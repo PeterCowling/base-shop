@@ -1,0 +1,144 @@
+{
+  "seo": {
+    "title": "Requisiti di età e accessibilità all'Hostel Brikette (Positano)",
+    "description": "Comprendi il nostro accesso tramite scale, le aspettative su bagagli e autosufficienza, la politica sui minori, le linee guida sugli animali da assistenza e i suggerimenti pratici per l'arrivo (traghetto e autobus) prima di prenotare."
+  },
+  "linkLabel": "Requisiti di età e accessibilità",
+  "sections": [
+    {
+      "id": "quickChecklist",
+      "title": "Prima di prenotare (lista di controllo rapida)",
+      "body": [
+        "Vogliamo che il tuo arrivo sia agevole – Positano è bellissima, ma non è \\\\\"piatta e facile\\\\\". Ecco cosa conta di più:",
+        "* **Le scale sono inevitabili:** la reception si raggiunge tramite ≈30 gradini in pietra esterni, e la maggior parte dei dormitori si trova 1-2 piani aggiuntivi sopra.\n* **Niente ascensore / nessun accesso senza gradini:** il nostro edificio storico non è stato costruito per rampe o ascensori.\n* **Pianifica i tuoi bagagli:** non abbiamo un servizio di portineria/facchini – porta ciò che puoi trasportare, o organizza un facchino.\n* **Le regole sui minori sono rigide:** sotto i 17 anni solo camera privata; i 17enni richiedono un adulto supervisore + documentazione.\n* **Se non sei sicuro, inviaci un'email prima di prenotare:** descriveremo la disposizione e i percorsi pedonali tipici in dettaglio."
+      ]
+    },
+    {
+      "id": "accessibilityRequirements",
+      "title": "Requisiti di accessibilità",
+      "body": [
+        "L'Hostel Brikette si trova in un edificio storico di Positano costruito sulla collina. Questo fa parte del fascino – ed è anche la principale considerazione sull'accessibilità: **non c'è ascensore e nessun percorso senza gradini**.",
+        "**Cosa aspettarsi nell'ostello:**\n* ≈30 gradini in pietra esterni dal vicolo pedonale più vicino alla reception.\n* La maggior parte dei dormitori si trova **uno o due piani interni aggiuntivi** sopra la reception.",
+        "Anche Positano è ripida. Molti percorsi da/verso la spiaggia e il porto includono scale e superfici irregolari.",
+        "Se le scale, l'equilibrio o il trasporto di bagagli potrebbero essere difficili, inviaci un'email prima di prenotare. Spiegheremo la disposizione e ti aiuteremo a prendere una decisione informata."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Le scale fino all'ingresso dell'Hostel Brikette, appena fuori dalla strada principale a Positano.",
+          "caption": "Aspettati gradini esterni per raggiungere la reception – non c'è ascensore o accesso senza gradini."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByFerry",
+      "title": "Arrivo in traghetto",
+      "body": [
+        "Arrivare in traghetto è pittoresco, ma il porto è molto al di sotto dell'ostello e i percorsi verso l'alto includono sezioni ripide e scale.",
+        "**Con i bagagli, non consigliamo di camminare** dal porto all'ostello – specialmente nel caldo estivo.",
+        "Un piano affidabile è:\n* Organizza un facchino registrato al porto per consegnare i bagagli direttamente all'ostello.\n* Prendi l'autobus locale Interno dal centro (area Piazza dei Mulini), poi cammina per l'ultimo breve tratto.",
+        "Per indicazioni dettagliate, vedi %LINK:arrivingByFerry|Guida Porto di Positano → Ostello%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Molo dei traghetti di Positano a livello della spiaggia con barche nella baia.",
+          "caption": "Il porto è a livello della spiaggia – pianifica aiuto per i bagagli (facchino) più un viaggio in autobus in salita."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByBus",
+      "title": "Arrivo in autobus",
+      "body": [
+        "La fermata dell'autobus più vicina è a circa **100 m / 330 piedi**. Il percorso tra la fermata e l'ostello è breve e per lo più pianeggiante.",
+        "Dalla strada, dovrai comunque gestire le scale:\n* scale fino alla reception\n* piani interni aggiuntivi per la maggior parte delle camere"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Segnaletica della fermata dell'autobus di Positano sul ciglio della strada.",
+          "caption": "Dalla fermata, è una breve passeggiata – poi scale fino alla reception."
+        }
+      ]
+    },
+    {
+      "id": "generalArrivalTips",
+      "title": "Suggerimenti generali per l'arrivo",
+      "body": [
+        "Poche piccole scelte fanno una grande differenza a Positano:",
+        "* Fai bagagli leggeri dove possibile.\n* Preferisci uno zaino a una grande valigia con ruote.\n* Indossa scarpe con una buona presa (i gradini in pietra possono essere scivolosi).\n* Se arrivi in traghetto con bagagli, pianifica in anticipo una combinazione facchino + autobus."
+      ]
+    },
+    {
+      "id": "reducedMobility",
+      "title": "Guida per mobilità ridotta",
+      "body": [
+        "Se hai mobilità ridotta, disabilità visiva, dolore cronico, problemi di equilibrio o dipendi da dispositivi di assistenza, inviaci un'email prima di prenotare.",
+        "Possiamo descrivere la disposizione (scale, percorsi pedonali tipici, opzioni di posizionamento della camera) in modo che tu possa valutare se la nostra posizione e le nostre strutture soddisfano le tue esigenze."
+      ]
+    },
+    {
+      "id": "serviceAnimals",
+      "title": "Animali da assistenza",
+      "body": [
+        "Possiamo ospitare **animali da assistenza certificati** in **solo camere private**, previo accordo e regolamenti applicabili.",
+        "Contattaci in anticipo in modo da poter confermare i requisiti di documentazione e la migliore opzione di camera."
+      ]
+    },
+    {
+      "id": "assistedSleeping",
+      "title": "Dispositivi di assistenza al sonno",
+      "body": [
+        "Per preservare un'atmosfera riposante nei dormitori condivisi, i dispositivi che creano suoni continui o intermittenti (ad esempio macchine CPAP, generatori di rumore bianco, altoparlanti per meditazione o orologi parlanti) possono essere utilizzati **solo con una prenotazione di camera privata**."
+      ]
+    },
+    {
+      "id": "selfSufficiencyPolicy",
+      "title": "Politica di autosufficienza",
+      "body": [
+        "L'Hostel Brikette è un ostello in stile backpacker: amichevole e solidale, ma **non una struttura di assistenza**.",
+        "Il nostro team può aiutare con informazioni e consigli pratici, ma non possiamo fornire servizi medici o di assistenza, e non possiamo conservare o somministrare farmaci da prescrizione.",
+        "**Per soggiornare con noi, gli ospiti devono essere in grado di:**\n* trasportare i propri bagagli (o organizzare un facchino)\n* salire le scale descritte sopra\n* fare il check-in/check-out in modo indipendente\n* gestire l'igiene personale in modo indipendente\n* utilizzare gli spazi comuni senza richiedere supervisione dello staff"
+      ]
+    },
+    {
+      "id": "essentialMedicine",
+      "title": "Medicinali essenziali",
+      "body": [
+        "Se viaggi con medicinali essenziali che richiedono refrigerazione, di solito possiamo conservarli per te – inviaci un'email prima dell'arrivo per riservare spazio.",
+        "Opzioni nelle vicinanze:\n* Farmacia: ~450 m su Viale Pasitea.\n* Ambulatorio medico pubblico: Praiano (~3 km in autobus).",
+        "In caso di emergenza, lo staff contatterà i servizi di emergenza italiani (112 / 118). Non possiamo fornire assistenza medica professionale in loco.",
+        "Se, durante il tuo soggiorno, diventa chiaro che non puoi soddisfare i requisiti minimi di autosufficienza sopra indicati, potremmo non essere in grado di ospitarti in sicurezza. Per i termini correlati, vedi %LINK:changingCancelling|Modifica e cancellazione% e %LINK:rules|Regole della casa%."
+      ]
+    },
+    {
+      "id": "minorsPolicy",
+      "title": "Politica sui minori",
+      "body": [
+        "Le regole italiane sull'ospitalità riguardo ai minori sono rigide, e noi le seguiamo. Questo protegge i giovani viaggiatori e mantiene l'ostello conforme – leggi attentamente prima di prenotare.",
+        "**Età 16 e inferiori:**\n* Solo camere private.\n* Devono essere accompagnati da un genitore/tutore legale di età 18+.\n* Il tutore deve rimanere nella stessa camera per l'intera permanenza.",
+        "**Età 17:** i letti in dormitorio potrebbero essere possibili solo con un adulto supervisore (18+) nello stesso dormitorio e documentazione appropriata di consenso/tutela all'arrivo (inviaci un'email in anticipo in modo da poter confermare cosa è necessario per la tua situazione).",
+        "**Gruppi (scuola/sport/scout) sotto i 18 anni:** devono organizzare l'occupazione esclusiva e fornire documentazione di responsabilità scritta dall'istituzione organizzatrice almeno 7 giorni prima dell'arrivo.",
+        "I minori non possono essere lasciati incustoditi nelle aree comuni. Se i requisiti non sono soddisfatti al check-in, potremmo essere legalmente obbligati a rifiutare il soggiorno."
+      ]
+    },
+    {
+      "id": "locationOverview",
+      "title": "Panoramica della posizione",
+      "body": [
+        "Siamo vicini alle comodità locali:\n* strada principale e fermate dell'autobus (~100 m / 330 piedi)\n* negozi di alimentari, bancomat, ristoranti e piccole necessità nelle vicinanze",
+        "L'area della spiaggia di Positano e il porto dei traghetti sono più in basso sulla collina; l'autobus locale è il modo più semplice per andare avanti e indietro."
+      ]
+    },
+    {
+      "id": "transportationGuide",
+      "title": "Guida ai trasporti",
+      "body": [
+        "Per la pianificazione del percorso passo dopo passo, usa queste guide come punto di partenza:",
+        "Percorsi comuni:\n* Dall'aeroporto di Napoli: %LINK:naplesAirportPositanoBus|Aeroporto di Napoli → Positano%.\n* Dal centro di Napoli: %LINK:naplesCenterTrainBus|Centro di Napoli → Positano%.\n* In traghetto (stagionale): %LINK:arrivingByFerry|Porto di Positano → Ostello%.",
+        "Arrivare in auto è possibile ma non consigliato in alta stagione a causa del parcheggio limitato e costoso. Se guidi, pianifica il parcheggio in anticipo e mantieni i bagagli il più leggeri possibile."
+      ]
+    }
+  ]
+}

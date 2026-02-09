@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Inne i en limoncellofabrikk",
+    "description": "Hvordan limoncello lages og hva du ser etter i en kvalitetsflaske."
+  },
+  "linkLabel": "Inne i en limoncellofabrikk",
+  "fallbackParagraph": "Hva går inn i ekte limoncello: sitroner, alkohol, sukker og tid. Omvisninger viser prosessen og avsluttes med smaksprøver - ikke kjør etterpå.",
+  "intro": [
+    "Bli med inn i en limoncellofabrikk: lær om sitronene, prosessen og hva du ser etter i en god flaske.",
+    "Lær stadiene, smak små batchflasker og hent tips om oppbevaring og transport av favorittblandingen din hjem."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Fra sitron til flaske",
+      "body": [
+        "Guidede omvisninger viser sortering, skrelling og infusjon i alkohol.",
+        "Små batcher hviler i flere uker før filtrering og tapping."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Smaking",
+      "body": [
+        "Smak klassisk limoncello, crema-varianter og eventuelt appelsin- eller urteversjoner.",
+        "Hold glasset kaldt – serveres best rett fra fryseren."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Handle med deg hjem",
+      "body": [
+        "Se etter etiketter med IGP/PGI for sitroner fra Costa d’Amalfi.",
+        "Spør om pakkesett eller gaveesker for trygg transport hjem."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Kjøp og oppbevaring",
+      "body": [
+        "Velg ugjennomsiktige glass eller UV-beskyttede flasker, og sjekk etiketter for produsentens adresse og produksjonsdato.",
+        "Hold flasken avkjølt når du åpner den hjemme; hvis du planlegger å reise med den, putt den i klær eller be butikken om beskyttende emballasje."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Tilbyr de frakt?",
+      "a": [
+        "Mange sender internasjonalt, men sjekk tollregler før bestilling."
+      ]
+    },
+    {
+      "q": "Kan jeg ta med limoncello i håndbagasjen?",
+      "a": [
+        "Kun miniflasker under 100 ml; ellers pakk i innsjekket bagasje."
+      ]
+    },
+    {
+      "q": "Hvor lenge holder limoncello?",
+      "a": [
+        "Uåpnede flasker holder seg friske i opptil ett år; Når de er åpnet, oppbevar du dem i kjøleskapet eller fryseren og nyt innen noen få måneder for maksimal aroma."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Itinerario di 7 giorni sulla Costiera Amalfitana (senza auto)",
+    "description": "Rotta completa tra Positano, Amalfi, Ravello e Capri con base multipla e consigli su trasferimenti leggeri."
+  },
+  "linkLabel": "Itinerario di 7 giorni sulla Costiera Amalfitana (senza auto)",
+  "intro": [
+    "Sette giorni senza auto ti permettono di bilanciare grandi classici e tempo lento nei borghi — usa i traghetti per comfort e gli autobus per risparmiare."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Giorni 1–2 — ambientarsi a Positano",
+      "body": [
+        "Arriva via Napoli o Salerno, esplora Spiaggia Grande e Fornillo e abituati alle scale con brevi passeggiate verso i belvedere.",
+        "Prenota una barca condivisa o una cooking class per la seconda sera così da inaugurare la settimana con un'esperienza speciale."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Giorno 3 — giro di Capri",
+      "body": [
+        "Prendi il traghetto delle 08:30 per Capri, dedica la mattina ad Anacapri e rientra prima del tramonto per evitare corse all'ultima barca.",
+        "Tieni una scorta di biglietti autobus nel caso i traghetti vengano sospesi; le rotte via Sorrento impiegano circa 90 minuti porta a porta."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Giorni 4–5 — Amalfi, Ravello e trekking",
+      "body": [
+        "Il giorno 4 dedicati ad Amalfi e ai giardini di Ravello, restando fino a tardi se ti attira un concerto.",
+        "Il giorno 5 affronta il Sentiero degli Dei o il trail di Montepertuso; parti presto, porta 1,5 L d'acqua e rientra in autobus."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Giorni 6–7 — cultura e margine",
+      "body": [
+        "Prendi un treno mattutino per Pompei o Salerno per musei e storia, poi rientra per un'ultima serata tranquilla a Positano.",
+        "Lascia l'ultimo giorno come cuscinetto per meteo o puro relax — torna in spiaggia o curiosa nelle botteghe artigiane."
+      ]
+    }
+  ],
+  "tips": [
+    "Fai il bucato a metà settimana per mantenere leggero il bagaglio; usa le self-service vicino a Chiesa Nuova.",
+    "Durante le giornate ventose verifica gli aggiornamenti dei traghetti sugli account Instagram degli operatori."
+  ],
+  "faqs": [
+    {
+      "q": "Devo soggiornare in più di un paese?",
+      "a": [
+        "Alloggia a Positano per ridurre i cambi di hotel. Aggiungi una notte a Napoli o Salerno solo se hai treni o voli molto presto."
+      ]
+    },
+    {
+      "q": "Devo prenotare tutto in anticipo?",
+      "a": [
+        "Prenota traghetti, tour in barca e ristoranti più richiesti. Lascia flessibili trekking, giornate di spiaggia e autobus locali per adattarti al meteo."
+      ]
+    }
+  ]
+}

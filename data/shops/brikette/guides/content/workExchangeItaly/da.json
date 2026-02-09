@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Work exchange på italienske hostels",
+    "description": "Roller, timer, lovgivning og hvordan du vurderer muligheder ansvarligt."
+  },
+  "linkLabel": "Work exchange på italienske hostels",
+  "intro": [
+    "Overvejer du et work exchange i Italien? Få styr på vagter, papirarbejde og hvordan du vælger ordentlige værter."
+  ],
+  "sections": [
+    {
+      "id": "expect",
+      "title": "Det kan du forvente",
+      "body": [
+        "Typiske aftaler bytter 20–25 timers rengøring, reception eller social hosting for seng og morgenmad.",
+        "Vagterne fordeles som regel over fem dage, så du har to hele dage fri. Få arbejdsplanen på skrift, før du siger ja."
+      ]
+    },
+    {
+      "id": "vet",
+      "title": "Tjek værterne",
+      "body": [
+        "Læs anmeldelser på Workaway, Worldpackers og hostelgrupper på Facebook. Vælg værter med nylig feedback og tydelige opgaver.",
+        "Spørg til indkvartering (sovesal vs. privat), udgangstider og om måltider eller personalerabatter er inkluderet."
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": "Papirarbejde og regler",
+      "body": [
+        "Borgere fra EU, UK, Canada, Australien og USA kan opholde sig 90 dage som turister i Schengen – work exchange skal forblive frivilligt.",
+        "Hav en rejseforsikring, der dækker frivilligt arbejde; nogle værter kræver en ansvarsfraskrivelse ved ankomst."
+      ]
+    }
+  ],
+  "tips": [
+    "Aftal et videoopkald med værten for at afklare opgaver og se faciliteterne, inden du booker fly.",
+    "Ankom en dag før start, så du kan lande, høre husreglerne og være klar til første vagt."
+  ],
+  "faqs": [
+    {
+      "q": "Får jeg lommepenge?",
+      "a": [
+        "De fleste italienske ophold giver kun kost og logi. Nogle tilbyder drikkepenge fra barvagter eller ture, men se det som bonus, ikke løn."
+      ]
+    },
+    {
+      "q": "Må jeg blive længere end 90 dage via work exchange?",
+      "a": [
+        "Nej. Du skal respektere Schengen-reglerne, medmindre du har arbejds- eller studievisum. Planlæg videre rejse eller en Schengen-reset."
+      ]
+    }
+  ]
+}

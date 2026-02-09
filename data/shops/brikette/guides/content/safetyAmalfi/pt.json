@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Como se manter seguro em Positano e na Costa Amalfitana",
+    "description": "Dicas práticas de segurança: ônibus, ferries, escadas, sol e contatos de emergência — o que saber antes de viajar."
+  },
+  "linkLabel": "Como se manter seguro em Positano e na Costa Amalfitana",
+  "intro": [
+    "Fique seguro nas escadas, autocarros e praias de Positano com alguns hábitos simples."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Escadas e rotas a pé",
+      "body": [
+        "Mapeie rotas com menos degraus (Chiesa Nuova ou Sponda) e divida o peso entre mochila e trolley leve se tiver sensibilidade nos joelhos.",
+        "Faça pausas em muros de terraço ou use bastões compactos nas subidas longas como o Caminho dos Deuses."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Autocarros e ferries",
+      "body": [
+        "Valide bilhetes SITA, segure-se ao corrimão e coloque malas na zona de bagagem — curvas cegas implicam travagens bruscas.",
+        "Nos ferries, mantenha objetos de valor consigo e siga as instruções da tripulação ao arrumar malas pesadas."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Mar e sol",
+      "body": [
+        "Verifique as bandeiras de segurança, use sapatos de água nas praias de seixos e reaplique protetor reef-safe após cada mergulho.",
+        "Hidrate-se com frequência: leve pelo menos 1 litro por pessoa em dias quentes e procure sombra entre as 12:00 e as 15:00."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Pertences e contactos",
+      "body": [
+        "Distribua dinheiro/cartões entre bolsas e use cacifos ou cofres do hostel para passaportes e eletrónica.",
+        "Guarde números de emergência (112 geral, Guarda Costeira 1530) e horários das farmácias offline caso o sinal falhe."
+      ]
+    }
+  ],
+  "tips": [
+    "Avise amigo ou receção do horário previsto antes de trilhos longos e confira o nível de alerta meteorológico.",
+    "Leve lanterna pequena para escadas noturnas — algumas ruelas têm iluminação irregular depois da meia-noite."
+  ],
+  "faqs": [
+    {
+      "q": "A água da torneira é potável?",
+      "a": [
+        "Sim, a água de Positano é potável — reabasteça garrafas para reduzir plástico e manter hidratação."
+      ]
+    },
+    {
+      "q": "Há zonas a evitar à noite?",
+      "a": [
+        "A vila é calma, mas fique em rotas iluminadas e use táxi se regressar tarde de Amalfi, Sorrento ou Nápoles."
+      ]
+    }
+  ]
+}

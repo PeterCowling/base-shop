@@ -1,0 +1,86 @@
+{
+  "seo": {
+    "title": "Positano niskim kosztem",
+    "description": "Strategie na oszczędne zwiedzanie Positano: noclegi, wyżywienie, transport i atrakcje."
+  },
+  "linkLabel": "Positano niskim kosztem",
+  "intro": [
+    "Rozciągnij euro, łącząc transport bez auta, tanie jedzenie i darmowe punkty widokowe bez rezygnacji z najważniejszych doświadczeń Positano."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport niskim kosztem",
+      "body": [
+        "Skorzystaj z Alibusa lub shuttle’a Curreri do Sorrento, a potem autobusu SITA do Positano; kup bilety w blokach w tabacchi, by uniknąć przepłacania.",
+        "Gdy morze jest spokojne, połącz jeden rejs promem (Positano ↔ Amalfi) z autobusami w pozostałych trasach; rezerwuj tylko potrzebne odcinki."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Smart stays",
+      "body": [
+        "Zarezerwuj akademiki lub apartamenty wieloosobowe w pobliżu Chiesa Nuova, aby obniżyć opłaty za portiera i wchodzenie po schodach.",
+        "Na dłuższe wycieczki rozważ bazy w Meta lub Praiano – dojazd zajmuje 30–40 minut, ale pokoje są znacznie tańsze w szczycie sezonu."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Oszczędności na jedzeniu",
+      "body": [
+        "Kup panini, sfogliatelle i espresso z barów zamiast siadać na brunch; przed wyjściem napełnij butelkę 1 l (34 oz) w kranach hostelu.",
+        "Dziel przystawki, omijaj opłaty cover i urządzaj pikniki z delikatesowymi zakupami na tarasach."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Tanie doświadczenia",
+      "body": [
+        "Postaw na darmowe wędrówki: Droga Bogów (autobus do Nocelle) albo zachodnia trasa Via Cristoforo Colombo.",
+        "Zainwestuj w jedną wyjątkową aktywność (np. wspólny rejs czy warsztaty), a resztę dni spędzaj na plażach i widokach."
+      ]
+    }
+  ],
+  "tips": [
+    "Podróżuj poza sezonem (kwiecień–maj, koniec września), by trafić na niższe ceny i mniej zatłoczone promy.",
+    "Zapisuj wydatki w aplikacji — dzielenie kosztów z grupą pomaga utrzymać budżet."
+  ],
+  "faqs": [
+    {
+      "q": "Jaki dzienny budżet zaplanować?",
+      "a": [
+        "70–90 € wystarczy na dorm, posiłki z delikatesów, bilety autobusowe i jedną płatną atrakcję; dorzuć 20–30 € na prywatne pokoje lub koktajle przy zachodzie."
+      ]
+    },
+    {
+      "q": "Czy trzeba zostawiać napiwki?",
+      "a": [
+        "Obsługa jest zwykle wliczona; zostaw 1–2 € za wyjątkową obsługę lub 10% tylko w eleganckich miejscach, jeśli naprawdę zrobiły wrażenie."
+      ]
+    }
+  ],
+  "tocTitle": "Na tej stronie",
+  "faqsTitle": "Najczęściej zadawane pytania",
+  "heroAlt": "Tani widok na Positano z tarasu",
+  "costBreakdown": {
+    "title": "Dzienny podział kosztów (przykład)",
+    "slices": [
+      {
+        "label": "Bed (dorm)",
+        "value": 45
+      },
+      {
+        "label": "Meals & snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Activities & extras",
+        "value": 18
+      }
+    ]
+  }
+}

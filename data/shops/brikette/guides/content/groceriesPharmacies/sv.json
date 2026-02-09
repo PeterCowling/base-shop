@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Livsmedel och apotek i Positano",
+    "description": "Var du handlar det viktigaste i Positano: små matbutiker, sena öppettider och information om apotek."
+  },
+  "linkLabel": "Livsmedel och apotek i Positano",
+  "intro": [
+    "Det finns inga stora stormarknader i Positano, så räkna med små butiker, en veckomarknad och ett par pålitliga apotek för det viktigaste."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Minimarknader och delikatessbutiker",
+      "body": [
+        "Lokala delikatessbutiker på Via Pasitea och Via dei Mulini har färskt bröd, ostar och färdiga sallader; utbudet är begränsat men de får leveranser varje dag.",
+        "Öppettiderna följer siestarytmen – handla före 13.00 eller efter 16.30 för att slippa stängda jalusier."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Frukt och marknader",
+      "body": [
+        "Frukt- och grönsaksstånd slår upp nära kurvan vid Sponda och hållplatsen Chiesa Nuova varje morgon; ha småmynt redo för snabba köp.",
+        "På onsdagar håller Montepertuso en liten marknad (buss 13) med säsongens grönsaker, mejerivaror och charkuterier."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Apotek och hälsoprodukter",
+      "body": [
+        "Farmacia Positano (Via Pasitea) har basläkemedel, solskydd och åksjuketabletter; ta med recept för mer specifika produkter.",
+        "Jouröppet roterar – kontrollera anslaget på apoteksdörren för telefonnumret om du behöver medicin sent."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Nattöppna nödvändigheter",
+      "body": [
+        "Några alimentari håller öppet till 22.00 under högsäsong; annars hittar du snacks i de dygnet runt-öppna automaterna vid busshållplatserna.",
+        "För akuta behov har Sorrento (45–60 minuter med buss) större stormarknader och akutmottagning."
+      ]
+    }
+  ],
+  "tips": [
+    "Ta med en lätt tygpåse eller ryggsäck så att du kan bära matkassar i trapporna utan att överbelasta ena handen.",
+    "Ha återanvändbara vattenflaskor: de flesta butiker säljer 1,5-liters påfyllningar billigt och på vandrarhemmets terrasser finns filtrerat vatten."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag köpa glutenfria varor på plats?",
+      "a": [
+        "Ja – leta efter hyllor med texten “senza glutine” i minimarknaderna eller fråga på apoteket; lagret är begränsat så köp när du ser det."
+      ]
+    },
+    {
+      "q": "Har apoteken öppet på söndagar?",
+      "a": [
+        "Minst ett håller öppet med förkortade tider; kontrollera schemat som sitter uppe och ring i förväg om du behöver receptbelagd medicin."
+      ]
+    }
+  ],
+  "fallback": "Det viktigaste finns i hela Positano – handla tidigare på dagen och notera var apoteken ligger."
+}

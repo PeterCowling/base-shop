@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "7-dagars resplan på Amalfikusten (utan bil)",
+    "description": "Veckoplan utan bil med baser i Positano, Amalfi/Ravello samt Capri eller Sorrento."
+  },
+  "linkLabel": "7-dagars resplan på Amalfikusten (utan bil)",
+  "intro": [
+    "Sju dagar utan bil låter dig balansera klassiska sevärdheter med långsammare bytid – använd färjor för komfort och bussar för värde."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Days 1–2 — settle in Positano",
+      "body": [
+        "Anländer via Neapel eller Salerno, utforska Spiaggia Grande och Fornillo och anpassa sig till trappan med korta promenader till utsiktspunkter.",
+        "Boka en delad båt eller matlagningskurs för den andra kvällen för att förankra veckan med en enastående upplevelse."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Day 3 — Capri loop",
+      "body": [
+        "Ta 08:30-färjan till Capri, fokusera på Anacapri på morgonen och återvänd innan solnedgången för att undvika sista båten.",
+        "Håll en bussbiljettförråd redo om färjorna stannar; Sorrento reservvägar tar cirka 90 minuter från dörr till dörr."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Days 4–5 — Amalfi & Ravello + hiking",
+      "body": [
+        "Tillbringa dag 4 mellan Amalfi stad och Ravellos trädgårdar, stanna sent om en konsert lockar dig.",
+        "Tillägna dag 5 åt Path of the Gods eller Montepertuso-leden; börja tidigt, ta med dig 1,5 L (51 oz) vatten och åk bussen tillbaka."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Days 6–7 — culture & buffer",
+      "body": [
+        "Ta ett morgontåg till Pompeji eller Salerno för museer och återvänd sedan för en avslappnad sista kväll i Positano.",
+        "Håll den sista dagen som en buffert för vädret eller ren fritid – upprepa en favoritstrand eller ströva i hantverksbutiker."
+      ]
+    }
+  ],
+  "tips": [
+    "Tvätt mitt i veckan håller påsarna lätta; använd självbetjäningsmaskiner nära Chiesa Nuova.",
+    "Spåra färjeuppdateringar på operatörens Instagram-konton under blåsiga perioder."
+  ],
+  "faqs": [
+    {
+      "q": "Should I stay in more than one town?",
+      "a": [
+        "Bas i Positano för färre ompackningar. Lägg till en natt i Neapel eller Salerno endast om du har mycket tidiga tåg eller flyg."
+      ]
+    },
+    {
+      "q": "Do I need to pre-book everything?",
+      "a": [
+        "Boka färjor, båtturer och populära restauranger. Lämna vandringar, stranddagar och lokala bussar flexibla så att du kan anpassa dig efter vädret."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Günstige Unterkünfte außerhalb von Positano",
+    "description": "Welche Orte sich fürs Sparen eignen (Sorrent, Salerno, Amalfi) und welche Kompromisse das bedeutet."
+  },
+  "linkLabel": "Günstige Unterkünfte rund um Positano",
+  "intro": [
+    "Preisfreundliche Basen außerhalb Positano mit realistischen Transport-Abwägungen."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Gute Preis-Leistungs-Basis mit häufigen Zügen und Fähren; späte Ankünfte sind einfacher."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Günstig und gut angebunden; saisonale Fähren fahren nach Amalfi und Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Region Amalfi",
+      "body": [
+        "Kleinere Orte bieten in der Nebensaison Schnäppchen; behalte Busfrequenzen im Blick."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Abwägungen",
+      "body": [
+        "Längere Fahrzeiten vs. niedrigere Preise. Für kurze Aufenthalte bleib in Positano, um Zeit zu sparen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Lohnt sich das Pendeln?",
+      "a": [
+        "Wenn der Preis Priorität hat und längere Transfers ok sind, ja – besonders in der Zwischensaison."
+      ]
+    }
+  ]
+}

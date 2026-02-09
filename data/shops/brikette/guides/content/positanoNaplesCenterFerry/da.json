@@ -1,0 +1,76 @@
+{
+  "seo": {
+    "title": "Positano til Napoli centrum med færge | Hostel Brikette",
+    "description": "Trin-for-trin fra Hostel Brikette til Positanos havn med billetkøb, ombordstigning og ankomsttips til færgen mod Napoli centrum."
+  },
+  "intro": {
+    "title": "Positano til Napoli centrum – færge",
+    "body": "Følg disse trin for at gå fra Hostel Brikette til Positanos havn, købe færgebilletter og sejle til Napoli. Guiden inkluderer operatørtips, sæsonbemærkninger og anvisninger ved ankomst til Napoli Centrale."
+  },
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Billede af rutetrin 1",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Billede af rutetrin 2",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Billede af rutetrin 3",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Billede af rutetrin 4",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Billede af rutetrin 5",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Billede af rutetrin 6",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Billede af rutetrin 7",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Billede af rutetrin 8",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Billede af rutetrin 9",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Billede af rutetrin 10",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

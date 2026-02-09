@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Work & Travel: równowaga zdalnej pracy w Positano",
+    "description": "Wi-Fi, kawiarnie, rytmy dnia i realne harmonogramy przy pracy na wybrzeżu."
+  },
+  "linkLabel": "Work & Travel: równowaga pracy zdalnej",
+  "intro": [
+    "Połącz fokus na pracę ze zwiedzaniem Positano: poznaj łącza, miejsca do pracy i rytm dnia dopasowany do tłumów."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi-Fi i zapasowe rozwiązania",
+      "body": [
+        "Korzystaj z eSIM jako backupu; testuj prędkości i unikaj ważnych rozmów, gdy promy rozładowują się na głównych ulicach."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Kawiarnie sprzyjające pracy",
+      "body": [
+        "Zajrzyj do przewodnika po Wi-Fi i kawiarniach przyjaznych pracy; pilnuj dostępu do gniazdek i regularnie kupuj napoje."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Rutyny, które działają",
+      "body": [
+        "Układaj bloki pracy na poranki i wieczory; w środku dnia zwiedzaj, gdy tłumy są największe lub po zachodzie słońca."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy praca zdalna jest tu możliwa?",
+      "a": [
+        "Tak, z planowaniem — mieszkaj blisko Chiesa Nuova, miej kopie zapasowe i elastyczne godziny."
+      ]
+    }
+  ]
+}

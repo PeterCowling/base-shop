@@ -1,0 +1,110 @@
+{
+  "seo": {
+    "title": "Positano-Reiseführer: Plane deinen Besuch",
+    "description": "Wo du übernachtest, wann du kommst, wie du dich fortbewegst und was du unternimmst."
+  },
+  "linkLabel": "Positano-Reiseführer",
+  "intro": [
+    "Plane deinen Positano-Trip: Wo wohnen, wie bewegen, beste Reisezeit und Highlights, die du nicht verpassen solltest.",
+    "Diese Übersicht verweist auf vertiefende Guides zu Transport, Stränden, Wanderungen, Tagesausflügen und Budgetplanung."
+  ],
+  "sections": [
+    {
+      "id": "when",
+      "title": "Beste Reisezeit",
+      "body": [
+        "Schultermonate (April–Mai, Ende September–Oktober) bieten bestes Verhältnis aus Wetter und Preisen.",
+        "Der Sommer bringt dichte Fährpläne und lange Tage, aber auch Hitze und Schlangen – früh starten."
+      ]
+    },
+    {
+      "id": "getting-around",
+      "title": "Fortbewegung",
+      "body": [
+        "Zu Fuß, SITA-Busse und saisonale Fähren decken die meisten Routen ab; Stufen gehören dazu.",
+        "Nutze unseren ÖPNV-Guide für Ticketinfos, Fahrzeiten und Tipps gegen Gedränge."
+      ]
+    },
+    {
+      "id": "highlights",
+      "title": "Highlights",
+      "body": [
+        "Beaches Spiaggia Grande und Fornillo; Sonnenuntergangsblickpunkte oberhalb der Via Pasitea.",
+        "Path of the Gods (Abschnitte Nocelle oder Bomerano); Tagesausflüge Amalfi + Ravello.",
+        "Capri-Tagestrip (erste Fähre) oder vor Ort bleiben für Cafés mit Klippenblick."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Übernachten",
+      "body": [
+        "Bleib in der Nähe der Haltestellen \\\\\"Chiesa Nuova\\\\\" oder \\\\\"Sponda\\\\\", um Gepäcktreppen zu sparen.",
+        "Mit kleinem Budget? In Sorrent/Meta übernachten und per Fähre/Bus für Tagestrips anreisen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Brauche ich ein Auto?",
+      "a": [
+        "Nein – Busse und Fähren decken die Küste ab; Parkplätze sind rar und teuer."
+      ]
+    },
+    {
+      "q": "Wie viele Tage einplanen?",
+      "a": [
+        "2–3 Tage zum Reinschnuppern; 4–5 Tage für Wanderung und Tagesausflug."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Positano ist vertikal, wunderschön und in der Hochsaison belebt. Dieser Abschnitt setzt auf praktische Entscheidungen: Wo du dich einquartierst, wann du reist, wie du dich bewegst und was du tatsächlich vor Ort unternimmst."
+    ],
+    "sections": {
+      "whereToStay": {
+        "title": "Übernachten",
+        "body": "Wer nahe <em>Chiesa Nuova</em> wohnt, spart beim An- und Abreisetag Treppen. Hostel Brikette liegt ca. 80 m von der Haltestelle entfernt, mit Panoramaterrassen sowie Schlafsälen und privaten Zimmern. Unterkünfte am Strand (Spiaggia Grande) sind besonders fotogen, bedeuten aber höhere Preise und mehr Stufen."
+      },
+      "whenToVisit": {
+        "title": "Beste Reisezeit",
+        "body": "Sommer ist lebhaft, aber voll; die Nebensaison bietet bestes Gleichgewicht. Details findest du im Guide <linkBestTime>beste Reisezeit für Positano</linkBestTime>. Fähren fahren saisonabhängig und werden außerhalb der Hauptmonate reduziert."
+      },
+      "gettingAround": {
+        "title": "Fortbewegung",
+        "arrivals": "<strong>Anreise</strong>: Starte mit dem Entscheidungsbaum <linkHowTo>Anreise nach Positano</linkHowTo> und schau dir danach <linkNaples>Neapel → Positano</linkNaples> und <linkSalerno>Salerno → Positano</linkSalerno> an.",
+        "withinTown": "<strong>Im Ort</strong>: Busse verbinden <em>Chiesa Nuova</em>, <em>Sponda</em> und den Strand. Vieles geht zu Fuß – plane Routen so, dass du Stufen doppelt vermeidest.",
+        "ferries": "<strong>Fähren</strong>: <linkFerries>Fahrpläne</linkFerries> vorher prüfen und immer Wetterpuffer einplanen."
+      },
+      "thingsToDo": {
+        "title": "Unternehmungen",
+        "beaches": "<linkBeaches>Strände</linkBeaches>: Spiaggia Grande für das klassische Panorama, Fornillo für entspannte Atmosphäre, Arienzo für Klippenszenerie.",
+        "pathOfTheGods": "<linkPath>Path of the Gods</linkPath> von Nocelle oder Bomerano für spektakuläre Ausblicke.",
+        "dayTrips": "Tagesausflüge: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi> und <linkRavello>Ravello</linkRavello>."
+      },
+      "moneySavers": {
+        "title": "Sparen",
+        "eat": "Iss nach unserer <linkCheapEats>Liste günstiger Adressen</linkCheapEats> und nimm eine wiederbefüllbare Flasche mit.",
+        "travel": "Reise außerhalb von Spitzenwochenenden; vergleiche <linkBudgetArrival>günstige Anreiseoptionen</linkBudgetArrival>.",
+        "stay": "Übernachte nahe <em>Chiesa Nuova</em>, um Porter-Gebühren und lange Treppen am Anreisetag zu vermeiden."
+      }
+    },
+    "tipsTitle": "Spartipps",
+    "faqHeading": "Häufige Fragen",
+    "faqs": [
+      {
+        "question": "Ist Positano mit kleinem Budget machbar?",
+        "answer": "Ja. Nutze Busse, plane Fähren gezielt und konzentriere dich auf kostenlose Aussichtspunkte und Strandzeiten."
+      },
+      {
+        "question": "Wo sollte ich mich einquartieren?",
+        "answer": "Für kurze Wege logiere nahe <em>Chiesa Nuova</em>. Für Strandfeeling bleib bei der Spiaggia Grande – rechne mit mehr Stufen."
+      }
+    ],
+    "tips": [
+      "Buchen Sie Fähren und Busse nach Möglichkeit im Voraus. Last-Minute-Tickets kosten mehr und können ausverkauft sein.",
+      "Nehmen Sie Bargeld für Strandclubs, Trinkgeld für den Gepäckträger und schnelle Snacks mit – die Geldautomaten in der Stadt sind nach dem Abendessen oft leer.",
+      "Teilen Sie Flughafentransfers oder fahren Sie mit den Bussen der Amalfiküste. Durch die Aufteilung der Fahrpreise werden die Anreisekosten niedrig gehalten."
+    ]
+  }
+}

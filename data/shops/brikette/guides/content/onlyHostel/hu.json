@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano egyetlen hostelje: mire számíts és hogyan spórolj",
+    "description": "Használd ki az erősségeinket: panorámás terasz, közeli buszmegálló, bár és reggeli – plusz tippek közvetlen foglaláshoz."
+  },
+  "linkLabel": "Positano egyetlen hostelje: mire számíts (és hogyan spórolj)",
+  "intro": "Üdv Positano egyetlen hostelében. Barátságos légkörre, panorámás teraszra és verhetetlen elhelyezkedésre számíthatsz közvetlenül a Chiesa Nuova SITA megálló mellett.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Szobatípusok és ágynemű",
+      "body": [
+        "A közös hálók 4–8 vendéget fogadnak, egyéni olvasólámpával, konnektorral és szekrénnyel – hozz TSA lakatot vagy vásárolj a recepción.",
+        "A privát szobák saját fürdős és közös fürdős változatban is elérhetők; ha fontos a balkon vagy a tengerre nézés, jelezd e-mailben a csapatnak."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Közös terek és szolgáltatások",
+      "body": [
+        "A teraszon asztalok, napozóágyak és konnektorok várnak, így ehetsz, útvonalat tervezhetsz vagy naplemente-aperitivón vehetsz részt a házból kilépés nélkül.",
+        "A lobby bár kávét, spritzet és helyi bort kínál; a szezonális büféreggeli általában 07:30–10:00 között fut – nézd meg a krétatáblán a napi menüt."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Foglalás és szabályzat",
+      "body": [
+        "Foglalj közvetlenül a hostelbrikette.com oldalon a legalacsonyabb rugalmas árért; a közvetítők drágábbak és szigorúbb a módosítás.",
+        "Kis előleggel biztosíthatod az ágyad; a lemondás a közzétett határidőig ingyenes – ha változik az utad, írj a csapatnak, hogy a takarítási beosztást igazítani tudják."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "Mi van a közelben",
+      "body": [
+        "Két percen belül minimarket, pékség és a Chiesa Nuova SITA megálló található; este vásárold meg a snackeket, mielőtt elfogynának a buszjáratok.",
+        "A Via Pasiteán lefelé haladva éttermeket és fagyizókat találsz; 10–12 perc alatt éred el a Spiaggia Grande-t a főúton, minimális lépcsővel."
+      ]
+    }
+  ],
+  "highlightsTitle": "Főbb előnyök",
+  "highlights": [
+    "Teraszok lélegzetelállító Amalfi-parti kilátással",
+    "Kb. 80 méterre a buszmegállótól, lépcsők nélkül",
+    "Kötetlen hangulatú bár és szezonális reggeli",
+    "Megfizethető ágyak és privát szobák"
+  ],
+  "saveTitle": "Hogyan spórolj",
+  "save": [
+    "Foglalj közvetlenül a legjobb ár és rugalmas feltételek érdekében",
+    "Utazz lehetőség szerint nem csúcsidős hétvégéken",
+    "Válassz hálótermet és csomagolj könnyen, hogy elkerüld a hordárdíjat"
+  ],
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "rooms": "Szobák és felszereltség",
+    "arrival": "Megérkezés",
+    "etiquette": "Házirend és etikett",
+    "faqs": "GYIK"
+  },
+  "roomsList": [
+    "Közös teraszok panorámával – a napfelkelte kávé és a naplemente kedvenc vendégprogram.",
+    "Bár (baráti árakkal) és szezonális reggeli kínálat.",
+    "Zárható szekrények a hálótermekben; nézd meg a pakolási listánkat.",
+    "Stabil Wi-Fi; a mély munkához ajánlott kávézókat itt találod."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Kb. 80 méterre vagyunk a \\\"Chiesa Nuova” SITA megállótól, lépcsősor nélkül. Komppal érkezel? Gondolkodj hordáron vagy a felfelé tartó SITA buszon.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Útvonalak:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Csendes órák: késő este és kora reggel légy tekintettel a hálótermekben.",
+    "Jelöld meg a hűtős ételeidet, takarítsd le az asztalt használat után, tartsd rendezettnek a közös tereket.",
+    "Az értékeidet tartsd szekrényben; hálóteremhez füldugó és alvómaszk ajánlott."
+  ],
+  "faq": [
+    {
+      "q": "Vannak privát szobák?",
+      "a": "Igen – főszezonban korlátozott számban. Foglalj időben a legjobb árakért."
+    },
+    {
+      "q": "Érkezhetek későn?",
+      "a": "Igen – egyeztess a recepcióval a késői check-inhez. Ha késő esti komppal érkezel, érdemes hordárt foglalni a kikötőtől."
+    }
+  ]
+}

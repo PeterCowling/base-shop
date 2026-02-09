@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Viajar como casal em albergues",
+    "description": "Dicas para dormitórios ou quartos privativos, encontrar tranquilidade e definir expectativas."
+  },
+  "linkLabel": "Viajar como casal em albergues",
+  "intro": [
+    "Albergues funcionam para casais quando você escolhe o tipo de quarto certo, empacota leve e define expectativas juntos."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Tipos de quartos",
+      "body": [
+        "Reserve um quarto privativo para privacidade; se estiver apertando o orçamento, compartilhem beliches no mesmo dormitório e mantenham a bagagem leve para as escadas."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Encontrar tranquilidade",
+      "body": [
+        "Leve tampões de ouvido e uma máscara para os olhos, escolha quartos longe do bar ou áreas comuns, e use as manhãs cedo para passeios turísticos mais tranquilos."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Um albergue é adequado para casais?",
+      "a": [
+        "Sim — você obtém energia social e bom valor; quartos privativos equilibram conforto e custo."
+      ]
+    }
+  ]
+}

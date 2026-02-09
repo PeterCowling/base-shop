@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Transport på budsjett (Amalfikysten)",
+    "description": "Rimelige ruter og kort: når du bør velge buss vs. ferje vs. skyttel, med backupløsninger."
+  },
+  "linkLabel": "Transport på budsjett",
+  "intro": [
+    "Hold transportkostnadene lave ved å blande pass, avganger utenfor topptider og delte transporter når det gjelder."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Velg riktig pass",
+      "body": [
+        "Bruk UNICO Costiera-dagpasset (€12,40) for ubegrensede SITA-busser mellom Sorrento og Salerno – valider den første turen og hold billetten tilgjengelig for inspektører.",
+        "Hvis du planlegger to eller flere fergeturer på en dag, kan du sammenligne kombinasjonsbilletter fra operatører som Travelmar; de pakker Amalfi- og Positano-hopp til en rabatt."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Kombiner transport smart",
+      "body": [
+        "Koble en enkelt fergetappe med busser for å spare penger, men fortsatt nyte utsikten – seil ut om morgenen, buss tilbake når prisene stiger.",
+        "Del drosjer for sent på kvelden når bussene stopper; Å dele €80 på fire måter kan slå ventetiden til neste kjøring."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Kjøp på forhånd når det lønner seg",
+      "body": [
+        "Bestill billetter til Trenitalia eller Italo fra Roma/Napoli tidlig for de laveste prisene; regionale tillegg til Sorrento holder fast pris.",
+        "Reserver flyplasstransport (Curreri, Pintour) på nettet for å låse seter i helgene."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Spar på siste etappe",
+      "body": [
+        "Ved ankomst, ta SITA-bussen til Chiesa Nuova og gå ned i stedet for å leie portør; beregn 15 minutter med håndterlig bagasje.",
+        "Bruk bagasjeoppbevaring i nærheten av fergekaien i stedet for privat transport hvis du har en sen utsjekking—€7–€10 slår en ekstra taxi."
+      ]
+    }
+  ],
+  "tips": [
+    "Reis før 08:30 eller etter 19:00 når bussene er roligere og du kan gå ombord uten å presse.",
+    "Skjermdump eller skriv ut billetter; Wi-Fi kan falle rett som inspektørbord."
+  ],
+  "faqs": [
+    {
+      "q": "Lønner busskort seg utenfor sesong?",
+      "a": [
+        "Ja hvis du tar tre eller flere turer på en dag. Ellers betal enkeltbilletter; rutene er roligere, men prisene er fortsatt lave."
+      ]
+    },
+    {
+      "q": "Må jeg validere fergebilletter?",
+      "a": [
+        "De fleste operatører skanner QR-koder digitalt, men beholder en trykt kopi hvis du forventer at våte forhold vil forvirre skjermene."
+      ]
+    }
+  ]
+}

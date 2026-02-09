@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Det eneste hostel i Positano: hvad du kan forvente (og hvordan du sparer)",
+    "description": "Udnyt vores særpræg: terrasseudsigt, tæt på busstop, bar og morgenmad — plus tips til at spare ved direkte booking."
+  },
+  "linkLabel": "Det eneste hostel i Positano: hvad du kan forvente (og hvordan du sparer)",
+  "intro": "Velkommen til Positanos eneste hostel. Glæd dig til en venlig stemning, en panoramaterrasse til morgenkaffen og en uovertruffen beliggenhed lige ved SITA-busstoppet ved Chiesa Nuova.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Værelsestyper og senge",
+      "body": [
+        "Delte sovesale har plads til 4–8 gæster med individuelle læselamper, strømudtag og skabe – medbring en TSA-hængelås eller køb én i receptionen.",
+        "Private værelser findes med eget badeværelse eller delt bad; skriv til teamet, hvis du ønsker balkon eller havudsigt."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Fællesarealer og services",
+      "body": [
+        "Terrassen har borde, liggestole og strømudtag, så du kan spise, planlægge ture eller deltage i aperitivo ved solnedgang uden at forlade hostellet.",
+        "Lobbybaren serverer kaffe, spritz og lokale vine; et sæsonbestemt morgenmadsbuffet kører ca. 07.30–10.00 – tjek tavlen for dagens menu."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Booking og politikker",
+      "body": [
+        "Book direkte på hostelbrikette.com for at få den laveste fleksible pris; tredjeparts-OTAs tager mere og har strammere ændringsregler.",
+        "Et lille depositum reserverer din seng; aflysninger er gratis indtil den angivne frist – giv teamet besked, hvis dine planer ændrer sig, så de kan justere rengøringen."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "Lige i nærheden",
+      "body": [
+        "Inden for to minutter finder du et minimarked, et bageri og SITA-stoppet ved Chiesa Nuova; køb snacks, før de sidste busser bliver udsolgt.",
+        "Følg Via Pasitea ned ad bakke for restauranter og gelato; sæt 10–12 minutter af til at nå Spiaggia Grande via hovedvejen med få trapper."
+      ]
+    }
+  ],
+  "highlightsTitle": "Højdepunkter",
+  "highlights": [
+    "Terrasser med bred udsigt over Amalfikysten",
+    "~80 m fra busstoppet, uden trapper",
+    "Hyggelig bar på stedet og sæsonbetonet morgenmad",
+    "Budgetvenlige senge og private værelser"
+  ],
+  "saveTitle": "Sådan sparer du",
+  "save": [
+    "Book direkte for bedste pris og fleksible vilkår",
+    "Rejs uden for de travleste weekender, når det er muligt",
+    "Vælg sovesal og pak let for at undgå portørgebyrer"
+  ],
+  "toc": {
+    "onThisPage": "På denne side",
+    "rooms": "Værelser og faciliteter",
+    "arrival": "Sådan kommer du frem",
+    "etiquette": "Husregler og etikette",
+    "faqs": "FAQ"
+  },
+  "roomsList": [
+    "Fælles terrasser med panoramaudsigt – morgenkaffe ved solopgang og gyldentime ved solnedgang er gæstefavoritter.",
+    "Bar med rimelige priser og sæsonbetonet morgenmad.",
+    "Skabe i sovesalene; se vores pakkeliste.",
+    "Stabil Wi-Fi; til fordybelse henviser vi til arbejdsvenlige caféer."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Vi ligger ca. 80 m fra SITA-stoppet \\\\\"Chiesa Nuova\\\\\" uden trapper på vejen. Ankommer du med færge? Overvej en portør eller SITA-bussen op ad bakken.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Ruter:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Stilletimer: vis hensyn i sovesalene sent om aftenen og tidligt om morgenen.",
+    "Mærk madvarer i køleskabet, ryd op på bordene efter brug, og hold fællesområderne indbydende.",
+    "Opbevar værdigenstande i skabe; ørepropper/øjenmaske anbefales i sovesale."
+  ],
+  "faq": [
+    {
+      "q": "Har I private værelser?",
+      "a": "Ja – men de er få i højsæsonen. Book tidligt for bedste priser."
+    },
+    {
+      "q": "Kan jeg ankomme sent?",
+      "a": "Ja – kontakt receptionen for at aftale sen indtjekning. Ved sene færgeankomster kan en portør fra havnen være en god idé."
+    }
+  ]
+}

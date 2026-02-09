@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Trabajar en Positano: Wi-Fi, cafés y consejos",
+    "description": "Cobertura Wi-Fi, etiqueta en cafés, equipo recomendado y respaldo de datos para trabajar en remoto en Positano sin sorpresas."
+  },
+  "linkLabel": "Cafés con Wi-Fi para trabajar en Positano",
+  "intro": [
+    "Trabajar en Positano es viable, con expectativas realistas: en temporada alta las redes se saturan y algunas terrazas tienen consumo mínimo o límites de tiempo."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Cafés cerca del Brikette",
+      "body": [
+        "Los cafés pequeños de Via Pasitea y alrededor de Chiesa Nuova suelen tener Wi‑Fi estable.",
+        "Lleva una batería externa; en los locales antiguos hay pocos enchufes."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Conectividad de respaldo",
+      "body": [
+        "Conserva una eSIM de respaldo; la cobertura varía según la zona — TIM y Vodafone suelen ser las más estables.",
+        "Comparte datos desde tu móvil cuando la red del café se sature a la hora de la comida."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo quedarme muchas horas?",
+      "a": [
+        "Consume algo cada 60–90 minutos y evita la hora punta de almuerzo; rota de local cuando sea posible."
+      ]
+    },
+    {
+      "q": "¿Son estables las videollamadas?",
+      "a": "Mejor temprano o al final de la tarde; en picos usa solo audio o baja la resolución."
+    },
+    {
+      "q": "¿Necesito efectivo?",
+      "a": "Algunos locales aceptan solo efectivo para pedidos pequeños; lleva cambio."
+    },
+    {
+      "q": "¿Recomendaciones de cobertura?",
+      "a": "TIM y Vodafone suelen ir mejor en zonas altas; revisa mapas antes de elegir mesa."
+    },
+    {
+      "q": "Ver SIM/eSIM y cajeros",
+      "a": "Consulta la guía de ",
+      "linkLabel": "SIM/eSIM y cajeros"
+    }
+  ]
+}

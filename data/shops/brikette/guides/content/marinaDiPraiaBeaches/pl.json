@@ -1,0 +1,237 @@
+{
+  "seo": {
+    "title": "Marina di Praia: przewodnik — autobus SITA, lido i kolacja",
+    "description": "Przewodnik dla gości hostelu o Marina di Praia: dojazd autobusem SITA, gdzie rozłożyć się na plaży (lido vs darmowa strefa), co spakować i gdzie zjeść przed powrotem."
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Marina di Praia: malownicza zatoczka między klifami",
+  "intro": [
+    "Marina di Praia to ukryta, kamienista zatoczka w Praiano — krótki przejazd autobusem SITA z Hostel Brikette, a zwykle znacznie spokojniejsza niż najbardziej znane plaże Positano. Łodzie rybackie, wieża strażnicza i kamienne ścieżki dają wrażenie \\\"sekretnego miejsca”, a jednocześnie masz blisko jedzenie i podstawowe udogodnienia.",
+    "Jeśli chcesz plażowego dnia bez stresu (kąpiel, przekąska, drzemka w cieniu i prosta kolacja), to jedna z najlepszych opcji w okolicy dla hostelowych podróżników.",
+    "W tym przewodniku znajdziesz: dojazd autobusem, układ plaży (lido vs darmowy odcinek), co zabrać na kamienie i cień oraz najprostszy sposób powrotu do Positano po zachodzie słońca."
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Dlaczego warto"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Dojazd"
+    },
+    {
+      "href": "#layout",
+      "label": "Układ i udogodnienia"
+    },
+    {
+      "href": "#what-to-bring",
+      "label": "Co zabrać"
+    },
+    {
+      "href": "#best-time",
+      "label": "Najlepsza pora"
+    },
+    {
+      "href": "#nearby",
+      "label": "Spokojne kąpiele w pobliżu"
+    },
+    {
+      "href": "#evening",
+      "label": "Kolacja i powrót"
+    }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Dlaczego ta zatoczka pasuje gościom hostelu",
+      "body": [
+        "W przeciwieństwie do Spiaggia Grande czy Fornillo, ta zatoka leży w wąskim wąwozie tuż za Praiano. Klify osłaniają wodę przed falą, łodzie kołyszą się w małym porcie, a klimat pozostaje spokojny nawet w szczycie sezonu.",
+        "To idealny \\\"złoty środek”: wygodniej niż w dzikich zatoczkach z masą schodów, ale mniej chaotycznie niż na dużych plażach Positano. Masz prysznice i jedzenie, a jednocześnie czujesz się \\\"wciśnięty” między klify, a nie w środku miasta.",
+        "Zaplanuj jako pół dnia (poranna kąpiel + długi lunch) albo jako relaks popołudniowy zakończony kolacją przy wodzie przed powrotem."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/01-marina-di-praia-overlook.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Widok na zatoczkę Marina di Praia z łodziami, parasolami i stromymi klifami w Praiano",
+          "caption": "Osłonięta, spektakularna i zwykle spokojniejsza niż duże plaże Positano. Zdjęcie: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Dojazd i powrót autobusem SITA",
+      "body": [
+        "Z Hostel Brikette zejdź Via Pasitea do przystanku Sponda i wsiądź w autobus SITA w kierunku Amalfi. Powiedz kierowcy, że chcesz wysiąść na \\\"Marina di Praia” — przystanek jest między Praiano a Furore i łatwo go przegapić, gdy autobus jest pełny.",
+        "Wysiądź na oznaczonym przystanku i zejdź kamienną ścieżką w dół (około dwie minuty) do nabrzeża. Dojście jest wyłożone, więc spokojnie dasz radę nawet w klapkach.",
+        "W drodze powrotnej przejdź na drugą stronę ulicy i czekaj na autobus do Positano. Latem kursy bywają dość częste, ale wieczorem robi się rzadziej — sprawdź rozkład na miejscu i celuj w przedostatni autobus, jeśli zostajesz na kolację.",
+        "Kup bilety SITA i skasuj je przed wejściem. Jeśli potrzebujesz przypomnienia o typach biletów, gdzie je kupić i co robić, gdy autobusy przejeżdżają pełne, zobacz nasz %LINK:sitaTickets|przewodnik po biletach SITA%. Jeśli łączysz plażę ze spacerem po Praiano (kościoły, punkty widokowe, ścieżki wzdłuż wybrzeża), dołóż %LINK:praianoGuide|przewodnik po Praiano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/02-marina-di-praia-waterfront.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Kamienna promenada przy Marina di Praia z łodziami i ścianami skalnymi",
+          "caption": "Kamienna promenada ułatwia ostatnie dwie minuty zejścia do wody. Zdjęcie: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        },
+        {
+          "src": "/img/guides/marina-di-praia/08-san-gennaro-church.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Kościół San Gennaro w Praiano z kafelkową kopułą i widokiem na Wybrzeże Amalfitańskie",
+          "caption": "Jeśli łączysz plażę ze zwiedzaniem Praiano, kościół San Gennaro to łatwy przystanek po drodze. Zdjęcie: Elliott Brown (CC BY 2.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Układ plaży: lido i usługi",
+      "body": [
+        "Plaża jest wąska, kamienista i podzielona na mały darmowy odcinek oraz główną strefę lido. Jeśli chcesz darmową część bliżej wody, przyjdź wcześniej — w weekendy zapełnia się najszybciej.",
+        "Główny operator to Marina di Praia Beach Club (leżaki, parasole, prysznice i zwykle coś w stylu paddle/kajak). W szczycie sezonu płaci się bardziej za wygodę niż za przestrzeń, ale warto, jeśli zależy ci na toaletach i prostym \\\"rozłóż rzeczy i odpoczywaj”.",
+        "Wzdłuż promenady są restauracje i kioski z zimnymi napojami. Terminale kart potrafią szwankować, więc weź trochę gotówki na drobne płatności i miej plan B, jeśli kioski z biletami autobusu będą zamknięte później.",
+        "Hostel reality check: nie bierz wartościowych rzeczy, które będą cię stresować. Jeśli jesteś sam, wybierz widoczne miejsce (blisko innych grup), trzymaj telefon w zamykanej kieszeni i pływaj krótkimi seriami zamiast zostawiać rzeczy bez nadzoru na długo."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/03-marina-di-praia-from-sea.webp",
+          "width": 1600,
+          "height": 1045,
+          "alt": "Marina di Praia widziana od strony morza: kamienista plaża i promenada u stóp klifów",
+          "caption": "Z wody widać, jak mała jest zatoka — lepiej przyjść wcześnie, jeśli chcesz miejsce w darmowej strefie. Zdjęcie: Gilbert Bochenek (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Co zabrać (żeby kamienie nie zepsuły dnia)",
+      "body": [
+        "To kamienista plaża, nie miękki piasek. Różnica jest ogromna: jeśli przyjdziesz tylko z cienkim ręcznikiem, prawdopodobnie będziesz się przestawiać co kilka minut zamiast odpoczywać.",
+        "Spakuj się jak na hostelowy day trip: lekko, żeby dać radę podejść z powrotem, ale z kilkoma rzeczami, które robią różnicę na kamieniach i w cieniu."
+      ],
+      "list": [
+        "Buty do wody: przy brzegu bywa ślisko, a kamienie po kilku godzinach bolą.",
+        "Grubsza mata albo złożony ręcznik: na kamieniach szybko robi się twardo.",
+        "Lekka warstwa na późne popołudnie: klify dają cień wcześniej i po kąpieli robi się chłodniej.",
+        "Gotówka + karta: część drobnych płatności i terminale bywają zawodne.",
+        "Mały worek wodoszczelny lub etui zip na telefon, jeśli często wchodzisz do wody."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/05-praiano-coastline.webp",
+          "width": 1600,
+          "height": 1200,
+          "alt": "Wybrzeże Praiano z klifami i niebieskim morzem na Wybrzeżu Amalfitańskim",
+          "caption": "Klify szybko zmieniają światło i cień — weź warstwę, jeśli zostajesz do wieczora. Zdjęcie: Barochat (CC BY-SA 3.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Najlepsza pora (i jak czuje się woda)",
+      "body": [
+        "Na spokojny, prosty dzień najlepiej przyjść rano. Masz większą szansę na wygodne miejsce, mniej tłoku na promenadzie i płynniejszy rytm \\\"baza → kąpiel”.",
+        "W połowie/późnym popołudniem klify dają więcej cienia. To świetne, gdy jest upał, ale zatoczka może wydawać się chłodna w wietrzne dni — zwłaszcza po dłuższym pływaniu.",
+        "Dno robi się głębokie dość szybko: wejdź powoli za pierwszym razem i pilnuj, gdzie kładziesz plecak, gdy fale podchodzą wyżej."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/06-praiano-view.webp",
+          "width": 1600,
+          "height": 1066,
+          "alt": "Widok na wybrzeże Praiano: klify i zabudowania na zboczu",
+          "caption": "Tutaj klify rządzą światłem i cieniem — planuj dzień pod to. Zdjęcie: Mihael Grmek (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "Spokojne kąpiele w pobliżu (co jest realne)",
+      "body": [
+        "Wybrzeże Amalfitańskie słynie z \\\"sekretnych zatoczek”, ale wiele z nich jest prywatnych, dostępnych tylko łodzią albo wymaga ryzykownych ścieżek na klifach. Dla gości hostelu najlepsza strategia to potraktować tę zatokę jako wygodną bazę i dodać jedną krótką \\\"wow” atrakcję na tej samej linii autobusowej.",
+        "Najłatwiejszy dramatyczny przystanek w pobliżu to %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore%: jedź wcześnie na zdjęcia i szybkie pływanie, a potem wróć tutaj na lunch, cień i spokojniejszą kąpiel.",
+        "Jeśli chcesz cały dzień \\\"próbowania”, zaplanuj kolejność (i rozkład autobusów) z naszym %LINK:beachHoppingAmalfi|przewodnikiem po beach-hopping na Wybrzeżu Amalfitańskim% — inaczej możesz spędzić popołudnie patrząc, jak przejeżdżają pełne autobusy."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/07-fiordo-di-furore.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Wąwóz Fiordo di Furore z turkusową wodą i stromymi klifami",
+          "caption": "Fiordo di Furore to najbardziej \\\"filmowy” przystanek w pobliżu — połącz go z spokojniejszą plażą bazową. Zdjęcie: Luca Aless (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Kolacja przy wodzie i powrót bez stresu",
+      "body": [
+        "To jedna z najfajniejszych zatok, żeby zostać po pływaniu: gdy słońce zachodzi, restauracje przechodzą na tryb kolacyjny, a światła promenady odbijają się w wodzie. Jeśli marzy ci się konkretny stolik, zarezerwuj — szczególnie w lipcu i sierpniu.",
+        "Żeby powrót był prosty, sprawdź rozkład autobusów od razu po przyjeździe. Celuj w przedostatni autobus do Positano, żeby mieć zapas, jeśli jeden kurs będzie pełny.",
+        "Jeśli przegapisz ostatni autobus, taksówki z Praiano do Positano potrafią być drogie — jeśli siedzisz dłużej, umów się na podział kosztów z ekipą z hostelu."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/marina-di-praia/04-torre-a-mare-watchtower.webp",
+          "width": 1200,
+          "height": 1600,
+          "alt": "Nadmorska wieża strażnicza koło Praiano nad klifami",
+          "caption": "Wybrzeże jest tu pełne historycznych wież i ścieżek na klifach. Zdjęcie: Falk2 (CC BY-SA 4.0) via Wikimedia Commons."
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Czego się spodziewać",
+  "essentials": [
+    "Krótki przejazd autobusem SITA z Positano; poproś kierowcę o przystanek Marina di Praia i zejdź około 2 minuty w dół do wody.",
+    "Wąska zatoka z kamieniami: jedno główne lido i mała darmowa strefa; przyjdź wcześniej, jeśli chcesz miejsce bez opłat.",
+    "Jedzenie i udogodnienia na miejscu (restauracje, napoje, prysznice przy lido) — idealne na spokojne pół dnia lub kolację przed powrotem."
+  ],
+  "typicalCostsTitle": "Typowe koszty",
+  "typicalCosts": [
+    "Leżak + parasol w Marina di Praia Beach Club: €25–€35 za dzień (dostępne zestawy dla dwóch osób).",
+    "Wynajem kajaka: około €20 za godzinę dla dwóch osób.",
+    "Dania główne w Da Armandino lub Il Pirata: €16–€28 w zależności od ryby i makaronu dnia."
+  ],
+  "tipsTitle": "Szybkie tipy",
+  "tips": [
+    "Skasuj bilet autobusowy od razu po wejściu i miej zapasowy na powrót, na wypadek gdyby kiosk był zamknięty wieczorem.",
+    "Zabierz buty do wody — kamienie bywają śliskie, a dno szybko robi się głębokie.",
+    "Porównaj inne opcje w naszej %LINK:positanoBeaches|pigułce o plażach% jeśli chcesz połączyć tę zatokę z dniem w Positano."
+  ],
+  "warningsTitle": "Warto wiedzieć",
+  "warnings": [
+    "Miejsca jest mało: darmowa strefa zapełnia się pierwsza, a leżaki w lido mogą się skończyć w weekendy.",
+    "Klify blokują bezpośrednie słońce w połowie popołudnia — świetnie na ochłodę, ale w wietrzne dni może być chłodno.",
+    "Zasięg w wąwozie spada: pobierz wcześniej rozkłady autobusów lub potwierdzenia rezerwacji na kolację."
+  ],
+  "faqsTitle": "FAQ: Marina di Praia",
+  "faqs": [
+    {
+      "q": "Skąd dokładnie łapię autobus w Positano?",
+      "a": [
+        "Wybierz przystanek Sponda na Via Pasitea dla autobusów w stronę Amalfi. To około 10 minut spaceru w dół od hostelu; w sezonie przyjdź 10 minut wcześniej, żeby zdążyć wsiąść zanim autobus się zapełni."
+      ]
+    },
+    {
+      "q": "Czy jest darmowa strefa, czy muszę wynająć leżaki?",
+      "a": [
+        "Mały odcinek publiczny jest w centrum zatoki. Weź matę albo grubszy ręcznik — kamienie są ostre — i przygotuj się, że przy zmianie pływu przesuniesz się bliżej skał. Leżaki w Marina di Praia Beach Club obejmują prysznice i toalety, jeśli chcesz wygodniejszą bazę."
+      ]
+    },
+    {
+      "q": "Jak późno mogę zostać na kolację i nadal wrócić do Hostel Brikette?",
+      "a": [
+        "Ostatnie autobusy SITA do Positano różnią się w zależności od miesiąca, ale latem zwykle jeżdżą do około 21:30. Sprawdź rozkład na miejscu i celuj w przedostatni kurs, na wypadek gdyby jeden autobus był pełny. Po ostatnim kursie taksówka Praiano → Positano kosztuje około €35–€45, więc podziel się kosztem, jeśli zostajesz dłużej."
+      ]
+    },
+    {
+      "q": "Czy Marina di Praia to dobre miejsce, jeśli idę sam?",
+      "a": [
+        "Tak — to jedna z bardziej “solo-friendly” zatok, bo są usługi i widoczna promenada. Mimo to zachowaj hostelowy zdrowy rozsądek: weź tylko to, co chcesz nieść, trzymaj telefon bezpiecznie i pływaj krócej, żeby nie zostawiać plecaka bez opieki na długo."
+      ]
+    }
+  ]
+}

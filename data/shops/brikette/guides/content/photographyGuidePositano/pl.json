@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Przewodnik fotograficzny po Positano: najlepsze punkty",
+    "description": "Wybierz kadry, planuj światło i zachowaj etykietę, by zrobić świetne zdjęcia."
+  },
+  "linkLabel": "Przewodnik fotograficzny po Positano: najlepsze punkty",
+  "intro": [
+    "Uchwyć Positano jak profesjonalista: kultowe kąty, planowanie światła i etykieta fotografowania."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Klasyczne ujęcia",
+      "body": [
+        "Z przystani promowej uchwycisz wodospad budynków na klifie; szerokokątny obiektyw pozwoli wkomponować kopułę Santa Maria Assunta.",
+        "Przejdź Via Cristoforo Colombo, by złapać warstwowe balkony i bugenwille oprawiające morze."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Światło i czas",
+      "body": [
+        "Wschód słońca (około 06:00 latem) daje ciepłe światło na klify — przyjedź wcześniej, by nie mieć w kadrze łodzi.",
+        "Niebieska godzina po zachodzie dodaje blasku światłom wsi; weź ze sobą mini statyw lub uchwyt na długie ekspozycje."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etykieta i backupy",
+      "body": [
+        "Szanuj prywatne tarasy i nie blokuj schodów — szybko odsuń się po zrobieniu zdjęcia.",
+        "Kopiuj zdjęcia do chmury lub na zewnętrzny dysk codziennie; wilgotne powietrze może parować obiektyw, więc zabierz saszetki z żelem krzemionkowym."
+      ]
+    }
+  ],
+  "tips": [
+    "Weź filtr polaryzacyjny, by opanować odbicia słońca na wodzie w południe.",
+    "Miej pod ręką mikrofibrową ściereczkę — bryza morska i wilgoć szybko zatykają obiektywy."
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę używać drona?",
+      "a": [
+        "Używanie dronów jest ograniczone; załatw pozwolenia z wyprzedzeniem i szanuj strefy zakazu lotów w okolicy miasta i wysp Li Galli."
+      ]
+    },
+    {
+      "q": "Gdzie mogę wydrukować zdjęcia lokalnie?",
+      "a": [
+        "W laboratoriach w Sorrento i Amalfi można szybko wydrukować fotografie; zabierz pliki na pendrivie lub karcie SD."
+      ]
+    }
+  ]
+}

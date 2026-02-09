@@ -1,0 +1,231 @@
+{
+  "seo": {
+    "title": "Guida alla Spiaggia Grande di Positano",
+    "description": "Mappa della spiaggia, zone libere, stabilimenti L'Incanto e La Scogliera, tariffe lettini e consigli per raggiungere Fornillo dalla spiaggia principale di Positano."
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Guida alla Spiaggia Grande di Positano",
+  "intro": [
+    "La Spiaggia Grande è la spiaggia da cartolina di Positano: un'ampia mezzaluna di ciottoli con lo skyline in cima a una scogliera accatastato dietro gli ombrelloni e i traghetti che vanno e vengono tutto il giorno.",
+    "Nuotare e tornare in città è indimenticabile, ma l'esperienza a terra dipende da dove ti siedi: dalla zona franca centrale ai ponti ultra premium scavati nella roccia."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Layout e zone chiave"
+    },
+    {
+      "href": "#free-zone",
+      "label": "Sezione di spiaggia libera"
+    },
+    {
+      "href": "#residents",
+      "label": "Zona residenziale"
+    },
+    {
+      "href": "#lincanto",
+      "label": "Stabilimento balneare L'Incanto"
+    },
+    {
+      "href": "#la-scogliera",
+      "label": "Ponte La Scogliera"
+    },
+    {
+      "href": "#fornillo-link",
+      "label": "Passerella per Fornillo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Getting there from Hostel Brikette",
+      "body": [
+        "Most guests either walk down for the views and take the bus back up, or take the bus both ways to save their knees. If you’re unsure, start with our %LINK:positanoMainBeachWalkDown|walk down to Spiaggia Grande% guide and keep our %LINK:positanoMainBeachBusBack|bus back to the hostel% guide saved for later.",
+        "For a low-stress beach day, leaving the hostel by 08:30–09:00 is the sweet spot. You’ll beat the heaviest crowds at Piazza dei Mulini, find a better patch of shade on the free beach, and avoid the midday heat on the promenade.",
+        "If you want to conserve energy, use our %LINK:positanoMainBeachBusDown|bus down to Positano main beach% guide. It’s also the easiest option if you’re carrying snorkel gear, a thicker mat, or a bigger beach bag."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/interno-positano-bus.jpg",
+          "alt": "Spiaggia Grande (Positano main beach) seen from above with the village rising behind the shoreline",
+          "caption": "Spiaggia Grande from above — great views, a pebbly shore, and a busy promenade at the back of the beach."
+        },
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/01-bus-stop-piazza-dei-mulini.jpg",
+          "alt": "Bus stop area at Piazza dei Mulini where guests board the Interno bus for the ride back up",
+          "caption": "Piazza dei Mulini bus stop area — useful to locate before you settle in for a long beach day."
+        },
+        {
+          "src": "/img/guides/topics/positanoMainBeach.jpg",
+          "alt": "Orange Interno Positano bus used by hostel guests to ride between Chiesa Nuova and the center",
+          "caption": "The orange Interno bus — the easiest way to save your legs after a day on the pebbles."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (crowds & shade)",
+      "body": [
+        "Spiaggia Grande is at its calmest early: a quick swim before 10:30 feels like a different beach compared to the lunchtime rush. Midday is when the promenade gets busiest (ferries, day-trippers, and people rotating through the clubs).",
+        "If you’re choosing the free section, shade is the limiting factor. The beach is wide, but umbrellas are limited to the paid clubs — so the earlier you arrive, the easier it is to claim a comfortable spot that won’t bake you by noon.",
+        "For photos, golden hour is beautiful from the promenade and the waterline, but the beach itself stays loud until dinner time in high season. If you want a quieter late afternoon, walk the coastal path to %LINK:fornilloBeachGuide|Fornillo Beach% and swim there instead."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Wide view of Positano's Spiaggia Grande with colorful umbrellas and the cliffside town behind it",
+          "caption": "Crowd reality check: Spiaggia Grande is iconic, but it gets busy fast — timing matters."
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (pebbles & heat)",
+      "body": [
+        "Spiaggia Grande is all pebbles, and in summer they heat up quickly. The right gear turns it from “beautiful but uncomfortable” into an easy, all-day hang.",
+        "If you’re on the free beach, think in layers: a thicker towel or mat for the stones, water shoes for getting in and out, and enough water/snacks that you’re not forced into expensive impulse buys on the promenade."
+      ],
+      "list": [
+        "Water shoes (or sturdy sandals) for pebbles + hot stones",
+        "A thicker mat/towel (thin towels feel like a net on pebbles)",
+        "Refillable bottle + snacks (or budget for promenade prices)",
+        "Cash as backup (card machines can be flaky in peak season)",
+        "Sun protection: hat + sunscreen — shade is limited outside the clubs"
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Disposizione e zone chiave",
+      "body": [
+        "Di fronte al mare, il molo dei traghetti pubblici e i pontili dei taxi acquei si trovano sulla destra, la strada principale libera si estende nel centro, mentre i locali a pagamento si affacciano sugli scogli di sinistra.",
+        "La mappa numerata sulla spiaggia di solito identifica la #1 come zona pubblica, la #2 come la fascia dei residenti di Positano e la #3/#4 come i due operatori a pagamento: L'Incanto sulla sabbia e La Scogliera sul ponte rialzato."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/02-beach-providers-overview.jpg",
+          "alt": "Beach layout map showing the free section, residents' section, L'Incanto, and La Scogliera at Spiaggia Grande",
+          "caption": "Spiaggia Grande layout: free zone (#1), residents' strip (#2), L'Incanto (#3), and La Scogliera deck (#4)"
+        },
+        {
+          "src": "/img/guides/positano-main-beach/01-beach-layout-map.jpg",
+          "alt": "Overview of the four beach providers on Spiaggia Grande showing their locations along the shoreline",
+          "caption": "Beach providers overview — the four zones on Spiaggia Grande from public area to premium decks"
+        }
+      ]
+    },
+    {
+      "id": "free-zone",
+      "title": "Sezione di spiaggia libera (#1)",
+      "body": [
+        "Tra i due club privati ​​si trova la zona libera più ampia. Arriva prima delle 10:00 per il posto in prima fila e porta un tappetino o un asciugamano spesso: i ciottoli si scaldano rapidamente e diventano scomodi senza imbottitura.",
+        "Docce e bagni pubblici sono nascosti accanto all'ingresso del molo dei traghetti. Gli snack provengono dai chioschi dietro la spiaggia o dai banconi da asporto del Blu Bar de L'Incanto (da pagare a parte)."
+      ]
+    },
+    {
+      "id": "residents",
+      "title": "Striscia dei residenti (#2)",
+      "body": [
+        "Ai residenti di Positano è riservata un'area recintata accanto alla zona pubblica. Aspettatevi che i bagnini controllino i braccialetti; i visitatori sono tenuti a rispettare la segnaletica e ad attenersi alle strisce libere o ai lettini del club.",
+        "Se la zona pubblica è piena, prosegui lungo il lungomare e segui la passerella fino a Fornillo per avere più spazio: è una passeggiata di cinque minuti una volta che sei sul sentiero."
+      ]
+    },
+    {
+      "id": "lincanto",
+      "title": "L'Incanto beach club (#3)",
+      "body": [
+        "L'Incanto copre gran parte della sabbia con file di lettini arancioni, docce, spogliatoi e servizio camerieri. Aspettatevi € 25–€ 35 a persona per un set standard in alta stagione, con upgrade in prima fila o in cabina che costano di più.",
+        "Prenota tramite WhatsApp o e-mail in luglio-agosto; le visite prima delle 09:30 di solito vanno bene nei mesi intermedi. Il Blu Bar (il loro ristorante informale) si affaccia sul lungomare ed è comodo per pizza, insalate e aperitivi senza alzarsi dal lettino."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/03-blu-bar.jpg",
+          "alt": "Blu Bar at L'Incanto beach club on the Positano promenade",
+          "caption": "Blu Bar — L'Incanto's promenade restaurant serving pizza, salads, and aperitivi"
+        }
+      ]
+    },
+    {
+      "id": "la-scogliera",
+      "title": "Ponte La Scogliera (#4)",
+      "body": [
+        "La Scogliera si trova sulle rocce all'estrema sinistra con ponti in teak, letti balinesi e scale da mare direttamente in acque profonde. I pacchetti partono da 100 euro circa per i lettini dell'ultima fila e possono superare i 400 euro per i nidi vip panoramici con prosecco incluso.",
+        "Il servizio è con tovaglie bianche: il ristorante al piano superiore si affaccia sul porto e il personale chiama i taxi acquei se vuoi fare un salto a Laurito o Arienzo per il tramonto. Il codice di abbigliamento è smart-casual dopo le 18:00."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/04-la-scogliera-deck.jpg",
+          "alt": "La Scogliera premium beach club with teak decks and ocean views on Positano's main beach",
+          "caption": "La Scogliera — premium teak decks on the rocks with direct water access and upstairs restaurant"
+        }
+      ]
+    },
+    {
+      "id": "fornillo-link",
+      "title": "Passerella per Fornillo",
+      "body": [
+        "Per cambiare spiaggia senza salire, dirigetevi all'estremità del porto dove caricano e scaricano le barche. Mantieni la destra e attraversa l'arco segnalato fino alla passerella costiera.",
+        "Seguire il lungomare per circa cinque minuti; passa accanto a caffè e punti panoramici prima di consegnarti all'ingresso principale di Fornillo. Abbina la passeggiata al nostro %LINK:fornilloBeachGuide|Fornillo beach guide% per i dettagli del club sull'altro lato."
+      ]
+    },
+    {
+      "id": "practicalities",
+      "title": "Facilities, food & costs (what guests ask most)",
+      "body": [
+        "Toilets and showers exist, but they’re not always as “on the beach” as you’d expect. The easiest facilities for the free area are near the ferry-dock side and just behind the promenade — plan a quick bathroom stop before you fully settle your towels down.",
+        "If you’ve arrived in Positano with bags (check-out day, day trip, or early arrival), sort storage first so you’re not dragging luggage across pebbles. Use %LINK:luggageStorage|Positano luggage storage near Piazza dei Mulini% before you head all the way to the water.",
+        "Food on the promenade is convenient but adds up quickly. Our staff tip (from the hostel): eat a proper breakfast, pack a couple of snacks, and then treat yourself to one “nice” beach purchase (espresso, gelato, or an aperitivo) rather than paying premium prices for every meal.",
+        "If you want a predictable, lower-cost meal plan, browse %LINK:cheapEats|cheap eats in Positano% and decide where you’ll stop on the way down or back up."
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "Hostel Brikette day plan (a simple way to do it)",
+      "body": [
+        "This is the easiest plan we recommend at reception when guests ask for “the best beach day without wasting money or energy.” Adjust the times based on season and your tolerance for crowds.",
+        "From our experience: doing your swim early, resting through the busiest midday stretch, and then moving to Fornillo later is the combo that feels like two beaches in one day."
+      ],
+      "list": [
+        "08:30–09:00: leave the hostel; stop for water/snacks if needed",
+        "09:30–10:30: first swim at Spiaggia Grande while it’s still calm",
+        "10:30–12:30: relax (free zone or club); reapply sunscreen — the reflected light is intense",
+        "12:30–14:00: lunch on/behind the promenade (or picnic if you packed)",
+        "14:00–16:30: take the coastal path and swim at %LINK:fornilloBeachGuide|Fornillo Beach% for a quieter afternoon",
+        "16:30–18:00: head back up using %LINK:positanoMainBeachBusBack|the bus route back to Hostel Brikette%"
+      ]
+    }
+  ],
+  "tipsTitle": "Consigli rapidi",
+  "tips": [
+    "Cammina lungo Viale Pasitea dall'ostello in 20-25 minuti, fermandoti ai belvedere lungo la strada per scattare foto prima di scendere in Piazza dei Mulini e sul lungomare della Spiaggia Grande.",
+    "Preferisci le ruote? Prendere l'autobus interno arancione da Chiesa Nuova fino alle fermate Sponda o Piazza dei Mulini; acquista i biglietti da € 1,50 al Bar Internazionale prima di salire a bordo.",
+    "Dopo una giornata in spiaggia, sali sull'autobus interno dal terminal accanto al molo dei traghetti per evitare la ripida salita fino all'Hostel Brikette.",
+    "Pianifica il budget del tuo lettino con il nostro %LINK:positanoBeaches|Positano beaches overview%: confronta i prezzi e le sezioni gratuite in ogni baia vicina."
+  ],
+  "warningsTitle": "Buono a sapersi",
+  "warnings": [
+    "La Spiaggia Grande è completamente di ciottoli: porta con te scarpe da acqua o sandali per facilitare l'ingresso in acqua.",
+    "I lettini e gli ombrelloni in prima fila si esauriscono con giorni di anticipo in agosto: prenota se hai bisogno di ombra garantita.",
+    "I distributori automatici di carte occasionalmente vanno offline; portare contanti per i chioschi, i saldi delle sedie e l'autista dell'autobus interno."
+  ],
+  "faqsTitle": "FAQ Spiaggia Grande",
+  "faqs": [
+    {
+      "q": "È necessario prenotare in anticipo L'Incanto o La Scogliera?",
+      "a": [
+        "Per L'Incanto, la prenotazione anticipata è essenziale a fine luglio e agosto, ma nelle mattine della bassa stagione è possibile entrare prima delle 09:30. La Scogliera richiede la prenotazione per tutti i ponti premium: invia un'e-mail o WhatsApp almeno un giorno prima per bloccare un letto."
+      ]
+    },
+    {
+      "q": "Ci sono docce e bagni per la parte libera?",
+      "a": [
+        "Sì. Le docce pubbliche si trovano vicino al molo dei traghetti e i bagni comunali sono dietro il lungomare. Tieni le monete a portata di mano per i tornelli; le strutture del club privato sono riservate agli ospiti paganti."
+      ]
+    },
+    {
+      "q": "Dove posso lasciare le borse prima di andare in spiaggia?",
+      "a": [
+        "Deposita i bagagli al %LINK:luggageStorage|Positano luggage storage% vicino a Piazza dei Mulini oppure utilizza il deposito del tuo alloggio. Le borse non sono ammesse sui ponti de La Scogliera e devono essere posizionate dietro i lettini de L'Incanto."
+      ]
+    }
+  ]
+}

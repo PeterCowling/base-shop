@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Supermercados y farmacias en Positano",
+    "description": "Dónde comprar básicos en Positano: minimercados, horarios ampliados e información de farmacias."
+  },
+  "linkLabel": "Supermercados y farmacias en Positano",
+  "intro": [
+    "No encontrarás grandes supermercados en Positano, así que planifica para tiendas compactas, un mercado semanal y un par de farmacias fiables para artículos esenciales."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Minimercados y delicatessen",
+      "body": [
+        "Los delicatessen locales en Via Pasitea y Via dei Mulini tienen pan fresco, quesos y ensaladas preparadas; espera espacio limitado en estanterías pero entregas diarias.",
+        "El horario de apertura sigue el ritmo de la siesta: compra antes de las 13:00 o después de las 16:30 para evitar persianas bajadas."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Productos frescos y mercados",
+      "body": [
+        "Los puestos de frutas y verduras se instalan cerca de la curva de Sponda y la parada de Chiesa Nuova cada mañana; lleva monedas pequeñas para compras rápidas.",
+        "Los miércoles, Montepertuso acoge un pequeño mercado (autobús 13) con verduras de temporada, lácteos y embutidos."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Farmacias y artículos de salud",
+      "body": [
+        "Farmacia Positano (Via Pasitea) tiene medicinas básicas, protección solar y pastillas para el mareo; trae recetas para cualquier cosa especializada.",
+        "El servicio fuera de horario rota: revisa el aviso en la puerta de la farmacia para el número de guardia si necesitas medicación tarde."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Artículos esenciales de noche",
+      "body": [
+        "Algunos alimentari permanecen abiertos hasta las 22:00 en temporada alta; de lo contrario, consigue snacks en las máquinas expendedoras 24 horas cerca de las paradas de autobús.",
+        "Para necesidades urgentes, Sorrento (45-60 minutos en autobús) tiene supermercados más grandes y una sala de emergencias hospitalaria."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva una bolsa ligera o mochila para poder llevar las compras por las escaleras sin sobrecargar una mano.",
+    "Guarda botellas de agua reutilizables: la mayoría de las tiendas venden recargas de 1.5 L baratas, y las terrazas del hostel tienen grifos filtrados."
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo comprar artículos sin gluten localmente?",
+      "a": [
+        "Sí, busca estantes 'senza glutine' en los minimercados o pregunta al farmacéutico; el stock es limitado así que compra cuando lo veas."
+      ]
+    },
+    {
+      "q": "¿Las farmacias abren los domingos?",
+      "a": [
+        "Al menos una permanece abierta con horario reducido; revisa el turno publicado y llama con anticipación para necesidades de recetas."
+      ]
+    }
+  ],
+  "fallback": "Los artículos esenciales están disponibles en todo Positano: compra temprano en el día y ten las farmacias locales anotadas."
+}

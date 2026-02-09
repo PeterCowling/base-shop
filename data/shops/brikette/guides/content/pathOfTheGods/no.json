@@ -1,0 +1,123 @@
+{
+  "seo": {
+    "title": "Stien til gudene fra Hostel Brikette",
+    "description": "Nøyaktig rute fra vandrerhjemmet til startpunktene for Sentiero degli Dei, med transportvalg og sikkerhetstips."
+  },
+  "linkLabel": "Stien til gudene fra Brikette",
+  "intro": [
+    "Sentiero degli Dei (gudenes sti) setter sammen terrasser på klippetoppen, kastanjelunder og vidstrakt utsikt over Amalfikysten. Fra Hostel Brikette kan du nå stien ved å kombinere lokale ferger og SITA-busser uten å bli med på en kostbar tur.",
+    "Tre hovedtilnærminger starter fra vandrerhjemmet: å seile til Amalfi og busse opp til Bomerano, kjøre bussnettverket hele veien, eller hoppe over overføringene og gå en ut-og-tilbake fra Nocelle. Bruk denne oversikten til å bestemme hvilken detaljert rute som passer din tid, budsjett og komfort med høyder."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Beste tid å gå",
+      "body": [
+        "Sikt på april–juni eller september–oktober for klar himmel og håndterbare temperaturer; vinterbyger kan gjøre steintrappene glatte.",
+        "I juli–august, start før 09:00 eller etter 15:00 fordi stien er eksponert og skyggen er begrenset."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Velg rute",
+      "body": [
+        "Bomerano → Nocelle dekker den klassiske 6,5 km ryggen med kontinuerlige opp- og nedstigninger; beregn 2,5–3 timer med gåing pluss transport.",
+        "Kort tid? Ta bussen til Nocelle, gå den panoramiske delen tur-retur til Colle Serra, eller gå ned de 1 700 trappene til Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigasjon og sikkerhet",
+      "body": [
+        "Følg de rød-hvite CAI-merkene og trepilene for Sentiero degli Dei; last ned et offline-kart fordi mobildata kan falle bort i ravinene.",
+        "Stien blander steintrapper, hardpakket jord og løs grus – bruk tursko med godt grep og hold stavene sammenfoldet til de brattere nedstigningene."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Vann, snacks og retur",
+      "body": [
+        "Fyll på i Bomeranos hovedtorg (kafeer, bakeri, siste offentlige toalett) før du starter; Nocelle har en kiosk og en sitron-granita-stand ved kirken.",
+        "Tilbake til Positano: gå ned trappene til Arienzo-stranden eller ta SITA-bussen fra Nocelle/Montepertuso – ha en ekstra validert billett i dagsekken."
+      ]
+    }
+  ],
+  "essentialsTitle": "Nødvendigheter",
+  "essentials": [
+    "Godt fottøy, vann, solbeskyttelse; unngå middagsvarmen om sommeren.",
+    "Bussbilletter må kjøpes før ombordstigning (tobakksbutikker, kiosker).",
+    "Beregn ca. 4 timer inkludert transport og fotostopp."
+  ],
+  "typicalCostsTitle": "Typiske kostnader",
+  "typicalCosts": [
+    "SITA-buss (Positano ⇄ Nocelle/Bomerano): ~€2–€4 hver vei avhengig av billettype",
+    "Snacks/vann: €3–€8 (ta med eget for å spare)",
+    "Sti: gratis (ingen inngangsavgift)"
+  ],
+  "steps": [
+    {
+      "name": "Gå til busstoppet Chiesa Nuova",
+      "text": "Fra vandrerhjemmet, gå oppover ca. 80 m til SITA-busstoppet ved Chiesa Nuova."
+    },
+    {
+      "name": "Buss til Nocelle eller Bomerano",
+      "text": "Ta SITA mot Amalfi og gå av i Nocelle for den kortere avslutningen, eller fortsett til Agerola/Bomerano for klassisk start."
+    },
+    {
+      "name": "Start på stien",
+      "text": "I Nocelle, følg skiltene til Sentiero degli Dei (avslutning). I Bomerano, følg skiltingen fra hovedtorget til stistart (start)."
+    },
+    {
+      "name": "Returalternativer",
+      "text": "Avslutt i Nocelle og gå ned til Positano via trapper, eller ta buss tilbake til Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Hvor starter jeg turen?",
+      "a": "Klassisk start er Bomerano (Agerola). Kortere alternativ avsluttes i Nocelle."
+    },
+    {
+      "q": "Hvor lang er den?",
+      "a": "Beregn ca. 4 timer inkludert transport og fotostopp."
+    },
+    {
+      "q": "Hva bør jeg ta med?",
+      "a": "Gode sko, vann og solbeskyttelse. Unngå middagsvarmen om sommeren."
+    }
+  ],
+  "faqsTitle": "Vanlige spørsmål",
+  "toc": {
+    "onThisPage": "På denne siden",
+    "essentials": "Nødvendigheter",
+    "costs": "Typiske kostnader",
+    "faqs": "Vanlige spørsmål",
+    "tips": "God timing"
+  },
+  "tipsTitle": "God timing",
+  "tips": [
+    "Dra før kl. 09.00 i juli–august eller sikte på de gylne timene om våren og høsten for kjøligere temperaturer og mykere lys.",
+    "Unngå nedstigningen på 1700 trinn til Positano med mindre knærne dine er friske – det er brutalt å gå ned Montepertuso-trappene etter en lang fottur.",
+    "Bruk en lett dagssekk og hold turstavene sammenfoldet til du kommer til brattere trapper."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor lang tid tar turen fra dør til dør?",
+      "a": [
+        "Budsjett 3–5 timer inkludert transport. Fergeruten er lengst; Nocelle ut og tilbake passer inn i en halv dag."
+      ]
+    },
+    {
+      "q": "Passer stien for nybegynnere?",
+      "a": [
+        "Ja, forutsatt at du er stødig på beina og komfortabel med høyder. Det er ingen tekniske stigninger, bare jevne stigninger og nedstigninger."
+      ]
+    },
+    {
+      "q": "Hva skjer hvis fergene blir kansellert?",
+      "a": [
+        "Bytt til bussen via Amalfi eller kjør direkte til Nocelle. Ha alltid en ekstra bussbillett slik at du kan tilpasse deg sjø- eller værforhold."
+      ]
+    }
+  ]
+}

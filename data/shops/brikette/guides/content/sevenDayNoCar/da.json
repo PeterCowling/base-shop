@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "7-dages rejseplan på Amalfikysten (uden bil)",
+    "description": "Fordel nætterne mellem Positano, Amalfi/Ravello og Capri eller Sorrento for nemmere transfers."
+  },
+  "linkLabel": "7-dages rejseplan på Amalfikysten (uden bil)",
+  "intro": [
+    "Syv dage uden bil giver plads til både klassikere og roligere landsbyliv – brug færger for komfort og busser for budget."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Dag 1–2 – falde til i Positano",
+      "body": [
+        "Ankom via Napoli eller Salerno, udforsk Spiaggia Grande og Fornillo, og væn dig til trapperne med korte ture til udsigtspunkter.",
+        "Book en delt bådtur eller madlavningskursus til anden aften for at forankre ugen med en særlig oplevelse."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Dag 3 – Capri rundt",
+      "body": [
+        "Tag 08.30-færgen til Capri, fokuser på Anacapri om formiddagen, og vend tilbage før solnedgang for at undgå kamp om den sidste båd.",
+        "Hav bussbilletter klar, hvis færgerne stopper; Sorrento-backup tager cirka 90 minutter dør-til-dør."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Dag 4–5 – Amalfi & Ravello + vandring",
+      "body": [
+        "Brug dag 4 mellem Amalfi og haverne i Ravello, og bliv sent, hvis en koncert frister.",
+        "Dedikér dag 5 til Gudernes sti eller Montepertuso-ruten; start tidligt, bær 1,5 L vand, og tag bussen tilbage."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Dag 6–7 – kultur og buffer",
+      "body": [
+        "Tag morgentog til Pompeji eller Salerno for museer, og vend tilbage til en afslappet aften i Positano.",
+        "Hold den sidste dag fri som buffer til vejret eller ren hygge – gentag en favoritstrand eller gå på opdagelse i håndværksbutikker."
+      ]
+    }
+  ],
+  "tips": [
+    "Vask midt på ugen holder bagagen let; brug selvbetjeningsmaskinerne nær Chiesa Nuova.",
+    "Følg færgeopdateringer på rederiernes Instagram under blæsevejr."
+  ],
+  "faqs": [
+    {
+      "q": "Skal jeg bo i mere end én by?",
+      "a": [
+        "Basér dig i Positano for færre pakke-sessioner. Tilføj kun en nat i Napoli eller Salerno, hvis du har meget tidlige tog eller fly."
+      ]
+    },
+    {
+      "q": "Skal alt forudbestilles?",
+      "a": [
+        "Reserver færger, bådture og toprestauranter. Lad vandringer, stranddage og lokale busser være fleksible, så du kan tilpasse dig vejret."
+      ]
+    }
+  ]
+}

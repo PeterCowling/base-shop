@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Bilety autobusowe SITA i porady",
+    "description": "Gdzie kupić bilety SITA, jak je kasować i jak radzić sobie z bagażem i kolejkami na wybrzeżu Amalfi."
+  },
+  "linkLabel": "Bilety autobusowe SITA i porady",
+  "intro": [
+    "Kupuj bilety SITA przed wejściem do autobusu i rezerwuj więcej czasu latem. Zachowaj bilet do końca przejazdu."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Gdzie kupić",
+      "body": [
+        "Kupuj w tabacchi/kioskach wzdłuż głównej drogi. Napełnij zapas, gdy kolejki są krótsze."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Kasowanie",
+      "body": [
+        "Kasuj po wejściu tam, gdzie są maszyny; zachowaj bilet do momentu opuszczenia autobusu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę kupić bilet w autobusie?",
+      "a": [
+        "Zazwyczaj nie; kup przed wejściem, by uniknąć opóźnień."
+      ]
+    }
+  ]
+}

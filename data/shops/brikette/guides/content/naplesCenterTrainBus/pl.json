@@ -1,0 +1,83 @@
+{
+  "lastUpdated": "2026-01-31",
+  "seo": {
+    "title": "Neapol (centrum) do Positano pociągiem i autobusem | Hostel Brikette",
+    "description": "Instrukcje krok po kroku dotyczące podróży z centrum Neapolu do Hostel Brikette kolejką Circumvesuviana i autobusem SITA, wraz z poradami biletowymi i zdjęciami z przyjazdu do Positano."
+  },
+  "intro": {
+    "title": "Neapol (centrum) do Positano – pociąg, a potem autobus",
+    "body": "Skorzystaj z tych wskazówek, aby dotrzeć z centrum Neapolu do Hostel Brikette kolejką Circumvesuviana do Sorrento i autobusem SITA do Positano. Przewodnik zawiera porady biletowe, wskazówki dotyczące rozkładów oraz zdjęcia końcowego podejścia do hostelu."
+  },
+  "callouts": {
+    "tip": "Szukasz innych tras? Sprawdź pełny zestaw wskazówek dojazdu na %HOWTO:how-to-get-here|stronie Jak do nas dotrzeć%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Przegląd: najpierw pociąg, potem autobus",
+      "body": "Ta trasa obejmuje najszybsze połączenie transportem publicznym z centrum Neapolu: kolejkę Circumvesuviana do Sorrento, a następnie autobus SITA do Positano. Nie obejmuje dojazdu z lotniska w Neapolu."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Dworzec kolejowy w Neapolu",
+      "body": "Pociągi Circumvesuviana do Sorrento odjeżdżają z dolnego poziomu stacji Napoli Garibaldi (pod Napoli Centrale). Kup bilet, zanim zejdziesz na perony, sprawdź numer toru dla swojego kursu i wsiądź do pociągu w kierunku Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Dworzec w Sorrento",
+      "body": "Po przyjeździe do Sorrento wyjdź ze stacji i kup bilet na autobus SITA w pobliskim barze, kiosku lub sklepie tytoniowym — w autobusie biletów nie sprzedaje się. Przystanek SITA znajduje się u podnóża schodów przed stacją; poczekaj na autobus w kierunku Amalfi i jedź nim do Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Jak czytać rozkład SITA",
+      "body": "Rozkład autobusów SITA potrafi być niejasny — skorzystaj z tych krótkich wskazówek, aby znaleźć właściwy kurs:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Przystanek autobusowy w Positano",
+      "list": [
+        "Najbliższym przystankiem jest Positano (Chiesa Nuova), około 140 metrów (490 stóp) od hostelu.",
+        "Znajduje się przed barem Bar Internazionale.",
+        "Autobus wysadza pasażerów na poziomie drogi — nie trzeba pokonywać długich schodów, aby do nas dotrzeć."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Spacer od przystanku"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ile kosztuje dojazd z centrum Neapolu do Positano pociągiem i autobusem?",
+      "a": "Całkowity koszt to około 7,20 €: 4,60 € za pociąg Circumvesuviana z Neapolu do Sorrento, plus 2,60 € za autobus SITA z Sorrento do Positano (ceny 2026). To najtańsza opcja transportu publicznego."
+    },
+    {
+      "q": "Ile trwa podróż z Neapolu do Positano?",
+      "a": "Całkowity czas podróży to 2,5-3 godziny: 70 minut pociągiem, 50 minut autobusem, plus 20-40 minut oczekiwania na przesiadki w Sorrento. Zaplanuj 3-3,5 godziny w sumie, aby uwzględnić możliwe opóźnienia."
+    },
+    {
+      "q": "Czy mogę kupić bilety w pociągu lub autobusie?",
+      "a": "Możesz kupić bilety kolejowe na stacji Napoli Garibaldi w automatach biletowych lub w kasie biletowej, ale musisz je skasować przed wejściem na pokład. Bilety autobusowe SITA nie mogą być kupowane na pokładzie — musisz je kupić w barze, tabacchi lub kiosku w pobliżu stacji w Sorrento przed wejściem do autobusu."
+    },
+    {
+      "q": "Czy ta trasa jest odpowiednia dla podróżnych z ciężkim bagażem?",
+      "a": "Tak, ale może być trudna w godzinach szczytu. Zarówno pociąg, jak i autobus mają ograniczoną przestrzeń bagażową, więc wsiądź wcześnie, jeśli masz duże torby. Spacer z przystanku Chiesa Nuova do hostelu jest płaski i trwa poniżej 2 minut, więc bagaż jest łatwy do zarządzania po przyjeździe. Jeśli wolisz, rozważ skorzystanie z naszych usług bagażowych lub prywatnego transferu."
+    },
+    {
+      "q": "O której godzinie odjeżdża ostatni autobus z Sorrento do Positano?",
+      "a": "Ostatni autobus różni się w zależności od sezonu. Latem (lipiec-sierpień) ostatni autobus zwykle odjeżdża około 21-22. Zimą (listopad-marzec) może być nawet o 19-20. Zawsze sprawdzaj aktualny rozkład na sitasudtrasporti.it przed podróżą, zwłaszcza w niedziele i święta, gdy usługi są ograniczone."
+    },
+    {
+      "q": "Czy istnieje bezpośredni pociąg lub autobus z Neapolu do Positano?",
+      "a": "Nie ma bezpośredniego pociągu — musisz przesiąść się w Sorrento. Autobus Curreri oferuje bezpośrednie połączenie z Neapolu do Positano, ale rozkład jest ograniczony (zwykle 2-3 kursów dziennie). Połączenie pociąg-autobus kursuje częściej i jest tańsze."
+    },
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład jazdy przypisuje alfabetyczną literę do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy autobusy są dostępne i o której godzinie dotrą do miejsca docelowego. Na przykład, aby zobaczyć czas odjazdu z Sorrento, spójrz na wiersz Sorrento. Aby zobaczyć czas przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), spójrz na wiersz Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

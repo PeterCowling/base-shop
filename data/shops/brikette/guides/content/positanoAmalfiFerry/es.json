@@ -1,0 +1,244 @@
+{
+  "seo": {
+    "title": "Positano a Amalfi en ferry | Hostel Brikette",
+    "description": "Recorrido paso a paso en ferry de Positano a Amalfi: dónde embarcar en Spiaggia Grande, billetes, horarios en vivo y un plan B simple si el mar cancela los barcos."
+  },
+  "intro": {
+    "title": "Positano a Amalfi — Ferry",
+    "body": "El ferry de Positano a Amalfi es una de las formas más pintorescas de viajar por la costa. Verás vistas impresionantes de pueblos de colores pastel, acantilados dramáticos y aguas turquesas. Esta guía completa cubre todo lo que necesitas: billetes y precios, embarque en Spiaggia Grande, llegada a Amalfi, horarios de temporada y qué hacer si los barcos se cancelan por el clima."
+  },
+  "callouts": {
+    "tip": "¿Necesitas otras opciones de transporte? Abre la %HOWTO:how-to-get-here|descripción general de Cómo llegar aquí% para autobuses, rutas mixtas y traslados al aeropuerto."
+  },
+  "lastUpdated": "2026-02-04",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumen del trayecto",
+      "body": "El viaje en ferry de Positano a Amalfi tarda unos 25-40 minutos dependiendo del operador y el número de paradas. La mayoría de los servicios funcionan de abril a octubre, con más salidas durante los meses de verano pico (junio a septiembre). Espera pagar €10-€18 por persona por un billete de ida, aunque los precios varían según el operador y la hora del día.",
+      "list": [
+        "Los ferris son estacionales (normalmente abril-octubre) y dependen del clima: el mar agitado puede cancelar el servicio con poco aviso.",
+        "Tiempo de viaje: 25-40 minutos dependiendo de las paradas (algunos ferris paran en Praiano u otros pueblos en el camino).",
+        "Costo: €10-€18 ida por adulto; los niños suelen obtener tarifas reducidas.",
+        "En temporada alta (julio-agosto), los servicios pueden agotarse y se forman colas en Spiaggia Grande: llega 30+ minutos antes.",
+        "Si el mar está agitado y los barcos dejan de navegar, el %HOWTO:positano-amalfi-bus|autobús Positano → Amalfi% es tu alternativa confiable."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Vista del muelle principal de ferry de Positano en Spiaggia Grande con barcos atracados y edificios coloridos en la ladera"
+        }
+      ]
+    },
+    {
+      "id": "whyFerry",
+      "title": "¿Por qué tomar el ferry?",
+      "body": "El ferry tiene ventajas sobre el autobús, pero no siempre es la mejor opción para todos los viajeros. Esto es lo que debes considerar:",
+      "list": [
+        "Ruta panorámica: verás la Costa Amalfitana desde el agua, incluidas calas escondidas, formaciones rocosas y pueblos en acantilados que no puedes ver desde la carretera.",
+        "Evita el tráfico: la carretera costera (SS163) se congestiona mucho en verano. Los ferris evitan todos los retrasos de la carretera.",
+        "Más rápido en temporada alta: cuando los autobuses avanzan lentamente por el tráfico, el ferry puede ser mucho más rápido.",
+        "Aire fresco y comodidad: espacio de cubierta abierta, brisa marina y sin carreteras de montaña sinuosas (bueno si te mareas en autobuses).",
+        "Dependiente del clima: a diferencia de los autobuses, los ferris se cancelan cuando el mar está agitado, generalmente durante tormentas de otoño e invierno y, a veces, tormentas eléctricas de verano.",
+        "Mayor costo: los billetes de ferry suelen ser 2-3 veces más caros que las tarifas de autobús."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/03-ferry-ride.webp",
+          "alt": "Vista panorámica de la Costa Amalfitana desde un ferry que muestra pueblos en acantilados y agua turquesa"
+        }
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetes y horarios",
+      "body": "Dos operadores principales cubren la ruta Positano-Amalfi: Travelmar y Alilauro. Los horarios cambian según la temporada y el servicio se vuelve mucho más frecuente en verano. Siempre verifica los horarios en vivo el día anterior (o la mañana) de tu viaje, ya que las cancelaciones por clima son comunes. Consulta los horarios y precios más recientes en %URL:https://travelmar.it/en|Travelmar% y %URL:https://www.positano.com/en/ferry-schedule|Positano.com — Horarios de ferry%. Para una guía rápida sobre operadores, temporadas y problemas comunes, consulta %LINK:ferrySchedules|nuestra guía de horarios de ferry%.",
+      "list": [
+        "Reserva en línea con anticipación durante la temporada alta (junio-septiembre), especialmente para viajes por la tarde cuando los excursionistas regresan de Amalfi.",
+        "Los billetes se venden en casetas del paseo marítimo en Positano (se acepta efectivo y tarjeta) o en línea a través de los sitios web de los operadores.",
+        "Llega 20-30 minutos antes de tu salida para canjear vales si es necesario, encontrar el área de embarque de tu operador y hacer cola.",
+        "Guarda una captura de pantalla de tu código QR o correo de confirmación: la señal móvil puede ser débil cerca de la playa y el muelle.",
+        "Verifica con qué operador reservaste: Travelmar y Alilauro tienen diferentes áreas de embarque y no aceptan los billetes del otro.",
+        "Si tienes bolsas grandes (maletas, mochilas grandes), pregunta al personal sobre las reglas de equipaje y dónde poner las bolsas a bordo. La mayoría de los ferris tienen espacio limitado para equipaje."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/07-positano-umbrellas.webp",
+          "alt": "Caseta de billetes de ferry en la playa Spiaggia Grande en Positano con tableros de horarios visibles"
+        }
+      ]
+    },
+    {
+      "id": "scheduleDetails",
+      "title": "Patrones de horarios (qué esperar)",
+      "body": "Saber cómo funcionan los horarios de ferry en la costa te ayuda a planificar mejor tu excursión de un día o regreso.",
+      "list": [
+        "Temporada alta (julio-agosto): 10-15 viajes diarios desde temprano en la mañana (~9:00) hasta temprano en la noche (~18:00).",
+        "Temporada intermedia (abril-junio, septiembre-octubre): 5-8 viajes diarios, con menos opciones por la tarde.",
+        "Primeros viajes: normalmente 8:30-9:30 AM, perfectos para excursiones de un día a Amalfi (llegar temprano, evitar multitudes).",
+        "Últimos viajes: normalmente 17:00-18:30 en verano (pero verifica diariamente: esto cambia y los servicios pueden agotarse o cancelarse).",
+        "Pausas de mediodía: algunos operadores pausan el servicio entre 12:00-14:00 en temporada baja. No asumas que hay un barco cada hora.",
+        "Tiempo de regreso: si planeas una excursión de un día a Amalfi, confirma tu hora de ferry de regreso antes de salir de Positano: no asumas 'habrá un barco más tarde'."
+      ]
+    },
+    {
+      "id": "gettingToPier",
+      "title": "Llegar al muelle desde Hostel Brikette",
+      "body": "Desde el hostal, caminarás hasta el pueblo de Positano y luego a la playa Spiaggia Grande donde salen los ferris. El camino tiene escaleras empinadas y senderos estrechos, así que deja tiempo extra. Usa %LINK:briketteToFerryDock|nuestro camino paso a paso al muelle del ferry% para llegar fácilmente a Spiaggia Grande. El camino tarda 15-25 minutos dependiendo de tu ritmo y las multitudes.",
+      "list": [
+        "Deja tiempo de margen para escaleras (unas 400+ escalones), calor y tráfico peatonal lento en el pueblo, especialmente en julio-agosto cuando las calles están llenas.",
+        "Comienza 45+ minutos antes de que salga tu ferry para tener tiempo de caminar, encontrar la caseta del operador correcta y hacer cola.",
+        "Trae agua y mantén artículos importantes (pasaporte, billetera, teléfono) en un bolsillo de fácil acceso para los controles de embarque.",
+        "Usa zapatos cómodos con buen agarre: las escaleras pueden ser resbaladizas, especialmente temprano en la mañana cuando las áreas sombreadas aún pueden estar húmedas.",
+        "Si tienes equipaje, considera tomar un taxi desde el hostal a la playa (alrededor de €10-€15) para evitar cargar bolsas por escaleras empinadas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/10-positano-street.webp",
+          "alt": "Escaleras que conducen hacia abajo a través del centro del pueblo de Positano hacia la playa Spiaggia Grande"
+        }
+      ]
+    },
+    {
+      "id": "positanoPier",
+      "title": "Dónde embarcar en Positano",
+      "body": "Todos los ferris salen del muelle principal de Positano en la playa Spiaggia Grande. El muelle está en el extremo este de la playa, fácil de ver cuando te acercas al paseo marítimo. Varios operadores comparten la misma área general de embarque, así que mira las señales y las instrucciones del personal.",
+      "list": [
+        "Las casetas de operadores bordean el paseo marítimo cerca del muelle. Los tableros muestran los próximos viajes para Travelmar, Alilauro y otras compañías.",
+        "Verifica nuevamente el operador y el destino en tu billete antes de hacer cola. El personal de las casetas puede ayudar si no estás seguro.",
+        "El embarque normalmente abre 10-15 minutos antes de la salida. El personal llamará a los pasajeros hacia adelante y verificará los billetes al embarcar.",
+        "Si llegas temprano y aún no hay cola, espera cerca de la caseta del operador en lugar de caminar por la playa: el embarque puede comenzar repentinamente.",
+        "Los baños están en Spiaggia Grande (pequeña tarifa) si los necesitas antes de embarcar. Los ferris tienen baños limitados o ninguno en rutas cortas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/06-positano-panorama.webp",
+          "alt": "Pasajeros embarcando en un ferry en el muelle principal de la playa Spiaggia Grande en Positano"
+        }
+      ]
+    },
+    {
+      "id": "onBoard",
+      "title": "A bordo del ferry",
+      "body": "La mayoría de los ferris en esta ruta son barcos pequeños a medianos con espacio de cubierta abierta y asientos cubiertos. El viaje es panorámico y generalmente tranquilo, pero prepárate para algo de movimiento si el mar está agitado.",
+      "list": [
+        "Consigue un asiento en la cubierta superior o en las barandillas laterales para las mejores vistas: estos se llenan rápido, así que embarca rápido cuando te llamen.",
+        "El lado izquierdo (babor) tiene mejores vistas de la costa cuando vas de Positano a Amalfi.",
+        "Algunos ferris paran en Praiano u otros pueblos en el camino. Escucha los anuncios y verifica tu billete si no estás seguro si tu servicio es directo o con múltiples paradas.",
+        "El sol puede ser fuerte en la cubierta en verano: trae protector solar, sombrero y gafas de sol.",
+        "Si te mareas fácilmente, siéntate cerca del centro del barco donde el movimiento es menor y mantén tus ojos en el horizonte.",
+        "Los bocadillos y bebidas no siempre se venden a bordo: trae agua y bocadillos si los necesitas (especialmente para niños).",
+        "Mantén tu billete a mano hasta que te bajes: algunos operadores verifican los billetes cuando llegas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/05-li-galli.webp",
+          "alt": "Pasajeros en la cubierta abierta de un ferry viajando por la Costa Amalfitana con vistas costeras"
+        }
+      ]
+    },
+    {
+      "id": "amalfiArrival",
+      "title": "Llegada a Amalfi",
+      "body": "Los ferris llegan a los muelles del paseo marítimo de Amalfi cerca de la Piazza Flavio Gioia, en el corazón del pueblo. Bajar es rápido y fácil, y estarás a pocos pasos de las principales atracciones de Amalfi.",
+      "list": [
+        "El centro histórico está justo al lado del puerto: es una caminata de 2 minutos hasta el Duomo y la plaza principal.",
+        "Si vas a tomar un autobús más adelante (como a Ravello, Salerno o de regreso a Positano), la parada de autobús SITA está cerca del paseo marítimo. Sigue las señales o pregunta a los lugareños para encontrar la cola correcta: varias líneas salen de paradas cercanas.",
+        "Los baños, cafés y cajeros automáticos están todos a 5 minutos a pie del muelle.",
+        "Si planeas regresar a Positano en ferry más tarde, nota dónde está el muelle de salida (la misma área donde llegaste) y verifica los horarios de regreso en las casetas de operadores antes de dejar el paseo marítimo.",
+        "El paseo marítimo de Amalfi se llena en verano: mantén los objetos de valor seguros y cuida de los carteristas en áreas concurridas.",
+        "Para una guía completa para explorar el pueblo de Amalfi, consulta %LINK:dayTripsAmalfi|nuestra guía de excursiones de un día desde Positano%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/01-amalfi-dock.webp",
+          "alt": "Ferry llegando al muelle del paseo marítimo de Amalfi con el pueblo y el Duomo visibles en el fondo"
+        }
+      ]
+    },
+    {
+      "id": "planB",
+      "title": "Si se cancela el ferry (plan de respaldo que funciona)",
+      "body": "Las cancelaciones de ferry ocurren a menudo cuando el mar está agitado, especialmente durante tormentas de otoño e invierno y, a veces, en verano durante tormentas eléctricas. No te preocupes: el %HOWTO:positano-amalfi-bus|autobús Positano → Amalfi% funciona todo el año y es tu alternativa confiable. Lee %LINK:ferryCancellations|nuestra guía de cancelaciones de ferry% para horarios, consejos y cómo verificar el estado antes de salir del hostal.",
+      "list": [
+        "Si ya estás en la playa cuando se anuncian las cancelaciones, camina de regreso a la carretera principal (Via Pasitea o SS163) y toma el próximo autobús SITA o taxi compartido.",
+        "Los billetes de autobús se pueden comprar en tiendas de tabacchi en el pueblo o del conductor (solo efectivo, los billetes pequeños funcionan mejor).",
+        "Deja tiempo de margen: los autobuses pueden llegar llenos en los meses pico (especialmente julio-agosto), y los retrasos de 15-30 minutos son normales.",
+        "Si viajas tarde en el día, verifica la última salida posible (ferry o autobús) temprano para que no te quedes atrapado en Amalfi después de que se detenga el transporte público.",
+        "En temporada baja (noviembre-marzo), el servicio de ferry es muy limitado o no funciona en absoluto: planea tomar el autobús."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/amalfi-positano-ferry/09-amalfi-coast.webp",
+          "alt": "Condiciones de mar agitado en la playa de Positano que muestran por qué los ferris se cancelan con mal tiempo"
+        }
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Consejos del hostal",
+      "body": "Nuestros huéspedes viajan por esta ruta todo el tiempo, y hemos recopilado consejos prácticos de sus experiencias y los propios viajes de nuestro personal por la costa.",
+      "list": [
+        "Reserva ferris de la mañana cuando puedas: mar más tranquilo, menos multitudes, y tendrás todo el día en Amalfi.",
+        "Los ferris de regreso por la tarde (especialmente 16:00-18:00) se agotan rápido en verano: reserva billetes de regreso con anticipación o de inmediato cuando llegues a Amalfi.",
+        "Si solo estás en Amalfi por unas pocas horas, concéntrate en el Duomo y un paseo por el paseo marítimo. Otras atracciones (Museo del Papel, caminata Valle delle Ferriere) necesitan más tiempo.",
+        "Mezcla ferry y autobús para variedad: toma el ferry a Amalfi (panorámico), explora el pueblo, luego regresa en autobús (más rápido, más barato, y verás vistas de la carretera).",
+        "Verifica el clima antes de reservar: si se esperan vientos fuertes o tormentas, asume que los ferris se cancelarán y planea tomar el autobús en su lugar.",
+        "Hemos visto huéspedes perder ferris de regreso porque no se dan cuenta de lo lleno que se pone Amalfi en verano. Configura una alarma en el teléfono 30 minutos antes de tu salida y regresa al muelle temprano."
+      ]
+    },
+    {
+      "id": "practical",
+      "title": "Detalles prácticos",
+      "body": "Algunas cosas más que debes saber antes de ir.",
+      "list": [
+        "Pago: la mayoría de los operadores aceptan tarjetas de crédito en las casetas y en línea. El efectivo sigue siendo útil para pequeñas compras en la playa.",
+        "Idioma: el personal de las casetas de operadores suele hablar inglés, italiano y a menudo español o alemán. Señala tu billete si no estás seguro.",
+        "Mascotas: las mascotas pequeñas en transportadoras generalmente están permitidas, pero verifica las políticas del operador si viajas con animales.",
+        "Viaje en grupo: si son un grupo de 6+ personas, considera reservar todos los billetes juntos en línea para garantizar asientos en la misma salida.",
+        "Fotografía: trae tu cámara o teléfono: las vistas costeras desde el ferry son impresionantes y querrás fotos.",
+        "Remedios para el mareo: si eres propenso al mareo por movimiento, toma medicamentos 30-60 minutos antes de embarcar. Los caramelos de jengibre también pueden ayudar.",
+        "Seguridad: los chalecos salvavidas están a bordo y la tripulación explicará los procedimientos de seguridad. Presta atención a los anuncios en caso de emergencias.",
+        "Propinas: no se esperan, pero se aprecian si la tripulación ayuda con el equipaje o brinda asistencia extra."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Otras formas de viajar de Positano a Amalfi",
+      "body": "El ferry es popular, pero no es tu única opción. Aquí hay una comparación rápida con otros métodos de transporte.",
+      "list": [
+        "Autobús SITA: más barato (€2-€3), funciona todo el año, pero puede ser lento en tráfico y estar lleno en verano. Consulta %HOWTO:positano-amalfi-bus|nuestra guía de autobús%.",
+        "Taxi privado o servicio de coche: rápido, cómodo, servicio puerta a puerta. Cuesta alrededor de €40-€60 dependiendo del momento y proveedor. Bueno para grupos o si tienes mucho equipaje.",
+        "Alquiler de scooter o motocicleta: solo para conductores seguros. La carretera costera SS163 es estrecha, sinuosa y concurrida. El estacionamiento en Amalfi es limitado y a menudo costoso.",
+        "Tour privado en barco: más caro (€100+ por persona) pero incluye paradas en playas escondidas y natación. Reserva a través de operadores locales o tu alojamiento.",
+        "Caminar: el Sendero de los Dioses conecta el área de Positano con áreas cercanas a Amalfi, pero es una caminata seria (3-4 horas) y no va directamente al pueblo de Amalfi. Consulta %LINK:pathOfTheGods|nuestra guía del Sendero de los Dioses% si te interesa."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo comprar billetes de ferry el mismo día?",
+      "a": "Sí, los billetes se venden en casetas del paseo marítimo en Positano, pero en temporada alta (julio-agosto) los horarios populares se agotan. Reserva en línea con anticipación para tranquilidad, especialmente para viajes por la tarde."
+    },
+    {
+      "q": "¿Qué pasa si mi ferry se cancela y tengo un billete prepago?",
+      "a": "La mayoría de los operadores ofrecen reembolsos o reprogramación por cancelaciones climáticas. Verifica la política de cancelación del operador cuando reserves y guarda tu billete o correo de confirmación. Si los ferris se cancelan, cambia al autobús: funciona todo el año y no se ve afectado por las condiciones del mar."
+    },
+    {
+      "q": "¿Es bueno el ferry para niños pequeños o pasajeros ancianos?",
+      "a": "Sí, pero piensa en movilidad y comodidad: embarcar significa subir a un barco (a veces con una pequeña rampa), y el mar puede estar agitado. Los chalecos salvavidas están disponibles. Si la movilidad es una preocupación o el clima parece incierto, el autobús puede ser una mejor opción."
+    },
+    {
+      "q": "¿Puedo llevar un cochecito o silla de ruedas en el ferry?",
+      "a": "La mayoría de los ferris pueden acomodar cochecitos y sillas de ruedas, pero el espacio es limitado y la ayuda para embarcar puede ser mínima. Contacta al operador con anticipación para confirmar el acceso y pedir ayuda. El autobús puede ser más fácil para algunos viajeros."
+    },
+    {
+      "q": "¿Con cuánta anticipación debo llegar al muelle?",
+      "a": "Llega al menos 20-30 minutos antes de la salida en temporada baja, y 30-45 minutos en temporada alta (julio-agosto). Esto te da tiempo para encontrar la caseta correcta, canjear vales si es necesario y hacer cola sin estrés."
+    },
+    {
+      "q": "¿Funcionan los ferris en invierno?",
+      "a": "El servicio de ferry es muy limitado o se detiene por completo de noviembre a marzo. Siempre verifica los sitios web de los operadores antes de planificar viajes de invierno. El autobús es tu mejor opción en los meses de invierno."
+    }
+  ]
+}

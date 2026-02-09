@@ -1,0 +1,57 @@
+{
+  "seo": {
+    "title": "Porter services in Positano",
+    "description": "How porter services work in Positano: where to book, pricing expectations, and when to use them."
+  },
+  "linkLabel": "Porter services in Positano",
+  "intro": [
+    "Porters help with heavy bags or mobility concerns. Arrange pickup at the dock or bus stop, confirm the rate first, and keep valuables with you."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "How it typically works",
+      "body": [
+        "Arrange pickup point and time (dock or bus stop). Share your accommodation name and meeting time.",
+        "Agree the fee before moving. Prices vary by distance, stairs, and time of day.",
+        "Keep valuables with you; label your bags clearly."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Booking & resources",
+      "body": [
+        "Ask your accommodation for trusted local providers near the dock and main bus stops.",
+        "For storage or off‑hours options, see aggregators like Bounce / Radical Storage."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & tips",
+      "body": [
+        "Tip for exceptional service or heavy loads; carry cash in small denominations.",
+        "Share your arrival plan in advance during peak periods to secure a slot."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need porters?",
+      "a": [
+        "Recommended if carrying heavy luggage; town has many stairs and steep lanes."
+      ]
+    },
+    {
+      "q": "Where can I book?",
+      "a": [
+        "Ask your accommodation or local services near the main beach and bus stops."
+      ]
+    },
+    {
+      "q": "How much does it cost?",
+      "a": [
+        "Varies by distance and load; confirm rate before service begins."
+      ]
+    }
+  ]
+}

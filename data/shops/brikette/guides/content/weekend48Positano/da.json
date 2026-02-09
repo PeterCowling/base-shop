@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "48 timers weekend i Positano",
+    "description": "To dage med udsigter, mad og lette eventyr omkring hostellet."
+  },
+  "linkLabel": "48 timers weekend i Positano",
+  "intro": [
+    "Et 48-timers weekendophold i Positano kan lade sig gøre, hvis du rejser let, planlægger ankomstene og jagter udsigter uden for den varmeste tid."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Dag 1 – ankomst og formiddag",
+      "body": [
+        "Ankom med første SITA-bus eller færge, aflever bagagen hos overnatningsstedet eller i opbevaring, og snup espresso plus sfogliatella på Via dei Mulini.",
+        "Gå ned til Fornillo-stranden for en dukkert før frokost, hvor lidoerne stadig er rolige og de gratis områder åbner op."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Dag 1 – eftermiddag og solnedgang",
+      "body": [
+        "Tag lokalbussen til Nocelle for en kort smagsprøve på Gudernes sti; vend tilbage i tide til solnedgang på Via Cristoforo Colombo.",
+        "Book middag på en terrasse, eller hent deli-mad til picnic på hostellets altan."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Dag 2 – vælg din morgen",
+      "body": [
+        "Mulighed A: færge til Amalfi og hurtigt videre til Villa Cimbrone i Ravello; mulighed B: deltag i en delt bådtur for kystudsigter.",
+        "Pak morgenmad fra bageren, så du kan starte tidligt uden at vente på caféservice."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Dag 2 – afrunding og afrejse",
+      "body": [
+        "Få de sidste indkøb hos sandalmagere eller keramikstudier før frokost.",
+        "Hent bagagen 90 minutter før afrejse for at have tid til trapper og kø ved mole eller busstoppested."
+      ]
+    }
+  ],
+  "tips": [
+    "Rejs med en dagtaske under 10 kg, så du kan klare trapperne hurtigt.",
+    "Gem færge- og bustider offline; weekendændringer er almindelige."
+  ],
+  "faqs": [
+    {
+      "q": "Er én overnatning nok?",
+      "a": [
+        "Ja, hvis du fokuserer på højdepunkterne og bor centralt, men to nætter giver et roligere tempo og buffer til vejret."
+      ]
+    },
+    {
+      "q": "Hvor skal jeg se solnedgang?",
+      "a": [
+        "Via Cristoforo Colombo og hostellets terrasse er sikre hits; strandbarer fungerer også, men priserne er højere."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Positano om vinteren på budget",
+    "description": "Vejr, åbne attraktioner, og hvordan du får mest ud af et lavsæsonbesøg."
+  },
+  "linkLabel": "Positano om vinteren på budget",
+  "intro": [
+    "Vinter i Positano er rolig, prisvenlig og køligere. Brug guiden til at se, hvad der holder åbent, hvordan du kommer rundt, når færger holder pause, og hvilke hyggelige oplevelser der ikke sprænger budgettet.",
+    "Pak lag (let dunjakke + vandtæt skal) og sko med godt greb – trapper kan være glatte efter regn."
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "title": "Det, der holder åbent",
+      "body": [
+        "Kernebutikker, caféer omkring Piazza dei Mulini og hostelbaren har åbent året rundt – med kortere åbningstider, men stabil service.",
+        "Færger mellem byerne holder pause fra november til marts, men SITA-busser og enkelte private shuttles kører videre med reducerede køreplaner."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport om vinteren",
+      "body": [
+        "Tag regionaltog til Sorrento eller Salerno og derfra SITA-bus; læg 20–30 minutter til i vådt vejr.",
+        "Hav kontanter til busbilletter (€2–€3 pr. vej), og gem UnicoCampania-appen i browseren for sidste-øjebliksændringer, når stormene ruller ind."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budgetvenlige dage",
+      "body": [
+        "Planlæg museer i Napoli eller Salerno på regnvejrsdage; returbilletter koster omkring €10.",
+        "Vandrestien Gudernes sti fra Nocelle er fantastisk i klart vintervejr: frisk luft, tomme udsigtspunkter og ingen sommerhede."
+      ]
+    }
+  ],
+  "tips": [
+    "Vælg overnatning med varme og morgenmad inkluderet, så du sparer caféudgifter på kolde morgener.",
+    "Solnedgangen kommer tidligt (ca. 16.45 i december) – læg terrasse-tid sidst på eftermiddagen, og pak et varmt lag."
+  ],
+  "faqs": [
+    {
+      "q": "Er restauranter åbne om vinteren?",
+      "a": [
+        "Ja, men udvalget er mindre. Familiedrevne trattoriaer og pizzeriaer holder weekendåbent; fine-dining vender ofte tilbage omkring påske.",
+        "Ring eller skriv via WhatsApp for at bekræfte åbningstider, før du går ned ad bakkerne."
+      ]
+    },
+    {
+      "q": "Hvor koldt bliver det?",
+      "a": [
+        "Dagstemperaturer ligger omkring 12–14 °C; nætterne falder til 8 °C, så medbring en varm mellemlag og sokker til klinkegulve."
+      ]
+    }
+  ]
+}

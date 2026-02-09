@@ -1,0 +1,76 @@
+{
+  "seo": {
+    "title": "Positanóból Nápoly központjába komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a Hostel Brikette-től a positanói kikötőig, jegyvásárlási, beszállási és érkezési tippekkel a Nápoly belvárosába tartó kompúthoz."
+  },
+  "intro": {
+    "title": "Positanóból Nápoly központjába – komp",
+    "body": "Kövesd ezeket a lépéseket, hogy elsétálj a Hostel Brikette-től a positanói kikötőig, megvásárold a kompjegyed, majd Nápolyba hajózz. Szolgáltatói tippeket, szezonális tudnivalókat és érkezési útmutatót is tartalmaz a Napoli Centrale állomáshoz."
+  },
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Útvonal lépés képe 1",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Útvonal lépés képe 2",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Útvonal lépés képe 3",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Útvonal lépés képe 4",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Útvonal lépés képe 5",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Útvonal lépés képe 6",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Útvonal lépés képe 7",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Útvonal lépés képe 8",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Útvonal lépés képe 9",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Útvonal lépés képe 10",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

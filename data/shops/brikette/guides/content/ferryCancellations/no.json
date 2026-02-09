@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Fergekanselleringer og urolig sjø",
+    "description": "Hva du skal gjøre når ferger kanselleres på grunn av været, alternativer og hvordan sjekke status."
+  },
+  "linkLabel": "Fergekanselleringer og urolig sjø",
+  "intro": [
+    "Urolig sjø kan suspendere ferger til og fra Positano med kort varsel.",
+    "Hold en landbasert backup klar og overvåk live-varsler slik at du fortsatt kan nå forbindelsen din."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Overvåk live-oppdateringer",
+      "body": [
+        "Sjekk operatørsider og apper (Travelmar, NLG, Alilauro) pluss havnens skjermer hvert 30. minutt på blåsende dager.",
+        "Aktiver SMS/e-postvarsler eller følg lokale Telegram/sosiale kanaler slik at kanselleringer når deg selv om du går bort fra kaien."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Bytt til landruter",
+      "body": [
+        "Hvis seilinger stopper, bytt til busser og tog: SITA til Sorrento deretter Circumvesuviana for Napoli/Pompeii, eller buss via Amalfi og regiontog fra Salerno.",
+        "Tillat minst 60 minutters buffer for dagens siste avganger og valider billetter før påstigning."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Refusjoner og vouchers",
+      "body": [
+        "Behold kvitteringer og ta skjermbilde av kansellerings­varselet slik at operatøren kan behandle refusjoner, ombooking eller kreditter.",
+        "La personalet vite om du foretrekker neste tilgjengelige seiling eller en sesongvoucher før du forlater skranken."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Håndtering av forsinkelser over natten",
+      "body": [
+        "Fortell innkvarteringen eller turlederen din så snart forsinkelser kunngjøres; mange vil justere innsjekking eller avreise hvis de varsles på forhånd.",
+        "Spør havnens infopunkt om delte taxier, erstatnings­shuttles eller bagasjeoppbevaring hvis du må vente til neste morgen."
+      ]
+    }
+  ],
+  "tips": [
+    "Sjekk sjøvarselet—vind over 20 knop eller dønninger over 1,5 meter (ca. 5 fot) utløser ofte kanselleringer.",
+    "Reiseforsikring som dekker værforsinkelser hjelper med å dekke ekstra hotellnetter eller erstatnings­transport.",
+    "Morgenseilinger er mest pålitelige; unngå å stole på dagens siste båt når stormer er varslet."
+  ],
+  "faqs": [
+    {
+      "q": "Hvordan vet jeg når seilinger gjenopptas?",
+      "a": [
+        "Oppdater operatørens nettsted eller sosiale feeds og lytt etter høyttaler­kunngjøringer ved kaien—beslutninger publiseres vanligvis innen 30 minutter etter planlagt avgang.",
+        "Billett­skrankepersonale kan også bekrefte om neste båt går før du forlater havnen."
+      ]
+    },
+    {
+      "q": "Hva skjer med billetten min?",
+      "a": [
+        "Vis kvitteringen eller QR-koden din for å be om refusjon, voucher eller ombooking til neste seiling.",
+        "Hvis du booket via et online­byrå, send dem kansellerings­skjermbildet på e-post innen 24 timer for å starte refusjonsprosessen."
+      ]
+    },
+    {
+      "q": "Er noen ferger garantert i hardt vær?",
+      "a": [
+        "Nei—når kystvakten stenger havnen stopper alle avganger. Hold en landrute klar.",
+        "Noen få private chartere kan seile i moderat sjø, men de er dyre og avhenger av kapteinens skjønn; vurder komfort og kostnad nøye."
+      ]
+    }
+  ]
+}

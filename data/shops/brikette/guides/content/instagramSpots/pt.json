@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Spots de Instagram em Positano (sem multidões)",
+    "description": "Mapa dos ângulos clássicos e alternativos, horários ideais e boas práticas para fotografar sem bloquear passagens."
+  },
+  "linkLabel": "Spots de Instagram em Positano (sem multidões)",
+  "intro": [
+    "Garanta os registos clássicos de Positano planeando luz, ângulos e etiqueta — sem bloquear moradores ou outros viajantes."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Postais clássicos",
+      "body": [
+        "Fotografe dos degraus da igreja Santa Maria Assunta logo após o nascer do sol; a praia fica vazia e a cúpula recebe luz dourada.",
+        "Caminhe até ao cais para uma grande-angular voltada para a encosta — chegue antes das 09:00, quando se formam filas de excursões."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Ângulos inesperados",
+      "body": [
+        "Suba ao miradouro da Via Trara Genoino, sobre Fornillo, para enquadrar barcos de pesca e casas pastel em camadas.",
+        "Apanhe o autocarro local até Nocelle e fotografe a costa a partir do terraço do Caminho dos Deuses; o panorama é imbatível em manhãs limpas."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Montagens ao pôr do sol",
+      "body": [
+        "Garanta lugar nos bancos da Via Cristoforo Colombo cerca de 45 minutos antes do pôr do sol; no verão, o sol mergulha atrás das ilhas Li Galli.",
+        "Desça até à praia de Laurito para silhuetas do skyline de Positano — as escadas são íngremes, por isso leve calçado aderente e lanterna frontal para a subida de regresso."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta fotográfica",
+      "body": [
+        "Use tripés compactos e afaste-se assim que fizer a foto para manter as escadas transitáveis.",
+        "Evite drones dentro da vila; as regras italianas exigem licenças e as multas são pesadas quando a fiscalização apanha voos sem autorização."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve um pano de microfibra para limpar salpicos de mar e marcas de protetor na lente.",
+    "Guarde os ângulos favoritos offline no Google Maps; o sinal pode falhar em terraços e trilhos."
+  ],
+  "faqs": [
+    {
+      "q": "Nascer ou pôr do sol?",
+      "a": [
+        "O nascer do sol oferece ruas vazias e luz suave na Spiaggia Grande; o pôr do sol ilumina a falésia a partir do oeste, mas atrai mais gente."
+      ]
+    },
+    {
+      "q": "Posso usar terraços de hotéis sem ser hóspede?",
+      "a": [
+        "Não — são áreas privadas. Reserve mesa no restaurante se quiser essa perspetiva e peça autorização ao staff antes de montar equipamento."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Positano é fotogénica de quase todos os ângulos — mas os pontos mais famosos ficam cheios grande parte do dia. Veja como capturar as vistas clássicas sem longas filas e descubra alternativas menos conhecidas.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Clássicos (timing conta)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Alternativas discretas"
+      },
+      {
+        "href": "#sunset",
+        "label": "Opções ao pôr do sol"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiqueta e dicas locais"
+      },
+      {
+        "href": "#faqs",
+        "label": "Perguntas frequentes"
+      }
+    ],
+    "classics": {
+      "heading": "Clássicos (timing conta)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Chegue ao nascer do sol para cais vazio e mar calmo; evite filas a meio da manhã."
+        },
+        {
+          "title": "Caminho de Fornillo",
+          "description": "Passeio costeiro suave com vistas em camadas; melhor cedo ou logo após o pôr do sol."
+        },
+        {
+          "title": "Curvas da Via Pasitea",
+          "description": "Curvas elevadas que oferecem o ângulo de postal sem multidões. Respeite o trânsito e mantenha-se fora da faixa."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Alternativas discretas",
+      "items": [
+        {
+          "title": "Terraços da Chiesa Nuova",
+          "description": "Golden hour sobre Fornillo; poucas pessoas e a curta distância do hostel."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Cordilheiras impressionantes; melhor luz cedo."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Lista com composições variadas."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Opções ao pôr do sol",
+      "paragraphs": [
+        "Para golden hour sem multidões, escolha os recuos superiores da Via Pasitea ou os terraços perto da Chiesa Nuova.",
+        "Se prefere silhuetas na praia, chegue 30–45 minutos antes do pôr do sol a Fornillo."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etiqueta e dicas locais",
+      "items": [
+        "Não bloqueie escadas ou estradas estreitas; fotografe e dê passagem.",
+        "Respeite propriedade privada e evite subir muros/telhados.",
+        "Use tripé pequeno fora de horas de pico; evite caminhos movimentados ao meio-dia."
+      ]
+    },
+    "faqs": {
+      "heading": "Perguntas frequentes",
+      "items": [
+        {
+          "summary": "Qual é a melhor hora para fotografar?",
+          "body": "Nascer do sol para cenários vazios; golden hour para tons quentes e sombras suaves."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Preciso de licença para drone?",
+      "body": "A Itália tem regras rígidas e muitas zonas de exclusão. Consulte a ENAC e regulamentos locais; evite voar perto de multidões."
+    },
+    "galleryAlt": [
+      "Positano vista do alto",
+      "Panorâmica costeira"
+    ],
+    "galleryFallbackAlt": "Vista cénica da costa de Positano"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "seo": {
+    "title": "48 óra Positanóban",
+    "description": "Egy gyors hétvége terv Positanón: érkezés, strandok, kilátók és vacsora."
+  },
+  "linkLabel": "48 óra Positanóban",
+  "intro": [
+    "Két nap Positanóban tele van lépcsőkkel és naplementével. Íme egy terv a legfontosabb állomásokra."
+  ],
+  "sections": [
+    {
+      "id": "day1",
+      "title": "1. nap – város és strand",
+      "body": [
+        "Kezdd a Fornillo vagy Marinella partszakasszal, majd sétálj fel a városban a kézműves üzletekhez és a kilátókhoz.",
+        "Este foglalj asztalt egy tengerparti trattoriában, és nézd a narancssárga naplementét."
+      ]
+    },
+    {
+      "id": "day2",
+      "title": "2. nap – kirándulás és kaland",
+      "body": [
+        "Indulj korán a Szlak Bogok felé, vagy maradj a Partyn és vegyél kompot Amalfi felé.",
+        "Délután fedezd fel a tengerparti butikokat, majd egy rövid séta a Piazzetta környékén lezárhatja a napot."
+      ]
+    }
+  ],
+  "tips": [
+    "Vegyél napijegyet a SITA buszra, hogy nem maradj le a visszaútról.",
+    "Ha jól tudsz lépcsőzni, válassz egy felső szállást, hogy megspórold az utazást a találkozókhoz."
+  ],
+  "faqs": [
+    {
+      "q": "Elég két nap?",
+      "a": [
+        "Igen, ha előre tervezel, és a fő strandokra, kilátókra és programokra koncentrálsz."
+      ]
+    },
+    {
+      "q": "Mennyire költséges?",
+      "a": [
+        "Átlagosan 150–200 € egy hétvége, ha beleszámítod a közlekedést, étkezést és egy élményt (pl. hajózás vagy főzőtanfolyam)."
+      ]
+    }
+  ]
+}

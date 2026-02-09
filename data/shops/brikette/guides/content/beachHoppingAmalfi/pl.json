@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Objazd plaż na Wybrzeżu Amalfi",
+    "description": "Które plaże łączyć w jeden dzień, porady dotyczące dostępu i koszty."
+  },
+  "linkLabel": "Objazd plaż na Wybrzeżu Amalfi",
+  "intro": [
+    "Zaplanuj plażowy dzień, łącząc rejsy promem, widoki z klifów i czas na piasku."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Poranek: Positano do Fornillo",
+      "body": [
+        "Zacznij wcześnie na Spiaggia Grande od krótkiej kąpieli, potem do 09:30 przejdź ścieżką przybrzeżną do spokojniejszego Fornillo.",
+        "Zarezerwuj leżaki z wyprzedzeniem, jeśli potrzebujesz cienia; w przeciwnym razie zabierz lekką parasolkę."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Południe: Amalfi lub Atrani",
+      "body": [
+        "Popłyń późnym rankiem promem do Amalfi i zjedz lunch na molo, zanim popływasz na miejskiej plaży lub w zatoczce Atrani.",
+        "Zostaw bagaże w przechowalni w Amalfi, aby zwiedzać bez obciążenia."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Wycieczki grupowe i wspólne łodzie",
+      "body": [
+        "Zobacz nasz %LINK:boatTours|przewodnik po wycieczkach łodzią w Positano%, jeśli wolisz skakać między plażami na wspólnej łodzi zamiast promami.",
+        "Operatorzy wypływają z głównego mola Positano; przyjdź 15 minut wcześniej i potwierdź przystanki pływackie w Laurito lub Arienzo podczas rezerwacji."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Wieczór: Kąpiel o zachodzie",
+      "body": [
+        "Zakończ w Laurito lub Arienzo, aby obejrzeć złotą godzinę; obie plaże są zwrócone na zachód i po 17:00 są spokojniejsze.",
+        "Złap ostatni prom albo zamów powrotną taksówkę, by uniknąć nocnej wspinaczki pod górę."
+      ]
+    }
+  ],
+  "tips": [
+    "Miej szybkoschnący ręcznik i ubranie na zmianę, aby czuć się komfortowo na promach.",
+    "Spakuj przekąski i co najmniej 1 L / 34 oz wody—kioski plażowe w zatłoczone dni mogą mieć braki."
+  ],
+  "faqs": [
+    {
+      "q": "Czy trzeba rezerwować leżaki?",
+      "a": [
+        "Tak w lipcu–sierpniu. Skontaktuj się z klubami plażowymi przez WhatsApp dzień wcześniej, aby zapewnić sobie miejsca z przodu."
+      ]
+    },
+    {
+      "q": "Czy mogę przynieść własne jedzenie?",
+      "a": [
+        "Większość darmowych odcinków plaż pozwala na piknik. Kluby plażowe zwykle tolerują drobne przekąski, ale wolą, by napoje kupować w ich barze."
+      ]
+    }
+  ]
+}

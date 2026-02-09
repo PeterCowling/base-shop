@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Travailler et voyager : concilier télétravail",
+    "description": "Organisation du télétravail : Wi-Fi, espaces adaptés, rythmes recommandés et équilibre activité/découverte."
+  },
+  "linkLabel": "Travailler et voyager : concilier télétravail",
+  "intro": [
+    "Conciliation travail/voyage à Positano : connexion réaliste, lieux où travailler et rythme quotidien adapté à la foule."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi-Fi & secours",
+      "body": [
+        "Gardez une eSIM de secours ; testez les débits ; évitez les appels critiques lors de l'arrivée des ferries sur les axes principaux."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Cafés propices au travail",
+      "body": [
+        "Consultez notre guide Wi-Fi & cafés télétravail ; surveillez les prises et consommez régulièrement."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Routines efficaces",
+      "body": [
+        "Programmez les plages de travail tôt le matin et en soirée ; explorez en milieu de journée quand la foule est maximale ou après le coucher du soleil."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Le télétravail est-il viable ici ?",
+      "a": [
+        "Oui avec une bonne préparation — logez près de Chiesa Nuova, prévoyez des solutions de secours et gardez des horaires flexibles."
+      ]
+    }
+  ]
+}

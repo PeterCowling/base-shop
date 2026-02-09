@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Concierge numérique (recommandations + réservations)",
+    "description": "Utilisez le concierge numérique d'Hostel Brikette pour des recommandations locales rapides, des mises à jour de transport et de l'aide pour réserver des expériences, surtout quand les plans changent."
+  },
+  "linkLabel": "Concierge numérique",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Ceci est pour des plans qui fonctionnent aujourd'hui, pas des listes génériques.",
+    "Envoyez votre créneau horaire, budget et priorité. Mettez votre échéance sur la première ligne."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Comment y accéder",
+      "body": [
+        "Demandez à la réception le dernier contact/QR et le meilleur canal (généralement WhatsApp).",
+        "Incluez : dates, point de départ, créneau horaire, budget et priorité #1."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Modèle copier/coller",
+      "body": [
+        "\\\\\"Nous avons 6 heures, pas de voiture, nous voulons (A) nager + (B) coucher de soleil, budget €40 par personne. Quel est le plan le plus simple et le plan B si les ferries sont annulés ?\\\\\"",
+        "Référence budgétaire : %LINK:positanoBudget|Positano avec budget% + %LINK:terraceSunsets|Coucher de soleil terrasse%.",
+        "Si le transport est sensible : %LINK:ferryCancellations|annulations de ferry + météo%."
+      ]
+    }
+  ],
+  "fallback": "Concierge numérique : recommandations rapides, mises à jour transport et aide réservation."
+}

@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Strand-Hopping an der Amalfiküste",
+    "description": "Welche Strände an einem Tag kombinieren, Zugangs-Tipps und Kosten."
+  },
+  "linkLabel": "Strand-Hopping an der Amalfiküste",
+  "intro": [
+    "Plane einen Strand-Hopping-Tag, der Fährfahrten, Ausblicke von Klippen und Entspannung am Strand ausbalanciert."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Morgen: Positano nach Fornillo",
+      "body": [
+        "Starte früh am Spiaggia Grande für ein schnelles Bad, und gehe dann den Küstenweg zu Fornillo bis 09:30 Uhr für ruhigeres Wasser.",
+        "Reserviere Sonnenliegen im Voraus, wenn du Schatten möchtest; ansonsten packe einen leichten Sonnenschirm ein."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Mittag: Amalfi oder Atrani",
+      "body": [
+        "Nimm eine späte Morgenfähre nach Amalfi und esse zu Mittag am Pier, bevor du am Stadtstrand oder in Atranis Taschenbucht schwimmst.",
+        "Lagere Taschen in Amalfis Depot, damit du freihändig erkunden kannst."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Gruppentouren & geteilte Boote",
+      "body": [
+        "Siehe unseren %LINK:boatTours|Bootstouren in Positano-Leitfaden%, wenn du lieber zwischen Stränden auf einem geteilten Boot statt mit Fähren hüpfen möchtest.",
+        "Betreiber fahren vom Hauptpier in Positano ab; komme 15 Minuten früher und bestätige Laurito- oder Arienzo-Badestopps bei der Buchung."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Abend: Sonnenuntergangs-Schwimmen",
+      "body": [
+        "Beende bei Laurito oder Arienzo für Ausblicke zur goldenen Stunde; beide sind nach Westen ausgerichtet für warmes Licht und weniger Menschenmassen nach 17:00 Uhr.",
+        "Nimm die letzte Fähre oder buche eine Rückfahrt mit dem Taxi, um Bergaufwanderungen im Dunkeln zu vermeiden."
+      ]
+    }
+  ],
+  "tips": [
+    "Trage ein schnelltrocknendes Handtuch und Wechselkleidung, damit du auf Fähren bequem bleibst.",
+    "Packe Snacks und mindestens 1 L / 34 oz Wasser ein — Strandkioske können an geschäftigen Tagen knapp werden."
+  ],
+  "faqs": [
+    {
+      "q": "Muss ich Sonnenliegen vorbuchen?",
+      "a": [
+        "Ja im Juli–August. Kontaktiere Strandclubs per WhatsApp am Vortag, um vordere Reihen zu sichern."
+      ]
+    },
+    {
+      "q": "Kann ich mein eigenes Essen mitbringen?",
+      "a": [
+        "Die meisten freien Bereiche erlauben Picknicks. Strandclubs erlauben in der Regel kleine Snacks, bevorzugen aber, dass du Getränke an ihrer Bar kaufst."
+      ]
+    }
+  ]
+}

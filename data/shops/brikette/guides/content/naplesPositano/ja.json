@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "ナポリからポジターノへの行き方",
+    "description": "バス＋電車、夏季フェリーなど最速・最安ルートを比較解説。"
+  },
+  "linkLabel": "ナポリからポジターノへの行き方",
+  "intro": [
+    "ナポリ空港または市内から、通年はシャトルやAlibus＋鉄道でソレントへ行き、SITAバスでポジターノへ。夏は海況が良ければフェリーも選択肢です。下車はChiesa Nuova（Bar Internazionale）が最寄りで、最後の徒歩は2〜5分ほどです。"
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (year-round)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (summer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Late arrivals & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "電車＋バス（通年）",
+      "body": [
+        "空港→ソレント: NAP到着口からCurreriシャトル直行、またはAlibusでナポリ・チェントラーレ/ガリバルディへ行きCircumvesuvianaでソレントへ。",
+        "ソレント到着後は駅を出てバス乗り場へ。タバッキ/売店でSITAチケットを購入し、乗車前に刻印できるよう用意しましょう。"
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "フェリー（夏季）",
+      "body": [
+        "ナポリ市内からはAlibusでモーロ・ベヴェレッロへ行き、ポジターノ行きフェリーに乗船（季節・天候依存）。当日の時刻と料金を確認し、最終便は避けるのが安心です。",
+        "ポジターノ港からはInterno Positanoバス＋ポーターの併用が便利。%LINK:ferryDockToBrikette|桟橋→ホステル%と%LINK:porterServices|ポーターガイド%を参照。"
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "遅い到着と乗り継ぎ",
+      "body": [
+        "最終バス/フェリー後の到着なら、専用送迎を予約するかナポリ/ソレントで1泊を検討しましょう。",
+        "降車場所の確認と、必要に応じた荷物サポートを事前に相談してください。"
+      ]
+    }
+  ],
+  "faqsTitle": "よくある質問",
+  "faqs": [
+    {
+      "q": "SITAチケットはどこで買えますか？",
+      "a": [
+        "ソレントのバス乗り場周辺のタバッキ/売店、ポジターノのBar Internazionaleで購入できます。乗車前に購入し、必要に応じて車内で刻印します。"
+      ]
+    },
+    {
+      "q": "ホステルに一番近い停留所は？",
+      "a": [
+        "\\\"Chiesa Nuova\\\"（Bar Internazionale前）です。ホステルに最寄りで、長い階段を避けられます。"
+      ]
+    }
+  ]
+}

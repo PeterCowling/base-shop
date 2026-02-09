@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Itinéraire retour Fornillo Beach → Hostel Brikette",
+    "description": "Suivez le front de mer jusqu’à Spiaggia Grande, faites un tour dans les boutiques puis prenez le bus interno pour remonter à l’auberge."
+  },
+  "linkLabel": "Itinéraire retour Fornillo Beach → Hostel Brikette",
+  "intro": [
+    "Le retour à l'auberge Brikette depuis la plage de Fornillo est plus facile si vous suivez le front de mer jusqu'à Spiaggia Grande et prenez le bus interno depuis le centre-ville. Cet itinéraire remplace la plupart des escaliers en montée par des promenades plates et une courte montée à côté de l'auberge."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-return",
+      "title": "Planifiez votre retour",
+      "body": [
+        "Prévoyez du temps supplémentaire pour les arrêts photos ou pour parcourir les magasins autour de Spiaggia Grande avant de monter dans le bus.",
+        "Ce chemin de retour est plus long que la montée de l'escalier de raccourci, mais il reste plus frais l'après-midi et vous permet de terminer plus en douceur après une journée à la plage."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Carte de l'itinéraire Fornillo Beach-Hostel Brikette",
+      "body": [
+        "1. Marchez jusqu'à l'extrême gauche de la plage de Fornillo (à gauche lorsque vous faites face à la mer).",
+        "2. Suivez le sentier côtier en direction de Spiaggia Grande jusqu'à atteindre la plage principale et la zone portuaire.",
+        "3. Passez la porte du port, quittez la jetée et continuez tout droit le long de la promenade du front de mer.",
+        "4. Empruntez le sentier juste devant le front de mer et continuez vers l'intérieur des terres.",
+        "5. Tournez à droite dans la première ruelle entre les magasins.",
+        "6. Montez l'escalier qui mène à l'église de Santa Maria Assunta.",
+        "7. En haut de la voie, tournez à gauche et suivez-la en montée.",
+        "8. Au croisement de la voie et de la route à sens unique, vous arrivez à l'arrêt de bus interno pour Chiesa Nuova. Montez à un arrêt jusqu'à l'auberge Brikette."
+      ]
+    },
+    {
+      "id": "bus-connection",
+      "title": "Prendre le bus interno",
+      "body": [
+        "Depuis l'arrêt Chiesa Nuova, le bus orange interno Positano vous dépose à quelques pas de l'Hostel Brikette, parfait si vous voulez éviter de monter complètement les escaliers pour revenir.",
+        "Les billets sont vendus dans les kiosques tabacchi/presse de toute la ville, alors achetez-les avant de vous y rendre ou vérifiez la disponibilité auprès de la réception."
+      ]
+    }
+  ],
+  "tips": [
+    "Achetez des billets de bus interno dans n'importe quel tabacchi/marchand de journaux avant d'aller à la plage.",
+    "Gardez le raccourci des escaliers pour le matin ; ce retour panoramique est plus calme après une longue baignade.",
+    "Associez-le à notre guide Fornillo Beach pour plus de détails sur les clubs de plage et les endroits calmes.",
+    "Consultez l'aperçu des plages de Positano pour planifier où nager pendant votre séjour."
+  ],
+  "faqsTitle": "FAQ sur les itinéraires",
+  "faqs": [
+    {
+      "q": "Combien de temps prend le retour ?",
+      "a": [
+        "Revenir via Spiaggia Grande ajoute environ 10 minutes supplémentaires par rapport à l'escalier direct, mais vous évitez la majeure partie de la montée raide avant de monter dans le bus."
+      ]
+    },
+    {
+      "q": "Où puis-je prendre le bus ?",
+      "a": [
+        "Prenez le bus orange Interno Positano depuis l'arrêt Chiesa Nuova en haut de la voie. Il vous dépose près de l'auberge et les billets proviennent des kiosques tabacchi/presse."
+      ]
+    }
+  ]
+}

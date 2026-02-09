@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Tạp hoá và hiệu thuốc ở Positano",
+    "description": "Nơi mua nhu yếu phẩm tại Positano: siêu thị nhỏ, giờ mở cửa muộn và thông tin hiệu thuốc."
+  },
+  "linkLabel": "Tạp hoá và hiệu thuốc ở Positano",
+  "intro": [
+    "Positano không có siêu thị lớn, vì vậy hãy chuẩn bị mua sắm ở cửa hàng nhỏ, chợ hằng tuần và vài hiệu thuốc uy tín cho nhu yếu phẩm."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Cửa hàng tạp hóa & deli",
+      "body": [
+        "Các cửa hàng trên Via Pasitea và Via dei Mulini bán bánh mì mới, phô mai và salad chế biến sẵn; diện tích hạn chế nhưng nhập hàng mỗi ngày.",
+        "Giờ mở cửa theo nhịp nghỉ trưa — hãy mua trước 13:00 hoặc sau 16:30 để tránh cửa đóng."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Rau củ & chợ",
+      "body": [
+        "Quầy rau củ bày ngay khúc cua Sponda và trạm Chiesa Nuova mỗi sáng; mang tiền lẻ để thanh toán nhanh.",
+        "Thứ Tư hằng tuần, Montepertuso (xe buýt 13) có chợ nhỏ bán rau theo mùa, sữa và thịt nguội."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Hiệu thuốc & chăm sóc sức khỏe",
+      "body": [
+        "Farmacia Positano (Via Pasitea) có thuốc cơ bản, kem chống nắng và thuốc say tàu xe; mang theo toa nếu cần thuốc đặc trị.",
+        "Dịch vụ ngoài giờ luân phiên — xem bảng thông báo trên cửa hiệu để biết số trực nếu cần thuốc muộn."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Nhu yếu phẩm buổi tối",
+      "body": [
+        "Một số alimentari mở tới 22:00 vào mùa cao điểm; ngoài ra có máy bán hàng 24/7 gần trạm xe buýt.",
+        "Nếu cần gấp, Sorrento (45–60 phút đi xe) có siêu thị lớn và phòng cấp cứu bệnh viện."
+      ]
+    }
+  ],
+  "tips": [
+    "Mang túi tote nhẹ hoặc balo để xách đồ lên cầu thang mà không dồn lực vào một tay.",
+    "Giữ chai nước tái sử dụng: đa số cửa hàng bán nước 1,5 L giá rẻ và sân thượng hostel có vòi lọc."
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có mua được đồ không gluten ở đây không?",
+      "a": [
+        "Có — tìm kệ “senza glutine” trong các cửa hàng nhỏ hoặc hỏi hiệu thuốc; lượng hàng ít nên thấy là mua ngay."
+      ]
+    },
+    {
+      "q": "Hiệu thuốc có mở cửa Chủ nhật không?",
+      "a": [
+        "Luôn có ít nhất một hiệu mở với giờ rút gọn; xem bảng phân công và gọi trước nếu cần thuốc kê toa."
+      ]
+    }
+  ],
+  "fallback": "Nhu yếu phẩm có mặt khắp Positano — hãy mua sớm trong ngày và ghi chú số hiệu thuốc địa phương."
+}

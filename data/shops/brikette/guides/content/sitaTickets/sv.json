@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "SITA-buss: biljetter och tips",
+    "description": "Var du köper SITA-bussbiljetter, regler för validering, bagage och kö-tips för Amalfikustens bussar."
+  },
+  "linkLabel": "SITA-buss: biljetter och tips",
+  "intro": [
+    "Köp SITA-biljetter innan du går ombord och räkna med extra tid sommartid. Spara biljetten hela resan."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Var du köper",
+      "body": [
+        "Handla i tabacchi/kiosker längs huvudgatan. Köp flera på en gång när köerna är korta."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Stämpling",
+      "body": [
+        "Stämpla när du kliver ombord där maskiner finns och behåll biljetten till avstigning."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag köpa ombord?",
+      "a": [
+        "I regel nej – köp i förväg för att undvika förseningar."
+      ]
+    }
+  ]
+}

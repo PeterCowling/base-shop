@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Fotoguide til Positano: de beste stedene",
+    "description": "Kartlegg vinkler, beste tidspunkt og etikette for gode bilder."
+  },
+  "linkLabel": "Fotoguide til Positano: de beste stedene",
+  "intro": [
+    "Fang Positano som en proff: ikoniske vinkler, lysplanlegging og respektfull skyteetikett."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Klassiske vinkler",
+      "body": [
+        "Skyt fra fergekaien for hele klippekanten; bruk et vidvinkelobjektiv for å inkludere kuppelen til Santa Maria Assunta.",
+        "Gå Via Cristoforo Colombo for lagdelte balkonger og bougainvillea som rammer inn havet."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Lys og timing",
+      "body": [
+        "Soloppgang (rundt 06:00 om sommeren) kaster varmt lys på klippen – kom tidlig for å unngå båttrafikk i rammen.",
+        "Blå time etter solnedgang gir glød til landsbyens lys; ta med et mini-stativ eller klemme for lange eksponeringer."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette og sikkerhetskopier",
+      "body": [
+        "Respekter private terrasser og unngå å blokkere trapper – gå raskt til side etter å ha tatt bildet.",
+        "Lagre sikkerhetskopier på sky eller bærbare stasjoner hver natt; fuktig luft kan dugge linser, så pakk silikagelpakker."
+      ]
+    }
+  ],
+  "tips": [
+    "Ta med et polarisasjonsfilter for å håndtere gjenskinn på vannet midt på dagen.",
+    "Ha en mikrofiberklut tilgjengelig – sjøspray og fuktighet bygges raskt opp på linsene."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg bruke drone til luftbilder?",
+      "a": [
+        "Dronebruk er begrenset; søke om tillatelser i god tid og respekter flyforbudssoner nær byen og Li Galli-øyene."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg skrive ut bilder lokalt?",
+      "a": [
+        "Fotolaboratorier i Sorrento og Amalfi tilbyr utskrifter samme dag; ta med bilder på en USB-pinne eller SD-kort."
+      ]
+    }
+  ]
+}

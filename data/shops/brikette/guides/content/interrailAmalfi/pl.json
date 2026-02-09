@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Karta Interrail/Włochy: jak dotrzeć na wybrzeże Amalfi",
+    "description": "Jak wykorzystać karty kolejowe, by dotrzeć na wybrzeże oraz co zrobić z ostatnim odcinkiem do Positano."
+  },
+  "linkLabel": "Interrail/Włochy: wybrzeże Amalfi",
+  "intro": [
+    "Wykorzystuj kartę Interrail lub Italy Rail Pass: które linie, jakie dopłaty i jak pokryć ostatni odcinek do Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Główne trasy",
+      "body": [
+        "Rzym → Neapol/Salerno pociągami dużych prędkości; regionalnie do Sorrento; dalej autobus do Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Dopłaty/rezerwacje",
+      "body": [
+        "Frecciarossa i Italo często wymagają rezerwacji miejsc; pociągi regionalne nie, ale bywają zatłoczone."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Ostatni odcinek do Positano",
+      "body": [
+        "Z Neapolu: Circumvesuviana do Sorrento, potem autobus SITA. Z Salerno: prom lub autobus w sezonie."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy karta się opłaca?",
+      "a": [
+        "Tylko jeśli pokonujesz wystarczająco dużo długodystansowych odcinków; w przeciwnym razie punkt-punkt może być tańszy."
+      ]
+    }
+  ]
+}

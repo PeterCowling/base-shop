@@ -1,0 +1,57 @@
+{
+  "seo": {
+    "title": "Portertjänster i Positano",
+    "description": "Hur portertjänster fungerar i Positano: var du bokar, prisnivåer och när de är värda att använda."
+  },
+  "linkLabel": "Portertjänster i Positano",
+  "intro": [
+    "Portervärdar hjälper till med tunga väskor eller om rörligheten är begränsad. Boka upphämtning vid bryggan eller busshållplatsen, bekräfta priset i förväg och behåll värdesaker hos dig."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "Så går det till",
+      "body": [
+        "Bestäm upphämtningsplats och tid (bryggan eller busshållplatsen) och meddela boendets namn.",
+        "Kom överens om priset innan ni går; kostnaden beror på distans, antal trappor och tid på dygnet.",
+        "Behåll värdesaker hos dig och märk väskorna tydligt."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Boka och hitta leverantörer",
+      "body": [
+        "Be ditt boende rekommendera pålitliga porterteam nära bryggan och busstorget.",
+        "För förvaring eller hjälp utanför öppettider kan du använda tjänster som Bounce eller Radical Storage."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett och tips",
+      "body": [
+        "Dricksa vid tung last eller extra bra service; ha kontanter i mindre valörer.",
+        "Dela din ankomstplan i förväg under högsäsong för att säkra en plats."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag porters?",
+      "a": [
+        "Rekommenderas om du bär tungt bagage – Positano har många trappor och branta gränder."
+      ]
+    },
+    {
+      "q": "Var bokar jag?",
+      "a": [
+        "Fråga ditt boende eller lokala aktörer vid huvudstranden och busshållplatserna."
+      ]
+    },
+    {
+      "q": "Vad kostar det?",
+      "a": [
+        "Priset varierar med distans och last – bekräfta summan innan tjänsten börjar."
+      ]
+    }
+  ]
+}

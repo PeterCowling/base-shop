@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Digital concierge (anbefalinger + bestillinger)",
+    "description": "Bruk Hostel Brikettes digitale concierge for raske lokale anbefalinger, transportoppdateringer og hjelp til å bestille opplevelser - spesielt når planene endrer seg."
+  },
+  "linkLabel": "Digital concierge",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Dette er for planer som fungerer i dag - ikke generiske lister.",
+    "Send ditt tidsvindu, budsjett og prioritet. Sett fristen din på første linje."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Hvordan få tilgang",
+      "body": [
+        "Spør resepsjonen om siste kontakt/QR og beste kanal (vanligvis WhatsApp).",
+        "Inkluder: datoer, startpunkt, tidsvindu, budsjett og #1 prioritet."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Kopier/lim inn mal",
+      "body": [
+        "\\\\\"Vi har 6 timer, ingen bil, vi vil ha (A) et bad + (B) solnedgang, budsjett €40 per person. Hva er den enkleste planen og plan B hvis fergene blir kansellert?\\\\\"",
+        "Budsjett grunnlinje: %LINK:positanoBudget|Positano på budsjett% + %LINK:terraceSunsets|Terrasse solnedgang%.",
+        "Hvis transport er følsom: %LINK:ferryCancellations|fergekanseleringer + vær%."
+      ]
+    }
+  ],
+  "fallback": "Digital concierge: raske anbefalinger, transportoppdateringer og bestillingshjelp."
+}

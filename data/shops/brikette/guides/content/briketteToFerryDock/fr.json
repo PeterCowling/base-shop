@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → quai des ferries de Positano (port)",
+    "description": "Itinéraire pédestre étape par étape vers le port de Positano avec repères sur la carte, conseils pour les billets et instructions d'embarquement."
+  },
+  "linkLabel": "Hostel Brikette → quai des ferries (port)",
+  "intro": [
+    "Vous vous rendez au port de Positano pour prendre un ferry? Voici la marche la plus facile que nous avons trouvée depuis l'Hostel Brikette jusqu'à Spiaggia Grande - avec une carte rapide et des repères photo pour les points 1-5.",
+    "Prévoyez 20 à 30 minutes à pied (plus avec des bagages), et notez que Google Maps suggère parfois des détours plus longs vers la plage - suivez plutôt l'itinéraire ci-dessous."
+  ],
+  "beforeList": [
+    "Vérifiez les horaires et les prix des ferries aux guichets des opérateurs au port (ils affichent le prochain départ sur le panneau).",
+    "Prévoyez une marge si vous avez des bagages - il y a des escaliers sur cet itinéraire et le port devient bondé aux heures de pointe.",
+    "Visez à arriver tôt pour pouvoir acheter des billets, trouver le bon quai et être prêt au début de l'embarquement."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Se rendre au port",
+      "body": [
+        "Commencez à l'auberge et dirigez-vous vers Spiaggia Grande (la plage principale de Positano).",
+        "Le port est situé sur le côté droit de la plage.",
+        "Prévoyez 20 à 30 minutes pour la marche de l'auberge au port.",
+        "Google Maps ne fournit pas toujours l'itinéraire le plus direct vers la plage - utilisez la carte et les directions étape par étape ci-dessous.",
+        "[Voir ici si vous préférez les directions cartographiques](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Marche de l'Hostel Brikette au port (points 1-5)",
+      "body": [
+        "Référence de la carte (Auberge → Port):",
+        "[[figure:map]]",
+        "Commencez par sortir de l'auberge par la porte principale.",
+        "Descendez les marches jusqu'à la route.",
+        "Tournez à gauche et marchez un peu plus de 100 mètres (330 pieds) jusqu'à atteindre le point 1 sur la carte.",
+        "Au point 1, prenez le virage à droite.",
+        "[[figure:point-1]]",
+        "Dès que vous tournez à droite au point 1, vous verrez le tabacchi sur la droite.",
+        "[[figure:tabacchi]]",
+        "Suivez la route en descente.",
+        "Au premier virage en épingle, vous aurez atteint le point 2 sur la carte.",
+        "Au point 2, quittez la route et marchez droit devant, en prenant les escaliers.",
+        "[[figure:point-2]]",
+        "Lorsque vous atteignez la fin des escaliers, vous serez arrivé au point 3 sur la carte.",
+        "Traversez la route et prenez le chemin droit devant.",
+        "Suivez les escaliers vers le bas jusqu'à atteindre le niveau suivant.",
+        "[[figure:point-3]]",
+        "Lorsque vous atteignez la fin des escaliers, vous arriverez à la route.",
+        "Traversez la route et tournez à gauche, en marchant 10 mètres (30 pieds) jusqu'à atteindre le point 4 sur la carte.",
+        "Au point 4, tournez à droite et prenez les escaliers qui quittent la route et descendent.",
+        "[[figure:point-4]]",
+        "Suivez les escaliers vers le bas jusqu'à atteindre le bas. En bas des escaliers, tournez à droite.",
+        "Cela vous amènera au point 5 sur la carte.",
+        "Continuez sous l'arche sur la droite.",
+        "[[figure:point-5]]",
+        "Après 50 mètres (160 pieds), vous atteindrez le port."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Achat de billets de ferry",
+      "body": [
+        "Au port de Positano, vous pouvez prendre des ferries vers des endroits comme Amalfi, Capri et au-delà. Chaque opérateur de ferry a un guichet, et le panneau sur le guichet affiche des informations sur le prochain ferry qu'ils vont exploiter.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Embarquer sur un ferry",
+      "body": [
+        "Une fois que vous avez votre billet, marchez jusqu'au bout du port et attendez que le ferry commence l'embarquement.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Quittez l'auberge et tournez à gauche le long de la route jusqu'au point 1 sur la carte, puis tournez à droite.",
+    "Suivez l'itinéraire vers le bas via les points 2-5 (escaliers et passages) jusqu'à atteindre le port.",
+    "Achetez des billets aux guichets des opérateurs et vérifiez le panneau pour le prochain départ.",
+    "Marchez jusqu'au bout du port et attendez l'embarquement."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "Combien de temps faut-il pour marcher de l'Hostel Brikette au port?",
+      "a": [
+        "Prévoyez 20 à 30 minutes à pied. Ajoutez du temps supplémentaire si vous avez des bagages ou si vous voulez vous arrêter pour acheter des billets avant l'embarquement."
+      ]
+    },
+    {
+      "q": "Où acheter des billets de ferry à Positano?",
+      "a": [
+        "Au port, vous verrez des guichets pour chaque opérateur de ferry. Le panneau sur le guichet affiche des informations sur le prochain ferry qu'ils vont exploiter."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Suivez l'itinéraire de la carte depuis l'auberge jusqu'au port",
+    "Utilisez les repères photo aux points 1-5 pour rester sur la bonne voie",
+    "Achetez des billets aux guichets des opérateurs et confirmez le prochain départ",
+    "Attendez au quai et embarquez lorsqu'on vous appelle"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Confronto tra basi: Positano vs Sorrento vs Amalfi",
+    "description": "Tabella pro/contro su atmosfera, costi, trasporti e tipologie di alloggio per scegliere la base giusta."
+  },
+  "linkLabel": "Confronto tra basi: Positano vs Sorrento vs Amalfi",
+  "intro": [
+    "Confronta vantaggi e compromessi tra Positano, Sorrento e Amalfi prima di scegliere la tua base."
+  ],
+  "tocTitle": "In questa pagina",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Panorami iconici e tante scale; perfetta se vuoi svegliarti dentro la cartolina.",
+        "I trasporti richiedono più pianificazione, quindi prevedi margini extra attorno a traghetti e autobus."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Migliori collegamenti ferroviari e autobus con un'ampia gamma di alloggi.",
+        "Le vedute sono meno scenografiche rispetto a Positano, ma valore e praticità sono ottimi."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Snodo di traghetti e autobus con facili gite a Ravello e ai borghi vicini.",
+        "Alloggi eterogenei e trasporti serali limitati: pianifica il rientro."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "A chi conviene",
+      "body": [
+        "Positano per viste da sogno e vita sociale in ostello.",
+        "Sorrento per chi vuole tenere sotto controllo il budget e muoversi velocemente.",
+        "Amalfi per un accesso equilibrato lungo la costa."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quale base è adatta a chi visita per la prima volta?",
+      "a": [
+        "Scegli Positano per le vedute classiche, Sorrento per trasporti facili e Amalfi per un compromesso con il Duomo a portata di mano."
+      ]
+    },
+    {
+      "q": "Serve l'auto se alloggio fuori Positano?",
+      "a": [
+        "No. Traghetti e autobus collegano tutte e tre le città; l'auto aggiunge stress da parcheggio a meno che tu non preveda molte escursioni nell'entroterra."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Positano com orçamento mochileiro: roteiros de 1-3 dias",
+    "description": "Planos simples de 1-3 dias com praias, miradouros e excursões baratas."
+  },
+  "linkLabel": "Positano com orçamento mochileiro: roteiros de 1-3 dias",
+  "intro": [
+    "Escolha um plano de 1, 2 ou 3 dias que mantém os custos baixos sem perder vistas, praias e bate-voltas."
+  ],
+  "toc": [
+    {
+      "href": "#day1",
+      "label": "Dia 1: essenciais de Positano"
+    },
+    {
+      "href": "#day2",
+      "label": "Dia 2: Caminho dos Deuses + praia"
+    },
+    {
+      "href": "#day3",
+      "label": "Dia 3: Capri ou Amalfi + Ravello"
+    },
+    {
+      "href": "#savings",
+      "label": "Dicas para poupar"
+    },
+    {
+      "href": "#food",
+      "label": "Comer em conta"
+    },
+    {
+      "href": "#transport",
+      "label": "Sugestões de transporte"
+    }
+  ],
+  "sections": [
+    {
+      "id": "pacing",
+      "title": "Comece pelas grandes subidas",
+      "body": [
+        "Use o dia de chegada para passeios na parte baixa (Spiaggia Grande, Fornillo) e deixe os dias de muitas escadas (Caminho dos Deuses, escadas de Arienzo) para depois de uma noite bem dormida.",
+        "Agrupe paragens por nível de altura para ficar num patamar de cada vez; termine os miradouros de cima antes de descer para a marina."
+      ]
+    },
+    {
+      "id": "budget-mix",
+      "title": "Um destaque pago por dia",
+      "body": [
+        "Reserve no orçamento uma experiência paga por dia (ferry para Capri, barco partilhado, entrada de jardins) e preencha o resto com caminhadas gratuitas e praia.",
+        "Abasteça-se de snacks e água perto da Chiesa Nuova; os cafés à beira-mar são os que mais encarecem."
+      ]
+    },
+    {
+      "id": "viewpoints",
+      "title": "Miradouros sem bilhete",
+      "body": [
+        "A Via Cristoforo Colombo dá o clássico ângulo de postal ao nascer do sol ou na golden hour, sem entrada.",
+        "Para fotos mais tranquilas, desvie-se para o pátio de azulejos junto à Chiesa Nuova ou para o pequeno belvedere acima de Fornillo antes das 08:30."
+      ]
+    },
+    {
+      "id": "swim-breaks",
+      "title": "Mergulhos económicos",
+      "body": [
+        "A praia de Fornillo tem um troço público gratuito; siga o caminho costeiro desde a Spiaggia Grande e alugue apenas o que precisa.",
+        "Para o ambiente de beach club de Arienzo, desça as escadas antes das 10:30 para garantir lugar na zona pública e faça piquenique com focaccia e fruta."
+      ]
+    },
+    {
+      "id": "evenings",
+      "title": "Noites económicas",
+      "body": [
+        "O pôr do sol no terraço do hostel é grátis; prepare um spritz simples com prosecco do supermercado e partilhe snacks.",
+        "Veja o quadro de avisos do hostel para socials; se sair, chegue tarde quando a entrada é mais baixa e leve identificação."
+      ]
+    }
+  ],
+  "day1Title": "1 dia: essenciais de Positano",
+  "day1": [
+    "Manhã: miradouros da Spiaggia Grande, depois o caminho costeiro até Fornillo para um mergulho.",
+    "Almoço: pizza al taglio ou panini perto da Chiesa Nuova; coma nas esplanadas.",
+    "Pôr do sol: Via Cristoforo Colombo ou o terraço do hostel."
+  ],
+  "day2Title": "2 dias: adicionar Caminho dos Deuses",
+  "day2": [
+    "Manhã: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (autocarro para Nocelle, caminhada até Positano).",
+    "Tarde: %LINK:fornilloBeachGuide|refrescar-se na praia de Fornillo% ou almoço tardio na vila."
+  ],
+  "day3Title": "3 dias: Capri ou Amalfi + Ravello",
+  "day3": [
+    "Opção A: %LINK:capriDayTrip|excursão a Capri% - apanhe o primeiro ferry, planeie um percurso DIY e leve snacks.",
+    "Opção B: %LINK:positanoRavello|Amalfi + Ravello% - autocarro ou ferry para Amalfi e depois suba até Villa Rufolo ou Villa Cimbrone."
+  ],
+  "savingsTitle": "Dicas para poupar",
+  "savings": [
+    "Viaje em meia estação (abril-maio, final de setembro) para preços mais baixos e menos gente.",
+    "Use autocarros SITA na maioria dos trajetos; adicione um ferry se quiser a vista.",
+    "Fique em dormitórios ou partilhe quarto perto da Chiesa Nuova para poupar em porteiros e escadas.",
+    "Encha as garrafas no hostel ou em fontes públicas antes de sair.",
+    "Se reservou direto, aproveite o pequeno-almoço e a bebida da noite gratuitos para cobrir uma refeição.",
+    "Caminhe entre miradouros em vez de usar autocarro; as escadas são grátis e panorâmicas."
+  ],
+  "foodTitle": "Comer em conta",
+  "foodText": "Pense em pizza al taglio, panini e saladas de deli na zona da Via dei Mulini e Chiesa Nuova. Compre em mini-mercados para piquenique e deixe refeições sentadas para um único extra.",
+  "transportTitle": "Sugestões de transporte",
+  "transportCompareLabel": "Compare rotas:",
+  "transportCompareLinks": [
+    {
+      "key": "naplesPositano",
+      "label": "Nápoles → Positano"
+    },
+    {
+      "key": "salernoPositano",
+      "label": "Salerno → Positano"
+    }
+  ],
+  "transportFerryPrefix": "Consulte ",
+  "transportFerryLinkLabel": "horários de ferry",
+  "transportFerrySuffix": " e a previsão do tempo; os autocarros são mais baratos.",
+  "faqs": [
+    {
+      "q": "Qual é o melhor plano para 1 dia?",
+      "a": [
+        "Comece na Spiaggia Grande, caminhe pelo caminho costeiro até Fornillo e veja o pôr do sol da Via Cristoforo Colombo ou do terraço do hostel."
+      ]
+    },
+    {
+      "q": "Como mantenho os custos de transporte baixos?",
+      "a": [
+        "Use autocarros SITA na maioria dos trajetos e inclua um ferry pela vista; compre bilhetes antes de embarcar para evitar surpresas."
+      ]
+    },
+    {
+      "q": "E um itinerário de 2 dias?",
+      "a": [
+        "O Dia 1 cobre os essenciais de Positano; o Dia 2 acrescenta o Caminho dos Deuses via Nocelle e um mergulho."
+      ]
+    },
+    {
+      "q": "Sugestões para 3 dias?",
+      "a": [
+        "Escolha um: excursão a Capri ou combo Amalfi + Ravello; saia cedo e leve snacks para poupar."
+      ]
+    }
+  ]
+}

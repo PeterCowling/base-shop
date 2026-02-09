@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Solorejse i Positano: tips",
+    "description": "Sikkerhed, sociale idéer, dorms vs. private værelser og dagsplaner, der fungerer alene."
+  },
+  "linkLabel": "Solorejse i Positano: tips",
+  "intro": [
+    "Positano er venlig for solorejsende. Hold den sociale energi på hostellet, planlæg dagsudflugter med luft i programmet, og brug færgerne, når solen står højt."
+  ],
+  "tocTitle": "På denne side",
+  "toc": [
+    {
+      "href": "#safety",
+      "label": "Sikkerhed og tryghed"
+    },
+    {
+      "href": "#social",
+      "label": "Sociale tips"
+    },
+    {
+      "href": "#dayplans",
+      "label": "Dagsplaner der fungerer solo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Sikkerhed og tryghed",
+      "list": [
+        "Del dine planer med receptionen; bær altid en opladt telefon og vand.",
+        "Brug oplyste ruter om aftenen, og sæt tempoet ned på trapperne."
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Sociale tips",
+      "list": [
+        "Deltag i solnedgangshygge på terrassen og hostelaktiviteter for nemme møder.",
+        "Vælg bådture eller vandreture i små grupper for uformelt selskab."
+      ]
+    },
+    {
+      "id": "dayplans",
+      "title": "Dagsplaner der fungerer solo",
+      "list": [
+        "Tag færgen til Amalfi, gå til Atrani, og hop på bussen op til haverne i Ravello.",
+        "Capri: vandretur til Villa Jovis eller fyrtårnet og retur inden gyldentime."
+      ]
+    }
+  ],
+  "tips": [
+    "Tjek tavlen i receptionen omkring kl. 18 for tilmeldingsark – det er den hurtigste måde at finde middags- eller bådmakker til næste dag.",
+    "Pak en let dagtaske med 1–1,5 L vand og en powerbank, så du kan blive til solnedgangsbilleder uden at haste op ad bakkerne."
+  ],
+  "faqs": [
+    {
+      "q": "Er Positano tryg at udforske alene om aftenen?",
+      "a": [
+        "Hold dig til hovedtrapperne og de oplyste ruter, giv receptionen besked om dine planer, og hav telefonen opladt.",
+        "Hvis det bliver sent, kan den orange taxibod ved Piazza dei Mulini skaffe et kort lift op ad bakken."
+      ]
+    },
+    {
+      "q": "Hvordan møder jeg andre rejsende, når jeg rejser solo?",
+      "a": [
+        "Vær med til hostellets solnedgangsmøder eller skriv dig op til bådture med maks. 10–12 deltagere.",
+        "Madlavningskurser og gåture i Amalfi eller Capri er afslappede steder at snakke uden akavede icebreakers."
+      ]
+    },
+    {
+      "q": "Kan jeg vandre Gudernes sti alene?",
+      "a": [
+        "Ja – start fra Bomerano omkring kl. 9, medbring mindst 1,5 L vand, og download rutekortet til offline brug.",
+        "Tag SITA-bussen tilbage fra Nocelle eller Montepertuso før skumring; aftenafgange bliver sjældnere efter kl. 20."
+      ]
+    }
+  ]
+}

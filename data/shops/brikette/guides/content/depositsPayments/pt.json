@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guia de Depósitos e Pagamentos para Positano Hostel",
+    "description": "Seu guia completo sobre depósitos, métodos de pagamento, confirmações de reserva, alterações, cancelamentos e retenções de segurança ao reservar sua estadia no Positano Hostel."
+  },
+  "linkLabel": "Guia de Depósitos e Pagamentos para Positano Hostel",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Como Enviar seu Pedido de Reserva",
+      "body": [
+        "Envie-nos seu pedido de reserva através de uma Agência de Viagens Online (OTA) autorizada ou diretamente em nosso site - apenas chats ou visitas presenciais não contam. Ao clicar em 'Reservar', você confirma que todos os nomes, datas e duração da estadia estão corretos e que você aceita nossos Termos e Condições."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Como Processamos seu Pedido",
+      "body": [
+        "Começamos a processar seu pedido assim que recebermos com sucesso qualquer depósito, pré-autorização ou pagamento necessário usando um de nossos métodos de pagamento aceitos. Certifique-se de que a reserva mostra o nome do titular do cartão de crédito que pagará. Se o nome do pagador for diferente, envie-nos por e-mail uma breve autorização do titular do cartão antes de processarmos seu pedido."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Teclado e tela do terminal de pagamento com cartão.",
+          "caption": "Podemos cobrar um depósito, executar um pagamento ou colocar uma pré-autorização para garantir sua reserva - Foto: Wikimedia Commons (CC0)."
+        }
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Quando Podemos Recusar um Pedido",
+      "body": [
+        "Raramente recusamos uma reserva, mas reservamos o direito de fazê-lo a nosso critério - por exemplo, se o pagamento falhar, informações necessárias estiverem faltando ou o pedido violar nossos Termos e Condições."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Limites de Tamanho para Um Pedido",
+      "body": [
+        "Um pedido de reserva pode cobrir até sete (7) noites consecutivas e no máximo cinco (5) hóspedes. Precisa de uma estadia mais longa ou um grupo maior? Simplesmente divida em pedidos separados."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "O Que Acontece se seu Quarto Não Estiver Disponível",
+      "body": [
+        "Se seu quarto preferido já estiver ocupado, enviaremos uma contraproposta por e-mail com a alternativa mais próxima. Aceite a oferta e complete o pagamento ou pré-autorização para garantir sua estadia."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Reservas Pré-pagas Não Reembolsáveis",
+      "body": [
+        "Escolher uma tarifa pré-paga não reembolsável economiza dinheiro, mas requer pagamento integral antecipado. Tentaremos seu cartão até três vezes. Se todas as tentativas falharem, cancelaremos o pedido. Essas reservas não podem ser reembolsadas ou modificadas."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Seu E-mail de Confirmação",
+      "body": [
+        "Assim que seu pagamento for compensado, enviaremos um e-mail de confirmação para o endereço que você nos forneceu. Ele lista sua referência de reserva, data de chegada, duração da estadia e quaisquer extras. Leia-o cuidadosamente e nos avise imediatamente se algo parecer errado."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "Ícone de e-mail na tela do telefone.",
+          "caption": "Seu e-mail de confirmação é o melhor lugar para verificar datas, nomes e detalhes de pagamento - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Quem Está Incluído na sua Reserva",
+      "body": [
+        "Sua reserva cobre automaticamente o seguinte:",
+        "* 1 hóspede por cama de solteiro\n* Até 2 hóspedes por cama de casal\n* Até a capacidade anunciada de qualquer apartamento que você reservar",
+        "Por segurança e conforto, não podemos acomodar hóspedes extras acima do limite do quarto."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "O Que Está Incluído na sua Estadia",
+      "body": [
+        "Cada hóspede recebe:",
+        "* Roupa de cama limpa e um cartão-chave\n* Uso dos chuveiros compartilhados\n* Água quente durante os horários programados (cerca de 07:00-10:30 e 17:00-22:30)\n* Acesso às nossas áreas comuns",
+        "Outros benefícios (café da manhã, Wi-Fi, guarda-volumes, etc.) são cortesia e seguem suas próprias regras simples."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Sua Responsabilidade Financeira",
+      "body": [
+        "O titular do cartão de crédito indicado em sua reserva é responsável por todas as cobranças - taxas de quarto, danos, taxas de limpeza, multas ou penalidades por violação das regras da casa. Valores não pagos podem ser cobrados diretamente no cartão registrado."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Como Camas e Quartos São Atribuídos",
+      "body": [
+        "Garantimos o tipo de cama e categoria de quarto que você reservou. Reservas de dormitório garantem uma cama na categoria escolhida, mas não podemos prometer que grupos compartilharão o mesmo quarto. Camas em dormitórios são escolhidas por ordem de chegada no check-in."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Upgrades de Quarto",
+      "body": [
+        "Às vezes fazemos upgrade para um quarto melhor gratuitamente, ou você pode pagar para fazer upgrade ao reservar. Se o upgrade gratuito se tornar impraticável posteriormente, podemos movê-lo de volta para a categoria que você originalmente pagou."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Pagamento Através de Sites de Terceiros",
+      "body": [
+        "Quando você reserva através de uma OTA, você pagará através do sistema deles sob os termos deles. Nunca vemos os detalhes do seu cartão da OTA e não somos responsáveis por problemas em sua plataforma. Sempre verifique se seu pagamento foi processado e se você recebeu uma confirmação."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Depósitos de Reserva",
+      "body": [
+        "Algumas tarifas precisam de um depósito para manter o quarto. Tarifas pré-pagas exigem 100% antecipado. Depósitos não são reembolsáveis. Se não pudermos receber o depósito, o pedido de reserva é automaticamente cancelado."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Pré-autorizações de Cartão",
+      "body": [
+        "Para tarifas flexíveis, podemos pré-autorizar seu cartão para a primeira noite ou toda a estadia para garantir sua reserva. Se a pré-autorização falhar, recusaremos o pedido."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Nossa Retenção de Segurança",
+      "body": [
+        "No check-in, podemos colocar uma retenção de segurança igual a uma noite por hóspede para cobrir possíveis multas, taxas, extensões ou danos. Se uma retenção de cartão não for possível, você pode deixar o mesmo valor em dinheiro ou usar o cartão de outro hóspede. Se nenhuma opção funcionar, infelizmente temos que cancelar sua reserva."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "Uma mão segurando várias moedas de euro.",
+          "caption": "Se uma retenção de cartão não for possível no check-in, podemos solicitar um depósito em dinheiro equivalente - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    }
+  ]
+}

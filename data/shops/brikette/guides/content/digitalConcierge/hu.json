@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Digitális concierge (ajánlások + foglalások)",
+    "description": "Használja a Hostel Brikette digitális concierge-ét gyors helyi ajánlásokhoz, közlekedési frissítésekhez és élményfoglaláshoz – különösen amikor a tervek változnak."
+  },
+  "linkLabel": "Digitális concierge",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Ez a ma működő tervekhez van – nem általános listákhoz.",
+    "Küldje el időablakát, költségvetését és prioritását. Tegye a határidőt az első sorba."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Hogyan lehet hozzáférni",
+      "body": [
+        "Kérdezze meg a recepciót a legfrissebb kapcsolatról/QR-ról és a legjobb csatornáról (általában WhatsApp).",
+        "Tartalmazza: dátumok, kiindulópont, időablak, költségvetés és #1 prioritás."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Másolás/beillesztés sablon",
+      "body": [
+        "\\\\\"6 óránk van, nincs autónk, szeretnénk (A) úszni + (B) naplementét, költségvetés €40 személyenként. Mi a legegyszerűbb terv és a B terv, ha a kompok törlődnek?\\\\\"",
+        "Költségvetési alapvonal: %LINK:positanoBudget|Positano költségvetéssel% + %LINK:terraceSunsets|Terasz naplement%.",
+        "Ha a közlekedés érzékeny: %LINK:ferryCancellations|komptörlések + időjárás%."
+      ]
+    }
+  ],
+  "fallback": "Digitális concierge: gyors ajánlások, közlekedési frissítések és foglalási segítség."
+}

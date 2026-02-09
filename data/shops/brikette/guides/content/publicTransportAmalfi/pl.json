@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Transport publiczny na Wybrzeżu Amalfitańskim",
+    "description": "Jak poruszać się bez samochodu: autobusy, promy i pociągi — bilety, rozkłady i sezonowe niuanse."
+  },
+  "linkLabel": "Transport publiczny na Wybrzeżu Amalfitańskim",
+  "intro": [
+    "Jak poruszać się po Wybrzeżu Amalfitańskim bez samochodu: autobusy gwarantują niezawodność przez cały rok, promy kursują latem, a pociągi obsługują dalsze odcinki."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA buses",
+      "body": [
+        "Kup bilety w sklepach tytoniowych/kioskach przed wejściem na pokład i kasuj w autobusie.",
+        "Należy spodziewać się kolejek w godzinach szczytu. Zacznij wcześnie i rozważ prom jako obejście tłumu."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Promy (sezonowe)",
+      "body": [
+        "Szybkie i malownicze połączenia między głównymi miejscowościami od wiosny do jesieni; możliwe są odwołania z powodu pogody.",
+        "Sprawdzaj aktualne rozkłady na stronach operatorów i zostaw zapas czasu na ostatnie kursy dnia."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Pociągi (do punktów przesiadkowych)",
+      "body": [
+        "Skorzystaj z Trenitalia/Italo, by dotrzeć do Sorrento/Salerno/Neapolu, a potem przesiądź się na autobus lub prom.",
+        "Odcinki międzymiastowe oszczędzają czas na trasach Rzym/Neapol/Salerno; lokalna Circumvesuviana obsługuje Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Planowanie i strategia",
+      "body": [
+        "Wyjedź przed 9:00, aby ominąć kolejki; przy powrotach o zachodzie słońca wybieraj promy, gdy morze jest spokojne.",
+        "Miej przy sobie drobne na bilety oraz kapelusz i wodę na odsłoniętych przystankach."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę zabrać bagaż do autobusów?",
+      "a": [
+        "Dozwolone, ale niekomfortowe w godzinach szczytu — cięższe torby warto przewieźć promem albo z pomocą tragarzy."
+      ]
+    },
+    {
+      "q": "Czy kursują nocne połączenia?",
+      "a": [
+        "Bardzo ograniczone; sprawdź z wyprzedzeniem ostatni autobus lub prom, żeby nie musieć korzystać z drogich taksówek."
+      ]
+    }
+  ]
+}

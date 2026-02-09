@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vs Napoli: quale arrivo scegliere",
+    "description": "Pro e contro di sbarcare a Salerno o Napoli in base a voli, treni, coincidenze e costi complessivi."
+  },
+  "linkLabel": "Salerno vs Napoli: quale arrivo scegliere",
+  "intro": [
+    "Entrambi i punti di accesso funzionano. In estate Salerno spesso vince in silenzio grazie a più traghetti e file più gestibili."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Quando conviene Salerno",
+      "body": [
+        "I traghetti stagionali collegano direttamente Positano o Amalfi con meno folla rispetto ai moli di Napoli.",
+        "Abbina l’aeroporto Salerno Costa d’Amalfi (QSR) alla navetta Airlink per trasferimenti semplici."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Quando conviene Napoli",
+      "body": [
+        "Affidabilità fuori stagione: treni AV più autobus SITA via Sorrento continuano a operare quando i traghetti si fermano.",
+        "Chi arriva tardi trova più alloggi e collegamenti successivi nell’area di Napoli."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Bagagli e scale",
+      "body": [
+        "Arriva a Chiesa Nuova per ridurre al minimo le scale fino all’ostello.",
+        "Sbarcato in traghetto? Prenota un facchino al molo oppure usa l’autobus SITA in salita invece di trascinare i bagagli."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vale la pena usare l’aeroporto di Salerno (QSR)?",
+      "a": [
+        "Sempre più sì in estate: abbina i voli su QSR alla navetta Airlink e al traghetto quando il mare è calmo, con i bus come piano B in caso di maltempo."
+      ]
+    }
+  ]
+}

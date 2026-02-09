@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Salto de playas en la Costa Amalfitana",
+    "description": "Qué playas combinar en un día, consejos de acceso y costos."
+  },
+  "linkLabel": "Salto de playas en la Costa Amalfitana",
+  "intro": [
+    "Planifica un día de salto de playas que equilibre viajes en ferry, vistas de acantilados y tiempo de descanso en la arena."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Mañana: Positano a Fornillo",
+      "body": [
+        "Comienza temprano en Spiaggia Grande para un chapuzón rápido, luego camina por el sendero costero a Fornillo antes de las 09:30 para aguas más tranquilas.",
+        "Reserva tumbonas con anticipación si quieres sombra; de lo contrario, lleva una sombrilla ligera."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Mediodía: Amalfi o Atrani",
+      "body": [
+        "Toma un ferry al final de la mañana hacia Amalfi y almuerza en el muelle antes de nadar en la playa del pueblo o en la pequeña cala de Atrani.",
+        "Guarda las bolsas en el depósito de Amalfi para explorar con las manos libres."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Tours grupales y barcos compartidos",
+      "body": [
+        "Consulta nuestra %LINK:boatTours|guía de tours en barco en Positano% si prefieres saltar entre playas en un barco compartido en lugar de ferries.",
+        "Los operadores parten desde el muelle principal de Positano; llega 15 minutos antes y confirma las paradas de baño en Laurito o Arienzo al reservar."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Tarde: Baño al atardecer",
+      "body": [
+        "Termina en Laurito o Arienzo para vistas de la hora dorada; ambos miran hacia el oeste para luz cálida y menos multitudes después de las 17:00.",
+        "Toma el último ferry o reserva un taxi de regreso para evitar caminatas cuesta arriba en la oscuridad."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva una toalla de secado rápido y un cambio de ropa para mantenerte cómodo en los ferries.",
+    "Empaca bocadillos y al menos 1 L / 34 oz de agua: los kioscos de playa pueden quedarse sin existencias en días concurridos."
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito reservar tumbonas con anticipación?",
+      "a": [
+        "Sí en julio–agosto. Contacta a los clubes de playa por WhatsApp el día anterior para asegurar las filas delanteras."
+      ]
+    },
+    {
+      "q": "¿Puedo traer mi propia comida?",
+      "a": [
+        "La mayoría de las secciones gratuitas permiten picnics. Los clubes de playa generalmente permiten pequeños bocadillos pero prefieren que compres bebidas en su bar."
+      ]
+    }
+  ]
+}

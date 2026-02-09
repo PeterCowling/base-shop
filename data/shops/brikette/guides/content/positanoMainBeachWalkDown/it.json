@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Cammina dall'Hostel Brikette alla spiaggia principale di Positano",
+    "description": "Percorso scalinato a gradini che raggiunge la Spiaggia Grande in 15–25 minuti."
+  },
+  "linkLabel": "Walk down to Positano's main beach",
+  "intro": [
+    "Dall'ostello Brikette alla spiaggia principale di Positano ci vogliono circa 15–25 minuti a seconda del ritmo e delle soste fotografiche.",
+    "Google Maps può indirizzarti attraverso deviazioni più lente, quindi utilizza questo percorso per raggiungere rapidamente la Spiaggia Grande e abbina ogni checkpoint alle foto di riferimento dell'ostello."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "Prima di partire",
+      "body": [
+        "Prendi le foto delle scale laminate dalla reception o dal concierge digitale in modo da poter confermare i cinque checkpoint lungo il percorso.",
+        "Indossa sandali robusti per i pianerottoli di ciottoli e trasporta l'acqua: non ci sono negozi sulle scale fino a quando non raggiungi il lungomare."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Passeggiata passo dopo passo fino alla Spiaggia Grande",
+      "body": [
+        "1. Esci dall'ostello Brikette attraverso la porta principale e scendi la scala d'ingresso fino a Viale Pasitea.",
+        "2. Gira a sinistra e cammina per circa 100 metri lungo la strada fino al primo angolo a destra accanto al tabacchi/edicola — questo è il punto 1 della mappa.",
+        "3. Girare a destra, rimanere sulla corsia in discesa e seguire la curva fino alla prima curva della strada (punto 2 della mappa).",
+        "4. Lascia la strada alla curva e prosegui dritto lungo le scale di fronte a te.",
+        "5. Quando le scale incontrano un'altra strada (punto 3 della mappa), attraversare dritto e continuare a scendere la scala visibile successiva.",
+        "6. Alla base delle scale, attraversare la strada, girare a sinistra per circa 10 metri (30 piedi), quindi prendere la scala successiva sulla destra (mappa punto 4).",
+        "7. Segui queste scale, gira a sinistra al pianerottolo e rimani sul sentiero fino a raggiungere il fondo.",
+        "8. Gira a destra, entra nel cortile al punto 5 della mappa e controlla che la vista corrisponda alla foto di riferimento dell'ostello.",
+        "9. Prosegui dritto sotto l'arco, poi cammina per circa 50 metri fino a quando il porto si apre e alla tua sinistra appare la Spiaggia Grande."
+      ]
+    }
+  ],
+  "tipsTitle": "Suggerimenti veloci",
+  "tips": [
+    "Risparmia la salita per dopo abbinando questo percorso al %LINK:positanoMainBeachBusBack|autobus di ritorno all'ostello% dopo la giornata in spiaggia.",
+    "Confronta i lettini, le zone franche e i prezzi dei club nel %LINK:positanoBeaches|Panoramica spiagge di Positano% prima di partire.",
+    "Condividi la mappa tramite il codice QR dell'ostello o il concierge digitale se gli amici ti incontrano in spiaggia."
+  ]
+}

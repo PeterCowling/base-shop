@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Wnętrze limonkowej fabryki",
+    "description": "Jak powstaje limoncello i na co zwracać uwagę przy wyborze butelki."
+  },
+  "linkLabel": "Wnętrze limonkowej fabryki",
+  "fallbackParagraph": "Prawdziwe limoncello to cytryny, alkohol, cukier i czas. Wycieczki pokazują proces i kończą degustacją — nie prowadź samochodu po wszystkim.",
+  "intro": [
+    "Wizyta w laboratorium limoncello pokazuje, jak cytryny sfusato Amalfitano stają się sygnaturowym digestivo wybrzeża.",
+    "Poznaj kolejne etapy, spróbuj limitowanych partii i dowiedz się, jak przechowywać i transportować ulubioną mieszankę."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Cytryny sfusato Amalfitano",
+      "body": [
+        "Produkcje korzystają z cytryn o grubej skórce, uprawianych na tarasowych pergolach; olejki eteryczne kryją się w skórce, a nie w soku.",
+        "Dobre wycieczki zaczynają się od pokazania, jak owoc jest ręcznie obierany i dlaczego rolnictwo ekologiczne ma znaczenie dla czystego, aromatycznego naparu."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Ze skórki do maceratu",
+      "body": [
+        "Świeża skórka maceruje w bezbarwnym alkoholu przez tydzień lub dłużej, aż płyn robi się złoty i pachnący.",
+        "Po maceracji ciecz filtruje się i miesza z syropem cukrowym; partie odpoczywają, by smaki się połączyły przed rozlewem."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Na co pozwala degustacja",
+      "body": [
+        "Przewodnicy oprowadzają po pracowni, a potem nalewają próbki limoncello, crema di limone lub sezonowych likierów.",
+        "Pij powoli, zanotuj teksturę i aromat, i odpuść prowadzenie samochodu — próbki są mocne, nawet jeśli smakują gładko."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Zakupy i przechowywanie butelki",
+      "body": [
+        "Wybieraj butelki z nieprzezroczystego szkła lub chronione UV, sprawdzaj etykiety z adresem producenta i datą produkcji.",
+        "Po otwarciu trzymaj w lodówce; jeśli planujesz podróż, owiń butelkę ubraniem albo poproś sklep o ochronne opakowanie."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy osoby poniżej 18 lat mogą uczestniczyć?",
+      "a": [
+        "Tak, młodsi obserwują tylko proces, bo nie mogą degustować; niektórzy producenci proponują lemoniady lub granitę jako alternatywę."
+      ]
+    },
+    {
+      "q": "Jak bezpiecznie przewieźć limoncello do domu?",
+      "a": [
+        "Pakuj w bagaż rejestrowany (w podręcznym nie wolno mieć płynów powyżej 100 ml), dobrze zabezpiecz butelki i zgłoś ilości, gdy kraj ma limity alkoholu."
+      ]
+    },
+    {
+      "q": "Jak długo zachowuje świeżość?",
+      "a": [
+        "Zamknięte butelki są dobre do roku; po otwarciu trzymaj w lodówce lub zamrażarce i wypij w ciągu kilku miesięcy, by utrzymać aromat."
+      ]
+    }
+  ]
+}

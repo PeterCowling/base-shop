@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Költségkímélő tippek az Amalfi-part közlekedéséhez",
+    "description": "Bérletek vs egyes jegyek, időzítés, busz-komp kombinációk és időjárási tartalékok."
+  },
+  "linkLabel": "Költségkímélő tippek a közlekedéshez",
+  "intro": [
+    "Gyakorlati tippek a közlekedési kiadások csökkentésére: bérletek, időzítés, busz-komp kombináció és időjárási tartalék."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Bérletek vagy egyes jegyek",
+      "body": [
+        "Csak akkor érdemes napi bérletet venni, ha több utat is tervezel; egyébként az egyes jegyek olcsóbbak. Mindig érvényesítsd a jegyet."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Időzítés és útvonal",
+      "body": [
+        "Kerüld a 10:00–16:00 közti csúcsidőt; a hegygerinceken a közvetlen buszok praktikusak, a panorámáért a kompok."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Busz-komp kombináció",
+      "body": [
+        "Válassz egy fizetős komp szakaszt (Positano ↔ Amalfi), a többit busszal tedd meg, hogy kényelmes maradj, de kevesebbet költs."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Időjárási tartalék",
+      "body": [
+        "Ha a tenger felkavarodik, a kompokat törlik—legyen egy buszalapú B-terv és tartsd szem előtt az utolsó menetrendet."
+      ]
+    }
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Megérik a kombinált jegyek?",
+      "a": [
+        "Néha igen, ha több kompúton ülsz meg; hasonlítsd össze az árukat az egyes jegyekkel."
+      ]
+    }
+  ]
+}

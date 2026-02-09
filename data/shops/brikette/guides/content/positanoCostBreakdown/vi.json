@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Chi tiết chi phí Positano",
+    "description": "Bảng phân bổ chi tiêu theo ngày cho chỗ ở, ăn uống, di chuyển và vui chơi."
+  },
+  "linkLabel": "Chi tiết chi phí Positano",
+  "intro": [
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport costs",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Activities & extras",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "tips": [
+    "Bản dịch đang được chuẩn bị.",
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "faqs": [
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "At a glance",
+    "tocTitle": "On this page",
+    "tipsTitle": "Where to save",
+    "faqsTitle": "FAQs"
+  }
+}

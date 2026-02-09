@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → muelle de ferry de Positano (puerto)",
+    "description": "Ruta a pie paso a paso al puerto de Positano con puntos de referencia en el mapa, consejos para billetes y orientación para el embarque."
+  },
+  "linkLabel": "Hostel Brikette → muelle de ferry (puerto)",
+  "intro": [
+    "¿Te diriges al puerto de Positano para tomar un ferry? Esta es la caminata más fácil que hemos encontrado desde Hostel Brikette hasta Spiaggia Grande, con un mapa rápido y puntos de referencia fotográficos para los puntos 1-5.",
+    "Permite 20-30 minutos a pie (más con equipaje), y ten en cuenta que Google Maps a veces sugiere desvíos más largos hasta la playa; sigue la ruta de abajo en su lugar."
+  ],
+  "beforeList": [
+    "Verifica los horarios y precios de los ferries en las cabinas de los operadores en el puerto (muestran la próxima salida en el letrero).",
+    "Deja un margen si llevas equipaje: hay escaleras en esta ruta y el puerto se llena en horas pico.",
+    "Intenta llegar temprano para que puedas comprar billetes, encontrar el muelle correcto y estar listo cuando comience el embarque."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Llegar al puerto",
+      "body": [
+        "Comienza en el albergue y dirígete hacia Spiaggia Grande (la playa principal de Positano).",
+        "El puerto está ubicado en el lado derecho de la playa.",
+        "Permite 20-30 minutos para la caminata desde el albergue hasta el puerto.",
+        "Google Maps puede no siempre proporcionar la ruta más directa a la playa; usa el mapa y las indicaciones paso a paso a continuación.",
+        "[Ve aquí si prefieres las indicaciones del mapa](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Caminar desde Hostel Brikette hasta el puerto (puntos 1-5)",
+      "body": [
+        "Referencia del mapa (Albergue → Puerto):",
+        "[[figure:map]]",
+        "Comienza saliendo del albergue por la puerta principal.",
+        "Baja los escalones hasta la carretera.",
+        "Gira a la izquierda y camina poco más de 100 metros (330 pies) hasta llegar al punto 1 en el mapa.",
+        "En el punto 1, toma el giro a la derecha.",
+        "[[figure:point-1]]",
+        "Tan pronto como gires a la derecha en el punto 1, verás el tabacchi a la derecha.",
+        "[[figure:tabacchi]]",
+        "Sigue la carretera cuesta abajo.",
+        "En la primera curva en zigzag, habrás llegado al punto 2 en el mapa.",
+        "En el punto 2, sal de la carretera y camina recto hacia adelante, tomando las escaleras.",
+        "[[figure:point-2]]",
+        "Cuando llegues al final de las escaleras, habrás llegado al punto 3 en el mapa.",
+        "Cruza la carretera y toma el camino recto hacia adelante.",
+        "Sigue las escaleras hacia abajo hasta llegar al siguiente nivel.",
+        "[[figure:point-3]]",
+        "Cuando llegues al final de las escaleras, llegarás a la carretera.",
+        "Cruza la carretera y gira a la izquierda, caminando 10 metros (30 pies) hasta llegar al punto 4 en el mapa.",
+        "En el punto 4, gira a la derecha y toma las escaleras que salen de la carretera y bajan.",
+        "[[figure:point-4]]",
+        "Sigue las escaleras hacia abajo hasta llegar al fondo. En la parte inferior de las escaleras, gira a la derecha.",
+        "Esto te llevará al punto 5 en el mapa.",
+        "Continúa bajo el arco a la derecha.",
+        "[[figure:point-5]]",
+        "Después de 50 metros (160 pies), llegarás al puerto."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Comprar billetes de ferry",
+      "body": [
+        "En el puerto de Positano puedes tomar ferries a lugares como Amalfi, Capri y más allá. Cada operador de ferry tiene una cabina, y el letrero en la cabina muestra información sobre el próximo ferry que operará.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Embarcar en un ferry",
+      "body": [
+        "Una vez que tengas tu billete, camina hasta el final del puerto y espera a que el ferry comience el embarque.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Sal del albergue y gira a la izquierda por la carretera hasta el punto 1 en el mapa, luego gira a la derecha.",
+    "Sigue la ruta hacia abajo a través de los puntos 2-5 (escaleras y cruces) hasta llegar al puerto.",
+    "Compra billetes en las cabinas de los operadores y verifica el letrero para la próxima salida.",
+    "Camina hasta el final del puerto y espera el embarque."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "¿Cuánto tiempo se tarda en caminar desde Hostel Brikette hasta el puerto?",
+      "a": [
+        "Planifica 20-30 minutos a pie. Añade tiempo extra si llevas equipaje o quieres parar a comprar billetes antes del embarque."
+      ]
+    },
+    {
+      "q": "¿Dónde compro billetes de ferry en Positano?",
+      "a": [
+        "En el puerto verás cabinas para cada operador de ferry. El letrero en la cabina muestra información sobre el próximo ferry que operará."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Sigue la ruta del mapa desde el albergue hasta el puerto",
+    "Usa los puntos de referencia fotográficos en los puntos 1-5 para mantenerte en el camino",
+    "Compra billetes en las cabinas de los operadores y confirma la próxima salida",
+    "Espera en el muelle y embarca cuando te llamen"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Dłuższy pobyt poza sezonem: wskazówki",
+    "description": "Jak przygotować się do dłuższego pobytu zimą lub poza szczytem: zakupy, pogoda, transport."
+  },
+  "linkLabel": "Dłuższy pobyt poza sezonem: wskazówki",
+  "intro": [
+    "Kilkutygodniowy pobyt poza sezonem to niższe temperatury, mniej promów i więcej czasu, by żyć jak miejscowi."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Zakwaterowanie i stawki",
+      "body": [
+        "Negocjuj miesięczne pobyty bezpośrednio z pensjonatami w górnych dzielnicach Positano — od listopada do marca często zniżki 20–30%.",
+        "Rozważ bazy w Praiano lub Minori, jeśli chcesz mieć sklepy i płaskie spacery; w razie tęsknoty za Positano dojedziesz autobusem."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Pogoda i pakowanie",
+      "body": [
+        "Spodziewaj się dziennych temperatur 12–16 °C, z przelotnymi opadami — pakuj warstwy, wodoodporną kurtkę i buty z dobrą przyczepnością na mokre schody.",
+        "Noś kompaktowy parasol; wiatr ciągnie przez dolinę, więc jego porywy bywają mocniejsze, niż pokazują prognozy."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Praca i rytm dnia",
+      "body": [
+        "Wiele kawiarni ogranicza godziny otwarcia, więc planuj sesje coworkingowe wokół niezawodnego Wi-Fi w hostelu lub mieszkaniu.",
+        "Częściej gotuj samodzielnie — targi w Meta czy Sorrento mają szerszy wybór, a autobusy są pustsze na zakupy."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Utrzymanie kontaktu",
+      "body": [
+        "Dołącz do lokalnych grup na Facebooku lub czatów WhatsApp, by brać udział w wymianach językowych i wspólnych kolacjach.",
+        "Wolontariat przy sprzątaniu miasta lub wydarzeniach kulturalnych łączy z mieszkańcami; gmina wiesza harmonogramy przy Piazza dei Mulini."
+      ]
+    }
+  ],
+  "tips": [
+    "Zachowaj trochę monet euro do grzejników i pralni samoobsługowych – w miesiącach zimowych wiele maszyn nadal obsługuje wiele automatów.",
+    "Śledź tygodniowo zredukowane rozkłady autobusów i promów — harmonogramy zmieniają się przy świętach."
+  ],
+  "faqs": [
+    {
+      "q": "Do restaurants stay open?",
+      "a": [
+        "Część restauracji działa przez cały rok, ale więcej opcji znajdziesz w Amalfi i Sorrento — planuj kolacje podczas wyjazdów do tych miast."
+      ]
+    },
+    {
+      "q": "Czy Droga Bogów jest bezpieczna zimą?",
+      "a": [
+        "Tak, ale tylko w suche dni — po ulewnych deszczach skały robią się śliskie, a małe osuwiska są częstsze."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "Na tej stronie",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Connectivity"
+      },
+      {
+        "href": "#groceries",
+        "label": "Groceries & essentials"
+      },
+      {
+        "href": "#transport",
+        "label": "Transport poza sezonem"
+      },
+      {
+        "href": "#weather",
+        "label": "Weather & packing"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Connectivity",
+        "body": [
+          "Połącz stabilne Wi-Fi w kawiarniach z eSIMem w zapasie; sprawdzaj mapy operatorów (TIM/Vodafone/WindTre)."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Groceries & essentials",
+        "body": [
+          "Godziny otwarcia poza sezonem są różne; uzupełniaj zapasy wcześniej tego samego dnia i w dni powszednie."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transport poza sezonem",
+        "body": [
+          "Promy zmniejszają się; polegaj na autobusach i planuj dni na deszcz/wiatr."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Weather & packing",
+        "body": [
+          "Weź warstwy i ochronę przed deszczem; dobre buty na mokre schody są koniecznością."
+        ]
+      }
+    ],
+    "faqsTitle": "Najczęściej zadawane pytania",
+    "faqs": [
+      {
+        "q": "Czy coś jest otwarte zimą?",
+        "a": [
+          "Tak, ale mniej opcji. Skup się na zakupach, wędrówkach, punktach widokowych i sąsiednich miasteczkach."
+        ]
+      }
+    ]
+  }
+}

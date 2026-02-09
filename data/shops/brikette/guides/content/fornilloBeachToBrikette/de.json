@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Rückweg Fornillo Beach → Hostel Brikette",
+    "description": "Folge der Uferpromenade zur Spiaggia Grande, stöbere durch die Geschäfte und nimm den Interno-Bus zurück hinauf zum Hostel."
+  },
+  "linkLabel": "Rückweg Fornillo Beach → Hostel Brikette",
+  "intro": [
+    "Der Rückweg vom Fornillo Beach zum Hostel Brikette ist am einfachsten, wenn Sie der Uferpromenade bis Spiaggia Grande folgen und vom Stadtzentrum aus mit dem Interno-Bus fahren. Bei dieser Route werden die meisten Treppenaufstiege durch ebene Promenaden und einen kurzen Anstieg neben der Herberge ersetzt."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-return",
+      "title": "Planen Sie Ihre Rückkehr",
+      "body": [
+        "Planen Sie zusätzliche Zeit für Fotostopps oder einen Bummel durch die Geschäfte rund um Spiaggia Grande ein, bevor Sie in den Bus einsteigen.",
+        "Dieser Rückweg ist länger als der Aufstieg über die Abkürzungstreppe, aber am Nachmittag bleibt es kühler und sorgt für einen sanfteren Abschluss nach einem Strandtag."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Route vom Fornillo Beach zum Hostel Brikette",
+      "body": [
+        "1. Gehen Sie zur ganz linken Seite des Fornillo-Strands (nach links, wenn Sie auf das Meer blicken).",
+        "2. Folgen Sie dem Küstenweg in Richtung Spiaggia Grande, bis Sie den Hauptstrand und den Hafenbereich erreichen.",
+        "3. Gehen Sie durch das Hafentor, verlassen Sie den Anleger und gehen Sie geradeaus entlang der Uferpromenade.",
+        "4. Nehmen Sie den Weg direkt vor dem Strand und gehen Sie landeinwärts weiter.",
+        "5. Biegen Sie in der ersten Gasse zwischen den Geschäften rechts ab.",
+        "6. Steigen Sie die Treppe hinauf, die zur Chiesa di Santa Maria Assunta führt.",
+        "7. Am Ende der Fahrspur biegen Sie links ab und folgen dieser bergauf.",
+        "8. Wenn die Fahrspur an der Kreuzung auf die Einbahnstraße trifft, haben Sie die Interno-Bushaltestelle nach Chiesa Nuova erreicht. Fahren Sie eine Haltestelle hinauf zum Hostel Brikette."
+      ]
+    },
+    {
+      "id": "bus-connection",
+      "title": "Nehmen Sie den Interno-Bus",
+      "body": [
+        "Von der Haltestelle Chiesa Nuova bringt Sie der orangefarbene Interno-Bus Positano nur einen kurzen Spaziergang vom Hostel Brikette entfernt – perfekt, wenn Sie den ganzen Treppenaufstieg zurück vermeiden möchten.",
+        "Tickets werden an Tabacchi-/Zeitungskiosken in der ganzen Stadt verkauft. Kaufen Sie sie also, bevor Sie losfahren, oder erkundigen Sie sich an der Rezeption nach der Verfügbarkeit."
+      ]
+    }
+  ],
+  "tips": [
+    "Kaufen Sie Fahrkarten für den Interno-Bus in jedem Tabacchi-/Zeitungsladen, bevor Sie zum Strand gehen.",
+    "Bewahren Sie die treppenintensive Abkürzung für morgens auf; Dieser malerische Rückweg ist nach einem langen Bad ruhiger.",
+    "Verknüpfen Sie es mit unserem Fornillo Beach-Guide für Details zu Strandclubs und ruhigen Orten.",
+    "Sehen Sie sich die Übersicht über die Strände von Positano an, um zu planen, wo Sie während Ihres Aufenthalts sonst noch schwimmen können."
+  ],
+  "faqsTitle": "Häufig gestellte Fragen zur Route",
+  "faqs": [
+    {
+      "q": "Wie lange dauert die Rücksendung?",
+      "a": [
+        "Der Rückweg über Spiaggia Grande dauert etwa 10 Minuten länger als über die direkte Treppe, aber Sie vermeiden den größten Teil des steilen Anstiegs, bevor Sie in den Bus einsteigen."
+      ]
+    },
+    {
+      "q": "Wo nehme ich den Bus?",
+      "a": [
+        "Fahren Sie mit dem orangefarbenen Interno Positano-Bus von der Haltestelle Chiesa Nuova am oberen Ende der Fahrspur. Es bringt Sie in die Nähe der Herberge und Tickets erhalten Sie an Tabak-/Zeitungskiosken."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Porównanie baz: Positano vs Sorrento vs Amalfi",
+    "description": "Które miasto wybrać na bazę: plusy, minusy i rekomendacje w zależności od stylu podróży."
+  },
+  "linkLabel": "Porównanie baz: Positano vs Sorrento vs Amalfi",
+  "intro": [
+    "Porównaj plusy i minusy Positano, Sorrento i Amalfi, zanim wybierzesz bazę."
+  ],
+  "tocTitle": "Na tej stronie",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Ikoniczne widoki i schody; idealne, jeśli chcesz budzić się jak na pocztówce.",
+        "Transport wymaga większego planowania, więc zostaw marginesy na promy i autobusy."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Najlepsze połączenia kolejowe i autobusowe oraz szeroki wybór noclegów.",
+        "Widoki mniej spektakularne niż w Positano, ale wartość i wygoda są świetne."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Węzeł promowy i autobusowy z łatwymi wycieczkami do Ravello i pobliskich miejscowości.",
+        "Spodziewaj się zróżnicowanych typów noclegów i zaplanuj ograniczony transport wieczorny."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Dla kogo jest każda baza",
+      "body": [
+        "Positano dla spektakularnych widoków i życia towarzyskiego w hostelu.",
+        "Sorrento dla kontroli budżetu i szybkiego transportu.",
+        "Amalfi dla zrównoważonego dostępu wzdłuż wybrzeża."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Która baza jest najlepsza na pierwszą wizytę?",
+      "a": [
+        "Positano wybierz dla klasycznych widoków, Sorrento dla łatwego transportu, a Amalfi dla kompromisu z dostępem do katedry."
+      ]
+    },
+    {
+      "q": "Czy potrzebuję auta, jeśli nocuję poza Positano?",
+      "a": [
+        "Nie. Promy i autobusy łączą wszystkie trzy miejscowości; auto oznacza stres z parkowaniem, chyba że planujesz liczne wypady w głąb lądu."
+      ]
+    }
+  ]
+}

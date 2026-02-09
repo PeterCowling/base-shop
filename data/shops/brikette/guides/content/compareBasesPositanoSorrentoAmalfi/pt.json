@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Comparando Bases: Positano vs Sorrento vs Amalfi",
+    "description": "Trade‑offs, transporte, preços e quem melhor se adapta a cada base."
+  },
+  "linkLabel": "Comparando bases: Positano x Sorrento x Amalfi",
+  "intro": [
+    "Compare os prós e contras de Positano, Sorrento e Amalfi antes de escolher a sua base."
+  ],
+  "tocTitle": "Nesta página",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Cenário icónico (e muitos degraus); perfeito se quer acordar dentro do postal.",
+        "O transporte exige mais planeamento, por isso reserve margens em torno de ferries e autocarros."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Melhores ligações ferroviárias e de autocarro, com ampla oferta de alojamento.",
+        "As vistas são menos dramáticas do que em Positano, mas a relação valor/conveniência é excelente."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Hub de ferries e autocarros com bate-voltas fáceis a Ravello e vilas próximas.",
+        "Espere estilos de alojamento variados e organize-se tendo em conta o transporte limitado à noite."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Para quem serve cada base",
+      "body": [
+        "Positano para vistas de luxo e vida social de hostel.",
+        "Sorrento para controlar o orçamento e ter transporte rápido.",
+        "Amalfi para equilibrar acessos a toda a costa."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Qual base funciona melhor para a primeira visita?",
+      "a": [
+        "Fique em Positano se quer as vistas clássicas, em Sorrento para facilitar o transporte e em Amalfi para um meio-termo com acesso à catedral."
+      ]
+    },
+    {
+      "q": "Preciso de carro se ficar fora de Positano?",
+      "a": [
+        "Não. Ferries e autocarros ligam as três cidades; um carro acrescenta stress com estacionamento, a menos que planeie excursões prolongadas pelo interior."
+      ]
+    }
+  ]
+}

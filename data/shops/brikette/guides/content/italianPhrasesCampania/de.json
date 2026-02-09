@@ -1,0 +1,40 @@
+{
+  "seo": {
+    "title": "Italienische Redewendungen für Reisende in Kampanien",
+    "description": "Nützliche italienische (und ein wenig Dialekt-)Phrasen für Busse, Fähren, Cafés und höfliche Begegnungen an der Küste."
+  },
+  "linkLabel": "Italienische Redewendungen für Reisende in Kampanien",
+  "intro": [
+    "Praktische italienische Wendungen für Transport, Cafés und Notfälle rund um Positano – inklusive kleiner Dialekt-Highlights aus Kampanien."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Grundlagen Transport",
+      "body": [
+        "“Dov'è la fermata SITA per Positano?” – Wo ist die SITA-Haltestelle nach Positano?",
+        "“Un biglietto per Sorrento, per favore” – Ein Ticket nach Sorrent, bitte."
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "Cafés & Essen",
+      "body": [
+        "\\\\\"Un espresso al banco, grazie\\\\\" – Ein Espresso am Tresen, bitte; \\\\\"Il conto, per favore\\\\\" – Die Rechnung, bitte. Immer ein \\\\\"grazie\\\\\" anhängen.",
+        "Frag nach Empfehlungen (\\\\\"Cosa consiglia oggi?\\\\\") oder nach Unverträglichkeiten: \\\\\"È possibile senza glutine?\\\\\". Dialekt-Tipp: \\\\\"Grazie assai\\\\\" bedeutet in Kampanien \\\\\"Vielen Dank\\\\\"."
+      ]
+    },
+    {
+      "id": "emergency",
+      "title": "Notfälle & Höflichkeit",
+      "body": [
+        "\\\\\"Ho bisogno di aiuto\\\\\" – Ich brauche Hilfe, und \\\\\"Può chiamare un taxi?\\\\\" – Können Sie ein Taxi rufen? Diese Sätze decken die wichtigsten Notfälle ab.",
+        "Lokale Farbe: \\\\\"Guagliò\\\\\" ist eine freundliche Anrede unter Freunden, \\\\\"Statt' bbuon\\\\\" ein warmer Abschiedsgruß im Dialekt. Notrufnummern: 112 (EU-Notruf), 118 (Rettungsdienst)."
+      ]
+    }
+  ],
+  "tips": [
+    "Ein \\\"buongiorno“ am Morgen und \\\"buonasera“ ab Nachmittag öffnen Türen – höfliche Anrede wirkt Wunder.",
+    "Speichere Phrasen offline oder nutze ein kleines Notizbuch; WLAN reißt an Haltestellen oft ab."
+  ]
+}

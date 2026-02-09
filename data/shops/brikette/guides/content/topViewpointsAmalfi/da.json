@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "De bedste udsigtspunkter på Amalfikysten",
+    "description": "Hvor du fanger de store udsigter, med noter om adgang og timing."
+  },
+  "linkLabel": "De bedste udsigtspunkter på Amalfikysten",
+  "intro": [
+    "Find de bedste udsigtspunkter langs Amalfikysten til solopgang, gyldentime og natbilleder."
+  ],
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Klassikere i Positano",
+      "body": [
+        "Via Cristoforo Colombo og terrassen ved Hotel Marincanto giver lagdelte byudsigter – fotografer ved solopgang for blødt lys.",
+        "La Tagliata-terrassen i Nocelle vender mod Li Galli-øerne; book middag til solnedgang eller kig forbi efter Gudernes sti."
+      ]
+    },
+    {
+      "id": "ravello",
+      "title": "Terrasser i Ravello",
+      "body": [
+        "Villa Rufolos koncertscene ser ud over kysten; morgenlyset rammer kuplerne bedst.",
+        "Villa Cimbrones Infinity-terrasse indrammer kystlinjen med marmorskulpturer – stativer er tilladt, men hold benene smalle, så du ikke spærrer."
+      ]
+    },
+    {
+      "id": "road",
+      "title": "Panoramaer langs vejen",
+      "body": [
+        "Hold ind ved Belvedere di Laurito mellem Positano og Praiano for vid udsigt; bliv bag autoværnet for sikkerhedens skyld.",
+        "På SS163 mellem Amalfi og Minori er der afmærkede stop – tag busserne, hvis du vil hoppe mellem udsigtspunkter uden at køre selv."
+      ]
+    }
+  ],
+  "tips": [
+    "Medbring et let stativ og ND-filter til glatte aftenoptagelser af færgespor.",
+    "Hold øje med trafikken ved vejsiden – brug synligt tøj, og træd ikke ud i kørebanen."
+  ],
+  "faqs": [
+    {
+      "q": "Må jeg flyve drone?",
+      "a": [
+        "Droneflyvning er stærkt reguleret langs Amalfikysten. Tjek ENAC-regler og lokale bekendtgørelser – bøderne er høje uden tilladelse."
+      ]
+    },
+    {
+      "q": "Hvornår er solnedgangen bedst at fotografere?",
+      "a": [
+        "Gyldentime starter cirka en time før solnedgang (omkring kl. 19 i juli). Kom 30 minutter før for at gøre klar og sikre plads."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "seo": {
+    "title": "Path of the Gods from Hostel Brikette",
+    "description": "Exact route from the hostel to the Sentiero degli Dei trailheads, with transit options and safety tips."
+  },
+  "linkLabel": "Path of the Gods: Complete Guide from Positano",
+  "intro": [
+    "The Sentiero degli Dei (Path of the Gods) strings together cliff-top terraces, chestnut groves, and sweeping views across the Amalfi Coast. From Hostel Brikette you can reach the trail by combining local ferries and SITA buses without joining a pricey tour.",
+    "Three main approaches start from the hostel: sailing to Amalfi and bussing up to Bomerano, riding the bus network the whole way, or skipping the transfers and hiking an out-and-back from Nocelle. Use this overview to decide which detailed route suits your time, budget, and comfort with heights."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Highlights at a glance",
+      "body": [
+        "Panoramic balconies float above Positano, Praiano, and Capri, so even short sections reward you with dramatic photo stops.",
+        "The gradients are steady rather than technical; confident walkers can tackle the path with good footwear and plenty of water."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/pathOfTheGods.jpg",
+          "alt": "The Path of the Gods trail with sweeping Amalfi Coast views.",
+          "caption": "Sentiero degli Dei rewards you with cliff-top views even on shorter sections."
+        }
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Before you commit",
+      "body": [
+        "Expect exposed ledges, handrail-free staircases, and long drops. Anyone with vertigo should favour the gentler Nocelle out-and-back.",
+        "Door-to-door journeys take 3–5 hours depending on your route. Summer heat makes early starts or late afternoon departures essential."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Route options from Hostel Brikette",
+      "body": [
+        "%LINK:pathOfTheGodsFerry|Ferry via Amalfi guide%: walk to Spiaggia Grande, sail to Amalfi, bus uphill to Bomerano, hike to Nocelle, and ride the shuttle back. Longest day but pairs sea views with time in Amalfi.",
+        "%LINK:pathOfTheGodsBus|Bus via Amalfi guide%: buy tickets at Bar Internazionale, take the SITA bus to Amalfi, connect to the Agerola service, then follow the classic Bomerano → Nocelle traverse. Best when seas are rough or ferries are sold out.",
+        "%LINK:pathOfTheGodsNocelle|Direct Nocelle loop guide%: catch the Montepertuso–Nocelle minibus, walk the panoramic out-and-back toward Colle Serra, and return on the same bus. Ideal for a lighter day or to avoid tight transfers."
+      ]
+    },
+    {
+      "id": "trail-basics",
+      "title": "Trail basics",
+      "body": [
+        "The Sentiero degli Dei links Bomerano and Nocelle over roughly 6 kilometres of undulating path with about 200 metres of elevation change.",
+        "Waymarks show red-and-white CAI stripes plus wooden \\\\\"Sentiero\\\\\" arrows. Surfaces alternate between cobbled steps, packed dirt, and rocky ledges—pack grippy shoes and keep your hands free."
+      ]
+    },
+    {
+      "id": "planning",
+      "title": "Planning tips",
+      "body": [
+        "Check the forecast the night before; rain makes the stone steps slick and strong winds can halt ferries.",
+        "Carry at least 1.5 litres of water per person. Refills are limited to cafés in Bomerano, kiosks in Nocelle, and the occasional farmhouse stand.",
+        "Validate SITA bus tickets before boarding and keep a spare ticket in your daypack for unexpected detours."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Comfortable footwear with grip plus sun protection and layers for exposed ridgelines.",
+    "Pre-purchased SITA bus tickets (tabacchi or Bar Internazionale) for every leg you plan to ride.",
+    "Offline maps or saved directions in case mobile data drops in the ravines."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "SITA bus Positano ⇄ Amalfi/Bomerano/Nocelle: €2–€4 per leg depending on ticket type.",
+    "Travelmar or Lucibello ferry Positano ⇄ Amalfi: roughly €12–€16 each way in peak season.",
+    "Trail snacks and water from village shops: €3–€8; access to the path itself is free."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Leave before 09:00 in July–August or aim for the golden hours in spring and autumn for cooler temperatures and softer light.",
+    "Avoid the 1,700-step descent to Positano unless your knees are fresh—descending Montepertuso stairs after a long hike is brutal.",
+    "Use a lightweight daypack and keep trekking poles folded until you reach steeper staircases."
+  ],
+  "steps": [
+    {
+      "name": "Pick your route",
+      "text": "Choose between the ferry via Amalfi, bus via Amalfi, or direct Nocelle option based on weather, ferry schedules, and energy levels."
+    },
+    {
+      "name": "Secure transport tickets",
+      "text": "Buy SITA bus tickets at Bar Internazionale and ferry tickets at the harbour if you plan to sail."
+    },
+    {
+      "name": "Travel to the trailhead",
+      "text": "Ride to Bomerano for the full traverse or to Nocelle for the shorter out-and-back section."
+    },
+    {
+      "name": "Hike Sentiero degli Dei",
+      "text": "Follow CAI markers between panoramic terraces, pacing yourself for photo and snack stops."
+    },
+    {
+      "name": "Return to Positano",
+      "text": "Catch the bus back to Chiesa Nuova or walk only if you intentionally want the long stair descent."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faq": [
+    {
+      "q": "How long does the hike take door to door?",
+      "a": "Budget 3–5 hours including transport. The ferry route is the longest; the Nocelle out-and-back fits into a half day."
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": "Yes, provided you are steady on your feet and comfortable with heights. There are no technical climbs, just steady ascents and descents."
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": "Switch to the bus via Amalfi or ride directly to Nocelle. Always keep a spare bus ticket so you can adapt to sea or weather conditions."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How long does the hike take door to door?",
+      "a": [
+        "Budget 3–5 hours including transport. The ferry route is the longest; the Nocelle out-and-back fits into a half day."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Yes, provided you are steady on your feet and comfortable with heights. There are no technical climbs, just steady ascents and descents."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Switch to the bus via Amalfi or ride directly to Nocelle. Always keep a spare bus ticket so you can adapt to sea or weather conditions."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "On this page",
+    "essentials": "Essentials",
+    "costs": "Typical costs",
+    "tips": "Smart timing",
+    "faqs": "FAQs"
+  }
+}

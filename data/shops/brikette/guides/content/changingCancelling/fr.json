@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Modifier et Annuler Votre Réservation d'Auberge à Positano",
+    "description": "Guide détaillé sur vos options d'annulation, politiques de non-présentation, comment modifier votre réservation, règles de transfert de réservation et réservations prépayées non remboursables à la seule auberge de Positano."
+  },
+  "linkLabel": "Modifier et Annuler Votre Réservation d'Auberge à Positano",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "Frais de Non-Présentation",
+      "body": [
+        "Si vous n'avez pas enregistré votre arrivée avant 22h30 le premier jour de votre réservation, votre réservation sera automatiquement marquée comme 'Non-Présentation'. Vous serez facturé le montant le plus élevé entre la première nuit de séjour ou votre dépôt non remboursable. Si vous avez plusieurs réservations, chacune peut avoir sa propre période de préavis d'annulation et ses frais."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Politique d'Annulation",
+      "body": [
+        "Envoyez toutes les demandes d'annulation par écrit à notre adresse e-mail officielle (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). La période d'annulation commence lorsque l'auberge reçoit votre e-mail et se termine à 00h01 à votre date d'arrivée prévue. Votre réservation reste active jusqu'à ce que vous receviez une confirmation par e-mail que l'annulation a été traitée. Des frais d'administration d'annulation séparés - généralement 15% du prix de la réservation hors commissions de tiers - seront facturés. L'auberge peut annuler votre réservation sans demande écrite si vous ne vous enregistrez pas avant la fermeture de la réception le jour de l'arrivée, partez tôt sans notification appropriée ou violez les politiques de l'auberge. Si vous ne fournissez pas un préavis suffisant, vous encourrez des frais équivalents à une Non-Présentation."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Personne utilisant un smartphone et un ordinateur portable",
+          "caption": "L'e-mail est le moyen le plus rapide d'obtenir une trace écrite des modifications ou annulations."
+        }
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Modifier les Réservations Confirmées",
+      "body": [
+        "Les réservations existantes ne peuvent pas être modifiées directement; elles sont plutôt remplacées entièrement par de nouvelles réservations. Envoyez votre demande de modification par e-mail à notre adresse officielle dans le délai de préavis requis. Vous recevrez un e-mail une fois la modification approuvée. Toutes les modifications sont soumises à la disponibilité des chambres et à d'autres conditions. Si vous raccourcissez ou prolongez votre séjour, l'ajustement sera traité comme une demande d'annulation ou de prolongation, et toute prolongation est traitée comme une nouvelle réservation. Si vous partez avant votre date de départ confirmée sans recevoir une confirmation d'annulation officielle, les conditions originales de la réservation resteront en vigueur."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Transférabilité de la Réservation",
+      "body": [
+        "Votre réservation doit rester à votre nom pour tout le séjour. Le transfert de la réservation ou le changement du nom du client n'est pas autorisé. Si quelqu'un tente de s'enregistrer sous une réservation transférée, la réservation sera annulée immédiatement, et vous resterez financièrement responsable du montant total."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Réservations Prépayées Non Remboursables",
+      "body": [
+        "Les réservations prépayées non remboursables nécessitent un paiement complet au moment de la réservation. Si le paiement n'aboutit pas, votre réservation sera annulée automatiquement. Ces réservations ne sont pas remboursables, même si vous annulez ou ne vous présentez pas. Toute prolongation de votre séjour sera traitée comme une nouvelle réservation non remboursable distincte."
+      ]
+    }
+  ]
+}

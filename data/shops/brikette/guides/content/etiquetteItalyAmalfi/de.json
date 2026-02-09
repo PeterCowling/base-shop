@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Lokale Etikette: Do’s & Don’ts (Amalfi)",
+    "description": "Höfliches Verhalten in Restaurants, Kirchen und engen Gassen."
+  },
+  "linkLabel": "Lokale Etikette: Do’s & Don’ts (Amalfi)",
+  "intro": [
+    "Praktische Etikette für Restaurantbesuche, Kirchen und enge Gassen in Positano und an der Amalfiküste."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Essen gehen",
+      "body": [
+        "Reserviere zu Stoßzeiten, habe Geduld zwischen den Gängen, fordere die Rechnung, wenn du fertig bist, und gib bei Top-Service ein kleines Trinkgeld."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Kirchen & Kleidung",
+      "body": [
+        "Schultern in Kirchen bedecken und nicht in Badebekleidung durch Geschäfte laufen."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Gemeinsame Gassen",
+      "body": [
+        "Auf schmalen Treppengassen rechts halten, andere vorbeilassen und an beliebten Fotospots schnell abwechseln."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Muss ich Trinkgeld geben?",
+      "a": [
+        "Trinkgeld ist optional; gib 1–2 € bei herausragendem Service oder runde die Rechnung auf. Das Coperto deckt Brot und Gedeck bereits ab."
+      ]
+    },
+    {
+      "q": "Was soll ich in Kirchen tragen?",
+      "a": [
+        "Schultern und Knie bedecken, Kopfbedeckung abnehmen und leise sprechen. Ein leichter Schal hilft bei ärmellosen Oberteilen."
+      ]
+    }
+  ]
+}

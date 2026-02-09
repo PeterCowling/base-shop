@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "SITA-billetter og tips",
+    "description": "Hvor du køber billetter, hvordan du stemple dem, og hvad du skal forvente på ruterne."
+  },
+  "linkLabel": "SITA-bus: billetter og tips",
+  "intro": [
+    "Køb SITA-billetter, før du stiger på, og afsæt ekstra tid i højsæsonen. Gem billetten til enden af turen."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hvor køber jeg?",
+      "body": [
+        "Køb i tabacchi eller kiosker langs hovedvejen. Fyld op, når køerne er korte."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Stempling",
+      "body": [
+        "Stemplyd ved ombordstigning, hvor maskinerne findes; gem billetten til du står af."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg købe ombord?",
+      "a": [
+        "Som udgangspunkt nej; køb før ombordstigning for at undgå forsinkelser."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → cais das barcas de Positano (porto)",
+    "description": "Rota a pé passo a passo para o porto de Positano com marcos de referência no mapa, dicas de bilhetes e orientação de embarque."
+  },
+  "linkLabel": "Hostel Brikette → cais das barcas (porto)",
+  "intro": [
+    "Indo para o porto de Positano para apanhar uma barca? Esta é a caminhada mais fácil que encontrámos desde o Hostel Brikette até Spiaggia Grande — com um mapa rápido e marcos de referência fotográficos para os pontos 1-5.",
+    "Preveja 20-30 minutos a pé (mais com bagagem) e note que o Google Maps às vezes sugere desvios mais longos para a praia — siga a rota abaixo."
+  ],
+  "beforeList": [
+    "Verifique os horários e preços das barcas nos balcões dos operadores no porto (eles listam a próxima partida no sinal).",
+    "Deixe uma margem se tiver bagagem — há escadas nesta rota e o porto fica cheio nos horários de pico.",
+    "Tente chegar cedo para poder comprar bilhetes, encontrar o cais certo e estar pronto quando o embarque começar."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Chegar ao porto",
+      "body": [
+        "Comece no hostel e dirija-se para Spiaggia Grande (a praia principal de Positano).",
+        "O porto está localizado no lado direito da praia.",
+        "Preveja 20-30 minutos para a caminhada do hostel até o porto.",
+        "O Google Maps pode nem sempre fornecer a rota mais direta para a praia — use o mapa e as instruções passo a passo abaixo.",
+        "[Veja aqui se preferir instruções do mapa](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Caminhada do Hostel Brikette até o porto (pontos 1-5)",
+      "body": [
+        "Referência do mapa (Hostel → Porto):",
+        "[[figure:map]]",
+        "Comece saindo do hostel pela porta principal.",
+        "Desça os degraus até a estrada.",
+        "Vire à esquerda e caminhe um pouco mais de 100 metros (330 pés) até chegar ao ponto 1 no mapa.",
+        "No ponto 1, vire à direita.",
+        "[[figure:point-1]]",
+        "Assim que virar à direita no ponto 1, verá o tabacchi à direita.",
+        "[[figure:tabacchi]]",
+        "Siga a estrada ladeira abaixo.",
+        "Na primeira curva em ziguezague, terá chegado ao ponto 2 no mapa.",
+        "No ponto 2, saia da estrada e caminhe em frente, pegando as escadas.",
+        "[[figure:point-2]]",
+        "Quando chegar ao fim das escadas, terá chegado ao ponto 3 no mapa.",
+        "Atravesse a estrada e pegue o caminho em frente.",
+        "Siga as escadas para baixo até chegar ao próximo nível.",
+        "[[figure:point-3]]",
+        "Quando chegar ao fim das escadas, chegará à estrada.",
+        "Atravesse a estrada e vire à esquerda, caminhando 10 metros (30 pés) até chegar ao ponto 4 no mapa.",
+        "No ponto 4, vire à direita e pegue as escadas que saem da estrada e descem.",
+        "[[figure:point-4]]",
+        "Siga as escadas para baixo até chegar ao fundo. No fundo das escadas, vire à direita.",
+        "Isso o levará ao ponto 5 no mapa.",
+        "Continue sob o arco à direita.",
+        "[[figure:point-5]]",
+        "Após 50 metros (160 pés), chegará ao porto."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Comprar bilhetes de barca",
+      "body": [
+        "No porto de Positano, pode apanhar barcas para locais como Amalfi, Capri e além. Cada operador de barcas tem um balcão e o sinal no balcão exibe informações sobre a próxima barca que irão operar.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Embarcar numa barca",
+      "body": [
+        "Depois de ter o seu bilhete, caminhe até ao fim do porto e aguarde que a barca comece o embarque.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Saia do hostel e vire à esquerda ao longo da estrada até o ponto 1 no mapa, depois vire à direita.",
+    "Siga a rota para baixo através dos pontos 2-5 (escadas e travessias) até chegar ao porto.",
+    "Compre bilhetes nos balcões dos operadores e verifique o sinal para a próxima partida.",
+    "Caminhe até ao fim do porto e aguarde o embarque."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "Quanto tempo demora a caminhar do Hostel Brikette até o porto?",
+      "a": [
+        "Preveja 20-30 minutos a pé. Adicione tempo extra se tiver bagagem ou quiser parar para comprar bilhetes antes do embarque."
+      ]
+    },
+    {
+      "q": "Onde compro bilhetes de barca em Positano?",
+      "a": [
+        "No porto verá balcões para cada operador de barcas. O sinal no balcão mostra informações sobre a próxima barca que irão operar."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Siga a rota do mapa desde o hostel até ao porto",
+    "Use marcos de referência fotográficos nos pontos 1-5 para se manter no caminho",
+    "Compre bilhetes nos balcões dos operadores e confirme a próxima partida",
+    "Aguarde no cais e embarque quando chamado"
+  ]
+}

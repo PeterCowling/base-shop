@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Isquia y Prócida: más allá de la Costa Amalfitana",
+    "description": "Termas, playas y rutas de ferry desde Nápoles o Sorrento."
+  },
+  "linkLabel": "Isquia y Prócida: más allá de la Costa Amalfitana",
+  "intro": [
+    "Ischia y Procida amplían el viaje con termas, aldeas coloridas y ritmo isleño relajado.",
+    "Combina una de ellas después de Positano o haz un largo bate y vuelta saliendo temprano desde Nápoles."
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Cómo llegar",
+      "body": [
+        "Toma ferry o hidroala en Nápoles (Molo Beverello) o Pozzuoli; reserva online en julio/agosto para asegurar plaza.",
+        "Desde Positano conecta vía ferry a Nápoles o Sorrento + tren; calcula 2 h 30–3 h por tramo."
+      ]
+    },
+    {
+      "id": "ischia-highlights",
+      "title": "Imprescindibles de Ischia",
+      "body": [
+        "Castello Aragonese, parques termales como Poseidon/Negombo y senderos en el Monte Epomeo con vistas 360°.",
+        "Usa autobuses locales o alquila scooter para recorrer la isla; los pases diarios ayudan si pararás en varias playas."
+      ]
+    },
+    {
+      "id": "procida-highlights",
+      "title": "Imprescindibles de Procida",
+      "body": [
+        "Marina Corricella con casas pastel, playas como Chiaiolella y miradores sobre el puerto natural.",
+        "Explora a pie: la isla es compacta; alquila bici eléctrica si quieres cubrirla en medio día."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Cuándo encajarlo",
+      "body": [
+        "Procida cabe en un bate y vuelta si sales de Nápoles antes de las 08:00 y vuelves al atardecer.",
+        "Para Ischia considera al menos una noche para disfrutar de termas y evitar regresos muy tarde."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva bañador y toalla ligera aunque solo planees pasear: las termas invitan a un chapuzón tras la visita.",
+    "Quédate a dormir en Ischia para disfrutar de noches tranquilas y ver el amanecer en el castillo antes de que lleguen los grupos."
+  ],
+  "faqs": [
+    {
+      "q": "¿Tengo que reservar el ferry con antelación?",
+      "a": [
+        "Sí en julio/agosto; elige horarios flexibles de regreso para ajustarte a retrasos o mar agitado."
+      ]
+    },
+    {
+      "q": "¿Qué isla elijo si solo tengo un día?",
+      "a": [
+        "Procida es más compacta y cabe en una jornada; Ischia merece dos noches si quieres termas y caminatas."
+      ]
+    }
+  ]
+}

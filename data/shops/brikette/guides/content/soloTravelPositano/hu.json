@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Egyedül utazás Positanóban: tippek",
+    "description": "Biztonság, társas programok, hostel vs privát szoba, és napirendek egyedülállóknak."
+  },
+  "linkLabel": "Egyedül Positanóban",
+  "intro": [
+    "Positano barátságos egyedül utazóknak: legyél társas a hostel teraszán, tervezz tartalékot a napokra, és használj kompot a legforróbb órákban."
+  ],
+  "tocTitle": "Ez szerepel az oldalon",
+  "toc": [
+    {
+      "href": "#safety",
+      "label": "Biztonság és magabiztosság"
+    },
+    {
+      "href": "#social",
+      "label": "Társas tippek"
+    },
+    {
+      "href": "#dayplans",
+      "label": "Napirendek egyedül"
+    }
+  ],
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Biztonság és magabiztosság",
+      "list": [
+        "Oszd meg a terveidet a recepción, és vigyél magaddal feltöltött telefont és vizet.",
+        "Éjszaka maradj a jól megvilágított útvonalakon, és ne kapkodj a lépcsőkön."
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Társas tippek",
+      "list": [
+        "Csatlakozz naplementés teraszprogramokhoz és hostel eseményekhez, hogy könnyen találkozz másokkal.",
+        "Válassz kis csoportos hajózást vagy túrákat, így kevésbé erőltetett a társaság."
+      ]
+    },
+    {
+      "id": "dayplans",
+      "title": "Napirendek egyedül",
+      "list": [
+        "Komp Amalfiig + séta Atrani felé; onnan busz Ravellóba és kertekbe.",
+        "Capri túra a Villa Jovishoz vagy a világítótoronyhoz; térj vissza aranyórára."
+      ]
+    }
+  ],
+  "tips": [
+    "Nézd meg este 6 körül a recepciónál a táblákat – ott gyorsan találsz vacsi- vagy hajótársakat.",
+    "Vigyél könnyű napitáskát 1–1,5 liter vízzel és egy power bankkal, hogy a naplementét fotózhassa, miközben nem sietsz fel a dombra."
+  ],
+  "faqs": [
+    {
+      "q": "Biztonságos este egyedül akármerre sétálni?",
+      "a": [
+        "Maradj a fő lépcsősávokon, tudasd a recepciónál az útvonaladat, és legyen nálad feltöltött telefon.",
+        "Ha későn végzel, a Piazza dei Mulini melletti narancssárga taxi pult rövid utat tud intézni felfelé."
+      ]
+    },
+    {
+      "q": "Hogy találkozom más utazókkal?",
+      "a": [
+        "Csatlakozz a hostel naplementés teraszprogramjaihoz vagy 10–12 fős hajótúrákhoz.",
+        "A főzőkurzusok vagy séták Amalfi vagy Capri környékén lazán nyitnak beszélgetésre."
+      ]
+    },
+    {
+      "q": "Egyedül teljesíthetem az Istenek ösvényét?",
+      "a": [
+        "Igen – indulj Bomeranóból kb. 9-kor, vigyél legalább 1,5 liter vizet, és töltsd le offline a térképet.",
+        "Noceléből vagy Montepertusóból busz visz vissza napnyugta előtt; 20:00 után már ritkább a közlekedés."
+      ]
+    }
+  ]
+}

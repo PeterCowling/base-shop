@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Så tar du dig till Positano på en budget",
+    "description": "De billigaste rutterna från Neapels flygplats till Positano med shuttle och SITA-buss – med steg för steg och kostnader."
+  },
+  "linkLabel": "Så tar du dig till Positano på en budget",
+  "intro": "Ta shuttlen från Neapels flygplats till Sorrento och vidare med SITA-buss till Positano för den billigaste och mest tillförlitliga resan.",
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Varför den här rutten fungerar",
+      "body": [
+        "En shuttle (~10 €) plus en SITA-buss (~2,10 €) håller totalen under 13 €, långt billigare än färjor eller taxi.",
+        "Båda etapperna stannar nära Chiesa Nuova så du slipper långa Positano-trappor med bagage."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Innan du ger dig av",
+      "body": [
+        "Förboka Curreri-shuttlen online under högsäsong, eller köp vid disken precis utanför ankomsthallen och lägg in 15 minuters buffert efter landning.",
+        "Ha småsedlar för SITA-biljetter i Sorrento; kiosker och tabacchi längs Corso Italia säljer dem och kan neka stora sedlar sent på kvällen."
+      ]
+    },
+    {
+      "id": "timing-backup",
+      "title": "Tidplan & reservplaner",
+      "body": [
+        "Notera dagens sista Curreri-avgång (ofta runt 21:30 sommartid, tidigare lågsäsong) och matcha din flygresa efter den.",
+        "Missade du shuttlen? Byt till Alibus + Circumvesuviana eller Campania Express till Sorrento och fortsätt med samma SITA-bussrutt."
+      ]
+    }
+  ],
+  "mapTitle": "Interaktiv karta",
+  "stepByStepTitle": "Steg för steg",
+  "steps": [
+    {
+      "name": "Neapels flygplats → Sorrento (Curreri Viaggi)",
+      "text": "Lämna ankomsthallen och gå ombord på Curreri-shuttlen mot Sorrento station. Biljett ~10 €; restid ca 1 h 15 min."
+    },
+    {
+      "name": "Sorrento → Positano (SITA-buss)",
+      "text": "Köp en SITA CIS-biljett (~2,10 €). Ta bussen mot Amalfi och kliv av vid Positano Chiesa Nuova."
+    },
+    {
+      "name": "Promenera till Hostel Brikette",
+      "text": "Från hållplatsen Chiesa Nuova går du cirka 80 meter nedför (utan trappor) till hostellets entré."
+    }
+  ],
+  "alternativesTitle": "Alternativ",
+  "trainTitle": "Tåg + buss (lite dyrare men kan gå snabbare)",
+  "train": [
+    "Alibus från NAP → Napoli Centrale (Garibaldi), därefter Circumvesuviana till Sorrento (totalt ~6 €).",
+    "SITA från Sorrento → Positano (~2,10 €). Tid: totalt cirka 2–2,5 timmar."
+  ],
+  "ferryTitle": "Färja (säsongsbetonad, vacker men dyrare)",
+  "ferry": [
+    "Alibus → Molo Beverello, färja till Positano (endast sommar; 20–38 € beroende på operatör).",
+    "Kolla vår guide till färjetidtabeller för aktuella avgångar."
+  ],
+  "costsTitle": "Kostnader i korthet",
+  "costs": [
+    "Shuttle (NAP → Sorrento): ~10 €",
+    "SITA-buss (Sorrento → Positano): ~2,10 €",
+    "Total budgetrutt: ~12,10 €"
+  ],
+  "faq": [
+    {
+      "q": "Vilken rutt är billigast?",
+      "a": "Shuttle från Neapels flygplats till Sorrento och därefter SITA-buss till Positano (Chiesa Nuova)."
+    },
+    {
+      "q": "Var köper jag bussbiljetter?",
+      "a": "Hos tobaksbutiker/kiosker nära stationerna. Köp innan du kliver på och stämpla på bussen."
+    },
+    {
+      "q": "Hur lång tid tar det?",
+      "a": "Cirka 2,5 timmar totalt vid smidiga byten."
+    }
+  ],
+  "ferryCta": "Föredrar du färja på sommaren? Läs vår färjeguide och hjälpartikeln ”Ankomst med färja” för hamntips och tillgänglighetsinfo.",
+  "mapIframeTitle": "Neapels flygplats till Positano via Sorrento",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x133b089b2b18a3e3%3A0x4bafc3f58a62a2a2!2sNaples%20International%20Airport%20(NAP)!3m2!1d40.8860031!2d14.2907817!4m5!1s0x133b98d2a1b9f60f%3A0x54a8f4e7a3413732!2sHostel%20Brikette%2C%20Via%20Guglielmo%20Marconi%2C%20358%2C%2084017%20Positano%20SA!3m2!1d40.6308766!2d14.487226!5e0!3m2!1sen!2sit!4v1700000000000",
+  "mapReferrerPolicy": "no-referrer-when-downgrade",
+  "howTo": {
+    "totalTime": "PT2H30M",
+    "estimatedCost": {
+      "currency": "EUR",
+      "value": "12.10"
+    }
+  },
+  "sectionIds": {
+    "map": "reach-budget-map",
+    "steps": "reach-budget-steps",
+    "alternatives": "reach-budget-alternatives",
+    "costs": "reach-budget-costs",
+    "tips": "reach-budget-tips"
+  }
+}

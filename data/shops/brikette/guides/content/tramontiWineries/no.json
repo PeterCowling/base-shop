@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Tramonti og vingårder på Amalfikysten",
+    "description": "Hvilke vingårder du kan besøke, transporttips og etikette ved smaking."
+  },
+  "linkLabel": "Tramonti og vingårder på Amalfikysten",
+  "intro": [
+    "Oppdag Tramontis vingårder i åssiden for DOC-smaking vekk fra kystens folkemengder."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Hvorfor Tramonti",
+      "body": [
+        "Flere hundre år gamle pergolavingårder vokser på vulkansk jord, og produserer Costa d'Amalfi DOC røde og hvite.",
+        "Familiedrevne eiendommer som Tenuta San Francesco og Reale ønsker små grupper velkommen for intime smaksprøver."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Bestille smaking",
+      "body": [
+        "Bestill 48 timer i forveien via e-post eller WhatsApp; smaksprøver med lette biter koster €25–€35 per person.",
+        "Spør om transport er inkludert - noen vingårder organiserer tur-retur-transport fra Amalfi eller Maiori."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Slik kommer du dit",
+      "body": [
+        "Kjør eller lei en sjåfør for stigningen på 18 km (11 mi) fra Positano; veiene er smale, men asfalterte.",
+        "Offentlig alternativ: buss til Amalfi, deretter en lokal Tramonti-buss. Planlegg buffere på returen da kveldstjenester er begrenset."
+      ]
+    }
+  ],
+  "tips": [
+    "Pakk en gjenbrukbar flaske - mange vinprodusenter tilbyr kildevann for å rense ganen mellom skjenkene.",
+    "Send vin via bud i stedet for å bære flasker hvis du flyr med håndbagasje."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor lenge varer en smaking?",
+      "a": [
+        "De fleste besøk varer i 90 minutter, inkludert vingårdstur, kjellergjennomgang og tre til fire viner."
+      ]
+    },
+    {
+      "q": "Kan jeg besøke uten bil?",
+      "a": [
+        "Ja, men avtal transport på forhånd. Delte taxier fordelt på fire reisende holder kostnadene rimelige."
+      ]
+    }
+  ]
+}

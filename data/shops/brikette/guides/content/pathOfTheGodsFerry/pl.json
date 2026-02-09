@@ -1,0 +1,219 @@
+{
+  "seo": {
+    "title": "Ścieżka Bogów promem przez Amalfi",
+    "description": "Popłyń z Positano do Amalfi, dojedź autobusem do Bomerano i przejdź Sentiero degli Dei z powrotem do Nocelle z poradami biletowymi i czasowymi."
+  },
+  "linkLabel": "Ścieżka Bogów przez Amalfi (prom + trekking)",
+  "intro": [
+    "Ta wycieczka łączy widokowy rejs promem do Amalfi z klasycznym przejściem Ścieżki Bogów z Bomerano do Nocelle. To najbardziej pełne doświadczenie dla gości Hostel Brikette — najpierw podziwiasz klify z poziomu morza, a potem wędrujesz ich grzbietem.",
+    "Zarezerwuj na nią cały poranek lub wczesne popołudnie. Promy wyprzedają się w szczycie sezonu, więc kup bilety zaraz po dotarciu do portu i miej w zapasie rozkład jazdy autobusów na wypadek wzburzonego morza."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Zanim wyjdziesz z hostelu",
+      "body": [
+        "Spakuj wodę, przekąski, krem z filtrem i warstwy odzieży. Między Bomerano a Nocelle nie ma żadnych usług, gdy tylko opuścisz wsie.",
+        "Sprawdź aktualny rozkład promów (Travelmar lub Lucibello) oraz godziny autobusów SITA. Celuj w poranny wyjazd, by uniknąć południowego upału na odsłoniętej grani.",
+        "Weź trzy bilety SITA na osobę: Amalfi → Bomerano, Nocelle → Positano oraz zapasowy na wypadek opóźnień."
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Zejdź do portu w Positano i kup bilety autobusowe",
+      "body": [
+        "Wyjdź z hostelu, skręć w lewo i przejdź około 100 metrów do Bar Internazionale. Kup bilety SITA przy ladzie tabacchi, zanim ruszysz dalej w dół.",
+        "Skorzystaj ze skrótowych schodów w stronę Spiaggia Grande. Marsz zajmuje około 20–30 minut; w tłoczne dni zaplanuj zapas czasu.",
+        "Na plaży skręć w prawo, aby dojść do małego portu, gdzie obok siebie stoją kasy promowe."
+      ]
+    },
+    {
+      "id": "buy-ferry-ticket",
+      "title": "Kup bilet na prom do Amalfi",
+      "body": [
+        "Sprawdź tablice przed kasami Lucibello i Travelmar, aby znaleźć najbliższy rejs. Rano statki zwykle odpływają co 30–60 minut w sezonie.",
+        "Kup bilet w jedną stronę do Amalfi i trzymaj go pod ręką do odprawy; obsługa wzywa pasażerów na kilka minut przed wypłynięciem.",
+        "Kolejki tworzą się szybko, więc bądź co najmniej 15 minut przed wybranym rejsem, aby mieć pewne miejsce na pokładzie."
+      ]
+    },
+    {
+      "id": "sail-to-amalfi",
+      "title": "Płyń promem i korzystaj z Amalfi",
+      "body": [
+        "Rejs trwa około 25 minut. Stań po prawej (sterburcie), aby podziwiać widoki na Positano i Praiano.",
+        "Po zacumowaniu wysiądź sprawnie i idź prosto do dworca autobusowego po lewej stronie placu portowego.",
+        "Jeśli masz chwilę do autobusu, zajrzyj na plac katedralny Amalfi lub złap espresso — miej jednak oko na stanowisko z odjazdem do Ageroli."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Wsiądź do autobusu do Bomerano",
+      "body": [
+        "Wypatruj autobusu SITA z oznaczeniem \\\"Agerola/Bomerano”. Skasuj bilet przy wejściu i usiądź bliżej przodu, aby znieść mniej zakrętów.",
+        "Po około 45 minutach wysiądź na przystanku Bomerano obok Ristorante Jerla. Przejdź na drugą stronę i zejdź boczną uliczką na plac.",
+        "Przejdź w lewo przez piazzę, a następnie kieruj się za znakami \\\"Sentiero degli Dei”, aż dotrzesz do tablicy informacyjnej na początku szlaku."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Przejdź przez ulicę od przystanku autobusowego i podążaj tą boczną uliczką w dół na plac"
+        }
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Przejdź szlak z Bomerano do Nocelle",
+      "body": [
+        "Szlak faluje na dystansie około 6 kilometrów. Czekają kamienne stopnie, wąskie półki i spektakularne balkony widokowe na wybrzeże.",
+        "Rób przerwy w oznaczonych punktach widokowych i zabierz ze sobą wszystkie śmieci. Szanuj lokalnych gospodarzy i trzymaj się wytyczonej ścieżki.",
+        "Gdy gruntowa ścieżka połączy się z betonową alejką prowadzącą do Nocelle, dotarłeś do mety."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Przejdź w lewo przez piazzę i kieruj się za znakami 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Po przejściu przez piazzę znajdź tablicę informacyjną i skręć w lewo; tutaj zaczyna się szlak. Podążaj ścieżką do sekcji z drewnianymi schodami."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Gdy gruntowa ścieżka połączy się z tą betonową alejką, dotarłeś do Nocelle"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Mapa Nocelle — idąc przez wieś, upewnij się, że skręcasz w prawo na rozwidleniu, aby dotrzeć do przystanku autobusowego; unikaj 1700-stopniowych schodów do Positano za wszelką cenę!"
+        }
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Przejdź przez Nocelle",
+      "body": [
+        "Idź utwardzoną alejką do miasteczka, trzymając się prawej strony na pierwszym rozwidleniu, aby ominąć 1700-stopniowe schody do Positano.",
+        "Przejdź około 175 metrów do przystanku autobusowego przy małym parkingu. Kiosk przy kościele sprzedaje latem zimne napoje.",
+        "Bądź co najmniej 10 minut wcześniej; przy zatłoczonym parkingu autobusy zatrzymują się czasem przed wiatą."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRYTYCZNE: NIE podążaj za znakami do 'Positano' w dół schodami — zamiast tego skręć tutaj w prawo"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Wejdź po tych schodach przez około 175 metrów, aby dotrzeć do przystanku autobusowego przy parkingu"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Dotarłeś do przystanku autobusowego."
+        }
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Wróć do Positano",
+      "body": [
+        "Wsiądź do autobusu Montepertuso/Nocelle jadącego do Positano i wysiądź przy Bar Internazionale lub Chiesa Nuova, aby mieć najkrótszy spacer do hostelu.",
+        "Jeśli zdecydujesz się zejść drogą, zaplanuj 45–60 minut i uważaj na lokalny ruch na zakrętach.",
+        "Po powrocie do miasta nagrodź się granitą lub późnym lunchem — najtrudniejsza część dnia za tobą."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Przykładowe ramy czasowe",
+      "body": [
+        "06:30 wyjście z hostelu → 07:10 prom → 08:40 przyjazd do Bomerano → 3-godzinny trekking → 12:30 autobus powrotny → 13:00 powrót do Positano.",
+        "Wyjazd o 08:00 też mieści się przed lunchem: 08:00 wyjście z hostelu, 08:40 prom, 10:15 początek szlaku, 14:30 z powrotem w mieście.",
+        "Późniejsze rejsy sprawdzą się w okresach przejściowych, ale zawsze sprawdź ostatni autobus z Nocelle przed popołudniowym startem."
+      ]
+    }
+  ],
+  "essentialsTitle": "Niezbędnik",
+  "essentials": [
+    "Bilet na prom Positano ⇄ Amalfi oraz trzy bilety SITA na osobę (Amalfi → Bomerano, Nocelle → Positano, zapasowy).",
+    "1,5–2 litra wody, przekąski lub panino na wynos, krem z filtrem i nakrycie głowy.",
+    "Wygodne buty z bieżnikiem na nierówne stopnie i skalne półki."
+  ],
+  "typicalCostsTitle": "Orientacyjne koszty",
+  "typicalCosts": [
+    "Prom Positano → Amalfi: 12–16 € w jedną stronę w zależności od operatora i sezonu.",
+    "Autobus SITA Amalfi → Bomerano i Nocelle → Positano: 2–4 € za odcinek przy zakupie z wyprzedzeniem.",
+    "Przekąski lub panini z minimarketu po drodze: 4–8 €."
+  ],
+  "tipsTitle": "Wskazówki na trasę",
+  "tips": [
+    "Wyrusz wcześnie, aby uniknąć upału i mieć pewne miejsca na promie — pierwsze rejsy są najspokojniejsze.",
+    "Kup panino na wynos w drugim minimarkecie przy Via Pasitea, żeby tanio zjeść na szlaku.",
+    "Trzymaj bilety na prom i autobus razem w wodoodpornej saszetce, aby szybko je okazać przy wejściu."
+  ],
+  "warningsTitle": "Na co uważać",
+  "warnings": [
+    "Nie schodź oznaczonymi schodami z Nocelle do Positano, chyba że chcesz pokonać 1700 stopni i dojść daleko od hostelu.",
+    "Wzburzone morze może odwołać promy z niewielkim wyprzedzeniem — sprawdzaj warunki w porcie i w razie potrzeby wybierz wariant autobusowy.",
+    "Letnie popołudnia są bardzo gorące i bez cienia; jeśli nie złapiesz porannego promu, lepiej poczekaj do późnego popołudnia niż maszeruj w pełnym słońcu."
+  ],
+  "steps": [
+    {
+      "name": "Zejdź do portu",
+      "text": "Wyjdź z Hostel Brikette, kup bilety autobusowe w Bar Internazionale i skieruj się w dół na Spiaggia Grande."
+    },
+    {
+      "name": "Kup bilety na prom",
+      "text": "Wybierz najbliższy rejs Travelmar lub Lucibello do Amalfi i ustaw się w kolejce 15 minut wcześniej."
+    },
+    {
+      "name": "Popłyń do Amalfi",
+      "text": "Ciesz się 25-minutową przeprawą i od razu kieruj się do stanowisk autobusowych obok portu."
+    },
+    {
+      "name": "Autobus do Bomerano",
+      "text": "Wsiądź do autobusu SITA z tablicą Agerola/Bomerano i podążaj boczną uliczką do początku szlaku."
+    },
+    {
+      "name": "Przejdź do Nocelle",
+      "text": "Kieruj się znakami Sentiero degli Dei przez grań, aż zacznie się betonowa alejka."
+    },
+    {
+      "name": "Wróć do Positano",
+      "text": "Złap autobus z Nocelle do Bar Internazionale lub zejdź drogą, jeśli autobusy są przepełnione."
+    }
+  ],
+  "faqsTitle": "Najczęstsze pytania",
+  "faqs": [
+    {
+      "q": "Gdzie kupić bilety na transport?",
+      "a": [
+        "Kup bilety na autobus SITA w Bar Internazionale przed zejściem w dół, a bilet na prom bezpośrednio w kasach Lucibello lub Travelmar w porcie."
+      ]
+    },
+    {
+      "q": "Ile czasu zaplanować na przesiadkę w Amalfi?",
+      "a": [
+        "Zaplanuj 20–30 minut zapasu, aby przesiąść się z promu na autobus do Ageroli. Możesz wypić szybką kawę, ale pozostań w zasięgu wzroku stanowisk autobusowych, aby nie przegapić wejścia."
+      ]
+    },
+    {
+      "q": "Co zrobić, jeśli prom zostanie odwołany?",
+      "a": [
+        "Sprawdź sytuację w porcie. Jeśli promy nie kursują, wybierz wariant autobusowy przez Amalfi — od Bomerano trasa prowadzi tym samym szlakiem."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Na tej stronie",
+    "essentials": "Niezbędnik",
+    "costs": "Orientacyjne koszty",
+    "tips": "Wskazówki na trasę",
+    "warnings": "Na co uważać",
+    "faqs": "Najczęstsze pytania"
+  }
+}

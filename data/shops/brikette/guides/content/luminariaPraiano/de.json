@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "Praianos Kerzenfestival Anfang August: Termine, Anreise, beste Aussichtspunkte und Foto-Etikette."
+  },
+  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "intro": [
+    "Plane deinen Besuch beim Luminaria di San Domenico in Praiano: Kerzengeschmückte Gassen, Feuerwerk und respektvolles Zuschauen."
+  ],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Festival-Grundlagen",
+      "body": [
+        "Das Fest findet in der ersten Augustwoche statt; die Hauptabende 1.–4. August erleuchten tausende Kerzen auf der Piazza San Gennaro.",
+        "Komm vor Sonnenuntergang, um beim Platzieren der Kerzen zuzusehen und einen guten Aussichtspunkt zu sichern."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "An- und Abreise",
+      "body": [
+        "Nimm den SITA-Bus ab Positano (ca. 20 Minuten) oder buche einen Shuttle; die letzten Busse fahren gegen Mitternacht, bitte tagesaktuelle Zeiten prüfen.",
+        "Wenn du länger bleiben möchtest, reserviere ein Taxi im Voraus oder übernachte in Praiano, um nach dem Feuerwerk Wartezeiten zu vermeiden."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette beim Zuschauen",
+      "body": [
+        "Lass die Kerzen für die Einheimischen unbeschädigt; betrete keine abgesperrten Bereiche und blockiere Wege nicht mit Stativen.",
+        "Nutze Stativ oder feste Unterlage für Langzeitbelichtungen, bleib aber fern von Kircheneingängen und Rettungswegen."
+      ]
+    }
+  ],
+  "tips": [
+    "Nimm eine nachfüllbare Flasche (mind. 500 ml) und eine kleine Taschenlampe für die dunklen Gassen Praianos mit.",
+    "Halte nach dem Feuerwerk Ruhe ein – Anwohner räumen das Wachs oft bis spät in die Nacht weg."
+  ],
+  "faqs": [
+    {
+      "q": "Ist das Festival kostenlos?",
+      "a": [
+        "Ja, das Zuschauen ist gratis. Unterstütze lokale Stände mit Snacks oder spende in der Kirche, damit Kerzen für kommende Jahre finanziert werden."
+      ]
+    },
+    {
+      "q": "Was passiert bei Regen?",
+      "a": [
+        "Starker Regen kann die Kerzenzeremonie verschieben; aktuelle Hinweise veröffentlicht die Gemeinde Praiano auf Facebook. Plane einen Ausweichabend ein."
+      ]
+    }
+  ],
+  "event": {
+    "date": "1.–4. August (Höhepunkte)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Vor Sonnenuntergang ankommen und den Freiwilligen beim Platzieren der Kerzen zusehen.",
+      "Taschenlampe oder Handylicht für den Rückweg durch dunkle Gassen bereithalten."
+    ]
+  }
+}

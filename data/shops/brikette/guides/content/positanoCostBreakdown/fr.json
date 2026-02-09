@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Budget Positano : répartition des coûts",
+    "description": "Exemple de budget quotidien : hébergement, repas, transport, activités et dépenses surprises."
+  },
+  "linkLabel": "Budget Positano : répartition des coûts",
+  "intro": [
+    "Comprenez combien coûte une journée à Positano et où réduire les dépenses sans renoncer aux essentiels."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Coûts de transport",
+      "body": [
+        "Les navettes aéroport vers Sorrente coûtent en moyenne 10 à 12 € ; ajoutez 2 à 3 € pour le bus SITA jusqu’à Positano. Les ferries entre villages varient de 8 à 20 € selon la distance.",
+        "Prévoyez 5 € par jour pour les bus locaux ; les taxis commencent autour de 20 € pour une courte course nocturne en montée."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Budget hébergement",
+      "body": [
+        "Les lits en dortoir à l’Hostel Brikette oscillent entre 30 et 55 € selon la saison ; les chambres privées démarrent vers 110 €.",
+        "Les appartements et boutiques-hôtels dépassent aisément 200 € la nuit. Praiano ou Sorrente offrent des bases avec cuisine à moindre coût."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Restauration",
+      "body": [
+        "Viennoiserie et café du matin valent 4 à 6 € ; un déjeuner panino coûte autour de 8 €.",
+        "Un dîner dans une trattoria milieu de gamme revient à 20–30 € par personne hors vin ; partagez les antipasti pour goûter davantage sans doubler l’addition."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Activités et extras",
+      "body": [
+        "Les sorties en bateau vont de 40 € pour un coucher de soleil en petit groupe à plus de 120 € pour une privatisation. Alternative économique : ferry vers Amalfi pour 9 € et visite libre.",
+        "Allouez 5 à 10 € pour un gelato, une granita ou un pourboire aux artistes de rue afin de garder un budget généreux mais maîtrisé."
+      ]
+    }
+  ],
+  "tips": [
+    "Voyagez en avril, mai, fin septembre ou octobre pour profiter des tarifs d’intersaison tout en gardant des ferries fréquents.",
+    "Retirez de l’argent à Sorrente ou Naples pour limiter les frais, puis répartissez-le en enveloppes quotidiennes."
+  ],
+  "faqs": [
+    {
+      "q": "Quel budget quotidien est réaliste ?",
+      "a": [
+        "Les backpackers tiennent entre 70 et 90 € par jour incluant dortoir, repas et une activité payante. Un confort milieu de gamme tourne plutôt autour de 140 €."
+      ]
+    },
+    {
+      "q": "Puis-je tout payer par carte ?",
+      "a": [
+        "La plupart des restaurants acceptent la carte, mais les bus, petites épiceries et stands de souvenirs préfèrent souvent le liquide. Gardez 20 € en petites coupures pour la journée."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "En bref",
+    "tocTitle": "Sur cette page",
+    "tipsTitle": "Où économiser",
+    "faqsTitle": "FAQ"
+  }
+}

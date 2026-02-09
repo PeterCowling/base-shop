@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Kompkikötés lemondások és viharos tenger",
+    "description": "Mit tegyél, ha az időjárás miatt lemondják a kompokat, alternatívák és hogyan ellenőrizd az állapotot."
+  },
+  "linkLabel": "Kompkikötés lemondások és viharos tenger",
+  "intro": [
+    "A viharos tenger rövid értesítéssel felfüggesztheti a Positanóba és onnan induló kompokat.",
+    "Tarts készen egy szárazföldi tartalékot és figyeld az élő riasztásokat, hogy még mindig elérd a csatlakozásodat."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Élő frissítések figyelése",
+      "body": [
+        "Ellenőrizd az üzemeltetői oldalakat és alkalmazásokat (Travelmar, NLG, Alilauro), valamint a kikötő kijelzőtábláit 30 percenként szeles napokon.",
+        "Engedélyezd az SMS/e-mail riasztásokat vagy kövesd a helyi Telegram/közösségi csatornákat, hogy a lemondások elérjenek téged, még ha el is távolodsz a mólótól."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Váltás szárazföldi útvonalakra",
+      "body": [
+        "Ha a hajózások leállnak, váltsd buszokra és vonatokra: SITA Sorrentóba, majd Circumvesuviana Nápolyba/Pompejibe, vagy busz Amafin keresztül és regionális vonat Salernóból.",
+        "Engedélyezz legalább 60 perces puffert a nap utolsó indulásaihoz, és érvényesítsd a jegyeket beszállás előtt."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Visszatérítések és utalványok",
+      "body": [
+        "Őrizd meg a nyugtákat és készíts képernyőképet a lemondási értesítésről, hogy az üzemeltető feldolgozhassa a visszatérítéseket, átfoglalásokat vagy jóváírásokat.",
+        "Közöld a személyzettel, hogy a következő elérhető hajózást vagy egy szezonutalványt részesíted-e előnyben, mielőtt elhagyod a pultot."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Éjszakai késések kezelése",
+      "body": [
+        "Értesítsd a szálláshelyed vagy túravezetőd, amint a késéseket bejelentik; sokan módosítják a bejelentkezést vagy az indulást, ha előre figyelmeztetik őket.",
+        "Kérdezd meg a kikötői információs pontot a közös taxikról, pótló transzferről vagy csomagmegőrzőről, ha a következő reggelig kell várnod."
+      ]
+    }
+  ],
+  "tips": [
+    "Ellenőrizd a tengeri előrejelzést—a 20 csomó feletti szél vagy 1,5 méter (kb. 5 láb) feletti hullámzás gyakran lemondásokat vált ki.",
+    "Az utasbiztosítás, amely fedezi az időjárási késéseket, segít megtéríteni az extra szállodai éjszakákat vagy pótló transzfereket.",
+    "A reggeli hajózások a legmegbízhatóbbak; kerüld, hogy a nap utolsó hajójára támaszkodj, amikor vihart jósolnak."
+  ],
+  "faqs": [
+    {
+      "q": "Honnan tudom, mikor indulnak újra a hajózások?",
+      "a": [
+        "Frissítsd az üzemeltető weboldalát vagy közösségi hírcsatornáit, és hallgasd a hangszórós bejelentéseket a mólónál—a döntéseket általában 30 percen belül közzéteszik a tervezett indulás után.",
+        "A jegyíródai személyzet is megerősítheti, hogy a következő hajó közlekedik-e, mielőtt elhagyod a kikötőt."
+      ]
+    },
+    {
+      "q": "Mi történik a jegyemmel?",
+      "a": [
+        "Mutasd be a nyugtádat vagy QR-kódodat, hogy visszatérítést, utalványt vagy átfoglalást kérj a következő hajózásra.",
+        "Ha online ügynökségen keresztül foglaltál, küldd el nekik e-mailben a lemondási képernyőképet 24 órán belül a visszatérítési folyamat elindításához."
+      ]
+    },
+    {
+      "q": "Van-e bármilyen garantált komp viharos időben?",
+      "a": [
+        "Nem—amikor a parti őrség bezárja a kikötőt, minden indulás leáll. Tarts készen egy szárazföldi útvonalat.",
+        "Néhány magán charter közepesen hullámzó tengeren hajózhat, de drágák és a kapitány mérlegelésétől függenek; gondold át alaposan a kényelmet és a költségeket."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano para Salerno de autocarro – passo a passo",
+    "description": "Instruções porta a porta do Hostel Brikette para Salerno via Amalfi: onde embarcar, comprar bilhetes, ler horários e mudar em Amalfi."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Resumo da viagem"
+    },
+    {
+      "id": "tickets",
+      "title": "Autocarros e bilhetes SITA"
+    },
+    {
+      "id": "timetable",
+      "title": "Horário e planeamento",
+      "body": "Consulte os horários mais recentes em %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Veja as duas etapas e reserve tempo para a ligação em Amalfi."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Paragem de autocarro Positano (Chiesa Nuova)"
+    },
+    {
+      "id": "walk",
+      "title": "Caminho do hostel até à paragem"
+    },
+    {
+      "id": "wait",
+      "title": "Compre o bilhete e aguarde pelo embarque"
+    },
+    {
+      "id": "transfer",
+      "title": "Trocar de autocarro em Amalfi"
+    },
+    {
+      "id": "arrival",
+      "title": "Chegada a Salerno"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Como leio o horário dos autocarros SITA?",
+      "a": [
+        "**Ler as linhas:** As linhas na primeira coluna representam as diferentes paragens de autocarro ao longo da rota.",
+        "**Ler as colunas:** O horário atribui uma letra alfabética a cada viagem programada, que são listadas como cabeçalhos em cada coluna. Se está a viajar de segunda a sábado, procure as colunas 'F' e 'G'. Se está a viajar ao domingo ou num feriado, use as colunas 'G' e 'H'.",
+        "**Combinar linhas e colunas:** Escolha as suas paragens de partida e chegada, depois verifique as colunas para ver quando os autocarros estão disponíveis e a que horas chegam ao seu destino. Por exemplo, para ver a hora de partida de Sorrento, veja a linha Sorrento. Para ver a hora de chegada a Positano (Chiesa Nuova / Bar Internazionale), consulte a linha Positano (Chiesa Nuova)."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Precisa de outras opções de transporte? Abra a %HOWTO:how-to-get-here|visão geral de Como Chegar% para itinerários de ferry, táxi e combinados."
+  }
+}

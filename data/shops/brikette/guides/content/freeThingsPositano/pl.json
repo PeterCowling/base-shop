@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Darmowe i tanie atrakcje w Positano",
+    "description": "Lista aktywności bezpłatnych lub za niewielką opłatą: spacery, punkty widokowe i wydarzenia."
+  },
+  "linkLabel": "Darmowe i tanie atrakcje w Positano",
+  "intro": [
+    "Positano nagradza wczesnych wstających i ciekawskich wędrowców — dni można wypełnić widokami, kąpielami i kulturą, nie wydając więcej niż kilka euro."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Punkty widokowe warte wspięcia się",
+      "body": [
+        "Zacznij od tarasu przed Chiesa Nuova, by obserwować barwy wschodu słońca nad zatoką; zabierz 500 ml butelkę (17 uncji), bo w pobliżu nie ma kranów.",
+        "Przejdź Via Cristoforo Colombo i balkony Viale Pasitea podczas złotej godziny, aby zrobić pocztówkowe zdjęcia bez rezerwacji stolika."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Darmowe plażowanie",
+      "body": [
+        "Spiaggia Grande ma bezpłatny pas po prawej stronie — weź lekki ręcznik i usiądź blisko linii wody, by ominąć kolejki do lido.",
+        "Pójdź ścieżką przybrzeżną do plaży Fornillo po cichszą zatoczkę; spacer zajmuje około 12 minut z łagodnymi schodami, a strefa publiczna pozostaje darmowa."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "DIY walking routes",
+      "body": [
+        "Przeglądaj wąskie uliczki dzielnicy Liparlati, wchodząc w malutkie dziedzińce i ceramiczne schodki między Via dei Mulini a Via Pasitea.",
+        "Skorzystaj z darmowego wahadła do przystanku Montepertuso i zejdź starożytnymi kamiennymi stopniami z powrotem do Positano w 25–35 minut, zatrzymując się przy punkcie widokowym z naturalną łukową skałą."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Kultura poza biletem",
+      "body": [
+        "Wstąp do Santa Maria Assunta, by zobaczyć bizantyjską ikonę i kopułę z majoliki; wystarczy, że ramiona są przykryte.",
+        "Sprawdź tablicę ogłoszeń gminy przy Piazza dei Mulini, by znaleźć wieczorne koncerty czy projekcje filmów na plaży latem."
+      ]
+    }
+  ],
+  "tips": [
+    "Zabierz wielorazową butelkę i nabierz wodę przy publicznej fontannie koło Chiesa Nuova, zanim udasz się na punkty widokowe.",
+    "Spakuj krem z filtrem przyjazny rafom i pareo — posłużą jako mata plażowa i lekka osłona w kościołach."
+  ],
+  "faqs": [
+    {
+      "q": "Czy na plażach są darmowe prysznice?",
+      "a": [
+        "Tak — przy publicznej części Spiaggia Grande są zimne prysznice. Zabierz klapki, bo podłoga rozgrzewa się w południe."
+      ]
+    },
+    {
+      "q": "Czy potrzebuję biletów na Ścieżkę Bogów?",
+      "a": [
+        "Sama trasa jest bezpłatna przez cały rok. Zaplanuj 2,40 € na autobus SITA do Nocelle i z powrotem, jeśli nie chcesz iść w obie strony."
+      ]
+    }
+  ]
+}

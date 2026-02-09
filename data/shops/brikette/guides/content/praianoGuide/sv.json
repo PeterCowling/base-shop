@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Upptäck Praiano: avslappnad granne",
+    "description": "Vad Praiano erbjuder: stränder, utsikter, transporter och vardagsservice."
+  },
+  "linkLabel": "Upptäck Praiano: avslappnad granne",
+  "intro": [
+    "Praiano är Positanos avslappnade granne med utsikt över solnedgången, hanterbara priser och lugna stränder."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Why visit",
+      "body": [
+        "Njut av panoramautsikt över solnedgångarna från Piazza San Gennaro utan trängsel från armbåge till armbåge.",
+        "Boende kostar €20–40 € billigare per natt än Positano samtidigt som busstillgången behålls."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Beaches & swimming",
+      "body": [
+        "Marina di Praia erbjuder en dramatisk vik med strandklubbar och kajakuthyrning; anländer före 11:00 för solstolar på första raden.",
+        "Gavitella Beach vetter mot väster för simtur i gyllene timmar; räkna 400 steg ner, så planera mellanmål och vatten."
+      ]
+    },
+    {
+      "id": "dining",
+      "title": "Food & nightlife",
+      "body": [
+        "Boka Il Pirata eller Kasai för skaldjursmiddagar med terrassutsikt; reservera solnedgångsbord några dagar framåt på sommaren.",
+        "Praianos strandbarer bjuder på levande musik på helgerna – se affischer nära SITA-hållplatsen för bestämda tider."
+      ]
+    }
+  ],
+  "tips": [
+    "Använd den lokala internbussen för att hoppa över de brantaste delarna mellan övre och nedre Praiano.",
+    "Bär en pannlampa för sena trappklättringar tillbaka till boendet."
+  ],
+  "faqs": [
+    {
+      "q": "How long is the bus ride from Positano?",
+      "a": [
+        "Cirka 15 minuter på SITA-bussen, längre vid rusningstid. Tjänsterna går ungefär var 30:e minut på sommaren."
+      ]
+    },
+    {
+      "q": "Kan jag stanna i Praiano och besöka Positano dagligen?",
+      "a": [
+        "Ja. Många resenärer pendlar med buss eller skoter och njuter av lugnare nätter samtidigt som de har tillgång till Positano dagtid."
+      ]
+    }
+  ]
+}

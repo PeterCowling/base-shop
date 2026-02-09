@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Vackra promenader i och runt Positano",
+    "description": "Promenader och kortare vandringar med utsikt, tider och svårighetsgrad."
+  },
+  "linkLabel": "Vackra promenader i och runt Positano",
+  "intro": [
+    "Länka terrassens gränder och utsiktsplatser för korta natursköna slingor utan att förvandla dagen till en full vandring."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Upper-village loop",
+      "body": [
+        "Koppla ihop Chiesa Nuova och Sponda via terrassbanor för klassisk silhuettvy med lättare gångtrafik."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Fornillo coastal path",
+      "body": [
+        "Följ den lugnare stranden och fotogeniska trappor. Sikta på tidig morgon eller golden hour."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Nocelle viewpoint stroll",
+      "body": [
+        "Åk bussen upp till Nocelle och gren av korta utlöpare för vidsträckta vyer utan långa trappor."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What shoes should I wear?",
+      "a": [
+        "Välj stödjande tränare med grepp; vissa stigar har ojämna stentrappor och kan vara hala efter regn."
+      ]
+    },
+    {
+      "q": "How long are the walks?",
+      "a": [
+        "Varje slinga tar 30–60 minuter inklusive fotostopp. Lägg till bussresor för Nocelle för att hålla lutningar hanterbara."
+      ]
+    }
+  ]
+}

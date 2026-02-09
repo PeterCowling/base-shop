@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Lokal etikette: do's and don'ts",
+    "description": "God opførsel i restauranter, kirker og på smalle gader — med eksempler fra Amalfikysten."
+  },
+  "linkLabel": "Lokal etikette: do's and don'ts (Italien, Amalfi-eksempler)",
+  "intro": [
+    "Praktisk etikette til restaurantbesøg, kirkebesøg og delte smalle gader i Positano og langs Amalfikysten."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Spisning",
+      "body": [
+        "Bestil bord i god tid i spidsbelastede perioder, vær tålmodig mellem retterne, bed om regningen, når du er klar, og giv et lille drikkepengebeløb ved ekstra god service."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Kirker og påklædning",
+      "body": [
+        "Dæk skuldre inde i kirker, og undgå at gå gennem butikker i badetøj."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Delte stræder",
+      "body": [
+        "Hold til højre på de smalle trappestræder, lad andre passere, og skift hurtigt ved populære fotospots."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Skal jeg give drikkepenge?",
+      "a": [
+        "Drikkepenge er frivillige; læg €1–€2 ved særlig god service eller rund regningen op. Coperto dækker allerede brød og opdækning."
+      ]
+    },
+    {
+      "q": "Hvad skal jeg have på i kirker?",
+      "a": [
+        "Dæk skuldre og knæ, tag hatten af, og tal dæmpet. Medbring et let tørklæde til at lægge over ærmeløse toppe."
+      ]
+    }
+  ]
+}

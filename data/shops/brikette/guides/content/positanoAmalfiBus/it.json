@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Positano ad Amalfi in autobus | Hostel Brikette",
+    "description": "Indicazioni passo dopo passo per prendere l'autobus SITA dall'Hostel Brikette ad Amalfi, con consigli su dove comprare i biglietti, la fermata Chiesa Nuova e come leggere l'orario."
+  },
+  "intro": {
+    "title": "Positano ad Amalfi – Autobus SITA",
+    "body": "Usa questa guida per un viaggio semplice dall'Hostel Brikette ad Amalfi. Gli autobus sono gestiti da SITA Sud e in alta stagione passano spesso. Qui trovi dove acquistare i biglietti, come interpretare l'orario e il punto esatto in cui salire a Positano."
+  },
+  "callouts": {
+    "tip": "Ti servono tutte le opzioni di trasporto? Apri la %HOWTO:how-to-get-here|panoramica di Come arrivare% per traghetti, taxi e itinerari combinati."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica del viaggio",
+      "body": "Metti in conto 45-60 minuti in estate, a seconda di traffico e code. Salta a bordo a Positano (Chiesa Nuova) per un autobus diretto ad Amalfi. Nelle ore di punta arriva in anticipo per assicurarti un posto."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA e i biglietti",
+      "body": "Gli autobus sono gestiti da SITA (SITA Sud Srl). Acquista il biglietto in anticipo in edicola o in tabaccheria. Mostralo all'autista quando sali: lo timbrerà o lo strapperà per convalidarlo. Conservalo fino all'arrivo ad Amalfi."
+    },
+    {
+      "id": "timetable",
+      "title": "Come leggere l'orario SITA",
+      "body": "L'orario ufficiale mostra le fermate sulle righe e le corse su colonne contrassegnate da lettere. Per il giorno del viaggio abbina le righe Positano e Amalfi all'interno della stessa colonna. Consulta l'orario aggiornato su %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Le righe nella prima colonna elencano tutte le fermate della linea.",
+        "Le colonne corrispondono alle corse programmate identificate da una lettera.",
+        "Viaggi da lunedì a sabato? Usa le colonne \\\\\"F\\\\\" e \\\\\"G\\\\\".",
+        "Viaggi di domenica o in festivo? Usa le colonne \\\\\"G\\\\\" e \\\\\"H\\\\\"."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Fermata autobus di Positano (Chiesa Nuova)",
+      "list": [
+        "La fermata SITA più vicina è Positano (Chiesa Nuova) in Via G. Marconi.",
+        "Si trova a circa 140 metri (490 piedi) dall'ingresso dell'ostello.",
+        "Attenderai fuori dal bar/caffè chiamato \\\\\"Bar Internazionale\\\\\"."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Dall'ostello alla fermata a piedi",
+      "list": [
+        "Esci dall'ostello, scendi i gradini fino alla strada principale e gira a sinistra.",
+        "Prosegui lungo Via G. Marconi per circa 100 metri (330 piedi).",
+        "Troverai il Bar Internazionale sulla sinistra; la fermata SITA è proprio lì davanti."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Compra il biglietto e attendi l'imbarco",
+      "list": [
+        "Acquista un biglietto SITA al bar o all'edicola/tabacchi nelle vicinanze.",
+        "Attraversa sull'altro lato della strada e mettiti in fila per l'autobus diretto ad Amalfi.",
+        "Controlla che il display dell'autobus indichi \\\\\"Amalfi\\\\\"."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arrivo ad Amalfi",
+      "body": "La maggior parte delle corse termina al terminal degli autobus di Amalfi vicino al porto. Da qui puoi proseguire per Ravello e Salerno o esplorare a piedi il centro storico di Amalfi. Programmi il ritorno? Consulta %HOWTO:amalfi-positano-bus|Amalfi a Positano in autobus%."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Come si legge l'orario degli autobus SITA?",
+      "a": [
+        "**Lettura delle righe:** Le righe nella prima colonna rappresentano le diverse fermate lungo il percorso.",
+        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascuna corsa programmata, elencate come intestazioni in ogni colonna. Se viaggi da lunedì a sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, usa le colonne 'G' e 'H'.",
+        "**Combinare righe e colonne:** Scegli le fermate di partenza e arrivo, quindi controlla le colonne per vedere quando gli autobus sono disponibili e a che ora arrivano a destinazione. Ad esempio, per vedere l'ora di partenza da Sorrento, guarda la riga Sorrento. Per l'ora di arrivo a Positano (Chiesa Nuova / Bar Internazionale), consulta la riga Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Naplemente a teraszon Positanóban",
+    "description": "Egyszerű naplemente‑terv a Hostel Brikette‑nél: mikor érkezz, hogy stresszmentes legyen."
+  },
+  "linkLabel": "Teraszos naplemente",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "A hostel terasza a legegyszerűbb opció, ha nem akarsz drága, hosszú vacsorát."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Mikor érdemes érkezni",
+      "body": [
+        "Főszezonban: 30–45 perccel naplemente előtt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Naplemente‑fény Positano felett, teraszról nézve"
+        }
+      ]
+    }
+  ],
+  "fallback": "Érkezz kicsit korábban, igyál egyet, és tartsd egyszerűen."
+}

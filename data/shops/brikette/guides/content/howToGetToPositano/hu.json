@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Hogyan jutsz el Positanóba: minden opció összehasonlítva",
+    "description": "Hasonlítsd össze a kompot, a vonat+buszt, a transzfert és a privát fuvarokat – szezonális megjegyzésekkel és poggyásztippekkel."
+  },
+  "linkLabel": "Hogyan juss el Positanóba (döntést segítő útmutató)",
+  "intro": "Positano megközelítésének minden reális módja – évszak, költség, poggyász és érkezési idő szerint összehasonlítva.",
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "naples": "Nápolyon keresztül",
+    "salerno": "Salernón keresztül",
+    "ferry": "Komp (nyár)",
+    "private": "Privát transzfer",
+    "faqs": "GYIK"
+  },
+  "labels": {
+    "whenHeading": "Mikor válaszd",
+    "cheapestHeading": "Legolcsóbb útvonal",
+    "seasonalHeading": "Szezonális megjegyzések"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Nápolyon keresztül",
+      "body": [
+        "Reptéri transzfer Sorrentóba + SITA busz Positanóba (a legolcsóbb), vagy vonat Sorrentóba és onnan SITA.",
+        "Nyáron a Molo Beverellóról induló kompok nyugodt tengernél járnak; mindig ellenőrizd, törölték-e a járatot."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salernón keresztül",
+      "body": [
+        "Vonattal Salernóba, majd szezonban komppal tovább Positanóba – poggyásszal is kényelmes.",
+        "Az előszezonban és a holtszezonban buszozz Amalfin keresztül; lassabb, de megbízható."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Privát transzfer",
+      "body": [
+        "Ajtótól ajtóig; drágább, de késői érkezésnél vagy sok csomaggal a legegyszerűbb."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Mi a leggyorsabb nyáron?",
+      "a": [
+        "Vonattal Salernóba, majd komppal, ha nyugodt a tenger; így elkerülöd a közúti forgalmat."
+      ]
+    },
+    {
+      "q": "Hol szálljak le a buszról?",
+      "a": [
+        "A ‘Chiesa Nuova’ megállótól a legkevesebb lépcsőt kell megtenni a Brikette Hostelhez (kb. 80 méter)."
+      ]
+    }
+  ]
+}

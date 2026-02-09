@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "48 timmar i Positano",
+    "description": "Tvådagarsplan med måsteupplevelser, matstopp och tid för stranden."
+  },
+  "linkLabel": "48 timmar i Positano",
+  "intro": [
+    "En 48-timmars helg i Positano är genomförbar om du reser lätt, frontlastade ankomster och jagar vyer utanför toppvärmen."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Day 1 — arrival & morning",
+      "body": [
+        "Kom på den första SITA-bussen eller färjan, släpp påsar vid ditt boende eller förråd och ta espresso plus sfogliatella på Via dei Mulini.",
+        "Gå ner till Fornillo Beach för ett dopp före middagstid när lidos fortfarande är lugnt och offentliga platser frigörs."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Day 1 — afternoon & sunset",
+      "body": [
+        "Åk med lokalbussen till Nocelle för en kort prova på Path of the Gods; återvända i tid för solnedgången på Via Cristoforo Colombo.",
+        "Boka middag på en terrass eller hämta delikatessmat för en picknick på vandrarhemmets balkong."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Day 2 — choose-your-adventure morning",
+      "body": [
+        "Alternativ A: färja till Amalfi och snabbt hoppa till Ravellos Villa Cimbrone-trädgårdar; alternativ B: gå med på en delad båttur för utsikt över kusten.",
+        "Packa frukost från bageriet så att du kan börja tidigt utan att vänta på caféservering."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Day 2 — wrap-up & departure",
+      "body": [
+        "Kläm in på shopping hos hantverkssandaltillverkare eller keramikstudior före lunch.",
+        "Hämta bagage 90 minuter före avgång för att möjliggöra trappor och köer vid kajen eller busshållplatsen."
+      ]
+    }
+  ],
+  "tips": [
+    "Bär en dagsväska under 10 kg (22 lb) så att du snabbt kan navigera i trappor.",
+    "Bokmärk tidtabeller för färjor och bussar offline; helgtjänstbyten är vanliga."
+  ],
+  "faqs": [
+    {
+      "q": "Is one overnight enough?",
+      "a": [
+        "Ja om du fokuserar på höjdpunkter och håller dig centralt, men två nätter erbjuder ett lugnare tempo och backup för väder."
+      ]
+    },
+    {
+      "q": "Where should I watch sunset?",
+      "a": [
+        "Via Cristoforo Colombo och vandrarhemsterrassen är lätta vinster; strandbarer fungerar också men förvänta dig högre priser."
+      ]
+    }
+  ]
+}

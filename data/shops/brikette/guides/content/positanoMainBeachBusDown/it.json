@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Autobus dall'Hostel Brikette alla spiaggia principale di Positano",
+    "description": "Come prendere l'autobus interno arancione in discesa fino a Piazza dei Mulini e passeggiare fino alla Spiaggia Grande."
+  },
+  "linkLabel": "Bus down to Positano's main beach",
+  "intro": [
+    "L'autobus arancione Interno Positano collega l'Ostello Brikette con Piazza dei Mulini, a pochi passi dalla Spiaggia Grande.",
+    "Segui questi passaggi per acquistare i biglietti ai tabacchi, guidare in discesa e coprire gli ultimi minuti a piedi."
+  ],
+  "sections": [
+    {
+      "id": "reach-the-stop",
+      "title": "Raggiungi la fermata Chiesa Nuova",
+      "body": [
+        "Esci dall'ostello, scendi le scale d'ingresso e gira a sinistra lungo Viale Pasitea.",
+        "Dopo circa 100 metri (330 piedi), prendi il primo angolo a destra accanto al tabacchi/edicola: la fermata dell'autobus Chiesa Nuova si trova proprio all'esterno.",
+        "Entra prima di salire a bordo per acquistare i biglietti Interno Positano in anticipo; è più economico ed evita ritardi alla porta."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Guidare l'autobus Interno Positano in discesa",
+      "body": [
+        "Sali a bordo del minibus arancione con la scritta “Interno Positano”. Diversi stili di veicoli percorrono il percorso, ma la destinazione sul cartello elettronico rimane la stessa.",
+        "Rimani mentre l'autobus attraversa le strade collinari di Positano e scende verso il centro della città."
+      ]
+    },
+    {
+      "id": "piazza-dei-mulini",
+      "title": "Sbarco in Piazza dei Mulini",
+      "body": [
+        "Scendi a Piazza dei Mulini, la fermata centrale del quartiere dello shopping vicino alla farmacia.",
+        "Questo è il punto più basso della città che i veicoli possono raggiungere e si trova a pochi minuti dal lungomare."
+      ]
+    },
+    {
+      "id": "final-walk",
+      "title": "Percorri l'ultimo tratto fino alla spiaggia",
+      "body": [
+        "Cammina dritto sotto l'arco accanto alla piazza e segui il lungomare verso il porto.",
+        "In 3–4 minuti la Spiaggia Grande si apre sulla tua sinistra — usa il %LINK:positanoMainBeachWalkDown|guida a piedi% se vuoi ogni punto di controllo delle scale."
+      ]
+    }
+  ],
+  "tipsTitle": "Suggerimenti sugli autobus",
+  "tips": [
+    "Acquista i biglietti interni ai tabacchi prima di metterti in coda; gli acquisti a bordo costano un po' di più e gli autisti a volte fanno il tutto esaurito.",
+    "Screenshot dell'orario dalla reception o dal concierge digitale: i servizi a tarda sera si assottigliano nella stagione delle spalle.",
+    "Passa a %LINK:positanoMainBeachWalkDown|percorso a piedi% se preferisci sgranchirti le gambe mentre scendi."
+  ]
+}

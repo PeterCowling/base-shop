@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Bus di ritorno all'Hostel Brikette dalla spiaggia di Arienzo",
+    "description": "Sali dalla spiaggia alla strada, prendi il bus verso Positano, scendi a Bar Internazionale/Chiesa Nuova, poi segui le brevi indicazioni per l'Hostel Brikette."
+  },
+  "linkLabel": "Bus di ritorno all'Hostel Brikette dalla spiaggia di Arienzo",
+  "intro": [
+    "Scansiona per condividere",
+    "Suggerimento: Orario del bus. Nota che l'orario include gli orari di Positano, ma non quelli di Arienzo. La fermata del bus di Arienzo si trova circa 2-5 minuti prima di Sponda.",
+    "Importante! Se non hai un biglietto del bus per il viaggio di ritorno, puoi camminare fino a Sponda e prendere il bus da lì, oppure prendere la navetta via mare fino alla spiaggia principale di Positano. Ricorda, non ci sono rivenditori di biglietti vicino alla spiaggia di Arienzo, quindi è importante pianificare in anticipo e acquistare i biglietti per il viaggio di ritorno.",
+    "Suggerimento: Consulta la nostra %LINK:arienzoBeachClub|Guida alla spiaggia di Arienzo%",
+    "Suggerimento: Consulta la nostra %LINK:positanoBeaches|Panoramica delle spiagge%"
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Sali alla fermata del bus",
+      "body": [
+        "Per prendere il bus di ritorno all'ostello, sali le scale dalla spiaggia alla strada e cerca la fermata del bus sul lato opposto della strada. Il cartello della fermata è blu e bianco, montato su un palo metallico (vedi l'immagine per riferimento). Aspetta alla fermata l'arrivo del bus."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Prendi il bus",
+      "body": [
+        "Il numero di volte che il bus si fermerà prima che tu debba scendere varierà. La distanza che devi percorrere è di circa 3 km / 1,9 miglia."
+      ]
+    },
+    {
+      "id": "get-off-bus",
+      "title": "Scendi dal bus",
+      "body": [
+        "Scenderai alla fermata Bar Internazionale/Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Cammina verso l'ostello",
+      "body": [
+        "Indicazioni:",
+        "* Continua nella direzione in cui andava il bus che hai appena lasciato per poco più di 100 m / 330 piedi.",
+        "* Prendi le scale verso la porta principale dell'ostello."
+      ]
+    }
+  ],
+  "tipsTitle": "Suggerimenti per il bus",
+  "tips": [
+    "Gli orari stampati elencano solo le fermate di Positano; aspettati Arienzo circa 2-5 minuti prima di Positano Sponda sulla via del ritorno.",
+    "Non ci sono rivenditori di biglietti vicino alla spiaggia di Arienzo. Acquista il biglietto di ritorno in città in anticipo, o cammina fino a Sponda per salire da lì, o prendi la navetta via mare fino alla spiaggia principale di Positano.",
+    "Leggi la nostra %LINK:arienzoBeachClub|Guida alla spiaggia di Arienzo% per servizi, navette e consigli di pianificazione.",
+    "Sfoglia la %LINK:positanoBeaches|Panoramica delle spiagge% per confrontare altre insenature e pianificare visite future."
+  ]
+}

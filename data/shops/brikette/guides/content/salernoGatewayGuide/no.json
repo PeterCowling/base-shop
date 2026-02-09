@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerno: den andre inngangsporten til Amalfikysten",
+    "description": "Hvorfor Salerno er en smart ankomst til Positano i sesong, med ferjeforbindelser."
+  },
+  "linkLabel": "Salerno: den andre inngangsporten til Amalfikysten",
+  "intro": [
+    "Salerno er et smart ankomststed for Amalfikysten med bedre togforbindelser og roligere gater enn Napoli."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Hvorfor ankomme via Salerno",
+      "body": [
+        "Høyhastighetstog fra Roma eller Milano avslutter her, slik at du kan gå av Frecciarossa og inn på fergekaien i løpet av minutter.",
+        "Overnatting og servering er billigere enn Positano, noe som gjør det ideelt for første eller siste netter."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Videre forbindelser",
+      "body": [
+        "Sesongbaserte ferger kommer til Positano på omtrent 70 minutter. Busser klatrer kysten året rundt; kjøp UnicoCampania-billetter før ombordstigning.",
+        "Flybussen går til Napoli Capodichino på 60 minutter hvis du flyr ut etter oppholdet."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Overnatting i Salerno",
+      "body": [
+        "Utforsk lungomare-promenaden, middelaldersenteret og Arechi-slottet for utsikt over solnedgangen.",
+        "Bestill trattoriaer rundt Via Roma for utmerket sjømat uten Positano-prislapper."
+      ]
+    }
+  ],
+  "tips": [
+    "Hvis du ankommer sent, over natten i Salerno og ta den første fergen eller bussen til Positano for jevnere transport.",
+    "Bruk bagasjeoppbevaring nær stasjonen (€5–€7 per bag) for å utforske handsfree mellom tog og ferge."
+  ],
+  "faqs": [
+    {
+      "q": "Er fergene pålitelige fra Salerno?",
+      "a": [
+        "Ja om sommeren. Skuldersesongene ser sporadiske værkanselleringer, så behold bussen som backup."
+      ]
+    },
+    {
+      "q": "Hvor tidlig bør jeg møte opp til tog?",
+      "a": [
+        "Ankom 15 minutter før avgang for å finne din plattform og validere regionale billetter om nødvendig."
+      ]
+    }
+  ]
+}

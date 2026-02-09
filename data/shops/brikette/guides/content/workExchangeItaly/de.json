@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Work-Exchange in italienischen Hostels",
+    "description": "Aufgaben, Stunden, rechtliche Basics und wie du Angebote prüfst."
+  },
+  "linkLabel": "Work-Exchange in italienischen Hostels",
+  "intro": [
+    "Du denkst über einen Work-Exchange in Italien nach? Erfahre, wie Hostels und Bauernhöfe Schichten strukturieren, welche Unterlagen du brauchst und wie du seriöse Programme auswählst."
+  ],
+  "sections": [
+    {
+      "id": "expect",
+      "title": "Was dich erwartet",
+      "body": [
+        "Typische Exchanges tauschen 20–25 Stunden Housekeeping, Rezeption oder Social Hosting gegen Bett und Frühstück.",
+        "Die Schichten verteilen sich meist auf fünf Tage, zwei volle Tage bleiben frei. Lass dir Dienstpläne schriftlich bestätigen, bevor du zusagst."
+      ]
+    },
+    {
+      "id": "vet",
+      "title": "Hosts prüfen",
+      "body": [
+        "Lies Bewertungen auf Workaway, Worldpackers und in Hostel-Facebook-Gruppen. Such nach Hosts mit aktuellem Feedback und klaren Aufgabenlisten.",
+        "Frag nach Unterkunftsart (Schlafsaal vs. privat), Ausgehzeiten und ob Mahlzeiten oder Mitarbeiterrabatte enthalten sind."
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": "Formalitäten & Regeln",
+      "body": [
+        "Bürger:innen aus EU, UK, Kanada, Australien und den USA können bis zu 90 Tage als Tourist im Schengenraum bleiben – Work-Exchanges müssen freiwillig bleiben.",
+        "Führ eine Reiseversicherung, die Freiwilligenarbeit oder informelle Arbeit abdeckt; manche Hosts verlangen bei Ankunft eine Haftungsverzichtserklärung."
+      ]
+    }
+  ],
+  "tips": [
+    "Vereinbare einen Video-Call mit dem Host, um Aufgaben zu klären und den Ort zu sehen, bevor du Flüge buchst.",
+    "Reise einen Tag früher an, um dich einzuleben, Hausregeln zu lernen und dich vor der ersten Schicht zu akklimatisieren."
+  ],
+  "faqs": [
+    {
+      "q": "Bekomme ich Taschengeld?",
+      "a": [
+        "Die meisten italienischen Exchanges bieten nur Unterkunft und Verpflegung. Manche erlauben Trinkgelder aus Bar-Schichten oder Ausflügen, aber betrachte das als Bonus, nicht als garantiertes Einkommen."
+      ]
+    },
+    {
+      "q": "Darf ich länger als 90 Tage bleiben?",
+      "a": [
+        "Nein. Du musst die Schengen-Aufenthaltsgrenzen einhalten, es sei denn, du erhältst ein Arbeits- oder Studentenvisum. Plane Weiterreise oder einen Schengen-Reset entsprechend."
+      ]
+    }
+  ]
+}

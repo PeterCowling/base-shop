@@ -1,0 +1,123 @@
+{
+  "seo": {
+    "title": "Sentier des Dieux depuis l'auberge Brikette",
+    "description": "Itinéraire précis depuis l'auberge jusqu'aux départs du Sentiero degli Dei, avec options de transport et conseils de sécurité."
+  },
+  "linkLabel": "Sentier des Dieux depuis Brikette",
+  "intro": [
+    "Le Sentiero degli Dei (Chemin des Dieux) enchaîne terrasses au sommet de falaises, châtaigniers et vues panoramiques sur la côte amalfitaine. Depuis l'auberge Brikette, vous pouvez rejoindre le sentier en combinant les ferries locaux et les bus SITA sans participer à une visite coûteuse.",
+    "Trois approches principales partent de l'auberge : naviguer jusqu'à Amalfi et prendre le bus jusqu'à Bomerano, emprunter le réseau de bus tout au long du trajet, ou sauter les transferts et faire un aller-retour depuis Nocelle. Utilisez cet aperçu pour décider quel itinéraire détaillé convient à votre temps, votre budget et votre confort en matière de hauteurs."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Quand partir",
+      "body": [
+        "Visez avril à juin ou septembre à octobre pour un ciel dégagé et des températures supportables ; les pluies hivernales rendent les marches en pierre glissantes.",
+        "En juillet-août, commencez avant 9 h ou après 15 h car le sentier est exposé et l’ombre rare."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Choisir son itinéraire",
+      "body": [
+        "Bomerano → Nocelle parcourt la crête classique de 6,5 km avec ascensions et descentes continues ; comptez 2 h 30 à 3 h de marche plus les trajets.",
+        "Peu de temps devant vous ? Prenez le bus jusqu’à Nocelle, parcourez l’aller-retour panoramique jusqu’à Colle Serra ou descendez les 1 700 marches vers Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigation et sécurité",
+      "body": [
+        "Suivez les balises rouge et blanc du CAI et les panneaux en bois \\\\\" Sentiero degli Dei \\\\\" ; téléchargez une carte hors ligne car le réseau tombe dans les ravins.",
+        "Le sentier alterne marches en pierre, terre battue et gravier meuble — portez des chaussures de trail adhérentes et gardez les bâtons pliés jusqu’aux descentes plus raides."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Eau, encas et retour",
+      "body": [
+        "Faites le plein sur la piazza principale de Bomerano (cafés, boulangerie, derniers sanitaires publics) avant de partir ; Nocelle possède un kiosque et un stand de granita au citron près de l’église.",
+        "Pour revenir à Positano : descendez les marches jusqu’à la plage d’Arienzo ou prenez le bus SITA depuis Nocelle/Montepertuso — gardez un billet validé supplémentaire dans votre sac."
+      ]
+    }
+  ],
+  "essentialsTitle": "Indispensables",
+  "essentials": [
+    "Chaussures adaptées, eau, protection solaire ; évitez les heures les plus chaudes en été.",
+    "Les billets de bus s’achètent avant de monter (buralistes, kiosques).",
+    "Prévoyez environ 4 h en comptant trajets et pauses photo."
+  ],
+  "typicalCostsTitle": "Coûts indicatifs",
+  "typicalCosts": [
+    "Bus SITA (Positano ⇄ Nocelle/Bomerano) : ~2 à 4 € par trajet selon le titre",
+    "En-cas/eau : 3 à 8 € (apportez les vôtres pour économiser)",
+    "Sentier : gratuit (pas de droit d’entrée)"
+  ],
+  "steps": [
+    {
+      "name": "Rejoindre l’arrêt Chiesa Nuova",
+      "text": "Depuis l’auberge, montez d’environ 80 m jusqu’à l’arrêt SITA de Chiesa Nuova."
+    },
+    {
+      "name": "Bus vers Nocelle ou Bomerano",
+      "text": "Prenez le SITA en direction d’Amalfi et descendez à Nocelle pour la version courte, ou poursuivez jusqu’à Agerola/Bomerano pour le départ classique."
+    },
+    {
+      "name": "Entrée du sentier",
+      "text": "À Nocelle, suivez les panneaux vers le Sentiero degli Dei (arrivée). À Bomerano, suivez la signalétique de la place principale vers le départ du sentier."
+    },
+    {
+      "name": "Options de retour",
+      "text": "Terminez à Nocelle et descendez à Positano par les escaliers, ou reprenez le bus jusqu’à Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Où commence la randonnée ?",
+      "a": "Le départ classique est à Bomerano (Agerola). L’option courte se termine à Nocelle."
+    },
+    {
+      "q": "Quelle est la distance ?",
+      "a": "Comptez environ 4 h en incluant transports et pauses photo."
+    },
+    {
+      "q": "Que dois-je emporter ?",
+      "a": "Chaussures solides, eau, protection solaire. Évitez les heures les plus chaudes en été."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "toc": {
+    "onThisPage": "Sur cette page",
+    "essentials": "Indispensables",
+    "costs": "Coûts indicatifs",
+    "faqs": "FAQ",
+    "tips": "Bon timing"
+  },
+  "tipsTitle": "Bon timing",
+  "tips": [
+    "Partez avant 9h00 en juillet-août ou visez les heures dorées du printemps et de l'automne pour des températures plus fraîches et une lumière plus douce.",
+    "Évitez la descente de 1 700 marches vers Positano à moins que vos genoux ne soient frais : descendre les escaliers de Montepertuso après une longue randonnée est brutal.",
+    "Utilisez un sac à dos léger et gardez les bâtons de randonnée pliés jusqu'à ce que vous atteigniez des escaliers plus raides."
+  ],
+  "faqs": [
+    {
+      "q": "Combien de temps dure la randonnée de porte à porte ?",
+      "a": [
+        "Budget 3 à 5 heures, transport compris. La route du ferry est la plus longue ; l'aller-retour Nocelle s'inscrit dans une demi-journée."
+      ]
+    },
+    {
+      "q": "Le sentier convient-il aux débutants ?",
+      "a": [
+        "Oui, à condition d’être stable sur vos pieds et à l’aise avec les hauteurs. Il n’y a pas de montées techniques, juste des montées et des descentes régulières."
+      ]
+    },
+    {
+      "q": "Que se passe-t-il si les ferries sont annulés ?",
+      "a": [
+        "Changez pour le bus via Amalfi ou roulez directement jusqu'à Nocelle. Conservez toujours un ticket de bus de rechange pour pouvoir vous adapter aux conditions maritimes ou météorologiques."
+      ]
+    }
+  ]
+}

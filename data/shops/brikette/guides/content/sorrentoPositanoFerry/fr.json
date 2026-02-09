@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sorrente vers Positano en ferry | Hostel Brikette",
+    "description": "Étapes de Sorrente à Positano en ferry : billets, conseils de départ et comment monter de l'embarcadère de Positano jusqu'à Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrente vers Positano — Ferry",
+    "body": "Prenez un ferry direct depuis la Marina Piccola de Sorrente vers Positano. Ce court guide explique où acheter vos billets, quand faire la queue et quoi faire à l'arrivée au port de Positano pour faciliter la montée finale jusqu'à Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Besoin de toutes les options de transport ? %HOWTO:how-to-get-here|Vue d’ensemble Comment arriver% pour les bus, taxis et itinéraires combinés."
+  },
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Arrivée à Positano",
+      "list": [
+        "Débarquez au quai principal de Positano (Spiaggia Grande).",
+        "Pour les bagages lourds, envisagez le service de porteurs officiel au quai (service payant).",
+        "Pour rejoindre plus facilement Hostel Brikette, prenez le bus local Interno vers \\\\\" Chiesa Nuova \\\\\" puis marchez une courte distance jusqu'à l'auberge.",
+        "Vous pouvez aussi monter à pied via Via dei Mulini/Via G. Marconi ; prévoyez du temps supplémentaire pour la montée."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Acheter votre billet et embarquer",
+      "list": [
+        "Arrivez 15 à 20 minutes avant le départ pour faire la queue sereinement.",
+        "Gardez votre billet à portée pour le contrôle et suivez les instructions de l'équipage lors de l'embarquement.",
+        "Sécurisez les bagages dans l'espace dédié et gardez vos essentiels avec vous."
+      ]
+    },
+    {
+      "id": "overview",
+      "title": "Aperçu du trajet",
+      "list": [
+        "Comptez environ 45 à 60 minutes de quai à quai en saison.",
+        "Les ferries dépendent de la météo et peuvent être complets aux heures de pointe.",
+        "Acheter les billets un peu en avance permet de garantir une place et un embarquement fluide."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Rejoindre le port de Sorrente (Marina Piccola)",
+      "list": [
+        "Rendez-vous à la Marina Piccola de Sorrente (port des ferries) et suivez la signalisation vers les guichets.",
+        "Vérifiez le prochain départ pour Positano et confirmez l'opérateur (par exemple Travelmar ou NLG).",
+        "Achetez votre billet au guichet ou en ligne puis dirigez-vous vers la porte indiquée."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Savoir-vivre local : à faire et à éviter (Italie, exemples amalfites)",
+    "description": "Bonnes manières italiennes : salutations, repas, plages, transports et pourboires."
+  },
+  "linkLabel": "Savoir-vivre local : à faire et à éviter (Italie, exemples amalfites)",
+  "intro": [
+    "Étiquette pratique pour les repas, les visites d'églises et le partage des ruelles étroites autour de Positano et de la côte amalfitaine."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Au restaurant",
+      "body": [
+        "Réservez à l'avance aux heures de pointe, restez patient entre les plats, demandez l'addition quand vous êtes prêt et laissez un petit pourboire si le service est exceptionnel."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Églises & tenue",
+      "body": [
+        "Couvrez vos épaules dans les églises et évitez de traverser les boutiques en maillot de bain."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Ruelles partagées",
+      "body": [
+        "Tenez-vous sur la droite dans les escaliers étroits, laissez passer les autres et tournez rapidement aux spots photo populaires."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Dois-je laisser un pourboire ?",
+      "a": [
+        "Les pourboires sont facultatifs ; laissez 1 à 2 € pour un service remarquable ou arrondissez l'addition. Le coperto couvre déjà le pain et la mise de table."
+      ]
+    },
+    {
+      "q": "Que porter dans les églises ?",
+      "a": [
+        "Couvrez épaules et genoux, retirez votre chapeau et parlez doucement. Gardez un foulard léger pour couvrir un haut sans manches au besoin."
+      ]
+    }
+  ]
+}

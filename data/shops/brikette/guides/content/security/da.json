@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Retningslinjer for sikkerhed – Positano Hostel",
+    "description": "Al vigtig information om, hvordan vi holder alle gæster – og deres ejendele – sikre, inkl. skabe, sikkerhedsarmbånd, CCTV og retningslinjer for besøgende."
+  },
+  "linkLabel": "Retningslinjer for sikkerhed – Positano Hostel",
+  "sections": [
+    {
+      "id": "personalBelongingsSecurity",
+      "title": "Pas på dine ejendele",
+      "body": [
+        "Hver gæst er ansvarlig for egne ejendele under hele opholdet. Hvor det er muligt, stiller vi skabe og værdibokse til rådighed; brugen er simpel, men flytter ikke ansvaret over på hostelet — sørg derfor for gyldig rejseforsikring. Af hensyn til alle: hold værelsesdøre lukkede og lås det tildelte skab. Effekter efterladt i mere end 30 dage kan blive doneret, genanvendt eller bortskaffet."
+      ]
+    },
+    {
+      "id": "identificationSecurityBands",
+      "title": "Sikkerhedsarmbånd",
+      "body": [
+        "For at personalet hurtigt kan genkende registrerede gæster, får alle et sikkerhedsarmbånd ved check‑in. Bær det på hostellets område; vi kan også bede om billed‑ID. Hvis armbåndet mistes eller beskadiges, kontakt receptionen — et lille erstatningsgebyr gælder. Gæster uden armbånd eller som nægter at vise ID kan blive bedt om at forlade, og refundering kan være umulig."
+      ]
+    },
+    {
+      "id": "cctvSurveillance",
+      "title": "CCTV og videoovervågning",
+      "body": [
+        "Fællesområder — inklusive indgang, gange, terrasse og opholdsrum — overvåges af CCTV døgnet rundt. Optagelser lagres sikkert og er kun tilgængelige for autoriseret personale. Kameraerne understøtter sikkerheden, men kan ikke garantere mod tab, tyveri eller skade; vær derfor opmærksom og sikr værdigenstande."
+      ]
+    },
+    {
+      "id": "temporaryGuestsPolicy",
+      "title": "Modtagelse af dagsbesøgende",
+      "body": [
+        "Tal med receptionen før du inviterer venner på besøg, så vi kan give dem status som Dagsgæst. Efter registrering med gyldigt ID kan dagsgæster benytte fællesarealer mellem 10:30 og 20:00. Af hensyn til privatlivet er værelserne kun for registrerede overnattende gæster. Hostelet kan efter eget skøn afslå eller tilbagekalde denne status."
+      ]
+    },
+    {
+      "id": "unregisteredPersonsPolicy",
+      "title": "Registrering af overnattende gæster",
+      "body": [
+        "Italiensk lov kræver, at alle overnattende gæster registreres. Hvis en uregistreret person findes i et værelse, opkræves standard værelsespris for vedkommende samt et administrationsgebyr svarende til det dobbelte beløb hos den/de registrerede gæst(er). Den ekstra gæst skal straks gennemføre check‑in eller forlade stedet; ellers er vi forpligtet til at kontakte de lokale myndigheder. At undlade at oplyse en overnattende gæst kan medføre, at bookingen markeres som no‑show."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Pôr do sol na esplanada em Positano",
+    "description": "Um plano de pôr do sol simples e com orçamento no Hostel Brikette: quando chegar para manter sem stress."
+  },
+  "linkLabel": "Pôr do sol na esplanada",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Para ver o pôr do sol sem um jantar longo e caro, a esplanada do hostel é a opção mais simples."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Timing",
+      "body": [
+        "Na época alta: chegue 30–45 minutos antes do pôr do sol para garantir bom lugar."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Luz do pôr do sol sobre Positano vista da esplanada"
+        }
+      ]
+    }
+  ],
+  "fallback": "Chegue um pouco antes, tome uma bebida e mantenha a noite simples."
+}

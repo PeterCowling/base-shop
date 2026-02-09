@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vs. Napoli: hvilket ankomststed er best for Positano?",
+    "description": "Når Salerno er raskere eller billigere enn Napoli for å nå Positano, avhengig av sesong og tidspunkt."
+  },
+  "linkLabel": "Salerno vs. Napoli – ankomst",
+  "intro": [
+    "Begge gatewayene fungerer. Om sommeren vinner Salerno ofte stille takket være ekstra ferger og roligere køer."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Når Salerno vinner",
+      "body": [
+        "Sesongbaserte ferger går direkte til Positano eller Amalfi med lettere folkemengder enn Napoli-bryggene.",
+        "Koble til flyplassen i Salerno Costa d'Amalfi (QSR) med Airlink-bussen for å gjøre transporten enkel."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Når Napoli vinner",
+      "body": [
+        "Pålitelighet utenom sesongen: høyhastighetstog pluss SITA via Sorrento fortsetter å kjøre når fergene stopper.",
+        "Sene ankomster finner flere overnattingsmuligheter og videre transportmuligheter rundt Napoli."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Bagasje og trapper",
+      "body": [
+        "Ankom Chiesa Nuova for å minimere trappene opp til vandrerhjemmet.",
+        "Lande med ferge? Bestill en portier ved kaien eller kjør SITA-bussen i oppoverbakke i stedet for å frakte sekker."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er Salerno Airport (QSR) verdt det?",
+      "a": [
+        "I økende grad ja for sommeren: Kombiner QSR-flyvninger med Airlink-bussen og fergen når havet er rolig, og fall tilbake til busser hvis været snur."
+      ]
+    }
+  ]
+}

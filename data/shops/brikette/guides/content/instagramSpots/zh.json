@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "波西塔诺 Instagram 打卡点（避开人潮）",
+    "description": "最佳拍摄时间与机位，避开排队的小众替代点。"
+  },
+  "linkLabel": "波西塔诺 Instagram 打卡点（避开人潮）",
+  "intro": [
+    "想拍出不‘撞角度’的照片？挑对时间与高度，避开正午人潮与顶光。"
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "经典角度的进阶拍法",
+      "body": [
+        "主沙滩回望山城：日落前 45 分钟色温最佳；以人群为前景，降低快门突出层次。",
+        "Fornillo 步道：低角度包含礁石，画面更稳。"
+      ]
+    },
+    {
+      "id": "elevated",
+      "title": "制高点与上城区",
+      "body": [
+        "公交上坡至 Sponda/Chiesa Nuova 一带，顺路寻找沿街观景平台，远景更干净。",
+        "搭乘本地公交上山到 Nocelle，再从众神之路的观景台拍摄海岸；晴朗清晨的全景最震撼。"
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "黄金时段的布景",
+      "body": [
+        "日落前约 45 分钟到 Via Cristoforo Colombo 的长椅占位，夏季夕阳会沉在 Li Galli 島後方。",
+        "前往 Laurito 海滩可拍到波西塔诺剪影；楼梯陡峭，记得穿防滑鞋并带头灯走回程。"
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "拍照礼仪",
+      "body": [
+        "脚架请维持小巧并拍完即移位，让阶梯保持通行。",
+        "镇内禁止随意放飞无人机；意大利法规需申请许可，被查到违规将面临重罚。"
+      ]
+    }
+  ],
+  "tips": [
+    "带超细纤维布，可随时擦拭海浪水汽或防晒油留下的痕迹。",
+    "在 Google 地图离线收藏喜爱的拍摄点，山路与露台的讯号常断线。"
+  ],
+  "faqs": [
+    {
+      "q": "需要三脚架吗？",
+      "a": [
+        "建议带便携脚架；夜景可提升成功率。部分地点请注意不阻塞通行。"
+      ]
+    },
+    {
+      "q": "不是房客可以在饭店露台拍照吗？",
+      "a": [
+        "不行，露台属私人空间；若想取景可预订餐厅座位，并在开拍前征得工作人员同意。"
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "波西塔诺几乎处处好拍，但热门机位大多时段拥挤。以下教你如何避开长队拍出经典画面，并提供几个冷门替代点。",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "经典机位（时间最关键）"
+      },
+      {
+        "href": "#alternatives",
+        "label": "同样好看的替代点"
+      },
+      {
+        "href": "#sunset",
+        "label": "日落选择"
+      },
+      {
+        "href": "#etiquette",
+        "label": "礼仪与本地提示"
+      },
+      {
+        "href": "#faqs",
+        "label": "常见问题"
+      }
+    ],
+    "classics": {
+      "heading": "经典机位（时间最关键）",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "日出时抵达码头最空、水面最平静；避开上午中段的排队高峰。"
+        },
+        {
+          "title": "Fornillo path",
+          "description": "沿海步道坡度平缓，可拍出层叠山城；清晨或日落后光线最好。"
+        },
+        {
+          "title": "Via Pasitea bends",
+          "description": "弯道的高角度能拍出明信片视角且较少人潮。注意车流，请勿站上车道。"
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "同样好看的替代点",
+      "items": [
+        {
+          "title": "Chiesa Nuova terraces",
+          "description": "黄金时刻俯瞰 Fornillo，人少且离旅舍仅需短程步行。"
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "沿稜线视野辽阔；清晨光线最佳。"
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "延伸阅读获取更多不同的构图灵感。"
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "日落选择",
+      "paragraphs": [
+        "想要无拥挤的黄金时段，可前往 Via Pasitea 上段的路边观景点或 Chiesa Nuova 附近露台。",
+        "若偏好海滩剪影，日落前 30–45 分钟抵达 Fornillo。"
+      ]
+    },
+    "etiquette": {
+      "heading": "礼仪与本地提示",
+      "items": [
+        "别堵在狭窄阶梯或道路上；拍完立即让道。",
+        "尊重私人财产，避免攀爬墙壁或屋顶。",
+        "小型脚架仅在离峰时段使用；正午避开拥挤路径。"
+      ]
+    },
+    "faqs": {
+      "heading": "常见问题",
+      "items": [
+        {
+          "summary": "拍照最佳时间？",
+          "body": "清晨最空；黄金时段色温更暖、阴影更柔。"
+        }
+      ]
+    },
+    "drone": {
+      "summary": "无人机需要许可吗？",
+      "body": "意大利对无人机监管严格且禁飞区众多。请查阅 ENAC 指引与当地规定；避免在人群上空飞行。"
+    },
+    "galleryAlt": [
+      "俯瞰波西塔诺",
+      "海岸全景"
+    ],
+    "galleryFallbackAlt": "波西塔诺海岸线的全景"
+  }
+}

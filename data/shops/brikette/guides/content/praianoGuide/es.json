@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Praiano: el vecino relajado",
+    "description": "Por qué visitar Praiano: atardeceres, Marina di Praia y San Gennaro."
+  },
+  "linkLabel": "Guía para explorar Praiano",
+  "intro": [
+    "Praiano ofrece puestas de sol hacia el oeste, playas pequeñas y un ritmo local más calmado que Positano.",
+    "Ideal para una escapada de medio día o como base si prefieres menos multitudes."
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Por qué ir",
+      "body": [
+        "Disfruta la terraza de la iglesia de San Gennaro para sunsets con música en verano.",
+        "El ambiente residencial trae restaurantes y lidos un poco más económicos que en Positano."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Playas y baños",
+      "body": [
+        "Marina di Praia tiene embarcadero para paseos en barco y restaurantes a pie de agua; se llega bajando un valle con escaleras.",
+        "Gavitella ofrece plataformas con vistas al atardecer: prepárate para muchas escaleras y lleva calzado con agarre."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Cómo llegar",
+      "body": [
+        "Los buses SITA Positano↔Praiano operan todo el año; valida el billete y haz señal a la parada con tiempo.",
+        "En verano, los taxis acuáticos conectan Praiano con Positano y Amalfi, perfectos para volver al atardecer."
+      ]
+    }
+  ],
+  "tips": [
+    "Usa el bus interno de Praiano para saltarte los tramos más empinados entre la parte alta y la parte baja.",
+    "Lleva frontal o linterna si vuelves tarde: las escaleras nocturnas están poco iluminadas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Vale la pena dormir en Praiano?",
+      "a": [
+        "Sí si buscas calma y puestas de sol; cuenta con escaleras y planifica desplazamientos en bus local o taxi."
+      ]
+    },
+    {
+      "q": "¿Cuánto tiempo reservo para una visita rápida?",
+      "a": [
+        "Calcula 3–4 horas para playa y aperitivo al atardecer; más si quieres cenar allí."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Điểm chụp Positano lên Instagram (không đông)",
+    "description": "Góc chụp, thời gian và cách tránh đám đông để có ảnh đẹp."
+  },
+  "linkLabel": "Điểm chụp Positano lên Instagram (không đông)",
+  "intro": [
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Classic postcard shots",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Underrated angles",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour setups",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Photo etiquette",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "tips": [
+    "Bản dịch đang được chuẩn bị.",
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "faqs": [
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Bản dịch đang được chuẩn bị.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Bản dịch đang được chuẩn bị."
+      },
+      {
+        "href": "#alternatives",
+        "label": "Underrated alternatives"
+      },
+      {
+        "href": "#sunset",
+        "label": "Sunset choices"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiquette & local tips"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "classics": {
+      "heading": "Bản dịch đang được chuẩn bị.",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Bản dịch đang được chuẩn bị."
+        },
+        {
+          "title": "Fornillo path",
+          "description": "Bản dịch đang được chuẩn bị."
+        },
+        {
+          "title": "Via Pasitea bends",
+          "description": "Bản dịch đang được chuẩn bị."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Underrated alternatives",
+      "items": [
+        {
+          "title": "Chiesa Nuova terraces",
+          "description": "Bản dịch đang được chuẩn bị."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Bản dịch đang được chuẩn bị."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Bản dịch đang được chuẩn bị."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Sunset choices",
+      "paragraphs": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etiquette & local tips",
+      "items": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    "faqs": {
+      "heading": "FAQs",
+      "items": [
+        {
+          "summary": "Bản dịch đang được chuẩn bị.",
+          "body": "Bản dịch đang được chuẩn bị."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Do I need a drone permit?",
+      "body": "Bản dịch đang được chuẩn bị."
+    },
+    "galleryAlt": [
+      "Positano from above",
+      "Coastal panorama"
+    ],
+    "galleryFallbackAlt": "Scenic view of Positano coastline"
+  }
+}

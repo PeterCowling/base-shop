@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Neapelguide för resenärer till Amalfikusten",
+    "description": "Vad du kan göra i Neapel före eller efter Positano-resan: mat, kultur och transporter."
+  },
+  "linkLabel": "Neapelguide för resenärer till Amalfikusten",
+  "intro": [
+    "Neapel är porten till Amalfikusten. Tillbringa en dag eller två med att utforska historiska gator, pizzainstitutioner och enkla sidoturer."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Essential neighbourhoods",
+      "body": [
+        "Gå Spaccanapoli för kyrkor, julkrubba workshops och underjordiska rundturer under San Lorenzo.",
+        "Gå till havet i Chiaia och Castel dell'Ovo för blåsig kvällspromenader."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & coffee",
+      "body": [
+        "Kö till pizza på Sorbillo eller Da Michele (beräkna 30–45 minuter). Ta sfogliatella och espresso på Gran Caffè Gambrinus.",
+        "Prova cuoppo fritto (papperskottar av stekt skaldjur) för €6–8 € när du behöver en snabb matbit."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Day-trip staging",
+      "body": [
+        "Använd Napoli Centrale för höghastighetståg till Rom (1h10) eller Pompeji (40 minuter på Circumvesuviana).",
+        "Förvara bagage på stationen (7 € per väska) om du reser direkt till Positano senare."
+      ]
+    }
+  ],
+  "tips": [
+    "Bär kontaktlösa kort för tunnelbaneresor och köp ett dagspass (5,60 €) om du planerar flera hopp.",
+    "Förvara värdesaker i framfickorna och använd crossbody-väskor i trånga gränder."
+  ],
+  "faqs": [
+    {
+      "q": "Is Naples safe to explore on foot?",
+      "a": [
+        "Ja med normal storstadsmedvetenhet. Håll dig till upplysta gator på natten, undvik att visa stora summor kontanter och ta officiella taxibilar efter midnatt."
+      ]
+    },
+    {
+      "q": "Where can I store luggage?",
+      "a": [
+        "Napoli Centrale och Piazza Garibaldi har bemannade förråd. Boka skåp online på hektiska helger för att garantera plats."
+      ]
+    }
+  ]
+}

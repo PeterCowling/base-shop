@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Camping sur la côte amalfitaine",
+    "description": "Où camper légalement, services disponibles, saisonnalité et alternatives économiques."
+  },
+  "linkLabel": "Camping sur la côte amalfitaine",
+  "intro": [
+    "Camper sur la Côte amalfitaine signifie réserver des emplacements dédiés hors du centre de Positano ; vérifiez la réglementation locale et les disponibilités."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Où camper",
+      "body": [
+        "Des campings aménagés existent en dehors du centre de Positano ; confirmez les règles locales et réservez à l’avance."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Accès et transports",
+      "body": [
+        "Prévoyez les bus ou la marche depuis les campings ; les routes côtières sont étroites et le stationnement limité."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Étiquette et sécurité",
+      "body": [
+        "Respectez les heures calmes et les règles sur les feux, ramenez vos déchets, évitez les falaises et les zones non balisées."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Le bivouac est-il autorisé ?",
+      "a": [
+        "En général non ; optez pour des campings officiels et suivez la signalisation sur place."
+      ]
+    }
+  ]
+}

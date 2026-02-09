@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Przechowywanie bagażu w Positano",
+    "description": "Gdzie zostawić bagaż w Positano, godziny otwarcia, spodziewane ceny i alternatywy."
+  },
+  "linkLabel": "Przechowywanie bagażu w Positano",
+  "intro": [
+    "Gdzie zostawić bagaż w Positano: opcje przy przystani i wzdłuż Via dei Mulini."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "W pobliżu przystani",
+      "body": [
+        "Przechowalnie na godziny/dni z biletem; spodziewaj się kolejek w sezonie — rezerwuj z wyprzedzeniem, jeśli możesz."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Platformy pośredniczące",
+      "body": [
+        "Bounce / Radical Storage: potwierdź dokładny adres i godziny otwarcia przed zapłatą online."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etykieta i wskazówki",
+      "body": [
+        "Trzymaj przy sobie rzeczy wartościowe; oznacz bagaż i sfotografuj potwierdzenia odbioru."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy przechowalnie działają wieczorem?",
+      "a": [
+        "Godziny różnią się — sprawdź wcześniej, czy nie zamykają się poza sezonem i uwzględnij ostatnie kursy promów."
+      ]
+    }
+  ],
+  "tocTitle": "Na tej stronie",
+  "faqsTitle": "Najczęściej zadawane pytania",
+  "heroAlt": "Porter prowadzi wózek bagażowy po schodach Positano",
+  "serviceType": "Przechowywanie bagażu",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Domy na urwisku Positano z widokiem na morze",
+    "primaryCaption": "Panorama Positano",
+    "secondaryAlt": "Porter pchający wózek bagażowy przy przystani promowej w Positano",
+    "secondaryCaption": "Wózki bagażowe przy przystani"
+  }
+}

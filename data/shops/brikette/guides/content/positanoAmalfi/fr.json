@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano - Amalfi : comment y aller",
+    "description": "Options de bus et de ferry entre Positano et Amalfi, avec horaires et conseils."
+  },
+  "linkLabel": "Positano - Amalfi : comment y aller",
+  "intro": [
+    "Positano ↔ Amalfi en bus ou en ferry saisonnier : comment choisir et quand partir."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (toute l’année)",
+      "body": [
+        "Bus SITA ; achetez et validez les billets ; files aux heures de pointe — partez tôt.",
+        "Asseyez-vous à droite en quittant Positano pour profiter des vues sur la falaise."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (saisonnier)",
+      "body": [
+        "Plus rapide et panoramique par mer calme ; vérifiez les horaires en temps réel et prévoyez une marge.",
+        "Arrivez en avance en haute saison pour être sûr d’avoir une place."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Combien de temps dure le trajet ?",
+      "a": [
+        "Le bus met 40 à 55 minutes selon la circulation ; les ferries couvrent la traversée en environ 25 minutes quand la mer est calme."
+      ]
+    },
+    {
+      "q": "Dois-je réserver une place ?",
+      "a": [
+        "Achetez les billets de bus à l’avance mais l’embarquement se fait dans l’ordre d’arrivée ; les ferries se réservent en ligne et il est prudent de bloquer les traversées de haute saison la veille."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Bus SITA vers Amalfi",
+        "text": "Montez dans le bus SITA direction Amalfi ; achetez les billets avant de monter."
+      },
+      {
+        "name": "Alternative : ferry (été)",
+        "text": "Consultez les horaires saisonniers ; les ferries sont fréquents pendant les mois de pointe."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Utilisez le bus SITA pour une option fiable toute l’année ; en été, les ferries offrent une alternative panoramique."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "Bus SITA (toute l’année)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (saisonnier)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "Bus SITA (toute l’année)",
+        "body": [
+          "Achetez vos billets avant de monter et faites la queue tôt en haute saison. Descendez au terminal de bus d’Amalfi."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (saisonnier)",
+        "body": [
+          "Consultez les sites des opérateurs pour les horaires et les alertes de mer agitée ; présentez-vous 20 à 30 minutes avant le départ."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Quel mode est le plus rapide ?",
+        "a": [
+          "En été, les ferries offrent un temps similaire et une vue plus agréable ; les bus restent plus fréquents toute l’année."
+        ]
+      }
+    ]
+  }
+}

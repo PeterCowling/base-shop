@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Dicas de viagem a Positano para a primeira visita",
+    "description": "Dicas essenciais sobre como chegar, etiqueta, bagagem e como evitar erros comuns — com conselhos amigáveis para hostels."
+  },
+  "linkLabel": "Dicas de viagem a Positano para a primeira visita",
+  "intro": [
+    "Primeira vez em Positano? Estas dicas cobrem chegadas, bagagem, pagamentos e conectividade sem stress."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Chegue com estratégia",
+      "body": [
+        "Reserve comboios + autocarros ou ferries quando possível; as primeiras partidas da manhã evitam calor e filas.",
+        "Bagagem pesada? Combine o autocarro SITA até Chiesa Nuova com um porteiro desde o cais para que as escadas mais íngremes fiquem a cargo dele."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bagagem e escadas",
+      "body": [
+        "Faça malas leves com sacos maleáveis ou mochilas que encaixem nas escadas estreitas e nos porta-bagagens dos shuttles.",
+        "Chegou cedo? Use guarda-volumes na Via dei Mulini para explorar mãos-livres até ao check-in."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Horários e reservas",
+      "body": [
+        "Planeie praia e caminhadas longas antes das 10:00 ou depois das 16:00, quando as ruas estão mais frescas e o transporte, calmo.",
+        "Reserve restaurantes, passeios de barco e shuttles do Caminho dos Deuses com pelo menos um dia de antecedência na época alta."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Pagamentos e numerário",
+      "body": [
+        "Cartões são amplamente aceites, mas muitos cafés e tabacchi têm consumo mínimo — mantenha notas de 5–10 € à mão.",
+        "Os multibancos funcionam, mas as taxas variam; levante montantes médios de uma vez e distribua o dinheiro por diferentes bolsos."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Conectividade e planos de reserva",
+      "body": [
+        "Compre um eSIM italiano (TIM/Vodafone) ou confirme o roaming; a cobertura é melhor nas partes altas da vila.",
+        "Descarregue mapas offline, horários de ferries e instruções do hostel para os momentos em que os dados falham."
+      ]
+    }
+  ],
+  "tips": [
+    "Guarde cópias offline de horários e instruções de chegada do hostel para quando ficar sem sinal.",
+    "Leve uma garrafa reutilizável (750 ml) e uma camada leve — os dias são quentes e as noites podem ser frescas acima da praia."
+  ],
+  "faqs": [
+    {
+      "q": "Consigo gerir apenas com bagagem de mão?",
+      "a": [
+        "Sim — leve roupas de secagem rápida, planeie usar a lavandaria do hostel e escolha frascos de viagem para cumprir limites das companhias aéreas."
+      ]
+    },
+    {
+      "q": "Preciso de adaptador de tomada?",
+      "a": [
+        "A Itália usa 230 V e fichas tipo F/L; leve adaptador universal se as suas fichas não forem padrão UE."
+      ]
+    }
+  ]
+}

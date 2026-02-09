@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Positano - Ravello : comment y aller",
+    "description": "Meilleures façons de rejoindre Ravello depuis Positano via Amalfi (bus + bus, ou ferry d'été + bus)."
+  },
+  "linkLabel": "Positano - Ravello : comment y aller",
+  "intro": [
+    "Positano → Ravello via Amalfi : bus toute l’année ; ferry + bus en saison.",
+    "Prévoyez une marge pour la correspondance à Amalfi et revenez avant le coucher du soleil si vous comptez sur les derniers ferries."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Via Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Jardins et villas"
+    },
+    {
+      "href": "#timing",
+      "label": "Timing et retours"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Via Amalfi",
+      "body": [
+        "Prenez le bus SITA ou le ferry saisonnier vers Amalfi ; achetez vos billets avant de monter et anticipez la file.",
+        "À Amalfi (quai 5), changez pour le bus de Ravello, puis marchez environ 10 minutes jusqu’aux villas Rufolo et Cimbrone."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Jardins et villas",
+      "body": [
+        "La Villa Rufolo accueille concerts et terrasses sur la baie ; la Villa Cimbrone est célèbre pour la Terrasse de l’Infini.",
+        "Réservez vos billets en ligne en haute saison pour éviter la queue à l’entrée."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing et retours",
+      "body": [
+        "Partez tôt de Positano pour éviter les heures les plus chaudes et les correspondances saturées.",
+        "Redescendez avant la nuit si vous avez besoin de lumière sur les escaliers ou d’un ferry garanti."
+      ]
+    }
+  ],
+  "tipsTitle": "Conseils",
+  "tips": [
+    "Emportez de l’eau et des encas — l’offre autour de la gare routière d’Amalfi est limitée et chère.",
+    "Portez des chaussures confortables et adhérentes pour les pentes de Ravello et la marche entre les villas."
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "L’itinéraire convient-il aux familles ?",
+      "a": [
+        "Oui avec des pauses et un rythme flexible ; les poussettes sont pratiques à Amalfi mais pas sur les escaliers de Ravello."
+      ]
+    },
+    {
+      "q": "Puis-je combiner Capri le même jour ?",
+      "a": [
+        "Possible mais expéditif — prévoyez des journées distinctes pour réellement profiter des deux destinations."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "Bus SITA ou ferry saisonnier vers Amalfi."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "Correspondance pour le bus de Ravello à Amalfi ; achetez les billets avant de monter."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Passez par Amalfi. En été, ferry jusqu’à Amalfi puis bus rapide vers Ravello peuvent faire gagner du temps."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Via Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry vers Amalfi (saisonnier)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Via Amalfi (bus + bus)",
+        "body": [
+          "Changez à Amalfi pour le bus de Ravello ; achetez vos billets avant de monter et faites la queue en avance."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry vers Amalfi (saisonnier)",
+        "body": [
+          "Envisagez un ferry matinal vers Amalfi puis un bus pour Ravello ; vérifiez l’heure du dernier retour."
+        ]
+      }
+    ],
+    "tipsTitle": "Conseils",
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Combien de temps prévoir à Ravello ?",
+        "a": [
+          "Comptez au moins 3 à 4 heures pour visiter les villas et profiter des vues ; davantage si vous assistez à un événement."
+        ]
+      }
+    ]
+  }
+}

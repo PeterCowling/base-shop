@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Båtturer i Positano",
+    "description": "Privata och gemensamma båtturer: vad du kan förvänta dig, prisnivåer och bokningstips i säsong."
+  },
+  "linkLabel": "Båtturer: Från solnedgångskryssningar till privata charter",
+  "intro": [
+    "Båtturer låter dig följa Amalfikustens klippor utan att brottas med vägtrafiken; boka i förväg under högsäsong och ha en väderplan i reserv."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Gruppturer och delade båtar",
+      "body": [
+        "Tre timmars delade kryssningar avgår från Positano på förmiddagen och inkluderar simstop; räkna med €85–€120 per person i juli–augusti.",
+        "Ta med badskor och ett lätt lager — vinden är svalare ute till havs än på terrasserna."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Privata charter",
+      "body": [
+        "Skeppare tar ut €550–€850 för en halvdag med gozzo-charter (upp till 6 personer) plus bränsle; bekräfta vad som ingår som prosecco eller handdukar.",
+        "Förhandla om starttider kring soluppgång eller sen eftermiddag om du vill ha mjukare ljus och färre svallvågor från färjor."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Väder och reservplaner",
+      "body": [
+        "Operatörer ställer in när vindarna överstiger styrka 4; ha en buss- eller strandplan redo så att dagen förblir avslappnad.",
+        "Haven kan vara krabbiga även på sommaren — packa åksjukeband om du är känslig."
+      ]
+    }
+  ],
+  "tips": [
+    "Kom 20 minuter före avgång för att reglera saldot och ta på de medföljande däcksskorna.",
+    "Ta med en vattentät påse för telefoner och en 1-liters (34 oz) vattenflaska; skuggan är begränsad ombord."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag boka i förväg?",
+      "a": [
+        "Ja i maj–september — båtar säljer ofta slut några dagar i förväg, särskilt solnedgångsplatser."
+      ]
+    },
+    {
+      "q": "Ingår handdukar?",
+      "a": [
+        "Gruppturer brukar tillhandahålla en per person; privata skeppare varierar, så ta med en snabbtorkande handduk för säkerhets skull."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotogalleri"
+}

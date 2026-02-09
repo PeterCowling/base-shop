@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM e caixas eletrônicos em Positano",
+    "description": "Onde comprar eSIM ou SIM físico, dicas de cobertura, taxas comuns de ATM e como evitar surpresas com saque."
+  },
+  "linkLabel": "SIM/eSIM e caixas eletrônicos em Positano",
+  "intro": [
+    "Garanta ligação e numerário configurando o plano SIM antes de chegar e planeando levantamentos com taxas menores."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Ative um eSIM",
+      "body": [
+        "Instale um eSIM italiano (TIM, Vodafone ou operadores de viagem fiáveis) no Wi-Fi do hostel ou antes do voo; a cobertura é mais forte nos terraços e ao longo da SS163.",
+        "Escolha pelo menos 10 GB para uma semana se ouvir música em streaming ou carregar fotos; controle o consumo, pois recargas na vila são limitadas."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Comprar SIM físico",
+      "body": [
+        "Pare em Sorrento, Salerno ou Napoli Centrale para lojas das operadoras; leve passaporte e conte com pacote inicial de 10–20 € com registo de ID.",
+        "Tabacchi às vezes vendem SIMs prontos a ativar na alta temporada, mas a disponibilidade varia — compre quando vir."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "Estratégia de ATM",
+      "body": [
+        "Prefira caixas de bancos como Intesa Sanpaolo com taxas de 2–3 €; máquinas independentes perto da praia cobram o dobro e têm câmbio pior.",
+        "Levantamentos de 100–150 € por vez; distribua as notas entre a mochila do dia e um bolso seguro da bagagem."
+      ]
+    }
+  ],
+  "tips": [
+    "Faça capturas dos QR codes e instruções antes de sair do Wi-Fi para reinstalar o eSIM caso o telemóvel reinicie.",
+    "Tenha powerbank — zonas de sinal fraco obrigam o telemóvel a aumentar a potência e consomem bateria mais rápido."
+  ],
+  "faqs": [
+    {
+      "q": "Há cobertura em Capri e Amalfi?",
+      "a": [
+        "Sim, mas a velocidade cai no mar; descarregue playlists e mapas antes de embarcar nos ferries."
+      ]
+    },
+    {
+      "q": "ATMs funcionam tarde da noite?",
+      "a": [
+        "Os átrios bancários ficam 24/7, mas se a máquina ficar sem notas terá de seguir para Amalfi ou Sorrento na manhã seguinte."
+      ]
+    }
+  ]
+}

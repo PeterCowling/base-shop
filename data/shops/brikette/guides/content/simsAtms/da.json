@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM og hæveautomater i Positano",
+    "description": "Hvor du finder signal, kort og kontanter — plus alternativer, hvis butikkerne er udsolgt."
+  },
+  "linkLabel": "SIM/eSIM og hæveautomater i Positano",
+  "intro": [
+    "Hold dig online og kontantklar ved at ordne SIM-planen før ankomst og planlægge hæveautomater med lave gebyrer."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Aktivér et eSIM",
+      "body": [
+        "Download et italiensk eSIM (TIM, Vodafone eller troværdige rejseselskaber) på hostellets Wi-Fi eller før afrejse; dækningen er bedst på terrasser og langs SS163.",
+        "Vælg mindst 10 GB til en uges ophold, hvis du streamer musik eller uploader billeder; hold øje med forbruget, da top-ups i byen er begrænsede."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Køb af fysisk SIM",
+      "body": [
+        "Smutturen via Sorrento, Salerno eller Napoli Centrale giver adgang til operatørbutikker; medbring pas, og forvent startpakker til €10–€20 med ID-registrering.",
+        "Tabacchi sælger nogle gange klar-til-aktivering SIM i højsæsonen, men udvalget svinger – køb når du ser dem."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "ATM-strategi",
+      "body": [
+        "Brug bank-ATM'er som Intesa Sanpaolo til €2–€3 i gebyr; uafhængige automater ved stranden kan tage det dobbelte og have dårlige valutakurser.",
+        "Hæv €100–€150 ad gangen, og fordel sedlerne mellem din daypack og en sikker lomme i bagagen."
+      ]
+    }
+  ],
+  "tips": [
+    "Gem QR-koder og aktiveringsoplysninger offline, så du kan geninstallere eSIM'et, hvis telefonen nulstilles.",
+    "Medbring powerbank – svag dækning får telefonen til at booste antennen og tømme batteriet hurtigere."
+  ],
+  "faqs": [
+    {
+      "q": "Rækker signalet til Capri og Amalfi?",
+      "a": [
+        "Ja, men forvent langsommere hastigheder til søs; download playlister og kort, før du går ombord på færger."
+      ]
+    },
+    {
+      "q": "Er hæveautomater pålidelige sent om natten?",
+      "a": [
+        "Bankfilialer er åbne døgnet rundt, men hvis automaten er tom, må du måske køre til Amalfi eller Sorrento næste morgen."
+      ]
+    }
+  ]
+}

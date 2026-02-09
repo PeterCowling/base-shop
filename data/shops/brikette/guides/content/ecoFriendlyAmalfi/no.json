@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Miljøvennlig reising på Amalfikysten",
+    "description": "Reduser fotavtrykket: påfyllsstasjoner, turstier, ferjer fremfor bil og bevisste stranddager."
+  },
+  "linkLabel": "Miljøvennlig reising på Amalfikysten",
+  "intro": [
+    "Miljøvennlig reising på Amalfikysten handler om transport, avfall og daglige energivaner.",
+    "Hold fotavtrykket lavt uten å gi slipp på utsikten."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Grønnere transport",
+      "body": [
+        "Velg buss eller ferje i stedet for private taxier når det er mulig.",
+        "Gå de korte distansene i byen fremfor å bestille bil."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Avfall og plast",
+      "body": [
+        "Ha med gjenbrukbar flaske og pose, og fyll på i fontener eller kafeer.",
+        "Sorter avfall der det finnes beholdere, og ta med det du tok med ut på turstiene."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energi og vann",
+      "body": [
+        "Skru av aircondition og lys når du forlater rommet; lukk skodder for å holde det kjølig.",
+        "Ta korte dusjer og bruk håndklær om igjen for å spare vann."
+      ]
+    }
+  ],
+  "tips": [
+    "Støtt lokale småbedrifter som bruker regionale råvarer og lav-avfall-praksis.",
+    "Bestill sesongretter – sitroner, ansjos og grønnsaker er best i sine topper."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg leie elsykkel på kysten?",
+      "a": [
+        "Ja i Amalfi, Sorrento og noen landsbyer – reserver tidlig siden flåtene er små."
+      ]
+    }
+  ]
+}

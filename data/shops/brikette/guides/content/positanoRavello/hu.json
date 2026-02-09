@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Positano → Ravello: útmutató",
+    "description": "Hogyan juthatsz el Ravellóba Positanóból Amalfi felé: busz + busz vagy nyáron komp + busz."
+  },
+  "linkLabel": "Positano ↔ Ravello útvonal",
+  "intro": [
+    "Positano és Ravello között Amalfi felé busszal egész évben, nyári szezonban pedig komppal és busszal is utazhatsz.",
+    "Számolj rá időt az amalfi átszállásra, és ha az utolsó kompra támaszkodsz, térj vissza naplemente előtt."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Amalfin át"
+    },
+    {
+      "href": "#gardens",
+      "label": "Kertek és villák"
+    },
+    {
+      "href": "#timing",
+      "label": "Időzítés és visszaút"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Amalfin át",
+      "body": [
+        "Indulj SITA busszal vagy szezonális komppal Amalfiig; vásárolj jegyet felszállás előtt és számolj a sorokra.",
+        "Amalfin (5-ös állás) szállj át a Ravello buszra, majd kb. 10 perc sétával jutsz el a Villa Rufolohoz és Villa Cimbronéhoz."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Kertek és villák",
+      "body": [
+        "A Villa Rufolo koncertjeiről és teraszairól híres, a Villa Cimbrone pedig az Infinity-terasszal vonzó.",
+        "Főszezonban foglald le előre a jegyeket az online oldalon, hogy elkerüld a sorban állást."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Időzítés és visszatérés",
+      "body": [
+        "Indulj Positanóból korán, hogy elkerüld a legforróbb órákat és a zsúfolt csatlakozásokat.",
+        "Ha a lépcsők miatt nappali fényt vagy biztos kompkapcsolatot szeretnél, térj vissza naplemente előtt."
+      ]
+    }
+  ],
+  "tipsTitle": "Tippek",
+  "tips": [
+    "Hozz magaddal vizet és nassolnivalót – az Amalfi buszpályaudvar környékén kevés a kínálat, és drágábbak a boltok.",
+    "Viselj tapadós cipőt Ravello emelkedőin és a villák közötti sétákon."
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Családbarát útvonal?",
+      "a": [
+        "Igen, ha szüneteket tartasz és rugalmas tempót választasz; babakocsiváros csak Amalfiig, Ravellóban a lépcsők miatt nem."
+      ]
+    },
+    {
+      "q": "Megvalósítható Capri is ugyanazon a napon?",
+      "a": [
+        "Lehetséges, de rohanós – külön napot érdemes szentelni mindkét célpontnak."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "SITA busszal vagy nyári komppal Amalfi felé."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "Amalfin szállj át a Ravello buszra; vásárolj jegyet felszállás előtt."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Utazz Amalfin át. Nyáron komp + busz kombinációval időt nyerhetsz."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Amalfin át (busz + busz)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Komp Amalfiig (szezonális)"
+      },
+      {
+        "href": "#faqs",
+        "label": "GYIK"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Amalfin át (busz + busz)",
+        "body": [
+          "Amalfin szállj át a Ravello buszra; vegyél jegyet felszállás előtt és állj sorba korán."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Komp Amalfiig (szezonális)",
+        "body": [
+          "Reggeli komp Amalfiig + busz Ravellóba gyors lehet; figyeld az utolsó visszatérést."
+        ]
+      }
+    ],
+    "tipsTitle": "Tippek",
+    "faqsTitle": "GYIK",
+    "faqs": [
+      {
+        "q": "Mennyi időt tölts Ravellóban?",
+        "a": [
+          "Szánj legalább 3–4 órát, hogy megnézd a villákat és élvezd a kilátást; ha eseményre mész, még többet."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Csomagmegőrzési lehetőségek Positanóban",
+    "description": "Hol hagyhatod biztonságban a táskádat: hostel, helyi szolgáltatók, kikötői opciók és árak."
+  },
+  "linkLabel": "Csomagmegőrzési lehetőségek Positanóban",
+  "intro": [
+    "Hol tudod elhelyezni a csomagodat Positanóban: lehetőségek a kikötő mellett és a Via dei Mulinin."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "A móló közelében",
+      "body": [
+        "Óradíjas/napi megőrzés jeggyel; főszezonban sorokra számíts, ha lehet, foglalj előre."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Aggregátorok",
+      "body": [
+        "Bounce / Radical Storage: fizetés előtt ellenőrizd a pontos címet és a nyitvatartást."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett és tippek",
+      "body": [
+        "Az értékeket tartsd magadnál, jelöld fel jól a táskákat, és fotózd le az átvételi szelvényeket."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Nyitva vannak este is?",
+      "a": [
+        "Változó; holtszezonban hamarabb zárhatnak, és vedd számításba az utolsó komp indulását."
+      ]
+    }
+  ],
+  "tocTitle": "Ezen az oldalon",
+  "faqsTitle": "GYIK",
+  "heroAlt": "Hordár poggyászkocsit tol fel Positano lépcsőin",
+  "serviceType": "Csomagmegőrzés",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Positano sziklafalra épült házai a tenger fölött",
+    "primaryCaption": "Positano panoráma",
+    "secondaryAlt": "Hordár poggyászkocsit tol a positanói kompkikötőnél",
+    "secondaryCaption": "Hordárkocsik a móló mellett"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Dentro de una fábrica de limoncello",
+    "description": "Cómo se elabora el limoncello y qué buscar en una botella de calidad."
+  },
+  "linkLabel": "Dentro de una fábrica de limoncello",
+  "fallbackParagraph": "Qué lleva un limoncello auténtico: limones, alcohol, azúcar y paciencia. Las visitas muestran el proceso y terminan con degustaciones; evita conducir después.",
+  "intro": [
+    "Visitar un laboratorio de limoncello te muestra cómo los limones sfusato Amalfitano se convierten en el digestivo emblemático de la costa.",
+    "Conoce cada etapa, prueba lotes pequeños y aprende a guardar y transportar tu mezcla favorita a casa."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Limones Sfusato Amalfitano",
+      "body": [
+        "Los productores usan limones sfusato de piel gruesa cultivados en terrazas; los aceites esenciales están en la corteza, no en el jugo.",
+        "Las buenas visitas empiezan viendo cómo pelan la fruta a mano y por qué la agricultura ecológica garantiza una infusión limpia y aromática."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "De la ralladura a la infusión",
+      "body": [
+        "La ralladura fresca macera en alcohol neutro una semana o más hasta que el líquido se vuelve dorado y fragante.",
+        "Tras la infusión se filtra y se mezcla con almíbar; los lotes reposan para que los sabores se integren antes de embotellar."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Qué incluyen las degustaciones",
+      "body": [
+        "El guía suele mostrarte el taller y luego sirve degustaciones pequeñas de limoncello, crema di limone o licores de temporada.",
+        "Prueba despacio, fija la atención en textura y aroma y evita conducir después: aunque suaves, los tragos tienen graduación completa."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Cómo comprar y conservar una botella",
+      "body": [
+        "Elige botellas opacas o protegidas contra UV y comprueba en la etiqueta la dirección del productor y la fecha de elaboración.",
+        "Guarda la botella en frío una vez la abras en casa; si vas a viajar con ella, protégela entre la ropa o pide embalaje especial en la tienda."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Pueden participar menores de 18 años?",
+      "a": [
+        "Sí, pueden observar el proceso pero legalmente no pueden catar; algunos productores ofrecen limonadas o granitas como alternativa."
+      ]
+    },
+    {
+      "q": "¿Cómo llevo limoncello a casa con seguridad?",
+      "a": [
+        "Empaca las botellas en equipaje facturado (los límites de cabina prohíben más de 100 ml), acolchalas bien y declara cantidades si tu país controla la importación de alcohol."
+      ]
+    },
+    {
+      "q": "¿Cuánto dura el limoncello?",
+      "a": [
+        "Las botellas sin abrir se conservan hasta un año; una vez abiertas, guárdalas en nevera o congelador y disfrútalas en unos meses para mantener el aroma."
+      ]
+    }
+  ]
+}

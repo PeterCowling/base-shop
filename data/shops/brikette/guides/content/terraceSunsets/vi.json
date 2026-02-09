@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Hoàng hôn trên sân thượng ở Positano",
+    "description": "Kế hoạch hoàng hôn đơn giản, tiết kiệm tại Hostel Brikette: đến lúc nào để không căng thẳng."
+  },
+  "linkLabel": "Hoàng hôn sân thượng",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Muốn xem hoàng hôn mà không cần bữa tối dài và đắt? Sân thượng hostel là lựa chọn dễ nhất."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Nên đến lúc nào",
+      "body": [
+        "Mùa cao điểm: đến trước 30–45 phút để chọn chỗ."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Ánh hoàng hôn phủ lên Positano nhìn từ sân thượng"
+        }
+      ]
+    }
+  ],
+  "fallback": "Đến sớm một chút, gọi một ly và giữ bữa tối đơn giản."
+}

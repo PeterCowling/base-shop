@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Wi-Fi og arbeidsvennlige kafeer nær Brikette",
+    "description": "Typiske hastigheter, etikette, eSIM-reserver og utstyrstips for å jobbe på kafeer rundt Positano."
+  },
+  "linkLabel": "Wi-Fi og arbeidsvennlige kafeer nær Brikette",
+  "intro": [
+    "Kafeer i nærheten av vandrerhjemmet med brukbar Wi-Fi. Etikette: kjøp regelmessig, unngå lange samtaler innendørs, og hold et lite fotavtrykk."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Steder nær Brikette",
+      "body": [
+        "Små kafeer på Via Pasitea og rundt Chiesa Nuova har ofte stabil Wi-Fi.",
+        "Ta med batteripakke; strømuttak er begrenset i eldre lokaler."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Reserve-tilkobling",
+      "body": [
+        "Behold et eSIM som en reserve; transportører varierer etter område - TIM/Vodafone er vanligvis sterk.",
+        "Tether når lunsjrushet bremser kafénettverk."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er det greit å jobbe hele dagen?",
+      "a": [
+        "Kjøp hvert 60.–90. minutt og unngå topp lunsj; vurdere å rotere arenaer."
+      ]
+    }
+  ]
+}

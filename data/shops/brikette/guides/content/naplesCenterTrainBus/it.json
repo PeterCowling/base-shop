@@ -1,0 +1,83 @@
+{
+  "seo": {
+    "title": "Dal centro di Napoli a Positano in treno e poi autobus | Hostel Brikette",
+    "description": "Istruzioni passo dopo passo per viaggiare dal centro di Napoli all'Hostel Brikette con il treno Circumvesuviana e l'autobus SITA, con consigli sui biglietti e foto dell'arrivo a Positano."
+  },
+  "intro": {
+    "title": "Centro di Napoli a Positano – Treno poi autobus",
+    "body": "Segui queste indicazioni per spostarti dal centro di Napoli all'Hostel Brikette con il treno Circumvesuviana per Sorrento e l'autobus SITA per Positano. La guida include consigli sui biglietti, suggerimenti sull'orario degli autobus e foto dell'arrivo finale in ostello."
+  },
+  "callouts": {
+    "tip": "Ti servono altre tratte? Esplora tutte le indicazioni d'arrivo nella %HOWTO:how-to-get-here|pagina Come arrivare%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica treno + autobus",
+      "body": "Questo percorso combina il treno Circumvesuviana dal centro di Napoli a Sorrento e l'autobus SITA per Positano: è l'opzione di trasporto pubblico più rapida dal centro città. Non copre il viaggio dall'aeroporto di Napoli."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Stazione ferroviaria di Napoli",
+      "body": "I treni Circumvesuviana per Sorrento partono dal livello inferiore della stazione Napoli Garibaldi (sotto Napoli Centrale). Acquista il biglietto prima di scendere ai binari, verifica da quale binario parte il tuo treno e sali in direzione Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Stazione ferroviaria di Sorrento",
+      "body": "Una volta arrivato a Sorrento, esci dalla stazione e compra il biglietto dell'autobus SITA al bar, all'edicola o in tabaccheria: a bordo non vengono venduti. La fermata SITA si trova ai piedi della scalinata fuori dalla stazione; attendi l'autobus diretto ad Amalfi e prosegui fino a Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Come leggere l'orario SITA",
+      "body": "L'orario degli autobus SITA può creare confusione: usa questi suggerimenti rapidi per individuare la corsa giusta:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Fermata degli autobus di Positano",
+      "list": [
+        "La fermata più vicina è Positano (Chiesa Nuova), a circa 140 metri (490 piedi) dall'ostello.",
+        "Si trova davanti al bar/caffè Bar Internazionale.",
+        "L'autobus ti lascia a livello strada: non servono lunghe scalinate per raggiungerci."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Percorso a piedi dalla fermata"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quanto costa spostarsi dal centro di Napoli a Positano in treno e autobus?",
+      "a": "Il costo totale è circa 7,20 €: 4,60 € per il treno Circumvesuviana da Napoli a Sorrento, più 2,60 € per l'autobus SITA da Sorrento a Positano (prezzi 2026). Questa è l'opzione di trasporto pubblico più economica."
+    },
+    {
+      "q": "Quanto tempo ci vuole per spostarsi da Napoli a Positano?",
+      "a": "Il tempo di viaggio totale è di 2,5–3 ore: 70 minuti in treno, 50 minuti in autobus, più 20–40 minuti di attesa per le coincidenze a Sorrento. Prevedi in totale 3–3,5 ore per tenere conto di eventuali ritardi."
+    },
+    {
+      "q": "Posso comprare i biglietti sul treno o sull'autobus?",
+      "a": "Puoi comprare i biglietti del treno alla stazione di Napoli Garibaldi dalle biglietterie automatiche o allo sportello, ma devi timbrare prima di salire. I biglietti dell'autobus SITA non possono essere acquistati a bordo — devi comprarli in un bar, in tabaccheria o in un'edicola vicino alla stazione di Sorrento prima di salire sull'autobus."
+    },
+    {
+      "q": "Questo percorso è adatto ai viaggiatori con bagagli pesanti?",
+      "a": "Sì, ma può essere impegnativo negli orari di punta. Sia il treno che l'autobus hanno spazio bagagli limitato, quindi sali presto se hai borse grandi. La camminata dalla fermata Chiesa Nuova all'ostello è pianeggiante e dura meno di 2 minuti, quindi i bagagli sono gestibili una volta arrivati. Se preferisci, valuta di usare i nostri servizi di facchini o un trasferimento privato."
+    },
+    {
+      "q": "A che ora parte l'ultimo autobus da Sorrento a Positano?",
+      "a": "L'ultimo autobus varia a seconda della stagione. In estate (luglio–agosto), l'ultimo autobus è solitamente intorno alle 21–22. In inverno (novembre–marzo), può partire anche alle 19–20. Controlla sempre l'orario attuale su sitasudtrasporti.it prima di viaggiare, specialmente la domenica e nei giorni festivi quando il servizio è ridotto."
+    },
+    {
+      "q": "Esiste un treno o autobus diretto da Napoli a Positano?",
+      "a": "Non esiste un treno diretto — devi cambiare a Sorrento. L'autobus Curreri offre un collegamento diretto da Napoli a Positano, ma gli orari sono limitati (di solito 2–3 corse al giorno). La combinazione treno-autobus è più frequente ed economica."
+    },
+    {
+      "q": "Come si legge l'orario degli autobus SITA?",
+      "a": [
+        "**Lettura delle righe:** Le righe nella prima colonna rappresentano diverse fermate dell'autobus lungo il percorso.",
+        "**Lettura delle colonne:** L'orario assegna una lettera alfabetica a ciascun viaggio programmato, che sono elencate come intestazioni in ogni colonna. Se viaggi dal lunedì al sabato, cerca le colonne 'F' e 'G'. Se viaggi di domenica o in un giorno festivo, cerca le colonne 'G' e 'H'.",
+        "**Combinazione di righe e colonne:** Scegli le tue fermate di partenza e arrivo, quindi controlla le colonne per vedere quando sono disponibili gli autobus e a che ora arriveranno a destinazione. Ad esempio, per vedere l'orario di partenza da Sorrento, guarda la riga Sorrento. Per vedere l'orario di arrivo a Positano (Chiesa Nuova / Bar Internazionale), guarda la riga Positano (Chiesa Nuova)."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
+}

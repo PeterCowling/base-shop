@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Guia da cidade de Amalfi: história, pontos turísticos e dicas de visita",
+    "description": "Igreja, museu do papel, claustro, praias e como chegar desde Positano."
+  },
+  "linkLabel": "Guia de Amalfi: história, atrações e dicas",
+  "intro": [
+    "Aproveite ao máximo um dia na cidade de Amalfi: veja as atrações essenciais, aprenda a chegar e descubra horários para evitar multidões de excursões."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Principais atrações",
+      "body": [
+        "Suba os 62 degraus até à Catedral de Amalfi para admirar a fachada listrada, o claustro e o museu (exige vestuário discreto).",
+        "Visite o Museo della Carta para ver demonstrações de papel feito à mão e leve lembranças leves para a mala."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Como chegar",
+      "body": [
+        "Os ferries desde Positano demoram cerca de 20 minutos; os autocarros demoram 40–50 minutos conforme o trânsito. Chegue antes das 10:00 para garantir sombra na praça.",
+        "Compre o bilhete de regresso no início da tarde, caso os horários mudem devido ao vento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Quando ir",
+      "body": [
+        "As manhãs (antes das 11:00) ou as noites (depois das 17:00) são mais calmas, quando os excursionistas já partiram.",
+        "Combine Amalfi com Atrani (a cinco minutos a pé) para jantar numa praça mais pequena antes de regressar."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve um lenço leve para visitas a igrejas e para se proteger do sol no trajeto de ferry.",
+    "Peça uma granita de limão nas bancas junto ao passeio marítimo para refrescar entre paragens."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Quanto tempo preciso em Amalfi?",
+      "a": [
+        "Reserve três a quatro horas para visitar a catedral, o museu do papel e fazer uma refeição tranquila. Acrescente tempo extra se quiser nadar na pequena praia da vila."
+      ]
+    },
+    {
+      "q": "Existe guarda-volumes?",
+      "a": [
+        "Sim, há depósitos de bagagem perto do cais do ferry. Conte com 5–8 € por mala durante o dia."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Ferragosto in Positano (Mariä Himmelfahrt)",
+    "description": "Was dich am 15. August erwartet: Menschenmengen, Schließzeiten, Feuerwerk und Verkehrstipps.",
+    "lastUpdated": "2026-01-31"
+  },
+  "linkLabel": "Ferragosto in Positano (Mariä Aufnahme)",
+  "intro": [
+    "Ferragosto am 15. August bringt volle Strände, Feuerwerk und geänderte Fahrpläne – plane voraus, damit der Feiertag festlich statt chaotisch wird."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "Was dich am Tag erwartet",
+      "body": [
+        "Geschäfte und kleine Supermärkte schließen früh; deck dich am Vorabend mit Snacks und Wasser ein.",
+        "Ab etwa 09:00 füllen sich die Strände, und entlang der Spiaggia Grande läuft Musik bis zum Mitternachtsfeuerwerk."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Reservierungen",
+      "body": [
+        "Reserviere Restaurants und Bootstouren mindestens eine Woche im Voraus; viele verlangen Vorkasse oder Kartengarantie.",
+        "Bestätige Porter-Services 24 Stunden vorher, falls du am 15. an- oder abreist – es gelten reduzierte Dienste."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Strand- & Schwimmtipps",
+      "body": [
+        "Nimm im öffentlichen Bereich einen eigenen Schirm mit; Lido-Liegen sind ausverkauft und kosten Spitzenpreise.",
+        "Schwimme früh oder zum Sonnenuntergang, wenn Rettungsschwimmer bessere Sicht haben – mittags erschweren Menschenmengen die Strömungseinschätzung."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport-Backups",
+      "body": [
+        "SITA fährt nach Feiertagsfahrplan mit weniger Kursen; prüfe die Aushänge und stell dich früh an.",
+        "Fähren können ausverkauft sein; sichere dir Hin- und Rückfahrt am Vortag und halte einen Busplan bereit, falls das Meer rau wird."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack Ohrstöpsel ein, wenn dein Zimmer zum Strand zeigt – Finale und Musik können bis nach 1:00 Uhr gehen.",
+    "Halt Kleingeld für Spendenboxen bereit, falls du die Messe zur Aufnahme Mariens besuchst; Kartenzahlung ist selten möglich."
+  ],
+  "faqs": [
+    {
+      "q": "Sind Supermärkte den ganzen Tag geschlossen?",
+      "a": [
+        "Viele schließen komplett oder öffnen nur kurz am Morgen. Kauf das Nötigste bis zum Abend des 14. ein."
+      ]
+    },
+    {
+      "q": "Kann ich das Feuerwerk von der Hostelterrasse sehen?",
+      "a": [
+        "Ja – die Terrasse bietet freien Blick über die Bucht. Komm früh für einen Platz und bring eine leichte Schicht für die Meeresbrise mit."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "tipsTitle": "Practical tips for hostel guests"
+}

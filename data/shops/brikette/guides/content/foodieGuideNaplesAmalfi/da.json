@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Madguide til Napoli og Amalfikysten",
+    "description": "Hvad du skal spise og hvor — klassiske retter og lokale specialiteter."
+  },
+  "linkLabel": "Madguide til Napoli og Amalfikysten",
+  "intro": [
+    "Find de bedste smagsoplevelser mellem Napoli og Amalfikysten med must-try retter, markeder og lokale drikke."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Napoli-klassikere",
+      "body": [
+        "Smag klassisk pizza Margherita, fritta og sfogliatella på én dag – tag pauser med espresso, så du kan nå det hele.",
+        "Besøg Pignasecca-markedet for frisk fisk, oste og grønt, du kan tage med videre til kysten."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Specialiteter fra Amalfikysten",
+      "body": [
+        "Bestil scialatielli ai frutti di mare, delizia al limone og lokalt produceret limoncello for en komplet smagspalette.",
+        "Opsøg et caseificio (ostehandel) for mozzarella, røget provola og caciocavallo, som du kan nyde på hostellets terrasse."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Streetfood og markeder",
+      "body": [
+        "Snup cuoppo fritto, friterede ansjoser eller arancini for €4–€6 for at holde sulten væk mellem færgeforbindelser.",
+        "Søndagens bondemarkeder i Positano og Praiano tilbyder sæsonfrugt og bagværk – medbring en genanvendelig pose."
+      ]
+    }
+  ],
+  "tips": [
+    "Book madlavningskurser i god tid, hvis du vil have praktiske sessioner med pasta og desserter – pladserne ryger hurtigt om sommeren.",
+    "Oplys kostbehov ved booking; mange værter kan tilpasse menuen, når de får besked på forhånd."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg tage på madtur fra Positano?",
+      "a": [
+        "Ja. Deltag i guidede smagninger i Napoli eller Sorrento; de fleste starter sidst på morgenen, så du kan tage et tidligt tog eller en færge."
+      ]
+    },
+    {
+      "q": "Tilgodeser restauranter vegetarer?",
+      "a": [
+        "Absolut. Hold øje med melanzane alla parmigiana, gnocchi alla sorrentina, salater og grøntsagsantipasti i hele området."
+      ]
+    }
+  ]
+}

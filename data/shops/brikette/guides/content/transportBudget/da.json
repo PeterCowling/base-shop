@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Transport på budget",
+    "description": "Sådan holder du transportudgifterne nede på kysten — busser, færger og pakkede billetter."
+  },
+  "linkLabel": "Transport på budget",
+  "intro": [
+    "Hold transportudgifterne nede ved at kombinere kort, afgange uden for myldretid og delte transfers, når det giver mening."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Vælg det rette kort",
+      "body": [
+        "Brug UNICO Costiera-dagskortet (€12,40) til ubegrænset SITA-bus mellem Sorrento og Salerno — stemple på første tur og hav billetten klar til kontrol.",
+        "Planlægger du to eller flere færgeture samme dag, så sammenlign kombobilletter fra operatører som Travelmar; de samler Amalfi- og Positano-hop med rabat."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Kombinér transport smart",
+      "body": [
+        "Tag én færgetur og kombiner med busser for at spare penge, men stadig få udsigterne — sejl ud om morgenen og tag bussen tilbage, når priserne stiger.",
+        "Del taxaer til sene returer, når busserne holder pause; at splitte €80 i fire er bedre end at vente i timer på næste afgang."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Køb på forhånd hvor det hjælper",
+      "body": [
+        "Book Trenitalia- eller Italo-billetter fra Rom/Napoli i god tid for laveste priser; regionale tillæg til Sorrento har fast takst.",
+        "Reserver lufthavnsshuttles (Curreri, Pintour) online for at sikre plads i travle weekender."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Sidste etape",
+      "body": [
+        "Ved ankomst: tag SITA-bussen til Chiesa Nuova og gå ned i stedet for at hyre porter; afsæt 15 minutter med håndterbar bagage.",
+        "Brug bagageopbevaring nær færgemolen i stedet for private transfers ved sen check-out — €7–€10 slår en ekstra taxi."
+      ]
+    }
+  ],
+  "tips": [
+    "Rejs før 08.30 eller efter 19.00, hvor busserne er roligere, og du kan stå på uden kamp.",
+    "Tag screenshot eller print billetter; wi-fi kan forsvinde netop som kontrollører stiger på."
+  ],
+  "faqs": [
+    {
+      "q": "Kan buskort betale sig uden for sæsonen?",
+      "a": [
+        "Ja, hvis du tager tre eller flere ture på en dag. Ellers betal enkeltbilletter; køreplanen er tyndere, men priserne lave."
+      ]
+    },
+    {
+      "q": "Skal jeg validere færgebilletter?",
+      "a": [
+        "De fleste operatører scanner QR-koder digitalt, men hav et print hvis du forventer vådt vejr, der kan forvirre skærme."
+      ]
+    }
+  ]
+}

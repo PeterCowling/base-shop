@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Passeios grátis (ou quase) em Positano",
+    "description": "Mirantes, praias públicas, caminhadas e pequenas experiências que custam pouco sem abrir mão das vistas."
+  },
+  "linkLabel": "Passeios grátis (ou quase) em Positano",
+  "intro": [
+    "Positano recompensa quem acorda cedo e gosta de explorar; dá para encher os dias com vistas, mergulhos e cultura gastando apenas alguns euros."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Miradouros que valem a subida",
+      "body": [
+        "Comece no terraço junto à Chiesa Nuova para ver as cores do nascer do sol a banhar a baía; leve uma garrafa de 500 ml porque não há torneiras por perto.",
+        "Percorra a Via Cristoforo Colombo e as varandas da Viale Pasitea na golden hour para ângulos de postal sem precisar reservar mesa."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Praia gratuita",
+      "body": [
+        "A Spiaggia Grande reserva uma faixa pública no lado direito — leve uma toalha leve e sente-se perto da linha de água para evitar as filas dos lidos.",
+        "Siga o caminho costeiro até à Praia de Fornillo para uma enseada mais tranquila; a caminhada demora cerca de 12 minutos com poucas escadas e a zona pública permanece gratuita."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Percursos a pé DIY",
+      "body": [
+        "Explore as ruelas do bairro Liparlati, entrando em pequenos pátios e escadarias revestidas de cerâmica entre a Via dei Mulini e a Via Pasitea.",
+        "Apanhe o shuttle gratuito até à paragem de Montepertuso e desça as antigas escadas de pedra de volta a Positano em 25–35 minutos, parando no miradouro do arco natural."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Cultura sem bilhete",
+      "body": [
+        "Entre na Santa Maria Assunta para ver o ícone bizantino e a cúpula de majólica; basta cobrir os ombros.",
+        "Consulte o quadro da comuna perto da Piazza dei Mulini para concertos ou cinema na praia durante as semanas de verão."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve uma garrafa reutilizável e reabasteça na fonte pública junto à Chiesa Nuova antes de subir aos miradouros.",
+    "Ponha protetor solar reef-safe e um pareo; serve de tapete de praia e cobertura leve em igrejas."
+  ],
+  "faqs": [
+    {
+      "q": "Há duches gratuitos nas praias?",
+      "a": [
+        "Sim — a Spiaggia Grande tem duches de água fria perto da zona pública. Leve chinelos porque o chão aquece ao meio-dia."
+      ]
+    },
+    {
+      "q": "Preciso de bilhete para o Caminho dos Deuses?",
+      "a": [
+        "O trilho é gratuito todo o ano. Reserve 2,40 € para o autocarro SITA até Nocelle e regresso se não quiser fazer ida e volta a pé."
+      ]
+    }
+  ]
+}

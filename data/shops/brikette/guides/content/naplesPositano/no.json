@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Napoli til Positano: slik gjør du det",
+    "description": "Raskeste og rimeligste alternativer fra Napoli til Positano med buss + tog eller sommerferje."
+  },
+  "linkLabel": "Napoli til Positano: slik gjør du det",
+  "intro": [
+    "Napoli → Positano: skyttel til Sorrento + SITA-buss året rundt; sommerferger når sjøen er god; bytter ved sen ankomst."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Tog + buss (året rundt)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferge (sommer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Sen ankomst og bytter"
+    },
+    {
+      "href": "#faqs",
+      "label": "Vanlige spørsmål"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Tog + buss (året rundt)",
+      "body": [
+        "Fra NAP-ankomster, ta Curreri-skyttelen (eller Alibus + Circumvesuviana) til Sorrento, og ta deretter SITA-bussen mot Amalfi.",
+        "Kjøp billetter før ombordstigning, sjekk dagens avgangstavle, og gå av ved ‘Chiesa Nuova’ for færrest trapper til Hostel Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferge (sommer)",
+      "body": [
+        "Alibus → Molo Beverello; ta ferge til Positano og bekreft priser med operatøren samme dag.",
+        "Sjekk kanselleringer og unngå siste båt hvis du har videre forbindelser."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Sen ankomst og bytter",
+      "body": [
+        "Ankommer du etter siste ferge/buss? Bestill privat transport eller overnatt i Napoli/Sorrento.",
+        "Bekreft avlevering nær overnattingsstedet og spør om bagasjehåndtering."
+      ]
+    }
+  ],
+  "faqsTitle": "Ofte stilte spørsmål",
+  "faqs": [
+    {
+      "q": "Hvor kjøper jeg SITA-billetter?",
+      "a": [
+        "Tabacchi/kiosker nær stasjoner. Kjøp før ombordstigning og valider på bussen."
+      ]
+    },
+    {
+      "q": "Hvor mange trapper til vandrerhjemmet?",
+      "a": [
+        "Fra ‘Chiesa Nuova’-stoppet er det ca. 80 m uten trapper."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guide til Innskudd og Betalinger for Positano Hostel",
+    "description": "Din guide til innskudd, betalingsmetoder, bestillingsbekreftelser, endringer, kanselleringer og sikkerhetsdepositum når du reserverer oppholdet ditt på Positano Hostel."
+  },
+  "linkLabel": "Guide til Innskudd og Betalinger for Positano Hostel",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Hvordan Sende Inn Bestillingsforespørselen",
+      "body": [
+        "Send oss bestillingsforespørselen din gjennom et autorisert online reisebyrå (OTA) eller direkte på nettsiden vår - chatter eller walk-ins alene teller ikke. Ved å klikke 'Bestill' bekrefter du at alle navn, datoer og oppholdsvarighet er korrekte og at du aksepterer våre vilkår og betingelser."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Hvordan Vi Behandler Forespørselen Din",
+      "body": [
+        "Vi begynner å behandle forespørselen din så snart vi vellykket mottar ethvert påkrevd depositum, forhåndsgodkjenning eller betaling ved hjelp av en av våre aksepterte betalingsmetoder. Sørg for at bestillingen viser navnet på kredittkortinnehaveren som skal betale. Hvis betalerens navn er annerledes, send oss en kort godkjenning fra kortinnehaveren via e-post før vi behandler forespørselen din."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Betalingsterminal tastatur og skjerm.",
+          "caption": "Vi kan ta et depositum, kjøre en betaling eller plassere en forhåndsgodkjenning for å sikre bestillingen din - Foto: Wikimedia Commons (CC0)."
+        }
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "Når Vi Kan Avslå en Forespørsel",
+      "body": [
+        "Vi avslår sjelden en bestilling, men vi forbeholder oss retten til å gjøre det etter eget skjønn - for eksempel hvis betalingen mislykkes, påkrevd informasjon mangler, eller forespørselen bryter våre vilkår og betingelser."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Størrelsesgrenser for Én Forespørsel",
+      "body": [
+        "Én bestillingsforespørsel kan dekke opptil syv (7) påfølgende netter og maksimalt fem (5) gjester. Trenger du et lengre opphold eller en større gruppe? Del det enkelt opp i separate forespørsler."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Hva Skjer hvis Rommet Ditt Ikke er Tilgjengelig",
+      "body": [
+        "Hvis ditt foretrukne rom allerede er tatt, sender vi deg et mottilbud med det nærmeste alternativet via e-post. Aksepter tilbudet og fullfør betalingen eller forhåndsgodkjenningen for å låse oppholdet ditt."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Forhåndsbetalte Ikke-Refunderbare Bestillinger",
+      "body": [
+        "Å velge en forhåndsbetalt ikke-refunderbar pris sparer deg penger, men krever full betaling på forhånd. Vi vil prøve kortet ditt opptil tre ganger. Hvis alle forsøk mislykkes, kansellerer vi forespørselen. Disse bestillingene kan ikke refunderes eller endres."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Din Bekreftelses-e-post",
+      "body": [
+        "Når betalingen din går gjennom, sender vi en bekreftelses-e-post til adressen du ga oss. Den viser bestillingsreferansen din, ankomstdato, oppholdsvarighet og eventuelle tillegg. Les den nøye og fortell oss umiddelbart hvis noe ser feil ut."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "E-postikon på en telefonskjerm.",
+          "caption": "Din bekreftelses-e-post er det beste stedet å dobbeltsjekke datoer, navn og betalingsdetaljer - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Hvem Er Inkludert i Bestillingen Din",
+      "body": [
+        "Bestillingen din dekker automatisk følgende:",
+        "* 1 gjest per enkelt seng\\n* Opptil 2 gjester per dobbeltseng\\n* Opptil den annonserte kapasiteten til enhver leilighet du bestiller",
+        "Av sikkerhet og komfort kan vi ikke ta imot ekstra gjester over rommets grense."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Hva Er Inkludert i Oppholdet Ditt",
+      "body": [
+        "Hver gjest mottar:",
+        "* Rent sengetøy og nøkkelkort\\n* Bruk av de delte dusjene\\n* Varmt vann i planlagte timer (ca. 07:00-10:30 og 17:00-22:30)\\n* Tilgang til våre fellesområder",
+        "Andre fordeler (frokost, Wi-Fi, bagasjeoppbevaring osv.) er gratis og følger sine egne enkle regler."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Ditt Økonomiske Ansvar",
+      "body": [
+        "Kredittkortinnehaveren navngitt på bestillingen din er ansvarlig for alle kostnader - rompriser, skader, rengjøringsavgifter, bøter eller straffer for brudd på husregler. Ubetalte beløp kan belastes direkte på kortet vi har registrert."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Hvordan Senger og Rom Tildeles",
+      "body": [
+        "Vi garanterer deg sengetype og romkategori du bestilte. Sovesalbesti lleringer sikrer en seng i den valgte kategorien, men vi kan ikke love at grupper deler samme rom. Senger i sovesaler velges etter førstemann-til-mølla-prinsippet når du sjekker inn."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Romoppgraderinger",
+      "body": [
+        "Noen ganger oppgraderer vi deg til et bedre rom gratis, eller du kan betale for å oppgradere når du bestiller. Hvis den gratis oppgraderingen senere blir upraktisk, kan vi flytte deg tilbake til kategorien du opprinnelig betalte for."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Betaling gjennom Tredjepartsnettsteder",
+      "body": [
+        "Når du bestiller gjennom en OTA, betaler du gjennom deres system under deres vilkår. Vi ser aldri kortdetaljene dine fra OTA-en og er ikke ansvarlige for problemer på deres plattform. Sjekk alltid at betalingen din gikk gjennom og at du mottok en bekreftelse."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Bestillingsdepositum",
+      "body": [
+        "Noen priser krever depositum for å holde rommet. Forhåndsbetalte priser krever 100% på forhånd. Depositum er ikke-refunderbart. Hvis vi ikke kan ta depositumet, kanselleres bestillingsforespørselen automatisk."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Kortforhåndsgodkjenninger",
+      "body": [
+        "For fleksible priser kan vi forhåndsgodkjenne kortet ditt for den første natten eller hele oppholdet for å garantere bestillingen din. Hvis forhåndsgodkjenningen mislykkes, avslår vi forespørselen."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Vårt Sikkerhetsdepositum",
+      "body": [
+        "Ved innsjekking kan vi plassere et sikkerhetsdepositum tilsvarende én natt per gjest for å dekke mulige bøter, avgifter, forlengelser eller skader. Hvis kortblokkering ikke er mulig, kan du etterlate samme beløp i kontanter eller bruke en annen gjests kort. Hvis ingen av alternativene fungerer, må vi dessverre kansellere bestillingen din."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "En hånd som holder flere euromynter.",
+          "caption": "Hvis kortblokkering ikke er mulig ved innsjekking, kan vi be om tilsvarende kontantdepositum - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Párokként utazni hostelekben",
+    "description": "Tippek hálótermekhez vagy privát szobákhoz, nyugalom megtalálása és elvárások meghatározása."
+  },
+  "linkLabel": "Párokként utazni hostelekben",
+  "intro": [
+    "A hostelek működnek párok számára, ha a megfelelő szobatípust választod, könnyedén csomagolsz, és együtt határozod meg az elvárásokat."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Szobatípusok",
+      "body": [
+        "Foglalj privát szobát a magánéletért; ha szűkös a költségvetés, osszatok meg ágyakat ugyanabban a hálóteremben, és tartsátok könnyűnek a csomagot a lépcsők miatt."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Nyugalom megtalálása",
+      "body": [
+        "Vigyél fülzárót és szemmaszkot, válassz szobát távol a bártól vagy közös terektől, és használd a korai reggeli órákat nyugodtabb városnézéshez."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Alkalmas-e a hostel párok számára?",
+      "a": [
+        "Igen — szociális energiát és jó értéket kapsz; a privát szobák egyensúlyt teremtenek a kényelem és a költség között."
+      ]
+    }
+  ]
+}

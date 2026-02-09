@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Ferry cancellations and rough seas",
+    "description": "What to do when ferries are cancelled due to weather, alternatives, and how to check status."
+  },
+  "linkLabel": "Ferry cancellations and rough seas",
+  "intro": [
+    "Rough seas can suspend ferries to and from Positano with little notice.",
+    "Keep a land-based backup ready and monitor live alerts so you still make your connection."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Monitor live updates",
+      "body": [
+        "Check operator sites and apps (Travelmar, NLG, Alilauro) plus the port display boards every 30 minutes on windy days.",
+        "Enable SMS/email alerts or follow local Telegram/social channels so cancellations reach you even if you step away from the pier."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Switch to land routes",
+      "body": [
+        "If sailings stop, pivot to buses and trains: SITA to Sorrento then Circumvesuviana for Naples/Pompeii, or bus via Amalfi and regional train from Salerno.",
+        "Allow at least 60 minutes of buffer for the last departures of the day and validate tickets before boarding."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Refunds & vouchers",
+      "body": [
+        "Keep receipts and screenshot the cancellation notice so the operator can process refunds, rebooking, or credits.",
+        "Let staff know whether you prefer the next available sailing or a season voucher before you leave the counter."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Managing overnight delays",
+      "body": [
+        "Tell your accommodation or tour host as soon as delays are announced; many will adjust check-in or departure if warned in advance.",
+        "Ask the port info point about shared taxis, substitute shuttles, or bag storage if you need to wait for the following morning."
+      ]
+    }
+  ],
+  "tips": [
+    "Check the marine forecast—winds above 20 knots or swell over 1.5 metres (about 5 ft) often trigger cancellations.",
+    "Travel insurance that covers weather delays helps recover extra hotel nights or replacement transfers.",
+    "Morning sailings are the most reliable; avoid relying on the final boat of the day when storms are forecast."
+  ],
+  "faqs": [
+    {
+      "q": "How do I know when sailings resume?",
+      "a": [
+        "Refresh the operator website or social feeds and listen for loudspeaker announcements at the pier—decisions are usually posted within 30 minutes of the scheduled departure.",
+        "Ticket-desk staff can also confirm if the next boat is running before you leave the port."
+      ]
+    },
+    {
+      "q": "What happens to my ticket?",
+      "a": [
+        "Show your receipt or QR code to request a refund, voucher, or rebooking on the next sailing.",
+        "If you booked via an online agency, email them the cancellation screenshot within 24 hours to start the refund process."
+      ]
+    },
+    {
+      "q": "Are any ferries guaranteed in rough weather?",
+      "a": [
+        "No—when the Coast Guard closes the harbour all departures stop. Have a land route ready.",
+        "A few private charters may sail in moderate seas but they’re expensive and depend on captain discretion; weigh comfort and cost carefully."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "seo": {
+    "title": "Top of the Mountain Hike from Hostel Brikette",
+    "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
+  },
+  "linkLabel": "Monte Comune: Hike to Positano's Highest Viewpoint",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing.",
+    "When you reach Santa Maria del Castello, you have completed just over a third of the total elevation gain — it’s the natural checkpoint to rest, refill if you can, and decide whether everyone feels strong enough to continue."
+  ],
+  "sections": [
+    {
+      "id": "what-is-it",
+      "title": "What is the Hike to the Top of the Mountain?",
+      "body": [
+        "A bona fide hike to the highest point on the Amalfi Coast, offering breathtaking views that will take your breath away."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/top-of-the-mountain-hike/01-view-capri.jpg",
+          "alt": "View from high on the Monte Comune trail looking across the peninsula toward Capri",
+          "caption": "Looking across the peninsula to Capri."
+        }
+      ]
+    },
+    {
+      "id": "why-go",
+      "title": "Why should you do this hike?",
+      "body": [
+        "The views are absolutely stunning and will leave you in awe.",
+        "Completing this hike will give you a real sense of accomplishment.",
+        "It is also a great way to get in a good workout."
+      ]
+    },
+    {
+      "id": "why-avoid",
+      "title": "Why should you avoid this hike?",
+      "body": [
+        "If you are not an experienced mountain hiker or otherwise very fit, you may find this hike to be extremely strenuous.",
+        "If you are uncomfortable with heights, the exposed sections and steep drops can feel intense — even for people who usually aren’t bothered by heights.",
+        "During the summer months we do not recommend this hike. Heat makes the climb much harder, and the amount of water you need to carry adds to the physical challenge.",
+        "While the views do keep improving as you climb, many hikers are already satisfied by the views at lower elevations — there is no shame in turning back early."
+      ]
+    },
+    {
+      "id": "getting-to-santa-maria",
+      "title": "Getting to Santa Maria del Castello",
+      "body": [
+        "Follow the %LINK:santaMariaDelCastelloHike|Santa Maria del Castello hike guide% directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
+        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+      ]
+    },
+    {
+      "id": "santa-maria-photo-guide",
+      "title": "Santa Maria → summit (photo guide)",
+      "body": [
+        "Use this photo to orient yourself before leaving Santa Maria — the upper route is long, markers are sparse, and it’s much easier if your group agrees on the key turns at the start."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/top-of-the-mountain-hike/02-santa-maria-to-summit.jpg",
+          "alt": "Directional photo for the Santa Maria del Castello to summit section of the Top of the Mountain hike",
+          "caption": "Santa Maria del Castello → summit: confirm the first turns before you leave the village."
+        }
+      ]
+    },
+    {
+      "id": "santa-maria-to-summit",
+      "title": "Directions from Santa Maria to the Mountain Top",
+      "body": [
+        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
+        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
+        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
+        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
+        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "At least 2 litres of water per person plus salty snacks; there are no reliable refills after Santa Maria del Castello.",
+    "Solid hiking shoes with grip—sections of the upper trail are rocky, loose, and exposed.",
+    "Sun protection and layers for the summit; wind can whip across the ridge even on warm days."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Trail access is free; budget €5–€10 if you plan to reward yourself with a drink or snack in Santa Maria del Castello.",
+    "Return SITA bus tickets or ferry fares if you decide to descend via another village instead of hiking all the way back."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Start at dawn in summer to avoid climbing under peak heat; late autumn and spring afternoons offer softer light without the scorching sun.",
+    "Check the forecast for storms—cloud cover can erase the views and wet rock makes the summit steps slippery.",
+    "Let someone at the hostel know your plan and expected return time before you set off."
+  ],
+  "warningsTitle": "When to reconsider",
+  "warnings": [
+    "Skip the hike if you lack mountain experience or strong fitness; the sustained elevation gain is punishing and there are few bailout points.",
+    "Avoid the route if heights unsettle you—exposed ledges and steep drops challenge even confident hikers.",
+    "Do not attempt the summit during peak summer afternoons when heat and the need to carry extra water add to the strain."
+  ],
+  "steps": [
+    {
+      "name": "Climb to Santa Maria del Castello",
+      "text": "Use the hostel's route to Santa Maria del Castello; reaching the square means you have completed roughly a third of the elevation."
+    },
+    {
+      "name": "Join the mountain trail",
+      "text": "From the village crossroads, turn right, then left past the restaurant, and leave the road on the right-hand path that skirts the houses."
+    },
+    {
+      "name": "Commit to the upper ascent",
+      "text": "Follow the rugged trail to the signed crossroads and choose the path that heads straight uphill toward the summit."
+    },
+    {
+      "name": "Navigate the zig-zags",
+      "text": "Work through steep switchbacks until the trail flattens along the mountain's left flank."
+    },
+    {
+      "name": "Take the rock-cut stairs",
+      "text": "Climb the stone steps on the right, looping behind the mountain face to the final ramp."
+    },
+    {
+      "name": "Reach the summit",
+      "text": "Follow the last ascent to the top and enjoy the panorama before retracing your steps to Santa Maria."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "How long does the full hike take?",
+      "a": [
+        "Allow 6–7 hours for the round trip from Hostel Brikette, including breaks in Santa Maria and time at the summit."
+      ]
+    },
+    {
+      "q": "Is the trail marked?",
+      "a": [
+        "Markers are sparse beyond Santa Maria; carry an offline map and pay attention to the obvious worn trail and signposts at junctions."
+      ]
+    },
+    {
+      "q": "Can I turn back early?",
+      "a": [
+        "Yes. If the upper section feels too exposed, enjoy the views from Santa Maria or the lower switchbacks and return the way you came."
+      ]
+    }
+  ],
+  "toc": {
+    "labels": {
+      "warnings": "When to reconsider"
+    }
+  }
+}

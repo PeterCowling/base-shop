@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Paseos panorámicos en Positano y alrededores",
+    "description": "Rutas y bucles con vistas, tiempos realistas y escaleras a considerar."
+  },
+  "linkLabel": "Paseos panorámicos en Positano y alrededores",
+  "intro": [
+    "Enlaza callejones y miradores para paseos panorámicos cortos sin convertir el día en una caminata intensa.",
+    "Perfecto para tardes tranquilas o mañanas previas a la playa."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Circuito alto",
+      "body": [
+        "Desde Chiesa Nuova baja por Via Pasitea y toma callejones escalonados hacia Sponda.",
+        "Verás la silueta completa del pueblo con menos gente; ideal al atardecer."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Ruta costera a Fornillo",
+      "body": [
+        "Accede por el sendero junto a Spiaggia Grande y sigue las escaleras con vistas al mar.",
+        "Haz parada en los miradores intermedios y vuelve por la pasarela superior."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Paseo en Nocelle",
+      "body": [
+        "Toma el bus hasta Nocelle y recorre las terrazas hacia el mirador de Santa Croce.",
+        "Regresa por el mismo camino o continúa unas paradas hacia Montepertuso para una merienda."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuánto tardan los circuitos?",
+      "a": [
+        "Circuito alto: 45 min con fotos; Fornillo: 30–40 min; Nocelle: 60–75 min incluyendo traslados."
+      ]
+    },
+    {
+      "q": "¿Son aptos para familias?",
+      "a": [
+        "Sí con niños acostumbrados a escaleras; evita cochecitos y lleva mochila porta-bebé."
+      ]
+    }
+  ],
+  "tips": [
+    "Usa calzado con agarre y lleva agua; muchas secciones son escalonadas.",
+    "Descarga mapas offline para orientarte sin depender de la señal."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salerno a Positano: como ir",
+    "description": "Use o Airlink, ferry ou ônibus com confiança: tempos, tarifas, compra de bilhetes e dicas para bagagem pesada."
+  },
+  "linkLabel": "Salerno a Positano: como ir",
+  "intro": [
+    "Salerno → Positano: ferry é mais fácil na época (ideal com bagagem); o autocarro via Amalfi funciona todo o ano como alternativa económica."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Ferry (recomendado com bagagem)",
+      "body": [
+        "Embarque no Molo Manfredi/Concordia conforme a operadora e conte com cerca de uma hora no mar, dependendo das condições.",
+        "Verifique estado do mar e horário em tempo real; em fins de semana os lugares esgotam — chegue cedo."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Autocarro via Amalfi (todo o ano)",
+      "body": [
+        "Comboio/Alibus até Amalfi (SITA) → ligação para a linha Positano; é mais demorado, mas opera fora de época.",
+        "Leve numerário trocado, valide o bilhete e reserve margem na mudança em Amalfi enquanto verifica o painel da partida seguinte."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "O ferry é fiável na primavera?",
+      "a": [
+        "Sim, mas tempestades no início da estação podem cancelar saídas. Consulte sempre no dia."
+      ]
+    },
+    {
+      "q": "Onde guardar malas?",
+      "a": [
+        "Use os suportes a bordo; mantenha objetos de valor consigo."
+      ]
+    }
+  ]
+}

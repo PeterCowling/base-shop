@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "SITA-Bustickets & Tipps",
+    "description": "Wo du SITA-Tickets kaufst, Entwertungsregeln sowie Tipps zu Gepäck und Warteschlangen."
+  },
+  "linkLabel": "SITA-Bustickets & Tipps",
+  "intro": [
+    "SITA-Tickets vor dem Einsteigen kaufen und in der Hochsaison mehr Zeit einplanen. Ticket bis zum Fahrtende aufbewahren."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Wo kaufen",
+      "body": [
+        "In Tabacchi/Kiosken entlang der Hauptstraße kaufen – am besten bevorraten, wenn die Schlange kurz ist."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Entwerten",
+      "body": [
+        "Beim Einstieg am Entwerter abstempeln, wo vorhanden, und das Ticket bis zum Ausstieg bereithalten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich im Bus kaufen?",
+      "a": [
+        "In der Regel nein; kauf vorher, um Verzögerungen zu vermeiden."
+      ]
+    }
+  ]
+}

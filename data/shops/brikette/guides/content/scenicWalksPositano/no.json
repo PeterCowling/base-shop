@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Vakre gåturer i Positano og omegn",
+    "description": "Ruter og runder med utsikt, realistiske tider og antall trapper."
+  },
+  "linkLabel": "Vakre gåturer i og rundt Positano",
+  "intro": [
+    "Koble sammen terrasseveier og utsiktspunkter for korte naturskjønne sløyfer uten å gjøre dagen om til en full fottur."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Runde i øvre landsby",
+      "body": [
+        "Koble sammen Chiesa Nuova og Sponda via terrassegater for klassisk skylineutsikt med lettere fottrafikk."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Fornillo kyststi",
+      "body": [
+        "Følg den roligere strandtilnærmingen og fotogene trapper. Sikt mot tidlig morgen eller gyllen time."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Utsiktstur ved Nocelle",
+      "body": [
+        "Kjør bussen opp til Nocelle og gren av korte utløpere for vidstrakt utsikt uten lange trappenedstigninger."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvilke sko bør jeg bruke?",
+      "a": [
+        "Velg støttende joggesko med grep; noen stier har ujevne steintrapper og kan være glatte etter regn."
+      ]
+    },
+    {
+      "q": "Hvor lange er turene?",
+      "a": [
+        "Hver sløyfe tar 30–60 minutter inkludert fotostopp. Legg til bussturer for Nocelle for å holde gradienter håndterbare."
+      ]
+    }
+  ]
+}

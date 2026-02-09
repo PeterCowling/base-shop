@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Ingyenes sétahang: fedezd fel Positano titkait",
+    "description": "Töltsd le a Chiesa Nuovától a strandra tartó útvonalat és kövesd a hallgatási tippeket."
+  },
+  "linkLabel": "Ingyenes sétahang: fedezd fel Positano történeteit",
+  "intro": [
+    "Töltsd le ingyenes Positano sétahangunkat: kezdj a Chiesa Nuovánál, kanyarogj végig az óvároson, és érkezz meg a Spiaggia Grande-ra.",
+    "Kövesd az útvonalat és a hallgatási tippeket lent, és mentsd a fájlokat Wi-Fi-n, mielőtt kilépsz a sikátorokba."
+  ],
+  "tocTitle": "Ezen az oldalon",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Útvonal"
+    },
+    {
+      "href": "#listen",
+      "label": "Hogyan hallgass"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Útvonal",
+      "body": [
+        "Kezdj a Chiesa Nuova buszmegállónál → állj meg a Via Pasitea kilátópontjainál → kanyarogj a sikátorok között → érkezz meg a Spiaggia Grandéra.",
+        "Pihenj meg a teraszokon, de légy tekintettel a helyiekre és a hordárokra, akik a lépcsőkön szállítják az árut."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "Hogyan hallgass",
+      "body": [
+        "Töltsd le a hanganyagot hostel Wi-Fi-n, vagy streameld az út menti ismert pontokon.",
+        "Tartsd alacsonyan a hangerőt a lépcsőkön, és vegyél ki egy fülest, amikor át kell haladnod az úton vagy más sétálókkal találkozol."
+      ]
+    }
+  ],
+  "faqHeading": "GYIK",
+  "faqs": [
+    {
+      "q": "Meredek a kör?",
+      "a": [
+        "Igen — számíts lépcsőkre. Ha szükséges, fordítsd meg az útvonalat, vagy használj SITA buszt felfelé, ha a térdeid pihenésre szorulnak."
+      ]
+    },
+    {
+      "q": "Hallgathatom offline?",
+      "a": [
+        "Természetesen. Mentsd el a fájlokat a telefonodra, hogy ne kelljen a gyenge mobiladatokra támaszkodnod a szűk sikátorokban."
+      ]
+    },
+    {
+      "q": "Mennyi időre számítsak?",
+      "a": [
+        "45–60 percet tervezz, beleértve a fotózást és a teraszmegállókat."
+      ]
+    }
+  ]
+}

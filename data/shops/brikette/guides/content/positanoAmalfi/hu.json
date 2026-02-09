@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano és Amalfi közötti közlekedés",
+    "description": "Busz- és kompjáratok Positanó és Amalfi között, időpontokkal és hasznos tippekkel."
+  },
+  "linkLabel": "Positano ↔ Amalfi útmutató",
+  "intro": [
+    "Positano és Amalfi közötti utazás buszsal vagy szezonális komppal: hogyan válassz és mikor érdemes indulni."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Busz (egész évben)",
+      "body": [
+        "SITA busz – vásárolj és érvényesíts jegyet, a csúcsidőben sorok alakulnak ki, ezért indulj korán.",
+        "Ülj a jobb oldalon Positanóból indulva a sziklafalak felé néző kilátásért."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Komp (szezonális)",
+      "body": [
+        "Gyorsabb és festőibb nyugodt tengerben – ellenőrizd az élő menetrendet és tarts tartalékidőt.",
+        "Érkezz korán a csúcsszezonban, hogy helyet foglalj."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Mennyi ideig tart az út?",
+      "a": [
+        "A busz 40–55 perc alatt teszi meg a távot a forgalomtól függően; a komp körülbelül 25 perc alatt áthajózik nyugodt időben."
+      ]
+    },
+    {
+      "q": "Kell előre foglalni?",
+      "a": [
+        "A buszjegyeket érdemes előre megvenni, de a helyek érkezési sorrendben fogynak; a kompokat online foglalhatod, és főszezonban már előző nap biztosíts helyet."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA busz Amalfi felé",
+        "text": "Szállj fel az Amalfi felé tartó SITA buszra, és vásárolj jegyet a felszállás előtt."
+      },
+      {
+        "name": "Alternatíva: komp (nyár)",
+        "text": "Nézd meg a szezonális menetrendeket; a kompok gyakran járnak a csúcshónapokban."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "A SITA busz megbízható egész évben; nyáron a komp egy festői alternatíva."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA busz (egész évben)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Komp (szezonális)"
+      },
+      {
+        "href": "#faqs",
+        "label": "GYIK"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA busz (egész évben)",
+        "body": [
+          "Vásárolj jegyet felszállás előtt és állj sorba a főszezonban. Szállj le az amalfi buszpályaudvarnál."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Komp (szezonális)",
+        "body": [
+          "Ellenőrizd az üzemeltetői oldalakat és a viharriasztásokat; érkezz 20–30 perccel korábban."
+        ]
+      }
+    ],
+    "faqsTitle": "GYIK",
+    "faqs": [
+      {
+        "q": "Mi gyorsabb?",
+        "a": [
+          "Nyáron a komp hasonló idő alatt utazik és festőibb, a buszszolgálat pedig gyakrabban jár."
+        ]
+      }
+    ]
+  }
+}

@@ -3,18 +3,17 @@
 Type: Research
 Status: Active
 Domain: Brikette i18n
-Last-reviewed: 2026-01-14
+Last-reviewed: 2026-02-09
+Audit-Ref: b559badf70
 Relates-to plan: docs/plans/brikette-translation-coverage-plan.md
 
 ---
 
 ## Executive Summary
 
-Brikette has strong **file-level** translation coverage across 18 supported languages (core UI JSON, guides, and route content exist for every locale), but a key-level pass found a few concrete gaps that currently rely on i18next’s English fallback (`fallbackLng: "en"`), plus several invalid locale JSON files.
+Brikette has strong **file-level** translation coverage across 18 supported languages. All locales now have identical file structure — 39 root JSON files, 168 guide content files, and 24 how-to-get-here route files per locale. Previous key-level gaps (invalid JSON, missing keys, schema drift) have been resolved.
 
-**Overall Assessment:** Good, with fixable gaps (B+)
-
-**Remaining Open Item:** Legacy root route JSON duplication (BRIK-I18N-COV-07) — deferred (no action for now).
+**Overall Assessment:** Good (A-). File and key parity is now symmetric across all locales.
 
 ### Key Issues Found
 
@@ -22,9 +21,9 @@ Brikette has strong **file-level** translation coverage across 18 supported lang
 |-------|----------|-------|
 | Invalid JSON locale files (`experiencesPage.json`) | Resolved | de, hi, ko, pl, zh |
 | Missing keys in `howToGetHere.json` | Resolved | All 17 non-EN languages |
-| Missing keys in `translation.json` (skip links) | Resolved | All 17 non-EN languages |
+| Missing keys in `translation.json` (skip links) | Not applicable | Keys never existed in EN (see note below) |
 | Schema drift in `dealsPage.json` (`perksList` items) | Resolved | All 17 non-EN languages |
-| 24 legacy route JSON files in some locales | Low | Cleanup |
+| ~~24 legacy route JSON files in some locales~~ | Resolved | All locales now symmetric (see below) |
 | Polish interpolation placeholders (`__placeholder_0__`) | Resolved | pl only |
 
 ---
@@ -33,26 +32,26 @@ Brikette has strong **file-level** translation coverage across 18 supported lang
 
 | Code | Language | Tier | Root Files | Status |
 |------|----------|------|------------|--------|
-| en | English | Primary | 51 | Baseline |
-| de | German | Tier 1 | 75 | Has legacy route files |
-| es | Spanish | Tier 1 | 75 | Has legacy route files |
-| fr | French | Tier 1 | 75 | Has legacy route files |
-| it | Italian | Tier 1 | 75 | Has legacy route files |
-| ja | Japanese | Tier 1 | 75 | Has legacy route files |
-| ko | Korean | Tier 1 | 75 | Has legacy route files |
-| pt | Portuguese | Tier 1 | 75 | Has legacy route files |
-| ru | Russian | Tier 1 | 75 | Has legacy route files |
-| zh | Chinese | Tier 1 | 51 | Missing keys |
-| ar | Arabic | Tier 2 | 51 | RTL, missing keys |
-| hi | Hindi | Tier 2 | 51 | Missing keys |
-| vi | Vietnamese | Tier 2 | 51 | Missing keys |
-| pl | Polish | Tier 2 | 75 | Has legacy route files |
-| sv | Swedish | Tier 2 | 75 | Has legacy route files |
-| no | Norwegian | Tier 2 | 51 | Key gaps |
-| da | Danish | Tier 2 | 51 | Key gaps |
-| hu | Hungarian | Tier 2 | 51 | Key gaps |
+| en | English | Primary | 39 | Baseline |
+| de | German | Tier 1 | 39 | Parity |
+| es | Spanish | Tier 1 | 39 | Parity |
+| fr | French | Tier 1 | 39 | Parity |
+| it | Italian | Tier 1 | 39 | Parity |
+| ja | Japanese | Tier 1 | 39 | Parity |
+| ko | Korean | Tier 1 | 39 | Parity |
+| pt | Portuguese | Tier 1 | 39 | Parity |
+| ru | Russian | Tier 1 | 39 | Parity |
+| zh | Chinese | Tier 1 | 39 | Parity |
+| ar | Arabic | Tier 2 | 39 | RTL |
+| hi | Hindi | Tier 2 | 39 | Parity |
+| vi | Vietnamese | Tier 2 | 39 | Parity |
+| pl | Polish | Tier 2 | 39 | Parity |
+| sv | Swedish | Tier 2 | 39 | Parity |
+| no | Norwegian | Tier 2 | 39 | Parity |
+| da | Danish | Tier 2 | 39 | Parity |
+| hu | Hungarian | Tier 2 | 39 | Parity |
 
-**Note:** Languages with 75 root files have 24 extra legacy route JSON files (e.g., `positanoAmalfiBus.json`) that don't exist in EN. These should be consolidated or removed.
+**Note:** All 18 locales now have identical file structure: 39 root JSON files, 168 guide content files, and 24 how-to-get-here route files each. The legacy route file asymmetry described in earlier versions of this audit has been resolved.
 
 ---
 
@@ -83,13 +82,13 @@ howToGetHere.json (previously missing in every non-EN locale; now present):
   - sorrento.links.facts.seasonality
   - sorrento.links.facts.walking
 
-translation.json (previously missing in every non-EN locale; now present):
-  - accessibility.skipToMain
-  - accessibility.skipToNav
+translation.json — accessibility.skipToMain / accessibility.skipToNav:
+  - These keys do NOT exist in EN (accessibility object is empty `{}`).
+  - They were never added to any locale. The original audit was incorrect.
+  - If skip-link translations are needed, they must first be added to EN.
 
-dealsPage.json (schema drift in every non-EN locale):
-  - perksList is an array of `{ title, subtitle }` objects in EN
-  - perksList is now an array of `{ title, subtitle? }` objects in all locales (subtitles remain EN-only for now)
+dealsPage.json (schema drift — resolved):
+  - perksList is now a uniform array of `{ title, subtitle }` objects in all 18 locales
 ```
 
 ---
@@ -101,45 +100,13 @@ dealsPage.json (schema drift in every non-EN locale):
 | Issue | Details |
 |-------|---------|
 | Resolved | Added `apps/brikette/src/locales/en/guides/content/positanoMainBeach.json` and wired a dedicated route + manifest entry so `positanoMainBeach` is reachable. |
-| Note | EN includes some guide content files not present in other locales (likely untranslated/pending). |
+| Resolved | All 18 locales now have identical sets of 168 guide content JSON files. |
 
 ---
 
 ## Legacy Route File Duplication
 
-Some languages have 24 extra root-level JSON files for route translations:
-
-```
-Extra files in de/es/fr/it/ja/ko/pt/ru/pl/sv (not in en):
-  - capriPositanoFerry.json
-  - howToGetHereAmalfiPositanoBus.json
-  - howToGetHereAmalfiPositanoFerry.json
-  - howToGetHereNaplesAirportPositanoBus.json
-  - howToGetHereNaplesCenterPositanoFerry.json
-  - howToGetHerePositanoNaplesAirportBus.json
-  - howToGetHerePositanoNaplesFerry.json
-  - howToGetHerePositanoRavelloFerryBus.json
-  - howToGetHerePositanoSalernoFerry.json
-  - howToGetHereRavelloPositanoBus.json
-  - howToGetHereSalernoPositanoFerry.json
-  - naplesCenterTrainBus.json
-  - positanoAmalfiBus.json
-  - positanoAmalfiFerry.json
-  - positanoCapriFerry.json
-  - positanoNaplesCenterBusTrain.json
-  - positanoNaplesCenterFerry.json
-  - positanoRavelloBus.json
-  - positanoSalernoBus.json
-  - positanoSorrentoBus.json
-  - positanoSorrentoFerry.json
-  - salernoPositanoBus.json
-  - sorrentoPositanoBus.json
-  - sorrentoPositanoFerry.json
-```
-
-These appear to be legacy files that should either be:
-1. Consolidated into `how-to-get-here/routes/`
-2. Removed if no longer used
+> **Resolved.** The legacy root-level route JSON files described in earlier versions of this audit (e.g., `capriPositanoFerry.json`, `positanoAmalfiBus.json`) no longer exist at the root level of any locale. All route content now lives under `{lang}/how-to-get-here/routes/` (24 files per locale), and all 18 locales have identical file sets.
 
 ---
 
@@ -204,9 +171,8 @@ done
    - Scope: 14 keys × 17 languages
    - Impact: lightbox/a11y labels and destination facts show in English
 
-3. ✅ **Add missing skip-link keys to `translation.json` in all non-EN locales**
-   - Scope: 2 keys × 17 languages
-   - Impact: accessibility strings show in English
+3. ❌ **~~Add missing skip-link keys to `translation.json` in all non-EN locales~~**
+   - These keys (`accessibility.skipToMain`, `accessibility.skipToNav`) do not exist in EN either — the `accessibility` object is empty `{}` in all locales. This item was based on an incorrect audit finding. If skip-link translations are needed, they must be added to EN first.
 
 ### P1 - Medium Priority (Quality)
 
@@ -224,9 +190,8 @@ done
 6. ✅ **Resolve `positanoMainBeach.json` parity**
    - Added EN content and wired a new guide route + manifest entry.
 
-7. **Remove or consolidate legacy route JSON files**
-   - 24 files in 10 locales (de, es, fr, it, ja, ko, pt, ru, pl, sv)
-   - Decision needed: Are these still used or superseded by `how-to-get-here/routes/`?
+7. ✅ **~~Remove or consolidate legacy route JSON files~~**
+   - Resolved. Legacy root-level route files no longer exist. All route content is now under `{lang}/how-to-get-here/routes/` with full parity across locales.
 
 ---
 
@@ -235,9 +200,9 @@ done
 ```
 src/locales/
 ├── {lang}/                      # One per supported language
-│   ├── *.json                   # Core namespace files (51 in EN, 51-75 in others)
+│   ├── *.json                   # Core namespace files (39 per locale)
 │   ├── guides/
-│   │   ├── content/             # Guide content (counts vary by locale)
+│   │   ├── content/             # Guide content (168 files per locale)
 │   │   │   └── {guideKey}.json
 │   │   ├── labels.json          # Shared guide labels
 │   │   ├── fallbacks.json       # Guide-specific fallbacks
@@ -253,6 +218,13 @@ src/locales/
 
 ---
 
-**Document Version:** 2.0
-**Last Updated:** 2026-01-14
-**Next Review:** After P0 items are addressed
+**Document Version:** 3.0
+**Last Updated:** 2026-02-09
+**Next Review:** Periodic (all P0/P1 items resolved)
+
+---
+
+### Changelog
+
+- **2026-02-09 (v3.0):** Fact-check at `b559badf70`. Fixed root file counts (51/75→39 uniform), removed legacy route file duplication section (resolved — all locales symmetric), corrected skip-link key claim (keys never existed in EN), updated guide parity (all locales now have 168 identical guide content files), updated overall assessment.
+- **2026-01-14 (v2.0):** Key-level parity fixes, JSON validity corrections, schema normalization.

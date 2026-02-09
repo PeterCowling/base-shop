@@ -126,7 +126,9 @@ describe("runtime preview parity", () => {
   it("round-trips a published page through the preview route and renders with the starter registry", async () => {
     const { onRequest, PreviewPage, token, cleanup } =
       await setupPreviewFixture();
+    // Suppress expected console.warn from React unknown prop 'hiddenBreakpoints'
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const error = jest.spyOn(console, "error").mockImplementation(() => {});
     const originalFetch = global.fetch;
 
     const fetchImpl = async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -174,6 +176,7 @@ describe("runtime preview parity", () => {
     } finally {
       (global as any).fetch = originalFetch;
       warn.mockRestore();
+      error.mockRestore();
       await cleanup();
     }
   });

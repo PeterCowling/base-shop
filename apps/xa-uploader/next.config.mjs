@@ -25,7 +25,8 @@ function requireEnv(name, minLength) {
   }
 }
 
-if (process.env.NODE_ENV === "production" && !VENDOR_MODE) {
+// In CI, skip validation since we only need runtime secrets at deploy time, not build time
+if (process.env.NODE_ENV === "production" && !VENDOR_MODE && !process.env.CI) {
   requireEnv("NEXTAUTH_SECRET", 32);
   requireEnv("SESSION_SECRET", 32);
   requireEnv("CART_COOKIE_SECRET");

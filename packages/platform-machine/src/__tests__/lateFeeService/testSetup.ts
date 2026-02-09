@@ -1,5 +1,3 @@
-import { readdir,readFile } from "fs/promises";
-
 import { coreEnv } from "@acme/config/env/core";
 import {
   markLateFeeCharged,
@@ -8,9 +6,13 @@ import {
 import { logger } from "@acme/platform-core/utils";
 import { stripe } from "@acme/stripe";
 
+// Mock fs/promises with actual mock functions
+const readdirMock = jest.fn();
+const readFileMock = jest.fn();
+
 jest.mock("fs/promises", () => ({
-  readFile: jest.fn(),
-  readdir: jest.fn(),
+  readFile: readFileMock,
+  readdir: readdirMock,
 }));
 
 jest.mock("@acme/stripe", () => ({
@@ -33,8 +35,7 @@ jest.mock("@acme/config/env/core", () => ({
   coreEnv: {},
 }));
 
-export const readdirMock = readdir as unknown as jest.Mock;
-export const readFileMock = readFile as unknown as jest.Mock;
+export { readdirMock, readFileMock };
 export const stripeRetrieveMock = stripe.checkout.sessions
   .retrieve as unknown as jest.Mock;
 export const stripeChargeMock = stripe.paymentIntents.create as unknown as jest.Mock;

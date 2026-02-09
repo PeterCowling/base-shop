@@ -56,6 +56,9 @@ afterEach(() => jest.resetModules());
     });
 
     test("returns 403 and does not process when tenant mismatch is detected", async () => {
+      // Suppress expected console.error from "[stripe-webhook] tenant mismatch"
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
       const handleStripeWebhook = jest.fn();
       const assertStripeWebhookTenant = jest.fn(async () => ({
         ok: false as const,
@@ -102,6 +105,8 @@ afterEach(() => jest.resetModules());
         { shopId: "bcd", service: "template-app" },
         1,
       );
+
+      errorSpy.mockRestore();
     });
 
     test("returns 503 and does not process when tenant is unresolvable", async () => {

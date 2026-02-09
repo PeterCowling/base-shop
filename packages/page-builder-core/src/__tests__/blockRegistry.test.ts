@@ -1,5 +1,6 @@
 import { coreBlockDescriptors } from "../blocks/core-blocks";
-import type { BlockRegistry , type BlockTypeId,buildBlockRegistry } from "../blocks/registry";
+import type { BlockRegistry, BlockTypeId } from "../blocks/registry";
+import { buildBlockRegistry } from "../blocks/registry";
 
 describe("block registry contracts", () => {
   it("buildBlockRegistry produces descriptor and registry maps keyed by BlockTypeId", () => {

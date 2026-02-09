@@ -35,6 +35,9 @@ describe("Upgrade page accessibility (color-contrast)", () => {
   });
 
   it("renders with no color-contrast violations", async () => {
+    // Suppress expected console.error from "We couldn't load the latest upgrade preview"
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
     const { container } = render(<Upgrade />);
 
     // Ensure content is present before running axe
@@ -44,5 +47,7 @@ describe("Upgrade page accessibility (color-contrast)", () => {
       runOnly: { type: "rule", values: ["color-contrast"] },
     });
     expect(results).toHaveNoViolations();
+
+    errorSpy.mockRestore();
   });
 });

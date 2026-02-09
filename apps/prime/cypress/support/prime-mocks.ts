@@ -47,13 +47,11 @@ export function installPrimeApiMocks(mode: PrimeJourneyMode = 'pre-arrival'): vo
     const token = req.query.token;
 
     if (typeof token === 'string' && token.includes('invalid')) {
-      // eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-ENG-0017 test-only API stub payload
       req.reply({ statusCode: 404, body: { error: 'Token not found' } });
       return;
     }
 
     if (typeof token === 'string' && token.includes('expired')) {
-      // eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-ENG-0017 test-only API stub payload
       req.reply({ statusCode: 410, body: { error: 'Token expired' } });
       return;
     }

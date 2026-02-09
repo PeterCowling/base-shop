@@ -28,6 +28,7 @@ function importNextConfig(env: Record<string, string | undefined>) {
 it("requires NEXTAUTH_SECRET in production", () => {
   const result = importNextConfig({
     NODE_ENV: "production",
+    CI: undefined,
     NEXT_PHASE: undefined,
     NEXTAUTH_SECRET: undefined,
     SESSION_SECRET: "s".repeat(32),
@@ -41,6 +42,7 @@ it("requires NEXTAUTH_SECRET in production", () => {
 it("requires SESSION_SECRET in production", () => {
   const result = importNextConfig({
     NODE_ENV: "production",
+    CI: undefined,
     NEXT_PHASE: undefined,
     NEXTAUTH_SECRET: "n".repeat(32),
     SESSION_SECRET: undefined,
@@ -54,6 +56,7 @@ it("requires SESSION_SECRET in production", () => {
 it("requires CART_COOKIE_SECRET in production", () => {
   const result = importNextConfig({
     NODE_ENV: "production",
+    CI: undefined,
     NEXT_PHASE: undefined,
     NEXTAUTH_SECRET: "n".repeat(32),
     SESSION_SECRET: "s".repeat(32),

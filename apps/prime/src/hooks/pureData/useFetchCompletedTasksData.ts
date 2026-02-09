@@ -66,7 +66,6 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
     if (!uuid) {
       if (!warnTimeoutRef.current) {
         warnTimeoutRef.current = setTimeout(() => {
-          // eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-ENG-0017 internal diagnostic log
           logger.warn('[useFetchCompletedTasks] UUID still unavailable after 1.5 s; listener not attached. ');
           setIsLoading(false);
           setIsUuidMissing(true);
@@ -102,7 +101,6 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
         })
         .catch((error) => {
           if (!isActive) return;
-          // eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-ENG-0017 internal diagnostic log
           logger.error('[useFetchCompletedTasks] Firebase one-shot error:', error);
           setIsError(true);
           setIsLoading(false);
@@ -135,7 +133,6 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
         setIsError(false);
       },
       (error) => {
-        // eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-ENG-0017 internal diagnostic log
         logger.error('[useFetchCompletedTasks] Firebase listener error:', error);
         setIsError(true);
         setIsLoading(false);

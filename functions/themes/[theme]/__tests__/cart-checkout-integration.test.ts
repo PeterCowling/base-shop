@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+
 import { asNextJson } from "@acme/test-utils";
 
 const CART_COOKIE = "__Host-CART_ID";
@@ -73,7 +74,7 @@ const sku = {
   deposit: 0,
   stock: 5,
   forSale: true,
-  forRental: false,
+  forRental: true,
   media: [],
   sizes: ["M"],
 };
@@ -97,20 +98,49 @@ afterEach(() => {
 });
 
 test("add to cart then create checkout session", async () => {
+  // Seed inventory for the test SKU
+  const { prisma } = await import("@acme/platform-core/db");
+  const size = sku.sizes[0];
+  const variantKey = `${sku.id}#size:${size}`;
+  await prisma.inventoryItem.upsert({
+    where: {
+      shopId_sku_variantKey: {
+        shopId: "cover-me-pretty",
+        sku: sku.id,
+        variantKey,
+      },
+    },
+    update: { quantity: 10, productId: sku.id },
+    create: {
+      shopId: "cover-me-pretty",
+      sku: sku.id,
+      variantKey,
+      quantity: 10,
+      productId: sku.id,
+    },
+  });
+
   const { POST: CHECKOUT_POST } = await import(
     "../../../../apps/cover-me-pretty/src/api/checkout-session/route"
   );
-  const size = sku.sizes[0];
   mockCart = {
     [`${sku.id}${size ? ":" + size : ""}`]: { sku, size, qty: 1 },
   };
   const cookie = "cart-1";
-  await CHECKOUT_POST(
+  const response = await CHECKOUT_POST(
     checkoutReq(
       { returnDate: "2030-01-02", currency: "EUR", taxRegion: "EU" },
       cookie,
     ),
   );
+
+  if (response.status !== 200) {
+    const body = await response.json();
+    // eslint-disable-next-line no-console -- diagnostic for CI debugging
+    console.log("Checkout failed:", response.status, body);
+  }
+
+  expect(response.status).toBe(200);
   const { stripe } = await import("@acme/stripe");
   expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });

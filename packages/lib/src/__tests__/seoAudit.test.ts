@@ -117,7 +117,9 @@ describe("runSeoAudit", () => {
       const result = await runSeoAudit("https://example.com");
 
       expect(result).toEqual({ score: 91, recommendations: ["Improve alt text"] });
-      expect(launch).toHaveBeenCalledWith({ chromeFlags: ["--headless"] });
+      expect(launch).toHaveBeenCalledWith({
+        chromeFlags: ["--headless", "--host-resolver-rules=MAP localhost 127.0.0.1"],
+      });
       expect(chrome.kill).toHaveBeenCalledTimes(1);
       expect(lighthouseFn).toHaveBeenCalledTimes(1);
       const [urlArg, optsArg, configArg] = (lighthouseFn as unknown as jest.Mock).mock.calls[0];

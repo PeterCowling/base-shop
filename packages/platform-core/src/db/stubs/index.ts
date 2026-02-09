@@ -2,6 +2,8 @@ export { createCustomerIdentityDelegate } from './customerIdentity';
 export { createCustomerMfaDelegate } from './customerMfa';
 export { createCustomerProfileDelegate } from './customerProfile';
 export { createCustomerStripeMappingDelegate } from './customerStripeMapping';
+export { createInventoryHoldDelegate } from './inventoryHold';
+export { createInventoryHoldItemDelegate } from './inventoryHoldItem';
 export type { InventoryItemDelegate } from './inventoryItem';
 export { createInventoryItemDelegate } from './inventoryItem';
 export { createPageDelegate } from './page';

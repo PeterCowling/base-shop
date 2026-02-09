@@ -54,12 +54,10 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv src/app/api src/app/_api-off &&
-        mv "src/app/[lang]/draft" "src/app/[lang]/_draft-off" &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm exec next build &&
         pnpm --filter @apps/brikette generate:static-aliases; e=$?;
         mv src/app/_api-off src/app/api;
-        mv "src/app/[lang]/_draft-off" "src/app/[lang]/draft";
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)
       artifact-path: "apps/brikette/out"
@@ -90,12 +88,10 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv src/app/api src/app/_api-off &&
-        mv "src/app/[lang]/draft" "src/app/[lang]/_draft-off" &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
         (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 pnpm exec next build &&
         pnpm --filter @apps/brikette generate:static-aliases; e=$?;
         mv src/app/_api-off src/app/api;
-        mv "src/app/[lang]/_draft-off" "src/app/[lang]/draft";
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)
       artifact-path: "apps/brikette/out"

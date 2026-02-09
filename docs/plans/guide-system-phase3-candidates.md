@@ -1,3 +1,10 @@
+---
+Type: Plan
+Status: Reference
+Domain: Repo
+Last-reviewed: 2026-02-09
+---
+
 # Guide System — Phase 3 Candidates
 
 > Captured from the [Unified Guide System Plan](../../.claude/plans/vivid-scribbling-pumpkin.md).

@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-09
+---
+
 # Business Maturity Model
 
 Standing reference for how businesses on the platform progress through capability levels.

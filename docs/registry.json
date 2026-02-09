@@ -438,6 +438,66 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0001.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0002.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0003.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0004.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0005.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0006.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0003.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0004.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0005.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0006.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/SCAN-BRIK-001.user.md",
     "type": "Idea",
     "status": "Draft",
@@ -462,10 +522,46 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/people/people.user.md",
+    "type": "People-Profile",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/security.md",
     "type": "Documentation",
     "status": "Active",
     "domain": "Business OS"
+  },
+  {
+    "path": "docs/business-os/strategy/BOS/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PIPE/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PLAT/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/business-maturity-model.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
   },
   {
     "path": "docs/cms-plan/index.md",
@@ -765,7 +861,7 @@
     "path": "docs/historical/plans/reception-legacy-cleanup-plan.md",
     "type": "Plan",
     "status": "Historical",
-    "domain": null
+    "domain": "Reception"
   },
   {
     "path": "docs/historical/plans/reception-stock-cash-control-plan.md",
@@ -912,7 +1008,7 @@
     "domain": "DevEx/Tooling"
   },
   {
-    "path": "docs/plans/agent-git-instructions-update-fact-find.md",
+    "path": "docs/plans/archive/agent-git-instructions-update-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Repo"
@@ -920,20 +1016,56 @@
   {
     "path": "docs/plans/archive/agent-git-instructions-update-plan.md",
     "type": "Plan",
-    "status": "Draft",
+    "status": "Complete",
     "domain": "Repo"
   },
   {
-    "path": "docs/plans/agent-language-intelligence-plan.md",
+    "path": "docs/plans/archive/agent-language-intelligence-plan.md",
     "type": "Plan",
     "status": "Draft",
     "domain": "DevEx/Tooling"
+  },
+  {
+    "path": "docs/plans/archive/agent-safety-net-hardening-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/archive/agent-safety-net-hardening-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Infra"
   },
   {
     "path": "docs/plans/archive/article-helpers-to-guide-helpers-migration-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/board-auto-refresh-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/board-auto-refresh-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/bos-agent-api-availability-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "BOS/Infrastructure"
+  },
+  {
+    "path": "docs/plans/archive/brikette-cloudflare-staging-deployment-briefing.md",
+    "type": "Briefing",
+    "status": "Superseded",
+    "domain": "Deploy"
   },
   {
     "path": "docs/plans/archive/brikette-compat-shim-removal.md",
@@ -984,6 +1116,24 @@
     "domain": "SEO"
   },
   {
+    "path": "docs/plans/archive/brikette-staging-localized-slug-routing-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Brikette/Routing"
+  },
+  {
+    "path": "docs/plans/archive/brikette-staging-localized-slug-routing-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Brikette/Routing"
+  },
+  {
+    "path": "docs/plans/archive/brikette-translation-coverage.md",
+    "type": "Research",
+    "status": "Active",
+    "domain": "Brikette i18n"
+  },
+  {
     "path": "docs/plans/archive/brikette-ui-simplification-plan.md",
     "type": "Plan",
     "status": "Historical",
@@ -1008,10 +1158,178 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/archive/business-os-skill-integration-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Agents / Business OS"
+  },
+  {
+    "path": "docs/plans/archive/business-os-unified-writes-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform / Business OS"
+  },
+  {
+    "path": "docs/plans/archive/catalog-stock-media-upload-facility-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/plans/archive/ci-quality-overnight-fixes-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/archive/ci-quality-overnight-fixes-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/archive/cochlearfit-terms-i18n-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Apps"
+  },
+  {
+    "path": "docs/plans/archive/composite-email-templates-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/cover-me-pretty-lint-enablement-plan.md",
+    "type": "Plan",
+    "status": "Done",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/archive/coverage-caching-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/plans/archive/coverage-caching-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/plans/archive/database-backed-business-os-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Superseded",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/database-backed-business-os-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/archive/design-system-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Design System"
+  },
+  {
+    "path": "docs/plans/archive/design-ui-theming-v2-plan.md",
+    "type": "Plan",
+    "status": "Archive",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/archive/email-autodraft-consolidation-baseline.md",
+    "type": "Baseline-Report",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/archive/email-autodraft-consolidation-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/archive/email-autodraft-consolidation-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/archive/email-autodraft-consolidation-security.md",
+    "type": "Report",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/archive/email-autodraft-consolidation-test-results.md",
+    "type": "Report",
+    "status": "Active",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/archive/email-autodraft-response-system-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/archive/experiences-page-refactor-plan.md",
+    "type": "Plan",
+    "status": "Completed",
+    "domain": "UI / CMS"
+  },
+  {
+    "path": "docs/plans/archive/fix-placeholder-translations-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI / i18n / Content"
+  },
+  {
+    "path": "docs/plans/archive/guide-area-editor-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/guide-cross-referencing-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Guides / Content / SEO"
+  },
+  {
+    "path": "docs/plans/archive/guide-publication-decoupling-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/guide-publication-decoupling-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/guide-status-single-source-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/guide-status-single-source-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/guide-system-improvements-phase2-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS / UI / Platform"
   },
   {
     "path": "docs/plans/archive/guide-system-improvements-plan.md",
@@ -1026,10 +1344,82 @@
     "domain": "CMS / UI"
   },
   {
+    "path": "docs/plans/archive/guide-translation-dx-improvements-plan.md",
+    "type": "Plan",
+    "status": "Accepted",
+    "domain": "DX"
+  },
+  {
+    "path": "docs/plans/archive/guide-wysiwyg-editor-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/guides-hydration-fix-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/guides-inline-images-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/guides-publication-readiness-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Brikette Guides"
+  },
+  {
+    "path": "docs/plans/archive/handbag-configurator-lint-enablement-plan.md",
+    "type": "Runbook",
+    "status": "Archive",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/archive/help-articles-to-guides-conversion-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/how-to-get-here-guides-migration-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Archived",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/how-to-get-here-guides-migration-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/how-to-get-here-guides-publication-plan.md",
+    "type": "Plan",
+    "status": "Superseded",
+    "domain": "Brikette Guides"
+  },
+  {
     "path": "docs/plans/archive/how-to-get-here-ux-improvement-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/i18n-missing-key-detection-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "UI / i18n"
+  },
+  {
+    "path": "docs/plans/archive/i18n-missing-key-detection-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "UI / i18n / Testing"
   },
   {
     "path": "docs/plans/archive/integrated-secrets-workflow-plan.md",
@@ -1068,6 +1458,12 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/archive/linting-enhancement-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Repo"
+  },
+  {
     "path": "docs/plans/archive/math-utilities-plan.md",
     "type": "Plan",
     "status": "Historical",
@@ -1080,10 +1476,28 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/archive/no-hardcoded-copy-non-ui-exemptions-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/archive/post-deploy-health-checks-mandatory-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/archive/postbuild-tsx-esm-fix-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Build"
+  },
+  {
+    "path": "docs/plans/archive/react-audit-design-system-plan.md",
+    "type": "Plan",
+    "status": "Completed",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/archive/reception-functionality-improvements-plan.md",
@@ -1104,6 +1518,36 @@
     "domain": "Reception"
   },
   {
+    "path": "docs/plans/archive/reception-stock-cash-control-plan-v2.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Reception"
+  },
+  {
+    "path": "docs/plans/archive/remove-gallery-feature-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/plans/archive/simplify-next-config-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Build"
+  },
+  {
+    "path": "docs/plans/archive/test-quality-audit-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/plans/archive/theme-generation-workflow-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Theming"
+  },
+  {
     "path": "docs/plans/archive/theming-audit-2026-01-plan.md",
     "type": "Plan",
     "status": "Superseded",
@@ -1114,6 +1558,18 @@
     "type": "Plan",
     "status": "Historical",
     "domain": "i18n"
+  },
+  {
+    "path": "docs/plans/archive/translation-workflow-improvements-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/translation-workflow-improvements-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/transport-renderer-content-unification-fact-find.md",
@@ -1134,28 +1590,64 @@
     "domain": "Platform/UI"
   },
   {
+    "path": "docs/plans/archive/ui-lint-remediation-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/archive/ui-package-split-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Platform/UI"
   },
   {
-    "path": "docs/plans/board-auto-refresh-fact-find.md",
+    "path": "docs/plans/archive/work-idea-inline-edit-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/work-idea-inline-edit-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/writer-lock-stale-locks-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/archive/writer-lock-stale-locks-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/archive/xa-publish-privacy-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "Commerce / Deploy"
+  },
+  {
+    "path": "docs/plans/article-generation-pipeline-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/board-auto-refresh-plan.md",
+    "path": "docs/plans/article-generation-pipeline-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/brikette-cloudflare-staging-deployment-briefing.md",
-    "type": "Briefing",
-    "status": "Active",
-    "domain": "Deploy"
+    "path": "docs/plans/bos-agent-api-availability-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "BOS/Infrastructure"
   },
   {
     "path": "docs/plans/brikette-deferred-plan.md",
@@ -1224,12 +1716,6 @@
     "domain": "Agents / Business OS"
   },
   {
-    "path": "docs/plans/business-os-skill-integration-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Agents / Business OS"
-  },
-  {
     "path": "docs/plans/business-os-strategic-review.md",
     "type": "Strategic Review",
     "status": "Draft",
@@ -1242,16 +1728,16 @@
     "domain": "Platform / Business OS"
   },
   {
-    "path": "docs/plans/business-os-unified-writes-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Platform / Business OS"
+    "path": "docs/plans/cabinet-system-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning # 7 open Qs have safe defaults; 3 behavioral Qs resolved",
+    "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/catalog-stock-media-upload-facility-plan.md",
+    "path": "docs/plans/cabinet-system-plan.md",
     "type": "Plan",
     "status": "Active",
-    "domain": "Commerce"
+    "domain": "Business-OS"
   },
   {
     "path": "docs/plans/ci-deploy/ci-and-deploy-roadmap.md",
@@ -1266,12 +1752,6 @@
     "domain": "CI/Infrastructure"
   },
   {
-    "path": "docs/plans/cochlearfit-terms-i18n-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Apps"
-  },
-  {
     "path": "docs/plans/commerce-core-readiness-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
@@ -1284,28 +1764,16 @@
     "domain": "Platform / Commerce"
   },
   {
+    "path": "docs/plans/composite-email-templates-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/content-translation-pipeline-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "i18n/CMS"
-  },
-  {
-    "path": "docs/plans/cover-me-pretty-lint-enablement-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Repo"
-  },
-  {
-    "path": "docs/plans/coverage-caching-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Draft",
-    "domain": "Testing"
-  },
-  {
-    "path": "docs/plans/coverage-caching-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Testing"
   },
   {
     "path": "docs/plans/dashboard-upgrade-aggregator-plan.md",
@@ -1314,28 +1782,10 @@
     "domain": "Dashboard / Upgrade"
   },
   {
-    "path": "docs/plans/database-backed-business-os-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Superseded",
-    "domain": "Platform"
-  },
-  {
-    "path": "docs/plans/database-backed-business-os-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Platform"
-  },
-  {
     "path": "docs/plans/design-system-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Design System"
-  },
-  {
-    "path": "docs/plans/design-ui-theming-v2-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Repo"
   },
   {
     "path": "docs/plans/edge-commerce-standardization-implementation-plan.md",
@@ -1344,45 +1794,9 @@
     "domain": "Platform, Commerce"
   },
   {
-    "path": "docs/plans/email-autodraft-consolidation-baseline.md",
-    "type": "Baseline-Report",
-    "status": "Historical",
-    "domain": "Automation"
-  },
-  {
-    "path": "docs/plans/email-autodraft-consolidation-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Historical",
-    "domain": "Automation"
-  },
-  {
-    "path": "docs/plans/email-autodraft-consolidation-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Automation"
-  },
-  {
-    "path": "docs/plans/email-autodraft-consolidation-security.md",
-    "type": "Report",
-    "status": "Historical",
-    "domain": "Automation"
-  },
-  {
-    "path": "docs/plans/email-autodraft-consolidation-test-results.md",
-    "type": "Report",
-    "status": "Active",
-    "domain": "Automation"
-  },
-  {
     "path": "docs/plans/email-autodraft-response-system-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
-    "domain": "Automation"
-  },
-  {
-    "path": "docs/plans/email-autodraft-response-system-plan.md",
-    "type": "Plan",
-    "status": "Historical",
     "domain": "Automation"
   },
   {
@@ -1392,28 +1806,22 @@
     "domain": "Business-Ops"
   },
   {
-    "path": "docs/plans/experiences-page-refactor-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "UI / CMS"
+    "path": "docs/plans/faster-staging-ci-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "CI/Infrastructure"
   },
   {
-    "path": "docs/plans/fix-placeholder-translations-plan.md",
+    "path": "docs/plans/faster-staging-ci-plan.md",
     "type": "Plan",
     "status": "Active",
-    "domain": "UI / i18n / Content"
+    "domain": "CI/Infrastructure"
   },
   {
     "path": "docs/plans/github-update-strategy-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Infra"
-  },
-  {
-    "path": "docs/plans/guide-area-editor-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "CMS"
   },
   {
     "path": "docs/plans/guide-areas-comparison-briefing.md",
@@ -1428,10 +1836,10 @@
     "domain": "Guides / Content / SEO"
   },
   {
-    "path": "docs/plans/guide-cross-referencing-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Guides / Content / SEO"
+    "path": "docs/plans/guide-production-unified-experience-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "BOS"
   },
   {
     "path": "docs/plans/guide-system-improvements-fact-find.md",
@@ -1440,16 +1848,10 @@
     "domain": "CMS / UI / Platform"
   },
   {
-    "path": "docs/plans/guide-system-improvements-phase2-plan.md",
+    "path": "docs/plans/guide-system-phase3-candidates.md",
     "type": "Plan",
-    "status": "Active",
-    "domain": "CMS / UI / Platform"
-  },
-  {
-    "path": "docs/plans/guide-translation-dx-improvements-plan.md",
-    "type": "Plan",
-    "status": "Accepted",
-    "domain": null
+    "status": "Reference",
+    "domain": "Repo"
   },
   {
     "path": "docs/plans/guide-translation-dx-problems.md",
@@ -1458,34 +1860,10 @@
     "domain": null
   },
   {
-    "path": "docs/plans/guide-wysiwyg-editor-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "CMS"
-  },
-  {
     "path": "docs/plans/guides-hydration-fix-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "UI"
-  },
-  {
-    "path": "docs/plans/guides-hydration-fix-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "UI"
-  },
-  {
-    "path": "docs/plans/guides-inline-images-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Historical",
-    "domain": "UI"
-  },
-  {
-    "path": "docs/plans/guides-publication-readiness-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Brikette Guides"
   },
   {
     "path": "docs/plans/handbag-configurator-implementation-plan.md",
@@ -1494,46 +1872,28 @@
     "domain": "Commerce"
   },
   {
-    "path": "docs/plans/handbag-configurator-lint-enablement-plan.md",
-    "type": "Runbook",
+    "path": "docs/plans/ideas-go-faster-redesign-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-go-faster-redesign-plan.md",
+    "type": "Plan",
     "status": "Active",
-    "domain": "Repo"
+    "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/help-articles-to-guides-conversion-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "CMS"
-  },
-  {
-    "path": "docs/plans/how-to-get-here-guides-migration-fact-find.md",
+    "path": "docs/plans/kanban-sweep-agent-fact-find.md",
     "type": "Fact-Find",
-    "status": "Draft",
-    "domain": "CMS"
+    "status": "Ready-for-planning",
+    "domain": "Platform"
   },
   {
-    "path": "docs/plans/how-to-get-here-guides-migration-plan.md",
+    "path": "docs/plans/kanban-sweep-agent-plan.md",
     "type": "Plan",
-    "status": "Historical",
-    "domain": "CMS"
-  },
-  {
-    "path": "docs/plans/how-to-get-here-guides-publication-plan.md",
-    "type": "Plan",
-    "status": "Superseded",
-    "domain": "Brikette Guides"
-  },
-  {
-    "path": "docs/plans/i18n-missing-key-detection-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Draft",
-    "domain": "UI / i18n"
-  },
-  {
-    "path": "docs/plans/i18n-missing-key-detection-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "UI / i18n / Testing"
+    "status": "Active",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/launch-3hr-v2-plan.md",
@@ -1548,16 +1908,10 @@
     "domain": "Launch"
   },
   {
-    "path": "docs/plans/linting-enhancement-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Repo"
-  },
-  {
     "path": "docs/plans/mcp-server-implementation-plan.md",
     "type": "Plan",
     "status": "Draft",
-    "domain": null
+    "domain": "Infrastructure"
   },
   {
     "path": "docs/plans/multi-writer-git-locking-plan.md",
@@ -1572,12 +1926,6 @@
     "domain": "Repo"
   },
   {
-    "path": "docs/plans/no-hardcoded-copy-non-ui-exemptions-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Platform"
-  },
-  {
     "path": "docs/plans/plans-to-cards-migration-analysis.md",
     "type": "Analysis",
     "status": "Reference",
@@ -1590,33 +1938,15 @@
     "domain": "Build"
   },
   {
-    "path": "docs/plans/postbuild-tsx-esm-fix-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Build"
-  },
-  {
     "path": "docs/plans/prime-guest-portal-gap-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Prime"
   },
   {
-    "path": "docs/plans/reception-stock-cash-control-plan-v2.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Reception"
-  },
-  {
     "path": "docs/plans/remove-gallery-feature-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
-    "domain": "CMS"
-  },
-  {
-    "path": "docs/plans/remove-gallery-feature-plan.md",
-    "type": "Plan",
-    "status": "Active",
     "domain": "CMS"
   },
   {
@@ -1632,18 +1962,6 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/simplify-next-config-plan.md",
-    "type": "Plan",
-    "status": "Draft",
-    "domain": null
-  },
-  {
-    "path": "docs/plans/test-quality-audit-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Testing"
-  },
-  {
     "path": "docs/plans/test-sweep-plan.md",
     "type": "Plan",
     "status": "Active",
@@ -1654,30 +1972,6 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Testing"
-  },
-  {
-    "path": "docs/plans/theme-generation-workflow-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Theming"
-  },
-  {
-    "path": "docs/plans/ui-lint-remediation-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "Platform"
-  },
-  {
-    "path": "docs/plans/work-idea-inline-edit-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Draft",
-    "domain": "UI"
-  },
-  {
-    "path": "docs/plans/work-idea-inline-edit-plan.md",
-    "type": "Plan",
-    "status": "Historical",
-    "domain": "UI"
   },
   {
     "path": "docs/plans/xa-client-readiness-plan.md",
@@ -1692,10 +1986,10 @@
     "domain": "Commerce"
   },
   {
-    "path": "docs/plans/xa-publish-privacy-fact-find.md",
+    "path": "docs/plans/xa-deploy-readiness-fact-find.md",
     "type": "Fact-Find",
-    "status": "Historical",
-    "domain": "Commerce / Deploy"
+    "status": "Ready-for-planning",
+    "domain": "Infra"
   },
   {
     "path": "docs/plans/xa-publish-privacy-plan.md",

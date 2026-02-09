@@ -1,5 +1,6 @@
 ---
 Type: People-Profile
+Status: Active
 Created: 2026-02-09
 Updated: 2026-02-09
 ---

@@ -107,6 +107,7 @@ async function migrateUserRoles(dryRun: boolean): Promise<void> {
 
   let serviceAccount: { databaseURL?: string };
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- operator-provided path from FIREBASE_SERVICE_ACCOUNT_KEY
     const serviceAccountRaw = await readFile(serviceAccountPath, 'utf8');
     serviceAccount = JSON.parse(serviceAccountRaw) as { databaseURL?: string };
   } catch (error) {

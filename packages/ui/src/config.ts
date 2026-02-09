@@ -61,9 +61,12 @@ const ensureHttps = (url: string | undefined): string | undefined => {
 /** Compute the canonical domain from current env values. */
 const computeDomain = (): string => {
   const envValues = {
-    VITE_SITE_DOMAIN: import.meta.env?.VITE_SITE_DOMAIN,
-    VITE_PUBLIC_DOMAIN: import.meta.env?.VITE_PUBLIC_DOMAIN,
-    VITE_DOMAIN: import.meta.env?.VITE_DOMAIN,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-000 Vite import.meta.env lacks typed declarations
+    VITE_SITE_DOMAIN: (import.meta as any).env?.VITE_SITE_DOMAIN,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-000 Vite import.meta.env lacks typed declarations
+    VITE_PUBLIC_DOMAIN: (import.meta as any).env?.VITE_PUBLIC_DOMAIN,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-000 Vite import.meta.env lacks typed declarations
+    VITE_DOMAIN: (import.meta as any).env?.VITE_DOMAIN,
   } satisfies Partial<Record<string, string | undefined>>;
 
   const env = envSchema.parse(envValues);

@@ -120,7 +120,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - TASK-01: Define guide types in `@acme/types` (Complete, 2026-02-09)
 - TASK-02: Create `GuidesRepository` interface (Complete, 2026-02-09; depends on TASK-01)
 - TASK-03: Implement JSON backend (`guides.json.server.ts`) (Complete, 2026-02-09; depends on TASK-02)
-- TASK-04: Create server facade (`guides.server.ts`) (Pending, depends on TASK-03)
+- TASK-04: Create server facade (`guides.server.ts`) (Complete, 2026-02-09; depends on TASK-03)
 - TASK-05: Add to barrel export and Prisma passthrough (Pending, depends on TASK-04)
 - TASK-06: Write migration script: Brikette → centralised store (Pending, depends on TASK-03)
 - TASK-07: Wire Brikette storefront to read from centralised store (Pending, depends on TASK-04, TASK-06)
@@ -134,7 +134,7 @@ apps/brikette                        ← Switches from local content to readGuid
 | TASK-01 | IMPLEMENT | Define guide types in `@acme/types` | 90% | S | Complete (2026-02-09) | - |
 | TASK-02 | IMPLEMENT | Create `GuidesRepository` interface | 92% | S | Complete (2026-02-09) | TASK-01 |
 | TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Complete (2026-02-09) | TASK-02 |
-| TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Pending | TASK-03 |
+| TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Complete (2026-02-09) | TASK-03 |
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Pending | TASK-04 |
 | TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Pending | TASK-03 |
 | TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Pending | TASK-04, TASK-06 |
@@ -402,6 +402,29 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Notes / references:**
   - Pattern: `packages/platform-core/src/repositories/products.server.ts`
   - `resolveRepo` at `packages/platform-core/src/repositories/repoResolver.ts` — tested in `repoResolver.test.ts`
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `441ac1d680`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 2
+  - Initial validation: FAIL (backend-selection tests initially used leaked mocked resolver)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-validation: 91%
+  - Delta reason: Delegation, backend selection, and singleton cache behavior are now covered by dedicated unit tests.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/platform-core test -- packages/platform-core/src/repositories/__tests__/guides.server.test.ts` — PASS
+  - Ran: `pnpm exec eslint packages/platform-core/src/repositories/guides.server.ts packages/platform-core/src/repositories/guides.prisma.server.ts packages/platform-core/src/repositories/__tests__/guides.server.test.ts` — PASS
+  - Ran: `pnpm --filter @acme/platform-core build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `packages/platform-core/src/repositories/guides.server.ts` with lazy `resolveRepo` selection (`GUIDES_BACKEND`) and all planned named guide-repository operations.
+  - Added `packages/platform-core/src/repositories/guides.prisma.server.ts` as a Prisma passthrough to JSON backend.
+  - Added `packages/platform-core/src/repositories/__tests__/guides.server.test.ts` to verify delegation, backend selection semantics, and singleton repository resolution.
+  - Package-wide lint in `@acme/platform-core` remains blocked by unrelated existing changes in `packages/platform-core/src/repositories/businessOs.server.ts`; task validation used scoped lint/build/test evidence.
 
 ---
 

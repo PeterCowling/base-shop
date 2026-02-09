@@ -129,55 +129,60 @@ async function main() {
     const header = parseHeader(content);
     if (header.type !== "Plan") continue;
 
-    if (!header.status || !header.domain || !header.lastReviewed) {
-      console.warn(
-        `[plans-lint] ${rel}: Plan missing Status/Domain/Last-reviewed header`,
-      );
-      hadError = true;
-    }
+    // Archive/historical plans are exempt from metadata completeness checks.
+    // Detected by terminal status OR path containing /historical/ or /archive/.
+    const terminalStatuses = new Set([
+      "Historical",
+      "Complete",
+      "Superseded",
+      "Accepted",
+      "Archived",
+      "Done",
+    ]);
+    const isTerminal =
+      (header.status && terminalStatuses.has(header.status)) ||
+      rel.includes("/historical/") ||
+      rel.includes("/archive/");
 
-    if (!header.relatesToCharter) {
-      console.warn(
-        `[plans-lint] ${rel}: Plan missing Relates-to charter header`,
-      );
-      hadError = true;
-    } else if (header.relatesToCharter.toLowerCase() === "none") {
-      // "none" is a valid explicit acknowledgment that the plan doesn't relate to a charter
-      // This is acceptable for repo-level or cross-cutting plans
-    } else {
-      const ok = await hasCharterType(header.relatesToCharter);
-      if (!ok) {
+    if (!isTerminal) {
+      if (!header.status || !header.domain || !header.lastReviewed) {
         console.warn(
-          `[plans-lint] ${rel}: Relates-to charter does not point to a Charter/Contract doc: ${header.relatesToCharter}`,
+          `[plans-lint] ${rel}: Plan missing Status/Domain/Last-reviewed header`,
         );
-        // Treat as a warning for now; do not fail CI solely on this.
+        hadError = true;
+      }
+
+      if (!header.relatesToCharter) {
+        console.warn(
+          `[plans-lint] ${rel}: Plan missing Relates-to charter header`,
+        );
+        hadError = true;
+      } else if (header.relatesToCharter.toLowerCase() === "none") {
+        // "none" is a valid explicit acknowledgment that the plan doesn't relate to a charter
+        // This is acceptable for repo-level or cross-cutting plans
+      } else {
+        const ok = await hasCharterType(header.relatesToCharter);
+        if (!ok) {
+          console.warn(
+            `[plans-lint] ${rel}: Relates-to charter does not point to a Charter/Contract doc: ${header.relatesToCharter}`,
+          );
+          // Treat as a warning for now; do not fail CI solely on this.
+        }
       }
     }
 
     if (!hasActiveTasksSection(content)) {
-      console.warn(
-        `[plans-lint] ${rel}: Plan missing "## Active tasks" section`,
-      );
-      hadError = true;
+      if (!isTerminal) {
+        console.warn(
+          `[plans-lint] ${rel}: Plan missing "## Active tasks" section`,
+        );
+        hadError = true;
+      }
       continue;
     }
 
     const tasks = parseTasks(content);
     if (tasks.length === 0) {
-      // Suppress warning for terminal-status plans and archived/historical paths —
-      // having no active tasks is expected for completed work.
-      const terminalStatuses = new Set([
-        "Historical",
-        "Complete",
-        "Superseded",
-        "Accepted",
-        "Archived",
-        "Done",
-      ]);
-      const isTerminal =
-        (header.status && terminalStatuses.has(header.status)) ||
-        rel.includes("/historical/") ||
-        rel.includes("/archive/");
       // Also suppress when the section explicitly states there are no active tasks
       const activeSection = content
         .split(/^## Active tasks/m)[1]

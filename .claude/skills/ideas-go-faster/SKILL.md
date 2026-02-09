@@ -164,8 +164,8 @@ For each business in `businesses.json`, execute a sequential multi-lens pass to 
 5. `reeves` (Marketing lens — USP)
 6. `lafley` (Marketing lens — consumer insight)
 7. `patterson` (Sales lens — systematic selling)
-8. `ellison` (Sales lens — competitive positioning)
-9. `chambers` (Sales lens — partner ecosystems)
+8. `benioff` (Sales lens — challenger positioning)
+9. `chambers` (Sales lens — ecosystem and distribution)
 10. `cook` (Sourcing lens — supply chain)
 11. `fung` (Sourcing lens — trading networks)
 12. `ohno` (Sourcing lens — lean/quality)
@@ -178,8 +178,8 @@ For each business in `businesses.json`, execute a sequential multi-lens pass to 
 5. `reeves` (Marketing lens — USP)
 6. `lafley` (Marketing lens — consumer insight)
 7. `patterson` (Sales lens — systematic selling)
-8. `ellison` (Sales lens — competitive positioning)
-9. `chambers` (Sales lens — partner ecosystems)
+8. `benioff` (Sales lens — challenger positioning)
+9. `chambers` (Sales lens — ecosystem and distribution)
 10. `crawford` (Brikette lens — interior/lived comfort)
 11. `starck` (Brikette lens — interior/bold identity)
 12. `nakajima` (Brikette lens — maintenance/TPM)
@@ -200,7 +200,7 @@ For each business in `businesses.json`, execute a sequential multi-lens pass to 
 
 **For each sub-expert:**
 1. Read the lens file from `.claude/skills/_shared/cabinet/lens-<lens>.md`
-   - For the **marketing** lens (split experts): also read `lens-marketing-<expert>.md` for the current sub-expert pass (e.g., `lens-marketing-hopkins.md` for the Hopkins pass). The coordinator file (`lens-marketing.md`) provides shared toolbox, stance behavior, and cross-lens rules; the individual file provides the expert's evidence anchor, required tools, and diagnostic questions.
+   - For composite lenses with split experts (**marketing**, **sales**): also read `lens-<lens>-<expert>.md` for the current sub-expert pass (e.g., `lens-marketing-hopkins.md` for Hopkins, `lens-sales-benioff.md` for Benioff). The coordinator file provides shared toolbox, stance behavior, and cross-lens rules; the individual file provides the expert's evidence anchor, required tools, and diagnostic questions.
 2. Apply stance-specific diagnostic questions to the business:
    - Under `improve-data`: Focus on measurement, data quality, knowledge gaps
    - Under `grow-business`: Focus on revenue, acquisition, conversion, retention
@@ -668,6 +668,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 
 ## Version History
 
+- **v2.3** (2026-02-09): Replaced Ellison with Benioff (startup challenger positioning); split sales experts into individual files; updated persona file reading for both marketing and sales split files.
 - **v2.2** (2026-02-09): Updated persona file reading for split marketing expert files; Marketing lens now has coordinator + 4 individual expert files.
 - **v2.1** (2026-02-09): Added BRIK-specific lens routing — Brikette lens (15 sub-experts across 6 hostel domains) replaces sourcing lens for BRIK. Hopkins/Ogilvy run twice for BRIK (marketing + brikette framing).
 - **v2.0** (2026-02-09): Cabinet Secretary orchestrator with 7-stage pipeline, multi-lens composite generation, confidence gating, clustering, Munger/Buffett filter, Drucker/Porter priority, fact-find seeding. Replaces v1 constraint-diagnostic approach.

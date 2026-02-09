@@ -122,7 +122,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - TASK-03: Implement JSON backend (`guides.json.server.ts`) (Complete, 2026-02-09; depends on TASK-02)
 - TASK-04: Create server facade (`guides.server.ts`) (Complete, 2026-02-09; depends on TASK-03)
 - TASK-05: Add to barrel export and Prisma passthrough (Complete, 2026-02-09; depends on TASK-04)
-- TASK-06: Write migration script: Brikette → centralised store (Pending, depends on TASK-03)
+- TASK-06: Write migration script: Brikette → centralised store (Complete, 2026-02-09; depends on TASK-03)
 - TASK-07: Wire Brikette storefront to read from centralised store (Pending, depends on TASK-04, TASK-06)
 - TASK-08: Validate migration data integrity (Pending, depends on TASK-06)
 - TASK-09: Confirm Slice 2-4 scope and sequencing (Pending, depends on TASK-07)
@@ -136,7 +136,7 @@ apps/brikette                        ← Switches from local content to readGuid
 | TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Complete (2026-02-09) | TASK-02 |
 | TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Complete (2026-02-09) | TASK-03 |
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Complete (2026-02-09) | TASK-04 |
-| TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Pending | TASK-03 |
+| TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Complete (2026-02-09) | TASK-03 |
 | TASK-07 | IMPLEMENT | Wire Brikette storefront to read from centralised store | 82% | M | Pending | TASK-04, TASK-06 |
 | TASK-08 | INVESTIGATE | Validate migration data integrity | 75% ⚠️ | S | Pending | TASK-06 |
 | TASK-09 | DECISION | Confirm Slice 2-4 scope and sequencing | 70% ⚠️ | S | Pending | TASK-07 |
@@ -544,6 +544,29 @@ apps/brikette                        ← Switches from local content to readGuid
   - Content source: `apps/brikette/src/locales/{locale}/guides/content/{contentKey}.json`
   - Override source: `apps/brikette/src/data/guides/guide-manifest-overrides.json`
   - Status mapping: fact-find "Status enum divergence" section
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `4621995360`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 84%
+  - Delta reason: Real-repo dry-run completed with zero validation failures and complete locale coverage.
+- **Validation:**
+  - Ran: `pnpm exec jest --config ./jest.config.cjs --runInBand --detectOpenHandles scripts/__tests__/migrate-guides-to-central.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/migrate-guides-to-central.ts scripts/__tests__/migrate-guides-to-central.test.ts` — PASS
+  - Ran: `pnpm exec tsx scripts/migrate-guides-to-central.ts --dry-run` — PASS (`guides=165`, `locales=18`, `contentWrites=2970`, `missingContent=0`, `validationFailures=0`)
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `scripts/migrate-guides-to-central.ts` with support for `--dry-run`, `--shop`, `--source-root`, and `--target-root`.
+  - Migration reads manifest entries, applies override merges, maps statuses (`live`/`published` -> `published`), validates content via `guideContentSchema`, and writes split metadata/content output.
+  - Script includes a resilient manifest loader path: tries `guide-manifest.ts` first, then falls back to `guide-manifest-snapshot.json` when runtime alias resolution is unavailable.
+  - Added `scripts/__tests__/migrate-guides-to-central.test.ts` covering mapping, structure, missing/invalid content handling, idempotency, and override application.
 
 ---
 

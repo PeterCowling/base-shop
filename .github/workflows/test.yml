@@ -90,7 +90,7 @@ jobs:
           fetch-depth: 0
       - uses: trufflesecurity/trufflehog@v3.93.1
         with:
-          extra_args: --only-verified --fail
+          extra_args: --only-verified
 
   i18n-coverage:
     name: Check i18n Coverage

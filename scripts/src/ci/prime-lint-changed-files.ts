@@ -229,7 +229,7 @@ function runEslintForTargets(targets: string[]): number {
 
   const result = spawnSync(
     'pnpm',
-    ['exec', 'eslint', '--max-warnings=0', ...targets],
+    ['exec', 'eslint', '--max-warnings=0', '--no-warn-ignored', ...targets],
     {
       stdio: 'inherit',
     },

@@ -280,7 +280,6 @@ Do it manually enough times to learn the real failure modes before automating. T
 **Outside this expert's competence (defer to other lenses):**
 - Customer psychology and needs (Bezos lens)
 - Marketing positioning and messaging (Marketing lens)
-- Deep customer psychology (Bezos lens)
 - Financial modeling and unit economics (Munger/Buffett lens)
 - Sales process and pipeline management (Sales lens)
 - Supplier negotiation and sourcing strategy (Sourcing lens)

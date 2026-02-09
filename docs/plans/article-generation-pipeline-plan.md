@@ -119,7 +119,7 @@ apps/brikette                        ← Switches from local content to readGuid
 
 - TASK-01: Define guide types in `@acme/types` (Complete, 2026-02-09)
 - TASK-02: Create `GuidesRepository` interface (Complete, 2026-02-09; depends on TASK-01)
-- TASK-03: Implement JSON backend (`guides.json.server.ts`) (Pending, depends on TASK-02)
+- TASK-03: Implement JSON backend (`guides.json.server.ts`) (Complete, 2026-02-09; depends on TASK-02)
 - TASK-04: Create server facade (`guides.server.ts`) (Pending, depends on TASK-03)
 - TASK-05: Add to barrel export and Prisma passthrough (Pending, depends on TASK-04)
 - TASK-06: Write migration script: Brikette → centralised store (Pending, depends on TASK-03)
@@ -133,7 +133,7 @@ apps/brikette                        ← Switches from local content to readGuid
 |---|---|---|---:|---:|---|---|
 | TASK-01 | IMPLEMENT | Define guide types in `@acme/types` | 90% | S | Complete (2026-02-09) | - |
 | TASK-02 | IMPLEMENT | Create `GuidesRepository` interface | 92% | S | Complete (2026-02-09) | TASK-01 |
-| TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Pending | TASK-02 |
+| TASK-03 | IMPLEMENT | Implement JSON backend (`guides.json.server.ts`) | 85% | M | Complete (2026-02-09) | TASK-02 |
 | TASK-04 | IMPLEMENT | Create server facade (`guides.server.ts`) | 90% | S | Pending | TASK-03 |
 | TASK-05 | IMPLEMENT | Add to barrel export and Prisma passthrough | 92% | S | Pending | TASK-04 |
 | TASK-06 | IMPLEMENT | Write migration script: Brikette → centralised store | 80% | M | Pending | TASK-03 |
@@ -339,6 +339,28 @@ apps/brikette                        ← Switches from local content to readGuid
   - `validateShopName` at `packages/platform-core/src/shops/universal.ts` — regex `^[a-z0-9_-]+$/i`
   - `DATA_ROOT` at `packages/platform-core/src/dataRoot.ts` — walks up from cwd looking for `data/shops`
   - Atomic write pattern: write to `${path}.${Date.now()}.tmp`, then `fs.rename(tmp, path)`
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `8c6cc8a002`
+- **Execution cycle:**
+  - Validation cases executed: TC-01 through TC-21
+  - Cycles: 2
+  - Initial validation: FAIL (expected; module missing before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 87%
+  - Delta reason: Full CRUD + content I/O contract validated with explicit unit coverage.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/platform-core test -- packages/platform-core/src/repositories/__tests__/guides.json.server.test.ts` — PASS
+  - Ran: `pnpm exec eslint packages/platform-core/src/repositories/guides.json.server.ts packages/platform-core/src/repositories/__tests__/guides.json.server.test.ts` — PASS
+  - Ran: `pnpm --filter @acme/platform-core build` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Added `packages/platform-core/src/repositories/guides.json.server.ts` with metadata + split-content storage, atomic writes, row-versioned updates, and duplication semantics aligned with existing repository patterns.
+  - Added `packages/platform-core/src/repositories/__tests__/guides.json.server.test.ts` covering missing-file behavior, CRUD, duplicate semantics, content validation, atomic content writes, and shop-name validation.
+  - Package-wide lint in `@acme/platform-core` remains blocked by unrelated existing changes in `packages/platform-core/src/repositories/businessOs.server.ts`; task validation used scoped lint/build/test evidence.
 
 ---
 

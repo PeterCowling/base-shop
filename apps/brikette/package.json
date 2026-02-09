@@ -28,6 +28,7 @@
     "scaffold-guide-block": "pnpm exec tsx ./scripts/scaffold-guide-block.ts",
     "generate:guide-link-labels": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-guide-link-labels.ts",
     "translate-guides": "pnpm exec tsx ./scripts/translate-guides.ts",
+    "translate-guides:spike": "pnpm exec tsx ./scripts/translate-guides-spike.ts",
     "perf:check-layout-chunk": "node ./scripts/perf/check-layout-chunk.mjs",
     "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2",
     "generate:manifest-snapshot": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-manifest-snapshot.ts"

@@ -1,6 +1,10 @@
 # Guide Translation Script
 
-Manual in-house translation of travel guides to 17 languages. **Do not obtain or use external API keys** for this workflow.
+Canonical policy is documented in `scripts/TRANSLATION_EXECUTION_POLICY.md`.
+
+Policy summary:
+- Default mode: fixture-based/provider-contract validation (no API keys, no network).
+- Legacy API-backed script (`translate-guides.ts`) remains available until S2-05 migration is complete.
 
 ## Overview
 
@@ -22,7 +26,11 @@ This script translates 5 English guide files to 17 target languages (85 total fi
    pnpm install
    ```
 
-2. **Do not obtain or use any external API keys for translation.** This workflow is in-house only.
+2. **Run policy-safe checks first (default workflow):**
+   ```bash
+   cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translate-guides-spike.test.ts
+   pnpm --filter @apps/brikette exec tsx scripts/translate-guides-spike.ts
+   ```
 
 ## Usage
 
@@ -30,7 +38,10 @@ This script translates 5 English guide files to 17 target languages (85 total fi
 # From the brikette app directory
 cd apps/brikette
 
-# Run the translation script (local/manual workflow only)
+# Run the spike matrix (default policy-safe workflow)
+pnpm exec tsx scripts/translate-guides-spike.ts
+
+# Legacy API-backed script (temporary; replaced in S2-05)
 pnpm run translate-guides
 ```
 
@@ -46,7 +57,8 @@ pnpm exec tsx scripts/translate-guides.ts
 - Validates JSON structure
 
 ### 2. Translates Content
-- Uses in-house translation only (no external API keys or services)
+- Default validation mode uses fixture provider (deterministic, no external services)
+- Legacy script still uses Anthropic until S2-05 cutover
 - Preserves special tokens:
   - `%LINK:guideKey|anchor text%` → translates only anchor text
   - `%IMAGE:filename.jpg|alt text%` → translates only alt text
@@ -98,11 +110,11 @@ The script includes:
 
 ### Common Issues
 
-**1. Missing API Key**
+**1. Missing API Key (legacy script only)**
 ```
 ❌ Error: ANTHROPIC_API_KEY environment variable is required
 ```
-**Solution:** Use the manual in-house workflow below (do not obtain API keys).
+**Solution:** Use the fixture/matrix workflow in `scripts/translate-guides-spike.ts`.
 
 **2. Invalid JSON Output**
 ```

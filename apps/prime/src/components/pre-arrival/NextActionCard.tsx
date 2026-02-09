@@ -5,6 +5,8 @@
  * Displays contextual messaging based on what's not yet completed.
  */
 
+import { type FC, memo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
   CheckCircle2,
@@ -15,10 +17,9 @@ import {
   Navigation,
   Sparkles,
 } from 'lucide-react';
-import { FC, memo, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
-import type { ChecklistProgress } from '../../types/preArrival';
+
 import { getChecklistItemLabel, getNextChecklistItem } from '../../lib/preArrival';
+import type { ChecklistProgress } from '../../types/preArrival';
 
 interface NextActionCardProps {
   /** Current checklist progress */

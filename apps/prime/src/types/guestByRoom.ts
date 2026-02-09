@@ -9,7 +9,7 @@
 //   }
 // }
 
-import { IndexedById } from './indexedById';
+import { type IndexedById } from './indexedById';
 
 /**
  * Represents the allocated and originally booked room numbers for an occupant.

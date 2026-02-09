@@ -1,9 +1,9 @@
 // File: /src/i18n.optimized.ts
 // Optimized i18n configuration with on-demand namespace loading
 
+import { initReactI18next } from 'react-i18next';
 import i18n, { type InitOptions } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
-import { initReactI18next } from 'react-i18next';
 
 // Define namespace groups based on route usage
 export const NAMESPACE_GROUPS = {
@@ -20,7 +20,7 @@ export const NAMESPACE_GROUPS = {
 } as const;
 
 // All available namespaces
-const ALL_NAMESPACES = [
+const _ALL_NAMESPACES = [
   ...NAMESPACE_GROUPS.core,
   ...NAMESPACE_GROUPS.breakfast,
   ...NAMESPACE_GROUPS.bar,
@@ -61,7 +61,7 @@ export async function loadNamespaceGroup(
   group: keyof typeof NAMESPACE_GROUPS
 ): Promise<void> {
   const namespaces = NAMESPACE_GROUPS[group];
-  const currentLng = i18n.language;
+  const _currentLng = i18n.language;
 
   const promises = namespaces.map((ns) =>
     i18n.loadNamespaces(ns, (err) => {

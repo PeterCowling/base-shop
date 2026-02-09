@@ -12,16 +12,18 @@
 
 'use client';
 
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { GuestIntent } from '../../types/guestProfile';
+
 import { useGuestProgressData } from '../../hooks/dataOrchestrator/useGuestProgressData';
+import type { GuestIntent } from '../../types/guestProfile';
+import { ProfileCompletionBanner } from '../profile/ProfileCompletionBanner';
 import QuestCard from '../quests/QuestCard';
-import SocialHighlightsCard from './SocialHighlightsCard';
+
 import DoList from './DoList';
 import ServicesList from './ServicesList';
+import SocialHighlightsCard from './SocialHighlightsCard';
 import { useHomePageVisibility } from './useHomePageVisibility';
-import { ProfileCompletionBanner } from '../profile/ProfileCompletionBanner';
 
 type Section = 'quest' | 'social' | 'tasks' | 'services';
 

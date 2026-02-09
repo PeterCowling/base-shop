@@ -5,6 +5,8 @@
  * Shows city tax and keycard deposit amounts.
  */
 
+import { type FC, memo, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   Banknote,
@@ -14,8 +16,6 @@ import {
   CreditCard,
   Info,
 } from 'lucide-react';
-import { FC, memo, useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 
 interface CashPrepProps {
   /** City tax amount in EUR */

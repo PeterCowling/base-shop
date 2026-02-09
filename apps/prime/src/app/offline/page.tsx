@@ -1,5 +1,5 @@
-import { WifiOff } from 'lucide-react';
 import Link from 'next/link';
+import { WifiOff } from 'lucide-react';
 
 export default function OfflinePage() {
   return (

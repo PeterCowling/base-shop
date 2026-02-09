@@ -1,7 +1,7 @@
 'use client';
 
-import { Coffee } from 'lucide-react';
 import Link from 'next/link';
+import { Coffee } from 'lucide-react';
 
 export default function BreakfastMenuPage() {
   return (

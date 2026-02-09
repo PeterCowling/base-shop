@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import ActivationFunnelSummary from '../ActivationFunnelSummary';
+
 import { readActivationFunnelEvents } from '../../../lib/analytics/activationFunnel';
+import ActivationFunnelSummary from '../ActivationFunnelSummary';
 
 jest.mock('../../../lib/analytics/activationFunnel', () => {
   const actual = jest.requireActual('../../../lib/analytics/activationFunnel');

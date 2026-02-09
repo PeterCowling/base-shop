@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import RoutesPage from '../page';
+
 import { ROUTES_TO_POSITANO } from '../../../../data/routes';
 import { useUnifiedBookingData } from '../../../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { usePreArrivalState } from '../../../../hooks/usePreArrivalState';
+import RoutesPage from '../page';
 
 const mockSaveRoute = jest.fn();
 const mockUpdateChecklistItem = jest.fn();

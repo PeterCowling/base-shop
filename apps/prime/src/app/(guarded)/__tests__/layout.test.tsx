@@ -1,11 +1,12 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import GuardedLayout from '../layout';
+
 import { usePinAuth } from '../../../contexts/messaging/PinAuthProvider';
 import {
   clearGuestSession,
   readGuestSession,
   validateGuestToken,
 } from '../../../lib/auth/guestSessionGuard';
+import GuardedLayout from '../layout';
 
 const mockReplace = jest.fn();
 

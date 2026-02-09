@@ -9,13 +9,17 @@
  * All opt-ins are optional - users can skip entirely.
  */
 
-import { Button } from '@acme/design-system/primitives';
-import logger from '@/utils/logger';
-import { Calendar, MessageCircle, Map, Users } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Calendar, Map, MessageCircle, Users } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
+
+import logger from '@/utils/logger';
+
 import { useChat } from '../../contexts/messaging/ChatProvider';
 import { useGuestProfileMutator } from '../../hooks/mutator/useGuestProfileMutator';
+
 import OnboardingLayout from './OnboardingLayout';
 
 interface SocialOptInStepProps {
@@ -27,7 +31,7 @@ interface SocialOptInStepProps {
 
 const SocialOptInStep: FC<SocialOptInStepProps> = ({
   onContinue,
-  bookingId,
+  bookingId: _bookingId,
 }) => {
   const { t } = useTranslation('Onboarding');
   const { updateProfile } = useGuestProfileMutator();

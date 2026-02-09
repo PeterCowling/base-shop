@@ -8,10 +8,11 @@
  * serves this page for all /checkin/* paths).
  */
 
-import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, User } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { usePathname, useRouter } from 'next/navigation';
+import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, User } from 'lucide-react';
+
 import StaffReadinessBadges from '../../components/check-in/StaffReadinessBadges';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
 import { extractCodeFromPathname, formatEtaWindow, isStaffRole } from '../../lib/checkin/helpers';

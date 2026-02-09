@@ -1,7 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+
 import EtaConfirmation from '../../../components/pre-arrival/EtaConfirmation';
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { usePreArrivalState } from '../../../hooks/usePreArrivalState';

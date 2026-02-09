@@ -7,10 +7,11 @@
  * This hook is responsible ONLY for data transformation - no fetching.
  */
 
-import logger from '@/utils/logger';
 import { useMemo } from 'react';
+
+import logger from '@/utils/logger';
+
 import type { BagStorageRecord } from '../../types/bagStorage';
-import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
 import type { CityTaxOccupantRecord, CityTaxRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import type {
@@ -26,7 +27,9 @@ import {
   getDaysBetween,
   parseCheckInDate,
 } from '../../utils/dateUtils';
-import type { OccupantPreordersData, PreordersDataRecord } from './useOccupantDataSources';
+import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
+
+import type { PreordersDataRecord } from './useOccupantDataSources';
 
 export interface ProcessedPreorder extends PreorderNightData {
   id: string;

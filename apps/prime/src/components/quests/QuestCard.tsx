@@ -5,11 +5,12 @@
  * Shows the active tier, progress bar, and next action to complete.
  */
 
-import { Award, ChevronRight, Clock, Sparkles } from 'lucide-react';
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useComputedQuestState } from '../../hooks/useComputedQuestState';
+import { Award, ChevronRight, Clock, Sparkles } from 'lucide-react';
+
 import { getTierById } from '../../config/quests/questTiers';
+import { useComputedQuestState } from '../../hooks/useComputedQuestState';
 
 interface QuestCardProps {
   /** Optional class name for styling */

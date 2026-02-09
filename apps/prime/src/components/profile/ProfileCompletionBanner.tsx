@@ -10,11 +10,12 @@
  * - Hide if profile is complete and matches current booking
  */
 
-import { Button } from '@acme/design-system/primitives';
-import { User } from 'lucide-react';
-import Link from 'next/link';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { User } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
 
 export interface ProfileCompletionBannerProps {
   /** Whether the profile is from a previous booking */

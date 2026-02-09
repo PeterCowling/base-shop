@@ -2,6 +2,7 @@
 // Uses Next.js API route instead of direct Firebase client connection
 
 import { useQuery } from '@tanstack/react-query';
+
 import useUuid from '../useUuid';
 
 async function fetchBookingsViaAPI(uuid: string) {

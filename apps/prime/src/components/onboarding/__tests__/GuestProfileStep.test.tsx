@@ -1,4 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import GuestProfileStep from '../GuestProfileStep';
 
 // Mock hooks
 const mockSetProfile = jest.fn().mockResolvedValue(undefined);
@@ -52,8 +54,6 @@ jest.mock('../OnboardingLayout', () => ({
     </div>
   ),
 }));
-
-import GuestProfileStep from '../GuestProfileStep';
 
 describe('GuestProfileStep', () => {
   const onContinue = jest.fn();

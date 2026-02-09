@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import FindMyStayPage from '../page';
 
 describe('FindMyStayPage', () => {

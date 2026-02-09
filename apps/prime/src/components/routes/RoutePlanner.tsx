@@ -4,6 +4,8 @@
  * Main route planning component with origin selector and route list.
  */
 
+import { type FC, memo, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Anchor,
   ArrowLeft,
@@ -12,10 +14,10 @@ import {
   Plane,
   Train,
 } from 'lucide-react';
-import { FC, memo, useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { useRoutes } from '../../hooks/useRoutes';
 import type { Route, RouteOrigin, TransportMode } from '../../types/routes';
+
 import RouteCard from './RouteCard';
 import RouteDetail from './RouteDetail';
 
@@ -63,7 +65,7 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
   onClose,
 }) {
   const { t } = useTranslation('PreArrival');
-  const { origins, routes, originsByCategory, getRoute } = useRoutes();
+  const { origins, routes, originsByCategory, getRoute: _getRoute } = useRoutes();
 
   // State
   const [selectedOriginId, setSelectedOriginId] = useState<string | null>(null);

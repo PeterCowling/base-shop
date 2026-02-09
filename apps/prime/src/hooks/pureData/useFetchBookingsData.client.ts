@@ -16,10 +16,12 @@
 */
 
 import { useQuery } from '@tanstack/react-query';
+
 import { get, ref, set } from '@/services/firebase';
 import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
-import { bookingOccupantDataSchema, type BookingOccupantData } from '../../utils/bookingsSchemas';
+import { type BookingOccupantData,bookingOccupantDataSchema } from '../../utils/bookingsSchemas';
 import { zodErrorToString } from '../../utils/zodErrorToString';
 import useUuid from '../useUuid';
 

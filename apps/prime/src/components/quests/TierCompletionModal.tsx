@@ -7,10 +7,12 @@
 
 'use client';
 
-import { Award, X } from 'lucide-react';
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { type FC, memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getTierById, getBadgeById } from '../../config/quests/questTiers';
+import { Award, X } from 'lucide-react';
+
+import { getBadgeById,getTierById } from '../../config/quests/questTiers';
+
 import BadgeIcon from './BadgeIcon';
 
 interface TierCompletionModalProps {

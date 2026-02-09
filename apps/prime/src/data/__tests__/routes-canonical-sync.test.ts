@@ -2,8 +2,8 @@ import { HOW_TO_GET_HERE_ROUTE_GUIDES } from '../../../../brikette/src/data/how-
 import { ROUTES_TO_POSITANO } from '../routes';
 import {
   BRIKETTE_HOW_TO_GET_HERE_BASE_URL,
-  PRIME_CANONICAL_INBOUND_ROUTE_SLUGS,
   isPrimeCanonicalInboundRouteSlug,
+  PRIME_CANONICAL_INBOUND_ROUTE_SLUGS,
   toPrimeCanonicalRouteUrl,
 } from '../routesCanonical';
 

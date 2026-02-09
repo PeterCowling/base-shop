@@ -48,4 +48,6 @@ module.exports = [
   "apps/cms/cypress.config.mjs",
   // Vendor WASM transcoder files
   "**/public/ktx2/basis_transcoder.js",
+  // OpenNext build config (outside tsconfig project scope)
+  "**/open-next.config.ts",
 ];

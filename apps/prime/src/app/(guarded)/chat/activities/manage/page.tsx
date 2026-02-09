@@ -1,7 +1,7 @@
 'use client';
 
-import { Settings } from 'lucide-react';
 import Link from 'next/link';
+import { Settings } from 'lucide-react';
 
 export default function ManageActivitiesPage() {
   return (

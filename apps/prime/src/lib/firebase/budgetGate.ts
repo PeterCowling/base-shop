@@ -1,6 +1,6 @@
 import {
-  firebaseBudgetBaselines,
   type FirebaseBudgetBaselines,
+  firebaseBudgetBaselines,
   type FirebaseBudgetFlowId,
 } from './budgetBaselines';
 

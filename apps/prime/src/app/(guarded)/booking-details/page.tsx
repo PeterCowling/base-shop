@@ -1,10 +1,11 @@
 'use client';
 
-import { CalendarDays, Clock3, FileText, MessageCircle, Package, UtensilsCrossed } from 'lucide-react';
-import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { getGuestArrivalState } from '../../../lib/preArrival/arrivalState';
+import Link from 'next/link';
+import { CalendarDays, Clock3, FileText, MessageCircle, Package, UtensilsCrossed } from 'lucide-react';
+
 import { useGuestBookingSnapshot } from '../../../hooks/dataOrchestrator/useGuestBookingSnapshot';
+import { getGuestArrivalState } from '../../../lib/preArrival/arrivalState';
 import { GUEST_CRITICAL_FLOW_ENDPOINTS } from '../../../lib/security/guestCriticalFlowEndpoints';
 import type { GuestArrivalState } from '../../../types/preArrival';
 

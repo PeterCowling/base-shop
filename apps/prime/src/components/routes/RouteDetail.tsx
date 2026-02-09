@@ -4,6 +4,8 @@
  * Detailed view of a route with segments, times, and actions.
  */
 
+import { type FC, memo, type ReactNode, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   AlertTriangle,
   Anchor,
@@ -17,8 +19,7 @@ import {
   MapPin,
   Train,
 } from 'lucide-react';
-import { FC, memo, ReactNode, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import type { Route, RouteSegment, TransportMode } from '../../types/routes';
 
 interface RouteDetailProps {
@@ -228,7 +229,7 @@ const SegmentItem: FC<{
   segment: RouteSegment;
   isLast: boolean;
 }> = memo(function SegmentItem({ segment, isLast }) {
-  const { t } = useTranslation('PreArrival');
+  const { t: _t } = useTranslation('PreArrival');
 
   return (
     <div className="relative mb-6 flex items-start gap-3">

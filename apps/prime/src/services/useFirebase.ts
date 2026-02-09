@@ -1,15 +1,18 @@
 /* File: /src/services/useFirebase.ts */
 'use client';
 
-import logger from '@/utils/logger';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import logger from '@/utils/logger';
+
 import type { FirebaseConfig } from '../types/firebase';
+
 import {
   type Database,
   type DataSnapshot,
   db,
-  firebaseApp,
   type FirebaseApp,
+  firebaseApp,
   type FirebaseStorage,
   get,
   off,

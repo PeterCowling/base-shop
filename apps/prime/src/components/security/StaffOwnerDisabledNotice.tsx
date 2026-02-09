@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+
 import { getStaffOwnerGateMessage } from '../../lib/security/staffOwnerGate';
 
 export default function StaffOwnerDisabledNotice() {

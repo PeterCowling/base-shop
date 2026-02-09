@@ -1,4 +1,6 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
+import SocialOptInStep from '../SocialOptInStep';
 
 // Mock hooks
 const mockUpdateProfile = jest.fn().mockResolvedValue(undefined);
@@ -43,8 +45,6 @@ jest.mock('../OnboardingLayout', () => ({
     </div>
   ),
 }));
-
-import SocialOptInStep from '../SocialOptInStep';
 
 describe('SocialOptInStep', () => {
   const onContinue = jest.fn();

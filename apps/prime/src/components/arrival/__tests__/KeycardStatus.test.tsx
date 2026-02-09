@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import KeycardStatus from '../KeycardStatus';
+
 import type { GuestKeycardStatus } from '../../../lib/preArrival/keycardStatus';
+import KeycardStatus from '../KeycardStatus';
 
 function renderWithStatus(status: GuestKeycardStatus) {
   render(<KeycardStatus status={status} />);

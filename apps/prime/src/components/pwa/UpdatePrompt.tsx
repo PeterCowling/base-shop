@@ -7,8 +7,9 @@
 
 'use client';
 
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { useServiceWorker } from '../../lib/pwa';
 
 interface UpdatePromptProps {

@@ -1,48 +1,49 @@
 // src/services/firebase.ts
-/* eslint-disable import/order */
+ 
 
-import logger from '@/utils/logger';
 import {
+  type FirebaseApp,
   getApp,
   getApps,
   initializeApp,
   setLogLevel,
-  type FirebaseApp,
 } from 'firebase/app';
 import {
+  type Database,
+  type DataSnapshot,
   endAt,
   endBefore,
   equalTo,
   get as fbGet,
-  onValue as fbOnValue,
   getDatabase,
   limitToFirst,
   limitToLast,
+  type ListenOptions,
   off,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
+  onValue as fbOnValue,
   orderByChild,
   push,
+  type Query,
   query,
   ref,
   set,
   startAt,
-  update,
-  type Database,
-  type DataSnapshot,
-  type ListenOptions,
-  type Query,
   type Unsubscribe,
+  update,
 } from 'firebase/database';
 import {
   deleteObject,
+  type FirebaseStorage,
   getDownloadURL,
   getStorage,
   ref as storageRef,
   uploadBytes,
-  type FirebaseStorage,
 } from 'firebase/storage';
+
+import logger from '@/utils/logger';
 
 /* -------------------------------------------------------------------------- */
 /*                              Firebase config                               */

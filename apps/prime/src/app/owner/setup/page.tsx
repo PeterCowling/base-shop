@@ -1,5 +1,6 @@
-import { Settings } from 'lucide-react';
 import Link from 'next/link';
+import { Settings } from 'lucide-react';
+
 import ActivationFunnelSummary from '../../../components/owner/ActivationFunnelSummary';
 import StaffOwnerDisabledNotice from '../../../components/security/StaffOwnerDisabledNotice';
 import { canAccessStaffOwnerRoutes } from '../../../lib/security/staffOwnerGate';

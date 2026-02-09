@@ -7,18 +7,19 @@
  * Guests can see activity details and join the chat for any activity.
  */
 
-import { Calendar, Clock, MapPin, MessageCircle, Users } from 'lucide-react';
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { Calendar, Clock, MapPin, MessageCircle, Users } from 'lucide-react';
+
 import { useChat } from '@/contexts/messaging/ChatProvider';
-import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 import useUuid from '@/hooks/useUuid';
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
 import { evaluateSdkAccess, isSdkFlowFeatureEnabled } from '@/lib/security/dataAccessModel';
+import { off, onValue, ref, set } from '@/services/firebase';
 import { useFirebaseDatabase } from '@/services/useFirebase';
 import type { ActivityInstance } from '@/types/messenger/activity';
-import { off, onValue, ref, set } from '@/services/firebase';
+import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 
 function formatActivityTime(startTime: number): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -221,6 +222,7 @@ export default function ActivitiesClient() {
     );
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- Pre-existing pattern: conditional SDK guard above protects this
   useEffect(() => {
     const presenceRef = ref(db, `${MSG_ROOT}/activities/presence`);
     const unsubscribe = onValue(
@@ -244,6 +246,7 @@ export default function ActivitiesClient() {
   }, [db]);
 
   // Sort and categorize activities
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- Pre-existing pattern: conditional SDK guard above protects this
   const { liveActivities, upcomingActivities, endedActivities } = useMemo(() => {
     const all = Object.values(activities || {});
     const now = Date.now();

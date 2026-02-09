@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import StaffReadinessBadges from '../../check-in/StaffReadinessBadges';
 
 describe('Personalization context visibility', () => {

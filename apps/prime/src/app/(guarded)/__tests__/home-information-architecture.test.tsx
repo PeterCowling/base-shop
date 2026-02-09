@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+
 import GuardedHomeExperience from '../../../components/homepage/GuardedHomeExperience';
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { usePreArrivalState } from '../../../hooks/usePreArrivalState';

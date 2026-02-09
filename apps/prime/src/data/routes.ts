@@ -6,6 +6,7 @@
  */
 
 import type { Route, RouteOrigin } from '../types/routes';
+
 import { toPrimeCanonicalRouteUrl } from './routesCanonical';
 
 /**

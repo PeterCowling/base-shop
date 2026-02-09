@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+
 import GuestEntryPage from '../page';
 
 jest.mock('next/navigation', () => ({

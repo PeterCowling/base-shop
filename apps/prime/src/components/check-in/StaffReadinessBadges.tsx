@@ -1,5 +1,7 @@
-import { memo, type FC } from 'react';
+import { type FC,memo } from 'react';
+
 import { StaffSignalBadgeGroup } from '@acme/ui';
+
 import type { StaffPersonalizationSignals, StaffReadinessSignals } from '../../types/checkInCode';
 
 interface StaffReadinessBadgesProps {

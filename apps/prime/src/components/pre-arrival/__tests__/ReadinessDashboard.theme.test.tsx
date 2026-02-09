@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import ReadinessDashboard from '../ReadinessDashboard';
+
 import type { PreArrivalData } from '../../../types/preArrival';
+import ReadinessDashboard from '../ReadinessDashboard';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({

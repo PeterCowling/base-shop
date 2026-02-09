@@ -8,12 +8,13 @@
 
 'use client';
 
-import { ArrowLeft, ExternalLink, MapPin, Sparkles, Sun, Sunset } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { FC, memo, useCallback, useEffect, useMemo } from 'react';
+import { type FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCompletedTaskMutator } from '@/hooks/mutator/useCompletedTaskMutator';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { ArrowLeft, ExternalLink, MapPin, Sparkles, Sun, Sunset } from 'lucide-react';
+
 import { useUnifiedBookingData } from '@/hooks/dataOrchestrator/useUnifiedBookingData';
+import { useCompletedTaskMutator } from '@/hooks/mutator/useCompletedTaskMutator';
 
 /** Brikette website base URL */
 const BRIKETTE_BASE_URL = 'https://hostel-positano.com';

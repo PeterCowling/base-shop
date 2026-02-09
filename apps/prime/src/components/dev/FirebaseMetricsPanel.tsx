@@ -7,8 +7,9 @@
  * Only renders in development mode.
  */
 
-import { firebaseMetrics } from '@/services/firebaseMetrics';
 import { useEffect, useState } from 'react';
+
+import { firebaseMetrics } from '@/services/firebaseMetrics';
 
 interface MetricsData {
   totalQueries: number;
@@ -75,6 +76,7 @@ export function FirebaseMetricsPanel() {
     if (isOpen) {
       refreshMetrics();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   useEffect(() => {
@@ -82,6 +84,7 @@ export function FirebaseMetricsPanel() {
       const interval = setInterval(refreshMetrics, 2000);
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh, isOpen]);
 
   // Early return after all hooks

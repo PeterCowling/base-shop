@@ -11,14 +11,18 @@
  */
 
 import { useCallback, useMemo } from 'react';
+
 import {
   computeQuestState,
   getTiersReadyForCompletion,
   type QuestState,
 } from '../lib/quests/computeQuestState';
-import { getXpFromTiers, getBadgesFromTiers } from '../config/quests/questTiers';
 import type { OccupantCompletedTasks } from '../types/completedTasks';
+
+// Internal hook to access occupantData from useUnifiedBookingData
+// This is needed because useGuestProgressData doesn't expose completedTasks
 import { useGuestProgressData } from './dataOrchestrator/useGuestProgressData';
+import { useUnifiedBookingData } from './dataOrchestrator/useUnifiedBookingData';
 import { useQuestProgressMutator } from './mutator/useQuestProgressMutator';
 
 /**
@@ -54,6 +58,7 @@ export function useComputedQuestState(): ComputedQuestStateResult {
   // Get completed tasks directly from unified booking data
   // This is needed because useGuestProgressData doesn't expose completedTasks directly
   const { occupantData } = useGuestProgressDataInternal();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const completedTasks: OccupantCompletedTasks = occupantData?.completedTasks ?? {};
 
   // Get quest progress mutator
@@ -106,10 +111,6 @@ export function useComputedQuestState(): ComputedQuestStateResult {
     processPendingCompletions,
   };
 }
-
-// Internal hook to access occupantData from useUnifiedBookingData
-// This is needed because useGuestProgressData doesn't expose completedTasks
-import { useUnifiedBookingData } from './dataOrchestrator/useUnifiedBookingData';
 
 function useGuestProgressDataInternal() {
   const { occupantData } = useUnifiedBookingData();

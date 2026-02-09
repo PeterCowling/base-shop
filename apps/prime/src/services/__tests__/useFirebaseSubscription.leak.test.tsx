@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+
 import { useFirebaseSubscription } from '../useFirebase';
 
 type MockSnapshot = {

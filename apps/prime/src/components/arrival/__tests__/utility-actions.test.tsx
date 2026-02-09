@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ReadinessDashboard } from '../../pre-arrival/ReadinessDashboard';
-import ArrivalHome from '../ArrivalHome';
+
 import { recordActivationFunnelEvent } from '../../../lib/analytics/activationFunnel';
 import type { PreArrivalData } from '../../../types/preArrival';
+import { ReadinessDashboard } from '../../pre-arrival/ReadinessDashboard';
+import ArrivalHome from '../ArrivalHome';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({

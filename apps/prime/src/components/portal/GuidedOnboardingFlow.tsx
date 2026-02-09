@@ -1,10 +1,14 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
-import { StepFlowShell } from '@acme/design-system/primitives';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+
+import { StepFlowShell } from '@acme/design-system/primitives';
 import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
+
 import { ROUTES_TO_POSITANO } from '../../data/routes';
+import { usePreArrivalMutator } from '../../hooks/mutator/usePreArrivalMutator';
+import { useFetchPreArrivalData } from '../../hooks/pureData/useFetchPreArrivalData';
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import { assignActivationVariants } from '../../lib/experiments/activationExperiments';
 import {
@@ -14,8 +18,6 @@ import {
   sortRoutesForPersonalization,
   writeLastCompletedChecklistItem,
 } from '../../lib/preArrival';
-import { usePreArrivalMutator } from '../../hooks/mutator/usePreArrivalMutator';
-import { useFetchPreArrivalData } from '../../hooks/pureData/useFetchPreArrivalData';
 import type { ArrivalConfidence, ChecklistProgress, EtaMethod } from '../../types/preArrival';
 
 type Step = 1 | 2 | 3;

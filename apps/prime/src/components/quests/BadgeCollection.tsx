@@ -7,11 +7,13 @@
 
 'use client';
 
-import { Award, Lock, Trophy } from 'lucide-react';
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { BADGES, QUEST_TIERS, getBadgeById } from '../../config/quests/questTiers';
+import { Award, Lock, Trophy } from 'lucide-react';
+
+import { BADGES, QUEST_TIERS } from '../../config/quests/questTiers';
 import { useComputedQuestState } from '../../hooks/useComputedQuestState';
+
 import BadgeIcon from './BadgeIcon';
 
 interface BadgeCollectionProps {

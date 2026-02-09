@@ -286,6 +286,38 @@ Do it manually enough times to learn the real failure modes before automating. T
 
 ---
 
+## Cross-Lens Coordination
+
+### With Marketing Lens
+
+Marketing defines what to track and why. Musk questions whether the tracking infrastructure should exist at all, then implements the simplest version.
+
+- **Handoff:** Marketing specifies instrumentation requirements (events, attribution, experiments). Musk validates feasibility and builds the minimum.
+- **Tension:** Marketing may request complex attribution stacks or experimentation platforms. Musk asks "do you need this, or do server logs + UTMs suffice?" Resolve by proving the measurement need before building.
+
+### With Sales Lens
+
+Sales identifies revenue channel needs (payment systems, marketplace integrations). Musk implements the simplest version.
+
+- **Handoff:** Sales defines what revenue mechanisms are needed. Musk applies the 5-step algorithm to the build.
+- **Tension:** Sales may request complex integrations. Musk will delete/simplify before building. Resolve by prioritizing manual workarounds before automation (step 5).
+
+### With Bezos Lens (Customer-Backwards)
+
+Bezos defines what the customer needs. Musk figures out the simplest way to deliver it.
+
+- **Handoff:** Bezos writes the PR/FAQ (what and why). Musk runs the 5-step algorithm on implementation (how).
+- **Tension:** Bezos may propose rich customer experiences. Musk will question whether all components are necessary. This is productive — Bezos prevents under-serving the customer; Musk prevents over-engineering the solution.
+
+### With Sourcing Lens
+
+Sourcing manages supply chain. Musk treats production/ops as a product and looks for constraint removal.
+
+- **Handoff:** Sourcing defines supply chain requirements. Musk questions whether those requirements should exist and simplifies the ops.
+- **Tension:** Sourcing may accept complexity as "the way it is." Musk runs the Idiot Index on operational costs.
+
+---
+
 ## Preferred Artifacts
 
 ### 1. Constraint Diagnosis (Always)
@@ -400,5 +432,6 @@ Manual fulfillment for first 10 orders. No automation until unit economics prove
 
 ## Version History
 
+- **v2.1** (2026-02-09): Added Cross-Lens Coordination section with handoffs and tension points for Marketing, Sales, Bezos, and Sourcing.
 - **v2.0** (2026-02-09): Grounded in documented Musk-adjacent practices and reported case anchors (SpaceX reusability, Tesla manufacturing/automation reversal, gigacasting, idiot index). Added Required Toolbox with M/R/O applicability matrix. Added Grounding Anchors, Bad-News Suppression failure mode, Design-for-Production review.
 - **v1.0** (2026-02-09): Initial persona for Cabinet System CS-07.

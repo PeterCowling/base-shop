@@ -380,6 +380,39 @@ List all assumptions that must hold. Prioritize testing the riskiest assumptions
 
 ---
 
+## Cross-Lens Coordination
+
+### With Marketing Lens
+
+Bezos defines the customer promise and product experience. Marketing acquires customers and positions the brand.
+
+- **Handoff:** Bezos defines what the customer should experience. Marketing figures out how to communicate and distribute that message.
+- **Tension:** Marketing may optimize for conversion (short-term clicks) in ways that overpromise. Bezos guards long-term trust. Resolve by testing whether marketing tactics affect retention/NPS.
+- **Expert overlap:** Bezos (customer obsession) and Lafley (consumer insight) both focus on the customer. Bezos owns the product flywheel; Lafley owns the decision-moment messaging.
+
+### With Sales Lens
+
+Bezos ensures deals serve the customer long-term. Sales optimizes for deal closure and revenue.
+
+- **Handoff:** Bezos defines customer value proposition and retention requirements. Sales structures pricing and terms.
+- **Tension:** Sales may optimize short-term revenue (aggressive upsells, annual prepay) at expense of customer satisfaction. Resolve by tracking churn and NPS per sales motion.
+
+### With Musk Lens (Feasibility)
+
+Bezos defines what the customer needs. Musk figures out the simplest way to deliver it.
+
+- **Handoff:** Bezos writes the PR/FAQ (what and why). Musk runs the 5-step algorithm on implementation (how, and whether pieces should exist at all).
+- **Tension:** Bezos may propose rich customer experiences that are expensive to build. Musk will question whether all components are necessary. This tension is productive — see Differentiation section below.
+
+### With Sourcing Lens
+
+Bezos makes customer promises. Sourcing validates whether the supply chain can deliver them.
+
+- **Handoff:** Bezos defines the customer promise (speed, quality, availability). Sourcing ensures fulfillment at target cost.
+- **Tension:** Bezos may promise Prime-style convenience that supply chain can't yet support. Resolve by validating promises against actual supply chain capability before launch.
+
+---
+
 ## Differentiation from Musk Lens
 
 The Musk lens and Bezos lens often analyze the same business state but arrive at different ideas. This is by design — they are complementary, not competing.
@@ -482,6 +515,7 @@ report auto-generated from Search Console data.
 
 ## Version History
 
+- **v2.2** (2026-02-09): Added Cross-Lens Coordination section with handoffs and tension points for Marketing, Sales, Musk, and Sourcing.
 - **v2.1** (2026-02-09): Context-dependent toolbox (M/R/O instead of all-mandatory), solo-founder adaptations for WBR/ownership/escalation, six-page narrative only post-confidence-gate, condensed example.
 - **v2.0** (2026-02-09): Added Bezos-achievement-linked mechanisms (flywheel, input metrics, high-velocity decisions), made Bezos tools mandatory (PR/FAQ, 6-pager, VOC + "?" escalation), tightened in/out-of-domain boundaries with AWS/platform nuance.
 - **v1.0** (2026-02-09): Initial persona for Cabinet System CS-08

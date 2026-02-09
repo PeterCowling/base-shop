@@ -199,7 +199,8 @@ For each business in `businesses.json`, execute a sequential multi-lens pass to 
 **Note:** Hopkins and Ogilvy appear twice for BRIK — once under Marketing lens (generic frameworks) and once under Brikette lens (hostel-specific framing). Distinguished by `Originator-Lens: marketing` vs `Originator-Lens: brikette`. Clustering (Stage 3) handles any duplicate ideas.
 
 **For each sub-expert:**
-1. Read the persona file from `.claude/skills/_shared/cabinet/lens-<lens>.md` (each lens file contains all its sub-experts)
+1. Read the lens file from `.claude/skills/_shared/cabinet/lens-<lens>.md`
+   - For the **marketing** lens (split experts): also read `lens-marketing-<expert>.md` for the current sub-expert pass (e.g., `lens-marketing-hopkins.md` for the Hopkins pass). The coordinator file (`lens-marketing.md`) provides shared toolbox, stance behavior, and cross-lens rules; the individual file provides the expert's evidence anchor, required tools, and diagnostic questions.
 2. Apply stance-specific diagnostic questions to the business:
    - Under `improve-data`: Focus on measurement, data quality, knowledge gaps
    - Under `grow-business`: Focus on revenue, acquisition, conversion, retention
@@ -667,6 +668,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 
 ## Version History
 
+- **v2.2** (2026-02-09): Updated persona file reading for split marketing expert files; Marketing lens now has coordinator + 4 individual expert files.
 - **v2.1** (2026-02-09): Added BRIK-specific lens routing — Brikette lens (15 sub-experts across 6 hostel domains) replaces sourcing lens for BRIK. Hopkins/Ogilvy run twice for BRIK (marketing + brikette framing).
 - **v2.0** (2026-02-09): Cabinet Secretary orchestrator with 7-stage pipeline, multi-lens composite generation, confidence gating, clustering, Munger/Buffett filter, Drucker/Porter priority, fact-find seeding. Replaces v1 constraint-diagnostic approach.
 - **v1.0** (2026-02-06): Original constraint-diagnostic sweep (preserved in `SKILL.md.pre-cabinet`)

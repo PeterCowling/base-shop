@@ -308,6 +308,7 @@ Every plan update must include:
 - **After `/work-idea`:** Update Opportunities section with new validated ideas
 - **After `/propose-lane-move` to Done:** Trigger reflection and plan update
 - **After `/scan-repo`:** Aggregate scan findings into plan updates
+- **After `/ideas-go-faster`:** Sweep reads plans and flags gaps/staleness — use this skill to act on sweep recommendations for plan bootstrapping or updates
 - **Before planning sessions:** Review plan to inform priority decisions
 
 ## Example Session

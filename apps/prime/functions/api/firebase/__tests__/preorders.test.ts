@@ -2,9 +2,9 @@
  * @jest-environment node
  */
 
-import { onRequestPost } from "../preorders";
-import { FirebaseRest } from "../../../lib/firebase-rest";
 import { createPagesContext } from "../../../__tests__/helpers";
+import { FirebaseRest } from "../../../lib/firebase-rest";
+import { onRequestPost } from "../preorders";
 
 describe("/api/firebase/preorders", () => {
   const getSpy = jest.spyOn(FirebaseRest.prototype, "get");

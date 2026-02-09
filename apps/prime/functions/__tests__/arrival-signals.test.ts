@@ -4,6 +4,7 @@
 
 import { onRequestGet } from '../api/check-in-lookup';
 import { FirebaseRest } from '../lib/firebase-rest';
+
 import { createMockEnv, createMockKv, createPagesContext } from './helpers';
 
 describe('/api/check-in-lookup readiness signals', () => {

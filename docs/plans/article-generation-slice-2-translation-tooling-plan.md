@@ -66,7 +66,9 @@ Gap noted:
 - S2-03: Extract schema-injected guide content validation runner.
 - S2-04: Generalize backfill script to remove Brikette runtime dependency. (Complete, 2026-02-09)
 - S2-05: Rewrite translation runner into configurable engine.
-- S2-06: Add drift detection + schemaVersion migration support scaffolding.
+- S2-06: Add drift detection + schemaVersion migration support scaffolding. (Complete, 2026-02-09)
+- S2-07: Implement translation drift manifest + check command.
+- S2-08: Implement guide content schema migration runner.
 
 ## Task Summary
 
@@ -77,7 +79,9 @@ Gap noted:
 | S2-03 | IMPLEMENT | Extract reusable validation runner with injected schema and path config | 79% | M | Pending | S2-01 | Blocked (<80) |
 | S2-04 | IMPLEMENT | Refactor `backfill-guides-from-en.ts` to CLI-configurable locale sourcing | 82% | M | Complete (2026-02-09) | S2-01 | Eligible |
 | S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 74% | L | Pending | S2-01 | Blocked (<80) |
-| S2-06 | INVESTIGATE | Define drift detection + schemaVersion migration contracts for Slice 2.5 | 78% | M | Pending | S2-02 | N/A |
+| S2-06 | INVESTIGATE | Define drift detection + schemaVersion migration contracts for Slice 2.5 | 78% | M | Complete (2026-02-09) | S2-02 | N/A |
+| S2-07 | IMPLEMENT | Build translation drift manifest/check workflow for guide content and namespace files | 83% | M | Pending | S2-02, S2-06 | Eligible |
+| S2-08 | IMPLEMENT | Build schemaVersion migration runner for guide content payloads | 81% | M | Pending | S2-01, S2-06 | Eligible |
 
 ## Tasks
 
@@ -217,6 +221,52 @@ Gap noted:
 - **Confidence:** 78%
 - **Deliverable:** follow-on implementation-ready tasks with explicit schema and CLI contracts.
 
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Investigation summary:**
+  - Drift handling is currently fragmented and manual (`apps/brikette/scripts/fix-i18n-drift-locales.ts` hardcodes locale/key patches).
+  - Translation checks exist but do not persist source-hash lineage for deterministic stale detection (`apps/brikette/scripts/check-guides-translations.ts`).
+  - `schemaVersion` exists in guide publication metadata (`packages/types/src/Guide.ts`) but guide content payloads lack a migration registry/runner.
+- **Output handoff (new IMPLEMENT tasks):**
+  - S2-07: translation drift manifest/check workflow.
+  - S2-08: schemaVersion migration runner for guide content.
+- **Recommended contracts:**
+  - Drift manifest key: stable content hash of EN source + per-locale hash and timestamp metadata.
+  - Migration runner contract: versioned transforms `vN -> vN+1` with dry-run diff report and invariant validation.
+
+### S2-07: Implement translation drift manifest + check command
+
+- **Type:** IMPLEMENT
+- **Execution-Skill:** `build-feature`
+- **Depends on:** S2-02, S2-06
+- **Confidence:** 83%
+- **Acceptance:**
+  - Add drift-manifest generation command that records source hash and per-locale hash for each guide content file.
+  - Add check command that reports stale locales when source hash changes without locale refresh.
+  - Output format supports machine-readable JSON for CI/ops.
+- **Test contract:**
+  - TC-01: unchanged source/locale files produce zero stale entries.
+  - TC-02: changing EN source marks all dependent locales stale.
+  - TC-03: updating one locale clears staleness for that locale only.
+  - TC-04: JSON output schema is stable and includes schemaVersion.
+
+### S2-08: Implement guide content schema migration runner
+
+- **Type:** IMPLEMENT
+- **Execution-Skill:** `build-feature`
+- **Depends on:** S2-01, S2-06
+- **Confidence:** 81%
+- **Acceptance:**
+  - Add migration registry with explicit `fromVersion`/`toVersion` transforms.
+  - Add CLI runner with `--from`, `--to`, and `--dry-run`.
+  - Runner validates transformed output with `guideContentSchema`.
+  - Runner provides rollback-ready report (files touched + before/after version counts).
+- **Test contract:**
+  - TC-01: dry-run reports candidate changes without writing files.
+  - TC-02: live run updates versioned payloads and preserves JSON validity.
+  - TC-03: unsupported version path fails with actionable error.
+  - TC-04: idempotent re-run at target version produces zero changes.
+
 ## Decision Points
 
 | Condition | Action |
@@ -224,6 +274,7 @@ Gap noted:
 | Any IMPLEMENT task <80% | Run `/re-plan` for that task before build |
 | S2-01 complete and validated | Proceed to S2-02 |
 | S2-02 reveals shared utility API gaps | Update S2-01 API via additive patch + revalidate |
+| S2-06 complete | Proceed to S2-07 and S2-08 |
 
 ## Risks and Mitigations
 
@@ -241,3 +292,4 @@ Gap noted:
 - 2026-02-09: S2-01 completed with new `@acme/guides-core` file/content utility exports and focused tests.
 - 2026-02-09: S2-02 completed; four Brikette scripts now consume shared file/content utilities from `@acme/guides-core`.
 - 2026-02-09: S2-04 completed; backfill script no longer imports app runtime i18n config and now supports `--dry-run`.
+- 2026-02-09: S2-06 completed; investigation created S2-07 (drift manifest/check) and S2-08 (schemaVersion migration runner) as implementation follow-ons.

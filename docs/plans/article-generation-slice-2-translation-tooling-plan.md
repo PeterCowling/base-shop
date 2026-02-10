@@ -3,7 +3,7 @@ Type: Plan
 Status: Active
 Domain: Platform/i18n
 Created: 2026-02-09
-Last-updated: 2026-02-09 (build)
+Last-updated: 2026-02-10 (build)
 Last-reviewed: 2026-02-09
 Relates-to charter: none
 Feature-Slug: article-generation-slice-2-translation-tooling
@@ -67,8 +67,8 @@ Gap noted:
 - S2-04: Generalize backfill script to remove Brikette runtime dependency. (Complete, 2026-02-09)
 - S2-05: Rewrite translation runner into configurable engine. (Complete, 2026-02-09)
 - S2-06: Add drift detection + schemaVersion migration support scaffolding. (Complete, 2026-02-09)
-- S2-07: Implement translation drift manifest + check command.
-- S2-08: Implement guide content schema migration runner.
+- S2-07: Implement translation drift manifest + check command. (Complete, 2026-02-10)
+- S2-08: Implement guide content schema migration runner. (Complete, 2026-02-10)
 - S2-09: Decide translation execution policy + provider contract for generic runner. (Complete, 2026-02-09)
 - S2-10: Spike generic runner parity using mock provider and token fixtures. (Complete, 2026-02-09)
 
@@ -82,8 +82,8 @@ Gap noted:
 | S2-04 | IMPLEMENT | Refactor `backfill-guides-from-en.ts` to CLI-configurable locale sourcing | 82% | M | Complete (2026-02-09) | S2-01 | Eligible |
 | S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 83% | L | Complete (2026-02-09) | S2-01, S2-09, S2-10 | Eligible |
 | S2-06 | INVESTIGATE | Define drift detection + schemaVersion migration contracts for Slice 2.5 | 78% | M | Complete (2026-02-09) | S2-02 | N/A |
-| S2-07 | IMPLEMENT | Build translation drift manifest/check workflow for guide content and namespace files | 83% | M | Pending | S2-02, S2-06 | Eligible |
-| S2-08 | IMPLEMENT | Build schemaVersion migration runner for guide content payloads | 81% | M | Pending | S2-01, S2-06 | Eligible |
+| S2-07 | IMPLEMENT | Build translation drift manifest/check workflow for guide content and namespace files | 83% | M | Complete (2026-02-10) | S2-02, S2-06 | Eligible |
+| S2-08 | IMPLEMENT | Build schemaVersion migration runner for guide content payloads | 81% | M | Complete (2026-02-10) | S2-01, S2-06 | Eligible |
 | S2-09 | INVESTIGATE | Resolve translation execution policy and provider abstraction contract | 86% | S | Complete (2026-02-09) | S2-02 | N/A |
 | S2-10 | SPIKE | Prove generic translation runner parity with fixture-driven mock provider | 82% | M | Complete (2026-02-09) | S2-09 | N/A |
 
@@ -415,6 +415,27 @@ Gap noted:
   - TC-03: updating one locale clears staleness for that locale only.
   - TC-04: JSON output schema is stable and includes schemaVersion.
 
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Validation:**
+  - Added drift manifest generation/check commands:
+    - `apps/brikette/scripts/generate-translation-drift-manifest.ts`
+    - `apps/brikette/scripts/check-translation-drift-manifest.ts`
+  - Added drift manifest logic and test suite:
+    - `apps/brikette/scripts/lib/translation-drift-manifest.ts`
+    - `apps/brikette/scripts/__tests__/translation-drift-manifest.test.ts`
+  - Ran: `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translation-drift-manifest.test.ts` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec tsx scripts/generate-translation-drift-manifest.ts --locales=it,de --output=/tmp/translation-drift-manifest-test.json` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec tsx scripts/check-translation-drift-manifest.ts --manifest=/tmp/translation-drift-manifest-test.json` — PASS
+- **Implementation notes:**
+  - Drift hashes now use canonical JSON hashing to avoid false-positive drift from key ordering.
+  - Manifest/check reports include `schemaVersion` and stable summary fields for CI/ops consumers.
+
 ### S2-08: Implement guide content schema migration runner
 
 - **Type:** IMPLEMENT
@@ -431,6 +452,30 @@ Gap noted:
   - TC-02: live run updates versioned payloads and preserves JSON validity.
   - TC-03: unsupported version path fails with actionable error.
   - TC-04: idempotent re-run at target version produces zero changes.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Validation:**
+  - Added migration registry/runner module:
+    - `apps/brikette/scripts/lib/guide-content-migrations.ts`
+  - Added migration CLI:
+    - `apps/brikette/scripts/migrate-guide-content-schema.ts`
+  - Added migration tests:
+    - `apps/brikette/scripts/__tests__/guide-content-migrations.test.ts`
+  - Added package scripts:
+    - `apps/brikette/package.json` -> `migrate-guide-content-schema`
+  - Ran: `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/guide-content-migrations.test.ts` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec tsx scripts/migrate-guide-content-schema.ts --locales-root=<tmp-locale-root> --locales=en --from=1 --to=2 --dry-run` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec tsx scripts/migrate-guide-content-schema.ts --locales-root=<tmp-locale-root> --locales=en --from=1 --to=2 --write` — PASS
+- **Implementation notes:**
+  - Migration registry is explicit and path-validated (`fromVersion`/`toVersion`).
+  - Runner produces rollback-ready report metadata: touched files and before/after schemaVersion counts.
+  - Transformed payloads are validated with `guideContentSchema` before write.
 
 ## Decision Points
 
@@ -467,3 +512,5 @@ Gap noted:
 - 2026-02-09 (build): S2-10 completed; fixture-driven spike runner and parity matrix validated token/JSON invariants.
 - 2026-02-09 (build): S2-05 promoted to 83% and build-eligible after S2-09/S2-10 evidence.
 - 2026-02-09 (build): S2-05 completed with generic translation batch runner, pluggable providers, dry-run/write modes, and contract tests.
+- 2026-02-10 (build): S2-07 completed with drift manifest generation/check commands, canonical JSON hashing, and CI-ready machine-readable report output.
+- 2026-02-10 (build): S2-08 completed with schemaVersion migration registry, dry-run/write CLI runner, and idempotence/unsupported-path validation coverage.

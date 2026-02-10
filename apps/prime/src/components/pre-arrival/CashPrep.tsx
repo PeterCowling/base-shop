@@ -71,29 +71,29 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
           <button
             type="button"
             onClick={onBack}
-            className="mt-1 rounded-full p-2 hover:bg-gray-100"
+            className="mt-1 rounded-full p-2 hover:bg-muted"
             aria-label={t('cash.back')}
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
         )}
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-foreground">
             {t('cash.title')}
           </h2>
-          <p className="mt-1 text-sm text-gray-600">{t('cash.subtitle')}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{t('cash.subtitle')}</p>
         </div>
       </div>
 
       {/* Cash info card */}
-      <div className="rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 p-4">
-        <div className="mb-4 flex items-center gap-2 text-green-700">
+      <div className="rounded-xl bg-success-soft p-4">
+        <div className="mb-4 flex items-center gap-2 text-success-foreground">
           <Banknote className="h-5 w-5" />
           <span className="font-medium">{t('cash.cashOnly')}</span>
         </div>
 
         {/* City tax */}
-        <div className="mb-4 flex items-center justify-between rounded-lg bg-white p-4 shadow-sm">
+        <div className="mb-4 flex items-center justify-between rounded-lg bg-card p-4 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -102,23 +102,23 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
               aria-label={t('cash.confirm.cityTax')}
             >
               {cityTaxReady ? (
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
+                <CheckCircle2 className="h-6 w-6 text-success" />
               ) : (
-                <Circle className="h-6 w-6 text-gray-300" />
+                <Circle className="h-6 w-6 text-muted-foreground" />
               )}
             </button>
             <div>
-              <p className="font-medium text-gray-900">{t('cash.cityTax.label')}</p>
-              <p className="text-xs text-gray-500">{t('cash.cityTax.perNight')}</p>
+              <p className="font-medium text-foreground">{t('cash.cityTax.label')}</p>
+              <p className="text-xs text-muted-foreground">{t('cash.cityTax.perNight')}</p>
             </div>
           </div>
-          <span className="text-lg font-semibold text-gray-900">
+          <span className="text-lg font-semibold text-foreground">
             €{cityTaxAmount.toFixed(2)}
           </span>
         </div>
 
         {/* Keycard deposit */}
-        <div className="flex items-center justify-between rounded-lg bg-white p-4 shadow-sm">
+        <div className="flex items-center justify-between rounded-lg bg-card p-4 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               type="button"
@@ -127,38 +127,38 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
               aria-label={t('cash.confirm.deposit')}
             >
               {depositReady ? (
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
+                <CheckCircle2 className="h-6 w-6 text-success" />
               ) : (
-                <Circle className="h-6 w-6 text-gray-300" />
+                <Circle className="h-6 w-6 text-muted-foreground" />
               )}
             </button>
             <div>
-              <p className="font-medium text-gray-900">{t('cash.deposit.label')}</p>
-              <p className="text-xs text-gray-500">{t('cash.deposit.refundable')}</p>
+              <p className="font-medium text-foreground">{t('cash.deposit.label')}</p>
+              <p className="text-xs text-muted-foreground">{t('cash.deposit.refundable')}</p>
             </div>
           </div>
-          <span className="text-lg font-semibold text-gray-900">
+          <span className="text-lg font-semibold text-foreground">
             €{depositAmount.toFixed(2)}
           </span>
         </div>
       </div>
 
       {/* Total */}
-      <div className="flex items-center justify-between rounded-xl bg-gray-900 p-4 text-white">
+      <div className="flex items-center justify-between rounded-xl bg-foreground p-4 text-background">
         <span className="font-medium">{t('cash.total')}</span>
         <span className="text-2xl font-bold">€{totalAmount.toFixed(2)}</span>
       </div>
 
       {/* Info note */}
-      <div className="flex items-start gap-3 rounded-xl bg-blue-50 p-4">
-        <Info className="mt-0.5 h-5 w-5 flex-shrink-0 text-blue-500" />
-        <div className="text-sm text-blue-800">
+      <div className="flex items-start gap-3 rounded-xl bg-info-soft p-4">
+        <Info className="mt-0.5 h-5 w-5 flex-shrink-0 text-info-foreground" />
+        <div className="text-sm text-info-foreground">
           <p>{t('cash.info.message')}</p>
         </div>
       </div>
 
       {/* Card payment note */}
-      <div className="flex items-center gap-2 text-sm text-gray-500">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
         <CreditCard className="h-4 w-4" />
         <span>{t('cash.cardNote')}</span>
       </div>
@@ -172,8 +172,8 @@ export const CashPrep: FC<CashPrepProps> = memo(function CashPrep({
           transition-colors
           ${
             allReady
-              ? 'bg-green-600 text-white hover:bg-green-700'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+              ? 'bg-success text-success-foreground hover:bg-success/90'
+              : 'bg-primary text-primary-foreground hover:bg-primary/90'
           }
         `}
       >

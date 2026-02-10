@@ -46,6 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AssistancePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  await getTranslations(validLang, ["assistanceSection", "assistance", "guides", "howToGetHere"]);
+  await getTranslations(validLang, [
+    "assistanceSection",
+    "assistance",
+    "guides",
+    "howToGetHere",
+    "notificationBanner",
+  ]);
   return <AssistanceIndexContent lang={validLang} />;
 }

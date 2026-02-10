@@ -120,7 +120,6 @@ function AssistanceQuickLinksSection({
               <Fragment key={key}>
                 {linkRenderer({
                   href: item.href,
-                  ariaLabel: item.label,
                   className: clsx(
                     "group",
                     "block",
@@ -239,7 +238,6 @@ function AssistanceQuickLinksSection({
             <Fragment>
               {ctaRenderer({
                 href: contactCta.href,
-                ariaLabel: contactCta.label,
                 className: clsx(
                   "group",
                   "flex",

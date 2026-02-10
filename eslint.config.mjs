@@ -2187,6 +2187,17 @@ export default [
     },
   },
   {
+    files: [
+      "apps/reception/src/components/common/DarkModeToggle.tsx",
+      "apps/reception/src/components/dashboard/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "ds/no-raw-color": "warn",
+      "ds/no-raw-font": "warn",
+      "ds/no-raw-tailwind-color": "warn",
+    },
+  },
+  {
     files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx,mjs,cjs}"],
     rules: {
       complexity: "off",
@@ -2271,6 +2282,60 @@ export default [
       "ds/no-important": "warn",
       "ds/no-naked-img": "warn",
       "ds/require-aspect-ratio-on-media": "warn",
+      "ds/no-negative-margins": "warn",
+      "ds/no-margins-on-atoms": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/require-disable-justification": [
+        "warn",
+        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
+      ],
+    },
+  },
+  /* ▸ Prime arrival: DS rules re-enabled after migration (TASK-03).
+   *   Must be after the blanket Prime disable so these overrides win. */
+  {
+    files: ["apps/prime/src/components/arrival/**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      // Color/token rules — fully migrated, enforce as errors
+      "ds/no-raw-color": "error",
+      "ds/no-raw-tailwind-color": "error",
+      "ds/no-raw-font": "error",
+      // Remaining DS rules — enabled as warnings for progressive hardening
+      "ds/no-raw-spacing": "warn",
+      "ds/no-raw-typography": "warn",
+      "ds/no-raw-radius": "warn",
+      "ds/no-raw-shadow": "warn",
+      "ds/no-raw-zindex": "warn",
+      "ds/no-arbitrary-tailwind": "warn",
+      "ds/no-important": "warn",
+      "ds/no-negative-margins": "warn",
+      "ds/no-margins-on-atoms": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/require-disable-justification": [
+        "warn",
+        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
+      ],
+    },
+  },
+  /* ▸ Prime pre-arrival: DS rules re-enabled after migration (TASK-04).
+   *   Must be after the blanket Prime disable so these overrides win. */
+  {
+    files: ["apps/prime/src/components/pre-arrival/**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      // Color/token rules — fully migrated, enforce as errors
+      "ds/no-raw-color": "error",
+      "ds/no-raw-tailwind-color": "error",
+      "ds/no-raw-font": "error",
+      // Remaining DS rules — enabled as warnings for progressive hardening
+      "ds/no-raw-spacing": "warn",
+      "ds/no-raw-typography": "warn",
+      "ds/no-raw-radius": "warn",
+      "ds/no-raw-shadow": "warn",
+      "ds/no-raw-zindex": "warn",
+      "ds/no-arbitrary-tailwind": "warn",
+      "ds/no-important": "warn",
       "ds/no-negative-margins": "warn",
       "ds/no-margins-on-atoms": "warn",
       "ds/enforce-layout-primitives": "warn",

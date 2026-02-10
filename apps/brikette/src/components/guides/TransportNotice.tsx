@@ -10,7 +10,8 @@ type TransComponentProps = ComponentProps<(typeof I18n)["Trans"]>;
 
 const LINK_CLASS_NAME = clsx(
   "inline-flex",
-  "min-h-10",
+  "min-h-11",
+  "min-w-11",
   "items-center",
   "px-2",
   "-mx-2",

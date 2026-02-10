@@ -127,23 +127,23 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
             <button
               type="button"
               onClick={onBack}
-              className="mt-1 rounded-full p-2 hover:bg-gray-100"
+              className="mt-1 rounded-full p-2 hover:bg-muted"
               aria-label={t('eta.back')}
             >
               <ArrowLeft className="h-5 w-5" />
             </button>
           )}
           <div>
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-foreground">
               {t('eta.title')}
             </h2>
-            <p className="mt-1 text-sm text-gray-600">{t('eta.subtitle')}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t('eta.subtitle')}</p>
           </div>
         </div>
 
         {/* Time selection */}
         <div>
-          <label className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700">
+          <label className="mb-2 flex items-center gap-2 text-sm font-medium text-foreground">
             <Clock className="h-4 w-4" />
             {t('eta.timeLabel')}
           </label>
@@ -158,8 +158,8 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
                   transition-colors
                   ${
                     selectedTime === time
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground hover:bg-muted/80'
                   }
                 `}
               >
@@ -168,7 +168,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
             ))}
           </div>
           {selectedTime && (
-            <p className="mt-2 text-sm text-gray-500">
+            <p className="mt-2 text-sm text-muted-foreground">
               {formatTimeSlot(selectedTime)}
             </p>
           )}
@@ -176,14 +176,14 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
 
         {/* Late arrival warning */}
         {showLateWarning && (
-          <div className="rounded-xl bg-amber-50 p-4">
+          <div className="rounded-xl bg-warning-soft p-4">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500" />
+              <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-warning-foreground" />
               <div>
-                <p className="font-medium text-amber-800">
+                <p className="font-medium text-warning-foreground">
                   {t('eta.lateArrival.title')}
                 </p>
-                <p className="mt-1 text-sm text-amber-700">
+                <p className="mt-1 text-sm text-warning-foreground">
                   {t('eta.lateArrival.message')}
                 </p>
               </div>
@@ -193,7 +193,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
 
         {/* Travel method selection */}
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-700">
+          <label className="mb-2 block text-sm font-medium text-foreground">
             {t('eta.methodLabel')}
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -207,8 +207,8 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
                   transition-colors
                   ${
                     selectedMethod === method
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted text-foreground hover:bg-muted/80'
                   }
                 `}
               >
@@ -225,7 +225,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
         <div>
           <label
             htmlFor="eta-note"
-            className="mb-2 block text-sm font-medium text-gray-700"
+            className="mb-2 block text-sm font-medium text-foreground"
           >
             {t('eta.noteLabel')}
           </label>
@@ -236,9 +236,9 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
             placeholder={t('eta.notePlaceholder')}
             rows={3}
             maxLength={200}
-            className="w-full resize-none rounded-xl border bg-white p-3 text-sm transition-colors focus:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-100"
+            className="w-full resize-none rounded-xl border bg-card p-3 text-sm transition-colors focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/10"
           />
-          <p className="mt-1 text-end text-xs text-gray-400">{note.length}/200</p>
+          <p className="mt-1 text-end text-xs text-muted-foreground">{note.length}/200</p>
         </div>
 
         {/* Confirm button */}
@@ -251,8 +251,8 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
             transition-colors
             ${
               isValid
-                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                : 'cursor-not-allowed bg-gray-200 text-gray-400'
+                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                : 'cursor-not-allowed bg-muted text-muted-foreground'
             }
           `}
         >

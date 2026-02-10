@@ -12,15 +12,12 @@ import { translatePath } from "../utils/translate-path";
 type NotificationBannerCopy = {
   message?: string;
   cta?: string;
-  openOffersLabel?: string;
 };
 
 type NotificationBannerLocaleModule = {
   default?: NotificationBannerCopy;
 } & NotificationBannerCopy;
 
-// i18n-exempt -- UI-1000 [ttl=2026-12-31] CSS selector string.
-const SERVER_ROOT_SELECTOR = '[data-notification-banner="root"]';
 // i18n-exempt -- UI-1000 [ttl=2026-12-31] CSS selector string.
 const SERVER_MESSAGE_SELECTOR = '[data-notification-banner="message"]';
 // i18n-exempt -- UI-1000 [ttl=2026-12-31] CSS selector string.
@@ -38,18 +35,6 @@ function readServerText(selector: string, fallback: string): string {
   return value || fallback;
 }
 
-function readServerAttr(selector: string, attribute: string, fallback: string): string {
-  if (typeof document === "undefined" || typeof document.querySelector !== "function") {
-    return fallback;
-  }
-  const node = document.querySelector<HTMLElement>(selector);
-  if (!node) {
-    return fallback;
-  }
-  const value = node.getAttribute(attribute)?.trim();
-  return value || fallback;
-}
-
 function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX.Element | null {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -59,14 +44,9 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const [isVisible, setIsVisible] = useState(true);
   const rawMessage = useMemo(() => (ready ? (t("message") as string) || "" : ""), [t, ready]);
   const rawCta = useMemo(() => (ready ? (t("cta") as string) || "" : ""), [t, ready]);
-  const rawOpenLabel = useMemo(() => (ready ? (t("openOffersLabel") as string) || "" : ""), [t, ready]);
-
   const [ctaText, setCtaText] = useState<string>(() => readServerText(SERVER_CTA_SELECTOR, rawCta));
   const [messageText, setMessageText] = useState<string>(() =>
     readServerText(SERVER_MESSAGE_SELECTOR, rawMessage)
-  );
-  const [openLabelText, setOpenLabelText] = useState<string>(() =>
-    readServerAttr(SERVER_ROOT_SELECTOR, "aria-label", rawOpenLabel || rawCta)
   );
 
   useEffect(() => {
@@ -82,8 +62,6 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     const looksUnresolved = (val: string, key: string) => !val || val === key;
     const messageUnresolved = looksUnresolved(rawMessage, "message");
     const ctaUnresolved = looksUnresolved(rawCta, "cta");
-    const openLabelUnresolved = looksUnresolved(rawOpenLabel, "openOffersLabel");
-
     if (!messageUnresolved) {
       setMessageText(rawMessage);
     }
@@ -92,11 +70,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
       setCtaText(rawCta);
     }
 
-    if (!openLabelUnresolved) {
-      setOpenLabelText(rawOpenLabel);
-    }
-
-    if (!messageUnresolved && !ctaUnresolved && !openLabelUnresolved) {
+    if (!messageUnresolved && !ctaUnresolved) {
       return;
     }
 
@@ -113,13 +87,6 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
         if (ctaUnresolved) {
           setCtaText(String(data.cta ?? rawCta ?? ""));
         }
-        if (openLabelUnresolved) {
-          const fallbackOpenLabel =
-            data.openOffersLabel ?? data.cta ?? rawOpenLabel ?? rawCta ?? "";
-          if (fallbackOpenLabel) {
-            setOpenLabelText(String(fallbackOpenLabel));
-          }
-        }
       })
       .catch(() => {
         /* keep existing copy if the fallback fails */
@@ -129,7 +96,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
       alive = false;
     };
     // re-run when lang changes or i18n function identity toggles
-  }, [lang, rawMessage, rawCta, rawOpenLabel]);
+  }, [lang, rawMessage, rawCta]);
 
   const openDeals = useCallback(() => router.push(`/${lang}/${translatePath("deals", lang)}`), [router, lang]);
   const close = useCallback(() => {
@@ -145,7 +112,6 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
       data-notification-banner="root"
       ref={setBannerRef}
       type="button"
-      aria-label={openLabelText || ctaText}
       onClick={openDeals}
       className="sticky top-0 z-50 flex min-h-10 min-w-10 w-full cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg dark:text-brand-text motion-safe:animate-slide-down"
     >

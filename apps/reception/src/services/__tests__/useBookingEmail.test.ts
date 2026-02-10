@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import { act, renderHook } from "@testing-library/react";
 
 import {
+  EMAIL_TEST_ADDRESS,
   FIREBASE_BASE_URL,
   OCCUPANT_LINK_PREFIX,
 } from "../../utils/emailConstants";
@@ -13,10 +14,6 @@ function jsonResponse<T>(data: T) {
   return { json: async () => data } as Response;
 }
 
-function textResponse(text: string) {
-  return { text: async () => text } as Response;
-}
-
 function jsonOkResponse<T>(data: T) {
   return { ok: true, json: async () => data } as Response;
 }
@@ -24,14 +21,14 @@ function jsonOkResponse<T>(data: T) {
 describe("useBookingEmail", () => {
   beforeEach(() => {
     jest.restoreAllMocks();
-    delete process.env.NEXT_PUBLIC_MCP_BOOKING_EMAIL_ENABLED;
+    delete process.env.NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE;
   });
 
   afterEach(() => {
     jest.restoreAllMocks();
   });
 
-  it("sendBookingEmail builds correct query", async () => {
+  it("TASK-10 TC-01/TC-03: sendBookingEmail always uses MCP route with unchanged payload shape", async () => {
     const fetchMock = jest.fn();
     (global as unknown as { fetch: typeof fetch }).fetch =
       fetchMock as unknown as typeof fetch;
@@ -44,8 +41,8 @@ describe("useBookingEmail", () => {
         guestB: { email: "b@example.com" },
       })
     );
-    // 3rd call: send email
-    fetchMock.mockResolvedValueOnce(textResponse("ok"));
+    // 3rd call: send email via MCP
+    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, messageId: "sent" }));
 
     const { result } = renderHook(() => useBookingEmail());
 
@@ -59,20 +56,22 @@ describe("useBookingEmail", () => {
     const links = ["guestA", "guestB"].map(
       (id) => `${OCCUPANT_LINK_PREFIX}${id}`
     );
-    const params = new URLSearchParams();
-    params.set("bookingRef", "BOOK123");
-    if (recipients.length) params.set("recipients", recipients.join(","));
-    links.forEach((l) => params.append("occupant", l));
-
     expect(fetchMock).toHaveBeenNthCalledWith(
       3,
-      `https://script.google.com/macros/s/AKfycbz236VUyVFKEKkJF8QaiL_h9y75XuwWsl82-xfWepZwv1-gBroOr5S4t_og4Fvl4caW/exec?${params.toString()}`
+      "/api/mcp/booking-email",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingRef: "BOOK123",
+          recipients,
+          occupantLinks: links,
+        }),
+      })
     );
   });
 
-  it("sendBookingEmail uses MCP route when enabled", async () => {
-    process.env.NEXT_PUBLIC_MCP_BOOKING_EMAIL_ENABLED = "true";
-
+  it("TASK-10 TC-02: MCP errors are surfaced without fallback", async () => {
     const fetchMock = jest.fn();
     (global as unknown as { fetch: typeof fetch }).fetch =
       fetchMock as unknown as typeof fetch;
@@ -84,7 +83,13 @@ describe("useBookingEmail", () => {
         guestB: { email: "b@example.com" },
       })
     );
-    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, messageId: "sent" }));
+    fetchMock.mockResolvedValueOnce(
+      { ok: false, json: async () => ({ error: "MCP unavailable" }) } as Response
+    );
+
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
 
     const { result } = renderHook(() => useBookingEmail());
 
@@ -94,24 +99,19 @@ describe("useBookingEmail", () => {
       });
     });
 
-    const recipients = ["override@example.com", "b@example.com"];
-    const occupantLinks = ["guestA", "guestB"].map(
-      (id) => `${OCCUPANT_LINK_PREFIX}${id}`
-    );
-
+    expect(result.current.message).toContain("MCP unavailable");
+    expect(fetchMock).toHaveBeenCalledTimes(3);
     expect(fetchMock).toHaveBeenNthCalledWith(
       3,
       "/api/mcp/booking-email",
-      expect.objectContaining({
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          bookingRef: "BOOK123",
-          recipients,
-          occupantLinks,
-        }),
-      })
+      expect.any(Object)
     );
+    const calledUrls = fetchMock.mock.calls.map((call) => String(call[0]));
+    expect(
+      calledUrls.some((url) => url.includes("script.google.com/macros"))
+    ).toBe(false);
+
+    errorSpy.mockRestore();
   });
 
   it("fetchGuestEmails returns id to email map", async () => {
@@ -167,5 +167,48 @@ describe("useBookingEmail", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
 
     errorSpy.mockRestore();
+  });
+
+  it("TASK-10 TC-04: test mode override still routes through MCP with test recipient", async () => {
+    process.env.NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE = "true";
+
+    const fetchMock = jest.fn();
+    (global as unknown as { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
+
+    fetchMock.mockResolvedValueOnce(jsonResponse({ guestA: {}, guestB: {} }));
+    fetchMock.mockResolvedValueOnce(
+      jsonResponse({
+        guestA: { email: "a@example.com" },
+        guestB: { email: "b@example.com" },
+      })
+    );
+    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, messageId: "sent" }));
+
+    const { result } = renderHook(() => useBookingEmail());
+
+    await act(async () => {
+      await result.current.sendBookingEmail("BOOK123", {
+        guestA: "override@example.com",
+      });
+    });
+
+    const occupantLinks = ["guestA", "guestB"].map(
+      (id) => `${OCCUPANT_LINK_PREFIX}${id}`
+    );
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "/api/mcp/booking-email",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookingRef: "BOOK123",
+          recipients: [EMAIL_TEST_ADDRESS],
+          occupantLinks,
+        }),
+      })
+    );
   });
 });

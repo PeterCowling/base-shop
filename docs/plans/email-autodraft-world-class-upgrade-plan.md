@@ -117,7 +117,7 @@ The approach builds outward from the existing 3-stage pipeline:
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Wire voice examples and draft guide into generation | 87% | S | Complete (2026-02-10) | - | TASK-02, TASK-07 |
 | TASK-02 | IMPLEMENT | Upgrade knowledge summaries to cited snippets | 85% | S | Complete (2026-02-10) | TASK-01 | TASK-07 |
-| TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Pending | - | TASK-04, TASK-06, TASK-07 |
+| TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Complete (2026-02-10) | - | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Pending | TASK-03 | TASK-05, TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Pending | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Pending | TASK-03, TASK-04 | TASK-07 |
@@ -324,6 +324,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Fact-find escalation triggers: `docs/plans/email-autodraft-world-class-upgrade-fact-find.md` (lines 174–178)
   - EUR threshold: configurable constant, default €500, to be confirmed at CHECKPOINT.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `a2d6c7daab`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08, TC-09, TC-10
+  - Cycles: 3 (red-green plus trigger-tuning follow-up cycle)
+  - Initial validation: FAIL expected (new TASK-03 tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 80%
+  - Delta reason: Escalation mapping worked as planned; one additional cycle was needed to tune refund/dispute trigger matching and satisfy mixed-trigger assertions.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts` — PASS (21/21 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (quality gate 29/31, 93.5%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added `escalation` classification to `EmailActionPlan` with tier (`NONE`/`HIGH`/`CRITICAL`), trigger list, and confidence. Implemented HIGH/CRITICAL trigger detection (legal/platform/public/fraud/high-value disputes, vulnerable circumstances, chargeback, repeated complaint with thread context), plus configurable high-value dispute threshold via `EMAIL_AUTODRAFT_HIGH_VALUE_DISPUTE_EUR_THRESHOLD` (default €500). Added unit and integration tests for all escalation validation cases and default NONE behavior on standard fixtures.
 
 ---
 

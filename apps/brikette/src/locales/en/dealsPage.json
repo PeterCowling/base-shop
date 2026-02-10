@@ -1,8 +1,12 @@
 {
   "slug": "deals",
   "meta": {
-    "title": "Save 15% on stays Sept 20 – Oct 31",
-    "description": "Limited-time offer: save 15% on direct bookings for stays from Sept 20 to Oct 31.",
+    "title": "Deals & Offers | Hostel Brikette",
+    "description": "Direct booking perks and seasonal offers at Hostel Brikette.",
+    "defaultTitle": "Deals & Offers | Hostel Brikette",
+    "defaultDescription": "Direct booking perks and seasonal offers at Hostel Brikette.",
+    "activeTitle": "Save {{percent}} on stays from {{from}} to {{to}}",
+    "activeDescription": "Auto-applied at checkout. Direct bookings only.",
     "ogImageAlt": "Limited-time discount banner"
   },
   "title": "Save {{percent}} on stays from {{from}} to {{to}}",

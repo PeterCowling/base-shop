@@ -40,19 +40,30 @@ const DestinationSections = dynamic(
 
 type Props = {
   lang: AppLanguage;
+  initialFilters?: {
+    transport?: string | null;
+    direction?: string | null;
+    destination?: string | null;
+  };
+  basePath?: string;
 };
 
 const ROME_SECTION_ID = "rome-travel-planner";
 const EXPERIENCE_SECTION_ID = "experience-planners";
 const INTRO_SECTION_ID = "arrival-help";
 
-function HowToGetHereIndexContent({ lang }: Props) {
+function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
   const { t } = useTranslation("howToGetHere", { lng: lang });
   usePagePreload({ lang, namespaces: ["howToGetHere", "guides"] });
   const fallbackT = useEnglishFallback("howToGetHere");
 
   const content = useHowToGetHereContent(lang);
-  const filtersState = useDestinationFilters(content.sections);
+  const filtersState = useDestinationFilters(content.sections, {
+    transport: initialFilters?.transport ?? null,
+    direction: initialFilters?.direction ?? null,
+    destination: initialFilters?.destination ?? null,
+    basePath,
+  });
   const {
     destinationFilter,
     transportFilter,

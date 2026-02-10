@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Section } from "@acme/design-system/atoms";
 
 import { Cluster, Inline, Stack } from "@/components/ui/flex";
-import hotel from "@/config/hotel";
+import hotel, { RATINGS_SNAPSHOT_DATE } from "@/config/hotel";
 import type { AppLanguage } from "@/i18n.config";
 import { Star } from "@/icons";
 
@@ -20,6 +20,16 @@ const SOURCE_KEYS: Record<string, string> = {
   Hostelworld: "hostelworld",
   "Booking.com": "booking",
 };
+
+function formatSnapshotMonthYear(isoDate: string, locale: string): string {
+  const parsed = new Date(isoDate);
+  if (Number.isNaN(parsed.getTime())) return isoDate;
+
+  return new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  }).format(parsed);
+}
 
 const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: AppLanguage }): JSX.Element | null {
   const translationOptions = lang ? { lng: lang } : undefined;
@@ -37,6 +47,11 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
   if (!ratings.length && !featured.length) return null;
 
   const locale = lang ?? i18n.language ?? "en";
+  const snapshotMonthYear = formatSnapshotMonthYear(RATINGS_SNAPSHOT_DATE, locale);
+  const snapshotAsOfLabel = tRatings("snapshotAsOf", {
+    date: snapshotMonthYear,
+    defaultValue: `As of ${snapshotMonthYear}`,
+  });
 
   return (
     <section className="bg-brand-surface py-12 scroll-mt-24 dark:bg-brand-surface">
@@ -47,6 +62,9 @@ const SocialProofSection = memo(function SocialProofSection({ lang }: { lang?: A
           </h2>
           <p className="text-sm text-brand-text/70 dark:text-brand-text/70">
             {tLanding("socialProof.subtitle")}
+          </p>
+          <p className="text-xs font-medium uppercase tracking-wide text-brand-text/60 dark:text-brand-text/60">
+            {snapshotAsOfLabel}
           </p>
         </Stack>
 

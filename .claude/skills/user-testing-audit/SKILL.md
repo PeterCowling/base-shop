@@ -1,6 +1,6 @@
 ---
 name: user-testing-audit
-description: Run a deep user-testing audit on a live URL (crawl, link integrity, image loading, contrast/a11y, layout heuristics, mobile behavior), then write a dated markdown issue report with prioritized findings and acceptance criteria.
+description: Run a deep user-testing audit on a live URL (crawl, link integrity, image loading, contrast/a11y, layout heuristics, mobile behavior, no-JS SSR predicates, SEO/Lighthouse), then write a dated markdown issue report with prioritized findings and acceptance criteria.
 ---
 
 # User Testing Audit
@@ -28,9 +28,11 @@ Do not proceed without a valid `https://...` URL.
 Always produce:
 1. A dated markdown report in `docs/audits/user-testing/`
 2. A JSON artifact with raw evidence
-3. A prioritized issue list (`P0/P1/P2`) with acceptance criteria per issue
-4. Deployment provenance in report frontmatter (`Deployment-URL`, `Deployment-Run`, `Deployment-Commit`)
-5. For reruns: explicit delta vs previous report (`Resolved`, `Still-open`, `Regressions/new`)
+3. A SEO summary JSON artifact (`...-seo-summary.json`) and raw Lighthouse artifact folder (`...-seo-artifacts/`)
+4. A prioritized issue list (`P0/P1/P2`) with acceptance criteria per issue
+5. Explicit no-JS predicate summary per key route (`H1`, bailout marker, i18n key leakage, deals parity, snapshot date)
+6. Deployment provenance in report frontmatter (`Deployment-URL`, `Deployment-Run`, `Deployment-Commit`)
+7. For reruns: explicit delta vs previous report (`Resolved`, `Still-open`, `Regressions/new`)
 
 ## Workflow
 
@@ -52,7 +54,7 @@ This returns JSON:
 
 If the latest run is still in progress, the resolver waits and polls until completion (or timeout). Use the returned `url` as `<TARGET_URL>` in all audit steps.
 
-### 2) Run automated audit (expanded default)
+### 2) Run automated audit (expanded default; includes no-JS + SEO by default)
 
 ```bash
 node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
@@ -77,53 +79,30 @@ This generates:
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>.md`
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>.json`
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>-screenshots/`
+- `docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-summary.json`
+- `docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-artifacts/`
 
 The script includes a sitewide image-asset integrity sweep across discovered internal routes, so broken `/img/...` URLs are reported even if a page is outside the smaller desktop/mobile audit subset.
+It also includes deterministic no-JS route checks on homepage/rooms/experiences/how-to-get-here/deals and Lighthouse checks for homepage + rooms + help/assistance.
 
 ### 3) Validate critical findings manually
 
 Do targeted repro checks for high-severity findings from the generated report:
 - Broken internal routes (open failing URL directly)
 - Suspected i18n key leakage pages
+- No-JS route checks (raw HTML for `/en`, `/en/rooms`, `/en/experiences`, `/en/how-to-get-here`, `/en/deals`)
 - Mobile menu state/focus issues
 - Contrast failures on key CTAs/headings
 
-### 4) Lighthouse SEO pass (required)
+### 4) Review generated SEO + no-JS sections (required)
 
-Run desktop + mobile SEO checks on:
-- homepage (`/<lang>`)
-- rooms/discovery page (`/<lang>/rooms`)
-- help/assistance page (`/<lang>/help` or localized equivalent)
-
-Desktop:
-
-```bash
-npx lighthouse <TARGET_URL> \
-  --chrome-flags='--headless --no-sandbox' \
-  --preset=desktop \
-  --only-categories=seo,accessibility,best-practices \
-  --output=json \
-  --output-path=/tmp/lh-home-desktop.json
-```
-
-Mobile:
-
-```bash
-npx lighthouse <TARGET_URL_OR_KEY_PAGE> \
-  --chrome-flags='--headless --no-sandbox' \
-  --form-factor=mobile \
-  --screenEmulation.mobile=true \
-  --throttling-method=provided \
-  --only-categories=seo,accessibility,best-practices \
-  --output=json \
-  --output-path=/tmp/lh-mobile.json
-```
-
-Also generate a JSON summary artifact in `docs/audits/user-testing/` and link both:
+The audit script now emits:
+- `## No-JS Predicate Summary` in markdown
+- `## SEO/Lighthouse Summary` in markdown
 - `...-seo-summary.json`
-- `...-seo-artifacts/` (raw Lighthouse JSON files)
+- `...-seo-artifacts/`
 
-If Lighthouse adds findings not already in the markdown report, update the report and Findings Index.
+If Lighthouse/no-JS artifacts expose issues not represented in Findings Index, update the findings list before finalizing.
 
 ### 5) Compare against prior audit when this is a rerun
 

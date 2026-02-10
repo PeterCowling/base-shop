@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
 import { Inline } from "../components/atoms/primitives/Inline";
-import hotel from "../config/hotel";
+import hotel, { RATINGS_SNAPSHOT_DATE } from "../config/hotel";
 
 type Props = { className?: string; lang?: string };
 
@@ -138,8 +138,6 @@ const BADGE_BASE_CLASSES = [
   "dark:ring-brand-bg/20",
 ] as const;
 
-const LAST_UPDATED = "2025-10-01"; // YYYY-MM-DD
-
 function formatDateISOToLocale(iso: string, locale: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
@@ -164,7 +162,7 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
   if (!ratings.length) return null;
 
   const activeLang = lang ?? i18n.language;
-  const localizedDate = formatDateISOToLocale(LAST_UPDATED, activeLang);
+  const localizedDate = formatDateISOToLocale(RATINGS_SNAPSHOT_DATE, activeLang);
   const lastCheckedLabel = t("lastChecked");
 
   return (
@@ -239,7 +237,7 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
             </span>
             <time
               className="text-base font-semibold text-brand-bg dark:text-brand-text"
-              dateTime={LAST_UPDATED}
+              dateTime={RATINGS_SNAPSHOT_DATE}
             >
               {localizedDate}
             </time>

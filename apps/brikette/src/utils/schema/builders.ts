@@ -4,7 +4,7 @@
 // Build page-level JSON-LD graphs from the rooms catalogue
 // -----------------------------------------------------------------------------
 
-import { CONTACT_EMAIL } from "@/config/hotel";
+import hotel, { CONTACT_EMAIL, RATINGS_SNAPSHOT_DATE } from "@/config/hotel";
 import { BASE_URL } from "@/config/site";
 import IMAGE_MANIFEST, { type ImageMeta } from "@/data/imageManifest";
 import type { HotelGraph, HotelRoom, Offer, OfferInput } from "@/types/schema";
@@ -24,11 +24,39 @@ function pickRelativeImagePaths(room: LocalizedRoom): string[] {
   return Array.isArray(room.imagesRaw) ? room.imagesRaw.slice(0, 4) : [];
 }
 
+const RATING_SNAPSHOT_LABEL = new Intl.DateTimeFormat("en", {
+  month: "long",
+  year: "numeric",
+}).format(new Date(`${RATINGS_SNAPSHOT_DATE}T12:00:00.000Z`));
+
+function resolveAggregateRating() {
+  const ratings = hotel.ratings ?? [];
+  if (!ratings.length) {
+    return {
+      ratingValue: 0,
+      reviewCount: 0,
+    };
+  }
+
+  const reviewCount = ratings.reduce((sum, rating) => sum + rating.count, 0);
+  const weightedValue =
+    reviewCount > 0
+      ? ratings.reduce((sum, rating) => sum + rating.value * rating.count, 0) / reviewCount
+      : ratings[0]?.value ?? 0;
+
+  return {
+    ratingValue: Number(weightedValue.toFixed(1)),
+    reviewCount,
+  };
+}
+
 export function buildHotelNode(opts?: {
   pageUrl?: string;
   publisher?: boolean;
   lang?: string;
 }): HotelGraph["hotel"] {
+  const aggregate = resolveAggregateRating();
+
   let base: ExtHotelNode = {
     "@type": "Hostel",
     "@id": HOTEL_ID,
@@ -86,11 +114,23 @@ export function buildHotelNode(opts?: {
     aggregateRating: {
       "@type": "AggregateRating",
       bestRating: 10,
-      ratingCount: 3336,
-      ratingValue: 9.3,
-      reviewCount: 3336,
+      ratingCount: aggregate.reviewCount,
+      ratingValue: aggregate.ratingValue,
+      reviewCount: aggregate.reviewCount,
       worstRating: 1,
     },
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        propertyID: "ratingsSnapshotDate",
+        value: RATINGS_SNAPSHOT_DATE,
+      },
+      {
+        "@type": "PropertyValue",
+        propertyID: "ratingsSnapshotLabel",
+        value: `As of ${RATING_SNAPSHOT_LABEL}`,
+      },
+    ],
   };
 
   if (opts?.pageUrl) {

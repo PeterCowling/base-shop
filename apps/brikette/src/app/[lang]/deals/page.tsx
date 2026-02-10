@@ -7,6 +7,8 @@ import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
+import { DEALS } from "@/routes/deals/deals";
+import { resolveDealsMetadataCopy } from "@/routes/deals/metadata";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -25,8 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const validLang = toAppLanguage(lang);
   const t = await getTranslations(validLang, ["dealsPage"]);
 
-  const title = (t("meta.title") as string) || "";
-  const description = (t("meta.description") as string) || "";
+  const { title, description } = resolveDealsMetadataCopy(t, validLang, DEALS);
 
   const dealsSlug = getSlug("deals", validLang);
   const path = `/${validLang}/${dealsSlug}`;

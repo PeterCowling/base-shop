@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       shop_skylar: ${{ steps.filter.outputs.shop_skylar }}
+      brikette: ${{ steps.brikette-filter.outputs.brikette }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,18 +31,27 @@ jobs:
             git diff --name-only "${{ github.event.before }}..${{ github.sha }}" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
           fi
           node scripts/ci/path-classifier.cjs --config lighthouse --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
+      - name: Detect Brikette changes for LHCI
+        id: brikette-filter
+        run: |
+          if grep -qE '^apps/brikette/|^lighthouserc\.brikette' /tmp/changed-files.txt 2>/dev/null; then
+            echo "brikette=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "brikette=false" >> "$GITHUB_OUTPUT"
+          fi
 
   lhci:
     name: Lighthouse (${{ matrix.config }})
     needs: [changes]
     # Run on all pushes to main. For PRs, only run when:
-    # - Shop/Skylar paths changed, or
+    # - Shop/Skylar or Brikette paths changed, or
     # - The PR has a `run-lhci` label.
     if: |
       github.event_name == 'push' ||
       (github.event_name == 'pull_request' &&
         (
           needs.changes.outputs.shop_skylar == 'true' ||
+          needs.changes.outputs.brikette == 'true' ||
           contains(github.event.pull_request.labels.*.name, 'run-lhci')
         )
       )
@@ -56,6 +66,8 @@ jobs:
             lighthouserc.shop.desktop.json,
             lighthouserc.skylar.json,
             lighthouserc.skylar.desktop.json,
+            lighthouserc.brikette.json,
+            lighthouserc.brikette.desktop.json,
           ]
     steps:
       - uses: actions/checkout@v4
@@ -63,7 +75,7 @@ jobs:
 
       - name: Build apps for LHCI
         run: |
-          pnpm --filter @apps/cover-me-pretty... --filter @apps/skylar... build
+          pnpm --filter @apps/cover-me-pretty... --filter @apps/skylar... --filter @apps/brikette... build
 
       - name: Setup Chrome for LHCI
         id: chrome

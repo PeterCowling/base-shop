@@ -188,23 +188,11 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
                 const reviewText = t("countReviews", { count: r.count, formattedCount });
 
                 const sourceTranslationKey = meta?.translationKey;
-                const accessibleProvider = sourceTranslationKey
-                  ? t(`sources.${sourceTranslationKey}.ariaName`, {
-                      defaultValue: meta?.defaultLabel ?? r.provider,
-                    })
-                  : meta?.defaultLabel ?? r.provider;
                 const providerLabel = sourceTranslationKey
                   ? t(`sources.${sourceTranslationKey}.label`, {
                       defaultValue: meta?.defaultLabel ?? r.provider,
                     })
                   : meta?.defaultLabel ?? r.provider;
-                const aria = t("aria.linkSummary", {
-                  score: r.value.toFixed(1),
-                  provider: accessibleProvider,
-                  reviews: reviewText,
-                  lastChecked: lastCheckedLabel,
-                  date: localizedDate,
-                });
 
                 const badgeBgClass = meta?.badgeBgClass ?? "bg-[var(--color-brand-primary)]";
 
@@ -214,7 +202,6 @@ const RatingsBar: FC<Props> = ({ className, lang }) => {
                     href={meta?.url ?? "#"}
                     target="_blank"
                     rel="noopener noreferrer external nofollow"
-                    aria-label={aria}
                     className={clsx(LINK_BASE_CLASSES)}
                   >
                     <span

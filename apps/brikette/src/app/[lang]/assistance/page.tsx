@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { getTranslations, resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
+import { resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
@@ -46,12 +46,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AssistancePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  await getTranslations(validLang, [
-    "assistanceSection",
-    "assistance",
-    "guides",
-    "howToGetHere",
-    "notificationBanner",
-  ]);
   return <AssistanceIndexContent lang={validLang} />;
 }

@@ -57,17 +57,17 @@ function getModeIcon(mode: TransportMode): ReactNode {
 function getModeColor(mode: TransportMode): string {
   switch (mode) {
     case 'bus':
-      return 'bg-green-100 text-green-700';
+      return 'bg-success-soft text-success-foreground';
     case 'ferry':
-      return 'bg-blue-100 text-blue-700';
+      return 'bg-info-soft text-info-foreground';
     case 'train':
-      return 'bg-orange-100 text-orange-700';
+      return 'bg-warning-soft text-warning-foreground';
     case 'walk':
-      return 'bg-gray-100 text-gray-700';
+      return 'bg-muted text-foreground';
     case 'taxi':
-      return 'bg-yellow-100 text-yellow-700';
+      return 'bg-accent-soft text-accent';
     default:
-      return 'bg-gray-100 text-gray-700';
+      return 'bg-muted text-foreground';
   }
 }
 
@@ -96,9 +96,9 @@ export const RouteCard: FC<RouteCardProps> = memo(function RouteCard({
       type="button"
       onClick={onClick}
       className={`
-        w-full text-start rounded-xl border bg-white p-4
+        w-full text-start rounded-xl border bg-card p-4
         transition-all duration-200
-        hover:border-blue-300 hover:shadow-md
+        hover:border-primary/30 hover:shadow-md
         ${className}
       `}
     >
@@ -116,30 +116,30 @@ export const RouteCard: FC<RouteCardProps> = memo(function RouteCard({
           ))}
         </div>
         {route.recommended && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-1 text-xs font-medium text-amber-700">
+          <span className="inline-flex items-center gap-1 rounded-full bg-warning-soft px-2 py-1 text-xs font-medium text-warning-foreground">
             <Star className="h-3 w-3" />
             {t('routes.recommended')}
           </span>
         )}
         {isSaved && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-700">
+          <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-1 text-xs font-medium text-success-foreground">
             {t('routes.savedRoute')}
           </span>
         )}
       </div>
 
       {/* Title and description */}
-      <h3 className="mb-1 font-semibold text-gray-900">{route.title}</h3>
-      <p className="mb-3 text-sm text-gray-600">{route.description}</p>
+      <h3 className="mb-1 font-semibold text-foreground">{route.title}</h3>
+      <p className="mb-3 text-sm text-muted-foreground">{route.description}</p>
 
       {/* Duration and cost */}
       <div className="flex items-center gap-4 text-sm">
-        <div className="flex items-center gap-1 text-gray-700">
-          <Clock className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-1 text-foreground">
+          <Clock className="h-4 w-4 text-muted-foreground" />
           <span>{formatDuration(route.totalDurationMinutes)}</span>
         </div>
         {route.costRange && (
-          <div className="text-gray-600">
+          <div className="text-muted-foreground">
             {route.costRange.min === route.costRange.max
               ? `€${route.costRange.min}`
               : `€${route.costRange.min}-${route.costRange.max}`}
@@ -149,14 +149,14 @@ export const RouteCard: FC<RouteCardProps> = memo(function RouteCard({
 
       {/* Warnings */}
       {route.warnings && route.warnings.length > 0 && (
-        <div className="mt-3 flex items-start gap-2 rounded-lg bg-amber-50 p-2 text-sm text-amber-800">
-          <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-500" />
+        <div className="mt-3 flex items-start gap-2 rounded-lg bg-warning-soft p-2 text-sm text-warning-foreground">
+          <AlertTriangle className="mt-0.5 h-4 w-4 flex-shrink-0 text-warning" />
           <span>{route.warnings[0]}</span>
         </div>
       )}
 
       {/* Segments preview */}
-      <div className="mt-3 flex items-center gap-1 text-xs text-gray-500">
+      <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground">
         {route.segments.map((segment, idx) => (
           <span key={idx} className="flex items-center gap-1">
             {idx > 0 && <ArrowRight className="h-3 w-3" />}

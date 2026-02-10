@@ -55,24 +55,24 @@ export default async function OwnerPage() {
   const totalBagDrops = kpiData.reduce((sum, day) => sum + day.bagDropRequestCount, 0);
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4">
+    <main className="min-h-screen bg-muted p-4">
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-              <BarChart3 className="h-6 w-6 text-blue-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-info-soft">
+              <BarChart3 className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Owner Dashboard</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-xl font-bold text-foreground">Owner Dashboard</h1>
+              <p className="text-sm text-muted-foreground">
                 Arrival insights for last 7 days ({startDate} to {endDate})
               </p>
             </div>
           </div>
           <Link
             href="/owner/setup"
-            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700"
+            className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-accent/90"
           >
             Setup
           </Link>
@@ -81,34 +81,34 @@ export default async function OwnerPage() {
         {/* Summary Cards */}
         <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <KpiCard
-            icon={<Users className="h-5 w-5 text-blue-600" />}
+            icon={<Users className="h-5 w-5 text-primary" />}
             label="Total Guests"
             value={totalGuests.toString()}
-            bgColor="bg-blue-50"
+            bgColor="bg-info-soft"
           />
           <KpiCard
-            icon={<TrendingUp className="h-5 w-5 text-green-600" />}
+            icon={<TrendingUp className="h-5 w-5 text-success" />}
             label="Average Readiness"
             value={`${Math.round(avgReadiness)}%`}
-            bgColor="bg-green-50"
+            bgColor="bg-success-soft"
           />
           <KpiCard
-            icon={<TrendingUp className="h-5 w-5 text-purple-600" />}
+            icon={<TrendingUp className="h-5 w-5 text-accent" />}
             label="ETA Submission"
             value={`${Math.round(avgEtaSubmission)}%`}
-            bgColor="bg-purple-50"
+            bgColor="bg-accent-soft"
           />
           <KpiCard
-            icon={<Clock className="h-5 w-5 text-orange-600" />}
+            icon={<Clock className="h-5 w-5 text-warning" />}
             label="Check-in Lag"
             value={`${Math.round(avgCheckInLag)} min`}
-            bgColor="bg-orange-50"
+            bgColor="bg-warning-soft"
           />
         </div>
 
         {/* Detailed Metrics */}
-        <div className="rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Detailed Metrics</h2>
+        <div className="rounded-xl bg-card p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-foreground">Detailed Metrics</h2>
 
           <div className="grid gap-4 md:grid-cols-3">
             <MetricRow label="Code Generation Rate" value={`${Math.round(avgCodeGeneration)}%`} />
@@ -117,8 +117,8 @@ export default async function OwnerPage() {
           </div>
 
           {daysWithData === 0 && (
-            <div className="mt-4 rounded-lg bg-yellow-50 p-4 text-center">
-              <p className="text-sm text-yellow-800">
+            <div className="mt-4 rounded-lg bg-warning-soft p-4 text-center">
+              <p className="text-sm text-warning-foreground">
                 No guest data available for this period. KPI aggregates will appear as data is
                 collected.
               </p>
@@ -127,40 +127,40 @@ export default async function OwnerPage() {
         </div>
 
         {/* Daily Breakdown */}
-        <div className="mt-6 rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Daily Breakdown</h2>
+        <div className="mt-6 rounded-xl bg-card p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-foreground">Daily Breakdown</h2>
 
           <div className="space-y-2">
             {kpiData.map((day) => (
               <div
                 key={day.date}
-                className="flex items-center justify-between rounded-lg border border-gray-200 p-4"
+                className="flex items-center justify-between rounded-lg border border-border p-4"
               >
                 <div className="flex items-center gap-4">
-                  <div className="text-sm font-medium text-gray-900">{day.date}</div>
-                  <div className="text-sm text-gray-600">{day.guestCount} guests</div>
+                  <div className="text-sm font-medium text-foreground">{day.date}</div>
+                  <div className="text-sm text-muted-foreground">{day.guestCount} guests</div>
                 </div>
                 <div className="flex gap-6 text-sm">
-                  <div className="text-gray-600">
-                    <span className="font-medium text-gray-900">
+                  <div className="text-muted-foreground">
+                    <span className="font-medium text-foreground">
                       {Math.round(day.readinessCompletionPct)}%
                     </span>{' '}
                     ready
                   </div>
-                  <div className="text-gray-600">
-                    <span className="font-medium text-gray-900">
+                  <div className="text-muted-foreground">
+                    <span className="font-medium text-foreground">
                       {Math.round(day.etaSubmissionPct)}%
                     </span>{' '}
                     ETA
                   </div>
-                  <div className="text-gray-600">
-                    <span className="font-medium text-gray-900">
+                  <div className="text-muted-foreground">
+                    <span className="font-medium text-foreground">
                       {Math.round(day.arrivalCodeGenPct)}%
                     </span>{' '}
                     codes
                   </div>
-                  <div className="text-gray-600">
-                    <span className="font-medium text-gray-900">
+                  <div className="text-muted-foreground">
+                    <span className="font-medium text-foreground">
                       {Math.round(day.medianCheckInLagMinutes)}
                     </span>{' '}
                     min lag
@@ -171,16 +171,16 @@ export default async function OwnerPage() {
           </div>
 
           {kpiData.length === 0 && (
-            <p className="text-center text-sm text-gray-500">No data available for this period.</p>
+            <p className="text-center text-sm text-muted-foreground">No data available for this period.</p>
           )}
         </div>
 
         {/* Navigation */}
         <div className="mt-6 flex justify-between">
-          <Link href="/" className="text-sm text-blue-600 hover:underline">
+          <Link href="/" className="text-sm text-primary hover:underline">
             Return Home
           </Link>
-          <Link href="/owner/setup" className="text-sm text-blue-600 hover:underline">
+          <Link href="/owner/setup" className="text-sm text-primary hover:underline">
             Owner Setup
           </Link>
         </div>
@@ -201,9 +201,9 @@ function KpiCard({ icon, label, value, bgColor }: KpiCardProps) {
     <div className={`rounded-xl ${bgColor} p-4`}>
       <div className="mb-2 flex items-center gap-2">
         {icon}
-        <span className="text-sm font-medium text-gray-700">{label}</span>
+        <span className="text-sm font-medium text-muted-foreground">{label}</span>
       </div>
-      <div className="text-2xl font-bold text-gray-900">{value}</div>
+      <div className="text-2xl font-bold text-foreground">{value}</div>
     </div>
   );
 }
@@ -215,9 +215,9 @@ interface MetricRowProps {
 
 function MetricRow({ label, value }: MetricRowProps) {
   return (
-    <div className="flex items-center justify-between rounded-lg bg-gray-50 p-3">
-      <span className="text-sm text-gray-700">{label}</span>
-      <span className="text-sm font-semibold text-gray-900">{value}</span>
+    <div className="flex items-center justify-between rounded-lg bg-muted p-3">
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-sm font-semibold text-foreground">{value}</span>
     </div>
   );
 }

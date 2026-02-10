@@ -75,7 +75,6 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
             target="_blank"
             rel="noopener noreferrer"
             className="group h-full justify-between rounded-3xl border border-brand-outline/30 bg-brand-surface/80 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-white/10 dark:bg-brand-surface"
-            aria-label={t("locationSection.mapLabel")}
           >
             <Inline className="gap-3 text-brand-heading dark:text-brand-text">
               <Inline

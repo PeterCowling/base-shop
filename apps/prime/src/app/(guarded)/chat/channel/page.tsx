@@ -105,10 +105,10 @@ export default function ChannelPage() {
 
   if (!channelId) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
+      <main className="min-h-screen bg-muted p-4">
         <div className="mx-auto max-w-md text-center">
-          <p className="text-gray-600">{t('noChannelSelected', 'No channel selected')}</p>
-          <Link href="/activities" className="text-blue-600 hover:underline">
+          <p className="text-muted-foreground">{t('noChannelSelected', 'No channel selected')}</p>
+          <Link href="/activities" className="text-primary hover:underline">
             {t('backToActivities', 'Back to Activities')}
           </Link>
         </div>
@@ -118,27 +118,27 @@ export default function ChannelPage() {
 
   if (!activity) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
+      <main className="min-h-screen bg-muted p-4">
         <div className="mx-auto max-w-md text-center">
-          <p className="text-gray-600">{t('loadingActivity', 'Loading activity...')}</p>
+          <p className="text-muted-foreground">{t('loadingActivity', 'Loading activity...')}</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="flex min-h-screen flex-col bg-gray-50">
+    <main className="flex min-h-screen flex-col bg-muted">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3">
+      <div className="bg-card border-b border-border px-4 py-3">
         <div className="mx-auto flex max-w-2xl items-center gap-3">
-          <Link href="/activities" className="text-gray-600 hover:text-gray-900">
+          <Link href="/activities" className="text-muted-foreground hover:text-foreground">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div className="flex-1">
-            <h1 className="font-semibold text-gray-900">
+            <h1 className="font-semibold text-foreground">
               {activity.title || t('channelTitle', 'Activity Chat')}
             </h1>
-            <div className="flex items-center gap-1.5 text-xs text-gray-500">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <Users className="h-3 w-3" />
               <span>
                 {isLive
@@ -154,8 +154,8 @@ export default function ChannelPage() {
       <div className="flex-1 overflow-y-auto px-4 py-4">
         <div className="mx-auto max-w-2xl space-y-3">
           {!isLive && (
-            <div className="rounded-lg bg-yellow-50 border border-yellow-200 p-4 text-center">
-              <p className="text-sm text-yellow-800">
+            <div className="rounded-lg bg-warning-soft border border-warning p-4 text-center">
+              <p className="text-sm text-warning-foreground">
                 {t('availableWhenLive', 'Chat will be available when the activity starts')}
               </p>
             </div>
@@ -171,10 +171,10 @@ export default function ChannelPage() {
                 <div
                   className={`max-w-[75%] rounded-lg px-3 py-2 ${
                     isOwn
-                      ? 'bg-blue-600 text-white'
+                      ? 'bg-primary text-primary-foreground'
                       : msg.senderRole === 'system'
-                        ? 'bg-gray-100 text-gray-700 italic'
-                        : 'bg-white border border-gray-200 text-gray-900'
+                        ? 'bg-muted text-muted-foreground italic'
+                        : 'bg-card border border-border text-foreground'
                   }`}
                 >
                   {!isOwn && msg.senderRole !== 'system' && (
@@ -185,7 +185,7 @@ export default function ChannelPage() {
                   <div className="text-sm">{msg.content}</div>
                   <div
                     className={`mt-1 text-xs ${
-                      isOwn ? 'text-blue-100' : 'text-gray-500'
+                      isOwn ? 'text-primary-foreground/80' : 'text-muted-foreground'
                     }`}
                   >
                     {formatTime(msg.createdAt)}
@@ -200,11 +200,11 @@ export default function ChannelPage() {
 
       {/* Composer */}
       {isLive && (
-        <div className="border-t border-gray-200 bg-white px-4 py-3">
+        <div className="border-t border-border bg-card px-4 py-3">
           <div className="mx-auto max-w-2xl">
             {!isPresent ? (
-              <div className="rounded-lg bg-blue-50 border border-blue-200 p-4 text-center">
-                <p className="text-sm text-blue-800">
+              <div className="rounded-lg bg-info-soft border border-primary/30 p-4 text-center">
+                <p className="text-sm text-primary">
                   {t(
                     'markPresenceToChat',
                     'Mark your presence on the activity page to start chatting',
@@ -212,7 +212,7 @@ export default function ChannelPage() {
                 </p>
                 <Link
                   href="/activities"
-                  className="mt-2 inline-block text-sm font-medium text-blue-600 hover:text-blue-800"
+                  className="mt-2 inline-block text-sm font-medium text-primary hover:text-primary"
                 >
                   {t('goToActivities', 'Go to Activities')}
                 </Link>
@@ -224,13 +224,13 @@ export default function ChannelPage() {
                   value={messageInput}
                   onChange={(e) => setMessageInput(e.target.value)}
                   placeholder={t('typeMessage', 'Type a message...')}
-                  className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="flex-1 rounded-lg border border-border px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                   disabled={isSending}
                 />
                 <button
                   type="submit"
                   disabled={!messageInput.trim() || isSending}
-                  className="flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label={t('send', 'Send')}
                 >
                   <Send className="h-4 w-4" />

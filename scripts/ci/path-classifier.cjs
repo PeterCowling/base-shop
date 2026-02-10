@@ -198,6 +198,7 @@ const MERGE_GATE_FILTER = {
     include: [
       "apps/cover-me-pretty/**",
       "apps/skylar/**",
+      "apps/brikette/**",
       ".lighthouseci/**",
       "lighthouserc*.json",
       ".github/workflows/ci-lighthouse.yml",
@@ -211,6 +212,15 @@ const LIGHTHOUSE_FILTER = {
     include: [
       "apps/cover-me-pretty/**",
       "apps/skylar/**",
+      ".lighthouseci/**",
+      "lighthouserc*.json",
+      ".github/workflows/ci-lighthouse.yml",
+    ],
+    exclude: [],
+  },
+  brikette: {
+    include: [
+      "apps/brikette/**",
       ".lighthouseci/**",
       "lighthouserc*.json",
       ".github/workflows/ci-lighthouse.yml",

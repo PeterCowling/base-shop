@@ -9,6 +9,8 @@ import { memo } from 'react';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 
+import { Card } from '@acme/design-system/primitives';
+
 export interface TaskCardProps {
   title: string;
   completedTitle?: string;
@@ -40,13 +42,10 @@ export const TaskCard = memo(function TaskCard({
   // --- Rendering Logic for INCOMPLETE state ---
   if (!completed) {
     return (
-      <div
+      <Card
         className="
           w-full
-          border border-gray-200
-          rounded-lg
           overflow-hidden
-          bg-white
           transition-all duration-300
           flex flex-col
           text-left
@@ -56,16 +55,16 @@ export const TaskCard = memo(function TaskCard({
         "
       >
         {/* Title Section */}
-        <h3 className="text-xl mt-3 mx-4 mb-2 text-gray-800 text-center">
+        <h3 className="text-xl mt-3 mx-4 mb-2 text-foreground text-center">
           {link ? (
             <Link
               href={link}
-              className="text-blue-600 no-underline transition-colors duration-300 hover:text-blue-800"
+              className="text-primary no-underline transition-colors duration-300 hover:text-primary-hover"
             >
               {title}
             </Link>
           ) : (
-            <span className="text-gray-800">{title}</span>
+            <span className="text-foreground">{title}</span>
           )}
         </h3>
 
@@ -93,40 +92,38 @@ export const TaskCard = memo(function TaskCard({
                 </>
               ))}
             {note && (
-              <p className="w-full text-gray-600 text-base text-center">
+              <p className="w-full text-muted-foreground text-base text-center">
                 {note}
               </p>
             )}
           </div>
         )}
-      </div>
+      </Card>
     );
   }
 
   // --- Rendering Logic for COMPLETED state ---
   return (
-    <div
+    <Card
       className="
         flex flex-col items-start
-        bg-white border border-gray-300 rounded-md
         px-5 py-4
-        shadow-sm
         transition-all duration-300
         cursor-default
       "
     >
       <div className="flex items-center w-full">
         {/* Checkmark for completed */}
-        <span className="text-green-600 text-xl mr-3 flex items-center">
+        <span className="text-success text-xl mr-3 flex items-center">
           <CheckCircle />
         </span>
 
         {/* Completed Title */}
-        <span className="text-lg font-semibold text-green-600">
+        <span className="text-lg font-semibold text-success">
           {displayCompletedTitle}
         </span>
       </div>
-    </div>
+    </Card>
   );
 });
 

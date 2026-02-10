@@ -3,9 +3,8 @@
 # This enforces non-regression: new/modified files must pass lint,
 # but existing lint debt doesn't block the gate.
 #
-# DS rules are disabled inline because Prime's .eslintrc.cjs disables them
-# but the root flat config (eslint.config.mjs) overrides local legacy configs.
-# This matches the intent of apps/prime/.eslintrc.cjs rules section.
+# DS rules are now enforced globally after full migration (TASK-01–13).
+# Only complexity/max-lines remain relaxed (via eslint.config.mjs).
 #
 # Usage:
 #   pnpm lint                # Changed files only
@@ -27,21 +26,9 @@ done
 
 cd "$REPO_ROOT"
 
-# DS rules disabled for Prime (early development; .eslintrc.cjs intent preserved)
-DS_OVERRIDES=(
-  --rule 'ds/no-unsafe-viewport-units: off'
-  --rule 'ds/container-widths-only-at: off'
-  --rule 'ds/no-hardcoded-copy: off'
-  --rule 'ds/min-tap-size: off'
-  --rule 'ds/enforce-focus-ring-token: off'
-  --rule 'ds/enforce-layout-primitives: off'
-  --rule 'complexity: off'
-  --rule 'max-lines-per-function: off'
-)
-
 if [[ "$FULL_LINT" == "true" ]]; then
   echo "[Prime lint] Running full ESLint on entire Prime codebase..."
-  pnpm exec eslint "apps/prime/" "${DS_OVERRIDES[@]}" || true
+  pnpm exec eslint "apps/prime/" || true
   exit 0
 fi
 
@@ -60,4 +47,4 @@ fi
 FILE_COUNT="$(echo "$ALL_FILES" | wc -l | tr -d ' ')"
 echo "[Prime lint] Linting $FILE_COUNT changed file(s)..."
 
-echo "$ALL_FILES" | xargs pnpm exec eslint --no-error-on-unmatched-pattern "${DS_OVERRIDES[@]}"
+echo "$ALL_FILES" | xargs pnpm exec eslint --no-error-on-unmatched-pattern

@@ -20,7 +20,7 @@ import FooterNav from "./FooterNav";
 import type { FooterGroup, FooterLink } from "./footerTypes";
 
 const CURRENT_YEAR = new Date().getFullYear();
-const FOOTER_PREFETCH = true;
+const FOOTER_PREFETCH = false;
 const SAFE_BOTTOM_PADDING_STYLE = {
   paddingBottom: "calc(var(--safe-bottom) + var(--space-3))",
 } as const;

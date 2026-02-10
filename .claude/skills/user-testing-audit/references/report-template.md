@@ -8,6 +8,8 @@ Created-by: Claude (user-testing-audit skill)
 Audit-Timestamp: YYYY-MM-DDTHH:MM:SSZ
 Artifacts-JSON: docs/audits/user-testing/YYYY-MM-DD-<slug>.json
 Artifacts-Screenshots: docs/audits/user-testing/YYYY-MM-DD-<slug>-screenshots
+Artifacts-SEO-Summary: docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-summary.json
+Artifacts-SEO-Raw: docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-artifacts
 ---
 
 # User Testing Audit: <target-url>
@@ -33,6 +35,29 @@ Artifacts-Screenshots: docs/audits/user-testing/YYYY-MM-DD-<slug>-screenshots
 ### 1. [P0] <Issue Title>
 
 **Issue ID:** `<issue-id>`
+
+**Evidence**
+```json
+{
+  "sample": "..."
+}
+```
+
+**Acceptance Criteria**
+- [ ] <objective criterion>
+- [ ] <objective criterion>
+
+## SEO Audit (Lighthouse)
+- Scope: `/<lang>`, `/<lang>/rooms`, `/<lang>/help` (desktop + mobile)
+- Average SEO score: <n>
+
+| URL | Desktop SEO | Mobile SEO | Repeated Failed Audit |
+|---|---:|---:|---|
+| `/<lang>` | <n> | <n> | <id or none> |
+
+### SEO Finding A. [P2] <SEO Issue Title>
+
+**Issue ID:** `<seo-issue-id>`
 
 **Evidence**
 ```json

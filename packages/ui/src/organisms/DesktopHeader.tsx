@@ -142,7 +142,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
         <nav aria-label="Primary navigation" className="header-row-2">
           <Inline asChild gap={8} className="justify-end text-sm font-medium">
             <ul>
-              {navLinks.map(({ key, to, label }) => {
+              {navLinks.map(({ key, to, label, prefetch }) => {
                 const current = pathname === `/${lang}${to}`;
                 const highlight = current
                   ? theme === "dark"
@@ -158,7 +158,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
                       href={`/${lang}${to}`}
                       aria-current={current ? "page" : undefined}
                       aria-label={label}
-                      prefetch={to === apartmentPath ? true : undefined}
+                      prefetch={to === apartmentPath ? true : prefetch}
                       className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
                     >
                       {label}

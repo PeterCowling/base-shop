@@ -92,11 +92,11 @@ function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.El
             className="flex-col items-stretch sm:flex-row sm:items-center sm:gap-4 lg:gap-6 divide-y divide-brand-bg/20 sm:divide-y-0 sm:divide-x dark:divide-brand-text/20"
           >
             <ul>
-              {navLinks.map(({ key, to, label }) => (
+              {navLinks.map(({ key, to, label, prefetch }) => (
                 <li key={key} className="text-center sm:flex-1 sm:px-4 lg:px-6">
                   <Link
                     href={`/${lang}${to}`}
-                    prefetch
+                    prefetch={prefetch}
                     className={`${linkClasses(false)} text-center`}
                   >
                     {label}

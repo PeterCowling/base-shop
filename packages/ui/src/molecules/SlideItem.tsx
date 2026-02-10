@@ -222,7 +222,7 @@ function SlideItemBase(
             prefetch
             aria-label={detailsAriaLabel}
             title={t("details")}
-            className="flex items-center justify-center gap-2 text-sm font-semibold text-brand-bougainvillea underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bougainvillea dark:text-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 text-sm font-semibold text-brand-bougainvillea underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bougainvillea dark:text-white"
           >
             {t("moreAboutThisRoom")} <ArrowRight className="h-4 w-4 shrink-0" />
           </Link>

@@ -11,6 +11,7 @@ export interface NavItem {
   key: NavKey;
   to: string;
   label: string;
+  prefetch?: boolean;
 }
 
 export interface NavLinksResult {
@@ -41,6 +42,7 @@ export function buildNavLinks(lang: AppLanguage, t: TranslateFn): NavLinksResult
       key,
       to: slugs[key],
       label,
+      prefetch: key === "assistance" ? false : undefined,
     };
   });
 

@@ -10,8 +10,8 @@ import type { LinkContext, RenderContext } from "./types";
 
 export const LINK_CLASSNAME = clsx(
   "inline-flex",
-  "min-h-10",
-  "min-w-10",
+  "min-h-11",
+  "min-w-11",
   "items-center",
   "font-semibold",
   "text-brand-primary",

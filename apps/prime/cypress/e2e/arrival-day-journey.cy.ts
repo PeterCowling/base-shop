@@ -1,3 +1,5 @@
+// i18n-exempt file -- PRIME-241 [ttl=2026-12-31]
+// E2E assertions intentionally use literal UI copy to verify guest-visible text.
 import { installPrimeApiMocks, PRIME_E2E_GUEST, setPrimeGuestSession } from '../support/prime-mocks';
 
 describe('Prime arrival-day journey', () => {

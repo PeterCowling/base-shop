@@ -12,7 +12,7 @@ Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: build-feature
 Supporting-Skills: re-plan, safe-commit-push-ci
-Overall-confidence: 82%
+Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by effort, dependency risk, and unresolved audit inputs
 Business-Unit: PLAT
 Card-ID:
@@ -28,12 +28,9 @@ This is a staged execution plan with an executable subset now and investigation-
 Priority gate: CI-SC-04 is the highest-leverage investigation because it is the primary unlock for CI-SC-05 (the largest remaining implementation risk).
 
 Complete:
-- CI-SC-01, CI-SC-02, CI-SC-07 (IMPLEMENT — built and committed)
+- CI-SC-01, CI-SC-02, CI-SC-05, CI-SC-07 (IMPLEMENT — built and committed)
 - CI-SC-04, CI-SC-06, CI-SC-08 (INVESTIGATE — findings documented)
 - CI-SC-09 (SPIKE — FAIL result, findings documented)
-
-Executable now (`>=80%`, complete test contracts):
-- CI-SC-05 (82%, promoted from 74% via CI-SC-04 evidence)
 
 Needs re-plan before build:
 - CI-SC-03 (79%, conditional on CI-SC-09 spike FAIL re-plan)
@@ -119,7 +116,7 @@ Merge-order prerequisite:
 | CI-SC-02 | IMPLEMENT | Coverage-free integration `test` + explicit `test:coverage` | 84% | M | Complete | - | Done |
 | CI-SC-03 | IMPLEMENT | CMS coverage handoff to overnight/manual lane | 79% (→ 84% conditional on CI-SC-09) | M | Pending | CI-SC-02, CI-SC-09 | Blocked |
 | CI-SC-04 | INVESTIGATE | Enumerate and validate all `paths-filter` semantics and edge cases | 88% | M | Complete | - | Done |
-| CI-SC-05 | IMPLEMENT | Repo-local classifier replacing `dorny/paths-filter` | 82% (promoted from 74% via CI-SC-04) | L | Pending | CI-SC-04 (done) | Eligible |
+| CI-SC-05 | IMPLEMENT | Repo-local classifier replacing `dorny/paths-filter` | 86% (post-build from 82%) | L | Complete | CI-SC-04 (done) | Done |
 | CI-SC-06 | INVESTIGATE | CI cache behavior audit and optimization proposal | 82% | M | Complete | - | Done |
 | CI-SC-07 | IMPLEMENT | Speed up `validate-changes.sh` related-test discovery | 82% | M | Complete | - | Done |
 | CI-SC-08 | INVESTIGATE | Dynamic sharding thresholds and reliability study | 75% | M | Complete | - | Done |
@@ -461,6 +458,30 @@ Merge order:
   - Implementation approach: updated from TBD to TypeScript + picomatch
   - Affects: confirmed `scripts/src/ci/path-classifier.ts` (new), `scripts/src/ci/filter-config.ts` (new), plus 3 workflow files
 
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Commits:** `11a5aa2f56`
+- **Execution cycle:**
+  - Validation cases executed: TC-01 through TC-15 (37 test cases total covering all 14 filter expressions), plus CI-SC-04 parity fixtures F1-F9, plus edge cases (empty list, leading ./, backslashes, whitespace, empty strings, renames)
+  - Cycles: 2 red-green (initial minimatch implementation, then refactored to zero-dependency custom matcher)
+  - Initial validation: FAIL expected (tests written before implementation)
+  - Final validation: PASS (37/37 tests)
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 86%
+  - Delta reason: All parity fixtures pass. Custom zero-dep matcher simplified from picomatch to 4 pattern types only (prefix, exact, wildcard, match-all). Standalone CJS file requires no npm install in CI.
+- **Validation:**
+  - Ran: `pnpm exec jest --testPathPattern=path-classifier` — PASS (37/37, 13.3s)
+  - Ran: `actionlint .github/workflows/ci.yml .github/workflows/merge-gate.yml .github/workflows/ci-lighthouse.yml` — PASS
+  - Ran: `grep -r dorny/paths-filter .github/workflows/` — No matches (complete removal)
+  - Ran: manual smoke test with `node scripts/ci/path-classifier.cjs --config merge_gate` — correct outputs
+- **Documentation updated:** None required (no standing docs affected)
+- **Implementation notes:**
+  - Key design change: replaced `picomatch` (planned) with custom `matchGlob()` function. CI detection jobs (`changes` steps) only do `actions/checkout` — no `setup-repo`, no `pnpm install`. The classifier must be zero-dependency.
+  - Created standalone `scripts/ci/path-classifier.cjs` (zero external deps, embedded config) for CI runtime. TypeScript source (`scripts/src/ci/path-classifier.ts` + `scripts/src/ci/filter-config.ts`) is the tested/typed version.
+  - All 14 filter expressions use only 4 glob pattern types: `dir/**` (prefix), `exact/file` (exact), `prefix*suffix` (wildcard), `**/*` (match all). This enabled the simple custom matcher.
+  - Added `scripts/ci/path-classifier.cjs` as additional Affects file (not in original plan — standalone CJS was a necessary addition for zero-dep CI runtime).
+
 ### CI-SC-06: Audit CI cache effectiveness and propose optimizations
 - **Type:** INVESTIGATE
 - **Deliverable:** Cache behavior report and prioritized optimization shortlist
@@ -764,30 +785,28 @@ Risk factors for expanding sharding:
 - 2026-02-09 (investigate): CI-SC-04 completed. Full parity map: 14 filter expressions across 3 workflows. Fixture matrix with 9 scenarios. Edge cases: negation patterns, universal match, renames/deletions. CI-SC-05 promoted from 74% to 82%.
 - 2026-02-09 (investigate): CI-SC-06 completed. Cache audit: 7 cache types, 5 prioritized recommendations. Top finding: turbo globalDependencies includes 5 test-only files that bust all task caches. Recommendations 1-3 are low-risk follow-on IMPLEMENT tasks.
 - 2026-02-09 (investigate): CI-SC-08 completed. Sharding threshold model: 200+ files → 2-way, 400+ → 4-way. Recommendation: HOLD on expanding sharding. Turbo cache optimization (CI-SC-06 rec 1-2) is higher leverage for CI speed.
+- 2026-02-09 (build): CI-SC-05 completed. Replaced all 4 `dorny/paths-filter` uses across 3 workflows with `scripts/ci/path-classifier.cjs` (zero-dependency standalone CJS). Custom `matchGlob()` replaces picomatch — CI detection jobs have no `setup-repo`/`pnpm install`. 37 tests pass. actionlint clean. Post-build confidence: 86%.
 
 ## Scope Extraction
 The following item is intentionally excluded from this plan and should be tracked separately:
 - Conflict-safe merge assistant (`scripts/git/*` + runbook changes) is tracked in `docs/plans/git-conflict-ops-hardening-plan.md`.
 
 ## Overall-confidence calculation
-- Complete IMPLEMENT: CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-07 (82%).
+- Complete IMPLEMENT: CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-05 (86%), CI-SC-07 (82%).
 - Complete INVESTIGATE: CI-SC-04 (88%), CI-SC-06 (82%), CI-SC-08 (75%).
 - Complete SPIKE: CI-SC-09 (FAIL).
-- Eligible IMPLEMENT: CI-SC-05 (82%, promoted from 74% via CI-SC-04 evidence).
 - Blocked IMPLEMENT: CI-SC-03 (79%, needs re-plan due to CI-SC-09 FAIL).
 - Arithmetic:
-  - Complete implement average = `(91 + 84 + 82) / 3 = 85.7`.
-  - Eligible implement: `82`.
+  - Complete implement average = `(91 + 84 + 86 + 82) / 4 = 85.75`.
   - Blocked implement: `79`.
-  - Weighted base = `0.40*85.7 + 0.25*82 + 0.15*79 + 0.20*81.7 = 83.1`.
+  - Weighted base = `0.65*85.75 + 0.15*79 + 0.20*81.7 = 84.1`.
   - Risk adjustment (`-1.0`) for CI-SC-03 re-plan needed.
-- Plan overall confidence: `82%` (up from 79% — investigations complete, CI-SC-05 promoted to eligible).
+- Plan overall confidence: `83%` (up from 82% — CI-SC-05 complete with 86% post-build confidence).
 
 ## What Would Make This >=90%
-- Complete CI-SC-01, CI-SC-02, CI-SC-07 and measure against baseline targets.
-- Complete CI-SC-09 spike and promote CI-SC-03 confidence.
-- Complete CI-SC-04 parity map and CI-SC-06 cache audit, then re-score CI-SC-05.
-- Run 10 consecutive required-check cycles without throttling false-reds after classifier cutover.
+- Re-plan CI-SC-03 (currently 79%) with revised approach post CI-SC-09 FAIL and build it.
+- Run 10 consecutive required-check cycles without throttling false-reds after classifier cutover (CI-SC-05).
+- Implement CI-SC-06 cache recommendations (top 3 are low-risk follow-on IMPLEMENT tasks).
 
 ## Decision Points
 | Condition | Action |

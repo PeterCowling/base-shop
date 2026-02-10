@@ -81,23 +81,23 @@ export default function GuestPortalPage() {
 
   if (status === 'loading') {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
   }
 
   if (status === 'unavailable') {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">Portal unavailable</h1>
-          <p className="mb-6 text-gray-600">
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-2xl font-bold text-foreground">Portal unavailable</h1>
+          <p className="mb-6 text-muted-foreground">
             We couldn&apos;t find an active guest session. Please use your personal link.
           </p>
           <Link
             href="/find-my-stay"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
             Find my stay
           </Link>

@@ -22,15 +22,15 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4">
+    <main className="min-h-screen bg-muted p-4">
       <div className="mx-auto max-w-md">
         <div className="mb-6 flex items-center gap-3">
-          <Link href="/" className="rounded-full p-2 hover:bg-gray-200">
+          <Link href="/" className="rounded-full p-2 hover:bg-muted/80">
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Admin Login</h1>
-            <p className="text-sm text-gray-500">Enter your PIN</p>
+            <h1 className="text-xl font-bold text-foreground">Admin Login</h1>
+            <p className="text-sm text-muted-foreground">Enter your PIN</p>
           </div>
         </div>
 
@@ -41,23 +41,23 @@ export default function AdminLoginPage() {
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               placeholder="Enter PIN"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center text-2xl tracking-widest focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="w-full rounded-lg border border-border px-4 py-3 text-center text-2xl tracking-widest focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
               maxLength={6}
               disabled={isLoading}
             />
           </div>
 
           {error && (
-            <div className="rounded-lg bg-red-50 p-4 text-red-800">{error}</div>
+            <div className="rounded-lg bg-danger-soft p-4 text-danger-foreground">{error}</div>
           )}
 
           <button
             type="submit"
             disabled={isLoading || !pin.trim()}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {isLoading ? (
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
             ) : (
               <>
                 <LogIn className="h-5 w-5" />

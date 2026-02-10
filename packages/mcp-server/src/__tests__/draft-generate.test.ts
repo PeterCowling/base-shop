@@ -34,6 +34,60 @@ const handleBriketteResourceReadMock = handleBriketteResourceRead as jest.Mock;
 const handleDraftGuideReadMock = handleDraftGuideRead as jest.Mock;
 const handleVoiceExamplesReadMock = handleVoiceExamplesRead as jest.Mock;
 
+const draftGuideFixture = {
+  length_calibration: {
+    faq: { min_words: 50, max_words: 100 },
+    policy: { min_words: 100, max_words: 150 },
+    cancellation: { min_words: 80, max_words: 140 },
+    general: { min_words: 80, max_words: 140 },
+  },
+  content_rules: {
+    always: [
+      "Answer every guest question directly.",
+      "Confirm what you can and link to the website for live availability.",
+      "Keep tone professional and warm.",
+    ],
+    if: [
+      "If policy questions, cite policy summary and link to policies.",
+      "If cancellation, explain policy and required actions.",
+    ],
+    never: [
+      "Never confirm availability.",
+      "Never state that a card will be charged immediately.",
+      "Never include internal notes or instructions.",
+    ],
+  },
+  tone_triggers: {
+    faq: "Friendly and concise",
+    policy: "Clear and precise",
+    cancellation: "Direct but respectful",
+  },
+};
+
+const voiceExamplesFixture = {
+  scenarios: {
+    faq: {
+      tone: "Friendly and concise",
+      bad_examples: ["Availability is confirmed for your dates."],
+      phrases_to_avoid: ["Availability is confirmed", "We will charge now"],
+      preferred_phrases: ["Please check live availability on our website", "Happy to help"],
+    },
+    policy: {
+      tone: "Clear and precise",
+      bad_examples: ["Rules are rules and there's nothing we can do."],
+      phrases_to_avoid: ["Nothing we can do"],
+      preferred_phrases: ["Per our policy", "Please note"],
+    },
+    cancellation: {
+      tone: "Direct but respectful",
+      bad_examples: ["We don't do refunds."],
+      phrases_to_avoid: ["We don't do refunds"],
+      preferred_phrases: ["Per the cancellation policy", "Let us know if we can help"],
+    },
+  },
+  global_phrases_to_avoid: ["Availability confirmed", "We will charge now", "Internal note"],
+};
+
 const baseActionPlan = {
   normalized_text: "Check-in time",
   language: "EN",
@@ -79,7 +133,7 @@ describe("draft_generate tool", () => {
         {
           uri: "brikette://draft-guide",
           mimeType: "application/json",
-          text: "{}",
+          text: JSON.stringify(draftGuideFixture),
         },
       ],
     });
@@ -88,7 +142,7 @@ describe("draft_generate tool", () => {
         {
           uri: "brikette://voice-examples",
           mimeType: "application/json",
-          text: "{}",
+          text: JSON.stringify(voiceExamplesFixture),
         },
       ],
     });
@@ -267,5 +321,125 @@ describe("draft_generate tool", () => {
     // Count occurrences of "regards" — should appear exactly once (at end)
     const regardsMatches = body.toLowerCase().match(/regards/g) || [];
     expect(regardsMatches.length).toBe(1);
+  });
+
+  it("TASK-01 TC-01: faq generation respects guide length calibration", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Check-in times",
+          body: "Check-in starts at 2:30 pm.",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Check-in time",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const wordCount = payload.draft.bodyPlain.trim().split(/\s+/).filter(Boolean).length;
+    expect(wordCount).toBeGreaterThanOrEqual(50);
+    expect(wordCount).toBeLessThanOrEqual(100);
+  });
+
+  it("TASK-01 TC-02: cancellation generation uses preferred phrases and avoids bad phrases", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Cancellation request",
+          body: "We don't do refunds. Availability is confirmed for your dates.",
+          category: "cancellation",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        scenario: {
+          category: "cancellation",
+          confidence: 0.9,
+        },
+      },
+      subject: "Cancel booking",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).toContain("per the cancellation policy");
+    expect(body).not.toContain("we don't do refunds");
+    expect(body).not.toContain("availability is confirmed for your dates");
+  });
+
+  it("TASK-01 TC-03: policy generation enforces always-rules guidance", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Policy clarification",
+          body: "Please note: pets are not allowed.",
+          category: "policy",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        intents: {
+          questions: [{ text: "Can I bring my pet?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "policy",
+          confidence: 0.9,
+        },
+      },
+      subject: "Pet policy",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).toContain("please check live availability on our website");
+    expect(body).toContain("answered each of your questions");
+    expect(body).toContain("happy to help");
+  });
+
+  it("TASK-01 TC-04: generation respects never-rules guardrails", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Booking options",
+          body: "Availability is confirmed. We will charge now. Internal note: ask manager.",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Availability",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).not.toContain("availability is confirmed");
+    expect(body).not.toContain("we will charge");
+    expect(body).not.toContain("internal note");
   });
 });

@@ -29,10 +29,30 @@ Always produce:
 1. A dated markdown report in `docs/audits/user-testing/`
 2. A JSON artifact with raw evidence
 3. A prioritized issue list (`P0/P1/P2`) with acceptance criteria per issue
+4. Deployment provenance in report frontmatter (`Deployment-URL`, `Deployment-Run`, `Deployment-Commit`)
+5. For reruns: explicit delta vs previous report (`Resolved`, `Still-open`, `Regressions/new`)
 
 ## Workflow
 
-### 1) Run automated audit (expanded default)
+### 1) Resolve a fresh immutable staging URL first (required for staging audits)
+
+Never reuse an old `https://<hash>.brikette-website.pages.dev` URL. Those are immutable and can mask whether a fix was deployed.
+
+For Brikette staging, resolve the newest URL from the latest successful `Deploy Brikette` workflow run on `staging`:
+
+```bash
+node .claude/skills/user-testing-audit/scripts/resolve-brikette-staging-url.mjs
+```
+
+This returns JSON:
+- `url` (fresh immutable URL, defaulting to `/en`)
+- `runId`
+- `runUrl`
+- `headSha`
+
+If the latest run is still in progress, the resolver waits and polls until completion (or timeout). Use the returned `url` as `<TARGET_URL>` in all audit steps.
+
+### 2) Run automated audit (expanded default)
 
 ```bash
 node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
@@ -60,7 +80,7 @@ This generates:
 
 The script includes a sitewide image-asset integrity sweep across discovered internal routes, so broken `/img/...` URLs are reported even if a page is outside the smaller desktop/mobile audit subset.
 
-### 2) Validate critical findings manually
+### 3) Validate critical findings manually
 
 Do targeted repro checks for high-severity findings from the generated report:
 - Broken internal routes (open failing URL directly)
@@ -68,7 +88,7 @@ Do targeted repro checks for high-severity findings from the generated report:
 - Mobile menu state/focus issues
 - Contrast failures on key CTAs/headings
 
-### 3) Lighthouse SEO pass (required)
+### 4) Lighthouse SEO pass (required)
 
 Run desktop + mobile SEO checks on:
 - homepage (`/<lang>`)
@@ -81,7 +101,7 @@ Desktop:
 npx lighthouse <TARGET_URL> \
   --chrome-flags='--headless --no-sandbox' \
   --preset=desktop \
-  --only-categories=accessibility,best-practices \
+  --only-categories=seo,accessibility,best-practices \
   --output=json \
   --output-path=/tmp/lh-home-desktop.json
 ```
@@ -94,7 +114,7 @@ npx lighthouse <TARGET_URL_OR_KEY_PAGE> \
   --form-factor=mobile \
   --screenEmulation.mobile=true \
   --throttling-method=provided \
-  --only-categories=accessibility,best-practices \
+  --only-categories=seo,accessibility,best-practices \
   --output=json \
   --output-path=/tmp/lh-mobile.json
 ```
@@ -105,13 +125,21 @@ Also generate a JSON summary artifact in `docs/audits/user-testing/` and link bo
 
 If Lighthouse adds findings not already in the markdown report, update the report and Findings Index.
 
-### 4) Return concise summary to user
+### 5) Compare against prior audit when this is a rerun
+
+When re-auditing a previously reported issue set:
+- link the prior report in the new report frontmatter/body,
+- summarize issue delta (`P0/P1/P2` before vs after),
+- call out `resolved`, `regressed`, and `still-open` findings explicitly.
+
+### 6) Return concise summary to user
 
 In chat, provide:
 - total issues by priority,
 - top blockers first,
 - link/path to markdown report,
 - link/path to SEO summary artifact,
+- deployment source (immutable URL + workflow run URL + commit SHA),
 - immediate next fix recommendation.
 
 ## Prioritization Rules

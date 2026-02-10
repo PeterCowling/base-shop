@@ -34,22 +34,22 @@ export default function RoutesPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
 
   if (error || !occupantData) {
     return (
-      <div className="p-4 text-center mt-5 text-red-600">
+      <div className="p-4 text-center mt-5 text-danger">
         Unable to load route planner data.
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
-      <div className="mx-auto max-w-md rounded-2xl bg-white p-4 shadow-sm">
+    <main className="min-h-screen bg-muted px-4 py-6 pb-24">
+      <div className="mx-auto max-w-md rounded-2xl bg-card p-4 shadow-sm">
         <RoutePlanner
           savedRouteSlug={preArrivalData.routeSaved}
           onSaveRoute={handleSaveRoute}

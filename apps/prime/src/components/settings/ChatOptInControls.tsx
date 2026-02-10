@@ -50,15 +50,15 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
     <div className="space-y-4">
       <div className="flex items-start gap-4">
         <div className="flex-shrink-0">
-          <MessageCircle className="h-6 w-6 text-gray-600" />
+          <MessageCircle className="h-6 w-6 text-muted-foreground" />
         </div>
         <div className="flex-1 space-y-2">
           <label className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-gray-900">
+              <h3 className="text-sm font-medium text-foreground">
                 {t('chat.optIn.label')}
               </h3>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {t('chat.optIn.description')}
               </p>
             </div>
@@ -69,12 +69,12 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
               checked={profile.chatOptIn}
               onChange={handleToggle}
               disabled={isUpdating}
-              className="h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
+              className="h-5 w-5 rounded border-border text-primary focus:ring-primary/30 disabled:opacity-50"
             />
           </label>
 
           {!profile.chatOptIn && (
-            <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded p-2">
+            <p className="text-xs text-warning-foreground bg-warning-soft border border-warning rounded p-2">
               {t('chat.optIn.optedOutNote')}
             </p>
           )}

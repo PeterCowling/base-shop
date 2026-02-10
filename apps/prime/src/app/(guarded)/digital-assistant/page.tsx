@@ -54,21 +54,21 @@ export default function DigitalAssistantPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 pb-20">
+    <main className="min-h-screen bg-muted p-4 pb-20">
       <div className="mx-auto max-w-md space-y-4">
-        <div className="rounded-xl bg-white p-5 shadow-sm">
+        <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-3">
-            <div className="rounded-full bg-blue-100 p-2">
-              <Bot className="h-5 w-5 text-blue-600" />
+            <div className="rounded-full bg-primary-soft p-2">
+              <Bot className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Digital Assistant</h1>
-              <p className="text-xs text-gray-500">Answer first, then further reading links</p>
+              <h1 className="text-xl font-semibold text-foreground">Digital Assistant</h1>
+              <p className="text-xs text-muted-foreground">Answer first, then further reading links</p>
             </div>
           </div>
 
           <form onSubmit={handleAsk}>
-            <label htmlFor="assistant-question" className="text-xs font-medium text-gray-600">
+            <label htmlFor="assistant-question" className="text-xs font-medium text-muted-foreground">
               Ask a question
             </label>
             <textarea
@@ -77,12 +77,12 @@ export default function DigitalAssistantPage() {
               onChange={(event) => setQuestion(event.target.value)}
               rows={3}
               placeholder="e.g. How do I get to the hostel from Naples?"
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
             />
             <button
               type="submit"
               disabled={!question.trim()}
-              className="mt-3 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+              className="mt-3 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
             >
               Ask assistant
             </button>
@@ -90,12 +90,12 @@ export default function DigitalAssistantPage() {
         </div>
 
         {exchange && (
-          <section className="rounded-xl bg-white p-5 shadow-sm">
-            <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-500">Answer</h2>
-            <p className="mt-2 text-sm text-gray-800">{exchange.answer}</p>
+          <section className="rounded-xl bg-card p-5 shadow-sm">
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Answer</h2>
+            <p className="mt-2 text-sm text-foreground">{exchange.answer}</p>
 
-            <div className="mt-4 rounded-lg bg-slate-50 p-3">
-              <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+            <div className="mt-4 rounded-lg bg-muted p-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <Sparkles className="mr-1 inline h-3.5 w-3.5" />
                 Further reading
               </p>
@@ -105,7 +105,7 @@ export default function DigitalAssistantPage() {
                     {link.href.startsWith('/') ? (
                       <Link
                         href={link.href}
-                        className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                        className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                       >
                         {link.label}
                         <ExternalLink className="h-3.5 w-3.5" />
@@ -115,7 +115,7 @@ export default function DigitalAssistantPage() {
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                        className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
                       >
                         {link.label}
                         <ExternalLink className="h-3.5 w-3.5" />
@@ -129,7 +129,7 @@ export default function DigitalAssistantPage() {
         )}
 
         <div className="text-center">
-          <Link href="/" className="text-sm text-blue-600 hover:underline">
+          <Link href="/" className="text-sm text-primary hover:underline">
             Return Home
           </Link>
         </div>

@@ -66,10 +66,10 @@ const GuideSection: FC<GuideSectionProps> = memo(function GuideSection({
   return (
     <section id={sectionId} className="mb-8 scroll-mt-24">
       <div className="mb-4 flex items-center gap-2">
-        <Icon className="h-5 w-5 text-amber-500" />
+        <Icon className="h-5 w-5 text-warning-foreground" />
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
-          <p className="text-sm text-gray-500">{subtitle}</p>
+          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+          <p className="text-sm text-muted-foreground">{subtitle}</p>
         </div>
       </div>
 
@@ -111,21 +111,21 @@ const GuideCard: FC<GuideCardProps> = memo(function GuideCard({
       href={guideUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-emerald-300 hover:shadow-md"
+      className="group block rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:border-success hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="mb-1 flex items-center gap-2">
-            <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600">
+            <h3 className="font-semibold text-foreground group-hover:text-success">
               {title}
             </h3>
-            <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">
+            <span className="rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success-foreground">
               {tag}
             </span>
           </div>
-          <p className="text-sm text-gray-600">{description}</p>
+          <p className="text-sm text-muted-foreground">{description}</p>
         </div>
-        <ExternalLink className="h-4 w-4 flex-shrink-0 text-gray-400 transition-colors group-hover:text-emerald-500" />
+        <ExternalLink className="h-4 w-4 flex-shrink-0 text-muted-foreground transition-colors group-hover:text-success" />
       </div>
     </a>
   );
@@ -184,33 +184,33 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
   }, [router, searchParams]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 py-3">
+      <header className="sticky top-0 z-10 border-b border-border bg-card px-4 py-3">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <button
             onClick={handleBack}
-            className="rounded-full p-2 transition-colors hover:bg-gray-100"
+            className="rounded-full p-2 transition-colors hover:bg-muted"
             aria-label="Go back"
           >
-            <ArrowLeft className="h-5 w-5 text-gray-700" />
+            <ArrowLeft className="h-5 w-5 text-foreground" />
           </button>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">
+            <h1 className="text-lg font-semibold text-foreground">
               {t('meta.title')}
             </h1>
-            <p className="text-sm text-gray-500">{t('meta.subtitle')}</p>
+            <p className="text-sm text-muted-foreground">{t('meta.subtitle')}</p>
           </div>
-          <MapPin className="ml-auto h-5 w-5 text-emerald-500" />
+          <MapPin className="ml-auto h-5 w-5 text-success" />
         </div>
       </header>
 
       {/* Content */}
       <main className="mx-auto max-w-lg px-4 py-6">
         {/* Popular badge */}
-        <div className="mb-6 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2">
-          <Sparkles className="h-4 w-4 text-amber-500" />
-          <span className="text-sm font-medium text-amber-700">
+        <div className="mb-6 flex items-center gap-2 rounded-lg bg-warning-soft px-3 py-2">
+          <Sparkles className="h-4 w-4 text-warning-foreground" />
+          <span className="text-sm font-medium text-warning-foreground">
             {t('cta.popularWithGuests')}
           </span>
         </div>
@@ -249,7 +249,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
         />
 
         {/* Attribution */}
-        <div className="mt-8 text-center text-xs text-gray-400">
+        <div className="mt-8 text-center text-xs text-muted-foreground">
           {t('cta.poweredBy')}
         </div>
       </main>

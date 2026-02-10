@@ -17,9 +17,9 @@ export default function ActivationFunnelSummary() {
   }, []);
 
   return (
-    <section className="space-y-3 rounded-xl bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900">Activation funnel</h2>
-      <p className="text-sm text-gray-500">
+    <section className="space-y-3 rounded-xl bg-card p-6 shadow-sm">
+      <h2 className="text-lg font-semibold text-foreground">Activation funnel</h2>
+      <p className="text-sm text-muted-foreground">
         Conversion from booking lookup through readiness completion.
       </p>
 
@@ -40,7 +40,7 @@ export default function ActivationFunnelSummary() {
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-3 text-xs text-gray-700">
+      <div className="grid grid-cols-3 gap-3 text-xs text-foreground">
         <Ratio
           label="Lookup → Verify"
           value={summary.conversion.lookupToVerify}
@@ -56,18 +56,18 @@ export default function ActivationFunnelSummary() {
       </div>
 
       <div className="space-y-2">
-        <h3 className="text-sm font-semibold text-gray-900">Weekly trend</h3>
+        <h3 className="text-sm font-semibold text-foreground">Weekly trend</h3>
         {summary.trends.weekly.length === 0 ? (
-          <p className="text-sm text-gray-500">No funnel events captured yet.</p>
+          <p className="text-sm text-muted-foreground">No funnel events captured yet.</p>
         ) : (
           <div className="space-y-1 text-sm">
             {summary.trends.weekly.map((point) => (
               <div
                 key={point.weekStartIso}
-                className="flex items-center justify-between rounded-md bg-gray-50 px-3 py-2"
+                className="flex items-center justify-between rounded-md bg-muted px-3 py-2"
               >
-                <span className="font-medium text-gray-800">{point.weekStartIso}</span>
-                <span className="text-gray-600">
+                <span className="font-medium text-foreground">{point.weekStartIso}</span>
+                <span className="text-muted-foreground">
                   {point.readinessSessions}/{point.lookupSessions} ready (
                   {Math.round(point.activationConversion * 100)}%)
                 </span>
@@ -82,18 +82,18 @@ export default function ActivationFunnelSummary() {
 
 function Metric({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md bg-gray-50 px-3 py-2">
-      <div className="text-xs text-gray-500">{label}</div>
-      <div className="text-xl font-semibold text-gray-900">{value}</div>
+    <div className="rounded-md bg-muted px-3 py-2">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className="text-xl font-semibold text-foreground">{value}</div>
     </div>
   );
 }
 
 function Ratio({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-md bg-blue-50 px-3 py-2">
-      <div className="text-[11px] text-blue-700">{label}</div>
-      <div className="text-sm font-semibold text-blue-900">
+    <div className="rounded-md bg-info-soft px-3 py-2">
+      <div className="text-[11px] text-info-foreground">{label}</div>
+      <div className="text-sm font-semibold text-info-foreground">
         {Math.round(value * 100)}%
       </div>
     </div>

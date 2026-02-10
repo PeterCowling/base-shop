@@ -80,7 +80,7 @@ export const CheckInQR: FC<CheckInQRProps> = memo(function CheckInQR({
   return (
     <div className={`flex flex-col items-center ${className}`}>
       {/* QR Code */}
-      <div className="rounded-2xl bg-white p-4 shadow-lg">
+      <div className="rounded-2xl bg-card p-4 shadow-lg">
         {qrDataUrl && !qrError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -91,36 +91,36 @@ export const CheckInQR: FC<CheckInQRProps> = memo(function CheckInQR({
             className="block"
           />
         ) : qrError ? (
-          <div className="flex h-60 w-60 flex-col items-center justify-center bg-gray-100 text-gray-400">
+          <div className="flex h-60 w-60 flex-col items-center justify-center bg-muted text-muted-foreground">
             <QrCode className="mb-2 h-12 w-12" />
             <span className="text-sm">{t('checkIn.qrError')}</span>
           </div>
         ) : (
-          <div className="flex h-60 w-60 items-center justify-center bg-gray-100">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+          <div className="flex h-60 w-60 items-center justify-center bg-muted">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           </div>
         )}
       </div>
 
       {/* Human-readable code */}
       <div className="mt-6 text-center">
-        <p className="mb-2 text-sm text-gray-500">{t('checkIn.yourCode')}</p>
+        <p className="mb-2 text-sm text-muted-foreground">{t('checkIn.yourCode')}</p>
         <button
           type="button"
           onClick={handleCopyCode}
-          className="group flex items-center gap-3 rounded-xl bg-gray-100 px-6 py-3 transition-colors hover:bg-gray-200"
+          className="group flex items-center gap-3 rounded-xl bg-muted px-6 py-3 transition-colors hover:bg-muted/80"
         >
-          <span className="font-mono text-2xl font-bold tracking-wider text-gray-900">
+          <span className="font-mono text-2xl font-bold tracking-wider text-foreground">
             {code}
           </span>
           {copied ? (
-            <CheckCircle2 className="h-5 w-5 text-green-500" />
+            <CheckCircle2 className="h-5 w-5 text-success" />
           ) : (
-            <Copy className="h-5 w-5 text-gray-400 transition-colors group-hover:text-gray-600" />
+            <Copy className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-foreground" />
           )}
         </button>
         {copied && (
-          <p className="mt-2 text-sm text-green-600">{t('checkIn.codeCopied')}</p>
+          <p className="mt-2 text-sm text-success">{t('checkIn.codeCopied')}</p>
         )}
       </div>
     </div>

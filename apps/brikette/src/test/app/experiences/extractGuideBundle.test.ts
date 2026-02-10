@@ -1,5 +1,5 @@
 // Mock i18next before importing the module under test
-import { extractGuideBundle } from "@/utils/extractGuideBundle";
+import { extractGuideBundle, extractGuidesBundle } from "@/utils/extractGuideBundle";
 
 const store: Record<string, Record<string, unknown>> = {};
 
@@ -80,5 +80,42 @@ describe("extractGuideBundle", () => {
     // store is empty — no seed call
     const result = extractGuideBundle("en", "positanoMainBeach");
     expect(result).toBeUndefined();
+  });
+});
+
+describe("extractGuidesBundle", () => {
+  it("returns shared keys + only requested guide content entries", () => {
+    seed("en", "guides", {
+      labels: { backLink: "Back" },
+      content: {
+        positanoMainBeach: { intro: ["Beach intro"] },
+        pathOfTheGods: { intro: ["Hike intro"] },
+        sunriseHike: { intro: ["Sunrise intro"] },
+      },
+    });
+
+    const result = extractGuidesBundle("en", ["positanoMainBeach", "sunriseHike"]);
+
+    expect(result).toBeDefined();
+    expect(result!.labels).toEqual({ backLink: "Back" });
+    expect(result!.content).toEqual({
+      positanoMainBeach: { intro: ["Beach intro"] },
+      sunriseHike: { intro: ["Sunrise intro"] },
+    });
+  });
+
+  it("returns shared keys with empty content when no requested keys exist", () => {
+    seed("en", "guides", {
+      labels: { backLink: "Back" },
+      content: {
+        positanoMainBeach: { intro: ["Beach intro"] },
+      },
+    });
+
+    const result = extractGuidesBundle("en", ["missingKeyA", "missingKeyB"]);
+
+    expect(result).toBeDefined();
+    expect(result!.labels).toEqual({ backLink: "Back" });
+    expect(result!.content).toEqual({});
   });
 });

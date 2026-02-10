@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: CI/Infrastructure
 Last-reviewed: 2026-02-09
 Created: 2026-02-09
@@ -12,7 +12,7 @@ Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: build-feature
 Supporting-Skills: re-plan, safe-commit-push-ci
-Overall-confidence: 85%
+Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by effort, dependency risk, and unresolved audit inputs
 Business-Unit: PLAT
 Card-ID:
@@ -28,12 +28,11 @@ This is a staged execution plan with an executable subset now and investigation-
 Priority gate: CI-SC-04 is the highest-leverage investigation because it is the primary unlock for CI-SC-05 (the largest remaining implementation risk).
 
 Complete:
-- CI-SC-01, CI-SC-02, CI-SC-05, CI-SC-07 (IMPLEMENT — built and committed)
+- CI-SC-01, CI-SC-02, CI-SC-03, CI-SC-05, CI-SC-07 (IMPLEMENT — built and committed)
 - CI-SC-04, CI-SC-06, CI-SC-08 (INVESTIGATE — findings documented)
 - CI-SC-09 (SPIKE — FAIL result, findings documented)
 
-Executable now (`>=80%`, complete test contracts):
-- CI-SC-03 (84%, promoted from 79% via CI-SC-09 FAIL → approach (b) selected)
+All tasks complete. No remaining work.
 
 ## Goals
 - Reduce deterministic false-red integration failures.
@@ -114,7 +113,7 @@ Merge-order prerequisite:
 |---|---|---|---:|---:|---|---|---|
 | CI-SC-01 | IMPLEMENT | Archive-aware plan lint scope fix | 91% | S | Complete | - | Done |
 | CI-SC-02 | IMPLEMENT | Coverage-free integration `test` + explicit `test:coverage` | 84% | M | Complete | - | Done |
-| CI-SC-03 | IMPLEMENT | CMS coverage handoff to overnight/manual lane | 84% | M | Pending | CI-SC-02 (done), CI-SC-09 (done) | Eligible |
+| CI-SC-03 | IMPLEMENT | CMS coverage handoff to overnight/manual lane | 88% (post-build) | M | Complete | CI-SC-02 (done), CI-SC-09 (done) | Done |
 | CI-SC-04 | INVESTIGATE | Enumerate and validate all `paths-filter` semantics and edge cases | 88% | M | Complete | - | Done |
 | CI-SC-05 | IMPLEMENT | Repo-local classifier replacing `dorny/paths-filter` | 86% (post-build from 82%) | L | Complete | CI-SC-04 (done) | Done |
 | CI-SC-06 | INVESTIGATE | CI cache behavior audit and optimization proposal | 82% | M | Complete | - | Done |
@@ -264,8 +263,8 @@ Merge order:
 - **Affects:** `.github/workflows/cms.yml:104-107`, `.github/workflows/test.yml` (new job), `apps/cms/jest.config.cjs:107`
 - **Depends on:** CI-SC-02 (done), CI-SC-09 (done — FAIL informed approach)
 - **Effort:** M
-- **Status:** Pending
-- **Confidence:** 84% (Implementation 86%, Approach 84%, Impact 84%)
+- **Status:** Complete
+- **Confidence:** 88% (post-build, from 84%)
   - Implementation: 86% — Three-part change fully specified: (1) `jest.config.cjs:107` `collectCoverage: false`, (2) `cms.yml` remove `--coverage`, (3) `test.yml` add dedicated 4-way sharded CMS coverage job.
   - Approach: 84% — Approach (b) selected via CI-SC-09 E2 evidence. Dedicated sharded nightly job. Each shard ~5-6 min, well within 20-min timeout.
   - Impact: 84% — Coverage signal preserved: nightly sharded coverage mirrors integration lane structure. No threshold regression (sharded runs already use threshold=0).
@@ -343,6 +342,33 @@ Merge order:
     - **Test type:** integration (workflow validation + actionlint + local jest config verification)
     - **Test location:** workflow files validated by `actionlint`; jest config verified by running CMS test locally
     - **Run:** `actionlint .github/workflows/cms.yml .github/workflows/test.yml && pnpm --filter @apps/cms test`
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `6de6720aad`
+- **Execution cycle:**
+  - Validation cases executed: TC-01 through TC-06
+  - Cycles: 1 (direct implementation — workflow/config changes, no red-green TDD needed)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 88%
+  - Delta reason: All TCs pass on first execution. actionlint clean. Local test verification confirmed no coverage output with `collectCoverage: false`. Nightly job structure mirrors integration lane exactly.
+- **Validation:**
+  - TC-01: `cms.yml` test command has no `--coverage` flag — PASS (grep confirms)
+  - TC-02: `jest.config.cjs` `collectCoverage: false` → `pnpm exec jest --config apps/cms/jest.config.cjs --testPathPattern=ConfirmationStep` produces no `coverage/` directory — PASS
+  - TC-03: `test.yml` has `cms-coverage` job with `matrix.shard: [1,2,3,4]` — PASS
+  - TC-04: Nightly CMS command includes `--coverage --config apps/cms/jest.config.cjs --shard=${{ matrix.shard }}/4` — PASS
+  - TC-05: Coverage artifact upload with `name: cms-coverage-shard-${{ matrix.shard }}` — PASS
+  - TC-06: CMS exclusion in package-checks (`p!=='apps/cms'`) preserved at line 29 — PASS
+  - actionlint: `actionlint .github/workflows/cms.yml .github/workflows/test.yml` — PASS (no output)
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Three files changed, 3 lines of config + workflow edits:
+    1. `apps/cms/jest.config.cjs:107`: `collectCoverage: true` → `collectCoverage: false`
+    2. `.github/workflows/cms.yml:104-107`: removed `--coverage` flag and coverage artifact upload step
+    3. `.github/workflows/test.yml`: added `cms-coverage` job with 4-way sharding (32 lines), mirroring `cms.yml` test job structure including jest cache restoration
+  - Pre-commit typecheck showed pre-existing TS6305 errors in CMS (`packages/config/dist` stale artifacts) — unrelated to this change, commit proceeded.
 
 ### CI-SC-04: Build full parity map for existing `paths-filter` expressions
 - **Type:** INVESTIGATE
@@ -827,24 +853,23 @@ Risk factors for expanding sharding:
 - 2026-02-09 (investigate): CI-SC-08 completed. Sharding threshold model: 200+ files → 2-way, 400+ → 4-way. Recommendation: HOLD on expanding sharding. Turbo cache optimization (CI-SC-06 rec 1-2) is higher leverage for CI speed.
 - 2026-02-09 (build): CI-SC-05 completed. Replaced all 4 `dorny/paths-filter` uses across 3 workflows with `scripts/ci/path-classifier.cjs` (zero-dependency standalone CJS). Custom `matchGlob()` replaces picomatch — CI detection jobs have no `setup-repo`/`pnpm install`. 37 tests pass. actionlint clean. Post-build confidence: 86%.
 - 2026-02-10 (re-plan): CI-SC-03 re-planned after CI-SC-09 FAIL. Approach (a) rejected (unsharded >21min). Approach (b) selected: dedicated 4-way sharded CMS coverage job in nightly `test.yml`. Also: `collectCoverage: false` in jest.config to make `test` script truly coverage-free. Confidence promoted 79% → 84%.
+- 2026-02-10 (build): CI-SC-03 completed. Three-part change: `collectCoverage: false`, remove `--coverage` from cms.yml, add `cms-coverage` 4-way sharded job to test.yml. All 6 TCs pass. actionlint clean. Post-build confidence: 88%. All plan tasks now complete.
 
 ## Scope Extraction
 The following item is intentionally excluded from this plan and should be tracked separately:
 - Conflict-safe merge assistant (`scripts/git/*` + runbook changes) is tracked in `docs/plans/git-conflict-ops-hardening-plan.md`.
 
 ## Overall-confidence calculation
-- Complete IMPLEMENT: CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-05 (86%), CI-SC-07 (82%).
+- Complete IMPLEMENT: CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-03 (88%), CI-SC-05 (86%), CI-SC-07 (82%).
 - Complete INVESTIGATE: CI-SC-04 (88%), CI-SC-06 (82%), CI-SC-08 (75%).
 - Complete SPIKE: CI-SC-09 (FAIL).
-- Eligible IMPLEMENT: CI-SC-03 (84%, promoted from 79% via CI-SC-09 E2 evidence).
 - Arithmetic:
-  - Complete implement average = `(91 + 84 + 86 + 82) / 4 = 85.75`.
-  - Eligible implement: `84`.
-  - Weighted base = `0.65*85.75 + 0.15*84 + 0.20*81.7 = 84.7`.
-- Plan overall confidence: `85%` (up from 83% — CI-SC-03 promoted to eligible, no blocked tasks remain).
+  - Complete implement average = `(91 + 84 + 88 + 86 + 82) / 5 = 86.2`.
+  - All tasks complete — no pending/blocked.
+- Plan overall confidence: `86%` (all tasks complete).
 
 ## What Would Make This >=90%
-- Build CI-SC-03 and verify nightly CMS coverage job runs successfully (paired run evidence).
+- Verify nightly CMS coverage job runs successfully (first nightly run evidence).
 - Run 10 consecutive required-check cycles without throttling false-reds after classifier cutover (CI-SC-05).
 - Implement CI-SC-06 cache recommendations (top 3 are low-risk follow-on IMPLEMENT tasks).
 

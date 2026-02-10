@@ -56,6 +56,8 @@ These codes are the required surface for runner logs and CI diagnostics.
 
 ## Runtime implications
 - Deterministic spike contract checks (default mode):
-  - `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translate-guides-spike.test.ts`
+  - `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translate-guides-runner.test.ts scripts/__tests__/translate-guides-spike.test.ts`
   - `pnpm --filter @apps/brikette exec tsx scripts/translate-guides-spike.ts`
-- Existing `translate-guides.ts` remains legacy API-key based until S2-05 implementation replaces it with the generic provider runner.
+- Generic runner supports dual mode:
+  - Fixture mode (`--provider=fixture`, default, requires `--fixture-file`, dry-run by default)
+  - Anthropic mode (`--provider=anthropic`, explicit opt-in, requires `ANTHROPIC_API_KEY`)

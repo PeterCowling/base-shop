@@ -13,7 +13,7 @@ Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: build-feature
 Supporting-Skills: re-plan, safe-commit-push-ci
-Overall-confidence: 84%
+Overall-confidence: 86%
 Confidence-Method: weighted by task effort and execution readiness
 Business-Unit: PLAT
 ---
@@ -65,7 +65,7 @@ Gap noted:
 - S2-02: Adopt shared utilities in validation/report scripts. (Complete, 2026-02-09)
 - S2-03: Extract schema-injected guide content validation runner. (Complete, 2026-02-09)
 - S2-04: Generalize backfill script to remove Brikette runtime dependency. (Complete, 2026-02-09)
-- S2-05: Rewrite translation runner into configurable engine.
+- S2-05: Rewrite translation runner into configurable engine. (Complete, 2026-02-09)
 - S2-06: Add drift detection + schemaVersion migration support scaffolding. (Complete, 2026-02-09)
 - S2-07: Implement translation drift manifest + check command.
 - S2-08: Implement guide content schema migration runner.
@@ -80,7 +80,7 @@ Gap noted:
 | S2-02 | IMPLEMENT | Replace local utility copies in core Brikette scripts with shared package imports | 84% | M | Complete (2026-02-09) | S2-01 | Eligible |
 | S2-03 | IMPLEMENT | Extract reusable validation runner with injected schema and path config | 83% | M | Complete (2026-02-09) | S2-02 | Eligible |
 | S2-04 | IMPLEMENT | Refactor `backfill-guides-from-en.ts` to CLI-configurable locale sourcing | 82% | M | Complete (2026-02-09) | S2-01 | Eligible |
-| S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 83% | L | Pending | S2-01, S2-09, S2-10 | Eligible |
+| S2-05 | IMPLEMENT | Rewrite `translate-guides.ts` to generic runner (`promptBuilder`, target config, token policy) | 83% | L | Complete (2026-02-09) | S2-01, S2-09, S2-10 | Eligible |
 | S2-06 | INVESTIGATE | Define drift detection + schemaVersion migration contracts for Slice 2.5 | 78% | M | Complete (2026-02-09) | S2-02 | N/A |
 | S2-07 | IMPLEMENT | Build translation drift manifest/check workflow for guide content and namespace files | 83% | M | Pending | S2-02, S2-06 | Eligible |
 | S2-08 | IMPLEMENT | Build schemaVersion migration runner for guide content payloads | 81% | M | Pending | S2-01, S2-06 | Eligible |
@@ -263,11 +263,11 @@ Gap noted:
 - **Type:** IMPLEMENT
 - **Execution-Skill:** `build-feature`
 - **Depends on:** S2-01, S2-09, S2-10
-- **Status:** Pending (promoted to build-eligible after precursor completion)
+- **Status:** Complete
 - **Confidence:** 83%
-  - Implementation: 76% — current script is hardcoded to fixed guide list/locales/provider model and writes directly to Brikette locale tree.
+  - Implementation: 83% — implemented generic batch runner with source/output path and locale/guide parameterization.
   - Approach: 83% — policy conflict resolved via S2-09 dual-mode contract (fixture default + explicit provider abstraction).
-  - Impact: 83% — token preservation and JSON parse invariants are now proven in S2-10 fixture spike.
+  - Impact: 83% — token preservation and JSON parse invariants enforced per locale via reusable runner contract.
 - **Acceptance (post-precursor):**
   - Generic runner supports pluggable provider via interface (`translate({ text, locale, context })`).
   - Runner supports fixture/dry provider mode for deterministic CI validation without external services.
@@ -281,7 +281,7 @@ Gap noted:
   - TC-05: dry-run mode emits planned writes with zero file mutation.
   - Test type: integration + contract tests.
   - Test location: `apps/brikette/scripts/__tests__/translate-guides-runner.test.ts` (new) or shared runner tests in package.
-  - Run: `pnpm --filter @apps/brikette test -- --testPathPattern=translate-guides-runner`.
+  - Run: `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translate-guides-runner.test.ts`.
 
 #### Re-plan Update (2026-02-09)
 - **Previous confidence:** 74%
@@ -300,6 +300,24 @@ Gap noted:
   - S2-09 complete: canonical policy + provider contract documented in `apps/brikette/scripts/TRANSLATION_EXECUTION_POLICY.md`.
   - S2-10 complete: fixture-based runner spike implemented and validated with token/parse invariants.
   - Decision: task is now build-eligible.
+
+#### Build Completion (2026-02-09)
+- **Status:** Complete
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Cycles: 1
+  - Initial validation: PASS
+  - Final validation: PASS
+- **Validation:**
+  - Ran: `cd apps/brikette && pnpm exec jest --ci --runInBand --config jest.config.cjs --runTestsByPath scripts/__tests__/translate-guides-runner.test.ts scripts/__tests__/translate-guides-spike.test.ts` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec tsx scripts/translate-guides.ts --provider=fixture --fixture-file=<tmp-fixture> --source-root=<tmp-locales> --output-root=<tmp-locales> --guides=demoGuide.json --locales=it --dry-run` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette lint` — PASS (`lint` script is currently an informational no-op)
+- **Implementation notes:**
+  - Added reusable batch engine: `apps/brikette/scripts/lib/translate-guides-runner.ts`.
+  - Added S2-05 contract tests: `apps/brikette/scripts/__tests__/translate-guides-runner.test.ts`.
+  - Rewrote `apps/brikette/scripts/translate-guides.ts` to use pluggable provider mode (`fixture` default, `anthropic` opt-in), configurable source/output roots, locale/guide selection, and `--dry-run`/`--write`.
+  - Updated policy/docs to reflect generic runner behavior and fixture-driven default workflow.
 
 ### S2-09: Decide translation execution policy + provider contract for generic runner
 
@@ -448,3 +466,4 @@ Gap noted:
 - 2026-02-09 (build): S2-09 completed; adopted dual-mode policy (fixture default, explicit provider abstraction contract, guarded external mode).
 - 2026-02-09 (build): S2-10 completed; fixture-driven spike runner and parity matrix validated token/JSON invariants.
 - 2026-02-09 (build): S2-05 promoted to 83% and build-eligible after S2-09/S2-10 evidence.
+- 2026-02-09 (build): S2-05 completed with generic translation batch runner, pluggable providers, dry-run/write modes, and contract tests.

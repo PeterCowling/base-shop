@@ -7,6 +7,14 @@ function parseResult(result: { content: Array<{ text: string }> }) {
     passed: boolean;
     failed_checks: string[];
     warnings: string[];
+    confidence: number;
+    question_coverage?: Array<{
+      question: string;
+      matched_count: number;
+      required_matches: number;
+      coverage_score: number;
+      status: "covered" | "partial" | "missing";
+    }>;
   };
 }
 
@@ -162,5 +170,193 @@ describe("draft_quality_check", () => {
     });
     const payload = parseResult(result);
     expect(payload.failed_checks).not.toContain("unanswered_questions");
+  });
+});
+
+describe("draft_quality_check TASK-05", () => {
+  it("TASK-05 TC-01: all questions with >=2 keyword matches pass", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [
+            { text: "What time is check-in and can we drop luggage before arrival?" },
+            { text: "Is breakfast included with direct booking?" },
+          ],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "check-in" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00 and we can store luggage before arrival. Breakfast is included for direct bookings. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Check-in starts at 15:00 and luggage storage is available.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("unanswered_questions");
+    expect(payload.warnings).not.toContain("partial_question_coverage");
+    expect(payload.question_coverage?.every((entry) => entry.status === "covered")).toBe(true);
+  });
+
+  it("TASK-05 TC-02: missing question is flagged with per-question status", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [
+            { text: "What time is check-in?" },
+            { text: "Is breakfast included?" },
+          ],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in starts at 15:00 and reception opens from 07:30. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("unanswered_questions");
+    expect(
+      payload.question_coverage?.some(
+        (entry) => entry.question.includes("breakfast") && entry.status === "missing"
+      )
+    ).toBe(true);
+  });
+
+  it("TASK-05 TC-03: partial coverage adds warning for low keyword match", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can you confirm airport transfer service availability?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "transportation" },
+      },
+      draft: {
+        bodyPlain:
+          "The airport is nearby and transport options are available. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>The airport is nearby.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("unanswered_questions");
+    expect(payload.warnings).toContain("partial_question_coverage");
+  });
+
+  it("TASK-05 TC-04: contradiction detects 'cannot provide' against commitment", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can we check in early?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "check-in" },
+        thread_summary: {
+          prior_commitments: ["We will arrange early check-in for your stay."],
+        },
+      },
+      draft: {
+        bodyPlain:
+          "Unfortunately we cannot provide the early check-in you requested. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>We cannot provide early check-in.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("contradicts_thread");
+  });
+
+  it("TASK-05 TC-05: contradiction detects '<keyword> is not available' pattern", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Is breakfast available?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "breakfast" },
+        thread_summary: {
+          prior_commitments: ["Breakfast is available every morning."],
+        },
+      },
+      draft: {
+        bodyPlain:
+          "Breakfast is not available tomorrow. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Breakfast is not available tomorrow.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("contradicts_thread");
+  });
+
+  it("TASK-05 TC-06: non-contradictory positive phrasing does not false-trigger", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can we get luggage storage?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "luggage" },
+        thread_summary: {
+          prior_commitments: ["We can provide luggage storage before check-in."],
+        },
+      },
+      draft: {
+        bodyPlain:
+          "We can certainly provide luggage storage before check-in. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>We can certainly provide luggage storage.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("contradicts_thread");
+  });
+
+  it("TASK-05 TC-07: quality result includes question coverage breakdown", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "check-in" },
+      },
+      draft: {
+        bodyPlain:
+          "Check-in time starts at 15:00 and arrival is possible from reception opening. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Check-in starts at 15:00.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.question_coverage).toBeDefined();
+    expect(payload.question_coverage?.[0]).toEqual(
+      expect.objectContaining({
+        question: "What time is check-in?",
+        matched_count: expect.any(Number),
+        required_matches: expect.any(Number),
+        coverage_score: expect.any(Number),
+        status: expect.any(String),
+      })
+    );
   });
 });

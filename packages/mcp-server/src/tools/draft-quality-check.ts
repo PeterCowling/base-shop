@@ -18,6 +18,15 @@ type QualityResult = {
   failed_checks: string[];
   warnings: string[];
   confidence: number;
+  question_coverage: QuestionCoverageEntry[];
+};
+
+type QuestionCoverageEntry = {
+  question: string;
+  matched_count: number;
+  required_matches: number;
+  coverage_score: number;
+  status: "covered" | "partial" | "missing";
 };
 
 type EmailActionPlanInput = {
@@ -174,43 +183,86 @@ function extractQuestionKeywords(question: string): string[] {
     .slice(0, 5);
 }
 
-function answersQuestions(body: string, questions: Array<{ text: string }>): boolean {
+function evaluateQuestionCoverage(
+  body: string,
+  questions: Array<{ text: string }>
+): QuestionCoverageEntry[] {
   const bodyTokens = tokenize(body.toLowerCase());
   const bodySet = new Set(bodyTokens);
 
-  return questions.every(question => {
+  return questions.map((question) => {
     const keywords = extractQuestionKeywords(question.text);
     if (keywords.length === 0) {
-      return true;
+      return {
+        question: question.text,
+        matched_count: 0,
+        required_matches: 0,
+        coverage_score: 1,
+        status: "covered",
+      };
     }
-    return keywords.some(keyword => {
-      // Direct stem match
-      const stems = tokenize(keyword);
-      if (stems.some(s => bodySet.has(s))) return true;
 
-      // Synonym match
-      const syns = SYNONYMS[keyword] ?? [];
-      for (const syn of syns) {
-        const synStems = tokenize(syn);
-        if (synStems.some(s => bodySet.has(s))) return true;
+    const matchedKeywords: string[] = [];
+    for (const keyword of keywords) {
+      const variants = [keyword, ...(SYNONYMS[keyword] ?? [])];
+      const matched = variants.some((variant) => {
+        const stems = tokenize(variant.toLowerCase());
+        return stems.some((stem) => bodySet.has(stem));
+      });
+      if (matched) {
+        matchedKeywords.push(keyword);
       }
-      return false;
-    });
+    }
+
+    const required_matches = keywords.length >= 2 ? 2 : 1;
+    const matched_count = matchedKeywords.length;
+    const coverage_score = Number((matched_count / keywords.length).toFixed(2));
+    const status =
+      matched_count === 0
+        ? "missing"
+        : matched_count < required_matches
+          ? "partial"
+          : "covered";
+
+    return {
+      question: question.text,
+      matched_count,
+      required_matches,
+      coverage_score,
+      status,
+    };
   });
 }
 
 function contradictsCommitments(body: string, commitments: string[]): boolean {
   const lower = body.toLowerCase();
-  const tokens = lower.split(/\s+/).filter(Boolean);
+  const contradictionCues = [
+    "cannot provide",
+    "can't provide",
+    "unable to provide",
+    "unable to arrange",
+    "cannot arrange",
+    "not available",
+    "not possible",
+  ];
+
   for (const commitment of commitments) {
-    const words = commitment.toLowerCase().split(/\s+/).filter(word => word.length > 3);
-    for (const word of words) {
-      for (let i = 0; i < tokens.length; i += 1) {
-        if (tokens[i] === "not") {
-          if (tokens[i + 1] === word || tokens[i + 2] === word) {
-            return true;
-          }
-        }
+    const keywords = extractQuestionKeywords(commitment);
+    for (const keyword of keywords) {
+      if (
+        lower.includes(`${keyword} is not available`) ||
+        lower.includes(`${keyword} are not available`) ||
+        lower.includes(`${keyword} was not available`)
+      ) {
+        return true;
+      }
+
+      if (!lower.includes(keyword)) {
+        continue;
+      }
+
+      if (contradictionCues.some((cue) => lower.includes(cue))) {
+        return true;
       }
     }
   }
@@ -225,8 +277,13 @@ function runChecks(actionPlan: EmailActionPlanInput, draft: DraftCandidateInput)
     ...actionPlan.intents.questions,
     ...(actionPlan.intents.requests ?? []),
   ];
-  if (!answersQuestions(draft.bodyPlain, allIntents)) {
+  const question_coverage = evaluateQuestionCoverage(draft.bodyPlain, allIntents);
+
+  if (question_coverage.some((entry) => entry.status === "missing")) {
     failed_checks.push("unanswered_questions");
+  }
+  if (question_coverage.some((entry) => entry.status === "partial")) {
+    warnings.push("partial_question_coverage");
   }
 
   if (containsProhibitedClaims(draft.bodyPlain)) {
@@ -273,6 +330,7 @@ function runChecks(actionPlan: EmailActionPlanInput, draft: DraftCandidateInput)
     failed_checks,
     warnings,
     confidence,
+    question_coverage,
   };
 }
 

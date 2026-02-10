@@ -1,9 +1,9 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform/i18n
 Created: 2026-02-09
-Last-updated: 2026-02-10 (build)
+Last-updated: 2026-02-10 (closeout)
 Last-reviewed: 2026-02-09
 Relates-to charter: none
 Feature-Slug: article-generation-slice-2-translation-tooling

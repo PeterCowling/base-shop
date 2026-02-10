@@ -30,7 +30,7 @@ const OnboardingLayout: FC<OnboardingLayoutProps> = ({
   hideProgress,
   children,
 }) => (
-  <div className="flex flex-col items-center min-h-screen w-full bg-[#f9f9f9]">
+  <div className="flex flex-col items-center min-h-screen w-full bg-muted">
     <header className="w-full max-w-[400px] mt-0 mb-0 text-center">
       {/* Hide logo when hideProgress is true */}
       {!hideProgress && (
@@ -44,7 +44,7 @@ const OnboardingLayout: FC<OnboardingLayoutProps> = ({
         </>
       )}
       {title && (
-        <h1 className="text-2xl font-semibold text-[#333] mb-2">{title}</h1>
+        <h1 className="text-2xl font-semibold text-foreground mb-2">{title}</h1>
       )}
       {!hideProgress && (
         <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />

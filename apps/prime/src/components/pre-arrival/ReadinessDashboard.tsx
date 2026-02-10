@@ -197,23 +197,23 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
       <div className={`space-y-6 ${className}`}>
         {/* Header */}
         <div className="text-center">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-info-soft px-3 py-1 text-sm font-medium text-info-foreground">
             <Sparkles className="h-4 w-4" />
             {isArrivalDay
               ? t('header.arrivalDay')
               : t('header.preArrival')}
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-foreground">
             {isArrivalDay
               ? t('header.welcomeArrivalDay', { name: firstName })
               : t('header.welcome', { name: firstName })}
           </h1>
-          <p className="mt-1 text-gray-600">
+          <p className="mt-1 text-muted-foreground">
             {isArrivalDay
               ? t('header.arrivalDaySubtitle')
               : t('header.subtitle')}
           </p>
-          <p className="mt-2 text-sm text-slate-600">
+          <p className="mt-2 text-sm text-muted-foreground">
             {isArrivalDay
               ? 'Final checks now mean faster reception handoff.'
               : 'Complete these steps now to speed up check-in on arrival day.'}
@@ -221,7 +221,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
           <div className="mt-3">
             <Link
               href="/portal?edit=personalization"
-              className="inline-flex rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 hover:bg-slate-50"
+              className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-foreground hover:bg-muted"
             >
               Edit preferences
             </Link>
@@ -229,27 +229,27 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         </div>
 
         {/* Check-in info card */}
-        <div className="flex items-center justify-between rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+        <div className="flex items-center justify-between rounded-xl bg-info-soft p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-              <CalendarDays className="h-5 w-5 text-blue-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-info-soft">
+              <CalendarDays className="h-5 w-5 text-info-foreground" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">{t('checkIn.label')}</p>
-              <p className="font-semibold text-gray-900">{formattedDate}</p>
+              <p className="text-sm text-muted-foreground">{t('checkIn.label')}</p>
+              <p className="font-semibold text-foreground">{formattedDate}</p>
             </div>
           </div>
           {!isArrivalDay && daysUntil > 0 && (
             <div className="text-right">
-              <p className="text-2xl font-bold text-blue-600">{daysUntil}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-2xl font-bold text-info-foreground">{daysUntil}</p>
+              <p className="text-sm text-muted-foreground">
                 {daysUntil === 1 ? t('checkIn.dayLeft') : t('checkIn.daysLeft')}
               </p>
             </div>
           )}
           {isArrivalDay && (
-            <div className="rounded-lg bg-green-100 px-3 py-2">
-              <p className="font-semibold text-green-700">{t('checkIn.today')}</p>
+            <div className="rounded-lg bg-success-soft px-3 py-2">
+              <p className="font-semibold text-success-foreground">{t('checkIn.today')}</p>
             </div>
           )}
         </div>
@@ -264,7 +264,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         <UtilityActionStrip actions={utilityActions} />
 
         {recentlyCompletedItem && (
-          <div className="flex animate-pulse items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+          <div className="flex animate-pulse items-center gap-2 rounded-xl bg-success-soft px-4 py-3 text-sm font-medium text-success-foreground">
             <Sparkles className="h-4 w-4" />
             Nice progress: {getChecklistItemLabel(recentlyCompletedItem)} completed.
           </div>
@@ -280,7 +280,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
 
         {/* Checklist */}
         <div>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {t('checklist.title')}
           </h2>
           <div className="space-y-2">
@@ -322,13 +322,13 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         </div>
 
         {/* Stay info */}
-        <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-4">
-          <MapPin className="h-5 w-5 text-gray-400" />
+        <div className="flex items-center gap-3 rounded-xl bg-muted p-4">
+          <MapPin className="h-5 w-5 text-muted-foreground" />
           <div>
-            <p className="font-medium text-gray-900">
+            <p className="font-medium text-foreground">
               {nights} {nights === 1 ? t('stay.night') : t('stay.nights')}
             </p>
-            <p className="text-sm text-gray-500">{t('stay.location')}</p>
+            <p className="text-sm text-muted-foreground">{t('stay.location')}</p>
           </div>
         </div>
       </div>

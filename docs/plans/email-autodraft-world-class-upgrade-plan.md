@@ -119,7 +119,7 @@ The approach builds outward from the existing 3-stage pipeline:
 | TASK-02 | IMPLEMENT | Upgrade knowledge summaries to cited snippets | 85% | S | Complete (2026-02-10) | TASK-01 | TASK-07 |
 | TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Complete (2026-02-10) | - | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Complete (2026-02-10) | TASK-03 | TASK-05, TASK-06, TASK-07 |
-| TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Pending | TASK-04 | TASK-07 |
+| TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Complete (2026-02-10) | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Pending | TASK-03, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Add policy decision layer before generation | 81% | L | Pending | TASK-07 | TASK-09 |
@@ -461,6 +461,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Synonym dict: `template-ranker.ts:89–112` (candidate for shared extraction)
   - Current stop words: `draft-quality-check.ts:152–157`
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `8101109458`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (new TASK-05 tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 83%
+  - Delta reason: Per-question coverage and contradiction enhancements behaved as expected; integration pass-rate remained above the 90% gate.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-quality-check.test.ts` — PASS (16/16 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (quality gate 29/31, 93.5%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Replaced global question `.some()` logic with per-question coverage scoring and status (`covered`/`partial`/`missing`), added `partial_question_coverage` warning behavior, surfaced `question_coverage` in quality output, and expanded contradiction detection for `cannot provide`/`unable to`/`<keyword> is not available` patterns while preserving non-contradictory positive phrasing.
 
 ---
 

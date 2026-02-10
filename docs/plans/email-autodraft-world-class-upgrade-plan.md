@@ -120,7 +120,7 @@ The approach builds outward from the existing 3-stage pipeline:
 | TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Complete (2026-02-10) | - | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Complete (2026-02-10) | TASK-03 | TASK-05, TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Complete (2026-02-10) | TASK-04 | TASK-07 |
-| TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Pending | TASK-03, TASK-04 | TASK-07 |
+| TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Complete (2026-02-10) | TASK-03, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Add policy decision layer before generation | 81% | L | Pending | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 80% | M | Pending | TASK-08 | - |
@@ -533,6 +533,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes / references:**
   - Existing fixture IDs: FAQ-01–06, POL-01–03, PAY-01–03, CAN-01–02, AGR-01–05, PRE-01, BRK-01–02, LUG-01–02, WIFI-01, CHG-01, CO-01, HR-01, MOD-01, IT-01–02, SYS-01–05.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `869b6db916`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (new fixture expectation exposed a charge-dispute phrase gap)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 87%
+  - Delta reason: Expanded fixtures validated the high-stakes coverage model; one escalation phrase variant required parser hardening.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (60/60 tests, quality gate 37/39, 94.9%)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts` — PASS (21/21 tests)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added 8 high-stakes fixtures (PRE-02/03/04, CAN-03/04/05, PAY-04/05) with expected escalation tiers and assertion coverage in interpretation tests. Hardened escalation detection for "dispute this charge" and "reverse this charge" phrasing discovered by composite payment-dispute coverage.
 
 ---
 

@@ -8,7 +8,8 @@
       "url": [
         "http://localhost:3012/en",
         "http://localhost:3012/en/experiences",
-        "http://localhost:3012/en/rooms"
+        "http://localhost:3012/en/rooms",
+        "http://localhost:3012/en/help"
       ],
       "settings": {
         "preset": "desktop",
@@ -25,11 +26,20 @@
           {
             "path": "/*",
             "resourceCounts": [
-              { "resourceType": "third-party", "budget": 5 }
+              {
+                "resourceType": "third-party",
+                "budget": 5
+              }
             ],
             "resourceSizes": [
-              { "resourceType": "script", "budget": 300 },
-              { "resourceType": "image", "budget": 600 }
+              {
+                "resourceType": "script",
+                "budget": 300
+              },
+              {
+                "resourceType": "image",
+                "budget": 600
+              }
             ]
           }
         ]
@@ -37,12 +47,58 @@
     },
     "assert": {
       "assertions": {
-        "categories:performance": ["warn", { "minScore": 0.8 }],
-        "largest-contentful-paint": ["warn", { "maxNumericValue": 3000, "aggregationMethod": "median" }],
-        "total-blocking-time": ["warn", { "maxNumericValue": 250, "aggregationMethod": "median" }],
-        "cumulative-layout-shift": ["warn", { "maxNumericValue": 0.1, "aggregationMethod": "median" }],
-        "resource-summary:script:size": ["error", { "maxNumericValue": 300000 }],
-        "resource-summary:third-party:count": ["warn", { "maxNumericValue": 5 }]
+        "categories:performance": [
+          "warn",
+          {
+            "minScore": 0.8
+          }
+        ],
+        "largest-contentful-paint": [
+          "warn",
+          {
+            "maxNumericValue": 3000,
+            "aggregationMethod": "median"
+          }
+        ],
+        "total-blocking-time": [
+          "warn",
+          {
+            "maxNumericValue": 250,
+            "aggregationMethod": "median"
+          }
+        ],
+        "cumulative-layout-shift": [
+          "warn",
+          {
+            "maxNumericValue": 0.1,
+            "aggregationMethod": "median"
+          }
+        ],
+        "resource-summary:script:size": [
+          "error",
+          {
+            "maxNumericValue": 300000
+          }
+        ],
+        "resource-summary:third-party:count": [
+          "warn",
+          {
+            "maxNumericValue": 5
+          }
+        ],
+        "errors-in-console": "error",
+        "color-contrast": [
+          "warn",
+          {
+            "minScore": 1
+          }
+        ],
+        "label-content-name-mismatch": [
+          "warn",
+          {
+            "minScore": 1
+          }
+        ]
       }
     },
     "upload": {

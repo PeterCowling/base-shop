@@ -1,10 +1,16 @@
 import { readFileSync } from "node:fs";
 
 import {
+  BRIKETTE_RELEVANT_EXACT_PATHS,
+  BRIKETTE_RELEVANT_PATH_PREFIXES,
   DEPLOY_ONLY_EXACT_PATHS,
   DEPLOY_ONLY_PATH_PREFIXES,
+  RELATED_TEST_SOURCE_FILE_EXTENSIONS,
+  RELATED_TEST_SOURCE_PATH_PREFIXES,
   RUNTIME_PATH_PREFIXES,
 } from "./classifier-fixtures";
+
+export type TestScope = "skip" | "full" | "related";
 
 export type DeployChangeClassification = {
   isDeployOnly: boolean;
@@ -13,16 +19,33 @@ export type DeployChangeClassification = {
     | "deploy_only_paths"
     | "runtime_path_detected"
     | "unknown_path_detected"
-    | "empty_path_set";
+    | "empty_path_set"
+    | "irrelevant_path_set";
   deployPaths: string[];
   runtimePaths: string[];
   unknownPaths: string[];
+  relevantPaths: string[];
+  ignoredPaths: string[];
+  testScope: TestScope;
+  relatedTestPaths: string[];
 };
 
 type CliFormat = "json" | "outputs";
 
 function normalizePath(rawPath: string): string {
   return rawPath.trim().replace(/\\/g, "/").replace(/^\.\//, "");
+}
+
+function isBriketteRelevantPath(path: string): boolean {
+  if (isDeployOnlyPath(path)) {
+    return true;
+  }
+
+  if (BRIKETTE_RELEVANT_EXACT_PATHS.has(path)) {
+    return true;
+  }
+
+  return BRIKETTE_RELEVANT_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
 function isDeployOnlyPath(path: string): boolean {
@@ -37,25 +60,101 @@ function isRuntimePath(path: string): boolean {
   return RUNTIME_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
 }
 
+function isRelatedTestEligiblePath(path: string): boolean {
+  if (path.endsWith(".d.ts")) {
+    return false;
+  }
+
+  const hasSupportedExtension = RELATED_TEST_SOURCE_FILE_EXTENSIONS.some((extension) =>
+    path.endsWith(extension),
+  );
+  if (!hasSupportedExtension) {
+    return false;
+  }
+
+  return RELATED_TEST_SOURCE_PATH_PREFIXES.some((prefix) => path.startsWith(prefix));
+}
+
+function withTestSelection(base: Omit<DeployChangeClassification, "testScope" | "relatedTestPaths">): DeployChangeClassification {
+  if (base.isDeployOnly && !base.uncertain) {
+    return {
+      ...base,
+      testScope: "skip",
+      relatedTestPaths: [],
+    };
+  }
+
+  if (base.uncertain || base.runtimePaths.length === 0) {
+    return {
+      ...base,
+      testScope: "full",
+      relatedTestPaths: [],
+    };
+  }
+
+  const relatedTestPaths = base.runtimePaths.filter(isRelatedTestEligiblePath);
+  const canUseRelatedMode = relatedTestPaths.length > 0 && relatedTestPaths.length === base.runtimePaths.length;
+
+  if (!canUseRelatedMode) {
+    return {
+      ...base,
+      testScope: "full",
+      relatedTestPaths: [],
+    };
+  }
+
+  return {
+    ...base,
+    testScope: "related",
+    relatedTestPaths,
+  };
+}
+
 export function classifyDeployChange(paths: readonly string[]): DeployChangeClassification {
   const normalizedPaths = paths.map(normalizePath).filter(Boolean);
 
   if (normalizedPaths.length === 0) {
-    return {
+    return withTestSelection({
       isDeployOnly: false,
       uncertain: true,
       reason: "empty_path_set",
       deployPaths: [],
       runtimePaths: [],
       unknownPaths: [],
-    };
+      relevantPaths: [],
+      ignoredPaths: [],
+    });
+  }
+
+  const relevantPaths: string[] = [];
+  const ignoredPaths: string[] = [];
+
+  for (const path of normalizedPaths) {
+    if (isBriketteRelevantPath(path)) {
+      relevantPaths.push(path);
+    } else {
+      ignoredPaths.push(path);
+    }
+  }
+
+  if (relevantPaths.length === 0) {
+    return withTestSelection({
+      isDeployOnly: false,
+      uncertain: true,
+      reason: "irrelevant_path_set",
+      deployPaths: [],
+      runtimePaths: [],
+      unknownPaths: [],
+      relevantPaths,
+      ignoredPaths,
+    });
   }
 
   const deployPaths: string[] = [];
   const runtimePaths: string[] = [];
   const unknownPaths: string[] = [];
 
-  for (const path of normalizedPaths) {
+  for (const path of relevantPaths) {
     if (isDeployOnlyPath(path)) {
       deployPaths.push(path);
       continue;
@@ -69,36 +168,42 @@ export function classifyDeployChange(paths: readonly string[]): DeployChangeClas
     unknownPaths.push(path);
   }
 
-  if (runtimePaths.length > 0) {
-    return {
-      isDeployOnly: false,
-      uncertain: false,
-      reason: "runtime_path_detected",
-      deployPaths,
-      runtimePaths,
-      unknownPaths,
-    };
-  }
-
   if (unknownPaths.length > 0) {
-    return {
+    return withTestSelection({
       isDeployOnly: false,
       uncertain: true,
       reason: "unknown_path_detected",
       deployPaths,
       runtimePaths,
       unknownPaths,
-    };
+      relevantPaths,
+      ignoredPaths,
+    });
   }
 
-  return {
+  if (runtimePaths.length > 0) {
+    return withTestSelection({
+      isDeployOnly: false,
+      uncertain: false,
+      reason: "runtime_path_detected",
+      deployPaths,
+      runtimePaths,
+      unknownPaths,
+      relevantPaths,
+      ignoredPaths,
+    });
+  }
+
+  return withTestSelection({
     isDeployOnly: true,
     uncertain: false,
     reason: "deploy_only_paths",
     deployPaths,
     runtimePaths,
     unknownPaths,
-  };
+    relevantPaths,
+    ignoredPaths,
+  });
 }
 
 type ParsedArgs = {
@@ -178,6 +283,8 @@ function main(): void {
     console.log(`is_deploy_only=${classification.isDeployOnly}`);
     console.log(`uncertain=${classification.uncertain}`);
     console.log(`reason=${classification.reason}`);
+    console.log(`test_scope=${classification.testScope}`);
+    console.log(`related_test_paths_json=${JSON.stringify(classification.relatedTestPaths)}`);
     return;
   }
 

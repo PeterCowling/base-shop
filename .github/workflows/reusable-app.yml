@@ -82,6 +82,8 @@ jobs:
     outputs:
       run_validation: ${{ steps.classify.outputs.run_validation }}
       run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
+      test_scope: ${{ steps.classify.outputs.test_scope }}
+      related_test_paths_json: ${{ steps.classify.outputs.related_test_paths_json }}
       should_deploy: ${{ steps.deploy_gate.outputs.should_deploy }}
     steps:
       - name: Checkout repository
@@ -118,6 +120,8 @@ jobs:
           is_deploy_only="false"
           uncertain="true"
           reason="non_brikette_caller"
+          test_scope="full"
+          related_test_paths_json="[]"
           changed_file_count="0"
 
           if [[ "$APP_FILTER" == "@apps/brikette" ]]; then
@@ -132,7 +136,7 @@ jobs:
 
             changed_paths_file="$RUNNER_TEMP/changed-paths.txt"
             if [[ -n "$base_sha" ]]; then
-              git diff --name-only "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
+              git diff --name-only --diff-filter=ACMRTUXB "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
             else
               : > "$changed_paths_file"
             fi
@@ -151,18 +155,35 @@ jobs:
                   is_deploy_only) is_deploy_only="$value" ;;
                   uncertain) uncertain="$value" ;;
                   reason) reason="$value" ;;
+                  test_scope) test_scope="$value" ;;
+                  related_test_paths_json) related_test_paths_json="$value" ;;
                 esac
               done <<< "$classification_output"
 
+              classifier_output_valid="true"
               if [[ "$run_validation" != "true" && "$run_validation" != "false" ]] \
                 || [[ "$is_deploy_only" != "true" && "$is_deploy_only" != "false" ]] \
                 || [[ "$uncertain" != "true" && "$uncertain" != "false" ]] \
                 || [[ -z "$reason" ]]; then
+                classifier_output_valid="false"
+              fi
+
+              if [[ "$test_scope" != "skip" && "$test_scope" != "full" && "$test_scope" != "related" ]]; then
+                classifier_output_valid="false"
+              fi
+
+              if ! node -e 'JSON.parse(process.argv[1]);' "$related_test_paths_json" >/dev/null 2>&1; then
+                classifier_output_valid="false"
+              fi
+
+              if [[ "$classifier_output_valid" != "true" ]]; then
                 echo "::warning title=Validation gating::Classifier output parse failed; running full validation."
                 run_validation="true"
                 is_deploy_only="false"
                 uncertain="true"
                 reason="classifier_parse_failed"
+                test_scope="full"
+                related_test_paths_json="[]"
               fi
             else
               echo "::warning title=Validation gating::Classifier command failed; running full validation."
@@ -173,6 +194,8 @@ jobs:
               uncertain="true"
               reason="classifier_command_failed"
               run_validation="true"
+              test_scope="full"
+              related_test_paths_json="[]"
             fi
           fi
 
@@ -182,6 +205,8 @@ jobs:
             echo "uncertain=$uncertain"
             echo "reason=$reason"
             echo "changed_file_count=$changed_file_count"
+            echo "test_scope=$test_scope"
+            echo "related_test_paths_json=$related_test_paths_json"
           } >> "$GITHUB_OUTPUT"
 
       - name: Validation gating decision
@@ -191,7 +216,7 @@ jobs:
           if [[ "${{ steps.classify.outputs.run_validation }}" == "false" ]]; then
             echo "::notice title=Validation gating::Skipping Lint/Typecheck/Test (deploy-only, confident). reason=${{ steps.classify.outputs.reason }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
           else
-            echo "::notice title=Validation gating::Running full validation. reason=${{ steps.classify.outputs.reason }} uncertain=${{ steps.classify.outputs.uncertain }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
+            echo "::notice title=Validation gating::Running validation. test_scope=${{ steps.classify.outputs.test_scope }} reason=${{ steps.classify.outputs.reason }} uncertain=${{ steps.classify.outputs.uncertain }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
           fi
 
       - name: Determine test strategy
@@ -314,7 +339,53 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Run tests
-        run: pnpm --filter ${{ inputs.app-filter }} test
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
+          RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$APP_FILTER" != "@apps/brikette" ]]; then
+            pnpm --filter "$APP_FILTER" test
+            exit 0
+          fi
+
+          base_cmd=(pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests)
+
+          if [[ "$TEST_SCOPE" == "related" ]]; then
+            mapfile -t related_paths < <(node -e '
+              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed)) {
+                throw new Error("related_test_paths_json must be an array");
+              }
+              for (const entry of parsed) {
+                if (typeof entry === "string" && entry.length > 0) {
+                  console.log(entry);
+                }
+              }
+            ')
+
+            existing_paths=()
+            for relative_path in "${related_paths[@]}"; do
+              absolute_path="$GITHUB_WORKSPACE/$relative_path"
+              if [[ -f "$absolute_path" ]]; then
+                existing_paths+=("$absolute_path")
+              fi
+            done
+
+            if [[ "${#existing_paths[@]}" -eq 0 ]]; then
+              echo "::warning title=Test selection::Related test scope requested but no eligible files were found; falling back to full suite."
+              "${base_cmd[@]}"
+            else
+              echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]})"
+              "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
+            fi
+          else
+            echo "::notice title=Test selection::Running full Brikette test suite scope=$TEST_SCOPE"
+            "${base_cmd[@]}"
+          fi
         shell: bash
 
   test-sharded:
@@ -358,9 +429,48 @@ jobs:
           restore-keys: |
             brikette-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
       - name: Run Brikette test shard (${{ matrix.shard }}/3)
+        env:
+          TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
+          RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
         run: |
-          pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests \
-            --shard=${{ matrix.shard }}/3
+          set -euo pipefail
+
+          shard="${{ matrix.shard }}/3"
+          base_cmd=(pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard="$shard")
+
+          if [[ "$TEST_SCOPE" == "related" ]]; then
+            mapfile -t related_paths < <(node -e '
+              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed)) {
+                throw new Error("related_test_paths_json must be an array");
+              }
+              for (const entry of parsed) {
+                if (typeof entry === "string" && entry.length > 0) {
+                  console.log(entry);
+                }
+              }
+            ')
+
+            existing_paths=()
+            for relative_path in "${related_paths[@]}"; do
+              absolute_path="$GITHUB_WORKSPACE/$relative_path"
+              if [[ -f "$absolute_path" ]]; then
+                existing_paths+=("$absolute_path")
+              fi
+            done
+
+            if [[ "${#existing_paths[@]}" -eq 0 ]]; then
+              echo "::warning title=Test selection::Related test scope requested but no eligible files were found; falling back to full suite."
+              "${base_cmd[@]}"
+            else
+              echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]}) shard=$shard"
+              "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
+            fi
+          else
+            echo "::notice title=Test selection::Running full Brikette test suite shard=$shard scope=$TEST_SCOPE"
+            "${base_cmd[@]}"
+          fi
         shell: bash
 
   build:

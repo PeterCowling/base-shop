@@ -54,19 +54,19 @@ export default function BagStoragePage() {
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
   }
 
   if (!snapshot) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-xl font-semibold text-gray-900">Bag Storage</h1>
-          <p className="text-sm text-gray-600">We could not load bag-storage details right now.</p>
-          <Link href="/" className="mt-5 inline-block text-blue-600 hover:underline">
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-xl font-semibold text-foreground">Bag Storage</h1>
+          <p className="text-sm text-muted-foreground">We could not load bag-storage details right now.</p>
+          <Link href="/" className="mt-5 inline-block text-primary hover:underline">
             Return Home
           </Link>
         </div>
@@ -78,30 +78,30 @@ export default function BagStoragePage() {
   const activeRequestStatus = snapshot.bagStorage?.requestStatus ?? snapshot.requestSummary?.bag_drop?.status ?? null;
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 pb-20">
+    <main className="min-h-screen bg-muted p-4 pb-20">
       <div className="mx-auto max-w-md space-y-4">
-        <div className="rounded-xl bg-white p-5 shadow-sm">
+        <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-3">
-            <Package className="h-6 w-6 text-blue-600" />
+            <Package className="h-6 w-6 text-primary" />
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">Bag Storage</h1>
-              <p className="text-xs text-gray-500">Post-checkout bag-drop requests</p>
+              <h1 className="text-xl font-semibold text-foreground">Bag Storage</h1>
+              <p className="text-xs text-muted-foreground">Post-checkout bag-drop requests</p>
             </div>
           </div>
 
           {activeRequestStatus && (
-            <p className="mb-3 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-700">
+            <p className="mb-3 rounded-lg bg-info-soft px-3 py-2 text-xs text-info-foreground">
               Current request status: <span className="font-semibold">{activeRequestStatus}</span>
             </p>
           )}
 
           {!isCheckedOut ? (
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Bag-drop requests become available after checkout. Please return once your stay is checked out.
             </p>
           ) : (
             <form onSubmit={submitBagDrop}>
-              <label htmlFor="pickupWindow" className="text-xs font-medium text-gray-600">
+              <label htmlFor="pickupWindow" className="text-xs font-medium text-muted-foreground">
                 Pickup window
               </label>
               <input
@@ -109,11 +109,11 @@ export default function BagStoragePage() {
                 value={pickupWindow}
                 onChange={(event) => setPickupWindow(event.target.value)}
                 placeholder="e.g. 16:00 - 18:00"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
                 required
               />
 
-              <label htmlFor="bagNote" className="mt-3 block text-xs font-medium text-gray-600">
+              <label htmlFor="bagNote" className="mt-3 block text-xs font-medium text-muted-foreground">
                 Note (optional)
               </label>
               <textarea
@@ -122,16 +122,16 @@ export default function BagStoragePage() {
                 onChange={(event) => setNote(event.target.value)}
                 rows={3}
                 maxLength={500}
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
               />
 
               {message && (
-                <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+                <p className="mt-3 rounded-lg bg-success-soft px-3 py-2 text-xs text-success-foreground">
                   {message}
                 </p>
               )}
               {error && (
-                <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700">
+                <p className="mt-3 rounded-lg bg-danger-soft px-3 py-2 text-xs text-danger-foreground">
                   {error}
                 </p>
               )}
@@ -139,7 +139,7 @@ export default function BagStoragePage() {
               <button
                 type="submit"
                 disabled={isSubmitting || !pickupWindow.trim()}
-                className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+                className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
               >
                 {isSubmitting ? 'Submitting…' : 'Request bag drop'}
               </button>
@@ -148,7 +148,7 @@ export default function BagStoragePage() {
         </div>
 
         <div className="text-center">
-          <Link href="/" className="text-sm text-blue-600 hover:underline">
+          <Link href="/" className="text-sm text-primary hover:underline">
             Return Home
           </Link>
         </div>

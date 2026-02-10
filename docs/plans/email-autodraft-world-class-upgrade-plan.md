@@ -124,7 +124,7 @@ The approach builds outward from the existing 3-stage pipeline:
 | TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Complete (2026-02-10) | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Add policy decision layer before generation | 84% | L | Complete (2026-02-10) | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 82% | M | Complete (2026-02-10) | TASK-08 | - |
-| TASK-10 | IMPLEMENT | Migrate booking email to MCP-only (remove GAS fallback) | 88% | S | Pending | - | - |
+| TASK-10 | IMPLEMENT | Migrate booking email to MCP-only (remove GAS fallback) | 88% | S | Complete (2026-02-10) | - | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -843,6 +843,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Changes to task:**
   - Dependencies: unchanged (independent task).
   - Acceptance/test plan/rollout: unchanged.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `a763f9b102`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (tests asserted MCP-only behavior before fallback removal)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 87%
+  - Delta reason: MCP-only cutover and payload contract behaved as expected; one additional cycle aligned error-path logging with strict test harness expectations.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath apps/reception/src/services/__tests__/useBookingEmail.test.ts` — PASS (6/6 tests)
+  - Ran: `pnpm --filter @apps/reception typecheck` — PASS
+  - Ran: `pnpm --filter @apps/reception lint` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; pre-existing)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Removed `isMcpBookingEmailEnabled()` branching and Google Apps Script URL path from `useBookingEmail.ts`; booking emails now always POST to `/api/mcp/booking-email`. Preserved payload shape (`bookingRef`, `recipients`, `occupantLinks`), added explicit test-mode env override (`NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE`), and added TASK-10 test coverage for MCP-only routing, error surfacing without fallback, payload integrity, and test-recipient behavior.
 
 ---
 

@@ -1,13 +1,6 @@
-name: Package Quality Matrix
+name: Nightly Package Quality Matrix
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - 'apps/skylar/**'
-      - 'apps/cms/**'
-      - '.github/workflows/skylar.yml'
-      - '.github/workflows/cms.yml'
   workflow_dispatch:
   schedule:
     - cron: '0 3 * * *'
@@ -78,6 +71,45 @@ jobs:
         with:
           name: ${{ steps.coverage-name.outputs.name }}
           path: ${{ matrix.workspace }}/coverage
+          if-no-files-found: ignore
+
+  cms-coverage:
+    name: CMS coverage (shard ${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Restore Jest/ts-jest caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .ts-jest
+            node_modules/.cache/jest
+            apps/cms/node_modules/.cache/jest
+          key: cms-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
+          restore-keys: |
+            cms-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+      - name: Run CMS tests with coverage (shard ${{ matrix.shard }}/4)
+        run: |
+          pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests \
+            --coverage --config apps/cms/jest.config.cjs \
+            --shard=${{ matrix.shard }}/4
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cms-coverage-shard-${{ matrix.shard }}
+          path: coverage/
           if-no-files-found: ignore
 
   secret-scanning:

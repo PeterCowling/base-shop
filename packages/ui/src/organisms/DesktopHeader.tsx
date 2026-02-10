@@ -100,7 +100,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
         <div className="header-row-1 flex items-center justify-between">
           <Link
             href={`/${lang}`}
-            className="flex min-w-48 items-center gap-3 whitespace-nowrap transition hover:text-brand-secondary"
+            className="flex min-h-11 min-w-48 items-center gap-3 whitespace-nowrap rounded transition hover:text-brand-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
             <img
@@ -128,7 +128,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
           <div className="flex items-center gap-6">
             <Button
               onClick={book}
-              className={`cta ${ctaClass} rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide focus-visible:ring-2 focus-visible:ring-offset-2`}
+              className={`cta ${ctaClass} min-h-11 rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide focus-visible:ring-2 focus-visible:ring-offset-2`}
             >
               {primaryCtaLabel}
             </Button>
@@ -159,7 +159,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
                       aria-current={current ? "page" : undefined}
                       aria-label={label}
                       prefetch={to === apartmentPath ? true : undefined}
-                      className={`underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea ${highlight}`}
+                      className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
                     >
                       {label}
                     </Link>

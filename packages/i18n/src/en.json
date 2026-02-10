@@ -3665,6 +3665,7 @@
   "businessOs.board.descriptions.highPriority": "High priority cards (P0/P1) across all businesses",
   "businessOs.board.actions.newCard": "+ New Card",
   "businessOs.board.actions.newIdea": "+ New Idea",
+  "businessOs.board.actions.ideas": "Ideas",
   "businessOs.board.actions.home": "Home",
   "businessOs.board.actions.globalBoard": "Global Board",
   "businessOs.changeRequest.button": "Request Change",

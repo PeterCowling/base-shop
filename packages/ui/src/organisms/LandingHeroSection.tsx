@@ -191,11 +191,23 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
     const locale = lang ?? ratingsI18n.language ?? i18nConfig.fallbackLng;
     return ratings.map((rating) => {
       const sourceKey = RATING_SOURCE_KEYS[rating.provider];
-      const providerLabel = sourceKey
-        ? (tRatings(`sources.${sourceKey}.label`) as string)
-        : rating.provider;
+      const providerLabelKey = sourceKey ? `sources.${sourceKey}.label` : "";
+      const translatedProviderLabel = providerLabelKey
+        ? ((tRatings(providerLabelKey) as string) ?? "").trim()
+        : "";
+      const providerLabel =
+        translatedProviderLabel && translatedProviderLabel !== providerLabelKey
+          ? translatedProviderLabel
+          : rating.provider;
       const formattedCount = rating.count.toLocaleString(locale);
-      const reviewText = tRatings("countReviews", { count: rating.count, formattedCount }) as string;
+      const reviewTextKey = "countReviews";
+      const translatedReviewText = (
+        tRatings(reviewTextKey, { count: rating.count, formattedCount }) as string
+      ).trim();
+      const reviewText =
+        translatedReviewText && translatedReviewText !== reviewTextKey
+          ? translatedReviewText
+          : `${formattedCount} reviews`;
       return {
         providerLabel,
         reviewText,

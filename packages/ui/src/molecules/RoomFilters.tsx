@@ -30,7 +30,7 @@ function RoomFilters({ selected, onChange, lang }: RoomFiltersProps): JSX.Elemen
           type="button"
           role="radio"
           aria-checked={selected === key}
-          className={`rounded-full px-3 py-1 text-sm border transition-colors duration-200 ${
+          className={`min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${
             selected === key ? activeClass : inactiveClass
           }`}
           onClick={() => onChange(key)}

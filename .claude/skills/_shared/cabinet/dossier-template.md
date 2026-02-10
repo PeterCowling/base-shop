@@ -1,6 +1,6 @@
 # Dossier Template Specification
 
-This document defines the canonical format for Cabinet Dossiers and Data Gap Proposals.
+This document defines the canonical format for Cabinet Dossiers and Decision Gap Proposals (DGPs).
 
 ## Overview
 
@@ -31,6 +31,10 @@ Pipeline-Stage: promoted
 Cluster-ID: BRIK-CLU-001
 Rival-Lenses: engineering, finance
 VOI-Score: 0.8
+Impact-Type: growth
+Impact-Mechanism: Acquire
+Impact-Band: M
+Impact-Confidence: 65
 <!-- /DOSSIER-HEADER -->
 ```
 
@@ -41,12 +45,36 @@ VOI-Score: 0.8
 | `Originator-Expert` | string | Yes | Person-level attribution (e.g., `hopkins`, `bezos`). PRIMARY attribution field. |
 | `Originator-Lens` | string | Yes | Lens-level grouping (e.g., `marketing`, `engineering`). |
 | `Contributors` | list | No | Comma-separated list of additional contributors. |
-| `Confidence-Tier` | enum | Yes | `presentable` / `data-gap` / `hunch` |
+| `Confidence-Tier` | enum | Yes | `presentable` / `decision-gap` / `hunch` |
 | `Confidence-Score` | integer | Yes | 0-100. Must align with tier thresholds. |
 | `Pipeline-Stage` | enum | Yes | `candidate` / `filtered` / `promoted` / `worked` / `prioritized` |
 | `Cluster-ID` | string | No | Links related ideas (e.g., `BRIK-CLU-001`). |
 | `Rival-Lenses` | list | No | Comma-separated list of lenses with competing priorities. |
 | `VOI-Score` | float | No | 0-1. Value of Information — how valuable is filling data gaps? |
+| `Impact-Type` | enum | No | `growth` / `savings` / `risk-avoidance` / `time` |
+| `Impact-Mechanism` | enum | No | `Acquire` / `Convert` / `Retain` / `Measure` / `Operate` (maps to MACRO) |
+| `Impact-Band` | enum | No | `XS` / `S` / `M` / `L` / `XL` (see Impact rubric) |
+| `Impact-Confidence` | integer | No | 0-100. Subjective; must cite evidence pointers or mark unknown. |
+| `Gap-Type` | enum | No | `data` / `timing` / `dependency`. Required for DGPs (Decision Gap Proposals). |
+| `Decision-Blocked` | string | No | What decision cannot be made. Required for DGPs. |
+| `Re-evaluate-When` | string | No | Date or trigger condition. Required for DGPs. |
+| `Owner` | string | No | Named person responsible for closing the gap. Required for DGPs. |
+
+### Impact Rubric
+
+| Band | Definition |
+|------|------------|
+| **XS** | Small/local improvement; unlikely to move a plan target materially |
+| **S** | Noticeable improvement; could move a sub-metric |
+| **M** | Meaningful; could move a primary KPI if executed well |
+| **L** | Large; likely to move a plan target materially |
+| **XL** | Step-change; materially changes the business trajectory |
+
+**Impact-Confidence guidelines:**
+- 80-100: Backed by plan targets, observable metrics, or historical data
+- 50-79: Reasonable inference from available evidence
+- 20-49: Educated guess; limited evidence
+- 0-19: Unknown; mark as such
 
 ### Grammar Rules
 
@@ -61,7 +89,7 @@ VOI-Score: 0.8
 | Tier | Score Range | Criteria |
 |------|-------------|----------|
 | `presentable` | 60-100 | Passes all 5 presentable idea criteria |
-| `data-gap` | 30-59 | Fails 1-2 criteria but has clear question that would make it presentable |
+| `decision-gap` | 30-59 | Fails 1-2 criteria but has a clear blocker (data, timing, or dependency) that would make it presentable when resolved |
 | `hunch` | 0-29 | Fails 3+ criteria. Not persisted (sweep report only). |
 
 ### Pipeline Stage Definitions
@@ -133,7 +161,7 @@ Required fields must be present and non-empty:
 1. **Enum validity**: All enum fields use only allowed values.
 2. **Score-tier alignment**:
    - `presentable` → score 60-100
-   - `data-gap` → score 30-59
+   - `decision-gap` → score 30-59
    - `hunch` → score 0-29
 3. **Stage progression**: Pipeline stage matches actual position in workflow.
 4. **VOI range**: If present, VOI-Score is 0-1.
@@ -197,6 +225,10 @@ Pipeline-Stage: promoted
 Cluster-ID: BRIK-CLU-001
 Rival-Lenses: engineering
 VOI-Score: 0.7
+Impact-Type: growth
+Impact-Mechanism: Measure
+Impact-Band: M
+Impact-Confidence: 75
 <!-- /DOSSIER-HEADER -->
 
 <!-- DECISION-LOG -->
@@ -288,9 +320,9 @@ None. All data gaps filled.
 **Status: Presentable** ✓
 ```
 
-## Data Gap Proposal Example
+## Decision Gap Proposal Example
 
-When an idea has promise but lacks critical information, use a Data Gap Proposal:
+When an idea has promise but lacks critical information, use a Decision Gap Proposal:
 
 ### File: `marketplace-seller-verification.md`
 
@@ -301,12 +333,20 @@ When an idea has promise but lacks critical information, use a Data Gap Proposal
 Originator-Expert: bezos
 Originator-Lens: platform
 Contributors: hopkins
-Confidence-Tier: data-gap
+Confidence-Tier: decision-gap
 Confidence-Score: 45
 Pipeline-Stage: candidate
 Cluster-ID: MKTP-CLU-003
 Rival-Lenses:
 VOI-Score: 0.9
+Impact-Type: risk-avoidance
+Impact-Mechanism: Operate
+Impact-Band: L
+Impact-Confidence: 35
+Gap-Type: data
+Decision-Blocked: Cannot commit resources without fraud rate and seller demand data
+Re-evaluate-When: After 2-week investigation completes
+Owner: bezos
 <!-- /DOSSIER-HEADER -->
 
 <!-- DECISION-LOG -->
@@ -428,4 +468,5 @@ function parseDecisionLog(markdown: string): Decision[] {
 
 ## Version History
 
+- **v1.1** (2026-02-09): Added Impact fields (Type, Mechanism, Band, Confidence) with rubric; added DGP fields (Gap-Type, Decision-Blocked, Re-evaluate-When, Owner); renamed "Data Gap Proposal" to "Decision Gap Proposal"
 - **v1.0** (2026-02-09): Initial specification for Cabinet System CS-03

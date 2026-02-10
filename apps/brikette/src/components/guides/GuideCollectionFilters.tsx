@@ -49,12 +49,13 @@ const FILTER_LINK_WRAP_CLASSES = [
 
 const FILTER_LINK_CLASSES = [
   "inline-flex",
+  "min-h-11",
   "items-center",
   "gap-2",
   "rounded-full",
   "border",
-  "px-3",
-  "py-1.5",
+  "px-4",
+  "py-2",
   "text-sm",
   "font-medium",
   "transition",

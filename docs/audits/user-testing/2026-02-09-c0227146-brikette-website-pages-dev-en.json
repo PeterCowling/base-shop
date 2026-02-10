@@ -1,0 +1,4932 @@
+{
+  "generatedAt": "2026-02-10T00:02:09.606Z",
+  "date": "2026-02-09",
+  "targetUrl": "https://c0227146.brikette-website.pages.dev/en",
+  "origin": "https://c0227146.brikette-website.pages.dev",
+  "startPath": "/en",
+  "crawl": {
+    "discoveredPaths": [
+      "/en",
+      "/en/rooms",
+      "/en/experiences",
+      "/en/how-to-get-here",
+      "/en/deals",
+      "/en/help",
+      "/",
+      "/en/terms",
+      "/en/house-rules",
+      "/en/privacy-policy",
+      "/en/cookie-policy",
+      "/en/rooms/double_room",
+      "/en/rooms/room_10",
+      "/en/rooms/room_11",
+      "/en/rooms/room_12",
+      "/en/rooms/room_3",
+      "/en/rooms/room_4",
+      "/en/rooms/room_5",
+      "/en/rooms/room_6",
+      "/en/rooms/room_9",
+      "/en/rooms/room_8",
+      "/en/experiences?topic=beaches",
+      "/en/experiences?topic=hiking",
+      "/en/experiences?topic=day-trip",
+      "/en/experiences?topic=boat",
+      "/en/experiences?topic=cuisine",
+      "/en/experiences?topic=more",
+      "/en/experiences/positano-beaches",
+      "/en/experiences/positano-main-beach-guide",
+      "/en/experiences/walk-down-to-positano-main-beach",
+      "/en/experiences/bus-down-to-positano-main-beach",
+      "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/marina-di-praia-and-secluded-beaches",
+      "/en/experiences/fiordo-di-furore-beach-guide",
+      "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+      "/en/experiences/fiordo-di-furore-bus-return",
+      "/en/experiences/fornillo-beach-guide",
+      "/en/experiences/hostel-brikette-to-fornillo-beach",
+      "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "/en/experiences/laurito-beach-guide",
+      "/en/experiences/getting-to-laurito-beach-by-bus",
+      "/en/experiences/bus-back-from-laurito-beach",
+      "/en/experiences/gavitella-beach-guide",
+      "/en/experiences/arienzo-beach-guide",
+      "/en/experiences/bus-to-arienzo-beach",
+      "/en/experiences/bus-back-from-arienzo-beach",
+      "/en/experiences/regina-giovanna-bath-beach-guide",
+      "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+      "/en/experiences/path-of-the-gods",
+      "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+      "/en/experiences/path-of-the-gods-via-amalfi-bus",
+      "/en/experiences/path-of-the-gods-via-nocelle",
+      "/en/experiences/top-of-the-mountain-hike",
+      "/en/experiences/santa-maria-del-castello-hike",
+      "/en/experiences/sunrise-hike-positano",
+      "/en/experiences/stay-fit-positano",
+      "/en/experiences/positano-to-pompeii",
+      "/en/experiences/day-trip-capri-from-positano",
+      "/en/experiences/day-trips-from-positano",
+      "/en/experiences/capri-on-a-budget",
+      "/en/experiences/boat-tours-positano",
+      "/en/experiences/cheap-eats-in-positano",
+      "/en/experiences/eating-out-in-positano",
+      "/en/experiences/limoncello-and-local-cuisine",
+      "/en/experiences/positano-dining-guide",
+      "/en/experiences/ferry-cancellations-weather",
+      "/en/experiences/positano-to-amalfi",
+      "/en/experiences/positano-to-ravello",
+      "/en/experiences/sunset-viewpoints-positano",
+      "/en/experiences/terrace-bar-sunset-experience-positano",
+      "/en/experiences/digital-concierge-service",
+      "/en/experiences/positano-on-a-budget",
+      "/en/experiences/positano-travel-guide",
+      "/en/experiences/positano-instagram-spots",
+      "/en/experiences/ravello-music-festival-guide",
+      "/en/experiences/ferragosto-in-positano",
+      "/en/experiences/camping-on-the-amalfi-coast",
+      "/en/experiences/positano-in-winter-on-a-budget",
+      "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+      "/en/experiences/free-walking-tour-audio-positano",
+      "/en/experiences/luminaria-di-san-domenico-praiano",
+      "/en/bar-menu",
+      "/en/breakfast-menu",
+      "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+      "/en/how-to-get-here/amalfi-positano-bus",
+      "/en/how-to-get-here/amalfi-positano-ferry",
+      "/en/how-to-get-here/capri-positano-ferry",
+      "/en/how-to-get-here/naples-center-train-bus",
+      "/en/how-to-get-here/naples-center-positano-ferry",
+      "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+      "/en/how-to-get-here/naples-airport-positano-bus",
+      "/en/how-to-get-here/salerno-positano-bus",
+      "/en/how-to-get-here/salerno-positano-ferry",
+      "/en/how-to-get-here/ravello-positano-bus",
+      "/en/how-to-get-here/positano-ravello-ferry-bus",
+      "/en/how-to-get-here/sorrento-positano-bus",
+      "/en/how-to-get-here/sorrento-positano-ferry",
+      "/en/help/arriving-by-car",
+      "/en/help/sim-esim-and-atms-positano",
+      "/en/help/what-to-pack-amalfi-coast",
+      "/en/help/best-time-to-visit-positano",
+      "/en/how-to-get-here/positano-naples-center-bus-train",
+      "/en/help/how-to-reach-positano-on-a-budget",
+      "/en/help/luggage-storage-positano",
+      "/en/help/sita-bus-tickets",
+      "/en/help/naples-city-guide-for-amalfi-travelers",
+      "/en/help/sorrento-gateway-guide",
+      "/en/how-to-get-here/positano-sorrento-bus",
+      "/en/how-to-get-here/positano-sorrento-ferry",
+      "/en/help/only-hostel-in-positano",
+      "/en/how-to-get-here/positano-capri-ferry",
+      "/en/help/ferry-schedules",
+      "/en/how-to-get-here/naples-to-positano",
+      "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+      "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "/en/help/money-saving-tips-amalfi-coast-transport",
+      "/en/help/transport-on-a-budget-amalfi-coast",
+      "/en/help/groceries-and-pharmacies-positano",
+      "/en/help/porter-service-positano",
+      "/en/help/free-low-cost-things-to-do-positano",
+      "/en/help/off-season-long-stay-tips-positano",
+      "/en/help/wi-fi-and-work-cafes-positano",
+      "/en/help/how-to-get-to-positano",
+      "/en/how-to-get-here/how-to-get-here",
+      "/en/how-to-get-here/positano-naples-ferry",
+      "/en/how-to-get-here/chiesa-nuova-arrivals",
+      "/en/how-to-get-here/positano-amalfi-bus",
+      "/en/help/eco-friendly-travel-amalfi-coast",
+      "/en/how-to-get-here/chiesaNuovaDepartures",
+      "/en/how-to-get-here/positanoSorrentoBus",
+      "/en/how-to-get-here/positanoNaplesCenterFerry",
+      "/en/how-to-get-here/positanoSalernoBus",
+      "/en/how-to-get-here/positanoAmalfiBus",
+      "/en/how-to-get-here/positanoRavelloBus",
+      "/en/how-to-get-here/salerno-to-positano",
+      "/en/how-to-get-here/positano-salerno-bus",
+      "/en/help/salerno-amalfi-coast-gateway"
+    ],
+    "visitedPaths": [
+      "/en",
+      "/en/rooms",
+      "/en/experiences",
+      "/en/how-to-get-here",
+      "/en/deals",
+      "/en/help",
+      "/",
+      "/en/terms",
+      "/en/house-rules",
+      "/en/privacy-policy",
+      "/en/cookie-policy",
+      "/en/rooms/double_room",
+      "/en/rooms/room_10",
+      "/en/rooms/room_11",
+      "/en/rooms/room_12",
+      "/en/rooms/room_3",
+      "/en/rooms/room_4",
+      "/en/rooms/room_5",
+      "/en/rooms/room_6",
+      "/en/rooms/room_9",
+      "/en/rooms/room_8",
+      "/en/experiences?topic=beaches",
+      "/en/experiences?topic=hiking",
+      "/en/experiences?topic=day-trip",
+      "/en/experiences?topic=boat",
+      "/en/experiences?topic=cuisine",
+      "/en/experiences?topic=more",
+      "/en/experiences/positano-beaches",
+      "/en/experiences/positano-main-beach-guide",
+      "/en/experiences/walk-down-to-positano-main-beach",
+      "/en/experiences/bus-down-to-positano-main-beach",
+      "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/marina-di-praia-and-secluded-beaches",
+      "/en/experiences/fiordo-di-furore-beach-guide",
+      "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+      "/en/experiences/fiordo-di-furore-bus-return",
+      "/en/experiences/fornillo-beach-guide",
+      "/en/experiences/hostel-brikette-to-fornillo-beach",
+      "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "/en/experiences/laurito-beach-guide",
+      "/en/experiences/getting-to-laurito-beach-by-bus",
+      "/en/experiences/bus-back-from-laurito-beach",
+      "/en/experiences/gavitella-beach-guide",
+      "/en/experiences/arienzo-beach-guide",
+      "/en/experiences/bus-to-arienzo-beach",
+      "/en/experiences/bus-back-from-arienzo-beach",
+      "/en/experiences/regina-giovanna-bath-beach-guide",
+      "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+      "/en/experiences/path-of-the-gods",
+      "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+      "/en/experiences/path-of-the-gods-via-amalfi-bus",
+      "/en/experiences/path-of-the-gods-via-nocelle",
+      "/en/experiences/top-of-the-mountain-hike",
+      "/en/experiences/santa-maria-del-castello-hike",
+      "/en/experiences/sunrise-hike-positano",
+      "/en/experiences/stay-fit-positano",
+      "/en/experiences/positano-to-pompeii",
+      "/en/experiences/day-trip-capri-from-positano",
+      "/en/experiences/day-trips-from-positano",
+      "/en/experiences/capri-on-a-budget",
+      "/en/experiences/boat-tours-positano",
+      "/en/experiences/cheap-eats-in-positano",
+      "/en/experiences/eating-out-in-positano",
+      "/en/experiences/limoncello-and-local-cuisine",
+      "/en/experiences/positano-dining-guide",
+      "/en/experiences/ferry-cancellations-weather",
+      "/en/experiences/positano-to-amalfi",
+      "/en/experiences/positano-to-ravello",
+      "/en/experiences/sunset-viewpoints-positano",
+      "/en/experiences/terrace-bar-sunset-experience-positano",
+      "/en/experiences/digital-concierge-service",
+      "/en/experiences/positano-on-a-budget",
+      "/en/experiences/positano-travel-guide",
+      "/en/experiences/positano-instagram-spots",
+      "/en/experiences/ravello-music-festival-guide",
+      "/en/experiences/ferragosto-in-positano",
+      "/en/experiences/camping-on-the-amalfi-coast",
+      "/en/experiences/positano-in-winter-on-a-budget",
+      "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+      "/en/experiences/free-walking-tour-audio-positano",
+      "/en/experiences/luminaria-di-san-domenico-praiano",
+      "/en/bar-menu",
+      "/en/breakfast-menu",
+      "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+      "/en/how-to-get-here/amalfi-positano-bus",
+      "/en/how-to-get-here/amalfi-positano-ferry",
+      "/en/how-to-get-here/capri-positano-ferry",
+      "/en/how-to-get-here/naples-center-train-bus",
+      "/en/how-to-get-here/naples-center-positano-ferry",
+      "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+      "/en/how-to-get-here/naples-airport-positano-bus",
+      "/en/how-to-get-here/salerno-positano-bus",
+      "/en/how-to-get-here/salerno-positano-ferry",
+      "/en/how-to-get-here/ravello-positano-bus",
+      "/en/how-to-get-here/positano-ravello-ferry-bus",
+      "/en/how-to-get-here/sorrento-positano-bus",
+      "/en/how-to-get-here/sorrento-positano-ferry",
+      "/en/help/arriving-by-car",
+      "/en/help/sim-esim-and-atms-positano",
+      "/en/help/what-to-pack-amalfi-coast",
+      "/en/help/best-time-to-visit-positano",
+      "/en/how-to-get-here/positano-naples-center-bus-train",
+      "/en/help/how-to-reach-positano-on-a-budget",
+      "/en/help/luggage-storage-positano",
+      "/en/help/sita-bus-tickets",
+      "/en/help/naples-city-guide-for-amalfi-travelers",
+      "/en/help/sorrento-gateway-guide",
+      "/en/how-to-get-here/positano-sorrento-bus",
+      "/en/how-to-get-here/positano-sorrento-ferry",
+      "/en/help/only-hostel-in-positano",
+      "/en/how-to-get-here/positano-capri-ferry",
+      "/en/help/ferry-schedules",
+      "/en/how-to-get-here/naples-to-positano",
+      "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+      "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "/en/help/money-saving-tips-amalfi-coast-transport",
+      "/en/help/transport-on-a-budget-amalfi-coast",
+      "/en/help/groceries-and-pharmacies-positano"
+    ],
+    "pageLinks": {
+      "/en": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/rooms": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/rooms/double_room",
+        "/en/rooms/room_10",
+        "/en/rooms/room_11",
+        "/en/rooms/room_12",
+        "/en/rooms/room_3",
+        "/en/rooms/room_4",
+        "/en/rooms/room_5",
+        "/en/rooms/room_6",
+        "/en/rooms/room_9",
+        "/en/rooms/room_8",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/experiences": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/experiences/sunrise-hike-positano",
+        "/en/experiences/stay-fit-positano",
+        "/en/experiences/positano-to-pompeii",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/day-trips-from-positano",
+        "/en/experiences/capri-on-a-budget",
+        "/en/experiences/boat-tours-positano",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/eating-out-in-positano",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/positano-dining-guide",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/positano-to-ravello",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/terrace-bar-sunset-experience-positano",
+        "/en/experiences/digital-concierge-service",
+        "/en/experiences/positano-on-a-budget",
+        "/en/experiences/positano-travel-guide",
+        "/en/experiences/positano-instagram-spots",
+        "/en/experiences/ravello-music-festival-guide",
+        "/en/experiences/ferragosto-in-positano",
+        "/en/experiences/camping-on-the-amalfi-coast",
+        "/en/experiences/positano-in-winter-on-a-budget",
+        "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+        "/en/experiences/free-walking-tour-audio-positano",
+        "/en/experiences/luminaria-di-san-domenico-praiano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/how-to-get-here/amalfi-positano-bus",
+        "/en/how-to-get-here/amalfi-positano-ferry",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/how-to-get-here/naples-center-train-bus",
+        "/en/how-to-get-here/naples-center-positano-ferry",
+        "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/how-to-get-here/salerno-positano-bus",
+        "/en/how-to-get-here/salerno-positano-ferry",
+        "/en/how-to-get-here/ravello-positano-bus",
+        "/en/how-to-get-here/positano-ravello-ferry-bus",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/deals": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/help": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/help/sim-esim-and-atms-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/help/best-time-to-visit-positano",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/how-to-get-here/positano-naples-center-bus-train",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/day-trips-from-positano",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/terms": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/house-rules": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/privacy-policy": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/cookie-policy": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/rooms/double_room": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_10": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_11": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_12": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_3": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_4": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_5": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_6": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_9": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_8": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/experiences?topic=beaches": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=hiking": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/experiences/sunrise-hike-positano",
+        "/en/experiences/stay-fit-positano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=day-trip": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/positano-to-pompeii",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/day-trips-from-positano",
+        "/en/experiences/capri-on-a-budget",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=boat": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/boat-tours-positano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=cuisine": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/eating-out-in-positano",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/positano-dining-guide",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=more": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/positano-to-ravello",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/terrace-bar-sunset-experience-positano",
+        "/en/experiences/digital-concierge-service",
+        "/en/experiences/positano-on-a-budget",
+        "/en/experiences/positano-travel-guide",
+        "/en/experiences/positano-instagram-spots",
+        "/en/experiences/ravello-music-festival-guide",
+        "/en/experiences/ferragosto-in-positano",
+        "/en/experiences/camping-on-the-amalfi-coast",
+        "/en/experiences/positano-in-winter-on-a-budget",
+        "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+        "/en/experiences/free-walking-tour-audio-positano",
+        "/en/experiences/luminaria-di-san-domenico-praiano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-beaches": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-main-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/help/luggage-storage-positano",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/walk-down-to-positano-main-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-down-to-positano-main-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/marina-di-praia-and-secluded-beaches": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/sita-bus-tickets",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/fiordo-di-furore-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/fiordo-di-furore-bus-return": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/fornillo-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/hostel-brikette-to-fornillo-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-travel-guide",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/fornillo-beach-to-hostel-brikette": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/laurito-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/getting-to-laurito-beach-by-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-back-from-laurito-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/gavitella-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/positano-to-amalfi",
+        "/en/help/sita-bus-tickets",
+        "/en/help/arriving-by-car",
+        "/en/experiences/boat-tours-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/arienzo-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/boat-tours-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-to-arienzo-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-back-from-arienzo-beach": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/regina-giovanna-bath-beach-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/help/naples-city-guide-for-amalfi-travelers",
+        "/en/experiences/day-trips-from-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/hostel-brikette-to-regina-giovanna-bath": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/help/naples-city-guide-for-amalfi-travelers",
+        "/en/experiences/day-trips-from-positano",
+        "/en/help/sorrento-gateway-guide",
+        "/en/how-to-get-here/positano-sorrento-bus",
+        "/en/how-to-get-here/positano-sorrento-ferry",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods-via-amalfi-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods-via-amalfi-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods-via-nocelle": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/top-of-the-mountain-hike": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/stay-fit-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/santa-maria-del-castello-hike": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/sunrise-hike-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/sunrise-hike-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/help/arriving-by-car",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/path-of-the-gods",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/stay-fit-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/help/arriving-by-car",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-to-pompeii": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/only-hostel-in-positano",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/experiences/path-of-the-gods",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/day-trip-capri-from-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/positano-capri-ferry",
+        "/en/help/ferry-schedules",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/experiences/positano-to-pompeii",
+        "/en/help/arriving-by-car",
+        "/en/experiences/boat-tours-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/experiences/positano-to-amalfi",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/day-trips-from-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/positano-to-pompeii",
+        "/en/experiences/positano-to-amalfi",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+        "/en/help/sita-bus-tickets",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/help/money-saving-tips-amalfi-coast-transport",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/capri-on-a-budget": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+        "/en/how-to-get-here/salerno-positano-bus",
+        "/en/experiences/day-trips-from-positano",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/help/money-saving-tips-amalfi-coast-transport",
+        "/en/help/arriving-by-car",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/how-to-get-here/positano-capri-ferry",
+        "/en/experiences/positano-to-amalfi",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/boat-tours-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/ferry-schedules",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/cheap-eats-in-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-on-a-budget",
+        "/en/help/groceries-and-pharmacies-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/eating-out-in-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/help/sita-bus-tickets",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/help/sim-esim-and-atms-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/limoncello-and-local-cuisine": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-dining-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/porter-service-positano",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/positano-beaches",
+        "/en/help/sita-bus-tickets",
+        "/en/help/arriving-by-car",
+        "/en/help/free-low-cost-things-to-do-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/ferry-cancellations-weather": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-to-amalfi": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-to-ravello": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/sunset-viewpoints-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/terrace-bar-sunset-experience-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/positano-on-a-budget",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/digital-concierge-service": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-on-a-budget",
+        "/en/experiences/terrace-bar-sunset-experience-positano",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-on-a-budget": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-travel-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-instagram-spots": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/ravello-music-festival-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/ferragosto-in-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/path-of-the-gods",
+        "/en/help/arriving-by-car",
+        "/en/help/best-time-to-visit-positano",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/camping-on-the-amalfi-coast": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-in-winter-on-a-budget": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/off-season-long-stay-tips-positano",
+        "/en/help/wi-fi-and-work-cafes-positano",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/thrifty-souvenir-shopping-amalfi-coast": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/free-walking-tour-audio-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/luminaria-di-san-domenico-praiano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/bar-menu": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/breakfast-menu": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/how-to-get-to-positano",
+        "/en/help/sita-bus-tickets",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/help/porter-service-positano",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/help/luggage-storage-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/ferry-schedules",
+        "/en/how-to-get-here/amalfi-positano-bus",
+        "/en/help/porter-service-positano",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/amalfi-positano-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/help/porter-service-positano",
+        "/en/how-to-get-here/amalfi-positano-ferry",
+        "/en/help/how-to-get-to-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/amalfi-positano-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/porter-service-positano",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/help/luggage-storage-positano",
+        "/en/how-to-get-here/how-to-get-here",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/capri-positano-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/how-to-get-here/positano-capri-ferry",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/naples-center-train-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/help/porter-service-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/naples-center-positano-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/positano-sorrento-bus",
+        "/en/how-to-get-here/positano-naples-ferry",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/how-to-get-here/salerno-positano-ferry",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/how-to-get-here/amalfi-positano-ferry",
+        "/en/how-to-get-here/chiesa-nuova-arrivals",
+        "/en/how-to-get-here/how-to-get-here",
+        "/en/how-to-get-here/naples-center-train-bus",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/positano-to-naples-directions-by-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/positano-sorrento-bus",
+        "/en/how-to-get-here/amalfi-positano-ferry",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/naples-airport-positano-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/help/porter-service-positano",
+        "/en/how-to-get-here/naples-center-train-bus",
+        "/en/help/luggage-storage-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/salerno-positano-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/salerno-positano-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/ravello-positano-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/positano-ravello-ferry-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/how-to-get-here/sorrento-positano-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/sorrento-positano-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/arriving-by-car": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/how-to-get-here",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/help/porter-service-positano",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/help/sita-bus-tickets",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/sim-esim-and-atms-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/groceries-and-pharmacies-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/what-to-pack-amalfi-coast": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/path-of-the-gods",
+        "/en/help/arriving-by-car",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/best-time-to-visit-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/path-of-the-gods",
+        "/en/help/ferry-schedules",
+        "/en/experiences/positano-beaches",
+        "/en/how-to-get-here/positano-amalfi-bus",
+        "/en/how-to-get-here/how-to-get-here",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-travel-guide",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/help/eco-friendly-travel-amalfi-coast",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/positano-naples-center-bus-train": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesaNuovaDepartures",
+        "/en/how-to-get-here/positanoSorrentoBus",
+        "/en/how-to-get-here/positanoNaplesCenterFerry",
+        "/en/how-to-get-here/positanoSalernoBus",
+        "/en/how-to-get-here/positanoAmalfiBus",
+        "/en/how-to-get-here/positanoRavelloBus",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/how-to-reach-positano-on-a-budget": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/luggage-storage-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/help/arriving-by-car",
+        "/en/help/porter-service-positano",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+        "/en/help/sim-esim-and-atms-positano",
+        "/en/help/groceries-and-pharmacies-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/help/sita-bus-tickets": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/help/how-to-get-to-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/naples-city-guide-for-amalfi-travelers": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/sorrento-gateway-guide": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/ferry-schedules",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/help/only-hostel-in-positano",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/how-to-get-here/positano-sorrento-bus",
+        "/en/how-to-get-here/positano-sorrento-ferry",
+        "/en/help/arriving-by-car",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/positano-sorrento-bus": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/positano-sorrento-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/help/only-hostel-in-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/positano-capri-ferry": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/ferry-schedules": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/positano-to-ravello",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/naples-to-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/help/porter-service-positano",
+        "/en/help/arriving-by-car",
+        "/en/help/ferry-schedules",
+        "/en/help/luggage-storage-positano",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/positano-to-ravello",
+        "/en/how-to-get-here/salerno-to-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/salerno-to-positano",
+        "/en/help/sorrento-gateway-guide",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/how-to-get-here/positano-amalfi-bus",
+        "/en/how-to-get-here/positano-sorrento-bus",
+        "/en/how-to-get-here/positano-naples-center-bus-train",
+        "/en/how-to-get-here/positano-salerno-bus",
+        "/en/help/sita-bus-tickets",
+        "/en/help/porter-service-positano",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/help/salerno-amalfi-coast-gateway",
+        "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+        "/en/help/ferry-schedules",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/money-saving-tips-amalfi-coast-transport": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/transport-on-a-budget-amalfi-coast": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/help/how-to-get-to-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/help/groceries-and-pharmacies-positano": [
+        "/en",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/sim-esim-and-atms-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ]
+    },
+    "crawlErrors": []
+  },
+  "selectedDesktopPaths": [
+    "/en",
+    "/en/rooms",
+    "/en/experiences",
+    "/en/how-to-get-here",
+    "/en/deals",
+    "/en/help",
+    "/en/terms",
+    "/en/privacy-policy",
+    "/en/cookie-policy",
+    "/en/rooms/double_room"
+  ],
+  "selectedMobilePaths": [
+    "/en",
+    "/en/rooms",
+    "/en/experiences",
+    "/en/how-to-get-here",
+    "/en/deals",
+    "/en/help"
+  ],
+  "linkChecks": [
+    {
+      "page": "/en",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here",
+      "status": 200
+    },
+    {
+      "page": "/en/deals",
+      "status": 200
+    },
+    {
+      "page": "/en/help",
+      "status": 200
+    },
+    {
+      "page": "/",
+      "status": 200
+    },
+    {
+      "page": "/en/terms",
+      "status": 200
+    },
+    {
+      "page": "/en/house-rules",
+      "status": 200
+    },
+    {
+      "page": "/en/privacy-policy",
+      "status": 200
+    },
+    {
+      "page": "/en/cookie-policy",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/double_room",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_10",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_11",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_12",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_3",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_4",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_5",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_6",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_9",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_8",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=beaches",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=hiking",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=day-trip",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=boat",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=cuisine",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=more",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-beaches",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-main-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/walk-down-to-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-down-to-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/marina-di-praia-and-secluded-beaches",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/fiordo-di-furore-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/fiordo-di-furore-bus-return",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/fornillo-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/hostel-brikette-to-fornillo-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/laurito-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/getting-to-laurito-beach-by-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-back-from-laurito-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/gavitella-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/arienzo-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-to-arienzo-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-back-from-arienzo-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/regina-giovanna-bath-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods-via-amalfi-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods-via-nocelle",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/top-of-the-mountain-hike",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/santa-maria-del-castello-hike",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/sunrise-hike-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/stay-fit-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-to-pompeii",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/day-trip-capri-from-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/day-trips-from-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/capri-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/boat-tours-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/cheap-eats-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/eating-out-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/limoncello-and-local-cuisine",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-dining-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/ferry-cancellations-weather",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-to-amalfi",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-to-ravello",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/sunset-viewpoints-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/terrace-bar-sunset-experience-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/digital-concierge-service",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-travel-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-instagram-spots",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/ravello-music-festival-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/ferragosto-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/camping-on-the-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-in-winter-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/free-walking-tour-audio-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/luminaria-di-san-domenico-praiano",
+      "status": 200
+    },
+    {
+      "page": "/en/bar-menu",
+      "status": 200
+    },
+    {
+      "page": "/en/breakfast-menu",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/amalfi-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/amalfi-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/capri-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-center-train-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-center-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-airport-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/salerno-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/salerno-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/ravello-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-ravello-ferry-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/sorrento-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/sorrento-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/help/arriving-by-car",
+      "status": 200
+    },
+    {
+      "page": "/en/help/sim-esim-and-atms-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/what-to-pack-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/help/best-time-to-visit-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-naples-center-bus-train",
+      "status": 200
+    },
+    {
+      "page": "/en/help/how-to-reach-positano-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/help/luggage-storage-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/sita-bus-tickets",
+      "status": 200
+    },
+    {
+      "page": "/en/help/naples-city-guide-for-amalfi-travelers",
+      "status": 200
+    },
+    {
+      "page": "/en/help/sorrento-gateway-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-sorrento-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-sorrento-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/help/only-hostel-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-capri-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/help/ferry-schedules",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-to-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "status": 200
+    },
+    {
+      "page": "/en/help/money-saving-tips-amalfi-coast-transport",
+      "status": 200
+    },
+    {
+      "page": "/en/help/transport-on-a-budget-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/help/groceries-and-pharmacies-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/porter-service-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/free-low-cost-things-to-do-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/off-season-long-stay-tips-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/wi-fi-and-work-cafes-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/how-to-get-to-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/how-to-get-here",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positano-naples-ferry",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/chiesa-nuova-arrivals",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positano-amalfi-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/help/eco-friendly-travel-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/chiesaNuovaDepartures",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positanoSorrentoBus",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positanoNaplesCenterFerry",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positanoSalernoBus",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positanoAmalfiBus",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/positanoRavelloBus",
+      "status": 404
+    },
+    {
+      "page": "/en/how-to-get-here/salerno-to-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-salerno-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/help/salerno-amalfi-coast-gateway",
+      "status": 200
+    }
+  ],
+  "imageSweep": {
+    "checkedImageCount": 254,
+    "pageFetchErrors": [],
+    "brokenImages": []
+  },
+  "desktopResults": [
+    {
+      "page": "/en",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Brikette Hostel in Positano - Affordable Amalfi Coast Stay",
+        "htmlLang": null,
+        "h1": [
+          "heroSection.title"
+        ],
+        "imageCount": 4,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 11,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 172,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 40,
+            "height": 17
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 45,
+            "height": 17
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 81,
+            "height": 17
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 109,
+            "height": 17
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 37,
+            "height": 17
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 17
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Direct booking perks • Best price guaranteed",
+            "ariaLabel": "Learn about direct perks",
+            "width": 266,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 37,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [
+          "sources.hostelworld.label",
+          "sources.booking.label"
+        ],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": [
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "description": "Ensure every HTML document has a lang attribute",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/en/rooms",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Rooms & Rates | Brikette Hostel Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Our rooms"
+        ],
+        "imageCount": 12,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 86,
+        "tinyTapTargets24": 17,
+        "tinyTapTargets44": 44,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "All rooms",
+            "ariaLabel": null,
+            "width": 91,
+            "height": 30
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Private rooms",
+            "ariaLabel": null,
+            "width": 122,
+            "height": 30
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "badResponses": [
+        {
+          "status": 404,
+          "url": "https://c0227146.brikette-website.pages.dev/en/help.txt?_rsc=1600h",
+          "path": "/en/help.txt",
+          "method": "GET",
+          "resourceType": "fetch"
+        }
+      ],
+      "axeViolations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                ".text-brand-secondary\\/80"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.27 (foreground color: #f4da7c, background color: #f5f5f6, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/en/experiences",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [],
+        "imageCount": 64,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 90,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 17,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "All experiences54",
+            "ariaLabel": null,
+            "width": 169,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#Beaches21",
+            "ariaLabel": "Filter by experience type: #Beaches (21)",
+            "width": 133,
+            "height": 34
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/how-to-get-here",
+      "viewport": "desktop",
+      "navStatus": null,
+      "navError": "Error: page.goto: net::ERR_CONNECTION_CLOSED at https://c0227146.brikette-website.pages.dev/en/how-to-get-here\nCall log:\n\u001b[2m  - navigating to \"https://c0227146.brikette-website.pages.dev/en/how-to-get-here\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "dom": null,
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/deals",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Save 15% on stays Sept 20 – Oct 31",
+        "htmlLang": "en",
+        "h1": [
+          "Save 15%"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 31,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 12,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Expired deals",
+            "ariaLabel": null,
+            "width": 1408,
+            "height": 25
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 156,
+            "height": 40
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "badResponses": [
+        {
+          "status": 404,
+          "url": "https://c0227146.brikette-website.pages.dev/en/help.txt?_rsc=zfrak",
+          "path": "/en/help.txt",
+          "method": "GET",
+          "resourceType": "fetch"
+        }
+      ],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/help",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Help centre with contact details and travel support - Hostel Brikette Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Help Centre"
+        ],
+        "imageCount": 14,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 46,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 14,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Google Business",
+            "ariaLabel": null,
+            "width": 141,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Booking.com",
+            "ariaLabel": null,
+            "width": 116,
+            "height": 36
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/terms",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Booking Terms | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Hostel Brikette — Booking Terms"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 47,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 10,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "badResponses": [
+        {
+          "status": 404,
+          "url": "https://c0227146.brikette-website.pages.dev/en/help.txt?_rsc=1i90z",
+          "path": "/en/help.txt",
+          "method": "GET",
+          "resourceType": "fetch"
+        }
+      ],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/privacy-policy",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Privacy Policy | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Privacy Policy"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 41,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 10,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "badResponses": [
+        {
+          "status": 404,
+          "url": "https://c0227146.brikette-website.pages.dev/en/help.txt?_rsc=6g2nj",
+          "path": "/en/help.txt",
+          "method": "GET",
+          "resourceType": "fetch"
+        }
+      ],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/cookie-policy",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Cookie Policy | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Cookie Policy"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 37,
+        "tinyTapTargets24": 6,
+        "tinyTapTargets44": 10,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "badResponses": [
+        {
+          "status": 404,
+          "url": "https://c0227146.brikette-website.pages.dev/en/help.txt?_rsc=p4h4n",
+          "path": "/en/help.txt",
+          "method": "GET",
+          "resourceType": "fetch"
+        }
+      ],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/double_room",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Double Room",
+        "htmlLang": "en",
+        "h1": [
+          "rooms.double_room.title"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 7,
+        "tinyTapTargets44": 15,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Hostel Brikette",
+            "ariaLabel": null,
+            "width": 192,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 178,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Home",
+            "ariaLabel": "Home",
+            "width": 42,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Rooms",
+            "ariaLabel": "Rooms",
+            "width": 48,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Experiences",
+            "ariaLabel": "Experiences",
+            "width": 83,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "How to Get Here",
+            "ariaLabel": "How to Get Here",
+            "width": 112,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": "Deals",
+            "width": 39,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": "Help",
+            "width": 31,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "<",
+            "ariaLabel": "roomImage.prevAria",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": ">",
+            "ariaLabel": "roomImage.nextAria",
+            "width": 40,
+            "height": 40
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [
+          "rooms.double_room.title",
+          "ROOMS.DOUBLE_ROOM.TITLE",
+          "rooms.double_room.bed_description",
+          "detail.common.amenitiesHeading",
+          "detail.common.amenitiesIntro"
+        ],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "badResponses": [
+        {
+          "status": 404,
+          "url": "https://c0227146.brikette-website.pages.dev/en/help.txt?_rsc=1mqd2",
+          "path": "/en/help.txt",
+          "method": "GET",
+          "resourceType": "fetch"
+        }
+      ],
+      "axeViolations": []
+    }
+  ],
+  "mobileResults": [
+    {
+      "page": "/en",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Brikette Hostel in Positano - Affordable Amalfi Coast Stay",
+        "htmlLang": "en",
+        "h1": [
+          "Hostel Brikette, Positano"
+        ],
+        "imageCount": 10,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 51,
+        "tinyTapTargets24": 7,
+        "tinyTapTargets44": 10,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Direct booking perks • Best price guaranteed",
+            "ariaLabel": "Learn about direct perks",
+            "width": 267,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": "More About This Room Double Room",
+            "width": 206,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": "More About This Room Premium Mixed Dorm",
+            "width": 206,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": "More About This Room Superior Female Dorm – Large Terrace",
+            "width": 206,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": "More About This Room Superior Mixed Dorm",
+            "width": 206,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": "More About This Room Value Female Dorm",
+            "width": 206,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": "More About This Room Value Mixed Dorm",
+            "width": 206,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Visit the help center",
+            "ariaLabel": null,
+            "width": 138,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Rooms & Rates | Brikette Hostel Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Our rooms"
+        ],
+        "imageCount": 12,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 79,
+        "tinyTapTargets24": 11,
+        "tinyTapTargets44": 56,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "All rooms",
+            "ariaLabel": null,
+            "width": 91,
+            "height": 30
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Private rooms",
+            "ariaLabel": null,
+            "width": 122,
+            "height": 30
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Dorms",
+            "ariaLabel": null,
+            "width": 72,
+            "height": 30
+          },
+          {
+            "tag": "BUTTON",
+            "text": "<",
+            "ariaLabel": "Previous image",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": ">",
+            "ariaLabel": "Next image",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Non-Refundable Rates",
+            "ariaLabel": "Non-Refundable Rates",
+            "width": 292,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Flexible Room Rates",
+            "ariaLabel": "Flexible Room Rates",
+            "width": 292,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "More About This Room",
+            "ariaLabel": null,
+            "width": 156,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "<",
+            "ariaLabel": "Previous image",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": ">",
+            "ariaLabel": "Next image",
+            "width": 40,
+            "height": 40
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                ".text-brand-secondary\\/80"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 1.27 (foreground color: #f4da7c, background color: #f5f5f6, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/en/experiences",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 64,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 209,
+        "tinyTapTargets24": 21,
+        "tinyTapTargets44": 131,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 257,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Show all experiences guides54",
+            "ariaLabel": null,
+            "width": 262,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#Beaches21",
+            "ariaLabel": "Filter experiences guides by topic: #Beaches (21)",
+            "width": 133,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#Hiking8",
+            "ariaLabel": "Filter experiences guides by topic: #Hiking (8)",
+            "width": 112,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#Day trips4",
+            "ariaLabel": "Filter experiences guides by topic: #Day trips (4)",
+            "width": 131,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#Boat tours1",
+            "ariaLabel": "Filter experiences guides by topic: #Boat tours (1)",
+            "width": 137,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#Food & Drink4",
+            "ariaLabel": "Filter experiences guides by topic: #Food & Drink (4)",
+            "width": 156,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "#More16",
+            "ariaLabel": "Filter experiences guides by topic: #More (16)",
+            "width": 108,
+            "height": 34
+          },
+          {
+            "tag": "A",
+            "text": "Positano Beaches: Sun & Secret Coves",
+            "ariaLabel": null,
+            "width": 305,
+            "height": 23
+          },
+          {
+            "tag": "A",
+            "text": "Read guide",
+            "ariaLabel": null,
+            "width": 114,
+            "height": 37
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/how-to-get-here",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Hostel Brikette - List of Travel Directions",
+        "htmlLang": "en",
+        "h1": [],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 22,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/deals",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Save 15% on stays Sept 20 – Oct 31",
+        "htmlLang": "en",
+        "h1": [
+          "Save 15%"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 24,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 4,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Expired deals",
+            "ariaLabel": null,
+            "width": 358,
+            "height": 25
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 156,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/help",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Help centre with contact details and travel support - Hostel Brikette Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Help Centre"
+        ],
+        "imageCount": 14,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 6,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Google Business",
+            "ariaLabel": null,
+            "width": 141,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Booking.com",
+            "ariaLabel": null,
+            "width": 116,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Hostelworld",
+            "ariaLabel": null,
+            "width": 108,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Instagram",
+            "ariaLabel": null,
+            "width": 99,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "broken-internal-routes",
+      "priority": "P0",
+      "title": "Internal routes return 4xx/5xx",
+      "evidence": {
+        "brokenCount": 9,
+        "samples": [
+          {
+            "page": "/en/how-to-get-here/how-to-get-here",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/positano-naples-ferry",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/chiesa-nuova-arrivals",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/chiesaNuovaDepartures",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/positanoSorrentoBus",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/positanoNaplesCenterFerry",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/positanoSalernoBus",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/positanoAmalfiBus",
+            "status": 404
+          },
+          {
+            "page": "/en/how-to-get-here/positanoRavelloBus",
+            "status": 404
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Every internal navigation route linked from the audited pages returns HTTP 200 (or expected redirect).",
+        "No help/support/article link in the audited navigation returns 404.",
+        "Automated link check passes for audited internal routes."
+      ]
+    },
+    {
+      "id": "untranslated-i18n-keys",
+      "priority": "P0",
+      "title": "Raw i18n keys leak into user-visible UI",
+      "evidence": {
+        "pageCount": 2,
+        "samples": [
+          {
+            "page": "/en",
+            "viewport": "desktop",
+            "samples": [
+              "sources.hostelworld.label",
+              "sources.booking.label"
+            ]
+          },
+          {
+            "page": "/en/rooms/double_room",
+            "viewport": "desktop",
+            "samples": [
+              "rooms.double_room.title",
+              "ROOMS.DOUBLE_ROOM.TITLE",
+              "rooms.double_room.bed_description",
+              "detail.common.amenitiesHeading",
+              "detail.common.amenitiesIntro"
+            ]
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "All user-facing labels, headings, and descriptions resolve to localized strings.",
+        "No `namespace.key.path` patterns appear in rendered UI text on audited pages.",
+        "Both desktop and mobile snapshots for affected pages show translated content only."
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "priority": "P1",
+      "title": "WCAG color contrast failures",
+      "evidence": {
+        "pageCount": 1,
+        "sampleViolations": [
+          {
+            "page": "/en/rooms",
+            "viewport": "desktop",
+            "nodeCount": 1,
+            "help": "Elements must meet minimum color contrast ratio thresholds"
+          },
+          {
+            "page": "/en/rooms",
+            "viewport": "mobile",
+            "nodeCount": 1,
+            "help": "Elements must meet minimum color contrast ratio thresholds"
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Text contrast meets WCAG AA thresholds (4.5:1 for normal text, 3:1 for large text).",
+        "Axe `color-contrast` reports 0 violations on homepage and key landing pages.",
+        "Updated palette passes both desktop and mobile checks."
+      ]
+    },
+    {
+      "id": "recurring-network-404-noise",
+      "priority": "P2",
+      "title": "Recurring 4xx fetch/XHR errors in console",
+      "evidence": {
+        "patternCount": 1,
+        "samples": [
+          {
+            "signature": "404 /en/help.txt",
+            "count": 6,
+            "pageCount": 6
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "No recurring 4xx fetch/XHR errors appear during page load of audited routes.",
+        "Browser console is free from deterministic missing-resource noise in normal navigation."
+      ]
+    },
+    {
+      "id": "touch-target-size",
+      "priority": "P2",
+      "title": "Touch targets below recommended size",
+      "evidence": {
+        "pageCount": 9,
+        "samples": [
+          {
+            "page": "/en",
+            "viewport": "desktop",
+            "tinyTapTargets44": 11
+          },
+          {
+            "page": "/en/rooms",
+            "viewport": "desktop",
+            "tinyTapTargets44": 44
+          },
+          {
+            "page": "/en/experiences",
+            "viewport": "desktop",
+            "tinyTapTargets44": 17
+          },
+          {
+            "page": "/en/deals",
+            "viewport": "desktop",
+            "tinyTapTargets44": 12
+          },
+          {
+            "page": "/en/help",
+            "viewport": "desktop",
+            "tinyTapTargets44": 14
+          },
+          {
+            "page": "/en/terms",
+            "viewport": "desktop",
+            "tinyTapTargets44": 10
+          },
+          {
+            "page": "/en/privacy-policy",
+            "viewport": "desktop",
+            "tinyTapTargets44": 10
+          },
+          {
+            "page": "/en/cookie-policy",
+            "viewport": "desktop",
+            "tinyTapTargets44": 10
+          },
+          {
+            "page": "/en/rooms/double_room",
+            "viewport": "desktop",
+            "tinyTapTargets44": 15
+          },
+          {
+            "page": "/en",
+            "viewport": "mobile",
+            "tinyTapTargets44": 10
+          },
+          {
+            "page": "/en/rooms",
+            "viewport": "mobile",
+            "tinyTapTargets44": 56
+          },
+          {
+            "page": "/en/experiences",
+            "viewport": "mobile",
+            "tinyTapTargets44": 131
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Interactive touch targets meet at least 44x44 CSS pixels on mobile-critical controls.",
+        "Lighthouse/Axe touch target checks pass for key conversion flows."
+      ]
+    }
+  ]
+}

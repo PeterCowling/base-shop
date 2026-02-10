@@ -23,15 +23,13 @@ jobs:
           fetch-depth: 0
       - name: Detect app-impacting changes for LHCI
         id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            shop_skylar:
-              - 'apps/cover-me-pretty/**'
-              - 'apps/skylar/**'
-              - '.lighthouseci/**'
-              - 'lighthouserc*.json'
-              - '.github/workflows/ci-lighthouse.yml'
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only "origin/${{ github.base_ref }}...HEAD" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          else
+            git diff --name-only "${{ github.event.before }}..${{ github.sha }}" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          fi
+          node scripts/ci/path-classifier.cjs --config lighthouse --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
 
   lhci:
     name: Lighthouse (${{ matrix.config }})

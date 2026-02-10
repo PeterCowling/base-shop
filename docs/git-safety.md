@@ -1,102 +1,44 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-02
+Last-reviewed: 2026-02-09
 
 # Git Safety Guide (Agent Runbook)
 
-> **⚠️ CRITICAL:** On January 14, 2026, a `git reset --hard` command destroyed 8 applications worth of work.
-> Recovery took days. This guide exists to prevent that from ever happening again.
-> See [RECOVERY-PLAN-2026-01-14.md](./historical/RECOVERY-PLAN-2026-01-14.md) for incident details.
-
----
+> Critical incident reference: January 14, 2026 (`docs/historical/RECOVERY-PLAN-2026-01-14.md`).
+> This guide defines the no-loss operating model that replaced the old workflow.
 
 ## Quick Reference
 
-| Who | What to Read |
-|-----|--------------|
-| **AI Agents (Claude/Codex)** | [AGENTS.md](../AGENTS.md) - Git Safety Rules section |
-| **All contributors** | The rules below apply to all contributors |
+| Audience | Primary doc |
+|----------|-------------|
+| AI agents (Claude/Codex) | `AGENTS.md` |
+| All contributors | This guide |
 
----
+## Golden Rules
 
-## The Golden Rules
+### 1) Never run destructive/history-rewrite commands
 
-### 1. Never Run Destructive Git Commands
+Forbidden in agent flow:
 
-These commands can permanently destroy work:
+- `git reset --hard` / `git clean -fd`
+- `git push --force`, `-f`, `--force-with-lease`
+- `git rebase` (including `-i`)
+- `git commit --amend`
+- bulk discard patterns (`git checkout -- ...`, `git restore ...` across multiple paths/dirs/globs)
+- stash-losing ops (`git stash pop|apply|drop|clear`)
 
-| Command | Risk | What It Does |
-|---------|------|--------------|
-| `git reset --hard` | 🔴 CATASTROPHIC | Destroys uncommitted changes AND moves HEAD |
-| `git reset --hard <commit>` | 🔴 CATASTROPHIC | Deletes ALL work since that commit |
-| `git clean -fd` | 🔴 HIGH | Permanently deletes untracked files |
-| `git checkout -- .`, `git restore .` | 🔴 HIGH | Discards all local modifications |
-| `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` | 🔴 HIGH | Bulk discards local modifications (multiple paths, directories, or globs) |
-| `git checkout --theirs .` | 🔴 HIGH | Overwrites files during conflict resolution (can destroy local changes) |
-| `git stash drop` | 🟠 MEDIUM | Permanently loses stashed changes (blocked by git guard) |
-| `git stash clear` | 🟠 MEDIUM | Loses all stashes (blocked by git guard) |
-| `git stash pop` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; `list/show/push` allowed) |
-| `git stash apply` | 🟠 MEDIUM | Can cause merge conflicts (blocked by git guard; `list/show/push` allowed) |
-| `git push --force` | 🔴 HIGH | Overwrites remote history (affects team) |
-| `git push -f` | 🔴 HIGH | Same as above (shorthand) |
-| `git push --force-with-lease` | 🔴 HIGH | Safer force-push variant, but still rewrites remote history |
-| `git rebase` (incl. `-i`) | 🟠 MEDIUM | Rewrites history; can lose commits |
-| `git commit --amend` | 🟠 MEDIUM | Rewrites the last commit (dangerous after push) |
+If git state is confusing: stop, capture diagnostics, and ask for direction.
 
-**If one of these commands seems necessary, STOP and read the alternatives below.**
+### 2) Use single-writer lock for any write operation
 
-### 2. Safe Alternatives
-
-| Instead of... | Do this... |
-|--------------|------------|
-| `git reset --hard` | Commit first, then discuss what to discard |
-| `git reset --hard <commit>` | **Never do this.** Ask for help instead. |
-| `git clean -fd` | Move files to `archive/` folder |
-| `git checkout -- .`, `git restore .` | Commit first, then discuss what to discard |
-| `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` | Commit first, then revert/select changes intentionally (never bulk-discard) |
-| `git rebase`, `git commit --amend` | Create a new commit; let PR merge handle history |
-| `git push --force` | Create a new branch instead |
-| Fixing a "broken" git state | Share `git status` output and ask for help |
-
-### 3. Commit and Push Regularly
-
-| Trigger | Action |
-|---------|--------|
-| Every 30 minutes of work | Commit changes |
-| Every significant change | Commit immediately |
-| Every 2 hours | Push to GitHub |
-| Every 3 local commits | Push to GitHub |
-| When ready to update staging | Ship `dev` → `staging` (`scripts/git/ship-to-staging.sh`) |
-
-**Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if the local machine fails.
-
-### 4. Never Commit Directly on `main` or `staging`
+For non-interactive agents:
 
 ```bash
-# Check current branch
-git branch --show-current
-
-# If on main/staging, switch to dev (create it if needed)
-git fetch origin --prune
-git checkout dev || git checkout -b dev origin/main
+scripts/agents/integrator-shell.sh -- <command> [args...]
 ```
 
-**Why:** Direct commits to `main`/`staging` bypass the release pipeline and can cause accidental deployments.
-
-### 5. Multi-Agent Rule: Single Writer Lock (Required)
-
-If you’re running multiple agents (or a human + agents), do **not** let multiple processes write to the same checkout.
-
-Before editing, committing, or pushing, enter integrator mode (writer lock + git guard):
-
-```bash
-scripts/agents/integrator-shell.sh -- codex
-# or open a subshell:
-scripts/agents/integrator-shell.sh
-```
-
-If the lock is held, recover safely, then wait:
+Lock diagnostics:
 
 ```bash
 scripts/git/writer-lock.sh status
@@ -104,364 +46,178 @@ scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this ho
 scripts/git/writer-lock.sh acquire --wait
 ```
 
-**Why:** A single checkout is safe only with a single-writer rule. The writer lock makes “save to GitHub” deterministic and prevents accidental overwrites.
+### 3) Follow the only release path
 
----
+`dev -> staging -> main`
+
+- Commit and push on `dev`
+- Ship via `scripts/git/ship-to-staging.sh`
+- Promote via `scripts/git/promote-to-main.sh`
+
+Direct commit/push to `staging` or `main` is blocked by policy and hooks.
+
+### 4) Commit and push frequently
+
+- commit every significant change (or <= 30 minutes)
+- push `dev` regularly (<= 2 hours or <= 3 commits)
 
 ## Branch Strategy
 
-### Branch Types
+| Branch | Purpose | Deploy target |
+|--------|---------|---------------|
+| `dev` | integration branch for local work | CI only |
+| `staging` | pre-production branch | staging environment |
+| `main` | production branch | production |
 
-| Branch | Purpose | Who Creates | Deploys To |
-|--------|---------|-------------|------------|
-| `dev` | All local commits (integration branch) | Integrator (human or designated agent) | CI only |
-| `staging` | Staging deploy branch (auto from `dev`) | Pipeline (PR merge) | Staging environment |
-| `main` | Production code | Pipeline (PR merge) | Production (live sites) |
+Operational scripts:
 
-### Workflow
-
-```
-┌─────────────┐     ┌─────────────┐     ┌────────────────────┐
-│ Commit on   │────▶│ Push dev    │────▶│ PR dev → staging    │
-│ dev         │     │ (backup)    │     │ (auto-merge)        │
-└─────────────┘     └─────────────┘     └────────────────────┘
-                                              │
-                                              ▼
-                                      Auto-deploy to staging
-                                              │
-                                              ▼
-                                      Visual test on staging
-                                              │
-                                              ▼
-                                   PR staging → main (auto-merge)
-                                              │
-                                              ▼
-                                      Auto-deploy to production
-```
-
----
+- `scripts/git/ship-to-staging.sh`
+- `scripts/git/promote-to-main.sh`
 
 ## Protection Layers
 
-This repo has multiple layers of protection against accidental data loss:
+### Layer 1: Policy docs
 
-### Layer 1: Documentation (AGENTS.md, CLAUDE.md)
+- `AGENTS.md`
+- `docs/git-safety.md`
+- `docs/git-hooks.md`
 
-AI agents are instructed to follow git safety rules. These rules are enforced by:
-- Clear prohibitions on destructive commands
-- Decision trees for common scenarios
-- Explicit instructions to ask for help when git is confusing
+### Layer 2: Local hooks
 
-**Location:** [AGENTS.md](../AGENTS.md) - Git Safety Rules section
+| Hook | Script | Effect |
+|------|--------|--------|
+| `pre-commit` | `scripts/git-hooks/block-commit-on-protected-branches.sh && scripts/git-hooks/pre-commit.sh` | blocks protected-branch commits; runs staged-scope checks with writer-lock enforcement |
+| `prepare-commit-msg` | `scripts/git-hooks/prepare-commit-msg-safety.sh` | blocks amend/reuse-message workflows |
+| `pre-rebase` | `scripts/git-hooks/pre-rebase-safety.sh` | blocks rebase by default |
+| `pre-push` | `scripts/git-hooks/pre-push.sh` | enforces writer lock, blocks unsafe pushes, runs range-scoped `scripts/validate-changes.sh` |
 
-### Layer 2: Git Hooks (Local)
+Install/refresh hooks:
 
-Git hooks run automatically before commits and pushes:
-
-| Hook | Script | What It Does |
-|------|--------|--------------|
-| `pre-commit` | [pre-commit-check-env.sh](../scripts/git-hooks/pre-commit-check-env.sh) | Blocks commits of secret env files |
-| `pre-commit` | [require-writer-lock.sh](../scripts/git-hooks/require-writer-lock.sh) | Blocks commits unless the single-writer lock is held |
-| `pre-commit` | [no-partially-staged.js](../scripts/git-hooks/no-partially-staged.js) | Blocks partially staged files before lint-staged runs |
-| `pre-commit` | `lint-staged --no-stash` | Runs check-only linting on staged files without backup stashes |
-| `pre-commit` | `pnpm typecheck` | Runs typecheck before committing |
-| `pre-commit` | `pnpm lint` | Runs lint before committing |
-| `pre-commit` | `pnpm validate:agent-context` | Checks for drift in always-on agent context files |
-| `prepare-commit-msg` | [prepare-commit-msg-safety.sh](../scripts/git-hooks/prepare-commit-msg-safety.sh) | Blocks amend-style / commit-message-reuse workflows by default |
-| `pre-rebase` | [pre-rebase-safety.sh](../scripts/git-hooks/pre-rebase-safety.sh) | Blocks `git rebase` by default |
-| `pre-push` | [require-writer-lock.sh](../scripts/git-hooks/require-writer-lock.sh) | Blocks pushes unless the single-writer lock is held |
-| `pre-push` | [pre-push-safety.sh](../scripts/git-hooks/pre-push-safety.sh) | Blocks direct pushes to protected branches and any non-fast-forward push |
-| `pre-push` | `pnpm typecheck` | Runs typecheck before pushing |
-| `pre-push` | `pnpm lint` | Runs lint before pushing |
-
-**Setup:**
 ```bash
-pnpm install
 pnpm run prepare
 ```
 
-**Documentation:** [Git Hooks](./git-hooks.md)
+### Layer 3: GitHub branch protections
 
-### Layer 3: GitHub Branch Protection (Server)
+Rulesets on `staging` and `main` should enforce:
 
-GitHub should enforce these rules on `main` and `staging`:
+- pull requests required
+- required checks must pass
+- force-push blocked
+- auto-merge allowed
 
-| Setting | Value | Why |
-|---------|-------|-----|
-| Require pull request | ✅ On | No direct pushes to main |
-| Required approvals | 0 | No manual review required |
-| Require status checks | ✅ On | CI must pass |
-| Auto-merge enabled | ✅ On | Merges PRs when checks pass |
-| Block force pushes | ✅ On | Prevents history destruction |
+### Layer 4: Agent git guard (Claude/Codex sessions)
 
-**Configuration:** GitHub → Settings → Rules → Rulesets → `main` / `staging`
+`.claude/hooks/pre-tool-use-git-safety.sh` blocks destructive commands and hook-bypass attempts (`--no-verify`, `-n`, `SKIP_WRITER_LOCK`, `SKIP_SIMPLE_GIT_HOOKS`) before execution.
 
-### Layer 4: Agent Runner Guardrails (ACTIVE in Claude Code)
+Regression tests:
 
-Claude Code sessions now automatically inject the git guard onto PATH via SessionStart hooks (`.claude/settings.json`).
+- `scripts/__tests__/pre-tool-use-git-safety.test.ts`
+- `scripts/__tests__/git-safety-policy.test.ts`
 
-**PreToolUse hooks are ACTIVE** - the git guard intercepts git commands before Claude Code executes them.
+## Conflict-Safe Merge Procedure (No-Loss)
 
-The git guard blocks:
-- Destructive commands (`git reset --hard`, `git clean -fd`)
-- History-rewriting commands (`git rebase`, `git commit --amend`, `git push --force`)
-- Bulk discard patterns (`git restore` / `git checkout --` with multiple paths, directories, or globs)
-- Stash operations that can lose work (`drop/clear/pop/apply` - `list/show/push` allowed)
-- `--no-verify` flag (prevents bypassing git hooks)
+Use this when push is rejected because remote advanced.
 
-**Script:** `.claude/hooks/pre-tool-use-git-safety.sh`
-**Tests:** `scripts/__tests__/pre-tool-use-git-safety.test.ts`
-
-The git guard is always active for Claude Code sessions (not just wrapper shells).
-
-If you run agents locally outside Claude Code, you can optionally use integrator mode (writer lock + git guard):
+1. Create safety anchor:
 
 ```bash
-scripts/agents/integrator-shell.sh -- <your-agent-command>
+git rev-parse HEAD
+git branch backup/pre-merge-$(date +%Y%m%d-%H%M%S)
 ```
 
----
-
-## For AI Agents (Claude/Codex)
-
-### Session Start Checklist
+2. Merge additively (no rebase/force):
 
 ```bash
-# 0. If you will WRITE, start in integrator mode (writer lock + git guard)
-scripts/agents/integrator-shell.sh -- codex
+git fetch origin --prune
+git merge --no-ff origin/dev
+```
 
-# 1. Check current branch (commit only on dev)
+3. Resolve conflicts file-by-file:
+
+```bash
+git diff --name-only --diff-filter=U
+```
+
+Never use bulk `ours/theirs` checkout or bulk discard shortcuts.
+
+4. Lockfile conflict rule:
+
+Regenerate lockfile from declarative sources where appropriate (for pnpm: `pnpm install --lockfile-only`), then re-run validation.
+
+5. Validate and push:
+
+```bash
+bash scripts/validate-changes.sh
+git push origin dev
+```
+
+## Agent Session Checklist
+
+### Start
+
+```bash
 git branch --show-current
-
-# 2. Check for uncommitted changes
 git status --porcelain
-# If not empty, commit them
-
-# 3. Sync remote refs (no merge/rebase)
 git fetch origin --prune
 ```
 
-### During Session
+If writing, run write commands via integrator wrapper.
 
-- Commit after every significant change
-- Push `dev` every 2 hours or 3 commits
-- Ship to staging when ready: `scripts/git/ship-to-staging.sh`
-- Never run destructive commands
-- If git is confusing, STOP and ask the user
+### During
 
-### Session End Checklist
+- keep changes small and committed
+- avoid stash-based workflows
+- run targeted validation before commit/push
 
-```bash
-# 1. Commit any remaining changes
-git add -A
-git commit -m "WIP: session end checkpoint
-
-Co-Authored-By: Claude <model> <noreply@anthropic.com>"
-
-# 2. Push to GitHub
-git push origin HEAD
-
-# 3. Tell user the branch name
-```
-
-### When Git Is Confusing
-
-**THIS IS HOW THE JAN 14 INCIDENT HAPPENED.** An agent tried to "fix" a confusing git state by resetting to an old commit.
-
-**DO NOT try to fix it yourself. Instead:**
-
-1. STOP - do not run more commands
-2. Run diagnostics:
-   ```bash
-   git status
-   git log --oneline -5
-   git diff --stat
-   scripts/git/writer-lock.sh status
-   ```
-3. Share output with user
-4. Say: "Git is in an unexpected state. Please advise how to proceed."
-5. Wait for human guidance
-
----
-
-## For Humans
-
-### Shipping and Promotion
-
-1. **Ship `dev` → `staging` (auto-deploy to staging)**
-   ```bash
-   git fetch origin --prune
-   git checkout dev
-   scripts/git/ship-to-staging.sh
-   ```
-
-2. **Promote `staging` → `main` (auto-deploy to production)**
-   ```bash
-   git fetch origin --prune
-   git checkout staging
-   scripts/git/promote-to-main.sh
-   ```
-
-### Emergency: Bypassing Hooks (Humans only)
-
-**⚠️ Use only when absolutely necessary:**
+### End
 
 ```bash
-# Skip pre-commit / pre-push hooks
-git commit --no-verify -m "Emergency fix"
-git push --no-verify
-
-# Or: skip simple-git-hooks specifically
-SKIP_SIMPLE_GIT_HOOKS=1 git push origin HEAD
-
-# Never bypass in order to rewrite history or push to protected branches.
+git add <paths>
+git commit -m "<message>"
+git push origin dev
 ```
 
-For writer-lock issues, fix lock state instead of bypassing:
+## Human Break-Glass Policy
 
-```bash
-scripts/git/writer-lock.sh status
-scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
-scripts/git/writer-lock.sh acquire --wait
-```
-
-**Document why hooks were bypassed and follow up to fix the root cause.**
-
----
+- Human-only emergency bypasses are outside standard agent flow.
+- Agents must never bypass hooks or guards.
+- If an emergency bypass occurs, document reason and follow-up remediation in repo history.
 
 ## Troubleshooting
 
-### "My changes disappeared"
+### "I accidentally committed on main/staging"
 
-1. Check reflog: `git reflog`
-2. Check recent commits: `git log --oneline -10`
-3. **Do NOT reset to try to recover**
-4. Ask for help
+Do not rewrite history. Move forward safely:
 
-### "I accidentally committed to main"
-
-1. Don’t push yet!
-2. Create/move the commit onto `dev`: `git checkout -b dev`
-3. Push `dev` and continue via the `dev` → `staging` pipeline
-
-### "I want to undo a change"
-
-**Safe way:**
 ```bash
-# Undo a specific commit (creates new commit)
-git revert <commit-hash>
-
-# Restore a specific file to an earlier version
-git restore --source <commit-hash> -- path/to/file
+git fetch origin --prune
+git switch dev || git switch -c dev origin/dev || git switch -c dev origin/main
 ```
 
-**Agents:** Restore only **one file at a time**. Never use `git restore` / `git checkout --` with multiple paths, directories, or globs — that’s a bulk discard and can silently destroy work.
+Then re-commit/cherry-pick as needed and continue through `dev -> staging -> main`.
 
-**NOT safe (don't do this):**
-```bash
-# DON'T DO THIS
-git reset --hard <commit>
-```
-
-### "Git hooks aren't running"
+### "Hooks are not running"
 
 ```bash
-# Reinstall hooks
 pnpm run prepare
-
-# Verify installation
 hooks_dir="$(git config --get core.hooksPath || git rev-parse --git-path hooks)"
 cat "$hooks_dir/pre-commit"
 ls -la "$hooks_dir/pre-commit"
 ```
 
-### "Push was rejected"
+### "Push rejected"
 
-If GitHub rejects a push to `main`/`staging`:
-1. This is expected - these branches are protected by process
-2. Use the pipeline scripts instead:
-   - `scripts/git/ship-to-staging.sh`
-   - `scripts/git/promote-to-main.sh`
+Protected branches reject direct pushes by design.
 
----
+Use:
 
-## Reference
+- `scripts/git/ship-to-staging.sh`
+- `scripts/git/promote-to-main.sh`
 
-### Commit Message Format
+## Related Docs
 
-```
-type: brief description
-
-Longer description if needed.
-
-Co-Authored-By: Claude <model> <noreply@anthropic.com>
-```
-
-Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
-
-### Related Documentation
-
-- [AGENTS.md](../AGENTS.md) - Full rules for AI agents
-- [CLAUDE.md](../CLAUDE.md) - Project-specific Claude instructions
-- [Git Hooks](./git-hooks.md) - Hook configuration details
-- [Contributing](./contributing.md) - Contribution guidelines
-- [Recovery Plan](./historical/RECOVERY-PLAN-2026-01-14.md) - Jan 14 incident details
-
----
-
-## Maintenance
-
-### Test Harness
-
-The git safety system is tested against the Command Policy Matrix to prevent drift between documentation and enforcement scripts.
-
-**Test files:**
-- `scripts/__tests__/git-safety-policy.test.ts` - Tests git guard enforcement against the policy matrix
-- `scripts/__tests__/pre-tool-use-git-safety.test.ts` - Tests Claude Code PreToolUse hook integration
-
-Run tests:
-```bash
-pnpm test scripts/__tests__/git-safety-policy.test.ts
-pnpm test scripts/__tests__/pre-tool-use-git-safety.test.ts
-```
-
-The test harness ensures:
-- All blocked commands in the matrix are enforced by the git guard
-- All allowed commands in the matrix pass through
-- Enforcement scripts stay in sync with documented policies
-
-### Regular Checks
-
-Add to the maintenance checklist:
-
-1. Review forbidden patterns quarterly
-2. Audit exceptions list for unused entries
-3. Test hooks after major git or Node.js updates
-4. Update documentation when modifying hooks
-5. Run test harness to verify enforcement points match Command Policy Matrix
-6. Run the drift-detection test: `pnpm exec jest scripts/__tests__/git-safety-policy.test.ts`
-
-**Note:** The test harness at `scripts/__tests__/git-safety-policy.test.ts` validates both the PreToolUse hook and git guard against the Command Policy Matrix. If patterns diverge, tests fail.
-
----
-
-## Incident Reference
-
-**Date:** January 14, 2026, 12:52 CET
-
-**What happened:**
-1. Git was in a confusing state (stash conflicts)
-2. AI agent tried to "fix" it by resetting to an old commit
-3. `git reset --hard 59f17b748` deleted all work since Dec 29, 2025
-4. 8 applications lost their source files
-5. Recovery required parsing transcript logs over several days
-
-**Root cause:** The agent tried to solve a git problem by resetting, not realizing this would destroy uncommitted and unpushed work.
-
-**Prevention:** All the rules and protection layers in this document.
-
----
-
-**Last Updated:** 2026-01-15
-
-**Questions?** Open an issue on GitHub or check the related documentation above.
+- `AGENTS.md`
+- `docs/git-hooks.md`
+- `docs/testing-policy.md`
+- `docs/historical/RECOVERY-PLAN-2026-01-14.md`

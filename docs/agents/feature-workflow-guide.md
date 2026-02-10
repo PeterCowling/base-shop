@@ -2,7 +2,7 @@
 Type: Guide
 Status: Active
 Domain: Repo / Agents
-Last-reviewed: 2026-02-03
+Last-reviewed: 2026-02-09
 ---
 
 # Feature Workflow Guide (All Agents)
@@ -26,6 +26,8 @@ Read only the skill you need for the current phase:
 - **Sequence:** `.claude/skills/sequence-plan/SKILL.md` (also runnable standalone)
 - **Build:** `.claude/skills/build-feature/SKILL.md`
 - **Re-plan:** `.claude/skills/re-plan/SKILL.md` (auto-runs `/sequence-plan` at the end)
+
+For non-code deliverables, `/build-feature` dispatches to progressive execution skills (for example: `/draft-email-message`, `/write-product-brief`, `/draft-marketing-asset`, `/create-ops-spreadsheet`, `/draft-whatsapp-message`).
 
 ## Phase Selection (Decision Tree)
 
@@ -68,25 +70,37 @@ When running `/re-plan`, confidence increases must be evidence-led:
 
 - **Fact-find:** `docs/plans/<feature>-fact-find.md` (evidence + impact map)
 - **Plan-feature:** `docs/plans/<feature>-plan.md` (atomic tasks + CI per task)
-- **Build-feature:** code/tests + plan updated per task; commits tied to TASK IDs
+- **Build-feature:** code and/or business artifacts + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/CIs (no implementation changes)
 
-## Business OS Card Tracking (Optional)
+## Business OS Card Tracking (Default)
 
-The feature workflow skills integrate with Business OS card lifecycle. To enable automatic card and stage doc management:
+The core loop updates Business OS automatically. No extra user action is required for baseline tracking.
 
-1. **Add `Business-Unit`** to your fact-find brief frontmatter (e.g., `Business-Unit: PLAT`)
-2. **Card creation happens automatically** when `/fact-find` completes
-3. **Card-ID flows through** to `/plan-feature` and `/build-feature`
+### Baseline Behavior
 
-**What's automated:**
-- `/fact-find`: Creates card + fact-finding stage doc
-- `/plan-feature`: Creates planned stage doc + proposes lane move to Planned
-- `/build-feature`: Tracks task progress + proposes lane move to Done on completion
+1. Set `Business-Unit` in fact-find frontmatter (or inherit from existing card).
+2. Keep `Business-OS-Integration` omitted or `on` (default).
+3. Use `Business-OS-Integration: off` only for intentionally standalone work.
 
-**Without Business-Unit/Card-ID:** Skills work unchanged (backward compatible).
+### What is automated
 
-**Shared helpers:** See `.claude/skills/_shared/card-operations.md` and `.claude/skills/_shared/stage-doc-operations.md`
+- `/ideas-go-faster`: creates prioritized ideas/cards and seeds top-K fact-find stage docs.
+- `/fact-find`: creates/updates card + `fact-find` stage doc.
+- `/plan-feature`: creates `plan` stage doc and applies deterministic `Fact-finding -> Planned` when plan gate passes.
+- `/build-feature`: applies deterministic `Planned -> In progress` at build start and `In progress -> Done` at completion gate.
+
+### Discovery freshness
+
+Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`. If rebuild fails twice, the skill run fails with explicit `discovery-index stale` output instead of silent success.
+
+### Compatibility
+
+- With `Business-OS-Integration: off`, skills skip card/stage-doc/lane writes.
+- Existing docs without the field default to integration on.
+
+**Shared helpers:** `.claude/skills/_shared/card-operations.md` and `.claude/skills/_shared/stage-doc-operations.md`
+
 ## Special-Purpose Workflows
 
 - **Business OS coordination:** `docs/business-os/agent-workflows.md` (idea management, card lifecycle, plan updates)

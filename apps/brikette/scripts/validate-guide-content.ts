@@ -4,8 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
-  listJsonFiles,
-  readJson,
+  type GuideContentValidationResult,
+  validateGuideContentFiles,
 } from "@acme/guides-core";
 
 import { i18nConfig } from "../src/i18n.config";
@@ -32,62 +32,6 @@ const guideFilter = guideFilterArg
     )
   : null;
 
-type ValidationViolation = {
-  file: string;
-  locale: string;
-  guideKey: string;
-  errors: Array<{
-    path: string;
-    message: string;
-  }>;
-};
-
-type ValidationResult = {
-  total: number;
-  validated: number;
-  skipped: number;
-  violations: ValidationViolation[];
-};
-
-/**
- * Validate a single guide content file
- */
-const validateGuideContent = (
-  content: unknown,
-  guideKey: string,
-  locale: string,
-  relativeFile: string,
-): ValidationViolation | null => {
-  // Check for opt-out flag
-  if (typeof content === "object" && content !== null && "_schemaValidation" in content) {
-    const optOut = (content as Record<string, unknown>)._schemaValidation;
-    if (optOut === false) {
-      if (verbose) {
-        console.log(`  ⊘ Skipped: ${relativeFile} (opt-out via _schemaValidation: false)`);
-      }
-      return null;
-    }
-  }
-
-  const result = guideContentSchema.safeParse(content);
-
-  if (!result.success) {
-    const errors = result.error.errors.map(err => ({
-      path: err.path.join(".") || "(root)",
-      message: err.message,
-    }));
-
-    return {
-      file: relativeFile,
-      locale,
-      guideKey,
-      errors,
-    };
-  }
-
-  return null;
-};
-
 /**
  * Main validation function
  */
@@ -102,13 +46,6 @@ const main = async (): Promise<void> => {
     process.exit(1);
   }
 
-  const result: ValidationResult = {
-    total: 0,
-    validated: 0,
-    skipped: 0,
-    violations: [],
-  };
-
   console.log("Validating guide content...");
   console.log(`Locales: ${locales.join(", ")}`);
   if (guideFilter) {
@@ -116,54 +53,22 @@ const main = async (): Promise<void> => {
   }
   console.log("");
 
-  for (const locale of locales) {
-    const localeDir = path.join(LOCALES_ROOT, locale);
-    const guidesContentDir = path.join(localeDir, "guides", "content");
-
-    let contentFiles: string[];
-    try {
-      contentFiles = await listJsonFiles(guidesContentDir);
-    } catch {
-      if (verbose) {
-        console.warn(`Warning: Could not read guides content directory for locale "${locale}"`);
-      }
-      continue;
-    }
-
-    for (const relativeFile of contentFiles) {
-      const guideKey = path.basename(relativeFile, ".json");
-      if (guideFilter && !guideFilter.has(guideKey)) {
-        continue;
-      }
-      result.total++;
-      const contentPath = path.join(guidesContentDir, relativeFile);
-
-      try {
-        const content = await readJson(contentPath);
-        const violation = validateGuideContent(content, guideKey, locale, relativeFile);
-
-        if (violation) {
-          result.violations.push(violation);
-        } else {
-          result.validated++;
+  const result: GuideContentValidationResult = await validateGuideContentFiles({
+    schemaValidator: guideContentSchema,
+    localesRoot: LOCALES_ROOT,
+    locales,
+    guideFilter,
+    onSkippedFile: verbose
+      ? ({ relativeFile }) => {
+          console.log(`  ⊘ Skipped: ${relativeFile} (opt-out via _schemaValidation: false)`);
         }
-      } catch (error) {
-        result.violations.push({
-          file: relativeFile,
-          locale,
-          guideKey,
-          errors: [
-            {
-              path: "(file)",
-              message: error instanceof Error ? error.message : String(error),
-            },
-          ],
-        });
-      }
-    }
-  }
-
-  result.skipped = result.total - result.validated - result.violations.length;
+      : undefined,
+    onMissingLocaleContentDir: verbose
+      ? locale => {
+          console.warn(`Warning: Could not read guides content directory for locale "${locale}"`);
+        }
+      : undefined,
+  });
 
   // Report results
   console.log("Validation Summary:");

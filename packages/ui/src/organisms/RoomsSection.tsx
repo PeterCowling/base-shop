@@ -99,7 +99,7 @@ function RoomsSection({ lang: explicitLang }: { lang?: string }): JSX.Element {
                 />
                 <Link
                   href={`${href}${searchString}`}
-                  className="mt-2 self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea"
+                  className="mt-2 inline-flex min-h-11 items-center self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70"
                 >
                   {t("moreAboutThisRoom")}
                 </Link>

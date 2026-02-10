@@ -14,6 +14,7 @@ import LocationInline from "@/components/booking/LocationInline";
 import RoomCard from "@/components/rooms/RoomCard";
 import RoomStructuredData from "@/components/seo/RoomStructuredData";
 import roomsData, { type RoomId } from "@/data/roomsData";
+import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
@@ -42,6 +43,16 @@ type AmenityContent = { title?: string; body?: string };
 type GridAsDivProps = ComponentPropsWithoutRef<"div"> & { as?: "div" };
 type GridAsUlProps = ComponentPropsWithoutRef<"ul"> & { as: "ul" };
 type GridProps = GridAsDivProps | GridAsUlProps;
+
+function resolveCopy(value: unknown, key: string, fallback = ""): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (trimmed === key) return fallback;
+  if (/^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/u.test(trimmed)) return fallback;
+  if (/^[A-Z0-9_]+(?:\.[A-Z0-9_]+)+$/u.test(trimmed)) return fallback;
+  return trimmed;
+}
 
 function Grid(props: GridProps) {
   if (props.as === "ul") {
@@ -178,17 +189,24 @@ function AmenitiesSection({
 }
 
 export default function RoomDetailContent({ lang, id }: Props) {
-  const { t } = useTranslation("roomsPage", { lng: lang });
-  const { t: tGuides } = useTranslation("guides", { lng: lang });
+  const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
+  const { t: tGuides } = useTranslation("guides", { lng: lang, useSuspense: true });
   const guidesEnT = i18n.getFixedT("en", "guides") as TFunction;
-  const { t: tRoomsPageDetail } = useTranslation("pages.rooms", { lng: lang });
-  const { t: tRoomDetail } = useTranslation("rooms", { lng: lang });
+  const { t: tRoomsPageDetail } = useTranslation("pages.rooms", { lng: lang, useSuspense: true });
+  const { t: tRoomDetail } = useTranslation("rooms", { lng: lang, useSuspense: true });
+  usePagePreload({
+    lang,
+    namespaces: ["roomsPage", "guides", "pages.rooms", "rooms"],
+    optionalNamespaces: ["assistanceCommon", "modals", "ratingsBar"],
+  });
   const room = roomsData.find((r) => r.id === id)!;
   const checkIn = getTodayIso();
   const checkOut = getDatePlusTwoDays(checkIn);
   const adults = 1;
+  const roomTitleKey = `rooms.${id}.title`;
+  const bedDescriptionKey = `rooms.${id}.bed_description`;
 
-  const title = t(`rooms.${id}.title`) as string;
+  const title = resolveCopy(t(roomTitleKey), roomTitleKey, id.replace(/_/gu, " "));
 
   const heroRaw = tRoomsPageDetail(`detail.${id}.hero`, { returnObjects: true });
   const hero =
@@ -206,8 +224,14 @@ export default function RoomDetailContent({ lang, id }: Props) {
   const isAmenityArray = Array.isArray(amenityRaw);
   const amenityBlurbs = isAmenityArray ? (amenityRaw as AmenityContent[]) : [];
 
-  const amenitiesHeading = tRoomDetail("detail.common.amenitiesHeading");
-  const amenitiesIntro = tRoomDetail("detail.common.amenitiesIntro");
+  const amenitiesHeading = resolveCopy(
+    tRoomDetail("detail.common.amenitiesHeading"),
+    "detail.common.amenitiesHeading",
+  );
+  const amenitiesIntro = resolveCopy(
+    tRoomDetail("detail.common.amenitiesIntro"),
+    "detail.common.amenitiesIntro",
+  );
   const hasFallbackCopy = !isAmenityArray && Boolean(amenityRaw) && Boolean(amenitiesHeading || amenitiesIntro);
   const shouldRenderAmenities = amenityBlurbs.length > 0 || hasFallbackCopy;
 
@@ -221,7 +245,9 @@ export default function RoomDetailContent({ lang, id }: Props) {
       <RoomCard room={room} checkIn={checkIn} checkOut={checkOut} adults={adults} lang={lang} />
 
       <Section className="mx-auto max-w-3xl px-4">
-        <p className="mt-6 text-base leading-relaxed">{t(`rooms.${id}.bed_description`)}</p>
+        <p className="mt-6 text-base leading-relaxed">
+          {resolveCopy(t(bedDescriptionKey), bedDescriptionKey)}
+        </p>
         <div className="mt-4">
           <DirectBookingPerks lang={lang} />
           <LocationInline lang={lang} />

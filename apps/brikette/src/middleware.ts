@@ -76,7 +76,10 @@ export function middleware(request: NextRequest) {
   // Rewrite the first segment (after lang) if it's a localized slug.
   const key = resolveTopLevelKey(appLang, topSegmentCore);
   if (key) {
-    nextParts[1] = `${INTERNAL_SEGMENT_BY_KEY[key]}${topSegmentSuffix}`;
+    // RSC probe requests may include a `.txt` suffix (e.g. /en/help.txt?_rsc=...).
+    // App Router routes are segment-based, so we must rewrite to the canonical
+    // internal segment without the suffix to avoid deterministic 404 noise.
+    nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
   } else {
     // TASK-SEO-3: Detect English slug or internal segment in wrong locale
     // If the first segment is NOT a localized slug for this language, check if

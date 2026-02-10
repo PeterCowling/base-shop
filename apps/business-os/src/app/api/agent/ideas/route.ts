@@ -7,6 +7,7 @@ import {
   appendAuditEntry,
   type Idea,
   IdeaLocationSchema,
+  IdeaPrioritySchema,
   IdeaSchema,
   listInboxIdeas,
   listWorkedIdeas,
@@ -22,6 +23,7 @@ const CreateAgentIdeaSchema = z.object({
   business: z.string().min(1),
   content: z.string().min(1),
   tags: z.array(z.string()).optional(),
+  priority: IdeaPrioritySchema.optional(),
   location: IdeaLocationSchema.optional(),
 });
 
@@ -40,9 +42,13 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const business = searchParams.get("business") ?? undefined;
   const locationParam = searchParams.get("location") ?? undefined;
+  const priorityParam = searchParams.get("priority") ?? undefined;
 
   const locationResult = locationParam
     ? IdeaLocationSchema.safeParse(locationParam)
+    : null;
+  const priorityResult = priorityParam
+    ? IdeaPrioritySchema.safeParse(priorityParam)
     : null;
   if (locationParam && !locationResult?.success) {
     return NextResponse.json(
@@ -51,13 +57,21 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
+  if (priorityParam && !priorityResult?.success) {
+    return NextResponse.json(
+      // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
+      { error: "Invalid priority filter" },
+      { status: 400 }
+    );
+  }
 
   const location = locationResult?.success ? locationResult.data : "inbox";
+  const priority = priorityResult?.success ? priorityResult.data : undefined;
   const db = getDb();
   const ideas =
     location === "worked"
-      ? await listWorkedIdeas(db, { business })
-      : await listInboxIdeas(db, { business });
+      ? await listWorkedIdeas(db, { business, priority })
+      : await listInboxIdeas(db, { business, priority });
 
   return NextResponse.json({ ideas });
 }
@@ -81,7 +95,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { business, content, tags, location: locationOverride } = parsed.data;
+    const {
+      business,
+      content,
+      tags,
+      priority,
+      location: locationOverride,
+    } = parsed.data;
 
     if (!isBusinessValid(business)) {
       return NextResponse.json(
@@ -102,6 +122,7 @@ export async function POST(request: NextRequest) {
       ID: ideaId,
       Business: business,
       Status: status,
+      Priority: priority ?? "P3",
       "Created-Date": createdDate,
       Tags: tags,
       content,
@@ -130,6 +151,7 @@ export async function POST(request: NextRequest) {
       changes_json: JSON.stringify({
         business,
         status,
+        priority: idea.Priority,
         location,
       }),
     });

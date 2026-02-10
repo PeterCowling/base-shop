@@ -27,6 +27,13 @@ export const IdeaStatusSchema = z.enum(["raw", "worked", "converted", "dropped"]
 export type IdeaStatus = z.infer<typeof IdeaStatusSchema>;
 
 /**
+ * Idea priority enum
+ */
+export const IdeaPrioritySchema = z.enum(["P0", "P1", "P2", "P3", "P4", "P5"]);
+
+export type IdeaPriority = z.infer<typeof IdeaPrioritySchema>;
+
+/**
  * Idea location enum
  */
 export const IdeaLocationSchema = z.enum(["inbox", "worked"]);
@@ -41,6 +48,7 @@ export const IdeaFrontmatterSchema = z.object({
   ID: z.string().optional(),
   Business: z.string().optional(),
   Status: IdeaStatusSchema.optional(),
+  Priority: IdeaPrioritySchema.optional().default("P3"),
   "Created-Date": z.string().optional(),
   Tags: z.array(z.string()).optional(),
   "Title-it": z.string().optional(),
@@ -67,10 +75,22 @@ export type IdeaRow = {
   id: string;
   business: string | null;
   status: string | null;
+  priority: string | null;
   location: string | null;
   payload_json: string;
   created_at: string;
   updated_at: string;
+};
+
+export type ListIdeasOptions = {
+  business?: string;
+  status?: IdeaStatus;
+  priorities?: IdeaPriority[];
+  location?: IdeaLocation | "all";
+  tagContains?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
 };
 
 // ============================================================================
@@ -81,7 +101,12 @@ export type IdeaRow = {
  * Parse idea from database row
  */
 function parseIdeaFromRow(row: IdeaRow): Idea {
-  const payload = JSON.parse(row.payload_json) as Idea;
+  const payload = JSON.parse(row.payload_json) as Partial<Idea>;
+  // Legacy payloads may not include priority. Use row value when present, else default P3.
+  if (!payload.Priority) {
+    const parsedRowPriority = IdeaPrioritySchema.safeParse(row.priority);
+    payload.Priority = parsedRowPriority.success ? parsedRowPriority.data : "P3";
+  }
   return IdeaSchema.parse(payload);
 }
 
@@ -93,10 +118,97 @@ function ideaToRow(idea: Idea, location: IdeaLocation, now: string): Omit<IdeaRo
     id: idea.ID ?? `idea-${Date.now()}`,
     business: idea.Business ?? null,
     status: idea.Status ?? "raw",
+    priority: idea.Priority ?? "P3",
     location: location,
     payload_json: JSON.stringify(idea),
     updated_at: now,
   };
+}
+
+function clampLimit(limit: number): number {
+  return Math.min(Math.max(Math.trunc(limit), 1), 500);
+}
+
+function clampOffset(offset: number): number {
+  return Math.max(Math.trunc(offset), 0);
+}
+
+function buildWhereClause(options: ListIdeasOptions): { whereClause: string; binds: unknown[] } {
+  const conditions: string[] = [];
+  const binds: unknown[] = [];
+
+  if (options.location && options.location !== "all") {
+    conditions.push("location = ?");
+    binds.push(options.location);
+  }
+
+  if (options.business) {
+    conditions.push("business = ?");
+    binds.push(options.business);
+  }
+
+  if (options.status) {
+    conditions.push("status = ?");
+    binds.push(options.status);
+  }
+
+  if (options.priorities && options.priorities.length > 0) {
+    const placeholders = options.priorities.map(() => "?").join(", ");
+    conditions.push(`priority IN (${placeholders})`);
+    binds.push(...options.priorities);
+  }
+
+  if (options.tagContains) {
+    conditions.push(
+      "EXISTS (SELECT 1 FROM json_each(payload_json, '$.Tags') tags WHERE LOWER(CAST(tags.value AS TEXT)) LIKE ?)"
+    );
+    binds.push(`%${options.tagContains.toLowerCase()}%`);
+  }
+
+  if (options.search) {
+    const searchTerm = `%${options.search.toLowerCase()}%`;
+    conditions.push(
+      `(
+        LOWER(id) LIKE ?
+        OR LOWER(COALESCE(json_extract(payload_json, '$.Title'), '')) LIKE ?
+        OR LOWER(COALESCE(json_extract(payload_json, '$.content'), '')) LIKE ?
+        OR EXISTS (
+          SELECT 1 FROM json_each(payload_json, '$.Tags') search_tags
+          WHERE LOWER(CAST(search_tags.value AS TEXT)) LIKE ?
+        )
+      )`
+    );
+    binds.push(searchTerm, searchTerm, searchTerm, searchTerm);
+  }
+
+  return {
+    whereClause: conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "",
+    binds,
+  };
+}
+
+function buildPaginationClause(
+  options: ListIdeasOptions
+): { paginationClause: string; binds: unknown[] } {
+  const binds: unknown[] = [];
+  const hasLimit = typeof options.limit === "number";
+  const hasOffset = typeof options.offset === "number";
+
+  if (!hasLimit && !hasOffset) {
+    return { paginationClause: "", binds };
+  }
+
+  if (hasLimit) {
+    binds.push(clampLimit(options.limit as number));
+    if (hasOffset) {
+      binds.push(clampOffset(options.offset as number));
+      return { paginationClause: "LIMIT ? OFFSET ?", binds };
+    }
+    return { paginationClause: "LIMIT ?", binds };
+  }
+
+  binds.push(clampOffset(options.offset as number));
+  return { paginationClause: "LIMIT -1 OFFSET ?", binds };
 }
 
 // ============================================================================
@@ -124,6 +236,7 @@ export async function listInboxIdeas(
   options: {
     business?: string;
     status?: IdeaStatus;
+    priority?: IdeaPriority;
     limit?: number;
     offset?: number;
   } = {}
@@ -141,12 +254,17 @@ export async function listInboxIdeas(
     binds.push(options.status);
   }
 
+  if (options.priority) {
+    conditions.push("priority = ?");
+    binds.push(options.priority);
+  }
+
   const whereClause = `WHERE ${conditions.join(" AND ")}`;
   const limitClause = options.limit ? `LIMIT ${options.limit}` : "";
   const offsetClause = options.offset ? `OFFSET ${options.offset}` : "";
 
   const query = `
-    SELECT id, business, status, location, payload_json, created_at, updated_at
+    SELECT id, business, status, priority, location, payload_json, created_at, updated_at
     FROM business_os_ideas
     ${whereClause}
     ORDER BY created_at DESC
@@ -175,6 +293,7 @@ export async function listWorkedIdeas(
   options: {
     business?: string;
     status?: IdeaStatus;
+    priority?: IdeaPriority;
     limit?: number;
     offset?: number;
   } = {}
@@ -192,12 +311,17 @@ export async function listWorkedIdeas(
     binds.push(options.status);
   }
 
+  if (options.priority) {
+    conditions.push("priority = ?");
+    binds.push(options.priority);
+  }
+
   const whereClause = `WHERE ${conditions.join(" AND ")}`;
   const limitClause = options.limit ? `LIMIT ${options.limit}` : "";
   const offsetClause = options.offset ? `OFFSET ${options.offset}` : "";
 
   const query = `
-    SELECT id, business, status, location, payload_json, created_at, updated_at
+    SELECT id, business, status, priority, location, payload_json, created_at, updated_at
     FROM business_os_ideas
     ${whereClause}
     ORDER BY created_at DESC
@@ -207,6 +331,71 @@ export async function listWorkedIdeas(
   const result = await db.prepare(query).bind(...binds).all<IdeaRow>();
 
   return (result.results ?? []).map(parseIdeaFromRow);
+}
+
+/**
+ * List ideas across locations with deterministic priority-first ordering.
+ *
+ * Ordering:
+ * 1. Priority (P0 -> P5)
+ * 2. Created-Date descending
+ * 3. ID ascending (stable tie-break)
+ */
+export async function listIdeas(
+  db: D1Database,
+  options: ListIdeasOptions = {}
+): Promise<Idea[]> {
+  const { whereClause, binds } = buildWhereClause(options);
+  const { paginationClause, binds: paginationBinds } = buildPaginationClause(options);
+
+  const query = `
+    SELECT id, business, status, priority, location, payload_json, created_at, updated_at
+    FROM business_os_ideas
+    ${whereClause}
+    ORDER BY
+      CASE priority
+        WHEN 'P0' THEN 0
+        WHEN 'P1' THEN 1
+        WHEN 'P2' THEN 2
+        WHEN 'P3' THEN 3
+        WHEN 'P4' THEN 4
+        WHEN 'P5' THEN 5
+        ELSE 6
+      END ASC,
+      COALESCE(json_extract(payload_json, '$."Created-Date"'), created_at) DESC,
+      id ASC
+    ${paginationClause}
+  `.trim();
+
+  const result = await db
+    .prepare(query)
+    .bind(...binds, ...paginationBinds)
+    .all<IdeaRow>();
+
+  return (result.results ?? []).map(parseIdeaFromRow);
+}
+
+/**
+ * Count ideas matching list filters.
+ */
+export async function countIdeas(
+  db: D1Database,
+  options: Omit<ListIdeasOptions, "limit" | "offset"> = {}
+): Promise<number> {
+  const { whereClause, binds } = buildWhereClause(options);
+
+  const query = `
+    SELECT COUNT(1) AS total
+    FROM business_os_ideas
+    ${whereClause}
+  `.trim();
+
+  const result = await db.prepare(query).bind(...binds).first<{ total: number | string | null }>();
+  const parsed =
+    typeof result?.total === "string"
+      ? Number.parseInt(result.total, 10)
+      : (result?.total ?? 0);
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 /**
@@ -227,7 +416,7 @@ export async function getIdeaById(
 ): Promise<Idea | null> {
   const result = await db
     .prepare(
-      "SELECT id, business, status, location, payload_json, created_at, updated_at FROM business_os_ideas WHERE id = ?"
+      "SELECT id, business, status, priority, location, payload_json, created_at, updated_at FROM business_os_ideas WHERE id = ?"
     )
     .bind(id)
     .first<IdeaRow>();
@@ -269,11 +458,12 @@ export async function upsertIdea(
   await db
     .prepare(
       `
-      INSERT INTO business_os_ideas (id, business, status, location, payload_json, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM business_os_ideas WHERE id = ?), ?), ?)
+      INSERT INTO business_os_ideas (id, business, status, priority, location, payload_json, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM business_os_ideas WHERE id = ?), ?), ?)
       ON CONFLICT(id) DO UPDATE SET
         business = excluded.business,
         status = excluded.status,
+        priority = excluded.priority,
         location = excluded.location,
         payload_json = excluded.payload_json,
         updated_at = excluded.updated_at
@@ -283,6 +473,7 @@ export async function upsertIdea(
       row.id,
       row.business,
       row.status,
+      row.priority,
       row.location,
       row.payload_json,
       row.id, // for COALESCE subquery

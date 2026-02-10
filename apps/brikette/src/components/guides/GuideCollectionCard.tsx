@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import { Cluster } from "@acme/design-system/primitives";
 import { CfImage } from "@acme/ui/atoms/CfImage";
+
 import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
 import { getGuideLinkLabels } from "@/guides/slugs/labels";
@@ -81,7 +82,10 @@ const SUMMARY_CLASSES = [
 
 const CTA_BUTTON_CLASSES = [
   "mt-4",
-  "inline-block",
+  "inline-flex",
+  "min-h-11",
+  "items-center",
+  "justify-center",
   "w-fit",
   "max-w-full",
   "whitespace-normal",
@@ -123,13 +127,14 @@ const DIRECTION_LABEL_CLASSES = [
 ] as const;
 const DIRECTION_PILL_CLASSES = [
   "inline-flex",
+  "min-h-11",
   "items-center",
   "rounded-full",
   "border",
   "border-brand-outline/40",
   "bg-brand-surface/60",
-  "px-3",
-  "py-1",
+  "px-4",
+  "py-2",
   "text-xs",
   "font-semibold",
   "text-brand-primary",
@@ -213,7 +218,11 @@ export const GuideCollectionCard = ({
         <div>
           <h3 className="text-base font-semibold text-brand-heading dark:text-brand-heading">
             {ctaLabel ? (
-              <Link href={href} prefetch={false} className="hover:underline">
+              <Link
+                href={href}
+                prefetch={false}
+                className="inline-flex min-h-11 items-center hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70"
+              >
                 {label}
               </Link>
             ) : (

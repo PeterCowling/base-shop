@@ -23,11 +23,11 @@ jobs:
       pull-requests: write
       issues: write
     steps:
-      - name: Guard (work/** or dev only)
-        if: ${{ !startsWith(github.ref, 'refs/heads/work/') && github.ref != 'refs/heads/dev' }}
+      - name: Guard (dev only)
+        if: ${{ github.ref != 'refs/heads/dev' }}
         run: |
-          echo "::error::This workflow is only valid for branches under refs/heads/work/** or refs/heads/dev." >&2
-          echo "Select a work/** branch or dev branch, or push to one to trigger automatically." >&2
+          echo "::error::This workflow only runs for refs/heads/dev." >&2
+          echo "Push to dev (or run this dispatch from dev) to create/update the pipeline PR." >&2
           exit 1
       - name: Ensure PR exists
         id: pr

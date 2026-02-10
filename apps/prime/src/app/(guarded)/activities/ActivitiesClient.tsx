@@ -92,19 +92,19 @@ function ActivityCard({
   const isEnded = lifecycle === 'ended';
 
   return (
-    <div className="rounded-xl bg-white p-4 shadow-sm border border-gray-100">
+    <div className="rounded-xl bg-card p-4 shadow-sm border border-border">
       <div className="mb-3 flex items-center justify-between">
         <div
           className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
             isLive
-              ? 'bg-green-100 text-green-700'
+              ? 'bg-success-soft text-success-foreground'
               : isEnded
-                ? 'bg-slate-200 text-slate-700'
-                : 'bg-blue-100 text-blue-700'
+                ? 'bg-muted text-muted-foreground'
+                : 'bg-info-soft text-info-foreground'
           }`}
         >
           {!isEnded && (
-            <span className={`h-2 w-2 rounded-full ${isLive ? 'animate-pulse bg-green-500' : 'bg-blue-500'}`} />
+            <span className={`h-2 w-2 rounded-full ${isLive ? 'animate-pulse bg-success' : 'bg-primary'}`} />
           )}
           {isLive
             ? t('status.live', 'Live now')
@@ -112,23 +112,23 @@ function ActivityCard({
               ? t('status.ended', 'Ended')
               : t('status.upcoming', 'Upcoming')}
         </div>
-        <span className="inline-flex items-center gap-1 text-xs text-gray-500">
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
           <Users className="h-3.5 w-3.5" />
           {presenceCount}
         </span>
       </div>
 
-      <h3 className="mb-2 text-lg font-semibold text-gray-900">
+      <h3 className="mb-2 text-lg font-semibold text-foreground">
         {activity.title}
       </h3>
 
       <div className="mb-3 space-y-1.5">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Calendar className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Calendar className="h-4 w-4 text-muted-foreground" />
           <span>{formatActivityTime(activity.startTime)}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
-          <Clock className="h-4 w-4 text-gray-400" />
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Clock className="h-4 w-4 text-muted-foreground" />
           <span>
             {new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date(activity.startTime))}
             {' - '}
@@ -136,14 +136,14 @@ function ActivityCard({
           </span>
         </div>
         {!isLive && (
-          <div className="flex items-center gap-2 text-sm text-emerald-600">
+          <div className="flex items-center gap-2 text-sm text-success">
             <Clock className="h-4 w-4" />
             <span>{isEnded ? 'Event finished' : formatRelativeTime(activity.startTime)}</span>
           </div>
         )}
         {activity.meetUpPoint && (
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <MapPin className="h-4 w-4 text-gray-400" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <MapPin className="h-4 w-4 text-muted-foreground" />
             <span>{activity.meetUpPoint}</span>
           </div>
         )}
@@ -151,7 +151,7 @@ function ActivityCard({
 
       {/* Description */}
       {activity.description && (
-        <p className="mb-4 text-sm text-gray-600 line-clamp-2">
+        <p className="mb-4 text-sm text-muted-foreground line-clamp-2">
           {activity.description}
         </p>
       )}
@@ -161,17 +161,17 @@ function ActivityCard({
           type="button"
           onClick={() => void onMarkPresent(activity.id)}
           disabled={!isLive || isPresent}
-          className="w-full rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full rounded-lg border border-success bg-success-soft px-4 py-2.5 text-sm font-medium text-success-foreground disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {isPresent ? 'You are marked present' : isLive ? "I'm here" : 'Available once live'}
         </button>
 
         <Link
           href={`/chat/channel?id=${activity.id}`}
-          className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-white transition-colors ${
+          className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors ${
             isEnded
-              ? 'bg-slate-400 pointer-events-none'
-              : 'bg-emerald-500 hover:bg-emerald-600'
+              ? 'bg-muted-foreground pointer-events-none'
+              : 'bg-success hover:bg-success/90'
           }`}
           aria-disabled={isEnded}
         >
@@ -206,15 +206,15 @@ export default function ActivitiesClient() {
   // Work around for strong fail-closed UX when SDK preconditions are not met.
   if (!sdkDecision.allowed) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-xl font-semibold text-gray-900">
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-xl font-semibold text-foreground">
             {t('title', 'Activities')}
           </h1>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Activities are temporarily unavailable until your secure session is ready.
           </p>
-          <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">
+          <Link href="/" className="mt-4 inline-block text-primary hover:underline">
             Return Home
           </Link>
         </div>
@@ -293,17 +293,17 @@ export default function ActivitiesClient() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-24">
+    <main className="min-h-screen bg-muted pb-24">
       {/* Header */}
-      <div className="bg-gradient-to-br from-emerald-500 to-teal-600 px-4 pb-6 pt-8">
+      <div className="bg-success px-4 pb-6 pt-8">
         <div className="mx-auto max-w-md">
           <div className="mb-2 flex items-center gap-2">
-            <Users className="h-6 w-6 text-white/80" />
-            <h1 className="text-2xl font-bold text-white">
+            <Users className="h-6 w-6 text-success-foreground/80" />
+            <h1 className="text-2xl font-bold text-success-foreground">
               {t('title', 'Activities')}
             </h1>
           </div>
-          <p className="text-sm text-emerald-100">
+          <p className="text-sm text-success-foreground/80">
             {t('subtitle', 'Join fellow travelers for adventures and social events')}
           </p>
         </div>
@@ -315,8 +315,8 @@ export default function ActivitiesClient() {
             {/* Live activities */}
             {liveActivities.length > 0 && (
               <section>
-                <h2 className="mb-3 flex items-center gap-2 text-sm font-medium text-gray-500">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
+                <h2 className="mb-3 flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                  <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
                   {t('sections.happeningNow', 'Happening Now')}
                 </h2>
                 <div className="space-y-3">
@@ -337,7 +337,7 @@ export default function ActivitiesClient() {
             {/* Upcoming activities */}
             {upcomingActivities.length > 0 && (
               <section>
-                <h2 className="mb-3 text-sm font-medium text-gray-500">
+                <h2 className="mb-3 text-sm font-medium text-muted-foreground">
                   {t('sections.upcoming', 'Coming Up')}
                 </h2>
                 <div className="space-y-3">
@@ -358,7 +358,7 @@ export default function ActivitiesClient() {
             {/* Ended activities */}
             {endedActivities.length > 0 && (
               <section>
-                <h2 className="mb-3 text-sm font-medium text-gray-500">
+                <h2 className="mb-3 text-sm font-medium text-muted-foreground">
                   {t('sections.ended', 'Ended')}
                 </h2>
                 <div className="space-y-3">
@@ -383,7 +383,7 @@ export default function ActivitiesClient() {
                   type="button"
                   onClick={loadMoreActivities}
                   disabled={isMarkingPresent !== null}
-                  className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted"
                 >
                   {t('actions.loadMore', 'Load more activities')}
                 </button>
@@ -392,17 +392,17 @@ export default function ActivitiesClient() {
           </div>
         ) : (
           /* Empty state */
-          <div className="rounded-xl bg-white p-6 text-center shadow-sm">
-            <Calendar className="mx-auto mb-4 h-12 w-12 text-gray-300" />
-            <h2 className="mb-2 text-lg font-semibold text-gray-900">
+          <div className="rounded-xl bg-card p-6 text-center shadow-sm">
+            <Calendar className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+            <h2 className="mb-2 text-lg font-semibold text-foreground">
               {t('empty.title', 'No activities yet')}
             </h2>
-            <p className="mb-4 text-sm text-gray-600">
+            <p className="mb-4 text-sm text-muted-foreground">
               {t('empty.description', 'Check back later for upcoming events, or explore Positano on your own!')}
             </p>
             <Link
               href="/positano-guide"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
+              className="inline-flex items-center gap-2 rounded-lg bg-success px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-success/90"
             >
               {t('empty.exploreGuide', 'Explore Positano Guide')}
             </Link>
@@ -413,7 +413,7 @@ export default function ActivitiesClient() {
         <div className="mt-6 text-center">
           <Link
             href="/"
-            className="text-sm text-gray-500 hover:text-gray-700"
+            className="text-sm text-muted-foreground hover:text-muted-foreground"
           >
             {t('actions.backHome', '← Back to home')}
           </Link>

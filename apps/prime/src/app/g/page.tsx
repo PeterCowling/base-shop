@@ -119,21 +119,21 @@ function GuestEntryContent() {
 
   if (status === 'loading') {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
   }
 
   if (status === 'error') {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">Link problem</h1>
-          <p className="mb-6 text-gray-600">{error}</p>
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-2xl font-bold text-foreground">Link problem</h1>
+          <p className="mb-6 text-muted-foreground">{error}</p>
           <Link
             href="/find-my-stay"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
             Find my stay
           </Link>
@@ -144,20 +144,20 @@ function GuestEntryContent() {
 
   if (status === 'verified') {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-2xl font-bold text-gray-900">
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-2xl font-bold text-foreground">
             {guestFirstName ? `Welcome, ${guestFirstName}` : 'You\'re in'}
           </h1>
-          <p className="mb-6 text-gray-600">
+          <p className="mb-6 text-muted-foreground">
             Your portal is ready. We&apos;ll guide you through arrival prep next.
           </p>
-          <p className="mb-6 rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          <p className="mb-6 rounded-lg bg-success-soft px-3 py-2 text-sm text-success-foreground">
             You&apos;ll now see a short guided setup so reception can serve you faster.
           </p>
           <Link
             href="/portal"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-primary-foreground hover:bg-primary/90"
           >
             Continue
           </Link>
@@ -167,23 +167,23 @@ function GuestEntryContent() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4">
+    <main className="min-h-screen bg-muted p-4">
       <div className="mx-auto max-w-md">
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-gray-900">Confirm your stay</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-2xl font-bold text-foreground">Confirm your stay</h1>
+          <p className="mt-2 text-muted-foreground">
             Please enter the last name on the booking to continue.
           </p>
-          <p className="mt-3 rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-800">
+          <p className="mt-3 rounded-lg bg-info-soft px-3 py-2 text-sm text-info-foreground">
             Why this helps: this quick check unlocks your guest tools and speeds up reception handoff.
           </p>
-          <p className="mt-2 text-xs text-gray-500">
+          <p className="mt-2 text-xs text-muted-foreground">
             Privacy: we only use this information for your current stay.
           </p>
         </div>
 
-        <form onSubmit={handleVerify} className="rounded-xl bg-white p-6 shadow-sm">
-          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+        <form onSubmit={handleVerify} className="rounded-xl bg-card p-6 shadow-sm">
+          <label htmlFor="lastName" className="block text-sm font-medium text-muted-foreground">
             Last name
           </label>
           <input
@@ -192,12 +192,12 @@ function GuestEntryContent() {
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
             placeholder="Enter your last name"
-            className="mt-2 w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="mt-2 w-full rounded-lg border border-border px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
             disabled={isVerifying}
           />
 
           {error && (
-            <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+            <div className="mt-4 rounded-lg bg-danger-soft p-3 text-sm text-danger-foreground">
               {error}
             </div>
           )}
@@ -205,7 +205,7 @@ function GuestEntryContent() {
           <button
             type="submit"
             disabled={isVerifying || !lastName.trim()}
-            className="mt-5 w-full rounded-lg bg-blue-600 px-4 py-3 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {isVerifying ? 'Checking...' : 'Continue'}
           </button>
@@ -219,8 +219,8 @@ export default function GuestEntryPage() {
   return (
     <Suspense
       fallback={
-        <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+        <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
         </main>
       }
     >

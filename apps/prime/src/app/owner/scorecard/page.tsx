@@ -43,17 +43,17 @@ export default async function ScorecardPage() {
   const scorecard = computeBusinessScorecard(kpiData);
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4">
+    <main className="min-h-screen bg-muted p-4">
       <div className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-              <BarChart3 className="h-6 w-6 text-purple-600" />
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft">
+              <BarChart3 className="h-6 w-6 text-accent" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Business Impact Scorecard</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-xl font-bold text-foreground">Business Impact Scorecard</h1>
+              <p className="text-sm text-muted-foreground">
                 Last 7 days ({startDate} to {endDate}) - {scorecard.totalGuests} guests across{' '}
                 {scorecard.daysWithData} days
               </p>
@@ -61,7 +61,7 @@ export default async function ScorecardPage() {
           </div>
           <Link
             href="/owner"
-            className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
             Dashboard
           </Link>
@@ -69,18 +69,18 @@ export default async function ScorecardPage() {
 
         {/* Insufficient Data Warning */}
         {scorecard.hasInsufficientData && (
-          <div className="mb-6 rounded-xl bg-yellow-50 border-2 border-yellow-200 p-6">
+          <div className="mb-6 rounded-xl bg-warning-soft border-2 border-warning p-6">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="h-6 w-6 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <AlertTriangle className="h-6 w-6 text-warning flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="text-lg font-semibold text-yellow-900 mb-2">
+                <h3 className="text-lg font-semibold text-warning-foreground mb-2">
                   Insufficient Data
                 </h3>
-                <p className="text-sm text-yellow-800">
+                <p className="text-sm text-warning-foreground">
                   Insufficient data to generate scorecard. At least 3 days with guest activity are
                   required for reliable metrics. Currently: {scorecard.daysWithData} days with data.
                 </p>
-                <p className="text-sm text-yellow-800 mt-2">
+                <p className="text-sm text-warning-foreground mt-2">
                   Metric statuses are shown as &quot;Unknown&quot; until sufficient data is
                   available.
                 </p>
@@ -90,10 +90,10 @@ export default async function ScorecardPage() {
         )}
 
         {/* Guest Engagement Section */}
-        <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
+        <div className="mb-6 rounded-xl bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <Users className="h-5 w-5 text-blue-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Guest Engagement</h2>
+            <Users className="h-5 w-5 text-primary" />
+            <h2 className="text-lg font-semibold text-foreground">Guest Engagement</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <MetricCard
@@ -114,10 +114,10 @@ export default async function ScorecardPage() {
         </div>
 
         {/* Staff Efficiency Section */}
-        <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
+        <div className="mb-6 rounded-xl bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <Clock className="h-5 w-5 text-green-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Staff Efficiency</h2>
+            <Clock className="h-5 w-5 text-success" />
+            <h2 className="text-lg font-semibold text-foreground">Staff Efficiency</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <MetricCard
@@ -138,10 +138,10 @@ export default async function ScorecardPage() {
         </div>
 
         {/* Business Impact Section */}
-        <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
+        <div className="mb-6 rounded-xl bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-purple-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Business Impact</h2>
+            <TrendingUp className="h-5 w-5 text-accent" />
+            <h2 className="text-lg font-semibold text-foreground">Business Impact</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
             <MetricCard
@@ -160,16 +160,16 @@ export default async function ScorecardPage() {
         </div>
 
         {/* Weekly Operating Review */}
-        <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Weekly Operating Review</h2>
+        <div className="mb-6 rounded-xl bg-card p-6 shadow-sm">
+          <h2 className="mb-4 text-lg font-semibold text-foreground">Weekly Operating Review</h2>
 
           {scorecard.reviewActions.length === 0 && !scorecard.hasInsufficientData && (
-            <div className="rounded-lg bg-green-50 p-4 text-center">
+            <div className="rounded-lg bg-success-soft p-4 text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <p className="text-sm font-semibold text-green-900">All targets met</p>
+                <CheckCircle2 className="h-5 w-5 text-success" />
+                <p className="text-sm font-semibold text-success-foreground">All targets met</p>
               </div>
-              <p className="text-sm text-green-700">
+              <p className="text-sm text-success-foreground">
                 All metrics are meeting or exceeding their targets. Continue current operations
                 and monitor for any changes.
               </p>
@@ -185,8 +185,8 @@ export default async function ScorecardPage() {
           )}
 
           {scorecard.hasInsufficientData && (
-            <div className="rounded-lg bg-gray-50 p-4 text-center">
-              <p className="text-sm text-gray-600">
+            <div className="rounded-lg bg-muted p-4 text-center">
+              <p className="text-sm text-muted-foreground">
                 Operating review will be available once sufficient data is collected.
               </p>
             </div>
@@ -194,17 +194,17 @@ export default async function ScorecardPage() {
         </div>
 
         {/* Data Sources / Lineage */}
-        <div className="mb-6 rounded-xl bg-white p-6 shadow-sm">
+        <div className="mb-6 rounded-xl bg-card p-6 shadow-sm">
           <div className="mb-4 flex items-center gap-2">
-            <Database className="h-5 w-5 text-gray-600" />
-            <h2 className="text-lg font-semibold text-gray-900">Data Sources</h2>
+            <Database className="h-5 w-5 text-muted-foreground" />
+            <h2 className="text-lg font-semibold text-foreground">Data Sources</h2>
           </div>
-          <div className="space-y-3 text-sm text-gray-700">
-            <div className="rounded-lg bg-gray-50 p-4">
-              <p className="font-medium text-gray-900 mb-2">Aggregate Node Dependency</p>
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <div className="rounded-lg bg-muted p-4">
+              <p className="font-medium text-foreground mb-2">Aggregate Node Dependency</p>
               <p className="mb-2">
                 All metrics are computed from pre-aggregated{' '}
-                <code className="rounded bg-gray-200 px-2 py-1 font-mono text-xs">
+                <code className="rounded bg-muted px-2 py-1 font-mono text-xs">
                   ownerKpis/{'{date}'}
                 </code>{' '}
                 nodes (TASK-47).
@@ -215,8 +215,8 @@ export default async function ScorecardPage() {
               </p>
             </div>
 
-            <div className="rounded-lg bg-gray-50 p-4">
-              <p className="font-medium text-gray-900 mb-2">Metric Lineage</p>
+            <div className="rounded-lg bg-muted p-4">
+              <p className="font-medium text-foreground mb-2">Metric Lineage</p>
               <ul className="space-y-1 list-disc list-inside">
                 <li>
                   <strong>Guest Readiness:</strong> Aggregated from pre-arrival checklist
@@ -237,8 +237,8 @@ export default async function ScorecardPage() {
               </ul>
             </div>
 
-            <div className="rounded-lg bg-gray-50 p-4">
-              <p className="font-medium text-gray-900 mb-2">Data Freshness</p>
+            <div className="rounded-lg bg-muted p-4">
+              <p className="font-medium text-foreground mb-2">Data Freshness</p>
               <p>
                 KPI aggregates are updated daily by scheduled job. Scorecard reflects data as of
                 the most recent aggregation run.
@@ -249,10 +249,10 @@ export default async function ScorecardPage() {
 
         {/* Navigation */}
         <div className="mt-6 flex justify-between">
-          <Link href="/" className="text-sm text-blue-600 hover:underline">
+          <Link href="/" className="text-sm text-primary hover:underline">
             Return Home
           </Link>
-          <Link href="/owner" className="text-sm text-blue-600 hover:underline">
+          <Link href="/owner" className="text-sm text-primary hover:underline">
             Owner Dashboard
           </Link>
         </div>
@@ -272,31 +272,31 @@ interface MetricCardProps {
 function MetricCard({ label, value, target, status, description }: MetricCardProps) {
   const statusConfig = {
     success: {
-      icon: <CheckCircle2 className="h-5 w-5 text-green-600" />,
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      textColor: 'text-green-900',
+      icon: <CheckCircle2 className="h-5 w-5 text-success" />,
+      bgColor: 'bg-success-soft',
+      borderColor: 'border-success',
+      textColor: 'text-success-foreground',
       badge: 'Success',
-      badgeBg: 'bg-green-100',
-      badgeText: 'text-green-700',
+      badgeBg: 'bg-success-soft',
+      badgeText: 'text-success-foreground',
     },
     warning: {
-      icon: <AlertTriangle className="h-5 w-5 text-yellow-600" />,
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200',
-      textColor: 'text-yellow-900',
+      icon: <AlertTriangle className="h-5 w-5 text-warning" />,
+      bgColor: 'bg-warning-soft',
+      borderColor: 'border-warning',
+      textColor: 'text-warning-foreground',
       badge: 'Warning',
-      badgeBg: 'bg-yellow-100',
-      badgeText: 'text-yellow-700',
+      badgeBg: 'bg-warning-soft',
+      badgeText: 'text-warning-foreground',
     },
     unknown: {
-      icon: <HelpCircle className="h-5 w-5 text-gray-600" />,
-      bgColor: 'bg-gray-50',
-      borderColor: 'border-gray-200',
-      textColor: 'text-gray-900',
+      icon: <HelpCircle className="h-5 w-5 text-muted-foreground" />,
+      bgColor: 'bg-muted',
+      borderColor: 'border-border',
+      textColor: 'text-foreground',
       badge: 'Unknown',
-      badgeBg: 'bg-gray-100',
-      badgeText: 'text-gray-700',
+      badgeBg: 'bg-muted',
+      badgeText: 'text-muted-foreground',
     },
   };
 
@@ -307,15 +307,15 @@ function MetricCard({ label, value, target, status, description }: MetricCardPro
       <div className="mb-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {config.icon}
-          <span className="text-sm font-medium text-gray-700">{label}</span>
+          <span className="text-sm font-medium text-muted-foreground">{label}</span>
         </div>
         <span className={`rounded px-2 py-1 text-xs font-medium ${config.badgeBg} ${config.badgeText}`}>
           {config.badge}
         </span>
       </div>
       <div className={`text-2xl font-bold ${config.textColor} mb-1`}>{value}</div>
-      <div className="text-xs text-gray-600 mb-2">{target}</div>
-      <div className="text-xs text-gray-600">{description}</div>
+      <div className="text-xs text-muted-foreground mb-2">{target}</div>
+      <div className="text-xs text-muted-foreground">{description}</div>
     </div>
   );
 }
@@ -328,12 +328,12 @@ interface MetricSummaryCardProps {
 
 function MetricSummaryCard({ label, value, description }: MetricSummaryCardProps) {
   return (
-    <div className="rounded-lg border-2 border-gray-200 bg-gray-50 p-4">
+    <div className="rounded-lg border-2 border-border bg-muted p-4">
       <div className="mb-2">
-        <span className="text-sm font-medium text-gray-700">{label}</span>
+        <span className="text-sm font-medium text-muted-foreground">{label}</span>
       </div>
-      <div className="text-2xl font-bold text-gray-900 mb-1">{value}</div>
-      <div className="text-xs text-gray-600">{description}</div>
+      <div className="text-2xl font-bold text-foreground mb-1">{value}</div>
+      <div className="text-xs text-muted-foreground">{description}</div>
     </div>
   );
 }
@@ -345,22 +345,22 @@ interface ActionCardProps {
 function ActionCard({ action }: ActionCardProps) {
   const statusConfig = {
     success: {
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      badgeBg: 'bg-green-100',
-      badgeText: 'text-green-700',
+      bgColor: 'bg-success-soft',
+      borderColor: 'border-success',
+      badgeBg: 'bg-success-soft',
+      badgeText: 'text-success-foreground',
     },
     warning: {
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200',
-      badgeBg: 'bg-yellow-100',
-      badgeText: 'text-yellow-700',
+      bgColor: 'bg-warning-soft',
+      borderColor: 'border-warning',
+      badgeBg: 'bg-warning-soft',
+      badgeText: 'text-warning-foreground',
     },
     unknown: {
-      bgColor: 'bg-gray-50',
-      borderColor: 'border-gray-200',
-      badgeBg: 'bg-gray-100',
-      badgeText: 'text-gray-700',
+      bgColor: 'bg-muted',
+      borderColor: 'border-border',
+      badgeBg: 'bg-muted',
+      badgeText: 'text-muted-foreground',
     },
   };
 
@@ -369,7 +369,7 @@ function ActionCard({ action }: ActionCardProps) {
   return (
     <div className={`rounded-lg border-2 ${config.borderColor} ${config.bgColor} p-4`}>
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-900">{action.metric}</h3>
+        <h3 className="text-sm font-semibold text-foreground">{action.metric}</h3>
         <span className={`rounded px-2 py-1 text-xs font-medium ${config.badgeBg} ${config.badgeText}`}>
           {action.status === 'warning' ? 'Needs Attention' : 'Unknown'}
         </span>
@@ -377,17 +377,17 @@ function ActionCard({ action }: ActionCardProps) {
 
       <div className="mb-3 grid grid-cols-2 gap-4 text-sm">
         <div>
-          <span className="text-gray-600">Current:</span>{' '}
-          <span className="font-semibold text-gray-900">{action.currentValue}</span>
+          <span className="text-muted-foreground">Current:</span>{' '}
+          <span className="font-semibold text-foreground">{action.currentValue}</span>
         </div>
         <div>
-          <span className="text-gray-600">Target:</span>{' '}
-          <span className="font-semibold text-gray-900">{action.targetValue}</span>
+          <span className="text-muted-foreground">Target:</span>{' '}
+          <span className="font-semibold text-foreground">{action.targetValue}</span>
         </div>
       </div>
 
       <div className="mb-3">
-        <p className="text-xs text-gray-700 mb-1">
+        <p className="text-xs text-muted-foreground mb-1">
           <strong>Suggested Action:</strong>
         </p>
         <p className="text-sm text-gray-800">{action.suggestedAction}</p>
@@ -395,12 +395,12 @@ function ActionCard({ action }: ActionCardProps) {
 
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div>
-          <span className="text-xs text-gray-600">Owner:</span>{' '}
-          <span className="text-sm font-medium text-gray-900">{action.owner}</span>
+          <span className="text-xs text-muted-foreground">Owner:</span>{' '}
+          <span className="text-sm font-medium text-foreground">{action.owner}</span>
         </div>
         <div>
-          <span className="text-xs text-gray-600">Expected Impact:</span>{' '}
-          <span className="text-sm font-medium text-gray-900">{action.expectedImpact}</span>
+          <span className="text-xs text-muted-foreground">Expected Impact:</span>{' '}
+          <span className="text-sm font-medium text-foreground">{action.expectedImpact}</span>
         </div>
       </div>
     </div>

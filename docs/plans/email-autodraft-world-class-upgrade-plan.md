@@ -118,7 +118,7 @@ The approach builds outward from the existing 3-stage pipeline:
 | TASK-01 | IMPLEMENT | Wire voice examples and draft guide into generation | 87% | S | Complete (2026-02-10) | - | TASK-02, TASK-07 |
 | TASK-02 | IMPLEMENT | Upgrade knowledge summaries to cited snippets | 85% | S | Complete (2026-02-10) | TASK-01 | TASK-07 |
 | TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Complete (2026-02-10) | - | TASK-04, TASK-06, TASK-07 |
-| TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Pending | TASK-03 | TASK-05, TASK-06, TASK-07 |
+| TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Complete (2026-02-10) | TASK-03 | TASK-05, TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Pending | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Pending | TASK-03, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
@@ -392,6 +392,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Template ranker hard rules: `template-ranker.ts:87` (`new Set(["prepayment", "cancellation"])`)
   - Quality check scenario targets: `draft-quality-check.ts:85–112`
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `5495aaa173`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 3 (red-green plus lint import-sort correction cycle)
+  - Initial validation: FAIL expected (new TASK-04 taxonomy tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 80%
+  - Delta reason: Validation confirmed unified taxonomy approach across interpret/ranker/quality-check; one lint-fix cycle was mechanical and did not change implementation risk.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts packages/mcp-server/src/__tests__/template-ranker.test.ts` — PASS (64/64 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts` — PASS (43/43 tests)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added shared `ScenarioCategory` taxonomy in `template-ranker` with normalization helpers and alias mapping, switched `draft-interpret` classification to unified category rules (including detailed categories like `breakfast`, `check-in`, `booking-changes`, `policies`), and updated quality-check target selection to normalize categories through the same taxonomy. Added integration validation for unified category classification and template JSON category integrity.
 
 ---
 

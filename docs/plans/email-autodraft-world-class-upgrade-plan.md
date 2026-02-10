@@ -122,7 +122,7 @@ The approach builds outward from the existing 3-stage pipeline:
 | TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Complete (2026-02-10) | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Complete (2026-02-10) | TASK-03, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Complete (2026-02-10) | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | Add policy decision layer before generation | 84% | L | Pending | TASK-07 | TASK-09 |
+| TASK-08 | IMPLEMENT | Add policy decision layer before generation | 84% | L | Complete (2026-02-10) | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 82% | M | Pending | TASK-08 | - |
 | TASK-10 | IMPLEMENT | Migrate booking email to MCP-only (remove GAS fallback) | 88% | S | Pending | - | - |
 
@@ -672,6 +672,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Changes to task:**
   - Dependencies: unchanged (`Depends on: TASK-07`, `Blocks: TASK-09`).
   - Acceptance/test plan/rollout: unchanged.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `87b3a09255`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08, TC-09, TC-10, TC-11, TC-12
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (policy module missing and pipeline assertions red before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 83%
+  - Delta reason: Cross-boundary integration behaved as expected; one additional cycle was needed to align repeated-complaint fixture wording with TC-12 intent.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/policy-decision.test.ts packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (71/71 tests, quality gate 38/39, 97.4%)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/draft-interpret.test.ts` — PASS (50/50 tests)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added new `policy-decision.ts` decision layer with escalation-to-review-tier routing, scenario-aware template constraints, and mandatory/prohibited content rules (including non-refundable cancellation safeguards). Integrated policy decision application into `draft-generate` template selection/body assembly and into `draft-quality-check` mandatory/prohibited validation. Activated TASK-08 test stubs and extended pipeline integration assertions for review-tier mapping and policy-check enforcement.
 
 ---
 

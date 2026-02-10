@@ -9,6 +9,7 @@ import { generateEmailHtml } from "../utils/email-template.js";
 import {
   type EmailTemplate,
   rankTemplates,
+  type TemplateCandidate,
 } from "../utils/template-ranker.js";
 import {
   errorResult,
@@ -17,6 +18,10 @@ import {
 } from "../utils/validation.js";
 
 import { handleDraftQualityTool } from "./draft-quality-check.js";
+import {
+  evaluatePolicy,
+  type PolicyDecision,
+} from "./policy-decision.js";
 
 const DATA_ROOT = join(process.cwd(), "packages", "mcp-server", "data");
 const CACHE_TTL_MS = 5 * 60 * 1000;
@@ -59,6 +64,13 @@ const draftGenerateSchema = z.object({
       category: z.string().min(1),
       confidence: z.number().min(0).max(1),
     }),
+    escalation: z
+      .object({
+        tier: z.enum(["NONE", "HIGH", "CRITICAL"]),
+        triggers: z.array(z.string()).default([]),
+        confidence: z.number().min(0).max(1),
+      })
+      .optional(),
     thread_summary: z
       .object({
         prior_commitments: z.array(z.string()).default([]),
@@ -833,6 +845,40 @@ function applyVoicePreferences(
   return normalizeParagraphs(enriched);
 }
 
+function applyPolicyTemplateConstraints(
+  candidates: TemplateCandidate[],
+  policyDecision: PolicyDecision,
+): TemplateCandidate[] {
+  const allowed = policyDecision.templateConstraints.allowedCategories;
+  if (!allowed || allowed.length === 0) {
+    return candidates;
+  }
+
+  const filtered = candidates.filter((candidate) =>
+    allowed.includes(candidate.template.category)
+  );
+  return filtered.length > 0 ? filtered : candidates;
+}
+
+function applyPolicyDecisionContent(
+  body: string,
+  policyDecision: PolicyDecision,
+): string {
+  let adjusted = body;
+
+  if (policyDecision.prohibitedContent.length > 0) {
+    adjusted = removeForbiddenPhrases(adjusted, policyDecision.prohibitedContent);
+  }
+
+  for (const requiredLine of policyDecision.mandatoryContent) {
+    if (!includesCaseInsensitive(adjusted, requiredLine)) {
+      adjusted = `${adjusted}\n\n${sentence(requiredLine)}`;
+    }
+  }
+
+  return normalizeParagraphs(adjusted);
+}
+
 function enforceLengthBounds(body: string, bounds: LengthBounds): string {
   let adjusted = body.trim();
   let fillerIdx = 0;
@@ -894,16 +940,22 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       prepaymentProvider,
     });
 
+    const policyDecision = evaluatePolicy(actionPlan);
+    const policyCandidates = applyPolicyTemplateConstraints(
+      rankResult.candidates,
+      policyDecision,
+    );
+
     const selectedTemplate =
-      rankResult.selection !== "none" ? rankResult.candidates[0]?.template : undefined;
+      rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined;
 
     const isComposite =
       actionPlan.intents.questions.length >= 2 &&
-      rankResult.candidates.length >= 2;
+      policyCandidates.length >= 2;
 
     let bodyPlain: string;
     if (isComposite) {
-      const candidateTemplates = rankResult.candidates.map((c) => c.template);
+      const candidateTemplates = policyCandidates.map((candidate) => candidate.template);
       bodyPlain = assembleCompositeBody(candidateTemplates);
     } else {
       bodyPlain = selectedTemplate?.body ??
@@ -950,6 +1002,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
         : undefined,
     };
     contentBody = enforceLengthBounds(contentBody, contentBounds);
+    contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
     bodyPlain = ensureSignature(contentBody);
 
     const bodyHtml = generateEmailHtml({
@@ -978,6 +1031,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
         thread_summary: actionPlan.thread_summary,
       },
       draft: { bodyPlain, bodyHtml },
+      policyDecision,
     });
 
     const quality = parseToolResult<{ passed: boolean; failed_checks: string[]; warnings: string[]; confidence: number }>(
@@ -1006,10 +1060,11 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
           },
       knowledge_sources: knowledgeSummaries.map((summary) => summary.uri),
       knowledge_summaries: knowledgeSummaries,
+      policy: policyDecision,
       quality,
       ranker: {
         selection: rankResult.selection,
-        candidates: rankResult.candidates.map((candidate) => ({
+        candidates: policyCandidates.map((candidate) => ({
           subject: candidate.template.subject,
           category: candidate.template.category,
           confidence: candidate.confidence,

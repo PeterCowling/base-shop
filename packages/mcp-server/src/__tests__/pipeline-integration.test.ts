@@ -118,6 +118,15 @@ type GenerateResult = {
     selection: string;
   };
   knowledge_sources: string[];
+  policy: {
+    reviewTier: "standard" | "mandatory-review" | "owner-alert";
+    mandatoryContent: string[];
+    prohibitedContent: string[];
+    toneConstraints: string[];
+    templateConstraints: {
+      allowedCategories?: string[];
+    };
+  };
   quality: { passed: boolean; failed_checks: string[]; warnings: string[] };
 };
 
@@ -922,6 +931,31 @@ describe("TASK-18: Stage 2+3 — Full Pipeline", () => {
         expect(generated.draft.bodyPlain).toBeDefined();
         expect(generated.draft.bodyPlain.length).toBeGreaterThan(0);
         expect(generated.draft.bodyHtml).toContain("<!DOCTYPE html>");
+        expect(Array.isArray(generated.policy.mandatoryContent)).toBe(true);
+        expect(Array.isArray(generated.policy.prohibitedContent)).toBe(true);
+        expect(Array.isArray(generated.policy.toneConstraints)).toBe(true);
+
+        const expectedReviewTier =
+          actionPlan.escalation.tier === "CRITICAL"
+            ? "owner-alert"
+            : actionPlan.escalation.tier === "HIGH"
+              ? "mandatory-review"
+              : "standard";
+        expect(generated.policy.reviewTier).toBe(expectedReviewTier);
+
+        if (
+          actionPlan.scenario.category === "cancellation" &&
+          /non[- ]?refundable/i.test(`${f.subject} ${f.body}`)
+        ) {
+          expect(
+            generated.policy.mandatoryContent.some((phrase) =>
+              phrase.toLowerCase().includes("non-refundable")
+            )
+          ).toBe(true);
+        }
+
+        expect(generated.quality.failed_checks).not.toContain("missing_policy_mandatory_content");
+        expect(generated.quality.failed_checks).not.toContain("policy_prohibited_content");
 
         // Record results
         results.push({

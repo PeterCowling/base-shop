@@ -9,6 +9,7 @@ import {
 } from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
+
 function tokenize(text: string): string[] {
   return stemmedTokenizer.tokenize(text);
 }
@@ -51,6 +52,16 @@ type DraftCandidateInput = {
   bodyHtml?: string;
 };
 
+type PolicyDecisionInput = {
+  mandatoryContent: string[];
+  prohibitedContent: string[];
+  reviewTier?: "standard" | "mandatory-review" | "owner-alert";
+  toneConstraints: string[];
+  templateConstraints?: {
+    allowedCategories?: string[];
+  };
+};
+
 const qualityCheckSchema = z.object({
   actionPlan: z.object({
     language: z.enum(["EN", "IT", "ES", "UNKNOWN"]),
@@ -74,6 +85,19 @@ const qualityCheckSchema = z.object({
     bodyPlain: z.string().min(1),
     bodyHtml: z.string().optional(),
   }),
+  policyDecision: z
+    .object({
+      mandatoryContent: z.array(z.string()).default([]),
+      prohibitedContent: z.array(z.string()).default([]),
+      reviewTier: z.enum(["standard", "mandatory-review", "owner-alert"]).optional(),
+      toneConstraints: z.array(z.string()).default([]),
+      templateConstraints: z
+        .object({
+          allowedCategories: z.array(z.string()).optional(),
+        })
+        .optional(),
+    })
+    .optional(),
 });
 
 export const draftQualityTools = [
@@ -269,7 +293,36 @@ function contradictsCommitments(body: string, commitments: string[]): boolean {
   return false;
 }
 
-function runChecks(actionPlan: EmailActionPlanInput, draft: DraftCandidateInput): QualityResult {
+function includesNormalizedPhrase(bodyLower: string, phrase: string): boolean {
+  const normalizedPhrase = phrase.toLowerCase().replace(/\s+/g, " ").trim();
+  return normalizedPhrase.length > 0 && bodyLower.includes(normalizedPhrase);
+}
+
+function hasMissingPolicyMandatoryContent(
+  body: string,
+  policyDecision: PolicyDecisionInput
+): boolean {
+  const lower = body.toLowerCase().replace(/\s+/g, " ");
+  return policyDecision.mandatoryContent.some(
+    (phrase) => !includesNormalizedPhrase(lower, phrase)
+  );
+}
+
+function hasPolicyProhibitedContent(
+  body: string,
+  policyDecision: PolicyDecisionInput
+): boolean {
+  const lower = body.toLowerCase().replace(/\s+/g, " ");
+  return policyDecision.prohibitedContent.some((phrase) =>
+    includesNormalizedPhrase(lower, phrase)
+  );
+}
+
+function runChecks(
+  actionPlan: EmailActionPlanInput,
+  draft: DraftCandidateInput,
+  policyDecision?: PolicyDecisionInput
+): QualityResult {
   const failed_checks: string[] = [];
   const warnings: string[] = [];
 
@@ -311,6 +364,21 @@ function runChecks(actionPlan: EmailActionPlanInput, draft: DraftCandidateInput)
     }
   }
 
+  if (policyDecision) {
+    if (
+      policyDecision.mandatoryContent.length > 0 &&
+      hasMissingPolicyMandatoryContent(draft.bodyPlain, policyDecision)
+    ) {
+      failed_checks.push("missing_policy_mandatory_content");
+    }
+    if (
+      policyDecision.prohibitedContent.length > 0 &&
+      hasPolicyProhibitedContent(draft.bodyPlain, policyDecision)
+    ) {
+      failed_checks.push("policy_prohibited_content");
+    }
+  }
+
   const draftLanguage = detectLanguage(draft.bodyPlain);
   if (actionPlan.language !== "UNKNOWN" && draftLanguage !== actionPlan.language) {
     warnings.push("language_mismatch");
@@ -322,7 +390,12 @@ function runChecks(actionPlan: EmailActionPlanInput, draft: DraftCandidateInput)
     warnings.push("length_out_of_range");
   }
 
-  const totalChecks = 6;
+  const policyRuleCheckCount = policyDecision &&
+    (policyDecision.mandatoryContent.length > 0 ||
+      policyDecision.prohibitedContent.length > 0)
+    ? 2
+    : 0;
+  const totalChecks = 6 + policyRuleCheckCount;
   const confidence = Math.max(0, Math.min(1, (totalChecks - failed_checks.length) / totalChecks));
 
   return {
@@ -340,8 +413,8 @@ export async function handleDraftQualityTool(name: string, args: unknown) {
   }
 
   try {
-    const { actionPlan, draft } = qualityCheckSchema.parse(args);
-    const result = runChecks(actionPlan, draft);
+    const { actionPlan, draft, policyDecision } = qualityCheckSchema.parse(args);
+    const result = runChecks(actionPlan, draft, policyDecision);
     return jsonResult(result);
   } catch (error) {
     return errorResult(formatError(error));

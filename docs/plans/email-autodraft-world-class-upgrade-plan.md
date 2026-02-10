@@ -123,7 +123,7 @@ The approach builds outward from the existing 3-stage pipeline:
 | TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Complete (2026-02-10) | TASK-03, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Complete (2026-02-10) | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Add policy decision layer before generation | 84% | L | Complete (2026-02-10) | TASK-07 | TASK-09 |
-| TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 82% | M | Pending | TASK-08 | - |
+| TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 82% | M | Complete (2026-02-10) | TASK-08 | - |
 | TASK-10 | IMPLEMENT | Migrate booking email to MCP-only (remove GAS fallback) | 88% | S | Pending | - | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -761,6 +761,26 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Changes to task:**
   - Dependencies: unchanged (`Depends on: TASK-08`).
   - Acceptance/test plan/rollout: unchanged.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `c9cfa4ca16`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07
+  - Cycles: 1 (draft-review-finalize)
+  - Initial validation: PASS (artifact assertions and pipeline gate passed on first review cycle)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 82%
+  - Delta reason: Template rewrites and new high-stakes additions stayed within expected scope and passed all targeted checks without additional iteration.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (66/66 tests, quality gate 38/39, 97.4%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Rewrote high-stakes cancellation/prepayment/booking-issues templates to empathetic policy-firm language, removed rigid legacy phrasing, and added three new templates for medical hardship, dispute acknowledgment, and overbooking support. Added TASK-09 assertions in `template-lint.test.ts` for cancellation tone/phrasing, new template presence, and prepayment progression.
 
 ---
 

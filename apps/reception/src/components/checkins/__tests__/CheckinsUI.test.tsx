@@ -25,6 +25,7 @@ jest.mock("../../../hooks/mutations/useActivitiesMutations", () => {
   addActivityMock = jest.fn();
   removeLastActivityMock = jest.fn();
   return {
+    __esModule: true,
     default: () => ({
       addActivity: addActivityMock,
       removeLastActivity: removeLastActivityMock,
@@ -41,7 +42,7 @@ jest.mock("react-day-picker", () => ({
     onSelect?: (d: Date) => void;
     classNames?: { root?: string };
   }) => (
-    <div data-testid="daypicker" className={classNames?.root}>
+    <div data-cy="daypicker" className={classNames?.root}>
       <button onClick={() => onSelect?.(new Date("2025-01-05"))}>pick</button>
     </div>
   ),
@@ -73,10 +74,12 @@ const baseBooking = {
 /* ------------------------------------------------------------------ */
 
 describe("DateSelector", () => {
+  let user: ReturnType<typeof userEvent.setup>;
   beforeEach(() => {
     // Only mock the Date object so userEvent timers still run normally
     jest.useFakeTimers({ toFake: ["Date"] });
     jest.setSystemTime(new Date("2025-01-02T00:00:00Z"));
+    user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   });
   afterEach(() => {
     jest.useRealTimers();
@@ -88,7 +91,7 @@ describe("DateSelector", () => {
       <DateSelector selectedDate="2025-01-01" onDateChange={onDateChange} />
     );
     const todayBtn = screen.getByRole("button", { name: /today/i });
-    await userEvent.click(todayBtn);
+    await user.click(todayBtn);
     expect(onDateChange).toHaveBeenCalledWith("2025-01-02");
   });
 
@@ -103,12 +106,12 @@ describe("DateSelector", () => {
     );
     // When a date is already selected the toggle displays that date
     const toggle = screen.getByRole("button", { name: "2025-01-01" });
-    await userEvent.click(toggle);
+    await user.click(toggle);
     const pickBtn = screen.getByRole("button", { name: /pick/i });
     const container = screen.getByTestId("daypicker");
     expect(container.className).toContain("dark:bg-darkSurface");
     expect(container.className).toContain("dark:text-darkAccentGreen");
-    await userEvent.click(pickBtn);
+    await user.click(pickBtn);
     const expected = formatDateForInput("2025-01-05");
     expect(onDateChange).toHaveBeenCalledWith(expected);
     expect(screen.queryByRole("button", { name: /pick/i })).not.toBeInTheDocument();
@@ -138,21 +141,23 @@ describe("DateSelector", () => {
 });
 
 describe("StatusButton", () => {
+  let user: ReturnType<typeof userEvent.setup>;
   beforeEach(() => {
     jest.clearAllMocks();
+    user = userEvent.setup();
   });
 
   it("cycles status and calls hooks", async () => {
     render(<StatusButton booking={baseBooking} />);
     const btn = screen.getByRole("button");
 
-    await userEvent.click(btn);
+    await user.click(btn);
     expect(addActivityMock).toHaveBeenCalledWith("O1", 23);
 
-    await userEvent.click(btn);
+    await user.click(btn);
     expect(addActivityMock).toHaveBeenLastCalledWith("O1", 12);
 
-    await userEvent.click(btn);
+    await user.click(btn);
     expect(removeLastActivityMock).toHaveBeenCalledWith("O1", 12);
   });
 });

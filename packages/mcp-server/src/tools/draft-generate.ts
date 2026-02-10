@@ -637,7 +637,20 @@ function truncateWords(text: string, maxWords: number): string {
   if (words.length <= maxWords) {
     return text.trim();
   }
-  return `${words.slice(0, maxWords).join(" ").trimEnd()}.`;
+  const truncated = words.slice(0, maxWords).join(" ").trimEnd();
+
+  // Prefer ending on a sentence boundary to avoid broken fragments.
+  const boundaryCandidates = [". ", "? ", "! ", ".\n", "?\n", "!\n"]
+    .map(token => truncated.lastIndexOf(token))
+    .filter(index => index > 0);
+  if (boundaryCandidates.length > 0) {
+    const boundary = Math.max(...boundaryCandidates);
+    if (boundary >= Math.floor(truncated.length * 0.5)) {
+      return truncated.slice(0, boundary + 1).trim();
+    }
+  }
+
+  return sentence(truncated.replace(/[\s,:;*_-]+$/g, ""));
 }
 
 function normalizeParagraphs(text: string): string {
@@ -879,6 +892,39 @@ function applyPolicyDecisionContent(
   return normalizeParagraphs(adjusted);
 }
 
+function hasAvailabilityIntent(actionPlan: z.infer<typeof draftGenerateSchema>["actionPlan"]): boolean {
+  const text = `${actionPlan.normalized_text} ${actionPlan.intents.questions.map(q => q.text).join(" ")}`.toLowerCase();
+  return /(check availability|do you have availability|availability for|availability from|available for these dates|available from)/.test(text);
+}
+
+function selectAvailabilityTemplate(templates: EmailTemplate[]): EmailTemplate | undefined {
+  const preferred = templates.find(template =>
+    template.category === "booking-issues" &&
+    /booking inquiry .*availability/i.test(template.subject)
+  );
+  if (preferred) {
+    return preferred;
+  }
+
+  return templates.find(template =>
+    template.category === "booking-issues" &&
+    /live availability/i.test(template.body)
+  );
+}
+
+function personalizeGreeting(body: string, recipientName?: string): string {
+  if (!recipientName) {
+    return body;
+  }
+
+  const trimmed = body.trimStart();
+  if (/^Dear\s+Guest,/i.test(trimmed)) {
+    return trimmed.replace(/^Dear\s+Guest,/i, `Dear ${recipientName},`);
+  }
+
+  return body;
+}
+
 function enforceLengthBounds(body: string, bounds: LengthBounds): string {
   let adjusted = body.trim();
   let fillerIdx = 0;
@@ -946,8 +992,12 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       policyDecision,
     );
 
-    const selectedTemplate =
-      rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined;
+    const hasAvailability = hasAvailabilityIntent(actionPlan);
+    const availabilityTemplate = hasAvailability
+      ? selectAvailabilityTemplate(templates)
+      : undefined;
+    const selectedTemplate = availabilityTemplate
+      ?? (rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined);
 
     const isComposite =
       actionPlan.intents.questions.length >= 2 &&
@@ -1004,6 +1054,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     contentBody = enforceLengthBounds(contentBody, contentBounds);
     contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
     bodyPlain = ensureSignature(contentBody);
+    bodyPlain = personalizeGreeting(bodyPlain, recipientName);
 
     const bodyHtml = generateEmailHtml({
       recipientName,

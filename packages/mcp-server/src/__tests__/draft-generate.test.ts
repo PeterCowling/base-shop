@@ -324,6 +324,99 @@ describe("draft_generate tool", () => {
     const regardsMatches = body.toLowerCase().match(/regards/g) || [];
     expect(regardsMatches.length).toBe(1);
   });
+
+  it("TC-08: availability intent prefers booking-issues availability template", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Arriving before check-in time",
+          body: "Dear Guest,\r\n\r\nCheck-in starts at 2:30 pm.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "faq",
+        },
+        {
+          subject: "Booking inquiry and live availability",
+          body: "Dear Guest,\r\n\r\nThank you for your message. Please check live availability on our website for current options and rates.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "booking-issues",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Hello, do you have availability from March 13 to March 19?",
+        intents: {
+          questions: [{ text: "Do you have availability from March 13 to March 19?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "faq",
+          confidence: 0.6,
+        },
+      },
+      subject: "Visiting your city for a quiet family stay",
+      recipientName: "Dedra",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.template_used.subject).toBe("Booking inquiry and live availability");
+    expect(payload.template_used.category).toBe("booking-issues");
+    expect(payload.draft.bodyPlain).toContain("Dear Dedra,");
+    expect(payload.draft.bodyPlain).not.toContain("Check-in starts at 2:30 pm");
+  });
+
+  it("TC-09: truncation avoids dangling promotional fragments", async () => {
+    handleDraftGuideReadMock.mockResolvedValue({
+      contents: [
+        {
+          uri: "brikette://draft-guide",
+          mimeType: "application/json",
+          text: JSON.stringify({
+            ...draftGuideFixture,
+            length_calibration: {
+              ...draftGuideFixture.length_calibration,
+              faq: { min_words: 10, max_words: 18 },
+            },
+          }),
+        },
+      ],
+    });
+
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Booking inquiry and live availability",
+          body: "Dear Guest,\r\n\r\nThank you for your email. Please check live availability on our website for current options. We can assist with next steps after you review dates.\r\n\r\n*Amenities Available Before check-in include luggage storage and lounge access when space allows and staff are available.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "faq",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can you confirm options?",
+        intents: {
+          questions: [{ text: "Can you confirm options?" }],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Question",
+      recipientName: "Dedra",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.draft.bodyPlain).not.toContain("*Amenities Available Before");
+    expect(payload.draft.bodyPlain).not.toMatch(/[\s,:;*_-]+\n\nBest regards,/);
+  });
 });
 
 describe("draft_generate tool TASK-01", () => {

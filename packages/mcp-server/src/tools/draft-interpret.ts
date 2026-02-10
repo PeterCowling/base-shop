@@ -435,6 +435,11 @@ function classifyScenario(text: string): ScenarioClassification {
       pattern: /(change date|date change|booking change|modify booking|reschedul|extend stay|extra night|upgrade|add (one )?more person|add guest)/,
     },
     {
+      category: "booking-issues",
+      confidence: 0.86,
+      pattern: /(check availability|availability.*(from|for).*(to|through)|do you have availability|availability for|available for these dates|available from)/,
+    },
+    {
       category: "breakfast",
       confidence: 0.84,
       pattern: /(breakfast|meal|morning food|colazione)/,

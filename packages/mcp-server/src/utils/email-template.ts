@@ -57,6 +57,22 @@ export interface EmailTemplateOptions {
   subject?: string;
 }
 
+function splitGreetingFromBody(bodyText: string): {
+  greetingFromBody?: string;
+  contentWithoutGreeting: string;
+} {
+  const normalized = bodyText.trim();
+  const greetingMatch = normalized.match(/^Dear\s+[^,\n]+,\s*/i);
+  if (!greetingMatch) {
+    return { contentWithoutGreeting: normalized };
+  }
+
+  return {
+    greetingFromBody: greetingMatch[0].trim(),
+    contentWithoutGreeting: normalized.slice(greetingMatch[0].length).trimStart(),
+  };
+}
+
 function pictureHtml(
   avifUrl: string,
   pngUrl: string,
@@ -77,8 +93,13 @@ function pictureHtml(
  */
 export function generateEmailHtml(options: EmailTemplateOptions): string {
   const { recipientName, bodyText, includeBookingLink = false, subject } = options;
-  const greeting = recipientName ? `Dear ${recipientName},` : "Dear Guest,";
-  const bodyHtml = textToHtmlParagraphs(bodyText);
+  const split = splitGreetingFromBody(bodyText);
+  const greeting = split.greetingFromBody
+    ? (recipientName && /^Dear\s+Guest,?$/i.test(split.greetingFromBody)
+      ? `Dear ${recipientName},`
+      : split.greetingFromBody)
+    : (recipientName ? `Dear ${recipientName},` : "Dear Guest,");
+  const bodyHtml = textToHtmlParagraphs(split.contentWithoutGreeting);
   const { colors } = EMAIL_CONFIG;
 
   const bookingCta = includeBookingLink

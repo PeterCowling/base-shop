@@ -17,11 +17,11 @@ jest.mock("@daminort/reservation-grid", () => ({
       days.push(formatDate(d));
     }
     return (
-      <div data-testid="reservation-grid">
+      <div data-cy="reservation-grid">
         {data.map((row) => (
-          <div key={row.id} data-testid={`row-${row.id}`}>
+          <div key={row.id} data-cy={`row-${row.id}`}>
             {days.map((date) => (
-              <div key={date} data-testid={`cell-${row.id}-${date}`}></div>
+              <div key={date} data-cy={`cell-${row.id}-${date}`}></div>
             ))}
           </div>
         ))}

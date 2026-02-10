@@ -59,6 +59,14 @@ describe("draft_interpret", () => {
     expect(payload.scenario.confidence).toBeGreaterThan(0);
   });
 
+  it("TC-04b: classifies availability inquiries as booking-issues", async () => {
+    const body = "Hello, do you have availability from March 13 to March 19 for 2 adults?";
+    const result = await handleDraftInterpretTool("draft_interpret", { body });
+    const payload = parseResult(result);
+    expect(payload.scenario.category).toBe("booking-issues");
+    expect(payload.scenario.confidence).toBeGreaterThan(0.8);
+  });
+
   it("TC-05: agreement status none when no agreement phrases", async () => {
     const body = "Can you share availability for next weekend?";
     const result = await handleDraftInterpretTool("draft_interpret", { body });

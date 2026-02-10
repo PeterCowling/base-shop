@@ -9,6 +9,7 @@ function parseResult(result: { content: Array<{ text: string }> }) {
     intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
     agreement: { status: string; confidence: number; requires_human_confirmation: boolean; additional_content: boolean };
     scenario: { category: string; confidence: number };
+    escalation: { tier: string; triggers: string[]; confidence: number };
     thread_summary?: {
       prior_commitments: string[];
       open_questions: string[];
@@ -154,5 +155,123 @@ describe("draft_interpret", () => {
     });
     const payload = parseResult(result);
     expect(payload.thread_summary?.tone_history).toBe("mixed");
+  });
+});
+
+describe("draft_interpret TASK-03 escalation", () => {
+  it("TASK-03 TC-01: refund + dispute escalates to HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I want a refund and I am disputing this cancellation charge.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("cancellation_refund_dispute");
+  });
+
+  it("TASK-03 TC-02: legal threat escalates to CRITICAL", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "If this is not resolved I will contact my lawyer and take legal action.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation.triggers).toContain("legal_threat");
+  });
+
+  it("TASK-03 TC-03: chargeback hint escalates to HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I will start a chargeback with my bank for this payment.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("chargeback_hint");
+  });
+
+  it("TASK-03 TC-04: routine FAQ remains NONE", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "What time is check-in?",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("NONE");
+    expect(payload.escalation.triggers).toEqual([]);
+  });
+
+  it("TASK-03 TC-05: platform escalation threat is CRITICAL", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I will contact Booking.com and open a formal complaint.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation.triggers).toContain("platform_escalation_threat");
+  });
+
+  it("TASK-03 TC-06: vulnerable circumstance is HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "We had a medical emergency and need help with this cancellation.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("vulnerable_circumstance");
+  });
+
+  it("TASK-03 TC-07: multiple HIGH triggers stay HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I need a refund, this is a dispute, and I will start a chargeback.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toEqual(
+      expect.arrayContaining(["cancellation_refund_dispute", "chargeback_hint"])
+    );
+  });
+
+  it("TASK-03 TC-08: CRITICAL trigger dominates mixed trigger set", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I want a refund and will contact my lawyer.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation.triggers).toEqual(
+      expect.arrayContaining(["cancellation_refund_dispute", "legal_threat"])
+    );
+  });
+
+  it("TASK-03 TC-09: repeated complaint with 3+ prior staff responses is HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I am still waiting and this is unacceptable.",
+      threadContext: {
+        messages: [
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Mon, 01 Jan 2026 09:00:00 +0000",
+            snippet: "We are checking your request.",
+          },
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Mon, 01 Jan 2026 12:00:00 +0000",
+            snippet: "We will send an update soon.",
+          },
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Tue, 02 Jan 2026 08:00:00 +0000",
+            snippet: "Thanks for your patience while we verify details.",
+          },
+        ],
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.thread_summary?.previous_response_count).toBe(3);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("repeated_complaint");
+  });
+
+  it("TASK-03 TC-10: standard scenario returns valid plan with escalation NONE", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Do you offer luggage storage before check-in?",
+      subject: "Luggage storage question",
+    });
+    const payload = parseResult(result);
+    expect(payload.scenario.category).toBeDefined();
+    expect(payload.escalation.tier).toBe("NONE");
+    expect(payload.escalation.confidence).toBe(0);
   });
 });

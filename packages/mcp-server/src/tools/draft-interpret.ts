@@ -27,6 +27,12 @@ type ScenarioClassification = {
   confidence: number;
 };
 
+type EscalationClassification = {
+  tier: "NONE" | "HIGH" | "CRITICAL";
+  triggers: string[];
+  confidence: number;
+};
+
 type ThreadMessage = {
   from: string;
   date: string;
@@ -54,6 +60,7 @@ export type EmailActionPlan = {
   agreement: AgreementDetection;
   workflow_triggers: WorkflowTriggers;
   scenario: ScenarioClassification;
+  escalation: EscalationClassification;
   thread_summary?: ThreadSummary;
 };
 
@@ -420,6 +427,127 @@ function classifyScenario(text: string): ScenarioClassification {
   return { category: "general", confidence: 0.6 };
 }
 
+const DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR = 500;
+const HIGH_VALUE_DISPUTE_THRESHOLD_EUR = (() => {
+  const raw = process.env.EMAIL_AUTODRAFT_HIGH_VALUE_DISPUTE_EUR_THRESHOLD;
+  if (!raw) {
+    return DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR;
+  }
+
+  const parsed = Number.parseFloat(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR;
+  }
+
+  return parsed;
+})();
+
+function extractEuroAmounts(text: string): number[] {
+  const amounts: number[] = [];
+  const regex = /(?:€\s?(\d+(?:[.,]\d+)?)|(\d+(?:[.,]\d+)?)\s?(?:€|eur))/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    const rawAmount = match[1] ?? match[2];
+    if (!rawAmount) {
+      continue;
+    }
+    const amount = Number.parseFloat(rawAmount.replace(",", "."));
+    if (Number.isFinite(amount)) {
+      amounts.push(amount);
+    }
+  }
+
+  return amounts;
+}
+
+function classifyEscalation(
+  text: string,
+  threadSummary?: ThreadSummary
+): EscalationClassification {
+  const lower = text.toLowerCase();
+  const highTriggers: string[] = [];
+  const criticalTriggers: string[] = [];
+
+  const hasRefundOrCancellation = /(cancel|cancellation|refund)/.test(lower);
+  const hasDisputeLanguage = /(disput|complaint|unacceptable|issue|problem|chargeback|request (a )?refund|want (a )?refund)/.test(lower);
+  if (hasRefundOrCancellation && hasDisputeLanguage) {
+    highTriggers.push("cancellation_refund_dispute");
+  }
+
+  if (
+    /(chargeback|card dispute|dispute (the )?charge|reverse (the )?charge|bank dispute)/.test(lower)
+  ) {
+    highTriggers.push("chargeback_hint");
+  }
+
+  if (
+    /(medical|hospital|emergency|disability|pregnan|bereave|funeral|vulnerable)/.test(lower)
+  ) {
+    highTriggers.push("vulnerable_circumstance");
+  }
+
+  const hasComplaintTone = /(still waiting|no response|unanswered|ignored|unacceptable|frustrated|upset|complaint|complain|again|already)/.test(lower);
+  if ((threadSummary?.previous_response_count ?? 0) >= 3 && hasComplaintTone) {
+    highTriggers.push("repeated_complaint");
+  }
+
+  if (/(lawyer|attorney|legal action|lawsuit|sue|court|solicitor|small claims)/.test(lower)) {
+    criticalTriggers.push("legal_threat");
+  }
+
+  const hasPlatformMention = /(booking\.com|airbnb|expedia|tripadvisor|google review|regulator|consumer authority|ombudsman)/.test(lower);
+  const hasEscalationVerb = /(contact|report|complain|complaint|escalate|open case|file)/.test(lower);
+  if (hasPlatformMention && hasEscalationVerb) {
+    criticalTriggers.push("platform_escalation_threat");
+  }
+
+  const hasPublicThreat = /(social media|instagram|facebook|tiktok|twitter|x\.com|press|media|public review|go public|viral)/.test(lower);
+  const hasPublicThreatVerb = /(post|publish|share|report|expose|name and shame|contact)/.test(lower);
+  if (hasPublicThreat && hasPublicThreatVerb) {
+    criticalTriggers.push("public_media_threat");
+  }
+
+  if (/(fraud|scam|theft|stole|criminal|misconduct|dishonest|illegal charge)/.test(lower)) {
+    criticalTriggers.push("fraud_or_misconduct_accusation");
+  }
+
+  const amounts = extractEuroAmounts(lower);
+  const hasHighValueDispute = amounts.some(
+    (amount) => amount >= HIGH_VALUE_DISPUTE_THRESHOLD_EUR
+  );
+  const hasDisputeContext = /(refund|dispute|chargeback|cancel|cancellation|complaint|legal)/.test(lower);
+  if (hasHighValueDispute && hasDisputeContext) {
+    criticalTriggers.push("high_value_dispute");
+  }
+
+  const uniqueTriggers = Array.from(new Set([...criticalTriggers, ...highTriggers]));
+
+  if (criticalTriggers.length > 0) {
+    const confidence = Math.min(0.99, 0.86 + (criticalTriggers.length - 1) * 0.04);
+    return {
+      tier: "CRITICAL",
+      triggers: uniqueTriggers,
+      confidence: Number(confidence.toFixed(2)),
+    };
+  }
+
+  if (highTriggers.length > 0) {
+    const confidence = Math.min(0.95, 0.74 + (highTriggers.length - 1) * 0.06);
+    return {
+      tier: "HIGH",
+      triggers: uniqueTriggers,
+      confidence: Number(confidence.toFixed(2)),
+    };
+  }
+
+  return {
+    tier: "NONE",
+    triggers: [],
+    confidence: 0,
+  };
+}
+
 export async function handleDraftInterpretTool(name: string, args: unknown) {
   if (name !== "draft_interpret") {
     return errorResult(`Unknown draft interpret tool: ${name}`);
@@ -433,6 +561,8 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
     const requests = extractRequests(normalized);
     const confirmations = extractConfirmations(normalized);
     const agreement = detectAgreement(normalized, language);
+    const threadSummary = summarizeThreadContext(threadContext, normalized);
+    const escalation = classifyEscalation(`${subject ?? ""}\n${normalized}`, threadSummary);
 
     const plan: EmailActionPlan = {
       normalized_text: normalized,
@@ -445,9 +575,9 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
       agreement,
       workflow_triggers: detectWorkflowTriggers(`${subject ?? ""}\n${normalized}`),
       scenario: classifyScenario(`${subject ?? ""}\n${normalized}`),
+      escalation,
     };
 
-    const threadSummary = summarizeThreadContext(threadContext, normalized);
     if (threadSummary) {
       plan.thread_summary = threadSummary;
     }

@@ -89,6 +89,11 @@ type InterpretResult = {
     booking_monitor: boolean;
   };
   scenario: { category: string; confidence: number };
+  escalation: {
+    tier: "NONE" | "HIGH" | "CRITICAL";
+    triggers: string[];
+    confidence: number;
+  };
   thread_summary?: {
     prior_commitments: string[];
     open_questions: string[];
@@ -596,6 +601,7 @@ describe("TASK-18: Stage 1 — Interpretation", () => {
         expect(payload.language).toBeDefined();
         expect(payload.scenario.category).toBeDefined();
         expect(payload.scenario.confidence).toBeGreaterThan(0);
+        expect(["NONE", "HIGH", "CRITICAL"]).toContain(payload.escalation.tier);
       }
     });
 
@@ -634,6 +640,21 @@ describe("TASK-18: Stage 1 — Interpretation", () => {
       expect(payload.thread_summary!.previous_response_count).toBeGreaterThan(
         0
       );
+    });
+
+    it("TASK-03 TC-10: standard fixtures default to NONE escalation", async () => {
+      const standardFixtureIds = ["FAQ-01", "BRK-01", "LUG-01", "WIFI-01"];
+      for (const fixtureId of standardFixtureIds) {
+        const fixture = fixtures.find((item) => item.id === fixtureId);
+        expect(fixture).toBeDefined();
+        const result = await handleDraftInterpretTool("draft_interpret", {
+          body: fixture!.body,
+          subject: fixture!.subject,
+          threadContext: fixture!.threadContext,
+        });
+        const payload = parseResult<InterpretResult>(result);
+        expect(payload.escalation.tier).toBe("NONE");
+      }
     });
   });
 

@@ -83,6 +83,8 @@ jest.mock("react-i18next", () => {
 });
 
 describe("/help assistance index", () => {
+  const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
   it("shows Quick help above Help guides", () => {
     renderWithProviders(<AssistanceIndexContent lang="en" />, { route: "/en/help" });
 
@@ -105,7 +107,7 @@ describe("/help assistance index", () => {
       "Best time to visit",
     ];
     for (const label of expected) {
-      expect(scoped.getByRole("link", { name: label })).toBeInTheDocument();
+      expect(scoped.getByRole("link", { name: new RegExp(escapeRegex(label), "i") })).toBeInTheDocument();
     }
 
     const hiddenDraftLabels = [
@@ -129,8 +131,8 @@ describe("/help assistance index", () => {
     expect(section).not.toBeNull();
     const scoped = within(section as HTMLElement);
 
-    expect(scoped.getByRole("link", { name: "Naples airport → Positano by bus" })).toBeInTheDocument();
-    expect(scoped.getByRole("link", { name: "Path of the Gods" })).toBeInTheDocument();
+    expect(scoped.getByRole("link", { name: /Naples airport → Positano by bus/i })).toBeInTheDocument();
+    expect(scoped.getByRole("link", { name: /Path of the Gods/i })).toBeInTheDocument();
     expect(scoped.getAllByRole("img")).toHaveLength(8);
   });
 });

@@ -6,7 +6,7 @@ Domain: Platform
 Created: 2026-02-06
 Last-updated: 2026-02-06
 Feature-Slug: article-generation-pipeline
-Related-Plan: docs/plans/article-generation-pipeline-plan.md
+Related-Plan: docs/plans/archive/article-generation-pipeline-plan.md
 Business-Unit: PLAT
 ---
 

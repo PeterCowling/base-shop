@@ -49,8 +49,8 @@ Prime has centralized UI/theme capability available (`@acme/design-system`, `@ac
 | TASK-07 | IMPLEMENT | Migrate onboarding steps to DS primitives + enable DS rules | 86% | M | Complete (2026-02-10) | TASK-05 | TASK-10 |
 | TASK-08 | IMPLEMENT | Migrate heavy route pages — owner, staff, guest core (8 files, ~434 classes) | 85% | L | Complete (2026-02-10) | TASK-05 | TASK-10 |
 | TASK-09 | IMPLEMENT | Migrate complex component surfaces — quests/ + routes/ (6 files, ~146 classes) | 86% | L | Complete (2026-02-10) | TASK-05 | TASK-10 |
-| TASK-10 | IMPLEMENT | Remove blanket DS bypass from eslint.config.mjs + lint-wrapper.sh | 85% | M | Pending | TASK-06, TASK-07, TASK-08, TASK-09, TASK-12, TASK-13 | TASK-11 |
-| TASK-11 | IMPLEMENT | Add DS lint regression guard test | 88% | S | Pending | TASK-10 | - |
+| TASK-10 | IMPLEMENT | Remove blanket DS bypass from eslint.config.mjs + lint-wrapper.sh | 85% | M | Complete (2026-02-10) | TASK-06, TASK-07, TASK-08, TASK-09, TASK-12, TASK-13 | TASK-11 |
+| TASK-11 | IMPLEMENT | Add DS lint regression guard test | 88% | S | Complete (2026-02-10) | TASK-10 | - |
 | TASK-12 | IMPLEMENT | Migrate medium + light route pages — remaining app routes (26 files, ~162 classes) | 86% | L | Complete (2026-02-10) | TASK-05 | TASK-10 |
 | TASK-13 | IMPLEMENT | Migrate remaining component surfaces — meal-orders, auth, pwa, etc. (12 files, ~172 classes) | 84% | L | Complete (2026-02-10) | TASK-05 | TASK-10 |
 

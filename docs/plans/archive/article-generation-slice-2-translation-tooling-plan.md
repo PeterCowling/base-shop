@@ -8,7 +8,7 @@ Last-reviewed: 2026-02-09
 Relates-to charter: none
 Feature-Slug: article-generation-slice-2-translation-tooling
 Related-Fact-Find: docs/plans/article-generation-pipeline-fact-find.md
-Parent-Plan: docs/plans/article-generation-pipeline-plan.md
+Parent-Plan: docs/plans/archive/article-generation-pipeline-plan.md
 Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: build-feature
@@ -22,7 +22,7 @@ Business-Unit: PLAT
 
 ## Summary
 
-Slice 2 extracts reusable translation/validation tooling from Brikette scripts into shared package utilities so guide translation can scale across shops without copying script logic. This plan converts the Slice 2 seeds from `docs/plans/article-generation-pipeline-plan.md` into buildable tasks.
+Slice 2 extracts reusable translation/validation tooling from Brikette scripts into shared package utilities so guide translation can scale across shops without copying script logic. This plan converts the Slice 2 seeds from `docs/plans/archive/article-generation-pipeline-plan.md` into buildable tasks.
 
 ## Goals
 

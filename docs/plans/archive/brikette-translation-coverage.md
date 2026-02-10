@@ -5,7 +5,7 @@ Status: Active
 Domain: Brikette i18n
 Last-reviewed: 2026-02-09
 Audit-Ref: b559badf70
-Relates-to plan: docs/plans/brikette-translation-coverage-plan.md
+Relates-to plan: docs/plans/archive/brikette-translation-coverage-plan.md
 
 ---
 

@@ -138,7 +138,7 @@ Update the Business OS ideas-to-delivery workflow so ideas are never rendered in
 - **Contract tests for:** Stage 7 deterministic pool + optional Stage 7b guardrails (if activated).
 
 ### Recent Git History (Targeted)
-- `docs/plans/business-os-ideas-kanban-flow-plan.md` — completed baseline ideas/kanban integration.
+- `docs/plans/archive/business-os-ideas-kanban-flow-plan.md` — completed baseline ideas/kanban integration.
 - `apps/business-os/src/app/ideas/page.tsx` and `apps/business-os/src/components/ideas/*` — recently introduced ideas index route/components.
 - `packages/platform-core/src/repositories/businessOsIdeas.server.ts` — new server-driven list/count query contract.
 

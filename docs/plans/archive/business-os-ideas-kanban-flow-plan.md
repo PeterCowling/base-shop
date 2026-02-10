@@ -1,10 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Historical
 Domain: Business-OS
 Workstream: Engineering
 Created: 2026-02-09
-Last-updated: 2026-02-09
+Last-updated: 2026-02-10
+Completed: 2026-02-10
 Last-reviewed: 2026-02-09
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: business-os-ideas-kanban-flow
@@ -373,7 +374,7 @@ Relationship to board:
 - **Type:** CHECKPOINT
 - **Deliverable:** Verification memo in this plan confirming behavior from idea creation to delivery visibility.
 - **Execution-Skill:** build-feature
-- **Affects:** `docs/plans/business-os-ideas-kanban-flow-plan.md`
+- **Affects:** `docs/plans/archive/business-os-ideas-kanban-flow-plan.md`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** -
 - **Confidence:** 90%

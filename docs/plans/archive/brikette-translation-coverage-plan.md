@@ -1,10 +1,12 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Brikette i18n
-Last-reviewed: 2026-02-08
+Last-reviewed: 2026-02-10
+Last-updated: 2026-02-10
+Completed: 2026-02-10
 Relates-to charter: none
-Progress: 6/7 tasks complete
+Progress: 7/7 tasks resolved (6 complete, 1 moved to deferred plan)
 ---
 
 # Brikette Translation Coverage Fix Plan
@@ -84,11 +86,11 @@ Progress: 6/7 tasks complete
   - Definition of done: guide is reachable at the generated slug and resolves content for all locales (with EN fallback where needed).
   - Status: Complete.
 
-- [ ] BRIK-I18N-COV-07: Decide fate of the 24 extra root route-guide JSON files
+- [x] BRIK-I18N-COV-07: Decide fate of the 24 extra root route-guide JSON files (moved to deferred backlog)
   - Scope: confirm usage of the extra root files present in 10 locales (e.g. `positanoAmalfiBus.json`); remove or consolidate if unused/superseded.
   - Dependencies: BRIK-I18N-COV-00.
   - Definition of done: either (a) files removed safely, or (b) documented as intentional with a loader/consumer reference.
-  - Status: Deferred (explicitly no action for now).
+  - Status: Moved to docs/plans/brikette-deferred-plan.md as BRIK-DEF-07.
 
 ## Validation
 - JSON validity: run the parse scan in `docs/brikette-translation-coverage.md` ("Validate Locale JSON").
@@ -96,4 +98,4 @@ Progress: 6/7 tasks complete
 
 ## Deferred tasks
 
-- **BRIK-I18N-COV-07** - Decide fate of 24 extra root route-guide JSON files (deferred - no action required)
+- **BRIK-I18N-COV-07** - Moved to docs/plans/brikette-deferred-plan.md as BRIK-DEF-07

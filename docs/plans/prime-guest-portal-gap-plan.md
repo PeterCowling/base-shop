@@ -14,7 +14,7 @@ Business-Unit: BRIK
 Card-ID: BRIK-ENG-0017
 Relates-to charter: none
 Fact-Find-Ref: docs/plans/prime-guest-portal-gap-fact-find.md
-Build-progress: 49/53 tasks complete (TASK-01 through TASK-37 complete; TASK-38 not started; TASK-39 through TASK-50 complete; TASK-51, TASK-52, TASK-53 deferred)
+Build-progress: 50/53 tasks complete (TASK-01 through TASK-50 complete; TASK-51, TASK-52, TASK-53 deferred)
 ---
 
 # Prime Guest Portal — Bridge Plan
@@ -332,13 +332,13 @@ Rows below are in **numeric TASK-ID order**.
 | TASK-40 | Production safety gate for staff/owner routes | IMPLEMENT | M | 82% | TASK-39, TASK-02 | Complete (2026-02-07) |
 | TASK-41 | Primary guest journey end-to-end suite (production gate) | IMPLEMENT | M | 81% | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 | Complete (2026-02-07) |
 | TASK-42 | Cloudflare Pages deep-link/routing verification gate | IMPLEMENT | S | 82% | TASK-02, TASK-03, TASK-04 | Complete (2026-02-07) |
-| TASK-43 | Arrival code offline-lite resilience (last-known code fallback) | IMPLEMENT | M | 78% | TASK-07, TASK-11 | Ready |
+| TASK-43 | Arrival code offline-lite resilience (last-known code fallback) | IMPLEMENT | M | 78% | TASK-07, TASK-11 | Complete (2026-02-10) |
 | TASK-44 | Messaging safety baseline (rate-limit, reporting, retention, feature flags) | IMPLEMENT | M | 77% | TASK-34, TASK-39 | Complete (2026-02-08) |
 | TASK-45 | Activity group chat channel (presence + live messaging) | IMPLEMENT | M | 85% | TASK-34, TASK-28, TASK-29, TASK-44 | Complete (2026-02-08) |
 | TASK-46 | Guest-to-guest opt-in messaging controls | IMPLEMENT | M | 85% | TASK-45, TASK-17, TASK-44 | Complete (2026-02-08) |
 | TASK-47 | Owner KPI pre-aggregation pipeline (cost-safe analytics source) | IMPLEMENT | M | 74% | TASK-15, TASK-21 | Complete (2026-02-08) |
-| TASK-48 | Owner arrival insights dashboard + KPI feed | IMPLEMENT | M | 73% | TASK-15, TASK-47 | Ready |
-| TASK-49 | Cross-app business impact scorecard + operating cadence | IMPLEMENT | M | 72% | TASK-15, TASK-48, TASK-21, TASK-27, TASK-47 | Ready |
+| TASK-48 | Owner arrival insights dashboard + KPI feed | IMPLEMENT | M | 73% | TASK-15, TASK-47 | Complete (2026-02-10) |
+| TASK-49 | Cross-app business impact scorecard + operating cadence | IMPLEMENT | M | 72% | TASK-15, TASK-48, TASK-21, TASK-27, TASK-47 | Complete (2026-02-10) |
 | TASK-50 | Prime touched-file lint non-regression gate | IMPLEMENT | S | 84% | TASK-02 | Complete (2026-02-07) |
 | TASK-51 | Staff auth replacement (PinAuthProvider) | IMPLEMENT | M | 74% | — | Deferred (Phase 3) |
 | TASK-52 | Campaign/trigger messaging orchestration | IMPLEMENT | L | 70% | TASK-51 | Deferred (Phase 3) |

@@ -208,6 +208,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (quality gate 29/31, 93.5%)
   - Ran: `pnpm --filter @acme/mcp-server build` — PASS
   - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only, pre-existing security plugin warnings)
+  - Business OS API integration steps were not executed in this run because `BOS_AGENT_API_BASE_URL` and `BOS_AGENT_API_KEY` were not present in the environment.
 - **Documentation updated:** None required
 - **Implementation notes:** Consumed `draft-guide` + `voice-examples` payloads in generation, added always/if/never composition enforcement, phrase sanitization, preferred-phrase insertion, and guide-driven length calibration (with safe fallback behavior when guide data is absent). Added TASK-01 validation tests in `draft-generate.test.ts`.
 

@@ -2345,6 +2345,33 @@ export default [
       ],
     },
   },
+  /* ▸ Prime portal: DS rules re-enabled after migration (TASK-06).
+   *   Must be after the blanket Prime disable so these overrides win. */
+  {
+    files: ["apps/prime/src/components/portal/**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      // Color/token rules — fully migrated, enforce as errors
+      "ds/no-raw-color": "error",
+      "ds/no-raw-tailwind-color": "error",
+      "ds/no-raw-font": "error",
+      // Remaining DS rules — enabled as warnings for progressive hardening
+      "ds/no-raw-spacing": "warn",
+      "ds/no-raw-typography": "warn",
+      "ds/no-raw-radius": "warn",
+      "ds/no-raw-shadow": "warn",
+      "ds/no-raw-zindex": "warn",
+      "ds/no-arbitrary-tailwind": "warn",
+      "ds/no-important": "warn",
+      "ds/no-negative-margins": "warn",
+      "ds/no-margins-on-atoms": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/require-disable-justification": [
+        "warn",
+        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
+      ],
+    },
+  },
   /* ▸ Business OS guide authoring: internal tool — relax DS rules.
    *   Must be after catch-all blocks so "off" wins. */
   {

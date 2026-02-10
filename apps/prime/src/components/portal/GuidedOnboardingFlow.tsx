@@ -254,15 +254,15 @@ export default function GuidedOnboardingFlow({
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-6">
-      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-white p-5 shadow-sm">
+    <main className="min-h-screen bg-muted px-4 py-6">
+      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-card p-5 shadow-sm">
         <StepFlowShell
           currentStep={step}
           totalSteps={3}
@@ -285,21 +285,21 @@ export default function GuidedOnboardingFlow({
 
         {step === 1 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Choose your arrival style</h2>
-            <p className="text-sm text-gray-600">This lets us recommend the best route and defaults for you.</p>
+            <h2 className="text-lg font-semibold text-foreground">Choose your arrival style</h2>
+            <p className="text-sm text-muted-foreground">This lets us recommend the best route and defaults for you.</p>
 
             {showConfidenceBeforeMethod ? (
               <>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-800">How confident do you feel about getting here?</p>
+                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => setArrivalConfidence('confident')}
                       className={`rounded-lg border px-3 py-2 text-sm font-medium ${
                         arrivalConfidence === 'confident'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-slate-200 text-slate-700'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
                       }`}
                     >
                       Confident
@@ -309,8 +309,8 @@ export default function GuidedOnboardingFlow({
                       onClick={() => setArrivalConfidence('need-guidance')}
                       className={`rounded-lg border px-3 py-2 text-sm font-medium ${
                         arrivalConfidence === 'need-guidance'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-slate-200 text-slate-700'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
                       }`}
                     >
                       Need guidance
@@ -318,7 +318,7 @@ export default function GuidedOnboardingFlow({
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-800">How are you most likely arriving?</p>
+                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
@@ -327,8 +327,8 @@ export default function GuidedOnboardingFlow({
                         onClick={() => setArrivalMethodPreference(method)}
                         className={`rounded-lg border px-3 py-2 text-sm font-medium ${
                           arrivalMethodPreference === method
-                            ? 'border-blue-500 bg-blue-50 text-blue-700'
-                            : 'border-slate-200 text-slate-700'
+                            ? 'border-primary bg-primary-soft text-primary'
+                            : 'border-border text-foreground'
                         }`}
                       >
                         {method}
@@ -340,7 +340,7 @@ export default function GuidedOnboardingFlow({
             ) : (
               <>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-800">How are you most likely arriving?</p>
+                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
@@ -349,8 +349,8 @@ export default function GuidedOnboardingFlow({
                         onClick={() => setArrivalMethodPreference(method)}
                         className={`rounded-lg border px-3 py-2 text-sm font-medium ${
                           arrivalMethodPreference === method
-                            ? 'border-blue-500 bg-blue-50 text-blue-700'
-                            : 'border-slate-200 text-slate-700'
+                            ? 'border-primary bg-primary-soft text-primary'
+                            : 'border-border text-foreground'
                         }`}
                       >
                         {method}
@@ -359,15 +359,15 @@ export default function GuidedOnboardingFlow({
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-gray-800">How confident do you feel about getting here?</p>
+                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
                   <div className="grid grid-cols-2 gap-2">
                     <button
                       type="button"
                       onClick={() => setArrivalConfidence('confident')}
                       className={`rounded-lg border px-3 py-2 text-sm font-medium ${
                         arrivalConfidence === 'confident'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-slate-200 text-slate-700'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
                       }`}
                     >
                       Confident
@@ -377,8 +377,8 @@ export default function GuidedOnboardingFlow({
                       onClick={() => setArrivalConfidence('need-guidance')}
                       className={`rounded-lg border px-3 py-2 text-sm font-medium ${
                         arrivalConfidence === 'need-guidance'
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-slate-200 text-slate-700'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
                       }`}
                     >
                       Need guidance
@@ -389,7 +389,7 @@ export default function GuidedOnboardingFlow({
             )}
 
             <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-800">Recommended routes</p>
+              <p className="text-sm font-medium text-foreground">Recommended routes</p>
               {routeSuggestions.map((route) => (
                 <button
                   key={route.slug}
@@ -397,12 +397,12 @@ export default function GuidedOnboardingFlow({
                   onClick={() => setSelectedRouteSlug(route.slug)}
                   className={`w-full rounded-lg border px-3 py-2 text-left ${
                     selectedRouteSlug === route.slug
-                      ? 'border-emerald-400 bg-emerald-50'
-                      : 'border-slate-200'
+                      ? 'border-success bg-success-soft'
+                      : 'border-border'
                   }`}
                 >
-                  <p className="text-sm font-semibold text-slate-900">{route.title}</p>
-                  <p className="text-xs text-slate-600">{route.description}</p>
+                  <p className="text-sm font-semibold text-foreground">{route.title}</p>
+                  <p className="text-xs text-muted-foreground">{route.description}</p>
                 </button>
               ))}
             </div>
@@ -411,7 +411,7 @@ export default function GuidedOnboardingFlow({
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700"
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
               >
                 Skip for now
               </button>
@@ -419,7 +419,7 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleStepOneContinue()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
               >
                 Save and continue
                 <ChevronRight className="h-4 w-4" />
@@ -430,15 +430,15 @@ export default function GuidedOnboardingFlow({
 
         {step === 2 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Share your ETA</h2>
-            <p className="text-sm text-gray-600">Sharing ETA helps reception prioritize fast check-in on arrival.</p>
+            <h2 className="text-lg font-semibold text-foreground">Share your ETA</h2>
+            <p className="text-sm text-muted-foreground">Sharing ETA helps reception prioritize fast check-in on arrival.</p>
 
-            <label className="block text-sm font-medium text-gray-800">
+            <label className="block text-sm font-medium text-foreground">
               Arrival time window
               <select
                 value={etaWindow}
                 onChange={(event) => setEtaWindow(event.target.value)}
-                className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2"
+                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
               >
                 {etaWindowOptions.map((window) => (
                   <option key={window} value={window}>
@@ -448,12 +448,12 @@ export default function GuidedOnboardingFlow({
               </select>
             </label>
 
-            <label className="block text-sm font-medium text-gray-800">
+            <label className="block text-sm font-medium text-foreground">
               Travel method
               <select
                 value={etaMethod}
                 onChange={(event) => setEtaMethod(normalizeMethod(event.target.value) ?? 'other')}
-                className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2"
+                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
               >
                 {(['ferry', 'bus', 'train', 'taxi', 'private', 'other'] as const).map((method) => (
                   <option key={method} value={method}>
@@ -467,7 +467,7 @@ export default function GuidedOnboardingFlow({
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700"
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
               >
                 Skip for now
               </button>
@@ -475,7 +475,7 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleStepTwoContinue()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
               >
                 Save ETA
                 <ChevronRight className="h-4 w-4" />
@@ -486,10 +486,10 @@ export default function GuidedOnboardingFlow({
 
         {step === 3 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Final readiness checks</h2>
-            <p className="text-sm text-gray-600">Complete what you can now. You can edit everything later on the dashboard.</p>
+            <h2 className="text-lg font-semibold text-foreground">Final readiness checks</h2>
+            <p className="text-sm text-muted-foreground">Complete what you can now. You can edit everything later on the dashboard.</p>
 
-            <label className="flex items-start gap-2 rounded-lg border border-slate-200 p-3 text-sm text-slate-700">
+            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
               <input
                 type="checkbox"
                 checked={cashPrepared}
@@ -499,7 +499,7 @@ export default function GuidedOnboardingFlow({
               I have prepared cash for city tax and keycard deposit
             </label>
 
-            <label className="flex items-start gap-2 rounded-lg border border-slate-200 p-3 text-sm text-slate-700">
+            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
               <input
                 type="checkbox"
                 checked={rulesReviewed}
@@ -509,7 +509,7 @@ export default function GuidedOnboardingFlow({
               I reviewed the house rules
             </label>
 
-            <label className="flex items-start gap-2 rounded-lg border border-slate-200 p-3 text-sm text-slate-700">
+            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
               <input
                 type="checkbox"
                 checked={locationSaved}
@@ -520,7 +520,7 @@ export default function GuidedOnboardingFlow({
             </label>
 
             {lastCompletedItem && (
-              <p className="rounded-lg bg-sky-50 px-3 py-2 text-xs font-medium text-sky-700">
+              <p className="rounded-lg bg-info-soft px-3 py-2 text-xs font-medium text-info-foreground">
                 Last completion: {getChecklistItemLabel(lastCompletedItem)}
               </p>
             )}
@@ -529,7 +529,7 @@ export default function GuidedOnboardingFlow({
               <button
                 type="button"
                 onClick={onComplete}
-                className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700"
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
               >
                 Skip to dashboard
               </button>
@@ -537,7 +537,7 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleFinish()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white disabled:opacity-60"
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-success px-3 py-2 text-sm font-semibold text-success-foreground disabled:opacity-60"
               >
                 Finish setup
                 <ChevronRight className="h-4 w-4" />

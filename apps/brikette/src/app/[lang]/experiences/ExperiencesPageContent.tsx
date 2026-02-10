@@ -3,7 +3,7 @@
 /* eslint-disable ds/no-hardcoded-copy, complexity, ds/container-widths-only-at -- PUB-05 pre-existing */
 // src/app/[lang]/experiences/ExperiencesPageContent.tsx
 // Client component for experiences listing page
-import { Fragment, memo, useCallback, useMemo } from "react";
+import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -123,8 +123,20 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
   const handleOpenBooking = useCallback(() => openModal("booking"), [openModal]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
-  const normalizedTopicParam = topicParam.trim().toLowerCase();
-  const normalizedTagParam = tagParam.trim().toLowerCase();
+  const [clientTopicParam, setClientTopicParam] = useState(topicParam);
+  const [clientTagParam, setClientTagParam] = useState(tagParam);
+  const [clientQueryString, setClientQueryString] = useState(queryString);
+
+  useEffect(() => {
+    if (topicParam || tagParam || queryString) return;
+    const params = new URLSearchParams(window.location.search);
+    setClientTopicParam(params.get("topic") ?? "");
+    setClientTagParam(params.get("tag") ?? "");
+    setClientQueryString(params.toString());
+  }, [queryString, tagParam, topicParam]);
+
+  const normalizedTopicParam = clientTopicParam.trim().toLowerCase();
+  const normalizedTagParam = clientTagParam.trim().toLowerCase();
 
   const activeFilter = normalizedTopicParam || normalizedTagParam;
   const isTagFilter = Boolean(!normalizedTopicParam && normalizedTagParam);
@@ -224,7 +236,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
                 {...(guideFilterOptions ? { filterOptions: guideFilterOptions } : {})}
                 clearFilterHref={clearFilterHref}
                 basePath={clearFilterHref}
-                searchParamsString={queryString}
+                searchParamsString={clientQueryString}
                 copy={guideCopy}
                 showFilters={false}
                 sectionClassName="mx-auto max-w-6xl"
@@ -237,7 +249,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
                 lang={lang}
                 guides={allExperienceGuides}
                 activeTopic={normalizedTopicParam}
-                searchParamsString={queryString}
+                searchParamsString={clientQueryString}
                 basePath={clearFilterHref}
                 clearFilterHref={clearFilterHref}
                 copy={{

@@ -32,6 +32,19 @@ function normalizeQueryValue(value: string | null): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+function readFiltersFromSearch(search: string): {
+  transport: string | null;
+  direction: string | null;
+  destination: string | null;
+} {
+  const params = new URLSearchParams(search);
+  return {
+    transport: normalizeQueryValue(params.get(FILTER_PARAM_KEYS.transport)),
+    direction: normalizeQueryValue(params.get(FILTER_PARAM_KEYS.direction)),
+    destination: normalizeQueryValue(params.get(FILTER_PARAM_KEYS.destination)),
+  };
+}
+
 export type DestinationFiltersState = {
   transportFilter: TransportFilter;
   directionFilter: DirectionFilter;
@@ -105,6 +118,20 @@ export function useDestinationFilters(
     const raw = normalizeQueryValue(initialState.destination ?? null);
     return raw || "all";
   });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const query = readFiltersFromSearch(window.location.search);
+    if (query.transport && isTransportMode(query.transport)) {
+      setTransportFilterState(query.transport);
+    }
+    if (query.direction && isRouteDirection(query.direction)) {
+      setDirectionFilterState(query.direction);
+    }
+    if (query.destination) {
+      setDestinationFilterState(query.destination);
+    }
+  }, []);
 
   const transportFilter: TransportFilter =
     transportFilterState !== "all" && !availableTransportModes.includes(transportFilterState)

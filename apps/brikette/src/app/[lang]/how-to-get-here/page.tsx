@@ -11,17 +11,7 @@ import HowToGetHereIndexContent from "./HowToGetHereIndexContent";
 
 type Props = {
   params: Promise<{ lang: string }>;
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
-
-type SearchParamsMap = Record<string, string | string[] | undefined>;
-
-function readFirstSearchValue(value: string | string[] | undefined): string {
-  if (Array.isArray(value)) {
-    return typeof value[0] === "string" ? value[0] : "";
-  }
-  return typeof value === "string" ? value : "";
-}
 
 export async function generateStaticParams() {
   return generateLangParams();
@@ -46,22 +36,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 }
 
-export default async function HowToGetHereIndexPage({ params, searchParams }: Props) {
+export default async function HowToGetHereIndexPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  const resolvedSearchParams: SearchParamsMap = await (searchParams ?? Promise.resolve({} as SearchParamsMap));
   const howToSlug = getSlug("howToGetHere", validLang);
   const basePath = `/${validLang}/${howToSlug}`;
 
-  return (
-    <HowToGetHereIndexContent
-      lang={validLang}
-      basePath={basePath}
-      initialFilters={{
-        transport: readFirstSearchValue(resolvedSearchParams.mode) || null,
-        direction: readFirstSearchValue(resolvedSearchParams.direction) || null,
-        destination: readFirstSearchValue(resolvedSearchParams.place) || null,
-      }}
-    />
-  );
+  return <HowToGetHereIndexContent lang={validLang} basePath={basePath} />;
 }

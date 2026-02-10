@@ -1,6 +1,6 @@
 import { spawnSync } from "child_process";
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
 
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const HOOK_SCRIPT = path.join(
@@ -50,8 +50,12 @@ describe("PreToolUse hook — Deny patterns", () => {
     ["git clean -f", "clean"],
     // TC-04
     ["git push --force origin main", "push --force"],
+    // Regression: force flag after remote still blocked
+    ["git push origin --force", "push --force"],
     // TC-05
     ["git push --force-with-lease", "push --force"],
+    // Regression: absolute git path with trailing force flag still blocked
+    ["/usr/bin/git push origin --force", "push --force"],
     // TC-06
     ["git push --mirror", "--mirror"],
     // TC-07
@@ -68,6 +72,9 @@ describe("PreToolUse hook — Deny patterns", () => {
     ["git rebase main", "rebase"],
     // TC-13
     ["git commit --amend", "commit --amend"],
+    // Regression: --no-verify on commit must be blocked regardless of arg order
+    ['git commit -m "x" --no-verify', "commit --no-verify"],
+    ["/usr/bin/git commit -m x --no-verify", "commit --no-verify"],
     // TC-14
     ["git stash drop", "stash drop"],
     // TC-15

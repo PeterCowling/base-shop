@@ -208,7 +208,7 @@ function ExperiencesPageContent({ lang }: Props) {
                   </span>
                   <a
                     href={clearFilterHref}
-                    className="text-sm font-semibold text-brand-primary underline-offset-4 hover:underline dark:text-brand-secondary"
+                    className="inline-flex min-h-11 items-center text-sm font-semibold text-brand-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-secondary"
                   >
                     {guideCopy.clearFilterLabel || (t("guideCollections.clearFilter") as string)}
                   </a>

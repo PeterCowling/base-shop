@@ -107,6 +107,12 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
 **Feature workflow**: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%)
 
+**Idea generation**: `/ideas-go-faster` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/ideas-go-faster` → `/fact-find` → `/plan-feature` → `/build-feature`
+- Spec: `.claude/skills/ideas-go-faster/SKILL.md`
+- Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
+- Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
+
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
 

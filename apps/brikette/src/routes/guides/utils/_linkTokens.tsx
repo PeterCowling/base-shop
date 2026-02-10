@@ -5,7 +5,7 @@ import Link from "next/link";
 import { isGuideLive } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
-import { guideHref } from "@/routes.guides-helpers";
+import { guideHref, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 const TOKEN_PATTERN = /%([A-Z]+):([^|%]+)\|([^%]+)%/g;
@@ -28,6 +28,10 @@ type PercentTokenContext = {
   howToBase: string;
   guideKey?: string;
 };
+
+const LEGACY_HOWTO_TOKEN_ALIASES: Readonly<Record<string, GuideKey>> = Object.freeze({
+  "positano-naples-ferry": "positanoToNaplesDirectionsByFerry",
+});
 
 /**
  * Convert camelCase to kebab-case for guide folder names.
@@ -150,6 +154,73 @@ function toGuideLinkOrText(key: string, label: string, lang: AppLanguage, endInd
   return { kind: "link", href: guideHref(lang, key as GuideKey), label, endIndex };
 }
 
+function toLowerTrimmed(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function isHowToOverviewToken(rawKey: string, howToBase: string): boolean {
+  const normalized = toLowerTrimmed(rawKey);
+  if (!normalized) return false;
+  return (
+    normalized === "how-to-get-here" ||
+    normalized === "howtogethere" ||
+    normalized === howToBase.toLowerCase()
+  );
+}
+
+function toCamelCaseToken(value: string): string {
+  const normalized = value.trim();
+  if (!normalized) return "";
+  if (!/[-_\s]/u.test(normalized)) return normalized;
+
+  const parts = normalized
+    .split(/[-_\s]+/u)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length === 0) return "";
+  return parts
+    .map((part, index) =>
+      index === 0
+        ? `${part.charAt(0).toLowerCase()}${part.slice(1)}`
+        : `${part.charAt(0).toUpperCase()}${part.slice(1)}`,
+    )
+    .join("");
+}
+
+function resolveHowToGuideKey(rawKey: string, lang: AppLanguage): GuideKey | null {
+  const normalized = rawKey.trim();
+  if (!normalized) return null;
+
+  if (isGuideLive(normalized as GuideKey)) {
+    return normalized as GuideKey;
+  }
+
+  const resolvedFromSlug = resolveGuideKeyFromSlug(normalized, lang);
+  if (resolvedFromSlug && isGuideLive(resolvedFromSlug)) {
+    return resolvedFromSlug;
+  }
+
+  const alias = LEGACY_HOWTO_TOKEN_ALIASES[toLowerTrimmed(normalized)];
+  if (alias && isGuideLive(alias)) {
+    return alias;
+  }
+
+  const camelCandidate = toCamelCaseToken(normalized);
+  if (camelCandidate && isGuideLive(camelCandidate as GuideKey)) {
+    return camelCandidate as GuideKey;
+  }
+
+  const resolvedFromCamel = camelCandidate
+    ? resolveGuideKeyFromSlug(camelCandidate, lang)
+    : undefined;
+  if (resolvedFromCamel && isGuideLive(resolvedFromCamel)) {
+    return resolvedFromCamel;
+  }
+
+  return null;
+}
+
 function buildPercentTokenResult(
   tokenType: string,
   key: string,
@@ -164,7 +235,15 @@ function buildPercentTokenResult(
 
   if (tokenType === "HOWTO") {
     if (howToBase.length === 0) return { kind: "text", text: label, endIndex };
-    return { kind: "link", href: `/${lang}/${howToBase}/${key}`, label, endIndex };
+    if (isHowToOverviewToken(key, howToBase)) {
+      return { kind: "link", href: `/${lang}/${howToBase}`, label, endIndex };
+    }
+
+    const resolvedGuideKey = resolveHowToGuideKey(key, lang);
+    if (!resolvedGuideKey) {
+      return { kind: "text", text: label, endIndex };
+    }
+    return { kind: "link", href: guideHref(lang, resolvedGuideKey), label, endIndex };
   }
 
   if (tokenType === "URL") {
@@ -340,6 +419,80 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
       linkIndex += 1;
     };
 
+    const appendParsedTokenText = (tokenText: string) => {
+      if (localBuffer.length > 0 && !/\s$/u.test(localBuffer) && !/^\s/u.test(tokenText)) {
+        localBuffer += " ";
+      }
+      localBuffer += tokenText;
+    };
+
+    const appendParsedTokenNode = (
+      parsed: Extract<TokenParseResult, { kind: "link" | "externalLink" | "image" }>,
+    ) => {
+      flushLocal();
+      if (parsed.kind === "link") {
+        appendLinkLocal(parsed.href, parsed.label);
+        return;
+      }
+      if (parsed.kind === "externalLink") {
+        appendLinkLocal(parsed.href, parsed.label, true);
+        return;
+      }
+      out.push(
+        <Image
+          key={`${keyBase}-img-${linkIndex++}`}
+          src={parsed.src}
+          alt={parsed.alt}
+          width={1200}
+          height={900}
+          className="my-6 h-auto w-full rounded-lg"
+          data-aspect="4/3"
+          loading="lazy"
+        />,
+      );
+    };
+
+    const tryConsumeEscapedCharacter = (ch: string, next: string): boolean => {
+      if (ch !== "\\" || !next || !ESCAPABLE.has(next)) {
+        return false;
+      }
+      localBuffer += next;
+      i += 2;
+      return true;
+    };
+
+    const tryConsumeDelimitedToken = (): boolean => {
+      const parsed = parseDelimitedToken(text, i, lang, howToBase, guideKey);
+      if (!parsed) {
+        return false;
+      }
+      if (parsed.kind === "text") {
+        appendParsedTokenText(parsed.text);
+      } else {
+        appendParsedTokenNode(parsed);
+      }
+      i = parsed.endIndex;
+      return true;
+    };
+
+    const tryConsumeEmphasis = (ch: string): boolean => {
+      if (ch !== "*" || isEscaped(text, i)) {
+        return false;
+      }
+      const { delim, length } = parseEmphasisDelimiter(text, i);
+      const inner = parse(i + length, delim);
+      if (inner.closed && inner.children.length > 0) {
+        flushLocal();
+        out.push(renderEmphasisNode(delim, nextElementKey(), inner.children));
+        i = inner.endIndex;
+        return true;
+      }
+      // No closing delimiter (or empty span): treat marker as literal.
+      localBuffer += delim;
+      i += length;
+      return true;
+    };
+
     while (i < text.length) {
       if (endDelim && text.startsWith(endDelim, i) && !isEscaped(text, i)) {
         flushLocal();
@@ -349,54 +502,15 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
       const ch = text[i] ?? "";
       const next = text[i + 1] ?? "";
 
-      if (ch === "\\" && next && ESCAPABLE.has(next)) {
-        localBuffer += next;
-        i += 2;
+      if (tryConsumeEscapedCharacter(ch, next)) {
         continue;
       }
 
-      const parsed = parseDelimitedToken(text, i, lang, howToBase, guideKey);
-      if (parsed) {
-        if (parsed.kind === "text") {
-          localBuffer += parsed.text;
-        } else {
-          flushLocal();
-          if (parsed.kind === "link") {
-            appendLinkLocal(parsed.href, parsed.label);
-          } else if (parsed.kind === "externalLink") {
-            appendLinkLocal(parsed.href, parsed.label, true);
-          } else if (parsed.kind === "image") {
-            out.push(
-              <Image
-                key={`${keyBase}-img-${linkIndex++}`}
-                src={parsed.src}
-                alt={parsed.alt}
-                width={1200}
-                height={900}
-                className="my-6 h-auto w-full rounded-lg"
-                data-aspect="4/3"
-                loading="lazy"
-              />,
-            );
-          }
-        }
-        i = parsed.endIndex;
+      if (tryConsumeDelimitedToken()) {
         continue;
       }
 
-      // Markdown-lite emphasis parsing (well-nested only).
-      if (ch === "*" && !isEscaped(text, i)) {
-        const { delim, length } = parseEmphasisDelimiter(text, i);
-        const inner = parse(i + length, delim);
-        if (inner.closed && inner.children.length > 0) {
-          flushLocal();
-          out.push(renderEmphasisNode(delim, nextElementKey(), inner.children));
-          i = inner.endIndex;
-          continue;
-        }
-        // No closing delimiter (or empty span): treat marker as literal.
-        localBuffer += delim;
-        i += length;
+      if (tryConsumeEmphasis(ch)) {
         continue;
       }
 

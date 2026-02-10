@@ -46,6 +46,7 @@ const baseIdea: Idea = {
   ID: "BRIK-OPP-0001",
   Business: "BRIK",
   Status: "raw",
+  Priority: "P3",
   "Created-Date": "2026-02-02",
   Tags: ["test"],
   content: "Initial idea content",

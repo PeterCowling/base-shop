@@ -55,44 +55,14 @@ if [[ ! "$normalized" =~ (^|[[:space:]])(/[^[:space:]]*/)?git([[:space:]]|$) ]];
 fi
 
 # ============================================================================
-# ALLOW PATTERNS (check first for performance)
+# DENY PATTERNS (evaluate before allow patterns)
 # ============================================================================
 
-# Dry-run clean operations
-if [[ "$normalized" =~ git[[:space:]]+clean[[:space:]].*(--dry-run|-n) ]] && [[ ! "$normalized" =~ -[a-z]*f ]]; then
-  exit 0
+# SKIP_* bypass env vars should never be used in agent flows.
+if [[ "$command_str" =~ (^|[[:space:]])SKIP_(WRITER_LOCK|SIMPLE_GIT_HOOKS)= ]]; then
+  echo "BLOCKED: SKIP_* bypass flags are forbidden for agent workflows. Fix lock/hook state instead." >&2
+  exit 2
 fi
-
-# Safe reset (unstage only, no mode flags like --hard/--merge/--keep)
-if [[ "$normalized" =~ git[[:space:]]+reset[[:space:]]+HEAD[[:space:]]+[^-] ]] && \
-   [[ ! "$normalized" =~ --(hard|merge|keep|mixed|soft) ]]; then
-  exit 0
-fi
-
-# Safe restore (--staged only, unstage)
-if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+--staged ]] && \
-   [[ ! "$normalized" =~ --worktree ]]; then
-  exit 0
-fi
-
-# Safe stash operations
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show|push) ]]; then
-  exit 0
-fi
-
-# Read-only operations
-if [[ "$normalized" =~ git[[:space:]]+(status|log|diff|show|branch|remote|fetch|describe|tag|ls-files|ls-remote|rev-parse|symbolic-ref) ]]; then
-  exit 0
-fi
-
-# Safe write operations
-if [[ "$normalized" =~ git[[:space:]]+(add|commit[[:space:]]+-m|push[[:space:]]+[^-]|pull[[:space:]]+--ff-only) ]]; then
-  exit 0
-fi
-
-# ============================================================================
-# DENY PATTERNS
-# ============================================================================
 
 # git reset --hard/--merge/--keep
 if [[ "$normalized" =~ git[[:space:]]+reset[[:space:]]+(--(hard|merge|keep)|.*[[:space:]]--(hard|merge|keep)) ]]; then
@@ -143,6 +113,17 @@ if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*(-f[[:space:]]|--force([
   exit 2
 fi
 
+# git commit/push --no-verify (-n) bypass
+if [[ "$normalized" =~ git[[:space:]]+commit[[:space:]]+.*([[:space:]])(--no-verify|-n)($|[[:space:]]) ]]; then
+  echo "BLOCKED: git commit --no-verify/-n bypasses safety hooks." >&2
+  exit 2
+fi
+
+if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*([[:space:]])(--no-verify|-n)($|[[:space:]]) ]]; then
+  echo "BLOCKED: git push --no-verify/-n bypasses safety hooks." >&2
+  exit 2
+fi
+
 # git rebase (all variants)
 if [[ "$normalized" =~ git[[:space:]]+rebase ]]; then
   echo "BLOCKED: git rebase rewrites history and can cause data loss. Use merge or coordinate with team." >&2
@@ -179,5 +160,41 @@ if [[ "$normalized" =~ git[[:space:]]+config[[:space:]]+.*core\.hooksPath ]]; th
   exit 2
 fi
 
-# If we got here, allow the command
+# ============================================================================
+# ALLOW PATTERNS
+# ============================================================================
+
+# Dry-run clean operations
+if [[ "$normalized" =~ git[[:space:]]+clean[[:space:]].*(--dry-run|-n) ]] && [[ ! "$normalized" =~ -[a-z]*f ]]; then
+  exit 0
+fi
+
+# Safe reset (unstage only, no mode flags like --hard/--merge/--keep)
+if [[ "$normalized" =~ git[[:space:]]+reset[[:space:]]+HEAD[[:space:]]+[^-] ]] && \
+   [[ ! "$normalized" =~ --(hard|merge|keep|mixed|soft) ]]; then
+  exit 0
+fi
+
+# Safe restore (--staged only, unstage)
+if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+--staged ]] && \
+   [[ ! "$normalized" =~ --worktree ]]; then
+  exit 0
+fi
+
+# Safe stash operations
+if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show|push) ]]; then
+  exit 0
+fi
+
+# Read-only operations
+if [[ "$normalized" =~ git[[:space:]]+(status|log|diff|show|branch|remote|fetch|describe|tag|ls-files|ls-remote|rev-parse|symbolic-ref) ]]; then
+  exit 0
+fi
+
+# Safe write operations
+if [[ "$normalized" =~ git[[:space:]]+(add|commit[[:space:]]+-m|push[[:space:]]+[^-]|pull[[:space:]]+--ff-only) ]]; then
+  exit 0
+fi
+
+# If we got here, allow by default.
 exit 0

@@ -72,40 +72,25 @@ Agent:
 
 ---
 
-### 2. `/propose-lane-move` — Propose Card Lane Transitions
+### 2. `/propose-lane-move` — Exception Lane Transition Proposals
 
 **When to use:**
-- A card has completed work in current lane
-- Evidence exists to support lane transition
-- You need to recommend next lane based on stage docs
+- You need a non-mechanical lane transition outside the default loop contracts
+- You want explicit owner review before transition
+- You are handling post-delivery/manual transitions (for example `Done -> Reflected`)
 
 **What it does:**
-- Reads card and all stage documents
-- Analyzes evidence against lane transition criteria
-- Updates card's `Proposed-Lane` frontmatter field
-- Adds comment explaining rationale and evidence
+- Reads card and stage documents
+- Evaluates evidence against lane criteria
+- Proposes `Proposed-Lane` with rationale and evidence
+
+**Important:** baseline core-loop transitions are deterministic in skill execution:
+- `/plan-feature`: `Fact-finding -> Planned`
+- `/build-feature`: `Planned -> In progress` and `In progress -> Done`
+
+Use `/propose-lane-move` only when you intentionally need an exception path.
 
 **Full instructions:** `.claude/skills/propose-lane-move/SKILL.md`
-
-**Lane transition criteria:**
-- **Inbox → Fact-finding:** Always allowed (no evidence required)
-- **Fact-finding → Planned:** Fact-finding doc complete with evidence
-- **Planned → In progress:** Plan doc exists with acceptance criteria, dependencies resolved
-- **In progress → Done:** All acceptance criteria met, tests passing
-- **Done → Reflected:** Reflection doc with outcomes and learnings
-
-**Example:**
-```
-Pete: /propose-lane-move BRIK-ENG-0001
-
-Agent:
-1. Reads card (currently in Fact-finding lane)
-2. Checks fact-finding.user.md for completeness
-3. Verifies evidence sources documented (repo-diff, measurement)
-4. Proposes: Fact-finding → Planned
-5. Updates Proposed-Lane field and commits
-```
-
 ---
 
 ### 3. `/scan-repo` — Scan for Changes and Create Ideas
@@ -216,58 +201,64 @@ Agent:
 
 ## Workflow Integration
 
-### Feature Workflow Skills with Business OS Integration
+### Feature Workflow Skills with Business OS Integration (Default)
 
-The feature workflow skills (`/fact-find`, `/plan-feature`, `/build-feature`) now integrate with Business OS card lifecycle. This is **opt-in** via frontmatter fields.
+The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-feature`) integrates with Business OS by default.
 
-**How to enable:**
-1. Add `Business-Unit: <BRIK|PLAT|PIPE|BOS>` to fact-find brief frontmatter
-2. The skill automatically creates a card and stage doc
-3. Card-ID flows through to plan and build phases
+**Baseline mode:** `Business-OS-Integration` omitted or `on`.
 
-**What happens automatically:**
+**Escape hatch:** set `Business-OS-Integration: off` in controlling fact-find/plan frontmatter for intentionally standalone work.
 
-| Skill | When Business-Unit/Card-ID Present |
-|-------|-----------------------------------|
-| `/fact-find` | Creates card, fact-finding stage doc, adds Card-ID to brief |
-| `/plan-feature` | Creates planned stage doc, updates card with Plan-Link, proposes lane move |
-| `/build-feature` | Creates build stage doc (first task), updates Last-Progress, proposes Done lane move |
+**Automated behavior:**
 
-**Shared helper docs:**
-- Card creation: `.claude/skills/_shared/card-operations.md`
-- Stage doc creation: `.claude/skills/_shared/stage-doc-operations.md`
+| Skill | Baseline integration behavior |
+|-------|-------------------------------|
+| `/ideas-go-faster` | Creates prioritized ideas/cards and seeds top-K fact-find stage docs |
+| `/fact-find` | Creates/updates card + `fact-find` stage doc |
+| `/plan-feature` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
+| `/build-feature` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
 
-**Backward compatibility:** Skills work unchanged if Business-Unit/Card-ID not provided.
+**Ideas triage UI:** `/ideas` is the backlog triage surface. It lists ideas in deterministic order (`P0 -> P5`, then created date DESC, then ID ASC) with server-driven filters/search via URL params and click-through to `/ideas/[id]`.
+
+**Automated idea routing:** idea writes from `/ideas-go-faster` (`POST /api/agent/ideas`) are persisted to D1 in `inbox`/`worked` and become visible on `/ideas` immediately (page is `force-dynamic`). Kanban lanes remain card-only and do not render idea entities.
+
+**Discovery index freshness (fail-closed):**
+- Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`.
+- Rebuild retries once after short backoff.
+- If second attempt fails, run surfaces `discovery-index stale` with:
+  - failing command,
+  - retry count,
+  - stderr summary,
+  - exact rerun command for operator reconciliation.
+- Success completion messages must not claim fresh discovery while stale persists.
+
+**Partial sweep reconciliation (ideas-go-faster):**
+- When persistence is partial (or index is stale), sweep report must include a reconciliation checklist:
+  - success/failure counts by entity type,
+  - failed endpoint/status summary,
+  - exact retry commands,
+  - owner handoff.
+
+**Compatibility:** existing documents without `Business-OS-Integration` field default to `on`; set `off` only for exception paths.
 
 ### Typical Card Lifecycle (Agent-Assisted)
 
 ```
-1. Raw idea submitted → inbox/
+1. /ideas-go-faster -> prioritized ideas + cards + top-K fact-find stage docs
    ↓
-2. /work-idea → Card created + Fact-finding stage doc
+2. /fact-find -> evidence brief + fact-find stage doc refresh
    ↓
-3. Pete performs fact-finding (code analysis, user research)
-   OR /fact-find with Business-Unit → Card + stage doc created automatically
+3. /plan-feature -> plan doc + planned stage doc
    ↓
-4. /propose-lane-move → Fact-finding → Planned
+4. /plan-feature applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
    ↓
-5. Pete creates plan doc with acceptance criteria
-   OR /plan-feature with Card-ID → Planned stage doc + lane proposal
+5. /build-feature starts execution and applies deterministic lane move: Planned -> In progress
    ↓
-6. /propose-lane-move → Planned → In progress
+6. /build-feature completes eligible implementation tasks with validation evidence
    ↓
-7. Pete implements (or delegates to agent)
-   OR /build-feature with Card-ID → Progress tracking + lane proposal on completion
+7. /build-feature applies deterministic lane move: In progress -> Done (when completion gate passes)
    ↓
-8. /propose-lane-move → In progress → Done
-   ↓
-9. Pete writes reflection doc (learnings, outcomes)
-   ↓
-10. /propose-lane-move → Done → Reflected
-    ↓
-11. /update-business-plan → Plan updated with learnings
-    ↓
-12. /update-people → People doc updated with capabilities/gaps
+8. /update-business-plan and /update-people capture reflections and capability updates
 ```
 
 ### Recommended Scan Schedule
@@ -323,8 +314,8 @@ Every Business OS operation requires **evidence**. Use evidence source types fro
 - Add missing evidence to stage doc
 - Document assumptions explicitly if evidence unavailable
 
-### Lane transition proposal rejected
-- Review lane transition criteria in `/propose-lane-move` skill doc
+### Deterministic lane transition failed
+- Check completion/transition gates in `/plan-feature` and `/build-feature` skill docs
 - Check for unresolved dependencies
 - Verify stage doc completeness (all questions answered)
 
@@ -364,7 +355,7 @@ Before any agent skill commits:
 ## Next Steps
 
 1. For new ideas → Use `/work-idea` to create cards
-2. For card progression → Use `/propose-lane-move` after stage work complete
+2. For card progression → Run core loop stages; deterministic lane updates occur inside `/plan-feature` and `/build-feature`
 3. For weekly reviews → Use `/scan-repo` to detect changes
 4. For plan updates → Use `/update-business-plan` after reflections
 5. For team tracking → Use `/update-people` after capabilities/gaps change

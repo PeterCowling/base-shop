@@ -1,16 +1,20 @@
-# Data Gap Proposal (DGP) Lifecycle
+# Decision Gap Proposal (DGP) Lifecycle
 
-This document defines how sub-presentable ideas are stored, prioritized, picked up, promoted to presentable status, and how hunches are suppressed in the Cabinet system.
+This document defines how sub-presentable ideas are stored, prioritized, picked up, promoted to presentable status, and how hunches are suppressed in the Cabinet system. DGPs now accommodate three types of decision blocks: data gaps, timing mismatches, and dependency holds.
 
 ## Overview
 
-Not all good ideas start with complete information. The Cabinet system recognizes three confidence tiers:
+Not all good ideas start with complete information, and not all good ideas are ready to act on immediately. The Cabinet system recognizes three confidence tiers:
 
 1. **Presentable** (score 60-100): Passes all 5 presentable criteria, ready for expert review
-2. **Data Gap** (score 30-59): Has promise but lacks 1-2 critical pieces of information
+2. **Decision Gap** (score 30-59): Has promise but decision is blocked by data gaps, timing issues, or dependencies
 3. **Hunch** (score 0-29): Too speculative, not worth persisting
 
-The Data Gap Proposal (DGP) lifecycle manages ideas in tier 2 — storing them with clear investigation targets, prioritizing by value of information, and promoting them once gaps are filled.
+The Decision Gap Proposal (DGP) lifecycle manages ideas in tier 2 — storing them with clear resolution paths, prioritizing by value of information or strategic importance, and promoting them once gaps are filled or conditions are met. DGPs encompass three gap types:
+
+- **Data gaps**: Missing information blocks the decision (requires investigation)
+- **Timing gaps**: Idea is sound but timing is wrong (requires trigger condition)
+- **Dependency gaps**: Prerequisite work must complete first (requires dependency tracking)
 
 ## Confidence Gate Decision Tree
 
@@ -31,7 +35,10 @@ Evaluate against 5 presentable criteria
     +--> [3-4/5 met] --> Confidence-Score: 30-59
     |                      |
     |                      v
-    |                  Confidence-Tier: data-gap
+    |                  Confidence-Tier: decision-gap
+    |                      |
+    |                      v
+    |                  Determine Gap-Type (data/timing/dependency)
     |                      |
     |                      v
     |                  Store as DGP (see Storage section below)
@@ -49,31 +56,41 @@ Evaluate against 5 presentable criteria
 
 ### Storage Mechanism
 
-Data Gap Proposals are stored as **Idea entities** via the Agent API with specific metadata:
+Decision Gap Proposals are stored as **Idea entities** via the Agent API with specific metadata:
 
 | Field | Value | Purpose |
 |-------|-------|---------|
 | `Status` | `raw` | Compatible with `/work-idea` entry requirement |
-| `Tags` | `["data-gap", "sweep-generated"]` | Enable filtering for pickup mechanism |
-| `Content` | Full Dossier (see below) | Include Dossier Header + investigation plan |
+| `Tags` | `["sweep-generated", "cabinet-v1", "dgp", "gap:<type>"]` | Enable filtering for pickup mechanism. Type is `data`, `timing`, or `dependency`. Also add `held` tag if DGP originates from Stage 4 Hold verdict. |
+| `Content` | Full Dossier (see below) | Include Dossier Header + resolution plan |
 
 ### Dossier Header for DGPs
 
-Every DGP must include a Dossier Header with `Confidence-Tier: data-gap` and a mandatory `VOI-Score`:
+Every DGP must include a Dossier Header with `Confidence-Tier: decision-gap`, a `Gap-Type`, and additional fields based on the gap type:
 
 ```markdown
 <!-- DOSSIER-HEADER -->
 Originator-Expert: bezos
 Originator-Lens: platform
 Contributors:
-Confidence-Tier: data-gap
+Confidence-Tier: decision-gap
 Confidence-Score: 45
 Pipeline-Stage: candidate
 Cluster-ID: BRIK-CLU-007
 Rival-Lenses:
 VOI-Score: 0.85
+Gap-Type: data
+Decision-Blocked: what decision cannot be made
+Re-evaluate-When: date or trigger condition
+Owner: Pete
 <!-- /DOSSIER-HEADER -->
 ```
+
+**Field definitions**:
+- `Gap-Type`: One of `data`, `timing`, or `dependency`
+- `Decision-Blocked`: Brief statement of what decision is blocked (e.g., "Go/no-go on marketplace verification")
+- `Re-evaluate-When`: For timing/dependency gaps, when to revisit. For data gaps, "after investigation completes"
+- `Owner`: Person responsible for tracking resolution
 
 ### Required Content Sections
 
@@ -81,9 +98,15 @@ Every DGP must include:
 
 1. **Problem Statement (Provisional)** — Current understanding of the opportunity/pain
 2. **Proposed Solution (Sketch)** — High-level approach (not detailed spec)
-3. **Data Gaps (Critical)** — Numbered list of blocking questions
-4. **Proposed Investigation** — How to fill the gaps (method, timeline, decision gate)
-5. **VOI Justification** — Why filling this gap is valuable (see next section)
+3. **Blocking Questions or Triggers** — Content varies by Gap-Type:
+   - **For Gap-Type=data**: Numbered list of blocking questions + VOI Justification (required)
+   - **For Gap-Type=timing**: Trigger conditions + re-evaluation date
+   - **For Gap-Type=dependency**: Prerequisite work items + owners
+4. **Resolution Plan** — How to resolve the gap:
+   - **For data**: Investigation method, timeline, decision gate
+   - **For timing**: Monitoring mechanism, who checks the trigger
+   - **For dependency**: Tracking mechanism, notification plan
+5. **VOI Justification** — Required for Gap-Type=data. Optional for Gap-Type=timing and Gap-Type=dependency.
 6. **Presentable Criteria Check** — Which criteria are met, which are missing
 
 ## VOI-Score: Value of Information
@@ -91,6 +114,8 @@ Every DGP must include:
 ### Definition
 
 **VOI-Score** measures how valuable it would be to fill this data gap. Scale: 0-1.
+
+**Note**: VOI-Score is **required for Gap-Type=data**. Optional for Gap-Type=timing and Gap-Type=dependency (use strategic priority instead).
 
 - **0.0** = No value. Even if we had perfect information, we wouldn't act differently.
 - **0.5** = Moderate value. Information helps but doesn't fundamentally change the decision.
@@ -147,40 +172,85 @@ Every DGP must include:
 - **Does the investigation just help us optimize details?** → Medium VOI (0.4-0.7)
 - **Could we make a decent decision without the data?** → Low VOI (0.1-0.3)
 
+## Gap-Type Definitions
+
+DGPs accommodate three types of decision blocks:
+
+| Type | When Used | Required Fields | Resolution Mechanism |
+|------|-----------|----------------|---------------------|
+| `data` | Missing information blocks the decision | VOI-Score, Investigation plan, Decision gate | Investigation fills gaps → promote or kill |
+| `timing` | Idea is sound but timing is wrong (too early or waiting for market/user readiness) | Trigger conditions, Re-evaluation date | Trigger fires → re-evaluate |
+| `dependency` | Prerequisite work must complete first (technical or strategic) | Prerequisite work items, Owners | Dependency completes → re-evaluate |
+
+### Gap-Type Selection Guide
+
+- **Use `data`** when: You don't know enough to decide. Need research, interviews, analysis, or experiments.
+- **Use `timing`** when: The idea is solid but external conditions aren't right yet. Examples: "Wait until Q3 when marketing budget increases", "Revisit after holiday season traffic patterns", "Too early - market not ready".
+- **Use `dependency`** when: This idea depends on other work completing first. Examples: "Blocked by API v2 launch", "Needs auth system refactor first", "Depends on marketplace MVP".
+
 ## DGP Pickup Mechanism
 
 ### When Pickup Occurs
 
-DGPs are picked up during sweeps with `improve-data` stance. This stance is explicitly for:
+DGP pickup mechanism varies by Gap-Type:
+
+#### Data Gaps
+
+Picked up during sweeps with `improve-data` stance. This stance is explicitly for:
 
 - Fact-finding missions
 - Investigation tasks
 - Research to fill known data gaps
 
-### Query Logic
-
-The sweep orchestrator queries the Agent API:
+**Query Logic**:
 
 ```typescript
 const dgps = await queryIdeas({
-  tags: ['data-gap'],
+  tags: ['dgp', 'gap:data'],
   status: 'raw',
   orderBy: 'VOI-Score DESC'
 });
 ```
 
-### Pickup Order
+**Pickup Order**: DGPs are worked **in VOI-Score descending order**.
 
-DGPs are worked **in VOI-Score descending order**:
+**Output**: Investigation produces a **fact-find stage doc** (not a build card). The fact-find doc answers the blocking questions listed in the DGP's "Blocking Questions" section.
 
-1. First sweep picks highest VOI-Score DGP
-2. Investigation converts DGP into fact-finding task card
-3. `/work-idea` processes the investigation
-4. Repeat with next highest VOI-Score
+#### Timing Gaps
 
-### Investigation Output
+Picked up when trigger conditions are met. Requires active monitoring:
 
-The investigation produces a **fact-find stage doc** (not a build card). The fact-find doc answers the blocking questions listed in the DGP's "Data Gaps (Critical)" section.
+- Owner periodically checks `Re-evaluate-When` date/condition
+- When trigger fires, owner schedules re-evaluation sweep
+- Re-evaluation sweep promotes DGP if timing is now right
+
+**Query Logic**:
+
+```typescript
+const timingDgps = await queryIdeas({
+  tags: ['dgp', 'gap:timing'],
+  status: 'raw',
+  // Filter by Re-evaluate-When <= today
+});
+```
+
+#### Dependency Gaps
+
+Picked up when prerequisite work completes. Requires notification mechanism:
+
+- Dependency owner notifies DGP owner when work completes
+- DGP owner schedules re-evaluation sweep
+- Re-evaluation sweep promotes DGP if dependencies are satisfied
+
+**Query Logic**:
+
+```typescript
+const depDgps = await queryIdeas({
+  tags: ['dgp', 'gap:dependency'],
+  status: 'raw',
+  // Manual review: check if prerequisites complete
+});
+```
 
 ## Promotion Path
 
@@ -197,13 +267,14 @@ A DGP is promoted when:
 Update the Idea entity:
 
 1. **Update Dossier Header**:
-   - `Confidence-Tier: data-gap` → `Confidence-Tier: presentable`
+   - `Confidence-Tier: decision-gap` → `Confidence-Tier: presentable`
    - `Confidence-Score: 45` → `Confidence-Score: 75` (or appropriate new score)
    - `Pipeline-Stage: candidate` → `Pipeline-Stage: filtered`
+   - `Gap-Type: <type>` → Remove this field (no longer needed)
 
 2. **Update Tags**:
-   - Remove `data-gap` tag
-   - Keep `sweep-generated` tag (preserves provenance)
+   - Remove `dgp`, `gap:<type>`, and `held` tags (if present)
+   - Keep `sweep-generated` and `cabinet-v1` tags (preserves provenance)
 
 3. **Add Evidence Section**:
    - Append findings from investigation
@@ -234,7 +305,7 @@ The DGP does NOT bypass the filters just because it was investigated. It must st
 
 ### Definition
 
-A **hunch** is an idea that scores below **both** the presentable threshold (60) **and** the data-gap threshold (30).
+A **hunch** is an idea that scores below **both** the presentable threshold (60) **and** the decision-gap threshold (30).
 
 Score range: 0-29.
 
@@ -287,7 +358,7 @@ A DGP represents an **investigation target**, not a **build-ready spec**. Conver
 ### Allowed Flow
 
 ```
-DGP (data-gap idea)
+DGP (decision-gap idea)
     |
     v
 Investigation card (fact-find task)
@@ -308,7 +379,7 @@ Build lane (Kanban card)
 ### Forbidden Flow
 
 ```
-DGP (data-gap idea)
+DGP (decision-gap idea)
     |
     X [BLOCKED]
     |
@@ -321,12 +392,12 @@ Build card (implementation task)
 The sweep orchestrator must check:
 
 ```typescript
-if (idea.tags.includes('data-gap')) {
+if (idea.tags.includes('dgp')) {
   const cardType = determineCardType(idea);
   if (cardType === 'build') {
     throw new Error(
       'DGP cannot convert directly to build card. ' +
-      'Must first complete investigation and promote to presentable.'
+      'Must first complete resolution and promote to presentable.'
     );
   }
 }
@@ -336,7 +407,7 @@ if (idea.tags.includes('data-gap')) {
 
 ### Initial DGP (Stored)
 
-**File**: Idea entity (via Agent API), `Tags: ["data-gap", "sweep-generated"]`
+**File**: Idea entity (via Agent API), `Tags: ["sweep-generated", "cabinet-v1", "dgp", "gap:data"]`
 
 ```markdown
 # Marketplace Seller Verification System
@@ -345,12 +416,16 @@ if (idea.tags.includes('data-gap')) {
 Originator-Expert: bezos
 Originator-Lens: platform
 Contributors: hopkins
-Confidence-Tier: data-gap
+Confidence-Tier: decision-gap
 Confidence-Score: 45
 Pipeline-Stage: candidate
 Cluster-ID: MKTP-CLU-003
 Rival-Lenses:
 VOI-Score: 0.85
+Gap-Type: data
+Decision-Blocked: Go/no-go on seller verification system
+Re-evaluate-When: after investigation completes
+Owner: Pete
 <!-- /DOSSIER-HEADER -->
 
 ## Problem (Provisional)
@@ -361,14 +436,14 @@ Marketplaces with unverified sellers face trust and fraud issues. We may need id
 
 3-tier verification: Email/phone (auto), business registration (API), manual KYC (human).
 
-## Data Gaps (Critical)
+## Blocking Questions (Gap-Type: data)
 
 1. **Demand signal**: How many sellers in Year 1? (Need: pipeline analysis)
 2. **Fraud baseline**: Current fraud rate? (Need: historical data)
 3. **Seller preference**: Do sellers want this? What level? (Need: 10 interviews)
 4. **Regulatory**: Legally required? (Need: legal memo)
 
-## Proposed Investigation
+## Resolution Plan (Investigation)
 
 - Demand: Pipeline analysis (2 days)
 - Fraud: Industry benchmarks + operator interviews (3 days)
@@ -401,7 +476,7 @@ If favorable, this jumps to P1 (high-impact, blocking trust issues). If unfavora
 
 ### Pickup (Next Sweep with `improve-data` Stance)
 
-1. Orchestrator queries ideas with `data-gap` tag, orders by VOI-Score DESC
+1. Orchestrator queries ideas with `dgp` and `gap:data` tags, orders by VOI-Score DESC
 2. This DGP ranks high (0.85)
 3. Orchestrator converts to fact-finding card:
 
@@ -436,7 +511,7 @@ Agent updates the Idea entity:
  Originator-Expert: bezos
  Originator-Lens: platform
  Contributors: hopkins
--Confidence-Tier: data-gap
+-Confidence-Tier: decision-gap
 +Confidence-Tier: presentable
 -Confidence-Score: 45
 +Confidence-Score: 75
@@ -445,10 +520,14 @@ Agent updates the Idea entity:
  Cluster-ID: MKTP-CLU-003
  Rival-Lenses:
  VOI-Score: 0.85
+-Gap-Type: data
+-Decision-Blocked: Go/no-go on seller verification system
+-Re-evaluate-When: after investigation completes
+-Owner: Pete
  <!-- /DOSSIER-HEADER -->
 ```
 
-**Tags updated**: `["sweep-generated"]` (removed `data-gap`)
+**Tags updated**: `["sweep-generated", "cabinet-v1"]` (removed `dgp` and `gap:data`)
 
 ### Re-Entry to Pipeline
 
@@ -468,14 +547,15 @@ Passes Drucker/Porter → **Build lane** (converted to Kanban card).
 
 ## Lifecycle Summary
 
-| Stage | Status | Tags | Confidence-Tier | Pipeline-Stage | Action |
-|-------|--------|------|-----------------|----------------|--------|
-| **Initial** | `raw` | `["data-gap", "sweep-generated"]` | `data-gap` | `candidate` | Store as DGP |
-| **Pickup** | `raw` | `["data-gap", "sweep-generated"]` | `data-gap` | `candidate` | Convert to fact-find card |
-| **Investigation** | `raw` → `worked` | `["data-gap", "sweep-generated"]` | `data-gap` | `candidate` | Fill gaps |
-| **Promotion** | `worked` | `["sweep-generated"]` | `presentable` | `filtered` | Re-enter pipeline |
-| **Build** | `converted` | `["sweep-generated"]` | `presentable` | `prioritized` | Kanban card created |
+| Stage | Status | Tags | Confidence-Tier | Gap-Type | Pipeline-Stage | Action |
+|-------|--------|------|-----------------|----------|----------------|--------|
+| **Initial** | `raw` | `["dgp", "gap:<type>", "sweep-generated", "cabinet-v1"]` | `decision-gap` | `data`/`timing`/`dependency` | `candidate` | Store as DGP |
+| **Pickup** | `raw` | `["dgp", "gap:<type>", "sweep-generated", "cabinet-v1"]` | `decision-gap` | varies | `candidate` | Convert to resolution task |
+| **Resolution** | `raw` → `worked` | `["dgp", "gap:<type>", "sweep-generated", "cabinet-v1"]` | `decision-gap` | varies | `candidate` | Fill gaps or wait for trigger |
+| **Promotion** | `worked` | `["sweep-generated", "cabinet-v1"]` | `presentable` | (removed) | `filtered` | Re-enter pipeline |
+| **Build** | `converted` | `["sweep-generated", "cabinet-v1"]` | `presentable` | (removed) | `prioritized` | Kanban card created |
 
 ## Version History
 
+- **v1.1** (2026-02-09): Renamed from "Data Gap Proposal" to "Decision Gap Proposal". Added Gap-Type field (data/timing/dependency) to accommodate three types of holds. Updated tags structure, dossier header fields, pickup mechanisms, and content requirements to support all three gap types.
 - **v1.0** (2026-02-09): Initial specification for Cabinet System CS-04

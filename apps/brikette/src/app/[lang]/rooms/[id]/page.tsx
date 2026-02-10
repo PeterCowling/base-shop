@@ -1,11 +1,12 @@
 // src/app/[lang]/rooms/[id]/page.tsx
 // Room detail page - App Router version
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { toAppLanguage } from "@/app/_lib/i18n-server";
+import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import roomsData, { type RoomId } from "@/data/roomsData";
@@ -36,7 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   // Get room-specific translations
-  const { getTranslations } = await import("@/app/_lib/i18n-server");
   const t = await getTranslations(validLang, "roomsPage");
   const meta = {
     title: (t(`rooms.${id}.title`, { defaultValue: id }) as string) || id,
@@ -70,5 +70,11 @@ export default async function RoomDetailPage({ params }: Props) {
     redirect(`/${validLang}/${getSlug("rooms", validLang)}`);
   }
 
-  return <RoomDetailContent lang={validLang} id={id as RoomId} />;
+  await getTranslations(validLang, ["roomsPage", "guides", "pages.rooms", "rooms"]);
+
+  return (
+    <Suspense fallback={null}>
+      <RoomDetailContent lang={validLang} id={id as RoomId} />
+    </Suspense>
+  );
 }

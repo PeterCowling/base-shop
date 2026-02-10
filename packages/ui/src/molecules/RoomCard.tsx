@@ -17,8 +17,8 @@ import type {
 
 export const ROOM_CARD_ACTION_BUTTON_CLASS = clsx(
   "inline-flex",
-  "min-h-10",
-  "min-w-10",
+  "min-h-11",
+  "min-w-11",
   "items-center",
   "justify-center",
   "rounded-lg",

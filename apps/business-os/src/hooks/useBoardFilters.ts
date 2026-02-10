@@ -7,13 +7,12 @@
 
 import { useMemo } from "react";
 
-import type { Card, Idea, Lane } from "@/lib/types";
+import type { Card, Lane } from "@/lib/types";
 
 import { applyFilters, type FilterType } from "../components/board/FilterChips";
 
 interface UseBoardFiltersOptions {
   cardsByLane: Record<Lane, Card[]>;
-  inboxIdeas: Idea[];
   visibleLanes: Lane[];
   searchQuery: string;
   activeFilters: FilterType[];
@@ -22,12 +21,10 @@ interface UseBoardFiltersOptions {
 
 interface UseBoardFiltersResult {
   filteredCardsByLane: Record<Lane, Card[]>;
-  filteredIdeas: Idea[];
 }
 
 export function useBoardFilters({
   cardsByLane,
-  inboxIdeas,
   visibleLanes,
   searchQuery,
   activeFilters,
@@ -63,21 +60,7 @@ export function useBoardFilters({
     return result;
   }, [visibleLanes, cardsByLane, searchQuery, activeFilters, currentUserName]);
 
-  // Filter ideas based on search
-  const filteredIdeas = useMemo(() => {
-    if (!searchQuery) return inboxIdeas;
-
-    const query = searchQuery.toLowerCase();
-    return inboxIdeas.filter(
-      (idea) =>
-        idea.ID?.toLowerCase().includes(query) ||
-        idea.content.toLowerCase().includes(query) ||
-        idea.Tags?.some((tag) => tag.toLowerCase().includes(query))
-    );
-  }, [inboxIdeas, searchQuery]);
-
   return {
     filteredCardsByLane,
-    filteredIdeas,
   };
 }

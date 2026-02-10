@@ -1,11 +1,11 @@
 ---
 name: build-feature
-description: Implement tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation. Update the plan as execution proceeds.
+description: Execute tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation for code and business-artifact deliverables.
 ---
 
 # Build Feature
 
-Implement tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation. Update the plan as execution proceeds.
+Execute tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation. Update the plan as execution proceeds.
 
 **Confidence note:** Confidence ≥90% is a motivation/diagnostic, not a requirement. The implementation gate is still **≥80%** confidence for IMPLEMENT tasks.
 
@@ -13,9 +13,9 @@ Implement tasks from an approved plan, one task at a time, with strict confidenc
 
 **BUILDING ONLY**
 
-**Allowed:** modify code, add/update tests, run validations, commit changes, update the plan doc.
+**Allowed:** modify code, add/update tests, produce non-code artifacts, run validations, commit changes, update the plan doc.
 
-**Not allowed:** implement tasks below threshold, do work not in the plan, skip validation, commit failing code, silently change scope.
+**Not allowed:** implement tasks below threshold, do work not in the plan, skip validation, commit failing outputs, silently change scope.
 
 ## Prerequisites
 
@@ -68,15 +68,33 @@ Also check the `planned` array for cards with plan links.
 
 If the user does not specify tasks, build in ascending TASK order among eligible IMPLEMENT tasks.
 
+## Execution Skill Dispatch (Progressive Disclosure)
+
+For each task, read `Deliverable` and `Execution-Skill` from the plan and route accordingly:
+
+| Deliverable Type | Primary Execution Skill | Notes |
+|---|---|---|
+| `code-change` | `/build-feature` | Native TDD path in this skill |
+| `email-message` | `/draft-email-message` | Use `/process-emails` when tied to inbox triage |
+| `product-brief` | `/write-product-brief` | Decision-quality brief artifact |
+| `marketing-asset` | `/draft-marketing-asset` | Campaign/channel asset package |
+| `spreadsheet` | `/create-ops-spreadsheet` | Spreadsheet spec + starter CSV |
+| `whatsapp-message` | `/draft-whatsapp-message` | Channel-safe copy with compliance checks |
+| `multi-deliverable` | `/build-feature` orchestrates per-task dispatch | One task per cycle still applies |
+
+If a referenced execution skill is missing, stop and run `/re-plan` to either:
+- add the missing skill as a prerequisite task, or
+- re-scope the task to an available execution path.
+
 ## Pre-Build Check (Required)
 
-Before editing any code, verify all of the following:
+Before executing any task work, verify all of the following:
 
 ### A) Plan integrity
 
 - The plan file exists and is the active source of truth.
 - The target task exists and includes:
-  - Type, Affects (file paths), Depends on, Confidence breakdown, Acceptance, Test plan, Planning validation (for M/L effort), Rollout/rollback notes, Documentation impact.
+  - Type, Deliverable, Execution-Skill, Affects (file paths), Depends on, Confidence breakdown, Acceptance, Validation contract, Planning validation (for M/L effort), Rollout/rollback notes, Documentation impact.
 - The task is not marked `Superseded`/`Blocked`/`Needs-input`.
 
 **If any required task fields are missing → treat as a confidence drop → STOP → `/re-plan`.**
@@ -90,10 +108,14 @@ Confirm:
 - No open DECISION tasks gate this work
 
 **Task type differences:**
-- **IMPLEMENT:** Standard feature work. Full TDD cycle, validation, commit.
-- **SPIKE:** Produces a prototype or executable proof. Has a test contract. TDD applies. On completion, its output (evidence) may be used by `/re-plan` to promote downstream tasks.
-- **INVESTIGATE:** Produces a decision memo or analysis artifact — not code. No TDD cycle required. Validation is: the decision memo exists and answers the question. Commit the memo/notes, then mark complete. Skip steps 3a–3e (TDD cycle) and instead: perform investigation, produce artifact, verify exit criteria, commit artifact, update plan.
+- **IMPLEMENT:** Standard execution work. Use TDD for code/mixed tasks, artifact cycle for business-artifact tasks.
+- **SPIKE:** Produces a prototype or executable proof. Must have explicit validation criteria. On completion, its output (evidence) may be used by `/re-plan` to promote downstream tasks.
+- **INVESTIGATE:** Produces a decision memo or analysis artifact — not implementation delivery. Validation is: the decision memo exists and answers the question. Commit the memo/notes, then mark complete. Skip step 3 execution cycles and instead: perform investigation, produce artifact, verify exit criteria, commit artifact, update plan.
 - **CHECKPOINT:** Horizon re-assessment gate — not code. See "CHECKPOINT Handling" below.
+
+**Execution-track differences (for IMPLEMENT tasks):**
+- **`code` or `mixed`:** Use the TDD cycle (tests first, fail, implement, pass).
+- **`business-artifact`:** Use the artifact cycle (draft, review against validation contract, finalize, evidence capture).
 
 **If not eligible → STOP → `/re-plan`.**
 
@@ -101,7 +123,8 @@ Confirm:
 
 - Working tree is clean (or you explicitly understand any local diffs and they are unrelated and will not be mixed).
 - Baseline is sane:
-  - If the repo has a standard "quick check" (typecheck/lint/unit), run it before starting.
+  - For code/mixed tasks: if the repo has a standard "quick check" (typecheck/lint/unit), run it before starting.
+  - For business-artifact tasks: verify required source docs/data and channel constraints are available before drafting.
   - If baseline is failing for unrelated reasons, do not proceed without documenting it in the plan and/or resolving via a separate, explicitly planned task.
 
 ### D) File-reading gate
@@ -109,7 +132,7 @@ Confirm:
 Before changing anything:
 - Read **all** files listed in "Affects" (both primary and `[readonly]`)
 - Read any immediately adjacent files needed to understand invariants (callers, types, schemas, tests)
-- Check for test stubs from planning (L-effort tasks should have them; use as starting point for TDD)
+- For code/mixed tasks, check for test stubs from planning (L-effort tasks should have them; use as starting point for TDD)
 
 **Scope boundaries:**
 - **Primary files** (no prefix): may be modified as part of this task
@@ -119,17 +142,23 @@ Before changing anything:
 - A file not in "Affects" → STOP → `/re-plan` (new scope)
 - A `[readonly]` file → STOP → `/re-plan` (scope was wrong, dependency is actually a modification target)
 
-### E) Test Contract Gate
+### E) Validation Contract Gate
 
-Before implementing, verify the task has a complete test contract:
-- [ ] Enumerated test cases (TC-XX) covering all acceptance criteria
-- [ ] Expected outcomes specified for each TC
-- [ ] Test type and location identified
-- [ ] For M/L tasks: test case specs are detailed enough to write tests
+Before implementing, verify the task has a complete validation contract:
+- For code/mixed tasks:
+  - [ ] Enumerated test cases (TC-XX) covering all acceptance criteria
+  - [ ] Expected outcomes specified for each TC
+  - [ ] Test type and location identified
+  - [ ] For M/L tasks: test case specs are detailed enough to write tests
+- For business-artifact tasks:
+  - [ ] Enumerated validation checks (VC-XX) covering all acceptance criteria
+  - [ ] Pass conditions specified for each VC
+  - [ ] Review/approval path identified (owner + artifact destination)
+  - [ ] Measurement readiness identified (how post-delivery effect will be tracked)
 
-**If test contract is incomplete → treat as confidence drop → STOP → `/re-plan`.**
+**If validation contract is incomplete → treat as confidence drop → STOP → `/re-plan`.**
 
-A task without enumerated test cases cannot be built, regardless of its stated confidence.
+A task without enumerated validation cases cannot be built, regardless of its stated confidence.
 
 ### F) Scout verification gate (when Scouts field is present)
 
@@ -153,22 +182,29 @@ If scouts were marked "inconclusive" during planning, treat them as risks — pr
 - Dependencies must be done.
 - **If the next task is a CHECKPOINT → execute the checkpoint protocol (see below) instead of the normal build loop.**
 
+**Dispatch rule:**
+- If `Execution-Skill` for the selected task is not `build-feature`, invoke that specialized skill with the task context and expected output path.
+- After specialized execution, return to this workflow for confidence reassessment, final validation, commit, and plan updates.
+
 ### 2) Restate the task constraints (from the plan)
 
 Extract from the plan into your working context:
 - Acceptance criteria
-- Test plan (what tests to add/run)
+- Validation plan (tests/checklists/reviews to run)
 - Rollout/rollback requirements (flags, migrations, backwards compatibility)
 - Observability expectations (logging/metrics)
 - Documentation impact (standing docs to update)
 
 **If any of these are unclear during execution → treat as confidence drop → STOP → `/re-plan`.**
 
-### 3) Implement using TDD (test-first)
+### 3) Execute using track-appropriate cycle
 
-Follow test-driven development: write tests first, verify they fail, implement to make them pass.
+Choose the execution cycle based on the task's `Execution-Track` / `Deliverable` in the plan:
 
-**a) Audit existing tests for extinction**
+- **Code/mixed:** follow TDD path (3a–3f)
+- **Business-artifact:** follow artifact path (3g–3k)
+
+**a) [Code/mixed] Audit existing tests for extinction**
 
 Before writing new tests, check for existing tests related to the code you're modifying:
 
@@ -186,12 +222,12 @@ Before writing new tests, check for existing tests related to the code you're mo
 
 **Why this matters:** Extinct tests give false confidence signals. A passing test suite that includes outdated tests does not validate current behavior.
 
-**b) Write or complete tests first**
+**b) [Code/mixed] Write or complete tests first**
 - If test stubs exist from planning (L-effort tasks):
   1. Convert `test.todo()` / `it.skip()` to active tests with full assertions
   2. Remove the `.todo` or `.skip` modifier
   3. Implement the test body based on the TC-XX specification in the stub comment
-- If no stubs exist: write tests based on the task's test contract (TC-XX specifications)
+- If no stubs exist: write tests based on the task's validation contract (TC-XX specifications)
 - Tests should cover the expected behavior before any implementation code is written
 
 **Activating test stubs:**
@@ -208,70 +244,94 @@ test('should return 409 when entity was modified', async () => {
 });
 ```
 
-**c) Run tests — verify they fail for the right reasons**
+**c) [Code/mixed] Run tests — verify they fail for the right reasons**
 - Tests should fail because the feature/fix doesn't exist yet
 - If tests pass unexpectedly → investigate (feature may already exist, or test is wrong)
 - If tests fail for unexpected reasons → STOP → `/re-plan`
 
-**d) Implement minimum code to make tests pass**
+**d) [Code/mixed] Implement minimum code to make tests pass**
 - Write only what's needed to make tests green
 - Keep changes tightly scoped to the task
 - Follow established patterns referenced in the plan (or discovered during file-reading)
 - If implementation duplicates existing code, use the existing pattern or extract a shared utility — note any new shared abstractions in the commit message
 - Do not "sneak in" refactors or over-engineer; if refactor is required, add a new task via `/re-plan`
 
-**e) Refactor if needed (tests stay green)**
+**e) [Code/mixed] Refactor if needed (tests stay green)**
 - Clean up implementation while keeping tests passing
 - This is for minor cleanup only, not architectural changes
 
-**f) Update documentation**
+**f) [Code/mixed] Update documentation**
 - Update all docs listed in the task's "Documentation impact" field
 - If the task specifies "None", skip this step
 - If implementation revealed additional docs needing updates not listed in the plan, update them and note the deviation
 
-### 3b) Confidence Reassessment Based on Test Outcomes (Mandatory)
+**g) [Business-artifact] Draft the artifact**
+- Produce the minimum viable artifact described in task acceptance.
+- Keep scope tightly aligned to task and deliverable type (email/brief/asset/sheet/message).
+- Save/update at the path or destination defined in the plan.
 
-After the TDD cycle completes (tests written → fail → implement → pass), reassess task confidence based on what the tests revealed.
+**h) [Business-artifact] Run validation checks (VC-XX)**
+- Execute every enumerated VC from the validation contract.
+- Verify channel/format constraints and compliance/brand requirements.
+- If any VC fails unexpectedly and fix is non-obvious → STOP → `/re-plan`.
 
-#### Test Outcome → Confidence Impact
+**i) [Business-artifact] Review and approval handoff**
+- Route artifact to the owner/reviewer specified in the plan (or capture review-ready evidence if async).
+- Record approval status (approved / changes requested / blocked).
+- If blocked by unresolved preference/decision → STOP and surface DECISION task.
 
-| Test Outcome | Confidence Impact | Action |
-|--------------|-------------------|--------|
-| All TCs pass on first implementation | Confidence holds or +5% (max) | Note in plan: "Tests validated assumptions" |
-| TC reveals edge case not in plan | Confidence -5 to -10% | Add TC to plan; note the gap |
-| TC reveals missing dependency/contract | Confidence -10 to -20% | May need to update "Affects"; consider `/re-plan` |
-| TC reveals architectural issue | Confidence drops to <80% | STOP → `/re-plan` |
-| TC was wrong (not implementation) | Confidence holds | Fix TC; note correction |
-| Implementation required >1 red-green cycle | Confidence -5% per additional cycle | Document iteration in plan |
+**j) [Business-artifact] Finalize artifact**
+- Incorporate approved revisions.
+- Re-run affected VC checks after changes.
+- Confirm final artifact destination and execution/sending readiness.
+
+**k) [Business-artifact] Update documentation**
+- Update playbooks/runbooks/docs listed in "Documentation impact".
+- Record any deviations discovered during artifact execution.
+
+### 3b) Confidence Reassessment Based on Validation Outcomes (Mandatory)
+
+After the execution cycle completes, reassess task confidence based on what validation revealed.
+
+#### Validation Outcome → Confidence Impact
+
+| Validation Outcome | Confidence Impact | Action |
+|--------------------|-------------------|--------|
+| All TCs/VCs pass on first execution | Confidence holds or +5% (max) | Note in plan: "Validation confirmed assumptions" |
+| TC/VC reveals edge case not in plan | Confidence -5 to -10% | Add case to plan; note the gap |
+| TC/VC reveals missing dependency/contract | Confidence -10 to -20% | May need to update "Affects" or routing; consider `/re-plan` |
+| Validation reveals architectural/strategic issue | Confidence drops to <80% | STOP → `/re-plan` |
+| Validation case was wrong (not execution) | Confidence holds | Fix case; note correction |
+| Execution required >1 cycle (red-green or draft-review) | Confidence -5% per additional cycle | Document iteration in plan |
 
 #### Hard Stop on Confidence Drop
 
-**If post-test confidence drops below 80%:**
+**If post-validation confidence drops below 80%:**
 - STOP immediately — do not commit
-- Document what tests revealed
+- Document what validation revealed
 - Run `/re-plan` for this task and any dependent tasks
 
-This creates a feedback loop: test outcomes directly inform confidence, which gates further work.
+This creates a feedback loop: validation outcomes directly inform confidence, which gates further work.
 
 ### 4) Final validation (mandatory)
 
-Run repo-standard validations to ensure nothing is broken:
-- Typecheck
-- Lint
-- Full relevant test suites (not just the new tests)
+Run validation aligned to execution track:
+- For code/mixed tasks: Typecheck, lint, and full relevant test suites (not just new tests)
+- For business-artifact tasks: all VC checks pass, required approval captured, artifact destination and measurement readiness confirmed
 
-**Rule: never commit failing code.** If failures occur:
+**Rule: never commit failing execution outputs.** If failures occur:
 - If the fix is straightforward and clearly within the task scope, fix it
 - If the failure indicates unclear behavior, unexpected dependencies, or uncertain approach:
   - STOP → `/re-plan`
 
-### 5) Confidence and effort re-check during implementation
+### 5) Confidence and effort re-check during execution
 
 If you encounter any of the following, treat it as a **confidence regression**:
 - unexpected dependency or integration boundary
 - ambiguous long-term design choice not addressed in the plan
 - blast radius larger than documented
 - unclear contract/data shape
+- unclear channel/approval/compliance requirement for business artifacts
 - validation failures that are non-obvious
 
 **Effort misclassification check:**
@@ -337,19 +397,17 @@ Add under the task:
 #### Build Completion (YYYY-MM-DD)
 - **Status:** Complete
 - **Commits:** <hash1>, <hash2>
-- **TDD cycle:**
-  - Test cases executed: TC-01, TC-02, TC-03
-  - Red-green cycles: <N> (1 = ideal; >1 = iteration needed)
-  - Initial test run: FAIL (expected — feature not implemented)
-  - Post-implementation: PASS
+- **Execution cycle:**
+  - Validation cases executed: <TC-XX and/or VC-XX>
+  - Cycles: <red-green count or draft-review count>
+  - Initial validation: <FAIL expected / draft pending review>
+  - Final validation: PASS
 - **Confidence reassessment:**
   - Original: XX%
-  - Post-test: YY%
-  - Delta reason: <tests validated | edge case found | dependency discovered>
+  - Post-validation: YY%
+  - Delta reason: <validation confirmed | edge case found | dependency discovered>
 - **Validation:**
-  - Ran: `pnpm typecheck` — PASS
-  - Ran: `pnpm lint` — PASS
-  - Ran: `pnpm test <relevant-suite>` — PASS (N tests, N passed)
+  - Ran: `<commands/checklists>` — PASS
 - **Documentation updated:** <list of docs updated, or "None required">
 - **Implementation notes:** <what changed, any deviations from plan>
 ```
@@ -375,7 +433,7 @@ Invoke `/re-plan` targeting all tasks that come **after** the CHECKPOINT in the 
 - Reassess confidence on remaining tasks using real implementation evidence
 - Split tasks that are too large or depend on unproven assumptions
 - Abandon or defer tasks that are no longer viable given what was learned
-- Insert new tasks discovered during implementation
+- Insert new tasks discovered during execution
 - Update the plan with any new findings
 
 ### 3) Evaluate re-plan results
@@ -416,20 +474,20 @@ Without CHECKPOINTs, a plan with 8 dependent tasks could build all 8 before disc
 - One IMPLEMENT task per cycle.
 - Never build below 80% confidence.
 - Never skip validation.
-- Never commit failing code.
+- Never commit failing execution outputs.
 - Do not expand scope beyond the plan.
 - Update the plan after every completed task.
 
 ## Feedback to Future Planning
 
-When confidence changes based on test outcomes, capture the learning for future work:
+When confidence changes based on validation outcomes, capture the learning for future work:
 
 | Finding Type | Feedback Action |
 |--------------|-----------------|
 | Edge case was missed | Note category of edge case for future fact-finds |
 | Dependency was missed | Note discovery pattern for future impact analysis |
 | Architecture issue found | Flag for architectural review; update conventions docs |
-| Test revealed undocumented behavior | Update system docs or briefings |
+| Validation revealed undocumented behavior | Update system docs or briefs/playbooks |
 
 This feedback loop improves future `/fact-find` and `/plan-feature` accuracy. When completing a task, explicitly note any learnings that should inform future planning.
 
@@ -447,26 +505,27 @@ When you do ask:
 
 A build cycle is considered complete only if:
 
-- [ ] Pre-build checks (A–E) all passed before editing code.
-- [ ] Existing related tests were audited for extinction (updated or removed if outdated).
-- [ ] Tests were written/completed BEFORE implementation code (TDD).
-- [ ] Tests initially failed for the expected reasons (feature not yet implemented).
+- [ ] Pre-build checks (A–E) all passed before executing task work.
+- [ ] Existing related tests were audited for extinction (code/mixed tasks).
+- [ ] Code/mixed tasks: tests were written/completed BEFORE implementation code (TDD).
+- [ ] Code/mixed tasks: tests initially failed for the expected reasons (feature not yet implemented).
+- [ ] Business-artifact tasks: artifact drafted, reviewed, and finalized against VC checks.
 - [ ] Implementation is scoped exactly to the task (no scope creep).
 - [ ] Actual scope matched classified effort (if not, stopped and re-planned with correct effort).
 - [ ] Standing documentation updated per "Documentation impact" field (or confirmed "None").
-- [ ] All validation commands passed (typecheck, lint, tests).
+- [ ] All required validations passed (code commands and/or VC checklists).
 - [ ] Commits include TASK ID and are scoped to the task.
 - [ ] Plan doc updated with Status, Commits, Validation evidence.
 - [ ] Confidence was re-assessed; if <80%, stopped and triggered `/re-plan`.
-- [ ] No failing code was committed.
+- [ ] No failing execution output was committed.
 
-### TDD Quality Checks
+### Execution Quality Checks
 
-- [ ] Confidence was reassessed after TDD cycle completed.
-- [ ] Post-test confidence is documented in plan.
+- [ ] Confidence was reassessed after execution cycle completed.
+- [ ] Post-validation confidence is documented in plan.
 - [ ] If confidence dropped below 80%, stopped and triggered `/re-plan`.
-- [ ] Test cycles documented (ideal: 1 red-green cycle).
-- [ ] All enumerated test cases (TC-XX) from plan were executed.
+- [ ] Cycle counts documented (red-green for code, draft-review for business artifacts).
+- [ ] All enumerated validation cases (TC-XX and/or VC-XX) from plan were executed.
 
 ## Completion Messages
 
@@ -479,21 +538,23 @@ Use one of the following outcomes:
 > "Completed N/M IMPLEMENT tasks (≥80% confidence). Tasks <IDs> are not eligible (confidence <80% or blocked). Recommend `/re-plan` for those tasks before continuing."
 
 **C) Stopped mid-task due to confidence regression:**
-> "Stopped during TASK-XX due to newly discovered complexity or unclear blast radius. No further implementation will proceed until `/re-plan` updates the plan for TASK-XX (and any dependent tasks)."
+> "Stopped during TASK-XX due to newly discovered complexity or unclear blast radius. No further execution will proceed until `/re-plan` updates the plan for TASK-XX (and any dependent tasks)."
 
-## Business OS Integration (Optional)
+## Business OS Integration (Default)
 
-When the plan frontmatter includes `Card-ID`, `/build-feature` integrates with Business OS card lifecycle management via the **agent API**. This is **opt-in** — if no `Card-ID` is present, the skill works unchanged.
+When plan frontmatter includes `Card-ID`, `/build-feature` integrates with Business OS by default.
 
-**Fail-closed rule:** if any API call fails, stop and surface the error. Do not write markdown files.
+**Escape hatch:** set `Business-OS-Integration: off` in plan frontmatter to skip card/stage-doc/lane writes for intentionally standalone work.
 
-### When Card-ID is Present
+**Fail-closed rule:** if any API call fails, stop and surface the error.
+
+### When Card-ID is Present (and integration is on)
 
 #### Step 1: Start Build Transition (First Task Only)
 
-Before starting the first task, perform the build start transition using the agent API.
+Before starting first task, perform build-start transition via API.
 
-**1a) Read the card to get current lane (and entity SHA):**
+**1a) Read the card to get current lane + entity SHA:**
 
 ```json
 {
@@ -505,9 +566,8 @@ Before starting the first task, perform the build start transition using the age
 
 Response includes `{ entity, entitySha }`.
 
-**1b) Create build stage doc if it doesn't exist:**
+**1b) Create build stage doc if missing:**
 
-- First, list stage docs for the card (optional filter is fine):
 ```json
 {
   "method": "GET",
@@ -516,28 +576,11 @@ Response includes `{ entity, entitySha }`.
 }
 ```
 
-- If none exists, create it:
-```json
-{
-  "method": "POST",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs",
-  "headers": {
-    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "cardId": "PLAT-ENG-0023",
-    "stage": "build",
-    "content": "# Build: {CARD-TITLE}\n\n## Progress Tracker\n\n**Last Updated:** {DATE}\n\n| Task ID | Description | Status | Completed |\n|---------|-------------|--------|-----------|\n| {ID} | {Description} | {Pending|In Progress|Complete} | {DATE or -} |\n\n## Build Log\n\n### {DATE} - {Task ID}\n- **Action:** {What was done}\n- **Commits:** {Commit hashes}\n- **Validation:** {Tests passed, etc.}\n- **Notes:** {Any issues or observations}\n\n## Blockers\n\n_None currently_\n\n## Transition Criteria\n\n**To Done:**\n- [ ] All tasks complete\n- [ ] All tests passing\n- [ ] Documentation updated\n- [ ] `pnpm typecheck && pnpm lint` passing\n"
-  }
-}
-```
+If none exists, create it via `POST /api/agent/stage-docs`.
 
-**Note:** `content` is the markdown body only (no frontmatter). The export job adds frontmatter.
+**1c) Deterministic lane transition (Planned -> In progress):**
 
-**1c) Planned → In progress (direct update when starting build):**
-
-If the card's current `Lane` is `Planned`, update it directly (mechanical transition) and set `Last-Progress`:
+If current `Lane` is `Planned`, update directly and set `Last-Progress`:
 
 ```json
 {
@@ -557,59 +600,32 @@ If the card's current `Lane` is `Planned`, update it directly (mechanical transi
 }
 ```
 
-**Why direct update (not proposal):** The Planned → In progress transition is mechanical — it happens when implementation begins. The Done transition remains a proposal because it requires verification that all work is complete.
-
-**Conflict handling (cards + stage docs):**
-- If a PATCH returns `409 CONFLICT`, refetch the latest entity (`GET`) and retry **once** with a new `baseEntitySha`.
-- If the retry also conflicts, stop and surface a clear error (fail-closed).
+**Conflict handling:** on `409 CONFLICT`, refetch and retry once. If retry conflicts, stop.
 
 #### Step 2: Update Card Progress (After Each Task)
 
-After each task is committed and the plan is updated, also update the card and build stage doc via the API.
+After each task commit + plan update:
+- PATCH card `Last-Progress`
+- PATCH build stage doc content (progress tracker + build log)
 
-1) **Update card `Last-Progress`:**
+#### Step 3: Check for Completion (After Each Task)
 
-```json
-{
-  "method": "GET",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
-  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
-}
-```
+When all eligible IMPLEMENT tasks are complete and validations passed:
+- Update build stage doc transition checklist
+- Perform deterministic Done transition (Step 4)
 
-Then PATCH with a JSON Merge Patch:
+#### Step 4: Deterministic lane transition (In progress -> Done)
 
-```json
-{
-  "method": "PATCH",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
-  "headers": {
-    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "baseEntitySha": "<entitySha from GET>",
-    "patch": { "Last-Progress": "YYYY-MM-DD" }
-  }
-}
-```
+Move card directly to `Done` when all completion-gate criteria are true:
+- All eligible IMPLEMENT tasks complete with evidence
+- All required validations passing (tests and/or VC checks)
+- Documentation impact addressed
+- No unresolved blocking DECISION tasks
 
-2) **Update build stage doc content:**
-
-- Read current build stage doc (to get `entitySha` and current `content`):
-```json
-{
-  "method": "GET",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/build",
-  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
-}
-```
-
-- Update the `content` string (append Build Log entry + update Progress Tracker), then PATCH:
 ```json
 {
   "method": "PATCH",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/build",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
   "headers": {
     "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
     "Content-Type": "application/json"
@@ -617,107 +633,50 @@ Then PATCH with a JSON Merge Patch:
   "body": {
     "baseEntitySha": "<entitySha from GET>",
     "patch": {
-      "content": "..."
+      "Lane": "Done",
+      "Last-Progress": "YYYY-MM-DD"
     }
   }
 }
 ```
 
-#### Step 3: Check for Completion (After Each Task)
+Do not move to `Done` if any completion criterion is unmet.
 
-After updating the plan, check if all IMPLEMENT tasks are complete:
+#### Step 5: Discovery index freshness
 
-- If all tasks in the plan are marked Complete:
-  - Update build stage doc transition criteria (check all boxes in `content`)
-  - Propose lane transition to Done (Step 4)
+After card/stage-doc writes and deterministic lane transitions, rebuild discovery index:
 
-#### Step 4: Propose Lane Transition (All Tasks Complete)
-
-When all eligible IMPLEMENT tasks are complete:
-
-**Option A: Use /propose-lane-move (Recommended)**
-
-Run `/propose-lane-move` with evidence:
-```
-/propose-lane-move CARD-ID
-- Current Lane: In progress
-- Proposed Lane: Done
-- Evidence:
-  - All IMPLEMENT tasks marked Complete in plan
-  - Build stage doc shows all tasks complete with commit hashes
-  - Validation: typecheck PASS, lint PASS, tests PASS
-  - Documentation updated per task requirements
+```bash
+docs/business-os/_meta/rebuild-discovery-index.sh > docs/business-os/_meta/discovery-index.json
 ```
 
-**Option B: Inline Proposal (Faster)**
+Retry once; if it still fails, stop and surface `discovery-index stale`.
 
-Update card via API:
-```json
-{
-  "method": "PATCH",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
-  "headers": {
-    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
-    "Content-Type": "application/json"
-  },
-  "body": {
-    "baseEntitySha": "<entitySha from GET>",
-    "patch": { "Proposed-Lane": "Done" }
-  }
-}
-```
+On repeated failure, include:
+- failing command,
+- retry count,
+- stderr summary,
+- exact operator rerun command.
 
-This signals to the card owner (Pete in Phase 0) that the card is ready for review and lane transition.
-
-**Evidence Requirements for Done:**
-- All IMPLEMENT tasks complete with commits
-- All tests passing
-- Documentation updated
-- Build stage doc transition criteria all checked
-
-**Do NOT propose Done if:**
-- Some tasks are blocked or pending
-- Tests are failing
-- DECISION tasks remain unresolved
-
-### Modified Build Loop (with Card-ID)
-
-When `Card-ID` is present, extend the standard build loop:
-
-**Before Step 1 (Select task) — First task only:**
-- Read card via API and confirm lane
-- If `Lane: Planned`: PATCH to `Lane: In progress` and set `Last-Progress: YYYY-MM-DD`
-- Create build stage doc via `POST /api/agent/stage-docs` if missing
-- Do not create or edit markdown files directly
-
-**After Step 6 (Commit):**
-- PATCH card `Last-Progress` via API with today's date
-
-**After Step 7 (Update the plan):**
-- PATCH build stage doc content (Build Log + Progress Tracker updates)
+Do not emit a clean completion message while index state is stale.
 
 ### Completion Messages (with Card-ID)
 
-Append to standard completion messages:
+**A) All eligible tasks complete:**
+> "All eligible IMPLEMENT tasks are complete and validated. Plan updated with completion status and validation evidence. Card {CARD-ID} Last-Progress updated via API. Build stage doc updated via API. Deterministic lane transition applied: `In progress -> Done`."
 
-**A) All eligible tasks complete (with Card-ID):**
-> "All eligible IMPLEMENT tasks are complete and validated. Plan updated with completion status and validation evidence. Card {CARD-ID} Last-Progress updated via API. Build stage doc updated via API. Ready for lane transition to Done — run `/propose-lane-move` or PATCH `Proposed-Lane: Done`."
+**B) Some tasks remain:**
+> "Completed N/M IMPLEMENT tasks. Card {CARD-ID} Last-Progress updated to {DATE} via API. Build stage doc updated with progress. Lane remains `In progress` until completion gate is satisfied."
 
-**B) Some tasks remain (with Card-ID):**
-> "Completed N/M IMPLEMENT tasks. Card {CARD-ID} Last-Progress updated to {DATE} via API. Build stage doc updated with progress."
+**C) Stopped mid-task:**
+> "Stopped during TASK-XX. Card {CARD-ID} Last-Progress remains at previous value. Build stage doc records the blocker."
 
-**C) Stopped mid-task (with Card-ID):**
-> "Stopped during TASK-XX. Card {CARD-ID} Last-Progress remains at previous value. Build stage doc notes the blocker."
+### Without Card-ID (or Integration Off)
 
-### Without Card-ID
-
-If the plan frontmatter does not include `Card-ID`:
-- Skip all Business OS integration steps
-- Use standard completion messages
-- Build loop operates unchanged
+Skip all Business OS integration steps and use standard completion messages.
 
 ### Related Resources
 
 - Card operations: `.claude/skills/_shared/card-operations.md`
 - Stage doc operations: `.claude/skills/_shared/stage-doc-operations.md`
-- Lane transitions: `.claude/skills/propose-lane-move/SKILL.md`
+- Exception-only/manual lane proposals (non-mechanical transitions): `.claude/skills/propose-lane-move/SKILL.md`

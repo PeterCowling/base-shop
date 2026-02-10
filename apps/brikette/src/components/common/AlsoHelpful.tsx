@@ -279,7 +279,7 @@ function AlsoHelpful({
                 </svg>
               </span>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-widest text-brand-secondary/80 dark:text-brand-secondary/70">
+                <p className="text-sm font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary/80">
                   {tAssistance("alsoHelpfulEyebrow", {
                     defaultValue: assistanceEnT("alsoHelpfulEyebrow"),
                   })}

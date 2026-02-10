@@ -57,6 +57,38 @@ describe("guide link tokens + markdown-lite", () => {
     expect(screen.getByTestId("root")).toHaveTextContent("Hello How to get here");
   });
 
+  it("resolves HOWTO overview tokens to the how-to-get-here index", () => {
+    const nodes = renderGuideLinkTokens("%HOWTO:how-to-get-here|How to Get Here%", "en", "t");
+    render(<div data-cy="root">{nodes}</div>);
+
+    const link = screen.getByRole("link", { name: "How to Get Here" });
+    expect(link).toHaveAttribute("href", "/en/how-to-get-here");
+  });
+
+  it("resolves HOWTO camelCase guide keys to canonical guide hrefs", () => {
+    const nodes = renderGuideLinkTokens("%HOWTO:positanoSorrentoBus|Positano to Sorrento%", "en", "t");
+    render(<div data-cy="root">{nodes}</div>);
+
+    const link = screen.getByRole("link", { name: "Positano to Sorrento" });
+    expect(link).toHaveAttribute("href", "/en/how-to-get-here/positano-sorrento-bus");
+  });
+
+  it("resolves HOWTO legacy slugs to canonical guide hrefs", () => {
+    const nodes = renderGuideLinkTokens("%HOWTO:positano-naples-ferry|Positano to Naples%", "en", "t");
+    render(<div data-cy="root">{nodes}</div>);
+
+    const link = screen.getByRole("link", { name: "Positano to Naples" });
+    expect(link).toHaveAttribute("href", "/en/how-to-get-here/positano-to-naples-directions-by-ferry");
+  });
+
+  it("resolves HOWTO kebab tokens to camelCase guide keys when needed", () => {
+    const nodes = renderGuideLinkTokens("%HOWTO:chiesa-nuova-arrivals|Chiesa Nuova arrivals%", "en", "t");
+    render(<div data-cy="root">{nodes}</div>);
+
+    const link = screen.getByRole("link", { name: "Chiesa Nuova arrivals" });
+    expect(link).toHaveAttribute("href", "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette");
+  });
+
   it("renders bullet lists from either multi-line blocks or consecutive '* ' entries", () => {
     const nodes1 = renderBodyBlocks(["* one\n* two"], "en", "t");
     render(<div data-cy="root1">{nodes1}</div>);

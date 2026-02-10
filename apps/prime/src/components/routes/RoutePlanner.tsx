@@ -159,14 +159,14 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
           <button
             type="button"
             onClick={handleBack}
-            className="rounded-full p-2 hover:bg-gray-100"
+            className="rounded-full p-2 hover:bg-muted"
             aria-label={t('routes.back')}
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
           <div>
             <h2 className="text-lg font-semibold">{t('routes.fromOrigin', { origin: selectedOrigin.name })}</h2>
-            <p className="text-sm text-gray-600">{t('routes.selectRoute')}</p>
+            <p className="text-sm text-muted-foreground">{t('routes.selectRoute')}</p>
           </div>
         </div>
 
@@ -182,8 +182,8 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
                 transition-colors
                 ${
                   selectedMode === filter.mode
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted text-foreground hover:bg-muted/80'
                 }
               `}
             >
@@ -204,7 +204,7 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
               />
             ))
           ) : (
-            <div className="rounded-xl bg-gray-50 p-6 text-center text-gray-500">
+            <div className="rounded-xl bg-muted p-6 text-center text-muted-foreground">
               {t('routes.noRoutes')}
             </div>
           )}
@@ -222,7 +222,7 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-2 hover:bg-gray-100"
+            className="rounded-full p-2 hover:bg-muted"
             aria-label={t('routes.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -230,14 +230,14 @@ export const RoutePlanner: FC<RoutePlannerProps> = memo(function RoutePlanner({
         )}
         <div>
           <h2 className="text-lg font-semibold">{t('routes.title')}</h2>
-          <p className="text-sm text-gray-600">{t('routes.subtitle')}</p>
+          <p className="text-sm text-muted-foreground">{t('routes.subtitle')}</p>
         </div>
       </div>
 
       {/* Origin categories */}
       {Object.entries(originsByCategory).map(([category, categoryOrigins]) => (
         <div key={category}>
-          <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-gray-500">
+          <h3 className="mb-2 text-sm font-medium uppercase tracking-wide text-muted-foreground">
             {t(`routes.categories.${category}`)}
           </h3>
           <div className="flex flex-col gap-2">
@@ -266,15 +266,15 @@ const OriginButton: FC<{
     <button
       type="button"
       onClick={onClick}
-      className="flex w-full items-center justify-between rounded-xl border bg-white p-4 transition-all hover:border-blue-300 hover:shadow-sm"
+      className="flex w-full items-center justify-between rounded-xl border bg-card p-4 transition-all hover:border-primary/30 hover:shadow-sm"
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
           {getOriginIcon(origin.icon)}
         </div>
-        <span className="font-medium text-gray-900">{origin.name}</span>
+        <span className="font-medium text-foreground">{origin.name}</span>
       </div>
-      <ChevronRight className="h-5 w-5 text-gray-400" />
+      <ChevronRight className="h-5 w-5 text-muted-foreground" />
     </button>
   );
 });

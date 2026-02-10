@@ -40,9 +40,9 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
     return (
       <div className={`flex items-center gap-3 ${className}`}>
         {/* XP display */}
-        <div className="flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-1">
-          <Trophy className="h-4 w-4 text-blue-600" />
-          <span className="text-sm font-semibold text-blue-600">{totalXp}</span>
+        <div className="flex items-center gap-1 rounded-full bg-primary-soft px-2.5 py-1">
+          <Trophy className="h-4 w-4 text-primary" />
+          <span className="text-sm font-semibold text-primary">{totalXp}</span>
         </div>
 
         {/* Badge count */}
@@ -52,14 +52,14 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
               {badges.slice(0, 3).map((badgeId) => (
                 <div
                   key={badgeId}
-                  className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-amber-100"
+                  className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-accent-soft"
                 >
-                  <BadgeIcon badgeId={badgeId} size="sm" className="text-amber-600" />
+                  <BadgeIcon badgeId={badgeId} size="sm" className="text-accent" />
                 </div>
               ))}
             </div>
             {badges.length > 3 && (
-              <span className="text-xs text-gray-500">+{badges.length - 3}</span>
+              <span className="text-xs text-muted-foreground">+{badges.length - 3}</span>
             )}
           </div>
         )}
@@ -69,29 +69,29 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
 
   // Full mode for account page
   return (
-    <div className={`rounded-2xl bg-white p-4 shadow-sm ${className}`}>
+    <div className={`rounded-2xl bg-card p-4 shadow-sm ${className}`}>
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-          <Award className="h-5 w-5 text-amber-500" />
+        <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+          <Award className="h-5 w-5 text-accent" />
           {t('account.badgesTitle')}
         </h3>
-        <div className="flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1">
-          <Trophy className="h-4 w-4 text-blue-600" />
-          <span className="font-semibold text-blue-600">{totalXp}</span>
-          <span className="text-xs text-blue-600">XP</span>
+        <div className="flex items-center gap-1 rounded-full bg-primary-soft px-3 py-1">
+          <Trophy className="h-4 w-4 text-primary" />
+          <span className="font-semibold text-primary">{totalXp}</span>
+          <span className="text-xs text-primary">XP</span>
         </div>
       </div>
 
       {/* Stats row */}
       <div className="mb-4 grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-amber-50 p-3 text-center">
-          <div className="text-2xl font-bold text-amber-600">{badges.length}</div>
-          <div className="text-xs text-amber-700">{t('account.badgesTitle')}</div>
+        <div className="rounded-xl bg-accent-soft p-3 text-center">
+          <div className="text-2xl font-bold text-accent">{badges.length}</div>
+          <div className="text-xs text-accent">{t('account.badgesTitle')}</div>
         </div>
-        <div className="rounded-xl bg-blue-50 p-3 text-center">
-          <div className="text-2xl font-bold text-blue-600">{completedTiers.length}</div>
-          <div className="text-xs text-blue-700">{t('account.questsCompleted')}</div>
+        <div className="rounded-xl bg-primary-soft p-3 text-center">
+          <div className="text-2xl font-bold text-primary">{completedTiers.length}</div>
+          <div className="text-xs text-primary">{t('account.questsCompleted')}</div>
         </div>
       </div>
 
@@ -106,29 +106,29 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
               key={badge.id}
               className={`relative flex flex-col items-center rounded-xl p-3 transition-all ${
                 isEarned
-                  ? 'bg-gradient-to-br from-amber-50 to-orange-50'
-                  : 'bg-gray-50 opacity-50'
+                  ? 'bg-accent-soft'
+                  : 'bg-muted opacity-50'
               }`}
             >
               {/* Badge icon */}
               <div
                 className={`mb-2 flex h-12 w-12 items-center justify-center rounded-full ${
                   isEarned
-                    ? 'bg-gradient-to-br from-amber-100 to-amber-200 shadow-sm'
-                    : 'bg-gray-200'
+                    ? 'bg-accent-soft shadow-sm'
+                    : 'bg-muted'
                 }`}
               >
                 {isEarned ? (
-                  <BadgeIcon badgeId={badge.id} size="lg" className="text-amber-600" />
+                  <BadgeIcon badgeId={badge.id} size="lg" className="text-accent" />
                 ) : (
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-muted-foreground" />
                 )}
               </div>
 
               {/* Badge name */}
               <span
                 className={`text-center text-xs font-medium ${
-                  isEarned ? 'text-amber-900' : 'text-gray-500'
+                  isEarned ? 'text-foreground' : 'text-muted-foreground'
                 }`}
               >
                 {t(badge.nameKey)}
@@ -138,7 +138,7 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
               {tier && (
                 <span
                   className={`mt-1 text-xs ${
-                    isEarned ? 'text-amber-600' : 'text-gray-400'
+                    isEarned ? 'text-accent' : 'text-muted-foreground'
                   }`}
                 >
                   {tier.xpValue} XP

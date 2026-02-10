@@ -57,17 +57,17 @@ function getModeIcon(mode: TransportMode): ReactNode {
 function getModeColor(mode: TransportMode): string {
   switch (mode) {
     case 'bus':
-      return 'bg-green-500';
+      return 'bg-success';
     case 'ferry':
-      return 'bg-blue-500';
+      return 'bg-info';
     case 'train':
-      return 'bg-orange-500';
+      return 'bg-warning';
     case 'walk':
-      return 'bg-gray-500';
+      return 'bg-muted-foreground';
     case 'taxi':
-      return 'bg-yellow-500';
+      return 'bg-accent';
     default:
-      return 'bg-gray-500';
+      return 'bg-muted-foreground';
   }
 }
 
@@ -104,33 +104,33 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
           <button
             type="button"
             onClick={onBack}
-            className="mt-1 rounded-full p-2 hover:bg-gray-100"
+            className="mt-1 rounded-full p-2 hover:bg-muted"
             aria-label={t('routes.back')}
           >
             <ArrowLeft className="h-5 w-5" />
           </button>
         )}
         <div className="flex-1">
-          <h2 className="text-xl font-semibold text-gray-900">{route.title}</h2>
-          <p className="mt-1 text-sm text-gray-600">{route.description}</p>
+          <h2 className="text-xl font-semibold text-foreground">{route.title}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{route.description}</p>
         </div>
       </div>
 
       {/* Summary stats */}
-      <div className="flex items-center gap-4 rounded-xl bg-gray-50 p-4">
+      <div className="flex items-center gap-4 rounded-xl bg-muted p-4">
         <div className="flex items-center gap-2">
-          <Clock className="h-5 w-5 text-gray-400" />
+          <Clock className="h-5 w-5 text-muted-foreground" />
           <div>
-            <p className="text-sm text-gray-500">{t('routes.totalTime')}</p>
-            <p className="font-semibold text-gray-900">
+            <p className="text-sm text-muted-foreground">{t('routes.totalTime')}</p>
+            <p className="font-semibold text-foreground">
               {formatDuration(route.totalDurationMinutes)}
             </p>
           </div>
         </div>
         {route.costRange && (
           <div className="border-s ps-4">
-            <p className="text-sm text-gray-500">{t('routes.cost')}</p>
-            <p className="font-semibold text-gray-900">
+            <p className="text-sm text-muted-foreground">{t('routes.cost')}</p>
+            <p className="font-semibold text-foreground">
               {route.costRange.min === route.costRange.max
                 ? `€${route.costRange.min}`
                 : `€${route.costRange.min} - €${route.costRange.max}`}
@@ -141,12 +141,12 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
 
       {/* Warnings */}
       {route.warnings && route.warnings.length > 0 && (
-        <div className="rounded-xl bg-amber-50 p-4">
-          <div className="mb-2 flex items-center gap-2 font-medium text-amber-800">
-            <AlertTriangle className="h-5 w-5 text-amber-500" />
+        <div className="rounded-xl bg-warning-soft p-4">
+          <div className="mb-2 flex items-center gap-2 font-medium text-warning-foreground">
+            <AlertTriangle className="h-5 w-5 text-warning" />
             <span>{t('routes.importantNotes')}</span>
           </div>
-          <ul className="list-inside list-disc space-y-1 text-sm text-amber-800">
+          <ul className="list-inside list-disc space-y-1 text-sm text-warning-foreground">
             {route.warnings.map((warning, idx) => (
               <li key={idx}>{warning}</li>
             ))}
@@ -155,8 +155,8 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
       )}
 
       {/* Segments timeline */}
-      <div className="rounded-xl border bg-white p-4">
-        <h3 className="mb-4 font-semibold text-gray-900">{t('routes.journey')}</h3>
+      <div className="rounded-xl border bg-card p-4">
+        <h3 className="mb-4 font-semibold text-foreground">{t('routes.journey')}</h3>
         <div className="relative">
           {route.segments.map((segment, idx) => (
             <SegmentItem
@@ -168,12 +168,12 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
 
           {/* Final destination */}
           <div className="flex items-start gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-success text-success-foreground">
               <MapPin className="h-4 w-4" />
             </div>
             <div className="pt-1">
-              <p className="font-medium text-gray-900">{route.destination}</p>
-              <p className="text-sm text-green-600">{t('routes.arrival')}</p>
+              <p className="font-medium text-foreground">{route.destination}</p>
+              <p className="text-sm text-success">{t('routes.arrival')}</p>
             </div>
           </div>
         </div>
@@ -190,8 +190,8 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
             transition-colors
             ${
               isSaved
-                ? 'bg-green-100 text-green-700'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-success-soft text-success-foreground'
+                : 'bg-primary text-primary-foreground hover:bg-primary/90'
             }
           `}
         >
@@ -212,7 +212,7 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
         <button
           type="button"
           onClick={handleOpenBrikette}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 font-medium text-foreground transition-colors hover:bg-muted"
         >
           <ExternalLink className="h-5 w-5" />
           {t('routes.viewFullGuide')}
@@ -235,12 +235,12 @@ const SegmentItem: FC<{
     <div className="relative mb-6 flex items-start gap-3">
       {/* Timeline line */}
       {!isLast && (
-        <div className="absolute start-4 top-8 h-full w-0.5 -translate-x-1/2 bg-gray-200" />
+        <div className="absolute start-4 top-8 h-full w-0.5 -translate-x-1/2 bg-border" />
       )}
 
       {/* Mode icon */}
       <div
-        className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-white ${getModeColor(segment.mode)}`}
+        className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-success-foreground ${getModeColor(segment.mode)}`}
       >
         {getModeIcon(segment.mode)}
       </div>
@@ -249,23 +249,23 @@ const SegmentItem: FC<{
       <div className="flex-1 pb-2">
         <div className="flex items-start justify-between">
           <div>
-            <p className="font-medium text-gray-900">{segment.from}</p>
-            <p className="text-sm text-gray-500">
+            <p className="font-medium text-foreground">{segment.from}</p>
+            <p className="text-sm text-muted-foreground">
               {segment.operator && <span>{segment.operator}</span>}
             </p>
           </div>
           <div className="text-end">
-            <p className="text-sm font-medium text-gray-700">
+            <p className="text-sm font-medium text-foreground">
               {formatDuration(segment.durationMinutes)}
             </p>
           </div>
         </div>
         {segment.notes && (
-          <p className="mt-1 text-sm text-gray-500">{segment.notes}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{segment.notes}</p>
         )}
 
         {/* Arrow to next */}
-        <div className="mt-2 flex items-center gap-1 text-sm text-gray-400">
+        <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
           <ArrowRight className="h-4 w-4" />
           <span>{segment.to}</span>
         </div>

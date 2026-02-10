@@ -111,36 +111,468 @@ async function loadTemplates(): Promise<EmailTemplate[]> {
   return data;
 }
 
-function resolveKnowledgeSources(category: string): string[] {
-  switch (category) {
-    case "faq":
-      return ["brikette://faq", "brikette://policies"];
-    case "policy":
-      return ["brikette://policies"];
-    case "payment":
-      return ["brikette://policies"];
-    case "cancellation":
-      return ["brikette://policies"];
-    default:
-      return ["brikette://faq"];
+const DEFAULT_KNOWLEDGE_URIS = [
+  "brikette://faq",
+  "brikette://rooms",
+  "brikette://pricing/menu",
+  "brikette://policies",
+] as const;
+
+const KNOWLEDGE_MAX_WORDS_PER_RESOURCE = 500;
+const KNOWLEDGE_MAX_SNIPPETS_PER_RESOURCE = 6;
+const KNOWLEDGE_STOP_WORDS = new Set([
+  "the",
+  "and",
+  "for",
+  "with",
+  "from",
+  "that",
+  "this",
+  "there",
+  "have",
+  "about",
+  "what",
+  "when",
+  "where",
+  "which",
+  "your",
+  "you",
+  "our",
+  "are",
+  "can",
+  "how",
+  "who",
+  "will",
+  "please",
+  "would",
+  "could",
+  "should",
+  "into",
+  "after",
+  "before",
+  "need",
+  "want",
+  "like",
+  "time",
+  "day",
+  "days",
+  "night",
+  "nights",
+  "email",
+  "booking",
+  "reservation",
+]);
+
+const KNOWLEDGE_SCENARIO_TERMS: Record<string, string[]> = {
+  cancellation: ["cancel", "cancellation", "refund", "non-refundable", "policy"],
+  payment: ["payment", "prepayment", "card", "charge", "invoice", "refund", "balance"],
+  policy: ["policy", "rules", "terms", "check-in", "check-out", "age", "pets", "quiet"],
+  breakfast: ["breakfast", "menu", "food", "meal"],
+  luggage: ["luggage", "storage", "bags", "suitcase"],
+  wifi: ["wifi", "internet", "connection"],
+  "check-in": ["check-in", "arrival", "late arrival", "reception hours"],
+  checkout: ["check-out", "departure", "luggage storage"],
+  prepayment: ["prepayment", "payment link", "secure payment", "charge"],
+  transportation: ["transport", "bus", "ferry", "taxi", "airport"],
+  "house-rules": ["rules", "quiet hours", "restrictions", "age", "pets"],
+  "booking-changes": ["change", "modify", "reschedule", "dates"],
+  "booking-issues": ["issue", "problem", "confirmation"],
+  access: ["access", "entry", "door", "code"],
+  "lost-found": ["lost", "found", "left behind", "forgot"],
+  activities: ["activities", "tour", "hike", "experience"],
+  promotions: ["promotion", "discount", "offer", "code"],
+  employment: ["job", "employment", "position", "application"],
+};
+
+type KnowledgeIntent = { text: string };
+type KnowledgeContext = {
+  category: string;
+  normalizedText: string;
+  intents: KnowledgeIntent[];
+};
+
+type KnowledgeSummary = { uri: string; summary: string };
+type KnowledgeSnippet = { citation: string; text: string; score: number };
+
+function resolveKnowledgeSources(_category: string): string[] {
+  return [...DEFAULT_KNOWLEDGE_URIS];
+}
+
+function tokenizeKnowledgeText(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, " ")
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter(
+      (token) => token.length >= 3 && !KNOWLEDGE_STOP_WORDS.has(token)
+    );
+}
+
+function buildKnowledgeTerms(context: KnowledgeContext): string[] {
+  const scenarioTerms = KNOWLEDGE_SCENARIO_TERMS[context.category] ?? [];
+  const extractedTerms = [
+    context.normalizedText,
+    ...context.intents.map((intent) => intent.text),
+  ].flatMap(tokenizeKnowledgeText);
+
+  return Array.from(
+    new Set(
+      [...extractedTerms, ...scenarioTerms, context.category.toLowerCase()].filter(
+        (term) => term.length >= 3 && !KNOWLEDGE_STOP_WORDS.has(term)
+      )
+    )
+  );
+}
+
+function scoreKnowledgeSnippet(text: string, terms: string[]): number {
+  const normalized = text.toLowerCase();
+  let score = 0;
+  for (const term of terms) {
+    if (term.length < 3) {
+      continue;
+    }
+    if (normalized.includes(term.toLowerCase())) {
+      score += term.length >= 7 ? 2 : 1;
+    }
+  }
+  return score;
+}
+
+function humanizePath(path: string): string {
+  return path
+    .split(".")
+    .map((segment) =>
+      segment
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/[_-]/g, " ")
+        .trim()
+        .toLowerCase()
+    )
+    .filter(Boolean)
+    .join(" ");
+}
+
+function createSnippet(
+  citation: string,
+  text: string,
+  terms: string[],
+): KnowledgeSnippet | null {
+  const normalizedText = normalizeParagraphs(text).replace(/\n+/g, " ").trim();
+  if (!normalizedText) {
+    return null;
+  }
+
+  const score = scoreKnowledgeSnippet(normalizedText, terms);
+  if (score <= 0) {
+    return null;
+  }
+
+  return {
+    citation,
+    text: normalizedText,
+    score,
+  };
+}
+
+function extractFaqSnippets(
+  payload: unknown,
+  terms: string[],
+  citationPrefix: string,
+): KnowledgeSnippet[] {
+  const items = Array.isArray(payload)
+    ? payload
+    : payload &&
+        typeof payload === "object" &&
+        Array.isArray((payload as { items?: unknown[] }).items)
+      ? (payload as { items: unknown[] }).items
+      : [];
+
+  const snippets: KnowledgeSnippet[] = [];
+  for (let index = 0; index < items.length; index += 1) {
+    const item = items[index];
+    if (!item || typeof item !== "object") {
+      continue;
+    }
+
+    const question = typeof (item as { question?: unknown }).question === "string"
+      ? (item as { question: string }).question
+      : "";
+    const answer = typeof (item as { answer?: unknown }).answer === "string"
+      ? (item as { answer: string }).answer
+      : "";
+    if (!question && !answer) {
+      continue;
+    }
+
+    const id = typeof (item as { id?: unknown }).id === "string"
+      ? (item as { id: string }).id
+      : String(index + 1);
+
+    const snippet = createSnippet(
+      `${citationPrefix}:${id}`,
+      `Q: ${question} A: ${answer}`,
+      terms,
+    );
+    if (snippet) {
+      snippets.push(snippet);
+    }
+  }
+
+  return snippets;
+}
+
+function extractPrimitiveSnippets(
+  value: unknown,
+  citationPrefix: string,
+  path: string[],
+  terms: string[],
+  snippets: KnowledgeSnippet[],
+  depth = 0,
+): void {
+  if (value === null || value === undefined || depth > 4) {
+    return;
+  }
+
+  const citationPath = path.length > 0 ? path.join(".") : "root";
+  if (
+    typeof value === "string" || typeof value === "number" || typeof value === "boolean"
+  ) {
+    const snippet = createSnippet(
+      `${citationPrefix}:${citationPath}`,
+      `${humanizePath(citationPath)}: ${String(value)}`,
+      terms,
+    );
+    if (snippet) {
+      snippets.push(snippet);
+    }
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    for (let index = 0; index < value.length; index += 1) {
+      const item = value[index];
+      if (
+        typeof item === "string" ||
+        typeof item === "number" ||
+        typeof item === "boolean"
+      ) {
+        const snippet = createSnippet(
+          `${citationPrefix}:${citationPath}.${index}`,
+          `${humanizePath(citationPath)}: ${String(item)}`,
+          terms,
+        );
+        if (snippet) {
+          snippets.push(snippet);
+        }
+        continue;
+      }
+      extractPrimitiveSnippets(
+        item,
+        citationPrefix,
+        [...path, String(index)],
+        terms,
+        snippets,
+        depth + 1,
+      );
+    }
+    return;
+  }
+
+  if (typeof value === "object") {
+    for (const [key, nestedValue] of Object.entries(value)) {
+      extractPrimitiveSnippets(
+        nestedValue,
+        citationPrefix,
+        [...path, key],
+        terms,
+        snippets,
+        depth + 1,
+      );
+    }
   }
 }
 
-async function loadKnowledgeSummaries(uris: string[]) {
-  const summaries: Array<{ uri: string; summary: string }> = [];
+function extractRoomSnippets(payload: unknown, terms: string[]): KnowledgeSnippet[] {
+  if (!payload || typeof payload !== "object") {
+    return [];
+  }
+
+  const summary = (payload as { summary?: unknown }).summary;
+  if (!summary || typeof summary !== "object") {
+    return [];
+  }
+
+  const snippets: KnowledgeSnippet[] = [];
+  const roomTypes = (summary as { roomTypes?: unknown }).roomTypes;
+
+  if (Array.isArray(roomTypes)) {
+    for (let index = 0; index < roomTypes.length; index += 1) {
+      const room = roomTypes[index];
+      if (!room || typeof room !== "object") {
+        continue;
+      }
+
+      const roomRecord = room as Record<string, unknown>;
+      const sku = typeof roomRecord.sku === "string"
+        ? roomRecord.sku
+        : `room-${index + 1}`;
+      const roomName = typeof roomRecord.name === "string"
+        ? roomRecord.name
+        : "Room details";
+      const occupancy = typeof roomRecord.occupancy === "number"
+        ? `Sleeps ${roomRecord.occupancy}.`
+        : "";
+      const amenities = Array.isArray(roomRecord.amenities)
+        ? roomRecord.amenities
+            .filter((amenity): amenity is string => typeof amenity === "string")
+            .slice(0, 4)
+            .join(", ")
+        : "";
+      const basePrice = roomRecord.basePrice;
+      let pricing = "";
+      if (basePrice && typeof basePrice === "object") {
+        const amount = (basePrice as { amount?: unknown }).amount;
+        const currency = (basePrice as { currency?: unknown }).currency;
+        if (typeof amount === "number" && typeof currency === "string") {
+          pricing = `Base price ${amount} ${currency}.`;
+        }
+      }
+
+      const snippet = createSnippet(
+        `rooms:${sku}`,
+        [
+          roomName,
+          occupancy,
+          pricing,
+          amenities ? `Amenities: ${amenities}.` : "",
+        ]
+          .filter(Boolean)
+          .join(" "),
+        terms,
+      );
+      if (snippet) {
+        snippets.push(snippet);
+      }
+    }
+  }
+
+  const note = (summary as { note?: unknown }).note;
+  if (typeof note === "string") {
+    const snippet = createSnippet("rooms:summary.note", note, terms);
+    if (snippet) {
+      snippets.push(snippet);
+    }
+  }
+
+  return snippets;
+}
+
+function extractPricingSnippets(payload: unknown, terms: string[]): KnowledgeSnippet[] {
+  const snippets: KnowledgeSnippet[] = [];
+  extractPrimitiveSnippets(payload, "pricing", [], terms, snippets);
+  return snippets;
+}
+
+function extractPolicySnippets(payload: unknown, terms: string[]): KnowledgeSnippet[] {
+  if (!payload || typeof payload !== "object") {
+    return [];
+  }
+
+  const snippets: KnowledgeSnippet[] = [];
+  const summary = (payload as { summary?: unknown }).summary;
+  if (summary) {
+    extractPrimitiveSnippets(summary, "policies", ["summary"], terms, snippets);
+  }
+
+  const faqItems = (payload as { faqItems?: unknown }).faqItems;
+  if (Array.isArray(faqItems)) {
+    snippets.push(
+      ...extractFaqSnippets({ items: faqItems }, terms, "policies:faq"),
+    );
+  }
+
+  if (snippets.length === 0) {
+    extractPrimitiveSnippets(payload, "policies", [], terms, snippets);
+  }
+
+  return snippets;
+}
+
+function extractKnowledgeSnippets(
+  uri: string,
+  payload: unknown,
+  terms: string[],
+): KnowledgeSnippet[] {
+  switch (uri) {
+    case "brikette://faq":
+      return extractFaqSnippets(payload, terms, "faq");
+    case "brikette://rooms":
+      return extractRoomSnippets(payload, terms);
+    case "brikette://pricing/menu":
+      return extractPricingSnippets(payload, terms);
+    case "brikette://policies":
+      return extractPolicySnippets(payload, terms);
+    default: {
+      const snippets: KnowledgeSnippet[] = [];
+      const citationPrefix = uri.replace("brikette://", "resource:").replace(/[/:]/g, ".");
+      extractPrimitiveSnippets(payload, citationPrefix, [], terms, snippets);
+      return snippets;
+    }
+  }
+}
+
+function formatKnowledgeSummary(snippets: KnowledgeSnippet[]): string {
+  if (snippets.length === 0) {
+    return "";
+  }
+
+  const sorted = [...snippets].sort((left, right) => {
+    if (right.score !== left.score) {
+      return right.score - left.score;
+    }
+    return left.text.length - right.text.length;
+  });
+
+  const uniqueByCitation = new Set<string>();
+  const selected: KnowledgeSnippet[] = [];
+  for (const snippet of sorted) {
+    if (uniqueByCitation.has(snippet.citation)) {
+      continue;
+    }
+    uniqueByCitation.add(snippet.citation);
+    selected.push(snippet);
+    if (selected.length >= KNOWLEDGE_MAX_SNIPPETS_PER_RESOURCE) {
+      break;
+    }
+  }
+
+  const summary = selected.map((snippet) => `[${snippet.citation}] ${snippet.text}`).join("\n");
+  return truncateWords(summary, KNOWLEDGE_MAX_WORDS_PER_RESOURCE);
+}
+
+async function loadKnowledgeSummaries(
+  uris: string[],
+  context: KnowledgeContext,
+): Promise<KnowledgeSummary[]> {
+  const terms = buildKnowledgeTerms(context);
+  const summaries: KnowledgeSummary[] = [];
+
   for (const uri of uris) {
     const result = await handleBriketteResourceRead(uri);
-    const payload = JSON.parse(result.contents[0].text);
-    let summary = "";
-    if (Array.isArray(payload)) {
-      summary = `items:${payload.length}`;
-    } else if (payload && typeof payload === "object") {
-      summary = `keys:${Object.keys(payload).length}`;
-    } else {
-      summary = "unknown";
+    const payload = parseResourceResult<unknown>(result);
+    if (!payload) {
+      summaries.push({ uri, summary: "" });
+      continue;
     }
-    summaries.push({ uri, summary });
+
+    const snippets = extractKnowledgeSnippets(uri, payload, terms);
+    summaries.push({
+      uri,
+      summary: formatKnowledgeSummary(snippets),
+    });
   }
+
   return summaries;
 }
 
@@ -528,7 +960,11 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     });
 
     const knowledgeUris = resolveKnowledgeSources(actionPlan.scenario.category);
-    const knowledgeSummaries = await loadKnowledgeSummaries(knowledgeUris);
+    const knowledgeSummaries = await loadKnowledgeSummaries(knowledgeUris, {
+      category: actionPlan.scenario.category,
+      normalizedText: actionPlan.normalized_text,
+      intents: [...actionPlan.intents.questions, ...actionPlan.intents.requests],
+    });
 
     const qualityResponse = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {

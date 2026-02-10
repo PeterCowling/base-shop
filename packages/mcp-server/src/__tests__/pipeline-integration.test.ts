@@ -146,6 +146,7 @@ type TestFixture = {
     messages: Array<{ from: string; date: string; snippet: string }>;
   };
   expectedCategory: string;
+  expectedEscalationTier?: "NONE" | "HIGH" | "CRITICAL";
   expectedAgreement?: string;
   requiresResponse: boolean;
   scenarioType: string;
@@ -404,6 +405,94 @@ const fixtures: TestFixture[] = [
     requiresResponse: true,
     scenarioType: "prepayment",
   },
+  {
+    id: "PRE-02",
+    description: "Prepayment second attempt failed",
+    from: "Guest Fourteen <guest14@example.com>",
+    subject: "Second prepayment attempt failed",
+    body: "Hi, the second prepayment attempt failed again and the payment link still does not work. Please send a new secure payment link.",
+    expectedCategory: "prepayment",
+    expectedEscalationTier: "NONE",
+    requiresResponse: true,
+    scenarioType: "prepayment",
+  },
+  {
+    id: "PRE-03",
+    description: "Prepayment third attempt failed and booking cancelled",
+    from: "Guest Fifteen <guest15@example.com>",
+    subject: "Third prepayment failed",
+    body: "Hello, after the third prepayment attempt failed my booking was cancelled. Can you explain next steps and send a fresh payment link?",
+    expectedCategory: "prepayment",
+    expectedEscalationTier: "NONE",
+    requiresResponse: true,
+    scenarioType: "prepayment",
+  },
+  {
+    id: "PRE-04",
+    description: "Prepayment success confirmation",
+    from: "Guest Sixteen <guest16@example.com>",
+    subject: "Prepayment completed",
+    body: "Hi, I completed the prepayment successfully through the secure link. Please confirm the booking is now fully confirmed.",
+    expectedCategory: "prepayment",
+    expectedEscalationTier: "NONE",
+    requiresResponse: true,
+    scenarioType: "prepayment",
+  },
+  {
+    id: "CAN-03",
+    description: "Cancellation with medical hardship context",
+    from: "Guest Seventeen <guest17@example.com>",
+    subject: "Emergency cancellation",
+    body: "We need to cancel due to a medical emergency in our family. I know the booking is non-refundable, but please advise what options we have.",
+    expectedCategory: "cancellation",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "cancellation",
+  },
+  {
+    id: "CAN-04",
+    description: "Cancellation dispute with chargeback language",
+    from: "Guest Eighteen <guest18@example.com>",
+    subject: "Refund dispute",
+    body: "I want a refund for this cancellation and I will start a chargeback if this is not resolved quickly.",
+    expectedCategory: "cancellation",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "cancellation",
+  },
+  {
+    id: "PAY-04",
+    description: "Payment dispute with legal threat",
+    from: "Guest Nineteen <guest19@example.com>",
+    subject: "Payment dispute",
+    body: "Your payment handling is unacceptable. If this is not fixed, I will contact my lawyer and pursue legal action.",
+    expectedCategory: "payment",
+    expectedEscalationTier: "CRITICAL",
+    requiresResponse: true,
+    scenarioType: "payment",
+  },
+  {
+    id: "CAN-05",
+    description: "Composite cancellation plus refund request",
+    from: "Guest Twenty <guest20@example.com>",
+    subject: "Cancel and refund",
+    body: "Please cancel the booking and process a refund. This dispute has been going on for days and I need a final answer now.",
+    expectedCategory: "cancellation",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "cancellation",
+  },
+  {
+    id: "PAY-05",
+    description: "Composite payment and policy dispute questions",
+    from: "Guest TwentyOne <guest21@example.com>",
+    subject: "Payment and policy clarification",
+    body: "Why was my card charged and what policy allows this? If needed I will dispute this charge with my bank.",
+    expectedCategory: "payment",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "payment",
+  },
 
   // ======================== BREAKFAST ========================
   {
@@ -605,6 +694,9 @@ describe("TASK-18: Stage 1 — Interpretation", () => {
         expect(payload.scenario.category).toBeDefined();
         expect(payload.scenario.confidence).toBeGreaterThan(0);
         expect(["NONE", "HIGH", "CRITICAL"]).toContain(payload.escalation.tier);
+        if (fixture.expectedEscalationTier) {
+          expect(payload.escalation.tier).toBe(fixture.expectedEscalationTier);
+        }
       }
     });
 

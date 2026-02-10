@@ -575,7 +575,7 @@ function classifyEscalation(
   }
 
   if (
-    /(chargeback|card dispute|dispute (the )?charge|reverse (the )?charge|bank dispute)/.test(lower)
+    /(chargeback|card dispute|dispute (the |this )?charge|reverse (the |this )?charge|bank dispute)/.test(lower)
   ) {
     highTriggers.push("chargeback_hint");
   }

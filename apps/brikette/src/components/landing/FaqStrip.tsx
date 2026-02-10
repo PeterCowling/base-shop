@@ -38,7 +38,8 @@ const FaqStrip = memo(function FaqStrip({ lang }: { lang?: AppLanguage }): JSX.E
           </h2>
           <Link
             href={`/${resolvedLang}/${translatePath("assistance", resolvedLang)}`}
-            className="text-sm font-semibold text-brand-primary underline-offset-4 transition hover:underline"
+            prefetch={false}
+            className="inline-flex min-h-11 min-w-11 items-center text-sm font-semibold text-brand-primary underline-offset-4 transition hover:underline"
           >
             {tLanding("faqSection.ctaLabel")}
           </Link>

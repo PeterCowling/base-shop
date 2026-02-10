@@ -85,12 +85,12 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
           {t("siteMenu")}
         </h2>
         <ul className="flex flex-col items-center space-y-6 pt-6 pb-10">
-          {navLinks.map(({ key, to, label }, idx) => (
+          {navLinks.map(({ key, to, label, prefetch }, idx) => (
             <li key={key}>
               <Link
                 ref={idx === 0 ? firstLinkRef : undefined}
                 href={`/${lang}${to}`}
-                prefetch={true}
+                prefetch={prefetch}
                 tabIndex={menuOpen ? 0 : -1}
                 className="block min-h-11 min-w-11 px-2 py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
                 onClick={close}

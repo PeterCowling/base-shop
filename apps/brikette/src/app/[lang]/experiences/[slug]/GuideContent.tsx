@@ -76,7 +76,7 @@ function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
     <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:max-w-4xl lg:px-8">
       <Link
         href={listingPath}
-        className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary-700 underline decoration-primary-200 underline-offset-4 transition hover:text-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+        className="mb-6 inline-flex min-h-11 min-w-11 items-center gap-2 text-sm font-medium text-primary-700 underline decoration-primary-200 underline-offset-4 transition hover:text-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
       >
         <span aria-hidden="true">←</span>
         {backLabel}

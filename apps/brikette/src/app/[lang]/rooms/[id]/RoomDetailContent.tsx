@@ -75,7 +75,7 @@ function HeroSection({ hero }: { hero: HeroContent | null }) {
   return (
     <Section className="mx-auto mt-6 max-w-3xl px-4 text-brand-heading dark:text-brand-surface">
       {hero.eyebrow ? (
-        <p className="text-sm font-semibold uppercase tracking-widest text-brand-secondary dark:text-brand-bougainvillea">
+        <p className="text-sm font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">
           {hero.eyebrow}
         </p>
       ) : null}

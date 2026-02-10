@@ -50,27 +50,91 @@ jobs:
       - run: pnpm --filter ./${{ matrix.workspace }} typecheck
       - name: Test with coverage
         if: matrix.workspace != 'packages/next-config'
-        run: pnpm exec turbo run test --filter=./${{ matrix.workspace }} -- --coverage --coverageDirectory=coverage
+        run: |
+          set -euo pipefail
+          workspace="${{ matrix.workspace }}"
+          package_json="${workspace}/package.json"
+
+          has_script() {
+            local script_name="$1"
+            node -e '
+              const fs = require("fs");
+              const [pkgPath, name] = process.argv.slice(1);
+              if (!fs.existsSync(pkgPath)) process.exit(1);
+              const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+              const scripts = pkg && pkg.scripts ? pkg.scripts : {};
+              process.exit(scripts[name] ? 0 : 1);
+            ' "$package_json" "$script_name"
+          }
+
+          if has_script "test:coverage"; then
+            echo "Running ${workspace} test:coverage script."
+            pnpm --filter "./${workspace}" run test:coverage
+          elif has_script "coverage"; then
+            echo "Running ${workspace} coverage script."
+            pnpm --filter "./${workspace}" run coverage
+          else
+            test_script="$(node -e '
+              const fs = require("fs");
+              const pkg = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+              process.stdout.write((pkg.scripts && pkg.scripts.test) ? pkg.scripts.test : "");
+            ' "$package_json")"
+            if echo "$test_script" | grep -Eq '(^|[[:space:]])(jest|vitest)([[:space:]]|$)|node[[:space:]]+--test'; then
+              echo "Running ${workspace} test with injected coverage flags."
+              pnpm exec turbo run test --filter="./${workspace}" -- --coverage --coverageDirectory=coverage
+            else
+              echo "No coverage-capable test script detected for ${workspace}; running plain test."
+              pnpm --filter "./${workspace}" test
+            fi
+          fi
       - name: Test next-config (node test runner coverage)
         if: matrix.workspace == 'packages/next-config'
         run: pnpm --filter ./packages/next-config test:coverage
-      - run: pnpm --filter ./${{ matrix.workspace }} coverage
-        if: matrix.workspace == 'apps/api'
       - name: E2E (if present)
         run: pnpm --filter ./${{ matrix.workspace }} run e2e --if-present
-      - name: Compute coverage artifact name
-        id: coverage-name
+      - name: Compute coverage artifact metadata
+        id: coverage-meta
         if: always()
         run: |
-          safe="${WORKSPACE//\//-}"
-          echo "name=coverage-${safe}" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          workspace="${WORKSPACE:-}"
+          if [ -z "$workspace" ]; then
+            echo "WORKSPACE is required but was not set."
+            exit 1
+          fi
+          workspace_safe="${workspace//\//-}"
+          package_json="${workspace}/package.json"
+
+          package_name="$(node -e '
+            const fs = require("fs");
+            const pkgPath = process.argv[1];
+            if (!fs.existsSync(pkgPath)) process.exit(1);
+            const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+            const name = typeof pkg.name === "string" ? pkg.name.trim() : "";
+            process.stdout.write(name);
+          ' "$package_json" 2>/dev/null || true)"
+
+          if [ -z "$package_name" ]; then
+            package_name="$(basename "$workspace")"
+          fi
+
+          package_safe="${package_name#@}"
+          package_safe="${package_safe//\//-}"
+
+          {
+            echo "name=coverage-${workspace_safe}"
+            echo "workspace_path=${workspace}/coverage"
+            echo "root_path=coverage/${package_safe}"
+          } >> "$GITHUB_OUTPUT"
         env:
           WORKSPACE: ${{ matrix.workspace }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: ${{ steps.coverage-name.outputs.name }}
-          path: ${{ matrix.workspace }}/coverage
+          name: ${{ steps.coverage-meta.outputs.name }}
+          path: |
+            ${{ steps.coverage-meta.outputs.workspace_path }}
+            ${{ steps.coverage-meta.outputs.root_path }}
           if-no-files-found: ignore
 
   cms-coverage:

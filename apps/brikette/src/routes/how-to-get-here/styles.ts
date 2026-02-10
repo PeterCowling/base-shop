@@ -34,6 +34,8 @@ export const externalLinkClass = [
 
 export const anchorLinkClass = [
   "inline-flex",
+  "min-h-11",
+  "min-w-11",
   "items-center",
   "justify-center",
   "rounded-full",
@@ -95,7 +97,8 @@ const filterButtonBaseClass = [
   "gap-2",
   "rounded-full",
   "border",
-  "min-h-10",
+  "min-h-11",
+  "min-w-11",
   "px-4",
   "py-2",
   "text-sm",
@@ -139,7 +142,8 @@ export const clearFiltersButtonClass = [
   "inline-flex",
   "items-center",
   "justify-center",
-  "min-h-10",
+  "min-h-11",
+  "min-w-11",
   "rounded-full",
   "border",
   "border-transparent",

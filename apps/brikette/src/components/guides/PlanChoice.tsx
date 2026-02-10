@@ -76,6 +76,8 @@ function PlanChoice({ onSelect, className = "", title, lang: explicitLang }: Pro
     "items-center",
     "rounded-md",
     "border",
+    "min-h-11",
+    "min-w-11",
     "px-3",
     "py-2",
     "text-sm",

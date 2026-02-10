@@ -71,7 +71,7 @@ export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSe
     <section className="rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/60">
       <header className="space-y-3 text-brand-text dark:text-brand-text/80">
         {content.eyebrow ? (
-          <p className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">
             {content.eyebrow}
           </p>
         ) : null}

@@ -32,13 +32,18 @@ Always produce:
 
 ## Workflow
 
-### 1) Run automated audit
+### 1) Run automated audit (expanded default)
 
 ```bash
-node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs --url <TARGET_URL>
+node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
+  --url <TARGET_URL> \
+  --slug <DEPLOYMENT-OR-BRANCH-SLUG> \
+  --max-crawl-pages 140 \
+  --max-audit-pages 36 \
+  --max-mobile-pages 24
 ```
 
-Optional tuning:
+Optional tuning (only when needed for very large sites):
 
 ```bash
 node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
@@ -63,9 +68,14 @@ Do targeted repro checks for high-severity findings from the generated report:
 - Mobile menu state/focus issues
 - Contrast failures on key CTAs/headings
 
-### 3) Optional Lighthouse pass for additional evidence
+### 3) Lighthouse SEO pass (required)
 
-Run at least homepage desktop; run key conversion page mobile when relevant.
+Run desktop + mobile SEO checks on:
+- homepage (`/<lang>`)
+- rooms/discovery page (`/<lang>/rooms`)
+- help/assistance page (`/<lang>/help` or localized equivalent)
+
+Desktop:
 
 ```bash
 npx lighthouse <TARGET_URL> \
@@ -76,7 +86,7 @@ npx lighthouse <TARGET_URL> \
   --output-path=/tmp/lh-home-desktop.json
 ```
 
-For mobile:
+Mobile:
 
 ```bash
 npx lighthouse <TARGET_URL_OR_KEY_PAGE> \
@@ -89,7 +99,11 @@ npx lighthouse <TARGET_URL_OR_KEY_PAGE> \
   --output-path=/tmp/lh-mobile.json
 ```
 
-If Lighthouse adds findings not already in the markdown report, update the report.
+Also generate a JSON summary artifact in `docs/audits/user-testing/` and link both:
+- `...-seo-summary.json`
+- `...-seo-artifacts/` (raw Lighthouse JSON files)
+
+If Lighthouse adds findings not already in the markdown report, update the report and Findings Index.
 
 ### 4) Return concise summary to user
 
@@ -97,6 +111,7 @@ In chat, provide:
 - total issues by priority,
 - top blockers first,
 - link/path to markdown report,
+- link/path to SEO summary artifact,
 - immediate next fix recommendation.
 
 ## Prioritization Rules

@@ -103,15 +103,8 @@ jobs:
       - name: Run tests (shard ${{ matrix.shard }}/4)
         run: |
           pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests \
-            --coverage --config apps/cms/jest.config.cjs \
+            --config apps/cms/jest.config.cjs \
             --shard=${{ matrix.shard }}/4
-      - name: Upload coverage
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cms-coverage-shard-${{ matrix.shard }}
-          path: coverage/
-          if-no-files-found: ignore
 
   build:
     name: Build

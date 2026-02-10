@@ -131,7 +131,6 @@ const FEATURED_TITLE_CLASS = "group-hover:text-brand-primary dark:group-hover:te
 
 type AlsoHelpfulCardProps = {
   href: string;
-  ariaLabel: string;
   title: React.ReactNode;
   ctaText: string;
   variant?: "standard" | "featured";
@@ -141,7 +140,6 @@ type AlsoHelpfulCardProps = {
 
 function AlsoHelpfulCard({
   href,
-  ariaLabel,
   title,
   ctaText,
   variant = "standard",
@@ -154,7 +152,6 @@ function AlsoHelpfulCard({
       href={href}
       prefetch={prefetch}
       className={clsx(CARD_SHARED_CLASSES, variantClasses)}
-      aria-label={ariaLabel}
     >
       <span
         className={clsx(
@@ -299,13 +296,11 @@ function AlsoHelpful({
               const label = getGuideLinkLabel(guidesT, guidesEnT, key);
               const labelText = normaliseForAria(label);
               const ctaText = buildSeoCta(exploreCtaPrefix, labelText);
-              const ariaLabel = ctaText.replace(/→/g, "to");
               return (
                 <li key={`${key}-${index}`} className="h-full">
                   <AlsoHelpfulCard
                     href={guideHref(lang, key)}
                     prefetch={false}
-                    ariaLabel={ariaLabel}
                     title={label}
                     ctaText={ctaText}
                     titleClassName={STANDARD_TITLE_CLASS}
@@ -324,13 +319,11 @@ function AlsoHelpful({
               const roomsLabel = labelFromTokens || (safeGetStr(tAssistance, assistanceEnT, "roomsCta") ?? "");
               const roomsLabelText = roomsLabel.trim();
               const roomsCtaText = buildSeoCta(bookCtaPrefix, roomsLabelText);
-              const roomsAriaLabel = roomsCtaText.replace(/→/g, "to");
               return (
                 <li key="rooms" className="h-full">
                   <AlsoHelpfulCard
                     href={`/${lang}/${getSlug("rooms", lang)}`}
                     prefetch={false}
-                    ariaLabel={roomsAriaLabel}
                     title={roomsLabel}
                     ctaText={roomsCtaText}
                     variant="featured"

@@ -119,9 +119,6 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { t: tRatings, i18n: ratingsI18n } = useTranslation("ratingsBar", { lng: lang });
   const { openModal } = useOptionalModal();
-  const perksAriaFallback =
-    /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback aria label copy. */
-    "Learn about direct perks";
 
   const selectDatesLabel = useMemo(() => {
     const direct = t("heroSection.selectDatesCta") as string;
@@ -290,10 +287,6 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
                     type="button"
                     onClick={handlePerksClick}
                     className="inline-flex min-h-10 min-w-10 items-center underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-                    aria-label={
-                      (t("heroSection.perksCtaLabel", { defaultValue: perksAriaFallback }) as string) ||
-                      perksAriaFallback
-                    }
                   >
                     {perksLabel}
                   </button>

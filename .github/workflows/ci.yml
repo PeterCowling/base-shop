@@ -31,17 +31,13 @@ jobs:
           fetch-depth: 0
       - name: Detect E2E-impacting changes
         id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            shop:
-              - 'apps/cover-me-pretty/**'
-              - 'apps/cms/**'
-              - 'packages/platform-core/**'
-              - 'packages/ui/**'
-              - 'packages/config/**'
-              - 'packages/i18n/**'
-              - 'packages/shared-utils/**'
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only "origin/${{ github.base_ref }}...HEAD" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          else
+            git diff --name-only "${{ github.event.before }}..${{ github.sha }}" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          fi
+          node scripts/ci/path-classifier.cjs --config ci_filter --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
 
   security-audit:
     name: Security Audit
@@ -113,8 +109,8 @@ jobs:
           restore-keys: |
             tailwind-color-report-${{ github.ref_name }}-
             tailwind-color-report-
-      - name: Lint (standard)
-        run: pnpm lint
+      - name: Lint (affected workspaces)
+        run: pnpm exec turbo run lint --affected
       - name: Lint (raw Tailwind color baseline)
         run: pnpm run lint:no-raw-tailwind-color:check
         timeout-minutes: 5
@@ -149,8 +145,8 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
-      - name: Typecheck
-        run: pnpm typecheck
+      - name: Typecheck (affected workspaces)
+        run: pnpm exec turbo run typecheck --affected
 
   test:
     name: Unit tests
@@ -186,17 +182,9 @@ jobs:
           fetch-depth: 0
       - name: Detect Business OS doc changes
         id: bos_filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            bos_guarded:
-              - 'docs/business-os/**'
-              - '!docs/business-os/README.md'
-              - '!docs/business-os/business-os-charter.md'
-              - '!docs/business-os/MANUAL_EDITS.md'
-              - '!docs/business-os/scans/**'
-              - '!docs/business-os/strategy/**'
-              - '!docs/business-os/people/**'
+        run: |
+          git diff --name-only "origin/${{ github.base_ref }}...HEAD" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          node scripts/ci/path-classifier.cjs --config ci_bos_filter --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
       - name: Validate BOS mirror edits
         # TEMP: bypass for dev branch — initial D1 migration pre-dates export workflow.
         # Remove this extra condition once the dev→main migration PR is merged.

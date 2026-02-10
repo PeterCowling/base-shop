@@ -64,7 +64,7 @@ function hasMealEntitlement(
 export default function MealOrderPage({
   service,
   title,
-  iconClassName = 'text-amber-500',
+  iconClassName = 'text-warning-foreground',
 }: MealOrderPageProps) {
   const { snapshot, token, isLoading, refetch } = useGuestBookingSnapshot();
   const [serviceDate, setServiceDate] = useState('');
@@ -169,19 +169,19 @@ export default function MealOrderPage({
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </main>
     );
   }
 
   if (!snapshot) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
-          <h1 className="mb-2 text-xl font-semibold text-gray-900">{title}</h1>
-          <p className="text-sm text-gray-600">We could not load your meal order data right now.</p>
-          <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+          <h1 className="mb-2 text-xl font-semibold text-foreground">{title}</h1>
+          <p className="text-sm text-muted-foreground">We could not load your meal order data right now.</p>
+          <Link href="/" className="mt-4 inline-block text-primary hover:underline">
             Return Home
           </Link>
         </div>
@@ -191,14 +191,14 @@ export default function MealOrderPage({
 
   if (!eligible) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-white p-6 text-center shadow-sm">
+      <main className="min-h-screen bg-muted p-4">
+        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <UtensilsCrossed className={`mx-auto mb-4 h-12 w-12 ${iconClassName}`} />
-          <h1 className="mb-2 text-xl font-semibold text-gray-900">{title}</h1>
-          <p className="text-sm text-gray-600">
+          <h1 className="mb-2 text-xl font-semibold text-foreground">{title}</h1>
+          <p className="text-sm text-muted-foreground">
             This service is not included in your booking. You can still explore the menu at reception.
           </p>
-          <Link href="/" className="mt-5 inline-block text-blue-600 hover:underline">
+          <Link href="/" className="mt-5 inline-block text-primary hover:underline">
             Return Home
           </Link>
         </div>
@@ -209,25 +209,25 @@ export default function MealOrderPage({
   const today = getRomeTodayIso();
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 pb-20">
+    <main className="min-h-screen bg-muted p-4 pb-20">
       <div className="mx-auto max-w-md space-y-4">
-        <div className="rounded-xl bg-white p-5 shadow-sm">
+        <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-4 flex items-center gap-3">
             <UtensilsCrossed className={`h-6 w-6 ${iconClassName}`} />
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">{title}</h1>
-              <p className="text-xs text-gray-500">Create or edit your order</p>
+              <h1 className="text-xl font-semibold text-foreground">{title}</h1>
+              <p className="text-xs text-muted-foreground">Create or edit your order</p>
             </div>
           </div>
 
-          <label htmlFor="service-date" className="text-xs font-medium text-gray-600">
+          <label htmlFor="service-date" className="text-xs font-medium text-muted-foreground">
             Service date
           </label>
           <select
             id="service-date"
             value={serviceDate}
             onChange={(event) => setServiceDate(event.target.value)}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
           >
             <option value="">Select date</option>
             {availableDates.map((date) => (
@@ -237,7 +237,7 @@ export default function MealOrderPage({
             ))}
           </select>
 
-          <label htmlFor="service-value" className="mt-3 block text-xs font-medium text-gray-600">
+          <label htmlFor="service-value" className="mt-3 block text-xs font-medium text-muted-foreground">
             Order details
           </label>
           <input
@@ -246,22 +246,22 @@ export default function MealOrderPage({
             value={value}
             onChange={(event) => setValue(event.target.value)}
             placeholder={service === 'breakfast' ? 'e.g. Continental' : 'e.g. Spritz'}
-            className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            className="mt-1 w-full rounded-lg border border-border px-3 py-2 text-sm"
           />
 
           {serviceDate && serviceDate <= today && (
-            <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-700">
+            <p className="mt-2 rounded-lg bg-warning-soft px-3 py-2 text-xs text-warning-foreground">
               Same-day changes are blocked by policy. You can submit an exception request.
             </p>
           )}
 
           {message && (
-            <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-xs text-emerald-700">
+            <p className="mt-3 rounded-lg bg-success-soft px-3 py-2 text-xs text-success-foreground">
               {message}
             </p>
           )}
           {error && (
-            <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700">
+            <p className="mt-3 rounded-lg bg-danger-soft px-3 py-2 text-xs text-danger">
               {error}
             </p>
           )}
@@ -270,7 +270,7 @@ export default function MealOrderPage({
             type="button"
             onClick={() => void submitOrder(false)}
             disabled={isSubmitting || !serviceDate || !value.trim()}
-            className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+            className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
           >
             {isSubmitting ? 'Saving…' : 'Save order'}
           </button>
@@ -280,29 +280,29 @@ export default function MealOrderPage({
               type="button"
               onClick={() => void submitOrder(true)}
               disabled={isSubmitting}
-              className="mt-2 w-full rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-medium text-amber-700 hover:bg-amber-100"
+              className="mt-2 w-full rounded-lg border border-warning bg-warning-soft px-4 py-2.5 text-sm font-medium text-warning-foreground hover:bg-warning-soft/80"
             >
               Request same-day exception
             </button>
           )}
         </div>
 
-        <div className="rounded-xl bg-white p-5 shadow-sm">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-700">
+        <div className="rounded-xl bg-card p-5 shadow-sm">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
             Existing orders
           </h2>
           {existingOrders.length === 0 ? (
-            <p className="mt-2 text-sm text-gray-500">No orders yet.</p>
+            <p className="mt-2 text-sm text-muted-foreground">No orders yet.</p>
           ) : (
             <ul className="mt-3 space-y-2">
               {existingOrders.map((order) => (
-                <li key={order.nightKey} className="rounded-lg border border-gray-200 px-3 py-2">
+                <li key={order.nightKey} className="rounded-lg border border-border px-3 py-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="inline-flex items-center gap-1 text-gray-600">
+                    <span className="inline-flex items-center gap-1 text-muted-foreground">
                       <CalendarDays className="h-4 w-4" />
                       {order.serviceDate}
                     </span>
-                    <span className="font-medium text-gray-800">{order.value}</span>
+                    <span className="font-medium text-foreground">{order.value}</span>
                   </div>
                 </li>
               ))}
@@ -311,7 +311,7 @@ export default function MealOrderPage({
         </div>
 
         <div className="text-center">
-          <Link href="/" className="text-sm text-blue-600 hover:underline">
+          <Link href="/" className="text-sm text-primary hover:underline">
             Return Home
           </Link>
         </div>

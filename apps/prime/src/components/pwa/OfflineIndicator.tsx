@@ -38,8 +38,8 @@ export const OfflineIndicator: FC<OfflineIndicatorProps> = memo(
         aria-live="polite"
         className={`
           fixed top-0 left-0 right-0 z-50
-          bg-amber-500 dark:bg-amber-600
-          text-white text-center text-sm
+          bg-warning
+          text-warning-foreground text-center text-sm
           py-2 px-4
           shadow-md
           animate-slideDown

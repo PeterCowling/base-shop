@@ -39,12 +39,12 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
   }));
 
   return (
-    <section className={`rounded-xl bg-slate-50 p-4 ${className}`} aria-label="staff-readiness">
+    <section className={`rounded-xl bg-muted p-4 ${className}`} aria-label="staff-readiness">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-slate-600">
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Arrival readiness
         </h3>
-        <span className="rounded-full bg-slate-200 px-2 py-1 text-xs font-semibold text-slate-700">
+        <span className="rounded-full bg-border px-2 py-1 text-xs font-semibold text-foreground">
           {readiness.readinessScore}%
         </span>
       </div>
@@ -52,7 +52,7 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
       <StaffSignalBadgeGroup title="Signals" signals={signals} />
 
       {(personalization?.arrivalMethodPreference || personalization?.arrivalConfidence) && (
-        <p className="mt-3 text-xs text-slate-700">
+        <p className="mt-3 text-xs text-foreground">
           Context:
           {personalization.arrivalMethodPreference && ` method ${personalization.arrivalMethodPreference}`}
           {personalization.arrivalConfidence && `, confidence ${personalization.arrivalConfidence}`}
@@ -60,7 +60,7 @@ export const StaffReadinessBadges: FC<StaffReadinessBadgesProps> = memo(function
       )}
 
       {operational?.bagDropRequested && (
-        <p className="mt-2 text-xs font-medium text-amber-700">
+        <p className="mt-2 text-xs font-medium text-warning-foreground">
           Post-checkout bag-drop request is active.
         </p>
       )}

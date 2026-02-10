@@ -22,9 +22,9 @@ const ProgressBar: FC<ProgressBarProps> = memo(function ProgressBar({
   );
 
   return (
-    <div className="w-full bg-gray-300 rounded-full h-2 mb-4">
+    <div className="w-full bg-muted rounded-full h-2 mb-4">
       <div
-        className="bg-blue-500 h-2 rounded-full transition-all duration-300 ease-in-out"
+        className="bg-primary h-2 rounded-full transition-all duration-300 ease-in-out"
         style={{ width: `${percentage}%` }}
       />
     </div>

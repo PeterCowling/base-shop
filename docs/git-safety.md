@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-10
 
 # Git Safety Guide (Agent Runbook)
 
@@ -26,7 +26,7 @@ Forbidden in agent flow:
 - `git rebase` (including `-i`)
 - `git commit --amend`
 - bulk discard patterns (`git checkout -- ...`, `git restore ...` across multiple paths/dirs/globs)
-- stash-losing ops (`git stash pop|apply|drop|clear`)
+- stash mutation ops (`git stash` bare, `git stash push|pop|apply|drop|clear`)
 
 If git state is confusing: stop, capture diagnostics, and ask for direction.
 

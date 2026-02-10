@@ -182,7 +182,9 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
           <div className="mb-3 rounded-lg bg-warning-soft px-4 py-3 text-sm text-warning-foreground">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 flex-shrink-0" />
-              <span>{t('arrival.codeStaleWarning')}</span>
+              <span>
+                {t('arrival.codeStaleWarning', { defaultValue: 'This code was cached. It may be outdated.' })}
+              </span>
             </div>
           </div>
         )}
@@ -192,7 +194,9 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
           <div className="mb-3 rounded-lg bg-danger-soft px-4 py-3 text-sm text-danger-foreground">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 flex-shrink-0" />
-              <span>{t('arrival.offlineNoCache')}</span>
+              <span>
+                {t('arrival.offlineNoCache', { defaultValue: 'Code unavailable while offline.' })}
+              </span>
             </div>
           </div>
         )}

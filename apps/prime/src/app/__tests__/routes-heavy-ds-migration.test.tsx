@@ -206,8 +206,16 @@ jest.mock('@/utils/messaging/dbRoot', () => ({ MSG_ROOT: 'msg' }));
 
 jest.mock('../../contexts/messaging/PinAuthProvider', () => ({
   usePinAuth: jest.fn(() => ({
+    user: { id: 'staff-1' },
     role: 'staff',
-    user: { uid: 'staff-1' },
+    claims: { role: 'staff' },
+    authToken: 'staff-token',
+    isAuthenticated: true,
+    isLoading: false,
+    authError: null,
+    lockout: null,
+    login: jest.fn(async () => true),
+    logout: jest.fn(),
   })),
 }));
 

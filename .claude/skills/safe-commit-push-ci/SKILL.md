@@ -29,7 +29,7 @@ Never use:
 - history rewrite (`git rebase`, `git commit --amend`, force-push variants)
 - hook bypass (`--no-verify`, `-n`, `-c core.hooksPath`, `git config core.hooksPath`)
 - bulk discard (`git checkout -- .`, directory/glob/multi-path checkout/restore, `git switch --discard-changes`, `checkout -f`)
-- stash-losing operations (`git stash pop|apply|drop|clear`)
+- stash mutation operations (`git stash` bare, `git stash push|pop|apply|drop|clear`)
 - `git worktree` (repo policy forbids worktrees for agent flow)
 
 ### Bypass flags/env (human-only, never for agent flow)
@@ -48,7 +48,7 @@ Do not use:
 - `git reset HEAD <file>` (unstage only)
 - `git restore --staged <file>` (unstage only)
 - `git clean --dry-run` / `git clean -n` (preview only)
-- `git stash list|show|push` (this skill still avoids creating stash entries; see stash policy)
+- `git stash list|show` (read-only only; see stash policy)
 
 ## Runtime Bounds
 
@@ -117,7 +117,7 @@ Default policy is **no new stashes**.
 
 Rationale:
 
-- hard guard blocks `stash pop|apply|drop|clear`
+- hard guards block all stash mutations (`stash` bare, `push|pop|apply|drop|clear`)
 - creating a stash that cannot be safely restored/cleared creates hidden debt
 
 Required behavior:

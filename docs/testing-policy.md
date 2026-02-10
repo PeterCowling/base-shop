@@ -30,6 +30,12 @@ pnpm --filter @apps/cms test        # Runs ALL tests in an app
 jest                                # Runs all tests in current directory
 ```
 
+**Mechanical guardrails (now enforced):**
+- Root `pnpm test` is hard-blocked by `scripts/guard-broad-test-run.cjs`.
+- Agent/integrator shells enforce `scripts/agent-bin/pnpm` and `scripts/agent-bin/turbo`, which block unscoped monorepo test fan-out commands.
+- If a full monorepo run is explicitly required, use:
+  - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
+
 **Why:** Broad test runs spawn multiple Jest workers (4-8 per run), each consuming 200-500MB RAM. Multiple concurrent runs can easily consume 2-5GB and bring the system to a crawl.
 
 **Exception (allowed only when explicitly requested by user):**
@@ -132,6 +138,29 @@ pnpm --filter <package> test -- <specific-file> --detectOpenHandles
 
 ---
 
+## Rule 6: Stable Mock References for React Components
+
+When mocking hooks that return objects (for example `useRouter`, `useTranslation`, `useSearchParams`, or custom hooks), define the return object outside the mock factory.
+
+**Problem:** Returning a fresh object on every call can trigger infinite re-render loops when a component uses the hook result in dependency arrays (for example `useEffect([router])`). In tests this often appears as a timeout instead of a clear assertion failure.
+
+```typescript
+// BAD: new object each call (unstable reference)
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: jest.fn(), back: jest.fn() }),
+}));
+
+// GOOD: stable reference across calls
+const mockRouter = { push: jest.fn(), back: jest.fn() };
+jest.mock('next/navigation', () => ({
+  useRouter: () => mockRouter,
+}));
+```
+
+Apply this pattern to any mocked object that may be used in React dependency arrays.
+
+---
+
 ## CI E2E Ownership (Reference)
 
 - Root CI (`.github/workflows/ci.yml`) runs only the cross-app **shop** subset (`pnpm e2e:shop`) when shop paths change.
@@ -163,8 +192,15 @@ Brikette staging CI now supports sharded Jest execution in the reusable deploy p
 
 - Shard mode: `3` shards (`1/3`, `2/3`, `3/3`)
 - Trigger: Brikette validation path when `run_validation=true`
-- Command per shard:
-  - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3`
+- Test selection modes:
+  - `test_scope=related`: run related tests only
+    - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3 --findRelatedTests <changed-source-files...>`
+  - `test_scope=full`: run full suite shard
+    - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3`
+  - `run_validation=false`: skip lint/typecheck/test entirely (deploy-only, confident)
+- Safety fallback:
+  - Any uncertain/unknown classification falls back to `test_scope=full`
+  - Any related-test mode with no eligible files falls back to full-suite shard execution
 - Cache restore is enabled for shard jobs:
   - `.ts-jest`
   - `node_modules/.cache/jest`

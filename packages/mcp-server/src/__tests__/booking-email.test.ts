@@ -20,12 +20,14 @@ describe("booking email tool", () => {
     jest.resetAllMocks();
   });
 
-  it("sends booking email with occupant links", async () => {
-    const sendMock = jest.fn().mockResolvedValue({ data: { id: "msg-1" } });
+  it("creates booking email draft with occupant links", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-1", message: { id: "msg-1" } } });
     const gmail = {
       users: {
-        messages: {
-          send: sendMock,
+        drafts: {
+          create: createDraftMock,
         },
       },
     };
@@ -39,17 +41,28 @@ describe("booking email tool", () => {
     });
 
     expect(result).toHaveProperty("content");
-    expect(sendMock).toHaveBeenCalledWith({
+    expect(createDraftMock).toHaveBeenCalledWith({
       userId: "me",
-      requestBody: { raw: expect.any(String) },
+      requestBody: {
+        message: { raw: expect.any(String) },
+      },
     });
 
-    const raw = sendMock.mock.calls[0][0].requestBody.raw as string;
+    const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
     const decoded = decodeRawEmail(raw);
 
     expect(decoded).toContain("To: guest@example.com");
     expect(decoded).toContain("Subject: Your booking details (BOOK123)");
     expect(decoded).toContain("Guest 1: https://example.com/occ1");
     expect(decoded).toContain("Guest 2: https://example.com/occ2");
+
+    const payload = JSON.parse(result.content[0].text) as {
+      success: boolean;
+      draftId?: string;
+      messageId?: string;
+    };
+    expect(payload.success).toBe(true);
+    expect(payload.draftId).toBe("draft-1");
+    expect(payload.messageId).toBe("msg-1");
   });
 });

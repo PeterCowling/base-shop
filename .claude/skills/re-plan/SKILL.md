@@ -39,11 +39,18 @@ A task should not be promoted from **<80%** to **≥80%** unless at least one is
 1. The blocking unknowns are closed with **E2+** evidence, or
 2. A precursor task is inserted with explicit exit criteria, and downstream implementation remains below 80% until that precursor is completed.
 
+### Fail-first promotion caps (business-artifact/mixed IMPLEMENT tasks)
+
+For non-code deliverables, confidence cannot be promoted above thresholds without fail-first evidence:
+- No Red evidence (falsification probe) → cap at 79%
+- Red complete but no Green pass evidence → cap at 84%
+- Green complete but no Refactor evidence → cap at 89%
+
 ### Precursor task pattern
 
 When evidence is insufficient to promote a task above 80%, **create formal precursor tasks in the plan** — not inline notes.
 
-**Precursor tasks are first-class plan tasks.** They get their own TASK-ID, full confidence assessment, acceptance criteria, test contract (if IMPLEMENT type), and appear in the task summary table. The blocked downstream task explicitly `Depends on` the precursor TASK-ID.
+**Precursor tasks are first-class plan tasks.** They get their own TASK-ID, full confidence assessment, acceptance criteria, and validation contract (TC for code/mixed; VC for business-artifact/mixed when applicable), and appear in the task summary table. The blocked downstream task explicitly `Depends on` the precursor TASK-ID.
 
 **Why formal tasks, not notes:** Inline "precursor evidence needed" notes hide real work behind a single confidence number. A task at 70% with "needs spike" looks like one task — but it's actually two: the spike and the implementation. Making precursors formal tasks means:
 - The dependency chain is visible and sequenceable
@@ -59,7 +66,7 @@ When evidence is insufficient to promote a task above 80%, **create formal precu
 - **Exit criteria:** binary pass/fail statement tied to evidence
 - **Confidence:** assessed using the same min-of-dimensions rule as any other task
 - **Dependency:** the blocked downstream task `Depends on` this precursor's TASK-ID
-- **Test contract:** SPIKE tasks that produce code require a test contract; INVESTIGATE tasks that produce only a decision memo do not
+- **Validation contract:** SPIKE tasks that produce code require TC contracts; business-artifact/mixed precursor tasks require VC contracts plus fail-first evidence when they are IMPLEMENT-like. INVESTIGATE tasks that produce only a decision memo do not.
 
 **Recursive decomposition:** If a precursor task is itself below 80% confidence, it may need its own precursors. Work backwards from the blocked task until every task in the chain is ≥80%. This may produce a chain of 2-3 tasks — that's fine. The alternative (one task with hidden precursors) masks the true confidence.
 
@@ -78,13 +85,16 @@ TASK-51 (IMPLEMENT, 74% → conditional 82%): Staff auth replacement
 
 This makes the confidence chain transparent. The task stays at 74% until precursors are done.
 
-## TDD Compliance Requirement
+## TDD / Fail-First Compliance Requirement
 
-**Every IMPLEMENT task must have an enumerated test contract before it can be marked Ready.**
+**Every IMPLEMENT task must have an enumerated validation contract before it can be marked Ready.**
 
-A task without test cases (TC-XX) cannot proceed to `/build-feature`, regardless of confidence score. Re-plan must add test contracts to any tasks missing them.
+- Code/mixed tasks require a `Test contract` with `TC-XX` cases.
+- Business-artifact/mixed tasks require a `Validation contract` with `VC-XX` checks plus fail-first execution evidence (Red, Green, Refactor).
 
-**Test contract format:**
+A task without required validation cases for its track (TC-XX or VC-XX) cannot proceed to `/build-feature`, regardless of confidence score. Re-plan must add missing contracts and evidence.
+
+**Code/mixed test contract format:**
 ```markdown
 - **Test contract:**
   - **TC-01:** <scenario> → <expected outcome>
@@ -95,11 +105,27 @@ A task without test cases (TC-XX) cannot proceed to `/build-feature`, regardless
   - **Run:** <command to execute>
 ```
 
-**Minimum test contract requirements:**
-- At least one TC per acceptance criterion
-- Happy path covered (TC-01 typically)
+**Business-artifact/mixed validation contract format:**
+```markdown
+- **Validation contract:**
+  - **VC-01:** <quality/channel/compliance scenario> → <pass condition>
+  - **VC-02:** <failure/constraint scenario> → <pass condition>
+  - **VC-03:** <edge/handoff/measurement scenario> → <pass condition>
+  - **Validation type:** <review checklist | approval gate | dry-run | rehearsal | contract>
+  - **Validation location/evidence:** <artifact path or checklist path>
+  - **Run/verify:** <procedure>
+- **Execution plan (business-artifact/mixed):** Red → Green → Refactor
+  - **Red evidence:** <expected failure/gap probe + observed result>
+  - **Green evidence:** <minimum artifact/process that passes VC checks>
+  - **Refactor evidence:** <quality/operability hardening + VC re-pass result>
+```
+
+**Minimum validation contract requirements:**
+- At least one TC/VC per acceptance criterion
+- Happy path covered (TC-01 or VC-01)
 - At least one error/edge case for M/L effort tasks
-- Test type and location specified
+- Validation type/location/run procedure specified
+- For business-artifact/mixed tasks claiming >80%: Red, Green, and Refactor evidence must be recorded
 
 ## Operating Mode
 
@@ -134,12 +160,12 @@ A task without test cases (TC-XX) cannot proceed to `/build-feature`, regardless
 Run `/re-plan` when any of the following occurs:
 
 - A plan task has overall confidence <80% (or is explicitly flagged as blocked).
-- **A task is missing a test contract (TC-XX enumeration) — cannot proceed to build without it.**
+- **A task is missing a required validation contract (TC-XX or VC-XX) — cannot proceed to build without it.**
 - During implementation, confidence drops due to unexpected complexity or new evidence.
 - A fact-check or repo audit finds factual inaccuracies in the plan that materially affect confidence.
 - New information invalidates assumptions, dependencies, or approach decisions.
 - Build was stopped due to uncertainty and needs a structured reset.
-- `/build-feature` rejected a task due to missing test contract.
+- `/build-feature` rejected a task due to missing validation contract/evidence.
 - **A CHECKPOINT task was reached during `/build-feature`** — triggers a mid-build reassessment of all remaining tasks using evidence from completed work.
 
 **Note:** `/re-plan` is not for generating a plan from scratch; that is `/plan-feature`. `/re-plan` operates on a specific plan and task IDs.
@@ -180,14 +206,15 @@ When `/re-plan` is invoked at a CHECKPOINT during `/build-feature`, it operates 
 Identify the target tasks:
 - Prefer explicit task IDs provided by the user.
 - Otherwise, scan the plan and select any tasks with overall confidence <80% **and** any tasks that depend on them.
-- **Also select any IMPLEMENT tasks missing test contracts (TC-XX)** — these cannot proceed to build regardless of confidence.
+- **Also select any IMPLEMENT tasks missing required validation contracts (TC-XX/VC-XX)** — these cannot proceed to build regardless of confidence.
 
 For each target task, record:
 - current confidence (overall + per dimension)
 - current acceptance criteria
 - dependencies (TASK-IDs)
 - affected files/modules
-- **test contract status:** complete (has TC-XX) | incomplete | missing
+- **validation contract status:** code/mixed TC complete|incomplete|missing OR business-artifact/mixed VC complete|incomplete|missing
+- **fail-first evidence status (business-artifact/mixed):** complete | incomplete | missing
 
 ### 2) Diagnose the confidence gap by dimension
 
@@ -265,27 +292,26 @@ If you cannot define a falsifiable check, confidence must not increase.
 - tests and commands
 - extinct tests flagged for update during build
 
-### 3b) Complete test contracts for tasks missing them
+### 3b) Complete validation contracts for tasks missing them
 
-For each IMPLEMENT task missing a test contract (or with incomplete TC-XX enumeration):
+For each IMPLEMENT task missing required validation contract elements:
 
 **Step 1: Review acceptance criteria**
-- Each acceptance criterion must map to at least one test case
-- Identify gaps: criteria without corresponding TCs
+- Each acceptance criterion must map to at least one validation case
+- Identify gaps: criteria without corresponding TC/VC cases
 
-**Step 2: Enumerate test cases**
-- **TC-01** (always): Happy path / primary success scenario
-- **TC-02+**: Error cases, edge cases, boundary conditions
-- For M/L effort tasks: at least 3 TCs required
-- For S effort tasks: at least 1 TC required (may be more based on complexity)
+**Step 2: Enumerate validation cases by track**
+- **Code/mixed:** TC-01 happy path; TC-02+ error/edge/boundary cases
+- **Business-artifact/mixed:** VC-01 happy path; VC-02+ failure/constraint/edge/handoff checks
+- For M/L effort tasks: at least 3 validation cases required
+- For S effort tasks: at least 1 validation case required (may be more based on complexity)
 
-**Step 3: Specify test metadata**
-- **Test type:** unit | integration | e2e | contract
-- **Test location:** existing file to extend, or new file path
-- **Run command:** exact command to execute tests
+**Step 3: Specify validation metadata**
+- **Code/mixed:** test type, test location, run command
+- **Business-artifact/mixed:** validation type, evidence location, run/verify procedure
 
-**Step 4: Add test contract to task**
-Use this format:
+**Step 4: Add track-specific contract to the task**
+Code/mixed format:
 ```markdown
 - **Test contract:**
   - **TC-01:** <scenario> → <expected outcome>
@@ -296,15 +322,30 @@ Use this format:
   - **Run:** `pnpm test --testPathPattern=<pattern>`
 ```
 
-**Deriving test cases from acceptance criteria:**
+Business-artifact/mixed format:
+```markdown
+- **Validation contract:**
+  - **VC-01:** <scenario> → <pass condition>
+  - **VC-02:** <failure case> → <pass condition>
+  - **Acceptance coverage:** VC-01 covers criteria 1,2; VC-02 covers criteria 3
+  - **Validation type:** <review checklist | approval gate | dry-run | rehearsal | contract>
+  - **Validation location/evidence:** `path/to/review-checklist.md`
+  - **Run/verify:** <exact review/rehearsal procedure>
+- **Execution plan (business-artifact/mixed):** Red → Green → Refactor
+  - **Red evidence:** <falsification probe + observed failure/gap>
+  - **Green evidence:** <minimum artifact/process + VC pass result>
+  - **Refactor evidence:** <improvement + VC regression check result>
+```
 
-| Acceptance Criterion Type | Test Case Pattern |
-|---------------------------|-------------------|
-| "X returns Y" | TC: Call X → assert Y |
-| "X validates Y" | TC-a: Valid input → success; TC-b: Invalid input → error |
-| "X handles error Z" | TC: Trigger Z → assert error handling |
-| "X is visible in Y" | TC: Create X → query Y → assert presence |
-| "X with auth" | TC-a: With auth → success; TC-b: Without auth → 401 |
+**Deriving validation cases from acceptance criteria:**
+
+| Acceptance Criterion Type | Code/mixed (TC) Pattern | Business-artifact/mixed (VC) Pattern |
+|---------------------------|-------------------------|--------------------------------------|
+| "X returns Y" | TC: Call X → assert Y | VC: produce X artifact/process → verify Y pass condition |
+| "X validates Y" | TC-a: Valid input → success; TC-b: Invalid input → error | VC-a: compliant input/source → pass; VC-b: non-compliant input/source → fail/reject |
+| "X handles error Z" | TC: Trigger Z → assert error handling | VC: trigger Z in rehearsal/dry-run → verify fallback/handoff response |
+| "X is visible in Y" | TC: Create X → query Y → assert presence | VC: produce/publish X → verify it appears correctly in channel Y |
+| "X with approval/auth" | TC-a: With auth → success; TC-b: Without auth → 401 | VC-a: with approval path → pass; VC-b: missing approval → blocked |
 
 ### 4) Resolve open questions (self-serve first; escalate last)
 
@@ -337,7 +378,7 @@ Update `docs/plans/<feature-slug>-plan.md` as follows:
   - What was investigated (repo areas, tests, docs)
   - Decisions made (and why)
   - Updated dependencies/order (if changed)
-  - Updated acceptance criteria/test plan/rollout notes as needed
+  - Updated acceptance criteria/validation plan/rollout notes as needed
 
 **If confidence remains <80% after investigation — create formal precursor tasks:**
 
@@ -349,7 +390,7 @@ Do NOT add inline "Precursor evidence needed" notes. Instead:
    - Effort (S/M/L)
    - Confidence (min-of-dimensions, assessed normally)
    - Acceptance criteria (what artifact is produced, what question is answered)
-   - Test contract (for SPIKE tasks that produce code)
+   - Validation contract (TC/VC based on execution track; required for SPIKE/IMPLEMENT-like precursors)
    - Exit criteria (binary pass/fail)
    - Affects (files to read/modify)
 3. **Add to task summary table** with confidence, effort, and dependencies
@@ -361,6 +402,8 @@ Do NOT add inline "Precursor evidence needed" notes. Instead:
 **The blocked task's confidence stays at its current value** until precursors are completed and provide E2/E3 evidence. Do not speculatively raise it.
 
 **After creating precursor tasks, re-assess the full dependency graph** — new tasks may unblock or reorder existing work.
+
+**Decomposition closure rule:** after all confidence/dependency/content edits are complete, run `/sequence-plan` as the final structural step before deciding readiness or handing off to `/build-feature`.
 
 **Also update:**
 - `Last-updated` in frontmatter
@@ -385,22 +428,32 @@ Before marking any task as Ready or finalizing confidence scores, verify:
 
 **If any checklist item fails, do NOT finalize the confidence score. Investigate or mark as Unknown.**
 
-### 5b) Test Contract Validation Checklist (Mandatory for all IMPLEMENT tasks)
+### 5b) Validation Contract Checklist (Mandatory for all IMPLEMENT tasks)
 
 Before marking any IMPLEMENT task as Ready, verify:
 
-- [ ] **TC enumeration exists:** Task has at least one `TC-XX:` line
-- [ ] **Acceptance coverage:** Every acceptance criterion maps to at least one TC
-- [ ] **Scenario + outcome:** Each TC has format `<scenario> → <expected outcome>`
-- [ ] **Test type specified:** unit | integration | e2e | contract
-- [ ] **Test location specified:** file path (existing or new)
-- [ ] **Run command specified:** exact command to execute tests
-- [ ] **Minimum TC count met:**
-  - S-effort: ≥1 TC
-  - M-effort: ≥3 TCs (including at least one error/edge case)
-  - L-effort: ≥5 TCs (including error cases, edge cases, and integration scenarios)
+- [ ] **Track-appropriate enumeration exists:**
+  - Code/mixed: task has at least one `TC-XX:` line
+  - Business-artifact/mixed: task has at least one `VC-XX:` line
+- [ ] **Acceptance coverage:** Every acceptance criterion maps to at least one TC/VC
+- [ ] **Scenario + outcome:** Each case has format `<scenario> → <expected outcome/pass condition>`
+- [ ] **Validation metadata specified:**
+  - Code/mixed: test type + test location + run command
+  - Business-artifact/mixed: validation type + evidence location + run/verify procedure
+- [ ] **Minimum case count met (TC or VC):**
+  - S-effort: ≥1
+  - M-effort: ≥3 (including at least one error/edge case)
+  - L-effort: ≥5 (including failure/edge/integration or handoff scenarios)
+- [ ] **Fail-first evidence (business-artifact/mixed):**
+  - Red evidence present
+  - Green evidence present
+  - Refactor evidence present
+- [ ] **Fail-first confidence caps respected (business-artifact/mixed):**
+  - >79% only with Red evidence
+  - >84% only with Green evidence
+  - >89% only with Refactor evidence
 
-**If any checklist item fails, the task is NOT ready for build. Add the missing test contract elements.**
+**If any checklist item fails, the task is NOT ready for build. Add the missing validation contract/evidence elements.**
 
 ### 6) Re-assess knock-on effects
 
@@ -415,7 +468,7 @@ Identify any tasks whose confidence should change due to:
 
 Update those tasks' confidence (and notes) if materially affected.
 
-### 6a) Sequence the plan (mandatory when precursor tasks are created)
+### 6a) Sequence the plan (mandatory after decomposition/topology changes)
 
 After updating tasks and re-assessing knock-on effects, run `/sequence-plan` on the plan. This:
 
@@ -424,9 +477,11 @@ After updating tasks and re-assessing knock-on effects, run `/sequence-plan` on 
 - Updates all `Depends on` and `Blocks` fields with new IDs
 - Regenerates the **Parallelism Guide** to reflect the current dependency graph
 
-**Mandatory when:** precursor tasks were created or dependencies changed. The new tasks must appear in the correct execution order — precursors before the tasks they unblock.
+**Mandatory when:** tasks were decomposed (split), added, removed, or dependencies changed. New tasks must appear in correct execution order — precursors before the tasks they unblock.
 
-**Skip conditions:** Only skip if re-plan touched a single task with no dependency changes and no new tasks were created.
+**Execution order rule:** complete all substantive re-plan edits first (confidence updates, acceptance changes, dependency rewrites), then run `/sequence-plan`, then move to step 7 handoff.
+
+**Skip conditions:** Only skip if re-plan touched a single task with no dependency changes and no tasks were created/split/removed.
 
 **Note:** `/sequence-plan` does not change task scope, confidence, or acceptance — it only reorders, renumbers, and maps dependencies. All substantive changes were made in steps 1–6.
 
@@ -434,16 +489,16 @@ After updating tasks and re-assessing knock-on effects, run `/sequence-plan` on 
 
 End by classifying the plan state:
 
-- **Ready to build:** all IMPLEMENT tasks are ≥80% confidence **AND** have complete test contracts (TC-XX)
-- **TDD incomplete:** confidence ≥80% but some tasks missing test contracts — add test contracts before proceeding
+- **Ready to build:** all IMPLEMENT tasks are ≥80% confidence **AND** have complete validation contracts (TC/VC) with required fail-first evidence
+- **Validation incomplete:** confidence ≥80% but some tasks are missing validation contracts/evidence — add them before proceeding
 - **Partially ready:** some tasks are 60–79% with explicit precursor tasks/verification steps; none below 60%
 - **Blocked:** any IMPLEMENT task is <60% or requires user input to proceed safely
 
-**TDD gate is mandatory.** A task with 90% confidence but no test contract is NOT ready for build.
+**Validation gate is mandatory.** A task with 90% confidence but missing required TC/VC or fail-first evidence is NOT ready for build.
 
 Provide the recommended next action:
-- `/build-feature` if ready (confidence ≥80% AND test contracts complete) — tasks are already sequenced with parallelism guide
-- `/re-plan` again if remaining blocked tasks exist or test contracts are missing
+- `/build-feature` if ready (confidence ≥80% AND validation contracts complete) — and sequencing is up-to-date after any decomposition
+- `/re-plan` again if remaining blocked tasks exist or validation contracts/evidence are missing
 - Ask user questions if genuinely required
 
 ## Plan Update Snippet (insert into each affected task)
@@ -467,7 +522,7 @@ Add this block inside the task section:
 - **Changes to task:**
   - Dependencies: <updated TASK-IDs (including new precursor tasks)>
   - Acceptance: <updated bullets if changed>
-  - Test plan: <updated bullets if changed>
+  - Validation plan: <updated bullets if changed>
   - Rollout/rollback: <updated notes if changed>
 ```
 
@@ -494,24 +549,25 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 - [ ] Investigation is targeted and evidenced (file paths/tests/docs).
 - [ ] Any approach decision includes alternatives, tradeoffs, and rationale.
 - [ ] Impact is mapped (upstream/downstream) with explicit blast radius notes.
-- [ ] Plan doc updated: task confidence deltas, dependencies, acceptance criteria, test contract, rollout/rollback.
+- [ ] Plan doc updated: task confidence deltas, dependencies, acceptance criteria, validation contract, rollout/rollback.
 - [ ] Related tasks re-assessed and updated where necessary.
 - [ ] User questions are only asked when genuinely unavoidable and are decision-framed.
-- [ ] **TDD compliance:** Every IMPLEMENT task has a complete test contract with TC-XX enumeration.
-- [ ] **Test contract validation:** All items in 5b) checklist pass for every IMPLEMENT task.
+- [ ] **TDD/fail-first compliance:** Every IMPLEMENT task has complete track-appropriate validation contracts (TC for code/mixed; VC + Red/Green/Refactor evidence for business-artifact/mixed).
+- [ ] **Validation contract checks:** All items in 5b) checklist pass for every IMPLEMENT task.
 - [ ] **Scientific uplift compliance:** each confidence increase is tied to E1/E2/E3 evidence and uncertainty reduction.
 - [ ] **Precursor compliance:** unresolved unknowns are represented as formal precursor tasks (with TASK-ID, confidence, acceptance) — not inline notes or "precursor evidence needed" bullets.
 - [ ] **Precursor confidence:** each precursor task has its own min-of-dimensions confidence assessment. If a precursor is <80%, it has its own precursors (recursive decomposition).
 - [ ] **Dependency chain:** blocked tasks have explicit `Depends on` referencing precursor TASK-IDs. Conditional confidence recorded on the blocked task.
 - [ ] **Sequencing applied:** `/sequence-plan` has been run — tasks reordered, renumbered, `Blocks` fields updated, Parallelism Guide regenerated.
+- [ ] **Decomposition closure:** when tasks were split/added/removed, sequencing was run after final structural edits and before handoff.
 
 ## Completion Messages
 
-**All ≥80% with complete test contracts:**
-> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete test contracts. Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/build-feature`."
+**All ≥80% with complete validation contracts:**
+> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete validation contracts (TC/VC + required fail-first evidence). Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/build-feature`."
 
-**Confidence ≥80% but missing test contracts:**
-> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing test contracts (TC-XX). Tasks re-sequenced. Run `/re-plan` again to add test contracts before proceeding to build."
+**Confidence ≥80% but missing validation contracts/evidence:**
+> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing required validation contracts/evidence (TC/VC or Red/Green/Refactor). Tasks re-sequenced. Run `/re-plan` again to add missing validation elements before proceeding to build."
 
 **Some tasks <80% with precursor chain created:**
 > "Re-plan complete. Updated plan. Tasks <IDs> remain <80% with conditional confidence pending precursor completion. Created N new precursor tasks (TASK-XX, TASK-YY) — all ≥80% and ready for `/build-feature`. Tasks re-sequenced into N execution waves. Build precursor tasks first, then `/re-plan` to promote blocked tasks."
@@ -520,7 +576,7 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 > "Re-plan complete but still blocked on <IDs> (<%>) due to <dimension>. Tasks re-sequenced where possible. I need the following decisions from you: <questions>."
 
 **Checkpoint-triggered — remaining tasks confirmed:**
-> "Checkpoint re-assessment complete. Horizon assumptions validated against completed work. N remaining tasks reassessed — all ≥80% with complete test contracts. Tasks re-sequenced. Resuming `/build-feature`."
+> "Checkpoint re-assessment complete. Horizon assumptions validated against completed work. N remaining tasks reassessed — all ≥80% with complete validation contracts/evidence. Tasks re-sequenced. Resuming `/build-feature`."
 
 **Checkpoint-triggered — remaining tasks revised:**
 > "Checkpoint re-assessment complete. Found: <findings from completed work>. Revised N tasks, added M new tasks, deferred/removed K tasks. Updated plan re-sequenced into N execution waves. Resuming `/build-feature` for eligible tasks."

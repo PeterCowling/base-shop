@@ -360,6 +360,10 @@ List all assumptions that must hold. Prioritize testing the riskiest assumptions
 - **Measure:** MEDIUM (measurement supports growth decisions, not an end in itself)
 - **Operate:** LOW (operational efficiency is secondary to customer acquisition)
 
+### Contrarian Gate Feed (produces input for Artifact 3)
+
+**Contrarian Secret (feeds Artifact 3):** "What important truth about this market or product do very few people agree with us on? Complete the sentence: 'Most people believe X about this space, but the truth is ¬X.' What operational advantage follows directly from knowing ¬X that competitors who believe X cannot exploit?"
+
 ### Stance-Invariant Rules
 
 **Always** (regardless of stance):
@@ -515,6 +519,7 @@ report auto-generated from Search Console data.
 
 ## Version History
 
+- **v2.3** (2026-02-10): Added Contrarian Gate Feed section with Contrarian Secret (Artifact 3) prompt.
 - **v2.2** (2026-02-09): Added Cross-Lens Coordination section with handoffs and tension points for Marketing, Sales, Musk, and Sourcing.
 - **v2.1** (2026-02-09): Context-dependent toolbox (M/R/O instead of all-mandatory), solo-founder adaptations for WBR/ownership/escalation, six-page narrative only post-confidence-gate, condensed example.
 - **v2.0** (2026-02-09): Added Bezos-achievement-linked mechanisms (flywheel, input metrics, high-velocity decisions), made Bezos tools mandatory (PR/FAQ, 6-pager, VOC + "?" escalation), tightened in/out-of-domain boundaries with AWS/platform nuance.

@@ -82,6 +82,16 @@ describe('useDateInfo', () => {
     expect(result.current.isCheckedIn).toBe(true);
   });
 
+  it('treats check-in date as arrival-day (not yet checked in)', () => {
+    const { result } = renderHook(() =>
+      useDateInfo({ checkInDate: '2025-07-20', nights: 2 })
+    );
+
+    expect(result.current.dateInfo.daysUntilCheckIn).toBe(0);
+    expect(result.current.dateInfo.daysRemaining).toBeNull();
+    expect(result.current.isCheckedIn).toBe(false);
+  });
+
   it('formats check-in date as DD/MM', () => {
     const { result } = renderHook(() =>
       useDateInfo({ checkInDate: '2025-07-21', nights: 2 })

@@ -3,7 +3,7 @@ Type: Business-Plan
 Status: Active
 Business: BRIK
 Created: 2026-02-09
-Updated: 2026-02-09
+Updated: 2026-02-10
 Last-reviewed: 2026-02-09
 Owner: Pete
 ---
@@ -77,6 +77,6 @@ _No learnings recorded yet. This section is append-only — learnings are added 
 
 ### Content Quality (Established: 2026-02-09)
 
-- **i18n Parity Score:** Passing (strict-mode audit)
+- **i18n Parity Score:** Passing (strict-mode audit; last verified manually — re-run command below to confirm)
   - Target: 100% structural parity across 18 locales
   - Measurement: `CONTENT_READINESS_MODE=fail pnpm --filter brikette test i18n-parity-quality-audit`

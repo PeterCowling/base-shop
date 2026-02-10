@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-02-02
+Last-reviewed: 2026-02-10
 ---
 
 # AGENTS.md — Operational Runbook
@@ -82,7 +82,7 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 **Destructive / history-rewriting commands (agents: never):**
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
-- Also treat these as forbidden: `git checkout -- .` / `git restore .`, **any bulk discard** via `git checkout -- <pathspec...>` or `git restore -- <pathspec...>` (multiple files, directories, or globs), `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
+- Also treat these as forbidden: `git checkout -- .` / `git restore .`, **any bulk discard** via `git checkout -- <pathspec...>` or `git restore -- <pathspec...>` (multiple files, directories, or globs), `git stash` mutations (`push` / `pop` / `apply` / `drop` / `clear`, including bare `git stash`), `git rebase` (incl. `-i`), `git commit --amend`
 
 If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 

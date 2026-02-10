@@ -154,7 +154,7 @@ async function main(): Promise<void> {
       console.error("To set up Gmail:");
       console.error("1) Create OAuth credentials in Google Cloud Console");
       console.error("2) Save credentials.json to packages/mcp-server/");
-      console.error("3) Run: cd packages/mcp-server && pnpm exec tsx test-gmail-auth.ts");
+      console.error("3) Run: cd packages/mcp-server && pnpm gmail:auth");
     }
     process.exit(1);
   }

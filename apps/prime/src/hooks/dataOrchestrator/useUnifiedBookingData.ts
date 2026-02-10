@@ -215,9 +215,19 @@ export function useUnifiedBookingData(): UnifiedBookingData {
       return;
     }
 
-    void i18n.changeLanguage(occupantLang).then(() => {
+    if (typeof i18n.changeLanguage !== 'function') {
       setHasSyncedLanguage(true);
-    });
+      return;
+    }
+
+    void i18n.changeLanguage(occupantLang)
+      .then(() => {
+        setHasSyncedLanguage(true);
+      })
+      .catch(() => {
+        // Fail open in production UI if i18n runtime cannot switch language.
+        setHasSyncedLanguage(true);
+      });
   }, [occupantData, i18n]);
 
   // 7) Determine initial sync complete status

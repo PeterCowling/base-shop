@@ -245,4 +245,31 @@ describe("gmail label state machine", () => {
     expect(createdNames).toContain("Brikette/Inbox/Awaiting-Agreement");
     expect(messageStore["msg-4"].labelIds.length).toBeGreaterThan(0);
   });
+
+  it("moves deferred emails out of active queue", async () => {
+    const needsProcessing = { id: "label-needs-2", name: "Brikette/Inbox/Needs-Processing" };
+    const processing = { id: "label-processing-2", name: "Brikette/Inbox/Processing" };
+    const deferred = { id: "label-deferred-2", name: "Brikette/Inbox/Deferred" };
+
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing, processing, deferred],
+      messages: {
+        "msg-6": {
+          id: "msg-6",
+          threadId: "thread-6",
+          labelIds: [needsProcessing.id, processing.id, "INBOX"],
+          internalDate: String(Date.now()),
+          payload: { headers: [] },
+        },
+      },
+    });
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    await handleGmailTool("gmail_mark_processed", { emailId: "msg-6", action: "deferred" });
+
+    expect(messageStore["msg-6"].labelIds).toContain(deferred.id);
+    expect(messageStore["msg-6"].labelIds).not.toContain(needsProcessing.id);
+    expect(messageStore["msg-6"].labelIds).not.toContain(processing.id);
+  });
 });

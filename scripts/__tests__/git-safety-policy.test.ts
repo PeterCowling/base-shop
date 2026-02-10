@@ -149,6 +149,20 @@ const POLICY_TABLE: PolicyTestCase[] = [
     description: "stash clear",
   },
   {
+    id: "TC-24",
+    command: "git stash push",
+    args: ["stash", "push"],
+    expectedDecision: "deny",
+    description: "stash push",
+  },
+  {
+    id: "TC-72",
+    command: "git stash",
+    args: ["stash"],
+    expectedDecision: "deny",
+    description: "bare stash",
+  },
+  {
     id: "TC-16",
     command: "git worktree add ../foo",
     args: ["worktree", "add", "../foo"],
@@ -228,7 +242,14 @@ const POLICY_TABLE: PolicyTestCase[] = [
     args: ["stash", "pop"],
     expectedDecision: "deny",
     description: "stash pop",
-    skipHook: true, // hook doesn't deny stash pop (ask-level in permissions); guard blocks it
+  },
+  {
+    id: "TC-55",
+    command: "git stash push",
+    args: ["stash", "push"],
+    expectedDecision: "deny",
+    description: "stash push (guard)",
+    skipHook: true, // duplicate of TC-24 for hook
   },
   {
     id: "TC-60",
@@ -345,7 +366,6 @@ const POLICY_TABLE: PolicyTestCase[] = [
     args: ["stash", "apply"],
     expectedDecision: "deny",
     description: "stash apply",
-    skipHook: true, // hook doesn't deny stash apply (ask-level in permissions); guard blocks it
   },
 
   // --- ALLOW cases ---
@@ -376,13 +396,6 @@ const POLICY_TABLE: PolicyTestCase[] = [
     args: ["stash", "list"],
     expectedDecision: "allow",
     description: "stash list",
-  },
-  {
-    id: "TC-24",
-    command: "git stash push",
-    args: ["stash", "push"],
-    expectedDecision: "allow",
-    description: "stash push",
   },
   {
     id: "TC-25",
@@ -442,14 +455,6 @@ const POLICY_TABLE: PolicyTestCase[] = [
     args: ["stash", "show"],
     expectedDecision: "allow",
     description: "stash show",
-  },
-  {
-    id: "TC-55",
-    command: "git stash push",
-    args: ["stash", "push"],
-    expectedDecision: "allow",
-    description: "stash push (guard)",
-    skipHook: true,
   },
   {
     id: "TC-59",

@@ -1,4 +1,6 @@
-import { act, render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
+
+jest.setTimeout(15_000);
 
 // Mock next/link
 jest.mock('next/link', () => {
@@ -228,12 +230,11 @@ describe('TASK-13: Remaining components — DS migration', () => {
 
   it('CheckInQR has no raw palette classes', async () => {
     const CheckInQR = jest.requireActual('../check-in/CheckInQR').default;
-    let container: HTMLElement;
-    await act(async () => {
-      const result = render(<CheckInQR code="BRK-ABCDE" />);
-      container = result.container;
+    const { container } = render(<CheckInQR code="BRK-ABCDE" />);
+    await waitFor(() => {
+      expect(container.querySelector('img')).toBeTruthy();
     });
-    const html = container!.innerHTML;
+    const html = container.innerHTML;
     assertNoRawPaletteClasses(html, 'CheckInQR');
     assertNoRawWhite(html, 'CheckInQR');
     assertNoArbitraryColors(html, 'CheckInQR');

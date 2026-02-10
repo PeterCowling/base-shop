@@ -21,6 +21,7 @@ import {
   faFileAlt,
   faHandHolding,
   faHome,
+  faInbox,
   faSearch,
   faShieldAlt,
   faSignOutAlt,
@@ -59,6 +60,7 @@ const navSections: NavSection[] = [
       { label: "Check-out", route: "/checkout", icon: faDoorOpen },
       { label: "Loans", route: "/loan-items", icon: faHandHolding },
       { label: "Extension", route: "/extension", icon: faCalendarPlus },
+      { label: "Prime Requests", route: "/prime-requests", icon: faInbox },
     ],
   },
   {

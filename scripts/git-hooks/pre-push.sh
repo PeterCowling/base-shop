@@ -10,8 +10,8 @@ tmp_refs="$(mktemp)"
 trap 'rm -f "$tmp_refs"' EXIT
 cat >"$tmp_refs"
 
-scripts/git-hooks/require-writer-lock.sh
-cat "$tmp_refs" | scripts/git-hooks/pre-push-safety.sh
+bash scripts/git-hooks/require-writer-lock.sh
+cat "$tmp_refs" | bash scripts/git-hooks/pre-push-safety.sh
 
 zeros40="0000000000000000000000000000000000000000"
 validated_any="0"

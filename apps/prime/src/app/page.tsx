@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
+import { ChatProvider } from '../contexts/messaging/ChatProvider';
+import { PinAuthProvider } from '../contexts/messaging/PinAuthProvider';
 import { clearGuestSession, readGuestSession, validateGuestToken } from '../lib/auth/guestSessionGuard';
 import { canAccessStaffOwnerRoutes } from '../lib/security/staffOwnerGate';
 
@@ -55,7 +57,13 @@ export default function HomePage() {
   }
 
   if (mode === 'guest') {
-    return <GuardedHomeExperience />;
+    return (
+      <PinAuthProvider>
+        <ChatProvider>
+          <GuardedHomeExperience />
+        </ChatProvider>
+      </PinAuthProvider>
+    );
   }
 
   return (

@@ -136,9 +136,15 @@ if [[ "$normalized" =~ git[[:space:]]+commit[[:space:]]+.*--amend ]]; then
   exit 2
 fi
 
-# git stash drop / clear
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(drop|clear) ]]; then
-  echo "BLOCKED: git stash drop/clear permanently removes stashed changes. Use git stash list to review first." >&2
+# git stash (bare) defaults to push and creates hidden debt for agent workflows
+if [[ "$normalized" =~ git[[:space:]]+stash([[:space:]]*($|[;&|])) ]]; then
+  echo "BLOCKED: bare git stash defaults to push and is forbidden in agent workflows. Use stage-only commits or ask for guidance." >&2
+  exit 2
+fi
+
+# git stash mutations
+if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(push|pop|apply|drop|clear)([[:space:]]|$) ]]; then
+  echo "BLOCKED: git stash mutations (push/pop/apply/drop/clear) are forbidden in agent workflows. Keep stash read-only (list/show)." >&2
   exit 2
 fi
 
@@ -181,8 +187,8 @@ if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+--staged ]] && \
   exit 0
 fi
 
-# Safe stash operations
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show|push) ]]; then
+# Read-only stash operations
+if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show)([[:space:]]|$) ]]; then
   exit 0
 fi
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ideas Readiness"
+  short_description: "Audit and gate idea-generation readiness"
+  default_prompt: "Run ideas-readiness and tell me if idea generation is blocked or ready."

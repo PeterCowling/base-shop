@@ -339,7 +339,20 @@ if [ -n "$GUIDE_JSON_CHANGED" ] || [ -n "$GUIDE_INFRA_CHANGED" ]; then
     echo "  OK: Guide validation passed"
 fi
 
-# 7. Summary
+# 7. Ideas-go-faster contract drift checks
+echo ""
+echo "> Ideas-go-faster contract checks..."
+if [ -x "./scripts/check-ideas-go-faster-contracts.sh" ]; then
+    if ! ./scripts/check-ideas-go-faster-contracts.sh; then
+        echo "FAIL: ideas-go-faster contract checks failed"
+        exit 1
+    fi
+    echo "OK: ideas-go-faster contract checks passed"
+else
+    echo "INFO: scripts/check-ideas-go-faster-contracts.sh not found; skipping."
+fi
+
+# 8. Summary
 echo ""
 echo "========================================"
 echo "Summary:"

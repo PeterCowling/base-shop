@@ -8,7 +8,7 @@ usage() {
   echo ""
   echo "Integrator mode:"
   echo "  - Acquires the Base-Shop writer lock"
-  echo "  - Enables the git guard (blocks reset --hard, clean -fd, force push, rebase, amend)"
+  echo "  - Enables command guards (git safety + broad-test safety)"
   echo ""
   echo "Example:"
   echo "  scripts/agents/integrator-shell.sh -- codex"

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 /* ------------------------------------------------------------------ */
@@ -24,23 +24,24 @@ var roomConfigsMock: jest.Mock;
 jest.mock("../../../hooks/mutations/useAllocateRoom", () => {
   allocateRoomMock = jest.fn();
   return {
+    __esModule: true,
     default: () => ({ allocateRoomIfAllowed: allocateRoomMock }),
   };
 });
 
 jest.mock("../../../hooks/data/useBookingsData", () => {
   bookingsMock = jest.fn();
-  return { default: () => bookingsMock() };
+  return { __esModule: true, default: () => bookingsMock() };
 });
 
 jest.mock("../../../hooks/data/roomgrid/useGuestByRoomData", () => {
   guestByRoomMock = jest.fn();
-  return { default: () => guestByRoomMock() };
+  return { __esModule: true, default: () => guestByRoomMock() };
 });
 
 jest.mock("../../../hooks/client/checkin/useRoomConfigs", () => {
   roomConfigsMock = jest.fn();
-  return { default: () => roomConfigsMock() };
+  return { __esModule: true, default: () => roomConfigsMock() };
 });
 
 /* ------------------------------------------------------------------ */
@@ -98,12 +99,13 @@ describe("BookingDetailsModal", () => {
 
   it("moves booking when confirmed", async () => {
     const onClose = jest.fn();
-    jest.spyOn(window, "confirm").mockReturnValue(true);
 
     render(<BookingDetailsModal bookingDetails={bookingDetails} onClose={onClose} />);
 
     await userEvent.selectOptions(screen.getByLabelText(/move booking to room/i), "105");
     await userEvent.click(screen.getByRole("button", { name: /move booking/i }));
+    const dialog = await screen.findByRole("dialog", { name: "Move guests" });
+    await userEvent.click(within(dialog).getByRole("button", { name: "Move" }));
 
     await waitFor(() => {
       expect(allocateRoomMock).toHaveBeenCalledWith({
@@ -122,5 +124,18 @@ describe("BookingDetailsModal", () => {
 
     expect(onClose).toHaveBeenCalled();
   });
-});
 
+  it("does not move booking when confirmation is cancelled", async () => {
+    const onClose = jest.fn();
+
+    render(<BookingDetailsModal bookingDetails={bookingDetails} onClose={onClose} />);
+
+    await userEvent.selectOptions(screen.getByLabelText(/move booking to room/i), "105");
+    await userEvent.click(screen.getByRole("button", { name: /move booking/i }));
+    const dialog = await screen.findByRole("dialog", { name: "Move guests" });
+    await userEvent.click(within(dialog).getByRole("button", { name: "Cancel" }));
+
+    expect(allocateRoomMock).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
+  });
+});

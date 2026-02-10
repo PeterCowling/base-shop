@@ -111,6 +111,12 @@ Under `grow-business`:
 - "What's the next product test we should run? (Top candidates in pipeline ranked by Stage R — which haven't launched?)"
 - "Which suppliers have performed well enough to deepen the relationship? (Check supplier_terms history — improving or stagnant?)"
 
+### Contrarian Gate Feed (produces input for Artifacts 4 & 5)
+
+**Stress-Case Margin (feeds Artifact 4):** "If our landed cost rises 15% or selling price drops 15%, does this product still make money? At what margin floor do we walk away?"
+
+**Escape Milestone (feeds Artifact 5):** "By cycle N (flip #3? #5?), what concrete milestone proves we've moved beyond pure commodity flipping? What is the specific wedge — co-design, exclusive, brand — and what is the earliest cycle we can credibly achieve it?"
+
 **Signature Outputs:**
 - Product opportunity scorecards (using Stage K capital return + Stage M velocity data)
 - Supplier vetting checklists (Alibaba evaluation, sample comparison matrices)
@@ -657,6 +663,7 @@ next product test (Finder). Pipeline moves from M0 to early M1.
 
 ## Version History
 
+- **v2.2** (2026-02-10): Added Contrarian Gate Feed section to Finder persona with Stress-Case Margin (Artifact 4) and Escape Milestone (Artifact 5) prompts.
 - **v2.1** (2026-02-09): Product Pipeline integration. Added expert-to-stage mapping (Finder↔P/A/M/K/R, Bridge↔N/suppliers, Mover↔S/B/C/lanes). Added 5 pipeline tools to Sourcing Toolbox. Updated all diagnostic questions to reference pipeline data entities. Added `Product-Pipeline-Stages` to Dossier Header. Added `Product Pipeline Context` as required output section. Added pipeline gaps diagnosis table. Added Volume Ladder ↔ Pipeline Maturity alignment.
 - **v2.0** (2026-02-09): Complete rewrite. Replaced Cook/Fung/Ohno (enterprise-scale supply chain optimization) with Finder/Bridge/Mover (startup-calibrated China sourcing). Added Volume Ladder framework (Flip → Co-design → Develop). All diagnostic questions, examples, and artifacts now calibrated to startup reality. Added Sourcing Toolbox with M/R/O applicability matrix. Added `Volume-Ladder-Stage` to Dossier Header.
 - **v1.1** (2026-02-09): Added BRIK exclusion — Brikette uses dedicated hostel-specific lens instead

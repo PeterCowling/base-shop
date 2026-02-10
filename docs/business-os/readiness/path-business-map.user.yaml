@@ -1,0 +1,73 @@
+version: 1
+updated: 2026-02-10
+owner: Pete
+
+rules:
+  - prefix: apps/brikette/
+    business: BRIK
+    confidence: high
+    notes: Brikette public website and content surfaces.
+
+  - prefix: apps/reception/
+    business: BRIK
+    confidence: high
+    notes: Reception operations app for Brikette.
+
+  - prefix: apps/prime/
+    business: BRIK
+    confidence: medium
+    notes: Guest/staff portal appears Brikette-facing; confirm explicitly.
+
+  - prefix: apps/business-os/
+    business: BOS
+    confidence: high
+    notes: Coordination platform and workflow runtime.
+
+  - prefix: packages/mcp-server/
+    business: PLAT
+    confidence: medium
+    notes: Shared platform toolchain; may also support BOS operations.
+
+  - prefix: packages/ui/
+    business: PLAT
+    confidence: high
+    notes: Shared UI platform component library.
+
+  - prefix: scripts/
+    business: PLAT
+    confidence: low
+    notes: Mixed platform/operations scripts; map script groups more precisely.
+
+  - prefix: docs/business-os/strategy/BRIK/
+    business: BRIK
+    confidence: high
+    notes: BRIK plan artifacts.
+
+  - prefix: docs/business-os/strategy/PIPE/
+    business: PIPE
+    confidence: high
+    notes: PIPE plan artifacts.
+
+  - prefix: docs/business-os/strategy/PLAT/
+    business: PLAT
+    confidence: high
+    notes: PLAT plan artifacts.
+
+  - prefix: docs/business-os/strategy/BOS/
+    business: BOS
+    confidence: high
+    notes: BOS plan artifacts.
+
+  - prefix: docs/plans/
+    business: BOS
+    confidence: low
+    notes: Plan docs are cross-business by default; require explicit business field check.
+
+unmapped_policy:
+  status: block
+  action: Do not run /ideas-go-faster until path is mapped to business + outcome decision link.
+
+open_questions:
+  - Confirm whether apps/prime is fully BRIK or split with BOS/PLAT concerns.
+  - Confirm whether scripts/ should be split into PLAT vs BOS mapping domains.
+  - Confirm whether packages/mcp-server should map to PLAT only or PLAT+BOS.

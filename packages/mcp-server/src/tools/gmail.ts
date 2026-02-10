@@ -1,7 +1,8 @@
 /**
  * Gmail MCP Tools for Brikette Email Processing
  *
- * Four tools for email workflow:
+ * Tools for email workflow:
+ * - gmail_organize_inbox: Scan unread inbox, trash known garbage, label customer emails for queue
  * - gmail_list_pending: List emails needing response
  * - gmail_get_email: Get full email details with thread context
  * - gmail_create_draft: Create a draft reply
@@ -71,12 +72,138 @@ const REQUIRED_LABELS = [
 const PROCESSING_TIMEOUT_MS = 30 * 60 * 1000;
 const processingLocks = new Map<string, number>();
 
+const GARBAGE_FROM_PATTERNS = [
+  "promotion-it@amazon.it",
+  "groupupdates@facebookmail.com",
+  "friendsuggestion@facebookmail.com",
+  "pageupdates@facebookmail.com",
+];
+
+const GARBAGE_OCTORATE_FROM_PATTERN = "noreply@smtp.octorate.com";
+const GARBAGE_OCTORATE_SUBJECT_PREFIX = "warning - payment process failed";
+
+const NON_CUSTOMER_FROM_PATTERNS = [
+  "noreply@booking.com",
+  "no-reply@booking.com",
+  "noreply@hotels.com",
+  "noreply@expedia.com",
+  "noreply@agoda.com",
+  "noreply@airbnb.com",
+  "noreply@hostelworld.com",
+  "mailer-daemon@",
+  "postmaster@",
+  "noreply@smtp.octorate.com",
+  "noreply-apps-scripts-notifications@google.com",
+  "cloudplatform-noreply@google.com",
+  "italoimpresa@mailing.italotreno.it",
+  "cmcowling@me.com",
+  "hostelpositano@gmail.com",
+];
+
+const NON_CUSTOMER_SUBJECT_PATTERNS = [
+  /^(re:|fwd:)?\s*booking confirmation/i,
+  /^(re:|fwd:)?\s*reservation confirmed/i,
+  /^(re:|fwd:)?\s*your booking/i,
+  /^(re:|fwd:)?\s*payment received/i,
+  /^(re:|fwd:)?\s*invoice/i,
+  /^(re:|fwd:)?\s*receipt/i,
+  /newsletter/i,
+  /unsubscribe/i,
+  /^(re:|fwd:)?\s*out of office/i,
+  /^(re:|fwd:)?\s*automatic reply/i,
+  /delivery status notification/i,
+  /^returned mail/i,
+  /new reservation/i,
+  /new cancellation/i,
+  /hostelworld confirmed booking/i,
+  /^screenshot\s+\d{4}-\d{2}-\d{2}/i,
+  /\bjob application\b/i,
+  /\bterms of service\b/i,
+  /\bprivacy policy\b/i,
+  /\bannual report\b/i,
+  /\bfattura\b/i,
+];
+
+const CUSTOMER_SUBJECT_PATTERNS = [
+  /your hostel brikette reservation/i,
+  /\bavailability\b/i,
+  /\bbooking\b/i,
+  /\breservation\b/i,
+  /\bcheck[\s-]?in\b/i,
+  /\bcheck[\s-]?out\b/i,
+  /\barriv(?:e|al)\b/i,
+  /\bcancel(?:lation)?\b/i,
+  /\brefund\b/i,
+  /\bpayment\b/i,
+  /\bquestion\b/i,
+];
+
+const CUSTOMER_SNIPPET_PATTERNS = [
+  /\bavailability\b/i,
+  /\bbooking\b/i,
+  /\breservation\b/i,
+  /\bcheck[\s-]?in\b/i,
+  /\bcheck[\s-]?out\b/i,
+  /\barriv(?:e|al)\b/i,
+  /\bcancel(?:lation)?\b/i,
+  /\brefund\b/i,
+  /\bluggage\b/i,
+  /\bbreakfast\b/i,
+  /\bwi[\s-]?fi\b/i,
+  /\bquestion\b/i,
+];
+
+const SPAM_SUBJECT_PATTERNS = [
+  /\byou(?:'|’)ve won\b/i,
+  /\blottery\b/i,
+  /\bbitcoin\b/i,
+  /\bcrypto investment\b/i,
+  /\burgent transfer\b/i,
+  /\bwire transfer\b/i,
+  /\baccount suspended\b/i,
+];
+
+const NON_CUSTOMER_DOMAINS = [
+  "booking.com",
+  "properties.booking.com",
+  "expedia.com",
+  "expediagroup.com",
+  "expediapartnercentral.com",
+  "hotels.com",
+  "agoda.com",
+  "hostelworld.com",
+  "tripadvisor.com",
+  "kayak.com",
+  "trivago.com",
+  "mailchimp.com",
+  "sendgrid.net",
+  "amazonses.com",
+  "smtp.octorate.com",
+  "marketing.octorate.com",
+  "accounts.google.com",
+  "mailing.italotreno.it",
+  "revolut.com",
+  "nordaccount.com",
+  "ausino.it",
+];
+
+const CUSTOMER_DOMAIN_EXCEPTIONS = new Set([
+  "guest.booking.com",
+]);
+
 // =============================================================================
 // Zod Schemas
 // =============================================================================
 
 const listPendingSchema = z.object({
   limit: z.number().min(1).max(50).optional().default(20),
+});
+
+const organizeInboxSchema = z.object({
+  testMode: z.boolean().optional().default(false),
+  specificStartDate: z.string().optional(),
+  limit: z.number().min(1).max(500).optional().default(500),
+  dryRun: z.boolean().optional().default(false),
 });
 
 const listQuerySchema = z.object({
@@ -129,6 +256,19 @@ function isPrepaymentAction(action: string): action is PrepaymentAction {
 // =============================================================================
 
 export const gmailTools = [
+  {
+    name: "gmail_organize_inbox",
+    description: "Scan unread inbox emails (all unread by default), trash known garbage patterns, and label customer emails as Brikette/Inbox/Needs-Processing.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        testMode: { type: "boolean", description: "Deprecated. Kept for backward compatibility.", default: false },
+        specificStartDate: { type: "string", description: "Optional start date (YYYY-MM-DD). If provided, scan unread emails from this date onward." },
+        limit: { type: "number", description: "Max unread threads to scan (1-500)", default: 500 },
+        dryRun: { type: "boolean", description: "If true, report actions without changing labels or trash", default: false },
+      },
+    },
+  },
   {
     name: "gmail_list_pending",
     description: "List customer emails in the Brikette inbox that need responses. Returns emails with the 'Brikette/Inbox/Needs-Processing' label.",
@@ -433,9 +573,451 @@ function isProcessingLockStale(
   return false;
 }
 
+function formatGmailQueryDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}/${month}/${day}`;
+}
+
+function extractSenderEmailAddress(fromRaw: string): string {
+  const parsed = parseEmailAddress(fromRaw);
+  return parsed.email.toLowerCase();
+}
+
+function extractSenderDomain(emailAddress: string): string {
+  const atIndex = emailAddress.lastIndexOf("@");
+  if (atIndex < 0) return "";
+  return emailAddress.slice(atIndex + 1);
+}
+
+function isNoReplySender(emailAddress: string): boolean {
+  const atIndex = emailAddress.lastIndexOf("@");
+  const localPart = (atIndex >= 0 ? emailAddress.slice(0, atIndex) : emailAddress).toLowerCase();
+  return /^(no[-_.]?reply|noreply|do[-_.]?not[-_.]?reply|donotreply)$/.test(localPart);
+}
+
+function hasBriketteLabel(
+  labelIds: string[] | null | undefined,
+  labelNameById: Map<string, string>
+): boolean {
+  for (const labelId of labelIds || []) {
+    const labelName = labelNameById.get(labelId);
+    if (!labelName) continue;
+    if (labelName === "Brikette" || labelName.startsWith("Brikette/")) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function shouldTrashAsGarbage(fromRaw: string, subject: string): boolean {
+  const fromLower = fromRaw.toLowerCase();
+  const subjectLower = subject.toLowerCase();
+
+  if (GARBAGE_FROM_PATTERNS.some(pattern => fromLower.includes(pattern))) {
+    return true;
+  }
+
+  return (
+    fromLower.includes(GARBAGE_OCTORATE_FROM_PATTERN) &&
+    subjectLower.startsWith(GARBAGE_OCTORATE_SUBJECT_PREFIX)
+  );
+}
+
+type OrganizeDecision =
+  | "needs_processing"
+  | "promotional"
+  | "spam"
+  | "deferred"
+  | "trash";
+
+interface OrganizeClassification {
+  decision: OrganizeDecision;
+  reason: string;
+  senderEmail: string;
+}
+
+function classifyOrganizeDecision(
+  fromRaw: string,
+  subject: string,
+  snippet: string,
+  hasListUnsubscribeHeader: boolean,
+  hasListIdHeader: boolean,
+  hasBulkPrecedenceHeader: boolean
+): OrganizeClassification {
+  const fromLower = fromRaw.toLowerCase();
+  const senderEmail = extractSenderEmailAddress(fromRaw);
+  const senderDomain = extractSenderDomain(senderEmail);
+  const snippetLower = snippet.toLowerCase();
+
+  if (shouldTrashAsGarbage(fromRaw, subject)) {
+    return { decision: "trash", reason: "matched-garbage-rule", senderEmail };
+  }
+
+  if (SPAM_SUBJECT_PATTERNS.some(pattern => pattern.test(subject))) {
+    return { decision: "spam", reason: "matched-spam-pattern", senderEmail };
+  }
+
+  const hasNoReplySender = isNoReplySender(senderEmail);
+  const hasNonCustomerFromPattern = NON_CUSTOMER_FROM_PATTERNS.some(pattern =>
+    fromLower.includes(pattern)
+  );
+  const hasNonCustomerSubjectPattern = NON_CUSTOMER_SUBJECT_PATTERNS.some(pattern =>
+    pattern.test(subject)
+  );
+  const hasNonCustomerDomain =
+    Boolean(senderDomain) &&
+    !CUSTOMER_DOMAIN_EXCEPTIONS.has(senderDomain) &&
+    NON_CUSTOMER_DOMAINS.some(
+      domain => senderDomain === domain || senderDomain.endsWith(`.${domain}`)
+    );
+  const hasListSignals =
+    hasListUnsubscribeHeader || hasListIdHeader || hasBulkPrecedenceHeader;
+
+  const hasStrongCustomerDomain = CUSTOMER_DOMAIN_EXCEPTIONS.has(senderDomain);
+  const hasCustomerSubjectPattern = CUSTOMER_SUBJECT_PATTERNS.some(pattern =>
+    pattern.test(subject)
+  );
+  const hasCustomerSnippetPattern = CUSTOMER_SNIPPET_PATTERNS.some(pattern =>
+    pattern.test(snippetLower)
+  );
+  const hasQuestionSignal = subject.includes("?") || snippet.includes("?");
+  const hasCustomerSignals =
+    hasStrongCustomerDomain ||
+    hasCustomerSubjectPattern ||
+    hasCustomerSnippetPattern ||
+    hasQuestionSignal;
+
+  const hasNonCustomerSignals =
+    hasNoReplySender ||
+    hasNonCustomerFromPattern ||
+    hasNonCustomerSubjectPattern ||
+    hasNonCustomerDomain ||
+    hasListSignals;
+
+  const hasStrongNonCustomerSignals =
+    hasNoReplySender ||
+    hasNonCustomerFromPattern ||
+    hasNonCustomerDomain ||
+    hasListSignals;
+
+  if (hasCustomerSignals && !hasNonCustomerSignals) {
+    return { decision: "needs_processing", reason: "customer-signal", senderEmail };
+  }
+
+  // Strong machine/OTA/newsletter signals should be routed directly, even if
+  // the subject contains booking-related words like "reservation" or "cancellation".
+  if (hasStrongNonCustomerSignals && !hasStrongCustomerDomain) {
+    return { decision: "promotional", reason: "strong-non-customer-signal", senderEmail };
+  }
+
+  if (hasNonCustomerSignals && !hasCustomerSignals) {
+    if (
+      hasNoReplySender ||
+      hasNonCustomerFromPattern ||
+      hasNonCustomerSubjectPattern ||
+      hasNonCustomerDomain ||
+      hasListSignals
+    ) {
+      return { decision: "promotional", reason: "non-customer-signal", senderEmail };
+    }
+  }
+
+  if (hasCustomerSignals && hasNonCustomerSignals) {
+    return {
+      decision: "deferred",
+      reason: "mixed-signals-needs-review",
+      senderEmail,
+    };
+  }
+
+  if (!hasCustomerSignals && !hasNonCustomerSignals) {
+    return {
+      decision: "deferred",
+      reason: "low-confidence-needs-review",
+      senderEmail,
+    };
+  }
+
+  return { decision: "deferred", reason: "fallback-needs-review", senderEmail };
+}
+
 // =============================================================================
 // Tool Case Handlers
 // =============================================================================
+
+async function handleOrganizeInbox(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { testMode, specificStartDate, limit, dryRun } = organizeInboxSchema.parse(args);
+
+  let query = "is:unread in:inbox";
+  let startDateString: string | null = null;
+  let tomorrowDateString: string | null = null;
+
+  if (specificStartDate) {
+    const parsed = new Date(specificStartDate);
+    if (Number.isNaN(parsed.getTime())) {
+      return errorResult(`Invalid specificStartDate: ${specificStartDate}`);
+    }
+    startDateString = formatGmailQueryDate(parsed);
+    tomorrowDateString = formatGmailQueryDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
+    query = `${query} after:${startDateString} before:${tomorrowDateString}`;
+  }
+
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const needsProcessingLabelId = labelMap.get(LABELS.NEEDS_PROCESSING);
+  const promotionalLabelId = labelMap.get(LABELS.PROMOTIONAL);
+  const spamLabelId = labelMap.get(LABELS.SPAM);
+  const deferredLabelId = labelMap.get(LABELS.DEFERRED);
+  if (!needsProcessingLabelId) {
+    return errorResult(
+      `Label "${LABELS.NEEDS_PROCESSING}" not found in Gmail. ` +
+      `Please create the Brikette label hierarchy first.`
+    );
+  }
+
+  const labelNameById = new Map<string, string>(
+    Array.from(labelMap.entries()).map(([name, id]) => [id, name])
+  );
+
+  const response = await gmail.users.threads.list({
+    userId: "me",
+    q: query,
+    maxResults: limit,
+  });
+
+  const threads = response.data.threads || [];
+  let scannedThreads = 0;
+  let labeledNeedsProcessing = 0;
+  let labeledPromotional = 0;
+  let labeledSpam = 0;
+  let labeledDeferred = 0;
+  let trashed = 0;
+  let skippedAlreadyManaged = 0;
+  let skippedNoAction = 0;
+
+  const samples = {
+    labeled: [] as Array<{ threadId: string; messageId: string; subject: string; from: string }>,
+    trashed: [] as Array<{ threadId: string; messageId: string; subject: string; from: string }>,
+    promotional: [] as Array<{ threadId: string; messageId: string; subject: string; from: string }>,
+    spam: [] as Array<{ threadId: string; messageId: string; subject: string; from: string }>,
+    deferred: [] as Array<{
+      threadId: string;
+      messageId: string;
+      subject: string;
+      from: string;
+      senderEmail: string;
+      reason: string;
+    }>,
+  };
+
+  for (const thread of threads) {
+    if (!thread.id) continue;
+    scannedThreads += 1;
+
+    const detail = await gmail.users.threads.get({
+      userId: "me",
+      id: thread.id,
+      format: "metadata",
+      metadataHeaders: ["From", "Subject", "Date", "List-Unsubscribe", "List-Id", "Precedence"],
+    });
+
+    const messages = detail.data.messages || [];
+    const latestMessage = messages[messages.length - 1];
+    if (!latestMessage?.id) continue;
+
+    const latestHeaders = (latestMessage.payload?.headers || []) as EmailHeader[];
+    const fromRaw = getHeader(latestHeaders, "From");
+    const subject = getHeader(latestHeaders, "Subject") || "(no subject)";
+    const snippet = latestMessage.snippet || "";
+    const hasListUnsubscribeHeader = latestHeaders.some(
+      header => header.name.toLowerCase() === "list-unsubscribe"
+    );
+    const hasListIdHeader = latestHeaders.some(
+      header => header.name.toLowerCase() === "list-id"
+    );
+    const hasBulkPrecedenceHeader = latestHeaders.some(header => {
+      return (
+        header.name.toLowerCase() === "precedence" &&
+        /(bulk|list|junk)/i.test(header.value || "")
+      );
+    });
+
+    if (hasBriketteLabel(latestMessage.labelIds, labelNameById)) {
+      skippedAlreadyManaged += 1;
+      continue;
+    }
+
+    const classification = classifyOrganizeDecision(
+      fromRaw,
+      subject,
+      snippet,
+      hasListUnsubscribeHeader,
+      hasListIdHeader,
+      hasBulkPrecedenceHeader
+    );
+
+    switch (classification.decision) {
+      case "trash": {
+        trashed += 1;
+        if (!dryRun) {
+          const addLabelIds = ["TRASH"];
+          if (spamLabelId) {
+            addLabelIds.unshift(spamLabelId);
+          }
+          await gmail.users.messages.modify({
+            userId: "me",
+            id: latestMessage.id,
+            requestBody: {
+              addLabelIds,
+              removeLabelIds: ["INBOX"],
+            },
+          });
+        }
+        if (samples.trashed.length < 10) {
+          samples.trashed.push({
+            threadId: thread.id,
+            messageId: latestMessage.id,
+            subject,
+            from: fromRaw,
+          });
+        }
+        break;
+      }
+      case "needs_processing": {
+        labeledNeedsProcessing += 1;
+        if (!dryRun) {
+          await gmail.users.messages.modify({
+            userId: "me",
+            id: latestMessage.id,
+            requestBody: {
+              addLabelIds: [needsProcessingLabelId],
+            },
+          });
+        }
+        if (samples.labeled.length < 10) {
+          samples.labeled.push({
+            threadId: thread.id,
+            messageId: latestMessage.id,
+            subject,
+            from: fromRaw,
+          });
+        }
+        break;
+      }
+      case "promotional": {
+        labeledPromotional += 1;
+        if (!dryRun) {
+          await gmail.users.messages.modify({
+            userId: "me",
+            id: latestMessage.id,
+            requestBody: {
+              addLabelIds: promotionalLabelId ? [promotionalLabelId] : [],
+              removeLabelIds: ["INBOX"],
+            },
+          });
+        }
+        if (samples.promotional.length < 10) {
+          samples.promotional.push({
+            threadId: thread.id,
+            messageId: latestMessage.id,
+            subject,
+            from: fromRaw,
+          });
+        }
+        break;
+      }
+      case "spam": {
+        labeledSpam += 1;
+        if (!dryRun) {
+          const addLabelIds = ["SPAM"];
+          if (spamLabelId) {
+            addLabelIds.unshift(spamLabelId);
+          }
+          await gmail.users.messages.modify({
+            userId: "me",
+            id: latestMessage.id,
+            requestBody: {
+              addLabelIds,
+              removeLabelIds: ["INBOX"],
+            },
+          });
+        }
+        if (samples.spam.length < 10) {
+          samples.spam.push({
+            threadId: thread.id,
+            messageId: latestMessage.id,
+            subject,
+            from: fromRaw,
+          });
+        }
+        break;
+      }
+      case "deferred": {
+        labeledDeferred += 1;
+        if (!dryRun) {
+          await gmail.users.messages.modify({
+            userId: "me",
+            id: latestMessage.id,
+            requestBody: {
+              addLabelIds: deferredLabelId ? [deferredLabelId] : [],
+              removeLabelIds: ["INBOX"],
+            },
+          });
+        }
+        if (samples.deferred.length < 20) {
+          samples.deferred.push({
+            threadId: thread.id,
+            messageId: latestMessage.id,
+            subject,
+            from: fromRaw,
+            senderEmail: classification.senderEmail,
+            reason: classification.reason,
+          });
+        }
+        break;
+      }
+      default: {
+        skippedNoAction += 1;
+      }
+    }
+  }
+
+  return jsonResult({
+    success: true,
+    dryRun,
+    query,
+    scanWindow: {
+      startDate: startDateString,
+      beforeDate: tomorrowDateString,
+      testMode,
+      specificStartDate: specificStartDate ?? null,
+      mode: specificStartDate ? "from-date" : "all-unread",
+    },
+    counts: {
+      scannedThreads,
+      labeledNeedsProcessing,
+      labeledPromotional,
+      labeledSpam,
+      labeledDeferred,
+      trashed,
+      skippedAlreadyManaged,
+      skippedNoAction,
+    },
+    samples,
+    followUp: {
+      deferredNeedsInstruction: samples.deferred.map(item => ({
+        senderEmail: item.senderEmail,
+        subject: item.subject,
+        reason: item.reason,
+        messageId: item.messageId,
+      })),
+    },
+  });
+}
 
 async function handleListPending(
   gmail: gmail_v1.Gmail,
@@ -808,7 +1390,7 @@ async function handleMarkProcessed(
     }
     case "deferred": {
       const deferredLabelId = labelMap.get(LABELS.DEFERRED);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds);
+      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       removeLabelIds.push(...collectLabelIds(labelMap, [LABELS.AWAITING_AGREEMENT]));
       if (deferredLabelId) {
         addLabelIds.push(deferredLabelId);
@@ -901,7 +1483,7 @@ export async function handleGmailTool(name: string, args: unknown) {
         `To set up Gmail:\n` +
         `1. Create OAuth credentials in Google Cloud Console\n` +
         `2. Save credentials.json to packages/mcp-server/\n` +
-        `3. Run: cd packages/mcp-server && node --loader ts-node/esm test-gmail-auth.ts`
+        `3. Run: cd packages/mcp-server && pnpm gmail:auth`
       );
     }
     return errorResult(clientResult.error);
@@ -911,6 +1493,10 @@ export async function handleGmailTool(name: string, args: unknown) {
 
   try {
     switch (name) {
+      case "gmail_organize_inbox": {
+        return await handleOrganizeInbox(gmail, args);
+      }
+
       case "gmail_list_pending": {
         return await handleListPending(gmail, args);
       }
@@ -946,7 +1532,7 @@ export async function handleGmailTool(name: string, args: unknown) {
     if (err.code === 401 || err.code === 403) {
       return errorResult(
         `Gmail authentication error. Token may have expired.\n` +
-        `Run: cd packages/mcp-server && node --loader ts-node/esm test-gmail-auth.ts\n` +
+        `Run: cd packages/mcp-server && pnpm gmail:auth\n` +
         `(Error: ${err.message || "Auth failed"})`
       );
     }

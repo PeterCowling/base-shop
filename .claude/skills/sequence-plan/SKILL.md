@@ -23,6 +23,7 @@ Run `/sequence-plan` when:
 - Tasks were added in phases/batches and the implementation order isn't optimized
 - You want to enable parallel subagent execution for `/build-feature` by making blocking relationships explicit
 - A `/re-plan` added or removed tasks and the numbering/dependencies need cleanup
+- Planning or re-planning decomposed tasks (split into precursor chains/subtasks): run this after all structural edits and before build handoff/resume
 
 Do **not** use `/sequence-plan` if:
 

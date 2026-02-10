@@ -24,6 +24,34 @@
     "BOS-13": {},
     "BOS-32": {},
     "BOS-33": {},
+    "BOS-2410": {
+      "allow": [
+        "apps/business-os/src/app/api/automation/status/route.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Automation status route filesystem and non-UI SQL probe exceptions."
+    },
+    "BOS-IDEAS-101": {
+      "allow": [
+        "apps/business-os/src/app/ideas/page.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Internal backlog ideas page copy pending i18n extraction."
+    },
+    "BOS-IDEAS-102": {
+      "allow": [
+        "apps/business-os/src/components/ideas/IdeasFilters.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Internal ideas filter copy pending DS and i18n pass."
+    },
+    "BOS-IDEAS-103": {
+      "allow": [
+        "apps/business-os/src/components/ideas/IdeasList.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Internal ideas list copy/layout exceptions pending DS and i18n pass."
+    },
     "BOS-UX-03": {},
     "BOS-UX-09": {},
     "BOS-UX-12": {},
@@ -270,6 +298,12 @@
     "SHOP-3206": {},
     "SHOP-3207": {},
     "STYLING-0001": {},
+    "TASK-09": {
+      "allow": [
+        "apps/prime/src/components/quests/TierCompletionModal.tsx"
+      ],
+      "notes": "Confetti particle CSS variable color usage in quest completion modal."
+    },
     "TASK-DS-26": {},
     "TEAM-42": {},
     "TECH-000": {},

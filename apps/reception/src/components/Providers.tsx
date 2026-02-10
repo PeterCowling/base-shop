@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 
 import App from "@/App";
 import { AuthProvider } from "@/context/AuthContext";
-import { DarkModeProvider } from "@/context/DarkModeContext";
+import { ReceptionThemeProvider } from "@/providers/ReceptionThemeProvider";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -13,9 +13,9 @@ interface ProvidersProps {
 export default function Providers({ children }: ProvidersProps) {
   return (
     <AuthProvider>
-      <DarkModeProvider>
+      <ReceptionThemeProvider>
         <App>{children}</App>
-      </DarkModeProvider>
+      </ReceptionThemeProvider>
     </AuthProvider>
   );
 }

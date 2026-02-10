@@ -39,4 +39,4 @@ Last-updated: 2026-02-05
 - Resolved: schema drift in `dealsPage.json` (`perksList` now object-array everywhere).
 - Resolved: `positanoMainBeach.json` parity (EN content added + route wired up).
 
-[... see full plan in docs/plans/brikette-translation-coverage-plan.md]
+[... see full plan in docs/plans/archive/brikette-translation-coverage-plan.md]

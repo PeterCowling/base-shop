@@ -271,18 +271,18 @@ case "$subcommand" in
     done
     ;;
   stash)
-    # Allow: list, show, push
-    # Block: pop, apply, drop, clear, and bare stash (no subcommand)
+    # Allow: list, show
+    # Block: push, pop, apply, drop, clear, and bare stash (no subcommand)
     stash_subcmd="${2:-}"
     case "$stash_subcmd" in
-      list|show|push)
+      list|show)
         # Allowed
         ;;
-      pop|apply|drop|clear)
-        deny "stash ${stash_subcmd} can lose work or create merge conflicts." "$@"
+      push|pop|apply|drop|clear)
+        deny "stash ${stash_subcmd} is forbidden for agent workflows (hidden debt and conflict risk)." "$@"
         ;;
       "")
-        # Bare 'git stash' defaults to 'git stash push' — allowed
+        deny "bare git stash defaults to stash push and is forbidden for agent workflows." "$@"
         ;;
       *)
         # Unknown subcommand - block to be safe

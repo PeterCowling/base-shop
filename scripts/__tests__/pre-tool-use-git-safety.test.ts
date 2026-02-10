@@ -75,10 +75,18 @@ describe("PreToolUse hook — Deny patterns", () => {
     // Regression: --no-verify on commit must be blocked regardless of arg order
     ['git commit -m "x" --no-verify', "commit --no-verify"],
     ["/usr/bin/git commit -m x --no-verify", "commit --no-verify"],
+    // TC-24
+    ["git stash push", "stash mutations"],
+    // TC-24b
+    ["git stash", "bare git stash"],
+    // TC-24c
+    ["git stash pop", "stash mutations"],
+    // TC-24d
+    ["git stash apply", "stash mutations"],
     // TC-14
-    ["git stash drop", "stash drop"],
+    ["git stash drop", "stash mutations"],
     // TC-15
-    ["git stash clear", "stash drop/clear"],
+    ["git stash clear", "stash mutations"],
     // TC-16
     ["git worktree add ../foo", "worktree"],
     // TC-17
@@ -130,8 +138,6 @@ describe("PreToolUse hook — Allow patterns", () => {
     ["git push origin feature-branch", "normal push"],
     // TC-23
     ["git stash list", "stash list"],
-    // TC-24
-    ["git stash push", "stash push"],
     // TC-25
     ["git add .", "add"],
     // TC-26

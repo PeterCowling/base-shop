@@ -9,9 +9,26 @@ import { createMockEnv, createMockKv, createPagesContext } from './helpers';
 
 describe('/api/check-in-lookup readiness signals', () => {
   const getSpy = jest.spyOn(FirebaseRest.prototype, 'get');
+  const originalFetch = global.fetch;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    global.fetch = jest.fn(async () =>
+      new Response(
+        JSON.stringify({
+          users: [
+            {
+              localId: 'staff_operator_1',
+              customAttributes: JSON.stringify({ role: 'staff' }),
+            },
+          ],
+        }),
+        { status: 200 },
+      )) as unknown as typeof fetch;
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
   });
 
   afterAll(() => {
@@ -79,7 +96,10 @@ describe('/api/check-in-lookup readiness signals', () => {
     const response = await onRequestGet(
       createPagesContext({
         url: 'https://prime.example.com/api/check-in-lookup?code=BRK-ABCDE',
-        headers: { 'CF-Connecting-IP': '10.0.0.44' },
+        headers: {
+          'CF-Connecting-IP': '10.0.0.44',
+          Authorization: 'Bearer staff-token-123',
+        },
         env,
       }),
     );
@@ -163,7 +183,10 @@ describe('/api/check-in-lookup readiness signals', () => {
     const response = await onRequestGet(
       createPagesContext({
         url: 'https://prime.example.com/api/check-in-lookup?code=BRK-ABCDE',
-        headers: { 'CF-Connecting-IP': '10.0.0.45' },
+        headers: {
+          'CF-Connecting-IP': '10.0.0.45',
+          Authorization: 'Bearer staff-token-123',
+        },
         env,
       }),
     );
@@ -185,9 +208,22 @@ describe('/api/check-in-lookup readiness signals', () => {
     const response = await onRequestGet(
       createPagesContext({
         url: 'https://prime.example.com/api/check-in-lookup',
+        headers: {
+          Authorization: 'Bearer staff-token-123',
+        },
       }),
     );
 
     expect(response.status).toBe(400);
+  });
+
+  it('TC-04: missing auth token returns 401 after gate replacement', async () => {
+    const response = await onRequestGet(
+      createPagesContext({
+        url: 'https://prime.example.com/api/check-in-lookup?code=BRK-ABCDE',
+      }),
+    );
+
+    expect(response.status).toBe(401);
   });
 });

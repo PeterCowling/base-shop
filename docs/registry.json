@@ -1638,7 +1638,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/article-generation-pipeline-plan.md",
+    "path": "docs/plans/archive/article-generation-pipeline-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Platform"
@@ -1686,7 +1686,7 @@
     "domain": "Deploy"
   },
   {
-    "path": "docs/plans/brikette-translation-coverage-plan.md",
+    "path": "docs/plans/archive/brikette-translation-coverage-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Brikette i18n"
@@ -1734,7 +1734,7 @@
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/cabinet-system-plan.md",
+    "path": "docs/plans/archive/cabinet-system-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Business-OS"
@@ -1890,7 +1890,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/kanban-sweep-agent-plan.md",
+    "path": "docs/historical/plans/kanban-sweep-agent-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Platform"

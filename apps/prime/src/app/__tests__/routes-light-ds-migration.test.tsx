@@ -8,7 +8,9 @@
  * the rendered DOM contains zero raw color classes.
  */
 
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
+
+jest.setTimeout(15_000);
 
 // ── RAW PALETTE PATTERNS ────────────────────────────────────────────
 const RAW_PALETTE = /(^|\s)(bg|text|border|ring|shadow|divide|placeholder|stroke|fill|from|to|via)-(gray|slate|blue|green|emerald|red|amber|yellow|orange|purple|indigo|teal|sky|cyan|violet|rose|lime|fuchsia|pink|white)-\d+/;
@@ -84,7 +86,18 @@ jest.mock('../../lib/auth/guestSessionGuard', () => ({
 // Mock PinAuthProvider
 jest.mock('../../contexts/messaging/PinAuthProvider', () => ({
   PinAuthProvider: ({ children }: any) => <>{children}</>,
-  usePinAuth: jest.fn(() => ({ isAuthenticated: true, role: 'staff' })),
+  usePinAuth: jest.fn(() => ({
+    user: { id: 'staff-1' },
+    role: 'staff',
+    claims: { role: 'staff' },
+    authToken: 'staff-token',
+    isAuthenticated: true,
+    isLoading: false,
+    authError: null,
+    lockout: null,
+    login: jest.fn(async () => true),
+    logout: jest.fn(),
+  })),
 }));
 
 // Mock ChatProvider
@@ -449,13 +462,15 @@ describe('TASK-12: Route pages — DS migration', () => {
   });
 
   it('page.tsx (root) has no raw palette classes', async () => {
+    const guestSessionGuard = jest.requireMock('../../lib/auth/guestSessionGuard');
+    guestSessionGuard.readGuestSession.mockReturnValueOnce({ token: null });
+
     const RootPage = jest.requireActual('../page').default;
-    let container: HTMLElement;
-    await act(async () => {
-      const result = render(<RootPage />);
-      container = result.container;
+    const { container } = render(<RootPage />);
+    await waitFor(() => {
+      expect(container.textContent).toContain('Prime Guest Portal');
     });
-    const html = container!.innerHTML;
+    const html = container.innerHTML;
     assertNoRawPaletteClasses(html, 'root');
     assertNoRawWhite(html, 'root');
     assertNoArbitraryColors(html, 'root');

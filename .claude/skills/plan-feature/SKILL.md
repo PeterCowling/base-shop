@@ -241,6 +241,10 @@ Before relying on existing tests for validation, verify they are still valid:
 - If validation reveals unexpected behavior → confidence drops (evidence trumps reasoning)
 - For M/L tasks, confidence >80% requires documented validation evidence
 - Pure reasoning without validation evidence caps M/L tasks at 75%
+- For business-artifact/mixed tasks, confidence is capped unless the fail-first loop is evidenced:
+  - No Red evidence (falsification attempt) → cap at 79%
+  - Red complete but no Green pass evidence → cap at 84%
+  - Green complete but no Refactor evidence → cap at 89%
 
 **For L code or mixed tasks — write test stubs:**
 - Translate acceptance criteria into test skeletons using `test.todo()` or `it.skip()` (non-failing)
@@ -261,6 +265,12 @@ describe('Feature: <feature-name>', () => {
 ```
 
 **Why non-failing:** Test stubs use `test.todo()` or `it.skip()` so they don't break CI. Build-feature converts them to active tests at task start, then watches them fail for the right reason.
+
+**For business-artifact or mixed tasks — use a fail-first validation loop (non-code TDD analog):**
+- **Red (falsify first):** Define VC-XX checks, then run a disconfirming probe (sample artifact, model run, market-research slice, or checklist dry-run) expected to fail at least one VC or expose a missing input/constraint.
+- **Green (minimum pass):** Produce the smallest viable artifact/process update that passes all scoped VC-XX checks.
+- **Refactor (harden):** Improve clarity/reuse/operability without changing scope; rerun VC checks to confirm no regression.
+- This loop is required evidence for business-artifact tasks claiming >80% confidence.
 
 **If validation reveals problems:**
 - Document unexpected findings in the task
@@ -352,6 +362,7 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
 **Rules:**
 - One logical unit per task (typically one file or one cohesive change set).
 - Order tasks so riskiest assumptions are validated first, then by prerequisites (infra/contracts before consumers). This is an initial authoring heuristic — `/sequence-plan` (step 10a) will formalize the ordering, renumber tasks, and add blocker metadata.
+- If decomposition is needed (for example, splitting one task into precursor + implementation tasks), complete all task content edits first, then run `/sequence-plan` before any completion message or auto-continue handoff.
 - Each task must include:
   - **Affects** (file paths/modules — see format below)
   - **Deliverable** (type + artifact/output location)
@@ -379,7 +390,10 @@ Use `[readonly]` prefix for files that must be read to understand contracts but 
 - "Validate quality" is not sufficient; enumerate the scenarios/checks.
 - Every IMPLEMENT task must include an explicit execution plan:
   - Code/mixed tasks: **Red → Green → Refactor**
-  - Business-artifact tasks: **Draft → Review → Finalize**
+  - Business-artifact tasks: **Red → Green → Refactor (VC-first fail-first loop)**
+    - Red: run a falsification probe before drafting final output
+    - Green: minimum deliverable that passes VC checks
+    - Refactor: improve quality/operability while keeping VC checks green
 - If a task spans multiple apps/services/packages, include cross-boundary **contract tests** for shared schemas/nodes/events.
 - If a task spans multiple channels/teams, include cross-boundary validation (handoff, approval, and measurement readiness).
 
@@ -449,6 +463,11 @@ For each dimension, include one sentence explaining the score and what evidence 
 
 A task cannot exceed 80% confidence without executable or review evidence proportional to its effort level. Pure reasoning without validation evidence caps M/L tasks at 75%.
 
+**Fail-first evidence gate (business-artifact/mixed tasks):**
+- >79% requires explicit Red evidence (failed falsification or surfaced blocking gap)
+- >84% requires Green evidence (all scoped VC checks pass)
+- >89% requires Refactor evidence (quality/operability improvement with VC re-pass)
+
 ### 9) Resolve open questions yourself (before asking the user)
 
 When confidence is low:
@@ -473,7 +492,7 @@ Write/update `docs/plans/<feature-slug>-plan.md` using the template below.
 
 Set frontmatter `Status: Active` in the final persisted plan unless the user explicitly says the plan should remain Draft.
 
-### 10a) Sequence the plan (automatic)
+### 10a) Sequence the plan (automatic; mandatory after decomposition)
 
 After persisting the plan doc, run `/sequence-plan` on it. This:
 
@@ -482,9 +501,11 @@ After persisting the plan doc, run `/sequence-plan` on it. This:
 - Adds a `Blocks` field to every task (inverse of `Depends on`) so agents know what they unblock
 - Generates a **Parallelism Guide** showing which tasks can be dispatched to concurrent subagents
 
+**Decomposition rule:** if any task was split, added, removed, or had dependency topology changes during planning, `/sequence-plan` is required and cannot be skipped.
+
 **This step modifies the plan doc that was just persisted in step 10.** The completion message (step 11) should reflect the sequenced state.
 
-**Skip conditions:** Only skip this step if the plan has fewer than 2 active tasks (nothing to sequence).
+**Skip conditions:** Only skip this step if the plan has fewer than 2 active tasks **and** no decomposition/topology edits occurred.
 
 ### 11) Completion message (decision-oriented)
 
@@ -602,12 +623,15 @@ _Generated by `/sequence-plan` (step 10a). Shows which tasks can run concurrentl
   - **Cross-boundary coverage (if applicable):** <shared contract tests or cross-team/channel handoff checks>
 - **Execution plan:**
   - **Code/mixed tasks:** Red → Green → Refactor
-  - **Business-artifact tasks:** Draft → Review → Finalize
+  - **Business-artifact tasks:** Red → Green → Refactor (VC-first fail-first loop)
+  - **Red evidence:** <what was expected to fail, command/check run, observed failure or surfaced gap>
+  - **Green evidence:** <minimum deliverable + VC checks that passed>
+  - **Refactor evidence:** <what was improved and VC regression check result>
 - **Scouts:** (include when task depends on non-obvious assumptions)
   - <assumption> → <how validated: doc lookup / probe test / existing test / type check> → <result: confirmed / disproved / inconclusive>
 - **Planning validation:** (required for M/L effort)
-  - Tests run: `<commands>` — <pass/fail, count>
-  - Test stubs written: <file paths, or "N/A" for S effort>
+  - Checks run: `<commands/procedures>` — <pass/fail, count>
+  - Validation artifacts written: <test stubs, rehearsal samples, or checklist evidence paths>
   - Unexpected findings: <any behavior that differed from expectation, or "None">
 - **What would make this ≥90%:** (include when task confidence <90%)
   - <concrete evidence/tests/spike that would raise confidence>
@@ -698,6 +722,7 @@ A plan is considered complete only if:
 - [ ] INVESTIGATE/DECISION tasks are used for uncertainty (not buried in IMPLEMENT tasks).
 - [ ] Dependencies are explicitly mapped and ordered correctly.
 - [ ] `/sequence-plan` has been run: tasks are topologically sorted, renumbered, `Blocks` fields added, and Parallelism Guide generated.
+- [ ] If tasks were decomposed (split/added/removed) during planning, `/sequence-plan` ran after the final structural edit and before any `/build-feature` handoff.
 - [ ] Risks and mitigations are documented.
 - [ ] User questions were asked only when genuinely unavoidable.
 - [ ] Auto-continue criteria evaluated: no open questions + ≥1 task ≥80% → `/build-feature` invoked; otherwise reason for stopping documented.
@@ -708,8 +733,10 @@ A plan is considered complete only if:
 - [ ] Validation cases include happy path, error cases, and edge cases.
 - [ ] M/L tasks have validation case specifications with expected outcomes/pass conditions.
 - [ ] L code/mixed tasks have test stubs committed with the plan.
+- [ ] L business-artifact/mixed tasks have rehearsal/sample validation evidence committed with the plan.
 - [ ] No task claims >80% confidence without enumerated validation cases.
-- [ ] Every IMPLEMENT task includes an explicit execution plan (Red→Green→Refactor for code, Draft→Review→Finalize for business-artifact).
+- [ ] Every IMPLEMENT task includes an explicit execution plan (Red→Green→Refactor for all tracks; business-artifact uses VC-first fail-first loop).
+- [ ] Business-artifact/mixed tasks claiming >80% include Red, Green, and Refactor evidence fields with concrete checks/results.
 - [ ] Tasks spanning multiple apps/services include cross-app contract tests for shared data contracts.
 - [ ] Tasks spanning multiple channels/teams include cross-boundary handoff and approval checks.
 
@@ -743,6 +770,7 @@ After the completion message (step 11), evaluate whether to auto-continue:
 1. **No open questions:** No DECISION tasks with status `Needs-Input`, no unresolved user questions
 2. **≥1 eligible task:** At least one IMPLEMENT task has confidence ≥80%
 3. **Plan status is Active:** The plan was set to `Active` (not left as `Draft`)
+4. **Topology is sequenced:** If tasks were decomposed or dependencies changed, `/sequence-plan` has run after those edits
 
 ### Auto-continue scope (CHECKPOINT-bounded)
 

@@ -22,10 +22,19 @@ export default function CheckInPage() {
   const pathname = usePathname();
   const router = useRouter();
   const { t } = useTranslation('PreArrival');
-  const { role, user } = usePinAuth();
+  const {
+    authError,
+    authToken,
+    isLoading: isAuthLoading,
+    lockout,
+    login,
+    role,
+    user,
+  } = usePinAuth();
 
   const code = extractCodeFromPathname(pathname, 'checkin');
 
+  const [pin, setPin] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [guestData, setGuestData] = useState<StaffCheckInView | null>(null);
@@ -34,10 +43,6 @@ export default function CheckInPage() {
 
   // Redirect non-staff users
   useEffect(() => {
-    if (!user) {
-      router.push('/');
-      return;
-    }
     if (user && role && !hasAccess) {
       router.push('/');
     }
@@ -55,13 +60,21 @@ export default function CheckInPage() {
       setError(null);
 
       try {
-        const response = await fetch(`/api/check-in-lookup?code=${encodeURIComponent(code!)}`);
+        const response = await fetch(`/api/check-in-lookup?code=${encodeURIComponent(code!)}`, {
+          headers: authToken
+            ? {
+                Authorization: `Bearer ${authToken}`,
+              }
+            : undefined,
+        });
 
         if (!response.ok) {
           if (response.status === 404) {
             setError('codeNotFound');
           } else if (response.status === 410) {
             setError('codeExpired');
+          } else if (response.status === 401 || response.status === 403) {
+            setError('lookupFailed');
           } else {
             setError('lookupFailed');
           }
@@ -79,10 +92,56 @@ export default function CheckInPage() {
     }
 
     void fetchGuestData();
-  }, [hasAccess, code]);
+  }, [authToken, hasAccess, code]);
+
+  async function handlePinSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    await login(pin);
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-muted p-4">
+        <div className="mx-auto mt-12 max-w-md rounded-xl bg-card p-6 shadow-sm">
+          <h1 className="text-xl font-bold text-foreground">Staff access</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Enter your staff PIN to continue.
+          </p>
+          <form onSubmit={handlePinSubmit} className="mt-4 space-y-3">
+            <input
+              type="password"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              value={pin}
+              onChange={(event) => setPin(event.target.value)}
+              className="w-full rounded-lg border border-border px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="PIN"
+            />
+            <button
+              type="submit"
+              disabled={isAuthLoading || !pin.trim()}
+              className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            >
+              {isAuthLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </form>
+          {authError && (
+            <p className="mt-3 text-sm text-danger">
+              {authError}
+            </p>
+          )}
+          {lockout && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Failed attempts: {lockout.failedAttempts}. Remaining: {lockout.attemptsRemaining}.
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   // Show loading while checking auth
-  if (!user || !role) {
+  if (!role) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />

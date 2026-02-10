@@ -216,6 +216,12 @@ Do it manually enough times to learn the real failure modes before automating. T
 - **Measure:** MEDIUM — Measurement supports growth decisions
 - **Operate:** LOW — Operational efficiency is secondary to growth
 
+### Contrarian Gate Feed (produces input for Artifacts 1 & 7)
+
+**Opposite-Side Steelman (feeds Artifact 1):** "Write the best 3-sentence argument AGAINST this idea, as if you were the smartest person in the room who thinks it will fail. What are they seeing that we might be ignoring?"
+
+**Enemy Auditor (feeds Artifact 7 — Incentive Truth-Bending):** "Where are we most tempted to describe this idea in a way that sounds better than reality? What claim in our pitch would an adversarial auditor flag as misleading or unfalsifiable?"
+
 ---
 
 ### Stance-Invariant Rules
@@ -432,6 +438,7 @@ Manual fulfillment for first 10 orders. No automation until unit economics prove
 
 ## Version History
 
+- **v2.2** (2026-02-10): Added Contrarian Gate Feed section with Opposite-Side Steelman (Artifact 1) and Enemy Auditor (Artifact 7) prompts.
 - **v2.1** (2026-02-09): Added Cross-Lens Coordination section with handoffs and tension points for Marketing, Sales, Bezos, and Sourcing.
 - **v2.0** (2026-02-09): Grounded in documented Musk-adjacent practices and reported case anchors (SpaceX reusability, Tesla manufacturing/automation reversal, gigacasting, idiot index). Added Required Toolbox with M/R/O applicability matrix. Added Grounding Anchors, Bad-News Suppression failure mode, Design-for-Production review.
 - **v1.0** (2026-02-09): Initial persona for Cabinet System CS-07.

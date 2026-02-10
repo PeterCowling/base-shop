@@ -28,8 +28,10 @@
     "clean": "rimraf dist *.tsbuildinfo",
     "start": "node ./dist/index.js",
     "dev": "tsx ./src/index.ts",
+    "gmail:auth": "tsx ./scripts/test-gmail-auth.ts",
     "lint": "NODE_OPTIONS='--max-old-space-size=8192' eslint .",
-    "lint:templates": "tsx ./scripts/lint-templates.ts"
+    "lint:templates": "tsx ./scripts/lint-templates.ts",
+    "typecheck": "tsc -b"
   },
   "dependencies": {
     "@acme/config": "workspace:^",

@@ -2,12 +2,17 @@
 Type: Plan
 Status: Active
 Domain: Infrastructure
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-10
 Relates-to charter: none
 Created: 2026-01-19
 Created-by: Claude (Opus 4.5)
-Last-updated: 2026-02-09
+Last-updated: 2026-02-10
 Last-updated-by: Codex (GPT-5)
+Consolidates:
+  - docs/plans/archive/design-system-plan-archived-2026-02-10.md
+  - docs/plans/archive/faster-staging-ci-plan-archived-2026-02-10.md
+  - docs/plans/archive/test-typechecking-plan-archived-2026-02-10.md
+  - docs/plans/archive/brikette-deferred-plan-archived-2026-02-10.md
 ---
 
 # Plan: Administrative & Infrastructure Debt
@@ -478,6 +483,64 @@ After completing all tasks, verify:
 
 ---
 
+## Merged Debt Streams (2026-02-10)
+
+The following plans were consolidated into this administrative debt tracker and archived:
+
+- `docs/plans/archive/design-system-plan-archived-2026-02-10.md`
+- `docs/plans/archive/faster-staging-ci-plan-archived-2026-02-10.md`
+- `docs/plans/archive/test-typechecking-plan-archived-2026-02-10.md`
+- `docs/plans/archive/brikette-deferred-plan-archived-2026-02-10.md`
+
+### Stream A: Design System Residual Work
+
+Source: `docs/plans/archive/design-system-plan-archived-2026-02-10.md`
+
+- **Carry-forward status**: mostly complete; two pending implementation tasks and three deferred items remain as backlog references.
+- **Pending implementation tasks**:
+  - DS-21a: Add tests + `asChild` support to design-system layout primitives
+  - DS-21b: Migrate Brikette from local layout primitives to DS imports
+- **Deferred items**:
+  - DS-D1: DataGrid via `@tanstack/react-table`
+  - DS-D2: Theme preset system (schema + CSS generator)
+  - DS-D3: Component API reference (TypeDoc)
+
+### Stream B: Brikette Staging CI Acceleration Follow-ups
+
+Source: `docs/plans/archive/faster-staging-ci-plan-archived-2026-02-10.md`
+
+- **Carry-forward status**: sharding + cache rollout complete; one optimization task and one policy decision remain open.
+- **Open items**:
+  - TASK-05: Optimize top 3 slow test suites if sharded runtime remains >8 minutes
+  - TASK-06: Decide test/doc-only Brikette policy (deploy bypass vs full deploy)
+
+### Stream C: Test Typechecking Program
+
+Source: `docs/plans/archive/test-typechecking-plan-archived-2026-02-10.md`
+
+- **Carry-forward status**: no active tasks, but still an open administrative quality program.
+- **Workstream checkpoints**:
+  - Fix alias resolution in `tsconfig.base.json` (`@acme/types` source+dist pathing)
+  - Keep package-scoped test typecheck config separate from app-scoped configs
+  - Resolve highest-error package/app test directories before CI gating
+  - Add targeted CI test-typecheck steps only after error backlog is cleared
+
+### Stream D: Brikette Deferred Operational Work
+
+Source: `docs/plans/archive/brikette-deferred-plan-archived-2026-02-10.md`
+
+- **Carry-forward status**: deferred queue; no active implementation currently in progress.
+- **Deferred queue**:
+  - BRIK-DEF-01: Full Brikette build verification (blocked by unrelated prerender issues)
+  - BRIK-DEF-02: Bundle analyzer setup
+  - BRIK-DEF-03: Performance target push (0.90+ Lighthouse, LCP <=2.0s)
+  - BRIK-DEF-04: Translation coverage telemetry + fallback simplification
+  - BRIK-DEF-05: GA4 data flow verification
+  - BRIK-DEF-06: Split `guides.state.ts` contexts for chunk reduction
+  - BRIK-DEF-07: Decide fate of legacy route-guide JSON files
+
+---
+
 ## Related Documents
 
 - [docs/repo-quality-audit-2026-01.md](../repo-quality-audit-2026-01.md) — Launch readiness audit
@@ -500,3 +563,4 @@ After completing all tasks, verify:
 | 2026-02-09 | Claude (Opus 4.6) | Completed ADMIN-12 (GitHub setup docs, `6f7ac68a71`), ADMIN-06 (TruffleHog secret scanning, `8f842a5af3`), ADMIN-10 (CMS Workers+OpenNext migration, `c86b266304`). Net: 8 complete, 4 remaining. |
 | 2026-02-09 | Codex (GPT-5) | Advanced ADMIN-07 to code-complete/manual-pending: rewrote `apps/reception/database.rules.json` to map-based checks (removed index checks), added `.firebaserc` for `prime-f3652`, expanded role migration coverage, updated Reception role normalization + rules tests. |
 | 2026-02-09 | Codex (GPT-5) | Added explicit ADMIN-07 O/S manual runbook (dry-run, live migration, deploy command, post-deploy checks, evidence capture) and marked pre-deployment investigation items complete. |
+| 2026-02-10 | Codex (GPT-5) | Merged four plan streams (design-system, faster-staging-ci, test-typechecking, brikette-deferred) into this plan under **Merged Debt Streams** and archived each source plan under `docs/plans/archive/` with archived status. |

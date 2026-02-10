@@ -33,7 +33,12 @@ jest.mock('../../../contexts/messaging/PinAuthProvider', () => ({
   usePinAuth: () => ({
     user: null,
     role: null,
+    claims: null,
+    authToken: null,
     isAuthenticated: false,
+    isLoading: false,
+    authError: null,
+    lockout: null,
     login: async () => false,
     logout: jest.fn(),
   }),

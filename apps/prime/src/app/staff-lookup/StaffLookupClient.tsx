@@ -8,7 +8,7 @@
  * for static export compatibility.
  */
 
-import { Suspense,useEffect, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, User } from 'lucide-react';
@@ -24,10 +24,19 @@ function StaffLookupContent() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { t } = useTranslation('PreArrival');
-  const { role, user } = usePinAuth();
+  const {
+    authError,
+    authToken,
+    isLoading: isAuthLoading,
+    lockout,
+    login,
+    role,
+    user,
+  } = usePinAuth();
 
   const codeFromUrl = searchParams.get('code') ?? extractCodeFromPathname(pathname, 'staff-lookup') ?? '';
   const [inputCode, setInputCode] = useState(codeFromUrl);
+  const [pin, setPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [guestData, setGuestData] = useState<StaffCheckInView | null>(null);
@@ -36,24 +45,12 @@ function StaffLookupContent() {
 
   // Redirect non-staff users
   useEffect(() => {
-    if (!user) {
-      router.push('/');
-      return;
-    }
-
     if (user && role && !hasAccess) {
       router.push('/');
     }
   }, [user, role, hasAccess, router]);
 
-  // Auto-lookup if code in URL
-  useEffect(() => {
-    if (codeFromUrl && hasAccess) {
-      performLookup(codeFromUrl);
-    }
-  }, [codeFromUrl, hasAccess]);
-
-  async function performLookup(code: string) {
+  const performLookup = useCallback(async (code: string) => {
     if (!code.trim()) return;
 
     setIsLoading(true);
@@ -61,13 +58,21 @@ function StaffLookupContent() {
     setGuestData(null);
 
     try {
-      const response = await fetch(`/api/check-in-lookup?code=${encodeURIComponent(code.trim())}`);
+      const response = await fetch(`/api/check-in-lookup?code=${encodeURIComponent(code.trim())}`, {
+        headers: authToken
+          ? {
+              Authorization: `Bearer ${authToken}`,
+            }
+          : undefined,
+      });
 
       if (!response.ok) {
         if (response.status === 404) {
           setError('codeNotFound');
         } else if (response.status === 410) {
           setError('codeExpired');
+        } else if (response.status === 401 || response.status === 403) {
+          setError('lookupFailed');
         } else {
           setError('lookupFailed');
         }
@@ -87,15 +92,68 @@ function StaffLookupContent() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [authToken]);
+
+  // Auto-lookup if code in URL
+  useEffect(() => {
+    if (codeFromUrl && hasAccess) {
+      performLookup(codeFromUrl);
+    }
+  }, [codeFromUrl, hasAccess, performLookup]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     performLookup(inputCode);
   }
 
+  async function handlePinSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    await login(pin);
+  }
+
   // Show loading while checking auth
-  if (!user || !role) {
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-muted p-4">
+        <div className="mx-auto mt-12 max-w-md rounded-xl bg-card p-6 shadow-sm">
+          <h1 className="text-xl font-bold text-foreground">Staff access</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Enter your staff PIN to continue.
+          </p>
+          <form onSubmit={handlePinSubmit} className="mt-4 space-y-3">
+            <input
+              type="password"
+              inputMode="numeric"
+              autoComplete="one-time-code"
+              value={pin}
+              onChange={(event) => setPin(event.target.value)}
+              className="w-full rounded-lg border border-border px-3 py-2 text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="PIN"
+            />
+            <button
+              type="submit"
+              disabled={isAuthLoading || !pin.trim()}
+              className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            >
+              {isAuthLoading ? 'Signing in...' : 'Sign in'}
+            </button>
+          </form>
+          {authError && (
+            <p className="mt-3 text-sm text-danger">
+              {authError}
+            </p>
+          )}
+          {lockout && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Failed attempts: {lockout.failedAttempts}. Remaining: {lockout.attemptsRemaining}.
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (!role) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />

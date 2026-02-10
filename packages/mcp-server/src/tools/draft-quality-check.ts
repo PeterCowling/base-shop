@@ -2,7 +2,11 @@ import { z } from "zod";
 
 import { stemmedTokenizer } from "@acme/lib";
 
-import { SYNONYMS } from "../utils/template-ranker.js";
+import {
+  normalizeScenarioCategory,
+  type ScenarioCategory,
+  SYNONYMS,
+} from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
 function tokenize(text: string): string[] {
@@ -26,7 +30,7 @@ type EmailActionPlanInput = {
     booking_monitor: boolean;
   };
   scenario: {
-    category: string;
+    category: ScenarioCategory | string;
   };
   thread_summary?: {
     prior_commitments: string[];
@@ -83,21 +87,25 @@ function wordCount(text: string): number {
 }
 
 function scenarioTarget(category: string): { min: number; max: number } {
-  switch (category) {
+  const normalizedCategory = normalizeScenarioCategory(category) ?? "general";
+
+  switch (normalizedCategory) {
     case "faq":
+    case "check-in":
     case "breakfast":
     case "luggage":
     case "wifi":
     case "checkout":
+    case "access":
+    case "transportation":
       return { min: 50, max: 100 };
-    case "policy":
+    case "policies":
     case "payment":
       return { min: 100, max: 150 };
     case "cancellation":
-      return { min: 80, max: 140 };
-    case "complaint":
-      return { min: 120, max: 180 };
     case "booking-changes":
+    case "booking-issues":
+    case "prepayment":
       return { min: 80, max: 140 };
     case "house-rules":
       return { min: 80, max: 120 };
@@ -105,6 +113,7 @@ function scenarioTarget(category: string): { min: number; max: number } {
       return { min: 40, max: 80 };
     case "employment":
     case "lost-found":
+    case "activities":
       return { min: 60, max: 120 };
     default:
       return { min: 80, max: 140 };

@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { type ScenarioCategory } from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
 type IntentItem = {
@@ -23,7 +24,7 @@ type WorkflowTriggers = {
 };
 
 type ScenarioClassification = {
-  category: string;
+  category: ScenarioCategory;
   confidence: number;
 };
 
@@ -412,19 +413,117 @@ function detectWorkflowTriggers(text: string): WorkflowTriggers {
 
 function classifyScenario(text: string): ScenarioClassification {
   const lower = text.toLowerCase();
-  if (/(payment|card|bank transfer|invoice|charge)/.test(lower)) {
-    return { category: "payment", confidence: 0.8 };
+  const rules: Array<{ category: ScenarioCategory; confidence: number; pattern: RegExp }> = [
+    {
+      category: "prepayment",
+      confidence: 0.9,
+      pattern: /(prepayment|payment link|secure link|octorate|hostelworld.*payment)/,
+    },
+    {
+      category: "cancellation",
+      confidence: 0.88,
+      pattern: /(cancel|cancellation|refund|non[-\s]?refundable|no show)/,
+    },
+    {
+      category: "payment",
+      confidence: 0.85,
+      pattern: /(payment|card|credit card|debit card|bank transfer|invoice|charge|iban)/,
+    },
+    {
+      category: "booking-changes",
+      confidence: 0.84,
+      pattern: /(change date|date change|booking change|modify booking|reschedul|extend stay|extra night|upgrade|add (one )?more person|add guest)/,
+    },
+    {
+      category: "breakfast",
+      confidence: 0.84,
+      pattern: /(breakfast|meal|morning food|colazione)/,
+    },
+    {
+      category: "luggage",
+      confidence: 0.84,
+      pattern: /(luggage|bag drop|baggage|suitcase|storage)/,
+    },
+    {
+      category: "wifi",
+      confidence: 0.84,
+      pattern: /(wi[\s-]?fi|internet|network connection)/,
+    },
+    {
+      category: "transportation",
+      confidence: 0.82,
+      pattern: /(transport|bus|ferry|taxi|train|airport|how to get)/,
+    },
+    {
+      category: "check-in",
+      confidence: 0.8,
+      pattern: /(check[-\s]?in|arrival|arrive early|late arrival|out of hours)/,
+    },
+    {
+      category: "checkout",
+      confidence: 0.8,
+      pattern: /(check[-\s]?out|checkout|departure|late checkout)/,
+    },
+    {
+      category: "house-rules",
+      confidence: 0.78,
+      pattern: /(house rules|quiet hours|visitor policy|noise policy)/,
+    },
+    {
+      category: "policies",
+      confidence: 0.76,
+      pattern: /(policy|policies|terms|t&c|age restriction|pet policy|alcohol policy)/,
+    },
+    {
+      category: "access",
+      confidence: 0.78,
+      pattern: /(main door|access code|entry code|door code|building access)/,
+    },
+    {
+      category: "employment",
+      confidence: 0.82,
+      pattern: /(job application|employment|volunteer|work exchange|receptionist)/,
+    },
+    {
+      category: "lost-found",
+      confidence: 0.8,
+      pattern: /(lost item|left behind|forgot|missing item|found item)/,
+    },
+    {
+      category: "promotions",
+      confidence: 0.78,
+      pattern: /(coupon|discount|promo|promotion|voucher)/,
+    },
+    {
+      category: "activities",
+      confidence: 0.8,
+      pattern: /(activity|activities|path of the gods|hike|tour|excursion)/,
+    },
+    {
+      category: "booking-issues",
+      confidence: 0.74,
+      pattern: /(booking issue|reservation issue|why cancelled|booking inquiry|capacity clarification)/,
+    },
+    {
+      category: "faq",
+      confidence: 0.7,
+      pattern: /(availability|available|price|cost|private room|how much|facilities|services)/,
+    },
+  ];
+
+  for (const rule of rules) {
+    if (rule.pattern.test(lower)) {
+      return {
+        category: rule.category,
+        confidence: rule.confidence,
+      };
+    }
   }
-  if (/(cancel|cancellation|refund)/.test(lower)) {
-    return { category: "cancellation", confidence: 0.8 };
-  }
-  if (/(policy|terms|t&c|non[-\s]?refundable)/.test(lower)) {
-    return { category: "policy", confidence: 0.75 };
-  }
-  if (/(check-in|check out|availability|available|price|cost|private room|how much)/.test(lower)) {
-    return { category: "faq", confidence: 0.7 };
-  }
-  return { category: "general", confidence: 0.6 };
+
+  return {
+    category: "general",
+    confidence: 0.6,
+  };
 }
 
 const DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR = 500;

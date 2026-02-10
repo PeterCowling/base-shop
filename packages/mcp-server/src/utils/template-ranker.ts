@@ -6,10 +6,68 @@ import {
   selectPrepaymentTemplate,
 } from "./workflow-triggers.js";
 
+export const SCENARIO_CATEGORIES = [
+  "access",
+  "activities",
+  "booking-changes",
+  "booking-issues",
+  "breakfast",
+  "cancellation",
+  "check-in",
+  "checkout",
+  "employment",
+  "faq",
+  "general",
+  "house-rules",
+  "lost-found",
+  "luggage",
+  "payment",
+  "policies",
+  "prepayment",
+  "promotions",
+  "transportation",
+  "wifi",
+] as const;
+
+export type ScenarioCategory = (typeof SCENARIO_CATEGORIES)[number];
+
+const SCENARIO_CATEGORY_SET = new Set<string>(SCENARIO_CATEGORIES);
+
+const SCENARIO_CATEGORY_ALIASES: Record<string, ScenarioCategory> = {
+  policy: "policies",
+  checkin: "check-in",
+  "check-in-time": "check-in",
+  "check-out": "checkout",
+  modification: "booking-changes",
+  modifications: "booking-changes",
+  transport: "transportation",
+  "house-rules": "house-rules",
+  lostfound: "lost-found",
+};
+
+export function isScenarioCategory(value: string): value is ScenarioCategory {
+  return SCENARIO_CATEGORY_SET.has(value);
+}
+
+export function normalizeScenarioCategory(
+  value: string | undefined,
+): ScenarioCategory | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const normalized = value.toLowerCase();
+  if (isScenarioCategory(normalized)) {
+    return normalized;
+  }
+
+  return SCENARIO_CATEGORY_ALIASES[normalized];
+}
+
 export interface EmailTemplate {
   subject: string;
   body: string;
-  category: string;
+  category: ScenarioCategory;
 }
 
 export interface TemplateRankInput {
@@ -84,7 +142,7 @@ const PHRASE_EXPANSIONS = [
   { phrase: "lost item", expansions: ["left behind", "forgot", "missing", "lost property"] },
 ];
 
-const HARD_RULE_CATEGORIES = new Set(["prepayment", "cancellation"]);
+const HARD_RULE_CATEGORIES = new Set<ScenarioCategory>(["prepayment", "cancellation"]);
 
 function expandQuery(query: string): string {
   const lower = query.toLowerCase();
@@ -190,9 +248,10 @@ function applyThresholds(candidates: TemplateCandidate[]): TemplateRankResult {
 
 function resolveHardRuleTemplates(
   templates: EmailTemplate[],
-  input: TemplateRankInput
+  input: TemplateRankInput,
+  categoryHint: ScenarioCategory
 ): TemplateRankResult {
-  if (input.categoryHint === "prepayment" && input.prepaymentStep) {
+  if (categoryHint === "prepayment" && input.prepaymentStep) {
     const selection = selectPrepaymentTemplate({
       step: input.prepaymentStep,
       provider: input.prepaymentProvider,
@@ -219,7 +278,7 @@ function resolveHardRuleTemplates(
   }
 
   const filtered = templates.filter(
-    (template) => template.category === input.categoryHint
+    (template) => template.category === categoryHint
   );
   const candidates = filtered.slice(0, input.limit ?? DEFAULT_LIMIT).map((template) => ({
     template,
@@ -242,9 +301,10 @@ export function rankTemplates(
   input: TemplateRankInput
 ): TemplateRankResult {
   const limit = input.limit ?? DEFAULT_LIMIT;
+  const categoryHint = normalizeScenarioCategory(input.categoryHint);
 
-  if (input.categoryHint && HARD_RULE_CATEGORIES.has(input.categoryHint)) {
-    return resolveHardRuleTemplates(templates, input);
+  if (categoryHint && HARD_RULE_CATEGORIES.has(categoryHint)) {
+    return resolveHardRuleTemplates(templates, input, categoryHint);
   }
 
   const query = expandQuery(`${input.subject}\n${input.body}`.trim());

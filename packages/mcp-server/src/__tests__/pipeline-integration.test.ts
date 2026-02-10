@@ -9,9 +9,12 @@
  * Measures: classification accuracy, quality gate pass rate, agreement detection.
  */
 
+import { readFileSync } from "fs";
+
 import { handleDraftGenerateTool } from "../tools/draft-generate";
 import handleDraftInterpretTool from "../tools/draft-interpret";
 import handleDraftQualityTool from "../tools/draft-quality-check";
+import { SCENARIO_CATEGORIES } from "../utils/template-ranker";
 
 // ---------------------------------------------------------------------------
 // Mocks – only knowledge resources need mocking (they'd normally read MCP data
@@ -656,6 +659,26 @@ describe("TASK-18: Stage 1 — Interpretation", () => {
         expect(payload.escalation.tier).toBe("NONE");
       }
     });
+
+    it("TASK-04 TC-01/TC-02: interpret uses unified scenario categories", async () => {
+      const breakfastFixture = fixtures.find((f) => f.id === "BRK-01");
+      expect(breakfastFixture).toBeDefined();
+      const breakfastResult = await handleDraftInterpretTool("draft_interpret", {
+        body: breakfastFixture!.body,
+        subject: breakfastFixture!.subject,
+      });
+      const breakfastPayload = parseResult<InterpretResult>(breakfastResult);
+      expect(breakfastPayload.scenario.category).toBe("breakfast");
+
+      const cancellationFixture = fixtures.find((f) => f.id === "CAN-01");
+      expect(cancellationFixture).toBeDefined();
+      const cancellationResult = await handleDraftInterpretTool("draft_interpret", {
+        body: cancellationFixture!.body,
+        subject: cancellationFixture!.subject,
+      });
+      const cancellationPayload = parseResult<InterpretResult>(cancellationResult);
+      expect(cancellationPayload.scenario.category).toBe("cancellation");
+    });
   });
 
 });
@@ -945,6 +968,21 @@ describe("TASK-18: Critical Error Checks", () => {
     });
   });
 
+});
+
+describe("TASK-04: Taxonomy Integrity", () => {
+  it("TC-06: template JSON categories are valid unified scenario categories", () => {
+    const templates = JSON.parse(
+      readFileSync("packages/mcp-server/data/email-templates.json", "utf-8")
+    ) as Array<{ category: string }>;
+
+    const categorySet = new Set(SCENARIO_CATEGORIES);
+    const invalidCategories = templates
+      .map((template) => template.category)
+      .filter((category) => !categorySet.has(category));
+
+    expect(invalidCategories).toEqual([]);
+  });
 });
 
 describe("TASK-18: Quality Gate Standalone", () => {

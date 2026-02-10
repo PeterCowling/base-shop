@@ -29,6 +29,11 @@ Artifacts-SEO-Raw: docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-artifacts
 - P1 issues: <n>
 - P2 issues: <n>
 
+## No-JS Predicate Summary
+| Route | Path | Status | H1 Present | No Bailout Marker |
+|---|---|---:|---|---|
+| home | `/en` | 200 | yes | yes |
+
 ## Delta vs Previous Audit
 - Previous report: <path | none>
 - P0 delta: <before> -> <after>
@@ -37,6 +42,13 @@ Artifacts-SEO-Raw: docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-artifacts
 - Resolved IDs: <comma-separated IDs or none>
 - Still-open IDs: <comma-separated IDs or none>
 - Regressions/new IDs: <comma-separated IDs or none>
+
+## SEO/Lighthouse Summary
+- Average SEO score: <n>
+
+| URL | Desktop SEO | Mobile SEO | Repeated Failed Audit |
+|---|---:|---:|---|
+| `/<lang>` | <n> | <n> | <id or none> |
 
 ## Findings Index
 | Priority | Issue ID | Title |
@@ -48,29 +60,6 @@ Artifacts-SEO-Raw: docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-artifacts
 ### 1. [P0] <Issue Title>
 
 **Issue ID:** `<issue-id>`
-
-**Evidence**
-```json
-{
-  "sample": "..."
-}
-```
-
-**Acceptance Criteria**
-- [ ] <objective criterion>
-- [ ] <objective criterion>
-
-## SEO Audit (Lighthouse)
-- Scope: `/<lang>`, `/<lang>/rooms`, `/<lang>/help` (desktop + mobile)
-- Average SEO score: <n>
-
-| URL | Desktop SEO | Mobile SEO | Repeated Failed Audit |
-|---|---:|---:|---|
-| `/<lang>` | <n> | <n> | <id or none> |
-
-### SEO Finding A. [P2] <SEO Issue Title>
-
-**Issue ID:** `<seo-issue-id>`
 
 **Evidence**
 ```json

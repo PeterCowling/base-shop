@@ -2,7 +2,6 @@
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import type { i18n as I18nInstance, TFunction } from "i18next";
 
@@ -74,14 +73,14 @@ const readGuideResource = (
 function useGuideCollectionHref(
   filterParam: string | undefined,
   clearFilterHref: string | undefined,
+  basePathInput: string,
+  searchParamsStringInput: string,
 ): { basePath: string; makeHref: (value: string | null) => string } {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const searchString = searchParams?.toString() ?? "";
+  const searchString = searchParamsStringInput;
   const paramName = filterParam?.trim() || "tag";
   const normalizedClearFilterHref = clearFilterHref?.trim() ?? "";
   const sanitizedClearFilterHref = normalizedClearFilterHref === "/" ? "" : normalizedClearFilterHref;
-  const normalizedPath = pathname === "/" ? "" : pathname ?? "";
+  const normalizedPath = basePathInput === "/" ? "" : basePathInput;
   const basePath = sanitizedClearFilterHref || normalizedPath;
 
   const makeHref = useCallback(
@@ -323,12 +322,19 @@ function GuideCollection({
   filterOptions: filterOptionsProp,
   filterPredicate,
   clearFilterHref,
+  basePath: basePathInput = "",
+  searchParamsString = "",
   sectionClassName,
   copy,
   showFilters = true,
 }: GuideCollectionProps): JSX.Element | null {
   const normalizedTag = filterTag?.trim().toLowerCase() ?? "";
-  const { basePath, makeHref } = useGuideCollectionHref(filterParam, clearFilterHref);
+  const { basePath, makeHref } = useGuideCollectionHref(
+    filterParam,
+    clearFilterHref,
+    basePathInput,
+    searchParamsString,
+  );
   const { i18n, translate } = useGuideCollectionTranslator(lang);
   const { hasFixedEnglish, fallbackGuidesT } = useEnglishGuidesFallback();
   const filtered = useFilteredGuides(guides, normalizedTag, filterPredicate);

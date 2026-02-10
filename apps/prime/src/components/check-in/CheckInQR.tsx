@@ -50,8 +50,8 @@ export const CheckInQR: FC<CheckInQRProps> = memo(function CheckInQR({
           width: 240,
           margin: 2,
           color: {
-            dark: '#000000',
-            light: '#ffffff',
+            dark: '#000000', // eslint-disable-line ds/no-raw-color -- TASK-10: QR library pixel color, not CSS
+            light: '#ffffff', // eslint-disable-line ds/no-raw-color -- TASK-10: QR library pixel color, not CSS
           },
           errorCorrectionLevel: 'M',
         });

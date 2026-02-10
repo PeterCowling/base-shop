@@ -34,7 +34,9 @@
     "migrate-guide-content-schema": "pnpm exec tsx ./scripts/migrate-guide-content-schema.ts",
     "perf:check-layout-chunk": "node ./scripts/perf/check-layout-chunk.mjs",
     "test:content-readiness": "pnpm exec jest --testPathPattern 'test/content-readiness/' --maxWorkers=2",
-    "generate:manifest-snapshot": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-manifest-snapshot.ts"
+    "generate:manifest-snapshot": "pnpm exec tsx --tsconfig tsconfig.scripts.json scripts/generate-manifest-snapshot.ts",
+    "e2e:smoke": "node ./scripts/e2e/brikette-smoke.mjs",
+    "e2e": "E2E_BASE_URL=http://127.0.0.1:3012 pnpm exec start-server-and-test \"pnpm --filter @apps/brikette start\" http://127.0.0.1:3012 \"pnpm --filter @apps/brikette run e2e:smoke\""
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

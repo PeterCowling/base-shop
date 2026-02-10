@@ -115,38 +115,40 @@ const baseActionPlan = {
   },
 };
 
-describe("draft_generate tool", () => {
-  beforeEach(() => {
-    jest.resetAllMocks();
-    clearTemplateCache();
-    handleBriketteResourceReadMock.mockResolvedValue({
-      contents: [
-        {
-          uri: "brikette://faq",
-          mimeType: "application/json",
-          text: JSON.stringify({ ok: true }),
-        },
-      ],
-    });
-    handleDraftGuideReadMock.mockResolvedValue({
-      contents: [
-        {
-          uri: "brikette://draft-guide",
-          mimeType: "application/json",
-          text: JSON.stringify(draftGuideFixture),
-        },
-      ],
-    });
-    handleVoiceExamplesReadMock.mockResolvedValue({
-      contents: [
-        {
-          uri: "brikette://voice-examples",
-          mimeType: "application/json",
-          text: JSON.stringify(voiceExamplesFixture),
-        },
-      ],
-    });
+function setupDraftGenerateMocks(): void {
+  jest.resetAllMocks();
+  clearTemplateCache();
+  handleBriketteResourceReadMock.mockResolvedValue({
+    contents: [
+      {
+        uri: "brikette://faq",
+        mimeType: "application/json",
+        text: JSON.stringify({ ok: true }),
+      },
+    ],
   });
+  handleDraftGuideReadMock.mockResolvedValue({
+    contents: [
+      {
+        uri: "brikette://draft-guide",
+        mimeType: "application/json",
+        text: JSON.stringify(draftGuideFixture),
+      },
+    ],
+  });
+  handleVoiceExamplesReadMock.mockResolvedValue({
+    contents: [
+      {
+        uri: "brikette://voice-examples",
+        mimeType: "application/json",
+        text: JSON.stringify(voiceExamplesFixture),
+      },
+    ],
+  });
+}
+
+describe("draft_generate tool", () => {
+  beforeEach(setupDraftGenerateMocks);
 
   it("TC-01/05: uses template ranker output and tracks answered questions", async () => {
     readFileMock.mockResolvedValue(
@@ -322,6 +324,10 @@ describe("draft_generate tool", () => {
     const regardsMatches = body.toLowerCase().match(/regards/g) || [];
     expect(regardsMatches.length).toBe(1);
   });
+});
+
+describe("draft_generate tool TASK-01", () => {
+  beforeEach(setupDraftGenerateMocks);
 
   it("TASK-01 TC-01: faq generation respects guide length calibration", async () => {
     readFileMock.mockResolvedValue(
@@ -441,5 +447,306 @@ describe("draft_generate tool", () => {
     expect(body).not.toContain("availability is confirmed");
     expect(body).not.toContain("we will charge");
     expect(body).not.toContain("internal note");
+  });
+});
+
+describe("draft_generate tool TASK-02", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TASK-02 TC-01: FAQ summaries include cited snippets instead of count placeholders", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Check-in time",
+          body: "Check-in starts at 3:00 PM.",
+          category: "faq",
+        },
+      ])
+    );
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    id: "check-in-window",
+                    question: "What time is check-in?",
+                    answer: "Check-in is from 15:00 until 22:30 at reception.",
+                  },
+                  {
+                    id: "breakfast-window",
+                    question: "When is breakfast served?",
+                    answer: "Breakfast is served from 08:00 until 10:30.",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({}) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: baseActionPlan,
+      subject: "Check-in time",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const faqSummary = payload.knowledge_summaries.find(
+      (entry: { uri: string; summary: string }) => entry.uri === "brikette://faq"
+    );
+    expect(faqSummary).toBeDefined();
+    expect(faqSummary.summary).toContain("[faq:check-in-window]");
+    expect(faqSummary.summary).toContain("Check-in is from 15:00 until 22:30");
+    expect(faqSummary.summary).not.toContain("items:");
+  });
+
+  it("TASK-02 TC-02: cancellation summaries favor policy snippets over unrelated FAQ content", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Cancellation policy",
+          body: "Please review cancellation terms.",
+          category: "cancellation",
+        },
+      ])
+    );
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://policies") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                summary: {
+                  cancellation: "Non-refundable bookings are not eligible for refunds.",
+                  checkIn: { regular: "15:00 - 22:30" },
+                },
+                faqItems: [
+                  {
+                    id: "cancel-terms",
+                    question: "Can I cancel my booking?",
+                    answer: "If non-refundable, cancellation does not include a refund.",
+                  },
+                  {
+                    id: "breakfast-info",
+                    question: "Is breakfast included?",
+                    answer: "Breakfast is served from 08:00 to 10:30.",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    id: "breakfast-info",
+                    question: "Is breakfast included?",
+                    answer: "Breakfast is served from 08:00 to 10:30.",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({}) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "I want to cancel and request a refund.",
+        intents: {
+          questions: [{ text: "Can I cancel and get a refund?" }],
+          requests: [{ text: "Please cancel my reservation." }],
+          confirmations: [],
+        },
+        scenario: {
+          category: "cancellation",
+          confidence: 0.92,
+        },
+      },
+      subject: "Cancellation and refund request",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const policySummary = payload.knowledge_summaries.find(
+      (entry: { uri: string; summary: string }) => entry.uri === "brikette://policies"
+    );
+    expect(policySummary).toBeDefined();
+    expect(policySummary.summary.toLowerCase()).toContain("non-refundable bookings");
+    expect(policySummary.summary).toContain("[policies:faq:cancel-terms]");
+    expect(policySummary.summary.toLowerCase()).not.toContain("breakfast is served");
+  });
+
+  it("TASK-02 TC-03: each resource summary is capped at 500 words", async () => {
+    const longAnswer = `Cancellation policy details ${"non-refundable bookings remain subject to terms ".repeat(220)}`;
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Cancellation policy",
+          body: "Please review cancellation terms.",
+          category: "cancellation",
+        },
+      ])
+    );
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    id: "long-cancellation-policy",
+                    question: "Can I cancel and get a refund?",
+                    answer: longAnswer,
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({}) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "I want to cancel and request a refund.",
+        intents: {
+          questions: [{ text: "Can I cancel and get a refund?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "cancellation",
+          confidence: 0.92,
+        },
+      },
+      subject: "Cancellation and refund request",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const faqSummary = payload.knowledge_summaries.find(
+      (entry: { uri: string; summary: string }) => entry.uri === "brikette://faq"
+    );
+    expect(faqSummary).toBeDefined();
+    const wordCount = faqSummary.summary.trim().split(/\s+/).filter(Boolean).length;
+    expect(wordCount).toBeLessThanOrEqual(500);
+  });
+
+  it("TASK-02 TC-04: irrelevant resources return empty or minimal summaries", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "WiFi information",
+          body: "WiFi is available throughout the hostel.",
+          category: "wifi",
+        },
+      ])
+    );
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://pricing/menu") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                breakfast: {
+                  mains: {
+                    eggsCombo: 12.5,
+                    pancakes: 12.5,
+                  },
+                },
+              }),
+            },
+          ],
+        };
+      }
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    id: "wifi-password",
+                    question: "Do you have WiFi?",
+                    answer: "Yes, complimentary WiFi is available throughout the hostel.",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({}) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Do you have WiFi in the rooms?",
+        intents: {
+          questions: [{ text: "Do you have WiFi in the rooms?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "wifi",
+          confidence: 0.9,
+        },
+      },
+      subject: "WiFi details",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const menuSummary = payload.knowledge_summaries.find(
+      (entry: { uri: string; summary: string }) => entry.uri === "brikette://pricing/menu"
+    );
+    expect(menuSummary).toBeDefined();
+    expect(menuSummary.summary).toBe("");
   });
 });

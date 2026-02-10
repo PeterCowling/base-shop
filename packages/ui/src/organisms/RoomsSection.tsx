@@ -3,7 +3,6 @@
 import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
@@ -15,17 +14,30 @@ import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
 import { SLUGS } from "../slug-map";
 import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
-function RoomsSection({ lang: explicitLang }: { lang?: string }): JSX.Element {
+export type RoomsSectionBookingQuery = {
+  checkIn?: string;
+  checkOut?: string;
+  pax?: string;
+  queryString?: string;
+};
+
+function RoomsSection({
+  lang: explicitLang,
+  bookingQuery,
+}: {
+  lang?: string;
+  bookingQuery?: RoomsSectionBookingQuery;
+}): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
   const { t } = useTranslation("roomsPage", { lng: lang });
   const { openModal } = useModal();
   const roomsSlug = SLUGS.rooms[lang as keyof typeof SLUGS.rooms] ?? SLUGS.rooms.en;
-  const searchParams = useSearchParams();
-  const checkIn = searchParams?.get("checkin") ?? getTodayIso();
-  const checkOut = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkIn);
-  const adults = parseInt(searchParams?.get("pax") ?? "1", 10) || 1;
-  const searchString = searchParams?.toString() ? `?${searchParams.toString()}` : "";
+  const checkIn = bookingQuery?.checkIn?.trim() || getTodayIso();
+  const checkOut = bookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
+  const adults = parseInt(bookingQuery?.pax ?? "1", 10) || 1;
+  const normalizedQueryString = (bookingQuery?.queryString ?? "").trim().replace(/^\?/, "");
+  const searchString = normalizedQueryString ? `?${normalizedQueryString}` : "";
 
   const [filter, setFilter] = useState<RoomFilter>("all");
 

@@ -1,7 +1,7 @@
 [
   {
     "subject": "Why cancelled",
-    "body": "Dear Cassy,\r\n\r\nThank you for your email.\r\n\r\n\r\nPlease be aware that once a 'pre-paid, non-refundable' booking is made, our system will follow these steps:\r\n\r\n   1. You will be prompted to opt-in to our terms and conditions.\r\n   2. Upon receiving your opt-in, we will attempt to process the payment.\r\n\r\n\r\nTo ensure your booking is successfully completed, we recommend:\r\n\r\n   - Check your email for the opt-in request and payment confirmation.\r\n   - Look in your spam or junk folder if you do not see these emails in your inbox.\r\n\r\nYou may also wish to ensure that emails from us do not go into spam in the future, as further emails will be sent by us that are essential to your stay at the hostel, and others will be useful (how best to get here etc.).\r\n\r\n\r\nIf either of these steps is not completed, the booking may be cancelled. \r\n\r\nUnfortunately, cancelled bookings cannot be reinstated.\r\n\r\nRegards,\r\n\r\nPeter Cowling\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nThank you for your email. I am sorry this has been frustrating.\r\n\r\nYour reservation was cancelled because the required confirmation and payment steps were not completed in time.\r\n\r\nFor this booking type, the process is:\r\n1) accept the terms and conditions;\r\n2) complete payment when prompted.\r\n\r\nIf either step is missed, the reservation is cancelled automatically and cannot be reinstated.\r\n\r\nIf you would like, we can guide you through making a new reservation with current availability.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "booking-issues"
   },
   {
@@ -46,32 +46,32 @@
   },
   {
     "subject": "Prepayment - Cancelled post 3rd Attempt",
-    "body": "Dear Guest,\r\n\r\nUnfortunately, we tried to run the prepayment a third time but could not.\r\n\r\nAs such, we have had to cancel the booking.\r\n\r\nWe have notified Hostelworld, who will cancel the booking on their system.\r\n\r\nRegards,\r\n\r\nPeter Cowling\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nWe completed the final (third) prepayment attempt and it was not successful.\r\n\r\nAs a result, the reservation has now been cancelled in line with booking policy.\r\n\r\nWe have notified Hostelworld so their system can reflect the cancellation.\r\n\r\nIf you would like to book again, we can help you with current availability and the fastest payment method.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "prepayment"
   },
   {
     "subject": "Prepayment - 1st Attempt Failed (Octorate)",
-    "body": "Dear Guest,\r\n\r\nThank you for choosing to stay with us. We appreciate your reservation.\r\n\r\nAs per the booking option you selected, we need to collect the remaining balance prior to your arrival. We tried but were unable to do so.\r\n\r\n\r\nWe will make three attempts to run the transaction, after which the booking will be cancelled. The hostel has high demand. Once a booking is cancelled it will not be reinstated. \r\n\r\nWe will make a second attempt to process the transaction tomorrow. In the meantime, we recommend checking that your account has sufficient funds and that your bank allows international transactions. If you prefer to use a different payment method, please let us know so that we can provide you with a secure link to provide the necessary details.\r\n\r\nWe appreciate your attention to this matter, and we look forward to having you as our guest soon.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nThank you again for choosing to stay with us.\r\n\r\nWe attempted to process the required prepayment today, but the transaction did not complete.\r\n\r\nNo action is needed immediately. We will try a second time tomorrow.\r\n\r\nIn the meantime, please check that your card is enabled for international/online payments and has sufficient available funds.\r\n\r\nIf you prefer a different card, reply and we will send a secure update link.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "prepayment"
   },
   {
     "subject": "Prepayment - 2nd Attempt Failed",
-    "body": "Dear Guest,\r\n\r\nFurther to our earlier email, we tried a second time to run the transaction but could not.\r\n\r\n\r\nAs per Hostelworld policy, we will make a third attempt to run the transaction, after which the booking will be cancelled. It is important to note that if your booking is cancelled: \r\n\r\n\r\n   - Whether you are refunded your deposit will depend on the type of booking you made with your booking agent, Hostelworld. We are not involved in this process since the money is not paid to us.\r\n   - The hostel has high demand. Once a booking is cancelled it will not be reinstated. \r\n\r\n\r\nWe will make the final attempt to process the transaction tomorrow. In the meantime, we recommend checking that your account has sufficient funds and that your bank allows international transactions. If you prefer to use a different payment method, please let us know so that we can provide you with a secure link to provide the necessary details.\r\n\r\n\r\nYour attention to this matter is greatly appreciated, and we look forward to hosting you soon.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nFurther to our earlier message, the second prepayment attempt also failed.\r\n\r\nWe will make one final attempt tomorrow. If that final attempt fails, the reservation will be cancelled automatically according to policy.\r\n\r\nPlease update payment details as soon as possible if needed, and ensure your card can accept international/online charges.\r\n\r\nIf your booking was made through Hostelworld, any deposit refund questions must be handled directly with Hostelworld.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "prepayment"
   },
   {
     "subject": "Prepayment - 1st Attempt Failed (Hostelworld)",
-    "body": "Dear Guest,\r\n\r\nThank you for choosing to stay with us. We appreciate your reservation.\r\n\r\nAs per the booking option you selected, we need to collect the remaining balance prior to your arrival. We tried but were unable to do so.\r\n\r\n\r\nAs per Hostelworld policy, we will make three attempts to run the transaction, after which the booking will be cancelled. It is important to note that if your booking is cancelled: \r\n\r\n\r\n   - Whether you are refunded your deposit will depend on the type of booking you made with your booking agent, Hostelworld. We are not involved in this process since the money is not paid to us.\r\n   - The hostel has high demand. Once a booking is cancelled it will not be reinstated. \r\n\r\nWe will make a second attempt to process the transaction tomorrow. In the meantime, we recommend checking that your account has sufficient funds and that your bank allows international transactions. If you prefer to use a different payment method, please let us know so that we can provide you with a secure link to provide the necessary details.\r\n\r\nWe appreciate your attention to this matter, and we look forward to having you as our guest soon.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nThank you for your reservation.\r\n\r\nOur first prepayment attempt was not successful.\r\n\r\nUnder Hostelworld policy, we will make up to three payment attempts before a reservation is cancelled.\r\n\r\nWe will try again tomorrow. Please confirm your payment method is active for international/online charges.\r\n\r\nIf you want to use a different card, reply and we will send a secure link.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "prepayment"
   },
   {
     "subject": "Cancellation of Non-Refundable Booking",
-    "body": "Dear Guest,\r\n\r\nThank you for contacting us, and sorry to hear of this issue. We can cancel your booking, but before we do we would like to take this opportunity to explain the specific details of your booking and its eligibility for a refund.\r\n\r\nWe offer two types of bookings to our customers, one that is not paid in advance and will not incur a fee on cancellation provided it is cancelled within the cancellation period, and the other is the 'pre-paid, non-refundable' type, which is the type of booking you have made. This policy is put in place to provide revenue security, which in turn allows us to offer a discounted rate to our customers. By securing a guaranteed revenue stream, we can afford to pass on savings to our customers.\r\n\r\nAs the name suggests, pre-paid bookings require payment in advance, and once payment has been made, they become non-refundable. We understand that there may be circumstances beyond your control that could prevent you from using your pre-paid booking, such as illness, flight cancellations, or other unforeseen events. However, as stated in our terms and conditions, pre-paid bookings are non-refundable. We always advise our customers to carefully consider the pros and cons of such bookings and to read the terms and conditions carefully before making any commitments. We also recommend that customers consider purchasing appropriate travel insurance to protect themselves in case of unforeseen events.\r\n\r\nIf you have any further queries, please do not hesitate to contact us.\r\n\r\nThank you for choosing to book with us.\r\n\r\nRegards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nThank you for contacting us, and I am sorry for the circumstances behind your request.\r\n\r\nWe can process the cancellation immediately if you would like us to proceed.\r\n\r\nYour reservation was made on a discounted non-refundable rate. Because this rate is confirmed in advance, it is not eligible for refund under the booking terms.\r\n\r\nIf you would like us to proceed with cancellation, please reply to confirm and we will complete it promptly.\r\n\r\nWe know this is disappointing when plans change unexpectedly. If you have travel insurance, your provider may be able to help recover costs.\r\n\r\nIf anything is unclear, we are happy to explain each step.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "cancellation"
   },
   {
     "subject": "No Show",
-    "body": "Dear Guest,\r\n\r\nWe regret to hear that you were unable to join us for your stay at our hostel.\r\n\r\nPlease be advised that your booking has been cancelled. Should you need any assistance regarding this matter, feel free to reach out to us.\r\n\r\nWe hope you have a wonderful time during your travels, and look forward to the possibility of hosting you at another time.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nWe are sorry you were unable to arrive for your stay.\r\n\r\nAs check-in was not completed, the reservation has been closed as a no-show.\r\n\r\nIf you would like to stay on different dates, please send your preferred dates and we will help you rebook based on availability.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "cancellation"
   },
   {
@@ -176,7 +176,7 @@
   },
   {
     "subject": "Booking Inquiry — Availability",
-    "body": "Dear Guest,\r\n\r\nThank you for your interest in staying with us!\r\n\r\nFor live availability and pricing, please check our website directly: <https://hostel-positano.com/>. You can see all available room types and dates, and book instantly.\r\n\r\nBooking directly with us ensures you receive the best rate and all included benefits such as complimentary breakfast.\r\n\r\nIf you have any specific questions about our rooms or facilities, please do not hesitate to ask.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nThank you for your message.\r\n\r\nFor live availability and pricing, please use our direct booking page:\r\nhttps://hostel-positano.com/\r\n\r\nThat page always shows the most up-to-date room options and rates.\r\n\r\nIf you send us your dates and room preference, we can also point you to the most suitable option.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "booking-issues"
   },
   {
@@ -188,5 +188,20 @@
     "subject": "Hostel Facilities and Services",
     "body": "Dear Guest,\r\n\r\nThank you for your question about our facilities.\r\n\r\nAt Hostel Brikette we offer:\r\n\r\n   - Complimentary WiFi throughout the property\r\n   - Free luggage storage on arrival and departure days\r\n   - A bar and terrace with views over Positano\r\n   - Breakfast for direct bookings (8:00–10:30 AM)\r\n   - A digital assistant for local tips and travel information\r\n\r\nPlease note that we do not currently offer on-site laundry facilities.\r\n\r\nFor a full overview of everything available, visit our assistance page: <https://hostel-positano.com/en/assistance>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "faq"
+  },
+  {
+    "subject": "Cancellation Request — Medical Hardship",
+    "body": "Dear Guest,\r\n\r\nThank you for explaining the situation, and we are very sorry to hear about your emergency.\r\n\r\nWe understand this is a difficult moment.\r\n\r\nFor bookings on a non-refundable rate, the payment terms still apply and we cannot issue a refund directly.\r\n\r\nIf you have travel insurance, we recommend submitting a claim as soon as possible, and we can provide supporting booking documentation on request.\r\n\r\nIf you would like us to proceed with cancellation immediately, reply to confirm and we will process it promptly.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "cancellation"
+  },
+  {
+    "subject": "Payment Dispute — Acknowledgement",
+    "body": "Dear Guest,\r\n\r\nThank you for your message. We understand your concern and we are reviewing this with priority.\r\n\r\nTo complete the review quickly, please reply with your booking reference, payment date, and the last 4 digits of the card used.\r\n\r\nOnce we verify the payment trail, we will send a clear written response with next steps.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "payment"
+  },
+  {
+    "subject": "Overbooking Support — Next Steps",
+    "body": "Dear Guest,\r\n\r\nThank you for your patience, and we are sorry for the inconvenience.\r\n\r\nWe are reviewing your booking status urgently and will confirm the final accommodation plan shortly.\r\n\r\nIf your original room cannot be honored, we will provide clear next steps, including relocation or cancellation options based on policy.\r\n\r\nPlease share the best phone number for urgent contact while we finalize this.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "booking-issues"
   }
 ]

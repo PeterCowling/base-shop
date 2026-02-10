@@ -1,3 +1,5 @@
+// i18n-exempt file -- PRIME-241 [ttl=2026-12-31]
+// Cypress runner config/log labels are developer-facing and intentionally literal.
 import { defineConfig } from 'cypress';
 
 export default defineConfig({

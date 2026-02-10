@@ -9,9 +9,12 @@
  * Measures: classification accuracy, quality gate pass rate, agreement detection.
  */
 
+import { readFileSync } from "fs";
+
 import { handleDraftGenerateTool } from "../tools/draft-generate";
 import handleDraftInterpretTool from "../tools/draft-interpret";
 import handleDraftQualityTool from "../tools/draft-quality-check";
+import { SCENARIO_CATEGORIES } from "../utils/template-ranker";
 
 // ---------------------------------------------------------------------------
 // Mocks – only knowledge resources need mocking (they'd normally read MCP data
@@ -89,6 +92,11 @@ type InterpretResult = {
     booking_monitor: boolean;
   };
   scenario: { category: string; confidence: number };
+  escalation: {
+    tier: "NONE" | "HIGH" | "CRITICAL";
+    triggers: string[];
+    confidence: number;
+  };
   thread_summary?: {
     prior_commitments: string[];
     open_questions: string[];
@@ -110,6 +118,15 @@ type GenerateResult = {
     selection: string;
   };
   knowledge_sources: string[];
+  policy: {
+    reviewTier: "standard" | "mandatory-review" | "owner-alert";
+    mandatoryContent: string[];
+    prohibitedContent: string[];
+    toneConstraints: string[];
+    templateConstraints: {
+      allowedCategories?: string[];
+    };
+  };
   quality: { passed: boolean; failed_checks: string[]; warnings: string[] };
 };
 
@@ -138,6 +155,7 @@ type TestFixture = {
     messages: Array<{ from: string; date: string; snippet: string }>;
   };
   expectedCategory: string;
+  expectedEscalationTier?: "NONE" | "HIGH" | "CRITICAL";
   expectedAgreement?: string;
   requiresResponse: boolean;
   scenarioType: string;
@@ -396,6 +414,94 @@ const fixtures: TestFixture[] = [
     requiresResponse: true,
     scenarioType: "prepayment",
   },
+  {
+    id: "PRE-02",
+    description: "Prepayment second attempt failed",
+    from: "Guest Fourteen <guest14@example.com>",
+    subject: "Second prepayment attempt failed",
+    body: "Hi, the second prepayment attempt failed again and the payment link still does not work. Please send a new secure payment link.",
+    expectedCategory: "prepayment",
+    expectedEscalationTier: "NONE",
+    requiresResponse: true,
+    scenarioType: "prepayment",
+  },
+  {
+    id: "PRE-03",
+    description: "Prepayment third attempt failed and booking cancelled",
+    from: "Guest Fifteen <guest15@example.com>",
+    subject: "Third prepayment failed",
+    body: "Hello, after the third prepayment attempt failed my booking was cancelled. Can you explain next steps and send a fresh payment link?",
+    expectedCategory: "prepayment",
+    expectedEscalationTier: "NONE",
+    requiresResponse: true,
+    scenarioType: "prepayment",
+  },
+  {
+    id: "PRE-04",
+    description: "Prepayment success confirmation",
+    from: "Guest Sixteen <guest16@example.com>",
+    subject: "Prepayment completed",
+    body: "Hi, I completed the prepayment successfully through the secure link. Please confirm the booking is now fully confirmed.",
+    expectedCategory: "prepayment",
+    expectedEscalationTier: "NONE",
+    requiresResponse: true,
+    scenarioType: "prepayment",
+  },
+  {
+    id: "CAN-03",
+    description: "Cancellation with medical hardship context",
+    from: "Guest Seventeen <guest17@example.com>",
+    subject: "Emergency cancellation",
+    body: "We need to cancel due to a medical emergency in our family. I know the booking is non-refundable, but please advise what options we have.",
+    expectedCategory: "cancellation",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "cancellation",
+  },
+  {
+    id: "CAN-04",
+    description: "Cancellation dispute with chargeback language",
+    from: "Guest Eighteen <guest18@example.com>",
+    subject: "Refund dispute",
+    body: "I want a refund for this cancellation and I will start a chargeback if this is not resolved quickly.",
+    expectedCategory: "cancellation",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "cancellation",
+  },
+  {
+    id: "PAY-04",
+    description: "Payment dispute with legal threat",
+    from: "Guest Nineteen <guest19@example.com>",
+    subject: "Payment dispute",
+    body: "Your payment handling is unacceptable. If this is not fixed, I will contact my lawyer and pursue legal action.",
+    expectedCategory: "payment",
+    expectedEscalationTier: "CRITICAL",
+    requiresResponse: true,
+    scenarioType: "payment",
+  },
+  {
+    id: "CAN-05",
+    description: "Composite cancellation plus refund request",
+    from: "Guest Twenty <guest20@example.com>",
+    subject: "Cancel and refund",
+    body: "Please cancel the booking and process a refund. This dispute has been going on for days and I need a final answer now.",
+    expectedCategory: "cancellation",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "cancellation",
+  },
+  {
+    id: "PAY-05",
+    description: "Composite payment and policy dispute questions",
+    from: "Guest TwentyOne <guest21@example.com>",
+    subject: "Payment and policy clarification",
+    body: "Why was my card charged and what policy allows this? If needed I will dispute this charge with my bank.",
+    expectedCategory: "payment",
+    expectedEscalationTier: "HIGH",
+    requiresResponse: true,
+    scenarioType: "payment",
+  },
 
   // ======================== BREAKFAST ========================
   {
@@ -596,6 +702,10 @@ describe("TASK-18: Stage 1 — Interpretation", () => {
         expect(payload.language).toBeDefined();
         expect(payload.scenario.category).toBeDefined();
         expect(payload.scenario.confidence).toBeGreaterThan(0);
+        expect(["NONE", "HIGH", "CRITICAL"]).toContain(payload.escalation.tier);
+        if (fixture.expectedEscalationTier) {
+          expect(payload.escalation.tier).toBe(fixture.expectedEscalationTier);
+        }
       }
     });
 
@@ -634,6 +744,41 @@ describe("TASK-18: Stage 1 — Interpretation", () => {
       expect(payload.thread_summary!.previous_response_count).toBeGreaterThan(
         0
       );
+    });
+
+    it("TASK-03 TC-10: standard fixtures default to NONE escalation", async () => {
+      const standardFixtureIds = ["FAQ-01", "BRK-01", "LUG-01", "WIFI-01"];
+      for (const fixtureId of standardFixtureIds) {
+        const fixture = fixtures.find((item) => item.id === fixtureId);
+        expect(fixture).toBeDefined();
+        const result = await handleDraftInterpretTool("draft_interpret", {
+          body: fixture!.body,
+          subject: fixture!.subject,
+          threadContext: fixture!.threadContext,
+        });
+        const payload = parseResult<InterpretResult>(result);
+        expect(payload.escalation.tier).toBe("NONE");
+      }
+    });
+
+    it("TASK-04 TC-01/TC-02: interpret uses unified scenario categories", async () => {
+      const breakfastFixture = fixtures.find((f) => f.id === "BRK-01");
+      expect(breakfastFixture).toBeDefined();
+      const breakfastResult = await handleDraftInterpretTool("draft_interpret", {
+        body: breakfastFixture!.body,
+        subject: breakfastFixture!.subject,
+      });
+      const breakfastPayload = parseResult<InterpretResult>(breakfastResult);
+      expect(breakfastPayload.scenario.category).toBe("breakfast");
+
+      const cancellationFixture = fixtures.find((f) => f.id === "CAN-01");
+      expect(cancellationFixture).toBeDefined();
+      const cancellationResult = await handleDraftInterpretTool("draft_interpret", {
+        body: cancellationFixture!.body,
+        subject: cancellationFixture!.subject,
+      });
+      const cancellationPayload = parseResult<InterpretResult>(cancellationResult);
+      expect(cancellationPayload.scenario.category).toBe("cancellation");
     });
   });
 
@@ -786,6 +931,31 @@ describe("TASK-18: Stage 2+3 — Full Pipeline", () => {
         expect(generated.draft.bodyPlain).toBeDefined();
         expect(generated.draft.bodyPlain.length).toBeGreaterThan(0);
         expect(generated.draft.bodyHtml).toContain("<!DOCTYPE html>");
+        expect(Array.isArray(generated.policy.mandatoryContent)).toBe(true);
+        expect(Array.isArray(generated.policy.prohibitedContent)).toBe(true);
+        expect(Array.isArray(generated.policy.toneConstraints)).toBe(true);
+
+        const expectedReviewTier =
+          actionPlan.escalation.tier === "CRITICAL"
+            ? "owner-alert"
+            : actionPlan.escalation.tier === "HIGH"
+              ? "mandatory-review"
+              : "standard";
+        expect(generated.policy.reviewTier).toBe(expectedReviewTier);
+
+        if (
+          actionPlan.scenario.category === "cancellation" &&
+          /non[- ]?refundable/i.test(`${f.subject} ${f.body}`)
+        ) {
+          expect(
+            generated.policy.mandatoryContent.some((phrase) =>
+              phrase.toLowerCase().includes("non-refundable")
+            )
+          ).toBe(true);
+        }
+
+        expect(generated.quality.failed_checks).not.toContain("missing_policy_mandatory_content");
+        expect(generated.quality.failed_checks).not.toContain("policy_prohibited_content");
 
         // Record results
         results.push({
@@ -924,6 +1094,21 @@ describe("TASK-18: Critical Error Checks", () => {
     });
   });
 
+});
+
+describe("TASK-04: Taxonomy Integrity", () => {
+  it("TC-06: template JSON categories are valid unified scenario categories", () => {
+    const templates = JSON.parse(
+      readFileSync("packages/mcp-server/data/email-templates.json", "utf-8")
+    ) as Array<{ category: string }>;
+
+    const categorySet = new Set(SCENARIO_CATEGORIES);
+    const invalidCategories = templates
+      .map((template) => template.category)
+      .filter((category) => !categorySet.has(category));
+
+    expect(invalidCategories).toEqual([]);
+  });
 });
 
 describe("TASK-18: Quality Gate Standalone", () => {

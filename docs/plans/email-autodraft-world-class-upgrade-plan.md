@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Automation
 Workstream: Mixed
 Created: 2026-02-10
@@ -10,7 +10,7 @@ Deliverable-Type: multi-deliverable
 Execution-Track: mixed
 Primary-Execution-Skill: build-feature
 Supporting-Skills: draft-email-message, process-emails
-Overall-confidence: 83%
+Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -116,15 +116,15 @@ The approach builds outward from the existing 3-stage pipeline:
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Wire voice examples and draft guide into generation | 87% | S | Complete (2026-02-10) | - | TASK-02, TASK-07 |
-| TASK-02 | IMPLEMENT | Upgrade knowledge summaries to cited snippets | 85% | S | Pending | TASK-01 | TASK-07 |
-| TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Pending | - | TASK-04, TASK-06, TASK-07 |
-| TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Pending | TASK-03 | TASK-05, TASK-06, TASK-07 |
-| TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Pending | TASK-04 | TASK-07 |
-| TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Pending | TASK-03, TASK-04 | TASK-07 |
-| TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | Add policy decision layer before generation | 81% | L | Pending | TASK-07 | TASK-09 |
-| TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 80% | M | Pending | TASK-08 | - |
-| TASK-10 | IMPLEMENT | Migrate booking email to MCP-only (remove GAS fallback) | 85% | S | Pending | - | - |
+| TASK-02 | IMPLEMENT | Upgrade knowledge summaries to cited snippets | 85% | S | Complete (2026-02-10) | TASK-01 | TASK-07 |
+| TASK-03 | IMPLEMENT | Add escalation tier classification to EmailActionPlan | 82% | M | Complete (2026-02-10) | - | TASK-04, TASK-06, TASK-07 |
+| TASK-04 | IMPLEMENT | Unify scenario taxonomy across pipeline stages | 80% | M | Complete (2026-02-10) | TASK-03 | TASK-05, TASK-06, TASK-07 |
+| TASK-05 | IMPLEMENT | Upgrade quality gate to per-question coverage | 84% | M | Complete (2026-02-10) | TASK-04 | TASK-07 |
+| TASK-06 | IMPLEMENT | Add high-stakes pipeline test fixtures | 88% | M | Complete (2026-02-10) | TASK-03, TASK-04 | TASK-07 |
+| TASK-07 | CHECKPOINT | Validate enrichment approach before policy/template work | 95% | S | Complete (2026-02-10) | TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08 |
+| TASK-08 | IMPLEMENT | Add policy decision layer before generation | 84% | L | Complete (2026-02-10) | TASK-07 | TASK-09 |
+| TASK-09 | IMPLEMENT | Rewrite high-stakes templates against tone-policy rubric | 82% | M | Complete (2026-02-10) | TASK-08 | - |
+| TASK-10 | IMPLEMENT | Migrate booking email to MCP-only (remove GAS fallback) | 88% | S | Complete (2026-02-10) | - | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -254,6 +254,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Knowledge resources: `packages/mcp-server/src/resources/brikette-knowledge.ts` (lines 88–312)
   - Current summary logic: `draft-generate.ts:129–145`
 
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `b3d219dd7a`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 3 (red-green plus lint-gate refactor cycle)
+  - Initial validation: FAIL expected (new TASK-02 tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 80%
+  - Delta reason: Validation confirmed extraction approach and relevance filtering; one additional lint-gate cycle was required to split oversized test describe blocks.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-generate.test.ts` — PASS (13/13 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (quality gate 29/31, 93.5%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only, pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Replaced count-only knowledge summaries with scenario-filtered cited snippets across FAQ, rooms, pricing/menu, and policies resources. Added relevance scoring from action-plan context, per-resource snippet selection, and 500-word summary caps. Added TASK-02 unit coverage for citation output, policy-focused filtering, length cap, and irrelevant-resource handling.
+
 ---
 
 ### TASK-03: Add escalation tier classification to EmailActionPlan
@@ -304,6 +325,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Fact-find escalation triggers: `docs/plans/email-autodraft-world-class-upgrade-fact-find.md` (lines 174–178)
   - EUR threshold: configurable constant, default €500, to be confirmed at CHECKPOINT.
 
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `a2d6c7daab`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08, TC-09, TC-10
+  - Cycles: 3 (red-green plus trigger-tuning follow-up cycle)
+  - Initial validation: FAIL expected (new TASK-03 tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 80%
+  - Delta reason: Escalation mapping worked as planned; one additional cycle was needed to tune refund/dispute trigger matching and satisfy mixed-trigger assertions.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts` — PASS (21/21 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (quality gate 29/31, 93.5%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added `escalation` classification to `EmailActionPlan` with tier (`NONE`/`HIGH`/`CRITICAL`), trigger list, and confidence. Implemented HIGH/CRITICAL trigger detection (legal/platform/public/fraud/high-value disputes, vulnerable circumstances, chargeback, repeated complaint with thread context), plus configurable high-value dispute threshold via `EMAIL_AUTODRAFT_HIGH_VALUE_DISPUTE_EUR_THRESHOLD` (default €500). Added unit and integration tests for all escalation validation cases and default NONE behavior on standard fixtures.
+
 ---
 
 ### TASK-04: Unify scenario taxonomy across pipeline stages
@@ -350,6 +392,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Template ranker hard rules: `template-ranker.ts:87` (`new Set(["prepayment", "cancellation"])`)
   - Quality check scenario targets: `draft-quality-check.ts:85–112`
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `5495aaa173`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 3 (red-green plus lint import-sort correction cycle)
+  - Initial validation: FAIL expected (new TASK-04 taxonomy tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 80%
+  - Delta reason: Validation confirmed unified taxonomy approach across interpret/ranker/quality-check; one lint-fix cycle was mechanical and did not change implementation risk.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts packages/mcp-server/src/__tests__/template-ranker.test.ts` — PASS (64/64 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts` — PASS (43/43 tests)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added shared `ScenarioCategory` taxonomy in `template-ranker` with normalization helpers and alias mapping, switched `draft-interpret` classification to unified category rules (including detailed categories like `breakfast`, `check-in`, `booking-changes`, `policies`), and updated quality-check target selection to normalize categories through the same taxonomy. Added integration validation for unified category classification and template JSON category integrity.
 
 ---
 
@@ -398,6 +461,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Synonym dict: `template-ranker.ts:89–112` (candidate for shared extraction)
   - Current stop words: `draft-quality-check.ts:152–157`
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `8101109458`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (new TASK-05 tests failed before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 83%
+  - Delta reason: Per-question coverage and contradiction enhancements behaved as expected; integration pass-rate remained above the 90% gate.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-quality-check.test.ts` — PASS (16/16 tests)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (quality gate 29/31, 93.5%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Replaced global question `.some()` logic with per-question coverage scoring and status (`covered`/`partial`/`missing`), added `partial_question_coverage` warning behavior, surfaced `question_coverage` in quality output, and expanded contradiction detection for `cannot provide`/`unable to`/`<keyword> is not available` patterns while preserving non-contradictory positive phrasing.
 
 ---
 
@@ -450,6 +534,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Existing fixture IDs: FAQ-01–06, POL-01–03, PAY-01–03, CAN-01–02, AGR-01–05, PRE-01, BRK-01–02, LUG-01–02, WIFI-01, CHG-01, CO-01, HR-01, MOD-01, IT-01–02, SYS-01–05.
 
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `869b6db916`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (new fixture expectation exposed a charge-dispute phrase gap)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 87%
+  - Delta reason: Expanded fixtures validated the high-stakes coverage model; one escalation phrase variant required parser hardening.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (60/60 tests, quality gate 37/39, 94.9%)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-interpret.test.ts` — PASS (21/21 tests)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added 8 high-stakes fixtures (PRE-02/03/04, CAN-03/04/05, PAY-04/05) with expected escalation tiers and assertion coverage in interpretation tests. Hardened escalation detection for "dispute this charge" and "reverse this charge" phrasing discovered by composite payment-dispute coverage.
+
 ---
 
 ### TASK-07: Horizon checkpoint — reassess remaining plan
@@ -472,6 +577,24 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Stricter quality gate doesn't drop pass rate below 90% threshold (evidence from TASK-05).
   - High-stakes fixtures expose real quality gaps that justify policy layer investment (evidence from TASK-06).
 
+#### Checkpoint Completion (2026-02-10)
+- **Status:** Complete
+- **Re-plan scope:** TASK-08, TASK-09, TASK-10
+- **Evidence reviewed:**
+  - Completed-task build notes for TASK-01 through TASK-06.
+  - `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (60/60 tests, quality gate 37/39, 94.9%).
+  - `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts` — PASS (3/3 tests).
+  - `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath apps/reception/src/services/__tests__/useBookingEmail.test.ts` — PASS (5/5 tests).
+  - `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/policy-decision.test.ts` — PASS (12 todos; stubs present and ready for activation).
+- **Horizon assumption outcomes:**
+  - Voice/guide integration impact: **Confirmed** (pipeline quality gate stayed above 90% after TASK-01 and remains 94.9% after TASK-06 expansion).
+  - Knowledge relevance/prompt bloat: **Confirmed** (scenario-filtered cited snippets preserved pass-rate and quality checks).
+  - Escalation false positives: **Confirmed with minor fix** (routine fixtures stay `NONE`; phrase variant "dispute this charge" required one parser hardening in TASK-06).
+  - Taxonomy/ranker compatibility: **Confirmed** (TASK-04 integrity checks still pass in expanded pipeline set).
+  - Quality gate threshold risk: **Confirmed** (pass rate remains above 90% threshold after stricter coverage logic).
+  - Policy-layer justification: **Confirmed** (new high-stakes fixtures expose handling gaps that deterministic policy gating can constrain).
+- **Checkpoint decision:** Remaining tasks stay build-eligible (>=80%) with updated confidence; proceed to TASK-08 with no new precursor tasks.
+
 ---
 
 ### TASK-08: Add policy decision layer before generation
@@ -483,10 +606,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `[readonly] packages/mcp-server/src/tools/draft-interpret.ts` — reads EmailActionPlan type
 - **Depends on:** TASK-07
 - **Blocks:** TASK-09
-- **Confidence:** 81%
-  - Implementation: 83% — Policy rules are enumerated (non-refundable = no exceptions, tone constraints, mandatory content). New module follows quality-check pattern.
-  - Approach: 80% — Policy layer between interpret and generate is the right insertion point. Constrains generation without restructuring it.
-  - Impact: 80% — Crosses 3 integration boundaries (interpret type → policy → generate → quality validation). L-effort.
+- **Confidence:** 84%
+  - Implementation: 85% — Integration seams and test scaffolding are now verified against current code paths and fixtures.
+  - Approach: 84% — CHECKPOINT evidence confirms policy gating is the right control point before generation.
+  - Impact: 84% — Cross-boundary risk is reduced by stable end-to-end integration coverage after TASK-06 expansion.
 - **Acceptance:**
   - New `evaluatePolicy()` function takes `EmailActionPlan` (with escalation tier) → returns `PolicyDecision`.
   - `PolicyDecision` includes: `mandatoryContent` (phrases/sections that MUST appear), `prohibitedContent` (phrases that MUST NOT appear), `toneConstraints` (formal/empathetic/etc.), `reviewTier` ('standard' | 'mandatory-review' | 'owner-alert'), `templateConstraints` (category restrictions for template selection).
@@ -533,6 +656,44 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Tone policy: factual + professional, not cold. Soften phrasing, not meaning.
   - EUR threshold: configurable constant `HIGH_VALUE_DISPUTE_EUR` (default 500, confirm at CHECKPOINT).
 
+#### Re-plan Update (2026-02-10)
+- **Previous confidence:** 81%
+- **Updated confidence:** 84%
+  - **Evidence class:** E2 (executable verification) + E1 (integration seam audit)
+  - Implementation: 85% — verified insertion points in `packages/mcp-server/src/tools/draft-generate.ts:889` and `packages/mcp-server/src/tools/draft-quality-check.ts:272`; test scaffold confirmed at `packages/mcp-server/src/__tests__/policy-decision.test.ts:1`.
+  - Approach: 84% — high-stakes fixtures from TASK-06 demonstrate deterministic policy gating is needed before template assembly.
+  - Impact: 84% — integration guard remains strong (`packages/mcp-server/src/__tests__/pipeline-integration.test.ts` at 60/60 with 94.9% quality gate).
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/__tests__/policy-decision.test.ts`.
+  - Tests: `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`, `packages/mcp-server/src/__tests__/policy-decision.test.ts`.
+  - Docs: CHECKPOINT section + TASK-01..TASK-06 completion evidence in this plan.
+- **Decision / resolution:**
+  - Keep TASK-08 scope and dependency order unchanged. Implement policy layer directly in next build cycle.
+- **Changes to task:**
+  - Dependencies: unchanged (`Depends on: TASK-07`, `Blocks: TASK-09`).
+  - Acceptance/test plan/rollout: unchanged.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `87b3a09255`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07, TC-08, TC-09, TC-10, TC-11, TC-12
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (policy module missing and pipeline assertions red before implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 83%
+  - Delta reason: Cross-boundary integration behaved as expected; one additional cycle was needed to align repeated-complaint fixture wording with TC-12 intent.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/policy-decision.test.ts packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (71/71 tests, quality gate 38/39, 97.4%)
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/draft-quality-check.test.ts packages/mcp-server/src/__tests__/draft-interpret.test.ts` — PASS (50/50 tests)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Added new `policy-decision.ts` decision layer with escalation-to-review-tier routing, scenario-aware template constraints, and mandatory/prohibited content rules (including non-refundable cancellation safeguards). Integrated policy decision application into `draft-generate` template selection/body assembly and into `draft-quality-check` mandatory/prohibited validation. Activated TASK-08 test stubs and extended pipeline integration assertions for review-tier mapping and policy-check enforcement.
+
 ---
 
 ### TASK-09: Rewrite high-stakes templates against tone-policy rubric
@@ -544,10 +705,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `[readonly] packages/mcp-server/src/tools/policy-decision.ts` — reads policy rubric for tone alignment
 - **Depends on:** TASK-08
 - **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 82% — Template structure is well-understood (subject + body + category). Rewrites follow established format.
-  - Approach: 80% — Rewriting against policy rubric ensures consistency. Tone-policy rubric from TASK-08 provides clear guidelines.
-  - Impact: 78% — Template changes directly affect all draft output for these categories. Careful tone calibration needed.
+- **Confidence:** 82%
+  - Implementation: 84% — Template schema and high-stakes inventory are verified; rewrite scope is explicit.
+  - Approach: 82% — Policy-rubric rewrite remains the best approach and is now backed by expanded high-stakes test data.
+  - Impact: 82% — Existing lint and integration suites provide strong regression containment for template updates.
 - **Acceptance:**
   - Rewrite 2 cancellation templates ("Cancellation of Non-Refundable Booking", "No Show") with empathetic but policy-firm tone.
   - Rewrite 4 prepayment templates with clearer escalation language per chase step.
@@ -584,6 +745,43 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Canonical non-refundable wording: Gmail template (fact-find Q, line 171). Use existing repo text as baseline if Gmail text not provided.
   - Tone policy: factual + professional, not cold (fact-find resolved Q, line 161).
 
+#### Re-plan Update (2026-02-10)
+- **Previous confidence:** 80%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (template lint + integration verification) + E1 (template inventory audit)
+  - Implementation: 84% — verified 9 high-stakes templates currently in scope within `packages/mcp-server/data/email-templates.json`.
+  - Approach: 82% — rewrite-against-policy remains consistent with TASK-08 architecture and CHECKPOINT findings.
+  - Impact: 82% — regression risk is bounded by passing `packages/mcp-server/src/__tests__/template-lint.test.ts` and current full pipeline coverage.
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/template-lint.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`.
+  - Tests: template lint (3/3 PASS), pipeline integration (60/60 PASS, 94.9% quality gate).
+  - Data audit: category distribution shows cancellation/prepayment/payment/policies templates are present and isolated for targeted rewrite.
+- **Decision / resolution:**
+  - Keep TASK-09 as a single implementation task after TASK-08. No split required at checkpoint.
+- **Changes to task:**
+  - Dependencies: unchanged (`Depends on: TASK-08`).
+  - Acceptance/test plan/rollout: unchanged.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `c9cfa4ca16`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07
+  - Cycles: 1 (draft-review-finalize)
+  - Initial validation: PASS (artifact assertions and pipeline gate passed on first review cycle)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 82%
+  - Delta reason: Template rewrites and new high-stakes additions stayed within expected scope and passed all targeted checks without additional iteration.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts packages/mcp-server/src/__tests__/pipeline-integration.test.ts` — PASS (66/66 tests, quality gate 38/39, 97.4%)
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; includes pre-existing security plugin warnings)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — SKIP (`@acme/mcp-server` has no `typecheck` script)
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Rewrote high-stakes cancellation/prepayment/booking-issues templates to empathetic policy-firm language, removed rigid legacy phrasing, and added three new templates for medical hardship, dispute acknowledgment, and overbooking support. Added TASK-09 assertions in `template-lint.test.ts` for cancellation tone/phrasing, new template presence, and prepayment progression.
+
 ---
 
 ### TASK-10: Migrate booking email to MCP-only (remove GAS fallback)
@@ -595,10 +793,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `[readonly] apps/reception/src/app/api/mcp/booking-email/route.ts` — verify MCP route is functional
 - **Depends on:** -
 - **Blocks:** -
-- **Confidence:** 85%
-  - Implementation: 90% — MCP path already works (lines 121–134). Remove flag check and GAS fallback (lines 135–148).
-  - Approach: 85% — Hard cut confirmed by sponsor. No fallback window needed.
-  - Impact: 80% — Removes a live code path. Must verify MCP route is production-ready.
+- **Confidence:** 88%
+  - Implementation: 90% — Existing MCP route path is already covered and stable in current tests.
+  - Approach: 88% — Hard cut strategy is confirmed and consistent with Decision Log direction.
+  - Impact: 88% — Current unit coverage demonstrates fallback removal is localized and testable.
 - **Acceptance:**
   - `isMcpBookingEmailEnabled()` flag check removed — always uses MCP path.
   - GAS fallback code (hardcoded URL at line 143) removed entirely.
@@ -628,6 +826,44 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - GAS script URL (to be removed): `AKfycbz236VUy...` at `useBookingEmail.ts:143`
   - MCP route: `apps/reception/src/app/api/mcp/booking-email/route.ts`
+
+#### Re-plan Update (2026-02-10)
+- **Previous confidence:** 85%
+- **Updated confidence:** 88%
+  - **Evidence class:** E2 (executable verification) + E1 (route/consumer audit)
+  - Implementation: 90% — `apps/reception/src/services/__tests__/useBookingEmail.test.ts` currently validates both MCP and GAS branches.
+  - Approach: 88% — sponsor-confirmed hard cut aligns with existing Decision Log and avoids dual-path maintenance debt.
+  - Impact: 88% — change is confined to `apps/reception/src/services/useBookingEmail.ts` with route contract preserved in existing tests.
+- **Investigation performed:**
+  - Repo: `apps/reception/src/services/useBookingEmail.ts`, `apps/reception/src/services/__tests__/useBookingEmail.test.ts`, `apps/reception/src/app/api/mcp/booking-email/route.ts`.
+  - Tests: `useBookingEmail.test.ts` PASS (5/5).
+  - Contract check: MCP payload shape (`bookingRef`, `recipients`, `occupantLinks`) already asserted in existing tests.
+- **Decision / resolution:**
+  - Proceed with direct fallback removal in TASK-10 without a feature flag.
+- **Changes to task:**
+  - Dependencies: unchanged (independent task).
+  - Acceptance/test plan/rollout: unchanged.
+
+#### Build Completion (2026-02-10)
+- **Status:** Complete
+- **Commits:** `a763f9b102`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL expected (tests asserted MCP-only behavior before fallback removal)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 87%
+  - Delta reason: MCP-only cutover and payload contract behaved as expected; one additional cycle aligned error-path logging with strict test harness expectations.
+- **Validation:**
+  - Ran: `JEST_FORCE_CJS=1 pnpm exec jest --config ./jest.config.cjs --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' --runTestsByPath apps/reception/src/services/__tests__/useBookingEmail.test.ts` — PASS (6/6 tests)
+  - Ran: `pnpm --filter @apps/reception typecheck` — PASS
+  - Ran: `pnpm --filter @apps/reception lint` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only; pre-existing)
+  - Ran: `pnpm --filter @acme/mcp-server build` — PASS
+- **Documentation updated:** `docs/plans/email-autodraft-world-class-upgrade-plan.md`
+- **Implementation notes:** Removed `isMcpBookingEmailEnabled()` branching and Google Apps Script URL path from `useBookingEmail.ts`; booking emails now always POST to `/api/mcp/booking-email`. Preserved payload shape (`bookingRef`, `recipients`, `occupantLinks`), added explicit test-mode env override (`NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE`), and added TASK-10 test coverage for MCP-only routing, error surfacing without fallback, payload integrity, and test-recipient behavior.
 
 ---
 
@@ -680,3 +916,4 @@ The following are explicitly out of scope for this plan. They should be planned 
 - 2026-02-10: EN only for phase 1 sensitive scenarios.
 - 2026-02-10: EUR threshold for high-value dispute defaulted to €500 (configurable); to be confirmed at CHECKPOINT.
 - 2026-02-10: Template rewrite uses existing repo text as baseline; Gmail template sync deferred to user-initiated import.
+- 2026-02-10: TASK-07 CHECKPOINT completed; remaining TASK-08/09/10 confirmed build-eligible (>=80%) with no precursor split required.

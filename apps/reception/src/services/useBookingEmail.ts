@@ -24,7 +24,6 @@ import {
   EMAIL_TEST_ADDRESS,
   EMAIL_TEST_MODE,
   FIREBASE_BASE_URL,
-  isMcpBookingEmailEnabled,
   OCCUPANT_LINK_PREFIX,
 } from "../utils/emailConstants";
 
@@ -106,46 +105,29 @@ export default function useBookingEmail() {
         /* -------------------------------------------------- */
         /* 3️⃣  Build recipients + links                      */
         /* -------------------------------------------------- */
-        const recipients = EMAIL_TEST_MODE
+        const emailTestMode = EMAIL_TEST_MODE ||
+          process.env.NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE === "true";
+
+        const recipients = emailTestMode
           ? [EMAIL_TEST_ADDRESS]
           : Object.values(mergedEmails).filter(Boolean);
 
         const links = guestIds.map((id) => `${OCCUPANT_LINK_PREFIX}${id}`);
 
-        const params = new URLSearchParams();
-        params.set("bookingRef", bookingRef);
-        if (recipients.length) params.set("recipients", recipients.join(","));
-        links.forEach((l) => params.append("occupant", l)); // repeated key
-
-        if (isMcpBookingEmailEnabled()) {
-          const resp = await fetch("/api/mcp/booking-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              bookingRef,
-              recipients,
-              occupantLinks: links,
-            }),
-          });
-          const json = await resp.json();
-          if (!resp.ok || !json?.success) {
-            throw new Error(json?.error || "Failed to send booking email");
-          }
-          setMessage(json?.messageId ?? "sent");
-        } else {
-          /*  ⚠️  Single diagnostic log before the fetch        */
-          console.log("➡️  GET", params.toString());
-
-          /* -------------------------------------------------- */
-          /* 4️⃣  Fire request                                  */
-          /* -------------------------------------------------- */
-          const resp = await fetch(
-            `https://script.google.com/macros/s/AKfycbz236VUyVFKEKkJF8QaiL_h9y75XuwWsl82-xfWepZwv1-gBroOr5S4t_og4Fvl4caW/exec?${params.toString()}`
-          );
-          const text = await resp.text();
-          console.log("✅ response", text);
-          setMessage(text);
+        const resp = await fetch("/api/mcp/booking-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            bookingRef,
+            recipients,
+            occupantLinks: links,
+          }),
+        });
+        const json = await resp.json();
+        if (!resp.ok || !json?.success) {
+          throw new Error(json?.error || "Failed to send booking email");
         }
+        setMessage(json?.messageId ?? "sent");
       } catch (err) {
         console.error("❌ sendBookingEmail failed", err);
         setMessage((err as Error).message || "Failed to send email");

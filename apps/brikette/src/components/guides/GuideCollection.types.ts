@@ -27,6 +27,8 @@ export interface GuideCollectionProps {
   filterOptions?: readonly GuideFilterOption[];
   filterPredicate?: (guide: GuideMeta, normalizedFilter: string) => boolean;
   clearFilterHref?: string;
+  basePath?: string;
+  searchParamsString?: string;
   sectionClassName?: string;
   copy: GuideCollectionCopy;
   showFilters?: boolean;

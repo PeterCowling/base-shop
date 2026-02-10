@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { spawnSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
@@ -13,6 +14,7 @@ const DEFAULTS = {
   screenshotsPerViewport: 8,
   timeoutMs: 90000,
   reportDir: "docs/audits/user-testing",
+  seoEnabled: true,
 };
 
 const KEYWORD_PATH_HINTS = [
@@ -34,6 +36,10 @@ const KEYWORD_PATH_HINTS = [
   "checkout",
 ];
 
+const NO_JS_HOME_KEY_PATTERN = /\b(?:heroSection|introSection|socialProof|locationSection)\.[a-z0-9_.-]+\b/gi;
+const NO_JS_BAILOUT_MARKER = "BAILOUT_TO_CLIENT_SIDE_RENDERING";
+const NO_JS_SOCIAL_SNAPSHOT_PATTERN = /\bnovember\s+2025\b/i;
+
 function parseArgs(argv) {
   const args = {
     url: "",
@@ -44,6 +50,7 @@ function parseArgs(argv) {
     maxMobilePages: DEFAULTS.maxMobilePages,
     screenshotsPerViewport: DEFAULTS.screenshotsPerViewport,
     timeoutMs: DEFAULTS.timeoutMs,
+    seoEnabled: DEFAULTS.seoEnabled,
   };
 
   for (let i = 0; i < argv.length; i += 1) {
@@ -90,6 +97,10 @@ function parseArgs(argv) {
       i += 1;
       continue;
     }
+    if (token === "--skip-seo") {
+      args.seoEnabled = false;
+      continue;
+    }
   }
 
   return args;
@@ -108,6 +119,7 @@ function usage() {
     "  --max-mobile-pages <n>              Max mobile pages to audit (default: 14)",
     "  --screenshots-per-viewport <n>      How many pages get screenshots per viewport (default: 8)",
     "  --timeout-ms <n>                    Navigation timeout (default: 90000)",
+    "  --skip-seo                          Skip Lighthouse SEO/accessibility/best-practices checks",
   ].join("\n");
 }
 
@@ -197,6 +209,304 @@ function selectAuditPaths(startPath, discovered, limit) {
 
 function isTruthyNumber(value) {
   return Number.isFinite(value) && value >= 0;
+}
+
+function detectPrimaryLanguageFromPath(startPath) {
+  const pathname = String(startPath || "/").split("?")[0] || "/";
+  const segments = pathname.split("/").filter(Boolean);
+  const candidate = segments[0] || "en";
+  return /^[a-z]{2}$/i.test(candidate) ? candidate.toLowerCase() : "en";
+}
+
+function pickDiscoveredPath(discoveredPaths, matcher, fallbackPath) {
+  const match = discoveredPaths.find((candidate) => matcher(candidate.toLowerCase()));
+  return match || fallbackPath;
+}
+
+function extractTitleText(html) {
+  const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (!match) return "";
+  return match[1].replace(/\s+/g, " ").trim();
+}
+
+function htmlToText(html) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function extractPercentClaim(titleText) {
+  const claim = titleText.match(/(\d+\s*%)/i);
+  return claim ? claim[1].replace(/\s+/g, "").toLowerCase() : "";
+}
+
+async function runNoJsChecks(context, origin, startPath, discoveredPaths) {
+  const lang = detectPrimaryLanguageFromPath(startPath);
+  const routeMap = {
+    home: pickDiscoveredPath(discoveredPaths, (p) => p === `/${lang}` || p === `/${lang}/`, `/${lang}`),
+    rooms: pickDiscoveredPath(discoveredPaths, (p) => p.startsWith(`/${lang}/rooms`), `/${lang}/rooms`),
+    experiences: pickDiscoveredPath(
+      discoveredPaths,
+      (p) => p.startsWith(`/${lang}/experiences`) && !/\/experiences\//.test(p),
+      `/${lang}/experiences`,
+    ),
+    howToGetHere: pickDiscoveredPath(
+      discoveredPaths,
+      (p) => p.startsWith(`/${lang}/how-to-get-here`) && !/\/how-to-get-here\//.test(p),
+      `/${lang}/how-to-get-here`,
+    ),
+    deals: pickDiscoveredPath(discoveredPaths, (p) => p.startsWith(`/${lang}/deals`), `/${lang}/deals`),
+  };
+
+  const routeChecks = {};
+
+  for (const [routeKey, routePath] of Object.entries(routeMap)) {
+    try {
+      const response = await context.request.get(`${origin}${routePath}`, {
+        timeout: 30000,
+      });
+      const status = response.status();
+      const html = status < 400 ? await response.text() : "";
+      const h1Count = (html.match(/<h1\b/gi) || []).length;
+      const hasBailoutMarker = html.includes(NO_JS_BAILOUT_MARKER);
+      const titleText = extractTitleText(html);
+      const bodyText = htmlToText(html);
+
+      routeChecks[routeKey] = {
+        routePath,
+        status,
+        h1Count,
+        hasBailoutMarker,
+        titleText,
+        checks: {
+          hasMeaningfulH1: h1Count > 0,
+          hasNoBailoutMarker: !hasBailoutMarker,
+        },
+      };
+
+      if (routeKey === "home") {
+        const leakedTokens = [...new Set((bodyText.match(NO_JS_HOME_KEY_PATTERN) || []).slice(0, 20))];
+        routeChecks[routeKey].checks.hasNoI18nKeyLeak = leakedTokens.length === 0;
+        routeChecks[routeKey].i18nKeyLeakSamples = leakedTokens;
+        routeChecks[routeKey].checks.hasSocialProofSnapshotDate = NO_JS_SOCIAL_SNAPSHOT_PATTERN.test(bodyText);
+      }
+
+      if (routeKey === "deals") {
+        const titlePercentClaim = extractPercentClaim(titleText);
+        const normalizedBody = bodyText.toLowerCase();
+        const bodyHasPercentClaim = titlePercentClaim
+          ? normalizedBody.includes(titlePercentClaim)
+          : true;
+        const bodyIndicatesExpiredOffer = /no current deals|offer has ended|expired deals|this offer has ended/i.test(
+          normalizedBody,
+        );
+
+        routeChecks[routeKey].checks.hasMetadataBodyParity = !(
+          titlePercentClaim && (!bodyHasPercentClaim || bodyIndicatesExpiredOffer)
+        );
+        routeChecks[routeKey].dealsParity = {
+          titlePercentClaim,
+          bodyHasPercentClaim,
+          bodyIndicatesExpiredOffer,
+        };
+      }
+    } catch (error) {
+      routeChecks[routeKey] = {
+        routePath,
+        status: "ERR",
+        error: String(error),
+        h1Count: 0,
+        hasBailoutMarker: false,
+        checks: {
+          hasMeaningfulH1: false,
+          hasNoBailoutMarker: false,
+        },
+      };
+    }
+  }
+
+  return {
+    lang,
+    routeChecks,
+  };
+}
+
+function summarizeLighthouseDocument(document, pagePath, formFactor) {
+  const categories = document.categories || {};
+  const audits = document.audits || {};
+  const score = (categoryId) => {
+    const raw = categories[categoryId]?.score;
+    return typeof raw === "number" ? Math.round(raw * 100) : null;
+  };
+
+  const failedAuditIds = Object.entries(audits)
+    .filter(([, audit]) => {
+      if (!audit || typeof audit !== "object") return false;
+      const scoreDisplayMode = audit.scoreDisplayMode;
+      const scoreValue = audit.score;
+      if (scoreDisplayMode === "notApplicable" || scoreDisplayMode === "manual") return false;
+      return typeof scoreValue === "number" && scoreValue < 1;
+    })
+    .map(([auditId]) => auditId);
+
+  return {
+    pagePath,
+    formFactor,
+    seo: score("seo"),
+    accessibility: score("accessibility"),
+    bestPractices: score("best-practices"),
+    failedAuditIds,
+  };
+}
+
+function runLighthouseOnce({ url, outputPath, formFactor }) {
+  const args = [
+    "lighthouse",
+    url,
+    "--chrome-flags=--headless --no-sandbox",
+    "--only-categories=seo,accessibility,best-practices",
+    "--output=json",
+    `--output-path=${outputPath}`,
+  ];
+
+  if (formFactor === "desktop") {
+    args.push("--preset=desktop");
+  } else {
+    args.push("--form-factor=mobile", "--screenEmulation.mobile=true", "--throttling-method=provided");
+  }
+
+  const result = spawnSync("npx", args, {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer: 1024 * 1024 * 25,
+  });
+
+  if (result.status !== 0) {
+    throw new Error(
+      `Lighthouse failed for ${url} (${formFactor}): ${result.stderr || result.stdout || "unknown error"}`,
+    );
+  }
+}
+
+function deriveSeoPaths(startPath, discoveredPaths) {
+  const lang = detectPrimaryLanguageFromPath(startPath);
+  const homePath = pickDiscoveredPath(
+    discoveredPaths,
+    (p) => p === `/${lang}` || p === `/${lang}/`,
+    `/${lang}`,
+  );
+  const roomsPath = pickDiscoveredPath(
+    discoveredPaths,
+    (p) => p.startsWith(`/${lang}/rooms`) && !/\/rooms\//.test(p),
+    `/${lang}/rooms`,
+  );
+  const helpPath = pickDiscoveredPath(
+    discoveredPaths,
+    (p) =>
+      (p.startsWith(`/${lang}/help`) && !/\/help\//.test(p)) ||
+      (p.startsWith(`/${lang}/assistance`) && !/\/assistance\//.test(p)),
+    `/${lang}/help`,
+  );
+
+  return [homePath, roomsPath, helpPath];
+}
+
+async function runSeoChecks({ origin, startPath, discoveredPaths, seoArtifactsDir, seoEnabled }) {
+  if (!seoEnabled) {
+    return {
+      enabled: false,
+      pages: [],
+      errors: [],
+    };
+  }
+
+  const pages = [];
+  const errors = [];
+  const pagePaths = deriveSeoPaths(startPath, discoveredPaths);
+
+  await fs.mkdir(seoArtifactsDir, { recursive: true });
+
+  for (const pagePath of pagePaths) {
+    const normalizedPath = pagePath.startsWith("/") ? pagePath : `/${pagePath}`;
+    const url = `${origin}${normalizedPath}`;
+    const safeName = sanitizeSlug(normalizedPath) || "root";
+    const desktopPath = path.join(seoArtifactsDir, `${safeName}-desktop.json`);
+    const mobilePath = path.join(seoArtifactsDir, `${safeName}-mobile.json`);
+
+    try {
+      runLighthouseOnce({
+        url,
+        outputPath: desktopPath,
+        formFactor: "desktop",
+      });
+      runLighthouseOnce({
+        url,
+        outputPath: mobilePath,
+        formFactor: "mobile",
+      });
+
+      const desktopRaw = JSON.parse(await fs.readFile(desktopPath, "utf8"));
+      const mobileRaw = JSON.parse(await fs.readFile(mobilePath, "utf8"));
+      const desktop = summarizeLighthouseDocument(desktopRaw, normalizedPath, "desktop");
+      const mobile = summarizeLighthouseDocument(mobileRaw, normalizedPath, "mobile");
+
+      const repeatedFailedAuditIds = desktop.failedAuditIds.filter((auditId) =>
+        mobile.failedAuditIds.includes(auditId),
+      );
+
+      pages.push({
+        pagePath: normalizedPath,
+        url,
+        desktop,
+        mobile,
+        repeatedFailedAuditIds,
+      });
+    } catch (error) {
+      errors.push({
+        pagePath: normalizedPath,
+        url,
+        error: String(error),
+      });
+    }
+  }
+
+  return {
+    enabled: true,
+    pages,
+    errors,
+    averageScores: {
+      seo:
+        pages.length > 0
+          ? Math.round(
+              pages.reduce((sum, page) => sum + (page.desktop.seo ?? 0) + (page.mobile.seo ?? 0), 0) /
+                (pages.length * 2),
+            )
+          : null,
+      accessibility:
+        pages.length > 0
+          ? Math.round(
+              pages.reduce(
+                (sum, page) => sum + (page.desktop.accessibility ?? 0) + (page.mobile.accessibility ?? 0),
+                0,
+              ) / (pages.length * 2),
+            )
+          : null,
+      bestPractices:
+        pages.length > 0
+          ? Math.round(
+              pages.reduce(
+                (sum, page) => sum + (page.desktop.bestPractices ?? 0) + (page.mobile.bestPractices ?? 0),
+                0,
+              ) / (pages.length * 2),
+            )
+          : null,
+    },
+  };
 }
 
 async function crawlInternalPaths(context, origin, startPath, options) {
@@ -526,6 +836,88 @@ function aggregateFindings(payload) {
   const allResults = [...payload.desktopResults, ...payload.mobileResults];
   const issueList = [];
 
+  const noJsRouteChecks = payload.noJsChecks?.routeChecks ?? {};
+  const homeNoJs = noJsRouteChecks.home;
+  if (homeNoJs && homeNoJs.checks?.hasNoI18nKeyLeak === false) {
+    issueList.push({
+      id: "no-js-i18n-key-leakage",
+      priority: "P0",
+      title: "Homepage initial HTML leaks untranslated i18n keys",
+      evidence: {
+        route: homeNoJs.routePath,
+        status: homeNoJs.status,
+        samples: homeNoJs.i18nKeyLeakSamples ?? [],
+      },
+      acceptanceCriteria: [
+        "Homepage initial HTML contains resolved copy for hero and core section headings.",
+        "No `heroSection.*`, `introSection.*`, `socialProof.*`, or `locationSection.*` tokens appear in raw HTML.",
+        "No-JS route checks pass on desktop and mobile audit runs.",
+      ],
+    });
+  }
+
+  const topNavNoJsFailures = Object.entries(noJsRouteChecks)
+    .filter(([key]) => key === "rooms" || key === "experiences" || key === "howToGetHere")
+    .map(([key, value]) => ({
+      key,
+      route: value.routePath,
+      status: value.status,
+      hasMeaningfulH1: value.checks?.hasMeaningfulH1 ?? false,
+      hasNoBailoutMarker: value.checks?.hasNoBailoutMarker ?? false,
+    }))
+    .filter((item) => !item.hasMeaningfulH1 || !item.hasNoBailoutMarker);
+
+  if (topNavNoJsFailures.length > 0) {
+    issueList.push({
+      id: "no-js-route-shell-bailout",
+      priority: "P0",
+      title: "Top-nav routes fail no-JS SSR content checks",
+      evidence: {
+        failingRoutes: topNavNoJsFailures,
+      },
+      acceptanceCriteria: [
+        "Top-nav pages (`rooms`, `experiences`, `how-to-get-here`) have at least one H1 in initial HTML.",
+        "No `BAILOUT_TO_CLIENT_SIDE_RENDERING` marker appears in initial HTML for top-nav routes.",
+        "No-JS route checks pass for all top-nav routes.",
+      ],
+    });
+  }
+
+  const dealsNoJs = noJsRouteChecks.deals;
+  if (dealsNoJs && dealsNoJs.checks?.hasMetadataBodyParity === false) {
+    issueList.push({
+      id: "deals-meta-body-parity",
+      priority: "P1",
+      title: "Deals metadata claim does not match initial HTML body state",
+      evidence: {
+        route: dealsNoJs.routePath,
+        status: dealsNoJs.status,
+        title: dealsNoJs.titleText,
+        parity: dealsNoJs.dealsParity ?? null,
+      },
+      acceptanceCriteria: [
+        "Deals metadata does not advertise an active discount when the body shows expired/no-current deals.",
+        "If metadata claims a percent offer, the body explicitly shows the same offer terms.",
+      ],
+    });
+  }
+
+  if (homeNoJs && homeNoJs.checks?.hasSocialProofSnapshotDate === false) {
+    issueList.push({
+      id: "social-proof-snapshot-date",
+      priority: "P1",
+      title: "Social proof snapshot date missing in initial HTML",
+      evidence: {
+        route: homeNoJs.routePath,
+        status: homeNoJs.status,
+      },
+      acceptanceCriteria: [
+        "Homepage social proof includes explicit snapshot date disclosure.",
+        "Snapshot date is rendered in initial HTML (no-JS check).",
+      ],
+    });
+  }
+
   const brokenInternal = payload.linkChecks.filter((item) => typeof item.status === "number" && item.status >= 400);
   if (brokenInternal.length > 0) {
     issueList.push({
@@ -791,6 +1183,51 @@ function aggregateFindings(payload) {
     });
   }
 
+  const seoChecks = payload.seoChecks;
+  if (seoChecks?.enabled) {
+    if (seoChecks.errors?.length > 0) {
+      issueList.push({
+        id: "seo-audit-execution",
+        priority: "P1",
+        title: "SEO/Lighthouse audit did not complete for all target pages",
+        evidence: {
+          errors: seoChecks.errors,
+        },
+        acceptanceCriteria: [
+          "Lighthouse SEO/accessibility/best-practices runs complete for all target pages.",
+          "SEO summary artifact contains desktop and mobile entries for each target page.",
+        ],
+      });
+    }
+
+    const isPagesPreview = /\.pages\.dev$/i.test(new URL(payload.origin).hostname);
+    const repeatedFailedAudits = (seoChecks.pages ?? []).flatMap((page) =>
+      (page.repeatedFailedAuditIds ?? [])
+        .filter((auditId) => !(isPagesPreview && auditId === "is-crawlable"))
+        .map((auditId) => ({
+          pagePath: page.pagePath,
+          auditId,
+          desktopSeo: page.desktop?.seo ?? null,
+          mobileSeo: page.mobile?.seo ?? null,
+        })),
+    );
+
+    if (repeatedFailedAudits.length > 0) {
+      issueList.push({
+        id: "seo-repeated-failed-audits",
+        priority: "P2",
+        title: "Lighthouse reports repeated failed audits on key pages",
+        evidence: {
+          failures: repeatedFailedAudits,
+        },
+        acceptanceCriteria: [
+          "Repeated Lighthouse failed audits are triaged and reduced on homepage, rooms, and help/assistance pages.",
+          "Expected staging-only noindex checks are documented and excluded from blocker severity.",
+        ],
+      });
+    }
+  }
+
   return issueList;
 }
 
@@ -832,6 +1269,25 @@ function buildMarkdownReport(payload, issues, output) {
     })
     .join("\n\n");
 
+  const noJsRouteChecks = payload.noJsChecks?.routeChecks ?? {};
+  const noJsSummaryRows = Object.entries(noJsRouteChecks)
+    .map(([key, value]) => {
+      const h1 = value.checks?.hasMeaningfulH1 ? "yes" : "no";
+      const bailoutFree = value.checks?.hasNoBailoutMarker ? "yes" : "no";
+      const status = value.status;
+      return `| ${key} | \`${value.routePath}\` | ${status} | ${h1} | ${bailoutFree} |`;
+    })
+    .join("\n");
+
+  const seoRows = (payload.seoChecks?.pages ?? [])
+    .map(
+      (page) =>
+        `| \`${page.pagePath}\` | ${page.desktop?.seo ?? "-"} | ${page.mobile?.seo ?? "-"} | ${
+          (page.repeatedFailedAuditIds ?? []).join(", ") || "none"
+        } |`,
+    )
+    .join("\n");
+
   const frontmatter = [
     "Type: Audit-Report",
     "Status: Draft",
@@ -842,6 +1298,8 @@ function buildMarkdownReport(payload, issues, output) {
     `Audit-Timestamp: ${payload.generatedAt}`,
     `Artifacts-JSON: ${output.jsonRelativePath}`,
     `Artifacts-Screenshots: ${output.screenshotsRelativeDir}`,
+    ...(output.seoSummaryRelativePath ? [`Artifacts-SEO-Summary: ${output.seoSummaryRelativePath}`] : []),
+    ...(output.seoArtifactsRelativeDir ? [`Artifacts-SEO-Raw: ${output.seoArtifactsRelativeDir}`] : []),
   ];
 
   return [
@@ -858,6 +1316,24 @@ function buildMarkdownReport(payload, issues, output) {
     `- P0 issues: ${priorityBuckets.P0.length}`,
     `- P1 issues: ${priorityBuckets.P1.length}`,
     `- P2 issues: ${priorityBuckets.P2.length}`,
+    "",
+    "## No-JS Predicate Summary",
+    "| Route | Path | Status | H1 Present | No Bailout Marker |",
+    "|---|---|---:|---|---|",
+    noJsSummaryRows || "| - | - | - | - | - |",
+    "",
+    "## SEO/Lighthouse Summary",
+    payload.seoChecks?.enabled
+      ? `- Average scores: SEO ${payload.seoChecks.averageScores?.seo ?? "-"}, accessibility ${
+          payload.seoChecks.averageScores?.accessibility ?? "-"
+        }, best-practices ${payload.seoChecks.averageScores?.bestPractices ?? "-"}`
+      : "- SEO checks: skipped (`--skip-seo`)",
+    payload.seoChecks?.errors?.length
+      ? `- SEO execution errors: ${payload.seoChecks.errors.length} (see JSON artifact)`
+      : "- SEO execution errors: 0",
+    "| URL | Desktop SEO | Mobile SEO | Repeated Failed Audit |",
+    "|---|---:|---:|---|",
+    seoRows || "| - | - | - | - |",
     "",
     "## Findings Index",
     "| Priority | Issue ID | Title |",
@@ -910,6 +1386,8 @@ async function main() {
   const jsonPath = path.join(reportDir, `${reportBase}.json`);
   const markdownPath = path.join(reportDir, `${reportBase}.md`);
   const screenshotDir = path.join(reportDir, `${reportBase}-screenshots`);
+  const seoSummaryPath = path.join(reportDir, `${reportBase}-seo-summary.json`);
+  const seoArtifactsDir = path.join(reportDir, `${reportBase}-seo-artifacts`);
 
   await fs.mkdir(reportDir, { recursive: true });
   await fs.mkdir(screenshotDir, { recursive: true });
@@ -941,6 +1419,12 @@ async function main() {
       parsedUrl.origin,
       crawl.discoveredPaths,
     );
+    const noJsChecks = await runNoJsChecks(
+      desktopContext,
+      parsedUrl.origin,
+      startPath,
+      crawl.discoveredPaths,
+    );
     await desktopContext.close();
 
     const selectedMobilePaths = selectedDesktopPaths.slice(0, Math.min(args.maxMobilePages, selectedDesktopPaths.length));
@@ -961,6 +1445,16 @@ async function main() {
 
     await mobileContext.close();
 
+    const seoChecks = await runSeoChecks({
+      origin: parsedUrl.origin,
+      startPath,
+      discoveredPaths: crawl.discoveredPaths,
+      seoArtifactsDir,
+      seoEnabled: args.seoEnabled,
+    });
+
+    await fs.writeFile(seoSummaryPath, JSON.stringify(seoChecks, null, 2), "utf8");
+
     const payload = {
       generatedAt: new Date().toISOString(),
       date,
@@ -972,6 +1466,8 @@ async function main() {
       selectedMobilePaths,
       linkChecks,
       imageSweep,
+      noJsChecks,
+      seoChecks,
       desktopResults,
       mobileResults,
     };
@@ -983,6 +1479,10 @@ async function main() {
     const markdown = buildMarkdownReport(payload, issues, {
       jsonRelativePath: path.relative(process.cwd(), jsonPath),
       screenshotsRelativeDir: path.relative(process.cwd(), screenshotDir),
+      seoSummaryRelativePath: path.relative(process.cwd(), seoSummaryPath),
+      seoArtifactsRelativeDir: args.seoEnabled
+        ? path.relative(process.cwd(), seoArtifactsDir)
+        : "",
     });
 
     await fs.writeFile(markdownPath, markdown, "utf8");
@@ -991,6 +1491,10 @@ async function main() {
     console.log(`- Markdown report: ${path.relative(process.cwd(), markdownPath)}`);
     console.log(`- JSON artifact:   ${path.relative(process.cwd(), jsonPath)}`);
     console.log(`- Screenshots:     ${path.relative(process.cwd(), screenshotDir)}`);
+    console.log(`- SEO summary:     ${path.relative(process.cwd(), seoSummaryPath)}`);
+    if (args.seoEnabled) {
+      console.log(`- SEO raw reports: ${path.relative(process.cwd(), seoArtifactsDir)}`);
+    }
     console.log(`- Issues found:    ${issues.length}`);
     for (const issue of issues) {
       console.log(`  - [${issue.priority}] ${issue.id}: ${issue.title}`);

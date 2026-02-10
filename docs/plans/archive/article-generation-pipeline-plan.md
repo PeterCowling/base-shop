@@ -1,9 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Historical
 Domain: Platform
 Created: 2026-02-06
-Last-updated: 2026-02-09 (re-plan)
+Last-updated: 2026-02-10
+Completed: 2026-02-10
 Last-reviewed: 2026-02-06
 Feature-Slug: article-generation-pipeline
 Overall-confidence: 87%
@@ -728,7 +729,7 @@ apps/brikette                        ← Switches from local content to readGuid
 ### TASK-09: Confirm Slice 2-4 scope and sequencing
 
 - **Type:** DECISION
-- **Affects:** `docs/plans/article-generation-pipeline-plan.md` (this doc)
+- **Affects:** `docs/plans/archive/article-generation-pipeline-plan.md` (this doc)
 - **Depends on:** TASK-07
 - **Confidence:** 70% ⚠️
   - Implementation: 80% — Slice boundaries are well-defined in fact-find

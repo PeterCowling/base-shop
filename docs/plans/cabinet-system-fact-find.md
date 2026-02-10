@@ -6,7 +6,7 @@ Domain: Business-OS
 Created: 2026-02-09
 Last-updated: 2026-02-09
 Feature-Slug: cabinet-system
-Related-Plan: docs/plans/cabinet-system-plan.md
+Related-Plan: docs/plans/archive/cabinet-system-plan.md
 Business-Unit: BOS
 ---
 

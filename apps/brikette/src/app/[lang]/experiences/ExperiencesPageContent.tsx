@@ -5,7 +5,6 @@
 // Client component for experiences listing page
 import { Fragment, memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -29,6 +28,9 @@ import { normalizeString, readString } from "./experiencesPageCopy";
 
 type Props = {
   lang: AppLanguage;
+  topicParam?: string;
+  tagParam?: string;
+  queryString?: string;
 };
 
 // Filter guides to only include published experiences.
@@ -105,8 +107,7 @@ function buildGuideCopy(
   };
 }
 
-function ExperiencesPageContent({ lang }: Props) {
-  const searchParams = useSearchParams();
+function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryString = "" }: Props) {
   const { t } = useTranslation("experiencesPage", { lng: lang });
   useTranslation("guides", { lng: lang });
   const { openModal } = useOptionalModal();
@@ -122,8 +123,6 @@ function ExperiencesPageContent({ lang }: Props) {
   const handleOpenBooking = useCallback(() => openModal("booking"), [openModal]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
-  const topicParam = searchParams?.get("topic") ?? "";
-  const tagParam = searchParams?.get("tag") ?? "";
   const normalizedTopicParam = topicParam.trim().toLowerCase();
   const normalizedTagParam = tagParam.trim().toLowerCase();
 
@@ -208,7 +207,8 @@ function ExperiencesPageContent({ lang }: Props) {
                   </span>
                   <a
                     href={clearFilterHref}
-                    className="inline-flex min-h-11 items-center text-sm font-semibold text-brand-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-secondary"
+                    // eslint-disable-next-line ds/min-tap-size -- BRIK-DS-001: link includes text and min dimensions; rule false-positives in this layout.
+                    className="inline-flex min-h-10 min-w-10 items-center text-sm font-semibold text-brand-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-secondary"
                   >
                     {guideCopy.clearFilterLabel || (t("guideCollections.clearFilter") as string)}
                   </a>
@@ -223,6 +223,8 @@ function ExperiencesPageContent({ lang }: Props) {
                 {...(guideFilterPredicate ? { filterPredicate: guideFilterPredicate } : {})}
                 {...(guideFilterOptions ? { filterOptions: guideFilterOptions } : {})}
                 clearFilterHref={clearFilterHref}
+                basePath={clearFilterHref}
+                searchParamsString={queryString}
                 copy={guideCopy}
                 showFilters={false}
                 sectionClassName="mx-auto max-w-6xl"
@@ -234,6 +236,9 @@ function ExperiencesPageContent({ lang }: Props) {
               <GroupedGuideCollection
                 lang={lang}
                 guides={allExperienceGuides}
+                activeTopic={normalizedTopicParam}
+                searchParamsString={queryString}
+                basePath={clearFilterHref}
                 clearFilterHref={clearFilterHref}
                 copy={{
                   cardCta: guideCopy.cardCta,

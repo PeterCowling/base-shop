@@ -1,7 +1,7 @@
 ---
 Type: Plan
 Last-reviewed: 2026-02-09
-Status: Active
+Status: Archived
 Domain: Brikette
 Created: 2026-02-09
 Last-updated: 2026-02-10
@@ -11,7 +11,7 @@ Remaining-confidence: 87% (excluding optional TASK-07)
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Relates-to charter: none
 Predecessor: docs/plans/archive/brikette-live-delivery-speed-plan.md
-Tasks-complete: 5/7
+Tasks-complete: 5/7 (2 deferred to brikette-deferred-plan.md)
 ---
 
 # Brikette — Live Delivery Speed Plan (v2)
@@ -20,7 +20,7 @@ Continuation of the original Brikette Live Delivery Speed plan. The original pla
 
 ## Active tasks
 
-TASK-04 (user action — GA4 property creation + env var config). TASK-07 (optional, pending TASK-06 recommendation).
+None — plan complete. TASK-04 (GA4 verification) and TASK-07 (chunk reduction) deferred to `docs/plans/brikette-deferred-plan.md` as BRIK-DEF-05 and BRIK-DEF-06.
 
 ## Summary
 
@@ -87,10 +87,10 @@ TASK-04 (user action — GA4 property creation + env var config). TASK-07 (optio
 | TASK-01 | TRACKER | Fix `_headers` caching policy (parent tracker) | 90% | S | ✅ Complete | - |
 | TASK-02 | IMPLEMENT | Deploy 22-rule `_headers` to staging (PR #7201) | 92% | S | ✅ Complete (superseded) | TASK-01 |
 | TASK-03 | INVESTIGATE | Verify cache headers working in production (curl checks) | 90% | S | ✅ Complete (prod headers NOT working) | TASK-02 |
-| TASK-04 | IMPLEMENT | Set up GA4 property + configure env vars + verify Web Vitals | 85% | M | ⬜ Pending | TASK-02 |
+| TASK-04 | IMPLEMENT | Set up GA4 property + configure env vars + verify Web Vitals | 85% | M | ➡️ Deferred (BRIK-DEF-05) | TASK-02 |
 | TASK-05 | IMPLEMENT | Add Brikette to Lighthouse CI (budgets + workflow) | 84% | M | ✅ Complete | TASK-03 |
 | TASK-06 | INVESTIGATE | Investigate chunk reduction approach | 88% | M | ✅ Complete | - |
-| TASK-07 | INVESTIGATE/EXPERIMENT | webpack splitChunks stopgap (optional) | 70% ⚠️ | S | ⬜ Optional | TASK-06 |
+| TASK-07 | INVESTIGATE/EXPERIMENT | webpack splitChunks stopgap (optional) | 70% ⚠️ | S | ➡️ Deferred (BRIK-DEF-06) | TASK-06 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 

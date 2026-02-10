@@ -2252,27 +2252,23 @@ export default [
     },
   },
 
-  /* ▸ Prime guest portal: early development, DS rules disabled (matches .eslintrc.cjs intent).
-   *   Must be after the catch-all complexity/max-lines block so "off" wins. */
+  /* ▸ Prime dev tools: DS rules disabled (internal debugging panels, not user-facing). */
   {
-    files: ["apps/prime/**"],
+    files: ["apps/prime/src/components/dev/**", "apps/prime/src/services/firebase*"],
     rules: {
       ...offAllDsRules,
-      "max-lines-per-function": "off",
-      "complexity": "off",
     },
   },
-  /* ▸ Prime homepage: DS rules re-enabled after migration (TASK-02).
-   *   Must be after the blanket Prime disable so these "error"/"warn" overrides win. */
+  /* ▸ Prime: DS color rules enforced after full migration (TASK-01–13).
+   *   Non-color DS rules at "warn" for progressive hardening.
+   *   complexity/max-lines relaxed (large components in guest portal). */
   {
-    files: ["apps/prime/src/components/homepage/**/*.{ts,tsx}"],
+    files: ["apps/prime/**"],
     plugins: { ds: dsPlugin },
     rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
+      "max-lines-per-function": "off",
+      "complexity": "off",
+      // Non-color DS rules — progressive hardening (warn, not error)
       "ds/no-raw-spacing": "warn",
       "ds/no-raw-typography": "warn",
       "ds/no-raw-radius": "warn",
@@ -2285,180 +2281,14 @@ export default [
       "ds/no-negative-margins": "warn",
       "ds/no-margins-on-atoms": "warn",
       "ds/enforce-layout-primitives": "warn",
-      "ds/require-disable-justification": [
-        "warn",
-        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
-      ],
-    },
-  },
-  /* ▸ Prime arrival: DS rules re-enabled after migration (TASK-03).
-   *   Must be after the blanket Prime disable so these overrides win. */
-  {
-    files: ["apps/prime/src/components/arrival/**/*.{ts,tsx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/require-disable-justification": [
-        "warn",
-        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
-      ],
-    },
-  },
-  /* ▸ Prime pre-arrival: DS rules re-enabled after migration (TASK-04).
-   *   Must be after the blanket Prime disable so these overrides win. */
-  {
-    files: ["apps/prime/src/components/pre-arrival/**/*.{ts,tsx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/require-disable-justification": [
-        "warn",
-        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
-      ],
-    },
-  },
-  /* ▸ Prime onboarding: DS rules re-enabled after migration (TASK-07).
-   *   Must be after the blanket Prime disable so these overrides win. */
-  {
-    files: ["apps/prime/src/components/onboarding/**/*.{ts,tsx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/require-disable-justification": [
-        "warn",
-        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
-      ],
-    },
-  },
-  /* ▸ Prime portal: DS rules re-enabled after migration (TASK-06).
-   *   Must be after the blanket Prime disable so these overrides win. */
-  {
-    files: ["apps/prime/src/components/portal/**/*.{ts,tsx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/require-disable-justification": [
-        "warn",
-        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
-      ],
-    },
-  },
-  /* ▸ Prime quests + routes components: DS rules re-enabled after migration (TASK-09).
-   *   Must be after the blanket Prime disable so these overrides win. */
-  {
-    files: [
-      "apps/prime/src/components/quests/**/*.{ts,tsx}",
-      "apps/prime/src/components/routes/**/*.{ts,tsx}",
-    ],
-    plugins: { ds: dsPlugin },
-    rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/require-disable-justification": [
-        "warn",
-        { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
-      ],
-    },
-  },
-  /* ▸ Prime heavy route pages: DS rules re-enabled after migration (TASK-08).
-   *   Must be after the blanket Prime disable so these overrides win. */
-  {
-    files: [
-      "apps/prime/src/app/owner/scorecard/page.{ts,tsx}",
-      "apps/prime/src/app/owner/page.{ts,tsx}",
-      "apps/prime/src/app/(guarded)/booking-details/page.{ts,tsx}",
-      "apps/prime/src/app/(guarded)/activities/ActivitiesClient.{ts,tsx}",
-      "apps/prime/src/app/staff-lookup/StaffLookupClient.{ts,tsx}",
-      "apps/prime/src/app/checkin/CheckInClient.{ts,tsx}",
-      "apps/prime/src/app/g/page.{ts,tsx}",
-      "apps/prime/src/app/(guarded)/chat/channel/page.{ts,tsx}",
-    ],
-    plugins: { ds: dsPlugin },
-    rules: {
-      // Color/token rules — fully migrated, enforce as errors
-      "ds/no-raw-color": "error",
-      "ds/no-raw-tailwind-color": "error",
-      "ds/no-raw-font": "error",
-      // Remaining DS rules — enabled as warnings for progressive hardening
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
+      "ds/no-unsafe-viewport-units": "warn",
+      "ds/container-widths-only-at": "warn",
+      "ds/no-hardcoded-copy": "warn",
+      "ds/min-tap-size": "warn",
+      "ds/enforce-focus-ring-token": "warn",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+      "ds/absolute-parent-guard": "warn",
+      "ds/no-nonlayered-zindex": "warn",
       "ds/require-disable-justification": [
         "warn",
         { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },

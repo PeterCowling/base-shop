@@ -48,5 +48,13 @@ export default async function HomePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
+  await getTranslations(validLang, [
+    "landingPage",
+    "faq",
+    "testimonials",
+    "ratingsBar",
+    "modals",
+  ]);
+
   return <HomeContent lang={validLang} />;
 }

@@ -6,20 +6,20 @@ import { Fragment, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
-import { RatingsBar } from "@acme/ui/atoms";
 import { DirectBookingPerks } from "@acme/ui/molecules";
-import RoomsSection from "@acme/ui/organisms/RoomsSection";
 
 import AlsoHelpful from "@/components/common/AlsoHelpful";
+import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
 import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 
 type Props = {
   lang: AppLanguage;
+  bookingQuery?: RoomsSectionBookingQuery;
 };
 
-function RoomsPageContent({ lang }: Props) {
+function RoomsPageContent({ lang, bookingQuery }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   useTranslation("ratingsBar", { lng: lang, useSuspense: true });
   usePagePreload({
@@ -35,21 +35,18 @@ function RoomsPageContent({ lang }: Props) {
     <Fragment>
       <RoomsStructuredData />
 
-      {/* Ratings Bar */}
-      <RatingsBar className="my-6" lang={lang} />
-
       {/* Page Header */}
       <Section padding="default" className="text-center">
         <h1 className="mb-4 text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl lg:text-5xl">
           {pageTitle}
         </h1>
         {pageSubtitle && (
-          <p className="mx-auto max-w-2xl text-lg text-brand-text/80">{pageSubtitle}</p>
+          <p className="mx-auto text-lg text-brand-text/80">{pageSubtitle}</p>
         )}
       </Section>
 
       {/* Rooms Grid */}
-      <RoomsSection lang={lang} />
+      <RoomsSection lang={lang} bookingQuery={bookingQuery} />
 
       {/* Direct Booking Perks */}
       <Section padding="default">

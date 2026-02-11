@@ -241,6 +241,15 @@ enqueue_waiter() {
 queue_allows_attempt() {
   local requester_ticket="${1:-}"
   local head
+
+  # DS-02: If the requester has a ticket but it was cleaned (orphan scenario),
+  # deny the attempt. This prevents orphaned waiters (whose parent PID died
+  # and whose ticket was removed by cleanup_stale_queue_entries) from acquiring
+  # the lock when the queue becomes empty.
+  if [[ -n "$requester_ticket" && ! -f "${queue_entries_dir}/${requester_ticket}.meta" ]]; then
+    return 1
+  fi
+
   head="$(queue_head_ticket)"
   if [[ -z "$head" ]]; then
     return 0
@@ -474,6 +483,15 @@ case "$cmd" in
       queue_mutex_lock
       cleanup_stale_queue_entries
       queue_mutex_unlock
+
+      # DS-02: If our own ticket was cleaned (parent PID died), exit immediately
+      # rather than attempting to acquire as an orphan.
+      if [[ -n "$queue_ticket" && ! -f "${queue_entries_dir}/${queue_ticket}.meta" ]]; then
+        echo "ERROR: queue ticket ${queue_ticket} was cleaned (owner PID likely dead); exiting." >&2
+        queue_ticket=""
+        trap - EXIT INT TERM
+        exit 1
+      fi
 
       if acquire_once "$queue_ticket"; then
         remove_queue_ticket "$queue_ticket"

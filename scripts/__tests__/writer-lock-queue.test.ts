@@ -266,10 +266,9 @@ describe("Writer Lock Queue Invariants", () => {
   );
 
   // TC-02: Orphaned waiter (parent killed) must NOT acquire lock.
-  // SKIP: Demonstrates Finding 1 bug — orphan CAN currently acquire because
-  // queue_allows_attempt returns 0 (allow) when the queue is empty after
-  // stale cleanup removes the orphan's ticket. Unskip after DS-02 fix.
-  test.skip(
+  // Fixed in DS-02: queue_allows_attempt and acquire loop now check for
+  // ticket-file-existence, blocking orphans whose tickets were cleaned.
+  test(
     "TC-02: orphaned waiter (parent killed) does not acquire lock",
     async () => {
       const repo = newRepo();

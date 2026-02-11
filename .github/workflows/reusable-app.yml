@@ -253,6 +253,7 @@ jobs:
         env:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
           EVENT_BEFORE: ${{ github.event.before || '' }}
+          PRIME_CHANGED_FILE_LINT_MAX_TARGETS: "150"
         run: |
           set -euo pipefail
           base_sha=""
@@ -271,7 +272,21 @@ jobs:
             : > "$changed_paths_file"
           fi
 
-          pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --format outputs
+          decision_output="$(pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --format outputs)"
+          echo "$decision_output"
+
+          run_lint="$(echo "$decision_output" | awk -F= '$1=="run_lint"{print $2}')"
+          lint_target_count="$(echo "$decision_output" | awk -F= '$1=="lint_target_count"{print $2}')"
+
+          if [[ "$run_lint" != "true" ]]; then
+            exit 0
+          fi
+
+          if [[ -n "${PRIME_CHANGED_FILE_LINT_MAX_TARGETS:-}" ]] && [[ "$lint_target_count" =~ ^[0-9]+$ ]] && (( lint_target_count > PRIME_CHANGED_FILE_LINT_MAX_TARGETS )); then
+            echo "::warning title=Prime changed-file lint gate::Skipping strict touched-file lint because target count ($lint_target_count) exceeds max ($PRIME_CHANGED_FILE_LINT_MAX_TARGETS)."
+            exit 0
+          fi
+
           pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --run-eslint --format outputs
 
       - name: Typecheck

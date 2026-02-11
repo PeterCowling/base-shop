@@ -18,12 +18,38 @@ describe('/api/guest-session', () => {
     getSpy.mockRestore();
   });
 
+  // Real Firebase data shapes
+  const BOOKING_ID = 'IM6JF8';
+  const OCCUPANT_ID = 'occ_1767440561435';
+
+  const mockBookingData = {
+    [OCCUPANT_ID]: {
+      checkInDate: '2026-08-15',
+      checkOutDate: '2026-08-17',
+      leadGuest: true,
+      roomNumbers: ['6'],
+    },
+  };
+
+  const mockGuestDetails = {
+    firstName: 'Megan',
+    lastName: 'Rochford',
+    email: 'meganrochford01@gmail.com',
+    gender: 'F',
+    citizenship: '',
+    dateOfBirth: { dd: '', mm: '', yyyy: '' },
+    document: { number: '', type: 'Passport' },
+    language: '',
+    municipality: 'NONE',
+    placeOfBirth: '',
+  };
+
   it('TC-04: GET returns 200 for valid non-expired token', async () => {
     getSpy.mockImplementation(async (path: string) => {
       if (path === 'guestSessionsByToken/valid-token') {
         return {
-          bookingId: 'BOOK123',
-          guestUuid: 'occ_1234567890123',
+          bookingId: BOOKING_ID,
+          guestUuid: OCCUPANT_ID,
           createdAt: '2026-02-01T00:00:00.000Z',
           expiresAt: '2099-12-31T00:00:00.000Z',
         };
@@ -36,7 +62,7 @@ describe('/api/guest-session', () => {
         url: 'https://prime.example.com/api/guest-session?token=valid-token',
       }),
     );
-    const payload = await response.json() as { status: string; expiresAt: string };
+    const payload = (await response.json()) as { status: string; expiresAt: string };
 
     expect(response.status).toBe(200);
     expect(payload.status).toBe('ok');
@@ -47,8 +73,8 @@ describe('/api/guest-session', () => {
     getSpy.mockImplementation(async (path: string) => {
       if (path === 'guestSessionsByToken/expired-token') {
         return {
-          bookingId: 'BOOK123',
-          guestUuid: 'occ_1234567890123',
+          bookingId: BOOKING_ID,
+          guestUuid: OCCUPANT_ID,
           createdAt: '2026-02-01T00:00:00.000Z',
           expiresAt: '2020-01-01T00:00:00.000Z',
         };
@@ -72,16 +98,17 @@ describe('/api/guest-session', () => {
     getSpy.mockImplementation(async (path: string) => {
       if (path === 'guestSessionsByToken/valid-token') {
         return {
-          bookingId: 'BOOK123',
-          guestUuid: 'occ_1234567890123',
+          bookingId: BOOKING_ID,
+          guestUuid: OCCUPANT_ID,
           createdAt: '2026-02-01T00:00:00.000Z',
           expiresAt: '2099-12-31T00:00:00.000Z',
         };
       }
-      if (path === 'bookings/BOOK123') {
-        return {
-          guestName: 'Jane Doe',
-        };
+      if (path === `bookings/${BOOKING_ID}`) {
+        return mockBookingData;
+      }
+      if (path === `guestsDetails/${BOOKING_ID}/${OCCUPANT_ID}`) {
+        return mockGuestDetails;
       }
       return null;
     });
@@ -92,14 +119,14 @@ describe('/api/guest-session', () => {
         method: 'POST',
         body: {
           token: 'valid-token',
-          lastName: 'Doe',
+          lastName: 'Rochford',
         },
         headers: { 'CF-Connecting-IP': '10.0.0.10' },
         env,
       }),
     );
 
-    const payload = await response.json() as {
+    const payload = (await response.json()) as {
       bookingId: string;
       guestUuid: string | null;
       guestFirstName: string;
@@ -107,9 +134,9 @@ describe('/api/guest-session', () => {
 
     expect(response.status).toBe(200);
     expect(payload).toEqual({
-      bookingId: 'BOOK123',
-      guestUuid: 'occ_1234567890123',
-      guestFirstName: 'Jane',
+      bookingId: BOOKING_ID,
+      guestUuid: OCCUPANT_ID,
+      guestFirstName: 'Megan',
     });
     expect(kv.delete).toHaveBeenCalledWith('guest-verify:10.0.0.10:valid-token');
   });
@@ -121,16 +148,17 @@ describe('/api/guest-session', () => {
     getSpy.mockImplementation(async (path: string) => {
       if (path === 'guestSessionsByToken/valid-token') {
         return {
-          bookingId: 'BOOK123',
-          guestUuid: 'occ_1234567890123',
+          bookingId: BOOKING_ID,
+          guestUuid: OCCUPANT_ID,
           createdAt: '2026-02-01T00:00:00.000Z',
           expiresAt: '2099-12-31T00:00:00.000Z',
         };
       }
-      if (path === 'bookings/BOOK123') {
-        return {
-          guestName: 'Jane Doe',
-        };
+      if (path === `bookings/${BOOKING_ID}`) {
+        return mockBookingData;
+      }
+      if (path === `guestsDetails/${BOOKING_ID}/${OCCUPANT_ID}`) {
+        return mockGuestDetails;
       }
       return null;
     });
@@ -149,10 +177,55 @@ describe('/api/guest-session', () => {
     );
 
     expect(response.status).toBe(403);
-    expect(kv.put).toHaveBeenCalledWith(
-      'guest-verify:10.0.0.11:valid-token',
-      '1',
-      { expirationTtl: 900 },
+    expect(kv.put).toHaveBeenCalledWith('guest-verify:10.0.0.11:valid-token', '1', {
+      expirationTtl: 900,
+    });
+  });
+
+  it('TC-08: POST with null guestUuid falls back to lead guest from booking', async () => {
+    const kv = createMockKv();
+    const env = createMockEnv({ RATE_LIMIT: kv });
+
+    getSpy.mockImplementation(async (path: string) => {
+      if (path === 'guestSessionsByToken/null-uuid-token') {
+        return {
+          bookingId: BOOKING_ID,
+          guestUuid: null, // null — must resolve from booking occupants
+          createdAt: '2026-02-01T00:00:00.000Z',
+          expiresAt: '2099-12-31T00:00:00.000Z',
+        };
+      }
+      if (path === `bookings/${BOOKING_ID}`) {
+        return mockBookingData;
+      }
+      if (path === `guestsDetails/${BOOKING_ID}/${OCCUPANT_ID}`) {
+        return mockGuestDetails;
+      }
+      return null;
+    });
+
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/guest-session',
+        method: 'POST',
+        body: {
+          token: 'null-uuid-token',
+          lastName: 'Rochford',
+        },
+        headers: { 'CF-Connecting-IP': '10.0.0.12' },
+        env,
+      }),
     );
+
+    const payload = (await response.json()) as {
+      bookingId: string;
+      guestUuid: string | null;
+      guestFirstName: string;
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.bookingId).toBe(BOOKING_ID);
+    expect(payload.guestUuid).toBe(OCCUPANT_ID);
+    expect(payload.guestFirstName).toBe('Megan');
   });
 });

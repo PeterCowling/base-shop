@@ -91,7 +91,7 @@ describe("Brikette header CTA translation", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Check availability" })
+      screen.getByRole("link", { name: "Check availability" })
     ).toBeInTheDocument();
 
     await act(async () => {
@@ -99,7 +99,7 @@ describe("Brikette header CTA translation", () => {
     });
 
     expect(
-      screen.getByRole("button", { name: "Comprobar disponibilidad" })
+      screen.getByRole("link", { name: "Comprobar disponibilidad" })
     ).toBeInTheDocument();
   });
 
@@ -124,7 +124,7 @@ describe("Brikette header CTA translation", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: "Check availability" })
+      screen.getByRole("link", { name: "Check availability" })
     ).toBeInTheDocument();
 
     await act(async () => {
@@ -132,7 +132,7 @@ describe("Brikette header CTA translation", () => {
     });
 
     expect(
-      screen.getByRole("button", { name: "Comprobar disponibilidad" })
+      screen.getByRole("link", { name: "Comprobar disponibilidad" })
     ).toBeInTheDocument();
   });
 

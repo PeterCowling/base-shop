@@ -1,3 +1,4 @@
+import { products } from "@/data/products";
 import type { Product, ProductColor, ProductSize, ProductVariant } from "@/types/product";
 
 const COLOR_META: Record<ProductColor, { label: string; hex: string }> = {
@@ -9,8 +10,33 @@ const COLOR_META: Record<ProductColor, { label: string; hex: string }> = {
 const SIZES: ProductSize[] = ["kids", "adult"];
 const COLORS: ProductColor[] = ["sand", "ocean", "berry"];
 
-export function getVariantById(products: Product[], variantId: string): ProductVariant | undefined {
-  for (const product of products) {
+export function getProducts(): Product[] {
+  return products;
+}
+
+export function getProductBySlug(slug: string): Product | undefined {
+  return products.find((product) => product.slug === slug);
+}
+
+export function getVariantById(variantId: string): ProductVariant | undefined;
+export function getVariantById(
+  products: Product[],
+  variantId: string
+): ProductVariant | undefined;
+export function getVariantById(
+  productsOrVariantId: Product[] | string,
+  variantIdArg?: string
+): ProductVariant | undefined {
+  const productList = Array.isArray(productsOrVariantId)
+    ? productsOrVariantId
+    : products;
+  const variantId = typeof productsOrVariantId === "string"
+    ? productsOrVariantId
+    : variantIdArg;
+  if (!variantId) return undefined;
+
+  for (const product of productList) {
+    if (!product) continue;
     const match = product.variants.find((variant) => variant.id === variantId);
     if (match) return match;
   }

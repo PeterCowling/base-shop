@@ -5,6 +5,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useR
 import { cartReducer, initialCartState } from "@/contexts/cart/cartReducer";
 import { loadCart, saveCart } from "@/contexts/cart/cartStorage";
 import { getCartTotals } from "@/lib/cart";
+import { getProducts } from "@/lib/catalog";
 import type { CartItem } from "@/types/cart";
 import type { CurrencyCode, Product } from "@/types/product";
 
@@ -21,7 +22,13 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-export function CartProvider({ children, products }: { children: React.ReactNode; products: Product[] }) {
+export function CartProvider({
+  children,
+  products = getProducts(),
+}: {
+  children: React.ReactNode;
+  products?: Product[];
+}) {
   const [state, dispatch] = useReducer(cartReducer, initialCartState);
 
   const totals = useMemo(() => getCartTotals(state, products), [products, state]);

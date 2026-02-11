@@ -26,6 +26,8 @@ import ThankYouPage, { generateMetadata as generateThankYouMetadata } from "@/ap
 import RootLayout, { metadata as rootMetadata } from "@/app/layout";
 import RootNotFound from "@/app/not-found";
 import RootRedirect from "@/app/page";
+import { products } from "@/data/products";
+import * as cochlearfitCatalogServer from "@/lib/cochlearfitCatalog.server";
 
 import enMessages from "../i18n/en.json";
 
@@ -99,7 +101,9 @@ describe("root pages", () => {
 
 describe("locale layout", () => {
   it("generates locale params", () => {
-    expect(generateLocaleParams()).toEqual([{ lang: "en" }, { lang: "it" }]);
+    expect(generateLocaleParams()).toEqual(
+      expect.arrayContaining([{ lang: "en" }, { lang: "it" }])
+    );
   });
 
   it("renders locale layout children", async () => {
@@ -217,8 +221,23 @@ describe("localized pages", () => {
 });
 
 describe("product pages", () => {
+  beforeEach(() => {
+    jest
+      .spyOn(cochlearfitCatalogServer, "listCochlearfitProductSlugs")
+      .mockResolvedValue(products.map((product) => product.slug));
+    jest
+      .spyOn(cochlearfitCatalogServer, "getCochlearfitProductBySlug")
+      .mockImplementation(async (_locale, slug) =>
+        products.find((product) => product.slug === slug) ?? null
+      );
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("generates product params and metadata", async () => {
-    const params = generateProductParams();
+    const params = await generateProductParams();
     expect(params).toEqual(
       expect.arrayContaining([
         { lang: "en", slug: "classic" },

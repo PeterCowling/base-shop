@@ -9,10 +9,15 @@ import Price from "@/components/Price";
 import { useCart } from "@/contexts/cart/CartContext";
 import { useLocale } from "@/contexts/LocaleContext";
 import { getCartLineItems } from "@/lib/cart";
+import { getProducts } from "@/lib/catalog";
 import { createCheckoutSession } from "@/lib/checkout";
 import type { Product } from "@/types/product";
 
-const CheckoutPanel = React.memo(function CheckoutPanel({ products }: { products: Product[] }) {
+const CheckoutPanel = React.memo(function CheckoutPanel({
+  products = getProducts(),
+}: {
+  products?: Product[];
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const { items, subtotal, currency } = useCart();

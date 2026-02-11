@@ -41,7 +41,7 @@ These items primarily affect:
 
 ---
 
-## Active Tasks
+## Active tasks
 
 ### ADMIN-01: Configure Turbo Remote Cache
 

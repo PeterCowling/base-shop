@@ -55,6 +55,12 @@ The only deliberate pushback retained is unchanged: a pure report-only patch is 
 - Hierarchical invocation logging.
 - Always-on large intermediate artifact graphs.
 
+## Active tasks
+
+- IGF-RS-01 - Capture 5-run baseline using existing metrics and baseline rubric scores.
+- IGF-RS-01B - Add lightweight run metrics if RS-01 finds missing fields.
+- IGF-RS-05 - Enforce default-vs-debug artifact policy and retention/prune behavior.
+
 ## Evidence Baseline and Escalation Gate
 
 ### RS-01 Baseline Data Sources

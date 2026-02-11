@@ -18,6 +18,8 @@ Audit-Ref: 9c344c9ee9a23c98b3cb645afbd0e97be90d3d46
 
 Active tasks are listed in the **Active Tasks** section below (`XA-READY-08` is currently active).
 
+- XA-READY-08 - Deploy to Cloudflare staging and verify.
+
 ## Context
 
 XA is a member rewards storefront application built with Next.js 15 and React 19. Before presenting it to the client for initial review, we need to ensure the app is functional and presentable.

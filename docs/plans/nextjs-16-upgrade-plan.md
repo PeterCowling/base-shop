@@ -2,6 +2,8 @@
 Type: Plan
 Status: Active
 Domain: Platform
+Last-reviewed: 2026-02-10
+Relates-to charter: none
 Workstream: Engineering
 Created: 2026-01-24
 Last-updated: 2026-02-10
@@ -72,6 +74,17 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 4. Upgrade ecosystem deps (next-auth, eslint-config-next, @opennextjs/cloudflare)
 5. Run codemod + manual fixes for async params/searchParams
 6. Validate builds, types, tests, and Cloudflare deploys
+
+## Active tasks
+
+- TASK-01 - Bump Next.js to 16.x + remove deprecated config.
+- TASK-02 - Add `--webpack` flag to all build/dev scripts.
+- TASK-03 - Upgrade ecosystem deps (`next-auth`, `eslint-config-next`).
+- TASK-04 - Migrate async params/searchParams in cover-me-pretty.
+- TASK-05 - Migrate remaining async params/searchParams in cms and other routes.
+- TASK-06 - Run mid-upgrade validation (build, typecheck, lint).
+- TASK-07 - Upgrade `@opennextjs/cloudflare` for Next 16.
+- TASK-08 - Run full test validation and regression fixes.
 
 **Why `--webpack` not Turbopack:** 9 of 14 apps have custom webpack functions in their next.config.mjs (inheriting from shared preset or adding their own). Migrating these to Turbopack equivalents is a separate project. The `--webpack` flag preserves existing behavior.
 

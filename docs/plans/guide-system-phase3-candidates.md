@@ -3,12 +3,17 @@ Type: Plan
 Status: Reference
 Domain: Repo
 Last-reviewed: 2026-02-09
+Relates-to charter: none
 ---
 
 # Guide System — Phase 3 Candidates
 
 > Captured from the [Unified Guide System Plan](../../.claude/plans/vivid-scribbling-pumpkin.md).
 > These are candidates for future work, not committed tasks.
+
+## Active tasks
+
+No active tasks. This is a reference-only candidate list.
 
 ## P3-01: Manifest TS to JSON migration
 

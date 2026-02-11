@@ -82,6 +82,16 @@ For each task, read `Deliverable` and `Execution-Skill` from the plan and route 
 | `whatsapp-message` | `/draft-whatsapp-message` | Channel-safe copy with compliance checks |
 | `multi-deliverable` | `/build-feature` orchestrates per-task dispatch | One task per cycle still applies |
 
+Startup aliases (from plan field `Startup-Deliverable-Alias`) are clarity labels, not replacement deliverable types:
+
+| Startup-Deliverable-Alias | Canonical Deliverable Type | Dispatch Skill |
+|---|---|---|
+| `startup-budget-envelope` | `spreadsheet` | `/create-ops-spreadsheet` |
+| `startup-channel-plan` | `product-brief` | `/write-product-brief` |
+| `startup-demand-test-protocol` | `product-brief` | `/write-product-brief` |
+| `startup-supply-timeline` | `spreadsheet` | `/create-ops-spreadsheet` |
+| `startup-weekly-kpcs-memo` | `product-brief` | `/write-product-brief` |
+
 If a referenced execution skill is missing, stop and run `/re-plan` to either:
 - add the missing skill as a prerequisite task, or
 - re-scope the task to an available execution path.
@@ -95,6 +105,7 @@ Before executing any task work, verify all of the following:
 - The plan file exists and is the active source of truth.
 - The target task exists and includes:
   - Type, Deliverable, Execution-Skill, Affects (file paths), Depends on, Confidence breakdown, Acceptance, Validation contract, Planning validation (for M/L effort), Rollout/rollback notes, Documentation impact.
+  - For `business-artifact`/`mixed` tasks: Artifact-Destination, Reviewer, Approval-Evidence, Measurement-Readiness.
 - The task is not marked `Superseded`/`Blocked`/`Needs-input`.
 
 **If any required task fields are missing → treat as a confidence drop → STOP → `/re-plan`.**
@@ -153,8 +164,10 @@ Before implementing, verify the task has a complete validation contract:
 - For business-artifact tasks:
   - [ ] Enumerated validation checks (VC-XX) covering all acceptance criteria
   - [ ] Pass conditions specified for each VC
-  - [ ] Review/approval path identified (owner + artifact destination)
-  - [ ] Measurement readiness identified (how post-delivery effect will be tracked)
+  - [ ] Artifact-Destination is explicit and actionable
+  - [ ] Reviewer is named
+  - [ ] Approval-Evidence capture path/method is defined
+  - [ ] Measurement-Readiness is explicit (owner + cadence + tracking location)
 
 **If validation contract is incomplete → treat as confidence drop → STOP → `/re-plan`.**
 
@@ -209,7 +222,7 @@ Extract from the plan into your working context:
 Choose the execution cycle based on the task's `Execution-Track` / `Deliverable` in the plan:
 
 - **Code/mixed:** follow TDD path (3a–3f)
-- **Business-artifact:** follow artifact path (3g–3k)
+- **Business-artifact:** follow artifact path (3g–3l)
 
 **a) [Code/mixed] Audit existing tests for extinction**
 
@@ -278,27 +291,34 @@ test('should return 409 when entity was modified', async () => {
 - If the task specifies "None", skip this step
 - If implementation revealed additional docs needing updates not listed in the plan, update them and note the deviation
 
-**g) [Business-artifact] Draft the artifact**
+**g) [Business-artifact] Staleness check on hypothesis landscape**
+- If the fact-find brief includes a Hypothesis & Validation Landscape, scan it for time-sensitive assumptions (supplier quotes, market pricing, regulatory rules, competitor positioning, demand signals) whose validity may have decayed since planning.
+- If any key hypothesis depends on data older than 14 days, flag it and verify before drafting. If the assumption no longer holds, STOP → `/re-plan`.
+- If no hypothesis landscape exists or all inputs are fresh, proceed.
+
+**h) [Business-artifact] Draft the artifact**
 - Produce the minimum viable artifact described in task acceptance.
 - Keep scope tightly aligned to task and deliverable type (email/brief/asset/sheet/message).
 - Save/update at the path or destination defined in the plan.
 
-**h) [Business-artifact] Run validation checks (VC-XX)**
+**i) [Business-artifact] Run validation checks (VC-XX)**
 - Execute every enumerated VC from the validation contract.
 - Verify channel/format constraints and compliance/brand requirements.
 - If any VC fails unexpectedly and fix is non-obvious → STOP → `/re-plan`.
 
-**i) [Business-artifact] Review and approval handoff**
+**j) [Business-artifact] Review and approval handoff**
 - Route artifact to the owner/reviewer specified in the plan (or capture review-ready evidence if async).
+- Capture explicit owner acknowledgement (who, when, where) and store proof at the `Approval-Evidence` destination defined in plan.
 - Record approval status (approved / changes requested / blocked).
 - If blocked by unresolved preference/decision → STOP and surface DECISION task.
 
-**j) [Business-artifact] Finalize artifact**
+**k) [Business-artifact] Finalize artifact**
 - Incorporate approved revisions.
 - Re-run affected VC checks after changes.
-- Confirm final artifact destination and execution/sending readiness.
+- Confirm final artifact destination publish/handoff is complete.
+- Confirm measurement tracking is ready at the declared `Measurement-Readiness` location.
 
-**k) [Business-artifact] Update documentation**
+**l) [Business-artifact] Update documentation**
 - Update playbooks/runbooks/docs listed in "Documentation impact".
 - Record any deviations discovered during artifact execution.
 
@@ -330,7 +350,7 @@ This creates a feedback loop: validation outcomes directly inform confidence, wh
 
 Run validation aligned to execution track:
 - For code/mixed tasks: Typecheck, lint, and full relevant test suites (not just new tests)
-- For business-artifact tasks: all VC checks pass, required approval captured, artifact destination and measurement readiness confirmed
+- For business-artifact tasks: all VC checks pass, artifact is published to Artifact-Destination, reviewer/owner acknowledgement is captured with Approval-Evidence, and measurement readiness/tracking is confirmed
 
 **Rule: never commit failing execution outputs.** If failures occur:
 - If the fix is straightforward and clearly within the task scope, fix it
@@ -534,7 +554,10 @@ A build cycle is considered complete only if:
 - [ ] Existing related tests were audited for extinction (code/mixed tasks).
 - [ ] Code/mixed tasks: tests were written/completed BEFORE implementation code (TDD).
 - [ ] Code/mixed tasks: tests initially failed for the expected reasons (feature not yet implemented).
-- [ ] Business-artifact tasks: artifact drafted, reviewed, and finalized against VC checks.
+- [ ] Business-artifact tasks: hypothesis landscape staleness checked before drafting (if available).
+- [ ] Business-artifact tasks: artifact drafted, reviewed, finalized, and published/handoff completed against VC checks.
+- [ ] Business-artifact tasks: reviewer/owner acknowledgement captured and linked in Approval-Evidence.
+- [ ] Business-artifact tasks: post-delivery tracking readiness confirmed in Measurement-Readiness destination.
 - [ ] Implementation is scoped exactly to the task (no scope creep).
 - [ ] Actual scope matched classified effort (if not, stopped and re-planned with correct effort).
 - [ ] Standing documentation updated per "Documentation impact" field (or confirmed "None").

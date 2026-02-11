@@ -43,6 +43,7 @@ When starting from a fact-find brief, verify the brief provides adequate validat
 
 **Required in fact-find brief (all tracks):**
 - [ ] `Deliverable-Type`, `Execution-Track`, and `Primary-Execution-Skill`
+- [ ] `Startup-Deliverable-Alias` is set to a supported value for startup work, otherwise `none`
 - [ ] `Delivery-Readiness` confidence input (0-100%)
 
 **Additionally required for `code` or `mixed` tracks:**
@@ -52,6 +53,7 @@ When starting from a fact-find brief, verify the brief provides adequate validat
 
 **Additionally required for `business-artifact` or `mixed` tracks:**
 - [ ] Delivery & Channel Landscape section (audience, channel constraints, approvals, measurement)
+- [ ] Hypothesis & Validation Landscape section (key hypotheses, existing signal coverage, falsifiability assessment, recommended validation approach) — this feeds the Business VC Quality Checklist
 
 **If required validation foundation is missing or incomplete:**
 - Do NOT proceed with planning
@@ -271,6 +273,31 @@ describe('Feature: <feature-name>', () => {
 - **Green (minimum pass):** Produce the smallest viable artifact/process update that passes all scoped VC-XX checks.
 - **Refactor (harden):** Improve clarity/reuse/operability without changing scope; rerun VC checks to confirm no regression.
 - This loop is required evidence for business-artifact tasks claiming >80% confidence.
+- All VC-XX checks must satisfy the **Business VC Quality Checklist** (see below).
+
+#### Business VC Quality Checklist
+
+Good unit tests are fast, isolated, repeatable, and self-validating. Business VCs must meet equivalent standards. Every VC-XX check must satisfy ALL of the following:
+
+| Principle | Code TDD analog | Business VC requirement |
+|-----------|-----------------|------------------------|
+| **Isolated** | Test one unit | Test one variable. A VC that conflates price AND channel AND audience is untestable — split into separate VCs. |
+| **Pre-committed** | Assert before run | State the pass/fail decision before seeing data. "If <5 preorders in 7 days → kill" not "we'll see how it goes." |
+| **Time-boxed** | Test runs in ms | Define when the result will be read. Every VC has a measurement deadline, not an open-ended observation window. |
+| **Minimum viable sample** | Smallest fixture | Define the smallest signal that constitutes evidence. "3 conversions from 200 visitors" not "enough traction." |
+| **Diagnostic** | Failure message | A failing VC must indicate *why* it failed, not just *that* it failed. Structure the check so the failure mode is attributable (wrong price vs. wrong audience vs. wrong channel). |
+| **Repeatable** | Deterministic | Another operator running the same check with the same inputs should reach the same pass/fail conclusion. Avoid VCs that depend on subjective judgment without a rubric. |
+| **Observable** | No side effects | The metric is directly measurable, not inferred. "Preorder count" not "perceived demand." |
+
+**Anti-patterns (reject these):**
+- `VC-01: Validate demand is sufficient` — not isolated, not pre-committed, not observable
+- `VC-02: Check market response` — no sample size, no deadline, not diagnostic
+- `VC-03: Confirm unit economics work` — conflates margin, CAC, and LTV in one check
+
+**Good examples:**
+- `VC-01: Price acceptance — ≥5 completed preorders at €X within 14 days of ad launch → pass; <5 → kill or reprice`
+- `VC-02: Channel viability — CAC from Instagram ads ≤€Y over first €Z spend → pass; >€Y → test alternate channel`
+- `VC-03: Margin floor — landed COGS ≤40% of retail price per supplier quote → pass; >40% → renegotiate or kill`
 
 **If validation reveals problems:**
 - Document unexpected findings in the task
@@ -366,6 +393,7 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
 - Each task must include:
   - **Affects** (file paths/modules — see format below)
   - **Deliverable** (type + artifact/output location)
+  - **Startup-Deliverable-Alias** (`none` unless startup-specific)
   - **Execution-Skill** (primary skill to execute task work)
   - **Dependencies** (TASK-IDs)
   - **Acceptance criteria**
@@ -373,6 +401,11 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
   - **Rollout/rollback** (feature flag, migration strategy, safe deploy)
   - **Documentation impact** (standing docs to update, or "None" if no docs affected)
   - **Notes** (links/pattern references)
+  - For `business-artifact` or `mixed` tasks (mandatory):
+    - **Artifact-Destination** (where the final artifact is published/handed off)
+    - **Reviewer** (named person/role that must acknowledge completion)
+    - **Approval-Evidence** (path/link/comment proving reviewer acknowledgement)
+    - **Measurement-Readiness** (metric owner + cadence + tracking location)
 
 **Affects field format:**
 - **Primary** (files being modified): `src/path/to/file.ts`
@@ -396,6 +429,7 @@ Use `[readonly]` prefix for files that must be read to understand contracts but 
     - Refactor: improve quality/operability while keeping VC checks green
 - If a task spans multiple apps/services/packages, include cross-boundary **contract tests** for shared schemas/nodes/events.
 - If a task spans multiple channels/teams, include cross-boundary validation (handoff, approval, and measurement readiness).
+- For `business-artifact` or `mixed` tasks, `Artifact-Destination`, `Reviewer`, `Approval-Evidence`, and `Measurement-Readiness` are required fields, not optional notes.
 
 If something is uncertain, create an explicit **INVESTIGATION** task (to raise confidence) or a **DECISION** task (to choose between alternatives). Do not bury uncertainty inside implementation tasks.
 
@@ -527,6 +561,7 @@ Created: YYYY-MM-DD
 Last-updated: YYYY-MM-DD
 Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
+Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo>
 Execution-Track: <code | business-artifact | mixed>
 Primary-Execution-Skill: <build-feature | draft-email-message | write-product-brief | draft-marketing-asset | create-ops-spreadsheet | draft-whatsapp-message>
 Supporting-Skills: <comma-separated or none>
@@ -597,7 +632,12 @@ _Generated by `/sequence-plan` (step 10a). Shows which tasks can run concurrentl
 ### TASK-01: <description>
 - **Type:** IMPLEMENT
 - **Deliverable:** <deliverable type + output location/path>
+- **Startup-Deliverable-Alias:** <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo>
 - **Execution-Skill:** <build-feature | draft-email-message | write-product-brief | draft-marketing-asset | create-ops-spreadsheet | draft-whatsapp-message>
+- **Artifact-Destination:** <required for business-artifact/mixed; where final output is published/handed off>
+- **Reviewer:** <required for business-artifact/mixed; named owner/approver>
+- **Approval-Evidence:** <required for business-artifact/mixed; link/path/comment proving acknowledgement>
+- **Measurement-Readiness:** <required for business-artifact/mixed; metric owner + cadence + tracking location>
 - **Affects:** `path/to/file.ts`, `path/to/other.ts`
 - **Depends on:** <TASK-IDs or "-">
 - **Blocks:** <TASK-IDs or "-"> _(populated by `/sequence-plan`)_
@@ -612,10 +652,11 @@ _Generated by `/sequence-plan` (step 10a). Shows which tasks can run concurrentl
     - TC-01: <scenario> → <expected outcome>
     - TC-02: <error case> → <expected outcome>
     - TC-03: <edge case> → <expected outcome>
-  - **Business-artifact tasks (VC format):**
-    - VC-01: <quality/brand/compliance check> → <pass condition>
-    - VC-02: <channel/format check> → <pass condition>
-    - VC-03: <approval/measurement readiness check> → <pass condition>
+  - **Business-artifact tasks (VC format — each VC must pass the Business VC Quality Checklist):**
+    - VC-01: <quality/brand/compliance check> → <pass condition + measurement deadline>
+    - VC-02: <channel/format check> → <pass condition + minimum sample>
+    - VC-03: <reviewer acknowledgement + approval evidence check> → <pass condition>
+    - VC-04: <measurement readiness check (owner/cadence/tracking)> → <pass condition>
   - **Acceptance coverage:** <which acceptance criteria each TC/VC covers>
   - **Validation type:** <unit | integration | e2e | contract | review checklist | approval gate | dry-run>
   - **Validation location/evidence:** <test file path(s) or artifact review checklist path>
@@ -716,6 +757,7 @@ A plan is considered complete only if:
 
 - [ ] All potentially affected areas have been studied (not assumed).
 - [ ] Each task has all required fields: Type, Deliverable, Execution-Skill, Affects, Depends on, Confidence (with dimension breakdown), Acceptance, Validation contract, Planning validation (for M/L), Rollout/rollback, Documentation impact.
+- [ ] For `business-artifact`/`mixed` tasks, mandatory fields are present: Artifact-Destination, Reviewer, Approval-Evidence, Measurement-Readiness.
 - [ ] Confidence scores are justified with evidence (file paths, patterns, tests).
 - [ ] Validation completed per effort level (tests for code/mixed tasks; channel/approval checks for business-artifact tasks).
 - [ ] For M/L tasks claiming >80% confidence: validation evidence is documented.
@@ -732,11 +774,13 @@ A plan is considered complete only if:
 - [ ] Every acceptance criterion maps to ≥1 enumerated validation case (TC-XX or VC-XX).
 - [ ] Validation cases include happy path, error cases, and edge cases.
 - [ ] M/L tasks have validation case specifications with expected outcomes/pass conditions.
+- [ ] `business-artifact`/`mixed` tasks do not use placeholder values (`TBD`, `TBC`, `later`) for Artifact-Destination, Reviewer, Approval-Evidence, or Measurement-Readiness when claiming >80% confidence.
 - [ ] L code/mixed tasks have test stubs committed with the plan.
 - [ ] L business-artifact/mixed tasks have rehearsal/sample validation evidence committed with the plan.
 - [ ] No task claims >80% confidence without enumerated validation cases.
 - [ ] Every IMPLEMENT task includes an explicit execution plan (Red→Green→Refactor for all tracks; business-artifact uses VC-first fail-first loop).
 - [ ] Business-artifact/mixed tasks claiming >80% include Red, Green, and Refactor evidence fields with concrete checks/results.
+- [ ] Every VC-XX check on business-artifact/mixed tasks passes the Business VC Quality Checklist (isolated, pre-committed, time-boxed, minimum viable sample, diagnostic, repeatable, observable).
 - [ ] Tasks spanning multiple apps/services include cross-app contract tests for shared data contracts.
 - [ ] Tasks spanning multiple channels/teams include cross-boundary handoff and approval checks.
 
@@ -744,9 +788,11 @@ A plan is considered complete only if:
 
 Before planning tasks, verify the fact-find brief includes:
 - [ ] Deliverable-Type, Execution-Track, Primary-Execution-Skill
+- [ ] Startup-Deliverable-Alias (startup task) or `none` (non-startup task)
 - [ ] Delivery-Readiness confidence input
 - [ ] For code/mixed tracks: test infrastructure + patterns + coverage gaps + testability assessment
 - [ ] For business-artifact/mixed tracks: delivery/channel landscape + approval + measurement constraints
+- [ ] For business-artifact/mixed tracks: hypothesis & validation landscape (key hypotheses, signal coverage, falsifiability, recommended approach)
 
 **If missing:** Create an INVESTIGATION task to complete the missing foundation, OR incorporate into first IMPLEMENT task with confidence penalty (-10% for missing foundation).
 

@@ -217,17 +217,13 @@ export const GuideCollectionCard = ({
       <div className={clsx(CONTENT_CLASSES)}>
         <div>
           <h3 className="text-base font-semibold text-brand-heading dark:text-brand-heading">
-            {ctaLabel ? (
-              <Link
-                href={href}
-                prefetch={false}
-                className="inline-flex min-h-11 items-center hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70"
-              >
-                {label}
-              </Link>
-            ) : (
-              <span>{label}</span>
-            )}
+            <Link
+              href={href}
+              prefetch={false}
+              className="inline-flex min-h-11 items-center hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70"
+            >
+              {label}
+            </Link>
           </h3>
           {summary ? <p className={clsx(SUMMARY_CLASSES)}>{summary}</p> : null}
           {ctaLabel ? (

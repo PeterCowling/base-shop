@@ -1,12 +1,11 @@
 // src: packages/ui/src/organisms/DesktopHeader.tsx
-import { memo, useCallback, useMemo } from "react";
+import { memo, type MouseEvent, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
-import { Button } from "../components/atoms/shadcn";
 import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useTheme } from "../hooks/useTheme";
@@ -30,6 +29,9 @@ const FALLBACK_PRIMARY_CTA_LABEL =
 const FALLBACK_BRAND_TITLE =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
   "Hostel Brikette";
+const FALLBACK_LOGO_ALT =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
+  "Hostel Brikette logo";
 
 function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -50,6 +52,15 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   const { theme } = useTheme();
 
   const book = useCallback(() => openModal("booking"), [openModal]);
+  const bookHref = `/${lang}/${translatePath("book", lang)}`;
+  const onBookClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      event.preventDefault();
+      book();
+    },
+    [book]
+  );
 
   const navTranslate = useCallback<TranslateFn>(
     (key, defaultValue) => {
@@ -105,7 +116,11 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
             {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
             <img
               src={logoIcon}
-              alt={headerT("logoAlt")}
+              alt={(() => {
+                const logoAlt = headerT("logoAlt", { defaultValue: FALLBACK_LOGO_ALT }) as string;
+                if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
+                return FALLBACK_LOGO_ALT;
+              })()}
               className="size-10"
               width={40}
               height={40}
@@ -126,12 +141,13 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
           </Link>
 
           <div className="flex items-center gap-6">
-            <Button
-              onClick={book}
-              className={`cta ${ctaClass} min-h-11 rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide focus-visible:ring-2 focus-visible:ring-offset-2`}
+            <Link
+              href={bookHref}
+              onClick={onBookClick}
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cta ${ctaClass}`}
             >
               {primaryCtaLabel}
-            </Button>
+            </Link>
 
             <ThemeToggle />
             <LanguageSwitcher />

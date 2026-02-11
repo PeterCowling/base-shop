@@ -51,9 +51,18 @@ type Props = {
 const ROME_SECTION_ID = "rome-travel-planner";
 const EXPERIENCE_SECTION_ID = "experience-planners";
 const INTRO_SECTION_ID = "arrival-help";
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+
+function resolveUiLabel(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}
 
 function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
-  const { t } = useTranslation("howToGetHere", { lng: lang });
+  const { t, ready } = useTranslation("howToGetHere", { lng: lang });
   usePagePreload({ lang, namespaces: ["howToGetHere", "guides"] });
   const fallbackT = useEnglishFallback("howToGetHere");
 
@@ -232,6 +241,40 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
     }
     return chips;
   })();
+
+  if (!ready) {
+    const fallbackRoutes = content.sections
+      .slice(0, 8)
+      .map((section) => ({
+        id: section.id,
+        label: resolveUiLabel(section.name, "Route guide"),
+      }));
+
+    return (
+      <Section padding="default">
+        <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
+          How to Get Here
+        </h1>
+        <p className="mt-3 text-base text-brand-text/80">
+          Route planner copy is loading. In the meantime, use these route guides:
+        </p>
+        {fallbackRoutes.length ? (
+          <ul className="mt-4 space-y-2">
+            {fallbackRoutes.map((route) => (
+              <li key={route.id}>
+                <a
+                  href={`${content.internalBasePath}/${route.id}`}
+                  className="text-sm font-medium text-brand-primary underline-offset-4 hover:underline"
+                >
+                  {route.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </Section>
+    );
+  }
 
   return (
     <div className="overflow-x-clip">

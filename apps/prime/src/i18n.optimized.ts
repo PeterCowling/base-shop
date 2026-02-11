@@ -50,13 +50,17 @@ const i18nOptions: InitOptions = {
   },
 };
 
-// Guard: only initialize in the browser. During SSR module evaluation,
-// initReactI18next tries to access React Context which is null.
+// Browser: full init with HTTP backend for lazy-loading locale JSON files.
+// Server (SSR): skip HttpBackend (no HTTP fetches during render) and disable
+// Suspense so useTranslation() returns fallback keys instead of throwing.
 if (typeof window !== 'undefined') {
   i18n.use(HttpBackend).use(initReactI18next).init(i18nOptions);
 } else {
-  // Minimal server-side init without React binding or HTTP backend
-  i18n.init({ ...i18nOptions, backend: undefined });
+  i18n.use(initReactI18next).init({
+    ...i18nOptions,
+    backend: undefined,
+    react: { useSuspense: false },
+  });
 }
 
 // Helper function to load namespace group

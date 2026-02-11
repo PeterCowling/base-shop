@@ -43,14 +43,14 @@ const POLICY_TABLE: GuardCase[] = [
   {
     id: "PT-05",
     args: ["--filter", "@apps/cms", "test"],
-    expectedDecision: "allow",
-    description: "filtered package test",
+    expectedDecision: "deny",
+    description: "filtered package test without selector",
   },
   {
     id: "PT-06",
     args: ["--filter=@apps/cms", "run", "test"],
-    expectedDecision: "allow",
-    description: "filtered package run test",
+    expectedDecision: "deny",
+    description: "filtered package run test without selector",
   },
   {
     id: "PT-07",
@@ -79,8 +79,8 @@ const POLICY_TABLE: GuardCase[] = [
   {
     id: "PT-11",
     args: ["test"],
-    expectedDecision: "allow",
-    description: "package-local test script",
+    expectedDecision: "deny",
+    description: "package-local unscoped test script",
     cwd: path.join(REPO_ROOT, "apps/cms"),
   },
   {
@@ -89,6 +89,25 @@ const POLICY_TABLE: GuardCase[] = [
     expectedDecision: "allow",
     description: "explicit override for broad tests",
     env: { BASESHOP_ALLOW_BROAD_TESTS: "1" },
+  },
+  {
+    id: "PT-13",
+    args: ["--filter", "@apps/cms", "test", "--", "apps/cms/src/__tests__/idempotency.test.ts"],
+    expectedDecision: "allow",
+    description: "filtered package test with explicit test file",
+  },
+  {
+    id: "PT-14",
+    args: ["--filter", "@apps/cms", "test", "--", "--testPathPattern=idempotency"],
+    expectedDecision: "allow",
+    description: "filtered package test with test path pattern",
+  },
+  {
+    id: "PT-15",
+    args: ["test", "--", "src/app/__tests__/page.test.tsx"],
+    expectedDecision: "allow",
+    description: "package-local test with explicit test file",
+    cwd: path.join(REPO_ROOT, "apps/cms"),
   },
 ];
 
@@ -154,7 +173,7 @@ describe("PNPM Test Safety Policy — pnpm guard (allow)", () => {
 
 describe("PNPM Test Safety Policy — Coverage", () => {
   test("policy table has deny cases", () => {
-    expect(denyCases.length).toBeGreaterThanOrEqual(4);
+    expect(denyCases.length).toBeGreaterThanOrEqual(6);
   });
 
   test("policy table has allow cases", () => {

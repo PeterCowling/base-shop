@@ -30,8 +30,8 @@ Last-reviewed: 2026-02-09
 - For local testing, always run targeted commands (never unfiltered `pnpm test`):
 
   ```bash
-  pnpm --filter @apps/cms test
-  pnpm --filter @apps/skylar test
+  pnpm --filter @apps/cms test -- apps/cms/src/lib/__tests__/shop-smoke.spec.ts
+  pnpm --filter @apps/skylar test -- --testPathPattern="checkout|payment"
   ```
 
 - Root `pnpm test` is intentionally blocked to prevent accidental monorepo fan-out.

@@ -33,6 +33,7 @@ jest                                # Runs all tests in current directory
 **Mechanical guardrails (now enforced):**
 - Root `pnpm test` is hard-blocked by `scripts/guard-broad-test-run.cjs`.
 - Agent/integrator shells enforce `scripts/agent-bin/pnpm` and `scripts/agent-bin/turbo`, which block unscoped monorepo test fan-out commands.
+- Agent/integrator shells also block unscoped package test runs (for example, `pnpm --filter @apps/cms test` without file/pattern selectors).
 - If a full monorepo run is explicitly required, use:
   - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
 

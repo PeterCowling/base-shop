@@ -220,7 +220,9 @@ jobs:
             echo "reason=$reason"
             echo "changed_file_count=$changed_file_count"
             echo "test_scope=$test_scope"
-            echo "related_test_paths_json=$related_test_paths_json"
+            echo "related_test_paths_json<<EOF_JSON"
+            echo "$related_test_paths_json"
+            echo "EOF_JSON"
           } >> "$GITHUB_OUTPUT"
 
       - name: Validation gating decision

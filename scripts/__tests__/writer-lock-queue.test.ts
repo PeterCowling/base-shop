@@ -321,9 +321,8 @@ describe("Writer Lock Queue Invariants", () => {
   );
 
   // TC-03: status returns within 3 seconds under mutex contention.
-  // SKIP: Demonstrates Finding 5 bug — print_status() calls queue_mutex_lock()
-  // which loops forever when mutex is held by a live process. Unskip after DS-05.
-  test.skip(
+  // Fixed in DS-05: print_status() no longer takes the queue mutex.
+  test(
     "TC-03: status returns within 3s under mutex contention",
     () => {
       const repo = newRepo();

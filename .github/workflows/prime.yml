@@ -14,6 +14,7 @@ on:
       - 'packages/themes/**'
       - 'packages/ui/**'
       - '.github/workflows/prime.yml'
+      - '.github/workflows/reusable-app.yml'
   pull_request:
     paths:
       - 'apps/prime/**'
@@ -24,6 +25,7 @@ on:
       - 'packages/themes/**'
       - 'packages/ui/**'
       - '.github/workflows/prime.yml'
+      - '.github/workflows/reusable-app.yml'
   workflow_dispatch:
 
 jobs:

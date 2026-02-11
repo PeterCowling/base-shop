@@ -51,6 +51,6 @@ export default async function RoomsPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  await getTranslations(validLang, ["roomsPage"]);
+  await getTranslations(validLang, ["roomsPage", "_tokens"]);
   return <RoomsPageContent lang={validLang} />;
 }

@@ -34,6 +34,40 @@ type HeroRatingItem = {
   score: string;
 };
 
+const FALLBACK_TRUST_ITEMS = [
+  "100 m to the SITA bus stop",
+  "Sea-view terrace",
+  "Digital concierge tips",
+];
+
+function looksLikeI18nKeyToken(value: string): boolean {
+  if (!value.includes(".")) return false;
+  const parts = value.split(".");
+  if (parts.length < 2) return false;
+  for (const part of parts) {
+    if (!part) return false;
+    for (let i = 0; i < part.length; i += 1) {
+      const code = part.charCodeAt(i);
+      const isLowerAlpha = code >= 97 && code <= 122;
+      const isUpperAlpha = code >= 65 && code <= 90;
+      const isDigit = code >= 48 && code <= 57;
+      const isUnderscore = code === 95;
+      if (!isLowerAlpha && !isUpperAlpha && !isDigit && !isUnderscore) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (looksLikeI18nKeyToken(trimmed)) return fallback;
+  return trimmed;
+}
+
 const RATING_SOURCE_KEYS: Record<string, string> = {
   Hostelworld: "hostelworld",
   "Booking.com": "booking",
@@ -153,14 +187,34 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
     return [perks, bestPrice].filter(Boolean).join(" • ");
   }, [tTokens, tokensReady]);
 
-  const heroIntro = t("introSection.title");
-  const heroTitle = t("heroSection.title");
-  const heroSubtitle = t("heroSection.subtitle");
-  const secondaryCta = t("heroSection.secondaryCta");
+  const heroIntro = resolveTranslatedCopy(
+    t("introSection.title", { defaultValue: "A Beautiful Home Away From Home" }),
+    "A Beautiful Home Away From Home"
+  );
+  const heroTitle = resolveTranslatedCopy(
+    t("heroSection.title", { defaultValue: "Hostel Brikette, Positano" }),
+    "Hostel Brikette, Positano"
+  );
+  const heroSubtitle = resolveTranslatedCopy(
+    t("heroSection.subtitle", {
+      defaultValue: "Positano's only hostel - sea views, common areas, and a digital concierge.",
+    }),
+    "Positano's only hostel - sea views, common areas, and a digital concierge."
+  );
+  const secondaryCta = resolveTranslatedCopy(
+    t("heroSection.secondaryCta", { defaultValue: "View rooms" }),
+    "View rooms"
+  );
   const trustItems = useMemo(() => {
-    if (!ready) return [] as string[];
+    if (!ready) return FALLBACK_TRUST_ITEMS;
     const raw = t("heroSection.trustItems", { returnObjects: true }) as unknown;
-    return Array.isArray(raw) ? (raw.filter((item) => typeof item === "string") as string[]) : [];
+    const items = Array.isArray(raw) ? (raw.filter((item) => typeof item === "string") as string[]) : [];
+    if (!items.length) {
+      return FALLBACK_TRUST_ITEMS;
+    }
+    return items.map((item, idx) =>
+      resolveTranslatedCopy(item, FALLBACK_TRUST_ITEMS[idx] ?? FALLBACK_TRUST_ITEMS[0])
+    );
   }, [ready, t]);
 
   const handleReserve = useCallback(() => openModal("booking"), [openModal]);
@@ -219,7 +273,12 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
         <div className="absolute inset-0 z-0 overflow-hidden">
           <CfHeroImage
             src={heroOriginal}
-            alt={t("heroSection.imageAlt")}
+            alt={resolveTranslatedCopy(
+              t("heroSection.imageAlt", {
+                defaultValue: "Panoramic view of Positano from Hostel Brikette terrace",
+              }),
+              "Panoramic view of Positano from Hostel Brikette terrace"
+            )}
             quality={85}
             width={1920}
             height={1080}
@@ -297,7 +356,7 @@ const LandingHeroSection: FC<LandingHeroSectionProps> = ({ lang: explicitLang, o
             <aside className="hidden lg:flex lg:justify-end">
               <Section as="div" padding="none" width="full" className="max-w-sm px-4 lg:px-0">
                 <HeroProofPanel
-                  heading={tRatings("reviewed") as string}
+                  heading={resolveTranslatedCopy(tRatings("reviewed", { defaultValue: "Reviewed" }), "Reviewed")}
                   ratings={ratingItems}
                   highlights={proofItems}
                 />

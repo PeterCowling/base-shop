@@ -1,4 +1,3 @@
-import { Trans } from "react-i18next";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
@@ -74,6 +73,11 @@ export type IntroHighlightsProps = {
 };
 
 export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttleEyebrow, isLateNight = false }: IntroHighlightsProps) {
+  const resolveCopy = (key: string, fallback: string, options?: Record<string, unknown>): string => {
+    const value = t(key, { defaultValue: fallback, ...(options ?? {}) }) as string;
+    const trimmed = value.trim();
+    return trimmed && trimmed !== key ? trimmed : fallback;
+  };
   const normalizePhone = (value: string) => value.replace(/[^\d+]/g, "").trim();
   const phone = normalizePhone(taxiContact);
   const whatsappNumber = phone.replace(/^\+/, "");
@@ -101,14 +105,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
           eyebrow={taxiEyebrow}
           className={clsx(isLateNight && LATE_NIGHT_EMPHASIS_CLASS)}
         >
-          <p>
-            <Trans
-              i18nKey={`${introKey}.taxi`}
-              t={t}
-              components={{ Strong: <span className="font-semibold" /> }}
-              values={{ contact: taxiContact }}
-            />
-          </p>
+          <p>{resolveCopy(`${introKey}.taxi`, `Taxi support available via ${taxiContact}.`, { contact: taxiContact })}</p>
           <Cluster as="div" className="mt-4">
             {whatsappHref ? (
               <a className={PRIMARY_BUTTON_CLASS} href={whatsappHref} rel="noopener noreferrer" target="_blank">
@@ -130,21 +127,10 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
 
         <IntroHighlightCard eyebrow={shuttleEyebrow}>
           <p>
-            <Trans
-              i18nKey={`${introKey}.shuttle`}
-              t={t}
-              components={{
-                Link: (
-                  <Inline
-                    as="a"
-                    className="min-h-11 min-w-11 underline underline-offset-4 decoration-brand-heading/40 hover:decoration-transparent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary dark:focus-visible:outline-brand-secondary"
-                    href={SEA_HORSE_SHUTTLE_URL}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  />
-                ),
-              }}
-            />
+            {resolveCopy(
+              `${introKey}.shuttle`,
+              "Shared shuttle options are available for arrivals from major transport hubs."
+            )}
           </p>
           <Cluster as="div" className="mt-4">
             <a className={PRIMARY_BUTTON_CLASS} href={SEA_HORSE_SHUTTLE_URL} rel="noopener noreferrer" target="_blank">

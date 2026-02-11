@@ -22,6 +22,12 @@ type NotificationBannerLocaleModule = {
 const SERVER_MESSAGE_SELECTOR = '[data-notification-banner="message"]';
 // i18n-exempt -- UI-1000 [ttl=2026-12-31] CSS selector string.
 const SERVER_CTA_SELECTOR = '[data-notification-banner="cta"]';
+const FALLBACK_BANNER_MESSAGE =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback banner copy. */
+  "Direct booking perks available now.";
+const FALLBACK_BANNER_CTA =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback banner CTA copy. */
+  "See deals";
 
 function readServerText(selector: string, fallback: string): string {
   if (typeof document === "undefined" || typeof document.querySelector !== "function") {
@@ -42,8 +48,16 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const router = useRouter();
   const setBannerRef = useSetBannerRef();
   const [isVisible, setIsVisible] = useState(true);
-  const rawMessage = useMemo(() => (ready ? (t("message") as string) || "" : ""), [t, ready]);
-  const rawCta = useMemo(() => (ready ? (t("cta") as string) || "" : ""), [t, ready]);
+  const rawMessage = useMemo(() => {
+    if (!ready) return FALLBACK_BANNER_MESSAGE;
+    const message = (t("message", { defaultValue: FALLBACK_BANNER_MESSAGE }) as string) || "";
+    return message === "message" ? FALLBACK_BANNER_MESSAGE : message;
+  }, [t, ready]);
+  const rawCta = useMemo(() => {
+    if (!ready) return FALLBACK_BANNER_CTA;
+    const cta = (t("cta", { defaultValue: FALLBACK_BANNER_CTA }) as string) || "";
+    return cta === "cta" ? FALLBACK_BANNER_CTA : cta;
+  }, [t, ready]);
   const [ctaText, setCtaText] = useState<string>(() => readServerText(SERVER_CTA_SELECTOR, rawCta));
   const [messageText, setMessageText] = useState<string>(() =>
     readServerText(SERVER_MESSAGE_SELECTOR, rawMessage)

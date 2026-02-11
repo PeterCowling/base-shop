@@ -20,6 +20,9 @@ interface Props {
 }
 
 const MOBILE_NAV_HEIGHT = 64;
+const FALLBACK_SITE_MENU_LABEL =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback heading copy. */
+  "Site menu";
 
 function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0 }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -82,7 +85,11 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
           id={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] id attribute */ "mobile-menu-title"}
           className={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "sr-only"}
         >
-          {t("siteMenu")}
+          {(() => {
+            const label = t("siteMenu") as string;
+            if (label && label !== "siteMenu") return label;
+            return FALLBACK_SITE_MENU_LABEL;
+          })()}
         </h2>
         <ul className="flex flex-col items-center space-y-6 pt-6 pb-10">
           {navLinks.map(({ key, to, label, prefetch }, idx) => (

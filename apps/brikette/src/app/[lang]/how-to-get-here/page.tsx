@@ -42,5 +42,7 @@ export default async function HowToGetHereIndexPage({ params }: Props) {
   const howToSlug = getSlug("howToGetHere", validLang);
   const basePath = `/${validLang}/${howToSlug}`;
 
+  await getTranslations(validLang, ["howToGetHere", "guides"]);
+
   return <HowToGetHereIndexContent lang={validLang} basePath={basePath} />;
 }

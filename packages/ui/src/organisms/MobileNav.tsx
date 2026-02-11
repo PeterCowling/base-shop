@@ -1,6 +1,6 @@
 // src: packages/ui/src/organisms/MobileNav.tsx
 // Fixed top bar – burger button toggles MobileMenu (visible below lg)
-import { memo, useCallback, useMemo } from "react";
+import { memo, type MouseEvent, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
@@ -9,6 +9,7 @@ import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolvePrimaryCtaLabel } from "../shared";
+import { translatePath } from "../utils/translate-path";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 const FALLBACK_PRIMARY_CTA_LABEL =
@@ -20,6 +21,9 @@ const FALLBACK_TOGGLE_LABEL =
 const FALLBACK_BRAND_TITLE =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
   "Hostel Brikette";
+const FALLBACK_LOGO_ALT =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
+  "Hostel Brikette logo";
 
 interface Props {
   menuOpen: boolean;
@@ -42,9 +46,18 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
   const { t, ready } = useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { openModal } = useModal();
+  const bookHref = `/${lang}/${translatePath("book", lang)}`;
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
   const openBooking = useCallback(() => openModal("booking"), [openModal]);
+  const onBookingClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      event.preventDefault();
+      openBooking();
+    },
+    [openBooking]
+  );
   const ctaClass = "cta-dark";
   const primaryCtaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
@@ -70,7 +83,11 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
           {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
           <img
             src={logoIcon}
-            alt={t("logoAlt")}
+            alt={(() => {
+              const logoAlt = t("logoAlt", { defaultValue: FALLBACK_LOGO_ALT }) as string;
+              if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
+              return FALLBACK_LOGO_ALT;
+            })()}
             className="size-10"
             width={40}
             height={40}
@@ -88,13 +105,13 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
 
         {/* Reserve CTA */}
         <div className="flex flex-1 justify-center">
-          <button
-            type="button"
-            onClick={openBooking}
+          <Link
+            href={bookHref}
+            onClick={onBookingClick}
             className={`min-h-11 min-w-11 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
           >
             {primaryCtaLabel}
-          </button>
+          </Link>
         </div>
 
         {/* Burger / X toggler */}

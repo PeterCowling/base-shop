@@ -19,6 +19,16 @@ type Props = {
   bookingQuery?: RoomsSectionBookingQuery;
 };
 
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}
+
 function RoomsPageContent({ lang, bookingQuery }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   useTranslation("ratingsBar", { lng: lang, useSuspense: true });
@@ -28,8 +38,14 @@ function RoomsPageContent({ lang, bookingQuery }: Props) {
     optionalNamespaces: ["ratingsBar", "modals", "guides"],
   });
 
-  const pageTitle = t("hero.heading", { defaultValue: "Our rooms" }) as string;
-  const pageSubtitle = t("hero.subheading", { defaultValue: "" }) as string;
+  const pageTitle = resolveTranslatedCopy(
+    t("hero.heading", { defaultValue: "Our rooms" }),
+    "Our rooms"
+  );
+  const pageSubtitle = resolveTranslatedCopy(
+    t("hero.subheading", { defaultValue: "" }),
+    ""
+  );
 
   return (
     <Fragment>

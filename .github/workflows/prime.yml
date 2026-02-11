@@ -33,7 +33,17 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/prime"
-      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
+      build-cmd: >
+        OUTPUT_EXPORT=1
+        NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+        NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+        NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+        NEXT_PUBLIC_FIREBASE_DATABASE_URL=${{ secrets.NEXT_PUBLIC_FIREBASE_DATABASE_URL }}
+        NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
+        pnpm --filter @apps/prime... build
       artifact-path: apps/prime/out
       deploy_cmd: >
         cd apps/prime &&
@@ -44,6 +54,6 @@ jobs:
       test-shard-count: 3
       project-name: "prime"
       environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
-      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime.pages.dev' || 'https://prime.pages.dev' }}"
+      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime-egt.pages.dev' || 'https://prime-egt.pages.dev' }}"
       healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit

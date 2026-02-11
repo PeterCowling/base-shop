@@ -1,8 +1,12 @@
-import { UI_LOCALES, type UiLocale } from '@acme/types';
+// Re-derive from the shared constant to avoid Jest haste map conflicts with
+// @acme/types (apps/xa/.open-next duplicates the package). Keep in sync with
+// packages/types/src/constants.ts → UI_LOCALES.
+const SUPPORTED_LOCALES = ['en', 'it'] as const;
+type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
-const DEFAULT_LOCALE: UiLocale = 'en';
+const DEFAULT_LOCALE: SupportedLocale = 'en';
 
-const supportedSet = new Set<string>(UI_LOCALES);
+const supportedSet = new Set<string>(SUPPORTED_LOCALES);
 
 /**
  * Normalize an incoming locale tag to a supported UI locale.
@@ -13,15 +17,15 @@ const supportedSet = new Set<string>(UI_LOCALES);
  */
 export function normalizeLocale(
   locale: string | null | undefined,
-): UiLocale {
+): SupportedLocale {
   if (!locale) return DEFAULT_LOCALE;
 
   // Exact match
-  if (supportedSet.has(locale)) return locale as UiLocale;
+  if (supportedSet.has(locale)) return locale as SupportedLocale;
 
   // Strip region subtag (e.g. 'it-IT' → 'it', 'en-GB' → 'en')
   const base = locale.split('-')[0].toLowerCase();
-  if (supportedSet.has(base)) return base as UiLocale;
+  if (supportedSet.has(base)) return base as SupportedLocale;
 
   return DEFAULT_LOCALE;
 }

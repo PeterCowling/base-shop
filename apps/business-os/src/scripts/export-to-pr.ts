@@ -330,7 +330,10 @@ export async function runExportToPr(
   deps.exec(`git checkout -B ${branchName}`);
   deps.exec("git add docs/business-os");
   // i18n-exempt -- BOS-06 git commit message [ttl=2026-03-31]
-  deps.exec(`${SKIP_HOOKS_PREFIX} git commit -m "chore(bos): export D1 snapshot"`);
+  // Use both env bypass and --no-verify so CI bot commits are resilient to hook drift.
+  deps.exec(
+    `${SKIP_HOOKS_PREFIX} git commit --no-verify -m "chore(bos): export D1 snapshot"`
+  );
   deps.exec(`git push -u origin ${branchName}`);
 
   const changedIds = buildChangedIds(changedFiles);

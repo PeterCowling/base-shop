@@ -171,7 +171,7 @@ describe("export-to-pr", () => {
     expect(
       execCalls.some((command) =>
         command.startsWith(
-          'SKIP_SIMPLE_GIT_HOOKS=1 git commit -m "chore(bos): export D1 snapshot"'
+          'SKIP_SIMPLE_GIT_HOOKS=1 git commit --no-verify -m "chore(bos): export D1 snapshot"'
         )
       )
     ).toBe(true);

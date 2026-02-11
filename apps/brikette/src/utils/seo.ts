@@ -87,6 +87,56 @@ interface BuildLinksArgs {
   path: string;
 }
 
+type RouteContext = {
+  firstSeg: string;
+  slugKey: SlugKey | null;
+  guideKey: GuideKey | null;
+  remainder: string;
+};
+
+function resolveGuideKey(
+  lang: AppLanguage,
+  slugKey: SlugKey | null,
+  afterFirst: string
+): GuideKey | null {
+  if (!afterFirst) return null;
+  if (
+    slugKey !== "assistance" &&
+    slugKey !== "guides" &&
+    slugKey !== "experiences" &&
+    slugKey !== "howToGetHere"
+  ) {
+    return null;
+  }
+  return guideLookup[lang]?.[afterFirst] ?? null;
+}
+
+function buildLocalizedSuffix(targetLang: AppLanguage, context: RouteContext): string {
+  const translatedFirst = context.guideKey
+    ? guideNamespace(targetLang, context.guideKey).baseSlug
+    : context.slugKey
+    ? SLUGS[context.slugKey][targetLang]
+    : context.firstSeg;
+  const translatedRest = context.guideKey
+    ? `/${guideSlug(targetLang, context.guideKey)}`
+    : context.remainder;
+
+  if (!translatedFirst && !translatedRest) return "";
+  return `/${[translatedFirst, translatedRest.replace(/^\//, "")].filter(Boolean).join("/")}`;
+}
+
+function resolveDefaultLang(
+  fallbackLng: unknown,
+  supportedLngs: unknown
+): AppLanguage {
+  const fallback = fallbackLng as AppLanguage | undefined;
+  if (fallback) return fallback;
+  if (Array.isArray(supportedLngs) && supportedLngs[0]) {
+    return supportedLngs[0] as AppLanguage;
+  }
+  return "en";
+}
+
 export function buildLinks({
   lang: declaredLang,
   origin,
@@ -117,37 +167,16 @@ export function buildLinks({
   const slugKey: SlugKey | null = slugLookup[lang]?.[firstSeg] ?? null;
   const afterFirst = segments.slice(1).join("/");
   const remainder = afterFirst ? `/${afterFirst}` : "";
-
-  /* Guide key resolution (for second segment) */
   // Assistance guides are now in guideLookup via slug parity (GUIDE_SLUG_OVERRIDES)
-  let guideKey: GuideKey | null = null;
-  if (
-    (slugKey === "assistance" || slugKey === "guides" || slugKey === "experiences" || slugKey === "howToGetHere") &&
-    afterFirst
-  ) {
-    guideKey = guideLookup[lang]?.[afterFirst] ?? null;
-  }
+  const guideKey = resolveGuideKey(lang, slugKey, afterFirst);
+  const routeContext: RouteContext = { firstSeg, slugKey, guideKey, remainder };
 
   /* ── hreflang alternates ── */
   const supportedLanguages = (Array.isArray(supportedLngs) ? supportedLngs : ["en"]) as string[];
   const alternates: HtmlLinkDescriptor[] = supportedLanguages
-    .filter((lng) => lng !== lang)
     .map((lng) => {
       const targetLang = lng as AppLanguage;
-      // Translate the first slug segment into the target language when known
-      const translatedFirst = guideKey
-        ? guideNamespace(targetLang, guideKey).baseSlug
-        : slugKey
-        ? SLUGS[slugKey][targetLang]
-        : firstSeg;
-      const translatedRest = guideKey !== null
-        ? `/${guideSlug(targetLang, guideKey)}`
-        : remainder;
-
-      const suffix =
-        translatedFirst || translatedRest
-          ? `/${[translatedFirst, translatedRest.replace(/^\//, "")].filter(Boolean).join("/")}`
-          : "";
+      const suffix = buildLocalizedSuffix(targetLang, routeContext);
 
       return {
         rel: "alternate",
@@ -158,27 +187,12 @@ export function buildLinks({
     });
 
   /* ── x-default fallback ── */
-  const defaultLang: AppLanguage =
-    (fallbackLng as AppLanguage | undefined) ??
-    ((Array.isArray(supportedLngs) && supportedLngs[0] ? supportedLngs[0] : "en") as AppLanguage);
-  const defFirst = guideKey
-    ? guideNamespace(defaultLang, guideKey).baseSlug
-    : slugKey
-    ? SLUGS[slugKey][defaultLang]
-    : firstSeg;
-  const defRest = guideKey !== null
-    ? `/${guideSlug(defaultLang, guideKey)}`
-    : remainder;
+  const defaultLang = resolveDefaultLang(fallbackLng, supportedLngs);
+  const defaultSuffix = buildLocalizedSuffix(defaultLang, routeContext);
 
   alternates.push({
     rel: "alternate",
-    href: normalizeHref(
-      `${origin}/${defaultLang}${
-        defFirst || defRest
-          ? `/${[defFirst, defRest.replace(/^\//, "")].filter(Boolean).join("/")}`
-          : ""
-      }`
-    ),
+    href: normalizeHref(`${origin}/${defaultLang}${defaultSuffix}`),
     hrefLang: "x-default",
   });
 

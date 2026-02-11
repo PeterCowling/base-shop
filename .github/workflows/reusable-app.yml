@@ -304,6 +304,17 @@ jobs:
         run: pnpm --filter @apps/reception test:rules
         shell: bash
 
+      - name: Cache Cypress binary (Prime E2E)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: cypress-${{ runner.os }}-
+      - name: Install Cypress binary (Prime E2E)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
+        run: pnpm exec cypress install
+        shell: bash
       - name: Prime critical E2E gate (release branches)
         if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
         run: pnpm --filter @apps/prime test:e2e:critical

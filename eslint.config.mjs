@@ -2302,6 +2302,24 @@ export default [
       "ds/no-hardcoded-copy": "off",
     },
   },
+  /* ▸ Prime internal operator pages: disable hardcoded-copy for staff-only UIs.
+   *   These pages are not guest-facing — owner dashboard, staff lookup, admin, portal, signage.
+   *   Must be after Prime catch-all so "off" wins over "warn". */
+  {
+    files: [
+      "apps/prime/src/app/owner/**/*.{ts,tsx}",
+      "apps/prime/src/components/owner/**/*.{ts,tsx}",
+      "apps/prime/src/lib/owner/**/*.{ts,tsx}",
+      "apps/prime/src/app/staff-lookup/**/*.{ts,tsx}",
+      "apps/prime/src/app/admin/**/*.{ts,tsx}",
+      "apps/prime/src/app/portal/**/*.{ts,tsx}",
+      "apps/prime/src/components/portal/**/*.{ts,tsx}",
+      "apps/prime/src/app/signage/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
   /* ▸ Prime dev tools: DS rules disabled (internal debugging panels, not user-facing).
    *   Must be after Prime catch-all so "off" wins over "warn". */
   {

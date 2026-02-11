@@ -1,8 +1,9 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Proposed
+Status: Archived
 Domain: Infra
+Superseded-by: docs/plans/xa-v2-plan.md
 Created: 2026-02-08
 Last-updated: 2026-02-08
 Feature-Slug: xa-deploy-readiness

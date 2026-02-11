@@ -1,9 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Commerce
 Last-reviewed: 2026-02-09
 Relates-to charter: none
+Superseded-by: docs/plans/xa-v2-plan.md
 Created: 2026-01-21
 Created-by: Claude
 Last-updated: 2026-02-09

@@ -1,8 +1,9 @@
 ---
 Type: Plan
 Last-reviewed: 2026-02-08
-Status: Active
+Status: Archived
 Domain: Commerce / Deploy
+Superseded-by: docs/plans/xa-v2-plan.md
 Created: 2026-02-03
 Last-updated: 2026-02-08
 Relates-to charter: docs/commerce-charter.md

@@ -1,5 +1,6 @@
 ---
 Type: Ideas-Readiness
+Status: Historical
 Date: 2026-02-10
 Run-Status: blocked
 Scope: BRIK, PIPE, PLAT, BOS

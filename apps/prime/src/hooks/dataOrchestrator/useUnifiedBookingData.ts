@@ -18,6 +18,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { normalizeLocale } from '../../lib/i18n/normalizeLocale';
 import type { BagStorageRecord } from '../../types/bagStorage';
 import type { CityTaxOccupantRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
@@ -208,7 +209,7 @@ export function useUnifiedBookingData(): UnifiedBookingData {
       setHasSyncedLanguage(false);
       return;
     }
-    const occupantLang = occupantData.language || 'en';
+    const occupantLang = normalizeLocale(occupantData.language);
 
     if (i18n.language === occupantLang) {
       setHasSyncedLanguage(true);

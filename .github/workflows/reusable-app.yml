@@ -51,8 +51,8 @@ on:
         required: false
         type: string
         default: ""
-      # Number of test shards for Brikette CI path. Values other than 3
-      # currently fall back to the default single test job.
+      # Number of Jest test shards. Set >1 to enable sharded parallel tests
+      # with changed-file detection. Default 1 = single test job, full suite.
       test-shard-count:
         required: false
         type: number
@@ -113,35 +113,38 @@ jobs:
           APP_FILTER: ${{ inputs.app-filter }}
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
           EVENT_BEFORE: ${{ github.event.before || '' }}
+          TEST_SHARD_COUNT: ${{ inputs.test-shard-count }}
         run: |
           set -euo pipefail
 
           run_validation="true"
           is_deploy_only="false"
           uncertain="true"
-          reason="non_brikette_caller"
+          reason="default"
           test_scope="related"
           related_test_paths_json="[]"
           changed_file_count="0"
 
+          # ── Compute changed files (shared by all apps) ──
+          base_sha=""
+          if [[ -n "$PR_BASE_SHA" ]]; then
+            base_sha="$PR_BASE_SHA"
+          elif [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
+            base_sha="$EVENT_BEFORE"
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            base_sha="$(git rev-parse HEAD^)"
+          fi
+
+          changed_paths_file="$RUNNER_TEMP/changed-paths.txt"
+          if [[ -n "$base_sha" ]]; then
+            git diff --name-only --diff-filter=ACMRTUXB "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
+          else
+            : > "$changed_paths_file"
+          fi
+          changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
+
+          # ── App-specific classification ──
           if [[ "$APP_FILTER" == "@apps/brikette" ]]; then
-            base_sha=""
-            if [[ -n "$PR_BASE_SHA" ]]; then
-              base_sha="$PR_BASE_SHA"
-            elif [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
-              base_sha="$EVENT_BEFORE"
-            elif git rev-parse HEAD^ >/dev/null 2>&1; then
-              base_sha="$(git rev-parse HEAD^)"
-            fi
-
-            changed_paths_file="$RUNNER_TEMP/changed-paths.txt"
-            if [[ -n "$base_sha" ]]; then
-              git diff --name-only --diff-filter=ACMRTUXB "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
-            else
-              : > "$changed_paths_file"
-            fi
-            changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
-
             classification_stderr_file="$RUNNER_TEMP/classify-deploy-change.stderr"
             if classification_output="$(
               node --import tsx scripts/src/ci/classify-deploy-change.ts \
@@ -197,6 +200,17 @@ jobs:
               test_scope="related"
               related_test_paths_json="[]"
             fi
+          elif [[ "$TEST_SHARD_COUNT" -gt 1 ]]; then
+            # Generic changed-file detection for any sharded app
+            testable_re='\.(ts|tsx|js|jsx|mjs|cjs)$'
+            related_json="$(grep -E "$testable_re" "$changed_paths_file" | node -e '
+              const lines = require("fs").readFileSync("/dev/stdin","utf8").trim().split("\n").filter(Boolean);
+              console.log(JSON.stringify(lines));
+            ' || echo '[]')"
+            related_test_paths_json="$related_json"
+            test_scope="related"
+            reason="generic_changed_files"
+            uncertain="false"
           fi
 
           {
@@ -227,9 +241,9 @@ jobs:
           TEST_SHARD_COUNT: ${{ inputs.test-shard-count }}
         run: |
           set -euo pipefail
-          if [[ "$APP_FILTER" == "@apps/brikette" && "$TEST_SHARD_COUNT" -eq 3 ]]; then
+          if [[ "$TEST_SHARD_COUNT" -gt 1 ]]; then
             echo "run_sharded_tests=true" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Test strategy::Using Brikette sharded test mode (3 shards)."
+            echo "::notice title=Test strategy::Using sharded test mode ($TEST_SHARD_COUNT shards)."
           else
             echo "run_sharded_tests=false" >> "$GITHUB_OUTPUT"
             echo "::notice title=Test strategy::Using single test job."
@@ -381,55 +395,49 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [[ "$APP_FILTER" != "@apps/brikette" ]]; then
-            pnpm --filter "$APP_FILTER" test
-            exit 0
-          fi
-
           if [[ "$TEST_SCOPE" == "skip" ]]; then
-            echo "::notice title=Test selection::Skipping Brikette tests (classifier selected skip scope)."
+            echo "::notice title=Test selection::Skipping tests (classifier selected skip scope)."
             exit 0
           fi
 
-          base_cmd=(pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests)
-
-          if [[ "$TEST_SCOPE" != "related" ]]; then
-            echo "::error title=Test selection::Unsupported Brikette test scope '$TEST_SCOPE'."
-            exit 1
-          fi
-
-          mapfile -t related_paths < <(node -e '
-            const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
-            const parsed = JSON.parse(raw);
-            if (!Array.isArray(parsed)) {
-              throw new Error("related_test_paths_json must be an array");
-            }
-            for (const entry of parsed) {
-              if (typeof entry === "string" && entry.length > 0) {
-                console.log(entry);
+          # Try related-test selection if scope is "related" with paths
+          if [[ "$TEST_SCOPE" == "related" ]]; then
+            mapfile -t related_paths < <(node -e '
+              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed)) {
+                throw new Error("related_test_paths_json must be an array");
               }
-            }
-          ')
+              for (const entry of parsed) {
+                if (typeof entry === "string" && entry.length > 0) {
+                  console.log(entry);
+                }
+              }
+            ')
 
-          existing_paths=()
-          for relative_path in "${related_paths[@]}"; do
-            absolute_path="$GITHUB_WORKSPACE/$relative_path"
-            if [[ -f "$absolute_path" ]]; then
-              existing_paths+=("$absolute_path")
+            existing_paths=()
+            for relative_path in "${related_paths[@]}"; do
+              absolute_path="$GITHUB_WORKSPACE/$relative_path"
+              if [[ -f "$absolute_path" ]]; then
+                existing_paths+=("$absolute_path")
+              fi
+            done
+
+            if [[ "${#existing_paths[@]}" -gt 0 ]]; then
+              echo "::notice title=Test selection::Running related tests (count=${#existing_paths[@]})"
+              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --findRelatedTests "${existing_paths[@]}"
+              exit 0
             fi
-          done
 
-          if [[ "${#existing_paths[@]}" -eq 0 ]]; then
-            echo "::notice title=Test selection::Skipping Brikette tests; related scope produced no existing files."
-            exit 0
+            echo "::notice title=Test selection::No related files found; running full test suite."
           fi
 
-          echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]})"
-          "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
+          # Fallback: run full test suite
+          pnpm --filter "$APP_FILTER" test
         shell: bash
 
   test-sharded:
-    name: Test (shard ${{ matrix.shard }}/3)
+    name: Test (shard ${{ matrix.shard }}/${{ inputs.test-shard-count }})
     if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests == 'true' && needs.validate.outputs.test_scope != 'skip' }}
     needs: validate
     runs-on: ubuntu-latest
@@ -458,64 +466,65 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
-      - name: Restore Jest/ts-jest caches (Brikette shards)
+      - name: Restore Jest/ts-jest caches (shards)
         uses: actions/cache@v4
         with:
           path: |
             .ts-jest
             node_modules/.cache/jest
-            apps/brikette/node_modules/.cache/jest
-          key: brikette-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
+            apps/*/node_modules/.cache/jest
+          key: jest-cache-${{ inputs.app-filter }}-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
           restore-keys: |
-            brikette-jest-cache-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
-      - name: Run Brikette test shard (${{ matrix.shard }}/3)
+            jest-cache-${{ inputs.app-filter }}-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+      - name: Run test shard (${{ matrix.shard }}/${{ inputs.test-shard-count }})
         env:
+          APP_FILTER: ${{ inputs.app-filter }}
           TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
           RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
         run: |
           set -euo pipefail
 
-          shard="${{ matrix.shard }}/3"
-          base_cmd=(pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard="$shard")
+          shard="${{ matrix.shard }}/${{ inputs.test-shard-count }}"
 
           if [[ "$TEST_SCOPE" == "skip" ]]; then
-            echo "::notice title=Test selection::Skipping Brikette tests (classifier selected skip scope). shard=$shard"
+            echo "::notice title=Test selection::Skipping tests (classifier selected skip scope). shard=$shard"
             exit 0
           fi
 
-          if [[ "$TEST_SCOPE" != "related" ]]; then
-            echo "::error title=Test selection::Unsupported Brikette test scope '$TEST_SCOPE'. shard=$shard"
-            exit 1
-          fi
-
-          mapfile -t related_paths < <(node -e '
-            const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
-            const parsed = JSON.parse(raw);
-            if (!Array.isArray(parsed)) {
-              throw new Error("related_test_paths_json must be an array");
-            }
-            for (const entry of parsed) {
-              if (typeof entry === "string" && entry.length > 0) {
-                console.log(entry);
+          # Try related-test selection if scope is "related" with paths
+          if [[ "$TEST_SCOPE" == "related" ]]; then
+            mapfile -t related_paths < <(node -e '
+              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed)) {
+                throw new Error("related_test_paths_json must be an array");
               }
-            }
-          ')
+              for (const entry of parsed) {
+                if (typeof entry === "string" && entry.length > 0) {
+                  console.log(entry);
+                }
+              }
+            ')
 
-          existing_paths=()
-          for relative_path in "${related_paths[@]}"; do
-            absolute_path="$GITHUB_WORKSPACE/$relative_path"
-            if [[ -f "$absolute_path" ]]; then
-              existing_paths+=("$absolute_path")
+            existing_paths=()
+            for relative_path in "${related_paths[@]}"; do
+              absolute_path="$GITHUB_WORKSPACE/$relative_path"
+              if [[ -f "$absolute_path" ]]; then
+                existing_paths+=("$absolute_path")
+              fi
+            done
+
+            if [[ "${#existing_paths[@]}" -gt 0 ]]; then
+              echo "::notice title=Test selection::Running related tests (count=${#existing_paths[@]}) shard=$shard"
+              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard" --findRelatedTests "${existing_paths[@]}"
+              exit 0
             fi
-          done
 
-          if [[ "${#existing_paths[@]}" -eq 0 ]]; then
-            echo "::notice title=Test selection::Skipping Brikette tests; related scope produced no existing files. shard=$shard"
-            exit 0
+            echo "::notice title=Test selection::No related files found; running full test suite. shard=$shard"
           fi
 
-          echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]}) shard=$shard"
-          "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
+          # Fallback: run full sharded test suite
+          pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard"
         shell: bash
 
   build:

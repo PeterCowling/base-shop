@@ -21,6 +21,8 @@ Owner: Pete
 2. **Category and Segment Prioritization** (Priority: High)
    - Status: Initial category options exist but no ranked decision set.
    - Next: Rank target segment and define primary offer scope for first validation cycle.
+   - Artifact: `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`
+   - Exec Summary: `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2-exec-summary.user.md`
 
 3. **Evidence and Tooling Baseline** (Priority: Medium)
    - Status: Demand, margin, and fulfillment instrumentation are not yet in place.

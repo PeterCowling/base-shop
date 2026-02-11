@@ -57,6 +57,25 @@ describe("guide link tokens + markdown-lite", () => {
     expect(screen.getByTestId("root")).toHaveTextContent("Hello How to get here");
   });
 
+  it("adds a separator when tokenized links are followed by word text", () => {
+    const nodes = renderGuideLinkTokens(
+      "Bus back to %LINK:onlyHostel|Hostel Brikette%from Spiaggia Grande",
+      "en",
+      "t",
+    );
+    render(<div data-cy="root">{nodes}</div>);
+    expect(screen.getByTestId("root")).toHaveTextContent(
+      "Bus back to Hostel Brikette from Spiaggia Grande",
+    );
+  });
+
+  it("does not add an extra separator before punctuation after a tokenized link", () => {
+    const nodes = renderGuideLinkTokens("See %LINK:onlyHostel|Hostel Brikette%, then continue.", "en", "t");
+    render(<div data-cy="root">{nodes}</div>);
+    expect(screen.getByTestId("root")).toHaveTextContent("See Hostel Brikette, then continue.");
+    expect(screen.getByTestId("root")).not.toHaveTextContent("Hostel Brikette ,");
+  });
+
   it("resolves HOWTO overview tokens to the how-to-get-here index", () => {
     const nodes = renderGuideLinkTokens("%HOWTO:how-to-get-here|How to Get Here%", "en", "t");
     render(<div data-cy="root">{nodes}</div>);

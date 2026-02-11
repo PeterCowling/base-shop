@@ -179,11 +179,17 @@ Look for:
 
 ### Step 5 - Feasibility and Execution Reality
 
-Check:
+Check (code/mixed):
 - Paths/patterns exist
 - Dependency chain realism
 - Failure points and rollback paths
 - Effort honesty
+
+Check (business-artifact/mixed — additionally):
+- Can each VC actually be executed within the stated time-box and budget?
+- Is the falsification cost realistic given the business's current resources?
+- Are approval paths available (reviewer named, process exists)?
+- Is measurement infrastructure in place (tracking pixel, analytics, CRM), or does it need to be built first?
 
 ### Step 6 - Contrarian Attacks
 
@@ -217,6 +223,7 @@ Required checks:
   - Planning Readiness
   - Test Landscape for code/mixed
   - Delivery and Channel Landscape for business-artifact/mixed
+  - Hypothesis & Validation Landscape for business-artifact/mixed (key hypotheses, existing signal coverage, falsifiability assessment, recommended validation approach) — this feeds `/plan-feature`'s Business VC Quality Checklist. Missing on a business-artifact/mixed brief is Major (downstream VCs will lack grounding).
 
 Fact-Find confidence dimensions:
 - The fact-find skill defines **5 dimensions**: Implementation, Approach, Impact, Delivery-Readiness, Testability.
@@ -270,6 +277,11 @@ Each IMPLEMENT task must include:
   - Business-artifact/mixed: VC-first Red -> Green -> Refactor
 - Rollout/rollback
 - Documentation impact
+
+Business-artifact/mixed VC quality check (apply to each VC-XX):
+- Each VC must be **isolated** (tests one variable), **pre-committed** (pass/fail decision stated before data), **time-boxed** (measurement deadline defined), **minimum viable sample** (smallest signal that constitutes evidence), **diagnostic** (failure indicates *why*), **repeatable** (another operator reaches same conclusion), and **observable** (metric is directly measurable).
+- Anti-patterns to flag: "Validate demand is sufficient" (not isolated, not pre-committed, not observable), "Check market response" (no sample size, no deadline), "Confirm unit economics work" (conflates multiple variables).
+- VCs failing ≥3 quality principles are Major; failing 1-2 is Moderate.
 
 Plan minimum bar:
 - Falsifiable objective

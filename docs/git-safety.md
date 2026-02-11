@@ -66,6 +66,50 @@ Direct commit/push to `staging` or `main` is blocked by policy and hooks.
 - commit every significant change (or <= 30 minutes)
 - push `dev` regularly (<= 2 hours or <= 3 commits)
 
+## Writer Lock System
+
+The writer lock prevents multiple agents (or a human + agents) from writing to the same checkout simultaneously.
+
+### Lifecycle
+
+1. **Entry** — always go through a wrapper, never call `writer-lock.sh` directly:
+   - `scripts/agents/integrator-shell.sh -- <cmd>` (lock + command guard)
+   - `scripts/agents/with-writer-lock.sh -- <cmd>` (lock only)
+
+2. **Queue** — if the lock is held, the wrapper joins a FIFO queue (ticket-numbered). Waiters poll until they reach the head of the queue AND the lock directory is free.
+
+3. **Acquire** — atomic `mkdir` creates the lock directory. A meta file records a random token, the owner PID, timestamp, and branch.
+
+4. **Token export** — the wrapper reads the token from the meta file and exports `BASESHOP_WRITER_LOCK_TOKEN`. Git hooks check this token to verify the caller owns the lock.
+
+5. **Release** — on wrapper exit (normal or crash), a trap calls `writer-lock.sh release` with the matching token. The lock directory is removed.
+
+### Enforcement layers
+
+| Layer | Script | Blocks |
+|-------|--------|--------|
+| Git hooks | `require-writer-lock.sh` | `git commit`/`push` without lock or with wrong token |
+| Agent git guard | `scripts/agent-bin/git` | Destructive commands, bypass env vars |
+| Claude pre-tool-use hook | `.claude/hooks/pre-tool-use-git-safety.sh` | Dangerous commands before they reach bash |
+| Settings ask-rules | `.claude/settings.json` | Borderline commands (requires confirmation) |
+
+### Failure recovery
+
+| Scenario | Recovery |
+|----------|----------|
+| Lock holder crashed (PID dead) | `writer-lock.sh clean-stale` |
+| Lock held but stale meta | `writer-lock.sh release --force` (human only) |
+| Wrapper killed while child waits in queue | Child detects its ticket was cleaned and exits (orphan protection) |
+| `status` command during lock contention | Returns instantly (non-blocking read) |
+
+### Queue invariants
+
+- FIFO ordering: first to request, first to acquire (ticket-numbered)
+- Orphan safety: waiters whose parent PID dies cannot acquire the lock
+- Stale cleanup: dead-PID tickets and locks are automatically recovered
+
+Regression tests: `scripts/__tests__/writer-lock-queue.test.ts` (5 TCs covering FIFO, orphan, contention, token lifecycle).
+
 ## Branch Strategy
 
 | Branch | Purpose | Deploy target |
@@ -119,6 +163,7 @@ Regression tests:
 
 - `scripts/__tests__/pre-tool-use-git-safety.test.ts`
 - `scripts/__tests__/git-safety-policy.test.ts`
+- `scripts/__tests__/writer-lock-queue.test.ts`
 
 ## Conflict-Safe Merge Procedure (No-Loss)
 

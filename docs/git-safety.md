@@ -36,6 +36,10 @@ For non-interactive agents:
 
 ```bash
 scripts/agents/integrator-shell.sh -- <command> [args...]
+# guard-only session for long read-only work (no writer lock)
+scripts/agents/integrator-shell.sh --read-only -- <command> [args...]
+# lock waits are queue-ordered and wait forever by default; optional fast-fail:
+scripts/agents/integrator-shell.sh --timeout 30 -- <command> [args...]
 ```
 
 Lock diagnostics:
@@ -43,7 +47,8 @@ Lock diagnostics:
 ```bash
 scripts/git/writer-lock.sh status
 scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
-scripts/git/writer-lock.sh acquire --wait
+scripts/agents/with-writer-lock.sh -- <git-write-command>
+# or: scripts/agents/integrator-shell.sh -- <command>
 ```
 
 ### 3) Follow the only release path
@@ -182,6 +187,10 @@ git push origin dev
 
 - Human-only emergency bypasses are outside standard agent flow.
 - Agents must never bypass hooks or guards.
+- `release --force` is a human-only break-glass action. Use it only when:
+  - The lock holder PID is confirmed dead but `clean-stale` cannot resolve (e.g., stale meta).
+  - You have verified no active writer is running.
+- After any `release --force`, document the reason in the next commit message.
 - If an emergency bypass occurs, document reason and follow-up remediation in repo history.
 
 ## Troubleshooting

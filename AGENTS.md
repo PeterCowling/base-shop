@@ -63,15 +63,17 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 - **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
   - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
+  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- codex`
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
+    - Wait mode is FIFO queue-ordered (first-come, first-served) and waits forever by default; pass `--timeout <sec>` only when you explicitly want fast-fail behavior.
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
   - If lock handling blocks your git write:
     - `scripts/git/writer-lock.sh status`
     - `scripts/git/writer-lock.sh clean-stale` (only if holder PID is dead on this host)
-    - `scripts/git/writer-lock.sh acquire --wait`
+    - `scripts/agents/with-writer-lock.sh -- <git-write-command>` (or `scripts/agents/integrator-shell.sh -- <command>`)
   - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`

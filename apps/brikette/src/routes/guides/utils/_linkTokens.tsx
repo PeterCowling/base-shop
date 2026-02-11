@@ -378,7 +378,16 @@ function renderInline(text: string, lang: AppLanguage, keyBase: string, guideKey
 
     const flushLocal = () => {
       if (localBuffer.length > 0) {
-        out.push(localBuffer);
+        const prev = out[out.length - 1];
+        if (
+          prev != null &&
+          typeof prev !== "string" &&
+          /^[\p{L}\p{N}]/u.test(localBuffer)
+        ) {
+          out.push(` ${localBuffer}`);
+        } else {
+          out.push(localBuffer);
+        }
         localBuffer = "";
       }
     };

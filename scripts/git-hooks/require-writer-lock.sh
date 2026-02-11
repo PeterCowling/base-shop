@@ -2,10 +2,8 @@
 set -euo pipefail
 
 # Enforce "single writer" commits/pushes in a shared checkout.
-
-if [[ "${SKIP_WRITER_LOCK:-}" == "1" ]]; then
-  exit 0
-fi
+# NOTE: SKIP_WRITER_LOCK=1 bypass was removed (DS-04). Use clean-stale or
+# release --force (human only) to recover from stuck lock states instead.
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 if [[ -z "$repo_root" ]]; then

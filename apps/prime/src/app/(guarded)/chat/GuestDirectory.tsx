@@ -122,7 +122,7 @@ function GuestCard({ uuid, profile }: { uuid: string; profile: GuestProfile }) {
   const { t } = useTranslation('Chat');
 
   const handleStartChat = () => {
-    logger.info('[GuestDirectory] Starting chat with:', uuid);
+    logger.info('[GuestDirectory] Starting chat with:', uuid); // i18n-exempt -- DS-11 developer diagnostic
     // TODO: Navigate to conversation when messaging is implemented
   };
 
@@ -135,7 +135,7 @@ function GuestCard({ uuid, profile }: { uuid: string; profile: GuestProfile }) {
           </span>
         </div>
         <div>
-          <p className="font-medium text-foreground">Guest {uuid.substring(0, 8)}</p>
+          <p className="font-medium text-foreground">{t('chat.directory.guestLabel', { id: uuid.substring(0, 8) })}</p>
           <p className="text-xs text-muted-foreground">
             {profile.intent === 'social' ? t('chat.directory.social') : t('chat.directory.quiet')}
           </p>

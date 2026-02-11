@@ -12,6 +12,7 @@
       "optInRequired": "[IT] Opt In Required",
       "quiet": "[IT] Quiet",
       "social": "[IT] Social",
+      "guestLabel": "Ospite {{id}}",
       "startChat": "[IT] Start Chat",
       "title": "Titolo"
     }

@@ -12,6 +12,7 @@
       "optInRequired": "Opt In Required",
       "quiet": "Quiet",
       "social": "Social",
+      "guestLabel": "Guest {{id}}",
       "startChat": "Start Chat",
       "title": "Title"
     }

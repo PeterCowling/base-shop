@@ -182,10 +182,17 @@ When `/re-plan` is invoked at a CHECKPOINT during `/build-feature`, it operates 
    - **Disproved:** The assumption was wrong — downstream tasks that depend on it need major revision or abandonment.
 
 3. **Scout ahead for remaining tasks:** Before reassessing confidence, proactively validate assumptions that remaining tasks depend on:
+
+   **Code/mixed scouts:**
    - **Doc lookups:** Verify any library/API/framework capabilities the remaining tasks assume — check against the exact versions in use.
    - **Probe tests:** Write small throwaway tests that exercise critical assumptions (e.g., "can Prisma do nested creates with this schema?", "does this API accept this payload shape?"). These are E2 evidence.
    - **Contract checks:** Run `tsc` or schema validation against type/contract assumptions that downstream tasks depend on.
    - **Integration boundary tests:** Run existing tests that cross boundaries the remaining tasks will depend on.
+
+   **Business-artifact/mixed scouts:**
+   - **Hypothesis freshness:** Check whether key hypotheses from the fact-find's Hypothesis & Validation Landscape still hold (supplier quotes, pricing, channel costs, regulatory rules, competitive positioning). Flag any >14 days old with time-sensitive dependencies.
+   - **Signal updates:** Check whether new evidence has appeared since planning (completed demand tests, conversion data, competitor launches) that changes existing signal coverage.
+   - **Channel/approval drift:** Verify platform policies, approval paths, and compliance constraints haven't changed.
 
    Scout results directly feed the reassessment — a failed scout disproves an assumption before you build on it.
 
@@ -241,27 +248,44 @@ If you cannot define a falsifiable check, confidence must not increase.
 
 #### A) Close Implementation gaps
 
-**Minimum actions:**
+**Minimum actions (code/mixed):**
 - Locate at least one analogous pattern in the repo.
 - Identify the exact integration seam (function/class/module boundaries).
 - Confirm required types/contracts and where they are validated.
 - Identify the correct test layer(s) that can prove correctness.
 - Run at least one executable check where possible (existing targeted test, probe, or script) for high-impact claims.
 
+**Minimum actions (business-artifact/mixed):**
+- Verify the fact-find's Hypothesis & Validation Landscape is still current (key hypotheses, existing signal coverage, falsifiability assessment).
+- Confirm channel constraints and format requirements haven't changed since planning.
+- Verify the approval path still works (reviewer available, process unchanged).
+- Check whether existing signal coverage has improved or decayed since fact-find (new data available? prior signals stale?).
+
 **Evidence to capture:**
-- file paths (and key symbol names)
+- file paths (and key symbol names) for code/mixed
 - pattern references ("this matches pattern used in X")
 - relevant tests and how they assert behavior
+- for business-artifact/mixed: hypothesis validity status, channel constraint confirmations, signal freshness assessment
 
 #### B) Close Approach gaps
 
-**Minimum actions:**
+**Minimum actions (code/mixed):**
 - List at least two viable approaches (A/B).
 - Evaluate each for:
   - consistency with existing architecture and conventions
   - coupling and maintainability
   - migration/rollout complexity
   - operational risk and observability
+
+**Minimum actions (business-artifact/mixed):**
+- List at least two viable approaches (A/B).
+- Evaluate each for:
+  - channel fit for the target audience
+  - test design quality — are VCs isolated and diagnostic per the Business VC Quality Checklist?
+  - measurement feasibility — can the pass/fail signal actually be observed?
+  - cost and time to run the validation (falsification cost from hypothesis landscape)
+
+**Both tracks:**
 - Decide on a chosen approach based on evidence.
 - If the decision is genuinely a product preference, escalate to the user with a precise choice and recommendation.
 - If no approach can be selected confidently, create a precursor INVESTIGATE/SPIKE task instead of forcing a score increase.
@@ -271,7 +295,7 @@ If you cannot define a falsifiable check, confidence must not increase.
 
 #### C) Close Impact gaps
 
-**Minimum actions:**
+**Minimum actions (code/mixed):**
 - Map upstream and downstream dependencies:
   - what this change depends on
   - who/what consumes it
@@ -286,11 +310,19 @@ If you cannot define a falsifiable check, confidence must not increase.
   - feature flags, backward compatibility, migration sequencing
 - Add quantitative blast-radius notes where possible (number of files, call-sites, tests likely affected).
 
+**Minimum actions (business-artifact/mixed):**
+- Check whether market, competitive, or regulatory landscape has shifted since planning.
+- Verify supplier quotes, pricing assumptions, or availability timelines are still valid.
+- Confirm audience/channel assumptions haven't drifted (ad costs, platform policy changes, audience behaviour shifts).
+- Check whether any hypothesis from the fact-find's Hypothesis & Validation Landscape has been confirmed or invalidated by events since planning.
+- Identify rollback/pivot requirements: what happens if the VC fails after execution (sunk cost, reversibility).
+
 **Evidence to capture:**
-- callers / references (file paths)
+- callers / references (file paths) for code/mixed
 - contracts (types/schemas/endpoints)
 - tests and commands
 - extinct tests flagged for update during build
+- for business-artifact/mixed: hypothesis validity status, market/regulatory change notes, updated signal coverage assessment
 
 ### 3b) Complete validation contracts for tasks missing them
 

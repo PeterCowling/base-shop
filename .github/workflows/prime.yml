@@ -45,5 +45,6 @@ jobs:
       project-name: "prime"
       environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
       environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime-egt.pages.dev' || 'https://prime-egt.pages.dev' }}"
+      healthcheck-base-url: "${{ github.ref_name == 'staging' && 'https://staging.prime-egt.pages.dev' || 'https://prime-egt.pages.dev' }}"
       healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit

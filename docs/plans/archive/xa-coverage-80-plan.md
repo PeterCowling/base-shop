@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Commerce
 Last-reviewed: 2026-01-15
 Relates-to charter: none

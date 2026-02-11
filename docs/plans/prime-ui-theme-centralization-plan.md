@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Accepted
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-10

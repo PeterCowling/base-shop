@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Reception
 Last-reviewed: 2026-02-08
 Last-replan: 2026-02-08

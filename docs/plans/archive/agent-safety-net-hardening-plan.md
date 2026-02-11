@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Infra
 Created: 2026-02-06
 Created-by: Claude Opus 4.6

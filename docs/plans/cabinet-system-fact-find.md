@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning          # doc intent: this fact-find exists to enable /plan-feature
-Status: Ready-for-planning # 7 open Qs have safe defaults; 3 behavioral Qs resolved
+Status: Proposed
 Domain: Business-OS
 Created: 2026-02-09
 Last-updated: 2026-02-09

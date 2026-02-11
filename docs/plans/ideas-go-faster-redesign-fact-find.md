@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Proposed
 Domain: Business-OS
 Created: 2026-02-09
 Last-updated: 2026-02-09

@@ -1,6 +1,6 @@
 ---
 Type: Decision-Memo
-Status: Approved
+Status: Accepted
 Domain: Prime
 Created: 2026-02-10
 Last-reviewed: 2026-02-10

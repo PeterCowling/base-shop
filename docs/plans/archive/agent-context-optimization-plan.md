@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: DevEx/Tooling
 Last-reviewed: 2026-01-24
 Relates-to charter: none

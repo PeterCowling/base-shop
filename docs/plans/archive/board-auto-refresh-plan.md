@@ -1,7 +1,7 @@
 ---
 Type: Plan
 Last-reviewed: 2026-02-05
-Status: Complete
+Status: Historical
 Domain: Platform
 Relates-to charter: none
 Created: 2026-01-30

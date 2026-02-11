@@ -1,6 +1,6 @@
 ---
 Type: Audit-Report
-Status: Final
+Status: Accepted
 Domain: Delivery-Speed
 Target-URL: https://staging.brikette-website.pages.dev
 Deployment-ID: 712b2b5d

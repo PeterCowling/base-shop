@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Completed
+Status: Historical
 Domain: UI
 Created: 2026-02-07
 Last-updated: 2026-02-07

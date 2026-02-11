@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Prime
 Created: 2026-01-17
 Last-updated: 2026-02-10

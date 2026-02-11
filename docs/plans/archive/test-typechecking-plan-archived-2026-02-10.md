@@ -1,7 +1,7 @@
 ---
 Type: Plan
 Last-reviewed: 2026-02-10
-Status: Archived
+Status: Historical
 Domain: Testing
 Relates-to charter: none
 Created: 2026-01-18

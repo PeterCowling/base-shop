@@ -1,6 +1,6 @@
 ---
 Type: Decision-Memo
-Status: Approved
+Status: Accepted
 Domain: Business-OS
 Created: 2026-02-09
 Last-reviewed: 2026-02-09

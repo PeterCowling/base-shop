@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Business-OS
 Workstream: docs
 Created: 2026-02-10

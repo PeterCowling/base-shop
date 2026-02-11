@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: CI/Infrastructure
 Last-reviewed: 2026-02-10
 Created: 2026-02-07

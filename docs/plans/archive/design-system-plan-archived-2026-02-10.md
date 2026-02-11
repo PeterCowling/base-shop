@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Design System
 Created: 2026-01-22
 Last-updated: 2026-02-10

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archive
+Status: Historical
 Domain: Repo/Git
 Last-reviewed: 2026-02-10
 Created: 2026-02-09

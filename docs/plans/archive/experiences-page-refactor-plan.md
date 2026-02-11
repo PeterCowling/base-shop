@@ -1,7 +1,7 @@
 ---
 Type: Plan
 Last-reviewed: 2026-02-05
-Status: Completed
+Status: Historical
 Domain: UI / CMS
 Relates-to charter: none
 Created: 2026-01-26

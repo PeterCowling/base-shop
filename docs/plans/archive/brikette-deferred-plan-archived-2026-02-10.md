@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Archived
+Status: Historical
 Domain: Brikette
 Last-reviewed: 2026-02-10
 Relates-to charter: none

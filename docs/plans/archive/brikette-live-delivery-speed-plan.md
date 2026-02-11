@@ -1,7 +1,7 @@
 ---
 Type: Plan
 Last-reviewed: 2026-02-08
-Status: Archived
+Status: Historical
 Domain: Brikette
 Created: 2026-02-05
 Last-updated: 2026-02-09

@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Historical
 Domain: Brikette/Routing
 Last-reviewed: 2026-02-07
 Relates-to:

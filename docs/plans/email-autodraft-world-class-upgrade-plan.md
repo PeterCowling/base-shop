@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Accepted
 Domain: Automation
 Workstream: Mixed
 Created: 2026-02-10

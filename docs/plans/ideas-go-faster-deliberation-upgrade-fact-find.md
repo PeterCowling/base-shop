@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Proposed
 Domain: Business-OS
 Workstream: Mixed
 Created: 2026-02-10

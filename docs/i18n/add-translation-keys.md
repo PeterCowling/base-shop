@@ -8,15 +8,25 @@ Last-reviewed: 2025-12-02
 Purpose: Replace user-visible literals with keys resolved via `t()`.
 
 Where translations live
-- JSON files: `packages/i18n/src/en.json`, `packages/i18n/src/de.json`, `packages/i18n/src/it.json`.
+
+**Shared package (storefront, CMS, etc.):**
+- JSON files: `packages/i18n/src/en.json`, `packages/i18n/src/it.json` (+ other locales).
 - English is the canonical source; other locales may temporarily mirror EN.
 
+**Prime app (guest portal):**
+- Namespace JSON files: `apps/prime/public/locales/{lng}/{ns}.json` (e.g., `en/Homepage.json`, `it/PreArrival.json`).
+- Namespaces are defined in `apps/prime/src/i18n.optimized.ts` → `NAMESPACE_GROUPS`.
+- Supported locales: `en`, `it` (matches `UI_LOCALES` in `packages/types/src/constants.ts`).
+- Generate/validate locale files: `node apps/prime/scripts/generate-locale-files.cjs` (or `--check` to validate).
+
 Steps
+
+**Shared package:**
 - Pick a descriptive key: `domain.area.component.label` (e.g., `pdp.addToCart`, `cms.media.delete`).
 - Edit `packages/i18n/src/en.json`:
   - Add the key with the English string. Support template vars with `{name}`.
 - For placeholders, add to other locales:
-  - Copy the EN value into `de.json` and `it.json` for a placeholder, or leave absent to fall back to EN. Adding placeholders avoids dev “Missing translation” warnings in the client.
+  - Copy the EN value into locale files for a placeholder, or leave absent to fall back to EN. Adding placeholders avoids dev "Missing translation" warnings in the client.
 - Use in code (client components):
   - `import { useTranslations } from "@acme/i18n";`
   - `const t = useTranslations();`
@@ -26,7 +36,18 @@ Steps
   - `const t = await useTranslations(locale);`
   - Call `t("your.key", { name: value })` when needed.
 
+**Prime app:**
+- Pick a descriptive key within the relevant namespace: `area.label` (e.g., `welcome.greeting`, `social.discoverTitle`).
+- Edit the namespace JSON for each locale: `apps/prime/public/locales/en/{Namespace}.json` and `apps/prime/public/locales/it/{Namespace}.json`.
+- Use in code (client components):
+  - `import { useTranslation } from "react-i18next";`
+  - `const { t } = useTranslation('Namespace');`
+  - Replace the literal with `{t("your.key")}` or `t("your.key")`.
+- Run `node apps/prime/scripts/generate-locale-files.cjs --check` to validate key parity.
+
 Examples
+
+**Shared package:**
 - Before: `<button>Delete</button>`
 - After:
   ```tsx
@@ -35,10 +56,19 @@ Examples
   return <button>{t("cms.delete")}</button>;
   ```
 
+**Prime app:**
+- Before: `<h1>Welcome to your stay</h1>`
+- After:
+  ```tsx
+  import { useTranslation } from "react-i18next";
+  const { t } = useTranslation('Homepage');
+  return <h1>{t("welcome.greeting")}</h1>;
+  ```
+
 - With variables:
   ```tsx
-  // en.json → "returns.dropOff": "Drop-off: {provider}"
-  <p>{t("returns.dropOff", { provider })}</p>
+  // en/PreArrival.json → "welcome.title": "Welcome, {{firstName}}!"
+  <p>{t("welcome.title", { firstName })}</p>
   ```
 
 Exemptions (last resort)

@@ -117,6 +117,8 @@ describe('ArrivalHome offline fallback', () => {
 
       // Should show offline unavailable message
       expect(screen.getByText(/Code unavailable offline/i)).toBeInTheDocument();
+      expect(screen.queryByText(/This code was cached/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/Refresh Code/i)).not.toBeInTheDocument();
     });
   });
 

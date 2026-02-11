@@ -59,6 +59,14 @@ describe("draft_interpret", () => {
     expect(payload.scenario.confidence).toBeGreaterThan(0);
   });
 
+  it("TC-04b: classifies availability inquiries as booking-issues", async () => {
+    const body = "Hello, do you have availability from March 13 to March 19 for 2 adults?";
+    const result = await handleDraftInterpretTool("draft_interpret", { body });
+    const payload = parseResult(result);
+    expect(payload.scenario.category).toBe("booking-issues");
+    expect(payload.scenario.confidence).toBeGreaterThan(0.8);
+  });
+
   it("TC-05: agreement status none when no agreement phrases", async () => {
     const body = "Can you share availability for next weekend?";
     const result = await handleDraftInterpretTool("draft_interpret", { body });
@@ -73,12 +81,36 @@ describe("draft_interpret", () => {
   });
 
   it("TC-09: agreement detection explicit phrases", async () => {
+    const short = await handleDraftInterpretTool("draft_interpret", { body: "Agree!" });
+    expect(parseResult(short).agreement.status).toBe("confirmed");
     const en = await handleDraftInterpretTool("draft_interpret", { body: "I agree to the terms." });
     expect(parseResult(en).agreement.status).toBe("confirmed");
     const it = await handleDraftInterpretTool("draft_interpret", { body: "Accetto." });
     expect(parseResult(it).agreement.status).toBe("confirmed");
     const es = await handleDraftInterpretTool("draft_interpret", { body: "De acuerdo." });
     expect(parseResult(es).agreement.status).toBe("confirmed");
+  });
+
+  it("TC-09b: mention of past agreement does not auto-confirm", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I sent an email yesterday with 'agree' to accept the terms.",
+    });
+    const payload = parseResult(result);
+    expect(payload.agreement.status).toBe("none");
+  });
+
+  it("TC-09c: quoted reply header does not count as additional content for explicit agreement", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: `Agree!
+
+On Fri, Jan 16, 2026 at 02:42 Hostel Positano Team <hostelpositano@gmail.com>
+wrote:
+> quoted previous message`,
+    });
+    const payload = parseResult(result);
+    expect(payload.normalized_text).toBe("Agree!");
+    expect(payload.agreement.status).toBe("confirmed");
+    expect(payload.agreement.additional_content).toBe(false);
   });
 
   it("TC-10: agreement detection negation and ambiguity", async () => {

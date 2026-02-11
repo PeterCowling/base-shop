@@ -1,0 +1,29 @@
+{
+  "doList": {
+    "continueToExplore": "Continue To Explore",
+    "startYourEpicStay": "Start Your Epic Stay"
+  },
+  "error": {
+    "loadInfo": "Load Info",
+    "missingData": "Missing Data"
+  },
+  "guest": "Guest",
+  "loading": "Loading",
+  "ourServices": "Our Services",
+  "profileBanner": {
+    "completeButton": "Complete Button",
+    "returningTitle": "Returning Title",
+    "title": "Title",
+    "updateButton": "Update Button"
+  },
+  "social": {
+    "discoverDescription": "Discover Description",
+    "discoverTitle": "Discover Title",
+    "exploreGuide": "Explore Guide",
+    "explorePositano": "Explore Positano",
+    "upcomingActivity": "Upcoming Activity"
+  },
+  "welcome": {
+    "greeting": "Greeting"
+  }
+}

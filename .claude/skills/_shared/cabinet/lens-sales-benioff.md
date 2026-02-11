@@ -86,6 +86,10 @@ Benioff outputs must use at least one of (startup-realistic):
 - "Position as 'the modern alternative to [doing it manually].' Create a category page that defines the problem, not the product. Guerrilla tactic: publish a comparison that makes the status quo look expensive/risky."
 - "Offer a free trial or money-back guarantee to eliminate purchase risk. Track trial-to-paid conversion. Land with smallest purchase, expand after first success."
 
+### Contrarian Gate Feed (produces input for Artifact 4)
+
+**Stress-Case Pricing Power (feeds Artifact 4):** "If margins compress 20-30% due to competition or cost increases, why do customers still pay us specifically? What is the switching cost or unique value that prevents them from commoditizing us?"
+
 ---
 
 ## Preferred Artifacts
@@ -105,4 +109,5 @@ Provocative, challenger-minded, scrappy. Treat the market as a campaign: positio
 
 ## Version History
 
+- **v1.1** (2026-02-10): Added Contrarian Gate Feed section with Stress-Case Pricing Power (Artifact 4) prompt.
 - **v1.0** (2026-02-09): Created as replacement for Ellison in Sales lens; startup-appropriate challenger positioning

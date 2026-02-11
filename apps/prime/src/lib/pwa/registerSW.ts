@@ -8,7 +8,7 @@
  * Check if service workers are supported.
  */
 export function isServiceWorkerSupported(): boolean {
-  return 'serviceWorker' in navigator;
+  return typeof navigator !== 'undefined' && 'serviceWorker' in navigator;
 }
 
 /**
@@ -16,7 +16,7 @@ export function isServiceWorkerSupported(): boolean {
  */
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
   if (!isServiceWorkerSupported()) {
-    console.log('[SW] Service workers not supported');
+    console.info('[SW] Service workers not supported');
     return null;
   }
 
@@ -25,7 +25,7 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
       scope: '/',
     });
 
-    console.log('[SW] Service worker registered:', registration.scope);
+    console.info('[SW] Service worker registered:', registration.scope);
 
     // Handle updates
     registration.addEventListener('updatefound', () => {
@@ -35,7 +35,7 @@ export async function registerServiceWorker(): Promise<ServiceWorkerRegistration
       newWorker.addEventListener('statechange', () => {
         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
           // New version available
-          console.log('[SW] New service worker available');
+          console.info('[SW] New service worker available');
           dispatchUpdateEvent();
         }
       });
@@ -60,7 +60,7 @@ export async function unregisterServiceWorker(): Promise<boolean> {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       await registration.unregister();
-      console.log('[SW] Service worker unregistered');
+      console.info('[SW] Service worker unregistered');
       return true;
     }
     return false;

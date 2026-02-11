@@ -588,10 +588,6 @@ async function loadKnowledgeSummaries(
   return summaries;
 }
 
-function ensureSignature(body: string): string {
-  return `${stripSignature(body).trim()}\n\nBest regards,\n\nHostel Brikette`;
-}
-
 function parseToolResult<T>(result: { content: Array<{ text: string }> }): T {
   return JSON.parse(result.content[0].text) as T;
 }
@@ -637,7 +633,20 @@ function truncateWords(text: string, maxWords: number): string {
   if (words.length <= maxWords) {
     return text.trim();
   }
-  return `${words.slice(0, maxWords).join(" ").trimEnd()}.`;
+  const truncated = words.slice(0, maxWords).join(" ").trimEnd();
+
+  // Prefer ending on a sentence boundary to avoid broken fragments.
+  const boundaryCandidates = [". ", "? ", "! ", ".\n", "?\n", "!\n"]
+    .map(token => truncated.lastIndexOf(token))
+    .filter(index => index > 0);
+  if (boundaryCandidates.length > 0) {
+    const boundary = Math.max(...boundaryCandidates);
+    if (boundary >= Math.floor(truncated.length * 0.5)) {
+      return truncated.slice(0, boundary + 1).trim();
+    }
+  }
+
+  return sentence(truncated.replace(/[\s,:;*_-]+$/g, ""));
 }
 
 function normalizeParagraphs(text: string): string {
@@ -674,11 +683,6 @@ const FALLBACK_LENGTH_BOUNDS: Record<string, LengthBounds> = {
   faq: { min: 50 },
   default: { min: 80 },
 };
-
-const CONTENT_FILLER_SENTENCES = [
-  "If you need anything else, please let us know.",
-  "We are happy to help with any follow-up questions.",
-];
 
 const CONDITIONAL_RULE_SNIPPETS: Record<string, string> = {
   policy: "Per our policy, please review the full terms on our website.",
@@ -760,40 +764,11 @@ function removeForbiddenPhrases(body: string, phrases: string[]): string {
 
 function applyAlwaysRules(
   body: string,
-  alwaysRules: string[],
-  intents: Array<{ text: string }>,
+  _alwaysRules: string[],
+  _intents: Array<{ text: string }>,
 ): string {
-  let enriched = body;
-  const lowerRules = alwaysRules.map((rule) => rule.toLowerCase());
-  const intentText = intents
-    .map((intent) => intent.text.trim().replace(/\s+/g, " "))
-    .filter(Boolean)
-    .join(" ");
-
-  const shouldReinforceAnswers = lowerRules.some((rule) =>
-    rule.includes("answer every guest question directly")
-  );
-  if (shouldReinforceAnswers && intentText.length > 0 &&
-    !includesCaseInsensitive(enriched, "answered each of your questions")) {
-    enriched = `${enriched}\n\nWe've answered each of your questions directly above: ${intentText}`;
-  }
-
-  const shouldAddWebsite = lowerRules.some((rule) =>
-    rule.includes("link to the website")
-  );
-  if (shouldAddWebsite &&
-    !includesCaseInsensitive(enriched, "live availability on our website")) {
-    enriched = `${enriched}\n\nPlease check live availability on our website: https://www.hostelbrikette.com.`;
-  }
-
-  const shouldWarmTone = lowerRules.some((rule) =>
-    rule.includes("professional and warm")
-  );
-  if (shouldWarmTone && !includesCaseInsensitive(enriched, "happy to help")) {
-    enriched = `${enriched}\n\nHappy to help.`;
-  }
-
-  return normalizeParagraphs(enriched);
+  // Keep template-authored wording; avoid appending generic boilerplate.
+  return normalizeParagraphs(body);
 }
 
 function applyConditionalRule(
@@ -821,28 +796,11 @@ function applyVoicePreferences(
   body: string,
   voiceScenario: VoiceScenario | null,
 ): string {
-  if (!voiceScenario) {
-    return body;
-  }
-
-  let enriched = body;
-
-  if (Array.isArray(voiceScenario.preferred_phrases) &&
-    voiceScenario.preferred_phrases.length > 0) {
-    const hasPreferredPhrase = voiceScenario.preferred_phrases.some((phrase) =>
-      includesCaseInsensitive(enriched, phrase)
-    );
-    if (!hasPreferredPhrase) {
-      enriched = `${enriched}\n\n${sentence(voiceScenario.preferred_phrases[0])}`;
-    }
-  }
-
-  if (Array.isArray(voiceScenario.bad_examples) &&
+  if (Array.isArray(voiceScenario?.bad_examples) &&
     voiceScenario.bad_examples.length > 0) {
-    enriched = removeForbiddenPhrases(enriched, voiceScenario.bad_examples);
+    return normalizeParagraphs(removeForbiddenPhrases(body, voiceScenario.bad_examples));
   }
-
-  return normalizeParagraphs(enriched);
+  return normalizeParagraphs(body);
 }
 
 function applyPolicyTemplateConstraints(
@@ -879,15 +837,66 @@ function applyPolicyDecisionContent(
   return normalizeParagraphs(adjusted);
 }
 
+function hasAvailabilityIntent(actionPlan: z.infer<typeof draftGenerateSchema>["actionPlan"]): boolean {
+  const text = `${actionPlan.normalized_text} ${actionPlan.intents.questions.map(q => q.text).join(" ")}`.toLowerCase();
+  return /(check availability|do you have availability|availability for|availability from|available for these dates|available from)/.test(text);
+}
+
+function selectAvailabilityTemplate(templates: EmailTemplate[]): EmailTemplate | undefined {
+  const preferred = templates.find(template =>
+    template.category === "booking-issues" &&
+    /booking inquiry .*availability/i.test(template.subject)
+  );
+  if (preferred) {
+    return preferred;
+  }
+
+  return templates.find(template =>
+    template.category === "booking-issues" &&
+    /live availability/i.test(template.body)
+  );
+}
+
+function shouldUseAgreementTemplate(
+  actionPlan: z.infer<typeof draftGenerateSchema>["actionPlan"],
+): boolean {
+  if (actionPlan.agreement.status !== "confirmed") {
+    return false;
+  }
+  if (actionPlan.agreement.requires_human_confirmation) {
+    return false;
+  }
+  if (actionPlan.agreement.additional_content) {
+    return false;
+  }
+  return (
+    actionPlan.intents.questions.length === 0 &&
+    actionPlan.intents.requests.length === 0
+  );
+}
+
+function selectAgreementTemplate(templates: EmailTemplate[]): EmailTemplate | undefined {
+  return templates.find((template) =>
+    template.category === "general" &&
+    /^agreement received$/i.test(template.subject.trim())
+  );
+}
+
+function personalizeGreeting(body: string, recipientName?: string): string {
+  if (!recipientName) {
+    return body;
+  }
+
+  const trimmed = body.trimStart();
+  if (/^Dear\s+Guest,/i.test(trimmed)) {
+    return trimmed.replace(/^Dear\s+Guest,/i, `Dear ${recipientName},`);
+  }
+
+  return body;
+}
+
 function enforceLengthBounds(body: string, bounds: LengthBounds): string {
   let adjusted = body.trim();
-  let fillerIdx = 0;
-
-  while (countWords(adjusted) < bounds.min) {
-    const filler = CONTENT_FILLER_SENTENCES[fillerIdx % CONTENT_FILLER_SENTENCES.length];
-    adjusted = `${adjusted}\n\n${filler}`;
-    fillerIdx += 1;
-  }
 
   if (typeof bounds.max === "number" && countWords(adjusted) > bounds.max) {
     adjusted = truncateWords(adjusted, bounds.max);
@@ -911,9 +920,8 @@ function assembleCompositeBody(
   // Extract content from each template
   const contentParts = templates.map((t) => extractContentBody(t.body));
 
-  // Combine with the first template's greeting and a single signature
-  const combined = `${greeting.trimEnd()}\n\nThank you for your email.\n\n${contentParts.join("\n\n")}\n\nBest regards,\n\nHostel Brikette`;
-  return combined;
+  // Combine with the first template's greeting; HTML template handles sign-off visuals.
+  return `${greeting.trimEnd()}\n\nThank you for your email.\n\n${contentParts.join("\n\n")}`;
 }
 
 export async function handleDraftGenerateTool(name: string, args: unknown) {
@@ -946,8 +954,16 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       policyDecision,
     );
 
-    const selectedTemplate =
-      rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined;
+    const hasAvailability = hasAvailabilityIntent(actionPlan);
+    const agreementTemplate = shouldUseAgreementTemplate(actionPlan)
+      ? selectAgreementTemplate(templates)
+      : undefined;
+    const availabilityTemplate = hasAvailability
+      ? selectAvailabilityTemplate(templates)
+      : undefined;
+    const selectedTemplate = agreementTemplate
+      ?? availabilityTemplate
+      ?? (rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined);
 
     const isComposite =
       actionPlan.intents.questions.length >= 2 &&
@@ -990,25 +1006,17 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     );
     contentBody = applyVoicePreferences(contentBody, voiceScenario);
 
-    const fullBodyBounds = resolveLengthBounds(draftGuide, actionPlan.scenario.category);
-    const signatureWordBudget = countWords("Best regards Hostel Brikette");
-    const contentBounds: LengthBounds = {
-      min: Math.max(1, fullBodyBounds.min - signatureWordBudget),
-      max: typeof fullBodyBounds.max === "number"
-        ? Math.max(
-          Math.max(1, fullBodyBounds.min - signatureWordBudget),
-          fullBodyBounds.max - signatureWordBudget,
-        )
-        : undefined,
-    };
+    const contentBounds = resolveLengthBounds(draftGuide, actionPlan.scenario.category);
     contentBody = enforceLengthBounds(contentBody, contentBounds);
     contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
-    bodyPlain = ensureSignature(contentBody);
+    bodyPlain = stripSignature(contentBody).trim();
+    bodyPlain = personalizeGreeting(bodyPlain, recipientName);
 
+    const includeBookingLink = actionPlan.workflow_triggers.booking_monitor && !agreementTemplate;
     const bodyHtml = generateEmailHtml({
       recipientName,
       bodyText: bodyPlain,
-      includeBookingLink: actionPlan.workflow_triggers.booking_monitor,
+      includeBookingLink,
       subject,
     });
 
@@ -1026,7 +1034,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
           questions: actionPlan.intents.questions,
           requests: actionPlan.intents.requests,
         },
-        workflow_triggers: { booking_monitor: actionPlan.workflow_triggers.booking_monitor },
+        workflow_triggers: { booking_monitor: includeBookingLink },
         scenario: { category: actionPlan.scenario.category },
         thread_summary: actionPlan.thread_summary,
       },

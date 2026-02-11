@@ -41,7 +41,7 @@ const activityCodes: Record<number, string> = {
   23: "Bags dropped",
   24: "Departure date change",
   25: "Cancelled",
-  26: "Resend app email",
+  26: "App email draft created",
 };
 
 interface StatusButtonProps {

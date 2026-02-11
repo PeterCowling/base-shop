@@ -1,6 +1,6 @@
 // src/hooks/useBookingEmail.ts
 /**
- * React hook for dispatching booking‑related “App‑Link” emails.
+ * React hook for creating booking-related “App-Link” email drafts.
  *
  * ✦ NEW:  All guest ( = occupant ) IDs in the booking are now
  *         automatically discovered from Firebase and **every** guest
@@ -64,7 +64,7 @@ export default function useBookingEmail() {
   const [message, setMessage] = useState("");
 
   /**
-   * Sends an App‑Link email that contains one link per guest.
+   * Creates an App-Link email draft that contains one link per guest.
    * Any `occupantEmails` supplied by the caller are merged with
    * emails fetched from Firebase (caller values win on conflict).
    */
@@ -125,12 +125,12 @@ export default function useBookingEmail() {
         });
         const json = await resp.json();
         if (!resp.ok || !json?.success) {
-          throw new Error(json?.error || "Failed to send booking email");
+          throw new Error(json?.error || "Failed to create booking email draft");
         }
-        setMessage(json?.messageId ?? "sent");
+        setMessage(json?.draftId ?? json?.messageId ?? "draft-created");
       } catch (err) {
         console.error("❌ sendBookingEmail failed", err);
-        setMessage((err as Error).message || "Failed to send email");
+        setMessage((err as Error).message || "Failed to create email draft");
       } finally {
         setLoading(false);
       }

@@ -39,5 +39,6 @@ jobs:
           BOS_AGENT_API_BASE_URL: ${{ vars.BOS_AGENT_API_BASE_URL }}
           BOS_EXPORT_BASE_BRANCH: dev
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SKIP_SIMPLE_GIT_HOOKS: "1"
         run: |
           pnpm tsx apps/business-os/src/scripts/export-to-pr.ts

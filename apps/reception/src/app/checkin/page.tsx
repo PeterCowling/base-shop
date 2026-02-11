@@ -3,7 +3,7 @@
 import dynamicImport from 'next/dynamic';
 
 // Dynamically import with ssr: false to prevent prerendering
-// This avoids SSR issues with localStorage in DarkModeContext
+// This avoids SSR issues with localStorage access in theme preference handling.
 const CheckinContent = dynamicImport(
   () => import('@/components/checkins/CheckinContent'),
   { ssr: false }

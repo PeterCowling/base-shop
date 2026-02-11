@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Historical
 Domain: Infra
 Created: 2026-02-07
 Last-updated: 2026-02-07

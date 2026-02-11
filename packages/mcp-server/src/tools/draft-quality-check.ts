@@ -173,6 +173,19 @@ function hasSignature(text: string): boolean {
   );
 }
 
+function hasHtmlSignatureBlock(html?: string): boolean {
+  if (!html) {
+    return false;
+  }
+  const lower = html.toLowerCase();
+  return (
+    lower.includes("cristiana's signature") ||
+    lower.includes("peter's signature") ||
+    lower.includes("cristiana marzano cowling") ||
+    lower.includes("peter cowling")
+  );
+}
+
 function detectLanguage(text: string): "EN" | "IT" | "ES" | "UNKNOWN" {
   const lower = text.toLowerCase();
   if (/(\bciao\b|\bgrazie\b|\bbuongiorno\b|\bper favore\b)/.test(lower)) {
@@ -350,7 +363,7 @@ function runChecks(
     failed_checks.push("missing_html");
   }
 
-  if (!hasSignature(draft.bodyPlain)) {
+  if (!hasSignature(draft.bodyPlain) && !hasHtmlSignatureBlock(draft.bodyHtml)) {
     failed_checks.push("missing_signature");
   }
 

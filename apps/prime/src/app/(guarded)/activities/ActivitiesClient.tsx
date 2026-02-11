@@ -31,7 +31,10 @@ function formatActivityTime(startTime: number): string {
   }).format(new Date(startTime));
 }
 
-function formatRelativeTime(startTime: number): string {
+function formatRelativeTime(
+  startTime: number,
+  t: (key: string, options?: Record<string, unknown>) => string,
+): string {
   const now = Date.now();
   const diff = startTime - now;
   const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -39,15 +42,15 @@ function formatRelativeTime(startTime: number): string {
 
   if (hours > 24) {
     const days = Math.floor(hours / 24);
-    return `in ${days} day${days > 1 ? 's' : ''}`;
+    return t('time.inDays', { count: days });
   }
   if (hours > 0) {
-    return `in ${hours}h ${minutes}m`;
+    return t('time.inHoursMinutes', { hours, minutes });
   }
   if (minutes > 0) {
-    return `in ${minutes}m`;
+    return t('time.inMinutes', { minutes });
   }
-  return 'starting now';
+  return t('time.startingNow');
 }
 
 function formatFinishTime(startTime: number): string {
@@ -107,10 +110,10 @@ function ActivityCard({
             <span className={`h-2 w-2 rounded-full ${isLive ? 'animate-pulse bg-success' : 'bg-primary'}`} />
           )}
           {isLive
-            ? t('status.live', 'Live now')
+            ? t('status.live')
             : isEnded
-              ? t('status.ended', 'Ended')
-              : t('status.upcoming', 'Upcoming')}
+              ? t('status.ended')
+              : t('status.upcoming')}
         </div>
         <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
           <Users className="h-3.5 w-3.5" />
@@ -138,7 +141,7 @@ function ActivityCard({
         {!isLive && (
           <div className="flex items-center gap-2 text-sm text-success">
             <Clock className="h-4 w-4" />
-            <span>{isEnded ? 'Event finished' : formatRelativeTime(activity.startTime)}</span>
+            <span>{isEnded ? t('time.eventFinished') : formatRelativeTime(activity.startTime, t)}</span>
           </div>
         )}
         {activity.meetUpPoint && (
@@ -163,7 +166,7 @@ function ActivityCard({
           disabled={!isLive || isPresent}
           className="w-full rounded-lg border border-success bg-success-soft px-4 py-2.5 text-sm font-medium text-success-foreground disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {isPresent ? 'You are marked present' : isLive ? "I'm here" : 'Available once live'}
+          {isPresent ? t('presence.markedPresent') : isLive ? t('presence.markPresent') : t('presence.availableOnceLive')}
         </button>
 
         <Link
@@ -177,10 +180,10 @@ function ActivityCard({
         >
           <MessageCircle className="h-4 w-4" />
           {isLive
-            ? t('actions.joinNow', 'Join now')
+            ? t('actions.joinNow')
             : isEnded
-              ? t('actions.eventEnded', 'Event ended')
-              : t('actions.seeDetails', 'See details')}
+              ? t('actions.eventEnded')
+              : t('actions.seeDetails')}
         </Link>
       </div>
     </div>
@@ -209,13 +212,13 @@ export default function ActivitiesClient() {
       <main className="min-h-screen bg-muted p-4">
         <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">
-            {t('title', 'Activities')}
+            {t('title')}
           </h1>
           <p className="text-sm text-muted-foreground">
-            Activities are temporarily unavailable until your secure session is ready.
+            {t('sdkUnavailable.message')}
           </p>
           <Link href="/" className="mt-4 inline-block text-primary hover:underline">
-            Return Home
+            {t('sdkUnavailable.returnHome')}
           </Link>
         </div>
       </main>
@@ -275,7 +278,7 @@ export default function ActivitiesClient() {
     }
     setIsMarkingPresent(activityId);
     try {
-      const { db, ref: dbRef } = await import('@/services/firebase');
+      const { db, ref: dbRef } = await import('@/services/firebase'); // i18n-exempt -- DS-11 module path
       await set(dbRef(db, `${MSG_ROOT}/activities/presence/${activityId}/${uuid}`), {
         at: Date.now(),
       });
@@ -300,11 +303,11 @@ export default function ActivitiesClient() {
           <div className="mb-2 flex items-center gap-2">
             <Users className="h-6 w-6 text-success-foreground/80" />
             <h1 className="text-2xl font-bold text-success-foreground">
-              {t('title', 'Activities')}
+              {t('title')}
             </h1>
           </div>
           <p className="text-sm text-success-foreground/80">
-            {t('subtitle', 'Join fellow travelers for adventures and social events')}
+            {t('subtitle')}
           </p>
         </div>
       </div>
@@ -317,7 +320,7 @@ export default function ActivitiesClient() {
               <section>
                 <h2 className="mb-3 flex items-center gap-2 text-sm font-medium text-muted-foreground">
                   <span className="h-2 w-2 animate-pulse rounded-full bg-success" />
-                  {t('sections.happeningNow', 'Happening Now')}
+                  {t('sections.happeningNow')}
                 </h2>
                 <div className="space-y-3">
                   {liveActivities.map((activity) => (
@@ -338,7 +341,7 @@ export default function ActivitiesClient() {
             {upcomingActivities.length > 0 && (
               <section>
                 <h2 className="mb-3 text-sm font-medium text-muted-foreground">
-                  {t('sections.upcoming', 'Coming Up')}
+                  {t('sections.upcoming')}
                 </h2>
                 <div className="space-y-3">
                   {upcomingActivities.map((activity) => (
@@ -359,7 +362,7 @@ export default function ActivitiesClient() {
             {endedActivities.length > 0 && (
               <section>
                 <h2 className="mb-3 text-sm font-medium text-muted-foreground">
-                  {t('sections.ended', 'Ended')}
+                  {t('sections.ended')}
                 </h2>
                 <div className="space-y-3">
                   {endedActivities.map((activity) => (
@@ -385,7 +388,7 @@ export default function ActivitiesClient() {
                   disabled={isMarkingPresent !== null}
                   className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted"
                 >
-                  {t('actions.loadMore', 'Load more activities')}
+                  {t('actions.loadMore')}
                 </button>
               </div>
             )}
@@ -395,16 +398,16 @@ export default function ActivitiesClient() {
           <div className="rounded-xl bg-card p-6 text-center shadow-sm">
             <Calendar className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
             <h2 className="mb-2 text-lg font-semibold text-foreground">
-              {t('empty.title', 'No activities yet')}
+              {t('empty.title')}
             </h2>
             <p className="mb-4 text-sm text-muted-foreground">
-              {t('empty.description', 'Check back later for upcoming events, or explore Positano on your own!')}
+              {t('empty.description')}
             </p>
             <Link
               href="/positano-guide"
               className="inline-flex items-center gap-2 rounded-lg bg-success px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-success/90"
             >
-              {t('empty.exploreGuide', 'Explore Positano Guide')}
+              {t('empty.exploreGuide')}
             </Link>
           </div>
         )}
@@ -415,7 +418,7 @@ export default function ActivitiesClient() {
             href="/"
             className="text-sm text-muted-foreground hover:text-muted-foreground"
           >
-            {t('actions.backHome', '← Back to home')}
+            {t('actions.backHome')}
           </Link>
         </div>
       </div>

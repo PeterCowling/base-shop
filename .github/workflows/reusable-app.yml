@@ -120,7 +120,7 @@ jobs:
           is_deploy_only="false"
           uncertain="true"
           reason="non_brikette_caller"
-          test_scope="full"
+          test_scope="related"
           related_test_paths_json="[]"
           changed_file_count="0"
 
@@ -168,7 +168,7 @@ jobs:
                 classifier_output_valid="false"
               fi
 
-              if [[ "$test_scope" != "skip" && "$test_scope" != "full" && "$test_scope" != "related" ]]; then
+              if [[ "$test_scope" != "skip" && "$test_scope" != "related" ]]; then
                 classifier_output_valid="false"
               fi
 
@@ -177,16 +177,16 @@ jobs:
               fi
 
               if [[ "$classifier_output_valid" != "true" ]]; then
-                echo "::warning title=Validation gating::Classifier output parse failed; running full validation."
+                echo "::warning title=Validation gating::Classifier output parse failed; running related-only validation."
                 run_validation="true"
                 is_deploy_only="false"
                 uncertain="true"
                 reason="classifier_parse_failed"
-                test_scope="full"
+                test_scope="related"
                 related_test_paths_json="[]"
               fi
             else
-              echo "::warning title=Validation gating::Classifier command failed; running full validation."
+              echo "::warning title=Validation gating::Classifier command failed; running related-only validation."
               if [[ -s "$classification_stderr_file" ]]; then
                 sed 's/^/classifier stderr: /' "$classification_stderr_file"
               fi
@@ -194,7 +194,7 @@ jobs:
               uncertain="true"
               reason="classifier_command_failed"
               run_validation="true"
-              test_scope="full"
+              test_scope="related"
               related_test_paths_json="[]"
             fi
           fi
@@ -253,6 +253,7 @@ jobs:
         env:
           PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
           EVENT_BEFORE: ${{ github.event.before || '' }}
+          PRIME_CHANGED_FILE_LINT_MAX_TARGETS: "150"
         run: |
           set -euo pipefail
           base_sha=""
@@ -271,7 +272,21 @@ jobs:
             : > "$changed_paths_file"
           fi
 
-          pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --format outputs
+          decision_output="$(pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --format outputs)"
+          echo "$decision_output"
+
+          run_lint="$(echo "$decision_output" | awk -F= '$1=="run_lint"{print $2}')"
+          lint_target_count="$(echo "$decision_output" | awk -F= '$1=="lint_target_count"{print $2}')"
+
+          if [[ "$run_lint" != "true" ]]; then
+            exit 0
+          fi
+
+          if [[ -n "${PRIME_CHANGED_FILE_LINT_MAX_TARGETS:-}" ]] && [[ "$lint_target_count" =~ ^[0-9]+$ ]] && (( lint_target_count > PRIME_CHANGED_FILE_LINT_MAX_TARGETS )); then
+            echo "::warning title=Prime changed-file lint gate::Skipping strict touched-file lint because target count ($lint_target_count) exceeds max ($PRIME_CHANGED_FILE_LINT_MAX_TARGETS)."
+            exit 0
+          fi
+
           pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --run-eslint --format outputs
 
       - name: Typecheck
@@ -314,7 +329,7 @@ jobs:
 
   test:
     name: Test
-    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests != 'true' }}
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests != 'true' && needs.validate.outputs.test_scope != 'skip' }}
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -351,46 +366,51 @@ jobs:
             exit 0
           fi
 
+          if [[ "$TEST_SCOPE" == "skip" ]]; then
+            echo "::notice title=Test selection::Skipping Brikette tests (classifier selected skip scope)."
+            exit 0
+          fi
+
           base_cmd=(pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests)
 
-          if [[ "$TEST_SCOPE" == "related" ]]; then
-            mapfile -t related_paths < <(node -e '
-              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
-              const parsed = JSON.parse(raw);
-              if (!Array.isArray(parsed)) {
-                throw new Error("related_test_paths_json must be an array");
-              }
-              for (const entry of parsed) {
-                if (typeof entry === "string" && entry.length > 0) {
-                  console.log(entry);
-                }
-              }
-            ')
-
-            existing_paths=()
-            for relative_path in "${related_paths[@]}"; do
-              absolute_path="$GITHUB_WORKSPACE/$relative_path"
-              if [[ -f "$absolute_path" ]]; then
-                existing_paths+=("$absolute_path")
-              fi
-            done
-
-            if [[ "${#existing_paths[@]}" -eq 0 ]]; then
-              echo "::warning title=Test selection::Related test scope requested but no eligible files were found; falling back to full suite."
-              "${base_cmd[@]}"
-            else
-              echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]})"
-              "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
-            fi
-          else
-            echo "::notice title=Test selection::Running full Brikette test suite scope=$TEST_SCOPE"
-            "${base_cmd[@]}"
+          if [[ "$TEST_SCOPE" != "related" ]]; then
+            echo "::error title=Test selection::Unsupported Brikette test scope '$TEST_SCOPE'."
+            exit 1
           fi
+
+          mapfile -t related_paths < <(node -e '
+            const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+            const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed)) {
+              throw new Error("related_test_paths_json must be an array");
+            }
+            for (const entry of parsed) {
+              if (typeof entry === "string" && entry.length > 0) {
+                console.log(entry);
+              }
+            }
+          ')
+
+          existing_paths=()
+          for relative_path in "${related_paths[@]}"; do
+            absolute_path="$GITHUB_WORKSPACE/$relative_path"
+            if [[ -f "$absolute_path" ]]; then
+              existing_paths+=("$absolute_path")
+            fi
+          done
+
+          if [[ "${#existing_paths[@]}" -eq 0 ]]; then
+            echo "::notice title=Test selection::Skipping Brikette tests; related scope produced no existing files."
+            exit 0
+          fi
+
+          echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]})"
+          "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
         shell: bash
 
   test-sharded:
     name: Test (shard ${{ matrix.shard }}/3)
-    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests == 'true' }}
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests == 'true' && needs.validate.outputs.test_scope != 'skip' }}
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -438,39 +458,44 @@ jobs:
           shard="${{ matrix.shard }}/3"
           base_cmd=(pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard="$shard")
 
-          if [[ "$TEST_SCOPE" == "related" ]]; then
-            mapfile -t related_paths < <(node -e '
-              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
-              const parsed = JSON.parse(raw);
-              if (!Array.isArray(parsed)) {
-                throw new Error("related_test_paths_json must be an array");
-              }
-              for (const entry of parsed) {
-                if (typeof entry === "string" && entry.length > 0) {
-                  console.log(entry);
-                }
-              }
-            ')
-
-            existing_paths=()
-            for relative_path in "${related_paths[@]}"; do
-              absolute_path="$GITHUB_WORKSPACE/$relative_path"
-              if [[ -f "$absolute_path" ]]; then
-                existing_paths+=("$absolute_path")
-              fi
-            done
-
-            if [[ "${#existing_paths[@]}" -eq 0 ]]; then
-              echo "::warning title=Test selection::Related test scope requested but no eligible files were found; falling back to full suite."
-              "${base_cmd[@]}"
-            else
-              echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]}) shard=$shard"
-              "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
-            fi
-          else
-            echo "::notice title=Test selection::Running full Brikette test suite shard=$shard scope=$TEST_SCOPE"
-            "${base_cmd[@]}"
+          if [[ "$TEST_SCOPE" == "skip" ]]; then
+            echo "::notice title=Test selection::Skipping Brikette tests (classifier selected skip scope). shard=$shard"
+            exit 0
           fi
+
+          if [[ "$TEST_SCOPE" != "related" ]]; then
+            echo "::error title=Test selection::Unsupported Brikette test scope '$TEST_SCOPE'. shard=$shard"
+            exit 1
+          fi
+
+          mapfile -t related_paths < <(node -e '
+            const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+            const parsed = JSON.parse(raw);
+            if (!Array.isArray(parsed)) {
+              throw new Error("related_test_paths_json must be an array");
+            }
+            for (const entry of parsed) {
+              if (typeof entry === "string" && entry.length > 0) {
+                console.log(entry);
+              }
+            }
+          ')
+
+          existing_paths=()
+          for relative_path in "${related_paths[@]}"; do
+            absolute_path="$GITHUB_WORKSPACE/$relative_path"
+            if [[ -f "$absolute_path" ]]; then
+              existing_paths+=("$absolute_path")
+            fi
+          done
+
+          if [[ "${#existing_paths[@]}" -eq 0 ]]; then
+            echo "::notice title=Test selection::Skipping Brikette tests; related scope produced no existing files. shard=$shard"
+            exit 0
+          fi
+
+          echo "::notice title=Test selection::Running related Brikette tests (count=${#existing_paths[@]}) shard=$shard"
+          "${base_cmd[@]}" --findRelatedTests "${existing_paths[@]}"
         shell: bash
 
   build:

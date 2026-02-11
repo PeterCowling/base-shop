@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Brikette/Routing
 Last-reviewed: 2026-02-07
 Relates-to:

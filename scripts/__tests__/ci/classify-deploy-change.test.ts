@@ -33,14 +33,14 @@ describe("classifyDeployChange", () => {
     });
   });
 
-  it("TC-03: classifies irrelevant path categories as uncertain with full-test fallback", () => {
+  it("TC-03: classifies irrelevant path categories as uncertain with test-skip scope", () => {
     const result = classifyDeployChange(["docs/new-area/unknown-contract.md"]);
 
     expect(result).toMatchObject({
       isDeployOnly: false,
       uncertain: true,
       reason: "irrelevant_path_set",
-      testScope: "full",
+      testScope: "skip",
       relatedTestPaths: [],
       relevantPaths: [],
       ignoredPaths: ["docs/new-area/unknown-contract.md"],
@@ -54,7 +54,7 @@ describe("classifyDeployChange", () => {
       isDeployOnly: false,
       uncertain: true,
       reason: "empty_path_set",
-      testScope: "full",
+      testScope: "skip",
       relatedTestPaths: [],
     });
   });
@@ -88,20 +88,20 @@ describe("classifyDeployChange", () => {
     });
   });
 
-  it("TC-07: falls back to full tests when runtime paths are not related-test eligible", () => {
+  it("TC-07: skips tests when runtime paths are not related-test eligible", () => {
     const result = classifyDeployChange(["apps/brikette/public/img/hero.jpg"]);
 
     expect(result).toMatchObject({
       isDeployOnly: false,
       uncertain: false,
       reason: "runtime_path_detected",
-      testScope: "full",
+      testScope: "skip",
       relatedTestPaths: [],
       runtimePaths: ["apps/brikette/public/img/hero.jpg"],
     });
   });
 
-  it("TC-08: treats mixed runtime and global-impact unknown paths as uncertain", () => {
+  it("TC-08: treats mixed runtime and global-impact unknown paths as uncertain with related scope when possible", () => {
     const result = classifyDeployChange([
       "apps/brikette/src/components/header/Header.tsx",
       "package.json",
@@ -111,10 +111,46 @@ describe("classifyDeployChange", () => {
       isDeployOnly: false,
       uncertain: true,
       reason: "unknown_path_detected",
-      testScope: "full",
-      relatedTestPaths: [],
+      testScope: "related",
+      relatedTestPaths: ["apps/brikette/src/components/header/Header.tsx"],
       runtimePaths: ["apps/brikette/src/components/header/Header.tsx"],
       unknownPaths: ["package.json"],
+    });
+  });
+
+  it("TC-09: narrows related scope to eligible runtime files when mixed with static assets", () => {
+    const result = classifyDeployChange([
+      "apps/brikette/src/components/header/Header.tsx",
+      "apps/brikette/public/img/hero.jpg",
+    ]);
+
+    expect(result).toMatchObject({
+      isDeployOnly: false,
+      uncertain: false,
+      reason: "runtime_path_detected",
+      testScope: "related",
+      relatedTestPaths: ["apps/brikette/src/components/header/Header.tsx"],
+      runtimePaths: [
+        "apps/brikette/src/components/header/Header.tsx",
+        "apps/brikette/public/img/hero.jpg",
+      ],
+    });
+  });
+
+  it("TC-10: ignores non-runtime scripts when deploy-only Brikette paths are present", () => {
+    const result = classifyDeployChange([
+      ".github/workflows/brikette.yml",
+      "scripts/agents/integrator-shell.sh",
+    ]);
+
+    expect(result).toMatchObject({
+      isDeployOnly: true,
+      uncertain: false,
+      reason: "deploy_only_paths",
+      testScope: "skip",
+      relatedTestPaths: [],
+      deployPaths: [".github/workflows/brikette.yml"],
+      ignoredPaths: ["scripts/agents/integrator-shell.sh"],
     });
   });
 });

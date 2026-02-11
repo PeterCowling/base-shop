@@ -30,9 +30,12 @@ Last-reviewed: 2026-02-09
 - For local testing, always run targeted commands (never unfiltered `pnpm test`):
 
   ```bash
-  pnpm --filter @apps/cms test
-  pnpm --filter @apps/skylar test
+  pnpm --filter @apps/cms test -- apps/cms/src/lib/__tests__/shop-smoke.spec.ts
+  pnpm --filter @apps/skylar test -- --testPathPattern="checkout|payment"
   ```
+
+- Root `pnpm test` is intentionally blocked to prevent accidental monorepo fan-out.
+  Use `pnpm test:affected` for integration scope, or `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all` when a deliberate full run is required.
 
 - `pnpm test:affected` runs `turbo run test --affected` and is the default integration test strategy.
 - Full-matrix/coverage quality runs belong to the nightly/manual lane (`.github/workflows/test.yml`), not the standard integration push loop.

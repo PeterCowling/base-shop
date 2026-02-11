@@ -44,6 +44,7 @@ const operationsActions: ModalAction[] = [
   { label: "Checkout", iconClass: "fas fa-sign-out-alt", route: "/checkout" },
   { label: "Loans", iconClass: "fas fa-lock", route: "/loan-items" },
   { label: "Extension", iconClass: "fas fa-calendar-plus", route: "/extension" },
+  { label: "Prime Requests", iconClass: "fas fa-inbox", route: "/prime-requests" },
 ];
 
 const managementActions: ModalAction[] = [
@@ -82,7 +83,7 @@ async function testLogout(Component: React.ComponentType<IconModalProps>) {
 
 describe("AppNav modals", () => {
   it("passes actions to OperationsModal", () => {
-    expect(withIconModalMock).toHaveBeenNthCalledWith(1, {
+    expect(withIconModalMock).toHaveBeenCalledWith({
       label: "OPERATIONS",
       actions: operationsActions,
     });
@@ -94,7 +95,7 @@ describe("AppNav modals", () => {
   });
 
   it("passes actions to ManagementModal", () => {
-    expect(withIconModalMock).toHaveBeenNthCalledWith(2, {
+    expect(withIconModalMock).toHaveBeenCalledWith({
       label: "MANAGEMENT",
       actions: managementActions,
     });
@@ -106,7 +107,7 @@ describe("AppNav modals", () => {
   });
 
   it("passes actions to ManModal", () => {
-    expect(withIconModalMock).toHaveBeenNthCalledWith(3, {
+    expect(withIconModalMock).toHaveBeenCalledWith({
       label: "MAN",
       actions: manActions,
     });
@@ -118,7 +119,7 @@ describe("AppNav modals", () => {
   });
 
   it("passes actions to TillModal", () => {
-    expect(withIconModalMock).toHaveBeenNthCalledWith(4, {
+    expect(withIconModalMock).toHaveBeenCalledWith({
       label: "TILL",
       actions: tillActions,
     });

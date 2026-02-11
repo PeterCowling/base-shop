@@ -11,8 +11,8 @@ import {
 } from "react";
 
 import { useAuth } from "../context/AuthContext";
-import { useDarkMode } from "../context/DarkModeContext";
 import { readJson, removeItem,writeJson } from "../lib/offline/storage";
+import { useReceptionTheme } from "../providers/ReceptionThemeProvider";
 import {
   getFirebaseAuth,
   sendPasswordResetEmail,
@@ -123,7 +123,7 @@ interface LoginProps {
 
 function Login({ onLoginSuccess }: LoginProps) {
   const { login, status } = useAuth();
-  const { toggleDark, dark } = useDarkMode();
+  const { toggleDark, dark } = useReceptionTheme();
   const app = useFirebaseApp();
   const auth = useMemo(() => getFirebaseAuth(app), [app]);
 

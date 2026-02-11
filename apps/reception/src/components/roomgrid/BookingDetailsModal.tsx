@@ -10,7 +10,8 @@
 import type { FC } from "react";
 import { memo, useCallback, useState } from "react";
 
-import { useDialog } from "../../context/DialogContext";
+import { ConfirmDialog } from "@acme/design-system/atoms";
+
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGuestByRoomData from "../../hooks/data/roomgrid/useGuestByRoomData";
 import useBookings from "../../hooks/data/useBookingsData";
@@ -40,7 +41,6 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
   bookingDetails,
   onClose,
 }) => {
-  const { showConfirm } = useDialog();
   const { allocateRoomIfAllowed } = useAllocateRoom();
   const { bookings } = useBookings({
     startAt: bookingDetails.bookingRef,
@@ -49,23 +49,28 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
   const { guestByRoomData } = useGuestByRoomData();
   const { knownRooms } = useRoomConfigs();
   const [targetRoom, setTargetRoom] = useState<string>("");
+  const [confirmMoveOpen, setConfirmMoveOpen] = useState(false);
+  const [pendingGuestCount, setPendingGuestCount] = useState(0);
 
   const handleClose = useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const handleMoveBooking = useCallback(async () => {
+  const handleMoveBooking = useCallback(() => {
     if (!bookingDetails.bookingRef || !targetRoom) return;
     const occMap = bookings?.[bookingDetails.bookingRef];
     if (!occMap) return;
+    setPendingGuestCount(Object.keys(occMap).length);
+    setConfirmMoveOpen(true);
+  }, [bookingDetails.bookingRef, bookings, targetRoom]);
 
-    const guestCount = Object.keys(occMap).length;
-    const confirmMove = await showConfirm({
-      title: "Move guests",
-      message: `Move all ${guestCount} guests to room "${targetRoom}"?`,
-      confirmLabel: "Move",
-    });
-    if (!confirmMove) return;
+  const handleConfirmMoveBooking = useCallback(async () => {
+    if (!bookingDetails.bookingRef || !targetRoom) return;
+    const occMap = bookings?.[bookingDetails.bookingRef];
+    if (!occMap) {
+      setConfirmMoveOpen(false);
+      return;
+    }
 
     for (const occupantId of Object.keys(occMap)) {
       const oldRoomValue = guestByRoomData[occupantId]?.allocated || "";
@@ -82,6 +87,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
         newGuestId: occupantId,
       });
     }
+    setConfirmMoveOpen(false);
     onClose();
   }, [
     allocateRoomIfAllowed,
@@ -89,7 +95,6 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
     bookingDetails.date,
     bookings,
     guestByRoomData,
-    showConfirm,
     targetRoom,
     onClose,
   ]);
@@ -172,6 +177,7 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
                 ))}
               </select>
               <button
+                type="button"
                 onClick={handleMoveBooking}
                 className="w-full px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
               >
@@ -181,6 +187,16 @@ const BookingDetailsModal: FC<BookingDetailsModalProps> = ({
           )}
         </div>
       </div>
+      <ConfirmDialog
+        open={confirmMoveOpen}
+        onOpenChange={setConfirmMoveOpen}
+        title="Move guests"
+        description={`Move all ${pendingGuestCount} guests to room "${targetRoom}"?`}
+        confirmLabel="Move"
+        onConfirm={() => {
+          void handleConfirmMoveBooking();
+        }}
+      />
     </>
   );
 };

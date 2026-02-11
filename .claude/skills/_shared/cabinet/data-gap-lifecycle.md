@@ -109,6 +109,45 @@ Every DGP must include:
 5. **VOI Justification** — Required for Gap-Type=data. Optional for Gap-Type=timing and Gap-Type=dependency.
 6. **Presentable Criteria Check** — Which criteria are met, which are missing
 
+### Contrarian Gate Resolution Template
+
+For DGPs tagged `gate-unresolved`, the fact-find should target the specific incomplete artifacts:
+
+```
+## Contrarian Gate Resolution: <Idea Title>
+
+**DGP Source:** Contrarian Gate UNRESOLVED (Sweep <YYYY-MM-DD>)
+**Incomplete Artifacts:** <list which of the 7 are incomplete>
+
+### Resolution Questions (per incomplete artifact)
+
+**If Artifact 3 (Contrarian Secret) incomplete:**
+- What do most competitors/observers believe about this market?
+- What evidence suggests the opposite might be true?
+- What operational advantage would follow from the contrarian truth?
+
+**If Artifact 4 (Capture-Value Proof) incomplete:**
+- What specific pricing power evidence exists?
+- Under 20-30% margin compression, why do customers stay?
+- What switching costs or unique value prevent commoditization?
+
+**If Artifact 5 (Competition Escape Plan) incomplete:**
+- What is the initial wedge (first differentiator)?
+- What is the path from wedge to durable advantage?
+- By what cycle/milestone is escape achieved?
+
+**If Artifact 6 (Market Definition) incomplete:**
+- What is our market under the narrowest honest definition?
+- What share do we have in that narrow market?
+- What does a skeptic say our real market is?
+
+### Evidence Gathered
+<fill during fact-find>
+
+### Gate Re-evaluation Recommendation
+<PASS/UNRESOLVED/FAIL based on new evidence>
+```
+
 ## VOI-Score: Value of Information
 
 ### Definition
@@ -171,6 +210,28 @@ Every DGP must include:
 - **If the investigation is very favorable, does the idea jump to P1?** → High VOI (0.8+)
 - **Does the investigation just help us optimize details?** → Medium VOI (0.4-0.7)
 - **Could we make a decent decision without the data?** → Low VOI (0.1-0.3)
+
+**Contrarian Gate VOI Boost:** DGPs originating from Contrarian Gate UNRESOLVED (tagged `gate-unresolved`) receive a +15 VOI boost. Rationale: these ideas already passed confidence gate at 60-100, meaning they have strong fundamentals — the gate artifacts are the only remaining blocker. Resolving them has high expected value because a PASS likely leads to Promote.
+
+## Contrarian Gate → DGP Path
+
+Ideas that pass the confidence gate (score 60-100, tier: presentable) but receive **Contrarian Status: UNRESOLVED** from the Munger-Thiel Contrarian Gate (Stage 4) are routed to DGP with:
+
+- **Gap-Type:** `data` (missing cheap facts needed to resolve gate artifacts)
+- **Source:** Contrarian Gate (not confidence gate)
+- **Tags:** `["sweep-generated", "cabinet-v1", "dgp", "gap:data", "held", "gate-unresolved"]`
+- **Required metadata:** Which of the 7 gate artifacts are incomplete:
+  1. Opposite-Side Steelman
+  2. Inversion Pre-Mortem
+  3. Contrarian Secret
+  4. Capture-Value Proof
+  5. Competition Escape Plan
+  6. Market Definition Reality Check
+  7. Incentive Truth-Bending Check
+
+**Resolution path:** When the missing artifact data is gathered (via fact-find or next sweep), the idea re-enters Stage 4 for Contrarian Gate re-evaluation. If the gate now returns PASS, the idea proceeds to Munger-Buffett verdict and onward through the pipeline.
+
+**Key difference from confidence-gate DGPs:** Confidence-gate DGPs have score 30-59 and need to reach 60+ to become presentable. Contrarian Gate DGPs are already presentable (score 60-100) but are blocked by incomplete gate artifacts. They have higher inherent quality and should receive a VOI boost in prioritization.
 
 ## Gap-Type Definitions
 
@@ -261,6 +322,8 @@ A DGP is promoted when:
 1. All critical data gaps are filled
 2. The idea now passes **at least 4/5** presentable criteria (score ≥ 60)
 3. The investigation reveals no showstoppers
+
+**Contrarian Gate DGPs:** Must re-enter Stage 4 for Contrarian Gate re-evaluation. Promotion requires Contrarian Status=PASS. Unlike confidence-gate DGPs which just need to reach score 60+, gate DGPs need their specific incomplete artifacts resolved.
 
 ### How to Promote
 
@@ -557,5 +620,6 @@ Passes Drucker/Porter → **Build lane** (converted to Kanban card).
 
 ## Version History
 
+- **v1.2** (2026-02-10): Contrarian Gate integration: added Contrarian Gate → DGP path for UNRESOLVED ideas (presentable but gate-blocked), +15 VOI boost for gate DGPs, gate resolution fact-find template, promotion path requires gate re-evaluation to PASS.
 - **v1.1** (2026-02-09): Renamed from "Data Gap Proposal" to "Decision Gap Proposal". Added Gap-Type field (data/timing/dependency) to accommodate three types of holds. Updated tags structure, dossier header fields, pickup mechanisms, and content requirements to support all three gap types.
 - **v1.0** (2026-02-09): Initial specification for Cabinet System CS-04

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Prime icon">
+  <rect width="256" height="256" rx="48" fill="#0f172a"/>
+  <circle cx="128" cy="104" r="54" fill="#14b8a6"/>
+  <path d="M72 170h112v20H72z" fill="#e2e8f0"/>
+  <path d="M116 64h24v120h-24z" fill="#0f172a"/>
+</svg>

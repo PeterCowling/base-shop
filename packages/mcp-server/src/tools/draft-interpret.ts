@@ -118,10 +118,18 @@ function normalizeThread(body: string): string {
   const lines = body.split("\n");
   const cleaned: string[] = [];
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
     const trimmed = line.trim();
+    const nextTrimmed = lines[i + 1]?.trim() ?? "";
     if (trimmed.startsWith(">")) {
       continue;
+    }
+    if (/^On .+$/i.test(trimmed) && /^wrote:$/i.test(nextTrimmed)) {
+      break;
+    }
+    if (/^wrote:$/i.test(trimmed) && i > 0 && /^On .+$/i.test(lines[i - 1].trim())) {
+      break;
     }
     if (/^On .*wrote:$/i.test(trimmed)) {
       break;
@@ -302,6 +310,7 @@ function extractConfirmations(text: string): IntentItem[] {
 function detectAgreement(text: string, language: string): AgreementDetection {
   const lower = text.toLowerCase();
   const explicitPatterns = [
+    /^\s*agree(?:[!.,\s]|$)/i,
     /\b(i agree|we agree|agreed)\b/i,
     /\baccetto\b/i,
     /\bde acuerdo\b/i,
@@ -344,8 +353,14 @@ function detectAgreement(text: string, language: string): AgreementDetection {
   }
 
   const contrast = contrastPatterns.some(pattern => pattern.test(text));
+  const residual = explicitMatch
+    ? lower.replace(explicitMatch[0].toLowerCase(), "")
+    : lower;
+  const normalizedResidual = residual
+    .replace(/[^\p{L}\p{N}]+/gu, "")
+    .trim();
   const additional_content = explicitMatch
-    ? lower.replace(explicitMatch[0].toLowerCase(), "").trim().length > 0
+    ? normalizedResidual.length > 0
     : lower.trim().length > 0;
 
   if (negated) {
@@ -433,6 +448,11 @@ function classifyScenario(text: string): ScenarioClassification {
       category: "booking-changes",
       confidence: 0.84,
       pattern: /(change date|date change|booking change|modify booking|reschedul|extend stay|extra night|upgrade|add (one )?more person|add guest)/,
+    },
+    {
+      category: "booking-issues",
+      confidence: 0.86,
+      pattern: /(check availability|availability.*(from|for).*(to|through)|do you have availability|availability for|available for these dates|available from)/,
     },
     {
       category: "breakfast",

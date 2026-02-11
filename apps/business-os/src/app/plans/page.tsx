@@ -10,6 +10,12 @@ export const dynamic = "force-static";
 
 export default async function PlansIndexPage() {
   const t = await getServerTranslations("en");
+  const operatingBusinesses = BUSINESSES.filter(
+    (business) => business.category === "operating-business"
+  );
+  const internalSystems = BUSINESSES.filter(
+    (business) => business.category === "internal-system"
+  );
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
@@ -32,25 +38,55 @@ export default async function PlansIndexPage() {
           </p>
         </div>
 
-        <Grid cols={1} gap={4} className="md:grid-cols-2">
-          {BUSINESSES.map((business) => (
-            <Link
-              key={business.id}
-              href={`/plans/${business.id}`}
-              className="rounded-lg border border-border-2 bg-card p-6 shadow-sm hover:bg-surface-2 transition-colors"
-            >
-              <div className="text-sm text-muted-foreground font-mono">
-                {business.id}
-              </div>
-              <div className="mt-1 text-lg font-semibold text-foreground">
-                {business.name}
-              </div>
-              <div className="mt-2 text-sm text-muted-foreground">
-                {business.description}
-              </div>
-            </Link>
-          ))}
-        </Grid>
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("businessOs.pages.plans.sections.operatingBusinesses")}
+          </h2>
+          <Grid cols={1} gap={4} className="md:grid-cols-2">
+            {operatingBusinesses.map((business) => (
+              <Link
+                key={business.id}
+                href={`/plans/${business.id}`}
+                className="rounded-lg border border-border-2 bg-card p-6 shadow-sm hover:bg-surface-2 transition-colors"
+              >
+                <div className="text-sm text-muted-foreground font-mono">
+                  {business.id}
+                </div>
+                <div className="mt-1 text-lg font-semibold text-foreground">
+                  {business.name}
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  {business.description}
+                </div>
+              </Link>
+            ))}
+          </Grid>
+        </section>
+
+        <section className="mt-8">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("businessOs.pages.plans.sections.internalSystems")}
+          </h2>
+          <Grid cols={1} gap={4} className="md:grid-cols-2">
+            {internalSystems.map((business) => (
+              <Link
+                key={business.id}
+                href={`/plans/${business.id}`}
+                className="rounded-lg border border-border-2 bg-card p-6 shadow-sm hover:bg-surface-2 transition-colors"
+              >
+                <div className="text-sm text-muted-foreground font-mono">
+                  {business.id}
+                </div>
+                <div className="mt-1 text-lg font-semibold text-foreground">
+                  {business.name}
+                </div>
+                <div className="mt-2 text-sm text-muted-foreground">
+                  {business.description}
+                </div>
+              </Link>
+            ))}
+          </Grid>
+        </section>
       </div>
     </div>
   );

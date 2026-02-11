@@ -172,6 +172,13 @@ If scouts were marked "inconclusive" during planning, treat them as risks — pr
 
 **If any scout fails → treat as confidence drop → STOP → `/re-plan`.**
 
+### G) Topology freshness gate (required after re-plan decomposition)
+
+If the most recent `/re-plan` split tasks, added/removed tasks, or changed dependency topology, ensure `/sequence-plan` has already run on the updated plan before continuing build.
+
+- Verify active task IDs/dependencies/`Blocks` are internally consistent and the Parallelism Guide reflects the current graph.
+- If decomposition occurred but sequencing is stale or missing, STOP and run `/sequence-plan` first, then resume `/build-feature`.
+
 ## Build Loop (One Task per Cycle)
 
 ### 1) Select the next eligible task
@@ -229,6 +236,12 @@ Before writing new tests, check for existing tests related to the code you're mo
   3. Implement the test body based on the TC-XX specification in the stub comment
 - If no stubs exist: write tests based on the task's validation contract (TC-XX specifications)
 - Tests should cover the expected behavior before any implementation code is written
+- **Mock accuracy gate (before writing any mock):**
+  - Read the source file for each component under test and each module/hook you plan to mock.
+  - Verify real import paths from source (do not assume module locations).
+  - Verify hook return shapes (all properties/destructured fields used by the component).
+  - Verify export patterns (`default`, named exports, wrappers like `memo(...)`) before using `jest.requireActual` or module destructuring.
+  - Define mocked object returns as stable `const` references outside mock factory functions to avoid React dependency-array re-render loops (see `docs/testing-policy.md`, Rule 6).
 
 **Activating test stubs:**
 ```typescript
@@ -416,6 +429,14 @@ Add under the task:
 
 Move to the next eligible IMPLEMENT task and repeat the cycle.
 
+### 9) Archive completed plan
+
+When all tasks in the plan are marked Complete, archive the plan:
+
+1. Set frontmatter `Status: Archived` (not `Complete`).
+2. Move the plan file to `docs/plans/archive/`.
+3. Commit: `docs(plans): archive <plan-name> — all tasks complete`
+
 ## CHECKPOINT Handling
 
 When the next task in sequence is a `CHECKPOINT` task, execute this protocol instead of the normal build loop:
@@ -436,10 +457,13 @@ Invoke `/re-plan` targeting all tasks that come **after** the CHECKPOINT in the 
 - Insert new tasks discovered during execution
 - Update the plan with any new findings
 
+If `/re-plan` decomposes or topology-edits the remaining tasks, run `/sequence-plan` before evaluating readiness to continue building.
+
 ### 3) Evaluate re-plan results
 
 After `/re-plan` completes:
 
+- **If decomposition/topology changes occurred and sequencing has not run yet:** STOP and run `/sequence-plan`, then re-evaluate.
 - **If remaining tasks are ≥80% and no open questions:** Mark the CHECKPOINT as complete, then continue the build loop with the next eligible task.
 - **If some tasks were revised but are still ≥80%:** Mark CHECKPOINT complete, continue building the revised tasks.
 - **If remaining tasks dropped below 80%:** Mark CHECKPOINT complete, then follow the normal below-threshold protocol (stop building those tasks, report to user).
@@ -467,6 +491,7 @@ Without CHECKPOINTs, a plan with 8 dependent tasks could build all 8 before disc
 | Validation fails and fix is non-obvious | Stop → `/re-plan` |
 | A DECISION is required (product/UX preference) | Stop → ask user via DECISION task in plan |
 | Baseline repo is failing unrelated checks | Stop → document and resolve via separate planned work |
+| Re-plan decomposed tasks but plan was not re-sequenced | Stop → run `/sequence-plan`, then resume build |
 | Next task is a CHECKPOINT | Pause build → execute CHECKPOINT protocol → `/re-plan` remaining tasks → resume if still viable |
 
 ## Rules

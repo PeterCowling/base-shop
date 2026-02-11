@@ -139,7 +139,8 @@ function removeUndefinedValues(input: Record<string, unknown>): Record<string, u
 
 function orderFrontmatterKeys(
   input: Record<string, unknown>,
-  keyOrder: string[]
+  keyOrder: string[],
+  includeAdditionalKeys = true
 ): Record<string, unknown> {
   const ordered: Record<string, unknown> = {};
   const remaining = new Set(Object.keys(input));
@@ -151,8 +152,10 @@ function orderFrontmatterKeys(
     }
   }
 
-  for (const key of Array.from(remaining).sort()) {
-    ordered[key] = input[key];
+  if (includeAdditionalKeys) {
+    for (const key of Array.from(remaining).sort()) {
+      ordered[key] = input[key];
+    }
   }
 
   return ordered;
@@ -161,10 +164,12 @@ function orderFrontmatterKeys(
 function serializeMarkdown(
   content: string,
   frontmatter: Record<string, unknown>,
-  keyOrder: string[]
+  keyOrder: string[],
+  options?: { includeAdditionalFrontmatterKeys?: boolean }
 ): string {
+  const includeAdditionalFrontmatterKeys = options?.includeAdditionalFrontmatterKeys ?? true;
   const cleaned = removeUndefinedValues(frontmatter);
-  const ordered = orderFrontmatterKeys(cleaned, keyOrder);
+  const ordered = orderFrontmatterKeys(cleaned, keyOrder, includeAdditionalFrontmatterKeys);
   return normalizeMarkdown(matter.stringify(content, ordered));
 }
 
@@ -578,7 +583,8 @@ async function validateCards(params: {
     const actual = serializeMarkdown(
       dbCard.content,
       buildFrontmatter(dbCard as Record<string, unknown>),
-      entry.frontmatterOrder
+      entry.frontmatterOrder,
+      { includeAdditionalFrontmatterKeys: false }
     );
     if (expected !== actual) {
       validationFailures.push({
@@ -614,7 +620,8 @@ async function validateIdeas(params: {
     const actual = serializeMarkdown(
       dbIdea.content,
       buildFrontmatter(dbIdea as Record<string, unknown>),
-      entry.frontmatterOrder
+      entry.frontmatterOrder,
+      { includeAdditionalFrontmatterKeys: false }
     );
     if (expected !== actual) {
       validationFailures.push({
@@ -648,7 +655,8 @@ async function validateStageDocs(params: {
     const actual = serializeMarkdown(
       dbStage.content,
       buildFrontmatter(dbStage as Record<string, unknown>),
-      entry.frontmatterOrder
+      entry.frontmatterOrder,
+      { includeAdditionalFrontmatterKeys: false }
     );
     if (expected !== actual) {
       validationFailures.push({

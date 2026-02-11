@@ -1391,8 +1391,6 @@ importers:
         specifier: ^3.25.73
         version: 3.25.73
 
-  apps/storefront: {}
-
   apps/storybook: {}
 
   apps/xa:

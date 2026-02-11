@@ -54,110 +54,151 @@ if [[ ! "$normalized" =~ (^|[[:space:]])(/[^[:space:]]*/)?git([[:space:]]|$) ]];
   exit 0
 fi
 
+block_with_guidance() {
+  local reason="$1"
+  local only_cmd="${2:-scripts/agents/integrator-shell.sh -- git status}"
+
+  echo "BLOCKED: ${reason}" >&2
+  echo "" >&2
+  echo "Only this path will work in this repo:" >&2
+  echo "  ${only_cmd}" >&2
+  echo "" >&2
+  echo "Do not retry with (hard-blocked):" >&2
+  echo "  --no-verify / -n" >&2
+  echo "  SKIP_WRITER_LOCK=1 or SKIP_SIMPLE_GIT_HOOKS=1" >&2
+  echo "  -c core.hooksPath=... or git config core.hooksPath ..." >&2
+  echo "  --force / -f, --amend, rebase, stash pop/apply/drop/clear" >&2
+  exit 2
+}
+
 # ============================================================================
 # DENY PATTERNS (evaluate before allow patterns)
 # ============================================================================
 
 # SKIP_* bypass env vars should never be used in agent flows.
 if [[ "$command_str" =~ (^|[[:space:]])SKIP_(WRITER_LOCK|SIMPLE_GIT_HOOKS)= ]]; then
-  echo "BLOCKED: SKIP_* bypass flags are forbidden for agent workflows. Fix lock/hook state instead." >&2
-  exit 2
+  block_with_guidance \
+    "SKIP_* bypass flags are forbidden for agent workflows. Fix lock/hook state instead." \
+    "scripts/agents/integrator-shell.sh -- git status"
 fi
 
 # git reset --hard/--merge/--keep
 if [[ "$normalized" =~ git[[:space:]]+reset[[:space:]]+(--(hard|merge|keep)|.*[[:space:]]--(hard|merge|keep)) ]]; then
-  echo "BLOCKED: git reset --hard/--merge/--keep destroys working tree content. Use a checkpoint commit instead." >&2
-  exit 2
+  block_with_guidance \
+    "git reset --hard/--merge/--keep destroys working tree content. Use a checkpoint commit instead." \
+    "scripts/agents/integrator-shell.sh -- git reset HEAD <file>"
 fi
 
 # git clean -f (any variant with -f flag, but not dry-run)
 if [[ "$normalized" =~ git[[:space:]]+clean[[:space:]].*-[a-z]*f ]] && \
    [[ ! "$normalized" =~ (--dry-run|-n) ]]; then
-  echo "BLOCKED: git clean -f removes untracked files. Use --dry-run first or commit your changes." >&2
-  exit 2
+  block_with_guidance \
+    "git clean -f removes untracked files. Use --dry-run first or commit your changes." \
+    "scripts/agents/integrator-shell.sh -- git clean --dry-run"
 fi
 
 # git checkout -f / --force
 if [[ "$normalized" =~ git[[:space:]]+checkout[[:space:]]+(-f|--force) ]]; then
-  echo "BLOCKED: git checkout -f/--force discards uncommitted changes. Use a checkpoint commit instead." >&2
-  exit 2
+  block_with_guidance \
+    "git checkout -f/--force discards uncommitted changes. Use a checkpoint commit instead." \
+    "scripts/agents/integrator-shell.sh -- git status"
 fi
 
 # git checkout -- . or -- <dir>/ or -- <glob-with-*>
 if [[ "$normalized" =~ git[[:space:]]+checkout[[:space:]]+--[[:space:]]+(\.|\*|.*/) ]]; then
-  echo "BLOCKED: git checkout -- . (or broad pathspecs) discards uncommitted changes. Use a checkpoint commit instead." >&2
-  exit 2
+  block_with_guidance \
+    "git checkout -- . (or broad pathspecs) discards uncommitted changes. Use a checkpoint commit instead." \
+    "scripts/agents/integrator-shell.sh -- git checkout -- <single-file>"
 fi
 
 # git restore . or <dir>/ or -- <glob-with-*>
 if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+(\.|\*|.*/|--[[:space:]]+(\.|\*)) ]]; then
-  echo "BLOCKED: git restore . (or broad pathspecs) discards uncommitted changes. Use a checkpoint commit instead." >&2
-  exit 2
+  block_with_guidance \
+    "git restore . (or broad pathspecs) discards uncommitted changes. Use a checkpoint commit instead." \
+    "scripts/agents/integrator-shell.sh -- git restore -- <single-file>"
 fi
 
 # git restore --worktree with broad pathspecs
 if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+.*--worktree ]]; then
-  echo "BLOCKED: git restore --worktree discards working tree changes. Use a checkpoint commit instead." >&2
-  exit 2
+  block_with_guidance \
+    "git restore --worktree discards working tree changes. Use a checkpoint commit instead." \
+    "scripts/agents/integrator-shell.sh -- git restore --staged <file>"
 fi
 
 # git switch --discard-changes or -f
 if [[ "$normalized" =~ git[[:space:]]+switch[[:space:]]+.*(-f|--discard-changes|--force) ]]; then
-  echo "BLOCKED: git switch -f/--discard-changes discards uncommitted changes. Use a checkpoint commit instead." >&2
-  exit 2
+  block_with_guidance \
+    "git switch -f/--discard-changes discards uncommitted changes. Use a checkpoint commit instead." \
+    "scripts/agents/integrator-shell.sh -- git switch <branch>"
 fi
 
 # git push --force / -f / --force-with-lease / --mirror
 if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*(-f[[:space:]]|--force([[:space:]]|$)|--force-with-lease|--mirror) ]]; then
-  echo "BLOCKED: git push --force/--force-with-lease/--mirror can overwrite remote history. Coordinate with team first." >&2
-  exit 2
+  block_with_guidance \
+    "git push --force/--force-with-lease/--mirror can overwrite remote history. Coordinate with team first." \
+    "scripts/agents/integrator-shell.sh -- git push origin <branch>"
 fi
 
 # git commit/push --no-verify (-n) bypass
 if [[ "$normalized" =~ git[[:space:]]+commit[[:space:]]+.*([[:space:]])(--no-verify|-n)($|[[:space:]]) ]]; then
-  echo "BLOCKED: git commit --no-verify/-n bypasses safety hooks." >&2
-  exit 2
+  block_with_guidance \
+    "git commit --no-verify/-n bypasses safety hooks." \
+    "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
 fi
 
 if [[ "$normalized" =~ git[[:space:]]+push[[:space:]]+.*([[:space:]])(--no-verify|-n)($|[[:space:]]) ]]; then
-  echo "BLOCKED: git push --no-verify/-n bypasses safety hooks." >&2
-  exit 2
+  block_with_guidance \
+    "git push --no-verify/-n bypasses safety hooks." \
+    "scripts/agents/integrator-shell.sh -- git push origin <branch>"
 fi
 
 # git rebase (all variants)
 if [[ "$normalized" =~ git[[:space:]]+rebase ]]; then
-  echo "BLOCKED: git rebase rewrites history and can cause data loss. Use merge or coordinate with team." >&2
-  exit 2
+  block_with_guidance \
+    "git rebase rewrites history and can cause data loss. Use merge or coordinate with team." \
+    "scripts/agents/integrator-shell.sh -- git merge --no-ff <target-branch>"
 fi
 
 # git commit --amend
 if [[ "$normalized" =~ git[[:space:]]+commit[[:space:]]+.*--amend ]]; then
-  echo "BLOCKED: git commit --amend rewrites history. Create a new commit instead (especially after hook failures)." >&2
-  exit 2
+  block_with_guidance \
+    "git commit --amend rewrites history. Create a new commit instead (especially after hook failures)." \
+    "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
 fi
 
-# git stash drop / clear
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(drop|clear) ]]; then
-  echo "BLOCKED: git stash drop/clear permanently removes stashed changes. Use git stash list to review first." >&2
-  exit 2
+# git stash (bare) defaults to push and creates hidden debt for agent workflows
+if [[ "$normalized" =~ git[[:space:]]+stash([[:space:]]*($|[;&|])) ]]; then
+  block_with_guidance \
+    "bare git stash defaults to push and is forbidden in agent workflows. Use stage-only commits or ask for guidance." \
+    "scripts/agents/integrator-shell.sh -- git stash list"
+fi
+
+# git stash mutations
+if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(push|pop|apply|drop|clear)([[:space:]]|$) ]]; then
+  block_with_guidance \
+    "git stash mutations (push/pop/apply/drop/clear) are forbidden in agent workflows. Keep stash read-only (list/show)." \
+    "scripts/agents/integrator-shell.sh -- git stash list"
 fi
 
 # git worktree (all operations)
 if [[ "$normalized" =~ git[[:space:]]+worktree ]]; then
-  echo "BLOCKED: git worktree operations can cause repository state issues. Use branches instead." >&2
-  exit 2
+  block_with_guidance \
+    "git worktree operations can cause repository state issues. Use branches instead." \
+    "scripts/agents/integrator-shell.sh -- git switch -c <branch>"
 fi
 
 # git -c core.hooksPath=... (hook bypass)
 if [[ "$normalized" =~ git[[:space:]]+-c[[:space:]]+core\.hooksPath ]]; then
-  echo "BLOCKED: git -c core.hooksPath bypasses safety hooks. Remove this flag." >&2
-  exit 2
+  block_with_guidance \
+    "git -c core.hooksPath bypasses safety hooks. Remove this flag." \
+    "scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
 fi
 
 # git config core.hooksPath
 if [[ "$normalized" =~ git[[:space:]]+config[[:space:]]+.*core\.hooksPath ]]; then
-  echo "BLOCKED: git config core.hooksPath bypasses safety hooks. Do not modify hook configuration." >&2
-  exit 2
+  block_with_guidance \
+    "git config core.hooksPath bypasses safety hooks. Do not modify hook configuration." \
+    "scripts/agents/integrator-shell.sh -- git config --get core.hooksPath"
 fi
 
 # ============================================================================
@@ -181,8 +222,8 @@ if [[ "$normalized" =~ git[[:space:]]+restore[[:space:]]+--staged ]] && \
   exit 0
 fi
 
-# Safe stash operations
-if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show|push) ]]; then
+# Read-only stash operations
+if [[ "$normalized" =~ git[[:space:]]+stash[[:space:]]+(list|show)([[:space:]]|$) ]]; then
   exit 0
 fi
 

@@ -1,6 +1,6 @@
 ---
 Type: Fact-Find
-Status: Complete
+Status: Accepted
 Domain: UI
 Created: 2026-02-10
 Feature-Slug: prime-ui-theme-centralization

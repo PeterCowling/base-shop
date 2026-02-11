@@ -7,6 +7,24 @@ jest.mock("../../../../hooks/dataOrchestrator/useGuestBookingSnapshot", () => ({
   useGuestBookingSnapshot: jest.fn(),
 }));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: Record<string, unknown>) => {
+      const copy: Record<string, string> = {
+        "status.pre-arrival": "Pre-arrival",
+        "status.checked-in": "Checked in",
+        "status.checked-out": "Checked out",
+        "nextActions.breakfast": "Breakfast order",
+        "nextActions.bagDrop": "Request bag drop",
+      };
+      if (key === "extension.currentStatus") {
+        return `Current extension request status: ${String(options?.status ?? "")}`;
+      }
+      return copy[key] ?? key;
+    },
+  }),
+}));
+
 function buildSnapshot(overrides: Record<string, unknown> = {}) {
   return {
     bookingId: "BOOK123",

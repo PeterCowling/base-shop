@@ -12,6 +12,25 @@ export const PRIME_E2E_GUEST = {
 
 type PrimeJourneyMode = 'pre-arrival' | 'arrival-day';
 
+const PRIME_CYPRESS_DATA_KEY = 'prime_cypress_data';
+
+let currentJourneyMode: PrimeJourneyMode = 'pre-arrival';
+let currentBookingDates: { checkInDate: string; checkOutDate: string } = buildBookingDates('pre-arrival');
+
+function getFirebaseHostPattern(): string {
+  const databaseUrl = Cypress.env('NEXT_PUBLIC_FIREBASE_DATABASE_URL') as string | undefined;
+  if (!databaseUrl) {
+    return '(?:firebasedatabase\\.app|firebaseio\\.com)';
+  }
+
+  try {
+    const host = new URL(databaseUrl).host.replace(/\./g, '\\.');
+    return host;
+  } catch {
+    return '(?:firebasedatabase\\.app|firebaseio\\.com)';
+  }
+}
+
 function toIsoDateWithOffset(daysFromToday: number): string {
   const date = new Date();
   date.setHours(12, 0, 0, 0);
@@ -35,6 +54,9 @@ function buildBookingDates(mode: PrimeJourneyMode): { checkInDate: string; check
 
 export function installPrimeApiMocks(mode: PrimeJourneyMode = 'pre-arrival'): void {
   const { checkInDate, checkOutDate } = buildBookingDates(mode);
+
+  currentJourneyMode = mode;
+  currentBookingDates = { checkInDate, checkOutDate };
 
   cy.intercept('GET', '/api/find-booking*', {
     statusCode: 200,
@@ -75,7 +97,10 @@ export function installPrimeApiMocks(mode: PrimeJourneyMode = 'pre-arrival'): vo
     },
   }).as('generateCheckInCode');
 
-  cy.intercept('GET', /https:\/\/.*firebasedatabase\.app\/.*\.json.*/, (req) => {
+  const firebaseHostPattern = getFirebaseHostPattern();
+  const firebaseReadsRegex = new RegExp(`https:\\/\\/${firebaseHostPattern}\\/.*\\.json.*`);
+
+  cy.intercept('GET', firebaseReadsRegex, (req) => {
     const url = new URL(req.url);
     const path = url.pathname.replace(/^\//, '').replace(/\.json$/, '');
 
@@ -173,5 +198,18 @@ export function setPrimeGuestSession(overrides?: Partial<{
     win.localStorage.setItem('prime_guest_uuid', uuid);
     win.localStorage.setItem('prime_guest_first_name', firstName);
     win.localStorage.setItem('prime_guest_verified_at', new Date().toISOString());
+    win.localStorage.setItem(
+      PRIME_CYPRESS_DATA_KEY,
+      JSON.stringify({
+        journeyMode: currentJourneyMode,
+        bookingRef: PRIME_E2E_GUEST.bookingRef,
+        uuid,
+        checkInDate: currentBookingDates.checkInDate,
+        checkOutDate: currentBookingDates.checkOutDate,
+        firstName: PRIME_E2E_GUEST.firstName,
+        lastName: PRIME_E2E_GUEST.lastName,
+        checkInCode: PRIME_E2E_GUEST.checkInCode,
+      }),
+    );
   });
 }

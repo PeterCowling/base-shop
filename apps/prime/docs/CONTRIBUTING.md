@@ -54,20 +54,66 @@ The most common issues are:
 - Type import style (`@typescript-eslint/consistent-type-imports`)
 - Hardcoded copy warnings (`ds/no-hardcoded-copy` - already disabled as warnings only)
 
-#### Disabled Rules
+#### ESLint Configuration
 
-The following design system rules are intentionally disabled for Prime (see `.eslintrc.cjs`):
-- `ds/no-unsafe-viewport-units`
-- `ds/container-widths-only-at`
-- `ds/no-hardcoded-copy`
-- `ds/min-tap-size`
-- `ds/enforce-focus-ring-token`
+Prime uses the flat ESLint config (`eslint.config.mjs`) with app-specific overrides. Key overrides for Prime:
+- `ds/no-hardcoded-copy` set to `"warn"` for guest-facing code (not `"off"`)
+- `ds/no-hardcoded-copy` set to `"off"` for internal operator pages (owner, staff-lookup, admin, portal, signage)
+- Test and dev-tools files are excluded from hardcoded-copy checks
 
-These rules are disabled because Prime is in early development and will adopt design system patterns incrementally.
+See `eslint.config.mjs` for the full override configuration.
 
 ## Testing
 
 See the main project testing policy in `docs/testing-policy.md`.
+
+## Prime Functions Email Staging Contract
+
+`/api/process-messaging-queue` requires the following staging configuration:
+
+- `PRIME_EMAIL_WEBHOOK_URL` (Cloudflare Pages env var)
+- `PRIME_EMAIL_WEBHOOK_TOKEN` (Cloudflare secret)
+
+Recommended smoke contract before promoting messaging automation:
+
+```bash
+pnpm --filter @apps/prime test -- --testPathPattern="email-provider-smoke"
+```
+
+Expected contract outcomes:
+
+- Valid config sends one deterministic `arrival.48hours` message (`sent` outcome).
+- Missing config fails closed with `Prime email provider is not configured`.
+- Invalid webhook token/key fails closed with explicit webhook error in `lastError`.
+
+## Prime Staff Auth Contract
+
+`/api/staff-auth-session` + staff lookup APIs now require explicit staff auth configuration:
+
+- `PRIME_STAFF_PIN_HASH` (bcrypt hash for the staff PIN)
+- `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` (service account client email)
+- `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` (service account PKCS8 private key; `\n`-escaped is supported)
+- `CF_FIREBASE_API_KEY` (Identity Toolkit lookup for staff token gate)
+
+Optional controls:
+
+- `PRIME_STAFF_AUTH_UID` (defaults to `prime_staff`)
+- `PRIME_STAFF_AUTH_ROLE` (defaults to `staff`, accepts `staff|admin|owner`)
+- `PRIME_STAFF_LOCKOUT_MAX_ATTEMPTS` (defaults to `5`)
+- `PRIME_STAFF_LOCKOUT_WINDOW_SECONDS` (defaults to `900`)
+
+Recommended validation before promotion:
+
+```bash
+pnpm --filter @apps/prime test -- functions/__tests__/staff-auth-session.test.ts functions/__tests__/staff-auth-token-gate.test.ts functions/__tests__/arrival-signals.test.ts --maxWorkers=2
+pnpm --filter @apps/prime test -- src/contexts/messaging/__tests__/PinAuthProvider.replacement.test.tsx --maxWorkers=2
+```
+
+Expected contract outcomes:
+
+- Valid PIN returns a custom token payload that bootstraps to staff role claims.
+- Invalid PIN returns deterministic lockout counters (no silent failure path).
+- `/api/check-in-lookup` returns `401/403` when staff bearer token is missing/invalid.
 
 ## Firebase Cost-Safety
 

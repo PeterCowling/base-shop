@@ -31,6 +31,32 @@ fi
 deny() {
   local why="$1"
   shift
+  local blocked_subcmd="${1:-}"
+  local only_cmd="scripts/agents/integrator-shell.sh -- git status"
+
+  case "$blocked_subcmd" in
+    push)
+      only_cmd="scripts/agents/integrator-shell.sh -- git push origin <branch>"
+      ;;
+    commit)
+      only_cmd="scripts/agents/integrator-shell.sh -- git commit -m \"<message>\""
+      ;;
+    reset)
+      only_cmd="scripts/agents/integrator-shell.sh -- git reset HEAD <file>   # unstage only"
+      ;;
+    clean|checkout|restore|switch|stash)
+      only_cmd="scripts/agents/integrator-shell.sh -- git status"
+      ;;
+    rebase)
+      only_cmd="scripts/agents/integrator-shell.sh -- git merge --no-ff <target-branch>"
+      ;;
+    worktree)
+      only_cmd="scripts/agents/integrator-shell.sh -- git switch -c <branch>"
+      ;;
+    config)
+      only_cmd="scripts/agents/integrator-shell.sh -- git config --get core.hooksPath"
+      ;;
+  esac
 
   echo "------------------------------------------------------------------" >&2
   echo "GIT COMMAND BLOCKED (agent guard)" >&2
@@ -45,10 +71,19 @@ deny() {
   done
   echo "" >&2
   echo "" >&2
-  echo "Safer alternatives:" >&2
-  echo "  - Make a checkpoint commit, then revert if needed" >&2
-  echo "  - Use integrator mode (writer lock + guard): scripts/agents/integrator-shell.sh" >&2
-  echo "  - Read: docs/git-safety.md" >&2
+  echo "Only this path will work in this repo:" >&2
+  echo "  ${only_cmd}" >&2
+  echo "" >&2
+  echo "Do not retry with (hard-blocked):" >&2
+  echo "  - --no-verify / -n" >&2
+  echo "  - SKIP_WRITER_LOCK=1 or SKIP_SIMPLE_GIT_HOOKS=1" >&2
+  echo "  - -c core.hooksPath=... or git config core.hooksPath ..." >&2
+  echo "  - --force / -f, rebase, --amend, stash pop/apply/drop/clear" >&2
+  echo "" >&2
+  echo "If you need read-only inspection, use:" >&2
+  echo "  scripts/agents/integrator-shell.sh --read-only -- <command>" >&2
+  echo "" >&2
+  echo "Reference: docs/git-safety.md" >&2
   echo "" >&2
   exit 1
 }
@@ -271,18 +306,18 @@ case "$subcommand" in
     done
     ;;
   stash)
-    # Allow: list, show, push
-    # Block: pop, apply, drop, clear, and bare stash (no subcommand)
+    # Allow: list, show
+    # Block: push, pop, apply, drop, clear, and bare stash (no subcommand)
     stash_subcmd="${2:-}"
     case "$stash_subcmd" in
-      list|show|push)
+      list|show)
         # Allowed
         ;;
-      pop|apply|drop|clear)
-        deny "stash ${stash_subcmd} can lose work or create merge conflicts." "$@"
+      push|pop|apply|drop|clear)
+        deny "stash ${stash_subcmd} is forbidden for agent workflows (hidden debt and conflict risk)." "$@"
         ;;
       "")
-        # Bare 'git stash' defaults to 'git stash push' — allowed
+        deny "bare git stash defaults to stash push and is forbidden for agent workflows." "$@"
         ;;
       *)
         # Unknown subcommand - block to be safe

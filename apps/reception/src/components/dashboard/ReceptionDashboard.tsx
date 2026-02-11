@@ -56,7 +56,7 @@ export default function ReceptionDashboard() {
     <div className="space-y-6">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-darkAccentGreen">
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-accent-hospitality">
             Reception Dashboard
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">

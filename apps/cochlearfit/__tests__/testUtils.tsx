@@ -5,6 +5,7 @@ import { TranslationsProvider } from "@acme/i18n";
 
 import { CartProvider } from "@/contexts/cart/CartContext";
 import { LocaleProvider } from "@/contexts/LocaleContext";
+import { getProducts } from "@/lib/catalog";
 import type { Locale } from "@/types/locale";
 
 import enMessages from "../i18n/en.json";
@@ -22,7 +23,11 @@ type ProviderOptions = {
 
 const buildWrapper = ({ withCart, locale = "en" }: ProviderOptions) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => {
-    const content = withCart ? <CartProvider>{children}</CartProvider> : children;
+    const content = withCart ? (
+      <CartProvider products={getProducts()}>{children}</CartProvider>
+    ) : (
+      children
+    );
     const messages = messageByLocale[locale] ?? messageByLocale.en;
     return (
       <LocaleProvider locale={locale}>

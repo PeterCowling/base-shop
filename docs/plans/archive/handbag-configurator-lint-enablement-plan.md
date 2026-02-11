@@ -1,6 +1,6 @@
 ---
 Type: Runbook
-Status: Archive
+Status: Historical
 Domain: Repo
 Last-reviewed: 2026-01-24
 Relates-to charter: docs/plans/handbag-configurator-implementation-plan.md

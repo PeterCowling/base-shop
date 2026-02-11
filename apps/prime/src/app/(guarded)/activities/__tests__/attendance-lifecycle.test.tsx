@@ -9,7 +9,34 @@ const mockDb = { __db: true };
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
-    t: (_key: string, fallback?: string) => fallback ?? "",
+    t: (key: string, options?: unknown) => {
+      const copy: Record<string, string> = {
+        "status.live": "Live now",
+        "status.ended": "Event ended",
+        "status.upcoming": "Upcoming",
+        "presence.markPresent": "I'm here",
+        "presence.markedPresent": "Already here",
+        "presence.availableOnceLive": "Available once live",
+        "actions.joinNow": "Join now",
+        "actions.eventEnded": "Event ended",
+        "actions.seeDetails": "See details",
+        "time.startingNow": "Starting now",
+        "time.eventFinished": "Event finished",
+      };
+      if (key === "time.inDays") {
+        const count = (options as { count?: number } | undefined)?.count ?? 0;
+        return `in ${count} days`;
+      }
+      if (key === "time.inHoursMinutes") {
+        const values = (options as { hours?: number; minutes?: number } | undefined) ?? {};
+        return `in ${values.hours ?? 0}h ${values.minutes ?? 0}m`;
+      }
+      if (key === "time.inMinutes") {
+        const values = (options as { minutes?: number } | undefined) ?? {};
+        return `in ${values.minutes ?? 0} minutes`;
+      }
+      return copy[key] ?? key;
+    },
   }),
 }));
 
@@ -94,7 +121,7 @@ describe("ActivitiesClient attendance lifecycle", () => {
     expect(screen.getByText("Morning Hike")).toBeDefined();
 
     expect(screen.getAllByText("Available once live").length).toBeGreaterThan(0);
-    expect(screen.getByText("Event ended")).toBeDefined();
+    expect(screen.getAllByText("Event ended").length).toBeGreaterThan(0);
   });
 
   it("TC-04: presence count renders from shared activity data", async () => {

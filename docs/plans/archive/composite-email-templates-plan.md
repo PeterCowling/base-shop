@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: Platform
 Created: 2026-02-08
 Last-updated: 2026-02-08

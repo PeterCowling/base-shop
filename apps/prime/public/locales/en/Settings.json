@@ -1,0 +1,18 @@
+{
+  "cache": {
+    "clear": "Clear",
+    "cleared": "Cleared",
+    "clearing": "Clearing",
+    "quota": "Quota",
+    "refresh": "Refresh",
+    "title": "Title",
+    "usage": "Usage"
+  },
+  "chat": {
+    "optIn": {
+      "description": "Description",
+      "label": "Label",
+      "optedOutNote": "Opted Out Note"
+    }
+  }
+}

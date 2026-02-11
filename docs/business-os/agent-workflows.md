@@ -2,7 +2,7 @@
 Type: Guide
 Status: Active
 Domain: Business OS / Agents
-Last-reviewed: 2026-01-28
+Last-reviewed: 2026-02-10
 ---
 
 # Business OS Agent Workflow Guide
@@ -213,8 +213,8 @@ The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-
 
 | Skill | Baseline integration behavior |
 |-------|-------------------------------|
-| `/ideas-go-faster` | Creates prioritized ideas/cards and seeds top-K fact-find stage docs |
-| `/fact-find` | Creates/updates card + `fact-find` stage doc |
+| `/ideas-go-faster` | Creates prioritized ideas/cards and seeds top-K fact-find stage docs via latest-wins upsert (`GET /stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
+| `/fact-find` | On card selection, reads latest `fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `fact-find` stage doc via latest-wins upsert |
 | `/plan-feature` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
 | `/build-feature` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
 
@@ -239,6 +239,18 @@ The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-
   - exact retry commands,
   - owner handoff.
 
+**Stage-doc latest-wins upsert contract (canonical):**
+- Applies to both `/ideas-go-faster` stage seeding and `/fact-find` stage updates.
+- Treat each `cardId + stage` as one logical current document.
+- Write flow: `GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` when present (`baseEntitySha` required) -> `POST` only when missing (`404`).
+- On `PATCH` conflict (`409`): refetch and retry once; if still conflicting, fail-closed and surface error.
+- Repository internals may append records over time, but workflow semantics are latest-wins for operator behavior.
+
+**Fact-find seeded-doc consumption contract:**
+- If `/ideas-go-faster` seeded a `fact-find` stage doc, `/fact-find` must load it when a card is selected.
+- Seeded content is starting context (questions/findings/recommendations), not a planning bypass.
+- `/fact-find` deepens evidence and refreshes the same logical `fact-find` stage doc via latest-wins upsert.
+
 **Compatibility:** existing documents without `Business-OS-Integration` field default to `on`; set `off` only for exception paths.
 
 ### Typical Card Lifecycle (Agent-Assisted)
@@ -246,7 +258,7 @@ The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-
 ```
 1. /ideas-go-faster -> prioritized ideas + cards + top-K fact-find stage docs
    ↓
-2. /fact-find -> evidence brief + fact-find stage doc refresh
+2. /fact-find -> loads seeded fact-find stage doc (if present), produces evidence brief, refreshes fact-find stage doc (latest-wins)
    ↓
 3. /plan-feature -> plan doc + planned stage doc
    ↓

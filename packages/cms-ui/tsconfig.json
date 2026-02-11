@@ -30,8 +30,8 @@
       "@acme/page-builder-core/*": ["../page-builder-core/dist/*"],
       "@acme/types": ["../types/dist/index.d.ts"],
       "@acme/types/*": ["../types/dist/*"],
-      "@acme/telemetry": ["../telemetry/dist/index.d.ts"],
-      "@acme/telemetry/*": ["../telemetry/dist/*"]
+      "@acme/telemetry": ["../telemetry/src/index", "../telemetry/dist/index.d.ts"],
+      "@acme/telemetry/*": ["../telemetry/src/*", "../telemetry/dist/*"]
     }
   },
   "references": [

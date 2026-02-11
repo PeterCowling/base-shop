@@ -38,14 +38,12 @@ export const resolveDealsMetadataCopy = (
   const candidate = activeDeal ?? upcomingDeal ?? null;
 
   if (!candidate) {
-    const fallbackTitle = readCopy(t, "meta.title", { defaultValue: "" });
-    const fallbackDescription = readCopy(t, "meta.description", { defaultValue: "" });
     return {
       title: readCopy(t, "meta.defaultTitle", {
-        defaultValue: fallbackTitle,
+        defaultValue: "Deals & Offers | Hostel Brikette",
       }),
       description: readCopy(t, "meta.defaultDescription", {
-        defaultValue: fallbackDescription,
+        defaultValue: "Direct booking perks and seasonal offers at Hostel Brikette.",
       }),
       state: "expired",
     };

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Historical
 Domain: BOS/Infrastructure
 Created: 2026-02-07
 Last-updated: 2026-02-07

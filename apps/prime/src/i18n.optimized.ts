@@ -5,29 +5,25 @@ import { initReactI18next } from 'react-i18next';
 import i18n, { type InitOptions } from 'i18next';
 import HttpBackend from 'i18next-http-backend';
 
-// Define namespace groups based on route usage
+// Define namespace groups based on actual useTranslation usage (DS-05)
 export const NAMESPACE_GROUPS = {
-  // Always loaded (critical)
-  core: ['Header', 'Homepage', 'Reused'],
+  // Always loaded (critical — homepage and profile)
+  core: ['Homepage'],
 
-  // Lazy loaded by route
-  breakfast: ['BreakfastMenu', 'CompBreakfast'],
-  bar: ['BarMenu', 'CompEvDrink'],
-  account: ['Account', 'BookingDetails', 'Payment'],
-  activities: ['ActivityAdmin', 'GuestChat'],
-  services: ['BagStorage', 'MainDoorAccess', 'OvernightIssues'],
-  admin: ['DocInsert', 'DigitalAssistant', 'Onboarding'],
+  // Lazy loaded by route/feature area
+  preArrival: ['PreArrival', 'BookingDetails', 'rooms'],
+  social: ['Chat', 'Activities', 'Quests'],
+  onboarding: ['Onboarding', 'FindMyStay'],
+  settings: ['Settings', 'PositanoGuide'],
 } as const;
 
 // All available namespaces
 const _ALL_NAMESPACES = [
   ...NAMESPACE_GROUPS.core,
-  ...NAMESPACE_GROUPS.breakfast,
-  ...NAMESPACE_GROUPS.bar,
-  ...NAMESPACE_GROUPS.account,
-  ...NAMESPACE_GROUPS.activities,
-  ...NAMESPACE_GROUPS.services,
-  ...NAMESPACE_GROUPS.admin,
+  ...NAMESPACE_GROUPS.preArrival,
+  ...NAMESPACE_GROUPS.social,
+  ...NAMESPACE_GROUPS.onboarding,
+  ...NAMESPACE_GROUPS.settings,
 ];
 
 const i18nOptions: InitOptions = {
@@ -54,7 +50,18 @@ const i18nOptions: InitOptions = {
   },
 };
 
-i18n.use(HttpBackend).use(initReactI18next).init(i18nOptions);
+// Browser: full init with HTTP backend for lazy-loading locale JSON files.
+// Server (SSR): skip HttpBackend (no HTTP fetches during render) and disable
+// Suspense so useTranslation() returns fallback keys instead of throwing.
+if (typeof window !== 'undefined') {
+  i18n.use(HttpBackend).use(initReactI18next).init(i18nOptions);
+} else {
+  i18n.use(initReactI18next).init({
+    ...i18nOptions,
+    backend: undefined,
+    react: { useSuspense: false },
+  });
+}
 
 // Helper function to load namespace group
 export async function loadNamespaceGroup(
@@ -76,27 +83,32 @@ export async function loadNamespaceGroup(
 
 // Helper function to preload namespaces for a route
 export function preloadNamespacesForRoute(route: string): void {
-  let group: keyof typeof NAMESPACE_GROUPS | null = null;
+  const groups: Array<keyof typeof NAMESPACE_GROUPS> = [];
 
-  if (route.includes('breakfast')) {
-    group = 'breakfast';
-  } else if (route.includes('bar')) {
-    group = 'bar';
-  } else if (route.includes('account') || route.includes('booking')) {
-    group = 'account';
-  } else if (route.includes('activity') || route.includes('chat')) {
-    group = 'activities';
-  } else if (
-    route.includes('bag') ||
-    route.includes('door') ||
-    route.includes('issues')
+  if (
+    route.includes('booking') ||
+    route.includes('checkin') ||
+    route.includes('arrival') ||
+    route.includes('welcome') ||
+    route.includes('route')
   ) {
-    group = 'services';
-  } else if (route.includes('admin') || route.includes('assistant')) {
-    group = 'admin';
+    groups.push('preArrival');
+  }
+  if (
+    route.includes('activity') ||
+    route.includes('chat') ||
+    route.includes('quest')
+  ) {
+    groups.push('social');
+  }
+  if (route.includes('onboarding') || route.includes('find-my-stay')) {
+    groups.push('onboarding');
+  }
+  if (route.includes('setting') || route.includes('positano')) {
+    groups.push('settings');
   }
 
-  if (group) {
+  for (const group of groups) {
     loadNamespaceGroup(group).catch((err) => {
       console.warn(`Failed to preload namespace group ${group}:`, err);
     });

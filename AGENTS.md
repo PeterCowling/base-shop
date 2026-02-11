@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-02-02
+Last-reviewed: 2026-02-10
 ---
 
 # AGENTS.md — Operational Runbook
@@ -63,15 +63,17 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 - **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
   - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
+  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- codex`
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
+    - Wait mode is FIFO queue-ordered (first-come, first-served) and waits forever by default; pass `--timeout <sec>` only when you explicitly want fast-fail behavior.
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
   - If lock handling blocks your git write:
     - `scripts/git/writer-lock.sh status`
     - `scripts/git/writer-lock.sh clean-stale` (only if holder PID is dead on this host)
-    - `scripts/git/writer-lock.sh acquire --wait`
+    - `scripts/agents/with-writer-lock.sh -- <git-write-command>` (or `scripts/agents/integrator-shell.sh -- <command>`)
   - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
 - **Branch flow:** `dev` → `staging` → `main`
   - Commit locally on `dev`
@@ -82,7 +84,7 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 **Destructive / history-rewriting commands (agents: never):**
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
-- Also treat these as forbidden: `git checkout -- .` / `git restore .`, **any bulk discard** via `git checkout -- <pathspec...>` or `git restore -- <pathspec...>` (multiple files, directories, or globs), `git stash drop` / `git stash clear`, `git rebase` (incl. `-i`), `git commit --amend`
+- Also treat these as forbidden: `git checkout -- .` / `git restore .`, **any bulk discard** via `git checkout -- <pathspec...>` or `git restore -- <pathspec...>` (multiple files, directories, or globs), `git stash` mutations (`push` / `pop` / `apply` / `drop` / `clear`, including bare `git stash`), `git rebase` (incl. `-i`), `git commit --amend`
 
 If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
@@ -164,7 +166,7 @@ Error: Cannot use import statement outside a module
 ## Plan Documentation
 
 - **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow `docs/plans/<name>-plan.md`.
-- **Completed (but still useful) plans** live in `docs/plans/archive/`.
+- **Completed plans** live in `docs/plans/archive/` with `Status: Archived`.
 - **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
 - **When superseding a plan (v2, rewrites, etc.)**
   - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).

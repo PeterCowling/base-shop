@@ -8,7 +8,6 @@
 'use client';
 
 import { type FC, memo } from 'react';
-import { useTranslation } from 'react-i18next';
 
 import { useServiceWorker } from '../../lib/pwa';
 
@@ -25,7 +24,6 @@ interface UpdatePromptProps {
 export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
   className = '',
 }) {
-  const { t } = useTranslation('Common');
   const { updateAvailable, applyUpdate } = useServiceWorker();
 
   // Don't render when no update available
@@ -70,11 +68,9 @@ export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
 
         {/* Content */}
         <div className="flex-1">
-          <h3 className="text-sm font-medium text-foreground">
-            {t('update.title', 'Update available')}
-          </h3>
+          <h3 className="text-sm font-medium text-foreground">Update available</h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {t('update.message', 'A new version is ready. Refresh to update.')}
+            A new version is ready. Refresh to update.
           </p>
 
           {/* Actions */}
@@ -83,7 +79,7 @@ export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
               onClick={applyUpdate}
               className="px-3 py-1.5 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary/90 transition-colors"
             >
-              {t('update.refresh', 'Refresh now')}
+              Refresh now
             </button>
           </div>
         </div>

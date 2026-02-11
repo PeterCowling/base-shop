@@ -14,6 +14,11 @@ export interface EmailDispatchResult {
   deliveryMode: 'webhook' | 'noop';
 }
 
+export interface EmailDispatchHttpError extends Error {
+  code: 'email_webhook_failed';
+  status: number;
+}
+
 export async function dispatchPrimeEmail(
   message: PrimeEmailMessage,
   env: EmailDispatchEnv,
@@ -37,7 +42,12 @@ export async function dispatchPrimeEmail(
   });
 
   if (!response.ok) {
-    throw new Error(`Email webhook failed: ${response.status}`);
+    const dispatchError = new Error(
+      `Email webhook failed: ${response.status}`,
+    ) as EmailDispatchHttpError;
+    dispatchError.code = 'email_webhook_failed';
+    dispatchError.status = response.status;
+    throw dispatchError;
   }
 
   return {

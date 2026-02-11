@@ -17,7 +17,7 @@ var mockEvent: TClickCellEventData;
 jest.mock("@daminort/reservation-grid", () => ({
   __esModule: true,
   ReservationGrid: ({ onClickCell }: { onClickCell: (e: TClickCellEventData) => void }) => (
-    <button data-testid="reservation-grid" onClick={() => onClickCell(mockEvent)}>
+    <button data-cy="reservation-grid" onClick={() => onClickCell(mockEvent)}>
       grid
     </button>
   ),
@@ -32,7 +32,7 @@ jest.mock("../BookingDetailsModal", () => ({
     bookingDetails: { id: string; bookingRef?: string; firstName?: string };
     onClose: () => void;
   }) => (
-    <div data-testid="booking-details-modal">
+    <div data-cy="booking-details-modal">
       <div>Booking Details</div>
       <div>{bookingDetails.id}</div>
       {bookingDetails.bookingRef && (

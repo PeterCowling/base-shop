@@ -2252,13 +2252,6 @@ export default [
     },
   },
 
-  /* ▸ Prime dev tools: DS rules disabled (internal debugging panels, not user-facing). */
-  {
-    files: ["apps/prime/src/components/dev/**", "apps/prime/src/services/firebase*"],
-    rules: {
-      ...offAllDsRules,
-    },
-  },
   /* ▸ Prime: DS color rules enforced after full migration (TASK-01–13).
    *   Non-color DS rules at "warn" for progressive hardening.
    *   complexity/max-lines relaxed (large components in guest portal). */
@@ -2293,6 +2286,46 @@ export default [
         "warn",
         { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
       ],
+    },
+  },
+  /* ▸ Prime test files: re-disable hardcoded-copy after catch-all re-enables it.
+   *   Global test override (line ~985) is defeated by Prime catch-all; this restores it. */
+  {
+    files: [
+      "apps/prime/**/__tests__/**/*.{ts,tsx,js,jsx}",
+      "apps/prime/**/*.test.{ts,tsx,js,jsx}",
+      "apps/prime/**/*.spec.{ts,tsx,js,jsx}",
+      "apps/prime/**/*.cy.{ts,tsx,js,jsx}",
+      "apps/prime/**/cypress/**/*.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+  /* ▸ Prime internal operator pages: disable hardcoded-copy for staff-only UIs.
+   *   These pages are not guest-facing — owner dashboard, staff lookup, admin, portal, signage.
+   *   Must be after Prime catch-all so "off" wins over "warn". */
+  {
+    files: [
+      "apps/prime/src/app/owner/**/*.{ts,tsx}",
+      "apps/prime/src/components/owner/**/*.{ts,tsx}",
+      "apps/prime/src/lib/owner/**/*.{ts,tsx}",
+      "apps/prime/src/app/staff-lookup/**/*.{ts,tsx}",
+      "apps/prime/src/app/admin/**/*.{ts,tsx}",
+      "apps/prime/src/app/portal/**/*.{ts,tsx}",
+      "apps/prime/src/components/portal/**/*.{ts,tsx}",
+      "apps/prime/src/app/signage/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+  /* ▸ Prime dev tools: DS rules disabled (internal debugging panels, not user-facing).
+   *   Must be after Prime catch-all so "off" wins over "warn". */
+  {
+    files: ["apps/prime/src/components/dev/**", "apps/prime/src/services/firebase*"],
+    rules: {
+      ...offAllDsRules,
     },
   },
   /* ▸ Business OS guide authoring: internal tool — relax DS rules.

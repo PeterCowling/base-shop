@@ -10,7 +10,7 @@ import {
   RUNTIME_PATH_PREFIXES,
 } from "./classifier-fixtures";
 
-export type TestScope = "skip" | "full" | "related";
+export type TestScope = "skip" | "related";
 
 export type DeployChangeClassification = {
   isDeployOnly: boolean;
@@ -84,21 +84,11 @@ function withTestSelection(base: Omit<DeployChangeClassification, "testScope" | 
     };
   }
 
-  if (base.uncertain || base.runtimePaths.length === 0) {
-    return {
-      ...base,
-      testScope: "full",
-      relatedTestPaths: [],
-    };
-  }
-
   const relatedTestPaths = base.runtimePaths.filter(isRelatedTestEligiblePath);
-  const canUseRelatedMode = relatedTestPaths.length > 0 && relatedTestPaths.length === base.runtimePaths.length;
-
-  if (!canUseRelatedMode) {
+  if (relatedTestPaths.length === 0) {
     return {
       ...base,
-      testScope: "full",
+      testScope: "skip",
       relatedTestPaths: [],
     };
   }

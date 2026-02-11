@@ -84,10 +84,94 @@
     "domain": "Testing"
   },
   {
+    "path": "docs/audits/user-testing/2026-02-09-5d811679-brikette-website-pages-dev-en-rerun.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-09-5d811679-brikette-website-pages-dev-en-rerun2.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-09-5d811679-brikette-website-pages-dev-en.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-09-c0227146-brikette-website-pages-dev-en.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-14dbef55-brikette-website-pages-staging-en-expanded-rerun.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-rerun-fixes.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-2a75064e-brikette-website-pages-staging-en-expanded-rerun.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-40cef8ec-brikette-website-pages-staging-en-expanded-rerun.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-5bd676c0-brikette-website-pages-staging-en-expanded-rerun.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-10-712b2b5d-brikette-staging-delivery-speed-audit.md",
+    "type": "Audit-Report",
+    "status": "Accepted",
+    "domain": "Delivery-Speed"
+  },
+  {
     "path": "docs/benchmarks/repo-benchmark.md",
     "type": "Benchmark",
     "status": "Reference",
     "domain": null
+  },
+  {
+    "path": "docs/briefs/email-autodraft-world-class-audit-briefing.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/briefs/git-conflict-enforcement-balance-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
+    "domain": "Repo/Git"
+  },
+  {
+    "path": "docs/briefs/git-stash-elimination-briefing.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "Repo"
   },
   {
     "path": "docs/briefs/safe-github-update-strategy-briefing.md",
@@ -114,7 +198,19 @@
     "domain": "Business OS"
   },
   {
+    "path": "docs/business-os/cards/BOS-ENG-0001.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BOS-ENG-0001.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0001.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -126,7 +222,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0002.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0002.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0003.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -138,7 +246,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0004.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0004.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0005.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -150,7 +270,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0006.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0006.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0007.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -162,7 +294,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0008.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0008.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0009.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -174,7 +318,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0010.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0010.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0011.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -186,7 +342,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0012.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0012.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0013.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -198,7 +366,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0014.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0014.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0015.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -210,7 +390,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0016.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0016.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0017.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -222,7 +414,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0018.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0018.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0019.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -252,7 +456,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-ENG-0020/build.agent.md",
+    "type": "Stage-Doc",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-ENG-0020/build.user.md",
+    "type": "Stage-Doc",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/BRIK-ENG-0020/fact-finding.agent.md",
     "type": "Stage-Doc",
     "status": "Active",
     "domain": null
@@ -264,7 +480,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/BRIK-OPP-0001.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/BRIK-OPP-0001.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PIPE-ENG-0001.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -276,7 +504,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PIPE-ENG-0002.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PIPE-ENG-0002.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PIPE-ENG-0003.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -288,7 +528,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PIPE-ENG-0004.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PIPE-ENG-0004.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PIPE-ENG-0005.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -300,13 +552,31 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0001.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0001.user.md",
     "type": "Card",
     "status": "Active",
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0002.agent.md",
+    "type": "Card",
+    "status": "Accepted",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0002.user.md",
+    "type": "Card",
+    "status": "Accepted",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0003.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -318,7 +588,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0004.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0004.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0005.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -330,7 +612,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0006.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0006.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0007.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -342,7 +636,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0008.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0008.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0009.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -354,7 +660,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0010.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0010.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0011.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -366,7 +684,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0012.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0012.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0013.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -378,7 +708,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0014.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0014.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0015.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -390,7 +732,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0016.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0016.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0017.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -402,7 +756,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-ENG-0018.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-ENG-0018.user.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-ENG-0019.agent.md",
     "type": "Card",
     "status": "Active",
     "domain": null
@@ -414,8 +780,20 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-OPP-0001.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-OPP-0001.user.md",
     "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/cards/PLAT-OPP-0001/fact-find.agent.md",
+    "type": "Stage",
     "status": "Active",
     "domain": null
   },
@@ -426,13 +804,37 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/cards/PLAT-OPP-0002.agent.md",
+    "type": "Card",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/cards/PLAT-OPP-0002.user.md",
     "type": "Card",
     "status": "Active",
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas-go-faster-legacy-control-mapping.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/BRIK-OPP-0002.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/BRIK-OPP-0002.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0001.agent.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
@@ -444,7 +846,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0002.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/PIPE-OPP-0002.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0003.agent.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
@@ -456,7 +870,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0004.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/PIPE-OPP-0004.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0005.agent.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
@@ -468,7 +894,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/PIPE-OPP-0006.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/PIPE-OPP-0006.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0003.agent.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
@@ -480,7 +918,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0004.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/PLAT-OPP-0004.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0005.agent.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
@@ -492,13 +942,31 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/PLAT-OPP-0006.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/PLAT-OPP-0006.user.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
   },
   {
+    "path": "docs/business-os/ideas/inbox/SCAN-BRIK-001.agent.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/ideas/inbox/SCAN-BRIK-001.user.md",
+    "type": "Idea",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/ideas/inbox/SCAN-PLAT-001.agent.md",
     "type": "Idea",
     "status": "Draft",
     "domain": null
@@ -522,8 +990,38 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/people/people.agent.md",
+    "type": "People-Profile",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/people/people.user.md",
     "type": "People-Profile",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-10-ideas-readiness.agent.md",
+    "type": "Ideas-Readiness",
+    "status": "Historical",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-10-ideas-readiness.user.md",
+    "type": "Ideas-Readiness",
+    "status": "Historical",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-10-missing-context-register.agent.md",
+    "type": "Ideas-Readiness-Missing-Context-Register",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-10-missing-context-register.user.md",
+    "type": "Ideas-Readiness-Missing-Context-Register",
     "status": "Active",
     "domain": null
   },
@@ -534,7 +1032,19 @@
     "domain": "Business OS"
   },
   {
+    "path": "docs/business-os/strategy/BOS/plan.agent.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/strategy/BOS/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/plan.agent.md",
     "type": "Business-Plan",
     "status": "Active",
     "domain": null
@@ -546,7 +1056,19 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/strategy/PIPE/plan.agent.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/strategy/PIPE/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PLAT/plan.agent.md",
     "type": "Business-Plan",
     "status": "Active",
     "domain": null
@@ -562,6 +1084,30 @@
     "type": "Reference",
     "status": "Canonical",
     "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/sweeps/2026-02-10-grow-business/2026-02-10-sweep.agent.md",
+    "type": "Sweep",
+    "status": "Historical",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/sweeps/2026-02-10-grow-business/2026-02-10-sweep.user.md",
+    "type": "Sweep",
+    "status": "Historical",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/sweeps/2026-02-10-sweep.agent.md",
+    "type": "Sweep",
+    "status": "Historical",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/sweeps/2026-02-10-sweep.user.md",
+    "type": "Sweep",
+    "status": "Historical",
+    "domain": null
   },
   {
     "path": "docs/cms-plan/index.md",
@@ -804,6 +1350,12 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/historical/plans/kanban-sweep-agent-plan.md",
+    "type": "Plan",
+    "status": "Superseded",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/historical/plans/lint-staged-autostash-avoidance-plan.md",
     "type": "Plan",
     "status": "Historical",
@@ -996,15 +1548,15 @@
     "domain": "Infrastructure"
   },
   {
-    "path": "docs/plans/agent-context-optimization-plan.md",
-    "type": "Plan",
-    "status": "Draft",
-    "domain": "DevEx/Tooling"
-  },
-  {
     "path": "docs/plans/agent-enhancement-plan.md",
     "type": "Plan",
     "status": "Active",
+    "domain": "DevEx/Tooling"
+  },
+  {
+    "path": "docs/plans/archive/agent-context-optimization-plan.md",
+    "type": "Plan",
+    "status": "Historical",
     "domain": "DevEx/Tooling"
   },
   {
@@ -1016,7 +1568,7 @@
   {
     "path": "docs/plans/archive/agent-git-instructions-update-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
@@ -1028,14 +1580,26 @@
   {
     "path": "docs/plans/archive/agent-safety-net-hardening-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Historical",
     "domain": "Infra"
   },
   {
     "path": "docs/plans/archive/agent-safety-net-hardening-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/archive/article-generation-pipeline-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/article-generation-slice-2-translation-tooling-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Platform/i18n"
   },
   {
     "path": "docs/plans/archive/article-helpers-to-guide-helpers-migration-plan.md",
@@ -1052,13 +1616,13 @@
   {
     "path": "docs/plans/archive/board-auto-refresh-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/bos-agent-api-availability-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "BOS/Infrastructure"
   },
   {
@@ -1072,6 +1636,12 @@
     "type": "Plan",
     "status": "Historical",
     "domain": "Apps/Brikette"
+  },
+  {
+    "path": "docs/plans/archive/brikette-deferred-plan-archived-2026-02-10.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Brikette"
   },
   {
     "path": "docs/plans/archive/brikette-flywheel-reuse-plan.md",
@@ -1098,6 +1668,18 @@
     "domain": "Brikette"
   },
   {
+    "path": "docs/plans/archive/brikette-live-delivery-speed-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Brikette"
+  },
+  {
+    "path": "docs/plans/archive/brikette-live-delivery-speed-v2-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Brikette"
+  },
+  {
     "path": "docs/plans/archive/brikette-seo-and-machine-readership-fact-finding.md",
     "type": "Fact-Find",
     "status": "Proposed",
@@ -1118,14 +1700,20 @@
   {
     "path": "docs/plans/archive/brikette-staging-localized-slug-routing-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Historical",
     "domain": "Brikette/Routing"
   },
   {
     "path": "docs/plans/archive/brikette-staging-localized-slug-routing-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Brikette/Routing"
+  },
+  {
+    "path": "docs/plans/archive/brikette-translation-coverage-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Brikette i18n"
   },
   {
     "path": "docs/plans/archive/brikette-translation-coverage.md",
@@ -1144,6 +1732,18 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/archive/business-os-ideas-kanban-flow-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/archive/business-os-ideas-surface-and-automation-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Business-OS"
   },
   {
     "path": "docs/plans/archive/business-os-kanban-plan.md",
@@ -1170,21 +1770,39 @@
     "domain": "Platform / Business OS"
   },
   {
+    "path": "docs/plans/archive/cabinet-system-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/plans/archive/catalog-stock-media-upload-facility-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Commerce"
+  },
+  {
+    "path": "docs/plans/archive/ci-integration-speed-control-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "CI/Infrastructure"
+  },
+  {
+    "path": "docs/plans/archive/ci-integration-speed-control-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "CI/Infrastructure"
   },
   {
     "path": "docs/plans/archive/ci-quality-overnight-fixes-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Historical",
     "domain": "Infra"
   },
   {
     "path": "docs/plans/archive/ci-quality-overnight-fixes-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Infra"
   },
   {
@@ -1196,13 +1814,13 @@
   {
     "path": "docs/plans/archive/composite-email-templates-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/cover-me-pretty-lint-enablement-plan.md",
     "type": "Plan",
-    "status": "Done",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
@@ -1230,6 +1848,12 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/archive/design-system-plan-archived-2026-02-10.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Design System"
+  },
+  {
     "path": "docs/plans/archive/design-system-plan.md",
     "type": "Plan",
     "status": "Active",
@@ -1238,7 +1862,7 @@
   {
     "path": "docs/plans/archive/design-ui-theming-v2-plan.md",
     "type": "Plan",
-    "status": "Archive",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
@@ -1256,7 +1880,7 @@
   {
     "path": "docs/plans/archive/email-autodraft-consolidation-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Automation"
   },
   {
@@ -1280,14 +1904,26 @@
   {
     "path": "docs/plans/archive/experiences-page-refactor-plan.md",
     "type": "Plan",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "UI / CMS"
+  },
+  {
+    "path": "docs/plans/archive/faster-staging-ci-plan-archived-2026-02-10.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "CI/Infrastructure"
   },
   {
     "path": "docs/plans/archive/fix-placeholder-translations-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "UI / i18n / Content"
+  },
+  {
+    "path": "docs/plans/archive/git-conflict-ops-hardening-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Repo/Git"
   },
   {
     "path": "docs/plans/archive/guide-area-editor-plan.md",
@@ -1304,25 +1940,25 @@
   {
     "path": "docs/plans/archive/guide-publication-decoupling-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
     "path": "docs/plans/archive/guide-publication-decoupling-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
     "path": "docs/plans/archive/guide-status-single-source-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
     "path": "docs/plans/archive/guide-status-single-source-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
@@ -1376,7 +2012,7 @@
   {
     "path": "docs/plans/archive/handbag-configurator-lint-enablement-plan.md",
     "type": "Runbook",
-    "status": "Archive",
+    "status": "Historical",
     "domain": "Repo"
   },
   {
@@ -1388,7 +2024,7 @@
   {
     "path": "docs/plans/archive/how-to-get-here-guides-migration-fact-find.md",
     "type": "Fact-Find",
-    "status": "Archived",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
@@ -1420,6 +2056,18 @@
     "type": "Plan",
     "status": "Historical",
     "domain": "UI / i18n / Testing"
+  },
+  {
+    "path": "docs/plans/archive/ideas-go-faster-process-hardening-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/archive/ideas-go-faster-redesign-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Business-OS"
   },
   {
     "path": "docs/plans/archive/integrated-secrets-workflow-plan.md",
@@ -1478,7 +2126,7 @@
   {
     "path": "docs/plans/archive/no-hardcoded-copy-non-ui-exemptions-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
@@ -1494,9 +2142,15 @@
     "domain": "Build"
   },
   {
+    "path": "docs/plans/archive/prime-guest-portal-gap-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Prime"
+  },
+  {
     "path": "docs/plans/archive/react-audit-design-system-plan.md",
     "type": "Plan",
-    "status": "Completed",
+    "status": "Historical",
     "domain": "UI"
   },
   {
@@ -1520,13 +2174,25 @@
   {
     "path": "docs/plans/archive/reception-stock-cash-control-plan-v2.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Reception"
+  },
+  {
+    "path": "docs/plans/archive/reception-ui-theme-centralization-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Historical",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/archive/reception-ui-theme-centralization-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/archive/remove-gallery-feature-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "CMS"
   },
   {
@@ -1537,6 +2203,12 @@
   },
   {
     "path": "docs/plans/archive/test-quality-audit-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/plans/archive/test-typechecking-plan-archived-2026-02-10.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Testing"
@@ -1562,13 +2234,13 @@
   {
     "path": "docs/plans/archive/translation-workflow-improvements-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/translation-workflow-improvements-plan.md",
     "type": "Plan",
-    "status": "Complete",
+    "status": "Historical",
     "domain": "Platform"
   },
   {
@@ -1626,6 +2298,12 @@
     "domain": "Infra"
   },
   {
+    "path": "docs/plans/archive/xa-coverage-80-plan.md",
+    "type": "Plan",
+    "status": "Historical",
+    "domain": "Commerce"
+  },
+  {
     "path": "docs/plans/archive/xa-publish-privacy-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
@@ -1634,26 +2312,20 @@
   {
     "path": "docs/plans/article-generation-pipeline-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
-    "domain": "Platform"
-  },
-  {
-    "path": "docs/plans/article-generation-pipeline-plan.md",
-    "type": "Plan",
-    "status": "Active",
+    "status": "Proposed",
     "domain": "Platform"
   },
   {
     "path": "docs/plans/bos-agent-api-availability-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Proposed",
     "domain": "BOS/Infrastructure"
   },
   {
-    "path": "docs/plans/brikette-deferred-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Brikette"
+    "path": "docs/plans/brikette-ci-targeted-test-selection-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
+    "domain": "CI/Infrastructure"
   },
   {
     "path": "docs/plans/brikette-lint-enablement-plan.md",
@@ -1668,10 +2340,10 @@
     "domain": "Brikette"
   },
   {
-    "path": "docs/plans/brikette-live-delivery-speed-plan.md",
+    "path": "docs/plans/brikette-ssr-seo-signal-hardening-plan.md",
     "type": "Plan",
     "status": "Active",
-    "domain": "Brikette"
+    "domain": "Brikette/SEO"
   },
   {
     "path": "docs/plans/brikette-staging-launch-fact-find.md",
@@ -1686,12 +2358,6 @@
     "domain": "Deploy"
   },
   {
-    "path": "docs/plans/brikette-translation-coverage-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Brikette i18n"
-  },
-  {
     "path": "docs/plans/brikette-url-coverage-matrix.md",
     "type": "Reference",
     "status": "Reference",
@@ -1704,6 +2370,12 @@
     "domain": null
   },
   {
+    "path": "docs/plans/business-os-ideas-surface-and-automation-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/plans/business-os-phase-2-plan.md",
     "type": "Plan",
     "status": "Draft",
@@ -1714,6 +2386,12 @@
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Agents / Business OS"
+  },
+  {
+    "path": "docs/plans/business-os-stage-7b-backfill-decision-memo.md",
+    "type": "Decision-Memo",
+    "status": "Accepted",
+    "domain": "Business-OS"
   },
   {
     "path": "docs/plans/business-os-strategic-review.md",
@@ -1730,13 +2408,7 @@
   {
     "path": "docs/plans/cabinet-system-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning # 7 open Qs have safe defaults; 3 behavioral Qs resolved",
-    "domain": "Business-OS"
-  },
-  {
-    "path": "docs/plans/cabinet-system-plan.md",
-    "type": "Plan",
-    "status": "Active",
+    "status": "Proposed",
     "domain": "Business-OS"
   },
   {
@@ -1766,7 +2438,7 @@
   {
     "path": "docs/plans/composite-email-templates-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Proposed",
     "domain": "Platform"
   },
   {
@@ -1780,12 +2452,6 @@
     "type": "Plan",
     "status": "Draft",
     "domain": "Dashboard / Upgrade"
-  },
-  {
-    "path": "docs/plans/design-system-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Design System"
   },
   {
     "path": "docs/plans/edge-commerce-standardization-implementation-plan.md",
@@ -1806,16 +2472,40 @@
     "domain": "Business-Ops"
   },
   {
+    "path": "docs/plans/email-autodraft-world-class-upgrade-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Active",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/email-autodraft-world-class-upgrade-plan.md",
+    "type": "Plan",
+    "status": "Accepted",
+    "domain": "Automation"
+  },
+  {
     "path": "docs/plans/faster-staging-ci-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Proposed",
     "domain": "CI/Infrastructure"
   },
   {
-    "path": "docs/plans/faster-staging-ci-plan.md",
-    "type": "Plan",
+    "path": "docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md",
+    "type": "Briefing",
     "status": "Active",
-    "domain": "CI/Infrastructure"
+    "domain": "Repo/Git"
+  },
+  {
+    "path": "docs/plans/git-conflict-ops-hardening-plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "Repo/Git"
+  },
+  {
+    "path": "docs/plans/git-stash-elimination-plan.md",
+    "type": "Plan",
+    "status": "Accepted",
+    "domain": "Repo/Git"
   },
   {
     "path": "docs/plans/github-update-strategy-fact-find.md",
@@ -1838,7 +2528,7 @@
   {
     "path": "docs/plans/guide-production-unified-experience-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Proposed",
     "domain": "BOS"
   },
   {
@@ -1872,27 +2562,33 @@
     "domain": "Commerce"
   },
   {
-    "path": "docs/plans/ideas-go-faster-redesign-fact-find.md",
+    "path": "docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Proposed",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-go-faster-redesign-plan.md",
+    "path": "docs/plans/ideas-go-faster-deliberation-upgrade-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Draft",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-go-faster-process-hardening-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-go-faster-redesign-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
     "domain": "Business-OS"
   },
   {
     "path": "docs/plans/kanban-sweep-agent-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
-    "domain": "Platform"
-  },
-  {
-    "path": "docs/plans/kanban-sweep-agent-plan.md",
-    "type": "Plan",
-    "status": "Active",
+    "status": "Proposed",
     "domain": "Platform"
   },
   {
@@ -1922,8 +2618,8 @@
   {
     "path": "docs/plans/nextjs-16-upgrade-plan.md",
     "type": "Plan",
-    "status": "Draft",
-    "domain": "Repo"
+    "status": "Active",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/plans-to-cards-migration-analysis.md",
@@ -1938,10 +2634,28 @@
     "domain": "Build"
   },
   {
-    "path": "docs/plans/prime-guest-portal-gap-plan.md",
-    "type": "Plan",
-    "status": "Active",
+    "path": "docs/plans/prime-messaging-processor-decision.md",
+    "type": "Decision-Memo",
+    "status": "Accepted",
     "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-staff-auth-architecture-decision.md",
+    "type": "Decision-Memo",
+    "status": "Accepted",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-ui-theme-centralization-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Accepted",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/prime-ui-theme-centralization-plan.md",
+    "type": "Plan",
+    "status": "Accepted",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/remove-gallery-feature-fact-find.md",
@@ -1968,19 +2682,7 @@
     "domain": "Testing"
   },
   {
-    "path": "docs/plans/test-typechecking-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Testing"
-  },
-  {
     "path": "docs/plans/xa-client-readiness-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Commerce"
-  },
-  {
-    "path": "docs/plans/xa-coverage-80-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Commerce"
@@ -1988,7 +2690,7 @@
   {
     "path": "docs/plans/xa-deploy-readiness-fact-find.md",
     "type": "Fact-Find",
-    "status": "Ready-for-planning",
+    "status": "Proposed",
     "domain": "Infra"
   },
   {

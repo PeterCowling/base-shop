@@ -1,0 +1,24 @@
+{
+  "cta": {
+    "popularWithGuests": "Popular With Guests",
+    "poweredBy": "Powered By"
+  },
+  "meta": {
+    "subtitle": "Subtitle",
+    "title": "Title"
+  },
+  "sections": {
+    "afternoon": {
+      "subtitle": "Subtitle",
+      "title": "Title"
+    },
+    "evening": {
+      "subtitle": "Subtitle",
+      "title": "Title"
+    },
+    "morning": {
+      "subtitle": "Subtitle",
+      "title": "Title"
+    }
+  }
+}

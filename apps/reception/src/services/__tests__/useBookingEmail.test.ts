@@ -41,8 +41,8 @@ describe("useBookingEmail", () => {
         guestB: { email: "b@example.com" },
       })
     );
-    // 3rd call: send email via MCP
-    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, messageId: "sent" }));
+    // 3rd call: create email draft via MCP
+    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, draftId: "draft-1" }));
 
     const { result } = renderHook(() => useBookingEmail());
 
@@ -183,7 +183,7 @@ describe("useBookingEmail", () => {
         guestB: { email: "b@example.com" },
       })
     );
-    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, messageId: "sent" }));
+    fetchMock.mockResolvedValueOnce(jsonOkResponse({ success: true, draftId: "draft-1" }));
 
     const { result } = renderHook(() => useBookingEmail());
 

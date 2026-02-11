@@ -1,0 +1,26 @@
+{
+  "button": {
+    "loading": "Loading",
+    "submit": "Submit"
+  },
+  "errors": {
+    "fieldsRequired": "Fields Required",
+    "networkError": "Network Error",
+    "notFound": "Not Found",
+    "tooManyAttempts": "Too Many Attempts"
+  },
+  "fields": {
+    "bookingCode": "Booking Code",
+    "bookingCodeHint": "Booking Code Hint",
+    "bookingCodePlaceholder": "Booking Code Placeholder",
+    "lastName": "Last Name",
+    "lastNameHint": "Last Name Hint",
+    "lastNamePlaceholder": "Last Name Placeholder"
+  },
+  "help": {
+    "cantFind": "Cant Find",
+    "contactUs": "Contact Us"
+  },
+  "subtitle": "Subtitle",
+  "title": "Title"
+}

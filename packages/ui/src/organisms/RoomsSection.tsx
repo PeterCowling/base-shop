@@ -1,6 +1,6 @@
 // packages/ui/src/organisms/RoomsSection.tsx
 // Responsive list of room cards (moved from app src)
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -21,6 +21,16 @@ export type RoomsSectionBookingQuery = {
   queryString?: string;
 };
 
+function parseClientBookingQuery(): RoomsSectionBookingQuery {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    checkIn: params.get("checkin") ?? "",
+    checkOut: params.get("checkout") ?? "",
+    pax: params.get("pax") ?? "",
+    queryString: params.toString(),
+  };
+}
+
 function RoomsSection({
   lang: explicitLang,
   bookingQuery,
@@ -32,11 +42,19 @@ function RoomsSection({
   const lang = explicitLang ?? fallbackLang;
   const { t } = useTranslation("roomsPage", { lng: lang });
   const { openModal } = useModal();
+  const [clientBookingQuery, setClientBookingQuery] = useState<RoomsSectionBookingQuery | null>(
+    bookingQuery ?? null
+  );
   const roomsSlug = SLUGS.rooms[lang as keyof typeof SLUGS.rooms] ?? SLUGS.rooms.en;
-  const checkIn = bookingQuery?.checkIn?.trim() || getTodayIso();
-  const checkOut = bookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
-  const adults = parseInt(bookingQuery?.pax ?? "1", 10) || 1;
-  const normalizedQueryString = (bookingQuery?.queryString ?? "").trim().replace(/^\?/, "");
+  useEffect(() => {
+    if (bookingQuery) return;
+    setClientBookingQuery(parseClientBookingQuery());
+  }, [bookingQuery]);
+  const resolvedBookingQuery = bookingQuery ?? clientBookingQuery;
+  const checkIn = resolvedBookingQuery?.checkIn?.trim() || getTodayIso();
+  const checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
+  const adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
+  const normalizedQueryString = (resolvedBookingQuery?.queryString ?? "").trim().replace(/^\?/, "");
   const searchString = normalizedQueryString ? `?${normalizedQueryString}` : "";
 
   const [filter, setFilter] = useState<RoomFilter>("all");

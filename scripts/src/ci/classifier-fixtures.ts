@@ -39,7 +39,8 @@ export const BRIKETTE_RELEVANT_PATH_PREFIXES = [
   "packages/platform-core/",
   "packages/telemetry/",
   "packages/ui/",
-  "scripts/",
+  "scripts/src/",
+  "scripts/__tests__/",
   "data/shops/brikette/",
 ] as const;
 

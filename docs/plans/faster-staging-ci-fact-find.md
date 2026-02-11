@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Proposed
 Domain: CI/Infrastructure
 Created: 2026-02-07
 Last-updated: 2026-02-07

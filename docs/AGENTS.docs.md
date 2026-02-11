@@ -228,7 +228,7 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
 
 - **Header fields**
   - `Type: Plan`
-  - `Status: Draft | Active | Frozen | Complete | Superseded`
+  - `Status: Draft | Active | Frozen | Archived | Superseded`
   - `Domain: <Domain>`
   - `Relates-to charter: <charter file or anchor>`
   - Optional lifecycle pointers:
@@ -258,7 +258,7 @@ Plans are the source of truth for **status**, not for **exact behaviour** (that 
 
 - **Lifecycle and archiving**
   - **Current / maintained plans:** keep in `docs/plans/` (or the domain’s plan directory, like `docs/cms-plan/`).
-  - **Completed (still useful) plans:** move to `docs/plans/archive/` and set `Status: Complete`.
+  - **Completed plans:** move to `docs/plans/archive/` and set `Status: Archived`.
   - **Superseded plans:** move to `docs/historical/plans/` and set `Status: Superseded` with a `Superseded-by: ...` pointer.
   - **Filename stability:** prefer keeping the canonical plan path stable; when you need disambiguation, append `-superseded-YYYY-MM-DD` (preferred) rather than adding `-v2` to the current plan.
 

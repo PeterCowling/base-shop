@@ -48,8 +48,7 @@ These commands are blocked by one or more protection layers:
 | `git clean -fd` | Permanently deletes untracked files |
 | `git checkout -- .` / `git restore .` | Discards all local modifications |
 | `git restore -- <pathspec...>` / `git checkout -- <pathspec...>` | Bulk discards local modifications (multiple paths, directories, or globs) |
-| `git stash drop/clear` | Permanently loses stashed work |
-| `git stash pop/apply` | Can cause merge conflicts (use list/show/push instead) |
+| `git stash` mutations (`push/pop/apply/drop/clear`) | Create hidden debt, can conflict, or can permanently lose stashed work |
 | `git push --force` / `-f` | Overwrites remote history |
 | `git rebase -i` | Can rewrite/lose history |
 | `--no-verify` | Bypasses safety hooks - hard-blocked by git guard |
@@ -101,4 +100,4 @@ These commands are blocked by one or more protection layers:
 
 ---
 
-**Last Updated:** 2026-02-02
+**Last Updated:** 2026-02-10

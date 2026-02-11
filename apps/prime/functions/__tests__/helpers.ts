@@ -8,6 +8,18 @@ export interface MockEnv {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY: string;
   RATE_LIMIT?: MockKvNamespace;
+  NODE_ENV?: string;
+  PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
+  PRIME_STAFF_OWNER_GATE_TOKEN?: string;
+  PRIME_EMAIL_WEBHOOK_URL?: string;
+  PRIME_EMAIL_WEBHOOK_TOKEN?: string;
+  PRIME_STAFF_PIN_HASH?: string;
+  PRIME_STAFF_AUTH_UID?: string;
+  PRIME_STAFF_AUTH_ROLE?: string;
+  PRIME_STAFF_LOCKOUT_MAX_ATTEMPTS?: string;
+  PRIME_STAFF_LOCKOUT_WINDOW_SECONDS?: string;
+  PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL?: string;
+  PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY?: string;
 }
 
 export function createMockKv(initialValues: Record<string, string> = {}): MockKvNamespace {

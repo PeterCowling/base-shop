@@ -1,0 +1,124 @@
+{
+  "operations": [
+    {
+      "operation_id": "idea-pipe-first-customer-sprint",
+      "kind": "idea_create",
+      "slug": "pipe-first-customer-sprint",
+      "payload_fingerprint": "sha256:idea-pipe-first-customer-sprint",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-brik-direct-booking-conversion-sprint",
+      "kind": "idea_create",
+      "slug": "brik-direct-booking-conversion-sprint",
+      "payload_fingerprint": "sha256:idea-brik-direct-booking-conversion-sprint",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-bos-growth-experiment-review-cadence",
+      "kind": "idea_create",
+      "slug": "bos-growth-experiment-review-cadence",
+      "payload_fingerprint": "sha256:idea-bos-growth-experiment-review-cadence",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-plat-experiment-telemetry-acceleration",
+      "kind": "idea_create",
+      "slug": "plat-experiment-telemetry-acceleration",
+      "payload_fingerprint": "sha256:idea-plat-experiment-telemetry-acceleration",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-pipe-demand-proof-before-catalog-scale",
+      "kind": "idea_create",
+      "slug": "pipe-demand-proof-before-catalog-scale",
+      "payload_fingerprint": "sha256:idea-pipe-demand-proof-before-catalog-scale",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-brik-multilingual-growth-sequencing",
+      "kind": "idea_create",
+      "slug": "brik-multilingual-growth-sequencing",
+      "payload_fingerprint": "sha256:idea-brik-multilingual-growth-sequencing",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-pipe-first-customer-sprint",
+      "kind": "card_create",
+      "slug": "pipe-first-customer-sprint",
+      "payload_fingerprint": "sha256:card-pipe-first-customer-sprint",
+      "depends_on": ["idea-pipe-first-customer-sprint"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-brik-direct-booking-conversion-sprint",
+      "kind": "card_create",
+      "slug": "brik-direct-booking-conversion-sprint",
+      "payload_fingerprint": "sha256:card-brik-direct-booking-conversion-sprint",
+      "depends_on": ["idea-brik-direct-booking-conversion-sprint"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-bos-growth-experiment-review-cadence",
+      "kind": "card_create",
+      "slug": "bos-growth-experiment-review-cadence",
+      "payload_fingerprint": "sha256:card-bos-growth-experiment-review-cadence",
+      "depends_on": ["idea-bos-growth-experiment-review-cadence"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-plat-experiment-telemetry-acceleration",
+      "kind": "card_create",
+      "slug": "plat-experiment-telemetry-acceleration",
+      "payload_fingerprint": "sha256:card-plat-experiment-telemetry-acceleration",
+      "depends_on": ["idea-plat-experiment-telemetry-acceleration"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "factfind-pipe-first-customer-sprint",
+      "kind": "factfind_upsert",
+      "slug": "pipe-first-customer-sprint",
+      "payload_fingerprint": "sha256:factfind-pipe-first-customer-sprint",
+      "depends_on": ["card-pipe-first-customer-sprint"],
+      "endpoint": "/api/agent/stage-docs",
+      "method": "POST",
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: PIPE First-Customer Sprint\"}"
+    },
+    {
+      "operation_id": "factfind-brik-direct-booking-conversion-sprint",
+      "kind": "factfind_upsert",
+      "slug": "brik-direct-booking-conversion-sprint",
+      "payload_fingerprint": "sha256:factfind-brik-direct-booking-conversion-sprint",
+      "depends_on": ["card-brik-direct-booking-conversion-sprint"],
+      "endpoint": "/api/agent/stage-docs",
+      "method": "POST",
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BRIK Direct-Booking Conversion Sprint\"}"
+    },
+    {
+      "operation_id": "factfind-bos-growth-experiment-review-cadence",
+      "kind": "factfind_upsert",
+      "slug": "bos-growth-experiment-review-cadence",
+      "payload_fingerprint": "sha256:factfind-bos-growth-experiment-review-cadence",
+      "depends_on": ["card-bos-growth-experiment-review-cadence"],
+      "endpoint": "/api/agent/stage-docs",
+      "method": "POST",
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BOS Growth Experiment Review Cadence\"}"
+    }
+  ]
+}

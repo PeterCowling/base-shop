@@ -83,6 +83,19 @@ describe("draft_quality_check", () => {
     expect(payload.failed_checks).toContain("missing_signature");
   });
 
+  it("TC-04b: HTML signature block satisfies signature check", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: baseActionPlan,
+      draft: {
+        bodyPlain: "Check-in is at 3pm. https://example.com",
+        bodyHtml:
+          "<p>Check-in is at 3pm</p><img alt=\"Cristiana's Signature\"><img alt=\"Peter's Signature\">",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("missing_signature");
+  });
+
   it("TC-05: missing html/plaintext triggers failed check", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: baseActionPlan,

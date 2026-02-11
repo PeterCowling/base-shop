@@ -8,7 +8,7 @@
  */
 
 import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
-import { enforceStaffOwnerApiGate } from '../lib/staff-owner-gate';
+import { enforceStaffAuthTokenGate } from '../lib/staff-auth-token-gate';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -107,9 +107,9 @@ function buildReadinessSignals(preArrival: PreArrivalData | null) {
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
-  const gateResponse = enforceStaffOwnerApiGate(request, env);
-  if (gateResponse) {
-    return gateResponse;
+  const gateResult = await enforceStaffAuthTokenGate(request, env);
+  if (!gateResult.ok) {
+    return gateResult.response;
   }
 
   const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';

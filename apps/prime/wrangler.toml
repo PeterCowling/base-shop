@@ -5,8 +5,8 @@ compatibility_flags = ["nodejs_compat"]
 
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "00000000000000000000000000000000"
-preview_id = "00000000000000000000000000000000"
+id = "f3d56007e07d494cb3ab0db1995fd958"
+preview_id = "f49512da7ac246e7bac8d97375a42809"
 
 [vars]
 # Set real values in Cloudflare Pages env configuration.

@@ -19,10 +19,13 @@ Pete triggers the sweep via `/ideas-go-faster`. Everything after that is autonom
 /ideas-go-faster --stance=grow-business
 /ideas-go-faster --dry-run                # preview-only: generate/report ideas, no API writes
 /ideas-go-faster --dry-run --stance=grow-business
+/ideas-go-faster --dry-run --allow-api-degraded   # allow filesystem-only fallback when API preflight fails
 /ideas-go-faster --force-code-review       # force technical cabinet even without triggers
 /ideas-go-faster --assumptions-file <path-to-md>  # optional assumptions input file
 /ideas-go-faster --verbosity=compact|standard|extended
 /ideas-go-faster --stage7b                 # enable optional Stage 7b single-card backfill slot
+scripts/run-ideas-go-faster.sh --dry-run --stance=improve-data   # recommended runner (loads .env.local)
+scripts/run-ideas-go-faster.sh --dry-run --allow-api-degraded --stance=improve-data
 ```
 
 **Invocation control contract:**
@@ -31,6 +34,9 @@ Pete triggers the sweep via `/ideas-go-faster`. Everything after that is autonom
   - `--assumptions-file <path>`
 - If both inline and file assumptions are present, file input takes precedence.
 - Verbosity mode supports `compact`, `standard`, `extended` (default: `standard`).
+- `--allow-api-degraded` is valid only with `--dry-run` (never valid for live mode).
+- Recommended execution path is `scripts/run-ideas-go-faster.sh` so Agent API env vars are loaded from `.env.local`.
+- `scripts/run-ideas-go-faster.sh` is initiator-agent-preserving: it auto-selects the local agent CLI (`codex` first, then `claude`) so the invoking agent can execute the sweep without forced cross-agent handoff.
 
 ---
 
@@ -63,6 +69,20 @@ The Musk lens applies this algorithm in **strict order** during its generation p
 - **Smallest shippable learning unit.** Prefer minimal changes that produce a measurable signal quickly. Do not propose 6-month roadmaps.
 - **Safety and sustainability.** Do not recommend burnout, heroics, or policy violations. Optimize for sustained throughput.
 
+### Sales-First Portfolio Directives (Ideas-Generation Scope)
+
+For `/ideas-go-faster`, operate in **sales-first mode**:
+
+- Treat **revenue businesses** as primary: `BRIK`, `PIPE`, `XA`, `HEAD`, `PET`, `HBAG`.
+- Treat **enabling systems** as secondary: `PLAT`, `BOS`.
+- **Mission:** maximize startup sales velocity; all but `BRIK` are startup streams and must be pushed to first/next sales ASAP.
+- **Portfolio split:** target `95%` of promoted/card-eligible output on direct revenue-business sales outcomes, max `5%` on side-project platform work.
+- **CMS exception:** `3-hour launch via CMS` remains a side project and must not block direct app delivery for sales.
+- **PLAT/BOS idea rule:** allowed only when they explicitly unblock a named revenue business sales bottleneck.
+- **UI/DS rule:** no standalone `@acme/ui` / `@acme/design-system` cleanup ideas. UI/DS ideas are valid only when attached to a concrete startup-sales deliverable.
+- **Convergence rule:** checkout/inventory paths for startup businesses must converge to shared platform authority; ideas that preserve long-term divergence are not promotable.
+- **Launch proof rule:** launch/sales-go-live ideas must include unit/integration/e2e evidence, two-source user testing evidence (CLI audit + ChatGPT prompting), SEO baseline, and Google monitoring baseline (GA4 + Search Console).
+
 ---
 
 ## Operating Mode
@@ -83,6 +103,11 @@ The Musk lens applies this algorithm in **strict order** during its generation p
 **Persistence mode (run-level):**
 - **Default (`live`):** run full pipeline including Stage 6/7 persistence.
 - **`--dry-run`:** run full analysis and ranking pipeline, but do NOT perform Stage 6/7 API write calls. Output preview tables for would-create ideas/cards/stage-docs in the sweep report.
+- **`--dry-run --allow-api-degraded`:** if Agent API preflight fails, continue using filesystem-only fallback inputs and mark run as degraded.
+
+**API preflight mode (run-level):**
+- **`strict` (default):** API preflight failures are fatal.
+- **`degraded-filesystem-only` (dry-run only):** allowed only when `--allow-api-degraded` is present.
 
 **Not allowed:**
 - Modify existing cards or ideas (no PATCH on cards/ideas — Drucker/Porter runs before card creation, so no priority updates needed)
@@ -90,6 +115,40 @@ The Musk lens applies this algorithm in **strict order** during its generation p
 - Move cards between lanes directly (baseline deterministic lane transitions are handled downstream by /plan-feature and /build-feature)
 - Run destructive commands
 - Auto-schedule or self-invoke
+
+### In-Run Progress Updates (Mandatory)
+
+The sweep must provide progress visibility while execution is underway.
+
+**Progress artifact:**
+- Write to `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md` (or run-scoped subdirectory equivalent when used).
+- Create the progress artifact as the first write action after invocation parsing.
+
+**Progress artifact frontmatter (required):**
+```yaml
+---
+Type: Sweep-Progress
+Date: YYYY-MM-DD
+Run-Status: running | complete | partial | failed-preflight
+Persistence-Mode: live | dry-run
+Stance: improve-data | grow-business
+Current-Stage: preflight | stage-1 | stage-2 | stage-3 | stage-4 | stage-5 | stage-5.5 | stage-6 | stage-7 | stage-7.5 | complete
+Last-Updated-UTC: YYYY-MM-DDTHH:MM:SSZ
+Progress-Events: N
+Final-Report-Path: <path-or-pending>
+---
+```
+
+**Update cadence (required):**
+- Emit a progress event at each stage transition (start + complete).
+- Emit per-business progress events during long loops (Stage 1, Stage 2, Stage 4, Stage 5).
+- Emit heartbeat updates every `<=90 seconds` while a long stage is running.
+- After each progress artifact update, emit a concise terminal line:
+  - `Progress: <stage> <state> (<completed>/<total>)`
+
+**Completion/failure finalization (required):**
+- On success or partial completion, set `Run-Status`, `Current-Stage: complete`, and `Final-Report-Path`.
+- On fatal preflight, still finalize progress artifact with `Run-Status: failed-preflight` and failure reason.
 
 ### Failure Policy (Two-Phase)
 
@@ -100,6 +159,18 @@ Stop the sweep if any of these fail:
 - Fetch existing cards/ideas/stage-docs for dedup + priority baseline
 
 In fatal cases: stop all pipeline stages and attempt one final write of a minimal sweep report marked `Run-Status: failed-preflight` including the error.
+
+**Dry-run degraded preflight fallback (explicitly opt-in):**
+- Trigger condition: `--dry-run --allow-api-degraded` and Agent API preflight fails.
+- Continue in `API-Preflight-Mode: degraded-filesystem-only` using:
+  - filesystem business plans under `docs/business-os/strategy/<BIZ>/plan.user.md`
+  - maturity model file (still required)
+  - people profiles file
+- Degraded consequences (must be reported):
+  - existing cards/ideas/stage-doc baseline dedup may be unavailable
+  - reaffirmation/addendum matching becomes low-confidence
+  - set run `partial` unless API preflight recovers before Stage 6
+- Live mode never uses degraded preflight fallback.
 
 **Phase 2 — Non-fatal (record + continue during persistence):**
 During Stages 6–7 (live-mode creates):
@@ -225,6 +296,10 @@ Even a good product fails if the operations are broken.
    - Accept `--assumptions-file <path>` when provided.
    - If both are present, file input wins.
    - Record assumptions source in report frontmatter (`none` | `inline` | `file`).
+6. Apply **sales-first portfolio classification** for this run:
+   - mark each business as `revenue` or `enabler`
+   - define startup set (`PIPE`, `XA`, `HEAD`, `PET`, `HBAG`) for sales-velocity emphasis
+   - enforce CMS work as side-project lane (non-blocking)
 
 **Composite Generation (per business):**
 Run sequential multi-lens passes to generate ideas.
@@ -513,14 +588,28 @@ Under `grow-business`:
 - Lower weight: Pure infrastructure without growth link, measurement for measurement's sake
 - MACRO emphasis: Acquire (HIGH), Convert (HIGH), Retain (MEDIUM), Measure (MEDIUM), Operate (LOW)
 
+**Sales-first portfolio gates (mandatory in both stances):**
+- Revenue businesses (`BRIK`, `PIPE`, `XA`, `HEAD`, `PET`, `HBAG`) are the default promotion path.
+- `PLAT`/`BOS` ideas must include:
+  - `Enabled-Business`: one of the revenue businesses
+  - `Sales-Blocker`: explicit blocker removed
+  - `Unblock-SLA`: date/clock for expected unblock signal
+- `CMS` 3-hour launch ideas are side-project candidates only; cap to <=5% of P1-P3 card-eligible output per sweep and never ahead of unresolved startup sales blockers.
+- Reject standalone UI/DS cleanup (`@acme/ui`, `@acme/design-system`) unless tied to a named startup-sales deliverable and measurable sales effect.
+- Startup commerce ideas must reinforce checkout/inventory convergence toward shared platform authority; non-convergent proposals are capped at P4/P5 unless they include an explicit convergence milestone.
+
 **Output:** Append Decision Log block to dossier with:
 - Priority: [P1|P2|P3|P4|P5]
 - Potential-Impact: [Impact-Band from dossier + mechanism + confidence assessment]
 - Strategic-Fit: How this aligns with business plan targets
 - Plan-Target: Which specific plan target this addresses
 - Stance-Weight: How stance influenced the ranking
+- Sales-Link: direct sales outcome path for this idea
+- Enabled-Business: revenue business directly enabled (`self` for revenue-business ideas)
 - Economics-Gate: [pass|blocked]
 - Economics-Missing-Fields: [list of missing fields, empty if pass]
+- Sales-Readiness-Gate: [pass|blocked|n/a]
+- Sales-Readiness-Missing-Fields: [list of missing launch-proof fields, empty if pass]
 - Rationale: 2-3 sentences using effectiveness, positioning, or value chain reasoning
 
 **Economics gate (F5, mandatory before Stage 6):**
@@ -535,6 +624,30 @@ Under `grow-business`:
   - block card eligibility for that idea
   - reroute to Hold (`Gap-Type=data`) with missing fields recorded
   - include the idea in the report's Economics Gate section with blocker reason
+
+**Sales-readiness gate (mandatory for startup launch/sales-go-live ideas):**
+- If idea claims launch readiness, checkout readiness, or near-term sales-go-live, it must include:
+  - `Unit-Test-Evidence`
+  - `Integration-Test-Evidence`
+  - `E2E-Test-Evidence`
+  - `User-Test-CLI-Audit-Evidence`
+  - `User-Test-ChatGPT-Evidence`
+  - `SEO-Baseline-Evidence`
+  - `Google-Monitoring-Evidence` (GA4 + Search Console baseline; equivalent signal allowed only with explicit rationale)
+- CLI audit settings contract for `User-Test-CLI-Audit-Evidence`:
+  - Must reference a current output from `.claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs`
+  - Must include no-JS predicate evidence: `NO_JS_BAILOUT_MARKER`, `hasNoI18nKeyLeak`, `hasMetadataBodyParity`, `hasSocialProofSnapshotDate`
+  - Must include SEO artifacts from the same run: `...-seo-summary.json` and `...-seo-artifacts/`
+  - Must include smoke/go-live signal for launch path confidence: `pnpm launch-smoke --wait --json` (or config `smokeChecks`) and applicable launch-go-live gate status
+- Two-source user-testing contract (mandatory):
+  - Source A: CLI-agent audit evidence (contract above)
+  - Source B: ChatGPT prompting evidence (prompt set, date, verdict, critical risks/open questions)
+  - Single-source user testing is invalid for launch/sales-go-live promotion
+- If any required field is missing:
+  - set `Sales-Readiness-Gate: blocked`
+  - block card eligibility for that idea
+  - reroute to Hold (`Gap-Type=data`) with missing fields recorded
+  - include the idea in the report's gate section with blocker reason
 
 **Traction mode (under `grow-business`, market-facing L1-L2 businesses only):**
 - Use traction-mode Decision Log format for P1/P2 (includes Traction Objective, Test Plan, Porter Fit, Abandonment)
@@ -580,7 +693,7 @@ Build persistence artifacts before any write call:
 
 Execute `idea_create` and `card_create` operations from the manifest in dependency order.
 
-**Pre-check (mandatory):** Before creating any card, assert that the idea has Verdict=Promote, Contrarian Status=PASS, and `Economics-Gate=pass`. If a Hold/Kill verdict or blocked economics gate leaks to Stage 6, flag as a pipeline violation in the sweep report and skip card creation for that idea.
+**Pre-check (mandatory):** Before creating any card, assert that the idea has Verdict=Promote, Contrarian Status=PASS, and `Economics-Gate=pass`. For launch/sales-go-live ideas, also require `Sales-Readiness-Gate=pass`. If a Hold/Kill verdict or blocked gate leaks to Stage 6, flag as a pipeline violation in the sweep report and skip card creation for that idea.
 
 **Card creation threshold:** Only P1–P3 ideas get cards by default. P4–P5 ideas are persisted as Idea entities only (documented in sweep report, available for future sweeps, but not progressed to cards). This prevents card flooding while ensuring all ideas are documented.
 
@@ -825,7 +938,9 @@ Type: Sweep
 Date: YYYY-MM-DD
 Run-Status: complete | partial | failed-preflight
 Persistence-Mode: live | dry-run
+API-Preflight-Mode: strict | degraded-filesystem-only
 Stance: improve-data | grow-business
+Progress-Artifact: docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md
 Assumptions-Source: none | inline | file
 Verbosity-Mode: compact | standard | extended
 Businesses-Audited: N
@@ -880,7 +995,7 @@ Context-Discipline: Full | Summary-Block | Degraded
 12. **Munger/Buffett Filter:** A promoted, B held (with Gap-Types), C killed
 13. **Kill/Hold Rationale (F4):** Held and killed ideas with reason codes, contrarian status, and restart condition for held ideas
 14. **Drucker/Porter Priority:** P1-P5 distribution with Impact-Band, plan alignment, global ranking
-15. **Economics Gate (F5):** Pass/blocked counts with missing-field reasons (upside, downside, reversibility, cost-of-delay, time-to-signal)
+15. **Economics + Sales Readiness Gate (F5):** Pass/blocked counts with missing-field reasons (upside, downside, reversibility, cost-of-delay, time-to-signal, unit/integration/e2e evidence, two-source user-testing evidence, SEO evidence, GA4/Search Console monitoring evidence)
 16. **Cards Created / Preview:** Live mode: table of created P1-P3 cards with priority + impact. Dry-run: would-create card table only. P4-P5 ideas listed separately.
 17. **Fact-Find Seeding / Preview:** Live mode: global top K cards seeded with stage docs (newly promoted ideas only). Dry-run: would-seed preview only.
 18. **Existing Card Addenda:** Existing cards surfaced only as reaffirmation/addendum notes (no Top-K mixing)
@@ -898,6 +1013,8 @@ Context-Discipline: Full | Summary-Block | Degraded
 25. **Signal Quality:** presentable-rate, contrarian-unresolved-rate, evidence-density with interpretation
 26. **Delta/Coverage (F6):** Comparison vs prior sweep: promoted/held/killed deltas, reaffirmation deltas, and sub-expert coverage delta
 27. **Duration:** Wall-clock time for sweep
+28. **Run Progress Trace:** Path to progress artifact + stage timeline summary + any heartbeat anomalies
+29. **API Preflight Mode:** strict vs degraded-filesystem-only, fallback trigger reason, and dedup confidence impact
 
 **Stance propagation note:**
 - Record which stance was active in frontmatter
@@ -960,6 +1077,10 @@ After producing the sweep report, verify each item. If any FAIL, revise before f
 
 - [ ] **Stance recorded:** Sweep report frontmatter includes stance used
 - [ ] **Persistence mode recorded:** Frontmatter includes `Persistence-Mode` and `Dry-Run-Writes-Blocked`
+- [ ] **API preflight mode recorded:** Frontmatter includes `API-Preflight-Mode` and matches strict vs degraded behavior in report narrative
+- [ ] **Progress artifact linked:** Sweep report frontmatter includes `Progress-Artifact` path
+- [ ] **Progress updates emitted:** Progress artifact records stage transitions and heartbeat cadence (`<=90s`) during long stages
+- [ ] **Degraded preflight rules honored:** `degraded-filesystem-only` appears only when `--dry-run --allow-api-degraded` is used; never in live mode
 - [ ] **Assumptions source recorded:** Frontmatter includes `Assumptions-Source` and reflects precedence (file wins over inline when both exist)
 - [ ] **Verbosity mode recorded:** Frontmatter includes `Verbosity-Mode` and output respects mode limits
 - [ ] **Sub-experts run:** Report shows how many sub-experts completed (X of Y)
@@ -975,6 +1096,9 @@ After producing the sweep report, verify each item. If any FAIL, revise before f
 - [ ] **Munger/Buffett filter executed:** Promote/hold/kill verdicts recorded
 - [ ] **Kill/Hold rationale present:** Held and killed ideas include reason code and restart condition (for held)
 - [ ] **Economics gate executed:** Promoted/card-eligible ideas have upside/downside/reversibility/cost-of-delay/time-to-signal; blocked ideas listed with missing fields
+- [ ] **Sales-first directives enforced:** PLAT/BOS ideas explicitly map to revenue-business sales blockers; CMS side-project ideas remain capped and non-blocking
+- [ ] **UI/DS guardrail enforced:** No standalone `@acme/ui` / `@acme/design-system` cleanup ideas in promoted/card-eligible set
+- [ ] **Sales-readiness gate executed (when applicable):** launch/sales-go-live ideas include unit/integration/e2e evidence, two-source user-testing evidence (CLI audit + ChatGPT), SEO baseline evidence, and GA4/Search Console monitoring evidence
 - [ ] **3A manifest emitted:** `docs/business-os/sweeps/<YYYY-MM-DD>-commit-manifest.json` exists with operation dependencies and payload fingerprints
 - [ ] **Cards created (or previewed):** Live mode persists via API with tags `["sweep-generated", "cabinet-v1"]`; dry-run records would-create outputs with zero write attempts
 - [ ] **Drucker/Porter priority assigned:** P1-P5 distribution recorded
@@ -1034,6 +1158,15 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 30. **Missing 3A commit manifest.** Persistence writes must be driven by deterministic manifest operations with dependency edges and payload fingerprints.
 31. **Fact-find write attempted before card ID resolution.** `factfind_upsert` operations must resolve `{{CARD_ID}}` from card-id-map before write.
 32. **Rerun duplicate write guard missing.** Writes must honor `operation_id + payload_fingerprint` skip rules using write ledger.
+33. **PLAT/BOS idea lacks explicit sales unblock path.** Enabler ideas must name enabled revenue business, blocker, and unblock SLA.
+34. **Standalone UI/DS cleanup promoted.** `@acme/ui` / `@acme/design-system` work without startup-sales linkage is invalid.
+35. **CMS side-project overtakes sales work.** CMS 3-hour launch ideas exceeding side-lane budget or blocking startup sales work are invalid.
+36. **Sales-go-live idea promoted without launch proof.** Missing unit/integration/e2e evidence, missing either user-testing source (CLI audit or ChatGPT), or missing SEO/GA4/Search Console monitoring evidence is invalid.
+37. **Non-convergent startup checkout/inventory promoted.** Ideas that preserve long-term divergence from shared platform authority are invalid.
+38. **CLI audit evidence ignores required audit settings.** Launch proof missing no-JS predicates (`NO_JS_BAILOUT_MARKER`, `hasNoI18nKeyLeak`, `hasMetadataBodyParity`, `hasSocialProofSnapshotDate`) or missing `...-seo-summary.json`/`...-seo-artifacts/` is invalid.
+39. **Missing in-run progress updates.** No progress artifact, missing stage transition updates, or heartbeat gaps >90s during long stages is invalid.
+40. **API degraded mode used without explicit dry-run opt-in.** `degraded-filesystem-only` without `--dry-run --allow-api-degraded` is invalid.
+41. **API degraded mode used in live persistence mode.** Live mode must remain strict preflight; degraded fallback is dry-run only.
 
 ---
 
@@ -1041,12 +1174,12 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 
 | Error | Action |
 |---|---|
-| Business list API fails | STOP (fatal preflight). Write minimal failure report. |
+| Business list API fails | In strict mode: STOP (fatal preflight). In `--dry-run --allow-api-degraded`: continue with filesystem business list fallback, set `API-Preflight-Mode=degraded-filesystem-only`, mark run partial. |
 | Maturity model missing | STOP (fatal). |
 | Business plan missing | Flag as critical; use maturity fallback; continue. |
 | People profiles missing | Use API defaults; flag; continue. |
 | Persona file missing | Skip that sub-expert; note in report; continue. |
-| Existing cards/ideas/stage-docs read fails | STOP (fatal preflight). |
+| Existing cards/ideas/stage-docs read fails | In strict mode: STOP (fatal preflight). In `--dry-run --allow-api-degraded`: continue without API dedup baseline, mark reaffirmation confidence low, set run partial. |
 | Context budget exceeded | Switch to summary-block mode. Record coverage ratio. If coverage <80%, mark partial + set `Quality-Rerun-Required: yes` + emit rerun focus packet. If coverage >=80%, continue with residual-risk note. |
 | Write call attempted during `--dry-run` | Stop persistence branch, mark run partial, record attempted endpoint as contract violation, continue with preview-only reporting. |
 | Commit manifest missing/invalid | Stop persistence branch, mark run partial, record manifest validation failure and required remediation. |
@@ -1056,7 +1189,9 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 | Upsert stage doc fails | Use latest-wins flow (GET -> PATCH/POST). Retry once only on PATCH 409; if still failing, record; continue; mark run partial. |
 | Rate limit 429 | Backoff once for read/reconciliation operations; do not repeat non-idempotent idea/card POST blindly. |
 | Discovery index rebuild fails | Retry once; if still fails, mark `discovery-index stale`, keep run partial, include reconciliation checklist with rerun command + owner. |
+| Progress artifact write/update fails | Continue sweep, emit terminal warning on each stage transition, mark run partial, and include manual reconstruction steps in reconciliation checklist. |
 | `BOS_AGENT_API_BASE_URL` or API key missing | STOP (fatal). |
+| `--allow-api-degraded` used without `--dry-run` | STOP before Stage 1 with contract error; degraded mode is dry-run only. |
 
 ---
 
@@ -1080,16 +1215,19 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 ## Completion Messages
 
 **Standard:**
-> "Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Stance: `{stance}`. {N} sub-experts run. {X} presentable ideas, {Y} decision-gaps, {Z} hunches. {N} cards created (P1: A, P2: B, P3: C). {K} fact-find docs seeded. Technical cabinet: {status}."
+> "Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Stance: `{stance}`. {N} sub-experts run. {X} presentable ideas, {Y} decision-gaps, {Z} hunches. {N} cards created (P1: A, P2: B, P3: C). {K} fact-find docs seeded. Technical cabinet: {status}."
 
 **First sweep (no plans):**
-> "First Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. CRITICAL: No business plans exist. Drucker/Porter operating in degraded mode with maturity model fallback. Recommendation: Bootstrap plans via `/update-business-plan`."
+> "First Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. CRITICAL: No business plans exist. Drucker/Porter operating in degraded mode with maturity model fallback. Recommendation: Bootstrap plans via `/update-business-plan`."
 
 **Context degradation:**
-> "Cabinet sweep complete with context degradation. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Context limit reached after {N} of {M} sub-experts. Switched to summary-block mode. {X} presentable ideas generated. {N} cards created."
+> "Cabinet sweep complete with context degradation. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Context limit reached after {N} of {M} sub-experts. Switched to summary-block mode. {X} presentable ideas generated. {N} cards created."
 
 **Dry run:**
-> "Cabinet sweep dry-run complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Persistence mode: dry-run (no ideas/cards/stage-doc writes). {X} presentable ideas, {Y} would-create cards, {K} would-seed fact-find docs."
+> "Cabinet sweep dry-run complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Persistence mode: dry-run (no ideas/cards/stage-doc writes). {X} presentable ideas, {Y} would-create cards, {K} would-seed fact-find docs."
+
+**Dry run (API degraded fallback):**
+> "Cabinet sweep dry-run complete with API degraded fallback. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. API-Preflight-Mode: degraded-filesystem-only. Dedup baseline confidence reduced; review reaffirmations manually."
 
 ---
 
@@ -1100,10 +1238,12 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 - **Prompt-only.** All orchestration logic lives in this SKILL.md. No TypeScript modules. Extract to code later if patterns stabilize.
 - **Max 3 fact-find docs per sweep.** Prevents flooding the fact-finding queue.
 - **File reads for plans/profiles/personas.** Agent API doesn't expose these yet. Read directly from filesystem.
-- **Single sweep report per invocation.** One file in `docs/business-os/sweeps/`.
+- **Sweep outputs per invocation.** One final sweep report plus one progress artifact in `docs/business-os/sweeps/`.
 - **Default stance:** `improve-data` if no `--stance` parameter provided.
 - **Default verbosity:** `standard` if no `--verbosity` parameter provided.
 - **Dry-run support:** `--dry-run` keeps full analysis/ranking but blocks Stage 6/7 persistence writes (ideas/cards/stage-docs) and records preview outputs only.
+- **Optional degraded dry-run preflight:** `--allow-api-degraded` may be used only with `--dry-run`; it enables filesystem-only fallback when Agent API preflight fails.
+- **Live-mode strictness:** live runs must never use degraded API preflight fallback.
 - **Assumptions precedence:** if both inline assumptions and `--assumptions-file` are provided, file input takes precedence.
 - **Technical cabinet active:** Runs only when trigger conditions in the Technical Cabinet section are met.
 - **Generation cadence locked:** Divergence (max 1 candidate per sub-expert) then deepening (top 8, hard cap 10 per business) before Stage 2.
@@ -1129,6 +1269,8 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 
 ## Version History
 
+- **v3.6** (2026-02-11): Added explicit API preflight mode contract and runner hardening: introduced `--allow-api-degraded` (dry-run only), strict live-mode preflight requirement, `API-Preflight-Mode` frontmatter/reporting, degraded fallback/error-handling rules, and recommended env-loading wrapper `scripts/run-ideas-go-faster.sh` with initiator-agent-preserving execution (codex/claude auto-select).
+- **v3.5** (2026-02-11): Added mandatory in-run progress update contract: progress artifact (`<YYYY-MM-DD>-progress.user.md`) with stage-transition events + `<=90s` heartbeat cadence during long stages, terminal progress-line emission rules, progress linkage in sweep frontmatter, checklist/red-flag enforcement, and failure-handling contract for progress write errors.
 - **v3.4** (2026-02-10): RS-03 write-safety split update: introduced explicit 3A/3B persistence contracts (Stage 5.5 prepare manifest with operation dependencies + payload fingerprints; Stage 6/7 commit using write-ledger, card-id-map, and rerun skip guard `operation_id + payload_fingerprint`), plus checklist/red-flag/error-handling requirements for manifest/ledger/card-id resolution.
 - **v3.3** (2026-02-10): RS-02B behavioral-gate update: added Assumption Challenge (F3) verdict contract (`accept|condition|reject`) with dependency effects on idea eligibility; added Economics Gate (F5) blocker contract requiring upside/downside/reversibility/cost-of-delay/time-to-signal before card eligibility; updated report sections, checklist, and red flags accordingly.
 - **v3.2** (2026-02-10): RS-02C input/UX contract update: added assumptions precedence contract (inline vs `--assumptions-file`), `Verbosity-Mode` frontmatter + word-limit policy (`compact|standard|extended`), and technical cabinet `applies_to` semantics (`[<BIZ>...]` or `["cross-cutting"]`) with checklist/red-flag enforcement.

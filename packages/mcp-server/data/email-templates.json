@@ -5,6 +5,11 @@
     "category": "booking-issues"
   },
   {
+    "subject": "Agreement Received",
+    "body": "Thank you, we have received your agreement to the terms and conditions for your reservation.\r\n\r\nNext step from our side: we will process the payment and send confirmation shortly.\r\n\r\nNo further action is needed right now. If payment does not go through, we will be in touch to let you know.",
+    "category": "general"
+  },
+  {
     "subject": "Alcohol Policy",
     "body": "Dear Guests in Room Nine,\r\n\r\nWe hope you are enjoying your stay at the hostel.\r\n\r\nThis morning, our cleaning crew removed a bottle of tequila from your room. If this item belongs to you, please visit the front desk to collect it either upon checkout or when you plan to head out and intend to consume them *outside* the hostel.\r\n\r\nPlease be reminded that bringing alcohol purchased outside of the hostel into the premises is against our policy, as stated in the room rules, terms, and conditions for room booking. As a licensed property, we must regulate alcohol consumption on-site.\r\n\r\nWe kindly ask for your cooperation with this rule to ensure compliance with legal requirements. Failure to adhere to this policy will result in the discontinuation of your stay with us.\r\n\r\nThank you for your understanding.\r\n\r\nRegards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
     "category": "policies"

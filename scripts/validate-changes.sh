@@ -158,6 +158,22 @@ TESTED_PKGS=0
 MISSING_TESTS=0
 MISSING_FILES=""
 
+# Run Jest with package-specific configuration when needed.
+run_jest_exec() {
+    pkg_path="$1"
+    shift
+
+    if [ "$pkg_path" = "./packages/mcp-server" ]; then
+        JEST_FORCE_CJS=1 pnpm exec jest \
+            --config ./jest.config.cjs \
+            --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' \
+            "$@"
+        return $?
+    fi
+
+    pnpm --filter "$pkg_path" exec jest "$@"
+}
+
 for pkg_file in "$PKG_MAP"/*; do
     [ -f "$pkg_file" ] || continue
 
@@ -243,16 +259,24 @@ for pkg_file in "$PKG_MAP"/*; do
     # If test files changed, run them directly
     if [ -n "$TEST_FILES" ]; then
         echo "    Test files changed:$TEST_FILES"
-        # Build relative paths for Jest
-        RELATIVE_TESTS=""
-        for tf in $TEST_FILES; do
-            REL=$(echo "$tf" | sed "s|^${PKG_TYPE}/${PKG_NAME}/||")
-            RELATIVE_TESTS="$RELATIVE_TESTS $REL"
-        done
-        # Use explicit -- separator (not --$VAR which is fragile)
-        if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" test -- $RELATIVE_TESTS --maxWorkers=2 2>&1; then
-            echo "    FAIL: Tests failed in $PKG_PATH"
-            exit 1
+        if [ "$PKG_PATH" = "./packages/mcp-server" ]; then
+            echo "    Running changed tests with root Jest config (CJS preset)..."
+            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $TEST_FILES --maxWorkers=2 2>&1; then
+                echo "    FAIL: Tests failed in $PKG_PATH"
+                exit 1
+            fi
+        else
+            # Build relative paths for package-local test scripts.
+            RELATIVE_TESTS=""
+            for tf in $TEST_FILES; do
+                REL=$(echo "$tf" | sed "s|^${PKG_TYPE}/${PKG_NAME}/||")
+                RELATIVE_TESTS="$RELATIVE_TESTS $REL"
+            done
+            # Use explicit -- separator (not --$VAR which is fragile)
+            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" test -- $RELATIVE_TESTS --maxWorkers=2 2>&1; then
+                echo "    FAIL: Tests failed in $PKG_PATH"
+                exit 1
+            fi
         fi
     fi
 
@@ -268,7 +292,7 @@ for pkg_file in "$PKG_MAP"/*; do
 
         # Single batched probe: find related tests for ALL source files at once
         # (replaces per-file jest --listTests loop for speed)
-        if ! RAW_RELATED=$(pnpm --filter "$PKG_PATH" exec jest --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests 2>&1); then
+        if ! RAW_RELATED=$(run_jest_exec "$PKG_PATH" --listTests --findRelatedTests $ABS_SOURCE_FILES --passWithNoTests 2>&1); then
             echo "    ERROR: Jest failed while probing tests for package: $PKG_PATH"
             echo "    Output: $RAW_RELATED"
             exit 1
@@ -287,7 +311,7 @@ for pkg_file in "$PKG_MAP"/*; do
         else
             # Tests found — run them (coverage thresholds relaxed)
             echo "    Running related tests for files (coverage thresholds relaxed)..."
-            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" exec jest --findRelatedTests $ABS_SOURCE_FILES --maxWorkers=2 2>&1; then
+            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --findRelatedTests $ABS_SOURCE_FILES --maxWorkers=2 2>&1; then
                 echo "    FAIL: Tests failed in $PKG_PATH"
                 exit 1
             fi

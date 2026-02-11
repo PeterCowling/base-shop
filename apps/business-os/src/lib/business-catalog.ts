@@ -13,7 +13,18 @@ export const BUSINESSES: Business[] = [
     status: "active",
     created: "2026-01-28",
     tags: ["infrastructure", "dx", "monorepo"],
-    apps: ["platform-core", "design-system", "mcp-server", "front-door-worker"],
+    apps: [
+      "platform-core",
+      "design-system",
+      "mcp-server",
+      "front-door-worker",
+      "api",
+      "cms",
+      "dashboard",
+      "storybook",
+      "telemetry-worker",
+      "checkout-gateway-worker",
+    ],
   },
   {
     id: "BRIK",
@@ -71,7 +82,7 @@ export const BUSINESSES: Business[] = [
     status: "active",
     created: "2026-02-11",
     tags: ["product", "accessories", "consumer"],
-    apps: [],
+    apps: ["cochlearfit", "cochlearfit-worker"],
   },
   {
     id: "PET",

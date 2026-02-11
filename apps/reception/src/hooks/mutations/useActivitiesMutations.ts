@@ -49,7 +49,22 @@ export default function useActivitiesMutations() {
           const reservationCode: string | undefined =
             guestData?.reservationCode;
           if (reservationCode) {
-            await sendEmailGuest(reservationCode);
+            const emailResult = await sendEmailGuest({
+              bookingRef: reservationCode,
+              activityCode: code,
+            });
+
+            if (emailResult.status === "deferred") {
+              console.warn(
+                `[useActivitiesMutations] Guest email deferred for reservation ${reservationCode} (code ${code}): ${emailResult.reason ?? "manual-review"}`
+              );
+            }
+
+            if (!emailResult.success && emailResult.status === "error") {
+              console.error(
+                `[useActivitiesMutations] Guest email draft failed for reservation ${reservationCode} (code ${code}): ${emailResult.error ?? "unknown"}`
+              );
+            }
           } else {
             console.warn(
               `[useActivitiesMutations] No reservationCode found for occupant ${occupantId}`

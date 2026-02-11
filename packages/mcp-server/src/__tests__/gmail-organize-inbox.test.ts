@@ -5,11 +5,18 @@ import { handleGmailTool } from "../tools/gmail";
 
 type GmailLabel = { id: string; name: string };
 type GmailHeader = { name: string; value: string };
+type GmailPayload = {
+  headers: GmailHeader[];
+  mimeType?: string;
+  body?: { data?: string };
+  parts?: GmailPayload[];
+};
 type GmailMessage = {
   id: string;
   threadId: string;
   labelIds: string[];
-  payload: { headers: GmailHeader[] };
+  payload: GmailPayload;
+  snippet?: string;
 };
 type GmailThread = {
   id: string;
@@ -28,6 +35,10 @@ type GmailStub = {
     };
     messages: {
       modify: jest.Mock;
+      get: jest.Mock;
+    };
+    drafts: {
+      create: jest.Mock;
     };
   };
 };
@@ -42,16 +53,35 @@ function createHeader(name: string, value: string): GmailHeader {
   return { name, value };
 }
 
+function encodeBase64Url(input: string): string {
+  return Buffer.from(input, "utf8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+function decodeBase64Url(input: string): string {
+  const normalized = input.replace(/-/g, "+").replace(/_/g, "/");
+  return Buffer.from(normalized, "base64").toString("utf8");
+}
+
 function createGmailStub({
   labels,
   threads,
 }: {
   labels: GmailLabel[];
   threads: Record<string, GmailThread>;
-}): { gmail: GmailStub; labelsStore: GmailLabel[]; messageStore: Record<string, GmailMessage> } {
+}): {
+  gmail: GmailStub;
+  labelsStore: GmailLabel[];
+  messageStore: Record<string, GmailMessage>;
+  draftStore: Array<{ id: string; raw?: string }>;
+} {
   const labelsStore = [...labels];
   const threadStore = { ...threads };
   const messageStore: Record<string, GmailMessage> = {};
+  const draftStore: Array<{ id: string; raw?: string }> = [];
   for (const thread of Object.values(threadStore)) {
     for (const message of thread.messages) {
       messageStore[message.id] = message;
@@ -59,6 +89,7 @@ function createGmailStub({
   }
 
   let labelCounter = labelsStore.length + 1;
+  let draftCounter = 1;
 
   const gmail: GmailStub = {
     users: {
@@ -92,11 +123,24 @@ function createGmailStub({
           }
           return { data: message };
         }),
+        get: jest.fn(async ({ id }: { id: string }) => ({ data: messageStore[id] })),
+      },
+      drafts: {
+        create: jest.fn(async ({ requestBody }: { requestBody: { message?: { raw?: string } } }) => {
+          const draftId = `draft-${draftCounter++}`;
+          draftStore.push({ id: draftId, raw: requestBody.message?.raw });
+          return {
+            data: {
+              id: draftId,
+              message: { id: `draft-message-${draftId}` },
+            },
+          };
+        }),
       },
     },
   };
 
-  return { gmail, labelsStore, messageStore };
+  return { gmail, labelsStore, messageStore, draftStore };
 }
 
 describe("gmail_organize_inbox", () => {
@@ -393,6 +437,140 @@ describe("gmail_organize_inbox classification", () => {
     expect(payload.counts.labeledNeedsProcessing).toBe(0);
     expect(payload.counts.labeledPromotional).toBe(1);
     expect(payload.counts.labeledDeferred).toBe(0);
+  });
+
+  it("processes Octorate NEW RESERVATION emails into guest drafts", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const processedDrafted = { id: "label-processed-drafted", name: "Brikette/Processed/Drafted" };
+    const { gmail, messageStore, draftStore } = createGmailStub({
+      labels: [needsProcessing, processedDrafted],
+      threads: {
+        "thread-10": {
+          id: "thread-10",
+          messages: [
+            {
+              id: "msg-10",
+              threadId: "thread-10",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "multipart/alternative",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW RESERVATION 6355834117_6080280211 Booking 2026-07-11"),
+                  createHeader("Date", "Wed, 11 Feb 2026 07:15:07 +0100"),
+                ],
+                parts: [
+                  {
+                    mimeType: "text/plain",
+                    body: {
+                      data: encodeBase64Url(
+                        "NEW RESERVATION 6355834117_6080280211 Booking 2026-07-11 - 2026-07-13"
+                      ),
+                    },
+                    headers: [],
+                  },
+                  {
+                    mimeType: "text/html",
+                    body: {
+                      data: encodeBase64Url(`
+                        <table>
+                          <tr><td><b>reservation code</b></td><td>6355834117_6080280211</td></tr>
+                          <tr><td><b>guest name</b></td><td>John Example</td></tr>
+                          <tr><td>email</td><td><a href="mailto:john.guest@example.com">john.guest@example.com</a></td></tr>
+                          <tr><td><b>check in</b></td><td>2026-07-11</td></tr>
+                          <tr><td><b>nights</b></td><td>2</td></tr>
+                          <tr><td><b>total amount</b></td><td>274.19</td></tr>
+                          <tr><td><b>Room 7</b></td><td>OTA, Non Refundable</td></tr>
+                        </table>
+                      `),
+                    },
+                    headers: [],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedBookingReservations).toBe(1);
+    expect(payload.counts.routedBookingMonitor).toBe(0);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledNeedsProcessing).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(gmail.users.drafts.create).toHaveBeenCalledTimes(1);
+    expect(draftStore).toHaveLength(1);
+    const rawDraft = decodeBase64Url(draftStore[0]?.raw ?? "");
+    expect(rawDraft).toContain("Subject: Your Hostel Brikette Reservation");
+    expect(rawDraft).toContain("Thank you for choosing to stay with us. Below is some essential information.");
+    expect(rawDraft).toContain("HERE ARE YOUR RESERVATION DETAILS:");
+    expect(rawDraft).toContain("Source: Booking.com");
+    expect(rawDraft).toContain("Reservation Code: 6355834117");
+    expect(rawDraft).toContain("Payment terms for room: Your booking is pre-paid and non-refundable.");
+    expect(rawDraft).toContain("-- Details for Room #7 --");
+    expect(rawDraft).not.toContain("Please reply with \"Agree\" within 48 hours.");
+    expect(payload.samples.bookingReservations).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          messageId: "msg-10",
+          guestEmail: "john.guest@example.com",
+        }),
+      ])
+    );
+    expect(messageStore["msg-10"].labelIds).toContain(processedDrafted.id);
+    expect(messageStore["msg-10"].labelIds).not.toContain("INBOX");
+    expect(messageStore["msg-10"].labelIds).not.toContain("UNREAD");
+  });
+
+  it("defers NEW RESERVATION emails when guest email cannot be parsed", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const deferred = { id: "label-deferred", name: "Brikette/Inbox/Deferred" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing, deferred],
+      threads: {
+        "thread-11": {
+          id: "thread-11",
+          messages: [
+            {
+              id: "msg-11",
+              threadId: "thread-11",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/plain",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW RESERVATION 8888888888_1111111111 Booking 2026-08-01"),
+                ],
+                body: { data: encodeBase64Url("NEW RESERVATION without guest email") },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedBookingReservations).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(1);
+    expect(gmail.users.drafts.create).not.toHaveBeenCalled();
+    expect(messageStore["msg-11"].labelIds).toContain(deferred.id);
+    expect(messageStore["msg-11"].labelIds).not.toContain("INBOX");
+    expect(payload.followUp.deferredNeedsInstruction).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          messageId: "msg-11",
+          reason: "new-reservation-parse-failed",
+        }),
+      ])
+    );
   });
 
   it("defers low-confidence emails and reports sender email for instruction", async () => {

@@ -81,12 +81,36 @@ describe("draft_interpret", () => {
   });
 
   it("TC-09: agreement detection explicit phrases", async () => {
+    const short = await handleDraftInterpretTool("draft_interpret", { body: "Agree!" });
+    expect(parseResult(short).agreement.status).toBe("confirmed");
     const en = await handleDraftInterpretTool("draft_interpret", { body: "I agree to the terms." });
     expect(parseResult(en).agreement.status).toBe("confirmed");
     const it = await handleDraftInterpretTool("draft_interpret", { body: "Accetto." });
     expect(parseResult(it).agreement.status).toBe("confirmed");
     const es = await handleDraftInterpretTool("draft_interpret", { body: "De acuerdo." });
     expect(parseResult(es).agreement.status).toBe("confirmed");
+  });
+
+  it("TC-09b: mention of past agreement does not auto-confirm", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I sent an email yesterday with 'agree' to accept the terms.",
+    });
+    const payload = parseResult(result);
+    expect(payload.agreement.status).toBe("none");
+  });
+
+  it("TC-09c: quoted reply header does not count as additional content for explicit agreement", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: `Agree!
+
+On Fri, Jan 16, 2026 at 02:42 Hostel Positano Team <hostelpositano@gmail.com>
+wrote:
+> quoted previous message`,
+    });
+    const payload = parseResult(result);
+    expect(payload.normalized_text).toBe("Agree!");
+    expect(payload.agreement.status).toBe("confirmed");
+    expect(payload.agreement.additional_content).toBe(false);
   });
 
   it("TC-10: agreement detection negation and ambiguity", async () => {

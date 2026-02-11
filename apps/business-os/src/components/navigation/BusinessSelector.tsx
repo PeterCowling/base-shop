@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
 
 import type { Business } from "@/lib/types";
 
@@ -27,7 +28,14 @@ export function BusinessSelector({
   businesses,
   currentBusiness,
 }: BusinessSelectorProps) {
+  const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
+  const operatingBusinesses = businesses.filter(
+    (business) => business.category === "operating-business"
+  );
+  const internalSystems = businesses.filter(
+    (business) => business.category === "internal-system"
+  );
 
   const current = businesses.find((b) => b.id === currentBusiness);
   const currentName = current?.name ?? currentBusiness;
@@ -59,7 +67,34 @@ export function BusinessSelector({
       </PopoverTrigger>
       <PopoverContent align="start" className="w-48 p-0">
         <div className="py-1">
-          {businesses.map((business) => {
+          {renderBusinessSection(
+            t("businessOs.businessSelector.sections.operating"),
+            operatingBusinesses
+          )}
+          {internalSystems.length > 0 && (
+            <>
+              <div className="mx-2 my-1 h-px bg-border" />
+              {renderBusinessSection(
+                t("businessOs.businessSelector.sections.internal"),
+                internalSystems
+              )}
+            </>
+          )}
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+
+  function renderBusinessSection(
+    label: string,
+    sectionBusinesses: Business[]
+  ) {
+    return (
+      <>
+        <div className="px-4 py-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {label}
+        </div>
+        {sectionBusinesses.map((business) => {
             const isCurrent = business.id === currentBusiness;
             return (
               <Link
@@ -98,8 +133,7 @@ export function BusinessSelector({
               </Link>
             );
           })}
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
+      </>
+    );
+  }
 }

@@ -299,6 +299,139 @@ if [[ -x "$output_validator" ]] && ! "$output_validator" --self-test >/dev/null;
   check_fail "Output validator deliberate-failure self-test failed (F23)"
 fi
 
+# F24: sales-first portfolio directives must be explicit.
+if ! rg -q "Sales-First Portfolio Directives" "$target"; then
+  check_fail "Sales-first directives block missing (F24)"
+fi
+if ! rg -q "Portfolio split.*95%.*5%" "$target"; then
+  check_fail "95/5 portfolio split contract missing (F24)"
+fi
+if ! rg -q "PLAT/BOS idea rule" "$target"; then
+  check_fail "PLAT/BOS enablement-only rule missing (F24)"
+fi
+if ! rg -q "UI/DS rule" "$target"; then
+  check_fail "UI/DS standalone exclusion rule missing (F24)"
+fi
+if ! rg -q "Convergence rule" "$target"; then
+  check_fail "Startup checkout/inventory convergence rule missing (F24)"
+fi
+if ! rg -q "Sales-readiness gate \(mandatory for startup launch/sales-go-live ideas\)" "$target"; then
+  check_fail "Sales-readiness gate contract missing (F24)"
+fi
+if ! rg -q "User-Test-CLI-Audit-Evidence" "$target"; then
+  check_fail "CLI audit evidence field missing (F24)"
+fi
+if ! rg -q "User-Test-ChatGPT-Evidence" "$target"; then
+  check_fail "ChatGPT evidence field missing (F24)"
+fi
+if ! rg -q "Two-source user-testing contract" "$target"; then
+  check_fail "Two-source user-testing contract missing (F24)"
+fi
+if ! rg -q "Single-source user testing is invalid" "$target"; then
+  check_fail "Single-source user-testing rejection rule missing (F24)"
+fi
+if ! rg -q "Google-Monitoring-Evidence" "$target"; then
+  check_fail "Google monitoring evidence requirement missing (F24)"
+fi
+if ! rg -q "GA4 \\+ Search Console" "$target"; then
+  check_fail "GA4/Search Console monitoring baseline missing (F24)"
+fi
+if ! rg -q "NO_JS_BAILOUT_MARKER" "$target" || ! rg -q "hasNoI18nKeyLeak" "$target" || ! rg -q "hasMetadataBodyParity" "$target" || ! rg -q "hasSocialProofSnapshotDate" "$target"; then
+  check_fail "CLI audit predicate contract missing (F24)"
+fi
+if ! rg -q "\\.\\.\\.-seo-summary\\.json" "$target" || ! rg -q "\\.\\.\\.-seo-artifacts/" "$target"; then
+  check_fail "CLI SEO artifact contract missing (F24)"
+fi
+if ! rg -q "Standalone UI/DS cleanup promoted" "$target"; then
+  check_fail "UI/DS red-flag contract missing (F24)"
+fi
+if ! rg -q "Non-convergent startup checkout/inventory promoted" "$target"; then
+  check_fail "Convergence red-flag contract missing (F24)"
+fi
+if ! rg -q "CLI audit evidence ignores required audit settings" "$target"; then
+  check_fail "CLI audit settings red-flag contract missing (F24)"
+fi
+
+# F25: in-run progress update contract must be explicit.
+if ! rg -q "In-Run Progress Updates \(Mandatory\)" "$target"; then
+  check_fail "In-run progress update section missing (F25)"
+fi
+if ! rg -q "progress.user.md" "$target"; then
+  check_fail "Progress artifact path contract missing (F25)"
+fi
+if ! rg -q "Type: Sweep-Progress" "$target"; then
+  check_fail "Progress artifact frontmatter contract missing (F25)"
+fi
+if ! rg -q "Current-Stage: preflight .* stage-7.5 .* complete" "$target"; then
+  check_fail "Progress current-stage lifecycle contract missing (F25)"
+fi
+if ! rg -Fq 'heartbeat updates every `<=90 seconds`' "$target"; then
+  check_fail "Progress heartbeat cadence contract missing (F25)"
+fi
+if ! rg -Fq 'Progress: <stage> <state> (<completed>/<total>)' "$target"; then
+  check_fail "Terminal progress line contract missing (F25)"
+fi
+if ! rg -q "Progress-Artifact: docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md" "$target"; then
+  check_fail "Sweep frontmatter progress linkage missing (F25)"
+fi
+if ! rg -q "Run Progress Trace" "$target"; then
+  check_fail "Run Progress Trace report section missing (F25)"
+fi
+if ! rg -q "Progress updates emitted" "$target"; then
+  check_fail "Progress checklist contract missing (F25)"
+fi
+if ! rg -q "Missing in-run progress updates" "$target"; then
+  check_fail "Progress red-flag contract missing (F25)"
+fi
+if ! rg -q "Progress artifact write/update fails" "$target"; then
+  check_fail "Progress error-handling contract missing (F25)"
+fi
+
+# F26: API preflight strictness + dry-run degraded fallback contract must be explicit.
+runner_script="scripts/run-ideas-go-faster.sh"
+if [[ ! -x "$runner_script" ]]; then
+  check_fail "Ideas-go-faster runner script missing or not executable at $runner_script (F26)"
+fi
+if ! rg -q "IDEAS_GO_FASTER_AGENT_CLI" "$runner_script"; then
+  check_fail "Runner agent CLI override contract missing (F26)"
+fi
+if ! rg -q "codex exec" "$runner_script" || ! rg -q "claude -p" "$runner_script"; then
+  check_fail "Runner must support both codex and claude execution paths (F26)"
+fi
+if ! rg -q "/api/agent/businesses" "$runner_script" || ! rg -q "API preflight failed" "$runner_script"; then
+  check_fail "Runner deterministic API preflight check missing (F26)"
+fi
+if ! rg -q -- "/ideas-go-faster --dry-run --allow-api-degraded" "$target"; then
+  check_fail "allow-api-degraded invocation missing (F26)"
+fi
+if ! rg -Fq -- '`--allow-api-degraded` is valid only with `--dry-run`' "$target"; then
+  check_fail "allow-api-degraded dry-run-only rule missing (F26)"
+fi
+if ! rg -q "API preflight mode \(run-level\)" "$target"; then
+  check_fail "API preflight mode contract block missing (F26)"
+fi
+if ! rg -q "API-Preflight-Mode: strict \\| degraded-filesystem-only" "$target"; then
+  check_fail "API-Preflight-Mode frontmatter contract missing (F26)"
+fi
+if ! rg -q "Dry-run degraded preflight fallback" "$target"; then
+  check_fail "Dry-run degraded preflight fallback contract missing (F26)"
+fi
+if ! rg -q "Live mode never uses degraded preflight fallback" "$target"; then
+  check_fail "Live-mode strict preflight rule missing (F26)"
+fi
+if ! rg -q "API degraded mode used without explicit dry-run opt-in" "$target"; then
+  check_fail "API degraded opt-in red-flag missing (F26)"
+fi
+if ! rg -q "API degraded mode used in live persistence mode" "$target"; then
+  check_fail "API degraded live-mode red-flag missing (F26)"
+fi
+if ! rg -q "\*\*API preflight mode recorded:\*\*" "$target"; then
+  check_fail "API preflight checklist contract missing (F26)"
+fi
+if ! rg -q "\*\*Degraded preflight rules honored:\*\*" "$target"; then
+  check_fail "Degraded preflight checklist contract missing (F26)"
+fi
+
 if [[ "$fail" -ne 0 ]]; then
   exit 1
 fi

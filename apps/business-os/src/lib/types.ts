@@ -10,9 +10,11 @@ export interface Business {
   name: string;
   description: string;
   owner: string;
+  category: "operating-business" | "internal-system";
   status: "active" | "inactive" | "archived";
   created: string;
   tags: string[];
+  apps: string[];
 }
 
 export interface BusinessCatalog {

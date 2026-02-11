@@ -28,6 +28,36 @@ rules:
     confidence: high
     notes: Edge ingress and routing worker for host mapping, redirects, and API gateway forwarding.
 
+  - prefix: apps/api/
+    business: PLAT
+    confidence: high
+    notes: Platform API surface and shared service endpoints.
+
+  - prefix: apps/cms/
+    business: PLAT
+    confidence: high
+    notes: Core platform CMS used across businesses.
+
+  - prefix: apps/dashboard/
+    business: PLAT
+    confidence: high
+    notes: Platform dashboard and operator control views.
+
+  - prefix: apps/storybook/
+    business: PLAT
+    confidence: high
+    notes: Platform component development and visual verification app.
+
+  - prefix: apps/telemetry-worker/
+    business: PLAT
+    confidence: high
+    notes: Platform telemetry ingestion and processing worker.
+
+  - prefix: apps/checkout-gateway-worker/
+    business: PLAT
+    confidence: high
+    notes: Platform checkout gateway worker for shared commerce routing.
+
 
   - prefix: apps/business-os/
     business: BOS
@@ -53,6 +83,16 @@ rules:
     business: XA
     confidence: high
     notes: XA upload pipeline tooling.
+
+  - prefix: apps/cochlearfit/
+    business: HEAD
+    confidence: high
+    notes: Headband business customer-facing app.
+
+  - prefix: apps/cochlearfit-worker/
+    business: HEAD
+    confidence: high
+    notes: Headband business background processing worker.
 
   - prefix: apps/skylar/
     business: HOLDCO
@@ -102,6 +142,14 @@ rules:
 unmapped_policy:
   status: block
   action: Do not run /ideas-go-faster until path is mapped to business + outcome decision link.
+
+excluded_paths:
+  - prefix: apps/xa-b/
+    reason: Explicitly excluded from active planning and idea generation scope.
+  - prefix: apps/xa-drop-worker/
+    reason: Explicitly excluded from active planning and idea generation scope.
+  - prefix: apps/xa-j/
+    reason: Explicitly excluded from active planning and idea generation scope.
 
 open_questions:
   - Register `HOLDCO` as a first-class business/system in `docs/business-os/strategy/businesses.json` so `apps/skylar/` can be mapped to a canonical business ID.

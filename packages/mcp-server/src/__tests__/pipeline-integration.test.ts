@@ -344,15 +344,12 @@ const fixtures: TestFixture[] = [
   // ======================== AGREEMENT ========================
   {
     id: "AGR-01",
-    description: "Simple agree response (standalone 'Agree' — NOT detected, see GAP-01)",
+    description: "Simple agree response (standalone 'Agree')",
     from: "Guest Eight <guest8@example.com>",
     subject: "Re: Your Reservation",
     body: "Agree.\n\nKind regards\nGuest Eight",
     expectedCategory: "general",
-    // GAP-01: Standalone "Agree" (no pronoun) is NOT matched by the current
-    // regex patterns which require "I agree", "we agree", or "agreed".
-    // Real-world emails (Sophie Drake, Daniel Schmidt) use this form.
-    expectedAgreement: "none",
+    expectedAgreement: "confirmed",
     requiresResponse: true,
     scenarioType: "agreement",
   },
@@ -1012,7 +1009,7 @@ describe("TASK-18: Critical Error Checks", () => {
       }
     });
 
-    it("should always include a signature in generated drafts", async () => {
+    it("should always include signature block in generated HTML", async () => {
       const customerFixtures = fixtures.filter(
         (f) => f.requiresResponse && f.scenarioType !== "system"
       );
@@ -1034,12 +1031,10 @@ describe("TASK-18: Critical Error Checks", () => {
         const generated = parseResult<GenerateResult>(
           generateResult as { content: Array<{ text: string }> }
         );
-        const bodyLower = generated.draft.bodyPlain.toLowerCase();
-
+        const htmlLower = generated.draft.bodyHtml.toLowerCase();
         expect(
-          bodyLower.includes("regards") ||
-            bodyLower.includes("hostel brikette") ||
-            bodyLower.includes("brikette")
+          htmlLower.includes("cristiana's signature") &&
+            htmlLower.includes("peter's signature")
         ).toBe(true);
       }
     });

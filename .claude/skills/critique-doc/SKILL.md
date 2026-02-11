@@ -207,19 +207,35 @@ Required checks:
   - `Type`, `Outcome`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`, `Related-Plan`
   - `Business-OS-Integration` must be explicit (`on`/`off`)
   - If `on`, require `Business-Unit` and `Card-ID`
+  - **Card-ID timing:** The fact-find skill creates cards even at `Needs-input` status. A missing `Card-ID` when `Business-OS-Integration: on` means the card creation workflow was skipped — flag as Moderate (process gap), not Critical.
   - In Legacy mode, missing BOS fields are template drift unless higher-precedence policy says mandatory
 - Sections present and substantive:
   - Scope (summary/goals/non-goals)
   - Evidence Audit
   - Confidence Inputs
+  - Risks (specific to the work, not generic)
   - Planning Readiness
   - Test Landscape for code/mixed
   - Delivery and Channel Landscape for business-artifact/mixed
+
+Fact-Find confidence dimensions:
+- The fact-find skill defines **5 dimensions**: Implementation, Approach, Impact, Delivery-Readiness, Testability.
+- Do NOT penalize fact-finds for having 5 dimensions instead of 3. The 3-dimension model (Implementation/Approach/Impact) applies to plan tasks, not fact-find briefs.
+
+Fact-Find `Related-Plan` field:
+- `Related-Plan` is a **forward pointer** to the plan that will be created by `/plan-feature`.
+- It is normal and expected for this file to not exist at fact-find time.
+- Do NOT flag a non-existent `Related-Plan` target as an issue.
+
+Open questions checks:
+- Each open question should include `Decision owner` (name or role).
+- Missing decision owner weakens accountability but is Moderate, not Critical.
 
 Fact-Find minimum bar:
 - Falsifiable goals
 - Evidence trail for major factual claims
 - Confidence justifications tied to evidence
+- At least one specific risk identified
 - No Ready-for-planning with untested load-bearing assumptions
 
 ## Section B: Plan Lens

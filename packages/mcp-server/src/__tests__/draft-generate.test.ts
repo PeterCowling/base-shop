@@ -202,6 +202,54 @@ describe("draft_generate tool", () => {
     expect(payload.quality).toHaveProperty("passed");
   });
 
+  it("TC-02b: selects agreement template for confirmed agreement-only replies", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Agreement Received",
+          body: "Thank you, we have received your agreement to the terms and conditions for your reservation.\r\n\r\nNext step from our side: we will process the payment and send confirmation shortly.\r\n\r\nNo further action is needed right now. If payment does not go through, we will be in touch to let you know.",
+          category: "general",
+        },
+        {
+          subject: "Transportation to Hostel Brikette",
+          body: "Dear Guest,\r\n\r\nThanks for your email.\r\n\r\nWe have detailed travel guides on our website.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "transportation",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Agree!",
+        intents: {
+          questions: [],
+          requests: [],
+          confirmations: [],
+        },
+        agreement: {
+          status: "confirmed",
+          confidence: 90,
+          evidence_spans: [{ text: "Agree", position: 0, is_negated: false }],
+          requires_human_confirmation: false,
+          detected_language: "EN",
+          additional_content: false,
+        },
+      },
+      subject: "Re: Your Hostel Brikette Reservation",
+      recipientName: "Gianna Chiavarone",
+    });
+
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.template_used.subject).toBe("Agreement Received");
+    expect(payload.draft.bodyPlain).toContain("we have received your agreement");
+    expect(payload.draft.bodyHtml).not.toContain("Book Direct &amp; Save");
+  });
+
   it("TC-05: single-question email uses single template (no composite)", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([
@@ -283,7 +331,7 @@ describe("draft_generate tool", () => {
     expect(body).toContain("wifi");
   });
 
-  it("TC-07: composite body has exactly one signature", async () => {
+  it("TC-07: composite body does not append plaintext signature boilerplate", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([
         {
@@ -320,9 +368,9 @@ describe("draft_generate tool", () => {
 
     const payload = JSON.parse(result.content[0].text);
     const body = payload.draft.bodyPlain;
-    // Count occurrences of "regards" — should appear exactly once (at end)
+    // Sign-off is rendered by HTML template, not appended in plaintext content.
     const regardsMatches = body.toLowerCase().match(/regards/g) || [];
-    expect(regardsMatches.length).toBe(1);
+    expect(regardsMatches.length).toBe(0);
   });
 
   it("TC-08: availability intent prefers booking-issues availability template", async () => {
@@ -415,14 +463,14 @@ describe("draft_generate tool", () => {
 
     const payload = JSON.parse(result.content[0].text);
     expect(payload.draft.bodyPlain).not.toContain("*Amenities Available Before");
-    expect(payload.draft.bodyPlain).not.toMatch(/[\s,:;*_-]+\n\nBest regards,/);
+    expect(payload.draft.bodyPlain).not.toContain("Best regards,");
   });
 });
 
 describe("draft_generate tool TASK-01", () => {
   beforeEach(setupDraftGenerateMocks);
 
-  it("TASK-01 TC-01: faq generation respects guide length calibration", async () => {
+  it("TASK-01 TC-01: faq generation avoids artificial length padding", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([
         {
@@ -443,8 +491,8 @@ describe("draft_generate tool TASK-01", () => {
 
     const payload = JSON.parse(result.content[0].text);
     const wordCount = payload.draft.bodyPlain.trim().split(/\s+/).filter(Boolean).length;
-    expect(wordCount).toBeGreaterThanOrEqual(50);
-    expect(wordCount).toBeLessThanOrEqual(100);
+    expect(wordCount).toBeGreaterThan(0);
+    expect(wordCount).toBeLessThan(50);
   });
 
   it("TASK-01 TC-02: cancellation generation uses preferred phrases and avoids bad phrases", async () => {
@@ -479,7 +527,7 @@ describe("draft_generate tool TASK-01", () => {
     expect(body).not.toContain("availability is confirmed for your dates");
   });
 
-  it("TASK-01 TC-03: policy generation enforces always-rules guidance", async () => {
+  it("TASK-01 TC-03: policy generation avoids auto-injected generic boilerplate", async () => {
     readFileMock.mockResolvedValue(
       JSON.stringify([
         {
@@ -511,9 +559,10 @@ describe("draft_generate tool TASK-01", () => {
 
     const payload = JSON.parse(result.content[0].text);
     const body = payload.draft.bodyPlain.toLowerCase();
-    expect(body).toContain("please check live availability on our website");
-    expect(body).toContain("answered each of your questions");
-    expect(body).toContain("happy to help");
+    expect(body).toContain("per our policy");
+    expect(body).not.toContain("please check live availability on our website");
+    expect(body).not.toContain("answered each of your questions");
+    expect(body).not.toContain("happy to help");
   });
 
   it("TASK-01 TC-04: generation respects never-rules guardrails", async () => {

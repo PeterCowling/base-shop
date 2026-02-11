@@ -54,16 +54,14 @@ The most common issues are:
 - Type import style (`@typescript-eslint/consistent-type-imports`)
 - Hardcoded copy warnings (`ds/no-hardcoded-copy` - already disabled as warnings only)
 
-#### Disabled Rules
+#### ESLint Configuration
 
-The following design system rules are intentionally disabled for Prime (see `.eslintrc.cjs`):
-- `ds/no-unsafe-viewport-units`
-- `ds/container-widths-only-at`
-- `ds/no-hardcoded-copy`
-- `ds/min-tap-size`
-- `ds/enforce-focus-ring-token`
+Prime uses the flat ESLint config (`eslint.config.mjs`) with app-specific overrides. Key overrides for Prime:
+- `ds/no-hardcoded-copy` set to `"warn"` for guest-facing code (not `"off"`)
+- `ds/no-hardcoded-copy` set to `"off"` for internal operator pages (owner, staff-lookup, admin, portal, signage)
+- Test and dev-tools files are excluded from hardcoded-copy checks
 
-These rules are disabled because Prime is in early development and will adopt design system patterns incrementally.
+See `eslint.config.mjs` for the full override configuration.
 
 ## Testing
 

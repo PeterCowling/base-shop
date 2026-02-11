@@ -20,27 +20,20 @@ interface GuestSessionToken {
   expiresAt: string;
 }
 
-interface Booking {
-  guestName?: string;
-  [key: string]: unknown;
+interface BookingOccupant {
+  checkInDate: string;
+  checkOutDate: string;
+  leadGuest?: boolean;
+  roomNumbers?: string[];
+}
+
+interface GuestDetails {
+  firstName?: string;
+  lastName?: string;
 }
 
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
-
-function normalizeLastName(fullName: string | undefined | null): string {
-  if (!fullName) return '';
-  return fullName.trim().split(' ').pop()?.toLowerCase() || '';
-}
-
-function normalizeInput(input: string | undefined | null): string {
-  return (input || '').trim().toLowerCase();
-}
-
-function getFirstName(fullName: string | undefined | null): string {
-  if (!fullName) return '';
-  return fullName.trim().split(' ')[0] || '';
-}
 
 function isExpired(expiresAt: string): boolean {
   return new Date(expiresAt) <= new Date();
@@ -111,15 +104,40 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       return errorResponse('Token expired', 410);
     }
 
-    const booking = await firebase.get<Booking>(`bookings/${session.bookingId}`);
+    const booking = await firebase.get<Record<string, BookingOccupant>>(
+      `bookings/${session.bookingId}`,
+    );
     if (!booking) {
       return errorResponse('Booking not found', 404);
     }
 
-    const bookingLastName = normalizeLastName(booking.guestName);
-    const inputLastName = normalizeInput(lastName);
+    // Resolve target occupant from session or fallback to lead guest
+    const occupantKeys = Object.keys(booking).filter((key) => key.startsWith('occ_'));
+    let targetOccupantId: string | null = session.guestUuid;
 
-    if (!bookingLastName || bookingLastName !== inputLastName) {
+    if (!targetOccupantId || !occupantKeys.includes(targetOccupantId)) {
+      targetOccupantId =
+        occupantKeys.find((id) => booking[id]?.leadGuest) || occupantKeys[0] || null;
+    }
+
+    if (!targetOccupantId) {
+      return errorResponse('Booking not found', 404);
+    }
+
+    // Fetch guest details for the target occupant
+    const guestDetails = await firebase.get<GuestDetails>(
+      `guestsDetails/${session.bookingId}/${targetOccupantId}`,
+    );
+
+    if (!guestDetails) {
+      return errorResponse('Booking not found', 404);
+    }
+
+    // Compare last name
+    const storedLastName = (guestDetails.lastName || '').trim().toLowerCase();
+    const inputLastName = lastName.trim().toLowerCase();
+
+    if (!storedLastName || storedLastName !== inputLastName) {
       if (env.RATE_LIMIT) {
         const currentAttempts = await env.RATE_LIMIT.get(rateLimitKey);
         const newAttempts = (parseInt(currentAttempts || '0', 10) + 1).toString();
@@ -137,8 +155,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
     return jsonResponse({
       bookingId: session.bookingId,
-      guestUuid: session.guestUuid,
-      guestFirstName: getFirstName(booking.guestName),
+      guestUuid: targetOccupantId,
+      guestFirstName: guestDetails.firstName || '',
     });
   } catch (error) {
     console.error('Error verifying guest session:', error);

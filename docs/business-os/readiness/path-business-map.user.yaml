@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-02-10
+updated: 2026-02-11
 owner: Pete
 
 rules:
@@ -8,6 +8,11 @@ rules:
     confidence: high
     notes: Brikette public website and content surfaces.
 
+  - prefix: apps/brikette-scripts/
+    business: BRIK
+    confidence: high
+    notes: Brikette Google Apps Script automation for booking and email workflows.
+
   - prefix: apps/reception/
     business: BRIK
     confidence: high
@@ -15,13 +20,44 @@ rules:
 
   - prefix: apps/prime/
     business: BRIK
-    confidence: medium
-    notes: Guest/staff portal appears Brikette-facing; confirm explicitly.
+    confidence: high
+    notes: Guest/staff portal services Brikette operations and customer workflows.
+
+  - prefix: apps/front-door-worker/
+    business: PLAT
+    confidence: high
+    notes: Edge ingress and routing worker for host mapping, redirects, and API gateway forwarding.
+
 
   - prefix: apps/business-os/
     business: BOS
     confidence: high
     notes: Coordination platform and workflow runtime.
+
+  - prefix: apps/handbag-configurator/
+    business: HBAG
+    confidence: high
+    notes: Handbag product configurator for the handbag accessory business.
+
+  - prefix: apps/handbag-configurator-api/
+    business: HBAG
+    confidence: high
+    notes: API backend for handbag configurator workflows.
+
+  - prefix: apps/xa/
+    business: XA
+    confidence: high
+    notes: XA core operating app.
+
+  - prefix: apps/xa-uploader/
+    business: XA
+    confidence: high
+    notes: XA upload pipeline tooling.
+
+  - prefix: apps/skylar/
+    business: HOLDCO
+    confidence: medium
+    notes: Holding companies app (requires explicit HOLDCO business registration in catalog).
 
   - prefix: packages/mcp-server/
     business: PLAT
@@ -68,6 +104,6 @@ unmapped_policy:
   action: Do not run /ideas-go-faster until path is mapped to business + outcome decision link.
 
 open_questions:
-  - Confirm whether apps/prime is fully BRIK or split with BOS/PLAT concerns.
+  - Register `HOLDCO` as a first-class business/system in `docs/business-os/strategy/businesses.json` so `apps/skylar/` can be mapped to a canonical business ID.
   - Confirm whether scripts/ should be split into PLAT vs BOS mapping domains.
   - Confirm whether packages/mcp-server should map to PLAT only or PLAT+BOS.

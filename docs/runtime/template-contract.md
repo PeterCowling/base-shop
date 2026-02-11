@@ -270,7 +270,7 @@ For Thread B, we distinguish:
 - **Platform‑compatible tenant apps**
   - `apps/cover-me-pretty` — first tenant app to converge on the template runtime contract; its manifest lives at `apps/cover-me-pretty/src/runtimeContractManifest.ts` and advertises full compatibility.
 - **Pilot convergence targets**
-  - `apps/storefront` — shared storefront logic and contexts; currently a pilot convergence target with a manifest at `apps/storefront/src/runtimeContractManifest.ts` but not yet a full runtime or platform‑compatible app.
+  - None currently active.
   - Additional apps can opt in by adding their own `runtimeContractManifest` and, once converged, flipping `platformCompatible` to `true`.
 
 Each app carries its own `runtimeContractManifest` so tests and tooling can reason about capabilities and routes without scraping code.
@@ -282,7 +282,7 @@ Each app carries its own `runtimeContractManifest` so tests and tooling can reas
 The machine‑readable view of this contract lives at:
 
 - Template app: `packages/template-app/src/runtimeContractManifest.ts`
-- Tenant/platform apps: per‑app manifest files (for example `apps/cover-me-pretty/src/runtimeContractManifest.ts`, `apps/storefront/src/runtimeContractManifest.ts`) with the same shape.
+- Tenant/platform apps: per-app manifest files (for example `apps/cover-me-pretty/src/runtimeContractManifest.ts`) with the same shape.
 
 Shape (simplified):
 

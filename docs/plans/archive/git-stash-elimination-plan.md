@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Accepted
+Status: Archived
 Domain: Repo/Git
 Workstream: Engineering
 Created: 2026-02-10

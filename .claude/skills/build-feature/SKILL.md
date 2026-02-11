@@ -429,6 +429,14 @@ Add under the task:
 
 Move to the next eligible IMPLEMENT task and repeat the cycle.
 
+### 9) Archive completed plan
+
+When all tasks in the plan are marked Complete, archive the plan:
+
+1. Set frontmatter `Status: Archived` (not `Complete`).
+2. Move the plan file to `docs/plans/archive/`.
+3. Commit: `docs(plans): archive <plan-name> — all tasks complete`
+
 ## CHECKPOINT Handling
 
 When the next task in sequence is a `CHECKPOINT` task, execute this protocol instead of the normal build loop:

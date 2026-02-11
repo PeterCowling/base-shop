@@ -164,7 +164,7 @@ Error: Cannot use import statement outside a module
 ## Plan Documentation
 
 - **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow `docs/plans/<name>-plan.md`.
-- **Completed (but still useful) plans** live in `docs/plans/archive/`.
+- **Completed plans** live in `docs/plans/archive/` with `Status: Archived`.
 - **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
 - **When superseding a plan (v2, rewrites, etc.)**
   - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).

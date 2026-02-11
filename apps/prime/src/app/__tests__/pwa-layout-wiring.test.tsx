@@ -16,6 +16,12 @@ jest.mock('../../providers/QueryProvider', () => ({
   ),
 }));
 
+jest.mock('../providers', () => ({
+  Providers: ({ children }: { children: ReactNode }) => (
+    <div data-testid="app-providers">{children}</div>
+  ),
+}));
+
 describe('Root layout PWA wiring', () => {
   it('TC-02: exports manifest metadata for app-shell discovery', () => {
     expect(metadata.manifest).toBe('/manifest.webmanifest');

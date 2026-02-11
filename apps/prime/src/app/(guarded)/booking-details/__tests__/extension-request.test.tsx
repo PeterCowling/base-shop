@@ -7,6 +7,22 @@ jest.mock("../../../../hooks/dataOrchestrator/useGuestBookingSnapshot", () => ({
   useGuestBookingSnapshot: jest.fn(),
 }));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: Record<string, unknown>) => {
+      const copy: Record<string, string> = {
+        "extension.dateLabel": "Requested check-out date",
+        "extension.noteLabel": "Note (optional)",
+        "extension.submitButton": "Send extension request",
+      };
+      if (key === "extension.currentStatus") {
+        return `Current extension request status: ${String(options?.status ?? "")}`;
+      }
+      return copy[key] ?? key;
+    },
+  }),
+}));
+
 describe("BookingDetailsPage extension request", () => {
   const mockedUseGuestBookingSnapshot = useGuestBookingSnapshot as jest.MockedFunction<
     typeof useGuestBookingSnapshot

@@ -5,6 +5,7 @@ import path from "node:path";
 
 const EXPORT_HEADER = "X-Export-API-Key";
 const DEFAULT_BASE_BRANCH = "dev";
+const SKIP_HOOKS_PREFIX = "SKIP_SIMPLE_GIT_HOOKS=1";
 
 type ExportCard = {
   id: string;
@@ -329,7 +330,7 @@ export async function runExportToPr(
   deps.exec(`git checkout -B ${branchName}`);
   deps.exec("git add docs/business-os");
   // i18n-exempt -- BOS-06 git commit message [ttl=2026-03-31]
-  deps.exec('git commit -m "chore(bos): export D1 snapshot"');
+  deps.exec(`${SKIP_HOOKS_PREFIX} git commit -m "chore(bos): export D1 snapshot"`);
   deps.exec(`git push -u origin ${branchName}`);
 
   const changedIds = buildChangedIds(changedFiles);

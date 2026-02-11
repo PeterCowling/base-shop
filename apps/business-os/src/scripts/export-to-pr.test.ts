@@ -168,6 +168,13 @@ describe("export-to-pr", () => {
     expect(createCall).toContain(
       "chore(bos): export D1 snapshot [changed: BRIK-ENG-0001]"
     );
+    expect(
+      execCalls.some((command) =>
+        command.startsWith(
+          'SKIP_SIMPLE_GIT_HOOKS=1 git commit -m "chore(bos): export D1 snapshot"'
+        )
+      )
+    ).toBe(true);
   });
 
   it("TC-04: PR body includes Export-Run-ID", async () => {

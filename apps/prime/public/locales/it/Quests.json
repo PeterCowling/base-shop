@@ -1,0 +1,18 @@
+{
+  "account": {
+    "badgesTitle": "I Tuoi Distintivi",
+    "questsCompleted": "Quest Completate"
+  },
+  "completion": {
+    "badgeEarned": "Distintivo Ottenuto",
+    "continue": "Continua",
+    "title": "Titolo"
+  },
+  "labels": {
+    "allComplete": "Tutto Completato",
+    "badges": "Distintivi",
+    "currentQuest": "Quest Attuale",
+    "lockedUntil": "Bloccato Fino A",
+    "progress": "Progresso"
+  }
+}

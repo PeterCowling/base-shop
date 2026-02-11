@@ -1,0 +1,18 @@
+{
+  "cache": {
+    "clear": "Cancella",
+    "cleared": "Cancellato",
+    "clearing": "Cancellazione",
+    "quota": "Quota",
+    "refresh": "Aggiorna",
+    "title": "Titolo",
+    "usage": "Utilizzo"
+  },
+  "chat": {
+    "optIn": {
+      "description": "Descrizione",
+      "label": "Etichetta",
+      "optedOutNote": "[IT] Opted Out Note"
+    }
+  }
+}

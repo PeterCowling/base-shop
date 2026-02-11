@@ -1,0 +1,26 @@
+{
+  "actions": {
+    "backHome": "Torna alla Home",
+    "eventEnded": "Evento Terminato",
+    "joinNow": "Partecipa Ora",
+    "loadMore": "Carica Altro",
+    "seeDetails": "Vedi Dettagli"
+  },
+  "empty": {
+    "description": "Descrizione",
+    "exploreGuide": "Esplora la Guida",
+    "title": "Titolo"
+  },
+  "sections": {
+    "ended": "Terminato",
+    "happeningNow": "In Corso",
+    "upcoming": "In Arrivo"
+  },
+  "status": {
+    "ended": "Terminato",
+    "live": "In Diretta",
+    "upcoming": "In Arrivo"
+  },
+  "subtitle": "Sottotitolo",
+  "title": "Titolo"
+}

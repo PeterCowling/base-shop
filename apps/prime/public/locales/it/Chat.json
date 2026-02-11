@@ -1,0 +1,26 @@
+{
+  "anonymousGuest": "Ospite Anonimo",
+  "availableWhenLive": "[IT] Available When Live",
+  "backToActivities": "[IT] Back To Activities",
+  "channelTitle": "[IT] Channel Title",
+  "chat": {
+    "directory": {
+      "loading": "Caricamento",
+      "noGuests": "[IT] No Guests",
+      "noGuestsDescription": "[IT] No Guests Description",
+      "optInDescription": "[IT] Opt In Description",
+      "optInRequired": "[IT] Opt In Required",
+      "quiet": "[IT] Quiet",
+      "social": "[IT] Social",
+      "startChat": "[IT] Start Chat",
+      "title": "Titolo"
+    }
+  },
+  "goToActivities": "[IT] Go To Activities",
+  "loadingActivity": "[IT] Loading Activity",
+  "noChannelSelected": "[IT] No Channel Selected",
+  "send": "Invia",
+  "statusLive": "[IT] Status Live",
+  "statusUpcoming": "[IT] Status Upcoming",
+  "typeMessage": "Scrivi un messaggio"
+}

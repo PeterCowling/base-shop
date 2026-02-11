@@ -1,0 +1,18 @@
+{
+  "account": {
+    "badgesTitle": "Badges Title",
+    "questsCompleted": "Quests Completed"
+  },
+  "completion": {
+    "badgeEarned": "Badge Earned",
+    "continue": "Continue",
+    "title": "Title"
+  },
+  "labels": {
+    "allComplete": "All Complete",
+    "badges": "Badges",
+    "currentQuest": "Current Quest",
+    "lockedUntil": "Locked Until",
+    "progress": "Progress"
+  }
+}

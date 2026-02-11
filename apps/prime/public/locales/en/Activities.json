@@ -1,0 +1,26 @@
+{
+  "actions": {
+    "backHome": "Back Home",
+    "eventEnded": "Event Ended",
+    "joinNow": "Join Now",
+    "loadMore": "Load More",
+    "seeDetails": "See Details"
+  },
+  "empty": {
+    "description": "Description",
+    "exploreGuide": "Explore Guide",
+    "title": "Title"
+  },
+  "sections": {
+    "ended": "Ended",
+    "happeningNow": "Happening Now",
+    "upcoming": "Upcoming"
+  },
+  "status": {
+    "ended": "Ended",
+    "live": "Live",
+    "upcoming": "Upcoming"
+  },
+  "subtitle": "Subtitle",
+  "title": "Title"
+}

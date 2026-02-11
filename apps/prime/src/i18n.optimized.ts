@@ -50,7 +50,14 @@ const i18nOptions: InitOptions = {
   },
 };
 
-i18n.use(HttpBackend).use(initReactI18next).init(i18nOptions);
+// Guard: only initialize in the browser. During SSR module evaluation,
+// initReactI18next tries to access React Context which is null.
+if (typeof window !== 'undefined') {
+  i18n.use(HttpBackend).use(initReactI18next).init(i18nOptions);
+} else {
+  // Minimal server-side init without React binding or HTTP backend
+  i18n.init({ ...i18nOptions, backend: undefined });
+}
 
 // Helper function to load namespace group
 export async function loadNamespaceGroup(

@@ -742,6 +742,21 @@ export default function GuidedOnboardingFlow({
         )}
         </StepFlowShell>
 
+        <a
+          href={`mailto:hostelbrikette@gmail.com?subject=Onboarding help (step-${step})`}
+          onClick={() => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey,
+              route: '/portal',
+              context: { surface: 'onboarding', stepId: `step-${step}` },
+            });
+          }}
+          className="block pt-2 text-center text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {t('guidedFlow.helpLink')}
+        </a>
+
         <Toast
           open={errorToast !== null}
           message={errorToast?.message ?? ''}

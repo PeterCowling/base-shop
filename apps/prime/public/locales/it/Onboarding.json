@@ -1,6 +1,7 @@
 {
   "guidedFlow": {
     "finish": "Completa",
+    "helpLink": "Hai bisogno di aiuto?",
     "methods": {
       "bus": "Autobus",
       "ferry": "Traghetto",

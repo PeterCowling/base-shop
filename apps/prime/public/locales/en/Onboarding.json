@@ -1,6 +1,7 @@
 {
   "guidedFlow": {
     "finish": "Finish",
+    "helpLink": "Need help?",
     "methods": {
       "bus": "Bus",
       "ferry": "Ferry",

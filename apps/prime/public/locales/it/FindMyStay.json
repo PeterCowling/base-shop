@@ -1,26 +1,26 @@
 {
   "button": {
-    "loading": "Caricamento",
-    "submit": "Invia"
+    "loading": "Ricerca in corso\u2026",
+    "submit": "Trova il mio soggiorno"
   },
   "errors": {
-    "fieldsRequired": "[IT] Fields Required",
-    "networkError": "[IT] Network Error",
-    "notFound": "[IT] Not Found",
-    "tooManyAttempts": "[IT] Too Many Attempts"
+    "fieldsRequired": "Inserisci sia il codice di prenotazione che il cognome.",
+    "networkError": "Errore di connessione. Controlla la tua connessione e riprova.",
+    "notFound": "Non abbiamo trovato una prenotazione con questi dati. Verifica e riprova.",
+    "tooManyAttempts": "Troppi tentativi. Attendi qualche minuto e riprova."
   },
   "fields": {
-    "bookingCode": "[IT] Booking Code",
-    "bookingCodeHint": "[IT] Booking Code Hint",
-    "bookingCodePlaceholder": "[IT] Booking Code Placeholder",
-    "lastName": "[IT] Last Name",
-    "lastNameHint": "[IT] Last Name Hint",
-    "lastNamePlaceholder": "[IT] Last Name Placeholder"
+    "bookingCode": "Codice prenotazione",
+    "bookingCodeHint": "Lo trovi nell'email di conferma.",
+    "bookingCodePlaceholder": "es. ABC123",
+    "lastName": "Cognome",
+    "lastNameHint": "Come indicato nella conferma di prenotazione.",
+    "lastNamePlaceholder": "es. Rossi"
   },
   "help": {
-    "cantFind": "[IT] Cant Find",
-    "contactUs": "[IT] Contact Us"
+    "cantFind": "Non riesci a trovare la prenotazione?",
+    "contactUs": "Contattaci per assistenza"
   },
-  "subtitle": "Sottotitolo",
-  "title": "Titolo"
+  "subtitle": "Inserisci i dati della prenotazione per accedere al portale ospiti.",
+  "title": "Trova il mio soggiorno"
 }

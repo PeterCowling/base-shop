@@ -1,18 +1,19 @@
 {
   "cache": {
-    "clear": "Cancella",
-    "cleared": "Cancellato",
-    "clearing": "Cancellazione",
-    "quota": "Quota",
+    "clear": "Cancella dati memorizzati",
+    "cleared": "Cancellato!",
+    "clearing": "Cancellazione\u2026",
+    "description": "I dati memorizzati permettono all'app di funzionare offline. Cancellarli potrebbe richiedere di scaricare nuovamente i contenuti.",
+    "quota": "{{percent}}% dello spazio disponibile",
     "refresh": "Aggiorna",
-    "title": "Titolo",
-    "usage": "Utilizzo"
+    "title": "Dati memorizzati",
+    "usage": "Spazio utilizzato"
   },
   "chat": {
     "optIn": {
-      "description": "Descrizione",
-      "label": "Etichetta",
-      "optedOutNote": "[IT] Opted Out Note"
+      "description": "Permetti agli altri ospiti di vederti nell'elenco ospiti e inviarti messaggi.",
+      "label": "Chat ospiti",
+      "optedOutNote": "Non apparirai nell'elenco ospiti e non riceverai nuovi messaggi. Le conversazioni esistenti restano visibili."
     }
   }
 }

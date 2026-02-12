@@ -1,18 +1,18 @@
 {
   "account": {
-    "badgesTitle": "Badges Title",
-    "questsCompleted": "Quests Completed"
+    "badgesTitle": "Your Badges",
+    "questsCompleted": "Quests completed"
   },
   "completion": {
-    "badgeEarned": "Badge Earned",
+    "badgeEarned": "Badge earned",
     "continue": "Continue",
-    "title": "Title"
+    "title": "Congratulations!"
   },
   "labels": {
-    "allComplete": "All Complete",
+    "allComplete": "All quests complete!",
     "badges": "Badges",
     "currentQuest": "Current Quest",
-    "lockedUntil": "Locked Until",
+    "lockedUntil": "Available in {{hours}} hours",
     "progress": "Progress"
   }
 }

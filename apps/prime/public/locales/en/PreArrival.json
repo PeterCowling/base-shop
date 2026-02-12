@@ -1,184 +1,217 @@
 {
   "arrival": {
-    "badge": "Badge",
-    "cashAmount": "Cash Amount",
-    "cashReady": "Cash Ready",
-    "cashReminder": "Cash Reminder",
-    "cityTaxLabel": "City Tax Label",
-    "codeStaleWarning": "Code Stale Warning",
-    "codeUnavailable": "Code Unavailable",
-    "depositLabel": "Deposit Label",
-    "findUs": "Find Us",
-    "generatingCode": "Generating Code",
-    "idNote": "Id Note",
-    "idReminder": "Id Reminder",
-    "offlineNoCache": "Offline No Cache",
-    "refreshCode": "Refresh Code",
-    "showAtReception": "Show At Reception",
-    "step1": "Step1",
-    "step2": "Step2",
-    "step3": "Step3",
-    "step4": "Step4",
-    "subtitle": "Subtitle",
+    "badge": "Arrival",
+    "cashAmount": "{{amount}} cash needed",
+    "cashReady": "Cash is ready",
+    "cashReminder": "Remember to bring cash for payment on arrival.",
+    "cityTaxLabel": "City tax",
+    "codeStaleWarning": "This code may have expired. Tap refresh to get a new one.",
+    "codeUnavailable": "Check-in code not yet available.",
+    "depositLabel": "Security deposit",
+    "findUs": "Find us",
+    "generatingCode": "Generating your code\u2026",
+    "idNote": "A valid photo ID is required for each guest at check-in.",
+    "idReminder": "Bring your ID",
+    "offlineNoCache": "You're offline and no cached code is available.",
+    "refreshCode": "Refresh code",
+    "showAtReception": "Show this at reception",
+    "step1": "Arrive at the address and ring the bell.",
+    "step2": "Show your check-in code at reception.",
+    "step3": "Complete payment and hand over your ID.",
+    "step4": "Collect your keys and enjoy your stay!",
+    "subtitle": "Everything you need for a smooth arrival.",
     "welcome": "Welcome",
-    "whatHappensNext": "What Happens Next"
+    "whatHappensNext": "What happens next"
   },
   "calendar": {
-    "addToCalendar": "Add To Calendar",
-    "downloading": "Downloading"
+    "addToCalendar": "Add to calendar",
+    "downloading": "Downloading\u2026"
   },
   "cash": {
     "back": "Back",
-    "cardNote": "Card Note",
-    "cashOnly": "Cash Only",
+    "cardNote": "Card payments are not accepted. Please bring cash.",
+    "cashOnly": "Cash only",
     "cityTax": {
-      "label": "Label",
-      "perNight": "Per Night"
+      "label": "City tax",
+      "perNight": "per night, per person"
     },
     "confirm": {
-      "cityTax": "City Tax",
-      "deposit": "Deposit"
+      "cityTax": "I have the city tax ready",
+      "deposit": "I have the deposit ready"
     },
-    "confirmPartial": "Confirm Partial",
+    "confirmPartial": "I have some of this ready",
     "deposit": {
-      "label": "Label",
-      "refundable": "Refundable"
+      "label": "Security deposit",
+      "refundable": "Fully refundable at check-out"
     },
     "done": "Done",
     "info": {
-      "message": "Message"
+      "message": "These amounts are due in cash on arrival."
     },
-    "subtitle": "Subtitle",
-    "title": "Title",
+    "subtitle": "Prepare the following amounts in cash.",
+    "title": "Cash to prepare",
     "total": "Total"
   },
   "checkIn": {
-    "codeCopied": "Code Copied",
-    "dayLeft": "Day Left",
-    "daysLeft": "Days Left",
-    "label": "Label",
-    "qrAlt": "Qr Alt",
-    "qrError": "Qr Error",
+    "codeCopied": "Code copied!",
+    "dayLeft": "{{count}} day left",
+    "daysLeft": "{{count}} days left",
+    "label": "Check-in",
+    "qrAlt": "Check-in QR code",
+    "qrError": "Could not generate QR code.",
     "today": "Today",
-    "yourCode": "Your Code"
+    "yourCode": "Your check-in code"
   },
   "checklist": {
     "cashPrepared": {
-      "amount": "Amount"
+      "amount": "{{cityTax}} city tax + {{deposit}} deposit",
+      "title": "Cash prepared"
     },
     "completed": "Completed",
-    "title": "Title"
+    "etaConfirmed": {
+      "title": "Arrival time confirmed"
+    },
+    "etaMethod": {
+      "bus": "Bus",
+      "car": "Car",
+      "ferry": "Ferry",
+      "other": "Other",
+      "taxi": "Taxi",
+      "train": "Train"
+    },
+    "locationSaved": {
+      "title": "Location saved"
+    },
+    "routePlanned": {
+      "title": "Route planned"
+    },
+    "rulesReviewed": {
+      "title": "House rules reviewed"
+    },
+    "title": "Pre-arrival checklist"
   },
   "eta": {
     "back": "Back",
-    "confirm": "Confirm",
+    "confirm": "Save and continue",
+    "helperText": "You can update your arrival details any time.",
     "lateArrival": {
-      "message": "Message",
-      "title": "Title"
+      "message": "Please let us know if you'll arrive after 22:00 so we can arrange access.",
+      "title": "Late arrival"
     },
-    "methodLabel": "Method Label",
-    "noteLabel": "Note Label",
-    "notePlaceholder": "Note Placeholder",
-    "subtitle": "Subtitle",
-    "timeLabel": "Time Label",
-    "title": "Title"
+    "methodLabel": "How are you travelling?",
+    "methods": {
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "other": "Other",
+      "private": "Private car",
+      "taxi": "Taxi",
+      "train": "Train"
+    },
+    "noteLabel": "Notes for us",
+    "notePlaceholder": "e.g. We'll have heavy luggage",
+    "required": "Required",
+    "skip": "Skip for now",
+    "stepProgress": "Step {{current}} of {{total}}",
+    "subtitle": "Let us know when to expect you.",
+    "timeLabel": "Estimated arrival time",
+    "title": "Confirm your arrival"
   },
   "header": {
-    "arrivalDay": "Arrival Day",
-    "arrivalDaySubtitle": "Arrival Day Subtitle",
-    "preArrival": "Pre Arrival",
-    "subtitle": "Subtitle",
-    "welcome": "Welcome",
-    "welcomeArrivalDay": "Welcome Arrival Day"
+    "arrivalDay": "Arrival day",
+    "arrivalDaySubtitle": "You're arriving today \u2014 here's everything you need.",
+    "preArrival": "Pre-arrival",
+    "subtitle": "A few things to get ready before you arrive.",
+    "welcome": "Welcome, {{name}}!",
+    "welcomeArrivalDay": "Welcome, {{name}} \u2014 today's the day!"
   },
   "location": {
     "address": "Address"
   },
   "nextAction": {
     "allComplete": {
-      "button": "Button",
-      "description": "Description",
-      "title": "Title"
+      "button": "View check-in details",
+      "description": "You're all set. We can't wait to welcome you!",
+      "title": "You're ready!"
     },
     "cashPrepared": {
-      "button": "Button",
-      "description": "Description",
-      "descriptionWithAmount": "Description With Amount",
-      "title": "Title"
+      "button": "Prepare cash",
+      "description": "Check the amounts you'll need to bring.",
+      "descriptionWithAmount": "You'll need {{amount}} in cash on arrival.",
+      "title": "Prepare your cash"
     },
     "default": {
-      "button": "Button",
-      "description": "Description",
-      "title": "Title"
+      "button": "Get started",
+      "description": "Complete a few quick steps to prepare for your stay.",
+      "title": "Prepare for your trip"
     },
     "etaConfirmed": {
-      "button": "Button",
-      "description": "Description",
-      "title": "Title"
+      "button": "Set arrival time",
+      "description": "Let us know when to expect you.",
+      "title": "Confirm your arrival time"
     },
     "locationSaved": {
-      "button": "Button",
-      "description": "Description",
-      "title": "Title"
+      "button": "Save location",
+      "description": "Save our address so you can find us easily.",
+      "title": "Save our location"
     },
     "routePlanned": {
-      "button": "Button",
-      "description": "Description",
-      "title": "Title"
+      "button": "Plan your route",
+      "description": "See the best ways to reach us from your location.",
+      "title": "Plan your route"
     },
     "rulesReviewed": {
-      "button": "Button",
-      "description": "Description",
-      "title": "Title"
+      "button": "Review rules",
+      "description": "A quick read to help your stay go smoothly.",
+      "title": "Review house rules"
     }
   },
   "readiness": {
-    "score": "Score"
+    "score": "{{score}}% ready"
   },
   "routes": {
     "arrival": "Arrival",
     "back": "Back",
     "cost": "Cost",
-    "fromOrigin": "From Origin",
-    "importantNotes": "Important Notes",
+    "fromOrigin": "From {{origin}}",
+    "importantNotes": "Important notes",
     "journey": "Journey",
-    "noRoutes": "No Routes",
+    "noRoutes": "No routes available for your origin.",
     "recommended": "Recommended",
-    "routeSaved": "Route Saved",
-    "saveRoute": "Save Route",
-    "savedRoute": "Saved Route",
-    "selectRoute": "Select Route",
-    "subtitle": "Subtitle",
-    "title": "Title",
-    "totalTime": "Total Time",
-    "viewFullGuide": "View Full Guide"
+    "routeSaved": "Route saved!",
+    "saveRoute": "Save this route",
+    "savedRoute": "Your saved route",
+    "selectRoute": "Select a route",
+    "subtitle": "Choose the best way to reach us.",
+    "title": "Getting here",
+    "totalTime": "Total time",
+    "viewFullGuide": "View full guide"
   },
   "staffLookup": {
     "back": "Back",
     "code": "Code",
     "dates": "Dates",
-    "eta": "Eta",
-    "guestName": "Guest Name",
-    "loading": "Loading",
+    "eta": "ETA",
+    "guestName": "Guest name",
+    "loading": "Loading\u2026",
     "nights": "Nights",
-    "noCode": "No Code",
+    "noCode": "No code generated",
     "payment": "Payment",
-    "placeholder": "Placeholder",
+    "placeholder": "Enter reservation code",
     "room": "Room",
-    "subtitle": "Subtitle",
-    "title": "Title",
-    "tryAgain": "Try Again"
+    "subtitle": "Look up a guest reservation.",
+    "title": "Staff Lookup",
+    "tryAgain": "Try again"
   },
   "stay": {
     "location": "Location",
-    "night": "Night",
-    "nights": "Nights"
+    "night": "night",
+    "nights": "nights"
   },
   "welcome": {
-    "subtitle": "Subtitle",
-    "tapToDismiss": "Tap To Dismiss",
-    "tip1": "Tip1",
-    "tip2": "Tip2",
-    "title": "Title"
+    "subtitle": "Here's what you need to know before you arrive.",
+    "tapToDismiss": "Tap to dismiss",
+    "tip1": "Complete each step to unlock your check-in code.",
+    "tip2": "You can come back to this page any time.",
+    "title": "Welcome to Prime"
   }
 }

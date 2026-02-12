@@ -1,61 +1,75 @@
 {
   "guestProfile": {
-    "goalsLabel": "[IT] Goals Label",
+    "goals": {
+      "adventure": "Avventura",
+      "explore": "Esplorare la zona",
+      "meetPeople": "Conoscere gente",
+      "relax": "Rilassarsi"
+    },
+    "goalsLabel": "Quali sono i tuoi obiettivi per questo soggiorno?",
     "intent": {
-      "mixed": "[IT] Mixed",
-      "quiet": "[IT] Quiet",
-      "social": "[IT] Social"
+      "mixed": "Un po' di entrambi",
+      "quiet": "Tranquillo e riservato",
+      "social": "Socievole e aperto"
     },
-    "intentLabel": "[IT] Intent Label",
-    "interestsLabel": "[IT] Interests Label",
+    "intentLabel": "Qual \u00e8 il tuo stile?",
+    "interests": {
+      "beaches": "Spiagge",
+      "food": "Cibo e ristoranti",
+      "hiking": "Escursioni",
+      "history": "Storia e cultura",
+      "nightlife": "Vita notturna",
+      "photography": "Fotografia"
+    },
+    "interestsLabel": "Cosa ti interessa?",
     "pace": {
-      "active": "[IT] Active",
-      "activeDesc": "[IT] Active Desc",
-      "relaxed": "[IT] Relaxed",
-      "relaxedDesc": "[IT] Relaxed Desc"
+      "active": "Attivo",
+      "activeDesc": "Fare il pi\u00f9 possibile.",
+      "relaxed": "Rilassato",
+      "relaxedDesc": "Con calma, senza fretta."
     },
-    "paceLabel": "[IT] Pace Label",
-    "saveCta": "Salva",
-    "skipCta": "[IT] Skip",
-    "title": "Titolo"
+    "paceLabel": "Qual \u00e8 il tuo ritmo?",
+    "saveCta": "Salva preferenze",
+    "skipCta": "Salta per ora",
+    "title": "Parlaci di te"
   },
   "handoff": {
-    "cta": "[IT] ",
+    "cta": "Inizia a esplorare",
     "highlights": {
       "connect": {
-        "description": "Descrizione",
-        "title": "Titolo"
+        "description": "Chatta con gli altri ospiti e partecipa alle attivit\u00e0 di gruppo.",
+        "title": "Connettiti"
       },
       "explore": {
-        "description": "Descrizione",
-        "title": "Titolo"
+        "description": "Scopri ristoranti locali, spiagge e gemme nascoste.",
+        "title": "Esplora"
       },
       "quests": {
-        "description": "Descrizione",
-        "title": "Titolo"
+        "description": "Completa sfide divertenti e guadagna distintivi durante il soggiorno.",
+        "title": "Sfide"
       }
     },
-    "subtitle": "Sottotitolo",
-    "title": "Titolo"
+    "subtitle": "Ecco cosa puoi fare durante il tuo soggiorno.",
+    "title": "Sei pronto, {{name}}!"
   },
   "socialOptIn": {
     "activities": {
-      "description": "Descrizione",
-      "title": "Titolo"
+      "description": "Partecipa ad attivit\u00e0 di gruppo come yoga, corsi di cucina e gite in barca.",
+      "title": "Attivit\u00e0"
     },
     "chat": {
-      "description": "Descrizione",
-      "title": "Titolo"
+      "description": "Connettiti con gli altri ospiti e condividi consigli nella chat di gruppo.",
+      "title": "Chat ospiti"
     },
-    "intro": "[IT] Intro",
+    "intro": "Sfrutta al meglio il tuo soggiorno connettendoti con gli altri ospiti.",
     "noActivities": {
-      "description": "Descrizione",
-      "title": "Titolo"
+      "description": "Nessuna attivit\u00e0 in programma al momento. Dai un'occhiata alla guida di Positano!",
+      "title": "Nessuna attivit\u00e0 in programma"
     },
-    "privacyNote": "[IT] Privacy Note",
-    "saveCta": "Salva",
-    "skipCta": "[IT] Skip",
-    "title": "Titolo",
-    "upcomingActivities": "[IT] Upcoming Activities"
+    "privacyNote": "Puoi modificare queste impostazioni in qualsiasi momento. Le tue informazioni sono visibili solo agli ospiti attuali.",
+    "saveCta": "Salva preferenze",
+    "skipCta": "Salta per ora",
+    "title": "Resta connesso",
+    "upcomingActivities": "Prossime attivit\u00e0"
   }
 }

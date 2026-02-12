@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Check, ChevronRight, ExternalLink, MapPin } from 'lucide-react';
 
 import { StepFlowShell } from '@acme/design-system/primitives';
 import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
@@ -22,9 +22,13 @@ import type { ArrivalConfidence, ChecklistProgress, EtaMethod } from '../../type
 
 type Step = 1 | 2 | 3;
 
+const HOSTEL_MAPS_URL =
+  'https://www.google.com/maps/search/?api=1&query=Hostel+Brikette+Via+Cristoforo+Colombo+13+Positano';
+
 interface GuidedOnboardingFlowProps {
   guestFirstName?: string | null;
   onComplete: () => void;
+  onClose?: () => void;
 }
 
 function normalizeMethod(method: string | null): EtaMethod | null {
@@ -62,9 +66,14 @@ function normalizeConfidence(confidence: string | null): ArrivalConfidence | nul
   return null;
 }
 
+function capitalize(s: string): string {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
 export default function GuidedOnboardingFlow({
   guestFirstName,
   onComplete,
+  onClose,
 }: GuidedOnboardingFlowProps) {
   const [step, setStep] = useState<Step>(1);
   const [isSaving, setIsSaving] = useState(false);
@@ -148,6 +157,37 @@ export default function GuidedOnboardingFlow({
   const etaWindowOptions = useMemo(() => {
     return getEtaWindowOptions(arrivalConfidence);
   }, [arrivalConfidence]);
+
+  // Step-dependent content for StepFlowShell
+  const stepTitle = useMemo(() => {
+    if (step === 1) {
+      return guestFirstName
+        ? `Welcome ${guestFirstName}, let\u2019s get you arrival-ready`
+        : 'Let\u2019s get you arrival-ready';
+    }
+    if (step === 2) {
+      return 'Share your ETA';
+    }
+    return 'Final checks';
+  }, [step, guestFirstName]);
+
+  const stepDescription = useMemo((): ReactNode => {
+    if (step === 1) {
+      return (
+        <ExperimentGate
+          flag="prime-onboarding-cta-copy"
+          enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
+          fallback="Finish these quick steps to reduce reception wait time and avoid arrival surprises."
+        >
+          Unlock faster check-in and sharper local recommendations by completing these steps now.
+        </ExperimentGate>
+      );
+    }
+    if (step === 2) {
+      return 'Sharing your ETA helps reception prepare for a faster check-in.';
+    }
+    return 'Tick off what you can \u2014 update any time from the dashboard.';
+  }, [step, experimentVariants.onboardingCtaCopy]);
 
   function showCelebration(message: string) {
     if (celebrationTimeoutRef.current) {
@@ -252,6 +292,21 @@ export default function GuidedOnboardingFlow({
     }
   }
 
+  function handleBack() {
+    if (step === 1) {
+      onClose?.();
+    } else {
+      setStep((step - 1) as Step);
+    }
+  }
+
+  const handleOpenMaps = useCallback(() => {
+    setLocationSaved(true);
+    if (typeof window !== 'undefined') {
+      window.open(HOSTEL_MAPS_URL, '_blank');
+    }
+  }, []);
+
   if (isLoading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-muted p-4">
@@ -262,156 +317,168 @@ export default function GuidedOnboardingFlow({
 
   return (
     <main className="min-h-screen bg-muted px-4 py-6">
-      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-card p-5 shadow-sm">
+      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
         <StepFlowShell
           currentStep={step}
           totalSteps={3}
-          title={guestFirstName ? `Welcome ${guestFirstName}, let’s get you arrival-ready` : 'Let’s get you arrival-ready'}
-          description={(
-            <ExperimentGate
-              flag="prime-onboarding-cta-copy"
-              enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
-              fallback="Finish these quick steps to reduce reception wait time and avoid arrival surprises."
-            >
-              Unlock faster check-in and sharper local recommendations by completing these steps now.
-            </ExperimentGate>
-          )}
-          trustCue={{
+          title={stepTitle}
+          description={stepDescription}
+          trustCue={step === 1 ? {
             title: 'Privacy reassurance',
             description: 'We only use this information for your current stay and reception operations.',
-          }}
+          } : undefined}
           milestoneMessage={celebration}
+          onBack={handleBack}
         >
 
+        {/* ── Step 1: Arrival style ── */}
         {step === 1 && (
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Choose your arrival style</h2>
-            <p className="text-sm text-muted-foreground">This lets us recommend the best route and defaults for you.</p>
-
+          <section className="space-y-5">
             {showConfidenceBeforeMethod ? (
               <>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">How confident do you feel about getting here?</legend>
                   <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('confident')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'confident'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Confident
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('need-guidance')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'need-guidance'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Need guidance
-                    </button>
+                    {([
+                      { value: 'confident' as const, label: 'Confident' },
+                      { value: 'need-guidance' as const, label: 'Need guidance' },
+                    ]).map(({ value, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        role="radio"
+                        aria-checked={arrivalConfidence === value}
+                        onClick={() => setArrivalConfidence(value)}
+                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                          arrivalConfidence === value
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
+                        }`}
+                      >
+                        {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
+                        {label}
+                      </button>
+                    ))}
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
+                </fieldset>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">How are you most likely arriving?</legend>
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
                         key={method}
                         type="button"
+                        role="radio"
+                        aria-checked={arrivalMethodPreference === method}
                         onClick={() => setArrivalMethodPreference(method)}
-                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalMethodPreference === method
-                            ? 'border-primary bg-primary-soft text-primary'
-                            : 'border-border text-foreground'
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
                         }`}
                       >
-                        {method}
+                        {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
+                        {capitalize(method)}
                       </button>
                     ))}
                   </div>
-                </div>
+                </fieldset>
               </>
             ) : (
               <>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">How are you most likely arriving?</legend>
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
                         key={method}
                         type="button"
+                        role="radio"
+                        aria-checked={arrivalMethodPreference === method}
                         onClick={() => setArrivalMethodPreference(method)}
-                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalMethodPreference === method
-                            ? 'border-primary bg-primary-soft text-primary'
-                            : 'border-border text-foreground'
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
                         }`}
                       >
-                        {method}
+                        {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
+                        {capitalize(method)}
                       </button>
                     ))}
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
+                </fieldset>
+                <fieldset className="space-y-2">
+                  <legend className="text-sm font-medium text-foreground">How confident do you feel about getting here?</legend>
                   <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('confident')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'confident'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Confident
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setArrivalConfidence('need-guidance')}
-                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
-                        arrivalConfidence === 'need-guidance'
-                          ? 'border-primary bg-primary-soft text-primary'
-                          : 'border-border text-foreground'
-                      }`}
-                    >
-                      Need guidance
-                    </button>
+                    {([
+                      { value: 'confident' as const, label: 'Confident' },
+                      { value: 'need-guidance' as const, label: 'Need guidance' },
+                    ]).map(({ value, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        role="radio"
+                        aria-checked={arrivalConfidence === value}
+                        onClick={() => setArrivalConfidence(value)}
+                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                          arrivalConfidence === value
+                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                            : 'border-border text-foreground hover:border-border-strong'
+                        }`}
+                      >
+                        {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
+                        {label}
+                      </button>
+                    ))}
                   </div>
-                </div>
+                </fieldset>
               </>
             )}
 
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-foreground">Recommended routes</p>
-              {routeSuggestions.map((route) => (
-                <button
-                  key={route.slug}
-                  type="button"
-                  onClick={() => setSelectedRouteSlug(route.slug)}
-                  className={`w-full rounded-lg border px-3 py-2 text-left ${
-                    selectedRouteSlug === route.slug
-                      ? 'border-success bg-success-soft'
-                      : 'border-border'
-                  }`}
-                >
-                  <p className="text-sm font-semibold text-foreground">{route.title}</p>
-                  <p className="text-xs text-muted-foreground">{route.description}</p>
-                </button>
-              ))}
-            </div>
+            {arrivalMethodPreference && (
+              <fieldset className="space-y-2">
+                <legend className="text-sm font-medium text-foreground">Pick a route <span className="font-normal text-foreground/60">(optional)</span></legend>
+                <div className="space-y-2" role="radiogroup" aria-label="Recommended routes">
+                  {routeSuggestions.map((route) => {
+                    const isSelected = selectedRouteSlug === route.slug;
+                    return (
+                      <button
+                        key={route.slug}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        onClick={() => setSelectedRouteSlug(isSelected ? null : route.slug)}
+                        className={`flex w-full items-start gap-3 rounded-xl border-2 p-3 text-left transition-all ${
+                          isSelected
+                            ? 'border-primary bg-primary-soft shadow-sm'
+                            : 'border-border hover:border-border-strong'
+                        }`}
+                      >
+                        <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
+                          isSelected
+                            ? 'border-primary bg-primary'
+                            : 'border-muted-foreground/40'
+                        }`}>
+                          {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-sm font-semibold text-foreground">{route.title}</span>
+                          <span className="block text-xs text-foreground/70">{route.description}</span>
+                        </span>
+                        <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                      </button>
+                    );
+                  })}
+                </div>
+              </fieldset>
+            )}
 
-            <div className="flex gap-2">
+            <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 Skip for now
               </button>
@@ -419,7 +486,7 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleStepOneContinue()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+                className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
                 Save and continue
                 <ChevronRight className="h-4 w-4" />
@@ -428,17 +495,15 @@ export default function GuidedOnboardingFlow({
           </section>
         )}
 
+        {/* ── Step 2: Share ETA ── */}
         {step === 2 && (
           <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Share your ETA</h2>
-            <p className="text-sm text-muted-foreground">Sharing ETA helps reception prioritize fast check-in on arrival.</p>
-
             <label className="block text-sm font-medium text-foreground">
               Arrival time window
               <select
                 value={etaWindow}
                 onChange={(event) => setEtaWindow(event.target.value)}
-                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
+                className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-foreground"
               >
                 {etaWindowOptions.map((window) => (
                   <option key={window} value={window}>
@@ -453,21 +518,21 @@ export default function GuidedOnboardingFlow({
               <select
                 value={etaMethod}
                 onChange={(event) => setEtaMethod(normalizeMethod(event.target.value) ?? 'other')}
-                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
+                className="mt-2 w-full rounded-lg border border-border bg-card px-3 py-2.5 text-foreground"
               >
                 {(['ferry', 'bus', 'train', 'taxi', 'private', 'other'] as const).map((method) => (
                   <option key={method} value={method}>
-                    {method}
+                    {capitalize(method)}
                   </option>
                 ))}
               </select>
             </label>
 
-            <div className="flex gap-2">
+            <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 Skip for now
               </button>
@@ -475,72 +540,132 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleStepTwoContinue()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+                className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Save ETA
+                Save and continue
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
           </section>
         )}
 
+        {/* ── Step 3: Final readiness checks ── */}
         {step === 3 && (
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-foreground">Final readiness checks</h2>
-            <p className="text-sm text-muted-foreground">Complete what you can now. You can edit everything later on the dashboard.</p>
+          <section className="space-y-3">
+            {/* Cash for check-in */}
+            <button
+              type="button"
+              onClick={() => setCashPrepared(!cashPrepared)}
+              className={`flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all active:scale-[0.98] ${
+                cashPrepared
+                  ? 'border-success/40 bg-success-soft'
+                  : 'border-border bg-card hover:border-border-strong'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded transition-colors ${
+                  cashPrepared
+                    ? 'bg-success text-success-foreground'
+                    : 'border-2 border-muted-foreground/40'
+                }`}
+              >
+                {cashPrepared && <Check className="h-4 w-4" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-foreground">
+                  Cash for check-in
+                </span>
+                <span className="block text-xs text-foreground/70">
+                  City tax + keycard deposit in cash — avoids delays at reception
+                </span>
+              </span>
+            </button>
 
-            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={cashPrepared}
-                onChange={(event) => setCashPrepared(event.target.checked)}
-                className="mt-0.5 h-4 w-4"
-              />
-              I have prepared cash for city tax and keycard deposit
-            </label>
+            {/* House rules */}
+            <button
+              type="button"
+              onClick={() => setRulesReviewed(!rulesReviewed)}
+              className={`flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all active:scale-[0.98] ${
+                rulesReviewed
+                  ? 'border-success/40 bg-success-soft'
+                  : 'border-border bg-card hover:border-border-strong'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded transition-colors ${
+                  rulesReviewed
+                    ? 'bg-success text-success-foreground'
+                    : 'border-2 border-muted-foreground/40'
+                }`}
+              >
+                {rulesReviewed && <Check className="h-4 w-4" />}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-foreground">
+                  House rules
+                </span>
+                <span className="block text-xs text-foreground/70">
+                  Quick read — helps your stay go smoothly
+                </span>
+              </span>
+            </button>
 
-            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={rulesReviewed}
-                onChange={(event) => setRulesReviewed(event.target.checked)}
-                className="mt-0.5 h-4 w-4"
-              />
-              I reviewed the house rules
-            </label>
-
-            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
-              <input
-                type="checkbox"
-                checked={locationSaved}
-                onChange={(event) => setLocationSaved(event.target.checked)}
-                className="mt-0.5 h-4 w-4"
-              />
-              I saved the hostel location in maps
-            </label>
+            {/* Save hostel location */}
+            <button
+              type="button"
+              onClick={handleOpenMaps}
+              className={`flex w-full items-start gap-3 rounded-xl border-2 p-4 text-left transition-all active:scale-[0.98] ${
+                locationSaved
+                  ? 'border-success/40 bg-success-soft'
+                  : 'border-border bg-card hover:border-border-strong'
+              }`}
+            >
+              <span
+                className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded transition-colors ${
+                  locationSaved
+                    ? 'bg-success text-success-foreground'
+                    : 'border-2 border-muted-foreground/40'
+                }`}
+              >
+                {locationSaved ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <MapPin className="h-3.5 w-3.5 text-muted-foreground" />
+                )}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-foreground">
+                  Save hostel location
+                </span>
+                <span className="flex items-center gap-1 text-xs text-primary">
+                  Open in Maps
+                  <ExternalLink className="h-3 w-3" />
+                </span>
+              </span>
+            </button>
 
             {lastCompletedItem && (
               <p className="rounded-lg bg-info-soft px-3 py-2 text-xs font-medium text-info-foreground">
-                Last completion: {getChecklistItemLabel(lastCompletedItem)}
+                Last completed: {getChecklistItemLabel(lastCompletedItem)}
               </p>
             )}
 
-            <div className="flex gap-2">
+            <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
                 onClick={onComplete}
-                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip to dashboard
+                Skip for now
               </button>
               <button
                 type="button"
                 onClick={() => void handleFinish()}
                 disabled={isSaving}
-                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-success px-3 py-2 text-sm font-semibold text-success-foreground disabled:opacity-60"
+                className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Finish setup
-                <ChevronRight className="h-4 w-4" />
+                Finish
+                <Check className="h-4 w-4" />
               </button>
             </div>
           </section>

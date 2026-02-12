@@ -1,26 +1,26 @@
 {
   "button": {
-    "loading": "Loading",
-    "submit": "Submit"
+    "loading": "Searching\u2026",
+    "submit": "Find my stay"
   },
   "errors": {
-    "fieldsRequired": "Fields Required",
-    "networkError": "Network Error",
-    "notFound": "Not Found",
-    "tooManyAttempts": "Too Many Attempts"
+    "fieldsRequired": "Please enter both your booking code and last name.",
+    "networkError": "Connection error. Please check your internet and try again.",
+    "notFound": "We couldn't find a booking with those details. Please check and try again.",
+    "tooManyAttempts": "Too many attempts. Please wait a few minutes and try again."
   },
   "fields": {
-    "bookingCode": "Booking Code",
-    "bookingCodeHint": "Booking Code Hint",
-    "bookingCodePlaceholder": "Booking Code Placeholder",
-    "lastName": "Last Name",
-    "lastNameHint": "Last Name Hint",
-    "lastNamePlaceholder": "Last Name Placeholder"
+    "bookingCode": "Booking code",
+    "bookingCodeHint": "Found in your confirmation email.",
+    "bookingCodePlaceholder": "e.g. ABC123",
+    "lastName": "Last name",
+    "lastNameHint": "As shown on your booking confirmation.",
+    "lastNamePlaceholder": "e.g. Rossi"
   },
   "help": {
-    "cantFind": "Cant Find",
-    "contactUs": "Contact Us"
+    "cantFind": "Still can't find your booking?",
+    "contactUs": "Contact us for help"
   },
-  "subtitle": "Subtitle",
-  "title": "Title"
+  "subtitle": "Enter your booking details to access your guest portal.",
+  "title": "Find My Stay"
 }

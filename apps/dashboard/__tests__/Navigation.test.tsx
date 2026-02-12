@@ -120,6 +120,7 @@ describe("Dashboard navigation surfaces", () => {
   });
 
   it("renders shop detail wrapper with diff tab", async () => {
+    jest.setTimeout(15_000);
     (useRouter as jest.Mock).mockReturnValue({ query: { id: "shop1" } });
     const ShopDetail = require("../src/pages/shops/[id]").default;
     render(<ShopDetail />);

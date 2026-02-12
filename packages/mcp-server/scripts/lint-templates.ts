@@ -8,6 +8,7 @@ import {
   buildPolicyKeywordSet,
   type EmailTemplate,
   lintTemplates,
+  partitionIssues,
 } from "../src/utils/template-lint.js";
 
 const DATA_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "data");
@@ -69,23 +70,22 @@ async function run(): Promise<void> {
     checkLink,
   });
 
-  const hardIssues = issues.filter((i) => i.code !== "broken_link");
-  const linkIssues = issues.filter((i) => i.code === "broken_link");
+  const { hard, warnings } = partitionIssues(issues);
 
-  if (linkIssues.length > 0) {
-    console.warn(`Template lint: ${linkIssues.length} broken link(s) (warn-only):\n`);
-    for (const issue of linkIssues) {
+  if (warnings.length > 0) {
+    console.warn(`Template lint: ${warnings.length} broken link(s) (warn-only):\n`);
+    for (const issue of warnings) {
       console.warn(`- [${issue.code}] ${issue.subject}: ${issue.details}`);
     }
   }
 
-  if (hardIssues.length === 0) {
+  if (hard.length === 0) {
     console.info("Template lint: OK");
     return;
   }
 
   console.error("Template lint failed:\n");
-  for (const issue of hardIssues) {
+  for (const issue of hard) {
     console.error(`- [${issue.code}] ${issue.subject}: ${issue.details}`);
   }
   process.exit(1);

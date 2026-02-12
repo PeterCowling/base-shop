@@ -124,3 +124,20 @@ export async function lintTemplates(
 
   return issues;
 }
+
+/** Separate issues into hard failures and soft warnings (broken links). */
+export function partitionIssues(issues: TemplateLintIssue[]): {
+  hard: TemplateLintIssue[];
+  warnings: TemplateLintIssue[];
+} {
+  const hard: TemplateLintIssue[] = [];
+  const warnings: TemplateLintIssue[] = [];
+  for (const issue of issues) {
+    if (issue.code === "broken_link") {
+      warnings.push(issue);
+    } else {
+      hard.push(issue);
+    }
+  }
+  return { hard, warnings };
+}

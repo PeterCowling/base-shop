@@ -1,5 +1,6 @@
 import { dispatchPrimeEmail } from '../lib/email-dispatch';
 import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
+import { createGuestDeepLink } from '../lib/guest-token';
 import { dispatchQueuedArrival48HoursEvent } from '../lib/messaging-dispatcher';
 
 interface Env {
@@ -11,6 +12,15 @@ interface Env {
 
 interface ProcessQueueRequestBody {
   eventId?: string;
+}
+
+/**
+ * Derive the public base URL from the incoming request.
+ * In production this is the custom domain; in staging the Pages preview URL.
+ */
+function deriveBaseUrl(request: Request): string {
+  const url = new URL(request.url);
+  return `${url.protocol}//${url.host}`;
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
@@ -27,10 +37,25 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   }
 
   const queueStore = new FirebaseRest(env);
+  const baseUrl = deriveBaseUrl(request);
 
   const result = await dispatchQueuedArrival48HoursEvent(eventId, {
     queueStore,
     dispatchArrival48Hours: async (payload) => {
+      // Look up checkout date from booking for token expiry
+      const booking = await queueStore.get<Record<string, { checkOutDate?: string }>>(
+        `bookings/${payload.bookingCode}/${payload.uuid}`,
+      );
+      const checkOutDate = booking?.checkOutDate ?? '';
+
+      // Generate a secure deep link instead of the insecure UUID-based URL
+      const deepLink = await createGuestDeepLink(queueStore, {
+        bookingId: payload.bookingCode,
+        guestUuid: payload.uuid,
+        checkOutDate,
+        baseUrl,
+      });
+
       const sendResult = await dispatchPrimeEmail(
         {
           to: payload.email,
@@ -40,7 +65,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
             '',
             `You're arriving on ${payload.checkInDate}.`,
             `Please bring EUR ${(payload.cityTaxDue + payload.depositDue).toFixed(2)} in cash.`,
-            `Portal: ${payload.portalUrl}`,
+            '',
+            `Open your guest portal: ${deepLink}`,
           ].join('\n'),
         },
         env,

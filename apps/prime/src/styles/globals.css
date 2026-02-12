@@ -1,7 +1,10 @@
+@config "../../tailwind.config.mjs";
+
 /* Base design-system tokens (colour, spacing, typography, z-index) */
 @import '@themes/base/tokens.css';
 @import '@themes/prime/tokens.css';
+@import "tailwindcss" source("../..");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 sources — scan shared packages for class usage */
+@source "../../../../packages/ui/src";
+@source "../../../../packages/design-system/src";

@@ -17,7 +17,6 @@ import type { GuideFilterOption } from "./useGuideFilterOptions";
 import { useGuideSummaryResolver } from "./useGuideSummaryResolver";
 
 const MAIN_TOPICS = ["beaches", "hiking", "day-trip", "boat", "cuisine"] as const;
-const MORE_TOPICS = ["transport", "photography", "culture"] as const;
 const MIN_GUIDES_FOR_MAIN = 1;
 
 const TOPIC_IMAGES: Record<string, string> = {
@@ -26,7 +25,6 @@ const TOPIC_IMAGES: Record<string, string> = {
   "day-trip": "/img/topics/day-trip.jpg",
   boat: "/img/topics/boat.jpg",
   cuisine: "/img/topics/cuisine.jpg",
-  more: "/img/topics/more.jpg",
 };
 
 const TOPIC_LABELS: Record<string, string> = {
@@ -35,7 +33,6 @@ const TOPIC_LABELS: Record<string, string> = {
   "day-trip": "Day trips",
   boat: "Boat tours",
   cuisine: "Food & Drink",
-  more: "More",
 };
 
 type GroupedGuides = Record<string, GuideMeta[]>;
@@ -70,8 +67,8 @@ type TopicGuideSectionListProps = {
 };
 
 function createEmptyTopicGroups(): GroupedGuides {
-  const groups: GroupedGuides = { more: [] };
-  for (const topicId of [...MAIN_TOPICS, ...MORE_TOPICS]) {
+  const groups: GroupedGuides = {};
+  for (const topicId of MAIN_TOPICS) {
     groups[topicId] = [];
   }
   return groups;
@@ -81,28 +78,11 @@ function groupGuidesByTopic(guidesToGroup: GuideMeta[]): GroupedGuides {
   const groups = createEmptyTopicGroups();
 
   for (const guide of guidesToGroup) {
-    let assigned = false;
-
     for (const topicId of MAIN_TOPICS) {
       if (matchesGuideTopic(guide, topicId)) {
         groups[topicId].push(guide);
-        assigned = true;
         break;
       }
-    }
-
-    if (!assigned) {
-      for (const topicId of MORE_TOPICS) {
-        if (matchesGuideTopic(guide, topicId)) {
-          groups.more.push(guide);
-          assigned = true;
-          break;
-        }
-      }
-    }
-
-    if (!assigned) {
-      groups.more.push(guide);
     }
   }
 
@@ -111,7 +91,7 @@ function groupGuidesByTopic(guidesToGroup: GuideMeta[]): GroupedGuides {
 
 function combineGroupedGuides(content: GroupedGuides, directions: GroupedGuides): GroupedGuides {
   const combined: GroupedGuides = {};
-  for (const topicId of [...MAIN_TOPICS, "more"]) {
+  for (const topicId of MAIN_TOPICS) {
     combined[topicId] = [...(content[topicId] || []), ...(directions[topicId] || [])];
   }
   return combined;
@@ -129,15 +109,6 @@ function buildFilterOptions(groupedGuides: GroupedGuides): GuideFilterOption[] {
         count,
       });
     }
-  }
-
-  const moreCount = groupedGuides.more?.length ?? 0;
-  if (moreCount > 0) {
-    options.push({
-      value: "more",
-      label: TOPIC_LABELS.more,
-      count: moreCount,
-    });
   }
 
   return options;
@@ -166,20 +137,8 @@ function buildTopicConfigs(groupedGuides: GroupedGuides, t: Translator): TopicCo
       id: topicId,
       title,
       description: readGroupedCopy(t, topicId, "description"),
-      imageSrc: TOPIC_IMAGES[topicId] || TOPIC_IMAGES.more,
+      imageSrc: TOPIC_IMAGES[topicId],
       imageAlt: readGroupedCopy(t, topicId, "imageAlt") || title,
-    });
-  }
-
-  const moreGuides = groupedGuides.more || [];
-  if (moreGuides.length > 0) {
-    const moreTitle = readGroupedCopy(t, "more", "title") || TOPIC_LABELS.more;
-    configs.push({
-      id: "more",
-      title: moreTitle,
-      description: readGroupedCopy(t, "more", "description"),
-      imageSrc: TOPIC_IMAGES.more,
-      imageAlt: readGroupedCopy(t, "more", "imageAlt") || moreTitle,
     });
   }
 

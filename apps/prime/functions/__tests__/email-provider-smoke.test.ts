@@ -36,12 +36,24 @@ function createArrival48HoursQueueRecord() {
 
 describe('email provider smoke spike', () => {
   const getSpy = jest.spyOn(FirebaseRest.prototype, 'get');
+  const setSpy = jest.spyOn(FirebaseRest.prototype, 'set');
   const updateSpy = jest.spyOn(FirebaseRest.prototype, 'update');
   const originalFetch = global.fetch;
 
   beforeEach(() => {
     jest.clearAllMocks();
-    getSpy.mockResolvedValue(createArrival48HoursQueueRecord());
+    getSpy.mockImplementation(async (path: string) => {
+      // Queue record lookup
+      if (path.startsWith('messagingQueue/')) {
+        return createArrival48HoursQueueRecord();
+      }
+      // Booking checkout date lookup (used by deep link generation)
+      if (path.startsWith('bookings/')) {
+        return { checkOutDate: '2026-02-17' };
+      }
+      return null;
+    });
+    setSpy.mockResolvedValue(undefined);
     updateSpy.mockResolvedValue(undefined);
     global.fetch = jest.fn() as unknown as typeof fetch;
   });
@@ -52,6 +64,7 @@ describe('email provider smoke spike', () => {
 
   afterAll(() => {
     getSpy.mockRestore();
+    setSpy.mockRestore();
     updateSpy.mockRestore();
   });
 

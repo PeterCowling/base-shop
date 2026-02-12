@@ -6,6 +6,7 @@
  */
 
 import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
+import { generateToken, computeTokenExpiry, type GuestSessionToken } from '../lib/guest-token';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -25,31 +26,8 @@ interface GuestDetails {
   lastName?: string;
 }
 
-interface GuestSessionToken {
-  bookingId: string;
-  guestUuid: string | null;
-  createdAt: string;
-  expiresAt: string;
-}
-
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 60 * 60 * 1000; // 1 hour
-
-function generateToken(): string {
-  return crypto.randomUUID().replace(/-/g, '');
-}
-
-function computeTokenExpiry(checkOutDate: string, now: Date): string {
-  const checkoutDate = new Date(checkOutDate);
-  if (!Number.isNaN(checkoutDate.getTime())) {
-    const expiresAt = new Date(checkoutDate.getTime() + 48 * 60 * 60 * 1000);
-    return expiresAt.toISOString();
-  }
-
-  const fallback = new Date(now.getTime());
-  fallback.setDate(fallback.getDate() + 30);
-  return fallback.toISOString();
-}
 
 async function incrementRateLimit(env: Env, rateLimitKey: string): Promise<void> {
   if (!env.RATE_LIMIT) return;

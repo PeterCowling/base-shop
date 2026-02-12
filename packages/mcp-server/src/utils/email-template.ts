@@ -175,7 +175,6 @@ export function generateEmailHtml(options: EmailTemplateOptions): string {
 
           <tr>
             <td style="background-color: ${colors.signature}; padding: 20px 30px 30px 30px; font-family: Arial, sans-serif;">
-              <p style="margin: 0 0 15px 0; text-align: center; font-size: 14px;">With warm regards,</p>
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td align="center" style="width: 50%;">
@@ -185,8 +184,6 @@ export function generateEmailHtml(options: EmailTemplateOptions): string {
                       "Cristiana's Signature",
                       "width: 200px; height: auto;"
                     )}
-                    <div style="font-size: 14px;">Cristiana Marzano Cowling</div>
-                    <div style="font-size: 12px;">Owner</div>
                   </td>
                   <td align="center" style="width: 50%;">
                     ${pictureHtml(
@@ -195,8 +192,6 @@ export function generateEmailHtml(options: EmailTemplateOptions): string {
                       "Peter's Signature",
                       "width: 200px; height: auto;"
                     )}
-                    <div style="font-size: 14px;">Peter Cowling</div>
-                    <div style="font-size: 12px;">Owner</div>
                   </td>
                 </tr>
               </table>

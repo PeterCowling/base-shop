@@ -147,7 +147,7 @@ function RoomsSection({
     () =>
       [
         /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-        "bg-brand-surface dark:bg-brand-text",
+        "bg-brand-surface dark:bg-brand-bg",
         /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
         "bg-no-repeat bg-[length:60vw]",
         "px-4 py-12",
@@ -161,7 +161,7 @@ function RoomsSection({
     <section id="rooms" className={sectionClasses}>
       <Section as="div" padding="none" width="full" className="mx-auto max-w-7xl px-4">
         <header className="mb-8 text-center sm:text-end">
-          <h2 className="text-xl font-medium tracking-wide text-brand-primary">
+          <h2 className="text-xl font-medium tracking-wide text-brand-primary dark:text-brand-secondary">
             {resolveTranslatedCopy(t("rooms.title", { defaultValue: "Rooms" }), "Rooms")}
           </h2>
           <hr className="mt-1 w-12 border-t-2 border-brand-primary" />
@@ -218,7 +218,7 @@ function RoomsSection({
                 </p>
                 <Link
                   href={`${href}${searchString}`}
-                  className="mt-2 inline-flex min-h-11 items-center self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70"
+                  className="mt-2 inline-flex min-h-11 items-center self-start text-sm font-medium text-brand-primary underline hover:text-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-secondary dark:hover:text-brand-secondary/85 dark:focus-visible:ring-brand-secondary/70"
                 >
                   {resolveTranslatedCopy(
                     t("moreAboutThisRoom", { defaultValue: "More About This Room" }),

@@ -1,11 +1,16 @@
 ---
 name: user-testing-audit
-description: Run a deep user-testing audit on a live URL (crawl, link integrity, image loading, contrast/a11y, layout heuristics, mobile behavior, no-JS SSR predicates, SEO/Lighthouse), then write a dated markdown issue report with prioritized findings and acceptance criteria.
+description: Run a repeatable two-layer site audit: full sitemap JS-off coverage for complete issue inventory, then focused JS-on flow checks for hydration/booking UX. Emit dated markdown+JSON artifacts with prioritized findings and acceptance criteria.
 ---
 
 # User Testing Audit
 
-Run a structured user-testing pass for a live website and produce an actionable markdown report.
+Run a structured, repeatable audit for a live website and produce actionable artifacts.
+
+This skill is now **two-layer by default**:
+
+1. **Layer A (full coverage):** sitemap-wide JS-off crawl for complete machine-readability/indexability inventory.
+2. **Layer B (focused behavior):** JS-on audit for booking/hydration/mobile/a11y conversion flows.
 
 ## Trigger
 
@@ -28,14 +33,22 @@ Do not proceed without a valid `https://...` URL.
 
 Always produce:
 
-1. A dated markdown report in `docs/audits/user-testing/`
-2. A JSON artifact with raw evidence
-3. A SEO summary JSON artifact (`...-seo-summary.json`) and raw Lighthouse artifact folder (`...-seo-artifacts/`)
-4. A prioritized issue list (`P0/P1/P2`) with acceptance criteria per issue
-5. Explicit no-JS predicate summary per key route (`meaningful H1`, bailout marker, home i18n leakage, booking-funnel key leakage, booking CTA fallback, visible `Book Now` label, homepage `mailto:` contact link, homepage social-link accessible names, deals parity, snapshot date)
-6. Explicit hydrated booking transaction summary (`home CTA -> modal -> provider handoff`, `room-rate CTA -> confirm -> provider handoff`)
-7. Deployment provenance in report frontmatter (`Deployment-URL`, `Deployment-Run`, `Deployment-Commit`)
-8. For reruns: explicit delta vs previous report (`Resolved`, `Still-open`, `Regressions/new`)
+1. Full-crawl markdown report:
+   - `docs/audits/user-testing/YYYY-MM-DD-<slug>-full-js-off-crawl.md`
+2. Full-crawl JSON matrix artifact:
+   - `docs/audits/user-testing/YYYY-MM-DD-<slug>-full-js-off-crawl.json`
+3. Focused JS-on markdown report:
+   - `docs/audits/user-testing/YYYY-MM-DD-<slug>.md`
+4. Focused JS-on JSON artifact:
+   - `docs/audits/user-testing/YYYY-MM-DD-<slug>.json`
+5. Focused SEO summary JSON + raw Lighthouse folder:
+   - `...-seo-summary.json`
+   - `...-seo-artifacts/`
+6. Prioritized issue list (`P0/P1/P2`) with acceptance criteria per issue.
+7. Explicit no-JS predicate summary for key routes.
+8. Explicit hydrated booking transaction summary.
+9. Discovery policy summary (`preview noindex`, `hreflang`, `llms.txt`).
+10. For reruns: explicit delta vs prior report (`Resolved`, `Still-open`, `Regressions/new`).
 
 ## Workflow
 
@@ -58,7 +71,24 @@ This returns JSON:
 
 If the latest run is still in progress, the resolver waits and polls until completion (or timeout). Use the returned `url` as `<TARGET_URL>` in all audit steps.
 
-### 2) Run automated audit (expanded default; includes no-JS + SEO by default)
+### 2) Run full coverage crawl first (JS-off, sitemap-wide)
+
+```bash
+node .claude/skills/user-testing-audit/scripts/run-full-js-off-sitemap-crawl.mjs \
+  --url <TARGET_URL> \
+  --slug <DEPLOYMENT-OR-BRANCH-SLUG> \
+  --max-pages 6000 \
+  --max-sitemaps 160 \
+  --concurrency 8
+```
+
+Notes:
+
+- This is the complete issue inventory layer.
+- It should cover all URLs exposed by sitemap(s), not a small sample.
+- If sitemap coverage is unexpectedly low, treat that as a blocker before moving on.
+
+### 3) Run focused JS-on audit (booking/hydration/mobile/a11y)
 
 ```bash
 node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
@@ -69,17 +99,7 @@ node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
   --max-mobile-pages 24
 ```
 
-Optional tuning (only when needed for very large sites):
-
-```bash
-node .claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs \
-  --url <TARGET_URL> \
-  --max-crawl-pages 120 \
-  --max-audit-pages 30 \
-  --max-mobile-pages 18
-```
-
-This generates:
+This focused run still generates:
 
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>.md`
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>.json`
@@ -87,49 +107,62 @@ This generates:
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-summary.json`
 - `docs/audits/user-testing/YYYY-MM-DD-<slug>-seo-artifacts/`
 
-The script includes a sitewide image-asset integrity sweep across discovered internal routes, so broken `/img/...` URLs are reported even if a page is outside the smaller desktop/mobile audit subset.
-It also includes deterministic no-JS route checks on homepage/rooms/experiences/how-to-get-here/deals (including booking-funnel key leakage, booking CTA fallback semantics, visible `Book Now` label coverage, and homepage contact/accessibility checks), hydrated booking transaction checks (CTA interaction + provider handoff), and Lighthouse checks for homepage + rooms + help/assistance.
+### 4) Reconcile layer A + layer B findings (required)
 
-### 3) Validate critical findings manually
+Do not treat the focused report as complete by itself.
+
+Required reconciliation:
+
+- Use full-crawl output as the canonical completeness baseline.
+- Merge focused-flow regressions (hydration, booking transaction, mobile/a11y) into the same backlog priority ordering.
+- Raise severity when a focused-flow failure appears across many sitemap URLs in full-crawl data.
+
+### 5) Validate critical findings manually
 
 Do targeted repro checks for high-severity findings from the generated report:
 
-- Broken internal routes (open failing URL directly)
-- Suspected i18n key leakage pages
-- No-JS route checks (raw HTML for `/en`, `/en/rooms`, `/en/experiences`, `/en/how-to-get-here`, `/en/deals`)
-- Mobile menu state/focus issues
-- Contrast failures on key CTAs/headings
+- Broken internal routes from full crawl
+- High-frequency template failures (canonical/hreflang/SSR shell issues)
+- Suspected i18n key leakage and booking CTA fallback failures
+- JS-on booking handoff failures and mobile menu/focus issues
+- Contrast failures on key conversion CTAs
 
-### 4) Review generated SEO + no-JS sections (required)
+### 6) Review generated sections/artifacts (required)
 
-The audit script now emits:
+From focused report:
 
 - `## No-JS Predicate Summary` in markdown
 - `## Booking Transaction Summary` in markdown
+- `## Discovery Policy Summary` in markdown
 - `## SEO/Lighthouse Summary` in markdown
 - `...-seo-summary.json`
 - `...-seo-artifacts/`
 
-If Lighthouse/no-JS artifacts expose issues not represented in Findings Index, update the findings list before finalizing.
+From full-crawl report:
 
-### 5) Compare against prior audit when this is a rerun
+- full sitemap URL coverage and status histogram
+- complete JS-off issue inventory for discovered URLs
+
+If either layer exposes issues not represented in your final backlog, update before finalizing.
+
+### 7) Compare against prior audit when this is a rerun
 
 When re-auditing a previously reported issue set:
 
-- link the prior report in the new report frontmatter/body,
+- link prior full-crawl and focused reports,
 - summarize issue delta (`P0/P1/P2` before vs after),
-- call out `resolved`, `regressed`, and `still-open` findings explicitly.
+- call out `resolved`, `regressed/new`, and `still-open` findings explicitly.
 
-### 6) Return concise summary to user
+### 8) Return concise summary to user
 
 In chat, provide:
 
-- total issues by priority,
-- top blockers first,
-- link/path to markdown report,
-- link/path to SEO summary artifact,
-- deployment source (immutable URL + workflow run URL + commit SHA),
-- immediate next fix recommendation.
+- total issues by priority (merged across both layers),
+- top blockers first (frequency + conversion impact),
+- path to full-crawl report/json,
+- path to focused report/json + SEO summary artifact,
+- deployment source (immutable URL + workflow run URL + commit SHA when available),
+- immediate next fix batch recommendation.
 
 ## Prioritization Rules
 

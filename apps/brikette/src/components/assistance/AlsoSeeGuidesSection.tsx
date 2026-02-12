@@ -28,7 +28,7 @@ function AlsoSeeGuidesSection({ lang }: { lang: AppLanguage }) {
           <Link
             href={guideHref(lang, "onlyHostel")}
             prefetch={false}
-            className="block min-h-10 min-w-10 rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
+            className="block min-h-10 min-w-10 rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text dark:hover:text-brand-secondary"
           >
             {getGuideLinkLabel(tGuides as TFunction, guidesEnT as TFunction, "onlyHostel")}
           </Link>

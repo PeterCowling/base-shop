@@ -2,9 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 const REPO_ROOT = path.resolve(__dirname, "../..");
-const AUDIT_SCRIPT = path.join(
+const FOCUSED_AUDIT_SCRIPT = path.join(
   REPO_ROOT,
   ".claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs"
+);
+const FULL_CRAWL_AUDIT_SCRIPT = path.join(
+  REPO_ROOT,
+  ".claude/skills/user-testing-audit/scripts/run-full-js-off-sitemap-crawl.mjs"
 );
 const AUDIT_NO_JS_MODULE = path.join(
   REPO_ROOT,
@@ -22,10 +26,14 @@ const AUDIT_SKILL = path.join(
   REPO_ROOT,
   ".claude/skills/user-testing-audit/SKILL.md"
 );
+const AUDIT_REPORT_TEMPLATE = path.join(
+  REPO_ROOT,
+  ".claude/skills/user-testing-audit/references/report-template.md"
+);
 
 describe("user-testing-audit expanded contract", () => {
-  it("enforces no-JS predicates for key route regressions", () => {
-    const source = fs.readFileSync(AUDIT_SCRIPT, "utf8");
+  it("enforces focused no-JS + booking + discovery policy checks", () => {
+    const source = fs.readFileSync(FOCUSED_AUDIT_SCRIPT, "utf8");
     const moduleSource = fs.readFileSync(AUDIT_NO_JS_MODULE, "utf8");
     const bookingModuleSource = fs.readFileSync(AUDIT_BOOKING_MODULE, "utf8");
     const discoveryPolicyModuleSource = fs.readFileSync(
@@ -68,22 +76,45 @@ describe("user-testing-audit expanded contract", () => {
     expect(source).toContain("Discovery Policy Summary");
   });
 
-  it("emits SEO summary and raw artifact paths", () => {
-    const source = fs.readFileSync(AUDIT_SCRIPT, "utf8");
+  it("enforces full sitemap JS-off crawl contract", () => {
+    const source = fs.readFileSync(FULL_CRAWL_AUDIT_SCRIPT, "utf8");
+
+    expect(source).toContain("collectSitemapLocs");
+    expect(source).toContain("evaluateNoJsRoute");
+    expect(source).toContain("new URL(\"/sitemap.xml\", origin)");
+    expect(source).toContain("new URL(\"/robots.txt\", parsed.origin)");
+    expect(source).toContain("new URL(\"/llms.txt\", parsed.origin)");
+    expect(source).toContain("--max-sitemaps");
+    expect(source).toContain("aggregateFindings");
+    expect(source).toContain("-full-js-off-crawl");
+  });
+
+  it("emits focused SEO summary and raw artifact paths", () => {
+    const source = fs.readFileSync(FOCUSED_AUDIT_SCRIPT, "utf8");
 
     expect(source).toContain("-seo-summary.json");
     expect(source).toContain("-seo-artifacts");
     expect(source).toContain("runSeoChecks");
   });
 
-  it("documents that automated audit includes no-JS and SEO outputs", () => {
-    const source = fs.readFileSync(AUDIT_SKILL, "utf8");
+  it("documents two-layer workflow and artifacts in skill + template", () => {
+    const skillSource = fs.readFileSync(AUDIT_SKILL, "utf8");
+    const templateSource = fs.readFileSync(AUDIT_REPORT_TEMPLATE, "utf8");
 
-    expect(source).toContain("includes no-JS + SEO by default");
-    expect(source).toContain("No-JS Predicate Summary");
-    expect(source).toContain("Booking Transaction Summary");
-    expect(source).toContain("booking CTA fallback");
-    expect(source).toContain("SEO/Lighthouse Summary");
-    expect(source).toContain("...-seo-summary.json");
+    expect(skillSource).toContain("two-layer by default");
+    expect(skillSource).toContain("run-full-js-off-sitemap-crawl.mjs");
+    expect(skillSource).toContain("full-js-off-crawl.md");
+    expect(skillSource).toContain("full-js-off-crawl.json");
+    expect(skillSource).toContain("No-JS Predicate Summary");
+    expect(skillSource).toContain("Booking Transaction Summary");
+    expect(skillSource).toMatch(/discovery policy summary/i);
+
+    expect(templateSource).toContain("Artifacts-Full-Crawl-Markdown");
+    expect(templateSource).toContain("Artifacts-Full-Crawl-JSON");
+    expect(templateSource).toContain("Artifacts-Focused-Markdown");
+    expect(templateSource).toContain("Artifacts-Focused-JSON");
+    expect(templateSource).toContain("## Audit Layers");
+    expect(templateSource).toContain("## Layer A Summary (Full JS-off Crawl)");
+    expect(templateSource).toContain("## Booking Transaction Summary (Focused)");
   });
 });

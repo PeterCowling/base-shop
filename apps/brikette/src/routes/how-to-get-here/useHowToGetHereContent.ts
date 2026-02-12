@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function -- LINT-1007 [ttl=2026-12-31] Content assembly remains centralized until planned extraction lands. */
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
@@ -45,12 +46,17 @@ export type HowToGetHereContent = {
   experienceGuides: ExperienceGuidesContent;
 };
 
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+
 const ensureString = (value: unknown): string => {
   if (typeof value !== "string") {
     return "";
   }
 
   const trimmed = value.trim();
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) {
+    return "";
+  }
   return trimmed.length > 0 ? trimmed : "";
 };
 
@@ -63,15 +69,39 @@ const withFallback = (value: unknown, fallback: string): string => {
   return ensureString(fallback) || fallback;
 };
 
+const withIndexedFallback = (
+  value: unknown,
+  fallbackBase: string,
+  index: number
+): string => withFallback(value, `${fallbackBase} ${index + 1}`);
+
 export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
   const { t, ready } = useTranslation("howToGetHere", { lng: lang });
 
   return useMemo(() => {
-    const header =
+    const headerRaw =
       (t("header", { returnObjects: true }) as HeaderContent | undefined) ??
       ({ eyebrow: "", title: "", description: "" } as HeaderContent);
+    const header = {
+      ...headerRaw,
+      eyebrow: withFallback(
+        headerRaw.eyebrow,
+        withFallback(t("header.eyebrow"), "Travel planner")
+      ),
+      title: withFallback(
+        headerRaw.title,
+        withFallback(t("header.title"), "How to Get Here")
+      ),
+      description: withFallback(
+        headerRaw.description,
+        withFallback(
+          t("header.description"),
+          "Plan your route to Hostel Brikette with practical transfer options."
+        )
+      ),
+    } satisfies HeaderContent;
 
-    const taxiContact = t("intro.taxiContact");
+    const taxiContact = ensureString(t("intro.taxiContact"));
     const sorrentoRaw =
       (t("sorrento", { returnObjects: true }) as Record<string, unknown> | undefined) ??
       ({ title: "", links: [] });
@@ -97,7 +127,32 @@ export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
           ]
         : normalizedSections;
 
-    const sections = augmentDestinationSections(normalizedSectionsWithSorrento);
+    const sections = augmentDestinationSections(
+      normalizedSectionsWithSorrento
+    ).map((section, sectionIndex) => {
+      const resolvedName = withIndexedFallback(
+        section.name,
+        "Route guide",
+        sectionIndex
+      );
+      const resolvedDescription = ensureString(section.description);
+      const resolvedLinks = section.links.map((link, linkIndex) => ({
+        ...link,
+        label: withIndexedFallback(
+          link.label,
+          `${resolvedName} route`,
+          linkIndex
+        ),
+        summary: ensureString(link.summary),
+      }));
+
+      return {
+        ...section,
+        name: resolvedName,
+        links: resolvedLinks,
+        ...(resolvedDescription ? { description: resolvedDescription } : {}),
+      };
+    });
 
     const heroCandidate = ensureString(ready ? t("header.heroAlt") : "");
     const heroFallback = ensureString(ready ? t("header.heroAltFallback") : "");
@@ -107,15 +162,64 @@ export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
       ensureString(header.title) ||
       heroFallback;
 
-    const taxiEyebrow = t("intro.taxiEyebrow", { defaultValue: header.eyebrow });
-    const shuttleEyebrow = t("intro.shuttleEyebrow", { defaultValue: header.eyebrow });
+    const taxiEyebrow = withFallback(
+      t("intro.taxiEyebrow", { defaultValue: header.eyebrow }),
+      "Taxi option",
+    );
+    const shuttleEyebrow = withFallback(
+      t("intro.shuttleEyebrow", { defaultValue: header.eyebrow }),
+      "Shuttle option",
+    );
 
-    const romeTitle = (t("rome.title") as string) || "";
-    const romeDescription = (t("rome.description") as string) || "";
+    const romeTitle = withFallback(
+      t("rome.title"),
+      "Rome to Positano route planner"
+    );
+    const romeDescription = withFallback(
+      t("rome.description"),
+      "Compare route options between Rome and Hostel Brikette."
+    );
     const romeTableRaw =
       (t("rome.table", { returnObjects: true }) as Record<string, unknown> | undefined) ??
       ({ headers: { route: "", toRome: "", toHostel: "" }, options: [] });
-    const romeTable = normalizeRomeTable(romeTableRaw);
+    const romeTableNormalized = normalizeRomeTable(romeTableRaw);
+    const romeTable = {
+      headers: {
+        route: withFallback(romeTableNormalized.headers.route, "Route"),
+        toRome: withFallback(romeTableNormalized.headers.toRome, "To Rome"),
+        toHostel: withFallback(
+          romeTableNormalized.headers.toHostel,
+          "To Hostel"
+        ),
+      },
+      options: romeTableNormalized.options.map((option, optionIndex) => {
+        const routeLabel = withIndexedFallback(
+          option.route.label,
+          "Route option",
+          optionIndex
+        );
+        return {
+          ...option,
+          route: {
+            ...option.route,
+            label: routeLabel,
+            summary: ensureString(option.route.summary),
+          },
+          toRome: {
+            heading: withFallback(option.toRome.heading, "Outbound"),
+            points: option.toRome.points
+              .map((point) => ensureString(point))
+              .filter(Boolean),
+          },
+          toHostel: {
+            heading: withFallback(option.toHostel.heading, "Return"),
+            points: option.toHostel.points
+              .map((point) => ensureString(point))
+              .filter(Boolean),
+          },
+        };
+      }),
+    } satisfies RomeTable;
     const romeImageRaw = (t("rome.image", { returnObjects: true }) as
       | DestinationSectionImage
       | Record<string, unknown>
@@ -156,7 +260,23 @@ export function useHowToGetHereContent(lang: AppLanguage): HowToGetHereContent {
     const howToSlug = getSlug("howToGetHere", lang);
     const internalBasePath = `/${lang}/${howToSlug}`;
     const experienceGuidesRaw = t("experienceGuides", { returnObjects: true }) as unknown;
-    const experienceGuides = normalizeExperienceGuides(experienceGuidesRaw);
+    const experienceGuidesNormalized = normalizeExperienceGuides(
+      experienceGuidesRaw
+    );
+    const experienceGuides = {
+      ...experienceGuidesNormalized,
+      eyebrow: withFallback(experienceGuidesNormalized.eyebrow, "Explore"),
+      title: withFallback(
+        experienceGuidesNormalized.title,
+        "Local experiences"
+      ),
+      description: ensureString(experienceGuidesNormalized.description),
+      items: experienceGuidesNormalized.items.map((item, index) => ({
+        ...item,
+        label: withIndexedFallback(item.label, "Experience guide", index),
+        summary: ensureString(item.summary),
+      })),
+    } satisfies ExperienceGuidesContent;
 
     return {
       t,

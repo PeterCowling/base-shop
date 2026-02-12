@@ -99,7 +99,7 @@
   --color-brand-outline: var(--color-brand-surface);
 
   /* accents — darker mustard guarantees ≥ 4.5 : 1 on white text */
-  --color-brand-primary: #9f6b00; /* ⬅︎ was #ffb74d               */
+  --color-brand-primary: #8f5f00; /* darkened to keep text contrast on primary surfaces */
   --color-brand-secondary: #d2b53f;
   --color-brand-terra: #ff5722;
   --color-brand-bougainvillea: #ffeb3b;
@@ -125,7 +125,7 @@
   --rgb-brand-surface: 31 31 31;
   --rgb-brand-text: 247 247 247;
   --rgb-brand-heading: 255 255 255;
-  --rgb-brand-primary: 159 107 0;
+  --rgb-brand-primary: 143 95 0;
   --rgb-brand-secondary: 210 181 63;
   --rgb-brand-terra: 255 87 34;
   --rgb-brand-bougainvillea: 255 235 59;
@@ -201,6 +201,13 @@
   a:hover,
   a:focus-visible {
     text-decoration-color: var(--color-brand-bougainvillea);
+  }
+  .dark a {
+    color: var(--color-brand-secondary);
+  }
+  .dark a:hover,
+  .dark a:focus-visible {
+    text-decoration-color: var(--color-brand-secondary);
   }
 
   details > summary {

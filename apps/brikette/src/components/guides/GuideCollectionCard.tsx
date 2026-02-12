@@ -220,7 +220,7 @@ export const GuideCollectionCard = ({
             <Link
               href={href}
               prefetch={false}
-              className="inline-flex min-h-11 items-center hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70"
+              className="inline-flex min-h-11 items-center text-brand-heading hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-text dark:focus-visible:ring-brand-secondary/70"
             >
               {label}
             </Link>

@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { getGmailClient } from "../clients/gmail.js";
 import { createRawEmail } from "../utils/email-mime.js";
+import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 
 function resolveDataRoot(): string {
@@ -165,6 +166,7 @@ export async function sendGuestEmailActivity(
   }
 
   if (dryRun) {
+    const sanitizedBody = stripLegacySignatureBlock(template.body);
     return {
       success: true,
       status: "drafted",
@@ -176,7 +178,7 @@ export async function sendGuestEmailActivity(
       dryRun: true,
       preview: {
         subject: template.subject,
-        bodyPlain: template.body,
+        bodyPlain: sanitizedBody,
       },
       prepaymentProvider: resolvedProvider,
     };
@@ -197,7 +199,7 @@ export async function sendGuestEmailActivity(
   }
 
   const subject = template.subject;
-  const bodyPlain = template.body;
+  const bodyPlain = stripLegacySignatureBlock(template.body);
   const bodyHtml = generateEmailHtml({
     bodyText: bodyPlain,
     includeBookingLink: false,

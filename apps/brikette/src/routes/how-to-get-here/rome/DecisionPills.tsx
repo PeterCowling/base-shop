@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] UI fallback copy retained while translation coverage is completed. */
 import { memo, useCallback, useId } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
@@ -32,6 +33,14 @@ const PREFERENCES: { key: PreferenceKey; labelKey: string; descriptionKey: strin
 const PRIMARY_PREFERENCES = PREFERENCES.slice(0, 2);
 const SECONDARY_PREFERENCE = PREFERENCES[2];
 
+function resolveTranslatedCopy(value: unknown, key: string, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (trimmed === key) return fallback;
+  return trimmed;
+}
+
 function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
   const { t } = useTranslation("howToGetHere");
   const toggleLabelId = useId();
@@ -51,7 +60,11 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
             id={toggleLabelId}
             className="text-sm font-medium text-brand-heading/80 dark:text-brand-text/80"
           >
-          {t("romePlanner.pref.prompt")}
+          {resolveTranslatedCopy(
+            t("romePlanner.pref.prompt", { defaultValue: "Any preference?" }),
+            "romePlanner.pref.prompt",
+            "Any preference?"
+          )}
         </span>
         <Inline
           role="group"
@@ -84,7 +97,7 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
                         "text-brand-surface",
                         "shadow-sm",
                         "dark:bg-brand-secondary/85",
-                        "dark:text-brand-text",
+                        "dark:text-brand-bg",
                       ]
                       : [
                         "text-brand-text/80",
@@ -94,7 +107,18 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
                       ],
                 )}
               >
-                {t(labelKey)}
+                {resolveTranslatedCopy(
+                  t(labelKey, {
+                    defaultValue:
+                      key === "cheapest"
+                        ? "Cheapest"
+                        : key === "scenic"
+                          ? "Scenic"
+                          : "Heavy luggage",
+                  }),
+                  labelKey,
+                  key === "cheapest" ? "Cheapest" : key === "scenic" ? "Scenic" : "Heavy luggage"
+                )}
               </button>
             );
           })}
@@ -106,7 +130,11 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
           id={heavyLabelId}
           className="text-sm font-medium text-brand-heading/80 dark:text-brand-text/80"
         >
-          {t("romePlanner.pref.heavyPrefix")}
+          {resolveTranslatedCopy(
+            t("romePlanner.pref.heavyPrefix", { defaultValue: "I have" }),
+            "romePlanner.pref.heavyPrefix",
+            "I have"
+          )}
         </span>
         {secondary
           ? (() => {
@@ -138,7 +166,7 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
                       "shadow-sm",
                       "dark:border-brand-secondary",
                       "dark:bg-brand-secondary/85",
-                      "dark:text-brand-text",
+                      "dark:text-brand-bg",
                     ]
                       : [
                         "border-brand-outline/20",
@@ -154,7 +182,7 @@ function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
                       ],
               )}
             >
-              {t(labelKey)}
+              {resolveTranslatedCopy(t(labelKey, { defaultValue: "Heavy luggage" }), labelKey, "Heavy luggage")}
             </button>
           );
         })()

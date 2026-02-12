@@ -1,0 +1,977 @@
+{
+  "generatedAt": "2026-02-11T18:39:26.132Z",
+  "date": "2026-02-11",
+  "targetUrl": "http://localhost:4020/en",
+  "origin": "http://localhost:4020",
+  "startPath": "/en",
+  "crawl": {
+    "discoveredPaths": [
+      "/en"
+    ],
+    "visitedPaths": [
+      "/en"
+    ],
+    "pageLinks": {
+      "/en": []
+    },
+    "crawlErrors": []
+  },
+  "selectedDesktopPaths": [
+    "/en"
+  ],
+  "selectedMobilePaths": [
+    "/en"
+  ],
+  "linkChecks": [
+    {
+      "page": "/en",
+      "status": 400
+    }
+  ],
+  "imageSweep": {
+    "checkedImageCount": 0,
+    "pageFetchErrors": [],
+    "brokenImages": []
+  },
+  "noJsChecks": {
+    "lang": "en",
+    "routeChecks": {
+      "home": {
+        "routePath": "/en",
+        "status": 400,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasNoI18nKeyLeak": true,
+          "hasSocialProofSnapshotDate": false,
+          "hasMailtoContactLink": false,
+          "hasNamedSocialLinks": false
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "i18nKeyLeakSamples": [],
+        "mailto": {
+          "hasMailtoLink": false,
+          "linkCount": 0
+        },
+        "socialLinks": {
+          "hasNamedSocialLinks": false,
+          "socialLinkCount": 0,
+          "unnamedSocialLinks": []
+        }
+      },
+      "rooms": {
+        "routePath": "/en/rooms",
+        "status": 400,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        }
+      },
+      "roomDetail": {
+        "routePath": "/en/rooms/double_room",
+        "status": 400,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": true
+        }
+      },
+      "experiences": {
+        "routePath": "/en/experiences",
+        "status": 400,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        }
+      },
+      "howToGetHere": {
+        "routePath": "/en/how-to-get-here",
+        "status": 400,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        }
+      },
+      "deals": {
+        "routePath": "/en/deals",
+        "status": 400,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasMetadataBodyParity": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "dealsParity": {
+          "titlePercentClaim": "",
+          "bodyHasPercentClaim": true,
+          "bodyIndicatesExpiredOffer": false
+        }
+      }
+    }
+  },
+  "bookingTransactionChecks": {
+    "lang": "en",
+    "routeMap": {
+      "home": "/en",
+      "roomDetail": "/en/rooms/double_room"
+    },
+    "flowChecks": {
+      "homeModalHandoff": {
+        "flowKey": "homeModalHandoff",
+        "flowType": "home-modal-booking",
+        "routePath": "/en",
+        "status": "FAIL",
+        "hydratedInteraction": false,
+        "hydratedTriggerWorked": false,
+        "handoffHref": "",
+        "handoffObservedUrl": "",
+        "triggerText": "",
+        "error": "No visible booking CTA trigger found on homepage.",
+        "handoffAnalysis": {
+          "url": "",
+          "isValidUrl": false,
+          "isProviderHost": false,
+          "isExpectedPath": false,
+          "hasRequiredQuery": false,
+          "missingQueryKeys": [
+            "codice",
+            "checkin",
+            "checkout"
+          ],
+          "hasPartySize": false
+        },
+        "checks": {
+          "hasHydratedInteraction": false,
+          "hasProviderHandoff": false,
+          "hasRequiredBookingQuery": false,
+          "hasNoExecutionError": false,
+          "passes": false
+        }
+      },
+      "roomDetailRateHandoff": {
+        "flowKey": "roomDetailRateHandoff",
+        "flowType": "room-detail-rate-booking",
+        "routePath": "/en/rooms/double_room",
+        "status": "FAIL",
+        "hydratedInteraction": false,
+        "hydratedTriggerWorked": false,
+        "handoffHref": "",
+        "handoffObservedUrl": "",
+        "triggerText": "",
+        "error": "No visible room-rate booking action found on room detail.",
+        "handoffAnalysis": {
+          "url": "",
+          "isValidUrl": false,
+          "isProviderHost": false,
+          "isExpectedPath": false,
+          "hasRequiredQuery": false,
+          "missingQueryKeys": [
+            "codice",
+            "checkin",
+            "checkout"
+          ],
+          "hasPartySize": false
+        },
+        "checks": {
+          "hasHydratedInteraction": false,
+          "hasProviderHandoff": false,
+          "hasRequiredBookingQuery": false,
+          "hasNoExecutionError": false,
+          "passes": false
+        }
+      }
+    }
+  },
+  "seoChecks": {
+    "enabled": false,
+    "pages": [],
+    "errors": []
+  },
+  "desktopResults": [
+    {
+      "page": "/en",
+      "viewport": "desktop",
+      "navStatus": 400,
+      "navError": null,
+      "dom": {
+        "title": "400: Bad Request",
+        "htmlLang": null,
+        "h1": [
+          "400"
+        ],
+        "imageCount": 0,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 0,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 0,
+        "tinyTapTargets44Samples": [],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": null
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+      ],
+      "badResponses": [
+        {
+          "status": 400,
+          "url": "http://localhost:4020/en",
+          "path": "/en",
+          "method": "GET",
+          "resourceType": "document"
+        }
+      ],
+      "axeViolations": [
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "description": "Ensure every HTML document has a lang attribute",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mobileResults": [
+    {
+      "page": "/en",
+      "viewport": "mobile",
+      "navStatus": 400,
+      "navError": null,
+      "dom": {
+        "title": "400: Bad Request",
+        "htmlLang": null,
+        "h1": [
+          "400"
+        ],
+        "imageCount": 0,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 0,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 0,
+        "tinyTapTargets44Samples": [],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": null
+      },
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+      ],
+      "badResponses": [
+        {
+          "status": 400,
+          "url": "http://localhost:4020/en",
+          "path": "/en",
+          "method": "GET",
+          "resourceType": "document"
+        }
+      ],
+      "axeViolations": [
+        {
+          "id": "html-has-lang",
+          "impact": "serious",
+          "help": "<html> element must have a lang attribute",
+          "description": "Ensure every HTML document has a lang attribute",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                "html"
+              ],
+              "failureSummary": "Fix any of the following:\n  The <html> element does not have a lang attribute"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "issues": [
+    {
+      "id": "no-js-route-shell-bailout",
+      "priority": "P0",
+      "title": "Top-nav routes fail no-JS SSR content checks",
+      "evidence": {
+        "failingRoutes": [
+          {
+            "key": "rooms",
+            "route": "/en/rooms",
+            "status": 400,
+            "hasMeaningfulH1": false,
+            "hasNoBailoutMarker": true
+          },
+          {
+            "key": "experiences",
+            "route": "/en/experiences",
+            "status": 400,
+            "hasMeaningfulH1": false,
+            "hasNoBailoutMarker": true
+          },
+          {
+            "key": "howToGetHere",
+            "route": "/en/how-to-get-here",
+            "status": 400,
+            "hasMeaningfulH1": false,
+            "hasNoBailoutMarker": true
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Top-nav pages (`rooms`, `experiences`, `how-to-get-here`) render a meaningful non-empty H1 in initial HTML (not blank/punctuation/i18n-key token).",
+        "No `BAILOUT_TO_CLIENT_SIDE_RENDERING` marker appears in initial HTML for top-nav routes.",
+        "No-JS route checks pass for all top-nav routes."
+      ]
+    },
+    {
+      "id": "booking-cta-visible-label-missing",
+      "priority": "P0",
+      "title": "Booking funnel routes are missing visible booking CTA labels",
+      "evidence": {
+        "failingRoutes": [
+          {
+            "key": "home",
+            "route": "/en",
+            "status": 400,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "rooms",
+            "route": "/en/rooms",
+            "status": 400,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "roomDetail",
+            "route": "/en/rooms/double_room",
+            "status": 400,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "experiences",
+            "route": "/en/experiences",
+            "status": 400,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "howToGetHere",
+            "route": "/en/how-to-get-here",
+            "status": 400,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Every booking-funnel route exposes a visible `Book Now` CTA label in initial HTML.",
+        "Route no-JS checks report `hasVisibleBookingCtaLabel=true` across funnel routes."
+      ]
+    },
+    {
+      "id": "social-proof-snapshot-date",
+      "priority": "P1",
+      "title": "Social proof snapshot date missing in initial HTML",
+      "evidence": {
+        "route": "/en",
+        "status": 400
+      },
+      "acceptanceCriteria": [
+        "Homepage social proof includes explicit snapshot date disclosure.",
+        "Snapshot date is rendered in initial HTML (no-JS check)."
+      ]
+    },
+    {
+      "id": "contact-email-mailto-missing",
+      "priority": "P1",
+      "title": "Contact email is not rendered as a mailto link in initial HTML",
+      "evidence": {
+        "route": "/en",
+        "status": 400,
+        "mailto": {
+          "hasMailtoLink": false,
+          "linkCount": 0
+        }
+      },
+      "acceptanceCriteria": [
+        "At least one contact email address is rendered as a `mailto:` link in initial HTML.",
+        "No-JS checks report `hasMailtoContactLink=true` on homepage."
+      ]
+    },
+    {
+      "id": "social-links-accessible-name-missing",
+      "priority": "P1",
+      "title": "Social links are missing accessible names in initial HTML",
+      "evidence": {
+        "route": "/en",
+        "status": 400,
+        "socialLinks": {
+          "hasNamedSocialLinks": false,
+          "socialLinkCount": 0,
+          "unnamedSocialLinks": []
+        }
+      },
+      "acceptanceCriteria": [
+        "Each social link has a visible text label or an accessible name (`aria-label` / `aria-labelledby`).",
+        "No-JS checks report `hasNamedSocialLinks=true` on homepage."
+      ]
+    },
+    {
+      "id": "booking-transaction-provider-handoff",
+      "priority": "P0",
+      "title": "Hydrated booking transaction cannot complete provider handoff",
+      "evidence": {
+        "failingFlows": [
+          {
+            "flowKey": "homeModalHandoff",
+            "routePath": "/en",
+            "flowType": "home-modal-booking",
+            "hydratedInteraction": false,
+            "hydratedTriggerWorked": false,
+            "handoffObservedUrl": "",
+            "handoffHref": "",
+            "checks": {
+              "hasHydratedInteraction": false,
+              "hasProviderHandoff": false,
+              "hasRequiredBookingQuery": false,
+              "hasNoExecutionError": false,
+              "passes": false
+            },
+            "handoffAnalysis": {
+              "url": "",
+              "isValidUrl": false,
+              "isProviderHost": false,
+              "isExpectedPath": false,
+              "hasRequiredQuery": false,
+              "missingQueryKeys": [
+                "codice",
+                "checkin",
+                "checkout"
+              ],
+              "hasPartySize": false
+            },
+            "error": "No visible booking CTA trigger found on homepage."
+          },
+          {
+            "flowKey": "roomDetailRateHandoff",
+            "routePath": "/en/rooms/double_room",
+            "flowType": "room-detail-rate-booking",
+            "hydratedInteraction": false,
+            "hydratedTriggerWorked": false,
+            "handoffObservedUrl": "",
+            "handoffHref": "",
+            "checks": {
+              "hasHydratedInteraction": false,
+              "hasProviderHandoff": false,
+              "hasRequiredBookingQuery": false,
+              "hasNoExecutionError": false,
+              "passes": false
+            },
+            "handoffAnalysis": {
+              "url": "",
+              "isValidUrl": false,
+              "isProviderHost": false,
+              "isExpectedPath": false,
+              "hasRequiredQuery": false,
+              "missingQueryKeys": [
+                "codice",
+                "checkin",
+                "checkout"
+              ],
+              "hasPartySize": false
+            },
+            "error": "No visible room-rate booking action found on room detail."
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hydrated booking CTA interactions open the expected booking surface (modal or rate selector) on all audited booking flows.",
+        "Completing each booking flow transitions to the provider handoff URL on `book.octorate.com` (`result.xhtml` or `confirm.xhtml`).",
+        "Provider handoff URLs include required booking query keys (`codice`, `checkin`, `checkout`, and party size)."
+      ]
+    },
+    {
+      "id": "broken-internal-routes",
+      "priority": "P0",
+      "title": "Internal routes return 4xx/5xx",
+      "evidence": {
+        "brokenCount": 1,
+        "samples": [
+          {
+            "page": "/en",
+            "status": 400
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Every internal navigation route linked from the audited pages returns HTTP 200 (or expected redirect).",
+        "No help/support/article link in the audited navigation returns 404.",
+        "Automated link check passes for audited internal routes."
+      ]
+    }
+  ]
+}

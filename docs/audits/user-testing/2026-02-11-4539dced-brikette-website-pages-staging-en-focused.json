@@ -1,0 +1,6230 @@
+{
+  "generatedAt": "2026-02-11T23:46:02.728Z",
+  "date": "2026-02-11",
+  "targetUrl": "https://4539dced.brikette-website.pages.dev/en",
+  "origin": "https://4539dced.brikette-website.pages.dev",
+  "startPath": "/en",
+  "crawl": {
+    "discoveredPaths": [
+      "/en",
+      "/en/book",
+      "/en/rooms",
+      "/en/experiences",
+      "/en/how-to-get-here",
+      "/en/deals",
+      "/en/help",
+      "/",
+      "/en/terms",
+      "/en/house-rules",
+      "/en/privacy-policy",
+      "/en/cookie-policy",
+      "/en/rooms/double_room",
+      "/en/rooms/room_10",
+      "/en/rooms/room_11",
+      "/en/rooms/room_12",
+      "/en/rooms/room_3",
+      "/en/rooms/room_4",
+      "/en/rooms/room_5",
+      "/en/rooms/room_6",
+      "/en/rooms/room_9",
+      "/en/rooms/room_8",
+      "/en/experiences?topic=beaches",
+      "/en/experiences?topic=hiking",
+      "/en/experiences?topic=day-trip",
+      "/en/experiences?topic=boat",
+      "/en/experiences?topic=cuisine",
+      "/en/experiences?topic=more",
+      "/en/experiences/positano-beaches",
+      "/en/experiences/positano-main-beach-guide",
+      "/en/experiences/walk-down-to-positano-main-beach",
+      "/en/experiences/bus-down-to-positano-main-beach",
+      "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/marina-di-praia-and-secluded-beaches",
+      "/en/experiences/fiordo-di-furore-beach-guide",
+      "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+      "/en/experiences/fiordo-di-furore-bus-return",
+      "/en/experiences/fornillo-beach-guide",
+      "/en/experiences/hostel-brikette-to-fornillo-beach",
+      "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "/en/experiences/laurito-beach-guide",
+      "/en/experiences/getting-to-laurito-beach-by-bus",
+      "/en/experiences/bus-back-from-laurito-beach",
+      "/en/experiences/gavitella-beach-guide",
+      "/en/experiences/arienzo-beach-guide",
+      "/en/experiences/bus-to-arienzo-beach",
+      "/en/experiences/bus-back-from-arienzo-beach",
+      "/en/experiences/regina-giovanna-bath-beach-guide",
+      "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+      "/en/experiences/path-of-the-gods",
+      "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+      "/en/experiences/path-of-the-gods-via-amalfi-bus",
+      "/en/experiences/path-of-the-gods-via-nocelle",
+      "/en/experiences/top-of-the-mountain-hike",
+      "/en/experiences/santa-maria-del-castello-hike",
+      "/en/experiences/sunrise-hike-positano",
+      "/en/experiences/stay-fit-positano",
+      "/en/experiences/positano-to-pompeii",
+      "/en/experiences/day-trip-capri-from-positano",
+      "/en/experiences/day-trips-from-positano",
+      "/en/experiences/capri-on-a-budget",
+      "/en/experiences/boat-tours-positano",
+      "/en/experiences/cheap-eats-in-positano",
+      "/en/experiences/eating-out-in-positano",
+      "/en/experiences/limoncello-and-local-cuisine",
+      "/en/experiences/positano-dining-guide",
+      "/en/experiences/ferry-cancellations-weather",
+      "/en/experiences/positano-to-amalfi",
+      "/en/experiences/positano-to-ravello",
+      "/en/experiences/sunset-viewpoints-positano",
+      "/en/experiences/terrace-bar-sunset-experience-positano",
+      "/en/experiences/digital-concierge-service",
+      "/en/experiences/positano-on-a-budget",
+      "/en/experiences/positano-travel-guide",
+      "/en/experiences/positano-instagram-spots",
+      "/en/experiences/ravello-music-festival-guide",
+      "/en/experiences/ferragosto-in-positano",
+      "/en/experiences/camping-on-the-amalfi-coast",
+      "/en/experiences/positano-in-winter-on-a-budget",
+      "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+      "/en/experiences/free-walking-tour-audio-positano",
+      "/en/experiences/luminaria-di-san-domenico-praiano",
+      "/en/bar-menu",
+      "/en/breakfast-menu",
+      "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+      "/en/how-to-get-here/amalfi-positano-bus",
+      "/en/how-to-get-here/amalfi-positano-ferry",
+      "/en/how-to-get-here/capri-positano-ferry",
+      "/en/how-to-get-here/naples-center-train-bus",
+      "/en/how-to-get-here/naples-center-positano-ferry",
+      "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+      "/en/how-to-get-here/naples-airport-positano-bus",
+      "/en/how-to-get-here/salerno-positano-bus",
+      "/en/how-to-get-here/salerno-positano-ferry",
+      "/en/how-to-get-here/ravello-positano-bus",
+      "/en/how-to-get-here/positano-ravello-ferry-bus",
+      "/en/how-to-get-here/sorrento-positano-bus",
+      "/en/how-to-get-here/sorrento-positano-ferry",
+      "/en/help/arriving-by-car",
+      "/en/help/sim-esim-and-atms-positano",
+      "/en/help/what-to-pack-amalfi-coast",
+      "/en/help/best-time-to-visit-positano",
+      "/en/how-to-get-here/positano-naples-center-bus-train",
+      "/en/help/how-to-reach-positano-on-a-budget",
+      "/en/help/luggage-storage-positano",
+      "/en/help/sita-bus-tickets",
+      "/en/help/naples-city-guide-for-amalfi-travelers",
+      "/en/help/sorrento-gateway-guide",
+      "/en/how-to-get-here/positano-sorrento-bus",
+      "/en/how-to-get-here/positano-sorrento-ferry",
+      "/en/help/only-hostel-in-positano",
+      "/en/how-to-get-here/positano-capri-ferry",
+      "/en/help/ferry-schedules",
+      "/en/how-to-get-here/naples-to-positano",
+      "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+      "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "/en/help/money-saving-tips-amalfi-coast-transport",
+      "/en/help/transport-on-a-budget-amalfi-coast",
+      "/en/help/groceries-and-pharmacies-positano",
+      "/en/help/porter-service-positano",
+      "/en/help/free-low-cost-things-to-do-positano",
+      "/en/help/off-season-long-stay-tips-positano",
+      "/en/help/wi-fi-and-work-cafes-positano"
+    ],
+    "visitedPaths": [
+      "/en",
+      "/en/book",
+      "/en/rooms",
+      "/en/experiences",
+      "/en/how-to-get-here",
+      "/en/deals",
+      "/en/help",
+      "/",
+      "/en/terms",
+      "/en/house-rules",
+      "/en/privacy-policy",
+      "/en/cookie-policy",
+      "/en/rooms/double_room",
+      "/en/rooms/room_10",
+      "/en/rooms/room_11",
+      "/en/rooms/room_12",
+      "/en/rooms/room_3",
+      "/en/rooms/room_4",
+      "/en/rooms/room_5",
+      "/en/rooms/room_6",
+      "/en/rooms/room_9",
+      "/en/rooms/room_8",
+      "/en/experiences?topic=beaches",
+      "/en/experiences?topic=hiking",
+      "/en/experiences?topic=day-trip",
+      "/en/experiences?topic=boat",
+      "/en/experiences?topic=cuisine",
+      "/en/experiences?topic=more",
+      "/en/experiences/positano-beaches",
+      "/en/experiences/positano-main-beach-guide",
+      "/en/experiences/walk-down-to-positano-main-beach",
+      "/en/experiences/bus-down-to-positano-main-beach",
+      "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "/en/experiences/marina-di-praia-and-secluded-beaches",
+      "/en/experiences/fiordo-di-furore-beach-guide",
+      "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+      "/en/experiences/fiordo-di-furore-bus-return",
+      "/en/experiences/fornillo-beach-guide",
+      "/en/experiences/hostel-brikette-to-fornillo-beach",
+      "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "/en/experiences/laurito-beach-guide",
+      "/en/experiences/getting-to-laurito-beach-by-bus",
+      "/en/experiences/bus-back-from-laurito-beach",
+      "/en/experiences/gavitella-beach-guide",
+      "/en/experiences/arienzo-beach-guide",
+      "/en/experiences/bus-to-arienzo-beach",
+      "/en/experiences/bus-back-from-arienzo-beach",
+      "/en/experiences/regina-giovanna-bath-beach-guide",
+      "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+      "/en/experiences/path-of-the-gods",
+      "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+      "/en/experiences/path-of-the-gods-via-amalfi-bus",
+      "/en/experiences/path-of-the-gods-via-nocelle",
+      "/en/experiences/top-of-the-mountain-hike",
+      "/en/experiences/santa-maria-del-castello-hike",
+      "/en/experiences/sunrise-hike-positano",
+      "/en/experiences/stay-fit-positano",
+      "/en/experiences/positano-to-pompeii",
+      "/en/experiences/day-trip-capri-from-positano",
+      "/en/experiences/day-trips-from-positano",
+      "/en/experiences/capri-on-a-budget",
+      "/en/experiences/boat-tours-positano",
+      "/en/experiences/cheap-eats-in-positano",
+      "/en/experiences/eating-out-in-positano",
+      "/en/experiences/limoncello-and-local-cuisine",
+      "/en/experiences/positano-dining-guide",
+      "/en/experiences/ferry-cancellations-weather",
+      "/en/experiences/positano-to-amalfi",
+      "/en/experiences/positano-to-ravello",
+      "/en/experiences/sunset-viewpoints-positano",
+      "/en/experiences/terrace-bar-sunset-experience-positano",
+      "/en/experiences/digital-concierge-service",
+      "/en/experiences/positano-on-a-budget",
+      "/en/experiences/positano-travel-guide",
+      "/en/experiences/positano-instagram-spots",
+      "/en/experiences/ravello-music-festival-guide",
+      "/en/experiences/ferragosto-in-positano",
+      "/en/experiences/camping-on-the-amalfi-coast",
+      "/en/experiences/positano-in-winter-on-a-budget"
+    ],
+    "pageLinks": {
+      "/en": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/book": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/rooms/double_room",
+        "/en/rooms/room_10",
+        "/en/rooms/room_11",
+        "/en/rooms/room_12",
+        "/en/rooms/room_3",
+        "/en/rooms/room_4",
+        "/en/rooms/room_5",
+        "/en/rooms/room_6",
+        "/en/rooms/room_9",
+        "/en/rooms/room_8",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/experiences": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/experiences/sunrise-hike-positano",
+        "/en/experiences/stay-fit-positano",
+        "/en/experiences/positano-to-pompeii",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/day-trips-from-positano",
+        "/en/experiences/capri-on-a-budget",
+        "/en/experiences/boat-tours-positano",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/eating-out-in-positano",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/positano-dining-guide",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/positano-to-ravello",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/terrace-bar-sunset-experience-positano",
+        "/en/experiences/digital-concierge-service",
+        "/en/experiences/positano-on-a-budget",
+        "/en/experiences/positano-travel-guide",
+        "/en/experiences/positano-instagram-spots",
+        "/en/experiences/ravello-music-festival-guide",
+        "/en/experiences/ferragosto-in-positano",
+        "/en/experiences/camping-on-the-amalfi-coast",
+        "/en/experiences/positano-in-winter-on-a-budget",
+        "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+        "/en/experiences/free-walking-tour-audio-positano",
+        "/en/experiences/luminaria-di-san-domenico-praiano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/how-to-get-here/amalfi-positano-bus",
+        "/en/how-to-get-here/amalfi-positano-ferry",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/how-to-get-here/naples-center-train-bus",
+        "/en/how-to-get-here/naples-center-positano-ferry",
+        "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/how-to-get-here/salerno-positano-bus",
+        "/en/how-to-get-here/salerno-positano-ferry",
+        "/en/how-to-get-here/ravello-positano-bus",
+        "/en/how-to-get-here/positano-ravello-ferry-bus",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/deals": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/help": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/help/sim-esim-and-atms-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/help/best-time-to-visit-positano",
+        "/en/how-to-get-here/naples-airport-positano-bus",
+        "/en/how-to-get-here/positano-naples-center-bus-train",
+        "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/day-trips-from-positano",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/terms": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/house-rules": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/privacy-policy": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/cookie-policy": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/rooms/double_room": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_10": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_11": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_12": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_3": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_4": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_5": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_6": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_9": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/rooms/room_8": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/en/terms",
+        "/en/help/how-to-reach-positano-on-a-budget",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy",
+        "/"
+      ],
+      "/en/experiences?topic=beaches": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=hiking": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/experiences/sunrise-hike-positano",
+        "/en/experiences/stay-fit-positano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=day-trip": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/positano-to-pompeii",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/day-trips-from-positano",
+        "/en/experiences/capri-on-a-budget",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=boat": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/boat-tours-positano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=cuisine": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/eating-out-in-positano",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/positano-dining-guide",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences?topic=more": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences?topic=beaches",
+        "/en/experiences?topic=hiking",
+        "/en/experiences?topic=day-trip",
+        "/en/experiences?topic=boat",
+        "/en/experiences?topic=cuisine",
+        "/en/experiences?topic=more",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/positano-to-ravello",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/terrace-bar-sunset-experience-positano",
+        "/en/experiences/digital-concierge-service",
+        "/en/experiences/positano-on-a-budget",
+        "/en/experiences/positano-travel-guide",
+        "/en/experiences/positano-instagram-spots",
+        "/en/experiences/ravello-music-festival-guide",
+        "/en/experiences/ferragosto-in-positano",
+        "/en/experiences/camping-on-the-amalfi-coast",
+        "/en/experiences/positano-in-winter-on-a-budget",
+        "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+        "/en/experiences/free-walking-tour-audio-positano",
+        "/en/experiences/luminaria-di-san-domenico-praiano",
+        "/en/bar-menu",
+        "/en/breakfast-menu",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-beaches": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-main-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/help/luggage-storage-positano",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/walk-down-to-positano-main-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-down-to-positano-main-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/marina-di-praia-and-secluded-beaches": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/sita-bus-tickets",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/fiordo-di-furore-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/gavitella-beach-guide",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fiordo-di-furore-beach-guide",
+        "/en/experiences/fiordo-di-furore-bus-return",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/fiordo-di-furore-bus-return": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/fornillo-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/hostel-brikette-to-fornillo-beach",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/hostel-brikette-to-fornillo-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-travel-guide",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/how-to-get-here/fornillo-beach-to-hostel-brikette": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/laurito-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/getting-to-laurito-beach-by-bus": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/walk-down-to-positano-main-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-back-from-laurito-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/laurito-beach-guide",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/gavitella-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/marina-di-praia-and-secluded-beaches",
+        "/en/experiences/positano-to-amalfi",
+        "/en/help/sita-bus-tickets",
+        "/en/help/arriving-by-car",
+        "/en/experiences/boat-tours-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/arienzo-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/bus-back-from-arienzo-beach",
+        "/en/help/arriving-by-car",
+        "/en/experiences/boat-tours-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-to-arienzo-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-back-from-laurito-beach",
+        "/en/experiences/bus-down-to-positano-main-beach",
+        "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+        "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+        "/en/experiences/getting-to-laurito-beach-by-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/bus-back-from-arienzo-beach": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/experiences/bus-to-arienzo-beach",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/regina-giovanna-bath-beach-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/how-to-get-here/sorrento-positano-ferry",
+        "/en/experiences/positano-beaches",
+        "/en/help/arriving-by-car",
+        "/en/help/naples-city-guide-for-amalfi-travelers",
+        "/en/experiences/day-trips-from-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/hostel-brikette-to-regina-giovanna-bath": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/regina-giovanna-bath-beach-guide",
+        "/en/help/naples-city-guide-for-amalfi-travelers",
+        "/en/experiences/day-trips-from-positano",
+        "/en/help/sorrento-gateway-guide",
+        "/en/how-to-get-here/positano-sorrento-bus",
+        "/en/how-to-get-here/positano-sorrento-ferry",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods-via-amalfi-ferry": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods-via-amalfi-bus": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-nocelle",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/path-of-the-gods-via-nocelle": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+        "/en/experiences/path-of-the-gods-via-amalfi-bus",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/top-of-the-mountain-hike": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/help/arriving-by-car",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/stay-fit-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/santa-maria-del-castello-hike": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/sunrise-hike-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/sunrise-hike-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/help/arriving-by-car",
+        "/en/experiences/top-of-the-mountain-hike",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/path-of-the-gods",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/stay-fit-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/arienzo-beach-guide",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/path-of-the-gods",
+        "/en/experiences/santa-maria-del-castello-hike",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/help/arriving-by-car",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-to-pompeii": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/only-hostel-in-positano",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/experiences/path-of-the-gods",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/how-to-get-here/sorrento-positano-bus",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/day-trip-capri-from-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/positano-capri-ferry",
+        "/en/help/ferry-schedules",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/experiences/positano-to-pompeii",
+        "/en/help/arriving-by-car",
+        "/en/experiences/boat-tours-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/experiences/positano-to-amalfi",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/day-trips-from-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/positano-to-pompeii",
+        "/en/experiences/positano-to-amalfi",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+        "/en/help/sita-bus-tickets",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/help/money-saving-tips-amalfi-coast-transport",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/capri-on-a-budget": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+        "/en/how-to-get-here/salerno-positano-bus",
+        "/en/experiences/day-trips-from-positano",
+        "/en/how-to-get-here/capri-positano-ferry",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/help/money-saving-tips-amalfi-coast-transport",
+        "/en/help/arriving-by-car",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/how-to-get-here/positano-capri-ferry",
+        "/en/experiences/positano-to-amalfi",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/boat-tours-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/ferry-schedules",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/cheap-eats-in-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-on-a-budget",
+        "/en/help/groceries-and-pharmacies-positano",
+        "/en/help/what-to-pack-amalfi-coast",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/eating-out-in-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/naples-to-positano",
+        "/en/experiences/limoncello-and-local-cuisine",
+        "/en/experiences/positano-main-beach-guide",
+        "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+        "/en/help/sita-bus-tickets",
+        "/en/experiences/positano-to-amalfi",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/help/sim-esim-and-atms-positano",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/limoncello-and-local-cuisine": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/help/arriving-by-car",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-dining-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/porter-service-positano",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/positano-beaches",
+        "/en/help/sita-bus-tickets",
+        "/en/help/arriving-by-car",
+        "/en/help/free-low-cost-things-to-do-positano",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/ferry-cancellations-weather": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-to-amalfi": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-to-ravello": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/sunset-viewpoints-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/terrace-bar-sunset-experience-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/positano-on-a-budget",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/digital-concierge-service": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/positano-on-a-budget",
+        "/en/experiences/terrace-bar-sunset-experience-positano",
+        "/en/experiences/ferry-cancellations-weather",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-on-a-budget": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-travel-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-instagram-spots": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-beaches",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/ravello-music-festival-guide": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/ferragosto-in-positano": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/experiences/fornillo-beach-guide",
+        "/en/experiences/cheap-eats-in-positano",
+        "/en/experiences/day-trip-capri-from-positano",
+        "/en/experiences/path-of-the-gods",
+        "/en/help/arriving-by-car",
+        "/en/help/best-time-to-visit-positano",
+        "/en/experiences/sunset-viewpoints-positano",
+        "/en/experiences/positano-beaches",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/camping-on-the-amalfi-coast": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/transport-on-a-budget-amalfi-coast",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ],
+      "/en/experiences/positano-in-winter-on-a-budget": [
+        "/en",
+        "/en/book",
+        "/en/rooms",
+        "/en/experiences",
+        "/en/how-to-get-here",
+        "/en/deals",
+        "/en/help",
+        "/",
+        "/en/help/arriving-by-car",
+        "/en/help/off-season-long-stay-tips-positano",
+        "/en/help/wi-fi-and-work-cafes-positano",
+        "/en/experiences/positano-travel-guide",
+        "/en/terms",
+        "/en/house-rules",
+        "/en/privacy-policy",
+        "/en/cookie-policy"
+      ]
+    },
+    "crawlErrors": []
+  },
+  "selectedDesktopPaths": [
+    "/en",
+    "/en/rooms",
+    "/en/experiences",
+    "/en/how-to-get-here",
+    "/en/deals",
+    "/en/help",
+    "/en/terms",
+    "/en/privacy-policy",
+    "/en/cookie-policy",
+    "/en/rooms/double_room",
+    "/en/rooms/room_10",
+    "/en/rooms/room_11",
+    "/en/rooms/room_12",
+    "/en/rooms/room_3",
+    "/en/rooms/room_4",
+    "/en/rooms/room_5",
+    "/en/rooms/room_6",
+    "/en/rooms/room_9",
+    "/en/rooms/room_8",
+    "/en/experiences?topic=beaches",
+    "/en/experiences?topic=hiking",
+    "/en/experiences?topic=day-trip",
+    "/en/experiences?topic=boat",
+    "/en/experiences?topic=cuisine"
+  ],
+  "selectedMobilePaths": [
+    "/en",
+    "/en/rooms",
+    "/en/experiences",
+    "/en/how-to-get-here",
+    "/en/deals",
+    "/en/help",
+    "/en/terms",
+    "/en/privacy-policy",
+    "/en/cookie-policy",
+    "/en/rooms/double_room",
+    "/en/rooms/room_10",
+    "/en/rooms/room_11",
+    "/en/rooms/room_12",
+    "/en/rooms/room_3"
+  ],
+  "linkChecks": [
+    {
+      "page": "/en",
+      "status": 200
+    },
+    {
+      "page": "/en/book",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here",
+      "status": 200
+    },
+    {
+      "page": "/en/deals",
+      "status": 200
+    },
+    {
+      "page": "/en/help",
+      "status": 200
+    },
+    {
+      "page": "/",
+      "status": 200
+    },
+    {
+      "page": "/en/terms",
+      "status": 200
+    },
+    {
+      "page": "/en/house-rules",
+      "status": 200
+    },
+    {
+      "page": "/en/privacy-policy",
+      "status": 200
+    },
+    {
+      "page": "/en/cookie-policy",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/double_room",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_10",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_11",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_12",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_3",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_4",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_5",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_6",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_9",
+      "status": 200
+    },
+    {
+      "page": "/en/rooms/room_8",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=beaches",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=hiking",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=day-trip",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=boat",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=cuisine",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences?topic=more",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-beaches",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-main-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/walk-down-to-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-down-to-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/walk-back-to-hostel-brikette-from-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-back-to-hostel-brikette-from-positano-main-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/marina-di-praia-and-secluded-beaches",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/fiordo-di-furore-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/hostel-brikette-to-fiordo-di-furore-by-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/fiordo-di-furore-bus-return",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/fornillo-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/hostel-brikette-to-fornillo-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/fornillo-beach-to-hostel-brikette",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/laurito-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/getting-to-laurito-beach-by-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-back-from-laurito-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/gavitella-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/arienzo-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-to-arienzo-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/bus-back-from-arienzo-beach",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/regina-giovanna-bath-beach-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/hostel-brikette-to-regina-giovanna-bath",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods-via-amalfi-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods-via-amalfi-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/path-of-the-gods-via-nocelle",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/top-of-the-mountain-hike",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/santa-maria-del-castello-hike",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/sunrise-hike-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/stay-fit-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-to-pompeii",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/day-trip-capri-from-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/day-trips-from-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/capri-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/boat-tours-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/cheap-eats-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/eating-out-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/limoncello-and-local-cuisine",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-dining-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/ferry-cancellations-weather",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-to-amalfi",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-to-ravello",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/sunset-viewpoints-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/terrace-bar-sunset-experience-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/digital-concierge-service",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-travel-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-instagram-spots",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/ravello-music-festival-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/ferragosto-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/camping-on-the-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/positano-in-winter-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/thrifty-souvenir-shopping-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/free-walking-tour-audio-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/experiences/luminaria-di-san-domenico-praiano",
+      "status": 200
+    },
+    {
+      "page": "/en/bar-menu",
+      "status": 200
+    },
+    {
+      "page": "/en/breakfast-menu",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/chiesa-nuova-bar-internazionale-to-hostel-brikette",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/ferry-dock-to-hostel-brikette-with-luggage",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/amalfi-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/amalfi-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/capri-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-center-train-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-center-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-to-naples-directions-by-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-airport-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/salerno-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/salerno-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/ravello-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-ravello-ferry-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/sorrento-positano-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/sorrento-positano-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/help/arriving-by-car",
+      "status": 200
+    },
+    {
+      "page": "/en/help/sim-esim-and-atms-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/what-to-pack-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/help/best-time-to-visit-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-naples-center-bus-train",
+      "status": 200
+    },
+    {
+      "page": "/en/help/how-to-reach-positano-on-a-budget",
+      "status": 200
+    },
+    {
+      "page": "/en/help/luggage-storage-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/sita-bus-tickets",
+      "status": 200
+    },
+    {
+      "page": "/en/help/naples-city-guide-for-amalfi-travelers",
+      "status": 200
+    },
+    {
+      "page": "/en/help/sorrento-gateway-guide",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-sorrento-bus",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-sorrento-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/help/only-hostel-in-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/positano-capri-ferry",
+      "status": 200
+    },
+    {
+      "page": "/en/help/ferry-schedules",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/naples-to-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/hostel-brikette-to-ferry-dock-with-luggage",
+      "status": 200
+    },
+    {
+      "page": "/en/how-to-get-here/hostel-brikette-to-chiesa-nuova-bar-internazionale",
+      "status": 200
+    },
+    {
+      "page": "/en/help/money-saving-tips-amalfi-coast-transport",
+      "status": 200
+    },
+    {
+      "page": "/en/help/transport-on-a-budget-amalfi-coast",
+      "status": 200
+    },
+    {
+      "page": "/en/help/groceries-and-pharmacies-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/porter-service-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/free-low-cost-things-to-do-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/off-season-long-stay-tips-positano",
+      "status": 200
+    },
+    {
+      "page": "/en/help/wi-fi-and-work-cafes-positano",
+      "status": 200
+    }
+  ],
+  "imageSweep": {
+    "checkedImageCount": 285,
+    "pageFetchErrors": [],
+    "brokenImages": []
+  },
+  "noJsChecks": {
+    "lang": "en",
+    "routeChecks": {
+      "home": {
+        "routePath": "/en",
+        "status": 200,
+        "h1Count": 1,
+        "h1Texts": [
+          "Hostel Brikette, Positano"
+        ],
+        "hasBailoutMarker": false,
+        "titleText": "Brikette Hostel in Positano - Affordable Amalfi Coast Stay",
+        "checks": {
+          "hasMeaningfulH1": true,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasCrawlableGuideLinks": true,
+          "hasRoomInventoryCrawlability": true,
+          "hasNoI18nKeyLeak": false,
+          "hasSocialProofSnapshotDate": true,
+          "hasMailtoContactLink": true,
+          "hasNamedSocialLinks": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 1,
+              "anchorCount": 2,
+              "textMentioned": true
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 1,
+              "visibleAnchorCount": 2,
+              "visibleTotal": 3
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "guideLinks": {
+          "hasCrawlableGuideLinks": true,
+          "guideDetailLinkCount": 10,
+          "textLinkedGuideCount": 10,
+          "sampleGuideLinks": [
+            "/en/book",
+            "/en/rooms",
+            "/en/experiences",
+            "/en/how-to-get-here",
+            "/en/deals",
+            "/en/help",
+            "/en/terms",
+            "/en/house-rules",
+            "/en/privacy-policy",
+            "/en/cookie-policy"
+          ]
+        },
+        "roomInventory": {
+          "hasRoomInventoryCrawlability": true,
+          "routeType": "other",
+          "roomDetailLinkCount": 0,
+          "textLinkedRoomCount": 0,
+          "roomDetailLinkSamples": [],
+          "descriptiveParagraphCount": 0,
+          "descriptiveParagraphSamples": [],
+          "hotelRoomJsonLdCount": 10,
+          "offerCatalogJsonLdCount": 0
+        },
+        "i18nKeyLeakSamples": [
+          "socialProof.title",
+          "socialProof.subtitle"
+        ],
+        "mailto": {
+          "hasMailtoLink": true,
+          "linkCount": 1
+        },
+        "socialLinks": {
+          "hasNamedSocialLinks": true,
+          "socialLinkCount": 2,
+          "unnamedSocialLinks": []
+        }
+      },
+      "rooms": {
+        "routePath": "/en/rooms",
+        "status": 200,
+        "h1Count": 1,
+        "h1Texts": [
+          "Our rooms"
+        ],
+        "hasBailoutMarker": false,
+        "titleText": "Rooms &amp; Rates | Brikette Hostel Positano",
+        "checks": {
+          "hasMeaningfulH1": true,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasCrawlableGuideLinks": true,
+          "hasRoomInventoryCrawlability": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 1,
+              "anchorCount": 2,
+              "textMentioned": true
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 1,
+              "visibleAnchorCount": 2,
+              "visibleTotal": 3
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "guideLinks": {
+          "hasCrawlableGuideLinks": true,
+          "guideDetailLinkCount": 10,
+          "textLinkedGuideCount": 10,
+          "sampleGuideLinks": [
+            "/en/rooms/double_room",
+            "/en/rooms/room_10",
+            "/en/rooms/room_11",
+            "/en/rooms/room_12",
+            "/en/rooms/room_3",
+            "/en/rooms/room_4",
+            "/en/rooms/room_5",
+            "/en/rooms/room_6",
+            "/en/rooms/room_9",
+            "/en/rooms/room_8"
+          ]
+        },
+        "roomInventory": {
+          "hasRoomInventoryCrawlability": true,
+          "routeType": "rooms-list",
+          "roomDetailLinkCount": 10,
+          "textLinkedRoomCount": 10,
+          "roomDetailLinkSamples": [
+            "/en/rooms/double_room",
+            "/en/rooms/room_10",
+            "/en/rooms/room_11",
+            "/en/rooms/room_12",
+            "/en/rooms/room_3",
+            "/en/rooms/room_4",
+            "/en/rooms/room_5",
+            "/en/rooms/room_6",
+            "/en/rooms/room_9",
+            "/en/rooms/room_8"
+          ],
+          "hotelRoomJsonLdCount": 10,
+          "offerCatalogJsonLdCount": 1
+        }
+      },
+      "roomDetail": {
+        "routePath": "/en/rooms/double_room",
+        "status": 200,
+        "h1Count": 1,
+        "h1Texts": [
+          "double room"
+        ],
+        "hasBailoutMarker": false,
+        "titleText": "Double Room",
+        "checks": {
+          "hasMeaningfulH1": true,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": false,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": true,
+          "hasCrawlableGuideLinks": true,
+          "hasRoomInventoryCrawlability": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [
+          "roomImage.clickToEnlarge",
+          "rooms.double_room.title",
+          "location.nearbyBusCompact",
+          "loadingPrice"
+        ],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 1,
+              "anchorCount": 2,
+              "textMentioned": true
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 1,
+              "textMentioned": true
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": true,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 1,
+              "visibleTotal": 1
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 1,
+              "visibleAnchorCount": 2,
+              "visibleTotal": 3
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": true
+        },
+        "guideLinks": {
+          "hasCrawlableGuideLinks": false,
+          "guideDetailLinkCount": 0,
+          "textLinkedGuideCount": 0,
+          "sampleGuideLinks": []
+        },
+        "roomInventory": {
+          "hasRoomInventoryCrawlability": true,
+          "routeType": "room-detail",
+          "descriptiveParagraphCount": 7,
+          "descriptiveParagraphSamples": [
+            "Direct booking perks available now. See deals",
+            "These perks are unique to guests who book directly on our website.",
+            "Every booking made directly on our website unlocks these exclusive perks automatically."
+          ],
+          "hotelRoomJsonLdCount": 1,
+          "offerCatalogJsonLdCount": 0
+        }
+      },
+      "experiences": {
+        "routePath": "/en/experiences",
+        "status": 200,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "Experiences at Hostel Brikette – Terrace Bar, Hikes &amp; Concierge",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasCrawlableGuideLinks": true,
+          "hasRoomInventoryCrawlability": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 1,
+              "anchorCount": 2,
+              "textMentioned": true
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 1,
+              "visibleAnchorCount": 2,
+              "visibleTotal": 3
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "guideLinks": {
+          "hasCrawlableGuideLinks": true,
+          "guideDetailLinkCount": 54,
+          "textLinkedGuideCount": 54,
+          "sampleGuideLinks": [
+            "/en/experiences/positano-beaches",
+            "/en/experiences/positano-main-beach-guide",
+            "/en/experiences/marina-di-praia-and-secluded-beaches",
+            "/en/experiences/fiordo-di-furore-beach-guide",
+            "/en/experiences/fornillo-beach-guide",
+            "/en/experiences/laurito-beach-guide",
+            "/en/experiences/gavitella-beach-guide",
+            "/en/experiences/arienzo-beach-guide",
+            "/en/experiences/regina-giovanna-bath-beach-guide",
+            "/en/experiences/path-of-the-gods"
+          ]
+        },
+        "roomInventory": {
+          "hasRoomInventoryCrawlability": true,
+          "routeType": "other",
+          "roomDetailLinkCount": 0,
+          "textLinkedRoomCount": 0,
+          "roomDetailLinkSamples": [],
+          "descriptiveParagraphCount": 0,
+          "descriptiveParagraphSamples": [],
+          "hotelRoomJsonLdCount": 0,
+          "offerCatalogJsonLdCount": 0
+        }
+      },
+      "howToGetHere": {
+        "routePath": "/en/how-to-get-here",
+        "status": 200,
+        "h1Count": 0,
+        "h1Texts": [],
+        "hasBailoutMarker": false,
+        "titleText": "Hostel Brikette - List of Travel Directions",
+        "checks": {
+          "hasMeaningfulH1": false,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": false,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasCrawlableGuideLinks": true,
+          "hasRoomInventoryCrawlability": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [
+          "filters.resultsCount",
+          "filters.editLabel",
+          "intro.taxiEyebrow",
+          "intro.taxiContact",
+          "intro.shuttleEyebrow",
+          "romePlanner.title",
+          "romePlanner.subtitle",
+          "romePlanner.directionPrompt",
+          "romePlanner.tabs.from",
+          "romePlanner.tabs.to",
+          "romePlanner.pref.prompt",
+          "romePlanner.pref.cheapest.label",
+          "romePlanner.pref.scenic.label",
+          "romePlanner.pref.heavyPrefix",
+          "romePlanner.pref.heavy_luggage.label",
+          "romePlanner.reco.title",
+          "romePlanner.route.naples.ferry.title",
+          "romePlanner.route.naples.ferry.summary.to",
+          "romePlanner.otherMatches",
+          "romePlanner.disclaimer"
+        ],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 1,
+              "anchorCount": 2,
+              "textMentioned": true
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 1,
+              "visibleAnchorCount": 2,
+              "visibleTotal": 3
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "guideLinks": {
+          "hasCrawlableGuideLinks": false,
+          "guideDetailLinkCount": 0,
+          "textLinkedGuideCount": 0,
+          "sampleGuideLinks": []
+        },
+        "roomInventory": {
+          "hasRoomInventoryCrawlability": true,
+          "routeType": "other",
+          "roomDetailLinkCount": 0,
+          "textLinkedRoomCount": 0,
+          "roomDetailLinkSamples": [],
+          "descriptiveParagraphCount": 0,
+          "descriptiveParagraphSamples": [],
+          "hotelRoomJsonLdCount": 0,
+          "offerCatalogJsonLdCount": 0
+        }
+      },
+      "deals": {
+        "routePath": "/en/deals",
+        "status": 200,
+        "h1Count": 1,
+        "h1Texts": [
+          "Deals & Offers"
+        ],
+        "hasBailoutMarker": false,
+        "titleText": "Deals &amp; Offers | Hostel Brikette",
+        "checks": {
+          "hasMeaningfulH1": true,
+          "hasNoBailoutMarker": true,
+          "hasNoBookingFunnelI18nLeak": true,
+          "hasBookingCtaFallback": true,
+          "hasVisibleBookingCtaLabel": false,
+          "hasCrawlableGuideLinks": true,
+          "hasRoomInventoryCrawlability": true,
+          "hasMetadataBodyParity": true
+        },
+        "bookingFunnelI18nKeyLeakSamples": [],
+        "ctaFallback": {
+          "hasFallbackLink": true,
+          "failingLabels": [],
+          "details": {
+            "checkAvailability": {
+              "label": "Check availability",
+              "buttonCount": 2,
+              "anchorCount": 3,
+              "textMentioned": true
+            },
+            "bookNow": {
+              "label": "Book Now",
+              "buttonCount": 0,
+              "anchorCount": 0,
+              "textMentioned": false
+            }
+          }
+        },
+        "bookingCtaLabelVisibility": {
+          "hasVisibleBookingLabel": false,
+          "requiredLabels": [
+            "Book Now"
+          ],
+          "missingLabels": [
+            "Book Now"
+          ],
+          "labelCounts": [
+            {
+              "label": "Book Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            },
+            {
+              "label": "Check availability",
+              "visibleButtonCount": 2,
+              "visibleAnchorCount": 3,
+              "visibleTotal": 5
+            },
+            {
+              "label": "Reserve Now",
+              "visibleButtonCount": 0,
+              "visibleAnchorCount": 0,
+              "visibleTotal": 0
+            }
+          ],
+          "isRoomDetail": false
+        },
+        "guideLinks": {
+          "hasCrawlableGuideLinks": false,
+          "guideDetailLinkCount": 0,
+          "textLinkedGuideCount": 0,
+          "sampleGuideLinks": []
+        },
+        "roomInventory": {
+          "hasRoomInventoryCrawlability": true,
+          "routeType": "other",
+          "roomDetailLinkCount": 0,
+          "textLinkedRoomCount": 0,
+          "roomDetailLinkSamples": [],
+          "descriptiveParagraphCount": 0,
+          "descriptiveParagraphSamples": [],
+          "hotelRoomJsonLdCount": 0,
+          "offerCatalogJsonLdCount": 0
+        },
+        "dealsParity": {
+          "titlePercentClaim": "",
+          "bodyHasPercentClaim": true,
+          "bodyIndicatesExpiredOffer": true
+        }
+      }
+    }
+  },
+  "bookingTransactionChecks": {
+    "lang": "en",
+    "routeMap": {
+      "home": "/en",
+      "roomDetail": "/en/rooms/double_room"
+    },
+    "flowChecks": {
+      "homeModalHandoff": {
+        "flowKey": "homeModalHandoff",
+        "flowType": "home-modal-booking",
+        "routePath": "/en",
+        "status": "PASS",
+        "hydratedInteraction": true,
+        "hydratedTriggerWorked": true,
+        "handoffHref": "https://book.octorate.com/octobook/site/reservation/result.xhtml?checkin=2026-02-11&checkout=2026-02-13&codice=45111&pax=1",
+        "handoffObservedUrl": "https://book.octorate.com/octobook/site/reservation/result.xhtml?checkin=2026-02-11&checkout=2026-02-13&codice=45111&pax=1",
+        "triggerText": "Check availability",
+        "error": "",
+        "handoffAnalysis": {
+          "url": "https://book.octorate.com/octobook/site/reservation/result.xhtml?checkin=2026-02-11&checkout=2026-02-13&codice=45111&pax=1",
+          "isValidUrl": true,
+          "isProviderHost": true,
+          "isExpectedPath": true,
+          "hasRequiredQuery": true,
+          "missingQueryKeys": [],
+          "hasPartySize": true
+        },
+        "checks": {
+          "hasHydratedInteraction": true,
+          "hasProviderHandoff": true,
+          "hasRequiredBookingQuery": true,
+          "hasNoExecutionError": true,
+          "passes": true
+        }
+      },
+      "roomDetailRateHandoff": {
+        "flowKey": "roomDetailRateHandoff",
+        "flowType": "room-detail-rate-booking",
+        "routePath": "/en/rooms/double_room",
+        "status": "PASS",
+        "hydratedInteraction": true,
+        "hydratedTriggerWorked": true,
+        "handoffHref": "https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111&checkin=2026-02-12&checkout=2026-02-14&pax=1&children=0&childrenAges=",
+        "handoffObservedUrl": "https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111&checkin=2026-02-12&checkout=2026-02-14&pax=1&children=0&childrenAges=",
+        "triggerText": "Reserve Now",
+        "error": "",
+        "handoffAnalysis": {
+          "url": "https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111&checkin=2026-02-12&checkout=2026-02-14&pax=1&children=0&childrenAges=",
+          "isValidUrl": true,
+          "isProviderHost": true,
+          "isExpectedPath": true,
+          "hasRequiredQuery": true,
+          "missingQueryKeys": [],
+          "hasPartySize": true
+        },
+        "checks": {
+          "hasHydratedInteraction": true,
+          "hasProviderHandoff": true,
+          "hasRequiredBookingQuery": true,
+          "hasNoExecutionError": true,
+          "passes": true
+        }
+      }
+    }
+  },
+  "discoveryPolicyChecks": {
+    "hostname": "4539dced.brikette-website.pages.dev",
+    "isPreviewHost": true,
+    "lang": "en",
+    "routeChecks": [
+      {
+        "routePath": "/en",
+        "status": 200,
+        "checks": {
+          "hasNoindexMeta": false,
+          "hasNoindexHeader": true,
+          "hasNoindex": true,
+          "hasHreflangAlternates": true,
+          "hasSelfHreflang": true,
+          "hasHreflangPolicy": true
+        },
+        "hreflangValues": [
+          "en",
+          "es",
+          "de",
+          "fr",
+          "it",
+          "ja",
+          "ko",
+          "pt",
+          "ru",
+          "zh",
+          "ar",
+          "hi"
+        ],
+        "hreflangSamples": [
+          {
+            "hreflang": "en",
+            "href": "https://hostel-positano.com/en/"
+          },
+          {
+            "hreflang": "es",
+            "href": "https://hostel-positano.com/es/"
+          },
+          {
+            "hreflang": "de",
+            "href": "https://hostel-positano.com/de/"
+          },
+          {
+            "hreflang": "fr",
+            "href": "https://hostel-positano.com/fr/"
+          },
+          {
+            "hreflang": "it",
+            "href": "https://hostel-positano.com/it/"
+          },
+          {
+            "hreflang": "ja",
+            "href": "https://hostel-positano.com/ja/"
+          },
+          {
+            "hreflang": "ko",
+            "href": "https://hostel-positano.com/ko/"
+          },
+          {
+            "hreflang": "pt",
+            "href": "https://hostel-positano.com/pt/"
+          },
+          {
+            "hreflang": "ru",
+            "href": "https://hostel-positano.com/ru/"
+          },
+          {
+            "hreflang": "zh",
+            "href": "https://hostel-positano.com/zh/"
+          },
+          {
+            "hreflang": "ar",
+            "href": "https://hostel-positano.com/ar/"
+          },
+          {
+            "hreflang": "hi",
+            "href": "https://hostel-positano.com/hi/"
+          }
+        ],
+        "headers": {
+          "xRobotsTag": "noindex"
+        }
+      },
+      {
+        "routePath": "/en/rooms",
+        "status": 200,
+        "checks": {
+          "hasNoindexMeta": false,
+          "hasNoindexHeader": true,
+          "hasNoindex": true,
+          "hasHreflangAlternates": true,
+          "hasSelfHreflang": true,
+          "hasHreflangPolicy": true
+        },
+        "hreflangValues": [
+          "en",
+          "es",
+          "de",
+          "fr",
+          "it",
+          "ja",
+          "ko",
+          "pt",
+          "ru",
+          "zh",
+          "ar",
+          "hi"
+        ],
+        "hreflangSamples": [
+          {
+            "hreflang": "en",
+            "href": "https://hostel-positano.com/en/rooms/"
+          },
+          {
+            "hreflang": "es",
+            "href": "https://hostel-positano.com/es/habitaciones/"
+          },
+          {
+            "hreflang": "de",
+            "href": "https://hostel-positano.com/de/zimmer/"
+          },
+          {
+            "hreflang": "fr",
+            "href": "https://hostel-positano.com/fr/chambres/"
+          },
+          {
+            "hreflang": "it",
+            "href": "https://hostel-positano.com/it/camere/"
+          },
+          {
+            "hreflang": "ja",
+            "href": "https://hostel-positano.com/ja/heya/"
+          },
+          {
+            "hreflang": "ko",
+            "href": "https://hostel-positano.com/ko/bang/"
+          },
+          {
+            "hreflang": "pt",
+            "href": "https://hostel-positano.com/pt/quartos/"
+          },
+          {
+            "hreflang": "ru",
+            "href": "https://hostel-positano.com/ru/komnaty/"
+          },
+          {
+            "hreflang": "zh",
+            "href": "https://hostel-positano.com/zh/fangjian/"
+          },
+          {
+            "hreflang": "ar",
+            "href": "https://hostel-positano.com/ar/ghuraf/"
+          },
+          {
+            "hreflang": "hi",
+            "href": "https://hostel-positano.com/hi/kamare/"
+          }
+        ],
+        "headers": {
+          "xRobotsTag": "noindex"
+        }
+      },
+      {
+        "routePath": "/en/help",
+        "status": 200,
+        "checks": {
+          "hasNoindexMeta": false,
+          "hasNoindexHeader": true,
+          "hasNoindex": true,
+          "hasHreflangAlternates": true,
+          "hasSelfHreflang": true,
+          "hasHreflangPolicy": true
+        },
+        "hreflangValues": [
+          "en",
+          "es",
+          "de",
+          "fr",
+          "it",
+          "ja",
+          "ko",
+          "pt",
+          "ru",
+          "zh",
+          "ar",
+          "hi"
+        ],
+        "hreflangSamples": [
+          {
+            "hreflang": "en",
+            "href": "https://hostel-positano.com/en/help/"
+          },
+          {
+            "hreflang": "es",
+            "href": "https://hostel-positano.com/es/ayuda/"
+          },
+          {
+            "hreflang": "de",
+            "href": "https://hostel-positano.com/de/hilfe/"
+          },
+          {
+            "hreflang": "fr",
+            "href": "https://hostel-positano.com/fr/aide/"
+          },
+          {
+            "hreflang": "it",
+            "href": "https://hostel-positano.com/it/assistenza/"
+          },
+          {
+            "hreflang": "ja",
+            "href": "https://hostel-positano.com/ja/sapoto/"
+          },
+          {
+            "hreflang": "ko",
+            "href": "https://hostel-positano.com/ko/jiwon/"
+          },
+          {
+            "hreflang": "pt",
+            "href": "https://hostel-positano.com/pt/ajuda/"
+          },
+          {
+            "hreflang": "ru",
+            "href": "https://hostel-positano.com/ru/pomoshch/"
+          },
+          {
+            "hreflang": "zh",
+            "href": "https://hostel-positano.com/zh/bangzhu/"
+          },
+          {
+            "hreflang": "ar",
+            "href": "https://hostel-positano.com/ar/musaada/"
+          },
+          {
+            "hreflang": "hi",
+            "href": "https://hostel-positano.com/hi/sahayata/"
+          }
+        ],
+        "headers": {
+          "xRobotsTag": "noindex"
+        }
+      }
+    ],
+    "llmsTxtCheck": {
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "sample": "# Hostel Brikette\n> Cliff-top hostel in Positano, Italy — panoramic Amalfi Coast views.\n\n## Machine-readable sources\n- [Unified graph](/schema/hostel-brikette/graph.jsonld)\n- [Hotel graph](/schema/hostel-brikette/hotel.j",
+      "checks": {
+        "hasLlmsTxtStatus": true,
+        "hasMachineReadableText": true,
+        "hasCorePageHints": true,
+        "passes": true
+      }
+    },
+    "checks": {
+      "previewNoindex": {
+        "required": true,
+        "passes": true,
+        "failingRoutes": []
+      },
+      "hreflangPolicy": {
+        "required": true,
+        "passes": true,
+        "failingRoutes": []
+      },
+      "llmsTxt": {
+        "recommended": true,
+        "passes": true
+      }
+    }
+  },
+  "seoChecks": {
+    "enabled": false,
+    "pages": [],
+    "errors": []
+  },
+  "desktopResults": [
+    {
+      "page": "/en",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Brikette Hostel in Positano - Affordable Amalfi Coast Stay",
+        "htmlLang": "en",
+        "h1": [
+          "Hostel Brikette, Positano"
+        ],
+        "imageCount": 10,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 58,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Direct booking perks • Best price guaranteed",
+            "ariaLabel": null,
+            "width": 267,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                ".text-brand-text\\/60"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.38 (foreground color: #717172, background color: #f2f3f4, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/en/rooms",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Rooms & Rates | Brikette Hostel Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Our rooms"
+        ],
+        "imageCount": 12,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 84,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [],
+        "imageCount": 64,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 144,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": [
+        {
+          "id": "link-name",
+          "impact": "serious",
+          "help": "Links must have discernible text",
+          "description": "Ensure links have discernible text",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                ".border-brand-primary"
+              ],
+              "failureSummary": "Fix all of the following:\n  Element is in tab order and does not have accessible text\n\nFix any of the following:\n  Element does not have text that is visible to screen readers\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/en/how-to-get-here",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Hostel Brikette - List of Travel Directions",
+        "htmlLang": "en",
+        "h1": [
+          "List of Travel Directions"
+        ],
+        "imageCount": 11,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 117,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 8,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Show my best route",
+            "ariaLabel": null,
+            "width": 171,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "From Rome → Hostel",
+            "ariaLabel": null,
+            "width": 175,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "From Hostel → Rome",
+            "ariaLabel": null,
+            "width": 175,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Cheapest",
+            "ariaLabel": null,
+            "width": 100,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Scenic",
+            "ariaLabel": null,
+            "width": 78,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Heavy luggage",
+            "ariaLabel": null,
+            "width": 132,
+            "height": 30
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/deals",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Deals & Offers | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "No current deals"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 31,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 4,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Expired deals",
+            "ariaLabel": null,
+            "width": 1408,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 156,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/help",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Help centre with contact details and travel support - Hostel Brikette Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Help Centre"
+        ],
+        "imageCount": 14,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 46,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 6,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Google Business",
+            "ariaLabel": null,
+            "width": 141,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Booking.com",
+            "ariaLabel": null,
+            "width": 116,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Hostelworld",
+            "ariaLabel": null,
+            "width": 108,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Instagram",
+            "ariaLabel": null,
+            "width": 99,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/terms",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Booking Terms | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Hostel Brikette — Booking Terms"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 47,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/privacy-policy",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Privacy Policy | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Privacy Policy"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 41,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/cookie-policy",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Cookie Policy | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Cookie Policy"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 37,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/double_room",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Double Room",
+        "htmlLang": "en",
+        "h1": [
+          "Double Room"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_10",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Premium Mixed Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Premium Mixed Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_11",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Superior Female Dorm – Large Terrace",
+        "htmlLang": "en",
+        "h1": [
+          "Superior Female Dorm – Large Terrace"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_12",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Superior Mixed Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Superior Mixed Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_3",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Value Female Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Value Female Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_4",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Value Mixed Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Value Mixed Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_5",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Superior Female Dorm – Sea View",
+        "htmlLang": "en",
+        "h1": [
+          "Superior Female Dorm – Sea View"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_6",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Superior Female Dorm – 7 Beds",
+        "htmlLang": "en",
+        "h1": [
+          "Superior Female Dorm – 7 Beds"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_9",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Deluxe Mixed Room",
+        "htmlLang": "en",
+        "h1": [
+          "Deluxe Mixed Room"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_8",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "All Female Dorm with one Bunkbed",
+        "htmlLang": "en",
+        "h1": [
+          "All Female Dorm with one Bunkbed"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences?topic=beaches",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 13,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 81,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 511,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences?topic=hiking",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 12,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 65,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 511,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences?topic=day-trip",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 8,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 53,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 511,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences?topic=boat",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 5,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 44,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 511,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences?topic=cuisine",
+      "viewport": "desktop",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 8,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 53,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 511,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "none",
+          "panelDisplay": "none",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    }
+  ],
+  "mobileResults": [
+    {
+      "page": "/en",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Brikette Hostel in Positano - Affordable Amalfi Coast Stay",
+        "htmlLang": "en",
+        "h1": [
+          "Hostel Brikette, Positano"
+        ],
+        "imageCount": 10,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 51,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Direct booking perks • Best price guaranteed",
+            "ariaLabel": null,
+            "width": 267,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "description": "Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds",
+          "nodeCount": 1,
+          "nodes": [
+            {
+              "target": [
+                ".text-brand-text\\/60"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element has insufficient color contrast of 4.38 (foreground color: #717172, background color: #f2f3f4, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "page": "/en/rooms",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Rooms & Rates | Brikette Hostel Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Our rooms"
+        ],
+        "imageCount": 12,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 77,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/experiences",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Experiences at Hostel Brikette – Terrace Bar, Hikes & Concierge",
+        "htmlLang": "en",
+        "h1": [
+          "Make the Most of Your Time"
+        ],
+        "imageCount": 64,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 209,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 3,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Browse by experience type below",
+            "ariaLabel": null,
+            "width": 257,
+            "height": 20
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/how-to-get-here",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Hostel Brikette - List of Travel Directions",
+        "htmlLang": "en",
+        "h1": [
+          "List of Travel Directions"
+        ],
+        "imageCount": 11,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 100,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 7,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Show my best route",
+            "ariaLabel": null,
+            "width": 171,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Jump to section",
+            "ariaLabel": null,
+            "width": 159,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Cheapest",
+            "ariaLabel": null,
+            "width": 100,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Scenic",
+            "ariaLabel": null,
+            "width": 78,
+            "height": 32
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Heavy luggage",
+            "ariaLabel": null,
+            "width": 132,
+            "height": 30
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/deals",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Deals & Offers | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "No current deals"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 24,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 4,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "BUTTON",
+            "text": "Expired deals",
+            "ariaLabel": null,
+            "width": 358,
+            "height": 40
+          },
+          {
+            "tag": "BUTTON",
+            "text": "Check availability",
+            "ariaLabel": null,
+            "width": 156,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/help",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Help centre with contact details and travel support - Hostel Brikette Positano",
+        "htmlLang": "en",
+        "h1": [
+          "Help Centre"
+        ],
+        "imageCount": 14,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 39,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 6,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Google Business",
+            "ariaLabel": null,
+            "width": 141,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Booking.com",
+            "ariaLabel": null,
+            "width": 116,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Hostelworld",
+            "ariaLabel": null,
+            "width": 108,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Instagram",
+            "ariaLabel": null,
+            "width": 99,
+            "height": 36
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/terms",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Booking Terms | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Hostel Brikette — Booking Terms"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 40,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/privacy-policy",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Privacy Policy | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Privacy Policy"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 34,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/cookie-policy",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Cookie Policy | Hostel Brikette",
+        "htmlLang": "en",
+        "h1": [
+          "Cookie Policy"
+        ],
+        "imageCount": 2,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 30,
+        "tinyTapTargets24": 0,
+        "tinyTapTargets44": 2,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/double_room",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Double Room",
+        "htmlLang": "en",
+        "h1": [
+          "Double Room"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 32,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_10",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Premium Mixed Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Premium Mixed Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 32,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_11",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Superior Female Dorm – Large Terrace",
+        "htmlLang": "en",
+        "h1": [
+          "Superior Female Dorm – Large Terrace"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 32,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_12",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Superior Mixed Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Superior Mixed Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 32,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    },
+    {
+      "page": "/en/rooms/room_3",
+      "viewport": "mobile",
+      "navStatus": 200,
+      "navError": null,
+      "dom": {
+        "title": "Value Female Dorm",
+        "htmlLang": "en",
+        "h1": [
+          "Value Female Dorm"
+        ],
+        "imageCount": 3,
+        "brokenImageCount": 0,
+        "brokenImageSamples": [],
+        "missingAltImageCount": 0,
+        "missingAltImageSamples": [],
+        "clickablesCount": 32,
+        "tinyTapTargets24": 1,
+        "tinyTapTargets44": 5,
+        "tinyTapTargets44Samples": [
+          {
+            "tag": "A",
+            "text": "Standard terms and conditions apply.",
+            "ariaLabel": null,
+            "width": 265,
+            "height": 20
+          },
+          {
+            "tag": "BUTTON",
+            "text": "getDirections",
+            "ariaLabel": null,
+            "width": 126,
+            "height": 36
+          },
+          {
+            "tag": "BUTTON",
+            "text": "",
+            "ariaLabel": "Close",
+            "width": 40,
+            "height": 40
+          },
+          {
+            "tag": "A",
+            "text": "Deals",
+            "ariaLabel": null,
+            "width": 39,
+            "height": 44
+          },
+          {
+            "tag": "A",
+            "text": "Help",
+            "ariaLabel": null,
+            "width": 31,
+            "height": 44
+          }
+        ],
+        "hasHorizontalOverflow": false,
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "bodyScrollWidth": 390,
+        "i18nKeySamples": [],
+        "mobileMenu": {
+          "hasLeak": false,
+          "linksVisible": 0,
+          "panelClass": "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg translate-y-full invisible pointer-events-none",
+          "panelTransform": "matrix(1, 0, 0, 1, 0, 494)",
+          "panelDisplay": "block",
+          "panelVisibility": "hidden",
+          "toggleExpanded": "false"
+        }
+      },
+      "consoleErrors": [],
+      "badResponses": [],
+      "axeViolations": []
+    }
+  ],
+  "issues": [
+    {
+      "id": "no-js-i18n-key-leakage",
+      "priority": "P0",
+      "title": "Homepage initial HTML leaks untranslated i18n keys",
+      "evidence": {
+        "route": "/en",
+        "status": 200,
+        "samples": [
+          "socialProof.title",
+          "socialProof.subtitle"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Homepage initial HTML contains resolved copy for hero and core section headings.",
+        "No `heroSection.*`, `introSection.*`, `socialProof.*`, or `locationSection.*` tokens appear in raw HTML.",
+        "No-JS route checks pass on desktop and mobile audit runs."
+      ]
+    },
+    {
+      "id": "no-js-route-shell-bailout",
+      "priority": "P0",
+      "title": "Top-nav routes fail no-JS SSR content checks",
+      "evidence": {
+        "failingRoutes": [
+          {
+            "key": "experiences",
+            "route": "/en/experiences",
+            "status": 200,
+            "hasMeaningfulH1": false,
+            "hasNoBailoutMarker": true
+          },
+          {
+            "key": "howToGetHere",
+            "route": "/en/how-to-get-here",
+            "status": 200,
+            "hasMeaningfulH1": false,
+            "hasNoBailoutMarker": true
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Top-nav pages (`rooms`, `experiences`, `how-to-get-here`) render a meaningful non-empty H1 in initial HTML (not blank/punctuation/i18n-key token).",
+        "No `BAILOUT_TO_CLIENT_SIDE_RENDERING` marker appears in initial HTML for top-nav routes.",
+        "No-JS route checks pass for all top-nav routes."
+      ]
+    },
+    {
+      "id": "no-js-booking-funnel-key-leakage",
+      "priority": "P0",
+      "title": "Booking funnel initial HTML leaks untranslated key tokens",
+      "evidence": {
+        "failingRoutes": [
+          {
+            "key": "roomDetail",
+            "route": "/en/rooms/double_room",
+            "status": 200,
+            "hasNoBookingFunnelI18nLeak": false,
+            "samples": [
+              "roomImage.clickToEnlarge",
+              "rooms.double_room.title",
+              "location.nearbyBusCompact",
+              "loadingPrice"
+            ]
+          },
+          {
+            "key": "howToGetHere",
+            "route": "/en/how-to-get-here",
+            "status": 200,
+            "hasNoBookingFunnelI18nLeak": false,
+            "samples": [
+              "filters.resultsCount",
+              "filters.editLabel",
+              "intro.taxiEyebrow",
+              "intro.taxiContact",
+              "intro.shuttleEyebrow",
+              "romePlanner.title",
+              "romePlanner.subtitle",
+              "romePlanner.directionPrompt",
+              "romePlanner.tabs.from",
+              "romePlanner.tabs.to",
+              "romePlanner.pref.prompt",
+              "romePlanner.pref.cheapest.label",
+              "romePlanner.pref.scenic.label",
+              "romePlanner.pref.heavyPrefix",
+              "romePlanner.pref.heavy_luggage.label",
+              "romePlanner.reco.title",
+              "romePlanner.route.naples.ferry.title",
+              "romePlanner.route.naples.ferry.summary.to",
+              "romePlanner.otherMatches",
+              "romePlanner.disclaimer"
+            ]
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Booking funnel routes (`home`, `rooms`, `room-detail`, `experiences`, `how-to-get-here`) render localized strings in initial HTML.",
+        "No booking-funnel key tokens (for example `roomImage.*`, `loadingPrice`, `checkRates*`, `filters.*`, `romePlanner.*`) appear in no-JS route HTML.",
+        "Route no-JS checks report `hasNoBookingFunnelI18nLeak=true` across all target routes."
+      ]
+    },
+    {
+      "id": "booking-cta-visible-label-missing",
+      "priority": "P0",
+      "title": "Booking funnel routes are missing visible booking CTA labels",
+      "evidence": {
+        "failingRoutes": [
+          {
+            "key": "home",
+            "route": "/en",
+            "status": 200,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 1,
+                "visibleAnchorCount": 2,
+                "visibleTotal": 3
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "rooms",
+            "route": "/en/rooms",
+            "status": 200,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 1,
+                "visibleAnchorCount": 2,
+                "visibleTotal": 3
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "experiences",
+            "route": "/en/experiences",
+            "status": 200,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 1,
+                "visibleAnchorCount": 2,
+                "visibleTotal": 3
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          },
+          {
+            "key": "howToGetHere",
+            "route": "/en/how-to-get-here",
+            "status": 200,
+            "hasVisibleBookingCtaLabel": false,
+            "missingLabels": [
+              "Book Now"
+            ],
+            "labelCounts": [
+              {
+                "label": "Book Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              },
+              {
+                "label": "Check availability",
+                "visibleButtonCount": 1,
+                "visibleAnchorCount": 2,
+                "visibleTotal": 3
+              },
+              {
+                "label": "Reserve Now",
+                "visibleButtonCount": 0,
+                "visibleAnchorCount": 0,
+                "visibleTotal": 0
+              }
+            ]
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Every booking-funnel route exposes a visible `Book Now` CTA label in initial HTML.",
+        "Route no-JS checks report `hasVisibleBookingCtaLabel=true` across funnel routes."
+      ]
+    },
+    {
+      "id": "color-contrast",
+      "priority": "P1",
+      "title": "WCAG color contrast failures",
+      "evidence": {
+        "pageCount": 1,
+        "sampleViolations": [
+          {
+            "page": "/en",
+            "viewport": "desktop",
+            "nodeCount": 1,
+            "help": "Elements must meet minimum color contrast ratio thresholds"
+          },
+          {
+            "page": "/en",
+            "viewport": "mobile",
+            "nodeCount": 1,
+            "help": "Elements must meet minimum color contrast ratio thresholds"
+          }
+        ]
+      },
+      "acceptanceCriteria": [
+        "Text contrast meets WCAG AA thresholds (4.5:1 for normal text, 3:1 for large text).",
+        "Axe `color-contrast` reports 0 violations on homepage and key landing pages.",
+        "Updated palette passes both desktop and mobile checks."
+      ]
+    }
+  ]
+}

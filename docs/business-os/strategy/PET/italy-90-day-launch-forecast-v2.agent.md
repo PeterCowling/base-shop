@@ -87,6 +87,19 @@ If any gate fails, switch to fix-first mode:
 - run focused PDP/checkout/shipping-trust experiments
 - re-forecast remaining 10 weeks using observed data
 
+### Gate validity rules (minimum denominators)
+
+- CVR gate is decision-valid only when `sessions >= 500` and `orders >= 10`.
+- Refund gate is decision-valid only when `orders_shipped >= 25`.
+- Payment-success gate is decision-valid only when `payment_attempts >= 100`.
+- If a denominator is below threshold, mark result as `insufficient-sample` and extend observation window before scale decisions.
+
+### Gate ownership and re-test SLA
+
+- Demand efficiency gates (`CVR`, `CAC`): growth owner.
+- Reliability gates (`refund`, `on-time ship`, `payment success`): operations owner.
+- Any failed gate requires a named owner, remediation plan within 48 hours, and re-test within 7 days.
+
 ## Inventory Constraint (Critical Unknown)
 
 - P90 requires capacity for ~483 shipped orders in 90 days.

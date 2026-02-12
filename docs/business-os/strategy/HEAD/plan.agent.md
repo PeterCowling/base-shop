@@ -21,10 +21,14 @@ Owner: Pete
 2. **Offer Definition** (Priority: High)
    - Status: Product proposition and differentiation are not yet finalized.
    - Next: Finalize offer statement and attach testable customer-value claims.
+   - Artifact: `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1.agent.md`
+   - Exec Summary: `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1-exec-summary.agent.md`
 
 3. **Launch Signal Design** (Priority: Medium)
    - Status: No agreed launch metrics or stop/pivot threshold.
    - Next: Define demand, conversion, and margin proxy signals with weekly cadence.
+   - Dry-run Evidence: `docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.agent.md`
+   - Action Backlog: `docs/business-os/strategy/HEAD/launch-readiness-action-backlog.agent.md`
 
 ## Risks
 

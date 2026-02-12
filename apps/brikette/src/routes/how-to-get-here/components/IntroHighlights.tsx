@@ -57,7 +57,7 @@ const PRIMARY_BUTTON_CLASS = [
   "focus-visible:outline-offset-2",
   "focus-visible:outline-brand-primary",
   "dark:bg-brand-secondary",
-  "dark:text-brand-text",
+  "dark:text-brand-bg",
   "dark:hover:bg-brand-secondary/90",
   "dark:focus-visible:outline-brand-secondary",
 ].join(" ");
@@ -99,7 +99,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
   )}`;
 
   return (
-    <div className="rounded-3xl bg-brand-secondary px-6 py-8 text-brand-heading shadow-sm dark:bg-brand-secondary">
+    <div className="rounded-3xl bg-brand-secondary px-6 py-8 text-brand-heading shadow-sm dark:bg-brand-secondary dark:text-brand-bg">
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 text-base leading-relaxed">
         <IntroHighlightCard
           eyebrow={taxiEyebrow}
@@ -118,7 +118,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               </a>
             ) : null}
           </Cluster>
-            <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text/80">
+            <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text">
             {t(`${introKey}.taxiBestFor`, {
               defaultValue: "Best for: late arrivals · heavy luggage · fastest option",
             })}
@@ -137,7 +137,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               {t(`${introKey}.shuttleCta`, { defaultValue: "Book shuttle" })}
             </a>
           </Cluster>
-          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text/80">
+          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text">
             {t(`${introKey}.shuttleBestFor`, {
               defaultValue: "Best for: airport arrivals · shared transfer · planning ahead",
             })}
@@ -156,7 +156,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               {t(`${introKey}.emailCta`, { defaultValue: "Email reception" })}
             </a>
           </Cluster>
-          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text/80">
+          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text">
             {t(`${introKey}.helpBestFor`, {
               defaultValue: "Best for: delays · ferry cancellations · late check-in",
             })}

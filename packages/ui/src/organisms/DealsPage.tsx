@@ -69,7 +69,7 @@ function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.E
     if (!ready) return [];
     const strong =
       /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-      "font-semibold text-brand-primary";
+      "font-semibold text-brand-primary dark:text-brand-secondary";
     const from = formatDisplayDate(lang, new Date(2025, 4, 29));
     const to = formatDisplayDate(lang, new Date(2025, 9, 31));
     return [
@@ -102,7 +102,7 @@ function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.E
         node: (
           <Link
             href={`/${lang}/${getSlug("terms", lang)}`}
-            className="underline text-brand-primary hover:text-brand-bougainvillea"
+            className="underline text-brand-primary hover:text-brand-bougainvillea dark:text-brand-secondary dark:hover:text-brand-secondary/85"
             prefetch
           >
             {t("restrictions.other")}
@@ -135,7 +135,7 @@ function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.E
         </header>
 
         <section aria-labelledby={PERKS_HEADING_ID} className="space-y-4">
-          <h2 id={PERKS_HEADING_ID} className="text-xl font-semibold text-brand-primary">
+          <h2 id={PERKS_HEADING_ID} className="text-xl font-semibold text-brand-primary dark:text-brand-secondary">
             {t("perksHeading")}
           </h2>
           <Stack asChild gap={3} className="mx-auto text-start">
@@ -154,7 +154,7 @@ function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.E
         </section>
 
         <section aria-labelledby={RESTRICTIONS_HEADING_ID} className="space-y-4">
-          <h2 id={RESTRICTIONS_HEADING_ID} className="text-xl font-semibold text-brand-primary">
+          <h2 id={RESTRICTIONS_HEADING_ID} className="text-xl font-semibold text-brand-primary dark:text-brand-secondary">
             {t("restrictions.heading")}
           </h2>
           <Card className="mx-auto text-start">
@@ -163,7 +163,7 @@ function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.E
                 <ul>
                   {restrictions.map(({ key, node }) => (
                     <li key={key} className="flex items-start gap-3">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-primary" />
+                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-primary dark:text-brand-secondary" />
                       <span>{node}</span>
                     </li>
                   ))}

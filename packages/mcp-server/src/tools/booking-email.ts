@@ -62,9 +62,6 @@ export async function sendBookingEmail(
     ...occupantLinks.map((link, index) => `Guest ${index + 1}: ${link}`),
     "",
     "If you have any questions, just reply to this email.",
-    "",
-    "Best regards,",
-    "Hostel Brikette",
   ];
 
   const bodyText = bodyLines.join("\n");

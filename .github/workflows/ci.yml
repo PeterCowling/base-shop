@@ -2,6 +2,8 @@ name: Core Platform CI
 
 on:
   push:
+    branches-ignore:
+      - staging
     paths-ignore:
       - 'apps/skylar/**'
       - 'apps/cms/**'

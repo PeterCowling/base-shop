@@ -127,14 +127,14 @@ export default function GuardedHomeExperience() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
 
   if (error || !occupantData) {
     return (
-      <div className="p-4 text-center mt-5 text-red-600">
+      <div className="p-4 text-center mt-5 text-danger-fg">
         Unable to load your booking information.
       </div>
     );
@@ -142,7 +142,7 @@ export default function GuardedHomeExperience() {
 
   if (arrivalState === 'pre-arrival' && checkInDate) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
+      <main className="min-h-screen bg-muted px-4 py-6 pb-24">
         <div className="mx-auto max-w-md">
           <ReadinessDashboard
             preArrivalData={preArrivalData}
@@ -164,7 +164,7 @@ export default function GuardedHomeExperience() {
 
   if (arrivalState === 'arrival-day') {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
+      <main className="min-h-screen bg-muted px-4 py-6 pb-24">
         <div className="mx-auto max-w-md">
           <ArrivalHome
             firstName={firstName}
@@ -189,7 +189,7 @@ export default function GuardedHomeExperience() {
 
   if (arrivalState === 'checked-in') {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-6 pb-24">
+      <main className="min-h-screen bg-muted px-4 py-6 pb-24">
         <div className="mx-auto max-w-md">
           <KeycardStatus status={keycardStatus} className="mb-6" />
           <HomePage />

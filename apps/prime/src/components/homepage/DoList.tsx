@@ -69,7 +69,7 @@ function DoList({
   return (
     <div className={`text-justify max-w-[400px] mx-auto ${className}`}>
       {/* Subheader */}
-      <p className="text-2xl font-bold text-gray-800 text-center mt-6 mb-4">
+      <p className="text-2xl font-bold text-foreground text-center mt-6 mb-4">
         {subheaderText}
       </p>
 

@@ -41,7 +41,7 @@ export const ServicesList = memo(function ServicesList({
 
   return (
     <div className={className}>
-      <h2 className="text-center text-2xl font-bold text-gray-800 mb-4">
+      <h2 className="text-center text-2xl font-bold text-foreground mb-4">
         {t('ourServices')}
       </h2>
       <div className="flex flex-wrap justify-center gap-5">

@@ -99,6 +99,7 @@ export default function GuidedOnboardingFlow({
 
   const didInitRef = useRef(false);
   const celebrationTimeoutRef = useRef<number | null>(null);
+  const flowCompletedRef = useRef(false);
 
   useEffect(() => {
     if (isLoading || didInitRef.current) {
@@ -141,6 +142,25 @@ export default function GuidedOnboardingFlow({
         window.clearTimeout(celebrationTimeoutRef.current);
       }
     };
+  }, []);
+
+  // Keep step accessible to the abandon cleanup via a ref
+  const stepRef = useRef(step);
+  stepRef.current = step;
+
+  // Track flow abandonment on unmount (if not completed)
+  useEffect(() => {
+    return () => {
+      if (!flowCompletedRef.current) {
+        recordActivationFunnelEvent({
+          type: 'guided_flow_abandoned',
+          sessionKey: getFunnelSessionKey(),
+          route: '/portal',
+          context: { lastStep: stepRef.current },
+        });
+      }
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- stepRef is stable
   }, []);
 
   const routeSuggestions = useMemo(() => {
@@ -286,6 +306,7 @@ export default function GuidedOnboardingFlow({
       });
 
       showCelebration('Nice work. Your arrival checklist is moving forward.');
+      flowCompletedRef.current = true;
       onComplete();
     } finally {
       setIsSaving(false);
@@ -477,7 +498,17 @@ export default function GuidedOnboardingFlow({
             <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
-                onClick={() => setStep(2)}
+                onClick={() => {
+                  recordActivationFunnelEvent({
+                    type: 'guided_step_skipped',
+                    sessionKey,
+                    route: '/portal',
+                    stepId: 'step-1',
+                    variant: experimentVariants.onboardingCtaCopy,
+                    context: { stepOrder: experimentVariants.onboardingStepOrder },
+                  });
+                  setStep(2);
+                }}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 Skip for now
@@ -531,7 +562,17 @@ export default function GuidedOnboardingFlow({
             <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
-                onClick={() => setStep(3)}
+                onClick={() => {
+                  recordActivationFunnelEvent({
+                    type: 'guided_step_skipped',
+                    sessionKey,
+                    route: '/portal',
+                    stepId: 'step-2',
+                    variant: experimentVariants.onboardingCtaCopy,
+                    context: { stepOrder: experimentVariants.onboardingStepOrder },
+                  });
+                  setStep(3);
+                }}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 Skip for now
@@ -653,7 +694,18 @@ export default function GuidedOnboardingFlow({
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
-                onClick={onComplete}
+                onClick={() => {
+                  recordActivationFunnelEvent({
+                    type: 'guided_step_skipped',
+                    sessionKey,
+                    route: '/portal',
+                    stepId: 'step-3',
+                    variant: experimentVariants.onboardingCtaCopy,
+                    context: { stepOrder: experimentVariants.onboardingStepOrder },
+                  });
+                  flowCompletedRef.current = true;
+                  onComplete();
+                }}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 Skip for now

@@ -117,6 +117,6 @@ describe('GuidedOnboardingFlow DS Migration', () => {
     // Should contain semantic tokens
     expect(html).toMatch(/\btext-foreground\b/);
     expect(html).toMatch(/\bbg-muted\b/);
-    expect(html).toMatch(/\bbg-card\b/);
+    expect(html).toMatch(/\bbg-background\b/);
   });
 });

@@ -13,11 +13,11 @@ import type { Token, TokenMap } from '@themes/base';
 
 export const tokens: TokenMap = {
   // Brand: warm coral primary (lifestyle/travel)
-  '--color-primary': { light: '6 78% 57%', dark: '6 72% 68%' },
+  '--color-primary': { light: '6 78% 47%', dark: '6 72% 68%' },
   '--color-primary-fg': { light: '0 0% 100%', dark: '0 0% 10%' },
   '--color-primary-soft': { light: '6 65% 96%', dark: '6 60% 18%' },
-  '--color-primary-hover': { light: '6 78% 52%', dark: '6 72% 74%' },
-  '--color-primary-active': { light: '6 78% 47%', dark: '6 72% 78%' },
+  '--color-primary-hover': { light: '6 78% 42%', dark: '6 72% 74%' },
+  '--color-primary-active': { light: '6 78% 37%', dark: '6 72% 78%' },
 
   // Accent: warm gold (complementary to coral)
   '--color-accent': { light: '36 85% 55%', dark: '36 80% 62%' },

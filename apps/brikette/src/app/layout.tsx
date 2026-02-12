@@ -2,11 +2,13 @@ import "@/styles/global.css";
 
 import type { ReactNode } from "react";
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 
 import { initTheme } from "@acme/platform-core/utils";
 
 import { GA_MEASUREMENT_ID, IS_PROD, NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
 import { BASE_URL } from "@/config/site";
+import { buildGA4InlineScript } from "@/utils/ga4-consent-script";
 import { BRAND_PRIMARY_DARK_RGB, BRAND_PRIMARY_RGB, toRgb } from "@/utils/theme-constants";
 
 // Determine if noindex should be applied (staging/preview environments)
@@ -17,19 +19,19 @@ const shouldNoIndex =
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL || "https://hostel-positano.com"),
   openGraph: {
-    siteName: "Hostel Brikette",
+    siteName: "Hostel Brikette", // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Next.js metadata export, not rendered UI
   },
   twitter: {
-    site: "@hostelbrikette",
-    creator: "@hostelbrikette",
+    site: "@hostelbrikette", // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Twitter handle, not rendered UI
+    creator: "@hostelbrikette", // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Twitter handle, not rendered UI
   },
   ...(shouldNoIndex ? { robots: { index: false, follow: true } } : {}),
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: toRgb(BRAND_PRIMARY_RGB) },
-    { media: "(prefers-color-scheme: dark)", color: toRgb(BRAND_PRIMARY_DARK_RGB) },
+    { media: "(prefers-color-scheme: light)", color: toRgb(BRAND_PRIMARY_RGB) }, // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS media query, not rendered UI
+    { media: "(prefers-color-scheme: dark)", color: toRgb(BRAND_PRIMARY_DARK_RGB) }, // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS media query, not rendered UI
   ],
 };
 
@@ -101,19 +103,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <script dangerouslySetInnerHTML={{ __html: HEAD_RELOCATOR_SCRIPT }} />
         {gaMeasurementId ? (
           <>
-            <script
-              async
-              src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`}
-            />
+            {/* Consent Mode v2 defaults + gtag config — synchronous in <head> before gtag.js loads */}
             <script
               dangerouslySetInnerHTML={{
-                __html: `
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${gaMeasurementId}');
-`.trim(),
+                __html: buildGA4InlineScript({ measurementId: gaMeasurementId }),
               }}
+            />
+            {/* gtag.js CDN — loaded after page becomes interactive for better performance */}
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`}
+              strategy="afterInteractive" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] next/script API prop, not rendered UI
             />
           </>
         ) : null}

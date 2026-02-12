@@ -11,6 +11,7 @@ import type { LanguageModalCopy, LanguageOption } from "@acme/ui/organisms/modal
 
 import { IS_DEV } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
+import enModals from "@/locales/en/modals.json";
 import { type GuideKey,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { INTERNAL_SEGMENT_BY_KEY } from "@/routing/sectionSegments";
 import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
@@ -105,6 +106,26 @@ function resolveAlternatePathForLanguage(nextLang: AppLanguage): string | null {
   return null;
 }
 
+function resolveModalCopy(
+  t: (key: string, options?: Record<string, unknown>) => unknown,
+  key: string,
+  fallback: string,
+): string {
+  const localized = t(key, { defaultValue: "" });
+  if (typeof localized === "string") {
+    const trimmed = localized.trim();
+    if (trimmed && trimmed !== key) return trimmed;
+  }
+
+  const fallbackValue = t(key, { lng: i18nConfig.fallbackLng, defaultValue: fallback });
+  if (typeof fallbackValue === "string") {
+    const trimmed = fallbackValue.trim();
+    if (trimmed && trimmed !== key) return trimmed;
+  }
+
+  return fallback;
+}
+
 export function LanguageGlobalModal(): JSX.Element | null {
   const { closeModal } = useModal();
   const { isDark } = useTheme();
@@ -126,8 +147,6 @@ export function LanguageGlobalModal(): JSX.Element | null {
     }
   }, [router]);
 
-  const { t: tModals, i18n } = useTranslation("modals");
-
   const pathSegments = location.pathname.split("/").filter(Boolean);
 
   const curLang: AppLanguage = (() => {
@@ -136,6 +155,8 @@ export function LanguageGlobalModal(): JSX.Element | null {
       ? (first as AppLanguage)
       : (i18nConfig.fallbackLng as AppLanguage);
   })();
+
+  const { t: tModals, i18n } = useTranslation("modals", { lng: curLang, useSuspense: false });
 
   const slugKey = resolveSlugKeyFromSegment(pathSegments[1], curLang);
 
@@ -166,8 +187,8 @@ export function LanguageGlobalModal(): JSX.Element | null {
   });
 
   const languageCopy: LanguageModalCopy = {
-    title: tModals("language.title"),
-    closeLabel: tModals("language.close"),
+    title: resolveModalCopy(tModals, "language.title", enModals.language.title),
+    closeLabel: resolveModalCopy(tModals, "language.close", enModals.language.close),
   };
 
   const warmLayoutNamespaces = useCallback(async (target: AppLanguage): Promise<void> => {

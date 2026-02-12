@@ -23,12 +23,15 @@ Turn existing research into execution-grade 90-day contracts for `HEAD` and `PET
 
 ## Active tasks
 
+- **HP-04**: Close remaining execution blockers for decision-grade scaling
+
+### Completed tasks
+
 | ID | Status | Task | Definition of done |
 |---|---|---|---|
 | HP-01 | Complete (2026-02-12) | Freeze HEAD 90-day outcome contract in canonical strategy doc | HEAD plan includes explicit sales target, CAC guardrail, weekly indicators, and kill/pivot thresholds |
 | HP-02 | Complete (2026-02-12) | Freeze PET 90-day outcome contract in canonical strategy doc | PET plan includes explicit sales target, CAC guardrail, weekly indicators, and kill/pivot thresholds |
 | HP-03 | Complete (2026-02-12) | Close PET website-reference quality gap | PET market-intelligence source section upgraded to URL-level references with explicit caveats |
-| HP-04 | Pending | Close remaining execution blockers for decision-grade scaling | Inventory/date, price architecture, payment readiness, and returns SLA are confirmed in strategy artifacts |
 
 ## Remaining Weak Gaps (Execution-Critical)
 

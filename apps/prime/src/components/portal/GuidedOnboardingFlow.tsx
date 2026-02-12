@@ -4,7 +4,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from 'react-i18next';
 import { Check, ChevronRight, ExternalLink, MapPin } from 'lucide-react';
 
-import { Toast } from '@acme/design-system/atoms';
+import { Skeleton, Toast } from '@acme/design-system/atoms';
 import { StepFlowShell } from '@acme/design-system/primitives';
 import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
 
@@ -348,8 +348,21 @@ export default function GuidedOnboardingFlow({
 
   if (isLoading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      <main className="min-h-screen bg-muted px-4 py-6">
+        <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
+          <Skeleton className="h-6 w-3/4 rounded" />
+          <Skeleton className="h-4 w-full rounded" />
+          <div className="grid grid-cols-2 gap-2">
+            <Skeleton className="h-10 rounded-full" />
+            <Skeleton className="h-10 rounded-full" />
+            <Skeleton className="h-10 rounded-full" />
+            <Skeleton className="h-10 rounded-full" />
+          </div>
+          <Skeleton className="h-16 w-full rounded-xl" />
+          <p className="text-center text-xs text-muted-foreground">
+            {t('guidedFlow.loadingTip')}
+          </p>
+        </div>
       </main>
     );
   }

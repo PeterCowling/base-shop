@@ -41,6 +41,9 @@ jest.mock('@acme/design-system/atoms', () => ({
         )}
       </div>
     ) : null,
+  Skeleton: ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+    <div data-cy="skeleton" className={className} {...props} />
+  ),
 }));
 
 describe('GuidedOnboardingFlow', () => {
@@ -266,6 +269,60 @@ describe('GuidedOnboardingFlow', () => {
       // Advance to Step 3
       fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
       expect(screen.getByRole('link', { name: /helpLink/i })).toBeDefined();
+    });
+  });
+
+  describe('OB-05: skeleton loader', () => {
+    it('TC-01: loading state shows skeleton elements, not spinner', () => {
+      (useFetchPreArrivalData as jest.Mock).mockReturnValue({
+        data: null,
+        error: null,
+        isLoading: true,
+        isError: false,
+        effectiveData: {
+          etaWindow: null, etaMethod: null, etaNote: '',
+          etaConfirmedAt: null, cashReadyCityTax: false, cashReadyDeposit: false,
+          routeSaved: null, arrivalMethodPreference: null, arrivalConfidence: null,
+          checklistProgress: { routePlanned: false, etaConfirmed: false, cashPrepared: false, rulesReviewed: false, locationSaved: false },
+          updatedAt: 0,
+        },
+        refetch: jest.fn(),
+      });
+
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} />);
+
+      const skeletons = screen.getAllByTestId('skeleton');
+      expect(skeletons.length).toBeGreaterThanOrEqual(3);
+      // No spinner should be present
+      expect(screen.queryByText('animate-spin')).toBeNull();
+    });
+
+    it('TC-02: loading state shows tip message', () => {
+      (useFetchPreArrivalData as jest.Mock).mockReturnValue({
+        data: null,
+        error: null,
+        isLoading: true,
+        isError: false,
+        effectiveData: {
+          etaWindow: null, etaMethod: null, etaNote: '',
+          etaConfirmedAt: null, cashReadyCityTax: false, cashReadyDeposit: false,
+          routeSaved: null, arrivalMethodPreference: null, arrivalConfidence: null,
+          checklistProgress: { routePlanned: false, etaConfirmed: false, cashPrepared: false, rulesReviewed: false, locationSaved: false },
+          updatedAt: 0,
+        },
+        refetch: jest.fn(),
+      });
+
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} />);
+
+      expect(screen.getByText('guidedFlow.loadingTip')).toBeDefined();
+    });
+
+    it('TC-03: non-loading state shows normal content, no skeletons', () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      expect(screen.queryAllByTestId('skeleton')).toHaveLength(0);
+      expect(screen.getByText('guidedFlow.step1.privacyTitle')).toBeDefined();
     });
   });
 

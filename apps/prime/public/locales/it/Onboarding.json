@@ -2,6 +2,7 @@
   "guidedFlow": {
     "finish": "Completa",
     "helpLink": "Hai bisogno di aiuto?",
+    "loadingTip": "Caricamento dei dettagli del tuo arrivo\u2026",
     "methods": {
       "bus": "Autobus",
       "ferry": "Traghetto",

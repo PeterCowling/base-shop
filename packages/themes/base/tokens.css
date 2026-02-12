@@ -218,6 +218,10 @@
   --safe-right: var(--token-safe-right, env(safe-area-inset-right, 0px));
   --safe-bottom: var(--token-safe-bottom, env(safe-area-inset-bottom, 0px));
   --safe-left: var(--token-safe-left, env(safe-area-inset-left, 0px));
+  --disabled-text: var(--token-disabled-text, var(--color-muted-foreground));
+  --disabled-bg: var(--token-disabled-bg, var(--color-muted));
+  --disabled-border: var(--token-disabled-border, var(--color-border));
+  --disabled-opacity: var(--token-disabled-opacity, 0.5);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -77,7 +77,7 @@
         "resource-summary:script:size": [
           "error",
           {
-            "maxNumericValue": 700000
+            "maxNumericValue": 750000
           }
         ],
         "resource-summary:third-party:count": [

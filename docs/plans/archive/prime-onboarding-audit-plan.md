@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-12
@@ -94,7 +94,7 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
 | OB-05 | IMPLEMENT | Replace loading spinner with skeleton + tip | 92% | S | Complete (2026-02-12) | OB-04 | OB-06 |
 | OB-06 | IMPLEMENT | Add ARIA live regions and focus management | 90% | S | Complete (2026-02-12) | OB-05 | OB-07 |
 | OB-07 | IMPLEMENT | Add Cypress E2E test for onboarding flow | 85% | M | Complete (2026-02-12) | OB-06 | - |
-| OB-08 | DECISION | Resolve dormant legacy onboarding components | 70% | S | Pending | - | - |
+| OB-08 | DECISION | Resolve dormant legacy onboarding components | 95% | S | Complete (2026-02-12) | - | - |
 
 ## Parallelism Guide
 
@@ -574,6 +574,25 @@ Single sequential improvement pass on GuidedOnboardingFlow.tsx, ordered by prior
   - Default if no answer: Remove (Option A)
 - **Acceptance:**
   - User selects option; plan updated with follow-up IMPLEMENT task if needed
+
+#### Build Completion (2026-02-12)
+- **Status:** Complete
+- **Decision:** Option A — Remove
+- **Commits:** `3c9d673988`
+- **Execution cycle:**
+  - Confirmed zero production imports of all 5 components
+  - Deleted 5 component files + 4 test files (kept `chat-optin-controls.test.tsx` — unrelated)
+  - 1472 lines removed
+- **Confidence reassessment:**
+  - Original: 70%
+  - Post-validation: 95%
+  - Delta reason: User chose Option A decisively; confirmed components are truly dormant (zero imports)
+- **Validation:**
+  - Ran: `jest` on onboarding + chat-optin tests — PASS (32/32)
+  - Pre-commit hooks — PASS
+- **Implementation notes:**
+  - Removed: GuestProfileStep, SocialOptInStep, WelcomeHandoffStep, OnboardingLayout, ProgressBar + their tests + DS migration test
+  - Kept: `chat-optin-controls.test.tsx` (tests `ChatOptInControls` from `settings/`, not onboarding)
 
 ## Risks & Mitigations
 

@@ -100,8 +100,8 @@ describe("gmail label state machine", () => {
   });
 
   it("prevents concurrent processing when Processing label is active", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const processing = { id: "label-processing", name: "Brikette/Inbox/Processing" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const processing = { id: "label-processing", name: "Brikette/Queue/In-Progress" };
 
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, processing],
@@ -124,8 +124,8 @@ describe("gmail label state machine", () => {
       expect.objectContaining({
         id: "msg-1",
         requestBody: expect.objectContaining({
-          addLabelIds: [processing.id],
-          removeLabelIds: [needsProcessing.id],
+          addLabelIds: expect.arrayContaining([processing.id]),
+          removeLabelIds: expect.arrayContaining([needsProcessing.id]),
         }),
       })
     );
@@ -138,8 +138,8 @@ describe("gmail label state machine", () => {
   });
 
   it("releases stale Processing lock after timeout", async () => {
-    const processing = { id: "label-processing", name: "Brikette/Inbox/Processing" };
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const processing = { id: "label-processing", name: "Brikette/Queue/In-Progress" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
 
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, processing],
@@ -172,7 +172,7 @@ describe("gmail label state machine", () => {
   });
 
   it("applies workflow label transitions based on action", async () => {
-    const awaitingAgreement = { id: "label-await", name: "Brikette/Inbox/Awaiting-Agreement" };
+    const awaitingAgreement = { id: "label-await", name: "Brikette/Queue/Needs-Decision" };
     const chase1 = { id: "label-chase-1", name: "Brikette/Workflow/Prepayment-Chase-1" };
     const chase2 = { id: "label-chase-2", name: "Brikette/Workflow/Prepayment-Chase-2" };
 
@@ -195,11 +195,11 @@ describe("gmail label state machine", () => {
 
     expect(messageStore["msg-3"].labelIds).toContain(chase2.id);
     expect(messageStore["msg-3"].labelIds).not.toContain(chase1.id);
-    expect(messageStore["msg-3"].labelIds).not.toContain(awaitingAgreement.id);
+    expect(messageStore["msg-3"].labelIds).toContain(awaitingAgreement.id);
   });
 
   it("moves Awaiting-Agreement to prepayment chase 1", async () => {
-    const awaitingAgreement = { id: "label-await-2", name: "Brikette/Inbox/Awaiting-Agreement" };
+    const awaitingAgreement = { id: "label-await-2", name: "Brikette/Queue/Needs-Decision" };
     const chase1 = { id: "label-chase-1a", name: "Brikette/Workflow/Prepayment-Chase-1" };
 
     const { gmail, messageStore } = createGmailStub({
@@ -220,7 +220,7 @@ describe("gmail label state machine", () => {
     await handleGmailTool("gmail_mark_processed", { emailId: "msg-5", action: "prepayment_chase_1" });
 
     expect(messageStore["msg-5"].labelIds).toContain(chase1.id);
-    expect(messageStore["msg-5"].labelIds).not.toContain(awaitingAgreement.id);
+    expect(messageStore["msg-5"].labelIds).toContain(awaitingAgreement.id);
   });
 
   it("creates missing workflow labels and applies them", async () => {
@@ -242,14 +242,14 @@ describe("gmail label state machine", () => {
     await handleGmailTool("gmail_mark_processed", { emailId: "msg-4", action: "awaiting_agreement" });
 
     const createdNames = labelsStore.map(label => label.name);
-    expect(createdNames).toContain("Brikette/Inbox/Awaiting-Agreement");
+    expect(createdNames).toContain("Brikette/Queue/Needs-Decision");
     expect(messageStore["msg-4"].labelIds.length).toBeGreaterThan(0);
   });
 
   it("moves deferred emails out of active queue", async () => {
-    const needsProcessing = { id: "label-needs-2", name: "Brikette/Inbox/Needs-Processing" };
-    const processing = { id: "label-processing-2", name: "Brikette/Inbox/Processing" };
-    const deferred = { id: "label-deferred-2", name: "Brikette/Inbox/Deferred" };
+    const needsProcessing = { id: "label-needs-2", name: "Brikette/Queue/Needs-Processing" };
+    const processing = { id: "label-processing-2", name: "Brikette/Queue/In-Progress" };
+    const deferred = { id: "label-deferred-2", name: "Brikette/Queue/Deferred" };
 
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, processing, deferred],
@@ -268,8 +268,171 @@ describe("gmail label state machine", () => {
 
     await handleGmailTool("gmail_mark_processed", { emailId: "msg-6", action: "deferred" });
 
+    expect(gmail.users.messages.modify).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        id: "msg-6",
+        requestBody: expect.objectContaining({
+          addLabelIds: expect.arrayContaining([deferred.id]),
+          removeLabelIds: expect.not.arrayContaining([deferred.id]),
+        }),
+      })
+    );
+
     expect(messageStore["msg-6"].labelIds).toContain(deferred.id);
     expect(messageStore["msg-6"].labelIds).not.toContain(needsProcessing.id);
     expect(messageStore["msg-6"].labelIds).not.toContain(processing.id);
+  });
+
+  it("requeues stale unresolved emails back to Needs-Processing", async () => {
+    const needsProcessing = { id: "label-needs-rq", name: "Brikette/Queue/Needs-Processing" };
+    const processing = { id: "label-processing-rq", name: "Brikette/Queue/In-Progress" };
+    const deferred = { id: "label-deferred-rq", name: "Brikette/Queue/Deferred" };
+
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing, processing, deferred],
+      messages: {
+        "msg-rq": {
+          id: "msg-rq",
+          threadId: "thread-rq",
+          labelIds: [processing.id, deferred.id, "INBOX"],
+          internalDate: String(Date.now() - 48 * 60 * 60 * 1000),
+          payload: {
+            headers: [
+              { name: "From", value: "Guest <guest@example.com>" },
+              { name: "Subject", value: "Question about payment" },
+              { name: "Date", value: new Date(Date.now() - 48 * 60 * 60 * 1000).toUTCString() },
+            ],
+          },
+          snippet: "Could you confirm what is due on arrival?",
+        },
+      },
+    });
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    await handleGmailTool("gmail_mark_processed", { emailId: "msg-rq", action: "requeued" });
+
+    expect(messageStore["msg-rq"].labelIds).toContain(needsProcessing.id);
+    expect(messageStore["msg-rq"].labelIds).not.toContain(processing.id);
+    expect(messageStore["msg-rq"].labelIds).not.toContain(deferred.id);
+  });
+
+  it("reconciles stale in-progress agreements to workflow and stale customer threads to queue", async () => {
+    const needsProcessing = { id: "label-needs-ri", name: "Brikette/Queue/Needs-Processing" };
+    const processing = { id: "label-processing-ri", name: "Brikette/Queue/In-Progress" };
+    const awaitingAgreement = { id: "label-await-ri", name: "Brikette/Queue/Needs-Decision" };
+    const agreementReceived = { id: "label-agree-ri", name: "Brikette/Workflow/Agreement-Received" };
+
+    const staleDate = new Date(Date.now() - 48 * 60 * 60 * 1000).toUTCString();
+
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing, processing, awaitingAgreement, agreementReceived],
+      messages: {
+        "msg-agree": {
+          id: "msg-agree",
+          threadId: "thread-agree",
+          labelIds: [processing.id, "INBOX"],
+          internalDate: String(Date.now() - 48 * 60 * 60 * 1000),
+          payload: {
+            headers: [
+              { name: "From", value: "Guest A <guesta@example.com>" },
+              { name: "Subject", value: "Re: Your Hostel Brikette Reservation" },
+              { name: "Date", value: staleDate },
+            ],
+          },
+          snippet: "Agree. Thank you!",
+        },
+        "msg-customer": {
+          id: "msg-customer",
+          threadId: "thread-customer",
+          labelIds: [processing.id, "INBOX"],
+          internalDate: String(Date.now() - 48 * 60 * 60 * 1000),
+          payload: {
+            headers: [
+              { name: "From", value: "Guest B <guestb@example.com>" },
+              { name: "Subject", value: "Question about payment" },
+              { name: "Date", value: staleDate },
+            ],
+          },
+          snippet: "Can you confirm what remains to pay?",
+        },
+      },
+    });
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_reconcile_in_progress", {
+      dryRun: false,
+      staleHours: 24,
+      limit: 20,
+      actor: "codex",
+    });
+
+    expect(result).toHaveProperty("content");
+    expect(messageStore["msg-agree"].labelIds).toContain(awaitingAgreement.id);
+    expect(messageStore["msg-agree"].labelIds).toContain(agreementReceived.id);
+    expect(messageStore["msg-agree"].labelIds).not.toContain(processing.id);
+
+    expect(messageStore["msg-customer"].labelIds).toContain(needsProcessing.id);
+    expect(messageStore["msg-customer"].labelIds).not.toContain(processing.id);
+  });
+
+  it("assigns actor label when claiming an email", async () => {
+    const needsProcessing = { id: "label-needs-3", name: "Brikette/Queue/Needs-Processing" };
+    const processing = { id: "label-processing-3", name: "Brikette/Queue/In-Progress" };
+    const codexActor = { id: "label-agent-codex", name: "Brikette/Agent/Codex" };
+    const claudeActor = { id: "label-agent-claude", name: "Brikette/Agent/Claude" };
+
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing, processing, codexActor, claudeActor],
+      messages: {
+        "msg-7": {
+          id: "msg-7",
+          threadId: "thread-7",
+          labelIds: [needsProcessing.id, codexActor.id],
+          internalDate: String(Date.now()),
+          payload: { headers: [] },
+        },
+      },
+    });
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    await handleGmailTool("gmail_get_email", {
+      emailId: "msg-7",
+      actor: "claude",
+    });
+
+    expect(messageStore["msg-7"].labelIds).toContain(processing.id);
+    expect(messageStore["msg-7"].labelIds).toContain(claudeActor.id);
+    expect(messageStore["msg-7"].labelIds).not.toContain(codexActor.id);
+  });
+
+  it("migrates legacy labels to queue/outcome labels", async () => {
+    const legacyNeeds = { id: "label-legacy-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const newNeeds = { id: "label-new-needs", name: "Brikette/Queue/Needs-Processing" };
+
+    const { gmail, messageStore } = createGmailStub({
+      labels: [legacyNeeds, newNeeds],
+      messages: {
+        "msg-8": {
+          id: "msg-8",
+          threadId: "thread-8",
+          labelIds: [legacyNeeds.id],
+          internalDate: String(Date.now()),
+          payload: { headers: [] },
+        },
+      },
+    });
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_migrate_labels", {
+      dryRun: false,
+      limitPerLabel: 100,
+    });
+    expect(result).toHaveProperty("content");
+    expect(messageStore["msg-8"].labelIds).toContain(newNeeds.id);
+    expect(messageStore["msg-8"].labelIds).not.toContain(legacyNeeds.id);
   });
 });

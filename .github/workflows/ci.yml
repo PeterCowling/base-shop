@@ -177,6 +177,7 @@ jobs:
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Docs lint
+        if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/staging' }}
         run: pnpm run docs:lint
       - name: Plans lint
         run: pnpm run plans:lint

@@ -7,30 +7,24 @@ import { FirebaseRest } from "../lib/firebase-rest";
 
 import { createMockEnv, createMockKv, createPagesContext } from "./helpers";
 
-const dispatchPrimeEmailMock = jest.fn(async () => ({
-  delivered: false,
-  deliveryMode: "noop",
-}));
-
-jest.mock("../lib/email-dispatch", () => ({
-  dispatchPrimeEmail: (...args: unknown[]) => dispatchPrimeEmailMock(...args),
-}));
-
 describe("/api/extension-request", () => {
   const getSpy = jest.spyOn(FirebaseRest.prototype, "get");
+  const setSpy = jest.spyOn(FirebaseRest.prototype, "set");
   const updateSpy = jest.spyOn(FirebaseRest.prototype, "update");
 
   beforeEach(() => {
     jest.clearAllMocks();
+    setSpy.mockResolvedValue(undefined);
     updateSpy.mockResolvedValue(undefined);
   });
 
   afterAll(() => {
     getSpy.mockRestore();
+    setSpy.mockRestore();
     updateSpy.mockRestore();
   });
 
-  it("TC-01: valid request writes one Prime request record and dispatches one email payload", async () => {
+  it("TC-01: valid request writes one Prime request record and one outbound draft", async () => {
     const kv = createMockKv();
     const env = createMockEnv({ RATE_LIMIT: kv });
 
@@ -66,12 +60,28 @@ describe("/api/extension-request", () => {
       }),
     );
 
-    const payload = await response.json() as { success: boolean; requestId: string };
+    const payload = await response.json() as { success: boolean; requestId: string; deliveryMode: string };
     expect(response.status).toBe(200);
     expect(payload.success).toBe(true);
     expect(payload.requestId).toContain("extension_");
+    expect(payload.deliveryMode).toBe("outbox");
+
+    // Prime request record written
     expect(updateSpy).toHaveBeenCalledTimes(1);
-    expect(dispatchPrimeEmailMock).toHaveBeenCalledTimes(1);
+
+    // Outbound draft written to Firebase outbox
+    expect(setSpy).toHaveBeenCalledWith(
+      expect.stringContaining("outboundDrafts/extension_"),
+      expect.objectContaining({
+        to: "hostelbrikette@gmail.com",
+        subject: "[Prime] Extension request BOOK123",
+        category: "extension-ops",
+        guestName: "Jane Doe",
+        bookingCode: "BOOK123",
+        status: "pending",
+        createdAt: expect.any(String),
+      }),
+    );
   });
 
   it("TC-02: invalid request date returns 400 with actionable error", async () => {
@@ -88,7 +98,7 @@ describe("/api/extension-request", () => {
 
     expect(response.status).toBe(400);
     expect(updateSpy).not.toHaveBeenCalled();
-    expect(dispatchPrimeEmailMock).not.toHaveBeenCalled();
+    expect(setSpy).not.toHaveBeenCalled();
   });
 
   it("TC-03: rate limit threshold returns 429 and does not dispatch", async () => {
@@ -123,7 +133,7 @@ describe("/api/extension-request", () => {
 
     expect(response.status).toBe(429);
     expect(updateSpy).not.toHaveBeenCalled();
-    expect(dispatchPrimeEmailMock).not.toHaveBeenCalled();
+    expect(setSpy).not.toHaveBeenCalled();
   });
 
   it("TC-04: duplicate same-session submission returns deterministic dedupe response", async () => {
@@ -161,6 +171,6 @@ describe("/api/extension-request", () => {
     expect(payload.deduplicated).toBe(true);
     expect(payload.requestId).toBe("extension_abc");
     expect(updateSpy).not.toHaveBeenCalled();
-    expect(dispatchPrimeEmailMock).not.toHaveBeenCalled();
+    expect(setSpy).not.toHaveBeenCalled();
   });
 });

@@ -163,14 +163,12 @@ export function SearchBar({
       {/* Search input */}
       <div
         className={`
-          relative flex items-center gap-2 rounded-lg border bg-white px-3 py-2 shadow-sm transition-colors
+          relative flex items-center gap-2 rounded-lg border bg-bg px-3 py-2 shadow-sm transition-colors
           ${isFocused ? 'border-primary-500 ring-2 ring-primary-500/20' : 'border-border'}
           ${disabled ? 'cursor-not-allowed opacity-50' : ''}
-          dark:bg-darkSurface dark:border-darkSurface
-          ${isFocused ? 'dark:border-darkAccentGreen dark:ring-darkAccentGreen/20' : ''}
         `}
       >
-        <Search className="h-5 w-5 flex-shrink-0 text-gray-400 dark:text-gray-500" />
+        <Search className="h-5 w-5 flex-shrink-0 text-fg-muted" />
 
         <input
           ref={inputRef}
@@ -183,11 +181,11 @@ export function SearchBar({
           placeholder={placeholder}
           disabled={disabled}
           autoFocus={autoFocus}
-          className="flex-1 border-none bg-transparent text-sm text-gray-900 placeholder-gray-500 outline-none dark:text-darkAccentGreen dark:placeholder-gray-500"
+          className="flex-1 border-none bg-transparent text-sm text-fg placeholder-fg-muted outline-none"
         />
 
         {shortcutHint && !hasValue && !isFocused && (
-          <kbd className="hidden rounded border border-border bg-gray-100 px-1.5 py-0.5 text-xs font-semibold text-gray-600 sm:inline-block dark:border-darkBg dark:bg-darkBg dark:text-gray-400">
+          <kbd className="hidden rounded border border-border bg-bg-2 px-1.5 py-0.5 text-xs font-semibold text-fg-muted sm:inline-block">
             {shortcutHint}
           </kbd>
         )}
@@ -196,7 +194,7 @@ export function SearchBar({
           <button
             type="button"
             onClick={handleClear}
-            className="rounded-full p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary-500 dark:hover:bg-darkBg dark:hover:text-darkAccentGreen"
+            className="rounded-full p-0.5 text-fg-muted hover:bg-bg-2 hover:text-fg focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
             aria-label="Clear search"
           >
             <X className="h-4 w-4" />
@@ -208,17 +206,17 @@ export function SearchBar({
       {shouldShowDropdown && (
         <div
           ref={dropdownRef}
-          className="absolute top-full z-10 mt-2 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:border-darkSurface dark:bg-darkSurface"
+          className="absolute top-full z-10 mt-2 w-full rounded-lg border border-border bg-bg shadow-lg"
         >
-          <div className="flex items-center justify-between border-b border-gray-200 px-3 py-2 dark:border-darkBg">
-            <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+          <div className="flex items-center justify-between border-b border-border px-3 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-fg-muted">
               Recent Searches
             </span>
             {onClearRecent && (
               <button
                 type="button"
                 onClick={onClearRecent}
-                className="text-xs font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-darkAccentGreen"
+                className="text-xs font-medium text-fg-muted hover:text-fg"
               >
                 Clear
               </button>
@@ -230,9 +228,9 @@ export function SearchBar({
                 <button
                   type="button"
                   onClick={() => handleSelectRecent(search)}
-                  className="flex w-full items-center gap-2 px-3 py-2 text-start text-sm text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-start text-sm text-fg hover:bg-bg-2"
                 >
-                  <Search className="h-4 w-4 flex-shrink-0 text-gray-400" />
+                  <Search className="h-4 w-4 flex-shrink-0 text-fg-muted" />
                   <span className="truncate">{search}</span>
                 </button>
               </li>

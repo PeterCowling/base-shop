@@ -141,7 +141,7 @@ function StepIndicator({
                 onClick={() => onStepClick?.(index)}
                 disabled={!isVisited && !isCompleted}
                 className={
-                  "group flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg " +
+                  "group flex items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-lg " +
                   (isVisited || isCompleted ? "cursor-pointer" : "cursor-not-allowed")
                 }
                 aria-current={isActive ? "step" : undefined}
@@ -151,12 +151,12 @@ function StepIndicator({
                   className={
                     "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 transition-colors " +
                     (isActive
-                      ? "border-blue-600 bg-blue-600 text-white"
+                      ? "border-primary bg-primary text-primary-fg"
                       : isCompleted
-                      ? "border-green-600 bg-success text-white"
+                      ? "border-success bg-success text-success-fg"
                       : isVisited
-                      ? "border-gray-300 bg-white text-gray-500 group-hover:border-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400"
-                      : "border-gray-200 bg-white text-gray-400 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-600")
+                      ? "border-border bg-bg text-fg-muted group-hover:border-border-strong"
+                      : "border-border-muted bg-bg text-fg-muted")
                   }
                 >
                   {isCompleted ? (
@@ -176,21 +176,21 @@ function StepIndicator({
                     className={
                       "block text-sm font-medium " +
                       (isActive
-                        ? "text-blue-600 dark:text-blue-400"
+                        ? "text-primary"
                         : isCompleted
-                        ? "text-green-600 dark:text-green-400"
-                        : "text-gray-500 dark:text-gray-400")
+                        ? "text-success-fg"
+                        : "text-fg-muted")
                     }
                   >
                     {step.title}
                     {step.optional && (
-                      <span className="ms-1 text-xs text-gray-400 dark:text-gray-500">
+                      <span className="ms-1 text-xs text-fg-muted">
                         (optional)
                       </span>
                     )}
                   </span>
                   {step.description && (
-                    <span className="block text-xs text-gray-400 dark:text-gray-500">
+                    <span className="block text-xs text-fg-muted">
                       {step.description}
                     </span>
                   )}
@@ -204,7 +204,7 @@ function StepIndicator({
                     "ml-4 h-0.5 flex-1 " +
                     (completedSteps.has(index)
                       ? "bg-success"
-                      : "bg-gray-200 dark:bg-gray-700")
+                      : "bg-border")
                   }
                   aria-hidden="true"
                 />
@@ -217,7 +217,7 @@ function StepIndicator({
                     "absolute left-5 top-10 h-full w-0.5 -translate-x-1/2 " +
                     (completedSteps.has(index)
                       ? "bg-success"
-                      : "bg-gray-200 dark:bg-gray-700")
+                      : "bg-border")
                   }
                   aria-hidden="true"
                   style={{ height: "calc(100% + 1rem)" }}
@@ -464,7 +464,7 @@ export function StepActions({
             type="button"
             onClick={prevStep}
             disabled={!canGoPrev || isValidating}
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-blue-500 focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-bg px-4 py-2 text-sm font-medium text-fg shadow-sm hover:bg-bg-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
             {prevLabel}
@@ -480,11 +480,11 @@ export function StepActions({
             type="button"
             onClick={isLastStep ? completeWizard : nextStep}
             disabled={(!canGoNext && !isLastStep) || isValidating}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-blue-500 focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-fg shadow-sm hover:bg-primary-hover focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary focus-visible:focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isValidating ? (
               <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-fg border-t-transparent" />
                 Validating...
               </>
             ) : isLastStep ? (

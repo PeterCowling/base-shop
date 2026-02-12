@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerno: Das andere Tor zur Amalfiküste",
+    "description": "Warum Salerno in der Saison eine clevere Anreise für Positano ist – inklusive Fährverbindungen."
+  },
+  "linkLabel": "Salerno: Das andere Tor zur Amalfiküste",
+  "intro": [
+    "Salerno ist ein smarter Startpunkt für die Amalfiküste – mit besseren Zugverbindungen und entspannteren Straßen als Neapel."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Warum über Salerno anreisen",
+      "body": [
+        "Hochgeschwindigkeitszüge aus Rom oder Mailand enden hier – vom Frecciarossa bist du in Minuten am Fährpier.",
+        "Unterkünfte und Restaurants sind günstiger als in Positano, ideal für erste oder letzte Nächte."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Weiterreise",
+      "body": [
+        "Saisonale Fähren erreichen Positano in etwa 70 Minuten. Busse fahren die Küste ganzjährig hinauf – UnicoCampania-Tickets vorab kaufen.",
+        "Airport-Shuttles brauchen ca. 60 Minuten bis Neapel Capodichino, falls du abfliegst."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Aufenthalt in Salerno",
+      "body": [
+        "An der Lungomare-Promenade, durch die Altstadt und zur Burg Arechi für Sonnenuntergänge spazieren.",
+        "Rund um die Via Roma findest du hervorragende Fischküche ohne Positano-Preisniveau."
+      ]
+    }
+  ],
+  "tips": [
+    "Bei später Ankunft in Salerno übernachten und morgens die erste Fähre oder den Bus nach Positano nehmen – deutlich entspannter.",
+    "Gepäckaufbewahrung nahe dem Bahnhof (5–7 € pro Tasche) nutzen, um zwischen Zug und Fähre frei zu bummeln."
+  ],
+  "faqs": [
+    {
+      "q": "Sind Fähren ab Salerno zuverlässig?",
+      "a": [
+        "Im Sommer ja. In der Nebensaison kann Wetter Fahrten streichen – Bus als Backup einplanen."
+      ]
+    },
+    {
+      "q": "Wie früh muss ich für den Zug da sein?",
+      "a": [
+        "15 Minuten vor Abfahrt reichen, um das Gleis zu finden und regionale Tickets bei Bedarf zu entwerten."
+      ]
+    }
+  ]
+}

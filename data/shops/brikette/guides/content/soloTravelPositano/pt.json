@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Viagem solo em Positano: dicas",
+    "description": "Segurança, ideias para socializar, hostel vs. quarto privado e roteiros que funcionam bem sozinho."
+  },
+  "linkLabel": "Viagem solo em Positano: dicas",
+  "intro": [
+    "Positano recebe bem viajantes a solo. Socialize no hostel, planeie bate-voltas com margem e privilegie ferries nas horas de sol forte."
+  ],
+  "tocTitle": "Nesta página",
+  "toc": [
+    {
+      "href": "#safety",
+      "label": "Segurança e confiança"
+    },
+    {
+      "href": "#social",
+      "label": "Dicas sociais"
+    },
+    {
+      "href": "#dayplans",
+      "label": "Planos diários a solo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Segurança e confiança",
+      "list": [
+        "Partilhe planos com a receção; leve telemóvel carregado e água.",
+        "Use rotas iluminadas à noite; evite correr nas escadas."
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Dicas sociais",
+      "list": [
+        "Participe no pôr do sol no terraço e nas atividades do hostel para encontros espontâneos.",
+        "Escolha passeios de barco ou trilhos em grupos pequenos para companhia sem esforço."
+      ]
+    },
+    {
+      "id": "dayplans",
+      "title": "Planos diários que funcionam",
+      "list": [
+        "Ferry até Amalfi + caminhada até Atrani; autocarro para os jardins de Ravello.",
+        "Capri com trilho até Villa Jovis ou farol; regresse ao pôr do sol."
+      ]
+    }
+  ],
+  "tips": [
+    "Veja o quadro da receção por volta das 18:00 para listas de inscrição — é a forma mais rápida de arranjar companhia para jantar ou passeio de barco no dia seguinte.",
+    "Leve mochila leve com 1–1,5 L de água e powerbank para ficar para fotos ao pôr do sol sem pressa na subida."
+  ],
+  "faqs": [
+    {
+      "q": "É seguro explorar Positano sozinho à noite?",
+      "a": [
+        "Prefira escadarias principais e rotas iluminadas, informe a receção e leve telemóvel carregado.",
+        "Se terminar tarde, o posto Positano Taxi (laranja) na Piazza dei Mulini organiza boleia curta encosta acima."
+      ]
+    },
+    {
+      "q": "Como conhecer outros viajantes estando sozinho?",
+      "a": [
+        "Participe nos encontros de pôr do sol do hostel ou inscreva-se em passeios de barco com grupos de 10–12 pessoas.",
+        "Aulas de culinária e walking tours em Amalfi ou Capri oferecem conversas descontraídas sem quebra-gelo forçado."
+      ]
+    },
+    {
+      "q": "Posso fazer o Path of the Gods sozinho?",
+      "a": [
+        "Sim — comece em Bomerano por volta das 09:00, leve pelo menos 1,5 L de água e descarregue o mapa offline.",
+        "Apanhe o autocarro SITA de volta de Nocelle ou Montepertuso antes do anoitecer; os serviços rareiam depois das 20:00."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,552 @@
+'use client';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+
+import { StepFlowShell } from '@acme/design-system/primitives';
+import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
+
+import { ROUTES_TO_POSITANO } from '../../data/routes';
+import { usePreArrivalMutator } from '../../hooks/mutator/usePreArrivalMutator';
+import { useFetchPreArrivalData } from '../../hooks/pureData/useFetchPreArrivalData';
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { assignActivationVariants } from '../../lib/experiments/activationExperiments';
+import {
+  getChecklistItemLabel,
+  getDefaultEtaWindow,
+  getEtaWindowOptions,
+  sortRoutesForPersonalization,
+  writeLastCompletedChecklistItem,
+} from '../../lib/preArrival';
+import type { ArrivalConfidence, ChecklistProgress, EtaMethod } from '../../types/preArrival';
+
+type Step = 1 | 2 | 3;
+
+interface GuidedOnboardingFlowProps {
+  guestFirstName?: string | null;
+  onComplete: () => void;
+}
+
+function normalizeMethod(method: string | null): EtaMethod | null {
+  if (
+    method === 'ferry' ||
+    method === 'bus' ||
+    method === 'taxi' ||
+    method === 'private' ||
+    method === 'train' ||
+    method === 'other'
+  ) {
+    return method;
+  }
+
+  return null;
+}
+
+function getFunnelSessionKey(): string {
+  if (typeof window === 'undefined') {
+    return 'unknown-session';
+  }
+
+  return (
+    localStorage.getItem('prime_guest_uuid') ||
+    localStorage.getItem('prime_guest_booking_id') ||
+    'unknown-session'
+  );
+}
+
+function normalizeConfidence(confidence: string | null): ArrivalConfidence | null {
+  if (confidence === 'confident' || confidence === 'need-guidance') {
+    return confidence;
+  }
+
+  return null;
+}
+
+export default function GuidedOnboardingFlow({
+  guestFirstName,
+  onComplete,
+}: GuidedOnboardingFlowProps) {
+  const [step, setStep] = useState<Step>(1);
+  const [isSaving, setIsSaving] = useState(false);
+  const [celebration, setCelebration] = useState<string | null>(null);
+
+  const { effectiveData, isLoading } = useFetchPreArrivalData();
+  const {
+    setPersonalization,
+    saveRoute,
+    setEta,
+    updateChecklistItem,
+  } = usePreArrivalMutator();
+
+  const [arrivalMethodPreference, setArrivalMethodPreference] = useState<EtaMethod | null>(null);
+  const [arrivalConfidence, setArrivalConfidence] = useState<ArrivalConfidence | null>(null);
+  const [selectedRouteSlug, setSelectedRouteSlug] = useState<string | null>(null);
+  const [etaWindow, setEtaWindow] = useState<string>('18:00-18:30');
+  const [etaMethod, setEtaMethod] = useState<EtaMethod>('other');
+  const [cashPrepared, setCashPrepared] = useState(false);
+  const [rulesReviewed, setRulesReviewed] = useState(false);
+  const [locationSaved, setLocationSaved] = useState(false);
+  const [lastCompletedItem, setLastCompletedItem] = useState<keyof ChecklistProgress | null>(null);
+
+  const didInitRef = useRef(false);
+  const celebrationTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (isLoading || didInitRef.current) {
+      return;
+    }
+
+    didInitRef.current = true;
+    const method = normalizeMethod(effectiveData.arrivalMethodPreference);
+    const confidence = normalizeConfidence(effectiveData.arrivalConfidence);
+    const defaultWindow = getDefaultEtaWindow(confidence);
+
+    setArrivalMethodPreference(method);
+    setArrivalConfidence(confidence);
+    setSelectedRouteSlug(effectiveData.routeSaved);
+    setEtaWindow(effectiveData.etaWindow ?? defaultWindow);
+    setEtaMethod(normalizeMethod(effectiveData.etaMethod) ?? method ?? 'other');
+    setCashPrepared(effectiveData.checklistProgress.cashPrepared);
+    setRulesReviewed(effectiveData.checklistProgress.rulesReviewed);
+    setLocationSaved(effectiveData.checklistProgress.locationSaved);
+  }, [effectiveData, isLoading]);
+
+  useEffect(() => {
+    if (!arrivalMethodPreference) {
+      return;
+    }
+
+    setEtaMethod(arrivalMethodPreference);
+  }, [arrivalMethodPreference]);
+
+  useEffect(() => {
+    const options = getEtaWindowOptions(arrivalConfidence);
+    if (!options.includes(etaWindow)) {
+      setEtaWindow(options[0]);
+    }
+  }, [arrivalConfidence, etaWindow]);
+
+  useEffect(() => {
+    return () => {
+      if (celebrationTimeoutRef.current) {
+        window.clearTimeout(celebrationTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const routeSuggestions = useMemo(() => {
+    return sortRoutesForPersonalization(ROUTES_TO_POSITANO, arrivalMethodPreference).slice(0, 3);
+  }, [arrivalMethodPreference]);
+
+  const sessionKey = useMemo(() => getFunnelSessionKey(), []);
+  const experimentVariants = useMemo(
+    () => assignActivationVariants(sessionKey),
+    [sessionKey],
+  );
+  const showConfidenceBeforeMethod = experimentVariants.onboardingStepOrder === 'eta-first';
+
+  const etaWindowOptions = useMemo(() => {
+    return getEtaWindowOptions(arrivalConfidence);
+  }, [arrivalConfidence]);
+
+  function showCelebration(message: string) {
+    if (celebrationTimeoutRef.current) {
+      window.clearTimeout(celebrationTimeoutRef.current);
+    }
+
+    setCelebration(message);
+    celebrationTimeoutRef.current = window.setTimeout(() => {
+      setCelebration(null);
+    }, 1400);
+  }
+
+  async function handleStepOneContinue() {
+    setIsSaving(true);
+
+    try {
+      await setPersonalization(arrivalMethodPreference, arrivalConfidence);
+
+      if (selectedRouteSlug) {
+        await saveRoute(selectedRouteSlug);
+        setLastCompletedItem('routePlanned');
+        writeLastCompletedChecklistItem('routePlanned');
+      }
+      recordActivationFunnelEvent({
+        type: 'guided_step_complete',
+        sessionKey,
+        route: '/portal',
+        stepId: 'step-1',
+        variant: experimentVariants.onboardingCtaCopy,
+        context: {
+          stepOrder: experimentVariants.onboardingStepOrder,
+        },
+      });
+
+      showCelebration('Great start. Your arrival path is now personalized.');
+      setStep(2);
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function handleStepTwoContinue() {
+    setIsSaving(true);
+
+    try {
+      await setEta(etaWindow, etaMethod, '');
+      setLastCompletedItem('etaConfirmed');
+      writeLastCompletedChecklistItem('etaConfirmed');
+      recordActivationFunnelEvent({
+        type: 'guided_step_complete',
+        sessionKey,
+        route: '/portal',
+        stepId: 'step-2',
+        variant: experimentVariants.onboardingCtaCopy,
+        context: {
+          stepOrder: experimentVariants.onboardingStepOrder,
+        },
+      });
+      showCelebration('ETA shared. Reception can now prepare your arrival.');
+      setStep(3);
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  async function handleFinish() {
+    setIsSaving(true);
+
+    try {
+      if (cashPrepared) {
+        await updateChecklistItem('cashPrepared', true);
+        setLastCompletedItem('cashPrepared');
+        writeLastCompletedChecklistItem('cashPrepared');
+      }
+
+      if (rulesReviewed) {
+        await updateChecklistItem('rulesReviewed', true);
+        setLastCompletedItem('rulesReviewed');
+        writeLastCompletedChecklistItem('rulesReviewed');
+      }
+
+      if (locationSaved) {
+        await updateChecklistItem('locationSaved', true);
+        setLastCompletedItem('locationSaved');
+        writeLastCompletedChecklistItem('locationSaved');
+      }
+      recordActivationFunnelEvent({
+        type: 'guided_step_complete',
+        sessionKey,
+        route: '/portal',
+        stepId: 'step-3',
+        variant: experimentVariants.onboardingCtaCopy,
+        context: {
+          stepOrder: experimentVariants.onboardingStepOrder,
+        },
+      });
+
+      showCelebration('Nice work. Your arrival checklist is moving forward.');
+      onComplete();
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-muted p-4">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </main>
+    );
+  }
+
+  return (
+    <main className="min-h-screen bg-muted px-4 py-6">
+      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-card p-5 shadow-sm">
+        <StepFlowShell
+          currentStep={step}
+          totalSteps={3}
+          title={guestFirstName ? `Welcome ${guestFirstName}, let’s get you arrival-ready` : 'Let’s get you arrival-ready'}
+          description={(
+            <ExperimentGate
+              flag="prime-onboarding-cta-copy"
+              enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
+              fallback="Finish these quick steps to reduce reception wait time and avoid arrival surprises."
+            >
+              Unlock faster check-in and sharper local recommendations by completing these steps now.
+            </ExperimentGate>
+          )}
+          trustCue={{
+            title: 'Privacy reassurance',
+            description: 'We only use this information for your current stay and reception operations.',
+          }}
+          milestoneMessage={celebration}
+        >
+
+        {step === 1 && (
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground">Choose your arrival style</h2>
+            <p className="text-sm text-muted-foreground">This lets us recommend the best route and defaults for you.</p>
+
+            {showConfidenceBeforeMethod ? (
+              <>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('confident')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'confident'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
+                      }`}
+                    >
+                      Confident
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('need-guidance')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'need-guidance'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
+                      }`}
+                    >
+                      Need guidance
+                    </button>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => setArrivalMethodPreference(method)}
+                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                          arrivalMethodPreference === method
+                            ? 'border-primary bg-primary-soft text-primary'
+                            : 'border-border text-foreground'
+                        }`}
+                      >
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">How are you most likely arriving?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        onClick={() => setArrivalMethodPreference(method)}
+                        className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                          arrivalMethodPreference === method
+                            ? 'border-primary bg-primary-soft text-primary'
+                            : 'border-border text-foreground'
+                        }`}
+                      >
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-foreground">How confident do you feel about getting here?</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('confident')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'confident'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
+                      }`}
+                    >
+                      Confident
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setArrivalConfidence('need-guidance')}
+                      className={`rounded-lg border px-3 py-2 text-sm font-medium ${
+                        arrivalConfidence === 'need-guidance'
+                          ? 'border-primary bg-primary-soft text-primary'
+                          : 'border-border text-foreground'
+                      }`}
+                    >
+                      Need guidance
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-foreground">Recommended routes</p>
+              {routeSuggestions.map((route) => (
+                <button
+                  key={route.slug}
+                  type="button"
+                  onClick={() => setSelectedRouteSlug(route.slug)}
+                  className={`w-full rounded-lg border px-3 py-2 text-left ${
+                    selectedRouteSlug === route.slug
+                      ? 'border-success bg-success-soft'
+                      : 'border-border'
+                  }`}
+                >
+                  <p className="text-sm font-semibold text-foreground">{route.title}</p>
+                  <p className="text-xs text-muted-foreground">{route.description}</p>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setStep(2)}
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+              >
+                Skip for now
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleStepOneContinue()}
+                disabled={isSaving}
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+              >
+                Save and continue
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </section>
+        )}
+
+        {step === 2 && (
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground">Share your ETA</h2>
+            <p className="text-sm text-muted-foreground">Sharing ETA helps reception prioritize fast check-in on arrival.</p>
+
+            <label className="block text-sm font-medium text-foreground">
+              Arrival time window
+              <select
+                value={etaWindow}
+                onChange={(event) => setEtaWindow(event.target.value)}
+                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
+              >
+                {etaWindowOptions.map((window) => (
+                  <option key={window} value={window}>
+                    {window}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="block text-sm font-medium text-foreground">
+              Travel method
+              <select
+                value={etaMethod}
+                onChange={(event) => setEtaMethod(normalizeMethod(event.target.value) ?? 'other')}
+                className="mt-2 w-full rounded-lg border border-border px-3 py-2"
+              >
+                {(['ferry', 'bus', 'train', 'taxi', 'private', 'other'] as const).map((method) => (
+                  <option key={method} value={method}>
+                    {method}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setStep(3)}
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+              >
+                Skip for now
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleStepTwoContinue()}
+                disabled={isSaving}
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+              >
+                Save ETA
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </section>
+        )}
+
+        {step === 3 && (
+          <section className="space-y-4">
+            <h2 className="text-lg font-semibold text-foreground">Final readiness checks</h2>
+            <p className="text-sm text-muted-foreground">Complete what you can now. You can edit everything later on the dashboard.</p>
+
+            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
+              <input
+                type="checkbox"
+                checked={cashPrepared}
+                onChange={(event) => setCashPrepared(event.target.checked)}
+                className="mt-0.5 h-4 w-4"
+              />
+              I have prepared cash for city tax and keycard deposit
+            </label>
+
+            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
+              <input
+                type="checkbox"
+                checked={rulesReviewed}
+                onChange={(event) => setRulesReviewed(event.target.checked)}
+                className="mt-0.5 h-4 w-4"
+              />
+              I reviewed the house rules
+            </label>
+
+            <label className="flex items-start gap-2 rounded-lg border border-border p-3 text-sm text-foreground">
+              <input
+                type="checkbox"
+                checked={locationSaved}
+                onChange={(event) => setLocationSaved(event.target.checked)}
+                className="mt-0.5 h-4 w-4"
+              />
+              I saved the hostel location in maps
+            </label>
+
+            {lastCompletedItem && (
+              <p className="rounded-lg bg-info-soft px-3 py-2 text-xs font-medium text-info-foreground">
+                Last completion: {getChecklistItemLabel(lastCompletedItem)}
+              </p>
+            )}
+
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={onComplete}
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm font-medium text-foreground"
+              >
+                Skip to dashboard
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleFinish()}
+                disabled={isSaving}
+                className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-success px-3 py-2 text-sm font-semibold text-success-foreground disabled:opacity-60"
+              >
+                Finish setup
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </section>
+        )}
+        </StepFlowShell>
+      </div>
+    </main>
+  );
+}

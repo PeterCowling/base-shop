@@ -10,7 +10,6 @@ import { Section } from "@acme/design-system/atoms";
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData, { type BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import HowToJsonLd from "@/components/seo/HowToJsonLd";
-import { PREVIEW_TOKEN } from "@/config/env";
 import { BASE_URL } from "@/config/site";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
@@ -138,13 +137,6 @@ export default function HowToGetHereContent({
 
   const canonicalUrl = getCanonicalUrl({ lang, segments: [howToSlug, slug] });
 
-  const isPublished = (definition as { status?: string }).status
-    ? (definition as { status?: string }).status === "published"
-    : true;
-  const previewToken = PREVIEW_TOKEN ?? "";
-  const fromUrl = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("preview") : null;
-  const showPreview = !isPublished && !!previewToken && fromUrl === previewToken;
-
   const howToSteps = extractSteps(content) ?? null;
 
   const breadcrumb: BreadcrumbList = (() => {
@@ -194,7 +186,6 @@ export default function HowToGetHereContent({
         items={breadcrumb.itemListElement.map((e) => ({ name: e.name, item: e.item }))}
       />
 
-      <PreviewBanner visible={showPreview} label={t("preview.notPublished")} />
       <Section as="div" padding="wide" className="max-w-5xl text-brand-text dark:text-brand-text">
         <div className="space-y-10">
           {hero ? (
@@ -229,12 +220,5 @@ export default function HowToGetHereContent({
         </div>
       </Section>
     </Fragment>
-  );
-}
-
-function PreviewBanner({ visible, label }: { visible: boolean; label?: string }): JSX.Element | null {
-  if (!visible) return null;
-  return (
-    <div className="sticky top-0 w-full bg-amber-500/95 px-4 py-2 text-sm font-medium text-brand-heading">{label}</div>
   );
 }

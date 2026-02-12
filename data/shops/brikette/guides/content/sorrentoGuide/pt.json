@@ -1,0 +1,95 @@
+{
+  "seo": {
+    "title": "Sorrento: Porta de Entrada para a Costa Amalfitana",
+    "description": "Por que começar em Sorrento, custos exatos de transporte e horários para Positano, Amalfi e Capri, e o que ver se você se hospedar aqui ou estiver de passagem."
+  },
+  "linkLabel": "Sorrento: Porta de Entrada para a Costa Amalfitana",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Sorrento oferece ônibus e balsas frequentes para a Costa Amalfitana, trens diretos para Nápoles e Pompeia, e mais opções de hospedagem do que Positano—tornando-se uma porta de entrada prática se você estiver de passagem ou baseado aqui por alguns dias."
+  ],
+  "sections": [
+    {
+      "id": "transport-costs-schedules",
+      "title": "Custos e horários de transporte",
+      "body": [
+        "**Ônibus SITA** operam o ano todo para Positano (€2,50, 40-50 min) e Amalfi (€3,60, 90 min). Os ônibus partem a cada 30-60 minutos da estação Circumvesuviana; compre os bilhetes no bar da estação ou na tabacaria antes de embarcar. As rotas no verão de pico podem lotar, então chegue cedo.",
+        "**Balsas para Positano e Amalfi** operam de abril a outubro, dependendo do clima. Positano custa €18–22 (35 min), Amalfi €20–24 (50 min). As partidas matinais começam por volta das 08:30; o último retorno é normalmente às 17:00–18:00. Reserve com antecedência nos dias de pico através das %LINK:ferrySchedules|operadoras de balsas%.",
+        "**Trens para Nápoles** (linha Circumvesuviana) custam €3,90 e operam a cada hora até ~22:30 (70 min). Os trens são mais lentos que os ônibus, mas evitam o trânsito costeiro e conectam você diretamente a Pompeia (€2,90, 30 min).",
+        "**Balsas para Capri** partem frequentemente na temporada (€20–25 por trecho, 20 min). Os serviços fora de temporada reduzem, mas nunca param completamente."
+      ]
+    },
+    {
+      "id": "why-base-or-pass-through",
+      "title": "Se hospedar aqui ou apenas passar?",
+      "body": [
+        "**Se você se hospedar em Sorrento:** Espere economizar €30–€60 por noite em comparação com Positano, além de mais opções de refeições a preços médios. O trade-off são menos vistas de penhascos e uma sensação de cidade mais tradicional em vez da paisagem de cartão-postal de Positano.",
+        "**Se você estiver de passagem:** Sorrento é uma primeira ou última parada fácil. Chegue do Aeroporto de Nápoles pelo %LINK:naplesAirportPositanoBus|ônibus Curreri% (€10, 75 min, direto para Sorrento), depois pegue transporte para Positano no mesmo dia ou na manhã seguinte.",
+        "Guarda-volumes está disponível na estação de trem (€6–8 por mala por dia) se você quiser explorar a cidade entre conexões."
+      ]
+    },
+    {
+      "id": "what-to-see",
+      "title": "O que ver em Sorrento",
+      "body": [
+        "O centro histórico tem ruas de pedestres repletas de lojas de produtos de limão, cerâmicas locais e artesãos de marchetaria. A Piazza Tasso é a praça principal; Marina Grande e Marina Piccola são as áreas portuárias com vistas de penhascos. A Via San Cesareo é a principal rua comercial—evite comprar limoncello perto da Piazza Tasso, onde os preços são 2-3x mais altos.",
+        "A maioria dos viajantes trata Sorrento como um ponto de partida em vez de destino, passando 1-2 horas caminhando pelo centro antes de seguir viagem. Se você ficar durante a noite, o pôr do sol no parque Villa Comunale vale a pena (entrada gratuita, aberto até tarde), e os preços dos jantares caem significativamente longe da praça principal—caminhe dois quarteirões para dentro para trattorias autênticas pela metade do custo da zona turística.",
+        "O Duomo (catedral) vale uma olhada rápida se você estiver passando; entrada gratuita e geralmente vazio. O Chiostro di San Francesco tem um jardim de claustro tranquilo (gratuito) que é um bom ponto de descanso se você estiver esperando conexões de transporte.",
+        "Para um dia de praia saindo de Sorrento, o %LINK:reginaGiovannaBath|banho de Regina Giovanna% fica a 30 minutos de ônibus (€1,40) e oferece uma enseada isolada com ruínas romanas—menos multidões do que a praia principal de Positano e sem taxa de entrada. Traga água e lanches, pois não há instalações."
+      ]
+    },
+    {
+      "id": "booking-ahead",
+      "title": "Quando reservar transporte com antecedência",
+      "body": [
+        "**Reserve balsas com antecedência** se viajar em julho–agosto ou nos fins de semana. Os barcos esgotam, especialmente as rotas diretas para Capri. Bilhetes de ônibus não podem ser reservados, então chegue 15-20 minutos mais cedo na alta temporada.",
+        "Bilhetes de trem para Nápoles não precisam de reserva antecipada (compre na estação), mas se estiver conectando para um voo, deixe no mínimo 2,5 horas de Sorrento ao Aeroporto de Nápoles—os trens atrasam, mas os ônibus podem pegar trânsito."
+      ]
+    },
+    {
+      "id": "sorrento-vs-positano",
+      "title": "Sorrento vs Positano: qual base escolher?",
+      "body": [
+        "**Escolha Sorrento se:** Você quer custos mais baixos, acesso fácil de trem para Nápoles/Pompeia, ou prefere uma cidade funcional em vez de paisagem de cartão-postal. Sorrento funciona bem para viajantes cobrindo múltiplos destinos (Capri, Pompeia, Costa Amalfitana) em uma viagem.",
+        "**Escolha Positano se:** Você quer o cenário icônico à beira do penhasco e não se importa com preços mais altos ou escadas. Positano é mais cênico, mas menos prático para viagens de um dia além da costa.",
+        "Muitos viajantes dividem seu tempo: 1-2 noites em Sorrento para chegadas/viagens de um dia, depois mudam para %LINK:onlyHostel|Positano% para a experiência costeira. %LINK:sorrentoPositanoBus|Sorrento para Positano de ônibus% é direto (40 min, €2,50)."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Dicas práticas para Sorrento",
+      "body": [
+        "**Caixas eletrônicos e dinheiro:** Disponíveis perto da Piazza Tasso e da estação de trem. Muitas pequenas lojas e vendedores de bilhetes de ônibus aceitam apenas dinheiro, então saque €50-100 na chegada.",
+        "**Melhor época para visitar:** Abril–junho e setembro–outubro oferecem clima ideal (18-25°C) com menos multidões. Julho–agosto é o período mais quente e movimentado—balsas e ônibus lotam rapidamente. Novembro–março é tranquilo, mas muitas balsas param de operar.",
+        "**Deslocamento pela cidade:** Sorrento é caminhável, mas montanhosa. O centro da cidade é compacto; reserve 10-15 minutos de caminhada da estação de trem até Marina Piccola (píer de balsas). Ônibus para a praia Marina Grande saem da Piazza Tasso (€1,40, a cada 30 min).",
+        "**Wi-Fi e conectividade:** A maioria dos cafés e hospedagens oferece Wi-Fi gratuito. A cobertura de celular é boa em toda a cidade. A estação de trem tem pontos de carregamento se você precisar esperar por conexões."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Sorrento é mais barato que Positano?",
+      "a": [
+        "Sim—espere economizar €30–€60 por noite em hospedagem e mais opções de refeições a preços médios. Uma pizza em Sorrento custa €8–12 vs €15–20 em Positano; camas em hostel €25–35 vs €40–60."
+      ]
+    },
+    {
+      "q": "Até que horas os trens voltam para Nápoles?",
+      "a": [
+        "O Circumvesuviana opera até por volta das 22:30 de Sorrento para Nápoles. Depois disso, use os ônibus Curreri ou SITA (último ônibus ~20:30–21:00) ou planeje pernoitar se tiver um voo tarde."
+      ]
+    },
+    {
+      "q": "Posso fazer Sorrento como um passeio de um dia saindo de Positano?",
+      "a": [
+        "Sim—pegue o %LINK:positanoSorrentoBus|ônibus SITA% (€2,50, 40 min) ou a %LINK:positanoSorrentoFerry|balsa sazonal% (€18–22, 25 min). Reserve 4-5 horas no total para uma visita rápida a Sorrento, mais se você estiver continuando para Pompeia ou Capri."
+      ]
+    },
+    {
+      "q": "Preciso falar italiano em Sorrento?",
+      "a": [
+        "Inglês é amplamente falado nas áreas turísticas. A equipe de trens e ônibus pode ter inglês limitado, então aprenda frases básicas ou use um aplicativo de tradução para guichês de bilhetes e para pedir direções."
+      ]
+    }
+  ]
+}

@@ -1,14 +1,15 @@
 import type { ReactNode } from "react";
-import { ZoomIn } from "@/icons";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
 import { CfImage } from "@acme/ui/atoms/CfImage";
 import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
+
+import { ZoomIn } from "@/icons";
 import { findPlaceholderBinding, type RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
-import { getValueAtPath, isPlainObject } from "./content-utils";
 import { renderCallout } from "./callouts";
+import { getValueAtPath, isPlainObject } from "./content-utils";
 import { isLinkedCopy, renderLink, renderLinkedCopy, renderRichText, resolveLinkTarget } from "./linking";
 import type { RenderContext } from "./types";
 

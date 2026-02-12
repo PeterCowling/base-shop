@@ -1,0 +1,35 @@
+{
+  "seo": {
+    "title": "Sonnenuntergang auf der Terrasse in Positano",
+    "description": "Ein einfacher, budgetfreundlicher Sunset-Plan im Hostel Brikette: wann du kommen solltest und wie du es stressfrei hältst."
+  },
+  "linkLabel": "Terrassen‑Sonnenuntergang",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Für einen Sunset ohne teures, langes Dinner ist die Hostel‑Terrasse die einfachste Option."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Timing",
+      "body": [
+        "In der Hochsaison: 30–45 Minuten vor Sonnenuntergang für einen guten Platz."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Sonnenuntergangslicht über Positano von der Terrasse"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budget",
+      "body": [
+        "Ein Drink + Aussicht, dann simpel essen: %LINK:cheapEats|günstig essen%.",
+        "%LINK:positanoBudget|Positano mit kleinem Budget%."
+      ]
+    }
+  ],
+  "fallback": "Komm etwas früher, ein Drink, danach einfach essen."
+}

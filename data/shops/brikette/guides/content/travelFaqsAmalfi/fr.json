@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "FAQ sur les voyages sur la côte amalfitaine",
+    "description": "Réponses rapides aux questions fréquentes sur les transports, l'argent, la sécurité et la saisonnalité."
+  },
+  "linkLabel": "FAQ sur les voyages sur la côte amalfitaine",
+  "intro": [
+    "Réponses express pour la logistique sur la côte amalfitaine : transports, réservations, budget et plans pluie."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Essentiels transport",
+      "body": [
+        "Consultez les horaires officiels bus et ferry la veille et gardez 30 minutes de marge pour les correspondances en haute saison.",
+        "Demandez les numéros de taxi à votre hébergement pour les retours tardifs si le dernier bus est complet."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Réservations & budget",
+      "body": [
+        "Réservez restaurants, beach clubs et excursions au moins 24 h à l’avance en été ; certains demandent un acompte par carte.",
+        "Privilégiez les tarifs flexibles ou une assurance voyage afin que vent ou mer agitée ne grèvent pas votre budget en cas de changement."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Météo & plan B",
+      "body": [
+        "Basculez sur des activités en intérieur comme MAR Positano, le musée du papier d’Amalfi ou une virée en train à Naples/Salerne par temps de pluie.",
+        "Si la mer se lève, passez aux bus ou taxis partagés et vérifiez les chutes de pierres ou fermetures sur la SS163 avant de partir."
+      ]
+    }
+  ],
+  "tips": [
+    "Enregistrez hors ligne les numéros d’urgence (112 et Garde-côtes 1530) ainsi que le contact de votre hébergement.",
+    "Achetez vos billets de bus en tabac ou en ligne à l’avance ; les chauffeurs en vendent rarement et les contrôles sont fréquents."
+  ],
+  "faqs": [
+    {
+      "q": "À quelle heure partent les derniers ferries ?",
+      "a": [
+        "En été, la dernière traversée Positano ↔ Amalfi est vers 20 h ; au printemps/automne elle descend plutôt à 18 h — confirmez la veille."
+      ]
+    },
+    {
+      "q": "Dois-je réserver restaurants et beach clubs ?",
+      "a": [
+        "Oui de juin à septembre : réservez au moins un jour à l’avance, et une semaine pour les beach clubs du week-end."
+      ]
+    },
+    {
+      "q": "Que faire s’il pleut toute la journée ?",
+      "a": [
+        "Visitez des musées, rejoignez un cours de cuisine ou partez à Naples/Salerne en train ; gardez une veste imperméable légère pour les trajets."
+      ]
+    },
+    {
+      "q": "Les distributeurs sont-ils fiables ?",
+      "a": [
+        "Les grandes villes en ont, mais les frais varient — retirez des montants moyens en une fois et gardez de petits billets pour bus et cafés."
+      ]
+    }
+  ]
+}

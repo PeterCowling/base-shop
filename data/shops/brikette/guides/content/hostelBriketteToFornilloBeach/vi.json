@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fornillo Beach đường đi bộ",
+    "description": "Chỉ đường từng bước từ hostel đến Fornillo Beach cùng mẹo xuống dốc nhanh và cách trở về."
+  },
+  "linkLabel": "Hướng dẫn đi bộ Hostel Brikette → Fornillo Beach",
+  "intro": [
+    "Đi bộ từ Hostel Brikette tới Fornillo Beach mất khoảng 15–25 phút chủ yếu là cầu thang. Hãy theo lối tắt này để luôn đi trên cầu thang nhanh nhất và đoạn đường lát bê tông xuống tận bờ biển."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-walk",
+      "title": "Lên kế hoạch cho chuyến đi bộ",
+      "body": [
+        "Dành khoảng 20 phút để tới bãi cát; thời gian thay đổi tùy theo bạn dừng chụp hình và mức độ quen với các bậc thang ở Positano.",
+        "Google Maps đôi khi chỉ khách đi đường vòng chậm hơn. Hãy bám theo lộ trình này để đi trên cầu thang chính và đoạn đường nhẵn suốt quãng đường."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Lộ trình từ Hostel Brikette tới Fornillo Beach",
+      "body": [
+        "1. Rời Hostel Brikette và đi xuống cầu thang chính tới Viale Pasitea.",
+        "2. Băng qua đường và tiếp tục đi thẳng xuống cầu thang có số nhà 31.",
+        "3. Theo cầu thang cho tới khi gặp đường, sau đó rẽ phải và bám theo khúc cua đi xuống.",
+        "4. Đi ngang qua các gara đỗ xe hai bên và giữ bên phải khi bạn đến gần biển hiệu Hotel Posa Posa.",
+        "5. Ngay sau khách sạn, tới một khúc cua và rẽ phải vào lối đi dành riêng cho người đi bộ hướng về Fornillo.",
+        "6. Đi trên lối lát bê tông tới tận bãi biển; đoạn cuối có bóng mát kết thúc bên cạnh beach club của Pupetto."
+      ]
+    },
+    {
+      "id": "return-options",
+      "title": "Đường lên trở lại",
+      "body": [
+        "Sau khi tắm biển, đi tiếp dọc bờ nước đến Spiaggia Grande và đi xe buýt nội bộ màu cam lên Chiesa Nuova nếu bạn muốn tránh leo ngược.",
+        "Mua vé xe buýt tại quầy tabacchi/quầy báo cạnh điểm dừng Chiesa Nuova trước khi đi hoặc nhờ lễ tân xác nhận còn vé."
+      ]
+    }
+  ],
+  "tips": [
+    "Đi xe buýt Interno Positano lên dốc để khỏi phải leo về.",
+    "Mang theo nước cho đoạn cầu thang — không có cửa hàng nào cho đến khi bạn ra tới mép nước.",
+    "Lên kế hoạch dành thêm thời gian trên biển với %LINK:fornilloBeachGuide|hướng dẫn bãi biển Fornillo% và %LINK:positanoBeaches|tổng quan bãi biển Positano%.",
+    "Xem hành trình này phù hợp với chuyến đi của bạn trong phần tổng quan du lịch Positano."
+  ],
+  "faqsTitle": "Câu hỏi về lộ trình",
+  "faqs": [
+    {
+      "q": "Đi bộ mất bao lâu?",
+      "a": [
+        "Hầu hết khách tới Fornillo trong 15–25 phút tùy tốc độ và thời gian chụp ảnh. Đi sớm trong ngày sẽ giúp cầu thang mát hơn."
+      ]
+    },
+    {
+      "q": "Có nhiều cầu thang không?",
+      "a": [
+        "Lối tắt này đi xuống vài nhịp cầu thang từ hostel rồi chuyển sang đường lát bê tông. Hãy đi xe buýt để quay lại nếu bạn không muốn leo ngược."
+      ]
+    }
+  ]
+}

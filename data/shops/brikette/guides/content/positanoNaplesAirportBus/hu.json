@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Positanóból a nápolyi repülőtérre busszal | Hostel Brikette",
+    "description": "Ajtótól ajtóig tartó útmutató a Hostel Brikette-től a Nápoly-Capodichino repülőtérig: SITA busz Szorrentóig, majd Curreri busz, jegyvásárlási tippekkel és menetrendi hivatkozásokkal."
+  },
+  "intro": {
+    "title": "Positanóból a nápolyi repülőtérre — busz Szorrentón keresztül",
+    "body": "Szállj fel Positanóban a SITA Sud buszra Szorrentóig, majd a Curreri buszra a Napoli Capodichino repülőtér felé. Ez a legegyszerűbb tömegközlekedési lehetőség, gyakori indulásokkal és könnyű csatlakozással a szorrentói buszpályaudvaron."
+  },
+  "callouts": {
+    "aside": "Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% taxik, kompok és alternatív útvonalak leírásáért."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Az út áttekintése",
+      "list": [
+        "Sétálj a Positano (Chiesa Nuova) megállóhoz a Bar Internazionale előtt.",
+        "Utazz a SITA busszal a szorrentói busz- és vasútállomásra.",
+        "Szállj át a Curreri buszra Szorrentóban a Napoli Aeroporto (Capodichino) felé."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a positanói megállóhoz",
+      "list": [
+        "Lépj ki a hostelből, és menj le a lépcsőn a főútig.",
+        "Fordulj balra, és haladj körülbelül 100 métert (330 lábat).",
+        "Bal kéz felől látod a Bar Internazionale-t; a SITA megálló közvetlenül előtte van."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és várakozás",
+      "list": [
+        "Vásárolj SITA-jegyet Szorrentóig a Bar Internazionale-ban vagy a közeli újságosnál.",
+        "Tartsd meg a jegyed beszállás után is; a sofőr lebélyegezheti vagy kilyukaszthatja.",
+        "A Curreri buszra online is vehetsz jegyet, vagy a pályaudvaron, ha van elérhető."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "A szorrentói buszpályaudvaron",
+      "body": "Szállj le Szorrento fő busz- és vasútállomásán. A buszállásoktól szállj fel a %URL:https://www.curreriviaggi.it/|Curreri Viaggi% buszra Napoli Aeroporto (Capodichino) felé. Ellenőrizd a legfrissebb menetrendet, és főszezonban fontold meg az online jegyvásárlást előre."
+    },
+    {
+      "id": "timetables",
+      "title": "Menetrendek"
+    }
+  ]
+}

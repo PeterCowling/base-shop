@@ -1,0 +1,124 @@
+{
+  "operations": [
+    {
+      "operation_id": "idea-brik-measurement-baseline",
+      "kind": "idea_create",
+      "slug": "brik-measurement-baseline",
+      "payload_fingerprint": "sha256:idea-brik-measurement-baseline",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-plat-build-reliability-baseline",
+      "kind": "idea_create",
+      "slug": "plat-build-reliability-baseline",
+      "payload_fingerprint": "sha256:idea-plat-build-reliability-baseline",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-bos-cabinet-outcome-scoreboard",
+      "kind": "idea_create",
+      "slug": "bos-cabinet-outcome-scoreboard",
+      "payload_fingerprint": "sha256:idea-bos-cabinet-outcome-scoreboard",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-pipe-fulfillment-signal-loop",
+      "kind": "idea_create",
+      "slug": "pipe-fulfillment-signal-loop",
+      "payload_fingerprint": "sha256:idea-pipe-fulfillment-signal-loop",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-pipe-demand-validation",
+      "kind": "idea_create",
+      "slug": "pipe-demand-validation",
+      "payload_fingerprint": "sha256:idea-pipe-demand-validation",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "idea-brik-measurement-taxonomy",
+      "kind": "idea_create",
+      "slug": "brik-measurement-taxonomy",
+      "payload_fingerprint": "sha256:idea-brik-measurement-taxonomy",
+      "depends_on": [],
+      "endpoint": "/api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-brik-measurement-baseline",
+      "kind": "card_create",
+      "slug": "brik-measurement-baseline",
+      "payload_fingerprint": "sha256:card-brik-measurement-baseline",
+      "depends_on": ["idea-brik-measurement-baseline"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-plat-build-reliability-baseline",
+      "kind": "card_create",
+      "slug": "plat-build-reliability-baseline",
+      "payload_fingerprint": "sha256:card-plat-build-reliability-baseline",
+      "depends_on": ["idea-plat-build-reliability-baseline"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-bos-cabinet-outcome-scoreboard",
+      "kind": "card_create",
+      "slug": "bos-cabinet-outcome-scoreboard",
+      "payload_fingerprint": "sha256:card-bos-cabinet-outcome-scoreboard",
+      "depends_on": ["idea-bos-cabinet-outcome-scoreboard"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "card-pipe-fulfillment-signal-loop",
+      "kind": "card_create",
+      "slug": "pipe-fulfillment-signal-loop",
+      "payload_fingerprint": "sha256:card-pipe-fulfillment-signal-loop",
+      "depends_on": ["idea-pipe-fulfillment-signal-loop"],
+      "endpoint": "/api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "factfind-brik-measurement-baseline",
+      "kind": "factfind_upsert",
+      "slug": "brik-measurement-baseline",
+      "payload_fingerprint": "sha256:factfind-brik-measurement-baseline",
+      "depends_on": ["card-brik-measurement-baseline"],
+      "endpoint": "/api/agent/stage-docs",
+      "method": "POST",
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BRIK Measurement Baseline Sprint\"}"
+    },
+    {
+      "operation_id": "factfind-plat-build-reliability-baseline",
+      "kind": "factfind_upsert",
+      "slug": "plat-build-reliability-baseline",
+      "payload_fingerprint": "sha256:factfind-plat-build-reliability-baseline",
+      "depends_on": ["card-plat-build-reliability-baseline"],
+      "endpoint": "/api/agent/stage-docs",
+      "method": "POST",
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: PLAT Build Reliability Baseline\"}"
+    },
+    {
+      "operation_id": "factfind-bos-cabinet-outcome-scoreboard",
+      "kind": "factfind_upsert",
+      "slug": "bos-cabinet-outcome-scoreboard",
+      "payload_fingerprint": "sha256:factfind-bos-cabinet-outcome-scoreboard",
+      "depends_on": ["card-bos-cabinet-outcome-scoreboard"],
+      "endpoint": "/api/agent/stage-docs",
+      "method": "POST",
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BOS Cabinet Outcome Scoreboard\"}"
+    }
+  ]
+}

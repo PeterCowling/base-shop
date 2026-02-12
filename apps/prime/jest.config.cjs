@@ -3,7 +3,7 @@ const createJestPreset = require("@acme/config/jest.preset.cjs");
 
 module.exports = {
   ...createJestPreset({ useCjs: true }),
-  roots: ["<rootDir>/src"],
+  roots: ["<rootDir>/src", "<rootDir>/functions"],
   testEnvironment: "jsdom",
   moduleNameMapper: {
     ...createJestPreset({ useCjs: true }).moduleNameMapper,

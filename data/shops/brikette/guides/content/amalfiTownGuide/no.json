@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Byguide til Amalfi: historie, severdigheter og tips",
+    "description": "Domkirken, papirmuseet, klosteret, strender og hvordan du reiser fra Positano."
+  },
+  "linkLabel": "Amalfi by-guide: historie, severdigheter og tips",
+  "intro": [
+    "Få mest mulig ut av en dag i Amalfi: viktige severdigheter, hvordan du kommer deg dit og når du bør reise for å unngå turbuss-køene."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Høydepunkter",
+      "body": [
+        "Gå de 62 trinnene opp til domkirken i Amalfi for å se den stripete fasaden, klosteret og museet (anstendig bekledning kreves).",
+        "Besøk Museo della Carta for å se demonstrasjoner av håndlaget papir og ta med lette suvenirer hjem."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Slik kommer du dit",
+      "body": [
+        "Ferjer fra Positano tar rundt 20 minutter; busser bruker 40–50 minutter avhengig av trafikken. Kom før kl. 10 for å sikre deg skygge på piazzaen.",
+        "Kjøp returbillett med ferje tidlig på ettermiddagen hvis avgangene endres på grunn av vind."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Når du bør dra",
+      "body": [
+        "Morgener (før kl. 11) eller kvelder (etter kl. 17) er roligst når dagsturistene har reist.",
+        "Kombiner Amalfi med Atrani (fem minutters gange) for middag på den mindre piazzaen før du reiser tilbake."
+      ]
+    }
+  ],
+  "tips": [
+    "Pakk et lett skjerf til kirkebesøk og som solskjerm på ferjeturen.",
+    "Ta en sitrongranita fra bodene på havnepromenaden for å kjøle deg ned mellom stoppene."
+  ],
+  "faqTitle": "Vanlige spørsmål",
+  "faqs": [
+    {
+      "q": "Hvor lang tid bør jeg sette av i Amalfi?",
+      "a": [
+        "Sett av tre til fire timer til domkirken, papirmuseet og et rolig måltid. Legg til ekstra tid hvis du vil bade på den lille bystranden."
+      ]
+    },
+    {
+      "q": "Finnes det bagasjeoppbevaring?",
+      "a": [
+        "Ja, det finnes bagasjeoppbevaring nær ferjekaien. Regn med €5–€8 per bagasje for en dag."
+      ]
+    }
+  ]
+}

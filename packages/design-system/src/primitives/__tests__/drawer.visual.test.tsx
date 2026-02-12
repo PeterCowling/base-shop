@@ -1,6 +1,7 @@
 import * as React from "react";
 import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Drawer, DrawerContent, DrawerDescription,DrawerTitle, DrawerTrigger } from "../drawer";
 
@@ -8,7 +9,7 @@ configure({ testIdAttribute: "data-cy" });
 
 describe("Drawer visuals", () => {
   it("renders right-side panel with correct classes", async () => {
-    render(
+    const { container } = render(
       <Drawer>
         <DrawerTrigger asChild>
           <button>Open</button>
@@ -24,6 +25,7 @@ describe("Drawer visuals", () => {
     const content = await screen.findByTestId("content");
     const cls = content.className;
     expect(cls).toMatch(/bg-panel/);
+
     expect(cls).toMatch(/right-0/);
     expect(cls).toMatch(/border-l/);
     expect(cls).toMatch(/border-border-2/);

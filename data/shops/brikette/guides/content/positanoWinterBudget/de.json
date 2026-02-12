@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Positano im Winter mit kleinem Budget",
+    "description": "Was geöffnet hat, wie du dich bewegst und wie du Positano im Winter günstig genießt."
+  },
+  "linkLabel": "Positano im Winter mit kleinem Budget",
+  "intro": [
+    "Winter in Positano ist ruhig, günstiger und kühler. Dieser Guide zeigt, was geöffnet bleibt, wie du dich ohne Fähren bewegst und welche gemütlichen Erfahrungen wenig kosten.",
+    "Pack Schichten (leichte Daunenjacke plus wasserfeste Shell) und Schuhe mit Grip – Stufen können nach Regen rutschig sein."
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "title": "Was geöffnet ist",
+      "body": [
+        "Zentrale Lebensmittelläden, Cafés rund um die Piazza dei Mulini und die Hostelbar bleiben ganzjährig offen – mit kürzeren Zeiten, aber verlässlichem Service.",
+        "Fährverbindungen pausieren meist von November bis März, SITA-Busse und ausgewählte Shuttle-Anbieter fahren mit reduziertem Fahrplan weiter."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Mobilität im Winter",
+      "body": [
+        "Regionale Züge nach Sorrent oder Salerno nutzen und dort auf den SITA-Bus umsteigen; bei Regen 20–30 Minuten Puffer einplanen.",
+        "Bargeld für Bustickets (2–3 € je Strecke) dabeihaben und die UnicoCampania-App für kurzfristige Sturmänderungen speichern."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budgetfreundliche Tage",
+      "body": [
+        "Museumsbesuche in Neapel oder Salerno auf Regentage legen – Hin- und Rückfahrt mit dem Zug kostet rund 10 €.",
+        "Den Path of the Gods ab Nocelle gehen, sobald der Himmel aufklart: klare Luft, leere Aussichtspunkte und keine Sommerhitze."
+      ]
+    }
+  ],
+  "tips": [
+    "Unterkunft mit Heizung und Frühstück wählen, um kalte Morgen ohne zusätzliche Cafékosten zu starten.",
+    "Sonnenuntergang ist früher (ca. 16:45 Uhr im Dezember) – Terrassenzeit auf den späten Nachmittag legen und warme Kleidung einpacken."
+  ],
+  "faqs": [
+    {
+      "q": "Sind Restaurants im Winter geöffnet?",
+      "a": [
+        "Ja, aber die Auswahl ist kleiner. Familiengeführte Trattorien und Pizzerien öffnen am Wochenende; Fine Dining startet meist zu Ostern.",
+        "Vorab per Anruf oder WhatsApp nach Öffnungszeiten fragen, bevor du den Hügel hinunterläufst."
+      ]
+    },
+    {
+      "q": "Wie kalt wird es?",
+      "a": [
+        "Tagsüber liegen die Höchstwerte bei 12–14 °C; nachts sinkt es auf etwa 8 °C. Warme Midlayer und Socken für Fliesenböden einpacken."
+      ]
+    }
+  ]
+}

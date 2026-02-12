@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Positano nach Flughafen Neapel mit dem Bus | Hostel Brikette",
+    "description": "Schritt für Schritt vom Hostel Brikette zum Flughafen Neapel über den SITA-Bus nach Sorrent und den Curreri-Bus – inklusive Tickettipps und Fahrplanlinks."
+  },
+  "intro": {
+    "title": "Positano nach Flughafen Neapel – Bus über Sorrent",
+    "body": "Nimm den SITA-Sud-Bus von Positano nach Sorrent und anschließend den Curreri-Bus zum Flughafen Napoli Capodichino. Das ist die unkomplizierteste ÖPNV-Variante mit häufigen Abfahrten und einem einfachen Umstieg am Busbahnhof von Sorrent."
+  },
+  "callouts": {
+    "aside": "Öffne die %HOWTO:how-to-get-here|Übersicht \\\"So kommst du zu uns“% für Taxi-, Fähr- und alternative Reiserouten."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseüberblick",
+      "list": [
+        "Gehe zur Haltestelle Positano (Chiesa Nuova) vor der Bar Internazionale.",
+        "Fahre mit dem SITA-Bus zum Bus- und Bahnhof in Sorrent.",
+        "Steige dort in den Curreri-Bus nach Napoli Aeroporto (Capodichino) um."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Zu Fuß zur Haltestelle in Positano",
+      "list": [
+        "Verlasse das Hostel und gehe die Stufen hinunter zur Hauptstraße.",
+        "Biege links ab und laufe etwa 100 Meter (330 Fuß) weiter.",
+        "Links liegt die Bar Internazionale; die SITA-Haltestelle befindet sich direkt davor."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets und Wartezeit",
+      "list": [
+        "Kaufe ein SITA-Ticket nach Sorrent in der Bar Internazionale oder einem Tabacchi in der Nähe.",
+        "Bewahre dein Ticket nach dem Einstieg auf; der Fahrer kann es stempeln oder einreißen.",
+        "Tickets für den Curreri-Bus kannst du online oder – falls verfügbar – am Bahnhof kaufen."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Am Busbahnhof Sorrent",
+      "body": "Steige am Hauptbus- und Bahnhof in Sorrent aus. Gehe zu den Bussteigen und nimm den Bus von %URL:https://www.curreriviaggi.it/|Curreri Viaggi% zum Napoli Aeroporto (Capodichino). Prüfe den aktuellen Fahrplan und kaufe in der Hochsaison am besten Tickets vorab online."
+    },
+    {
+      "id": "timetables",
+      "title": "Fahrpläne"
+    }
+  ]
+}

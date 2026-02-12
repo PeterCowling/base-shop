@@ -1,0 +1,25 @@
+{
+  "seo": {
+    "title": "Hostel szabályok és irányelvek – Positano",
+    "description": "Olvasd el és tartsd be alapvető házirendünket — többek között a külső alkohol behozatalának tiltását és a gondossági kötelezettség irányelveit — mindenki biztonsága és kellemes tartózkodása érdekében."
+  },
+  "linkLabel": "Hostel szabályok és irányelvek – Positano",
+  "sections": [
+    {
+      "id": "alcoholPolicy",
+      "title": "Külső alkohol tilalma",
+      "body": [
+        "Mivel engedéllyel rendelkező hely vagyunk, a hostel területén tilos a kívülről behozott alkohol italok bevitele vagy fogyasztása. Ha ilyen italokkal érkezel, csapatunk biztonságosan megőrzi és kijelentkezéskor visszaadja (vagy amikor megerősíted, hogy a területen kívül kerül fogyasztásra). A csapat döntése végleges. Külső alkohol behozatala vagy fogyasztása a foglalás azonnali törlését vonja maga után, no‑show‑ként kerül rögzítésre, és nincs visszatérítés."
+      ]
+    },
+    {
+      "id": "dutyOfCare",
+      "title": "Gondossági kötelezettséged",
+      "body": [
+        "Tartózkodásod alatt más vendégekkel, személyzettel és vállalkozókkal osztozol a hostelen. Kérjük:",
+        "* Tiszteld mindenki magánszféráját és személyes terét.\n* Ügyelj arra, hogy ne károsítsd a hostel vagy vendégek tulajdonát.\n* Tartsd ésszerű szinten a zajt, és segíts fenntartani a nyugodt, barátságos légkört.\n* Kövesd a személyzet által adott további szabályokat vagy utasításokat.",
+        "E kötelezettségek figyelmen kívül hagyása a foglalás azonnali törlését eredményezheti (no‑show‑ként rögzítve), távozás visszatérítés nélkül, és pénzügyi felelősség vállalása bírságokért, jogi költségekért, jóhírnév‑sérelemért vagy más kiadásokért. Bármilyen jogellenes tevékenységet azonnal jelentünk a helyi hatóságoknak."
+      ]
+    }
+  ]
+}

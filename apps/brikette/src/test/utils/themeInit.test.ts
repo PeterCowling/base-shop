@@ -48,7 +48,7 @@ beforeEach(() => {
   jest.restoreAllMocks();
 });
 
-describe.skip("initTheme", () => {
+describe("initTheme", () => {
   it("applies the stored dark theme", () => {
     localStorage.setItem("theme-mode", "dark");
     runScript({ prefersDark: false });
@@ -84,8 +84,8 @@ describe.skip("initTheme", () => {
   it("outputs a self-invoking script string", () => {
     const script = initTheme;
     expect(typeof script).toBe("string");
-    expect(script).toMatch(/^\(function\s\(\)/);
+    expect(script).toMatch(/^\s*\(function\s\(\)/);
     expect(script).toContain("localStorage.getItem");
-    expect(script).toContain("typeof window.matchMedia");
+    expect(script).toContain("window.matchMedia");
   });
 });

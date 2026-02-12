@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Viagem sustentável na Costa Amalfitana",
+    "description": "Como reduzir o impacto: transporte coletivo, reabastecimentos de água, trilhas responsáveis e escolhas conscientes."
+  },
+  "linkLabel": "Viagem sustentável na Costa Amalfitana",
+  "intro": [
+    "Viajar com baixo impacto na Costa Amalfitana passa por transporte, resíduos e hábitos diários de energia.",
+    "Mantenha a pegada leve sem abdicar das vistas costeiras."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transporte mais verde",
+      "body": [
+        "Prefira autocarros ou ferries em vez de táxis privados sempre que possível.",
+        "Para distâncias curtas dentro da vila, caminhe em vez de chamar carro."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Resíduos e plástico",
+      "body": [
+        "Leve garrafa/saco reutilizáveis e reabasteça em fontes ou cafés.",
+        "Separe o lixo onde houver ecopontos e leve de volta o que levar para trilhos."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energia e água",
+      "body": [
+        "Desligue AC e luzes ao sair do quarto; feche portadas para manter o interior fresco.",
+        "Tome duches curtos e reutilize toalhas para poupar água."
+      ]
+    }
+  ],
+  "tips": [
+    "Apoie pequenos negócios locais que usam produtos regionais e práticas de baixo desperdício.",
+    "Peça pratos sazonais — limões, anchovas e vegetais brilham nos meses de pico."
+  ],
+  "faqs": [
+    {
+      "q": "Posso alugar e-bikes na costa?",
+      "a": [
+        "Sim, em Amalfi, Sorrento e algumas vilas — reserve cedo porque as frotas são pequenas."
+      ]
+    }
+  ]
+}

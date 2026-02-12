@@ -5,7 +5,7 @@ import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
 
 const origin = "https://hostel-positano.com";
 
-describe.skip("document head logic", () => {
+describe("document head logic", () => {
   it("generates complete head content for home page", () => {
     const path = "/en";
     const lang = "en";
@@ -40,6 +40,7 @@ describe.skip("document head logic", () => {
     const links = buildLinks({ lang: "xx", origin, path });
 
     const canonical = links.find((link) => link.rel === "canonical");
-    expect(canonical?.href).toBe(`${origin}${path}`);
+    const normalizedPath = path.endsWith("/") ? path : `${path}/`;
+    expect(canonical?.href).toBe(`${origin}${normalizedPath}`);
   });
 });

@@ -1,137 +1,110 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-01
+Last-reviewed: 2026-02-09
 
 # Git & GitHub Workflow (Human UX)
 
-This repo is designed so that shipping a change feels like:
+This repository ships through one release pipeline only:
 
-1. Make a change on a `work/**` branch.
-2. Commit early and often.
-3. Push.
-4. A PR appears automatically, runs the right checks, and **auto‑merges on green**.
+1. Commit on `dev`
+2. Push `dev`
+3. Auto PR `dev` -> `staging` (label: `pipeline`, auto-merge on green)
+4. Promote `staging` -> `main` (label: `pipeline`, auto-merge on green)
 
-If something is red or idle for too long, the PR may auto-close (by design). You fix the issue, push again, and the system makes a new PR.
+## Happy Path (One Change)
 
-## The Happy Path (One Change)
-
-### 1) Start a work branch
+### 1) Work on `dev`
 
 ```bash
 git fetch origin --prune
-git switch -c work/$(date +%Y-%m-%d)-short-description origin/main
+git switch dev || git switch -c dev origin/dev || git switch -c dev origin/main
 ```
 
-### 2) Make your change and commit it
+### 2) Make your change and commit
 
 ```bash
 git status
-git add -A
+git add <paths>
 git commit -m "feat: short description"
 ```
 
-### 3) Push and let GitHub handle the PR
+### 3) Validate and push `dev`
 
 ```bash
-git push -u origin HEAD
+bash scripts/validate-changes.sh
+git push -u origin dev
 ```
 
-What you should expect next:
-
-- Within ~1 minute, GitHub creates a PR from your branch into `main`.
-- The PR gets the `zero-touch` label and has auto‑merge enabled (squash).
-- CI runs (and the **Merge Gate / Gate** check summarizes whether you’re “good to merge”).
-- When required checks are green, the PR merges automatically.
-
-## What GitHub Is Doing For You
-
-### Auto PRs (only for `work/**` branches)
-
-Pushing a `work/**` branch triggers an “Auto PR (Zero‑Touch)” workflow that:
-
-- Creates a PR (if one doesn’t already exist)
-- Adds the `zero-touch` label
-- Enables auto‑merge (squash)
-
-### Merge Gate (the one check to watch)
-
-You’ll see many workflows on a PR. The user experience is: watch **Merge Gate / Gate**.
-
-- Green Merge Gate means “all required workflows for this change set passed.”
-- Red Merge Gate means “something required failed.”
-
-## When Things Go Wrong (And What To Do)
-
-### “I pushed, but no PR appeared”
-
-1. Confirm your branch name starts with `work/` (not `feature/`, `fix/`, etc.).
-2. Refresh GitHub → Pull requests (it can take ~1 minute).
-3. If it still doesn’t exist, create one manually (GitHub UI is fine), then enable auto‑merge.
-
-### “The PR auto-closed”
-
-Two common reasons:
-
-- **Failing required checks**: if **Merge Gate** fails, zero-touch PRs auto-close.
-- **Stale PR**: after **5 days with no commits**, the PR is marked stale; after **2 more days**, it auto-closes.
-
-To recover:
-
-1. Keep working on the same branch.
-2. Push a new commit.
-3. The auto‑PR workflow will create a new PR for that branch.
-
-If you want to intentionally keep a PR open while it’s red or idle, add the `keep-open` label.
-
-### “Git won’t let me commit/push”
-
-That’s usually a hook doing its job:
-
-- If you’re blocked from committing/pushing, read the message and follow the suggested fix.
-- If you’re in the **main checkout** and see a writer‑lock error, either:
-  - Use a worktree (`scripts/git/new-worktree.sh <label>`), or
-  - Run your git command via `scripts/agents/with-writer-lock.sh <cmd>` (single‑writer safety).
-
-### “I accidentally started on `main`”
-
-Do not try to “clean it up” with resets or rebases.
+### 4) Ship to staging
 
 ```bash
-git switch -c work/$(date +%Y-%m-%d)-short-description
-git push -u origin HEAD
+scripts/git/ship-to-staging.sh
 ```
 
-## Parallel Work (Without Conflicts)
-
-If you want two branches in flight at the same time (or you’re working alongside an agent), use worktrees.
+### 5) Promote to production
 
 ```bash
-scripts/git/new-worktree.sh my-task
+git fetch origin --prune
+git switch staging
+scripts/git/promote-to-main.sh
 ```
 
-User experience: you get a new folder for a new branch, so changes don’t collide.
+## What GitHub Does
 
-## After It Merges (Cleanup)
+### Auto PR (`dev` -> `staging`)
 
-GitHub will usually show a “Delete branch” button on the PR after merge. You can use that, or delete manually:
+Pushing `dev` triggers `.github/workflows/auto-pr.yml`, which:
+
+- Ensures an open PR from `dev` to `staging`
+- Adds the `pipeline` label
+- Enables auto-merge (merge commit)
+
+### Merge Gate (required check)
+
+Watch **Merge Gate / Gate** on pipeline PRs.
+
+- Green: required checks passed, auto-merge can proceed
+- Red: fix failures, push `dev` again, and rerun the pipeline
+
+### Auto-close behavior
+
+Pipeline PRs may be auto-closed when:
+
+- Required checks fail, or
+- The PR is stale for too long
+
+Use `keep-open` when you intentionally want a PR to stay open while red/inactive.
+
+## Troubleshooting
+
+### "I pushed, but no pipeline PR appeared"
+
+1. Confirm branch is `dev`: `git branch --show-current`
+2. Confirm push succeeded: `git log --oneline origin/dev -n 1`
+3. Check Actions run: `Auto PR (dev → staging)`
+
+### "Git blocks commit or push"
+
+Hooks are expected to block unsafe operations.
+
+- Hold writer lock via integrator wrapper:
+  - `scripts/agents/integrator-shell.sh -- <command>`
+- Follow hook output; do not bypass with `--no-verify`
+
+### "I started on main/staging by mistake"
+
+Do not use reset/rebase to recover. Move to `dev` and continue safely:
 
 ```bash
-git branch -d work/<your-branch>
-git push origin --delete work/<your-branch>
+git fetch origin --prune
+git switch dev || git switch -c dev origin/dev || git switch -c dev origin/main
 ```
 
-## FAQ
+## Safety Rules
 
-### “Can I keep a PR open for review?”
+- Never run destructive history-rewriting commands (`git reset --hard`, `git clean -fd`, `git push --force`, `git rebase`, `git commit --amend`).
+- Never commit directly to `main` or `staging`.
+- Prefer explicit path staging (`git add <file> ...`) when unrelated work exists.
 
-Yes. Add the `keep-open` label so the PR won’t be auto-closed for failures or staleness.
-
-If you also want to prevent auto‑merge, disable auto‑merge in the GitHub UI (note: future pushes may re‑enable it because `work/**` branches are auto‑managed).
-
-## Safety Rules (Non‑Negotiable)
-
-- Never use destructive history‑rewriting commands in this repo (for example: `git reset --hard`, `git clean -fd`, `git push --force`, `git rebase`, `git commit --amend`).
-- If you need to undo something, prefer `git revert` (it creates a new commit and keeps history intact).
-
-See `docs/git-safety.md` for the full safety rules and rationale.
+See `docs/git-safety.md` for full policy.

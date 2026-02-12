@@ -1,19 +1,21 @@
 import "@testing-library/jest-dom";
 
 import { fireEvent, render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { QuantityInput } from "../QuantityInput";
 
 describe("QuantityInput", () => {
-  it("disables decrement at minimum and increments", () => {
+  it("disables decrement at minimum and increments", async () => {
     const handleChange = jest.fn();
-    const { getByRole } = render(
+    const { container,  getByRole } = render(
       <QuantityInput value={1} min={1} max={5} onChange={handleChange} />
     );
     const dec = getByRole("button", { name: "-" });
     const inc = getByRole("button", { name: "+" });
 
     expect(dec).toBeDisabled();
+
     expect(inc).not.toBeDisabled();
 
     fireEvent.click(dec);

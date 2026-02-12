@@ -1,7 +1,6 @@
 // packages/ui/src/components/atoms/primitives/Stack.tsx
 // i18n-exempt file -- DS-1234 [ttl=2025-11-30] — contains only CSS utility class names and design tokens
-import type { HTMLAttributes } from "react";
-import { forwardRef } from "react";
+import type { HTMLAttributes, Ref } from "react";
 
 import { cn } from "../utils/style/cn";
 
@@ -13,10 +12,14 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   asChild?: boolean;
 };
 
-export const Stack = forwardRef<HTMLDivElement, Props>(function Stack(
-  { gap = 3, align = "stretch", asChild = false, className, ...rest },
-  ref
-) {
+export function Stack({
+  ref,
+  gap = 3,
+  align = "stretch",
+  asChild = false,
+  className,
+  ...rest
+}: Props & { ref?: Ref<HTMLDivElement> }) {
   const alignClass =
     align === "start" ? "items-start" : align === "center" ? "items-center" : align === "end" ? "items-end" : "items-stretch";
   const Comp = asChild ? Slot : "div";
@@ -27,4 +30,4 @@ export const Stack = forwardRef<HTMLDivElement, Props>(function Stack(
       {...rest}
     />
   );
-});
+}

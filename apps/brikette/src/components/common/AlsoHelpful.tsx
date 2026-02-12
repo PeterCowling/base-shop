@@ -6,7 +6,7 @@ import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
 
-import type { GuideSection } from "@/data/guides.index";
+import { type GuideSection,isGuideLive } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { TFunction } from "@/utils/i18nSafe";
@@ -125,9 +125,12 @@ const FEATURED_CARD_VARIANTS = [
   "dark:hover:bg-brand-secondary/35",
 ] as const;
 
+const STANDARD_TITLE_CLASS =
+  "dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary";
+const FEATURED_TITLE_CLASS = "group-hover:text-brand-primary dark:group-hover:text-brand-secondary";
+
 type AlsoHelpfulCardProps = {
   href: string;
-  ariaLabel: string;
   title: React.ReactNode;
   ctaText: string;
   variant?: "standard" | "featured";
@@ -137,7 +140,6 @@ type AlsoHelpfulCardProps = {
 
 function AlsoHelpfulCard({
   href,
-  ariaLabel,
   title,
   ctaText,
   variant = "standard",
@@ -150,7 +152,6 @@ function AlsoHelpfulCard({
       href={href}
       prefetch={prefetch}
       className={clsx(CARD_SHARED_CLASSES, variantClasses)}
-      aria-label={ariaLabel}
     >
       <span
         className={clsx(
@@ -207,6 +208,7 @@ function AlsoHelpful({
       limit: 3,
     });
   }, [excludeGuide, section, tags]);
+  const liveRelated = useMemo(() => related.filter((key) => isGuideLive(key)), [related]);
 
   const heading = (() => {
     if (!titleKey) {
@@ -240,7 +242,7 @@ function AlsoHelpful({
     return "Book";
   })();
 
-  const hasAny = includeRooms || related.length > 0;
+  const hasAny = includeRooms || liveRelated.length > 0;
   if (!hasAny) return null;
 
   return (
@@ -274,7 +276,7 @@ function AlsoHelpful({
                 </svg>
               </span>
               <div>
-                <p className="text-sm font-semibold uppercase tracking-widest text-brand-secondary/80 dark:text-brand-secondary/70">
+                <p className="text-sm font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary/80">
                   {tAssistance("alsoHelpfulEyebrow", {
                     defaultValue: assistanceEnT("alsoHelpfulEyebrow"),
                   })}
@@ -290,20 +292,18 @@ function AlsoHelpful({
           </div>
 
           <ul className={clsx(GRID_BASE_CLASSES, "gap-4")}>
-            {related.map((key, index) => {
+            {liveRelated.map((key, index) => {
               const label = getGuideLinkLabel(guidesT, guidesEnT, key);
               const labelText = normaliseForAria(label);
               const ctaText = buildSeoCta(exploreCtaPrefix, labelText);
-              const ariaLabel = ctaText.replace(/→/g, "to");
               return (
                 <li key={`${key}-${index}`} className="h-full">
                   <AlsoHelpfulCard
                     href={guideHref(lang, key)}
                     prefetch={false}
-                    ariaLabel={ariaLabel}
                     title={label}
                     ctaText={ctaText}
-                    titleClassName="dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary"
+                    titleClassName={STANDARD_TITLE_CLASS}
                   />
                 </li>
               );
@@ -319,17 +319,15 @@ function AlsoHelpful({
               const roomsLabel = labelFromTokens || (safeGetStr(tAssistance, assistanceEnT, "roomsCta") ?? "");
               const roomsLabelText = roomsLabel.trim();
               const roomsCtaText = buildSeoCta(bookCtaPrefix, roomsLabelText);
-              const roomsAriaLabel = roomsCtaText.replace(/→/g, "to");
               return (
                 <li key="rooms" className="h-full">
                   <AlsoHelpfulCard
                     href={`/${lang}/${getSlug("rooms", lang)}`}
                     prefetch={false}
-                    ariaLabel={roomsAriaLabel}
                     title={roomsLabel}
                     ctaText={roomsCtaText}
                     variant="featured"
-                    titleClassName="group-hover:text-brand-primary dark:group-hover:text-brand-secondary"
+                    titleClassName={FEATURED_TITLE_CLASS}
                   />
                 </li>
               );

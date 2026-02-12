@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "Top of the Mountain Hike från Hostel Brikette",
+    "description": "Nå Monte Sant'Angelo, Amalfikustens högsta punkt, med dessa vägbeskrivningar, förberedelsetips och varningar."
+  },
+  "linkLabel": "Top of the Mountain-vandring från Hostel Brikette",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
+    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Why tackle this hike",
+      "body": [
+        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
+        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
+        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+      ]
+    },
+    {
+      "id": "getting-to-santa-maria",
+      "title": "Getting to Santa Maria del Castello",
+      "body": [
+        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
+        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+      ]
+    },
+    {
+      "id": "santa-maria-to-summit",
+      "title": "From Santa Maria to the summit",
+      "body": [
+        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
+        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
+        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
+        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
+        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Minst 2 liter vatten per person plus salta snacks; det finns inga pålitliga påfyllningar efter Santa Maria del Castello.",
+    "Rejäla vandringsskor med grepp – delar av den övre leden är steniga, lösa och exponerade.",
+    "Solskydd och lager för toppen; vinden kan piska över åsen även under varma dagar."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Tillgång till stigarna är gratis; budgetera €5–€10 om du planerar att belöna dig själv med en drink eller mellanmål i Santa Maria del Castello.",
+    "Returnera SITA-bussbiljetter eller färjepriser om du bestämmer dig för att gå ner via en annan by istället för att vandra hela vägen tillbaka."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Börja i gryningen på sommaren för att undvika att klättra under hög värme; senhöstens och våreftermiddagarna bjuder på mjukare ljus utan den gassande solen.",
+    "Kontrollera prognosen för stormar – molntäcke kan radera vyerna och blöta stenar gör toppstegen hala.",
+    "Låt någon på vandrarhemmet veta din plan och förväntade återkomsttid innan du ger dig av."
+  ],
+  "warningsTitle": "When to reconsider",
+  "warnings": [
+    "Hoppa över vandringen om du saknar bergserfarenhet eller stark kondition; den ihållande höjdökningen är straffbar och det finns få räddningspunkter.",
+    "Undvik rutten om höjder gör dig orolig – exponerade avsatser och branta fall utmanar även självsäkra vandrare.",
+    "Försök inte toppmötet under högsommareftermiddagar när värmen och behovet av att bära extra vatten ökar påfrestningen."
+  ],
+  "steps": [
+    {
+      "name": "Climb to Santa Maria del Castello",
+      "text": "Använd vandrarhemmets väg till Santa Maria del Castello; att nå torget betyder att du har klarat ungefär en tredjedel av höjden."
+    },
+    {
+      "name": "Join the mountain trail",
+      "text": "Från byns korsning, sväng höger, sedan vänster förbi restaurangen och lämna vägen på den högra stigen som går runt husen."
+    },
+    {
+      "name": "Commit to the upper ascent",
+      "text": "Följ den oländiga leden till den skyltade vägskälet och välj stigen som går rakt uppför mot toppen."
+    },
+    {
+      "name": "Navigate the zig-zags",
+      "text": "Arbeta dig igenom branta växlar tills leden planar ut längs bergets vänstra flank."
+    },
+    {
+      "name": "Take the rock-cut stairs",
+      "text": "Klättra upp för stentrappan till höger, gå i en slinga bakom berget till den sista rampen."
+    },
+    {
+      "name": "Reach the summit",
+      "text": "Följ den sista uppstigningen till toppen och njut av panoramautsikten innan du går tillbaka till Santa Maria."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "How long does the full hike take?",
+      "a": [
+        "Räkna med 6–7 timmar för tur och retur från Hostel Brikette, inklusive pauser i Santa Maria och tid på toppen."
+      ]
+    },
+    {
+      "q": "Is the trail marked?",
+      "a": [
+        "Markörer är sparsamma bortom Santa Maria; bär en offlinekarta och var uppmärksam på den uppenbara slitna leden och vägvisare vid korsningar."
+      ]
+    },
+    {
+      "q": "Can I turn back early?",
+      "a": [
+        "Ja. Om den övre delen känns för exponerad, njut av utsikten från Santa Maria eller de nedre växlarna och återvänd vägen du kom."
+      ]
+    }
+  ],
+  "toc": {
+    "labels": {
+      "warnings": "When to reconsider"
+    }
+  }
+}

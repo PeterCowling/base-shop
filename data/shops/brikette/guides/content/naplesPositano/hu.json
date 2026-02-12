@@ -1,0 +1,111 @@
+{
+  "seo": {
+    "title": "Nápolyból Positanóba lépésről lépésre",
+    "description": "Egész évben elérhető út Sorrentón át SITA busszal, hol szállj le Positanóban, hogyan sétálj el a Hostel Brikette-hez, plusz nyári komp és késő esti transzferek."
+  },
+  "linkLabel": "Nápoly → Positano lépésről lépésre",
+  "intro": [
+    "Nápolyi reptérről vagy városból úgy jutsz Positanóba egész évben, hogy shuttle-el vagy Alibusszal a Circumvesuviana vonatig utazol Sorrentóig, majd a SITA busszal folytatod Amalfi felé. Nyáron a komp is jár, ha nyugodt a tenger. Ez az útmutató megmutatja, hol szállj le (Chiesa Nuova / Bar Internazionale) és hogyan tetőzd a 2–5 perces sétát a Hostel Brikette felé."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Vonat + busz (egész évben)"
+    },
+    {
+      "href": "#sorrento-bus",
+      "label": "Sorrento → Positano SITA busszal"
+    },
+    {
+      "href": "#get-off",
+      "label": "Szállj le: Chiesa Nuova"
+    },
+    {
+      "href": "#walk",
+      "label": "Séta a Hostel Brikette-hez"
+    },
+    {
+      "href": "#ferry",
+      "label": "Komp (nyár)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Késő esti érkezés és transzferek"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Vonat + busz (egész évben)",
+      "body": [
+        "Reptérről Sorrentóba: a NAP érkezési szintjéről vegyél Curreri shuttle-t (vagy Alibusszal a Napoli Centrale/Garibaldiig, majd Circumvesuviana vonattal Sorrentóba).",
+        "Sorrentóban: hagyd el az állomást, kövesd a buszállások feliratát, és vásárolj SITA jegyet a dohánybolt vagy újságosnál (mindenképp legyen érvényesített jegyed felszállás előtt)."
+      ]
+    },
+    {
+      "id": "sorrento-bus",
+      "title": "Sorrento → Positano SITA busszal",
+      "body": [
+        "Szállj fel az Amalfi/Positano felé tartó SITA buszra. A csomagokat rakd a busz alatti rekeszbe, az értékeket tartsd magadnál. Nyáron gyakrabban járnak, de zsúfoltak – érkezz időben és állj sorba.",
+        "A busz elhalad a Priora és Piano településeken, majd Montepertuso lehajtója után lefelé ereszkedik Positanó felé."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Szállj le a 'Chiesa Nuova' megállónál (Bar Internazionale)",
+      "body": [
+        "A Hostel Brikette-hez szállj le a 'Chiesa Nuova' megállónál, pontosan a Bar Internazionale kávézó előtt; ez a legközelebbi megálló a hostelhez.",
+        "A menetidő és a megállók száma a forgalomtól függ. A megállótól nagyjából 140 méter (450 láb) a hostel minimális lépcsőzéssel."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a Hostel Brikette-hez",
+      "body": [
+        "A Bar Internazionale megállótól haladj tovább abba az irányba, amerre a busz jött, kb. 100 métert (330 láb) a Viale Pasitea mentén.",
+        "Keresd a Hostel Brikette táblát a teraszos szinten, kanyarodj rá az útra, majd vedd fel a jobbra vezető lépcsőt a főbejárathoz."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Komp (nyár)",
+      "body": [
+        "Nápoly városából szállj Alibuszra Molo Beverellóig, majd onnan komppal Positanóba (csak szezonális, időjárásfüggő). Ellenőrizd aznapi járatokat és árakat, és ne hagyatkozz az utolsó indulásra, ha további csatlakozást tervezel.",
+        "A positanói dokknál használd az Interno Positano buszt és kérj portert, ha csomaggal utazol — nézd meg a %LINK:ferryDockToBrikette|dokkból → hostel útvonalat% és a %LINK:porterServices|hordár útmutatót%."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Késői érkezés és transzferek",
+      "body": [
+        "Ha az utolsó busz vagy komp után érkezel, foglalj privát transzfert, vagy tölts egy éjszakát Nápolyban vagy Sorrentóban.",
+        "Egyeztesd le a kiszállást a szállásod közelében, és ha kell, kérdezz rá a csomagkezelésre."
+      ]
+    }
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Hol veszek SITA jegyet?",
+      "a": [
+        "Sorrento és Positano környékén lévő tabacchi/dohányboltokban és kioszkoknál. Csak érvényesített jeggyel szállj fel."
+      ]
+    },
+    {
+      "q": "Melyik megálló a legjobb a hostelhez?",
+      "a": [
+        "A 'Chiesa Nuova' (a Bar Internazionale mellett). Ez a legközelebbi megálló, így elkerülheted a hosszú lépcsőket."
+      ]
+    },
+    {
+      "q": "Mennyi a séta a végén?",
+      "a": [
+        "Körülbelül 2–5 perc és nagyjából 140 méter (450 láb) rövid lépcsővel a bejáratnál."
+      ]
+    }
+  ]
+}

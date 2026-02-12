@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Đến nơi thật nhẹ nhàng: đi bộ, đi xe buýt Interno Positano và làm theo mẹo mang hành lý để tới hostel trong chưa đầy 15 phút. Kèm liên kết Google Maps, thông tin vé và tư vấn tiếp cận."
+  },
+  "linkLabel": "Bản dịch đang được chuẩn bị.",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "**Mẹo 1:** %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|Lịch &amp; giá xe buýt Interno%. **Mẹo 2:** Mua vé tại bất kỳ cửa hàng *Tabacchi* hoặc sạp báo nào. **Mẹo 3:** Mang nhiều hành lý? Porter ở bến sẽ giao đồ trực tiếp tới hostel cho bạn."
+      ]
+    },
+    {
+      "id": "portToPiazza",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Theo %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|đường đi bộ này% từ bãi biển chính tới Piazza Dei Mulini."
+      ]
+    },
+    {
+      "id": "piazzaToStop",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "* Tránh leo bậc thang — lên xe buýt Interno.\n* Tuyến chạy khoảng mỗi 30 phút từ ~8:00 tới nửa đêm.\n* Xem lộ trình trên %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Google Maps%."
+      ]
+    },
+    {
+      "id": "busLook",
+      "title": "Xe buýt trông như thế nào?",
+      "body": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "stopToHostel",
+      "title": "Trạm xe buýt địa phương → Hostel",
+      "body": [
+        "* Xe buýt dừng trước cửa hàng Tabacchi trong ảnh bên dưới.\n* Xuống xe, rẽ **phải** ra đường chính.\n* Rẽ **trái** và đi khoảng 100 m / 330 ft.\n* Hostel ở bên phải — leo cầu thang lên lễ tân.\n* Cần chỉ đường chi tiết? %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|Mở Google Maps%."
+      ]
+    },
+    {
+      "id": "approach",
+      "title": "Mẹo: Khi đến gần hostel",
+      "body": [
+        "* Khi tới gần hostel bạn sẽ thấy bảng hiệu bên cạnh sân thượng tầng hai.\n* Đi qua bảng hiệu, ôm theo khúc cua và rẽ phải lên cầu thang vào lễ tân."
+      ]
+    }
+  ]
+}

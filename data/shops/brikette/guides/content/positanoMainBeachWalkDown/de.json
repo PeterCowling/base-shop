@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Spazieren Sie vom Hostel Brikette zum Hauptstrand von Positano",
+    "description": "Schritt-für-Schritt-Treppenweg, der in 15–25 Minuten den Spiaggia Grande erreicht."
+  },
+  "linkLabel": "Zu Fuß hinunter zum Hauptstrand von Positano",
+  "intro": [
+    "Ein Spaziergang vom Hostel Brikette zum Hauptstrand von Positano dauert je nach Tempo und Fotostopps etwa 15–25 Minuten.",
+    "Google Maps kann dich durch langsamere Umwege führen. Nutze also diesen Treppenweg, um Spiaggia Grande schnell zu erreichen und jeden Checkpoint mit den Referenzfotos des Hostels abzugleichen."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "Bevor es weitergeht",
+      "body": [
+        "Holen Sie sich die laminierten Treppenfotos von der Rezeption oder vom digitalen Concierge, damit Sie die fünf Kontrollpunkte auf dem Weg bestätigen können.",
+        "Tragen Sie robuste Sandalen für die Kieslandungen und tragen Sie Wasser — es gibt keine Geschäfte auf der Treppe, bis Sie die Promenade erreichen."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Schritt-für-Schritt-Spaziergang zur Spiaggia Grande",
+      "body": [
+        "1. Verlassen Sie das Hostel Brikette durch die Haupttür und steigen Sie die vordere Treppe hinunter zur Viale Pasitea.",
+        "2. Biegen Sie links ab und gehen Sie etwa 100 Meter (330 Fuß) entlang der Straße bis zur ersten rechten Ecke neben dem Tabacchi/Kiosk — das ist Kartenpunkt 1.",
+        "3. Biegen Sie rechts ab, bleiben Sie auf der Abfahrtsspur und folgen Sie der Kurve bis zur ersten Kurve der Straße (Kartenpunkt 2).",
+        "4. Verlassen Sie die Straße an der Kurve und fahren Sie geradeaus die Treppe hinunter, die vor Ihnen liegt.",
+        "5. Wenn die Treppe auf eine andere Straße trifft (Kartenpunkt 3), überqueren Sie die Straße geradeaus und steigen Sie die nächste sichtbare Treppe ab.",
+        "6. Überqueren Sie am Fuß der Treppe die Straße, biegen Sie etwa 10 Meter (30 Fuß) links ab und nehmen Sie dann die nächste Treppe auf der rechten Seite (Kartenpunkt 4).",
+        "7. Folgen Sie dieser Treppe, biegen Sie am Treppenabsatz links ab und bleiben Sie auf dem Weg, bis Sie den Boden erreichen.",
+        "8. Biegen Sie rechts ab, gehen Sie am Kartenpunkt 5 in den Innenhof und überprüfen Sie, ob die Ansicht mit dem Referenzfoto des Hostels übereinstimmt.",
+        "9. Fahren Sie geradeaus unter dem Torbogen weiter und gehen Sie dann etwa 50 Meter zu Fuß, bis sich der Hafen öffnet und Spiaggia Grande auf der linken Seite erscheint."
+      ]
+    }
+  ],
+  "tipsTitle": "Schnelle Tipps",
+  "tips": [
+    "Spare dir den Aufstieg für später auf, indem du diese Route nach deinem Strandtag mit dem %LINK:positanoMainBeachBusBack|zurück zur Jugendherberge% kombinierst.",
+    "Vergleiche Liegen, Freizonen und Clubpreise im %LINK:positanoBeaches|Die Strände von Positano im Überblick%, bevor du loslegst.",
+    "Teilen Sie die Karte über den QR-Code des Hostels oder den digitalen Concierge, wenn Freunde Sie am Strand treffen."
+  ]
+}

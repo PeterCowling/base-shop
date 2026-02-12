@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Positano cho phượt thủ tiết kiệm: lịch trình 1-3 ngày",
+    "description": "Kế hoạch 1-3 ngày đơn giản với bãi biển, điểm ngắm và các chuyến đi trong ngày giá rẻ."
+  },
+  "linkLabel": "Positano cho phượt thủ tiết kiệm: lịch trình 1-3 ngày",
+  "intro": [
+    "Chọn lịch trình 1, 2 hoặc 3 ngày để giữ chi phí thấp nhưng vẫn đủ view, bãi biển và chuyến đi trong ngày."
+  ],
+  "toc": [
+    {
+      "href": "#day1",
+      "label": "Ngày 1: Positano cơ bản"
+    },
+    {
+      "href": "#day2",
+      "label": "Ngày 2: Con Đường của Các Vị Thần + bãi biển"
+    },
+    {
+      "href": "#day3",
+      "label": "Ngày 3: Capri hoặc Amalfi + Ravello"
+    },
+    {
+      "href": "#savings",
+      "label": "Mẹo tiết kiệm"
+    },
+    {
+      "href": "#food",
+      "label": "Ăn rẻ"
+    },
+    {
+      "href": "#transport",
+      "label": "Mẹo di chuyển"
+    }
+  ],
+  "sections": [
+    {
+      "id": "pacing",
+      "title": "Ưu tiên các ngày leo nhiều bậc",
+      "body": [
+        "Ngày đến nên đi dạo khu thấp (Spiaggia Grande, Fornillo) và để các ngày leo nhiều bậc (Path of the Gods, bậc thang Arienzo) sau khi đã ngủ đủ.",
+        "Nhóm điểm theo cao độ để ở cùng một tầng; làm xong các viewpoint ở trên rồi mới xuống bến thuyền."
+      ]
+    },
+    {
+      "id": "budget-mix",
+      "title": "Mỗi ngày một điểm trả phí",
+      "body": [
+        "Ngân sách cho một trải nghiệm trả phí mỗi ngày (phà đi Capri, tour thuyền chung, vé vườn), còn lại là đi bộ miễn phí và tắm biển.",
+        "Mua đồ ăn nhẹ và nước gần Chiesa Nuova; quán ven biển thường cộng giá cao nhất."
+      ]
+    },
+    {
+      "id": "viewpoints",
+      "title": "Viewpoint không tốn vé",
+      "body": [
+        "Via Cristoforo Colombo cho góc bưu thiếp vào bình minh hoặc golden hour mà không mất phí vào.",
+        "Muốn chụp yên tĩnh, rẽ vào sân lát gạch cạnh Chiesa Nuova hoặc belvedere nhỏ phía trên Fornillo trước 08:30."
+      ]
+    },
+    {
+      "id": "swim-breaks",
+      "title": "Tắm biển tiết kiệm",
+      "body": [
+        "Bãi Fornillo có khu công cộng miễn phí; đi theo lối ven biển từ Spiaggia Grande và chỉ thuê những gì cần.",
+        "Muốn không khí beach club Arienzo, đi xuống cầu thang trước 10:30 để giữ chỗ khu công cộng, rồi picnic với focaccia và trái cây."
+      ]
+    },
+    {
+      "id": "evenings",
+      "title": "Buổi tối tiết kiệm",
+      "body": [
+        "Ngắm hoàng hôn ở sân thượng hostel là miễn phí; pha spritz đơn giản với prosecco từ siêu thị và chia sẻ đồ ăn nhẹ.",
+        "Xem bảng thông báo ở hostel; nếu ra ngoài, đi muộn khi phí vào cửa thấp hơn và mang giấy tờ."
+      ]
+    }
+  ],
+  "day1Title": "1 ngày: Positano cơ bản",
+  "day1": [
+    "Sáng: ngắm Spiaggia Grande, rồi đi theo lối ven biển tới Fornillo để tắm.",
+    "Trưa: pizza al taglio hoặc panini gần Chiesa Nuova; ăn ở các sân hiên.",
+    "Hoàng hôn: Via Cristoforo Colombo hoặc sân thượng hostel."
+  ],
+  "day2Title": "2 ngày: thêm Con Đường của Các Vị Thần",
+  "day2": [
+    "Sáng: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (xe buýt tới Nocelle, đi bộ xuống Positano).",
+    "Chiều: %LINK:fornilloBeachGuide|làm mát ở bãi Fornillo% hoặc ăn trưa muộn trong thị trấn."
+  ],
+  "day3Title": "3 ngày: Capri hoặc Amalfi + Ravello",
+  "day3": [
+    "Lựa chọn A: %LINK:capriDayTrip|đi Capri trong ngày% - bắt phà sớm nhất, lên lịch vòng DIY và mang đồ ăn nhẹ.",
+    "Lựa chọn B: %LINK:positanoRavello|Amalfi + Ravello% - đi bus hoặc phà tới Amalfi, rồi lên Villa Rufolo hoặc Villa Cimbrone."
+  ],
+  "savingsTitle": "Mẹo tiết kiệm",
+  "savings": [
+    "Du lịch mùa vai (tháng 4-5, cuối tháng 9) để giá rẻ và ít đông.",
+    "Dùng xe buýt SITA cho hầu hết chặng; thêm một chặng phà nếu muốn ngắm cảnh.",
+    "Ở phòng dorm hoặc chia sẻ phòng gần Chiesa Nuova để tiết kiệm phí porter và bậc thang.",
+    "Đổ đầy nước ở hostel hoặc vòi nước công cộng trước khi đi.",
+    "Nếu đặt trực tiếp, dùng bữa sáng và đồ uống buổi tối miễn phí để thay một bữa.",
+    "Đi bộ giữa các viewpoint thay vì đi bus; cầu thang miễn phí và nhiều cảnh đẹp."
+  ],
+  "foodTitle": "Ăn rẻ",
+  "foodText": "Ưu tiên pizza al taglio, panini và salad deli quanh Via dei Mulini và Chiesa Nuova. Mua ở mini-market để picnic và dành bữa ăn ngồi bàn cho một lần duy nhất.",
+  "transportTitle": "Mẹo di chuyển",
+  "transportCompareLabel": "So sánh tuyến:",
+  "transportCompareLinks": [
+    {
+      "key": "naplesPositano",
+      "label": "Naples → Positano"
+    },
+    {
+      "key": "salernoPositano",
+      "label": "Salerno → Positano"
+    }
+  ],
+  "transportFerryPrefix": "Kiểm tra ",
+  "transportFerryLinkLabel": "lịch phà",
+  "transportFerrySuffix": " và thời tiết; xe buýt rẻ hơn nhiều.",
+  "faqs": [
+    {
+      "q": "Kế hoạch 1 ngày tốt nhất là gì?",
+      "a": [
+        "Bắt đầu ở Spiaggia Grande, đi theo lối ven biển tới Fornillo, rồi ngắm hoàng hôn từ Via Cristoforo Colombo hoặc sân thượng hostel."
+      ]
+    },
+    {
+      "q": "Giữ chi phí di chuyển thấp bằng cách nào?",
+      "a": [
+        "Dùng xe buýt SITA cho hầu hết hành trình và thêm một chặng phà để ngắm cảnh; mua vé trước khi lên xe để tránh bất ngờ."
+      ]
+    },
+    {
+      "q": "Lịch trình 2 ngày thì sao?",
+      "a": [
+        "Ngày 1 bao gồm essentials của Positano; Ngày 2 thêm Sentiero degli Dei qua Nocelle và một lần tắm biển."
+      ]
+    },
+    {
+      "q": "Có gợi ý nào cho 3 ngày không?",
+      "a": [
+        "Chọn một: đi Capri trong ngày hoặc combo Amalfi + Ravello; đi sớm và mang đồ ăn nhẹ để tiết kiệm."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Rejseforsikring til Amalfikysten",
+    "description": "Dækningstyper, dokumentation og tips til en problemfri tur."
+  },
+  "linkLabel": "Rejseforsikring til Amalfikysten",
+  "intro": [
+    "Grundregler for rejseforsikring på Amalfikysten: sundhed, aflysninger, elektronik og dækning til aktiviteter."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Det vigtigste at dække",
+      "body": [
+        "Sundhed/ulykker, aflysninger/forsinkelser og elektronik; overvej vandredækning til Sentiero degli Dei."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Skader og dokumentation",
+      "body": [
+        "Gem kvitteringer, politirapporter ved tyveri samt bekræftelser på forsinkelser/aflysninger; tjek frister og om der kræves originaler eller kopier."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Behøver jeg særlig dækning til færger?",
+      "a": [
+        "Normalt dækket under generel transport; vejrrelaterede forsinkelser/aflysninger afhænger af policen – læs betingelserne."
+      ]
+    }
+  ]
+}

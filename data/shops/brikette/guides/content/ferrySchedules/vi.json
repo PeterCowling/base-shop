@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Lịch phà đến Positano",
+    "description": "Phà chạy khi nào, nơi kiểm tra lịch thời gian thực, mùa vụ, nhà khai thác và mẹo làm thủ tục lên phà."
+  },
+  "linkLabel": "Lịch phà đến Positano",
+  "intro": [
+    "Lịch phà đi/đến Positano: kiểm tra chuyến trực tiếp ở đâu, phà chạy mùa nào và cách chuẩn bị phương án dự phòng."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Thời gian phà hoạt động",
+      "body": [
+        "Mùa chính kéo dài khoảng tháng 4 đến tháng 10 với tần suất dày nhất từ giữa tháng 5 tới tháng 9; mùa đông hiếm chuyến và phụ thuộc thời tiết.",
+        "Các tháng giao mùa thường cắt bớt chuyến đầu và cuối ngày — hãy xác nhận lịch vào tối hôm trước."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Theo dõi cập nhật trực tiếp",
+      "body": [
+        "Sử dụng website/ứng dụng của hãng (Travelmar, NLG, Alilauro, Positano Jet) cùng bảng điện tử ở bến để theo dõi trễ chuyến và đổi cổng.",
+        "Chụp lại lịch và bật thông báo email/SMS để nhận tin cảnh báo thời tiết ngay cả khi không có SIM Ý."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Vé & thời gian đệm",
+      "body": [
+        "Mùa cao điểm vé có thể hết trước nhiều giờ — hãy mua online hoặc từ hôm trước và tới bến sớm 30 phút, chuẩn bị CMND/hộ chiếu cùng hành lý để dán thẻ.",
+        "Giữ thời gian đệm trước chuyến cuối trong ngày để có thể chuyển sang xe buýt hoặc taxi nếu biển bất ngờ động."
+      ]
+    }
+  ],
+  "tips": [
+    "Theo dõi dự báo hàng hải (gió trên 20 hải lý/giờ hoặc sóng vượt 1,5 m thường khiến phà hủy chuyến).",
+    "Nếu phải đổi bến, kiểm tra giờ xe buýt địa phương trước để hành trình không bị áp lực."
+  ],
+  "faqs": [
+    {
+      "q": "Khi nào có lịch phà mùa hè?",
+      "a": [
+        "Đa số hãng công bố lịch mùa cao điểm vào khoảng tháng 2–3; lịch mùa thu thường được cập nhật cuối tháng 8."
+      ]
+    },
+    {
+      "q": "Làm sao xác nhận phà bị hủy trong ngày?",
+      "a": [
+        "Tải lại website/kênh mạng xã hội của hãng và xem thông báo dán tại bến; nhân viên cũng phát loa khi có thay đổi.",
+        "Luôn mang theo lịch xe buýt SITA hoặc số taxi để chuyển hướng ngay nếu cần."
+      ]
+    },
+    {
+      "q": "Tôi có thể mang hành lý lớn không?",
+      "a": [
+        "Có, nhưng hành lý quá khổ có thể thu thêm phụ phí; hãy đến sớm để nhân viên gắn thẻ, sắp xếp an toàn và bạn vẫn giữ đồ quý bên mình."
+      ]
+    }
+  ]
+}

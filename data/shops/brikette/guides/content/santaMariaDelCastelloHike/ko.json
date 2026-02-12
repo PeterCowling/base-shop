@@ -1,0 +1,143 @@
+{
+  "lastUpdated": "2026-02-04",
+  "seo": {
+    "title": "Hostel Brikette에서 Santa Maria del Castello까지 하이킹 - 포지타노",
+    "description": "포지타노 위 산악 마을 Santa Maria del Castello까지의 완전한 하이킹 가이드. 방향, 전망대 및 멋진 해안 경치 포함."
+  },
+  "linkLabel": "Santa Maria del Castello: 산악 마을 하이킹",
+  "intro": [
+    "Santa Maria del Castello는 포지타노 위 670미터(2,200피트)에 위치하며 신들의 길과 동등하거나 더 나은 경치를 제공합니다. 이 산악 마을에는 합리적인 가격의 좋은 음식을 제공하는 레스토랑과 놀라운 파노라마 전망이 있습니다.",
+    "호스텔을 떠난 지 단 15분 만에 멋진 경치가 나타나 유연성을 원하고 붐비는 SITA 버스를 피하고 싶은 사람들에게 보람 있는 하이킹입니다."
+  ],
+  "sections": [
+    {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
+      "id": "what-is-santa-maria",
+      "title": "Santa Maria del Castello란 무엇입니까?",
+      "body": [
+        "목적지는 포지타노 위 해발 670미터(2,200피트)에 위치한 산악 마을입니다. 마을에는 합리적인 가격의 좋은 음식과 멋진 경치를 제공하는 레스토랑이 있습니다.",
+        "전용 전망대는 아말피 해안, 포지타노 및 주변 산의 놀라운 파노라마 전망을 제공합니다."
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "왜 이 하이킹을 해야 합니까?",
+      "body": [
+        "경치는 신들의 길과 동등하거나 더 나아 멋진 해안 파노라마를 제공합니다.",
+        "호스텔을 떠난 지 단 15분 만에 멋진 경치가 나타납니다—보상을 위해 오래 기다릴 필요가 없습니다.",
+        "유연성을 제공하며 붐비는 SITA 버스를 피하는 사람들이 선호합니다.",
+        "포지타노 주변의 다른 산악 지역을 탐험하는 출발점 역할을 합니다."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "중요한 고려 사항",
+      "body": [
+        "이 하이킹은 신들의 길보다 훨씬 더 힘듭니다. 가파른 오르막을 준비하세요.",
+        "신들의 길 경험을 주요 하이킹 목표로 우선시하는 사람들에게는 적합하지 않을 수 있습니다.",
+        "여름 더위로 인해 오전 11시에서 오후 4시 사이에 이 하이킹을 피해야 합니다. 따뜻한 달에는 이른 아침이나 늦은 오후 출발이 필수적입니다."
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "마을까지의 방향",
+      "body": [
+        "Hostel Brikette에서 Santa Maria del Castello 마을에 도달하기 위한 단계별 지침을 따르세요:"
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "전망대까지의 방향",
+      "body": [
+        "트레일이 평평해지는 교차로에 도달하면 다음 지침에 따라 멋진 전망대에 접근하세요."
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
+    },
+    {
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
+    },
+    {
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
+    },
+    {
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
+    },
+    {
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
+    },
+    {
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
+    },
+    {
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
+    },
+    {
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
+    },
+    {
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
+    },
+    {
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
+    },
+    {
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
+    },
+    {
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
+    },
+    {
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
+    }
+  ],
+  "warningsTitle": "안전 경고",
+  "warnings": [
+    "전망 지점에는 수백 미터의 갑작스러운 낙차가 있습니다. 가장자리에서 멀리 떨어져 있고 어린이를 면밀히 감독하세요.",
+    "이 하이킹은 신들의 길보다 훨씬 더 힘듭니다. 시도하기 전에 체력 수준을 평가하세요.",
+    "산길의 극심한 더위 노출로 인해 여름철 오전 11시에서 오후 4시 사이에 하이킹을 피하세요."
+  ],
+  "essentialsTitle": "챙길 것",
+  "essentials": [
+    "가파르고 불규칙한 지형을 위한 좋은 그립이 있는 튼튼한 하이킹 신발",
+    "1인당 최소 1.5리터의 물—보충 기회가 제한적입니다",
+    "햇빛 보호: 노출된 구간을 위한 모자, 자외선 차단제 및 선글라스",
+    "마을 레스토랑에서 시간을 보낼 계획이라면 가벼운 간식이나 점심"
+  ],
+  "tipsTitle": "하이킹 팁",
+  "tips": [
+    "여름철에는 정오의 더위를 피하기 위해 이른 아침에 출발하세요.",
+    "가파른 구간에서는 시간을 가지세요—경치는 도중에 음미할 가치가 있습니다.",
+    "포지타노로 다시 내려가기 전에 마을 레스토랑에서 점심을 먹는 것을 고려하세요.",
+    "카메라나 완전히 충전된 전화를 가져오세요—전망대에서의 사진 기회는 탁월합니다."
+  ]
+}

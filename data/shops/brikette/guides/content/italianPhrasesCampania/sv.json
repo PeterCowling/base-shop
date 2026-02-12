@@ -1,0 +1,40 @@
+{
+  "seo": {
+    "title": "Italienska fraser för resenärer i Kampanien",
+    "description": "Användbara italienska fraser (och lite dialekt) för bussar, färjor, kaféer och ett artigt bemötande längs kusten."
+  },
+  "linkLabel": "Italienska fraser för resenärer i Kampanien",
+  "intro": [
+    "Praktisk italienska (och en touch av lokal dialekt) för bussar, färjor, kaféer och artiga förfrågningar runt Kampanien."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport basics",
+      "body": [
+        "\\\\\"Un biglietto per Positano, per favore\\\\\" (en biljett till Positano, tack) eller \\\\\"Dove si convalida?\\\\\" (Var validerar jag?) täcker de flesta motchattar.",
+        "Behåll \\\\\"Scendo alla prossima\\\\\" (jag kliver av härnäst) och \\\\\"A che ora parte l'ultima corsa?\\\\\" (Vilken tid är sista körningen?) redo för snabba frågor."
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "Cafés & dining",
+      "body": [
+        "Beställ med \\\\\"Prendo un espresso al banco\\\\\" eller \\\\\"Possiamo avere il conto, per favore?\\\\\" och lägg alltid till en grazie.",
+        "Be om rekommendationer (\\\\\"Cosa consiglia oggi?\\\\\") eller kontrollera kostbehov: \\\\\"È possibile senza glutine?\\\\\"."
+      ]
+    },
+    {
+      "id": "emergency",
+      "title": "Emergencies & courtesy",
+      "body": [
+        "\\\\\"Ho bisogno di aiuto\\\\\" (jag behöver hjälp) och \\\\\"Può chiamare un taxi?\\\\\" (Kan du ringa en taxi?) täcker de flesta akuta situationer.",
+        "Lokal färg: \\\\\"Guagliò\\\\\" är en vänlig informell hälsning, medan \\\\\"Statt' bbuon\\\\\" är ett varmt farväl du kanske hör på dialekt."
+      ]
+    }
+  ],
+  "tips": [
+    "Ladda ner en offline-parlörapp för snabb ljuduppspelning när mobildata tappar.",
+    "En enkel \\\\\"Grazie mille\\\\\" och \\\\\"Buona giornata\\\\\" håller interaktionerna varma även i rusning under högsäsong."
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Fährpläne für Positano",
+    "description": "Wann Fähren fahren, wo du Echtzeit-Fahrpläne findest, Saisonzeiten, Anbieter und praktische Boarding-Tipps."
+  },
+  "linkLabel": "Fährpläne für Positano",
+  "intro": [
+    "Fährpläne von und nach Positano: wo du Live-Abfahrten prüfst, wie die Saison tickt und wie du Backups planst."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Wann Fähren fahren",
+      "body": [
+        "Die Hauptsaison läuft ungefähr von April bis Oktober, mit höchsten Frequenzen zwischen Mitte Mai und September; Winterfahrten sind selten und wetterabhängig.",
+        "In der Zwischensaison werden oft erste und letzte Abfahrten gekürzt – prüfe den Plan am Vorabend."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Live-Updates prüfen",
+      "body": [
+        "Nutze Websites und Apps der Betreiber (Travelmar, NLG, Alilauro, Positano Jet) sowie Anzeigetafeln am Hafen für Verzögerungen und Gate-Wechsel.",
+        "Screenshotte Fahrpläne und aktiviere E-Mail/SMS-Benachrichtigungen, damit dich Wettermeldungen auch ohne italienische SIM erreichen."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets & Puffer",
+      "body": [
+        "In der Hochsaison sind Überfahrten oft Stunden vorher ausverkauft – kaufe online oder am Vortag und sei 30 Minuten vor Abfahrt mit Ausweis bereit.",
+        "Lass vor der letzten Verbindung des Tages einen Zeitpuffer, damit du bei rauer See auf Bus oder Taxi ausweichen kannst."
+      ]
+    }
+  ],
+  "tips": [
+    "Beobachte die Marinevorhersage (Winde über 20 Knoten oder Wellen über 1,5 m führen häufig zu Ausfällen).",
+    "Falls du den Hafen wechseln musst, prüfe Buszeiten im Voraus, damit die Verbindung entspannt bleibt."
+  ],
+  "faqs": [
+    {
+      "q": "Wann erscheinen Sommerfahrpläne?",
+      "a": [
+        "Die meisten Betreiber veröffentlichen Hochsaisonpläne zwischen Februar und März; Herbst-Updates folgen meist Ende August."
+      ]
+    },
+    {
+      "q": "Wie bestätige ich eine kurzfristige Absage?",
+      "a": [
+        "Aktualisiere die Betreiber-Website oder Social-Feeds und halte am Pier nach Aushängen Ausschau; Durchsagen informieren zusätzlich.",
+        "Halte den SITA-Fahrplan oder eine Taxi-Nummer bereit, falls du direkt umplanen musst."
+      ]
+    },
+    {
+      "q": "Kann ich mit großem Gepäck reisen?",
+      "a": [
+        "Ja, für Übergrößen kann ein kleiner Zuschlag anfallen; sei früh da, damit die Crew das Gepäck markieren und sicher verstauen kann, während du Wertsachen bei dir behältst."
+      ]
+    }
+  ]
+}

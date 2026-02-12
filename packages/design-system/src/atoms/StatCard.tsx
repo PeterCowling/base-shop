@@ -8,14 +8,19 @@ export interface StatCardProps extends React.HTMLAttributes<HTMLDivElement> {
   value: React.ReactNode;
 }
 
-export const StatCard = React.forwardRef<HTMLDivElement, StatCardProps>(
-  ({ label, value, className, ...props }, ref) => (
-    <Card ref={ref} className={cn(className)} {...props}>
-      <CardContent className="flex flex-col gap-1">
-        <span className="text-muted-foreground text-sm">{label}</span>
-        <span className="text-2xl font-semibold">{value}</span>
-      </CardContent>
-    </Card>
-  )
-);
-StatCard.displayName = "StatCard";
+export const StatCard = (
+  {
+    ref,
+    label,
+    value,
+    className,
+    ...props
+  }: StatCardProps & {
+    ref?: React.Ref<HTMLDivElement>;
+  }
+) => (<Card ref={ref} className={cn(className)} {...props}>
+  <CardContent className="flex flex-col gap-1">
+    <span className="text-muted-foreground text-sm">{label}</span>
+    <span className="text-2xl font-semibold">{value}</span>
+  </CardContent>
+</Card>);

@@ -3,11 +3,11 @@
  */
 
 import {
-  checkRateLimit,
-  getRateLimitStatus,
-  getRateLimitHeaders,
-  RATE_LIMIT_CONFIG,
   _clearRateLimitStore,
+  checkRateLimit,
+  getRateLimitHeaders,
+  getRateLimitStatus,
+  RATE_LIMIT_CONFIG,
 } from '../rateLimiter';
 
 describe('rateLimiter', () => {

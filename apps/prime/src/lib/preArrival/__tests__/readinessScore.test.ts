@@ -5,11 +5,11 @@
 import {
   computeReadinessScore,
   getCompletedCount,
-  getTotalChecklistItems,
-  isChecklistComplete,
   getNextChecklistItem,
   getReadinessLevel,
   getReadinessMessageKey,
+  getTotalChecklistItems,
+  isChecklistComplete,
 } from '../readinessScore';
 
 describe('readinessScore', () => {

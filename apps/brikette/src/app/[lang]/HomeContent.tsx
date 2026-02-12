@@ -5,15 +5,16 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { Fragment, memo, Suspense, useCallback } from "react";
-import dynamic from "next/dynamic";
+import { Fragment, memo, useCallback } from "react";
 
 import { Section } from "@acme/design-system/atoms";
+import CarouselSlides from "@acme/ui/organisms/CarouselSlides";
 import HeroSection from "@acme/ui/organisms/LandingHeroSection";
 import QuickLinksSection from "@acme/ui/organisms/QuickLinksSection";
 
 import BookingWidget from "@/components/landing/BookingWidget";
 import FaqStrip from "@/components/landing/FaqStrip";
+import IntroTextBox from "@/components/landing/IntroTextBox";
 import LocationMiniBlock from "@/components/landing/LocationMiniBlock";
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import WhyStaySection from "@/components/landing/WhyStaySection";
@@ -24,28 +25,6 @@ import { useOptionalModal } from "@/context/ModalContext";
 import { type Room,roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
-
-// Lazy load heavy components
-const IntroTextBox = dynamic(
-  () =>
-    import(
-      /* i18n-exempt -- BRK-001 [ttl=2026-12-31]: module name is not user copy */
-      "@/components/landing/IntroTextBox"
-    ),
-  {
-  ssr: false,
-  loading: () => null,
-});
-const CarouselSlides = dynamic(
-  () =>
-    import(
-      /* i18n-exempt -- BRK-001 [ttl=2026-12-31]: module name is not user copy */
-      "@acme/ui/organisms/CarouselSlides"
-    ),
-  {
-  ssr: false,
-  loading: () => null,
-});
 
 type Props = {
   lang: AppLanguage;
@@ -86,31 +65,25 @@ function HomeContent({ lang }: Props) {
         onPrimaryCtaClick={handleReserve}
       />
 
-      {/* Booking Widget - uses useSearchParams, needs Suspense for static export */}
+      {/* Booking Widget */}
       <Section padding="narrow">
-        <Suspense fallback={null}>
-          <BookingWidget lang={lang} />
-        </Suspense>
+        <BookingWidget lang={lang} />
       </Section>
 
       {/* Intro */}
       <Section padding="default">
-        <Suspense fallback={null}>
-          <IntroTextBox lang={lang} />
-        </Suspense>
+        <IntroTextBox lang={lang} />
       </Section>
 
       {/* Why Stay */}
       <WhyStaySection lang={lang} />
 
       {/* Rooms Carousel */}
-      <Suspense fallback={null}>
-        <CarouselSlides
-          roomsData={roomsForCarousel}
-          openModalForRate={handleOpenModalForRate}
-          lang={lang}
-        />
-      </Suspense>
+      <CarouselSlides
+        roomsData={roomsForCarousel}
+        openModalForRate={handleOpenModalForRate}
+        lang={lang}
+      />
 
       {/* Social Proof */}
       <SocialProofSection lang={lang} />

@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Solnedgang på terrassen i Positano",
+    "description": "En enkel solnedgangsplan på Hostel Brikette: når du bør komme for å holde det stressfritt."
+  },
+  "linkLabel": "Solnedgang på terrassen",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Hostelterrassen er enkleste alternativ hvis du vil slippe dyr, lang middag."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Når du bør komme",
+      "body": [
+        "I høysesong: 30–45 minutter før solnedgang."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Solnedgangslys over Positano fra terrassen"
+        }
+      ]
+    }
+  ],
+  "fallback": "Kom litt tidligere, ta en drink og hold resten enkelt."
+}

@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Cose gratuite e a basso costo da fare a Positano",
+    "description": "Passeggiate, punti panoramici, spiagge pubbliche e attività culturali a costo zero o quasi."
+  },
+  "linkLabel": "Cose gratuite e a basso costo da fare a Positano",
+  "intro": [
+    "Positano premia chi si alza presto e ama esplorare: puoi riempire le giornate con viste, bagni e cultura senza spendere piu di pochi euro."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Punti panoramici che valgono la salita",
+      "body": [
+        "Inizia dalla terrazza fuori Chiesa Nuova per i colori dell'alba sulla baia; porta una bottiglia da 500 ml perche non ci sono fontanelle vicino.",
+        "Passeggia su Via Cristoforo Colombo e sui balconi di Viale Pasitea all'ora d'oro per angoli da cartolina senza prenotare un tavolo."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Tempo in spiaggia gratuito",
+      "body": [
+        "A Spiaggia Grande c'e una fascia libera sulla destra: porta un asciugamano leggero e posizionati vicino alla riva per evitare i lidi.",
+        "Segui il sentiero costiero verso Fornillo per una cala piu tranquilla; la camminata dura circa 12 minuti con poche scale e la parte libera resta gratuita."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Percorsi a piedi fai-da-te",
+      "body": [
+        "Esplora i vicoli stretti del quartiere Liparlati, infilati nelle piccole corti e nelle scalinate rivestite di ceramica tra Via dei Mulini e Via Pasitea.",
+        "Prendi la navetta gratuita fino alla fermata di Montepertuso e scendi per le antiche scale in pietra verso Positano in circa 25-35 minuti, fermandoti al belvedere dell'arco naturale."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Cultura senza biglietto",
+      "body": [
+        "Entra nella chiesa di Santa Maria Assunta per vedere l'icona bizantina e la cupola in maiolica; basta coprire le spalle.",
+        "Controlla la bacheca comunale vicino a Piazza dei Mulini per concerti serali o cinema in spiaggia durante l'estate."
+      ]
+    }
+  ],
+  "tips": [
+    "Porta una borraccia riutilizzabile e riempila alla fontana pubblica vicino a Chiesa Nuova prima di andare ai belvedere.",
+    "Metti crema solare reef-safe e un pareo: valgono come tappetino e copertura leggera in chiesa."
+  ],
+  "faqs": [
+    {
+      "q": "Ci sono docce gratuite in spiaggia?",
+      "a": [
+        "Si: Spiaggia Grande ha docce fredde vicino alla zona libera. Porta infradito perche il pavimento si scalda a meta giornata."
+      ]
+    },
+    {
+      "q": "Servono biglietti per il Sentiero degli Dei?",
+      "a": [
+        "Il sentiero e gratuito tutto l'anno. Metti a budget 2,40 EUR per il bus SITA verso Nocelle e ritorno se non vuoi farlo a piedi."
+      ]
+    }
+  ]
+}

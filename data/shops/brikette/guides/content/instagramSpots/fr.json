@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Spots Instagram à Positano (sans la foule)",
+    "description": "Lieux photo emblématiques, horaires conseillés et astuces pour éviter la cohue."
+  },
+  "linkLabel": "Spots Instagram à Positano (sans la foule)",
+  "intro": [
+    "Assurez vos clichés emblématiques de Positano en maîtrisant la lumière, les angles et l'étiquette, sans gêner habitants ni voyageurs."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Vues cartes postales",
+      "body": [
+        "Photographiez depuis les marches de l'église Santa Maria Assunta juste après le lever du soleil ; la plage est vide et le dôme prend une teinte dorée.",
+        "Avancez jusqu'à la jetée des ferries pour une vue grand angle vers la falaise — arrivez avant 09 h 00, avant les files des excursions."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Angles méconnus",
+      "body": [
+        "Montez jusqu'au belvédère de Via Trara Genoino au-dessus de Fornillo pour cadrer bateaux de pêche et maisons pastel.",
+        "Prenez le bus local jusqu'à Nocelle puis capturez la côte depuis la terrasse du Sentier des Dieux ; le panorama est imbattable par matin clair."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Couchers de soleil",
+      "body": [
+        "Installez-vous sur les bancs de Via Cristoforo Colombo 45 minutes avant le coucher du soleil ; en été, l'astre disparaît derrière les îles Li Galli.",
+        "Rejoignez la plage de Laurito pour des silhouettes de la skyline de Positano — les escaliers sont raides, prenez des chaussures adhérentes et une lampe frontale pour remonter."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Étiquette photo",
+      "body": [
+        "Gardez les trépieds compacts et dégagez l'escalier dès que vous avez votre prise pour laisser passer.",
+        "Évitez les drones dans les limites de la ville : la réglementation italienne exige des permis et les amendes sont lourdes en cas de vol non autorisé."
+      ]
+    }
+  ],
+  "tips": [
+    "Glissez un chiffon microfibre pour essuyer embruns et traces de crème solaire sur les objectifs.",
+    "Enregistrez vos angles préférés hors ligne dans Google Maps ; le réseau peut faiblir sur les terrasses et sentiers."
+  ],
+  "faqs": [
+    {
+      "q": "Le matin ou le soir pour les photos ?",
+      "a": [
+        "Le lever du soleil offre des rues désertes et une lumière douce sur Spiaggia Grande ; le coucher illumine la falaise à l'ouest mais attire plus de monde."
+      ]
+    },
+    {
+      "q": "Puis-je poser sur les terrasses d'hôtel si je ne suis pas client ?",
+      "a": [
+        "Non, ce sont des espaces privés. Réservez une table au restaurant pour profiter de la vue et demandez l'autorisation avant d'installer votre matériel."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Positano est photogénique sous tous les angles — mais les spots les plus prisés restent occupés une grande partie de la journée. Voici comment capturer les vues classiques sans attente, plus quelques alternatives étonnantes.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Les classiques (timing crucial)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Alternatives méconnues"
+      },
+      {
+        "href": "#sunset",
+        "label": "Options coucher de soleil"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Étiquette & conseils"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "classics": {
+      "heading": "Les classiques (timing crucial)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Arrivez à l'aube pour un quai désert et une mer calme ; évitez les files de fin de matinée."
+        },
+        {
+          "title": "Sentier de Fornillo",
+          "description": "Balade côtière facile avec vue en strates sur la falaise ; idéal tôt ou juste après le coucher du soleil."
+        },
+        {
+          "title": "Virages de Via Pasitea",
+          "description": "Courbes en surplomb qui offrent l'angle carte postale sans foule. Respectez la circulation et restez hors de la chaussée."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Alternatives méconnues",
+      "items": [
+        {
+          "title": "Terrasses de Chiesa Nuova",
+          "description": "Lumière dorée sur Fornillo ; peu de monde et courte marche depuis l'auberge."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Crêtes panoramiques ; lumière idéale tôt le matin."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Sélection de spots pour varier les compositions."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Options coucher de soleil",
+      "paragraphs": [
+        "Pour une heure dorée sans foule, privilégiez les belvédères de la haute Via Pasitea ou les terrasses proches de Chiesa Nuova.",
+        "Si vous préférez les silhouettes de plage, arrivez 30 à 45 minutes avant le coucher à Fornillo."
+      ]
+    },
+    "etiquette": {
+      "heading": "Étiquette & conseils",
+      "items": [
+        "Ne bloquez pas les escaliers ou la route : prenez la photo puis écartez-vous.",
+        "Respectez les propriétés privées et ne grimpez ni murs ni toits.",
+        "Utilisez un petit trépied hors des heures de pointe ; évitez les sentiers très fréquentés à midi."
+      ]
+    },
+    "faqs": {
+      "heading": "FAQ",
+      "items": [
+        {
+          "summary": "Quel est le meilleur moment pour shooter ?",
+          "body": "Lever de soleil pour des scènes vides ; heure dorée pour des tons chauds et des ombres douces."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Faut-il un permis de drone ?",
+      "body": "L'Italie impose des règles strictes et de nombreuses zones d'interdiction. Consultez toujours les conseils de l'ENAC et la réglementation locale ; ne volez pas près de la foule."
+    },
+    "galleryAlt": [
+      "Positano vu d'en haut",
+      "Panorama côtier"
+    ],
+    "galleryFallbackAlt": "Vue pittoresque du littoral de Positano"
+  }
+}

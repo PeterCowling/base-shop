@@ -1,12 +1,13 @@
+/* eslint-disable ds/enforce-layout-primitives -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/WhyStaySection.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Compass, Sparkles, Users } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 
 import { Inline, Stack } from "@/components/ui/flex";
 import type { AppLanguage } from "@/i18n.config";
+import { Compass, Sparkles, Users } from "@/icons";
 
 type HighlightItem = {
   title: string;

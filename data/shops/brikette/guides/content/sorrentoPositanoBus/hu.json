@@ -1,0 +1,64 @@
+{
+  "seo": {
+    "title": "Szorrentóból Positanóba busszal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató Szorrentóból a Hostel Brikette-ig SITA busszal Positano (Chiesa Nuova) megállóig: jegyek, menetrendi tippek és hogyan juthatsz el a hostelhez a megállótól."
+  },
+  "intro": {
+    "title": "Szorrentóból Positanóba — SITA busz",
+    "body": "Használd ezt az útmutatót, amikor Szorrentóból Positanóba utazol. A SITA Sud busszal mész, és a Positano (Chiesa Nuova) megállónál szállsz le, ami a legközelebb van a hostelhez. Bemutatjuk a jegyek alapjait, a menetrend olvasását és azt, hogyan juthatsz el a hostelhez a megállótól."
+  },
+  "callouts": {
+    "tip": "Szeretnéd látni az összes közlekedési lehetőséget? %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintés% kompokért, taxiinfókért és alternatívákért."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Utazás áttekintése",
+      "body": "Főszezonban számolj 1–1,5 órával. Szorrento és Positano között gyakran indulnak buszok. Vásárold meg a jegyet beszállás előtt, és tartsd készen az érvényesítéshez."
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és érvényesítés",
+      "body": "Ezt az útvonalat a SITA (SITA Sud) üzemelteti. Jegyet újságosnál vagy tabacchiban vásárolj. Beszálláskor mutasd meg a jegyet a sofőrnek; őrizd meg az út végéig. Ahol szükséges, érvényesítsd használat előtt."
+    },
+    {
+      "id": "timetable",
+      "title": "A menetrend olvasása",
+      "list": [
+        "Az első oszlop sorai az útvonal összes buszmegállóját sorolják fel.",
+        "Az oszlopok betűkkel jelölt menetrendi járatokat jelentenek.",
+        "Hétfőtől szombatig utazol? Használd az \\\\\"F\\\\\" és \\\\\"G\\\\\" oszlopokat.",
+        "Vasárnap vagy ünnepnapon utazol? Használd a \\\\\"G\\\\\" és \\\\\"H\\\\\" oszlopokat."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Positanóba (Chiesa Nuova)",
+      "list": [
+        "Positanóban két SITA megálló szerepel a listán: \\\\\"Sponda\\\\\" és \\\\\"Chiesa Nuova\\\\\".",
+        "A hostelhez a \\\\\"Positano (Chiesa Nuova)\\\\\" a megfelelő megálló a Via G. Marconin.",
+        "A megálló a \\\\\"Bar Internazionale\\\\\" kávézó/bár előtt található."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a Hostel Brikette-hez",
+      "list": [
+        "Sétálj valamivel több mint 100 métert (330 lábat) a Via G. Marconin.",
+        "Jobbra keresd a második emeleti terasz felett látható táblánkat.",
+        "Fordulj jobbra a lépcsőn felfelé, így jutsz el a hostel főbejáratához."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31",
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**Sorok olvasása:** Az első oszlop sorai különböző buszmegállókat képviselnek az útvonal mentén.",
+        "**Oszlopok olvasása:** A menetrend minden tervezett utazáshoz egy alfabetikus betűt rendel, amelyek fejlécként szerepelnek minden oszlopban. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, keresse a 'G' és 'H' oszlopokat.",
+        "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési buszmegállókat, majd ellenőrizze az oszlopokat, hogy lássa, mikor vannak buszok és mikor érkeznek meg a célállomására. Például a Sorrentóból való indulási idő megtekintéséhez nézze meg a Sorrento sort. A Positanóba (Chiesa Nuova / Bar Internazionale) való érkezési idő megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Trampen an der Amalfiküste (geht das?)",
+    "description": "Warum Busse auf den engen Küstenstraßen die sicherere Wahl sind."
+  },
+  "linkLabel": "Trampen an der Amalfiküste",
+  "intro": [
+    "Trampen an der Amalfiküste klingt romantisch, ist aber wegen enger Straßen und begrenzter Haltebuchten riskant.",
+    "Diese Hinweise zeigen sichere Alternativen und Notfallpläne, falls Busse ausfallen."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Sicherheitslage",
+      "body": [
+        "Die Küstenstraße SS163 hat schmale Spuren, wenige Ausweichbuchten und eingeschränkte Sicht – Fahrer halten ungern oder dürfen es nicht.",
+        "Polizei ahndet unerlaubtes Anhalten; Busse und Lieferverkehr müssen freie Fahrbahn haben."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Bessere Alternativen",
+      "body": [
+        "Nutze SITA-Busse oder Direktshuttles – Fahrpläne über die UnicoCampania-App oder Aushänge an den Haltestellen.",
+        "Für späte Abendfahrten reserviere einen Transfer (z. B. Positano Shuttle) oder teile ein Taxi mit Hostelgästen.",
+        "Fähren sind bei ruhiger See die schnellste Alternative zwischen Positano, Amalfi und Sorrent."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Wenn du feststeckst",
+      "body": [
+        "Kontaktiere dein Hostel oder Hotel – viele vermitteln Transfers oder kennen Fahrer, die noch frei sind.",
+        "Frage lokale Bars oder Lidos nach Sammel-Taxis; oft teilen Reisende Kosten für die Rückfahrt nach Sorrent oder Salerno."
+      ]
+    }
+  ],
+  "tips": [
+    "Lade Fahrpläne offline (PDF oder Screenshot) – Mobilfunk bricht in Tunneln weg.",
+    "Trage reflektierende Kleidung oder Stirnlampe, falls du nach Sonnenuntergang unterwegs bist – auch beim Warten an Haltestellen."
+  ],
+  "warnings": [
+    "Nie auf unbeleuchteten Kurven oder unmittelbar vor Ausfahrten stehen – Unfallgefahr und Bußgelder."
+  ],
+  "faqs": [
+    {
+      "q": "Darf ich offiziell per Anhalter fahren?",
+      "a": [
+        "Es ist nicht verboten, aber mangels Haltebuchten kaum praktikabel; Polizei kann dich zum Weitergehen oder Busfahren auffordern."
+      ]
+    },
+    {
+      "q": "Gibt es Mitfahr-Apps?",
+      "a": [
+        "In der Region kaum verbreitet; setze eher auf offizielle Transfers oder organisierte Fahrgemeinschaften via Unterkunft."
+      ]
+    }
+  ]
+}

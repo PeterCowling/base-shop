@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Fotoguide till Positano: bästa platserna",
+    "description": "Fotoplatser, ljus och etikett för att fånga Positano på bästa sätt."
+  },
+  "linkLabel": "Fotoguide till Positano: bästa platserna",
+  "intro": [
+    "Fånga Positano som ett proffs: ikoniska vinklar, ljusplanering och hänsynsfull fotovett."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Klassiska vinklar",
+      "body": [
+        "Fotografera från färjebryggan för hela klippfasaden – använd vidvinkel för att få med kupolen på Santa Maria Assunta.",
+        "Vandra Via Cristoforo Colombo för lager på lager av balkonger och bougainvillea med havet som bakgrund."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Ljus och timing",
+      "body": [
+        "Soluppgången (kring kl. 06.00 på sommaren) ger varmt ljus på klippan – kom tidigt för att slippa båtar i bilden.",
+        "Blå timmen efter solnedgången ger mjukt sken från byn; ta med ministativ eller klämma för längre exponeringar."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett och backup",
+      "body": [
+        "Visa respekt för privata terrasser och blockera inte trappor – kliv åt sidan direkt efter du tagit bilden.",
+        "Säkerhetskopiera varje kväll i molnet eller på extern hårddisk; fuktig luft immar snabbt igen objektiv, så packa silikagelpåsar."
+      ]
+    }
+  ],
+  "tips": [
+    "Ta med polarisationsfilter för att minska reflexer mitt på dagen.",
+    "Ha en mikrofiberduk redo – havsspray och fukt lägger sig snabbt på linser."
+  ],
+  "faqs": [
+    {
+      "q": "Får jag flyga drönare för flygbilder?",
+      "a": [
+        "Drönare är reglerade; ansök om tillstånd i god tid och respektera flygförbud nära byn och ögruppen Li Galli."
+      ]
+    },
+    {
+      "q": "Var kan jag skriva ut bilder?",
+      "a": [
+        "Fotobutiker i Sorrento och Amalfi erbjuder utskrifter samma dag – ta med materialet på USB-minne eller SD-kort."
+      ]
+    }
+  ]
+}

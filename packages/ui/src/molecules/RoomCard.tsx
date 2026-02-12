@@ -17,8 +17,8 @@ import type {
 
 export const ROOM_CARD_ACTION_BUTTON_CLASS = clsx(
   "inline-flex",
-  "min-h-10",
-  "min-w-10",
+  "min-h-11",
+  "min-w-11",
   "items-center",
   "justify-center",
   "rounded-lg",
@@ -28,10 +28,13 @@ export const ROOM_CARD_ACTION_BUTTON_CLASS = clsx(
   "text-sm",
   "font-medium",
   "text-brand-text",
+  "dark:text-brand-bg",
   "transition-opacity",
   "duration-200",
   "hover:bg-brand-primary/90",
   "hover:text-brand-bg",
+  "dark:hover:bg-brand-secondary/90",
+  "dark:hover:text-brand-bg",
   "focus-visible:outline-2",
   "focus-visible:outline-brand-primary",
   "disabled:cursor-not-allowed",
@@ -247,7 +250,7 @@ function RoomCardComponent({
       lang={lang}
       className={clsx(
         /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-        "group flex flex-col overflow-hidden rounded-lg border border-brand-surface bg-brand-bg shadow-sm transition-shadow duration-300 hover:shadow-lg dark:border-brand-surface/20 dark:bg-brand-text",
+        "group flex flex-col overflow-hidden rounded-lg border border-brand-surface bg-brand-bg shadow-sm transition-shadow duration-300 hover:shadow-lg dark:border-brand-surface/20 dark:bg-brand-surface",
         className
       )}
     >
@@ -269,7 +272,7 @@ function RoomCardComponent({
       )}
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-semibold uppercase tracking-wide text-brand-terra">{title}</h3>
+        <h3 className="mb-1 text-lg font-semibold uppercase tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
 
         <PriceBlock price={price} />
 

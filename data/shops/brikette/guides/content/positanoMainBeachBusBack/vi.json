@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Xe buýt quay lại Hostel Brikette từ bãi biển chính của Positano",
+    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+  },
+  "linkLabel": "Xe buýt quay lại Hostel Brikette từ Spiaggia Grande",
+  "intro": [
+    "Bỏ qua hơn 600 bậc thang sau một ngày đi biển bằng cách đi xe buýt Interno Positano màu cam trở lại Hostel Brikette.",
+    "Vé có giá trị theo một trong hai hướng, vì vậy bạn có thể mua chúng tại tabacchi trước khi đi đến bãi biển hoặc mua chúng trên đường trở về nếu cổ phiếu cho phép."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Đi bộ đến Piazza dei Mulini",
+      "body": [
+        "Rời khỏi Spiaggia Grande qua cổng vòm bên cạnh cảng và đi theo làn đường mua sắm đến quảng trường Piazza dei Mulini.",
+        "Trạm xe buýt nội bộ nằm bên cạnh hiệu thuốc và cùng một tabacchi/quầy bán báo được sử dụng cho vé."
+      ]
+    },
+    {
+      "id": "wait-for-the-bus",
+      "title": "Chờ ở Piazza dei Mulini",
+      "body": [
+        "Kiểm tra thời gian biểu được đăng tại nơi trú ẩn hoặc thông qua nhân viên trợ giúp kỹ thuật số; dịch vụ được thực hiện muộn vào ban đêm và vào mùa đông.",
+        "Đứng bên cạnh hiệu thuốc và tabacchi để bạn có thể lên xe ngay khi xe buýt Interno Positano màu cam đến."
+      ]
+    },
+    {
+      "id": "ride-uphill",
+      "title": "Đi xe buýt nội bộ lên dốc",
+      "body": [
+        "Lên chiếc xe màu cam được đánh dấu \\\\\"Interno Positano\\\\\" và đi vòng qua thị trấn về phía Chiesa Nuova.",
+        "Lắng nghe cuộc gọi dừng hoặc theo dõi góc tabacchi nơi bạn lên máy bay trước đó trong ngày."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Các bước cuối cùng để đến khách sạn giá rẻ",
+      "body": [
+        "Xuống xe tại điểm dừng tabacchi, rẽ trái vào Viale Pasitea và đi bộ lên dốc khoảng 100 mét (330 feet).",
+        "Đi cầu thang bên phải để trở về thẳng lối vào chính của Hostel Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Lời khuyên về xe buýt",
+  "tips": [
+    "Mang theo vé dự phòng để bạn có thể lên xe ngay lập tức nếu xe buýt đông đúc.",
+    "Nếu các dịch vụ kết thúc sớm, hãy quay lại %LINK:positanoMainBeachWalkBack|tuyến đường đi bộ% - nó đi theo các điểm kiểm tra cầu thang của khách sạn giá rẻ.",
+    "Cho nhân viên lễ tân biết nếu bạn phát hiện có thay đổi về thời gian biểu để nhân viên hỗ trợ kỹ thuật số luôn cập nhật cho các khách khác."
+  ],
+  "extras": {
+    "photos": {
+      "title": "Photos",
+      "items": {
+        "busInterior": {
+          "alt": "Xe buýt Interno Positano ở trạm dừng bên bờ biển",
+          "caption": "Xe buýt Interno Positano - các phương tiện khác nhau nhưng nhãn tuyến đường vẫn giữ nguyên."
+        },
+        "barInternazionaleStop": {
+          "alt": "Trạm xe buýt Chiesa Nuova / Bar Internazionale",
+          "caption": "Chiesa Nuova (Bar Internazionale) - điểm dừng gần nhất với Hostel Brikette."
+        }
+      }
+    }
+  }
+}

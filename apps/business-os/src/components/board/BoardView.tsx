@@ -20,12 +20,16 @@ import { useKeyboardNavigation } from "@/hooks/useKeyboardNavigation";
 import { useRovingTabindex } from "@/hooks/useRovingTabindex";
 import { calculateCardCountsByLane } from "@/lib/board-card-counts";
 import type { User } from "@/lib/current-user";
-import type { Business, Card, Idea, Lane } from "@/lib/types";
+import type { Business, Card, Lane } from "@/lib/types";
 
 import { UserSwitcher } from "../user/UserSwitcher";
 
 import { BoardLane } from "./BoardLane";
-import { type BoardView as BoardViewType,BoardViewSwitcher, getLanesForView } from "./BoardViewSwitcher";
+import {
+  type BoardView as BoardViewType,
+  BoardViewSwitcher,
+  getLanesForView,
+} from "./BoardViewSwitcher";
 import { FilterChips, type FilterType } from "./FilterChips";
 import { MobileLanePicker } from "./MobileLanePicker";
 import { SearchBar } from "./SearchBar";
@@ -35,7 +39,6 @@ interface BoardViewProps {
   businessCode: string;
   businesses: Business[];
   cardsByLane: Record<Lane, Card[]>;
-  inboxIdeas: Idea[];
   currentUser: User;
 }
 
@@ -43,7 +46,6 @@ export function BoardView({
   businessCode,
   businesses,
   cardsByLane,
-  inboxIdeas,
   currentUser,
 }: BoardViewProps) {
   const t = useTranslations();
@@ -80,9 +82,8 @@ export function BoardView({
   }, [viewport, activeMobileLane, currentView]);
 
   // Apply search and filter logic
-  const { filteredCardsByLane, filteredIdeas } = useBoardFilters({
+  const { filteredCardsByLane } = useBoardFilters({
     cardsByLane,
-    inboxIdeas,
     visibleLanes,
     searchQuery,
     activeFilters,
@@ -91,8 +92,8 @@ export function BoardView({
 
   // Calculate card counts for mobile picker
   const cardCountByLane = useMemo(
-    () => calculateCardCountsByLane(allLanes, cardsByLane, inboxIdeas),
-    [cardsByLane, inboxIdeas, allLanes]
+    () => calculateCardCountsByLane(allLanes, cardsByLane),
+    [cardsByLane, allLanes]
   );
 
   // Build grid for keyboard navigation (BOS-P2-05)
@@ -116,7 +117,7 @@ export function BoardView({
   // Set up keyboard event listeners (BOS-P2-05)
   useKeyboardNavigation({ handleArrowKey, isFocusMode, exitFocusMode });
 
-  // Auto-refresh board when cards/ideas change (BOS-D1-07)
+  // Auto-refresh board when cards change (BOS-D1-07)
   useBoardAutoRefresh({
     businessCode,
     enabled: true,
@@ -168,6 +169,12 @@ export function BoardView({
               className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90"
             >
               {t("businessOs.board.actions.newIdea")}
+            </Link>
+            <Link
+              href="/ideas"
+              className="px-4 py-2 text-sm font-medium text-foreground bg-surface-2 border border-border-2 rounded-md hover:bg-surface-3"
+            >
+              {t("businessOs.board.actions.ideas")}
             </Link>
             <Link
               href="/"
@@ -230,15 +237,12 @@ export function BoardView({
       <div className="flex gap-4 p-6 overflow-x-auto md:flex-row max-md:flex-col max-md:overflow-y-auto max-md:px-4 max-md:pb-20 transition-opacity duration-200 ease-in-out">
         {visibleLanes.map((lane) => {
           const cards = filteredCardsByLane[lane] || [];
-          // For Inbox lane, show ideas too
-          const ideas = lane === "Inbox" ? filteredIdeas : [];
 
           return (
             <BoardLane
               key={lane}
               lane={lane}
               cards={cards}
-              ideas={ideas}
               showBusinessTag={isGlobal}
               keyboardNav={{
                 getTabIndex,

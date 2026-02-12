@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Busz vissza a Hostel Brikette-be Positano fő strandjáról",
+    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+  },
+  "linkLabel": "Busz vissza Spiaggia Grandéból a Hostel Brikette-be",
+  "intro": [
+    "Egy tengerparti nap után ugorja át a több mint 600 lépcsőt a narancssárga Interno Positano busszal vissza a Hostel Brikette-be.",
+    "A jegyek mindkét irányban érvényesek, így megvásárolhatja őket a tabacchiban, mielőtt elindulna a strandra, vagy megvásárolhatja őket visszafelé, ha a készlet lehetővé teszi."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Séta a Piazza dei Mulini térre",
+      "body": [
+        "Hagyja a Spiaggia Grande-t a kikötő melletti boltíven keresztül, és kövesse a bevásárlóutcát a Piazza dei Mulini-ig.",
+        "Az interno buszmegálló a gyógyszertár és a jegyekhez használt tabacchi/újságárus mellett található."
+      ]
+    },
+    {
+      "id": "wait-for-the-bus",
+      "title": "Várjon a Piazza dei Mulinin",
+      "body": [
+        "Ellenőrizze a menhelyen vagy a digitális portán keresztül közzétett menetrendet; a szolgáltatás késő este és vállszezonban ritkul.",
+        "Álljon a gyógyszertár és a tabacchi mellé, hogy felszállhasson, amint megérkezik a narancssárga Interno Positano busz."
+      ]
+    },
+    {
+      "id": "ride-uphill",
+      "title": "Utazz az interno busszal felfelé",
+      "body": [
+        "Szálljon fel az \\\\\"Interno Positano\\\\\" jelzésű narancssárga buszra, és lovagoljon át a városon a Chiesa Nuova felé.",
+        "Figyelje a stop hívást, vagy figyelje a tabacchi sarkot, ahová a nap folyamán korábban beszállt."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Utolsó lépések a szállóhoz",
+      "body": [
+        "Szálljon le a tabacchi megállónál, forduljon balra a Viale Pasitea-ra, és sétáljon körülbelül 100 métert (330 láb) felfelé.",
+        "Menjen a jobb oldali lépcsőn, és térjen vissza közvetlenül a Hostel Brikette főbejáratához."
+      ]
+    }
+  ],
+  "tipsTitle": "Busz tippek",
+  "tips": [
+    "Tartson magánál pótjegyet, hogy azonnal felszállhasson, ha a busz foglalt.",
+    "Ha a szolgáltatások korán befejeződnek, térjen vissza a %LINK:positanoMainBeachWalkBack|gyalogút% -hoz — ez követi a szálló lépcsőházi ellenőrzőpontjait.",
+    "Tájékoztasd a recepciót, ha menetrend-módosításokat észlelsz, hogy a digitális portás naprakész maradjon a többi vendég számára."
+  ],
+  "extras": {
+    "photos": {
+      "title": "Photos",
+      "items": {
+        "busInterior": {
+          "alt": "Interno Positano busz a tengerparti megállónál",
+          "caption": "Interno Positano busz – a járművek változatosak, de az útvonal címke változatlan marad."
+        },
+        "barInternazionaleStop": {
+          "alt": "Chiesa Nuova / Bar Internazionale buszmegálló",
+          "caption": "Chiesa Nuova (Bar Internazionale) — a legközelebbi megálló a Hostel Brikette helyhez."
+        }
+      }
+    }
+  }
+}

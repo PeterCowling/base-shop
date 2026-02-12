@@ -28,148 +28,28 @@ jobs:
 
       - name: Detect required workflows
         id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            github_config:
-              - ".github/workflows/**"
-              - ".github/actions/**"
-              - ".github/dependabot.yml"
-              - ".github/CODEOWNERS"
-
-            # Core Platform CI is skipped when changes are ONLY in apps/cms/** or apps/skylar/**,
-            # or those specific workflow files (see `.github/workflows/ci.yml` paths-ignore).
-            core:
-              - "**/*"
-              - "!apps/cms/**"
-              - "!apps/skylar/**"
-              - "!.github/workflows/cms.yml"
-              - "!.github/workflows/skylar.yml"
-
-            cms_deploy:
-              - "apps/cms/**"
-              - "packages/config/**"
-              - "packages/configurator/**"
-              - "packages/date-utils/**"
-              - "packages/email/**"
-              - "packages/email-templates/**"
-              - "packages/i18n/**"
-              - "packages/next-config/**"
-              - "packages/plugins/sanity/**"
-              - "packages/shared-utils/**"
-              - "packages/theme/**"
-              - "packages/telemetry/**"
-              - "packages/zod-utils/**"
-              - "packages/themes/**"
-              - "packages/ui/**"
-              - "packages/platform-core/**"
-              - "packages/lib/**"
-              - "packages/types/**"
-              - "packages/tailwind-config/**"
-              - "packages/design-tokens/**"
-              - ".github/workflows/cms.yml"
-
-            cms_e2e:
-              - "apps/cms/**"
-              - "packages/config/**"
-              - "packages/configurator/**"
-              - "packages/date-utils/**"
-              - "packages/email/**"
-              - "packages/email-templates/**"
-              - "packages/i18n/**"
-              - "packages/next-config/**"
-              - "packages/plugins/sanity/**"
-              - "packages/shared-utils/**"
-              - "packages/theme/**"
-              - "packages/telemetry/**"
-              - "packages/zod-utils/**"
-              - "packages/themes/**"
-              - "packages/ui/**"
-              - "packages/platform-core/**"
-              - "packages/lib/**"
-              - "packages/types/**"
-              - "packages/tailwind-config/**"
-              - "packages/design-tokens/**"
-              - ".github/workflows/cypress.yml"
-
-            skylar:
-              - "apps/skylar/**"
-              - "packages/config/**"
-              - "packages/i18n/**"
-              - "packages/next-config/**"
-              - "packages/tailwind-config/**"
-              - "packages/ui/**"
-              - "packages/platform-core/**"
-              - "packages/shared-utils/**"
-              - "packages/themes/**"
-              - "packages/design-tokens/**"
-              - ".github/workflows/skylar.yml"
-
-            brikette:
-              - "apps/brikette/**"
-              - "packages/design-system/**"
-              - "packages/design-tokens/**"
-              - "packages/guides-core/**"
-              - "packages/next-config/**"
-              - "packages/platform-core/**"
-              - "packages/telemetry/**"
-              - "packages/ui/**"
-              - ".github/workflows/brikette.yml"
-              - ".github/workflows/reusable-app.yml"
-
-            prime:
-              - "apps/prime/**"
-              - "packages/design-system/**"
-              - "packages/design-tokens/**"
-              - "packages/next-config/**"
-              - "packages/tailwind-config/**"
-              - "packages/themes/**"
-              - "packages/ui/**"
-              - ".github/workflows/prime.yml"
-
-            product_pipeline:
-              - "apps/product-pipeline/**"
-              - "packages/next-config/**"
-              - "packages/tailwind-config/**"
-              - "packages/design-tokens/**"
-              - "packages/themes/**"
-              - "packages/pipeline-engine/**"
-              - "packages/ui/**"
-              - ".github/workflows/product-pipeline.yml"
-
-            storybook:
-              - "apps/storybook/**"
-              - "apps/cms/**"
-              - "apps/cover-me-pretty/**"
-              - "packages/ui/**"
-              - "packages/design-tokens/**"
-              - "packages/tailwind-config/**"
-              - "packages/themes/**"
-              - "packages/theme/**"
-              - "packages/i18n/**"
-              - "packages/shared-utils/**"
-              - "packages/config/**"
-              - "packages/types/**"
-              - "docs/storybook.md"
-              - ".github/workflows/storybook.yml"
-
-            consent_analytics:
-              - "apps/cover-me-pretty/src/app/api/analytics/**"
-              - "apps/cover-me-pretty/src/app/api/leads/**"
-              - "packages/platform-core/src/analytics/**"
-              - "packages/platform-core/src/contexts/CartContext.tsx"
-              - ".github/workflows/consent-analytics.yml"
-
-            lhci:
-              - "apps/cover-me-pretty/**"
-              - "apps/skylar/**"
-              - ".lighthouseci/**"
-              - "lighthouserc*.json"
-              - ".github/workflows/ci-lighthouse.yml"
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only "origin/${{ github.base_ref }}...HEAD" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            git diff --name-only "${{ github.event.before }}..${{ github.sha }}" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          else
+            # workflow_dispatch: treat as all-changed (run everything)
+            echo "**/*" > /tmp/changed-files.txt
+          fi
+          node scripts/ci/path-classifier.cjs --config merge_gate --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
 
       - name: Lint GitHub Actions workflows
-        if: ${{ steps.filter.outputs.github_config == 'true' }}
-        uses: rhysd/actionlint@v1.7.1
+        if: >-
+          ${{
+            steps.filter.outputs.github_config == 'true' &&
+            (
+              github.event_name != 'pull_request' ||
+              github.base_ref != 'main' ||
+              !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:')
+            )
+          }}
+        uses: rhysd/actionlint@v1.7.10
 
       - name: Wait for required workflows
         if: ${{ github.event_name != 'push' }}
@@ -208,27 +88,78 @@ jobs:
             };
 
             const requiredWorkflows = [];
-            if (need.core) requiredWorkflows.push({ id: "ci.yml", name: "Core Platform CI" });
-            if (need.cms_e2e) requiredWorkflows.push({ id: "cypress.yml", name: "CMS E2E & Component Tests" });
-            if (need.cms_deploy) requiredWorkflows.push({ id: "cms.yml", name: "Deploy CMS" });
-            if (need.skylar) requiredWorkflows.push({ id: "skylar.yml", name: "Deploy Skylar" });
-            if (need.brikette) requiredWorkflows.push({ id: "brikette.yml", name: "Deploy Brikette" });
-            if (need.prime) requiredWorkflows.push({ id: "prime.yml", name: "Deploy Prime" });
-            if (need.product_pipeline) requiredWorkflows.push({ id: "product-pipeline.yml", name: "Deploy Product Pipeline" });
-            if (need.storybook) requiredWorkflows.push({ id: "storybook.yml", name: "Storybook CI" });
-            if (need.consent_analytics) requiredWorkflows.push({ id: "consent-analytics.yml", name: "Consent & Analytics Checks" });
+            const labels = context.eventName === "pull_request"
+              ? (context.payload.pull_request.labels || []).map((l) => l.name)
+              : [];
+            const scopedPromotionApps = labels
+              .filter((label) => label.startsWith("promote-app:"))
+              .map((label) => label.slice("promote-app:".length))
+              .filter(Boolean);
+            const isScopedMainPromotion =
+              context.eventName === "pull_request" &&
+              context.payload.pull_request.base?.ref === "main" &&
+              scopedPromotionApps.length > 0;
 
-            // LHCI only runs on PRs when paths changed OR label `run-lhci` is present.
-            // Require it only in those cases.
-            if (context.eventName === "pull_request") {
-              const labels = (context.payload.pull_request.labels || []).map((l) => l.name);
-              const hasRunLabel = labels.includes("run-lhci");
-              if (need.lhci || hasRunLabel) {
-                requiredWorkflows.push({ id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+            if (isScopedMainPromotion) {
+              core.notice(
+                `Scoped promotion detected for app(s): ${scopedPromotionApps.join(", ")}. Merge Gate will require only scoped workflows.`
+              );
+              const scopeWorkflowMap = {
+                brikette: [{ id: "brikette.yml", name: "Deploy Brikette" }],
+                "business-os": [{ id: "business-os-deploy.yml", name: "Deploy Business OS" }],
+                cms: [
+                  { id: "cms.yml", name: "Deploy CMS" },
+                  { id: "cypress.yml", name: "CMS E2E & Component Tests" },
+                ],
+                core: [
+                  { id: "ci.yml", name: "Core Platform CI" },
+                  { id: "storybook.yml", name: "Storybook CI" },
+                  { id: "consent-analytics.yml", name: "Consent & Analytics Checks" },
+                ],
+                prime: [{ id: "prime.yml", name: "Deploy Prime" }],
+                "product-pipeline": [{ id: "product-pipeline.yml", name: "Deploy Product Pipeline" }],
+                reception: [{ id: "reception.yml", name: "Validate Reception" }],
+                skylar: [{ id: "skylar.yml", name: "Deploy Skylar" }],
+                shop: [{ id: "ci.yml", name: "Core Platform CI" }],
+                xa: [{ id: "xa.yml", name: "Deploy XA (Stealth Staging)" }],
+              };
+              const dedup = new Map();
+              for (const scopedApp of scopedPromotionApps) {
+                const workflows = scopeWorkflowMap[scopedApp];
+                if (!workflows) {
+                  core.warning(`Unknown promotion scope label: promote-app:${scopedApp}`);
+                  continue;
+                }
+                for (const workflow of workflows) {
+                  dedup.set(workflow.id, workflow);
+                }
+                if (scopedApp === "brikette" || scopedApp === "shop" || scopedApp === "skylar") {
+                  dedup.set("ci-lighthouse.yml", { id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+                }
               }
-            } else if (context.eventName === "push" && context.ref === "refs/heads/main") {
-              // On main, LHCI always runs (but not necessarily required for merges).
-              // Don't block the gate on it for push runs.
+              requiredWorkflows.push(...dedup.values());
+            } else {
+              if (need.core) requiredWorkflows.push({ id: "ci.yml", name: "Core Platform CI" });
+              if (need.cms_e2e) requiredWorkflows.push({ id: "cypress.yml", name: "CMS E2E & Component Tests" });
+              if (need.cms_deploy) requiredWorkflows.push({ id: "cms.yml", name: "Deploy CMS" });
+              if (need.skylar) requiredWorkflows.push({ id: "skylar.yml", name: "Deploy Skylar" });
+              if (need.brikette) requiredWorkflows.push({ id: "brikette.yml", name: "Deploy Brikette" });
+              if (need.prime) requiredWorkflows.push({ id: "prime.yml", name: "Deploy Prime" });
+              if (need.product_pipeline) requiredWorkflows.push({ id: "product-pipeline.yml", name: "Deploy Product Pipeline" });
+              if (need.storybook) requiredWorkflows.push({ id: "storybook.yml", name: "Storybook CI" });
+              if (need.consent_analytics) requiredWorkflows.push({ id: "consent-analytics.yml", name: "Consent & Analytics Checks" });
+
+              // LHCI only runs on PRs when paths changed OR label `run-lhci` is present.
+              // Require it only in those cases.
+              if (context.eventName === "pull_request") {
+                const hasRunLabel = labels.includes("run-lhci");
+                if (need.lhci || hasRunLabel) {
+                  requiredWorkflows.push({ id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+                }
+              } else if (context.eventName === "push" && context.ref === "refs/heads/main") {
+                // On main, LHCI always runs (but not necessarily required for merges).
+                // Don't block the gate on it for push runs.
+              }
             }
 
             if (requiredWorkflows.length === 0) {

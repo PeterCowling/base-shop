@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Positano ferry dock (port)",
+    "description": "Step-by-step walking route to Positano’s port with map landmarks, ticket tips, and boarding guidance."
+  },
+  "linkLabel": "Hostel Brikette → ferry dock (port)",
+  "intro": [
+    "Heading to Positano’s port for a ferry? This is the easiest walk we’ve found from Hostel Brikette to Spiaggia Grande — with a quick map and photo landmarks for points 1–5.",
+    "Allow 20–30 minutes on foot (more with luggage), and note that Google Maps sometimes suggests longer detours to the beach — follow the route below instead."
+  ],
+  "beforeList": [
+    "Check ferry times and prices at the operator booths at the port (they list the next departure on the sign).",
+    "Leave a buffer if you have luggage — there are stairs on this route and the port gets busy at peak times.",
+    "Aim to arrive early so you can buy tickets, find the right pier, and be ready when boarding starts."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Getting to the port",
+      "body": [
+        "Begin at the hostel and head towards Spiaggia Grande (Positano’s main beach).",
+        "The port is located on the right-hand side of the beach.",
+        "Allow 20–30 minutes for the walk from the hostel to the port.",
+        "Google Maps may not always provide the most direct route to the beach — use the map and step-by-step directions below.",
+        "[See here if you prefer map directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Walk from Hostel Brikette to the port (points 1–5)",
+      "body": [
+        "Map reference (Hostel → Port):",
+        "[[figure:map]]",
+        "Begin by exiting the hostel via the main door.",
+        "Go down the steps to the road.",
+        "Turn left and walk just over 100 metres (330 feet) until you reach point 1 on the map.",
+        "At point 1, take the right-hand turn.",
+        "[[figure:point-1]]",
+        "As soon as you turn right at point 1, you’ll see the tabacchi on the right.",
+        "[[figure:tabacchi]]",
+        "Follow the road downhill.",
+        "At the first switchback bend, you’ll have reached point 2 on the map.",
+        "At point 2, go off the road and walk straight ahead, taking the stairs.",
+        "[[figure:point-2]]",
+        "When you reach the end of the stairs, you’ll have arrived at point 3 on the map.",
+        "Cross the road and take the path straight ahead.",
+        "Follow the stairs down until you reach the next level.",
+        "[[figure:point-3]]",
+        "When you reach the end of the stairs, you’ll arrive at the road.",
+        "Cross over the road and turn left, walking 10 metres (30 feet) until you reach point 4 on the map.",
+        "At point 4, turn right and take the stairs that lead off the road and downhill.",
+        "[[figure:point-4]]",
+        "Follow the stairs down until you reach the bottom. At the bottom of the stairs, turn right.",
+        "This will bring you to point 5 on the map.",
+        "Continue under the archway on the right.",
+        "[[figure:point-5]]",
+        "After 50 metres (160 feet), you’ll reach the port."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Buying ferry tickets",
+      "body": [
+        "At the Positano port you can catch ferries to places like Amalfi, Capri, and beyond. Each ferry operator has a booth, and the sign on the booth displays information about the next ferry they will run.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Boarding a ferry",
+      "body": [
+        "Once you have your ticket, walk to the end of the port and wait for the ferry to commence boarding.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Leave the hostel and turn left along the road until point 1 on the map, then turn right.",
+    "Follow the route down via points 2–5 (stairs and crossings) until you reach the port.",
+    "Buy tickets at the operator booths and check the sign for the next sailing.",
+    "Walk to the end of the port and wait for boarding."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "How long does it take to walk from Hostel Brikette to the port?",
+      "a": [
+        "Plan for 20–30 minutes on foot. Add extra time if you have luggage or want to stop to buy tickets before boarding."
+      ]
+    },
+    {
+      "q": "Where do I buy ferry tickets in Positano?",
+      "a": [
+        "At the port you will see booths for each ferry operator. The sign on the booth shows information about the next ferry they will run."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Follow the map route from the hostel down to the port",
+    "Use photo landmarks at points 1–5 to stay on track",
+    "Buy tickets at the operator booths and confirm the next sailing",
+    "Wait at the pier and board when called"
+  ]
+}

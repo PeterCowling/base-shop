@@ -1,8 +1,13 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] CLI audit reads locale JSON files from the app workspace. */
+/* eslint-disable no-console, complexity, max-depth, security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] CLI audit script intentionally logs and traverses workspace JSON trees. */
 
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import {
+  listJsonFiles,
+  readJson,
+} from "@acme/guides-core";
 
 import { i18nConfig } from "../src/i18n.config";
 
@@ -48,29 +53,6 @@ const outputPath = outputArg ? outputArg.slice("--output=".length) : undefined;
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   Boolean(value) && typeof value === "object" && !Array.isArray(value);
-
-const listJsonFiles = async (rootDir: string, relativeDir = ""): Promise<string[]> => {
-  const entries = await readdir(path.join(rootDir, relativeDir), { withFileTypes: true });
-  const files: string[] = [];
-
-  for (const entry of entries) {
-    const nextRelative = relativeDir ? path.join(relativeDir, entry.name) : entry.name;
-    if (entry.isDirectory()) {
-      files.push(...await listJsonFiles(rootDir, nextRelative));
-      continue;
-    }
-    if (entry.isFile() && entry.name.endsWith(".json")) {
-      files.push(nextRelative);
-    }
-  }
-
-  return files.sort();
-};
-
-const readJson = async (filePath: string): Promise<unknown> => {
-  const raw = await readFile(filePath, "utf8");
-  return JSON.parse(raw) as unknown;
-};
 
 const collectMissingKeys = (
   base: unknown,

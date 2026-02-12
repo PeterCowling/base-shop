@@ -6,9 +6,17 @@
  */
 
 import { useCallback, useMemo } from 'react';
+
 import { getGuestArrivalState, shouldShowPreArrivalDashboard } from '../lib/preArrival';
-import type { ChecklistProgress, GuestArrivalState, PreArrivalData } from '../types/preArrival';
+import type {
+  ArrivalConfidence,
+  ChecklistProgress,
+  EtaMethod,
+  GuestArrivalState,
+  PreArrivalData,
+} from '../types/preArrival';
 import { DEFAULT_PRE_ARRIVAL } from '../types/preArrival';
+
 import { usePreArrivalMutator } from './mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from './pureData/useFetchPreArrivalData';
 
@@ -57,6 +65,11 @@ export interface UsePreArrivalStateReturn {
   setCashReady: (cityTax: boolean, deposit: boolean) => Promise<void>;
   /** Handler to save a route */
   saveRoute: (routeSlug: string | null) => Promise<void>;
+  /** Handler to persist onboarding personalization context */
+  setPersonalization: (
+    method: EtaMethod | null,
+    confidence: ArrivalConfidence | null,
+  ) => Promise<void>;
   /** Refetch pre-arrival data */
   refetch: () => Promise<void>;
 }
@@ -109,6 +122,7 @@ export function usePreArrivalState(
     setCashReadyCityTax,
     setCashReadyDeposit,
     saveRoute: saveRouteMutator,
+    setPersonalization: setPersonalizationMutator,
   } = usePreArrivalMutator();
 
   // Calculate cash amounts
@@ -163,6 +177,16 @@ export function usePreArrivalState(
     [saveRouteMutator],
   );
 
+  const setPersonalization = useCallback(
+    async (
+      method: EtaMethod | null,
+      confidence: ArrivalConfidence | null,
+    ): Promise<void> => {
+      await setPersonalizationMutator(method, confidence);
+    },
+    [setPersonalizationMutator],
+  );
+
   return {
     arrivalState,
     showPreArrivalDashboard,
@@ -173,6 +197,7 @@ export function usePreArrivalState(
     setEta,
     setCashReady,
     saveRoute,
+    setPersonalization,
     refetch,
   };
 }

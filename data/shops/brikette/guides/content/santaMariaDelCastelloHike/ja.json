@@ -1,0 +1,143 @@
+{
+  "lastUpdated": "2026-02-04",
+  "seo": {
+    "title": "Hostel BriketteからSanta Maria del Castelloへのハイキング - ポジターノ",
+    "description": "ポジターノ上部の山村Santa Maria del Castelloへの完全ハイキングガイド。道順、展望台、素晴らしい海岸の眺めを含む。"
+  },
+  "linkLabel": "Santa Maria del Castello：山村ハイキング",
+  "intro": [
+    "Santa Maria del Castelloはポジターノの上670メートル（2,200フィート）に位置し、神々の道と同等かそれ以上の景色を提供します。この山村には手頃な価格でおいしい料理を提供するレストランと、素晴らしいパノラマビューがあります。",
+    "ホステルを出発してわずか15分で素晴らしい景色が現れ、柔軟性を求め、混雑したSITAバスを避けたい人にとって価値あるハイキングです。"
+  ],
+  "sections": [
+    {
+      "id": "scan-to-share",
+      "title": "Scan to share",
+      "body": [
+        "Want to open this guide on another phone or share it with a hiking buddy? Scan the QR code below."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/santa-maria-castello/scan-to-share.png",
+          "alt": "QR code to open and share the Santa Maria del Castello hike guide.",
+          "caption": "Scan to open/share this guide."
+        }
+      ]
+    },
+    {
+      "id": "what-is-santa-maria",
+      "title": "Santa Maria del Castelloとは？",
+      "body": [
+        "目的地はポジターノの上、標高670メートル（2,200フィート）に位置する山村です。村には手頃な価格でおいしい料理を提供するレストランと素晴らしい景色があります。",
+        "専用の展望台からは、アマルフィ海岸、ポジターノ、周囲の山々の素晴らしいパノラマビューが楽しめます。"
+      ]
+    },
+    {
+      "id": "why-do-this-hike",
+      "title": "なぜこのハイキングをするべきか？",
+      "body": [
+        "景色は神々の道と同等かそれ以上で、壮観な海岸のパノラマを提供します。",
+        "ホステルを出発してわずか15分で素晴らしい景色が現れます—報酬を待つ時間は長くありません。",
+        "柔軟性を提供し、混雑したSITAバスを避ける人に好まれます。",
+        "ポジターノ周辺の他の山岳エリアを探索する出発点となります。"
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "重要な考慮事項",
+      "body": [
+        "このハイキングは神々の道よりもかなりきついです。急な上りに備えてください。",
+        "神々の道の体験を主要なハイキング目標としている人には適していない場合があります。",
+        "夏の暑さのため、午前11時から午後4時の間はこのハイキングを避ける必要があります。暖かい月は早朝または午後遅い出発が不可欠です。"
+      ]
+    },
+    {
+      "id": "directions-to-village",
+      "title": "村への道順",
+      "body": [
+        "Hostel BriketteからSanta Maria del Castello村に到達するための段階的な指示に従ってください："
+      ]
+    },
+    {
+      "id": "directions-to-lookout",
+      "title": "展望台への道順",
+      "body": [
+        "道が平らになる交差点に到着したら、以下の指示に従って素晴らしい展望台にアクセスしてください。"
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "name": "Turn right and take the steps",
+      "text": "From the hostel, turn right and take the steps that lead up the side of the building."
+    },
+    {
+      "name": "Continue on the footpath",
+      "text": "At the top of the steps, continue on the footpath."
+    },
+    {
+      "name": "Turn left at the junction",
+      "text": "At the junction, choose the left option to go uphill (not right/downhill)."
+    },
+    {
+      "name": "Turn right up more stairs",
+      "text": "Follow the steps until you reach a point where you can either turn right up more stairs that lead to a road, or continue left on the path. Choose to turn right and go up the stairs."
+    },
+    {
+      "name": "Cross the road to the next stairs",
+      "text": "At the top of the stairs, look across the road for a set of stairs leading alongside some houses. Cross the road and take those stairs."
+    },
+    {
+      "name": "Follow stairs behind the houses",
+      "text": "Follow the stairs behind the houses until they lead you to a mountain trail."
+    },
+    {
+      "name": "Continue on the mountain trail",
+      "text": "Continue on the mountain trail, which will take you to the village."
+    },
+    {
+      "name": "Take the uphill splits",
+      "text": "In two places the mountain trail splits in two directions. Choose the path that goes uphill."
+    },
+    {
+      "name": "Reach the crossroads",
+      "text": "You have reached the top when the mountain trail levels out and you reach a crossroads."
+    },
+    {
+      "name": "Turn right at the crossroads",
+      "text": "For the lookout point, turn right at the crossroads. Please note that cars do travel on this road."
+    },
+    {
+      "name": "Take the road uphill",
+      "text": "Take the road uphill until you reach a junction."
+    },
+    {
+      "name": "Turn right at the junction",
+      "text": "At the junction, turn right and follow the road around to the right."
+    },
+    {
+      "name": "Head to the grassy section and viewpoints",
+      "text": "When you see a grassy section off the road, go there and proceed to the vantage points. Use extreme caution—there are sudden drop-offs of several hundred meters."
+    }
+  ],
+  "warningsTitle": "安全警告",
+  "warnings": [
+    "展望ポイントには数百メートルの突然の落差があります。端から十分離れて、子供を厳重に監督してください。",
+    "このハイキングは神々の道よりもかなりきついです。試みる前に体力レベルを評価してください。",
+    "山道での極端な暑さのため、夏季は午前11時から午後4時の間のハイキングを避けてください。"
+  ],
+  "essentialsTitle": "持ち物",
+  "essentials": [
+    "急で不規則な地形に対応する良いグリップを持つ頑丈なハイキングシューズ",
+    "1人あたり少なくとも1.5リットルの水—補給の機会は限られています",
+    "日焼け対策：露出した区域用の帽子、日焼け止め、サングラス",
+    "村のレストランで時間を過ごす予定なら軽い軽食または昼食"
+  ],
+  "tipsTitle": "ハイキングのヒント",
+  "tips": [
+    "夏季は正午の暑さを避けるために早朝に出発してください。",
+    "急な区間では時間をかけてください—景色は途中で楽しむ価値があります。",
+    "ポジターノに戻る前に村のレストランで昼食を取ることを検討してください。",
+    "カメラまたは完全に充電された電話を持参してください—展望台からの写真撮影の機会は格別です。"
+  ]
+}

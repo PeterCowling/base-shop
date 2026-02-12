@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Backpacking i Syditalien: rutt inklusive Amalfikusten",
+    "description": "En logisk rundtur genom höjdpunkterna med budgettransportanteckningar."
+  },
+  "linkLabel": "Backpacking i Syditalien: rutt inkl. Amalfi",
+  "intro": [
+    "Planera en rundtur genom södra Italien som håller Positano centralt utan att spräcka budgeten."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Föreslagen rundtur",
+      "body": [
+        "Börja i Neapel för flyg och järnväg, tillbringa 2–3 nätter i Positano eller närliggande Praiano, fortsätt till Salerno och sväng sedan inåt landet till Matera eller Apulien innan du vänder tillbaka.",
+        "Använd regionaltåg och långfärdsbussar för att täcka längre sträckor billigt; boka 4–6 veckor i förväg för platser till €15–€25."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Ankomst & packning",
+      "body": [
+        "Res med en 40 L ryggsäck så att du enkelt kan navigera trappor och bussars bagagehyllor.",
+        "Packa snabbtorkande lager, en kompakt handduk och sandaler för hostellduschar; tvättstugor i Positano tar €12–€15 för tvätt- och torkpass."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budgetknep",
+      "body": [
+        "Kombinera matinköp (färsk focaccia, frukt, mozzarella) med terrasspicknickar; budgetera €8 för lunch istället för €18 för sittande måltider.",
+        "Dela dagsutflykter med hostelkompisar: dela på taxitransfer till vandringsleder eller hyr scootrar i Salerno/Praiano där priserna sjunker till €35 per dag."
+      ]
+    }
+  ],
+  "tips": [
+    "Aktivera ett regionalt SIM-kort eller eSIM (TIM/Vodafone) så att du kan ladda busstidtabeller och hostellincheckningar när du är på språng.",
+    "Reservera hostell eller gästhus för den första och sista natten på din rundtur och håll sedan flexibilitet mitt i resan för väderpivots."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag hyra bil?",
+      "a": [
+        "Nej. Tåg, bussar och färjor täcker rundturen. Att hyra en skoter för korta sträckor kan vara roligt, men vägtrafiken runt Amalfi kräver självsäkerhet."
+      ]
+    },
+    {
+      "q": "Hur många dagar bör jag avsätta för Positano?",
+      "a": [
+        "Ge dig själv minst tre nätter: en för Positano i sig, en för Gudarnas stig eller en båtdag och en flexibel dag för Amalfi/Ravello eller väderreserver."
+      ]
+    }
+  ]
+}

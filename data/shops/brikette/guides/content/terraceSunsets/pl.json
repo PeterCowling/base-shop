@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Zachód słońca na tarasie w Positano",
+    "description": "Prosty, budżetowy plan zachodu słońca w Hostel Brikette: kiedy przyjść, żeby było bez stresu."
+  },
+  "linkLabel": "Zachód na tarasie",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Taras hostelu to najprostsza opcja na zachód bez drogiej kolacji."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Kiedy przyjść",
+      "body": [
+        "W sezonie przyjdź 30–45 minut przed zachodem."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Światło zachodu słońca nad Positano z tarasu"
+        }
+      ]
+    }
+  ],
+  "fallback": "Przyjdź wcześniej, weź jednego drinka i zjedz prosto później."
+}

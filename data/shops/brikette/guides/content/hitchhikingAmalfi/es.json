@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Autoestop en la Costa Amalfitana (¿es posible?)",
+    "description": "Por qué el autobús es la opción más segura en carreteras estrechas."
+  },
+  "linkLabel": "Autoestop en la Costa Amalfitana",
+  "intro": [
+    "Hacer autostop en la Costa Amalfitana suena aventurero, pero la SS163 es estrecha, con curvas ciegas y casi sin apartaderos seguros.",
+    "Mejor apóyate en el transporte público: lleva billetes validados, planifica rutas de respaldo y guarda efectivo para taxis o porteadores si se detienen los servicios."
+  ],
+  "tocTitle": "En esta página",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Realidad en materia de seguridad",
+      "body": [
+        "Autocares, buses y scooters ya comparten un único carril excavado en el acantilado. Los conductores no te ven a tiempo y la policía suele pedir que sigas por seguridad.",
+        "De noche la visibilidad es baja y los arcenes minúsculos: esperar en la calzada implica riesgo de lesiones y multas."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternativas más seguras",
+      "body": [
+        "Los buses SITA, lanzaderas locales y furgonetas comunitarias operan todo el día; compra billetes con antelación en tabacchi y valídalos al subir.",
+        "Los ferris de temporada permiten saltos panorámicos entre pueblos; si el mar los cancela, vuelve a la combinación bus + porteador o taxis compartidos.",
+        "Senderos cortos (Nocelle ↔ Positano, Praiano ↔ aldeas costeras) ofrecen alternativas escénicas a plena luz."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Si te quedas tirado",
+      "body": [
+        "Llama a un taxi autorizado (los números están en las paradas principales) o pide en tu alojamiento/bar del hostel que gestionen uno; de noche la tarifa sube, así que comparte coste con otros viajeros cuando puedas.",
+        "Avisa a tu anfitrión si te retrasas. El equipo del hostel puede sugerir el punto de recogida más seguro o alternativas para pasar la noche en Sorrento/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Haz capturas de los horarios de bus y ferry en UnicoCampania o Travelmar cada mañana para saber cuál es la última salida garantizada.",
+    "Lleva linterna pequeña o banda reflectante si crees que caminarás tras el atardecer: la iluminación en carretera es limitada."
+  ],
+  "warnings": [
+    "Nunca esperes dentro de túneles ni en curvas ciegas: la policía local puede multarte y los conductores no tienen espacio para esquivarte."
+  ],
+  "faqs": [
+    {
+      "q": "¿Es legal hacer autostop en la Costa Amalfitana?",
+      "a": [
+        "No hay una prohibición regional explícita, pero la policía lo desaconseja y puede pedirte que te muevas por seguridad. Si intervienen, sigue sus instrucciones y desplázate a una parada de bus."
+      ]
+    },
+    {
+      "q": "¿Qué hago si el último bus ya se fue?",
+      "a": [
+        "Usa los números de taxi publicados, apps de rideshare que operen en la zona o pide a hoteles/bares locales que llamen a un conductor. Como último recurso, ve a Amalfi o Sorrento (pueblos grandes) donde hay más buses y trenes nocturnos."
+      ]
+    }
+  ]
+}

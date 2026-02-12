@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Bootstouren in Positano",
+    "description": "Private und Gruppenbootstouren: was zu erwarten ist, Preisspannen und Buchungstipps in der Saison."
+  },
+  "linkLabel": "Bootstouren: Sonnenuntergangskreuzfahrten bis Privatcharter",
+  "intro": [
+    "Bootstouren ermöglichen es dir, den Klippen der Amalfiküste zu folgen, ohne dich mit dem Straßenverkehr herumschlagen zu müssen; buche in Spitzenmonaten im Voraus und halte eine Wetteralternative bereit."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Gruppentouren und geteilte Boote",
+      "body": [
+        "3-stündige geteilte Kreuzfahrten verlassen Positano am späten Vormittag und beinhalten Badestopps; rechne mit €85–€120 pro Person im Juli–August.",
+        "Bring Badeschuhe und eine leichte Schicht mit — die Brise ist draußen auf dem Meer kühler als auf den Terrassen."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Privatcharter",
+      "body": [
+        "Skipper verlangen €550–€850 für halbtägige Gozzo-Charter (bis zu 6 Personen) plus Treibstoff; bestätige Inklusivleistungen wie Prosecco oder Handtücher.",
+        "Verhandle Startzeiten bei Sonnenaufgang oder am späten Nachmittag, wenn du sanfteres Licht und weniger Wellen von Fähren möchtest."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Wetter und Alternativpläne",
+      "body": [
+        "Betreiber stornieren, wenn der Wind Stärke 4 überschreitet; halte einen Bus- oder Strandplan bereit, damit der Tag entspannt bleibt.",
+        "Die See kann selbst im Sommer rau sein — pack Reisekrankheitsbänder ein, wenn du anfällig bist."
+      ]
+    }
+  ],
+  "tips": [
+    "Komme 20 Minuten vor Abfahrt an, um den Restbetrag zu begleichen und die bereitgestellten Deckschuhe anzuziehen.",
+    "Nimm einen Drybag für Telefone und eine 1 L (34 oz) Wasserflasche mit; Schatten ist an Bord begrenzt."
+  ],
+  "faqs": [
+    {
+      "q": "Muss ich im Voraus buchen?",
+      "a": [
+        "Ja, im Mai–September — Boote sind oft ein paar Tage im Voraus ausverkauft, besonders Sonnenuntergangsplätze."
+      ]
+    },
+    {
+      "q": "Sind Handtücher inbegriffen?",
+      "a": [
+        "Gruppentouren stellen normalerweise eines pro Person zur Verfügung; private Skipper variieren, also pack zur Sicherheit ein schnelltrocknendes Handtuch ein."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotogalerie"
+}

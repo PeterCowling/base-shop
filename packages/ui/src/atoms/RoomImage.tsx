@@ -62,7 +62,7 @@ function RoomImageBase({
 	          type="button"
 	          onClick={handleClick}
 	          aria-label={labels.enlarge}
-	          className="block min-h-10 min-w-10 h-full w-full focus-visible:outline-2 focus-visible:outline-brand-primary"
+	          className="block min-h-11 min-w-11 h-full w-full focus-visible:outline-2 focus-visible:outline-brand-primary"
 	        >
           <CfImage
             src={src}
@@ -91,7 +91,7 @@ function RoomImageBase({
           type="button"
           onClick={handlePrev}
           aria-label={labels.prevAria}
-          className="inline-flex size-10 items-center justify-center text-sm font-semibold transition hover:text-brand-terra"
+          className="inline-flex size-11 items-center justify-center text-sm font-semibold transition hover:text-brand-terra"
         >
           &lt;
         </button>
@@ -102,7 +102,7 @@ function RoomImageBase({
           type="button"
           onClick={handleNext}
           aria-label={labels.nextAria}
-          className="inline-flex size-10 items-center justify-center text-sm font-semibold transition hover:text-brand-terra"
+          className="inline-flex size-11 items-center justify-center text-sm font-semibold transition hover:text-brand-terra"
         >
           &gt;
         </button>

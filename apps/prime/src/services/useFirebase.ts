@@ -1,15 +1,19 @@
 /* File: /src/services/useFirebase.ts */
 'use client';
 
-import logger from '@/utils/logger';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getDatabase } from 'firebase/database';
+
+import logger from '@/utils/logger';
+
 import type { FirebaseConfig } from '../types/firebase';
+
 import {
   type Database,
   type DataSnapshot,
   db,
-  firebaseApp,
   type FirebaseApp,
+  firebaseApp,
   type FirebaseStorage,
   get,
   off,
@@ -55,7 +59,17 @@ export function useFirebaseApp(): FirebaseApp {
  * Returns the Firebase Realtime Database instance for the initialized app.
  */
 export function useFirebaseDatabase(): Database {
-  return useMemo(() => db, []);
+  return useMemo(() => {
+    if (db) {
+      return db;
+    }
+
+    if (typeof window !== 'undefined') {
+      return getDatabase(firebaseApp);
+    }
+
+    return db;
+  }, []);
 }
 
 /** Returns Firebase Cloud Storage instance */

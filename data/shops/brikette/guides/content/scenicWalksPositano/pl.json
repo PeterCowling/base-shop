@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Malownicze spacery w Positano i okolicy",
+    "description": "Propozycje tras pieszych z czasem przejścia i poziomem trudności."
+  },
+  "linkLabel": "Malownicze spacery w Positano i okolicy",
+  "intro": [
+    "Połącz tarasowe uliczki i punkty widokowe w krótkie pętle, dzięki czemu dzień pozostaje spacerem, nie wielogodzinnym trekkingiem."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Pętla w górnej części",
+      "body": [
+        "Połącz Chiesa Nuova i Sponda przez tarasowe zaułki, by zobaczyć klasyczny skyline przy mniejszym tłoku."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Fornillo coastal path",
+      "body": [
+        "Podążaj spokojniejszym podejściem do plaży i fotogenicznymi schodami. Celuj we wczesny poranek lub złotą godzinę."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Spacer widokowy w Nocelle",
+      "body": [
+        "Wjedź autobusem do Nocelle i odbij krótkimi odcinkami ku rozległym widokom, bez konieczności długiego zejścia schodami."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Jakie buty zabrać?",
+      "a": [
+        "Wybierz wygodne trampki z dobrą przyczepnością; niektóre ścieżki mają nierówne kamienne schody i śliską nawierzchnię po deszczu."
+      ]
+    },
+    {
+      "q": "Ile trwają te spacery?",
+      "a": [
+        "Każdą pętlę pokonasz w 30–60 minut z postojami na zdjęcia; dodaj przejazdy autobusem do Nocelle, aby obniżyć nachylenie."
+      ]
+    }
+  ]
+}

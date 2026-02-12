@@ -9,7 +9,7 @@
  * @see docs/plans/i18n-missing-key-detection-plan.md
  */
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { existsSync,readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import {
@@ -239,11 +239,11 @@ describe("guide content placeholder audit", () => {
     }
 
     if (report.totalFindings > 0) {
-      // eslint-disable-next-line no-console
+       
       console.warn(
         `[WARN] Found ${report.totalFindings} placeholder phrase(s) in non-en guide content.`
       );
-      // eslint-disable-next-line no-console
+       
       console.warn("Run with CONTENT_READINESS_MODE=fail to enforce.");
     }
     expect(true).toBe(true);

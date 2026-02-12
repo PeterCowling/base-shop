@@ -5,8 +5,10 @@
  * Horizontal layout with image on one side and description on the other.
  */
 
-import Link from 'next/link';
 import { memo } from 'react';
+import Link from 'next/link';
+
+import { Card } from '@acme/design-system/primitives';
 
 export interface ServiceCardProps {
   title: string;
@@ -29,13 +31,10 @@ export const ServiceCard = memo(function ServiceCard({
   image,
 }: ServiceCardProps) {
   return (
-    <div
+    <Card
       className="
         w-full max-w-[370px]
-        border border-gray-200
-        rounded-lg
         overflow-hidden
-        bg-white
         transition-transform duration-300
         flex flex-col
         text-left
@@ -44,10 +43,10 @@ export const ServiceCard = memo(function ServiceCard({
         hover:shadow-lg
       "
     >
-      <h3 className="text-xl mt-3 mx-4 mb-2 text-gray-800 text-center">
+      <h3 className="text-xl mt-3 mx-4 mb-2 text-foreground text-center">
         <Link
           href={to}
-          className="text-blue-600 no-underline transition-colors duration-300 hover:text-blue-800"
+          className="text-primary no-underline transition-colors duration-300 hover:text-primary-hover"
         >
           {title}
         </Link>
@@ -56,6 +55,7 @@ export const ServiceCard = memo(function ServiceCard({
       <div className="flex flex-row items-center p-4 w-full gap-4">
         {image && (
           <Link href={to}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={image}
               alt={alt || ''}
@@ -64,12 +64,12 @@ export const ServiceCard = memo(function ServiceCard({
           </Link>
         )}
         {description && (
-          <p className="w-full px-4 text-gray-600 text-base">
+          <p className="w-full px-4 text-muted-foreground text-base">
             {description}
           </p>
         )}
       </div>
-    </div>
+    </Card>
   );
 });
 

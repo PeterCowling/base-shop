@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Positano em 48 horas",
+    "description": "Roteiro condensado de dois dias com logística passo a passo, horários sugeridos e planos sobressalentes para clima instável."
+  },
+  "linkLabel": "Positano em 48 horas",
+  "intro": [
+    "Um fim de semana de 48 horas em Positano é viável se viajar leve, antecipar a chegada e perseguir vistas fora do pico de calor."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Dia 1 — chegada e manhã",
+      "body": [
+        "Chegue no primeiro autocarro SITA ou ferry, deixe as malas no alojamento ou guarda-volumes e tome um espresso com sfogliatella na Via dei Mulini.",
+        "Desça até à Praia de Fornillo para um mergulho antes do meio-dia, quando os lidos ainda estão calmos e os lugares públicos livram."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Dia 1 — tarde e pôr do sol",
+      "body": [
+        "Apanhe o autocarro local para Nocelle para um aperitivo do Caminho dos Deuses; regresse a tempo do pôr do sol na Via Cristoforo Colombo.",
+        "Reserve jantar num terraço ou compre delicatessen para um piquenique na varanda do hostel."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Dia 2 — manhã à escolha",
+      "body": [
+        "Opção A: ferry para Amalfi e salto rápido a Ravello para visitar a Villa Cimbrone; opção B: participar num passeio de barco partilhado para vistas costeiras.",
+        "Leve pequeno-almoço da pastelaria para começar cedo sem esperar serviço de café."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Dia 2 — fecho e partida",
+      "body": [
+        "Dedique tempo às compras em artesãos de sandálias ou cerâmica antes do almoço.",
+        "Recolha a bagagem 90 minutos antes da partida para acomodar escadas e filas no cais ou na paragem."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve uma mochila até 10 kg para subir escadas rapidamente.",
+    "Guarde horários de ferries e autocarros offline; os serviços de fim de semana mudam com frequência."
+  ],
+  "faqs": [
+    {
+      "q": "Uma noite basta?",
+      "a": [
+        "Sim, se focar os essenciais e ficar no centro, mas duas noites dão ritmo mais calmo e margem para o tempo."
+      ]
+    },
+    {
+      "q": "Onde ver o pôr do sol?",
+      "a": [
+        "A Via Cristoforo Colombo e o terraço do hostel são apostas seguras; bares na praia também funcionam, mas com preços mais altos."
+      ]
+    }
+  ]
+}

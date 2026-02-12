@@ -2,6 +2,7 @@
 import React from "react";
 import { type ColumnDef } from "@tanstack/react-table";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { createSelectionColumn, DataGrid } from "../DataGrid";
 
@@ -25,8 +26,8 @@ const TEST_COLUMNS: ColumnDef<TestRow, unknown>[] = [
 ];
 
 describe("DataGrid", () => {
-  it("renders columns and data correctly", () => {
-    render(<DataGrid columns={TEST_COLUMNS} data={TEST_DATA} />);
+  it("renders columns and data correctly", async () => {
+    const { container } = render(<DataGrid columns={TEST_COLUMNS} data={TEST_DATA} />);
 
     expect(screen.getByText("Name")).toBeInTheDocument();
     expect(screen.getByText("Age")).toBeInTheDocument();
@@ -61,6 +62,7 @@ describe("DataGrid", () => {
 
     fireEvent.click(screen.getByText("Alice").closest("tr")!);
     expect(onRowClick).toHaveBeenCalledWith(TEST_DATA[0]);
+
   });
 
   describe("sorting", () => {
@@ -158,6 +160,7 @@ describe("DataGrid", () => {
       const checkboxes = screen.getAllByRole("checkbox");
       // 1 header checkbox + 5 row checkboxes
       expect(checkboxes).toHaveLength(6);
+
     });
 
     it("toggles row selection", () => {

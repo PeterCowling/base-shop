@@ -108,12 +108,6 @@ function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
     return `https://book.octorate.com/octobook/site/reservation/result.xhtml?${qs}`;
   }, [checkIn, checkOut, adults]);
 
-  const onClick = useCallback(() => {
-    if (typeof window !== "undefined") {
-      window.location.href = deepLink;
-    }
-  }, [deepLink]);
-
   const onDismiss = useCallback(() => {
     if (typeof window !== "undefined") {
       try {
@@ -145,7 +139,7 @@ function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
           <X aria-hidden className="h-4 w-4" />
         </button>
         <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-brand-heading/80">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-terracotta">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-primary">
             <Sparkles aria-hidden className="h-3.5 w-3.5" />
             {perksEyebrow}
           </span>
@@ -160,10 +154,9 @@ function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
             <p className="text-lg font-semibold text-brand-heading sm:text-xl">{highlightHeadline}</p>
             <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{highlightSubcopy}</p>
           </div>
-          <button
-            type="button"
-            onClick={onClick}
-            className="group relative inline-flex min-h-10 min-w-10 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-heading shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
+          <a
+            href={deepLink}
+            className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-heading shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
             aria-label={ctaLabel}
           >
             <span
@@ -174,7 +167,7 @@ function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
               <span>{ctaLabel}</span>
               <ArrowRight aria-hidden className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-          </button>
+          </a>
         </div>
       </Section>
     </div>

@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Guía de transporte público en la Costa Amalfitana",
+    "description": "Cómo combinar buses SITA, ferris y trenes para recorrer la Costa Amalfitana sin coche, con recomendaciones de billetes y horarios."
+  },
+  "linkLabel": "Transporte público en la Costa Amalfitana",
+  "intro": [
+    "Moverse sin coche es factible: combina buses SITA, ferris en verano y trenes hasta nodos como Sorrento y Salerno.",
+    "En días de calor, el ferry es más cómodo a mediodía; por la mañana/noche, el bus funciona bien."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Autobuses SITA",
+      "body": [
+        "Frecuencias variables según temporada; en horas punta, espera colas y autobuses llenos.",
+        "Compra billetes con antelación y valida al subir; llega con tiempo a las paradas principales (Amalfi/Positano)."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferris (verano)",
+      "body": [
+        "Rutas rápidas entre los principales puertos; pueden cancelarse con mar de fondo.",
+        "Ten un plan B en bus y comprueba el estado el mismo día."
+      ]
+    },
+    {
+      "id": "train",
+      "title": "Trenes (hasta los nodos)",
+      "body": [
+        "Usa tren a Nápoles/Salerno/Sorrento para enlazar con bus o ferry; no hay tren a lo largo de la costa.",
+        "Deja margen para la última vuelta en ferry/bus, sobre todo fuera de temporada."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetes y validación",
+      "body": [
+        "Compra en estancos/kioscos o apps oficiales; valida siempre al subir.",
+        "Consulta abonos CIS/UNICO si haces varios trayectos el mismo día."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Se aceptan tarjetas?",
+      "a": [
+        "En kioscos sí; a bordo depende de la línea."
+      ]
+    },
+    {
+      "q": "¿Qué opción es más fiable?",
+      "a": [
+        "Bus todo el año; ferry en temporada y buen tiempo."
+      ]
+    }
+  ]
+}

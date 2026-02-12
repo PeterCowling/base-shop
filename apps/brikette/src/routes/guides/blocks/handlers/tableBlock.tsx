@@ -4,6 +4,7 @@
  */
 
 import type { TableBlockOptions } from "../types";
+
 import type { BlockAccumulator } from "./BlockAccumulator";
 
 export function applyTableBlock(acc: BlockAccumulator, options: TableBlockOptions): void {

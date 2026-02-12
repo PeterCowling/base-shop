@@ -1,3 +1,4 @@
+"use client";
 /* src/components/till/Till.tsx */
 import { memo } from "react";
 

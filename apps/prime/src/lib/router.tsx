@@ -5,9 +5,9 @@
  * Provides a unified API compatible with both client and server components
  */
 
+import { type ComponentProps,forwardRef } from 'react';
 import NextLink from 'next/link';
-import { useRouter as useNextRouter, usePathname, useSearchParams } from 'next/navigation';
-import { forwardRef, type ComponentProps } from 'react';
+import { usePathname, useRouter as useNextRouter, useSearchParams } from 'next/navigation';
 
 // Extended props to support react-router style `to` prop
 type LinkProps = Omit<ComponentProps<typeof NextLink>, 'href'> & {

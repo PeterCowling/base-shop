@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Sorrento til Positano med buss | Hostel Brikette",
+    "description": "Steg for steg fra Sorrento til Hostel Brikette via SITA-buss til Positano (Chiesa Nuova): billetter, rutetips og hvordan du kommer deg til hostellet fra stoppet."
+  },
+  "intro": {
+    "title": "Sorrento til Positano — SITA-buss",
+    "body": "Bruk denne guiden når du reiser fra Sorrento til Positano. Du tar SITA Sud-bussen og går av ved Positano (Chiesa Nuova), det stoppet som ligger nærmest hostellet. Vi dekker det grunnleggende om billetter, hvordan du leser rutetabellen og hvordan du kommer deg til hostellet fra stoppet."
+  },
+  "callouts": {
+    "tip": "Trenger du alle transportalternativene? Se %HOWTO:how-to-get-here|oversikten \\\\\"Slik kommer du hit\\\\\"% for ferger, taxiinfo og alternativer."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Reiseoversikt",
+      "body": "Sett av 1–1,5 timer i høysesongen. Bussene går hyppig mellom Sorrento og Positano. Kjøp billetten før du går om bord, og ha den klar for validering."
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og validering",
+      "body": "SITA (SITA Sud) driver denne ruten. Kjøp billetter på kiosker eller i tabacchi-butikker. Vis frem billetten til sjåføren når du går om bord; behold den til reisen er over. Valider før bruk der det kreves."
+    },
+    {
+      "id": "timetable",
+      "title": "Slik leser du rutetabellen",
+      "list": [
+        "Radene i den første kolonnen viser hvert bussholdeplass langs ruten.",
+        "Kolonnene tilsvarer planlagte avganger merket med bokstaver.",
+        "Reiser du mandag til lørdag? Bruk kolonnene \\\\\"F\\\\\" og \\\\\"G\\\\\".",
+        "Reiser du på søndag eller en helligdag? Bruk kolonnene \\\\\"G\\\\\" og \\\\\"H\\\\\"."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst ved Positano (Chiesa Nuova)",
+      "list": [
+        "Det finnes to SITA-stopp oppført for Positano: \\\\\"Sponda\\\\\" og \\\\\"Chiesa Nuova\\\\\".",
+        "For hostellet er \\\\\"Positano (Chiesa Nuova)\\\\\" det riktige stoppet på Via G. Marconi.",
+        "Stoppet ligger utenfor kafeen/baren \\\\\"Bar Internazionale\\\\\"."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Spaserturen til Hostel Brikette",
+      "list": [
+        "Gå litt over 100 meter (330 fot) langs Via G. Marconi.",
+        "Se etter skiltet vårt over terrassen i andre etasje på høyre side.",
+        "Sving til høyre opp trappen for å komme til hostellets hoveddør."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvordan leser jeg SITA buss-rutetabellen?",
+      "a": [
+        "**Lesing av radene:** Radene i den første kolonnen representerer forskjellige bussholdeplasser langs ruten.",
+        "**Lesing av kolonnene:** Rutetabellen tildeler en alfabetisk bokstav til hver planlagte reise, som er oppført som overskrifter i hver kolonne. Hvis du reiser mandag til lørdag, se etter kolonnene 'F' og 'G'. Hvis du reiser på søndag eller en helligdag, se etter kolonnene 'G' og 'H'.",
+        "**Kombinasjon av rader og kolonner:** Velg dine avgangs- og ankomstholdeplasser, sjekk deretter kolonnene for å se når busser er tilgjengelige og når de ankommer destinasjonen din. For eksempel, for å se avgangstiden fra Sorrento, se på Sorrento-raden. For å se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), se på Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ]
+}

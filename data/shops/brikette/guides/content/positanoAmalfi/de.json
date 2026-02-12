@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano → Amalfi: So kommst du hin",
+    "description": "Bus- und Fährverbindungen zwischen Positano und Amalfi mit Zeiten und Tipps."
+  },
+  "linkLabel": "Positano → Amalfi: So kommst du hin",
+  "intro": [
+    "Positano ↔ Amalfi per Bus oder saisonaler Fähre: so wählst du die passende Option und die beste Tageszeit."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (ganzjährig)",
+      "body": [
+        "SITA-Bus; Tickets vorher kaufen und entwerten; zu Spitzenzeiten bilden sich Schlangen – starte früh.",
+        "Setz dich beim Verlassen Positanos auf die rechte Seite für Klippenblicke."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Fähre (saisonal)",
+      "body": [
+        "Schneller und besonders aussichtsreich bei ruhiger See; checke Live-Fahrpläne und plane Pufferzeit ein.",
+        "In der Hochsaison früh ankommen, um Sitzplätze zu sichern."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Wie lange dauert die Fahrt?",
+      "a": [
+        "Der Bus braucht je nach Verkehr 40–55 Minuten; Fähren schaffen die Strecke bei ruhiger See in etwa 25 Minuten."
+      ]
+    },
+    {
+      "q": "Muss ich Plätze reservieren?",
+      "a": [
+        "Busfahrkarten vorab kaufen, Sitzplätze sind jedoch First Come. Fähren lassen sich online buchen; sichere Hochsaison-Abfahrten idealerweise am Vortag."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA-Bus nach Amalfi",
+        "text": "Steig in den SITA-Bus Richtung Amalfi; Tickets vor dem Einstieg besorgen."
+      },
+      {
+        "name": "Alternative: Fähre (Sommer)",
+        "text": "Saisonfahrpläne prüfen; in den Spitzenmonaten verkehren die Fähren häufig."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Nutze den SITA-Bus für Zuverlässigkeit rund ums Jahr; im Sommer ist die Fähre die aussichtsreiche Alternative."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA-Bus (ganzjährig)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Fähre (saisonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA-Bus (ganzjährig)",
+        "body": [
+          "Tickets vor dem Einstieg kaufen und in den Spitzenmonaten früh anstellen. Ausstieg am Busbahnhof Amalfi."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Fähre (saisonal)",
+        "body": [
+          "Sieh dir Betreiber-Websites für Fahrpläne und Seegangshinweise an; 20–30 Minuten vor Abfahrt eintreffen."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Welche Option ist schneller?",
+        "a": [
+          "Im Sommer sind Fähren ähnlich schnell und schöner; Busse fahren insgesamt häufiger."
+        ]
+      }
+    ]
+  }
+}

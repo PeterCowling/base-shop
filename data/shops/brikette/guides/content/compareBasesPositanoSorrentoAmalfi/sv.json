@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Jämför baser: Positano vs Sorrento vs Amalfi",
+    "description": "Vilken bas passar din resa? Jämförelse av atmosfär, pris och transporter mellan Positano, Sorrento och Amalfi."
+  },
+  "linkLabel": "Jämför baser: Positano vs Sorrento vs Amalfi",
+  "intro": [
+    "Jämför för- och nackdelar med Positano, Sorrento och Amalfi innan du väljer bas."
+  ],
+  "tocTitle": "På denna sida",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Ikoniska vyer och många trappor – perfekt om du vill vakna mitt i vykortet.",
+        "Transporten kräver mer planering, så lägg in marginaler kring färjor och bussar."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Bäst tåg- och bussförbindelser samt stort utbud av boenden i olika prisklasser.",
+        "Utsikten är mindre dramatisk än i Positano, men värdet och bekvämligheten är starka."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Färje- och busshub med enkla dagsturer till Ravello och byarna runt omkring.",
+        "Förvänta dig blandade boendestilar och planera för att kvällstrafiken är begränsad."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Vem trivs var",
+      "body": [
+        "Positano för vyer att unna sig och social hostelkänsla.",
+        "Sorrento för budgetkontroll och snabba transporter.",
+        "Amalfi för balans och enkel åtkomst längs kusten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vilken bas passar förstaresenärer?",
+      "a": [
+        "Välj Positano om du vill ha vykortsvyer, Sorrento för smidiga transporter och Amalfi för ett mellanalternativ nära domkyrkan."
+      ]
+    },
+    {
+      "q": "Behöver jag bil om jag bor utanför Positano?",
+      "a": [
+        "Nej. Färjor och bussar binder ihop alla tre städer; bil innebär parkeringsstress om du inte planerar många inlandsturer."
+      ]
+    }
+  ]
+}

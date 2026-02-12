@@ -5,20 +5,24 @@
  * Events are processed by Cloud Functions.
  */
 
-import { ref, set } from '@/services/firebase';
-import logger from '@/utils/logger';
 import { useCallback, useState } from 'react';
+
+import { get, ref, set } from '@/services/firebase';
+import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
+
 import {
   createQueueRecord,
-  type MessagingEventType,
+  MessagingEventType,
+  type MessagingEventType as MessagingEventTypeValue,
   type MessagingPayload,
 } from './triggers';
 
 interface UseMessagingQueueReturn {
   /** Queue a messaging event */
   queueEvent: (
-    eventType: MessagingEventType,
+    eventType: MessagingEventTypeValue,
     payload: MessagingPayload,
   ) => Promise<string | null>;
   /** Loading state */
@@ -37,7 +41,7 @@ export function useMessagingQueue(): UseMessagingQueueReturn {
 
   const queueEvent = useCallback(
     async (
-      eventType: MessagingEventType,
+      eventType: MessagingEventTypeValue,
       payload: MessagingPayload,
     ): Promise<string | null> => {
       setIsLoading(true);
@@ -46,6 +50,13 @@ export function useMessagingQueue(): UseMessagingQueueReturn {
       try {
         const record = createQueueRecord(eventType, payload);
         const queueRef = ref(database, `messagingQueue/${record.eventId}`);
+
+        if (eventType === MessagingEventType.BOOKING_CONFIRMED) {
+          const existing = await get(queueRef);
+          if (existing.exists()) {
+            return record.eventId;
+          }
+        }
 
         await set(queueRef, record);
 

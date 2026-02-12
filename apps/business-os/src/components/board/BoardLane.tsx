@@ -1,13 +1,11 @@
-import type { Card, Idea, Lane } from "@/lib/types";
+import type { Card, Lane } from "@/lib/types";
 
 import { CompactCard } from "./CompactCard";
-import { CompactIdea } from "./CompactIdea";
 import { EmptyLaneState } from "./EmptyLaneState";
 
 interface BoardLaneProps {
   lane: Lane;
   cards: Card[];
-  ideas: Idea[];
   showBusinessTag: boolean;
   /** Optional keyboard navigation helpers */
   keyboardNav?: {
@@ -73,14 +71,13 @@ export function calculateLaneStats(cards: Card[]): LaneStats {
 export function BoardLane({
   lane,
   cards,
-  ideas,
   showBusinessTag,
   keyboardNav,
 }: BoardLaneProps) {
   // Cards are already sorted by board-logic.ts (BOS-14)
   const stats = calculateLaneStats(cards);
   const headerColor = getLaneHeaderColor(lane);
-  const totalCount = cards.length + ideas.length;
+  const totalCount = cards.length;
 
   return (
     <div className="flex flex-col min-w-[320px] max-w-[320px] md:min-w-[320px] md:max-w-[320px] max-md:min-w-full max-md:max-w-full bg-gray-100 rounded-lg">
@@ -112,15 +109,6 @@ export function BoardLane({
 
       {/* Lane content - max-height on desktop only */}
       <div className="flex-1 overflow-y-auto p-3 space-y-2 md:max-h-[calc(100vh-16rem)] max-md:max-h-none">
-        {/* Ideas (only in Inbox lane) */}
-        {ideas.map((idea) => (
-          <CompactIdea
-            key={idea.ID || idea.filePath}
-            idea={idea}
-            showBusinessTag={showBusinessTag}
-          />
-        ))}
-
         {/* Cards */}
         {cards.map((card) => (
           <CompactCard

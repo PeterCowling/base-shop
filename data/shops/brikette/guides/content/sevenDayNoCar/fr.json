@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Itinéraire de 7 jours sur la côte amalfitaine (sans voiture)",
+    "description": "Boucle d'une semaine sans voiture, comment répartir les nuits et éviter les transferts difficiles."
+  },
+  "linkLabel": "Itinéraire de 7 jours sur la côte amalfitaine (sans voiture)",
+  "intro": [
+    "Sept jours sans voiture permettent de mêler incontournables et temps tranquille au village : privilégiez les ferries pour le confort et les bus pour le budget."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Jours 1–2 : s'installer à Positano",
+      "body": [
+        "Arrivez via Naples ou Salerne, explorez Spiaggia Grande et Fornillo, et habituez-vous aux escaliers avec de courtes balades vers les belvédères.",
+        "Réservez un bateau partagé ou un cours de cuisine pour la deuxième soirée afin de lancer la semaine avec une expérience marquante."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Jour 3 : escapade à Capri",
+      "body": [
+        "Prenez le ferry de 8 h 30 pour Capri, concentrez-vous sur Anacapri le matin et rentrez avant le coucher du soleil pour éviter la cohue du dernier bateau.",
+        "Gardez une réserve de billets de bus au cas où les ferries s'arrêtent ; les itinéraires de secours via Sorrente prennent environ 90 minutes porte à porte."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Jours 4–5 : Amalfi, Ravello et randonnée",
+      "body": [
+        "Consacrez le jour 4 à Amalfi ville et aux jardins de Ravello, en restant jusqu'au soir si un concert vous attire.",
+        "Réservez le jour 5 au Sentier des Dieux ou au sentier de Montepertuso ; partez tôt, emportez 1,5 L d'eau par personne et prenez le bus pour revenir."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Jours 6–7 : culture et marge",
+      "body": [
+        "Prenez un train matinal vers Pompéi ou Salerne pour les musées, puis rentrez pour une dernière soirée détendue à Positano.",
+        "Gardez le dernier jour comme tampon météo ou simple détente : retrouvez votre plage préférée ou flânez dans les boutiques artisanales."
+      ]
+    }
+  ],
+  "tips": [
+    "Une lessive en milieu de séjour allège les bagages ; utilisez les machines en libre-service près de Chiesa Nuova.",
+    "Suivez les mises à jour des ferries sur les comptes Instagram des opérateurs quand le vent se lève."
+  ],
+  "faqs": [
+    {
+      "q": "Dois-je séjourner dans plusieurs villes ?",
+      "a": [
+        "Installez votre camp de base à Positano pour limiter les re-packs. Ajoutez une nuit à Naples ou Salerne seulement si vous avez un train ou un vol très matinal."
+      ]
+    },
+    {
+      "q": "Dois-je tout réserver à l'avance ?",
+      "a": [
+        "Réservez ferries, excursions en bateau et restaurants vedettes. Gardez les randonnées, journées plage et bus locaux flexibles pour vous adapter à la météo."
+      ]
+    }
+  ]
+}

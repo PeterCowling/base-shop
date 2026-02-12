@@ -1,6 +1,7 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Tag } from "../Tag";
 

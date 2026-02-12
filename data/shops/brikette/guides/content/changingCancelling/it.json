@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Modificare e Cancellare la Tua Prenotazione dell'Ostello di Positano",
+    "description": "Guida dettagliata sulle tue opzioni di cancellazione, politiche di mancata presentazione, come modificare la tua prenotazione, regole di trasferibilità della prenotazione e prenotazioni prepagate non rimborsabili nell'unico ostello di Positano."
+  },
+  "linkLabel": "Modificare e Cancellare la Tua Prenotazione dell'Ostello di Positano",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "Addebiti per Mancata Presentazione",
+      "body": [
+        "Se non hai effettuato il check-in entro le 22:30 del primo giorno della tua prenotazione, la tua prenotazione sarà automaticamente contrassegnata come 'Mancata Presentazione'. Ti verrà addebitato il maggiore tra il pernottamento della prima notte o il tuo deposito non rimborsabile. Se hai più prenotazioni, ognuna potrebbe avere il proprio periodo di preavviso di cancellazione e tariffe."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Politica di Cancellazione",
+      "body": [
+        "Invia tutte le richieste di cancellazione per iscritto al nostro indirizzo email ufficiale (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Il periodo di cancellazione inizia quando l'ostello riceve la tua email e termina alle 00:01 della data di check-in programmata. La tua prenotazione rimane attiva fino a quando non ricevi la conferma via email che la cancellazione è stata elaborata. Verrà addebitata una Commissione Amministrativa di Cancellazione separata, solitamente il 15% del prezzo della prenotazione escluse le commissioni di terze parti. L'ostello può cancellare la tua prenotazione senza una richiesta scritta se non effettui il check-in prima della chiusura della reception il giorno di arrivo, parti in anticipo senza adeguata notifica o violi le politiche dell'ostello. Se non fornisci un preavviso sufficiente, incorrerai in addebiti equivalenti a una Mancata Presentazione."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Persona che usa uno smartphone e un laptop",
+          "caption": "L'email è il modo più veloce per ottenere una registrazione scritta di modifiche o cancellazioni."
+        }
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Modificare Prenotazioni Confermate",
+      "body": [
+        "Le prenotazioni esistenti non possono essere modificate direttamente; invece, vengono sostituite interamente con nuove prenotazioni. Invia la tua richiesta di modifica via email al nostro indirizzo ufficiale entro il periodo di preavviso richiesto. Riceverai un'email una volta che la modifica sarà stata approvata. Tutte le modifiche sono soggette alla disponibilità delle camere e ad altre condizioni. Se accorci o prolunghi il tuo soggiorno, l'aggiustamento sarà gestito come una richiesta di cancellazione o proroga, e qualsiasi proroga è trattata come una nuova prenotazione. Se parti prima della data di partenza confermata senza ricevere una conferma ufficiale di cancellazione, i termini originali della prenotazione rimarranno in vigore."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Trasferibilità della Prenotazione",
+      "body": [
+        "La tua prenotazione deve rimanere a tuo nome per l'intero soggiorno. Trasferire la prenotazione o cambiare il nome dell'ospite non è consentito. Se qualcuno tenta di effettuare il check-in con una prenotazione trasferita, la prenotazione sarà cancellata immediatamente e rimarrai finanziariamente responsabile dell'intero importo."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Prenotazioni Prepagate Non Rimborsabili",
+      "body": [
+        "Le prenotazioni prepagate non rimborsabili richiedono il pagamento completo al momento della prenotazione. Se il pagamento non va a buon fine, la tua prenotazione sarà cancellata automaticamente. Queste prenotazioni non sono rimborsabili, anche se cancelli o non ti presenti. Qualsiasi proroga del tuo soggiorno sarà elaborata come una nuova prenotazione non rimborsabile separata."
+      ]
+    }
+  ]
+}

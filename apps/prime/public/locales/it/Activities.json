@@ -1,0 +1,44 @@
+{
+  "actions": {
+    "backHome": "\u2190 Torna alla home",
+    "eventEnded": "Evento terminato",
+    "joinNow": "Partecipa ora",
+    "loadMore": "Carica altre attivit\u00e0",
+    "seeDetails": "Vedi dettagli"
+  },
+  "empty": {
+    "description": "Torna pi\u00f9 tardi per i prossimi eventi, o esplora Positano per conto tuo!",
+    "exploreGuide": "Esplora la Guida di Positano",
+    "title": "Nessuna attivit\u00e0"
+  },
+  "presence": {
+    "markedPresent": "Sei segnato come presente",
+    "markPresent": "Sono qui",
+    "availableOnceLive": "Disponibile quando in diretta"
+  },
+  "sdkUnavailable": {
+    "message": "Le attivit\u00e0 sono temporaneamente non disponibili fino a quando la sessione sicura \u00e8 pronta.",
+    "returnHome": "Torna alla Home"
+  },
+  "sections": {
+    "ended": "Terminate",
+    "happeningNow": "In Corso",
+    "upcoming": "In Arrivo"
+  },
+  "status": {
+    "ended": "Terminata",
+    "live": "In diretta ora",
+    "upcoming": "In arrivo"
+  },
+  "subtitle": "Unisciti agli altri viaggiatori per avventure ed eventi sociali",
+  "time": {
+    "eventFinished": "Evento terminato",
+    "inDays": "tra {{count}} giorni",
+    "inDays_one": "tra {{count}} giorno",
+    "inDays_other": "tra {{count}} giorni",
+    "inHoursMinutes": "tra {{hours}}h {{minutes}}m",
+    "inMinutes": "tra {{minutes}}m",
+    "startingNow": "inizia ora"
+  },
+  "title": "Attivit\u00e0"
+}

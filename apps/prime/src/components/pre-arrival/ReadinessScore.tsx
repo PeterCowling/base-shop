@@ -5,9 +5,10 @@
  * Score is computed from checklist progress (0-100).
  */
 
-import { CheckCircle2 } from 'lucide-react';
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CheckCircle2 } from 'lucide-react';
+
 import type { ReadinessLevel } from '../../lib/preArrival';
 
 interface ReadinessScoreProps {
@@ -30,33 +31,33 @@ function getLevelColors(level: ReadinessLevel): {
   switch (level) {
     case 'not-started':
       return {
-        ring: 'stroke-gray-300',
-        text: 'text-gray-600',
-        bg: 'bg-gray-50',
+        ring: 'text-muted-foreground',
+        text: 'text-muted-foreground',
+        bg: 'bg-muted',
       };
     case 'in-progress':
       return {
-        ring: 'stroke-blue-500',
-        text: 'text-blue-600',
-        bg: 'bg-blue-50',
+        ring: 'text-info',
+        text: 'text-info-foreground',
+        bg: 'bg-info-soft',
       };
     case 'almost-ready':
       return {
-        ring: 'stroke-amber-500',
-        text: 'text-amber-600',
-        bg: 'bg-amber-50',
+        ring: 'text-warning',
+        text: 'text-warning-foreground',
+        bg: 'bg-warning-soft',
       };
     case 'ready':
       return {
-        ring: 'stroke-green-500',
-        text: 'text-green-600',
-        bg: 'bg-green-50',
+        ring: 'text-success',
+        text: 'text-success-foreground',
+        bg: 'bg-success-soft',
       };
     default:
       return {
-        ring: 'stroke-gray-300',
-        text: 'text-gray-600',
-        bg: 'bg-gray-50',
+        ring: 'text-muted-foreground',
+        text: 'text-muted-foreground',
+        bg: 'bg-muted',
       };
   }
 }
@@ -95,7 +96,7 @@ export const ReadinessScore: FC<ReadinessScoreProps> = memo(function ReadinessSc
             fill="none"
             stroke="currentColor"
             strokeWidth={strokeWidth}
-            className="text-gray-200"
+            className="text-muted"
           />
           {/* Progress circle */}
           <circle
@@ -103,6 +104,7 @@ export const ReadinessScore: FC<ReadinessScoreProps> = memo(function ReadinessSc
             cy={size / 2}
             r={radius}
             fill="none"
+            stroke="currentColor"
             strokeWidth={strokeWidth}
             strokeLinecap="round"
             className={`transition-all duration-500 ${colors.ring}`}
@@ -122,7 +124,7 @@ export const ReadinessScore: FC<ReadinessScoreProps> = memo(function ReadinessSc
               <span className={`text-3xl font-bold ${colors.text}`}>
                 {score}%
               </span>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-muted-foreground">
                 {t('readiness.score')}
               </span>
             </>

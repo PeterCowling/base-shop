@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Tramonti e le cantine della Costiera Amalfitana",
+    "description": "Piccole aziende familiari, come prenotare degustazioni e consigli per acquistare vini da portare a casa."
+  },
+  "linkLabel": "Tramonti e le cantine della Costiera Amalfitana",
+  "intro": [
+    "Scopri le cantine collinari di Tramonti per degustazioni DOC lontano dalla folla costiera."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Perché Tramonti",
+      "body": [
+        "Vigneti pergolati secolari crescono su suolo vulcanico producendo rossi e bianchi DOC Costa d’Amalfi.",
+        "Tenute familiari come San Francesco e Reale accolgono piccoli gruppi per degustazioni intime."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Prenotare le degustazioni",
+      "body": [
+        "Prenota con 48 ore di anticipo via e-mail o WhatsApp; degustazioni con assaggi leggeri costano 25–35 € a persona.",
+        "Chiedi se il trasporto è incluso: alcune cantine organizzano navette andata/ritorno da Amalfi o Maiori."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Come arrivarci",
+      "body": [
+        "Guida o noleggia un driver per i 18 km di salita da Positano; le strade sono strette ma asfaltate.",
+        "Opzione pubblica: autobus per Amalfi e poi linea locale per Tramonti. Prevedi margine al rientro, i servizi serali sono limitati."
+      ]
+    }
+  ],
+  "tips": [
+    "Porta una borraccia riutilizzabile: molte cantine offrono acqua di sorgente per pulire il palato tra un calice e l’altro.",
+    "Spedisci il vino via corriere invece di portare le bottiglie se viaggi solo con bagaglio a mano."
+  ],
+  "faqs": [
+    {
+      "q": "Quanto dura una degustazione?",
+      "a": [
+        "La maggior parte dura 90 minuti tra visita in vigna, cantina e tre-quattro vini."
+      ]
+    },
+    {
+      "q": "Posso visitare senza auto?",
+      "a": [
+        "Sì, ma organizza i transfer in anticipo. I taxi condivisi divisi in quattro persone mantengono i costi sotto controllo."
+      ]
+    }
+  ]
+}

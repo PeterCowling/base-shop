@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Podróżowanie jako para w hostelach",
+    "description": "Wskazówki dotyczące dormitoriów lub pokoi prywatnych, znajdowania ciszy i ustalania oczekiwań."
+  },
+  "linkLabel": "Podróżowanie jako para w hostelach",
+  "intro": [
+    "Hostele działają dla par, gdy wybierasz odpowiedni typ pokoju, pakujesz lekko i ustalacie oczekiwania razem."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Typy pokoi",
+      "body": [
+        "Zarezerwuj prywatny pokój dla prywatności; jeśli ograniczasz budżet, podzielcie się łóżkami w tym samym dormitorium i utrzymujcie bagaż lekki ze względu na schody."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Znajdowanie ciszy",
+      "body": [
+        "Zabierz zatyczki do uszu i maskę na oczy, wybieraj pokoje z dala od baru lub przestrzeni wspólnych i wykorzystuj wczesne ranki na spokojniejsze zwiedzanie."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy hostel jest odpowiedni dla par?",
+      "a": [
+        "Tak — otrzymujesz energię społeczną i dobrą wartość; prywatne pokoje równoważą komfort i koszt."
+      ]
+    }
+  ]
+}

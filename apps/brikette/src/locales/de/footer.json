@@ -29,5 +29,6 @@
   "houseRules": "Hausordnung",
   "cancellationPolicy": "Stornierungsbedingungen",
   "privacy": "Datenschutzerklärung",
-  "cookies": "Cookie-Richtlinie"
+  "cookies": "Cookie-Richtlinie",
+  "navAriaLabel": "Footer navigation"
 }

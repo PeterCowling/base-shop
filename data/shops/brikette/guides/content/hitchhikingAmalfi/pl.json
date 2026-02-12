@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Autostop na Wybrzeżu Amalfitańskim",
+    "description": "Dlaczego autostop jest ryzykowny i jakie są bezpieczniejsze alternatywy dla niskiego budżetu."
+  },
+  "linkLabel": "Autostop na Wybrzeżu Amalfitańskim",
+  "intro": [
+    "Autostop na Wybrzeżu Amalfitańskim brzmi przygodowo, ale SS163 jest wąska, pełna ślepych zakrętów i prawie bez bezpiecznych zatoczek.",
+    "Zamiast tego skorzystaj z sieci transportu publicznego: miej skasowane bilety, planuj trasy zapasowe i trzymaj gotówkę na taksówki lub tragarzy, gdy usługi zawiodą."
+  ],
+  "tocTitle": "Na tej stronie",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Rzeczywistość bezpieczeństwa",
+      "body": [
+        "Autokary, autobusy i skutery już dzielą jeden pas wykuty w klifie. Kierowcy nie widzą Cię wystarczająco wcześnie, a policja często przegania ludzi dla ich własnego bezpieczeństwa.",
+        "Nocna widoczność jest niedobra, a pobocza malutkie — czekanie na jezdni grozi urazami i mandatami."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Lepsze alternatywy",
+      "body": [
+        "Autobusy SITA, lokalne shuttle i vany społecznościowe kursują przez cały dzień; kup bilety wcześniej w tabacchi i skasuj w pojeździe.",
+        "Sezonowe promy zapewniają malownicze przeloty między miejscowościami; gdy morze je odwoła, wróć do kombinacji autobus + tragarz lub wspólne taksówki.",
+        "Krótkie szlaki spacerowe (Nocelle ↔ Positano, Praiano ↔ przyległe osady) dają malownicze alternatywy w świetle dnia."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Jeśli utkniesz",
+      "body": [
+        "Zadzwoń po licencjonowaną taksówkę (numery wiszą przy ważnych przystankach) lub poproś recepcję/baru hostelu o zamówienie; stawki nocne są wyższe, więc dziel koszty z innymi podróżnikami.",
+        "Powiadom gospodarza, gdy się spóźnisz — zespół hostelu może zasugerować najbezpieczniejszy punkt odbioru albo nocleg w Sorrento/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Zrób zrzut ekranu rozkładów autobusów i promów z UnicoCampania lub Travelmar rano, by znać ostatnie kursy.",
+    "Noś małą latarkę albo odblask, jeśli planujesz poruszać się po zmroku — oświetlenie przy drodze jest ograniczone."
+  ],
+  "warnings": [
+    "Nigdy nie stój w tunelach ani na ślepych zakrętach — policja może nałożyć mandat, a kierowcy nie mają przestrzeni, by ominąć pieszych."
+  ],
+  "faqs": [
+    {
+      "q": "Czy autostop jest legalny na Wybrzeżu Amalfi?",
+      "a": [
+        "Brak wyraźnego zakazu regionalnego, ale policja odradza autostop i może poprosić o zmianę miejsca na bezpieczniejszy przystanek. Jeśli interweniują, posłuchaj ich poleceń."
+      ]
+    },
+    {
+      "q": "Co zrobić, gdy ostatni autobus już odjechał?",
+      "a": [
+        "Skorzystaj z numerów do taksówek, lokalnych aplikacji rideshare lub poproś pobliskie hotele/bary o wezwanie kierowcy. W ostateczności jedź do Amalfi lub Sorrento, gdzie są częstsze nocne autobusy i pociągi."
+      ]
+    }
+  ]
+}

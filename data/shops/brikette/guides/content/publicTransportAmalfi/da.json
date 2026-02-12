@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Guide til offentlig transport på Amalfikysten",
+    "description": "Sådan kommer du rundt uden bil: busser, færger og tog — billetter, timing og sæsonbemærkninger."
+  },
+  "linkLabel": "Guide til offentlig transport på Amalfikysten",
+  "intro": [
+    "Sådan kommer du rundt på Amalfikysten uden bil: busser for helårspålidelighed, færger om sommeren og tog til de længere stræk."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA-busser",
+      "body": [
+        "Køb billetter hos tabacchi/aviskiosker før du stiger på, og validér i bussen.",
+        "Forvent køer i myldretid. Start tidligt og overvej færge som genvej."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Færger (sæson)",
+      "body": [
+        "Hurtige og sceniske mellem hovedbyerne fra forår til efterår; vejraflysninger kan forekomme.",
+        "Tjek liveplaner hos operatørerne og læg buffer ind til dagens sidste afgang."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Tog (til gateway-byer)",
+      "body": [
+        "Brug Trenitalia/Italo til Sorrento/Salerno/Napoli og skift til bus eller færge derfra.",
+        "Intercity-stræk sparer tid på ruterne Rom/Napoli/Salerno; lokal Circumvesuviana betjener Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing og strategi",
+      "body": [
+        "Afgang før kl. 09 for at undgå køer; til hjemturen i solnedgang er færger bedst, når havet er roligt.",
+        "Hav småpenge til billetter og en hat/vand til eksponerede stoppesteder."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg tage bagage med i busserne?",
+      "a": [
+        "Tilladt, men ikke ideelt i myldretid; overvej færger eller portere til tung bagage."
+      ]
+    },
+    {
+      "q": "Findes der nattjenester?",
+      "a": [
+        "Begrænset; tjek sidste bus/færge i god tid for at undgå dyre taxaer."
+      ]
+    }
+  ]
+}

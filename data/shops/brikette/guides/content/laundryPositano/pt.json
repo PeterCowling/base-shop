@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Lavanderias em Positano (self-service e entrega)",
+    "description": "Onde lavar roupa, quanto custa, horários de pico e dicas para secar peças rapidamente."
+  },
+  "linkLabel": "Lavanderias em Positano (self-service e entrega)",
+  "intro": [
+    "Existem opções self-service e drop-off na vila; confirme horários na meia estação e conte com filas em dias de mudança de hóspedes."
+  ],
+  "toc": {
+    "onThisPage": "Nesta página",
+    "selfService": "Lavandarias self-service",
+    "dropOff": "Serviços drop-off",
+    "howto": "Como usar self-service",
+    "tips": "Detergente e máquinas",
+    "faqs": "Perguntas frequentes"
+  },
+  "selfServiceText": "Espere máquinas compactas europeias. Leve moedas e escolha horários fora de pico (meio da manhã ou início da tarde fora de dias de troca) para evitar filas.",
+  "dropOffText": "Pergunte o preço por kg para wash & fold e se há entrega no mesmo dia. Em época alta, entregar cedo aumenta as hipóteses.",
+  "howtoSteps": [
+    "Escolha o tamanho da máquina conforme a carga; não encha demasiado.",
+    "Adicione detergente/amaciador conforme instruções; algumas máquinas fazem dose automática.",
+    "Selecione o programa (frio/morno) e inicie. Programe um alarme para regressar antes do fim do ciclo."
+  ],
+  "tipsList": [
+    "Use ciclos delicados para tecidos de secagem rápida e fatos de banho.",
+    "Secadores partilhados podem aquecer muito — verifique as etiquetas e considere secar ao ar."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Self-service",
+      "body": [
+        "Espere máquinas compactas europeias. Leve moedas e escolha horários fora de pico (meio da manhã ou início da tarde fora de dias de troca) para evitar filas."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Serviços drop-off",
+      "body": [
+        "Pergunte o preço por kg para wash & fold e se há entrega no mesmo dia. Em época alta, entregar cedo aumenta as hipóteses."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso comprar detergente por perto?",
+      "a": [
+        "Sim — veja %LINK:groceriesPharmacies|mercearias e farmácias% para embalagens pequenas."
+      ]
+    },
+    {
+      "q": "Onde esperar enquanto a roupa lava?",
+      "a": [
+        "Use um café próximo (consulte %LINK:workCafes|cafés para trabalhar%) ou dê um passeio curto."
+      ]
+    }
+  ]
+}

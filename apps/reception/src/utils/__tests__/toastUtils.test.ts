@@ -1,18 +1,17 @@
 import "@testing-library/jest-dom";
 
-import { toast } from "react-toastify";
+import { toast } from "@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter";
 
 import { showToast, type ToastMessageType } from "../toastUtils";
 
-jest.mock("react-toastify", () => {
-  const toastFn = jest.fn();
+jest.mock("@acme/ui/components/organisms/operations/NotificationCenter/NotificationCenter", () => {
   return {
-    toast: Object.assign(toastFn, {
+    toast: {
       success: jest.fn(),
       error: jest.fn(),
       info: jest.fn(),
       warning: jest.fn(),
-    }),
+    },
   };
 });
 
@@ -25,27 +24,27 @@ describe("showToast", () => {
 
   it("routes success messages to toast.success", () => {
     showToast(message, "success");
-    expect(toast.success).toHaveBeenCalledWith(message, expect.any(Object));
+    expect(toast.success).toHaveBeenCalledWith(message, expect.objectContaining({ duration: 1500 }));
   });
 
   it("routes error messages to toast.error", () => {
     showToast(message, "error");
-    expect(toast.error).toHaveBeenCalledWith(message, expect.any(Object));
+    expect(toast.error).toHaveBeenCalledWith(message, expect.objectContaining({ duration: 1500 }));
   });
 
   it("routes info messages to toast.info", () => {
     showToast(message, "info");
-    expect(toast.info).toHaveBeenCalledWith(message, expect.any(Object));
+    expect(toast.info).toHaveBeenCalledWith(message, expect.objectContaining({ duration: 1500 }));
   });
 
   it("routes warning messages to toast.warning", () => {
     showToast(message, "warning");
-    expect(toast.warning).toHaveBeenCalledWith(message, expect.any(Object));
+    expect(toast.warning).toHaveBeenCalledWith(message, expect.objectContaining({ duration: 1500 }));
   });
 
-  it("calls toast for unknown types", () => {
+  it("calls toast.info for unknown types", () => {
     // Cast to unknown first to bypass strict type checking
     showToast(message, "other" as unknown as ToastMessageType);
-    expect(toast).toHaveBeenCalledWith(message, expect.any(Object));
+    expect(toast.info).toHaveBeenCalledWith(message, expect.objectContaining({ duration: 1500 }));
   });
 });

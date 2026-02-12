@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM et distributeurs à Positano",
+    "description": "Où acheter une SIM ou eSIM, retirer de l'argent et rester connecté pendant votre séjour."
+  },
+  "linkLabel": "SIM/eSIM et distributeurs à Positano",
+  "intro": [
+    "Restez connecté et avec du liquide en configurant votre forfait SIM avant l'arrivée et en planifiant des retraits aux distributeurs avec peu de frais."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Activer une eSIM",
+      "body": [
+        "Installez une eSIM italienne (TIM, Vodafone ou un opérateur voyage reconnu) sur le Wi-Fi de l'auberge ou avant le vol ; la couverture est meilleure sur les terrasses et le long de la SS163.",
+        "Prévoyez au moins 10 Go pour une semaine si vous écoutez de la musique ou envoyez des photos ; surveillez votre consommation car les recharges sur place sont limitées."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Acheter une SIM physique",
+      "body": [
+        "Faites un détour par Sorrente, Salerne ou Napoli Centrale pour trouver des boutiques d'opérateur ; munissez-vous de votre passeport et comptez 10 à 20 € pour un kit d'activation avec enregistrement d'identité.",
+        "Les tabacchi proposent parfois des SIM prêtes à activer en haute saison, mais les stocks varient — prenez-les quand vous en voyez."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "Stratégie retrait d'argent",
+      "body": [
+        "Privilégiez les distributeurs de banque comme Intesa Sanpaolo (2 à 3 € de frais) ; les automates indépendants près de la plage facturent parfois le double avec un taux défavorable.",
+        "Retirez 100 à 150 € à la fois et répartissez les billets entre votre sac de jour et une poche sécurisée dans vos bagages."
+      ]
+    }
+  ],
+  "tips": [
+    "Capturez en écran les QR codes et instructions d'activation avant de quitter le Wi-Fi pour pouvoir réinstaller l'eSIM en cas de redémarrage du téléphone.",
+    "Gardez une batterie externe : les zones à faible signal font grimper la consommation d'énergie."
+  ],
+  "faqs": [
+    {
+      "q": "La couverture atteint-elle Capri et Amalfi ?",
+      "a": [
+        "Oui, mais le débit ralentit en mer ; téléchargez playlists et cartes avant d'embarquer sur les ferries."
+      ]
+    },
+    {
+      "q": "Les distributeurs fonctionnent-ils tard le soir ?",
+      "a": [
+        "Les halls bancaires restent ouverts 24 h/24, mais si un distributeur est à sec vous devrez peut-être aller à Amalfi ou Sorrente le lendemain matin."
+      ]
+    }
+  ]
+}

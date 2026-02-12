@@ -3,7 +3,7 @@
 // Single-purpose stub: Backpacker itineraries (Amalfi Coast)
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const backpackerItineraries = {
   seo: {
@@ -52,5 +52,5 @@ export const backpackerItineraries = {
   ],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

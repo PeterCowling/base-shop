@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano Photography Guide: Best Spots",
+    "description": "Map the angles, best times, and etiquette to get great shots."
+  },
+  "linkLabel": "Positano Photography Guide: Best Spots",
+  "intro": [
+    "Capture Positano like a pro: iconic angles, light planning, and respectful shooting etiquette."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Classic angles",
+      "body": [
+        "Shoot from the ferry dock for the full cliffside cascade; use a wide-angle lens to include the dome of Santa Maria Assunta.",
+        "Walk Via Cristoforo Colombo for layered balconies and bougainvillea framing the sea."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Light & timing",
+      "body": [
+        "Sunrise (around 06:00 in summer) casts warm light on the cliff—arrive early to avoid boat traffic in your frame.",
+        "Blue hour after sunset adds glow to village lights; carry a mini tripod or clamp for long exposures."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & backups",
+      "body": [
+        "Respect private terraces and avoid blocking staircases—step aside quickly after taking your shot.",
+        "Store backups on cloud or portable drives nightly; humid air can fog lenses, so pack silica gel packs."
+      ]
+    }
+  ],
+  "tips": [
+    "Bring a polarising filter to manage midday glare on the water.",
+    "Keep a microfiber cloth handy—sea spray and humidity build up fast on lenses."
+  ],
+  "faqs": [
+    {
+      "q": "Can I use a drone for aerial shots?",
+      "a": [
+        "Drone use is restricted; apply for permits well in advance and respect no-fly zones near the town and Li Galli islands."
+      ]
+    },
+    {
+      "q": "Where can I print photos locally?",
+      "a": [
+        "Photo labs in Sorrento and Amalfi offer same-day prints; bring images on a USB stick or SD card."
+      ]
+    }
+  ]
+}

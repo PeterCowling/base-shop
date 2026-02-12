@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Roteiros pela Costa Amalfitana (sem carro)",
+    "description": "Modelos de 2, 3 e 7 dias com dicas de horários, transporte e respostas para dúvidas frequentes."
+  },
+  "linkLabel": "Roteiros pela Costa Amalfitana (sem carro)",
+  "intro": [
+    "Monte um roteiro sem carro na Costa Amalfitana encadeando ferries e autocarros de forma lógica, deixando tempo para manhãs lentas e planos alternativos quando o tempo muda."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "Instantâneo de 2 dias",
+      "body": [
+        "Dia 1: Chegue cedo, explore as ruelas de Positano, relaxe na Praia de Fornillo e veja o pôr do sol na Via Cristoforo Colombo.",
+        "Dia 2: Ferry matinal para Amalfi para visitar o Duomo e provar granita de limão, autocarro à tarde para Ravello e regresso a Positano para jantar."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "Extensão de 3–4 dias",
+      "body": [
+        "Adicione Capri no dia 3 — primeiro ferry, teleférico de Anacapri e regresso ao final da tarde.",
+        "Use o dia 4 para o Caminho dos Deuses ou passeio de barco; tenha Pompeia como plano B para dias de chuva."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "Ritmo de 5–6 dias",
+      "body": [
+        "Inclua um food crawl em Salerno ou Sorrento para visitar mercados e reabastecer.",
+        "Planeie um dia de saltos de praia entre Arienzo, Laurito e Marina di Praia usando ferries costeiros ou táxis aquáticos."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "Loop de 7 dias",
+      "body": [
+        "Estruture a semana com dois dias tranquilos em Positano, dois dias de excursões (Capri + Pompeia) e dois dias mais lentos (vinícolas de Tramonti ou ruínas de Paestum).",
+        "Deixe o último dia flexível para repetir favoritos ou descansar antes da viagem seguinte."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserve com antecedência os trechos longos (ferries para Capri, comboio para Pompeia), mas mantenha pelo menos um dia de margem para imprevistos meteorológicos.",
+    "Agrupe atividades por zona geográfica para só enfrentar grandes escadarias uma vez por dia."
+  ],
+  "faqs": [
+    {
+      "q": "Quantas noites devo ficar em Positano?",
+      "a": [
+        "Quatro noites permitem explorar Positano e fazer duas excursões principais sem correria; acrescente mais se quiser manhãs sem pressa."
+      ]
+    },
+    {
+      "q": "Posso trocar ferries por autocarros com mau tempo?",
+      "a": [
+        "Sim — os autocarros operam todo o ano. Saia cedo, compre bilhetes com antecedência e conte com mais 20–30 minutos de viagem."
+      ]
+    }
+  ]
+}

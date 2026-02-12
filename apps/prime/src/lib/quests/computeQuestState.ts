@@ -11,19 +11,18 @@
  * - Total XP and badges
  */
 
-import type { GuestProfile } from '../../types/guestProfile';
-import type { OccupantCompletedTasks } from '../../types/completedTasks';
-import type { QuestProgress } from '../../types/questProgress';
 import {
-  QUEST_TIERS,
-  type QuestTier,
-  getTierById,
+  getAvailableTiers,
   getBadgesFromTiers,
+  getTierById,
   getXpFromTiers,
   isTierUnlocked,
-  getAvailableTiers,
-  getNextTierId,
+  QUEST_TIERS,
+  type QuestTier,
 } from '../../config/quests/questTiers';
+import type { OccupantCompletedTasks } from '../../types/completedTasks';
+import type { GuestProfile } from '../../types/guestProfile';
+import type { QuestProgress } from '../../types/questProgress';
 
 /**
  * Input data for quest state computation.

@@ -14,6 +14,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import {
+  buildLocalizedStaticRedirectRules,
+  formatRedirectRule,
+} from "../../routing/staticExportRedirects";
+
 // Patterns for URLs that are handled by Cloudflare _redirects (not served by App Router)
 const REDIRECT_PATTERNS = [
   /^\/directions\//, // /directions/:slug → /en/how-to-get-here/:slug
@@ -85,6 +90,22 @@ describe("URL inventory", () => {
 
     // Verify each redirect pattern has a corresponding _redirects rule
     expect(redirectsFile).toContain("/directions/:slug");
+  });
+
+  it("localized static-export redirect rules are present in _redirects", () => {
+    const redirectsPath = path.join(__dirname, "../../../public/_redirects");
+    const redirectsFile = fs.readFileSync(redirectsPath, "utf8");
+    const expectedRules = buildLocalizedStaticRedirectRules().map(formatRedirectRule);
+    const missingRules = expectedRules.filter((rule) => !redirectsFile.includes(rule));
+
+    if (missingRules.length > 0) {
+      const preview = missingRules.slice(0, 20);
+      console.error(
+        `Missing ${missingRules.length} localized redirect rules. First 20:\\n${preview.join("\\n")}`
+      );
+    }
+
+    expect(missingRules).toEqual([]);
   });
 
   itWithFixture("App Router URLs are unique (no duplicates)", () => {

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Tramonti et domaines viticoles de la côte amalfitaine",
+    "description": "Dégustations dans les collines : réservations, transport et bouteilles à ramener."
+  },
+  "linkLabel": "Tramonti et domaines viticoles de la côte amalfitaine",
+  "intro": [
+    "Découvrez les domaines viticoles en terrasses de Tramonti pour des dégustations DOC loin de la foule du littoral."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Pourquoi Tramonti",
+      "body": [
+        "Des vignes en pergola centenaires poussent sur un sol volcanique et produisent des rouges et blancs DOC Costa d'Amalfi.",
+        "Des domaines familiaux comme Tenuta San Francesco et Reale accueillent de petits groupes pour des dégustations intimistes."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Réserver une dégustation",
+      "body": [
+        "Réservez 48 heures à l'avance par e-mail ou WhatsApp ; les dégustations avec petites bouchées coûtent 25 à 35 € par personne.",
+        "Demandez si le transport est inclus ; certaines caves organisent une navette aller-retour depuis Amalfi ou Maiori."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "S'y rendre",
+      "body": [
+        "Conduisez ou engagez un chauffeur pour gravir les 18 km depuis Positano ; les routes sont étroites mais bien goudronnées.",
+        "Option transport public : bus jusqu'à Amalfi, puis bus local pour Tramonti. Prévoyez du temps à l'aller-retour car les services du soir sont limités."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenez une gourde : de nombreux domaines proposent de l'eau de source pour rincer le palais entre deux verres.",
+    "Faites expédier le vin par transporteur plutôt que de transporter des bouteilles si vous voyagez en cabine."
+  ],
+  "faqs": [
+    {
+      "q": "Combien de temps dure une dégustation ?",
+      "a": [
+        "La plupart des visites durent 90 minutes, incluant balade dans les vignes, passage en cave et dégustation de trois à quatre vins."
+      ]
+    },
+    {
+      "q": "Puis-je visiter sans voiture ?",
+      "a": [
+        "Oui, mais organisez les transferts à l'avance. Un taxi partagé entre quatre voyageurs reste abordable."
+      ]
+    }
+  ]
+}

@@ -2,13 +2,14 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../accordion";
 
 describe("Accordion primitives", () => {
   test("single mode toggles one item and respects collapsible=false", async () => {
     const user = userEvent.setup();
-    render(
+    const { container } = render(
       <Accordion type="single" defaultValue="a" collapsible={false}>
         <AccordionItem value="a">
           <AccordionTrigger>Section A</AccordionTrigger>

@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+
 import type { QuestState } from '../../../lib/quests/computeQuestState';
+import QuestCard from '../QuestCard';
 
 // Mock quest state values
 let mockQuestState: QuestState | null = null;
@@ -47,8 +49,6 @@ jest.mock('react-i18next', () => ({
     },
   }),
 }));
-
-import QuestCard from '../QuestCard';
 
 describe('QuestCard', () => {
   beforeEach(() => {

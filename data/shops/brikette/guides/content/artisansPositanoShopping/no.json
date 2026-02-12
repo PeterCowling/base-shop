@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Kunst og håndverk i Positano (shopping)",
+    "description": "Sandaler, keramikk, trykk – hvor du finner kvalitet og hvordan sende hjem."
+  },
+  "linkLabel": "Kunst og håndverk i Positano (shopping)",
+  "intro": [
+    "Handle i Positanos håndverksmiljø uten å betale overpris: sandaler, keramikk, trykk og hvordan sende ting hjem."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Spesialtilpassede sandaler",
+      "body": [
+        "Se skomakere lage lærsandaler for hånd på rundt 30 minutter; prisene starter på cirka €80 for skreddersydde par.",
+        "Ta med eller tegn av foten din for bestillinger senere – mange håndverkere sender verden over når de har målene dine."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Keramikk og kunst",
+      "body": [
+        "Stikk innom familiedrevne keramikkverksteder for håndmalte fliser og servise. Spør etter blyfrie glasurer hvis du skal servere mat.",
+        "Lokale kunstnere selger trykk og akvareller langs Via Cristoforo Colombo – tuber beskytter dem godt på reisen."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Betaling og frakt",
+      "body": [
+        "De fleste butikker tar kort, men gir ofte kontant­rabatt. Ha legitimasjon klart for taxfree-skjema ved kjøp over €154,94.",
+        "Send skjøre gjenstander med forsikret bud (DHL/UPS) og be om dobbel emballasje; prisene starter rundt €40, avhengig av vekt."
+      ]
+    }
+  ],
+  "tips": [
+    "Ta bilder av kvitteringer og håndverkerinfo så du husker hvilket verksted som laget hva.",
+    "Pakk bobleplast hvis du skal frakte keramikk i bagasjen – vandrerhjem har ofte ekstra emballasje fra leveranser."
+  ],
+  "faqs": [
+    {
+      "q": "Kan håndverkerne tilpasse varene?",
+      "a": [
+        "Ja. Mange preger initialer på sandaler eller tilpasser keramikkfarger med et par dagers varsel."
+      ]
+    },
+    {
+      "q": "Hvordan får jeg tilbake moms?",
+      "a": [
+        "Be om taxfree-skjema ved kjøp, få det stemplet på flyplassen eller ferjekaien og lever det innen tre måneder for refusjon."
+      ]
+    }
+  ]
+}

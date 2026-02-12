@@ -12,6 +12,7 @@
     "next-env.d.ts",
     "instrumentation.ts",
     "middleware.ts",
+    "open-next.config.ts",
     "src/**/*",
     "src/**/*.json",
     ".next/types/**/*.ts"

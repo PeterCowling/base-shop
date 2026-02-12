@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Darmowy spacer audio: Positano",
+    "description": "Audio przemarsz od Chiesa Nuova do plaży z lokalnymi historiami."
+  },
+  "linkLabel": "Darmowy spacer audio: odkryj ukryte historie Positano",
+  "intro": [
+    "Pobierz nasz darmowy spacer audio po Positano: zaczynaj przy Chiesa Nuova, snuj się przez starą część miasta i kończ na Spiaggia Grande.",
+    "Podążaj trasą i wskazówkami do słuchania poniżej, zapisując pliki na Wi-Fi, zanim wyjdziesz."
+  ],
+  "tocTitle": "Na tej stronie",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Trasa"
+    },
+    {
+      "href": "#listen",
+      "label": "Jak słuchać"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Trasa",
+      "body": [
+        "Start na przystanku autobusowym Chiesa Nuova → zatrzymaj się przy punktach widokowych Via Pasitea → przeturlaj przez zaułki → dotrzyj na Spiaggia Grande.",
+        "Zatrzymuj się na tarasach, ale pamiętaj o mieszkańcach i tragarzach korzystających ze schodów przy dostawach."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "Jak słuchać",
+      "body": [
+        "Pobierz audio na Wi-Fi hostelu albo streamuj w znanych punktach zasięgu na trasie.",
+        "Trzymaj głośność nisko na schodach i wysuń jedno słuchawko przy przejściach drogowych lub mijaniu innych spacerowiczów."
+      ]
+    }
+  ],
+  "faqHeading": "FAQ",
+  "faqs": [
+    {
+      "q": "Czy trasa jest strom a?",
+      "a": [
+        "Tak — spodziewaj się schodów. Odwróć trasę albo skorzystaj z autobusu SITA pod górę, jeśli kolana potrzebują przerwy."
+      ]
+    },
+    {
+      "q": "Czy mogę słuchać offline?",
+      "a": [
+        "Oczywiście. Zapisz pliki w telefonie, by nie polegać na przerywanym zasięgu w zaułkach."
+      ]
+    },
+    {
+      "q": "Ile to trwa?",
+      "a": [
+        "Zaplanuj 45–60 minut, wliczając postoje na zdjęcia i relaks na tarasach."
+      ]
+    }
+  ]
+}

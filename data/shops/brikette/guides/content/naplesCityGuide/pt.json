@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Guia da cidade de Nápoles para viajantes da Costa Amalfitana",
+    "description": "Comida, história e bairros; dicas de passeios de um dia saindo de Positano."
+  },
+  "linkLabel": "Guia de Nápoles para viajantes da Costa Amalfitana",
+  "intro": [
+    "Nápoles é a porta de entrada para a Costa Amalfitana. Reserve um ou dois dias para explorar ruas históricas, templos da pizza e escapadinhas fáceis."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Bairros essenciais",
+      "body": [
+        "Percorra a Spaccanapoli para igrejas, oficinas de presépios e tours subterrâneos sob San Lorenzo.",
+        "Siga para o calçadão de Chiaia e Castel dell'Ovo para passeios frescos ao entardecer."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Comida e café",
+      "body": [
+        "Enfrente a fila na Sorbillo ou Da Michele (30–45 minutos). Peça sfogliatella e espresso no Gran Caffè Gambrinus.",
+        "Prove cuoppo fritto (cones de papel com mariscos fritos) por 6–8 € quando precisar de algo rápido."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Base para bate-voltas",
+      "body": [
+        "Use a Napoli Centrale para comboios de alta velocidade até Roma (1h10) ou Pompeia (40 minutos na Circumvesuviana).",
+        "Guarde bagagem na estação (7 € por volume) se for seguir direto para Positano depois."
+      ]
+    }
+  ],
+  "tips": [
+    "Use cartões contactless no metro e compre passe diário (5,60 €) se planeia várias viagens.",
+    "Mantenha objetos de valor nos bolsos frontais e use bolsa transversal em ruelas cheias."
+  ],
+  "faqs": [
+    {
+      "q": "É seguro explorar Nápoles a pé?",
+      "a": [
+        "Sim, com prudência de cidade grande. Prefira ruas iluminadas à noite, evite exibir muito dinheiro e opte por táxis oficiais depois da meia-noite."
+      ]
+    },
+    {
+      "q": "Onde guardar bagagem?",
+      "a": [
+        "A Napoli Centrale e a Piazza Garibaldi têm guarda-volumes vigiados. Reserve cacifos online em fins de semana concorridos para garantir vaga."
+      ]
+    }
+  ]
+}

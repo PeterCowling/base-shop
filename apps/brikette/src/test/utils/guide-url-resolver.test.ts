@@ -1,8 +1,8 @@
 import { type AppLanguage } from "@/i18n.config";
-import { guideAbsoluteUrl, guideHref, guidePath, guideSlug } from "@/routes.guides-helpers";
+import { guideAbsoluteUrl, guideHref, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
-describe.skip("guide URL resolver", () => {
+describe("guide URL resolver", () => {
   const lang = "en" as AppLanguage;
   const legacyBase = `/${lang}/${getSlug("guides", lang)}/`;
 
@@ -20,11 +20,21 @@ describe.skip("guide URL resolver", () => {
     assertBase("pathOfTheGods", "experiences");
   });
 
-  it("routes assistance guides under assistance", () => {
+  it("routes reachBudget under the current manifest namespace", () => {
     assertBase("reachBudget", "assistance");
   });
 
   it("routes how-to-get-here guides under how-to-get-here", () => {
     assertBase("ferryDockToBrikette", "howToGetHere");
+  });
+
+  it("resolves legacy compact top-level slug keys", () => {
+    expect(resolveGuideKeyFromSlug("positanomainbeach", "it")).toBe("positanoMainBeach");
+  });
+
+  it("generates locale slugs from guide labels instead of compact key names", () => {
+    const localizedSlug = guideSlug("it", "positanoMainBeach");
+    expect(localizedSlug).not.toBe("positanomainbeach");
+    expect(resolveGuideKeyFromSlug(localizedSlug, "it")).toBe("positanoMainBeach");
   });
 });

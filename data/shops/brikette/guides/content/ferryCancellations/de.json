@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Fährausfälle und raue See",
+    "description": "Was zu tun ist, wenn Fähren aufgrund des Wetters ausfallen, Alternativen und wie man den Status überprüft."
+  },
+  "linkLabel": "Fährausfälle und raue See",
+  "intro": [
+    "Raue See kann den Fährverkehr von und nach Positano kurzfristig aussetzen.",
+    "Halten Sie eine landbasierte Alternative bereit und überwachen Sie Live-Warnungen, damit Sie Ihre Verbindung dennoch erreichen."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Live-Updates überwachen",
+      "body": [
+        "Überprüfen Sie die Websites und Apps der Betreiber (Travelmar, NLG, Alilauro) sowie die Anzeigetafeln im Hafen alle 30 Minuten an windigen Tagen.",
+        "Aktivieren Sie SMS-/E-Mail-Benachrichtigungen oder folgen Sie lokalen Telegram-/Social-Media-Kanälen, damit Stornierungen Sie auch dann erreichen, wenn Sie sich vom Pier entfernen."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Auf Landrouten umsteigen",
+      "body": [
+        "Wenn die Fahrten eingestellt werden, wechseln Sie zu Bussen und Zügen: SITA nach Sorrento, dann Circumvesuviana nach Neapel/Pompeji, oder Bus über Amalfi und Regionalzug von Salerno.",
+        "Planen Sie mindestens 60 Minuten Puffer für die letzten Abfahrten des Tages ein und validieren Sie Tickets vor dem Einsteigen."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Rückerstattungen & Gutscheine",
+      "body": [
+        "Bewahren Sie Quittungen auf und machen Sie einen Screenshot der Stornierungsmitteilung, damit der Betreiber Rückerstattungen, Umbuchungen oder Gutschriften bearbeiten kann.",
+        "Teilen Sie dem Personal mit, ob Sie die nächste verfügbare Fahrt oder einen Saisongutschein bevorzugen, bevor Sie den Schalter verlassen."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Übernachtungsverzögerungen verwalten",
+      "body": [
+        "Informieren Sie Ihre Unterkunft oder Ihren Reiseleiter, sobald Verzögerungen angekündigt werden; viele passen Check-in oder Abreise an, wenn sie im Voraus gewarnt werden.",
+        "Fragen Sie am Hafeninfopoint nach Sammeltaxis, Ersatzshuttles oder Gepäckaufbewahrung, wenn Sie bis zum nächsten Morgen warten müssen."
+      ]
+    }
+  ],
+  "tips": [
+    "Prüfen Sie die Seewettervorhersage—Winde über 20 Knoten oder Seegang über 1,5 Meter lösen oft Stornierungen aus.",
+    "Reiseversicherung, die Wetterverzögerungen abdeckt, hilft bei der Erstattung zusätzlicher Hotelnächte oder Ersatztransfers.",
+    "Morgenfahrten sind am zuverlässigsten; vermeiden Sie es, sich auf das letzte Boot des Tages zu verlassen, wenn Stürme vorhergesagt werden."
+  ],
+  "faqs": [
+    {
+      "q": "Wie erfahre ich, wann die Fahrten wieder aufgenommen werden?",
+      "a": [
+        "Aktualisieren Sie die Website oder Social-Media-Feeds des Betreibers und hören Sie auf Lautsprecherdurchsagen am Pier—Entscheidungen werden normalerweise innerhalb von 30 Minuten nach der geplanten Abfahrt veröffentlicht.",
+        "Das Personal am Ticketschalter kann auch bestätigen, ob das nächste Boot fährt, bevor Sie den Hafen verlassen."
+      ]
+    },
+    {
+      "q": "Was passiert mit meinem Ticket?",
+      "a": [
+        "Zeigen Sie Ihre Quittung oder Ihren QR-Code, um eine Rückerstattung, einen Gutschein oder eine Umbuchung auf die nächste Fahrt zu beantragen.",
+        "Wenn Sie über eine Online-Agentur gebucht haben, senden Sie ihnen innerhalb von 24 Stunden den Screenshot der Stornierung per E-Mail, um den Rückerstattungsprozess zu starten."
+      ]
+    },
+    {
+      "q": "Gibt es Fähren, die bei rauer See garantiert fahren?",
+      "a": [
+        "Nein—wenn die Küstenwache den Hafen schließt, werden alle Abfahrten eingestellt. Halten Sie eine Landroute bereit.",
+        "Einige private Charter können bei mäßigem Seegang fahren, sind aber teuer und abhängig vom Ermessen des Kapitäns; wägen Sie Komfort und Kosten sorgfältig ab."
+      ]
+    }
+  ]
+}

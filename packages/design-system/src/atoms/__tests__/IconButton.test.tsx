@@ -1,14 +1,16 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { IconButton } from "../IconButton";
 
 describe("IconButton", () => {
-  it("applies variant token and size data attribute", () => {
-    render(<IconButton variant="primary" size="md" aria-label="star">★</IconButton>);
+  it("applies variant token and size data attribute", async () => {
+    const { container } = render(<IconButton variant="primary" size="md" aria-label="star">★</IconButton>);
     const btn = screen.getByLabelText("star");
     expect(btn).toHaveAttribute("data-token", "--color-primary");
+
     expect(btn).toHaveAttribute("data-size", "md");
   });
 

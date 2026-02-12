@@ -3,8 +3,8 @@ import React, { memo, useId } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
-import { Coffee, Percent, Wine } from "@/icons";
 
+import { Coffee, Percent, Wine } from "@/icons";
 import enTokens from "@/locales/en/_tokens.json";
 import enDealsPage from "@/locales/en/dealsPage.json";
 import { toAppLanguage } from "@/utils/lang";
@@ -102,12 +102,12 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
       className="my-8 w-full max-w-screen-2xl space-y-4 rounded-3xl border border-brand-primary/20 bg-brand-primary/5 px-6 py-8 text-start shadow-sm sm:my-12 sm:px-8 sm:py-10"
     >
       <div className="space-y-3">
-        <h2 id={headingId} className="text-xl font-semibold text-brand-primary">
+        <h2 id={headingId} className="text-xl font-semibold text-brand-primary dark:text-brand-secondary">
           {heading}
         </h2>
         {showIntro ? <p className="text-base text-brand-text/90">{introCopy}</p> : null}
         {guaranteeCopy.trim().length > 0 ? (
-          <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary/80">
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary/80 dark:text-brand-secondary">
             {guaranteeCopy}
           </p>
         ) : null}
@@ -132,7 +132,7 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
         <div>
           <Link
             href={termsHref}
-            className="text-sm font-medium text-brand-primary underline underline-offset-4 hover:text-brand-bougainvillea"
+            className="text-sm font-medium text-brand-primary underline underline-offset-4 hover:text-brand-bougainvillea dark:text-brand-secondary dark:hover:text-brand-secondary/85"
             prefetch={true}
           >
             {termsLabel}

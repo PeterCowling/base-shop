@@ -1,8 +1,8 @@
 "use client";
 
-import { Check } from "@/icons";
-
 import { CfImage } from "@acme/ui/atoms/CfImage";
+
+import { Check } from "@/icons";
 
 import type { ExperienceFeatureCopy, ExperienceFeatureKey } from "./experiencesPageCopy";
 
@@ -31,6 +31,7 @@ export function ExperienceFeatureSection({
         src={imageSrc}
         preset="gallery"
         alt={copy.imageAlt?.trim() ?? ""}
+        // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: 4/3 aspect ratio is a specific design requirement
         className="relative aspect-[4/3] w-full object-cover"
         width={1200}
         height={900}
@@ -42,7 +43,10 @@ export function ExperienceFeatureSection({
   const body = (
     <div className="space-y-4">
       {copy.eyebrow?.trim() ? (
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-muted dark:text-brand-muted">
+        <p
+          // eslint-disable-next-line ds/no-arbitrary-tailwind -- TASK-DS-26: Wide letter-spacing (0.25em) is a design requirement for eyebrow text
+          className="text-xs font-semibold uppercase tracking-[0.25em] text-brand-muted dark:text-brand-muted"
+        >
           {copy.eyebrow}
         </p>
       ) : null}

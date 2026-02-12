@@ -1,0 +1,57 @@
+{
+  "seo": {
+    "title": "Services de porteurs à Positano",
+    "description": "Comment fonctionnent les services de porteurs à Positano : où réserver, budget à prévoir et quand y recourir."
+  },
+  "linkLabel": "Services de porteurs à Positano",
+  "intro": [
+    "Les porteurs aident avec les bagages lourds ou en cas de mobilité réduite. Organisez un rendez-vous au quai ou à l’arrêt de bus, confirmez le tarif au préalable et gardez vos objets de valeur avec vous."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "Mode opératoire",
+      "body": [
+        "Fixez un point et une heure de rendez-vous (quai ou arrêt de bus). Indiquez le nom de votre hébergement et l’horaire prévu.",
+        "Validez le tarif avant de partir. Les prix varient selon la distance, le nombre de marches et l’heure.",
+        "Gardez vos objets de valeur sur vous ; identifiez clairement vos bagages."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Réservation et contacts",
+      "body": [
+        "Demandez à votre hébergement les prestataires de confiance proches du quai et des principaux arrêts de bus.",
+        "Pour la consigne ou les services en horaires décalés, consultez des plateformes comme Bounce ou Radical Storage."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Étiquette et pourboires",
+      "body": [
+        "Laissez un pourboire pour un service remarquable ou des charges lourdes ; ayez des espèces en petites coupures.",
+        "Communiquez votre plan d’arrivée à l’avance en haute saison pour garantir un créneau."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ai-je besoin d’un porteur ?",
+      "a": [
+        "Oui si vous transportez des bagages lourds ; la ville compte de nombreux escaliers et ruelles pentues."
+      ]
+    },
+    {
+      "q": "Où réserver ?",
+      "a": [
+        "Renseignez-vous auprès de votre hébergement ou des services locaux près de la plage principale et des arrêts de bus."
+      ]
+    },
+    {
+      "q": "Combien cela coûte-t-il ?",
+      "a": [
+        "Cela dépend de la distance et du volume à transporter ; confirmez le tarif avant de commencer."
+      ]
+    }
+  ]
+}

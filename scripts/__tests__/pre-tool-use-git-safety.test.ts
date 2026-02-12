@@ -1,6 +1,6 @@
 import { spawnSync } from "child_process";
-import * as path from "path";
 import * as fs from "fs";
+import * as path from "path";
 
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const HOOK_SCRIPT = path.join(
@@ -50,8 +50,12 @@ describe("PreToolUse hook — Deny patterns", () => {
     ["git clean -f", "clean"],
     // TC-04
     ["git push --force origin main", "push --force"],
+    // Regression: force flag after remote still blocked
+    ["git push origin --force", "push --force"],
     // TC-05
     ["git push --force-with-lease", "push --force"],
+    // Regression: absolute git path with trailing force flag still blocked
+    ["/usr/bin/git push origin --force", "push --force"],
     // TC-06
     ["git push --mirror", "--mirror"],
     // TC-07
@@ -68,10 +72,21 @@ describe("PreToolUse hook — Deny patterns", () => {
     ["git rebase main", "rebase"],
     // TC-13
     ["git commit --amend", "commit --amend"],
+    // Regression: --no-verify on commit must be blocked regardless of arg order
+    ['git commit -m "x" --no-verify', "commit --no-verify"],
+    ["/usr/bin/git commit -m x --no-verify", "commit --no-verify"],
+    // TC-24
+    ["git stash push", "stash mutations"],
+    // TC-24b
+    ["git stash", "bare git stash"],
+    // TC-24c
+    ["git stash pop", "stash mutations"],
+    // TC-24d
+    ["git stash apply", "stash mutations"],
     // TC-14
-    ["git stash drop", "stash drop"],
+    ["git stash drop", "stash mutations"],
     // TC-15
-    ["git stash clear", "stash drop/clear"],
+    ["git stash clear", "stash mutations"],
     // TC-16
     ["git worktree add ../foo", "worktree"],
     // TC-17
@@ -123,8 +138,6 @@ describe("PreToolUse hook — Allow patterns", () => {
     ["git push origin feature-branch", "normal push"],
     // TC-23
     ["git stash list", "stash list"],
-    // TC-24
-    ["git stash push", "stash push"],
     // TC-25
     ["git add .", "add"],
     // TC-26

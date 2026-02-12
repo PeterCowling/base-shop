@@ -1,6 +1,7 @@
 import type { Rule } from "eslint";
 
-const TRANSITION_ALL = /(?:^|\s)transition-all(?:\s|$)/;
+// Match transition-all with or without Tailwind variant prefixes (hover:, md:, focus:, etc.)
+const TRANSITION_ALL = /(?:^|\s)(?:[a-z0-9]+:)*transition-all(?:\s|$)/;
 
 const rule: Rule.RuleModule = {
   meta: {

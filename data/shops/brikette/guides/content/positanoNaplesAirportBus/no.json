@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Positano til Napoli lufthavn med buss | Hostel Brikette",
+    "description": "Dør-til-dør-trinn fra Hostel Brikette til Napoli lufthavn via SITA-buss til Sorrento og Curreri-bussen, med billettips og lenker til rutetabeller."
+  },
+  "intro": {
+    "title": "Positano til Napoli lufthavn — buss via Sorrento",
+    "body": "Ta SITA Sud-bussen fra Positano til Sorrento, og bytt til Curreri-bussen til Napoli Capodichino lufthavn. Dette er det enkleste kollektivtilbudet, med hyppige avganger og en uanstrengt overgang på bussstasjonen i Sorrento."
+  },
+  "callouts": {
+    "aside": "Åpne %HOWTO:how-to-get-here|oversikten for Hvordan komme seg hit% for taxi, ferge og alternative reiseruter."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseoversikt",
+      "list": [
+        "Gå til holdeplassen Positano (Chiesa Nuova) utenfor Bar Internazionale.",
+        "Ta SITA-bussen til buss- og togstasjonen i Sorrento.",
+        "Bytt til Curreri-bussen fra Sorrento til Napoli Aeroporto (Capodichino)."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå til holdeplassen i Positano",
+      "list": [
+        "Gå ut av vandrerhjemmet og ned trappene til hovedveien.",
+        "Sving til venstre og fortsett i omtrent 100 meter.",
+        "Bar Internazionale ligger på venstre hånd; SITA-holdeplassen er rett utenfor."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og venting",
+      "list": [
+        "Kjøp en SITA-billett til Sorrento hos Bar Internazionale eller en nærliggende kiosk.",
+        "Behold billetten etter ombordstigning; sjåføren kan stemple eller rive den.",
+        "For Curreri-bussen kan du kjøpe billetter på nett eller på stasjonen (hvis tilgjengelig)."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "På bussstasjonen i Sorrento",
+      "body": "Gå av på hovedstasjonen for buss og tog i Sorrento. Gå fra busslommene og gå om bord på %URL:https://www.curreriviaggi.it/|Curreri Viaggi%-bussen til Napoli Aeroporto (Capodichino). Sjekk den nyeste rutetabellen, og vurder å kjøpe billetter på nett på forhånd i høysesongen."
+    },
+    {
+      "id": "timetables",
+      "title": "Rutetabeller"
+    }
+  ]
+}

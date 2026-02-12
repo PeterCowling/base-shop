@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
 
 import designTokens from "../index.ts";
+import { disabledColors } from "../src/core/disabled.ts";
 
 describe("designTokens Tailwind plugin", () => {
   it("exposes the expected Tailwind theme extensions", () => {
@@ -73,5 +74,20 @@ describe("designTokens Tailwind plugin", () => {
     expect(context.addBase).not.toHaveBeenCalled();
     expect(context.addComponents).not.toHaveBeenCalled();
     expect(context.addUtilities).not.toHaveBeenCalled();
+  });
+});
+
+describe("disabledColors", () => {
+  it("exports expected disabled state tokens", () => {
+    expect(disabledColors).toBeDefined();
+    expect(disabledColors.text).toBe('var(--color-muted-foreground)');
+    expect(disabledColors.background).toBe('var(--color-muted)');
+    expect(disabledColors.border).toBe('var(--color-border)');
+    expect(disabledColors.opacity).toBe('0.5');
+  });
+
+  it("has all expected keys", () => {
+    const keys = Object.keys(disabledColors);
+    expect(keys).toEqual(['text', 'background', 'border', 'opacity']);
   });
 });

@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Salerno to Positano by Ferry | Hostel Brikette",
+    "description": "Salerno to Positano by ferry: schedules, ticket tips, and how to reach Hostel Brikette from the port using porters or the local bus."
+  },
+  "intro": {
+    "title": "Salerno to Positano — Ferry",
+    "body": "Use this guide to travel from Salerno to Positano by ferry. It covers tickets, where to board in Salerno, timetable tips, and how to reach Hostel Brikette from the Positano dock."
+  },
+  "callouts": {
+    "tip": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for buses, mixed routes, and airport transfers."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "list": [
+        "Seasonal ferries run from Salerno to Positano with scenic coastal views.",
+        "Travelmar operates the most frequent services; allow extra time in high season.",
+        "Ferries can be cancelled in bad weather — always check live updates before travel."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets and schedules",
+      "body": "Check latest times and prices on %URL:https://travelmar.it/en|Travelmar% and %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Ferry schedules%.",
+      "list": [
+        "Buy tickets online in advance during peak months.",
+        "Arrive 15–20 minutes before departure to board calmly.",
+        "Keep your ticket handy; staff will scan or tear it before boarding."
+      ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Where to board in Salerno",
+      "list": [
+        "Most services depart Salerno’s Piazza della Concordia (Travelmar).",
+        "Some departures use Molo Manfredi — confirm the terminal on your ticket.",
+        "Follow signage at the waterfront; staff can direct you to the correct pier."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Arriving in Positano",
+      "body": "For a step-by-step route from the dock to our door, read the %LINK:ferryDockToBrikette|Ferry dock → Hostel Brikette, with luggage guide%.",
+      "list": [
+        "You’ll arrive at Positano’s main ferry dock (Spiaggia Grande).",
+        "With luggage, we recommend the porter service or the local Interno bus.",
+        "Walking uphill with heavy bags is not advised in summer heat."
+      ]
+    }
+  ]
+}

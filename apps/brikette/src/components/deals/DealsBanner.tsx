@@ -79,7 +79,7 @@ function DealsBanner({ beds, time, lang }: DealsBannerProps): JSX.Element {
   return (
     <div
       ref={setBannerRef}
-      className="sticky top-0 flex w-full items-center justify-center bg-brand-primary px-6 py-3 text-brand-bg shadow-md motion-safe:animate-slide-down dark:text-brand-text"
+      className="sticky top-0 flex w-full items-center justify-center bg-brand-primary px-6 py-3 text-white shadow-md motion-safe:animate-slide-down"
     >
       <p className="text-center text-sm font-medium sm:text-base">
         {ft(

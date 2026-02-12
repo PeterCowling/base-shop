@@ -17,7 +17,7 @@ export type BookingEmailInput = z.infer<typeof bookingEmailSchema>;
 export const bookingEmailTools = [
   {
     name: "mcp_send_booking_email",
-    description: "Send booking app-link emails via Gmail using MCP tooling.",
+    description: "Create booking app-link email drafts via Gmail using MCP tooling.",
     inputSchema: {
       type: "object",
       properties: {
@@ -41,6 +41,7 @@ export const bookingEmailTools = [
 
 export interface BookingEmailResult {
   success: boolean;
+  draftId?: string;
   messageId?: string;
   subject: string;
   recipients: string[];
@@ -61,9 +62,6 @@ export async function sendBookingEmail(
     ...occupantLinks.map((link, index) => `Guest ${index + 1}: ${link}`),
     "",
     "If you have any questions, just reply to this email.",
-    "",
-    "Best regards,",
-    "Hostel Brikette",
   ];
 
   const bodyText = bodyLines.join("\n");
@@ -80,10 +78,10 @@ export async function sendBookingEmail(
     if (clientResult.needsSetup) {
       throw new Error(
         `Gmail not configured. ${clientResult.error}\n\n` +
-          `To set up Gmail:\n` +
+        `To set up Gmail:\n` +
           `1. Create OAuth credentials in Google Cloud Console\n` +
           `2. Save credentials.json to packages/mcp-server/\n` +
-          `3. Run: cd packages/mcp-server && node --loader ts-node/esm test-gmail-auth.ts`
+          `3. Run: cd packages/mcp-server && pnpm gmail:auth`
       );
     }
     throw new Error(clientResult.error);
@@ -92,14 +90,17 @@ export async function sendBookingEmail(
   const gmail = clientResult.client;
   const raw = createRawEmail(recipients.join(", "), subjectText, bodyText, bodyHtml);
 
-  const response = await gmail.users.messages.send({
+  const response = await gmail.users.drafts.create({
     userId: "me",
-    requestBody: { raw },
+    requestBody: {
+      message: { raw },
+    },
   });
 
   return {
     success: true,
-    messageId: response.data?.id || undefined,
+    draftId: response.data?.id || undefined,
+    messageId: response.data?.message?.id || undefined,
     subject: subjectText,
     recipients,
     bookingRef,

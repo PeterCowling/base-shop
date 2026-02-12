@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Oupptäckta byar på Amalfikusten",
+    "description": "Mindre kända byar på Amalfikusten med tips på transporter, mat och utsikter."
+  },
+  "linkLabel": "Oupptäckta byar på Amalfikusten",
+  "intro": [
+    "Fem tystare Amalfikustbyar värda en omväg, plus hur man når var och en."
+  ],
+  "tocTitle": "On this page",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Ansjovistraditioner och en lugn strand med fungerande fiskebåtar.",
+        "Nå via SITA-buss eller säsongsfärjor från Amalfi eller Salerno."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Platta strandpromenader och älskade konditorier för ett lugnare tempo.",
+        "Anländer med buss eller färja; kombinera med citronspåret mellan tvillingarna."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Charmig pocket piazza strax öster om Amalfi med smala gränder och tillgång till stranden.",
+        "Gå från Amalfi på några minuter eller åk en hållplats med lokalbussen."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Keramikhuvudstad nära Salerno där verkstäder kantar gatorna.",
+        "Ta tåget till Salerno, sedan en kort buss eller färja."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Dramatisk fjord med begränsat strandutrymme — kom tidigt för lugna bilder.",
+        "Använd SITA-bussar mot Amalfi; sommarfärjor stannar ibland i närheten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag besöka flera byar på en dag?",
+      "a": [
+        "Ja – länka Cetara, Vietri och Minori via färja eller buss. Börja tidigt och håll koll på returscheman."
+      ]
+    },
+    {
+      "q": "Do small villages accept cards?",
+      "a": [
+        "Ta med kontanter till kaféer och kiosker; många sätter fortfarande €10 minimum eller förblir endast kontanter."
+      ]
+    }
+  ]
+}

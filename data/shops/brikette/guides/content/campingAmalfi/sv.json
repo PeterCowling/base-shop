@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Camping på Amalfikusten",
+    "description": "Var du kan campa, vad som gäller för att boka och hur du tar dig till leder och stränder."
+  },
+  "linkLabel": "Camping på Amalfikusten",
+  "intro": [
+    "Camping nära Amalfikusten betyder i praktiken särskilda campingplatser utanför centrala Positano — kontrollera regler och tillgänglighet."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Var du kan campa",
+      "body": [
+        "Det finns avsedda campingplatser utanför centrala Positano; kolla lokala regler och lediga platser."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Tillgång & transport",
+      "body": [
+        "Planera för bussar eller promenad från campingplatserna; kustvägarna är smala och parkering begränsad."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett & säkerhet",
+      "body": [
+        "Respektera tystnadstider och eldningsregler; ta med soporna; undvik klippkanter och obevakade områden."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Är vildcamping tillåten?",
+      "a": [
+        "Generellt nej; använd officiella campingplatser och följ anslagna regler."
+      ]
+    }
+  ]
+}

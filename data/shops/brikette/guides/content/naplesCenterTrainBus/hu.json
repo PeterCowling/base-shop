@@ -1,0 +1,83 @@
+{
+  "seo": {
+    "title": "Nápoly központjából Positanóba vonattal, majd busszal | Hostel Brikette",
+    "description": "Lépésről lépésre bemutatjuk, hogyan juthatsz el Nápoly belvárosából a Hostel Brikette-hez a Circumvesuviana vonattal Szorrentóig, majd a SITA busszal Positanóba, jegyvásárlási tippekkel és positanói érkezési fotókkal."
+  },
+  "intro": {
+    "title": "Nápoly központjából Positanóba – vonat, majd busz",
+    "body": "Kövesd ezeket az útmutatókat, hogy Nápoly belvárosából a Circumvesuviana vonattal Szorrentóig, onnan pedig a SITA busszal Positanóba utazz a Hostel Brikette-hez. Az útmutató jegyvásárlási tanácsokat, menetrendi tippeket és fotókat is tartalmaz az érkezés utolsó szakaszáról."
+  },
+  "callouts": {
+    "tip": "Másik útvonal érdekel? Fedezd fel az összes érkezési útmutatót a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk oldalán%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Áttekintés: vonat, majd busz",
+      "body": "Ez az útvonal a leggyorsabb tömegközlekedési kombinációt írja le Nápoly belvárosából: a Circumvesuviana vonatot Szorrentóig, majd a SITA buszt Positanóig. A nápolyi repülőtérről induló utazást nem tartalmazza."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Nápolyi vasútállomás",
+      "body": "A Circumvesuviana Szorrentó felé induló járatai a Napoli Garibaldi állomás alsó szintjéről (a Napoli Centrale alatt) indulnak. Vásárold meg a jegyed, mielőtt leereszkedsz a peronokhoz, ellenőrizd, melyik vágányról indul a járatod, majd szállj fel a Szorrentó felé tartó vonatra."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Szorrento vasútállomás",
+      "body": "Szorrentóba érkezés után hagyd el az állomást, és vásárold meg SITA-buszjegyedet a közeli bárban, újságosnál vagy trafikban — a buszon nem árulnak jegyet. A SITA megálló közvetlenül az állomás előtti lépcső alján található; várd meg az Amalfi felé tartó buszt, és utazz vele Positanóba."
+    },
+    {
+      "id": "timetable",
+      "title": "A SITA-menetrend értelmezése",
+      "body": "A SITA busz menetrendje megtévesztő lehet — az alábbi gyors tippek segítenek megtalálni a megfelelő járatot:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positanói buszmegálló",
+      "list": [
+        "A legközelebbi megálló a Positano (Chiesa Nuova), nagyjából 140 méterre (490 lábra) a hosteltől.",
+        "A Bar Internazionale kávézó/bár előtt található.",
+        "A busz az útszinten tesz le — nem kell hosszú lépcsőkön felmenni hozzánk."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a buszmegállótól"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Mennyibe kerül Nápoly központjából Positanóba vonattal és busszal eljutni?",
+      "a": "A teljes költség körülbelül 7,20 €: 4,60 € a Circumvesuviana vonatért Nápolyból Szorrentóig, plusz 2,60 € a SITA buszért Szorrentóból Positanóba (2026-os árak). Ez a legolcsóbb tömegközlekedési lehetőség."
+    },
+    {
+      "q": "Mennyi idő alatt lehet Nápolyból Positanóba eljutni?",
+      "a": "A teljes utazási idő 2,5–3 óra: 70 perc a vonaton, 50 perc a buszon, plusz 20–40 perc várakozás az átszállásra Szorrentóban. Számolj összesen 3–3,5 órával, hogy figyelembe vedd az esetleges késéseket."
+    },
+    {
+      "q": "Tudok jegyet venni a vonaton vagy a buszon?",
+      "a": "A vonatjegyeket a Napoli Garibaldi állomáson vásárolhatod meg jegyautomatából vagy a pénztárban, de felszállás előtt le kell bélyegezned. A SITA-buszjegyeket nem lehet a buszon megvenni — meg kell venned egy bárban, trafikban vagy újságosnál a szorrentói állomás közelében, mielőtt felszállsz a buszra."
+    },
+    {
+      "q": "Ez az útvonal alkalmas-e sok csomaggal utazóknak?",
+      "a": "Igen, de csúcsidőben nehéz lehet. Mind a vonaton, mind a buszon korlátozott a csomagtartó hely, ezért korán szállj fel, ha nagy táskákkal utazol. A Chiesa Nuova buszmegállótól a hostelig vezető séta sík terepen zajlik és 2 percnél rövidebb, így a csomag kezelése az érkezés után már egyszerűbb. Ha szeretnéd, fontold meg poggyászhordó szolgáltatásunk vagy privát transzfer igénybevételét."
+    },
+    {
+      "q": "Mikor indul az utolsó busz Szorrentóból Positanóba?",
+      "a": "Az utolsó busz időpontja évszaktól függően változik. Nyáron (július–augusztus) az utolsó busz általában 21–22 óra körül indul. Télen (november–március) akár már 19–20 órakor is lehet. Mindig ellenőrizd az aktuális menetrendet a sitasudtrasporti.it oldalon utazás előtt, különösen vasárnap és ünnepnapokon, amikor a járatok ritkábbak."
+    },
+    {
+      "q": "Van közvetlen vonat vagy busz Nápolyból Positanóba?",
+      "a": "Nem létezik közvetlen vonat — Szorrentóban át kell szállnod. A Curreri busz közvetlen kapcsolatot kínál Nápolyból Positanóba, de a menetrend korlátozott (általában napi 2–3 járat). A vonat-busz kombináció gyakrabban közlekedik és olcsóbb."
+    },
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**A sorok olvasása:** Az első oszlop sorai az útvonal mentén különböző buszmegállókat jelölnek.",
+        "**Az oszlopok olvasása:** A menetrend minden egyes tervezett járathoz egy betűt rendel, amelyek minden oszlop fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, keresse a 'G' és 'H' oszlopokat.",
+        "**A sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokat, hogy mikor vannak buszok, és mikor érkeznek meg a célállomásra. Például a Sorrento indulási idejének megtekintéséhez nézze meg a Sorrento sort. A Positano (Chiesa Nuova / Bar Internazionale) érkezési idejének megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
+}

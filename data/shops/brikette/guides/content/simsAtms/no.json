@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM og minibanker i Positano",
+    "description": "Hvor du får SIM/eSIM, dekning og tilgjengelige minibanker og gebyrer i Positano."
+  },
+  "linkLabel": "SIM/eSIM og minibanker i Positano",
+  "intro": [
+    "Hold deg online og klar for kontanter ved å sette opp SIM-abonnementet ditt før du ankommer og planlegge minibankstopp med lavere avgifter."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Aktiver en eSIM",
+      "body": [
+        "Last inn et italiensk eSIM (TIM, Vodafone eller pålitelige reiseleverandører) mens du er på vandrerhjemmets Wi-Fi eller før du flyr; dekningen er sterkest på terrasser og langs SS163.",
+        "Velg minst 10 GB for en uke hvis du streamer musikk eller laster opp bilder; overvåke bruken fordi påfylling i byen er begrenset."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Hente et fysisk SIM",
+      "body": [
+        "Omvei via Sorrento, Salerno eller Napoli Centrale for transportørbutikker; ta med passet ditt og forvent en startpakke på €10–20 € med ID-registrering.",
+        "Tabacchi selger noen ganger klare til å aktivere SIM-kort i høysesongen, men tilgjengeligheten svinger – kjøp når du ser dem."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "Minibankstrategi",
+      "body": [
+        "Foretrekk bankminibanker som Intesa Sanpaolo for €2–€3 avgifter; uavhengige maskiner i nærheten av stranden kan lade dobbelt med dårlige valutakurser.",
+        "Ta ut €100–€150 per gang og del sedler mellom dagbaggen og en sikker lomme i bagasjen."
+      ]
+    }
+  ],
+  "tips": [
+    "Skjermbilde QR-koder og aktiveringsdetaljer før du forlater Wi-Fi, slik at du kan installere eSIM på nytt hvis telefonen tilbakestilles.",
+    "Behold et bærbart batteri – områder med svakt signal tvinger telefoner til å øke antennene og tappe strøm raskere."
+  ],
+  "faqs": [
+    {
+      "q": "Rekker dekningen til Capri og Amalfi?",
+      "a": [
+        "Ja, men forvent lavere fart offshore; last ned spillelister og kart før du går ombord på fergene."
+      ]
+    },
+    {
+      "q": "Er minibanker pålitelige sent på kvelden?",
+      "a": [
+        "Banklobbyer holder åpent 24/7, men hvis en automat går tom for kontanter, kan det hende du må kjøre til Amalfi eller Sorrento neste morgen."
+      ]
+    }
+  ]
+}

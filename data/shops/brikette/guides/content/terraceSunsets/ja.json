@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "ポジターノ：テラスで夕日（手軽）",
+    "description": "Hostel Briketteのテラスで夕日：いつ来ると良いか。"
+  },
+  "linkLabel": "テラスの夕日",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "高い長時間ディナーを避けたいなら、ホステルのテラスが最も手軽です。"
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "到着タイミング",
+      "body": [
+        "ハイシーズンは日没の30〜45分前が目安。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "テラスから眺めるポジターノの夕日"
+        }
+      ]
+    }
+  ],
+  "fallback": "少し早めに来て、あとはシンプルに。"
+}

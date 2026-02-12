@@ -1,0 +1,129 @@
+{
+  "seo": {
+    "title": "Kulinarikführer Amalfiküste",
+    "description": "Was du probieren solltest: Meeresfrüchte-Klassiker, Zitronensüßes und DOC-Weine."
+  },
+  "linkLabel": "Kulinarikführer Amalfiküste",
+  "intro": [
+    "Ein schneller Überblick über die Küche der Amalfiküste: Meeresfrüchte-Klassiker, zitronige Desserts und wo du sie in Positano probierst.",
+    "Nutze den Guide als Spickzettel, bevor du Speisekarten studierst oder Nachbarorte für regionale Spezialitäten besuchst."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Meeresfrüchte-Klassiker",
+      "body": [
+        "Spaghetti alle vongole, Scialatielli ai frutti di mare und gegrillter Fang des Tages stehen fast überall auf der Karte.",
+        "Frag nach Tagesempfehlungen – saisonale Zutaten wie Erbsen, Kirschtomaten oder Zucchiniblüten tauchen oft auf Tafeln auf."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Märkte & schnelle Happen",
+      "body": [
+        "Morgendliche Märkte und Delitheken bieten Focaccia, frittierte Cuoppi und frische Mozzarella für unkomplizierte Mittagessen.",
+        "Nimm Zitrusmarmelade, Colatura di alici und getrocknete Kräuter als Geschmacksbooster fürs Picknick mit."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserts & Gebäck",
+      "body": [
+        "Delizia al limone, Babà al limoncello und Sfogliatella harmonieren perfekt mit einem Espresso nach dem Essen.",
+        "Gelaterien rotieren Zitronensorbet, Granita und Crema al limone – ideal an heißen Nachmittagen."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Getränke & Pairings",
+      "body": [
+        "Bestell gekühlten Limoncello oder Crema di limoncello als Digestif nach dem Essen.",
+        "DOC-Weine aus Tramonti oder der Costa d’Amalfi (Furore, Ravello) passen hervorragend zu Meeresfrüchten und zitronigen Gerichten."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Bestell-Etikette",
+      "body": [
+        "Das Coperto deckt Brot und Gedeck ab – Trinkgeld gibst du nur bei herausragendem Service.",
+        "Teilt Speisen im Family-Style, informiert das Personal jedoch vorab, damit Ablauf und Geschirr passen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Können Vegetarier hier gut essen?",
+      "a": [
+        "Ja – such nach Parmigiana di melanzane, Gnocchi alla sorrentina und Salaten mit lokalem Käse sowie gegrilltem Gemüse."
+      ]
+    },
+    {
+      "q": "Muss ich beliebte Trattorien reservieren?",
+      "a": [
+        "In der Hochsaison ja, besonders für Terrassenplätze oder Sonnenuntergang – mittags oder in der Zwischensaison klappt oft der Walk-in."
+      ]
+    }
+  ],
+  "itemListTitle": "Signature-Gerichte & wo du sie probierst",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Fixmenü auf dem Bauernhof mit hausgemachter Pasta, Grillgerichten und weiter Terrassen-Aussicht."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Tagescafé für zitronige Salate, kaltgepresste Säfte und hausgemachte Desserts."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Klassische Trattoria mit Meeresfrüchte-Pasta, frittierten Antipasti und saisonalen Spezialitäten seit 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Bäckerei für Delizia al limone, Babà al limoncello und Gebäck to-go für Picknicks an den Klippen."
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Klassiker"
+      },
+      {
+        "href": "#sweets",
+        "label": "Süßes"
+      },
+      {
+        "href": "#drinks",
+        "label": "Getränke"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Klassiker",
+        "body": [
+          "Meeresfrüchte-Pasta, gegrillter Fang und zitronige Salate mit lokalem Olivenöl gehören überall dazu.",
+          "Frag nach Tagesgerichten – Saisonprodukte wie Zucchiniblüten oder Kirschtomaten stehen oft auf Tafeln."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Süßes",
+        "body": [
+          "Probiere delizia al limone, Babà al limoncello und Zitronensorbet als zitroniges Dessert-Trio.",
+          "Kombiniere Gebäck mit Espresso oder Limoncello-Digestiv, um das Essen wie ein Local abzurunden."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Getränke",
+        "body": [
+          "Genieße Limoncello oder Crema di limone als Digestif und entdecke Costa-d’Amalfi-DOC-Weine aus Tramonti, Ravello oder Furore.",
+          "Wechsle mit Sprudelwasser, um frisch zu bleiben – Sommerabende bleiben lange warm."
+        ]
+      }
+    ]
+  }
+}

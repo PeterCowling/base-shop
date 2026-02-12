@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Trasporti con budget ridotto",
+    "description": "Come pianificare spostamenti convenienti con abbonamenti, carnet e combinazioni di mezzi pubblici."
+  },
+  "linkLabel": "Trasporti con budget ridotto",
+  "intro": [
+    "Mantieni bassi i costi di viaggio combinando pass, partenze fuori punta e transfer condivisi quando serve."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Scegli il pass giusto",
+      "body": [
+        "Usa il pass giornaliero UNICO Costiera (12,40 €) per corse illimitate SITA tra Sorrento e Salerno: convalida la prima corsa e tieni il biglietto a portata di mano per i controlli.",
+        "Se prevedi due o più tratte in traghetto nella stessa giornata, confronta i biglietti combinati di operatori come Travelmar: spesso includono Amalfi e Positano a tariffa ridotta."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Combina i mezzi con intelligenza",
+      "body": [
+        "Abbina un solo traghetto ai bus per risparmiare ma goderti comunque la vista: viaggia via mare al mattino e torna in autobus quando i prezzi salgono.",
+        "Condividi taxi per rientri notturni quando i bus non circolano: dividere 80 € in quattro è meglio che attendere ore la corsa successiva."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Acquista in anticipo quando conviene",
+      "body": [
+        "Prenota in anticipo i treni Trenitalia o Italo da Roma/Napoli per le tariffe più basse; i regionali verso Sorrento hanno prezzo fisso.",
+        "Riserva navette aeroportuali (Curreri, Pintour) online per assicurarti il posto nei weekend di punta."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Risparmi sull'ultimo miglio",
+      "body": [
+        "All’arrivo prendi l’autobus SITA fino a Chiesa Nuova e scendi a piedi invece di ingaggiare un facchino: con bagagli gestibili bastano 15 minuti.",
+        "Usa i depositi bagagli vicino al molo invece dei transfer privati se hai check-out tardivo: 7–10 € battono un taxi extra."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaggia prima delle 08:30 o dopo le 19:00 quando i bus sono più vuoti e sali a bordo senza stress.",
+    "Fai screenshot o stampa i biglietti: il Wi-Fi può saltare proprio quando salgono i controllori."
+  ],
+  "faqs": [
+    {
+      "q": "I pass bus convengono fuori stagione?",
+      "a": [
+        "Sì se fai tre o più corse al giorno. Altrimenti paga singole: gli orari sono ridotti ma le tariffe restano basse."
+      ]
+    },
+    {
+      "q": "Devo convalidare i biglietti del traghetto?",
+      "a": [
+        "La maggior parte degli operatori scansiona i QR code, ma porta una stampa se prevedi condizioni umide che possono confondere lo schermo."
+      ]
+    }
+  ]
+}

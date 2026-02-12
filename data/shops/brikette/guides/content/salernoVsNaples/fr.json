@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Arriver par Salerne vs Naples",
+    "description": "Comparer l'arrivée à Salerne ou Naples : temps de trajet, options de transport et simplicité."
+  },
+  "linkLabel": "Arriver par Salerne vs Naples",
+  "intro": [
+    "Les deux portes d'entrée fonctionnent. En été, Salerne l'emporte souvent discrètement grâce aux ferries supplémentaires et aux files plus calmes."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Quand Salerne gagne",
+      "body": [
+        "Les ferries saisonniers rejoignent directement Positano ou Amalfi avec moins de foule qu'aux quais de Naples.",
+        "Associez l'aéroport Salerno Costa d'Amalfi (QSR) à la navette Airlink pour des transferts simplifiés."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Quand Naples prend l'avantage",
+      "body": [
+        "Fiabilité hors saison : les trains à grande vitesse et la liaison SITA via Sorrente fonctionnent quand les ferries s'arrêtent.",
+        "Les arrivées tardives trouvent davantage d'hébergements et d'options de transport autour de Naples."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Bagages et escaliers",
+      "body": [
+        "Descendez à Chiesa Nuova pour limiter les marches jusqu'à l'auberge.",
+        "Vous arrivez en ferry ? Réservez un porteur sur le quai ou montez avec le bus SITA plutôt que de porter vos valises."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "L'aéroport de Salerne (QSR) vaut-il le coup ?",
+      "a": [
+        "De plus en plus, oui pour l'été : combinez un vol vers QSR avec la navette Airlink et un ferry si la mer est calme, tout en gardant le bus en plan B si la météo se dégrade."
+      ]
+    }
+  ]
+}

@@ -1,8 +1,4 @@
 /** @jest-environment node */
-import { coreEnv } from "@acme/config/env/core";
-
-import { resolveConfig } from "../resolveConfig";
-
 import {
   readFile,
   resetReverseLogisticsMocks,
@@ -10,6 +6,12 @@ import {
 
 // Override the core env module with a simple mutable object for these tests
 jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
+
+// eslint-disable-next-line import/first -- imports must follow jest.mock declarations
+import { coreEnv } from "@acme/config/env/core";
+
+// eslint-disable-next-line import/first
+import { resolveConfig } from "../resolveConfig";
 
 describe("resolveConfig", () => {
   beforeEach(() => {

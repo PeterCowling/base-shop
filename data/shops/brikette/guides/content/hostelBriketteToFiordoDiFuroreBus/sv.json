@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fiordo di Furore by bus",
+    "description": "Steg‑för‑steg‑väg till Fiordo di Furore från Hostel Brikette med SITA-buss, inklusive var du köper biljetter och hur du tar dig ner till stranden."
+  },
+  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "intro": [
+    "Följ denna rutt för att resa från Hostel Brikette till Fiordo di Furore på SITA-bussen utan att missa ett stopp eller komma oförberedd.",
+    "Fjorden har inga biljettmöjligheter eller butiker, så dessa steg täcker biljetter, närmaste busshållplats och trappan som leder ner till stranden."
+  ],
+  "warningsTitle": "Before you leave the hostel",
+  "warnings": [
+    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
+    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-bus-stop",
+      "title": "Walk to the Chiesa Nuova bus stop",
+      "body": [
+        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
+        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
+        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+      ]
+    },
+    {
+      "id": "buy-bus-tickets",
+      "title": "Buy round-trip bus tickets",
+      "body": [
+        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
+        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Wait on the seaward side of the road",
+      "body": [
+        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
+        "Arrive early and give yourself time for a second bus in case the first one is already full."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Ride the SITA bus towards Amalfi",
+      "body": [
+        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
+        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "Take the stairs down to the beach",
+      "body": [
+        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
+        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
+        "Använd samma trappa för att gå tillbaka till vägen när du är redo att gå."
+      ]
+    }
+  ],
+  "essentialsTitle": "Det viktigaste",
+  "essentials": [
+    "Solkräm.",
+    "Handduk.",
+    "Solglasögon."
+  ],
+  "typicalCostsTitle": "Typiska kostnader",
+  "typicalCosts": [
+    "Bussbiljett: 10 euro."
+  ],
+  "tipsTitle": "Extra tips",
+  "tips": [
+    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
+    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
+    "Spara %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette returguide% för din resa tillbaka.",
+    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+  ],
+  "faqsTitle": "Common questions",
+  "faqs": [
+    {
+      "q": "Behöver jag verkligen köpa en returbiljett i förväg?",
+      "a": [
+        "Ja. Förare förväntar sig validerade SITA-biljetter och det finns inga maskiner eller butiker på stranden, så köp båda benen i Positano innan du går ombord."
+      ]
+    },
+    {
+      "q": "Vad ska jag göra om bussen är full när den kommer?",
+      "a": [
+        "Vänta på nästa schemalagda trafik och håll ett öga på tidtabellen — under högsäsong är det normalt att en eller två bussar passerar innan utrymmet öppnas."
+      ]
+    },
+    {
+      "q": "How will I recognise the right stop?",
+      "a": [
+        "Efter att bussen korsat den välvda bron över fjorden stannar den bredvid bilräcket. Håll utkik efter brovyerna, lyssna efter föraren och använd Google Maps \\\\\"JH73+PQ Furore\\\\\"-stift som backup."
+      ]
+    }
+  ]
+}

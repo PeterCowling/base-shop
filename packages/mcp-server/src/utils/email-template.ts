@@ -57,6 +57,22 @@ export interface EmailTemplateOptions {
   subject?: string;
 }
 
+function splitGreetingFromBody(bodyText: string): {
+  greetingFromBody?: string;
+  contentWithoutGreeting: string;
+} {
+  const normalized = bodyText.trim();
+  const greetingMatch = normalized.match(/^Dear\s+[^,\n]+,\s*/i);
+  if (!greetingMatch) {
+    return { contentWithoutGreeting: normalized };
+  }
+
+  return {
+    greetingFromBody: greetingMatch[0].trim(),
+    contentWithoutGreeting: normalized.slice(greetingMatch[0].length).trimStart(),
+  };
+}
+
 function pictureHtml(
   avifUrl: string,
   pngUrl: string,
@@ -77,8 +93,13 @@ function pictureHtml(
  */
 export function generateEmailHtml(options: EmailTemplateOptions): string {
   const { recipientName, bodyText, includeBookingLink = false, subject } = options;
-  const greeting = recipientName ? `Dear ${recipientName},` : "Dear Guest,";
-  const bodyHtml = textToHtmlParagraphs(bodyText);
+  const split = splitGreetingFromBody(bodyText);
+  const greeting = split.greetingFromBody
+    ? (recipientName && /^Dear\s+Guest,?$/i.test(split.greetingFromBody)
+      ? `Dear ${recipientName},`
+      : split.greetingFromBody)
+    : (recipientName ? `Dear ${recipientName},` : "Dear Guest,");
+  const bodyHtml = textToHtmlParagraphs(split.contentWithoutGreeting);
   const { colors } = EMAIL_CONFIG;
 
   const bookingCta = includeBookingLink
@@ -154,7 +175,6 @@ export function generateEmailHtml(options: EmailTemplateOptions): string {
 
           <tr>
             <td style="background-color: ${colors.signature}; padding: 20px 30px 30px 30px; font-family: Arial, sans-serif;">
-              <p style="margin: 0 0 15px 0; text-align: center; font-size: 14px;">With warm regards,</p>
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td align="center" style="width: 50%;">
@@ -164,8 +184,6 @@ export function generateEmailHtml(options: EmailTemplateOptions): string {
                       "Cristiana's Signature",
                       "width: 200px; height: auto;"
                     )}
-                    <div style="font-size: 14px;">Cristiana Marzano Cowling</div>
-                    <div style="font-size: 12px;">Owner</div>
                   </td>
                   <td align="center" style="width: 50%;">
                     ${pictureHtml(
@@ -174,8 +192,6 @@ export function generateEmailHtml(options: EmailTemplateOptions): string {
                       "Peter's Signature",
                       "width: 200px; height: auto;"
                     )}
-                    <div style="font-size: 14px;">Peter Cowling</div>
-                    <div style="font-size: 12px;">Owner</div>
                   </td>
                 </tr>
               </table>

@@ -4,8 +4,8 @@ import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildTagDefinedTermSets, buildTagDictionary, type TagDictionary } from "@/utils/tags";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { buildTagDefinedTermSets, buildTagDictionary, type TagDictionary } from "@/utils/tags";
 
 export interface GuidesTagListItem {
   url: string;

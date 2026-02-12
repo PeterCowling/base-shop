@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 
 import { useState } from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { type PaymentMethod,PaymentMethodSelector } from "../PaymentMethodSelector";
 
@@ -25,9 +26,9 @@ describe("PaymentMethodSelector", () => {
     );
   }
 
-  it("fires onChange with the selected value and renders icons", () => {
+  it("fires onChange with the selected value and renders icons", async () => {
     const handle = jest.fn();
-    render(<Wrapper onChange={handle} />);
+    const { container } = render(<Wrapper onChange={handle} />);
 
     expect(screen.getByTestId("card-icon")).toBeInTheDocument();
     expect(screen.getByTestId("paypal-icon")).toBeInTheDocument();
@@ -36,6 +37,7 @@ describe("PaymentMethodSelector", () => {
     fireEvent.click(paypalRadio);
 
     expect(handle).toHaveBeenCalledWith("paypal");
+
     expect(paypalRadio.checked).toBe(true);
   });
 });

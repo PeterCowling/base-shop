@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { act, renderHook } from '@testing-library/react';
+
 import { useDebounce } from './useDebounce';
 
 describe('useDebounce', () => {

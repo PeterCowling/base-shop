@@ -19,7 +19,7 @@
  * }
  */
 
-import { IndexedById } from './indexedById';
+import { type IndexedById } from './indexedById';
 
 /**
  * TxType: enumerates possible transaction types.

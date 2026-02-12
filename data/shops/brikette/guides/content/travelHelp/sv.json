@@ -1,0 +1,126 @@
+{
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "seo": {
+    "title": "Resehjälp Positano | Hostel Brikette",
+    "description": "Tvåminutersguide för resor till Positano: hur du tar dig till Hostel Brikette, vad du ska göra om du är sen, och länkar till våra transport- och dagsturerguider."
+  },
+  "linkLabel": "Resehjälp Positano | Hostel Brikette",
+  "intro": [
+    "Resehjälp Positano: de flesta resvägar går via Sorrento. I Positano anländer du vanligtvis till Chiesa Nuova (buss) eller Spiaggia Grande (färja).",
+    "Använd den här sidan för att välja rätt guide. Våra ruttguider täcker biljetter, hållplatser, bagage och alternativa rutter. Våra Upplevelseguider täcker hela dagsturer från dörr till dörr."
+  ],
+  "sections": [
+    {
+      "id": "quick-start",
+      "title": "Snabbstart (läs detta först)",
+      "body": [
+        "**Standard ankomstplan:** Ta dig till Sorrento, sedan tar du SITA-bussen till Positano. Planera ~2 till 3,5 timmar från Neapel (tider varierar med säsong).",
+        "**Köp bussbiljetter före ombordstigning:** SITA-bussar säljer inte alltid biljetter ombord på ett tillförlitligt sätt. I Sorrento, köp på en tabacchi/bar innan du ställer dig i kö.",
+        "**Spara det viktigaste:** ta skärmdump på tidtabeller och dina biljetter. Skriv ner hostellets adress. Signalen kan försvinna på kustvägen.",
+        "**Ankomst med färja:** du landar vid Spiaggia Grande. Sista steget är att gå uppför med ditt bagage. Om du vill ha den enklaste ankomstdagen, använd %LINK:porterServices|bärartjänster%.",
+        "**Om du är sen:** meddela oss så snart du vet din beräknade ankomst så att vi kan planera incheckningen: %LINK:checkinCheckout|Incheckning & utcheckning%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Lokal busshållplats i Positano"
+        },
+        {
+          "src": "/img/directions/ferry-dock-interno-yellow.webp",
+          "alt": "Interno Positano lokalbuss vid färjekajen"
+        }
+      ]
+    },
+    {
+      "id": "travel-checklist",
+      "title": "Före resan (enkel checklista)",
+      "body": [
+        "- Ladda din telefon eller ta med en powerbank.",
+        "- Ha med dig vatten och ett litet mellanmål.",
+        "- Ta med lite kontanter för små butiker och biljettluckor.",
+        "- Ha din biljett i en lättåtkomlig ficka för kontroller.",
+        "- Ha bra skor. Det finns många trappor.",
+        "- Om du har stora väskor, planera för trappor. Bärare hjälper till.",
+        "- Ta med en lätt jacka. Nätterna kan kännas svala vid havet.",
+        "- Spara en kartlänk. Det hjälper när du anländer sent.",
+        "- Om du blir åksjuk, sitt nära framsidan av bussen och titta ut genom fönstret."
+      ]
+    },
+    {
+      "id": "how-to-get-here",
+      "title": "Hur du tar dig hit (vad ruttguiderna täcker)",
+      "body": [
+        "Börja med %HOWTO:how-to-get-here|sidan Hitta hit% om du väljer mellan buss, färja eller en kombination.",
+        "Varje ruttguide är steg-för-steg. Den täcker:",
+        "- var du köper biljetter (och vad du ska ta skärmdump på)",
+        "- vilken hållplats du ska använda i Positano (ofta Chiesa Nuova, närmast hostellet)",
+        "- bagagetips för fullsatta bussar och färjor",
+        "- säsongsanteckningar (sommarlinjer vs vintertrafik)",
+        "- en alternativ rutt för grovt hav eller missade anslutningar.",
+        "",
+        "**Mest använda ankomstrutter:**",
+        "- %HOWTO:naples-airport-positano-bus|Neapels flygplats → Positano (buss via Sorrento)% — Curreri-shuttle till Sorrento, sedan SITA till Positano.",
+        "- %HOWTO:naples-center-train-bus|Neapels centrum → Positano (tåg + buss)% — tåg till Sorrento, sedan SITA till Positano.",
+        "- %HOWTO:naples-center-positano-ferry|Neapels centrum → Positano (färja)% — utmärkt när den går; ha en reservplan för sjöväder.",
+        "- %HOWTO:salerno-positano-ferry|Salerno → Positano (färja)% — ett bra alternativ under säsong.",
+        "- %HOWTO:sorrento-positano-bus|Sorrento → Positano (buss)% — nyckellänken för många planer.",
+        "",
+        "**Att lämna Positano efter din vistelse:**",
+        "- %HOWTO:positano-naples-airport-bus|Positano → Neapels flygplats (kollektivtrafik)% — planera extra marginal för anslutningar.",
+        "- %HOWTO:positano-naples-center-bus-train|Positano → Neapels centrum (buss + tåg)% — vanligt när färjor inte går.",
+        "- %HOWTO:positano-naples-center-ferry|Positano → Neapels centrum (färja)% — snabbast när havet är lugnt."
+      ]
+    },
+    {
+      "id": "last-10-minutes",
+      "title": "Dina sista 10 minuter: färjekaj eller busshållplats → hostellet",
+      "body": [
+        "**Ankomst med buss:** de flesta bussar stannar vid Chiesa Nuova (nära Bar Internazionale). Därifrån är det en kort promenad till hostellet. Använd: %LINK:chiesaNuovaArrivals|Chiesa Nuova → Hostel Brikette (ankomster)% och %LINK:chiesaNuovaDepartures|Hostel Brikette → Chiesa Nuova (avgångar)%.",
+        "",
+        "**Ankomst med färja:** följ den bagagevänliga rutten från kajen. Om du inte reser lätt, läs detta innan du börjar klättra: %LINK:ferryDockToBrikette|Färjekaj → Hostel Brikette (med bagage)%.",
+        "",
+        "**Resor med tungt bagage:** Positano är trappor och branta gränder. Om du vill ha den enklaste ankomstdagen, kombinera kaj-/bussvägbeskrivningarna ovan med %LINK:porterServices|bärartjänster%."
+      ]
+    },
+    {
+      "id": "delays-cancellations",
+      "title": "Om något går fel (förseningar, grovt hav, missade anslutningar)",
+      "body": [
+        "**Färjeinställningar:** om havet är grovt kan färjor stanna med kort varsel. Känn till din reservrutt i förväg. Börja här: %LINK:ferryCancellations|Färjeinställningar & väder% och %HOWTO:how-to-get-here|Hitta hit-översikten%.",
+        "",
+        "**Missad anslutning i Sorrento:** du kan (1) vänta på nästa SITA-buss, (2) byta till en färja om den går, eller (3) dela en taxi om ni är en grupp. Ruttguiderna ovan visar vanliga köpunkter och tidsmarginaler.",
+        "",
+        "**Sen ankomst till hostellet:** meddela oss så snart du vet din beräknade ankomst så att vi kan planera din incheckning: %LINK:checkinCheckout|Incheckning & utcheckning%."
+      ]
+    },
+    {
+      "id": "popular-excursions",
+      "title": "Populära dagsturer (från dörr till dörr-vägbeskrivningar)",
+      "body": [
+        "Dessa Upplevelseguider fokuserar på grunderna: första avgångar, vilken kaj/hållplats att använda, vad man ska packa, och vanliga returresemisstag.",
+        "",
+        "- %LINK:capriDayTrip|Dagstur till Capri från Positano% — resplan + länkar till färjvägbeskrivningar ut/retur.",
+        "- %LINK:pathOfTheGods|Gudarnas stig (Sentiero degli Dei)% — välj ditt bästa tillvägagångssätt (buss, färja + buss, eller Nocelle-alternativet).",
+        "- %LINK:positanoPompeii|Positano → Pompeji dagstur% — buss till Sorrento + lokaltåg, med tid- och folkmassetips.",
+        "- %LINK:dayTripsAmalfi|Bästa dagsturerna från Positano% — en snabbväljare för Capri, Pompeji, Amalfi/Ravello och Sorrento.",
+        "",
+        "För stad-till-stad-förflyttningar hjälper dessa transportguider: %HOWTO:positano-amalfi-ferry|Positano → Amalfi (färja)%, %HOWTO:positano-amalfi-bus|Positano → Amalfi (buss)%, %HOWTO:positano-ravello-ferry-bus|Positano → Ravello (färja + buss)%."
+      ]
+    }
+  ],
+  "faqsTitle": "Vanliga frågor om resehjälp",
+  "faqs": [
+    {
+      "q": "Var bör jag sikta på att anlända i Positano?",
+      "a": [
+        "Om du kommer med SITA-buss, sikta på hållplatsen Chiesa Nuova (nära Bar Internazionale). Det är den närmaste och mest bekväma hållplatsen för Hostel Brikette. Om du kommer med färja anländer du till Spiaggia Grande (huvudstranden/kajen) och går sedan uppför till hostellet."
+      ]
+    },
+    {
+      "q": "Behöver jag boka transport i förväg?",
+      "a": [
+        "Under högsäsong (särskilt helger) hjälper det att planera tidigare avgångar och vara vid kajen/busshållplatsen tidigt. Färjor kan bli fullbokade vid populära tider, och bussköerna kan bli långa. Om du föredrar flexibilitet, håll en alternativ rutt i minnet från %HOWTO:how-to-get-here|Hitta hit-översikten%."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Autobus powrotny do Hostel Brikette z plaży Arienzo",
+    "description": "Wejdź z plaży na drogę, jedź autobusem z powrotem w kierunku Positano, wysiądź przy Bar Internazionale/Chiesa Nuova, a następnie podążaj krótkimi wskazówkami z powrotem do Hostel Brikette."
+  },
+  "linkLabel": "Autobus powrotny do Hostel Brikette z plaży Arienzo",
+  "intro": [
+    "Skanuj, aby udostępnić",
+    "Wskazówka: Rozkład jazdy autobusów. Zauważ, że rozkład zawiera czasy dla Positano, ale nie dla Arienzo. Przystanek autobusowy Arienzo znajduje się około 2–5 minut przed Sponda.",
+    "Ważne! Jeśli nie masz biletu autobusowego na powrót, możesz wrócić do Sponda i tam wsiąść do autobusu lub skorzystać z wodnej łodzi wahadłowej z powrotem do głównej plaży w Positano. Pamiętaj, w pobliżu plaży Arienzo nie ma sprzedawców biletów, dlatego ważne jest, aby zaplanować z wyprzedzeniem i kupić bilety na powrót z wyprzedzeniem.",
+    "Wskazówka: Zobacz nasz %LINK:arienzoBeachClub|Przewodnik po plaży Arienzo%",
+    "Wskazówka: Zobacz nasz %LINK:positanoBeaches|Przegląd plaż%"
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Idź do przystanku autobusowego",
+      "body": [
+        "Aby złapać autobus z powrotem do hostelu, wejdź po schodach z plaży na drogę i poszukaj przystanku autobusowego po przeciwnej stronie drogi. Znak przystanku autobusowego jest niebieski i biały, zamontowany na metalowym słupku (patrz obraz dla odniesienia). Czekaj na przystanku na przyjazd autobusu."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Jedź autobusem",
+      "body": [
+        "Liczba przystanków, na których autobus się zatrzyma, zanim będziesz musiał wysiąść, będzie się różnić. Odległość, którą musisz przejechać, wynosi około 3 km / 1,9 mili."
+      ]
+    },
+    {
+      "id": "get-off-bus",
+      "title": "Wysiądź z autobusu",
+      "body": [
+        "Wysiadasz na przystanku Bar Internazionale/Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Idź do hostelu",
+      "body": [
+        "Wskazówki:",
+        "* Kontynuuj w kierunku, w którym jechał autobus, z którego właśnie wysiadłeś, przez nieco ponad 100 m / 330 stóp.",
+        "* Weź schody do głównego wejścia hostelu."
+      ]
+    }
+  ],
+  "tipsTitle": "Wskazówki dotyczące autobusów",
+  "tips": [
+    "Wydrukowane rozkłady jazdy wymieniają tylko przystanki w Positano; spodziewaj się Arienzo około 2–5 minut przed Positano Sponda w drodze powrotnej.",
+    "W pobliżu plaży Arienzo nie ma sprzedawcy biletów. Kup bilet powrotny w mieście z wyprzedzeniem lub przygotuj się na spacer do Sponda, aby wsiąść tam, lub weź wodną łódź wahadłową z powrotem do głównej plaży w Positano.",
+    "Przeczytaj nasz %LINK:arienzoBeachClub|Przewodnik po plaży Arienzo%, aby poznać obiekty, łodzie wahadłowe i wskazówki planowania.",
+    "Przeglądaj %LINK:positanoBeaches|Przegląd plaż%, aby porównać inne zatoki i zaplanować przyszłe wizyty."
+  ]
+}

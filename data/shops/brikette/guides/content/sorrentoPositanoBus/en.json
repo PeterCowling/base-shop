@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Sorrento to Positano by Bus | Hostel Brikette",
+    "description": "Step-by-step from Sorrento to Hostel Brikette via SITA bus to Positano (Chiesa Nuova): tickets, timetable tips, and how to reach the hostel from the stop."
+  },
+  "intro": {
+    "title": "Sorrento to Positano — SITA Bus",
+    "body": "Use this guide when travelling from Sorrento to Positano. You’ll take the SITA Sud bus and get off at Positano (Chiesa Nuova), the closest stop to the hostel. We cover ticket basics, how to read the timetable, and how to reach the hostel from the stop."
+  },
+  "callouts": {
+    "tip": "Need every transport option? %HOWTO:how-to-get-here|How to Get Here overview% for ferries, taxi info, and alternatives."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Journey overview",
+      "body": "Allow 1–1.5 hours in high season. Buses run frequently between Sorrento and Positano. Buy your ticket before boarding and have it ready for validation."
+    },
+    {
+      "id": "tickets",
+      "title": "Tickets and validation",
+      "body": "SITA (SITA Sud) operates this route. Purchase tickets at newsstands or tabacchi. Present your ticket to the driver when boarding; keep it until journey end. Validate before use where required."
+    },
+    {
+      "id": "timetable",
+      "title": "Reading the timetable",
+      "list": [
+        "The rows in the first column list each bus stop along the route.",
+        "Columns correspond to scheduled journeys labelled with letters.",
+        "Travel Monday to Saturday? Use columns “F” and “G”.",
+        "Travel on Sunday or a public holiday? Use columns “G” and “H”."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving at Positano (Chiesa Nuova)",
+      "list": [
+        "There are two SITA stops listed for Positano: “Sponda” and “Chiesa Nuova”.",
+        "For the hostel, “Positano (Chiesa Nuova)” is the correct stop on Via G. Marconi.",
+        "The stop sits outside the café/bar “Bar Internazionale”."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Walk to Hostel Brikette",
+      "list": [
+        "Walk a little over 100 metres (330 feet) along Via G. Marconi.",
+        "Look for our sign above the second-floor terrace on your right.",
+        "Turn right up the steps to reach the hostel’s main door."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How do I read the SITA bus timetable?",
+      "a": [
+        "**Reading the Rows:** The rows in the first column represent different bus stops along the route.",
+        "**Reading the Columns:** The timetable assigns an alphabetical letter to each scheduled journey, which are listed as headers in each column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
+        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "guestProfile": {
+    "goalsLabel": "[IT] Goals Label",
+    "intent": {
+      "mixed": "[IT] Mixed",
+      "quiet": "[IT] Quiet",
+      "social": "[IT] Social"
+    },
+    "intentLabel": "[IT] Intent Label",
+    "interestsLabel": "[IT] Interests Label",
+    "pace": {
+      "active": "[IT] Active",
+      "activeDesc": "[IT] Active Desc",
+      "relaxed": "[IT] Relaxed",
+      "relaxedDesc": "[IT] Relaxed Desc"
+    },
+    "paceLabel": "[IT] Pace Label",
+    "saveCta": "Salva",
+    "skipCta": "[IT] Skip",
+    "title": "Titolo"
+  },
+  "handoff": {
+    "cta": "[IT] ",
+    "highlights": {
+      "connect": {
+        "description": "Descrizione",
+        "title": "Titolo"
+      },
+      "explore": {
+        "description": "Descrizione",
+        "title": "Titolo"
+      },
+      "quests": {
+        "description": "Descrizione",
+        "title": "Titolo"
+      }
+    },
+    "subtitle": "Sottotitolo",
+    "title": "Titolo"
+  },
+  "socialOptIn": {
+    "activities": {
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "chat": {
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "intro": "[IT] Intro",
+    "noActivities": {
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "privacyNote": "[IT] Privacy Note",
+    "saveCta": "Salva",
+    "skipCta": "[IT] Skip",
+    "title": "Titolo",
+    "upcomingActivities": "[IT] Upcoming Activities"
+  }
+}

@@ -1,6 +1,6 @@
 // src: packages/ui/src/organisms/MobileNav.tsx
 // Fixed top bar – burger button toggles MobileMenu (visible below lg)
-import { memo, useCallback, useMemo } from "react";
+import { memo, type MouseEvent, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
@@ -9,6 +9,7 @@ import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolvePrimaryCtaLabel } from "../shared";
+import { translatePath } from "../utils/translate-path";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 const FALLBACK_PRIMARY_CTA_LABEL =
@@ -20,6 +21,9 @@ const FALLBACK_TOGGLE_LABEL =
 const FALLBACK_BRAND_TITLE =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
   "Hostel Brikette";
+const FALLBACK_LOGO_ALT =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
+  "Hostel Brikette logo";
 
 interface Props {
   menuOpen: boolean;
@@ -38,13 +42,22 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   }, [i18nLanguage]);
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t, ready } = useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const { openModal } = useModal();
+  const bookHref = `/${lang}/${translatePath("book", lang)}`;
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
   const openBooking = useCallback(() => openModal("booking"), [openModal]);
+  const onBookingClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      event.preventDefault();
+      openBooking();
+    },
+    [openBooking]
+  );
   const ctaClass = "cta-dark";
   const primaryCtaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
@@ -65,12 +78,16 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
         <Link
           href={`/${lang}`}
           prefetch={true}
-          className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="flex min-h-11 min-w-11 items-center gap-2 rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
           <img
             src={logoIcon}
-            alt={t("logoAlt")}
+            alt={(() => {
+              const logoAlt = t("logoAlt", { defaultValue: FALLBACK_LOGO_ALT }) as string;
+              if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
+              return FALLBACK_LOGO_ALT;
+            })()}
             className="size-10"
             width={40}
             height={40}
@@ -88,13 +105,13 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
 
         {/* Reserve CTA */}
         <div className="flex flex-1 justify-center">
-          <button
-            type="button"
-            onClick={openBooking}
-            className={`min-h-10 min-w-10 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
+          <Link
+            href={bookHref}
+            onClick={onBookingClick}
+            className={`min-h-11 min-w-11 whitespace-nowrap px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:px-4 sm:text-sm`}
           >
             {primaryCtaLabel}
-          </button>
+          </Link>
         </div>
 
         {/* Burger / X toggler */}
@@ -111,7 +128,7 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
           aria-controls="mobile-menu"
           data-testid="menu-toggle"
           onClick={toggleMenu}
-          className="justify-self-end size-10 rounded p-2 transition hover:bg-brand-bg/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+          className="justify-self-end size-11 rounded p-2 transition hover:bg-brand-bg/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
         >
           {menuOpen ? (
             <X className="size-6 text-brand-heading" data-testid="lucide-x" aria-hidden />

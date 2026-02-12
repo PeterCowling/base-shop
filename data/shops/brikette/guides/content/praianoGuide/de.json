@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Praiano entdecken: entspannter Nachbar",
+    "description": "Warum Praiano sich lohnt: Sonnenuntergänge, Marina di Praia, San Gennaro."
+  },
+  "linkLabel": "Praiano entdecken: entspannter Nachbar",
+  "intro": [
+    "Praiano ist Positanos entspannter Nachbar mit Sonnenuntergängen, moderaten Preisen und ruhigen Stränden."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Warum hinfahren",
+      "body": [
+        "Panoramasonnenuntergänge von der Piazza San Gennaro genießen – ohne dichtes Gedränge.",
+        "Unterkünfte kosten pro Nacht 20–40 € weniger als in Positano, die Busanbindung bleibt erhalten."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strände & Baden",
+      "body": [
+        "Marina di Praia liegt dramatisch in einer Bucht mit Beachclubs und Kajakverleih; vor 11:00 ankommen, um Liegen in erster Reihe zu sichern.",
+        "Gavitella Beach schaut nach Westen – perfekt für Golden-Hour-Bäder; rund 400 Stufen hinunter, also Snacks und Wasser einplanen."
+      ]
+    },
+    {
+      "id": "dining",
+      "title": "Essen & Nachtleben",
+      "body": [
+        "Il Pirata oder Kasai für Seafood mit Terrassenblick reservieren – Sunset-Tische in der Hochsaison ein paar Tage vorher sichern.",
+        "Beachbars in Praiano bieten am Wochenende Live-Musik; Aushänge nahe der SITA-Haltestelle verraten die Spielzeiten."
+      ]
+    }
+  ],
+  "tips": [
+    "Den lokalen Shuttlebus nutzen, um steile Abschnitte zwischen Ober- und Unter-Praiano zu sparen.",
+    "Für nächtliche Treppen eine Stirnlampe oder Taschenlampe mitnehmen."
+  ],
+  "faqs": [
+    {
+      "q": "Wie lange braucht der Bus ab Positano?",
+      "a": [
+        "Rund 15 Minuten mit dem SITA-Bus, länger zu Spitzenzeiten. Im Sommer fährt er etwa alle 30 Minuten."
+      ]
+    },
+    {
+      "q": "Kann ich in Praiano wohnen und täglich nach Positano pendeln?",
+      "a": [
+        "Ja. Viele Reisende pendeln mit Bus oder Roller – ruhige Nächte in Praiano, tagsüber Positano genießen."
+      ]
+    }
+  ]
+}

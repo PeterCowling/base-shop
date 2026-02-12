@@ -2,9 +2,11 @@
 
 // src/hooks/pureData/useFetchCompletedTasksData.ts
 
-import { onValue, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 import { useEffect, useRef, useState } from 'react';
+
+import { get, onValue, ref } from '@/services/firebase';
+import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import useUuid from '../useUuid';
@@ -43,6 +45,9 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
   const [isError, setIsError] = useState<boolean>(false);
   const [isUuidMissing, setIsUuidMissing] = useState<boolean>(false);
 
+  const shouldUseOneShotRead =
+    typeof window !== 'undefined' && Boolean((window as { Cypress?: unknown }).Cypress);
+
   // Keep the grace-period timer stable across renders.
   const warnTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -61,9 +66,7 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
     if (!uuid) {
       if (!warnTimeoutRef.current) {
         warnTimeoutRef.current = setTimeout(() => {
-          logger.warn(
-            '[useFetchCompletedTasks] UUID still unavailable after 1.5 s; listener not attached. ',
-          );
+          logger.warn('[useFetchCompletedTasks] UUID still unavailable after 1.5 s; listener not attached. ');
           setIsLoading(false);
           setIsUuidMissing(true);
         }, 1500);
@@ -74,7 +77,42 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
     }
 
     // ──────────────────────────────────────────────────────────────────────────
-    // Case 2: UUID *is* available – attach realtime listener.
+    // Case 2: UUID *is* available in Cypress e2e – use one-shot read.
+    // Avoid websocket-based listeners in browser E2E to keep tests deterministic.
+    // ──────────────────────────────────────────────────────────────────────────
+    if (shouldUseOneShotRead) {
+      clearWarnTimer();
+      setIsUuidMissing(false);
+      setIsLoading(true);
+      setIsError(false);
+
+      let isActive = true;
+
+      void get(ref(database, `completedTasks/${uuid}`))
+        .then((snapshot) => {
+          if (!isActive) return;
+          if (snapshot.exists()) {
+            setOccupantTasks(snapshot.val() as OccupantCompletedTasks);
+          } else {
+            setOccupantTasks({});
+          }
+          setIsLoading(false);
+          setIsError(false);
+        })
+        .catch((error) => {
+          if (!isActive) return;
+          logger.error('[useFetchCompletedTasks] Firebase one-shot error:', error);
+          setIsError(true);
+          setIsLoading(false);
+        });
+
+      return () => {
+        isActive = false;
+      };
+    }
+
+    // ──────────────────────────────────────────────────────────────────────────
+    // Case 3: UUID *is* available – attach realtime listener.
     // ──────────────────────────────────────────────────────────────────────────
     clearWarnTimer(); // Cancel any pending warning.
     setIsUuidMissing(false);
@@ -95,10 +133,7 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
         setIsError(false);
       },
       (error) => {
-        logger.error(
-          '[useFetchCompletedTasks] Firebase listener error:',
-          error,
-        );
+        logger.error('[useFetchCompletedTasks] Firebase listener error:', error);
         setIsError(true);
         setIsLoading(false);
       },
@@ -108,7 +143,7 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
     return () => {
       unsubscribe();
     };
-  }, [uuid, database]);
+  }, [uuid, database, shouldUseOneShotRead]);
 
   // Ensure the warn-timer is cleared on unmount.
   useEffect(

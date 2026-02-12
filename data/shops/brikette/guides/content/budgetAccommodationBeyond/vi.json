@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Chỗ ở giá rẻ bên ngoài Positano",
+    "description": "Các thị trấn lân cận với hostel và khách sạn tiết kiệm, cùng mẹo di chuyển."
+  },
+  "linkLabel": "Chỗ ở giá rẻ bên ngoài Positano",
+  "intro": [
+    "Những điểm lưu trú giá mềm ngoài Positano cùng các đánh đổi di chuyển thực tế."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Căn cứ đáng giá với tàu và phà chạy thường xuyên; thuận tiện cho các chuyến đến muộn."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Chi phí phải chăng và kết nối tốt; mùa cao điểm có phà tới Amalfi và Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Khu vực Amalfi",
+      "body": [
+        "Các thị trấn nhỏ có thể giảm giá mùa thấp điểm; lưu ý tần suất xe buýt."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Đánh đổi",
+      "body": [
+        "Đi xa hơn để đổi lấy giá rẻ. Nếu ở ngắn ngày, nên chọn Positano để tiết kiệm thời gian."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Có nên ở xa rồi đi lại mỗi ngày không?",
+      "a": [
+        "Nếu bạn ưu tiên chi phí và chịu được quãng di chuyển dài hơn thì nên — đặc biệt vào mùa giao mùa."
+      ]
+    }
+  ]
+}

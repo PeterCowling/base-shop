@@ -1,0 +1,231 @@
+{
+  "seo": {
+    "title": "Spiaggia Grande (Positano főstrandja) útmutató",
+    "description": "Ingyenes zónák, strandklubok, árak és egyszerű elrendezési térkép a Spiaggia Grandéhoz — plusz hogyan sétálj el Fornillóba és mikor foglalj napágyat."
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Spiaggia Grande útmutató (Positano főstrandja)",
+  "intro": [
+    "A Spiaggia Grande a Positano képeslap Beach: egy széles kavicshold, amelynek a szikla tetejének látképe az esernyők és a kompok mögött áll, és egész nap jön.",
+    "Felejthetetlen az úszás és a város felé fordulás, de a parti tapasztalatok attól függnek, hogy hol ülsz-a központi szabad zónától a sziklákba faragott ultra-prémium fedélzetekig."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Elrendezés és kulcstartó"
+    },
+    {
+      "href": "#free-zone",
+      "label": "Ingyenes strand szakasz"
+    },
+    {
+      "href": "#residents",
+      "label": "A lakosok szalagja"
+    },
+    {
+      "href": "#lincanto",
+      "label": "L'Canto Beach Club"
+    },
+    {
+      "href": "#la-scogliera",
+      "label": "La Scogliera Deck"
+    },
+    {
+      "href": "#fornillo-link",
+      "label": "Sétyút a Fornillo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Getting there from Hostel Brikette",
+      "body": [
+        "Most guests either walk down for the views and take the bus back up, or take the bus both ways to save their knees. If you’re unsure, start with our %LINK:positanoMainBeachWalkDown|walk down to Spiaggia Grande% guide and keep our %LINK:positanoMainBeachBusBack|bus back to the hostel% guide saved for later.",
+        "For a low-stress beach day, leaving the hostel by 08:30–09:00 is the sweet spot. You’ll beat the heaviest crowds at Piazza dei Mulini, find a better patch of shade on the free beach, and avoid the midday heat on the promenade.",
+        "If you want to conserve energy, use our %LINK:positanoMainBeachBusDown|bus down to Positano main beach% guide. It’s also the easiest option if you’re carrying snorkel gear, a thicker mat, or a bigger beach bag."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/interno-positano-bus.jpg",
+          "alt": "Spiaggia Grande (Positano main beach) seen from above with the village rising behind the shoreline",
+          "caption": "Spiaggia Grande from above — great views, a pebbly shore, and a busy promenade at the back of the beach."
+        },
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/01-bus-stop-piazza-dei-mulini.jpg",
+          "alt": "Bus stop area at Piazza dei Mulini where guests board the Interno bus for the ride back up",
+          "caption": "Piazza dei Mulini bus stop area — useful to locate before you settle in for a long beach day."
+        },
+        {
+          "src": "/img/guides/topics/positanoMainBeach.jpg",
+          "alt": "Orange Interno Positano bus used by hostel guests to ride between Chiesa Nuova and the center",
+          "caption": "The orange Interno bus — the easiest way to save your legs after a day on the pebbles."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (crowds & shade)",
+      "body": [
+        "Spiaggia Grande is at its calmest early: a quick swim before 10:30 feels like a different beach compared to the lunchtime rush. Midday is when the promenade gets busiest (ferries, day-trippers, and people rotating through the clubs).",
+        "If you’re choosing the free section, shade is the limiting factor. The beach is wide, but umbrellas are limited to the paid clubs — so the earlier you arrive, the easier it is to claim a comfortable spot that won’t bake you by noon.",
+        "For photos, golden hour is beautiful from the promenade and the waterline, but the beach itself stays loud until dinner time in high season. If you want a quieter late afternoon, walk the coastal path to %LINK:fornilloBeachGuide|Fornillo Beach% and swim there instead."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Wide view of Positano's Spiaggia Grande with colorful umbrellas and the cliffside town behind it",
+          "caption": "Crowd reality check: Spiaggia Grande is iconic, but it gets busy fast — timing matters."
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (pebbles & heat)",
+      "body": [
+        "Spiaggia Grande is all pebbles, and in summer they heat up quickly. The right gear turns it from “beautiful but uncomfortable” into an easy, all-day hang.",
+        "If you’re on the free beach, think in layers: a thicker towel or mat for the stones, water shoes for getting in and out, and enough water/snacks that you’re not forced into expensive impulse buys on the promenade."
+      ],
+      "list": [
+        "Water shoes (or sturdy sandals) for pebbles + hot stones",
+        "A thicker mat/towel (thin towels feel like a net on pebbles)",
+        "Refillable bottle + snacks (or budget for promenade prices)",
+        "Cash as backup (card machines can be flaky in peak season)",
+        "Sun protection: hat + sunscreen — shade is limited outside the clubs"
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Layout and Key Zones-ig",
+      "body": [
+        "A tenger felé nézve a nyilvános komp móló és a víz-taxi pontonok a jobb oldalon ülnek, a fő ingyenes szalag a központban terjed, és a fizetett klubok a bal oldali sziklákat vonják be.",
+        "A tengerparton lévő számozott térkép általában az 1. számú jelölést jelzi, mint a Positano lakosainak szalagja, és a 3/ #4, mint a két fizetett operátor: L'Canto a homokon és a La Scogliera az emelt fedélzeten."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/02-beach-providers-overview.jpg",
+          "alt": "Beach layout map showing the free section, residents' section, L'Incanto, and La Scogliera at Spiaggia Grande",
+          "caption": "Spiaggia Grande layout: free zone (#1), residents' strip (#2), L'Incanto (#3), and La Scogliera deck (#4)"
+        },
+        {
+          "src": "/img/guides/positano-main-beach/01-beach-layout-map.jpg",
+          "alt": "Overview of the four beach providers on Spiaggia Grande showing their locations along the shoreline",
+          "caption": "Beach providers overview — the four zones on Spiaggia Grande from public area to premium decks"
+        }
+      ]
+    },
+    {
+      "id": "free-zone",
+      "title": "Ingyenes tengerparti szakasz (#1)",
+      "body": [
+        "A legszélesebb szabad terület a két magánklub között helyezkedik el. Érkezzen 10:00 előtt az első sorban, és hozzon egy szőnyeget vagy vastag törülközőt-a ​​kavicsokat gyorsan melegítik, és párnázás nélkül kényelmetlenné váljanak.",
+        "A zuhanyzók és a nyilvános WC -k a komp móló bejárata mellé kerülnek. A harapnivalók a tengerpart mögötti kioszkokból származnak, vagy a L'Canto Blu Bar (külön fizetése) a L'Canto Blu Bar -ban."
+      ]
+    },
+    {
+      "id": "residents",
+      "title": "A lakosok szalagja (#2)",
+      "body": [
+        "A Positano lakosok számára egy bekerített terület a nyilvános szakasz mellett. Várható, hogy az életmentők ellenőrizzék a karszalagokat; A látogatóknak tiszteletben kell tartaniuk a jelzéseket, és ragaszkodniuk kell az ingyenes szalaghoz vagy a klub nyugágyához.",
+        "Ha a nyilvános zóna csomagolva van, folytassa a sétány mentén, és kövesse a Fornillo felé vezető sétányt-ez egy öt perces séta, miután az ösvényen van."
+      ]
+    },
+    {
+      "id": "lincanto",
+      "title": "L'Canto Beach Club (#3)",
+      "body": [
+        "A L'Canto a homok nagy részét narancssárga nyúlványok, zuhanyzók, öltözőszobák és pincérszolgáltatások soraival borítja. Várhatóan 25–35 eurót várnak személyenként a főszezonban beállított szabványra, az első sorban vagy a Cabana frissítésével többet fizetnek.",
+        "Tartalék a WhatsApp -on vagy az e -mailben július - augusztus; A beutazások 09:30 előtt általában rendben vannak a váll hónapokban. A Blu Bar (alkalmi étteremük) a sétány felé néz, és hasznos pizzára, salátákra és aperitivire, anélkül, hogy elhagyná a társalgóját."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/03-blu-bar.jpg",
+          "alt": "Blu Bar at L'Incanto beach club on the Positano promenade",
+          "caption": "Blu Bar — L'Incanto's promenade restaurant serving pizza, salads, and aperitivi"
+        }
+      ]
+    },
+    {
+      "id": "la-scogliera",
+      "title": "A La Scogliera fedélzet (#4)",
+      "body": [
+        "La Scogliera a baloldali sziklákon ül, teak fedélzetekkel, balinéz ágyakkal és tengeri létrákkal egyenesen a mély vízbe. A csomagok 100 euró körül kezdődnek a hátsó sorban lévő akadályok számára, és meghaladhatják a 400 eurót a panorámás VIP fészkeknél, beleértve a Prosecco-t.",
+        "A kiszolgálás fehér-tablecloth: Az emeleti étterem a kikötőre néz, és a személyzet felhívja a víztaxokat, ha Laurito vagy Arienzo naplementére akar ugrani. Az öltözködési kód 18:00 után az intelligens-alkalmi hajlítás."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/04-la-scogliera-deck.jpg",
+          "alt": "La Scogliera premium beach club with teak decks and ocean views on Positano's main beach",
+          "caption": "La Scogliera — premium teak decks on the rocks with direct water access and upstairs restaurant"
+        }
+      ]
+    },
+    {
+      "id": "fornillo-link",
+      "title": "sétány a Fornillo -ba",
+      "body": [
+        "A strandok váltásához mászás nélkül menjen el a kikötő végére, ahol a hajók rakodnak be és kirakodnak. Tartsa jobbra, és csúsztassa át az aláírt boltívet a tengerparti sétányig.",
+        "Kövesse a sétányt körülbelül öt percig; A kávézók és a nézőpontok mellett szövi, mielőtt eljuttatja Fornillo főbejáratához. Párosítsa a sétát az __link0__ -val a klub részleteihez a másik oldalon."
+      ]
+    },
+    {
+      "id": "practicalities",
+      "title": "Facilities, food & costs (what guests ask most)",
+      "body": [
+        "Toilets and showers exist, but they’re not always as “on the beach” as you’d expect. The easiest facilities for the free area are near the ferry-dock side and just behind the promenade — plan a quick bathroom stop before you fully settle your towels down.",
+        "If you’ve arrived in Positano with bags (check-out day, day trip, or early arrival), sort storage first so you’re not dragging luggage across pebbles. Use %LINK:luggageStorage|Positano luggage storage near Piazza dei Mulini% before you head all the way to the water.",
+        "Food on the promenade is convenient but adds up quickly. Our staff tip (from the hostel): eat a proper breakfast, pack a couple of snacks, and then treat yourself to one “nice” beach purchase (espresso, gelato, or an aperitivo) rather than paying premium prices for every meal.",
+        "If you want a predictable, lower-cost meal plan, browse %LINK:cheapEats|cheap eats in Positano% and decide where you’ll stop on the way down or back up."
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "Hostel Brikette day plan (a simple way to do it)",
+      "body": [
+        "This is the easiest plan we recommend at reception when guests ask for “the best beach day without wasting money or energy.” Adjust the times based on season and your tolerance for crowds.",
+        "From our experience: doing your swim early, resting through the busiest midday stretch, and then moving to Fornillo later is the combo that feels like two beaches in one day."
+      ],
+      "list": [
+        "08:30–09:00: leave the hostel; stop for water/snacks if needed",
+        "09:30–10:30: first swim at Spiaggia Grande while it’s still calm",
+        "10:30–12:30: relax (free zone or club); reapply sunscreen — the reflected light is intense",
+        "12:30–14:00: lunch on/behind the promenade (or picnic if you packed)",
+        "14:00–16:30: take the coastal path and swim at %LINK:fornilloBeachGuide|Fornillo Beach% for a quieter afternoon",
+        "16:30–18:00: head back up using %LINK:positanoMainBeachBusBack|the bus route back to Hostel Brikette%"
+      ]
+    }
+  ],
+  "tipsTitle": "Gyors tippek",
+  "tips": [
+    "Sétáljon le a Viale Pasitea -ba a hostelből 20–25 perc alatt, szüneteltetésre a fényképeket a Roadside -i keresések során, mielőtt a Piazza Dei Mulini -ba és a Spiaggia Grande sétányba esett.",
+    "inkább a kerekeket részesíti előnyben? Kapja meg a narancssárga interno buszt Chiesa Nuovától a Sponda vagy a Piazza Dei Mulini megállóig; Vásároljon 1,50 eurós jegyet a Bar Internazionale -nál, mielőtt beszáll.",
+    "A tengerparti nap után menj vissza az interno buszon a komp móló melletti terminálról, hogy kihagyja a meredek mászást a Hostel Brikette felé.",
+    "Tervezze meg a Lounger költségvetését a __link0__ -val - ez összehasonlítja az árakat és az ingyenes szakaszokat minden közeli öbölben."
+  ],
+  "warningsTitle": "Jó tudni, hogy",
+  "warnings": [
+    "A Spiaggia Grande teljesen kavicsos: csomagoljon vízcipőt vagy szandált a könnyebb vízbe.",
+    "Az első sorban lévő akadályok és a napernyők augusztusban eladásra kerülnek-Tartalék, ha garantált árnyékra van szüksége.",
+    "A kártyagépek időnként offline állapotba kerülnek; Vigyázzon készpénzzel a kioszkokhoz, a széki egyenlegekhez és az interno buszsofőrhez."
+  ],
+  "faqsTitle": "Spiaggia Grande GYIK",
+  "faqs": [
+    {
+      "q": "Előzetesen le kell foglalnom a L'Canto vagy a La Scogliera -t?",
+      "a": [
+        "A L'Canto számára az előzetes foglalás elengedhetetlen július végén és augusztusban, de a váll-szezon reggelei 09:30 előtt van beépítve. A La Scogliera minden prémium fedélzethez való foglalást igényel - az e -mailt vagy a WhatsApp -ot legalább egy nappal az ágyba zárni."
+      ]
+    },
+    {
+      "q": "Vannak -e zuhanyzók és fürdőszobák az ingyenes szakaszhoz?",
+      "a": [
+        "Igen. A nyilvános zuhanyok a komp móló közelében ülnek, és az önkormányzati WC -k a sétány mögött vannak. Tartsa kéznél az érméket a forgókészülékekhez; A magánklub létesítményeit a vendégek fizetésére fenntartják."
+      ]
+    },
+    {
+      "q": "Hol hagyhatok táskákat, mielőtt elindulnék a tengerpartra?",
+      "a": [
+        "Dobja el a poggyászot a __link0__ közelében a Piazza Dei Mulini közelében, vagy használja a szálláshelyet. A táskák nem engedélyezettek a La Scogliera fedélzetén, és a Loungers mögött kell ülniük a L'Canto -nál."
+      ]
+    }
+  ]
+}

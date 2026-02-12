@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Work & Travel: equilibrando trabalho remoto em Positano",
+    "description": "Rotinas, Wi-Fi e planejamento para conciliar prazos com passeios e pôr do sol."
+  },
+  "linkLabel": "Work & Travel: equilibrando trabalho remoto",
+  "intro": [
+    "Equilibre trabalho focado com tempo para explorar Positano: conectividade realista, onde trabalhar e um ritmo diário que evita multidões."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi-Fi e redundâncias",
+      "body": [
+        "Use eSIMs de backup; teste velocidades; evite chamadas críticas nas horas em que os ferries descarregam nas ruas principais."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Cafés amigos do portátil",
+      "body": [
+        "Consulte o nosso guia Wi-Fi & Cafés para Trabalhar; respeite as tomadas e consuma regularmente."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Rotinas que funcionam",
+      "body": [
+        "Bloques de trabalho cedo e ao fim do dia; explore ao meio-dia, quando as ruas estão cheias, ou depois do pôr do sol."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "É viável trabalhar remotamente aqui?",
+      "a": [
+        "Sim, com planeamento — fique perto de Chiesa Nuova, garanta redundâncias e mantenha horários flexíveis."
+      ]
+    }
+  ]
+}

@@ -3,7 +3,6 @@
 
 import { type ChangeEvent, memo, type Ref, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { usePathname,useRouter, useSearchParams } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
@@ -98,9 +97,6 @@ const BookingWidget = memo(function BookingWidget({
   const { t: tModals } = useTranslation("modals", translationOptions);
   const { t: tTokens } = useTranslation("_tokens", translationOptions);
   const { t: tLanding } = useTranslation("landingPage", translationOptions);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
   const hasHydrated = useRef(false);
   const { dateFormat, placeholder, inputLocale } = resolveBookingDateFormat(lang);
 
@@ -113,13 +109,15 @@ const BookingWidget = memo(function BookingWidget({
   useEffect(() => {
     if (hasHydrated.current) return;
     hasHydrated.current = true;
-    setCheckIn(searchParams?.get(BOOKING_QUERY_KEYS.checkIn) ?? "");
-    setCheckOut(searchParams?.get(BOOKING_QUERY_KEYS.checkOut) ?? "");
-    const guestsValue = searchParams?.get(BOOKING_QUERY_KEYS.guests);
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    setCheckIn(params.get(BOOKING_QUERY_KEYS.checkIn) ?? "");
+    setCheckOut(params.get(BOOKING_QUERY_KEYS.checkOut) ?? "");
+    const guestsValue = params.get(BOOKING_QUERY_KEYS.guests);
     if (guestsValue) {
       setGuests(toPositiveInt(guestsValue));
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     setToday(formatLocalIso(new Date()));
@@ -127,7 +125,8 @@ const BookingWidget = memo(function BookingWidget({
 
   useEffect(() => {
     if (!hasHydrated.current) return;
-    const next = new URLSearchParams(searchParams?.toString() ?? "");
+    if (typeof window === "undefined") return;
+    const next = new URLSearchParams(window.location.search);
     if (checkIn) {
       next.set(BOOKING_QUERY_KEYS.checkIn, checkIn);
     } else {
@@ -143,12 +142,13 @@ const BookingWidget = memo(function BookingWidget({
     } else {
       next.delete(BOOKING_QUERY_KEYS.guests);
     }
-    const currentSearch = searchParams?.toString() ?? "";
+    const currentSearch = window.location.search.replace(/^\?/, "");
     if (next.toString() !== currentSearch) {
       const queryString = next.toString();
-      router.replace(`${pathname}${queryString ? `?${queryString}` : ""}`, { scroll: false });
+      const nextHref = `${window.location.pathname}${queryString ? `?${queryString}` : ""}`;
+      window.history.replaceState(null, "", nextHref);
     }
-  }, [checkIn, checkOut, guests, searchParams, router, pathname]);
+  }, [checkIn, checkOut, guests]);
 
   const invalidRange = (() => {
     if (!checkIn || !checkOut) return false;
@@ -156,9 +156,7 @@ const BookingWidget = memo(function BookingWidget({
     return getDateParts(checkOut, dateFormat) <= getDateParts(checkIn, dateFormat);
   })();
 
-  const fallbackAvailabilityLabel =
-    (tModals("booking.buttonAvailability", { defaultValue: "Check availability" }) as string) ??
-    "Check availability";
+  const fallbackAvailabilityLabel = tModals("booking.buttonAvailability") as string;
   const checkAvailabilityLabel =
     resolvePrimaryCtaLabel(tTokens, {
       fallback: () => fallbackAvailabilityLabel,

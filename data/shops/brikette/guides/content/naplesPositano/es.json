@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Cómo ir de Nápoles a Positano: ferry, tren y bus",
+    "description": "Compara ferry, tren+bus y traslado privado para viajar de Nápoles a Positano, con consejos según temporada y equipaje."
+  },
+  "linkLabel": "Cómo ir de Nápoles a Positano",
+  "intro": [
+    "Compara ferry, tren+bus y traslado privado. En verano hay ferris directos (dependen del clima); verifica siempre el estado del mar y los avisos de los operadores."
+  ],
+  "toc": [
+    {
+      "href": "#ferry",
+      "label": "Ferry (estacional)"
+    },
+    {
+      "href": "#train-bus",
+      "label": "Tren + bus (todo el año)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Traslado privado"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Ferry (estacional)",
+      "body": [
+        "Las rutas directas operan por temporada y pueden cancelarse por mar de fondo. Llega con antelación para colas y validación de billetes; consulta avisos de cada operador.",
+        "Compra los billetes antes de embarcar, comprueba el panel del día y baja en ‘Chiesa Nuova’ si quieres minimizar escaleras hacia el Hostel Brikette."
+      ]
+    },
+    {
+      "id": "train-bus",
+      "title": "Tren + bus (todo el año)",
+      "body": [
+        "Alta velocidad a Napoli Centrale → tren local a Sorrento → SITA a Positano (Chiesa Nuova para menos escaleras). Es la opción más fiable todo el año.",
+        "Comprueba cancelaciones y evita depender del último ferry si tienes conexiones posteriores."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Traslado privado",
+      "body": [
+        "Más rápido y puerta a puerta, pero más caro; útil para llegadas tardías o equipaje pesado.",
+        "Confirma el punto de descenso cerca de tu alojamiento y pregunta si incluyen ayuda con el equipaje."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "q": "¿Qué opción es más fiable?",
+      "a": [
+        "Tren + bus funciona todo el año; los ferris son escénicos en temporada pero dependen del clima."
+      ]
+    },
+    {
+      "q": "¿Dónde compro billetes de bus?",
+      "a": [
+        "En estancos/kioscos. Compra antes de subir y valida en el bus."
+      ]
+    }
+  ]
+}

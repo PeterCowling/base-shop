@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Informações Legais e Políticas do Hostel de Positano",
+    "description": "Conheça nossos termos legais, limites de responsabilidade, lei aplicável, uso de conteúdo do site e diretrizes de saúde e segurança para planejar sua estadia com tranquilidade."
+  },
+  "linkLabel": "Informações Legais e Políticas do Hostel de Positano",
+  "sections": [
+    {
+      "id": "modificationOfTerms",
+      "title": "Alterações destes Termos",
+      "body": [
+        "Estes Termos e Condições constituem o acordo completo entre você e o Positano Hostel, substituindo quaisquer entendimentos anteriores. Podemos atualizá-los a qualquer momento; a nova versão entra em vigor assim que publicada on-line."
+      ]
+    },
+    {
+      "id": "scopeOfLiability",
+      "title": "Alcance da Responsabilidade",
+      "body": [
+        "Nossa responsabilidade se limita aos serviços e itens descritos nestes Termos. Qualquer indenização é limitada ao total pago por sua reserva. Não respondemos por perdas indiretas ou econômicas — como lucro, fundo de comércio ou oportunidades perdidas — mesmo por negligência ou força maior. Há cofres para objetos de valor, mas não assumimos responsabilidade financeira pelo conteúdo e podemos mover pertences durante limpezas sem aviso."
+      ]
+    },
+    {
+      "id": "governingLaw",
+      "title": "Lei Aplicável e Jurisdição",
+      "body": [
+        "Sua estadia — e estes Termos — são regidos exclusivamente pela legislação italiana. Qualquer disputa será submetida aos tribunais da Itália."
+      ]
+    },
+    {
+      "id": "websiteInformation",
+      "title": "Informações do Site e Uso de Conteúdo",
+      "body": [
+        "Fazemos o possível para manter as informações do site corretas, mas erros podem ocorrer e detalhes mudar sem aviso. As fotos mostram o estilo geral e podem não refletir exatamente o layout real. Todo o conteúdo (textos, imagens, marcas) pertence ao Positano Hostel e não pode ser usado sem permissão escrita. Links externos são fornecidos por conveniência; não nos responsabilizamos por seu conteúdo. Consulte nossa política de privacidade para saber como tratamos seus dados."
+      ]
+    },
+    {
+      "id": "healthAndSafetyPolicy",
+      "title": "Política de Saúde e Segurança",
+      "body": [
+        "Para a segurança de todos, informe-nos se teve contato recente com doença contagiosa, incluindo gripe. Reservas pré-pagas não reembolsáveis continuam sem reembolso nesses casos; recomendamos fortemente seguro-viagem que cubra imprevistos de saúde."
+      ]
+    }
+  ]
+}

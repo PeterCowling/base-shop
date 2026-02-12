@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/absolute-parent-guard, ds/enforce-layout-primitives, ds/no-nonlayered-zindex, ds/no-raw-font, ds/no-raw-color -- HAND-0009 [ttl=2026-12-31]: 3D viewer canvas overlays require absolute positioning, z-index layering, monospace debug font, and inline debug styling */
 import {
   Component,
   type PointerEvent,

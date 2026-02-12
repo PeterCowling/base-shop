@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "So sánh chi phí Positano với bãi biển khác",
+    "description": "Đặt Positano cạnh các điểm đến biển nổi tiếng để dự đoán ngân sách."
+  },
+  "linkLabel": "So sánh chi phí Positano với bãi biển khác",
+  "intro": [
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "tips": [
+    "Bản dịch đang được chuẩn bị.",
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "faqs": [
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "Bản dịch đang được chuẩn bị."
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "Bản dịch đang được chuẩn bị."
+      }
+    },
+    "faq": {
+      "summary": "Bản dịch đang được chuẩn bị.",
+      "answer": "Bản dịch đang được chuẩn bị."
+    }
+  }
+}

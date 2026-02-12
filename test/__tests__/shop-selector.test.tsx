@@ -1,5 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+import ShopSelector from "../../packages/ui/components/cms/ShopSelector";
 import { rest, server } from "../msw/server";
 
 const pushMock = jest.fn();
@@ -35,12 +37,10 @@ jest.mock("../../packages/ui/components/atoms/shadcn", () => {
   };
 });
 
-import ShopSelector from "../../packages/ui/components/cms/ShopSelector";
-
 describe("ShopSelector", () => {
   beforeEach(() => {
     server.use(
-      rest.get("/api/shops", (_req, res, ctx) =>
+      rest.get("/api/shops", (_req: any, res: any, ctx: any) =>
         res(ctx.json(["demo", "other"]))
       )
     );

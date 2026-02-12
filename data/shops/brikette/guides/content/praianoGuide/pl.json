@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Poznaj Praiano: spokojny sąsiad",
+    "description": "Dlaczego warto odwiedzić Praiano: zachody słońca, Marina di Praia i San Gennaro."
+  },
+  "linkLabel": "Poznaj Praiano: spokojny sąsiad",
+  "intro": [
+    "Praiano to spokojniejszy sąsiad Positano z zachodami słońca, umiarkowanymi cenami i cichszymi plażami."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Dlaczego warto",
+      "body": [
+        "Podziwiaj panoramiczne zachody z Piazza San Gennaro bez tłumów łokci w łokieć.",
+        "Noclegi są o 20–40 € tańsze niż w Positano, a autobusy nadal kursują regularnie."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Plaże i kąpiele",
+      "body": [
+        "Marina di Praia to malownicza zatoka z klubami plażowymi i wypożyczalnią kajaków — przyjdź przed 11:00, by zająć leżak przy brzegu.",
+        "Plaża Gavitella wychodzi na zachód, więc idealna na kąpiele przy złotej godzinie; trzeba pokonać 400 schodów, więc zaplanuj przekąski i wodę."
+      ]
+    },
+    {
+      "id": "dining",
+      "title": "Jedzenie i życie nocne",
+      "body": [
+        "Zarezerwuj Il Pirata lub Kasai na kolację z owocami morza i widokiem — latem książki rezerwujące stoliki przy zachodzie znikają na kilka dni wcześniej.",
+        "Beach bary w Praiano organizują muzykę na żywo w weekendy — zerknij na plakaty przy przystanku SITA, by sprawdzić godziny."
+      ]
+    }
+  ],
+  "tips": [
+    "Skorzystaj z lokalnego busika \\\"interno”, by ominąć najstromsze odcinki między górną a dolną częścią miasta.",
+    "Zabierz latarkę czołową na późne wspinaczki po schodach w drodze do noclegu."
+  ],
+  "faqs": [
+    {
+      "q": "Ile trwa przejazd autobusem z Positano?",
+      "a": [
+        "Około 15 minut autobusem SITA, dłużej w godzinach szczytu. Latem kursy co około 30 minut."
+      ]
+    },
+    {
+      "q": "Czy mogę nocować w Praiano i codziennie odwiedzać Positano?",
+      "a": [
+        "Tak. Wielu podróżnych dojeżdża autobusem lub skuterem, korzystając z ciszy nocą przy jednoczesnym dostępie do Positano w ciągu dnia."
+      ]
+    }
+  ]
+}

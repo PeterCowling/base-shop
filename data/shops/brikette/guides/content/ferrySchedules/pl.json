@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Rozkłady promów do Positano",
+    "description": "Kiedy pływają promy, gdzie sprawdzić rozkłady w czasie rzeczywistym, sezonowość, przewoźnicy i praktyczne wskazówki przy wejściu na pokład."
+  },
+  "linkLabel": "Rozkłady promów do Positano",
+  "intro": [
+    "Rozkłady promów do i z Positano: gdzie sprawdzać bieżące odjazdy, jak działa sezonowość i jak mieć gotowe plany awaryjne."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Kiedy pływają promy",
+      "body": [
+        "Główny sezon trwa mniej więcej od kwietnia do października, z największą częstotliwością od połowy maja do września; zimowe rejsy są rzadkie i zależne od pogody.",
+        "W miesiącach przejściowych pierwsze i ostatnie kursy bywają skracane — potwierdź rozkład wieczorem poprzedniego dnia."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Sprawdzaj aktualizacje",
+      "body": [
+        "Korzystaj ze stron i aplikacji przewoźników (Travelmar, NLG, Alilauro, Positano Jet) oraz tablic w porcie, aby wychwycić opóźnienia i zmiany stanowisk.",
+        "Zrób zrzuty rozkładów i włącz alerty e-mail/SMS, by komunikaty pogodowe dotarły nawet bez włoskiego pakietu danych."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Bilety i margines czasu",
+      "body": [
+        "Latem kursy potrafią wyprzedać się kilka godzin wcześniej — kup bilet online lub dzień przed i przyjdź 30 minut przed rejsem z dokumentem i bagażem gotowym do oznaczenia.",
+        "Zostaw zapas przed ostatnim połączeniem dnia, aby w razie wzburzonego morza móc przejść na autobus lub taksówkę."
+      ]
+    }
+  ],
+  "tips": [
+    "Monitoruj prognozy morskie (wiatr powyżej 20 węzłów lub fala ponad 1,5 m często oznacza odwołania).",
+    "Jeśli musisz zmienić port, sprawdź wcześniej lokalne rozkłady autobusów, by przesiadka przebiegła bez stresu."
+  ],
+  "faqs": [
+    {
+      "q": "Kiedy publikowane są rozkłady letnie?",
+      "a": [
+        "Większość przewoźników udostępnia rozkłady na szczyt sezonu między lutym a marcem; jesienne aktualizacje pojawiają się zwykle pod koniec sierpnia."
+      ]
+    },
+    {
+      "q": "Jak potwierdzić odwołanie w dniu rejsu?",
+      "a": [
+        "Odśwież stronę przewoźnika lub jego profile społecznościowe i wypatruj ogłoszeń w porcie; załoga przekazuje zmiany także przez głośniki.",
+        "Miej pod ręką rozkład autobusów SITA lub kontakt do taksówki, by w razie potrzeby od razu zmienić trasę."
+      ]
+    },
+    {
+      "q": "Czy mogę płynąć z dużym bagażem?",
+      "a": [
+        "Tak, ale za bardzo duże torby może obowiązywać niewielka dopłata; przyjdź wcześniej, by załoga mogła je oznaczyć i bezpiecznie schować, a kosztowności trzymaj przy sobie."
+      ]
+    }
+  ]
+}

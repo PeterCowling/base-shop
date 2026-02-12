@@ -2,8 +2,7 @@
 // src/components/seo/HowToJsonLd.tsx
 import { memo } from "react";
 
-import { buildHowToPayload } from "@/utils/seo/jsonld";
-import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { buildHowToPayload , serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 type HowToStep = { name: string; text?: string };
 

@@ -1,0 +1,26 @@
+{
+  "button": {
+    "loading": "Caricamento",
+    "submit": "Invia"
+  },
+  "errors": {
+    "fieldsRequired": "[IT] Fields Required",
+    "networkError": "[IT] Network Error",
+    "notFound": "[IT] Not Found",
+    "tooManyAttempts": "[IT] Too Many Attempts"
+  },
+  "fields": {
+    "bookingCode": "[IT] Booking Code",
+    "bookingCodeHint": "[IT] Booking Code Hint",
+    "bookingCodePlaceholder": "[IT] Booking Code Placeholder",
+    "lastName": "[IT] Last Name",
+    "lastNameHint": "[IT] Last Name Hint",
+    "lastNamePlaceholder": "[IT] Last Name Placeholder"
+  },
+  "help": {
+    "cantFind": "[IT] Cant Find",
+    "contactUs": "[IT] Contact Us"
+  },
+  "subtitle": "Sottotitolo",
+  "title": "Titolo"
+}

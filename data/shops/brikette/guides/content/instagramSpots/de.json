@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Positano-Instagram-Spots (ohne Gedränge)",
+    "description": "Fotogene Orte mit den besten Zeiten ohne Warteschlangen – plus unterschätzte Alternativen."
+  },
+  "linkLabel": "Instagram-Spots in Positano (ohne Gedränge)",
+  "intro": [
+    "Fang die ikonischen Aussichten Positanos ohne Menschenmassen ein: nutze diese Spots nach Tageszeit, egal ob Sonnenaufgang, Golden Hour oder Nachtaufnahme."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Postkartenmotive",
+      "body": [
+        "Via Cristoforo Colombo am frühen Morgen liefert den klassischen Blick auf Spiaggia Grande und die Kirche Santa Maria Assunta.",
+        "Die Kurven der Via Pasitea bei Chiesa Nuova bieten Terrassenperspektiven – am besten kurz nach Sonnenaufgang, wenn Lieferwagen bereits weitergezogen sind."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Unterschätzte Blickwinkel",
+      "body": [
+        "Spaziere den Fornillo-Pfad entlang: kleine Belvederes oberhalb des Strandes geben freie Sicht ohne Gedränge.",
+        "Der Treppenabsatz oberhalb der Piazza dei Mulini Richtung Via Boscariello zeigt farbige Häuserfronten mit wenig Durchgangsverkehr."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden Hour",
+      "body": [
+        "Laurito- und Arienzo-Strände liegen westlich – komm gegen 18:30 für warmes Licht und Spiegelungen im Wasser.",
+        "Wer höher hinaus will, nimmt den Bus nach Nocelle und filmt den Sonnenuntergang vom Startpunkt des Path of the Gods."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Foto-Etikette",
+      "body": [
+        "Halte Treppen frei, gib Porter-Teams und Passanten Vorrang und bleib niemals auf der Straße stehen.",
+        "Verwende leises Auslösegeräusch oder Live-Photos, wenn du in Kirchen fotografierst, und respektiere Privatgrundstücke."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack ein Mikrofasertuch gegen Gischt und Sonnencreme-Flecken auf der Linse.",
+    "Speichere Lieblingsspots offline in Google Maps – der Empfang bricht auf Terrassen und Wegen oft ab."
+  ],
+  "faqs": [
+    {
+      "q": "Wann ist Spiaggia Grande am leersten?",
+      "a": [
+        "Vor 09:00 Uhr oder nach 18:30; bring ein Handtuch und nutze das weiche Licht für Fotos."
+      ]
+    },
+    {
+      "q": "Wo kann ich Nachtaufnahmen machen?",
+      "a": [
+        "Stativfrei gelingen Shots auf der Piazza dei Mulini und an der Via Cristoforo Colombo, wo Laternenlicht die Häuser illuminiert."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Beste Fotospots nach Tageszeit – für Sonnenaufgang, Golden Hour und ruhige Alternativen ohne Gedränge.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Klassische Motive"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Verborgene Alternativen"
+      },
+      {
+        "href": "#sunset",
+        "label": "Sonnenuntergangs-Spots"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etikette & lokale Tipps"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "classics": {
+      "heading": "Klassische Motive",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Früh am Morgen freie Sicht auf Kirche und Küste; Stativ nicht nötig, Treppe frei halten."
+        },
+        {
+          "title": "Fornillo-Pfad",
+          "description": "Romantischer Küstenweg mit Blick auf Boote und Felsen – ideal für 50mm/Portraitlinsen."
+        },
+        {
+          "title": "Kurven der Via Pasitea",
+          "description": "Auf den Kurven nahe Chiesa Nuova siehst du gestapelte Häuserfassaden; am besten außerhalb der Lieferzeiten."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Verborgene Alternativen",
+      "items": [
+        {
+          "title": "Terrassen bei Chiesa Nuova",
+          "description": "Terrassen oberhalb des Hostels bieten freie Sicht auf Bucht und Berge – perfekt für Langzeitbelichtungen."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Der Path of the Gods liefert Panoramen aus der Vogelperspektive, besonders zwischen Nocelle und Colle Serra."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Sieh dir die Sunset-Guidepunkte an – viele davon bleiben auch tagsüber ruhig."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Sonnenuntergangs-Spots",
+      "paragraphs": [
+        "Laurito, Arienzo und die Via Positanesi d’America liefern warmes Gegenlicht, wenn die Sonne hinter Capri versinkt.",
+        "Auf der Piazza dei Mulini spiegeln sich nach 20:00 die Lichter der Restaurants – ideal für Blaue-Stunde-Aufnahmen."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etikette & lokale Tipps",
+      "items": [
+        "Stativ nur dort aufstellen, wo du niemanden blockierst – in Stoßzeiten lieber freihändig fotografieren.",
+        "Frag Händler oder Gastgeber, bevor du Terrassen betrittst; viele freuen sich über Tagesschnappschüsse, solange Gäste nicht gestört werden.",
+        "Keine Drohnen ohne Genehmigung starten – große Teile der Küste liegen in Schutz- und Flugverbotszonen."
+      ]
+    },
+    "faqs": {
+      "heading": "FAQ",
+      "items": [
+        {
+          "summary": "Wann ist das Licht am schönsten?",
+          "body": "Golden Hour kurz nach Sonnenaufgang oder vor Sonnenuntergang – meide 11:00–16:00 wegen harschem Licht und Gedränge."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Brauche ich eine Drohnengenehmigung?",
+      "body": "Ja – Drohnen erfordern eine ENAC-Genehmigung, und große Teile der Küste sind gesperrt. Ohne Bewilligung drohen Bußgelder und Beschlagnahme."
+    },
+    "galleryAlt": [
+      "Positano von oben",
+      "Küstenpanorama"
+    ],
+    "galleryFallbackAlt": "Panoramablick auf die Küste von Positano"
+  }
+}

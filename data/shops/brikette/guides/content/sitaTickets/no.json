@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "SITA-billetter og tips",
+    "description": "Hvor du kjøper SITA-billetter, regler for påstempling, bagasje- og køtips for bussene langs Amalfikysten."
+  },
+  "linkLabel": "SITA-billetter og tips",
+  "intro": [
+    "Kjøp SITA-billetter før ombordstigning og gi ekstra tid om sommeren. Behold billettene til slutten av turen."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hvor du kjøper",
+      "body": [
+        "Kjøp på tabacchi/kiosker langs hovedveien. Fyll opp når køene er korte."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Validering",
+      "body": [
+        "Valider ved ombordstigning der maskiner finnes; behold billettene til avstigning."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg kjøpe om bord?",
+      "a": [
+        "Generelt ikke; kjøp før ombordstigning for å unngå forsinkelser."
+      ]
+    }
+  ]
+}

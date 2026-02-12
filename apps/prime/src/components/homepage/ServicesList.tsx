@@ -7,7 +7,9 @@
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import type { ServiceCardData } from '../../config/homepage/servicesConfig';
+
 import ServiceCard from './cards/ServiceCard';
 import ServiceCard2 from './cards/ServiceCard2';
 

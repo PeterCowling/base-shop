@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Vaskemuligheder i Positano",
+    "description": "Selvbetjening, indlevering og hvad du gør, hvis du vasker sent."
+  },
+  "linkLabel": "Vaskemuligheder i Positano (selvbetjening & indlevering)",
+  "intro": [
+    "Der findes både selvbetjening og vaskeservice i byen; tjek åbningstider i skuldersæsonen, og forvent køer på skiftedage."
+  ],
+  "toc": {
+    "onThisPage": "På denne side",
+    "selfService": "Selvbetjente vaskerier",
+    "dropOff": "Indleveringsservice",
+    "howto": "Sådan bruger du selvbetjening",
+    "tips": "Sæbe og maskiner",
+    "faqs": "FAQ"
+  },
+  "selfServiceText": "Forvent kompakte europæiske maskiner. Medbring småmønter, og sigt efter tidspunkter uden for myldretid (sen formiddag eller tidlig eftermiddag uden for skiftedage).",
+  "dropOffText": "Spørg efter pris pr. kilo og samme dags levering. I højsæsonen øger tidlig indlevering chancen for at få tøjet tilbage samme dag.",
+  "howtoSteps": [
+    "Vælg maskinstørrelse efter mængde; fyld ikke for meget.",
+    "Tilføj vaskemiddel/skyllemiddel som anvist; nogle maskiner doserer automatisk.",
+    "Vælg program (kold/varm), start maskinen, og sæt en alarm, så du er tilbage før programmet slutter."
+  ],
+  "tipsList": [
+    "Brug skånsomme programmer til hurtigttørrende stof og badetøj.",
+    "Delte tørretumblere kan blive meget varme – tjek vaskeanvisning, og overvej at hængetørre."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Selvbetjening",
+      "body": [
+        "Forvent kompakte maskiner. Medbring mønter, og vask uden for spidsbelastning for at undgå køer."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Indleveringsservice",
+      "body": [
+        "Spørg efter pris pr. kilo og leveringstid; aflever tidligt i højsæsonen for at sikre samme dag."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg købe vaskemiddel i nærheden?",
+      "a": [
+        "Ja – se %LINK:groceriesPharmacies|dagligvarer og apoteker% for små pakker."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg vente, mens tøjet vaskes?",
+      "a": [
+        "Brug en café i nærheden (se %LINK:workCafes|arbejdsvenlige caféer%) eller nyd en kort gåtur."
+      ]
+    }
+  ]
+}

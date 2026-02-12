@@ -1,11 +1,12 @@
 import "../../../../../../../test/resetNextMocks";
 
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Button } from "../button";
 
 describe("Button", () => {
-  it("applies size classes for sm/md/lg", () => {
+  it("applies size classes for sm/md/lg", async () => {
     const { rerender, container } = render(<Button size="sm">Small</Button>);
     expect(container.firstChild).toHaveClass("h-9", "px-3");
 
@@ -16,7 +17,7 @@ describe("Button", () => {
     expect(container.firstChild).toHaveClass("h-11", "px-5", "text-base");
   });
 
-  it("applies quiet tone styles", () => {
+  it("applies quiet tone styles", async () => {
     const { container } = render(
       <Button tone="quiet" color="primary">
         Quiet
@@ -24,5 +25,6 @@ describe("Button", () => {
     );
     expect(container.firstChild).toHaveClass("text-primary");
     expect(container.firstChild).toHaveClass("hover:bg-primary-soft/50");
+
   });
 });

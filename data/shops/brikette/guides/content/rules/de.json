@@ -1,0 +1,25 @@
+{
+  "seo": {
+    "title": "Hausordnung und Richtlinien – Positano Hostel",
+    "description": "Lies und befolge unsere wichtigsten Hausregeln – einschließlich der Kein-Außenalkohol-Regel und der Sorgfaltspflicht –, damit alle sicher bleiben und du deinen Aufenthalt genießt."
+  },
+  "linkLabel": "Hausordnung und Richtlinien – Positano Hostel",
+  "sections": [
+    {
+      "id": "alcoholPolicy",
+      "title": "Kein-Außenalkohol-Regel",
+      "body": [
+        "Da wir eine lizenzierte Lokalität sind, darfst du auf dem gesamten Gelände keinen außerhalb gekauften Alkohol mitbringen oder konsumieren. Falls du doch Außenalkohol mitbringst, bewahrt unser Team ihn sicher auf und gibt ihn beim Check-out zurück (oder sobald du bestätigst, dass er außerhalb konsumiert wird). Die Entscheidung unseres Teams ist endgültig. Das Mitbringen oder Trinken von Außenalkohol führt zur sofortigen Stornierung deiner Buchung, wird als No-Show gewertet und es gibt keine Erstattung."
+      ]
+    },
+    {
+      "id": "dutyOfCare",
+      "title": "Deine Sorgfaltspflicht",
+      "body": [
+        "Während du bei uns bist, teilst du das Hostel mit anderen Gästen, Mitarbeitenden und Dienstleistern. Bitte:",
+        "* Respektiere die Privatsphäre und den persönlichen Raum aller.\n* Achte darauf, das Eigentum des Hostels oder anderer Gäste nicht zu beschädigen.\n* Halte den Geräuschpegel angemessen und sorge für eine ruhige, freundliche Atmosphäre.\n* Befolge alle zusätzlichen Regeln oder Anweisungen unseres Teams.",
+        "Wenn du diese Pflichten ignorierst, können wir deine Buchung sofort (als No-Show) stornieren, dich ohne Rückerstattung des Hauses verweisen und dich für Bußgelder, Rechtskosten, Reputationsschäden oder andere Ausgaben haftbar machen. Illegale Aktivitäten melden wir umgehend den örtlichen Behörden."
+      ]
+    }
+  ]
+}

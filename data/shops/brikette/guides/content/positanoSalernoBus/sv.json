@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano till Salerno med buss – steg för steg",
+    "description": "Dörr-till-dörr-bussvägledning från Hostel Brikette till Salerno via Amalfi: var du går ombord, köper biljetter, läser tidtabeller och byter i Amalfi."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Reseöversikt"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA-bussar och biljetter"
+    },
+    {
+      "id": "timetable",
+      "title": "Tidtabell och planering",
+      "body": "Kontrollera de senaste tiderna på %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Slå upp båda etapperna och planera in bytestid i Amalfi."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Busshållplatsen Positano (Chiesa Nuova)"
+    },
+    {
+      "id": "walk",
+      "title": "Promenad från vandrarhemmet till hållplatsen"
+    },
+    {
+      "id": "wait",
+      "title": "Köp biljetten och vänta på ombordstigning"
+    },
+    {
+      "id": "transfer",
+      "title": "Byt buss i Amalfi"
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst till Salerno"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hur läser jag SITA-busstidtabellen?",
+      "a": [
+        "**Läsa raderna:** Raderna i första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsa kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje schemalagd resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på söndag eller en helgdag, använd kolumnerna 'G' och 'H'.",
+        "**Kombinera rader och kolonner:** Välj dina avgångs- och ankomsthållplatser, kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de anländer till din destination. Till exempel, för att se avgångstid från Sorrento, titta på Sorrento-raden. För att se ankomsttid i Positano (Chiesa Nuova / Bar Internazionale), se Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Behöver du andra transportalternativ? Öppna %HOWTO:how-to-get-here|översikten Så tar du dig hit% för färjor, taxi och kombinerade resplaner."
+  }
+}

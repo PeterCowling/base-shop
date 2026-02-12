@@ -15,11 +15,13 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button, Input, Textarea } from "@acme/design-system/atoms";
 import {
   Dialog,
+  DialogDescription,
   DialogOverlay,
   DialogPortal,
   DialogTitle,
 } from "@acme/design-system/primitives";
 
+import { BUSINESSES } from "@/lib/business-catalog";
 import { getStringProp, readJsonSafely } from "@/lib/json";
 import type { Priority } from "@/lib/types";
 
@@ -36,9 +38,22 @@ interface FormData {
   notes: string;
 }
 
+const ACTIVE_BUSINESSES = BUSINESSES.filter(
+  (business) => business.status === "active"
+);
+const DEFAULT_BUSINESS = ACTIVE_BUSINESSES[0]?.id ?? "PLAT";
+
+function resolveBusiness(input?: string): string {
+  if (input && ACTIVE_BUSINESSES.some((business) => business.id === input)) {
+    return input;
+  }
+
+  return DEFAULT_BUSINESS;
+}
+
 const INITIAL_FORM_DATA: FormData = {
   title: "",
-  business: "PLAT",
+  business: DEFAULT_BUSINESS,
   priority: "P2",
   notes: "",
 };
@@ -88,9 +103,11 @@ function QuickCaptureForm(props: {
           disabled={isSubmitting}
           className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <option value="PLAT">Platform</option>
-          <option value="BRIK">Brikette</option>
-          <option value="CMS">CMS</option>
+          {ACTIVE_BUSINESSES.map((business) => (
+            <option key={business.id} value={business.id}>
+              {business.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -169,11 +186,11 @@ function QuickCaptureSuccess(props: {
 export function QuickCaptureModal({
   isOpen,
   onClose,
-  defaultBusiness = "PLAT",
+  defaultBusiness = DEFAULT_BUSINESS,
 }: QuickCaptureModalProps) {
   const [formData, setFormData] = useState<FormData>({
     ...INITIAL_FORM_DATA,
-    business: defaultBusiness,
+    business: resolveBusiness(defaultBusiness),
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedIdeaId, setSubmittedIdeaId] = useState<string | null>(null);
@@ -223,12 +240,18 @@ export function QuickCaptureModal({
   };
 
   const handleAddAnother = () => {
-    setFormData({ ...INITIAL_FORM_DATA, business: defaultBusiness });
+    setFormData({
+      ...INITIAL_FORM_DATA,
+      business: resolveBusiness(defaultBusiness),
+    });
     setSubmittedIdeaId(null);
   };
 
   const handleClose = () => {
-    setFormData({ ...INITIAL_FORM_DATA, business: defaultBusiness });
+    setFormData({
+      ...INITIAL_FORM_DATA,
+      business: resolveBusiness(defaultBusiness),
+    });
     setSubmittedIdeaId(null);
     onClose();
   };
@@ -245,6 +268,9 @@ export function QuickCaptureModal({
             <DialogTitle className="text-xl font-semibold">
               Quick Capture
             </DialogTitle>
+            <DialogDescription className="sr-only">
+              Capture a new idea with title, business, priority, and optional notes.
+            </DialogDescription>
             <DialogPrimitive.Close
               className="inline-flex items-center justify-center min-h-10 min-w-10 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Close modal"

@@ -129,7 +129,6 @@ flowchart TB
 flowchart LR
     subgraph Apps["Applications"]
         cms["@apps/cms"]
-        storefront["@apps/storefront"]
         cmp["@apps/cover-me-pretty"]
         brikette["@apps/brikette"]
         skylar["@apps/skylar"]

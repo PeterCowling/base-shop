@@ -64,7 +64,9 @@ export async function getCommitsForCard(
     }));
   } catch (error) {
     // Log error but don't throw - activity view is non-critical
-    console.error(`Failed to get commits for card ${cardId}:`, error);
+    if (process.env.NODE_ENV !== "test") {
+      console.error(`Failed to get commits for card ${cardId}:`, error);
+    }
     return [];
   }
 }

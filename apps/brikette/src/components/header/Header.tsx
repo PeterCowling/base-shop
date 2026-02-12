@@ -36,6 +36,7 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
       {/* Scroll progress bar -------------------------------------------------- */}
       <div
         role="progressbar"
+        aria-label="Page scroll progress"
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress)}

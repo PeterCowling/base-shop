@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Nghệ thuật và nghệ nhân Positano (mua sắm)",
+    "description": "Sandals, đồ gốm, tranh in — nơi tìm chất lượng và cách vận chuyển."
+  },
+  "linkLabel": "Nghệ thuật và nghệ nhân Positano (mua sắm)",
+  "intro": [
+    "Mua sắm ở làng nghề Positano không bị chặt chém: sandals, đồ gốm, tranh in và cách gửi đồ về nhà."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Sandals đóng theo chân",
+      "body": [
+        "Xem thợ đóng giày làm sandals da trong vòng 30 phút; giá các đôi đặt riêng bắt đầu từ khoảng 80 €.",
+        "Mang theo hoặc vẽ khuôn bàn chân để đặt hàng từ xa sau này — nhiều nghệ nhân gửi hàng toàn cầu khi đã có số đo của bạn."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Đồ gốm & nghệ thuật",
+      "body": [
+        "Ghé các xưởng gốm gia đình để xem gạch men và bộ đồ ăn vẽ tay. Hỏi về men không chì nếu bạn định dùng đồ để đựng thức ăn.",
+        "Các nghệ sĩ địa phương bán tranh in và tranh màu nước dọc Via Cristoforo Colombo — ống giấy bảo vệ tác phẩm khi di chuyển."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Thanh toán & vận chuyển",
+      "body": [
+        "Hầu hết cửa hàng nhận thẻ nhưng giảm giá khi trả tiền mặt. Giữ sẵn giấy tờ tùy thân để làm thủ tục hoàn thuế cho đơn hàng trên 154,94 €.",
+        "Gửi đồ dễ vỡ bằng dịch vụ chuyển phát có bảo hiểm (DHL/UPS) và yêu cầu đóng hai lớp hộp; phí bắt đầu từ khoảng 40 € tùy trọng lượng."
+      ]
+    }
+  ],
+  "tips": [
+    "Chụp lại hóa đơn và thông tin nghệ nhân để nhớ xưởng nào làm từng món.",
+    "Mang theo màng xốp hơi nếu định mang gốm sứ trong hành lý — hostel thường có sẵn vật liệu đệm từ các kiện hàng giao."
+  ],
+  "faqs": [
+    {
+      "q": "Nghệ nhân có thể cá nhân hóa sản phẩm không?",
+      "a": [
+        "Có. Nhiều nơi khắc chữ viết tắt lên sandals hoặc tùy chỉnh màu đồ gốm nếu bạn báo trước vài ngày."
+      ]
+    },
+    {
+      "q": "Làm sao để được hoàn thuế VAT?",
+      "a": [
+        "Yêu cầu biểu mẫu miễn thuế khi mua hàng, đóng dấu tại sân bay hoặc bến phà và nộp trong vòng ba tháng để nhận hoàn tiền."
+      ]
+    }
+  ]
+}

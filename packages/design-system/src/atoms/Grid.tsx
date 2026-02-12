@@ -1,7 +1,6 @@
 import {
   type ComponentPropsWithoutRef,
   type ElementType,
-  forwardRef,
   type ReactElement,
   type Ref,
 } from "react";
@@ -122,29 +121,34 @@ type GridComponent = <T extends ElementType = "div">(
   props: GridProps<T> & { ref?: Ref<HTMLElement> }
 ) => ReactElement;
 
-const Grid = forwardRef(
-  <T extends ElementType = "div">(
-    { as, columns, gap = 6, className, ...rest }: GridProps<T>,
-    ref: Ref<HTMLElement>
-  ) => {
-    const Component = (as ?? "div") as ElementType;
-    const columnClasses = columns
-      ? (Object.entries(columns) as Array<[GridBreakpoint, GridColumnCount | undefined]>)
-          .filter(([, value]) => typeof value === "number")
-          .map(([key, value]) => GRID_COL_CLASSES[key][value as GridColumnCount])
-      : [];
-
-    return (
-      <Component
-        ref={ref as never}
-        className={clsx("grid", GAP_CLASS[gap], columnClasses, className)}
-        {...rest}
-      />
-    );
+const Grid = (<T extends ElementType = "div">(
+  {
+    ref,
+    as,
+    columns,
+    gap = 6,
+    className,
+    ...rest
+  }: GridProps<T> & {
+    ref?: Ref<HTMLElement>;
   }
-) as GridComponent & { displayName?: string };
+) => {
+  const Component = (as ?? "div") as ElementType;
+  const columnClasses = columns
+    ? (Object.entries(columns) as Array<[GridBreakpoint, GridColumnCount | undefined]>)
+        .filter(([, value]) => typeof value === "number")
+        .map(([key, value]) => GRID_COL_CLASSES[key][value as GridColumnCount])
+    : [];
 
-Grid.displayName = "Grid";
+  return (
+    <Component
+      ref={ref as never}
+      className={clsx("grid", GAP_CLASS[gap], columnClasses, className)}
+      {...rest}
+    />
+  );
+}) as GridComponent;
+
 
 export { Grid };
 export type { GridColumns, GridGap, GridProps };

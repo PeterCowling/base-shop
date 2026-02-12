@@ -1,6 +1,6 @@
 import { verifyCredentials } from "@acme/plugin-sanity";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 interface VerifyRequest {
   projectId: string;

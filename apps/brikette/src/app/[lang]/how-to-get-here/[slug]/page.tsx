@@ -1,16 +1,17 @@
 // src/app/[lang]/how-to-get-here/[slug]/page.tsx
 // How to get here dynamic route - App Router version (guide system only)
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX } from "@/data/guides.index";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+import { GUIDES_INDEX, isGuideLive } from "@/data/guides.index";
 import { listHowToSlugs } from "@/lib/how-to-get-here/definitions";
-import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
+import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { OG_IMAGE } from "@/utils/headConstants";
 
 import GuideContent from "../../experiences/[slug]/GuideContent";
@@ -24,7 +25,7 @@ export async function generateStaticParams() {
   const slugs = listHowToSlugs();
   return langParams.flatMap(({ lang }) => {
     const routeSlugs = slugs;
-    const guideSlugs = GUIDES_INDEX.filter((guide) => guide.status === "published")
+    const guideSlugs = GUIDES_INDEX.filter((guide) => guide.status === "live")
       .map((guide) => guide.key)
       .filter(
         (key) => guideNamespace(lang as Parameters<typeof guideNamespace>[0], key).baseKey === "howToGetHere",
@@ -75,8 +76,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     format: "auto",
   });
 
-  const guideMeta = GUIDES_INDEX.find((g) => g.key === guideKey);
-  const isPublished = (guideMeta?.status ?? "published") === "published";
+  const isPublished = isGuideLive(guideKey);
 
   return buildAppMetadata({
     lang: validLang,
@@ -100,9 +100,22 @@ export default async function HowToGetHerePage({ params }: Props) {
   if (!guideKey || guideBase?.baseKey !== "howToGetHere") {
     notFound();
   }
+  if (!isGuideLive(guideKey)) {
+    notFound();
+  }
+  const localizedSlug = guideSlug(validLang, guideKey);
+  if (slug !== localizedSlug) {
+    permanentRedirect(guidePath(validLang, guideKey));
+  }
 
-  // Load manifest overrides (includes audit results)
-  const serverOverrides = loadGuideManifestOverridesFromFs();
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
 
-  return <GuideContent lang={validLang} guideKey={guideKey} serverOverrides={serverOverrides} />;
+  return (
+    <GuideContent
+      lang={validLang}
+      guideKey={guideKey}
+      serverGuides={serverGuides}
+      serverGuidesEn={serverGuidesEn}
+    />
+  );
 }

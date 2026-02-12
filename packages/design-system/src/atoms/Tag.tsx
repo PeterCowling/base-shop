@@ -124,31 +124,41 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: "default" | "success" | "warning" | "destructive";
 }
 
-export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ className, color, variant, tone, size = "md", children, ...props }, ref) => {
-    const resolvedColor = resolveColor(variant, color);
-    const resolvedTone = resolveTone(tone, color, variant);
-
-    return (
-      <span
-        ref={ref}
-        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy
-        data-token={bgToken(resolvedColor, resolvedTone)}
-        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy
-        data-token-fg={FG_TOKEN[resolvedColor]}
-        className={cn(
-          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "inline-flex items-center rounded-full font-medium",
-          SIZE_CLASSES[size],
-          (resolvedTone === "solid" ? SOLID_BG : SOFT_BG)[resolvedColor],
-          textClass(resolvedColor, resolvedTone),
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </span>
-    );
+export const Tag = (
+  {
+    ref,
+    className,
+    color,
+    variant,
+    tone,
+    size = "md",
+    children,
+    ...props
+  }: TagProps & {
+    ref?: React.Ref<HTMLSpanElement>;
   }
-);
-Tag.displayName = "Tag";
+) => {
+  const resolvedColor = resolveColor(variant, color);
+  const resolvedTone = resolveTone(tone, color, variant);
+
+  return (
+    <span
+      ref={ref}
+      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy
+      data-token={bgToken(resolvedColor, resolvedTone)}
+      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy
+      data-token-fg={FG_TOKEN[resolvedColor]}
+      className={cn(
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        "inline-flex items-center rounded-full font-medium",
+        SIZE_CLASSES[size],
+        (resolvedTone === "solid" ? SOLID_BG : SOFT_BG)[resolvedColor],
+        textClass(resolvedColor, resolvedTone),
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  );
+};

@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Blanchisserie à Positano (libre-service et dépôt)",
+    "description": "Laveries en libre-service, services dépôt-minute et conseils pour gérer le linge en voyage."
+  },
+  "linkLabel": "Blanchisserie à Positano (libre-service et dépôt)",
+  "intro": [
+    "On trouve en ville des laveries en libre-service et des services de dépôt ; vérifiez les horaires en intersaison et attendez-vous à de l’affluence les jours de rotation."
+  ],
+  "toc": {
+    "onThisPage": "Sur cette page",
+    "selfService": "Laveries en libre-service",
+    "dropOff": "Services de dépôt",
+    "howto": "Mode d’emploi : libre-service",
+    "tips": "Lessive et machines",
+    "faqs": "FAQ"
+  },
+  "selfServiceText": "Les machines sont des modèles européens compacts. Prévoyez de la petite monnaie et privilégiez les heures creuses (fin de matinée ou début d’après-midi hors jours de rotation) pour éviter la file.",
+  "dropOffText": "Demandez le tarif au kilo pour le lavage et pliage ainsi que le délai dans la journée. En haute saison, un dépôt matinal augmente vos chances.",
+  "howtoSteps": [
+    "Choisissez la taille de machine adaptée à votre chargement ; ne la surchargez pas.",
+    "Ajoutez lessive et adoucissant selon les indications ; certaines machines dosent automatiquement.",
+    "Sélectionnez le programme (froid/tiède) et lancez. Programmez un rappel pour revenir avant la fin du cycle."
+  ],
+  "tipsList": [
+    "Utilisez des cycles délicats pour les tissus à séchage rapide et les maillots.",
+    "Les sèche-linge partagés chauffent fort — vérifiez les étiquettes et pensez au séchage à l’air libre."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Libre-service",
+      "body": [
+        "Les machines sont des modèles européens compacts. Prévoyez de la petite monnaie et privilégiez les heures creuses (fin de matinée ou début d’après-midi hors jours de rotation) pour éviter la file."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Services de dépôt",
+      "body": [
+        "Demandez le tarif au kilo pour le lavage et pliage ainsi que le délai dans la journée. En haute saison, un dépôt matinal augmente vos chances."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je acheter de la lessive à proximité ?",
+      "a": [
+        "Oui — consultez %LINK:groceriesPharmacies|épiceries et pharmacies% pour trouver des petits formats."
+      ]
+    },
+    {
+      "q": "Où patienter pendant le lavage ?",
+      "a": [
+        "Installez-vous dans un café proche (voir %LINK:workCafes|cafés propices au travail%) ou profitez d’une courte balade."
+      ]
+    }
+  ]
+}

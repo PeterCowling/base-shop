@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "Praiano gyertyafényes fesztiválja augusztus elején: dátumok, megközelítés, nézőpontok és fotóetikett."
+  },
+  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "intro": [
+    "Így tervezd meg a látogatást Praiano Luminaria di San Domenico fesztiváljára: gyertyafényes sikátorok, tűzijáték és tiszteletteljes nézelődés."
+  ],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "A fesztivál alapjai",
+      "body": [
+        "Az esemény augusztus első hetében zajlik, a csúcsnapok nagyjából augusztus 1–4., amikor több ezer gyertya világítja meg a Piazza San Gennarót.",
+        "Érkezz napnyugta előtt, így látod, ahogy az önkéntesek kihelyezik a gyertyákat, és jó kilátóhelyet is találsz."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Utazás oda-vissza",
+      "body": [
+        "Positanóból SITA busszal kb. 20 perc, vagy foglalj megosztott transzfert; az utolsó buszok éjfél körül indulnak vissza, de indulás napján mindenképp ellenőrizd.",
+        "Ha későig maradsz, intézz előre taxit, vagy szállj meg éjszakára Praianóban, hogy elkerüld a hosszú várakozást a tűzijáték után."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Nézői etikett",
+      "body": [
+        "Hagyd épségben a gyertyákat a helyieknek; ne lépj a kordonnal elzárt részekre, és ne torlaszd el az ösvényeket állványokkal.",
+        "Ha hosszú expozíciót készítesz, használj állványt vagy stabil felületet, de maradj távol a templombejáratoktól és a menekülési útvonalaktól."
+      ]
+    }
+  ],
+  "tips": [
+    "Vigyél újratölthető palackot (500 ml) és kis lámpát, hogy sötétedés után is biztonságosan járd Praiano sikátorait.",
+    "A tűzijáték után tartsd tiszteletben a csendet; a lakók késő éjszakáig takarítják a viaszt."
+  ],
+  "faqs": [
+    {
+      "q": "Ingyenes a fesztivál?",
+      "a": [
+        "Igen, a nézés ingyenes. Támogasd a helyi standokat harapnivaló vásárlásával, vagy adakozz a templomban, hogy a jövőben is legyen gyertyapénz."
+      ]
+    },
+    {
+      "q": "Mi történik, ha esik?",
+      "a": [
+        "Erős eső elhalaszthatja a gyertyakihelyezést; a szervezők Praiano önkormányzatának Facebook-oldalán tesznek közzé frissítést. Legyen tartalék estéd a látogatáshoz."
+      ]
+    }
+  ],
+  "event": {
+    "date": "Augusztus 1–4. (csúcsnapok)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Érkezz napnyugta előtt, hogy lásd az önkénteseket munka közben.",
+      "Vigyél kis lámpát vagy telefon fényt a sötét sikátorokban való hazasétához."
+    ]
+  }
+}

@@ -1,13 +1,14 @@
 ---
 Type: Plan
-Status: Active
+Status: Superseded
+Superseded-by: docs/plans/agent-setup-improvement-fact-find.md
 Domain: DevEx/Tooling
 Last-reviewed: 2026-01-27
 Relates-to charter: none
 Created: 2026-01-20
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-27
-Last-updated-by: Codex (doc updates: skills path + progressive disclosure pointers)
+Last-updated: 2026-02-11
+Last-updated-by: Claude Opus 4.6 (fact-check + superseded by fresh fact-find)
 ---
 
 # Agent Enhancement Plan
@@ -28,8 +29,8 @@ Analysis of current agent configuration revealed:
 | Aspect | Claude Code | Codex | Gap |
 |--------|-------------|-------|-----|
 | Project instructions | `CLAUDE.md` (comprehensive) | `CODEX.md` (thin overlay) | Codex relies heavily on shared docs |
-| Safety hooks | 9 hooks in `.claude/settings.json` | None | **Codex has no guardrails** |
-| Skills/Prompts | 12 implemented | References Claude's | Works but not agent-agnostic |
+| Safety hooks | 2 hooks + deny/ask/allow permissions in `.claude/settings.json` | None | **Codex has no guardrails** |
+| Skills/Prompts | 40 implemented | References Claude's | Works but not agent-agnostic |
 | Progressive disclosure | None | None | Everything dumped at once |
 | Self-reflection | None | None | No learning mechanism |
 | Orchestration | None | None | No multi-agent patterns |
@@ -68,6 +69,9 @@ Key insight from external research: **Tools should be agent-first** — designed
 - **No MCP access** — Can't use project MCP tools
 
 ### Skill Inventory (Current)
+
+> **Note (2026-02-11 fact-check):** This snapshot listed 14 skills at plan creation (2026-01-20). The repo now contains **40 skills** in `.claude/skills/`. The original 14 are listed below; see `.claude/skills/*/SKILL.md` for the full current set. Skills were NOT migrated to `.agents/skills/` (see Phase 2 tasks).
+
 ```
 .claude/skills/
 ├── fact-find/SKILL.md            ✅ Core workflow
@@ -153,22 +157,24 @@ Phases are thematic groupings; the critical path is the actual execution order a
 
 - [x] **AGENT-03**: Create `.agents/` directory structure
   - Agent-agnostic location (not `.claude/`-specific)
-  - Structure:
+  - Structure (planned vs actual):
     ```
-    .agents/
-    ├── README.md
-    ├── skills/
-    │   ├── manifest.yaml
-    │   ├── workflows/
-    │   ├── components/
-    │   ├── testing/
-    │   └── domain/
-    ├── safety/
-    ├── orchestration/
-    ├── learnings/           # gitignored except .gitkeep
-    │   └── .gitkeep
-    └── status/              # gitignored except .gitkeep
-        └── .gitkeep
+    .agents/                           # Planned             Actual (2026-02-11)
+    ├── README.md                      # ✅                  ✅ exists
+    ├── skills/                        # ✅ (with subdirs)   ❌ NOT created — skills stayed in .claude/skills/
+    │   ├── manifest.yaml              # ✅                  ❌ NOT created
+    │   ├── workflows/                 # ✅                  ❌
+    │   ├── components/                # ✅                  ❌
+    │   ├── testing/                   # ✅                  ❌
+    │   └── domain/                    # ✅                  ❌
+    ├── safety/                        # ✅                  ✅ exists (rationale.md, checklists.md)
+    ├── orchestration/                 # ✅                  ❌ NOT created (Phase 5 incomplete)
+    ├── learnings/                     # ✅                  ✅ exists (.gitkeep only; DEPRECATED)
+    │   └── .gitkeep                   # ✅                  ✅
+    ├── status/                        # ✅                  ✅ exists (.gitkeep only)
+    │   └── .gitkeep                   # ✅                  ✅
+    ├── private/                       # (not planned)       ✅ exists (gitignored)
+    └── pre_rollback_reports/          # (not planned)       ✅ exists (gitignored)
     ```
   - Affects: New directory tree
 
@@ -196,20 +202,22 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - Add patterns to root `.gitignore` (not a separate `.agents/.gitignore`)
   - Affects: `.gitignore` (update), `.gitkeep` files
 
-- [x] **AGENT-03c**: Update `.claude/config.json` context files
+- [ ] **AGENT-03c**: Update `.claude/config.json` context files
   - Add `.agents/README.md` to context files list
   - Add `.agents/skills/manifest.yaml` to context files list
   - **Scope decision**: Only auto-load README + manifest; individual skills loaded on-demand per Phase 3
   - Ensure Claude Code discovers the new skill location
   - Affects: `.claude/config.json`
+  - **Fact-check (2026-02-11)**: NOT done. `.claude/config.json` context files are `["AGENTS.md", "PROJECT_DIGEST.md"]` — no `.agents/` paths added.
 
-- [x] **AGENT-04**: Create skill manifest with metadata
+- [ ] **AGENT-04**: Create skill manifest with metadata
   - YAML manifest defining all skills
   - Include: name, path, load conditions, dependencies
   - Enable progressive disclosure (load on trigger)
   - Affects: `.agents/skills/manifest.yaml` (new)
+  - **Fact-check (2026-02-11)**: NOT done. `.agents/skills/manifest.yaml` does not exist; `.agents/skills/` directory was never created.
 
-- [x] **AGENT-04b**: Add manifest validation to CI
+- [ ] **AGENT-04b**: Add manifest validation to CI
   - **Implementation**: Node script using `js-yaml`
   - **Prerequisite**: Verify `js-yaml` is available (`pnpm why js-yaml`); if not, add as devDependency to root
   - Validates manifest.yaml:
@@ -220,8 +228,9 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - **Exception handling**: stub/redirect files in `.claude/skills/` are not errors
   - Add to existing CI workflow (`.github/workflows/ci.yml` exists)
   - Affects: `scripts/validate-agent-manifest.js` (new), `.github/workflows/ci.yml`
+  - **Fact-check (2026-02-11)**: Partially done. `scripts/validate-agent-manifest.js` exists but is a stub (`console.log('PASS'); process.exit(0)`) — no actual validation logic. CI step exists in `.github/workflows/ci.yml` (line 127) but runs the no-op stub. `js-yaml` is not a direct dependency.
 
-- [x] **AGENT-05**: Migrate core skills to `.agents/`
+- [ ] **AGENT-05**: Migrate core skills to `.agents/`
   - **Scope**: Migrate only core workflow skills first (`plan-feature.md`, `build-feature.md`)
   - **Remaining 10 skills**: Left in `.claude/skills/` for now; migrate incrementally in follow-up tasks or leave in place if working
   - Update references in `AGENTS.md`, `CODEX.md`, `CLAUDE.md`
@@ -237,6 +246,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
     - Avoids symlink issues on Windows/CI environments
   - **Docs handling**: `.claude/HOW_TO_USE_SKILLS.md` stays in place (documents the skills system); add note about `.agents/` migration
   - Affects: Multiple files
+  - **Fact-check (2026-02-11)**: NOT done. All 40 skills remain in `.claude/skills/`. `.agents/skills/` directory was never created. `.agents/README.md` explicitly states "Skills have moved to `.claude/skills/`", suggesting a conscious decision was made to keep skills in place.
 
 - [x] **AGENT-06**: Add skill reference section to CODEX.md
   - Explicitly document that Codex can use skills
@@ -246,13 +256,14 @@ Phases are thematic groupings; the critical path is the actual execution order a
 
 ### Phase 3: Progressive Disclosure
 
-- [x] **AGENT-07**: Implement trigger-based skill loading
+- [ ] **AGENT-07**: Implement trigger-based skill loading
   - Define triggers in manifest (error messages, keywords)
   - **Important**: Agents don't have regex engines; triggers are human-readable hints, not programmatic matchers
   - Document pattern for agents: "When you encounter error X, read skill Y"
   - Add trigger hints to AGENTS.md so agents know to check manifest
   - Example: Jest ESM errors → load `testing/jest-esm-issues.md`
   - Affects: `.agents/skills/manifest.yaml`, skill files, `AGENTS.md`
+  - **Fact-check (2026-02-11)**: NOT done. No manifest exists. AGENTS.md has a table mapping error patterns to skills (ESM/CJS section) but no general manifest-based trigger system.
 
 - [x] **AGENT-08**: Create troubleshooting skill tree
   - Extract troubleshooting from `CLAUDE.md` into discrete skills
@@ -260,12 +271,14 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - Git state confusion → `safety/git-recovery.md`
   - Dependency conflicts → `domain/dependency-conflicts.md`
   - Affects: New skill files
+  - **Fact-check (2026-02-11)**: Done, but skills live in `.claude/skills/` (not `.agents/skills/`): `jest-esm-issues/SKILL.md`, `git-recovery/SKILL.md`, `dependency-conflicts/SKILL.md`.
 
-- [x] **AGENT-09**: Add "load more context" protocol to AGENTS.md
+- [ ] **AGENT-09**: Add "load more context" protocol to AGENTS.md
   - Document how agents should discover and load skills
   - Pattern: Check manifest → match triggers → read skill
   - Reduces initial context size
   - Affects: `AGENTS.md`
+  - **Fact-check (2026-02-11)**: NOT done. AGENTS.md has no "load more context", "check manifest", or "skill discovery" protocol. Without a manifest (AGENT-04), this protocol cannot be implemented as designed.
 
 ### Phase 4: Reflection Mechanism (Exploratory)
 
@@ -275,7 +288,8 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - Skill template for end-of-session reflection
   - Questions: problems, patterns, skill gaps, tooling ideas
   - Output format: structured markdown in `.agents/learnings/`
-  - Affects: `.agents/skills/workflows/session-reflection.md` (new)
+  - Affects: `.claude/skills/session-reflect/SKILL.md` (actual location; planned `.agents/skills/workflows/session-reflection.md` was never created)
+  - **Fact-check (2026-02-11)**: Done, but at `.claude/skills/session-reflect/SKILL.md` not the planned `.agents/` path. `.agents/README.md` notes the original learnings-based approach is DEPRECATED in favor of the active feedback-loop in `/session-reflect`.
 
 - [x] **AGENT-11**: Initialize learnings directory
   - Directory: `.agents/learnings/` with `.gitkeep` only
@@ -332,7 +346,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - Before large refactor checklist
   - Affects: `.agents/safety/checklists.md` (new)
 
-- [x] **AGENT-18**: Document domain skill extraction pattern
+- [ ] **AGENT-18**: Document domain skill extraction pattern
   - Create template for extracting domain knowledge from plan docs into skills
   - Pattern: plan doc → skill directory with README + sub-skills + troubleshooting
   - **Example extraction** (optional, demonstrates pattern):
@@ -340,6 +354,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
     - Output: `.agents/skills/domain/translation/` with README, workstream docs, troubleshooting
   - The pattern is the deliverable; specific domain skills are optional follow-ups
   - Affects: `.agents/skills/domain/TEMPLATE.md` (new)
+  - **Fact-check (2026-02-11)**: NOT done. `.agents/skills/domain/TEMPLATE.md` does not exist; `.agents/skills/` directory was never created.
 
 - [ ] **AGENT-01b**: Create wrapper script for destructive command protection (optional)
   - Shell wrapper that intercepts dangerous git commands (`reset --hard`, `push --force`, `clean -fd`)
@@ -443,10 +458,10 @@ Brief trigger description
 - [ ] CODEX.md explicitly references skill system
 
 ### Phase 3 Complete When:
-- [x] Manifest includes human-readable trigger hints for on-demand skills
-- [x] AGENTS.md documents "check manifest when you encounter X" pattern
+- [ ] Manifest includes human-readable trigger hints for on-demand skills
+- [ ] AGENTS.md documents "check manifest when you encounter X" pattern
 - [x] Troubleshooting content is extracted into discrete skills
-- [x] Agents can discover skills via documented lookup pattern
+- [ ] Agents can discover skills via documented lookup pattern
 
 ### Phase 4 Complete When (Exploratory):
 - [x] Reflection workflow skill exists and is documented
@@ -463,7 +478,7 @@ Brief trigger description
 ### Phase 6 Complete When:
 - [x] Non-git safety rules (test commands, layer hierarchy) added to rationale doc
 - [x] Pre-action checklists exist
-- [x] Domain skill extraction pattern/template is documented
+- [ ] Domain skill extraction pattern/template is documented
 
 ## Success Metrics
 

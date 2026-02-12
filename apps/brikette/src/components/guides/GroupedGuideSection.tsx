@@ -4,12 +4,14 @@
 import { memo } from "react";
 import clsx from "clsx";
 
+import { Grid } from "@acme/design-system/primitives";
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
-import type { GuideMeta } from "@/data/guides.index";
 import { getGuideImage } from "@/data/guideImages";
+import type { GuideMeta } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
 
+import { formatGuideCardCta } from "./formatGuideCardCta";
 import { GuideCollectionCard } from "./GuideCollectionCard";
 
 /**
@@ -34,6 +36,7 @@ export type TopicConfig = {
 export type GroupedGuideSectionProps = {
   topic: TopicConfig;
   guides: GuideMeta[];
+  guideCountOverride?: number;
   lang: AppLanguage;
   translate: (key: string) => string;
   fallbackTranslate?: (key: string) => string;
@@ -42,7 +45,7 @@ export type GroupedGuideSectionProps = {
   resolveSummary?: (guide: GuideMeta) => string | undefined;
 };
 
-// Hero-style header with image background and overlay
+// Hero-style header with image background
 const HEADER_CLASSES = [
   "relative",
   "overflow-hidden",
@@ -61,22 +64,6 @@ const IMAGE_CLASSES = [
   "inset-0",
   "size-full",
   "object-cover",
-] as const;
-
-// Gradient overlay for text readability
-const OVERLAY_CLASSES = [
-  "absolute",
-  "inset-0",
-  // Mobile: stronger gradient from bottom
-  "bg-gradient-to-t",
-  "from-black/80",
-  "via-black/40",
-  "to-transparent",
-  // Desktop: add side gradient for wider layouts
-  "lg:bg-gradient-to-r",
-  "lg:from-black/70",
-  "lg:via-black/30",
-  "lg:to-transparent",
 ] as const;
 
 // Content container positioned over the image
@@ -140,6 +127,7 @@ const DESCRIPTION_CLASSES = [
 function GroupedGuideSection({
   topic,
   guides,
+  guideCountOverride,
   lang,
   translate,
   fallbackTranslate,
@@ -150,8 +138,8 @@ function GroupedGuideSection({
   // Don't render section header if there are no guides (e.g., all guides in category are draft)
   if (!guides.length) return null;
 
-  const guideCount = guides.length;
-  const countLabel = guideCount === 1 ? "1 guide" : `${guideCount} guides`;
+  const guideCount = guideCountOverride ?? guides.length;
+  const countLabel = String(guideCount);
 
   const resolveLabel = (guideKey: string): string => {
     // Try content.{key}.linkLabel first (standard format)
@@ -199,53 +187,47 @@ function GroupedGuideSection({
           priority={false}
         />
 
-        {/* Gradient overlay */}
-        <div className={clsx(OVERLAY_CLASSES)} aria-hidden="true" />
-
         {/* Content */}
         <div className={clsx(CONTENT_CLASSES)}>
-          <span className={clsx(COUNT_BADGE_CLASSES)}>
-            <svg
-              className="size-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-              aria-hidden="true"
+          <div className="inline-flex flex-col rounded-2xl bg-black/60 px-4 py-3 shadow-lg backdrop-blur-sm sm:px-5 sm:py-4">
+            <span className={clsx(COUNT_BADGE_CLASSES)}>
+              <svg
+                className="size-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                />
+              </svg>
+              {countLabel}
+            </span>
+            <h3
+              id={`topic-${topic.id}`}
+              className={clsx(TITLE_CLASSES)}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-              />
-            </svg>
-            {countLabel}
-          </span>
-          <h3
-            id={`topic-${topic.id}`}
-            className={clsx(TITLE_CLASSES)}
-          >
-            {topic.title}
-          </h3>
-          {topic.description ? (
-            <p className={clsx(DESCRIPTION_CLASSES)}>
-              {topic.description}
-            </p>
-          ) : null}
+              {topic.title}
+            </h3>
+            {topic.description ? (
+              <p className={clsx(DESCRIPTION_CLASSES)}>
+                {topic.description}
+              </p>
+            ) : null}
+          </div>
         </div>
       </div>
 
       {/* Guide cards grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <Grid className="gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {guides.map((guide) => {
           const label = resolveLabel(guide.key);
           const summary = resolveSummary?.(guide);
-          // Use template if it contains placeholder, otherwise use as-is
-          const ctaLabel = cardCtaTemplate
-            ? cardCtaTemplate.includes("{{guideTitle}}")
-              ? cardCtaTemplate.replace("{{guideTitle}}", label)
-              : cardCtaTemplate
-            : undefined;
+          const ctaLabel = cardCtaTemplate ? formatGuideCardCta(cardCtaTemplate, label) : undefined;
           // Use guide-specific image if available, otherwise fall back to topic image
           const thumbnailSrc = getGuideImage(guide.key, topic.imageSrc);
 
@@ -263,7 +245,7 @@ function GroupedGuideSection({
             />
           );
         })}
-      </div>
+      </Grid>
     </section>
   );
 }

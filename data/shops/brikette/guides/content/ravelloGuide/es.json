@@ -1,0 +1,94 @@
+{
+  "seo": {
+    "title": "Guía de viaje de Ravello",
+    "description": "Villas, conciertos y vistas de jardines, además de cómo llegar desde Amalfi o Positano."
+  },
+  "linkLabel": "Guía de viaje de Ravello",
+  "intro": [
+    "Ravello es sinónimo de jardines colgantes y música al atardecer.",
+    "Reserva medio día con margen, porque los horarios de autobús de vuelta son reducidos."
+  ],
+  "sections": [
+    {
+      "id": "villas",
+      "title": "Villas y jardines",
+      "body": [
+        "Villa Rufolo y Villa Cimbrone ofrecen vistas icónicas; llega temprano o al final de la tarde.",
+        "Compra entradas online en temporada alta para evitar filas."
+      ]
+    },
+    {
+      "id": "concerts",
+      "title": "Conciertos",
+      "body": [
+        "El Festival de Ravello se celebra en verano; revisa la programación oficial y lleva abrigo ligero para la brisa nocturna.",
+        "Llega con tiempo para los asientos sin numerar y mantén el silencio en los jardines."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Cómo llegar",
+      "body": [
+        "Autobús desde Amalfi; por la noche hay menos frecuencias, así que planifica el regreso con margen.",
+        "Los taxis compartidos o transfers reservados ayudan si el último bus va lleno."
+      ]
+    }
+  ],
+  "tips": [
+    "Usa calzado cómodo: las calles de Ravello son adoquinadas y con pendientes suaves.",
+    "Combina la visita con una parada en Minori para probar los pasteles de Sal De Riso antes de volver a Positano."
+  ],
+  "faqs": [
+    {
+      "q": "¿Vale la pena pasar la noche?",
+      "a": [
+        "Sí, si quieres asistir a conciertos tardíos y disfrutar de noches tranquilas; si no, basta una excursión de día."
+      ]
+    },
+    {
+      "q": "¿Debo reservar las entradas a las villas con antelación?",
+      "a": [
+        "Las entradas se venden en la puerta. En tardes de verano puede haber filas cortas, así que procura ir por la mañana para entrar sin esperas."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#villas",
+        "label": "Villas y jardines"
+      },
+      {
+        "href": "#concerts",
+        "label": "Conciertos"
+      },
+      {
+        "href": "#getting",
+        "label": "Cómo llegar"
+      }
+    ],
+    "sections": [
+      {
+        "id": "villas",
+        "title": "Villas y jardines",
+        "body": [
+          "Villa Rufolo y Villa Cimbrone ofrecen vistas icónicas. Llega temprano para evitar colas."
+        ]
+      },
+      {
+        "id": "concerts",
+        "title": "Conciertos",
+        "body": [
+          "El Festival de Ravello se celebra en verano: revisa la programación oficial y lleva una capa ligera para las noches frescas."
+        ]
+      },
+      {
+        "id": "getting",
+        "title": "Cómo llegar",
+        "body": [
+          "Toma el autobús desde Amalfi; las frecuencias bajan al atardecer, así que deja margen para el regreso."
+        ]
+      }
+    ]
+  }
+}

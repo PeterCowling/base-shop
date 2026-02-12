@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Stopolás az Amalfi-parton",
+    "description": "Miért kockázatos, milyen alternatív közlekedési megoldások maradnak olcsón."
+  },
+  "linkLabel": "Stopolás az Amalfi-parton",
+  "intro": [
+    "Az Amalfi-parton stoppolni kalandosan hangzik, de az SS163-as út szűk, tele vak kanyarokkal, és alig van biztonságos lehúzódó.",
+    "Támaszkodj inkább a tömegközlekedésre: legyen nálad érvényesített jegy, tervezz tartalék útvonalakat, és tarts félretett készpénzt taxira vagy hordárra, ha a járatok leállnának."
+  ],
+  "tocTitle": "Ezen az oldalon",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "A biztonság tényleges helyzete",
+      "body": [
+        "A sziklákba vájt úton a turistabuszok, a menetrend szerinti buszok és a robogók is egyetlen sávon osztoznak. A sofőrök nem látnak meg időben, és a rendőrség is gyakran arrébb küld mindenkit a saját biztonsága érdekében.",
+        "Sötétedés után rossz a láthatóság, a padkák pedig szűkösek – ha az úttesten várakozol, könnyen megsérülhetsz, és bírságot is kaphatsz."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Biztonságosabb alternatívák",
+      "body": [
+        "A SITA buszok, a helyi transzferek és a települési kisbuszok egész nap közlekednek; a jegyeket vedd meg előre a tabakkikban, és érvényesítsd a járművön.",
+        "A szezonális kompok látványos ugrásokkal kötik össze a városokat; ha a tengeri járatokat törlik, válts busz + hordár szolgáltatásra vagy megosztott taxira.",
+        "Rövid gyalogutak (Nocelle ↔ Positano, Praiano ↔ tengerparti falvak) nappal hangulatos tartalék útvonalat jelentenek."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Ha mégis ott ragadsz",
+      "body": [
+        "Hívd a hivatalos taxikat (a számokat a főbb megállókban kifüggesztik), vagy kérd meg a szállásodat vagy a hostel bárját, hogy rendeljenek; az éjszakai tarifák magasabbak, ezért ha tudod, oszd meg a fuvart más utazókkal.",
+        "Írj a szállásadónak, ha késel. A hostel csapata megmondja, hol a legbiztonságosabb a felvétel, vagy milyen éjszakai alternatívák vannak Amalfi vagy Sorrento környékén."
+      ]
+    }
+  ],
+  "tips": [
+    "Készíts képernyőmentést a busz- és kompmenetrendekről az UnicoCampania vagy a Travelmar alkalmazásból minden reggel, hogy tudd, mikor indul az utolsó garantált járat.",
+    "Vigyél magaddal kis elemlámpát vagy fényvisszaverő szalagot, ha napnyugta után is gyalogolnál – az út menti világítás korlátozott."
+  ],
+  "warnings": [
+    "Soha ne várakozz alagutakban vagy vak kanyarokban – a rendőrök megbírságolhatnak, és a sofőröknek nincs helyük kikerülni a gyalogosokat."
+  ],
+  "faqs": [
+    {
+      "q": "Legális a stoppolás az Amalfi-parton?",
+      "a": [
+        "Kifejezett regionális tiltás nincs, de a hatóságok nem látják szívesen, és a biztonságod érdekében felszólíthatnak, hogy menj tovább. Ha a rendőrök közbelépnek, tartsd be az utasításaikat, és menj át egy buszmegállóba."
+      ]
+    },
+    {
+      "q": "Mi van, ha az utolsó busz már elment?",
+      "a": [
+        "Használd a kifüggesztett taxis telefonszámokat, a helyben elérhető fuvarmegosztó alkalmazásokat, vagy kérd meg a közeli hoteleket és bárokat, hogy hívjanak sofőrt. Végső megoldásként utazz Amalfi vagy Sorrento felé, ahol az éjszakai buszok és vonatok sűrűbben járnak."
+      ]
+    }
+  ]
+}

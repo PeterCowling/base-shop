@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+
 import { ChevronRight } from "@/icons";
 
 import { resolveHref } from "../richText";
@@ -76,7 +77,7 @@ const DIRECTION_TOGGLE_ACTIVE_CLASS = [
   "text-brand-bg",
   "shadow-sm",
   "dark:bg-brand-secondary",
-  "dark:text-brand-text",
+  "dark:text-brand-bg",
 ].join(" ");
 
 const DIRECTION_TOGGLE_INACTIVE_CLASS = [

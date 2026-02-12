@@ -5,20 +5,24 @@
  * Displays readiness score, checklist progress, and next action card.
  */
 
-import { CalendarDays, MapPin, Sparkles } from 'lucide-react';
-import { FC, memo, useCallback, useMemo } from 'react';
+import { type FC, memo, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { CalendarDays, MapPin, MessageCircle, Sparkles } from 'lucide-react';
+
+import { ReadinessSignalCard, UtilityActionStrip } from '@acme/ui';
+
+import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 import {
   computeReadinessScore,
+  getChecklistItemLabel,
   getCompletedCount,
-  getReadinessLevel,
   getTotalChecklistItems,
 } from '../../lib/preArrival';
-import type { ChecklistProgress, PreArrivalData } from '../../types/preArrival';
-import type { GuestArrivalState } from '../../types/preArrival';
+import type { ChecklistProgress, GuestArrivalState,PreArrivalData  } from '../../types/preArrival';
+
 import ChecklistItem from './ChecklistItem';
 import NextActionCard from './NextActionCard';
-import ReadinessScore from './ReadinessScore';
 
 interface ReadinessDashboardProps {
   /** Pre-arrival data */
@@ -38,6 +42,8 @@ interface ReadinessDashboardProps {
   };
   /** Handler for checklist item clicks */
   onChecklistItemClick: (item: keyof ChecklistProgress) => void;
+  /** Most recent completed checklist item for celebration feedback */
+  recentlyCompletedItem?: keyof ChecklistProgress | null;
   /** Optional class name */
   className?: string;
 }
@@ -45,7 +51,7 @@ interface ReadinessDashboardProps {
 /**
  * Format check-in date for display.
  */
-function formatCheckInDate(dateStr: string, t: (key: string) => string): string {
+function formatCheckInDate(dateStr: string, _t: (key: string) => string): string {
   try {
     const date = new Date(dateStr);
     return date.toLocaleDateString(undefined, {
@@ -74,6 +80,18 @@ function getDaysUntilCheckIn(dateStr: string): number {
   }
 }
 
+function getFunnelSessionKey(): string {
+  if (typeof window === 'undefined') {
+    return 'unknown-session';
+  }
+
+  return (
+    localStorage.getItem('prime_guest_uuid') ||
+    localStorage.getItem('prime_guest_booking_id') ||
+    'unknown-session'
+  );
+}
+
 export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
   function ReadinessDashboard({
     preArrivalData,
@@ -83,6 +101,7 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
     firstName,
     cashAmounts,
     onChecklistItemClick,
+    recentlyCompletedItem,
     className = '',
   }) {
     const { t } = useTranslation('PreArrival');
@@ -93,7 +112,6 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
       () => computeReadinessScore(checklistProgress),
       [checklistProgress],
     );
-    const level = useMemo(() => getReadinessLevel(score), [score]);
     const completedCount = useMemo(
       () => getCompletedCount(checklistProgress),
       [checklistProgress],
@@ -115,72 +133,154 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
       [onChecklistItemClick],
     );
 
+    const utilityActions = useMemo(
+      () => [
+        {
+          id: 'maps',
+          label: 'Maps',
+          icon: MapPin,
+          onSelect: () => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey: getFunnelSessionKey(),
+              route: '/',
+              stepId: 'maps',
+              context: {
+                surface: isArrivalDay ? 'arrival-day' : 'pre-arrival',
+              },
+            });
+            handleItemClick('locationSaved');
+          },
+          variant: 'primary' as const,
+        },
+        {
+          id: 'eta',
+          label: 'Share ETA',
+          icon: CalendarDays,
+          onSelect: () => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey: getFunnelSessionKey(),
+              route: '/',
+              stepId: 'eta',
+              context: {
+                surface: isArrivalDay ? 'arrival-day' : 'pre-arrival',
+              },
+            });
+            handleItemClick('etaConfirmed');
+          },
+        },
+        {
+          id: 'support',
+          label: 'Support',
+          icon: MessageCircle,
+          onSelect: () => {
+            recordActivationFunnelEvent({
+              type: 'utility_action_used',
+              sessionKey: getFunnelSessionKey(),
+              route: '/',
+              stepId: 'support',
+              context: {
+                surface: isArrivalDay ? 'arrival-day' : 'pre-arrival',
+              },
+            });
+            if (typeof window !== 'undefined') {
+              window.open('mailto:hostelbrikette@gmail.com', '_self');
+            }
+          },
+        },
+      ],
+      [handleItemClick, isArrivalDay],
+    );
+
     return (
       <div className={`space-y-6 ${className}`}>
         {/* Header */}
         <div className="text-center">
-          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
+          <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-info-soft px-3 py-1 text-sm font-medium text-info-foreground">
             <Sparkles className="h-4 w-4" />
             {isArrivalDay
               ? t('header.arrivalDay')
               : t('header.preArrival')}
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-foreground">
             {isArrivalDay
               ? t('header.welcomeArrivalDay', { name: firstName })
               : t('header.welcome', { name: firstName })}
           </h1>
-          <p className="mt-1 text-gray-600">
+          <p className="mt-1 text-muted-foreground">
             {isArrivalDay
               ? t('header.arrivalDaySubtitle')
               : t('header.subtitle')}
           </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {isArrivalDay
+              ? 'Final checks now mean faster reception handoff.'
+              : 'Complete these steps now to speed up check-in on arrival day.'}
+          </p>
+          <div className="mt-3">
+            <Link
+              href="/portal?edit=personalization"
+              className="inline-flex rounded-full border border-border px-3 py-1 text-xs font-medium text-foreground hover:bg-muted"
+            >
+              Edit preferences
+            </Link>
+          </div>
         </div>
 
         {/* Check-in info card */}
-        <div className="flex items-center justify-between rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+        <div className="flex items-center justify-between rounded-xl bg-info-soft p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-              <CalendarDays className="h-5 w-5 text-blue-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-info-soft">
+              <CalendarDays className="h-5 w-5 text-info-foreground" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">{t('checkIn.label')}</p>
-              <p className="font-semibold text-gray-900">{formattedDate}</p>
+              <p className="text-sm text-muted-foreground">{t('checkIn.label')}</p>
+              <p className="font-semibold text-foreground">{formattedDate}</p>
             </div>
           </div>
           {!isArrivalDay && daysUntil > 0 && (
             <div className="text-right">
-              <p className="text-2xl font-bold text-blue-600">{daysUntil}</p>
-              <p className="text-sm text-gray-500">
+              <p className="text-2xl font-bold text-info-foreground">{daysUntil}</p>
+              <p className="text-sm text-muted-foreground">
                 {daysUntil === 1 ? t('checkIn.dayLeft') : t('checkIn.daysLeft')}
               </p>
             </div>
           )}
           {isArrivalDay && (
-            <div className="rounded-lg bg-green-100 px-3 py-2">
-              <p className="font-semibold text-green-700">{t('checkIn.today')}</p>
+            <div className="rounded-lg bg-success-soft px-3 py-2">
+              <p className="font-semibold text-success-foreground">{t('checkIn.today')}</p>
             </div>
           )}
         </div>
 
         {/* Readiness score */}
-        <div className="flex flex-col items-center rounded-xl bg-white p-6 shadow-sm">
-          <ReadinessScore score={score} level={level} />
-          <p className="mt-4 text-center text-sm text-gray-600">
-            {completedCount} {t('readiness.of')} {totalItems} {t('readiness.itemsComplete')}
-          </p>
-        </div>
+        <ReadinessSignalCard
+          score={score}
+          completedCount={completedCount}
+          totalCount={totalItems}
+        />
+
+        <UtilityActionStrip actions={utilityActions} />
+
+        {recentlyCompletedItem && (
+          <div className="flex animate-pulse items-center gap-2 rounded-xl bg-success-soft px-4 py-3 text-sm font-medium text-success-foreground">
+            <Sparkles className="h-4 w-4" />
+            Nice progress: {getChecklistItemLabel(recentlyCompletedItem)} completed.
+          </div>
+        )}
 
         {/* Next action card */}
         <NextActionCard
           checklist={checklistProgress}
           onAction={handleItemClick}
           cashAmounts={cashAmounts}
+          recentlyCompletedItem={recentlyCompletedItem}
         />
 
         {/* Checklist */}
         <div>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             {t('checklist.title')}
           </h2>
           <div className="space-y-2">
@@ -222,13 +322,13 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
         </div>
 
         {/* Stay info */}
-        <div className="flex items-center gap-3 rounded-xl bg-gray-50 p-4">
-          <MapPin className="h-5 w-5 text-gray-400" />
+        <div className="flex items-center gap-3 rounded-xl bg-muted p-4">
+          <MapPin className="h-5 w-5 text-muted-foreground" />
           <div>
-            <p className="font-medium text-gray-900">
+            <p className="font-medium text-foreground">
               {nights} {nights === 1 ? t('stay.night') : t('stay.nights')}
             </p>
-            <p className="text-sm text-gray-500">{t('stay.location')}</p>
+            <p className="text-sm text-muted-foreground">{t('stay.location')}</p>
           </div>
         </div>
       </div>

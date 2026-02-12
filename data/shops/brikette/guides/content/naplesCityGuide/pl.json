@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Przewodnik po Neapolu dla podróżnych na Amalfi",
+    "description": "Kluczowe atrakcje Neapolu, bezpieczeństwo, jedzenie i wskazówki dotyczące transportu na wybrzeże."
+  },
+  "linkLabel": "Przewodnik po Neapolu dla podróżnych na Amalfi",
+  "intro": [
+    "Neapol jest bramą do Wybrzeża Amalfi. Spędź dzień lub dwa zwiedzając historyczne ulice, pizzerie i łatwe wycieczki."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Essential neighbourhoods",
+      "body": [
+        "Spacer po Spaccanapoli, aby zobaczyć kościoły, warsztaty bożonarodzeniowe i podziemne wycieczki pod San Lorenzo.",
+        "Przejdź na nadbrzeże w Chiaia i Castel dell'Ovo na wieczorne spacery z bryzą."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & coffee",
+      "body": [
+        "Kolejka po pizzę w Sorbillo lub Da Michele (oczekiwane 30–45 minut). Skosztuj sfogliatelli i espresso w Gran Caffè Gambrinus.",
+        "Spróbuj cuoppo fritto (kornet smażonych owoców morza) za 6–8 €, gdy potrzebujesz szybkiej przekąski."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Day-trip staging",
+      "body": [
+        "Napoli Centrale to punkt startowy szybkich pociągów do Rzymu (1:10) lub Pompejów (40 minut Circumvesuviana).",
+        "Zostaw bagaż przy stacji (7 € za sztukę), jeśli planujesz później dojechać do Positano."
+      ]
+    }
+  ],
+  "tips": [
+    "Noś karty zbliżeniowe na przejazdy metrem i kup karnet dzienny (5,60 EUR), jeśli planujesz wiele przeskoków.",
+    "Trzymaj kosztowności w przednich kieszeniach i noś torby krzyżowe w zatłoczonych uliczkach."
+  ],
+  "faqs": [
+    {
+      "q": "Czy Neapol jest bezpieczny do zwiedzania pieszo?",
+      "a": [
+        "Tak — zachowaj standardową ostrożność jak w dużym mieście: trzymaj się oświetlonych ulic, nie pokazuj dużych kwot gotówki i po północy wybieraj oficjalne taksówki."
+      ]
+    },
+    {
+      "q": "Gdzie mogę zostawić bagaż?",
+      "a": [
+        "Napoli Centrale i Piazza Garibaldi mają przechowalnie z obsługą. W weekendy rezerwuj online, żeby mieć miejsce."
+      ]
+    }
+  ]
+}

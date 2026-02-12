@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Viaggiare in coppia negli ostelli",
+    "description": "Consigli per dormitori o camere private, trovare tranquillità e stabilire aspettative."
+  },
+  "linkLabel": "Viaggiare in coppia negli ostelli",
+  "intro": [
+    "Gli ostelli funzionano per le coppie quando scegli il tipo di camera giusto, fai bagagli leggeri e stabilisci aspettative insieme."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Tipi di camere",
+      "body": [
+        "Prenota una camera privata per la privacy; se stai limitando il budget, condividete letti a castello nello stesso dormitorio e tenete i bagagli leggeri per le scale."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Trovare tranquillità",
+      "body": [
+        "Porta tappi per le orecchie e una mascherina per gli occhi, scegli camere lontane dal bar o dalle aree comuni, e usa le prime ore del mattino per visite turistiche più tranquille."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Un ostello è adatto alle coppie?",
+      "a": [
+        "Sì — ottieni energia sociale e buon rapporto qualità-prezzo; le camere private bilanciano comfort e costo."
+      ]
+    }
+  ]
+}

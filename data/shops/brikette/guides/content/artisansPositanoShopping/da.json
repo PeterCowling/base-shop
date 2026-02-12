@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Kunst og kunsthåndværk i Positano",
+    "description": "Sandaler, keramik, tryk — hvor du finder kvalitet, og hvordan du sender hjem."
+  },
+  "linkLabel": "Kunst og kunsthåndværk i Positano (shopping)",
+  "intro": [
+    "Shop hos Positanos håndværkere uden at betale for meget: sandaler, keramik, prints og sådan sender du køb hjem."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Håndlavede sandaler",
+      "body": [
+        "Se skomagere fremstille lædersandaler på 30 minutter; priserne starter omkring €80 for skræddersyede par.",
+        "Medbring eller tegn konturen af din fod til bestillinger senere — mange håndværkere sender globalt, når de har dine mål."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Keramik og kunst",
+      "body": [
+        "Gå på opdagelse i familiedrevne keramikværksteder efter håndmalede fliser og service. Spørg efter blyfri glasur, hvis du vil servere mad på dem.",
+        "Lokale kunstnere sælger tryk og akvareller langs Via Cristoforo Colombo — paprør beskytter dem på rejsen."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Betaling og forsendelse",
+      "body": [
+        "De fleste butikker tager kort, men giver rabat for kontanter. Hav ID klar til momsrefusion på køb over €154,94.",
+        "Send skrøbelige varer med forsikret kurer (DHL/UPS) og bed om dobbelt emballage; priser starter omkring €40 afhængigt af vægt."
+      ]
+    }
+  ],
+  "tips": [
+    "Tag billeder af kvitteringer og håndværkerens info, så du husker hvilket værksted der lavede hvert stykke.",
+    "Pak bobleplast hvis du vil have keramik i bagagen — hostellet har ofte ekstra fyld fra leverancer."
+  ],
+  "faqs": [
+    {
+      "q": "Kan håndværkere personliggøre varer?",
+      "a": [
+        "Ja. Mange præger initialer på sandaler eller tilpasser farver på keramik med et par dages varsel."
+      ]
+    },
+    {
+      "q": "Hvordan får jeg moms tilbage?",
+      "a": [
+        "Bed om taxfree-blanket ved køb, få den stemplet i lufthavn eller havn, og aflever den inden tre måneder for refusion."
+      ]
+    }
+  ]
+}

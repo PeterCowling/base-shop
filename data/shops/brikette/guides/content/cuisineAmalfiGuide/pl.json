@@ -1,0 +1,129 @@
+{
+  "seo": {
+    "title": "Kuchnia Wybrzeża Amalfi",
+    "description": "Najważniejsze potrawy, składniki i polecane miejsca, w których warto ich spróbować."
+  },
+  "linkLabel": "Kuchnia Wybrzeża Amalfi",
+  "intro": [
+    "Krótki wstęp do kuchni Wybrzeża Amalfi: podstawowe owoce morza, cytrusowe desery i miejsca, gdzie ich spróbujesz w Positano.",
+    "Użyj tego przewodnika jako ściągi, zanim zagłębisz się w menu lub odwiedzisz sąsiednie miejscowości po regionalne specjały."
+  ],
+  "tocTitle": "Na tej stronie",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Seafood staples",
+      "body": [
+        "Spaghetti alle vongole, scialatielli ai frutti di mare i grillowany dzienny połów goszczą na większości menu.",
+        "Zapytaj o sezonowe specjalności — wiosenne groszki, pomidorki koktajlowe lub kwiaty cukinii często pojawiają się na tablicach."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Markets & quick bites",
+      "body": [
+        "Poranne targi i delikatesy sprzedają focaccię, smażone cuoppi i świeżą mozzarellę na łatwy lunch.",
+        "Wybierz marmoladę cytrusową, colatura di alici i suszone zioła jako wzmacniacze smaku na pikniki."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserts & pastries",
+      "body": [
+        "Delizia al limone, babà al limoncello i sfogliatella doskonale komponują się z espresso po obiedzie.",
+        "Lodziarnie serwują sorbety cytrynowe, granitę i crema al limone — idealne na upalne popołudnia."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Drinks & pairings",
+      "body": [
+        "Zamów schłodzone limoncello lub crema di limoncello jako trawienie po posiłkach.",
+        "Wina DOC z Tramonti lub Costa d’Amalfi (Furore, Ravello) uzupełniają dania z owocami morza i cytrusami."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Ordering etiquette",
+      "body": [
+        "Coperto (opłata za nakrycie) obejmuje chleb i zastawę — napiwek dawaj tylko za wyjątkową obsługę.",
+        "Dziel dania w stylu rodzinnym, ale uprzedź obsługę z wyprzedzeniem, aby tempo i zastawa pozostały płynne."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can vegetarians eat well here?",
+      "a": [
+        "Tak — szukaj parmigiany z bakłażana, gnocchi alla sorrentina i sałatek z lokalnym serem oraz grillowanymi warzywami."
+      ]
+    },
+    {
+      "q": "Czy muszę rezerwować popularne trattorie?",
+      "a": [
+        "W sezonie wysokim rezerwuj z wyprzedzeniem miejsca na tarasie lub zachodzie słońca; bez rezerwacji łatwiej o lunch lub okresy poza szczytem."
+      ]
+    }
+  ],
+  "itemListTitle": "Charakterystyczne dania i miejsca, gdzie ich spróbujesz",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Kolacja w gospodarstwie o stałym daniu z ręcznie robionym makaronem, grillowanymi mięsami i pięknym widokiem na taras."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Kawiarnia czynna w ciągu dnia serwująca sałatki z cytryną, soki tłoczone na zimno i domowe desery."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Tradycyjna trattoria serwująca makarony z owocami morza, smażone przystawki i sezonowe specjały od 1958 roku."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Piekarnia z delizia al limone, babà al limoncello i wypiekami łatwymi do zapakowania na piknik w klifowej scenerii."
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Staples"
+      },
+      {
+        "href": "#sweets",
+        "label": "Sweets"
+      },
+      {
+        "href": "#drinks",
+        "label": "Drinks"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Staples",
+        "body": [
+          "Makaron z owocami morza, grillowane ryby i cytrusowe sałatki z lokalną oliwą to stałe elementy kart na całym wybrzeżu.",
+          "Poproś o danie dnia — sezonowe dodatki, jak kwiaty cukinii lub pomidorki koktajlowe, często trafiają na tablice."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Sweets",
+        "body": [
+          "Spróbuj delizia al limone, babà al limoncello i sorbet cytrynowy, aby stworzyć deserowe trio z cytrusami.",
+          "Połącz ciasta z espresso lub limoncello z trawieniem, aby zakończyć posiłek jak miejscowy."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Drinks",
+        "body": [
+          "Popijaj limoncello lub crema di limone jako digestivo i odkrywaj wina DOC z Tramonti, Ravello lub Furore.",
+          "Przeplataj je gazowaną wodą, by zachować świeżość — letnie wieczory pozostają wilgotne długo po zachodzie słońca."
+        ]
+      }
+    ]
+  }
+}

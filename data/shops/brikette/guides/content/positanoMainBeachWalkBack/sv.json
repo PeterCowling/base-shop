@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Gå tillbaka till Hostel Brikette från Spiaggia Grande",
+    "description": "Följ vandrarhemmets trappkontroller för 30–45 minuter tillbaka klättringen."
+  },
+  "linkLabel": "Walk back from Positano's main beach",
+  "intro": [
+    "Returstigningen från Spiaggia Grande till Hostel Brikette tar ungefär 30–45 minuter beroende på tempo, fotostopp och värme.",
+    "Dessa steg speglar vandrarhemmets fem checkpoint-bilder så att du kan bo på den snabbaste trappvägen hela vägen upp."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Innan du klättrar",
+      "body": [
+        "Fyll på vatten och ge dig själv tid för raster — det finns inga butiker på trappan förrän du når de övre vägarna.",
+        "Ta referensfotona från receptionen eller den digitala conciergen så att du kan matcha punkterna 4 och 5 under uppstigningen."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Steg-för-steg-promenad tillbaka till vandrarhemmet",
+      "body": [
+        "1. Börja på vänster sida av Spiaggia Grande (vänd bort från vattnet) och passera under valvet bredvid hamnen.",
+        "2. Fortsätt rakt igenom shoppinggatan tills du når den öppna gården vid kartpunkt 5 — bekräfta att utsikten matchar vandrarhemmets foto.",
+        "3. Ta trappan till vänster, följ den uppåt när den böjer sig till höger och klättra upp till toppen.",
+        "4. Sväng höger längst upp, ta sedan omedelbart nästa trappa uppåt för att nå kartpunkt 4.",
+        "5. Från punkt 4, sväng vänster in på vägen, gå cirka 10 meter (30 fot), korsa och ta trappan direkt framför dig.",
+        "6. Följ trappan tills de möter en annan väg. Om du tittar tillbaka bör scenen matcha punkt 3-fotot. Korsa rakt fram på nästa trappa och fortsätt klättra.",
+        "7. När trappan är klar, gå ut på vägen framför, sväng vänster och fortsätt uppåt i drygt 100 meter (330 fot).",
+        "8. Sväng höger in på den välbekanta trappan som leder rakt tillbaka till Hostel Brikettes huvuddörr."
+      ]
+    }
+  ],
+  "tipsTitle": "Snabbtips",
+  "tips": [
+    "Om klättringen känns för intensiv, byt till %LINK:positanoMainBeachBusBack|buss tillbaka till vandrarhemmet% när du når Piazza dei Mulini.",
+    "Börja promenaden före middagstid eller efter solnedgången för att undvika den hetaste delen av dagen.",
+    "Pausa i skuggade landningar för att hämta andan och ta bilder av utsikten — du förtjänade dem."
+  ]
+}

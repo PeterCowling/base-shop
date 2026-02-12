@@ -1,0 +1,98 @@
+{
+  "generatedAt": "2026-02-10T11:43:22.824Z",
+  "deployment": {
+    "url": "https://14dbef55.brikette-website.pages.dev/en",
+    "runId": 21862255296,
+    "runUrl": "https://github.com/PeterCowling/base-shop/actions/runs/21862255296",
+    "commit": "963792a6209d98e67c26185103830d01b5971e97"
+  },
+  "pages": [
+    {
+      "url": "https://14dbef55.brikette-website.pages.dev/en",
+      "desktop": {
+        "seo": 92,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "failedAudits": [
+          "is-crawlable",
+          "label-content-name-mismatch"
+        ]
+      },
+      "mobile": {
+        "seo": 93,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "failedAudits": [
+          "is-crawlable",
+          "label-content-name-mismatch"
+        ]
+      },
+      "repeatedFailedAuditIds": [
+        "is-crawlable",
+        "label-content-name-mismatch"
+      ]
+    },
+    {
+      "url": "https://14dbef55.brikette-website.pages.dev/en/rooms",
+      "desktop": {
+        "seo": 92,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "failedAudits": [
+          "is-crawlable",
+          "label-content-name-mismatch"
+        ]
+      },
+      "mobile": {
+        "seo": 93,
+        "accessibility": 100,
+        "bestPractices": 100,
+        "failedAudits": [
+          "is-crawlable",
+          "label-content-name-mismatch"
+        ]
+      },
+      "repeatedFailedAuditIds": [
+        "is-crawlable",
+        "label-content-name-mismatch"
+      ]
+    },
+    {
+      "url": "https://14dbef55.brikette-website.pages.dev/en/help",
+      "desktop": {
+        "seo": 92,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "failedAudits": [
+          "errors-in-console",
+          "is-crawlable"
+        ]
+      },
+      "mobile": {
+        "seo": 93,
+        "accessibility": 100,
+        "bestPractices": 96,
+        "failedAudits": [
+          "errors-in-console",
+          "is-crawlable"
+        ]
+      },
+      "repeatedFailedAuditIds": [
+        "errors-in-console",
+        "is-crawlable"
+      ]
+    }
+  ],
+  "averages": {
+    "desktop": {
+      "seo": 92,
+      "accessibility": 100,
+      "bestPractices": 99
+    },
+    "mobile": {
+      "seo": 93,
+      "accessibility": 100,
+      "bestPractices": 99
+    }
+  }
+}

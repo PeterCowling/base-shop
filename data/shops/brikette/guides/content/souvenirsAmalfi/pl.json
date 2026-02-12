@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "Oszczędne zakupy pamiątek na wybrzeżu Amalfi",
+    "description": "Co kupić, gdzie i jak spakować, by bezpiecznie wysłać pamiątki do domu."
+  },
+  "linkLabel": "Oszczędne zakupy pamiątek (Amalfi)",
+  "intro": [
+    "Pamiątki to ręcznie malowane ceramiki i produkty spożywcze, ale ceny różnią się znacznie przy głównych ulicach.",
+    "Skorzystaj z tych wskazówek, by wybrać jakość, znaleźć uczciwe sklepy i zabezpieczyć pakunek do domu."
+  ],
+  "tocTitle": "Na tej stronie",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "Co kupić"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Gdzie szukać"
+    },
+    {
+      "href": "#packing",
+      "label": "Pakowanie i wysyłka"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "Co kupić",
+      "body": [
+        "Ręcznie malowane ceramiki, limoncello, małe grafiki i produkty spiżarniane jak colatura czy marmolada cytrynowa dobrze się pakują i oddają charakter wybrzeża.",
+        "Szukaj podpisów twórców lub pieczęci spółdzielczych; unikaj masowo produkowanych bibelotów z kiepskim szkliwem albo chemicznym zapachem."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Gdzie kupować",
+      "body": [
+        "Zejdź jedną lub dwie ulice powyżej Via dei Mulini i plaży, by porównać butiki, spółdzielnie i pracownie rzemieślników.",
+        "Targi w Sorrento, Amalfi czy nawet Salerno często mają podobne towary w spokojniejszych cenach — uwzględnij ceny promów lub autobusów w kalkulacji."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Pakowanie i wysyłka",
+      "body": [
+        "Zawiń ceramikę w ubrania lub folię bąbelkową i oddziel talerze kartonem albo ręcznikami wielokrotnego użytku.",
+        "Jeśli wysyłasz z Włoch, poproś o usługę śledzoną i zachowaj potwierdzenia; w przypadku żywności sprawdź przepisy celne kraju docelowego przed zapłatą."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Sprawdzanie cen i autentyczności",
+      "body": [
+        "Szukaj oznaczeń Consorzio lub IGP na limoncello i wróć uwagę na ręcznie pisane ceny zamiast tylko tablic ‚promocja’.",
+        "Jeśli oferta wydaje się zbyt tania, przyjrzyj się łączeniom i szkliwu; prawdziwa robota rzemieślnicza ma drobne różnice, nie identyczne wzory."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę zabrać limoncello lub jedzenie w bagażu?",
+      "a": [
+        "Płyny powyżej 100 ml muszą być w bagażu rejestrowanym; deklaruj alkohol, gdy trzeba, i sprawdź ograniczenia na produkty mleczne czy mięsne w swoim kraju."
+      ]
+    },
+    {
+      "q": "Czy sklepy przyjmują karty?",
+      "a": [
+        "Większość tak, ale małe pracownie wolą gotówkę lub mają wysokie progi — miej euro w małych nominałach."
+      ]
+    },
+    {
+      "q": "Czy mogę skorzystać z zakupów bez VAT?",
+      "a": [
+        "Tak, jeśli przekroczysz próg VAT w jednym sklepie; poproś o formularz tax-free, zalegalizuj go przy wyjeździe i miej paragony pod ręką."
+      ]
+    }
+  ]
+}

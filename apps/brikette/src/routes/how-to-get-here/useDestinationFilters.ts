@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { DIRECTION_ORDER, TRANSPORT_MODE_ORDER } from "./transport";
 import type {
@@ -32,19 +32,17 @@ function normalizeQueryValue(value: string | null): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-function updateParams(
-  current: URLSearchParams,
-  updates: Partial<Record<(typeof FILTER_PARAM_KEYS)[keyof typeof FILTER_PARAM_KEYS], string | null>>,
-): URLSearchParams {
-  const next = new URLSearchParams(current);
-  for (const [key, value] of Object.entries(updates)) {
-    if (!value) {
-      next.delete(key);
-    } else {
-      next.set(key, value);
-    }
-  }
-  return next;
+function readFiltersFromSearch(search: string): {
+  transport: string | null;
+  direction: string | null;
+  destination: string | null;
+} {
+  const params = new URLSearchParams(search);
+  return {
+    transport: normalizeQueryValue(params.get(FILTER_PARAM_KEYS.transport)),
+    direction: normalizeQueryValue(params.get(FILTER_PARAM_KEYS.direction)),
+    destination: normalizeQueryValue(params.get(FILTER_PARAM_KEYS.destination)),
+  };
 }
 
 export type DestinationFiltersState = {
@@ -63,22 +61,31 @@ export type DestinationFiltersState = {
   totalRoutes: number;
 };
 
+export type DestinationFiltersInitialState = {
+  transport?: string | null;
+  direction?: string | null;
+  destination?: string | null;
+  basePath?: string;
+};
+
 export function useDestinationFilters(
   sections: AugmentedDestinationSection[],
+  initialState: DestinationFiltersInitialState = {},
 ): DestinationFiltersState {
   const router = useRouter();
-  const rawSearchParams = useSearchParams();
-  // Provide a fallback empty URLSearchParams if null (e.g., during SSR or Suspense)
-  const searchParams = rawSearchParams ?? new URLSearchParams();
+  const resolvedBasePath = initialState.basePath?.trim() || "";
+
   const setSearchParams = useCallback((params: URLSearchParams, options?: { replace?: boolean }) => {
     const search = params.toString();
-    const url = search ? `?${search}` : window.location.pathname;
+    const fallbackPath = typeof window !== "undefined" ? window.location.pathname : "/";
+    const basePath = resolvedBasePath || fallbackPath;
+    const url = search ? `${basePath}?${search}` : basePath;
     if (options?.replace) {
       router.replace(url);
     } else {
       router.push(url);
     }
-  }, [router]);
+  }, [resolvedBasePath, router]);
 
   const availableTransportModes = TRANSPORT_MODE_ORDER.filter((mode) =>
     sections.some((section) => section.links.some((link) => link.transportModes.includes(mode))),
@@ -99,55 +106,120 @@ export function useDestinationFilters(
     name: section.name,
   }));
 
-  const transportFilter: TransportFilter = (() => {
-    const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.transport));
-    if (!raw) return "all";
-    if (!isTransportMode(raw)) return "all";
-    return availableTransportModes.includes(raw) ? raw : "all";
-  })();
+  const [transportFilterState, setTransportFilterState] = useState<TransportFilter>(() => {
+    const raw = normalizeQueryValue(initialState.transport ?? null);
+    return raw && isTransportMode(raw) ? raw : "all";
+  });
+  const [directionFilterState, setDirectionFilterState] = useState<DirectionFilter>(() => {
+    const raw = normalizeQueryValue(initialState.direction ?? null);
+    return raw && isRouteDirection(raw) ? raw : "all";
+  });
+  const [destinationFilterState, setDestinationFilterState] = useState<DestinationFilter>(() => {
+    const raw = normalizeQueryValue(initialState.destination ?? null);
+    return raw || "all";
+  });
 
-  const directionFilter: DirectionFilter = (() => {
-    const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.direction));
-    if (!raw) return "all";
-    if (!isRouteDirection(raw)) return "all";
-    return availableDirections.includes(raw) ? raw : "all";
-  })();
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const query = readFiltersFromSearch(window.location.search);
+    if (query.transport && isTransportMode(query.transport)) {
+      setTransportFilterState(query.transport);
+    }
+    if (query.direction && isRouteDirection(query.direction)) {
+      setDirectionFilterState(query.direction);
+    }
+    if (query.destination) {
+      setDestinationFilterState(query.destination);
+    }
+  }, []);
 
-  const destinationFilter: DestinationFilter = (() => {
-    const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.destination));
-    if (!raw) return "all";
-    const present = availableDestinations.some((destination) => destination.id === raw);
-    return present ? raw : "all";
-  })();
+  const transportFilter: TransportFilter =
+    transportFilterState !== "all" && !availableTransportModes.includes(transportFilterState)
+      ? "all"
+      : transportFilterState;
+  const directionFilter: DirectionFilter =
+    directionFilterState !== "all" && !availableDirections.includes(directionFilterState)
+      ? "all"
+      : directionFilterState;
+  const destinationFilter: DestinationFilter =
+    destinationFilterState !== "all" &&
+    !availableDestinations.some((destination) => destination.id === destinationFilterState)
+      ? "all"
+      : destinationFilterState;
+
+  useEffect(() => {
+    if (transportFilterState !== transportFilter) {
+      setTransportFilterState(transportFilter);
+    }
+  }, [transportFilter, transportFilterState]);
+
+  useEffect(() => {
+    if (directionFilterState !== directionFilter) {
+      setDirectionFilterState(directionFilter);
+    }
+  }, [directionFilter, directionFilterState]);
+
+  useEffect(() => {
+    if (destinationFilterState !== destinationFilter) {
+      setDestinationFilterState(destinationFilter);
+    }
+  }, [destinationFilter, destinationFilterState]);
+
+  const writeFiltersToQuery = useCallback(
+    (next: {
+      transport: TransportFilter;
+      direction: DirectionFilter;
+      destination: DestinationFilter;
+    }) => {
+      const params = new URLSearchParams();
+      if (next.transport !== "all") {
+        params.set(FILTER_PARAM_KEYS.transport, next.transport);
+      }
+      if (next.direction !== "all") {
+        params.set(FILTER_PARAM_KEYS.direction, next.direction);
+      }
+      if (next.destination !== "all") {
+        params.set(FILTER_PARAM_KEYS.destination, next.destination);
+      }
+      setSearchParams(params, { replace: true });
+    },
+    [setSearchParams],
+  );
 
   const setTransportFilter = useCallback(
     (filter: TransportFilter) => {
-      const next = updateParams(searchParams, {
-        [FILTER_PARAM_KEYS.transport]: filter === "all" ? null : filter,
+      setTransportFilterState(filter);
+      writeFiltersToQuery({
+        transport: filter,
+        direction: directionFilter,
+        destination: destinationFilter,
       });
-      setSearchParams(next, { replace: true });
     },
-    [searchParams, setSearchParams],
+    [destinationFilter, directionFilter, writeFiltersToQuery],
   );
 
   const setDirectionFilter = useCallback(
     (filter: DirectionFilter) => {
-      const next = updateParams(searchParams, {
-        [FILTER_PARAM_KEYS.direction]: filter === "all" ? null : filter,
+      setDirectionFilterState(filter);
+      writeFiltersToQuery({
+        transport: transportFilter,
+        direction: filter,
+        destination: destinationFilter,
       });
-      setSearchParams(next, { replace: true });
     },
-    [searchParams, setSearchParams],
+    [destinationFilter, transportFilter, writeFiltersToQuery],
   );
 
   const setDestinationFilter = useCallback(
     (filter: DestinationFilter) => {
-      const next = updateParams(searchParams, {
-        [FILTER_PARAM_KEYS.destination]: filter === "all" ? null : filter,
+      setDestinationFilterState(filter);
+      writeFiltersToQuery({
+        transport: transportFilter,
+        direction: directionFilter,
+        destination: filter,
       });
-      setSearchParams(next, { replace: true });
     },
-    [searchParams, setSearchParams],
+    [directionFilter, transportFilter, writeFiltersToQuery],
   );
 
   const filteredSections = (() => {
@@ -173,13 +245,15 @@ export function useDestinationFilters(
     transportFilter !== "all" || directionFilter !== "all" || destinationFilter !== "all";
 
   const clearFilters = useCallback(() => {
-    const next = updateParams(searchParams, {
-      [FILTER_PARAM_KEYS.transport]: null,
-      [FILTER_PARAM_KEYS.direction]: null,
-      [FILTER_PARAM_KEYS.destination]: null,
+    setTransportFilterState("all");
+    setDirectionFilterState("all");
+    setDestinationFilterState("all");
+    writeFiltersToQuery({
+      transport: "all",
+      direction: "all",
+      destination: "all",
     });
-    setSearchParams(next, { replace: true });
-  }, [searchParams, setSearchParams]);
+  }, [writeFiltersToQuery]);
 
   return {
     transportFilter,

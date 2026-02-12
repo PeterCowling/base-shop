@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Guide till kollektivtrafiken på Amalfikusten",
+    "description": "Så tar du dig runt utan bil: bussar, färjor och tåg – biljetter, tider och säsongsnotiser."
+  },
+  "linkLabel": "Guide till kollektivtrafiken på Amalfikusten",
+  "intro": [
+    "Hur man tar sig runt Amalfikusten utan bil: bussar för pålitlighet året runt, färjor på sommaren och tåg för långa hopp."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA buses",
+      "body": [
+        "Köp biljetter på tobaksbutiker/tidningskiosker innan du går ombord och validera på bussen.",
+        "Räkna med köer vid rusningstid. Börja tidigt och betrakta en färja som en förbifart av folkmassan."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Ferries (seasonal)",
+      "body": [
+        "Snabbt och naturskönt mellan huvudstäderna från vår till höst; väderavbokningar är möjliga.",
+        "Kontrollera livescheman på operatörsplatser och tillåt buffert för dagens sista båtar."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Trains (to gateways)",
+      "body": [
+        "Använd Trenitalia/Italo för att nå Sorrento/Salerno/Neapel och anslut sedan med buss eller färja.",
+        "Intercity-sträckor sparar tid på Rom/Neapel/Salerno-rutt; lokala Circumvesuviana serverar Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & strategy",
+      "body": [
+        "Lämna före 09:00 för att slå köerna; för solnedgången återvänder, föredrar färjor när havet är lugnt.",
+        "Ta med småpengar för biljetter och hatt/vatten för utsatta hållplatser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can I bring luggage on buses?",
+      "a": [
+        "Tillåtet men inte idealiskt vid topp; överväga färjor eller bärare för tunga väskor."
+      ]
+    },
+    {
+      "q": "Are there night services?",
+      "a": [
+        "Begränsad; kolla sista bussen/färjan i god tid för att undvika dyra taxibilar."
+      ]
+    }
+  ]
+}

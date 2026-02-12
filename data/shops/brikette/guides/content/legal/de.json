@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Rechtliche Informationen und Richtlinien für Positano Hostel",
+    "description": "Erfahren Sie alles über unsere rechtlichen Bedingungen, Haftungsbeschränkungen, das anwendbare Recht, die Nutzung von Website-Inhalten sowie unsere Gesundheits- und Sicherheitsrichtlinien, damit Sie Ihren Aufenthalt sorgenfrei planen können."
+  },
+  "linkLabel": "Rechtliche Informationen und Richtlinien für Positano Hostel",
+  "sections": [
+    {
+      "id": "modificationOfTerms",
+      "title": "Änderungen dieser Bedingungen",
+      "body": [
+        "Diese Allgemeinen Geschäfts­bedingungen bilden die gesamte Vereinbarung zwischen Ihnen und Positano Hostel und ersetzen alle früheren Zusagen oder Absprachen. Wir können sie jederzeit aktualisieren; die neue Fassung gilt sofort nach Online-Veröffentlichung."
+      ]
+    },
+    {
+      "id": "scopeOfLiability",
+      "title": "Unser Haftungsumfang",
+      "body": [
+        "Unsere Haftung beschränkt sich auf die in diesen Bedingungen genannten Leistungen. Etwaige Entschädigungen sind auf den Gesamtbetrag begrenzt, den Sie für Ihre Buchung gezahlt haben. Für mittelbare oder wirtschaftliche Verluste wie entgangenen Gewinn, Goodwill oder verpasste Chancen haften wir nicht – auch nicht bei Fahrlässigkeit oder höherer Gewalt. Für Wertgegenstände stehen Schließfächer zur Verfügung; wir übernehmen jedoch keine finanzielle Verantwortung für dort gelagerte Dinge und können Gegenstände im Rahmen der Reinigung ohne Vorankündigung umstellen."
+      ]
+    },
+    {
+      "id": "governingLaw",
+      "title": "Anwendbares Recht & Gerichtsstand",
+      "body": [
+        "Ihr Aufenthalt und diese Bedingungen unterliegen ausschließlich italienischem Recht. Streitigkeiten werden vor den Gerichten Italiens verhandelt."
+      ]
+    },
+    {
+      "id": "websiteInformation",
+      "title": "Website-Informationen & Inhaltsnutzung",
+      "body": [
+        "Wir bemühen uns um korrekte Website-Angaben, dennoch können Fehler auftreten und Details sich ohne Ankündigung ändern. Fotos zeigen den allgemeinen Stil und entsprechen möglicherweise nicht exakt dem tatsächlichen Grundriss. Sämtliche Inhalte (Texte, Bilder, Marken) gehören Positano Hostel und dürfen ohne schriftliche Genehmigung nicht verwendet werden. Externe Links dienen nur zur Information; für deren Inhalte übernehmen wir keine Verantwortung. Bitte lesen Sie unsere Datenschutz­richtlinie, um zu erfahren, wie wir Ihre Daten verarbeiten."
+      ]
+    },
+    {
+      "id": "healthAndSafetyPolicy",
+      "title": "Gesundheits- & Sicherheitsrichtlinie",
+      "body": [
+        "Zu Ihrer und unserer Sicherheit teilen Sie uns bitte mit, wenn Sie kürzlich Kontakt zu einer ansteckenden Krankheit wie Grippe hatten. Vorausbezahlte, nicht erstattbare Reservierungen bleiben in solchen Fällen nicht erstattbar, daher empfehlen wir dringend eine Reiseversicherung für krankheitsbedingte Störungen Ihrer Reisepläne."
+      ]
+    }
+  ]
+}

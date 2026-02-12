@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { axe } from "jest-axe";
 
 import { TranslationsProvider } from '@acme/i18n';
 
@@ -7,7 +8,7 @@ import { Alert } from '../Alert';
 
 describe('Alert i18n title', () => {
   it('renders string title as-is', () => {
-    render(
+    const { container } = render(
       <TranslationsProvider messages={{}}>
         <Alert title="Notice">Body</Alert>
       </TranslationsProvider>

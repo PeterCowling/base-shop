@@ -36,6 +36,7 @@ if (disableCoverageThreshold) {
 // Setup file for React Testing Library and jest-axe
 config.setupFilesAfterEnv = [
   ...(config.setupFilesAfterEnv || []),
+  require.resolve("./jest.setup.local.ts"),
 ];
 
 // Ensure "@/..." resolves to design-system sources

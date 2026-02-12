@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Hållbart resande på Amalfikusten",
+    "description": "Minska avtrycket: fyll på, vandra, välj färjor framför bil och planera medvetna stranddagar."
+  },
+  "linkLabel": "Hållbart resande på Amalfikusten",
+  "intro": [
+    "Hållbart resande på Amalfikusten handlar om transporter, avfall och vardagsvanor kring energi.",
+    "Behåll de fantastiska vyerna samtidigt som du minimerar avtrycket."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Grönare transporter",
+      "body": [
+        "Välj buss eller färja i stället för privata taxi när det går.",
+        "Gå korta sträckor i stan i stället för att beställa bil."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Avfall & plast",
+      "body": [
+        "Ta med återanvändbar flaska/påse och fyll på vid fontäner eller kaféer.",
+        "Sortera sopor där kärl finns och ta med allt skräp tillbaka från leder."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energi & vatten",
+      "body": [
+        "Stäng av AC och lampor när du lämnar rummet; dra för jalusier för att hålla det svalt.",
+        "Duscha kort och återanvänd handdukar för att spara vatten."
+      ]
+    }
+  ],
+  "tips": [
+    "Stöd små lokala företag som använder lokala råvaror och arbetar med låg avfallsnivå.",
+    "Beställ säsongsrätter – citroner, ansjovis och grönsaker är bäst när de är i säsong."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag hyra elcykel på kusten?",
+      "a": [
+        "Ja, i Amalfi, Sorrento och några byar – boka tidigt eftersom utbudet är begränsat."
+      ]
+    }
+  ]
+}

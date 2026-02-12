@@ -1,0 +1,71 @@
+{
+  "seo": {
+    "title": "Transporte económico en la Costa Amalfitana",
+    "description": "Rutas y abonos baratos: cuándo elegir bus, ferry o shuttle, con planes de contingencia."
+  },
+  "linkLabel": "Transporte económico en la Costa Amalfitana",
+  "intro": [
+    "Reduce el gasto en transporte combinando buses, ferris puntuales y reservas anticipadas solo cuando aporten valor.",
+    "Mantén siempre un plan B por si el mar se complica o hay huelgas."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Passes y billetes",
+      "body": [
+        "Los pases CIS/Unico Costiera merecen la pena si harás 4–5 trayectos en 24 horas; si no, compra billetes sueltos.",
+        "Valida el ticket nada más subir y guarda el recibo: en verano los controles son frecuentes y las multas empiezan en 40 €."
+      ]
+    },
+    {
+      "id": "cheap-routes",
+      "title": "Rutas más económicas",
+      "body": [
+        "Desde Nápoles aeropuerto: Alibus hasta la estación + Circumvesuviana/Campania Express a Sorrento + bus SITA a Positano (~12 €).",
+        "Desde Roma: tren rápido a Salerno, ferry Travelmar en verano o bus directo SITAsud en invierno; reservar con tiempo asegura la tarifa base."
+      ]
+    },
+    {
+      "id": "when-ferry",
+      "title": "Cuándo pagar un ferry",
+      "body": [
+        "Invierte en ferry los días de más calor o cuando lleves equipaje pesado: llegas cerca del centro y evitas escaleras.",
+        "Compra los tickets matutinos el día anterior; las primeras salidas se agotan y suben de precio en taquilla."
+      ]
+    },
+    {
+      "id": "contingencies",
+      "title": "Planes de respaldo",
+      "body": [
+        "Si el mar está revuelto o hay paros, pásate al bus o tren regional y deja al menos una hora de colchón antes del último traslado.",
+        "Activa notificaciones de UnicoCampania y Travelmar para enterarte de retrasos, cambios de muelle o cancelaciones."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva efectivo en billetes de 5/10 €: algunas tabaccherie no aceptan tarjeta para tickets.",
+    "Si viajáis 3–4 personas, calcula un transfer compartido: puede costar apenas un poco más que el ferry y ahorra combinaciones."
+  ],
+  "faqs": [
+    {
+      "q": "¿El pase diario siempre conviene?",
+      "a": [
+        "No: actívalo solo cuando concentres muchas rutas en un mismo día; revisa además qué servicios cubre porque la mayoría no incluye ferris."
+      ]
+    },
+    {
+      "q": "¿Puedo comprar todo online?",
+      "a": [
+        "Los buses suelen requerir app regional o tabaccheria; descarga los códigos QR antes por si falla la señal.",
+        "Ferris y shuttles permiten pago digital, pero conserva comprobantes en papel si el lector se queda offline."
+      ]
+    },
+    {
+      "q": "¿Cómo gestiono el equipaje voluminoso?",
+      "a": [
+        "En buses SITA hay espacio limitado: escoge salidas tempranas y usa las rejillas interiores.",
+        "Para varias maletas, apuesta por ferry o reserva un porter en el muelle para evitar suplementos y estrés."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Positano Hostel 押金和付款指南",
+    "description": "在 Positano Hostel 预订住宿时，关于押金、付款方式、预订确认、更改、取消和安全保证金的综合指南。"
+  },
+  "linkLabel": "Positano Hostel 押金和付款指南",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "如何提交预订请求",
+      "body": [
+        "通过授权的在线旅行社(OTA)或直接在我们的网站上向我们发送预订请求 - 仅聊天或临时访问不算。点击'预订'即表示您确认所有姓名、日期和住宿时长正确，并且您接受我们的条款和条件。"
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "我们如何处理您的请求",
+      "body": [
+        "一旦我们使用我们接受的付款方式之一成功收到任何所需的押金、预授权或付款，我们就会开始处理您的请求。确保预订显示将支付的信用卡持有人的姓名。如果付款人的姓名不同，请在我们处理您的请求之前通过电子邮件向我们发送持卡人的简短授权。"
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "银行卡支付终端键盘和屏幕。",
+          "caption": "我们可能会收取押金、进行付款或设置预授权以确保您的预订 - 照片：维基共享资源 (CC0)。"
+        }
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "我们何时可能拒绝请求",
+      "body": [
+        "我们很少拒绝预订，但我们保留自行决定这样做的权利 - 例如，如果付款失败、缺少必需信息或请求违反我们的条款和条件。"
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "一次请求的规模限制",
+      "body": [
+        "一次预订请求最多可覆盖七(7)个连续晚上和最多五(5)位客人。需要更长的住宿或更大的团体？只需将其分成单独的请求。"
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "如果您的房间不可用会怎样",
+      "body": [
+        "如果您首选的房间已被预订，我们会通过电子邮件向您发送最接近的替代方案的还价。接受报价并完成付款或预授权以锁定您的住宿。"
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "预付不可退款预订",
+      "body": [
+        "选择预付不可退款价格可以为您省钱，但需要全额预付。我们会尝试您的卡最多三次。如果所有尝试都失败，我们将取消请求。这些预订不能退款或修改。"
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "您的确认电子邮件",
+      "body": [
+        "付款结算后，我们会向您提供给我们的地址发送确认电子邮件。它列出了您的预订参考、到达日期、住宿时长和任何额外服务。仔细阅读，如果有任何错误，请立即告诉我们。"
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "手机屏幕上的电子邮件图标。",
+          "caption": "您的确认电子邮件是再次检查日期、姓名和付款详细信息的最佳位置 - 照片：维基共享资源 (CC BY-SA 4.0)。"
+        }
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "您的预订包括谁",
+      "body": [
+        "您的预订自动涵盖以下内容:",
+        "* 每张单人床1位客人\n* 每张双人床最多2位客人\n* 最多达到您预订的任何公寓的广告容量",
+        "为了安全和舒适，我们不能容纳超过房间限制的额外客人。"
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "您的住宿包括什么",
+      "body": [
+        "每位客人都会收到:",
+        "* 新鲜的床单和钥匙卡\n* 使用共享淋浴\n* 计划时间内的热水(约07:00-10:30和17:00-22:30)\n* 访问我们的公共区域",
+        "其他福利(早餐、Wi-Fi、行李寄存等)是免费的，并遵循各自简单的规则。"
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "您的财务责任",
+      "body": [
+        "在您的预订上命名的信用卡持有人对所有费用负责 - 房费、损坏、清洁费、罚款或违反房屋规则的处罚。未付金额可能直接从存档的卡上收取。"
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "如何分配床位和房间",
+      "body": [
+        "我们保证您预订的床位类型和房间类别。宿舍预订确保所选类别的床位，但我们不能承诺团体将共享同一房间。宿舍的床位在您办理入住时按先到先得的原则选择。"
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "房间升级",
+      "body": [
+        "有时我们会免费为您升级到更好的房间，或者您可以在预订时付费升级。如果免费升级后来变得不切实际，我们可能会将您移回您最初支付的类别。"
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "通过第三方网站付款",
+      "body": [
+        "当您通过OTA预订时，您将根据他们的条款通过他们的系统付款。我们从不从OTA看到您的卡详细信息，并且不对其平台上的问题负责。始终检查您的付款是否已完成以及您是否收到确认。"
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "预订押金",
+      "body": [
+        "一些价格需要押金来保留房间。预付价格需要100%预付。押金不可退还。如果我们无法收取押金，预订请求将自动取消。"
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "卡预授权",
+      "body": [
+        "对于灵活价格，我们可能会预授权您的卡第一晚或整个住宿以保证您的预订。如果预授权失败，我们将拒绝请求。"
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "我们的安全保证金",
+      "body": [
+        "办理入住时，我们可能会设置相当于每位客人一晚的安全保证金，以支付可能的罚款、费用、延期或损坏。如果无法保留卡，您可以留下相同金额的现金或使用另一位客人的卡。如果两种选择都不起作用，很遗憾我们必须取消您的预订。"
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "一只手拿着几枚欧元硬币。",
+          "caption": "如果在办理入住时无法保留卡，我们可能会要求等值的现金押金 - 照片：维基共享资源 (CC BY-SA 4.0)。"
+        }
+      ]
+    }
+  ]
+}

@@ -8,8 +8,8 @@ import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
 import { buildHotelNode,WEBSITE_ID } from "@/utils/schema";
-import { getSlug } from "@/utils/slug";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 type Props = {
   lang?: AppLanguage;

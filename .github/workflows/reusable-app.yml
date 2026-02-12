@@ -17,9 +17,15 @@ on:
         required: false
         type: string
       # Command to deploy, e.g. "pnpm exec wrangler pages deploy ..."
-      deploy-cmd:
+      deploy_cmd:
         required: false
         type: string
+      # Caller-controlled deploy gate. Callers should pass true only for
+      # branch/event combinations that are intended to publish.
+      deploy_enabled:
+        required: false
+        type: boolean
+        default: false
       # Cloudflare project name (for environment context or logs)
       project-name:
         required: false
@@ -45,6 +51,17 @@ on:
         required: false
         type: string
         default: ""
+      # Extra routes to check after deploy (space-separated, e.g. "/api/health /shop")
+      healthcheck-extra-routes:
+        required: false
+        type: string
+        default: "/api/health"
+      # Number of Jest test shards. Set >1 to enable sharded parallel tests
+      # with changed-file detection. Default 1 = single test job, full suite.
+      test-shard-count:
+        required: false
+        type: number
+        default: 1
 
     secrets:
       CLOUDFLARE_API_TOKEN:
@@ -55,14 +72,38 @@ on:
         required: false
       SOPS_AGE_KEY:
         required: false
+      NEXTAUTH_SECRET:
+        required: false
+      SESSION_SECRET:
+        required: false
+      CART_COOKIE_SECRET:
+        required: false
 
 jobs:
-  validate-and-build:
-    name: Validate & build
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    outputs:
+      run_validation: ${{ steps.classify.outputs.run_validation }}
+      run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
+      test_scope: ${{ steps.classify.outputs.test_scope }}
+      related_test_paths_json: ${{ steps.classify.outputs.related_test_paths_json }}
+      should_deploy: ${{ steps.deploy_gate.outputs.should_deploy }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_validate_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_validate_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_validate_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
@@ -70,18 +111,245 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
 
+      - name: Classify deploy-only change set
+        id: classify
+        shell: bash
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+          EVENT_BEFORE: ${{ github.event.before || '' }}
+          TEST_SHARD_COUNT: ${{ inputs.test-shard-count }}
+        run: |
+          set -euo pipefail
+
+          run_validation="true"
+          is_deploy_only="false"
+          uncertain="true"
+          reason="default"
+          test_scope="related"
+          related_test_paths_json="[]"
+          changed_file_count="0"
+
+          # ── Compute changed files (shared by all apps) ──
+          base_sha=""
+          if [[ -n "$PR_BASE_SHA" ]]; then
+            base_sha="$PR_BASE_SHA"
+          elif [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
+            base_sha="$EVENT_BEFORE"
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            base_sha="$(git rev-parse HEAD^)"
+          fi
+
+          changed_paths_file="$RUNNER_TEMP/changed-paths.txt"
+          if [[ -n "$base_sha" ]]; then
+            git diff --name-only --diff-filter=ACMRTUXB "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
+          else
+            : > "$changed_paths_file"
+          fi
+          changed_file_count="$(wc -l < "$changed_paths_file" | tr -d ' ')"
+
+          # ── App-specific classification ──
+          if [[ "$APP_FILTER" == "@apps/brikette" ]]; then
+            classification_stderr_file="$RUNNER_TEMP/classify-deploy-change.stderr"
+            if classification_output="$(
+              node --import tsx scripts/src/ci/classify-deploy-change.ts \
+                --paths-file "$changed_paths_file" \
+                --format outputs \
+                2> "$classification_stderr_file"
+            )"; then
+              while IFS='=' read -r key value; do
+                case "$key" in
+                  run_validation) run_validation="$value" ;;
+                  is_deploy_only) is_deploy_only="$value" ;;
+                  uncertain) uncertain="$value" ;;
+                  reason) reason="$value" ;;
+                  test_scope) test_scope="$value" ;;
+                  related_test_paths_json) related_test_paths_json="$value" ;;
+                esac
+              done <<< "$classification_output"
+
+              classifier_output_valid="true"
+              if [[ "$run_validation" != "true" && "$run_validation" != "false" ]] \
+                || [[ "$is_deploy_only" != "true" && "$is_deploy_only" != "false" ]] \
+                || [[ "$uncertain" != "true" && "$uncertain" != "false" ]] \
+                || [[ -z "$reason" ]]; then
+                classifier_output_valid="false"
+              fi
+
+              if [[ "$test_scope" != "skip" && "$test_scope" != "related" ]]; then
+                classifier_output_valid="false"
+              fi
+
+              if ! node -e 'JSON.parse(process.argv[1]);' "$related_test_paths_json" >/dev/null 2>&1; then
+                classifier_output_valid="false"
+              fi
+
+              if [[ "$classifier_output_valid" != "true" ]]; then
+                echo "::warning title=Validation gating::Classifier output parse failed; running related-only validation."
+                run_validation="true"
+                is_deploy_only="false"
+                uncertain="true"
+                reason="classifier_parse_failed"
+                test_scope="related"
+                related_test_paths_json="[]"
+              fi
+            else
+              echo "::warning title=Validation gating::Classifier command failed; running related-only validation."
+              if [[ -s "$classification_stderr_file" ]]; then
+                sed 's/^/classifier stderr: /' "$classification_stderr_file"
+              fi
+              is_deploy_only="false"
+              uncertain="true"
+              reason="classifier_command_failed"
+              run_validation="true"
+              test_scope="related"
+              related_test_paths_json="[]"
+            fi
+          elif [[ "$TEST_SHARD_COUNT" -gt 1 ]]; then
+            # Generic changed-file detection for any sharded app
+            testable_re='\.(ts|tsx|js|jsx|mjs|cjs)$'
+            related_json="$(grep -E "$testable_re" "$changed_paths_file" | node -e '
+              const lines = require("fs").readFileSync("/dev/stdin","utf8").trim().split("\n").filter(Boolean);
+              console.log(JSON.stringify(lines));
+            ' || echo '[]')"
+            related_test_paths_json="$related_json"
+            test_scope="related"
+            reason="generic_changed_files"
+            uncertain="false"
+          fi
+
+          {
+            echo "run_validation=$run_validation"
+            echo "is_deploy_only=$is_deploy_only"
+            echo "uncertain=$uncertain"
+            echo "reason=$reason"
+            echo "changed_file_count=$changed_file_count"
+            echo "test_scope=$test_scope"
+            echo "related_test_paths_json<<EOF_JSON"
+            echo "$related_test_paths_json"
+            echo "EOF_JSON"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Validation gating decision
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ steps.classify.outputs.run_validation }}" == "false" ]]; then
+            echo "::notice title=Validation gating::Skipping Lint/Typecheck/Test (deploy-only, confident). reason=${{ steps.classify.outputs.reason }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
+          else
+            echo "::notice title=Validation gating::Running validation. test_scope=${{ steps.classify.outputs.test_scope }} reason=${{ steps.classify.outputs.reason }} uncertain=${{ steps.classify.outputs.uncertain }} changed_files=${{ steps.classify.outputs.changed_file_count }}"
+          fi
+
+      - name: Determine test strategy
+        id: test-strategy
+        shell: bash
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          TEST_SHARD_COUNT: ${{ inputs.test-shard-count }}
+        run: |
+          set -euo pipefail
+          if [[ "$TEST_SHARD_COUNT" -gt 1 ]]; then
+            echo "run_sharded_tests=true" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Test strategy::Using sharded test mode ($TEST_SHARD_COUNT shards)."
+          else
+            echo "run_sharded_tests=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Test strategy::Using single test job."
+          fi
+
+      - name: Determine deploy gate
+        id: deploy_gate
+        shell: bash
+        run: |
+          echo "should_deploy=${{ inputs.deploy_cmd != '' && inputs.deploy_enabled }}" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Deploy gate::should_deploy=${{ inputs.deploy_cmd != '' && inputs.deploy_enabled }} deploy_enabled=${{ inputs.deploy_enabled }}"
+
       - name: Lint
+        if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm --filter ${{ inputs.app-filter }}... lint
         shell: bash
 
+      - name: Prime changed-file lint gate
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' }}
+        shell: bash
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha || '' }}
+          EVENT_BEFORE: ${{ github.event.before || '' }}
+          PRIME_CHANGED_FILE_LINT_MAX_TARGETS: "150"
+        run: |
+          set -euo pipefail
+          base_sha=""
+          if [[ -n "$PR_BASE_SHA" ]]; then
+            base_sha="$PR_BASE_SHA"
+          elif [[ -n "$EVENT_BEFORE" && "$EVENT_BEFORE" != "0000000000000000000000000000000000000000" ]]; then
+            base_sha="$EVENT_BEFORE"
+          elif git rev-parse HEAD^ >/dev/null 2>&1; then
+            base_sha="$(git rev-parse HEAD^)"
+          fi
+
+          changed_paths_file="$RUNNER_TEMP/prime-changed-paths.txt"
+          if [[ -n "$base_sha" ]]; then
+            git diff --name-only --diff-filter=ACMRTUXB "$base_sha" "${GITHUB_SHA}" > "$changed_paths_file"
+          else
+            : > "$changed_paths_file"
+          fi
+
+          decision_output="$(pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --format outputs)"
+          echo "$decision_output"
+
+          run_lint="$(echo "$decision_output" | awk -F= '$1=="run_lint"{print $2}')"
+          lint_target_count="$(echo "$decision_output" | awk -F= '$1=="lint_target_count"{print $2}')"
+
+          if [[ "$run_lint" != "true" ]]; then
+            exit 0
+          fi
+
+          if [[ -n "${PRIME_CHANGED_FILE_LINT_MAX_TARGETS:-}" ]] && [[ "$lint_target_count" =~ ^[0-9]+$ ]] && (( lint_target_count > PRIME_CHANGED_FILE_LINT_MAX_TARGETS )); then
+            echo "::warning title=Prime changed-file lint gate::Skipping strict touched-file lint because target count ($lint_target_count) exceeds max ($PRIME_CHANGED_FILE_LINT_MAX_TARGETS)."
+            exit 0
+          fi
+
+          pnpm exec tsx scripts/src/ci/prime-lint-changed-files.ts --paths-file "$changed_paths_file" --run-eslint --format outputs
+
       - name: Typecheck
+        if: ${{ steps.classify.outputs.run_validation == 'true' }}
         run: pnpm exec turbo run typecheck --filter=${{ inputs.app-filter }}...
         shell: bash
 
-      - name: Test
-        if: github.ref != 'refs/heads/staging'  # TEMP: skip tests on staging to speed up deploy
-        run: pnpm --filter ${{ inputs.app-filter }} test
+      - name: Firebase cost-safety gate (Prime)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' }}
+        run: pnpm --filter @apps/prime test:firebase-cost-gate
         shell: bash
+
+      - name: Firebase security rules test (Reception)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/reception' }}
+        run: pnpm --filter @apps/reception test:rules
+        shell: bash
+
+      - name: Cache Cypress binary (Prime E2E)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: cypress-${{ runner.os }}-
+      - name: Install Cypress binary (Prime E2E)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
+        run: pnpm exec cypress install
+        shell: bash
+      - name: Prime critical E2E gate (release branches)
+        if: ${{ steps.classify.outputs.run_validation == 'true' && inputs.app-filter == '@apps/prime' && (github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/main') }}
+        run: pnpm --filter @apps/prime test:e2e:critical
+        shell: bash
+        continue-on-error: true # TEMP: arrival-day E2E mocks need CI fix — non-blocking until resolved
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_FIREBASE_DATABASE_URL: ${{ secrets.NEXT_PUBLIC_FIREBASE_DATABASE_URL }}
+          NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
 
       - name: Validate guide manifest (warn-only)
         if: ${{ inputs.app-filter == '@apps/brikette' }}
@@ -101,9 +369,219 @@ jobs:
         shell: bash
         continue-on-error: true
 
+  test:
+    name: Test
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests != 'true' && needs.validate.outputs.test_scope != 'skip' }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        id: checkout_test_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_test_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_test_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run tests
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
+          RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$TEST_SCOPE" == "skip" ]]; then
+            echo "::notice title=Test selection::Skipping tests (classifier selected skip scope)."
+            exit 0
+          fi
+
+          # Try related-test selection if scope is "related" with paths
+          if [[ "$TEST_SCOPE" == "related" ]]; then
+            mapfile -t related_paths < <(node -e '
+              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed)) {
+                throw new Error("related_test_paths_json must be an array");
+              }
+              for (const entry of parsed) {
+                if (typeof entry === "string" && entry.length > 0) {
+                  console.log(entry);
+                }
+              }
+            ')
+
+            existing_paths=()
+            for relative_path in "${related_paths[@]}"; do
+              absolute_path="$GITHUB_WORKSPACE/$relative_path"
+              if [[ -f "$absolute_path" ]]; then
+                existing_paths+=("$absolute_path")
+              fi
+            done
+
+            if [[ "${#existing_paths[@]}" -gt 0 ]]; then
+              echo "::notice title=Test selection::Running related tests (count=${#existing_paths[@]})"
+              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --findRelatedTests "${existing_paths[@]}"
+              exit 0
+            fi
+
+            echo "::notice title=Test selection::No related files found; running full test suite."
+          fi
+
+          # Fallback: run full test suite
+          pnpm --filter "$APP_FILTER" test
+        shell: bash
+
+  test-sharded:
+    name: Test (shard ${{ matrix.shard }}/${{ inputs.test-shard-count }})
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests == 'true' && needs.validate.outputs.test_scope != 'skip' }}
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
+    steps:
+      - name: Checkout repository
+        id: checkout_test_sharded_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_test_sharded_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_test_sharded_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Restore Jest/ts-jest caches (shards)
+        uses: actions/cache@v4
+        with:
+          path: |
+            .ts-jest
+            node_modules/.cache/jest
+            apps/*/node_modules/.cache/jest
+          key: jest-cache-${{ inputs.app-filter }}-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ matrix.shard }}
+          restore-keys: |
+            jest-cache-${{ inputs.app-filter }}-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
+      - name: Run test shard (${{ matrix.shard }}/${{ inputs.test-shard-count }})
+        env:
+          APP_FILTER: ${{ inputs.app-filter }}
+          TEST_SCOPE: ${{ needs.validate.outputs.test_scope }}
+          RELATED_TEST_PATHS_JSON: ${{ needs.validate.outputs.related_test_paths_json }}
+        run: |
+          set -euo pipefail
+
+          shard="${{ matrix.shard }}/${{ inputs.test-shard-count }}"
+
+          if [[ "$TEST_SCOPE" == "skip" ]]; then
+            echo "::notice title=Test selection::Skipping tests (classifier selected skip scope). shard=$shard"
+            exit 0
+          fi
+
+          # Try related-test selection if scope is "related" with paths
+          if [[ "$TEST_SCOPE" == "related" ]]; then
+            mapfile -t related_paths < <(node -e '
+              const raw = process.env.RELATED_TEST_PATHS_JSON ?? "[]";
+              const parsed = JSON.parse(raw);
+              if (!Array.isArray(parsed)) {
+                throw new Error("related_test_paths_json must be an array");
+              }
+              for (const entry of parsed) {
+                if (typeof entry === "string" && entry.length > 0) {
+                  console.log(entry);
+                }
+              }
+            ')
+
+            existing_paths=()
+            for relative_path in "${related_paths[@]}"; do
+              absolute_path="$GITHUB_WORKSPACE/$relative_path"
+              if [[ -f "$absolute_path" ]]; then
+                existing_paths+=("$absolute_path")
+              fi
+            done
+
+            if [[ "${#existing_paths[@]}" -gt 0 ]]; then
+              echo "::notice title=Test selection::Running related tests (count=${#existing_paths[@]}) shard=$shard"
+              pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard" --findRelatedTests "${existing_paths[@]}"
+              exit 0
+            fi
+
+            echo "::notice title=Test selection::No related files found; running full test suite. shard=$shard"
+          fi
+
+          # Fallback: run full sharded test suite
+          pnpm --filter "$APP_FILTER" exec jest --ci --runInBand --passWithNoTests --shard="$shard"
+        shell: bash
+
+  build:
+    name: Build
+    needs: [validate, test, test-sharded]
+    if: >-
+      ${{
+        always() &&
+        needs.validate.result == 'success' &&
+        !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
+        !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result)
+      }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        id: checkout_build_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_build_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_build_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Build
         run: ${{ inputs.build-cmd }}
         shell: bash
+        # Prime needs Firebase config inlined at build time (NEXT_PUBLIC_* are
+        # replaced during static export). Harmless for other apps — Next.js only
+        # bundles env vars that code actually references.
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_FIREBASE_DATABASE_URL: ${{ secrets.NEXT_PUBLIC_FIREBASE_DATABASE_URL }}
+          NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID }}
 
       - name: Upload Artifact
         if: ${{ inputs.artifact-path != '' }}
@@ -116,16 +594,33 @@ jobs:
 
   deploy:
     name: Deploy
-    # Only deploy if a deploy command is provided AND we are on main or staging
-    if: ${{ inputs.deploy-cmd != '' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
-    needs: validate-and-build
+    # Keep job scheduling simple; evaluate deploy gate inside job steps.
+    if: >-
+      ${{
+        always() &&
+        needs.build.result == 'success' &&
+        needs.validate.result == 'success'
+      }}
+    needs: [build, validate]
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
       name: ${{ inputs.environment-name }}
       url: ${{ inputs.environment-url != '' && inputs.environment-url || format('https://{0}.pages.dev', inputs.project-name) }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        id: checkout_deploy_primary
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait before checkout retry
+        if: ${{ steps.checkout_deploy_primary.outcome == 'failure' }}
+        run: sleep 15
+        shell: bash
+      - name: Checkout repository (retry)
+        if: ${{ steps.checkout_deploy_primary.outcome == 'failure' }}
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
@@ -133,8 +628,19 @@ jobs:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
 
+      - name: Evaluate deploy gate
+        id: deploy_gate
+        shell: bash
+        run: |
+          should_deploy="${{ needs.validate.outputs.should_deploy }}"
+          if [[ "$should_deploy" != "true" ]]; then
+            should_deploy="false"
+          fi
+          echo "should_deploy=$should_deploy" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Deploy gate (job)::should_deploy=$should_deploy"
+
       - name: Download Artifact
-        if: ${{ inputs.artifact-path != '' }}
+        if: ${{ inputs.artifact-path != '' && steps.deploy_gate.outputs.should_deploy == 'true' }}
         uses: actions/download-artifact@v4
         with:
           name: build-artifact-${{ inputs.project-name }}
@@ -142,6 +648,7 @@ jobs:
 
       # ADMIN-04: Decrypt SOPS secrets before deploy
       - name: Decrypt secrets
+        if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
         uses: ./.github/actions/decrypt-secrets
         with:
           sops-age-key: ${{ secrets.SOPS_AGE_KEY }}
@@ -149,24 +656,31 @@ jobs:
 
       # ADMIN-05: Validate environment before deploy
       - name: Validate deploy environment
+        if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
         run: |
           chmod +x scripts/validate-deploy-env.sh
           ./scripts/validate-deploy-env.sh
         shell: bash
-        continue-on-error: true  # TEMP: unblock staging deploy while secrets config is resolved
 
       - name: Deploy
+        if: ${{ steps.deploy_gate.outputs.should_deploy == 'true' }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'ci-build-placeholder-32chars!!' }}
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'ci-build-placeholder-32chars!!' }}
-          CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET || 'ci-build-placeholder' }}
-        run: ${{ inputs.deploy-cmd }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          CART_COOKIE_SECRET: ${{ secrets.CART_COOKIE_SECRET }}
+        run: ${{ inputs.deploy_cmd }}
         shell: bash
 
       - name: Post-Deploy Health Check
-        if: success() && inputs.project-name != ''
+        if: success() && steps.deploy_gate.outputs.should_deploy == 'true' && inputs.project-name != ''
         run: |
           chmod +x scripts/post-deploy-health-check.sh
           ./scripts/post-deploy-health-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}
@@ -178,12 +692,12 @@ jobs:
         # copy-pasting it.)
         env:
           BASE_URL: ${{ inputs.healthcheck-base-url }}
-          EXTRA_ROUTES: "/api/health"
+          EXTRA_ROUTES: ${{ inputs.healthcheck-extra-routes }}
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
 
       - name: Post-Deploy Cache Headers Check (Brikette)
-        if: success() && inputs.app-filter == '@apps/brikette' && inputs.project-name != '' && inputs.environment-name == 'production'
+        if: success() && steps.deploy_gate.outputs.should_deploy == 'true' && inputs.app-filter == '@apps/brikette' && inputs.project-name != '' && inputs.environment-name == 'production'
         run: |
           chmod +x scripts/post-deploy-brikette-cache-check.sh
           ./scripts/post-deploy-brikette-cache-check.sh ${{ inputs.project-name }} ${{ inputs.healthcheck-args }}

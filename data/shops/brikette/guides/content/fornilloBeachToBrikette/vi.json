@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Lộ trình quay về: Bãi biển Fornillo → Hostel Brikette",
+    "description": "Đi dọc lối đi ven biển tới Spiaggia Grande, ghé các cửa hàng rồi lên xe buýt interno để trở lại hostel."
+  },
+  "linkLabel": "Lộ trình quay về: Bãi biển Fornillo → Hostel Brikette",
+  "intro": [
+    "Quay trở lại Hostel Brikette từ Bãi biển Fornillo là cách dễ dàng nhất nếu bạn đi theo bờ sông đến Spiaggia Grande và đi xe buýt nội địa từ trung tâm thị trấn. Tuyến đường này hoán đổi hầu hết các cầu thang lên dốc để có lối đi dạo bằng phẳng và leo lên một đoạn ngắn bên cạnh nhà trọ."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-return",
+      "title": "Lập kế hoạch trở lại của bạn",
+      "body": [
+        "Dành thêm thời gian để dừng chụp ảnh hoặc dạo qua các cửa hàng xung quanh Spiaggia Grande trước khi lên xe buýt.",
+        "Con đường trở về này dài hơn việc leo lên cầu thang tắt nhưng mát mẻ hơn vào buổi chiều và mang lại cho bạn cảm giác nhẹ nhàng hơn sau một ngày đi biển."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Lộ trình từ Bãi biển Fornillo tới Hostel Brikette",
+      "body": [
+        "1. Đi bộ về phía bên trái của Bãi biển Fornillo (bên trái khi bạn quay mặt ra biển).",
+        "2. Đi theo con đường ven biển về phía Spiaggia Grande cho đến khi bạn đến bãi biển chính và khu vực cảng.",
+        "3. Đi qua cổng bến cảng, rời cầu cảng và tiếp tục đi thẳng dọc theo lối đi dạo ven sông.",
+        "4. Đi theo con đường ngay phía trước bãi biển và tiếp tục vào đất liền.",
+        "5. Rẽ phải ở con hẻm đầu tiên giữa các cửa hàng.",
+        "6. Leo lên cầu thang dẫn lên Chiesa di Santa Maria Assunta.",
+        "7. Ở đầu làn đường, rẽ trái và đi lên dốc.",
+        "8. Khi làn đường gặp đường một chiều tại ngã ba, bạn đã đến trạm xe buýt nội địa đi Chiesa Nuova. Đi lên một điểm dừng để đến Hostel Brikette."
+      ]
+    },
+    {
+      "id": "bus-connection",
+      "title": "Bắt xe buýt nội địa",
+      "body": [
+        "Từ trạm dừng Chiesa Nuova, xe buýt nội địa Positano màu cam sẽ đưa bạn đi bộ một đoạn ngắn đến Hostel Brikette—hoàn hảo nếu bạn muốn tránh phải leo lên toàn bộ cầu thang để quay về.",
+        "Vé được bán tại các ki-ốt tabacchi/sạp báo khắp thị trấn, vì vậy hãy mua vé trước khi bạn xuống hoặc kiểm tra với lễ tân xem còn chỗ hay không."
+      ]
+    }
+  ],
+  "tips": [
+    "Mua vé xe buýt nội địa tại bất kỳ quầy bán báo/báo nào trước khi bạn đi biển.",
+    "Hãy dành lối tắt nặng nề cho buổi sáng; chuyến trở về ngắm cảnh này yên bình hơn sau một chuyến bơi dài.",
+    "Liên kết nó với hướng dẫn Bãi biển Fornillo của chúng tôi để biết chi tiết về câu lạc bộ bãi biển và các điểm yên tĩnh.",
+    "Xem lại tổng quan về các bãi biển Positano để lên kế hoạch bơi lội ở những nơi khác trong thời gian lưu trú của bạn."
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về lộ trình",
+  "faqs": [
+    {
+      "q": "Thời gian hoàn trả mất bao lâu?",
+      "a": [
+        "Đi bộ trở lại qua Spiaggia Grande sẽ mất thêm khoảng 10 phút so với đi bộ bằng cầu thang bộ, nhưng bạn tránh được phần lớn việc phải leo dốc trước khi lên xe buýt."
+      ]
+    },
+    {
+      "q": "Tôi có thể bắt xe buýt ở đâu?",
+      "a": [
+        "Đi xe buýt nội địa Positano màu cam từ trạm dừng Chiesa Nuova ở đầu làn đường. Nó đưa bạn đến gần ký túc xá và vé đến từ các ki-ốt tabacchi/sạp báo."
+      ]
+    }
+  ]
+}

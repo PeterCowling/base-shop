@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM och bankomater i Positano",
+    "description": "Var du skaffar SIM/eSIM, täckningsnotiser och hur bankomater fungerar och tar betalt i Positano."
+  },
+  "linkLabel": "SIM/eSIM och bankomater i Positano",
+  "intro": [
+    "Håll dig online och redo för kontanter genom att konfigurera ditt SIM-abonnemang innan du anländer och planera bankomatstopp med lägre avgifter."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Activate an eSIM",
+      "body": [
+        "Ladda ett italienskt eSIM (TIM, Vodafone eller pålitliga reseleverantörer) när du är på vandrarhemmets Wi-Fi eller innan du flyger; täckningen är starkast på terrasser och längs SS163.",
+        "Välj minst 10 GB för en vecka om du streamar musik eller laddar upp bilder; övervaka användningen eftersom påfyllningen i staden är begränsad."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Picking up a physical SIM",
+      "body": [
+        "Omväg via Sorrento, Salerno eller Neapel Centrale för transportbutiker; ta med ditt pass och förvänta dig ett startpaket på €10–20 € med ID-registrering.",
+        "Tabacchi säljer ibland färdiga att aktivera SIM-kort under toppmånaderna, men tillgängligheten varierar - köp när du ser dem."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "ATM strategy",
+      "body": [
+        "Föredrar bankautomater som Intesa Sanpaolo för €2–3 € avgifter; oberoende maskiner nära stranden kan ladda dubbelt med dåliga växelkurser.",
+        "Ta ut €100–150 € per gång och dela sedlar mellan din dagsväska och en säker ficka i ditt bagage."
+      ]
+    }
+  ],
+  "tips": [
+    "Skärmbild QR-koder och aktiveringsdetaljer innan du lämnar Wi-Fi så att du kan installera om eSIM om din telefon återställs.",
+    "Behåll ett bärbart batteri – områden med svag signal tvingar telefoner att förstärka antennerna och tappa ström snabbare."
+  ],
+  "faqs": [
+    {
+      "q": "Does coverage reach Capri and Amalfi?",
+      "a": [
+        "Ja, men förvänta dig lägre hastigheter till havs; ladda ner spellistor och kartor innan du går ombord på färjorna."
+      ]
+    },
+    {
+      "q": "Are ATMs reliable late at night?",
+      "a": [
+        "Banklobbyerna är öppna dygnet runt, men om en automat tar slut på kontanter kan du behöva åka till Amalfi eller Sorrento nästa morgon."
+      ]
+    }
+  ]
+}

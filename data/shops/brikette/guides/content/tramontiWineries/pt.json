@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Tramonti & Amalfi Coast Wineries",
+    "description": "Vinícolas para visitar, notas de transporte e etiqueta de degustação."
+  },
+  "linkLabel": "Vinícolas de Tramonti e da Costa Amalfitana",
+  "intro": [
+    "Descubra as vinícolas nas colinas de Tramonti para provas DOC longe das multidões costeiras."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Por que Tramonti",
+      "body": [
+        "Vinhas centenárias em pergolado crescem em solo vulcânico, produzindo DOC Costa d'Amalfi tintos e brancos.",
+        "Quintas familiares como Tenuta San Francesco e Reale recebem grupos pequenos para provas intimistas."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Reservar provas",
+      "body": [
+        "Reserve com 48 h de antecedência por e-mail ou WhatsApp; degustações com petiscos custam 25–35 € por pessoa.",
+        "Pergunte se o transporte está incluído — algumas vinícolas organizam shuttle ida e volta desde Amalfi ou Maiori."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Como chegar",
+      "body": [
+        "Conduza ou contrate motorista para os 18 km de subida desde Positano; estradas estreitas, porém asfaltadas.",
+        "Opção pública: autocarro até Amalfi e depois autocarro local para Tramonti. Planeie margens no regresso, pois os serviços à noite são limitados."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve garrafa reutilizável — muitas vinícolas oferecem água de nascente para limpar o paladar entre taças.",
+    "Envie o vinho por transportadora em vez de levar garrafas se viajar apenas com bagagem de mão."
+  ],
+  "faqs": [
+    {
+      "q": "Quanto dura uma prova?",
+      "a": [
+        "A maioria dura cerca de 90 minutos, incluindo passeio pela vinha, cave e três a quatro vinhos."
+      ]
+    },
+    {
+      "q": "Consigo visitar sem carro?",
+      "a": [
+        "Sim, mas combine transfer com antecedência. Táxis partilhados entre quatro viajantes mantêm o custo razoável."
+      ]
+    }
+  ]
+}

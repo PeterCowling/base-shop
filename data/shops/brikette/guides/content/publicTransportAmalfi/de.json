@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "ÖPNV an der Amalfiküste",
+    "description": "So bewegst du dich ohne Auto: Busse, Fähren und Züge – Tickets, Taktung und Hinweise zur Saison."
+  },
+  "linkLabel": "ÖPNV an der Amalfiküste",
+  "intro": [
+    "So bewegst du dich ohne Auto an der Amalfiküste: Busse für ganzjährige Zuverlässigkeit, Fähren im Sommer und Züge für längere Strecken."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA-Busse",
+      "body": [
+        "Tickets vor dem Einstieg in Tabacchi/Kiosken kaufen und im Bus entwerten.",
+        "Rechne zu Spitzenzeiten mit Schlangen: früh starten und als Ausweichmöglichkeit die Fähre einplanen."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Fähren (saisonal)",
+      "body": [
+        "Zwischen Frühling und Herbst schnell und aussichtsreich zwischen den Hauptorten; Wetterausfälle sind möglich.",
+        "Live-Fahrpläne bei den Betreibern prüfen und für die letzten Boote des Tages Puffer einplanen."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Züge (zu den Hubs)",
+      "body": [
+        "Mit Trenitalia/Italo nach Sorrent, Salerno oder Neapel fahren und dort auf Bus oder Fähre umsteigen.",
+        "Fernzüge sparen Zeit auf den Strecken Rom/Neapel/Salerno; die Circumvesuviana bedient Sorrent."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & Strategie",
+      "body": [
+        "Vor 09:00 Uhr losgehen, um Schlangen zu vermeiden; für die Rückfahrt zum Sonnenuntergang sind Fähren erste Wahl, sofern die See ruhig ist.",
+        "Kleingeld für Tickets und Hut/Wasser für exponierte Haltestellen dabeihaben."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich Gepäck im Bus mitnehmen?",
+      "a": [
+        "Erlaubt, aber zur Hauptzeit unpraktisch – bei schwerem Gepäck besser Fähren oder Porter einplanen."
+      ]
+    },
+    {
+      "q": "Gibt es Nachtverbindungen?",
+      "a": [
+        "Nur eingeschränkt; letzte Bus-/Fährzeiten frühzeitig prüfen, um teure Taxis zu vermeiden."
+      ]
+    }
+  ]
+}

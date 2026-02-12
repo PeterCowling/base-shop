@@ -1,0 +1,249 @@
+{
+  "seo": {
+    "title": "El único hostel de Positano: qué esperar (y cómo ahorrar)",
+    "description": "Vistas de terraza, ubicación junto a la parada de bus Chiesa Nuova, tipos de habitación, qué incluye y consejos prácticos para ahorrar y llegar sin estrés."
+  },
+  "linkLabel": "El único hostel de Positano: qué esperar (y cómo ahorrar)",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": "Este es el único hostel de Positano. Espera un ambiente cercano, una terraza panorámica para café al amanecer y golden hour al atardecer, y una ubicación justo al lado de la parada SITA en Chiesa Nuova. Si llegas en ferri, usa %LINK:ferryDockToBrikette|muelle → hostel (con equipaje)% para no improvisar escaleras. Si quieres una estancia tranquila, planifica una noche simple y duerme temprano: los días en Positano empiezan rápido. Si no tienes claro qué conviene hoy, pregunta en recepción antes de comprometerte. Si quieres mantener el gasto bajo, combina con %LINK:positanoBudget|Positano con presupuesto% y %LINK:groceriesPharmacies|supermercados y farmacias% para gastar en experiencias, no en errores de conveniencia.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Tipos de habitación y ropa de cama",
+      "body": [
+        "Los dormitorios compartidos (4–8 personas) tienen luz de lectura, enchufes y taquillas: trae candado o compra uno en recepción.",
+        "Las privadas pueden ser con baño en suite o baño compartido. Si te importa balcón o vista al mar, pregunta pronto: hay poca disponibilidad en meses pico.",
+        "Si duermes ligero, trae tapones y antifaz. La vida de dormitorio es social, pero los días de viaje en Positano empiezan temprano."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Vistas desde terraza sobre Positano, parte de lo que a muchos huéspedes les encanta del hostel"
+        }
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Zonas comunes y servicios",
+      "body": [
+        "La terraza tiene mesas y enchufes: ideal para planificar rutas, comer con vistas y conocer a otros viajeros al atardecer.",
+        "El bar del lobby es el plan más fácil de “una bebida” en Positano: tienes vista sin reserva y sin subir escaleras tarde. %LINK:terraceSunsets|Atardeceres en terraza% cubre mejor hora y qué pedir.",
+        "El desayuno es estacional: pregunta en recepción qué se ofrece ahora y los horarios."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Positano en ladera y costa, visible desde miradores y terrazas"
+        }
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Reserva y políticas",
+      "body": [
+        "Reservar directo suele ser mejor valor; las webs de terceros pueden ser más caras y a veces más estrictas con cambios.",
+        "Un pequeño depósito puede asegurar la cama; las cancelaciones suelen ser flexibles hasta el plazo publicado—escribe pronto si cambian tus planes.",
+        "Si miras el precio, los ahorros más simples son: viajar en temporada media, elegir dormitorio y evitar errores de transporte de última hora. %LINK:ferryCancellations|Cancelaciones de ferri% merece la lectura si conectas con algo importante."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/cheapEats.jpg",
+          "alt": "Comida económica en Positano, un buen complemento para ahorrar en alojamiento"
+        }
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "Qué hay cerca",
+      "body": [
+        "A un par de minutos tienes minimarket, panadería y la parada SITA en Chiesa Nuova: compra snacks y agua antes de bajar al centro.",
+        "Baja por Via Pasitea hacia restaurantes y gelato; calcula ~10–15 minutos hasta Spiaggia Grande por la ruta principal con pocas escaleras.",
+        "Plan fácil de primera noche: compra lo básico en %LINK:groceriesPharmacies|supermercados y farmacias%, haz drinks de atardecer en la terraza y duerme temprano. Disfrutas más Positano sin prisas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Zona de la playa principal, un destino habitual desde el hostel"
+        }
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Cómo llegar (rutas más fáciles)",
+      "body": [
+        "Si llegas en bus, Chiesa Nuova es la parada más simple para el hostel: pocas escaleras y sin callejones confusos.",
+        "Si llegas en ferri con equipaje, decide el plan antes de bajar del barco. %LINK:ferryDockToBrikette|Muelle → hostel (con equipaje)% y %LINK:briketteToFerryDock|hostel → muelle (con equipaje)% cubren los detalles prácticos.",
+        "Si llevas equipaje pesado o viajas con calor, un portero puede compensar. %LINK:porterServices|Porteadores en Positano% explica qué acordar por adelantado."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-boats-bay.webp",
+          "alt": "Bahía y zona del muelle de Positano, donde empiezan las llegadas en ferri"
+        }
+      ]
+    },
+    {
+      "id": "how-to-save",
+      "title": "Cómo ahorrar (sin arruinar el viaje)",
+      "body": [
+        "Ahorra en lo predecible (cama + snacks) y gasta en una experiencia que recuerdes (día de barco, cooking class o una cena mejor).",
+        "La forma más rápida de romper un presupuesto en Positano son taxis/traslados privados de última hora. Si el mar se ve mal, planifica rutas terrestres pronto. %LINK:ferryCancellations|Cancelaciones de ferri y mar agitado% evita decisiones de pánico caras.",
+        "Si quieres vibes de atardecer cada noche, no hagas una “cena al atardecer” completa todas las noches. Haz el atardecer como una bebida y mantén la cena simple: tu cartera (y tu sueño) te lo agradecerán."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/positanoDining.jpg",
+          "alt": "Cenar en Positano es más agradable cuando planificas una comida y no gastas de más cada noche"
+        }
+      ]
+    },
+    {
+      "id": "who-its-for",
+      "title": "Para quién va mejor (y para quién no)",
+      "body": [
+        "Va genial para: viajeros solos que quieren base social, amigos que quieren atardecer fácil en terraza y viajeros con presupuesto que aún quieren buena ubicación.",
+        "También genial para: quien no quiere que las escaleras sean su “primer problema” al llegar. Estar junto a la parada de bus facilita la logística.",
+        "No ideal para: quien busca un resort silencioso y privado cada noche. Un hostel es social: tu experiencia depende de la vibe de la semana.",
+        "Si te preocupa el ambiente social, puedes elegir tu ritmo. Atardecer temprano, charla un rato y a dormir. No tienes que convertir cada noche en fiesta.",
+        "Si quieres conocer gente, la terraza es el sitio más fácil. Una pregunta tipo “¿a dónde vas mañana?” suele abrir un plan rápido.",
+        "Si quieres noches tranquilas, apunta a temporada media y elige tus noches con intención: drinks temprano y a dormir. %LINK:terraceSunsets|Atardeceres en terraza% es una versión muy fácil."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Un momento de atardecer en terraza, una experiencia social clásica para huéspedes del hostel"
+        }
+      ]
+    },
+    {
+      "id": "work-wifi",
+      "title": "Wi‑Fi y trabajo (cómo hacerlo cómodo)",
+      "body": [
+        "Si trabajas mientras viajas, planifica con la realidad de Positano: escaleras, calor y logística de excursiones pueden drenar energía más rápido de lo que crees.",
+        "Usa las mañanas para trabajo concentrado cuando el hostel está más tranquilo y deja las tardes para explorar y playa.",
+        "Si necesitas cambiar de aires, pregunta en recepción por los mejores sitios esa semana. Una buena respuesta a “¿dónde trabajo hoy?” puede ahorrarte horas.",
+        "Para planificación más amplia (rutas, timing, días de viaje), el %LINK:digitalConcierge|concierge digital% está pensado para respuestas rápidas y prácticas."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-umbrellas.webp",
+          "alt": "Un día en Positano donde el ritmo importa si equilibras trabajo y viaje"
+        }
+      ]
+    },
+    {
+      "id": "house-rules",
+      "title": "Normas y etiqueta de dormitorio (versión simple)",
+      "body": [
+        "Baja el ruido en horas de descanso. Muchos salen temprano para rutas y transporte.",
+        "Usa taquillas y guarda tus objetos de valor. La convivencia va mejor cuando todos se sienten seguros.",
+        "Etiqueta lo del frigo y recoge mesas compartidas. Pequeños hábitos mantienen buena vibe.",
+        "Si tienes dudas (llegada tarde, desayuno, lavandería), pregunta en recepción pronto en vez de adivinar."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-town-and-beach.webp",
+          "alt": "Los días de viaje en Positano son más fáciles cuando la logística y la etiqueta están claras"
+        }
+      ]
+    },
+    {
+      "id": "first-day",
+      "title": "Plan de primer día (sin darle vueltas)",
+      "body": [
+        "Si acabas de llegar, el mejor movimiento es mantenerlo simple: deja las maletas, compra lo básico, haz un mirador, luego una bebida al atardecer y a dormir.",
+        "Para lo básico (agua, snacks, tiritas, crema solar), usa %LINK:groceriesPharmacies|supermercados y farmacias en Positano%. Evita el error típico de gastar demasiado en comida de conveniencia.",
+        "Si quieres una “noche Positano” low‑effort, haz %LINK:terraceSunsets|atardeceres en terraza% y una cena simple. Si quieres una noche de restaurante, elige con antelación usando %LINK:positanoDining|la guía de restaurantes%.",
+        "Si mañana tienes excursión, revisa %LINK:ferryCancellations|cancelaciones de ferri% para no montar un plan frágil sobre el último barco.",
+        "Si llegaste con maleta pesada, valora si un portero compensa una vez en lugar de sufrir varios días. %LINK:porterServices|Porteadores% explica lo básico.",
+        "Si quieres playa el día uno, elige la opción que encaje con tu energía. %LINK:positanoBeaches|Playas de Positano% te ayuda a elegir sin pasarte.",
+        "Si vas con presupuesto, decide pronto tu “capricho” (día de barco o una cena mejor) y mantén el resto simple. %LINK:positanoBudget|Positano con presupuesto% tiene un enfoque claro que funciona.",
+        "Y lo más importante: no intentes hacerlo todo el primer día. Las mejores estancias en Positano se viven con ritmo, no con prisa."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Escenarios del primer día en Positano, donde los planes simples funcionan mejor"
+        }
+      ]
+    }
+  ],
+  "highlightsTitle": "Lo mejor",
+  "highlights": [
+    "Terrazas con vistas amplias a la Costa Amalfitana",
+    "~80 m de la parada de bus, sin escaleras",
+    "Bar relajado y desayuno estacional",
+    "Camas asequibles y habitaciones privadas"
+  ],
+  "saveTitle": "Cómo ahorrar",
+  "save": [
+    "Reserva directo para mejor tarifa y políticas más flexibles",
+    "Viaja fuera de fines de semana pico cuando puedas",
+    "Elige dormitorio y viaja ligero para evitar porteadores"
+  ],
+  "toc": {
+    "onThisPage": "En esta página",
+    "rooms": "Habitaciones y servicios",
+    "arrival": "Cómo llegar",
+    "etiquette": "Normas y etiqueta",
+    "faqs": "FAQs"
+  },
+  "roomsList": [
+    "Terrazas comunes con vistas panorámicas: café al amanecer y golden hour al atardecer son de lo más popular.",
+    "Bar (precios razonables) y desayuno estacional.",
+    "Taquillas en dormitorios; mira nuestra lista de qué llevar.",
+    "Wi‑Fi fiable; para sitios work‑friendly, mira cafés para trabajar."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Estamos a ~80 m de la parada SITA “Chiesa Nuova” sin escaleras en la ruta. ¿Llegas en ferri? Valora un portero o el bus SITA cuesta arriba.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "chiesaNuovaDepartures",
+    "ferryDockToBrikette",
+    "briketteToFerryDock",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Rutas:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Horas de silencio: sé respetuoso en dormitorios de noche y temprano por la mañana.",
+    "Etiqueta lo del frigo; recoge mesas después de usar; mantén espacios compartidos agradables.",
+    "Guarda valores en taquillas; tapones/antifaz recomendados en dormitorio."
+  ],
+  "faq": [
+    {
+      "q": "¿Tenéis habitaciones privadas?",
+      "a": "Sí — limitadas en meses pico. Reserva pronto para mejores precios."
+    },
+    {
+      "q": "¿Puedo llegar tarde?",
+      "a": "Sí — contacta con recepción para organizar late check‑in. Si llegas tarde en ferri, valora un portero desde el muelle."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Es fácil llegar a Spiaggia Grande desde el hostel?",
+      "a": [
+        "Sí: baja por Via Pasitea y sigue la ruta principal. Para subir, calcula algo más de tiempo, sobre todo con calor."
+      ]
+    },
+    {
+      "q": "¿Debería reservar transporte con antelación?",
+      "a": [
+        "Si vas justo de tiempo, sí. El tiempo y la gente pueden cambiar planes rápido. Empieza por %LINK:ferrySchedules|horarios de ferri% y ten un plan B por carretera."
+      ]
+    },
+    {
+      "q": "¿Necesito portero para el equipaje?",
+      "a": [
+        "No siempre. Si viajas ligero, suele ser manejable. Si llevas maleta pesada o llegas en ferri con calor, un portero puede compensar—ver %LINK:porterServices|porteadores%."
+      ]
+    }
+  ]
+}

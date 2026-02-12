@@ -1,0 +1,86 @@
+{
+  "seo": {
+    "title": "Positano takarékosan: gyakorlati útmutató",
+    "description": "Hogyan élvezd Positano legjavát pénztárcabarát módon: közlekedés, olcsó étkek, ingyenes kilátók, spórolós szállások és megtakarítási tippek."
+  },
+  "linkLabel": "Positano takarékosan",
+  "intro": [
+    "Nyújtsd ki az euróidat autómentes közlekedéssel, olcsó falatozókkal és ingyenes kilátópontokkal, miközben megőrzöd Positano csillogását."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Olcsó közlekedés",
+      "body": [
+        "Használd az Alibust vagy Curreri shuttle-t Sorrentóig, majd a SITA buszt Positanóba; vásárolj buszjegyeket csomagban a tabacchi-nál, hogy elkerüld a felárakat.",
+        "Ha nyugodt a tenger, kombinálj egy kompszakaszt buszokkal a kényelmesebb utazáshoz — csak az adott szakaszokra foglalj helyet, hogy ne fizess túl."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Okos szállások",
+      "body": [
+        "Foglalj hostelkajákban vagy közös apartmanokban Chiesa Nuova közelében, hogy csökkentsd a cipekedést és kiküszöböld a lépcsők miatti porterdíjakat.",
+        "Hosszabb tartózkodásnál gondolj Meta vagy Praiano bázisra — 30–40 perces a bejárás, de a csúcsidőszakban sokkal olcsóbb a szoba."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Étel-és italmegtakarítások",
+      "body": [
+        "Vásárolj paniniket, sfogliatellét és espresso-kat bárokból a helyben ejtős brunch helyett; tölts fel egy 1 literes palackot (34 oz) a hostel csapjainál indulás előtt.",
+        "Oszd meg az antipastit, kerüld a coperto díjat olcsóbb trattoriákban, és piknikezz a teraszokon deli vásárlásokkal naplementekor."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Olcsó élmények",
+      "body": [
+        "Tervezd be az ingyenes utak közül a Szlak Bogokat (busz Nocelle-be) vagy az Via Cristoforo Colombo menti naplemente sétaútvonalakat.",
+        "Költs egy kiemelkedő élményre (például közös hajótúra vagy főzőtanfolyam), a többit szenteld strandolásra és kilátókra."
+      ]
+    }
+  ],
+  "tips": [
+    "Utazz a vállszezonban (április–május, szeptember vége), így alacsonyabb árakat és üresebb kompokat találhatsz.",
+    "Kövesd nyomon a kiadásaidat jegyzetappban, a napi közös költségek felosztásával megelőzheted a félreértéseket."
+  ],
+  "faqs": [
+    {
+      "q": "Mennyivel számoljak naponta?",
+      "a": [
+        "70–90 € fedezi a dorm szobát, deli ételeket, buszjegyeket és egy fizetős programot; ha privát szobát vagy naplemente koktélt szeretnél, adj hozzá 20–30 €-t."
+      ]
+    },
+    {
+      "q": "Várható borravaló?",
+      "a": [
+        "A szolgáltatás benne van; gyűrj fel 1–2 €-t, ha tényleg kiemelkedően figyelmesek, vagy hagyj 10%-ot a magasabb kategóriás helyeken csak akkor, ha úgy érezzük megérte."
+      ]
+    }
+  ],
+  "tocTitle": "Tartalom",
+  "faqsTitle": "GYIK",
+  "heroAlt": "Takarékos kilátás Positanóra egy teraszról",
+  "costBreakdown": {
+    "title": "Napi költségmegoszlás (példa)",
+    "slices": [
+      {
+        "label": "Ágy (dorm)",
+        "value": 45
+      },
+      {
+        "label": "Étkezés és nassolnivaló",
+        "value": 25
+      },
+      {
+        "label": "Közlekedés",
+        "value": 12
+      },
+      {
+        "label": "Programok és extra",
+        "value": 18
+      }
+    ]
+  }
+}

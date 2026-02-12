@@ -1,0 +1,139 @@
+{
+  "seo": {
+    "title": "Sunrise Hike from Hostel Brikette (Positano)",
+    "description": "A short pre-dawn hike from Hostel Brikette to a quiet viewpoint above Positano, with navigation photos in the correct order."
+  },
+  "linkLabel": "Sunrise Hike: Watch Dawn Break Over Positano",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "If you want the simplest sunrise, you can watch dawn from the hostel’s common terrace as the sun rises to the left (when you’re looking out to sea).",
+    "If you want a wider panorama and a quieter moment above town, follow this short hike up into the hills for a clifftop viewpoint over Positano."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "What is the Sunrise Hike?",
+      "body": [
+        "This is a short, pre‑dawn out‑and‑back walk from Hostel Brikette to a small viewpoint above Positano.",
+        "If you want a longer mountain option, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% is a great alternative, but the route below is the quickest way to get a dramatic sunrise view without committing to a full-day hike."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Before you go (it will be dark)",
+      "body": [
+        "Bring a phone light or headlamp, and keep your hands free (especially on the stairs).",
+        "Wear shoes with grip — the first part is paved, but the woodland trail can be loose or damp.",
+        "Start early enough that you arrive 10–15 minutes before sunrise so you can settle in, find your spot, and enjoy the first light."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "Step 1: Walk from the hostel to the staircase (≈350 m)",
+      "body": [
+        "Exit the hostel through the main door and walk down to the road.",
+        "Turn toward Sorrento and walk about **350 metres** along the main road until you reach a staircase climbing up from the road."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Step 2: Climb to the house, then turn left",
+      "body": [
+        "Take the staircase all the way up until you reach the old white house pictured below.",
+        "At the house, **turn left** to join the woodland trail."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Old white house beside the staircase on the sunrise hike route above Positano",
+          "caption": "This building marks the end of the staircase climb; turn left here to enter the woodland trail.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Step 3: Follow the woodland trail to the viewpoint",
+      "body": [
+        "Follow the woodland trail as it climbs gently away from the house.",
+        "When the trail branches, take the **right** branch.",
+        "You’ll eventually reach a point where the trees open and you can see the sea straight ahead. From there, head around to your **left**.",
+        "That leftward path brings you to the viewpoint. You can scramble carefully up the rocks for a higher perch, or stay at the main spot for a stable view."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Overhead map view showing the final turns on the sunrise hike route to the viewpoint above Positano",
+          "caption": "Use this overhead view to confirm the final left turn toward the viewpoint after the trail opens to the sea.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Share this guide (QR)",
+      "body": [
+        "If you’re heading out with friends, you can use this QR code to quickly share the guide on another phone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR code linking to the Hostel Brikette sunrise hike guide",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Headlamp or phone light (plus a charged battery).",
+    "Shoes with grip and a light layer — it can feel cool and breezy before dawn.",
+    "Water and a small snack if you plan to sit and watch the sunrise."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Do a quick forecast check: wind and low cloud can hide the sunrise even on otherwise clear days.",
+    "If you’re unsure about a junction in the dark, pause and confirm your bearings rather than guessing."
+  ],
+  "warningsTitle": "Safety notes",
+  "warnings": [
+    "Go slowly on the stairs and keep your hands free — it’s easy to misstep in low light.",
+    "If the trail feels slippery after rain, consider watching from the hostel terrace instead."
+  ],
+  "steps": [
+    {
+      "name": "Walk to the staircase",
+      "text": "From the hostel, walk ~350 m toward Sorrento on the main road until you spot the staircase climbing uphill."
+    },
+    {
+      "name": "Climb to the house",
+      "text": "Follow the stairs to the old white house, then turn left onto the woodland trail."
+    },
+    {
+      "name": "Take the right branch",
+      "text": "When the woodland trail branches, keep right and continue until you can see the sea."
+    },
+    {
+      "name": "Turn left to the viewpoint",
+      "text": "After the trail opens out to the sea, head left to reach the viewpoint (scramble up carefully if you want a higher perch)."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Can I just watch sunrise from the hostel?",
+      "a": [
+        "Yes — the hostel terrace is the simplest option and the sun rises to the left of the building when you’re facing the sea."
+      ]
+    },
+    {
+      "q": "How long does the hike take?",
+      "a": [
+        "It’s a short route, but timing depends on your pace and how long you spend at the viewpoint. Leave enough time to arrive 10–15 minutes before sunrise."
+      ]
+    }
+  ]
+}

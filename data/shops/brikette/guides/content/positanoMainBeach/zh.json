@@ -1,0 +1,231 @@
+{
+  "seo": {
+    "title": "Spiaggia Grande（波西塔诺主海滩）指南",
+    "description": "Spiaggia Grande 的免费区域、海滩俱乐部、价格及简明布局——包括如何步行至 Fornillo 以及何时预订躺椅。"
+  },
+  "lastUpdated": "2026-01-29T00:00:00.000Z",
+  "linkLabel": "Spiaggia Grande 指南（波西塔诺主海滩）",
+  "intro": [
+    "Spiaggia Grande 是波西塔诺的明信片海滩：宽阔的卵石新月形海滩，悬崖顶的天际线堆积在遮阳伞和全天来来往往的渡轮后面。",
+    "游出海并返回城镇令人难忘，但岸上的体验取决于您坐在哪里 - 从中​​央自由区到刻在岩石上的超高级甲板。"
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "布局及重点区域"
+    },
+    {
+      "href": "#free-zone",
+      "label": "自由海滩区"
+    },
+    {
+      "href": "#residents",
+      "label": "居民区"
+    },
+    {
+      "href": "#lincanto",
+      "label": "L'Incanto 海滩俱乐部"
+    },
+    {
+      "href": "#la-scogliera",
+      "label": "La Scogliera 甲板"
+    },
+    {
+      "href": "#fornillo-link",
+      "label": "通往福尼洛 (Fornillo) 的步道"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Getting there from Hostel Brikette",
+      "body": [
+        "Most guests either walk down for the views and take the bus back up, or take the bus both ways to save their knees. If you’re unsure, start with our %LINK:positanoMainBeachWalkDown|walk down to Spiaggia Grande% guide and keep our %LINK:positanoMainBeachBusBack|bus back to the hostel% guide saved for later.",
+        "For a low-stress beach day, leaving the hostel by 08:30–09:00 is the sweet spot. You’ll beat the heaviest crowds at Piazza dei Mulini, find a better patch of shade on the free beach, and avoid the midday heat on the promenade.",
+        "If you want to conserve energy, use our %LINK:positanoMainBeachBusDown|bus down to Positano main beach% guide. It’s also the easiest option if you’re carrying snorkel gear, a thicker mat, or a bigger beach bag."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/interno-positano-bus.jpg",
+          "alt": "Spiaggia Grande (Positano main beach) seen from above with the village rising behind the shoreline",
+          "caption": "Spiaggia Grande from above — great views, a pebbly shore, and a busy promenade at the back of the beach."
+        },
+        {
+          "src": "/img/guides/positano-main-beach-bus-back/01-bus-stop-piazza-dei-mulini.jpg",
+          "alt": "Bus stop area at Piazza dei Mulini where guests board the Interno bus for the ride back up",
+          "caption": "Piazza dei Mulini bus stop area — useful to locate before you settle in for a long beach day."
+        },
+        {
+          "src": "/img/guides/topics/positanoMainBeach.jpg",
+          "alt": "Orange Interno Positano bus used by hostel guests to ride between Chiesa Nuova and the center",
+          "caption": "The orange Interno bus — the easiest way to save your legs after a day on the pebbles."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (crowds & shade)",
+      "body": [
+        "Spiaggia Grande is at its calmest early: a quick swim before 10:30 feels like a different beach compared to the lunchtime rush. Midday is when the promenade gets busiest (ferries, day-trippers, and people rotating through the clubs).",
+        "If you’re choosing the free section, shade is the limiting factor. The beach is wide, but umbrellas are limited to the paid clubs — so the earlier you arrive, the easier it is to claim a comfortable spot that won’t bake you by noon.",
+        "For photos, golden hour is beautiful from the promenade and the waterline, but the beach itself stays loud until dinner time in high season. If you want a quieter late afternoon, walk the coastal path to %LINK:fornilloBeachGuide|Fornillo Beach% and swim there instead."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Wide view of Positano's Spiaggia Grande with colorful umbrellas and the cliffside town behind it",
+          "caption": "Crowd reality check: Spiaggia Grande is iconic, but it gets busy fast — timing matters."
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (pebbles & heat)",
+      "body": [
+        "Spiaggia Grande is all pebbles, and in summer they heat up quickly. The right gear turns it from “beautiful but uncomfortable” into an easy, all-day hang.",
+        "If you’re on the free beach, think in layers: a thicker towel or mat for the stones, water shoes for getting in and out, and enough water/snacks that you’re not forced into expensive impulse buys on the promenade."
+      ],
+      "list": [
+        "Water shoes (or sturdy sandals) for pebbles + hot stones",
+        "A thicker mat/towel (thin towels feel like a net on pebbles)",
+        "Refillable bottle + snacks (or budget for promenade prices)",
+        "Cash as backup (card machines can be flaky in peak season)",
+        "Sun protection: hat + sunscreen — shade is limited outside the clubs"
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "布局和关键区域",
+      "body": [
+        "面朝大海，公共渡轮码头和水上出租车浮桥位于右侧，主要的免费地带横跨中心，付费俱乐部沿左侧岩石排列。",
+        "海滩上的编号地图通常将#1 标记为公共区域，#2 标记为波西塔诺居民区，#3/#4 标记为两个付费运营商：沙滩上的 L'Incanto 和高架甲板上的 La Scogliera。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/02-beach-providers-overview.jpg",
+          "alt": "Beach layout map showing the free section, residents' section, L'Incanto, and La Scogliera at Spiaggia Grande",
+          "caption": "Spiaggia Grande layout: free zone (#1), residents' strip (#2), L'Incanto (#3), and La Scogliera deck (#4)"
+        },
+        {
+          "src": "/img/guides/positano-main-beach/01-beach-layout-map.jpg",
+          "alt": "Overview of the four beach providers on Spiaggia Grande showing their locations along the shoreline",
+          "caption": "Beach providers overview — the four zones on Spiaggia Grande from public area to premium decks"
+        }
+      ]
+    },
+    {
+      "id": "free-zone",
+      "title": "免费海滩区（#1）",
+      "body": [
+        "最宽的免费区域位于两个私人俱乐部之间。请在 10:00 之前到达前排，并带上垫子或厚毛巾——鹅卵石会很快变暖，如果没有衬垫，会感到不舒服。",
+        "淋浴间和公共厕所隐藏在渡轮码头入口旁边。小吃来自海滩后面的售货亭或 L'Incanto's Blu Bar 的外卖柜台（单独付费）。"
+      ]
+    },
+    {
+      "id": "residents",
+      "title": "居民区 (#2)",
+      "body": [
+        "公共区域旁边的围栏区域是为波西塔诺居民保留的。等待救生员检查腕带；游客应尊重标牌并坚持使用免费的脱衣舞场或俱乐部躺椅。",
+        "如果公共区域挤满了人，请继续沿着海滨长廊走，然后沿着通往 Fornillo 的人行道寻找额外的空间 - 一旦您上路，只需步行五分钟。"
+      ]
+    },
+    {
+      "id": "lincanto",
+      "title": "L'Incanto 海滩俱乐部（#3）",
+      "body": [
+        "L'Incanto 覆盖了大部分沙滩，有一排橙色躺椅、淋浴间、更衣室和服务员服务。旺季标准套餐预计每人 25 至 35 欧元，前排或小屋升级费用更高。",
+        "7月至8月通过WhatsApp或电子邮件预订；在平月里，09:30 之前上门通常没问题。 Blu Bar（他们的休闲餐厅）面向海滨长廊，无需离开躺椅即可轻松享用披萨、沙拉和开胃酒。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/03-blu-bar.jpg",
+          "alt": "Blu Bar at L'Incanto beach club on the Positano promenade",
+          "caption": "Blu Bar — L'Incanto's promenade restaurant serving pizza, salads, and aperitivi"
+        }
+      ]
+    },
+    {
+      "id": "la-scogliera",
+      "title": "La Scogliera 甲板 (#4)",
+      "body": [
+        "La Scogliera 坐落在最左边的岩石上，配有柚木甲板、巴厘岛床和直入深水的海梯。后排躺椅的套餐起价约为 100 欧元，全景 VIP 巢穴（含普罗塞克）的套餐价格可能超过 400 欧元。",
+        "服务是白色桌布：楼上的餐厅俯瞰海港，如果您想前往劳里托或阿里恩佐欣赏日落，工作人员会叫水上出租车。 18:00 后着装要求倾向于商务休闲装。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/positano-main-beach/04-la-scogliera-deck.jpg",
+          "alt": "La Scogliera premium beach club with teak decks and ocean views on Positano's main beach",
+          "caption": "La Scogliera — premium teak decks on the rocks with direct water access and upstairs restaurant"
+        }
+      ]
+    },
+    {
+      "id": "fornillo-link",
+      "title": "通往福尼洛 (Fornillo) 的步道",
+      "body": [
+        "要在不攀爬的情况下切换海滩，请前往港口的远端，那里有船只装卸。靠右行驶，穿过有标志的拱门即可到达沿海步道。",
+        "沿着长廊步行约五分钟；它蜿蜒穿过咖啡馆和观景台，然后带您到达福尼洛的主入口。将漫步与我们的 %LINK:fornilloBeachGuide|Fornillo beach guide% 配对，了解另一侧的俱乐部详细信息。"
+      ]
+    },
+    {
+      "id": "practicalities",
+      "title": "Facilities, food & costs (what guests ask most)",
+      "body": [
+        "Toilets and showers exist, but they’re not always as “on the beach” as you’d expect. The easiest facilities for the free area are near the ferry-dock side and just behind the promenade — plan a quick bathroom stop before you fully settle your towels down.",
+        "If you’ve arrived in Positano with bags (check-out day, day trip, or early arrival), sort storage first so you’re not dragging luggage across pebbles. Use %LINK:luggageStorage|Positano luggage storage near Piazza dei Mulini% before you head all the way to the water.",
+        "Food on the promenade is convenient but adds up quickly. Our staff tip (from the hostel): eat a proper breakfast, pack a couple of snacks, and then treat yourself to one “nice” beach purchase (espresso, gelato, or an aperitivo) rather than paying premium prices for every meal.",
+        "If you want a predictable, lower-cost meal plan, browse %LINK:cheapEats|cheap eats in Positano% and decide where you’ll stop on the way down or back up."
+      ]
+    },
+    {
+      "id": "hostel-day-plan",
+      "title": "Hostel Brikette day plan (a simple way to do it)",
+      "body": [
+        "This is the easiest plan we recommend at reception when guests ask for “the best beach day without wasting money or energy.” Adjust the times based on season and your tolerance for crowds.",
+        "From our experience: doing your swim early, resting through the busiest midday stretch, and then moving to Fornillo later is the combo that feels like two beaches in one day."
+      ],
+      "list": [
+        "08:30–09:00: leave the hostel; stop for water/snacks if needed",
+        "09:30–10:30: first swim at Spiaggia Grande while it’s still calm",
+        "10:30–12:30: relax (free zone or club); reapply sunscreen — the reflected light is intense",
+        "12:30–14:00: lunch on/behind the promenade (or picnic if you packed)",
+        "14:00–16:30: take the coastal path and swim at %LINK:fornilloBeachGuide|Fornillo Beach% for a quieter afternoon",
+        "16:30–18:00: head back up using %LINK:positanoMainBeachBusBack|the bus route back to Hostel Brikette%"
+      ]
+    }
+  ],
+  "tipsTitle": "小贴士",
+  "tips": [
+    "从旅舍沿着 Viale Pasitea 步行 20-25 分钟，在路边瞭望台停下来拍照，然后前往 Piazza dei Mulini 和 Spiaggia Grande 长廊。",
+    "喜欢轮子？从 Chiesa Nuova 搭乘橙色内线巴士前往 Sponda 或 Piazza dei Mulini 站；登机前在国际酒吧购买 1.50 欧元的门票。",
+    "在海滩度过一天后，从渡轮码头旁边的终点站乘坐内部巴士返回，可以跳过陡峭的爬坡，到达 Hostel Brikette。",
+    "使用我们的 %LINK:positanoBeaches|Positano beaches overview% 规划您的躺椅预算 — 它会比较附近每个海湾的价格和免费区域。"
+  ],
+  "warningsTitle": "很高兴知道",
+  "warnings": [
+    "Spiaggia Grande 完全是鹅卵石：带上水鞋或凉鞋，以便更容易进水。",
+    "前排躺椅和遮阳伞在 8 月前几天就卖光了——如果您需要有保证的阴凉处，请预订。",
+    "刷卡机偶尔会掉线；携带现金用于售货亭、椅子余额和内部巴士司机。"
+  ],
+  "faqsTitle": "Spiaggia Grande 常见问题解答",
+  "faqs": [
+    {
+      "q": "我需要提前预订 L'Incanto 或 La Scogliera 吗？",
+      "a": [
+        "对于 L'Incanto，七月底和八月必须提前预订，但淡季的早晨 09:30 之前有步入式空间。 La Scogliera 要求所有高级甲板至少提前一天通过电子邮件或 WhatsApp 预订才能锁定床位。"
+      ]
+    },
+    {
+      "q": "免费区域有淋浴和卫生间吗？",
+      "a": [
+        "是的。公共淋浴间位于轮渡码头附近，市政厕所位于长廊后面。请将硬币放在十字转门附近；私人俱乐部设施仅供付费客人使用。"
+      ]
+    },
+    {
+      "q": "前往海滩之前我可以在哪里寄存行李？",
+      "a": [
+        "将行李寄存在 Piazza dei Mulini 附近的 %LINK:luggageStorage|Positano luggage storage% 处或使用住宿的储藏室。 La Scogliera 的甲板上不允许携带行李，行李必须放在 L'Incanto 的躺椅后面。"
+      ]
+    }
+  ]
+}

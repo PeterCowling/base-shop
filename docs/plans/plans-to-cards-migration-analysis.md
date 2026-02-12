@@ -173,7 +173,7 @@ Business: PLAT (derived from Domain: Platform)
 
 **Option B - From filename:**
 ```
-File: docs/plans/brikette-translation-coverage-plan.md
+File: docs/plans/archive/brikette-translation-coverage-plan.md
 → Slug: brikette-translation-coverage
 → ID: BRIK-ENG-0002
 ```

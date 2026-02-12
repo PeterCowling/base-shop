@@ -1,15 +1,18 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy, max-lines-per-function -- PUB-05 pre-existing */
 // src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx
 // Client component for how-to-get-here index page
-import { Fragment, memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import dynamic from "next/dynamic";
 
 import { Section } from "@acme/design-system/atoms";
 
+import { isGuideLive } from "@/data/guides.index";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { guideHref } from "@/routes.guides-helpers";
 import { BeforeYouTravel } from "@/routes/how-to-get-here/components/BeforeYouTravel";
 import { ExperienceGuidesSection } from "@/routes/how-to-get-here/components/ExperienceGuidesSection";
 import { FiltersDialog } from "@/routes/how-to-get-here/components/FiltersDialog";
@@ -27,7 +30,6 @@ import type { RoutePickerSelection } from "@/routes/how-to-get-here/components/R
 import { pickBestLink } from "@/routes/how-to-get-here/pickBestLink";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
-import { guideHref } from "@/routes.guides-helpers";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 // Lazy load DestinationSections to prevent bundling destinations data into guide pages
@@ -38,19 +40,39 @@ const DestinationSections = dynamic(
 
 type Props = {
   lang: AppLanguage;
+  initialFilters?: {
+    transport?: string | null;
+    direction?: string | null;
+    destination?: string | null;
+  };
+  basePath?: string;
 };
 
 const ROME_SECTION_ID = "rome-travel-planner";
 const EXPERIENCE_SECTION_ID = "experience-planners";
 const INTRO_SECTION_ID = "arrival-help";
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
 
-function HowToGetHereIndexContent({ lang }: Props) {
-  const { t } = useTranslation("howToGetHere", { lng: lang });
+function resolveUiLabel(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}
+
+function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
+  const { t, ready } = useTranslation("howToGetHere", { lng: lang });
   usePagePreload({ lang, namespaces: ["howToGetHere", "guides"] });
   const fallbackT = useEnglishFallback("howToGetHere");
 
   const content = useHowToGetHereContent(lang);
-  const filtersState = useDestinationFilters(content.sections);
+  const filtersState = useDestinationFilters(content.sections, {
+    transport: initialFilters?.transport ?? null,
+    direction: initialFilters?.direction ?? null,
+    destination: initialFilters?.destination ?? null,
+    basePath,
+  });
   const {
     destinationFilter,
     transportFilter,
@@ -123,6 +145,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
   const [highlightedRouteSlug, setHighlightedRouteSlug] = useState<string | null>(null);
   const [isLateNight, setIsLateNight] = useState(false);
   const stickyOffset = useHeaderStickyOffset();
+  const parkingHref = isGuideLive("parking") ? guideHref(lang, "parking") : undefined;
 
   const handleRoutePick = useCallback((sel: RoutePickerSelection) => {
     // Track if user selected late-night arrival for taxi emphasis
@@ -212,15 +235,49 @@ function HowToGetHereIndexContent({ lang }: Props) {
     if (directionFilter && directionFilter !== "all") {
       chips.push({
         key: "direction",
-        label: directionFilter === "to" ? "To Positano" : "From Positano",
+                label: directionFilter === "to" ? "To Positano" : "From Positano",
         value: directionFilter,
       });
     }
     return chips;
   })();
 
+  if (!ready) {
+    const fallbackRoutes = content.sections
+      .slice(0, 8)
+      .map((section) => ({
+        id: section.id,
+        label: resolveUiLabel(section.name, "Route guide"),
+      }));
+
+    return (
+      <Section padding="default">
+        <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
+          How to Get Here
+        </h1>
+        <p className="mt-3 text-base text-brand-text/80">
+          Route planner copy is loading. In the meantime, use these route guides:
+        </p>
+        {fallbackRoutes.length ? (
+          <ul className="mt-4 space-y-2">
+            {fallbackRoutes.map((route) => (
+              <li key={route.id}>
+                <a
+                  href={`${content.internalBasePath}/${route.id}`}
+                  className="text-sm font-medium text-brand-primary underline-offset-4 hover:underline"
+                >
+                  {route.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </Section>
+    );
+  }
+
   return (
-    <Fragment>
+    <div className="overflow-x-clip">
       {/* Header */}
       <HeaderSection
         header={content.header}
@@ -279,7 +336,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
       </Section>
 
       {/* Before You Travel */}
-      <BeforeYouTravel t={t} parkingHref={guideHref(lang, "parking")} />
+      <BeforeYouTravel t={t} parkingHref={parkingHref} />
 
       {/* Experience Guides */}
       <Section id={EXPERIENCE_SECTION_ID} padding="default">
@@ -300,7 +357,7 @@ function HowToGetHereIndexContent({ lang }: Props) {
         filtersHelper={content.filtersHelper}
         filters={filtersState}
       />
-    </Fragment>
+    </div>
   );
 }
 

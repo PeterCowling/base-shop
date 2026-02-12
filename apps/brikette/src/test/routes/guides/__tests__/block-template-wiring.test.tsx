@@ -6,8 +6,7 @@
  * explicit route props > block-derived props > defaults
  */
 
-import { render, screen } from "@testing-library/react";
-import type { ReactNode } from "react";
+import { render } from "@testing-library/react";
 
 import GuideSeoTemplate from "@/routes/guides/_GuideSeoTemplate";
 import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
@@ -17,11 +16,6 @@ import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
 jest.mock("@/routes/guides/guide-seo/template/useGuideManifestState", () => ({
   useGuideManifestState: jest.fn(() => ({
     manifestEntry: null,
-    resolvedStatus: "published",
-    checklistSnapshot: null,
-    draftUrl: null,
-    isDraftRoute: false,
-    shouldShowEditorialPanel: false,
   })),
 }));
 
@@ -66,7 +60,22 @@ jest.mock("@/routes/guides/guide-seo/useHasLocalizedResources", () => ({
   useHasLocalizedResources: jest.fn(() => true),
 }));
 
-describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: { defaultValue?: string }) => options?.defaultValue ?? key,
+    i18n: { language: "en" },
+    ready: true,
+  }),
+  Trans: ({
+    defaults,
+    i18nKey,
+  }: {
+    defaults?: string;
+    i18nKey?: string;
+  }) => <>{defaults ?? i18nKey ?? null}</>,
+}));
+
+describe("GuideSeoTemplate block wiring (TASK-01)", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -83,11 +92,6 @@ describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
           relatedGuides: [],
           contentKey: "testGuide",
         } satisfies Partial<GuideManifestEntry>,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -118,11 +122,6 @@ describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       // planChoice block sets showPlanChoice: true
@@ -163,11 +162,6 @@ describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -196,11 +190,6 @@ describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -225,11 +214,6 @@ describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(
@@ -260,11 +244,6 @@ describe.skip("GuideSeoTemplate block wiring (TASK-01)", () => {
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
-        resolvedStatus: "published",
-        checklistSnapshot: null,
-        draftUrl: null,
-        isDraftRoute: false,
-        shouldShowEditorialPanel: false,
       });
 
       const { container } = render(

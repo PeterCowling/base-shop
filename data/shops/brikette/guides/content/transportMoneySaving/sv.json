@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Spara pengar på transport på Amalfikusten",
+    "description": "Tips för billigare resor på Amalfikusten: biljetter, kombinationer och rabattkort."
+  },
+  "linkLabel": "Spara pengar på transport på Amalfikusten",
+  "intro": [
+    "Praktiska sätt att sänka transportkostnaderna: pass, timing, blandning av buss och färja och väderleksförhållanden."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Passes vs singles",
+      "body": [
+        "Använd endast dagskort om du tar flera åk; annars är singlar billigare. Validera biljetter."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & routing",
+      "body": [
+        "Resa utanför 10:00–16:00 under högtrafik; föredrar direktbussar för åsar och färjor för natursköna humle."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Mixing bus and ferry",
+      "body": [
+        "Välj en betald färjesträcka (Positano ↔ Amalfi) och använd bussar någon annanstans för att spara samtidigt som du är bekväm."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Weather contingency",
+      "body": [
+        "Rå sjö ställer in färjor: ha en buss-först backup och buffra dagens sista segling."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Are combo tickets worth it?",
+      "a": [
+        "Ibland för multi-hop färjedagar; jämför mot enstaka priser."
+      ]
+    }
+  ]
+}

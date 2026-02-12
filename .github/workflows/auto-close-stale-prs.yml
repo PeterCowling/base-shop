@@ -1,4 +1,4 @@
-name: Auto-close Stale Zero-Touch PRs
+name: Auto-close Stale Pipeline PRs
 
 on:
   schedule:
@@ -20,7 +20,7 @@ jobs:
           days-before-pr-stale: 5
           days-before-pr-close: 2
           stale-pr-label: stale
-          stale-pr-message: "This zero-touch PR has been inactive for 5 days and will be closed in 2 days if no new commits are pushed."
-          close-pr-message: "Auto-closed stale zero-touch PR after 7 days of inactivity."
-          only-labels: zero-touch
+          stale-pr-message: "This pipeline PR has been inactive for 5 days and will be closed in 2 days if no new commits are pushed."
+          close-pr-message: "Auto-closed stale pipeline PR after 7 days of inactivity."
+          only-labels: pipeline
           exempt-pr-labels: keep-open

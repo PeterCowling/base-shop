@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/Italy Rail Pass: Visiting the Amalfi Coast",
+    "description": "How to use rail passes to reach the coast, plus last‑mile details to Positano."
+  },
+  "linkLabel": "Interrail/Italy Rail Pass: Amalfi Coast",
+  "intro": [
+    "Using an Interrail/Italy Rail Pass to reach the Amalfi Coast: which lines to take, required supplements, and how to cover the last leg to Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Core routes",
+      "body": [
+        "Rome → Naples/Salerno high-speed; local trains to Sorrento; buses to Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Supplements/reservations",
+      "body": [
+        "Frecciarossa/Italo often require seat reservations; regional trains don’t but can be crowded."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Last mile to Positano",
+      "body": [
+        "From Naples: Circumvesuviana to Sorrento then SITA bus. From Salerno: ferry/bus in season."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is a pass worth it?",
+      "a": [
+        "Only if taking enough long-distance segments; otherwise point-to-point can be cheaper."
+      ]
+    }
+  ]
+}

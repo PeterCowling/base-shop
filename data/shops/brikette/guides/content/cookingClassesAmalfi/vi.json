@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Trải nghiệm lớp nấu ăn trên Amalfi Coast",
+    "description": "Mức giá, nội dung lớp và cách đặt chỗ cho buổi học nấu ăn local."
+  },
+  "linkLabel": "Trải nghiệm lớp nấu ăn trên Amalfi Coast",
+  "intro": [
+    "Lớp nấu ăn Amalfi Coast mang tới chanh sfusato, pasta tươi và công thức gia đình trong căn bếp nhỏ nhìn ra biển.",
+    "Dùng cẩm nang này để chọn lớp phù hợp ngân sách và lịch trình, đồng thời xác nhận chi tiết trước khi đặt cọc."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Chủ lớp chào bạn bằng cà phê hoặc prosecco rồi giới thiệu nguyên liệu: chanh bào vỏ thơm, rau củ theo mùa và khối bột pasta bạn sẽ tạo hình.",
+        "Thường nấu 2–3 món — pasta tươi, sốt ăn kèm và món tráng miệng vị chanh — sau đó cùng ngồi thưởng thức; tổng thời lượng 2,5–4 giờ tính cả bữa ăn."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Chọn lớp phù hợp",
+      "body": [
+        "Kiểm tra quy mô nhóm và vị trí bếp: trong Positano, trên nông trại vùng cao hay ở thị trấn lân cận; một số lớp bao gồm đưa đón, số khác tính riêng.",
+        "Xác minh những gì đã bao gồm trong giá: nguyên liệu, rượu vang, công thức in sẵn, tạp dề hay đồ ăn mang về."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Hậu cần & thời gian",
+      "body": [
+        "Mùa cao điểm lớp kín chỗ vài tuần trước; đặt slot trước khi tới, nhất là buổi tối sau các chuyến đi trong ngày.",
+        "Nếu lớp ở ngoài Positano, xác nhận điểm đón hoặc dự trù tiền taxi; đường dốc nên dù đi shuttle vẫn cần giày thoải mái."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Chế độ ăn & ứng xử",
+      "body": [
+        "Báo trước dị ứng, nhu cầu chay/thuần chay hoặc không gluten khi đặt; nhiều lớp có thể điều chỉnh nếu biết sớm.",
+        "Đi giày kín mũi, buộc gọn tóc dài và hạn chế nước hoa — bếp nhỏ, bạn sẽ làm việc gần nguyên liệu tươi."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Người mới bắt đầu có hợp không?",
+      "a": [
+        "Có. Giảng viên minh hoạ từng bước, chỉnh tay ngay khi cần và chia việc để mọi người đều được tham gia mà không vội vàng."
+      ]
+    },
+    {
+      "q": "Có cần nói tiếng Ý không?",
+      "a": [
+        "Không. Đa số lớp dạy bằng tiếng Anh hoặc song ngữ, cộng với phần minh hoạ trực quan rất dễ theo dõi."
+      ]
+    },
+    {
+      "q": "Tôi nên mang gì?",
+      "a": [
+        "Mang sổ nhỏ nếu muốn ghi chú, sạc đầy điện thoại để chụp ảnh và đem theo tiền mặt trả phần còn lại hay chi phí di chuyển."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Tự tay làm pasta, sốt và tráng miệng chanh; nhóm nhỏ, bếp view biển trong mùa cao điểm."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Mong đợi gì"
+      },
+      {
+        "href": "#choose",
+        "label": "Cách chọn lớp"
+      },
+      {
+        "href": "#tips",
+        "label": "Mẹo"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Mong đợi gì",
+        "body": [
+          "Tự tay làm pasta, sốt và tráng miệng chanh; nhóm nhỏ, bếp view biển trong mùa cao điểm."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Cách chọn lớp",
+        "body": [
+          "Kiểm tra số người, thời lượng, nội dung bao gồm và phương án di chuyển."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Mẹo",
+        "body": [
+          "Đặt sớm vào tháng cao điểm; báo trước nhu cầu ăn kiêng cho chủ lớp."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bagageförvaring i Positano",
+    "description": "Var du kan lämna väskor i Positano, öppettider, prisnivåer och alternativ."
+  },
+  "linkLabel": "Bagageförvaring i Positano",
+  "intro": [
+    "Här kan du lämna bagaget i Positano: alternativ vid kajen och längs Via dei Mulini."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Nära kajen",
+      "body": [
+        "Förvaring per timme/dag mot kvitto; räkna med köer under högsäsong – boka i förväg om det går."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Förmedlingstjänster",
+      "body": [
+        "Bounce / Radical Storage: bekräfta exakt adress och öppettider innan du betalar online."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett & tips",
+      "body": [
+        "Behåll värdesakerna hos dig, märk väskor tydligt och ta foto på kvitto/nummerlapp."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Har de öppet på kvällen?",
+      "a": [
+        "Öppettiderna varierar – kontrollera tidiga stängningar i lågsäsong och sista färjeavgång."
+      ]
+    }
+  ],
+  "tocTitle": "På den här sidan",
+  "faqsTitle": "Vanliga frågor",
+  "heroAlt": "Porter som leder en bagagevagn uppför Positanos trappor",
+  "serviceType": "Bagageförvaring",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Positanos hus på klipporna med utsikt över havet",
+    "primaryCaption": "Panorama över Positano",
+    "secondaryAlt": "Porter som skjuter en bagagevagn nära Positanos färjekaj",
+    "secondaryCaption": "Bagagekärror vid kajen"
+  }
+}

@@ -69,12 +69,28 @@ const PACKAGE_TIERS = {
   "@acme/auth": "CRITICAL",
   "@acme/platform-core": "CRITICAL",
 
-  // MINIMAL: No runtime logic
+  // MINIMAL: No runtime logic, config, or coverage not yet established
   "@acme/types": "MINIMAL",
   "@acme/templates": "MINIMAL",
   "@acme/template-app": "MINIMAL",
   "@acme/tailwind-config": "MINIMAL",
+  "@acme/design-tokens": "MINIMAL",
   scripts: "MINIMAL",
+
+  // Apps: coverage not yet at STANDARD — will graduate as tests are added
+  "@apps/prime": "MINIMAL",
+  "@apps/handbag-configurator": "MINIMAL",
+  "@apps/handbag-configurator-api": "MINIMAL",
+  "@apps/cochlearfit": "MINIMAL",
+  "@apps/product-pipeline": "MINIMAL",
+  "@apps/xa": "MINIMAL",
+  "@apps/xa-drop-worker": "MINIMAL",
+
+  // Packages: coverage not yet at STANDARD — will graduate as tests are added
+  "@acme/guides-core": "MINIMAL",
+  "@acme/i18n": "MINIMAL",
+  "@acme/pipeline-engine": "MINIMAL",
+  "@acme/design-system": "MINIMAL",
 };
 
 /**

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Comparer les bases : Positano vs Sorrente vs Amalfi",
+    "description": "Avantages de chaque ville selon le budget, l'ambiance, les transports et la facilité d'accès."
+  },
+  "linkLabel": "Comparer les bases : Positano vs Sorrente vs Amalfi",
+  "intro": [
+    "Comparez les avantages et inconvénients entre Positano, Sorrente et Amalfi avant de choisir votre base."
+  ],
+  "tocTitle": "Sur cette page",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Paysages iconiques et escaliers à profusion ; idéal si vous voulez vous réveiller dans la carte postale.",
+        "Les transports demandent plus d’anticipation, prévoyez des marges autour des ferries et des bus."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Les meilleures liaisons ferroviaires et routières, avec une large gamme d’hébergements.",
+        "Les vues sont moins spectaculaires qu’à Positano, mais le rapport qualité-prix et la praticité sont excellents."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Nœud de ferries et de bus permettant des excursions faciles vers Ravello et les villages voisins.",
+        "Attendez-vous à des styles d’hébergement variés et planifiez en fonction des transports plus limités le soir."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Pour qui chaque base convient",
+      "body": [
+        "Positano pour les vues d’exception et l’ambiance sociale de l’auberge.",
+        "Sorrente pour maîtriser le budget et profiter de liaisons rapides.",
+        "Amalfi pour un accès équilibré à toute la côte."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quelle base convient aux visiteurs pour la première fois ?",
+      "a": [
+        "Choisissez Positano pour les vues emblématiques, Sorrente pour la facilité de transport et Amalfi pour un compromis avec la cathédrale à portée de main."
+      ]
+    },
+    {
+      "q": "Ai-je besoin d’une voiture si je loge en dehors de Positano ?",
+      "a": [
+        "Non. Ferries et bus relient les trois villes ; une voiture ajoute du stress de stationnement sauf si vous prévoyez de longues excursions à l’intérieur des terres."
+      ]
+    }
+  ]
+}

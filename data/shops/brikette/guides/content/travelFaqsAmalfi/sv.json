@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Vanliga frågor om Amalfikusten",
+    "description": "Snabba svar på frågor om transport, pengar, säkerhet och säsong."
+  },
+  "linkLabel": "Vanliga frågor om Amalfikusten",
+  "intro": [
+    "Snabba svar för Amalfikustens logistik: transporter, bokningar, budgetar och regniga dagar."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport essentials",
+      "body": [
+        "Kontrollera officiella buss- och färjetidtabeller kvällen innan och håll 30-minutersbuffertar för anslutningar under högsäsong.",
+        "Hämta taxinummer från ditt boende för sena returer så att du har en backup om den sista bussen är full."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Bookings & budget",
+      "body": [
+        "Boka restauranger, strandklubbar och turer minst 24 timmar framåt på sommaren; vissa begär en liten kortinsättning.",
+        "Välj flexibla priser eller en reseförsäkring så att vind eller hård sjö inte gör att du blir rädd när planerna ändras."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Weather & plan B",
+      "body": [
+        "Byt till inomhusalternativ som MAR Positano, Amalfis pappersmuseum eller en dagstur med tåg i Neapel/Salerno när regnet sätter in.",
+        "Om havet blir grovt, byt till bussar eller delade taxibilar och kolla efter stenfall eller vägavstängningar på SS163 innan du avgår."
+      ]
+    }
+  ],
+  "tips": [
+    "Spara nödnummer offline (112 och kustbevakningen 1530) tillsammans med din boendekontakt.",
+    "Köp bussbiljetter i tobaksaffärer eller online i förväg; förare säljer dem sällan och inspektörer gör stickprovskontroller."
+  ],
+  "faqs": [
+    {
+      "q": "When do the last ferries depart?",
+      "a": [
+        "På sommaren är den sista Positano ↔ Amalfi-seglingen vanligtvis runt 20:00; på våren/hösten sjunker det närmare 18:00—bekräfta kvällen innan."
+      ]
+    },
+    {
+      "q": "Behöver jag boka restauranger eller strandklubbar?",
+      "a": [
+        "Ja från juni till september: boka minst en dag i förväg och en vecka framåt för helgklubbar."
+      ]
+    },
+    {
+      "q": "What if it rains all day?",
+      "a": [
+        "Besök museer, gå med i en matlagningskurs eller ta en dagsutflykt till Neapel/Salerno med tåg; bär ett lätt vattentätt lager för överföringar."
+      ]
+    },
+    {
+      "q": "Are ATMs reliable?",
+      "a": [
+        "Större städer har uttagsautomater men avgifterna varierar – ta ut medelstora belopp på en gång och behåll små eurosedlar för bussar och kaféer."
+      ]
+    }
+  ]
+}

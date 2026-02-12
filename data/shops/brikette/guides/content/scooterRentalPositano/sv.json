@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Guide till scooteruthyrning (Positano)",
+    "description": "Vad du ska tänka på när du hyr scooter: licenser, säkerhet och rutter."
+  },
+  "linkLabel": "Guide till scooteruthyrning (Positano)",
+  "intro": [
+    "Skotrar ser lockande ut runt Positano, men väger tillgänglighet, pappersarbete och klippvägssäkerhet innan de hyrs."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Where to rent",
+      "body": [
+        "Tillgängligheten i Positano fluktuerar och priserna är höga; Sorrento erbjuder vanligtvis fler valmöjligheter och stabilare priser."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Rules & documents",
+      "body": [
+        "Ta med din licens (plus en IDP vid behov) och ett kreditkort, och dubbelkolla vad försäkringen faktiskt täcker."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Safety & when to avoid",
+      "body": [
+        "Kustvägarna är smala med blinda kurvor och bussar; om du är oerfaren är färjor och bussar det säkraste alternativet."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Should beginners rent a scooter here?",
+      "a": [
+        "Inte riktigt - utan gedigna skoterfärdigheter är dessa klippvägar stressande, så håll dig till kollektivtrafiken."
+      ]
+    }
+  ]
+}

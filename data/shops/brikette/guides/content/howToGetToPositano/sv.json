@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Så tar du dig till Positano: alla alternativ jämförda",
+    "description": "Jämför färja, tåg + buss, shuttle och privata transfers – med säsongsnotiser och bagagetips."
+  },
+  "linkLabel": "Så tar du dig till Positano (guide för val)",
+  "intro": "Alla realistiska sätt att nå Positano — jämfört med säsong, budget, bagage och ankomsttid.",
+  "toc": {
+    "onThisPage": "On this page",
+    "naples": "Via Naples",
+    "salerno": "Via Salerno",
+    "ferry": "Ferry (summer)",
+    "private": "Private transfer",
+    "faqs": "FAQs"
+  },
+  "labels": {
+    "whenHeading": "When to choose",
+    "cheapestHeading": "Cheapest route",
+    "seasonalHeading": "Seasonal notes"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Via Naples",
+      "body": [
+        "Flygplatstransfer till Sorrento + SITA till Positano (billigast), eller tåg till Sorrento + SITA.",
+        "Sommar: färjor från Molo Beverello i lugna hav; kontrollera avbokningar."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Via Salerno",
+      "body": [
+        "Tåg till Salerno; färja vidare till Positano under säsong (bagagevänligt).",
+        "Lågsäsong: buss via Amalfi; långsammare men pålitlig."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Private transfer",
+      "body": [
+        "Dörr-till-dörr; dyrare men enklast för sena ankomster eller tungt bagage."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What’s fastest in summer?",
+      "a": [
+        "Tåg till Salerno + färja när havet är lugnt; undviker vägtrafik."
+      ]
+    },
+    {
+      "q": "Where should I get off the bus?",
+      "a": [
+        "\\\\\"Chiesa Nuova\\\\\" ger de minsta trappor till Hostel Brikette (~80 m)."
+      ]
+    }
+  ]
+}

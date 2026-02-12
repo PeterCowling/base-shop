@@ -2,6 +2,7 @@ import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { TranslationsProvider } from "@acme/i18n";
 import en from "@acme/i18n/en.json";
@@ -9,14 +10,15 @@ import en from "@acme/i18n/en.json";
 import { Chip } from "../Chip";
 
 describe("Chip", () => {
-  it("respects size prop via Tag", () => {
-    render(
+  it("respects size prop via Tag", async () => {
+    const { container } = render(
       <TranslationsProvider messages={en}>
         <Chip size="lg">Chip</Chip>
       </TranslationsProvider>
     );
     const chip = screen.getByText("Chip");
     expect(chip.className).toContain("px-4");
+
     expect(chip.className).toContain("py-2");
     expect(chip.className).toContain("text-sm");
   });

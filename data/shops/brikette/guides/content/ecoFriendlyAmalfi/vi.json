@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Du lịch xanh trên Amalfi Coast",
+    "description": "Giảm dấu chân: tiếp nước, tuyến đi bộ, chọn phà thay vì xe hơi và những ngày biển ý thức hơn."
+  },
+  "linkLabel": "Du lịch xanh trên Amalfi Coast",
+  "intro": [
+    "Du lịch bền vững trên Amalfi Coast bao gồm cách di chuyển, xử lý rác và thói quen tiết kiệm năng lượng hằng ngày.",
+    "Giữ dấu chân du lịch nhẹ nhàng mà vẫn tận hưởng trọn vẹn đường bờ biển."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Đi lại xanh hơn",
+      "body": [
+        "Ưu tiên xe buýt hoặc phà thay vì taxi riêng bất cứ khi nào có thể.",
+        "Các quãng đường ngắn trong thị trấn hãy đi bộ thay vì gọi xe."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Giảm rác thải & nhựa",
+      "body": [
+        "Mang chai/túi tái sử dụng và châm lại tại đài phun hoặc quán cà phê.",
+        "Phân loại rác đúng thùng và mang đồ đã dùng ra khỏi đường mòn."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Tiết kiệm điện & nước",
+      "body": [
+        "Tắt điều hòa, đèn khi rời phòng; đóng cửa chớp để giữ phòng mát.",
+        "Tắm nhanh và tái sử dụng khăn để tiết kiệm nước."
+      ]
+    }
+  ],
+  "tips": [
+    "Ủng hộ cửa hàng địa phương dùng nguyên liệu vùng và hạn chế rác thải.",
+    "Gọi món theo mùa — chanh, cá cơm và rau địa phương ngon nhất đúng vụ."
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có thể thuê xe đạp điện trên bờ biển không?",
+      "a": [
+        "Có ở Amalfi, Sorrento và một vài thị trấn lân cận — nên đặt sớm vì số lượng xe ít."
+      ]
+    }
+  ]
+}

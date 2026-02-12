@@ -121,28 +121,38 @@ export interface ProductBadgeProps extends React.HTMLAttributes<HTMLSpanElement>
   size?: "sm" | "md" | "lg";
 }
 
-export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>(
-  ({ label, variant = "default", color, tone, size = "md", className, ...props }, ref) => {
-    const resolvedColor = resolveColor(variant, color);
-    const resolvedTone = resolveTone(tone, color);
-
-    return (
-      <span
-        ref={ref}
-        data-token={bgToken(resolvedColor, resolvedTone)}
-        className={cn(
-          "rounded font-semibold", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          SIZE_CLASSES[size],
-          (resolvedTone === "solid" ? SOLID_BG : SOFT_BG)[resolvedColor],
-          className
-        )}
-        {...props}
-      >
-        <span className={textClass(resolvedColor, resolvedTone)} data-token={FG_TOKEN[resolvedColor]}>
-          {label}
-        </span>
-      </span>
-    );
+export const ProductBadge = (
+  {
+    ref,
+    label,
+    variant = "default",
+    color,
+    tone,
+    size = "md",
+    className,
+    ...props
+  }: ProductBadgeProps & {
+    ref?: React.Ref<HTMLSpanElement>;
   }
-);
-ProductBadge.displayName = "ProductBadge";
+) => {
+  const resolvedColor = resolveColor(variant, color);
+  const resolvedTone = resolveTone(tone, color);
+
+  return (
+    <span
+      ref={ref}
+      data-token={bgToken(resolvedColor, resolvedTone)}
+      className={cn(
+        "rounded font-semibold", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        SIZE_CLASSES[size],
+        (resolvedTone === "solid" ? SOLID_BG : SOFT_BG)[resolvedColor],
+        className
+      )}
+      {...props}
+    >
+      <span className={textClass(resolvedColor, resolvedTone)} data-token={FG_TOKEN[resolvedColor]}>
+        {label}
+      </span>
+    </span>
+  );
+};

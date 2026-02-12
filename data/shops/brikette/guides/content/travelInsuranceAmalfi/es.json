@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Seguro de viaje para la Costa Amalfitana",
+    "description": "Coberturas básicas y consejos de documentación para un viaje sin sobresaltos."
+  },
+  "linkLabel": "Seguro de viaje para la Costa Amalfitana",
+  "intro": [
+    "Seguro de viaje para la Costa Amalfitana: salud, cancelaciones, electrónicos y coberturas para actividades."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Coberturas imprescindibles",
+      "body": [
+        "Incluye salud/accidentes, cancelaciones/retrasos y dispositivos electrónicos; añade cobertura de senderismo para el Sentiero degli Dei."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Reclamaciones y documentos",
+      "body": [
+        "Guarda recibos, denuncias policiales por robo y confirmaciones de retrasos/cancelaciones; revisa plazos y requisitos de originales/copias."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito una cobertura especial para los ferris?",
+      "a": [
+        "Normalmente queda dentro del transporte general; las incidencias por clima varían según la póliza — revisa las condiciones."
+      ]
+    }
+  ]
+}

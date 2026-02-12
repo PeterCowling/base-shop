@@ -3,3 +3,4 @@
  */
 
 export { CheckInQR } from './CheckInQR';
+export { StaffReadinessBadges } from './StaffReadinessBadges';

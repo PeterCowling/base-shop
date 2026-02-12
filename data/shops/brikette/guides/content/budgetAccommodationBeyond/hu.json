@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Költségbarát szállás Positanón túl",
+    "description": "Hol érdemes engedményes szállást keresni (Sorrento, Salerno, Amalfi környéke) és mik a kompromisszumok."
+  },
+  "linkLabel": "Költségbarát szállások Positanón túl",
+  "intro": [
+    "Értékcentrikus bázisok Positanón kívül reális közlekedési kompromisszumokkal."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Jó ár-érték arány vonatokkal és kompokkal; könnyebb késő esti érkezés."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Megfizethető és jól csatlakozik; szezonálisan kompok közlekednek Amalfi és Positano felé."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Amalfi környéke",
+      "body": [
+        "Kisebb falvakban szezonon kívül akciók lehetnek; figyeld a buszjáratokat."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Kompromisszumok",
+      "body": [
+        "Hosszabb ingázás az alacsonyabb árakért. Rövidebb tartózkodásnál Positano időt takaríthat meg."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Megéri ingázni?",
+      "a": [
+        "Ha az ár számít és elbírod a hosszabb átszállásokat, különösen vállszezonban érdemes."
+      ]
+    }
+  ]
+}

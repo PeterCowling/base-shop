@@ -4,7 +4,7 @@
       "tone": "Friendly and concise",
       "good_examples": [
         "Thanks for reaching out! Check-in starts at 3pm, and you can store bags earlier if needed.",
-        "We’re happy to help—check-out is by 10am, and late storage is available for a small fee.",
+        "We're happy to help—check-out is by 10am, and late storage is available for a small fee.",
         "Breakfast is available daily at the bar from 7:30–10:30am; you can add it on arrival.",
         "Private rooms are subject to availability—please book directly on our website for live options.",
         "If you need directions, our website has a step-by-step guide with maps and ferry info."
@@ -28,7 +28,7 @@
         "Pets are not allowed in the hostel."
       ],
       "bad_examples": [
-        "Rules are rules and there’s nothing we can do.",
+        "Rules are rules and there's nothing we can do.",
         "We can make exceptions if you ask nicely."
       ],
       "phrases_to_avoid": ["Nothing we can do", "Exception guaranteed"],
@@ -40,7 +40,7 @@
       "good_examples": [
         "It looks like the card attempt failed—could you try a different card or contact your bank?",
         "To secure the booking, please complete the payment step from the link provided.",
-        "If you prefer, you can pay by bank transfer; let us know and we’ll send the details.",
+        "If you prefer, you can pay by bank transfer; let us know and we'll send the details.",
         "We can hold the booking for a short time—please complete payment as soon as possible.",
         "Thanks for confirming—once payment is complete, your booking remains secured."
       ],
@@ -58,32 +58,167 @@
         "This booking is non‑refundable and cannot be cancelled for a refund.",
         "If your plans change, please notify us so we can update the reservation.",
         "Refundable bookings can be cancelled up to the stated deadline without penalty.",
-        "We’re sorry your plans changed—let us know if we can help rebook.",
+        "We're sorry your plans changed—let us know if we can help rebook.",
         "Please review the cancellation terms in your confirmation email."
       ],
       "bad_examples": [
-        "We don’t do refunds."
+        "We don't do refunds."
       ],
-      "phrases_to_avoid": ["We don’t do refunds"],
+      "phrases_to_avoid": ["We don't do refunds"],
       "preferred_phrases": ["Per the cancellation policy", "Let us know if we can help"],
       "attribution": { "scenario": "cancellation", "tone": "direct" }
     },
     "complaint": {
       "tone": "Empathetic and solution-focused",
       "good_examples": [
-        "I’m sorry to hear about this—thank you for letting us know.",
-        "We’d like to make this right; could you share a few more details?",
+        "I'm sorry to hear about this—thank you for letting us know.",
+        "We'd like to make this right; could you share a few more details?",
         "We appreciate your feedback and will address this with the team.",
-        "Thank you for your patience—we’ll follow up shortly.",
+        "Thank you for your patience—we'll follow up shortly.",
         "Please accept our apologies for the inconvenience."
       ],
       "bad_examples": [
-        "That’s not our fault.",
+        "That's not our fault.",
         "You should have read the policy."
       ],
-      "phrases_to_avoid": ["That’s not our fault", "You should have read"],
-      "preferred_phrases": ["Thank you for letting us know", "We’d like to help"],
+      "phrases_to_avoid": ["That's not our fault", "You should have read"],
+      "preferred_phrases": ["Thank you for letting us know", "We'd like to help"],
       "attribution": { "scenario": "complaint", "tone": "empathetic" }
+    },
+    "breakfast": {
+      "tone": "Friendly and informative",
+      "good_examples": [
+        "Breakfast is served daily from 8:00 AM to 10:30 AM for direct bookings.",
+        "Each guest receives one breakfast per day—just order through the hostel system.",
+        "Unfortunately, breakfast is only available for guests who booked directly with us."
+      ],
+      "bad_examples": [
+        "You can't have breakfast because you booked through Hostelworld.",
+        "Breakfast is free for everyone."
+      ],
+      "phrases_to_avoid": ["You can't have", "Breakfast is free for everyone"],
+      "preferred_phrases": ["Breakfast is available for direct bookings", "Please order through the hostel system"],
+      "attribution": { "scenario": "breakfast", "tone": "friendly" }
+    },
+    "luggage": {
+      "tone": "Helpful and precise",
+      "good_examples": [
+        "You can store your bags free of charge from 10:30 AM on arrival day.",
+        "After checkout, luggage storage is free until 3:30 PM.",
+        "Our porter service can help with bags after 3:30 PM for €15 per bag."
+      ],
+      "bad_examples": [
+        "Just leave your bags wherever.",
+        "We can't help with luggage after hours."
+      ],
+      "phrases_to_avoid": ["Just leave your bags", "We can't help"],
+      "preferred_phrases": ["Free luggage storage is available", "Our porter service can assist"],
+      "attribution": { "scenario": "luggage", "tone": "helpful" }
+    },
+    "wifi": {
+      "tone": "Friendly and straightforward",
+      "good_examples": [
+        "Complimentary WiFi is available from check-in to checkout.",
+        "The network supports browsing and email; streaming performance may vary.",
+        "WiFi details are provided at check-in."
+      ],
+      "bad_examples": [
+        "The WiFi is bad, sorry.",
+        "WiFi works perfectly for everything."
+      ],
+      "phrases_to_avoid": ["WiFi is bad", "Works perfectly for everything"],
+      "preferred_phrases": ["Complimentary WiFi is available", "Supports browsing and email"],
+      "attribution": { "scenario": "wifi", "tone": "friendly" }
+    },
+    "booking-changes": {
+      "tone": "Accommodating and clear",
+      "good_examples": [
+        "Date changes are subject to availability—let us know your preferred dates.",
+        "We're happy to look into extending your stay, subject to availability and our 7-night maximum.",
+        "Room type changes depend on availability and any rate differences."
+      ],
+      "bad_examples": [
+        "You can't change your booking.",
+        "Changes are guaranteed."
+      ],
+      "phrases_to_avoid": ["You can't change", "Changes are guaranteed"],
+      "preferred_phrases": ["Subject to availability", "We're happy to look into this"],
+      "attribution": { "scenario": "booking-changes", "tone": "accommodating" }
+    },
+    "checkout": {
+      "tone": "Warm and helpful",
+      "good_examples": [
+        "Checkout is by 10:00 AM—please return your keycard at reception.",
+        "Late checkout until 12:00 PM is available for €40, subject to availability.",
+        "After checkout, you can store luggage and enjoy the facilities until 3:30 PM."
+      ],
+      "bad_examples": [
+        "You must leave by 10 AM sharp.",
+        "Late checkout is always available."
+      ],
+      "phrases_to_avoid": ["You must leave", "Always available"],
+      "preferred_phrases": ["Checkout is by 10:00 AM", "Subject to availability"],
+      "attribution": { "scenario": "checkout", "tone": "warm" }
+    },
+    "house-rules": {
+      "tone": "Polite but firm",
+      "good_examples": [
+        "Quiet hours are from 11:45 PM to 8:00 AM—we appreciate your cooperation.",
+        "Visitors are welcome in communal areas between 10:30 AM and 11:00 PM with valid ID.",
+        "Our full house rules are available on our website for your reference."
+      ],
+      "bad_examples": [
+        "Stop making noise or you're out.",
+        "No visitors allowed ever."
+      ],
+      "phrases_to_avoid": ["You're out", "No visitors allowed ever"],
+      "preferred_phrases": ["We kindly ask", "We appreciate your cooperation"],
+      "attribution": { "scenario": "house-rules", "tone": "polite-firm" }
+    },
+    "promotions": {
+      "tone": "Warm and appreciative",
+      "good_examples": [
+        "Thank you for booking directly—we've applied the discount to your reservation.",
+        "We appreciate you choosing to book with us directly!",
+        "Your coupon has been applied. No further action needed."
+      ],
+      "bad_examples": [
+        "Send proof of your coupon.",
+        "Coupons are not valid."
+      ],
+      "phrases_to_avoid": ["Coupon not valid", "Send proof"],
+      "preferred_phrases": ["We've applied the discount", "Thank you for booking directly"],
+      "attribution": { "scenario": "promotions", "tone": "warm" }
+    },
+    "employment": {
+      "tone": "Professional and encouraging",
+      "good_examples": [
+        "Thank you for your interest in joining the team—we'll review your application.",
+        "We typically recruit for the upcoming season between January and March.",
+        "If your profile matches our needs, we'll be in touch."
+      ],
+      "bad_examples": [
+        "We're not hiring.",
+        "Your application was ignored."
+      ],
+      "phrases_to_avoid": ["We're not hiring", "Application ignored"],
+      "preferred_phrases": ["Thank you for your interest", "We will review your application"],
+      "attribution": { "scenario": "employment", "tone": "professional" }
+    },
+    "lost-found": {
+      "tone": "Empathetic and action-oriented",
+      "good_examples": [
+        "We'll check the room and our lost property area for your item.",
+        "If we find it, we can hold it for collection or arrange shipping.",
+        "Please describe the item and confirm your room number and checkout date."
+      ],
+      "bad_examples": [
+        "We're not responsible for lost items.",
+        "You should have checked before leaving."
+      ],
+      "phrases_to_avoid": ["Not responsible", "Should have checked"],
+      "preferred_phrases": ["We'll check for your item", "We can arrange shipping if found"],
+      "attribution": { "scenario": "lost-found", "tone": "empathetic" }
     }
   },
   "global_phrases_to_avoid": [

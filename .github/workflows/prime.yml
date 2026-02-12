@@ -14,6 +14,7 @@ on:
       - 'packages/themes/**'
       - 'packages/ui/**'
       - '.github/workflows/prime.yml'
+      - '.github/workflows/reusable-app.yml'
   pull_request:
     paths:
       - 'apps/prime/**'
@@ -24,22 +25,34 @@ on:
       - 'packages/themes/**'
       - 'packages/ui/**'
       - '.github/workflows/prime.yml'
+      - '.github/workflows/reusable-app.yml'
   workflow_dispatch:
 
 jobs:
   deploy:
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:prime')
+      }}
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/prime"
       build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
       artifact-path: apps/prime/out
-      deploy-cmd: >
-        pnpm exec wrangler pages deploy apps/prime/out
+      deploy_cmd: >
+        cd apps/prime &&
+        pnpm exec wrangler pages deploy out
         --project-name prime
         --branch ${{ github.ref_name }}
-        --functions apps/prime/functions
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
+      test-shard-count: 3
       project-name: "prime"
       environment-name: "${{ github.ref_name == 'staging' && 'staging' || 'production' }}"
-      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime.pages.dev' || 'https://prime.pages.dev' }}"
+      environment-url: "${{ github.ref_name == 'staging' && 'https://staging.prime-egt.pages.dev' || 'https://prime-egt.pages.dev' }}"
+      healthcheck-base-url: "${{ github.ref_name == 'staging' && 'https://staging.prime-egt.pages.dev' || 'https://prime-egt.pages.dev' }}"
+      healthcheck-extra-routes: ""
       healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit

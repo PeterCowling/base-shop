@@ -3,8 +3,8 @@
 import {
   type ButtonHTMLAttributes,
   createContext,
-  forwardRef,
   type HTMLAttributes,
+  type Ref,
   useCallback,
   useContext,
   useMemo,
@@ -102,11 +102,11 @@ export function Accordion({
   );
 
   return (
-    <AccordionContext.Provider value={context}>
+    <AccordionContext value={context}>
       <div className={cn("space-y-2", className)} {...props}>
         {children}
       </div>
-    </AccordionContext.Provider>
+    </AccordionContext>
   );
 }
 
@@ -114,37 +114,51 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLDivElement> {
   readonly value: string;
 }
 
-export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
-  ({ value, className, children, ...props }, ref) => {
-    const { openValues } = useAccordionContext();
-    const isOpen = openValues.includes(value);
-    return (
-      <AccordionItemContext.Provider value={value}>
-        <div
-          ref={ref}
-          data-state={isOpen ? "open" : "closed"}
-          data-value={value}
-          className={cn(
-            // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-            "rounded-md border border-border-3",
-            className,
-          )}
-          {...props}
-        >
-          {children}
-        </div>
-      </AccordionItemContext.Provider>
-    );
-  },
-);
-AccordionItem.displayName = "AccordionItem";
+export const AccordionItem = (
+  {
+    ref,
+    value,
+    className,
+    children,
+    ...props
+  }: AccordionItemProps & {
+    ref?: Ref<HTMLDivElement>;
+  }
+) => {
+  const { openValues } = useAccordionContext();
+  const isOpen = openValues.includes(value);
+  return (
+    <AccordionItemContext value={value}>
+      <div
+        ref={ref}
+        data-state={isOpen ? "open" : "closed"}
+        data-value={value}
+        className={cn(
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+          "rounded-md border border-border-3",
+          className,
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    </AccordionItemContext>
+  );
+};
 
 export type AccordionTriggerProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const AccordionTrigger = forwardRef<
-  HTMLButtonElement,
-  AccordionTriggerProps
->(({ className, children, onClick, ...props }, ref) => {
+export const AccordionTrigger = (
+  {
+    ref,
+    className,
+    children,
+    onClick,
+    ...props
+  }: AccordionTriggerProps & {
+    ref?: Ref<HTMLButtonElement>;
+  }
+) => {
   const value = useAccordionItemValue();
   const { openValues, toggle } = useAccordionContext();
   const isOpen = openValues.includes(value);
@@ -183,34 +197,39 @@ export const AccordionTrigger = forwardRef<
       />
     </button>
   );
-});
-AccordionTrigger.displayName = "AccordionTrigger";
+};
 
 export type AccordionContentProps = HTMLAttributes<HTMLDivElement>;
 
-export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
-  ({ className, children, ...props }, ref) => {
-    const value = useAccordionItemValue();
-    const { openValues } = useAccordionContext();
-    const isOpen = openValues.includes(value);
+export const AccordionContent = (
+  {
+    ref,
+    className,
+    children,
+    ...props
+  }: AccordionContentProps & {
+    ref?: Ref<HTMLDivElement>;
+  }
+) => {
+  const value = useAccordionItemValue();
+  const { openValues } = useAccordionContext();
+  const isOpen = openValues.includes(value);
 
-    return (
-      <div
-        ref={ref}
-        data-state={isOpen ? "open" : "closed"}
-        hidden={!isOpen}
-        className={cn(
-          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "px-4 pb-4 text-sm",
-          className,
-          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          !isOpen && "hidden",
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  },
-);
-AccordionContent.displayName = "AccordionContent";
+  return (
+    <div
+      ref={ref}
+      data-state={isOpen ? "open" : "closed"}
+      hidden={!isOpen}
+      className={cn(
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        "px-4 pb-4 text-sm",
+        className,
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+        !isOpen && "hidden",
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};

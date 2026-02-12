@@ -1,0 +1,129 @@
+{
+  "seo": {
+    "title": "Guide til køkkenet på Amalfikysten",
+    "description": "Hvad du skal smage: fiskespecialiteter, citronsød, lokale DOC-vine."
+  },
+  "linkLabel": "Guide til køkkenet på Amalfikysten",
+  "intro": [
+    "Et hurtigt overblik over køkkenet på Amalfikysten: signaturretter med fisk og skaldyr, citronprægede desserter og hvor du kan smage dem i Positano.",
+    "Brug den som huskeseddel, før du læser menukort eller besøger nabobyer for regionale specialiteter."
+  ],
+  "tocTitle": "På denne side",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Faste skaldyrsklassikere",
+      "body": [
+        "Spaghetti alle vongole, scialatielli ai frutti di mare og dagens grillfangst er fundamentet på de fleste menuer.",
+        "Spørg efter sæsonens specialiteter – forårsbælg, cherrytomater eller fyldte squashblomster dukker ofte op på tavlerne."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Markeder og hurtige bidder",
+      "body": [
+        "Formiddagsmarkeder og delikatesse-diske sælger focaccia, friturestegte cuoppi og frisk mozzarella til nemme frokoster.",
+        "Køb citrussyltetøj, colatura di alici og tørrede urter som smagsgivere til picnic."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserter og bagværk",
+      "body": [
+        "Delizia al limone, babà al limoncello og sfogliatella passer perfekt til en espresso efter middagen.",
+        "Gelateriaer skifter mellem citronsorbet, granita og crema al limone – ideelt på varme eftermiddage."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Drikke og serveringsforslag",
+      "body": [
+        "Bestil afkølet limoncello eller crema di limoncello som digestivo efter måltidet.",
+        "DOC-vine fra Tramonti eller Costa d'Amalfi (Furore, Ravello) passer godt til fisk, skaldyr og citronprægede retter."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Bestillingsetikette",
+      "body": [
+        "Coperto (dækpenge) dækker brød og opdækning – giv kun drikkepenge ved ekstraordinær service.",
+        "Del retterne familiestil, men sig det til personalet på forhånd, så tempo og service passer til delen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan vegetarer spise godt her?",
+      "a": [
+        "Ja – hold øje med melanzane alla parmigiana, gnocchi alla sorrentina og salater med lokale oste og grillede grøntsager."
+      ]
+    },
+    {
+      "q": "Skal jeg reservere bord på populære trattoriaer?",
+      "a": [
+        "I højsæsonen bør du reservere på forhånd for at få terrassesæder eller solnedgangstidspunkter; drop-in fungerer bedre til frokost eller i skuldersæsonen."
+      ]
+    }
+  ],
+  "itemListTitle": "Signaturretter og hvor du kan smage dem",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Fast menu i landlig stil med hjemmelavet pasta, grillede kødudskæringer og panoramaudsigt fra terrassen."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Dagsåben café med citrontunge salater, koldpressede juicer og hjemmelavede desserter."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Klassisk trattoria med pastaretter, friturestegte antipasti og sæsonspecialiteter siden 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Bageri med delizia al limone, babà al limoncello og kager, der er nemme at tage med til picnic på klippesiden."
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Klassikere"
+      },
+      {
+        "href": "#sweets",
+        "label": "Søde sager"
+      },
+      {
+        "href": "#drinks",
+        "label": "Drikke"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Klassikere",
+        "body": [
+          "Pastaretter med fisk og skaldyr, grillet fangst og citrondresserede salater med lokal olivenolie er faste indslag langs kysten.",
+          "Spørg efter dagens ret – sæsonvarer som squashblomster eller cherrytomater står ofte på tavlerne."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Søde sager",
+        "body": [
+          "Smag delizia al limone, babà al limoncello og citronsorbet for et desserttrio med citrus i centrum.",
+          "Nyd kagerne sammen med espresso eller limoncello som digestivo for at afslutte måltidet som de lokale."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Drikke",
+        "body": [
+          "Nip til limoncello eller crema di limone som digestivo, og udforsk Costa d'Amalfi DOC-vine fra Tramonti, Ravello eller Furore.",
+          "Skift til danskvand mellem glasene for at holde dig frisk – sommeraftenerne er fugtige langt efter solnedgang."
+        ]
+      }
+    ]
+  }
+}

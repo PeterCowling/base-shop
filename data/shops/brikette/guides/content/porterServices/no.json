@@ -1,0 +1,57 @@
+{
+  "seo": {
+    "title": "Portørtjenester i Positano",
+    "description": "Hvordan portørtjenester fungerer i Positano: hvor du bestiller, hva du kan forvente å betale og når de er mest nyttige."
+  },
+  "linkLabel": "Portørtjenester i Positano",
+  "intro": [
+    "Bærere hjelper med tunge sekker eller problemer med mobilitet. Ordne henting ved kaien eller bussholdeplassen, bekreft prisen først, og ha verdisaker med deg."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "Slik fungerer det vanligvis",
+      "body": [
+        "Ordne hentepunkt og tid (brygge eller bussholdeplass). Del navnet på overnattingsstedet ditt og møtetidspunkt.",
+        "Avtal gebyr før flytting. Prisene varierer etter avstand, trapper og tid på dagen.",
+        "Hold verdisaker med deg; merk posene tydelig."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Bestilling og ressurser",
+      "body": [
+        "Spør overnattingsstedet ditt etter pålitelige lokale leverandører i nærheten av kaien og de viktigste bussholdeplassene.",
+        "Se aggregatorer som Bounce / Radical Storage for alternativer for lagring eller frie timer."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette og tips",
+      "body": [
+        "Gi tips for ekstra god service eller tung last; ta med kontanter i små valører.",
+        "Del ankomstplanen din på forhånd i høye perioder for å sikre deg en plass."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Trenger jeg portører?",
+      "a": [
+        "Anbefales hvis du bærer tung bagasje; byen har mange trapper og bratte stier."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg bestille?",
+      "a": [
+        "Spør overnattingsstedet ditt eller lokale tjenester nær hovedstranden og bussholdeplasser."
+      ]
+    },
+    {
+      "q": "Hva koster det?",
+      "a": [
+        "Varierer etter avstand og belastning; bekreft satsen før tjenesten starter."
+      ]
+    }
+  ]
+}

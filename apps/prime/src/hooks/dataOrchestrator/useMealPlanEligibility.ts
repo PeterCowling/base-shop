@@ -8,6 +8,7 @@
  */
 
 import { useMemo } from 'react';
+
 import type { ProcessedPreorder } from './useOccupantTransform';
 
 // Prepaid meal plan types

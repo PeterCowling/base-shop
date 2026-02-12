@@ -1,4 +1,5 @@
 // i18n-exempt file -- HAND-0004 [ttl=2026-12-31]: viewer palette data, not user-facing copy.
+/* eslint-disable ds/no-raw-color -- HAND-0008 [ttl=2026-12-31]: swatch palette hex values for 3D material preview */
 import type { ProductConfigSchema } from "@acme/product-configurator";
 
 const swatchPalette: Record<string, string> = {

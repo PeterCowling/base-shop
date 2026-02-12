@@ -1,87 +1,176 @@
 #!/usr/bin/env tsx
-/**
- * Translate Guides Script
- *
- * Translates 5 English guide files to 17 target languages (85 files total)
- * using the Claude API while preserving all special tokens.
- *
- * Usage: pnpm exec tsx scripts/translate-guides.ts
- *
- * Environment: Requires ANTHROPIC_API_KEY environment variable
- */
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 
-import fs from 'fs/promises';
-import path from 'path';
-import Anthropic from '@anthropic-ai/sdk';
+import Anthropic from "@anthropic-ai/sdk";
 
-// Configuration
-const GUIDES_TO_TRANSLATE = [
-  'historyPositano.json',
-  'ferragostoPositano.json',
-  'folkloreAmalfi.json',
-  'avoidCrowdsPositano.json',
-  'positanoPompeii.json',
-];
+import { runGuideTranslationBatch } from "./lib/translate-guides-runner";
+import {
+  createFixtureTranslationProvider,
+  type FixtureTranslationProviderMap,
+  type TranslationProvider,
+} from "./lib/translation-runner-spike";
 
-const TARGET_LOCALES = [
-  'ar',  // Arabic
-  'da',  // Danish
-  'de',  // German
-  'es',  // Spanish
-  'fr',  // French
-  'hi',  // Hindi
-  'hu',  // Hungarian
-  'it',  // Italian
-  'ja',  // Japanese
-  'ko',  // Korean
-  'no',  // Norwegian
-  'pl',  // Polish
-  'pt',  // Portuguese
-  'ru',  // Russian
-  'sv',  // Swedish
-  'vi',  // Vietnamese
-  'zh',  // Chinese (Simplified)
-];
+const DEFAULT_GUIDES_TO_TRANSLATE = [
+  "historyPositano.json",
+  "ferragostoPositano.json",
+  "folkloreAmalfi.json",
+  "avoidCrowdsPositano.json",
+  "positanoPompeii.json",
+] as const;
+
+const DEFAULT_TARGET_LOCALES = [
+  "ar",
+  "da",
+  "de",
+  "es",
+  "fr",
+  "hi",
+  "hu",
+  "it",
+  "ja",
+  "ko",
+  "no",
+  "pl",
+  "pt",
+  "ru",
+  "sv",
+  "vi",
+  "zh",
+] as const;
 
 const LOCALE_NAMES: Record<string, string> = {
-  ar: 'Arabic',
-  da: 'Danish',
-  de: 'German',
-  es: 'Spanish',
-  fr: 'French',
-  hi: 'Hindi',
-  hu: 'Hungarian',
-  it: 'Italian',
-  ja: 'Japanese',
-  ko: 'Korean',
-  no: 'Norwegian',
-  pl: 'Polish',
-  pt: 'Portuguese',
-  ru: 'Russian',
-  sv: 'Swedish',
-  vi: 'Vietnamese',
-  zh: 'Chinese (Simplified)',
+  ar: "Arabic",
+  da: "Danish",
+  de: "German",
+  es: "Spanish",
+  fr: "French",
+  hi: "Hindi",
+  hu: "Hungarian",
+  it: "Italian",
+  ja: "Japanese",
+  ko: "Korean",
+  no: "Norwegian",
+  pl: "Polish",
+  pt: "Portuguese",
+  ru: "Russian",
+  sv: "Swedish",
+  vi: "Vietnamese",
+  zh: "Chinese (Simplified)",
 };
 
-const SOURCE_DIR = path.join(process.cwd(), 'src/locales/en/guides/content');
-const TARGET_BASE_DIR = path.join(process.cwd(), 'src/locales');
+type ProviderMode = "fixture" | "anthropic";
 
-// Initialize Anthropic client
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+type CliOptions = {
+  provider: ProviderMode;
+  sourceRoot: string;
+  outputRoot: string;
+  sourceLocale: string;
+  contentRelativeDir: string;
+  guides: string[];
+  locales: string[];
+  dryRun: boolean;
+  allowFailures: boolean;
+  fixtureFile?: string;
+};
 
-/**
- * Translation prompt for Claude
- */
+function splitCsv(value: string): string[] {
+  return value
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean);
+}
+
+function parseArgs(argv: readonly string[]): CliOptions {
+  const defaultRoot = path.join(process.cwd(), "src", "locales");
+  const options: CliOptions = {
+    provider: "fixture",
+    sourceRoot: defaultRoot,
+    outputRoot: defaultRoot,
+    sourceLocale: "en",
+    contentRelativeDir: path.join("guides", "content"),
+    guides: [...DEFAULT_GUIDES_TO_TRANSLATE],
+    locales: [...DEFAULT_TARGET_LOCALES],
+    dryRun: true,
+    allowFailures: false,
+  };
+
+  for (const arg of argv) {
+    if (arg === "--dry-run") {
+      options.dryRun = true;
+      continue;
+    }
+    if (arg === "--write") {
+      options.dryRun = false;
+      continue;
+    }
+    if (arg === "--allow-failures") {
+      options.allowFailures = true;
+      continue;
+    }
+    if (arg.startsWith("--provider=")) {
+      const provider = arg.slice("--provider=".length).trim();
+      if (provider !== "fixture" && provider !== "anthropic") {
+        throw new Error(`Unsupported provider "${provider}". Use fixture or anthropic.`);
+      }
+      options.provider = provider;
+      continue;
+    }
+    if (arg.startsWith("--guides=")) {
+      options.guides = splitCsv(arg.slice("--guides=".length));
+      continue;
+    }
+    if (arg.startsWith("--locales=")) {
+      options.locales = splitCsv(arg.slice("--locales=".length));
+      continue;
+    }
+    if (arg.startsWith("--source-root=")) {
+      options.sourceRoot = path.resolve(arg.slice("--source-root=".length));
+      continue;
+    }
+    if (arg.startsWith("--output-root=")) {
+      options.outputRoot = path.resolve(arg.slice("--output-root=".length));
+      continue;
+    }
+    if (arg.startsWith("--source-locale=")) {
+      options.sourceLocale = arg.slice("--source-locale=".length).trim();
+      continue;
+    }
+    if (arg.startsWith("--content-dir=")) {
+      options.contentRelativeDir = arg.slice("--content-dir=".length).trim();
+      continue;
+    }
+    if (arg.startsWith("--fixture-file=")) {
+      options.fixtureFile = path.resolve(arg.slice("--fixture-file=".length));
+      continue;
+    }
+
+    throw new Error(`Unknown argument: ${arg}`);
+  }
+
+  if (options.guides.length === 0) {
+    throw new Error("At least one guide must be provided via --guides.");
+  }
+  if (options.locales.length === 0) {
+    throw new Error("At least one locale must be provided via --locales.");
+  }
+
+  if (options.provider === "fixture" && !options.fixtureFile) {
+    throw new Error("Fixture provider requires --fixture-file=<path-to-fixtures.json>.");
+  }
+
+  return options;
+}
+
 function buildTranslationPrompt(
   sourceContent: string,
-  targetLanguage: string,
-  guideName: string
+  targetLocale: string,
+  guideName: string,
 ): string {
+  const localeName = LOCALE_NAMES[targetLocale] ?? targetLocale;
   return `You are a professional translator specializing in travel content for budget travelers.
 
-TASK: Translate the following JSON guide content from English to ${LOCALE_NAMES[targetLanguage]}.
+TASK: Translate the following JSON guide content from English to ${localeName}.
 
 CRITICAL REQUIREMENTS:
 1. Preserve ALL special tokens EXACTLY as they appear:
@@ -92,7 +181,7 @@ CRITICAL REQUIREMENTS:
 2. Preserve JSON structure exactly - only translate string values, never keys
 
 3. Translate naturally for the target audience (hostel guests visiting Positano, Italy):
-   - Use appropriate formality level for ${LOCALE_NAMES[targetLanguage]}
+   - Use appropriate formality level for ${localeName}
    - Maintain practical, direct, helpful tone
    - Keep content appropriate for budget travelers
 
@@ -106,168 +195,108 @@ CRITICAL REQUIREMENTS:
 SOURCE CONTENT (${guideName}):
 ${sourceContent}
 
-TRANSLATION (${LOCALE_NAMES[targetLanguage]}):`;
+TRANSLATION (${localeName}):`;
 }
 
-/**
- * Translate a single guide to a target language
- */
-async function translateGuide(
-  sourceContent: string,
-  targetLocale: string,
-  guideName: string
-): Promise<string> {
-  console.log(`  Translating to ${LOCALE_NAMES[targetLocale]}...`);
-
-  try {
-    const prompt = buildTranslationPrompt(sourceContent, targetLocale, guideName);
-
-    const message = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 16000,
-      temperature: 0.3, // Lower temperature for more consistent translations
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    });
-
-    const translatedContent = message.content[0].type === 'text'
-      ? message.content[0].text
-      : '';
-
-    // Validate JSON
-    try {
-      JSON.parse(translatedContent);
-      console.log(`  ✓ ${LOCALE_NAMES[targetLocale]} translation validated`);
-      return translatedContent;
-    } catch (parseError) {
-      console.error(`  ✗ Invalid JSON for ${LOCALE_NAMES[targetLocale]}`);
-      throw new Error(`Invalid JSON output for ${targetLocale}: ${parseError}`);
-    }
-  } catch (error) {
-    console.error(`  ✗ Translation failed for ${LOCALE_NAMES[targetLocale]}:`, error);
-    throw error;
+async function createAnthropicProvider(): Promise<TranslationProvider> {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "ANTHROPIC_API_KEY is required for --provider=anthropic. Use fixture mode for deterministic no-network checks.",
+    );
   }
+
+  const anthropic = new Anthropic({ apiKey });
+
+  return {
+    id: "anthropic",
+    async translate({ text, locale, context }) {
+      const prompt = buildTranslationPrompt(text, locale, context.guideName);
+      const message = await anthropic.messages.create({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 16000,
+        temperature: 0.3,
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      });
+
+      const firstBlock = message.content[0];
+      if (!firstBlock || firstBlock.type !== "text") {
+        throw new Error("Provider returned non-text content.");
+      }
+
+      return firstBlock.text;
+    },
+  };
 }
 
-/**
- * Process a single guide file for all target languages
- */
-async function processGuide(guideName: string): Promise<void> {
-  console.log(`\n📖 Processing guide: ${guideName}`);
-  console.log(`━`.repeat(60));
-
-  // Read source file
-  const sourcePath = path.join(SOURCE_DIR, guideName);
-  const sourceContent = await fs.readFile(sourcePath, 'utf-8');
-
-  // Validate source is valid JSON
-  try {
-    JSON.parse(sourceContent);
-  } catch (error) {
-    console.error(`✗ Source file ${guideName} is not valid JSON`);
-    throw error;
+async function createProvider(options: CliOptions): Promise<TranslationProvider> {
+  if (options.provider === "anthropic") {
+    return createAnthropicProvider();
   }
 
-  let successCount = 0;
-  let failCount = 0;
-
-  // Translate to each target language
-  for (const locale of TARGET_LOCALES) {
-    try {
-      const translatedContent = await translateGuide(sourceContent, locale, guideName);
-
-      // Write translated file
-      const targetPath = path.join(TARGET_BASE_DIR, locale, 'guides/content', guideName);
-      const targetDir = path.dirname(targetPath);
-
-      // Ensure directory exists
-      await fs.mkdir(targetDir, { recursive: true });
-
-      // Write file with proper formatting
-      const formattedContent = JSON.stringify(JSON.parse(translatedContent), null, 2);
-      await fs.writeFile(targetPath, formattedContent + '\n', 'utf-8');
-
-      successCount++;
-
-      // Rate limiting - pause between requests
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    } catch (error) {
-      failCount++;
-      console.error(`Failed to translate ${guideName} to ${locale}:`, error);
-      // Continue with next language even if one fails
-    }
+  const fixturePath = options.fixtureFile;
+  if (!fixturePath) {
+    throw new Error("fixtureFile must be provided for fixture provider.");
   }
 
-  console.log(`\n✓ ${guideName}: ${successCount}/${TARGET_LOCALES.length} translations completed`);
-  if (failCount > 0) {
-    console.log(`⚠ ${failCount} translation(s) failed`);
-  }
+  const fixtureRaw = await readFile(fixturePath, "utf8");
+  const parsed = JSON.parse(fixtureRaw) as FixtureTranslationProviderMap;
+  return createFixtureTranslationProvider(parsed);
 }
 
-/**
- * Main execution
- */
 async function main(): Promise<void> {
-  console.log('🌍 Guide Translation Script');
-  console.log(`━`.repeat(60));
-  console.log(`Translating ${GUIDES_TO_TRANSLATE.length} guides to ${TARGET_LOCALES.length} languages`);
-  console.log(`Total files to generate: ${GUIDES_TO_TRANSLATE.length * TARGET_LOCALES.length}`);
-  console.log(`━`.repeat(60));
+  const options = parseArgs(process.argv.slice(2));
+  const provider = await createProvider(options);
 
-  // Check for API key
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('❌ Error: ANTHROPIC_API_KEY environment variable is required');
-    console.error('Set it with: export ANTHROPIC_API_KEY=your_api_key');
-    process.exit(1);
-  }
+  console.info("Guide translation runner");
+  console.info(`provider=${options.provider} (id=${provider.id})`);
+  console.info(`sourceRoot=${options.sourceRoot}`);
+  console.info(`outputRoot=${options.outputRoot}`);
+  console.info(`sourceLocale=${options.sourceLocale}`);
+  console.info(`guides=${options.guides.join(",")}`);
+  console.info(`locales=${options.locales.join(",")}`);
+  console.info(`dryRun=${String(options.dryRun)}`);
 
-  // Check source directory exists
-  try {
-    await fs.access(SOURCE_DIR);
-  } catch (error) {
-    console.error(`❌ Error: Source directory not found: ${SOURCE_DIR}`);
-    process.exit(1);
-  }
+  const summary = await runGuideTranslationBatch({
+    provider,
+    sourceRoot: options.sourceRoot,
+    outputRoot: options.outputRoot,
+    sourceLocale: options.sourceLocale,
+    contentRelativeDir: options.contentRelativeDir,
+    guides: options.guides,
+    targetLocales: options.locales,
+    dryRun: options.dryRun,
+  });
 
-  const startTime = Date.now();
-  let totalSuccess = 0;
-  let totalFail = 0;
+  console.info("");
+  console.info("Translation summary");
+  console.info(`total=${summary.total}`);
+  console.info(`written=${summary.written}`);
+  console.info(`unchanged=${summary.unchanged}`);
+  console.info(`plannedWrites=${summary.plannedWrites}`);
+  console.info(`failed=${summary.failed}`);
 
-  // Process each guide
-  for (const guideName of GUIDES_TO_TRANSLATE) {
-    try {
-      await processGuide(guideName);
-      totalSuccess += TARGET_LOCALES.length;
-    } catch (error) {
-      console.error(`Failed to process ${guideName}:`, error);
-      totalFail += TARGET_LOCALES.length;
+  if (summary.failed > 0) {
+    console.error("");
+    console.error("Failures");
+    for (const entry of summary.entries.filter((item) => item.status === "failed")) {
+      console.error(
+        `- ${entry.locale}/${entry.guideName} :: ${entry.failureCode ?? "unknown"} :: ${entry.failureMessage ?? "no message"}`,
+      );
     }
   }
 
-  const duration = ((Date.now() - startTime) / 1000 / 60).toFixed(2);
-
-  console.log(`\n${'='.repeat(60)}`);
-  console.log('📊 Translation Summary');
-  console.log(`${'='.repeat(60)}`);
-  console.log(`✓ Successful translations: ${totalSuccess}`);
-  console.log(`✗ Failed translations: ${totalFail}`);
-  console.log(`⏱ Total time: ${duration} minutes`);
-  console.log(`${'='.repeat(60)}\n`);
-
-  if (totalFail > 0) {
-    console.log('⚠ Some translations failed. Review errors above.');
-    process.exit(1);
+  if (summary.failed > 0 && !options.allowFailures) {
+    process.exitCode = 1;
   }
-
-  console.log('✨ All translations completed successfully!');
 }
 
-// Run script
 main().catch((error) => {
-  console.error('❌ Fatal error:', error);
-  process.exit(1);
+  console.error(error);
+  process.exitCode = 1;
 });

@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Seguro-viagem para a Costa Amalfitana: o que saber",
+    "description": "Coberturas recomendadas para saúde, cancelamentos, atividades ao ar livre e atrasos de ferry."
+  },
+  "linkLabel": "Seguro-viagem para a Costa Amalfitana",
+  "intro": [
+    "Noções básicas de seguro de viagem para a Costa Amalfitana: saúde, cancelamentos, eletrónicos e atividades."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Coberturas essenciais",
+      "body": [
+        "Saúde/acidente, cancelamentos/atrasos e eletrónicos; considere incluir trilhos como o Caminho dos Deuses."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Sinistros e documentos",
+      "body": [
+        "Guarde recibos, participações policiais em caso de roubo e comprovativos de atrasos/cancelamentos; verifique prazos e se precisa de originais ou cópias."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Preciso de cobertura específica para ferries?",
+      "a": [
+        "Normalmente entra no transporte geral; atrasos por condições meteorológicas variam conforme a apólice — leia as cláusulas."
+      ]
+    }
+  ]
+}

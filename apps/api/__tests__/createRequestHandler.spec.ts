@@ -1,18 +1,21 @@
 import type { IncomingMessage, ServerResponse } from "http";
 import { Readable } from "stream";
 
+import * as componentsModule from "../src/routes/components/[shopId]";
+import * as publishUpgradeModule from "../src/routes/shop/[id]/publish-upgrade";
+
 import { createRequestHandler } from "./test-utils";
 
-const componentsHandlerMock = jest.fn();
-const publishUpgradeMock = jest.fn();
-
 jest.mock("../src/routes/components/[shopId]", () => ({
-  onRequest: componentsHandlerMock,
+  onRequest: jest.fn(),
 }));
 
 jest.mock("../src/routes/shop/[id]/publish-upgrade", () => ({
-  onRequestPost: publishUpgradeMock,
+  onRequestPost: jest.fn(),
 }));
+
+const mockComponentsHandler = jest.mocked(componentsModule.onRequest);
+const mockPublishUpgrade = jest.mocked(publishUpgradeModule.onRequestPost);
 
 describe("createRequestHandler", () => {
   let OriginalRequest: typeof Request;
@@ -119,7 +122,7 @@ describe("createRequestHandler", () => {
   });
 
   it("handles GET /components/:shopId", async () => {
-    componentsHandlerMock.mockResolvedValueOnce(new Response("OK", { status: 200 }));
+    mockComponentsHandler.mockResolvedValueOnce(new Response("OK", { status: 200 }));
     const handler = createRequestHandler();
 
     const req = new Readable({
@@ -136,13 +139,13 @@ describe("createRequestHandler", () => {
 
     await handler(req, res);
 
-    expect(componentsHandlerMock).toHaveBeenCalledTimes(1);
+    expect(mockComponentsHandler).toHaveBeenCalledTimes(1);
     expect(res.statusCode).toBe(200);
     expect(end).toHaveBeenCalledWith("OK");
   });
 
   it("forwards response headers", async () => {
-    componentsHandlerMock.mockResolvedValueOnce(
+    mockComponentsHandler.mockResolvedValueOnce(
       new Response("OK", { status: 200, headers: { "X-Test": "value" } }),
     );
     const handler = createRequestHandler();
@@ -183,8 +186,8 @@ describe("createRequestHandler", () => {
 
     expect(res.statusCode).toBe(404);
     expect(end).toHaveBeenCalled();
-    expect(componentsHandlerMock).not.toHaveBeenCalled();
-    expect(publishUpgradeMock).not.toHaveBeenCalled();
+    expect(mockComponentsHandler).not.toHaveBeenCalled();
+    expect(mockPublishUpgrade).not.toHaveBeenCalled();
   });
 
   it("returns 404 for PUT /components/:shopId", async () => {
@@ -206,12 +209,12 @@ describe("createRequestHandler", () => {
 
     expect(res.statusCode).toBe(404);
     expect(end).toHaveBeenCalled();
-    expect(componentsHandlerMock).not.toHaveBeenCalled();
-    expect(publishUpgradeMock).not.toHaveBeenCalled();
+    expect(mockComponentsHandler).not.toHaveBeenCalled();
+    expect(mockPublishUpgrade).not.toHaveBeenCalled();
   });
 
   it("handles POST /shop/:id/publish-upgrade", async () => {
-    publishUpgradeMock.mockResolvedValueOnce(new Response(null, { status: 200 }));
+    mockPublishUpgrade.mockResolvedValueOnce(new Response(null, { status: 200 }));
     const handler = createRequestHandler();
 
     const req = new Readable({
@@ -228,7 +231,7 @@ describe("createRequestHandler", () => {
 
     await handler(req, res);
 
-    expect(publishUpgradeMock).toHaveBeenCalledTimes(1);
+    expect(mockPublishUpgrade).toHaveBeenCalledTimes(1);
     expect(res.statusCode).toBe(200);
     expect(end).toHaveBeenCalledWith("");
   });
@@ -252,8 +255,8 @@ describe("createRequestHandler", () => {
 
     expect(res.statusCode).toBe(404);
     expect(end).toHaveBeenCalledWith();
-    expect(componentsHandlerMock).not.toHaveBeenCalled();
-    expect(publishUpgradeMock).not.toHaveBeenCalled();
+    expect(mockComponentsHandler).not.toHaveBeenCalled();
+    expect(mockPublishUpgrade).not.toHaveBeenCalled();
   });
 
   it("returns 404 for unrecognized path", async () => {
@@ -275,8 +278,8 @@ describe("createRequestHandler", () => {
 
     expect(res.statusCode).toBe(404);
     expect(end).toHaveBeenCalled();
-    expect(componentsHandlerMock).not.toHaveBeenCalled();
-    expect(publishUpgradeMock).not.toHaveBeenCalled();
+    expect(mockComponentsHandler).not.toHaveBeenCalled();
+    expect(mockPublishUpgrade).not.toHaveBeenCalled();
   });
 });
 

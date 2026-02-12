@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Carona na Costa Amalfitana (vale a pena?)",
+    "description": "Por que pegar carona não é seguro nas estradas costeiras e quais alternativas econômicas usar no lugar."
+  },
+  "linkLabel": "Pegar carona na Costa Amalfitana",
+  "intro": [
+    "Apanhar boleia na Costa Amalfitana parece aventureiro, mas a SS163 é estreita, com curvas cegas e quase sem locais seguros para parar.",
+    "Aproveite a rede de transporte público: tenha bilhetes validados, planeie rotas de backup e reserve numerário para táxis ou porteiros se os serviços pararem."
+  ],
+  "tocTitle": "Nesta página",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Realidade de segurança",
+      "body": [
+        "Autocarros, camiões e scooters já partilham uma única faixa escavada na falésia. Os condutores não o veem a tempo e a polícia costuma pedir que as pessoas saiam por segurança.",
+        "À noite a visibilidade é fraca e as bermas minúsculas — esperar na faixa coloca-o em risco de multa ou acidente."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternativas melhores",
+      "body": [
+        "Autocarros SITA, shuttles locais e vans comunitárias circulam todo o dia; compre bilhetes nos tabacchi e valide a bordo.",
+        "Ferries sazonais oferecem saltos cénicos entre vilas; se o mar cancelar viagens, recorra a autocarro + serviço de porteiro ou táxis partilhados.",
+        "Caminhos curtos (Nocelle ↔ Positano, Praiano ↔ aldeias costeiras) rendem passeios seguros durante o dia."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Se ficar preso",
+      "body": [
+        "Telefone a um táxi licenciado (números nos principais pontos) ou peça ao alojamento/bar do hostel para reservar; tarifas noturnas são mais altas, por isso partilhe custo com outros viajantes.",
+        "Avise o anfitrião se se atrasar. A equipa do hostel pode sugerir ponto de recolha seguro ou alternativas para pernoitar em Sorrento/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Faça screenshot dos horários de autocarro e ferry (UnicoCampania, Travelmar) todas as manhãs para saber a última saída garantida.",
+    "Leve lanterna ou fita refletora se precisar de caminhar após o pôr do sol — a iluminação rodoviária é limitada."
+  ],
+  "warnings": [
+    "Nunca espere em túneis ou curvas cegas — a polícia pode multar e os condutores não têm espaço para desviar."
+  ],
+  "faqs": [
+    {
+      "q": "Hitchhiking é legal na Costa Amalfitana?",
+      "a": [
+        "Não existe proibição explícita, mas as autoridades desencorajam e podem encaminhá-lo para uma paragem de autocarro. Obedeça às instruções e mude-se para um local seguro."
+      ]
+    },
+    {
+      "q": "E se o último autocarro já tiver passado?",
+      "a": [
+        "Use os números de táxi afixados, apps que operem na região ou peça a hotéis/bars próximos para chamar um motorista. Como último recurso, siga para Amalfi ou Sorrento, onde há mais autocarros e comboios noturnos."
+      ]
+    }
+  ]
+}

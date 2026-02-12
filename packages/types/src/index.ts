@@ -14,6 +14,7 @@ export type * from "./data";
 export * from "./ds";
 export * from "./environment";
 export type * from "./ExampleProps";
+export * from "./Guide";
 export type * from "./i18n";
 export {
   inlineSchema,

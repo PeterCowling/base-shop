@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Positano–Amalfi busszal | Hostel Brikette",
+    "description": "Lépésről lépésre bemutatjuk, hogyan juthat el a Hostel Brikette-ből Amalfiba a SITA buszával: hol vásároljon jegyet, hol találja a Chiesa Nuova megállót, és miként olvassa a menetrendet."
+  },
+  "intro": {
+    "title": "Positano–Amalfi – SITA busszal",
+    "body": "Ez az útmutató segít abban, hogy gond nélkül busszal utazzon a Hostel Brikette-ből Amalfiba. A járatokat a SITA Sud üzemelteti, és főszezonban gyakran indulnak. Megmutatjuk, hol vegyen jegyet, hogyan értelmezze a menetrendet, és pontosan hol szálljon fel Positanóban."
+  },
+  "callouts": {
+    "tip": "Az összes közlekedési lehetőségre kíváncsi? Nyissa meg a %HOWTO:how-to-get-here|Hogyan juthat ide áttekintést%, ahol komp-, taxi- és kombinált útvonalakat is talál."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Utazás áttekintése",
+      "body": "Nyáron szánjon 45–60 percet az útra a forgalomtól és a soroktól függően. A Positano (Chiesa Nuova) megállóból indul a közvetlen busz Amalfiba. A csúcsidőszakban érkezzen időben, hogy biztosan legyen ülőhelye."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA és a jegyek",
+      "body": "A járatokat a SITA (SITA Sud Srl) üzemelteti. Vásároljon jegyet előre újságárusnál vagy dohányboltban. Felszálláskor mutassa meg a sofőrnek – a jegyet lepecsételik vagy kitépik, így válik érvényessé. A megőrzött jegyre Amalfiba érkezésig szükség lehet."
+    },
+    {
+      "id": "timetable",
+      "title": "A SITA menetrend olvasása",
+      "body": "A hivatalos menetrendben a megállók sorokban, az indulások betűkkel jelölt oszlopokban szerepelnek. Az utazás napján keresse meg ugyanabban a betűjelű oszlopban a Positano és Amalfi sorokat. A legfrissebb menetrendet a %URL:https://www.positano.com/en/bus-schedule|Positano.com% oldalon találja.",
+      "list": [
+        "Az első oszlop sorai a teljes útvonal megállóit sorolják fel.",
+        "Az oszlopok a betűkkel jelölt indulásoknak felelnek meg.",
+        "Hétfőtől szombatig utazik? Az \\\"F” és \\\"G” oszlopot használja.",
+        "Vasárnap vagy ünnepnap indul? A \\\"G” és \\\"H” oszlopban keresse a járatokat."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) buszmegálló",
+      "list": [
+        "A legközelebbi SITA-megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
+        "Körülbelül 140 méterre (490 lábra) található a hostel bejáratától.",
+        "A \\\"Bar Internazionale” nevű kávézó/bár előtt kell várakoznia."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a hosteltől a megállóig",
+      "list": [
+        "Lépjen ki a hostelből, menjen le a lépcsőn a főútra, majd forduljon balra.",
+        "Haladjon a Via G. Marconi úton nagyjából 100 métert (330 lábat).",
+        "Bal kéz felől lesz a Bar Internazionale; közvetlenül előtte található a SITA megálló."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Jegyvásárlás és várakozás beszállás előtt",
+      "list": [
+        "Vegyen SITA buszjegyet a bárban vagy a közeli újságosnál (tabacchi).",
+        "Menjen át az utca túloldalára, és álljon sorba az Amalfi felé tartó buszhoz.",
+        "Ellenőrizze, hogy a kijelzőn valóban az \\\"Amalfi” felirat szerepel."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Amalfiba",
+      "body": "A legtöbb járat Amalfi kikötője melletti buszállomáson végállomásozik. Innen könnyen továbbutazhat Ravellóba vagy Salernóba, illetve gyalog is felfedezheti Amalfi történelmi központját. Visszaútat tervez? Nézze meg az %HOWTO:amalfi-positano-bus|Amalfi–Positano busszal% útmutatót."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA buszmenetrendet?",
+      "a": [
+        "**Sorok olvasása:** Az első oszlopban lévő sorok az útvonal mentén található különböző buszmegállókat jelölik.",
+        "**Oszlopok olvasása:** A menetrend minden ütemezett járathoz egy betűt rendel, amelyek az egyes oszlopok fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, használja a 'G' és 'H' oszlopokat.",
+        "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokban, hogy mikor közlekednek a buszok, és mikor érkeznek meg a célállomásra. Például a sorrentói indulási időt a Sorrento sorban találja. A positanói (Chiesa Nuova / Bar Internazionale) érkezési időt a Positano (Chiesa Nuova) sorban láthatja."
+      ]
+    }
+  ]
+}

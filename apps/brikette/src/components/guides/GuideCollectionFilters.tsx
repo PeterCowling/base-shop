@@ -49,12 +49,13 @@ const FILTER_LINK_WRAP_CLASSES = [
 
 const FILTER_LINK_CLASSES = [
   "inline-flex",
+  "min-h-11",
   "items-center",
   "gap-2",
   "rounded-full",
   "border",
-  "px-3",
-  "py-1.5",
+  "px-4",
+  "py-2",
   "text-sm",
   "font-medium",
   "transition",
@@ -70,7 +71,7 @@ const FILTER_ACTIVE_CLASSES = [
   "bg-brand-primary/10",
   "text-brand-primary",
   "dark:border-brand-secondary/70",
-  "dark:bg-brand-secondary/20",
+  "dark:bg-brand-secondary/15",
   "dark:text-brand-secondary",
 ] as const;
 
@@ -93,8 +94,8 @@ const FILTER_COUNT_BADGE_CLASSES = [
   "text-xs",
   "font-semibold",
   "text-brand-muted",
-  "dark:bg-brand-text/15",
-  "dark:text-brand-muted",
+  "dark:bg-brand-surface/70",
+  "dark:text-brand-text",
 ] as const;
 
 export interface GuideCollectionFiltersProps {

@@ -4,9 +4,10 @@
  * @jest-environment jsdom
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { User } from "@/lib/current-user";
 import type { Business } from "@/lib/types";
 
 import { NavigationHeader } from "./NavigationHeader";
@@ -37,21 +38,48 @@ const mockBusinesses: Business[] = [
   },
 ];
 
+const mockCurrentUser: User = {
+  id: "pete",
+  name: "Pete",
+  email: "pete@business-os.local",
+  role: "admin",
+};
+
 describe("NavigationHeader", () => {
+  const fetchMock = jest.fn();
+
+  beforeEach(() => {
+    fetchMock.mockImplementation(() => new Promise(() => {}));
+    (global as typeof globalThis & { fetch: typeof fetch }).fetch = fetchMock as unknown as typeof fetch;
+  });
+
+  afterEach(() => {
+    fetchMock.mockReset();
+  });
+
   it("renders all navigation links", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /boards/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /ideas/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /people/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /plans/i })).toBeInTheDocument();
   });
 
   it("highlights current route", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const boardsLink = screen.getByRole("link", { name: /boards/i });
@@ -60,7 +88,11 @@ describe("NavigationHeader", () => {
 
   it("renders business selector", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     // BusinessSelector should show current business name
@@ -69,7 +101,11 @@ describe("NavigationHeader", () => {
 
   it("renders capture button", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const captureButton = screen.getByRole("button", { name: /capture/i });
@@ -79,7 +115,11 @@ describe("NavigationHeader", () => {
   it("opens modal when capture button clicked", async () => {
     const user = userEvent.setup();
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const captureButton = screen.getByRole("button", { name: /capture/i });
@@ -92,12 +132,66 @@ describe("NavigationHeader", () => {
 
   it("shows capture button on desktop only", () => {
     render(
-      <NavigationHeader businesses={mockBusinesses} currentBusiness="BRIK" />
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
     );
 
     const captureButton = screen.getByRole("button", { name: /capture/i });
     // Parent container should have responsive class
     const parentContainer = captureButton.closest(".md\\:inline-flex");
     expect(parentContainer).toBeInTheDocument();
+  });
+
+  it("renders Healthy badge when automation status is healthy", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        status: "ok",
+        automation: {
+          lastSweepRunStatus: "complete",
+          discoveryIndexStatus: "fresh",
+        },
+      }),
+    });
+
+    render(
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Automation status")).toHaveTextContent("Healthy");
+    });
+  });
+
+  it("renders Attention badge when automation status is degraded", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        status: "degraded",
+        automation: {
+          lastSweepRunStatus: "partial",
+          discoveryIndexStatus: "stale",
+        },
+      }),
+    });
+
+    render(
+      <NavigationHeader
+        businesses={mockBusinesses}
+        currentBusiness="BRIK"
+        currentUser={mockCurrentUser}
+      />
+    );
+
+    await waitFor(() => {
+      expect(screen.getByLabelText("Automation status")).toHaveTextContent("Attention");
+    });
   });
 });

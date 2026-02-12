@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Ravellói Zenei Fesztivál útmutató",
+    "description": "Koncertek, jegyek, ülőhelyek és érkezés Ravellóba Amalfi/Positano felől."
+  },
+  "linkLabel": "Ravellói Zenei Fesztivál útmutató",
+  "intro": [
+    "A Ravellói Fesztivál klasszikus koncerteket és sziklafalra néző panorámát ötvözve igényel tervezést jegyekre, viseletre és az éjszakai visszautazásra Positanóba."
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Jegyek beszerzése",
+      "body": [
+        "Foglalj a hivatalos Ravello Festival weboldalán, amint megjelennek a dátumok – általában tavasszal; nyomtasd ki vagy töltsd le a QR-kódot, mielőtt elhagynád Positano Wi-Fi-jét.",
+        "Ha éjfél körüli busszal mennél vissza Amalfiba, válassz a folyosóhoz közelebb eső helyet, hogy könnyen ki tudj szállni."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Hogyan juss el oda",
+      "body": [
+        "Vegyél késő délutáni kompot vagy buszt Amalfiig (kb. 30–45 perc), majd szállj át az Amalfi–Ravello SITA buszra; számolj 25 percet a hegyre való felkapaszkodásra.",
+        "Ha a buszok tele vannak, előre foglalj megosztott shuttlet vagy taxit Amalfiig — oszd meg a költséget az utazótársaiddal."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Koncertetikett",
+      "body": [
+        "A smart-casual öltözködés ideális: réteges ruhák a szeles teraszokhoz és kényelmes cipő a kőlépcsőkön.",
+        "Érkezz legalább 30 perccel hamarabb, hogy áthaladj a biztonsági ellenőrzésen, megtaláld a mosdót és türelmesen letelepedj."
+      ]
+    },
+    {
+      "id": "late-return",
+      "title": "Éjszakai visszatérés",
+      "body": [
+        "Szezonban az utolsó SITA busz Amalfiig kb. 00:15-kor indul; aznap korábban ellenőrizd a menetrendet, és állj sorba 20 perccel előbb.",
+        "Ha szoros a csatlakozás, intézz taxit Amalfiig vagy közvetlenül Positanóba (~120–140 euró) és oszd meg a csoporttal."
+      ]
+    }
+  ],
+  "tips": [
+    "Csomagolj könnyű sálat vagy összehajtható dzsekit – még augusztusban is 18 °C-ra hűlhet a terasz.",
+    "Vigyél készpénzt egy gyors espresso vagy nassolnivaló vásárlásához Amalfiban, míg várod az éjszakai buszt."
+  ],
+  "faqs": [
+    {
+      "q": "Törlik a koncerteket eső esetén?",
+      "a": [
+        "Könnyű eső általában csak rövid késést okoz, de egy nagyobb zivatar áthelyezheti a fellépést fedett helyre vagy lemondhatja azt – kövesd a fesztivál email értesítéseit és közösségi oldalait."
+      ]
+    },
+    {
+      "q": "Vissza tudok jutni Positanóba éjfél után?",
+      "a": [
+        "Igen, de a lehetőségek ritkulnak. Tervezd meg taximegosztást vagy töltsd az éjszakát Amalfiban/Ravellóban, ha a menetrend bizonytalan."
+      ]
+    }
+  ],
+  "eventSchema": {
+    "name": "Ravello Festival",
+    "startDate": "2025-07-01",
+    "endDate": "2025-09-15",
+    "locationName": "Ravello Festival helyszínei",
+    "addressLocality": "Ravello",
+    "description": "Nyári klasszikus zenei fesztivál az Amalfi-part fölött; nézd meg a hivatalos programot dátumokért és jegyértékesítésért."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Gratis ljudguide för Positano",
+    "description": "Hur du använder vår kostnadsfria ljudguide för promenader i Positano och vad du får med dig."
+  },
+  "linkLabel": "Gratis ljudguide för Positano",
+  "intro": [
+    "Ladda ner vår gratis ljudvandring i Positano: börja vid Chiesa Nuova, väv genom gamla stan och avsluta på Spiaggia Grande.",
+    "Följ rutt- och lyssningstipsen nedan och spara filerna via Wi-Fi innan du går ut."
+  ],
+  "tocTitle": "On this page",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Route"
+    },
+    {
+      "href": "#listen",
+      "label": "How to listen"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Route",
+      "body": [
+        "Börja vid busshållplatsen Chiesa Nuova → pausa vid utsiktspunkterna Via Pasitea → vind genom gränderna → kom fram till Spiaggia Grande.",
+        "Ta dig tid på terrasser, men var uppmärksam på lokalbefolkningen och bärare som använder trappan för leveranser."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "How to listen",
+      "body": [
+        "Ladda ner ljudet på vandrarhemmets Wi-Fi eller streama på kända hotspots längs rutten.",
+        "Håll volymen låg i trappor och dra ut ena hörsnäckan när du korsar vägar eller passerar andra vandrare."
+      ]
+    }
+  ],
+  "faqHeading": "FAQs",
+  "faqs": [
+    {
+      "q": "Is the loop steep?",
+      "a": [
+        "Ja - förvänta dig trappor. Vänd om öglan eller använd SITA-bussen i uppförsbacke om dina knän behöver en paus."
+      ]
+    },
+    {
+      "q": "Can I listen offline?",
+      "a": [
+        "Absolut. Spara filerna på din telefon så att du inte litar på ojämn mobildata i gränderna."
+      ]
+    },
+    {
+      "q": "How long does it take?",
+      "a": [
+        "Planera för 45–60 minuter inklusive fotostopp och terrasser."
+      ]
+    }
+  ]
+}

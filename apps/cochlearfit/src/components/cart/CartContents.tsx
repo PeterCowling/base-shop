@@ -10,10 +10,15 @@ import CartSummary from "@/components/cart/CartSummary";
 import { useCart } from "@/contexts/cart/CartContext";
 import { useLocale } from "@/contexts/LocaleContext";
 import { getCartLineItems } from "@/lib/cart";
+import { getProducts } from "@/lib/catalog";
 import { withLocale } from "@/lib/routes";
 import type { Product } from "@/types/product";
 
-const CartContents = React.memo(function CartContents({ products }: { products: Product[] }) {
+const CartContents = React.memo(function CartContents({
+  products = getProducts(),
+}: {
+  products?: Product[];
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const { items } = useCart();

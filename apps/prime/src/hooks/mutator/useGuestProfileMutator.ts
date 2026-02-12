@@ -1,6 +1,8 @@
+import { useCallback, useState } from 'react';
+
 import { ref, set, update } from '@/services/firebase';
 import logger from '@/utils/logger';
-import { useCallback, useState } from 'react';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestProfile } from '../../types/guestProfile';
 import useUuid from '../useUuid';

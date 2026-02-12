@@ -6,10 +6,68 @@ import {
   selectPrepaymentTemplate,
 } from "./workflow-triggers.js";
 
+export const SCENARIO_CATEGORIES = [
+  "access",
+  "activities",
+  "booking-changes",
+  "booking-issues",
+  "breakfast",
+  "cancellation",
+  "check-in",
+  "checkout",
+  "employment",
+  "faq",
+  "general",
+  "house-rules",
+  "lost-found",
+  "luggage",
+  "payment",
+  "policies",
+  "prepayment",
+  "promotions",
+  "transportation",
+  "wifi",
+] as const;
+
+export type ScenarioCategory = (typeof SCENARIO_CATEGORIES)[number];
+
+const SCENARIO_CATEGORY_SET = new Set<string>(SCENARIO_CATEGORIES);
+
+const SCENARIO_CATEGORY_ALIASES: Record<string, ScenarioCategory> = {
+  policy: "policies",
+  checkin: "check-in",
+  "check-in-time": "check-in",
+  "check-out": "checkout",
+  modification: "booking-changes",
+  modifications: "booking-changes",
+  transport: "transportation",
+  "house-rules": "house-rules",
+  lostfound: "lost-found",
+};
+
+export function isScenarioCategory(value: string): value is ScenarioCategory {
+  return SCENARIO_CATEGORY_SET.has(value);
+}
+
+export function normalizeScenarioCategory(
+  value: string | undefined,
+): ScenarioCategory | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const normalized = value.toLowerCase();
+  if (isScenarioCategory(normalized)) {
+    return normalized;
+  }
+
+  return SCENARIO_CATEGORY_ALIASES[normalized];
+}
+
 export interface EmailTemplate {
   subject: string;
   body: string;
-  category: string;
+  category: ScenarioCategory;
 }
 
 export interface TemplateRankInput {
@@ -38,26 +96,53 @@ export interface TemplateRankResult {
 
 const DEFAULT_LIMIT = 3;
 const AUTO_THRESHOLD = 80;
-const SUGGEST_THRESHOLD = 50;
+const SUGGEST_THRESHOLD = 25;
 
-const SYNONYMS: Record<string, string[]> = {
+export const SYNONYMS: Record<string, string[]> = {
   arrival: ["check-in", "check in", "arrive"],
   checkin: ["check-in", "arrival", "arrive"],
-  checkout: ["check-out", "departure", "leave"],
+  checkout: ["check-out", "departure", "leaving"],
   cancel: ["cancellation", "refund"],
   payment: ["card", "charge", "prepayment", "bank transfer"],
   door: ["access", "entry", "code"],
   directions: ["transportation", "bus", "ferry", "taxi"],
+  breakfast: ["food", "meal", "morning", "colazione"],
+  luggage: ["bags", "suitcase", "storage", "belongings", "bagagli"],
+  wifi: ["internet", "connection", "network"],
+  modification: ["change", "modify", "reschedule", "extend"],
+  coupon: ["discount", "code", "promo", "promotion", "voucher"],
+  job: ["application", "employment", "work", "position", "receptionist", "volunteer"],
+  lost: ["found", "missing", "left behind", "forgot", "forgotten"],
+  laundry: ["washing", "clothes", "facilities"],
+  room: ["capacity", "beds", "dorm", "private", "occupancy"],
+  fee: ["cost", "charge", "price", "expense"],
+  cost: ["fee", "charge", "price", "expense"],
+  price: ["cost", "fee", "charge", "rate"],
+  add: ["include", "purchase", "buy"],
+  include: ["add", "purchase", "buy"],
+  transfer: ["bank transfer", "wire", "IBAN"],
+  age: ["restriction", "policy", "limit", "years old"],
+  restriction: ["age", "policy", "limit"],
+  allowed: ["permitted", "possible", "available", "can"],
 };
 
 const PHRASE_EXPANSIONS = [
   { phrase: "check in", expansions: ["check-in", "arrival time", "early arrival"] },
-  { phrase: "check out", expansions: ["check-out", "departure time"] },
+  { phrase: "check out", expansions: ["check-out", "departure time", "checkout"] },
   { phrase: "arrival time", expansions: ["check-in", "early arrival"] },
   { phrase: "late check", expansions: ["late arrival", "out of hours"] },
+  { phrase: "luggage storage", expansions: ["bags", "bag drop", "suitcase"] },
+  { phrase: "bag drop", expansions: ["luggage", "luggage storage"] },
+  { phrase: "change dates", expansions: ["date modification", "reschedule", "booking change"] },
+  { phrase: "extend stay", expansions: ["extension", "extra nights", "booking change"] },
+  { phrase: "quiet hours", expansions: ["noise", "house rules", "quiet time"] },
+  { phrase: "late checkout", expansions: ["late check-out", "checkout extension"] },
+  { phrase: "coupon code", expansions: ["discount", "promo code", "voucher"] },
+  { phrase: "job application", expansions: ["work exchange", "volunteer", "employment", "receptionist"] },
+  { phrase: "lost item", expansions: ["left behind", "forgot", "missing", "lost property"] },
 ];
 
-const HARD_RULE_CATEGORIES = new Set(["prepayment", "cancellation"]);
+const HARD_RULE_CATEGORIES = new Set<ScenarioCategory>(["prepayment", "cancellation"]);
 
 function expandQuery(query: string): string {
   const lower = query.toLowerCase();
@@ -163,9 +248,10 @@ function applyThresholds(candidates: TemplateCandidate[]): TemplateRankResult {
 
 function resolveHardRuleTemplates(
   templates: EmailTemplate[],
-  input: TemplateRankInput
+  input: TemplateRankInput,
+  categoryHint: ScenarioCategory
 ): TemplateRankResult {
-  if (input.categoryHint === "prepayment" && input.prepaymentStep) {
+  if (categoryHint === "prepayment" && input.prepaymentStep) {
     const selection = selectPrepaymentTemplate({
       step: input.prepaymentStep,
       provider: input.prepaymentProvider,
@@ -192,7 +278,7 @@ function resolveHardRuleTemplates(
   }
 
   const filtered = templates.filter(
-    (template) => template.category === input.categoryHint
+    (template) => template.category === categoryHint
   );
   const candidates = filtered.slice(0, input.limit ?? DEFAULT_LIMIT).map((template) => ({
     template,
@@ -215,9 +301,10 @@ export function rankTemplates(
   input: TemplateRankInput
 ): TemplateRankResult {
   const limit = input.limit ?? DEFAULT_LIMIT;
+  const categoryHint = normalizeScenarioCategory(input.categoryHint);
 
-  if (input.categoryHint && HARD_RULE_CATEGORIES.has(input.categoryHint)) {
-    return resolveHardRuleTemplates(templates, input);
+  if (categoryHint && HARD_RULE_CATEGORIES.has(categoryHint)) {
+    return resolveHardRuleTemplates(templates, input, categoryHint);
   }
 
   const query = expandQuery(`${input.subject}\n${input.body}`.trim());

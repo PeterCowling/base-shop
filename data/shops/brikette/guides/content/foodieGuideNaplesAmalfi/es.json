@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Guía gastronómica de Nápoles y la Costa Amalfitana",
+    "description": "Qué comer y dónde: platos clásicos y especialidades locales."
+  },
+  "linkLabel": "Guía gastronómica de Nápoles y la Costa Amalfitana",
+  "intro": [
+    "Nápoles y la Costa Amalfitana se disfrutan despacio: planifica comidas clave y reserva cuando haga falta.",
+    "Alterna clásicos famosos con trattorias familiares para esquivar filas."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Empezar por Nápoles",
+      "body": [
+        "Prueba pizza fritta en Montesanto y sfogliatelle en Via Toledo a primera hora.",
+        "Mercados como Pignasecca ofrecen quesos, mariscos y productos para un picnic en ruta."
+      ]
+    },
+    {
+      "id": "amalfi-specialties",
+      "title": "Sabores costeros",
+      "body": [
+        "En Positano prueba scialatielli ai frutti di mare, delizia al limone y limoncello artesanal.",
+        "Reserva cena en trattorias familiares de Fornillo o Montepertuso para precios equilibrados."
+      ]
+    },
+    {
+      "id": "planning",
+      "title": "Reservas y presupuesto",
+      "body": [
+        "Haz reservas online o por WhatsApp, sobre todo en agosto.",
+        "Alterna comidas completas con panini de salumeria y aperitivos para controlar gastos."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserva los cursos de cocina con antelación si deseas sesiones prácticas de pasta y postres: en verano se agotan rápido.",
+    "Indica restricciones alimentarias al reservar; muchos anfitriones adaptan el menú si lo saben con tiempo."
+  ],
+  "faqs": [
+    {
+      "q": "¿Tengo que reservar las pizzerías famosas?",
+      "a": [
+        "En Nápoles las filas son largas: llega antes de la apertura o usa listas de espera digitales cuando haya."
+      ]
+    },
+    {
+      "q": "¿Hay opciones vegetarianas?",
+      "a": [
+        "Sí: verduras a la parrilla, pasta al limone y focaccia aparecen en casi todas las cartas."
+      ]
+    }
+  ]
+}

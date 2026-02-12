@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Comment se rendre à Positano : toutes les options comparées",
+    "description": "Comparez ferry, train + bus, navettes et transferts privés — avec notes saisonnières et conseils bagages."
+  },
+  "linkLabel": "Comment se rendre à Positano (guide décisionnel)",
+  "intro": "Toutes les façons réalistes d'arriver à Positano — comparées selon la saison, le budget, les bagages et l'heure d'arrivée.",
+  "toc": {
+    "onThisPage": "Sur cette page",
+    "naples": "Par Naples",
+    "salerno": "Par Salerne",
+    "ferry": "Ferry (été)",
+    "private": "Transfert privé",
+    "faqs": "FAQ"
+  },
+  "labels": {
+    "whenHeading": "Quand choisir",
+    "cheapestHeading": "Itinéraire le moins cher",
+    "seasonalHeading": "Notes saisonnières"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Par Naples",
+      "body": [
+        "Navette aéroport vers Sorrente + bus SITA vers Positano (le moins cher), ou train vers Sorrente + bus SITA.",
+        "Été : ferries depuis Molo Beverello par mer calme ; surveillez les annulations."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Par Salerne",
+      "body": [
+        "Train jusqu'à Salerne ; ferry vers Positano en saison (bagages acceptés facilement).",
+        "Hors saison : bus via Amalfi ; plus lent mais fiable."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Transfert privé",
+      "body": [
+        "Porte-à-porte ; plus cher mais idéal pour les arrivées tardives ou les bagages lourds."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quelle est l'option la plus rapide en été ?",
+      "a": [
+        "Train jusqu'à Salerne + ferry si la mer est calme ; vous évitez le trafic routier."
+      ]
+    },
+    {
+      "q": "Où descendre du bus ?",
+      "a": [
+        "‘Chiesa Nuova’ offre le moins de marches jusqu'à l'auberge Brikette (~80 m)."
+      ]
+    }
+  ]
+}

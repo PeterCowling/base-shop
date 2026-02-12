@@ -1,3 +1,4 @@
+import type { PathLike } from "node:fs";
 import * as path from "node:path";
 
 const fs = jest.requireActual("node:fs") as typeof import("node:fs");
@@ -28,7 +29,7 @@ describe("dataRoot", () => {
     const spy = jest
       .spyOn(fs, "existsSync")
       .mockImplementation(
-        (p: fs.PathLike) => p === "/repo/app/data/shops" || p === "/repo/data/shops"
+        (p: PathLike) => p === "/repo/app/data/shops" || p === "/repo/data/shops"
       );
     const { resolveDataRoot } = await import("../src/dataRoot");
     spy.mockClear();

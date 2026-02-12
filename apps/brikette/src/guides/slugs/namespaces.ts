@@ -115,10 +115,9 @@ export function guideNamespace(
   return { baseKey, baseSlug };
 }
 
-// Group keys by base and filter by publication status depending on env.
-export function publishedGuideKeysByBase(
+// Group keys by base and filter by live status depending on env.
+export function liveGuideKeysByBase(
   isProd: boolean,
-  statusMap?: Readonly<Partial<Record<GuideKey, "draft" | "review" | "published">>>,
   manifestEntries?: ReadonlyArray<GuideManifestEntry>,
 ): { experiences: GuideKey[]; howToGetHere: GuideKey[]; assistance: GuideKey[] } {
   const groups = {
@@ -137,15 +136,8 @@ export function publishedGuideKeysByBase(
 
   for (const key of GUIDE_KEYS as GuideKey[]) {
     const manifestEntry = manifestLookup?.[key] ?? getGuideManifestEntry(key);
-    const status =
-      statusMap?.[key] ??
-      (manifestEntry
-        ? manifestEntry.status === "live"
-          ? "published"
-          : (manifestEntry.status as "draft" | "review")
-        : "published");
 
-    if (isProd && status !== "published") {
+    if (isProd && manifestEntry?.status !== "live") {
       continue;
     }
 
@@ -156,7 +148,6 @@ export function publishedGuideKeysByBase(
           ...manifestEntry.areas.map((area) => guideAreaToSlugKey(area)),
         ]
       : (() => {
-          // Legacy fallback when no manifest entry
           const override = GUIDE_BASE_KEY_OVERRIDES[key];
           return override ? [override] : ["experiences" as const];
         })();

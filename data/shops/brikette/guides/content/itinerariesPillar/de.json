@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Amalfiküste-Itineraries (ohne Auto)",
+    "description": "2–7-tägige Pläne für Positano, Amalfi, Ravello sowie Capri/Sorrent mit Fähren und Bussen."
+  },
+  "linkLabel": "Amalfiküste-Itineraries (ohne Auto)",
+  "intro": [
+    "Beispiele für 2 bis 7 Tage an der Amalfiküste ohne Auto – kombiniere Positano, Amalfi, Ravello, Capri oder Salerno je nach Zeitbudget."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "2-Tage-Überblick",
+      "body": [
+        "Tag 1: Positano-Innenstadt, Spiaggia Grande, Fornillo über den Küstenpfad, Sonnenuntergang an der Via Cristoforo Colombo.",
+        "Tag 2: SITA-Bus nach Amalfi, Dom & Papiermuseum; optional Abstecher nach Atrani. Abends zurück per Fähre oder Bus."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "3–4-Tage-Programm",
+      "body": [
+        "Tag 1–2: wie oben (Positano + Amalfi).",
+        "Tag 3: Path of the Gods ab Nocelle am Vormittag, Nachmittag Strandpause; Tag 4: Capri-Tagesausflug mit Monte Solaro und Giardini di Augusto."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "5–6-Tage-gemütlich",
+      "body": [
+        "Füge nach Tag 3 eine Übernachtung in Amalfi hinzu: Abendspaziergang, am nächsten Morgen Bus nach Ravello (Villa Rufolo & Cimbrone).",
+        "Tag 5/6: Relax- oder Aktivtage – z. B. Bootstour, Kochkurs oder Wandern in den Monti Lattari."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "7-Tage-Rundreise",
+      "body": [
+        "Verankere die Woche mit zwei entspannten Positano-Tagen, zwei Ausflugstagen für Capri und Pompeji sowie zwei langsameren Abenteuern wie Tramonti-Weingüter oder die Tempel von Paestum.",
+        "Halte den letzten Tag flexibel für Wiederholungen oder eine Ruhepause vor der Weiterreise – etwa Salerno oder Sorrent für Shopping und Vorräte."
+      ]
+    }
+  ],
+  "tips": [
+    "Buche Unterkünfte nahe Bushaltestellen oder Hafen, damit du Gepäck nicht weit tragen musst.",
+    "Plane Puffer nachmittags ein – Busse können sich stauen; morgens bist du zuverlässiger unterwegs."
+  ],
+  "faqs": [
+    {
+      "q": "Sollte ich die Basis wechseln?",
+      "a": [
+        "Ja bei Reisen über 4 Tage: Kombiniere Positano mit Amalfi oder Salerno, um Fahrzeiten zu verkürzen."
+      ]
+    },
+    {
+      "q": "Wie viele Ausflüge pro Tag sind realistisch?",
+      "a": [
+        "Maximal zwei Programmpunkte plus An-/Abreise – die Küstenstraßen kosten mehr Zeit als erwartet."
+      ]
+    }
+  ]
+}

@@ -6,7 +6,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -36,10 +36,49 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/boards", label: "Boards" },
+  { href: "/ideas", label: "Ideas" },
   { href: "/people", label: "People" },
   { href: "/plans", label: "Plans" },
   { href: "/archive", label: "Archive" },
 ];
+
+type AutomationBadgeState = "Healthy" | "Attention" | "Unknown";
+
+interface AutomationStatusResponse {
+  status: "ok" | "degraded";
+  automation: {
+    lastSweepRunStatus: "complete" | "partial" | "failed-preflight" | "unknown";
+    discoveryIndexStatus: "fresh" | "stale" | "unknown";
+  };
+}
+
+function mapAutomationBadgeState(payload: AutomationStatusResponse): AutomationBadgeState {
+  if (
+    payload.status === "degraded" ||
+    payload.automation.lastSweepRunStatus === "partial" ||
+    payload.automation.lastSweepRunStatus === "failed-preflight" ||
+    payload.automation.discoveryIndexStatus === "stale"
+  ) {
+    return "Attention";
+  }
+
+  if (payload.status === "ok" && payload.automation.discoveryIndexStatus === "fresh") {
+    return "Healthy";
+  }
+
+  return "Unknown";
+}
+
+function badgeClasses(state: AutomationBadgeState): string {
+  switch (state) {
+    case "Healthy":
+      return "border border-emerald-300 bg-emerald-50 text-emerald-900";
+    case "Attention":
+      return "border border-amber-300 bg-amber-50 text-amber-900";
+    default:
+      return "border border-slate-300 bg-slate-100 text-slate-700";
+  }
+}
 
 export function NavigationHeader({
   businesses,
@@ -49,6 +88,7 @@ export function NavigationHeader({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [captureModalOpen, setCaptureModalOpen] = useState(false);
+  const [automationBadgeState, setAutomationBadgeState] = useState<AutomationBadgeState>("Unknown");
 
   const isActive = (href: string) => {
     if (href === "/") {
@@ -56,6 +96,33 @@ export function NavigationHeader({
     }
     return pathname?.startsWith(href) ?? false;
   };
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadAutomationStatus() {
+      try {
+        const response = await fetch("/api/automation/status");
+        if (!response.ok) {
+          throw new Error(`automation status request failed: ${response.status}`);
+        }
+        const payload = (await response.json()) as AutomationStatusResponse;
+        if (active) {
+          setAutomationBadgeState(mapAutomationBadgeState(payload));
+        }
+      } catch {
+        if (active) {
+          setAutomationBadgeState("Unknown");
+        }
+      }
+    }
+
+    void loadAutomationStatus();
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 w-full border-b border-border bg-background">
@@ -98,6 +165,13 @@ export function NavigationHeader({
 
         {/* Desktop Actions */}
         <Inline alignY="center" gap={2} wrap={false} className="hidden md:inline-flex">
+          <span
+            aria-label="Automation status"
+            className={`rounded-full px-2 py-1 text-xs font-medium ${badgeClasses(automationBadgeState)}`}
+          >
+            {automationBadgeState}
+          </span>
+
           {/* Capture Button */}
           <Button
             onClick={() => setCaptureModalOpen(true)}
@@ -149,6 +223,15 @@ export function NavigationHeader({
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border bg-background">
+          <div className="px-4 pt-4">
+            <span
+              aria-label="Automation status"
+              className={`inline-flex rounded-full px-2 py-1 text-xs font-medium ${badgeClasses(automationBadgeState)}`}
+            >
+              {automationBadgeState}
+            </span>
+          </div>
+
           <Stack asChild gap={2} className="p-4">
             <nav aria-label="Mobile navigation">
               {NAV_LINKS.map((link) => {

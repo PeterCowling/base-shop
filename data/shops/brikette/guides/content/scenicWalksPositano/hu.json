@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Látványos séták Positanóban és környékén",
+    "description": "Útvonalak és körséták valós időkkel, lépcsőszámmal és kilátással."
+  },
+  "linkLabel": "Látványos séták Positanóban és környékén",
+  "intro": [
+    "Kapcsolja össze a teraszos sikátorokat és kilátópontokat rövid, látványos körsétákhoz anélkül, hogy egész napos túrát csinálna belőle."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Felső falurész kör",
+      "body": [
+        "Kösse össze a Chiesa Nuova és a Sponda negyedet teraszos utcákon át; klasszikus panorámát kap, kevesebb gyalogos forgalommal."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Fornillo tengerparti ösvény",
+      "body": [
+        "Kövesse a csendesebb strand felé vezető utat és a fotogén lépcsőket. Kora reggel vagy aranyórában a legszebb."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Nocelle kilátó séta",
+      "body": [
+        "Menjen busszal fel Nocellébe, és rövid kitérőkkel csodálatos panorámát kap, hosszú lépcsős leereszkedés nélkül."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Milyen cipőt vegyek fel?",
+      "a": [
+        "Válasszon stabil, jól tapadó edzőcipőt; néhol egyenetlen kőlépcsők vannak, eső után csúszhatnak."
+      ]
+    },
+    {
+      "q": "Meddig tartanak ezek a séták?",
+      "a": [
+        "Egy-egy kör 30–60 percet vesz igénybe a fotómegállókkal együtt. A Nocelle-hez vegye igénybe a buszt, hogy kezelhető maradjon a szintkülönbség."
+      ]
+    }
+  ]
+}

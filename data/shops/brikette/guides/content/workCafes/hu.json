@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Wi‑Fi és munka-barát kávézók a Brikette közelében",
+    "description": "Tipikus sebességek, etikettszabályok, tartalék eSIM lehetőségek és felszerelési tippek a positanói kávézókból való munkához."
+  },
+  "linkLabel": "Wi‑Fi és munka-barát kávézók a Brikette közelében",
+  "intro": [
+    "A hostel környékén lévő kávézók, ahol használható Wi‑Fi van. Etiquette: vásárolj rendszeresen, kerüld a hosszú hívásokat bent, és tartsd a helyet rendezettnek."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Helyek a Brikette közelében",
+      "body": [
+        "A Via Pasitea és a Chiesa Nuova körüli kis kávézókban gyakran stabil a Wi‑Fi.",
+        "Hozz magaddal külső akkut; a régi helyeken kevés a hálózati csatlakozó."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Tartalék kapcsolat",
+      "body": [
+        "Tarts kéznél eSIM-et; a szolgáltatók területtől függően változnak — a TIM és Vodafone általában erős jelet ad.",
+        "Csatlakozz megosztott kapcsolatra, amikor az ebédidő lelassítja a kávézók hálózatát."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Lehet egész nap itt dolgozni?",
+      "a": [
+        "Vásárolj 60–90 percenként, kerüld az ebédidőt; érdemes váltogatni a helyeket."
+      ]
+    }
+  ]
+}

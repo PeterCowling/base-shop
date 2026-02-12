@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Du lịch theo cặp tại nhà trọ",
+    "description": "Lời khuyên cho phòng ngủ tập thể hoặc phòng riêng, tìm sự yên tĩnh và đặt kỳ vọng."
+  },
+  "linkLabel": "Du lịch theo cặp tại nhà trọ",
+  "intro": [
+    "Nhà trọ phù hợp với các cặp đôi khi bạn chọn đúng loại phòng, đóng gói nhẹ nhàng và đặt kỳ vọng cùng nhau."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Loại phòng",
+      "body": [
+        "Đặt phòng riêng để có sự riêng tư; nếu bạn đang căng thẳng ngân sách, chia sẻ giường tầng trong cùng phòng ngủ tập thể và giữ hành lý nhẹ cho cầu thang."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Tìm sự yên tĩnh",
+      "body": [
+        "Mang theo nút tai và mặt nạ che mắt, chọn phòng xa quầy bar hoặc khu vực chung, và sử dụng buổi sáng sớm để tham quan yên tĩnh hơn."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Nhà trọ có phù hợp với các cặp đôi không?",
+      "a": [
+        "Có — bạn nhận được năng lượng xã hội và giá trị tốt; phòng riêng cân bằng giữa sự thoải mái và chi phí."
+      ]
+    }
+  ]
+}

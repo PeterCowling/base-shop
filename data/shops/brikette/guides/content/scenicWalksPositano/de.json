@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Panoramaspaziergänge in Positano & Umgebung",
+    "description": "Routen und Rundwege mit Aussicht – realistische Zeiten und Treppen."
+  },
+  "linkLabel": "Panoramaspaziergänge in Positano & Umgebung",
+  "intro": [
+    "Die schönsten Spaziergänge in und um Positano: kurze Runden durch die oberen Gassen, Küstenpfade und Aussichtspunkte mit minimaler Planung."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Runde durchs Oberdorf",
+      "body": [
+        "An der Piazza dei Mulini starten, die Via Pasitea bergauf bis Chiesa Nuova verfolgen und über die Via Marconi zurück – Panoramablicke inklusive, rund 45 Minuten mit wenigen Stufen."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Fornillo-Küstenpfad",
+      "body": [
+        "Dem ruhigeren Strandzugang entlang des Küstenwegs folgen – mit fotogenen Treppen und Felsformationen; am besten früh morgens oder zur Golden Hour gehen."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Nocelle-Aussichts-Spaziergang",
+      "body": [
+        "Bus nach Nocelle nehmen, zum Belvedere für den Blick über die gesamte Bucht spazieren und mit Snack auf den Terrassenbänken den Sonnenuntergang genießen, bevor es zurück geht."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Welche Schuhe sollte ich tragen?",
+      "a": [
+        "Bequeme Schuhe mit Profil – einige Wege haben unebenes Kopfsteinpflaster und werden nach Regen rutschig."
+      ]
+    },
+    {
+      "q": "Wie lang dauern die Spaziergänge?",
+      "a": [
+        "Die Dorfrunde dauert rund 45 Minuten, Fornillo hin und zurück etwa 30 Minuten, der Nocelle-Spaziergang (ohne Bus) ca. 60 Minuten."
+      ]
+    }
+  ]
+}

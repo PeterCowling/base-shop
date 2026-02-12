@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vs. Napoli: ankomstvalg",
+    "description": "Sammenlign ruter, priser og hvornår hver by er smartest at flyve til."
+  },
+  "linkLabel": "Salerno vs. Napoli: ankomst",
+  "intro": [
+    "Begge gateways virker. Om sommeren vinder Salerno ofte stille og roligt takket være ekstra færger og roligere køer."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Når Salerno er bedst",
+      "body": [
+        "Sæsonbestemte færger sejler direkte til Positano eller Amalfi med lettere menneskemængder end Napoli-molerne.",
+        "Par Salerno Costa d'Amalfi (QSR) lufthavn med Airlink-shuttlen for at gøre overførsler enkel."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Når Napoli er bedst",
+      "body": [
+        "Pålidelighed uden for sæsonen: højhastighedstog plus SITA via Sorrento fortsætter med at køre, når færger holder pause.",
+        "Sene ankomster finder flere overnatningsmuligheder og videre transportmuligheder omkring Napoli."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Bagage og trapper",
+      "body": [
+        "Ankom til Chiesa Nuova for at minimere trapperne op til vandrerhjemmet.",
+        "Landing med færge? Book en portier ved kajen, eller kør med SITA-bussen op ad bakke i stedet for at trække tasker."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er Salerno Airport (QSR) det værd?",
+      "a": [
+        "I stigende grad ja til sommer: Kombiner QSR-flyvninger med Airlink-shuttle og færge, når havet er roligt, og fald tilbage til busser, hvis vejret vender."
+      ]
+    }
+  ]
+}

@@ -317,6 +317,7 @@ Every people doc update must include:
 - **After `/work-idea`:** Update responsibilities (new card ownership)
 - **After reflection:** Update capabilities (skills learned) and gaps (discovered needs)
 - **After `/scan-repo`:** Update availability (workload changes from scan)
+- **After `/ideas-go-faster`:** Sweep reads profiles and flags capacity gaps — use this skill to act on sweep recommendations for profile bootstrapping or updates
 - **Monthly review:** Run code analysis to update ownership and contributions
 
 ## Example Session

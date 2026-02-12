@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Ändra och Avboka Din Positano Hostel Bokning",
+    "description": "Detaljerad vägledning om dina avbokningsalternativ, no-show-policy, hur du ändrar din bokning, regler för överföring av bokning och förbetalda icke-återbetalningsbara bokningar på Positanos enda hostel."
+  },
+  "linkLabel": "Ändra och Avboka Din Positano Hostel Bokning",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "No-Show Avgifter",
+      "body": [
+        "Om du inte har checkat in senast kl. 22:30 på din boknings första dag kommer din bokning automatiskt att markeras som 'No-Show'. Du kommer att debiteras det högre beloppet av antingen första nattens vistelse eller din icke-återbetalningsbara deposition. Om du har flera bokningar kan var och en ha sin egen avbokningsperiod och avgifter."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Avbokningspolicy",
+      "body": [
+        "Skicka alla avbokningsförfrågningar skriftligt till vår officiella e-postadress (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). Avbokningsperioden börjar när hostellet tar emot din e-post och slutar kl. 00:01 på ditt planerade incheckningsdatum. Din bokning förblir aktiv tills du får e-postbekräftelse på att avbokningen har behandlats. En separat administrationsavgift för avbokning - vanligtvis 15% av bokningspriset exklusive tredjepartsprovisioner - kommer att debiteras. Hostellet kan avboka din bokning utan skriftlig begäran om du inte checkar in innan receptionen stänger på ankomstdagen, åker tidigt utan ordentlig avisering eller bryter mot hostellets policyer. Om du inte ger tillräcklig avisering kommer du att ådra dig avgifter motsvarande en No-Show."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Person som använder smartphone och laptop",
+          "caption": "E-post är det snabbaste sättet att få en skriftlig registrering av ändringar eller avbokningar."
+        }
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Ändra Bekräftade Bokningar",
+      "body": [
+        "Befintliga bokningar kan inte ändras direkt; istället ersätts de helt av nya bokningar. Skicka din ändringsförfrågan via e-post till vår officiella e-postadress inom den erforderliga avisperioden. Du kommer att få ett e-postmeddelande när ändringen har godkänts. Alla ändringar är föremål för rumstillgänglighet och andra villkor. Om du förkortar eller förlänger din vistelse kommer justeringen att hanteras som en avboknings- eller förlängningsförfrågan, och varje förlängning behandlas som en ny bokning. Om du åker innan ditt bekräftade avresedatum utan att få en officiell avbokningsbekräftelse kommer de ursprungliga bokningsvillkoren att förbli i kraft."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Överförbarhet av Bokning",
+      "body": [
+        "Din bokning måste förbli i ditt namn under hela vistelsen. Överföring av bokningen eller ändring av gästens namn är inte tillåtet. Om någon försöker checka in under en överförd bokning kommer bokningen att avbokas omedelbart, och du förblir ekonomiskt ansvarig för hela beloppet."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Förbetalda, Icke-Återbetalningsbara Bokningar",
+      "body": [
+        "Förbetalda, icke-återbetalningsbara bokningar kräver full betalning vid bokningstillfället. Om betalningen inte går igenom kommer din bokning att avbokas automatiskt. Dessa bokningar är inte återbetalningsbara, även om du avbokar eller inte dyker upp. Varje förlängning av din vistelse kommer att behandlas som en separat, ny icke-återbetalningsbar bokning."
+      ]
+    }
+  ]
+}

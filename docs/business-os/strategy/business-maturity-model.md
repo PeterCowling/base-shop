@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-09
+---
+
 # Business Maturity Model
 
 Standing reference for how businesses on the platform progress through capability levels.
@@ -193,6 +200,10 @@ The data assets built at L1 (products) and L2 (guides) stop being isolated websi
 |----------|--------------|----------------|
 | Brikette (BRIK) | L2, transitioning to L3 | Complete cross-app integrations |
 | XA / Product Pipeline (PIPE) | L1 | Build article generation pipeline for L2 |
+| XA (XA) | Pre-L1 | Define first measurable outcome contract and primary channel test |
+| Headband (HEAD) | Pre-L1 | Validate first offer with explicit demand and conversion thresholds |
+| Pet Product (PET) | Pre-L1 | Lock first category bet and establish margin-ready signal loop |
+| Handbag Accessory (HBAG) | Pre-L1 | Run independent validation cycle separate from XA assumptions |
 | Future businesses | Pre-L1 | Launch via Rapid Shop Launch, then follow this model |
 
 ---

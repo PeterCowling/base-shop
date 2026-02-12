@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Art et artisans de Positano (shopping)",
+    "description": "Ateliers de sandales, céramiques, galeries : où rencontrer les artisans et expédier vos achats."
+  },
+  "linkLabel": "Art et artisans de Positano (shopping)",
+  "intro": [
+    "Découvrez l'artisanat de Positano sans trop dépenser : sandales, céramiques, estampes et astuces pour expédier vos achats."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Sandales sur mesure",
+      "body": [
+        "Observez les artisans façonner des sandales en cuir en une trentaine de minutes ; les paires personnalisées commencent autour de 80 €.",
+        "Apportez ou tracez la forme de votre pied pour des commandes à distance : nombre d'ateliers expédient dans le monde entier dès qu'ils ont vos mesures."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Céramiques & art",
+      "body": [
+        "Parcourez les ateliers familiaux pour des carreaux et de la vaisselle peints à la main. Demandez des émaux sans plomb si vous comptez servir des aliments.",
+        "Des artistes locaux vendent estampes et aquarelles le long de la Via Cristoforo Colombo — un tube cartonné protège vos achats pendant le trajet."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Paiement & expédition",
+      "body": [
+        "La plupart des boutiques acceptent les cartes mais accordent une remise en espèces. Gardez une pièce d'identité à portée de main pour la détaxe au-delà de 154,94 €.",
+        "Expédiez les pièces fragiles par transporteur assuré (DHL/UPS) et demandez un double emballage ; les tarifs débutent autour de 40 € selon le poids."
+      ]
+    }
+  ],
+  "tips": [
+    "Photographiez reçus et coordonnées des artisans pour mémoriser l'atelier de chaque pièce.",
+    "Glissez du papier bulle si vous transportez des céramiques en bagage — les auberges ont souvent des matériaux de calage issus des livraisons."
+  ],
+  "faqs": [
+    {
+      "q": "Les artisans peuvent-ils personnaliser les articles ?",
+      "a": [
+        "Oui. Beaucoup embossent des initiales sur les sandales ou ajustent les couleurs des céramiques avec quelques jours de préavis."
+      ]
+    },
+    {
+      "q": "Comment obtenir un remboursement de TVA ?",
+      "a": [
+        "Demandez un formulaire tax free lors de l'achat, faites-le tamponner à l'aéroport ou au port, puis déposez-le sous trois mois pour recevoir le remboursement."
+      ]
+    }
+  ]
+}

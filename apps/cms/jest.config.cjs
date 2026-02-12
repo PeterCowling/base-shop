@@ -104,7 +104,7 @@ module.exports = {
     "/node_modules/(?!(?:\\.pnpm/[^/]+/node_modules/)?(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme|msw|until-async)/)",
   ],
   // Collect coverage only from the CMS source code; exclude declarations and tests.
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: isShardRun
     ? undefined
     : [

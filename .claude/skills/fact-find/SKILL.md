@@ -1,6 +1,6 @@
 ---
 name: fact-find
-description: Gather evidence and context before planning or as a standalone briefing. Helps discover available ideas/cards to fact-find, or accepts a specific topic. Produces either a Planning Fact-Find Brief (feeds /plan-feature) or a System Briefing Note (understanding-only explainer).
+description: Gather evidence and context before planning or as a standalone briefing. Supports code and business deliverables by classifying execution track and routing to progressive execution skills.
 ---
 
 # Fact Find
@@ -13,6 +13,31 @@ Gather evidence and context before planning or as a standalone briefing.
 
 - **Outcome A — Planning Fact-Find Brief:** a structured brief that feeds directly into `/plan-feature`.
 - **Outcome B — System Briefing Note:** an explainer of how something works today (no planning deliverable).
+
+## Execution Model (Outcome A)
+
+`/fact-find` is now a business-wide intake/orchestrator step, not just a code preflight.
+
+For Outcome A, classify each request into:
+
+- **Execution-Track:** `code` | `business-artifact` | `mixed`
+- **Deliverable-Type:** one of:
+  - `code-change`
+  - `email-message`
+  - `product-brief`
+  - `marketing-asset`
+  - `spreadsheet`
+  - `whatsapp-message`
+  - `multi-deliverable`
+- **Startup-Deliverable-Alias:** optional clarity label for startup flows (does not replace `Deliverable-Type`):
+  - `none` (default)
+  - `startup-budget-envelope`
+  - `startup-channel-plan`
+  - `startup-demand-test-protocol`
+  - `startup-supply-timeline`
+  - `startup-weekly-kpcs-memo`
+
+This classification drives `/plan-feature` task design and `/build-feature` execution routing.
 
 ## Operating Mode
 
@@ -80,19 +105,23 @@ This index contains all raw ideas, inbox cards, and fact-finding cards. Present 
 If the user selects a card ID from the discovery table:
 
 1. **Read the card via agent API** (`GET /api/agent/cards/{CARD-ID}`)
-2. **Extract pre-populated context:**
+2. **Read latest fact-find stage doc (if any)** via agent API:
+   - `GET /api/agent/stage-docs?cardId={CARD-ID}&stage=fact-find`
+   - If multiple docs exist, use the latest one as working context
+3. **Extract pre-populated context:**
    - `Title` → Topic/area
    - `Business` → Business-Unit for frontmatter
    - Card description → Initial scope context
    - `Plan-Link` (if exists) → Check for existing fact-find brief
-3. **Confirm intent:**
-   - Cards in **Inbox lane**: Default to Outcome A (building/changing)
+   - Existing fact-find stage doc (if present) → import Questions/Findings/Recommendations as starting context
+4. **Confirm intent:**
+   - Cards in **Inbox lane**: Default to Outcome A (building/changing) and propose lane transition to **Fact-finding** before deep investigation
    - Cards in **Fact-finding lane**: Ask if completing existing fact-find or starting fresh
-4. **Set frontmatter defaults:**
+5. **Set frontmatter defaults:**
    - `Business-Unit`: from card's `Business` field
    - `Card-ID`: from the selected card
    - `Feature-Slug`: read from card frontmatter if present (do not re-derive)
-5. **Skip to "Sufficiency gate"** with pre-filled context
+6. **Skip to "Sufficiency gate"** with pre-filled context
 
 **Example flow for selected card:**
 ```
@@ -127,6 +156,10 @@ For new topics not linked to an existing card, collect enough to choose the corr
 - For A (build/change): what's the desired new behavior/outcome?
 - For B (briefing): what question(s) are you trying to answer?
 
+**Deliverable shape (Outcome A):**
+- What should exist at the end? (code, email, marketing asset, spreadsheet, WhatsApp message, product brief, or mixed pack; for startup tracks also provide a startup alias such as `startup-budget-envelope`)
+- Where will it be used? (channel/system/team)
+
 **Constraints (if any):**
 - Compatibility, performance, security, rollout requirements, deadlines.
 
@@ -137,6 +170,7 @@ If the user's answer is insufficient to meaningfully investigate, ask targeted q
 - a concrete area (feature/component name or user-facing behavior), and
 - the intended outcome (A vs. B), and
 - at least one anchor for where to look (a path guess, an entrypoint guess, a UI route, an endpoint name, a log/error message, or "where in the product it appears").
+- for Outcome A: a provisional deliverable shape (can be refined after initial audit).
 
 **Pre-populated context from cards counts toward sufficiency:**
 - Card Title → satisfies "concrete area"
@@ -179,7 +213,7 @@ Use only what's needed to get unblocked.
 
 ### Purpose
 
-Produce a planning-ready evidence brief with impact mapping and "confidence inputs" aligned to `/plan-feature`'s confidence rubric.
+Produce a planning-ready evidence brief with impact mapping, execution routing, and confidence inputs aligned to `/plan-feature`'s confidence rubric.
 
 ### Output File
 
@@ -190,6 +224,30 @@ docs/plans/<feature-slug>-fact-find.md
 
 (Use the same `<feature-slug>` that `/plan-feature` will use for `docs/plans/<feature-slug>-plan.md`.)
 
+### Progressive Skill Routing (Outcome A)
+
+Set `Primary-Execution-Skill` in the brief based on the dominant deliverable:
+
+| Deliverable-Type | Primary-Execution-Skill | Supporting-Skills (example) |
+|---|---|---|
+| `code-change` | `/build-feature` | `/create-api-endpoint`, `/create-server-action`, `/create-ui-component` |
+| `email-message` | `/draft-email-message` | `/process-emails` |
+| `product-brief` | `/write-product-brief` | `/update-business-plan` |
+| `marketing-asset` | `/draft-marketing-asset` | `/update-business-plan` |
+| `spreadsheet` | `/create-ops-spreadsheet` | `/update-business-plan` |
+| `whatsapp-message` | `/draft-whatsapp-message` | `/update-business-plan` |
+| `multi-deliverable` | `/build-feature` (orchestrator mode) | select per task in plan |
+
+Startup aliases map to canonical deliverables for planning clarity:
+
+| Startup-Deliverable-Alias | Canonical Deliverable-Type | Primary-Execution-Skill |
+|---|---|---|
+| `startup-budget-envelope` | `spreadsheet` | `/create-ops-spreadsheet` |
+| `startup-channel-plan` | `product-brief` | `/write-product-brief` |
+| `startup-demand-test-protocol` | `product-brief` | `/write-product-brief` |
+| `startup-supply-timeline` | `spreadsheet` | `/create-ops-spreadsheet` |
+| `startup-weekly-kpcs-memo` | `product-brief` | `/write-product-brief` |
+
 ### Workflow (Outcome A)
 
 #### 1) Define scope for planning
@@ -198,18 +256,41 @@ Capture:
 - Goals / non-goals
 - Constraints (security, performance, compatibility, rollout)
 - Assumptions (minimize; only if necessary)
+- Execution profile:
+  - `Deliverable-Type`
+  - `Startup-Deliverable-Alias` (`none` unless startup-specific)
+  - `Execution-Track` (`code` | `business-artifact` | `mixed`)
+  - Intended channels/surfaces (repo, email, ad channel, WhatsApp, spreadsheet consumer, etc.)
 
-#### 2) Audit the repo (evidence-first)
+#### 2) Audit evidence sources (system + business, evidence-first)
 
-**Minimum evidence checklist:**
+Always audit the sources that matter for the selected execution track.
+
+**For `code` or `mixed` tracks (required):**
 - Entry points (routes/handlers/pages/jobs)
 - Key modules/files and responsibilities
 - Data/contracts touched (types, schemas, DB models)
 - Upstream dependencies and downstream dependents (blast radius)
+- **Performance patterns** (N+1 queries in affected data paths, caching layers, high-frequency code paths touched by the feature)
+- **Security boundaries** (auth/authorization on affected routes, data access controls, input validation points for untrusted data)
 - **Test landscape** (infrastructure, patterns, coverage gaps, testability, extinct tests)
 - Existing conventions/patterns to follow
 - Related docs/plans
 - Targeted recent git history in affected areas
+
+**For `business-artifact` or `mixed` tracks (required):**
+- Audience/recipient definition and segmentation evidence
+- Channel constraints (email platform, WhatsApp policy, ad channel specs, spreadsheet consumer/tooling)
+- Existing templates/assets/playbooks and performance baselines (if available)
+- Approval/ownership path (who signs off, who executes/sends)
+- Compliance and risk constraints (legal, brand, privacy, opt-in/contact policy)
+- Measurement plan (how impact will be tracked after delivery)
+- **Hypothesis & validation landscape** (the business equivalent of Test Landscape):
+  - Key hypotheses the deliverable depends on (demand, pricing, channel, economics)
+  - Existing signal coverage — what evidence already exists vs. what must be gathered
+  - Falsifiability assessment — how easy/hard/expensive is each hypothesis to test
+  - Recommended validation approach — which hypotheses get quick probes vs. structured tests vs. deferred validation
+  - This feeds `/plan-feature`'s VC-first fail-first loop and Business VC Quality Checklist
 
 **If you discover factual inaccuracies in an existing plan or related docs that would change confidence scores:**
 - Note the inaccuracies in the fact-find brief, with evidence.
@@ -221,6 +302,7 @@ Capture:
 Only if repo evidence cannot answer:
 - API/library docs for the stack patterns in use
 - Compatibility notes verified against repo versions (package.json/lockfile)
+- Channel/platform policies or constraints for non-code deliverables (official docs only)
 
 #### 4) Questions: resolve first, escalate only when necessary
 
@@ -240,9 +322,10 @@ When you do ask:
 #### 5) Produce confidence inputs for /plan-feature
 
 Provide three "feature-level" scores (0–100) that calibrate planning:
-- **Implementation** — do we know how to write correct code?
+- **Implementation** — do we know how to execute this deliverable correctly?
 - **Approach** — is this the right long-term design?
 - **Impact** — do we understand what this touches and how to avoid regressions?
+- **Delivery-Readiness** — do we have clear execution owner/channel/quality gate for the selected deliverable type?
 
 Include:
 - What would raise each score to **≥80** (build-eligible planning), if currently below.
@@ -250,18 +333,37 @@ Include:
 
 **Confidence policy reminder:** Confidence ≥90% is a motivation/diagnostic, not a quota. Do not recommend deleting planned work just to raise confidence; preserve it as phased/deferred with clear “what would make this ≥90%” actions.
 
-#### 6) Provide planning handoff artifacts
+#### 6) Identify risks
+
+Surface risks that could affect the planned work. For each risk:
+- Description (what could go wrong)
+- Likelihood and impact
+- Mitigation or flag as needing a decision
+
+Focus on risks that are specific to this work, not generic software risks. Common categories:
+- Regression risk to existing user flows during migration
+- Dependency on external actors (translations, approvals, third-party APIs)
+- Rollback difficulty if the change partially ships
+- Signal loss (e.g., silencing warnings that also catch real issues)
+
+#### 7) Provide planning handoff artifacts
 
 Include:
 - Planning constraints (patterns to follow, rollout expectations, observability expectations)
 - Suggested task seeds (non-binding), to accelerate `/plan-feature`
+- Execution routing packet:
+  - `Primary-Execution-Skill`
+  - `Supporting-Skills`
+  - Deliverable-specific quality gate expectations
 
-#### 7) End with Planning Readiness
+#### 8) End with Planning Readiness
 
 - **Ready-for-planning** if open questions are non-blocking or resolved.
 - **Needs-input** if user decisions are required before tasking can be accurate.
 
 If status is **Needs-input**, ask the user the open questions and stop (do not proceed to planning).
+
+**Card creation timing:** Business OS card creation (Steps 1-5 in the integration workflow below) happens regardless of Planning Readiness status. A brief with `Needs-input` status still gets a card (tracked in `Fact-finding` lane) and a `Card-ID` in frontmatter. This ensures all fact-find work is visible on the board even before open questions are resolved.
 
 ### Brief Template (Outcome A)
 
@@ -271,11 +373,18 @@ Type: Fact-Find
 Outcome: Planning
 Status: <Draft | Ready-for-planning | Needs-input>
 Domain: <CMS | Platform | UI | API | Data | Infra | etc.>
+Workstream: <Engineering | Product | Marketing | Sales | Operations | Finance | Mixed>
 Created: YYYY-MM-DD
 Last-updated: YYYY-MM-DD
 Feature-Slug: <kebab-case>
+Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
+Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo>
+Execution-Track: <code | business-artifact | mixed>
+Primary-Execution-Skill: <build-feature | draft-email-message | write-product-brief | draft-marketing-asset | create-ops-spreadsheet | draft-whatsapp-message>
+Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>-plan.md
-# Business OS Integration (optional - triggers card creation)
+# Business OS Integration (default-on in core loop; set `off` to opt out intentionally)
+Business-OS-Integration: <on | off>
 Business-Unit: <BRIK | PLAT | PIPE | BOS | etc.>
 Card-ID: <auto-generated when card is created>
 ---
@@ -298,7 +407,7 @@ Card-ID: <auto-generated when card is created>
 - Assumptions:
   - ...
 
-## Repo Audit (Current State)
+## Evidence Audit (Current State)
 ### Entry Points
 - `path/to/entry` — <role>
 
@@ -324,7 +433,51 @@ Card-ID: <auto-generated when card is created>
 - Likely blast radius:
   - ...
 
-### Test Landscape
+### Delivery & Channel Landscape (for business-artifact or mixed)
+- Audience/recipient:
+  - ...
+- Channel constraints:
+  - ...
+- Existing templates/assets:
+  - ...
+- Approvals/owners:
+  - ...
+- Compliance constraints:
+  - ...
+- Measurement hooks:
+  - ...
+
+### Hypothesis & Validation Landscape (required for `business-artifact` or `mixed`; optional otherwise)
+
+_This section is the business-artifact equivalent of the Test Landscape. It gives `/plan-feature` the groundwork to write quality VC-XX checks that satisfy the Business VC Quality Checklist (isolated, pre-committed, time-boxed, minimum viable sample, diagnostic, repeatable, observable)._
+
+#### Key Hypotheses
+| # | Hypothesis | Depends on | Falsification cost | Falsification time |
+|---|-----------|-----------|-------------------|-------------------|
+| H1 | <"Customers will preorder at €X"> | <channel live, product page exists> | <€Y ad spend> | <N days> |
+| H2 | <"CAC via Instagram ≤ €Z"> | <H1 pass, ad creative exists> | <€W spend> | <N days> |
+
+#### Existing Signal Coverage
+| Hypothesis | Evidence available | Source | Confidence in signal |
+|-----------|-------------------|--------|---------------------|
+| H1 | <e.g., "Competitor sells similar at €X+10" or "None — untested"> | <source> | <High/Low/None> |
+| H2 | <e.g., "Prior campaign data shows €Z±20% CAC for similar product"> | <source> | <High/Low/None> |
+
+#### Falsifiability Assessment
+- **Easy to test (clear signal, low cost):**
+  - <H1 — landing page + small ad spend gives binary preorder signal>
+- **Hard to test (noisy signal, high cost, long feedback loop):**
+  - <H3 — retention requires 90-day cohort data>
+- **Validation seams needed:**
+  - <e.g., "Need tracking pixel on preorder confirmation page to attribute channel">
+
+#### Recommended Validation Approach
+- **Quick probes for:** <which hypotheses can be tested in <7 days with <€100>
+- **Structured tests for:** <which need designed experiments with control/treatment>
+- **Deferred validation for:** <which require operational data that won't exist until post-launch>
+- **Note:** This informs VC-XX design in `/plan-feature` — each hypothesis maps to one or more VCs
+
+### Test Landscape (required for `code` or `mixed`; optional otherwise)
 
 #### Test Infrastructure
 - **Frameworks:** <Jest | Vitest | Cypress | Playwright | etc.>
@@ -379,6 +532,7 @@ Card-ID: <auto-generated when card is created>
 - Q: ...
   - Why it matters: ...
   - Decision impacted: ...
+  - Decision owner: <name or role>
   - Default assumption (if any) + risk: ...
 
 ## Confidence Inputs (for /plan-feature)
@@ -388,9 +542,16 @@ Card-ID: <auto-generated when card is created>
   - <why + tradeoffs; what's missing>
 - **Impact:** <0–100>%
   - <why + blast radius confidence; what's missing>
+- **Delivery-Readiness:** <0–100>%
+  - <do we have owner, channel constraints, quality checks, and deployment/send path?>
 - **Testability:** <0–100>%
   - <how testable is this feature given current infrastructure and patterns?>
   - <what would improve testability? test seams, mocks, fixtures needed?>
+
+## Risks
+| Risk | Likelihood | Impact | Mitigation / Open Question |
+|------|-----------|--------|---------------------------|
+| <risk description> | <Low/Medium/High> | <Low/Medium/High> | <how to mitigate, or flag as needing decision> |
 
 ## Planning Constraints & Notes
 - Must-follow patterns:
@@ -403,6 +564,16 @@ Card-ID: <auto-generated when card is created>
 ## Suggested Task Seeds (Non-binding)
 - ...
 - ...
+
+## Execution Routing Packet
+- Primary execution skill:
+  - ...
+- Supporting skills:
+  - ...
+- Deliverable acceptance package (what must exist before task can be marked complete):
+  - ...
+- Post-delivery measurement plan:
+  - ...
 
 ## Planning Readiness
 - Status: <Ready-for-planning | Needs-input>
@@ -562,34 +733,42 @@ If the user then decides to implement a change, instruct them to run `/fact-find
 - [ ] Unknowns are called out with a concrete verification path.
 - [ ] Output file is created/updated in the correct location; no code changes.
 
-### TDD Quality Checks (Outcome A only)
+### Validation Foundation Checks (Outcome A only)
 
-- [ ] Test Landscape section is complete (infrastructure, patterns, coverage, gaps, testability).
-- [ ] Testability confidence input is provided (0-100%).
-- [ ] Recommended test approach is documented.
-- [ ] Extinct tests are identified and flagged for update/removal during build.
-- [ ] Coverage gaps are mapped as planning inputs.
+- [ ] Execution profile is present: Deliverable-Type + Execution-Track + Primary-Execution-Skill.
+- [ ] For startup tracks: Startup-Deliverable-Alias is present and consistent with Deliverable-Type (`product-brief` or `spreadsheet`).
+- [ ] Delivery-Readiness confidence input is provided (0-100%).
+- [ ] Risks section is present with at least one specific risk (not generic).
+- [ ] Open questions include `Decision owner` for each question.
+- [ ] For `code` or `mixed` tracks: Test Landscape section is complete (infrastructure, patterns, coverage, gaps, testability).
+- [ ] For `code` or `mixed` tracks: Recommended test approach is documented.
+- [ ] For `code` or `mixed` tracks: Extinct tests are identified and flagged for update/removal during build.
+- [ ] For `business-artifact` or `mixed` tracks: Delivery & Channel Landscape is complete (audience, channel constraints, approvals, measurement).
+- [ ] For `business-artifact` or `mixed` tracks: Hypothesis & Validation Landscape is complete (key hypotheses, existing signal coverage, falsifiability assessment, recommended validation approach).
 
 ## Final Hand-off Messages
 
 **Outcome A (Planning):**
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-fact-find.md`. Status: Ready-for-planning (or Needs-input). Proceed to `/plan-feature` once blocking questions are answered."
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-fact-find.md`. Status: Ready-for-planning (or Needs-input). Primary execution skill: `<skill>`. Proceed to `/plan-feature` once blocking questions are answered."
 
 **Outcome B (Briefing):**
 > "Briefing complete. Note saved to `<path>`. This documents the current behavior and evidence pointers. No planning artifact was produced."
 
 ---
 
-## Business OS Integration (Optional)
+## Business OS Integration (Default with Escape Hatch)
 
-Fact-find briefs can optionally integrate with Business OS for card tracking. This is entirely opt-in.
+Fact-find briefs in the core loop integrate with Business OS by default. Use `Business-OS-Integration: off` only for intentionally standalone work.
 
 ### When to Use
 
-Include `Business-Unit` in the frontmatter when:
+Set `Business-OS-Integration: on` and include `Business-Unit` in the frontmatter when:
 - The work should be tracked on the Business OS kanban board
 - The feature is part of a specific business unit's roadmap (BRIK, PLAT, PIPE, BOS)
 - You want automatic card creation and lifecycle tracking
+
+Set `Business-OS-Integration: off` when:
+- The work is intentionally standalone and should not create/update cards or stage docs
 
 ### Business Unit Codes
 
@@ -600,9 +779,9 @@ Include `Business-Unit` in the frontmatter when:
 
 ### Card Creation Workflow (After Brief Completion)
 
-**When:** After persisting the fact-find brief (Outcome A only), if `Business-Unit` is present in frontmatter.
+**When:** During Outcome A brief writing, if integration is on (`Business-OS-Integration` omitted or `on`) and `Business-Unit` is present in frontmatter. Card creation happens regardless of Planning Readiness status (even `Needs-input`), so all fact-find work is tracked on the board.
 
-**Fail-closed:** if any API call fails, stop and surface the error. Do not write markdown files.
+**Fail-closed:** run API steps first; if any API call fails, stop and surface the error. Do not finalize brief markdown writes until API workflow succeeds.
 
 **Step 1: Check for existing card**
 
@@ -658,7 +837,60 @@ Use the returned ID (or the existing Card-ID). Include `Feature-Slug` and `Plan-
 }
 ```
 
-**Step 4: Create fact-finding stage doc (API)**
+**Step 3b: Lane normalization for existing cards**
+
+- If existing card lane is `Inbox`, propose transition to `Fact-finding` before investigation starts:
+
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/cards/PLAT-ENG-0023",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": { "Proposed-Lane": "Fact-finding" }
+  }
+}
+```
+
+**Step 4: Upsert fact-finding stage doc (API, latest-wins)**
+
+First, check if a fact-find stage doc already exists:
+
+```json
+{
+  "method": "GET",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/fact-find",
+  "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
+}
+```
+
+- If GET returns `200`: update via PATCH (optimistic concurrency).
+- If GET returns `404`: create via POST.
+
+PATCH example (existing stage doc):
+
+```json
+{
+  "method": "PATCH",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/fact-find",
+  "headers": {
+    "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
+    "Content-Type": "application/json"
+  },
+  "body": {
+    "baseEntitySha": "<entitySha from GET>",
+    "patch": {
+      "content": "# Fact-Finding: {Feature Title}\n\n## Execution Profile\n\n- Deliverable-Type: {from brief}\n- Startup-Deliverable-Alias: {from brief or none}\n- Execution-Track: {from brief}\n- Primary-Execution-Skill: {from brief}\n- Supporting-Skills: {from brief}\n\n## Questions to Answer\n\n{Import questions from fact-find brief}\n\n## Findings\n\n{Import findings from fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
+    }
+  }
+}
+```
+
+POST example (no existing stage doc):
 
 ```json
 {
@@ -671,10 +903,12 @@ Use the returned ID (or the existing Card-ID). Include `Feature-Slug` and `Plan-
   "body": {
     "cardId": "PLAT-ENG-0023",
     "stage": "fact-find",
-    "content": "# Fact-Finding: {Feature Title}\n\n## Questions to Answer\n\n{Import questions from fact-find brief}\n\n## Findings\n\n{Import findings from fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
+    "content": "# Fact-Finding: {Feature Title}\n\n## Execution Profile\n\n- Deliverable-Type: {from brief}\n- Startup-Deliverable-Alias: {from brief or none}\n- Execution-Track: {from brief}\n- Primary-Execution-Skill: {from brief}\n- Supporting-Skills: {from brief}\n\n## Questions to Answer\n\n{Import questions from fact-find brief}\n\n## Findings\n\n{Import findings from fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
   }
 }
 ```
+
+**Conflict handling:** if PATCH returns `409`, refetch latest stage doc and retry once. If it conflicts again, stop and surface error.
 
 **Note:** `content` is the markdown body only (no frontmatter). The export job adds frontmatter.
 
@@ -705,7 +939,6 @@ When Business-Unit is present and card is created:
 > - Created card via API: `<Card-ID>`
 > - Stage doc created via API: `fact-find`
 > - Card-ID added to brief frontmatter
->
 > Proceed to `/plan-feature` once blocking questions are answered."
 
 When Business-Unit is present but card already exists:
@@ -720,22 +953,24 @@ When Business-Unit is present but card already exists:
 
 ### Backward Compatibility
 
-- Briefs without `Business-Unit` work exactly as before
-- No card is created unless `Business-Unit` is explicitly provided
+- Briefs with `Business-OS-Integration: off` remain standalone
+- Briefs without `Business-Unit` remain standalone unless an existing `Card-ID` is explicitly provided
 - Existing briefs are unaffected
 - The standard completion message is used when no Business OS integration
 
 ---
 
-## Discovery Index Maintenance
+## Discovery Index Freshness (Loop Contract)
 
-The discovery index at `docs/business-os/_meta/discovery-index.json` enables instant discovery without scanning.
+`docs/business-os/_meta/discovery-index.json` powers zero-argument discovery in `/fact-find`, `/plan-feature`, and `/build-feature`.
 
-### When to Rebuild
+### Trigger Points
 
-Rebuild after:
-- Adding/removing cards or ideas
-- Moving cards between lanes (especially to/from Inbox or Fact-finding)
+Rebuild index immediately after successful loop writes:
+- Idea/card/stage-doc create or update in `/ideas-go-faster`
+- Card/stage-doc writes in `/fact-find`
+- Card/stage-doc writes and deterministic `Fact-finding -> Planned` transition in `/plan-feature`
+- Card/stage-doc writes and deterministic lane transitions in `/build-feature`
 
 ### Rebuild Command
 
@@ -743,9 +978,12 @@ Rebuild after:
 docs/business-os/_meta/rebuild-discovery-index.sh > docs/business-os/_meta/discovery-index.json
 ```
 
-### Automatic Updates
+### Failure Mode (Deterministic)
 
-The index is also rebuilt by:
-- `/work-idea` - when converting ideas to cards
-- `/propose-lane-move` - when moving cards between lanes
-- `/scan-repo` - when generating new ideas
+- Retry rebuild once after a short backoff.
+- If it still fails: stop and surface `discovery-index stale` with:
+  - failing command,
+  - retry count,
+  - stderr summary,
+  - explicit operator rerun command.
+- Do not emit a success completion message claiming discovery is current.

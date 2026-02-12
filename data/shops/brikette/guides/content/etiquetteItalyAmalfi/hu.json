@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Helyi etikett: mit tegyél és mit ne (olasz példák)",
+    "description": "Viselkedési szabályok éttermekben, templomokban és zsúfolt lépcsős utcákon."
+  },
+  "linkLabel": "Helyi etikett: mit tegyél és mit ne (olasz példákkal)",
+  "intro": [
+    "Gyakorlati etikett, ha éttermekben eszik, templomokat látogat, vagy szűk sávokat oszt meg Positanóban és az Amalfi-parton."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Étkezési etikett",
+      "body": [
+        "Foglaljon előre csúcsidőben, legyen türelmes a fogások között, a számlát csak akkor kérje, ha indulna, és hagyjon szerény borravalót kivételes kiszolgálásnál."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Templomok és öltözködés",
+      "body": [
+        "Fedje be a vállát a templomokban, és kerülje, hogy fürdőruhában vagy strandruhában sétáljon át az üzleteken."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Megosztott lépcsős sávok",
+      "body": [
+        "Tartson jobbra a szűk lépcsőkön, engedje el a gyorsabbakat, és a népszerű fotópontoknál gyorsan cseréljen helyet másokkal."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kell borravalót adnom?",
+      "a": [
+        "A borravaló nem kötelező; 1–2 eurót hagyjon kiemelkedő kiszolgálásnál, vagy kerekítse fel a számlát. A coperto már tartalmazza a kenyeret és a terítéket."
+      ]
+    },
+    {
+      "q": "Mit viseljek a templomokban?",
+      "a": [
+        "Fedje a vállát és a térdét, vegye le a fejfedőt, és beszéljen halkan. Tartson magánál egy könnyű sálat, amit felvehet ujjatlan felsőre."
+      ]
+    }
+  ]
+}

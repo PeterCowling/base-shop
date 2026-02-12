@@ -2,12 +2,13 @@ import "../../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Checkbox } from "../checkbox";
 
 describe("Checkbox", () => {
   it("mounts and toggles state", async () => {
-    render(<Checkbox />);
+    const { container } = render(<Checkbox aria-label="Test checkbox" />);
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).toHaveAttribute("data-token", "--color-primary");
     expect(checkbox).toHaveAttribute("data-state", "unchecked");
@@ -15,11 +16,12 @@ describe("Checkbox", () => {
     const user = userEvent.setup();
     await user.click(checkbox);
     expect(checkbox).toHaveAttribute("data-state", "checked");
+
   });
 
   it("calls onCheckedChange and updates indicator through toggle cycle", async () => {
     const onCheckedChange = jest.fn();
-    render(<Checkbox onCheckedChange={onCheckedChange} />);
+    render(<Checkbox aria-label="Test checkbox" onCheckedChange={onCheckedChange} />);
     const checkbox = screen.getByRole("checkbox");
     const user = userEvent.setup();
 
@@ -37,13 +39,13 @@ describe("Checkbox", () => {
   });
 
   it("merges custom className", () => {
-    render(<Checkbox className="custom" />);
+    render(<Checkbox aria-label="Test checkbox" className="custom" />);
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox).toHaveClass("custom");
   });
 
   it("renders checkmark indicator only when checked", async () => {
-    render(<Checkbox />);
+    render(<Checkbox aria-label="Test checkbox" />);
     const checkbox = screen.getByRole("checkbox");
     expect(checkbox.querySelector("svg")).toBeNull();
 

@@ -7,6 +7,7 @@
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import TaskCard from './cards/TaskCard';
 
 /** DoListTask - data for a single task */

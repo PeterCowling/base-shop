@@ -7,13 +7,18 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import type { Business, Card, Idea, Lane } from "@/lib/types";
+import type { User } from "@/lib/current-user";
+import type { Business, Card, Lane } from "@/lib/types";
 
 import { BoardView } from "./BoardView";
 
 // Mock i18n
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => key,
+}));
+
+jest.mock("./useBoardAutoRefresh", () => ({
+  useBoardAutoRefresh: jest.fn(),
 }));
 
 const mockBusinesses: Business[] = [
@@ -55,27 +60,12 @@ const mockCards: Card[] = [
   },
 ];
 
-const mockIdeas: Idea[] = [
-  {
-    Type: "Idea",
-    ID: "BRIK-OPP-001",
-    Business: "BRIK",
-    Status: "raw",
-    "Created-Date": "2025-01-20",
-    content: "# Test Idea",
-    Tags: [],
-    filePath: "/test/ideas/inbox/BRIK-OPP-001.md",
-  },
-];
-
-const mockLanes: Lane[] = [
-  "Inbox",
-  "Fact-finding",
-  "Planned",
-  "In progress",
-  "Done",
-  "Blocked",
-];
+const mockCurrentUser: User = {
+  id: "pete",
+  name: "Pete",
+  email: "pete@business-os.local",
+  role: "admin",
+};
 
 const mockCardsByLane: Record<Lane, Card[]> = {
   Inbox: [mockCards[0]],
@@ -93,14 +83,17 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 
     // Should show all lanes
     expect(screen.getByText("Inbox")).toBeInTheDocument();
     expect(screen.getByText("Fact-finding")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "businessOs.board.actions.ideas" })
+    ).toBeInTheDocument();
   });
 
   it("renders search bar", () => {
@@ -108,8 +101,8 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -121,8 +114,8 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -137,8 +130,8 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -153,8 +146,8 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -171,8 +164,8 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 
@@ -192,8 +185,8 @@ describe("BoardView", () => {
       <BoardView
         businessCode="BRIK"
         businesses={mockBusinesses}
-          cardsByLane={mockCardsByLane}
-        inboxIdeas={mockIdeas}
+        cardsByLane={mockCardsByLane}
+        currentUser={mockCurrentUser}
       />
     );
 

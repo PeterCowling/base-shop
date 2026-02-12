@@ -1,6 +1,8 @@
+/* eslint-disable ds/no-hardcoded-copy, ds/enforce-layout-primitives -- BRIK-DS-001: in-progress design-system migration */
 import { memo } from "react";
-import type { TFunction } from "i18next";
 import Link from "next/link";
+import type { TFunction } from "i18next";
+
 import { AlertTriangle, Car, Clock, Luggage, MapPin, Ship } from "@/icons";
 
 import { Inline } from "../ui";

@@ -1,11 +1,12 @@
 import Link from "next/link";
+import type { TFunction } from "i18next";
 
 import { renderRichText, resolveHref } from "../richText";
 import { RomeTravelPlanner } from "../rome/RomeTravelPlanner";
 import { externalLinkClass } from "../styles";
-import { ZoomableFigure } from "./ZoomableFigure";
 import type { DestinationSectionImage, RomeTable } from "../types";
-import type { TFunction } from "i18next";
+
+import { ZoomableFigure } from "./ZoomableFigure";
 
 export type RomeSectionProps = {
   showRomePlanner: boolean;

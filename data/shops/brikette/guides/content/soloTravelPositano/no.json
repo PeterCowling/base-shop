@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Alenereise i Positano: tips",
+    "description": "Sikkerhet, sosiale forslag, sovesaler vs. private rom og dagsplaner som fungerer fint alene."
+  },
+  "linkLabel": "Alenereise i Positano: tips",
+  "intro": [
+    "Positano er et imøtekommende reisemål for solo-eventyr. Vær sosial på hostellet, planlegg dagsturer med god margin, og bruk fergene når solen står høyt."
+  ],
+  "tocTitle": "På denne siden",
+  "toc": [
+    {
+      "href": "#safety",
+      "label": "Trygghet og selvtillit"
+    },
+    {
+      "href": "#social",
+      "label": "Sosiale tips"
+    },
+    {
+      "href": "#dayplans",
+      "label": "Dagsplaner som passer alene"
+    }
+  ],
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Trygghet og selvtillit",
+      "list": [
+        "Del planene dine med resepsjonen; ha med oppladet telefon og vann.",
+        "Bruk opplyste ruter om kvelden; unngå å haste i trappene."
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Sosiale tips",
+      "list": [
+        "Bli med på solnedgangstimer på terrassen og hostelaktiviteter for å møte folk.",
+        "Velg båtturer eller fotturer i små grupper for selskap uten mye styr."
+      ]
+    },
+    {
+      "id": "dayplans",
+      "title": "Dagsplaner som passer alene",
+      "list": [
+        "Ferge til Amalfi + spasertur til Atrani; buss opp til hagene i Ravello.",
+        "Capri-tur til Villa Jovis eller fyrtårnet; vær tilbake rundt solnedgang."
+      ]
+    }
+  ],
+  "tips": [
+    "Sjekk tavlen ved resepsjonen rundt kl. 18 for påmeldingslister; det er raskeste måten å finne middags- eller båtvenner til dagen etter.",
+    "Pakk en lett dagstursekk med 1–1,5 liter vann og en powerbank, så kan du ta solnedgangsbilder uten å måtte skynde deg opp bakkene."
+  ],
+  "faqs": [
+    {
+      "q": "Er det trygt å utforske Positano alene om kvelden?",
+      "a": [
+        "Hold deg til hovedtrappene og godt opplyste ruter, informer resepsjonen om planene dine, og ha med oppladet telefon.",
+        "Blir du ferdig sent, kan den oransje Positano Taxi-kiosken ved Piazza dei Mulini ordne en kort tur oppover."
+      ]
+    },
+    {
+      "q": "Hvordan møter jeg andre reisende når jeg reiser alene?",
+      "a": [
+        "Bli med på hostellets solnedgangstreff på terrassen eller meld deg på båtturer med grupper på 10–12 gjester.",
+        "Matlagingskurs og vandreturer i Amalfi eller Capri er avslappede arenaer for å slå av en prat uten tvungne leker."
+      ]
+    },
+    {
+      "q": "Kan jeg gå Gudestien alene?",
+      "a": [
+        "Ja – start fra Bomerano rundt kl. 09, ta med minst 1,5 liter vann og last ned kartet for bruk uten dekning.",
+        "Ta SITA-bussen tilbake fra Nocelle eller Montepertuso før skumring; avgangene blir sjeldnere etter kl. 20."
+      ]
+    }
+  ]
+}

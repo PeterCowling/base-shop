@@ -3,6 +3,7 @@ import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
 import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Button } from "../button";
 import {
@@ -21,7 +22,7 @@ configure({ testIdAttribute: "data-cy" });
 
 describe("DropdownMenu submenu visuals", () => {
   it("uses panel surface for SubContent as well", async () => {
-    render(
+    const { container } = render(
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button>Open</Button>
@@ -47,6 +48,7 @@ describe("DropdownMenu submenu visuals", () => {
     const sub = await screen.findByTestId("sub-content");
     const cls = sub.className;
     expect(cls).toMatch(/bg-panel/);
+
     expect(cls).toMatch(/border-border-2/);
     expect(cls).toMatch(/shadow-elevation/);
   });

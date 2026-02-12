@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Fotoguide til Positano: de bedste steder",
+    "description": "Kortlæg vinklerne, de bedste tidspunkter og etikette for at få flotte billeder."
+  },
+  "linkLabel": "Fotoguide til Positano: de bedste steder",
+  "intro": [
+    "Fang Positano som en pro: ikoniske vinkler, lysplanlægning og respektfuld fotokutyme."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Klassiske vinkler",
+      "body": [
+        "Tag billeder fra færgemolen for at få hele klippesiden med; brug vidvinkel for at inkludere Santa Maria Assunta-kuplen.",
+        "Gå ad Via Cristoforo Colombo for lagdelte altaner og bougainvillea som ramme mod havet."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Lys og timing",
+      "body": [
+        "Solopgang (omkring kl. 06 om sommeren) giver varmt lys på byen – kom tidligt for at undgå bådtrafik i motivet.",
+        "Blue hour efter solnedgang tilfører glød til byens lys; medbring mini-stativ eller klemme til lange eksponeringer."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette og backups",
+      "body": [
+        "Respekter private terrasser, og blokér ikke trapper – træd til side hurtigt efter dit skud.",
+        "Gem backups i skyen eller på en bærbar disk hver aften; fugtig luft kan dugge linser, så pak silica-poser."
+      ]
+    }
+  ],
+  "tips": [
+    "Medbring et polariseringsfilter til at styre middagsglans på vandet.",
+    "Hav en mikrofiberklud klar – saltvand og fugt lægger sig hurtigt på linser."
+  ],
+  "faqs": [
+    {
+      "q": "Må jeg bruge drone til luftfotos?",
+      "a": [
+        "Dronebrug er begrænset; søg tilladelse i god tid, og respekter no-fly-zoner ved byen og Li Galli-øerne."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg printe billeder?",
+      "a": [
+        "Fotolaboratorier i Sorrento og Amalfi laver samme-dags print; medbring filer på USB eller SD-kort."
+      ]
+    }
+  ]
+}

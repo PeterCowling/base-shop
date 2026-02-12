@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-raw-color -- HAND-0008 [ttl=2026-12-31]: Three.js light colors for scene lighting */
 import { useRef } from "react";
 import { Environment } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";

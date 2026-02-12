@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Nápoles a Positano: como ir",
+    "description": "Trens, ônibus, transfers e ferries — com tempos aproximados, custo e qual rota funciona melhor em cada temporada."
+  },
+  "linkLabel": "Nápoles a Positano: como ir",
+  "intro": [
+    "Nápoles → Positano: shuttle para Sorrento + autocarro SITA todo o ano; ferries no verão quando o mar ajuda; transfers para chegadas tardias."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Comboio + autocarro (todo o ano)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (verão)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Chegadas tardias & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "Perguntas frequentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Comboio + autocarro (todo o ano)",
+      "body": [
+        "Saia das chegadas do NAP no shuttle Curreri (ou Alibus + Circumvesuviana) até Sorrento e apanhe o autocarro SITA para Amalfi.",
+        "Compre bilhetes antes de embarcar, consulte o painel diário e desça em ‘Chiesa Nuova’ para menos escadas até ao Hostel Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (verão)",
+      "body": [
+        "Alibus → Molo Beverello; apanhe ferry até Positano e confirme tarifas com a operadora no dia.",
+        "Verifique cancelamentos e evite o último barco se tiver ligações a seguir."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Chegadas tardias & transfers",
+      "body": [
+        "Chega depois dos últimos ferries/autocarros? Reserve transfer privado ou pernoite em Nápoles/Sorrento.",
+        "Confirme o drop-off perto do alojamento e pergunte sobre ajuda com bagagem."
+      ]
+    }
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Onde compro bilhetes SITA?",
+      "a": [
+        "Em tabacchi/quiosques próximos das estações. Compre antes de embarcar e valide no autocarro."
+      ]
+    },
+    {
+      "q": "Quantas escadas até ao hostel?",
+      "a": [
+        "Da paragem ‘Chiesa Nuova’ são ~80 m sem escadas."
+      ]
+    }
+  ]
+}

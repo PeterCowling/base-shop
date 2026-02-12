@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "7-dniowy plan na wybrzeże Amalfi (bez samochodu)",
+    "description": "Tydzień na wybrzeżu z realistycznym tempem i wskazówkami transportowymi."
+  },
+  "linkLabel": "7-dniowy plan na wybrzeże Amalfi (bez samochodu)",
+  "intro": [
+    "Siedem dni bez auta pozwala połączyć klasyczne atrakcje ze spokojniejszym tempem — promy dla komfortu, autobusy dla oszczędności."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Dni 1–2 — oswajamy Positano",
+      "body": [
+        "Przyjedź przez Neapol lub Salerno, odkryj Spiaggia Grande i Fornillo, i przespaceruj się krótkimi trasami do punktów widokowych, by przyzwyczaić się do schodów.",
+        "Zarezerwuj wspólny rejs lub warsztaty kulinarne drugiego wieczoru, by rozpocząć tydzień wyjątkowym doświadczeniem."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Dzień 3 — pętla Capri",
+      "body": [
+        "Złap prom o 08:30 do Capri, skup się rano na Anacapri i wróć przed zachodem, by uniknąć ostatniego kursu.",
+        "Miej odłożony bilet autobusowy na wypadek, gdy prom przestanie kursować; alternatywa przez Sorrento to około 90 minut w jedną stronę."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Dni 4–5 — Amalfi, Ravello i wędrówki",
+      "body": [
+        "Dzień 4 spędź między Amalfi a ogrodami Ravello, zostań dłużej, jeśli kusi koncert.",
+        "Dzień 5 przeznacz na Szlak Bogów lub Montepertuso; ruszaj wcześnie, noś 1,5 l (51 oz) wody i wróć autobusem."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Dni 6–7 — kultura i luz",
+      "body": [
+        "Wybierz się rankiem pociągiem do Pompejów lub Salerno na muzea, potem wróć na spokojny wieczór w Positano.",
+        "Zachowaj ostatni dzień na zapas pogodowy lub totalny relaks — powtórz ulubioną plażę lub odwiedź warsztaty rzemieślnicze."
+      ]
+    }
+  ],
+  "tips": [
+    "Pranie w środku tygodnia odciąża bagaż; korzystaj z pralni samoobsługowych przy Chiesa Nuova.",
+    "Śledź aktualizacje promów na instagramowych kontach operatorów w czasie wietrznej pogody."
+  ],
+  "faqs": [
+    {
+      "q": "Czy warto nocować w różnych miejscowościach?",
+      "a": [
+        "Zatrzymaj się w Positano, by uniknąć ciągłych przeprowadzek. Dodaj nocleg w Neapolu lub Salerno tylko przy bardzo wczesnych odjazdach."
+      ]
+    },
+    {
+      "q": "Czy trzeba rezerwować z wyprzedzeniem?",
+      "a": [
+        "Zarezerwuj prom, rejsy i popularne restauracje. Zostaw miejsce na zmienne warunki pogodowe przy wędrówkach i plażach."
+      ]
+    }
+  ]
+}

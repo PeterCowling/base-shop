@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Positanói tippek első látogatóknak",
+    "description": "Alapvető tanácsok az érkezéshez, etiketthez, csomagoláshoz és a trükkös helyzetek elkerüléséhez hosteles perspektívából."
+  },
+  "linkLabel": "Positanói tippek kezdőknek",
+  "intro": [
+    "Először Positanóban? Ezek a tippek az érkezésről, csomagokról, fizetésről és a zökkenőmentes kapcsolattartásról szólnak."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Okos érkezés",
+      "body": [
+        "Ha lehet, foglald le előre a vonat+busz vagy komp kombinációkat; a reggeli első járatok elkerülik a hőséget és a sorokat.",
+        "Nehéz csomag? Használd a Chiesa Nuováig tartó SITA buszt és kérj a dokknál hordárt a meredek lépcsők átvállalásához."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Csomagok és lépcsők",
+      "body": [
+        "Csomagolj könnyű, puha oldalfalú táskákat vagy hátizsákot, amik kényelmesen mennek fel a szűk lépcsőkön és a shuttle csomagtartóin.",
+        "Ha korán érkezel, használd a Via dei Mulini menti csomagtárolókat, hogy a bejelentkezésig kéz nélkül fedezhesd fel a várost."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Időzítés és foglalás",
+      "body": [
+        "Tervezd a strandot és nagy sétákat 10:00 előttre vagy 16:00 utánra, amikor hűvösebbek az utcák és nyugodtabbak a közlekedési viszonyok.",
+        "Foglalj éttermet, hajókirándulást és a Path of the Gods shuttle-jét legalább egy nappal előre főszezonban."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Fizetés és készpénz",
+      "body": [
+        "A kártyát sok helyen elfogadják, de sok kávézó és dohánybolt minimum vásárlásra kéri a vendéget – tarts magadnál 5–10 eurós címleteket.",
+        "Az ATM működik, de a díjak eltérnek; vegyél fel közepes összeget egyszer, és oszd szét zsebeid között."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Kapcsolat és B-tervek",
+      "body": [
+        "Szerezz olasz eSIM-et (TIM/Vodafone), vagy ellenőrizd a roamingot; a jel a domb tetején a legerősebb.",
+        "Tölts le offline térképeket, kompmenetrendeket és a hostel útvonalát arra az időre, amikor gyengébb a mobil adat."
+      ]
+    }
+  ],
+  "tips": [
+    "Mentsd el offline a busz/komp menetrendeket és a hostel érkezési utasításait, ha időnként megszűnne a jel.",
+    "Vigyél 750 ml-es újratölthető palackot és könnyű réteget – a napok forrók, az esti órák a strand fölött szelesek."
+  ],
+  "faqs": [
+    {
+      "q": "Elég csak kézipoggyász?",
+      "a": [
+        "Igen – csomagolj gyorsan száradó ruhákat, használd a hostel mosodáját és vigyél utazó méretű piperecikkeket a légitársaság megengedett súlyhatáraihoz."
+      ]
+    },
+    {
+      "q": "Szükség van adapterre?",
+      "a": [
+        "Olaszországban 230V-os F/L típusú konnektorok vannak; ha más csatlakozóid vannak, hozz univerzális adaptert."
+      ]
+    }
+  ]
+}

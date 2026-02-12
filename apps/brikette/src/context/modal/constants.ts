@@ -5,6 +5,7 @@
 
 import hotel from "@/config/hotel";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
+
 export { CORE_LAYOUT_I18N_NAMESPACES as CORE_LAYOUT_NAMESPACES } from "@/i18n.namespaces";
 
 export const BOOKING_CODE = "45111" as const;

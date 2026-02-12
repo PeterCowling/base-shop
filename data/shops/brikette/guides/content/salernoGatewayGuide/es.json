@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Salerno: la otra puerta de entrada a la Costa Amalfitana",
+    "description": "Por qué Salerno es una llegada inteligente en temporada y sus enlaces de ferry."
+  },
+  "linkLabel": "Salerno: la otra puerta de entrada a la costa",
+  "intro": [
+    "Salerno es la otra puerta de la Costa Amalfitana, con trenes rápidos y ferris directos a Positano en verano.",
+    "Elígela si quieres evitar el tráfico de Nápoles o llegas desde el sur de Italia."
+  ],
+  "sections": [
+    {
+      "id": "when-choose",
+      "title": "Cuándo conviene",
+      "body": [
+        "Los trenes Frecciarossa o Italo desde Roma/sur paran en Salerno sin hacer transbordo en Nápoles.",
+        "Los precios de hoteles y comidas son más bajos que en la costa: ideal para dormir antes de seguir viaje."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Conexiones hacia Positano",
+      "body": [
+        "Los ferris Travelmar (abril–octubre) salen del Molo Manfredi y llegan a Positano en unos 70 minutos; compra billetes online.",
+        "En invierno toma tren hasta Vietri sul Mare y luego bus SITA vía Amalfi; calcula 2 h 15 con márgenes."
+      ]
+    },
+    {
+      "id": "in-city",
+      "title": "Qué hacer en Salerno",
+      "body": [
+        "Pasea por el lungomare arbolado, visita la catedral y el barrio medieval con arte urbano.",
+        "Prueba pizza fritta y dulces en Via dei Mercanti antes de embarcar."
+      ]
+    },
+    {
+      "id": "practical",
+      "title": "Consejos prácticos",
+      "body": [
+        "Usa el consigna junto al puerto si llegas temprano: cuesta unos 5–7 € por maleta.",
+        "Confirma horarios del último ferry/bus y lleva cambio para billetes comprados a bordo."
+      ]
+    }
+  ],
+  "tips": [
+    "Si llegas tarde, pasa la noche en Salerno y toma el primer ferry o bus a Positano para un traslado más fluido.",
+    "Utiliza consigna cerca de la estación (5–7 € por maleta) para explorar sin carga entre tren y ferry."
+  ],
+  "faqs": [
+    {
+      "q": "¿Es más rápido que vía Nápoles?",
+      "a": [
+        "Sí cuando hay ferry directo y llegas en tren rápido: evitas tráfico y trasbordos extra."
+      ]
+    },
+    {
+      "q": "¿Puedo hacer bate y vuelta desde Positano?",
+      "a": [
+        "Sí, pero sal temprano y regresa antes del último ferry; fuera de temporada vuelve vía Amalfi + bus."
+      ]
+    }
+  ]
+}

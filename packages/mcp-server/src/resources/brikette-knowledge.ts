@@ -1,18 +1,7 @@
 import { readFile } from "fs/promises";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 
-// Path to the brikette app source files
-const BRIKETTE_ROOT = join(
-  dirname(fileURLToPath(import.meta.url)),
-  "..",
-  "..",
-  "..",
-  "..",
-  "apps",
-  "brikette",
-  "src"
-);
+import { BRIKETTE_ROOT } from "../utils/data-root.js";
 
 // Cache for knowledge base content with TTL
 interface CacheEntry {

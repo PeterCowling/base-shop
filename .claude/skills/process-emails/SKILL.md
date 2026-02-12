@@ -22,15 +22,34 @@ Run this skill when you want to process customer inquiry emails for Brikette:
 
 ## Workflow
 
-### 1. Check Email Queue
+### 1. Run Inbox Organize Cycle
 
-First, use the `gmail_list_pending` MCP tool to fetch pending emails:
+First, run an inbox organize pass for unread emails. This does a garbage/sort cycle:
+- trashes known garbage patterns
+- labels likely customer inquiries as `Brikette/Inbox/Needs-Processing`
 
 ```
-Checking your email queue...
+Organizing unread inbox...
 ```
 
 Call the tool:
+```typescript
+gmail_organize_inbox({ limit: 500 })
+```
+
+Then briefly report the result:
+- scanned threads
+- trashed count
+- needs-processing count
+- promotional count
+- spam count
+- deferred count
+- deferred sender email list (for user instruction on future routing rules)
+
+### 2. Check Email Queue
+
+Use the `gmail_list_pending` MCP tool to fetch pending emails:
+
 ```typescript
 gmail_list_pending({ limit: 20 })
 ```
@@ -40,7 +59,7 @@ If no pending emails, inform the user:
 No pending emails in your queue. You're all caught up!
 ```
 
-### 2. Display Queue Summary
+### 3. Display Queue Summary
 
 Present emails in a summary table:
 
@@ -57,7 +76,7 @@ Actions:
 - "Process all" - work through queue in order
 - "Process #1" - handle specific email
 - "Skip #3" - mark as spam/not-customer
-- "Defer #5" - move to end of queue
+- "Defer #5" - move to deferred manual-review label
 - "Done" - finish session
 ```
 
@@ -77,7 +96,7 @@ Classify emails by type:
 - **Complex** - Multi-part, complaint, or unusual request (defer for careful handling)
 - **Spam** - Suspicious, phishing, or unwanted
 
-### 3. Process Individual Emails
+### 4. Process Individual Emails
 
 When user selects an email to process:
 
@@ -101,6 +120,7 @@ When user selects an email to process:
    - Check detected language
    - Inspect agreement detection status
    - Note workflow triggers (prepayment, T&C, booking monitor)
+   - If classification is ambiguous or context looks odd, default to `deferred` (manual review)
 
 4. **Run Composition stage** using `draft_generate`:
    ```typescript
@@ -154,7 +174,7 @@ When user selects an email to process:
    - "Flag" - mark for manual handling
    ```
 
-### 4. Handle User Actions
+### 5. Handle User Actions
 
 **Create draft** (for Inquiry/Reply/FAQ):
 ```typescript
@@ -193,6 +213,11 @@ Use for:
 - Supplier marketing
 - Service provider updates
 
+When a promotional/spam false-positive appears in queue:
+1. Mark it `promotional` or `spam` immediately.
+2. Capture sender email/domain and subject pattern.
+3. Add the new exclusion pattern to `packages/mcp-server/src/tools/gmail.ts` (`NON_CUSTOMER_*` constants) so future organize runs stop queueing it.
+
 **Skip** (not relevant/not customer):
 ```typescript
 gmail_mark_processed({ emailId: "...", action: "skipped" })
@@ -207,7 +232,7 @@ gmail_mark_processed({ emailId: "...", action: "spam" })
 ```typescript
 gmail_mark_processed({ emailId: "...", action: "deferred" })
 ```
-Keeps in queue for later handling.
+Moves it out of the active queue and labels it `Brikette/Inbox/Deferred` for manual follow-up.
 
 ### Agreement Detection (T&C workflow)
 
@@ -221,7 +246,7 @@ If the email includes agreement **and** questions, treat as mixed response:
 2. Answer all questions.
 3. Keep the workflow state as awaiting confirmation if `likely/unclear`.
 
-### 5. Processing Informational Emails
+### 6. Processing Informational Emails
 
 When an email is classified as **Informational** (customer providing info, no reply needed):
 
@@ -302,7 +327,7 @@ When user says "Done" or queue is empty:
 
 Remember to review and send drafts in Gmail!
 
-**Still in queue:** 1 email (deferred)
+**Deferred for manual review:** 1 email
 ```
 
 ## Email Classification Guide

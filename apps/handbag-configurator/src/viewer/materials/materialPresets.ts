@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- HAND-0008 [ttl=2026-12-31]: Three.js material preset colors for 3D rendering */
 import type * as THREE from "three";
 
 type MaterialPreset = {

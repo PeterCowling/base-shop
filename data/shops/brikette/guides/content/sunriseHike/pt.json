@@ -1,0 +1,139 @@
+{
+  "seo": {
+    "title": "Caminhada ao Nascer do Sol do Hostel Brikette (Positano)",
+    "description": "Uma curta caminhada antes do amanhecer do Hostel Brikette até um mirante tranquilo acima de Positano, com fotos de navegação na ordem correta."
+  },
+  "linkLabel": "Caminhada ao Nascer do Sol: Assista ao Amanhecer Sobre Positano",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Se você quiser o nascer do sol mais simples, pode assistir ao amanhecer do terraço comum do hostel enquanto o sol nasce à esquerda (quando você está olhando para o mar).",
+    "Se você quiser um panorama mais amplo e um momento mais tranquilo acima da cidade, siga esta curta caminhada até as colinas para um mirante no topo do penhasco sobre Positano."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "O que é a Caminhada ao Nascer do Sol?",
+      "body": [
+        "Esta é uma curta caminhada de ida e volta antes do amanhecer do Hostel Brikette até um pequeno mirante acima de Positano.",
+        "Se você quiser uma opção de montanha mais longa, %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% é uma ótima alternativa, mas a rota abaixo é a maneira mais rápida de obter uma vista dramática do nascer do sol sem se comprometer com uma caminhada de dia inteiro."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Antes de ir (estará escuro)",
+      "body": [
+        "Leve uma lanterna de celular ou de cabeça e mantenha as mãos livres (especialmente nas escadas).",
+        "Use sapatos com aderência — a primeira parte é pavimentada, mas a trilha arborizada pode estar solta ou úmida.",
+        "Comece cedo o suficiente para chegar 10-15 minutos antes do nascer do sol para que você possa se acomodar, encontrar seu lugar e apreciar a primeira luz."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "Passo 1: Caminhe do hostel até a escadaria (≈350 m)",
+      "body": [
+        "Saia do hostel pela porta principal e desça até a estrada.",
+        "Vire em direção a Sorrento e caminhe cerca de **350 metros** ao longo da estrada principal até chegar a uma escadaria que sobe da estrada."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Passo 2: Suba até a casa, depois vire à esquerda",
+      "body": [
+        "Suba a escadaria até chegar à antiga casa branca ilustrada abaixo.",
+        "Na casa, **vire à esquerda** para entrar na trilha arborizada."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Antiga casa branca ao lado da escadaria na rota da caminhada ao nascer do sol acima de Positano",
+          "caption": "Este edifício marca o fim da subida da escadaria; vire à esquerda aqui para entrar na trilha arborizada.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Passo 3: Siga a trilha arborizada até o mirante",
+      "body": [
+        "Siga a trilha arborizada enquanto ela sobe suavemente para longe da casa.",
+        "Quando a trilha se bifurcar, pegue o ramo **direito**.",
+        "Você eventualmente chegará a um ponto onde as árvores se abrem e você pode ver o mar diretamente à frente. De lá, vá ao redor para sua **esquerda**.",
+        "Esse caminho para a esquerda leva você ao mirante. Você pode escalar cuidadosamente as rochas para um poleiro mais alto, ou ficar no ponto principal para uma vista estável."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Vista de mapa aéreo mostrando as curvas finais na rota da caminhada ao nascer do sol até o mirante acima de Positano",
+          "caption": "Use esta vista aérea para confirmar a curva final à esquerda em direção ao mirante depois que a trilha se abre para o mar.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Compartilhe este guia (QR)",
+      "body": [
+        "Se você está saindo com amigos, pode usar este código QR para compartilhar rapidamente o guia em outro telefone."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "Código QR vinculado ao guia de caminhada ao nascer do sol do Hostel Brikette",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Essenciais",
+  "essentials": [
+    "Lanterna de cabeça ou luz de celular (mais uma bateria carregada).",
+    "Sapatos com aderência e uma camada leve — pode ficar fresco e ventoso antes do amanhecer.",
+    "Água e um pequeno lanche se você planeja sentar e assistir ao nascer do sol."
+  ],
+  "tipsTitle": "Tempo inteligente",
+  "tips": [
+    "Faça uma verificação rápida da previsão: vento e nuvens baixas podem esconder o nascer do sol mesmo em dias claros.",
+    "Se você não tiver certeza sobre uma junção no escuro, pause e confirme suas direções em vez de adivinhar."
+  ],
+  "warningsTitle": "Notas de segurança",
+  "warnings": [
+    "Vá devagar nas escadas e mantenha as mãos livres — é fácil tropeçar em pouca luz.",
+    "Se a trilha parecer escorregadia após a chuva, considere assistir do terraço do hostel."
+  ],
+  "steps": [
+    {
+      "name": "Caminhe até a escadaria",
+      "text": "Do hostel, caminhe ~350 m em direção a Sorrento na estrada principal até avistar a escadaria subindo."
+    },
+    {
+      "name": "Suba até a casa",
+      "text": "Siga as escadas até a antiga casa branca, depois vire à esquerda para a trilha arborizada."
+    },
+    {
+      "name": "Pegue o ramo direito",
+      "text": "Quando a trilha arborizada se bifurcar, mantenha-se à direita e continue até poder ver o mar."
+    },
+    {
+      "name": "Vire à esquerda para o mirante",
+      "text": "Depois que a trilha se abrir para o mar, vá à esquerda para chegar ao mirante (escale cuidadosamente se quiser um poleiro mais alto)."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Posso apenas assistir ao nascer do sol do hostel?",
+      "a": [
+        "Sim — o terraço do hostel é a opção mais simples e o sol nasce à esquerda do edifício quando você está de frente para o mar."
+      ]
+    },
+    {
+      "q": "Quanto tempo leva a caminhada?",
+      "a": [
+        "É uma rota curta, mas o tempo depende do seu ritmo e de quanto tempo você passa no mirante. Saia com tempo suficiente para chegar 10-15 minutos antes do nascer do sol."
+      ]
+    }
+  ]
+}

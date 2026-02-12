@@ -90,6 +90,16 @@ jest.mock("firebase/database", () => {
   };
 });
 
+jest.mock("../../../hooks/data/useKeycardAssignments", () => ({
+  useKeycardAssignments: () => ({
+    assignments: [],
+    assignmentsRecord: {},
+    activeAssignments: [],
+    loading: false,
+    error: null,
+  }),
+}));
+
 jest.mock("../../../hooks/data/useEndOfDayReportData", () => ({
   useEndOfDayReportData: (date: Date) => mockUseEndOfDayReportData(date),
 }));

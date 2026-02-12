@@ -78,13 +78,13 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
       <div className="space-y-3">
         <h2
           id={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] id attribute */ "perks-heading"}
-          className={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "text-xl font-semibold text-brand-primary"}
+          className={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "text-xl font-semibold text-brand-primary dark:text-brand-secondary"}
         >
           {heading}
         </h2>
         {showIntro ? <p className="text-base text-brand-text/90">{introCopy}</p> : null}
         {guaranteeCopy.trim().length > 0 ? (
-          <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary/80">
+          <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary/80 dark:text-brand-secondary">
             {guaranteeCopy}
           </p>
         ) : null}
@@ -115,7 +115,7 @@ function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
           <Link
             href={termsHref}
             prefetch
-            className="text-sm font-medium text-brand-primary underline underline-offset-4 hover:text-brand-bougainvillea"
+            className="text-sm font-medium text-brand-primary underline underline-offset-4 hover:text-brand-bougainvillea dark:text-brand-secondary dark:hover:text-brand-secondary/85"
           >
             {termsLabel}
           </Link>

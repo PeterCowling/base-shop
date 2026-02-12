@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Eko podróżowanie po Wybrzeżu Amalfitańskim",
+    "description": "Jak zmniejszyć ślad: dolewki wody, trasy piesze, promy zamiast aut i świadome dni na plaży."
+  },
+  "linkLabel": "Eko podróżowanie po Wybrzeżu Amalfitańskim",
+  "intro": [
+    "Podróżowanie w duchu eko na Wybrzeżu Amalfitańskim obejmuje transport, odpady i codzienne nawyki energetyczne.",
+    "Zostaw lekki ślad, nie rezygnując z morskich widoków."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Greener transport",
+      "body": [
+        "W miarę możliwości wybieraj autobusy lub promy zamiast prywatnych taksówek.",
+        "Zamiast dzwonić do samochodu, spaceruj na krótkich dystansach po mieście."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Waste & plastic",
+      "body": [
+        "Noś wielorazową butelkę i torbę, uzupełniaj wodę przy fontannach lub w kawiarniach.",
+        "Segreguj śmieci, gdy są kosze, a na szlakach zabierz ze sobą to, co przynosisz."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energy & water",
+      "body": [
+        "Wyłącz klimatyzację i światła, gdy opuszczasz pokój; zamykaj okiennice, by wnętrza pozostawały chłodne.",
+        "Krótko się kąp i korzystaj z ręczników wielokrotnie, by oszczędzać wodę."
+      ]
+    }
+  ],
+  "tips": [
+    "Wspieraj małe lokalne firmy wykorzystujące regionalne produkty i praktyki low-waste.",
+    "Zamów dania sezonowe — cytryny, anchois i warzywa błyszczą w szczytowych miesiącach."
+  ],
+  "faqs": [
+    {
+      "q": "Can I rent e-bikes on the coast?",
+      "a": [
+        "Tak — w Amalfi, Sorrento i niektórych wsiach; rezerwuj wcześnie, bo floty są ograniczone."
+      ]
+    }
+  ]
+}

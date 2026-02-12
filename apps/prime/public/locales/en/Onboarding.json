@@ -1,0 +1,61 @@
+{
+  "guestProfile": {
+    "goalsLabel": "Goals Label",
+    "intent": {
+      "mixed": "Mixed",
+      "quiet": "Quiet",
+      "social": "Social"
+    },
+    "intentLabel": "Intent Label",
+    "interestsLabel": "Interests Label",
+    "pace": {
+      "active": "Active",
+      "activeDesc": "Active Desc",
+      "relaxed": "Relaxed",
+      "relaxedDesc": "Relaxed Desc"
+    },
+    "paceLabel": "Pace Label",
+    "saveCta": "Save",
+    "skipCta": "Skip",
+    "title": "Title"
+  },
+  "handoff": {
+    "cta": "handoff.cta",
+    "highlights": {
+      "connect": {
+        "description": "Description",
+        "title": "Title"
+      },
+      "explore": {
+        "description": "Description",
+        "title": "Title"
+      },
+      "quests": {
+        "description": "Description",
+        "title": "Title"
+      }
+    },
+    "subtitle": "Subtitle",
+    "title": "Title"
+  },
+  "socialOptIn": {
+    "activities": {
+      "description": "Description",
+      "title": "Title"
+    },
+    "chat": {
+      "description": "Description",
+      "title": "Title"
+    },
+    "intro": "Intro",
+    "noActivities": {
+      "description": "Description",
+      "title": "Title"
+    },
+    "privacyNote": "Privacy Note",
+    "saveCta": "Save",
+    "skipCta": "Skip",
+    "title": "Title",
+    "upcomingActivities": "Upcoming Activities"
+  }
+}

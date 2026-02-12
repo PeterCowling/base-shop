@@ -1,4 +1,5 @@
 // src/components/bookingSearch/Search.tsx
+"use client";
 
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 

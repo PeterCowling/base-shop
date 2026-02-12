@@ -161,6 +161,26 @@ export function generateEventId(): string {
   return `msg_${timestamp}_${random}`;
 }
 
+function normalizeEventIdComponent(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function maybeBuildDeterministicEventId(
+  eventType: MessagingEventType,
+  payload: MessagingPayload,
+): string | null {
+  if (eventType !== MessagingEventType.BOOKING_CONFIRMED) {
+    return null;
+  }
+
+  const bookingConfirmedPayload = payload as BookingConfirmedPayload;
+  return `msg_booking_confirmed_${normalizeEventIdComponent(bookingConfirmedPayload.bookingCode)}`;
+}
+
 /**
  * Create a messaging queue record for Firebase.
  */
@@ -168,8 +188,10 @@ export function createQueueRecord(
   eventType: MessagingEventType,
   payload: MessagingPayload,
 ): MessagingQueueRecord {
+  const deterministicEventId = maybeBuildDeterministicEventId(eventType, payload);
+
   return {
-    eventId: generateEventId(),
+    eventId: deterministicEventId ?? generateEventId(),
     eventType,
     payload,
     createdAt: Date.now(),

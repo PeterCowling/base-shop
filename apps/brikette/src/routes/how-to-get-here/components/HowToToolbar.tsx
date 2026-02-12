@@ -1,6 +1,8 @@
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] UI fallback copy retained while translation coverage is completed. */
 import { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
+
 import { ChevronDown } from "@/icons";
 
 import { anchorLinkClass, getFilterButtonClass } from "../styles";
@@ -138,6 +140,11 @@ export function HowToToolbar({
   onOpenFilters,
   className,
 }: HowToToolbarProps) {
+  const resolveCopy = (key: string, fallback: string, options?: Record<string, unknown>): string => {
+    const value = t(key, { defaultValue: fallback, ...(options ?? {}) }) as string;
+    const trimmed = value.trim();
+    return trimmed && trimmed !== key ? trimmed : fallback;
+  };
   const offset = useHeaderStickyOffset();
 
   // Disclosure state for mobile jump-to nav
@@ -152,7 +159,9 @@ export function HowToToolbar({
     }
   }, []);
 
-  const resultsLabel = t("filters.resultsCount", { count: resultsCount });
+  const resultsLabel = resolveCopy("filters.resultsCount", `Results: ${resultsCount} routes`, {
+    count: resultsCount,
+  });
 
   const clearChip = useCallback(
     (key: ActiveFilterChip["key"]) => {
@@ -169,7 +178,7 @@ export function HowToToolbar({
     [filters],
   );
 
-  const jumpToLabel = t("jumpTo.label");
+  const jumpToLabel = resolveCopy("jumpTo.label", "Jump to");
 
   return (
     <div
@@ -189,7 +198,7 @@ export function HowToToolbar({
                   type="button"
                   onClick={() => clearChip(chip.key)}
                   className={clsx(getFilterButtonClass(true), ACTIVE_FILTER_CHIP_CLASS)}
-                  aria-label={t("filters.chipClear", { label: chip.label })}
+                  aria-label={resolveCopy("filters.chipClear", `Clear ${chip.label}`, { label: chip.label })}
                 >
                   <span className="truncate">
                     <span className="opacity-80">{chip.label}:</span> {chip.value}
@@ -206,11 +215,11 @@ export function HowToToolbar({
             onClick={onOpenFilters}
             className={getFilterButtonClass(false)}
           >
-            {t("filters.editLabel")}
+            {resolveCopy("filters.editLabel", "Edit filters")}
           </button>
           {filters.hasActiveFilters ? (
             <button type="button" onClick={filters.clearFilters} className={getFilterButtonClass(false)}>
-              {t("filters.clearLabel")}
+              {resolveCopy("filters.clearLabel", "Clear filters")}
             </button>
           ) : null}
         </Cluster>
@@ -225,7 +234,7 @@ export function HowToToolbar({
             aria-expanded={jumpToExpanded}
             className={JUMP_TO_TOGGLE_CLASS}
           >
-            <span>{t("jumpTo.toggleLabel", { defaultValue: "Jump to section" })}</span>
+            <span>{resolveCopy("jumpTo.toggleLabel", "Jump to section")}</span>
             <ChevronDown
               aria-hidden
               className={clsx("size-4 transition-transform", jumpToExpanded && "rotate-180")}

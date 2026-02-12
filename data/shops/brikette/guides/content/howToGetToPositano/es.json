@@ -1,0 +1,64 @@
+{
+  "seo": {
+    "title": "Cómo llegar a Positano: todas las opciones comparadas",
+    "description": "Compara ferry, tren+bus, shuttle y traslados privados, con notas por temporada y consejos para el equipaje."
+  },
+  "linkLabel": "Cómo llegar a Positano (guía de decisiones)",
+  "intro": [
+    "Compara ferry, tren+bus, lanzadera y traslado privado. Elige por temporada, equipaje y escaleras, no por horarios rígidos."
+  ],
+  "toc": {
+    "onThisPage": "En esta página",
+    "naples": "Vía Nápoles",
+    "salerno": "Vía Salerno",
+    "ferry": "Ferry (verano)",
+    "private": "Traslado privado",
+    "faqs": "Preguntas frecuentes"
+  },
+  "labels": {
+    "whenHeading": "Cuándo elegir",
+    "cheapestHeading": "Ruta más económica",
+    "seasonalHeading": "Notas según la temporada"
+  },
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Ferry (estacional)",
+      "body": [
+        "Escénico en días calmados; consulta estado del mar y llega con antelación para colas y validación.",
+        "En verano salen desde Molo Beverello cuando el mar está tranquilo; revisa cancelaciones antes de salir."
+      ]
+    },
+    {
+      "id": "train-bus",
+      "title": "Tren + bus (todo el año)",
+      "body": [
+        "Alta velocidad a Nápoles/Salerno → bus SITA a Positano (baja en ‘Chiesa Nuova’ para menos escaleras).",
+        "Fuera de temporada: toma el bus vía Amalfi; es más lento pero fiable."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Traslado privado",
+      "body": [
+        "Puerta a puerta; más caro, útil con llegadas tardías o equipaje pesado."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuál es la opción más rápida en verano?",
+      "a": [
+        "Tren a Salerno y ferry cuando el mar está en calma: evitas el tráfico de carretera y viajas con espacio para el equipaje."
+      ]
+    },
+    {
+      "q": "¿En qué parada bajo del bus SITA?",
+      "a": [
+        "Chiesa Nuova tiene unas 80 escaleras hasta el Hostel Brikette y suele ser la bajada más cómoda con maletas."
+      ]
+    }
+  ],
+  "tocTitle": "En esta página",
+  "faqsTitle": "Preguntas frecuentes"
+}

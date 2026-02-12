@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Færgeplaner for Positano",
+    "description": "Hvornår færgerne sejler, hvor du tjekker realtidsplaner, sæsoner, selskaber og praktiske boarding-tips."
+  },
+  "linkLabel": "Færgeplaner for Positano",
+  "intro": [
+    "Færgeplaner til og fra Positano: hvor du tjekker liveafgange, hvordan sæsonerne påvirker sejlplanerne, og hvordan du har backup klar."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Hvornår færgerne sejler",
+      "body": [
+        "Højsæsonen løber cirka april–oktober med flest afgange fra midt i maj til september; om vinteren sejles der sjældent og kun hvis vejret tillader det.",
+        "I skuldersæsonen er første og sidste afgang ofte skåret væk – bekræft tidstabellen aftenen før."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Tjek live-opdateringer",
+      "body": [
+        "Brug rederiernes hjemmesider og apps (Travelmar, NLG, Alilauro, Positano Jet) samt opslagstavlerne i havnen for forsinkelser og gate-skift.",
+        "Tag skærmbilleder af tidstabeller og slå e-mail/SMS-varsler til, så vejradvarsler når dig, selv uden italiensk data."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og buffer",
+      "body": [
+        "I højsæsonen kan overfarter blive udsolgt flere timer før – køb online eller dagen før, og mød op 30 minutter inden med legitimation og bagage klar til mærkning.",
+        "Hold luft inden dagens sidste forbindelse, så du kan skifte til bus eller taxi, hvis havet bliver uroligt."
+      ]
+    }
+  ],
+  "tips": [
+    "Følg marineprognoser (vind over 20 knob eller dønninger over 1,5 meter udløser ofte aflysninger).",
+    "Hvis du skal skifte havn, så tjek lokale bustider på forhånd, så forbindelsen forbliver stressfri."
+  ],
+  "faqs": [
+    {
+      "q": "Hvornår offentliggøres sommertidtabellerne?",
+      "a": [
+        "De fleste rederier frigiver højsæsonplanerne i februar–marts; efterårsopdateringer lander som regel i slutningen af august."
+      ]
+    },
+    {
+      "q": "Hvordan bekræfter jeg en aflysning samme dag?",
+      "a": [
+        "Opdater rederiets website eller sociale kanaler, og kig efter opslag ved molen; personalet melder også ændringer i højtalerne.",
+        "Hav SITA-buskøreplanen eller et taxinummer klar i tilfælde af, at du skal skifte transport med det samme."
+      ]
+    },
+    {
+      "q": "Kan jeg rejse med stor bagage?",
+      "a": [
+        "Ja, men overdimensioneret bagage kan udløse et lille tillæg; kom i god tid, så besætningen kan mærke og stuve taskerne sikkert, mens du beholder værdierne hos dig."
+      ]
+    }
+  ]
+}

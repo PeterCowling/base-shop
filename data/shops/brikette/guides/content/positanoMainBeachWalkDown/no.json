@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Gå fra Hostel Brikette til Positanos hovedstrand",
+    "description": "Trinn-for-trinn trapperute som når Spiaggia Grande på 15–25 minutter."
+  },
+  "linkLabel": "Gå ned til Positanos hovedstrand",
+  "intro": [
+    "Det tar omtrent 15–25 minutter å gå fra Hostel Brikette til Positano hovedstrand, avhengig av tempo og fotostopp.",
+    "Google Maps kan veilede deg gjennom langsommere omveier, så bruk denne trappen først for å komme raskt til Spiaggia Grande og match hvert kontrollpunkt med vandrerhjemmets referansebilder."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "Før du går.",
+      "body": [
+        "Hent de laminerte trappebildene i resepsjonen eller den digitale conciergen, slik at du kan bekrefte de fem kontrollpunktene underveis.",
+        "Bruk solide sandaler til rullesteinene og ta med deg vann – det er ingen butikker i trappen før du kommer til promenaden."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Steg-for-steg-tur til Spiaggia Grande",
+      "body": [
+        "1. Gå ut av Hostel Brikette gjennom hoveddøren og gå ned trappen foran til Viale Pasitea.",
+        "2. Ta til venstre og gå omtrent 100 meter langs veien til første høyre hjørne ved siden av tobakksbutikken/aviskiosken – dette er kartpunkt 1.",
+        "3. Ta til høyre, hold deg i nedoverbakkefeltet og følg kurven til den første svingen i veien (kartpunkt 2).",
+        "4. Kjør av veien i svingen og fortsett rett frem ned trappen foran deg.",
+        "5. Når trappen møter en annen vei (kartpunkt 3), kryss rett frem og fortsett å gå nedover den neste synlige trapp.",
+        "6. Ved foten av trappen, kryss veien, ta til venstre i omtrent 10 meter, og ta deretter neste trapp på høyre side (kartpunkt 4).",
+        "7. Følg disse trappene, ta til venstre ved avsatsen og hold deg på stien til du kommer til bunnen.",
+        "8. Ta til høyre, gå inn på gårdsplassen ved punkt 5 på kartet, og sjekk at utsikten samsvarer med referansebildet av vandrerhjemmet.",
+        "9. Fortsett rett under buen, og gå deretter i omtrent 50 meter til havnen åpner seg og Spiaggia Grande vises på venstre side."
+      ]
+    }
+  ],
+  "tipsTitle": "Raske tips",
+  "tips": [
+    "Spar klatringen til senere ved å kombinere denne ruten med %LINK:positanoMainBeachBusBack|buss tilbake til vandrerhjemmet% etter stranddagen.",
+    "Sammenlign solsenger, gratissoner og klubbpriser i %LINK:positanoBeaches|Oversikt over strendene i Positano% før du legger ut.",
+    "Del kartet via vandrerhjemmets QR-kode eller digitale concierge hvis venner møter deg på stranden."
+  ]
+}

@@ -32,8 +32,9 @@ describe("generateEmailHtml", () => {
 
     expect(html).toContain("Cristiana's Signature");
     expect(html).toContain("Peter's Signature");
-    expect(html).toContain("Cristiana Marzano Cowling");
-    expect(html).toContain("Peter Cowling");
+    expect(html).not.toContain("With warm regards,");
+    expect(html).not.toContain("Peter Cowling</div>");
+    expect(html).not.toContain("Cristiana Marzano Cowling</div>");
   });
 
   it("includes social links and terms link in footer", () => {
@@ -43,5 +44,31 @@ describe("generateEmailHtml", () => {
     expect(html).toContain("tiktok.com");
     expect(html).toContain("hostel-positano.com");
     expect(html).toContain("Terms and conditions");
+  });
+
+  it("uses a single personalized greeting when body already starts with Dear Guest", () => {
+    const html = generateEmailHtml({
+      ...baseOptions,
+      recipientName: "Dedra",
+      bodyText: "Dear Guest,\n\nThanks for your message.\n\nBest regards,\nHostel Brikette",
+    });
+
+    const dearDedraCount = (html.match(/Dear Dedra,/g) || []).length;
+    const dearGuestCount = (html.match(/Dear Guest,/g) || []).length;
+    expect(dearDedraCount).toBe(1);
+    expect(dearGuestCount).toBe(0);
+  });
+
+  it("preserves a custom greeting from body and does not duplicate it", () => {
+    const html = generateEmailHtml({
+      ...baseOptions,
+      recipientName: "Maria",
+      bodyText: "Dear Alessia,\n\nThanks for your message.\n\nBest regards,\nHostel Brikette",
+    });
+
+    const dearAlessiaCount = (html.match(/Dear Alessia,/g) || []).length;
+    const dearMariaCount = (html.match(/Dear Maria,/g) || []).length;
+    expect(dearAlessiaCount).toBe(1);
+    expect(dearMariaCount).toBe(0);
   });
 });

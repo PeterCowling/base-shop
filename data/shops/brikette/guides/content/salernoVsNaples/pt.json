@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno ou Nápoles: qual chegada combina com você?",
+    "description": "Compare tempo de viagem, custo, facilidade com bagagem e disponibilidade de ferries para escolher a melhor porta de entrada."
+  },
+  "linkLabel": "Chegar por Salerno ou Nápoles?",
+  "intro": [
+    "Ambas as portas funcionam. No verão, Salerno costuma vencer discretamente graças a ferries extra e filas mais calmas."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Quando Salerno ganha",
+      "body": [
+        "Ferries sazonais seguem direto para Positano ou Amalfi com menos gente do que os cais de Nápoles.",
+        "Combine o aeroporto Salerno Costa d'Amalfi (QSR) com o shuttle Airlink para simplificar transferências."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Quando Nápoles ganha",
+      "body": [
+        "Fiabilidade fora de época: comboios rápidos + SITA via Sorrento continuam quando os ferries param.",
+        "Chegadas tardias encontram mais alojamento e opções de transporte em Nápoles."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Bagagem e escadas",
+      "body": [
+        "Chegue à Chiesa Nuova para minimizar escadas até ao hostel.",
+        "Chegou de ferry? Reserve porteiro no cais ou suba de autocarro SITA em vez de carregar malas."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vale a pena usar o aeroporto de Salerno (QSR)?",
+      "a": [
+        "Cada vez mais no verão: combine voos QSR com o shuttle Airlink e ferry quando o mar está calmo, recorrendo a autocarros se o tempo mudar."
+      ]
+    }
+  ]
+}

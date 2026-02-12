@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Művészet és kézművesek Positanóban",
+    "description": "Egyedi szandálok, kerámiák, nyomatok – hol találsz minőséget és hogyan postázd haza."
+  },
+  "linkLabel": "Művészet és kézművesek Positanóban (vásárlás)",
+  "intro": [
+    "Ismerje meg Positano kézműves világát okosan: szandálok, kerámiák, grafikák és tippek a hazaszállításhoz."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Egyedi szandálok",
+      "body": [
+        "Figyelje, ahogy a suszterek 30 perc alatt kézzel készítik el a bőrszandált; az egyedi párok ára körülbelül 80 eurótól indul.",
+        "Őrizze meg a lába körvonalát vagy készítsen lenyomatot, így később is rendelhet távolról – sok mester világszerte szállít, ha megvannak a méretei."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Kerámiák és művészet",
+      "body": [
+        "Családi kerámiaműhelyekben válogathat kézzel festett csempék és étkészletek között. Kérdezzen rá az ólommentes mázra, ha tálalásra szánja az edényeket.",
+        "Helyi művészek grafikákat és akvarelleket árulnak a Via Cristoforo Colombo mentén – a hengeres csomagolás megóvja őket az utazás során."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Fizetés és szállítás",
+      "body": [
+        "A legtöbb bolt elfogad bankkártyát, de készpénzzel gyakran kedvezményt kínálnak. Tartsa kéznél a személyi okmányát az adó-visszatérítéshez szükséges papírokhoz 154,94 euró feletti vásárlásnál.",
+        "A törékeny darabokat biztosított futárszolgálattal (DHL/UPS) érdemes feladni, és kérjen dupla dobozolást; az árak körülbelül 40 eurótól indulnak súlytól függően."
+      ]
+    }
+  ],
+  "tips": [
+    "Fotózza le a blokkokat és a műhelyek nevét, hogy később is tudja, melyik darabot ki készítette.",
+    "Ha kerámiát vinne kézipoggyászban, csomagoljon buborékfóliát – a hostelekben gyakran akad maradék csomagolóanyag a kiszállításokból."
+  ],
+  "faqs": [
+    {
+      "q": "Személyre szabják a mesterek a termékeket?",
+      "a": [
+        "Igen. Sok helyen monogramot domborítanak a szandálokra, vagy néhány napos határidővel a kerámiák színeit is igazítják a kéréséhez."
+      ]
+    },
+    {
+      "q": "Hogyan igényelhetek áfa-visszatérítést?",
+      "a": [
+        "Kérjen tax free űrlapot a vásárlásnál, pecsételtesse le a reptéren vagy a kompkikötőben, majd három hónapon belül nyújtsa be a visszatérítéshez."
+      ]
+    }
+  ]
+}

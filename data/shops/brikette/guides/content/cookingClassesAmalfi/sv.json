@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Matlagningskurser på Amalfikusten",
+    "description": "Var du bokar matlagningskurser, vad de kostar och vad som ingår."
+  },
+  "linkLabel": "Matlagningskurser på Amalfikusten",
+  "intro": [
+    "Praktiska matlagningskurser på Amalfikusten kombinerar sfusato-citroner, färsk pasta och familjerecept i små kök med utsikt.",
+    "Använd guiden för att välja en kurs som passar din budget och ditt schema och för att bekräfta detaljerna innan du betalar handpenning."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Så brukar en klass gå till",
+      "body": [
+        "Värdar bjuder på kaffe eller prosecco innan de går igenom ingredienserna: nyrivna citroner, säsongsgrönsaker och de pastadegar du ska forma.",
+        "Räkna med att laga två till tre rätter — oftast färsk pasta, en sås och en citronbaserad dessert — och sedan äta tillsammans; passen varar 2,5–4 timmar inklusive måltiden."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Så väljer du rätt kurs",
+      "body": [
+        "Kolla gruppstorlek och om köket ligger i Positano, på en gård i bergen eller i en grannby; transfer kan ingå eller kosta extra.",
+        "Ta reda på vad priset omfattar: ingredienser, vinpaket, utskrivna recept och om du får behålla förkläden eller matrester."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Praktiskt & timing",
+      "body": [
+        "Under högsäsong blir kurser fullbokade veckor i förväg; säkra en plats innan du anländer, särskilt för kvällspass efter dagsutflykter.",
+        "Om platsen ligger utanför Positano, bekräfta upphämtningspunkter eller budgetera för taxi; branta gränder betyder bekväma skor även om du åker shuttle."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Specialkost & etikett",
+      "body": [
+        "Informera värdarna om allergier, vegetariska/veganska önskemål eller glutenintolerans när du bokar; mycket kan anpassas om de vet i tid.",
+        "Bär täckta skor, sätt upp långt hår och använd diskret parfym — köken är små och du står nära färska ingredienser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Passar matlagningskurser nybörjare?",
+      "a": [
+        "Ja. Instruktörerna visar varje moment, hjälper till med tekniken och delar upp momenten så att alla får göra något utan stress."
+      ]
+    },
+    {
+      "q": "Behöver jag kunna italienska?",
+      "a": [
+        "Nej. De flesta klasser hålls på engelska eller tvåspråkigt, och visuella demonstrationer gör det lätt att hänga med."
+      ]
+    },
+    {
+      "q": "Vad ska jag ta med?",
+      "a": [
+        "Ta en liten anteckningsbok om du vill skriva ner tips, se till att telefonen är laddad för foton och ha kontanter för slutbetalning eller transport."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Praktisk pasta, såser och citrondesserter; små grupper och kök med utsikt i säsong."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Det här väntar"
+      },
+      {
+        "href": "#choose",
+        "label": "Så väljer du"
+      },
+      {
+        "href": "#tips",
+        "label": "Tips"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Det här väntar",
+        "body": [
+          "Praktisk pasta, såser och citrondesserter; små grupper och kök med utsikt i säsong."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Så väljer du",
+        "body": [
+          "Kolla gruppstorlek, längd, vad som ingår och transportalternativ."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Tips",
+        "body": [
+          "Boka tidigt under högsäsong; meddela specialkost i förväg."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "seo": {
+    "title": "Istenek ösvénye a Hostel Brikette-től",
+    "description": "Pontos útvonal a hosteltől a Sentiero degli Dei kiindulópontjaihoz, közlekedési lehetőségekkel és biztonsági tippekkel."
+  },
+  "linkLabel": "Istenek ösvénye: komplett útmutató Positanóból",
+  "intro": [
+    "A Sentiero degli Dei sziklafalra épült teraszokat, gesztenyés ligeteket és tágas panorámákat köti össze az Amalfi-parton. A Hostel Brikette-ből kompok és SITA buszok kombinációjával eljuthatsz a túraindulókhoz drága szervezett túrák nélkül.",
+    "Három fő kiindulópontot használhatsz: komp+busz Amalfi felé, végig busszal, vagy a Nocelle-i kiindulású oda-vissza túra. Ez az áttekintés segít eldönteni, melyik út felel meg idődnek, költségvetésednek és magasságfélelmednek."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Főbb látnivalók egy pillantásra",
+      "body": [
+        "Positano, Praiano és Capri felett lebegő panorámák várnak, így még rövidebb szakaszok is rendkívüli fotóhelyeket kínálnak.",
+        "Az emelkedők inkább állandóak, mint technikásak; magabiztos gyalogosok jó lábbeli és sok víz mellett bátran teljesíthetik az ösvényt."
+      ]
+    },
+    {
+      "id": "considerations",
+      "title": "Mire figyelj indulás előtt",
+      "body": [
+        "Számíts kiálló sziklafalakra, korlát nélküli lépcsőkre és szédítő mélységekre. A magasság miatt érzékenyek válasszák a könnyebb Nocelle oda-vissza szakaszt.",
+        "Az egész túra 3–5 órát vesz igénybe útvonaltól függően. Nyáron a korai indulás vagy késő délutáni kezdés elengedhetetlen."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Útvonalak a Hostel Brikette-től",
+      "body": [
+        "%LINK:pathOfTheGodsFerry|Kompos verzió Amalfin keresztül%: sétálj a Spiaggia Grandéig, kompozz Amalfiig, busszal kapaszkodj fel Bomeranóba, túrázz Noceléig, majd shuttle-lal térj vissza. Hosszabb nap, de tengerparti és Amalfi élményt is ad.",
+        "%LINK:pathOfTheGodsBus|Buszos verzió Amalfin keresztül%: válts jegyet a Bar Internazionale-nél, SITA busszal menj Amalfiig, onnan Agerola járattal Bomeranóba, majd kövesd a klasszikus Bomerano → Nocelle szakaszt. Akkor jó, ha a tengeri viszonyok rosszak vagy a kompot elkapkodták.",
+        "%LINK:pathOfTheGodsNocelle|Direkt Nocelle kör%: fogd a Montepertuso–Nocelle minibuszt, sétálj panorámás oda-vissza szakaszt Colle Serra felé, majd ugyanazon busszal térj vissza. Ideális könnyebb napra vagy kevésbé összetett utazásra."
+      ]
+    },
+    {
+      "id": "trail-basics",
+      "title": "A túra alapjai",
+      "body": [
+        "A Sentiero degli Dei Bomeranót és Nocelét köti össze kb. 6 km hosszban, mintegy 200 méter szintkülönbséggel.",
+        "A jelzések piros-fehér CAI csíkok és fa \\\"Sentiero” nyilak; a talaj köves lépcsők, tömörített föld és sziklás ledges keveréke – vigyél tapadó talpú cipőt és tartsd szabadon a kezed."
+      ]
+    },
+    {
+      "id": "planning",
+      "title": "Tervezési tippek",
+      "body": [
+        "Ellenőrizd az előrejelzést előző este; az eső megcsúsztathatja a köveket, az erős szél pedig félretéve leállíthatja a kompokat.",
+        "Vigyél legalább 1,5 liter vizet személyenként. Bomeranóban, Nocelében és néhány parasztházas standnál van csak utántöltési lehetőség.",
+        "Érvényesítsd a SITA jegyeket felszállás előtt, és tarts kiegészítő jegyet a hátizsákban a váratlan kitérők miatt."
+      ]
+    }
+  ],
+  "essentialsTitle": "Elengedhetetlen felszerelés",
+  "essentials": [
+    "Tapadó talpú lábbeli, napvédelem és rétegek az expozícióra.",
+    "Előre megvett SITA buszjegyek (tabacchi vagy Bar Internazionale) minden szakaszra.",
+    "Offline térképek vagy elmentett útvonalak, ha a mobil adat megszűnik a völgyekben."
+  ],
+  "typicalCostsTitle": "Szokásos költségek",
+  "typicalCosts": [
+    "SITA busz Positano ⇄ Amalfi/Bomerano/Nocelle: 2–4 € járatonként.",
+    "Travelmar vagy Lucibello komp Positano ⇄ Amalfi: főszezonban kb. 12–16 € oda-vissza.",
+    "Útmenti nasik és víz: 3–8 €; maga az ösvény ingyenes."
+  ],
+  "tipsTitle": "Okos időzítés",
+  "tips": [
+    "Indulj 09:00 előtt július–augusztusban vagy a tavaszi/őszi aranyóraidőben a hűvös és lágy fény miatt.",
+    "Kerüld a 1700 lépcsőt a Positano-ba való visszaeséskor, ha a térded már fáradt – hosszú a Montepertuso utáni lezuhanás.",
+    "Használj könnyű napitáskát és tartsd összehajtva a botokat, amíg a meredek lépcsők meg nem kezdődnek."
+  ],
+  "steps": [
+    {
+      "name": "Válaszd ki az útvonalat",
+      "text": "Dönts a komp+busz Amalfi felé, buszos út vagy a direkt Nocelle opció közül az időjárás és energia alapján."
+    },
+    {
+      "name": "Szerezz közlekedési jegyet",
+      "text": "Vásárolj SITA jegyet a Bar Internazionale-nél, és kompjegyet a kikötőben, ha hajóval mentek."
+    },
+    {
+      "name": "Jut el a túrainduláshoz",
+      "text": "Utazz Bomeranóba a teljes szakaszhoz vagy Nocelébe a rövidebb oda-vissza részhez."
+    },
+    {
+      "name": "Túrázd a Sentiero degli Dei-t",
+      "text": "Kövesd a CAI jelzéseket a panorámás teraszok között, és állj meg fotózni vagy harapni."
+    },
+    {
+      "name": "Térj vissza Positanóba",
+      "text": "Szállj vissza a Chiesa Nuova buszra, vagy csak akkor menjetek gyalog, ha tudatosan vállalod a hosszú lépcsőt."
+    }
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Mennyit vesz igénybe a teljes túra?",
+      "a": "Számolj 3–5 órával, beleértve a közlekedést. A kompút a leghosszabb, a Nocelle oda-vissza fél napba belefér."
+    },
+    {
+      "q": "Kezdőknek is jó?",
+      "a": "Igen, ha biztos a lépteidben és nem okoz gondot a magasság. Nincs technikai mászás, csak fokozatos emelkedés."
+    },
+    {
+      "q": "Mi történik, ha lemondják a kompot?",
+      "a": "Válts a buszos Amalfi útvonalra vagy menjetek egyenesen Nocelébe. Mindig legyen tartalék buszijegy a rugalmas váltáshoz."
+    }
+  ],
+  "toc": {
+    "onThisPage": "Ez az oldalon",
+    "essentials": "Alapfelszerelés",
+    "costs": "Szokásos költségek",
+    "tips": "Időzítés",
+    "faqs": "GYIK"
+  },
+  "faq": [
+    {
+      "q": "Mennyi idő a túra ajtótól ajtóig?",
+      "a": "Számolj 3–5 órával, beleértve a közlekedést is. A kompos út a leghosszabb; a Nocelle oda-vissza fél napba belefér."
+    },
+    {
+      "q": "Kezdőknek is megfelelő az ösvény?",
+      "a": "Igen, ha biztos a lépteidben és nem okoz gondot a magasság. Nincsenek technikai mászások, csak folyamatos emelkedők és lejtők."
+    },
+    {
+      "q": "Mi van, ha törlik a kompokat?",
+      "a": "Válts az Amalfin át közlekedő buszra, vagy menj közvetlenül Nocelébe. Mindig legyen tartalék buszjegyed, hogy alkalmazkodni tudj az időjáráshoz."
+    }
+  ]
+}

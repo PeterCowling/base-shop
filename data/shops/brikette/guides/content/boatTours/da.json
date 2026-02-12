@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Bådture i Positano",
+    "description": "Private og gruppe bådture: hvad du kan forvente, prisintervaller og bookingtips i sæsonen."
+  },
+  "linkLabel": "Bådture: Solnedgangskrydstogt til Private Chartere",
+  "intro": [
+    "Bådture lader dig følge Amalfikystens klipper uden at kæmpe med trafikken på vejen; book forud i topmånederne og hav en vejr-backup klar."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Gruppeture og delte både",
+      "body": [
+        "3-timers delte krydstogt afgår fra Positano midt på formiddagen og inkluderer badestop; forvent €85–€120 pr. person i juli–august.",
+        "Medbring badesko og et let lag — brisen er køligere ude på havet end på terrasserne."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Private chartere",
+      "body": [
+        "Skippere oplyser €550–€850 for halvdags gozzo-chartere (op til 6 personer) plus brændstof; bekræft inklusioner som prosecco eller håndklæder.",
+        "Forhandl starttider omkring solopgang eller sen eftermiddag, hvis du vil have blødere lys og færre bølger fra færgerne."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Vejr og backup-planer",
+      "body": [
+        "Operatører aflyser, når vinden overstiger styrke 4; hav en bus- eller strandplan klar, så dagen forbliver afslappet.",
+        "Havet kan være uroligt selv om sommeren — pak søsygebånd, hvis du er tilbøjelig til det."
+      ]
+    }
+  ],
+  "tips": [
+    "Ankom 20 minutter før afgang for at afregne restbeløbet og tage de medfølgende dækssko på.",
+    "Medbring en drybag til telefoner og en 1 L (34 oz) vandflaske; skygge er begrænset ombord."
+  ],
+  "faqs": [
+    {
+      "q": "Skal jeg forudbestille?",
+      "a": [
+        "Ja i maj–september — både bliver ofte udsolgt få dage i forvejen, især solnedgangspladser."
+      ]
+    },
+    {
+      "q": "Er håndklæder inkluderet?",
+      "a": [
+        "Gruppeture leverer normalt ét pr. person; private skippere varierer, så pak et hurtigtørrende håndklæde for en sikkerheds skyld."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotogalleri"
+}

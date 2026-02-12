@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Cẩm nang ẩm thực Naples & Amalfi cho người mê ăn",
+    "description": "Từ pizza Napoli đến chanh Amalfi: món nên thử và tour nếm chọn lọc."
+  },
+  "linkLabel": "Cẩm nang ẩm thực Naples & Amalfi cho người mê ăn",
+  "intro": [
+    "Khám phá món ngon từ Naples tới Amalfi Coast với các món phải thử, chợ địa phương và đồ uống đặc trưng."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Đặc sản Naples",
+      "body": [
+        "Thưởng thức pizza Margherita truyền thống, pizza chiên và bánh sfogliatella trong cùng một ngày — nhớ nghỉ với một ly espresso giữa mỗi món.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Đặc sản Amalfi Coast",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Tìm các caseificio (cửa hàng sữa) để mua mozzarella, provola hun khói và caciocavallo thưởng thức trên sân thượng hostel."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Đồ ăn đường phố & chợ",
+      "body": [
+        "Mua cuoppo fritto, cá cơm chiên hoặc arancini với giá 4–6 € để nạp năng lượng giữa các chuyến phà.",
+        "Chợ nông sản Chủ nhật ở Positano và Praiano bán trái cây theo mùa, bánh ngọt — nhớ mang túi tái sử dụng."
+      ]
+    }
+  ],
+  "tips": [
+    "Bản dịch đang được chuẩn bị.",
+    "Ghi rõ chế độ ăn khi đặt chỗ; nhiều đơn vị có thể điều chỉnh thực đơn nếu được báo trước."
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có thể tham gia tour ẩm thực từ Positano không?",
+      "a": [
+        "Có. Tham gia các tour thử món tại Naples hoặc Sorrento; đa số bắt đầu giữa buổi sáng nên bạn có thể đi tàu hoặc phà sớm."
+      ]
+    },
+    {
+      "q": "Nhà hàng có phục vụ món chay không?",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ]
+}

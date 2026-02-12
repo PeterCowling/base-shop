@@ -29,5 +29,6 @@
   "houseRules": "住客守则",
   "cancellationPolicy": "取消政策",
   "privacy": "隐私政策",
-  "cookies": "Cookie 政策"
+  "cookies": "Cookie 政策",
+  "navAriaLabel": "Footer navigation"
 }

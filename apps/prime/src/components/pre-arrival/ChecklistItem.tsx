@@ -5,6 +5,8 @@
  * Can be interactive (clickable) or informational.
  */
 
+import { type FC, memo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Check,
   ChevronRight,
@@ -14,8 +16,7 @@ import {
   MapPin,
   Navigation,
 } from 'lucide-react';
-import { FC, memo, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import type { ChecklistProgress } from '../../types/preArrival';
 
 export type ChecklistItemType = keyof ChecklistProgress;
@@ -71,18 +72,18 @@ export const ChecklistItem: FC<ChecklistItemProps> = memo(function ChecklistItem
 
   // Styling based on state
   const containerClasses = completed
-    ? 'bg-green-50 border-green-200'
+    ? 'bg-success-soft border-success-soft'
     : isInteractive
-      ? 'bg-white border-gray-200 hover:border-blue-300 hover:shadow-sm cursor-pointer'
-      : 'bg-gray-50 border-gray-200';
+      ? 'bg-card border-border hover:border-primary/30 hover:shadow-sm cursor-pointer'
+      : 'bg-muted border-border';
 
   const iconContainerClasses = completed
-    ? 'bg-green-500 text-white'
-    : 'bg-gray-100 text-gray-500';
+    ? 'bg-success-soft text-success-foreground'
+    : 'bg-muted text-muted-foreground';
 
   const titleClasses = completed
-    ? 'text-green-700'
-    : 'text-gray-900';
+    ? 'text-success-foreground'
+    : 'text-foreground';
 
   return (
     <button
@@ -113,12 +114,12 @@ export const ChecklistItem: FC<ChecklistItemProps> = memo(function ChecklistItem
           {t(`checklist.${type}.title`)}
         </h4>
         {description && !completed && (
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-muted-foreground mt-0.5">
             {description}
           </p>
         )}
         {completed && (
-          <p className="text-sm text-green-600 mt-0.5">
+          <p className="text-sm text-success-foreground mt-0.5">
             {t('checklist.completed')}
           </p>
         )}
@@ -126,7 +127,7 @@ export const ChecklistItem: FC<ChecklistItemProps> = memo(function ChecklistItem
 
       {/* Arrow for interactive items */}
       {isInteractive && (
-        <ChevronRight className="h-5 w-5 text-gray-400 flex-shrink-0" />
+        <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
       )}
     </button>
   );

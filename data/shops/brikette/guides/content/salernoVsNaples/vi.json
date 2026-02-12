@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Ưu/nhược điểm của mỗi thành phố làm điểm đến đầu tiên cho hành trình Amalfi."
+  },
+  "linkLabel": "Salerno vs Naples arrivals",
+  "intro": [
+    "Cả hai cửa ngõ đều ổn. Mùa hè, Salerno thường thắng thầm lặng nhờ thêm phà và hàng chờ nhẹ nhàng hơn."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Khi Salerno lợi thế",
+      "body": [
+        "Phà theo mùa chạy thẳng tới Positano hoặc Amalfi với lượng khách nhẹ hơn so với bến Naples.",
+        "Kết hợp sân bay Salerno Costa d'Amalfi (QSR) với shuttle Airlink để hành trình chuyển chặng đơn giản."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Khi Naples lợi thế",
+      "body": [
+        "Mùa thấp điểm: tàu cao tốc cộng xe buýt SITA qua Sorrento vẫn hoạt động khi phà tạm dừng.",
+        "Đến muộn buổi tối sẽ có nhiều lựa chọn lưu trú và phương án di chuyển tiếp tục quanh Naples hơn."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Hành lý & cầu thang",
+      "body": [
+        "Xuống ở Chiesa Nuova để giảm bậc thang khi lên hostel.",
+        "Đi phà lên bờ? Đặt khuân vác tại bến hoặc đi xe buýt SITA lên đồi thay vì tự vác hành lý."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Sân bay Salerno (QSR) có đáng dùng không?",
+      "a": [
+        "Ngày càng đáng cân nhắc vào mùa hè: kết hợp chuyến bay QSR với shuttle Airlink và phà khi biển êm, và chuyển sang xe buýt nếu thời tiết xấu."
+      ]
+    }
+  ]
+}

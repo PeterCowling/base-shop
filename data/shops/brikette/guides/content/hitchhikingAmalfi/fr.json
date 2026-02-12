@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Auto-stop sur la côte amalfitaine",
+    "description": "Pourquoi l'auto-stop est risqué sur la SS163, alternatives sûres et options économiques."
+  },
+  "linkLabel": "Auto-stop sur la côte amalfitaine",
+  "intro": [
+    "Faire de l'auto-stop sur la côte amalfitaine paraît aventureux, mais la SS163 est étroite, pleine de virages aveugles et presque dépourvue d'aires où s'arrêter en sécurité.",
+    "Appuyez-vous plutôt sur le réseau de transports publics : billets validés, itinéraires de secours et un peu de cash pour taxi ou porteur si le service est interrompu."
+  ],
+  "tocTitle": "Sur cette page",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Réalité sécurité",
+      "body": [
+        "Cars, bus et scooters partagent déjà une voie taillée dans la falaise. Les conducteurs ne vous voient qu'au dernier moment et la police vous déplacera pour votre sécurité.",
+        "La nuit, la visibilité est faible et les bas-côtés minuscules — attendre sur la chaussée expose à des blessures et à une amende."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Meilleures alternatives",
+      "body": [
+        "Les bus SITA, navettes locales et vans communautaires tournent toute la journée ; achetez vos tickets en tabacchi et validez-les à bord.",
+        "Les ferries saisonniers offrent des trajets panoramiques entre villages ; si la mer les annule, optez pour bus + porteur ou taxi partagé.",
+        "Les sentiers courts (Nocelle ↔ Positano, Praiano ↔ hameaux côtiers) restent de bons plans de jour."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Si vous êtes bloqué",
+      "body": [
+        "Appelez un taxi agréé (numéros affichés aux principaux arrêts) ou demandez à votre hébergement/bar d'auberge de réserver ; les tarifs nocturnes sont plus élevés, partagez la course si possible.",
+        "Prévenez votre hôte en cas de retard. L'équipe peut indiquer un point de prise en charge sûr ou une solution d'appoint à Sorrente/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Capturez chaque matin les horaires bus/ferry via UnicoCampania ou Travelmar pour connaître le dernier départ garanti.",
+    "Gardez une petite lampe ou un brassard réfléchissant si vous marchez après le coucher du soleil — l'éclairage public est limité."
+  ],
+  "warnings": [
+    "N'attendez jamais dans un tunnel ou sur un virage aveugle — la police peut vous sanctionner et les conducteurs n'ont aucun espace pour éviter un piéton."
+  ],
+  "faqs": [
+    {
+      "q": "L'auto-stop est-il légal sur la côte amalfitaine ?",
+      "a": [
+        "Il n'existe pas d'interdiction explicite, mais les forces de l'ordre le déconseillent et peuvent vous demander de vous déplacer pour votre sécurité. Si un agent vous interpelle, suivez ses instructions et rejoignez un arrêt de bus."
+      ]
+    },
+    {
+      "q": "Que faire si le dernier bus est parti ?",
+      "a": [
+        "Utilisez les numéros de taxi affichés, les applis de VTC actives localement ou demandez à un hôtel/bar d'appeler un chauffeur. En dernier recours, rejoignez Amalfi ou Sorrente, où les bus/trains nocturnes sont plus fréquents."
+      ]
+    }
+  ]
+}

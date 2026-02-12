@@ -12,6 +12,8 @@ export interface PreorderEntry {
   breakfast: string;
   drink1: string;
   drink2: string;
+  night?: string;
+  serviceDate?: string;
 }
 
 /**

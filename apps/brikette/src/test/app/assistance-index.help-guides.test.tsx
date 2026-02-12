@@ -2,10 +2,10 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { screen, within } from "@testing-library/react";
+import { renderWithProviders } from "@tests/renderers";
 
 import AssistanceIndexContent from "@/app/[lang]/assistance/AssistanceIndexContent";
 import type { GuideKey } from "@/guides/slugs";
-import { renderWithProviders } from "@tests/renderers";
 
 jest.mock("@/hooks/useCurrentLanguage", () => ({
   useCurrentLanguage: () => undefined,
@@ -83,6 +83,8 @@ jest.mock("react-i18next", () => {
 });
 
 describe("/help assistance index", () => {
+  const escapeRegex = (value: string): string => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
   it("shows Quick help above Help guides", () => {
     renderWithProviders(<AssistanceIndexContent lang="en" />, { route: "/en/help" });
 
@@ -91,7 +93,7 @@ describe("/help assistance index", () => {
     expect(quickHelpHeading.compareDocumentPosition(helpGuidesHeading) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("renders only the curated Helpful guides list", () => {
+  it("renders only published guides in the curated Helpful guides list", () => {
     renderWithProviders(<AssistanceIndexContent lang="en" />, { route: "/en/help" });
 
     const heading = screen.getByRole("heading", { name: "Helpful Guides" });
@@ -100,18 +102,24 @@ describe("/help assistance index", () => {
     const scoped = within(section as HTMLElement);
 
     const expected = [
+      "SIMs, eSIMs, and ATMs",
+      "What to pack",
+      "Best time to visit",
+    ];
+    for (const label of expected) {
+      expect(scoped.getByRole("link", { name: new RegExp(escapeRegex(label), "i") })).toBeInTheDocument();
+    }
+
+    const hiddenDraftLabels = [
       "Age and accessibility",
       "Booking basics",
       "Defects and damages",
       "Deposits and payment",
       "Safety and security",
       "Travel help",
-      "SIMs, eSIMs, and ATMs",
-      "What to pack",
-      "Best time to visit",
     ];
-    for (const label of expected) {
-      expect(scoped.getByRole("link", { name: label })).toBeInTheDocument();
+    for (const label of hiddenDraftLabels) {
+      expect(scoped.queryByRole("link", { name: label })).not.toBeInTheDocument();
     }
   });
 
@@ -123,8 +131,8 @@ describe("/help assistance index", () => {
     expect(section).not.toBeNull();
     const scoped = within(section as HTMLElement);
 
-    expect(scoped.getByRole("link", { name: "Naples airport → Positano by bus" })).toBeInTheDocument();
-    expect(scoped.getByRole("link", { name: "Path of the Gods" })).toBeInTheDocument();
+    expect(scoped.getByRole("link", { name: /Naples airport → Positano by bus/i })).toBeInTheDocument();
+    expect(scoped.getByRole("link", { name: /Path of the Gods/i })).toBeInTheDocument();
     expect(scoped.getAllByRole("img")).toHaveLength(8);
   });
 });

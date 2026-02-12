@@ -1,0 +1,130 @@
+{
+  "seo": {
+    "title": "Ankomst med bil til Positano: parkering, ZTL og SS163-regler",
+    "description": "Ankommer du med bil til Positano? Praktiske parkeringsmuligheder, typiske priser, ZTL-regler, SS163-restriktioner og de nemmeste \"parker udenfor + bus/færge\"-alternativer."
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "linkLabel": "Ankomst med bil: parkering, ZTL og hvad du kan forvente",
+  "intro": [
+    "Ankomst med bil til Positano er muligt, men det er sjældent den nemmeste løsning. Vejene er smalle, håndhævelsen er streng, og parkering er knap og dyr.",
+    "Hvis du kører, så planlæg at parkere bilen én gang og lade den stå under dit ophold. Hvis du vil have mindre stress (og ofte en lavere totalpris), så parker uden for Positano og afslut med bus eller færge."
+  ],
+  "sections": [
+    {
+      "id": "quick-decision",
+      "title": "Hurtig beslutning: skal du tage bil med?",
+      "body": [
+        "**Bedst for:** familier med meget bagage, folk på længere italiensk roadtrip, eller rejsende der planlægger at udforske indlandsbyer på ikke-peak-dage.",
+        "**Ikke godt for:** korte ophold, dagstur-stil rejseplaner, eller nogen der bliver nervøs på klippeveje og snæver parkering.",
+        "",
+        "SS163 (Amalfikystvejen) er smuk, men krævende. Den er smal, travl og fuld af blinde sving. Sæsonbegrænsninger kan gælde (inkl. skiftende nummerplade-regler), og ZTL-zoner kan udløse bøder der dukker op måneder senere.",
+        "",
+        "Hvis du allerede er på offentlig transport, vil du normalt have en mere glidende tur ved at bruge %HOWTO:how-to-get-here|Sådan kommer du hertil-siden% og ankomme bilfrit."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Kystvej på Amalfikysten med stejle klipper og snævre sving"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panoramaudsigt over Positano, der klatrer op ad bjergskråningen over havet"
+        }
+      ]
+    },
+    {
+      "id": "warnings",
+      "title": "Vigtige advarsler (ZTL, SS163-restriktioner og omkostninger)",
+      "body": [
+        "**ZTL-zoner:** Positano og nærliggende byer bruger ZTL (begrænset trafik)-regler. Kameraer og kontroller er almindelige. Hvis du kører ind i et begrænset område på det forkerte tidspunkt, kan du få en bøde. Lejebiler kan også tilføje admin-gebyrer oveni.",
+        "",
+        "**SS163 skiftende nummerplade-restriktioner (apr–okt):** nogle perioder begrænser adgangen baseret på nummerpladenumre. Disse regler kan ændre sig efter år og kommune. Tjek altid aktuelle meddelelser, hvis du kører i højsæson.",
+        "",
+        "**Parkeringsomkostninger varierer meget:** i topmåneder skal du forvente dyre dagspriser i byen og begrænset tilgængelighed. Betragt en privat garagereservation som \"din billet ind i Positano med bil.\" Hvis du ikke har en booking, kan du bruge lang tid på at køre rundt.",
+        "",
+        "Bundlinje: kørsel kan fungere, men kun hvis du planlægger det som en reservationsbaseret aktivitet."
+      ]
+    },
+    {
+      "id": "arrival-plan",
+      "title": "Ankomst til Positano: planen med mindst stress",
+      "body": [
+        "1) **Læs først af, så parker.** Hvis du bor på Hostel Brikette, så planlæg et hurtigt bagageaflevering nær Chiesa Nuova, og kør så hen og parker bilen. Positano er stejlt — at bære tunge tasker efter du har parkeret er den del folk fortryder.",
+        "",
+        "2) **Undgå gule \"politi-linjer\" / stop-forbudt-zoner.** Håndhævelse er streng på hovedvejen. Stop ikke \"bare et øjeblik\" — bøder er almindelige.",
+        "",
+        "3) **Forvent trapper på begge måder.** Selv med garage skal du stadig gå op og ned ad trin. Gode sko betyder noget.",
+        "",
+        "Hvis du ankommer med færge i stedet, så brug %LINK:ferryDockToBrikette|Færgekaj → Hostel Brikette (med bagage)% og overvej %LINK:porterServices|bæreservice%."
+      ]
+    },
+    {
+      "id": "parking-options",
+      "title": "Parkeringsmuligheder (i byen vs. uden for Positano)",
+      "body": [
+        "**Mulighed A — Private garager i Positano (bedst hvis du skal køre):**",
+        "Nogle garager tager reservationer (eksempler gæster nævner: Mandara, Car Park Anna, Di Gennaro). Book på forhånd om sommeren. Bekræft åbningstider, højdebegrænsninger (ofte omkring 1,9 m / 6,2 ft), og om du skal aflevere nøgler.",
+        "Typisk forventning: **€35–€60 pr. 24 timer** i topperioder, nogle gange mere. Priser varierer efter placering, køretøjsstørrelse og sæson.",
+        "",
+        "**Mulighed B — Betalte gadepladser (kun hvis du er heldig):**",
+        "Du vil nogle gange se blåmarkerede betalte pladser, herunder i områder omkring Chiesa Nuova. Takster og maksimale opholdstider varierer. Læs skiltet og antag håndhævelse.",
+        "",
+        "**Mulighed C — Parker uden for Positano og afslut med bus/færge (bedste balance for de fleste rejsende):**",
+        "Hvis du ikke behøver en bil under dit ophold, er det ofte billigere og nemmere at parkere i Sorrento/Meta/Piano di Sorrento eller i Salerno nær havnen, og så bruge offentlig transport. %LINK:transportBudget|Transport budget-guiden% sammenligner omkostninger og afvejninger."
+      ]
+    },
+    {
+      "id": "free-parking-tip",
+      "title": "En realistisk note om \"gratis parkering\"",
+      "body": [
+        "I praksis er gratis pladser i Positano ikke noget du kan planlægge omkring. Nogle bilister finder nogle gange udkørsler eller umarkerede pladser, men regler ændrer sig, og bøder er almindelige.",
+        "",
+        "Hvis du vil prøve lykken, så gør det kun hvis du også har råd til backup-planen (en betalt garage). Ét sted som nogle gange nævnes af bilister er Plus Code **JFJG+2X Positano, SA** — behandl det som et \"måske,\" ikke et løfte. Tjek altid lokal skilteføring og bloker aldrig trafik eller indkørsler."
+      ]
+    },
+    {
+      "id": "driving-tips",
+      "title": "Køretips på Amalfikysten (kort version)",
+      "body": [
+        "- Kør langsomt og vær opmærksom ved blinde sving. Lokale bruger ofte hornet i snævre hjørner.",
+        "- Undgå peak ankomst-vinduer (sen formiddag til sen eftermiddag) hvis du kan. Trafik og parkeringssøgninger er på deres værste.",
+        "- Planlæg ikke snævre videre forbindelser efter en køredag. Forsinkelser er normale.",
+        "- Medbring både kort og kontanter. Nogle garager foretrækker kontanter eller har kortproblemer i travle perioder.",
+        "- Hvis du er træt, er det sikrere at parkere og skifte til busser/færger end at køre igennem sent om natten."
+      ]
+    }
+  ],
+  "tipsTitle": "Hurtige tips",
+  "tips": [
+    "Behandl en bilankomst som \"reservationsbaseret\": book parkering, planlæg så resten af dagen omkring det.",
+    "Pak en lille dagstaske med det vigtigste før du afleverer nøglerne — garager kan parkere biler kofanger mod kofanger indtil check-ud.",
+    "For lokal transport når du er parkeret, brug %LINK:publicTransportAmalfi|Amalfikyst offentlig transport-guide% og %LINK:sitaTickets|SITA busbilletter%."
+  ],
+  "faqsTitle": "Ankomst med bil FAQ",
+  "faqs": [
+    {
+      "q": "Er der parkering nær Hostel Brikette?",
+      "a": [
+        "Ikke pålideligt. Positano har ikke \"hotelparkering\" på den måde mange rejsende forventer. Planlæg at bruge en privat garage og behandl bilen som opbevaret, eller parker uden for Positano og ankom med bus/færge."
+      ]
+    },
+    {
+      "q": "Hvor lang tid på forhånd skal jeg reservere en garage?",
+      "a": [
+        "For juli–august-ankomster, book så tidligt du kan (ofte en uge eller mere på forhånd). Skuldersæson er nemmere, men last-minute kan stadig være smertefuldt i weekender."
+      ]
+    },
+    {
+      "q": "Kan jeg parkere i bare et par timer?",
+      "a": [
+        "Nogle gange, men det er ikke noget at regne med. Time-gadepladser findes i nogle områder, men håndhævelse er streng, og pladser fyldes hurtigt. Garager skifter ofte til dagspriser hurtigt."
+      ]
+    },
+    {
+      "q": "Hvad er de største \"gotchas\" for bilister?",
+      "a": [
+        "ZTL-bøder, sæsonrestriktioner på SS163, og undervurdering af tiden brugt på at finde parkering. Forvent trapper selv efter du har parkeret, og planlæg ekstra tid på ankomstdagen."
+      ]
+    }
+  ]
+}

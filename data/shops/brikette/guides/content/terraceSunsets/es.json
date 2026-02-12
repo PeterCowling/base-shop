@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Atardecer en terraza en Positano",
+    "description": "Un plan de atardecer simple y con presupuesto en Hostel Brikette: cuándo llegar y cómo hacerlo sin estrés."
+  },
+  "linkLabel": "Atardecer en terraza",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Para un atardecer clásico sin una cena larga y cara, la terraza del hostel es la opción más simple."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Cuándo llegar",
+      "body": [
+        "En temporada alta, llega 30–45 minutos antes del atardecer para conseguir buen sitio.",
+        "Deja margen si vienes de playa/excursión."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Luz de atardecer sobre Positano desde la terraza"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Plan con presupuesto",
+      "body": [
+        "Un trago + la vista y luego comida sencilla: %LINK:cheapEats|comer barato%.",
+        "Día completo a presupuesto: %LINK:positanoBudget|Positano con presupuesto%."
+      ]
+    }
+  ],
+  "fallback": "Llega un poco antes, toma un trago y mantén la cena simple."
+}

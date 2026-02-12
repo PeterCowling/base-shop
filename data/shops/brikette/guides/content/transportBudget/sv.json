@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Transport på budget",
+    "description": "Så minskar du transportkostnaderna på Amalfikusten."
+  },
+  "linkLabel": "Transport på budget",
+  "intro": [
+    "Håll transportkostnaderna låga genom att blanda pass, avgångar under lågtrafik och delade transfers när det gäller."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Choose the right pass",
+      "body": [
+        "Använd UNICO Costiera-dagpasset (12,40 €) för obegränsade SITA-bussar mellan Sorrento och Salerno – validera den första resan och ha biljetten till hands för inspektörerna.",
+        "Om du planerar två eller flera färjeturer på en dag, jämför kombinationsbiljetter från operatörer som Travelmar; de paketerar Amalfi- och Positano-humle till rabatterat pris."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Combine modes smartly",
+      "body": [
+        "Para ihop en färjesträcka med bussar för att spara pengar men ändå njuta av utsikten – segla ut på morgonen, buss tillbaka när priserna stiger.",
+        "Dela taxi för sena returer när bussarna stannar; att dela 80 € på fyra sätt kan slå väntetimmar till nästa körning."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Buy ahead when it helps",
+      "body": [
+        "Boka Trenitalia eller Italo biljetter från Rom/Neapel tidigt för de lägsta priserna; regionala tillägg till Sorrento är fast pris.",
+        "Boka flygplatstransfer (Curreri, Pintour) online för att låsa in platser under högsäsong."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Last-mile savings",
+      "body": [
+        "För ankomster, åk SITA-bussen till Chiesa Nuova och gå ner istället för att hyra en portier; tillåt 15 minuter med hanterbart bagage.",
+        "Använd bagageförvaring nära färjeläget istället för privat transfer om du har en sen utcheckning—7–10 € slår en extra taxi."
+      ]
+    }
+  ],
+  "tips": [
+    "Res före 08:30 eller efter 19:00 när bussarna är tystare och du kan gå ombord utan att trycka på.",
+    "Skärmdump eller skriv ut biljetter; Wi-Fi kan sjunka direkt som inspektörens styrelse."
+  ],
+  "faqs": [
+    {
+      "q": "Are bus passes worth it off-season?",
+      "a": [
+        "Ja om du tar tre eller fler turer på en dag. Annars betala singlar; tidtabellerna är lättare men priserna är fortfarande låga."
+      ]
+    },
+    {
+      "q": "Do I need to validate ferry tickets?",
+      "a": [
+        "De flesta operatörer skannar QR-koder digitalt, men behåll en utskriven kopia om du förväntar dig att våta förhållanden ska förvirra skärmarna."
+      ]
+    }
+  ]
+}

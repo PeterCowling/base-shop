@@ -1,11 +1,12 @@
 // src/hooks/useUuid.ts
 'use client';
 
-import logger from '@/utils/logger';
-import { zodErrorToString } from '@/utils/zodErrorToString';
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
+
+import logger from '@/utils/logger';
+import { zodErrorToString } from '@/utils/zodErrorToString';
 
 /**
  * Validates whether the provided string is a recognized ID.
@@ -44,14 +45,18 @@ export default function useUuid(): string {
       }
     }
 
+    if (!uuidFromURL) {
+      const storedUuid = localStorage.getItem('prime_guest_uuid')?.trim() || '';
+      if (storedUuid) {
+        uuidFromURL = storedUuid;
+      }
+    }
+
     // Missing or invalid UUID → redirect to error
     // The short-circuiting here correctly prevents validating an empty string
     if (!uuidFromURL) {
-      // CASE 1: UUID is missing, null, or empty string.
-      // Note: If you trimmed uuidFromURL earlier, an empty string "" means it was either
-      //       missing, empty, or contained only whitespace in the URL.
       logger.error(
-        `Redirecting to /error: Required 'uuid' query parameter is missing or empty. Received: ${JSON.stringify(uuidFromURL)}`,
+        `Redirecting to /error: Required 'uuid' value is missing from URL and guest session. Received: ${JSON.stringify(uuidFromURL)}`,
       );
       router.replace('/error');
       return; // Exit useEffect early

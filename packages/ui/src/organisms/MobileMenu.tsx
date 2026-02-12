@@ -20,6 +20,9 @@ interface Props {
 }
 
 const MOBILE_NAV_HEIGHT = 64;
+const FALLBACK_SITE_MENU_LABEL =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback heading copy. */
+  "Site menu";
 
 function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0 }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -30,7 +33,7 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   }, [i18n?.language]);
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t } = useTranslation("header", { lng: lang });
 
   /* Focus management --------------------------------------------------- */
@@ -61,32 +64,42 @@ function MobileMenu({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 
         id="mobile-menu"
         data-testid="mobile-menu"
         role="dialog"
-        aria-modal="true"
+        aria-modal={menuOpen ? "true" : undefined}
+        aria-hidden={!menuOpen}
         aria-labelledby="mobile-menu-title"
         className={clsx(
           /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
           "fixed inset-x-0 z-40 overflow-y-auto overscroll-contain will-change-transform " +
             /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
             "transform transition-transform duration-300 ease-out lg:hidden bg-brand-bg dark:bg-brand-bg",
-          menuOpen ? "translate-y-0" : "translate-y-full"
+          menuOpen ? "translate-y-0 visible pointer-events-auto" : "translate-y-full invisible pointer-events-none"
         )}
         // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 menu offset is runtime-calculated.
-        style={{ top: menuOffset, height: `calc(100dvh - ${menuOffset}px)` }}
+        style={{
+          top: menuOffset,
+          height: `calc(100dvh - ${menuOffset}px)`,
+          transform: `translate3d(0, ${menuOpen ? "0%" : "100%"}, 0)`,
+        }}
       >
         <h2
           id={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] id attribute */ "mobile-menu-title"}
           className={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "sr-only"}
         >
-          {t("siteMenu")}
+          {(() => {
+            const label = t("siteMenu") as string;
+            if (label && label !== "siteMenu") return label;
+            return FALLBACK_SITE_MENU_LABEL;
+          })()}
         </h2>
         <ul className="flex flex-col items-center space-y-6 pt-6 pb-10">
-          {navLinks.map(({ key, to, label }, idx) => (
+          {navLinks.map(({ key, to, label, prefetch }, idx) => (
             <li key={key}>
               <Link
                 ref={idx === 0 ? firstLinkRef : undefined}
                 href={`/${lang}${to}`}
-                prefetch={true}
-                className="block py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
+                prefetch={prefetch}
+                tabIndex={menuOpen ? 0 : -1}
+                className="block min-h-11 min-w-11 px-2 py-2 text-xl font-medium underline-offset-4 text-brand-heading dark:text-brand-heading hover:underline focus-visible:underline"
                 onClick={close}
               >
                 {label}

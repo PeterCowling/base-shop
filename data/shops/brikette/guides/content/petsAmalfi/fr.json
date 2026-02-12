@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Voyager avec des animaux sur la côte amalfitaine",
+    "description": "Politiques de transport, hébergements, vétérinaires et conseils pour gérer la chaleur."
+  },
+  "linkLabel": "Voyager avec des animaux sur la côte amalfitaine",
+  "intro": [
+    "Voyagez sur la côte amalfitaine avec vos animaux en toute sérénité : formalités, hébergements pet-friendly et bonnes pratiques locales."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Avant le départ",
+      "body": [
+        "Emportez la preuve de puce électronique aux normes européennes, les certificats de vaccination antirabique et le traitement contre le ténia si exigé par votre pays d’origine.",
+        "Glissez dans vos bagages des gamelles pliables, un tapis léger et des sacs à déjections — de nombreuses communes proposent peu d’accessoires pour animaux."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Se déplacer",
+      "body": [
+        "Les petits animaux voyagent gratuitement sur les bus SITA s’ils sont tenus en laisse ou en caisse ; les chiens plus grands doivent porter une muselière et disposent d’un billet réduit.",
+        "Les ferries acceptent les animaux sur les ponts extérieurs ; utilisez une laisse courte et arrivez tôt pour trouver un coin ombragé."
+      ]
+    },
+    {
+      "id": "where",
+      "title": "Où les animaux sont acceptés",
+      "body": [
+        "De nombreux hébergements acceptent les petits chiens sur demande préalable ; confirmez les frais et le règlement avant de réserver.",
+        "Les plages pet-friendly incluent Bau Bau Beach à Maiori et certaines zones de Marina di Praia en dehors des heures de pointe."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenez de l’eau et des gamelles pliables ; chaleur et escaliers fatiguent vite les animaux en été.",
+    "Évitez les marches des églises et n’entrez dans les cafés avec votre animal que sur invitation — les terrasses sont en général accueillantes."
+  ],
+  "faqs": [
+    {
+      "q": "Les vétérinaires parlent-ils anglais ?",
+      "a": [
+        "Beaucoup oui, surtout à Sorrente et Salerne. Gardez sous la main une liste de cliniques proches et les numéros d’urgence avant le départ."
+      ]
+    },
+    {
+      "q": "Les taxis acceptent-ils les animaux ?",
+      "a": [
+        "La plupart des chauffeurs acceptent les petits animaux si vous les prévenez à la réservation. Apportez une couverture pour protéger les sièges et laissez un pourboire pour le nettoyage."
+      ]
+    }
+  ]
+}

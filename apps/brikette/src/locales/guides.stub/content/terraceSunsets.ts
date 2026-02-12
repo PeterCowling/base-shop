@@ -3,7 +3,7 @@
 // Single-purpose stub: Terrace Bar Sunset Experience
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const terraceSunsets = {
   seo: {
@@ -45,4 +45,4 @@ export const terraceSunsets = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 

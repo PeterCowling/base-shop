@@ -2,13 +2,14 @@ import "../../../../../../test/resetNextMocks";
 
 import { render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Tooltip } from "../Tooltip";
 
 describe("Tooltip", () => {
   it("reveals tooltip on hover and focus and wires aria-describedby", async () => {
     const user = userEvent.setup();
-    const { getByRole } = render(
+    const { container,  getByRole } = render(
       <Tooltip text="Sample text">
         <button>Hover me</button>
       </Tooltip>,

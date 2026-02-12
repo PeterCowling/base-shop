@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- HAND-0008 [ttl=2026-12-31]: Three.js material colors for asset generation script */
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";

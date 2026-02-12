@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salerno til Positano: sådan gør du",
+    "description": "Sådan planlægger du rejsen fra Salerno med færge, bus eller privat transfer."
+  },
+  "linkLabel": "Salerno til Positano: sådan gør du",
+  "intro": [
+    "Salerno → Positano: færgen er lettest i sæson (især med bagage); bus via Amalfi kører hele året som billigere alternativ."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Færge (anbefalet med bagage)",
+      "body": [
+        "Gå ombord ved Molo Manfredi/Concordia afhængigt af operatør og regn med cirka en time på vandet, afhængigt af forholdene.",
+        "Tjek søforhold og liveplanen; sæder sælger ud i weekender — kom i god tid."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Bus via Amalfi (året rundt)",
+      "body": [
+        "Tag toget til Amalfi (SITA) → skift til Positano-linjen; længere tur men tilgængelig uden for sæson.",
+        "Hav små kontanter, stemple billetter, og læg buffer ind ved skiftet i Amalfi, mens du tjekker næste afgang."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er færgen pålidelig i foråret?",
+      "a": [
+        "Ja, men tidlige forårsstorme kan aflyse sejladser. Tjek på selve dagen."
+      ]
+    },
+    {
+      "q": "Hvor skal bagagen stå?",
+      "a": [
+        "Brug stativerne på færgerne; behold værdigenstande på dig."
+      ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@ import "../../../../../../test/resetNextMocks";
 import type { ComponentType } from "react";
 import { HeartIcon, PersonIcon,StarIcon } from "@radix-ui/react-icons";
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Icon, type IconName } from "../Icon";
 

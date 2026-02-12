@@ -4,263 +4,253 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { CheckInRow } from "../../../types/component/CheckinRow";
- 
+import * as dateUtils from "../../../utils/dateUtils";
+import CheckinsTable from "../CheckinsTable";
 
-// Suppress native alert calls in jsdom
-globalThis.alert = jest.fn();
+const useAuthMock = jest.fn();
+const useSearchParamsMock = jest.fn();
+const checkinsTableDataMock = jest.fn();
+const addReplicatedGuestToBookingMock = jest.fn();
+const archiveEligibleCountMock = jest.fn();
+const checkinsModesMock = jest.fn();
+const sharedDailyToggleMock = jest.fn();
+const showToastMock = jest.fn();
 
-/* ------------------------------------------------------------------ */
-/*  Hoist-safe mock placeholders                                      */
-/* ------------------------------------------------------------------ */
-/* eslint-disable no-var */
-/* eslint-disable react-hooks/rules-of-hooks */
-var setSelectedBookingMock: jest.Mock;
-var setBookingToDeleteMock: jest.Mock;
-var toggleAddGuestModeMock: jest.Mock;
-var toggleEditModeMock: jest.Mock;
-var toggleDeleteModeMock: jest.Mock;
-var openArchiveModalMock: jest.Mock;
-var closeArchiveModalMock: jest.Mock;
-var addGuestMock: jest.Mock;
-var refreshCountMock: jest.Mock;
-var setRoomsReadyMock: jest.Mock;
-/* eslint-enable no-var */
+jest.mock("../../../context/AuthContext", () => ({
+  useAuth: () => useAuthMock(),
+}));
 
-async function loadTable() {
-  jest.resetModules();
+jest.mock("next/navigation", () => ({
+  useSearchParams: () => useSearchParamsMock(),
+}));
 
-  setSelectedBookingMock = jest.fn();
-  setBookingToDeleteMock = jest.fn();
-  toggleAddGuestModeMock = jest.fn();
-  toggleEditModeMock = jest.fn();
-  toggleDeleteModeMock = jest.fn();
-  openArchiveModalMock = jest.fn();
-  closeArchiveModalMock = jest.fn();
-  addGuestMock = jest.fn().mockResolvedValue(undefined);
-  refreshCountMock = jest.fn();
-  setRoomsReadyMock = jest.fn();
+jest.mock("../../../hooks/data/useCheckinsTableData", () => ({
+  __esModule: true,
+  default: (args: unknown) => checkinsTableDataMock(args),
+}));
 
-  jest.doMock("../../../context/AuthContext", () => ({
-    useAuth: () => ({ user: { user_name: "Pete", email: "p@example.com" } }),
-  }));
+jest.mock("../../../hooks/mutations/useAddGuestToBookingMutation", () => ({
+  __esModule: true,
+  default: () => ({
+    addReplicatedGuestToBooking: addReplicatedGuestToBookingMock,
+  }),
+}));
 
-  const baseRow: CheckInRow = {
-    bookingRef: "BR1",
-    occupantId: "O1",
-    checkInDate: "2025-01-03",
-    rooms: [],
-    firstName: "John",
-    lastName: "Doe",
-    roomBooked: "101",
-    roomAllocated: "101",
-    activities: [],
-    isFirstForBooking: true,
-  };
+jest.mock("../../../hooks/mutations/useArchiveEligibleCount", () => ({
+  __esModule: true,
+  default: () => archiveEligibleCountMock(),
+}));
 
-  jest.doMock("../../../hooks/data/useCheckinsTableData", () => ({
-    __esModule: true,
-    default: () => ({
-      rows: [baseRow],
-      loading: false,
-      error: null,
-      validationError: null,
-    }),
-  }));
+jest.mock("../../../hooks/utilities/useCheckinsModes", () => ({
+  __esModule: true,
+  default: () => checkinsModesMock(),
+}));
 
-  jest.doMock("../../../hooks/mutations/useAddGuestToBookingMutation", () => ({
-    __esModule: true,
-    default: () => ({ addReplicatedGuestToBooking: addGuestMock }),
-  }));
+jest.mock("../../../hooks/utilities/useSharedDailyToggle", () => ({
+  __esModule: true,
+  default: () => sharedDailyToggleMock(),
+}));
 
-  jest.doMock("../../../hooks/mutations/useArchiveEligibleCount", () => ({
-    __esModule: true,
-    default: () => ({ eligibleCount: 0, refresh: refreshCountMock }),
-  }));
+jest.mock("../../../utils/toastUtils", () => ({
+  showToast: (...args: Parameters<typeof showToastMock>) =>
+    showToastMock(...args),
+}));
 
-  jest.doMock("../../../hooks/utilities/useSharedDailyToggle", () => ({
-    __esModule: true,
-    default: () => [false, setRoomsReadyMock],
-  }));
+jest.mock("../BookingRow", () => ({
+  __esModule: true,
+  default: ({
+    booking,
+    onRowClick,
+  }: {
+    booking: CheckInRow;
+    onRowClick?: (booking: CheckInRow) => void;
+  }) => (
+    <tr data-cy="booking-row" onClick={() => onRowClick?.(booking)}>
+      <td>{booking.firstName}</td>
+    </tr>
+  ),
+}));
 
-  jest.doMock("../../../hooks/utilities/useCheckinsModes", () => {
-     
-    const React: typeof import("react") = require("react");
-    return {
-      __esModule: true,
-      default: () => {
-         
-        const [isEditMode, setIsEditMode] = React.useState(false);
-         
-        const [isDeleteMode, setIsDeleteMode] = React.useState(false);
-         
-        const [isAddGuestMode, setIsAddGuestMode] = React.useState(false);
-         
-        const [showArchiveModal, setShowArchiveModal] = React.useState(false);
-        return {
-          isEditMode,
-          isDeleteMode,
-          isAddGuestMode,
-          showArchiveModal,
-          selectedBooking: null,
-          bookingToDelete: null,
-          setSelectedBooking: setSelectedBookingMock,
-          setBookingToDelete: setBookingToDeleteMock,
-          toggleAddGuestMode: () => {
-            toggleAddGuestModeMock();
-            setIsAddGuestMode((p) => !p);
-            setIsEditMode(false);
-            setIsDeleteMode(false);
-          },
-          toggleEditMode: () => {
-            toggleEditModeMock();
-            setIsEditMode((p) => !p);
-            setIsDeleteMode(false);
-            setIsAddGuestMode(false);
-          },
-          toggleDeleteMode: () => {
-            toggleDeleteModeMock();
-            setIsDeleteMode((p) => !p);
-            setIsEditMode(false);
-            setIsAddGuestMode(false);
-          },
-          openArchiveModal: () => {
-            openArchiveModalMock();
-            setShowArchiveModal(true);
-            setIsEditMode(false);
-            setIsDeleteMode(false);
-            setIsAddGuestMode(false);
-          },
-          closeArchiveModal: () => {
-            closeArchiveModalMock();
-            setShowArchiveModal(false);
-          },
-        };
-      },
-    };
-  });
+jest.mock("../TableHeader", () => ({
+  __esModule: true,
+  default: () => <thead />,
+}));
 
-  jest.doMock("react-router-dom", async () => {
-    const actual = jest.requireActual(
-      "react-router-dom"
-    );
-    return {
-      ...actual,
-      useLocation: () => ({ state: { selectedDate: "2025-01-03" } }),
-    };
-  });
+jest.mock("../header/BookingModal", () => ({
+  __esModule: true,
+  default: () => <div data-cy="booking-modal" />,
+}));
 
-  jest.doMock("../BookingRow", () => ({
-    __esModule: true,
-    default: ({ onRowClick, booking }: { onRowClick?: (b: CheckInRow) => void; booking: CheckInRow }) => (
-      <tr data-testid="booking-row" onClick={() => onRowClick?.(booking)}>
-        <td>{booking.firstName}</td>
-      </tr>
-    ),
-  }));
+jest.mock("../header/DeleteConfirmationModal", () => ({
+  __esModule: true,
+  default: () => <div data-cy="delete-modal" />,
+}));
 
-  jest.doMock("../TableHeader", () => ({ __esModule: true, default: () => <thead /> }));
-  jest.doMock("../header/BookingModal", () => ({ __esModule: true, default: () => <div data-testid="booking-modal" /> }));
-  jest.doMock("../header/DeleteConfirmationModal", () => ({ __esModule: true, default: () => <div data-testid="delete-modal" /> }));
-  jest.doMock("../header/ArchiveConfirmationModal", () => ({
-    __esModule: true,
-    default: ({ onClose }: { onClose: () => void }) => (
-      <div data-testid="archive-modal">
-        <button onClick={onClose}>close</button>
-      </div>
-    ),
-  }));
+jest.mock("../header/ArchiveConfirmationModal", () => ({
+  __esModule: true,
+  default: ({ onClose }: { onClose: () => void }) => (
+    <div data-cy="archive-modal">
+      <button onClick={onClose}>close</button>
+    </div>
+  ),
+}));
 
-  const mod = await import("../CheckinsTable");
-  return { Comp: mod.default, baseRow };
+const baseRow: CheckInRow = {
+  bookingRef: "BR1",
+  occupantId: "O1",
+  checkInDate: "2025-01-03",
+  rooms: [],
+  firstName: "John",
+  lastName: "Doe",
+  roomBooked: "101",
+  roomAllocated: "101",
+  activities: [],
+  isFirstForBooking: true,
+};
+
+function createModes(overrides: Partial<ReturnType<typeof defaultModes>>) {
+  return { ...defaultModes(), ...overrides };
 }
 
-/* ------------------------------------------------------------------ */
-/*  Tests                                                             */
-/* ------------------------------------------------------------------ */
+function defaultModes() {
+  return {
+    isEditMode: false,
+    isDeleteMode: false,
+    isAddGuestMode: false,
+    showArchiveModal: false,
+    selectedBooking: null,
+    bookingToDelete: null,
+    setSelectedBooking: jest.fn(),
+    setBookingToDelete: jest.fn(),
+    toggleAddGuestMode: jest.fn(),
+    toggleEditMode: jest.fn(),
+    toggleDeleteMode: jest.fn(),
+    openArchiveModal: jest.fn(),
+    closeArchiveModal: jest.fn(),
+  };
+}
 
 describe("CheckinsTable", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+
+    useAuthMock.mockReturnValue({
+      user: { user_name: "Pete", email: "p@example.com" },
+    });
+    useSearchParamsMock.mockReturnValue(
+      new URLSearchParams("selectedDate=2025-01-03"),
+    );
+    checkinsTableDataMock.mockReturnValue({
+      rows: [baseRow],
+      loading: false,
+      error: null,
+      validationError: null,
+    });
+    addReplicatedGuestToBookingMock.mockResolvedValue(undefined);
+    archiveEligibleCountMock.mockReturnValue({
+      eligibleCount: 0,
+      refresh: jest.fn(),
+    });
+    checkinsModesMock.mockReturnValue(defaultModes());
+    sharedDailyToggleMock.mockReturnValue([false, jest.fn()]);
   });
 
-  it("derives selected date from route state", async () => {
-    const { Comp } = await loadTable();
-    render(<Comp />);
+  it("derives selected date from search params", () => {
+    render(<CheckinsTable />);
+
     expect(screen.getByTestId("booking-row")).toBeInTheDocument();
+    expect(checkinsTableDataMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedDate: "2025-01-03",
+        daysBefore: 1,
+        daysAfter: 5,
+      }),
+    );
   });
 
-  it("handles row clicks for each mode", async () => {
-    const { Comp, baseRow } = await loadTable();
-    render(<Comp />);
-    const row = screen.getByTestId("booking-row");
+  it("routes row clicks to edit mode selection", async () => {
+    const modes = createModes({ isEditMode: true });
+    checkinsModesMock.mockReturnValue(modes);
+    const user = userEvent.setup();
 
-    await userEvent.click(screen.getByRole("button", { name: /edit/i }));
-    await userEvent.click(row);
-    expect(setSelectedBookingMock).toHaveBeenCalledWith(baseRow);
+    render(<CheckinsTable />);
+    await user.click(screen.getByTestId("booking-row"));
 
-    await userEvent.click(screen.getByRole("button", { name: /delete/i }));
-    await userEvent.click(row);
-    expect(setBookingToDeleteMock).toHaveBeenCalledWith(baseRow);
+    expect(modes.setSelectedBooking).toHaveBeenCalledWith(baseRow);
+  });
 
-    await userEvent.click(screen.getByRole("button", { name: /new booking/i }));
-    await userEvent.click(row);
-    expect(addGuestMock).toHaveBeenCalledWith("BR1", "O1", {
+  it("routes row clicks to delete mode selection", async () => {
+    const modes = createModes({ isDeleteMode: true });
+    checkinsModesMock.mockReturnValue(modes);
+    const user = userEvent.setup();
+
+    render(<CheckinsTable />);
+    await user.click(screen.getByTestId("booking-row"));
+
+    expect(modes.setBookingToDelete).toHaveBeenCalledWith(baseRow);
+  });
+
+  it("routes row clicks to add-guest mode replication", async () => {
+    const modes = createModes({ isAddGuestMode: true });
+    checkinsModesMock.mockReturnValue(modes);
+    const user = userEvent.setup();
+
+    render(<CheckinsTable />);
+    await user.click(screen.getByTestId("booking-row"));
+
+    expect(addReplicatedGuestToBookingMock).toHaveBeenCalledWith("BR1", "O1", {
       firstName: "Auto",
       lastName: "Created",
     });
+    expect(modes.toggleAddGuestMode).toHaveBeenCalled();
   });
 
-  it("opens and closes archive modal", async () => {
-    const { Comp } = await loadTable();
-    render(<Comp />);
+  it("opens archive modal from header action", async () => {
+    const modes = createModes();
+    checkinsModesMock.mockReturnValue(modes);
+    const user = userEvent.setup();
 
-    await userEvent.click(screen.getByRole("button", { name: /archive/i }));
-    expect(openArchiveModalMock).toHaveBeenCalled();
-    expect(screen.getByTestId("archive-modal")).toBeInTheDocument();
+    render(<CheckinsTable />);
+    await user.click(screen.getByRole("button", { name: /archive/i }));
 
-    await userEvent.click(screen.getByText("close"));
-    expect(closeArchiveModalMock).toHaveBeenCalled();
-    expect(screen.queryByTestId("archive-modal")).not.toBeInTheDocument();
+    expect(modes.openArchiveModal).toHaveBeenCalled();
   });
 
-  it("defaults to local today when route state is absent for non-Pete users", async () => {
-    jest.resetModules();
+  it("closes archive modal from modal action", async () => {
+    const modes = createModes({ showArchiveModal: true });
+    checkinsModesMock.mockReturnValue(modes);
+    const user = userEvent.setup();
 
-    const getLocalTodayMock = jest.fn(() => "2025-07-04");
-    const useCheckinsTableDataMock = jest.fn(() => ({
+    render(<CheckinsTable />);
+    await user.click(screen.getByRole("button", { name: /close/i }));
+
+    expect(modes.closeArchiveModal).toHaveBeenCalled();
+  });
+
+  it("defaults non-Pete users to local today when no search param is present", () => {
+    const getLocalTodaySpy = jest
+      .spyOn(dateUtils, "getLocalToday")
+      .mockReturnValue("2025-07-04");
+    useAuthMock.mockReturnValue({
+      user: { user_name: "Jane", email: "j@example.com" },
+    });
+    useSearchParamsMock.mockReturnValue(new URLSearchParams(""));
+    checkinsTableDataMock.mockReturnValue({
       rows: [],
       loading: false,
       error: null,
       validationError: null,
-    }));
-
-    jest.doMock("../../../context/AuthContext", () => ({
-      useAuth: () => ({ user: { user_name: "Jane", email: "j@example.com" } }),
-    }));
-
-    jest.doMock("../../../hooks/data/useCheckinsTableData", () => ({
-      __esModule: true,
-      default: useCheckinsTableDataMock,
-    }));
-
-    jest.doMock("../../../utils/dateUtils", async () => {
-      const actual = jest.requireActual("../../../utils/dateUtils");
-      return { ...actual, getLocalToday: getLocalTodayMock };
     });
 
-    jest.doMock("react-router-dom", async () => {
-      const actual = jest.requireActual(
-        "react-router-dom",
-      );
-      return { ...actual, useLocation: () => ({ state: undefined }) };
-    });
+    render(<CheckinsTable />);
 
-    const { default: Comp } = await import("../CheckinsTable");
-    render(<Comp />);
-
-    expect(useCheckinsTableDataMock).toHaveBeenCalledWith(
-      expect.objectContaining({ selectedDate: "2025-07-04" }),
+    expect(checkinsTableDataMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        selectedDate: "2025-07-04",
+        daysBefore: 0,
+        daysAfter: 1,
+      }),
     );
+    getLocalTodaySpy.mockRestore();
   });
 });
-

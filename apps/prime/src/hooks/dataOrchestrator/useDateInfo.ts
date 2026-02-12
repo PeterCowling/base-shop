@@ -9,8 +9,10 @@
  * - Order dates for each night
  */
 
-import logger from '@/utils/logger';
 import { useMemo } from 'react';
+
+import logger from '@/utils/logger';
+
 import {
   computeOrderDate,
   formatDateToDDMM,
@@ -68,8 +70,8 @@ export function useDateInfo(input: UseDateInfoInput): UseDateInfoResult {
 
       const daysSinceCheckIn = getDaysBetween(checkinStr, todayStr);
 
-      if (daysSinceCheckIn >= 0) {
-        // Guest is checked in
+      if (daysSinceCheckIn > 0) {
+        // Guest is checked in only after arrival day has passed.
         const daysUntilCheckOut = getDaysBetween(todayStr, checkoutStr);
         return {
           daysUntilCheckIn: null,

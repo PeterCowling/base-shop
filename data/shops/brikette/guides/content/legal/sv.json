@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Juridisk information och policyer",
+    "description": "Läs om våra juridiska villkor, ansvarsskyldighet, tillämplig lag, användning av webbplatsinnehåll samt riktlinjer för hälsa och säkerhet."
+  },
+  "linkLabel": "Juridisk information och policyer",
+  "sections": [
+    {
+      "id": "modificationOfTerms",
+      "title": "Ändringar av villkoren",
+      "body": [
+        "De här villkoren utgör hela avtalet mellan dig och Positano Hostel och ersätter alla tidigare löften eller överenskommelser. Vi kan uppdatera eller ändra dem när som helst, och den nya versionen gäller så snart den publiceras online."
+      ]
+    },
+    {
+      "id": "scopeOfLiability",
+      "title": "Vårt ansvarsomfång",
+      "body": [
+        "Vårt ansvar gentemot dig omfattar endast de tjänster och artiklar som anges i dessa villkor. Eventuell ersättning är begränsad till det belopp du har betalat för din bokning. Vi ansvarar inte för indirekta eller ekonomiska förluster som förlorad vinst, goodwill eller missade möjligheter – inte ens vid vårdslöshet eller oförutsedda händelser (force majeure). Säkerhetsboxar finns tillgängliga för värdesaker, men vi kan inte ta ekonomiskt ansvar för föremål som förvaras där och kan flytta tillhörigheter vid rutinstädning utan förvarning."
+      ]
+    },
+    {
+      "id": "governingLaw",
+      "title": "Tillämplig lag & jurisdiktion",
+      "body": [
+        "Din vistelse – och dessa villkor – regleras exklusivt av italiensk lag. Alla tvister ska prövas av italiensk domstol."
+      ]
+    },
+    {
+      "id": "websiteInformation",
+      "title": "Webbplatsinformation & innehållsanvändning",
+      "body": [
+        "Vi gör vårt bästa för att hålla informationen på webbplatsen korrekt, men fel kan förekomma och detaljer kan ändras utan föregående avisering. Bilderna visar den övergripande stilen på våra lokaler och återspeglar kanske inte exakt layout eller funktioner. Allt innehåll (text, bilder, varumärken) tillhör Positano Hostel och får inte användas utan skriftligt tillstånd. Externa länkar tillhandahålls för din bekvämlighet; vi tar inget ansvar för deras innehåll. Läs vår integritetspolicy för att förstå hur vi hanterar dina uppgifter."
+      ]
+    },
+    {
+      "id": "healthAndSafetyPolicy",
+      "title": "Hälso‑ och säkerhetspolicy",
+      "body": [
+        "För allas säkerhet, meddela oss om du nyligen har utsatts för någon smittsam sjukdom, inklusive influensa eller liknande virus. Förbetalda, ej återbetalningsbara bokningar förblir ej återbetalningsbara i sådana fall, så vi rekommenderar starkt en reseförsäkring som täcker hälsorelaterade avbrott i dina planer."
+      ]
+    }
+  ]
+}

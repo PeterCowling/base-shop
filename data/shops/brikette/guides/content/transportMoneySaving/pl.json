@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Jak oszczędzać na transporcie na Wybrzeżu Amalfitańskim",
+    "description": "Sprytne sposoby na tańsze przejazdy: bilety zbiorcze, rejsy o porach poza szczytem, alternatywne trasy."
+  },
+  "linkLabel": "Jak oszczędzać na transporcie na Wybrzeżu Amalfitańskim",
+  "intro": [
+    "Praktyczne sposoby na obniżenie kosztów transportu: karnety, odpowiednie godziny podróży, mieszanie autobusu i promu oraz plany awaryjne na pogorszenie pogody."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Karnety czy bilety jednorazowe",
+      "body": [
+        "Korzystaj z karnetów tylko wtedy, gdy robisz kilka przejazdów dziennie; w przeciwnym razie bardziej ekonomiczne są pojedyncze bilety. Pamiętaj o skasowaniu."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Czas i trasa",
+      "body": [
+        "Podróżuj poza godzinami szczytu 10:00–16:00 w dni największego ruchu; wybieraj autobusy bezpośrednie na grzbiety i promy na widokowe odcinki."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Mieszanie autobusu i promu",
+      "body": [
+        "Wybierz jeden płatny rejs promem (Positano ↔ Amalfi) i korzystaj z autobusów w pozostałych trasach, by oszczędzać przy zachowaniu komfortu."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Plan awaryjny na pogodę",
+      "body": [
+        "Wzburzone morze odwołuje promy: miej plan B z autobusem i zostaw margines na ostatnie popołudniowe kursy."
+      ]
+    }
+  ],
+  "faqsTitle": "Najczęściej zadawane pytania",
+  "faqs": [
+    {
+      "q": "Czy bilety łączone się opłacają?",
+      "a": [
+        "Czasem tak podczas dni z wieloma przesiadkami promowymi — porównaj ceny z biletami pojedynczymi."
+      ]
+    }
+  ]
+}

@@ -22,7 +22,7 @@ describe("buildProductFormData", () => {
       ],
       variants: { color: ["red", "blue", ""], size: ["m"] },
     };
-    const fd = buildProductFormData(product, ["storefront", "bcd"], ["en", "de"] as const);
+    const fd = buildProductFormData(product as any, ["storefront", "bcd"], ["en", "de"] as const);
     const entries = Array.from(fd.entries());
     const map = Object.fromEntries(entries) as Record<string, FormDataEntryValue>;
 

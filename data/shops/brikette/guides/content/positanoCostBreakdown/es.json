@@ -1,0 +1,91 @@
+{
+  "seo": {
+    "title": "Cuánto cuesta Positano: desglose de gastos",
+    "description": "Costes diarios para mochileros y viajeros de confort: transporte, comida, actividades y dónde ahorrar."
+  },
+  "linkLabel": "Cuánto cuesta Positano: desglose",
+  "intro": [
+    "Calcula cuánto necesitas por día en Positano desglosado por alojamiento, transporte, comidas y extras.",
+    "Usa esta guía para ajustar tu presupuesto según temporada y estilo de viaje."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Alojamiento",
+      "body": [
+        "Cama en hostel: 45–70 € según temporada; incluye desayuno ligero en Brikette.",
+        "B&B/guesthouse: 110–180 € por habitación doble con desayuno.",
+        "Hoteles 4★ con vistas: 300 €+ por noche en verano; reserva con meses de antelación si buscas ofertas."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transporte",
+      "body": [
+        "Bus SITA: 2,40 € por tramo; abonos diarios 8 € si haces 4+ trayectos.",
+        "Ferry Positano ↔ Amalfi: 10–12 € por trayecto en temporada.",
+        "Transfers privados: 120–150 € desde Nápoles (1–3 pasajeros); divide costo entre el grupo para comparar."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Comidas y bebida",
+      "body": [
+        "Desayuno en cafetería: cappuccino + cornetto 3,50–4,50 €.",
+        "Comida rápida (panino/pizza al taglio): 6–8 €; cena informal con vino: 18–25 €.",
+        "Cena con vistas: 35–50 € por persona; reserva y pregunta por cubierto/servicio."
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "Extras y actividades",
+      "body": [
+        "Excursión en barco compartido: 80–120 € por persona (3–4 h).",
+        "Clase de cocina: 90–130 € con degustación.",
+        "Sombrilla + tumbonas en Spiaggia Grande: 35–60 € por día en primera fila; Fornillo suele ser más barato."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaja en temporada media (mayo, septiembre) para equilibrar precios y clima.",
+    "Reserva actividades esenciales online para asegurar cupo y comparar tarifas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuánto efectivo debo llevar por día?",
+      "a": [
+        "Unos 30 € cubren snacks, buses y propinas; paga alojamiento y cenas con tarjeta."
+      ]
+    },
+    {
+      "q": "¿Se puede viajar con presupuesto mochilero?",
+      "a": [
+        "Sí: combina hostel, comidas en trattorias familiares y ferry solo para una excursión destacada; calcula 90–110 € por día."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "De un vistazo",
+    "tocTitle": "En esta página",
+    "tipsTitle": "Dónde ahorrar",
+    "faqsTitle": "Preguntas frecuentes"
+  },
+  "toc": [
+    {
+      "href": "#stay",
+      "label": "Alojamiento"
+    },
+    {
+      "href": "#transport",
+      "label": "Transporte"
+    },
+    {
+      "href": "#food",
+      "label": "Comidas"
+    },
+    {
+      "href": "#extras",
+      "label": "Extras y actividades"
+    }
+  ]
+}

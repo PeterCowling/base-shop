@@ -3,7 +3,7 @@
 // Single-purpose stub: Chiesa Nuova arrival route
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const chiesaNuovaArrivals = {
   seo: {
@@ -25,5 +25,5 @@ export const chiesaNuovaArrivals = {
   kneesPorterLinkLabel: "Porter service guide",
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

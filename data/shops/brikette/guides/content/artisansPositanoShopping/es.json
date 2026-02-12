@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Arte y artesanos de Positano (compras)",
+    "description": "Sandalias, cerámica, grabados — dónde encontrar calidad y cómo enviar."
+  },
+  "linkLabel": "Arte y artesanos de Positano (compras)",
+  "intro": [
+    "Compra artesanía de Positano sin pagar de más: sandalias, cerámica, grabados y cómo enviar tus compras a casa."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Sandalias a medida",
+      "body": [
+        "Observa cómo los zapateros fabrican sandalias de cuero en 30 minutos; los pares hechos a medida empiezan en unos 80 €.",
+        "Lleva el contorno de tu pie o dibújalo para pedidos posteriores — muchos artesanos envían a todo el mundo una vez tienen tus medidas."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Cerámica y arte",
+      "body": [
+        "Explora estudios familiares de cerámica con azulejos y vajilla pintados a mano. Pregunta por esmaltes sin plomo si piensas servir comida.",
+        "Artistas locales venden grabados y acuarelas en Via Cristoforo Colombo — el embalaje en tubo protege las piezas durante el viaje."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Pago y envíos",
+      "body": [
+        "La mayoría de tiendas aceptan tarjetas pero ofrecen descuentos en efectivo. Ten el DNI a mano para el papeleo de devolución de impuestos en compras superiores a 154,94 €.",
+        "Envía piezas frágiles por mensajería asegurada (DHL/UPS) y pide doble caja; las tarifas empiezan en unos 40 € según el peso."
+      ]
+    }
+  ],
+  "tips": [
+    "Fotografía recibos y detalles del artesano para recordar qué estudio hizo cada pieza.",
+    "Empaca plástico de burbujas si vas a llevar cerámica en el equipaje — los hosteles suelen tener material de relleno sobrante de envíos."
+  ],
+  "faqs": [
+    {
+      "q": "¿Pueden los artesanos personalizar artículos?",
+      "a": [
+        "Sí. Muchos graban iniciales en sandalias o personalizan colores de cerámica con unos días de aviso."
+      ]
+    },
+    {
+      "q": "¿Cómo solicito una devolución de IVA?",
+      "a": [
+        "Solicita un formulario tax-free en la compra, haz que lo sellen en el aeropuerto o puerto de ferry y envíalo en tres meses para recibir el reembolso."
+      ]
+    }
+  ]
+}

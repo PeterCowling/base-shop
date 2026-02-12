@@ -1,12 +1,11 @@
 // src: packages/ui/src/organisms/DesktopHeader.tsx
-import { memo, useCallback, useMemo } from "react";
+import { memo, type MouseEvent, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
-import { Button } from "../components/atoms/shadcn";
 import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useTheme } from "../hooks/useTheme";
@@ -30,6 +29,9 @@ const FALLBACK_PRIMARY_CTA_LABEL =
 const FALLBACK_BRAND_TITLE =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback brand name. */
   "Hostel Brikette";
+const FALLBACK_LOGO_ALT =
+  /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
+  "Hostel Brikette logo";
 
 function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -40,7 +42,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
     const base = raw.split("-")[0] as AppLanguage | undefined;
     return base && i18nConfig.supportedLngs.includes(base) ? base : undefined;
   }, [i18n.language]);
-  const lang = normalizedI18nLang ?? explicitLang ?? fallbackLang;
+  const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
@@ -50,6 +52,15 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   const { theme } = useTheme();
 
   const book = useCallback(() => openModal("booking"), [openModal]);
+  const bookHref = `/${lang}/${translatePath("book", lang)}`;
+  const onBookClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      event.preventDefault();
+      book();
+    },
+    [book]
+  );
 
   const navTranslate = useCallback<TranslateFn>(
     (key, defaultValue) => {
@@ -100,12 +111,16 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
         <div className="header-row-1 flex items-center justify-between">
           <Link
             href={`/${lang}`}
-            className="flex min-w-48 items-center gap-3 whitespace-nowrap transition hover:text-brand-secondary"
+            className="flex min-h-11 min-w-48 items-center gap-3 whitespace-nowrap rounded transition hover:text-brand-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70"
           >
             {/* eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package is not Next-only; icon is a local static asset */}
             <img
               src={logoIcon}
-              alt={headerT("logoAlt")}
+              alt={(() => {
+                const logoAlt = headerT("logoAlt", { defaultValue: FALLBACK_LOGO_ALT }) as string;
+                if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
+                return FALLBACK_LOGO_ALT;
+              })()}
               className="size-10"
               width={40}
               height={40}
@@ -126,12 +141,13 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
           </Link>
 
           <div className="flex items-center gap-6">
-            <Button
-              onClick={book}
-              className={`cta ${ctaClass} rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide focus-visible:ring-2 focus-visible:ring-offset-2`}
+            <Link
+              href={bookHref}
+              onClick={onBookClick}
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center rounded-md px-6 py-2.5 text-sm font-semibold tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 cta ${ctaClass}`}
             >
               {primaryCtaLabel}
-            </Button>
+            </Link>
 
             <ThemeToggle />
             <LanguageSwitcher />
@@ -142,7 +158,7 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
         <nav aria-label="Primary navigation" className="header-row-2">
           <Inline asChild gap={8} className="justify-end text-sm font-medium">
             <ul>
-              {navLinks.map(({ key, to, label }) => {
+              {navLinks.map(({ key, to, label, prefetch }) => {
                 const current = pathname === `/${lang}${to}`;
                 const highlight = current
                   ? theme === "dark"
@@ -158,8 +174,8 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
                       href={`/${lang}${to}`}
                       aria-current={current ? "page" : undefined}
                       aria-label={label}
-                      prefetch={to === apartmentPath ? true : undefined}
-                      className={`underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea ${highlight}`}
+                      prefetch={to === apartmentPath ? true : prefetch}
+                      className={`inline-flex min-h-11 items-center px-2 underline-offset-4 transition hover:underline hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-secondary/70 ${highlight}`}
                     >
                       {label}
                     </Link>

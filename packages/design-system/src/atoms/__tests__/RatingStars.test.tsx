@@ -1,11 +1,12 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { RatingStars } from "../RatingStars";
 
 describe("RatingStars", () => {
-  it("renders filled, half and empty stars based on rating", () => {
+  it("renders filled, half and empty stars based on rating", async () => {
     const size = 24;
     const { container } = render(<RatingStars rating={3.7} size={size} />);
     const stars = Array.from(container.querySelectorAll("svg"));

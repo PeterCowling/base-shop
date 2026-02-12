@@ -157,5 +157,8 @@
   "language": {
     "title": "Velg språk",
     "close": "Lukk"
+  },
+  "loader": {
+    "ariaLabel": "Loading"
   }
 }

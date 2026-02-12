@@ -1,0 +1,44 @@
+{
+  "actions": {
+    "backHome": "\u2190 Back to home",
+    "eventEnded": "Event ended",
+    "joinNow": "Join now",
+    "loadMore": "Load more activities",
+    "seeDetails": "See details"
+  },
+  "empty": {
+    "description": "Check back later for upcoming events, or explore Positano on your own!",
+    "exploreGuide": "Explore Positano Guide",
+    "title": "No activities yet"
+  },
+  "presence": {
+    "markedPresent": "You are marked present",
+    "markPresent": "I'm here",
+    "availableOnceLive": "Available once live"
+  },
+  "sdkUnavailable": {
+    "message": "Activities are temporarily unavailable until your secure session is ready.",
+    "returnHome": "Return Home"
+  },
+  "sections": {
+    "ended": "Ended",
+    "happeningNow": "Happening Now",
+    "upcoming": "Coming Up"
+  },
+  "status": {
+    "ended": "Ended",
+    "live": "Live now",
+    "upcoming": "Upcoming"
+  },
+  "subtitle": "Join fellow travelers for adventures and social events",
+  "time": {
+    "eventFinished": "Event finished",
+    "inDays": "in {{count}} days",
+    "inDays_one": "in {{count}} day",
+    "inDays_other": "in {{count}} days",
+    "inHoursMinutes": "in {{hours}}h {{minutes}}m",
+    "inMinutes": "in {{minutes}}m",
+    "startingNow": "starting now"
+  },
+  "title": "Activities"
+}

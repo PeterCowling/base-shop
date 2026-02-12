@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Perguntas frequentes sobre a Costa Amalfitana",
+    "description": "Respostas rápidas sobre transporte, temporada, custos, segurança e logística geral na região."
+  },
+  "linkLabel": "Perguntas frequentes sobre a Costa Amalfitana",
+  "intro": [
+    "Respostas rápidas para a logística na Costa Amalfitana: transportes, reservas, orçamento e planos para dias de chuva."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Essenciais de transporte",
+      "body": [
+        "Confirme horários oficiais de autocarro e ferry na noite anterior e mantenha margens de 30 minutos para ligações nos meses de pico.",
+        "Peça contactos de táxi ao alojamento para regressos tardios, garantindo alternativa se o último autocarro encher."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Reservas e orçamento",
+      "body": [
+        "Reserve restaurantes, beach clubs e passeios com pelo menos 24 horas de antecedência no verão; alguns pedem pequeno depósito.",
+        "Opte por tarifas flexíveis ou seguro de viagem para que vento e mar agitado não gerem prejuízo quando mudar planos."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Meteorologia e plano B",
+      "body": [
+        "Troque por opções interiores como o MAR Positano, o Museu do Papel de Amalfi ou uma visita de comboio a Nápoles/Salerno quando chover.",
+        "Se o mar ficar bravo, mude para autocarros ou táxis partilhados e verifique quedas de rochas ou cortes na SS163 antes de sair."
+      ]
+    }
+  ],
+  "tips": [
+    "Guarde contactos de emergência offline (112 e Guarda Costeira 1530) e o telefone do alojamento.",
+    "Compre bilhetes de autocarro nos tabacchi ou online com antecedência; os motoristas raramente vendem e há fiscalizações surpresa."
+  ],
+  "faqs": [
+    {
+      "q": "Quando partem os últimos ferries?",
+      "a": [
+        "No verão, a última ligação Positano ↔ Amalfi é por volta das 20:00; na primavera/outono desce para perto das 18:00 — confirme na noite anterior."
+      ]
+    },
+    {
+      "q": "Preciso reservar restaurantes ou beach clubs?",
+      "a": [
+        "Sim, de junho a setembro: reserve com pelo menos um dia de antecedência e, para fins de semana em beach clubs, com uma semana."
+      ]
+    },
+    {
+      "q": "E se chover o dia inteiro?",
+      "a": [
+        "Visite museus, faça uma aula de culinária ou apanhe o comboio para Nápoles/Salerno; leve uma camada impermeável leve para os transfers."
+      ]
+    },
+    {
+      "q": "Os multibancos são fiáveis?",
+      "a": [
+        "As principais vilas têm ATMs, mas as taxas variam — levante montantes médios de cada vez e mantenha notas pequenas para autocarros e cafés."
+      ]
+    }
+  ]
+}

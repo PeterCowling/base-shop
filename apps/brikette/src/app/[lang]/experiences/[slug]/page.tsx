@@ -1,18 +1,17 @@
 // src/app/[lang]/experiences/[slug]/page.tsx
 // Guide page - App Router version (dynamic route for all guides)
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX } from "@/data/guides.index";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
-import { guideNamespace,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
-import { loadGuideManifestOverridesFromFs } from "@/routes/guides/guide-manifest-overrides.node";
-import { extractGuideBundle } from "@/utils/extractGuideBundle";
+import { GUIDES_INDEX, isGuideLive } from "@/data/guides.index";
+import { guideNamespace,guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
 
 import GuideContent from "./GuideContent";
 
@@ -22,7 +21,7 @@ type Props = {
 
 export async function generateStaticParams() {
   const langParams = generateLangParams();
-  const publishedGuideKeys = GUIDES_INDEX.filter((guide) => guide.status === "published").map(
+  const publishedGuideKeys = GUIDES_INDEX.filter((guide) => guide.status === "live").map(
     (guide) => guide.key,
   );
   // Generate params for all guide keys across all languages
@@ -79,9 +78,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     format: "auto",
   });
 
-  // Check publish status from guides index
-  const guideMeta = GUIDES_INDEX.find((g) => g.key === guideKey);
-  const isPublished = (guideMeta?.status ?? "published") === "published";
+  const isPublished = isGuideLive(guideKey);
 
   return buildAppMetadata({
     lang: validLang,
@@ -106,23 +103,20 @@ export default async function GuidePage({ params }: Props) {
   if (base.baseKey !== "experiences") {
     notFound();
   }
+  if (!isGuideLive(guideKey)) {
+    notFound();
+  }
+  const localizedSlug = guideSlug(validLang, guideKey);
+  if (slug !== localizedSlug) {
+    permanentRedirect(guidePath(validLang, guideKey));
+  }
 
-  // Load manifest overrides (includes audit results)
-  const serverOverrides = loadGuideManifestOverridesFromFs();
-
-  // Load translations in render path (cheap if already loaded by generateMetadata)
-  await getTranslations(validLang, ["guides"]);
-
-  // Extract slim bundle for client hydration
-  const serverGuides = extractGuideBundle(validLang, guideKey);
-  const serverGuidesEn =
-    validLang !== "en" ? extractGuideBundle("en", guideKey) : undefined;
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
 
   return (
     <GuideContent
       lang={validLang}
       guideKey={guideKey}
-      serverOverrides={serverOverrides}
       serverGuides={serverGuides}
       serverGuidesEn={serverGuidesEn}
     />

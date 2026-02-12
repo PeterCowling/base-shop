@@ -1,4 +1,6 @@
 /* src/components/reports/EndOfDayPacket.tsx */
+"use client";
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   endAt as fbEndAt,
@@ -14,6 +16,7 @@ import { SafeDataProvider } from "../../context/SafeDataContext";
 import { TillDataProvider } from "../../context/TillDataContext";
 import { useTillShiftsRange } from "../../hooks/data/till/useTillShiftsRange";
 import { useEndOfDayReportData } from "../../hooks/data/useEndOfDayReportData";
+import { useKeycardAssignments } from "../../hooks/data/useKeycardAssignments";
 import { useVarianceThresholds } from "../../hooks/data/useVarianceThresholds";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { KeycardTransfer } from "../../types/hooks/data/keycardTransferData";
@@ -113,6 +116,19 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
       safeInflowsMismatch,
       correctionSummary,
     } = useEndOfDayReportData(date);
+    const { activeAssignments } = useKeycardAssignments();
+    const unresolvedAssignments = useMemo(
+      () =>
+        activeAssignments.map((a) => ({
+          keycardNumber: a.keycardNumber,
+          roomNumber: a.roomNumber,
+          occupantId: a.occupantId,
+          bookingRef: a.bookingRef,
+          assignedToStaff: a.assignedToStaff,
+          isMasterKey: a.isMasterKey,
+        })),
+      [activeAssignments]
+    );
     const { thresholds } = useVarianceThresholds();
     const { shifts, loading: shiftsLoading, error: shiftsError } =
       useTillShiftsRange({
@@ -691,6 +707,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
           closingKeycards={closingKeycards}
           keycardVariance={keycardVariance}
           keycardVarianceMismatch={keycardVarianceMismatch}
+          unresolvedAssignments={unresolvedAssignments}
           beginningSafeBalance={beginningSafeBalance}
           endingSafeBalance={endingSafeBalance}
           expectedSafeVariance={expectedSafeVariance}

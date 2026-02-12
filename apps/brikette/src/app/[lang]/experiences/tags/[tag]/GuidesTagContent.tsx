@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy, complexity -- PUB-05 pre-existing */
 // src/app/[lang]/experiences/tags/[tag]/GuidesTagContent.tsx
 // Client component for guide tag page
 import React, { memo, useEffect } from "react";
@@ -9,7 +10,7 @@ import type { TFunction } from "i18next";
 
 import GuidesTagsStructuredData, { type GuidesTagListItem } from "@/components/seo/GuidesTagsStructuredData";
 import { BASE_URL } from "@/config/site";
-import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
+import { type GuideMeta,GUIDES_INDEX, isGuideLive } from "@/data/guides.index";
 import { TAGS_SUMMARY } from "@/data/tags.index";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { getGuidesBundle, type GuidesNamespace } from "@/locales/guides";
@@ -38,7 +39,9 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const { t, i18n, ready } = useTranslation("guides", { lng: lang });
   const { t: tTags } = useTranslation("guides.tags", { lng: lang });
 
-  const items: GuideMeta[] = tag ? GUIDES_INDEX.filter((guide) => guide.tags.includes(tag)) : [];
+  const items: GuideMeta[] = tag
+    ? GUIDES_INDEX.filter((guide) => guide.tags.includes(tag) && isGuideLive(guide.key))
+    : [];
 
   const shouldNoIndex = items.length < 3;
 
@@ -169,7 +172,7 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
             <li key={key}>
               <Link
                 href={href}
-                className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:bg-brand-text dark:text-brand-secondary"
+                className="block rounded-lg border border-brand-outline/40 bg-brand-bg px-4 py-3 text-brand-primary underline-offset-4 hover:underline dark:border-brand-secondary/35 dark:bg-brand-surface dark:text-brand-text dark:hover:text-brand-secondary"
               >
                 {label}
               </Link>

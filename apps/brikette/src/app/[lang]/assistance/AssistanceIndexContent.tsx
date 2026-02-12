@@ -1,28 +1,35 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy -- PUB-05 pre-existing */
 // src/app/[lang]/assistance/AssistanceIndexContent.tsx
 // Client component for assistance landing page
-import { type ComponentProps, memo, useCallback, useMemo } from "react";
+import { type ComponentProps, memo, useCallback, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { Button } from "@acme/design-system/primitives";
-import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 import type { AssistanceQuickLinkRenderProps } from "@acme/ui/organisms/AssistanceQuickLinksSection";
+import { AssistanceQuickLinksSection as AssistanceQuickLinksSectionUi } from "@acme/ui/organisms/AssistanceQuickLinksSection";
 
 import AssistanceQuickLinksSection from "@/components/assistance/quick-links-section";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
+import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { usePagePreload } from "@/hooks/usePagePreload";
+import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
+import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
-import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
+
+import type { AssistanceIndexI18nSeed } from "./i18n-bundle";
 
 type Props = {
   lang: AppLanguage;
+  serverI18n?: AssistanceIndexI18nSeed;
 };
 
 const BOOKING_LINKS = {
@@ -105,6 +112,8 @@ type GuideCardData = {
   image: ReturnType<typeof resolveGuideCardImage>;
 };
 
+const DEFAULT_GUIDE_CARD_IMAGE = "/img/hostel-communal-terrace-lush-view.webp";
+
 function buildGuideCardData(
   key: GuideKey,
   resolvedLang: AppLanguage,
@@ -129,9 +138,36 @@ function buildGuideCardData(
   return { key, href, label, description, image };
 }
 
-function AssistanceIndexContent({ lang }: Props): JSX.Element {
+function seedBundle(lang: string, namespace: string, bundle: Record<string, unknown> | undefined): void {
+  if (!bundle || Object.keys(bundle).length === 0) return;
+  i18n.addResourceBundle(lang, namespace, bundle, true, true);
+}
+
+function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
+  const seededRef = useRef(false);
+  if (!seededRef.current && serverI18n) {
+    if (serverI18n.namespaces) {
+      for (const [namespace, bundle] of Object.entries(serverI18n.namespaces)) {
+        seedBundle(serverI18n.lang, namespace, bundle);
+      }
+    }
+    if (serverI18n.namespacesEn) {
+      for (const [namespace, bundle] of Object.entries(serverI18n.namespacesEn)) {
+        seedBundle("en", namespace, bundle);
+      }
+    }
+    seedBundle(serverI18n.lang, "guides", serverI18n.guides);
+    seedBundle("en", "guides", serverI18n.guidesEn);
+    seededRef.current = true;
+  }
+
   const routeLang = useCurrentLanguage();
   const resolvedLang = routeLang ?? lang;
+  usePagePreload({
+    lang: resolvedLang,
+    namespaces: ["assistanceSection", "assistance", "guides", "howToGetHere"],
+    optional: true,
+  });
   const { t, i18n } = useTranslation("assistanceSection", { lng: resolvedLang });
   const { t: tGuides, i18n: guidesI18n } = useTranslation("guides", { lng: resolvedLang });
   const { t: tAssistance } = useTranslation("assistance", { lng: resolvedLang });
@@ -169,15 +205,21 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
     popularGuidesHeadingRaw.trim().length > 0 &&
     popularGuidesHeadingRaw !== popularGuidesHeadingKey
       ? popularGuidesHeadingRaw
-      : "Other Popular Guides";
+            : "Other Popular Guides";
 
   const helpfulGuideCards = useMemo(
-    () => HELPFUL_GUIDE_KEYS.map((key) => buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn)),
+    () =>
+      HELPFUL_GUIDE_KEYS.filter((key) => isGuideLive(key)).map((key) =>
+        buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn),
+      ),
     [resolvedLang, tGuides, tGuidesEn],
   );
 
   const popularGuideCards = useMemo(
-    () => POPULAR_GUIDE_KEYS.map((key) => buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn)),
+    () =>
+      POPULAR_GUIDE_KEYS.filter((key) => isGuideLive(key)).map((key) =>
+        buildGuideCardData(key, resolvedLang, tGuides, tGuidesEn),
+      ),
     [resolvedLang, tGuides, tGuidesEn],
   );
 
@@ -188,7 +230,9 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
         href: card.href,
         label: card.label,
         description: card.description || card.label,
-        image: card.image ? { src: card.image.src, alt: card.image.alt ?? card.label } : undefined,
+        image: card.image
+          ? { src: card.image.src, alt: card.image.alt ?? card.label }
+          : { src: DEFAULT_GUIDE_CARD_IMAGE, alt: card.label },
       })),
     [helpfulGuideCards],
   );
@@ -200,7 +244,9 @@ function AssistanceIndexContent({ lang }: Props): JSX.Element {
         href: card.href,
         label: card.label,
         description: card.description || card.label,
-        image: card.image ? { src: card.image.src, alt: card.image.alt ?? card.label } : undefined,
+        image: card.image
+          ? { src: card.image.src, alt: card.image.alt ?? card.label }
+          : { src: DEFAULT_GUIDE_CARD_IMAGE, alt: card.label },
       })),
     [popularGuideCards],
   );

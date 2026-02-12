@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Weekend di 48 ore a Positano",
+    "description": "Come concentrare arrivi, spiagge, escursioni e cene panoramiche in due giorni intensi."
+  },
+  "linkLabel": "Weekend di 48 ore a Positano",
+  "intro": [
+    "Un weekend di 48 ore a Positano è fattibile se viaggi leggero, programmi gli arrivi in anticipo e cerchi le viste fuori dalle ore più calde."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Giorno 1 — arrivo e mattina",
+      "body": [
+        "Arriva con il primo autobus SITA o traghetto, lascia i bagagli in struttura o in deposito e prendi un espresso con sfogliatella in Via dei Mulini.",
+        "Scendi a Fornillo per un bagno prima di mezzogiorno, quando i lidi sono ancora tranquilli e gli spazi liberi si liberano."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Giorno 1 — pomeriggio e tramonto",
+      "body": [
+        "Prendi l’autobus interno fino a Nocelle per un assaggio del Sentiero degli Dei; rientra in tempo per il tramonto su Via Cristoforo Colombo.",
+        "Prenota una cena in terrazza oppure prendi piatti in gastronomia per un picnic sul balcone dell’ostello."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Giorno 2 — mattina a scelta",
+      "body": [
+        "Opzione A: traghetto per Amalfi e salto rapido a Ravello nei giardini di Villa Cimbrone; opzione B: partecipa a un tour barca condiviso per vedere la costa dal mare.",
+        "Prepara la colazione in panificio così puoi partire presto senza attendere servizio al tavolo."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Giorno 2 — ultime tappe e partenza",
+      "body": [
+        "Dedica un’ora allo shopping tra sandali artigianali o ceramiche prima di pranzo.",
+        "Recupera i bagagli 90 minuti prima della partenza per gestire scale e eventuali code al molo o alla fermata bus."
+      ]
+    }
+  ],
+  "tips": [
+    "Porta uno zainetto sotto i 10 kg così affronti le scale senza rallentare.",
+    "Salva offline gli orari di traghetti e autobus: nei weekend gli orari cambiano spesso."
+  ],
+  "faqs": [
+    {
+      "q": "Basta una sola notte?",
+      "a": [
+        "Sì se ti concentri sui punti salienti e dormi in centro, ma due notti garantiscono un ritmo più calmo e margine meteo."
+      ]
+    },
+    {
+      "q": "Dove guardo il tramonto?",
+      "a": [
+        "Via Cristoforo Colombo e la terrazza dell’ostello sono soluzioni facili; anche i bar in spiaggia funzionano ma con prezzi più alti."
+      ]
+    }
+  ]
+}

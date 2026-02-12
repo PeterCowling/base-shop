@@ -3,11 +3,13 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
+import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { GUIDES_INDEX } from "@/data/guides.index";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+import { GUIDES_INDEX, isGuideLive } from "@/data/guides.index";
 import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { OG_IMAGE } from "@/utils/headConstants";
 
@@ -20,7 +22,7 @@ type Props = {
 export async function generateStaticParams() {
   const langParams = generateLangParams();
   return langParams.flatMap(({ lang }) => {
-    const guideSlugs = GUIDES_INDEX.filter((guide) => guide.status === "published")
+    const guideSlugs = GUIDES_INDEX.filter((guide) => guide.status === "live")
       .map((guide) => guide.key)
       .filter(
         (key) => guideNamespace(lang as Parameters<typeof guideNamespace>[0], key).baseKey === "assistance",
@@ -68,8 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     format: "auto",
   });
 
-  const guideMeta = GUIDES_INDEX.find((g) => g.key === guideKey);
-  const isPublished = (guideMeta?.status ?? "published") === "published";
+  const isPublished = isGuideLive(guideKey);
 
   return buildAppMetadata({
     lang: validLang,
@@ -89,7 +90,21 @@ export default async function AssistanceArticlePage({ params }: Props) {
   const guideBase = guideKey ? guideNamespace(validLang, guideKey) : null;
 
   if (!guideKey || !guideBase) notFound();
+  if (!isGuideLive(guideKey)) notFound();
   if (guideBase.baseKey !== "assistance") permanentRedirect(guidePath(validLang, guideKey));
+  const localizedSlug = guideSlug(validLang, guideKey);
+  if (article.toLowerCase() !== localizedSlug.toLowerCase()) {
+    permanentRedirect(guidePath(validLang, guideKey));
+  }
 
-  return <GuideContent lang={validLang} guideKey={guideKey} />;
+  const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle(validLang, guideKey);
+
+  return (
+    <GuideContent
+      lang={validLang}
+      guideKey={guideKey}
+      serverGuides={serverGuides}
+      serverGuidesEn={serverGuidesEn}
+    />
+  );
 }

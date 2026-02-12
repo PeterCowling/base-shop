@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Informations Légales et Politiques – Auberge de Positano",
+    "description": "Découvrez nos conditions légales, limites de responsabilité, droit applicable, utilisation du contenu du site et consignes de santé-sécurité pour préparer votre séjour en toute confiance."
+  },
+  "linkLabel": "Informations Légales et Politiques – Auberge de Positano",
+  "sections": [
+    {
+      "id": "modificationOfTerms",
+      "title": "Modification des Conditions",
+      "body": [
+        "Les présentes Conditions constituent l’accord complet entre vous et Positano Hostel et remplacent tout engagement antérieur. Nous pouvons les modifier à tout moment ; la nouvelle version s’applique dès sa mise en ligne."
+      ]
+    },
+    {
+      "id": "scopeOfLiability",
+      "title": "Notre Champ de Responsabilité",
+      "body": [
+        "Notre responsabilité couvre uniquement les prestations énoncées ici. Toute indemnité est plafonnée au montant total payé pour votre réservation. Nous déclinons toute responsabilité pour les pertes indirectes ou économiques (bénéfice, clientèle, opportunités) même en cas de négligence ou de force majeure. Des casiers sécurisés sont disponibles, mais nous n’assumons aucune responsabilité financière pour les objets qui y sont placés et pouvons déplacer des biens lors du nettoyage sans préavis."
+      ]
+    },
+    {
+      "id": "governingLaw",
+      "title": "Droit Applicable & Juridiction",
+      "body": [
+        "Votre séjour et ces Conditions sont régis exclusivement par le droit italien. Tout litige sera porté devant les tribunaux italiens."
+      ]
+    },
+    {
+      "id": "websiteInformation",
+      "title": "Informations du Site & Utilisation du Contenu",
+      "body": [
+        "Nous faisons tout pour garantir l’exactitude du site, mais des erreurs peuvent survenir et les détails évoluer sans préavis. Les photos illustrent le style général et peuvent ne pas refléter fidèlement la disposition. Tout le contenu (textes, images, marques) appartient à Positano Hostel et ne peut être utilisé sans autorisation écrite. Les liens externes sont fournis à titre pratique ; nous déclinons toute responsabilité quant à leur contenu. Veuillez consulter notre politique de confidentialité pour savoir comment nous traitons vos données."
+      ]
+    },
+    {
+      "id": "healthAndSafetyPolicy",
+      "title": "Politique Santé & Sécurité",
+      "body": [
+        "Pour la sécurité de tous, informez-nous si vous avez récemment été exposé à une maladie contagieuse, grippe ou virus similaire. Les réservations prépayées non remboursables le restent également dans ces cas ; nous recommandons fortement une assurance voyage couvrant les imprévus de santé."
+      ]
+    }
+  ]
+}

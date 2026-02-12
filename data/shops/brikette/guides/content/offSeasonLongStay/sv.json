@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Långtidsvistelse i lågsäsong: tips",
+    "description": "Råd för längre vistelser under lågsäsong: boende, budget, väder och vad som håller öppet."
+  },
+  "linkLabel": "Långtidsvistelse i lågsäsong: tips",
+  "intro": [
+    "Att stanna några veckor under lågsäsongen innebär svalare väder, färre färjor och mer tid att leva som en lokalbo."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Boende och priser",
+      "body": [
+        "Förhandla om månadsvistelser direkt med pensionat i Positanos övre kvarter; rabatter på 20–30 % är vanliga från november till mars.",
+        "Fundera på att bo i Praiano eller Minori om du vill ha stormarknader och flackare promenader; pendla med buss när du längtar efter kvällar i Positano."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Väder och packning",
+      "body": [
+        "Räkna med dagstemperaturer på cirka 12–16 °C med sporadiskt regn – packa lager på lager, en vattentät jacka och skor med bra grepp för blöta trappor.",
+        "Ha ett litet paraply med dig; vindarna kanaliseras genom dalen och känns starkare än vad prognosen antyder."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Arbete och vardagsrytm",
+      "body": [
+        "Många kaféer kortar öppettiderna, så planera arbetspassen runt pålitligt Wi-Fi på vandrarhemmet eller i din lägenhet.",
+        "Laga mat hemma oftare – marknaderna i Meta eller Sorrento har större utbud och bussarna är lugnare för matinköp."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Behåll det sociala",
+      "body": [
+        "Gå med i lokala Facebookgrupper eller WhatsApp-chattar för språkutbyte och gemensamma middagar.",
+        "Volontärarbeta vid städdagar eller kulturevenemang; kommunen sätter upp scheman på anslagstavlor nära Piazza dei Mulini."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha euromynt redo för värmeaggregat och tvättomater – myntapparater driver fortfarande många maskiner vintertid.",
+    "Följ de reducerade buss- och färjetidtabellerna varje vecka; scheman ändras kring helger."
+  ],
+  "faqs": [
+    {
+      "q": "Håller restaurangerna öppet?",
+      "a": [
+        "Ett fåtal håller öppet året runt i Positano, men i Amalfi och Sorrento finns fler alternativ – planera middagar när du ändå besöker de städerna."
+      ]
+    },
+    {
+      "q": "Är Gudarnas stig säker på vintern?",
+      "a": [
+        "Ja, under torra dagar, men undvik den efter kraftigt regn; stenarna blir hala och små jordskred är vanligare."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "På den här sidan",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Uppkoppling"
+      },
+      {
+        "href": "#groceries",
+        "label": "Mat och förnödenheter"
+      },
+      {
+        "href": "#transport",
+        "label": "Transport under lågsäsong"
+      },
+      {
+        "href": "#weather",
+        "label": "Väder och packning"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Uppkoppling",
+        "body": [
+          "Kombinera kaféer med stabilt Wi-Fi och eSIM som reserv; kontrollera täckningskartor (TIM/Vodafone/WindTre)."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Mat och förnödenheter",
+        "body": [
+          "Öppettiderna varierar under lågsäsong; bunkra upp tidigare på dagen och på vardagar."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transport under lågsäsong",
+        "body": [
+          "Färjorna glesas ut; lita på bussar och planera för dagar med regn eller blåst."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Väder och packning",
+        "body": [
+          "Ta med lager på lager och regnskydd; bra skor för blöta trappor."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Är något öppet på vintern?",
+        "a": [
+          "Ja, men färre alternativ. Fokusera på matinköp, vandringar, utsiktsplatser och närliggande städer."
+        ]
+      }
+    ]
+  }
+}

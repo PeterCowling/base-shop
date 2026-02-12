@@ -3,6 +3,7 @@ import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
 import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import {
   Dialog,
@@ -18,11 +19,11 @@ import {
 configure({ testIdAttribute: "data-testid" });
 
 describe("Dialog", () => {
-  it("forwards refs and merges custom classes on overlay and content", () => {
+  it("forwards refs and merges custom classes on overlay and content", async () => {
     const overlayRef = React.createRef<HTMLDivElement>();
     const contentRef = React.createRef<HTMLDivElement>();
 
-    render(
+    const { container } = render(
       <Dialog open>
         <DialogOverlay
           ref={overlayRef}
@@ -48,6 +49,7 @@ describe("Dialog", () => {
     expect(contentRef.current).toBe(content);
     expect(content).toHaveClass("custom-content");
     expect(content).toHaveClass("bg-panel");
+
   });
 
   it(
@@ -90,6 +92,7 @@ describe("Dialog", () => {
 
     const header = screen.getByTestId("header");
     expect(header).toHaveClass("custom-header");
+
     expect(header).toHaveClass(
       "flex flex-col space-y-1.5 text-center sm:text-start"
     );

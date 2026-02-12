@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Cắm trại trên Amalfi Coast",
+    "description": "Các khu cắm trại, quy định và những điều nên kỳ vọng khi dựng lều gần bờ biển."
+  },
+  "linkLabel": "Cắm trại trên Amalfi Coast",
+  "intro": [
+    "Cắm trại gần Amalfi Coast đồng nghĩa chọn khu được cấp phép ngoài trung tâm Positano; luôn kiểm tra quy định và tình trạng chỗ."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Cắm ở đâu",
+      "body": [
+        "Các khu cắm trại hợp pháp nằm ngoài trung tâm Positano; hãy kiểm tra quy định địa phương và đặt trước."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Di chuyển & tiếp cận",
+      "body": [
+        "Chuẩn bị đi xe buýt hoặc đi bộ từ khu cắm trại; đường ven biển hẹp và chỗ đỗ rất hạn chế."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Ứng xử & an toàn",
+      "body": [
+        "Tuân thủ giờ yên tĩnh và quy định lửa trại; mang rác về; tránh mép vách đá và khu vực chưa được đánh dấu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Có được cắm trại tự do không?",
+      "a": [
+        "Hầu như không; hãy dùng khu cắm trại chính thức và tuân theo nội quy niêm yết."
+      ]
+    }
+  ]
+}

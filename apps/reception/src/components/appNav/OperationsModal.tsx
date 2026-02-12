@@ -33,6 +33,11 @@ const actions: ModalAction[] = [
     iconClass: "fas fa-calendar-plus",
     route: "/extension",
   },
+  {
+    label: "Prime Requests",
+    iconClass: "fas fa-inbox",
+    route: "/prime-requests",
+  },
 ];
 
 export default withIconModal({

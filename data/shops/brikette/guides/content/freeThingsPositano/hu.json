@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Ingyenes és olcsó programok Positanóban",
+    "description": "Séták, kilátópontok, strandok és közösségi események, amelyek nem terhelik a pénztárcát."
+  },
+  "linkLabel": "Ingyenes és olcsó programok Positanóban",
+  "intro": [
+    "Positano megjutalmazza a korán kelőket és a kíváncsi felfedezőket; kilátásokkal, fürdőzéssel és kulturális programokkal is eltöltheti a napokat néhány euróból."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Kilátópontok, amelyekért megéri felmászni",
+      "body": [
+        "Kezdje a napot a Chiesa Nuova előtti teraszon, ahol a napkelte színei bevilágítják az öblöt; vigyen magával 500 ml-es palackot, mert a közelben nincs csap.",
+        "Sétáljon végig a Via Cristoforo Colombo és a Viale Pasitea erkélyein aranyórában, így foglalás nélkül is képeslapba illő látványt kap."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Free beach time",
+      "body": [
+        "A Spiaggia Grande jobb oldalán egy ingyenes sávot tartanak fenn – vigyen könnyű törölközőt, és üljön közel a vízhez, hogy a lido sorok ne legyenek útban.",
+        "Kövesse a parti ösvényt a Fornillo strandra egy csendesebb öbölért; az út kb. 12 perc szerény lépcsőzéssel, és a közterület ingyenes marad."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "DIY walking routes",
+      "body": [
+        "Fedezze fel a Liparlati negyed szűk sikátorait, kukkantson be az apró udvarokba és a kerámiával borított lépcsőkbe a Via dei Mulini és a Via Pasitea között.",
+        "Üljön fel az ingyenes shuttle-re Montepertuso megállójáig, majd ereszkedjen le a régi kőlépcsőkön Positanóba 25–35 perc alatt, megállva a természetes sziklaív kilátópontjánál."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Culture without a ticket",
+      "body": [
+        "Lépjen be a Santa Maria Assunta templomba, hogy megnézze a bizánci ikont és a majolikakupolát; a vállak eltakarása elegendő.",
+        "Nézze meg a községi hirdetőtáblát a Piazza dei Mulini közelében az esti koncertek és a nyári szabadtéri vetítések időpontjaiért."
+      ]
+    }
+  ],
+  "tips": [
+    "Vigyen újratölthető kulacsot, és töltse meg a Chiesa Nuova melletti ivókútnál, mielőtt a kilátókhoz indul.",
+    "Pakoljon zátonybarát naptejet és szarongot; strandpokrócként és könnyű templomi takarásként is használhatók."
+  ],
+  "faqs": [
+    {
+      "q": "Vannak ingyenes zuhanyzók a strandokon?",
+      "a": [
+        "Igen, a Spiaggia Grande közterületéhez hidegvizes zuhanyok tartoznak. Vigyen papucsot, mert délre felmelegszik a burkolat."
+      ]
+    },
+    {
+      "q": "Kell jegy az Istenek ösvényéhez?",
+      "a": [
+        "Az ösvény egész évben ingyenes. Számoljon a 2,40 eurós SITA buszjeggyel Nocelléig és vissza, ha nem akar oda-vissza gyalogolni."
+      ]
+    }
+  ]
+}

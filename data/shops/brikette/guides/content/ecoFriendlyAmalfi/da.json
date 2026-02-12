@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Bæredygtig rejse på Amalfikysten",
+    "description": "Sænk dit aftryk: genopfyldning, gangruter, færger frem for biler og bevidste stranddage."
+  },
+  "linkLabel": "Bæredygtig rejse på Amalfikysten",
+  "intro": [
+    "Miljøvenlig rejse langs Amalfikysten handler om transport, affald og daglige energivaner.",
+    "Hold dit aftryk let uden at give afkald på udsigten over kystlinjen."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Grønnere transport",
+      "body": [
+        "Vælg busser eller færger frem for private taxaer, når det er muligt.",
+        "Gå de korte stræk i byerne i stedet for at tilkalde en bil."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Affald og plastik",
+      "body": [
+        "Medbring en genopfyldelig flaske eller indkøbsnet, og fyld den ved fontæner eller caféer.",
+        "Sortér affald, hvor der er beholdere, og tag det med dig igen på stier uden skraldespande."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energi og vand",
+      "body": [
+        "Sluk for aircondition og lys, når du forlader værelset, og luk skodderne for at holde temperaturen nede.",
+        "Hold brusebadet kort og genbrug håndklæder for at spare på vandet."
+      ]
+    }
+  ],
+  "tips": [
+    "Støt små lokale virksomheder, der bruger lokale råvarer og lav-affaldspraksis.",
+    "Bestil retter med sæsonens råvarer – citroner, ansjoser og grøntsager er bedst i deres højsæson."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg leje elcykler på kysten?",
+      "a": [
+        "Ja, i Amalfi, Sorrento og enkelte landsbyer – reserver i god tid, for udvalget er begrænset."
+      ]
+    }
+  ]
+}

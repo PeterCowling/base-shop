@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Guia do Ravello Music Festival",
+    "description": "Ingressos, transporte noturno, dress code e como aproveitar os concertos nos terraços mais famosos do litoral."
+  },
+  "linkLabel": "Guia do Ravello Festival",
+  "intro": [
+    "O Ravello Festival combina concertos orquestrais com vistas de falésia; planeie ingressos, dress code e regresso tardio a Positano."
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Garantir bilhetes",
+      "body": [
+        "Reserve no site oficial assim que as datas saírem (normalmente na primavera); imprima ou descarregue o QR code antes de sair do Wi-Fi de Positano.",
+        "Escolha lugares atribuídos perto dos corredores se precisar apanhar o autocarro da meia-noite de volta a Amalfi."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Como chegar",
+      "body": [
+        "Vá de ferry ou autocarro no fim da tarde até Amalfi (30–45 min) e ligue com o autocarro SITA para Ravello, reservando 25 minutos para a subida.",
+        "Se os autocarros estiverem cheios, pré-reserve shuttle partilhado ou táxi em Amalfi — divida a tarifa com outros viajantes para reduzir custos."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta nos concertos",
+      "body": [
+        "Dress code smart-casual: camadas leves para terraços ventosos e calçado confortável para degraus de pedra.",
+        "Chegue pelo menos 30 minutos antes para passar a segurança, localizar WC e sentar sem apressar outros convidados."
+      ]
+    },
+    {
+      "id": "late-return",
+      "title": "Regresso tardio",
+      "body": [
+        "O último autocarro SITA desce para Amalfi por volta das 00:15 na alta temporada; confirme horários mais cedo e entre na fila 20 minutos antes.",
+        "Se as ligações ficarem apertadas, organize táxi para Amalfi ou direto a Positano (~120–140 €) e divida com o grupo."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve lenço ou casaco leve — mesmo em agosto a temperatura no terraço desce para ~18 °C.",
+    "Tenha numerário para espresso ou snacks rápidos em Amalfi enquanto espera o autocarro noturno."
+  ],
+  "faqs": [
+    {
+      "q": "Os concertos cancelam com chuva?",
+      "a": [
+        "Chuva leve causa apenas atraso; chuva forte move espetáculos para interior ou cancela — consulte alertas por e-mail e redes sociais do festival."
+      ]
+    },
+    {
+      "q": "Consigo voltar a Positano depois da meia-noite?",
+      "a": [
+        "Sim, mas há poucas opções. Planeie partilhar táxi ou pernoitar em Amalfi/Ravello se os horários parecerem incertos."
+      ]
+    }
+  ],
+  "eventSchema": {
+    "name": "Ravello Festival",
+    "startDate": "2025-07-01",
+    "endDate": "2025-09-15",
+    "locationName": "Ravello Festival venues",
+    "addressLocality": "Ravello",
+    "description": "Festival de música clássica de verão sobre a Costa Amalfitana. Consulte o programa oficial para datas e bilhetes."
+  }
+}

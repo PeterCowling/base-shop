@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 
 import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { type GuideKey,guideHref,guideNamespace,guideSlug } from "@/routes.guides-helpers";
+import { guideHref,type GuideKey,guideNamespace,guideSlug } from "@/routes.guides-helpers";
 import { SLUGS } from "@/slug-map";
 import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
 import { getSlug } from "@/utils/slug";
@@ -31,8 +31,8 @@ describe("buildLinks", () => {
     expect(canonical).toEqual({ rel: "canonical", href: origin });
 
     const alternates = links.slice(1, -1);
-    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length - 1);
-    expect(alternates.map((link) => link.hrefLang)).not.toContain("en");
+    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length);
+    expect(alternates.map((link) => link.hrefLang)).toContain("en");
 
     const xDefault = links.at(-1);
     expect(xDefault).toEqual(
@@ -133,7 +133,7 @@ describe("buildLinks", () => {
     const canonical = links.find((link) => link.rel === "canonical");
     const alternates = links.filter((link) => link.rel === "alternate");
     expect(canonical?.href).toBe(origin);
-    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length);
+    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length + 1);
     const xDefault = alternates.find((link) => link.hrefLang === "x-default");
     expect(xDefault?.href).toBe(`${origin}/${i18nConfig.fallbackLng}`);
   });
@@ -143,16 +143,13 @@ describe("buildLinks", () => {
     const canonical = links.find((link) => link.rel === "canonical");
     const alternates = links.filter((link) => link.rel === "alternate");
     expect(canonical?.href).toBe(`${origin}/en/`);
-    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length);
+    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length + 1);
     const langs = alternates.map((link) => link.hrefLang).filter(Boolean);
     expect(langs).toContain("x-default");
-    for (const lng of i18nConfig.supportedLngs) {
-      if (lng === "en") continue;
-      expect(langs).toContain(lng);
-    }
+    for (const lng of i18nConfig.supportedLngs) expect(langs).toContain(lng);
   });
 
-  it("produces no duplicate alternates and excludes current language", () => {
+  it("produces no duplicate alternates and includes current language self-reference", () => {
     const path = `/en/${getSlug("assistance", "en")}`;
     const links = buildLinks({ lang: "en", origin, path });
     const alternates = links.filter((link) => link.rel === "alternate");
@@ -160,7 +157,7 @@ describe("buildLinks", () => {
     const langs = alternates.map((link) => link.hrefLang);
     const uniqueLangs = new Set(langs);
     expect(uniqueLangs.size).toBe(alternates.length);
-    expect(uniqueLangs.has("en")).toBe(false);
+    expect(uniqueLangs.has("en")).toBe(true);
     expect(uniqueLangs.has("x-default")).toBe(true);
   });
 

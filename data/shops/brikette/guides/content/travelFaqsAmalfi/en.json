@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Amalfi Coast travel FAQs",
+    "description": "Quick answers to common questions on transport, money, safety, and seasonality."
+  },
+  "linkLabel": "Amalfi Coast travel FAQs",
+  "intro": [
+    "Quick-fire answers for Amalfi Coast logistics: transport, bookings, budgets, and rainy-day pivots."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport essentials",
+      "body": [
+        "Check official bus and ferry timetables the night before and keep 30-minute buffers for connections in peak months.",
+        "Collect taxi numbers from your accommodation for late returns so you have a backup if the last bus is full."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Bookings & budget",
+      "body": [
+        "Reserve restaurants, beach clubs, and tours at least 24 hours ahead in summer; some request a small card deposit.",
+        "Choose flexible rates or travel insurance so wind or rough seas don’t leave you out of pocket when plans change."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Weather & plan B",
+      "body": [
+        "Swap to indoor options like MAR Positano, Amalfi’s paper museum, or a Naples/Salerno train day trip when rain sets in.",
+        "If seas turn rough, switch to buses or shared taxis and check for rockfall or road closures on the SS163 before you depart."
+      ]
+    }
+  ],
+  "tips": [
+    "Save emergency numbers offline (112 and Coast Guard 1530) alongside your accommodation contact.",
+    "Buy bus tickets in tobacconists or online ahead of time; drivers rarely sell them and inspectors do spot checks."
+  ],
+  "faqs": [
+    {
+      "q": "When do the last ferries depart?",
+      "a": [
+        "In summer the final Positano ↔ Amalfi sailing is usually around 20:00; in spring/autumn it drops closer to 18:00—confirm the evening before."
+      ]
+    },
+    {
+      "q": "Do I need to reserve restaurants or beach clubs?",
+      "a": [
+        "Yes from June through September: book at least a day ahead, and a week ahead for weekend beach clubs."
+      ]
+    },
+    {
+      "q": "What if it rains all day?",
+      "a": [
+        "Visit museums, join a cooking class, or take a Naples/Salerno day trip by train; carry a lightweight waterproof layer for transfers."
+      ]
+    },
+    {
+      "q": "Are ATMs reliable?",
+      "a": [
+        "Major towns have ATMs but fees vary—withdraw medium amounts in one go and keep small euro notes for buses and cafés."
+      ]
+    }
+  ]
+}

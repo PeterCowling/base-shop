@@ -17,25 +17,27 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { normalizeLocale } from '../../lib/i18n/normalizeLocale';
 import type { BagStorageRecord } from '../../types/bagStorage';
-import type { BookingDetails } from '../pureData/useFetchBookingsData.client';
 import type { CityTaxOccupantRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import type { FinancialsRoomRecord } from '../../types/financialsRoom';
 import type { GuestDetailsRecord } from '../../types/guestsDetails';
 import type { LoanOccupantRecord } from '../../types/loans';
 import type { PreorderNightData } from '../../types/preorder';
-import { useDateInfo, type DateInfo } from './useDateInfo';
+
+import { type DateInfo,useDateInfo } from './useDateInfo';
 import {
-  useMealPlanEligibility,
   type OccupantEligibility,
+  useMealPlanEligibility,
 } from './useMealPlanEligibility';
 import { useOccupantDataSources } from './useOccupantDataSources';
 import {
-  useOccupantTransform,
   type ProcessedPreorder,
+  useOccupantTransform,
 } from './useOccupantTransform';
-import { useUpgradeInfo, type UpgradeInfo } from './useUpgradeInfo';
+import { type UpgradeInfo,useUpgradeInfo } from './useUpgradeInfo';
 
 // Re-export types for consumers
 export type { DateInfo, OccupantEligibility, UpgradeInfo };
@@ -207,16 +209,26 @@ export function useUnifiedBookingData(): UnifiedBookingData {
       setHasSyncedLanguage(false);
       return;
     }
-    const occupantLang = occupantData.language || 'en';
+    const occupantLang = normalizeLocale(occupantData.language);
 
     if (i18n.language === occupantLang) {
       setHasSyncedLanguage(true);
       return;
     }
 
-    void i18n.changeLanguage(occupantLang).then(() => {
+    if (typeof i18n.changeLanguage !== 'function') {
       setHasSyncedLanguage(true);
-    });
+      return;
+    }
+
+    void i18n.changeLanguage(occupantLang)
+      .then(() => {
+        setHasSyncedLanguage(true);
+      })
+      .catch(() => {
+        // Fail open in production UI if i18n runtime cannot switch language.
+        setHasSyncedLanguage(true);
+      });
   }, [occupantData, i18n]);
 
   // 7) Determine initial sync complete status

@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Ferjetabeller for Positano",
+    "description": "Når ferjene går, hvor du sjekker sanntidstabeller, sesongvariasjoner, selskaper og praktiske tips til ombordstigning."
+  },
+  "linkLabel": "Ferjetabeller for Positano",
+  "intro": [
+    "Ferjeruter til/fra Positano: hvor du sjekker liveavganger, hvordan sesongene fungerer og hvordan du holder reserver klar."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Når ferjene går",
+      "body": [
+        "Hovedsesongen er omtrent april–oktober med flest avganger fra midten av mai til september; vinteravganger er sjeldne og avhenger av været.",
+        "I skuldermånedene kuttes ofte første og siste avgang – bekreft rutetabellen kvelden før."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Sjekk liveoppdateringer",
+      "body": [
+        "Bruk operatørenes nettsider og apper (Travelmar, NLG, Alilauro, Positano Jet) samt tavlene i havnen for forsinkelser og endringer.",
+        "Ta skjermbilder av rutetabeller og aktiver e-post/SMS-varsler slik at du får melding selv uten italiensk SIM-data."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og buffer",
+      "body": [
+        "I høysesong kan avganger bli utsolgt flere timer i forveien – kjøp online eller dagen før og møt opp 30 minutter før med legitimasjon og bagasje klar for merking.",
+        "Sett av margin før dagens siste forbindelse slik at du kan bytte til buss eller taxi hvis sjøen blir grov."
+      ]
+    }
+  ],
+  "tips": [
+    "Følg sjøværmeldingen (vind over 20 knop eller bølger over 1,5 meter utløser ofte kanselleringer).",
+    "Hvis du må bytte havn, sjekk lokale busstider på forhånd for en stressfri overgang."
+  ],
+  "faqs": [
+    {
+      "q": "Når publiseres sommerrutene?",
+      "a": [
+        "De fleste operatører slipper høysesongplaner i februar–mars; høstoppsdateringer kommer som regel i slutten av august."
+      ]
+    },
+    {
+      "q": "Hvordan bekrefter jeg en kansellering samme dag?",
+      "a": [
+        "Oppdater operatørens nettside eller sosiale medier og se etter oppslag på kaien; personalet annonserer endringer over høyttalerne også.",
+        "Ha SITA-rutetabellen eller et taxinummer klart i tilfelle du må legge om umiddelbart."
+      ]
+    },
+    {
+      "q": "Kan jeg reise med stor bagasje?",
+      "a": [
+        "Ja, men overdimensjonerte kolli kan få et lite tillegg; kom tidlig slik at mannskapet kan merke og stue dem trygt mens du beholder verdisaker."
+      ]
+    }
+  ]
+}

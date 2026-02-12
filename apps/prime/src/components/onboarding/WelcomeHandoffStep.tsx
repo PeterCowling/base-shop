@@ -6,12 +6,16 @@
  * and smoothly hands off to the main app experience.
  */
 
-import { Button } from '@acme/design-system/primitives';
-import logger from '@/utils/logger';
-import { CheckCircle, Compass, MessageCircle, Sparkles } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { CheckCircle, Compass, MessageCircle, Sparkles } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
+
+import logger from '@/utils/logger';
+
 import { useCompletedTaskMutator } from '../../hooks/mutator/useCompletedTaskMutator';
+
 import OnboardingLayout from './OnboardingLayout';
 
 interface WelcomeHandoffStepProps {
@@ -49,15 +53,15 @@ const WelcomeHandoffStep: FC<WelcomeHandoffStepProps> = ({
     <OnboardingLayout currentStep={6} totalSteps={6} hideProgress>
       <div className="flex min-h-[calc(100vh-70px)] flex-col items-center justify-center px-6 py-8">
         {/* Success icon */}
-        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
-          <CheckCircle className="h-12 w-12 text-green-600" />
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success-soft">
+          <CheckCircle className="h-12 w-12 text-success-foreground" />
         </div>
 
         {/* Headline */}
-        <h1 className="mb-2 text-center text-2xl font-bold text-gray-900">
+        <h1 className="mb-2 text-center text-2xl font-bold text-foreground">
           {t('handoff.title', { name: guestName })}
         </h1>
-        <p className="mb-8 text-center text-gray-600">
+        <p className="mb-8 text-center text-muted-foreground">
           {t('handoff.subtitle')}
         </p>
 
@@ -84,7 +88,7 @@ const WelcomeHandoffStep: FC<WelcomeHandoffStepProps> = ({
         <Button
           onClick={handleContinue}
           disabled={isSubmitting}
-          className="w-full max-w-sm rounded-full bg-blue-500 px-6 py-4 text-lg font-semibold text-white shadow hover:bg-blue-600 transition-colors disabled:opacity-50"
+          className="w-full max-w-sm rounded-full bg-primary px-6 py-4 text-lg font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors disabled:opacity-50"
         >
           {t('handoff.cta')}
         </Button>
@@ -104,13 +108,13 @@ function HighlightItem({
   description: string;
 }) {
   return (
-    <div className="flex items-start gap-3 rounded-lg bg-gray-50 p-3">
-      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-100">
-        <Icon className="h-4 w-4 text-blue-600" />
+    <div className="flex items-start gap-3 rounded-lg bg-muted p-3">
+      <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary-soft">
+        <Icon className="h-4 w-4 text-primary" />
       </div>
       <div>
-        <h3 className="text-sm font-medium text-gray-900">{title}</h3>
-        <p className="text-xs text-gray-500">{description}</p>
+        <h3 className="text-sm font-medium text-foreground">{title}</h3>
+        <p className="text-xs text-muted-foreground">{description}</p>
       </div>
     </div>
   );

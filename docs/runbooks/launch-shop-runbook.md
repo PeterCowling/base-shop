@@ -85,21 +85,24 @@ pnpm launch-shop --config profiles/shops/my-shop.json --validate
 
 ### 4. Launch (Preview Mode)
 
-Launch to a preview branch first:
+Launch from `dev` so generated changes follow the integration branch:
 
 ```bash
-git checkout -b work/launch-my-shop
+git fetch origin --prune
+git switch dev || git switch -c dev origin/dev || git switch -c dev origin/main
 pnpm launch-shop --config profiles/shops/my-shop.json --mode preview
 ```
 
-### 5. Launch (Production Mode)
+### 5. Promote to Production via Pipeline
 
-After validating the preview, merge to main and launch production:
+After validating preview results, promote through the release pipeline:
 
 ```bash
-git checkout main
-git merge work/launch-my-shop
-pnpm launch-shop --config profiles/shops/my-shop.json --mode production
+git push -u origin dev
+scripts/git/ship-to-staging.sh
+git fetch origin --prune
+git switch staging
+scripts/git/promote-to-main.sh
 ```
 
 ## CLI Reference

@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Plage du Fiordo di Furore → Hostel Brikette en bus",
+    "description": "Suivez ces étapes pour rejoindre l'arrêt SITA au-dessus du Fiordo di Furore, revenir vers Positano et terminer la courte marche jusqu'à l'Hostel Brikette."
+  },
+  "linkLabel": "Plage du Fiordo di Furore → Hostel Brikette en bus",
+  "intro": [
+    "Le Fiordo di Furore se trouve en contrebas de la route côtière, sans guichet ni boutique une fois au niveau de l'eau. Ce guide de retour vous aide à remonter jusqu'à la route, prendre le bus SITA vers Positano et rejoindre l'Hostel Brikette sans tâtonner."
+  ],
+  "warningsTitle": "Avant de quitter la plage",
+  "warnings": [
+    "Achetez vos billets SITA à l'avance — il n'y a aucun point de vente près de la plage, et les chauffeurs peuvent refuser l'accès sans billet validé."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Remonter jusqu'à la route",
+      "body": [
+        "Suivez l'escalier depuis la plage de galets jusqu'à la route de la côte amalfitaine.",
+        "L'arrêt du bus SITA se trouve là où l'escalier rejoint l'aire de stationnement ; attendez côté montagne de la route."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Prendre le bus SITA vers Positano",
+      "body": [
+        "Montez dans le bus SITA en direction de Positano — les arrêts intermédiaires se font à la demande, selon les passagers.",
+        "Comptez environ 10,8 kilomètres (6,7 miles) le long de la côte avant d'arriver à Positano."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Descendre à Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Appuyez sur le bouton d'arrêt peu après la sortie du tunnel au-dessus de Positano et repérez le tabac Bar Internazionale.",
+        "Descendez à l'arrêt Chiesa Nuova ; c'est l'arrêt SITA le plus proche de l'Hostel Brikette."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Parcourir le dernier tronçon jusqu'à l'Hostel Brikette",
+      "body": [
+        "Continuez dans le même sens que le bus sur un peu plus de 100 mètres (330 pieds).",
+        "Tournez à droite à l'escalier à côté du bar et montez jusqu'à la porte d'entrée de l'auberge."
+      ]
+    }
+  ],
+  "tipsTitle": "Conseils pour le retour",
+  "tips": [
+    "Consultez les derniers horaires via le concierge numérique de l'auberge pour connaître le prochain bus SITA.",
+    "Servez-vous de %LINK:positanoBeaches|notre aperçu des plages de Positano% pour planifier d'autres baignades côtières à combiner avec le Fiordo di Furore.",
+    "Si un bus est plein ou annulé, soyez prêt à héler un taxi licencié depuis l'aire de stationnement en solution de secours."
+  ],
+  "faqsTitle": "Questions fréquentes",
+  "faqs": [
+    {
+      "q": "Où attendre le bus ?",
+      "a": [
+        "Tenez-vous côté montagne de la route, en haut de l'escalier — les bus vers Positano s'arrêtent le long du garde-fou."
+      ]
+    },
+    {
+      "q": "Que faire si je n'ai pas de billet ?",
+      "a": [
+        "Les conducteurs exigent un billet SITA validé avant de monter. Achetez un aller-retour à Positano ou demandez à la réception les stocks disponibles avant de quitter l'auberge."
+      ]
+    }
+  ]
+}

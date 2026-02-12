@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Viajar con mascotas por la Costa Amalfitana",
+    "description": "Logística pet-friendly, ferris y alojamientos a tener en cuenta."
+  },
+  "linkLabel": "Viajar con mascotas por la Costa Amalfitana",
+  "intro": [
+    "Viajar con tu mascota por la Costa Amalfitana requiere planificar transportes y calor.",
+    "Lleva documentación al día y mantén paseos temprano."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transporte con animales",
+      "body": [
+        "Los autobuses SITA aceptan animales pequeños en transportín; los perros grandes necesitan bozal y billete reducido.",
+        "Los ferris permiten mascotas en cubierta con correa. Confirma las normas con cada operador."
+      ]
+    },
+    {
+      "id": "accommodation",
+      "title": "Alojamiento pet-friendly",
+      "body": [
+        "Hostel Brikette acepta perros pequeños previa solicitud; lleva su cama.",
+        "En hoteles, confirma recargos y restricciones de acceso a zonas comunes."
+      ]
+    },
+    {
+      "id": "daily",
+      "title": "Rutina diaria",
+      "body": [
+        "Pasea antes de las 8:00 y después de las 19:00 para evitar suelos calientes.",
+        "Lleva cuenco portátil y agua: las fuentes públicas no siempre funcionan."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva agua y cuencos plegables; el calor y las escaleras cansan rápidamente a las mascotas en verano.",
+    "Protege las almohadillas con botitas o bálsamo si caminas sobre piedra caliente."
+  ],
+  "faqs": [
+    {
+      "q": "¿Hay playas para perros?",
+      "a": [
+        "Algunas zonas libres en Fornillo y playas de Maiori los permiten fuera de agosto. Usa correa corta y recoge siempre."
+      ]
+    },
+    {
+      "q": "¿Necesito vacunas específicas?",
+      "a": [
+        "Mantén la antirrábica y el microchip vigentes. Lleva pasaporte animal y comprobantes."
+      ]
+    }
+  ]
+}

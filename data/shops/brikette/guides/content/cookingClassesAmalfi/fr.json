@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Cours de cuisine sur la côte amalfitaine",
+    "description": "Types de cours, tarifs, ce qui est inclus et comment réserver depuis Positano."
+  },
+  "linkLabel": "Cours de cuisine sur la côte amalfitaine",
+  "intro": [
+    "Les cours de cuisine pratiques sur la Côte amalfitaine marient citrons sfusato, pâtes fraîches et recettes familiales dans de petites cuisines avec vue.",
+    "Servez-vous de ce guide pour choisir une session adaptée à votre budget et à votre planning et pour confirmer les détails avant de verser un acompte."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Déroulé d’un cours type",
+      "body": [
+        "Les hôtes vous accueillent avec un café ou un prosecco avant de présenter les ingrédients : zestes de citrons sfusato, légumes de saison et pâte fraîche que vous façonnerez.",
+        "Prévoyez deux à trois plats — généralement une pâte fraîche, une sauce et un dessert citronné — puis un repas partagé ; les sessions durent 2,5 à 4 heures repas compris."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Choisir le bon cours",
+      "body": [
+        "Vérifiez la taille du groupe et si la cuisine se situe à Positano, sur une ferme en hauteur ou dans un village voisin ; les transferts peuvent être inclus ou facturés séparément.",
+        "Clarifiez ce que couvre le prix : ingrédients, accords mets-vins, recettes imprimées et possibilité de garder tabliers ou restes."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistique et horaires",
+      "body": [
+        "En haute saison, les cours se remplissent des semaines à l’avance ; bloquez votre place avant d’arriver, surtout pour les soirées après excursion.",
+        "Si le lieu est en dehors de Positano, confirmez les points de prise en charge ou prévoyez un taxi ; les ruelles pentues réclament de bonnes chaussures même avec une navette."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Régimes et étiquette",
+      "body": [
+        "Signalez allergies, préférences végétariennes/véganes ou intolérance au gluten lors de la réservation ; beaucoup adaptent le menu s’ils sont prévenus tôt.",
+        "Portez des chaussures fermées, attachez les cheveux longs et allez-y doucement sur le parfum : les cuisines sont petites et vous travaillez au-dessus d’ingrédients frais."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Les cours de cuisine conviennent-ils aux débutants ?",
+      "a": [
+        "Oui. Les chefs démontrent chaque étape, corrigent la technique au fur et à mesure et répartissent les tâches pour que chacun participe sans pression."
+      ]
+    },
+    {
+      "q": "Dois-je parler italien ?",
+      "a": [
+        "Non. La plupart des cours se déroulent en anglais ou en format bilingue, et les démonstrations visuelles facilitent le suivi."
+      ]
+    },
+    {
+      "q": "Que dois-je apporter ?",
+      "a": [
+        "Prenez un petit carnet pour noter les astuces, gardez votre téléphone chargé pour les photos et prévoyez des espèces pour solder ou pour le transport."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Pâtes, sauces et desserts au citron en mode pratique ; petits groupes et cuisines panoramiques en saison."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "À quoi s’attendre"
+      },
+      {
+        "href": "#choose",
+        "label": "Comment choisir"
+      },
+      {
+        "href": "#tips",
+        "label": "Conseils"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "À quoi s’attendre",
+        "body": [
+          "Pâtes, sauces et desserts au citron en mode pratique ; petits groupes et cuisines panoramiques en saison."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Comment choisir",
+        "body": [
+          "Vérifiez la taille du cours, sa durée, les inclusions et les options de transport."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Conseils",
+        "body": [
+          "Réservez tôt en haute saison ; informez les hôtes de vos besoins alimentaires."
+        ]
+      }
+    ]
+  }
+}

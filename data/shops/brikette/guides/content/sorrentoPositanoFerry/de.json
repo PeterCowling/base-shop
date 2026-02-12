@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sorrent nach Positano mit der Fähre | Hostel Brikette",
+    "description": "Schritt für Schritt von Sorrent nach Positano mit der Fähre: Tickets, Boarding-Tipps und der Weg vom Hafen hinauf zum Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrent nach Positano – Fähre",
+    "body": "Nimm die Direktfähre von Sorrents Marina Piccola nach Positano. Dieser kurze Leitfaden zeigt, wo du Tickets kaufst, wann du dich anstellst und wie du bei der Ankunft den letzten Abschnitt zum Hostel Brikette erleichterst."
+  },
+  "callouts": {
+    "tip": "Du brauchst alle Transportoptionen? Die %HOWTO:how-to-get-here|Übersicht \\\"So kommst du zu uns“% deckt Busse, Taxis und kombinierte Routen ab."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Reiseüberblick",
+      "list": [
+        "Plane in der Saison etwa 45–60 Minuten von Pier zu Pier ein.",
+        "Fähren sind wetterabhängig und können zu Spitzenzeiten ausgebucht sein.",
+        "Wer Tickets etwas früher kauft, sichert Plätze und vermeidet Stress beim Boarding."
+      ]
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Zum Hafen von Sorrent (Marina Piccola)",
+      "list": [
+        "Begib dich zur Marina Piccola in Sorrent und folge den Schildern zu den Ticketschaltern.",
+        "Prüfe die nächste Abfahrt nach Positano und den Anbieter (z. B. Travelmar oder NLG).",
+        "Kaufe dein Ticket am Schalter oder online und gehe anschließend zum angegebenen Gate."
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Ticket kaufen und an Bord gehen",
+      "list": [
+        "Sei 15–20 Minuten vor Abfahrt dort, um entspannt anzustehen.",
+        "Halte dein Ticket zur Kontrolle bereit und folge den Anweisungen der Crew beim Boarding.",
+        "Verstaue großes Gepäck im vorgesehenen Bereich und behalte Wertsachen bei dir."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Ankunft in Positano",
+      "list": [
+        "Steige am Hauptpier von Positano (Spiaggia Grande) aus.",
+        "Nutze bei schwerem Gepäck den offiziellen Gepäckservice am Pier (kostenpflichtig).",
+        "Für einen leichteren Weg zum Hostel nimm den lokalen Interno-Bus bergauf bis \\\"Chiesa Nuova“ und gehe das kurze Stück zu Fuß.",
+        "Alternativ läufst du bergauf über die Via dei Mulini/Via G. Marconi – plane zusätzliche Zeit ein."
+      ]
+    }
+  ]
+}

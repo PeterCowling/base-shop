@@ -76,7 +76,7 @@ describe("InteractionsPanel timing + scroll effects", () => {
     const mockInput = jest.fn();
     function Wrapper() {
       const [component, setComponent] = useState<PageComponent>({ id: "c1", type: "Box" } as any);
-      const handleInput = <K extends keyof PageComponent>(field: K, value: PageComponent[K]) => {
+      const handleInput = (field: any, value: any) => {
         mockInput(field, value);
         setComponent((c) => ({ ...c, [field]: value }));
       };
@@ -104,7 +104,7 @@ describe("InteractionsPanel timing + scroll effects", () => {
     const mockInput = jest.fn();
     function Wrapper() {
       const [component, setComponent] = useState<PageComponent>({ id: "c1", type: "Box" } as any);
-      const handleInput = <K extends keyof PageComponent>(field: K, value: PageComponent[K]) => {
+      const handleInput = (field: any, value: any) => {
         mockInput(field, value);
         setComponent((c) => ({ ...c, [field]: value }));
       };

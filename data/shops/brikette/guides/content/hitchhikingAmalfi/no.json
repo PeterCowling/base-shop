@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Haiking på Amalfikysten (er det mulig?)",
+    "description": "Hvorfor busser er det tryggere valget på smale kystveier."
+  },
+  "linkLabel": "Haiking på Amalfikysten",
+  "intro": [
+    "Haiking på Amalfikysten frister, men veiene er smale og trafikken tett – buss er som regel tryggere.",
+    "Len deg på det offentlige transportnettverket i stedet: ta med validerte billetter, planlegg reserveruter og oppbevar nødkontanter for drosjer eller portører hvis tjenestene stopper."
+  ],
+  "tocTitle": "På denne siden",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Hva du må vite",
+      "body": [
+        "Kystveien SS163 har få lommer å stoppe i, og bilene kjører tett – sjåfører kan sjelden stoppe trygt.",
+        "Politi og lokale anbefaler offentlig transport; haiking kan gi bøter hvis du hindrer trafikken."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Bedre alternativer",
+      "body": [
+        "SITA-busser, lokale skyttelbusser og varebiler går hele dagen; kjøp billetter på forhånd på tabacchi og valider om bord.",
+        "Sesongbaserte ferger gir naturskjønne hopp mellom byene; når hav avbryter dem, gå tilbake til buss + portiertjeneste eller delte drosjer.",
+        "Korte turstier (Nocelle ↔ Positano, Praiano ↔ kystlandsbyer) gir naturskjønne sikkerhetskopier i dagslys."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Hvis du blir strandet",
+      "body": [
+        "Ring en lisensiert taxi (numre er oppgitt på store holdeplasser) eller be din overnattings-/herbergebar om å bestille en; Prisene for sent på kvelden er høyere, så del prisene med andre reisende når det er mulig.",
+        "Send melding til verten din hvis du er forsinket. Vandrerhjemmets team kan foreslå det sikreste hentestedet eller overnattingsalternativene i Sorrento/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Bruk SITA-busser eller ferjer som rimelig alternativ; kjøp billetter på tabacchi eller via app.",
+    "Hvis du står fast, vurder delte taxier eller skyttel fra overnattingsstedet."
+  ],
+  "warnings": [
+    "Vent aldri inne i tunneler eller i blinde svinger – lokalt politi kan bøtelegge deg og sjåførene har ikke plass til å unngå fotgjengere."
+  ],
+  "faqs": [
+    {
+      "q": "Finnes det tryggere strekninger å haike?",
+      "a": [
+        "Kun i innlandet med bredere veier – langs kysten er det best å unngå det."
+      ]
+    },
+    {
+      "q": "Hvorfor frarådes haiking her?",
+      "a": [
+        "Siktlinjene er korte, veiene smale og sjåfører har liten tid til å reagere; buss og ferje er langt tryggere."
+      ]
+    }
+  ]
+}

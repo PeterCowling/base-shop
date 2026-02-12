@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "Souvenires econômicos na Costa Amalfitana",
+    "description": "Onde encontrar lembranças autênticas, quanto pagar e como levar itens frágeis com segurança."
+  },
+  "linkLabel": "Souvenires econômicos (Costa Amalfitana)",
+  "intro": [
+    "Os souvenirs vão de cerâmica artesanal a delícias de despensa, mas os preços variam muito nas ruas principais.",
+    "Use estas dicas para focar na qualidade, encontrar lojas honestas e embalar tudo para chegar a casa intacto."
+  ],
+  "tocTitle": "On this page",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "What to buy"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Where to shop"
+    },
+    {
+      "href": "#packing",
+      "label": "Packing & shipping"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "O que comprar",
+      "body": [
+        "Cerâmica pintada à mão, limoncello, gravuras e produtos de despensa como colatura ou marmelada de limão representam bem a costa e viajam com segurança.",
+        "Procure assinaturas do artesão ou selos de cooperativa; evite peças produzidas em massa com esmalte fraco ou cheiro químico forte."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Onde comprar",
+      "body": [
+        "Suba uma ou duas ruas acima da Via dei Mulini e da praia para comparar boutiques, cooperativas e ateliês artesanais.",
+        "Mercados em Sorrento, Amalfi e até Salerno vendem itens semelhantes com preços mais calmos — inclua o custo de ferry ou autocarro na conta."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Embalagem e envio",
+      "body": [
+        "Envolva cerâmicas em roupa ou plástico-bolha e separe pratos com cartão ou toalhas reutilizáveis.",
+        "Ao enviar de Itália, peça serviço com tracking e guarde recibos; para comida, confirme regras alfandegárias do destino antes de pagar."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Preços e autenticidade",
+      "body": [
+        "Procure rótulos do Consorzio ou IGP no limoncello e etiquetas manuscritas em vez de apenas cartazes de ‘promoção’.",
+        "Se o valor parecer baixo demais, inspecte juntas e esmalte; peças artesanais exibem pequenas variações, não padrões idênticos."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso levar limoncello ou alimentos na bagagem?",
+      "a": [
+        "Líquidos acima de 100 ml vão na bagagem de porão; declare álcool quando necessário e confirme os limites do seu país para laticínios ou produtos com carne antes de comprar."
+      ]
+    },
+    {
+      "q": "As lojas aceitam cartão?",
+      "a": [
+        "A maioria sim, mas pequenos ateliês preferem numerário ou impõem consumo mínimo — leve euros em notas pequenas."
+      ]
+    },
+    {
+      "q": "Existe tax free?",
+      "a": [
+        "Sim, para compras acima do limite de IVA na mesma loja; peça o formulário, carimbe na saída e mantenha os recibos acessíveis."
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] UI fallback copy retained while translation coverage is completed. */
 import { memo, useCallback, useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
@@ -44,7 +45,7 @@ const directionButtonActiveClass = [
   "text-brand-surface",
   "shadow-sm",
   "dark:bg-brand-secondary/85",
-  "dark:text-brand-text",
+  "dark:text-brand-bg",
 ];
 const directionButtonInactiveClass = [
   "text-brand-text/80",
@@ -55,6 +56,11 @@ const directionButtonInactiveClass = [
 
 export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
   const { t } = useTranslation("howToGetHere");
+  const resolveCopy = (key: string, fallback: string): string => {
+    const value = t(key, { defaultValue: fallback }) as string;
+    const trimmed = value.trim();
+    return trimmed && trimmed !== key ? trimmed : fallback;
+  };
   const [direction, setDirection] = useState<Direction>("from-rome");
   const [selected, setSelected] = useState<ReadonlySet<PreferenceKey>>(new Set());
 
@@ -97,10 +103,13 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
       <div className="relative isolate overflow-hidden rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-primary/10 via-brand-surface to-brand-surface p-6 shadow-lg dark:border-brand-outline/40 dark:from-brand-secondary/20 dark:via-brand-surface/40 dark:to-brand-surface/30">
         <header className="border-b border-brand-outline/10 pb-4 dark:border-brand-outline/30">
           <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
-            {t("romePlanner.title")}
+            {resolveCopy("romePlanner.title", "Rome ↔ Positano: How to Travel")}
           </h2>
           <p className="mt-1 text-sm text-brand-text/80 dark:text-brand-text/70">
-            {t("romePlanner.subtitle")}
+            {resolveCopy(
+              "romePlanner.subtitle",
+              "Pick a direction, set your preferences, and we'll suggest a route."
+            )}
           </p>
         </header>
 
@@ -109,7 +118,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
             id={directionLabelId}
             className="text-sm font-medium text-brand-heading/80 dark:text-brand-text/80"
           >
-            {t("romePlanner.directionPrompt")}
+            {resolveCopy("romePlanner.directionPrompt", "Pick a direction")}
           </span>
           <Inline
             role="group"
@@ -125,7 +134,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
               )}
               aria-pressed={isFromRome}
             >
-              {t("romePlanner.tabs.from")}
+              {resolveCopy("romePlanner.tabs.from", "From Rome → Hostel")}
             </button>
             <button
               type="button"
@@ -136,7 +145,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
               )}
               aria-pressed={!isFromRome}
             >
-              {t("romePlanner.tabs.to")}
+              {resolveCopy("romePlanner.tabs.to", "From Hostel → Rome")}
             </button>
           </Inline>
         </Cluster>
@@ -148,7 +157,7 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
 
       <div className="rounded-3xl border border-brand-outline/20 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/40 dark:bg-brand-surface/30">
         <p className="text-sm font-bold uppercase tracking-wide text-brand-primary dark:text-brand-secondary">
-          {t("romePlanner.otherMatches")}
+          {resolveCopy("romePlanner.otherMatches", "Other matches for your pick")}
         </p>
         <div className="mt-4">
           <RouteList routes={visibleRoutes} />
@@ -156,7 +165,10 @@ export const RomeTravelPlanner = memo(function RomeTravelPlanner() {
       </div>
 
       <p className="text-center text-xs text-brand-text/60 dark:text-brand-text/60">
-        {t("romePlanner.disclaimer")}
+        {resolveCopy(
+          "romePlanner.disclaimer",
+          "Always check operators for latest schedules and availability."
+        )}
       </p>
     </section>
   );

@@ -9,6 +9,12 @@ name: Business OS D1 Export
 
 on:
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run in dry-run mode (no commit/push)"
+        required: false
+        type: boolean
+        default: false
 permissions:
   contents: write  # Required for git push
   pull-requests: write  # Required for auto-PR creation

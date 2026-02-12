@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Work Exchange in Italian Hostels",
+    "description": "Roles, hours, legal basics, and evaluating opportunities."
+  },
+  "linkLabel": "Work Exchange in Italian Hostels",
+  "intro": [
+    "Considering a work exchange in Italy? Learn how hostels and farms structure shifts, what paperwork you need, and how to choose reputable programmes."
+  ],
+  "sections": [
+    {
+      "id": "expect",
+      "title": "What to expect",
+      "body": [
+        "Typical exchanges trade 20–25 hours of housekeeping, reception support, or social hosting for a bed and breakfast.",
+        "Shifts are usually split across five days, leaving two full days to explore. Confirm rotas in writing before you commit."
+      ]
+    },
+    {
+      "id": "vet",
+      "title": "Vetting hosts",
+      "body": [
+        "Read reviews on Workaway, Worldpackers, and hostel Facebook groups. Look for hosts with recent feedback and clear task lists.",
+        "Ask about accommodation setup (dorm vs private), curfews, and if meals or staff discounts are included."
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": "Paperwork & rules",
+      "body": [
+        "Citizens from the EU, UK, Canada, Australia, and the US can stay up to 90 days in Schengen as tourists—work exchanges must remain voluntary.",
+        "Carry travel insurance that covers volunteering and informal work; some hosts require a liability waiver on arrival."
+      ]
+    }
+  ],
+  "tips": [
+    "Schedule a video call with the host to clarify duties and see the space before booking flights.",
+    "Arrive a day early to settle in, learn the house rules, and adjust before your first shift."
+  ],
+  "faqs": [
+    {
+      "q": "Do I get paid pocket money?",
+      "a": [
+        "Most Italian exchanges are room-and-board only. Some offer tips from bar shifts or excursions, but treat those as bonuses, not guaranteed income."
+      ]
+    },
+    {
+      "q": "Can I overstay 90 days on a work exchange?",
+      "a": [
+        "No. You must respect Schengen stay limits unless you secure a work visa or student permit. Plan onward travel or a Schengen reset accordingly."
+      ]
+    }
+  ]
+}

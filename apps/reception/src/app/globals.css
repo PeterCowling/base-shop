@@ -1,8 +1,30 @@
 /* apps/reception/src/app/globals.css
    Reception app global styles powered by Tailwind */
-@config "../../../../tailwind.config.mjs";
+@config "../../tailwind.config.mjs";
 
+@import "@themes/base/tokens.css";
 @import "tailwindcss";
+
+:root {
+  /* Legacy dark palette aliases bridged to shared semantic tokens */
+  --reception-dark-bg: var(--color-bg-dark);
+  --reception-dark-surface: var(--surface-2-dark);
+  --reception-dark-accent-green: var(--hospitality-ready-fg-dark);
+  --reception-dark-accent-orange: var(--hospitality-warning-fg-dark);
+  --reception-dark-border: var(--color-border-dark);
+
+  /* Semantic aliases for new Reception component usage */
+  --reception-surface-dark: var(--surface-2);
+  --reception-accent-hospitality: var(--hospitality-ready-fg);
+
+  /* Bridge legacy reception semantics to shared hospitality tokens */
+  --reception-signal-ready-bg: hsl(var(--hospitality-ready));
+  --reception-signal-ready-fg: hsl(var(--hospitality-ready-fg));
+  --reception-signal-warning-bg: hsl(var(--hospitality-warning));
+  --reception-signal-warning-fg: hsl(var(--hospitality-warning-fg));
+  --reception-signal-info-bg: hsl(var(--hospitality-info));
+  --reception-signal-info-fg: hsl(var(--hospitality-info-fg));
+}
 
 /* -------- CSS reset (minimal) ------------------------------------ */
 *,

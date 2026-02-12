@@ -1,315 +1,92 @@
 // i18n-exempt file -- I18N-4521 [ttl=2026-12-31] Manifest metadata scheduled for localisation migration
 /* eslint-disable ds/no-hardcoded-copy -- GUIDES-2176 manifest requires inline editorial defaults */
 // src/routes/guides/guide-manifest.ts
-import { z } from "zod";
+import {
+  CHECKLIST_ITEM_IDS,
+  type ChecklistItemId,
+  type ChecklistStatus,
+  createManifestEntrySchema,
+  type GuideArea,
+  type GuideChecklistItem,
+  type GuideManifestEntry as GuideManifestEntryBase,
+  type GuideRouteExpectations,
+  type GuideRouteOptions,
+  type GuideStatus,
+  registerManifestEntries,
+} from "@acme/guide-system";
 
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
+
 import type { GuideKey } from "../../guides/slugs/keys";
 import { GUIDE_KEYS, GUIDE_KEYS_WITH_OVERRIDES } from "../../guides/slugs/keys";
 import { GUIDE_SLUGS } from "../../guides/slugs/slugs";
 import { slugify } from "../../utils/slugify";
 
-import {
-  GUIDE_BLOCK_DECLARATION_SCHEMA,
-  type GuideBlockDeclaration,
-} from "./blocks/types";
-import { analyzeGuideCompleteness, analyzeTranslationCoverage, analyzeDateValidation } from "./guide-diagnostics";
+import type { GuideBlockDeclaration } from "./blocks/types";
+import { analyzeDateValidation,analyzeGuideCompleteness, analyzeTranslationCoverage } from "./guide-diagnostics";
 import type { GuideChecklistDiagnostics } from "./guide-diagnostics.types";
 import type { ManifestOverrides } from "./guide-manifest-overrides";
 
-/**
- * Supported publish status values for guides. These power both routing (draft vs live)
- * and the editorial dashboard surfaces that display the current lifecycle state.
- */
-export const GUIDE_STATUS_VALUES = ["draft", "review", "live"] as const;
-export type GuideStatus = (typeof GUIDE_STATUS_VALUES)[number];
+// Re-export shared types for backward compatibility
+export {
+  CHECKLIST_ITEM_IDS,
+  CHECKLIST_STATUS_VALUES,
+  type ChecklistItemId,
+  type ChecklistStatus,
+  GUIDE_AREA_VALUES,
+  GUIDE_STATUS_VALUES,
+  GUIDE_TEMPLATE_VALUES,
+  type GuideArea,
+  type GuideAreaSlugKey,
+  guideAreaToSlugKey,
+  type GuideChecklistItem,
+  type GuideRouteExpectations,
+  type GuideRouteOptions,
+  type GuideStatus,
+  type GuideTemplate,
+  STRUCTURED_DATA_TYPES,
+  type StructuredDataDeclaration,
+  type StructuredDataType,
+} from "@acme/guide-system";
 
 /**
- * Guides can surface in one or more primary navigation areas. Manifest entries declare
- * every area they are eligible for so the publishing UI can present toggle chips instead
- * of requiring bespoke route components.
+ * Brikette-specific manifest entry type, narrowed to concrete GuideKey.
  */
-export const GUIDE_AREA_VALUES = ["howToGetHere", "help", "experience"] as const;
-export type GuideArea = (typeof GUIDE_AREA_VALUES)[number];
-
-export type GuideAreaSlugKey = "howToGetHere" | "assistance" | "experiences";
-
-export function guideAreaToSlugKey(area: GuideArea): GuideAreaSlugKey {
-  switch (area) {
-    case "help":
-      return "assistance";
-    case "experience":
-      return "experiences";
-    case "howToGetHere":
-    default:
-      return "howToGetHere";
-  }
-}
-
-/**
- * Manifest-driven checklists let editors see — directly in the CMS/preview — which pieces
- * of a guide still need attention before promotion. Items intentionally stay generic so
- * we can derive them from content analysis in a follow-up iteration.
- */
-export const CHECKLIST_ITEM_IDS = ["translations", "jsonLd", "faqs", "content", "seoAudit"] as const;
-export type ChecklistItemId = (typeof CHECKLIST_ITEM_IDS)[number];
-
-export const CHECKLIST_STATUS_VALUES = ["missing", "inProgress", "complete"] as const;
-export type ChecklistStatus = (typeof CHECKLIST_STATUS_VALUES)[number];
-
-export type GuideChecklistItem = {
-  id: ChecklistItemId;
-  status: ChecklistStatus;
-  note?: string;
+export type GuideManifestEntry = GuideManifestEntryBase & {
+  key: GuideKey;
+  relatedGuides: GuideKey[];
 };
 
-const CHECKLIST_ITEM_SCHEMA = z.object({
-  id: z.enum(CHECKLIST_ITEM_IDS),
-  status: z.enum(CHECKLIST_STATUS_VALUES),
-  note: z.string().trim().optional(),
-});
+// Create schema with brikette's concrete guide keys
+const { schema: GUIDE_MANIFEST_ENTRY_SCHEMA_INNER } = createManifestEntrySchema(GUIDE_KEYS_WITH_OVERRIDES);
 
-/**
- * Structured data needs more than a boolean flag. Using a declarative manifest allows us to
- * express both the schema type and any typed parameters the generator should consume.
- */
-export const STRUCTURED_DATA_TYPES = [
-  "Article",
-  "FAQPage",
-  "BreadcrumbList",
-  "Service",
-  "ItemList",
-  "HowTo",
-] as const;
-export type StructuredDataType = (typeof STRUCTURED_DATA_TYPES)[number];
-
-export type StructuredDataDeclaration =
-  | StructuredDataType
-  | {
-      type: StructuredDataType;
-      options?: Record<string, unknown> | undefined;
-    };
-
-export const GUIDE_TEMPLATE_VALUES = ["help", "experience", "localGuide", "pillar"] as const;
-export type GuideTemplate = (typeof GUIDE_TEMPLATE_VALUES)[number];
-
-const STRUCTURED_DATA_SCHEMA = z.union([
-  z.enum(STRUCTURED_DATA_TYPES),
-  z.object({
-    type: z.enum(STRUCTURED_DATA_TYPES),
-    options: z.record(z.unknown()).optional(),
-  }),
-]);
-
-const ARTICLE_LIKE_STRUCTURED_TYPES = new Set<StructuredDataType>([
-  "Article",
-  "HowTo",
-  "FAQPage",
-]);
-
-function extractStructuredDataType(
-  declaration: StructuredDataDeclaration | undefined,
-): StructuredDataType | undefined {
-  if (!declaration) return undefined;
-  if (typeof declaration === "string") return declaration;
-  if (typeof declaration === "object" && declaration !== null) {
-    const candidate = (declaration as { type?: unknown }).type;
-    if (typeof candidate === "string") {
-      return candidate as StructuredDataType;
-    }
-  }
-  return undefined;
-}
-
-function hasArticleLikeStructuredData(
-  structured: StructuredDataDeclaration[] | undefined,
-): boolean {
-  if (!structured || structured.length === 0) return true;
-  return structured.some((entry) => {
-    const type = extractStructuredDataType(entry);
-    return Boolean(type && ARTICLE_LIKE_STRUCTURED_TYPES.has(type));
-  });
-}
-
-/**
- * Route behaviour knobs that map closely to GuideSeoTemplate props. These stay optional so
- * most entries can rely on sensible defaults while bespoke routes can opt-in to overrides.
- */
-export type GuideRouteOptions = {
-  allowEnglishFallback?: boolean;
-  showPlanChoice?: boolean;
-  showTransportNotice?: boolean;
-  showTagChips?: boolean;
-  showTocWhenUnlocalized?: boolean;
-  suppressTocTitle?: boolean;
-  suppressUnlocalizedFallback?: boolean;
-  preferManualWhenUnlocalized?: boolean;
-  renderGenericWhenEmpty?: boolean;
-  preferGenericWhenFallback?: boolean;
-  showRelatedWhenLocalized?: boolean;
-  suppressFaqWhenUnlocalized?: boolean;
-  fallbackToEnTocTitle?: boolean;
-  ogType?: string;
+// Cast to preserve the brikette-specific GuideManifestEntry type
+export const GUIDE_MANIFEST_ENTRY_SCHEMA = GUIDE_MANIFEST_ENTRY_SCHEMA_INNER as unknown as {
+  parse: (input: GuideManifestEntryInput) => GuideManifestEntry;
 };
 
-export type GuideRouteExpectations = {
-  redirectOnly?: boolean;
-};
-
-const GUIDE_ROUTE_OPTIONS_SCHEMA = z
-  .object({
-    allowEnglishFallback: z.boolean().optional(),
-    showPlanChoice: z.boolean().optional(),
-    showTransportNotice: z.boolean().optional(),
-    showTagChips: z.boolean().optional(),
-    showTocWhenUnlocalized: z.boolean().optional(),
-    suppressTocTitle: z.boolean().optional(),
-    suppressUnlocalizedFallback: z.boolean().optional(),
-    preferManualWhenUnlocalized: z.boolean().optional(),
-    renderGenericWhenEmpty: z.boolean().optional(),
-    preferGenericWhenFallback: z.boolean().optional(),
-    showRelatedWhenLocalized: z.boolean().optional(),
-    suppressFaqWhenUnlocalized: z.boolean().optional(),
-    fallbackToEnTocTitle: z.boolean().optional(),
-    ogType: z.string().trim().optional(),
-  })
-  .partial()
-  .optional();
-
-const GUIDE_ROUTE_EXPECTATIONS_SCHEMA = z
-  .object({
-    redirectOnly: z.boolean().optional(),
-  })
-  .partial()
-  .optional();
-
-/**
- * Helpers to constrain manifest entries to known guide keys at runtime without losing type safety.
- */
-const GUIDE_KEY_SET = new Set<GuideKey>(GUIDE_KEYS_WITH_OVERRIDES);
-const guideKeySchema = z.custom<GuideKey>(
-  (value) => typeof value === "string" && GUIDE_KEY_SET.has(value as GuideKey),
-  {
-    message: "Invalid guide key",
-  },
-);
-
-export type GuideManifestEntry = {
+export type GuideManifestEntryInput = {
   key: GuideKey;
   slug: string;
   contentKey: string;
-  status: GuideStatus;
-  /**
-   * When true, the route should only be available under /{lang}/draft/* until promoted.
-   */
-  draftOnly?: boolean | undefined;
+  status?: string;
+  draftOnly?: boolean;
   draftPathSegment?: string;
-  areas: GuideArea[];
-  primaryArea: GuideArea;
+  areas: readonly string[];
+  primaryArea: string;
   metaKey?: string;
-  structuredData: StructuredDataDeclaration[];
-  relatedGuides: GuideKey[];
-  blocks: GuideBlockDeclaration[];
+  structuredData?: unknown[];
+  relatedGuides?: GuideKey[];
+  blocks?: GuideBlockDeclaration[];
   options?: GuideRouteOptions;
   expectations?: GuideRouteExpectations;
-  checklist?: GuideChecklistItem[];
-  /**
-   * Optional SEO/content auditing hints.
-   * These are intentionally non-blocking fields that can be rolled out incrementally.
-   */
-  template?: GuideTemplate;
+  checklist?: Array<{ id: string; status: string; note?: string }>;
+  template?: string;
   focusKeyword?: string;
   primaryQuery?: string;
   timeSensitive?: boolean;
 };
-
-const GUIDE_MANIFEST_ENTRY_SCHEMA_BASE = z
-  .object({
-    key: guideKeySchema,
-    slug: z.string().min(1),
-    contentKey: z.string().min(1),
-    status: z.enum(GUIDE_STATUS_VALUES).optional(),
-    draftOnly: z.boolean().optional(),
-    draftPathSegment: z.string().min(1).optional(),
-    areas: z.array(z.enum(GUIDE_AREA_VALUES)).nonempty(),
-    primaryArea: z.enum(GUIDE_AREA_VALUES),
-    metaKey: z.string().min(1).optional(),
-    structuredData: z.array(STRUCTURED_DATA_SCHEMA).optional(),
-    relatedGuides: z.array(guideKeySchema).optional(),
-    blocks: z.array(GUIDE_BLOCK_DECLARATION_SCHEMA).optional(),
-    options: GUIDE_ROUTE_OPTIONS_SCHEMA,
-    expectations: GUIDE_ROUTE_EXPECTATIONS_SCHEMA,
-    checklist: z.array(CHECKLIST_ITEM_SCHEMA).optional(),
-    template: z.enum(GUIDE_TEMPLATE_VALUES).optional(),
-    focusKeyword: z.string().trim().min(3).optional(),
-    primaryQuery: z.string().trim().min(3).optional(),
-    timeSensitive: z.boolean().optional(),
-  })
-  .superRefine((value, ctx) => {
-    const ogType = value.options?.ogType?.trim();
-    if (!ogType) return;
-    if (hasArticleLikeStructuredData(value.structuredData)) {
-      if (ogType.toLowerCase() !== "article") {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["options", "ogType"],
-          message: 'Guides with article-like content must set og:type="article".',
-        });
-      }
-    }
-  });
-
-export type GuideManifestEntryInput = z.input<typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE>;
-
-export const GUIDE_MANIFEST_ENTRY_SCHEMA: z.ZodEffects<
-  typeof GUIDE_MANIFEST_ENTRY_SCHEMA_BASE,
-  GuideManifestEntry
-> = GUIDE_MANIFEST_ENTRY_SCHEMA_BASE.transform((value) => {
-  const {
-    draftPathSegment,
-    metaKey,
-    options,
-    expectations,
-    checklist,
-    template,
-    focusKeyword,
-    primaryQuery,
-    timeSensitive,
-    ...rest
-  } = value;
-  const cleanOptions = options
-    ? (Object.fromEntries(Object.entries(options).filter(([, v]) => typeof v !== "undefined")) as GuideRouteOptions)
-    : undefined;
-  const cleanExpectations = expectations
-    ? (Object.fromEntries(Object.entries(expectations).filter(([, v]) => typeof v !== "undefined")) as GuideRouteExpectations)
-    : undefined;
-  const cleanChecklist = Array.isArray(checklist)
-    ? checklist.map((item) => {
-        const { note, ...rest } = item;
-        return {
-          ...rest,
-          ...(typeof note === "string" ? { note } : {}),
-        };
-      })
-    : undefined;
-  return {
-    ...rest,
-    ...(typeof draftPathSegment === "string" ? { draftPathSegment } : {}),
-    ...(typeof metaKey === "string" ? { metaKey } : {}),
-    ...(typeof cleanOptions !== "undefined" ? { options: cleanOptions } : {}),
-    ...(typeof cleanExpectations !== "undefined" ? { expectations: cleanExpectations } : {}),
-    ...(Array.isArray(cleanChecklist) ? { checklist: cleanChecklist } : {}),
-    ...(typeof template === "string" ? { template } : {}),
-    ...(typeof focusKeyword === "string" ? { focusKeyword } : {}),
-    ...(typeof primaryQuery === "string" ? { primaryQuery } : {}),
-    ...(typeof timeSensitive === "boolean" ? { timeSensitive } : {}),
-    status: (value.status ?? "draft") as GuideStatus,
-    structuredData: value.structuredData ?? [],
-    relatedGuides: value.relatedGuides ?? [],
-    blocks: value.blocks ?? [],
-  } satisfies GuideManifestEntry;
-});
 
 export function createGuideManifestEntry(input: GuideManifestEntryInput): GuideManifestEntry {
   return GUIDE_MANIFEST_ENTRY_SCHEMA.parse(input);
@@ -646,7 +423,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "luggageStorage",
     slug: "luggage-storage-positano",
     contentKey: "luggageStorage",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/luggage-storage-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -709,7 +486,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "whatToPack",
     slug: "what-to-pack-amalfi-coast",
     contentKey: "whatToPack",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/what-to-pack-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -739,7 +516,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoWinterBudget",
     slug: "positano-in-winter-on-a-budget",
     contentKey: "positanoWinterBudget",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/positano-in-winter-on-a-budget",
     areas: ["experience"],
     primaryArea: "experience",
@@ -768,7 +545,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "laundryPositano",
     slug: "laundry-positano",
     contentKey: "laundryPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/laundry-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -789,7 +566,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "limoncelloCuisine",
     slug: "limoncello-and-local-cuisine",
     contentKey: "limoncelloCuisine",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/limoncello-and-local-cuisine",
     areas: ["experience"],
     primaryArea: "experience",
@@ -821,7 +598,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "pathOfTheGods",
     slug: "path-of-the-gods",
     contentKey: "pathOfTheGods",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/path-of-the-gods",
     areas: ["experience"],
     primaryArea: "experience",
@@ -844,7 +621,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "pathOfTheGodsBus",
     slug: "path-of-the-gods-via-amalfi-bus",
     contentKey: "pathOfTheGodsBus",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/path-of-the-gods-via-amalfi-bus",
     areas: ["experience"],
     primaryArea: "experience",
@@ -876,7 +653,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "pathOfTheGodsFerry",
     slug: "path-of-the-gods-via-amalfi-ferry",
     contentKey: "pathOfTheGodsFerry",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/path-of-the-gods-via-amalfi-ferry",
     areas: ["experience"],
     primaryArea: "experience",
@@ -908,7 +685,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "simsAtms",
     slug: "sim-esim-and-atms-positano",
     contentKey: "simsAtms",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/sim-esim-and-atms-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -945,7 +722,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "freeThingsPositano",
     slug: "free-low-cost-things-to-do-positano",
     contentKey: "freeThingsPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/free-low-cost-things-to-do-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -980,10 +757,10 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "couplesInHostels",
     slug: "traveling-as-a-couple-in-hostels",
     contentKey: "couplesInHostels",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/traveling-as-a-couple-in-hostels",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["onlyHostel", "positanoBudget"],
     blocks: [
@@ -1017,7 +794,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "stayingFitPositano",
     slug: "stay-fit-positano",
     contentKey: "stayingFitPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/stay-fit-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1049,10 +826,10 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "naplesPositano",
     slug: "naples-to-positano",
     contentKey: "naplesPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/naples-to-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
     structuredData: ["Article"],
     relatedGuides: ["ferrySchedules", "luggageStorage"],
     blocks: [
@@ -1148,7 +925,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "capriDayTrip",
     slug: "day-trip-capri-from-positano",
     contentKey: "capriDayTrip",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/day-trip-capri-from-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1186,7 +963,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "dayTripsAmalfi",
     slug: "day-trips-from-positano",
     contentKey: "dayTripsAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/day-trips-from-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1279,7 +1056,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "santaMariaDelCastelloHike",
     slug: "santa-maria-del-castello-hike",
     contentKey: "santaMariaDelCastelloHike",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/santa-maria-del-castello-hike",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1310,7 +1087,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "topOfTheMountainHike",
     slug: "top-of-the-mountain-hike",
     contentKey: "topOfTheMountainHike",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/top-of-the-mountain-hike",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1342,7 +1119,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "instagramSpots",
     slug: "positano-instagram-spots",
     contentKey: "instagramSpots",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/positano-instagram-spots",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1433,7 +1210,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "fornilloBeachGuide",
     slug: "fornillo-beach-guide",
     contentKey: "fornilloBeachGuide",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/fornillo-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1462,7 +1239,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoBeaches",
     slug: "positano-beaches",
     contentKey: "positanoBeaches",
-    status: "draft",
+    status: "live",
     draftPathSegment: "experiences/positano-beaches",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1579,7 +1356,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoMainBeach",
     slug: "positano-main-beach-guide",
     contentKey: "positanoMainBeach",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/positano-main-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1609,7 +1386,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "fiordoDiFuroreBeachGuide",
     slug: "fiordo-di-furore-beach-guide",
     contentKey: "fiordoDiFuroreBeachGuide",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/fiordo-di-furore-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1639,7 +1416,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ferrySchedules",
     slug: "ferry-schedules",
     contentKey: "ferrySchedules",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/ferry-schedules",
     areas: ["help"],
     primaryArea: "help",
@@ -1766,7 +1543,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoDining",
     slug: "positano-dining-guide",
     contentKey: "positanoDining",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/positano-dining-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1798,7 +1575,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "cheapEats",
     slug: "cheap-eats-in-positano",
     contentKey: "cheapEats",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/cheap-eats-in-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1827,7 +1604,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ferragostoPositano",
     slug: "ferragosto-in-positano",
     contentKey: "ferragostoPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/ferragosto-in-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -1857,7 +1634,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "safetyAmalfi",
     slug: "staying-safe-positano-amalfi-coast",
     contentKey: "safetyAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/staying-safe-positano-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -1886,7 +1663,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "sitaTickets",
     slug: "sita-bus-tickets",
     contentKey: "sitaTickets",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/sita-bus-tickets",
     areas: ["help"],
     primaryArea: "help",
@@ -1916,7 +1693,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "transportBudget",
     slug: "transport-on-a-budget-amalfi-coast",
     contentKey: "transportBudget",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/transport-on-a-budget-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -2006,7 +1783,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ecoFriendlyAmalfi",
     slug: "eco-friendly-travel-amalfi-coast",
     contentKey: "ecoFriendlyAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/eco-friendly-travel-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -2035,7 +1812,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "workAndTravelPositano",
     slug: "work-and-travel-remote-work-positano",
     contentKey: "workAndTravelPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/work-and-travel-remote-work-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -2064,7 +1841,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "workExchangeItaly",
     slug: "work-exchange-in-italian-hostels",
     contentKey: "workExchangeItaly",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/work-exchange-in-italian-hostels",
     areas: ["help"],
     primaryArea: "help",
@@ -2125,7 +1902,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "bestTimeToVisit",
     slug: "best-time-to-visit-positano",
     contentKey: "bestTimeToVisit",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/best-time-to-visit-positano",
     areas: ["help"],
     primaryArea: "help",
@@ -2155,10 +1932,10 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "parking",
     slug: "arriving-by-car",
     contentKey: "parking",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/arriving-by-car",
-    areas: ["howToGetHere"],
-    primaryArea: "howToGetHere",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article", "FAQPage"],
     focusKeyword: "arriving by car Positano",
     relatedGuides: ["transportBudget", "publicTransportAmalfi", "scooterRentalPositano"],
@@ -2186,10 +1963,10 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "salernoPositano",
     slug: "salerno-to-positano",
     contentKey: "salernoPositano",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/salerno-to-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["howToGetHere"],
+    primaryArea: "howToGetHere",
     structuredData: ["Article"],
     relatedGuides: ["ferrySchedules", "reachBudget", "luggageStorage"],
     blocks: [
@@ -2223,7 +2000,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "interrailAmalfi",
     slug: "interrail-italy-rail-pass-amalfi-coast",
     contentKey: "interrailAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/interrail-italy-rail-pass-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -2252,7 +2029,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "naplesCityGuide",
     slug: "naples-city-guide-for-amalfi-travelers",
     contentKey: "naplesCityGuide",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/naples-city-guide-for-amalfi-travelers",
     areas: ["help"],
     primaryArea: "help",
@@ -2306,7 +2083,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "hitchhikingAmalfi",
     slug: "hitchhiking-the-amalfi-coast",
     contentKey: "hitchhikingAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/hitchhiking-the-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -2400,7 +2177,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "sorrentoGuide",
     slug: "sorrento-gateway-guide",
     contentKey: "sorrentoGuide",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/sorrento-gateway-guide",
     areas: ["help"],
     primaryArea: "help",
@@ -2430,7 +2207,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "salernoGatewayGuide",
     slug: "salerno-amalfi-coast-gateway",
     contentKey: "salernoGatewayGuide",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/salerno-amalfi-coast-gateway",
     areas: ["help"],
     primaryArea: "help",
@@ -2460,7 +2237,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoMainBeachWalkDown",
     slug: "walk-down-to-positano-main-beach",
     contentKey: "positanoMainBeachWalkDown",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/walk-down-to-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2497,7 +2274,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoMainBeachWalkBack",
     slug: "walk-back-to-hostel-brikette-from-positano-main-beach",
     contentKey: "positanoMainBeachWalkBack",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/walk-back-to-hostel-brikette-from-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2534,7 +2311,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoMainBeachBusDown",
     slug: "bus-down-to-positano-main-beach",
     contentKey: "positanoMainBeachBusDown",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/bus-down-to-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2571,7 +2348,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "positanoMainBeachBusBack",
     slug: "bus-back-to-hostel-brikette-from-positano-main-beach",
     contentKey: "positanoMainBeachBusBack",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/bus-back-to-hostel-brikette-from-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2639,7 +2416,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "souvenirsAmalfi",
     slug: "thrifty-souvenir-shopping-amalfi-coast",
     contentKey: "souvenirsAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/thrifty-souvenir-shopping-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2696,7 +2473,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "travelInsuranceAmalfi",
     slug: "travel-insurance-amalfi-coast",
     contentKey: "travelInsuranceAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/travel-insurance-amalfi-coast",
     areas: ["help"],
     primaryArea: "help",
@@ -2723,7 +2500,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "italianPhrasesCampania",
     slug: "italian-phrases-for-travelers-campania",
     contentKey: "italianPhrasesCampania",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/italian-phrases-for-travelers-campania",
     areas: ["help"],
     primaryArea: "help",
@@ -2827,7 +2604,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "sunriseHike",
     slug: "sunrise-hike-positano",
     contentKey: "sunriseHike",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/sunrise-hike-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2853,7 +2630,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "gavitellaBeachGuide",
     slug: "gavitella-beach-guide",
     contentKey: "gavitellaBeachGuide",
-    status: "draft",
+    status: "live",
     focusKeyword: "Gavitella Beach Praiano",
     draftPathSegment: "guides/gavitella-beach-guide",
     areas: ["experience"],
@@ -2883,7 +2660,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "lauritoBeachBusBack",
     slug: "bus-back-from-laurito-beach",
     contentKey: "lauritoBeachBusBack",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/bus-back-from-laurito-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2912,7 +2689,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "lauritoBeachBusDown",
     slug: "bus-down-to-positano-main-beach",
     contentKey: "lauritoBeachBusDown",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/bus-down-to-positano-main-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2942,7 +2719,7 @@ const manifestSeed: GuideManifestEntry[] = [
     slug: "laurito-beach-guide",
     contentKey: "lauritoBeachGuide",
     focusKeyword: "Laurito Beach",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/laurito-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -2971,7 +2748,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "arienzoBeachBusBack",
     slug: "bus-back-from-arienzo-beach",
     contentKey: "arienzoBeachBusBack",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/bus-back-from-arienzo-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3029,10 +2806,10 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "budgetAccommodationBeyond",
     slug: "budget-accommodation-beyond-positano",
     contentKey: "budgetAccommodationBeyond",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/budget-accommodation-beyond-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["positanoBudget", "transportBudget", "howToGetToPositano"],
     blocks: [
@@ -3151,7 +2928,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "campingAmalfi",
     slug: "camping-on-the-amalfi-coast",
     contentKey: "campingAmalfi",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/camping-on-the-amalfi-coast",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3181,7 +2958,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "capriOnABudget",
     slug: "capri-on-a-budget",
     contentKey: "capriOnABudget",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/capri-on-a-budget",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3220,7 +2997,7 @@ const manifestSeed: GuideManifestEntry[] = [
     slug: "regina-giovanna-bath-beach-guide",
     contentKey: "reginaGiovannaBath",
     focusKeyword: "Bagni della Regina Giovanna",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/regina-giovanna-bath-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3312,7 +3089,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "boatTours",
     slug: "boat-tours-positano",
     contentKey: "boatTours",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/boat-tours-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3342,7 +3119,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "hostelBriketteToArienzoBus",
     slug: "bus-to-arienzo-beach",
     contentKey: "hostelBriketteToArienzoBus",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/bus-to-arienzo-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3379,7 +3156,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "pathOfTheGodsNocelle",
     slug: "path-of-the-gods-via-nocelle",
     contentKey: "pathOfTheGodsNocelle",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/path-of-the-gods-via-nocelle",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3409,7 +3186,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "marinaDiPraiaBeaches",
     slug: "marina-di-praia-and-secluded-beaches",
     contentKey: "marinaDiPraiaBeaches",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/marina-di-praia-and-secluded-beaches",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3467,7 +3244,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "hostelBriketteToFiordoDiFuroreBus",
     slug: "hostel-brikette-to-fiordo-di-furore-by-bus",
     contentKey: "hostelBriketteToFiordoDiFuroreBus",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/hostel-brikette-to-fiordo-di-furore-by-bus",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3504,7 +3281,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "hostelBriketteToFornilloBeach",
     slug: "hostel-brikette-to-fornillo-beach",
     contentKey: "hostelBriketteToFornilloBeach",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/hostel-brikette-to-fornillo-beach",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3541,7 +3318,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "hostelBriketteToReginaGiovannaBath",
     slug: "hostel-brikette-to-regina-giovanna-bath",
     contentKey: "hostelBriketteToReginaGiovannaBath",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/hostel-brikette-to-regina-giovanna-bath",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3578,7 +3355,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "arienzoBeachClub",
     slug: "arienzo-beach-guide",
     contentKey: "arienzoBeachClub",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/arienzo-beach-guide",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3637,7 +3414,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "walkingTourAudio",
     slug: "free-walking-tour-audio-positano",
     contentKey: "walkingTourAudio",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/free-walking-tour-audio-positano",
     areas: ["experience"],
     primaryArea: "experience",
@@ -3667,10 +3444,10 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "groceriesPharmacies",
     slug: "groceries-and-pharmacies-positano",
     contentKey: "groceriesPharmacies",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/groceries-and-pharmacies-positano",
-    areas: ["experience"],
-    primaryArea: "experience",
+    areas: ["help"],
+    primaryArea: "help",
     structuredData: ["Article"],
     relatedGuides: ["simsAtms", "whatToPack", "positanoBeaches"],
     blocks: [
@@ -3698,7 +3475,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "ferryDockToBrikette",
     slug: "ferry-dock-to-hostel-brikette-with-luggage",
     contentKey: "ferryDockToBrikette",
-    status: "draft",
+    status: "live",
     focusKeyword: "ferry dock to hostel brikette",
     draftPathSegment: "guides/ferry-dock-to-hostel-brikette-with-luggage",
     areas: ["howToGetHere"],
@@ -3714,7 +3491,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "briketteToFerryDock",
     slug: "hostel-brikette-to-ferry-dock-with-luggage",
     contentKey: "briketteToFerryDock",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/hostel-brikette-to-ferry-dock-with-luggage",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -3729,7 +3506,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "chiesaNuovaArrivals",
     slug: "chiesa-nuova-bar-internazionale-to-hostel-brikette",
     contentKey: "chiesaNuovaArrivals",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/chiesa-nuova-bar-internazionale-to-hostel-brikette",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -3745,7 +3522,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "chiesaNuovaDepartures",
     slug: "hostel-brikette-to-chiesa-nuova-bar-internazionale",
     contentKey: "chiesaNuovaDepartures",
-    status: "draft",
+    status: "live",
     draftPathSegment: "guides/hostel-brikette-to-chiesa-nuova-bar-internazionale",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
@@ -4046,7 +3823,7 @@ const manifestSeed: GuideManifestEntry[] = [
     key: "capriPositanoFerry",
     slug: "capri-positano-ferry",
     contentKey: "capriPositanoFerry",
-    status: "draft",
+    status: "live",
     areas: ["howToGetHere"],
     primaryArea: "howToGetHere",
     structuredData: ["HowTo", "BreadcrumbList"],
@@ -4439,25 +4216,65 @@ const manifestSeed: GuideManifestEntry[] = [
 
 const existingManifestKeys = new Set(manifestSeed.map((entry) => entry.key));
 const fallbackKeys = (GUIDE_KEYS as GuideKey[]).filter((key) => !existingManifestKeys.has(key));
-const fallbackEntries = fallbackKeys.map((key) =>
-  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+
+// Area overrides for fallback entries — matches legacy GUIDE_BASE_KEY_OVERRIDES in namespaces.ts.
+// Cannot import directly due to circular dependency (namespaces.ts imports from this file).
+const FALLBACK_AREA_MAP: Partial<Record<GuideKey, GuideArea>> = {
+  fornilloBeachToBrikette: "howToGetHere",
+  drivingAmalfi: "help",
+  howToGetToPositano: "help",
+  offSeasonLongStay: "help",
+  onlyHostel: "help",
+  porterServices: "help",
+  positanoCostBreakdown: "help",
+  positanoCostComparison: "help",
+  reachBudget: "help",
+  salernoVsNaples: "help",
+  transportMoneySaving: "help",
+  workCafes: "help",
+};
+
+// Fallback keys that are live in GUIDES_INDEX — must be "live" here to keep
+// manifest aligned with the index.  All other fallbacks default to "draft".
+const LIVE_FALLBACK_KEYS: ReadonlySet<GuideKey> = new Set([
+  "digitalConcierge", "eatingOutPositano", "ferryCancellations",
+  "fiordoDiFuroreBusReturn", "fornilloBeachToBrikette", "howToGetToPositano",
+  "luminariaPraiano", "naplesBariPositanoTrain", "naplesPositanoBus",
+  "naplesPositanoCar", "naplesPositanoFerry", "naplesPositanoPrivateTransfer",
+  "naplesPositanoTaxi", "naplesPositanoTrain", "offSeasonLongStay",
+  "onlyHostel", "pompeiPositanoBus", "porterServices", "positanoAmalfi",
+  "positanoBudget", "positanoCostBreakdown", "positanoCostComparison",
+  "positanoNaplesBus", "positanoNaplesCar", "positanoNaplesFerry",
+  "positanoPompeii", "positanoRavello", "positanoRomeBus", "positanoRomeCar",
+  "positanoRomeFlight", "positanoRomeTrain", "positanoTravelGuide",
+  "ravelloFestival", "reachBudget", "romeFcoPositanoBus", "romeFcoPositanoTrain",
+  "salernoVsNaples", "sunsetViewpoints", "terraceSunsets",
+  "transportMoneySaving", "workCafes",
+] as GuideKey[]);
+
+const fallbackEntries = fallbackKeys.map((key) => {
+  const area: GuideArea = FALLBACK_AREA_MAP[key] ?? "experience";
+  return GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key,
     slug: GUIDE_SLUGS[key]?.["en"] ?? slugify(key),
     contentKey: key,
-    status: "draft",
-    areas: ["experience"],
-    primaryArea: "experience",
+    status: LIVE_FALLBACK_KEYS.has(key) ? "live" : "draft",
+    areas: [area],
+    primaryArea: area,
     structuredData: ["Article"],
     relatedGuides: [],
     blocks: [],
-  }),
-);
+  });
+});
 const allManifestEntries = [...manifestSeed, ...fallbackEntries];
 
 export const guideManifest: GuideManifest = allManifestEntries.reduce<GuideManifest>((acc, entry) => {
   acc[entry.key] = entry;
   return acc;
 }, {} as GuideManifest);
+
+// Register entries in the shared registry so other apps (business-os) can access them
+registerManifestEntries(allManifestEntries);
 
 export function getGuideManifestEntry(key: GuideKey): GuideManifestEntry | undefined {
   return guideManifest[key];
@@ -4586,6 +4403,7 @@ export function buildGuideChecklist(
   })();
 
   // Auto-infer status based on diagnostics and declarations
+  // eslint-disable-next-line complexity -- GS-001: manifest validation
   const inferStatus = (id: ChecklistItemId): ChecklistStatus => {
     if (id === "jsonLd" && entry.structuredData.length > 0) {
       return "complete";
@@ -4701,26 +4519,6 @@ export function resolveDraftPathSegment(
   const slug = entry.slug.trim();
   if (!slug) return `guides/${entry.key}`;
   return slug.includes("/") ? slug : `guides/${slug}`;
-}
-
-export type GuidePublicationStatus = "draft" | "review" | "published";
-
-export function buildGuideStatusMap(
-  entries: Iterable<GuideManifestEntry>,
-): Record<GuideKey, GuidePublicationStatus> {
-  const map: Partial<Record<GuideKey, GuidePublicationStatus>> = {};
-  for (const entry of entries) {
-    let status: GuidePublicationStatus;
-    if (entry.status === "live") {
-      status = entry.draftOnly ? "review" : "published";
-    } else if (entry.status === "review") {
-      status = "review";
-    } else {
-      status = "draft";
-    }
-    map[entry.key] = status;
-  }
-  return map as Record<GuideKey, GuidePublicationStatus>;
 }
 
 export function formatGuideManifestEntry(

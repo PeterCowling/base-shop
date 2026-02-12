@@ -21,7 +21,7 @@ describe("SocialLinksEditor", () => {
     { label: "LinkedIn URL", field: "linkedin" },
   ])("propagates %s changes", ({ label, field }) => {
     const onChange = jest.fn();
-    render(<SocialLinksEditor component={{ ...baseComponent }} onChange={onChange} />);
+    render(<SocialLinksEditor component={{ ...baseComponent } as any} onChange={onChange} />);
 
     const input = screen.getByLabelText(label);
     fireEvent.change(input, { target: { value: "https://example.com" } });

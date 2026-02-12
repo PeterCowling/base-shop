@@ -63,6 +63,8 @@ const moduleMapper = {
     " /packages/platform-core/src/repositories/rentalOrders.server.ts",
   "^@platform-core/repositories/pages$":
     " /packages/platform-core/src/repositories/pages/index.server.ts",
+  "^@platform-core/repositories/pages/index.server$":
+    " /packages/platform-core/src/repositories/pages/index.server.ts",
   "^@platform-core/(.*)$": " /packages/platform-core/src/$1",
   "^@ui/src/(.*)$": " /packages/ui/src/$1",
   "^@config/src/env$": " /packages/config/src/env/index.ts",
@@ -76,6 +78,10 @@ const moduleMapper = {
   "^@acme/config$": " /packages/config/src/env/index.ts",
   "^@acme/config/(.*)$": " /packages/config/src/$1",
   "^@acme/platform-core$": " /packages/platform-core/src/index.ts",
+  "^@acme/platform-core/repositories/pages$":
+    " /packages/platform-core/src/repositories/pages/index.server.ts",
+  "^@acme/platform-core/repositories/pages/index.server$":
+    " /packages/platform-core/src/repositories/pages/index.server.ts",
   "^@acme/platform-core/(.*)\\.js$": " /packages/platform-core/src/$1",
   "^@acme/platform-core/(.*)$": " /packages/platform-core/src/$1",
   "^@acme/page-builder-core$": " /packages/page-builder-core/src/index.ts",

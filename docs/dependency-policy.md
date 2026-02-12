@@ -45,6 +45,7 @@ Current overrides and their purpose:
 
 | Override | Reason |
 |---------|--------|
+| `next` | Pin to exact version 15.3.9 for monorepo consistency |
 | `@shadcn/ui` | Pin to known-working version |
 | `yallist` | Security patch |
 | `dom-serializer`, `domhandler`, `domutils` | HTML parser security |
@@ -53,7 +54,7 @@ Current overrides and their purpose:
 | `@tanstack/query-core` | Compatibility fix |
 | `@storybook/addon-coverage>vite-plugin-istanbul` | Compatibility fix |
 | `linkifyjs`, `path-to-regexp`, `semver`, `tar-fs` | Security patches (CVE mitigations) |
-| `diff`, `jws`, `qs`, `validator`, `undici` | Security patches |
+| `diff`, `jws`, `qs`, `undici`, `tar`, `axios` | Security patches |
 
 **Never add overrides for direct workspace dependencies.** If a dep needs upgrading, update all workspace `package.json` files.
 

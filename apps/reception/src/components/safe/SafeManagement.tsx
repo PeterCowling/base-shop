@@ -1,3 +1,5 @@
+"use client";
+
 import { Fragment, memo, useEffect, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";

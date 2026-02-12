@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Miradores imprescindibles de la Costa Amalfitana",
+    "description": "Dónde conseguir vistas espectaculares y cómo acceder a cada punto."
+  },
+  "linkLabel": "Miradores imprescindibles en la Costa Amalfitana",
+  "intro": [
+    "Hay miradores repartidos por la costa que regalan vistas sin coste.",
+    "Aprovecha amaneceres o atardeceres para mejor luz."
+  ],
+  "sections": [
+    {
+      "id": "nocelle",
+      "title": "Nocelle",
+      "body": [
+        "Sube en bus hasta Nocelle y camina a la Piazzetta para panorámica aérea de Positano.",
+        "Lleva agua: pocos bares abren fuera del verano."
+      ]
+    },
+    {
+      "id": "villa-rufolo",
+      "title": "Terraza de Villa Rufolo",
+      "body": [
+        "En Ravello, paga la entrada para acceder a los jardines suspendidos sobre el mar.",
+        "Llega temprano para esquivar los grupos de excursión."
+      ]
+    },
+    {
+      "id": "sanpietro",
+      "title": "Curvas panorámicas de la SS163",
+      "body": [
+        "Paradas como el Hotel San Pietro y el Belvedere della Madonnina permiten fotos rápidas.",
+        "Usa chaleco reflectante y extrema la precaución con el tráfico; mantente en zonas habilitadas."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva trípode ligero y filtro ND si quieres capturar estelas suaves de ferris al atardecer.",
+    "Extrema precauciones con el tráfico al fotografiar junto a la carretera: usa ropa llamativa y no invadas el carril."
+  ],
+  "faqs": [
+    {
+      "q": "¿Algún mirador es de pago?",
+      "a": [
+        "Sí, jardines como Villa Cimbrone y Villa Rufolo tienen entrada. Otros miradores en carretera son gratuitos."
+      ]
+    },
+    {
+      "q": "¿Necesito coche?",
+      "a": [
+        "No: los buses y taxis llegan a Nocelle y Ravello. Para paradas en carretera, recurre a conductores locales o excursiones."
+      ]
+    }
+  ]
+}

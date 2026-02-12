@@ -21,6 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useLoanData } from "../../../context/LoanDataContext";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
+import { useKeycardAssignmentsMutations } from "../../../hooks/mutations/useKeycardAssignmentsMutations";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import {
   type LoanMethod,
@@ -54,9 +55,11 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
   const { occupantId, bookingRef } = booking;
 
   const [buttonDisabled, setButtonDisabled] = useState<boolean>(false);
+  const [keycardNumber, setKeycardNumber] = useState<string>("");
   const { addActivity } = useActivitiesMutations();
   const { saveLoan } = useLoanData();
   const { addToAllTransactions } = useAllTransactions();
+  const { assignGuestKeycard } = useKeycardAssignmentsMutations();
 
   /* ──────────────── keycard / “No_card” status ─────────────────────────── */
   const { occupantLoans } = useOccupantLoans(bookingRef, occupantId);
@@ -289,6 +292,20 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
             isKeycard: true,
             itemCategory: "keycard",
           });
+
+          if (keycardNumber.trim()) {
+            const roomNumber =
+              booking.roomAllocated ?? booking.roomBooked ?? "";
+            assignGuestKeycard({
+              keycardNumber: keycardNumber.trim(),
+              occupantId,
+              bookingRef,
+              roomNumber,
+              depositMethod: depositType,
+              depositAmount,
+              loanTxnId: transactionId,
+            });
+          }
         }
 
         addActivity(occupantId, 10);
@@ -296,9 +313,10 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
         showToast(
           payType === KeycardPayType.NO_CARD
             ? "Guest declined a keycard (No_card logged)."
-            : `Issued 1 keycard with deposit €${depositAmount}.`,
+            : `Issued 1 keycard (#${keycardNumber || "?"}) with deposit €${depositAmount}.`,
           payType === KeycardPayType.NO_CARD ? "info" : "success"
         );
+        setKeycardNumber("");
       })
       .catch(() => {
         showToast("Error issuing keycard.", "error");
@@ -310,13 +328,16 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
       });
   }, [
     isDisabled,
+    booking,
     bookingRef,
     occupantId,
     payType,
     docType,
     cardCount,
+    keycardNumber,
     saveLoan,
     addToAllTransactions,
+    assignGuestKeycard,
     addActivity,
     setTrackedTimeout,
   ]);
@@ -372,9 +393,11 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
             menuPosition={menuPosition}
             payType={payType}
             docType={docType}
+            keycardNumber={keycardNumber}
             buttonDisabled={buttonDisabled}
             setPayType={setPayType}
             setDocType={setDocType}
+            setKeycardNumber={setKeycardNumber}
             handleConfirm={handleConfirm}
             closeMenu={() => {
               setMenuOpen(false);

@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Scenic Walks in Positano & Environs",
+    "description": "Rotas e loops com vistas; tempos e escadas realistas."
+  },
+  "linkLabel": "Caminhadas cênicas em Positano e arredores",
+  "intro": [
+    "Ligue ruelas em terraço e miradouros para voltas curtas e panorâmicas sem transformar o dia numa trilha completa."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Circuito da parte alta",
+      "body": [
+        "Conecte Chiesa Nuova e Sponda por ruelas em terraço para vistas clássicas da linha do horizonte com menos movimento."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Caminho costeiro de Fornillo",
+      "body": [
+        "Siga o acesso mais tranquilo à praia e as escadarias fotogénicas. Prefira manhã cedo ou golden hour."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Passeio em Nocelle",
+      "body": [
+        "Suba de autocarro até Nocelle e explore desvios curtos para vistas amplas sem longas descidas de escadas."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Que calçado usar?",
+      "a": [
+        "Escolha ténis com suporte e boa aderência; alguns caminhos têm degraus irregulares e ficam escorregadios após chuva."
+      ]
+    },
+    {
+      "q": "Quanto duram os percursos?",
+      "a": [
+        "Cada circuito leva 30–60 minutos com paragens para fotos. Adicione o autocarro para Nocelle para manter os desníveis suaves."
+      ]
+    }
+  ]
+}

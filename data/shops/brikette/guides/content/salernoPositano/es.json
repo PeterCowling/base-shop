@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "De Salerno a Positano: ferry, tren y bus",
+    "description": "Opciones desde Salerno hacia Positano: ferry estacional, combinación tren+bus y consejos para reducir escaleras y colas."
+  },
+  "linkLabel": "Cómo ir de Salerno a Positano",
+  "intro": [
+    "Desde Salerno, el ferry funciona bien en temporada; fuera de ella, combina tren + bus SITA. Para ahorrar escaleras, baja en ‘Sponda’ o ‘Chiesa Nuova’."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Ferry (primavera‑otoño)",
+      "body": [
+        "Línea Salerno ↔ Positano con buenas vistas; comprueba el estado del mar y horarios.",
+        "Consulta el estado del mar y el horario en tiempo real; los fines de semana los asientos se agotan, así que llega con antelación."
+      ]
+    },
+    {
+      "id": "train-bus",
+      "title": "Tren + bus (todo el año)",
+      "body": [
+        "Tren regional a Sorrento/Amalfi + bus SITA. Más lento pero operativo todo el año.",
+        "Lleva efectivo suelto, valida los billetes y deja margen en el cambio de Amalfi mientras verificas el siguiente horario."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Qué opción es más barata?",
+      "a": [
+        "Fuera de temporada, tren + bus suele ser lo más económico."
+      ]
+    },
+    {
+      "q": "¿Dónde dejo el equipaje en el ferry?",
+      "a": [
+        "Utiliza los compartimentos designados y lleva los objetos de valor contigo; llega con margen para asegurar espacio en bodega los fines de semana."
+      ]
+    }
+  ],
+  "toc": [
+    {
+      "href": "#ferry",
+      "label": "Ferry (primavera‑otoño)"
+    },
+    {
+      "href": "#train-bus",
+      "label": "Tren + bus (todo el año)"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ]
+}

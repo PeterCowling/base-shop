@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "48 Stunden in Positano",
+    "description": "Praktischer Zweitagesplan: Strände, Ausblicke, Option Path of the Gods und günstiges Essen."
+  },
+  "linkLabel": "48 Stunden in Positano",
+  "intro": [
+    "Ein 48-Stunden-Wochenende in Positano klappt, wenn du leicht reist, früh ankommst und Ausblicke außerhalb der größten Hitze suchst."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Tag 1 – Anreise & Vormittag",
+      "body": [
+        "Reise mit dem ersten SITA-Bus oder der Fähre an, gib das Gepäck in deiner Unterkunft oder Aufbewahrung ab und hol dir Espresso plus Sfogliatella in der Via dei Mulini.",
+        "Geh vor Mittag zum Strand Fornillo für einen Sprung ins Wasser, solange die Lidos ruhig sind und freie Bereiche verfügbar bleiben."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Tag 1 – Nachmittag & Sonnenuntergang",
+      "body": [
+        "Nimm den Ortsbus nach Nocelle für einen kurzen Vorgeschmack auf den Path of the Gods; komm rechtzeitig für den Sonnenuntergang an der Via Cristoforo Colombo zurück.",
+        "Reserviere ein Abendessen auf einer Terrasse oder hol Delikost für ein Picknick auf dem Hostelbalkon."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Tag 2 – Abenteuer nach Wahl",
+      "body": [
+        "Option A: Fähre nach Amalfi und schneller Abstecher zu den Gärten der Villa Cimbrone in Ravello; Option B: schließe dich einer gemeinsamen Bootstour für Küstenblicke an.",
+        "Pack das Frühstück aus der Bäckerei ein, damit du früh starten kannst, ohne auf Café-Service zu warten."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Tag 2 – Abschluss & Abreise",
+      "body": [
+        "Schieb vor dem Mittag noch Shopping bei Sandelmachern oder Keramikstudios ein.",
+        "Hol dein Gepäck 90 Minuten vor Abfahrt ab, um Treppen und Wartezeiten am Dock oder an der Bushaltestelle einzuplanen."
+      ]
+    }
+  ],
+  "tips": [
+    "Trag einen Tagesrucksack unter 10 kg, damit du Treppen zügig meisterst.",
+    "Speichere Fähr- und Busfahrpläne offline; Wochenendänderungen sind häufig."
+  ],
+  "faqs": [
+    {
+      "q": "Reicht eine Übernachtung?",
+      "a": [
+        "Ja, wenn du dich auf Highlights konzentrierst und zentral übernachtest, aber zwei Nächte sorgen für mehr Ruhe und einen Wetterpuffer."
+      ]
+    },
+    {
+      "q": "Wo schaue ich den Sonnenuntergang am besten?",
+      "a": [
+        "Die Via Cristoforo Colombo und die Hostelterrasse sind sichere Tipps; Strandbars funktionieren ebenfalls, kosten aber mehr."
+      ]
+    }
+  ]
+}

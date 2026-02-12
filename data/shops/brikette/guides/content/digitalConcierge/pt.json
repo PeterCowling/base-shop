@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Concierge digital (recomendações + reservas)",
+    "description": "Use o concierge digital do Hostel Brikette para recomendações locais rápidas, atualizações de transporte e ajuda para reservar experiências - especialmente quando os planos mudam."
+  },
+  "linkLabel": "Concierge digital",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Isto é para planos que funcionam hoje - não listas genéricas.",
+    "Envie sua janela de tempo, orçamento e prioridade. Coloque seu prazo na primeira linha."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Como acessar",
+      "body": [
+        "Pergunte na recepção pelo contato/QR mais recente e o melhor canal (geralmente WhatsApp).",
+        "Inclua: datas, ponto de partida, janela de tempo, orçamento e prioridade #1."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Modelo copiar/colar",
+      "body": [
+        "\\\\\"Temos 6 horas, sem carro, queremos (A) nadar + (B) pôr do sol, orçamento €40 por pessoa. Qual é o plano mais simples e o plano B se os ferries forem cancelados?\\\\\"",
+        "Linha de base do orçamento: %LINK:positanoBudget|Positano com orçamento% + %LINK:terraceSunsets|Pôr do sol no terraço%.",
+        "Se o transporte for sensível: %LINK:ferryCancellations|cancelamentos de ferry + clima%."
+      ]
+    }
+  ],
+  "fallback": "Concierge digital: recomendações rápidas, atualizações de transporte e ajuda com reservas."
+}

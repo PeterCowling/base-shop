@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Jak dotrzeć do Positano: porównanie wszystkich opcji",
+    "description": "Porównaj prom, pociąg+autobus, shuttle i transfer prywatny — z uwagami sezonowymi i poradami dotyczącymi bagażu."
+  },
+  "linkLabel": "Jak dotrzeć do Positano (przewodnik po opcjach)",
+  "intro": "Porównanie wszystkich realnych sposobów dotarcia do Positano — z uwzględnieniem sezonu, budżetu, bagażu i czasu przyjazdu.",
+  "toc": {
+    "onThisPage": "Na tej stronie",
+    "naples": "Przez Neapol",
+    "salerno": "Przez Salerno",
+    "ferry": "Prom (latem)",
+    "private": "Transfer prywatny",
+    "faqs": "FAQ"
+  },
+  "labels": {
+    "whenHeading": "Kiedy wybrać",
+    "cheapestHeading": "Najtańsza opcja",
+    "seasonalHeading": "Uwagi sezonowe"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Przez Neapol",
+      "body": [
+        "Shuttle z lotniska do Sorrento + SITA do Positano (najtaniej) albo pociąg do Sorrento + SITA.",
+        "Latem promy z Molo Beverello na spokojnym morzu; sprawdzaj anulowania."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Przez Salerno",
+      "body": [
+        "Pociąg do Salerno i dalej promem do Positano (sezonowo, wygodniejsze z bagażem).",
+        "Poza sezonem: autobus przez Amalfi — wolniej, ale pewniej."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Transfer prywatny",
+      "body": [
+        "Door-to-door; drożej, ale najwygodniej przy późnych przylotach lub ciężkich walizkach."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Co jest najszybsze latem?",
+      "a": [
+        "Pociąg do Salerno + prom, gdy morze jest spokojne — omijasz korki na drodze."
+      ]
+    },
+    {
+      "q": "Gdzie wysiąść z autobusu?",
+      "a": [
+        "Przystanek ‚Chiesa Nuova’ oszczędza około 80 m schodów do Hostelu Brikette."
+      ]
+    }
+  ]
+}

@@ -123,25 +123,35 @@ describe("telemetry", () => {
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
     const fetchMock = jest.fn<any, any[]>().mockRejectedValue(new Error("fail"));
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     global.fetch = fetchMock;
-    mod.track("event");
-    await mod.__flush();
-    expect(fetchMock).toHaveBeenCalledTimes(3);
-    expect(mod.__buffer.length).toBe(1);
+    try {
+      mod.track("event");
+      await mod.__flush();
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(mod.__buffer.length).toBe(1);
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 
   test("flush retries on failure", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const fetchMock = jest
       .fn<any, any[]>()
       .mockRejectedValueOnce(new Error("fail"))
       .mockResolvedValueOnce({});
     global.fetch = fetchMock;
-    mod.track("event", { foo: "bar" });
-    await mod.__flush();
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(mod.__buffer.length).toBe(0);
+    try {
+      mod.track("event", { foo: "bar" });
+      await mod.__flush();
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(mod.__buffer.length).toBe(0);
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 });

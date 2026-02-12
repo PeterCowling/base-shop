@@ -1,0 +1,110 @@
+{
+  "seo": {
+    "title": "Positano to Amalfi by Bus | Hostel Brikette",
+    "description": "Step-by-step SITA bus directions from Hostel Brikette to Amalfi, including where to buy tickets, the Chiesa Nuova stop, and how to read the timetable."
+  },
+  "intro": {
+    "title": "Positano to Amalfi – By SITA Bus",
+    "body": "Use this guide for a straightforward bus journey from Hostel Brikette to Amalfi. Buses are operated by SITA Sud and run frequently in high season. We cover where to buy tickets, how to read the timetable, and exactly where to board in Positano."
+  },
+  "callouts": {
+    "tip": "Need every transport option? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferry, taxi, and mixed itineraries."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Journey overview",
+      "body": "Allow 45–60 minutes in summer, depending on traffic and queues. Board at Positano (Chiesa Nuova) for a direct bus to Amalfi. In peak hours, arrive early to secure a seat."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA and their tickets",
+      "body": "Buses are operated by SITA (SITA Sud Srl). Buy tickets in advance from newsstands or tobacco shops. Present your ticket to the driver on boarding – they will stamp or tear it to validate. Keep the ticket until you arrive in Amalfi."
+    },
+    {
+      "id": "timetable",
+      "title": "Reading the SITA timetable",
+      "body": "The official timetable lists stops as rows and journeys as lettered columns. Match Positano and Amalfi rows within the same lettered column for your day of travel. Consult the latest schedule on %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "The rows in the first column list each stop along the route.",
+        "Columns correspond to scheduled journeys labelled with letters.",
+        "Travel Monday to Saturday? Use columns ‘F’ and ‘G’.",
+        "Travel on Sunday or a public holiday? Use columns ‘G’ and ‘H’."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) bus stop",
+      "list": [
+        "The closest SITA stop is Positano (Chiesa Nuova) on Via G. Marconi.",
+        "It sits about 140 metres (490 feet) from the hostel entrance.",
+        "You will wait outside the cafe/bar called ‘Bar Internazionale’."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Walk from the hostel to the stop",
+      "list": [
+        "Exit the hostel, walk down the steps to the main road, and turn left.",
+        "Continue along Via G. Marconi for roughly 100 metres (330 feet).",
+        "Bar Internazionale will be on your left; the SITA stop is right outside."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Buy your ticket and wait for boarding",
+      "list": [
+        "Buy a SITA bus ticket from the bar or nearby newsstand (tabacchi).",
+        "Cross to the far side of the street and queue for the Amalfi-bound bus.",
+        "Double-check the bus display reads ‘Amalfi’."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving in Amalfi",
+      "body": "Most services terminate at Amalfi’s bus terminal near the port. From here you can connect to Ravello and Salerno, or explore Amalfi’s historic centre on foot. Planning the return? See %HOWTO:amalfi-positano-bus|Amalfi to Positano by Bus%."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How much does the bus from Positano to Amalfi cost?",
+      "a": "€2.60 for a single journey. If you're making multiple trips in one day, the COSTIERASITA 24-hour pass costs €10 and includes unlimited SITA bus rides across the Amalfi Coast."
+    },
+    {
+      "q": "Can I buy bus tickets on board?",
+      "a": "No. Tickets must be purchased before boarding at tobacco shops (tabacchi), newsstands, or cafés displaying the SITA logo. Drivers cannot sell tickets."
+    },
+    {
+      "q": "Which stop should I board at for Hostel Brikette?",
+      "a": "Board at Positano (Chiesa Nuova), outside Bar Internazionale on Via G. Marconi. It’s the closest stop to the hostel and a short walk from our entrance."
+    },
+    {
+      "q": "Where do I get off in Amalfi?",
+      "a": "Most services stop at Amalfi’s main bus terminal at Piazza Flavio Gioia near the waterfront. From there you can walk into the historic centre or connect to other buses."
+    },
+    {
+      "q": "How long does the bus journey take?",
+      "a": "45-60 minutes depending on traffic and queues. The route is scenic but winding, following the coastal road with dramatic cliff-side views."
+    },
+    {
+      "q": "Can I bring luggage on the bus?",
+      "a": "Yes, but space is limited. Large backpacks and suitcases may need to go in the luggage hold if there’s room, or stay with you if it’s full. Consider using the hostel’s porter service for heavy bags."
+    },
+    {
+      "q": "Do buses run in winter?",
+      "a": "Yes, but with reduced frequency. Services run year-round, but November-March has fewer departures. Always check the current timetable before traveling."
+    },
+    {
+      "q": "Is the bus journey scenic?",
+      "a": "Extremely. The route hugs the dramatic Amalfi Coast cliffs with stunning sea views. Sit on the left side when traveling Positano to Amalfi for the best coastal views."
+    },
+    {
+      "q": "How do I read the SITA bus timetable?",
+      "a": [
+        "**Reading the rows:** The rows in the first column represent different bus stops along the route.",
+        "**Reading the columns:** Each scheduled journey is labelled with a letter at the top of a column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
+        "**Combining rows and columns:** Find your departure and arrival stops, then read across the same column letter to get the times. For example, use the Positano row for departure and the Amalfi row for arrival."
+      ]
+    }
+  ]
+}

@@ -7,8 +7,9 @@
 
 'use client';
 
-import { FC, memo, useCallback, useState } from 'react';
+import { type FC, memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { useServiceWorker } from '../../lib/pwa';
 
 interface CacheSettingsProps {
@@ -64,13 +65,13 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
   return (
     <div
       className={`
-        bg-white dark:bg-gray-800 rounded-lg
-        border border-gray-200 dark:border-gray-700
+        bg-card rounded-lg
+        border border-border
         p-4
         ${className}
       `}
     >
-      <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+      <h3 className="text-sm font-medium text-foreground mb-3">
         {t('cache.title', 'Cached Data')}
       </h3>
 
@@ -78,20 +79,20 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
       {cacheSize && (
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-600 dark:text-gray-400">
+            <span className="text-muted-foreground">
               {t('cache.usage', 'Storage used')}
             </span>
-            <span className="text-gray-900 dark:text-white">
+            <span className="text-foreground">
               {formatBytes(cacheSize.usage)}
             </span>
           </div>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-muted rounded-full h-2">
             <div
-              className="bg-primary-600 h-2 rounded-full transition-all"
+              className="bg-primary h-2 rounded-full transition-all"
               style={{ width: `${Math.min(parseFloat(cacheSize.usagePercent), 100)}%` }}
             />
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             {t('cache.quota', '{{percent}}% of available storage', {
               percent: cacheSize.usagePercent,
             })}
@@ -100,7 +101,7 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
       )}
 
       {/* Description */}
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+      <p className="text-sm text-muted-foreground mb-4">
         {t(
           'cache.description',
           'Cached data helps the app work offline. Clearing it may require re-downloading content.',
@@ -117,8 +118,8 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
             transition-colors
             ${
               clearSuccess
-                ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                ? 'bg-success-soft text-success-foreground'
+                : 'bg-muted text-foreground hover:bg-muted/80'
             }
             disabled:opacity-50 disabled:cursor-not-allowed
           `}
@@ -132,7 +133,7 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
 
         <button
           onClick={refreshCacheSize}
-          className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+          className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           title={t('cache.refresh', 'Refresh')}
         >
           <svg

@@ -18,11 +18,13 @@ case "$branch" in
     echo "" >&2
     echo "Do not commit directly to '${branch}'." >&2
     echo "" >&2
-    echo "Use a work branch (recommended via worktree):" >&2
-    echo "  scripts/git/new-worktree.sh <label>" >&2
+    echo "Use the integration branch flow:" >&2
+    echo "  git fetch origin --prune" >&2
+    echo "  git switch dev || git switch -c dev origin/dev || git switch -c dev origin/main" >&2
     echo "" >&2
-    echo "Or create a work branch in-place:" >&2
-    echo "  git checkout -b work/$(date +%Y-%m-%d)-<desc>" >&2
+    echo "Then ship via pipeline PR scripts:" >&2
+    echo "  - scripts/git/ship-to-staging.sh" >&2
+    echo "  - scripts/git/promote-to-main.sh" >&2
     echo "" >&2
     echo "Bypass (human only, emergency):" >&2
     echo "  ALLOW_COMMIT_ON_PROTECTED_BRANCH=1 git commit ..." >&2
@@ -32,4 +34,3 @@ case "$branch" in
 esac
 
 exit 0
-

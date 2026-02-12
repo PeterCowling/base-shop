@@ -1,6 +1,5 @@
 // src/app/[lang]/experiences/page.tsx
 // Experiences listing page - App Router version
-import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
@@ -40,10 +39,5 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ExperiencesPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-
-  return (
-    <Suspense fallback={null}>
-      <ExperiencesPageContent lang={validLang} />
-    </Suspense>
-  );
+  return <ExperiencesPageContent lang={validLang} />;
 }

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Prisvärt boende utanför Positano",
+    "description": "Alternativ runtom Amalfikusten för billigare boende och hur du tar dig till Positano därifrån."
+  },
+  "linkLabel": "Prisvärt boende utanför Positano",
+  "intro": [
+    "Prisvänliga baser utanför Positano med realistiska transporter som motvikt."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Prisvärt läge med täta tåg och färjor; smidig vid sena ankomster."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Prisvärt och väl anslutet; säsongsfärjor går till Amalfi och Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Området Amalfi",
+      "body": [
+        "Mindre orter kan ge fynd utanför högsäsong; håll koll på busstiderna."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Avvägningar",
+      "body": [
+        "Längre pendling mot lägre priser. För korta vistelser är det effektivast att bo i Positano."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Är det värt att pendla?",
+      "a": [
+        "Ja om priset är prio och du klarar längre transporter — särskilt under skuldersäsong."
+      ]
+    }
+  ]
+}

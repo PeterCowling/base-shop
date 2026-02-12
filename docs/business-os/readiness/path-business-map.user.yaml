@@ -1,0 +1,157 @@
+version: 1
+updated: 2026-02-11
+owner: Pete
+
+rules:
+  - prefix: apps/brikette/
+    business: BRIK
+    confidence: high
+    notes: Brikette public website and content surfaces.
+
+  - prefix: apps/brikette-scripts/
+    business: BRIK
+    confidence: high
+    notes: Brikette Google Apps Script automation for booking and email workflows.
+
+  - prefix: apps/reception/
+    business: BRIK
+    confidence: high
+    notes: Reception operations app for Brikette.
+
+  - prefix: apps/prime/
+    business: BRIK
+    confidence: high
+    notes: Guest/staff portal services Brikette operations and customer workflows.
+
+  - prefix: apps/front-door-worker/
+    business: PLAT
+    confidence: high
+    notes: Edge ingress and routing worker for host mapping, redirects, and API gateway forwarding.
+
+  - prefix: apps/api/
+    business: PLAT
+    confidence: high
+    notes: Platform API surface and shared service endpoints.
+
+  - prefix: apps/cms/
+    business: PLAT
+    confidence: high
+    notes: Core platform CMS used across businesses.
+
+  - prefix: apps/dashboard/
+    business: PLAT
+    confidence: high
+    notes: Platform dashboard and operator control views.
+
+  - prefix: apps/storybook/
+    business: PLAT
+    confidence: high
+    notes: Platform component development and visual verification app.
+
+  - prefix: apps/telemetry-worker/
+    business: PLAT
+    confidence: high
+    notes: Platform telemetry ingestion and processing worker.
+
+  - prefix: apps/checkout-gateway-worker/
+    business: PLAT
+    confidence: high
+    notes: Platform checkout gateway worker for shared commerce routing.
+
+
+  - prefix: apps/business-os/
+    business: BOS
+    confidence: high
+    notes: Coordination platform and workflow runtime.
+
+  - prefix: apps/handbag-configurator/
+    business: HBAG
+    confidence: high
+    notes: Handbag product configurator for the handbag accessory business.
+
+  - prefix: apps/handbag-configurator-api/
+    business: HBAG
+    confidence: high
+    notes: API backend for handbag configurator workflows.
+
+  - prefix: apps/xa/
+    business: XA
+    confidence: high
+    notes: XA core operating app.
+
+  - prefix: apps/xa-uploader/
+    business: XA
+    confidence: high
+    notes: XA upload pipeline tooling.
+
+  - prefix: apps/cochlearfit/
+    business: HEAD
+    confidence: high
+    notes: Headband business customer-facing app.
+
+  - prefix: apps/cochlearfit-worker/
+    business: HEAD
+    confidence: high
+    notes: Headband business background processing worker.
+
+  - prefix: apps/skylar/
+    business: HOLDCO
+    confidence: medium
+    notes: Holding companies app (requires explicit HOLDCO business registration in catalog).
+
+  - prefix: packages/mcp-server/
+    business: PLAT
+    confidence: medium
+    notes: Shared platform toolchain; may also support BOS operations.
+
+  - prefix: packages/ui/
+    business: PLAT
+    confidence: high
+    notes: Shared UI platform component library.
+
+  - prefix: scripts/
+    business: PLAT
+    confidence: low
+    notes: Mixed platform/operations scripts; map script groups more precisely.
+
+  - prefix: docs/business-os/strategy/BRIK/
+    business: BRIK
+    confidence: high
+    notes: BRIK plan artifacts.
+
+  - prefix: docs/business-os/strategy/PIPE/
+    business: PIPE
+    confidence: high
+    notes: PIPE plan artifacts.
+
+  - prefix: docs/business-os/strategy/PLAT/
+    business: PLAT
+    confidence: high
+    notes: PLAT plan artifacts.
+
+  - prefix: docs/business-os/strategy/BOS/
+    business: BOS
+    confidence: high
+    notes: BOS plan artifacts.
+
+  - prefix: docs/plans/
+    business: BOS
+    confidence: low
+    notes: Plan docs are cross-business by default; require explicit business field check.
+
+unmapped_policy:
+  status: block
+  action: Do not run /ideas-go-faster until path is mapped to business + outcome decision link.
+
+excluded_paths:
+  - prefix: apps/xa-b/
+    reason: Explicitly excluded from active planning and idea generation scope.
+  - prefix: apps/xa-drop-worker/
+    reason: Explicitly excluded from active planning and idea generation scope.
+  - prefix: apps/xa-j/
+    reason: Explicitly excluded from active planning and idea generation scope.
+
+open_questions:
+  - Register `HOLDCO` as a first-class business/system in `docs/business-os/strategy/businesses.json` so `apps/skylar/` can be mapped to a canonical business ID.
+  - Confirm whether scripts/ should be split into PLAT vs BOS mapping domains.
+  - Confirm whether packages/mcp-server should map to PLAT only or PLAT+BOS.

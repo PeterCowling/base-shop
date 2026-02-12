@@ -4,6 +4,11 @@ import { readFile } from "fs/promises";
 
 import { clearDraftGuideCache, handleDraftGuideRead } from "../resources/draft-guide";
 
+jest.mock("../utils/data-root", () => ({
+  DATA_ROOT: "/mock/data",
+  BRIKETTE_ROOT: "/mock/brikette",
+}));
+
 jest.mock("fs/promises", () => ({
   readFile: jest.fn(),
 }));

@@ -29,5 +29,6 @@
   "houseRules": "قواعد المنزل",
   "cancellationPolicy": "سياسة الإلغاء",
   "privacy": "سياسة الخصوصية",
-  "cookies": "سياسة ملفات تعريف الارتباط"
+  "cookies": "سياسة ملفات تعريف الارتباط",
+  "navAriaLabel": "Footer navigation"
 }

@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Fiordo di Furore → Hostel Brikette mit dem Bus",
+    "description": "So erreichst du die SITA-Haltestelle über dem Fiordo di Furore, fährst zurück nach Positano und legst die letzten Meter zum Hostel zurück."
+  },
+  "linkLabel": "Fiordo di Furore → Hostel Brikette mit dem Bus",
+  "intro": [
+    "Der Fiordo di Furore liegt unterhalb der Amalfitana ohne Ticketbüro oder Geschäfte am Wasser. Mit diesem Rückweg-Guide steigst du wieder zur Straße hinauf, nimmst den SITA-Bus nach Positano und gehst die letzten Schritte zum Hostel Brikette ohne Rätselraten."
+  ],
+  "warningsTitle": "Bevor du den Strand verlässt",
+  "warnings": [
+    "Kaufe SITA-Tickets im Voraus – in Strandnähe gibt es keinen Verkauf, und ohne entwertetes Ticket kann der Fahrer die Mitfahrt verweigern."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Zurück zur Straße steigen",
+      "body": [
+        "Folge der Treppe vom Kiesstrand hinauf zur Amalfitana.",
+        "Die SITA-Haltestelle liegt genau dort, wo die Treppe auf den kleinen Haltebucht trifft; warte hier auf der bergseitigen Straßenseite."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Mit dem SITA-Bus Richtung Positano",
+      "body": [
+        "Steig in den SITA-Bus ein, der Richtung Positano fährt – die Fahrten halten auf Zuruf, daher hängt die Zahl der Zwischenstopps von den Passagieren ab.",
+        "Rechne mit rund 10,8 Kilometern entlang der Küste, bevor du Positano erreichst."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Bei Bar Internazionale / Chiesa Nuova aussteigen",
+      "body": [
+        "Drück die Haltewunschtaste kurz nachdem der Bus den Tunnel oberhalb Positanos verlassen hat und halte Ausschau nach dem Tabacchi Bar Internazionale.",
+        "Steig an der Haltestelle Chiesa Nuova aus; das ist die SITA-Haltestelle, die dem Hostel Brikette am nächsten liegt."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Die letzten Meter zum Hostel Brikette",
+      "body": [
+        "Geh in Fahrtrichtung noch gut 100 Meter weiter.",
+        "Biege rechts bei der Treppe neben der Bar ab und steig hinauf zur Eingangstür des Hostels."
+      ]
+    }
+  ],
+  "tipsTitle": "Tipps für den Rückweg",
+  "tips": [
+    "Prüfe den aktuellen Fahrplan in der digitalen Gästemappe des Hostels, damit du weißt, wann der nächste SITA-Bus fährt.",
+    "Nutze den %LINK:positanoBeaches|Strandüberblick von Positano%, um weitere Badeplätze zu planen, die gut zu einem Fiordo-di-Furore-Ausflug passen.",
+    "Falls ein Bus voll ist oder ausfällt, sei darauf vorbereitet, von der Haltebucht ein lizenziertes Taxi zu rufen."
+  ],
+  "faqsTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "q": "Wo soll ich auf den Bus warten?",
+      "a": [
+        "Stell dich auf die bergseitige Straßenseite oben an der Treppe – Busse Richtung Positano halten direkt neben der Leitplanke."
+      ]
+    },
+    {
+      "q": "Was, wenn ich kein Ticket habe?",
+      "a": [
+        "Fahrer erwarten entwertete SITA-Tickets vor dem Einsteigen. Kauf in Positano ein Rückfahrticket oder frag an der Rezeption nach Vorräten, bevor du das Hostel verlässt."
+      ]
+    }
+  ]
+}

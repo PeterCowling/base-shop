@@ -2,15 +2,15 @@
 // Tests for the how-to-get-here route guide canonical mapping.
 // Ensures the mapping stays in sync with routes.json and GUIDE_SLUG_OVERRIDES.
 
-import routesJson from "@/data/how-to-get-here/routes.json";
+import { GUIDES_INDEX } from "@/data/guides.index";
 import {
-  HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS,
-  HOW_TO_GET_HERE_ROUTE_GUIDES,
   getHowToGetHereRouteSlug,
   getHowToGetHereRouteTags,
+  HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS,
+  HOW_TO_GET_HERE_ROUTE_GUIDES,
   isHowToGetHereRouteGuideKey,
 } from "@/data/how-to-get-here/routeGuides";
-import { GUIDES_INDEX } from "@/data/guides.index";
+import routesJson from "@/data/how-to-get-here/routes.json";
 import { GUIDE_BASE_KEY_OVERRIDES, guideNamespace } from "@/guides/slugs/namespaces";
 import { GUIDE_SLUG_OVERRIDES } from "@/guides/slugs/overrides";
 import { guidePath, resolveGuideKeyFromSlug } from "@/guides/slugs/urls";
@@ -209,10 +209,10 @@ describe("routeGuides", () => {
       }
     });
 
-    it("all GUIDES_INDEX entries have status published", () => {
+    it("all GUIDES_INDEX entries have status live", () => {
       for (const key of HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS) {
         const entry = GUIDES_INDEX.find((g) => g.key === key);
-        expect(entry?.status).toBe("published");
+        expect(entry?.status).toBe("live");
       }
     });
 

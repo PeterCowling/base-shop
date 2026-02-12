@@ -101,7 +101,7 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="h-32 bg-gray-200 dark:bg-darkSurface animate-pulse rounded-lg"
+            className="h-32 animate-pulse rounded-lg bg-gray-200 dark:bg-surface-dark"
           />
         ))}
       </Grid>

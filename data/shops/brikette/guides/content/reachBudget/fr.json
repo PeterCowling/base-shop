@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Comment rejoindre Positano avec un budget limité",
+    "description": "Itinéraires les moins chers depuis l'aéroport de Naples vers Positano en navette + bus SITA, avec instructions détaillées et coûts."
+  },
+  "linkLabel": "Comment rejoindre Positano avec un budget limité",
+  "intro": "Utilisez la navette Naples Aéroport → Sorrente, puis le bus SITA vers Positano pour la connexion la moins chère et la plus fiable.",
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Pourquoi cet itinéraire fonctionne",
+      "body": [
+        "Une navette (~10 €) + un bus SITA (~2,10 €) maintiennent le total sous les 13 €, bien moins cher que les ferries ou taxis.",
+        "Les deux trajets vous déposent près de Chiesa Nuova, évitant ainsi les longues volées de marches de Positano avec les bagages."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Avant de partir",
+      "body": [
+        "Réservez la navette Curreri en ligne en haute saison, ou achetez votre billet au guichet juste après les arrivées en gardant 15 minutes de marge après l'atterrissage.",
+        "Prévoyez de la petite monnaie pour les tickets SITA à Sorrente ; kiosques et tabacchi le long du Corso Italia les vendent et peuvent refuser les grosses coupures tard le soir."
+      ]
+    },
+    {
+      "id": "timing-backup",
+      "title": "Horaires & plans B",
+      "body": [
+        "Notez le dernier départ Curreri (souvent ~21 h 30 l'été, plus tôt hors saison) et planifiez votre vol en conséquence.",
+        "Navette manquée ? Basculez sur Alibus + Circumvesuviana ou Campania Express jusqu'à Sorrente, puis poursuivez avec le même bus SITA."
+      ]
+    }
+  ],
+  "mapTitle": "Carte interactive",
+  "stepByStepTitle": "Étapes détaillées",
+  "steps": [
+    {
+      "name": "Aéroport de Naples → Sorrente (Curreri Viaggi)",
+      "text": "Sortez des arrivées et montez dans la navette Curreri vers la gare de Sorrente. Billet ~10 € ; durée ~1 h 15."
+    },
+    {
+      "name": "Sorrente → Positano (bus SITA)",
+      "text": "Achetez un ticket SITA CIS (~2,10 €). Prenez le bus vers Amalfi et descendez à Positano Chiesa Nuova."
+    },
+    {
+      "name": "Marche vers l'auberge Brikette",
+      "text": "Depuis l'arrêt Chiesa Nuova, descendez ~80 m (sans marches) jusqu'à l'entrée de l'auberge."
+    }
+  ],
+  "alternativesTitle": "Alternatives",
+  "trainTitle": "Train + bus (légèrement plus cher, parfois plus rapide)",
+  "train": [
+    "Alibus de NAP → Napoli Centrale (Garibaldi), puis Circumvesuviana jusqu'à Sorrente (~6 € au total).",
+    "Bus SITA de Sorrente → Positano (~2,10 €). Temps total : ~2 à 2 h 30."
+  ],
+  "ferryTitle": "Ferry (saisonnier, panoramique, plus coûteux)",
+  "ferry": [
+    "Alibus → Molo Beverello, ferry vers Positano (été uniquement ; 20–38 € selon l'opérateur).",
+    "Consultez notre guide des horaires de ferry pour les horaires à jour."
+  ],
+  "costsTitle": "Coûts en un coup d'œil",
+  "costs": [
+    "Navette (NAP → Sorrente) : ~10 €",
+    "Bus SITA (Sorrente → Positano) : ~2,10 €",
+    "Total itinéraire budget : ~12,10 €"
+  ],
+  "faq": [
+    {
+      "q": "Quel est l'itinéraire le moins cher ?",
+      "a": "Navette aéroport de Naples → Sorrente, puis bus SITA jusqu'à Positano (Chiesa Nuova)."
+    },
+    {
+      "q": "Où acheter les tickets de bus ?",
+      "a": "Dans les tabacchi/kiosques près des gares ; achetez avant de monter et validez à bord."
+    },
+    {
+      "q": "Quelle durée prévoir ?",
+      "a": "Environ 2 h 30 avec des correspondances fluides."
+    }
+  ],
+  "ferryCta": "Vous préférez le ferry en été ? Consultez notre guide dédié et l'article d'assistance sur l'arrivée par ferry pour les conseils portuaires et infos accessibilité.",
+  "mapIframeTitle": "Aéroport de Naples vers Positano via Sorrente",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x133b089b2b18a3e3%3A0x4bafc3f58a62a2a2!2sNaples%20International%20Airport%20(NAP)!3m2!1d40.8860031!2d14.2907817!4m5!1s0x133b98d2a1b9f60f%3A0x54a8f4e7a3413732!2sHostel%20Brikette%2C%20Via%20Guglielmo%20Marconi%2C%20358%2C%2084017%20Positano%20SA!3m2!1d40.6308766!2d14.487226!5e0!3m2!1sen!2sit!4v1700000000000",
+  "mapReferrerPolicy": "no-referrer-when-downgrade",
+  "howTo": {
+    "totalTime": "PT2H30M",
+    "estimatedCost": {
+      "currency": "EUR",
+      "value": "12.10"
+    }
+  },
+  "sectionIds": {
+    "map": "reach-budget-map",
+    "steps": "reach-budget-steps",
+    "alternatives": "reach-budget-alternatives",
+    "costs": "reach-budget-costs",
+    "tips": "reach-budget-tips"
+  }
+}

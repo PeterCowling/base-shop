@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Sklepy spożywcze i apteki w Positano",
+    "description": "Lista sklepów i aptek, godziny otwarcia oraz wskazówki, gdzie kupić podstawowe rzeczy."
+  },
+  "linkLabel": "Sklepy spożywcze i apteki w Positano",
+  "intro": [
+    "W Positano nie znajdziesz dużych supermarketów, więc planuj zakupy w małych sklepach, na cotygodniowym targu i w zaufanych aptekach."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Mini-markety i delikatesy",
+      "body": [
+        "Lokalne delikatesy na Via Pasitea i Via dei Mulini mają świeży chleb, sery i gotowe sałatki; spodziewaj się ograniczonej przestrzeni, ale codziennych dostaw.",
+        "Godziny otwarcia wynikają z rytmu sjesty — zakupy rób przed 13:00 lub po 16:30, by uniknąć zsuwania się rolet."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Owoce, warzywa i targi",
+      "body": [
+        "Stragany z owocami i warzywami rozstawiają się przy zakręcie Sponda i przystanku Chiesa Nuova każdego ranka; miej drobne, by szybko zapłacić.",
+        "W środy Montepertuso organizuje mały targ (autobus 13) z sezonowymi warzywami, nabiałem i wędlinami."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Apteki i artykuły zdrowotne",
+      "body": [
+        "Farmacia Positano (Via Pasitea) ma podstawowe leki, kremy przeciwsłoneczne i tabletki na chorobę morską; na specjalistyczne recepty zabierz ze sobą dokumentację.",
+        "Dyżury nocne się zmieniają — sprawdź ogłoszenie na drzwiach apteki, by znaleźć numer na nocną obsługę."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Nocne potrzeby",
+      "body": [
+        "W sezonie kilka alimentari jest otwartych do 22:00; w przeciwnym razie zdobądź przekąski w całodobowych automatach przy przystankach.",
+        "Na pilne potrzeby wyrusz do Sorrento (45–60 minut autobusem) — tam są większe supermarkety i izba przyjęć szpitala."
+      ]
+    }
+  ],
+  "tips": [
+    "Weź lekki torby lub plecak, by nie przeciążać jednej ręki podczas noszenia zakupów po schodach.",
+    "Zabierz wielorazowe butelki na wodę — wiele sklepów sprzedaje tanie 1,5-litrowe uzupełnienia, a tarasy hostelu mają filtrowane krany."
+  ],
+  "faqs": [
+    {
+      "q": "Can I buy gluten-free items locally?",
+      "a": [
+        "Tak – poszukaj półek z \\\"senza glutine” w minimarketach lub zapytaj farmaceutę; ilość sztuk jest ograniczona, więc kupuj przy pierwszej okazji."
+      ]
+    },
+    {
+      "q": "Are pharmacies open on Sundays?",
+      "a": [
+        "Co najmniej jedna apteka jest otwarta w ograniczonych godzinach; sprawdź grafik wywieszony na drzwiach i zadzwoń z wyprzedzeniem po receptę."
+      ]
+    }
+  ],
+  "fallback": "Podstawowe potrzeby można zaspokoić w Positano — zakupy rób wcześniej, a apteki miej zaznaczone."
+}

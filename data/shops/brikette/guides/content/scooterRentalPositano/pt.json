@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Scooter Rental Guide (Positano)",
+    "description": "Onde alugar, regras, segurança e quando evitar scooters."
+  },
+  "linkLabel": "Aluguel de scooter em Positano",
+  "intro": [
+    "Alugar scooter em Positano parece tentador, mas pondere disponibilidade, documentação e segurança nas estradas da falésia."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Onde alugar",
+      "body": [
+        "A oferta em Positano oscila e as tarifas são altas; Sorrento costuma ter mais escolha e preços estáveis."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Regras e documentos",
+      "body": [
+        "Leve carta de condução (mais PID quando exigido) e cartão de crédito, verificando exatamente o que o seguro cobre."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Segurança e quando evitar",
+      "body": [
+        "As estradas costeiras são estreitas, com curvas cegas e autocarros; se é inexperiente, ferries e autocarros são escolhas mais seguras."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Iniciantes devem alugar scooter aqui?",
+      "a": [
+        "Não é aconselhável — sem prática sólida, as estradas da falésia são stressantes; prefira transporte público."
+      ]
+    }
+  ]
+}

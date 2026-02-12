@@ -1,4 +1,6 @@
 // src/components/Statistics.tsx
+"use client";
+
 import React, { useCallback, useState } from "react";
 
 /**

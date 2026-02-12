@@ -1,0 +1,175 @@
+{
+  "lastUpdated": "2026-02-04",
+  "seo": {
+    "title": "Positanóból Nápoly központjába busszal, majd vonattal | Hostel Brikette",
+    "description": "Teljes útmutató a Hostel Brikette-től Naples Garibaldiig SITA busszal és Circumvesuviana vonattal. Jegyek, időpontok, költségek és peronok tippek."
+  },
+  "intro": {
+    "title": "Positanóból Nápoly központjába – Busz, majd vonat",
+    "body": "Ez az útmutató a tömegközlekedéssel való ajtótól ajtóig tartó utazást tárgyalja a Hostel Brikette-től a Napoli Piazza Garibaldiig. A SITA Sud busszal Chiesa Nuova-ból Szorrentóba utazol (kb. €2,50, 50 perc), majd átszállsz a Circumvesuviana vonatra Nápoly belvárosába (kb. €4,00, 65 perc). Az összes utazási idő körülbelül 2-2,5 óra, a kombinált költség pedig körülbelül €6,50.\n\nEz a leggazdaságosabb útvonal Nápolyba, amikor a kompok nem járnak (október-március) vagy amikor szeretnéd elkerülni a taxi díjakat. A fő csapdák: vásárolj SITA jegyeket beszállás előtt (a buszon nem kapható), érkezz korán nyáron ülőhely biztosítása érdekében, és érvényesítsd a vonatjegyedet beszállás előtt a bírságok elkerülése érdekében. Ha nagy poggyászt szállítasz, fontold meg inkább a magán transzfert - a busz és a vonat zsúfolt lehet, és korlátozott poggyásztárolóval rendelkezik. Lépj kapcsolatba a hostel recepcióval a transzferek megszervezéséhez."
+  },
+  "callouts": {
+    "cta": "Szükséged van minden közlekedési lehetőségre? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el ide áttekintést% a kompokhoz, taxikhoz és vegyes útvonalakhoz.",
+    "tip": "Télen vagy alacsony szezonban utazol? Ellenőrizd a %GUIDES:travelHelp|közlekedési fennakadás értesítéseket% indulás előtt - a sztrájkok és menetrend változások gyakoribbak november és március között."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Utazás áttekintése",
+      "body": "Normál körülmények között számolj 2-2,5 órával ajtótól ajtóig. A SITA buszok gyakran indulnak Positano-ból (Chiesa Nuova) Szorrentóba - általában 30-60 percenként a szezon függvényében. A Circumvesuviana vonat Szorrentóból Napoli Garibaldiba körülbelül 20-30 percenként közlekedik a nap folyamán.\n\nNyáron (június-szeptember) adj hozzá puffer időt: a buszok gyorsan megtelnek, és lehet, hogy meg kell várnod a következő indulást, ha nem tudsz felszállni. Télen előre ellenőrizd a menetrendeket, mert a SITA csökkenti a gyakoriságot, és a Circumvesuviana esetenként késéseket vagy törléseket tapasztal karbantartás vagy sztrájkok miatt.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-train-station.jpg",
+          "alt": "A szorrentói vasútállomás bejárata a peronok közelében.",
+          "caption": "A SITA buszról a Circumvesuvianára fogsz átszállni Sorrento állomásán."
+        }
+      ]
+    },
+    {
+      "id": "costs",
+      "title": "Költségek",
+      "body": "**SITA busz (Positano → Sorrento):** Körülbelül €2,50 per fő (az árak évente változnak; ellenőrizd a vásárlás helyén).\n\n**Circumvesuviana vonat (Sorrento → Napoli Garibaldi):** Körülbelül €4,00 per fő.\n\n**Összes költség:** Körülbelül €6,50 per fő, egy irányba.\n\nMindkét szakasz elfogad készpénzt és kártyát a jegypultokban, bár a kisebb dohányboltok és újságárusok a SITA jegyekhez készpénzzel működhetnek. Tarts 10-20 €-t kis címletekben, ha bárban vagy újságosnál vásárolsz. A szorrentói Circumvesuviana jegyautomaták és pultok elfogadják a főbb hitel/betéti kártyákat."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA jegyek vásárlása és érvényesítése",
+      "body": "A SITA buszjegyeket fel kell szerezni beszállás előtt - a sofőr nem tud neked jegyet eladni. Vásárolj innen:\n\n- Bar Internazionale (a buszmegállónál)\n- Dohányboltok (tabacchi) a Via G. Marconi mentén\n- Újságárusok Positano városközpontjában\n\nMutasd be a jegyet a sofőrnek, amikor beszállsz; ő lebélyegzi vagy eltépi, hogy érvényesítse az utazásodat. Tartsd meg az érvényesített jegyet, amíg le nem szállsz, arra az esetre, ha egy ellenőr útközben ellenőrzi a díjakat. Az érvényesítés elmulasztása vagy jegy nélküli utazás azonnali bírságot von maga után (általában €50+).",
+      "images": [
+        {
+          "src": "/img/directions/sita-ticket-validation.jpg",
+          "alt": "SITA buszsofőr érvényesít egy jegyet a bejáratnál.",
+          "caption": "Add át a jegyedet a sofőrnek, amikor beszállsz - ő lebélyegzi vagy eltépi az érvényesítéshez."
+        }
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "A SITA menetrend olvasása",
+      "body": "A hivatalos SITA menetrend sorokban listázza a megállókat és betűs oszlopokban az utazásokat. Az indulásod megtalálásához:\n\n1. Válaszd ki az utazás napját (hétköznap vs. vasárnap/ünnepnap) - minden naptípusnak más betűkódjai vannak (pl. F és G oszlopok hétköznap, G és H vasárnap).\n2. Keresd meg a Sorrento sort, hogy lásd, mikor indul a busz Szorrentóból.\n3. Találd meg a Positano (Chiesa Nuova) sort ugyanabban az oszlopban, hogy lásd, mikor halad át a megállódnál.\n\nA menetrend ki van függesztve a buszmegállónál és elérhető online a %URL:https://www.sitasudtrasporti.it|SITA Sud weboldalán%. A gyakorlatban a buszok 5-10 percet késhetnek, különösen nyári forgalomban, ezért érkezz néhány perccel az ütemezett idő előtt.",
+      "images": [
+        {
+          "src": "/img/directions/sita-timetable-example.jpg",
+          "alt": "SITA menetrend közeli képe, amely sorokat és betűs oszlopokat mutat.",
+          "caption": "Párosítsd a megálló sort a nap oszlopával az indulási idő megtalálásához."
+        }
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) buszmegálló",
+      "body": "A Hostel Brikette-hez legközelebbi SITA megálló a **Positano (Chiesa Nuova)** a Via G. Marconin, körülbelül 140 méterre (460 láb) a hostel bejáratától. A Bar Internazionale előtt fogsz várni.\n\n**Mire számíthatsz:**\n- Nyáron (július-augusztus) érkezz 10-15 perccel korábban az ülőhely biztosítása érdekében. A buszok teljesen megtelhetnek állóhelyig, és a sofőrök megtagadhatják a felszállást, ha a busz teljesen megtelt.\n- Közepes szezonban (május-június, szeptember-október) érkezz 5 perccel korábban - a buszok kevésbé zsúfoltak, de még mindig forgalmasak.\n- Télen (november-március) érkezz időben vagy néhány perccel korábban; a buszok ritkán telnek meg teljesen.\n\nNincs formális sorrendrendszer; az utasok első jött, első szolgált alapon szállnak fel. Állj a járda közelében, hogy a sofőr tisztán lásson téged.",
+      "images": [
+        {
+          "src": "/img/directions/chiesa-nuova-bus-stop.jpg",
+          "alt": "SITA buszmegálló tábla a Bar Internazionale előtt Chiesa Nuova-ban.",
+          "caption": "A buszmegálló közvetlenül a Bar Internazionale előtt van - nézd a SITA táblát."
+        }
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Séta a hosteltől a megállóig",
+      "body": "Menj ki a Hostel Brikette-ből, menj le a lépcsőkön a Via G. Marconiig és fordulj balra. Folytasd a főút mentén körülbelül 100 métert (330 láb). A Bar Internazionale a bal oldalon lesz; a SITA megálló közvetlenül kint van.\n\nA séta 2-3 percet vesz igénybe normál tempóban. Részletes lépésről lépésre séta útmutatókért fotókkal lásd a %HOWTO:chiesaNuovaDepartures|Hostel Brikette Chiesa Nuova útmutatót%. Nincsenek lépcsők vagy nehéz terep, miután elérted a főutat, de a kezdeti lépcsők a hosteltől kihívást jelenthetnek, ha nehéz poggyászod van vagy mobilitási problémáid vannak. Ha nagy táskákkal utazol vagy nehézségeid vannak a lépcsőkkel, fontold meg, hogy kérd meg a hostel recepciót, hogy szervezzen poggyász átvitelt vagy taxit."
+    },
+    {
+      "id": "wait",
+      "title": "Vásárolj jegyet és várj a beszállásra",
+      "body": "Vásárolj egy SITA buszjegyet Szorrentóba a Bar Internazionale-nál vagy egy közeli újságosnál sorakozás előtt. Add meg \\\\\"Sorrento\\\\\"-t vásárláskor - a jegy ára ugyanaz, bárhol szállj is fel Positano és Sorrento között.\n\nMiután megvan a jegyed, állj a Bar Internazionale előtt és figyelj a buszra. Ellenőrizd a cél kijelzőt a busz elején - **Sorrento**-t kell olvasnia. Ritka esetekben a buszok korán végződhetnek vagy alternatív útvonalakat vehetnek; ha bizonytalan vagy, kérdezd meg a sofőrtől \\\\\"Sorrento?\\\\\" beszállás előtt."
+    },
+    {
+      "id": "busRide",
+      "title": "A buszon Szorrentóba",
+      "body": "A buszút Positanóból Szorrentóba körülbelül 50 percet vesz igénybe az SS163 parti úton (Strada Statale 163 Amalfitana). Az útvonal festői, de kanyargós, gyakori éles kanyarokkal és szikla kilátással. Ehhez a SITA busz útvonalhoz átfogó útmutatóért menetrendi tippekkel és megállóról megállóra részletekkel lásd a %HOWTO:positanoSorrentoBus|Positano-Sorrento busz útmutatót%.\n\n**Tippek az utazáshoz:**\n- Ha hajlamos vagy a mozgásbetegségre, ülj a busz elején és nézz a horizont felé, ne a telefonodra.\n- A poggyásztér korlátozott - a kisebb táskák az öledbe vagy a lábaid közé kerülhetnek; a nagyobb táskáknak a folyosón kell állniuk (ami blokkolhatja a mozgást, amikor a busz zsúfolt).\n- Nincs fedélzeti WC vagy WiFi.\n- A busz több megállót tesz Positano és Sorrento között; maradj ülve, amíg el nem éred a végállomást (Sorrento Circumvesuviana).\n\nNyáron a busz csak állóhelyes lehet és kényelmetlenül meleg. Ha júliusban vagy augusztusban utazol, célozd meg a korábbi reggeli indulásokat (10:00 előtt) a csúcs hőség és tömeg elkerülése érdekében.",
+      "images": [
+        {
+          "src": "/img/directions/sita-bus-interior.jpg",
+          "alt": "SITA busz belseje ülő utasokkal.",
+          "caption": "A SITA buszok kényelmesek, de nyáron zsúfoltak lehetnek - érkezz korán az ülőhelyért."
+        }
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Szorrentói vasútállomáson",
+      "body": "A SITA busz Sorrento kombinált vonat- és buszterminál mellett tesz le (Circumvesuviana állomás). Menj fel a lépcsőn a fő csarnokba, majd vásárolj Circumvesuviana jegyet **Napoli Garibaldi**-ba.\n\n**Jegyvásárlás:**\n- Jegyautomaták találhatók a fő csarnokban (készpénz és kártya elfogadva).\n- Emberi személyzetű jegypultok balra vannak, amikor belépsz a csarnokba (kártya elfogadva; a sorok hosszúak lehetnek nyáron).\n- Költség: körülbelül €4,00 per fő.\n\n**Beszállás előtt:**\n- Érvényesítsd a jegyedet a sárga vagy zöld érvényesítő gépekben a peronok közelében, mielőtt felszállsz a vonatra. Az érvényesítés elmulasztása azonnali bírságot eredményez, ha az ellenőrök ellenőrzik a jegyeket.\n- Ellenőrizd az indulási táblát, hogy megerősítsd a következő Napoli Garibaldi vonat peron számát. A Circumvesuviana dedikált vágányokon fut, így nem fogod összetéveszteni a fővonalbeli Trenitalia szolgáltatásokkal.\n\n**A peron megtalálása:**\n- Kövesd a \\\\\"Circumvesuviana\\\\\" vagy \\\\\"Napoli\\\\\" táblákat (mindkettő ugyanazokhoz a peronokhoz vezet).\n- A peronok lépcsőkön vagy rövid rámpán keresztül érhetők el - nincs lift, ezért tervezd előre, ha nehéz poggyászod vagy mobilitási problémáid vannak.",
+      "images": [
+        {
+          "src": "/img/directions/sorrento-station-ticket-machines.jpg",
+          "alt": "Circumvesuviana jegyautomaták a szorrentói állomáson.",
+          "caption": "Vásárold meg a nápolyi jegyedet az automatákból vagy a pultból, mielőtt a peronra mennél."
+        },
+        {
+          "src": "/img/directions/sorrento-station-validation-machine.jpg",
+          "alt": "Sárga jegyérvényesítő gép a szorrentói állomáson.",
+          "caption": "Érvényesítsd a jegyedet a sárga gépben beszállás előtt - az ellenőrök ellenőrzik."
+        }
+      ]
+    },
+    {
+      "id": "trainRide",
+      "title": "A Circumvesuvianán Nápolyba",
+      "body": "A Circumvesuviana vonat Szorrentóból Napoli Garibaldiba körülbelül 65 percet vesz igénybe. A vonat több megállót tesz (beleértve Pompeii Scavi-t a pompeii romokhoz, Ercolano Scavi-t Herculaneumhoz és több nápolyi külvárost) mielőtt Napoli Garibaldiban végződne.\n\n**Mire számíthatsz:**\n- Az ülés első jött, első szolgált alapon történik. Nyáron és hétvégeken a vonatok zsúfoltak lehetnek, különösen Pompeii Scavi után. Ha Szorrentóban (a kezdőpontban) szállsz fel, általában találsz ülőhelyet.\n- A vonat régebbi gördülőállomány - nincs WiFi, nincs fedélzeti WC és korlátozott légkondicionálás. Nyáron a nyitott ablakok biztosítják a szellőzést.\n- Poggyásztartók elérhetők az ajtók közelében, de a hely korlátozott. Tartsd az értékeidet mindig magadnál.\n- Zseblopók időnként turistákat céloznak meg zsúfolt vonatokon. Tartsd a táskákat cipzárral és látótérben, különösen Nápoly közelében.\n\n**Bejelentések:**\n- Az állomásnevek csak olaszul vannak bejelentve, de minden megálló egyértelmű táblákkal rendelkezik, amelyek láthatók a peronról. Számold a megállókat, ha bizonytalan vagy (Napoli Garibaldi a végállomás, így nem mulaszthatod el).",
+      "images": [
+        {
+          "src": "/img/directions/circumvesuviana-interior.jpg",
+          "alt": "Circumvesuviana vonat belseje utasokkal.",
+          "caption": "A Circumvesuviana alapvető, de megbízható - ülj a poggyászod közelében és maradj éber."
+        }
+      ]
+    },
+    {
+      "id": "naples",
+      "title": "Érkezés Nápolyba",
+      "body": "Maradj a Circumvesuvianán, amíg **Napoli Garibaldi**-nál végződik (más térképeken Napoli Porta Nolana néven is szerepel, bár a hivatalos megálló neve Garibaldi). Onnan kövesd a táblákat a fő csarnok felé, hogy átszállj:\n\n- Távolsági Trenitalia vonatok (Frecciarossa, Intercity, regionális szolgáltatások)\n- Naples Metro Line 1 (a városközpontba, Vomeroba, repülőtérre Garibaldi metro állomáson keresztül)\n- Naples Metro Line 2 (Garibaldi szintén fővonalbeli vasúti megálló)\n- Alibus repülőtéri transzfer (a Piazza Garibaldiból indul az állomás előtt)\n- Helyi buszok és taxik (a főbejárat előtt)\n\n**Az állomásról való kilépés:**\n- Kövesd az \\\\\"Uscita\\\\\" (kilépés) vagy \\\\\"Stazione Centrale\\\\\" (központi állomás) táblákat a fő csarnok eléréséhez.\n- A Piazza Garibaldi közvetlenül a főbejárat előtt van - egy nagy, forgalmas tér taxi állomásokkal, buszmegállókkal és metro hozzáféréssel.\n\n**Tájékozódás:**\n- Naples Centrale (a fő Trenitalia állomás) és Napoli Garibaldi (a Circumvesuviana végállomás) ugyanabban az épületkomplexumban vannak, a fő csarnokkal összekötve. Nem kell kimenned és újra belépned a szolgáltatások közötti átszálláshoz.\n\n**Biztonság és éberség:**\n- A Piazza Garibaldi egy forgalmas közlekedési csomópont és kaotikusnak tűnhet, különösen éjszaka. Tartsd a táskákat biztonságban, maradj tudatában a környezetednek és mozogj magabiztosan a következő kapcsolatodhoz.\n- A hivatalos taxik fehérek egy \\\\\"Taxi\\\\\" táblával a tetőn és egy mérőóra belül. Kerüld az engedély nélküli sofőröket, akik megkeresnek téged fuvart kínálva."
+    },
+    {
+      "id": "luggage",
+      "title": "Poggyász és akadálymentesség",
+      "body": "Ez az útvonal kezelhető egy kis hátizsákkal vagy kézipoggyásszal, de kihívást jelenthet nagy vagy nehéz poggyásszal:\n\n**SITA busz:**\n- Nincs dedikált poggyáztartó; a táskáknak veled vagy a folyosón kell maradniuk.\n- A nagy táskák blokkolhatják a mozgást, amikor a busz zsúfolt.\n- Ha teljes méretű bőröndöd van (23 kg-os feladott táska vagy nagyobb), fontold meg inkább a magán transzfert (lépj kapcsolatba a hostel recepcióval).\n\n**Circumvesuviana vonat:**\n- Kis poggyáztartók az ajtók közelében; a hely korlátozott és gyorsan elfoglalják.\n- Nincs lift a szorrentói állomáson - a táskákat fel/le kell vinned a lépcsőkön a peron eléréséhez.\n- Nincs lift néhány köztes megállónál; Napoli Garibaldi mozgólépcsőkkel és liftekkel rendelkezik a fő csarnokhoz.\n\n**Akadálymentesség:**\n- Sem a SITA busz, sem a Circumvesuviana vonat nem akadálymentes hagyományos értelemben (nincsenek rámpák, nincsenek dedikált kerekesszék helyek).\n- Ha kerekesszéket használsz vagy jelentős mobilitási korlátozásaid vannak, erősen ajánlott egy magán akadálymentes transzfer. Lépj kapcsolatba a hostel recepcióval ennek megszervezéséhez."
+    },
+    {
+      "id": "seasonal",
+      "title": "Szezonális és időzítési megfontolások",
+      "body": "**Nyár (június-szeptember):**\n- A SITA buszok gyakrabban járnak, de gyorsan megtelnek. Érkezz 10-15 perccel korábban.\n- A Circumvesuviana vonatok zsúfoltak, különösen délidőben és hétvégeken.\n- A hőség kényelmetlen lehet - mind a busz, mind a vonat korlátozott légkondicionálással rendelkezik.\n\n**Közepes szezon (április-május, október):**\n- Mérsékelt tömeg; érkezz 5-10 perccel korábban a buszhoz.\n- A kellemes hőmérsékletek kényelmesebbé teszik az utazást.\n\n**Tél (november-március):**\n- A SITA csökkenti a gyakoriságot; előre ellenőrizd a menetrendeket.\n- A Circumvesuviana menetrendek változhatnak karbantartás vagy sztrájkok miatt - ellenőrizd az indulási időket az utazás előtti napon.\n- Kevesebb turista könnyebb beszállást és több helyet jelent, de a szolgáltatások kevésbé megbízhatók lehetnek.\n\n**Sztrájkok és fennakadások:**\n- A tömegközlekedési sztrájkokat (sciopero) legalább 48 órával előre bejelentik. Ellenőrizd a %GUIDES:travelHelp|közlekedési értesítések oldalt% vagy kérdezd meg a hostel recepciót a legfrissebb frissítésekért.\n- Sztrájkok alatt a SITA és Circumvesuviana csökkentett szolgáltatásokat futtathat vagy teljesen törölhet. Tervezz alternatív közlekedést (taxi, magán transzfer vagy komp, ha elérhető), ha sztrájk van ütemezve az utazás napján."
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternatív útvonalak Nápolyba",
+      "body": "Ez a busz-és-vonat útvonal a leggazdaságosabb tömegközlekedési lehetőség, de nem mindig a legkényelmesebb. Fontold meg ezeket az alternatívákat:\n\n**Komp (szezonális, április-október):**\n- %HOWTO:positanoNaplesCenterFerry|Positano-Nápoly kompon% gyorsabb (70 perc közvetlen), festőibb és kényelmesebb, de €20-€25 per fő.\n- A kompok csak április-október között járnak, általában napi 1-2 indulásal.\n- Nincs poggyászkorlátozás; könnyebb nagy táskákkal utazó utasoknak.\n\n**Magán transzfer vagy taxi:**\n- Magán transzfer Nápolyba vagy Nápoly Repülőtérre €100-€140 költséggel jár legfeljebb 4 utas számára (lépj kapcsolatba a hostel recepcióval foglalásért).\n- Ajtótól ajtóig szolgáltatás; nincsenek csatlakozások, nincs várakozás.\n- Legjobb választás 3-4 fős csoportoknak, nagy poggyásszal utazó utasoknak vagy mobilitási problémákkal rendelkezőknek.\n\n**Busz Salernóba, majd vonat Nápolyba:**\n- %HOWTO:positanoSalernoBus|SITA busz Salernóba% (€3,00, 90 perc), majd Trenitalia regionális vagy nagysebességű vonat Nápolyba (€4-€15, 30-50 perc).\n- Hosszabb összes utazási idő, de a salernói vonatok kényelmesebbek és gyakoribbak, mint a Circumvesuviana.\n\n**Közeli városok felfedezése:**\n- Ha napi kirándulásokat tervezel Positanóból, nézd meg a %HOWTO:positanoAmalfiBus|Positano-Amalfi busz útmutatót% vagy a %HOWTO:positanoRavelloBus|Positano-Ravello busz útmutatót% más parti célpontokhoz."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**A sorok olvasása:** Az első oszlop sorai az útvonal mentén különböző buszmegállókat jelölnek.",
+        "**Az oszlopok olvasása:** A menetrend minden egyes tervezett járathoz egy betűt rendel, amelyek minden oszlop fejlécében szerepelnek. Ha hétfőtől szombatig utazol, keresd az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazol, keresd a 'G' és 'H' oszlopokat.",
+        "**A sorok és oszlopok kombinálása:** Válaszd ki az indulási és érkezési megállókat, majd ellenőrizd az oszlopokat, hogy mikor vannak buszok, és mikor érkeznek meg a célállomásra. Például a Sorrento indulási idejének megtekintéséhez nézd meg a Sorrento sort. A Positano (Chiesa Nuova / Bar Internazionale) érkezési idejének megtekintéséhez nézd meg a Positano (Chiesa Nuova) sort ugyanabban az oszlopban."
+      ]
+    },
+    {
+      "q": "Vásárolhatok SITA buszjegyeket a fedélzeten?",
+      "a": [
+        "Nem. A SITA buszsofőrök nem tudnak jegyeket eladni - a Bar Internazionale-nál (a buszmegállónál), egy dohányboltban (tabacchi) vagy újságosnál kell vásárolnod beszállás előtt. Az érvényesített jegy nélküli utazás €50 vagy több azonnali bírságot von maga után."
+      ]
+    },
+    {
+      "q": "Foglalnom kell helyeket a SITA buszon vagy a Circumvesuviana vonaton?",
+      "a": [
+        "Nem. Mind a SITA busz, mind a Circumvesuviana vonat első jött, első szolgált alapon működik foglalások nélkül. Érkezz korán nyáron (július-augusztus) az ülőhely biztosítása érdekében, mivel a buszok és vonatok csak állóhelyig telhetnek meg csúcsszezonban."
+      ]
+    },
+    {
+      "q": "Ez az útvonal alkalmas nagy poggyásszal utazó utasoknak?",
+      "a": [
+        "Kezelhető egy kis hátizsákkal vagy kézipoggyásszal, de kihívást jelent teljes méretű bőröndökkel. A SITA busznak nincs poggyáztartója, és a szorrentói állomásnak nincsenek liftjei a vonat peronhoz. Ha nagy vagy nehéz táskákkal utazol, fontold meg inkább a magán transzfert - lépj kapcsolatba a Hostel Brikette recepcióval segítségért."
+      ]
+    },
+    {
+      "q": "Mit tegyek, ha tömegközlekedési sztrájk van az utazás napján?",
+      "a": [
+        "A sztrájkokat (sciopero) legalább 48 órával előre bejelentik. Ellenőrizd a %GUIDES:travelHelp|közlekedési értesítések oldalt% vagy kérdezd meg a hostel recepciót frissítésekért. Sztrájkok alatt a SITA és Circumvesuviana csökkentett szolgáltatásokat futtathat vagy teljesen törölhet. Foglalj magán transzfert vagy taxit tartalékként - ha a kompok járnak (április-október), a %HOWTO:positanoNaplesCenterFerry|Positano-Nápoly komp% megbízható alternatíva."
+      ]
+    }
+  ]
+}

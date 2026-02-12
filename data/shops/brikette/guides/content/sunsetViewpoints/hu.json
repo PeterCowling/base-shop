@@ -1,0 +1,77 @@
+{
+  "seo": {
+    "title": "A legjobb napnyugta-kilátópontok Positanóban",
+    "description": "Positano legszebb napnyugtái, hogyan közelítsd meg őket gyalog vagy busszal és mikor érdemes érkezni."
+  },
+  "linkLabel": "Naplemente Positanóban: legjobb kilátóhelyek",
+  "intro": [
+    "A positanói naplementék drámaiak – a megfelelő hely és időzítés kiválasztása adja a tökéletes képet.",
+    "Használd ezeket a megbízható nézőpontokat és érkezési időpontokat, hogy elkerüld a legnagyobb tömegeket."
+  ],
+  "itemList": [
+    {
+      "name": "Chiesa Nuova terasz",
+      "note": "Könnyen megközelíthető a SITA megállótól, és szinte az egész öblöt belátni."
+    },
+    {
+      "name": "Via Positanesi d’America kilátó",
+      "note": "Fornillo fölött, érkezz 30 perccel naplemente előtt a meleg fényért."
+    },
+    {
+      "name": "Nocelle (az Istenek ösvénye kezdete)",
+      "note": "A Li Galli-szigetek felé néz – vigyél réteget a visszautazáshoz."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klasszikus nézőpontok",
+      "body": [
+        "A Chiesa Nuova terasza széles öbölkilátást kínál közvetlenül a SITA megálló mellett.",
+        "A Via Positanesi d’America egy Fornillo fölötti erkély – érkezz 30 perccel naplemente előtt a meleg fényért."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Csendesebb alternatívák",
+      "body": [
+        "Nocelle az Istenek ösvénye kiindulópontja a Li Galli-szigetek felé néz; vigyél réteget a visszavezető útra.",
+        "Fornillo strand a csúcsszezonon kívül nyugalmasabb; a nap a szikla mögött tűnik el, szóval állítsd be korán a felszerelést."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Időzítés",
+      "body": [
+        "Legyél a helyeden 20 perccel az aranyóra előtt, hogy megszerezhesd a helyet, és beállíthasd a beállításokat.",
+        "Nyáron a naplemente kb. 20:30-kor van – nézd meg a buszmenetrendeket, hogy sötétedés után se maradj ott."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett",
+      "body": [
+        "Tartsd szabadon a lépcsőket és magánbejáratokat: készítsd el a képet, majd lépj félre.",
+        "Vidd vissza a szemetet, és állítsd néma módba a telefonodat estélyi koncertek vagy események alatt."
+      ]
+    }
+  ],
+  "tips": [
+    "Érkezz 20–30 perccel korábban, hogy nyugodtan felállíthasd az állványt és ne kapkodj.",
+    "Egy könnyű utazóállvány vagy konzol hasznos a kékóra expozíciókhoz, amikor a fény gyorsan elhalványul."
+  ],
+  "faqs": [
+    {
+      "q": "Kell foglalás?",
+      "a": [
+        "Nyáron a bárok és tetőteraszok gyakran foglalást kérnek; a nyilvános kilátók viszont elsőként érkezőknek maradnak."
+      ]
+    },
+    {
+      "q": "Van elég fény a visszasétához?",
+      "a": [
+        "Az utcai világítás változó – vigyél telefontöltött lámpát a késő esti lejövéshez."
+      ]
+    }
+  ]
+}

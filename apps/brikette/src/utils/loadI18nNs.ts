@@ -1,9 +1,9 @@
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 import { IS_SERVER } from "@/config/env";
+import { IS_DEV } from "@/config/env";
 import i18n from "@/i18n";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { loadLocaleResource } from "@/locales/locale-loader";
-import { IS_DEV } from "@/config/env";
 
 import type { GuidesNamespace } from "../locales/guides.types";
 

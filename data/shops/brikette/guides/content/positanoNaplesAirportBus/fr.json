@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Positano → aéroport de Naples en bus | Hostel Brikette",
+    "description": "Itinéraire porte à porte depuis l'Hostel Brikette jusqu'à l'aéroport de Naples via le bus SITA pour Sorrente puis le bus Curreri, avec des conseils billets et des liens vers les horaires."
+  },
+  "intro": {
+    "title": "Positano → aéroport de Naples — Bus via Sorrente",
+    "body": "Prenez le bus SITA Sud de Positano à Sorrente, puis le bus Curreri jusqu'à l'aéroport de Napoli Capodichino. C'est l'option de transport public la plus simple, avec des départs fréquents et une correspondance facile à la gare routière de Sorrente."
+  },
+  "callouts": {
+    "aside": "Ouvrez la %HOWTO:how-to-get-here|vue d'ensemble Comment venir% pour les taxis, ferries et autres trajets."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Aperçu du trajet",
+      "list": [
+        "Rejoignez à pied l'arrêt Positano (Chiesa Nuova) devant le Bar Internazionale.",
+        "Prenez le bus SITA jusqu'à la gare routière/ferroviaire de Sorrente.",
+        "Correspondance avec le bus Curreri de Sorrente à l'aéroport de Naples (Capodichino)."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "À la gare routière de Sorrente",
+      "body": "Descendez à la gare routière et ferroviaire principale de Sorrente. Depuis les quais, montez dans le bus %URL:https://www.curreriviaggi.it/|Curreri Viaggi% vers l'aéroport de Naples (Capodichino). Consultez les horaires les plus récents et envisagez d'acheter vos billets en ligne à l'avance en période de pointe."
+    },
+    {
+      "id": "tickets",
+      "title": "Billets et attente",
+      "list": [
+        "Achetez un billet SITA pour Sorrente au Bar Internazionale ou dans un kiosque à proximité.",
+        "Conservez votre billet après l'embarquement ; le conducteur peut le composter ou le déchirer.",
+        "Pour le bus Curreri, achetez en ligne ou à la gare (si disponible)."
+      ]
+    },
+    {
+      "id": "timetables",
+      "title": "Horaires"
+    },
+    {
+      "id": "walk",
+      "title": "Rejoindre l'arrêt de Positano",
+      "list": [
+        "Sortez de l'auberge et descendez les marches jusqu'à la route principale.",
+        "Tournez à gauche et continuez sur environ 100 mètres (330 pieds).",
+        "Le Bar Internazionale se trouve sur votre gauche ; l'arrêt SITA est juste devant."
+      ]
+    }
+  ]
+}

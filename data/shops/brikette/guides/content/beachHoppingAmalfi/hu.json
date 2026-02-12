@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Strandolás az Amalfi-parton",
+    "description": "Mely strandokat érdemes összekötni egy nap alatt, megközelítési tippek és költségek."
+  },
+  "linkLabel": "Strandolás az Amalfi-parton",
+  "intro": [
+    "Tervezzen egy strandoló napot, amely kiegyensúlyozza a kompútakat, a sziklás kilátásokat és a homokos pihenést."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Reggel: Positano – Fornillo",
+      "body": [
+        "Kezdje korán a Spiaggia Grande-n egy gyors fürdővel, majd sétáljon a tengerparti ösvényen Fornillóba 09:30-ig nyugodtabb vízért.",
+        "Foglaljon napágyat előre, ha árnyékot szeretne; különben vigyen könnyű napernyőt."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Délidő: Amalfi vagy Atrani",
+      "body": [
+        "Vegyen egy késő délelőtti kompot Amalfiba, és ebédeljen a mólón, mielőtt úszna a városi strandon vagy Atrani kis öblében.",
+        "Tárolja táskáit Amalfi csomagmegőrzőjében, hogy szabadon tudjon felfedezni."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Csoportos túrák és közös hajók",
+      "body": [
+        "Nézze meg a %LINK:boatTours|Hajótúrák Positanóban útmutatót%, ha inkább közös hajón szeretne ugrálni strandok között kompok helyett.",
+        "Az üzemeltetők Positano fő mólójától indulnak; érkezzen 15 perccel korábban, és erősítse meg a Laurito vagy Arienzo fürdőmegállókat foglaláskor."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Este: Naplementés fürdő",
+      "body": [
+        "Fejezze be Lauritóban vagy Arienzóban az aranyóra kilátásokért; mindkettő nyugatra néz, meleg fényért és kevesebb tömegért 17:00 után.",
+        "Fogja meg az utolsó kompot, vagy foglaljon visszautat taxival, hogy elkerülje a felmászást a sötétben."
+      ]
+    }
+  ],
+  "tips": [
+    "Vigyen gyorsan száradó törölközőt és váltó ruhát, hogy kényelmes maradjon a kompokon.",
+    "Csomagoljon harapnivalót és legalább 1 L / 34 oz vizet — a parti büfék zsúfolt napokon kifogyhatnak."
+  ],
+  "faqs": [
+    {
+      "q": "Előre kell foglalnom a napágyakat?",
+      "a": [
+        "Igen július–augusztusban. Lépjen kapcsolatba a strandklubokkal WhatsAppon előző nap az első sorok biztosításához."
+      ]
+    },
+    {
+      "q": "Vihetek saját ételt?",
+      "a": [
+        "A legtöbb ingyenes rész engedélyezi a piknikeket. A strandklubok általában engedélyezik a kis harapnivalókat, de jobban szeretik, ha italokat a bárjukban vásárol."
+      ]
+    }
+  ]
+}

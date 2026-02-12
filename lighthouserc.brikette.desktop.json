@@ -1,0 +1,109 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "startServerCommand": "pnpm --filter @apps/brikette run start",
+      "startServerReadyPattern": "http://localhost:3012",
+      "startServerReadyTimeout": 120000,
+      "url": [
+        "http://localhost:3012/en",
+        "http://localhost:3012/en/experiences",
+        "http://localhost:3012/en/rooms",
+        "http://localhost:3012/en/help"
+      ],
+      "settings": {
+        "preset": "desktop",
+        "throttlingMethod": "simulate",
+        "disableStorageReset": true,
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage --ignore-certificate-errors --allow-insecure-localhost",
+        "blockedUrlPatterns": [
+          "*googletagmanager.com*",
+          "*google-analytics.com*",
+          "*segment.io*",
+          "*fullstory.com*"
+        ],
+        "budgets": [
+          {
+            "path": "/*",
+            "resourceCounts": [
+              {
+                "resourceType": "third-party",
+                "budget": 5
+              }
+            ],
+            "resourceSizes": [
+              {
+                "resourceType": "script",
+                "budget": 300
+              },
+              {
+                "resourceType": "image",
+                "budget": 600
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": [
+          "warn",
+          {
+            "minScore": 0.8
+          }
+        ],
+        "largest-contentful-paint": [
+          "warn",
+          {
+            "maxNumericValue": 3000,
+            "aggregationMethod": "median"
+          }
+        ],
+        "total-blocking-time": [
+          "warn",
+          {
+            "maxNumericValue": 250,
+            "aggregationMethod": "median"
+          }
+        ],
+        "cumulative-layout-shift": [
+          "warn",
+          {
+            "maxNumericValue": 0.1,
+            "aggregationMethod": "median"
+          }
+        ],
+        "resource-summary:script:size": [
+          "error",
+          {
+            "maxNumericValue": 750000
+          }
+        ],
+        "resource-summary:third-party:count": [
+          "warn",
+          {
+            "maxNumericValue": 5
+          }
+        ],
+        "errors-in-console": "warn",
+        "color-contrast": [
+          "warn",
+          {
+            "minScore": 1
+          }
+        ],
+        "label-content-name-mismatch": [
+          "warn",
+          {
+            "minScore": 1
+          }
+        ]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage",
+      "githubStatusContextSuffix": "-brikette-desktop"
+    }
+  }
+}

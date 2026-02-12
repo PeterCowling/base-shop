@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Quanto custa Positano: detalhamento do orçamento",
+    "description": "Estimativas de gastos diários por categoria e ajustes simples para equilibrar o orçamento."
+  },
+  "linkLabel": "Quanto custa Positano: detalhamento do orçamento",
+  "intro": [
+    "Entenda quanto custa Positano por dia e onde pode reduzir gastos sem abdicar dos destaques."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Custos de transporte",
+      "body": [
+        "Shuttle do aeroporto até Sorrento ronda 10–12 €; acrescente 2–3 € para o autocarro SITA até Positano. Ferries entre vilas variam de 8–20 €, conforme a distância.",
+        "Reserve 5 € por dia para autocarros locais; táxis começam nos 20 € para subidas curtas noite dentro."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Onde o orçamento de estadia pesa",
+      "body": [
+        "Camas em dormitório no Hostel Brikette variam entre 30–55 € consoante a época; quartos privados começam perto dos 110 €.",
+        "Apartamentos e hotéis boutique no centro ultrapassam facilmente 200 € por noite. Considere Praiano ou Sorrento para bases self-catering mais em conta."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Comida e bebida",
+      "body": [
+        "Pastelaria + café ao pequeno-almoço custam 4–6 €; panini casuais ao almoço ficam perto dos 8 €.",
+        "Jantar em trattorias intermédias ronda 20–30 € por pessoa sem vinho; partilhe entradas para provar mais sem duplicar a conta."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Atividades e extras",
+      "body": [
+        "Passeios de barco vão de 40 € (pôr do sol em grupo) a 120 €+ (charters privados). Alternativa económica: ferry para Amalfi e exploração por 9 €.",
+        "Reserve 5–10 € para gelado, granita ou gorjetas de artistas de rua, mantendo o gasto diário controlado mas generoso."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaje em abril, maio, fim de setembro ou outubro para tarifas de meia estação enquanto os ferries ainda têm boa frequência.",
+    "Use ATMs em Sorrento ou Nápoles para taxas menores e distribua o numerário em envelopes diários."
+  ],
+  "faqs": [
+    {
+      "q": "Qual é um orçamento diário realista?",
+      "a": [
+        "Mochileiros conseguem entre 70–90 € por dia (dormitório, refeições e uma atividade paga). Conforto intermédio aproxima-se dos 140 €."
+      ]
+    },
+    {
+      "q": "Posso pagar tudo com cartão?",
+      "a": [
+        "A maioria dos restaurantes aceita cartão, mas autocarros, pequenas mercearias e bancas preferem numerário. Traga 20 € em notas pequenas para o dia."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "Resumo rápido",
+    "tocTitle": "Nesta página",
+    "tipsTitle": "Onde poupar",
+    "faqsTitle": "Perguntas frequentes"
+  }
+}

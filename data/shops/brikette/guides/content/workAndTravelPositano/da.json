@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Arbejde og rejse fra Positano",
+    "description": "Balancér fjernarbejde med udforskning — wi-fi, tidszoner og rutiner."
+  },
+  "linkLabel": "Arbejde og rejse: balance mellem fjernarbejde",
+  "intro": [
+    "Balancer fokuseret arbejde med at udforske Positano: realistisk forbindelse, hvor man skal arbejde og en dagsrytme, der passer til folkemængderne."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi‑Fi og backup",
+      "body": [
+        "Brug eSIM-sikkerhedskopier; test hastigheder; undgå kritiske anløb under færgens lossetider på hovedbanerne."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Arbejdsvenlige caféer",
+      "body": [
+        "Se vores guide til Wi‑Fi og arbejdsvenlige caféer; vær sparsom med stikkontakter og køb jævnligt."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Rutiner der virker",
+      "body": [
+        "Arbejd tidligt og sent; udforsk midt på dagen, når folkemængderne topper, eller efter solnedgang."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er fjernarbejde realistisk her?",
+      "a": [
+        "Ja med planlægning — bliv i nærheden af ​​Chiesa Nuova, brug sikkerhedskopier, og hold fleksible åbningstider."
+      ]
+    }
+  ]
+}

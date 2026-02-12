@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Comparativa: Positano vs. Sorrento vs. Amalfi",
+    "description": "Pros, transporte, precios y a quién conviene cada base."
+  },
+  "linkLabel": "Comparativa: Positano vs. Sorrento vs. Amalfi",
+  "intro": [
+    "Compara los pros y contras de Positano, Sorrento y Amalfi antes de elegir base.",
+    "Elige según tu presupuesto, movilidad y plan de excursiones."
+  ],
+  "tocTitle": "En esta página",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Vistas icónicas, playas cercanas y ambiente romántico; muchas escaleras.",
+        "Ideal si quieres despertar dentro de la postal y no te importa planificar transporte con margen."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Mejores conexiones (trenes, buses, ferris) y amplia oferta de alojamiento.",
+        "Menos vistas dramáticas, pero gran relación calidad-precio y vida nocturna más activa."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Nudo de ferris y buses, con acceso fácil a Ravello, Atrani y Minori.",
+        "Elige si quieres un equilibrio entre ambiente histórico y transporte directo."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "¿Para quién es cada base?",
+      "body": [
+        "Positano: parejas, fotógrafos y viajeros que valoran vistas + vida de hostel.",
+        "Sorrento: presupuesto controlado, familias y quienes visitan Pompeya/Capri.",
+        "Amalfi: viajeros que quieren moverse por toda la costa con un punto intermedio."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuál es mejor sin coche?",
+      "a": [
+        "Todas funcionan sin coche, pero Sorrento y Amalfi ofrecen conexiones más frecuentes."
+      ]
+    },
+    {
+      "q": "¿Qué base conviene para playas?",
+      "a": [
+        "Positano si quieres playa caminando; Amalfi para combinar con Atrani; Sorrento tiene plataformas y acceso rápido a ferris."
+      ]
+    }
+  ],
+  "tips": [
+    "Divide el viaje en dos bases si te quedas más de 5 noches: Positano + Sorrento o Amalfi.",
+    "Consulta horarios nocturnos: en Amalfi el último bus a Positano suele salir antes de las 22:45."
+  ]
+}

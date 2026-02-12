@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Transport mit kleinem Budget (Amalfiküste)",
+    "description": "Günstige Verbindungen und Pässe: wann Bus, Fähre oder Shuttle sinnvoll ist – plus Plan B."
+  },
+  "linkLabel": "Transport mit kleinem Budget",
+  "intro": [
+    "Halte deine Transportkosten niedrig, indem du Pässe, Fahrten außerhalb der Stoßzeiten und geteilte Transfers gezielt kombinierst."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Den passenden Pass wählen",
+      "body": [
+        "Nutze den UNICO Costiera Tagespass (12,40 €) für unbegrenzte SITA-Busfahrten zwischen Sorrent und Salerno – entwerte ihn bei der ersten Fahrt und halte das Ticket für Kontrollen griffbereit.",
+        "Wenn du zwei oder mehr Fährfahrten an einem Tag planst, vergleiche Kombitickets von Anbietern wie Travelmar; sie bündeln Fahrten zwischen Amalfi und Positano mit Rabatt."
+      ]
+    },
+    {
+      "id": "combo-routes",
+      "title": "Verkehrsmittel clever kombinieren",
+      "body": [
+        "Kombiniere eine einzelne Fährfahrt mit Busfahrten, um Geld zu sparen und trotzdem die Aussicht zu genießen – morgens mit dem Schiff raus, zurück mit dem Bus, wenn die Preise steigen.",
+        "Teile Taxis für späte Rückfahrten, wenn keine Busse mehr fahren; 80 € durch vier geteilt ist günstiger, als stundenlang auf die nächste Verbindung zu warten."
+      ]
+    },
+    {
+      "id": "advance",
+      "title": "Vorab kaufen, wenn es hilft",
+      "body": [
+        "Buche Trenitalia- oder Italo-Tickets von Rom oder Neapel frühzeitig, um die niedrigsten Tarife zu bekommen; regionale Zubringer nach Sorrent haben Festpreise.",
+        "Reserviere Flughafenshuttles (Curreri, Pintour) online, um an stark frequentierten Wochenenden Plätze zu sichern."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Sparen auf der letzten Meile",
+      "body": [
+        "Bei der Ankunft: Nimm den SITA-Bus bis Chiesa Nuova und geh hinunter statt einen Porter zu engagieren; mit handlichem Gepäck dauert das etwa 15 Minuten.",
+        "Nutze die Gepäckaufbewahrung nahe der Fähren, wenn du späten Check-out hast – 7–10 € sind günstiger als ein zusätzlicher Taxitransfer."
+      ]
+    }
+  ],
+  "tips": [
+    "Fahr vor 08:30 Uhr oder nach 19:00 Uhr, wenn die Busse leerer sind und du stressfrei einsteigen kannst.",
+    "Mach Screenshots oder Ausdrucke deiner Tickets; das WLAN fällt gern genau dann aus, wenn Kontrolleure zusteigen."
+  ],
+  "faqs": [
+    {
+      "q": "Lohnen sich Buspässe in der Nebensaison?",
+      "a": [
+        "Ja, wenn du drei oder mehr Fahrten am Tag machst. Ansonsten kauf Einzelfahrscheine; die Fahrpläne sind dünner, aber die Preise bleiben niedrig."
+      ]
+    },
+    {
+      "q": "Muss ich Fährtickets entwerten?",
+      "a": [
+        "Die meisten Anbieter scannen QR-Codes digital, aber behalte eine Ausdruckkopie, falls Nässe oder Sonne den Bildschirm stören."
+      ]
+    }
+  ]
+}

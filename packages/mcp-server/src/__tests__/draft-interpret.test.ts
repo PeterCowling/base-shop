@@ -9,6 +9,7 @@ function parseResult(result: { content: Array<{ text: string }> }) {
     intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
     agreement: { status: string; confidence: number; requires_human_confirmation: boolean; additional_content: boolean };
     scenario: { category: string; confidence: number };
+    escalation: { tier: string; triggers: string[]; confidence: number };
     thread_summary?: {
       prior_commitments: string[];
       open_questions: string[];
@@ -58,6 +59,14 @@ describe("draft_interpret", () => {
     expect(payload.scenario.confidence).toBeGreaterThan(0);
   });
 
+  it("TC-04b: classifies availability inquiries as booking-issues", async () => {
+    const body = "Hello, do you have availability from March 13 to March 19 for 2 adults?";
+    const result = await handleDraftInterpretTool("draft_interpret", { body });
+    const payload = parseResult(result);
+    expect(payload.scenario.category).toBe("booking-issues");
+    expect(payload.scenario.confidence).toBeGreaterThan(0.8);
+  });
+
   it("TC-05: agreement status none when no agreement phrases", async () => {
     const body = "Can you share availability for next weekend?";
     const result = await handleDraftInterpretTool("draft_interpret", { body });
@@ -72,12 +81,36 @@ describe("draft_interpret", () => {
   });
 
   it("TC-09: agreement detection explicit phrases", async () => {
+    const short = await handleDraftInterpretTool("draft_interpret", { body: "Agree!" });
+    expect(parseResult(short).agreement.status).toBe("confirmed");
     const en = await handleDraftInterpretTool("draft_interpret", { body: "I agree to the terms." });
     expect(parseResult(en).agreement.status).toBe("confirmed");
     const it = await handleDraftInterpretTool("draft_interpret", { body: "Accetto." });
     expect(parseResult(it).agreement.status).toBe("confirmed");
     const es = await handleDraftInterpretTool("draft_interpret", { body: "De acuerdo." });
     expect(parseResult(es).agreement.status).toBe("confirmed");
+  });
+
+  it("TC-09b: mention of past agreement does not auto-confirm", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I sent an email yesterday with 'agree' to accept the terms.",
+    });
+    const payload = parseResult(result);
+    expect(payload.agreement.status).toBe("none");
+  });
+
+  it("TC-09c: quoted reply header does not count as additional content for explicit agreement", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: `Agree!
+
+On Fri, Jan 16, 2026 at 02:42 Hostel Positano Team <hostelpositano@gmail.com>
+wrote:
+> quoted previous message`,
+    });
+    const payload = parseResult(result);
+    expect(payload.normalized_text).toBe("Agree!");
+    expect(payload.agreement.status).toBe("confirmed");
+    expect(payload.agreement.additional_content).toBe(false);
   });
 
   it("TC-10: agreement detection negation and ambiguity", async () => {
@@ -154,5 +187,123 @@ describe("draft_interpret", () => {
     });
     const payload = parseResult(result);
     expect(payload.thread_summary?.tone_history).toBe("mixed");
+  });
+});
+
+describe("draft_interpret TASK-03 escalation", () => {
+  it("TASK-03 TC-01: refund + dispute escalates to HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I want a refund and I am disputing this cancellation charge.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("cancellation_refund_dispute");
+  });
+
+  it("TASK-03 TC-02: legal threat escalates to CRITICAL", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "If this is not resolved I will contact my lawyer and take legal action.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation.triggers).toContain("legal_threat");
+  });
+
+  it("TASK-03 TC-03: chargeback hint escalates to HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I will start a chargeback with my bank for this payment.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("chargeback_hint");
+  });
+
+  it("TASK-03 TC-04: routine FAQ remains NONE", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "What time is check-in?",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("NONE");
+    expect(payload.escalation.triggers).toEqual([]);
+  });
+
+  it("TASK-03 TC-05: platform escalation threat is CRITICAL", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I will contact Booking.com and open a formal complaint.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation.triggers).toContain("platform_escalation_threat");
+  });
+
+  it("TASK-03 TC-06: vulnerable circumstance is HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "We had a medical emergency and need help with this cancellation.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("vulnerable_circumstance");
+  });
+
+  it("TASK-03 TC-07: multiple HIGH triggers stay HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I need a refund, this is a dispute, and I will start a chargeback.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toEqual(
+      expect.arrayContaining(["cancellation_refund_dispute", "chargeback_hint"])
+    );
+  });
+
+  it("TASK-03 TC-08: CRITICAL trigger dominates mixed trigger set", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I want a refund and will contact my lawyer.",
+    });
+    const payload = parseResult(result);
+    expect(payload.escalation.tier).toBe("CRITICAL");
+    expect(payload.escalation.triggers).toEqual(
+      expect.arrayContaining(["cancellation_refund_dispute", "legal_threat"])
+    );
+  });
+
+  it("TASK-03 TC-09: repeated complaint with 3+ prior staff responses is HIGH", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I am still waiting and this is unacceptable.",
+      threadContext: {
+        messages: [
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Mon, 01 Jan 2026 09:00:00 +0000",
+            snippet: "We are checking your request.",
+          },
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Mon, 01 Jan 2026 12:00:00 +0000",
+            snippet: "We will send an update soon.",
+          },
+          {
+            from: "Hostel Brikette <info@hostel-positano.com>",
+            date: "Tue, 02 Jan 2026 08:00:00 +0000",
+            snippet: "Thanks for your patience while we verify details.",
+          },
+        ],
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.thread_summary?.previous_response_count).toBe(3);
+    expect(payload.escalation.tier).toBe("HIGH");
+    expect(payload.escalation.triggers).toContain("repeated_complaint");
+  });
+
+  it("TASK-03 TC-10: standard scenario returns valid plan with escalation NONE", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Do you offer luggage storage before check-in?",
+      subject: "Luggage storage question",
+    });
+    const payload = parseResult(result);
+    expect(payload.scenario.category).toBeDefined();
+    expect(payload.escalation.tier).toBe("NONE");
+    expect(payload.escalation.confidence).toBe(0);
   });
 });

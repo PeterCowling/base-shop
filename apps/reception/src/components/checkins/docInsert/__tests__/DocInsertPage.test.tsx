@@ -78,11 +78,13 @@ jest.mock("../BookingRef", () => ({
 }));
 
 jest.mock("../occupantCompleteHelpers", () => ({
-  occupantIsComplete: occupantIsCompleteMock,
+  occupantIsComplete: (...args: Parameters<typeof occupantIsCompleteMock>) =>
+    occupantIsCompleteMock(...args),
 }));
 
 jest.mock("../../../../utils/toastUtils", () => ({
-  showToast: showToastMock,
+  showToast: (...args: Parameters<typeof showToastMock>) =>
+    showToastMock(...args),
 }));
 
 // ------------------------------------------------------------------

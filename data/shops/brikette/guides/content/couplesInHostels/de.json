@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Als Paar in Hostels reisen",
+    "description": "Tipps für Schlafsäle oder Privatzimmer, Ruhe finden und Erwartungen setzen."
+  },
+  "linkLabel": "Als Paar in Hostels reisen",
+  "intro": [
+    "Hostels funktionieren für Paare, wenn du den richtigen Zimmertyp wählst, leicht packst und gemeinsam Erwartungen setzt."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Zimmertypen",
+      "body": [
+        "Buche ein Privatzimmer für Privatsphäre; wenn das Budget knapp ist, teilt euch Betten im selben Schlafsaal und haltet das Gepäck leicht für die Treppen."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Ruhe finden",
+      "body": [
+        "Nimm Ohrstöpsel und eine Schlafmaske mit, wähle Zimmer abseits der Bar oder Gemeinschaftsbereiche und nutze die frühen Morgenstunden für ruhigeres Sightseeing."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ist ein Hostel für Paare geeignet?",
+      "a": [
+        "Ja — du bekommst soziale Energie und gutes Preis-Leistungs-Verhältnis; Privatzimmer schaffen eine Balance zwischen Komfort und Kosten."
+      ]
+    }
+  ]
+}

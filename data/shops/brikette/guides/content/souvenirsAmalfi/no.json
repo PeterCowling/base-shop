@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "Smarte suvenirkjøp på Amalfikysten",
+    "description": "Rimelige, pakkbare suvenirer: hva du bør kjøpe, hvor, og hvordan sende trygt."
+  },
+  "linkLabel": "Smarte suvenirkjøp (Amalfikysten)",
+  "intro": [
+    "Suvenirene spenner fra håndmalte keramikk til delikatesser, men prisene varierer stort langs hovedgatene.",
+    "Bruk disse tipsene til å velge kvalitet, finne pålitelige butikker og pakke alt slik at det kommer helt hjem."
+  ],
+  "tocTitle": "På denne siden",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "Hva du bør kjøpe"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Hvor du handler"
+    },
+    {
+      "href": "#packing",
+      "label": "Pakking og frakt"
+    },
+    {
+      "href": "#faqs",
+      "label": "Spørsmål og svar"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "Hva du bør kjøpe",
+      "body": [
+        "Håndmalte keramikk, limoncello, små trykk og skafferiartikler som colatura eller sitronmarmelade pakker godt og representerer kysten.",
+        "Se etter signaturer fra produsenten eller kooperativmerker; unngå masseproduserte varer uten god glasur eller med sterk kjemikalielukt."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Hvor du handler",
+      "body": [
+        "Gå én eller to gater opp fra Via dei Mulini og stranden for å sammenligne butikker, kooperativer og håndverksverksteder.",
+        "Markeder i Sorrento, Amalfi og til og med Salerno selger ofte de samme varene til roligere priser – ta høyde for ferge- eller busskostnader i vurderingen."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Pakking og frakt",
+      "body": [
+        "Pakk keramikk i klær eller bobleplast, og skill tallerkener med pappbiter eller gjenbrukbare kjøkkenhåndklær.",
+        "Hvis du sender fra Italia, be om sporing og ta vare på kvitteringene; for matvarer må du sjekke tollreglene for landet ditt før du betaler."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Priskontroll og ekthet",
+      "body": [
+        "Se etter Consorzio- eller IGP-merker på limoncello og let etter håndskrevne prislapper fremfor bare ‘special offer’-skilt.",
+        "Hvis et tilbud virker for billig, sjekk skjøter og glasur; ekte håndverk har små variasjoner, ikke identiske mønstre."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg ta med limoncello eller mat i bagasjen?",
+      "a": [
+        "Væsker over 100 ml må i innsjekket bagasje; deklarer alkohol der det kreves, og sjekk hjemlandets regler for melk- eller kjøttprodukter før du handler."
+      ]
+    },
+    {
+      "q": "Tar butikkene kort?",
+      "a": [
+        "De fleste gjør det, men små atelierer foretrekker kontanter eller har høye minste beløp – ha med noen små eurosedler."
+      ]
+    },
+    {
+      "q": "Finnes tax-free shopping?",
+      "a": [
+        "Ja, for kjøp over momsgrensen i én butikk; be om tax-free-skjema, få det stemplet ved avreise og ha kvitteringene klare."
+      ]
+    }
+  ]
+}

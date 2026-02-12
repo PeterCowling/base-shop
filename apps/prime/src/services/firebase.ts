@@ -1,48 +1,49 @@
 // src/services/firebase.ts
-/* eslint-disable import/order */
+ 
 
-import logger from '@/utils/logger';
 import {
+  type FirebaseApp,
   getApp,
   getApps,
   initializeApp,
   setLogLevel,
-  type FirebaseApp,
 } from 'firebase/app';
 import {
+  type Database,
+  type DataSnapshot,
   endAt,
   endBefore,
   equalTo,
   get as fbGet,
-  onValue as fbOnValue,
   getDatabase,
   limitToFirst,
   limitToLast,
+  type ListenOptions,
   off,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
+  onValue as fbOnValue,
   orderByChild,
   push,
+  type Query,
   query,
   ref,
   set,
   startAt,
-  update,
-  type Database,
-  type DataSnapshot,
-  type ListenOptions,
-  type Query,
   type Unsubscribe,
+  update,
 } from 'firebase/database';
 import {
   deleteObject,
+  type FirebaseStorage,
   getDownloadURL,
   getStorage,
   ref as storageRef,
   uploadBytes,
-  type FirebaseStorage,
 } from 'firebase/storage';
+
+import logger from '@/utils/logger';
 
 /* -------------------------------------------------------------------------- */
 /*                              Firebase config                               */
@@ -71,8 +72,14 @@ const app: FirebaseApp = getApps().length
 setLogLevel('error');
 
 export const firebaseApp = app;
-export const db = getDatabase(app);
-export const storage = getStorage(app);
+// Defer RTDB/Storage init to client — getDatabase() fails during static export
+// prerendering when NEXT_PUBLIC_FIREBASE_DATABASE_URL is absent.
+export const db: Database = typeof window !== 'undefined'
+  ? getDatabase(app)
+  : (null as unknown as Database);
+export const storage: FirebaseStorage = typeof window !== 'undefined'
+  ? getStorage(app)
+  : (null as unknown as FirebaseStorage);
 
 /* -------------------------------------------------------------------------- */
 /*                            Firebase Metrics (OPT-07)                       */
@@ -84,6 +91,23 @@ interface QueryRecord {
   durationMs: number;
   timestamp: number;
 }
+
+interface CypressPrimeMockData {
+  bookingRef: string;
+  uuid: string;
+  checkInDate: string;
+  checkOutDate: string;
+  firstName: string;
+  lastName: string;
+  checkInCode: string;
+}
+
+interface CypressMockResolution {
+  matched: boolean;
+  value: unknown;
+}
+
+const CYPRESS_PRIME_DATA_KEY = 'prime_cypress_data';
 
 const SLOW_QUERY_THRESHOLD_MS = 1000;
 
@@ -142,12 +166,169 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV !== 'production') {
 /*                               Helper methods                               */
 /* -------------------------------------------------------------------------- */
 
+function isCypressRuntime(): boolean {
+  return typeof window !== 'undefined' && Boolean((window as { Cypress?: unknown }).Cypress);
+}
+
+function parseFirebasePath(input: string): string {
+  const withoutQuery = input.split('?')[0] ?? input;
+  const withoutProtocol = withoutQuery.replace(/^https?:\/\/[^/]+\//, '');
+  return withoutProtocol.replace(/\.json$/, '').replace(/^\/+/, '').replace(/\/+$/, '');
+}
+
+function readCypressPrimeMockData(): CypressPrimeMockData | null {
+  if (!isCypressRuntime()) {
+    return null;
+  }
+
+  const raw = window.localStorage.getItem(CYPRESS_PRIME_DATA_KEY);
+  if (!raw) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(raw) as Partial<CypressPrimeMockData>;
+    if (
+      !parsed.bookingRef ||
+      !parsed.uuid ||
+      !parsed.checkInDate ||
+      !parsed.checkOutDate ||
+      !parsed.firstName ||
+      !parsed.lastName ||
+      !parsed.checkInCode
+    ) {
+      return null;
+    }
+
+    return {
+      bookingRef: parsed.bookingRef,
+      uuid: parsed.uuid,
+      checkInDate: parsed.checkInDate,
+      checkOutDate: parsed.checkOutDate,
+      firstName: parsed.firstName,
+      lastName: parsed.lastName,
+      checkInCode: parsed.checkInCode,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function resolveCypressMockValue(path: string, mock: CypressPrimeMockData): CypressMockResolution {
+  const { bookingRef, uuid, checkInDate, checkOutDate, firstName, lastName, checkInCode } = mock;
+
+  if (path === `occupantIndex/${uuid}`) {
+    return { matched: true, value: bookingRef };
+  }
+
+  if (path === `bookings/${bookingRef}/${uuid}`) {
+    return {
+      matched: true,
+      value: {
+        checkInDate,
+        checkOutDate,
+        leadGuest: true,
+        roomNumbers: ['A1'],
+      },
+    };
+  }
+
+  if (path === 'bookings') {
+    return {
+      matched: true,
+      value: {
+        [bookingRef]: {
+          [uuid]: {
+            checkInDate,
+            checkOutDate,
+            leadGuest: true,
+            roomNumbers: ['A1'],
+          },
+        },
+      },
+    };
+  }
+
+  if (path === `guestByRoom/${uuid}`) {
+    return {
+      matched: true,
+      value: {
+        allocated: 'A1',
+        booked: 'A1',
+      },
+    };
+  }
+
+  if (path === `guestsDetails/${bookingRef}/${uuid}`) {
+    return {
+      matched: true,
+      value: {
+        firstName,
+        lastName,
+        language: 'en',
+      },
+    };
+  }
+
+  if (path === `completedTasks/${uuid}`) {
+    return { matched: true, value: {} };
+  }
+
+  if (path === `checkInCodes/byUuid/${uuid}`) {
+    return {
+      matched: true,
+      value: {
+        code: checkInCode,
+        uuid,
+        expiresAt: Date.now() + 24 * 60 * 60 * 1000,
+      },
+    };
+  }
+
+  if (path.startsWith(`preorder/${uuid}`)) {
+    return { matched: true, value: {} };
+  }
+
+  if (
+    path.startsWith('loans/') ||
+    path.startsWith('financialsRoom/') ||
+    path.startsWith('cityTax/') ||
+    path.startsWith('bagStorage/') ||
+    path.startsWith('preArrival/')
+  ) {
+    return { matched: true, value: null };
+  }
+
+  return { matched: false, value: null };
+}
+
+function createMockSnapshot(value: unknown): DataSnapshot {
+  const exists = value !== null && value !== undefined;
+  return {
+    exists: () => exists,
+    val: () => value,
+  } as DataSnapshot;
+}
+
 /**
  * Logged wrapper around `get()` that records payload size, timing, and metrics.
  */
 export async function get(queryRef: Query): Promise<DataSnapshot> {
   const path = queryRef.toString();
   logger.debug(`[firebase] get ${path}`);
+
+  const cypressMock = readCypressPrimeMockData();
+  if (cypressMock) {
+    const normalizedPath = parseFirebasePath(path);
+    const resolved = resolveCypressMockValue(normalizedPath, cypressMock);
+    if (resolved.matched) {
+      const snapshot = createMockSnapshot(resolved.value);
+      const size = JSON.stringify(snapshot.val()).length;
+      firebaseMetrics.recordQuery(path, size, 0);
+      logger.debug(`[firebase] get mock ${normalizedPath} bytes=${size}`);
+      return snapshot;
+    }
+  }
 
   const start = performance.now();
   const snapshot = await fbGet(queryRef);

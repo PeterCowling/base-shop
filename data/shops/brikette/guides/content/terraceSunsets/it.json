@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "Tramonto in terrazza a Positano",
+    "description": "Un piano tramonto semplice e a budget in Hostel Brikette: quando arrivare per farlo senza stress."
+  },
+  "linkLabel": "Tramonto in terrazza",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Per un tramonto senza una cena lunga e cara, la terrazza dell’ostello è l’opzione più semplice."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Timing",
+      "body": [
+        "In alta stagione: arriva 30–45 minuti prima del tramonto per un buon posto."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Luce del tramonto su Positano vista dalla terrazza"
+        }
+      ]
+    }
+  ],
+  "fallback": "Arriva un po’ prima, un drink, poi cena semplice."
+}

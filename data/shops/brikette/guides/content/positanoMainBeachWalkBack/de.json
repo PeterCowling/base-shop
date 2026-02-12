@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Gehen Sie vom Spiaggia Grande zurück zum Hostel Brikette",
+    "description": "Folgen Sie den Treppenkontrollpunkten der Herberge für den 30–45-minütigen Rückaufstieg."
+  },
+  "linkLabel": "Zu Fuß zurück vom Hauptstrand von Positano",
+  "intro": [
+    "Der Rückweg von Spiaggia Grande zum Hostel Brikette dauert je nach Tempo, Fotostopps und Hitze etwa 30–45 Minuten.",
+    "Diese Stufen spiegeln die fünf Checkpoint-Fotos des Hostels wider, sodass du den ganzen Weg hinauf auf der schnellsten Treppenroute bleiben kannst."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Bevor Sie klettern",
+      "body": [
+        "Füllen Sie Wasser nach und gönnen Sie sich Zeit für Pausen — es gibt keine Geschäfte auf der Treppe, bis Sie die oberen Straßen erreichen.",
+        "Schnappen Sie sich die Referenzfotos von der Rezeption oder vom digitalen Concierge, damit Sie die Punkte 4 und 5 während des Aufstiegs abgleichen können."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Schritt-für-Schritt-Rückweg zum Hostel",
+      "body": [
+        "1. Beginnen Sie auf der linken Seite der Spiaggia Grande (dem Wasser abgewandt) und fahren Sie unter dem Torbogen neben dem Hafen hindurch.",
+        "2. Fahren Sie geradeaus durch die Einkaufsstraße, bis Sie am Kartenpunkt 5 den offenen Innenhof erreichen — bestätigen Sie, dass die Ansicht mit dem Foto des Hostels übereinstimmt.",
+        "3. Nehmen Sie die Treppe auf der linken Seite, folgen Sie ihr bergauf, während sie sich nach rechts wölbt, und steigen Sie nach oben.",
+        "4. Biegen Sie oben rechts ab und nehmen Sie dann sofort die nächste Treppe bergauf, um zum Kartenpunkt 4 zu gelangen.",
+        "5. Biegen Sie von Punkt 4 aus links auf die Straße ab, gehen Sie etwa 10 Meter (30 Fuß), überqueren Sie die Straße und nehmen Sie die Treppe direkt vor Ihnen.",
+        "6. Folgen Sie der Treppe, bis sie auf eine andere Straße treffen. Wenn Sie zurückblicken, sollte die Szene mit dem Punkt-3-Foto übereinstimmen. Überqueren Sie geradeaus die nächste Treppe und steigen Sie weiter.",
+        "7. Wenn die Treppe fertig ist, gehen Sie auf die Straße vor Ihnen, biegen Sie links ab und gehen Sie etwas mehr als 100 Meter bergauf.",
+        "8. Biegen Sie rechts auf die bekannte Treppe ab, die direkt zurück zum Haupteingang des Hostels Brikette führt."
+      ]
+    }
+  ],
+  "tipsTitle": "Schnelle Tipps",
+  "tips": [
+    "Wenn der Aufstieg zu intensiv ist, wechseln Sie zur %LINK:positanoMainBeachBusBack|zurück zur Jugendherberge%, sobald Sie die Piazza dei Mulini erreicht haben.",
+    "Beginnen Sie den Spaziergang vor Mittag oder nach Sonnenuntergang, um dem heißesten Teil des Tages auszuweichen.",
+    "Halte in schattigen Landungen inne, um Luft zu holen und Fotos von der Aussicht zu machen — du hast sie dir verdient."
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Robogóbérlés Positanóban",
+    "description": "Hol bérelj, milyen szabályok érvényesek, biztonsági tippek és mikor ne válaszd."
+  },
+  "linkLabel": "Robogóbérlés Positanóban",
+  "intro": [
+    "A robogók csábítóak Positano körül, de bérlés előtt mérlegelje az elérhetőséget, a papírmunkát és a szikla menti utak biztonságát."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hol lehet bérelni",
+      "body": [
+        "Positanóban változó a kínálat és magasak az árak; Szorrentóban általában több a választék és stabilabbak a tarifák."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Szabályok és szükséges okmányok",
+      "body": [
+        "Hozza magával a jogosítványát (és ha kell, a nemzetközi vezetői engedélyt) plusz bankkártyát, és ellenőrizze, pontosan mire terjed ki a biztosítás."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Biztonság és mikor érdemes kerülni",
+      "body": [
+        "A parti utak szűkek, vak kanyarokkal és buszokkal; ha nincs rutinos robogós tapasztalata, inkább válassza a kompot vagy a buszt."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Érdemes kezdőként robogót bérelni itt?",
+      "a": [
+        "Nem igazán — ha nincs stabil robogós rutin, a szikla menti utak stresszesek, maradjon inkább a tömegközlekedésnél."
+      ]
+    }
+  ]
+}

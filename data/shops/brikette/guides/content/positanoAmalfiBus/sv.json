@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Positano till Amalfi med buss | Hostel Brikette",
+    "description": "Steg-för-steg-instruktioner för SITA-bussen från Hostel Brikette till Amalfi, inklusive var du köper biljetter, hållplatsen Chiesa Nuova och hur du läser tidtabellen."
+  },
+  "intro": {
+    "title": "Positano till Amalfi – med SITA-buss",
+    "body": "Använd den här guiden för en smidig bussresa från Hostel Brikette till Amalfi. Bussarna körs av SITA Sud och går ofta under högsäsong. Vi visar var du köper biljetter, hur du tolkar tidtabellen och exakt var du går ombord i Positano."
+  },
+  "callouts": {
+    "tip": "Behöver du alla transportalternativ? Öppna %HOWTO:how-to-get-here|översikten Så tar du dig hit% för färja, taxi och kombinerade rutter."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resan i korthet",
+      "body": "Avsätt 45–60 minuter under sommaren beroende på trafik och köer. Kliv på vid Positano (Chiesa Nuova) för en direktbuss till Amalfi. Under rusningstid bör du komma i god tid för att få en sittplats."
+    },
+    {
+      "id": "tickets",
+      "title": "SITA och deras biljetter",
+      "body": "Bussarna körs av SITA (SITA Sud Srl). Köp biljetter i förväg hos tidningskiosker eller tobaksbutiker. Visa biljetten för föraren när du går ombord – de stämplar eller river den för att validera. Behåll biljetten tills du är framme i Amalfi."
+    },
+    {
+      "id": "timetable",
+      "title": "Så läser du SITA:s tidtabell",
+      "body": "I den officiella tidtabellen listas hållplatserna som rader och avgångarna som bokstavsmarkerade kolumner. Matcha raderna för Positano och Amalfi inom samma bokstavskolumn för din resdag. Se den senaste tidtabellen på %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Raderna i första kolumnen visar varje hållplats längs linjen.",
+        "Kolumnerna motsvarar schemalagda turer som är märkta med bokstäver.",
+        "Reser du måndag–lördag? Använd kolumnerna F och G.",
+        "Reser du på söndag eller helgdag? Använd kolumnerna G och H."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Busshållplatsen Positano (Chiesa Nuova)",
+      "list": [
+        "Den närmaste SITA-hållplatsen är Positano (Chiesa Nuova) på Via G. Marconi.",
+        "Den ligger cirka 140 meter (490 fot) från vandrarhemmets entré.",
+        "Du väntar utanför caféet/baren Bar Internazionale."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå från vandrarhemmet till hållplatsen",
+      "list": [
+        "Lämna vandrarhemmet, gå nedför trapporna till huvudvägen och sväng vänster.",
+        "Fortsätt längs Via G. Marconi i ungefär 100 meter (330 fot).",
+        "Bar Internazionale ligger på vänster sida; SITA-hållplatsen är precis utanför."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Köp biljett och vänta på ombordstigning",
+      "list": [
+        "Köp en SITA-biljett i baren eller i närliggande tidningskiosk (tabacchi).",
+        "Gå över till andra sidan vägen och ställ dig i kön till bussen mot Amalfi.",
+        "Kontrollera att bussens skylt visar \\\\\"Amalfi\\\\\"."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Framme i Amalfi",
+      "body": "De flesta turer slutar vid Amalfis bussterminal nära hamnen. Härifrån kan du byta till Ravello och Salerno eller utforska Amalfis historiska centrum till fots. Planerar du återresan? Läs %HOWTO:amalfi-positano-bus|Amalfi till Positano med buss%."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hur läser jag SITA-busstidtabellen?",
+      "a": [
+        "**Läsa raderna:** Raderna i första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsa kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje schemalagd resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på söndag eller en helgdag, använd kolumnerna 'G' och 'H'.",
+        "**Kombinera rader och kolonner:** Välj dina avgångs- och ankomsthållplatser, kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de anländer till din destination. Till exempel, för att se avgångstid från Sorrento, titta på Sorrento-raden. För att se ankomsttid i Positano (Chiesa Nuova / Bar Internazionale), se Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ]
+}

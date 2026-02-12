@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fornillo Beach gyalogos útvonal",
+    "description": "Lépésről lépésre útmutató a hosteltől a Fornillo strandig, plusz tippek a leggyorsabb lejutáshoz és a visszaúthoz."
+  },
+  "linkLabel": "Hostel Brikette → Fornillo Beach gyalogos útmutató",
+  "intro": [
+    "A Hostel Brikette-től a Fornillo Beachig tartó séta nagyjából 15–25 percet vesz igénybe, többnyire lépcsőkön. Kövesd ezt a rövidítést, hogy végig a leggyorsabb lépcsősoron és a burkolt sétányon haladj."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-walk",
+      "title": "Tervezd meg a sétát",
+      "body": [
+        "Számolj körülbelül 20 perccel, hogy leérj a homokig; ez a tempódtól, a fotószünetektől és attól függ, mennyire érzed magad komfortosan a positanói lépcsőkön.",
+        "A Google Maps időnként lassabb kerülőkre irányít. Maradj ennél az útvonalnál, így végig a fő lépcsősoron és a sima útszakaszon haladhatsz."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Útvonal a Hostel Brikette-től a Fornillo Beachig",
+      "body": [
+        "1. Lépj ki a Hostel Brikette-ből, és menj le a fő lépcsősoron a Viale Pasiteáig.",
+        "2. Kelj át az úton, és menj tovább egyenesen a 31-es házszámmal jelölt lépcsőn.",
+        "3. Kövesd a lépcsőket, amíg úttal találkoznak, majd fordulj jobbra, és maradj a lejtős kanyaron.",
+        "4. Haladj el a mindkét oldalon lévő garázsok mellett, és tartsd a jobb oldalt, amikor meglátod a Hotel Posa Posa tábláját.",
+        "5. Közvetlenül a hotel után érsz egy útkanyarhoz; itt fordulj jobbra a Fornillo felé vezető, csak gyalogos ösvényre.",
+        "6. Maradj a burkolt sétányon egészen a partig; az árnyas szakasz a Pupetto strandklub mellett ér véget."
+      ]
+    },
+    {
+      "id": "return-options",
+      "title": "Visszaút felfelé",
+      "body": [
+        "Fürdés után sétálj tovább a vízparton a Spiaggia Grande felé, és szállj fel a narancssárga belső buszra Chiesa Nuova irányába, ha kihagynád a kaptatót.",
+        "A buszjegyeket a Chiesa Nuova megálló melletti trafikban szerezd be indulás előtt, vagy kérd meg a recepciót, hogy ellenőrizze a készletet."
+      ]
+    }
+  ],
+  "tips": [
+    "A visszaúton ülj fel az Interno Positano buszra, így elkerülöd a meredek emelkedőt.",
+    "Vigyél vizet a lépcsős szakaszra – a partig nincs bolt az út mentén.",
+    "Tervezz extra part menti időt a %LINK:fornilloBeachGuide|Fornillo strand útmutatóval% és a %LINK:positanoBeaches|positanói strandáttekintővel%.",
+    "Nézd meg, hogyan illeszkedik ez a séta a teljes utadba a Positano utazási áttekintőben."
+  ],
+  "faqsTitle": "Gyakori kérdések az útvonalról",
+  "faqs": [
+    {
+      "q": "Mennyi ideig tart a séta?",
+      "a": [
+        "A legtöbb vendég 15–25 perc alatt ér Fornillóba, tempótól és fotószünetektől függően. Ha korábban indulsz, hűvösebbek maradnak a lépcsők."
+      ]
+    },
+    {
+      "q": "Sok lépcsőre számíthatok?",
+      "a": [
+        "A rövidítés több lépcsősoron vezet le a hosteltől, mielőtt burkolt útra váltana. A visszaútban használd a buszt, ha nem szeretnél újra felmászni."
+      ]
+    }
+  ]
+}

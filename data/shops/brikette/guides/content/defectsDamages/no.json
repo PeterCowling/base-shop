@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Veiledning om defekter og skader for Positano Hostel",
+    "description": "Forstå hvordan du rapporterer romfeil, vår respons på alvorlige problemer, retningslinjer for skadedepositum, gjesteansvar og viktig informasjon om forebygging av veggedyr på Positanos eksklusive hostel."
+  },
+  "linkLabel": "Veiledning om defekter og skader for Positano Hostel",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Rapportering av defekter",
+      "body": [
+        "Hvis du legger merke til et problem eller en defekt på rommet ditt, vennligst informer oss umiddelbart. Din raske varsling hjelper oss med å raskt håndtere og løse problemet.",
+        "Den raskeste måten å rapportere på er personlig i resepsjonen. Når det er mulig, inkluder: hva som er galt, når du la merke til det, og et raskt bilde eller en kort video."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Vurdering av defekter",
+      "body": [
+        "Når du rapporterer en defekt, vil vi raskt vurdere problemet og prioritere responsen vår basert på hvor mye det påvirker komforten og oppholdet ditt."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "ISO 7010 W008 generelt advarselsskilt (gul trekant med utropstegn)",
+          "caption": "Vi prioriterer sikkerhet først, deretter alt som påvirker søvn og komfort."
+        }
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Respons på alvorlige defekter",
+      "body": [
+        "Hvis det er en alvorlig defekt som ikke kan repareres umiddelbart, vil vi tilby alternativ innkvartering. Hvis alternativet er billigere enn det bookede rommet ditt, refunderer vi deg prisforskjellen. Hvis du bestemmer deg for ikke å akseptere vårt alternativ, kan du be om en forholdsmessig refusjon for de gjenværende nettene av oppholdet ditt."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Ikke-rapporterte defekter",
+      "body": [
+        "Hvis vi oppdager et problem på rommet ditt som du ikke har rapportert innen en rimelig tidsramme, vil vi vurdere eventuelle skader som følge av dette, og vår skadepolicy kan bli anvendt."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Skadepolicy",
+      "body": [
+        "For din og vår sikkerhet kan vi forhåndsgodkjenne kredittkortet ditt eller be om et kontantdepositum ved innsjekking for å dekke potensielle skader eller tap. Hvis du ikke kan gi et depositum eller forhåndsgodkjenning, kan reservasjonen din bli kansellert. Depositum er fullt refunderbart ved utsjekking, minus gebyrer for eventuelle skader, tap, arbeidskraft eller administrative utgifter. Hvis disse gebyrene overstiger depositumet ditt, er du ansvarlig for de ekstra kostnadene. Timepriser for reparasjoner eller rengjøring faktureres per time: Direktør (€50/time), Leder (€35/time) og Personale (€25/time)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Policy om veggedyr",
+      "body": [
+        "Vi håndterer proaktivt og adresserer raskt eventuelle problemer med veggedyr. Men hvis veggedyr blir funnet på rommet ditt under oppholdet, kan du bli holdt ansvarlig for tilknyttede kostnader, som tapt bookingingtekt, rengjøringsutgifter og skadedyrkontroll. Vennligst rapporter umiddelbart eventuelle tegn på veggedyr til personalet vårt."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Forebygging av veggedyr",
+      "body": [
+        "For å hjelpe til med å forhindre problemer med veggedyr, vennligst:",
+        "* Informer oss ved innsjekking hvis du nylig har oppholdt deg et sted med kjente veggedyrproblemer.\n* Grundig desinfiser eiendelene dine.\n* Nøye inspiser bagasjen og klærne dine for veggedyr før du går inn på rommet ditt."
+      ]
+    }
+  ]
+}

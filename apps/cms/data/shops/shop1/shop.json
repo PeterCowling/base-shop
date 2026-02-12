@@ -41,5 +41,6 @@
     "trackingDashboard": false,
     "premierDelivery": false
   },
-  "componentVersions": {}
+  "componentVersions": {},
+  "tier": "basic"
 }

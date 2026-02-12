@@ -2,15 +2,16 @@
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { usePathname } from "next/navigation";
-import { Facebook, Instagram } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 
 import { Cluster } from "@/components/ui/flex";
 import hotel, { CONTACT_EMAIL } from "@/config/hotel";
+import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { guideHref, guideSlug } from "@/routes.guides-helpers";
+import { Facebook, Instagram } from "@/icons";
+import { guideHref } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 import FooterLegalRow from "./FooterLegalRow";
@@ -19,10 +20,11 @@ import FooterNav from "./FooterNav";
 import type { FooterGroup, FooterLink } from "./footerTypes";
 
 const CURRENT_YEAR = new Date().getFullYear();
-const FOOTER_PREFETCH = true;
+const FOOTER_PREFETCH = false;
 const SAFE_BOTTOM_PADDING_STYLE = {
   paddingBottom: "calc(var(--safe-bottom) + var(--space-3))",
 } as const;
+// eslint-disable-next-line max-lines-per-function -- BRIK-DS-001: large component pending refactor
 const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
@@ -122,26 +124,42 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
           label: tFooter("assistance", { lng: lang }) as string,
           href: `/${lang}/${getSlug("assistance", lang)}`,
         },
-        {
-          key: "faq",
-          label: tFooter("faq", { lng: lang }) as string,
-          href: guideHref(lang, "travelFaqsAmalfi"),
-        },
-        {
-          key: "checkinCheckout",
-          label: tFooter("checkinCheckout", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "checkinCheckout")}`,
-        },
-        {
-          key: "houseRules",
-          label: tFooter("houseRules", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "rules")}`,
-        },
-        {
-          key: "cancellationPolicy",
-          label: tFooter("cancellationPolicy", { lng: lang }) as string,
-          href: `/${lang}/${getSlug("assistance", lang)}/${guideSlug(lang, "changingCancelling")}`,
-        },
+        ...(isGuideLive("travelFaqsAmalfi")
+          ? [
+              {
+                key: "faq",
+                label: tFooter("faq", { lng: lang }) as string,
+                href: guideHref(lang, "travelFaqsAmalfi"),
+              },
+            ]
+          : []),
+        ...(isGuideLive("checkinCheckout")
+          ? [
+              {
+                key: "checkinCheckout",
+                label: tFooter("checkinCheckout", { lng: lang }) as string,
+                href: guideHref(lang, "checkinCheckout"),
+              },
+            ]
+          : []),
+        ...(isGuideLive("rules")
+          ? [
+              {
+                key: "houseRules",
+                label: tFooter("houseRules", { lng: lang }) as string,
+                href: guideHref(lang, "rules"),
+              },
+            ]
+          : []),
+        ...(isGuideLive("changingCancelling")
+          ? [
+              {
+                key: "cancellationPolicy",
+                label: tFooter("cancellationPolicy", { lng: lang }) as string,
+                href: guideHref(lang, "changingCancelling"),
+              },
+            ]
+          : []),
       ],
     },
     {
@@ -246,6 +264,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
             navGroups={navGroups}
             isActiveLink={isActiveLink}
             prefetch={FOOTER_PREFETCH}
+            lang={lang}
           />
         </Section>
       </div>

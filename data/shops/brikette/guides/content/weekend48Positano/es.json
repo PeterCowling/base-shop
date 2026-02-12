@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Fin de semana de 48 horas en Positano",
+    "description": "Plan práctico de dos días: playas, vistas, opción del Sentiero degli Dei y comida asequible."
+  },
+  "linkLabel": "Fin de semana de 48 horas en Positano",
+  "intro": [
+    "48 horas en Positano son intensas pero posibles si viajas ligero, reservas lo imprescindible y eliges un gran momento por día.",
+    "Este plan combina playas, vistas y una excursión estrella sin dejar de lado descansos breves para disfrutar la atmósfera."
+  ],
+  "sections": [
+    {
+      "id": "day1",
+      "title": "Día 1: llegada y primeras vistas",
+      "body": [
+        "Llega temprano, deja el equipaje (usa consigna si hace falta) y almuerza rápido con panino o pizza al taglio en Via Pasitea.",
+        "Dedica la tarde a Spiaggia Grande y al paseo hasta Fornillo; si quieres lido reserva hamaca con antelación o quédate en la zona libre."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Atardecer y noche",
+      "body": [
+        "Sube a Chiesa Nuova o a Via Positanesi d’America para el atardecer; lleva una capa ligera en media temporada.",
+        "Cena en trattoria reservada o apuesta por street food y terraza del hostel; termina con un paseo iluminado por el centro."
+      ]
+    },
+    {
+      "id": "day2",
+      "title": "Día 2: excursión o plan alternativo",
+      "body": [
+        "Opción senderismo: primer bus a Nocelle para recorrer el Sentiero degli Dei y regresar a mediodía con navetta o escaleras.",
+        "Opción mar: ferry a Amalfi + Ravello o mini crucero compartido de 2 horas; deja 60 minutos de margen antes de tu salida final."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Día 2: últimas horas y salida",
+      "body": [
+        "Haz compras de última hora en sandaleros artesanales o talleres de cerámica antes del almuerzo.",
+        "Recoge el equipaje con 90 minutos de margen para afrontar escaleras y colas en el muelle o la parada de bus."
+      ]
+    }
+  ],
+  "tips": [
+    "Compra billetes de bus o ferry la tarde anterior para evitar colas matutinas.",
+    "Programa pausas cortas para simplemente admirar las vistas; dos días rinden más si evitas correr todo el tiempo."
+  ],
+  "faqs": [
+    {
+      "q": "¿48 horas son suficientes?",
+      "a": [
+        "Sí, siempre que limites las excursiones a un solo gran plan y tengas listos los transportes clave con antelación."
+      ]
+    },
+    {
+      "q": "¿Qué hago con el equipaje al llegar o al salir?",
+      "a": [
+        "Viaja con equipaje de cabina y, si necesitas manos libres, reserva porter en el muelle o usa depósitos en Via dei Mulini; retira las maletas 30 minutos antes de partir."
+      ]
+    },
+    {
+      "q": "¿Hace falta reservar restaurante?",
+      "a": [
+        "Para terrazas populares del sábado por la noche sí; para opciones informales apuesta por comida para llevar y picnic con vistas."
+      ]
+    }
+  ]
+}

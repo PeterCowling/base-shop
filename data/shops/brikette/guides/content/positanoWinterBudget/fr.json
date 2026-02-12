@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Positano en hiver avec un budget serré",
+    "description": "Conditions hivernales, activités ouvertes, transports et idées pour économiser hors saison."
+  },
+  "linkLabel": "Positano en hiver avec un budget serré",
+  "intro": [
+    "L'hiver à Positano est calme, abordable et plus frais. Utilisez ce guide pour savoir ce qui reste ouvert, vous déplacer quand les ferries s'interrompent et planifier des moments douillets sans dépasser votre budget.",
+    "Prévoyez des couches (doudoune légère et veste imperméable) ainsi que des chaussures à bonne adhérence : les escaliers deviennent glissants après la pluie."
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "title": "Ce qui reste ouvert",
+      "body": [
+        "Les épiceries essentielles, les cafés autour de la Piazza dei Mulini et le bar de l'auberge fonctionnent toute l'année ; attendez-vous à des horaires réduits mais à un service fiable.",
+        "Les ferries côtiers s'arrêtent pour la plupart de novembre à mars, mais les bus SITA et quelques navettes privées continuent de rouler selon des horaires allégés."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Se déplacer en hiver",
+      "body": [
+        "Prenez un train régional vers Sorrente ou Salerne puis le bus SITA ; ajoutez 20 à 30 minutes pour les ralentissements par temps pluvieux.",
+        "Gardez du liquide pour les billets de bus (2 à 3 € par trajet) et enregistrez l'application UnicoCampania pour suivre les changements de dernière minute en cas de tempête."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Journées à petit budget",
+      "body": [
+        "Programmez vos visites de musées à Naples ou Salerne lorsque la météo s'annonce humide ; l'aller-retour en train coûte environ 10 € (environ 11 $ US).",
+        "Randonnez sur le Sentier des Dieux depuis Nocelle quand le ciel se dégage : air vif, belvédères déserts et aucune chaleur estivale."
+      ]
+    }
+  ],
+  "tips": [
+    "Choisissez un hébergement avec chauffage et petit-déjeuner inclus pour éviter des dépenses supplémentaires dans les cafés les matins frais.",
+    "Le soleil se couche plus tôt (vers 16 h 45 en décembre) : prévoyez votre moment terrasse en fin d'après-midi et emportez une couche chaude."
+  ],
+  "faqs": [
+    {
+      "q": "Les restaurants sont-ils ouverts en hiver ?",
+      "a": [
+        "Oui, mais le choix se réduit. Les trattorias familiales et les pizzerias restent ouvertes le week-end ; la gastronomie rouvre souvent autour de Pâques.",
+        "Appelez ou envoyez un message sur WhatsApp pour confirmer les horaires avant de descendre la colline."
+      ]
+    },
+    {
+      "q": "Quelle température fait-il ?",
+      "a": [
+        "Les maximales atteignent 12 à 14 °C (54 à 57 °F). La nuit, elles descendent vers 8 °C (46 °F) : prévoyez une couche chaude et des chaussettes pour les sols carrelés."
+      ]
+    }
+  ]
+}

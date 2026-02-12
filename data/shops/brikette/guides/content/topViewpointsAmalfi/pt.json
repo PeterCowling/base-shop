@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Top Viewpoints on the Amalfi Coast",
+    "description": "Onde desfrutar de vistas épicas da costa, com notas de acesso."
+  },
+  "linkLabel": "Melhores mirantes na Costa Amalfitana",
+  "intro": [
+    "Descubra os melhores miradouros da Costa Amalfitana para nascer do sol, golden hour e fotos noturnas."
+  ],
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Clássicos de Positano",
+      "body": [
+        "A Via Cristoforo Colombo e o terraço junto ao Hotel Marincanto oferecem camadas do vilarejo — fotografe ao amanhecer para luz suave.",
+        "O terraço La Tagliata, em Nocelle, encara as ilhas Li Galli; reserve jantar ao pôr do sol ou passe depois de caminhar o Caminho dos Deuses."
+      ]
+    },
+    {
+      "id": "ravello",
+      "title": "Terraços de Ravello",
+      "body": [
+        "O palco da Villa Rufolo domina a costa; a luz da manhã destaca as cúpulas.",
+        "O Terraço do Infinito, na Villa Cimbrone, enquadra a costa com estátuas de mármore — tripés são permitidos, mas mantenha as pernas juntas para não bloquear outros visitantes."
+      ]
+    },
+    {
+      "id": "road",
+      "title": "Panoramas à beira da estrada",
+      "body": [
+        " Pare no Belvedere di Laurito entre Positano e Praiano para fotos amplas; permaneça atrás do rail para segurança.",
+        "A SS163 entre Amalfi e Minori possui mirantes sinalizados — utilize autocarros para saltar entre eles se preferir não conduzir."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve tripé leve e filtro ND para capturar trilhas de luz ao entardecer.",
+    "Vigia o trânsito ao fotografar na estrada — use roupa chamativa e nunca pise na faixa."
+  ],
+  "faqs": [
+    {
+      "q": "Posso voar drone?",
+      "a": [
+        "Voos de drone são altamente restringidos na costa. Consulte regras da ENAC e legislação local; multas são elevadas para voos não autorizados."
+      ]
+    },
+    {
+      "q": "Qual horário é melhor para o pôr do sol?",
+      "a": [
+        "A golden hour começa cerca de uma hora antes do pôr do sol (por volta das 19:00 em julho). Chegue 30 minutos antes para montar e garantir lugar."
+      ]
+    }
+  ]
+}

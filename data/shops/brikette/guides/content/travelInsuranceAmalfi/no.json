@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Reiseforsikring for Amalfikysten: dette bør du vite",
+    "description": "Grunnleggende dekning og dokumentasjon som gir en smidig tur."
+  },
+  "linkLabel": "Reiseforsikring for Amalfikysten",
+  "intro": [
+    "Grunnleggende reiseforsikring for Amalfikysten: helse, kanselleringer, elektronikk og aktivitetsdekning."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Dekning – det viktigste",
+      "body": [
+        "Helse/ulykke, kanselleringer/forsinkelser og elektronikk; vurder fotturdekkning for Gudestien."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Erstatning og dokumentasjon",
+      "body": [
+        "Ta vare på kvitteringer, politirapporter for tyveri og bekreftelser på forsinkelser/kanselleringer; sjekk frister og original-/kopikrav."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Trenger jeg egen dekning for ferger?",
+      "a": [
+        "Vanligvis dekket under generell transport; værrelaterte forsinkelser/kanselleringer varierer avhengig av policy - sjekk forholdene."
+      ]
+    }
+  ]
+}

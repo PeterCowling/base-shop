@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Färjetidtabeller för Positano",
+    "description": "När färjorna går, var du ser realtidsscheman, säsonger, rederier och praktiska boardingtips."
+  },
+  "linkLabel": "Färjetidtabeller för Positano",
+  "intro": [
+    "Färjetidtabeller till och från Positano: var du kollar liveavgångar, hur säsongerna påverkar trafiken och hur du har reservplaner redo."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "När färjorna går",
+      "body": [
+        "Huvudsäsongen pågår ungefär april–oktober med som mest avgångar från mitten av maj till september; vinterturer är ovanliga och väderberoende.",
+        "Under skuldersäsong kapas ofta första och sista avgången – bekräfta tidtabellen kvällen innan du reser."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Kolla liveuppdateringar",
+      "body": [
+        "Använd rederiernas webbplatser och appar (Travelmar, NLG, Alilauro, Positano Jet) samt skärmarna i hamnen för förseningar och gateändringar.",
+        "Ta skärmdumpar av tidtabeller och aktivera e-post/SMS-varningar så att vädermeddelanden når dig även utan italiensk data."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Biljetter och marginaler",
+      "body": [
+        "Under högsäsong kan avgångar sälja slut flera timmar i förväg – köp online eller dagen innan och var på plats 30 minuter före avfärd med legitimation och bagage redo för märkning.",
+        "Lägg in marginal före dagens sista anslutning så att du kan växla till buss eller taxi om havet blir grovt."
+      ]
+    }
+  ],
+  "tips": [
+    "Följ sjöväderprognoser – vind över 20 knop eller svall över 1,5 meter leder ofta till inställda turer.",
+    "Om du behöver byta hamn, kolla lokala busstider i förväg så att bytet blir stressfritt."
+  ],
+  "faqs": [
+    {
+      "q": "När publiceras sommartidtabellerna?",
+      "a": [
+        "De flesta operatörer släpper högsäsongens scheman mellan februari och mars; höstuppdateringar brukar komma i slutet av augusti."
+      ]
+    },
+    {
+      "q": "Hur bekräftar jag en inställd avgång samma dag?",
+      "a": [
+        "Ladda om rederiets webbplats eller sociala kanaler och leta efter uppsatta meddelanden vid kajen; personalen ropar också ut ändringar i högtalarna.",
+        "Ha SITA:s busstidtabell eller ett taxinummer till hands om du behöver plan B direkt."
+      ]
+    },
+    {
+      "q": "Kan jag resa med stora väskor?",
+      "a": [
+        "Ja, men skrymmande bagage kan ge en liten avgift; kom tidigt så att besättningen kan märka och stuva dem säkert medan du behåller värdesakerna."
+      ]
+    }
+  ]
+}

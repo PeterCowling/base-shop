@@ -95,6 +95,7 @@ test("campaign create writes campaign file", async () => {
   });
   expect(typeof json[0].sendAt).toBe("string");
   expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/^Created campaign/));
+  logSpy.mockRestore();
 });
 
 test("campaign create with segment and no recipients", async () => {
@@ -129,6 +130,7 @@ test("campaign create with segment and no recipients", async () => {
   });
   expect(typeof json[0].sendAt).toBe("string");
   expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/^Created campaign/));
+  logSpy.mockRestore();
 });
 
 test("campaign create rejects when writing fails", async () => {
@@ -178,6 +180,7 @@ test("campaign list outputs campaigns", async () => {
   expect(logSpy).toHaveBeenCalledTimes(1);
   const output = logSpy.mock.calls[0][0];
   expect(JSON.parse(output)).toEqual(campaigns);
+  logSpy.mockRestore();
 });
 
 test("campaign list outputs [] when file missing", async () => {
@@ -193,6 +196,7 @@ test("campaign list outputs [] when file missing", async () => {
     "utf8",
   );
   expect(logSpy).toHaveBeenCalledWith("[]");
+  logSpy.mockRestore();
 });
 
 test("campaign send invokes scheduler", async () => {
@@ -201,6 +205,7 @@ test("campaign send invokes scheduler", async () => {
   await run(["node", "email", "campaign", "send"]);
   expect(sendDueCampaigns).toHaveBeenCalled();
   expect(logSpy).toHaveBeenCalledWith("Sent due campaigns");
+  logSpy.mockRestore();
 });
 
 test("campaign send propagates scheduler errors", async () => {

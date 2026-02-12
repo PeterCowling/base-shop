@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Etiqueta local: o que fazer e o que não fazer (exemplos Itália, Amalfi)",
+    "description": "Comportamento educado em restaurantes, igrejas e ruas movimentadas."
+  },
+  "linkLabel": "Etiqueta local: o que fazer e o que evitar (Itália, exemplos na Costa Amalfitana)",
+  "intro": [
+    "Etiqueta prática para refeições, visitas a igrejas e partilha de ruelas estreitas em Positano e na Costa Amalfitana."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "À mesa",
+      "body": [
+        "Reserve em horários de pico, tenha paciência entre pratos, peça a conta quando estiver pronto e deixe gorjeta modesta por serviço excecional."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Igrejas e vestuário",
+      "body": [
+        "Cubra os ombros dentro das igrejas e evite passar em lojas em traje de banho."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Ruelas partilhadas",
+      "body": [
+        "Mantenha-se à direita em escadarias estreitas, dê passagem e faça a sua vez rapidamente em spots fotográficos disputados."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Preciso de deixar gorjeta?",
+      "a": [
+        "É opcional; deixe 1–2 € por serviço excecional ou arredonde a conta. O coperto já cobre pão e serviço."
+      ]
+    },
+    {
+      "q": "O que vestir dentro das igrejas?",
+      "a": [
+        "Cubra ombros e joelhos, retire chapéus e fale baixo. Traga um lenço leve para cobrir tops sem mangas."
+      ]
+    }
+  ]
+}

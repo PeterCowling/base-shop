@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { CalendarCheck, CalendarClock, CalendarX } from "lucide-react";
 
 import { Grid } from "@acme/design-system/primitives";
-import { MetricsCard } from "@acme/ui/operations";
+import { OwnerKpiTile, StaffSignalBadgeGroup } from "@acme/ui";
 
 import { useAuth } from "../../context/AuthContext";
 import useAllFinancialTransactionsData from "../../hooks/data/useAllFinancialTransactionsData";
@@ -56,7 +56,7 @@ export default function ReceptionDashboard() {
     <div className="space-y-6">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-darkAccentGreen">
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-accent-hospitality">
             Reception Dashboard
           </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -85,20 +85,20 @@ export default function ReceptionDashboard() {
           Arrivals and Departures
         </h2>
         <Grid cols={1} gap={4} className="md:grid-cols-3">
-          <MetricsCard
+          <OwnerKpiTile
             label="Arrivals Today"
             value={summaryLoading ? "-" : arrivalsToday.toString()}
             icon={CalendarCheck}
             description={summaryLoading ? "Loading" : "Check-ins"}
           />
-          <MetricsCard
+          <OwnerKpiTile
             label="Departures Today"
             value={summaryLoading ? "-" : departuresToday.toString()}
             icon={CalendarX}
             variant={departuresToday > 0 ? "warning" : "default"}
             description={summaryLoading ? "Loading" : "Check-outs"}
           />
-          <MetricsCard
+          <OwnerKpiTile
             label="Departures Tomorrow"
             value={summaryLoading ? "-" : departuresTomorrow.toString()}
             icon={CalendarClock}
@@ -106,6 +106,14 @@ export default function ReceptionDashboard() {
             description={summaryLoading ? "Loading" : "Scheduled"}
           />
         </Grid>
+        <StaffSignalBadgeGroup
+          title="Desk readiness signals"
+          signals={[
+            { id: "arrivals-feed", label: "Arrivals feed", ready: !summaryLoading && !summaryError },
+            { id: "departures-feed", label: "Departures feed", ready: !summaryLoading && !summaryError },
+            { id: "transactions-feed", label: "Transactions feed", ready: !transactionsLoading && !transactionsError },
+          ]}
+        />
       </section>
 
       <DashboardQuickActions />

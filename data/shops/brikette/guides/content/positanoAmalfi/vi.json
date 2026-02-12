@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Các lựa chọn xe buýt và phà giữa Positano và Amalfi, kèm thời gian và mẹo."
+  },
+  "linkLabel": "Positano to Amalfi: how to go",
+  "intro": [
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (year‑round)",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (seasonal)",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How long is the trip?",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "Bản dịch đang được chuẩn bị.",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA bus to Amalfi",
+        "text": "Bản dịch đang được chuẩn bị."
+      },
+      {
+        "name": "Alternative: ferry (summer)",
+        "text": "Bản dịch đang được chuẩn bị."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Bản dịch đang được chuẩn bị."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA bus (year-round)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA bus (year-round)",
+        "body": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (seasonal)",
+        "body": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Which is faster?",
+        "a": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      }
+    ]
+  }
+}

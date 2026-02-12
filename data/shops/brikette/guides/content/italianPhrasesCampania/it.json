@@ -1,0 +1,40 @@
+{
+  "seo": {
+    "title": "Frasi italiane per viaggiatori in Campania",
+    "description": "Espressioni utili per bus, traghetti, bar e ristoranti — con pronuncia e contesto così da farti capire ovunque."
+  },
+  "linkLabel": "Frasi italiane per viaggiatori in Campania",
+  "intro": [
+    "Italiano utile (e un tocco di dialetto locale) per autobus, traghetti, bar e richieste gentili in Campania."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Basi dei trasporti",
+      "body": [
+        "\\\\\"Un biglietto per Positano, per favore\\\\\" oppure \\\\\"Dove si convalida?\\\\\" coprono la maggior parte delle richieste al banco.",
+        "Tieni pronti \\\\\"Scendo alla prossima\\\\\" e \\\\\"A che ora parte l'ultima corsa?\\\\\" per domande rapide."
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "Bar e ristoranti",
+      "body": [
+        "Ordina con \\\\\"Prendo un espresso al banco\\\\\" o \\\\\"Possiamo avere il conto, per favore?\\\\\" e aggiungi sempre un grazie.",
+        "Chiedi consigli (\\\\\"Cosa consiglia oggi?\\\\\") o verifica le esigenze alimentari: \\\\\"È possibile senza glutine?\\\\\"."
+      ]
+    },
+    {
+      "id": "emergency",
+      "title": "Emergenze e cortesia",
+      "body": [
+        "\\\\\"Ho bisogno di aiuto\\\\\" e \\\\\"Può chiamare un taxi?\\\\\" coprono le situazioni più urgenti.",
+        "Colore locale: \\\\\"Guagliò\\\\\" è un saluto informale amichevole, mentre \\\\\"Statt' bbuon\\\\\" è un arrivederci caloroso che potresti sentire in dialetto."
+      ]
+    }
+  ],
+  "tips": [
+    "Scarica un'app per frasari offline per una rapida riproduzione audio quando i dati mobili diminuiscono.",
+    "Un semplice \\\\\"Grazie mille\\\\\" e \\\\\"Buona giornata\\\\\" rende le interazioni più calorose anche nei periodi di punta."
+  ]
+}

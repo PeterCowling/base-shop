@@ -1,0 +1,177 @@
+{
+  "seo": {
+    "title": "Capri a Positano en ferry | Hostel Brikette",
+    "description": "Guía completa para huéspedes del hostel: billetes de ferry de Capri a Positano, horarios, operadores, consejos de llegada y la ruta más fácil al Hostel Brikette con equipaje."
+  },
+  "lastUpdated": "2026-01-31",
+  "intro": {
+    "title": "Capri a Positano – Ferry",
+    "body": "Esta guía cubre todo lo que necesitas saber sobre viajar de Capri a Positano en ferry, escrita específicamente para huéspedes del hostel con mochilas. Desde el hostel, hemos ayudado a cientos de huéspedes a planificar esta ruta: aquí te explicamos cómo navegar entre los operadores de ferry, comprar billetes en el puerto Marina Grande, llegar sin problemas al muelle Spiaggia Grande de Positano y encontrar el camino al Hostel Brikette sin perderte en las escaleras."
+  },
+  "callouts": {
+    "tip": "El mar agitado puede cancelar ferris con poco aviso. Si reservas un viaje posterior el mismo día, deja un margen de 3 horas o consulta la %LINK:positanoCapriFerry|ruta alternativa en autobús vía Sorrento%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resumen del viaje",
+      "body": "El ferry de Capri a Positano es una de las mejores rutas marítimas de la Costa Amalfitana. Muchas compañías operan hidroalas rápidos y barcos todo el día durante la temporada alta de abril a octubre. En invierno, el servicio es limitado. El viaje dura entre 20 y 40 minutos según el barco y el clima. Desde el hostel, les decimos a los huéspedes que esta ruta es perfecta para una excursión de un día a Capri. Es más rápida y divertida que el autobús vía Sorrento. Obtienes vistas fantásticas de la costa y llegas directamente a la playa de Positano.",
+      "list": [
+        "Temporada: Barcos diarios de abril a octubre, menos viajes en invierno",
+        "Primer ferry: Alrededor de las 09:45 desde el puerto Capri Marina Grande",
+        "Último ferry: Alrededor de las 19:00 (los horarios cambian según la compañía y la temporada)",
+        "Tiempo de viaje: 20-40 minutos en el agua",
+        "Precio: €22-€35 por persona para 2026",
+        "Clima: Los barcos se cancelan con mar agitado, así que revisa antes de ir",
+        "Mejores asientos: Lado derecho del barco para vistas de Positano al llegar",
+        "Consejo: Los barcos matutinos (antes de las 14:00) se cancelan menos que los de la tarde"
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "Compañías de ferry y billetes",
+      "body": "Seis compañías operan barcos de Capri a Positano: NLG, Positano Jet, Alicost, Alilauro Gruson, Capitan Morgan y Grassi Junior. Todas son buenas. NLG y Positano Jet tienen la mayoría de los viajes cada día. Tu billete funciona en cualquier compañía para la misma ruta. Simplemente compra a quien tenga el siguiente barco.",
+      "list": [
+        "Compra billetes en el puerto Marina Grande en Capri. Cada compañía tiene un puesto cerca de los muelles.",
+        "Llega 20-30 minutos antes para hacer fila para el embarque.",
+        "Si compraste online, canjea tu cupón en el puesto de billetes primero.",
+        "Temporada alta (julio-agosto): Reserva viajes matutinos con anticipación online. Se agotan rápido.",
+        "Los billetes son solo para peatones. Los ferris no llevan coches ni bicicletas.",
+        "En verano, compra billetes 1-2 días antes para conseguir tu hora preferida."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/05-capri-harbour.webp",
+          "alt": "Puerto de ferris Marina Grande en Capri con barcos y puestos de billetes",
+          "caption": "Puerto Marina Grande en Capri donde salen los ferris a Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Habour_of_Capri.JPG|JonathanHeu% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "capriPort",
+      "title": "En el puerto Marina Grande de Capri",
+      "body": "Todos los barcos a Positano salen de Marina Grande. Este es el puerto principal de Capri al nivel del mar. Si estás en el pueblo de Capri (la Piazzetta), toma el funicular hacia abajo. Funciona cada 15 minutos y tarda 5 minutos. También puedes bajar caminando en 20 minutos, pero es muy empinado. El puerto tiene muchos puestos de billetes, cafés y baños. Desde nuestro hostel, sabemos que el puerto se llena mucho de 11:00 a 17:00. Llega temprano a tu ferry si viajas por la tarde.",
+      "list": [
+        "Toma el funicular desde el pueblo de Capri por €2.30. O baja caminando en 20 minutos (camino empinado).",
+        "Los puestos de billetes bordean el paseo marítimo. Busca el letrero de tu compañía.",
+        "Si compraste online, canjea tu cupón en el puesto correcto.",
+        "Revisa tu billete para el número de muelle. Normalmente está escrito claramente.",
+        "Embarca 10-15 minutos antes. Los asientos son por orden de llegada.",
+        "No se necesita pasaporte para barcos dentro de Italia.",
+        "El puerto tiene consigna de equipaje si quieres explorar Capri sin maletas primero."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/01-marina-grande-capri.webp",
+          "alt": "Puerto Marina Grande en Capri con ferris y puestos de billetes a lo largo del paseo marítimo",
+          "caption": "Marina Grande es el puerto principal de Capri - todos los ferris a Positano salen desde aquí. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Marina_Grande_(Capri).jpg|Yair Haklai% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)."
+        }
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Llegada al muelle de ferris de Positano",
+      "body": "Tu ferry atraca en el muelle Spiaggia Grande, justo en la playa principal de Positano. El muelle es pequeño, solo una pasarela de madera, así que espera a que todos salgan antes de moverte con tus maletas. Los porteadores con chalecos brillantes reciben cada ferry y ofrecerán llevar el equipaje a los hoteles por €15-€25 según la distancia. Para Hostel Brikette, los porteadores pueden llevarte a Chiesa Nuova (la parada de autobús superior) pero cuesta mucho para la corta caminata. La mayoría de los huéspedes del hostel omiten esto y usan el autobús Interno en su lugar.",
+      "list": [
+        "Sale del muelle a Via del Brigantino (la carretera de la playa)",
+        "Los baños y cafés están a lo largo de la playa a tu izquierda",
+        "La %LINK:ferryDockToBrikette|parada del autobús Interno% está a 3 minutos caminando cuesta arriba desde el muelle",
+        "Si prefieres caminar todo el camino: Son 25 minutos cuesta arriba al hostel con escaleras. Fácil con una mochila ligera, difícil con una maleta grande."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/02-positano-from-sea.webp",
+          "alt": "Vista de la costa de Positano desde el ferry acercándose desde Capri",
+          "caption": "Acercándose a Positano en ferry desde Capri - el pueblo colorido desciende en cascada hacia el mar. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Sea.JPG|JeCCo% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)."
+        },
+        {
+          "src": "/img/guides/capri-positano-ferry/04-view-positano.webp",
+          "alt": "Vista panorámica de Positano desde el agua mostrando la playa Spiaggia Grande y el muelle",
+          "caption": "Playa Spiaggia Grande de Positano donde atracan los ferris desde Capri. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:View_of_Positano.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)."
+        }
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Del puerto al hostel en autobús Interno",
+      "body": "El autobús naranja Interno es la forma más fácil de subir al Hostel Brikette con equipaje. Circula en un circuito por Positano cada 20-30 minutos. La tarifa es de €1.30 (el cambio exacto está bien, pero los conductores suelen tener cambio para billetes pequeños). Desde el muelle, es una caminata corta hasta la parada más cercana en Piazza dei Mulini. Sube al autobús que va cuesta arriba (dirección: Chiesa Nuova) y viaja durante unos 8 minutos. El hostel está a 2 minutos a pie de la parada Chiesa Nuova Tabacchi.",
+      "list": [
+        "Camina cuesta arriba desde el muelle del ferry a Piazza dei Mulini (3 minutos, pendiente ligera)",
+        "Espera en el lado cuesta arriba de la plaza. El autobús dirá 'Chiesa Nuova' al frente.",
+        "Compra billetes en el tabacchi (estanco) en la plaza, o paga al conductor (€1.30)",
+        "Dile al conductor 'Chiesa Nuova Tabacchi' si no estás seguro de dónde bajarte",
+        "Guía de ruta completa: %LINK:ferryDockToBrikette|Muelle del ferry a Hostel Brikette con equipaje%"
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "Chiesa Nuova Tabacchi a Hostel Brikette",
+      "body": "La caminata desde la parada de autobús al hostel es fácil y toma unos 2 minutos. Desde la parada, verás la tienda Tabacchi (estanco) en la esquina. Ese es tu punto de referencia. El hostel está justo arriba por la calle en Via G. Marconi, con escaleras que llevan a la entrada.",
+      "list": [
+        "Baja del autobús en la parada Chiesa Nuova Tabacchi",
+        "Mira hacia la tienda Tabacchi, luego gira a la derecha hacia la carretera principal (Via G. Marconi)",
+        "Camina 100 metros (aproximadamente 1 minuto). Pasarás algunas tiendas y cafés.",
+        "Busca el letrero de Hostel Brikette a tu derecha",
+        "Sube las escaleras para llegar a la entrada principal y la recepción"
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "Si se cancelan los ferris",
+      "body": "Las cancelaciones de ferris ocurren más a menudo de lo que podrías pensar, especialmente por la tarde cuando se levantan los vientos. Los operadores suelen anunciar cancelaciones 30-60 minutos antes de la salida, pero a veces solo te enteras en el muelle. Si se cancela tu ferry, tienes dos opciones: espera el siguiente barco (si todavía funciona uno ese día) o toma la ruta terrestre más larga de regreso vía Sorrento. La ruta terrestre usa un ferry de Capri a Sorrento (estos funcionan en condiciones más adversas) seguido del autobús SITA por la carretera costera.",
+      "list": [
+        "Consulta con todos los operadores en Marina Grande. A veces una compañía sigue funcionando cuando otras cancelan.",
+        "Alternativa: Toma el ferry Capri-Sorrento (30 min), luego autobús SITA a Positano (50 min)",
+        "Tiempo total de ruta terrestre: Alrededor de 2,5 horas incluyendo esperas",
+        "Información ferry Sorrento: %LINK:positanoCapriFerry|Horarios de ferry%",
+        "Desde el hostel: Recomendamos reservar tu regreso de Capri a más tardar a las 17:00 para evitar cancelaciones nocturnas"
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Consejos para huéspedes del hostel",
+      "body": "Basado en comentarios de cientos de huéspedes que han hecho este viaje de Capri de regreso a Positano, esto es lo que funciona mejor:",
+      "list": [
+        "Reserva una salida matutina de Capri antes de las 14:00. Los mares de la tarde se vuelven más agitados y los ferris se cancelan más a menudo.",
+        "Lleva una chaqueta ligera. Los hidroalas tienen aire acondicionado fuerte y se sienten fríos después de un día caluroso en Capri.",
+        "Siéntate en el lado derecho del barco para las mejores vistas de las casas coloridas de Positano al llegar.",
+        "Si te mareas fácilmente, toma medicación 30 minutos antes de embarcar. La travesía puede ser agitada.",
+        "Guarda tu billete de ferry hasta que salgas completamente del muelle. El personal a veces revisa los billetes de nuevo en Positano.",
+        "No te preocupes por perder el último ferry. La ruta terrestre vía Sorrento funciona hasta tarde en la noche."
+      ]
+    },
+    {
+      "id": "dayTrip",
+      "title": "Combinación con una excursión de día a Capri",
+      "body": "La mayoría de los huéspedes del hostel visitan Capri como excursión de un día y regresan en ferry al final de la tarde. Este es un buen plan, pero necesita algo de estrategia de tiempo para evitar las multitudes y cancelaciones. Sal de Positano temprano (alrededor de las 09:00) en el ferry matutino a Capri, pasa 5-6 horas explorando la isla, luego toma un ferry de regreso alrededor de las 15:00-16:00. Esto te da tiempo para ver los principales sitios: Anacapri, Villa San Michele, teleférico Monte Solaro y la Piazzetta en el pueblo de Capri, sin prisas.",
+      "list": [
+        "Ferry matutino de Positano a Capri: Normalmente sale a las 09:00-10:00",
+        "En Capri: Toma el autobús desde el puerto Marina Grande hasta Anacapri (15 min de viaje)",
+        "Visita: Villa San Michele (€10 entrada), teleférico Monte Solaro (€10 ida, €14 ida y vuelta)",
+        "Almuerzo en Anacapri o pueblo de Capri (presupuesto €15-€25 por persona)",
+        "Explora: Jardines de Augusto, mirador Via Krupp, compras en el pueblo de Capri",
+        "Regresa a Marina Grande antes de las 15:30 para tu ferry de las 16:00 de regreso a Positano",
+        "Costo total de excursión de día: €50-€70 por persona incluyendo ferris, autobús, teleférico y almuerzo",
+        "Relacionado: %LINK:capriDayTrip|Guía completa de excursión de día a Capri desde Positano%"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Cuánto cuesta el ferry de Capri a Positano?",
+      "answer": "Los billetes de ferry cuestan entre €22-€35 por persona para un viaje de ida en 2026. Los precios varían ligeramente según el operador y la temporada: espera pagar más cerca de €30-€35 durante la temporada alta de julio y agosto. No hay descuentos por compra anticipada, pero reservar online te garantiza un lugar en días concurridos."
+    },
+    {
+      "question": "¿Puedo llevar equipaje en el ferry Capri-Positano?",
+      "answer": "Sí, puedes llevar equipaje sin cargo extra. Se permiten mochilas, maletas y bolsas grandes. Guárdalas en el área de equipaje designada cerca de la entrada o bajo tu asiento. La mayoría de los ferris tienen almacenamiento superior limitado, así que mantén los objetos de valor contigo. Según la experiencia del hostel, una mochila llena cabe cómodamente bajo los asientos en todos los operadores."
+    },
+    {
+      "question": "¿Qué pasa si se cancela mi ferry desde Capri?",
+      "answer": "Las cancelaciones de ferris son comunes en clima adverso por la tarde. Si se cancela, consulta con todos los operadores en Marina Grande: a veces uno sigue funcionando. De lo contrario, toma el ferry Capri-Sorrento (funciona en condiciones más adversas) y luego el autobús SITA de Sorrento a Positano. Viaje total: alrededor de 2,5 horas. Tu billete normalmente puede reembolsarse o usarse en la siguiente salida disponible."
+    },
+    {
+      "question": "¿Necesito reservar el ferry de Capri a Positano con anticipación?",
+      "answer": "Depende de la temporada. En julio y agosto, las salidas matutinas y de primera hora de la tarde se agotan rápido: reserva online con 1-2 días de anticipación. En temporada media (abril-junio, septiembre-octubre), normalmente puedes comprar billetes en el puerto 30 minutos antes de la salida. Desde el hostel, hemos visto a huéspedes perder su cruce preferido en temporada alta, así que la reserva anticipada vale la pena si tienes un horario ajustado."
+    }
+  ]
+}

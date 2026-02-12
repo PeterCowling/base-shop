@@ -1,6 +1,7 @@
 /** @jest-environment node */
 import { jest } from "@jest/globals";
-import { withTempRepo, setupRentalData, seedShop } from "@acme/test-utils";
+
+import { seedShop,setupRentalData, withTempRepo } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -66,7 +67,12 @@ test("rental order is returned and refunded", async () => {
     // Seed an order directly via the repository to avoid depending on the rental
     // endpoint wiring. The return handler should look up this order and mark it
     // refunded when a refund is issued.
-    await repo.addOrder("cover-me-pretty", "sess", 50, "2030-01-02" as any);
+    await repo.addOrder({
+      shop: "cover-me-pretty",
+      sessionId: "sess",
+      deposit: 50,
+      returnDueDate: "2030-01-02",
+    });
     await returnPost(
       new Request("http://test", {
         method: "POST",

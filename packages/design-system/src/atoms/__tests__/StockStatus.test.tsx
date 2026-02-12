@@ -1,14 +1,16 @@
 import "../../../../../../test/resetNextMocks";
 
 import { render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { StockStatus } from "../StockStatus";
 
 describe("StockStatus", () => {
-  it("renders in-stock status", () => {
-    render(<StockStatus inStock labelInStock="In stock" />);
+  it("renders in-stock status", async () => {
+    const { container } = render(<StockStatus inStock labelInStock="In stock" />);
     const span = screen.getByText("In stock");
     expect(span).toHaveClass("text-success");
+
     expect(span).toHaveAttribute("data-token", "--color-success");
   });
 

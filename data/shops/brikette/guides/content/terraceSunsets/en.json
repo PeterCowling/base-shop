@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Terrace sunset in Positano",
+    "description": "A simple, budget-friendly sunset plan at Hostel Brikette: when to arrive and how to keep it stress-free."
+  },
+  "linkLabel": "Terrace sunset",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "For a classic sunset without an expensive long dinner, the hostel terrace is the easiest option."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "When to arrive",
+      "body": [
+        "In peak season, aim for 30–45 minutes before sunset to get a good spot.",
+        "Build buffer time if you’re coming back from the beach or a day trip."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "Sunset light over Positano from the terrace"
+        }
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budget plan",
+      "body": [
+        "One drink + the view, then simple food: %LINK:cheapEats|cheap eats%.",
+        "Full budget day: %LINK:positanoBudget|Positano on a budget%."
+      ]
+    }
+  ],
+  "fallback": "Arrive a bit early, have one drink, then keep dinner simple."
+}

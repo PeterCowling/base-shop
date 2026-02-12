@@ -1,0 +1,201 @@
+{
+  "seo": {
+    "title": "Từ Positano đến Capri bằng Phà | Hostel Brikette",
+    "description": "Đi bộ từ Hostel Brikette đến cảng Positano, mua vé phà và đi thuyền đến Capri. Hướng dẫn từng bước với thời gian, chi phí và mẹo lên tàu."
+  },
+  "lastUpdated": "2025-02-04",
+  "intro": [
+    "Hướng dẫn này chỉ cho bạn cách đi bộ từ Hostel Brikette đến cảng Positano (15–20 phút đi xuống, chủ yếu là cầu thang), mua vé phà và lên phà đến Capri.",
+    "**Thời gian hành trình:** 30–60 phút bằng phà, tùy thuộc vào hãng và tàu. Đi bộ đến cảng: 15–20 phút.",
+    "**Chi phí:** Vé phà thường có giá €18–€25 một chiều (thay đổi theo hãng và mùa). Kiểm tra giá hiện tại khi đặt vé.",
+    "**Đặt vé:** Nên đặt trước ít nhất 24 giờ trong mùa cao điểm (tháng 5–9). Trong mùa thấp điểm, vé trong ngày thường có sẵn.",
+    "**Cảnh báo thời tiết:** Phà có thể bị hủy khi biển động mạnh với ít cảnh báo trước. Nếu bạn có chuyến đi tiếp vào cùng ngày, hãy dự phòng 3 giờ hoặc kiểm tra %LINK:positanoCapriFerry|tuyến xe buýt thay thế qua Sorrento%."
+  ],
+  "sections": [
+    {
+      "id": "journey-overview",
+      "title": "Lịch trình phà và các hãng",
+      "body": [
+        "Phà giữa Positano và Capri chạy thường xuyên nhất từ mùa xuân đến đầu mùa thu (tháng 4–10) và có thể giảm hoặc bị hủy vào mùa đông hoặc khi biển động. Nhiều hãng phục vụ tuyến này.",
+        "So sánh lịch trình và đặt vé:",
+        "• [Capri.net – Capri ↔ Positano](https://www.capri.net/en/t/capri/positano)",
+        "• [Positano.com (lịch trình tổng hợp)](https://www.positano.com/en/ferry-schedule)"
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Đi bộ từ Hostel Brikette đến cảng Positano",
+      "body": "Đi bộ mất 15–20 phút và gần như hoàn toàn xuống cầu thang. Làm theo các bước sau:",
+      "list": [
+        "Thoát khỏi hostel qua cửa chính.",
+        "Đi xuống cầu thang đến đường, rẽ trái và đi hơn 100 m (≈330 ft).",
+        "Tại ngã tư đầu tiên (điểm 1), rẽ phải ở Tabacchi (tòa nhà đầu tiên bên phải).",
+        "Tiếp tục đi xuống; tại khúc quanh đầu tiên (điểm 2), rời đường và đi thẳng lên cầu thang phía trước.",
+        "Ở cuối cầu thang, đến đường (điểm 3); băng qua và tiếp tục thẳng đến cầu thang tiếp theo.",
+        "Khi cầu thang đó kết thúc ở đường, băng qua, rẽ trái, đi ~10 m (≈30 ft) đến điểm 4.",
+        "Rẽ phải khỏi đường và đi theo cầu thang xuống.",
+        "Ở cuối, rẽ phải đến điểm 5, sau đó tiếp tục qua vòm bên phải.",
+        "Cảng (bến Spiaggia Grande) cách khoảng 50 m (≈160 ft) về phía trước bên phải bãi biển."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Bản đồ tổng quan về tuyến đường đi bộ từ Hostel Brikette đến cảng Positano",
+          "caption": "Bản đồ tổng quan: Hostel đến cảng Positano",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Điểm 1: ngã tư ở Tabacchi trên Via G. Marconi gần Hostel Brikette",
+          "caption": "Điểm 1: ngã tư Tabacchi (rẽ phải)",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Điểm 2: khúc quanh đầu tiên nơi bạn rời đường để lên cầu thang",
+          "caption": "Điểm 2: rời đường, lên cầu thang",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Điểm 3: cuối cầu thang ở đường trước khi băng qua",
+          "caption": "Điểm 3: cầu thang kết thúc ở đường",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Điểm 4: băng qua đường, rẽ trái ngắn, sau đó lên cầu thang",
+          "caption": "Điểm 4: băng qua đường, rẽ trái, cầu thang",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Điểm 5: lối đi qua vòm dẫn đến bãi biển và cảng",
+          "caption": "Điểm 5: vòm đến cảng",
+          "aspectRatio": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "tickets-and-boarding",
+      "title": "Mua vé phà và lên tàu",
+      "body": "Tại cảng Positano, mỗi hãng phà có quầy vé riêng bên cạnh bến.",
+      "list": [
+        "Bảng hiệu bên cạnh mỗi quầy hiển thị giờ khởi hành tiếp theo của hãng đó.",
+        "Mua vé trực tiếp từ quầy của hãng (chấp nhận tiền mặt hoặc thẻ).",
+        "Đến trước 20–30 phút để đổi voucher đã đặt trước và xếp hàng lên tàu.",
+        "Sau khi mua vé, đi đến cuối bến và đợi bắt đầu lên tàu (nhân viên sẽ thông báo khi lên tàu)."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Ảnh lối vào Spiaggia Grande của Positano và cảng du lịch",
+          "caption": "Lối vào Spiaggia Grande (cảng du lịch)",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Bản đồ chi tiết làm nổi bật phía bên phải Spiaggia Grande nơi có cảng",
+          "caption": "Bản đồ chi tiết: vị trí cảng trên Spiaggia Grande",
+          "aspectRatio": "4/3"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Quầy vé của các hãng phà tại cảng Positano với biển báo chuyến khởi hành tiếp theo",
+          "caption": "Quầy vé của các hãng phà",
+          "aspectRatio": "4/3"
+        }
+      ]
+    },
+    {
+      "id": "timing-and-weather",
+      "title": "Thời điểm đi tốt nhất và cân nhắc về thời tiết",
+      "body": [
+        "Lịch trình phà thay đổi đáng kể theo mùa. Tháng 4 đến tháng 10 có dịch vụ thường xuyên nhất, với các chuyến khởi hành mỗi giờ trong những tháng hè cao điểm (tháng 6–9). Phà sáng sớm (khoảng 09:00–10:00) phổ biến với khách du lịch trong ngày, trong khi các chuyến chiều (14:00–16:00) thường yên tĩnh hơn.",
+        "**Tác động thời tiết:** Tuyến Positano–Capri băng qua vùng nước mở và có thể động mạnh khi gió lên. Các chuyến mùa thu và mùa đông (tháng 10–3) bị ảnh hưởng nhiều nhất. Từ hostel, chúng tôi đã thấy các chuyến bị hủy chỉ với 90 phút cảnh báo khi điều kiện xấu đi.",
+        "**Điều kiện biển:** Nếu bạn dễ say sóng, uống thuốc 30–60 phút trước khi lên tàu. Chuyến đi thường êm vào sáng sớm và tối; biển giữa trưa có thể động hơn, đặc biệt vào mùa hè khi gió nhiệt chiều phát triển.",
+        "**Mẹo lập kế hoạch:** Nếu bạn đến Capri trong chuyến đi trong ngày từ Positano và có lịch trình chặt chẽ (chuyến bay, tàu tiếp theo, v.v.), đặt phà sáng đi và cố gắng quay về trước 16:00–17:00. Điều này cho bạn thời gian dự phòng nếu những chuyến phà cuối bị hủy."
+      ]
+    },
+    {
+      "id": "what-to-expect-onboard",
+      "title": "Những gì mong đợi trên phà",
+      "body": [
+        "Hầu hết các phà trên tuyến này là tàu khách nhanh (không phải phà chở xe lớn). Chỗ ngồi thường là ai đến trước ngồi trước; đến sớm để có chỗ ngồi cửa sổ hoặc khu vực có mái che nếu thời tiết không chắc chắn.",
+        "Hành trình mất 30–60 phút tùy thuộc vào hãng và tàu. Tàu cánh ngầm nhanh hơn hoàn thành chuyến đi trong khoảng 30–40 phút, trong khi phà thông thường có thể mất gần một giờ và có thêm điểm dừng.",
+        "**Tiện nghi trên tàu:** Tàu nhỏ hơn có tiện nghi hạn chế — thường là nhà vệ sinh và quầy giải khát nhỏ. Phà lớn hơn có thể có chỗ ngồi trong nhà, nhưng hầu hết hành khách thích boong ngoài trời để ngắm cảnh Bờ biển Amalfi và các đảo Li Galli.",
+        "**Cảnh quan:** Vào những ngày trong, bạn sẽ thấy toàn bộ bờ biển Positano, vịnh Praiano và vách đá ấn tượng khi tiếp cận Capri. Ngồi bên phải (mạn phải) khi khởi hành từ Positano để có cảnh bờ biển đẹp nhất."
+      ]
+    },
+    {
+      "id": "arrival-capri",
+      "title": "Khi đến Capri",
+      "body": [
+        "Xuống tàu tại cảng du lịch Capri (Marina Grande). Cảng là khu vực nhỏ gọn với quầy vé phà, bến taxi và ga cáp treo, tất cả trong vòng 100 mét.",
+        "**Đi lên thị trấn Capri:** Hầu hết du khách đi cáp treo (€2 một chiều, chạy mỗi 15 phút) để đến quảng trường chính của Capri (Piazzetta). Trong mùa cao điểm (tháng 6–9), hàng đợi cáp treo có thể dài 30–45 phút từ 10:00–14:00. Ngoài ra, taxi tính khoảng €15–20 cho cùng chuyến đi và xe buýt chạy thường xuyên với giá €2.",
+        "**Vé về:** Nếu bạn đi du lịch trong ngày, mua vé phà về ngay sau khi đến Capri (tại cảng hoặc trực tuyến). Các giờ về phổ biến (16:00–18:00) bán hết nhanh vào mùa hè, và bạn không muốn bị mắc kẹt tìm vé phút cuối.",
+        "**Hành lý:** Nếu bạn có túi, cảng Marina Grande có dịch vụ gửi hành lý trả phí (khoảng €5–8 mỗi món). Điều này hữu ích nếu bạn khám phá thị trấn Capri trước khi đi phà tối về Positano."
+      ]
+    },
+    {
+      "id": "return-journey",
+      "title": "Quay về Positano từ Capri",
+      "body": [
+        "Để quay về, kiểm tra lịch trình phà tại cảng Marina Grande hoặc hỏi nhân viên tại quầy vé của bạn. Phà chiều muộn (16:00–18:00) đông nhất; nếu có thể, đi chuyến sớm hơn hoặc muộn hơn để tránh đông đúc.",
+        "**Cảnh báo thời tiết:** Trước khi quay về, kiểm tra dự báo thời tiết và bất kỳ thông báo hủy chuyến nào tại cảng. Nếu biển chiều có vẻ động, cân nhắc quay về trên phà sớm hơn hoặc kéo dài chuyến thăm thêm một ngày (có nhà khách giá rẻ gần Marina Grande).",
+        "**Tuyến thay thế:** Nếu phà đến Positano đã đầy hoặc bị hủy, bạn có thể đi phà đến Sorrento rồi bắt %LINK:sorrentoPositanoBus|xe buýt SITA đến Positano% (tổng hành trình: khoảng 90–120 phút). Điều này mất nhiều thời gian hơn nhưng là lựa chọn dự phòng đáng tin cậy.",
+        "**Đi bộ về hostel:** Sau khi xuống tàu ở Positano, đi bộ về Hostel Brikette dốc (15–20 phút, tất cả lên cầu thang). Nếu bạn mệt hoặc mang túi mua sắm, cân nhắc đi taxi từ cảng (khoảng €10–15). Xem hướng dẫn %LINK:ferryDockToBrikette|Từ bến phà đến Hostel Brikette% của chúng tôi cho tuyến đường đi bộ lên."
+      ]
+    },
+    {
+      "id": "practical-tips",
+      "title": "Mẹo thực tế cho chuyến đi phà",
+      "body": [
+        "**Chống nắng:** Boong phà rất nóng vào mùa hè (tháng 6–8). Mang kem chống nắng, mũ và nước. Chỗ ngồi có mái che hạn chế, vì vậy nếu bạn dễ cháy nắng, lên tàu sớm để có chỗ ngồi bóng mát.",
+        "**Mang gì:** Giữ điện thoại đầy pin để chụp ảnh (cảnh bờ biển ngoạn mục). Mang áo khoác nhẹ ngay cả vào mùa hè — gió biển có thể mát, đặc biệt trên tàu nhanh hơn. Nếu bạn dễ say sóng, mang thuốc và tránh ngồi ở cuối tàu nơi chuyển động mạnh nhất.",
+        "**Tiền mặt và thẻ:** Hầu hết các hãng phà chấp nhận thanh toán thẻ tại quầy vé, nhưng khôn ngoan khi mang €50–100 tiền mặt dự phòng. Capri đắt hơn Positano; dự kiến trả €8–12 cho bữa trưa đơn giản và €4–6 cho cà phê ở Piazzetta.",
+        "**Chụp ảnh:** Để có ảnh đẹp nhất, ngồi bên phải (mạn phải) khi rời Positano và bên trái (mạn trái) khi quay về. Ánh sáng sáng sớm và chiều muộn tốt nhất cho ảnh bờ biển.",
+        "**Cập nhật thông tin:** Kiểm tra bảng thông báo cảng Positano (bên cạnh quầy vé) để biết cập nhật thời tiết thời gian thực và hủy chuyến. Khi thời tiết không chắc chắn, nhân viên đăng cập nhật khoảng 08:00–09:00 và lại khoảng 13:00–14:00."
+      ]
+    },
+    {
+      "id": "luggage-tip",
+      "title": "Quay về với hành lý",
+      "body": "Nếu bạn đến Positano từ Capri với túi nặng, xem hướng dẫn %LINK:ferryDockToBrikette|Bến phà → Hostel Brikette, với hành lý% cho tuyến đường đi bộ tốt nhất lên (khác với tuyến xuống được hiển thị ở đây)."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "Tôi có thể mua vé phà trong ngày không?",
+      "answer": [
+        "Có, nhưng tình trạng có sẵn phụ thuộc vào mùa. Trong mùa cao điểm (tháng 5–9), phà thường bán hết, đặc biệt các chuyến sáng (09:00–11:00). Từ hostel, chúng tôi khuyên đặt trước ít nhất 24 giờ nếu bạn đi vào mùa hè.",
+        "Trong mùa thấp điểm (tháng 10–4), vé trong ngày thường có sẵn tại quầy cảng. Tuy nhiên, dịch vụ có thể giảm xuống 2–3 chuyến mỗi ngày, và hủy chuyến phổ biến hơn khi thời tiết xấu."
+      ]
+    },
+    {
+      "question": "Điều gì xảy ra nếu phà bị hủy?",
+      "answer": [
+        "Phà có thể bị hủy khi biển động mạnh, đôi khi chỉ cảnh báo 1–2 giờ trước. Chúng tôi thấy điều này xảy ra thường xuyên nhất vào mùa thu và mùa đông khi gió chiều mạnh lên.",
+        "Nếu phà của bạn bị hủy:",
+        "• Kiểm tra với nhân viên quầy vé cho chuyến khả dụng tiếp theo (thường 2–3 giờ sau, nếu điều kiện cải thiện).",
+        "• Cân nhắc %LINK:sorrentoPositanoBus|xe buýt đến Sorrento% rồi phà đến Capri (tuyến dài hơn nhưng xe buýt chạy trong mọi thời tiết).",
+        "• Nếu bạn có chuyến kết nối tiếp theo, dự phòng 3 giờ hoặc lập kế hoạch tuyến dự phòng trước."
+      ]
+    },
+    {
+      "question": "Đi bộ đến cảng có khó không?",
+      "answer": "Đi bộ từ hostel đến cảng Positano mất 15–20 phút xuống, chủ yếu trên cầu thang. Đi xuống dễ dàng, nhưng chuyến về lên dốc và có thể mệt, đặc biệt vào mùa hè nóng. Nếu quay về với túi mua sắm hoặc hành lý, chúng tôi đề nghị đi taxi từ cảng về hostel (khoảng €10–15, hoặc yêu cầu hostel sắp xếp đón)."
+    },
+    {
+      "question": "Tôi nên dành bao nhiêu thời gian ở Capri?",
+      "answer": [
+        "Cho chuyến đi trong ngày, dự kiến 5–7 giờ trên đảo. Điều này cho bạn thời gian đi cáp treo lên thị trấn Capri, khám phá Piazzetta, đi bộ đến Vườn Augustus và ăn trưa — với thời gian dự phòng cho hàng đợi và trễ phà.",
+        "Lịch trình chuyến đi trong ngày phổ biến: Khởi hành Positano khoảng 09:30–10:00, khám phá Capri 11:00–16:00, phà về khoảng 17:00–18:00. Điều này tránh đám đông đông nhất và cho bạn sự linh hoạt nếu phà về bị trễ.",
+        "Nếu bạn muốn thăm Hang xanh, Anacapri hoặc Villa Jovis, cân nhắc ở lại qua đêm tại Capri (khách sạn giá rẻ gần Marina Grande bắt đầu khoảng €80–100 trong mùa thấp điểm)."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Cần các tùy chọn dự phòng nếu biển động? Kiểm tra %LINK:travelHelp|hướng dẫn trợ giúp du lịch% cho các tuyến thay thế qua Sorrento."
+  }
+}

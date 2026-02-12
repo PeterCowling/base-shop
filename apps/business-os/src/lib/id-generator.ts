@@ -141,7 +141,10 @@ export async function validateBusinessId(
       (business: { id: string }) => business.id === businessId
     );
   } catch (err) {
-    console.error("Error validating business ID:", err);
+    const code = (err as NodeJS.ErrnoException).code;
+    if (code !== "ENOENT" && process.env.NODE_ENV !== "test") {
+      console.error("Error validating business ID:", err);
+    }
     return false;
   }
 }
@@ -166,7 +169,10 @@ export async function getValidBusinessIds(
 
     return catalog.businesses.map((business: { id: string }) => business.id);
   } catch (err) {
-    console.error("Error reading business catalog:", err);
+    const code = (err as NodeJS.ErrnoException).code;
+    if (code !== "ENOENT" && process.env.NODE_ENV !== "test") {
+      console.error("Error reading business catalog:", err);
+    }
     return [];
   }
 }

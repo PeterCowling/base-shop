@@ -12,27 +12,34 @@ export const DialogTrigger = DialogPrimitive.Trigger;
 
 export const DialogPortal = DialogPrimitive.Portal;
 
-export const DialogOverlay = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay
-    ref={ref}
-    className={cn(
-      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in motion-reduce:animate-none fixed inset-0 z-modal-backdrop backdrop-blur-sm bg-surface-2/60", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-      className
-    )}
-    {...props}
-  />
-));
-DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
+export const DialogOverlay = (
+  {
+    ref,
+    className,
+    ...props
+  }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> & {
+    ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Overlay>>;
+  }
+) => (<DialogPrimitive.Overlay
+  ref={ref}
+  className={cn(
+    "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in motion-reduce:animate-none fixed inset-0 z-modal-backdrop backdrop-blur-sm bg-surface-2/60", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    className
+  )}
+  {...props}
+/>);
 
-export const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
-  <DialogPortal>
-    <DialogOverlay />
+export const DialogContent = (
+  {
+    ref,
+    className,
+    children,
+    ...props
+  }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Content>>;
+  }
+) => (<DialogPortal>
+  <DialogOverlay />
   <DialogPrimitive.Content
       ref={ref}
       className={cn(
@@ -55,9 +62,7 @@ export const DialogContent = React.forwardRef<
         </DialogPrimitive.Close>
       </div>
     </DialogPrimitive.Content>
-  </DialogPortal>
-));
-DialogContent.displayName = DialogPrimitive.Content.displayName;
+</DialogPortal>);
 
 export const DialogHeader = ({
   className,
@@ -85,29 +90,33 @@ export const DialogFooter = ({
   />
 );
 
-export const DialogTitle = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Title
-    ref={ref}
-    className={cn("text-lg font-semibold", className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    {...props}
-  />
-));
-DialogTitle.displayName = DialogPrimitive.Title.displayName;
+export const DialogTitle = (
+  {
+    ref,
+    className,
+    ...props
+  }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title> & {
+    ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Title>>;
+  }
+) => (<DialogPrimitive.Title
+  ref={ref}
+  className={cn("text-lg font-semibold", className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  {...props}
+/>);
 
-export const DialogDescription = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
->(({ className, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn("text-muted-foreground text-sm", className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    {...props}
-  />
-));
-DialogDescription.displayName = DialogPrimitive.Description.displayName;
+export const DialogDescription = (
+  {
+    ref,
+    className,
+    ...props
+  }: React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description> & {
+    ref?: React.Ref<React.ElementRef<typeof DialogPrimitive.Description>>;
+  }
+) => (<DialogPrimitive.Description
+  ref={ref}
+  className={cn("text-muted-foreground text-sm", className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  {...props}
+/>);
 
 function DialogCloseLabel() {
   const t = useTranslations();

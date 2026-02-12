@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Hébergements économiques autour de Positano",
+    "description": "Options abordables dans les villes voisines, liaisons quotidiennes et points à vérifier avant de réserver."
+  },
+  "linkLabel": "Hébergements économiques autour de Positano",
+  "intro": [
+    "Des bases abordables hors de Positano avec des compromis transport réalistes."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrente",
+      "body": [
+        "Bon rapport qualité-prix avec trains et ferries fréquents ; arrivées tardives facilitées."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerne",
+      "body": [
+        "Tarifs doux et excellentes correspondances ; ferries saisonniers vers Amalfi et Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Région d'Amalfi",
+      "body": [
+        "Les villages plus petits proposent des affaires hors saison ; surveillez les fréquences de bus."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Compromis",
+      "body": [
+        "Trajets plus longs contre prix plus bas. Pour un court séjour, loger à Positano évite les allers-retours."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Le trajet quotidien vaut-il le coup ?",
+      "a": [
+        "Oui si vous privilégiez le budget et acceptez des transferts plus longs — surtout en intersaison."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Options de consigne à bagages à Positano",
+    "description": "Où déposer ses bagages à Positano, horaires, tarifs indicatifs et solutions alternatives."
+  },
+  "linkLabel": "Options de consigne à bagages à Positano",
+  "intro": [
+    "Où déposer ses bagages à Positano : options près du quai et le long de la Via dei Mulini."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Près du quai",
+      "body": [
+        "Consignes à l'heure/journée avec ticket ; prévoyez de l'attente en haute saison — réservez si possible."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Plateformes",
+      "body": [
+        "Bounce / Radical Storage : vérifiez l'adresse exacte et les horaires avant de payer en ligne."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Bonnes pratiques",
+      "body": [
+        "Gardez vos objets de valeur sur vous ; étiquetez clairement vos sacs ; prenez une photo des tickets de dépôt."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ouvert en soirée ?",
+      "a": [
+        "Les horaires varient ; vérifiez les fermetures anticipées hors saison et les derniers ferries."
+      ]
+    }
+  ],
+  "tocTitle": "Sur cette page",
+  "faqsTitle": "FAQ",
+  "heroAlt": "Un porteur guidant un chariot de bagages dans les escaliers de Positano",
+  "serviceType": "Consigne à bagages",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Maisons à flanc de falaise surplombant la mer à Positano",
+    "primaryCaption": "Panorama de Positano",
+    "secondaryAlt": "Porteur poussant un chariot près du quai des ferries de Positano",
+    "secondaryCaption": "Chariots porteurs près du quai"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Basisvergleich: Positano vs. Sorrent vs. Amalfi",
+    "description": "Vor- und Nachteile, Transport, Preise und für wen welcher Ort passt."
+  },
+  "linkLabel": "Basisvergleich: Positano vs. Sorrent vs. Amalfi",
+  "intro": [
+    "Vergleiche die Vor- und Nachteile von Positano, Sorrent und Amalfi, bevor du deine Basis wählst."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Ikonische Kulisse und viele Treppen – ideal, wenn du im Postkartenmotiv aufwachen möchtest.",
+        "Transport erfordert mehr Planung; plane Puffer um Fähren und Busse ein."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Beste Bahn- und Busanbindung mit breiter Unterkunftsauswahl.",
+        "Weniger dramatische Aussicht als Positano, dafür top Preis-Leistung und Komfort."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Fähren- und Busknotenpunkt mit einfachen Tagesausflügen nach Ravello und umliegende Dörfer.",
+        "Gemischte Unterkunftsstile; Abendverkehr ist begrenzt – entsprechend planen."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Welche Basis zu wem passt",
+      "body": [
+        "Positano für luxuriöse Ausblicke und Hostel-Social-Life.",
+        "Sorrent für Budgetkontrolle und schnelle Verbindungen.",
+        "Amalfi für ausgewogenen Zugang entlang der Küste."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Welche Basis passt für Erstbesucher?",
+      "a": [
+        "Wähle Positano für klassische Ausblicke, Sorrent für einfache Verbindungen und Amalfi als Mittelweg mit Dom direkt vor der Tür."
+      ]
+    },
+    {
+      "q": "Brauche ich ein Auto, wenn ich außerhalb von Positano übernachte?",
+      "a": [
+        "Nein. Fähren und Busse verbinden alle drei Orte; ein Auto bedeutet Parkstress, außer du planst viele Inlandsausflüge."
+      ]
+    }
+  ]
+}

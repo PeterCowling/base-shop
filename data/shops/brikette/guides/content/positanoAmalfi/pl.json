@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano ↔ Amalfi: jak dojechać",
+    "description": "Autobusowe i promowe połączenia między Positano a Amalfi, z godzinami i poradami."
+  },
+  "linkLabel": "Positano ↔ Amalfi: jak dojechać",
+  "intro": [
+    "Positano ↔ Amalfi autobusem lub sezonowym promem — jak wybrać i kiedy najlepiej jechać."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Autobus (cały rok)",
+      "body": [
+        "Autobus SITA — kup i skasuj bilet; w szczycie kolejki, więc ruszaj wcześnie.",
+        "Siadaj po prawej stronie od wyjazdu z Positano, by ująć w kadrze klifowe widoki."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Prom (sezonowo)",
+      "body": [
+        "Szybciej i bardziej malowniczo przy spokojnym morzu; sprawdź aktualne rozkłady i zostaw czas zapasowy.",
+        "Latem przyjdź wcześniej, by złapać miejsca."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ile trwa podróż?",
+      "a": [
+        "Autobus jedzie 40–55 minut, zależnie od ruchu; prom pokonuje trasę w około 25 minut przy spokojnym morzu."
+      ]
+    },
+    {
+      "q": "Czy trzeba rezerwować siedzenia?",
+      "a": [
+        "Bilety autobusowe kupuj wcześniej, ale miejsca są na zasadzie kto pierwszy — promy można rezerwować online i warto zarezerwować kursy szczytowe dzień wcześniej."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Autobus SITA do Amalfi",
+        "text": "Wsiądź do SITA w stronę Amalfi; kup bilety przed wejściem."
+      },
+      {
+        "name": "Alternatywa: prom (latem)",
+        "text": "Sprawdź sezonowe rozkłady; promy kursują często w szczycie sezonu."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Autobus SITA jest niezawodny przez cały rok, a latem promy stanowią malowniczą alternatywę."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "Autobus SITA (cały rok)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Prom (sezonowo)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "Autobus SITA (cały rok)",
+        "body": [
+          "Kup bilety przed wejściem i ustaw się w kolejce w szczytowych godzinach. Wysiądź na dworcu autobusowym w Amalfi."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Prom (sezonowo)",
+        "body": [
+          "Sprawdź strony operatorów pod kątem rozkładów i ostrzeżeń o trudnych warunkach; przybądź 20–30 minut wcześniej."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Co jest szybsze?",
+        "a": [
+          "Latem promy dorównują czasowi przejazdu i są ładniejsze, a autobusy są częściej dostępne."
+        ]
+      }
+    ]
+  }
+}

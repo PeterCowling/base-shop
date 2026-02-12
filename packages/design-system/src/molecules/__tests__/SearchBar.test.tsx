@@ -1,17 +1,19 @@
 import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { SearchBar } from "../SearchBar";
 
 describe("SearchBar", () => {
   it("updates suggestions as query changes", async () => {
-    render(<SearchBar suggestions={["apple", "banana", "cherry"]} label="Search" />);
+    const { container } = render(<SearchBar suggestions={["apple", "banana", "cherry"]} label="Search" />);
     const input = screen.getByRole("searchbox", { name: "Search" });
 
     await userEvent.type(input, "a");
     const options = await screen.findAllByRole("option");
     expect(options).toHaveLength(2);
+
     expect(options[0]).toHaveTextContent("apple");
     expect(options[1]).toHaveTextContent("banana");
 

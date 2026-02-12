@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Inside a Limoncello Factory",
+    "description": "How limoncello is made and what to look for in a quality bottle."
+  },
+  "linkLabel": "Inside a Limoncello Factory",
+  "fallbackParagraph": "What goes into real limoncello: lemons, alcohol, sugar, and time. Tours show the process and end with tastings — don’t drive afterwards.",
+  "intro": [
+    "Touring a limoncello laboratory shows how sfusato Amalfitano lemons become the coast’s signature digestivo.",
+    "Learn the stages, taste small-batch bottles, and pick up tips on storing and transporting your favourite blend home."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Sfusato Amalfitano lemons",
+      "body": [
+        "Producers use thick-skinned sfusato Amalfitano lemons grown on terraced pergolas; their essential oils sit in the zest, not the juice.",
+        "Good tours start with a look at how the fruit is peeled by hand and why organic farming matters for a clean, aromatic infusion."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "From zest to infusion",
+      "body": [
+        "Fresh zest steeps in neutral grain alcohol for a week or more until the liquid turns golden and fragrant.",
+        "After the infusion, the liquid is filtered and blended with simple syrup; batches rest to marry flavours before bottling."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "What tastings include",
+      "body": [
+        "Guides usually walk you through the workspace, then pour small tastings of limoncello, crema di limone, or seasonal liqueurs.",
+        "Sip slowly, note texture and aroma, and skip driving afterwards—the samples are full strength even if they feel smooth."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Buying and storing a bottle",
+      "body": [
+        "Choose opaque glass or UV-protected bottles, and check labels for the producer’s address and production date.",
+        "Keep your bottle chilled once you open it at home; if you plan to travel with it, cushion it in clothing or ask the shop for protective packaging."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can under-18 visitors join a tour?",
+      "a": [
+        "Yes, minors can observe the process but legally cannot taste; some producers offer lemonades or granita as an alternative."
+      ]
+    },
+    {
+      "q": "How can I bring limoncello home safely?",
+      "a": [
+        "Pack bottles in checked luggage (carry-on limits prohibit liquids over 100 ml), cushion them well, and declare quantities if your country has strict alcohol import limits."
+      ]
+    },
+    {
+      "q": "How long does limoncello keep?",
+      "a": [
+        "Unopened bottles stay fresh for up to a year; once opened, store them in the fridge or freezer and enjoy within a few months for peak aroma."
+      ]
+    }
+  ]
+}

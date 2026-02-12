@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Naples - Positano : comment y aller",
+    "description": "Choix de transport depuis Naples (aéroport ou centre) vers Positano, avec budgets, durées et astuces bagages."
+  },
+  "linkLabel": "Naples - Positano : comment y aller",
+  "intro": [
+    "Naples → Positano : navette vers Sorrente + bus SITA toute l'année ; ferries estivaux par mer clémente ; transferts pour les arrivées tardives."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (toute l'année)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (été)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Arrivées tardives & transferts"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Train + bus (toute l'année)",
+      "body": [
+        "Depuis les arrivées de NAP, prenez la navette Curreri (ou Alibus + Circumvesuviana) jusqu'à Sorrente, puis le bus SITA en direction d'Amalfi.",
+        "Achetez vos billets avant de monter, consultez le tableau des départs et descendez à ‘Chiesa Nuova’ pour limiter les marches vers l'auberge Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (été)",
+      "body": [
+        "Alibus → Molo Beverello ; prenez un ferry pour Positano et vérifiez les tarifs auprès de l'opérateur le jour même.",
+        "Surveillez les annulations et évitez le dernier bateau si vous avez une correspondance ensuite."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Arrivées tardives & transferts",
+      "body": [
+        "Arrivée après les derniers ferries/bus ? Réservez un transfert privé ou passez la nuit à Naples/Sorrente.",
+        "Confirmez le point de dépose proche de votre hébergement et demandez la gestion des bagages."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Où acheter les billets SITA ?",
+      "a": [
+        "Dans les tabacchi/kiosques près des gares. Achetez avant de monter et validez dans le bus."
+      ]
+    },
+    {
+      "q": "Combien de marches jusqu'à l'auberge ?",
+      "a": [
+        "Depuis l'arrêt ‘Chiesa Nuova’, comptez ~80 m sans escaliers."
+      ]
+    }
+  ]
+}

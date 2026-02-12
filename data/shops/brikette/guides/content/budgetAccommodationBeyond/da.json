@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Billig indkvartering uden for Positano",
+    "description": "Alternative baser som Sorrento, Salerno og Napoli med hostel- og budgettilbud."
+  },
+  "linkLabel": "Billig indkvartering uden for Positano",
+  "intro": [
+    "Budgetvenlige baser uden for Positano med realistiske transportafvejninger."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Godt prisniveau med hyppige tog og færger; nemmere sene ankomster."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Billigt og velforbundet; sæsonfærger sejler til Amalfi og Positano."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Amalfi-området",
+      "body": [
+        "Mindre byer kan være rigtigt billige uden for sæsonen; hold øje med busfrekvenser."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Afvejninger",
+      "body": [
+        "Længere transporttid mod lavere priser. Til korte ophold er det tidssparende at bo i Positano."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan det betale sig at pendle?",
+      "a": [
+        "Hvis prisen vægter højest, og du kan håndtere længere transfers, ja — især i skuldersæsonen."
+      ]
+    }
+  ]
+}

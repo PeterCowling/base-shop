@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Positano på vintern på budget",
+    "description": "Vad som är öppet vintertid, hur du reser billigt och vad du kan göra i Positano off-season."
+  },
+  "linkLabel": "Positano på vintern på budget",
+  "intro": [
+    "Vintern i Positano är lugnare, billigare och svalare. Använd denna guide för att se vad som håller öppet, hur du tar dig runt när färjorna står still och hur du planerar mysiga upplevelser utan att spräcka budgeten.",
+    "Packa lager (en lätt dunjacka plus skaljacka) och skor med bra grepp – trapporna kan bli hala efter regn."
+  ],
+  "sections": [
+    {
+      "id": "open",
+      "title": "Vad som håller öppet",
+      "body": [
+        "Livsmedelsbutiker, kaféer runt Piazza dei Mulini och hostellets bar kör året runt – räkna med kortare öppettider men stabil service.",
+        "Färjor längs kusten tar mestadels paus november–mars, men SITA-bussar och vissa privata shuttles kör vidare med glesare tidtabeller."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Så tar du dig runt på vintern",
+      "body": [
+        "Ta regionaltåg till Sorrento eller Salerno och fortsätt med SITA-buss; lägg till 20–30 minuter extra vid blötväder.",
+        "Ha kontanter för bussbiljetter (2–3 € per väg) och spara UnicoCampania-appen för sista-minuten-ändringar när oväder drar in."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budgetvänliga dagar",
+      "body": [
+        "Lägg museidagar i Neapel eller Salerno på regniga prognoser; tur-och-retur med tåg kostar runt 10 €.",
+        "Vandra Gudarnas stig från Nocelle när himlen klarnar: frisk luft, tomma utsikter och ingen sommarvärme."
+      ]
+    }
+  ],
+  "tips": [
+    "Välj boende med uppvärmning och frukost inkluderad så slipper du extra kafékostnader kalla morgnar.",
+    "Solen går ner tidigare (kring 16:45 i december) – planera terasstiden till sen eftermiddag och packa ett varmt lager."
+  ],
+  "faqs": [
+    {
+      "q": "Är restauranger öppna på vintern?",
+      "a": [
+        "Ja, men utbudet krymper. Familjedrivna trattorior och pizzerior håller helgöppet; fine dining öppnar ofta igen runt påsk.",
+        "Ring eller skicka ett WhatsApp-meddelande i förväg för att bekräfta öppettider innan du går nerför backen."
+      ]
+    },
+    {
+      "q": "Hur kallt blir det?",
+      "a": [
+        "Dagstemperaturer ligger runt 12–14 °C. På natten sjunker det till cirka 8 °C, så packa ett varmt mellanlager och strumpor för kalla klinkergolv."
+      ]
+    }
+  ]
+}

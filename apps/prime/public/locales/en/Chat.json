@@ -1,0 +1,27 @@
+{
+  "anonymousGuest": "Anonymous Guest",
+  "availableWhenLive": "Available When Live",
+  "backToActivities": "Back To Activities",
+  "channelTitle": "Channel Title",
+  "chat": {
+    "directory": {
+      "loading": "Loading",
+      "noGuests": "No Guests",
+      "noGuestsDescription": "No Guests Description",
+      "optInDescription": "Opt In Description",
+      "optInRequired": "Opt In Required",
+      "quiet": "Quiet",
+      "social": "Social",
+      "guestLabel": "Guest {{id}}",
+      "startChat": "Start Chat",
+      "title": "Title"
+    }
+  },
+  "goToActivities": "Go To Activities",
+  "loadingActivity": "Loading Activity",
+  "noChannelSelected": "No Channel Selected",
+  "send": "Send",
+  "statusLive": "Status Live",
+  "statusUpcoming": "Status Upcoming",
+  "typeMessage": "Type Message"
+}

@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Da Positano all'Aeroporto di Napoli in autobus | Hostel Brikette",
+    "description": "Indicazioni porta a porta dall'Hostel Brikette all'Aeroporto di Napoli tramite autobus SITA per Sorrento e autobus Curreri, con consigli sui biglietti e link agli orari."
+  },
+  "intro": {
+    "title": "Da Positano all'Aeroporto di Napoli — Autobus via Sorrento",
+    "body": "Prendi l'autobus SITA Sud da Positano a Sorrento, poi l'autobus Curreri per l'aeroporto di Napoli Capodichino. È l'opzione di trasporto pubblico più semplice, con partenze frequenti e collegamenti lineari presso la stazione degli autobus di Sorrento."
+  },
+  "callouts": {
+    "aside": "Apri la %HOWTO:how-to-get-here|panoramica Come arrivare% per taxi, traghetti e itinerari alternativi."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Panoramica del viaggio",
+      "list": [
+        "Raggiungi a piedi la fermata di Positano (Chiesa Nuova) fuori dal Bar Internazionale.",
+        "Prendi l'autobus SITA fino alla stazione degli autobus/treni di Sorrento.",
+        "Cambia con l'autobus Curreri da Sorrento all'aeroporto di Napoli (Capodichino)."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Raggiungi la fermata di Positano",
+      "list": [
+        "Esci dall'ostello e scendi i gradini fino alla strada principale.",
+        "Svolta a sinistra e prosegui per circa 100 metri.",
+        "Bar Internazionale sarà alla tua sinistra; la fermata SITA è proprio davanti."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Biglietti e attesa",
+      "list": [
+        "Acquista un biglietto SITA per Sorrento al Bar Internazionale o in un'edicola vicina.",
+        "Conserva il biglietto dopo essere salito a bordo: l'autista potrebbe obliterarlo o strapparlo.",
+        "Per l'autobus Curreri puoi comprare il biglietto online o in stazione (se disponibile)."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Alla stazione degli autobus di Sorrento",
+      "body": "Scendi alla principale stazione degli autobus e dei treni di Sorrento. Dalle banchine degli autobus sali sul bus %URL:https://www.curreriviaggi.it/|Curreri Viaggi% per l'aeroporto di Napoli (Capodichino). Controlla gli orari aggiornati e valuta l'acquisto dei biglietti online in anticipo nei periodi di punta."
+    },
+    {
+      "id": "timetables",
+      "title": "Orari"
+    }
+  ]
+}

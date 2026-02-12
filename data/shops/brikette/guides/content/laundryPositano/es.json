@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Lavanderías y servicio de entrega en Positano",
+    "description": "Autoservicio, servicio de entrega y consejos para lavar ropa en Positano: horarios, costes y qué esperar en temporada alta."
+  },
+  "linkLabel": "Lavanderías en Positano",
+  "intro": [
+    "En Positano hay opciones de autoservicio y de entrega/recogida; verifica los horarios en temporada media y espera colas en días de cambio de huéspedes.",
+    "Elige según tu presupuesto y tiempo disponible: las lavadoras autoservicio son económicas; el servicio de entrega es cómodo si llegas con prisa."
+  ],
+  "toc": {
+    "onThisPage": "En esta página",
+    "selfService": "Lavanderías de autoservicio",
+    "dropOff": "Servicios con entrega",
+    "howto": "Cómo usar el autoservicio",
+    "tips": "Detergente y máquinas",
+    "faqs": "Preguntas frecuentes"
+  },
+  "selfServiceText": "Las máquinas son compactas al estilo europeo. Lleva cambio y procura ir fuera de horas punta (media mañana o primeras horas de la tarde en días sin cambio de huéspedes).",
+  "dropOffText": "Pregunta el precio por kilo para lavado y doblado y el tiempo de entrega. En temporada alta, dejar la colada a primera hora aumenta las posibilidades de tenerla el mismo día.",
+  "howtoSteps": [
+    "Elige el tamaño de máquina según la carga; no la sobrecargues.",
+    "Añade detergente o suavizante según las instrucciones; algunas máquinas dosifican automáticamente.",
+    "Selecciona el programa (frío/templado) y ponla en marcha. Pon una alarma para volver antes de que termine el ciclo."
+  ],
+  "tipsList": [
+    "Usa ciclos delicados para tejidos que secan rápido y ropa de baño.",
+    "Las secadoras compartidas pueden calentar mucho: revisa las etiquetas y valora secar al aire."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Autoservicio",
+      "body": [
+        "Las lavadoras son compactas al estilo europeo. Lleva monedas y procura ir fuera de horas punta (media mañana o primeras horas de la tarde en días que no sean de cambio)."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Servicios con entrega",
+      "body": [
+        "Pregunta el precio por kilo para lavado y doblado y si entregan en el mismo día. En temporada alta, dejar la ropa a primera hora aumenta las posibilidades."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo comprar detergente cerca?",
+      "a": [
+        "Sí — consulta supermercados y farmacias para paquetes pequeños."
+      ]
+    },
+    {
+      "q": "¿Dónde esperar mientras se lava la ropa?",
+      "a": [
+        "Ve a una cafetería cercana o da un paseo corto."
+      ]
+    }
+  ],
+  "faqTitle": "Preguntas frecuentes"
+}

@@ -1,0 +1,160 @@
+{
+  "seo": {
+    "title": "Hướng dẫn check-in và check-out tại Hostel Brikette (Positano)",
+    "description": "Hướng dẫn từng bước về giờ đến, giấy tờ tùy thân, gửi hành lý, tiền đặt cọc và hỗ trợ check-out tại Hostel Brikette ở Positano."
+  },
+  "linkLabel": "Hướng dẫn check-in và check-out tại Hostel Brikette",
+  "sections": [
+    {
+      "id": "checkInRequest",
+      "title": "Yêu cầu check-in",
+      "body": [
+        "Khi đến nơi, hãy đến quầy lễ tân để bắt đầu quy trình check-in và nhận phân phòng.",
+        "Nếu bạn đến bằng phà, hãy theo %LINK:ferryDockToBrikette|lộ trình từ bến phà đến hostel%. Nếu bạn đến bằng xe buýt, hãy dùng %LINK:chiesaNuovaArrivals|hướng dẫn đến Chiesa Nuova% để tới cửa vào."
+      ],
+      "images": [
+        {
+          "src": "/img/checkin-desk.avif",
+          "alt": "Quầy lễ tân check-in của hostel.",
+          "caption": "Check-in bắt đầu tại quầy lễ tân Hostel Brikette."
+        }
+      ]
+    },
+    {
+      "id": "earlyArrival",
+      "title": "Đến sớm",
+      "body": [
+        "Nếu bạn đến trước 10:30 AM vào ngày đặt phòng, bạn chưa thể vào hostel.",
+        "Hãy dùng thời gian này để ăn sáng, đi dạo ngắn hoặc lên kế hoạch cho ngày trong lúc chờ đến giờ check-in."
+      ]
+    },
+    {
+      "id": "middayArrival",
+      "title": "Đến vào buổi trưa",
+      "body": [
+        "Nếu bạn đến trong khoảng 10:30 AM đến 3:00 PM, bạn có thể được cho vào như Khách Tạm Thời, tùy theo phê duyệt. Trong thời gian này, bạn có thể yêu cầu gửi hành lý nếu còn chỗ. Gửi hành lý là dịch vụ riêng so với đặt phòng và có điều kiện riêng.",
+        "Nếu cần phương án đảm bảo, hãy xem %LINK:luggageStorage|hướng dẫn gửi hành lý% trước khi đến."
+      ]
+    },
+    {
+      "id": "checkInWindow",
+      "title": "Khung giờ check-in",
+      "body": [
+        "Bạn có thể check-in từ 3:00 PM đến 10:30 PM mỗi ngày. Trong khung giờ này bạn sẽ theo quy trình check-in tiêu chuẩn."
+      ]
+    },
+    {
+      "id": "lateArrival",
+      "title": "Đến muộn",
+      "body": [
+        "Nếu bạn dự kiến đến sau khi lễ tân đóng lúc 10:30 PM, chúng tôi có thể cung cấp phương án tự check-in muộn, tùy theo tình trạng. Chúng tôi sẽ gửi hướng dẫn đến thông tin liên hệ bạn cung cấp khi đặt phòng. Hãy chắc chắn thiết bị của bạn còn pin và thông tin chính xác, vì chúng tôi không chịu trách nhiệm với sự cố do thông tin sai hoặc lỗi kỹ thuật.",
+        "Nếu bạn sẽ đến muộn, hãy thông báo trước giờ đến dự kiến để chúng tôi xác nhận khả năng check-in muộn."
+      ]
+    },
+    {
+      "id": "necessityOfProcess",
+      "title": "Cần hoàn tất toàn bộ quy trình check-in",
+      "body": [
+        "Bạn phải hoàn tất toàn bộ quy trình check-in mới được vào hostel. Nếu không thể hoàn tất check-in, đặt phòng của bạn sẽ bị hủy và tính là No Show."
+      ]
+    },
+    {
+      "id": "proofOfIdentity",
+      "title": "Giấy tờ tùy thân",
+      "body": [
+        "Bạn phải xuất trình giấy tờ tùy thân gốc còn hiệu lực (hộ chiếu, căn cước/ID quốc gia, bằng lái xe hoặc ID quân sự) khi đến. Nếu không cung cấp giấy tờ hợp lệ trước 10:30 PM trong ngày check-in, đặt phòng sẽ bị hủy như No Show."
+      ]
+    },
+    {
+      "id": "paymentBalance",
+      "title": "Thanh toán số dư",
+      "body": [
+        "Bạn phải thanh toán đầy đủ số dư còn lại bằng phương thức thanh toán được chấp nhận trước khi hoàn tất check-in. Nếu không thể thanh toán toàn bộ, đặt phòng sẽ bị hủy và đánh dấu No Show."
+      ]
+    },
+    {
+      "id": "keycardLinenDeposit",
+      "title": "Tiền đặt cọc thẻ phòng và đồ ga",
+      "body": [
+        "Khi check-in, bạn cần đặt cọc €10 tiền mặt cho thẻ phòng và bộ ga. Số tiền này sẽ được hoàn lại đầy đủ bằng tiền mặt khi check-out sau khi bạn trả lại cả hai món. Không chấp nhận thẻ tín dụng hoặc thẻ ghi nợ cho khoản đặt cọc này."
+      ],
+      "images": [
+        {
+          "src": "https://www.retrotouch.co.uk/user/products/large/Boutique%20hotel%20range/Card%20Key/Key%20card%20white.jpg",
+          "alt": "Thẻ phòng màu trắng.",
+          "caption": "Hãy giữ thẻ phòng bên mình; trả lại khi check-out để nhận lại tiền đặt cọc €10 bằng tiền mặt — Ảnh: RetroTouch (retrotouch.co.uk). Đã điều chỉnh kích thước/cắt."
+        }
+      ]
+    },
+    {
+      "id": "checkoutWindow",
+      "title": "Khung giờ check-out",
+      "body": [
+        "Check-out từ 7:30 AM đến 10:30 AM. Sau check-out, bạn không thể quay lại phòng hoặc để lại đồ dùng cá nhân."
+      ]
+    },
+    {
+      "id": "earlyCheckout",
+      "title": "Check-out sớm",
+      "body": [
+        "Nếu bạn cần rời đi trước 7:30 AM, hãy sắp xếp check-out sớm tại lễ tân vào tối hôm trước để nhận lại tiền đặt cọc bằng tiền mặt. Để thẻ phòng mà không có xác nhận của nhân viên sẽ dẫn đến mất tiền đặt cọc."
+      ]
+    },
+    {
+      "id": "lateCheckout",
+      "title": "Check-out muộn",
+      "body": [
+        "Chúng tôi không cung cấp check-out muộn. Check-out cần hoàn tất trước 10:30 AM."
+      ]
+    },
+    {
+      "id": "failureToCheckout",
+      "title": "Không check-out",
+      "body": [
+        "Hostel thường kín phòng, vì vậy cần dọn phòng nhanh để nhân viên vệ sinh chuẩn bị cho khách đến.",
+        "Nếu bạn không check-out và đồ đạc vẫn còn trong phòng sau giờ check-out, chúng tôi có thể cần giải phóng phòng. Chúng tôi sẽ cố gắng liên hệ bạn trước, nhưng có thể chuyển đồ của bạn sang kho lưu trữ với dịch vụ mang vác địa phương. Mọi chi phí lưu kho và xử lý sẽ do bạn chi trả."
+      ]
+    },
+    {
+      "id": "postCheckout",
+      "title": "Sau check-out",
+      "body": [
+        "Sau khi check-out, đặt phòng của bạn kết thúc chính thức. Bạn có thể ở lại khuôn viên hostel như Khách Tạm Thời đến 3:30 PM, chỉ được sử dụng khu vực chung (không vào phòng). Gửi hành lý có thể yêu cầu nếu còn chỗ, và áp dụng điều kiện riêng.",
+        "Nếu cần di chuyển hành lý nặng sau check-out, hãy cân nhắc %LINK:porterServices|dịch vụ khuân vác% hoặc xem %LINK:luggageStorage|hướng dẫn gửi hành lý% để đi tham quan nhẹ nhàng hơn."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "intro": [
+    "Hướng dẫn này giải thích quy trình check-in và check-out tại Hostel Brikette để bạn có thể lên kế hoạch giờ đến, giấy tờ và thanh toán trước.",
+    "Phần lớn khách check-in trong khoảng 3:00 PM đến 10:30 PM, nhưng đến sớm có thể được vào tạm thời và gửi hành lý tùy theo tình trạng.",
+    "Trước khi đến, hãy chuẩn bị giấy tờ hợp lệ, thanh toán số dư còn lại và nhớ tiền đặt cọc €10 bằng tiền mặt cho thẻ phòng và đồ ga. Check-out từ 7:30–10:30 AM."
+  ],
+  "tipsTitle": "Mẹo nhanh",
+  "tips": [
+    "Chuẩn bị sẵn giấy tờ và phương thức thanh toán trước khi đến lễ tân để check-in nhanh hơn.",
+    "Nếu đến sớm, hãy lưu %LINK:luggageStorage|hướng dẫn gửi hành lý% để lên kế hoạch ngày không mang hành lý.",
+    "Nếu bạn có hành lý nặng từ bến phà, %LINK:porterServices|dịch vụ khuân vác% có thể giúp mang hành lý khi bạn đi bộ."
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về check-in và check-out",
+  "faqs": [
+    {
+      "q": "Tôi có thể check-in trước 3:00 PM không?",
+      "a": [
+        "Việc vào sớm có hạn và tùy theo tình trạng. Bạn có thể yêu cầu vào như Khách Tạm Thời và gửi hành lý, nhưng check-in đầy đủ bắt đầu từ 3:00 PM."
+      ]
+    },
+    {
+      "q": "Nếu tôi quên mang giấy tờ thì sao?",
+      "a": [
+        "Cần có giấy tờ gốc hợp lệ để hoàn tất check-in. Nếu không có, đặt phòng có thể bị hủy như No Show."
+      ]
+    },
+    {
+      "q": "Tôi có thể gửi hành lý sau check-out không?",
+      "a": [
+        "Thường có thể gửi hành lý trong thời gian ngắn tùy theo chỗ trống. Xem %LINK:luggageStorage|hướng dẫn gửi hành lý% để biết chi tiết và phương án thay thế."
+      ]
+    }
+  ]
+}

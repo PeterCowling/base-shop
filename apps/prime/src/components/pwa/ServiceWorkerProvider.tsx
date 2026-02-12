@@ -7,8 +7,10 @@
 
 'use client';
 
-import { FC, memo, useEffect, type ReactNode } from 'react';
+import { type FC, memo, type ReactNode,useEffect } from 'react';
+
 import { registerServiceWorker } from '../../lib/pwa';
+
 import { OfflineIndicator } from './OfflineIndicator';
 import { UpdatePrompt } from './UpdatePrompt';
 

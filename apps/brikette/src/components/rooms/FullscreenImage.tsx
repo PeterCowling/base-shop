@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
 import { CfImage } from "@acme/ui/atoms/CfImage";
+
 import { getIntrinsicSize } from "@/lib/getIntrinsicSize";
 
 type ModalProps = ComponentPropsWithoutRef<"div">;

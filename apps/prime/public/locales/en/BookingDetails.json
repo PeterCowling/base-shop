@@ -1,0 +1,42 @@
+{
+  "page": {
+    "title": "Booking Details",
+    "loadError": "We could not load your booking details right now.",
+    "returnHome": "Return Home"
+  },
+  "status": {
+    "pre-arrival": "Pre-arrival",
+    "arrival-day": "Arrival day",
+    "checked-in": "Checked in",
+    "checked-out": "Checked out"
+  },
+  "dates": {
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "unknown": "Unknown"
+  },
+  "room": "Room",
+  "ref": "Ref: {{code}}",
+  "extension": {
+    "title": "Request Extension",
+    "description": "Send a stay-extension request to reception.",
+    "currentStatus": "Current extension request status: {{status}}",
+    "dateLabel": "Requested check-out date",
+    "noteLabel": "Note (optional)",
+    "submitButton": "Send extension request",
+    "submitting": "Sending request\u2026",
+    "successDeduplicated": "This extension request was already submitted recently.",
+    "successDefault": "Extension request sent. Reception will respond via email.",
+    "errorDefault": "Unable to submit extension request.",
+    "errorNetwork": "Unable to submit extension request right now.",
+    "replyNote": "Reception replies via email, usually within one business day."
+  },
+  "nextActions": {
+    "title": "Next Actions",
+    "breakfast": "Breakfast order",
+    "eveningDrink": "Evening drink order",
+    "bagDrop": "Request bag drop",
+    "bagStorage": "Bag storage options",
+    "checkedOutNote": "Your stay is checked out. In-stay services are now hidden; bag-drop and contact options remain available."
+  }
+}

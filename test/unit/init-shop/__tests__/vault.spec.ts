@@ -1,5 +1,6 @@
-import path from 'node:path';
 import fs from 'node:fs';
+import path from 'node:path';
+
 import ts from 'typescript';
 import { runInNewContext } from 'vm';
 
@@ -191,7 +192,7 @@ describe('init-shop configurator - vault', () => {
             initShop: async () => {
               const secret = execSync('vault STRIPE_SECRET_KEY', {
                 encoding: 'utf8',
-              }) as unknown as string;
+              });
               validateShopEnv();
               envParse({ STRIPE_SECRET_KEY: secret });
               const fs = require('node:fs');

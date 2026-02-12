@@ -1,0 +1,64 @@
+{
+  "seo": {
+    "title": "Positano en invierno con presupuesto limitado",
+    "description": "Qué permanece abierto, cómo moverse y maneras de disfrutar Positano en invierno sin gastar de más."
+  },
+  "linkLabel": "Positano en invierno con presupuesto limitado",
+  "intro": [
+    "En invierno Positano está tranquila, con menos servicios pero vistas increíbles y precios más bajos.",
+    "Planifica tus desplazamientos con antelación y ten un plan alternativo para días de lluvia o mar agitado."
+  ],
+  "sections": [
+    {
+      "id": "whats-open",
+      "title": "Qué permanece abierto",
+      "body": [
+        "Muchos hoteles y restaurantes cierran por turnos; contacta tu alojamiento y reserva trattorias que abren todo el año en la parte alta.",
+        "Las tiendas de comestibles y los cafés operan en horario reducido: haz tus compras antes del final de la tarde."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Cómo moverse",
+      "body": [
+        "Los autobuses SITA son la columna vertebral entre noviembre y marzo; compra los billetes en tabaccherie y valídalos al subir.",
+        "Los ferris se detienen; para Capri o Amalfi combina bus con trasbordo en Sorrento/Amalfi o reserva un traslado compartido."
+      ]
+    },
+    {
+      "id": "budget-ideas",
+      "title": "Planes asequibles",
+      "body": [
+        "Senderos como el Sentiero degli Dei y los paseos por las calles altas son gratuitos: lleva calzado antideslizante.",
+        "Escribe o llama por WhatsApp antes de bajar la colina para confirmar horarios."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Qué llevar",
+      "body": [
+        "Empaca capas cálidas, un impermeable compacto y calzado con buena suela; las noches bajan a 8–10 °C.",
+        "Lleva termo y power bank: muchos cafés cierran temprano y hay pocos enchufes en zonas comunes."
+      ]
+    }
+  ],
+  "tips": [
+    "Elige alojamiento con calefacción y desayuno incluido para evitar gastar de más en mañanas frías.",
+    "En diciembre anochece sobre las 16:45; disfruta la terraza a media tarde y lleva una capa de abrigo."
+  ],
+  "faqs": [
+    {
+      "q": "¿Todavía vale la pena alojarse en Positano en invierno?",
+      "a": [
+        "Sí, si buscas calma y ahorrar; solo acepta horarios reducidos y depender más del autobús.",
+        "Escribe o llama por WhatsApp antes de bajar la colina para confirmar horarios."
+      ]
+    },
+    {
+      "q": "¿Debo reservar los restaurantes con antelación?",
+      "a": [
+        "Sí. Llama o envía un mensaje el día anterior para asegurar mesa en los locales que abren todo el año."
+      ]
+    }
+  ]
+}

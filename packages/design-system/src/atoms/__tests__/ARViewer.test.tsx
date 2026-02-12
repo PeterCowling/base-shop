@@ -2,6 +2,7 @@ import "../../../../../../test/resetNextMocks";
 
 import { jest } from "@jest/globals";
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { ARViewer } from "../ARViewer";
 
@@ -16,13 +17,14 @@ describe("ARViewer", () => {
     }
   });
 
-  it("injects script once when model-viewer is undefined", () => {
+  it("injects script once when model-viewer is undefined", async () => {
     jest.spyOn(customElements, "get").mockReturnValue(undefined);
     const appendChildSpy = jest.spyOn(document.head, "appendChild");
 
-    const { unmount } = render(<ARViewer src="model.glb" />);
+    const { container,  unmount } = render(<ARViewer src="model.glb" />);
 
     expect(appendChildSpy).toHaveBeenCalledTimes(1);
+
     const scriptEl = appendChildSpy.mock.calls[0][0] as HTMLScriptElement;
     expect(scriptEl.tagName).toBe("SCRIPT");
     expect(scriptEl.getAttribute("src")).toBe(scriptSrc);

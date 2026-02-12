@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Környezetbarát utazás az Amalfi-parton",
+    "description": "Hogyan csökkentsd a lábnyomod: utántöltések, séta, komp a taxi helyett és tudatos strandnapok."
+  },
+  "linkLabel": "Környezetbarát utazás az Amalfi-parton",
+  "intro": [
+    "A környezetbarát utazás az Amalfi-parton a közlekedés, a hulladékkezelés és a mindennapi energiahasználat köré épül.",
+    "Tartsd könnyű lábnyomodat anélkül, hogy lemondanál a tengerparti kilátásokról."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Fenntartható közlekedés",
+      "body": [
+        "Ha lehetséges, válaszd a buszt vagy a kompot a privát taxik helyett.",
+        "Sétálj a rövidebb távolságokat a városban autóhívás helyett."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Hulladék és műanyag",
+      "body": [
+        "Vigyél újratölthető palackot és szatyrot, töltsd fel a kutaknál vagy kávézóknál.",
+        "Szelektáld ott a szemetet, ahol van kuka, és vidd magaddal a túrákra hozott csomagokat."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energia és víz",
+      "body": [
+        "Kapcsold le a légkondit és a lámpákat, amikor elhagyod a szobát; zárd be a zsalukat, hogy hűvös maradjon a belső tér.",
+        "Tartsd röviden a zuhanyt és használd többször a törölközőt a vízspórolásért."
+      ]
+    }
+  ],
+  "tips": [
+    "Támogasd a kis helyi üzleteket, amelyek regionális alapanyagokat és alacsony hulladékkal dolgoznak.",
+    "Rendelj szezonális fogásokat – a citrom, szardínia és a zöldségek a csúcsszezonban a legjobbak."
+  ],
+  "faqs": [
+    {
+      "q": "Bérelhetek elektromos biciklit?",
+      "a": [
+        "Igen, Amalfi, Sorrento és néhány kis település kínál elektromos kerékpárt – foglalj előre, mert a flották kicsik."
+      ]
+    }
+  ]
+}

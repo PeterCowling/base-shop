@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Zu Besuch in einer Limoncello-Manufaktur",
+    "description": "Wie Limoncello entsteht und worauf du bei Qualität achtest."
+  },
+  "linkLabel": "Zu Besuch in einer Limoncello-Manufaktur",
+  "fallbackParagraph": "Was echten Limoncello ausmacht: Zitronen, Alkohol, Zucker und Zeit. Führungen zeigen den gesamten Prozess und enden mit Verkostungen – danach nicht mehr fahren.",
+  "intro": [
+    "Ein Rundgang durch eine Limoncello-Manufaktur zeigt, wie aus sfusato-Amalfi-Zitronen der typische Digestivo der Küste entsteht.",
+    "Lerne jede Stufe kennen, probiere Kleinserien-Abfüllungen und nimm Tipps zum Lagern und Transportieren deiner Lieblingsmischung mit nach Hause."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Sfusato-Amalfi-Zitronen",
+      "body": [
+        "Produzenten verwenden dickschalige sfusato-Amalfi-Zitronen, die auf Terrassenpergolen wachsen; ihre ätherischen Öle sitzen vor allem in der Schale, nicht im Saft.",
+        "Gute Touren beginnen mit einer Demonstration des händischen Schälens und erklären, warum Bio-Anbau wichtig ist, damit die Infusion sauber und aromatisch bleibt."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Von der Schale zur Infusion",
+      "body": [
+        "Frische Schalen ziehen mindestens eine Woche in neutralem Getreidealkohol, bis die Flüssigkeit golden wird und intensiv duftet.",
+        "Nach der Mazeration wird gefiltert und mit Zuckersirup vermischt; die Ansätze ruhen anschließend, damit sich die Aromen vor dem Abfüllen verbinden."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Was Verkostungen bieten",
+      "body": [
+        "Guides führen durch die Arbeitsräume und schenken danach kleine Proben von Limoncello, Crema di Limone oder saisonalen Likören ein.",
+        "Langsam trinken, Textur und Duft beachten und auf das Autofahren verzichten – die Samples haben trotz ihrer Sanftheit volle Stärke."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Kaufen und Lagern einer Flasche",
+      "body": [
+        "Wähle blickdichte oder UV-geschützte Flaschen und prüfe Etiketten auf Adresse des Produzenten sowie Abfülldatum.",
+        "Nach dem Öffnen zuhause kühl stellen; für den Rücktransport Flaschen in Kleidung polstern oder im Shop nach Schutzverpackung fragen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Können Besucher unter 18 Jahren an einer Tour teilnehmen?",
+      "a": [
+        "Ja, Minderjährige dürfen den Prozess beobachten, dürfen aber rechtlich nicht probieren; einige Produzenten bieten als Alternative Limonade oder Granita an."
+      ]
+    },
+    {
+      "q": "Wie bringe ich Limoncello sicher nach Hause?",
+      "a": [
+        "Pack Flaschen ins Aufgabegepäck (Handgepäck erlaubt nur bis 100 ml), gut gepolstert, und deklariere Mengen, falls dein Heimatland strenge Einfuhrlimits hat."
+      ]
+    },
+    {
+      "q": "Wie lange ist Limoncello haltbar?",
+      "a": [
+        "Ungeöffnete Flaschen bleiben bis zu einem Jahr frisch; nach dem Öffnen im Kühlschrank oder Gefrierfach lagern und innerhalb weniger Monate genießen."
+      ]
+    }
+  ]
+}

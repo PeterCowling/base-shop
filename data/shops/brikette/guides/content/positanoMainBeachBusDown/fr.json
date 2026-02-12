@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bus de l'auberge Brikette à la plage principale de Positano",
+    "description": "Comment prendre le bus interno orange pour descendre jusqu'à la Piazza dei Mulini et se promener jusqu'à Spiaggia Grande."
+  },
+  "linkLabel": "Bus pour descendre vers la plage principale de Positano",
+  "intro": [
+    "Le bus orange Interno Positano relie l'auberge Brikette à la Piazza dei Mulini, à quelques pas de la Spiaggia Grande.",
+    "Suivez ces étapes pour acheter des billets au tabacchi, roulez en descente et couvrez les dernières minutes à pied."
+  ],
+  "sections": [
+    {
+      "id": "reach-the-stop",
+      "title": "Atteindre l'arrêt Chiesa Nuova",
+      "body": [
+        "Sortez de l'auberge, descendez l'escalier avant et tournez à gauche le long de Viale Pasitea.",
+        "Après environ 100 mètres, prenez le premier coin à droite à côté du tabacchi/marchand de journaux — l'arrêt de bus Chiesa Nuova se trouve juste à l'extérieur.",
+        "Rendez-vous à l'intérieur avant l'embarquement pour acheter des billets Interno Positano à l'avance ; c'est moins cher et évite les retards à la porte."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Prendre le bus Interno Positano en descente",
+      "body": [
+        "Montez à bord du mini-bus orange marqué \\\\\" Interno Positano \\\\\". Différents styles de véhicules parcourent l'itinéraire, mais la destination sur le panneau électronique reste la même.",
+        "Restez sur place pendant que le bus circule dans les rues à flanc de colline de Positano et descend vers le centre-ville."
+      ]
+    },
+    {
+      "id": "piazza-dei-mulini",
+      "title": "Débarquement sur la Piazza dei Mulini",
+      "body": [
+        "Descendez à la Piazza dei Mulini, l'arrêt central dans le quartier commerçant près de la pharmacie.",
+        "C'est le point le plus bas de la ville que les véhicules peuvent atteindre et qui vous place à quelques minutes du front de mer."
+      ]
+    },
+    {
+      "id": "final-walk",
+      "title": "Marchez sur le dernier tronçon jusqu'à la plage",
+      "body": [
+        "Marchez tout droit sous l'arcade à côté de la place et suivez la promenade en direction du port.",
+        "En 3–4 minutes, Spiaggia Grande s'ouvre sur votre gauche — utilisez le %LINK:positanoMainBeachWalkDown|guide à pied% si vous voulez chaque point de contrôle de l'escalier."
+      ]
+    }
+  ],
+  "tipsTitle": "Conseils de bus",
+  "tips": [
+    "Achetez des billets interno au tabacchi avant de faire la queue ; les achats à bord coûtent un peu plus cher et les chauffeurs se vendent parfois.",
+    "Capture d'écran de l'horaire de la réception ou de la conciergerie numérique — les services de fin de soirée s'amincissent en moyenne saison.",
+    "Passez au %LINK:positanoMainBeachWalkDown|itinéraire à pied% si vous préférez vous dégourdir les jambes en descendant."
+  ]
+}

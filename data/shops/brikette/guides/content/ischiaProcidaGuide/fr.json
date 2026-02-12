@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia et Procida : au-delà de la côte amalfitaine",
+    "description": "Comparez ces îles, ferries depuis Naples/Salerne et itinéraires pour une escapade depuis Positano."
+  },
+  "linkLabel": "Ischia et Procida : au-delà de la côte amalfitaine",
+  "intro": [
+    "Associez les thermes d'Ischia aux ports pastel de Procida pour une parenthèse rafraîchissante depuis la Côte Amalfitaine."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Temps forts à Ischia",
+      "body": [
+        "Détendez-vous dans les parcs thermaux comme Poseidon ou Negombo ; les pass journée coûtent 35 à 45 €.",
+        "Grimpez au château aragonais pour la vue sur la baie et flânez dans les ruelles piétonnes de Sant'Angelo."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Temps forts à Procida",
+      "body": [
+        "Photographiez les maisons pastel de Marina Corricella depuis Terra Murata et goûtez aux pâtisseries lingue di bue.",
+        "Louez un scooter ou un vélo électrique pour atteindre les plages tranquilles comme Chiaiolella."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistique & billets",
+      "body": [
+        "Prenez les premiers ferries depuis Naples Beverello (une heure pour Ischia, 35 minutes pour Procida). Combiner les deux en une journée est possible mais mieux vaut deux jours.",
+        "Achetez les retours en avance les week-ends d'été ; les derniers bateaux pour Naples partent vers 21 h 30."
+      ]
+    }
+  ],
+  "tips": [
+    "Glissez maillot et serviette légère même si vous venez pour explorer : les bassins thermaux sont irrésistibles après la visite.",
+    "Dormez sur Ischia pour profiter des soirées tranquilles et photographier le château au lever du soleil avant l'arrivée des excursionnistes."
+  ],
+  "faqs": [
+    {
+      "q": "Peut-on visiter les deux îles en une journée ?",
+      "a": [
+        "C'est possible mais expéditif. Consacrez une journée par île ou restez la nuit pour admirer le coucher de soleil sans stress de ferry."
+      ]
+    },
+    {
+      "q": "Faut-il réserver les parcs thermaux ?",
+      "a": [
+        "Oui en haute saison (juin à septembre). Les jours de semaine sont plus calmes et certains parcs proposent des entrées du soir après 16 h 00 à tarif réduit."
+      ]
+    }
+  ]
+}

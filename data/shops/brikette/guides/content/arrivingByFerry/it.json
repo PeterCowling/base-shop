@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Arrivare in traghetto",
+    "description": "Guida passo passo per raggiungere l'ostello dal molo dei traghetti di Positano."
+  },
+  "linkLabel": "Arrivare in traghetto",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Porto di Positano → Ostello con l’autobus Interno",
+      "body": [
+        "**Consiglio 1:** %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|Orari e prezzi dell’autobus Interno%. **Consiglio 2:** Acquista i biglietti in qualsiasi *Tabacchi* / edicola. **Consiglio 3:** Viaggi con bagagli? I facchini al molo consegneranno le valigie direttamente all’ostello."
+      ]
+    },
+    {
+      "id": "portToPiazza",
+      "title": "Porto a Piazza Dei Mulini",
+      "body": [
+        "Segui %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|queste indicazioni a piedi% dalla Spiaggia Grande alla Piazza Dei Mulini."
+      ]
+    },
+    {
+      "id": "piazzaToStop",
+      "title": "Piazza Dei Mulini → Fermata autobus locale",
+      "body": [
+        "* Evita le scale: prendi l’autobus Interno.\n* Il servizio passa circa ogni 30 min, dalle 8:00 a mezzanotte.\n* Visualizza il percorso su %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Google Maps%."
+      ]
+    },
+    {
+      "id": "busLook",
+      "title": "Come riconoscere l’autobus?",
+      "body": [
+        "Esistono diversi tipi di mezzi, ma il display LED indica sempre *“Interno Positano”*."
+      ]
+    },
+    {
+      "id": "stopToHostel",
+      "title": "Fermata autobus locale → Ostello",
+      "body": [
+        "* Il bus si ferma davanti al Tabacchi mostrato qui sotto.\n* Scendi, gira a **destra** e raggiungi la strada principale.\n* Svolta a **sinistra**; prosegui per ≈100 m / 330 ft.\n* L’ostello è sulla destra: sali le scale fino alla reception.\n* Hai bisogno del percorso dettagliato? %URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|Apri Google Maps%."
+      ]
+    },
+    {
+      "id": "approach",
+      "title": "Consiglio: Arrivo all’ostello",
+      "body": [
+        "* Avvicinandoti all’ostello vedrai il nostro cartello sulla terrazza al secondo piano.\n* Supera il cartello, segui la curva e prendi le scale a destra per arrivare alla reception."
+      ]
+    }
+  ]
+}

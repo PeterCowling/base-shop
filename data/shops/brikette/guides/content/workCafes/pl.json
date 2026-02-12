@@ -1,0 +1,36 @@
+{
+  "seo": {
+    "title": "Wi-Fi i kawiarnie przyjazne pracy w pobliżu Brikette",
+    "description": "Najlepsze miejsca na pracę zdalną: Wi-Fi, gniazdka, menu i godziny najbliżej hostelu."
+  },
+  "linkLabel": "Wi-Fi i kawiarnie przyjazne pracy w pobliżu Brikette",
+  "intro": [
+    "Kawiarnie blisko hostelu z Wi-Fi nadającym się do pracy. Etykieta: zamawiaj regularnie, unikaj długich rozmów telefonicznych i zostawiaj mało miejsca."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Miejsca przy Brikette",
+      "body": [
+        "Małe kawiarnie na Via Pasitea i wokół Chiesa Nuova często mają stabilne Wi-Fi.",
+        "Zabierz powerbank; gniazdka są ograniczone w starszych lokalach."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Kopie połączenia",
+      "body": [
+        "Miej eSIM jako plan awaryjny; zasięg różni się w zależności od operatora — TIM i Vodafone są zwykle niezawodne.",
+        "Tetheruj, gdy lunchowy tłok przygasa i kawiarniane sieci znów działają."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy można pracować cały dzień?",
+      "a": [
+        "Zamawiaj co 60–90 minut i unikaj szczytu lunchowego; rozważ zmianę lokalu."
+      ]
+    }
+  ]
+}

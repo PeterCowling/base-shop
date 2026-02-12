@@ -16,10 +16,19 @@ export interface QuantityInputProps
 /**
  * Numeric input with increment/decrement buttons.
  */
-export const QuantityInput = React.forwardRef<
-  HTMLDivElement,
-  QuantityInputProps
->(({ value, min = 1, max = Infinity, onChange, className, ...props }, ref) => {
+export const QuantityInput = (
+  {
+    ref,
+    value,
+    min = 1,
+    max = Infinity,
+    onChange,
+    className,
+    ...props
+  }: QuantityInputProps & {
+    ref?: React.Ref<HTMLDivElement>;
+  }
+) => {
   const t = useTranslations();
   const handleDec = () => {
     if (value > min && onChange) onChange(value - 1);
@@ -29,7 +38,7 @@ export const QuantityInput = React.forwardRef<
   };
   return (
     // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-    <div ref={ref} className={cn("flex items-center gap-2", className)} {...props}>
+    (<div ref={ref} className={cn("flex items-center gap-2", className)} {...props}>
       <button
         type="button"
         onClick={handleDec}
@@ -53,7 +62,6 @@ export const QuantityInput = React.forwardRef<
         <span aria-hidden="true">+</span>{/* i18n-exempt: decorative glyph */}
         <span className="sr-only">{t("quantity.increment")}</span>
       </button>
-    </div>
+    </div>)
   );
-});
-QuantityInput.displayName = "QuantityInput";
+};

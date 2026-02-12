@@ -4,8 +4,9 @@
  * Renders the appropriate icon for a badge based on its icon type.
  */
 
+import { type FC, memo } from 'react';
 import { Compass, Sparkles, Sunrise, Users } from 'lucide-react';
-import { FC, memo } from 'react';
+
 import { getBadgeById } from '../../config/quests/questTiers';
 
 interface BadgeIconProps {

@@ -1,0 +1,123 @@
+{
+  "seo": {
+    "title": "Sentiero degli Dei da Hostel Brikette",
+    "description": "Percorso esatto dall'ostello ai punti di accesso del Sentiero degli Dei, con opzioni di trasporto e consigli di sicurezza."
+  },
+  "linkLabel": "Sentiero degli Dei da Brikette",
+  "intro": [
+    "Il Sentiero degli Dei unisce terrazze a picco sulla scogliera, castagneti e ampie vedute sulla Costiera Amalfitana. Dall'Hostel Brikette puoi raggiungere il sentiero combinando traghetti locali e autobus SITA senza partecipare a un tour costoso.",
+    "Tre approcci principali partono dall'ostello: salpare per Amalfi e prendere l'autobus fino a Bomerano, utilizzando la rete di autobus per tutto il percorso, oppure saltare i trasferimenti e fare un'andata e ritorno da Nocelle. Utilizza questa panoramica per decidere quale percorso dettagliato si adatta al tuo tempo, al tuo budget e al tuo comfort in caso di altezze."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Quando partire",
+      "body": [
+        "Punta su aprile–giugno o settembre–ottobre: cielo limpido e temperature gestibili; in inverno la pioggia rende scivolosi i gradini in pietra.",
+        "A luglio–agosto parti prima delle 09:00 o dopo le 15:00 perché il sentiero è esposto e l’ombra è limitata."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Scegli il percorso",
+      "body": [
+        "Bomerano → Nocelle copre i 6,5 km classici in cresta con continui saliscendi: considera 2,5–3 ore di cammino più i trasferimenti.",
+        "Hai poco tempo? Salta sull’autobus per Nocelle, percorri il tratto panoramico di andata e ritorno fino a Colle Serra oppure scendi i 1.700 gradini verso Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Orientamento e sicurezza",
+      "body": [
+        "Segui i segnavia bianco-rossi CAI e le frecce in legno “Sentiero degli Dei”; scarica una mappa offline perché il segnale cala nelle gole.",
+        "Il tracciato alterna scalini in pietra, terra battuta e ghiaia: indossa scarpe da trekking con grip e tieni i bastoncini ripiegati finché non inizi le discese ripide."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Acqua, snack e rientro",
+      "body": [
+        "Fai scorta nella piazza principale di Bomerano (bar, forno, ultimo bagno pubblico) prima di partire; a Nocelle trovi un chiosco e una granita al limone vicino alla chiesa.",
+        "Per tornare a Positano scendi le scale verso la spiaggia di Arienzo oppure prendi la SITA da Nocelle/Montepertuso: tieni un biglietto convalidato di riserva nello zaino."
+      ]
+    }
+  ],
+  "essentialsTitle": "Cosa portare",
+  "essentials": [
+    "Scarpe con buona aderenza, acqua, protezione solare: evita le ore centrali in estate.",
+    "I biglietti SITA si comprano prima di salire (tabacchi, edicole).",
+    "Considera ~4 ore totali includendo trasferimenti e pause foto."
+  ],
+  "typicalCostsTitle": "Costi indicativi",
+  "typicalCosts": [
+    "Autobus SITA (Positano ⇄ Nocelle/Bomerano): ~2–4 € a tratta in base al titolo di viaggio",
+    "Snack/acqua: 3–8 € (porta il necessario per risparmiare)",
+    "Sentiero: gratuito (nessun biglietto d’ingresso)"
+  ],
+  "steps": [
+    {
+      "name": "Raggiungi la fermata Chiesa Nuova",
+      "text": "Dall’ostello cammina in salita per ~80 m fino alla fermata SITA di Chiesa Nuova."
+    },
+    {
+      "name": "Autobus per Nocelle o Bomerano",
+      "text": "Prendi la SITA verso Amalfi: scendi a Nocelle per l’uscita breve, prosegui fino ad Agerola/Bomerano per la partenza classica."
+    },
+    {
+      "name": "Ingresso al sentiero",
+      "text": "A Nocelle segui i cartelli “Sentiero degli Dei” (fine). A Bomerano segui le indicazioni dalla piazza principale all’imbocco (inizio)."
+    },
+    {
+      "name": "Opzioni di rientro",
+      "text": "Concludi a Nocelle e scendi le scale fino a Positano oppure torna in autobus a Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Da dove parto?",
+      "a": "Il percorso classico inizia a Bomerano (Agerola). In alternativa puoi percorrere il tratto breve da Nocelle."
+    },
+    {
+      "q": "Quanto dura?",
+      "a": "Calcola circa 4 ore totali includendo trasferimenti e pause panoramiche."
+    },
+    {
+      "q": "Cosa devo portare?",
+      "a": "Scarpe robuste, acqua, protezione solare e strati leggeri; evita le ore centrali in estate."
+    }
+  ],
+  "faqsTitle": "Domande frequenti",
+  "toc": {
+    "onThisPage": "In questa pagina",
+    "essentials": "Cosa portare",
+    "costs": "Costi indicativi",
+    "faqs": "Domande frequenti",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Parti prima delle 09:00 in luglio-agosto oppure punta alle ore dorate in primavera e autunno per temperature più fresche e luce più morbida.",
+    "Evita la discesa di 1.700 gradini verso Positano a meno che le tue ginocchia non siano fresche: scendere le scale di Montepertuso dopo una lunga camminata è brutale.",
+    "Usa uno zaino leggero e tieni i bastoncini da trekking piegati finché non raggiungi le scale più ripide."
+  ],
+  "faqs": [
+    {
+      "q": "Quanto tempo dura l'escursione porta a porta?",
+      "a": [
+        "Budget 3-5 ore compreso il trasporto. La tratta del traghetto è la più lunga; l'andata e il ritorno di Nocelle si svolge in mezza giornata."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Sì, a condizione che tu sia stabile in piedi e a tuo agio con le altezze. Non ci sono salite tecniche, solo salite e discese costanti."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Passare all'autobus via Amalfi o andare direttamente a Nocelle. Conserva sempre un biglietto dell'autobus di riserva in modo da poterti adattare alle condizioni del mare o del tempo."
+      ]
+    }
+  ]
+}

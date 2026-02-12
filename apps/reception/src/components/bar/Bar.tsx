@@ -1,4 +1,6 @@
 // src/components/bar/Bar.tsx
+"use client";
+
 import React, { type FC, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";

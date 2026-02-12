@@ -25,12 +25,13 @@ var confirmMock: jest.Mock;
 /* ------------------------------------------------------------------ */
 jest.mock("../../../hooks/data/useBookingNotes", () => {
   bookingNotesMock = jest.fn();
-  return { default: (ref: string) => bookingNotesMock(ref) };
+  return { __esModule: true, default: (ref: string) => bookingNotesMock(ref) };
 });
 
 jest.mock("../../../hooks/mutations/useAllocateRoom", () => {
   allocateRoomIfAllowedMock = jest.fn();
   return {
+    __esModule: true,
     default: () => ({ allocateRoomIfAllowed: allocateRoomIfAllowedMock }),
   };
 });
@@ -38,6 +39,7 @@ jest.mock("../../../hooks/mutations/useAllocateRoom", () => {
 jest.mock("../../loans/useOccupantLoans", () => {
   occupantLoansMock = jest.fn();
   return {
+    __esModule: true,
     default: (bookingRef: string, occupantId: string) =>
       occupantLoansMock(bookingRef, occupantId),
   };
@@ -50,24 +52,31 @@ jest.mock("../../../utils/confirmAndAllocateRoom", () => {
 
 /* Dumb component mocks - not part of the TDZ fix */
 jest.mock("../cityTaxButton/CityTaxPaymentButton", () => ({
-  default: () => <div data-testid="city-tax-button" />,
+  __esModule: true,
+  default: () => <div data-cy="city-tax-button" />,
 }));
 jest.mock("../DocInsertButton", () => ({
-  default: () => <div data-testid="doc-insert" />,
+  __esModule: true,
+  default: () => <div data-cy="doc-insert" />,
 }));
 jest.mock("../EmailBookingButton", () => ({
-  default: () => <div data-testid="email-booking" />,
+  __esModule: true,
+  default: () => <div data-cy="email-booking" />,
 }));
 jest.mock("../keycardButton/KeycardDepositButton", () => ({
-  default: () => <div data-testid="keycard-button" />,
+  __esModule: true,
+  default: () => <div data-cy="keycard-button" />,
 }));
 jest.mock("../roomButton/roomPaymentButton", () => ({
-  default: () => <div data-testid="room-payment" />,
+  __esModule: true,
+  default: () => <div data-cy="room-payment" />,
 }));
 jest.mock("../StatusButton", () => ({
-  default: () => <div data-testid="status-button" />,
+  __esModule: true,
+  default: () => <div data-cy="status-button" />,
 }));
 jest.mock("../tooltip/Tooltip", () => ({
+  __esModule: true,
   default: ({
     booking,
     onDoubleClick,
@@ -75,15 +84,16 @@ jest.mock("../tooltip/Tooltip", () => ({
     booking: { personalDetails: { firstName: string; lastName: string } };
     onDoubleClick?: () => void;
   }) => (
-    <span onDoubleClick={onDoubleClick} data-testid="tooltip-name">
+    <span onDoubleClick={onDoubleClick} data-cy="tooltip-name">
       {booking.personalDetails.firstName} {booking.personalDetails.lastName}
     </span>
   ),
 }));
 jest.mock("../notes/BookingNotesModal", () => ({
+  __esModule: true,
   default: () => (
     <div
-      data-testid="notes-modal"
+      data-cy="notes-modal"
       className="dark:bg-darkSurface dark:text-darkAccentGreen"
     >
       notes

@@ -1,0 +1,116 @@
+{
+  "seo": {
+    "title": "ポジターノの駐車：駐車場、路上ルール、代替手段",
+    "description": "ポジターノでどこに駐車できるか、駐車場の費用、路上駐車が現実的な場合、車なしの賢い選択肢。"
+  },
+  "lastUpdated": "2026-02-04T00:00:00.000Z",
+  "linkLabel": "ポジターノの駐車場：場所と料金",
+  "intro": [
+    "ポジターノの駐車場は数も少なく料金も高め。ガレージは事前予約し、滞在中は実質的に保管場所と考えるのが無難です。"
+  ],
+  "sections": [
+    {
+      "id": "quick-decision",
+      "title": "Quick decision: should you bring a car?",
+      "body": [
+        "**Best for:** families with lots of luggage, people doing a longer Italian road trip, or travelers who plan to explore inland villages on non-peak days.",
+        "**Not great for:** short stays, day-trip style itineraries, or anyone who gets anxious on cliff roads and tight parking.",
+        "",
+        "The SS163 (Amalfi Coast road) is beautiful but demanding. It is narrow, busy, and full of blind bends. Seasonal restrictions can apply (including alternated-plate rules), and ZTL zones can trigger fines that show up months later.",
+        "",
+        "If you are already on public transport, you will usually have a smoother trip by using the %HOWTO:how-to-get-here|How to Get Here page% and arriving car-free."
+      ],
+      "images": [
+        {
+          "src": "/images/guides/amalfiPositanoBus/amalfi-coast-road.jpg",
+          "alt": "Coastal road on the Amalfi Coast with steep cliffs and tight bends"
+        },
+        {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panoramic view of Positano climbing up the hillside above the sea"
+        }
+      ]
+    },
+    {
+      "id": "warnings",
+      "title": "Important warnings (ZTL, SS163 restrictions, and costs)",
+      "body": [
+        "**ZTL zones:** Positano and nearby towns use ZTL (restricted traffic) rules. Cameras and checks are common. If you enter a restricted area at the wrong time, you can be fined. Rental cars may also add admin fees on top.",
+        "",
+        "**SS163 alternated-plate restrictions (Apr–Oct):** some periods restrict access based on license-plate numbers. These rules can change by year and by municipality. Always check current notices if you are driving in high season.",
+        "",
+        "**Parking costs vary a lot:** in peak months, expect expensive day rates in town and limited availability. Treat a private garage reservation as “your ticket into Positano by car.” If you do not have a booking, you may spend a long time circling.",
+        "",
+        "Bottom line: driving can work, but only if you plan it like a reservation-based activity."
+      ]
+    },
+    {
+      "id": "arrival-plan",
+      "title": "Arriving in Positano: the least-stress plan",
+      "body": [
+        "1) **Unload first, then park.** If you are staying at Hostel Brikette, plan a quick luggage drop near Chiesa Nuova, then go park the car. Positano is steep — carrying heavy bags after you park is the part people regret.",
+        "",
+        "2) **Avoid yellow “police line” / no-stopping zones.** Enforcement is strict on the main road. Do not stop “for just a minute” — fines are common.",
+        "",
+        "3) **Expect stairs either way.** Even with a garage, you will still walk up and down steps. Good shoes matter.",
+        "",
+        "If you are arriving by ferry instead, use %LINK:ferryDockToBrikette|Ferry dock → Hostel Brikette (with luggage)% and consider %LINK:porterServices|porter services%."
+      ]
+    },
+    {
+      "id": "parking-options",
+      "title": "Parking options (in-town vs outside Positano)",
+      "body": [
+        "**Option A — Private garages in Positano (best if you must drive):**",
+        "Some garages take reservations (examples guests mention: Mandara, Car Park Anna, Di Gennaro). Book ahead in summer. Confirm opening hours, height limits (often around 1.9 m / 6.2 ft), and whether you need to leave keys.",
+        "Typical expectation: **€35–€60 per 24 hours** in peak periods, sometimes more. Prices vary by location, vehicle size, and season.",
+        "",
+        "**Option B — Paid street bays (only if you get lucky):**",
+        "You will sometimes see blue-marked paid spaces, including in areas around Chiesa Nuova. Rates and maximum stays vary. Read the sign and assume enforcement.",
+        "",
+        "**Option C — Park outside Positano and finish by bus/ferry (best balance for most travelers):**",
+        "If you do not need a car during your stay, it is often cheaper and easier to park in Sorrento/Meta/Piano di Sorrento or in Salerno near the port, then use public transport. The %LINK:transportBudget|transport budget guide% compares costs and tradeoffs."
+      ]
+    },
+    {
+      "id": "free-parking-tip",
+      "title": "A realistic note about “free parking”",
+      "body": [
+        "In practice, free spots in Positano are not something you can plan around. Some drivers sometimes find pullouts or unmarked spaces, but rules change and fines are common.",
+        "",
+        "If you want to try your luck, do it only if you can also afford the backup plan (a paid garage). One location sometimes mentioned by drivers is the Plus Code **JFJG+2X Positano, SA** — treat it as a “maybe,” not a promise. Always check local signage and never block traffic or driveways."
+      ]
+    },
+    {
+      "id": "driving-tips",
+      "title": "Driving tips on the Amalfi Coast (short version)",
+      "body": [
+        "- Drive slowly and stay alert on blind bends. Locals often use the horn on tight corners.",
+        "- Avoid peak arrival windows (late morning to late afternoon) if you can. Traffic and parking searches are at their worst.",
+        "- Do not plan tight onward connections after a drive day. Delays are normal.",
+        "- Carry both card and cash. Some garages prefer cash or have card issues in busy periods.",
+        "- If you are tired, it is safer to park and switch to buses/ferries than push through late at night."
+      ]
+    }
+  ],
+  "tipsTitle": "Quick tips",
+  "tips": [
+    "出発前にSS163号線のZTL（車両進入規制）やナンバープレート交互規制を必ず確認。違反すると後日海外へも罰金通知が届きます。",
+    "鍵を預ける前に必要な荷物をすべて取り出しておきましょう。ガレージでは車を隙間なく詰めて保管する場合があります。"
+  ],
+  "faqsTitle": "よくある質問",
+  "faqs": [
+    {
+      "q": "数時間だけ駐車できますか？",
+      "a": [
+        "時間料金はありますが、短時間でもすぐ日額に切り替わることが多いです。ちょっとした用事ならSponda付近の30分スペースを利用してください。"
+      ]
+    },
+    {
+      "q": "ガレージは夜遅くまで開いていますか？",
+      "a": [
+        "多くは07:00〜00:00頃まで営業。深夜に戻る場合は事前に連絡し、夜間担当に鍵を預けてもらえるか確認しましょう。"
+      ]
+    }
+  ]
+}

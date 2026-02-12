@@ -2,10 +2,12 @@
 // Assistance landing page - App Router version
 import type { Metadata } from "next";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
+import { loadAssistanceIndexI18nBundle } from "@/app/_lib/assistance-index-i18n-bundle";
 import { resolveI18nMetaForApp, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -45,5 +47,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function AssistancePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  return <AssistanceIndexContent lang={validLang} />;
+  const serverI18n = await loadAssistanceIndexI18nBundle(validLang);
+  return <AssistanceIndexContent lang={validLang} serverI18n={serverI18n} />;
 }

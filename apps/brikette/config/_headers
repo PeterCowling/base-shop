@@ -1,3 +1,6 @@
+# Cache header rules for brikette. Parsed by next.config.mjs for local dev.
+# Keep in sync with public/_headers (Cloudflare Pages deployment).
+
 /*
   Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400
 

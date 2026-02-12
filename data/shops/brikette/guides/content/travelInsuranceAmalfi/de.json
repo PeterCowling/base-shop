@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Reiseversicherung für die Amalfiküste: Was du wissen solltest",
+    "description": "Grundschutz, Dokumentationstipps und Hinweise für eine reibungslose Reise."
+  },
+  "linkLabel": "Reiseversicherung für die Amalfiküste",
+  "intro": [
+    "Reiseversicherungs-Basics für die Amalfiküste: Gesundheit, Stornierungen, Elektronik und Aktivitätsdeckungen."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Wichtige Deckungen",
+      "body": [
+        "Achte auf Gesundheit/Unfall, Stornierungen/Verspätungen und Elektronik; für den Path of the Gods ggf. eine Wander-Option hinzubuchen."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Schadenmeldung & Unterlagen",
+      "body": [
+        "Quittungen, Polizeiberichte bei Diebstahl sowie Bestätigungen zu Verzögerungen sichern; Fristen sowie Anforderungen für Originale/Kopien im Blick behalten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Brauche ich eine spezielle Deckung für Fähren?",
+      "a": [
+        "Ist meist über den allgemeinen Transportbaustein abgedeckt; wetterbedingte Verspätungen oder Ausfälle variieren je nach Tarif – Bedingungen prüfen."
+      ]
+    }
+  ]
+}

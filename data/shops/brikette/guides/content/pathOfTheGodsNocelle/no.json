@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Gudestien via Nocelle-bussen",
+    "description": "Ta Montepertuso–Nocelle-bussen for en tur-retur-vandring på Sentiero degli Dei, med tider, tips og returvalg."
+  },
+  "linkLabel": "Gudestien via Nocelle-buss",
+  "intro": [
+    "Har du dårlig tid eller vil du slippe flere bytter? Ta Montepertuso–Nocelle-bussen fra Hostel Brikette, gå den mest panoramiske delen av Sentiero degli Dei frem og tilbake, og returner med samme buss.",
+    "Dette alternativet hopper over ferja og Amalfi-omstigningen og passer for rolige dager eller reisende som ønsker en enklere plan."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Gjør deg klar på hostellet",
+      "body": [
+        "Kjøp to bussbilletter per person på Bar Internazionale: Positano → Nocelle og Nocelle → Positano. Personalet kan hjelpe deg med billigste kombinasjon.",
+        "Sjekk siste Montepertuso/Nocelle-tabell slik at du vet når siste retur går før solnedgang.",
+        "Pakk vann, snacks og et ekstra lag. Kiosken i Nocelle selger drikke i sesong, men langs stien finnes det ingen butikker."
+      ]
+    },
+    {
+      "id": "bus-to-nocelle",
+      "title": "Ta bussen opp til Nocelle",
+      "body": [
+        "Vent utenfor Bar Internazionale. Bussene har \\\\\"Montepertuso - Nocelle\\\\\" på fronten.",
+        "Turen klatrer gjennom Montepertuso før den avsluttes ved den lille parkeringsplassen i Nocelle. Bli sittende til bussen snur – det er stoppet ditt.",
+        "Valider billetten når du går om bord og oppbevar den til returen."
+      ]
+    },
+    {
+      "id": "walk-through-town",
+      "title": "Gå gjennom Nocelle til stien",
+      "body": [
+        "Fra parkeringen følger du fottrappen ned til hovedgangveien og tar til venstre.",
+        "Gå omtrent 175 meter og hold til høyre i det viktige krysset for å unngå trappen som går ned til Positano.",
+        "Fortsett rett frem til du ser skiltene for Sentiero degli Dei og steinstien som leder ut av landsbyen."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Gå så langt du vil",
+      "body": [
+        "Gå i retning Colle Serra for de beste utsiktspunktene. Hele tur-retur til Bomerano er omtrent 11,6 km, men du kan snu når du vil.",
+        "Følg de rød-hvite CAI-merkene, trå varsomt på utsatte hyller og stopp for bilder på panoramabalkongene.",
+        "Når du er klar, følger du samme sti tilbake til Nocelle."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Reis tilbake til Positano",
+      "body": [
+        "Gå gjennom Nocelle samme vei tilbake og ta til høyre i krysset for å komme til busstoppet.",
+        "Bruk returbilletten på bussen ned til Bar Internazionale eller Chiesa Nuova. Hvis bussene er fulle, kan du gå den asfalterte veien (ca. 4 km), men beregn 45–60 minutter.",
+        "Unngå trappenedgangen med mindre du med vilje ønsker en lang, knetøff nedstigning som ender på motsatt side av byen."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Forslag til tidsplan",
+      "body": [
+        "06:30-buss → 06:50 fremme i Nocelle → 3-timers tur → 09:50 buss tilbake → 10:10 i Positano (3 t 40 min totalt).",
+        "08:30-avgang → 08:50 fremme i Nocelle → 3 t 20 min fottur → 11:50 retur → 12:10 i Positano (4 t totalt).",
+        "10:30-avgang → 10:50 fremme i Nocelle → 3-timers tur → 13:50 retur → 14:10 i Positano (3 t 40 min totalt)."
+      ]
+    }
+  ],
+  "essentialsTitle": "Må ha med",
+  "essentials": [
+    "To SITA-billetter per person (opp og ned) pluss en ekstra.",
+    "Vann, snacks, solkrem og hatt til den åpne ryggen.",
+    "Komfortable sko med godt grep og eventuelt staver for ujevne trinn."
+  ],
+  "typicalCostsTitle": "Typiske kostnader",
+  "typicalCosts": [
+    "Nocelle-bussbilletter: €1,80–€2,40 per strekning avhengig av klippekort.",
+    "Granita eller drikke fra kiosken i Nocelle: €3–€5.",
+    "Tilgang til stien: gratis."
+  ],
+  "tipsTitle": "Rutetips",
+  "tips": [
+    "Sikt på morgenavganger for kjøligere temperaturer og roligere stier.",
+    "Ta med en lett jakke – ryggen kan være vindfull selv når Positano er varm.",
+    "Spar en liten belønning i kiosken ved kirken til du kommer tilbake."
+  ],
+  "warningsTitle": "Vær obs på",
+  "warnings": [
+    "Ignorer skiltet mot trappen ned til Positano med mindre du ønsker en krevende nedstigning som ender langt fra hostellet.",
+    "Bussene går sjeldnere på ettermiddagen – sett alarm på siste avgang du rekker komfortabelt.",
+    "Stien er eksponert; unngå å gå midt på dagen i juli og august."
+  ],
+  "steps": [
+    {
+      "name": "Kjøp bussbilletter",
+      "text": "Kjøp Nocelle-billetter på Bar Internazionale før du forlater hostellet."
+    },
+    {
+      "name": "Kjør til Nocelle",
+      "text": "Ta Montepertuso–Nocelle-bussen og bli sittende til den snur ved parkeringsplassen."
+    },
+    {
+      "name": "Finn stien",
+      "text": "Følg gangveien gjennom landsbyen, hold til høyre og finn Sentiero degli Dei-skiltene."
+    },
+    {
+      "name": "Gå tur-retur",
+      "text": "Gå mot Colle Serra og snu når du er klar til å returnere."
+    },
+    {
+      "name": "Tilbake til Positano",
+      "text": "Gå tilbake til busstoppet og ta bussen til Bar Internazionale eller Chiesa Nuova."
+    }
+  ],
+  "faqsTitle": "Ofte stilte spørsmål",
+  "faqs": [
+    {
+      "q": "Hvor lenge bør jeg gå før jeg snur?",
+      "a": [
+        "Mange går 45–60 minutter mot Colle Serra for de mest kjente utsiktspunktene før de snur. Beregn mer tid hvis du vil helt til Bomerano."
+      ]
+    },
+    {
+      "q": "Er Nocelle-bussen pålitelig?",
+      "a": [
+        "Ja, men den følger en fast tabell med lengre pauser midt på dagen. Sjekk rutetidene på Bar Internazionale og planlegg litt slingringsmonn i tilfelle bussen er full."
+      ]
+    },
+    {
+      "q": "Kan jeg gå ned i stedet for å ta bussen?",
+      "a": [
+        "Du kan gå den asfalterte veien ned på 45–60 minutter. Unngå trappen med mindre du vil ha en real treningsøkt og er komfortabel med tusenvis av trinn."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "På denne siden",
+    "essentials": "Må ha med",
+    "costs": "Typiske kostnader",
+    "tips": "Rutetips",
+    "warnings": "Vær obs på",
+    "faqs": "Ofte stilte spørsmål"
+  }
+}

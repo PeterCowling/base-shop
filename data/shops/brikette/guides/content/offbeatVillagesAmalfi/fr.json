@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Villages méconnus de la côte amalfitaine",
+    "description": "Petites communes moins fréquentées, comment s'y rendre et ce qu'on y trouve."
+  },
+  "linkLabel": "Villages méconnus de la côte amalfitaine",
+  "intro": [
+    "Cinq villages plus tranquilles de la côte amalfitaine qui méritent un détour, et comment s’y rendre."
+  ],
+  "tocTitle": "Sur cette page",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Tradition des anchois et plage paisible où les bateaux de pêche restent actifs.",
+        "Accès via le bus SITA ou les ferries saisonniers depuis Amalfi ou Salerne."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Promenades côtières planes et pâtisseries prisées pour un rythme plus serein.",
+        "Arrivez en bus ou en ferry ; combinez avec le sentier des citrons entre les deux villes jumelles."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Charmante petite piazza à l’est d’Amalfi, avec des ruelles étroites et un accès à la plage.",
+        "Rejoignez-la à pied depuis Amalfi en quelques minutes ou faites un arrêt en bus local."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Capitale de la céramique près de Salerne, où les ateliers se succèdent le long des rues.",
+        "Prenez le train jusqu’à Salerne, puis un court trajet en bus ou en ferry."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Fjord spectaculaire avec peu d’espace de plage — arrivez tôt pour des photos au calme.",
+        "Prenez les bus SITA vers Amalfi ; des ferries estivaux marquent parfois un arrêt à proximité."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je visiter plusieurs villages en une journée ?",
+      "a": [
+        "Oui — reliez Cetara, Vietri et Minori en ferry ou en bus. Partez tôt et surveillez les horaires de retour."
+      ]
+    },
+    {
+      "q": "Les petits villages acceptent-ils les cartes ?",
+      "a": [
+        "Ayez du liquide pour les cafés et kiosques ; beaucoup imposent encore un minimum de 10 € ou restent uniquement en espèces."
+      ]
+    }
+  ]
+}

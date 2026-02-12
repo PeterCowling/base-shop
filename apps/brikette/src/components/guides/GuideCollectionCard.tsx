@@ -1,16 +1,36 @@
 // src/components/guides/GuideCollectionCard.tsx
+import { useMemo } from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import { useMemo } from "react";
 
+import { Cluster } from "@acme/design-system/primitives";
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
 import { GUIDE_DIRECTION_LINKS } from "@/data/guideDirectionLinks";
 import type { GuideMeta } from "@/data/guides.index";
+import { getGuideLinkLabels } from "@/guides/slugs/labels";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
-import { getGuideLinkLabels } from "@/guides/slugs/labels";
+
+function humanizeGuideLabel(value: string): string {
+  const spaced = value
+    .replace(/_/g, " ")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .replace(/([a-z\d])([A-Z])/g, "$1 $2")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!spaced) return value;
+  return spaced
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => {
+      if (/^[A-Z0-9]{2,}$/.test(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(" ");
+}
 
 // Card with optional thumbnail - overflow hidden for image
 const CARD_CLASSES = [
@@ -62,7 +82,10 @@ const SUMMARY_CLASSES = [
 
 const CTA_BUTTON_CLASSES = [
   "mt-4",
-  "inline-block",
+  "inline-flex",
+  "min-h-11",
+  "items-center",
+  "justify-center",
   "w-fit",
   "max-w-full",
   "whitespace-normal",
@@ -104,13 +127,14 @@ const DIRECTION_LABEL_CLASSES = [
 ] as const;
 const DIRECTION_PILL_CLASSES = [
   "inline-flex",
+  "min-h-11",
   "items-center",
   "rounded-full",
   "border",
   "border-brand-outline/40",
   "bg-brand-surface/60",
-  "px-3",
-  "py-1",
+  "px-4",
+  "py-2",
   "text-xs",
   "font-semibold",
   "text-brand-primary",
@@ -153,7 +177,8 @@ export const GuideCollectionCard = ({
     const guideLinkLabels = getGuideLinkLabels(lang);
 
     return directionLinks.map((link) => {
-      const resolvedLabel = link.label ?? guideLinkLabels[link.labelKey] ?? link.labelKey;
+      const resolvedLabel =
+        link.label ?? guideLinkLabels[link.labelKey] ?? humanizeGuideLabel(link.labelKey);
       const linkType = link.type ?? 'guide';
 
       let href: string;
@@ -192,13 +217,13 @@ export const GuideCollectionCard = ({
       <div className={clsx(CONTENT_CLASSES)}>
         <div>
           <h3 className="text-base font-semibold text-brand-heading dark:text-brand-heading">
-            {ctaLabel ? (
-              <Link href={href} prefetch={false} className="hover:underline">
-                {label}
-              </Link>
-            ) : (
-              <span>{label}</span>
-            )}
+            <Link
+              href={href}
+              prefetch={false}
+              className="inline-flex min-h-11 items-center text-brand-heading hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/70 dark:text-brand-text dark:focus-visible:ring-brand-secondary/70"
+            >
+              {label}
+            </Link>
           </h3>
           {summary ? <p className={clsx(SUMMARY_CLASSES)}>{summary}</p> : null}
           {ctaLabel ? (
@@ -209,7 +234,7 @@ export const GuideCollectionCard = ({
           {resolvedDirectionLinks?.length && directionsLabel ? (
             <div className={clsx(DIRECTION_WRAPPER_CLASSES)}>
               <p className={clsx(DIRECTION_LABEL_CLASSES)}>{directionsLabel}</p>
-              <div className="flex flex-wrap gap-2">
+              <Cluster className="gap-2">
                 {resolvedDirectionLinks.map((link) => (
                   <Link
                     key={`${guide.key}-${link.labelKey}`}
@@ -220,7 +245,7 @@ export const GuideCollectionCard = ({
                     {link.label}
                   </Link>
                 ))}
-              </div>
+              </Cluster>
             </div>
           ) : null}
         </div>

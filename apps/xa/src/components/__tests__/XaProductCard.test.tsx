@@ -2,6 +2,8 @@ import * as React from "react";
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
 
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+
 import type { XaProduct } from "../../lib/demoData";
 import { getAvailableStock } from "../../lib/inventoryStore";
 import { XaProductCard } from "../XaProductCard";
@@ -79,27 +81,31 @@ beforeEach(() => {
   (getAvailableStock as jest.Mock).mockReturnValue(3);
 });
 
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  <CurrencyProvider>{children}</CurrencyProvider>
+);
+
 describe("XaProductCard", () => {
   it("renders fallback content and sold out badge", () => {
     (getAvailableStock as jest.Mock).mockReturnValue(0);
     const product = makeProduct({ media: [], sizes: [] });
-    render(<XaProductCard product={product} />);
+    render(<XaProductCard product={product} />, { wrapper: Wrapper });
 
-    expect(screen.getByText(product.title)).toBeInTheDocument();
+    expect(screen.getAllByText(product.title)[0]).toBeInTheDocument();
   });
 
   it("shows discount badge and wishlist state", () => {
     const product = makeProduct({ compareAtPrice: 200 });
     wishlistState = [product.id];
 
-    render(<XaProductCard product={product} />);
+    render(<XaProductCard product={product} />, { wrapper: Wrapper });
 
     expect(screen.getByText("Save")).toBeInTheDocument();
   });
 
   it("renders quick add for clothing sizes", () => {
     const product = makeProduct({ sizes: ["S", "M"] });
-    render(<XaProductCard product={product} />);
+    render(<XaProductCard product={product} />, { wrapper: Wrapper });
 
     expect(screen.getByText("Quick add")).toBeInTheDocument();
   });
@@ -116,7 +122,7 @@ describe("XaProductCard", () => {
         gemstone: "emerald",
       },
     });
-    render(<XaProductCard product={product} />);
+    render(<XaProductCard product={product} />, { wrapper: Wrapper });
 
     expect(screen.getByText("Rose Gold / Emerald")).toBeInTheDocument();
   });
@@ -132,7 +138,7 @@ describe("XaProductCard", () => {
         sizeClass: "mini",
       },
     });
-    render(<XaProductCard product={product} />);
+    render(<XaProductCard product={product} />, { wrapper: Wrapper });
 
     expect(screen.getByText("Size class: Mini")).toBeInTheDocument();
   });

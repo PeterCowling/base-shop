@@ -5,10 +5,10 @@
  */
 
 import { useMemo } from 'react';
+
 import {
   getRecommendedRoutes,
   getRouteBySlug,
-  getRoutesByMode,
   getRoutesByOrigin,
   ROUTE_ORIGINS,
   ROUTES_TO_POSITANO,

@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Mosási lehetőségek Positanóban",
+    "description": "Önkiszolgáló mosodák, leadós szolgáltatók, árak és várakozási idők."
+  },
+  "linkLabel": "Mosási lehetőségek Positanóban (önkiszolgáló és leadós)",
+  "intro": [
+    "Positanóban van önkiszolgáló mosoda és leadható szolgáltatás is; szezonváltáskor ellenőrizd a nyitvatartást, és számíts sorokra a turnusváltó napokon."
+  ],
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "selfService": "Önkiszolgáló mosodák",
+    "dropOff": "Leadós szolgáltatások",
+    "howto": "Útmutató: önkiszolgáló",
+    "tips": "Mosószer és gépek",
+    "faqs": "GYIK"
+  },
+  "selfServiceText": "Kompakt, európai méretű gépekre számíts. Vigyél aprópénzt, és válassz csúcsidőn kívüli sávokat (késő délelőtt vagy kora délután a turnusnapokon kívül), hogy elkerüld a sorokat.",
+  "dropOffText": "Érdeklődj a kilónkénti mosás-vasalás árról és az aznapi átfutásról. Főszezonban a korai leadás növeli az esélyt, hogy még aznap készen legyen.",
+  "howtoSteps": [
+    "Válaszd ki a gép méretét a töltet szerint; ne töltsd túl.",
+    "Adj hozzá mosószert/öblítőt az útmutató szerint; egyes gépek automatikusan adagolnak.",
+    "Válaszd ki a programot (hideg/meleg), indítsd el, és állíts be emlékeztetőt, hogy a ciklus vége előtt visszaérj."
+  ],
+  "tipsList": [
+    "Gyorsan száradó textilekhez és fürdőruhákhoz kímélő programot használj.",
+    "A közös szárítógépek erős hőt adhatnak – nézd meg a címkéket, és ha kell, szárítsd vállfán."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Önkiszolgáló",
+      "body": [
+        "Kompakt, európai méretű gépekre számíts. Vigyél aprópénzt, és válassz csúcsidőn kívüli sávokat (késő délelőtt vagy kora délután a turnusnapokon kívül), hogy elkerüld a sorokat."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Leadós szolgáltatások",
+      "body": [
+        "Érdeklődj a kilónkénti mosás-vasalás árról és az aznapi átfutásról. Főszezonban a korai leadás növeli az esélyt, hogy még aznap készen legyen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vásárolhatok a közelben mosószert?",
+      "a": [
+        "Igen — nézd meg a %LINK:groceriesPharmacies|élelmiszerboltok és gyógyszertárak% útmutatót a kis csomagokért."
+      ]
+    },
+    {
+      "q": "Hol várjak, amíg a mosás fut?",
+      "a": [
+        "Ülj be egy közeli kávézóba (lásd %LINK:workCafes|dolgozásbarát kávézók%), vagy tegyél egy rövid sétát."
+      ]
+    }
+  ]
+}

@@ -64,6 +64,7 @@ const ALLOWED_STATUSES = new Set([
   "Proposed",
   "Accepted",
   "Rejected",
+  "Archive",
 ]);
 
 async function walk(dir: string): Promise<string[]> {

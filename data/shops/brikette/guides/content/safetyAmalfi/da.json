@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Sådan holder du dig sikker i Positano og på Amalfikysten",
+    "description": "Praktiske sikkerhedstips: busser, færger, trapper, sol og nødkontakter — alt du bør kende på forhånd."
+  },
+  "linkLabel": "Sådan holder du dig sikker i Positano og på Amalfikysten",
+  "intro": [
+    "Hold dig sikker på Positanos trapper, busser og strande med få enkle vaner."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Trapper og gåture",
+      "body": [
+        "Kortlæg ruter med færre trin (Chiesa Nuova eller Sponda), og fordel vægten mellem rygsæk og let trolley, hvis knæene driller.",
+        "Hold pauser ved terrasser, eller brug kompakte vandrestave til længere stigninger som Gudernes sti."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Busser og færger",
+      "body": [
+        "Stemple SITA-billetter, hold fast i gelænderet, og placer bagage i bagagezonen – blinde sving kan give pludselige opbremsninger.",
+        "På færger: behold værdier hos dig og følg besætningens anvisninger, når kufferter stues af vejen."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Hav og sol",
+      "body": [
+        "Tjek strandflag, brug badesko på rullesten, og genpåfør reef-safe solcreme efter hvert dyp.",
+        "Drik jævnligt: bær mindst 1 liter vand pr. person på varme dage, og søg skygge mellem kl. 12 og 15."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Ejendele og kontaktinfo",
+      "body": [
+        "Fordel kontanter og kort mellem tasker, og brug hostellets skabe eller safes til pas og elektronik.",
+        "Gem nødnumre (112 generelt, kystvagt 1530) og lokale apotekstider offline i tilfælde af dårlig dækning."
+      ]
+    }
+  ],
+  "tips": [
+    "Fortæl en ven eller receptionen, hvornår du er tilbage fra lange vandringer, og dobbelttjek vejrmeldingerne.",
+    "Medbring en lille lommelygte til sene trapper – nogle stræder er svagt belyst efter midnat."
+  ],
+  "faqs": [
+    {
+      "q": "Kan man drikke postevandet?",
+      "a": [
+        "Ja, vandet i Positano er drikkeligt – fyld flasker op for at spare plastik og holde væskebalancen."
+      ]
+    },
+    {
+      "q": "Er der områder, jeg bør undgå om natten?",
+      "a": [
+        "Byen er generelt rolig, men hold dig til oplyste ruter, og tag taxi, hvis du vender sent hjem fra Amalfi, Sorrento eller Napoli."
+      ]
+    }
+  ]
+}

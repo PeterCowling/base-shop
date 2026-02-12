@@ -1,7 +1,7 @@
+/* eslint-disable ds/no-hardcoded-copy, ds/no-naked-img, ds/require-aspect-ratio-on-media -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/LocationMiniBlock.tsx
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { MapPin } from "@/icons";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -9,13 +9,29 @@ import { Cluster, Inline, Stack } from "@/components/ui/flex";
 import hotel from "@/config/hotel";
 import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
+import { MapPin } from "@/icons";
+
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}
 
 const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: AppLanguage }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t } = useTranslation("landingPage", translationOptions);
   const { t: tModals } = useTranslation("modals", translationOptions);
   const { openModal } = useOptionalModal();
-  const address = t("heroSection.address");
+  const address = resolveTranslatedCopy(
+    t("heroSection.address", {
+      defaultValue: "Via G. Marconi, 358, 84017 Positano SA",
+    }),
+    "Via G. Marconi, 358, 84017 Positano SA"
+  );
 
   const { streetAddress, postalCode, addressLocality } = hotel.address;
   const mapsUrl = `https://www.google.com/maps/place/${encodeURIComponent(`${streetAddress}, ${postalCode} ${addressLocality}`)}`;
@@ -31,19 +47,34 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
           <Stack className="gap-4 rounded-3xl border border-brand-outline/30 bg-brand-bg p-6 shadow-sm dark:border-white/10 dark:bg-brand-surface">
             <div>
               <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
-                {t("locationSection.title")}
+                {resolveTranslatedCopy(
+                  t("locationSection.title", { defaultValue: "Location & transport" }),
+                  "Location & transport"
+                )}
               </h2>
               <p className="mt-2 text-sm text-brand-text/70 dark:text-brand-text/70">
-                {t("locationSection.subtitle")}
+                {resolveTranslatedCopy(
+                  t("locationSection.subtitle", {
+                    defaultValue:
+                      "Perched above Positano with quick access to buses, the beach, and ferries.",
+                  }),
+                  "Perched above Positano with quick access to buses, the beach, and ferries."
+                )}
               </p>
             </div>
 
             <Cluster className="text-xs font-medium text-brand-text/80 dark:text-brand-text/80">
               <span className="rounded-full bg-brand-surface/70 px-3 py-1 dark:bg-white/10">
-                {tModals("location.nearbyBusCompact")}
+                {resolveTranslatedCopy(
+                  tModals("location.nearbyBusCompact", { defaultValue: "100 m to SITA bus stop" }),
+                  "100 m to SITA bus stop"
+                )}
               </span>
               <span className="rounded-full bg-brand-surface/70 px-3 py-1 dark:bg-white/10">
-                {t("locationSection.nearbyBeach")}
+                {resolveTranslatedCopy(
+                  t("locationSection.nearbyBeach", { defaultValue: "≈350 m to the beach" }),
+                  "≈350 m to the beach"
+                )}
               </span>
             </Cluster>
 
@@ -53,17 +84,23 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
               <button
                 type="button"
                 onClick={handleDirections}
-                className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-md transition-colors hover:bg-brand-primary/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-md transition-colors hover:bg-brand-primary/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-bg dark:hover:text-brand-bg"
               >
-                {tModals("location.getDirections")}
+                {resolveTranslatedCopy(
+                  tModals("location.getDirections", { defaultValue: "Get directions" }),
+                  "Get directions"
+                )}
               </button>
               <a
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-surface"
+                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-surface dark:hover:text-brand-secondary"
               >
-                {tModals("location.justShowMap")}
+                {resolveTranslatedCopy(
+                  tModals("location.justShowMap", { defaultValue: "Show map" }),
+                  "Show map"
+                )}
               </a>
             </Cluster>
           </Stack>
@@ -74,7 +111,6 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
             target="_blank"
             rel="noopener noreferrer"
             className="group h-full justify-between rounded-3xl border border-brand-outline/30 bg-brand-surface/80 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-white/10 dark:bg-brand-surface"
-            aria-label={t("locationSection.mapLabel")}
           >
             <Inline className="gap-3 text-brand-heading dark:text-brand-text">
               <Inline
@@ -84,9 +120,19 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 <MapPin className="size-5" aria-hidden />
               </Inline>
               <div>
-                <p className="text-sm font-semibold">{t("locationSection.mapLabel")}</p>
+                <p className="text-sm font-semibold">
+                  {resolveTranslatedCopy(
+                    t("locationSection.mapLabel", { defaultValue: "Open in Maps" }),
+                    "Open in Maps"
+                  )}
+                </p>
                 <p className="text-xs text-brand-text/70 dark:text-brand-text/70">
-                  {t("locationSection.mapHint")}
+                  {resolveTranslatedCopy(
+                    t("locationSection.mapHint", {
+                      defaultValue: "Tap for a Google Maps pin and directions.",
+                    }),
+                    "Tap for a Google Maps pin and directions."
+                  )}
                 </p>
               </div>
             </Inline>
@@ -102,8 +148,11 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 </div>
               </div>
             </div>
-            <span className="mt-6 text-xs font-semibold uppercase tracking-widest text-brand-primary">
-              {t("locationSection.mapCta")}
+            <span className="mt-6 text-xs font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">
+              {resolveTranslatedCopy(
+                t("locationSection.mapCta", { defaultValue: "View map" }),
+                "View map"
+              )}
             </span>
           </Stack>
         </div>

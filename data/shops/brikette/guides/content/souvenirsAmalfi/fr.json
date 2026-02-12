@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "Souvenirs à petit prix (côte amalfitaine)",
+    "description": "Idées de souvenirs authentiques abordables, où les acheter et comment les rapporter en toute sécurité."
+  },
+  "linkLabel": "Souvenirs à petit prix (côte amalfitaine)",
+  "intro": [
+    "Souvenirs locaux : céramiques artisanales, gourmandises de garde-manger et impressions, mais les prix varient fortement dans les ruelles principales.",
+    "Suivez ces conseils pour viser la qualité, repérer les bonnes boutiques et emballer vos achats sans casse au retour."
+  ],
+  "tocTitle": "Sur cette page",
+  "toc": [
+    {
+      "href": "#what-to-buy",
+      "label": "Que rapporter"
+    },
+    {
+      "href": "#where-to-shop",
+      "label": "Où acheter"
+    },
+    {
+      "href": "#packing",
+      "label": "Emballage & expédition"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "what-to-buy",
+      "title": "Que rapporter",
+      "body": [
+        "Céramiques peintes à la main, limoncello, petites estampes, condiments comme la colatura ou la confiture de citron représentent bien la côte et voyagent facilement.",
+        "Cherchez la signature de l'artisan ou les labels coopératifs ; évitez les souvenirs industriels sans bel émaillage ou à forte odeur chimique."
+      ]
+    },
+    {
+      "id": "where-to-shop",
+      "title": "Où acheter",
+      "body": [
+        "Montez d'une ou deux rues au-dessus de Via dei Mulini et de la plage pour comparer boutiques, coopératives et ateliers.",
+        "Les marchés de Sorrente, Amalfi ou même Salerne proposent souvent les mêmes produits à un prix plus doux — intégrez le coût ferry/bus à votre calcul."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Emballage & expédition",
+      "body": [
+        "Enveloppez les céramiques dans des vêtements ou du papier bulle et séparez les assiettes avec du carton ou des torchons réutilisables.",
+        "Si vous expédiez depuis l'Italie, demandez un envoi suivi et gardez les reçus ; pour les denrées, vérifiez les règles douanières de votre pays avant de payer."
+      ]
+    },
+    {
+      "id": "price-checks",
+      "title": "Vérifier prix & authenticité",
+      "body": [
+        "Repérez les labels Consorzio ou IGP sur le limoncello et préférez les étiquettes manuscrites plutôt que les panneaux ‘special offer’ à répétition.",
+        "Si l'affaire paraît trop belle, examinez coutures et glaçure : un vrai travail artisanal présente de légères variations, pas des motifs identiques."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je transporter limoncello ou aliments dans mes bagages ?",
+      "a": [
+        "Les liquides de plus de 100 ml vont en soute ; déclarez l'alcool si nécessaire et vérifiez les limites de votre pays pour les produits laitiers ou carnés avant d'acheter."
+      ]
+    },
+    {
+      "q": "Les boutiques acceptent-elles la carte ?",
+      "a": [
+        "La plupart oui, mais certains ateliers préfèrent l'espèce ou imposent un minimum — gardez des euros en petites coupures."
+      ]
+    },
+    {
+      "q": "Le tax free est-il disponible ?",
+      "a": [
+        "Oui au-delà du seuil de TVA dans une même boutique ; demandez le formulaire tax free, faites-le tamponner au départ et conservez les reçus à portée."
+      ]
+    }
+  ]
+}

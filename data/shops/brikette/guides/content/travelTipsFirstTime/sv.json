@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Resetips för Positano för förstagångsbesökare",
+    "description": "Viktiga råd om att ta sig dit, etikett, packning och misstag att undvika – med hostelvänliga tips."
+  },
+  "linkLabel": "Resetips för Positano för förstagångsbesökare",
+  "intro": [
+    "Första gången i Positano? Här får du tips om ankomst, bagage, betalningar och uppkoppling – utan stress."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Smart ankomst",
+      "body": [
+        "Förboka tåg + buss eller färjeetapper när det går; dagens första avgångar slår både värme och köer.",
+        "Tungt bagage? Kombinera SITA-bussen till Chiesa Nuova med en bärare från kajen så slipper du de brantaste trapporna."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bagage och trappor",
+      "body": [
+        "Packa lätt med mjuka väskor eller ryggsäckar som klarar smala trappor och shuttlens bagageutrymmen.",
+        "Kommer du tidigt? Använd bagageförvaring längs Via dei Mulini så kan du utforska handsfree fram till incheckning."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing och bokningar",
+      "body": [
+        "Planera strandtid och längre promenader före 10.00 eller efter 16.00 när gränderna är svalare och trafiken lugnare.",
+        "Boka restauranger, båtturer och skytteln till Gudarnas stig minst en dag i förväg under högsäsong."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Betalningar och kontanter",
+      "body": [
+        "Kort accepteras nästan överallt, men många kaféer och tobaksbutiker har minsta belopp – ha 5–10-eurosedlar redo.",
+        "Bankomater fungerar men avgifterna varierar; ta ut medelstora belopp vid ett tillfälle och fördela kontanterna i olika fickor."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Uppkoppling och backup",
+      "body": [
+        "Skaffa ett italienskt eSIM (TIM/Vodafone) eller säkerställ roaming; täckningen är bäst högre upp i byn.",
+        "Ladda ner offlinekartor, färjetidtabeller och vägbeskrivningar till vandrarhemmet för tillfällen då mobildatan svajar."
+      ]
+    }
+  ],
+  "tips": [
+    "Spara offlineversioner av buss- och färjetidtabeller samt ankomstinstruktioner till vandrarhemmet för stunder utan täckning.",
+    "Ha med en återanvändbar flaska (750 ml) och ett lätt lager – dagarna är varma och kvällarna blåsiga ovanför stranden."
+  ],
+  "faqs": [
+    {
+      "q": "Klarar jag mig med endast handbagage?",
+      "a": [
+        "Ja – packa snabbtorkande kläder, planera att använda vandrarhemmets tvättmöjligheter och ta med små reseförpackningar för att hålla dig inom flygbolagets gränser."
+      ]
+    },
+    {
+      "q": "Behöver jag en reseadapter?",
+      "a": [
+        "Italien använder 230 V med kontakter av typ F/L; ta med en universaladapter om dina kontakter skiljer sig från EU-standarden."
+      ]
+    }
+  ]
+}

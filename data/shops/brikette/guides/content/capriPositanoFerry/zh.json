@@ -1,0 +1,177 @@
+{
+  "seo": {
+    "title": "卡普里至波西塔诺乘渡轮 | Hostel Brikette",
+    "description": "旅舍客人完整指南：卡普里至波西塔诺渡轮票、时刻表、运营商、抵达提示以及携带行李前往Hostel Brikette的最简单路线。"
+  },
+  "lastUpdated": "2026-01-31",
+  "intro": {
+    "title": "卡普里 → 波西塔诺 – 渡轮",
+    "body": "本指南涵盖了从卡普里到波西塔诺乘渡轮旅行需要了解的一切，专为携带背包的旅舍客人而写。从旅舍出发，我们帮助过数百位客人规划这条路线——以下是如何选择渡轮运营商、在Marina Grande港口购买船票、顺利抵达波西塔诺的Spiaggia Grande码头，并前往Hostel Brikette而不会在楼梯上迷路。"
+  },
+  "callouts": {
+    "tip": "海况恶劣可能会在短时间内取消渡轮。如果您在同一天预订后续行程，请留出3小时缓冲时间或查看%LINK:positanoCapriFerry|经索伦托的替代巴士路线%。"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "行程概览",
+      "body": "从卡普里到波西塔诺的渡轮是阿马尔菲海岸最佳海上路线之一。许多公司在4月至10月的旺季期间全天运营快速水翼船和渡轮。冬季，服务有限。根据船只和天气情况，行程需要20-40分钟。在旅舍，我们告诉客人这条路线非常适合卡普里一日游。它比经索伦托的巴士更快、更有趣。您可以欣赏到海岸的美景，并直接到达波西塔诺的海滩。",
+      "list": [
+        "季节：4月至10月每天有船，冬季航班较少",
+        "首班渡轮：约09:45从卡普里Marina Grande港口出发",
+        "末班渡轮：约19:00（时间因公司和季节而变化）",
+        "旅行时间：水上20-40分钟",
+        "价格：2026年每人€22-€35",
+        "天气：恶劣海况会取消渡轮，请在出发前查看",
+        "最佳座位：船的右侧，可在抵达时观看波西塔诺景色",
+        "提示：早晨船班（14:00前）比下午船班取消频率低"
+      ]
+    },
+    {
+      "id": "operators",
+      "title": "渡轮公司和船票",
+      "body": "六家公司运营从卡普里到波西塔诺的船只：NLG、Positano Jet、Alicost、Alilauro Gruson、Capitan Morgan和Grassi Junior。所有公司都不错。NLG和Positano Jet每天的航班最多。您的船票适用于同一路线的任何公司。只需从有下一班船的公司购买即可。",
+      "list": [
+        "在卡普里的Marina Grande港口购买船票。每家公司在码头附近都有售票处。",
+        "提前20-30分钟到达以排队登船。",
+        "如果您在网上购买，请先在售票处兑换凭证。",
+        "旺季（7-8月）：在线提前预订早晨航班。它们很快售罄。",
+        "船票仅供步行乘客。渡轮不运载汽车或自行车。",
+        "夏季，提前1-2天购买船票以获得您首选的时间。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/05-capri-harbour.webp",
+          "alt": "卡普里Marina Grande渡轮港口，有船只和售票处",
+          "caption": "卡普里Marina Grande港口，前往波西塔诺的渡轮从这里出发。Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Habour_of_Capri.JPG|JonathanHeu% (%URL:https://creativecommons.org/licenses/by-sa/3.0|CC BY-SA 3.0%)。"
+        }
+      ]
+    },
+    {
+      "id": "capriPort",
+      "title": "在卡普里的Marina Grande港口",
+      "body": "所有前往波西塔诺的船只都从Marina Grande出发。这是卡普里海平面的主要港口。如果您在卡普里镇（Piazzetta），请乘坐缆车下山。缆车每15分钟一班，需要5分钟。您也可以步行20分钟下山，但非常陡峭。港口有许多售票处、咖啡馆和洗手间。从我们旅舍了解到，港口在11:00至17:00之间非常拥挤。如果您下午旅行，请提前到达渡轮。",
+      "list": [
+        "从卡普里镇乘坐缆车，票价€2.30。或步行20分钟下山（陡峭路径）。",
+        "售票处沿海滨排列。寻找您公司的标志。",
+        "如果您在网上购买，请在正确的售票处兑换凭证。",
+        "查看您的船票上的码头号码。通常写得很清楚。",
+        "提前10-15分钟登船。座位先到先得。",
+        "意大利境内的船只不需要护照。",
+        "如果您想先不带行李探索卡普里，港口有行李寄存处。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/01-marina-grande-capri.webp",
+          "alt": "卡普里Marina Grande港口，渡轮和售票处沿海滨排列",
+          "caption": "Marina Grande是卡普里的主要港口——所有前往波西塔诺的渡轮都从这里出发。Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Marina_Grande_(Capri).jpg|Yair Haklai% (%URL:https://creativecommons.org/licenses/by-sa/4.0|CC BY-SA 4.0%)。"
+        }
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "抵达波西塔诺渡轮码头",
+      "body": "您的渡轮停靠在Spiaggia Grande码头，就在波西塔诺的主海滩上。码头很小——只是一条木制走道——所以请等所有人离开后再携带行李移动。穿着鲜艳背心的搬运工会迎接每艘渡轮，并提供将行李搬运到酒店的服务，费用为€15-€25，具体取决于距离。对于Hostel Brikette，搬运工可以带您到Chiesa Nuova（上方的巴士站），但对于短途步行来说费用较高。大多数旅舍客人跳过这一步，改用Interno巴士。",
+      "list": [
+        "从码头出来到Via del Brigantino（海滩路）",
+        "洗手间和咖啡馆位于海滩左侧",
+        "%LINK:ferryDockToBrikette|Interno巴士站%距离码头上坡步行3分钟",
+        "如果您更喜欢全程步行：上坡25分钟到旅舍，有楼梯。轻便背包容易，大行李箱困难。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/capri-positano-ferry/02-positano-from-sea.webp",
+          "alt": "从卡普里接近的渡轮看波西塔诺海岸线景色",
+          "caption": "从卡普里乘渡轮接近波西塔诺——色彩缤纷的村庄层层叠叠至海边。Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Sea.JPG|JeCCo% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)。"
+        },
+        {
+          "src": "/img/guides/capri-positano-ferry/04-view-positano.webp",
+          "alt": "从水面看波西塔诺全景，显示Spiaggia Grande海滩和码头",
+          "caption": "波西塔诺的Spiaggia Grande海滩，从卡普里来的渡轮在这里停靠。Photo credit: %URL:https://commons.wikimedia.org/wiki/File:View_of_Positano.jpg|Alexis Lours% (%URL:https://creativecommons.org/licenses/by/4.0|CC BY 4.0%)。"
+        }
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "从港口乘Interno巴士前往旅舍",
+      "body": "橙色的Interno巴士是携带行李前往Hostel Brikette最简单的方式。它每20-30分钟绕波西塔诺一圈。票价为€1.30（刚好的零钱很好，但司机通常有小额钞票的找零）。从码头短途步行到Piazza dei Mulini最近的车站。登上上行巴士（方向：Chiesa Nuova）并乘坐约8分钟。旅舍距离Chiesa Nuova Tabacchi站步行2分钟。",
+      "list": [
+        "从渡轮码头上坡步行到Piazza dei Mulini（3分钟，轻微坡度）",
+        "在广场上坡一侧等候。巴士前面会显示'Chiesa Nuova'。",
+        "在广场的tabacchi（烟草店）购买车票，或向司机支付（€1.30）",
+        "如果不确定在哪里下车，请告诉司机'Chiesa Nuova Tabacchi'",
+        "完整路线指南：%LINK:ferryDockToBrikette|渡轮码头到Hostel Brikette携带行李%"
+      ]
+    },
+    {
+      "id": "finalWalk",
+      "title": "从Chiesa Nuova Tabacchi到Hostel Brikette",
+      "body": "从巴士站到旅舍的步行很容易，大约需要2分钟。从车站，您会看到拐角处的Tabacchi商店（烟草店）。那是您的地标。旅舍就在Via G. Marconi路上，有楼梯通向入口。",
+      "list": [
+        "在Chiesa Nuova Tabacchi站下车",
+        "面向Tabacchi商店，然后右转到主路（Via G. Marconi）",
+        "步行100米（约1分钟）。您会经过几家商店和咖啡馆。",
+        "寻找右侧的Hostel Brikette标志",
+        "爬楼梯到达主入口和接待处"
+      ]
+    },
+    {
+      "id": "cancelled",
+      "title": "如果渡轮被取消",
+      "body": "渡轮取消比您想象的更频繁，尤其是在下午风力增强时。运营商通常在出发前30-60分钟宣布取消，但有时您只能在码头才知道。如果您的渡轮被取消，您有两个选择：等待下一班船（如果当天仍有船运行）或通过索伦托走更长的陆路返回。陆路使用从卡普里到索伦托的渡轮（它们在更恶劣的条件下运行），然后沿着海岸公路乘坐SITA巴士。",
+      "list": [
+        "在Marina Grande咨询所有运营商。有时一家仍在运营而其他公司取消。",
+        "替代方案：乘坐卡普里-索伦托渡轮（30分钟），然后乘坐SITA巴士到波西塔诺（50分钟）",
+        "陆路总时间：包括等待约2.5小时",
+        "索伦托渡轮信息：%LINK:positanoCapriFerry|渡轮时刻表%",
+        "从旅舍：我们建议最晚17:00预订您的卡普里返程，以避免晚间取消"
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "旅舍客人提示",
+      "body": "根据数百位从卡普里返回波西塔诺的客人的反馈，以下是最有效的方法：",
+      "list": [
+        "预订14:00前从卡普里出发的早晨航班。下午海面更加波涛汹涌，渡轮取消更频繁。",
+        "带一件轻便外套。水翼船有强劲的空调，在卡普里炎热的一天后会感觉很冷。",
+        "坐在船的右侧，可在抵达时获得波西塔诺色彩缤纷房屋的最佳景色。",
+        "如果您容易晕船，请在登船前30分钟服药。航行可能颠簸。",
+        "保留您的渡轮票直到完全离开码头。工作人员有时会在波西塔诺再次检查票。",
+        "不要担心错过最后一班渡轮。经索伦托的陆路一直运营到深夜。"
+      ]
+    },
+    {
+      "id": "dayTrip",
+      "title": "与卡普里一日游结合",
+      "body": "大多数旅舍客人将卡普里作为一日游，并在傍晚乘渡轮返回。这是一个很好的计划，但需要一些时间策略来避免人群和取消。早上（约09:00）乘早班渡轮离开波西塔诺前往卡普里，花5-6小时探索岛屿，然后在15:00-16:00左右乘返程渡轮。这让您有时间看到主要景点——阿纳卡普里、Villa San Michele、Monte Solaro索道和卡普里镇的Piazzetta——而不必匆忙。",
+      "list": [
+        "从波西塔诺到卡普里的早晨渡轮：通常09:00-10:00出发",
+        "在卡普里：从Marina Grande港口乘巴士上到阿纳卡普里（15分钟车程）",
+        "参观：Villa San Michele（门票€10）、Monte Solaro索道（单程€10，往返€14）",
+        "在阿纳卡普里或卡普里镇用餐（预算每人€15-€25）",
+        "探索：奥古斯都花园、Via Krupp观景台、卡普里镇购物",
+        "在15:30前返回Marina Grande搭乘16:00渡轮返回波西塔诺",
+        "一日游总费用：每人€50-€70，包括渡轮、巴士、索道和午餐",
+        "相关：%LINK:capriDayTrip|从波西塔诺出发的卡普里一日游完整指南%"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "从卡普里到波西塔诺的渡轮费用是多少？",
+      "answer": "2026年单程渡轮票价为每人€22-€35。价格因运营商和季节略有不同——预计在7月和8月旺季支付接近€30-€35。没有提前购买折扣，但在线预订可保证您在繁忙日子有位置。"
+    },
+    {
+      "question": "可以在卡普里-波西塔诺渡轮上携带行李吗？",
+      "answer": "可以，您可以免费携带行李。允许携带背包、手提箱和大包。将它们存放在入口附近的指定行李区或座位下。大多数渡轮的顶部储物空间有限，因此请将贵重物品随身携带。根据旅舍的经验，所有运营商的座位下都可以舒适地放置一个完整的背包。"
+    },
+    {
+      "question": "如果我从卡普里的渡轮被取消怎么办？",
+      "answer": "下午天气恶劣时渡轮取消很常见。如果取消，请咨询Marina Grande的所有运营商——有时一家仍在运营。否则，乘坐卡普里-索伦托渡轮（在更恶劣的条件下运行），然后从索伦托乘坐SITA巴士到波西塔诺。全程：约2.5小时。您的票通常可以退款或用于下一班可用航班。"
+    },
+    {
+      "question": "需要提前预订从卡普里到波西塔诺的渡轮吗？",
+      "answer": "取决于季节。在7月和8月，早上和下午早些时候的出发班次很快就会售罄——提前1-2天在线预订。在淡季（4-6月、9-10月），通常可以在出发前30分钟在港口购票。根据旅舍的经验，我们看到客人在旺季错过了首选的航班，因此如果您的行程紧张，提前预订是值得的。"
+    }
+  ]
+}

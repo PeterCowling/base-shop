@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Balades panoramiques à Positano et alentours",
+    "description": "Boucles à pied avec vues, durée, dénivelé et points pratiques (eau, bus)."
+  },
+  "linkLabel": "Balades panoramiques à Positano et alentours",
+  "intro": [
+    "Reliez ruelles en terrasses et belvédères pour de courtes boucles panoramiques sans transformer la journée en grande randonnée."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Boucle du haut du village",
+      "body": [
+        "Reliez Chiesa Nuova et Sponda par les ruelles en terrasse pour profiter des vues emblématiques sur la skyline avec moins de passage."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Sentier côtier de Fornillo",
+      "body": [
+        "Empruntez l'accès plus calme vers la plage et les escaliers photogéniques. Privilégiez le matin ou la golden hour."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Balade panoramique à Nocelle",
+      "body": [
+        "Montez à Nocelle en bus puis explorez les petits sentiers latéraux pour des panoramas grandioses sans longues descentes d'escaliers."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quelles chaussures porter ?",
+      "a": [
+        "Optez pour des baskets avec bon maintien et adhérence ; certains tronçons comportent des marches en pierre irrégulières et deviennent glissants après la pluie."
+      ]
+    },
+    {
+      "q": "Quelle est la durée des balades ?",
+      "a": [
+        "Chaque boucle prend 30 à 60 minutes, pauses photo comprises. Ajoutez un trajet en bus pour Nocelle afin de garder des dénivelés raisonnables."
+      ]
+    }
+  ]
+}

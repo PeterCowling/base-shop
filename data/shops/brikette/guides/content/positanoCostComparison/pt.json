@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "O custo de Positano versus outros destinos de praia",
+    "description": "Comparações de acomodação, alimentação e transporte – e quando Positano tem um bom valor."
+  },
+  "linkLabel": "Positano vs. outros destinos de praia: comparação de custos",
+  "intro": [
+    "Compare Positano com outros destinos balneares europeus para planear o orçamento e justificar o investimento."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Alojamento vs. pares",
+      "body": [
+        "Camas de dormitório em época alta custam cerca do dobro das de Lisboa ou Split. Quartos privados alinham com Santorini, mas esgotam mais rápido pela oferta limitada.",
+        "Fique em Praiano ou Sorrento para poupar 40–60 € por noite mantendo acesso de ferry/autocarro a Positano."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Comida e bebida",
+      "body": [
+        "Refeições casuais ficam 5–10 € acima de Bari ou Valência, mas a qualidade dos produtos compensa. Tábuas de aperitivo permitem jantar por ~12 € com bebida incluída.",
+        "Prepare pequenos-almoços com fruta de mercado e pastelaria para equilibrar jantares mais caros com vista para o mar."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transporte e experiências",
+      "body": [
+        "Ferries custam 9–22 €, ligeiramente acima da Croácia, mas abaixo de táxis aquáticos em ilhas gregas.",
+        "Passeios de barco ou aulas de culinária têm preços semelhantes a Amalfi ou Santorini; reserve em meia estação para tarifas mais baixas e mar calmo."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaje em abril, maio ou outubro para manter preços próximos aos de Dubrovnik com clima mais fresco.",
+    "Agrupe experiências (por ex., aula de culinária do hostel + saída de barco) para obter descontos em pacote."
+  ],
+  "faqs": [
+    {
+      "q": "Positano vale o prémio?",
+      "a": [
+        "Sim, se valoriza vistas de falésia, praias icónicas e ligações rápidas de ferry. Pode reduzir custos ficando nas redondezas e destinando o gasto a refeições ou tours marcantes."
+      ]
+    },
+    {
+      "q": "Onde consigo vistas semelhantes por menos?",
+      "a": [
+        "Praiano e Minori oferecem cenário da Costa Amalfitana com hotéis mais em conta. Combine com bate-voltas a Positano para garantir os postais."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Visão geral"
+      },
+      {
+        "href": "#when",
+        "label": "Quando compensa"
+      },
+      {
+        "href": "#faqs",
+        "label": "Perguntas frequentes"
+      }
+    ],
+    "faqLabel": "Perguntas frequentes",
+    "sections": {
+      "overview": {
+        "heading": "Visão geral",
+        "body": "O alojamento pode ser mais caro, mas transporte e refeições mantêm-se acessíveis com escolhas inteligentes."
+      },
+      "when": {
+        "heading": "Quando compensa",
+        "body": "Meia estação, dias de semana e estadias prolongadas perto da Chiesa Nuova reduzem custos e esforço."
+      }
+    },
+    "faq": {
+      "summary": "Positano é mais caro do que Amalfi?",
+      "answer": "Frequentemente nas vistas à beira-mar; o valor melhora em zonas interiores ou perto das paragens de autocarro."
+    }
+  }
+}

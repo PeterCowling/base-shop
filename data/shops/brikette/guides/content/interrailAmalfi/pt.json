@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/Italy Rail Pass: visitando a Costa Amalfitana",
+    "description": "Como usar o passe até Nápoles/Salerno, suplementos obrigatórios e dicas para o trecho final até Positano."
+  },
+  "linkLabel": "Interrail/Italy Rail Pass: Costa Amalfitana",
+  "intro": [
+    "Como usar um Interrail/Italy Rail Pass para chegar à Costa Amalfitana: linhas a apanhar, suplementos obrigatórios e o último trecho até Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Percursos principais",
+      "body": [
+        "Roma → Nápoles/Salerno em alta velocidade; comboios regionais até Sorrento; autocarros para Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Suplementos/reservas",
+      "body": [
+        "Frecciarossa/Italo exigem quase sempre reserva de lugar; os regionais não exigem, mas enchem facilmente."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Último trecho até Positano",
+      "body": [
+        "Desde Nápoles: Circumvesuviana até Sorrento e depois autocarro SITA. Desde Salerno: ferry/autocarro na época."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "O passe compensa?",
+      "a": [
+        "Só se incluir vários trajetos de longa distância; caso contrário, bilhetes ponto a ponto podem sair mais baratos."
+      ]
+    }
+  ]
+}

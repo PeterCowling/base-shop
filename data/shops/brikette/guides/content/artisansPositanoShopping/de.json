@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Kunst & Handwerk shoppen in Positano",
+    "description": "Sandalen, Keramik, Drucke – wo du Qualität findest und wie du sicher versendest."
+  },
+  "linkLabel": "Kunst & Handwerk shoppen in Positano",
+  "intro": [
+    "Shoppe Positanos Kunsthandwerk, ohne zu viel zu zahlen: Sandalen, Keramik, Drucke und Tipps zum sicheren Versand nach Hause."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Maßgefertigte Sandalen",
+      "body": [
+        "Sieh zu, wie Schuhmacher Ledersandalen in 30 Minuten fertigen; maßgeschneiderte Paare starten bei ca. 80 €.",
+        "Bring deinen Fußabdruck mit oder zeichne ihn nach für spätere Bestellungen – viele Werkstätten versenden weltweit, sobald sie Maße haben."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Keramik & Kunst",
+      "body": [
+        "Stöbere in familiengeführten Keramik-Studios nach handbemalten Fliesen und Geschirr. Frag nach bleifreien Glasuren, wenn du darauf servieren willst.",
+        "Lokale Künstler verkaufen Drucke und Aquarelle entlang der Via Cristoforo Colombo – Rollenverpackungen schützen sie auf Reisen."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Bezahlen & Versand",
+      "body": [
+        "Die meisten Läden akzeptieren Karten, geben aber Bar-Rabatte. Halte deinen Ausweis für Tax-Free-Formulare bei Käufen über 154,94 € bereit.",
+        "Versende Zerbrechliches per versichertem Kurier (DHL/UPS) und bitte um doppelte Verpackung; Preise starten bei etwa 40 € je nach Gewicht."
+      ]
+    }
+  ],
+  "tips": [
+    "Fotografiere Quittungen und Werkstattnamen, damit du weißt, wo welches Stück herkommt.",
+    "Pack Luftpolsterfolie ein, falls du Keramik im Gepäck mitnimmst – Hostels haben oft Verpackungsmaterial von Lieferungen übrig."
+  ],
+  "faqs": [
+    {
+      "q": "Können Handwerker Artikel personalisieren?",
+      "a": [
+        "Ja. Viele prägen Initialen in Sandalen oder passen Keramikfarben mit ein paar Tagen Vorlauf an."
+      ]
+    },
+    {
+      "q": "Wie beantrage ich eine Mehrwertsteuer-Rückerstattung?",
+      "a": [
+        "Fordere beim Kauf ein Tax-Free-Formular an, lass es am Flughafen oder Fährterminal abstempeln und reiche es innerhalb von drei Monaten ein."
+      ]
+    }
+  ]
+}

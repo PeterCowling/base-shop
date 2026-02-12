@@ -98,6 +98,7 @@ describe("Ideas Repository", () => {
     ID: "BRIK-OPP-0001",
     Business: "BRIK",
     Status: "raw",
+    Priority: "P3",
     content: "Test idea content",
     filePath: "/test/idea.md",
   };
@@ -106,6 +107,7 @@ describe("Ideas Repository", () => {
     id: "BRIK-OPP-0001",
     business: "BRIK",
     status: "raw",
+    priority: "P3",
     location: "inbox",
     payload_json: JSON.stringify(mockIdea),
     created_at: "2026-01-30T10:00:00Z",
@@ -114,22 +116,40 @@ describe("Ideas Repository", () => {
 
   it("lists inbox ideas", async () => {
     const db = new SimpleMockD1Database();
-    db.setMockResults([mockIdeaRow]);
+    db.setMockResults([
+      {
+        ...mockIdeaRow,
+        priority: null,
+        payload_json: JSON.stringify({
+          ...mockIdea,
+          Priority: undefined,
+        }),
+      },
+    ]);
 
     const ideas = await listInboxIdeas(db, {});
 
     expect(ideas).toHaveLength(1);
     expect(ideas[0]?.ID).toBe("BRIK-OPP-0001");
+    expect(ideas[0]?.Priority).toBe("P3");
   });
 
   it("gets idea by ID", async () => {
     const db = new SimpleMockD1Database();
-    db.setMockFirstResult(mockIdeaRow);
+    db.setMockFirstResult({
+      ...mockIdeaRow,
+      priority: null,
+      payload_json: JSON.stringify({
+        ...mockIdea,
+        Priority: undefined,
+      }),
+    });
 
     const idea = await getIdeaById(db, "BRIK-OPP-0001");
 
     expect(idea).not.toBeNull();
     expect(idea?.ID).toBe("BRIK-OPP-0001");
+    expect(idea?.Priority).toBe("P3");
   });
 
   it("upserts idea", async () => {
@@ -139,6 +159,7 @@ describe("Ideas Repository", () => {
     const result = await upsertIdea(db, mockIdea, "inbox");
 
     expect(result.success).toBe(true);
+    expect(result.idea?.Priority).toBe("P3");
   });
 });
 

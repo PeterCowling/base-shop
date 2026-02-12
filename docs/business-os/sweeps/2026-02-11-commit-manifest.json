@@ -1,0 +1,152 @@
+{
+  "sweep_date": "2026-02-11",
+  "stance": "improve-data",
+  "persistence_mode": "dry-run",
+  "api_mode": "strict",
+  "operations": [
+    {
+      "operation_id": "op-001",
+      "kind": "idea_create",
+      "slug": "PIPE-product-selection-competitive-landscape",
+      "payload_fingerprint": "3f8357296c28f083",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-002",
+      "kind": "idea_create",
+      "slug": "XA-outcome-contract",
+      "payload_fingerprint": "b9e0fa8d7ef5ae60",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-003",
+      "kind": "idea_create",
+      "slug": "HEAD-outcome-contract",
+      "payload_fingerprint": "497356aa2d148b35",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-004",
+      "kind": "idea_create",
+      "slug": "PET-category-lock-margin",
+      "payload_fingerprint": "56accf4a646582e6",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-005",
+      "kind": "idea_create",
+      "slug": "HBAG-standalone-outcome",
+      "payload_fingerprint": "e11f86da98f9e28b",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-006",
+      "kind": "idea_create",
+      "slug": "cross-cutting-api-business-registration",
+      "payload_fingerprint": "091a0474aec6c1a4",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-007",
+      "kind": "idea_create",
+      "slug": "BRIK-guest-satisfaction-survey-dgp",
+      "payload_fingerprint": "c5923c370e50c805",
+      "depends_on": [],
+      "endpoint": "POST /api/agent/ideas",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-008",
+      "kind": "card_create",
+      "slug": "PIPE-product-selection-competitive-landscape",
+      "payload_fingerprint": "826982376a43ef37",
+      "depends_on": ["op-001"],
+      "endpoint": "POST /api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-009",
+      "kind": "card_create",
+      "slug": "XA-outcome-contract",
+      "payload_fingerprint": "aa71a9529cfbca67",
+      "depends_on": ["op-002"],
+      "endpoint": "POST /api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-010",
+      "kind": "card_create",
+      "slug": "HEAD-outcome-contract",
+      "payload_fingerprint": "f15c997fcf87b701",
+      "depends_on": ["op-003"],
+      "endpoint": "POST /api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-011",
+      "kind": "card_create",
+      "slug": "PET-category-lock-margin",
+      "payload_fingerprint": "8649166f9244e982",
+      "depends_on": ["op-004"],
+      "endpoint": "POST /api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-012",
+      "kind": "card_create",
+      "slug": "HBAG-standalone-outcome",
+      "payload_fingerprint": "f68c78c992debe24",
+      "depends_on": ["op-005"],
+      "endpoint": "POST /api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-013",
+      "kind": "card_create",
+      "slug": "cross-cutting-api-business-registration",
+      "payload_fingerprint": "0f39c3913dfd54b6",
+      "depends_on": ["op-006"],
+      "endpoint": "POST /api/agent/cards",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-014",
+      "kind": "factfind_upsert",
+      "slug": "PIPE-product-selection-competitive-landscape",
+      "payload_fingerprint": "c16a93aed5b66a54",
+      "depends_on": ["op-008"],
+      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/fact-find",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-015",
+      "kind": "factfind_upsert",
+      "slug": "XA-outcome-contract",
+      "payload_fingerprint": "071fdbe93db1ffba",
+      "depends_on": ["op-009"],
+      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/fact-find",
+      "method": "POST"
+    },
+    {
+      "operation_id": "op-016",
+      "kind": "factfind_upsert",
+      "slug": "cross-cutting-api-business-registration",
+      "payload_fingerprint": "b40d8d6b0b3212a5",
+      "depends_on": ["op-013"],
+      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/fact-find",
+      "method": "POST"
+    }
+  ]
+}

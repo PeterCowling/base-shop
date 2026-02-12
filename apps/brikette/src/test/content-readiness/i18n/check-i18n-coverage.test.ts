@@ -1,7 +1,8 @@
-import { describe, expect, it } from "@jest/globals";
 import { execSync } from "node:child_process";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
+
+import { describe, expect, it } from "@jest/globals";
 
 const APP_ROOT = path.resolve(__dirname, "../../../..");
 const SCRIPT_PATH = path.join(APP_ROOT, "scripts", "check-i18n-coverage.ts");

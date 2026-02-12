@@ -1,0 +1,7672 @@
+[
+  {
+    "id": "01KH28HVMM4GV6N62B9AQW3GTD",
+    "shop": "brikette",
+    "key": "ageAccessibility",
+    "slug": "age-accessibility",
+    "contentKey": "ageAccessibility",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "ageAccessibility",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "bookingBasics",
+      "checkinCheckout"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWQZ7KBBMGE4KPK7P522",
+    "shop": "brikette",
+    "key": "amalfiPositanoBus",
+    "slug": "amalfi-positano-bus",
+    "contentKey": "amalfiPositanoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "Amalfi Positano bus",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "amalfiPositanoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "aside",
+          "bodyKey": "callouts.aside"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWQK837MK9XTHEKNS0C1",
+    "shop": "brikette",
+    "key": "amalfiPositanoFerry",
+    "slug": "amalfi-positano-ferry",
+    "contentKey": "amalfiPositanoFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "Amalfi to Positano ferry",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "amalfiPositanoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferryDockToBrikette"
+    ],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW3QQYYE7P2JTPDXE8C6",
+    "shop": "brikette",
+    "key": "amalfiTownGuide",
+    "slug": "amalfi-town-guide",
+    "contentKey": "amalfiTownGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "amalfiTownGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "amalfiTownGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "dayTripsAmalfi",
+            "capriDayTrip",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "dayTripsAmalfi",
+      "capriDayTrip",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWGQJ6AQMD73CWF29HRS",
+    "shop": "brikette",
+    "key": "arienzoBeachBusBack",
+    "slug": "bus-back-from-arienzo-beach",
+    "contentKey": "arienzoBeachBusBack",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "arienzoBeachBusBack",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "arienzoBeachBusBack",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "arienzoBeachClub",
+            "hostelBriketteToArienzoBus",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "arienzoBeachClub",
+      "hostelBriketteToArienzoBus",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWN567BWF0ZMC8XQYFA2",
+    "shop": "brikette",
+    "key": "arienzoBeachClub",
+    "slug": "arienzo-beach-guide",
+    "contentKey": "arienzoBeachClub",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "arienzoBeachClub",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "arienzoBeachClub",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "fornilloBeachGuide",
+            "boatTours"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "fornilloBeachGuide",
+      "boatTours"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVN8GRTRFFQYZSXN6Z0Q",
+    "shop": "brikette",
+    "key": "arrivingByFerry",
+    "slug": "arriving-by-ferry",
+    "contentKey": "arrivingByFerry",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "arrivingByFerry",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferryDockToBrikette",
+      "travelHelp",
+      "naplesAirportBus"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWGXXD1BH1V2WF0D5GAP",
+    "shop": "brikette",
+    "key": "artisansPositanoShopping",
+    "slug": "art-and-artisans-positano-shopping",
+    "contentKey": "artisansPositanoShopping",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "artisansPositanoShopping",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "artisansPositanoShopping",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "souvenirsAmalfi",
+            "naplesCityGuide",
+            "foodieGuideNaplesAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "souvenirsAmalfi",
+      "naplesCityGuide",
+      "foodieGuideNaplesAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW40YEC19MYCQA3W0XV8",
+    "shop": "brikette",
+    "key": "avoidCrowdsPositano",
+    "slug": "avoid-crowds-off-the-beaten-path-positano",
+    "contentKey": "avoidCrowdsPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "avoid crowds Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "avoidCrowdsPositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "avoidCrowdsPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "topViewpointsAmalfi",
+            "freeThingsPositano",
+            "weekend48Positano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "topViewpointsAmalfi",
+      "freeThingsPositano",
+      "weekend48Positano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWYQ4AZTY1RS40XAKVQM",
+    "shop": "brikette",
+    "key": "backpackerItineraries",
+    "slug": "positano-backpacker-budget-itineraries",
+    "contentKey": "backpackerItineraries",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWB4NQE08MP3GPW2W91F",
+    "shop": "brikette",
+    "key": "backpackingSouthernItaly",
+    "slug": "backpacking-southern-italy-itinerary",
+    "contentKey": "backpackingSouthernItaly",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "backpackingSouthernItaly",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "sevenDayNoCar",
+            "interrailAmalfi",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "sevenDayNoCar",
+      "interrailAmalfi",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWM5YPDRKTVK8YKXXWBB",
+    "shop": "brikette",
+    "key": "beachHoppingAmalfi",
+    "slug": "beach-hopping-amalfi-coast",
+    "contentKey": "beachHoppingAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "beachHoppingAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "beachHoppingAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "praianoGuide",
+            "positanoBeaches",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "praianoGuide",
+      "positanoBeaches",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW9MZ9PJ0XK457ZCB23G",
+    "shop": "brikette",
+    "key": "bestTimeToVisit",
+    "slug": "best-time-to-visit-positano",
+    "contentKey": "bestTimeToVisit",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "focusKeyword": "best time to visit Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "bestTimeToVisit",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "bestTimeToVisit",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoTravelGuide",
+            "transportBudget",
+            "ecoFriendlyAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoTravelGuide",
+      "transportBudget",
+      "ecoFriendlyAmalfi"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWK4BNSXHWTKNZZ26Z2H",
+    "shop": "brikette",
+    "key": "boatTours",
+    "slug": "boat-tours-positano",
+    "contentKey": "boatTours",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "boatTours",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "boatTours",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "ferrySchedules",
+            "capriDayTrip",
+            "sunsetViewpoints"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferrySchedules",
+      "capriDayTrip",
+      "sunsetViewpoints"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVRDCMJ3HC3MQW7ZST39",
+    "shop": "brikette",
+    "key": "bookingBasics",
+    "slug": "booking-basics",
+    "contentKey": "bookingBasics",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "bookingBasics",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "checkinCheckout",
+      "depositsPayments",
+      "changingCancelling",
+      "rules"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWPH0SY6J79M8CQ75JV4",
+    "shop": "brikette",
+    "key": "briketteToFerryDock",
+    "slug": "hostel-brikette-to-ferry-dock-with-luggage",
+    "contentKey": "briketteToFerryDock",
+    "status": "draft",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWH4XRJ9B3VKD4C55Y9P",
+    "shop": "brikette",
+    "key": "budgetAccommodationBeyond",
+    "slug": "budget-accommodation-beyond-positano",
+    "contentKey": "budgetAccommodationBeyond",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "budgetAccommodationBeyond",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "budgetAccommodationBeyond",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBudget",
+            "transportBudget",
+            "howToGetToPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBudget",
+      "transportBudget",
+      "howToGetToPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWHXE40GVVHRZ556BFQD",
+    "shop": "brikette",
+    "key": "campingAmalfi",
+    "slug": "camping-on-the-amalfi-coast",
+    "contentKey": "campingAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "campingAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "campingAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "transportBudget",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "transportBudget",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVY3SDA2YTYNETCKKRHX",
+    "shop": "brikette",
+    "key": "capriDayTrip",
+    "slug": "day-trip-capri-from-positano",
+    "contentKey": "capriDayTrip",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "capriDayTrip",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "capriDayTrip",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "ferrySchedules",
+            "boatTours",
+            "whatToPack"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "day-trip",
+            "capri",
+            "ferry",
+            "positano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferrySchedules",
+      "boatTours",
+      "whatToPack"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWJ40HW2ZV4SD4528YD6",
+    "shop": "brikette",
+    "key": "capriOnABudget",
+    "slug": "capri-on-a-budget",
+    "contentKey": "capriOnABudget",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "capriOnABudget",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "capriOnABudget",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "capriDayTrip",
+            "transportBudget",
+            "cheapEats"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "budgeting",
+            "capri",
+            "day-trip",
+            "ferry",
+            "positano"
+          ],
+          "excludeGuide": [
+            "capriDayTrip",
+            "transportBudget",
+            "cheapEats"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "capriDayTrip",
+      "transportBudget",
+      "cheapEats"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWTR1TPEGNN07TRFXWAS",
+    "shop": "brikette",
+    "key": "capriPositanoFerry",
+    "slug": "capri-positano-ferry",
+    "contentKey": "capriPositanoFerry",
+    "status": "draft",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "capriPositanoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVNJYGG3WM1J0HZB3NMG",
+    "shop": "brikette",
+    "key": "changingCancelling",
+    "slug": "changing-cancelling",
+    "contentKey": "changingCancelling",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "changingCancelling",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "bookingBasics",
+      "depositsPayments",
+      "legal"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW50EGFRV8DXX4QKE9TW",
+    "shop": "brikette",
+    "key": "cheapEats",
+    "slug": "cheap-eats-in-positano",
+    "contentKey": "cheapEats",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "cheapEats",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "cheapEats",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBudget",
+            "groceriesPharmacies",
+            "whatToPack"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBudget",
+      "groceriesPharmacies",
+      "whatToPack"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVNWM96F568JDSRVHF02",
+    "shop": "brikette",
+    "key": "checkinCheckout",
+    "slug": "checkin-checkout",
+    "contentKey": "checkinCheckout",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "focusKeyword": "hostel brikette check-in and checkout",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "checkinCheckout",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "rules",
+      "security",
+      "ageAccessibility"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWPWAQC84CJTB3KC66Z0",
+    "shop": "brikette",
+    "key": "chiesaNuovaArrivals",
+    "slug": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
+    "contentKey": "chiesaNuovaArrivals",
+    "status": "draft",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "Chiesa Nuova / Bar Internazionale bus stop",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "BreadcrumbList"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWQ8ADEHVEA3RVS9DKG1",
+    "shop": "brikette",
+    "key": "chiesaNuovaDepartures",
+    "slug": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
+    "contentKey": "chiesaNuovaDepartures",
+    "status": "draft",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "Positano Chiesa Nuova / Bar Internazionale bus stop",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "BreadcrumbList"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWYZ8G2CGTYZ2TB5WMGP",
+    "shop": "brikette",
+    "key": "compareBasesPositanoSorrentoAmalfi",
+    "slug": "compare-bases-positano-sorrento-amalfi",
+    "contentKey": "compareBasesPositanoSorrentoAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWF6ACNCFHDNPD0HWAMM",
+    "shop": "brikette",
+    "key": "cookingClassesAmalfi",
+    "slug": "cooking-classes-amalfi-coast",
+    "contentKey": "cookingClassesAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "cookingClassesAmalfi",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "cuisineAmalfiGuide",
+      "limoncelloCuisine",
+      "foodieGuideNaplesAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVWPK051CPGE8BHK79R9",
+    "shop": "brikette",
+    "key": "couplesInHostels",
+    "slug": "traveling-as-a-couple-in-hostels",
+    "contentKey": "couplesInHostels",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "couplesInHostels"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "couplesInHostels",
+          "alwaysProvideFallback": true,
+          "suppressWhenUnlocalized": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "onlyHostel",
+      "positanoBudget"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW4DBT26W47CF7SN87W3",
+    "shop": "brikette",
+    "key": "cuisineAmalfiGuide",
+    "slug": "amalfi-coast-cuisine-guide",
+    "contentKey": "cuisineAmalfiGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "cuisineAmalfiGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "cuisineAmalfiGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "cheapEats",
+            "positanoDining",
+            "limoncelloCuisine"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "cheapEats",
+      "positanoDining",
+      "limoncelloCuisine"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true,
+      "showTocWhenUnlocalized": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVYFBFVM26F8ZN3JPQ96",
+    "shop": "brikette",
+    "key": "dayTripsAmalfi",
+    "slug": "day-trips-from-positano",
+    "contentKey": "dayTripsAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "dayTripsAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "dayTripsAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "capriDayTrip",
+            "positanoPompeii",
+            "positanoAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "capriDayTrip",
+      "positanoPompeii",
+      "positanoAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "renderGenericWhenEmpty": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVPB4PCMYGW479XS1KK5",
+    "shop": "brikette",
+    "key": "defectsDamages",
+    "slug": "defects-damages",
+    "contentKey": "defectsDamages",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "defectsDamages",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "rules",
+      "security",
+      "legal"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVPPYASY5B4PEVSHX48F",
+    "shop": "brikette",
+    "key": "depositsPayments",
+    "slug": "deposits-payments",
+    "contentKey": "depositsPayments",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "depositsPayments",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "bookingBasics",
+      "changingCancelling",
+      "legal"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWZ7XSP1ZRM3RT8Y1TS2",
+    "shop": "brikette",
+    "key": "digitalConcierge",
+    "slug": "digital-concierge-service",
+    "contentKey": "digitalConcierge",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWZEGYEXQFY8H8EY32H9",
+    "shop": "brikette",
+    "key": "eatingOutPositano",
+    "slug": "eating-out-in-positano",
+    "contentKey": "eatingOutPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW6W51NGRNMS4PMDVG4X",
+    "shop": "brikette",
+    "key": "ecoFriendlyAmalfi",
+    "slug": "eco-friendly-travel-amalfi-coast",
+    "contentKey": "ecoFriendlyAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "ecoFriendlyAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "ecoFriendlyAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "stayingFitPositano",
+            "safetyAmalfi",
+            "workAndTravelPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "stayingFitPositano",
+      "safetyAmalfi",
+      "workAndTravelPositano"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWHHQFZ9N4A6R0KDJTD4",
+    "shop": "brikette",
+    "key": "etiquetteItalyAmalfi",
+    "slug": "italy-travel-etiquette-amalfi-examples",
+    "contentKey": "etiquetteItalyAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Italy travel etiquette",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "etiquetteItalyAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "etiquetteItalyAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "travelTipsFirstTime",
+            "avoidCrowdsPositano",
+            "cuisineAmalfiGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "travelTipsFirstTime",
+      "avoidCrowdsPositano",
+      "cuisineAmalfiGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "showTocWhenUnlocalized": false,
+      "renderGenericWhenEmpty": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW5C27HFM2A11PRARFSB",
+    "shop": "brikette",
+    "key": "ferragostoPositano",
+    "slug": "ferragosto-in-positano",
+    "contentKey": "ferragostoPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Ferragosto Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "ferragostoPositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "ferragostoPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "bestTimeToVisit",
+            "sunsetViewpoints",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "bestTimeToVisit",
+      "sunsetViewpoints",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWZRKDT3WZ3H41BD8E4E",
+    "shop": "brikette",
+    "key": "ferryCancellations",
+    "slug": "ferry-cancellations-weather",
+    "contentKey": "ferryCancellations",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWP5V427GJ9KKY8DF7W5",
+    "shop": "brikette",
+    "key": "ferryDockToBrikette",
+    "slug": "ferry-dock-to-hostel-brikette-with-luggage",
+    "contentKey": "ferryDockToBrikette",
+    "status": "draft",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "ferry dock to hostel brikette",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "BreadcrumbList"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW3GG9REK6SH14Z8AQT8",
+    "shop": "brikette",
+    "key": "ferrySchedules",
+    "slug": "ferry-schedules",
+    "contentKey": "ferrySchedules",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "ferrySchedules",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "ferryCancellations",
+            "chiesaNuovaArrivals",
+            "chiesaNuovaDepartures",
+            "ferryDockToBrikette"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "transport",
+            "ferry",
+            "positano"
+          ],
+          "excludeGuide": [
+            "ferryCancellations",
+            "chiesaNuovaArrivals",
+            "chiesaNuovaDepartures",
+            "ferryDockToBrikette"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferryCancellations",
+      "chiesaNuovaArrivals",
+      "chiesaNuovaDepartures",
+      "ferryDockToBrikette"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": true,
+      "renderGenericWhenEmpty": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW34B8K6NFYCN0BB4EG2",
+    "shop": "brikette",
+    "key": "fiordoDiFuroreBeachGuide",
+    "slug": "fiordo-di-furore-beach-guide",
+    "contentKey": "fiordoDiFuroreBeachGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "fiordoDiFuroreBeachGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "fiordoDiFuroreBeachGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "marinaDiPraiaBeaches",
+            "gavitellaBeachGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "marinaDiPraiaBeaches",
+      "gavitellaBeachGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX00J4YDRYK6G1FGDPET",
+    "shop": "brikette",
+    "key": "fiordoDiFuroreBusReturn",
+    "slug": "fiordo-di-furore-bus-return",
+    "contentKey": "fiordoDiFuroreBusReturn",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWEN2ERT0ZHXTFN5NNR2",
+    "shop": "brikette",
+    "key": "folkloreAmalfi",
+    "slug": "local-legends-and-folklore-amalfi-coast",
+    "contentKey": "folkloreAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Amalfi Coast folklore",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "folkloreAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "folkloreAmalfi",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "luminariaPraiano",
+      "ravelloFestival",
+      "ferragostoPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWEZ9SGNVN84SX0N0DC4",
+    "shop": "brikette",
+    "key": "foodieGuideNaplesAmalfi",
+    "slug": "foodies-guide-naples-amalfi",
+    "contentKey": "foodieGuideNaplesAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "foodieGuideNaplesAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "foodieGuideNaplesAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "cheapEats",
+            "limoncelloCuisine",
+            "naplesCityGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "cheapEats",
+      "limoncelloCuisine",
+      "naplesCityGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW1FZBQ62AZAA46X9YB7",
+    "shop": "brikette",
+    "key": "fornilloBeachGuide",
+    "slug": "fornillo-beach-guide",
+    "contentKey": "fornilloBeachGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "fornilloBeachGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "fornilloBeachGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "hostelBriketteToFornilloBeach",
+            "fornilloBeachToBrikette",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "hostelBriketteToFornilloBeach",
+      "fornilloBeachToBrikette",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX078NJDAS7HHBWFMH3N",
+    "shop": "brikette",
+    "key": "fornilloBeachToBrikette",
+    "slug": "fornillo-beach-to-hostel-brikette",
+    "contentKey": "fornilloBeachToBrikette",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVWFFKE1SDPDXY8C7VS2",
+    "shop": "brikette",
+    "key": "freeThingsPositano",
+    "slug": "free-low-cost-things-to-do-positano",
+    "contentKey": "freeThingsPositano",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "freeThingsPositano"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "freeThingsPositano"
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBudget",
+            "cheapEats",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBudget",
+      "cheapEats",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWFNRQTC97WR5H1H6ZSS",
+    "shop": "brikette",
+    "key": "gavitellaBeachGuide",
+    "slug": "gavitella-beach-guide",
+    "contentKey": "gavitellaBeachGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Gavitella Beach Praiano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "gavitellaBeachGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "gavitellaBeachGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "marinaDiPraiaBeaches",
+            "boatTours"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "marinaDiPraiaBeaches",
+      "boatTours"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWNZSP905NBF9267Y0E0",
+    "shop": "brikette",
+    "key": "groceriesPharmacies",
+    "slug": "groceries-and-pharmacies-positano",
+    "contentKey": "groceriesPharmacies",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "groceriesPharmacies",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "groceriesPharmacies",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "simsAtms",
+            "whatToPack",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "simsAtms",
+      "whatToPack",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW07GYRJJW06SXY25XGJ",
+    "shop": "brikette",
+    "key": "historyPositano",
+    "slug": "history-of-positano",
+    "contentKey": "historyPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "history of Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "historyPositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "historyPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoTravelGuide",
+            "instagramSpots",
+            "scenicWalksPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoTravelGuide",
+      "instagramSpots",
+      "scenicWalksPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true,
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWBAAQVABETT3XEX5ZWR",
+    "shop": "brikette",
+    "key": "hitchhikingAmalfi",
+    "slug": "hitchhiking-the-amalfi-coast",
+    "contentKey": "hitchhikingAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "hitchhikingAmalfi",
+          "showToc": true,
+          "renderWhenEmpty": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "hitchhikingAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "transportBudget",
+            "positanoAmalfi",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "transportBudget",
+      "positanoAmalfi",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "renderGenericWhenEmpty": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWKAATPQBCBQVQFQ1F63",
+    "shop": "brikette",
+    "key": "hostelBriketteToArienzoBus",
+    "slug": "bus-to-arienzo-beach",
+    "contentKey": "hostelBriketteToArienzoBus",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "hostelBriketteToArienzoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "hostelBriketteToArienzoBus",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "lauritoBeachBusBack",
+            "positanoMainBeachBusDown"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "positano",
+            "bus"
+          ],
+          "excludeGuide": [
+            "positanoBeaches",
+            "lauritoBeachBusBack",
+            "positanoMainBeachBusDown"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "lauritoBeachBusBack",
+      "positanoMainBeachBusDown"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWMBCB9CJSCWC4DYMD7T",
+    "shop": "brikette",
+    "key": "hostelBriketteToFiordoDiFuroreBus",
+    "slug": "hostel-brikette-to-fiordo-di-furore-by-bus",
+    "contentKey": "hostelBriketteToFiordoDiFuroreBus",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "hostelBriketteToFiordoDiFuroreBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "hostelBriketteToFiordoDiFuroreBus",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "fiordoDiFuroreBeachGuide",
+            "fiordoDiFuroreBusReturn",
+            "positanoBeaches"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "bus",
+            "positano"
+          ],
+          "excludeGuide": [
+            "fiordoDiFuroreBeachGuide",
+            "fiordoDiFuroreBusReturn",
+            "positanoBeaches"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "fiordoDiFuroreBeachGuide",
+      "fiordoDiFuroreBusReturn",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWMJ6NG1D2STXKBT1MD8",
+    "shop": "brikette",
+    "key": "hostelBriketteToFornilloBeach",
+    "slug": "hostel-brikette-to-fornillo-beach",
+    "contentKey": "hostelBriketteToFornilloBeach",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "hostelBriketteToFornilloBeach",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "hostelBriketteToFornilloBeach",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "beachHoppingAmalfi",
+            "positanoTravelGuide"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "positano",
+            "stairs"
+          ],
+          "excludeGuide": [
+            "positanoBeaches",
+            "beachHoppingAmalfi",
+            "positanoTravelGuide"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "beachHoppingAmalfi",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWMXCYHX462GFQFX5BX2",
+    "shop": "brikette",
+    "key": "hostelBriketteToReginaGiovannaBath",
+    "slug": "hostel-brikette-to-regina-giovanna-bath",
+    "contentKey": "hostelBriketteToReginaGiovannaBath",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "hostelBriketteToReginaGiovannaBath",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "hostelBriketteToReginaGiovannaBath",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "reginaGiovannaBath",
+            "naplesCityGuide",
+            "dayTripsAmalfi"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "transport",
+            "sorrento"
+          ],
+          "excludeGuide": [
+            "reginaGiovannaBath",
+            "hostelBriketteToReginaGiovannaBath"
+          ],
+          "includeRooms": false
+        }
+      }
+    ],
+    "relatedGuides": [
+      "reginaGiovannaBath",
+      "naplesCityGuide",
+      "dayTripsAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVRWR625HQE00BQQ6KZY",
+    "shop": "brikette",
+    "key": "hostelFaqs",
+    "slug": "hostel-faqs",
+    "contentKey": "hostelFaqs",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "hostelFaqs",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "checkinCheckout",
+      "bookingBasics",
+      "rules"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "suppressUnlocalizedFallback": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX0E7690QTA757PCGN6Y",
+    "shop": "brikette",
+    "key": "howToGetToPositano",
+    "slug": "how-to-get-to-positano",
+    "contentKey": "howToGetToPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVZXPDBHRA7CH6RRSBJ9",
+    "shop": "brikette",
+    "key": "instagramSpots",
+    "slug": "positano-instagram-spots",
+    "contentKey": "instagramSpots",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "instagramSpots",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "instagramSpots",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "sunsetViewpoints",
+            "positanoBeaches",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "sunsetViewpoints",
+      "positanoBeaches",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "renderGenericWhenEmpty": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWAP3KXAQ89ZZY49HQSZ",
+    "shop": "brikette",
+    "key": "interrailAmalfi",
+    "slug": "interrail-italy-rail-pass-amalfi-coast",
+    "contentKey": "interrailAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "interrailAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "interrailAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "howToGetToPositano",
+            "transportBudget",
+            "salernoPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "howToGetToPositano",
+      "transportBudget",
+      "salernoPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWHBNSXZ65KNKCNVK0JF",
+    "shop": "brikette",
+    "key": "ischiaProcidaGuide",
+    "slug": "ischia-and-procida-guide",
+    "contentKey": "ischiaProcidaGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "ischiaProcidaGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "ischiaProcidaGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "capriDayTrip",
+            "dayTripsAmalfi",
+            "naplesCityGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "capriDayTrip",
+      "dayTripsAmalfi",
+      "naplesCityGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWEF2SX3J29FJHJ14GRB",
+    "shop": "brikette",
+    "key": "italianPhrasesCampania",
+    "slug": "italian-phrases-for-travelers-campania",
+    "contentKey": "italianPhrasesCampania",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "italianPhrasesCampania",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "italianPhrasesCampania",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVYW0WSB6CJHZF3CPH65",
+    "shop": "brikette",
+    "key": "itinerariesPillar",
+    "slug": "amalfi-coast-itineraries-no-car",
+    "contentKey": "itinerariesPillar",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "itinerariesPillar",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "itinerariesPillar",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "weekend48Positano",
+            "sevenDayNoCar",
+            "dayTripsAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "weekend48Positano",
+      "sevenDayNoCar",
+      "dayTripsAmalfi"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVTJNAAF4W6RZW8YR5E3",
+    "shop": "brikette",
+    "key": "laundryPositano",
+    "slug": "laundry-positano",
+    "contentKey": "laundryPositano",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [],
+    "relatedGuides": [
+      "porterServices",
+      "ferryDockToBrikette",
+      "groceriesPharmacies"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo"
+    ],
+    "options": {
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWG00882HPNS1KFFM0SW",
+    "shop": "brikette",
+    "key": "lauritoBeachBusBack",
+    "slug": "bus-back-from-laurito-beach",
+    "contentKey": "lauritoBeachBusBack",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "lauritoBeachBusBack",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "lauritoBeachBusBack",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "lauritoBeachGuide",
+            "lauritoBeachBusDown",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "lauritoBeachGuide",
+      "lauritoBeachBusDown",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWG7PTPEQ9WXX8CXV0NS",
+    "shop": "brikette",
+    "key": "lauritoBeachBusDown",
+    "slug": "bus-down-to-positano-main-beach",
+    "contentKey": "lauritoBeachBusDown",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "lauritoBeachBusDown",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "lauritoBeachBusDown",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "lauritoBeachBusBack",
+            "positanoBeaches",
+            "positanoMainBeachWalkDown"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "lauritoBeachBusBack",
+      "positanoBeaches",
+      "positanoMainBeachWalkDown"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWGDJQZKPX9AVAQD4EX8",
+    "shop": "brikette",
+    "key": "lauritoBeachGuide",
+    "slug": "laurito-beach-guide",
+    "contentKey": "lauritoBeachGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Laurito Beach",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "lauritoBeachGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "lauritoBeachGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "lauritoBeachBusDown",
+            "lauritoBeachBusBack",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "lauritoBeachBusDown",
+      "lauritoBeachBusBack",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVQ2HM2HE5PPS7R8S43D",
+    "shop": "brikette",
+    "key": "legal",
+    "slug": "legal",
+    "contentKey": "legal",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "legal",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "rules",
+      "changingCancelling",
+      "depositsPayments"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVTTPN4J0XJGV6BC0623",
+    "shop": "brikette",
+    "key": "limoncelloCuisine",
+    "slug": "limoncello-and-local-cuisine",
+    "contentKey": "limoncelloCuisine",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "limoncelloCuisine",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "limoncelloCuisine"
+        }
+      }
+    ],
+    "relatedGuides": [
+      "cheapEats",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWNGFDKJ4CJ44HS3CDJB",
+    "shop": "brikette",
+    "key": "limoncelloFactory",
+    "slug": "inside-a-limoncello-factory-amalfi-coast",
+    "contentKey": "limoncelloFactory",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "limoncelloFactory",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "limoncelloFactory",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "limoncelloCuisine",
+            "cuisineAmalfiGuide",
+            "tramontiWineries"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "limoncelloCuisine",
+      "cuisineAmalfiGuide",
+      "tramontiWineries"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVSBTP7X955D330AGJRD",
+    "shop": "brikette",
+    "key": "luggageStorage",
+    "slug": "luggage-storage-positano",
+    "contentKey": "luggageStorage",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "hero",
+        "options": {
+          "image": "luggage-storage-positano/hero.jpg"
+        }
+      },
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "luggageStorage"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "luggageStorage"
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "porters",
+            "logistics",
+            "positano"
+          ]
+        }
+      },
+      {
+        "type": "serviceSchema",
+        "options": {
+          "source": "luggage-storage-positano.service"
+        }
+      }
+    ],
+    "relatedGuides": [
+      "porterServices",
+      "ferryDockToBrikette",
+      "chiesaNuovaArrivals"
+    ],
+    "structuredData": [
+      "Article",
+      {
+        "type": "Service",
+        "options": {
+          "source": "luggage-storage-positano.service"
+        }
+      },
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX0MCP8FAYHGE43HA5SY",
+    "shop": "brikette",
+    "key": "luminariaPraiano",
+    "slug": "luminaria-di-san-domenico-praiano",
+    "contentKey": "luminariaPraiano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWKSEAD4D3P4GW1F4RB9",
+    "shop": "brikette",
+    "key": "marinaDiPraiaBeaches",
+    "slug": "marina-di-praia-and-secluded-beaches",
+    "contentKey": "marinaDiPraiaBeaches",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "marinaDiPraiaBeaches",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "marinaDiPraiaBeaches",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "praianoGuide",
+            "beachHoppingAmalfi",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "praianoGuide",
+      "beachHoppingAmalfi",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVQCFW573F67HYYNYRR7",
+    "shop": "brikette",
+    "key": "naplesAirportBus",
+    "slug": "naples-airport-to-positano-bus",
+    "contentKey": "naplesAirportBus",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "naplesAirportBus",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "arrivingByFerry",
+      "travelHelp",
+      "chiesaNuovaArrivals"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWRD55XMQZK8K6NV2BZ7",
+    "shop": "brikette",
+    "key": "naplesAirportPositanoBus",
+    "slug": "naples-airport-positano-bus",
+    "contentKey": "naplesAirportPositanoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "naples airport to positano bus",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "naplesAirportPositanoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWVGK8SJYDSQEYDW1WZ8",
+    "shop": "brikette",
+    "key": "naplesCenterPositanoFerry",
+    "slug": "naples-center-positano-ferry",
+    "contentKey": "naplesCenterPositanoFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "naplesCenterPositanoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWRRRKFFDTY3YZMNAPAY",
+    "shop": "brikette",
+    "key": "naplesCenterTrainBus",
+    "slug": "naples-center-train-bus",
+    "contentKey": "naplesCenterTrainBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "Naples to Positano train bus",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "naplesCenterTrainBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWAXRGY7EHD8Q0MECZRQ",
+    "shop": "brikette",
+    "key": "naplesCityGuide",
+    "slug": "naples-city-guide-for-amalfi-travelers",
+    "contentKey": "naplesCityGuide",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "naplesCityGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "naplesCityGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "reachBudget",
+            "foodieGuideNaplesAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "reachBudget",
+      "foodieGuideNaplesAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVX931F8GHSZMKH6FP3H",
+    "shop": "brikette",
+    "key": "naplesPositano",
+    "slug": "naples-to-positano",
+    "contentKey": "naplesPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "naplesPositano"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "naplesPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "transport",
+            "naples",
+            "positano",
+            "ferry",
+            "bus"
+          ],
+          "excludeGuide": [
+            "ferrySchedules",
+            "luggageStorage"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferrySchedules",
+      "luggageStorage"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWBGGNBARB53GH28737M",
+    "shop": "brikette",
+    "key": "offbeatVillagesAmalfi",
+    "slug": "offbeat-amalfi-coast-villages",
+    "contentKey": "offbeatVillagesAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "offbeatVillagesAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "offbeatVillagesAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "dayTripsAmalfi",
+            "transportBudget",
+            "topViewpointsAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "dayTripsAmalfi",
+      "transportBudget",
+      "topViewpointsAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX0VXM36Z9QCMQMHP6ZC",
+    "shop": "brikette",
+    "key": "offSeasonLongStay",
+    "slug": "off-season-long-stay-tips-positano",
+    "contentKey": "offSeasonLongStay",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX13P846Q8MC5GM1K78N",
+    "shop": "brikette",
+    "key": "onlyHostel",
+    "slug": "only-hostel-in-positano",
+    "contentKey": "onlyHostel",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWA6GDH2MXNYNWRW49ZR",
+    "shop": "brikette",
+    "key": "parking",
+    "slug": "arriving-by-car",
+    "contentKey": "parking",
+    "status": "draft",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "focusKeyword": "arriving by car Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "parking",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "parking",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "transportBudget",
+            "publicTransportAmalfi",
+            "scooterRentalPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "transportBudget",
+      "publicTransportAmalfi",
+      "scooterRentalPositano"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": true,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVV56YADR22GBR2QF882",
+    "shop": "brikette",
+    "key": "pathOfTheGods",
+    "slug": "path-of-the-gods",
+    "contentKey": "pathOfTheGods",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [
+      "pathOfTheGodsFerry",
+      "pathOfTheGodsBus",
+      "pathOfTheGodsNocelle"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVVGEXAP8KP3PK17PQXY",
+    "shop": "brikette",
+    "key": "pathOfTheGodsBus",
+    "slug": "path-of-the-gods-via-amalfi-bus",
+    "contentKey": "pathOfTheGodsBus",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "pathOfTheGodsBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "pathOfTheGodsBus",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "pathOfTheGodsFerry",
+      "pathOfTheGodsNocelle"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVVWX0QNQCCP2EGZP8T8",
+    "shop": "brikette",
+    "key": "pathOfTheGodsFerry",
+    "slug": "path-of-the-gods-via-amalfi-ferry",
+    "contentKey": "pathOfTheGodsFerry",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "pathOfTheGodsFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "pathOfTheGodsFerry",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "pathOfTheGodsBus",
+      "pathOfTheGodsNocelle"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWKHM3EFYS2KXS4NJ7XV",
+    "shop": "brikette",
+    "key": "pathOfTheGodsNocelle",
+    "slug": "path-of-the-gods-via-nocelle",
+    "contentKey": "pathOfTheGodsNocelle",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "pathOfTheGodsNocelle",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "pathOfTheGodsNocelle",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "pathOfTheGods",
+            "pathOfTheGodsFerry",
+            "pathOfTheGodsBus"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "pathOfTheGodsFerry",
+      "pathOfTheGodsBus"
+    ],
+    "structuredData": [
+      "Article",
+      "HowTo"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW98K3HQYCSBMC0XM38X",
+    "shop": "brikette",
+    "key": "petsAmalfi",
+    "slug": "traveling-with-pets-amalfi-coast",
+    "contentKey": "petsAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "petsAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "petsAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "ecoFriendlyAmalfi",
+            "safetyAmalfi",
+            "workAndTravelPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ecoFriendlyAmalfi",
+      "safetyAmalfi",
+      "workAndTravelPositano"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "showRelatedWhenLocalized": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWJYJXR90RGD8YWMV0R4",
+    "shop": "brikette",
+    "key": "photographyGuidePositano",
+    "slug": "positano-photography-guide-best-spots",
+    "contentKey": "photographyGuidePositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "photographyGuidePositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "photographyGuidePositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "instagramSpots",
+            "topViewpointsAmalfi",
+            "sunsetViewpoints"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "instagramSpots",
+      "topViewpointsAmalfi",
+      "sunsetViewpoints"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "showTocWhenUnlocalized": true,
+      "preferGenericWhenFallback": true,
+      "showRelatedWhenLocalized": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX1BNQ1Q45VVQ6QM3JFB",
+    "shop": "brikette",
+    "key": "porterServices",
+    "slug": "porter-service-positano",
+    "contentKey": "porterServices",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX1J71TFN1SY9NQ0G945",
+    "shop": "brikette",
+    "key": "positanoAmalfi",
+    "slug": "positano-to-amalfi",
+    "contentKey": "positanoAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWS38SFG5WHSS9RRDK48",
+    "shop": "brikette",
+    "key": "positanoAmalfiBus",
+    "slug": "positano-amalfi-bus",
+    "contentKey": "positanoAmalfiBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoAmalfiBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWV6KCW4DPGTFH7KXKAP",
+    "shop": "brikette",
+    "key": "positanoAmalfiFerry",
+    "slug": "positano-amalfi-ferry",
+    "contentKey": "positanoAmalfiFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoAmalfiFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW1VRRKZAF4WZ45XSMY0",
+    "shop": "brikette",
+    "key": "positanoBeaches",
+    "slug": "positano-beaches",
+    "contentKey": "positanoBeaches",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Positano beaches",
+    "blocks": [
+      {
+        "type": "hero",
+        "options": {
+          "image": "/img/guides/positano-beaches/positano-main-beach.webp",
+          "alt": "Positano's main beach with colorful umbrellas and the town rising up the cliffs",
+          "showIntro": true
+        }
+      },
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoBeaches",
+          "showToc": true
+        }
+      },
+      {
+        "type": "table",
+        "options": {
+          "id": "beach-comparison",
+          "titleKey": "comparisonTable.title",
+          "columns": [
+            {
+              "key": "beach",
+              "label": "Beach",
+              "align": "left"
+            },
+            {
+              "key": "price",
+              "label": "Lounger Prices",
+              "align": "left"
+            },
+            {
+              "key": "freeArea",
+              "label": "Free Area?",
+              "align": "center"
+            },
+            {
+              "key": "pros",
+              "label": "Pros",
+              "align": "left"
+            },
+            {
+              "key": "cons",
+              "label": "Cons",
+              "align": "left"
+            }
+          ],
+          "rows": [
+            {
+              "beach": "Fornillo",
+              "price": "€15+ (Pupetto, Grassi, Ferdinando, La Marinella)",
+              "freeArea": "Yes",
+              "pros": "Cheaper; large free section; secret free area",
+              "cons": "Steep walk back; easier route via main beach & bus"
+            },
+            {
+              "beach": "Main (Grande)",
+              "price": "€25+ (L'Incanto); €100-400 (La Scogliera)",
+              "freeArea": "Yes",
+              "pros": "Classic Positano views; town backdrop",
+              "cons": "Most expensive; crowded"
+            },
+            {
+              "beach": "Arienzo",
+              "price": "€60+ with food/drink deals",
+              "freeArea": "Yes",
+              "pros": "Long sunshine; stunning views; good value packages",
+              "cons": "Hundreds of stairs; water taxi needed"
+            },
+            {
+              "beach": "Laurito",
+              "price": "Free with restaurant purchase (Da Adolfo); €30+ (Villa Tre Ville)",
+              "freeArea": "Yes",
+              "pros": "Extended sunshine; remarkable views",
+              "cons": "Da Adolfo overrated; small free area; water taxi needed"
+            },
+            {
+              "beach": "Gavitella (Praiano)",
+              "price": "Not listed",
+              "freeArea": "No",
+              "pros": "Ideal evening; sunset/aperitif atmosphere",
+              "cons": "Concrete jungle during day"
+            },
+            {
+              "beach": "Marina di Praia",
+              "price": "Not listed",
+              "freeArea": "Yes",
+              "pros": "Charming fishing cove",
+              "cons": "Narrow; limited morning sun"
+            },
+            {
+              "beach": "Fiordo di Furore",
+              "price": "Not listed",
+              "freeArea": "Yes",
+              "pros": "Instagram-worthy; cliff jumping; budget-friendly",
+              "cons": "Difficult access; extremely limited space"
+            },
+            {
+              "beach": "Regina Giovanna Bath (Sorrento)",
+              "price": "Free entry",
+              "freeArea": "Yes",
+              "pros": "Free natural pool; relatively unknown",
+              "cons": "No facilities"
+            },
+            {
+              "beach": "Amalfi Marina Grande",
+              "price": "Premium pricing (multiple clubs)",
+              "freeArea": "Varies",
+              "pros": "Multiple clubs; easy ferry/bus access",
+              "cons": "Premium pricing; book ahead in peak"
+            }
+          ]
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoBeaches",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "fornilloBeachGuide",
+            "positanoMainBeach",
+            "gavitellaBeachGuide",
+            "marinaDiPraiaBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "fornilloBeachGuide",
+      "positanoMainBeach",
+      "gavitellaBeachGuide",
+      "marinaDiPraiaBeaches"
+    ],
+    "structuredData": [
+      "Article",
+      "ItemList"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX1RS828ZVXJ974B9W23",
+    "shop": "brikette",
+    "key": "positanoBudget",
+    "slug": "positano-on-a-budget",
+    "contentKey": "positanoBudget",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWTBPVWQSY2RHS0GNPEA",
+    "shop": "brikette",
+    "key": "positanoCapriFerry",
+    "slug": "positano-capri-ferry",
+    "contentKey": "positanoCapriFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoCapriFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX1ZBG4S0GC2EGQJEJ0N",
+    "shop": "brikette",
+    "key": "positanoCostBreakdown",
+    "slug": "positano-cost-breakdown",
+    "contentKey": "positanoCostBreakdown",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX27SYH2Y15EZPE5T6KV",
+    "shop": "brikette",
+    "key": "positanoCostComparison",
+    "slug": "positano-cost-vs-other-beach-destinations",
+    "contentKey": "positanoCostComparison",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW4NNRFX5MQE1MQ0T816",
+    "shop": "brikette",
+    "key": "positanoDining",
+    "slug": "positano-dining-guide",
+    "contentKey": "positanoDining",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "positano restaurants",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoDining",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoDining",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "cheapEats",
+            "cuisineAmalfiGuide",
+            "freeThingsPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "cheapEats",
+      "cuisineAmalfiGuide",
+      "freeThingsPositano"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "renderGenericWhenEmpty": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW2VDJYFQD51EWC8S97Q",
+    "shop": "brikette",
+    "key": "positanoMainBeach",
+    "slug": "positano-main-beach-guide",
+    "contentKey": "positanoMainBeach",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Spiaggia Grande Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoMainBeach",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoMainBeach",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "fornilloBeachGuide",
+            "positanoMainBeachBusDown"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "fornilloBeachGuide",
+      "positanoMainBeachBusDown"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWDAWVAB64TK21TVFQW3",
+    "shop": "brikette",
+    "key": "positanoMainBeachBusBack",
+    "slug": "bus-back-to-hostel-brikette-from-positano-main-beach",
+    "contentKey": "positanoMainBeachBusBack",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoMainBeachBusBack",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoMainBeachBusBack",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoMainBeachBusDown",
+            "positanoMainBeachWalkBack",
+            "positanoBeaches"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "positano",
+            "bus"
+          ],
+          "excludeGuide": [
+            "positanoMainBeachBusDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoMainBeachBusDown",
+      "positanoMainBeachWalkBack",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWD316YW5BA4BQ5MJFGX",
+    "shop": "brikette",
+    "key": "positanoMainBeachBusDown",
+    "slug": "bus-down-to-positano-main-beach",
+    "contentKey": "positanoMainBeachBusDown",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoMainBeachBusDown",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoMainBeachBusDown",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoMainBeachWalkDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "positano",
+            "bus"
+          ],
+          "excludeGuide": [
+            "positanoMainBeachWalkDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoMainBeachWalkDown",
+      "positanoMainBeachBusBack",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWCPBTC1JPVB7MS46029",
+    "shop": "brikette",
+    "key": "positanoMainBeachWalkBack",
+    "slug": "walk-back-to-hostel-brikette-from-positano-main-beach",
+    "contentKey": "positanoMainBeachWalkBack",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoMainBeachWalkBack",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoMainBeachWalkBack",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoMainBeachWalkDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "positano",
+            "stairs"
+          ],
+          "excludeGuide": [
+            "positanoMainBeachWalkDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoMainBeachWalkDown",
+      "positanoMainBeachBusBack",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWCF08F18XMTFWYNED0H",
+    "shop": "brikette",
+    "key": "positanoMainBeachWalkDown",
+    "slug": "walk-down-to-positano-main-beach",
+    "contentKey": "positanoMainBeachWalkDown",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoMainBeachWalkDown",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoMainBeachWalkDown",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoMainBeachBusDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "beaches",
+            "positano",
+            "bus"
+          ],
+          "excludeGuide": [
+            "positanoMainBeachBusDown",
+            "positanoMainBeachBusBack",
+            "positanoBeaches"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoMainBeachBusDown",
+      "positanoMainBeachBusBack",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWSB3R6B6RP59R9M39WG",
+    "shop": "brikette",
+    "key": "positanoNaplesAirportBus",
+    "slug": "positano-naples-airport-bus",
+    "contentKey": "positanoNaplesAirportBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoNaplesAirportBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWSJW2NXF53SW9FA8MN6",
+    "shop": "brikette",
+    "key": "positanoNaplesCenterBusTrain",
+    "slug": "positano-naples-center-bus-train",
+    "contentKey": "positanoNaplesCenterBusTrain",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoNaplesCenterBusTrain",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWW4H89QWZWFT7CTMZ3M",
+    "shop": "brikette",
+    "key": "positanoNaplesCenterFerry",
+    "slug": "positano-naples-center-ferry",
+    "contentKey": "positanoNaplesCenterFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoNaplesCenterFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX2DPABQM14SG62K5M8P",
+    "shop": "brikette",
+    "key": "positanoPompeii",
+    "slug": "positano-to-pompeii",
+    "contentKey": "positanoPompeii",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX2W8AG9F0D6WMNGEZ8T",
+    "shop": "brikette",
+    "key": "positanoRavello",
+    "slug": "positano-to-ravello",
+    "contentKey": "positanoRavello",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWWAQZFE94G71GKDZ3XV",
+    "shop": "brikette",
+    "key": "positanoRavelloBus",
+    "slug": "positano-ravello-bus",
+    "contentKey": "positanoRavelloBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoRavelloBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWWH6FTR8KP54CEEHZ4V",
+    "shop": "brikette",
+    "key": "positanoRavelloFerryBus",
+    "slug": "positano-ravello-ferry-bus",
+    "contentKey": "positanoRavelloFerryBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoRavelloFerryBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWX7JHWFC66J58FZQVZB",
+    "shop": "brikette",
+    "key": "positanoSalernoBus",
+    "slug": "positano-salerno-bus",
+    "contentKey": "positanoSalernoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoSalernoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWWQE23P89MV8GSKNG51",
+    "shop": "brikette",
+    "key": "positanoSalernoFerry",
+    "slug": "positano-salerno-ferry",
+    "contentKey": "positanoSalernoFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoSalernoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWSW7Y2W90B1S8VGBSDC",
+    "shop": "brikette",
+    "key": "positanoSorrentoBus",
+    "slug": "positano-sorrento-bus",
+    "contentKey": "positanoSorrentoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoSorrentoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWVXRZ04NKKVRJH2YBEJ",
+    "shop": "brikette",
+    "key": "positanoSorrentoFerry",
+    "slug": "positano-sorrento-ferry",
+    "contentKey": "positanoSorrentoFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoSorrentoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWXFYVNKV878Z5EMCNMM",
+    "shop": "brikette",
+    "key": "positanoToNaplesDirectionsByFerry",
+    "slug": "positano-to-naples-directions-by-ferry",
+    "contentKey": "positanoToNaplesDirectionsByFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoToNaplesDirectionsByFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX32H2RS3M18PY6MPDNC",
+    "shop": "brikette",
+    "key": "positanoTravelGuide",
+    "slug": "positano-travel-guide",
+    "contentKey": "positanoTravelGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVT7RKQ6BYQJW861BJMZ",
+    "shop": "brikette",
+    "key": "positanoWinterBudget",
+    "slug": "positano-in-winter-on-a-budget",
+    "contentKey": "positanoWinterBudget",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "positanoWinterBudget",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "positanoWinterBudget",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "offSeasonLongStay",
+            "workCafes",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "offSeasonLongStay",
+      "workCafes",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWBRV9C1MG3SRCBHKSEF",
+    "shop": "brikette",
+    "key": "praianoGuide",
+    "slug": "praiano-travel-guide",
+    "contentKey": "praianoGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "praianoGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "praianoGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "marinaDiPraiaBeaches",
+            "topViewpointsAmalfi",
+            "scenicWalksPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "marinaDiPraiaBeaches",
+      "topViewpointsAmalfi",
+      "scenicWalksPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW6A4AXZKS6M10TSM5EY",
+    "shop": "brikette",
+    "key": "publicTransportAmalfi",
+    "slug": "amalfi-coast-public-transport-guide",
+    "contentKey": "publicTransportAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "publicTransportAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "publicTransportAmalfi",
+          "alwaysProvideFallback": true,
+          "preferManualWhenUnlocalized": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "transportBudget",
+            "ferrySchedules",
+            "sitaTickets"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "transportBudget",
+      "ferrySchedules",
+      "sitaTickets"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": true,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX3B4S4GMA2H24SG39X8",
+    "shop": "brikette",
+    "key": "ravelloFestival",
+    "slug": "ravello-music-festival-guide",
+    "contentKey": "ravelloFestival",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW0NMFW6ZDFBT9G3G4RD",
+    "shop": "brikette",
+    "key": "ravelloGuide",
+    "slug": "ravello-travel-guide",
+    "contentKey": "ravelloGuide",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "ravelloGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "ravelloGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "ravelloFestival",
+            "positanoRavello",
+            "dayTripsAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ravelloFestival",
+      "positanoRavello",
+      "dayTripsAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWT4D7VB4AQCD8TTASM8",
+    "shop": "brikette",
+    "key": "ravelloPositanoBus",
+    "slug": "ravello-positano-bus",
+    "contentKey": "ravelloPositanoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "ravelloPositanoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX3J8VBQCNKFPX90J75W",
+    "shop": "brikette",
+    "key": "reachBudget",
+    "slug": "how-to-reach-positano-on-a-budget",
+    "contentKey": "reachBudget",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWJDKX7M9GGXV809FP5A",
+    "shop": "brikette",
+    "key": "reginaGiovannaBath",
+    "slug": "regina-giovanna-bath-beach-guide",
+    "contentKey": "reginaGiovannaBath",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "Bagni della Regina Giovanna",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "reginaGiovannaBath",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "reginaGiovannaBath",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "positanoBeaches",
+            "naplesCityGuide",
+            "dayTripsAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "positanoBeaches",
+      "naplesCityGuide",
+      "dayTripsAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVM79PE1XV0YGDRA366P",
+    "shop": "brikette",
+    "key": "rules",
+    "slug": "rules",
+    "contentKey": "rules",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "rules",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "security",
+      "legal"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW5NXZG2HKK7KY5VJ47Z",
+    "shop": "brikette",
+    "key": "safetyAmalfi",
+    "slug": "staying-safe-positano-amalfi-coast",
+    "contentKey": "safetyAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "safetyAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "safetyAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "travelInsuranceAmalfi",
+            "ecoFriendlyAmalfi",
+            "petsAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "travelInsuranceAmalfi",
+      "ecoFriendlyAmalfi",
+      "petsAmalfi"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWC7908Q1E3X6RS1CQ43",
+    "shop": "brikette",
+    "key": "salernoGatewayGuide",
+    "slug": "salerno-amalfi-coast-gateway",
+    "contentKey": "salernoGatewayGuide",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "salernoGatewayGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "salernoGatewayGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "salernoVsNaplesArrivals",
+            "salernoPositano",
+            "ferrySchedules"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "salernoVsNaplesArrivals",
+      "salernoPositano",
+      "ferrySchedules"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "showTocWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWAFGY1V7EHEFEH5BDGY",
+    "shop": "brikette",
+    "key": "salernoPositano",
+    "slug": "salerno-to-positano",
+    "contentKey": "salernoPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "salernoPositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "salernoPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "ferrySchedules",
+            "reachBudget",
+            "luggageStorage"
+          ]
+        }
+      },
+      {
+        "type": "alsoHelpful",
+        "options": {
+          "tags": [
+            "transport",
+            "salerno",
+            "positano",
+            "ferry",
+            "bus"
+          ],
+          "excludeGuide": [
+            "ferrySchedules",
+            "reachBudget",
+            "luggageStorage"
+          ],
+          "includeRooms": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ferrySchedules",
+      "reachBudget",
+      "luggageStorage"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWXZG8YN4EDVBXG497SS",
+    "shop": "brikette",
+    "key": "salernoPositanoBus",
+    "slug": "salerno-positano-bus",
+    "contentKey": "salernoPositanoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "salernoPositanoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWWY6Z5PHBGGX050ZMYA",
+    "shop": "brikette",
+    "key": "salernoPositanoFerry",
+    "slug": "salerno-positano-ferry",
+    "contentKey": "salernoPositanoFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "salernoPositanoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX3SSFPYAET0MQFN5R4P",
+    "shop": "brikette",
+    "key": "salernoVsNaples",
+    "slug": "salerno-vs-naples",
+    "contentKey": "salernoVsNaples",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX40161KNS9SEA5E197C",
+    "shop": "brikette",
+    "key": "salernoVsNaplesArrivals",
+    "slug": "salerno-vs-naples-arrivals",
+    "contentKey": "salernoVsNaplesArrivals",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVZAZQV7888ZQNHFQ3FZ",
+    "shop": "brikette",
+    "key": "santaMariaDelCastelloHike",
+    "slug": "santa-maria-del-castello-hike",
+    "contentKey": "santaMariaDelCastelloHike",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "hero",
+        "options": {
+          "image": "santa-maria-castello/smaria-to-positano.jpg"
+        }
+      },
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "santaMariaDelCastelloHike",
+          "showToc": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "topOfTheMountainHike",
+            "pathOfTheGods",
+            "sunriseHike"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "topOfTheMountainHike",
+      "pathOfTheGods",
+      "sunriseHike"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWHQ5AHCQQ5150NRKXS4",
+    "shop": "brikette",
+    "key": "scenicWalksPositano",
+    "slug": "scenic-walks-positano-environs",
+    "contentKey": "scenicWalksPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "scenicWalksPositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "scenicWalksPositano"
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "walkingTourAudio",
+            "pathOfTheGods",
+            "instagramSpots"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "walkingTourAudio",
+      "pathOfTheGods",
+      "instagramSpots"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWDGWYTHNBDPSX77FZFK",
+    "shop": "brikette",
+    "key": "scooterRentalPositano",
+    "slug": "scooter-rental-positano-guide",
+    "contentKey": "scooterRentalPositano",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "scooterRentalPositano"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "scooterRentalPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "parking",
+            "publicTransportAmalfi",
+            "transportBudget"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "parking",
+      "publicTransportAmalfi",
+      "transportBudget"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": false,
+      "showRelatedWhenLocalized": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVQQXA2Q1CG1QJQR4REH",
+    "shop": "brikette",
+    "key": "security",
+    "slug": "security",
+    "contentKey": "security",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "security",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "rules",
+      "checkinCheckout",
+      "defectsDamages"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVXVP6PK95TCMR5F8JZ9",
+    "shop": "brikette",
+    "key": "sevenDayNoCar",
+    "slug": "7-day-amalfi-coast-itinerary-no-car",
+    "contentKey": "sevenDayNoCar",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "sevenDayNoCar",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "sevenDayNoCar",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "itinerariesPillar",
+            "positanoTravelGuide",
+            "dayTripsAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "itinerariesPillar",
+      "positanoTravelGuide",
+      "dayTripsAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVW6TPAZYX41YWF37405",
+    "shop": "brikette",
+    "key": "simsAtms",
+    "slug": "sim-esim-and-atms-positano",
+    "contentKey": "simsAtms",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "hero",
+        "options": {
+          "image": "/img/tabacchi.webp",
+          "alt": "A tabacchi shop sign in Positano"
+        }
+      },
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "simsAtms",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "simsAtms",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "groceriesPharmacies",
+      "whatToPack",
+      "naplesPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW5XHHFAHX8FGM4H8W78",
+    "shop": "brikette",
+    "key": "sitaTickets",
+    "slug": "sita-bus-tickets",
+    "contentKey": "sitaTickets",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "sitaTickets",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "sitaTickets",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "publicTransportAmalfi",
+            "transportBudget",
+            "howToGetToPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "publicTransportAmalfi",
+      "transportBudget",
+      "howToGetToPositano"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": true,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWE1A59W6CMA7XD52W9C",
+    "shop": "brikette",
+    "key": "soloTravelPositano",
+    "slug": "solo-travel-positano-tips",
+    "contentKey": "soloTravelPositano",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "soloTravelPositano",
+          "showToc": false
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "soloTravelPositano",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "ravelloFestival",
+      "dayTripsAmalfi",
+      "instagramSpots"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTransportNotice": false,
+      "showTagChips": true,
+      "showTocWhenUnlocalized": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWBZAPBTWW4PANNFGYCX",
+    "shop": "brikette",
+    "key": "sorrentoGuide",
+    "slug": "sorrento-gateway-guide",
+    "contentKey": "sorrentoGuide",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "sorrentoGuide",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "sorrentoGuide",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "sorrentoPositanoBus",
+            "sorrentoPositanoFerry",
+            "ferrySchedules"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "sorrentoPositanoBus",
+      "sorrentoPositanoFerry",
+      "ferrySchedules"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "showTocWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWY83Q60T75MCEWVA9S4",
+    "shop": "brikette",
+    "key": "sorrentoPositanoBus",
+    "slug": "sorrento-positano-bus",
+    "contentKey": "sorrentoPositanoBus",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "sorrentoPositanoBus",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWYGCGDTZNA7ZTDAAJVK",
+    "shop": "brikette",
+    "key": "sorrentoPositanoFerry",
+    "slug": "sorrento-positano-ferry",
+    "contentKey": "sorrentoPositanoFerry",
+    "status": "published",
+    "areas": [
+      "howToGetHere"
+    ],
+    "primaryArea": "howToGetHere",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "sorrentoPositanoFerry",
+          "showToc": true
+        }
+      },
+      {
+        "type": "callout",
+        "options": {
+          "variant": "tip",
+          "bodyKey": "callouts.tip"
+        }
+      }
+    ],
+    "relatedGuides": [],
+    "structuredData": [
+      "HowTo",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "ogType": "article"
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWDR2W5BS5Z8C7CD2FZN",
+    "shop": "brikette",
+    "key": "souvenirsAmalfi",
+    "slug": "thrifty-souvenir-shopping-amalfi-coast",
+    "contentKey": "souvenirsAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "souvenirsAmalfi"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "souvenirsAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "limoncelloCuisine",
+            "cheapEats",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "limoncelloCuisine",
+      "cheapEats",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVWXNVYR0KCDVR74YR6T",
+    "shop": "brikette",
+    "key": "stayingFitPositano",
+    "slug": "stay-fit-positano",
+    "contentKey": "stayingFitPositano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "focusKeyword": "stay fit Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "stayingFitPositano"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "stayingFitPositano",
+          "alwaysProvideFallback": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "sunsetViewpoints",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWFE5TNE8F6Z52ASZ2GQ",
+    "shop": "brikette",
+    "key": "sunriseHike",
+    "slug": "sunrise-hike-positano",
+    "contentKey": "sunriseHike",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "sunriseHike",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "topOfTheMountainHike",
+            "sunsetViewpoints",
+            "pathOfTheGods"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "topOfTheMountainHike",
+      "sunsetViewpoints",
+      "pathOfTheGods"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "renderGenericWhenEmpty": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX46B0X291G4CNTJCVQ6",
+    "shop": "brikette",
+    "key": "sunsetViewpoints",
+    "slug": "sunset-viewpoints-positano",
+    "contentKey": "sunsetViewpoints",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX4EVVJSGXMZGDJHZY72",
+    "shop": "brikette",
+    "key": "tagsIndex",
+    "slug": "tags",
+    "contentKey": "tagsIndex",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX4MF68TSD2JQSXRNKMB",
+    "shop": "brikette",
+    "key": "terraceSunsets",
+    "slug": "terrace-bar-sunset-experience-positano",
+    "contentKey": "terraceSunsets",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVZKTFSMGE43QCMB76HW",
+    "shop": "brikette",
+    "key": "topOfTheMountainHike",
+    "slug": "top-of-the-mountain-hike",
+    "contentKey": "topOfTheMountainHike",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "topOfTheMountainHike",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "topOfTheMountainHike",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "pathOfTheGods",
+            "sunsetViewpoints",
+            "stayingFitPositano"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "sunsetViewpoints",
+      "stayingFitPositano"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "renderGenericWhenEmpty": true,
+      "suppressFaqWhenUnlocalized": true,
+      "fallbackToEnTocTitle": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVZ21VQR3TFS6FFAWZJT",
+    "shop": "brikette",
+    "key": "topViewpointsAmalfi",
+    "slug": "top-viewpoints-amalfi-coast",
+    "contentKey": "topViewpointsAmalfi",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "topViewpointsAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "topViewpointsAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "sunsetViewpoints",
+            "instagramSpots",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "sunsetViewpoints",
+      "instagramSpots",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWJQ7JQECW014BWTMYHW",
+    "shop": "brikette",
+    "key": "tramontiWineries",
+    "slug": "tramonti-wineries-amalfi-coast",
+    "contentKey": "tramontiWineries",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "tramontiWineries",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "tramontiWineries",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "foodieGuideNaplesAmalfi",
+            "offbeatVillagesAmalfi",
+            "salernoGatewayGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "foodieGuideNaplesAmalfi",
+      "offbeatVillagesAmalfi",
+      "salernoGatewayGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW63J9CGV8W957XK4SES",
+    "shop": "brikette",
+    "key": "transportBudget",
+    "slug": "transport-on-a-budget-amalfi-coast",
+    "contentKey": "transportBudget",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "transportBudget",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "transportBudget",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "reachBudget",
+            "howToGetToPositano",
+            "salernoVsNaplesArrivals"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "reachBudget",
+      "howToGetToPositano",
+      "salernoVsNaplesArrivals"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX4SPED01NWTQ8XT4M6Z",
+    "shop": "brikette",
+    "key": "transportMoneySaving",
+    "slug": "money-saving-tips-amalfi-coast-transport",
+    "contentKey": "transportMoneySaving",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW6N286MZR7EV88N2TS6",
+    "shop": "brikette",
+    "key": "travelFaqsAmalfi",
+    "slug": "amalfi-coast-travel-faqs",
+    "contentKey": "travelFaqsAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "travelFaqsAmalfi",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "travelFaqsAmalfi",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "safetyAmalfi",
+            "ecoFriendlyAmalfi",
+            "transportBudget"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "safetyAmalfi",
+      "ecoFriendlyAmalfi",
+      "transportBudget"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVR032S4AEM54T0FJ5XG",
+    "shop": "brikette",
+    "key": "travelHelp",
+    "slug": "travel-help",
+    "contentKey": "travelHelp",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "focusKeyword": "travel help Positano",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "travelHelp",
+          "showToc": true
+        }
+      }
+    ],
+    "relatedGuides": [
+      "arrivingByFerry",
+      "naplesAirportBus",
+      "ferryDockToBrikette"
+    ],
+    "structuredData": [
+      "Article",
+      "BreadcrumbList"
+    ],
+    "options": {
+      "showTagChips": false
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWE9SN9G1CF68JRPEY55",
+    "shop": "brikette",
+    "key": "travelInsuranceAmalfi",
+    "slug": "travel-insurance-amalfi-coast",
+    "contentKey": "travelInsuranceAmalfi",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "travelInsuranceAmalfi"
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "travelInsuranceAmalfi"
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true,
+      "renderGenericWhenEmpty": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX50S6G3KA5NK0TKSY2V",
+    "shop": "brikette",
+    "key": "travelTipsFirstTime",
+    "slug": "positano-travel-tips-first-time-visitors",
+    "contentKey": "travelTipsFirstTime",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HWNQ766JZY2HZHBPW9P2",
+    "shop": "brikette",
+    "key": "walkingTourAudio",
+    "slug": "free-walking-tour-audio-positano",
+    "contentKey": "walkingTourAudio",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "walkingTourAudio",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "walkingTourAudio",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "sunsetViewpoints",
+            "positanoBeaches",
+            "positanoTravelGuide"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "sunsetViewpoints",
+      "positanoBeaches",
+      "positanoTravelGuide"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferGenericWhenFallback": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVXHYAZFW871HX0YC3FH",
+    "shop": "brikette",
+    "key": "weekend48Positano",
+    "slug": "48-hour-positano-weekend",
+    "contentKey": "weekend48Positano",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "weekend48Positano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "weekend48Positano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "itinerariesPillar",
+            "cheapEats",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "itinerariesPillar",
+      "cheapEats",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HVSMY57215RH0X9YRPFC",
+    "shop": "brikette",
+    "key": "whatToPack",
+    "slug": "what-to-pack-amalfi-coast",
+    "contentKey": "whatToPack",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "whatToPack",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "whatToPack",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "pathOfTheGods",
+            "sunsetViewpoints",
+            "positanoBeaches"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "pathOfTheGods",
+      "sunsetViewpoints",
+      "positanoBeaches"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW738HDVCXWTXXCXZJQ3",
+    "shop": "brikette",
+    "key": "workAndTravelPositano",
+    "slug": "work-and-travel-remote-work-positano",
+    "contentKey": "workAndTravelPositano",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "workAndTravelPositano",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "workAndTravelPositano",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "workCafes",
+            "workExchangeItaly",
+            "ecoFriendlyAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "workCafes",
+      "workExchangeItaly",
+      "ecoFriendlyAmalfi"
+    ],
+    "structuredData": [
+      "Article"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HX58WF5MVGN7DXS13KCW",
+    "shop": "brikette",
+    "key": "workCafes",
+    "slug": "wi-fi-and-work-cafes-positano",
+    "contentKey": "workCafes",
+    "status": "draft",
+    "areas": [
+      "experience"
+    ],
+    "primaryArea": "experience",
+    "blocks": [],
+    "relatedGuides": [],
+    "structuredData": [
+      "Article"
+    ],
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  },
+  {
+    "id": "01KH28HW7A6F8Q3FYBCX84TCVV",
+    "shop": "brikette",
+    "key": "workExchangeItaly",
+    "slug": "work-exchange-in-italian-hostels",
+    "contentKey": "workExchangeItaly",
+    "status": "draft",
+    "areas": [
+      "help"
+    ],
+    "primaryArea": "help",
+    "blocks": [
+      {
+        "type": "genericContent",
+        "options": {
+          "contentKey": "workExchangeItaly",
+          "showToc": true
+        }
+      },
+      {
+        "type": "faq",
+        "options": {
+          "fallbackKey": "workExchangeItaly",
+          "alwaysProvideFallback": true
+        }
+      },
+      {
+        "type": "relatedGuides",
+        "options": {
+          "guides": [
+            "workCafes",
+            "workAndTravelPositano",
+            "ecoFriendlyAmalfi"
+          ]
+        }
+      }
+    ],
+    "relatedGuides": [
+      "workCafes",
+      "workAndTravelPositano",
+      "ecoFriendlyAmalfi"
+    ],
+    "structuredData": [
+      "Article",
+      "FAQPage"
+    ],
+    "options": {
+      "showPlanChoice": false,
+      "showTagChips": true,
+      "suppressUnlocalizedFallback": true,
+      "preferManualWhenUnlocalized": true
+    },
+    "riskTier": 0,
+    "schemaVersion": 1,
+    "row_version": 1,
+    "created_at": "2026-02-09T22:32:30.567Z",
+    "updated_at": "2026-02-09T22:32:30.567Z"
+  }
+]

@@ -2,8 +2,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { walkJsonStrings, type JsonPath } from "./jsonWalker";
 import { resolveGuideContentFileAllowlist } from "./guideFilters";
+import { type JsonPath,walkJsonStrings } from "./jsonWalker";
 
 export type RawContentKeyTokenMatch = {
   locale: string;

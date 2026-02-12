@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Free and low‑cost things to do in Positano",
+    "description": "Enjoy Positano on a budget: viewpoints, beaches, town walks, and cheap eats."
+  },
+  "linkLabel": "Free Things to Do in Positano: Budget-Friendly Fun",
+  "intro": [
+    "Positano rewards early risers and curious wanderers; you can fill days with views, swims, and culture without spending more than a few euros."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Viewpoints worth the climb",
+      "body": [
+        "Start at the terrace outside Chiesa Nuova for sunrise colours washing over the bay; bring a 500 ml (17 oz) bottle because there are no taps nearby.",
+        "Walk Via Cristoforo Colombo and the Viale Pasitea balconies around golden hour for postcard angles without booking a table."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Free beach time",
+      "body": [
+        "Spiaggia Grande reserves a public strip on the right-hand side—pack a light towel and sit close to the waterline to avoid lido rows.",
+        "Follow the coastal path to Fornillo Beach for a quieter cove; the walk takes about 12 minutes with modest stairs and the public section stays free."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "DIY walking routes",
+      "body": [
+        "Explore the narrow lanes in the Liparlati district, ducking into tiny courtyards and ceramic-lined staircases between Via dei Mulini and Via Pasitea.",
+        "Take the free shuttle to Montepertuso’s stop and descend the ancient stone steps back to Positano in about 25–35 minutes, pausing at the natural arch viewpoint."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Culture without a ticket",
+      "body": [
+        "Step inside Santa Maria Assunta to view the Byzantine icon and majolica dome; shoulders covered is enough dress code.",
+        "Check the commune noticeboard near Piazza dei Mulini for evening concerts or films hosted on the beach during summer weeks."
+      ]
+    }
+  ],
+  "tips": [
+    "Carry a reusable bottle and refill at the public fountain near Chiesa Nuova before you head to viewpoints.",
+    "Pack reef-safe sunscreen and a sarong; they double as a beach mat and light cover in churches."
+  ],
+  "faqs": [
+    {
+      "q": "Are there free showers on the beaches?",
+      "a": [
+        "Yes—Spiaggia Grande has cold-water showers near the public section. Bring flip-flops because the floor gets hot by midday."
+      ]
+    },
+    {
+      "q": "Do I need tickets for the Path of the Gods?",
+      "a": [
+        "The trail itself is free year-round. Budget for the €2.40 SITA bus ride up to Nocelle and back if you do not want to hike both ways."
+      ]
+    }
+  ]
+}

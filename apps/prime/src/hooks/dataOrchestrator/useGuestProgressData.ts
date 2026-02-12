@@ -12,19 +12,18 @@
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import {
   initializeQuestProgressFromCompletedTasks,
   isQuestProgressStale,
 } from '../../lib/quests/initializeQuestProgress';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
 import type { GuestProfile, ProfileStatus } from '../../types/guestProfile';
-import { DEFAULT_GUEST_PROFILE } from '../../types/guestProfile';
 import type { QuestProgress } from '../../types/questProgress';
-import { DEFAULT_QUEST_PROGRESS } from '../../types/questProgress';
-import { useGuestProfileMutator } from '../mutator/useGuestProfileMutator';
 import { useQuestProgressMutator } from '../mutator/useQuestProgressMutator';
 import { useFetchGuestProfile } from '../pureData/useFetchGuestProfile';
 import { useFetchQuestProgress } from '../pureData/useFetchQuestProgress';
+
 import { useUnifiedBookingData } from './useUnifiedBookingData';
 
 export interface GuestProgressData {
@@ -75,6 +74,7 @@ export function useGuestProgressData(): GuestProgressData {
 
   const currentBookingId = occupantData?.reservationCode ?? null;
   const currentCheckInDate = occupantData?.checkInDate ?? null;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const completedTasks: OccupantCompletedTasks =
     occupantData?.completedTasks ?? {};
 
@@ -84,7 +84,7 @@ export function useGuestProgressData(): GuestProgressData {
     isLoading: profileLoading,
     error: profileError,
     isStale: isProfileStale,
-    effectiveProfile,
+    effectiveProfile: _effectiveProfile,
   } = useFetchGuestProfile({
     enabled: !!currentBookingId,
     currentBookingId: currentBookingId ?? undefined,

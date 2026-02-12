@@ -90,6 +90,9 @@ describe("send helpers", () => {
     });
 
     it("caches missing providers", async () => {
+      // Suppress expected console.warn from "Unrecognized provider error"
+      const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
       const { loadProvider } = await import("../send");
       const first = await loadProvider("unknown");
       const second = await loadProvider("unknown");
@@ -99,6 +102,8 @@ describe("send helpers", () => {
       const { ResendProvider } = await import("../providers/resend");
       expect(SendgridProvider).not.toHaveBeenCalled();
       expect(ResendProvider).not.toHaveBeenCalled();
+
+      warnSpy.mockRestore();
     });
   });
 

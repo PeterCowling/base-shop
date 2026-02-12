@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Bus retour à l'auberge Brikette depuis la plage principale de Positano",
+    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+  },
+  "linkLabel": "Bus retour à l'auberge Brikette depuis Spiaggia Grande",
+  "intro": [
+    "Évitez les plus de 600 escaliers après une journée à la plage en prenant le bus orange Interno Positano jusqu'à l'auberge Brikette.",
+    "Les billets sont valables dans les deux sens, vous pouvez donc les acheter au tabacchi avant de vous rendre à la plage ou les acheter sur le chemin du retour si le stock le permet."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Marcher jusqu'à la Piazza dei Mulini",
+      "body": [
+        "Quittez Spiaggia Grande par l'arcade à côté du port et suivez la rue commerçante jusqu'à la Piazza dei Mulini.",
+        "L'arrêt de bus interno se trouve à côté de la pharmacie et du même tabacchi/marchand de journaux utilisé pour les billets."
+      ]
+    },
+    {
+      "id": "wait-for-the-bus",
+      "title": "Attendez à la Piazza dei Mulini",
+      "body": [
+        "Consultez les horaires affichés au refuge ou via la conciergerie numérique ; le service s'amincit tard le soir et en moyenne saison.",
+        "Tenez-vous à côté de la pharmacie et de tabacchi pour pouvoir monter à bord dès l'arrivée du bus orange Interno Positano."
+      ]
+    },
+    {
+      "id": "ride-uphill",
+      "title": "Prendre le bus interno en montée",
+      "body": [
+        "Montez à bord de l'autocar orange marqué \\\\\" Interno Positano \\\\\" et roulez en boucle à travers la ville vers Chiesa Nuova.",
+        "Écoutez l'appel d'arrêt ou surveillez le coin tabacchi où vous êtes monté à bord plus tôt dans la journée."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Dernières étapes vers l'auberge",
+      "body": [
+        "Descendez à l'arrêt tabacchi, tournez à gauche sur Viale Pasitea et marchez environ 100 mètres (330 pieds) en montée.",
+        "Prenez l'escalier sur votre droite pour retourner directement à l'entrée principale de l'auberge Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Conseils de bus",
+  "tips": [
+    "Emportez un billet de rechange afin de pouvoir monter immédiatement à bord si le bus est occupé.",
+    "Si les services se terminent tôt, revenez au %LINK:positanoMainBeachWalkBack|itinéraire à pied% — il suit les points de contrôle de l'escalier de l'auberge.",
+    "Informez la réception si vous remarquez des changements d'horaire afin que le concierge numérique reste à jour pour les autres voyageurs."
+  ],
+  "extras": {
+    "photos": {
+      "title": "Photos",
+      "items": {
+        "busInterior": {
+          "alt": "Bus Interno Positano à l'arrêt au bord de la plage",
+          "caption": "Bus Interno Positano — les véhicules varient mais l’étiquette de l’itinéraire reste la même."
+        },
+        "barInternazionaleStop": {
+          "alt": "Arrêt de bus Chiesa Nuova / Bar Internazionale",
+          "caption": "Chiesa Nuova (Bar Internazionale) – arrêt le plus proche de l’auberge Brikette."
+        }
+      }
+    }
+  }
+}

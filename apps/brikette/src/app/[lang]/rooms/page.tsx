@@ -1,12 +1,12 @@
 // src/app/[lang]/rooms/page.tsx
 // Rooms listing page - App Router version
-import { Suspense } from "react";
 import type { Metadata } from "next";
+
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getSlug } from "@/utils/slug";
 
@@ -51,11 +51,6 @@ export default async function RoomsPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  await getTranslations(validLang, ["roomsPage"]);
-
-  return (
-    <Suspense fallback={null}>
-      <RoomsPageContent lang={validLang} />
-    </Suspense>
-  );
+  await getTranslations(validLang, ["roomsPage", "_tokens"]);
+  return <RoomsPageContent lang={validLang} />;
 }

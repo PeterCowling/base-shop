@@ -66,7 +66,7 @@ function Wrapper({
   search: string;
   status: ProductStatus;
 }) {
-  const { setSearch, setStatus, filteredRows } = useProductFilters(products);
+  const { setSearch, setStatus, filteredRows } = useProductFilters(products as any);
 
   useEffect(() => {
     setSearch(search);

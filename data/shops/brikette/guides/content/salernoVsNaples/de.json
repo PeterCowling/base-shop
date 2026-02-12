@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vs. Neapel: Welche Anreise ist besser für Positano?",
+    "description": "Wann Salerno schneller oder günstiger ist als Neapel – je nach Saison und Tageszeit."
+  },
+  "linkLabel": "Salerno vs. Neapel: Anreisevergleich",
+  "intro": [
+    "Salerno oder Neapel? Diese Gegenüberstellung hilft dir zu entscheiden, welcher Hafen oder Bahnhof besser zu Budget, Flugzeiten und Gepäck passt."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Wann Salerno punktet",
+      "body": [
+        "Kommst du aus Süditalien oder Rom, enden Hochgeschwindigkeitszüge direkt in Salerno – kurze Wege zum Hafen.",
+        "Fähren nach Positano/Amalfi fahren in der Hochsaison häufiger; Übernachtungen und Parken kosten weniger."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Wann Neapel punktet",
+      "body": [
+        "Flugankünfte in Neapel (NAP) sparen den Umstieg; Alibus + Campania Express bringen dich in rund 70 Minuten nach Sorrent.",
+        "Großes Hotelangebot, mehr Abendaktivitäten und direkte Fähren nach Positano (Mai–Oktober)."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Gepäck & Treppen",
+      "body": [
+        "Über Salerno nach Positano per Fähre bedeutet Treppen erst ab der Anlegestelle; Busse erfordern Gepäckverladung in Amalfi.",
+        "Über Neapel/Sorrent gibt es mehr Umstiege – mit leichtem Koffer oder Rucksack reist es sich entspannter."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ist Salerno Costa d’Amalfi (QSR) eine gute Alternative zum Flughafen Neapel?",
+      "a": [
+        "Ja, besonders im Sommer: Airlink-Shuttle nach Salerno mit ruhiger See per Fähre kombinieren und bei Schlechtwetter auf den Bus umsteigen."
+      ]
+    }
+  ]
+}

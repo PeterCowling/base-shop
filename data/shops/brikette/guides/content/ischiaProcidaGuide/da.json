@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia og Procida: ud over Amalfikysten",
+    "description": "Termalbade, strande og færgeruter fra Napoli/Sorrento."
+  },
+  "linkLabel": "Ischia og Procida: ud over Amalfikysten",
+  "intro": [
+    "Kombinér Ischias termalspaer med Procidas pastelfarvede havne for en frisk afstikker fra Amalfikysten."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Højdepunkter på Ischia",
+      "body": [
+        "Nyd termalparker som Poseidon eller Negombo; endagsbilletter koster ca. €35–€45.",
+        "Bestig Aragonese-slottet for udsigten over bugten, og udforsk Sant'Angelos bilfrie gader."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Højdepunkter på Procida",
+      "body": [
+        "Fotografér Marina Corricellas pastelhuse fra Terra Murata, og smag lingue di bue-kager.",
+        "Lej en scooter eller elcykel for at nå afsides strande som Chiaiolella."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistik og billetter",
+      "body": [
+        "Tag tidlige færger fra Napolis Molo Beverello (ca. 1 time til Ischia, 35 minutter til Procida). En kombineret dagstur er mulig, men bedre fordelt over to dage.",
+        "Køb returbilletter på forhånd i sommerweekender; de sidste både tilbage til Napoli afgår omkring kl. 21.30."
+      ]
+    }
+  ],
+  "tips": [
+    "Pak badetøj og et let håndklæde, selv hvis du kun planlægger at udforske – termalbassinerne frister efter sightseeing.",
+    "Overnat på Ischia for rolige aftener og for at fange solopgangen ved slottet, før endagsturisterne ankommer."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg besøge begge øer på én dag?",
+      "a": [
+        "Det kan lade sig gøre, men bliver forhastet. Fokuser på én ø pr. dag, eller overnat, så du kan nyde solnedgangene uden færgestress."
+      ]
+    },
+    {
+      "q": "Skal jeg reservere til termalparkerne?",
+      "a": [
+        "Book på forhånd i højsæsonen (juni–september). Hverdage er roligere, og nogle parker tilbyder aftenbilletter efter kl. 16 til lavere pris."
+      ]
+    }
+  ]
+}

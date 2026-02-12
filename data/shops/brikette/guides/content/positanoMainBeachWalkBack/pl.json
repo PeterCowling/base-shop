@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Wróć do Hostelu Brikette ze Spiaggia Grande",
+    "description": "Podążaj za punktami kontrolnymi na klatce schodowej hostelu, a wspinaczka powrotna zajmie 30–45 minut."
+  },
+  "linkLabel": "Powrót z głównej plaży Positano",
+  "intro": [
+    "Powrót ze Spiaggia Grande do Hostel Brikette trwa około 30–45 minut w zależności od tempa, przystanków fotograficznych i ciepła.",
+    "Te kroki odzwierciedlają pięć zdjęć punktów kontrolnych hostelu, dzięki czemu możesz zatrzymać się na najszybszej trasie schodów przez całą drogę w górę."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Przed wspinaczką",
+      "body": [
+        "Uzupełnij wodę i daj sobie czas na przerwy — na klatce schodowej nie ma sklepów, dopóki nie dotrzesz do górnych dróg.",
+        "Odbierz zdjęcia referencyjne z recepcji lub konsjerża cyfrowego, aby podczas wynurzania dopasować punkty 4 i 5."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Krok po kroku wracaj do hostelu",
+      "body": [
+        "1. Zacznij od lewej strony Spiaggia Grande (patrząc od strony wody) i przejdź pod łukiem obok portu.",
+        "2. Kontynuuj prosto przez ścieżkę zakupową, aż dotrzesz do otwartego dziedzińca w punkcie 5 na mapie — potwierdź, że widok pasuje do zdjęcia w hostelu.",
+        "3. Wjedź schodami po lewej stronie, podążaj za nimi pod górę, gdy skręca w prawo, i wspinaj się na górę.",
+        "4. Skręć w prawo na górze, a następnie natychmiast idź następnymi schodami, kierując się pod górę, aby dotrzeć do punktu na mapie 4.",
+        "5. Z punktu 4 skręć w lewo na drogę, przejdź około 10 metrów, przejdź na drugą stronę i idź schodami bezpośrednio przed sobą.",
+        "6. Idź po schodach, aż zetkną się z inną drogą. Jeśli spojrzysz wstecz, scena powinna pasować do zdjęcia z punktu 3. Przejdź prosto na następną klatkę schodową i wspinaj się dalej.",
+        "7. Kiedy schody się skończą, wejdź na drogę przed nimi, skręć w lewo i kontynuuj pod górę przez nieco ponad 100 metrów (330 stóp).",
+        "8. Skręć w prawo na znane schody, które prowadzą prosto do głównych drzwi hostelu Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Szybkie wskazówki",
+  "tips": [
+    "Jeśli wspinaczka wydaje się zbyt intensywna, przejdź do %LINK:positanoMainBeachBusBack|autobusem z powrotem do hostelu% po dotarciu do Piazza dei Mulini.",
+    "Rozpocznij spacer przed południem lub po zachodzie słońca, aby ominąć najgorętszą część dnia.",
+    "Zatrzymaj się na zacienionych lądowaniach, aby złapać oddech i zrobić zdjęcia widoku — zasłużyłeś na nie."
+  ]
+}

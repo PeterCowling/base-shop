@@ -3,6 +3,7 @@ import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import { Button } from "../button";
 import {
@@ -20,7 +21,7 @@ import {
 describe("DropdownMenu behavior", () => {
   it("invokes onSelect for items and closes on outside click", async () => {
     const onSelect = jest.fn();
-    render(
+    const { container } = render(
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button>Open</Button>
@@ -38,6 +39,7 @@ describe("DropdownMenu behavior", () => {
     expect(await screen.findByTestId("content")).toBeInTheDocument();
     await user.click(screen.getByRole("menuitem", { name: /choose me/i }));
     expect(onSelect).toHaveBeenCalled();
+
     // Click outside should close
     await user.click(document.body);
     expect(screen.queryByTestId("content")).toBeNull();

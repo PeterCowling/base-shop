@@ -3,7 +3,7 @@
 // Single-purpose stub: Day trip to Capri from Positano
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const capriDayTrip = {
   seo: {
@@ -29,5 +29,5 @@ export const capriDayTrip = {
   howTo: { steps: [{ name: "Check seasonal ferries", text: "Confirm departures and last returns." }] },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

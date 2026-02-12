@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/Italy Rail Pass: Amalfikusten",
+    "description": "Hur du använder tågpass på Amalfikusten: bokningar, rutter och sista biten till Positano."
+  },
+  "linkLabel": "Interrail/Italy Rail Pass: Amalfikusten",
+  "intro": [
+    "Använda ett Interrail/Italy Rail Pass för att nå Amalfikusten: vilka linjer man ska ta, nödvändiga tillägg och hur man tar sig den sista sträckan till Positano."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Core routes",
+      "body": [
+        "Rom → Neapel/Salerno höghastighet; lokaltåg till Sorrento; bussar till Positano."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Supplements/reservations",
+      "body": [
+        "Frecciarossa/Italo kräver ofta platsreservationer; regionaltåg gör det inte men kan vara trångt."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Last mile to Positano",
+      "body": [
+        "Från Neapel: Circumvesuviana till Sorrento sedan SITA buss. Från Salerno: färja/buss under säsong."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is a pass worth it?",
+      "a": [
+        "Endast om du tar tillräckligt långa sträckor; annars kan punkt-till-punkt vara billigare."
+      ]
+    }
+  ]
+}

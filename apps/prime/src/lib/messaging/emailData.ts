@@ -6,10 +6,12 @@
  */
 
 import { get, ref } from 'firebase/database';
+
 import { db } from '@/services/firebase';
-import { computeReadinessScore } from '../preArrival';
+
 import type { PreArrivalData } from '../../types/preArrival';
 import { DEFAULT_PRE_ARRIVAL } from '../../types/preArrival';
+import { computeReadinessScore } from '../preArrival';
 
 /**
  * Default values for calculations.
@@ -238,10 +240,15 @@ async function fetchCheckInCode(uuid: string): Promise<string | null> {
 }
 
 /**
- * Build portal URL for a guest.
+ * Build a placeholder portal URL for queue record creation.
+ *
+ * At dispatch time the queue processor replaces this with a secure
+ * token-based deep link (`/g/{token}`). The placeholder uses
+ * `/find-my-stay` so that if the override is ever skipped the guest
+ * still lands on a working page rather than an insecure UUID-based URL.
  */
-function buildPortalUrl(uuid: string, baseUrl: string): string {
-  return `${baseUrl}/?uuid=${uuid}`;
+function buildPortalUrl(_uuid: string, baseUrl: string): string {
+  return `${baseUrl}/find-my-stay`;
 }
 
 /**

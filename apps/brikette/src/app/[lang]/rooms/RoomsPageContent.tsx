@@ -6,20 +6,30 @@ import { Fragment, memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
-import { RatingsBar } from "@acme/ui/atoms";
 import { DirectBookingPerks } from "@acme/ui/molecules";
-import RoomsSection from "@acme/ui/organisms/RoomsSection";
 
 import AlsoHelpful from "@/components/common/AlsoHelpful";
+import RoomsSection, { type RoomsSectionBookingQuery } from "@/components/rooms/RoomsSection";
 import RoomsStructuredData from "@/components/seo/RoomsStructuredData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 
 type Props = {
   lang: AppLanguage;
+  bookingQuery?: RoomsSectionBookingQuery;
 };
 
-function RoomsPageContent({ lang }: Props) {
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}
+
+function RoomsPageContent({ lang, bookingQuery }: Props) {
   const { t } = useTranslation("roomsPage", { lng: lang, useSuspense: true });
   useTranslation("ratingsBar", { lng: lang, useSuspense: true });
   usePagePreload({
@@ -28,15 +38,18 @@ function RoomsPageContent({ lang }: Props) {
     optionalNamespaces: ["ratingsBar", "modals", "guides"],
   });
 
-  const pageTitle = t("hero.heading", { defaultValue: "Our rooms" }) as string;
-  const pageSubtitle = t("hero.subheading", { defaultValue: "" }) as string;
+  const pageTitle = resolveTranslatedCopy(
+    t("hero.heading", { defaultValue: "Our rooms" }),
+    "Our rooms"
+  );
+  const pageSubtitle = resolveTranslatedCopy(
+    t("hero.subheading", { defaultValue: "" }),
+    ""
+  );
 
   return (
     <Fragment>
       <RoomsStructuredData />
-
-      {/* Ratings Bar */}
-      <RatingsBar className="my-6" lang={lang} />
 
       {/* Page Header */}
       <Section padding="default" className="text-center">
@@ -44,12 +57,12 @@ function RoomsPageContent({ lang }: Props) {
           {pageTitle}
         </h1>
         {pageSubtitle && (
-          <p className="mx-auto max-w-2xl text-lg text-brand-text/80">{pageSubtitle}</p>
+          <p className="mx-auto text-lg text-brand-text/80">{pageSubtitle}</p>
         )}
       </Section>
 
       {/* Rooms Grid */}
-      <RoomsSection lang={lang} />
+      <RoomsSection lang={lang} bookingQuery={bookingQuery} />
 
       {/* Direct Booking Perks */}
       <Section padding="default">

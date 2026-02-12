@@ -10,9 +10,11 @@
  */
 
 import { useQuery } from '@tanstack/react-query';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
 import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { CheckInCodeRecord } from '../../types/checkInCode';
 import { CHECK_IN_CODE_PATHS } from '../../types/checkInCode';

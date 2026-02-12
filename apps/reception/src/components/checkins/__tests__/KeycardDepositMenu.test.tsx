@@ -16,9 +16,11 @@ describe("KeycardDepositMenu", () => {
         menuPosition={{ top: 0, left: 0 }}
         payType={KeycardPayType.CASH}
         docType={DocumentType.PASSPORT}
+        keycardNumber=""
         buttonDisabled={false}
         setPayType={jest.fn()}
         setDocType={jest.fn()}
+        setKeycardNumber={jest.fn()}
         handleConfirm={handleConfirm}
         closeMenu={closeMenu}
       />
@@ -38,9 +40,11 @@ describe("KeycardDepositMenu", () => {
         menuPosition={{ top: 0, left: 0 }}
         payType={KeycardPayType.DOCUMENT}
         docType={DocumentType.PASSPORT}
+        keycardNumber=""
         buttonDisabled={false}
         setPayType={jest.fn()}
         setDocType={jest.fn()}
+        setKeycardNumber={jest.fn()}
         handleConfirm={jest.fn()}
         closeMenu={jest.fn()}
       />

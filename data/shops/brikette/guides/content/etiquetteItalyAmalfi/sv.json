@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Lokal etikett: gör och gör inte (Italien, exempel från Amalfi)",
+    "description": "Hövliga vanor, klädkod och sociala tips för Italien och Amalfikusten."
+  },
+  "linkLabel": "Lokal etikett: gör och gör inte (Italien, exempel från Amalfi)",
+  "intro": [
+    "Praktisk etikett för måltider, kyrkobesök och samspelet i trånga gränder runt Positano och Amalfikusten."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Vid matbordet",
+      "body": [
+        "Boka i god tid när det är högtryck, ha tålamod mellan rätterna, be om notan när du är klar och lämna en liten dricks bara vid extra bra service."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Kyrkor & klädsel",
+      "body": [
+        "Täck axlarna inomhus och undvik att gå genom butiker i badkläder."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Delade gränder",
+      "body": [
+        "Håll höger i smala trappgränder, släpp förbi andra och växla snabbt vid populära fotoplatser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag ge dricks?",
+      "a": [
+        "Dricks är frivilligt; lämna 1–2 € vid utmärkt service eller avrunda uppåt. Coperto täcker redan bröd och dukning."
+      ]
+    },
+    {
+      "q": "Hur bör jag klä mig i kyrkor?",
+      "a": [
+        "Täck axlar och knän, ta av hatten och tala lågmält. Ha gärna en tunn sjal i väskan för ärmlösa plagg."
+      ]
+    }
+  ]
+}

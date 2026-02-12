@@ -2,10 +2,11 @@
 // Home page - App Router version
 import type { Metadata } from "next";
 
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+
 import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 
 import HomeContent from "./HomeContent";
@@ -46,6 +47,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HomePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
+
+  await getTranslations(validLang, [
+    "landingPage",
+    "faq",
+    "testimonials",
+    "ratingsBar",
+    "modals",
+  ]);
 
   return <HomeContent lang={validLang} />;
 }

@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Camping on the Amalfi Coast",
+    "description": "Camping options and access tips for the wider Amalfi area."
+  },
+  "linkLabel": "Camping the Amalfi Coast: Budget Alternative to Hotels",
+  "intro": [
+    "Camping near the Amalfi Coast means designated sites outside central Positano; confirm regulations and availability."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Where you can camp",
+      "body": [
+        "Designated campgrounds exist outside central Positano; check local regulations and availability."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Access & transport",
+      "body": [
+        "Plan for buses or walking from campgrounds; coastal roads are narrow and parking limited."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & safety",
+      "body": [
+        "Respect quiet hours and fire rules; pack out trash; avoid cliff edges and unmarked areas."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is wild camping allowed?",
+      "a": [
+        "Generally no; use official campgrounds and follow posted rules."
+      ]
+    }
+  ]
+}

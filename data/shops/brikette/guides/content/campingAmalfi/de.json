@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Camping an der Amalfiküste",
+    "description": "Campingplätze und Hinweise zur Anreise im weiteren Küstengebiet."
+  },
+  "linkLabel": "Camping an der Amalfiküste",
+  "intro": [
+    "Camping an der Amalfiküste bedeutet ausgewiesene Plätze außerhalb des Zentrums von Positano – prüfe Regeln und Verfügbarkeit."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Wo du campen kannst",
+      "body": [
+        "Ausgewiesene Campingplätze liegen außerhalb des Zentrums; informiere dich über lokale Vorschriften und Kapazitäten."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Anreise & Transport",
+      "body": [
+        "Plane Busfahrten oder Fußwege ab den Plätzen ein; die Küstenstraßen sind eng und Parkplätze rar."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette & Sicherheit",
+      "body": [
+        "Halte Ruhezeiten und Feuerregeln ein, nimm deinen Müll wieder mit und meide Klippenkanten sowie unmarkierte Bereiche."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ist Wildcampen erlaubt?",
+      "a": [
+        "In der Regel nein; nutze offizielle Plätze und folge den Aushängen."
+      ]
+    }
+  ]
+}

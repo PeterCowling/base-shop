@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Sorrento till Positano med färja | Hostel Brikette",
+    "description": "Steg för steg från Sorrento till Positano med färja: biljetter, avgångstips och hur du tar dig från Positanos hamn upp till Hostel Brikette."
+  },
+  "intro": {
+    "title": "Sorrento till Positano – färja",
+    "body": "Ta en direktfärja från Sorrentos Marina Piccola till Positano. Den här korta guiden berättar var du köper biljetter, när du bör köa och vad du ska göra när du anländer till Positanos hamn för att göra sista delen upp till Hostel Brikette enklare."
+  },
+  "callouts": {
+    "tip": "Behöver du alla transportalternativ? %HOWTO:how-to-get-here|Översikten Så tar du dig hit% visar bussar, taxi och kombinerade resvägar."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Resan i korthet",
+      "list": [
+        "Räkna med cirka 45–60 minuter från kaj till kaj under säsong.",
+        "Färjorna är väderberoende och kan bli fullbokade under hög belastning.",
+        "Att köpa biljetter lite i förväg hjälper dig att säkra platser och underlätta ombordstigningen."
+      ],
+      "lastUpdated": "2026-01-31"
+    },
+    {
+      "id": "sorrentoPort",
+      "title": "Ta dig till Sorrentos hamn (Marina Piccola)",
+      "list": [
+        "Gå till Sorrentos Marina Piccola (färjehamnen) och följ skyltarna till biljettkontoren.",
+        "Kontrollera nästa avgång till Positano och bekräfta operatören (till exempel Travelmar eller NLG).",
+        "Köp biljetten vid disken eller online och gå vidare till angiven gate."
+      ],
+      "lastUpdated": "2026-01-31"
+    },
+    {
+      "id": "boarding",
+      "title": "Köp biljett och gå ombord",
+      "list": [
+        "Kom 15–20 minuter före avgång för att kunna köa i lugn och ro.",
+        "Ha biljetten redo för kontroll och följ besättningens instruktioner när du går ombord.",
+        "Ställ bagaget i det avsedda utrymmet och behåll det viktigaste hos dig."
+      ],
+      "lastUpdated": "2026-01-31"
+    },
+    {
+      "id": "arrival",
+      "title": "Ankomst till Positano",
+      "list": [
+        "Kliv av vid Positanos huvudkaj (Spiaggia Grande).",
+        "Överväg den officiella bärartjänsten vid kajen för tunga väskor (betaltjänst).",
+        "För en enklare väg till Hostel Brikette, ta den lokala Interno-bussen upp till \\\\\"Chiesa Nuova\\\\\" och promenera en kort sträcka till vandrarhemmet.",
+        "Alternativt kan du gå uppför via Via dei Mulini/Via G. Marconi – räkna med extra tid för backen."
+      ],
+      "lastUpdated": "2026-01-31"
+    }
+  ]
+}

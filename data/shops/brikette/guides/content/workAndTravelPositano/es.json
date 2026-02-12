@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Trabajar y viajar en Positano",
+    "description": "Wi-Fi, cafés, rutinas y horarios realistas para días productivos en la costa."
+  },
+  "linkLabel": "Trabajar y viajar en Positano",
+  "intro": [
+    "Equilibra trabajo concentrado y tiempo para explorar Positano: conectividad realista, dónde instalarte y un ritmo diario acorde a las multitudes."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi‑Fi y planes de respaldo",
+      "body": [
+        "Usa eSIM de respaldo, prueba velocidades y evita llamadas críticas cuando desembarcan los ferris en las avenidas principales."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Cafés aptos para trabajar",
+      "body": [
+        "Consulta nuestra guía de Wi‑Fi y cafés para trabajar; vigila los enchufes y consume con regularidad."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Rutinas que funcionan",
+      "body": [
+        "Reserva bloques de trabajo temprano y al final del día; explora al mediodía cuando hay más gente o tras el atardecer."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Es viable trabajar en remoto aquí?",
+      "a": [
+        "Sí, con planificación: alójate cerca de Chiesa Nuova, ten respaldos y mantén horarios flexibles."
+      ]
+    }
+  ]
+}

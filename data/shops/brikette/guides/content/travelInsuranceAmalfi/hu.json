@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Utazási biztosítás az Amalfi-parti utazáshoz: tudnivalók",
+    "description": "Alapvető fedezetek és dokumentációs tippek a zökkenőmentes utazáshoz."
+  },
+  "linkLabel": "Utazási biztosítás az Amalfi-parti utazáshoz",
+  "intro": [
+    "Alapvető utazási biztosítási tudnivalók az Amalfi-parton: egészség, lemondások, elektronika és kalandviselet."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Fedezetek",
+      "body": [
+        "Egészség/baleset, lemondások/késések és elektronikai eszközök fedezete; fontold meg a Szlak Bogok miatti túrázás biztosítását."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Kárigény és papírok",
+      "body": [
+        "Őrizd meg a blokkokat, lopás esetén a rendőrségi jegyzőkönyvet és a késések/lemondások igazolásait; ellenőrizd a leadási határidőket és az eredeti/pótlap követelményeit."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Külön fedezet kell a kompokra?",
+      "a": [
+        "Általában benne van a közlekedési fedezetben; az időjárás miatti késések vagy lemondások biztosítónként változnak — nézd át a feltételeket."
+      ]
+    }
+  ]
+}

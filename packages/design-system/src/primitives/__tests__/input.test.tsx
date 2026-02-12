@@ -1,16 +1,18 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Input } from "../input";
 
 describe("Input primitive", () => {
-  it("applies wrapper class to outer div", () => {
+  it("applies wrapper class to outer div", async () => {
     const { container } = render(<Input wrapperClassName="custom-wrapper" />);
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveClass("custom-wrapper");
+
   });
 
-  it("renders without floating label and applies error styles", () => {
-    render(<Input label="Email" error="Required" />);
+  it("renders without floating label and applies error styles", async () => {
+    const { container } = render(<Input label="Email" error="Required" />);
     const input = screen.getByLabelText("Email");
     expect(input).toHaveClass("border-danger");
     expect(input).toHaveAttribute("aria-invalid", "true");
@@ -44,6 +46,7 @@ describe("Input primitive", () => {
       );
       const label = screen.getByText("Email");
       expect(label).toHaveClass("-translate-y-3 text-xs");
+
     });
 
     it("floats label when defaultValue is provided", () => {

@@ -1,0 +1,32 @@
+{
+  "seo": {
+    "title": "Conserje digital (recomendaciones + reservas)",
+    "description": "Usa el conserje digital de Hostel Brikette para recomendaciones locales rápidas, actualizaciones de transporte y ayuda para reservar experiencias, especialmente cuando los planes cambian."
+  },
+  "linkLabel": "Conserje digital",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "Esto es para planes que funcionan hoy, no listas genéricas.",
+    "Envía tu ventana de tiempo, presupuesto y prioridad. Pon tu plazo en la primera línea."
+  ],
+  "sections": [
+    {
+      "id": "how-to-access",
+      "title": "Cómo acceder",
+      "body": [
+        "Pregunta en recepción por el último contacto/QR y el mejor canal (normalmente WhatsApp).",
+        "Incluye: fechas, punto de partida, ventana de tiempo, presupuesto y prioridad #1."
+      ]
+    },
+    {
+      "id": "templates",
+      "title": "Plantilla copiar/pegar",
+      "body": [
+        "\\\\\"Tenemos 6 horas, sin coche, queremos (A) nadar + (B) puesta de sol, presupuesto €40 por persona. ¿Cuál es el plan más simple y el plan B si cancelan los ferrys?\\\\\"",
+        "Línea base de presupuesto: %LINK:positanoBudget|Positano con presupuesto% + %LINK:terraceSunsets|Puesta de sol desde terraza%.",
+        "Si el transporte es sensible: %LINK:ferryCancellations|cancelaciones de ferry + clima%."
+      ]
+    }
+  ],
+  "fallback": "Conserje digital: recomendaciones rápidas, actualizaciones de transporte y ayuda con reservas."
+}

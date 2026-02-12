@@ -29,5 +29,6 @@
   "houseRules": "Husregler",
   "cancellationPolicy": "Avbokningspolicy",
   "privacy": "Integritetspolicy",
-  "cookies": "Cookiepolicy"
+  "cookies": "Cookiepolicy",
+  "navAriaLabel": "Footer navigation"
 }

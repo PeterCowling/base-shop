@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bagasjeoppbevaring i Positano",
+    "description": "Hvor du kan oppbevare bagasje i Positano, åpningstider, prisnivå og alternativer."
+  },
+  "linkLabel": "Bagasjeoppbevaring i Positano",
+  "intro": [
+    "Hvor du kan oppbevare bagasjen i Positano: alternativer nær kaien og langs Via dei Mulini."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Nær kaien",
+      "body": [
+        "Time/daglig lagring med billett; forvent køer i høysesongen - bestill på forhånd hvis mulig."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Formidlere",
+      "body": [
+        "Bounce / Radical Storage: bekreft nøyaktig adresse og åpningstider før du betaler online."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette og tips",
+      "body": [
+        "Hold verdisaker med deg; merke poser tydelig; ta et bilde av krav på billetter."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Åpent om kvelden?",
+      "a": [
+        "Timene varierer; sjekk for tidlig stengetid utenom sesongen og siste fergetider."
+      ]
+    }
+  ],
+  "tocTitle": "På denne siden",
+  "faqsTitle": "Ofte stilte spørsmål",
+  "heroAlt": "Portier som leder en bagasjevogn opp trappene til Positano",
+  "serviceType": "Bagasjeoppbevaring",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Positanos klippehus med utsikt over havet",
+    "primaryCaption": "Panorama over Positano",
+    "secondaryAlt": "Portier dytter en bagasjevogn nær Positanos fergekai",
+    "secondaryCaption": "Portørvogner ved kaien"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Ravello nach Positano mit dem Bus | Hostel Brikette",
+    "description": "Schritt-für-Schritt-Anleitung von Ravello nach Positano über Amalfi mit SITA-Bussen – inklusive Fahrplanhinweisen, Haltestellen und dem kurzen Fußweg zum Hostel Brikette."
+  },
+  "intro": {
+    "title": "Ravello nach Positano – via Amalfi mit dem Bus",
+    "body": "Reise von Ravello nach Positano mit einem einfachen Umstieg in Amalfi. Dieser Leitfaden erklärt, wo du SITA-Tickets kaufst und entwertest, wie du den Fahrplan liest und was dich beim Umstieg in Amalfi erwartet – plus der kurze Weg von Positanos Haltestelle Chiesa Nuova zum Hostel Brikette."
+  },
+  "callouts": {
+    "tip": "Brauchst du alle Verkehrsoptionen? Öffne die %HOWTO:how-to-get-here|{{guideLabel}}% für Fähren, Taxis und kombinierte Routen."
+  },
+  "faqs": [
+    {
+      "q": "Wie lese ich den SITA-Busfahrplan?",
+      "a": [
+        "**Zeilen lesen:** Die Zeilen in der ersten Spalte repräsentieren verschiedene Bushaltestellen entlang der Route.",
+        "**Spalten lesen:** Der Fahrplan weist jeder geplanten Fahrt einen alphabetischen Buchstaben zu, der als Überschrift in jeder Spalte aufgeführt ist. Wenn Sie Montag bis Samstag reisen, suchen Sie nach den Spalten 'F' und 'G'. Wenn Sie an einem Sonntag oder Feiertag reisen, suchen Sie nach den Spalten 'G' und 'H'.",
+        "**Zeilen und Spalten kombinieren:** Wählen Sie Ihre Abfahrts- und Ankunftshaltestellen aus und überprüfen Sie dann die Spalten, um zu sehen, wann Busse verfügbar sind und wann sie an Ihrem Ziel ankommen. Um beispielsweise die Abfahrtszeit von Sorrento zu sehen, schauen Sie sich die Sorrento-Zeile an. Um die Ankunftszeit in Positano (Chiesa Nuova / Bar Internazionale) zu sehen, schauen Sie sich die Positano (Chiesa Nuova)-Zeile an."
+      ]
+    }
+  ]
+}

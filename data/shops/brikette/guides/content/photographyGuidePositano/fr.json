@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Guide photo de Positano : meilleurs spots",
+    "description": "Angles classiques, horaires lumière, gestion de la foule et idées pour diversifier vos clichés."
+  },
+  "linkLabel": "Guide photo de Positano : meilleurs spots",
+  "intro": [
+    "Immortalisez Positano comme un pro : angles iconiques, gestion de la lumière et bonnes pratiques sur place."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Angles classiques",
+      "body": [
+        "Photographiez depuis l’embarcadère pour capturer toute la cascade de maisons sur la falaise ; utilisez un grand angle pour intégrer le dôme de Santa Maria Assunta.",
+        "Parcourez la Via Cristoforo Colombo pour superposer balcons et bougainvillées avec la mer en arrière-plan."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Lumière et timing",
+      "body": [
+        "Le lever du soleil (vers 6 h en été) baigne la falaise d’une lumière dorée — arrivez tôt pour éviter les bateaux dans le cadre.",
+        "L’heure bleue après le coucher ajoute une lueur aux lumières du village ; emportez un mini trépied ou une pince pour les poses longues."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Étiquette et sauvegardes",
+      "body": [
+        "Respectez les terrasses privées et ne bloquez pas les escaliers — écartez-vous rapidement après votre prise de vue.",
+        "Sauvegardez chaque soir sur le cloud ou un disque portable ; l’humidité peut embuer les objectifs, emportez des sachets de gel de silice."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenez un filtre polarisant pour dompter les reflets de milieu de journée sur l’eau.",
+    "Gardez une chiffonnette microfibre à portée de main — embruns et humidité se déposent vite sur les objectifs."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je utiliser un drone pour les vues aériennes ?",
+      "a": [
+        "L’usage de drones est réglementé ; demandez les autorisations bien en amont et respectez les zones d’exclusion autour du village et des îles Li Galli."
+      ]
+    },
+    {
+      "q": "Où faire imprimer mes photos sur place ?",
+      "a": [
+        "Les laboratoires photo de Sorrente et Amalfi proposent des tirages dans la journée ; apportez vos images sur clé USB ou carte SD."
+      ]
+    }
+  ]
+}

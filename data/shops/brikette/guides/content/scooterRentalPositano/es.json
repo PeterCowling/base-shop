@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Guía de alquiler de scooter en Positano",
+    "description": "Dónde alquilar, normas, seguridad y cuándo evitar el scooter."
+  },
+  "linkLabel": "Alquiler de scooter en Positano",
+  "intro": [
+    "Alquilar scooter suena tentador, pero sopesa disponibilidad, costes y la realidad de conducir por carreteras de acantilado.",
+    "Si no tienes experiencia, quizá convenga más combinar buses y ferris."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Dónde alquilar",
+      "body": [
+        "En Positano la flota es reducida y cara (70–90 € al día).",
+        "En Sorrento hay más oferta y tarifas desde 45 €; recoge allí y baja en scooter si ya dominas la conducción."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Documentos y seguro",
+      "body": [
+        "Lleva carné de conducir vigente y Permiso Internacional si tu país lo requiere.",
+        "Revisa qué cubre el seguro: la mayoría incluye daños a terceros pero no neumáticos o espejos."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Seguridad y cuándo evitarlo",
+      "body": [
+        "La carretera SS163 es estrecha, con curvas ciegas y autobuses que ocupan todo el carril.",
+        "En días de lluvia o si viajas con equipaje, prioriza el transporte público."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Recomiendan alquilar si soy principiante?",
+      "a": [
+        "No: el tráfico y las curvas son exigentes. Mejor usar buses/ferris hasta que tengas más práctica."
+      ]
+    },
+    {
+      "q": "¿Hay aparcamiento seguro?",
+      "a": [
+        "Muy limitado; pregunta al alojamiento y evita estacionar en zonas con línea amarilla (multas altas)."
+      ]
+    }
+  ],
+  "tips": [
+    "Usa casco homologado y guantes ligeros para agarrar mejor.",
+    "Planifica rutas con Google Maps descargado; la señal puede fallar en túneles."
+  ]
+}

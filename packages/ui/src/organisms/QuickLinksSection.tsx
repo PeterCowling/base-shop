@@ -45,7 +45,7 @@ const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): 
     "text-sm leading-snug text-brand-text/70 dark:text-brand-surface/70";
 
   return (
-    <a href={href} className={container} aria-label={label}>
+    <a href={href} className={container}>
       <span className={iconWrapper} aria-hidden>
         <Icon className={icon} />
       </span>

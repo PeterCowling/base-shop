@@ -1,0 +1,27 @@
+{
+  "seo": {
+    "title": "포시타노 테라스 노을 (간단하게)",
+    "description": "Hostel Brikette 테라스 노을: 언제 도착하면 좋은지."
+  },
+  "linkLabel": "테라스 노을",
+  "lastUpdated": "2026-02-02T00:00:00.000Z",
+  "intro": [
+    "비싼 긴 저녁 없이 노을을 보고 싶다면 테라스가 가장 쉬운 선택입니다."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "도착 시간",
+      "body": [
+        "성수기에는 노을 30–45분 전에 도착하세요."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/terraceSunsets.webp",
+          "alt": "테라스에서 보는 포시타노의 노을빛"
+        }
+      ]
+    }
+  ],
+  "fallback": "조금 일찍 와서 한 잔만, 이후엔 간단히."
+}

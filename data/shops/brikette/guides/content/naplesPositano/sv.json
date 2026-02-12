@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Neapel till Positano: så gör du",
+    "description": "Jämför buss, färja, transfer och hyrbil mellan Neapel och Positano – med tider och bagageråd."
+  },
+  "linkLabel": "Neapel till Positano: så gör du",
+  "intro": [
+    "Neapel → Positano: shuttle till Sorrento + SITA-buss året runt; sommarfärjor när havet samarbetar; transfers för sena ankomster."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Tåg + buss (året runt)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Färja (sommar)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Sena ankomster & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "Vanliga frågor"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Tåg + buss (året runt)",
+      "body": [
+        "Från ankomsthallen i NAP tar du Curreri-shuttle (eller Alibus + Circumvesuviana) till Sorrento och fortsätter sedan med SITA-bussen mot Amalfi.",
+        "Köp biljetter innan du går ombord, kika på dagens avgångstavla och kliv av vid ”Chiesa Nuova” för minst antal trappor till Hostel Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Färja (sommar)",
+      "body": [
+        "Alibus → Molo Beverello; ta en färja till Positano och bekräfta priser med operatören samma dag.",
+        "Håll koll på inställda avgångar och undvik sista båten om du har vidare anslutningar."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Sena ankomster & transfers",
+      "body": [
+        "Anländer du efter sista färjan/bussen? Boka en privat transfer eller övernatta i Neapel/Sorrento.",
+        "Bekräfta avlämningsplats nära ditt boende och fråga hur bagaget hanteras."
+      ]
+    }
+  ],
+  "faqsTitle": "Vanliga frågor",
+  "faqs": [
+    {
+      "q": "Var köper jag SITA-biljetter?",
+      "a": [
+        "Hos tobaksbutiker/kiosker nära stationerna. Köp innan du går ombord och stämpla på bussen."
+      ]
+    },
+    {
+      "q": "Hur många trappsteg är det till hostellet?",
+      "a": [
+        "Från hållplatsen ”Chiesa Nuova” är det cirka 80 meter utan trappor."
+      ]
+    }
+  ]
+}

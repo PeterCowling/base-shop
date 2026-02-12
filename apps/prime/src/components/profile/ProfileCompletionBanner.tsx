@@ -10,11 +10,12 @@
  * - Hide if profile is complete and matches current booking
  */
 
-import { Button } from '@acme/design-system/primitives';
-import { User } from 'lucide-react';
-import Link from 'next/link';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { User } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
 
 export interface ProfileCompletionBannerProps {
   /** Whether the profile is from a previous booking */
@@ -39,18 +40,18 @@ function ProfileCompletionBannerComponent({
   const wasSkipped = profileStatus === 'skipped';
 
   return (
-    <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-4">
+    <div className="bg-info-soft border border-primary rounded-lg p-4 mb-4">
       <div className="flex items-start gap-3">
-        <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-          <User className="w-5 h-5 text-primary-600" />
+        <div className="flex-shrink-0 w-10 h-10 bg-info-soft rounded-full flex items-center justify-center">
+          <User className="w-5 h-5 text-primary" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-medium text-gray-900">
+          <h3 className="text-sm font-medium text-foreground">
             {isReturningGuest
               ? t('profileBanner.returningTitle', 'Welcome back!')
               : t('profileBanner.title', 'Complete your profile')}
           </h3>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             {isReturningGuest
               ? t(
                   'profileBanner.returningDescription',

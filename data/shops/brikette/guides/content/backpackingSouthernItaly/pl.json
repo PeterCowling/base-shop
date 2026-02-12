@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Backpacking po południowych Włoszech z postojem na Amalfi",
+    "description": "Propozycja trasy backpackerskiej obejmującej Wybrzeże Amalfi, Kampanię i sąsiednie miasta."
+  },
+  "linkLabel": "Backpacking po południowych Włoszech z postojem na Amalfi",
+  "intro": [
+    "Zaplanuj pętlę po południowych Włoszech z Positano w roli głównej, nie przekraczając budżetu."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Proponowana trasa",
+      "body": [
+        "Zacznij w Neapolu (połączenia lotnicze i kolejowe), spędź 2–3 noce w Positano lub pobliskim Praiano, kontynuuj do Salerno, następnie skręć w głąb lądu do Matery lub Apulii i wróć.",
+        "Korzystaj z pociągów regionalnych i autokarów na dłuższe odcinki; rezerwuj 4–6 tygodni wcześniej, aby zapłacić 15–25 € za miejsce."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Przyjazd i pakowanie",
+      "body": [
+        "Podróżuj z plecakiem 40 l, aby łatwo pokonywać schody i zmieścić się w półkach na bagaż w autobusie.",
+        "Spakuj szybkoschnące warstwy, kompaktowy ręcznik i klapki pod prysznic; pralnie w Positano liczą 12–15 € za pranie z suszeniem."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Sposoby na oszczędzanie",
+      "body": [
+        "Łącz zakupy (świeża focaccia, owoce, mozzarella) z piknikami na tarasach; przeznacz około 8 € na lunch zamiast 18 € w restauracji.",
+        "Dziel koszty wycieczek z osobami z hostelu: wspólnie bierzcie taksówki na szlaki lub wynajmujcie skutery w Salerno/Praiano, gdzie ceny spadają do około 35 € dziennie."
+      ]
+    }
+  ],
+  "tips": [
+    "Aktywuj regionalną kartę SIM lub eSIM (TIM/Vodafone), aby w drodze sprawdzać rozkłady autobusów i meldunki hostelowe.",
+    "Zarezerwuj hostele lub pensjonaty na pierwszą i ostatnią noc trasy, a środek pozostaw elastyczny na wypadek zmian pogody."
+  ],
+  "faqs": [
+    {
+      "q": "Czy muszę wynajmować samochód?",
+      "a": [
+        "Nie. Pociągi, autobusy i promy obsłużą całą trasę. Skuter na krótkie odcinki może być fajny, ale ruch na Amalfi wymaga pewności siebie."
+      ]
+    },
+    {
+      "q": "Ile dni przeznaczyć na Positano?",
+      "a": [
+        "Zapewnij sobie co najmniej trzy noce: dzień na samo Positano, dzień na Ścieżkę Bogów lub rejs oraz dzień rezerwowy na Amalfi/Ravello lub na wypadek zmiany pogody."
+      ]
+    }
+  ]
+}

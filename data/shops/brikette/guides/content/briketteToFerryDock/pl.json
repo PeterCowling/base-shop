@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → nabrzeże promowe Positano (port)",
+    "description": "Trasa spacerowa krok po kroku do portu w Positano z punktami orientacyjnymi na mapie, wskazówkami dotyczącymi biletów i wskazówkami dotyczącymi wejścia na pokład."
+  },
+  "linkLabel": "Hostel Brikette → nabrzeże promowe (port)",
+  "intro": [
+    "Udajesz się do portu w Positano, aby wsiąść na prom? To najłatwiejszy spacer, jaki znaleźliśmy z Hostel Brikette do Spiaggia Grande — z szybką mapą i punktami orientacyjnymi ze zdjęć dla punktów 1-5.",
+    "Przewiduj 20-30 minut pieszo (więcej z bagażem) i pamiętaj, że Google Maps czasami sugeruje dłuższe objazdy do plaży — zamiast tego postępuj zgodnie z poniższą trasą."
+  ],
+  "beforeList": [
+    "Sprawdź godziny promów i ceny w budkach operatorów w porcie (wyświetlają następny odjazd na znaku).",
+    "Zostaw margines, jeśli masz bagaż — na tej trasie są schody, a port robi się zatłoczony w godzinach szczytu.",
+    "Staraj się przybyć wcześnie, aby móc kupić bilety, znaleźć odpowiednie nabrzeże i być gotowym, gdy rozpocznie się wejście na pokład."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Dotarcie do portu",
+      "body": [
+        "Zacznij od hostelu i idź w kierunku Spiaggia Grande (główna plaża Positano).",
+        "Port znajduje się po prawej stronie plaży.",
+        "Przewiduj 20-30 minut na spacer z hostelu do portu.",
+        "Google Maps może nie zawsze zapewniać najbardziej bezpośredniej trasy do plaży — użyj mapy i instrukcji krok po kroku poniżej.",
+        "[Zobacz tutaj, jeśli wolisz wskazówki z mapy](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Spacer z Hostel Brikette do portu (punkty 1-5)",
+      "body": [
+        "Odniesienie do mapy (Hostel → Port):",
+        "[[figure:map]]",
+        "Zacznij od wyjścia z hostelu przez główne drzwi.",
+        "Zejdź po schodach na drogę.",
+        "Skręć w lewo i idź nieco ponad 100 metrów (330 stóp), aż dotrzesz do punktu 1 na mapie.",
+        "W punkcie 1 skręć w prawo.",
+        "[[figure:point-1]]",
+        "Gdy tylko skręcisz w prawo w punkcie 1, zobaczysz tabacchi po prawej stronie.",
+        "[[figure:tabacchi]]",
+        "Podążaj drogą w dół.",
+        "Przy pierwszym zakręcie serpentynowym dotrzesz do punktu 2 na mapie.",
+        "W punkcie 2 zejdź z drogi i idź prosto naprzód, schodząc po schodach.",
+        "[[figure:point-2]]",
+        "Gdy dotrzesz do końca schodów, dotrzesz do punktu 3 na mapie.",
+        "Przejdź przez drogę i podążaj ścieżką prosto naprzód.",
+        "Podążaj schodami w dół, aż dotrzesz do następnego poziomu.",
+        "[[figure:point-3]]",
+        "Gdy dotrzesz do końca schodów, dotrzesz do drogi.",
+        "Przejdź przez drogę i skręć w lewo, idąc 10 metrów (30 stóp), aż dotrzesz do punktu 4 na mapie.",
+        "W punkcie 4 skręć w prawo i zejdź po schodach, które odchodzą od drogi i prowadzą w dół.",
+        "[[figure:point-4]]",
+        "Podążaj schodami w dół, aż dotrzesz na dół. Na dole schodów skręć w prawo.",
+        "To doprowadzi cię do punktu 5 na mapie.",
+        "Kontynuuj pod łukiem po prawej stronie.",
+        "[[figure:point-5]]",
+        "Po 50 metrach (160 stopach) dotrzesz do portu."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Zakup biletów promowych",
+      "body": [
+        "W porcie Positano możesz złapać promy do miejsc takich jak Amalfi, Capri i dalej. Każdy operator promowy ma budkę, a znak na budce wyświetla informacje o następnym promie, który będzie obsługiwał.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Wejście na pokład promu",
+      "body": [
+        "Gdy masz już bilet, idź na koniec portu i poczekaj, aż prom rozpocznie wejście na pokład.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Opuść hostel i skręć w lewo wzdłuż drogi do punktu 1 na mapie, następnie skręć w prawo.",
+    "Podążaj trasą w dół przez punkty 2-5 (schody i przejścia), aż dotrzesz do portu.",
+    "Kup bilety w budkach operatorów i sprawdź znak dla następnego rejsu.",
+    "Idź na koniec portu i poczekaj na wejście na pokład."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "Ile czasu zajmuje przejście z Hostel Brikette do portu?",
+      "a": [
+        "Zaplanuj 20-30 minut pieszo. Dodaj dodatkowy czas, jeśli masz bagaż lub chcesz zatrzymać się, aby kupić bilety przed wejściem na pokład."
+      ]
+    },
+    {
+      "q": "Gdzie kupuję bilety promowe w Positano?",
+      "a": [
+        "W porcie zobaczysz budki dla każdego operatora promowego. Znak na budce pokazuje informacje o następnym promie, który będą obsługiwać."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Podążaj trasą mapy z hostelu w dół do portu",
+    "Użyj punktów orientacyjnych ze zdjęć w punktach 1-5, aby pozostać na trasie",
+    "Kup bilety w budkach operatorów i potwierdź następny rejs",
+    "Poczekaj na nabrzeżu i wejdź na pokład, gdy zostaniesz wezwany"
+  ]
+}

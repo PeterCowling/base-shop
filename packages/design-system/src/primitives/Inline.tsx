@@ -12,40 +12,39 @@ type Props = React.ComponentPropsWithoutRef<"div"> & {
   asChild?: boolean;
 };
 
-export const Inline = React.forwardRef<React.ElementRef<"div">, Props>(
-  (
-    {
-      gap = 2,
-      alignY = "center",
-      wrap = true,
-      asChild = false,
-      className,
-      ...rest
-    },
+export const Inline = (
+  {
     ref,
-  ) => {
-    const alignClass =
-      alignY === "start"
-        ? "items-start"
-        : alignY === "center"
-        ? "items-center"
-        : alignY === "end"
-        ? "items-end"
-        : "items-baseline";
-    const Comp = asChild ? Slot : "div";
-    return (
-      <Comp
-        ref={ref}
-        className={cn(
-          "flex",
-          wrap ? "flex-wrap" : "flex-nowrap",
-          `gap-${gap}`,
-          alignClass,
-          className
-        )}
-        {...rest}
-      />
-    );
+    gap = 2,
+    alignY = "center",
+    wrap = true,
+    asChild = false,
+    className,
+    ...rest
+  }: Props & {
+    ref?: React.Ref<React.ElementRef<"div">>;
   }
-);
-Inline.displayName = "Inline";
+) => {
+  const alignClass =
+    alignY === "start"
+      ? "items-start"
+      : alignY === "center"
+      ? "items-center"
+      : alignY === "end"
+      ? "items-end"
+      : "items-baseline";
+  const Comp = asChild ? Slot : "div";
+  return (
+    <Comp
+      ref={ref}
+      className={cn(
+        "flex",
+        wrap ? "flex-wrap" : "flex-nowrap",
+        `gap-${gap}`,
+        alignClass,
+        className
+      )}
+      {...rest}
+    />
+  );
+};

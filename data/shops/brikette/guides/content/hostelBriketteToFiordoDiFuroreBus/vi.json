@@ -1,0 +1,101 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fiordo di Furore by bus",
+    "description": "Hướng dẫn từng bước từ Hostel Brikette đến Fiordo di Furore bằng xe buýt SITA, gồm nơi mua vé và cách xuống bãi biển."
+  },
+  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "intro": [
+    "Đi theo tuyến đường này để đi từ Hostel Brikette đến Fiordo di Furore trên xe buýt SITA mà không bị lỡ trạm dừng hoặc đến nơi mà không chuẩn bị trước.",
+    "Fiord không có cơ sở bán vé hoặc cửa hàng nên những bậc thang này bao gồm vé, trạm xe buýt gần nhất và cầu thang dẫn xuống bãi biển."
+  ],
+  "warningsTitle": "Before you leave the hostel",
+  "warnings": [
+    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
+    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-bus-stop",
+      "title": "Walk to the Chiesa Nuova bus stop",
+      "body": [
+        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
+        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
+        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+      ]
+    },
+    {
+      "id": "buy-bus-tickets",
+      "title": "Buy round-trip bus tickets",
+      "body": [
+        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
+        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Wait on the seaward side of the road",
+      "body": [
+        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
+        "Arrive early and give yourself time for a second bus in case the first one is already full."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Ride the SITA bus towards Amalfi",
+      "body": [
+        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
+        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
+        "If you have mobile data, track the stop by searching for \\\\\"JH73+PQ Furore, Province of Salerno\\\\\" on Google Maps."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "Take the stairs down to the beach",
+      "body": [
+        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
+        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
+        "Sử dụng cùng một cầu thang để quay lại đường khi bạn sẵn sàng rời đi."
+      ]
+    }
+  ],
+  "essentialsTitle": "Điều cần biết",
+  "essentials": [
+    "Trạm xe buýt Chiesa Nuova cách hostel 2 phút đi bộ — đối diện Bar Internazionale trên Via Pasitea.",
+    "Xe buýt SITA hướng Amalfi hoặc Agerola; nhờ tài xế dừng tại \\\\\"Fiordo di Furore\\\\\".",
+    "Không có dịch vụ tại bãi biển — mua vé khứ hồi, nước và đồ ăn trước khi đi."
+  ],
+  "typicalCostsTitle": "Chi phí tham khảo",
+  "typicalCosts": [
+    "Vé xe buýt SITA (khứ hồi): ~€4–€6.",
+    "Vào cửa bãi biển: Miễn phí.",
+    "Taxi dự phòng (nếu xe buýt đầy): ~€30–€50 từ đường."
+  ],
+  "tipsTitle": "Extra tips",
+  "tips": [
+    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
+    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
+    "Lưu %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hướng dẫn hoàn trả của Hostel Brikette% cho chuyến trở về của bạn.",
+    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+  ],
+  "faqsTitle": "Common questions",
+  "faqs": [
+    {
+      "q": "Tôi có thực sự cần phải mua vé khứ hồi trước không?",
+      "a": [
+        "Đúng. Người lái xe mong muốn có vé SITA đã được xác thực và không có máy móc hoặc cửa hàng nào trên bãi biển, vì vậy hãy mua cả hai chặng ở Positano trước khi lên xe."
+      ]
+    },
+    {
+      "q": "Tôi nên làm gì nếu xe buýt đầy người khi đến nơi?",
+      "a": [
+        "Đợi chuyến xe theo lịch trình tiếp theo và theo dõi lịch trình - trong mùa cao điểm, việc một hoặc hai xe buýt chạy qua trước khi có chỗ trống là điều bình thường."
+      ]
+    },
+    {
+      "q": "How will I recognise the right stop?",
+      "a": [
+        "Sau khi xe buýt đi qua cây cầu hình vòm bắc qua vịnh hẹp, xe sẽ dừng bên cạnh rào chắn va chạm. Theo dõi khung cảnh cây cầu, lắng nghe người lái xe và sử dụng mã pin \\\\\"JH73+PQ Furore\\\\\" của Google Maps để dự phòng."
+      ]
+    }
+  ]
+}

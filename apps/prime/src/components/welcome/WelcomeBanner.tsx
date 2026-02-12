@@ -8,7 +8,7 @@
 
 'use client';
 
-import { FC, memo, useCallback, useEffect, useState } from 'react';
+import { type FC, memo, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface WelcomeBannerProps {
@@ -42,6 +42,7 @@ export const WelcomeBanner: FC<WelcomeBannerProps> = memo(function WelcomeBanner
     }, 8000);
 
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDismiss = useCallback(() => {

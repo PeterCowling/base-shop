@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Como chegar a Positano (guia de decisão)",
+    "description": "Compare rotas via Nápoles, Salerno e Roma — tempo de viagem, custos e quando cada opção vale a pena."
+  },
+  "linkLabel": "Como chegar a Positano (guia de decisão)",
+  "intro": "Todas as formas realistas de chegar a Positano — comparadas por estação, orçamento, bagagem e horário de chegada.",
+  "toc": {
+    "onThisPage": "Nesta página",
+    "naples": "Via Nápoles",
+    "salerno": "Via Salerno",
+    "ferry": "Ferry (verão)",
+    "private": "Transfer privado",
+    "faqs": "Perguntas frequentes"
+  },
+  "labels": {
+    "whenHeading": "Quando escolher",
+    "cheapestHeading": "Rota mais barata",
+    "seasonalHeading": "Notas sazonais"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Via Nápoles",
+      "body": [
+        "Shuttle do aeroporto para Sorrento + SITA até Positano (mais barato) ou comboio para Sorrento + SITA.",
+        "Verão: ferries a partir do Molo Beverello quando o mar está calmo; confirme cancelamentos."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Via Salerno",
+      "body": [
+        "Comboio até Salerno; ferry para Positano na época (amigo da bagagem).",
+        "Fora de época: autocarro via Amalfi — mais lento, porém fiável."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Transfer privado",
+      "body": [
+        "Porta a porta; mais caro mas ideal para chegadas tardias ou muita bagagem."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Qual é a opção mais rápida no verão?",
+      "a": [
+        "Comboio até Salerno + ferry quando o mar está calmo; evita trânsito rodoviário."
+      ]
+    },
+    {
+      "q": "Onde devo descer do autocarro?",
+      "a": [
+        "‘Chiesa Nuova’ tem menos escadas até ao Hostel Brikette (~80 m)."
+      ]
+    }
+  ]
+}

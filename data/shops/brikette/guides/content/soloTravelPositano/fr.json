@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Voyager seul à Positano : conseils",
+    "description": "Sécurité, idées sociales, comparaison auberge/chambre privée et programmes adaptés au voyage en solo."
+  },
+  "linkLabel": "Voyager seul à Positano : conseils",
+  "intro": [
+    "Positano accueille bien les voyageurs solo. Restez sociable à l'auberge, prévoyez des excursions avec un peu de marge et privilégiez les ferries quand le soleil tape fort."
+  ],
+  "tocTitle": "Sur cette page",
+  "toc": [
+    {
+      "href": "#safety",
+      "label": "Sécurité et confiance"
+    },
+    {
+      "href": "#social",
+      "label": "Conseils pour socialiser"
+    },
+    {
+      "href": "#dayplans",
+      "label": "Plans de journée en solo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Sécurité et confiance",
+      "list": [
+        "Informez la réception de vos plans ; gardez un téléphone chargé et de l'eau.",
+        "Restez sur les trajets éclairés la nuit ; ne précipitez pas vos descentes d'escaliers."
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Conseils pour socialiser",
+      "list": [
+        "Participez aux moments terrasse au coucher du soleil et aux activités de l'auberge pour rencontrer du monde facilement.",
+        "Choisissez des excursions en bateau ou des randonnées en petits groupes pour une compagnie sans effort."
+      ]
+    },
+    {
+      "id": "dayplans",
+      "title": "Plans de journée en solo",
+      "list": [
+        "Ferry vers Amalfi puis balade jusqu'à Atrani ; bus vers les jardins de Ravello.",
+        "À Capri, rando jusqu'à la Villa Jovis ou au phare ; retour à la golden hour."
+      ]
+    }
+  ],
+  "tips": [
+    "Regardez le tableau de la réception vers 18 h pour les feuilles d'inscription ; c'est le moyen le plus rapide de trouver des compagnons de dîner ou de bateau pour le lendemain.",
+    "Préparez un sac de jour léger avec 1 à 1,5 L d'eau et une batterie externe afin de pouvoir attendre le coucher de soleil pour les photos sans courir dans les escaliers."
+  ],
+  "faqs": [
+    {
+      "q": "Est-ce sûr de se promener seul la nuit à Positano ?",
+      "a": [
+        "Restez sur les escaliers principaux et les itinéraires éclairés, informez la réception de vos plans et gardez un téléphone chargé.",
+        "Si vous terminez tard, le kiosque orange Positano Taxi près de la Piazza dei Mulini peut organiser une courte course pour monter."
+      ]
+    },
+    {
+      "q": "Comment rencontrer d'autres voyageurs quand on est seul ?",
+      "a": [
+        "Participez aux rencontres sur la terrasse de l'auberge au coucher du soleil ou inscrivez-vous à des sorties en bateau limitées à 10–12 personnes.",
+        "Les cours de cuisine et visites guidées à Amalfi ou Capri offrent un cadre détendu pour discuter sans icebreakers forcés."
+      ]
+    },
+    {
+      "q": "Puis-je randonner sur le Sentier des Dieux seul ?",
+      "a": [
+        "Oui : partez de Bomerano vers 9 h, emportez au moins 1,5 L d'eau et téléchargez la carte du sentier pour un usage hors ligne.",
+        "Reprenez le bus SITA depuis Nocelle ou Montepertuso avant la tombée de la nuit ; les services s'espacent après 20 h."
+      ]
+    }
+  ]
+}

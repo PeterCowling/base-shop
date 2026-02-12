@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guide till Depositioner och Betalningar för Positano Hostel",
+    "description": "Din guide till depositioner, betalningsmetoder, bokningsbekräftelser, ändringar, avbokningar och säkerhetsdepositioner när du bokar din vistelse på Positano Hostel."
+  },
+  "linkLabel": "Guide till Depositioner och Betalningar för Positano Hostel",
+  "sections": [
+    {
+      "id": "submittingBookingRequest",
+      "title": "Hur du Skickar In din Bokningsförfrågan",
+      "body": [
+        "Skicka oss din bokningsförfrågan via en auktoriserad online-resebyrå (OTA) eller direkt på vår webbplats - chattar eller walk-ins ensamma räknas inte. Genom att klicka på 'Boka' bekräftar du att alla namn, datum och vistelselängd är korrekta och att du accepterar våra villkor."
+      ]
+    },
+    {
+      "id": "processingBookingRequest",
+      "title": "Hur Vi Behandlar din Förfrågan",
+      "body": [
+        "Vi börjar behandla din förfrågan så snart vi framgångsrikt mottar någon nödvändig deposition, förauktorisering eller betalning med någon av våra accepterade betalningsmetoder. Se till att bokningen visar namnet på kreditkortsinnehavaren som ska betala. Om betalarens namn är annorlunda, mejla oss en kort auktorisering från kortinnehavaren innan vi behandlar din förfrågan."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Payment_terminal_at_the_Berlin_immigration_office.jpg/960px-Payment_terminal_at_the_Berlin_immigration_office.jpg",
+          "alt": "Kortbetalningsterminalknappsats och skärm.",
+          "caption": "Vi kan ta en deposition, köra en betalning eller placera en förauktorisering för att säkra din bokning - Foto: Wikimedia Commons (CC0)."
+        }
+      ]
+    },
+    {
+      "id": "decliningBookingRequest",
+      "title": "När Vi Kan Avslå en Förfrågan",
+      "body": [
+        "Vi avslår sällan en bokning, men vi förbehåller oss rätten att göra det efter eget gottfinnande - till exempel om betalningen misslyckas, nödvändig information saknas eller förfrågan bryter mot våra villkor."
+      ]
+    },
+    {
+      "id": "requestSizeLimit",
+      "title": "Storleksgränser för En Förfrågan",
+      "body": [
+        "En bokningsförfrågan kan omfatta upp till sju (7) på varandra följande nätter och maximalt fem (5) gäster. Behöver du en längre vistelse eller en större grupp? Dela helt enkelt upp det i separata förfrågningar."
+      ]
+    },
+    {
+      "id": "counterOffer",
+      "title": "Vad Händer om ditt Rum Inte är Tillgängligt",
+      "body": [
+        "Om ditt föredragna rum redan är taget skickar vi dig ett moterbjudande via e-post med närmaste alternativ. Acceptera erbjudandet och slutför betalningen eller förauktoriseringen för att låsa din vistelse."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookingsPolicy",
+      "title": "Förbetalda Ej Återbetalningsbara Bokningar",
+      "body": [
+        "Att välja en förbetald ej återbetalningsbar taxa sparar dig pengar men kräver full förskottsbetalning. Vi försöker ditt kort upp till tre gånger. Om alla försök misslyckas avbokar vi förfrågan. Dessa bokningar kan inte återbetalas eller ändras."
+      ]
+    },
+    {
+      "id": "confirmationEmail",
+      "title": "Ditt Bekräftelsemail",
+      "body": [
+        "När din betalning klarnar skickar vi ett bekräftelsemail till adressen du gav oss. Det listar din bokningsreferens, ankomstdatum, vistelselängd och eventuella extratjänster. Läs det noggrant och berätta omedelbart om något ser fel ut."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Email_on_Phone_Flat_Icon.svg/960px-Email_on_Phone_Flat_Icon.svg.png",
+          "alt": "E-postikon på en telefonskärm.",
+          "caption": "Ditt bekräftelsemail är den bästa platsen att dubbelkolla datum, namn och betalningsdetaljer - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    },
+    {
+      "id": "numberOfGuestsIncluded",
+      "title": "Vem Ingår i din Bokning",
+      "body": [
+        "Din bokning täcker automatiskt följande:",
+        "* 1 gäst per enkelsäng\n* Upp till 2 gäster per dubbelsäng\n* Upp till den annonserade kapaciteten för vilken lägenhet du än bokar",
+        "För säkerhet och komfort kan vi inte ta emot extra gäster över rummets gräns."
+      ]
+    },
+    {
+      "id": "scopeOfFacilitiesIncluded",
+      "title": "Vad Ingår i din Vistelse",
+      "body": [
+        "Varje gäst får:",
+        "* Fräscha lakan och nyckelkort\n* Användning av de delade duscharna\n* Varmvatten under schemalagda timmar (cirka 07:00-10:30 och 17:00-22:30)\n* Tillgång till våra gemensamma utrymmen",
+        "Andra förmåner (frukost, Wi-Fi, bagageförvaring etc.) är gratis och följer sina egna enkla regler."
+      ]
+    },
+    {
+      "id": "financialObligation",
+      "title": "Ditt Ekonomiska Ansvar",
+      "body": [
+        "Kreditkortsinnehavaren som nämns på din bokning är ansvarig för alla avgifter - rumspriser, skador, städavgifter, böter eller påföljder för brott mot husregler. Obetalda belopp kan debiteras direkt på kortet vi har registrerat."
+      ]
+    },
+    {
+      "id": "roomAllocation",
+      "title": "Hur Sängar och Rum Tilldelas",
+      "body": [
+        "Vi garanterar dig sängtyp och rumskategori du bokade. Sovs albokningar säkrar en säng i vald kategori, men vi kan inte lova att grupper delar samma rum. Sängar i sovsalar väljs enligt först-till-kvarn-principen när du checkar in."
+      ]
+    },
+    {
+      "id": "allocatingUpgrades",
+      "title": "Rumsuppgraderingar",
+      "body": [
+        "Ibland uppgraderar vi dig till ett bättre rum gratis, eller du kan betala för att uppgradera när du bokar. Om den gratis uppgraderingen senare blir opraktisk kan vi flytta dig tillbaka till kategorin du ursprungligen betalade för."
+      ]
+    },
+    {
+      "id": "thirdPartyPayments",
+      "title": "Betalning via Tredjepartswebbplatser",
+      "body": [
+        "När du bokar via en OTA betalar du via deras system enligt deras villkor. Vi ser aldrig dina kortuppgifter från OTA:n och är inte ansvariga för problem på deras plattform. Kontrollera alltid att din betalning gick igenom och att du fick en bekräftelse."
+      ]
+    },
+    {
+      "id": "bookingRequestDeposits",
+      "title": "Bokningsdepositioner",
+      "body": [
+        "Vissa taxor kräver en deposition för att hålla rummet. Förbetalda taxor kräver 100% i förskott. Depositioner är inte återbetalningsbara. Om vi inte kan ta depositionen avbokas bokningsförfrågan automatiskt."
+      ]
+    },
+    {
+      "id": "bookingRequestPreauthorisations",
+      "title": "Kortförauktoriseringar",
+      "body": [
+        "För flexibla taxor kan vi förauktorisera ditt kort för första natten eller hela vistelsen för att garantera din bokning. Om förauktoriseringen misslyckas avslår vi förfrågan."
+      ]
+    },
+    {
+      "id": "safeguardingProcess",
+      "title": "Vår Säkerhetsdeposition",
+      "body": [
+        "Vid incheckning kan vi placera en säkerhetsdeposition motsvarande en natt per gäst för att täcka eventuella böter, avgifter, förlängningar eller skador. Om kortspärr inte är möjlig kan du lämna samma belopp kontant eller använda en annan gästs kort. Om inget alternativ fungerar måste vi tyvärr avboka din bokning."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Euro_coins_in_hand.jpg/960px-Euro_coins_in_hand.jpg",
+          "alt": "En hand som håller flera euromynt.",
+          "caption": "Om kortspärr inte är möjlig vid incheckning kan vi be om motsvarande kontantdeposition - Foto: Wikimedia Commons (CC BY-SA 4.0)."
+        }
+      ]
+    }
+  ]
+}

@@ -132,8 +132,8 @@ export default function UploadPanel({
                 data-token={isValid ? "--color-success" : "--color-danger"} /* i18n-exempt -- DS-000 token name [ttl=2026-01-01] */
               >
                 {isValid
-                  ? t("cms.image.orientation.ok", { actual })
-                  : t("cms.image.orientation.bad", { actual, required: REQUIRED_ORIENTATION })}
+                  ? t("cms.image.orientation.ok", { actual: actual as unknown as string })
+                  : t("cms.image.orientation.bad", { actual: actual as unknown as string, required: REQUIRED_ORIENTATION as unknown as string })}
               </p>
             )}
             {(isVideo || isValid) && (

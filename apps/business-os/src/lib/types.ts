@@ -10,9 +10,11 @@ export interface Business {
   name: string;
   description: string;
   owner: string;
+  category: "operating-business" | "internal-system";
   status: "active" | "inactive" | "archived";
   created: string;
   tags: string[];
+  apps: string[];
 }
 
 export interface BusinessCatalog {
@@ -73,6 +75,7 @@ export interface IdeaFrontmatter {
   ID?: string;
   Business?: string;
   Status?: "raw" | "worked" | "converted" | "dropped";
+  Priority?: Priority;
   "Created-Date"?: string;
   Tags?: string[];
   "Title-it"?: string; // MVP-G1: Italian translation of title (only for worked ideas)
@@ -130,6 +133,7 @@ export interface CardQuery {
 export interface IdeaQuery {
   business?: string;
   status?: "raw" | "worked" | "converted" | "dropped";
+  priority?: Priority;
   location?: "inbox" | "worked";
   includeArchived?: boolean;
 }

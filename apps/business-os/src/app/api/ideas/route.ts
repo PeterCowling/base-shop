@@ -6,6 +6,7 @@ import {
   allocateNextIdeaId,
   appendAuditEntry,
   type Idea,
+  IdeaPrioritySchema,
   upsertIdea,
 } from "@acme/platform-core/repositories/businessOs.server";
 
@@ -18,6 +19,7 @@ const CreateIdeaSchema = z.object({
   business: z.string().min(1),
   content: z.string().min(1),
   tags: z.array(z.string()).optional(),
+  priority: IdeaPrioritySchema.optional(),
 });
 
 /**
@@ -37,7 +39,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { business, content, tags } = parsed.data;
+    const { business, content, tags, priority } = parsed.data;
 
     if (!BUSINESSES.some((b) => b.id === business)) {
       return NextResponse.json(
@@ -58,6 +60,7 @@ export async function POST(request: Request) {
       ID: ideaId,
       Business: business,
       Status: "raw",
+      Priority: priority ?? "P3",
       "Created-Date": createdDate,
       Tags: tags,
       content,
@@ -83,7 +86,11 @@ export async function POST(request: Request) {
       entity_id: ideaId,
       action: "create",
       actor: currentUser.id,
-      changes_json: JSON.stringify({ business, status: "raw" }),
+      changes_json: JSON.stringify({
+        business,
+        status: "raw",
+        priority: idea.Priority,
+      }),
     });
 
     return NextResponse.json(

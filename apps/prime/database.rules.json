@@ -221,6 +221,12 @@
         ".write": "auth != null && (root.child('messagingUsers').child(auth.uid).child('role').val() === 'staff' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'admin' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'owner')"
       },
       ".indexOn": ["timestamp", "staffUid"]
+    },
+    "ownerKpis": {
+      "$date": {
+        ".read": "auth != null && (root.child('messagingUsers').child(auth.uid).child('role').val() === 'owner' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'admin' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'developer')",
+        ".write": "auth != null && (root.child('messagingUsers').child(auth.uid).child('role').val() === 'owner' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'admin' || root.child('messagingUsers').child(auth.uid).child('role').val() === 'developer')"
+      }
     }
   }
 }

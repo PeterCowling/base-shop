@@ -29,5 +29,6 @@
   "houseRules": "Nội quy",
   "cancellationPolicy": "Chính sách hủy",
   "privacy": "Chính sách bảo mật",
-  "cookies": "Chính sách cookie"
+  "cookies": "Chính sách cookie",
+  "navAriaLabel": "Footer navigation"
 }

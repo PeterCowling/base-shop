@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "SITA buszjegyek és tippek",
+    "description": "Hol vedd meg, hogyan érvényesítsd, mikor indulj és mit várj zsúfolt időszakokban."
+  },
+  "linkLabel": "SITA buszjegyek és tippek",
+  "intro": [
+    "A SITA jegyet felszállás előtt vásárold meg, és nyáron hagyj extra időt a sorban állásra. Az utazás végéig őrizd meg a jegyet."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hol tudsz jegyet venni",
+      "body": [
+        "Vásárolj a főút menti tabacchi boltokban és kioszkokban. Ha rövid a sor, vegyél több jegyet előre."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Érvényesítés",
+      "body": [
+        "Ahol van lyukasztó, felszálláskor érvényesítsd, és az utazás végéig tartsd magadnál a jegyet."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vehetek jegyet a buszon?",
+      "a": [
+        "Általában nem; felszállás előtt vegyél jegyet, így elkerülöd a késéseket."
+      ]
+    }
+  ]
+}

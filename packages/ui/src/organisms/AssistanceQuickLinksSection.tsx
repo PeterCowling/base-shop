@@ -1,7 +1,6 @@
 // packages/ui/src/organisms/AssistanceQuickLinksSection.tsx
 import type { ReactNode } from "react";
 import { Fragment, memo } from "react";
-import Image from "next/image";
 import clsx from "clsx";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
@@ -121,7 +120,6 @@ function AssistanceQuickLinksSection({
               <Fragment key={key}>
                 {linkRenderer({
                   href: item.href,
-                  ariaLabel: item.label,
                   className: clsx(
                     "group",
                     "block",
@@ -147,11 +145,14 @@ function AssistanceQuickLinksSection({
                       <div className={clsx("flex", "flex-col", "h-full")}>
                         <div className={clsx("grid", "grid-cols-[4.5rem_1fr]", "gap-4", "items-start")}>
                           {item.image?.src ? (
-                            <Image
+                            // eslint-disable-next-line @next/next/no-img-element -- UI-1000 [ttl=2026-12-31] UI package accepts mixed local/remote URLs at runtime.
+                            <img
                               src={item.image.src}
                               alt={item.image.alt ?? item.label}
                               width={64}
                               height={64}
+                              loading="lazy"
+                              decoding="async"
                               className={clsx(
                                 "h-16",
                                 "w-16",
@@ -237,7 +238,6 @@ function AssistanceQuickLinksSection({
             <Fragment>
               {ctaRenderer({
                 href: contactCta.href,
-                ariaLabel: contactCta.label,
                 className: clsx(
                   "group",
                   "flex",

@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Assurance voyage pour la côte amalfitaine",
+    "description": "Couvertures utiles, situations courantes et points à vérifier pour un séjour sur la côte."
+  },
+  "linkLabel": "Assurance voyage pour la côte amalfitaine",
+  "intro": [
+    "Assurance voyage sur la côte amalfitaine : santé, annulations, électronique et activités."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Garantie indispensable",
+      "body": [
+        "Soins/accidents, annulations/retards et matériel électronique ; ajoutez une couverture randonnée pour le Sentier des Dieux."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Dossiers & preuves",
+      "body": [
+        "Conservez reçus, dépôt de plainte en cas de vol et attestations de retard/annulation ; vérifiez délais et pièces originales/copies exigés."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Faut-il une garantie spécifique pour les ferries ?",
+      "a": [
+        "Souvent incluse dans la rubrique transports ; les retards météo varient selon le contrat — lisez les conditions."
+      ]
+    }
+  ]
+}

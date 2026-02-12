@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Work & Travel: balansera distansarbete",
+    "description": "Så kombinerar du distansarbete och resa i Positano: nätverk, arbetsplatser och rutiner."
+  },
+  "linkLabel": "Work & Travel: balansera distansarbete",
+  "intro": [
+    "Balansera fokuserat arbete med att utforska Positano: realistisk anslutning, var man ska arbeta och en dagsrytm som passar folkmassorna."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi‑Fi & backups",
+      "body": [
+        "Använd eSIM-säkerhetskopior; testhastigheter; undvika kritiska anrop under färjans lossningstider på huvudfilerna."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Work‑friendly cafés",
+      "body": [
+        "Se vår guide för Wi-Fi & Work-Friendly Cafés; mind sockets och köp regelbundet."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Routines that work",
+      "body": [
+        "Arbete blockerar tidigt och sent; utforska mitt på dagen när folkmassorna toppar eller efter solnedgången."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is remote work viable here?",
+      "a": [
+        "Ja med planering — stanna nära Chiesa Nuova, använd säkerhetskopior och ha flexibla öppettider."
+      ]
+    }
+  ]
+}

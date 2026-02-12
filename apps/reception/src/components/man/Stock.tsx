@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useMemo } from "react";
 
 import { useProducts } from "../../hooks/data/bar/useProducts";

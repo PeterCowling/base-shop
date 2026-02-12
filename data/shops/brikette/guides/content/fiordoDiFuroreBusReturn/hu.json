@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Fiordo di Furore strand → Hostel Brikette busszal",
+    "description": "Kövesd ezeket a lépéseket, hogy feljuss a Fiordo di Furore feletti SITA megállóhoz, visszautazz Positano felé, és könnyedén elsétálj a Hostel Brikettéig."
+  },
+  "linkLabel": "Fiordo di Furore strand → Hostel Brikette busszal",
+  "intro": [
+    "A Fiordo di Furore az Amalfi-part főútja alatt fekszik, és amint leérsz a vízhez, nincs jegypénztár vagy bolt. Használd ezt a visszaúti útmutatót, hogy felmássz az útra, felszállj a Positano felé tartó SITA buszra, és gond nélkül eljuss a Hostel Brikettébe."
+  ],
+  "warningsTitle": "Mielőtt elhagynád a strandot",
+  "warnings": [
+    "Előre vedd meg a SITA jegyeket – a part közelében nincs vásárlási lehetőség, és a sofőrök megtagadhatják a felszállást érvényesített jegy nélkül."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Mássz vissza az útra",
+      "body": [
+        "Kövesd a kavicsos partról induló lépcsőt vissza az Amalfi-parti főútig.",
+        "A SITA megálló közvetlenül ott van, ahol a lépcső a kis öböl fölötti parkolóöbölhöz csatlakozik; a hegy felőli oldalon várakozz."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Utazz a SITA busszal Positano felé",
+      "body": [
+        "Szállj fel a Positano irányába tartó SITA buszra – a járatok igény szerint állnak meg, így a köztes megállók száma az utasoktól függ.",
+        "Az út körülbelül 10,8 kilométert (6,7 mérföldet) tesz meg a part mentén, mire Positanóba érkezel."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Szállj le a Bar Internazionale / Chiesa Nuova megállónál",
+      "body": [
+        "Nyomd meg a leszállásjelzőt nem sokkal azután, hogy a busz kijön a Positano feletti alagútból, és keresd a Bar Internazionale tabacchit.",
+        "Szállj le a Chiesa Nuova megállónál; ez a Hostel Brikettéhez legközelebbi SITA megálló."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Sétáld le az utolsó szakaszt a Hostel Brikettéig",
+      "body": [
+        "Haladj a busz irányába még valamivel több mint 100 métert.",
+        "Fordulj jobbra a bár melletti lépcsőn, és kapaszkodj fel a hostel bejáratáig."
+      ]
+    }
+  ],
+  "tipsTitle": "Visszaút tippek",
+  "tips": [
+    "Ellenőrizd a legfrissebb menetrendet a hostel digitális concierge-én keresztül, hogy tudd, mikor érkezik a következő SITA busz.",
+    "Használd a %LINK:positanoBeaches|positanói strandáttekintést% további partok tervezéséhez, amelyek jól kombinálhatók egy fiordi kiruccanással.",
+    "Ha a busz tele van vagy kimarad, készülj fel rá, hogy a parkolóöbölből engedéllyel rendelkező taxit intesz le tartalékként."
+  ],
+  "faqsTitle": "Gyakori kérdések",
+  "faqs": [
+    {
+      "q": "Hol várakozzak a buszra?",
+      "a": [
+        "Állj az út hegy felőli oldalán a lépcső tetejénél – a Positano felé tartó buszok a szalagkorlát mellett állnak meg."
+      ]
+    },
+    {
+      "q": "Mi történik, ha nincs jegyem?",
+      "a": [
+        "A sofőrök érvényesített SITA jegyet várnak el felszállás előtt. Vegyél retúr jegyet Positanóban, vagy indulás előtt érdeklődj a recepción, van-e készleten."
+      ]
+    }
+  ]
+}

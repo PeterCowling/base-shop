@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia & Procida: jenseits der Amalfiküste",
+    "description": "Thermalbäder, Strände und Fährverbindungen ab Neapel/Sorrent."
+  },
+  "linkLabel": "Ischia & Procida: jenseits der Amalfiküste",
+  "intro": [
+    "Nutze Positano als Basis für Inselhopping nach Ischia und Procida – so planst du Fährzeiten, Highlights und Tickets."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Ischia-Highlights",
+      "body": [
+        "Thermalbäder wie Poseidon oder Negombo lassen sich mit Tagespässen besuchen – Handtuch und Flip-Flops mitnehmen.",
+        "Castello Aragonese bietet Panorama-Blicke; früh starten, um der Mittagshitze und Kreuzfahrtgruppen auszuweichen."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Procida-Highlights",
+      "body": [
+        "Bunte Häuschen in Marina Corricella sind am Vormittag am ruhigsten – perfekte Foto-Spots ohne große Höhenmeter.",
+        "Spaziere zum Belvedere dei Cannoni oder entspanne am Spiaggia di Chiaia; beide erreichen Sie zu Fuß in 15 Minuten."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistik & Tickets",
+      "body": [
+        "Fähren starten ab Neapel (Beverello) und Sorrent; reserviere Hin- und Rückfahrt zusammen, besonders in Juli/August.",
+        "Auf Ischia verkehren Busse (Eav) rund um die Insel – Tageskarte (~4,50 €) lohnt sich. Procida lässt sich zu Fuß erkunden, Taxis sind verfügbar."
+      ]
+    }
+  ],
+  "tips": [
+    "Plane Ischia für mindestens einen ganzen Tag; Procida lässt sich auch als Halbtagesausflug genießen.",
+    "Pack Badesachen, Wasser und Sonnencreme – viele Thermalparks verlangen Badekappen (vor Ort erhältlich)."
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich beide Inseln an einem Tag kombinieren?",
+      "a": [
+        "Nur mit sehr frühen Abfahrten und knappen Umstiegszeiten – empfehlenswert ist je ein Tag pro Insel für entspannte Besuche."
+      ]
+    },
+    {
+      "q": "Brauche ich Vorab-Tickets für Thermalparks?",
+      "a": [
+        "In der Hochsaison ja – Buchungen online oder telefonisch sichern Einlassfenster und vermeiden Warteschlangen."
+      ]
+    }
+  ]
+}

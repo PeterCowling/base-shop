@@ -1,0 +1,184 @@
+{
+  "arrival": {
+    "badge": "Badge",
+    "cashAmount": "Cash Amount",
+    "cashReady": "Cash Ready",
+    "cashReminder": "Cash Reminder",
+    "cityTaxLabel": "City Tax Label",
+    "codeStaleWarning": "Code Stale Warning",
+    "codeUnavailable": "Code Unavailable",
+    "depositLabel": "Deposit Label",
+    "findUs": "Find Us",
+    "generatingCode": "Generating Code",
+    "idNote": "Id Note",
+    "idReminder": "Id Reminder",
+    "offlineNoCache": "Offline No Cache",
+    "refreshCode": "Refresh Code",
+    "showAtReception": "Show At Reception",
+    "step1": "Step1",
+    "step2": "Step2",
+    "step3": "Step3",
+    "step4": "Step4",
+    "subtitle": "Subtitle",
+    "welcome": "Welcome",
+    "whatHappensNext": "What Happens Next"
+  },
+  "calendar": {
+    "addToCalendar": "Add To Calendar",
+    "downloading": "Downloading"
+  },
+  "cash": {
+    "back": "Back",
+    "cardNote": "Card Note",
+    "cashOnly": "Cash Only",
+    "cityTax": {
+      "label": "Label",
+      "perNight": "Per Night"
+    },
+    "confirm": {
+      "cityTax": "City Tax",
+      "deposit": "Deposit"
+    },
+    "confirmPartial": "Confirm Partial",
+    "deposit": {
+      "label": "Label",
+      "refundable": "Refundable"
+    },
+    "done": "Done",
+    "info": {
+      "message": "Message"
+    },
+    "subtitle": "Subtitle",
+    "title": "Title",
+    "total": "Total"
+  },
+  "checkIn": {
+    "codeCopied": "Code Copied",
+    "dayLeft": "Day Left",
+    "daysLeft": "Days Left",
+    "label": "Label",
+    "qrAlt": "Qr Alt",
+    "qrError": "Qr Error",
+    "today": "Today",
+    "yourCode": "Your Code"
+  },
+  "checklist": {
+    "cashPrepared": {
+      "amount": "Amount"
+    },
+    "completed": "Completed",
+    "title": "Title"
+  },
+  "eta": {
+    "back": "Back",
+    "confirm": "Confirm",
+    "lateArrival": {
+      "message": "Message",
+      "title": "Title"
+    },
+    "methodLabel": "Method Label",
+    "noteLabel": "Note Label",
+    "notePlaceholder": "Note Placeholder",
+    "subtitle": "Subtitle",
+    "timeLabel": "Time Label",
+    "title": "Title"
+  },
+  "header": {
+    "arrivalDay": "Arrival Day",
+    "arrivalDaySubtitle": "Arrival Day Subtitle",
+    "preArrival": "Pre Arrival",
+    "subtitle": "Subtitle",
+    "welcome": "Welcome",
+    "welcomeArrivalDay": "Welcome Arrival Day"
+  },
+  "location": {
+    "address": "Address"
+  },
+  "nextAction": {
+    "allComplete": {
+      "button": "Button",
+      "description": "Description",
+      "title": "Title"
+    },
+    "cashPrepared": {
+      "button": "Button",
+      "description": "Description",
+      "descriptionWithAmount": "Description With Amount",
+      "title": "Title"
+    },
+    "default": {
+      "button": "Button",
+      "description": "Description",
+      "title": "Title"
+    },
+    "etaConfirmed": {
+      "button": "Button",
+      "description": "Description",
+      "title": "Title"
+    },
+    "locationSaved": {
+      "button": "Button",
+      "description": "Description",
+      "title": "Title"
+    },
+    "routePlanned": {
+      "button": "Button",
+      "description": "Description",
+      "title": "Title"
+    },
+    "rulesReviewed": {
+      "button": "Button",
+      "description": "Description",
+      "title": "Title"
+    }
+  },
+  "readiness": {
+    "score": "Score"
+  },
+  "routes": {
+    "arrival": "Arrival",
+    "back": "Back",
+    "cost": "Cost",
+    "fromOrigin": "From Origin",
+    "importantNotes": "Important Notes",
+    "journey": "Journey",
+    "noRoutes": "No Routes",
+    "recommended": "Recommended",
+    "routeSaved": "Route Saved",
+    "saveRoute": "Save Route",
+    "savedRoute": "Saved Route",
+    "selectRoute": "Select Route",
+    "subtitle": "Subtitle",
+    "title": "Title",
+    "totalTime": "Total Time",
+    "viewFullGuide": "View Full Guide"
+  },
+  "staffLookup": {
+    "back": "Back",
+    "code": "Code",
+    "dates": "Dates",
+    "eta": "Eta",
+    "guestName": "Guest Name",
+    "loading": "Loading",
+    "nights": "Nights",
+    "noCode": "No Code",
+    "payment": "Payment",
+    "placeholder": "Placeholder",
+    "room": "Room",
+    "subtitle": "Subtitle",
+    "title": "Title",
+    "tryAgain": "Try Again"
+  },
+  "stay": {
+    "location": "Location",
+    "night": "Night",
+    "nights": "Nights"
+  },
+  "welcome": {
+    "subtitle": "Subtitle",
+    "tapToDismiss": "Tap To Dismiss",
+    "tip1": "Tip1",
+    "tip2": "Tip2",
+    "title": "Title"
+  }
+}

@@ -1,12 +1,12 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Proposed
 Domain: Platform
 Created: 2026-02-06
 Last-updated: 2026-02-06
 Feature-Slug: kanban-sweep-agent
-Related-Plan: docs/plans/kanban-sweep-agent-plan.md
+Related-Plan: docs/historical/plans/kanban-sweep-agent-plan.md
 Business-Unit: PLAT
 ---
 

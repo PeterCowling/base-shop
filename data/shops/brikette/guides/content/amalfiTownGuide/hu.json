@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Amalfi város útmutató: történelem, látnivalók, tippek",
+    "description": "Katedrális, papírmúzeum, kolostor, strandok és az odajutás Positanóból."
+  },
+  "linkLabel": "Amalfi város útmutató: történelem, látnivalók, tippek",
+  "intro": [
+    "Hozza ki a legtöbbet az amalfi városban töltött napból: itt vannak a legfontosabb látnivalók, az odajutási lehetőségek és az időzítési tippek, hogy elkerülje a buszos turisták tömegét."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Fő látnivalók",
+      "body": [
+        "Mássza meg a 62 lépcsőt az Amalfi-katedrálishoz, és csodálja meg a csíkos homlokzatot, a kolostort és a múzeumot (szerény öltözet szükséges).",
+        "Látogasson el a Museo della Carta papírmúzeumba, ahol kézi papírkészítést mutatnak be, és könnyű szuveníreket is hazavihet."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Megközelítés",
+      "body": [
+        "A Positanóból induló kompok 20 perc alatt érnek Amalfiba, a buszok forgalomtól függően 40–50 percet vesznek igénybe. Érkezzen 10:00 előtt, hogy legyen árnyék a főtéren.",
+        "Vegye meg a visszaútra szóló kompjegyet kora délután, ha a szél miatt módosítanák az indulásokat."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Mikor érdemes menni",
+      "body": [
+        "A reggeli órák (11:00 előtt) vagy az esték (17:00 után) a legnyugodtabbak, amikor a napközi kirándulók már elmentek.",
+        "Kösse össze Amalfít Atrani látogatásával (öt perc séta), és vacsorázzon a kisebb piazzán, mielőtt visszaindul."
+      ]
+    }
+  ],
+  "tips": [
+    "Vigyen magával könnyű sálat a templomlátogatásokhoz, és hogy megvédje magát a naptól a kompon.",
+    "Frissüljön fel citromos granitával a vízparti bódéknál a megállók között."
+  ],
+  "faqTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Mennyi időre van szükségem Amalfiban?",
+      "a": [
+        "Három-négy órát szánjon a katedrálisra, a papírmúzeumra és egy kényelmes étkezésre. Számoljon extra idővel, ha szeretne fürdeni a kis városi strandon."
+      ]
+    },
+    {
+      "q": "Van csomagmegőrző a városban?",
+      "a": [
+        "Igen, a komp móló közelében talál csomagmegőrzőt. A napi díj jellemzően 5–8 euró csomagonként."
+      ]
+    }
+  ]
+}

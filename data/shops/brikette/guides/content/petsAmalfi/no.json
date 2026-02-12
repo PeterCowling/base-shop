@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Reise med kjæledyr på Amalfikysten",
+    "description": "Praktisk om kjæledyrvennlige overnattinger, ferjer og hva du kan forvente."
+  },
+  "linkLabel": "Reise med kjæledyr på Amalfikysten",
+  "intro": [
+    "Reis Amalfikysten med kjæledyr trygt: papirarbeid, kjæledyrvennlige opphold og lokal etikette."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Før du ankommer",
+      "body": [
+        "Ta med EU-standard mikrochipsikker, rabiesvaksinasjonssertifikater og bendelormbehandling hvis nødvendig for ditt opprinnelsesland.",
+        "Pakk sammen sammenleggbare boller, en lett matte og avfallsposer – mange byer har begrenset kjæledyrforsyning."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Slik kommer du deg rundt",
+      "body": [
+        "Små kjæledyr reiser gratis på SITA-busser hvis de er i bånd eller i kasse; større hunder trenger munnkurv og rabatterte billetter.",
+        "Ferger tillater kjæledyr på utendørs dekk; ta med en kort ledning og kom tidlig for å finne skyggefulle flekker."
+      ]
+    },
+    {
+      "id": "where",
+      "title": "Hvor kjæledyr er velkomne",
+      "body": [
+        "Mange overnattingssteder aksepterer små hunder med forhåndsvarsel – bekreft gebyrer og husregler før bestilling.",
+        "Kjæledyrvennlige strender inkluderer Bau Bau-stranden i Maiori og deler av Marina di Praia utenom rushtiden."
+      ]
+    }
+  ],
+  "tips": [
+    "Bær vann og sammenleggbare boller; varme og trapper sliter kjæledyr raskt om sommeren.",
+    "Hold kjæledyr unna kirketrapper og inne på kafeer bare når de er invitert - utendørs terrasser er generelt dyrevennlige."
+  ],
+  "faqs": [
+    {
+      "q": "Snakker veterinærer engelsk?",
+      "a": [
+        "Mange gjør det, spesielt i Sorrento og Salerno. Lagre en liste over nærliggende klinikker og nødnumre før du reiser."
+      ]
+    },
+    {
+      "q": "Er taxier kjæledyrvennlige?",
+      "a": [
+        "De fleste sjåfører godtar små kjæledyr hvis de får beskjed ved bestilling. Ta med et teppe for å beskytte setene og gi et tips for ekstra rengjøring."
+      ]
+    }
+  ]
+}

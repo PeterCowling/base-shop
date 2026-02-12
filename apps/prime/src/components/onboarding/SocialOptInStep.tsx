@@ -9,13 +9,17 @@
  * All opt-ins are optional - users can skip entirely.
  */
 
-import { Button } from '@acme/design-system/primitives';
-import logger from '@/utils/logger';
-import { Calendar, MessageCircle, Map, Users } from 'lucide-react';
-import { FC, useCallback, useState } from 'react';
+import { type FC, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Calendar, Map, MessageCircle, Users } from 'lucide-react';
+
+import { Button } from '@acme/design-system/primitives';
+
+import logger from '@/utils/logger';
+
 import { useChat } from '../../contexts/messaging/ChatProvider';
 import { useGuestProfileMutator } from '../../hooks/mutator/useGuestProfileMutator';
+
 import OnboardingLayout from './OnboardingLayout';
 
 interface SocialOptInStepProps {
@@ -27,7 +31,7 @@ interface SocialOptInStepProps {
 
 const SocialOptInStep: FC<SocialOptInStepProps> = ({
   onContinue,
-  bookingId,
+  bookingId: _bookingId,
 }) => {
   const { t } = useTranslation('Onboarding');
   const { updateProfile } = useGuestProfileMutator();
@@ -88,7 +92,7 @@ const SocialOptInStep: FC<SocialOptInStepProps> = ({
     >
       <div className="space-y-6 px-2 pb-6">
         {/* Intro text */}
-        <p className="text-sm text-gray-600 leading-relaxed">
+        <p className="text-sm text-muted-foreground leading-relaxed">
           {t('socialOptIn.intro')}
         </p>
 
@@ -116,7 +120,7 @@ const SocialOptInStep: FC<SocialOptInStepProps> = ({
         {/* Show upcoming activities or guidebook CTA */}
         {hasActivities ? (
           <section className="mt-6">
-            <h3 className="text-sm font-medium text-gray-900 mb-3 flex items-center gap-2">
+            <h3 className="text-sm font-medium text-foreground mb-3 flex items-center gap-2">
               <Users size={16} />
               {t('socialOptIn.upcomingActivities')}
             </h3>
@@ -131,14 +135,14 @@ const SocialOptInStep: FC<SocialOptInStepProps> = ({
             </div>
           </section>
         ) : (
-          <section className="mt-6 rounded-lg bg-amber-50 border border-amber-200 p-4">
+          <section className="mt-6 rounded-lg bg-warning-soft border border-warning p-4">
             <div className="flex items-start gap-3">
-              <Map className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <Map className="w-5 h-5 text-warning-foreground flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="text-sm font-medium text-amber-900">
+                <h3 className="text-sm font-medium text-warning-foreground">
                   {t('socialOptIn.noActivities.title')}
                 </h3>
-                <p className="text-sm text-amber-700 mt-1">
+                <p className="text-sm text-warning-foreground mt-1">
                   {t('socialOptIn.noActivities.description')}
                 </p>
               </div>
@@ -147,7 +151,7 @@ const SocialOptInStep: FC<SocialOptInStepProps> = ({
         )}
 
         {/* Privacy note */}
-        <p className="text-xs text-gray-500 leading-relaxed">
+        <p className="text-xs text-muted-foreground leading-relaxed">
           {t('socialOptIn.privacyNote')}
         </p>
 
@@ -156,7 +160,7 @@ const SocialOptInStep: FC<SocialOptInStepProps> = ({
           <Button
             onClick={handleSave}
             disabled={isSubmitting}
-            className="w-full rounded-full bg-blue-500 px-6 py-3 font-medium text-white shadow hover:bg-blue-600 transition-colors disabled:opacity-50"
+            className="w-full rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground shadow hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
             {t('socialOptIn.saveCta')}
           </Button>
@@ -164,7 +168,7 @@ const SocialOptInStep: FC<SocialOptInStepProps> = ({
             type="button"
             onClick={handleSkip}
             disabled={isSubmitting}
-            className="w-full text-sm text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50"
+            className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
           >
             {t('socialOptIn.skipCta')}
           </button>
@@ -192,8 +196,8 @@ function OptInCard({
     <label
       className={`flex items-start gap-3 rounded-lg border-2 p-4 cursor-pointer transition-all ${
         checked
-          ? 'border-blue-500 bg-blue-50'
-          : 'border-gray-200 bg-white hover:border-gray-300'
+          ? 'border-primary bg-primary-soft'
+          : 'border-border bg-card hover:bg-muted'
       }`}
     >
       <input
@@ -204,23 +208,23 @@ function OptInCard({
       />
       <div
         className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
-          checked ? 'bg-blue-500 border-blue-500' : 'border-gray-300'
+          checked ? 'bg-primary border-primary' : 'border-border'
         }`}
       >
         {checked && (
-          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 12 12">
+          <svg className="w-3 h-3 text-primary-foreground" fill="currentColor" viewBox="0 0 12 12">
             <path d="M10.28 2.28L3.989 8.575 1.695 6.28A1 1 0 00.28 7.695l3 3a1 1 0 001.414 0l7-7a1 1 0 00-1.414-1.414z" />
           </svg>
         )}
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-2">
-          <Icon size={18} className={checked ? 'text-blue-600' : 'text-gray-500'} />
-          <span className={`text-sm font-medium ${checked ? 'text-blue-700' : 'text-gray-700'}`}>
+          <Icon size={18} className={checked ? 'text-primary' : 'text-muted-foreground'} />
+          <span className={`text-sm font-medium ${checked ? 'text-primary' : 'text-foreground'}`}>
             {title}
           </span>
         </div>
-        <p className="text-xs text-gray-500 mt-1">{description}</p>
+        <p className="text-xs text-muted-foreground mt-1">{description}</p>
       </div>
     </label>
   );
@@ -235,11 +239,11 @@ function ActivityPreview({ title, time }: { title: string; time: number }) {
   }).format(new Date(time));
 
   return (
-    <div className="flex items-center gap-3 rounded-lg bg-gray-50 p-3">
-      <Calendar size={16} className="text-gray-400" />
+    <div className="flex items-center gap-3 rounded-lg bg-muted p-3">
+      <Calendar size={16} className="text-muted-foreground" />
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-gray-900 truncate">{title}</p>
-        <p className="text-xs text-gray-500">{formattedTime}</p>
+        <p className="text-sm font-medium text-foreground truncate">{title}</p>
+        <p className="text-xs text-muted-foreground">{formattedTime}</p>
       </div>
     </div>
   );

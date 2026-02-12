@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Madlavningskurser på Amalfikysten",
+    "description": "Hvordan kurserne foregår, hvad du laver, og hvordan du vælger det rigtige hold."
+  },
+  "linkLabel": "Madlavningskurser på Amalfikysten",
+  "intro": [
+    "Praktiske madlavningskurser på Amalfikysten kombinerer sfusato-citroner, frisk pasta og familieretter i små køkkener med udsigt.",
+    "Brug denne guide til at vælge et kursus, der passer til dit budget og din tidsplan, og til at få afklaret detaljerne, før du betaler et depositum."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Sådan forløber et typisk kursus",
+      "body": [
+        "Værterne byder velkommen med kaffe eller prosecco, før de gennemgår ingredienserne: friskrevet citronskal, sæsonens grøntsager og den pastadej, I skal forme.",
+        "Regn med at lave to eller tre retter – typisk frisk pasta, en sauce og en citronbaseret dessert – og afslutte med et fælles måltid. Hele forløbet varer 2,5-4 timer inklusive spisningen."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Vælg det rette kursus",
+      "body": [
+        "Tjek gruppestørrelsen, og om køkkenet ligger i Positano, på en gård i bakkerne eller i en naboby – transport kan være inkluderet eller koste ekstra.",
+        "Afklar hvad prisen dækker: ingredienser, vinmatch, trykte opskrifter og om forklæder eller rester følger med hjem."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistik og timing",
+      "body": [
+        "Kurser i højsæsonen bliver udsolgt uger i forvejen; reserver en plads, før du ankommer, især til aftenhold efter dagsudflugter.",
+        "Hvis stedet ligger uden for Positano, så bekræft opsamlingssteder eller sæt penge af til en taxa. De stejle gader kræver stadig gode sko, selv hvis du tager en shuttle."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Kosthensyn og etikette",
+      "body": [
+        "Informér værterne om allergier, vegetariske/veganske ønsker eller glutenintolerance, når du booker; mange kan tilpasse menuen, hvis de ved det i god tid.",
+        "Brug lukkede sko, sæt langt hår op, og gå let til parfume – køkkenerne er små, og du kommer tæt på de friske ingredienser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er madlavningskurserne velegnede til begyndere?",
+      "a": [
+        "Ja. Instruktørerne viser hvert trin, hjælper med teknikken undervejs og fordeler opgaverne, så alle er med uden at føle sig pressede."
+      ]
+    },
+    {
+      "q": "Skal jeg kunne tale italiensk?",
+      "a": [
+        "Nej. De fleste kurser foregår på engelsk eller to-sproget, og visuelle demonstrationer gør det let at følge med."
+      ]
+    },
+    {
+      "q": "Hvad skal jeg medbringe?",
+      "a": [
+        "Tag et lille noteshæfte med, hvis du vil skrive tips ned, sørg for at telefonen er opladet til billeder, og hav kontanter til restbeløb eller transport."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Praktisk madlavning med pasta, saucer og citrondesserter; små hold og køkkener med udsigt i sæsonen."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Det kan du forvente"
+      },
+      {
+        "href": "#choose",
+        "label": "Sådan vælger du"
+      },
+      {
+        "href": "#tips",
+        "label": "Tips"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Det kan du forvente",
+        "body": [
+          "Praktisk madlavning med pasta, saucer og citrondesserter; små hold og køkkener med udsigt i sæsonen."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Sådan vælger du",
+        "body": [
+          "Tjek holdstørrelse, varighed, hvad der er inkluderet, og hvilke transportmuligheder der findes."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Tips",
+        "body": [
+          "Book i god tid i højsæsonen, og informér værterne om særlige kostbehov."
+        ]
+      }
+    ]
+  }
+}

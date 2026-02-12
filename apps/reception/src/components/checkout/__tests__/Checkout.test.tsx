@@ -97,6 +97,25 @@ jest.mock("../../../hooks/mutations/useAllTransactionsMutations", () => {
   return { default: () => ({ addToAllTransactions: addToAllTransactionsMock }) };
 });
 
+jest.mock("../../../hooks/data/useKeycardAssignments", () => ({
+  useKeycardAssignments: () => ({
+    assignments: [],
+    assignmentsRecord: {},
+    activeAssignments: [],
+    loading: false,
+    error: null,
+  }),
+}));
+
+jest.mock("../../../hooks/mutations/useKeycardAssignmentsMutations", () => ({
+  useKeycardAssignmentsMutations: () => ({
+    assignGuestKeycard: jest.fn(),
+    assignMasterKey: jest.fn(),
+    returnKeycard: jest.fn(),
+    markLost: jest.fn(),
+  }),
+}));
+
 const financials = {
   balance: 0,
   totalDue: 0,

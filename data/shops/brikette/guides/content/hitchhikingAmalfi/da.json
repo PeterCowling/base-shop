@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Tomlen langs Amalfikysten",
+    "description": "Hvorfor busser er det sikre valg på smalle kystveje."
+  },
+  "linkLabel": "Tomlen langs Amalfikysten",
+  "intro": [
+    "Lysten til at tomle langs Amalfikysten er forståelig, men SS163 er smal med blinde sving og næsten ingen sikre holdepladser.",
+    "Brug i stedet det offentlige netværk: hav stemplede billetter klar, planlæg backup-ruter og medbring nød-kontanter til taxi eller portør, hvis trafikken stopper."
+  ],
+  "tocTitle": "På denne side",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Sikkerhed i virkeligheden",
+      "body": [
+        "Busser, turistcoaches og scootere deler ét spor hugget ind i klippen. Bilister ser dig ikke i tide, og politiet beder ofte folk om at flytte sig for egen sikkerhed.",
+        "Om natten er synligheden ringe, og rabatterne er minimale – at vente på kørebanen kan give både bøder og skader."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Bedre alternativer",
+      "body": [
+        "SITA-busser, lokale shuttles og community-vogne kører hele dagen; køb billetter i tabacchi, og stemple dem ombord.",
+        "Sæsonfærger giver panoramiske hop mellem byer; når havet lukker dem ned, skift til bus + portørservice eller delte taxaer.",
+        "Korte gangstier (Nocelle ↔ Positano, Praiano ↔ kystlandsbyer) er gode alternativer i dagslys."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "Hvis du strander",
+      "body": [
+        "Ring til en licenseret taxi (numre hænger ved de store stoppesteder), eller bed overnatningssted/hostelbar om at booke én; nætter er dyrere, så del gerne regningen med andre rejsende.",
+        "Giv værten besked, hvis du bliver forsinket. Hostelteamet kan foreslå sikre opsamlingspunkter eller overnatningsmuligheder i Sorrento/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Tag screenshots af bus- og færgeplaner fra UnicoCampania eller Travelmar hver morgen, så du kender sidste sikre afgang.",
+    "Medbring en lille lommelygte eller refleksbånd, hvis du skal gå efter solnedgang – belysningen langs vejen er begrænset."
+  ],
+  "warnings": [
+    "Vent aldrig i tunneller eller på blinde sving – politiet kan give bøder, og bilister har ingen plads til at undvige fodgængere."
+  ],
+  "faqs": [
+    {
+      "q": "Er tomlen lovlig på Amalfikysten?",
+      "a": [
+        "Der er ingen direkte regionalt forbud, men ordensmagten fraråder det og kan bede dig flytte af sikkerhedshensyn. Følg deres instrukser, og gå til et busstoppested."
+      ]
+    },
+    {
+      "q": "Hvad hvis den sidste bus er kørt?",
+      "a": [
+        "Brug de opslåede taxinumre, lokale rideshare-apps, eller bed nærliggende hoteller/barer om at ringe efter en chauffør. Som sidste udvej kan du køre til Amalfi eller Sorrento, hvor natbusser og tog er hyppigere."
+      ]
+    }
+  ]
+}

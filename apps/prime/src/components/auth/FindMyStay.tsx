@@ -8,7 +8,7 @@
 
 'use client';
 
-import { FC, FormEvent, memo, useCallback, useState } from 'react';
+import { type FC, type FormEvent, memo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
@@ -92,17 +92,17 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
   return (
     <div
       className={`
-        max-w-md mx-auto p-6 bg-white dark:bg-gray-800
+        max-w-md mx-auto p-6 bg-card
         rounded-xl shadow-lg
         ${className}
       `}
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-2xl font-bold text-foreground mb-2">
           {t('title')}
         </h1>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-muted-foreground">
           {t('subtitle')}
         </p>
       </div>
@@ -113,7 +113,7 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
         <div>
           <label
             htmlFor="bookingCode"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
+            className="block text-sm font-medium text-foreground mb-2"
           >
             {t('fields.bookingCode')}
           </label>
@@ -126,18 +126,18 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
             placeholder={t('fields.bookingCodePlaceholder')}
             className={`
               w-full px-4 py-3 rounded-lg
-              border border-gray-300 dark:border-gray-600
-              bg-white dark:bg-gray-700
-              text-gray-900 dark:text-white
-              placeholder-gray-400 dark:placeholder-gray-500
-              focus:ring-2 focus:ring-primary-500 focus:border-transparent
+              border border-border
+              bg-card
+              text-foreground
+              placeholder-muted-foreground
+              focus:ring-2 focus:ring-primary/30 focus:border-transparent
               uppercase
             `}
             autoComplete="off"
             autoCapitalize="characters"
             disabled={isLoading}
           />
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             {t('fields.bookingCodeHint')}
           </p>
         </div>
@@ -146,7 +146,7 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
         <div>
           <label
             htmlFor="lastName"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2"
+            className="block text-sm font-medium text-foreground mb-2"
           >
             {t('fields.lastName')}
           </label>
@@ -159,16 +159,16 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
             placeholder={t('fields.lastNamePlaceholder')}
             className={`
               w-full px-4 py-3 rounded-lg
-              border border-gray-300 dark:border-gray-600
-              bg-white dark:bg-gray-700
-              text-gray-900 dark:text-white
-              placeholder-gray-400 dark:placeholder-gray-500
-              focus:ring-2 focus:ring-primary-500 focus:border-transparent
+              border border-border
+              bg-card
+              text-foreground
+              placeholder-muted-foreground
+              focus:ring-2 focus:ring-primary/30 focus:border-transparent
             `}
             autoComplete="family-name"
             disabled={isLoading}
           />
-          <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-xs text-muted-foreground">
             {t('fields.lastNameHint')}
           </p>
         </div>
@@ -177,7 +177,7 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
         {error && (
           <div
             role="alert"
-            className="p-3 rounded-lg bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 text-sm"
+            className="p-3 rounded-lg bg-danger-soft text-danger text-sm"
           >
             {error}
           </div>
@@ -189,9 +189,9 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
           disabled={isLoading}
           className={`
             w-full py-3 px-4 rounded-lg
-            font-medium text-white
-            bg-primary-600 hover:bg-primary-700
-            disabled:bg-gray-400 disabled:cursor-not-allowed
+            font-medium text-primary-foreground
+            bg-primary hover:bg-primary/90
+            disabled:bg-muted disabled:cursor-not-allowed
             transition-colors duration-200
             ${isLoading ? 'opacity-75' : ''}
           `}
@@ -202,10 +202,10 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
 
       {/* Help text */}
       <div className="mt-8 text-center">
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-muted-foreground">
           {t('help.cantFind')}
         </p>
-        <p className="text-sm text-primary-600 dark:text-primary-400 mt-1">
+        <p className="text-sm text-primary mt-1">
           {t('help.contactUs')}
         </p>
       </div>

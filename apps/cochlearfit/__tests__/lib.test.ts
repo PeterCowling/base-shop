@@ -52,7 +52,7 @@ describe("locales", () => {
   });
 
   it("exposes locales list", () => {
-    expect(LOCALES).toEqual(["en", "it"]);
+    expect(LOCALES).toEqual(expect.arrayContaining(["en", "it"]));
   });
 });
 

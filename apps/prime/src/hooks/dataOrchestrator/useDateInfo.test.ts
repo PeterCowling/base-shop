@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
+
 import { renderHook } from '@testing-library/react';
+
 import { useDateInfo } from './useDateInfo';
 
 // Mock date utils
@@ -78,6 +80,16 @@ describe('useDateInfo', () => {
     expect(result.current.dateInfo.daysUntilCheckIn).toBeNull();
     expect(result.current.dateInfo.daysRemaining).toBe(3);
     expect(result.current.isCheckedIn).toBe(true);
+  });
+
+  it('treats check-in date as arrival-day (not yet checked in)', () => {
+    const { result } = renderHook(() =>
+      useDateInfo({ checkInDate: '2025-07-20', nights: 2 })
+    );
+
+    expect(result.current.dateInfo.daysUntilCheckIn).toBe(0);
+    expect(result.current.dateInfo.daysRemaining).toBeNull();
+    expect(result.current.isCheckedIn).toBe(false);
   });
 
   it('formats check-in date as DD/MM', () => {

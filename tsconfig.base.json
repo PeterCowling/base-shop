@@ -243,6 +243,14 @@
       "@acme/types/*": [
         "packages/types/src/*",
         "packages/types/dist/*"
+      ],
+      "@acme/guide-system": [
+        "packages/guide-system/src/index.ts",
+        "packages/guide-system/dist/index.d.ts"
+      ],
+      "@acme/guide-system/*": [
+        "packages/guide-system/src/*",
+        "packages/guide-system/dist/*"
       ]
     }
   },

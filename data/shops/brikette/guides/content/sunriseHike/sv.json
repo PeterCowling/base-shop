@@ -1,0 +1,139 @@
+{
+  "seo": {
+    "title": "Soluppgångsvandring från Hostel Brikette (Positano)",
+    "description": "En kort vandring före gryningen från Hostel Brikette till en lugn utsiktspunkt ovanför Positano, med navigeringsfoton i rätt ordning."
+  },
+  "linkLabel": "Soluppgångsvandring: Se gryningen bryta över Positano",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Om du vill ha den enklaste soluppgången kan du se gryningen från hostellets gemensamma terrass när solen går upp till vänster (när du tittar ut mot havet).",
+    "Om du vill ha ett bredare panorama och ett lugnare ögonblick ovanför staden, följ denna korta vandring upp i bergen till en utsiktspunkt på klippkanten över Positano."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "Vad är soluppgångsvandringen?",
+      "body": [
+        "Detta är en kort tur och retur-vandring före gryningen från Hostel Brikette till en liten utsiktspunkt ovanför Positano.",
+        "Om du vill ha ett längre bergsalternativ är %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% ett bra alternativ, men rutten nedan är det snabbaste sättet att få en dramatisk soluppgångsvy utan att förbinda sig till en heldagsvandring."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Innan du går (det kommer vara mörkt)",
+      "body": [
+        "Ta med en telefonlampa eller pannlampa och håll händerna fria (särskilt på trapporna).",
+        "Bär skor med grepp — den första delen är asfalterad, men skogsleden kan vara lös eller fuktig.",
+        "Börja tillräckligt tidigt så att du anländer 10-15 minuter före soluppgången så att du kan sätta dig tillrätta, hitta din plats och njuta av det första ljuset."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "Steg 1: Gå från hostellet till trappan (≈350 m)",
+      "body": [
+        "Lämna hostellet genom huvuddörren och gå ner till vägen.",
+        "Sväng mot Sorrento och gå cirka **350 meter** längs huvudvägen tills du når en trappa som klättrar upp från vägen."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Steg 2: Klättra till huset, sväng sedan vänster",
+      "body": [
+        "Ta trappan hela vägen upp tills du når det gamla vita huset som visas nedan.",
+        "Vid huset, **sväng vänster** för att gå med på skogsleden."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Gammalt vitt hus bredvid trappan på soluppgångsvandringens rutt ovanför Positano",
+          "caption": "Denna byggnad markerar slutet på trappklättringen; sväng vänster här för att komma in på skogsleden.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Steg 3: Följ skogsleden till utsiktspunkten",
+      "body": [
+        "Följ skogsleden när den klättrar försiktigt bort från huset.",
+        "När leden delar sig, ta den **högra** grenen.",
+        "Du kommer så småningom att nå en punkt där träden öppnar sig och du kan se havet rakt fram. Därifrån, gå runt till din **vänster**.",
+        "Den vänstra vägen tar dig till utsiktspunkten. Du kan försiktigt klättra upp på klipporna för en högre sittplats, eller stanna vid huvudplatsen för en stabil utsikt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Kartvy ovanifrån som visar de sista svängarna på soluppgångsvandringens rutt till utsiktspunkten ovanför Positano",
+          "caption": "Använd denna vy ovanifrån för att bekräfta den sista vänstersväng mot utsiktspunkten efter att leden öppnar sig mot havet.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Dela denna guide (QR)",
+      "body": [
+        "Om du är på väg ut med vänner kan du använda denna QR-kod för att snabbt dela guiden på en annan telefon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-kod som länkar till Hostel Brikette soluppgångsvandring guide",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Nödvändigheter",
+  "essentials": [
+    "Pannlampa eller telefonljus (plus ett laddat batteri).",
+    "Skor med grepp och ett lätt lager — det kan kännas svalt och blåsigt före gryningen.",
+    "Vatten och ett litet mellanmål om du planerar att sitta och se soluppgången."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Gör en snabb väderkontroll: vind och låga moln kan dölja soluppgången även på annars klara dagar.",
+    "Om du är osäker på en korsning i mörkret, pausa och bekräfta din riktning istället för att gissa."
+  ],
+  "warningsTitle": "Säkerhetsanteckningar",
+  "warnings": [
+    "Gå långsamt på trapporna och håll händerna fria — det är lätt att snubbla i dåligt ljus.",
+    "Om leden känns hal efter regn, överväg att se från hostellets terrass istället."
+  ],
+  "steps": [
+    {
+      "name": "Gå till trappan",
+      "text": "Från hostellet, gå ~350 m mot Sorrento på huvudvägen tills du ser trappan som klättrar uppför."
+    },
+    {
+      "name": "Klättra till huset",
+      "text": "Följ trappan till det gamla vita huset, sväng sedan vänster till skogsleden."
+    },
+    {
+      "name": "Ta högra grenen",
+      "text": "När skogsleden delar sig, håll till höger och fortsätt tills du kan se havet."
+    },
+    {
+      "name": "Sväng vänster till utsiktspunkten",
+      "text": "Efter att leden öppnar sig mot havet, gå vänster för att nå utsiktspunkten (klättra försiktigt om du vill ha en högre plats)."
+    }
+  ],
+  "faqsTitle": "Vanliga frågor",
+  "faqs": [
+    {
+      "q": "Kan jag bara se soluppgången från hostellet?",
+      "a": [
+        "Ja — hostellets terrass är det enklaste alternativet och solen går upp till vänster om byggnaden när du står vänd mot havet."
+      ]
+    },
+    {
+      "q": "Hur lång tid tar vandringen?",
+      "a": [
+        "Det är en kort rutt, men tiden beror på din takt och hur länge du stannar vid utsiktspunkten. Ge dig själv tillräckligt med tid för att anlända 10-15 minuter före soluppgången."
+      ]
+    }
+  ]
+}

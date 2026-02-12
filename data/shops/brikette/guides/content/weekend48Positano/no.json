@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "48-timers weekend i Positano",
+    "description": "En praktisk to-dagers plan: strender, utsikt, mulighet for Stien til gudene og rimelig mat."
+  },
+  "linkLabel": "48-timers weekend i Positano",
+  "intro": [
+    "En 48-timers helg i Positano er gjennomførbar hvis du reiser lett, frontlastede ankomster og jager utsikt utenfor toppvarme."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Dag 1 — ankomst og morgen",
+      "body": [
+        "Ankom den første SITA-bussen eller fergen, slipp poser på overnattingsstedet eller lageret ditt, og ta espresso pluss sfogliatella på Via dei Mulini.",
+        "Gå ned til Fornillo-stranden for en svømmetur før middag når strandklubbene fortsatt er rolige og de offentlige områdene frigjør."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Dag 1 — ettermiddag og solnedgang",
+      "body": [
+        "Kjør den lokale bussen til Nocelle for en kort smakebit av Gudestien; tilbake i tide for solnedgang på Via Cristoforo Colombo.",
+        "Bestill middag på en terrasse eller hent delikatessemat for en piknik på vandrerhjemmets balkong."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Dag 2 — morgen med valgfri rute",
+      "body": [
+        "Alternativ A: ferge til Amalfi og raskt hopp til Ravellos Villa Cimbrone-hager; alternativ B: bli med på en felles båttur for kystlinjeutsikt.",
+        "Pakk frokost fra bakeriet slik at du kan starte tidlig uten å vente på kaféservering."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Dag 2 — avslutning og avreise",
+      "body": [
+        "Klem inn shopping hos håndverkssandalprodusenter eller keramikkstudioer før lunsj.",
+        "Samle bagasje 90 minutter før avgang for å tillate trapper og køer ved kaien eller bussholdeplassen."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha med deg en dagssekk under 10 kg (22 lb) slik at du raskt kan navigere i trapper.",
+    "Bokmerke rutetider for ferge og buss offline; endringer i helgene er vanlig."
+  ],
+  "faqs": [
+    {
+      "q": "Holder en natt?",
+      "a": [
+        "Ja hvis du fokuserer på høydepunkter og holder deg sentralt, men to netter byr på et roligere tempo og backup for været."
+      ]
+    },
+    {
+      "q": "Hvor bør jeg se solnedgangen?",
+      "a": [
+        "Via Cristoforo Colombo og vandrerhjemmets terrasse er enkle gevinster; strandbarer fungerer også, men forvent høyere priser."
+      ]
+    }
+  ]
+}

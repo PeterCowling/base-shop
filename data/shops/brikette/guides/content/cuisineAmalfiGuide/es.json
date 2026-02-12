@@ -1,0 +1,129 @@
+{
+  "seo": {
+    "title": "Gastronomía de la Costa Amalfitana",
+    "description": "Qué comer: mariscos emblemáticos, dulces de limón y vinos DOC locales."
+  },
+  "linkLabel": "Gastronomía de la Costa Amalfitana",
+  "intro": [
+    "Guía rápida de la gastronomía de la Costa Amalfitana: platos marineros imprescindibles, postres cítricos y dónde probarlos en Positano.",
+    "Úsala como chuleta antes de revisar menús o de visitar pueblos vecinos en busca de especialidades regionales."
+  ],
+  "tocTitle": "En esta página",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Clásicos del mar",
+      "body": [
+        "Spaghetti alle vongole, scialatielli ai frutti di mare y pescado del día a la parrilla protagonizan la mayoría de menús.",
+        "Pregunta por los fuera de carta de temporada: guisantes primaverales, tomates cherry o flores de calabacín suelen aparecer en las pizarras."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Mercados y bocados rápidos",
+      "body": [
+        "Los mercados matutinos y mostradores de delicatessen venden focaccia, cuoppi fritos y mozzarella fresca para almuerzos sencillos.",
+        "Llévate mermelada de cítricos, colatura di alici y hierbas secas como potenciadores de sabor para pícnics."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Postres y repostería",
+      "body": [
+        "Delizia al limone, babà al limoncello y sfogliatella combinan perfecto con un espresso tras la cena.",
+        "Las gelaterías rotan sorbete de limón, granita y crema al limone; ideales para las tardes calurosas."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Bebidas y maridajes",
+      "body": [
+        "Pide limoncello bien frío o crema di limoncello como digestivo después de las comidas.",
+        "Los vinos DOC de Tramonti o Costa d’Amalfi (Furore, Ravello) equilibran los platos de mar y cítricos."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta al pedir",
+      "body": [
+        "El coperto cubre pan y cubiertos; deja propina solo si el servicio destaca.",
+        "Si vais a compartir platos al centro, avisad desde el principio para que coordinen ritmos y vajilla."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Los vegetarianos comen bien aquí?",
+      "a": [
+        "Sí: busca parmigiana de berenjena, gnocchi alla sorrentina y ensaladas con quesos locales y verduras a la parrilla."
+      ]
+    },
+    {
+      "q": "¿Tengo que reservar las trattorias populares?",
+      "a": [
+        "En temporada alta reserva con antelación para conseguir terraza o atardecer; a mediodía o en meses de entretiempo suele bastar presentarse."
+      ]
+    }
+  ],
+  "itemListTitle": "Platos emblemáticos y dónde probarlos",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Cena de menú cerrado en una granja con pasta casera, carnes a la parrilla y vistas panorámicas."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Café diurno con ensaladas protagonizadas por el limón, zumos prensados en frío y postres caseros."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Trattoria clásica que sirve pastas de mar, frituras y especiales de temporada desde 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Pastelería famosa por la delizia al limone, babà al limoncello y dulces perfectos para un picnic en los acantilados."
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Platos base"
+      },
+      {
+        "href": "#sweets",
+        "label": "Dulces"
+      },
+      {
+        "href": "#drinks",
+        "label": "Bebidas"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Platos base",
+        "body": [
+          "Las pastas de marisco, el pescado a la parrilla y las ensaladas con limón y aceite local son imprescindibles en toda la costa.",
+          "Pregunta por el plato del día: productos como flores de calabacín o tomates cherry suelen aparecer en la pizarra."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Dulces",
+        "body": [
+          "Prueba delizia al limone, babà al limoncello y sorbete de limón para un trío cítrico.",
+          "Acompaña los postres con espresso o un limoncello digestivo para cerrar como un local."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Bebidas",
+        "body": [
+          "Toma limoncello o crema di limone como digestivo y descubre los vinos DOC Costa d'Amalfi de Tramonti, Ravello o Furore.",
+          "Alterna con agua con gas para mantenerte fresco: las noches veraniegas siguen siendo húmedas bien entrada la noche."
+        ]
+      }
+    ]
+  }
+}

@@ -4,9 +4,11 @@
 // OPT-02: Uses React Query for caching and automatic refetch.
 
 import { useQuery } from '@tanstack/react-query';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
 import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestDetailsRecord } from '../../types/guestsDetails';
 import useUuid from '../useUuid';

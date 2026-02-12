@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Guida ai trasporti pubblici della Costiera Amalfitana",
+    "description": "Autobus, traghetti e collegamenti ferroviari: orari, dove comprare i biglietti e come pianificare le coincidenze senza stress."
+  },
+  "linkLabel": "Guida ai trasporti pubblici della Costiera Amalfitana",
+  "intro": [
+    "Come muoversi sulla Costiera Amalfitana senza auto: autobus per affidabilità tutto l'anno, traghetti in estate e treni per i collegamenti lunghi."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "Autobus SITA",
+      "body": [
+        "Compra i biglietti in tabaccheria/edicola prima di salire e convalidali a bordo.",
+        "Aspettati code nelle ore di punta. Parti presto e valuta il traghetto per evitare la folla."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Traghetti (stagionali)",
+      "body": [
+        "Rapidi e panoramici tra i principali paesi da primavera ad autunno; possibili cancellazioni per meteo.",
+        "Controlla gli orari live sui siti degli operatori e lascia margine per le ultime corse del giorno."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Treni (verso le porte di accesso)",
+      "body": [
+        "Usa Trenitalia/Italo per raggiungere Sorrento/Salerno/Napoli, poi prosegui in autobus o traghetto.",
+        "Le tratte intercity fanno risparmiare tempo su Roma/Napoli/Salerno; la Circumvesuviana collega Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Tempistiche e strategia",
+      "body": [
+        "Parti prima delle 09:00 per evitare code; per il rientro al tramonto preferisci i traghetti con mare calmo.",
+        "Porta monete per i biglietti e un cappello/acqua per le fermate esposte."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso portare i bagagli sugli autobus?",
+      "a": [
+        "Consentiti ma non ideali nelle ore di punta; per bagagli pesanti considera traghetti o facchini."
+      ]
+    },
+    {
+      "q": "Ci sono servizi notturni?",
+      "a": [
+        "Limitati; controlla con anticipo l'ultimo autobus/traghetto per evitare taxi costosi."
+      ]
+    }
+  ]
+}

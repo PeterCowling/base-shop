@@ -126,7 +126,7 @@ Ask us for a demonstration
 
 Digital Assistant
 
-Get answers to any questions: https://hostel-positano.com/help.html
+Get answers to any questions: https://hostel-positano.com/en/assistance
 
 Answers include links to super useful guides!
 
@@ -150,7 +150,7 @@ Ask us for a demonstration
 
 Digital Assistant
 
-Get answers to any questions: https://hostel-positano.com/help.html
+Get answers to any questions: https://hostel-positano.com/en/assistance
 
 Answers include links to super useful guides!
 
@@ -170,12 +170,12 @@ Dear Guest,
 
 Thanks for your email.
 
-Our digital assistant can help with a range of questions.
+We have detailed travel guides on our website that cover all transport options to the hostel:
 
-This includes:
+   - Travel directions to the hostel: https://hostel-positano.com/en/assistance/travel-help
+   - Arriving by ferry: https://hostel-positano.com/en/assistance/arriving-by-ferry
 
-   - Our travel directions to the hostel: http://hostel-positano.com/help.html?transportation-options
-   - A taxi number that can be used for private transfer: http://hostel-positano.com/help.html?taxi
+These guides include step-by-step instructions, maps, and taxi information.
 
 We look forward to seeing you at the hostel.
 
@@ -438,16 +438,443 @@ Owner
 
 ---
 
+## Breakfast
+
+### Breakfast — Eligibility and Hours
+
+```
+Dear Guest,
+
+Thank you for your question about breakfast.
+
+Breakfast is served daily from 8:00 AM to 10:30 AM. Each guest is entitled to one breakfast per day. To order, simply use the hostel ordering system and collect your breakfast within 30 minutes. Please note that breakfast is served on-site only and cannot be taken away.
+
+If you have any dietary requirements or further questions, please let us know.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Breakfast — Not Included (OTA Booking)
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+Breakfast is available exclusively for direct bookings. As your reservation was made through a third-party booking platform, breakfast is unfortunately not included in your stay.
+
+For future stays, booking directly through our website ensures you receive all available benefits, including breakfast. You can find more details at https://hostel-positano.com/en/assistance/booking-basics.
+
+If you have any other questions, please do not hesitate to ask.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## Luggage
+
+### Luggage Storage — Before Check-in
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+Yes, we offer free luggage storage on your arrival day. You can drop off your bags from 10:30 AM onwards. Our secure storage area will keep your belongings safe while you explore Positano before check-in.
+
+For more details, please see our luggage storage guide: https://hostel-positano.com/en/assistance/luggage-storage-positano.
+
+We look forward to welcoming you!
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Luggage Storage — After Checkout
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+After checkout, you are welcome to store your luggage free of charge until 3:30 PM on your departure day. You may collect your bags at any time between 7:30 AM and 3:30 PM.
+
+Please note that if you need to collect your luggage after 3:30 PM, our porter service is available at a cost of €15 per bag.
+
+For full details, please see: https://hostel-positano.com/en/assistance/luggage-storage-positano.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Luggage Storage — Porter Service
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+Our standard luggage storage hours on departure day are 7:30 AM to 3:30 PM (free of charge). If you need to collect your bags after 3:30 PM, our porter service can assist you at a cost of €15 per bag.
+
+Please let us know your expected collection time so we can arrange this for you. More information is available here: https://hostel-positano.com/en/assistance/porter-service-positano.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## WiFi
+
+### WiFi Information
+
+```
+Dear Guest,
+
+Thank you for your question.
+
+Complimentary WiFi is available throughout the hostel from check-in to checkout. The network supports general browsing and email. Please note that streaming and high-bandwidth activities may experience limited performance, and connection speeds are not guaranteed.
+
+You will receive the WiFi details at check-in.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## Booking Changes
+
+### Booking Change — Date Modification
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+Date changes are subject to availability. Please let us know your preferred new dates and we will check what options are available for you.
+
+Please note that for non-refundable bookings, modifications may not be possible. For full details on our change and cancellation policy, please see: https://hostel-positano.com/en/assistance/changing-cancelling.
+
+We will do our best to accommodate your request.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Booking Change — Room Type
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+Room type changes are subject to availability and any applicable rate differences. Please let us know which room type you would prefer, and we will check what we can offer.
+
+For more information about our booking policies, please see: https://hostel-positano.com/en/assistance/changing-cancelling.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Booking Extension Request
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+We are happy to look into extending your stay. Please note that extensions are subject to availability and our maximum stay limit of 7 nights.
+
+Please let us know how many additional nights you would like, and we will confirm whether this is possible along with the applicable rate.
+
+For more details: https://hostel-positano.com/en/assistance/changing-cancelling.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## Checkout
+
+### Checkout Reminder
+
+```
+Dear Guest,
+
+We hope you have enjoyed your stay with us.
+
+This is a friendly reminder that checkout is by 10:00 AM. After checkout, you are welcome to store your luggage free of charge until 3:30 PM and continue to enjoy our bar, terrace, and facilities.
+
+Please return your keycard at reception to receive your €10 deposit refund.
+
+For full checkout details: https://hostel-positano.com/en/assistance/checkin-checkout.
+
+We wish you safe onward travels!
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Late Checkout Request
+
+```
+Dear Guest,
+
+Thank you for your email.
+
+Late checkout is available until 12:00 PM at a cost of €40, subject to availability. Standard checkout time is 10:00 AM.
+
+Please let us know if you would like to request late checkout and we will confirm availability for your departure date.
+
+For more details about check-in and checkout: https://hostel-positano.com/en/assistance/checkin-checkout.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## House Rules
+
+### Quiet Hours Reminder
+
+```
+Dear Guest,
+
+We hope you are enjoying your stay.
+
+This is a friendly reminder that quiet hours are in effect from 11:45 PM to 8:00 AM. During this time, we kindly ask all guests to keep noise to a minimum in rooms, hallways, and common areas out of respect for fellow guests.
+
+Please note that repeated disturbances may result in further action. Our full house rules can be found here: https://hostel-positano.com/en/assistance/rules.
+
+Thank you for your cooperation.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Visitor Policy
+
+```
+Dear Guest,
+
+Thank you for your question about visitors.
+
+Visitors are welcome in our communal areas between 10:30 AM and 11:00 PM. All visitors must present a valid photo ID at reception upon arrival. Please note that visitors are not permitted in guest rooms or dormitories.
+
+For our complete house rules, please see: https://hostel-positano.com/en/assistance/rules.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Deposit and Keycard Info
+
+```
+Dear Guest,
+
+Thank you for your question.
+
+At check-in, we collect a €10 refundable deposit which covers your keycard and linen. This deposit is returned to you at checkout when you hand back your keycard at reception.
+
+The city tax is also collected at check-in, as required by local regulations.
+
+For full details on the check-in process: https://hostel-positano.com/en/assistance/checkin-checkout.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## Promotions
+
+### Coupon Code Redemption
+
+```
+Dear Guest,
+
+Thank you for booking with us and for sharing your coupon code.
+
+We have applied the discount to your reservation. You will see this reflected in your booking details. No further action is needed on your part.
+
+We appreciate you booking directly with us, and we look forward to welcoming you to the hostel!
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## Employment
+
+### Job Application — Acknowledgement
+
+```
+Dear Applicant,
+
+Thank you for your interest in joining the Hostel Brikette team.
+
+We have received your application and will review it along with other candidates. If your profile matches our current needs, we will be in touch to arrange an interview.
+
+Please note that we typically recruit for the upcoming season between January and March. If you do not hear from us within a few weeks, we encourage you to apply again for future seasons.
+
+We wish you all the best.
+
+Best regards,
+
+Hostel Brikette, Positano
+```
+
+---
+
+## Lost and Found
+
+### Lost Item — Report Received
+
+```
+Dear Guest,
+
+Thank you for getting in touch about your lost item.
+
+We will check the room and our lost property storage. To help us locate your item, please confirm:
+
+   - A description of the item
+   - The room number you stayed in
+   - Your checkout date
+
+If we find the item, we can arrange to hold it for collection or discuss shipping options. Please note that shipping costs would be at the guest's expense.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
+## FAQ
+
+### Booking Inquiry — Availability
+
+```
+Dear Guest,
+
+Thank you for your interest in staying with us!
+
+For live availability and pricing, please check our website directly: https://hostel-positano.com/. You can see all available room types and dates, and book instantly.
+
+Booking directly with us ensures you receive the best rate and all included benefits such as complimentary breakfast.
+
+If you have any specific questions about our rooms or facilities, please do not hesitate to ask.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Room Capacity Clarification
+
+```
+Dear Guest,
+
+Thank you for your question.
+
+Our dorm rooms have multiple beds, and each booking is for one bed per guest. If you are travelling as a group, each member will need their own booking for a bed in the room.
+
+For groups wanting a private space, we offer private rooms that accommodate 2 guests. These are subject to availability.
+
+Please check our website for live availability: https://hostel-positano.com/. If you have any further questions about room types, please let us know.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+### Hostel Facilities and Services
+
+```
+Dear Guest,
+
+Thank you for your question about our facilities.
+
+At Hostel Brikette we offer:
+
+   - Complimentary WiFi throughout the property
+   - Free luggage storage on arrival and departure days
+   - A bar and terrace with views over Positano
+   - Breakfast for direct bookings (8:00–10:30 AM)
+   - A digital assistant for local tips and travel information
+
+Please note that we do not currently offer on-site laundry facilities.
+
+For a full overview of everything available, visit our assistance page: https://hostel-positano.com/en/assistance.
+
+Best regards,
+
+Peter Cowling
+Owner
+```
+
+---
+
 ## Template Categories Summary
 
-| Category | Templates |
-|----------|-----------|
-| booking-issues | Why cancelled |
-| check-in | Arriving before check-in time, Arrival Time, Out of hours check-in |
-| access | Inner Building Main Door, Outer Buildings Main Door |
-| transportation | Transportation to Hostel Brikette |
-| payment | Change Credit Card Details |
-| prepayment | 1st Attempt (Hostelworld), 1st Attempt (Octorate), 2nd Attempt, Cancelled, Successful |
-| cancellation | Cancellation of Non-Refundable Booking, No Show |
-| policies | Alcohol Policy, Age Restriction |
-| activities | Path of the Gods Hike |
+| Category | Count | Templates |
+|----------|-------|-----------|
+| prepayment | 5 | 1st Attempt (Hostelworld), 1st Attempt (Octorate), 2nd Attempt, Cancelled, Successful |
+| check-in | 4 | Arriving before check-in time, Arrival Time, Out of hours check-in, Deposit and Keycard Info |
+| booking-issues | 3 | Why cancelled, Booking Inquiry — Availability, Room Capacity Clarification |
+| luggage | 3 | Before Check-in, After Checkout, Porter Service |
+| booking-changes | 3 | Date Modification, Room Type, Extension Request |
+| house-rules | 3 | Quiet Hours Reminder, Visitor Policy |
+| breakfast | 2 | Eligibility and Hours, Not Included (OTA Booking) |
+| cancellation | 2 | Non-Refundable Booking, No Show |
+| checkout | 2 | Checkout Reminder, Late Checkout Request |
+| access | 2 | Inner Building Main Door, Outer Buildings Main Door |
+| policies | 2 | Alcohol Policy, Age Restriction |
+| faq | 2 | Hostel Facilities and Services |
+| activities | 1 | Path of the Gods Hike |
+| payment | 1 | Change Credit Card Details |
+| transportation | 1 | Transportation to Hostel Brikette |
+| wifi | 1 | WiFi Information |
+| promotions | 1 | Coupon Code Redemption |
+| employment | 1 | Job Application — Acknowledgement |
+| lost-found | 1 | Lost Item — Report Received |

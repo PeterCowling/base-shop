@@ -1,29 +1,29 @@
 // src/components/assistance/quick-links-section/index.tsx
 import type { JSX } from "react";
 import { memo, useCallback, useMemo } from "react";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 import type { TFunction } from "i18next";
 
-import AssistanceQuickLinksSection from "@acme/ui/organisms/AssistanceQuickLinksSection";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import type {
   AssistanceQuickLinkRenderProps,
   AssistanceQuickLinksCta,
   AssistanceQuickLinksSectionProps,
 } from "@acme/ui/organisms/AssistanceQuickLinksSection";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
+import AssistanceQuickLinksSection from "@acme/ui/organisms/AssistanceQuickLinksSection";
+
+import type { AppLanguage } from "@/i18n.config";
+import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
+import { HERO_IMAGE_SRC } from "@/routes/how-to-get-here/styles";
+import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 import { buildQuickLinksJsonLd } from "./jsonLd";
 import { useAssistanceTranslations } from "./translations";
-import type { AssistanceQuickLinksProps } from "./types";
+import type { AssistanceQuickLinksProps , QuickLinkWithHref } from "./types";
 import { useContactCta } from "./useContactCta";
 import { useQuickLinksWithHref, useResolvedQuickLinks } from "./useQuickLinks";
-import { serializeJsonLdValue } from "@/utils/seo/jsonld";
-import type { QuickLinkWithHref } from "./types";
-import { HERO_IMAGE_SRC } from "@/routes/how-to-get-here/styles";
-import { getSlug } from "@/utils/slug";
-import type { AppLanguage } from "@/i18n.config";
-import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 
 const jsonLdType = `application/${["ld", "json"].join("+")}`;
 const sectionId = "assistance-quick-links";

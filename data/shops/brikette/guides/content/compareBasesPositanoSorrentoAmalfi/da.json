@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Sammenlign baser: Positano vs. Sorrento vs. Amalfi",
+    "description": "Fordele, transport, priser og hvem hver base passer bedst til."
+  },
+  "linkLabel": "Sammenlign baser: Positano vs. Sorrento vs. Amalfi",
+  "intro": [
+    "Sammenlign fordele og ulemper ved Positano, Sorrento og Amalfi, før du vælger base."
+  ],
+  "tocTitle": "På denne side",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Ikoniske udsigter og trapper; perfekt hvis du vil vågne i postkortet.",
+        "Transport kræver ekstra planlægning, så læg buffere ind omkring færger og busser."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "De bedste tog- og busforbindelser samt bredt udbud af indkvartering.",
+        "Udsigten er mindre dramatisk end i Positano, men værdi og bekvemmelighed er høj."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Knudepunkt for færger og busser med lette dagsture til Ravello og nærliggende landsbyer.",
+        "Forvent blandede boligtyper, og planlæg efter begrænset aftentransport."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Hvem hver base passer til",
+      "body": [
+        "Positano til udsigter og hostelstemning, når du vil forkæle dig selv.",
+        "Sorrento til budgetkontrol og hurtige forbindelser.",
+        "Amalfi til balanceret adgang langs kysten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvilken base passer bedst til førstegangsbesøgende?",
+      "a": [
+        "Bo i Positano for de klassiske udsigter, Sorrento for nem transport og Amalfi for et mellemvalg tæt på domkirken."
+      ]
+    },
+    {
+      "q": "Behøver jeg bil, hvis jeg bor uden for Positano?",
+      "a": [
+        "Nej. Færger og busser forbinder alle tre byer; bil giver ekstra parkeringsstress, medmindre du skal meget ind i landet."
+      ]
+    }
+  ]
+}

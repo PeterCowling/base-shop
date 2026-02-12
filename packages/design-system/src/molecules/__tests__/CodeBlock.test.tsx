@@ -1,6 +1,7 @@
 // no userEvent to avoid hangs in some environments
 import React from "react";
 import { act, fireEvent, render, screen } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import CodeBlock from "../../molecules/CodeBlock";
 
@@ -24,12 +25,13 @@ describe("CodeBlock copy-to-clipboard", () => {
       configurable: true,
     });
 
-    render(<CodeBlock code="console.info('hi')" />);
+    const { container } = render(<CodeBlock code="console.info('hi')" />);
     const btn = screen.getByRole("button", { name: /copy/i });
     act(() => {
       fireEvent.click(btn);
     });
     expect(writeText).toHaveBeenCalledWith("console.info('hi')");
+
     // Allow any microtasks/state updates to flush
     await act(async () => {});
     // Let the auto-reset timeout elapse (covers cleanup path)

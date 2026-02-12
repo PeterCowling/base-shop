@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Itinerari sulla Costiera Amalfitana (senza auto)",
+    "description": "Percorsi da 2, 3 e 7 giorni basati su traghetti e bus, con suggerimenti per ottimizzare bagagli e check-in."
+  },
+  "linkLabel": "Itinerari sulla Costiera Amalfitana (senza auto)",
+  "intro": [
+    "Costruisci un itinerario senza auto sulla Costiera Amalfitana concatenando traghetti e autobus in un loop logico, lasciando spazio a mattine lente e a cambi di programma in caso di maltempo."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "Panoramica in 2 giorni",
+      "body": [
+        "Giorno 1: arrivo presto, esplora i vicoli di Positano, relax a Fornillo e tramonto da via Cristoforo Colombo.",
+        "Giorno 2: traghetto mattutino per Amalfi tra Duomo e granita al limone, pomeriggio in bus fino a Ravello e rientro a Positano per cena."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "3–4 giorni",
+      "body": [
+        "Aggiungi una gita a Capri al giorno 3: primo traghetto, seggiovia di Anacapri e rientro serale.",
+        "Dedica il giorno 4 al Sentiero degli Dei o a un tour in barca; tieni pronto un piano alternativo (es. Pompei) in caso di pioggia."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "5–6 giorni lenti",
+      "body": [
+        "Inserisci un food tour a Salerno o Sorrento per mercati e scorte.",
+        "Pianifica un giorno di spiagge tra Arienzo, Laurito e Marina di Praia usando traghetti costieri o taxi boat."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "Loop di 7 giorni",
+      "body": [
+        "Costruisci la settimana con due giorni rilassati a Positano, due escursioni (Capri + Pompei) e due esperienze più calme (cantine di Tramonti o rovine di Paestum).",
+        "Lascia l'ultimo giorno flessibile per ripetere ciò che ti è piaciuto o per riposarti prima della partenza."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenota in anticipo le tratte lunghe (traghetti per Capri, treni per Pompei) ma conserva almeno un giorno cuscinetto per i capricci del meteo.",
+    "Raggruppa le attività per area così affronti le grandi scalinate una sola volta al giorno."
+  ],
+  "faqs": [
+    {
+      "q": "Quante notti dovrei fermarmi a Positano?",
+      "a": [
+        "Quattro notti ti permettono di vivere Positano e due gite importanti senza correre; aggiungi altre notti se preferisci mattine più lente."
+      ]
+    },
+    {
+      "q": "Posso sostituire i traghetti con gli autobus in caso di maltempo?",
+      "a": [
+        "Sì — gli autobus circolano tutto l'anno. Parti presto, compra i biglietti in anticipo e conta che i viaggi possano durare 20–30 minuti in più."
+      ]
+    }
+  ]
+}

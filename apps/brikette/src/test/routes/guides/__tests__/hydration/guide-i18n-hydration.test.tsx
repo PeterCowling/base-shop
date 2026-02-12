@@ -1,6 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
+// Import after mocks
+import GuideContentMemo from "@/app/[lang]/experiences/[slug]/GuideContent";
 import i18n from "@/i18n";
 
 // Track addResourceBundle calls
@@ -49,9 +51,6 @@ jest.mock("next/link", () => ({
 jest.mock("@/routes.guides-helpers", () => ({
   guideNamespace: () => ({ baseKey: "experiences", baseSlug: "experiences" }),
 }));
-
-// Import after mocks
-import GuideContentMemo from "@/app/[lang]/experiences/[slug]/GuideContent";
 
 // Unwrap memo for testing
 const GuideContent = (GuideContentMemo as unknown as { type: React.ComponentType }).type ?? GuideContentMemo;

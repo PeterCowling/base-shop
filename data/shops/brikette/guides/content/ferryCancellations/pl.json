@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Odwołania promów i wzburzone morze",
+    "description": "Co zrobić, gdy promy są odwoływane z powodu pogody, alternatywy i jak sprawdzić status."
+  },
+  "linkLabel": "Odwołania promów i wzburzone morze",
+  "intro": [
+    "Wzburzone morze może zawiesić promy do i z Positano z niewielkim wyprzedzeniem.",
+    "Przygotuj zapasową trasę lądową i monitoruj alerty na żywo, aby nadal zdążyć na połączenie."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Monitoruj aktualizacje na żywo",
+      "body": [
+        "Sprawdzaj strony i aplikacje operatorów (Travelmar, NLG, Alilauro) oraz tablice informacyjne w porcie co 30 minut w wietrzne dni.",
+        "Włącz alerty SMS/e-mail lub śledź lokalne kanały Telegram/społecznościowe, aby odwołania dotarły do Ciebie, nawet jeśli odejdziesz od molo."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Przejdź na trasy lądowe",
+      "body": [
+        "Jeśli rejsy przestaną kursować, przejdź na autobusy i pociągi: SITA do Sorrento, następnie Circumvesuviana do Neapolu/Pompei lub autobus przez Amalfi i pociąg regionalny z Salerno.",
+        "Zarezerwuj co najmniej 60 minut bufora na ostatnie odjazdy dnia i zwaliduj bilety przed wejściem na pokład."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Zwroty i vouchery",
+      "body": [
+        "Zachowaj paragony i zrób zrzut ekranu powiadomienia o odwołaniu, aby operator mógł przetworzyć zwroty, zmianę rezerwacji lub kredyty.",
+        "Poinformuj personel, czy wolisz następny dostępny rejs, czy voucher sezonowy, zanim opuścisz ladę."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Zarządzanie opóźnieniami nocnymi",
+      "body": [
+        "Powiadom swoje zakwaterowanie lub organizatora wycieczki, gdy tylko ogłoszono opóźnienia; wielu dostosuje zameldowanie lub wyjazd, jeśli zostanie ostrzeżonych z wyprzedzeniem.",
+        "Zapytaj w punkcie informacyjnym portu o wspólne taksówki, zastępcze busy lub przechowalnię bagażu, jeśli musisz czekać do następnego ranka."
+      ]
+    }
+  ],
+  "tips": [
+    "Sprawdź prognozę morską—wiatry powyżej 20 węzłów lub fale powyżej 1,5 metra (około 5 stóp) często powodują odwołania.",
+    "Ubezpieczenie podróżne pokrywające opóźnienia pogodowe pomaga odzyskać koszty dodatkowych nocy hotelowych lub zastępczych transferów.",
+    "Poranne rejsy są najbardziej niezawodne; unikaj polegania na ostatnim statku dnia, gdy prognozowane są burze."
+  ],
+  "faqs": [
+    {
+      "q": "Skąd mam wiedzieć, kiedy rejsy zostaną wznowione?",
+      "a": [
+        "Odśwież stronę internetową operatora lub kanały społecznościowe i słuchaj ogłoszeń głośnikowych na molo—decyzje są zwykle publikowane w ciągu 30 minut od zaplanowanego odjazdu.",
+        "Personel kasy biletowej może również potwierdzić, czy następny statek kursuje, zanim opuścisz port."
+      ]
+    },
+    {
+      "q": "Co się stanie z moim biletem?",
+      "a": [
+        "Pokaż paragon lub kod QR, aby poprosić o zwrot, voucher lub zmianę rezerwacji na następny rejs.",
+        "Jeśli rezerwowałeś przez agencję internetową, wyślij im zrzut ekranu odwołania e-mailem w ciągu 24 godzin, aby rozpocząć proces zwrotu."
+      ]
+    },
+    {
+      "q": "Czy są jakieś promy gwarantowane w trudnych warunkach pogodowych?",
+      "a": [
+        "Nie—gdy straż przybrzeżna zamyka port, wszystkie odjazdy są wstrzymane. Przygotuj trasę lądową.",
+        "Kilka prywatnych czarterów może pływać w umiarkowanym morzu, ale są drogie i zależą od uznania kapitana; dokładnie rozważ komfort i koszt."
+      ]
+    }
+  ]
+}

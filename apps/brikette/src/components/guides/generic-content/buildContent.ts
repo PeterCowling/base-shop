@@ -36,6 +36,71 @@ export type GenericContentData = {
   supplementalNav: SupplementalNavEntry[];
 };
 
+function filterPlaceholder(value: string, expectedKey: string, guideKey: GuideKey): boolean {
+  try {
+    const normalised = value.replace(/^[a-z]{2,3}:/i, "").trim();
+    if (!normalised) return false;
+    if (normalised === expectedKey) return false;
+    if (normalised === String(guideKey)) return false;
+    if (normalised.startsWith("content.") && normalised.includes(String(guideKey))) return false;
+    return true;
+  } catch {
+    return true;
+  }
+}
+
+function tryEnglishFallback(
+  guideKey: GuideKey,
+  contentKey: string,
+  baseContent: string[],
+): string[] {
+  if (baseContent.length > 0) return baseContent;
+
+  try {
+    const lang = typeof i18n?.language === 'string' ? i18n.language : '';
+    if (!allowEnglishGuideFallback(lang)) return baseContent;
+
+    const getEn = i18n?.getFixedT?.('en', 'guides');
+    if (typeof getEn !== 'function') return baseContent;
+
+    const sentinel = contentKey;
+    const raw = getEn(sentinel, { returnObjects: true }) as unknown;
+
+    // Avoid treating key-sentinel strings as content
+    if (typeof raw === 'string' && raw.trim() === sentinel) {
+      return baseContent;
+    }
+
+    const en = toStringArray(raw);
+    if (en.length > 0) return en;
+  } catch { /* noop */ }
+
+  return baseContent;
+}
+
+function buildIntro(
+  t: GenericContentTranslator,
+  guideKey: GuideKey,
+  introRaw: unknown,
+  aliasKey: GuideKey | null | undefined,
+): string[] {
+  const base = toStringArray(introRaw);
+  const baseMeaningful = base.filter((paragraph) =>
+    filterPlaceholder(paragraph, `content.${guideKey}.intro`, guideKey),
+  );
+
+  if (aliasKey && baseMeaningful.length === 0) {
+    try {
+      const aliasIntro = toStringArray(
+        t(`content.${aliasKey}.intro`, { returnObjects: true }),
+      );
+      if (aliasIntro.length > 0) return aliasIntro;
+    } catch { /* noop */ }
+  }
+
+  return tryEnglishFallback(guideKey, `content.${guideKey}.intro`, baseMeaningful);
+}
+
 export function buildGenericContentData(
   t: GenericContentTranslator,
   guideKey: GuideKey,
@@ -51,51 +116,7 @@ export function buildGenericContentData(
   const aliasKey = getContentAlias(guideKey);
   const mergeAliasFaqs = shouldMergeAliasFaqs(guideKey);
 
-  // Normalise intro to support legacy shapes like { default: string[] }
-  const intro = (() => {
-    const base = toStringArray(introRaw);
-    const filterPlaceholder = (value: string, expectedKey: string): boolean => {
-      try {
-        const normalised = value.replace(/^[a-z]{2,3}:/i, "").trim();
-        if (!normalised) return false;
-        if (normalised === expectedKey) return false;
-        if (normalised === String(guideKey)) return false;
-        if (normalised.startsWith("content.") && normalised.includes(String(guideKey))) return false;
-        return true;
-      } catch {
-        return true;
-      }
-    };
-    const baseMeaningful = base.filter((paragraph) =>
-      filterPlaceholder(paragraph, `content.${guideKey}.intro`),
-    );
-    if (aliasKey && baseMeaningful.length === 0) {
-      try {
-        const aliasIntro = toStringArray(
-          t(`content.${aliasKey}.intro`, { returnObjects: true }),
-        );
-        if (aliasIntro.length > 0) return aliasIntro;
-      } catch { /* noop */ }
-    }
-    if (baseMeaningful.length > 0) return baseMeaningful;
-    try {
-      const lang = typeof i18n?.language === 'string' ? i18n.language : '';
-      if (allowEnglishGuideFallback(lang)) {
-        const getEn = i18n?.getFixedT?.('en', 'guides');
-        if (typeof getEn === 'function') {
-          const sentinel = `content.${guideKey}.intro` as const;
-          const raw = getEn(sentinel, { returnObjects: true }) as unknown;
-          // Avoid treating key-sentinel strings as content in tests/runtime
-          if (typeof raw === 'string' && raw.trim() === sentinel) {
-            return baseMeaningful;
-          }
-          const en = toStringArray(raw);
-          if (en.length > 0) return en;
-        }
-      }
-    } catch { /* noop */ }
-    return baseMeaningful;
-  })();
+  const intro = buildIntro(t, guideKey, introRaw, aliasKey);
 
   const sections = (() => {
     if (Array.isArray(sectionsRaw)) {

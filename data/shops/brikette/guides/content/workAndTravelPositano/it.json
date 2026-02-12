@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Work & travel: bilanciare il lavoro da remoto",
+    "description": "Organizza orari di lavoro, Wi-Fi affidabile e momenti di esplorazione senza perdere le scadenze."
+  },
+  "linkLabel": "Work & travel: bilanciare il lavoro da remoto",
+  "intro": [
+    "Bilancia lavoro focalizzato ed esplorazioni a Positano: connettività realistica, luoghi dove lavorare e ritmo giornaliero adatto ai flussi di gente."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi-Fi e soluzioni di backup",
+      "body": [
+        "Usa eSIM di backup, testa le velocità e evita call critiche durante gli sbarchi dei traghetti nelle vie principali."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Caffè adatti al lavoro",
+      "body": [
+        "Consulta la guida ai caffè con Wi-Fi: occhio alle prese e ordina con regolarità."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Routine che funzionano",
+      "body": [
+        "Lavora al mattino presto e alla sera; esplora nelle ore centrali quando c’è più folla o dopo il tramonto."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso lavorare da remoto qui?",
+      "a": [
+        "Sì, con organizzazione: resta vicino a Chiesa Nuova, prevedi backup e mantieni orari flessibili."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia og Procida: utenfor Amalfikysten",
+    "description": "Termalbad, strender og ferjeruter fra Napoli/Sorrento."
+  },
+  "linkLabel": "Ischia og Procida: utenfor Amalfikysten",
+  "intro": [
+    "Kombiner Ischias termiske spa med Procidas pastellhavner for en forfriskende avstikker fra Amalfikysten."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Høydepunkter på Ischia",
+      "body": [
+        "Sug i termiske parker som Poseidon eller Negombo; Heldagspass varierer fra €35–€45.",
+        "Bestig Aragonese Castle for utsikt over bukten og utforsk Sant'Angelos fotgjengerfelt."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Høydepunkter på Procida",
+      "body": [
+        "Fotografer Marina Corricellas pastellhus fra Terra Murata og prøv lingue di bue bakverk.",
+        "Lei en scooter eller e-sykkel for å nå bortgjemte strender som Chiaiolella."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistikk og billetter",
+      "body": [
+        "Ta tidlige ferger fra Napoli Beverello (en time til Ischia, 35 minutter til Procida). En kombinert dagstur er mulig, men best delt over to dager.",
+        "Kjøp returbilletter på forhånd i sommerhelgene; siste båter tilbake til Napoli går rundt 21:30."
+      ]
+    }
+  ],
+  "tips": [
+    "Pakk med badetøy og et lett håndkle selv om du bare planlegger å utforske – termiske bassenger er uimotståelige etter sightseeing.",
+    "Overnatt på Ischia for avslappende kvelder og for å se soloppgangen på slottet før dagsturister ankommer."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg besøke begge øyene på én dag?",
+      "a": [
+        "Det er mulig, men det hastet. Fokuser på én øy per dag eller bli over natten for å nyte solnedganger uten fergestress."
+      ]
+    },
+    {
+      "q": "Trenger jeg reservasjoner for termiske parker?",
+      "a": [
+        "Bestill på forhånd i høysesongen (juni–september). Hverdager er roligere, og noen parker tilbyr kveldspass etter kl. 16.00 for lavere priser."
+      ]
+    }
+  ]
+}

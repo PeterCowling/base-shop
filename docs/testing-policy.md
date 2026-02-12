@@ -1,7 +1,7 @@
 Type: Policy
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-01-17
+Last-reviewed: 2026-02-07
 Created: 2026-01-17
 Created-by: Claude Opus 4.5 (extracted from AGENTS.md)
 
@@ -29,6 +29,13 @@ pnpm --filter @acme/ui test         # Runs ALL tests in a large package
 pnpm --filter @apps/cms test        # Runs ALL tests in an app
 jest                                # Runs all tests in current directory
 ```
+
+**Mechanical guardrails (now enforced):**
+- Root `pnpm test` is hard-blocked by `scripts/guard-broad-test-run.cjs`.
+- Agent/integrator shells enforce `scripts/agent-bin/pnpm` and `scripts/agent-bin/turbo`, which block unscoped monorepo test fan-out commands.
+- Agent/integrator shells also block unscoped package test runs (for example, `pnpm --filter @apps/cms test` without file/pattern selectors).
+- If a full monorepo run is explicitly required, use:
+  - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
 
 **Why:** Broad test runs spawn multiple Jest workers (4-8 per run), each consuming 200-500MB RAM. Multiple concurrent runs can easily consume 2-5GB and bring the system to a crawl.
 
@@ -132,6 +139,29 @@ pnpm --filter <package> test -- <specific-file> --detectOpenHandles
 
 ---
 
+## Rule 6: Stable Mock References for React Components
+
+When mocking hooks that return objects (for example `useRouter`, `useTranslation`, `useSearchParams`, or custom hooks), define the return object outside the mock factory.
+
+**Problem:** Returning a fresh object on every call can trigger infinite re-render loops when a component uses the hook result in dependency arrays (for example `useEffect([router])`). In tests this often appears as a timeout instead of a clear assertion failure.
+
+```typescript
+// BAD: new object each call (unstable reference)
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({ push: jest.fn(), back: jest.fn() }),
+}));
+
+// GOOD: stable reference across calls
+const mockRouter = { push: jest.fn(), back: jest.fn() };
+jest.mock('next/navigation', () => ({
+  useRouter: () => mockRouter,
+}));
+```
+
+Apply this pattern to any mocked object that may be used in React dependency arrays.
+
+---
+
 ## CI E2E Ownership (Reference)
 
 - Root CI (`.github/workflows/ci.yml`) runs only the cross-app **shop** subset (`pnpm e2e:shop`) when shop paths change.
@@ -139,6 +169,68 @@ pnpm --filter <package> test -- <specific-file> --detectOpenHandles
 - Workspace CI (`.github/workflows/test.yml`) runs `e2e` only when a workspace defines it (`--if-present`) and is scheduled/manual, not a merge gate.
 
 See `docs/plans/e2e-ownership-consolidation-plan.md` for the full ownership policy.
+
+---
+
+## Brikette Deploy Preflight
+
+When a change affects Brikette deploy/static-export surfaces, run this local preflight before pushing:
+
+```bash
+pnpm preflight:brikette-deploy
+```
+
+This checks:
+- required static-export routes include `generateStaticParams()`
+- `robots.txt` route exports `GET()`
+- required `apps/brikette/wrangler.toml` fields are present
+
+Use `pnpm preflight:brikette-deploy -- --json` for machine-readable output.
+
+## Brikette CI Test Sharding (Staging)
+
+Brikette staging CI now supports sharded Jest execution in the reusable deploy pipeline.
+
+- Shard mode: `3` shards (`1/3`, `2/3`, `3/3`)
+- Trigger: Brikette validation path when `run_validation=true`
+- Test selection modes:
+  - `test_scope=related`: run related tests only
+    - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3 --findRelatedTests <changed-source-files...>`
+  - `test_scope=full`: run full suite shard
+    - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3`
+  - `run_validation=false`: skip lint/typecheck/test entirely (deploy-only, confident)
+- Safety fallback:
+  - Any uncertain/unknown classification falls back to `test_scope=full`
+  - Any related-test mode with no eligible files falls back to full-suite shard execution
+- Cache restore is enabled for shard jobs:
+  - `.ts-jest`
+  - `node_modules/.cache/jest`
+  - `apps/brikette/node_modules/.cache/jest`
+
+When diagnosing CI duration regressions, compare shard runtimes and overall `Validate & build` time using:
+
+```bash
+pnpm --filter scripts run collect-workflow-metrics -- \
+  --workflow "Deploy Brikette" \
+  --branch staging \
+  --event push \
+  --include-jobs
+```
+
+---
+
+## Prime Firebase Cost-Safety Gate
+
+When changing Prime guest data-loading, listener, or Firebase wrapper code, run the cost-safety suite before pushing:
+
+```bash
+pnpm --filter @apps/prime test:firebase-cost-gate
+```
+
+This suite enforces:
+- query-budget contracts for guest-critical flows
+- listener lifecycle leak checks
+- regression-gate behavior against checked-in baseline budgets
 
 ---
 

@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Tömegközlekedési útmutató az Amalfi-partra",
+    "description": "Hogyan közlekedj autó nélkül: buszok, kompok és vonatok – jegyek, időzítés és szezonális megjegyzések."
+  },
+  "linkLabel": "Amalfi Coast public transport guide",
+  "intro": [
+    "Így járhatod be az Amalfi-partot autó nélkül: a buszok egész évben megbízhatók, nyáron a komp gyors és látványos, a vonat pedig a hosszabb szakaszokra jó."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA buszok",
+      "body": [
+        "A jegyet felszállás előtt vedd meg (dohánybolt, újságos), és érvényesítsd a buszon.",
+        "Csúcsidőben sorokra számíts. Indulj korán, és fontold meg a kompot, ha szeretnéd elkerülni a tömeget."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Kompok (szezonális)",
+      "body": [
+        "Tavasztól őszig gyors és látványos összeköttetés a főbb városok között; időjárás miatt előfordulhatnak törlések.",
+        "Nézd az élő menetrendeket az üzemeltetők oldalain, és hagyj tartalékot az utolsó járat előtt."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Vonatok (kapuvárosokhoz)",
+      "body": [
+        "A Trenitalia/Italo járatokkal éred el Sorrentót/Salernót/Nápolyt, onnan buszra vagy kompre válthatsz.",
+        "A nagyobb távolságokhoz (Róma–Nápoly–Salerno) érdemes az intercityt választani; Sorrentóba a Circumvesuviana helyi járat visz."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Időzítés és stratégia",
+      "body": [
+        "Indulj 09:00 előtt, hogy megelőzd a sorokat; naplementés visszaútra nyugodt tenger esetén a komp a legkényelmesebb.",
+        "Legyen nálad apró pénz a jegyekhez, kalap és víz a napos megállókra."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vihetek csomagot a buszra?",
+      "a": [
+        "Lehetséges, de csúcsidőben nem ideális; nagyobb poggyásszal inkább komp vagy hordár segít."
+      ]
+    },
+    {
+      "q": "Van éjszakai járat?",
+      "a": [
+        "Korlátozott; ellenőrizd előre az utolsó buszt/kompot, hogy elkerüld a drága taxit."
+      ]
+    }
+  ]
+}

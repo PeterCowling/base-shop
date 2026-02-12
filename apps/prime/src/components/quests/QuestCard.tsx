@@ -5,11 +5,12 @@
  * Shows the active tier, progress bar, and next action to complete.
  */
 
-import { Award, ChevronRight, Clock, Sparkles } from 'lucide-react';
-import { FC, memo } from 'react';
+import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useComputedQuestState } from '../../hooks/useComputedQuestState';
+import { Award, ChevronRight, Clock, Sparkles } from 'lucide-react';
+
 import { getTierById } from '../../config/quests/questTiers';
+import { useComputedQuestState } from '../../hooks/useComputedQuestState';
 
 interface QuestCardProps {
   /** Optional class name for styling */
@@ -28,16 +29,16 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
   // If all quests are complete, show completion state
   if (questState.allComplete) {
     return (
-      <div className={`rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-4 shadow-sm ${className}`}>
+      <div className={`rounded-2xl bg-accent-soft p-4 shadow-sm ${className}`}>
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-100">
-            <Award className="h-6 w-6 text-amber-600" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft">
+            <Award className="h-6 w-6 text-accent" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-amber-900">
+            <h3 className="font-semibold text-foreground">
               {t('labels.allComplete')}
             </h3>
-            <p className="text-sm text-amber-700">
+            <p className="text-sm text-accent">
               {questState.totalXp} XP
             </p>
           </div>
@@ -45,9 +46,9 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
             {questState.badges.slice(0, 3).map((badge) => (
               <div
                 key={badge}
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-amber-200"
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-accent-soft"
               >
-                <Sparkles className="h-4 w-4 text-amber-600" />
+                <Sparkles className="h-4 w-4 text-accent" />
               </div>
             ))}
           </div>
@@ -79,36 +80,36 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
   }
 
   return (
-    <div className={`rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 p-4 shadow-sm ${className}`}>
+    <div className={`rounded-2xl bg-primary-soft p-4 shadow-sm ${className}`}>
       {/* Header */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-blue-600" />
-          <span className="text-xs font-medium uppercase tracking-wide text-blue-600">
+          <Sparkles className="h-5 w-5 text-primary" />
+          <span className="text-xs font-medium uppercase tracking-wide text-primary">
             {t('labels.currentQuest')}
           </span>
         </div>
-        <span className="text-xs font-medium text-blue-600">
+        <span className="text-xs font-medium text-primary">
           {questState.totalXp} XP
         </span>
       </div>
 
       {/* Quest name */}
-      <h3 className="mb-2 text-lg font-semibold text-gray-900">
+      <h3 className="mb-2 text-lg font-semibold text-foreground">
         {t(activeTier.nameKey)}
       </h3>
 
       {/* Progress bar */}
       <div className="mb-3">
-        <div className="mb-1 flex justify-between text-xs text-gray-500">
+        <div className="mb-1 flex justify-between text-xs text-muted-foreground">
           <span>
             {tierProgress.completedCount}/{tierProgress.totalCount} {t('labels.progress')}
           </span>
           <span>{tierProgress.percentage}%</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-blue-100">
+        <div className="h-2 overflow-hidden rounded-full bg-primary-soft">
           <div
-            className="h-full rounded-full bg-blue-500 transition-all duration-300"
+            className="h-full rounded-full bg-primary transition-all duration-300"
             style={{ width: `${tierProgress.percentage}%` }}
           />
         </div>
@@ -116,8 +117,8 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
 
       {/* Next action */}
       {actionText && (
-        <div className="flex items-center justify-between rounded-lg bg-white/60 px-3 py-2">
-          <span className="text-sm text-gray-700">{actionText}</span>
+        <div className="flex items-center justify-between rounded-lg bg-card/60 px-3 py-2">
+          <span className="text-sm text-foreground">{actionText}</span>
           {actionIcon}
         </div>
       )}
@@ -125,15 +126,15 @@ const QuestCard: FC<QuestCardProps> = memo(function QuestCard({ className = '' }
       {/* Badges earned */}
       {questState.badges.length > 0 && (
         <div className="mt-3 flex items-center gap-2">
-          <span className="text-xs text-gray-500">{t('labels.badges')}:</span>
+          <span className="text-xs text-muted-foreground">{t('labels.badges')}:</span>
           <div className="flex -space-x-1">
             {questState.badges.map((badge) => (
               <div
                 key={badge}
-                className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-amber-100"
+                className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-card bg-accent-soft"
                 title={t(`badges.${badge}.name`)}
               >
-                <Sparkles className="h-3 w-3 text-amber-600" />
+                <Sparkles className="h-3 w-3 text-accent" />
               </div>
             ))}
           </div>

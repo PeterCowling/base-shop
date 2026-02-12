@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Itinéraires sur la côte amalfitaine (sans voiture)",
+    "description": "Itinéraires phares sans voiture pour explorer la côte : durées, étapes et liaisons."
+  },
+  "linkLabel": "Itinéraires sur la côte amalfitaine (sans voiture)",
+  "intro": [
+    "Composez un itinéraire sans voiture sur la côte amalfitaine en enchaînant ferries et bus dans une boucle logique, tout en gardant du temps pour les matinées tranquilles et les aléas météo."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "Aperçu en 2 jours",
+      "body": [
+        "Jour 1 : arrivez tôt, explorez les ruelles de Positano, détendez-vous sur la plage de Fornillo et admirez le coucher de soleil depuis la Via Cristoforo Colombo.",
+        "Jour 2 : ferry matinal pour Amalfi pour visiter le Duomo et déguster une granita au citron, bus l’après-midi vers Ravello, puis retour à Positano pour le dîner."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "Escapade de 3 à 4 jours",
+      "body": [
+        "Ajoutez une excursion à Capri le jour 3 : premier ferry du matin, télésiège d’Anacapri, puis retour en soirée.",
+        "Consacrez le jour 4 au Sentier des Dieux ou à une sortie en bateau ; prévoyez une option de repli par temps de pluie comme Pompéi."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "Balade de 5 à 6 jours",
+      "body": [
+        "Ajoutez une virée gastronomique à Salerne ou Sorrente pour goûter aux marchés et faire le plein de provisions.",
+        "Préparez une journée plage entre Arienzo, Laurito et Marina di Praia en utilisant les ferries côtiers ou les taxis-bateaux."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "Boucle de 7 jours",
+      "body": [
+        "Pivotez la semaine autour de deux journées détendues à Positano, deux journées d’excursion (Capri + Pompéi) et deux escapades plus tranquilles (domaines viticoles de Tramonti ou ruines de Paestum).",
+        "Gardez la dernière journée flexible pour refaire un coup de cœur ou vous reposer avant la suite du voyage."
+      ]
+    }
+  ],
+  "tips": [
+    "Réservez à l’avance les longues liaisons (ferries pour Capri, train pour Pompéi) mais conservez au moins une journée tampon pour les caprices de la météo.",
+    "Regroupez les activités par zone afin de ne grimper qu’un grand escalier par jour."
+  ],
+  "faqs": [
+    {
+      "q": "Combien de nuits faut-il prévoir à Positano ?",
+      "a": [
+        "Quatre nuits vous laissent le temps de profiter de Positano et d’ajouter deux grandes excursions sans courir ; prolongez si vous aimez les matinées lentes."
+      ]
+    },
+    {
+      "q": "Puis-je remplacer les ferries par des bus en cas de mauvais temps ?",
+      "a": [
+        "Oui, les bus circulent toute l’année. Partez tôt, achetez vos billets à l’avance et comptez 20 à 30 minutes de trajet supplémentaires."
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@ import { render, screen } from "@testing-library/react";
 
 import type { Card } from "@/lib/types";
 
-import { BoardLane, calculateLaneStats,getLaneHeaderColor } from "./BoardLane";
+import { BoardLane, calculateLaneStats, getLaneHeaderColor } from "./BoardLane";
 
 const mockCards: Card[] = [
   {
@@ -51,7 +51,6 @@ describe("BoardLane", () => {
       <BoardLane
         lane="In progress"
         cards={mockCards}
-        ideas={[]}
         showBusinessTag={false}
       />
     );
@@ -64,7 +63,6 @@ describe("BoardLane", () => {
       <BoardLane
         lane="In progress"
         cards={mockCards}
-        ideas={[]}
         showBusinessTag={false}
       />
     );
@@ -77,7 +75,6 @@ describe("BoardLane", () => {
       <BoardLane
         lane="In progress"
         cards={mockCards}
-        ideas={[]}
         showBusinessTag={false}
       />
     );
@@ -90,7 +87,6 @@ describe("BoardLane", () => {
       <BoardLane
         lane="In progress"
         cards={mockCards}
-        ideas={[]}
         showBusinessTag={false}
       />
     );
@@ -103,7 +99,6 @@ describe("BoardLane", () => {
       <BoardLane
         lane="Inbox"
         cards={[]}
-        ideas={[]}
         showBusinessTag={false}
       />
     );

@@ -5,6 +5,7 @@ import type { Hotel, RatingSource } from "../types/machine-layer/ml.ts";
 import { hotelSchema } from "../types/schemas";
 /** Official hostel contact e-mail. */
 export const CONTACT_EMAIL = "hostelpositano@gmail.com" as const;
+export const RATINGS_SNAPSHOT_DATE = "2025-11-01" as const;
 
 const ratings: RatingSource[] = [
   { provider: "Hostelworld", value: 9.3, count: 2_757, best: 10, worst: 1 },
@@ -99,4 +100,7 @@ const hotel: Hotel = {
   ratings,
 };
 
-export default hotelSchema.parse(hotel);
+const parsedHotel = hotelSchema.parse(hotel) as Hotel & { ratingsSnapshotDate: string };
+parsedHotel.ratingsSnapshotDate = RATINGS_SNAPSHOT_DATE;
+
+export default parsedHotel;

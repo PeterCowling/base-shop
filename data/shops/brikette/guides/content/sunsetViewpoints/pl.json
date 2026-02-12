@@ -1,0 +1,77 @@
+{
+  "seo": {
+    "title": "Najlepsze punkty zachodu słońca w Positano",
+    "description": "Tarasy, zakręty i plaże z najlepszym widokiem na zachód słońca oraz wskazówki fotograficzne."
+  },
+  "linkLabel": "Najlepsze punkty zachodu słońca w Positano",
+  "intro": [
+    "Zachody słońca w Positano są dramatyczne — odpowiedni punkt i timing robią różnicę.",
+    "Skorzystaj z tych sprawdzonych kadrów i godzin przyjazdu, aby ominąć największe tłumy."
+  ],
+  "itemList": [
+    {
+      "name": "Taras Chiesa Nuova",
+      "note": "Łatwy dostęp przy przystanku SITA i szeroka panorama zatoki."
+    },
+    {
+      "name": "Punkt widokowy Via Positanesi d’America",
+      "note": "Balkon nad Fornillo — przyjdź 30 minut przed zachodem, by złapać ciepłe światło."
+    },
+    {
+      "name": "Nocelle (początek Drogi Bogów)",
+      "note": "Z widokiem na wysepki Li Galli — spakuj warstwę na drogę powrotną."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klasyczne punkty",
+      "body": [
+        "Taras Chiesa Nuova daje szeroką panoramę zatoki zaledwie kilka kroków od przystanku SITA.",
+        "Via Positanesi d’America to balkon nad Fornillo — przyjdź 30 minut wcześniej, by złapać ciepłe światło."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Cichsze alternatywy",
+      "body": [
+        "Nocelle przy Drozdze Bogów patrzy na Li Galli; weź dodatkową warstwę na powrót.",
+        "Fornillo poza szczytem zostaje spokojniejsze; słońce chowa się za klifem, więc ustaw się wcześniej."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Kiedy ustawić sprzęt",
+      "body": [
+        "Bądź na miejscu 20 minut wcześniej, by zająć przestrzeń i ustawić aparat.",
+        "Letnie zachody przypadają ok. 20:30 — sprawdź rozkłady autobusów, by nie utknąć po zmroku."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etykieta",
+      "body": [
+        "Podczas fotografowania dbaj o to, by nie blokować schodów i prywatnych wejść — odsuń się, gdy masz kadr.",
+        "Zabierz ze sobą wszystko, co przyniesiesz, i włącz tryb cichy podczas koncertów lub wydarzeń wieczornych."
+      ]
+    }
+  ],
+  "tips": [
+    "Przyjdź 20–30 minut wcześniej, by spokojnie ustawić statyw i sprzęt.",
+    "Lekki statyw podróżny lub klamra przydają się, gdy światło słabnie."
+  ],
+  "faqs": [
+    {
+      "q": "Czy trzeba rezerwować miejsce?",
+      "a": [
+        "Bary i tarasy mogą wymagać rezerwacji w sezonie; publiczne punkty widokowe działają według zasady kto pierwszeństwo."
+      ]
+    },
+    {
+      "q": "Czy trasa powrotna jest dobrze oświetlona?",
+      "a": [
+        "Oświetlenie bywa różne — weź latarkę w telefonie lub małą lampkę przy schodach o późniejszej porze."
+      ]
+    }
+  ]
+}

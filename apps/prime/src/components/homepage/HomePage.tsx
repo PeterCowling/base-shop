@@ -12,16 +12,18 @@
 
 'use client';
 
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { GuestIntent } from '../../types/guestProfile';
+
 import { useGuestProgressData } from '../../hooks/dataOrchestrator/useGuestProgressData';
+import type { GuestIntent } from '../../types/guestProfile';
+import { ProfileCompletionBanner } from '../profile/ProfileCompletionBanner';
 import QuestCard from '../quests/QuestCard';
-import SocialHighlightsCard from './SocialHighlightsCard';
+
 import DoList from './DoList';
 import ServicesList from './ServicesList';
+import SocialHighlightsCard from './SocialHighlightsCard';
 import { useHomePageVisibility } from './useHomePageVisibility';
-import { ProfileCompletionBanner } from '../profile/ProfileCompletionBanner';
 
 type Section = 'quest' | 'social' | 'tasks' | 'services';
 
@@ -86,7 +88,7 @@ export const HomePage = memo(function HomePage() {
       <div className="flex items-center justify-center w-full min-h-[calc(100vh-120px)]">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-          <p className="text-gray-600">{t('loading', { defaultValue: 'Loading...' })}</p>
+          <p className="text-muted-foreground">{t('loading', { defaultValue: 'Loading...' })}</p>
         </div>
       </div>
     );

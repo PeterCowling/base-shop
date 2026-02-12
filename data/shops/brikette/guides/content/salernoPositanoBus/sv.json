@@ -1,0 +1,19 @@
+{
+  "seo": {
+    "title": "Salerno till Positano bussguide – vandrarhem, hållplatser och tidtabellstips",
+    "description": "Steg för steg-anvisningar för resan från Salerno till Positano med SITA Sud-buss via Amalfi. Lär dig var du köper biljetter, hur du läser tidtabellen och vilken hållplats som är bäst för Hostel Brikette."
+  },
+  "faqs": [
+    {
+      "q": "Hur läser jag SITA-busstidtabellen?",
+      "a": [
+        "**Läsa raderna:** Raderna i första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsa kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje schemalagd resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på söndag eller en helgdag, använd kolumnerna 'G' och 'H'.",
+        "**Kombinera rader och kolonner:** Välj dina avgångs- och ankomsthållplatser, kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de anländer till din destination. Till exempel, för att se avgångstid från Sorrento, titta på Sorrento-raden. För att se ankomsttid i Positano (Chiesa Nuova / Bar Internazionale), se Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Behöver du alla transportalternativ? Öppna %HOWTO:how-to-get-here|översikten Så tar du dig hit% för färjor, taxi och kombinerade resvägar."
+  }
+}

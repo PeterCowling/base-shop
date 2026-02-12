@@ -50,12 +50,7 @@ export function readInitial(): Currency {
 }
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
-  const [currency, setCurrency] = useState<Currency>(DEFAULT_CURRENCY);
-
-  useEffect(() => {
-    const initial = readInitial();
-    setCurrency((prev) => (prev === initial ? prev : initial));
-  }, []);
+  const [currency, setCurrency] = useState<Currency>(() => readInitial());
 
   useEffect(() => {
     const win = resolveWindow();

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Matupplevelser i Neapel och på Amalfikusten",
+    "description": "Matställen, specialiteter och tips för att boka kulinariska upplevelser."
+  },
+  "linkLabel": "Matupplevelser i Neapel och på Amalfikusten",
+  "intro": [
+    "Utforska de bästa smakerna mellan Neapel och Amalfikusten: måsterätter, marknader och lokala drycker."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Neapel – måsten",
+      "body": [
+        "Smaka klassisk pizza Margherita, friterad pizza och sfogliatella på en dag – balansera med espressopauser.",
+        "Besök marknaden Pignasecca för fisk, ostar och färska råvaror att ta med till kusten."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Specialiteter på Amalfikusten",
+      "body": [
+        "Beställ scialatielli ai frutti di mare, delizia al limone och lokal limoncello för en komplett provsmakning.",
+        "Leta upp caseificio (mejeributiker) för mozzarella, rökt provola och caciocavallo att njuta av på hostelterrassen."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Streetfood & marknader",
+      "body": [
+        "Plocka cuoppo fritto-käglor, friterade ansjovis eller arancini för 4–6 € för att hålla hungern borta mellan färjeturerna.",
+        "Söndagsmarknader i Positano och Praiano säljer säsongsfrukt och bakverk – ta med återanvändbara påsar."
+      ]
+    }
+  ],
+  "tips": [
+    "Boka matlagningskurser tidigt om du vill ha praktiska pass – platserna försvinner snabbt på sommaren.",
+    "Ange kostönskemål vid bokning; många värdar kan justera menyn med framförhållning."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag göra en matresa från Positano?",
+      "a": [
+        "Ja. Följ med på guidade provningar i Neapel eller Sorrento; de flesta startar sent på morgonen så du hinner dit med första tåget eller färjan."
+      ]
+    },
+    {
+      "q": "Får vegetarianer bra alternativ?",
+      "a": [
+        "Absolut. Leta efter aubergine parmigiana, gnocchi alla sorrentina, sallader och grönsaksantipasti runt om i regionen."
+      ]
+    }
+  ]
+}

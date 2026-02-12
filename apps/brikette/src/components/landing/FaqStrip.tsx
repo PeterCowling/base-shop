@@ -1,3 +1,4 @@
+/* eslint-disable ds/enforce-layout-primitives -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/FaqStrip.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,7 +38,8 @@ const FaqStrip = memo(function FaqStrip({ lang }: { lang?: AppLanguage }): JSX.E
           </h2>
           <Link
             href={`/${resolvedLang}/${translatePath("assistance", resolvedLang)}`}
-            className="text-sm font-semibold text-brand-primary underline-offset-4 transition hover:underline"
+            prefetch={false}
+            className="inline-flex min-h-11 min-w-11 items-center text-sm font-semibold text-brand-primary underline-offset-4 transition hover:underline dark:text-brand-secondary"
           >
             {tLanding("faqSection.ctaLabel")}
           </Link>

@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Positano do Sorrento autobusem | Hostel Brikette",
+    "description": "Instrukcje krok po kroku z Hostel Brikette do Sorrento autobusem SITA, wraz z informacjami o biletach, rozkładach i przystanku Chiesa Nuova."
+  },
+  "intro": {
+    "title": "Positano do Sorrento – autobus (SITA)",
+    "body": "Skorzystaj z tego przewodnika, jadąc z Hostel Brikette do Sorrento autobusem SITA. Wyjaśniamy zasady zakupu biletów, czytania rozkładu i miejsce wsiadania w Positano (Chiesa Nuova)."
+  },
+  "callouts": {
+    "tip": "Potrzebujesz wszystkich opcji transportu? Otwórz %HOWTO:how-to-get-here|przegląd Jak do nas dotrzeć%, aby zobaczyć promy, taksówki i trasy łączone."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Przegląd podróży",
+      "body": "Autobusy do Sorrento kursują często w sezonie. Wsiądź na przystanku Positano (Chiesa Nuova) i jedź bezpośrednio do połączonego dworca autobusowo-kolejowego w Sorrento. W godzinach szczytu zaplanuj dodatkowy czas."
+    },
+    {
+      "id": "tickets",
+      "title": "Autobusy SITA i bilety",
+      "body": "Autobusy obsługuje SITA Sud. Kup bilety w kioskach lub tabacchi (również w Bar Internazionale). Przy wejściu przygotuj bilet, aby kierowca mógł go skasować."
+    },
+    {
+      "id": "timetable",
+      "title": "Jak czytać rozkład",
+      "body": "Sprawdź aktualny rozkład na stronie %URL:https://www.positano.com/en/bus-schedule|Positano.com%.",
+      "list": [
+        "Wiersze w pierwszej kolumnie zawierają listę przystanków na trasie.",
+        "Kolumny odpowiadają zaplanowanym kursom oznaczonym literami.",
+        "Podróż od poniedziałku do soboty? Korzystaj z kolumn ‘F’ i ‘G’.",
+        "Podróż w niedzielę lub święto? Korzystaj z kolumn ‘G’ i ‘H’."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Przystanek Positano (Chiesa Nuova)",
+      "list": [
+        "Najbliższy przystanek znajduje się w dzielnicy ‘Chiesa Nuova’ w Positano.",
+        "Leży około 140 metrów (490 stóp) od hostelu.",
+        "Przystanek jest przed kawiarnią/barem ‘Bar Internazionale’."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Spacer z hostelu na przystanek",
+      "list": [
+        "Wyjdź głównym wyjściem hostelu i zejdź schodami na drogę.",
+        "Skręć w lewo i przejdź około 100 metrów (330 stóp).",
+        "Zobaczysz ‘Bar Internazionale’ po lewej; przystanek SITA znajduje się tuż przed nim."
+      ]
+    },
+    {
+      "id": "wait",
+      "title": "Kup bilet i poczekaj na boarding",
+      "list": [
+        "Kup bilet na autobus do Sorrento (w barze/kiosku).",
+        "Czekaj przed barem na autobus jadący do Sorrento.",
+        "Upewnij się, że wyświetlacz autobusu pokazuje ‘Sorrento’."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Przyjazd do Sorrento",
+      "body": "Autobus SITA wysadzi Cię na połączonym dworcu kolejowo-autobusowym w Sorrento. Stamtąd możesz kontynuować podróż kolejką Circumvesuviana do Neapolu lub zwiedzić historyczne centrum Sorrento tuż za stacją."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Jak czytać rozkład jazdy autobusów SITA?",
+      "a": [
+        "**Czytanie wierszy:** Wiersze w pierwszej kolumnie reprezentują różne przystanki autobusowe wzdłuż trasy.",
+        "**Czytanie kolumn:** Rozkład jazdy przypisuje literę alfabetyczną do każdego zaplanowanego kursu, które są wymienione jako nagłówki w każdej kolumnie. Jeśli podróżujesz od poniedziałku do soboty, szukaj kolumn 'F' i 'G'. Jeśli podróżujesz w niedzielę lub święto, szukaj kolumn 'G' i 'H'.",
+        "**Łączenie wierszy i kolumn:** Wybierz przystanki odjazdu i przyjazdu, a następnie sprawdź kolumny, aby zobaczyć, kiedy są dostępne autobusy i o której godzinie dotrą do celu. Na przykład, aby zobaczyć godzinę odjazdu z Sorrento, spójrz na wiersz Sorrento. Aby zobaczyć godzinę przyjazdu do Positano (Chiesa Nuova / Bar Internazionale), spójrz na wiersz Positano (Chiesa Nuova)."
+      ]
+    }
+  ]
+}

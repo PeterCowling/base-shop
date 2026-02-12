@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Matguide til Napoli og Amalfikysten",
+    "description": "Hva du bør spise og hvor – klassiske retter og lokale spesialiteter."
+  },
+  "linkLabel": "Matguide til Napoli og Amalfikysten",
+  "intro": [
+    "Matguide til Napoli og Amalfikysten: gatefavoritter, tradisjonelle retter og hvor du unner deg noe ekstra."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Napoli – streetfood og klassikere",
+      "body": [
+        "Prøv sfogliatella, pizza fritta og cuoppo frito fra stående disker for best pris.",
+        "Bestill en pizzameny med flere toppings eller en guidet streetfood-tur for å smake ulike spesialiteter."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Positano og Amalfi – trattoriafavoritter",
+      "body": [
+        "Smak scialatielli ai frutti di mare, gnocchi alla sorrentina og grillet dagsfang med sitron.",
+        "Reserver kveldsbord i god tid – små familiedrevne steder fylles raskt i høysesongen."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Søte avslutninger og litt ekstra",
+      "body": [
+        "Delizia al limone, babà al limoncello og håndlagde mandelkaker finner du i konditorier og på kafé.",
+        "Kombiner dessert med espresso eller limoncello, og sett av budsjett til en vinsmaking i Tramonti eller Ravello om du vil unne deg noe ekstra."
+      ]
+    }
+  ],
+  "tips": [
+    "Spør etter sesongens råvarer – sitroner, ansjos og tomater smaker best i sin høysesong.",
+    "Ha kontanter tilgjengelig til små familiebedrifter og delikatessebutikker som ikke tar kort."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor finner jeg rimelig sitrondessert?",
+      "a": [
+        "Stikk innom lokale pasticceria som La Zagara eller små bakerier på Via dei Mulini for porsjonskaker til takeaway."
+      ]
+    },
+    {
+      "q": "Er tips inkludert på regningen?",
+      "a": [
+        "Coperto dekker brød og oppdekking; legg igjen noen mynter kun ved ekstra god service."
+      ]
+    }
+  ]
+}

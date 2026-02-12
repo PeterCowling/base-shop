@@ -1,0 +1,139 @@
+{
+  "seo": {
+    "title": "Soloppgangstur fra Hostel Brikette (Positano)",
+    "description": "En kort tur før daggry fra Hostel Brikette til et rolig utsiktspunkt over Positano, med navigasjonsbilder i riktig rekkefølge."
+  },
+  "linkLabel": "Soloppgangstur: Se daggrybrudd over Positano",
+  "lastUpdated": "2026-02-04",
+  "intro": [
+    "Hvis du vil ha den enkleste soloppgangen, kan du se daggry fra vandrerhj emmets felleser terrasse mens solen stiger til venstre (når du ser ut mot havet).",
+    "Hvis du vil ha et bredere panorama og et roligere øyeblikk over byen, følg denne korte turen opp i åsene til et utsiktspunkt på en klippe over Positano."
+  ],
+  "sections": [
+    {
+      "id": "what-is",
+      "title": "Hva er soloppgangsturen?",
+      "body": [
+        "Dette er en kort tur-retur-tur før daggry fra Hostel Brikette til et lite utsiktspunkt over Positano.",
+        "Hvis du vil ha et lengre fjellets alternativ, er %LINK:santaMariaDelCastelloHike|Santa Maria del Castello% et flott alternativ, men ruten nedenfor er den raskeste måten å få en dramatisk soloppgangsutsikt uten å forplikte seg til en heldagstur."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Før du drar (det vil være mørkt)",
+      "body": [
+        "Ta med telefonlys eller hodelykt, og hold hendene frie (spesielt på trappene).",
+        "Ha på sko med grep — første del er asfaltert, men skogsstien kan være løs eller fuktig.",
+        "Start tidlig nok til at du ankommer 10-15 minutter før soloppgang slik at du kan slå deg til ro, finne plassen din og nyte det første lyset."
+      ]
+    },
+    {
+      "id": "step-1",
+      "title": "Trinn 1: Gå fra vandrerhj emmet til trappen (≈350 m)",
+      "body": [
+        "Gå ut av vandrerhj emmet gjennom hoveddøren og gå ned til veien.",
+        "Sving mot Sorrento og gå omtrent **350 meter** langs hovedveien til du når en trapp som klatrer opp fra veien."
+      ]
+    },
+    {
+      "id": "step-2",
+      "title": "Trinn 2: Klatre til huset, deretter sving til venstre",
+      "body": [
+        "Ta trappen helt opp til du når det gamle hvite huset vist nedenfor.",
+        "Ved huset, **sving til venstre** for å bli med på skogsstien."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/02-house.jpg",
+          "alt": "Gammelt hvitt hus ved siden av trappen på soloppgangsturuten over Positano",
+          "caption": "Denne bygningen markerer slutten på trappeklatringen; sving til venstre her for å komme inn på skogsstien.",
+          "width": 876,
+          "height": 530
+        }
+      ]
+    },
+    {
+      "id": "step-3",
+      "title": "Trinn 3: Følg skogsstien til utsiktspunktet",
+      "body": [
+        "Følg skogsstien mens den stiger forsiktig bort fra huset.",
+        "Når stien deler seg, ta **høyre** gren.",
+        "Du vil til slutt nå et punkt der trærne åpner seg og du kan se havet rett foran deg. Derfra, gå til **venstre**.",
+        "Den venstre stien fører deg til utsiktspunktet. Du kan klatre forsiktig opp på klippene for en høyere plass, eller bli på hovedstedet for en stabil utsikt."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/03-viewpoint.jpg",
+          "alt": "Overheadkartvisning som viser de siste svingene på soloppgangsturuten til utsiktspunktet over Positano",
+          "caption": "Bruk denne overheadvisningen for å bekrefte den siste venstresvingen mot utsiktspunktet etter at stien åpner seg til havet.",
+          "width": 677,
+          "height": 600
+        }
+      ]
+    },
+    {
+      "id": "share",
+      "title": "Del denne guiden (QR)",
+      "body": [
+        "Hvis du drar ut med venner, kan du bruke denne QR-koden for å dele guiden raskt på en annen telefon."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/sunrise-hike/01-qr.png",
+          "alt": "QR-kode som lenker til Hostel Brikette soloppgangsturguiden",
+          "width": 450,
+          "height": 450
+        }
+      ]
+    }
+  ],
+  "essentialsTitle": "Nødvendigheter",
+  "essentials": [
+    "Hodelykt eller telefonlys (pluss et ladet batteri).",
+    "Sko med grep og et lett lag — det kan føles kjølig og blåsende før daggry.",
+    "Vann og en liten snacks hvis du planlegger å sitte og se soloppgangen."
+  ],
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Gjør en rask værmeldingssjekk: vind og lave skyer kan skjule soloppgangen selv på ellers klare dager.",
+    "Hvis du er usikker på et kryss i mørket, stopp og bekreft retningen din i stedet for å gjette."
+  ],
+  "warningsTitle": "Sikkerhetsnotater",
+  "warnings": [
+    "Gå sakte på trappene og hold hendene frie — det er lett å feiltrinne i lavt lys.",
+    "Hvis stien føles glatt etter regn, vurder å se fra vandrerhj emmets terrasse i stedet."
+  ],
+  "steps": [
+    {
+      "name": "Gå til trappen",
+      "text": "Fra vandrerhj emmet, gå ~350 m mot Sorrento på hovedveien til du oppdager trappen som klatrer oppover."
+    },
+    {
+      "name": "Klatre til huset",
+      "text": "Følg trappen til det gamle hvite huset, deretter sving til venstre onto skogsstien."
+    },
+    {
+      "name": "Ta høyre gren",
+      "text": "Når skogsstien deler seg, hold til høyre og fortsett til du kan se havet."
+    },
+    {
+      "name": "Sving til venstre til utsiktspunktet",
+      "text": "Etter at stien åpner seg til havet, gå til venstre for å nå utsiktspunktet (klatre opp forsiktig hvis du vil ha en høyere plass)."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Kan jeg bare se soloppgangen fra vandrerhj emmet?",
+      "a": [
+        "Ja — vandrerhj emmets terrasse er det enkleste alternativet, og solen stiger til venstre for bygningen når du vender ansiktet mot havet."
+      ]
+    },
+    {
+      "q": "Hvor lang tid tar turen?",
+      "a": [
+        "Det er en kort rute, men timing avhenger av tempoet ditt og hvor lenge du bruker på utsiktspunktet. Gi deg selv nok tid til å ankomme 10-15 minutter før soloppgangen."
+      ]
+    }
+  ]
+}

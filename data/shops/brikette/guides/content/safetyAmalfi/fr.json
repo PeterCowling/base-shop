@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Sécurité à Positano et sur la côte amalfitaine",
+    "description": "Conseils pratiques : bus, ferries, escaliers, soleil et contacts d'urgence — tout ce qu'il faut savoir avant le départ."
+  },
+  "linkLabel": "Sécurité à Positano et sur la côte amalfitaine",
+  "intro": [
+    "Restez en sécurité dans les escaliers, les bus et sur les plages de Positano grâce à quelques habitudes simples."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Escaliers et itinéraires à pied",
+      "body": [
+        "Repérez des parcours avec moins de marches (Chiesa Nuova ou Sponda) et répartissez le poids entre un sac à dos et un petit chariot si vos genoux sont fragiles.",
+        "Faites des pauses en vous appuyant sur les murets des terrasses ou utilisez des bâtons de marche compacts pour les longues ascensions comme le Sentier des Dieux."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Bus et ferries",
+      "body": [
+        "Validez vos billets SITA, tenez-vous à la barre et rangez vos bagages dans la zone prévue : les virages aveugles peuvent provoquer des freinages brusques.",
+        "Sur les ferries, gardez vos objets de valeur avec vous et suivez les consignes de l'équipage pour arrimer les valises lourdes."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Mer et soleil",
+      "body": [
+        "Surveillez les drapeaux de sécurité, portez des chaussures d'eau sur les plages de galets et remettez une protection solaire respectueuse du corail après chaque baignade.",
+        "Hydratez-vous régulièrement : emportez au moins 1 litre par personne les jours de forte chaleur et cherchez l'ombre entre midi et 15 h."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Affaires et numéros utiles",
+      "body": [
+        "Répartissez votre argent et vos cartes entre plusieurs sacs et utilisez les casiers ou coffres de l'auberge pour les passeports et l'électronique.",
+        "Enregistrez les numéros d'urgence (112 pour tout, Garde côtière 1530) ainsi que les horaires des pharmacies locales hors ligne en cas de perte de réseau."
+      ]
+    }
+  ],
+  "tips": [
+    "Informez un ami ou la réception de l'auberge de votre heure de retour prévue avant une longue randonnée et vérifiez deux fois le niveau d'alerte météo.",
+    "Gardez une petite lampe de poche pour les escaliers nocturnes : certaines ruelles sont mal éclairées après minuit."
+  ],
+  "faqs": [
+    {
+      "q": "Peut-on boire l'eau du robinet ?",
+      "a": [
+        "Oui, l'eau du robinet de Positano est potable ; remplissez vos bouteilles pour limiter le plastique et rester hydraté."
+      ]
+    },
+    {
+      "q": "Y a-t-il des zones à éviter la nuit ?",
+      "a": [
+        "La ville est généralement calme, mais restez sur les axes éclairés et prenez un taxi si vous rentrez tard d'Amalfi, Sorrente ou Naples."
+      ]
+    }
+  ]
+}

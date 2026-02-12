@@ -4,9 +4,11 @@
 // OPT-02/03: React Query with deferred loading support.
 
 import { useQuery } from '@tanstack/react-query';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
 import logger from '@/utils/logger';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestByRoom } from '../../types/guestByRoom';
 import useUuid from '../useUuid';

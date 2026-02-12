@@ -16,6 +16,8 @@ import type { IndexedById } from './indexedById';
  */
 export type EtaMethod = 'ferry' | 'bus' | 'taxi' | 'private' | 'train' | 'other';
 
+export type ArrivalConfidence = 'confident' | 'need-guidance';
+
 /**
  * Guest arrival state based on check-in/checkout dates and check-in status.
  * Determines which UI mode to show (readiness dashboard vs arrival vs normal).
@@ -53,6 +55,8 @@ export interface ChecklistProgress {
  * @property cashReadyCityTax - Guest confirms they have cash for city tax
  * @property cashReadyDeposit - Guest confirms they have cash for deposit
  * @property routeSaved - Slug of saved route (from how-to-get-here content)
+ * @property arrivalMethodPreference - Preferred travel mode captured in onboarding
+ * @property arrivalConfidence - Guest confidence for self-guided arrival
  * @property checklistProgress - Individual checklist item completion states
  * @property updatedAt - Timestamp of last update
  */
@@ -64,6 +68,8 @@ export interface PreArrivalData {
   cashReadyCityTax: boolean;
   cashReadyDeposit: boolean;
   routeSaved: string | null;
+  arrivalMethodPreference: EtaMethod | null;
+  arrivalConfidence: ArrivalConfidence | null;
   checklistProgress: ChecklistProgress;
   updatedAt: number;
 }
@@ -80,6 +86,8 @@ export const DEFAULT_PRE_ARRIVAL: PreArrivalData = {
   cashReadyCityTax: false,
   cashReadyDeposit: false,
   routeSaved: null,
+  arrivalMethodPreference: null,
+  arrivalConfidence: null,
   checklistProgress: {
     routePlanned: false,
     etaConfirmed: false,

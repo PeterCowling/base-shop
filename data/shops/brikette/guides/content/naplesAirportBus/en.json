@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Naples Airport to Positano by Bus – Step-by-Step",
+    "description": "Take the Curreri shuttle to Sorrento, then the SITA bus to Positano (Chiesa Nuova). Photos, timetable tips, and walking directions to Hostel Brikette."
+  },
+  "linkLabel": "Naples Airport to Positano by Bus – Step-by-Step",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Curreri shuttle + SITA bus overview",
+      "body": [
+        "Tip 1: For the Sorrento to Positano timetable, %URL:https://www.positano.com/en/bus-schedule?route=sorrento_positano_amalfi|check the official schedule%.Tip 2: For Naples Airport to Sorrento, %URL:https://www.curreriviaggi.it/it/navetta-aeroporto-di-napoli|see Curreri Viaggi% (select \\\\\"Da Napoli Aeroporto - Per Sorrento\\\\\"). You can also buy your shuttle ticket there."
+      ]
+    },
+    {
+      "id": "naplesAirport",
+      "title": "Departing Naples Airport",
+      "body": [
+        "Exit the arrivals hall straight to the bus stands. Buy a Curreri Viaggi ticket to Sorrento (online or at the kiosk) and wait at the marked bay. Coaches run roughly every 60-90 minutes; in peak months arrive 15 minutes early to secure a seat."
+      ]
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "At Sorrento bus station",
+      "body": [
+        "- Disembark at Sorrento's main station, which is both the train and bus hub.- From the forecourt, board the SITA bus toward Amalfi (Positano is an intermediate stop).- Need a ticket? Buy from the bar or newsstand next to the stands before you queue.- When you board, the driver will stamp or tear your ticket. Keep it handy for inspectors."
+      ]
+    },
+    {
+      "id": "timetable",
+      "title": "Reading the SITA timetable",
+      "body": [
+        "The SITA timetable lists stops as rows and lettered journeys as columns. Match your departure stop with the column letter for your travel day: Monday–Saturday trips are under columns F and G; Sunday and public holiday departures are under G and H."
+      ]
+    },
+    {
+      "id": "positanoStop",
+      "title": "Arriving at Positano (Chiesa Nuova)",
+      "body": [
+        "Stay on the bus until the Chiesa Nuova stop in Positano. It sits about 140 m (450 ft) from the hostel outside Bar Internazionale. Use the photo to confirm you're at the right place before you hop off."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Walk from Chiesa Nuova to the hostel",
+      "body": [
+        "From the stop, walk a little over 100 m / 330 ft along Via G. Marconi.Turn right at the small lane and follow the steps up to our front door.Want turn-by-turn directions? %URL:https://www.google.com/maps/dir/bar+internazionale/hostel+brikette/@40.6295534,14.479394,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634|Open the same route in Google Maps%."
+      ]
+    },
+    {
+      "id": "spotSign",
+      "title": "Tip: Spot the hostel entrance",
+      "body": [
+        "As you approach, look for the Hostel Brikette sign by the second-floor terrace. Walk past it, follow the bend in the road, and climb the stairs on the right to reach reception."
+      ]
+    }
+  ]
+}

@@ -8,8 +8,8 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-import { Button } from "@acme/design-system/primitives";
 import { LinkText, Section } from "@acme/design-system/atoms";
+import { Button } from "@acme/design-system/primitives";
 
 import roomsData from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
@@ -91,6 +91,56 @@ function BookPageContent({ lang }: Props) {
     return list;
   })();
 
+  const buildConfirmParams = useCallback(
+    (roomSku: string, plan: "flex" | "nr") => {
+      const params = new URLSearchParams();
+      params.set("sku", roomSku);
+      params.set("plan", plan);
+      params.set("checkin", checkin);
+      params.set("checkout", checkout);
+
+      const childrenStr = searchParams?.get("children");
+      const childrenAges = searchParams?.get("childrenAges");
+      if (childrenStr) params.set("children", childrenStr);
+      if (childrenAges) params.set("childrenAges", childrenAges);
+
+      if (searchParams) {
+        for (const [k, v] of searchParams.entries()) {
+          if (k.startsWith("utm_")) params.set(k, v);
+        }
+      }
+
+      return params;
+    },
+    [checkin, checkout, searchParams]
+  );
+
+  const fireCheckoutEvent = useCallback((roomSku: string, plan: "flex" | "nr", confirmUrl?: string) => {
+    const win = window as unknown as { gtag?: (...args: unknown[]) => void };
+    if (typeof win.gtag === "function" && confirmUrl) {
+      win.gtag("event", "begin_checkout", {
+        currency: "EUR",
+        items: [{ item_id: roomSku, item_name: roomSku, item_category: plan }],
+      });
+    }
+  }, []);
+
+  const fetchAlternatives = useCallback(
+    async (roomSku: string, plan: "flex" | "nr") => {
+      const altParams = buildConfirmParams(roomSku, plan);
+      altParams.set("excludeSku", roomSku);
+
+      try {
+        const altRes = await fetch(`/api/octorate/alternatives?${altParams.toString()}`);
+        const altData = await altRes.json();
+        return { items: altData.alternatives || [], resultUrl: altData.resultUrl || octorateHref };
+      } catch {
+        return { items: [], resultUrl: octorateHref };
+      }
+    },
+    [buildConfirmParams, octorateHref]
+  );
+
   const handleConfirmClick = useCallback(
     async (
       roomSku: string,
@@ -102,63 +152,31 @@ function BookPageContent({ lang }: Props) {
       setUnavailableFor(null);
       setAlternatives(null);
 
-      // Build query for our API
-      const params = new URLSearchParams();
-      params.set("sku", roomSku);
-      params.set("plan", plan);
-      params.set("checkin", checkin);
-      params.set("checkout", checkout);
-      // Pass through children/ages and UTMs if present
-      const childrenStr = searchParams?.get("children");
-      const childrenAges = searchParams?.get("childrenAges");
-      if (childrenStr) params.set("children", childrenStr);
-      if (childrenAges) params.set("childrenAges", childrenAges);
-      if (searchParams) {
-        for (const [k, v] of searchParams.entries()) {
-          if (k.startsWith("utm_")) params.set(k, v);
-        }
-      }
-
       try {
+        const params = buildConfirmParams(roomSku, plan);
         const res = await fetch(`/api/octorate/confirm-link?${params.toString()}`);
         const data = await res.json();
-        // Fire GA4 begin_checkout if present
-        const win = window as unknown as { gtag?: (...args: unknown[]) => void };
-        if (typeof win.gtag === "function" && data?.confirmUrl) {
-          win.gtag("event", "begin_checkout", {
-            currency: "EUR",
-            items: [{ item_id: roomSku, item_name: roomSku, item_category: plan }],
-          });
-        }
+
+        fireCheckoutEvent(roomSku, plan, data?.confirmUrl);
+
         if (data.status === "available" && data.confirmUrl) {
           window.location.assign(data.confirmUrl as string);
           return;
         }
+
         // Unavailable or fallback/error → show alternatives
-        const altParams = new URLSearchParams();
-        altParams.set("checkin", checkin);
-        altParams.set("checkout", checkout);
-        altParams.set("excludeSku", roomSku);
-        altParams.set("plan", plan);
-        if (childrenStr) altParams.set("children", childrenStr);
-        if (childrenAges) altParams.set("childrenAges", childrenAges);
-        if (searchParams) {
-          for (const [k, v] of searchParams.entries()) {
-            if (k.startsWith("utm_")) altParams.set(k, v);
-          }
-        }
-        const altRes = await fetch(`/api/octorate/alternatives?${altParams.toString()}`);
-        const altData = await altRes.json();
+        const alternatives = await fetchAlternatives(roomSku, plan);
         setUnavailableFor(roomSku);
-        setAlternatives({ items: altData.alternatives || [], resultUrl: altData.resultUrl || octorateHref });
+        setAlternatives(alternatives);
       } catch {
+        const alternatives = await fetchAlternatives(roomSku, plan);
         setUnavailableFor(roomSku);
-        setAlternatives({ items: [], resultUrl: octorateHref });
+        setAlternatives(alternatives);
       } finally {
         setPending(null);
       }
     },
-    [checkin, checkout, octorateHref, searchParams]
+    [buildConfirmParams, fetchAlternatives, fireCheckoutEvent]
   );
 
   return (

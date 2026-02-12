@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Meilleurs points de vue sur la côte amalfitaine",
+    "description": "Belvédères, routes panoramiques et conseils photo pour capter la côte."
+  },
+  "linkLabel": "Meilleurs points de vue sur la côte amalfitaine",
+  "intro": [
+    "Repérez les meilleurs points de vue de la côte amalfitaine pour le lever du soleil, la golden hour et les photos de nuit."
+  ],
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Classiques de Positano",
+      "body": [
+        "Via Cristoforo Colombo et la terrasse près de l'hôtel Marincanto offrent des vues superposées sur le village ; privilégiez le lever du soleil pour une lumière douce.",
+        "La terrasse de La Tagliata à Nocelle fait face aux îles Li Galli ; réservez un dîner au coucher du soleil ou passez-y après le Sentier des Dieux."
+      ]
+    },
+    {
+      "id": "ravello",
+      "title": "Terrasses de Ravello",
+      "body": [
+        "La scène du festival de la Villa Rufolo domine la côte ; la lumière matinale illumine idéalement les coupoles.",
+        "La Terrasse de l'Infini de la Villa Cimbrone encadre le littoral avec des statues de marbre ; les trépieds sont autorisés mais gardez les pieds serrés pour ne pas gêner."
+      ]
+    },
+    {
+      "id": "road",
+      "title": "Panoramas au bord de route",
+      "body": [
+        "Arrêtez-vous à l'aire du Belvedere di Laurito entre Positano et Praiano pour des vues panoramiques ; restez derrière la barrière pour votre sécurité.",
+        "La SS163 entre Amalfi et Minori comporte des belvédères signalés ; utilisez les bus pour passer de l'un à l'autre si vous ne souhaitez pas conduire."
+      ]
+    }
+  ],
+  "tips": [
+    "Emportez un trépied léger et un filtre ND pour capturer les traînées des ferries au crépuscule.",
+    "Surveillez toujours la circulation quand vous photographiez en bord de route ; portez des vêtements visibles et ne marchez pas sur la chaussée."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je faire voler un drone ?",
+      "a": [
+        "Les vols de drones sont fortement restreints sur la côte amalfitaine. Vérifiez les règles de l'ENAC et les arrêtés locaux ; les amendes sont élevées en cas de vol non autorisé."
+      ]
+    },
+    {
+      "q": "Quel est le meilleur moment pour les photos de coucher de soleil ?",
+      "a": [
+        "La golden hour commence environ une heure avant le coucher du soleil (vers 19 h en juillet). Arrivez 30 minutes à l'avance pour vous installer et garder votre place."
+      ]
+    }
+  ]
+}

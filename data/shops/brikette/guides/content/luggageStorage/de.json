@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Gepäckaufbewahrung in Positano",
+    "description": "Wo du Gepäck in Positano lagern kannst, Öffnungszeiten, zu erwartende Preise und Alternativen."
+  },
+  "linkLabel": "Gepäckaufbewahrung in Positano",
+  "intro": [
+    "Wo du in Positano Gepäck lagern kannst: Optionen nahe dem Hafen und entlang der Via dei Mulini."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "In Hafennähe",
+      "body": [
+        "Stunden- oder Tageslagerung mit Ticket; rechne in der Hochsaison mit Warteschlangen – wenn möglich vorab reservieren."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Vermittlungsplattformen",
+      "body": [
+        "Bounce/Radical Storage: genaue Adresse und Öffnungszeiten vor der Onlinezahlung prüfen."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette & Tipps",
+      "body": [
+        "Wertsachen bei dir behalten, Taschen deutlich beschriften und Abholscheine fotografieren."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Abends geöffnet?",
+      "a": [
+        "Öffnungszeiten variieren; beachte in der Nebensaison frühe Schließzeiten und die letzte Fähre."
+      ]
+    }
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "faqsTitle": "FAQ",
+  "heroAlt": "Porter schiebt einen Gepäckwagen die Stufen von Positano hinauf",
+  "serviceType": "Gepäckaufbewahrung",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Klippenhäuser von Positano mit Blick auf das Meer",
+    "primaryCaption": "Positano-Panorama",
+    "secondaryAlt": "Porter schiebt einen Gepäckwagen nahe der Fähre in Positano",
+    "secondaryCaption": "Porter-Wagen am Hafen"
+  }
+}

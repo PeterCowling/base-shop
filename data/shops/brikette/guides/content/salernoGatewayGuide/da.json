@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerno: den anden vej til Amalfikysten",
+    "description": "Hvorfor Salerno er et smart ankomstpunkt i sæsonen; færgeforbindelser og logistik."
+  },
+  "linkLabel": "Salerno: den anden indgang til Amalfikysten",
+  "intro": [
+    "Salerno er et smart ankomstpunkt til Amalfikysten med bedre togforbindelser og roligere gader end Napoli."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Hvorfor ankomme via Salerno",
+      "body": [
+        "Højhastighedstog fra Rom eller Milano ender her, så du kan gå direkte fra Frecciarossa til færgepieren på få minutter.",
+        "Overnatning og mad er billigere end i Positano, hvilket gør byen ideel til første eller sidste nat."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Forbindelser videre",
+      "body": [
+        "Sæsonfærger sejler til Positano på cirka 70 minutter. Busser kører året rundt; køb UnicoCampania-billetter, før du stiger på.",
+        "Lufthavnsbusser til Napoli Capodichino tager omkring 60 minutter, hvis du flyver hjem efter opholdet."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Bo i Salerno",
+      "body": [
+        "Udforsk lungomare-promenaden, middelaldercentrum og Arechi-slottet for solnedgangsudsigt.",
+        "Book trattoriaer omkring Via Roma for fremragende seafood uden Positano-priser."
+      ]
+    }
+  ],
+  "tips": [
+    "Ankommer du sent, så overnat i Salerno og tag første færge eller bus til Positano næste morgen for en glidende transfer.",
+    "Brug bagageopbevaring ved stationen (€5–€7 pr. taske), så du kan udforske hænderne fri mellem tog og færge."
+  ],
+  "faqs": [
+    {
+      "q": "Er færgerne fra Salerno pålidelige?",
+      "a": [
+        "Ja om sommeren. I skuldersæsoner kan vejret give aflysninger, så behold bussen som backup."
+      ]
+    },
+    {
+      "q": "Hvor tidligt skal jeg være ved toget?",
+      "a": [
+        "Kom 15 minutter før afgang for at finde perron og stemple regionale billetter, hvis det kræves."
+      ]
+    }
+  ]
+}

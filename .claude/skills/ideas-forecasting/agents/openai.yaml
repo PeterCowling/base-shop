@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ideas Forecasting"
+  short_description: "Forecast startup goals from idea and product inputs"
+  default_prompt: "Run ideas-forecasting for HEAD using my idea and products, and propose 90-day targets from web research."

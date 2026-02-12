@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "The Cost of Positano vs Other Beach Destinations",
+    "description": "Accommodation, food, and transport comparisons — and when Positano is good value."
+  },
+  "linkLabel": "Positano Cost vs Other Beach Destinations",
+  "intro": [
+    "See how Positano stacks up against other European beach destinations so you can budget smartly and justify the splurge."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "Peak-season dorm beds in Positano cost roughly double those in Lisbon or Split. Private rooms mirror Santorini pricing but sell out faster due to limited inventory.",
+        "Stay in Praiano or Sorrento to save €40–€60 per night while keeping ferry/bus access to Positano."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "Casual meals cost €5–€10 more than Bari or Valencia, yet produce quality is high. Aperitivo boards help you dine for €12 with a drink included.",
+        "Self-cater breakfasts with market fruit and pastries to offset pricier dinners overlooking the sea."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "Ferries run €9–€22, slightly higher than Croatia but cheaper than Greek island water taxis.",
+        "Experiences like boat tours or cooking classes cost similar to Amalfi or Santorini; book shoulder season for lower rates and calmer seas."
+      ]
+    }
+  ],
+  "tips": [
+    "Travel in April, May, or October to keep prices closer to Dubrovnik levels while enjoying cooler weather.",
+    "Bundle experiences (e.g., hostel cooking class + boat outing) for package discounts instead of booking individual slots."
+  ],
+  "faqs": [
+    {
+      "q": "Is Positano worth the premium?",
+      "a": [
+        "Yes if you prioritise cliffside views, iconic beaches, and quick ferry links. You can trim costs by staying nearby and focusing spend on standout meals or tours."
+      ]
+    },
+    {
+      "q": "Where should I go if I want similar views for less?",
+      "a": [
+        "Praiano and Minori offer Amalfi Coast scenery with lower hotel rates. Pair them with day trips to Positano for the postcard moments."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "Accommodation can be pricier, but transport and food can be kept affordable with smart choices."
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "Shoulder season, weekdays, and longer stays near Chiesa Nuova reduce costs and effort."
+      }
+    },
+    "faq": {
+      "summary": "Is Positano more expensive than Amalfi?",
+      "answer": "Often for seafront stays; value improves inland or near bus stops."
+    }
+  }
+}

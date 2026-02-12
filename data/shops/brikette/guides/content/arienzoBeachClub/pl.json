@@ -1,0 +1,213 @@
+{
+  "seo": {
+    "title": "Przewodnik po Arienzo Beach Club",
+    "description": "Zarezerwuj leżaki, wybierz między zejściem po 300 stopniach a łodzią wahadłową i zaplanuj jedzenie oraz transport do Arienzo Beach Club."
+  },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Przewodnik po Arienzo Beach Club",
+  "intro": [
+    "Arienzo leży tuż na wschód od Positano, oferuje długie popołudniowe słońce, turkusową wodę i spektakularne schody prowadzące z drogi Amalfi. To najżywsze lido w zasięgu krótkiej drogi z Hostel Brikette, ale ze względu na schody i obowiązkowe rezerwacje warto przygotować plan, zanim wyruszysz.",
+    "Skorzystaj z tego przewodnika, aby zarezerwować swoje miejsce, zdecydować, czy popłynąć łodzią wahadłową, czy pokonać 300 stopni pieszo, oraz zaplanować budżet na lunch, napoje i powrotny przejazd."
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Dlaczego wybrać Arienzo"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Dojazd"
+    },
+    {
+      "href": "#layout",
+      "label": "Układ i udogodnienia"
+    },
+    {
+      "href": "#packages",
+      "label": "Pakiety i gastronomia"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Powrót"
+    }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Dlaczego Arienzo sprawdza się dla gości Hostel Brikette",
+      "body": [
+        "Arienzo to najbliższy w pełni obsługiwany beach club poza tłumem Spiaggia Grande. Tarasy na klifie łapią słońce do wczesnego wieczoru, woda pozostaje przejrzysta do pływania, a bar zapewnia imprezowy klimat, nie wchodząc jednak w nocne życie.",
+        "Możesz podzielić grupę między pakiety obejmujące leżaki i lunch albo zarezerwować frontowy taras na dzień pełen luksusu. Z odrobiną planowania unikniesz kolejek i wrócisz do hostelu jeszcze przed zachodem słońca na tarasie."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/02-arienzo-cliffs.webp",
+          "alt": "View over Arienzo bay with pebble beach under steep cliffs near Positano",
+          "caption": "Arienzo sits under the coastal road east of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:84017_Arienzo_SA,_Italy_-_panoramio_(1).jpg|Luigi Biondi% (%URL:https://creativecommons.org/licenses/by/3.0/|CC BY 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "when-to-go",
+      "title": "Best time to go (and when to skip it)",
+      "body": [
+        "Arienzo gets long afternoon sun, so it’s perfect if you want a slow start and still have light late. If you’re choosing between “morning sunbed marathon” and “easy golden hour”, Arienzo is the golden‑hour pick.",
+        "Avoid very windy days with rough seas. Shuttle boats can pause and swimming gets choppy. If it looks wild, swap to a more sheltered plan (or do a town day and save Arienzo for a calm afternoon).",
+        "In high season, weekends sell out first. Book ahead and choose a vibe that matches your energy: early for more swim time, late for sunset feels."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/05-amalfi-coast-positano.webp",
+          "alt": "View along the Amalfi Coast near Positano with cliffs and sea in afternoon light",
+          "caption": "Afternoon light is the reason to choose this side of Positano. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Amalfi_Coast_(Positano).jpg|Ron Clausen% (%URL:https://creativecommons.org/licenses/by-sa/2.0/|CC BY-SA 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Dojazd: łódź wahadłowa czy 300 schodów",
+      "body": [
+        "Najłatwiejsza opcja to łódź wahadłowa Arienzo Beach Club, która odpływa ze Spiaggia Grande. Rejsy odbywają się mniej więcej co 30 minut od 09:30, a ostatni kurs w stronę klubu wypływa około 13:30. Potwierdzenie rezerwacji zawiera kod QR—pokaż go na molo i miej przy sobie rozkład powrotów.",
+        "Jeśli wolisz uniknąć łodzi, możesz zejść pieszo. Wsiądź do autobusu SITA w kierunku Amalfi (przystanek Sponda znajduje się 10 minut w dół od hostelu) i wysiądź na oznaczonym przystanku Arienzo. Stamtąd czeka cię 300 stopni w dół przez tarasy cytrynowe do wejścia klubu.",
+        "Przyjazd samochodem lub skuterem jest odradzany; miejsc parkingowych jest bardzo mało, a policja drogowa karze pojazdy blokujące zakręty mandatami."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/04-positano-beach.webp",
+          "alt": "Spiaggia Grande in Positano with colourful umbrellas and boats in the bay",
+          "caption": "Spiaggia Grande is often the shuttle boat’s starting point. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_(42919362342).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Stairs & accessibility (what 300 steps feels like)",
+      "body": [
+        "The stairs are real. They’re steep, uneven in places, and feel worse on the way up because you’re wet and salty. If you hate stairs or you’re carrying heavy, choose the boat and pack light.",
+        "Wear shoes with grip (trainers or sturdy sandals) and carry weight in a backpack. Take breaks on the landings — everyone does.",
+        "If someone has knee pain or an injury, make Arienzo a “boat‑only” day. Otherwise the steps can ruin your evening."
+      ],
+      "list": [
+        "Down: fine if you go slow and use the shade.",
+        "Up: allow 15–25 minutes depending on heat and fitness.",
+        "Late: feels harder — agree your return plan early."
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Układ, udogodnienia i nasłonecznienie",
+      "body": [
+        "Główny taras należy do Arienzo Beach Club i oferuje pomarańczowe leżaki, serwis ręczników, prysznice z wodą słodką oraz tętniący życiem bar. Po prawej stronie, przy pomoście dla łodzi, znajduje się niewielka bezpłatna część, ale po 10:30 miejsca praktycznie znikają, a sprzęt i tak trzeba wnieść po schodach.",
+        "Latem słońce dociera do dwóch pierwszych rzędów mniej więcej do 17:30, zanim klify rzucą cień. Poproś obsługę o ustawienie parasoli, gdy światło się zmienia, zwłaszcza jeśli planujesz cały dzień opalania.",
+        "Prysznice z wodą słodką, szafki i przebieralnie są wliczone w pakiety dzienne. Wi-Fi bywa kapryśne—pobierz playlisty lub informacje o promach przed przyjazdem."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/01-beach-layout.webp",
+          "alt": "Layout diagram of Arienzo Beach Club with main deck and small free area near the boat landing",
+          "caption": "Layout: main deck (orange loungers, bar, and showers) + a small free area by the boat landing."
+        },
+        {
+          "src": "/img/guides/arienzo-beach/03-positano-umbrellas.webp",
+          "alt": "Rows of beach umbrellas on a pebble beach in Positano",
+          "caption": "Expect lido style: umbrellas, loungers, and table service. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Beach_Umbrellas_in_Positano_(41158690680).jpg|Chris% (%URL:https://creativecommons.org/licenses/by/2.0/|CC BY 2.0%)."
+        }
+      ]
+    },
+    {
+      "id": "packages",
+      "title": "Pakiety, gastronomia i rezerwacje",
+      "body": [
+        "Standardowe łóżka dzienne kosztują około 70 € za dwie osoby i obejmują parasol, ręczniki, dwa powitalne napoje oraz rejs łodzią wahadłową. Frontowe platformy i prestiżowe kabany kosztują 120–200 € w zależności od miesiąca.",
+        "Lunch serwowany jest od 12:30 i obejmuje makarony z owocami morza, sałatki oraz dania z grilla. Licz się z ceną 18–28 € za danie; zarezerwuj stolik przy meldowaniu, aby uniknąć szczytu około 14:00.",
+        "Rezerwacje dokonuje się bezpośrednio na stronie Arienzo lub przez wiadomość na WhatsAppie. Dane płatnicze gwarantują miejsce; odwołanie krótsze niż 48 godzin zwykle wiąże się z opłatą, więc najpierw sprawdź prognozę pogody i plan promów."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "What to pack (so the stairs don’t punish you)",
+      "body": [
+        "Treat it like a mini hike to a beach club. The less you carry, the better the day feels — especially on the way back up.",
+        "If you’re taking the boat you can bring a bit more. If you’re taking the stairs, stick to essentials and avoid heavy or fragile stuff."
+      ],
+      "list": [
+        "Water shoes or grippy sandals (pebbles + wet steps).",
+        "Small dry bag / zip pouch (phone, cash, tickets).",
+        "Refillable bottle (the climb dehydrates).",
+        "Reef‑safe sunscreen + sunglasses (strong glare).",
+        "A light layer for the ride back (breeze after swimming)."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/arienzo-beach/06-positano-umbrellas-panorama.webp",
+          "alt": "Panoramic view of Positano’s umbrellas and the town climbing the cliffs",
+          "caption": "Pack light and plan your exit so you can enjoy the view without stress. Photo credit: %URL:https://commons.wikimedia.org/wiki/File:Positano_Beach_Umbrellas_-_panoramio.jpg|Mauro% (%URL:https://creativecommons.org/licenses/by-sa/3.0/|CC BY-SA 3.0%)."
+        }
+      ]
+    },
+    {
+      "id": "sea-conditions",
+      "title": "If the boat cancels (a Plan B that works)",
+      "body": [
+        "On windy days, rough seas can pause the shuttle boats. Don’t panic — switch to land logistics.",
+        "If you’re already at Arienzo, the safe option is to walk up to the road and take the next bus or a taxi. Build in buffer, especially later when buses may pass by full.",
+        "If you haven’t left yet and the sea looks rough, choose a beach with easier logistics (see %LINK:positanoBeaches|our beach overview%) or a “no boat needed” option like %LINK:fornilloBeachGuide|Fornillo Beach%."
+      ]
+    },
+    {
+      "id": "heading-back",
+      "title": "Powrót do Hostel Brikette",
+      "body": [
+        "Łodzie powrotne odpływają z Arienzo co pół godziny od około 15:00; ostatni kurs zwykle jest o 18:00, ale w okresach przejściowych godziny mogą się zmieniać—sprawdź tablicę przy recepcji.",
+        "Jeśli schodziłeś pieszo, zarezerwuj 15–20 minut na wejście po schodach do drogi. Popołudniowe autobusy w kierunku Positano kursują co 30–40 minut; skasuj bilet na pokładzie i miej zapasowy na późny powrót.",
+        "Marzy ci się nocna kąpiel? Zarezerwuj z wyprzedzeniem taksówkę przez recepcję lub cyfrowego concierge’a, bo aplikacje przewozowe działają na wybrzeżu zawodnie."
+      ]
+    }
+  ],
+  "essentialsTitle": "Na co się przygotować",
+  "essentials": [
+    "W szczycie sezonu rezerwacje są obowiązkowe—zrób je online lub przez WhatsApp, zanim wyjdziesz z hostelu.",
+    "Wybierz między łodzią wahadłową ze Spiaggia Grande a 300-stopniowymi schodami od przystanku SITA.",
+    "Pełnowymiarowe lido z barem, restauracją, prysznicami i serwisem ręczników w cenie pakietów dziennych."
+  ],
+  "typicalCostsTitle": "Typowe koszty",
+  "typicalCosts": [
+    "Łóżko dzienne dla dwóch osób z łodzią wahadłową: 70–90 € w zależności od sezonu.",
+    "Frontowa platforma lub kabana: 120–200 € dla dwóch gości.",
+    "Dania główne na lunch: 18–28 €, koktajle 12–15 €, butelkowana woda 3–4 €."
+  ],
+  "tipsTitle": "Szybkie wskazówki",
+  "tips": [
+    "Zrób zrzut ekranu potwierdzenia rezerwacji; sygnał komórkowy słabnie na schodach i przy pomoście.",
+    "Spakuj butelkę wielokrotnego użytku—możesz ją uzupełnić w barze i ograniczysz koszty w upalne dni.",
+    "Porównaj inne opcje na wybrzeżu w naszym %LINK:positanoBeaches|przeglądzie plaż%, jeśli szukasz spokojniejszej lub darmowej alternatywy."
+  ],
+  "warningsTitle": "Warto wiedzieć",
+  "warnings": [
+    "Brak zwrotów gotówki za spóźnienia; zadzwoń wcześniej, jeśli się opóźniasz, aby obsługa zatrzymała leżaki.",
+    "Bezpłatna strefa jest bardzo mała i nadal wymaga pokonania całych schodów z ekwipunkiem.",
+    "Silne fale czasami zatrzymują łódź wahadłową—obsługa wysyła wiadomości z aktualizacjami, ale miej przygotowany plan z autobusem."
+  ],
+  "faqsTitle": "Najczęstsze pytania dotyczące Arienzo Beach Club",
+  "faqs": [
+    {
+      "q": "Z jakim wyprzedzeniem powinienem rezerwować?",
+      "a": [
+        "Rezerwuj co najmniej trzy do pięciu dni wcześniej w okresie od czerwca do września, zwłaszcza na weekendy lub frontowe platformy. W okresach przejściowych (kwiecień, maj, październik) często dostępne są terminy na kolejny dzień, ale mimo to potwierdź rozkład łodzi."
+      ]
+    },
+    {
+      "q": "Czy mogę odwiedzić miejsce bez kupowania pakietu?",
+      "a": [
+        "Tak, ale możliwości są ograniczone. Przy klubie znajduje się niewielki publiczny skrawek plaży, który zapełnia się do późnego rana. Bez pakietu nie masz dostępu do łazienek ani pryszniców, a długie schody i tak trzeba pokonać."
+      ]
+    },
+    {
+      "q": "W co się ubrać na podejście po schodach?",
+      "a": [
+        "Załóż solidne sandały lub buty sportowe na zejście. Cięższe rzeczy spakuj do plecaka i rób przerwy na półpiętrach. Wracając w górę, odpoczywaj w cieniu i nawodnij się przed wejściem do autobusu lub taksówki."
+      ]
+    }
+  ],
+  "galleryHeading": "Arienzo photo highlights"
+}

@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Alojamiento económico más allá de Positano",
+    "description": "Dónde alojarte con buen precio (Sorrento, Salerno, zona de Amalfi) y los pros y contras."
+  },
+  "linkLabel": "Alojamiento económico cerca de Positano",
+  "intro": [
+    "Bases económicas fuera de Positano con compromisos realistas entre precio, tiempo de viaje y comodidad.",
+    "Úsalas para estancias largas o cuando los precios en Positano se disparan en pleno verano."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Gran oferta de B&B y apartamentos a precios moderados, con trenes y ferris frecuentes.",
+        "Ideal si llegas tarde desde Nápoles: la línea Circumvesuviana y los buses nocturnos facilitan el acceso."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Hoteles urbanos con tarifas bajas todo el año y trenes de alta velocidad a Roma/Nápoles.",
+        "En temporada operan ferris directos a Amalfi y Positano; calcula 70–80 minutos hasta el hostel."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Zona de Amalfi y pueblos vecinos",
+      "body": [
+        "Atrani, Minori o Maiori ofrecen pensiones familiares con desayuno incluido.",
+        "En temporada baja aparecen ofertas de última hora; revisa horarios de bus para volver de noche."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Pros y contras",
+      "body": [
+        "Más traslado (45–90 min) frente a ahorro significativo.",
+        "Para escapadas de fin de semana conviene dormir en Positano para optimizar el tiempo; en estancias largas sí compensa base más económica."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Compensa desplazarse cada día?",
+      "a": [
+        "Sí si priorizas presupuesto y puedes asumir traslados de 1–1,5 h; calcula ida y vuelta al planificar actividades."
+      ]
+    },
+    {
+      "q": "¿Qué base conviene para excursiones?",
+      "a": [
+        "Sorrento para Pompeya/Capri, Salerno para Cilento y Paestum, Amalfi si quieres dividir días entre playa y senderismo."
+      ]
+    }
+  ],
+  "tips": [
+    "Coordina traslados nocturnos con antelación; los últimos buses salen sobre las 22:30.",
+    "Verifica si tu alojamiento ofrece consigna tras el check-out para no cargar maletas todo el día."
+  ]
+}

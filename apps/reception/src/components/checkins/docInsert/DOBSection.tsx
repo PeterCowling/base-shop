@@ -7,8 +7,9 @@ import React, {
   useState,
 } from "react";
 
+import { ConfirmDialog } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../../context/AuthContext";
-import { useDialog } from "../../../context/DialogContext";
 import { occupantDetailsSchema } from "../../../schemas/occupantDetailsSchema";
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
@@ -40,13 +41,18 @@ function DOBSection({
   saveField,
 }: DOBSectionProps): JSX.Element {
   const { user } = useAuth();
-  const { showConfirm } = useDialog();
 
   const [yyyy, setYyyy] = useState("");
   const [mm, setMm] = useState("");
   const [dd, setDd] = useState("");
   const [bgSuccess, setBgSuccess] = useState(false);
   const [dobError, setDobError] = useState("");
+  const [overrideDialogOpen, setOverrideDialogOpen] = useState(false);
+  const [pendingOverrideDob, setPendingOverrideDob] = useState<{
+    yyyy: string;
+    mm: string;
+    dd: string;
+  } | null>(null);
 
   /**
    * Load occupant DOB or reset if occupantDetails changes
@@ -119,6 +125,49 @@ function DOBSection({
     setBgSuccess(false);
   }, [occupantDetails]);
 
+  const saveDob = useCallback(
+    (nextYyyy: string, nextMm: string, nextDd: string) => {
+      saveField("dateOfBirth", { yyyy: nextYyyy, mm: nextMm, dd: nextDd })
+        .then(() => {
+          showToast("Date of Birth updated successfully!", "success");
+          setBgSuccess(true);
+        })
+        .catch((err: unknown) => {
+          if (err instanceof Error) {
+            showToast(`Failed to update dateOfBirth: ${err.message}`, "error");
+          } else {
+            showToast(
+              "Failed to update dateOfBirth due to an unknown error.",
+              "error"
+            );
+          }
+          setBgSuccess(false);
+        });
+    },
+    [saveField]
+  );
+
+  const handleOverrideOpenChange = useCallback(
+    (open: boolean) => {
+      setOverrideDialogOpen(open);
+      if (!open && pendingOverrideDob) {
+        setPendingOverrideDob(null);
+        revertDOB();
+      }
+    },
+    [pendingOverrideDob, revertDOB]
+  );
+
+  const handleOverrideConfirm = useCallback(() => {
+    if (!pendingOverrideDob) {
+      return;
+    }
+    const overrideDob = pendingOverrideDob;
+    setPendingOverrideDob(null);
+    setOverrideDialogOpen(false);
+    saveDob(overrideDob.yyyy, overrideDob.mm, overrideDob.dd);
+  }, [pendingOverrideDob, saveDob]);
+
   /**
    * On blur, if all fields are filled, validate. If invalid, revert unless user is in ALLOWED_OVERRIDE_USERS and confirms override.
    */
@@ -139,16 +188,13 @@ function DOBSection({
 
         // If user is allowed an override, prompt for confirmation.
         if (canOverride) {
-          const confirmed = await showConfirm({
-            title: "Override invalid date?",
-            message: errorMsg,
-            confirmLabel: "Override",
+          setPendingOverrideDob({
+            yyyy,
+            mm,
+            dd,
           });
-          if (!confirmed) {
-            revertDOB();
-            return;
-          }
-          // If confirmed, proceed without reverting.
+          setOverrideDialogOpen(true);
+          return;
         } else {
           revertDOB();
           return;
@@ -156,24 +202,9 @@ function DOBSection({
       }
 
       // Valid date or override accepted.
-      saveField("dateOfBirth", { yyyy, mm, dd })
-        .then(() => {
-          showToast("Date of Birth updated successfully!", "success");
-          setBgSuccess(true);
-        })
-        .catch((err: unknown) => {
-          if (err instanceof Error) {
-            showToast(`Failed to update dateOfBirth: ${err.message}`, "error");
-          } else {
-            showToast(
-              "Failed to update dateOfBirth due to an unknown error.",
-              "error"
-            );
-          }
-          setBgSuccess(false);
-        });
+      saveDob(yyyy, mm, dd);
     },
-    [yyyy, mm, dd, validateDOB, user?.user_name, saveField, revertDOB, showConfirm]
+    [yyyy, mm, dd, validateDOB, user?.user_name, revertDOB, saveDob]
   );
 
   return (
@@ -228,6 +259,14 @@ function DOBSection({
       </div>
 
       {dobError && <p className="text-error-main text-sm mt-1">{dobError}</p>}
+      <ConfirmDialog
+        open={overrideDialogOpen}
+        onOpenChange={handleOverrideOpenChange}
+        title="Override invalid date?"
+        description={dobError}
+        confirmLabel="Override"
+        onConfirm={handleOverrideConfirm}
+      />
     </>
   );
 }

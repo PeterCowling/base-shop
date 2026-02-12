@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Séta a Hostel Brikette-től Positano fő strandjára",
+    "description": "Lépésről lépésre haladó lépcsősor, amely 15-25 perc alatt eléri a Spiaggia Grandét."
+  },
+  "linkLabel": "Walk down to Positano's main beach",
+  "intro": [
+    "A Hostel Brikette és a Positano fő strandja közötti séta körülbelül 15–25 percet vesz igénybe a tempótól és a fotómegállóktól függően.",
+    "A Google Térkép segítségével lassabb kitérőkön is átjuthatsz, ezért használd ezt a lépcsősort, hogy gyorsan elérd a Spiaggia Grandét, és az egyes ellenőrzőpontokat megfeleltesd a hostel referenciafotóinak."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "Mielőtt elmegy...<ex id=\\\\\"_1\\\\\"/> ",
+      "body": [
+        "Vedd fel a laminált lépcsőfotókat a recepcióról vagy a digitális portáról, hogy útközben megerősíthesd az öt ellenőrzőpontot.",
+        "Viseljen masszív szandált a kavicsos partraszálláshoz és hordjon vizet — nincs üzlet a lépcsőn, amíg el nem éri a sétányt."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Lépésről lépésre a Spiaggia Grande-ig",
+      "body": [
+        "1. Hagyja el a Hostel Brikette-et a főbejáraton keresztül, és ereszkedjen le a bejárati lépcsőn a Viale Pasitea-hoz.",
+        "2. Forduljon balra, és sétáljon durván 100 métert (330 láb) az út mentén a tabacchi/újságos mellett lévő első jobb sarokig — ez az 1. térképpont.",
+        "3. Forduljon jobbra, maradjon a lejtősávon, és kövesse a kanyart az út első kanyarjáig (térkép 2. pont).",
+        "4. Hagyja el az utat a kanyarban, és haladjon egyenesen előre az előtted lévő lépcsőn.",
+        "5. Amikor a lépcsők egy másik úttal találkoznak (3. térképpont), haladjon egyenesen előre, és haladjon lefelé a következő látható lépcsőn.",
+        "6. A lépcső alján haladjon át az úton, forduljon balra kb. 10 méterre (30 láb), majd menjen a következő lépcsőn jobbra (4. térképpont).",
+        "7. Kövesse ezeket a lépcsőket, forduljon balra a lépcsőfordulónál, és maradjon az ösvényen, amíg el nem éri az alját.",
+        "8. Forduljon jobbra, sétáljon be az udvarra az 5. térképpontnál, és ellenőrizze, hogy a kilátás egyezik-e a hostel referenciafotójával.",
+        "9. Haladjon egyenesen az ív alatt, majd sétáljon körülbelül 50 métert (160 láb), amíg a nyílás megnyílik, és megjelenik a Spiaggia Grande a bal oldalán."
+      ]
+    }
+  ],
+  "tipsTitle": "Tippek",
+  "tips": [
+    "Mentse el a mászást későbbre úgy, hogy párosítja ezt az útvonalat a tengerparti napot követő %LINK:positanoMainBeachBusBack|busz vissza a szállóhoz% -vel.",
+    "Mielőtt útnak indulnál, hasonlítsd össze a %LINK:positanoBeaches|A Positano strandok áttekintése% területén található nyugágyak, vámszabad területek és klubok árait.",
+    "Oszd meg a térképet a hostel QR-kódján vagy digitális portáján keresztül, ha ismerőseid találkoznak veled a strandon."
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salerno → Positano: So kommst du hin",
+    "description": "Beste Routen von Salerno nach Positano per Bus oder Sommerfähre – mit Timing-Tipps."
+  },
+  "linkLabel": "Salerno → Positano: So kommst du hin",
+  "intro": [
+    "Salerno → Positano: Die Fähre ist in der Saison am bequemsten (auch mit Gepäck); der Bus via Amalfi fährt ganzjährig als günstigere Alternative."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Fähre (mit Gepäck empfohlen)",
+      "body": [
+        "Ablegen je nach Betreiber an Molo Manfredi oder Concordia; plane je nach Seegang etwa eine Stunde auf dem Wasser ein.",
+        "Prüfe Seegang und aktuelle Fahrpläne; an Wochenenden sind Plätze schnell weg – früh da sein."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Bus über Amalfi (ganzjährig)",
+      "body": [
+        "Zug bzw. SITA nach Amalfi → dort in die Linie nach Positano umsteigen; dauert länger, ist aber auch in der Nebensaison verfügbar.",
+        "Halte Kleingeld bereit, entwerte Tickets und plane Puffer am Umstieg in Amalfi ein, während du die Abfahrtstafel checkst."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ist die Fähre im Frühling zuverlässig?",
+      "a": [
+        "Ja, aber frühe Frühlingsstürme können Verbindungen streichen – prüfe den Status am selben Tag."
+      ]
+    },
+    {
+      "q": "Wo lagere ich Gepäck?",
+      "a": [
+        "Nutze die Gepäckregale auf den Fähren; Wertsachen immer bei dir behalten."
+      ]
+    }
+  ]
+}

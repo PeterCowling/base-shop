@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Vejledning om defekter og skader for Positano Hostel",
+    "description": "Forstå hvordan du rapporterer værelsesfejl, vores reaktion på alvorlige problemer, politikker for depositum for skader, gæsteansvar og vigtig information om forebyggelse af væggelus på Positanos eksklusive hostel."
+  },
+  "linkLabel": "Vejledning om defekter og skader for Positano Hostel",
+  "sections": [
+    {
+      "id": "reportingDefects",
+      "title": "Rapportering af defekter",
+      "body": [
+        "Hvis du bemærker et problem eller en defekt på dit værelse, bedes du straks informere os. Din hurtige meddelelse hjælper os med hurtigt at løse problemet.",
+        "Den hurtigste måde at rapportere på er personligt i receptionen. Når det er muligt, inkluder: hvad der er galt, hvornår du bemærkede det, og et hurtigt foto eller en kort video."
+      ]
+    },
+    {
+      "id": "assessingDefects",
+      "title": "Vurdering af defekter",
+      "body": [
+        "Når du rapporterer en defekt, vil vi hurtigt vurdere problemet og prioritere vores reaktion baseret på, hvor meget det påvirker din komfort og dit ophold."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/2/27/ISO_7010_W008.svg",
+          "alt": "ISO 7010 W008 generelt advarselsskilt (gul trekant med udråbstegn)",
+          "caption": "Vi prioriterer sikkerhed først, derefter alt der påvirker søvn og komfort."
+        }
+      ]
+    },
+    {
+      "id": "responseToSeriousDefects",
+      "title": "Reaktion på alvorlige defekter",
+      "body": [
+        "Hvis der er en alvorlig defekt, der ikke kan repareres med det samme, vil vi tilbyde alternativ indkvartering. Hvis alternativet er billigere end dit bookede værelse, refunderer vi dig prisforskellen. Hvis du beslutter ikke at acceptere vores alternativ, kan du anmode om en forholdsmæssig refusion for de resterende nætter af dit ophold."
+      ]
+    },
+    {
+      "id": "unreportedDefects",
+      "title": "Ikke-rapporterede defekter",
+      "body": [
+        "Hvis vi opdager et problem på dit værelse, som du ikke har rapporteret inden for en rimelig tidsramme, vil vi vurdere eventuelle skader, og vores skadespolitik kan blive anvendt."
+      ]
+    },
+    {
+      "id": "damagesPolicy",
+      "title": "Skadespolitik",
+      "body": [
+        "For din og vores sikkerhed kan vi forhåndsgodkende dit kreditkort eller anmode om et kontant depositum ved indtjekning for at dække potentielle skader eller tab. Hvis du ikke kan stille et depositum eller forhåndsgodkendelse, kan din reservation blive annulleret. Depositum er fuldt refunderbart ved udtjekning minus gebyrer for eventuelle skader, tab, arbejdskraft eller administrative udgifter. Hvis disse gebyrer overstiger dit depositum, er du ansvarlig for de ekstra omkostninger. Timepriser for reparationer eller rengøring faktureres pr. time: Direktør (50 €/time), Manager (35 €/time) og Personale (25 €/time)."
+      ]
+    },
+    {
+      "id": "bedBugsPolicy",
+      "title": "Politik om væggelus",
+      "body": [
+        "Vi håndterer proaktivt og adresserer straks eventuelle problemer med væggelus. Men hvis der findes væggelus på dit værelse under dit ophold, kan du blive holdt ansvarlig for tilknyttede omkostninger, såsom tabt bookingindtægt, rengøringsudgifter og skadedyrsbekæmpelse. Rapporter venligst straks eventuelle tegn på væggelus til vores personale."
+      ]
+    },
+    {
+      "id": "bedBugsPrevention",
+      "title": "Forebyggelse af væggelus",
+      "body": [
+        "For at hjælpe med at forhindre problemer med væggelus, bedes du:",
+        "* Informere os ved indtjekning, hvis du for nylig har opholdt dig et sted med kendte vægglusproblemer.\n* Grundigt desinficere dine ejendele.\n* Omhyggeligt inspicere din bagage og tøj for væggelus, før du går ind på dit værelse."
+      ]
+    }
+  ]
+}

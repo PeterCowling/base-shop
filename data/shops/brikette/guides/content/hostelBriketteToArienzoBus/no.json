@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Buss til Arienzo-stranden fra Hostel Brikette",
+    "description": "Ta Amalfikystbussen fra Chiesa Nuova, kjør tre kilometer sørover og gå ned klippetrappen til Arienzo-stranden."
+  },
+  "linkLabel": "Buss til Arienzo-stranden",
+  "intro": [
+    "Arienzo-stranden ligger noen kilometer sør for Hostel Brikette og er lettest å nå med Amalfikysten-bussen.",
+    "Følg disse trinnene for å finne holdeplassen, kjøpe billetter, ri med selvtillit og avslutte turen med riktig trapp ned til sanden."
+  ],
+  "sections": [
+    {
+      "id": "reach-bus-stop",
+      "title": "Gå til bussholdeplassen ved Chiesa Nuova",
+      "body": [
+        "Gå ut hovedinngangen på Hostel Brikette og gå ned trappene til veien.",
+        "Sving til venstre og gå omtrent 100 meter (330 fot) til du når Bar Internazionale.",
+        "SITA-holdeplassen ligger utenfor baren i Chiesa Nuova-området, ca. 140 meter (490 fot) fra vandrerhjemmet."
+      ]
+    },
+    {
+      "id": "buy-tickets",
+      "title": "Kjøp bussbilletter inne i baren",
+      "body": [
+        "Gå inn på Bar Internazionale og kjøp billetter i tabacchi-disken.",
+        "Be om både tur- og returbilletter — personalet kan anbefale én kombinert billett eller to enkeltbilletter avhengig av prisene."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Vent på Amalfikystbussen",
+      "body": [
+        "Kryss veien til den merkede holdeplassen rett overfor Bar Internazionale.",
+        "Stå slik at sjåføren ser deg og vink til bussen når den kommer fra Positano."
+      ]
+    },
+    {
+      "id": "ride-to-arienzo",
+      "title": "Kjør til Arienzo-holdeplassen",
+      "body": [
+        "Følg med underveis — bussen gjør mellomstopp etter passasjerenes behov.",
+        "Turen er omtrent 3 kilometer (1,9 miles). Arienzo kommer 2–5 minutter etter Positano Sponda-stoppet.",
+        "Bruk mobildata eller last ned Google Maps offline og søk etter \\\\\"JFGW+X6 Arienzo, Province of Salerno\\\\\" for å bekrefte stoppet."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "Gå ned til stranden",
+      "body": [
+        "Etter at du går av bussen, gå et kort stykke tilbake i retningen du kom fra.",
+        "Se etter Arienzo-skiltet og trappen på sjøsiden av veien, og følg trappene ned til lido-inngangen."
+      ]
+    }
+  ],
+  "tipsTitle": "Busstips",
+  "tips": [
+    "Trykte rutetabeller viser Positano-stoppene; Arienzo står vanligvis 2–5 minutter etter Positano Sponda når du reiser fra sentrum.",
+    "Kjøp returbilletter før du drar — det finnes ingen butikker på stranden hvis du blir lengre.",
+    "Se %LINK:positanoBeaches|oversikt over strendene i Positano% for Arienzo-fasiliteter, skyttelbåter og alternative returer."
+  ],
+  "afterArticle": {
+    "scanToShareHeading": "Skann for å dele",
+    "scanToShareGalleryAlt": [
+      "Skann for å dele – Arienzo bussguide QR eller kort",
+      "Bar Internazionale-området og Chiesa Nuova bussholdeplass",
+      "Eksempel på bussrutekontekst for Arienzo-holdeplass"
+    ]
+  }
+}

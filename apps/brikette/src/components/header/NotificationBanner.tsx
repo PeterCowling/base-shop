@@ -6,17 +6,16 @@ import type { KeyboardEvent } from "react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
-import { X } from "@/icons";
 
 import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
+import { X } from "@/icons";
 import { translatePath } from "@/utils/translate-path";
 
 type NotificationBannerCopy = {
   message?: string;
   cta?: string;
-  openOffersLabel?: string;
 };
 
 type NotificationBannerLocaleModule = {
@@ -31,19 +30,10 @@ const createBannerSelector = <Value extends BannerDataValue>(
 ): `[${typeof BANNER_DATA_ATTRIBUTE}="${Value}"]` =>
   `[${BANNER_DATA_ATTRIBUTE}="${value}"]`;
 
-const SERVER_ROOT_SELECTOR = createBannerSelector("root");
 const SERVER_MESSAGE_SELECTOR = createBannerSelector("message");
 const SERVER_CTA_SELECTOR = createBannerSelector("cta");
 
 const ACTIVATION_KEYS = new Set(["Enter", " ", "Space", "Spacebar"]);
-
-const ensureResolvedValue = (value: string, placeholder: string, fallback: string): string => {
-  const trimmed = value.trim();
-  if (!trimmed || trimmed === placeholder) {
-    return fallback;
-  }
-  return trimmed;
-};
 
 type Invocable = (...args: never[]) => void;
 
@@ -97,18 +87,6 @@ function readServerText(selector: string, fallback: string): string {
   return value || fallback;
 }
 
-function readServerAttr(selector: string, attribute: string, fallback: string): string {
-  if (typeof document === "undefined" || typeof document.querySelector !== "function") {
-    return fallback;
-  }
-  const node = document.querySelector<HTMLElement>(selector);
-  if (!node) {
-    return fallback;
-  }
-  const value = node.getAttribute(attribute)?.trim();
-  return value || fallback;
-}
-
 function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX.Element | null {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -121,16 +99,10 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const dismissIconRef = useRef<HTMLSpanElement | null>(null);
   const rawMessage = ready ? ((t("message") as string) || "").trim() : "";
   const rawCta = ready ? ((t("cta") as string) || "").trim() : "";
-  const rawOpenLabel = ready ? ((t("openOffersLabel") as string) || "").trim() : "";
   const [ctaText, setCtaText] = useState<string>(() => readServerText(SERVER_CTA_SELECTOR, rawCta));
   const [messageText, setMessageText] = useState<string>(() =>
     readServerText(SERVER_MESSAGE_SELECTOR, rawMessage)
   );
-  const [openLabelText, setOpenLabelText] = useState<string>(() => {
-    const preferred = ensureResolvedValue(rawOpenLabel, "openOffersLabel", rawCta);
-    const serverLabel = readServerAttr(SERVER_ROOT_SELECTOR, "aria-label", preferred);
-    return ensureResolvedValue(serverLabel, "openOffersLabel", rawCta);
-  });
 
   /* check persisted state on mount */
   useEffect(() => {
@@ -146,8 +118,6 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     const looksUnresolved = (val: string, key: string) => !val || val === key;
     const messageUnresolved = looksUnresolved(rawMessage, "message");
     const ctaUnresolved = looksUnresolved(rawCta, "cta");
-    const openLabelUnresolved = looksUnresolved(rawOpenLabel, "openOffersLabel");
-
     if (!messageUnresolved) {
       setMessageText(rawMessage);
     }
@@ -156,13 +126,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
       setCtaText(rawCta);
     }
 
-    if (!openLabelUnresolved) {
-      setOpenLabelText(rawOpenLabel);
-    } else {
-      setOpenLabelText((current) => ensureResolvedValue(current, "openOffersLabel", rawCta));
-    }
-
-    if (!messageUnresolved && !ctaUnresolved && !openLabelUnresolved) {
+    if (!messageUnresolved && !ctaUnresolved) {
       return;
     }
 
@@ -178,14 +142,6 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
         if (ctaUnresolved) {
           setCtaText(String(data.cta ?? rawCta ?? ""));
         }
-        if (openLabelUnresolved) {
-          const fallbackOpenLabel = ensureResolvedValue(
-            String(data.openOffersLabel ?? data.cta ?? rawOpenLabel ?? rawCta ?? ""),
-            "openOffersLabel",
-            rawCta
-          );
-          setOpenLabelText(fallbackOpenLabel);
-        }
       })
       .catch(() => {
         /* keep server-rendered copy */
@@ -194,7 +150,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     return () => {
       alive = false;
     };
-  }, [lang, rawMessage, rawCta, rawOpenLabel]);
+  }, [lang, rawMessage, rawCta]);
 
   const openDeals = useCallback(
     () => router.push(`/${lang}/${translatePath("deals", lang)}`),
@@ -287,10 +243,9 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
         ref={setBannerRef}
         role="button"
         tabIndex={0}
-        aria-label={openLabelText || ctaText}
         onClick={openDeals}
         onKeyDown={handleActivation}
-        className="relative flex min-h-10 w-full min-w-10 cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 pe-16 text-brand-bg shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down dark:text-brand-text"
+        className="relative flex min-h-10 w-full min-w-10 cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 pe-16 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
       >
         <p className="text-balance text-center text-lg font-semibold leading-snug md:text-xl">
           <span data-notification-banner="message" className="font-semibold md:font-bold">
@@ -307,7 +262,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
           type="button"
           ref={registerDismissButton}
           aria-label={closeLabel}
-          className="absolute end-2 top-2 inline-flex size-11 items-center justify-center rounded-full bg-brand-bg/10 text-brand-bg transition hover:bg-brand-bg/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg dark:bg-brand-text/20 dark:text-brand-bg dark:hover:bg-brand-text/30"
+          className="absolute end-2 top-2 inline-flex size-11 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg"
         >
           <span
             aria-hidden="true"
@@ -326,9 +281,7 @@ export default memo(NotificationBanner);
 
 export const __test__ = {
   createBannerSelector,
-  ensureResolvedValue,
   callHandler,
   callDescriptorHandler,
   readServerText,
-  readServerAttr,
 };

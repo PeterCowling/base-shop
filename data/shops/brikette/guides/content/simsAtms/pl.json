@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Karty SIM/eSIM i bankomaty w Positano",
+    "description": "Gdzie kupić SIM lub eSIM, jak działa zasięg i na co uważać przy wypłatach z bankomatów."
+  },
+  "linkLabel": "Karty SIM/eSIM i bankomaty w Positano",
+  "intro": [
+    "Pozostań online i przygotuj gotówkę, konfigurując plan SIM przed przyjazdem i planując postoje w bankomatach z niższymi opłatami."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Aktywuj eSIM",
+      "body": [
+        "Załaduj włoski eSIM (TIM, Vodafone lub sprawdzone travel-friendly marki) korzystając z Wi-Fi w hostelu lub przed lotem; zasięg jest najsilniejszy na tarasach i wzdłuż SS163.",
+        "Wybierz minimum 10 GB na tydzień, jeśli słuchasz strumieniowo muzyki lub wrzucasz zdjęcia; śledź zużycie, bo doładowania w mieście są ograniczone."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Kupno fizycznej karty SIM",
+      "body": [
+        "Zrób objazd przez Sorrento, Salerno lub Neapol Centrale na sklepy operatorów; zabierz paszport i spodziewaj się starter packa 10–20 €, z rejestracją tożsamości.",
+        "Tabacchi czasem sprzedają gotowe do aktywacji karty SIM w szczycie sezonu, ale dostępność zmienia się — kup, gdy je widzisz."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "Strategia przy bankomatach",
+      "body": [
+        "Preferuj bankomaty bankowe, np. Intesa Sanpaolo, z opłatą 2–3 €; niezależne maszyny przy plaży mogą doliczać podwójne prowizje i oferować niekorzystny kurs.",
+        "Wypłacaj 100–150 € jednorazowo i dziel banknoty pomiędzy torbę dzienną a bezpieczną kieszeń w bagażu."
+      ]
+    }
+  ],
+  "tips": [
+    "Zrób zrzut ekranu kodów QR i danych aktywacyjnych, zanim wyjdziesz z Wi-Fi, by móc ponownie zainstalować eSIM po przywróceniu ustawień telefonu.",
+    "Noś przenośny powerbank — słaby sygnał zmusza telefon do mocniejszej pracy anten i szybciej rozładowuje akumulator."
+  ],
+  "faqs": [
+    {
+      "q": "Czy zasięg dociera do Capri i Amalfi?",
+      "a": [
+        "Tak, ale spodziewaj się wolniejszych prędkości na morzu; pobierz playlisty i mapy przed wejściem na prom."
+      ]
+    },
+    {
+      "q": "Are ATMs reliable late at night?",
+      "a": [
+        "Bankowe lobby są czynne 24/7, ale jeśli maszyna skończy gotówkę, rano musisz pojechać do Amalfi lub Sorrento."
+      ]
+    }
+  ]
+}

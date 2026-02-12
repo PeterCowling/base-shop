@@ -29,5 +29,6 @@
   "houseRules": "House rules",
   "cancellationPolicy": "Cancellation policy",
   "privacy": "Privacy policy",
-  "cookies": "Cookie policy"
+  "cookies": "Cookie policy",
+  "navAriaLabel": "Footer navigation"
 }

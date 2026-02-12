@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM und Geldautomaten in Positano",
+    "description": "Wo du SIM/eSIM bekommst, Hinweise zur Netzabdeckung und welche ATMs es mit welchen Gebühren gibt."
+  },
+  "linkLabel": "SIM/eSIM und Geldautomaten in Positano",
+  "intro": [
+    "Bleib online und flüssig, indem du deinen SIM-Tarif vor der Anreise einrichtest und Bargeldabhebungen mit niedrigen Gebühren einplanst."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "eSIM aktivieren",
+      "body": [
+        "Lade eine italienische eSIM (TIM, Vodafone oder seriöse Reiseanbieter), solange du im Hostel-WLAN bist oder bevor du losfliegst; die Abdeckung ist auf Terrassen und entlang der SS163 am stärksten.",
+        "Wähle mindestens 10 GB für eine Woche, wenn du Musik streamst oder Fotos hochlädst; behalte den Verbrauch im Blick, weil Aufladungen vor Ort begrenzt sind."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Physische SIM besorgen",
+      "body": [
+        "Mach einen Umweg über Sorrent, Salerno oder Napoli Centrale zu den Shops der Mobilfunkanbieter; nimm deinen Pass mit und rechne mit einem Starterpaket für 10–20 € inklusive ID-Registrierung.",
+        "Tabacchi verkaufen in der Hochsaison manchmal sofort aktivierbare SIMs, aber die Verfügbarkeit schwankt – kauf sie, sobald du eine siehst."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "ATM-Strategie",
+      "body": [
+        "Bevorzuge Bankautomaten wie Intesa Sanpaolo mit Gebühren von 2–3 €; unabhängige Geräte in Strandnähe verlangen oft das Doppelte bei schlechten Wechselkursen.",
+        "Heb jeweils 100–150 € ab und verteile die Scheine zwischen Tagesrucksack und einem sicheren Fach im Gepäck."
+      ]
+    }
+  ],
+  "tips": [
+    "Mach einen Screenshot von QR-Codes und Aktivierungsdetails, bevor du das WLAN verlässt, damit du die eSIM neu installieren kannst, falls dein Handy zurückgesetzt wird.",
+    "Nimm eine Powerbank mit – in Gebieten mit schwachem Empfang erhöht sich der Stromverbrauch."
+  ],
+  "faqs": [
+    {
+      "q": "Erreicht die Netzabdeckung Capri und Amalfi?",
+      "a": [
+        "Ja, aber offshore langsamer – lade Playlists und Karten herunter, bevor du an Bord der Fähre gehst."
+      ]
+    },
+    {
+      "q": "Sind Geldautomaten spät in der Nacht zuverlässig?",
+      "a": [
+        "Bankfoyers sind rund um die Uhr geöffnet; wenn ein Automat leer ist, musst du am nächsten Morgen nach Amalfi oder Sorrent ausweichen."
+      ]
+    }
+  ]
+}

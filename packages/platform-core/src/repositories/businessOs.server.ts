@@ -31,16 +31,21 @@ export {
 
 // Ideas repository
 export {
+  countIdeas,
   getIdeaById,
   type Idea,
   type IdeaFrontmatter,
   IdeaFrontmatterSchema,
   type IdeaLocation,
   IdeaLocationSchema,
+  type IdeaPriority,
+  IdeaPrioritySchema,
   type IdeaRow,
   IdeaSchema,
   type IdeaStatus,
   IdeaStatusSchema,
+  listIdeas,
+  type ListIdeasOptions,
   listInboxIdeas,
   listWorkedIdeas,
   updateIdeaStatus,

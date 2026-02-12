@@ -2,31 +2,29 @@
  * Tests for TASK-04: Add explicit transport drop-in block for Chiesa Nuova
  *
  * Verifies that the transportDropIn block renders the Chiesa Nuova component.
- *
- * @skip Transport drop-in feature has been dropped.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { render, screen } from "@testing-library/react";
+ 
 import type { ReactNode } from "react";
+import { render, screen } from "@testing-library/react";
 
-import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
-import { applyTransportDropInBlock } from "@/routes/guides/blocks/handlers/transportDropInBlock";
 import { BlockAccumulator } from "@/routes/guides/blocks/handlers/BlockAccumulator";
-import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import { applyTransportDropInBlock } from "@/routes/guides/blocks/handlers/transportDropInBlock";
 import type { TransportDropInBlockOptions } from "@/routes/guides/blocks/types";
+import type { GuideManifestEntry } from "@/routes/guides/guide-manifest";
+import type { GuideSeoTemplateContext } from "@/routes/guides/guide-seo/types";
 
 // Mock the Chiesa Nuova component
 jest.mock("@/routes/how-to-get-here/chiesaNuovaArrivals/DropIn", () => ({
   __esModule: true,
   default: ({ lang }: { lang: string }) => (
-    <div data-testid="chiesa-nuova-dropin" data-lang={lang}>
+    <div data-cy="chiesa-nuova-dropin" data-lang={lang}>
       Chiesa Nuova Arrivals Drop-in for {lang}
     </div>
   ),
 }));
 
-describe.skip("transportDropIn block handler (TASK-04)", () => {
+describe("transportDropIn block handler (TASK-04)", () => {
   let mockContext: GuideSeoTemplateContext;
   let mockManifest: GuideManifestEntry;
 
@@ -85,7 +83,7 @@ describe.skip("transportDropIn block handler (TASK-04)", () => {
     const afterArticle = template.afterArticle as (ctx: GuideSeoTemplateContext) => ReactNode;
     const result = afterArticle(italianContext);
 
-    const { container } = render(<div>{result}</div>);
+    render(<div>{result}</div>);
 
     const dropIn = screen.getByTestId("chiesa-nuova-dropin");
     expect(dropIn).toHaveAttribute("data-lang", "it");
@@ -105,7 +103,7 @@ describe.skip("transportDropIn block handler (TASK-04)", () => {
     expect(template.articleExtras).toBeUndefined();
   });
 
-  it("returns null for unsupported component", () => {
+  it("renders no drop-in for unsupported component", () => {
     const options = {
       component: "unsupportedComponent",
     } as TransportDropInBlockOptions;
@@ -116,7 +114,7 @@ describe.skip("transportDropIn block handler (TASK-04)", () => {
 
     const afterArticle = template.afterArticle as (ctx: GuideSeoTemplateContext) => ReactNode;
     const result = afterArticle(mockContext);
-
-    expect(result).toBeNull();
+    render(<div>{result}</div>);
+    expect(screen.queryByTestId("chiesa-nuova-dropin")).not.toBeInTheDocument();
   });
 });

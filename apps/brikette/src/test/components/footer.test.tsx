@@ -53,6 +53,7 @@ jest.mock("react-i18next", () => {
     assistance: "Help",
     backToTop: "Back to top",
     noPhoneNotice: "We do not conduct business by telephone. Please contact us via email.",
+    navAriaLabel: "Footer navigation",
   };
 
   const i18nStub = {

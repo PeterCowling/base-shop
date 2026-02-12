@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano Photography Guide: Best Spots",
+    "description": "Mapeie os ângulos, os melhores horários e a etiqueta para obter ótimas fotos."
+  },
+  "linkLabel": "Guia de fotografia em Positano: melhores spots",
+  "intro": [
+    "Fotografe Positano como um profissional: ângulos icónicos, planeamento de luz e etiqueta para fotografar com respeito."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Ângulos clássicos",
+      "body": [
+        "Fotografe do cais para captar a encosta completa; use grande-angular para incluir a cúpula da Santa Maria Assunta.",
+        "Caminhe pela Via Cristoforo Colombo em busca de varandas em camadas e buganvílias a enquadrar o mar."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Luz e timing",
+      "body": [
+        "O nascer do sol (~06:00 no verão) banha a falésia com luz quente — chegue cedo para evitar barcos no enquadramento.",
+        "A blue hour após o pôr do sol dá brilho às luzes da vila; leve mini tripé ou grampo para exposições longas."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta e backups",
+      "body": [
+        "Respeite terraços privados e evite bloquear escadas — afaste-se rapidamente após fotografar.",
+        "Faça backups na nuvem ou em discos portáteis todas as noites; a humidade embacia lentes, por isso leve saquinhos de sílica."
+      ]
+    }
+  ],
+  "tips": [
+    "Traga filtro polarizador para controlar o brilho do mar ao meio-dia.",
+    "Tenha pano de microfibra à mão — spray de mar e humidade acumulam-se rápido."
+  ],
+  "faqs": [
+    {
+      "q": "Posso usar drone para fotos aéreas?",
+      "a": [
+        "O uso de drone é restrito; solicite permissão com antecedência e respeite zonas de exclusão perto da vila e das ilhas Li Galli."
+      ]
+    },
+    {
+      "q": "Onde imprimir fotos localmente?",
+      "a": [
+        "Laboratórios em Sorrento e Amalfi entregam no mesmo dia; leve USB ou cartão SD com as imagens."
+      ]
+    }
+  ]
+}

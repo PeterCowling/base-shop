@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Foodie-Guide: Neapel & Amalfiküste",
+    "description": "Was du wo isst – Klassiker und lokale Spezialitäten."
+  },
+  "linkLabel": "Foodie-Guide: Neapel & Amalfiküste",
+  "intro": [
+    "Kulinarischer Streifzug zwischen Neapel und der Amalfiküste: Streetfood, Slow-Food und Mitbringsel, die in den Rucksack passen."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Neapel: Must-Eats",
+      "body": [
+        "Starte am Mercato di Pignasecca für frittierten Cuoppo, Pizza a portafoglio und Sfogliatella frisch aus dem Ofen.",
+        "Reserviere am Abend eine Pizzeria verace (Sorbillo, Da Michele) und probiere Limoncello oder Aperol am Lungomare."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Spezialitäten der Küste",
+      "body": [
+        "Bestell in Positano Scialatielli ai frutti di mare und Delizia al limone; frag nach Hauswein aus Tramonti oder Furore.",
+        "In Amalfi lohnt sich Colatura di alici aus Cetara als Mitbringsel – wenige Tropfen verfeinern Pasta, Gemüse und Fisch."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Streetfood & Märkte",
+      "body": [
+        "Morgens verkaufen Stände an der Piazza dei Mulini frische Focaccia, Obst und Mozzarella – perfekt für Picknicks.",
+        "Auf der Rückfahrt lohnt sich ein Stopp in Sorrent für Agrumi, Torrone und Limoncello aus kleinen Destillerien."
+      ]
+    }
+  ],
+  "tips": [
+    "Frag nach dem Menü del giorno: viele Trattorien bieten Vorspeise, Pasta und Kaffee für unter 20 €.",
+    "Pack einen leichten Beutel für Delikatessen – Vakuumverpackungen sparen Gewicht und halten länger frisch."
+  ],
+  "faqs": [
+    {
+      "q": "Brauche ich Reservierungen für beliebte Lokale?",
+      "a": [
+        "Ja, besonders abends in Neapel und an Wochenenden an der Küste. Mittags oder in der Zwischensaison klappt oft Walk-in."
+      ]
+    },
+    {
+      "q": "Kann ich Food-Touren auch vegetarisch genießen?",
+      "a": [
+        "Ja – avisier den Guide vorab. Viele Touren ersetzen Fleischgerichte durch Bufala-Mozzarella, Gemüse-Antipasti und Süßspeisen."
+      ]
+    }
+  ]
+}

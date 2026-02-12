@@ -1,0 +1,184 @@
+{
+  "arrival": {
+    "badge": "[IT] Badge",
+    "cashAmount": "[IT] Cash Amount",
+    "cashReady": "[IT] Cash Ready",
+    "cashReminder": "[IT] Cash Reminder",
+    "cityTaxLabel": "[IT] City Tax Label",
+    "codeStaleWarning": "[IT] Code Stale Warning",
+    "codeUnavailable": "[IT] Code Unavailable",
+    "depositLabel": "[IT] Deposit Label",
+    "findUs": "[IT] Find Us",
+    "generatingCode": "[IT] Generating Code",
+    "idNote": "[IT] Id Note",
+    "idReminder": "[IT] Id Reminder",
+    "offlineNoCache": "[IT] Offline No Cache",
+    "refreshCode": "[IT] Refresh Code",
+    "showAtReception": "[IT] Show At Reception",
+    "step1": "[IT] Step1",
+    "step2": "[IT] Step2",
+    "step3": "[IT] Step3",
+    "step4": "[IT] Step4",
+    "subtitle": "Sottotitolo",
+    "welcome": "Benvenuto",
+    "whatHappensNext": "[IT] What Happens Next"
+  },
+  "calendar": {
+    "addToCalendar": "[IT] Add To Calendar",
+    "downloading": "[IT] Downloading"
+  },
+  "cash": {
+    "back": "Indietro",
+    "cardNote": "[IT] Card Note",
+    "cashOnly": "[IT] Cash Only",
+    "cityTax": {
+      "label": "Etichetta",
+      "perNight": "[IT] Per Night"
+    },
+    "confirm": {
+      "cityTax": "[IT] City Tax",
+      "deposit": "[IT] Deposit"
+    },
+    "confirmPartial": "[IT] Confirm Partial",
+    "deposit": {
+      "label": "Etichetta",
+      "refundable": "[IT] Refundable"
+    },
+    "done": "Fatto",
+    "info": {
+      "message": "Messaggio"
+    },
+    "subtitle": "Sottotitolo",
+    "title": "Titolo",
+    "total": "[IT] Total"
+  },
+  "checkIn": {
+    "codeCopied": "[IT] Code Copied",
+    "dayLeft": "[IT] Day Left",
+    "daysLeft": "[IT] Days Left",
+    "label": "Etichetta",
+    "qrAlt": "[IT] Qr Alt",
+    "qrError": "[IT] Qr Error",
+    "today": "Oggi",
+    "yourCode": "[IT] Your Code"
+  },
+  "checklist": {
+    "cashPrepared": {
+      "amount": "[IT] Amount"
+    },
+    "completed": "Completato",
+    "title": "Titolo"
+  },
+  "eta": {
+    "back": "Indietro",
+    "confirm": "Conferma",
+    "lateArrival": {
+      "message": "Messaggio",
+      "title": "Titolo"
+    },
+    "methodLabel": "[IT] Method Label",
+    "noteLabel": "[IT] Note Label",
+    "notePlaceholder": "[IT] Note Placeholder",
+    "subtitle": "Sottotitolo",
+    "timeLabel": "[IT] Time Label",
+    "title": "Titolo"
+  },
+  "header": {
+    "arrivalDay": "[IT] Arrival Day",
+    "arrivalDaySubtitle": "[IT] Arrival Day Subtitle",
+    "preArrival": "[IT] Pre Arrival",
+    "subtitle": "Sottotitolo",
+    "welcome": "Benvenuto",
+    "welcomeArrivalDay": "[IT] Welcome Arrival Day"
+  },
+  "location": {
+    "address": "Indirizzo"
+  },
+  "nextAction": {
+    "allComplete": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "cashPrepared": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "descriptionWithAmount": "[IT] Description With Amount",
+      "title": "Titolo"
+    },
+    "default": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "etaConfirmed": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "locationSaved": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "routePlanned": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "title": "Titolo"
+    },
+    "rulesReviewed": {
+      "button": "[IT] Button",
+      "description": "Descrizione",
+      "title": "Titolo"
+    }
+  },
+  "readiness": {
+    "score": "Punteggio"
+  },
+  "routes": {
+    "arrival": "[IT] Arrival",
+    "back": "Indietro",
+    "cost": "[IT] Cost",
+    "fromOrigin": "[IT] From Origin",
+    "importantNotes": "[IT] Important Notes",
+    "journey": "[IT] Journey",
+    "noRoutes": "[IT] No Routes",
+    "recommended": "[IT] Recommended",
+    "routeSaved": "[IT] Route Saved",
+    "saveRoute": "[IT] Save Route",
+    "savedRoute": "[IT] Saved Route",
+    "selectRoute": "[IT] Select Route",
+    "subtitle": "Sottotitolo",
+    "title": "Titolo",
+    "totalTime": "[IT] Total Time",
+    "viewFullGuide": "[IT] View Full Guide"
+  },
+  "staffLookup": {
+    "back": "Indietro",
+    "code": "[IT] Code",
+    "dates": "[IT] Dates",
+    "eta": "[IT] Eta",
+    "guestName": "[IT] Guest Name",
+    "loading": "Caricamento",
+    "nights": "Notti",
+    "noCode": "[IT] No Code",
+    "payment": "[IT] Payment",
+    "placeholder": "[IT] Placeholder",
+    "room": "Camera",
+    "subtitle": "Sottotitolo",
+    "title": "Titolo",
+    "tryAgain": "Riprova"
+  },
+  "stay": {
+    "location": "Posizione",
+    "night": "Notte",
+    "nights": "Notti"
+  },
+  "welcome": {
+    "subtitle": "Sottotitolo",
+    "tapToDismiss": "[IT] Tap To Dismiss",
+    "tip1": "[IT] Tip1",
+    "tip2": "[IT] Tip2",
+    "title": "Titolo"
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Positano-instagramsteder (uten folkemengdene)",
+    "description": "Fotogene steder med beste tidspunkt for å unngå kø, samt undervurderte alternativer."
+  },
+  "linkLabel": "Positano-instagramsteder (uten folkemengdene)",
+  "intro": [
+    "Finn fotogene steder i Positano uten folkemengdene – med riktig timing og alternative vinkler."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klassiske postkortbilder",
+      "body": [
+        "Ta bilder fra kirken Santa Maria Assunta-trinn like etter soloppgang; stranden er tom og kuppelen lyser varm.",
+        "Gå til fergekaien for en vidvinkelutsikt tilbake mot klippesiden – ankom før kl. 09.00 når dagsturskøer dannes."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Undervurderte vinkler",
+      "body": [
+        "Klatre til utsiktspunktet på Via Trara Genoino ovenfor Fornillo for et lagvis skudd av fiskebåter og pastellhus.",
+        "Kjør den lokale bussen til Nocelle, og ta deretter kysten fra Gudestien-terrassen; panoramaet er uslåelig på klare morgener."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour-oppsett",
+      "body": [
+        "Ta en plass på Via Cristoforo Colombo-benkene omtrent 45 minutter før solnedgang; solen faller bak Li Galli-øyene om sommeren.",
+        "Gå til Laurito-stranden for silhuetter av Positanos skyline – trappene er bratte, så bruk gripende sko og ta med en hodelykt på turen tilbake."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Fotoetikette",
+      "body": [
+        "Hold stativene kompakte og gå til side når du har tatt en ramme, slik at trapper forblir farbare.",
+        "Unngå droner innenfor byens grenser; Italienske forskrifter krever tillatelser og bøter er høye når vakter oppdager fly uten lisens."
+      ]
+    }
+  ],
+  "tips": [
+    "Vis hensyn til lokalbefolkning og butikker; ikke blokker innganger i smale gater.",
+    "Ta med ekstra batteri og plass på minnekortet – du er ofte borte fra lademuligheter."
+  ],
+  "faqs": [
+    {
+      "q": "Trenger jeg stativ?",
+      "a": [
+        "For nattebilder eller blåtime er et lett stativ nyttig; ellers holder håndholdt med god stabilisering."
+      ]
+    },
+    {
+      "q": "Er droner tillatt?",
+      "a": [
+        "Droner krever tillatelse og er forbudt over tett bebyggelse; bruk dem kun med gyldig lisens og klarering."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Positano er fotogent fra nesten alle vinkler - men de mest populære stedene er travle store deler av dagen. Slik fanger du de klassiske utsiktene uten lange køer, pluss undervurderte alternativer.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Klassikerne (timing betyr noe)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Undervurderte alternativer"
+      },
+      {
+        "href": "#sunset",
+        "label": "Solnedgangsvalg"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etikette og lokale tips"
+      },
+      {
+        "href": "#faqs",
+        "label": "Vanlige spørsmål"
+      }
+    ],
+    "classics": {
+      "heading": "Klassikerne (timing betyr noe)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Ankom ved soloppgang for tomme kaier og rolig vann; unngå køer midt på morgenen."
+        },
+        {
+          "title": "Fornillo-stien",
+          "description": "Slak kystgangvei med lagdelt utsikt over klippene; best tidlig eller like etter solnedgang."
+        },
+        {
+          "title": "Svingene på Via Pasitea",
+          "description": "Forhøyede kurver gir postkortet vinkel uten folkemengder. Respekter trafikken og hold deg unna veien."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Undervurderte alternativer",
+      "items": [
+        {
+          "title": "Terrassene ved Chiesa Nuova",
+          "description": "Gylden time over Fornillo; minimal folkemengde og en kort spasertur fra vandrerhjemmet."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Feiende rygglinjer; lys er best tidlig."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Se listen for varierte komposisjoner."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Solnedgangsvalg",
+      "paragraphs": [
+        "For en publikumsfri golden hour, ta turen til øvre Via Pasitea-gater eller terrassene i nærheten av Chiesa Nuova.",
+        "Hvis du foretrekker strandsilhuetter, ankom Fornillo 30–45 minutter før solnedgang."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etikette og lokale tips",
+      "items": [
+        "Ikke blokker smale trapper eller veier; ta skuddet og gå til side.",
+        "Respekter privat eiendom og unngå klatrevegger/tak.",
+        "Bruk et lite stativ off-peak; unngå travle stier midt på dagen."
+      ]
+    },
+    "faqs": {
+      "heading": "Vanlige spørsmål",
+      "items": [
+        {
+          "summary": "Hva er beste tidspunkt for bilder?",
+          "body": "Soloppgang for tommere scener; golden hour for varme toner og mykere skygger."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Trenger jeg dronetillatelse?",
+      "body": "Italia har strenge droneregler og mange flyforbudssoner. Sjekk alltid ENAC-veiledning og lokale forskrifter; unngå å fly nær folkemengder."
+    },
+    "galleryAlt": [
+      "Positano ovenfra",
+      "Kystpanorama"
+    ],
+    "galleryFallbackAlt": "Naturskjønn utsikt over Positanokysten"
+  }
+}

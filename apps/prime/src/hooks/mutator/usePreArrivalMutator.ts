@@ -11,12 +11,15 @@
  * - Save route selection
  */
 
+import { useCallback, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+
 import { ref, update } from '@/services/firebase';
 import logger from '@/utils/logger';
-import { useCallback, useState } from 'react';
+
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type {
+  ArrivalConfidence,
   ChecklistProgress,
   EtaMethod,
   PreArrivalData,
@@ -48,6 +51,11 @@ export interface UsePreArrivalMutatorReturn {
   setCashReadyDeposit: (ready: boolean) => Promise<void>;
   /** Save a route slug */
   saveRoute: (routeSlug: string | null) => Promise<void>;
+  /** Save onboarding personalization context */
+  setPersonalization: (
+    method: EtaMethod | null,
+    confidence: ArrivalConfidence | null,
+  ) => Promise<void>;
   /** Loading state */
   isLoading: boolean;
   /** Error state */
@@ -115,20 +123,6 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
   );
 
   /**
-   * Update a single checklist item.
-   */
-  const updateChecklistItem = useCallback(
-    async (item: keyof ChecklistProgress, completed: boolean): Promise<void> => {
-      await updatePreArrivalData({
-        checklistProgress: {
-          [item]: completed,
-        } as Partial<ChecklistProgress>,
-      } as Partial<PreArrivalData>);
-    },
-    [updatePreArrivalData],
-  );
-
-  /**
    * Update multiple checklist items at once.
    */
   const updateChecklistItems = useCallback(
@@ -171,6 +165,18 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
       }
     },
     [uuid, database, queryClient],
+  );
+
+  /**
+   * Update a single checklist item.
+   */
+  const updateChecklistItem = useCallback(
+    async (item: keyof ChecklistProgress, completed: boolean): Promise<void> => {
+      await updateChecklistItems({
+        [item]: completed,
+      });
+    },
+    [updateChecklistItems],
   );
 
   /**
@@ -238,6 +244,22 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
     [updatePreArrivalData, updateChecklistItem],
   );
 
+  /**
+   * Persist onboarding personalization preferences.
+   */
+  const setPersonalization = useCallback(
+    async (
+      method: EtaMethod | null,
+      confidence: ArrivalConfidence | null,
+    ): Promise<void> => {
+      await updatePreArrivalData({
+        arrivalMethodPreference: method,
+        arrivalConfidence: confidence,
+      });
+    },
+    [updatePreArrivalData],
+  );
+
   return {
     updateChecklistItem,
     updateChecklistItems,
@@ -245,6 +267,7 @@ export function usePreArrivalMutator(): UsePreArrivalMutatorReturn {
     setCashReadyCityTax,
     setCashReadyDeposit,
     saveRoute,
+    setPersonalization,
     isLoading,
     isError,
     isSuccess,

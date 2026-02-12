@@ -11,27 +11,8 @@ import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import { guidePath } from "@/routes.guides-helpers";
-import type { SlugKey } from "@/types/slugs";
+import { STATIC_EXPORT_SECTION_KEYS } from "@/routing/sectionSegments";
 import { getSlug } from "@/utils/slug";
-
-/** Static sections with localized slugs (routes without additional dynamic segments) */
-const STATIC_SECTIONS: SlugKey[] = [
-  "about",
-  "rooms",
-  "deals",
-  "careers",
-  "breakfastMenu",
-  "barMenu",
-  "terms",
-  "houseRules",
-  "privacyPolicy",
-  "cookiePolicy",
-  "assistance",
-  "experiences",
-  "howToGetHere",
-  "book",
-  "apartment",
-];
 
 /**
  * Lists all valid App Router URLs for the brikette app.
@@ -47,7 +28,7 @@ export function listAppRouterUrls(): string[] {
     urls.push(`/${lang}`);
 
     // Static sections (with localized slugs)
-    for (const key of STATIC_SECTIONS) {
+    for (const key of STATIC_EXPORT_SECTION_KEYS) {
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
 
@@ -62,7 +43,7 @@ export function listAppRouterUrls(): string[] {
 
     // Dynamic: Guides (namespace-aware)
     const experiencesSlug = getSlug("experiences", lang);
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "published");
+    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
     for (const guide of publishedGuides) {
       urls.push(guidePath(lang, guide.key));
     }
@@ -97,15 +78,15 @@ export function getUrlCounts(): Record<string, number> {
 
   return {
     home: langCount,
-    staticSections: langCount * STATIC_SECTIONS.length,
+    staticSections: langCount * STATIC_EXPORT_SECTION_KEYS.length,
     draft: langCount,
     rooms: langCount * roomsData.length,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
-    guides: langCount * GUIDES_INDEX.filter((g) => g.status === "published").length,
+    guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
     // howToGetHere now enumerated from guide key list (TASK-05)
     howToGetHere: langCount * HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.length,
-    assistance: langCount * ASSISTANCE_GUIDES.filter((g) => g.status === "published").length,
+    assistance: langCount * ASSISTANCE_GUIDES.filter((g) => g.status === "live").length,
     total: listAppRouterUrls().length,
   };
 }

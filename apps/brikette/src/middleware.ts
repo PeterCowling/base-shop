@@ -9,31 +9,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { type AppLanguage,i18nConfig } from "./i18n.config";
+import { INTERNAL_SEGMENT_BY_KEY, TOP_LEVEL_SEGMENT_KEYS } from "./routing/sectionSegments";
 import { SLUGS } from "./slug-map";
 
 type SlugKey = keyof typeof SLUGS;
-
-// Canonical (internal) segment names as used by `src/app/[lang]/...` folders.
-// NOTE: This does not have to match the English slug (e.g. assistance => /help).
-const INTERNAL_SEGMENT_BY_KEY: Record<SlugKey, string> = {
-  rooms: "rooms",
-  deals: "deals",
-  careers: "careers",
-  about: "about",
-  assistance: "assistance",
-  experiences: "experiences",
-  howToGetHere: "how-to-get-here",
-  apartment: "apartment",
-  book: "book",
-  guides: "guides",
-  guidesTags: "tags",
-  terms: "terms",
-  houseRules: "house-rules",
-  privacyPolicy: "privacy-policy",
-  cookiePolicy: "cookie-policy",
-  breakfastMenu: "breakfast-menu",
-  barMenu: "bar-menu",
-};
 
 const SUPPORTED_LANGS = new Set(
   (i18nConfig.supportedLngs as readonly string[]).map((l) => l.toLowerCase()),
@@ -56,30 +35,23 @@ for (const key of Object.keys(SLUGS) as SlugKey[]) {
 function resolveTopLevelKey(lang: AppLanguage, segment: string): SlugKey | null {
   const normalized = segment.toLowerCase();
   // Only check keys that represent the first path segment after /:lang.
-  const candidates: SlugKey[] = [
-    "rooms",
-    "deals",
-    "careers",
-    "about",
-    "assistance",
-    "experiences",
-    "howToGetHere",
-    "apartment",
-    "book",
-    "guides",
-    "terms",
-    "houseRules",
-    "privacyPolicy",
-    "cookiePolicy",
-    "breakfastMenu",
-    "barMenu",
-  ];
-
-  for (const key of candidates) {
+  for (const key of TOP_LEVEL_SEGMENT_KEYS) {
     const expected = SLUGS[key][lang];
     if (expected.toLowerCase() === normalized) return key;
   }
   return null;
+}
+
+type SegmentWithSuffix = {
+  core: string;
+  suffix: "" | ".txt";
+};
+
+function splitSegmentSuffix(segment: string): SegmentWithSuffix {
+  if (segment.toLowerCase().endsWith(".txt")) {
+    return { core: segment.slice(0, -4), suffix: ".txt" };
+  }
+  return { core: segment, suffix: "" };
 }
 
 export function middleware(request: NextRequest) {
@@ -98,17 +70,21 @@ export function middleware(request: NextRequest) {
   const appLang = lang as AppLanguage;
 
   const nextParts = [...parts];
+  const originalTopSegment = nextParts[1] ?? "";
+  const { core: topSegmentCore, suffix: topSegmentSuffix } = splitSegmentSuffix(originalTopSegment);
 
   // Rewrite the first segment (after lang) if it's a localized slug.
-  const key = resolveTopLevelKey(appLang, nextParts[1] ?? "");
+  const key = resolveTopLevelKey(appLang, topSegmentCore);
   if (key) {
+    // RSC probe requests may include a `.txt` suffix (e.g. /en/help.txt?_rsc=...).
+    // App Router routes are segment-based, so we must rewrite to the canonical
+    // internal segment without the suffix to avoid deterministic 404 noise.
     nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
   } else {
     // TASK-SEO-3: Detect English slug or internal segment in wrong locale
     // If the first segment is NOT a localized slug for this language, check if
     // it's an English slug or internal segment that should be redirected.
-    const segment = nextParts[1] ?? "";
-    const normalizedSegment = segment.toLowerCase();
+    const normalizedSegment = topSegmentCore.toLowerCase();
 
     // Check if this is an English slug (e.g., /de/rooms should redirect to /de/zimmer)
     let wrongKey: SlugKey | undefined = ENGLISH_SLUG_TO_KEY.get(normalizedSegment);
@@ -122,9 +98,12 @@ export function middleware(request: NextRequest) {
     if (wrongKey) {
       const correctSlug = SLUGS[wrongKey][appLang];
       if (correctSlug.toLowerCase() !== normalizedSegment) {
-        // Build redirect URL with correct localized slug + trailing slash
+        // Build redirect URL with correct localized slug. Preserve .txt suffixes
+        // used by framework prefetch probes (e.g. /en/help.txt).
+        const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
+        const trailingSlash = topSegmentSuffix ? "" : "/";
         const remainingPath = nextParts.slice(2).join("/");
-        const redirectPath = `/${appLang}/${correctSlug}${remainingPath ? `/${remainingPath}` : ""}/`;
+        const redirectPath = `/${appLang}/${correctedSegment}${remainingPath ? `/${remainingPath}` : ""}${trailingSlash}`;
 
         // Construct redirect URL preserving query params and hash
         const redirectUrl = new URL(
@@ -161,4 +140,3 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: ["/:lang([a-z]{2})/:path*"],
 };
-

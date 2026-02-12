@@ -1,4 +1,4 @@
-name: Auto-close Failing Zero-Touch PRs
+name: Auto-close Failing Pipeline PRs
 
 on:
   workflow_run:
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            const label = "zero-touch";
+            const label = "pipeline";
             const keepOpenLabel = "keep-open";
             const { workflow_run } = context.payload;
             if (!workflow_run.pull_requests || workflow_run.pull_requests.length === 0) {
@@ -50,7 +50,7 @@ jobs:
                 owner,
                 repo,
                 issue_number: number,
-                body: `Auto-closed: workflow **${workflow_run.name}** failed on ${headSha.slice(0, 7)}.`,
+                body: `Auto-closed pipeline PR: workflow **${workflow_run.name}** failed on ${headSha.slice(0, 7)}.`,
               });
               await github.rest.pulls.update({
                 owner,

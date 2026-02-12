@@ -38,7 +38,7 @@ function EmailBookingButton({
   const { logActivity } = useActivitiesMutations();
 
   // Only show timestamps for the initial booking creation (code=1)
-  // and when the booking email was sent (code=26).
+  // and when the booking email draft was created (code=26).
   const EMAIL_CODES = useMemo<number[]>(() => [1, 26], []);
 
   const emailTimes = useMemo<string[]>(() => {
@@ -66,13 +66,13 @@ function EmailBookingButton({
 
     try {
       await sendBookingEmail(bookingRef, emailMap);
-      // Log activity 26 for each occupant we emailed
+      // Log activity 26 for each occupant included in the draft
       await Promise.all(
         Object.keys(emailMap).map((occId) => logActivity(occId, 26))
       );
-      showToast("Email sent", "success");
+      showToast("Email draft created", "success");
     } catch {
-      showToast("Failed to send email", "error");
+      showToast("Failed to create email draft", "error");
     }
   }, [bookingRef, guestsDetails, sendBookingEmail, logActivity]);
 
@@ -95,7 +95,7 @@ function EmailBookingButton({
         onClick={handleClick}
         disabled={loading}
         className="min-h-[55px] px-4 bg-primary-main text-white rounded-md hover:bg-primary-dark transition-colors flex items-center justify-center"
-        title="Send booking details"
+        title="Create booking email draft"
       >
         {loading ? "..." : <FontAwesomeIcon icon={faThLarge} size="lg" />}
       </button>

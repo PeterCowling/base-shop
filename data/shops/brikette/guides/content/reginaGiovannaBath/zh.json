@@ -1,0 +1,193 @@
+{
+  "seo": {
+    "title": "Bagni della Regina Giovanna（Sorrento）海滩指南",
+    "description": "面向青旅住客的 Bagni della Regina Giovanna（Sorrento）攻略：bus 怎么去、要带什么、下水安全和简单的一日安排。"
+  },
+  "lastUpdated": "2026-01-30T00:00:00.000Z",
+  "linkLabel": "Regina Giovanna：罗马遗迹与天然泳池",
+  "intro": [
+    "Bagni della Regina Giovanna 位于 Sorrento 半岛，是一处塌陷的海蚀洞，清澈海水流入一个被岩壁包围的天然泳池。这里没有 beach clubs 或 snack bars —— 只有石灰岩峭壁、翡翠色浅水，以及一座天然拱门，让阳光明亮的清晨水面格外发光。",
+    "本指南为青旅住客而写。如果你想要从 Positano 出发的逐步路线（购票、换乘点以及最后那段下坡小路），先看 %LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna 路线% ，再回到这里了解“现场是什么感觉”。建议把它安排成两段式：趁岩石平台还安静时一早下水，然后回到 Sorrento 吃午饭、逛一逛，再搭 %LINK:sorrentoPositanoBus|Sorrento → Positano bus% 回去（海况平稳时也可以搭 %LINK:sorrentoPositanoFerry|Sorrento → Positano ferry%）。"
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "为什么去"
+    },
+    {
+      "href": "#getting-there",
+      "label": "怎么去"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "带什么"
+    },
+    {
+      "href": "#swimming",
+      "label": "下水与安全"
+    },
+    {
+      "href": "#pair-it",
+      "label": "与 Sorrento 搭配"
+    }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "为什么 Regina Giovanna Bath 值得绕一下",
+      "body": [
+        "泳池上方的罗马别墅遗址，框住了从海面经天然拱门涌入的蓝绿色海水。海面平静时，即便外海看起来有点浪，这个池子依然相对避风——像是在石灰岩里凿出来的一间“秘密泳池房”。",
+        "这里不像 Positano 的 lidos，需要付费；全年免费。但代价也明显：没有遮阳租赁、没有厕所、没有救生员，而且通往水边的路是岩石地形。行李打包得当，这是在 Sorrento 附近不用坐船也能拥有的最难忘的一次游泳。Brikette staff 建议把它当作日出或清晨任务：平台很窄，人多了就不再轻松。下水、游一会儿、拍照，然后在中午热浪把回程变成“惩罚”之前离开。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/reginaGiovannaBath.webp",
+          "width": 760,
+          "height": 516,
+          "alt": "Bagni della Regina Giovanna natural pool in Sorrento, seen from above with swimmers in clear turquoise water",
+          "caption": "This is the spot: a sheltered natural pool by the Roman ruins — best enjoyed early before the ledges fill up"
+        }
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "怎么坐 bus 到步道入口",
+      "body": [
+        "从 Hostel Brikette 出发，先搭 SITA bus 到 Sorrento，再换乘开往 Capo di Sorrento 方向的 EAV 本地 bus。如果不确定在哪里换乘，请使用完整路线指南：%LINK:hostelBriketteToReginaGiovannaBath|Hostel Brikette → Bagni della Regina Giovanna%（包含换乘点和“最后一公里”的步行）。",
+        "到了 Via Capo 之后，注意寻找写着“Bagni della Regina Giovanna”的指示牌。下坡小路一开始是铺装路，接近遗址时会变得更粗糙。大约 10 分钟到达别墅遗址区域，再用 5 分钟走下石阶到海湾。",
+        "Brikette staff 小贴士：下到水边前先截屏保存回程选项。靠近岩石处信号可能不稳定，你不想在日落时靠猜。傍晚 buses 会变少——尤其在非旺季，尽量提前、留出余量回到公路边。"
+      ],
+      "images": [
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image3.png",
+          "alt": "Bar Internazionale in Positano (Chiesa Nuova) on the roadside",
+          "caption": "Step 1: Start at the Chiesa Nuova bus stop outside Bar Internazionale (buy tickets here)"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image5.png",
+          "alt": "Map screenshot showing the bus route from Positano toward Sorrento (Hotel Metropole stop)",
+          "caption": "Step 2: Ride to Sorrento and get off at the Hotel Metropole stop"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image1.png",
+          "alt": "Map screenshot showing Hotel Metropole at the Via Capo junction in Sorrento",
+          "caption": "Step 3: From Hotel Metropole, continue via the Via Capo road"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image2.png",
+          "alt": "Map screenshot showing the walking route along Via Capo toward the Bagni della Regina Giovanna area",
+          "caption": "Step 4: Walk along Via Capo (about 1.1 km / 0.7 mi) toward the turnoff"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image4.png",
+          "alt": "Street view of the pedestrian lane entrance at 49 Via Capo in Sorrento",
+          "caption": "Step 5: At 49 Via Capo, turn into the pedestrian-only lane downhill"
+        },
+        {
+          "src": "/img/guides/hostel-brikette-to-regina-giovanna-bath/image7.png",
+          "alt": "Satellite view of the Bagni Regina Giovanna area and nearby paths above the swimming cove",
+          "caption": "Step 6: Follow the lane down to the ruins and the natural pool cove"
+        }
+      ]
+    },
+    {
+      "id": "best-time",
+      "title": "Best time to go (and a hostel-friendly day plan)",
+      "body": [
+        "If you only remember one thing: go early. The “beach” here is not a wide stretch of sand — it’s rock ledges. When a few groups arrive, it gets crowded fast, and it becomes harder to find a safe entry point into the water.",
+        "Season matters. In shoulder season, the water can be cold and the steps can stay damp; in mid-summer, the heat on the rocks is intense and shade is limited. Either way, stable weather makes the experience better: after storms the access route can be slippery with algae and debris.",
+        "A simple Brikette day plan: leave after breakfast, arrive for a morning swim, then head back to Sorrento for lunch and a walk. If you want a “big views” add-on, finish the day at a viewpoint or a waterfront aperitivo — and keep your return route in mind via %LINK:sorrentoPositanoBus|bus% or %LINK:sorrentoPositanoFerry|ferry%."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/topics/hostelBriketteToReginaGiovannaBath.webp",
+          "width": 1332,
+          "height": 1000,
+          "alt": "The rocky natural pool at Bagni della Regina Giovanna with a low arch opening to the sea",
+          "caption": "Aim for calm sea and good light: you’ll enjoy safer entries, clearer water, and better photos"
+        }
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "没有配套服务时该带什么",
+      "body": [
+        "这里没有救生员、厕所或小卖部。带足水、零食，并准备一个垃圾袋，把所有东西都带走。",
+        "穿结实的鞋子走近路，带水鞋应对湿滑的岩石平台。轻便毛巾、dry bag（或 zip 袋）和便宜的手机挂绳，能让贵重物品远离浪花。",
+        "盛夏请加上防晒、帽子，以及每人至少 1.5 litres 的水——太阳越过峭壁后几乎没有阴凉。如果你很怕热，带一包电解质：回程上坡会比地图看起来更吃力。面镜/呼吸管可选，但在海况平稳时很值得：避风的泳池比很多暴露的卵石滩更容易看到鱼。"
+      ]
+    },
+    {
+      "id": "swimming",
+      "title": "下水、跳水与安全提示",
+      "body": [
+        "泳池对熟练游泳者来说够深，但没有正式梯子。沿着天然岩石台阶慢慢入水；除非你亲自确认过水深，否则不要跳水。",
+        "涨潮时有些当地人会从拱门处跳下；只有在海面平静、且你对高度有把握时才考虑模仿。否则就在池内漂浮，或者爬到朝海的一侧看更开阔的景色（如果有涌浪，请远离边缘）。",
+        "暴风雨后台阶可能因藻类而很滑。小心慢走，腾出一只手，不要带玻璃。结伴出行可以定个简单规则：留一人“保持干爽”看包，并留意体力下降的人。没有救生员、脚下又不平，这一点能显著提高安全性。"
+      ]
+    },
+    {
+      "id": "pair-it",
+      "title": "把这次下水和 Sorrento 的经典行程搭配起来",
+      "body": [
+        "这次游泳很适合搭配一个轻松的 Sorrento 下午：在老城补给、绕一圈观景点，然后回到 Positano。想在之后安排一次“海湾对比日”，可以收藏 %LINK:positanoBeaches|我们的 Positano 海滩总览%，用来决定“哪片海湾更适合我们？”。",
+        "如果想看日落，请预留时间爬回公路并赶上稳定的回程。海况较差时，%LINK:sorrentoPositanoBus|bus% 通常比 ferry 更稳妥。来源与延伸阅读：关于罗马时期别墅遗址（常与 Pollio Felice 关联）的背景：%URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%. 关于别墅的补充说明（历史 + 实用信息）：%URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%. 图片署名：%URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%. 请在出发当天确认交通时间（季节性班次会变动），并遵循现场指示与任何通行公告。"
+      ]
+    },
+    {
+      "id": "sources",
+      "title": "Sources and further reading",
+      "body": [
+        "Background on the site’s Roman-era villa ruins (often associated with Pollio Felice): %URL:https://aboutsorrento.com/cosa-vedere/sorrento/i-bagni-della-regina-giovanna/|About Sorrento — I Bagni della Regina Giovanna%.",
+        "Additional notes on the villa (history + practical info): %URL:https://www.museionline.info/tipologie-museo/villa-di-pollio-felice|MuseiOnline — Villa di Pollio Felice%.",
+        "Photo credit for the Sorrento coastline image used above: %URL:https://commons.wikimedia.org/wiki/File:Sorrento_2013_-_3_(9694522728).jpg|Wikimedia Commons (CC BY 2.0)%.",
+        "Always confirm transport times on the day (seasonal schedules change), and follow local signage and any access notices at the site."
+      ]
+    }
+  ],
+  "essentialsTitle": "你会遇到什么",
+  "essentials": [
+    "Sorrento 西侧峭壁上的免费天然泳池——没有躺椅也没有餐厅。",
+    "Bus + 短步行：搭乘 EAV bus A 或 C 到 Capo di Sorrento，然后沿着指示牌走下坡小路。",
+    "岩石路面和不平整台阶；穿结实的鞋，并把垃圾全部带走。"
+  ],
+  "typicalCostsTitle": "常见费用",
+  "typicalCosts": [
+    "SITA bus Positano ⇄ Sorrento：€2–€3/程（取决于票种）。",
+    "前往 Capo di Sorrento 的 EAV 本地 bus：提前购买为 €1.50。",
+    "错过 bus 时打车回 Sorrento：€18–€22（最多四人）。"
+  ],
+  "tipsTitle": "快速建议",
+  "tips": [
+    "务必验证/打票——Sorrento 线路夏季查票很频繁。",
+    "10:00 之前到：水更平、人更少，窄岩石平台也更好用。",
+    "带 dry bag 并夹/绑在岩石上；现场没有储物柜或工作人员看管。"
+  ],
+  "warningsTitle": "出发前要知道",
+  "warnings": [
+    "没有救生员或安全设备——量力而行，并留意潮汐。",
+    "中午后阴影很少；7 月和 8 月岩石会快速升温。",
+    "小路不平，潮湿时更滑；避免人字拖，雨后务必更小心。"
+  ],
+  "faqsTitle": "Regina Giovanna Bath 常见问题",
+  "faqs": [
+    {
+      "q": "可以带食物和饮料到泳池吗？",
+      "a": [
+        "可以，但现场没有垃圾桶——自带野餐并把所有垃圾带走。冻水瓶可以当冰袋，回程搭 bus 时还能保持凉。"
+      ]
+    },
+    {
+      "q": "有地方换衣服或上厕所吗？",
+      "a": [
+        "设施基本只在步道顶端的遗址处，而且经常关闭。建议在住宿换好，或在上 bus 前在 Sorrento 先使用洗手间。"
+      ]
+    },
+    {
+      "q": "从 Positano 往返需要预留多久？",
+      "a": [
+        "建议预留约 3 小时：单程 buses 和换乘各约 1 小时，再加至少 1 小时在现场。若还想逛 Sorrento，请再加时间。"
+      ]
+    }
+  ]
+}

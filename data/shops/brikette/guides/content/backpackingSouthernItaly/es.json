@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Mochileando por el sur de Italia: Ruta incluyendo la costa de Amalfi",
+    "description": "Un recorrido lógico por los puntos destacados con notas de transporte económico."
+  },
+  "linkLabel": "Mochileando por el sur de Italia: Ruta incl. Amalfi",
+  "intro": [
+    "Planifica un recorrido circular por el sur de Italia que mantenga Positano en el centro sin reventar el presupuesto."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Ruta sugerida",
+      "body": [
+        "Comienza en Nápoles por vuelos y trenes, pasa 2–3 noches en Positano o en la cercana Praiano, continúa a Salerno y luego dirígete al interior hacia Matera o Puglia antes de regresar.",
+        "Usa trenes regionales y autobuses para cubrir tramos largos a bajo costo; reserva con 4–6 semanas de anticipación para conseguir asientos de €15–€25."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Llegadas y equipaje",
+      "body": [
+        "Viaja con una mochila de 40 L para poder navegar escaleras y portaequipajes de autobuses fácilmente.",
+        "Empaca capas de secado rápido, una toalla compacta y sandalias para las duchas de hostales; las lavanderías en Positano cobran €12–€15 por lavado y secado."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Trucos de presupuesto",
+      "body": [
+        "Combina compras en supermercados (focaccia fresca, fruta, mozzarella) con picnics en terrazas; presupuesta €8 para el almuerzo en lugar de €18 en comidas sentado.",
+        "Comparte excursiones de día con compañeros de hostal: divide traslados en taxi a senderos o alquila scooters en Salerno/Praiano donde las tarifas bajan a €35 por día."
+      ]
+    }
+  ],
+  "tips": [
+    "Activa una SIM regional o eSIM (TIM/Vodafone) para poder cargar horarios de autobuses y check-ins de hostales mientras te mueves.",
+    "Reserva hostales o pensiones para la primera y última noche de tu recorrido, luego mantén flexibilidad a mitad del viaje para ajustes por clima."
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito alquilar un coche?",
+      "a": [
+        "No. Trenes, autobuses y ferris cubren el recorrido. Alquilar un scooter para tramos cortos puede ser divertido, pero el tráfico alrededor de Amalfi requiere confianza."
+      ]
+    },
+    {
+      "q": "¿Cuántos días debo dedicar a Positano?",
+      "a": [
+        "Date al menos tres noches: una para Positano en sí, una para el Sendero de los Dioses o un día en barco, y un día flexible para Amalfi/Ravello o respaldo por clima."
+      ]
+    }
+  ]
+}

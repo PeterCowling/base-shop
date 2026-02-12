@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano til Amalfi: slik gjør du det",
+    "description": "Buss- og ferjealternativer mellom Positano og Amalfi, med tider og tips."
+  },
+  "linkLabel": "Positano til Amalfi: slik gjør du det",
+  "intro": [
+    "Positano ↔ Amalfi med buss eller sesongferge: slik velger du og dette er beste tidspunkt."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Buss (hele året)",
+      "body": [
+        "SITA-buss; kjøp og stemple billetten på forhånd; det kan bli kø i rushtiden – møt opp tidlig.",
+        "Sitt på høyre side når du drar fra Positano for utsikt over klippene."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferge (sesong)",
+      "body": [
+        "Raskere og mer naturskjønn når havet er rolig; sjekk oppdaterte rutetider og legg inn god margin.",
+        "Kom tidlig i høysesongen for å sikre deg sitteplass."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvor lang tid tar turen?",
+      "a": [
+        "Bussen bruker 40–55 minutter avhengig av trafikk; fergen tar omtrent 25 minutter når sjøen er rolig."
+      ]
+    },
+    {
+      "q": "Må jeg reservere sete?",
+      "a": [
+        "Kjøp bussbilletter på forhånd, men setene fordeles etter førstemann til mølla; ferger kan bestilles på nett, og i høysesongen bør du sikre deg avgangen dagen før."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA bus to Amalfi",
+        "text": "Gå om bord på SITA-bussen mot Amalfi; kjøp billetten før du stiger på."
+      },
+      {
+        "name": "Alternative: ferry (summer)",
+        "text": "Sjekk sesongrutene; i høysesongen går fergene ofte."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Bruk SITA-bussen for et stabilt alternativ hele året; om sommeren er fergene et naturskjønt supplement."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA-buss (hele året)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferge (sesong)"
+      },
+      {
+        "href": "#faqs",
+        "label": "Spørsmål og svar"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA-buss (hele året)",
+        "body": [
+          "Kjøp billett før du går om bord og still deg i kø tidlig i høysesongen. Gå av på bussterminalen i Amalfi."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferge (sesong)",
+        "body": [
+          "Sjekk operatørenes nettsider for rutetider og varsler om grov sjø; møt opp 20–30 minutter før avgang."
+        ]
+      }
+    ],
+    "faqsTitle": "Spørsmål og svar",
+    "faqs": [
+      {
+        "q": "Hva går raskest?",
+        "a": [
+          "Om sommeren kan fergene bruke omtrent like lang tid og gir penere utsikt; bussene går oftere totalt sett."
+        ]
+      }
+    ]
+  }
+}

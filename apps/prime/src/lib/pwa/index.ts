@@ -3,14 +3,13 @@
  */
 
 export {
-  isServiceWorkerSupported,
-  registerServiceWorker,
-  unregisterServiceWorker,
-  skipWaiting,
   clearCache,
   getCacheSize,
+  isServiceWorkerSupported,
   onUpdateAvailable,
+  registerServiceWorker,
+  skipWaiting,
+  unregisterServiceWorker,
 } from './registerSW';
-
-export { useServiceWorker } from './useServiceWorker';
 export { useOnlineStatus } from './useOnlineStatus';
+export { useServiceWorker } from './useServiceWorker';

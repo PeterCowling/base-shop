@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano to Salerno by Bus – Step-by-Step",
+    "description": "Door-to-door bus directions from Hostel Brikette to Salerno via Amalfi: where to board, buy tickets, read timetables, and change at Amalfi."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Journey overview"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA buses and tickets"
+    },
+    {
+      "id": "timetable",
+      "title": "Timetable and planning",
+      "body": "Check the latest schedules on %URL:https://www.positano.com/en/bus-schedule|Positano.com%. Look up both legs and allow transfer time in Amalfi."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positano (Chiesa Nuova) bus stop"
+    },
+    {
+      "id": "walk",
+      "title": "Walk from the hostel to the stop"
+    },
+    {
+      "id": "wait",
+      "title": "Buy your ticket and wait for boarding"
+    },
+    {
+      "id": "transfer",
+      "title": "Change buses at Amalfi"
+    },
+    {
+      "id": "arrival",
+      "title": "Arriving in Salerno"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How do I read the SITA bus timetable?",
+      "a": [
+        "**Reading the Rows:** The rows in the first column represent different bus stops along the route.",
+        "**Reading the Columns:** The timetable assigns an alphabetical letter to each scheduled journey, which are listed as headers in each column. If you are traveling Monday through Saturday, look for columns 'F' and 'G'. If you are traveling on Sunday or a holiday, look for columns 'G' and 'H'.",
+        "**Combining Rows and Columns:** Choose your departure and arrival bus stops, then check the columns to see when buses are available and what time they will arrive at your destination. For example, to see the departure time from Sorrento, look at the Sorrento row. To see the arrival time in Positano (Chiesa Nuova / Bar Internazionale), look at the Positano (Chiesa Nuova) row."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Need other transport options? Open the %HOWTO:how-to-get-here|How to Get Here overview% for ferries, taxis, and mixed itineraries."
+  }
+}

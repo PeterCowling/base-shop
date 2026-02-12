@@ -1,0 +1,71 @@
+{
+  "seo": {
+    "title": "Frases italianas para viajar por Campania",
+    "description": "Italiano útil (y un toque de dialecto) para buses, ferris, cafés y saludos educados en la costa."
+  },
+  "linkLabel": "Frases italianas útiles en Campania",
+  "intro": [
+    "Frases útiles en italiano (y un toque de dialecto campano) para moverte, comer y saludar con respeto.",
+    "Aprende unas cuantas expresiones clave y te será más fácil conseguir ayuda o indicaciones."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Autobuses y ferris",
+      "body": [
+        "\\\\\"Dov’è la fermata?\\\\\" (¿Dónde está la parada?).",
+        "\\\\\"Un biglietto per Positano, per favore.\\\\\" (Un billete a Positano, por favor).",
+        "\\\\\"A che ora parte?\\\\\" (¿A qué hora sale?)."
+      ]
+    },
+    {
+      "id": "cafe",
+      "title": "Bares y cafés",
+      "body": [
+        "\\\\\"Un caffè, per favore.\\\\\" (Un espresso, por favor).",
+        "\\\\\"Possiamo avere il conto?\\\\\" (¿Nos traes la cuenta?).",
+        "\\\\\"Posso avere acqua del rubinetto?\\\\\" (¿Puedo tener agua del grifo?)."
+      ]
+    },
+    {
+      "id": "polite",
+      "title": "Cortesía y saludos",
+      "body": [
+        "\\\\\"Per favore\\\\\", \\\\\"Grazie mille\\\\\" y \\\\\"Scusami\\\\\" te sacan de casi cualquier apuro.",
+        "En el dialecto local se escucha \\\\\"Ué\\\\\" como saludo informal; úsalo solo con gente que ya conozcas."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Mercados y compras",
+      "body": [
+        "\\\\\"Quanto costa?\\\\\" (¿Cuánto cuesta?).",
+        "\\\\\"Ne prendo due.\\\\\" (Me llevo dos).",
+        "\\\\\"Avete una taglia più piccola?\\\\\" (¿Tenéis una talla más pequeña?)."
+      ]
+    }
+  ],
+  "tips": [
+    "Descarga una app de frases con audio offline para reproducir pronunciaciones cuando pierdas datos móviles.",
+    "Un sencillo “Grazie mille” y “Buona giornata” mantienen un trato amable incluso en plena temporada alta."
+  ],
+  "notesTitle": "Consejos de pronunciación",
+  "notes": [
+    "La \\\\\"c\\\\\" seguida de \\\\\"e/i\\\\\" suena como \\\\\"ch\\\\\"; \\\\\"sc\\\\\" + \\\\\"i\\\\\" suena parecido a \\\\\"sh\\\\\".",
+    "Habla despacio, sonríe y acompaña con gestos suaves: la gente local suele agradecer el esfuerzo."
+  ],
+  "faqs": [
+    {
+      "q": "¿Pasa algo si pronuncio mal?",
+      "a": [
+        "No te preocupes: intenta decir unas palabras y pide que te repitan más despacio si lo necesitas."
+      ]
+    },
+    {
+      "q": "¿Qué apps me ayudan con el idioma?",
+      "a": [
+        "Descarga el paquete sin conexión de Google Translate y guarda tus frases favoritas en notas rápidas."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Changing and Cancelling Your Positano Hostel Reservation",
+    "description": "Detailed guidance on your cancellation options, no-show policies, how to modify your reservation, booking transfer rules, and pre-paid non-refundable bookings at Positano's only hostel."
+  },
+  "linkLabel": "Changing and Cancelling Your Positano Hostel Reservation",
+  "sections": [
+    {
+      "id": "noShowCharges",
+      "title": "No-Show Charges",
+      "body": [
+        "If you haven't checked in by 22:30 (10:30 PM) on the first day of your reservation, your booking will automatically be marked as a 'No-Show.' You will be charged the higher of either the first night's stay or your non-refundable deposit. If you hold multiple bookings, each one may carry its own cancellation notice period and fees."
+      ]
+    },
+    {
+      "id": "cancellationsPolicy",
+      "title": "Cancellation Policy",
+      "body": [
+        "Send all cancellation requests in writing to our official email address (%URL:mailto:hostelpositano@gmail.com|hostelpositano@gmail.com%). The cancellation period begins when the hostel receives your email and ends at 00:01 on your scheduled check-in date. Your booking remains active until you receive email confirmation that the cancellation has been processed. A separate Cancellation Administration Fee—usually 15% of the booking price excluding third-party commissions—will be charged. The hostel may cancel your booking without a written request if you fail to check in before reception closes on arrival day, depart early without proper notification, or violate hostel policies. If you do not provide sufficient notice, you will incur charges equivalent to a No-Show."
+      ],
+      "images": [
+        {
+          "src": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Man_with_smartphone_and_laptop_%28Unsplash%29.jpg",
+          "alt": "Person using a smartphone and laptop",
+          "caption": "Email is the fastest way to get a written record of changes or cancellations."
+        }
+      ]
+    },
+    {
+      "id": "changingConfirmedBookings",
+      "title": "Changing Confirmed Bookings",
+      "body": [
+        "Existing reservations cannot be directly modified; instead, they are replaced entirely with new bookings. Email your change request to our official email address within the required notice period. You will receive an email once the change is approved. All changes are subject to room availability and other conditions. If you shorten or extend your stay, the adjustment will be handled as a cancellation or extension request, and any extension is treated as a new reservation. If you leave before your confirmed departure date without receiving an official cancellation confirmation, the original booking terms will remain in effect."
+      ]
+    },
+    {
+      "id": "bookingTransferability",
+      "title": "Booking Transferability",
+      "body": [
+        "Your booking must stay under your name for the entire stay. Transferring the reservation or changing the guest name is not allowed. If someone attempts to check in under a transferred booking, the reservation will be canceled immediately, and you will remain financially responsible for the full amount."
+      ]
+    },
+    {
+      "id": "prepaidNonRefundableBookings",
+      "title": "Pre-paid, Non-Refundable Bookings",
+      "body": [
+        "Pre-paid, Non-Refundable reservations require full payment at the time of booking. If the payment does not go through, your reservation will be canceled automatically. These bookings are not refundable, even if you cancel or do not show up. Any extension to your stay will be processed as a separate, new non-refundable booking."
+      ]
+    }
+  ]
+}

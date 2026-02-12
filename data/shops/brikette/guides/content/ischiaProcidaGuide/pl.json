@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia i Procida: poza wybrzeżem Amalfi",
+    "description": "Termy, plaże i promy z Neapolu/Sorrento."
+  },
+  "linkLabel": "Ischia i Procida: poza wybrzeżem Amalfi",
+  "intro": [
+    "Połącz termalne spa Ischii z pastelowymi portami Procidy — orzeźwiająca odskocznia od wybrzeża Amalfi."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Atrakcje Ischii",
+      "body": [
+        "Zanurz się w parkach termalnych jak Poseidon czy Negombo; całodniowe bilety kosztują 35–45 €.",
+        "Wspięcie się na Zamek Aragoński daje widok na zatokę, a Sant'Angelo kusi deptakami tylko dla pieszych."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Atrakcje Procidy",
+      "body": [
+        "Fotografuj pastelowe domy Marinai Corricella z Terra Murata i spróbuj ciastek lingue di bue.",
+        "Wypożycz skuter lub e-bike, by dotrzeć na odosobnione plaże, np. Chiaiolella."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistyka i bilety",
+      "body": [
+        "Rano wypływają promy z Naples Beverello (godzinę na Ischię, 35 minut na Procidę). Wyprawa na obie wyspy jednego dnia jest możliwa, ale lepiej rozłożyć na dwa.",
+        "Kup bilety powrotne z wyprzedzeniem na letnie weekendy; ostatnie łodzie do Neapolu odpływają około 21:30."
+      ]
+    }
+  ],
+  "tips": [
+    "Spakuj kostium i lekki ręcznik, nawet jeśli planujesz tylko zwiedzanie — termy kuszą po dniu spacerów.",
+    "Zostań na Ischii na noc, by złapać spokojniejsze wieczory i wschód słońca na zamku przed przypływem turystów."
+  ],
+  "faqs": [
+    {
+      "q": "Czy można odwiedzić obie wyspy w jeden dzień?",
+      "a": [
+        "To możliwe, ale wyczerpujące. Skup się na jednej wyspie dziennie albo zostań na noc, by cieszyć się zachodami bez bieganiny."
+      ]
+    },
+    {
+      "q": "Czy trzeba rezerwować wejścia do term?",
+      "a": [
+        "W szczycie sezonu (czerwiec–wrzesień) rezerwuj wcześniej. W dni powszednie jest spokojniej, a niektóre parki oferują wejścia wieczorne po 16:00 w niższej cenie."
+      ]
+    }
+  ]
+}

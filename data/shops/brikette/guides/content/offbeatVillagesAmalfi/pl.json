@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Mniej znane miejscowości na Wybrzeżu Amalfi",
+    "description": "Spokojniejsze miasteczka i wioski, dojazd oraz powody, by je odwiedzić."
+  },
+  "linkLabel": "Mniej znane miejscowości na Wybrzeżu Amalfi",
+  "intro": [
+    "Pięć spokojniejszych wiosek na wybrzeżu Amalfi, które warto objechać, oraz wskazówki, jak dotrzeć do każdej z nich."
+  ],
+  "tocTitle": "Na tej stronie",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Tradycje anchois i spokojna plaża obok pracujących kutrów rybackich.",
+        "Dojazd autobusem SITA lub sezonowymi promami z Amalfi albo Salerno."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Płaskie promenady nadmorskie i ukochane cukiernie zapewniają spokojniejsze tempo.",
+        "Dotrzyj autobusem lub promem; połącz wycieczkę ze szlakiem cytrynowym łączącym bliźniacze miasteczka."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Uroczy plac tuż na wschód od Amalfi z wąskimi uliczkami i dostępem do plaży.",
+        "Spacer z Amalfi zajmuje kilka minut albo wysiądź na jednym przystanku autobusem lokalnym."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Stolica ceramiki blisko Salerno, gdzie warsztaty tworzą kolorowe zdobienia na ulicach.",
+        "Dojeżdżaj pociągiem do Salerno, a potem krótki autobus albo prom."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Dramatyczna fjordowa zatoka z ograniczoną plażą — przyjedź wcześnie, by trafić na spokojne zdjęcia.",
+        "Korzystaj z autobusów SITA w kierunku Amalfi; latem czasem kursują tu promy."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę odwiedzić wiele wiosek w ciągu jednego dnia?",
+      "a": [
+        "Tak — połącz Cetarę, Vietri i Minori promem lub autobusem. Zacznij wcześnie i pilnuj harmonogramu powrotów."
+      ]
+    },
+    {
+      "q": "Czy małe wioski przyjmują karty płatnicze?",
+      "a": [
+        "Noś gotówkę na kawiarnie i kioski — wiele wciąż ustala minimum 10 €, a niektóre działa tylko cash."
+      ]
+    }
+  ]
+}

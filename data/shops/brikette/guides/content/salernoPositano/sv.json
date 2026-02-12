@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salerno till Positano: så gör du",
+    "description": "Så tar du dig från Salerno till Positano med färja, buss eller kombinationer beroende på säsong."
+  },
+  "linkLabel": "Salerno till Positano: så gör du",
+  "intro": [
+    "Salerno → Positano: ta färjan i säsong (särskilt med bagage); bussen via Amalfi går året runt och är billigare."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Färja (rekommenderas med bagage)",
+      "body": [
+        "Gå ombord vid Molo Manfredi eller Concordia beroende på operatör och räkna med omkring en timme till sjöss, beroende på sjöläget.",
+        "Kontrollera väder och aktuell tidtabell; platser kan sälja slut på helger – kom i god tid."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Buss via Amalfi (året runt)",
+      "body": [
+        "Ta SITA-bussen till Amalfi och byt sedan till linjen mot Positano; resan är längre men fungerar även utanför högsäsong.",
+        "Ha småpengar redo, stämpla biljetten och lägg in lite buffert vid bytet i Amalfi medan du kollar nästa avgång."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Är färjan pålitlig på våren?",
+      "a": [
+        "Ja, men tidiga vårstormar kan ställa in avgångar. Kontrollera alltid samma dag."
+      ]
+    },
+    {
+      "q": "Var förvarar jag väskorna?",
+      "a": [
+        "Använd bagageställen ombord på färjan och behåll värdesakerna hos dig."
+      ]
+    }
+  ]
+}

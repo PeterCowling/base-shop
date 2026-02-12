@@ -3,6 +3,7 @@ import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
 import { configure,render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import {
   Select,
@@ -20,7 +21,7 @@ configure({ testIdAttribute: "data-testid" });
 describe("Select", () => {
   it("fires onValueChange and shows indicator on selected item", async () => {
     const onValueChange = jest.fn();
-    render(
+    const { container } = render(
       <Select onValueChange={onValueChange}>
         <SelectTrigger data-cy="trigger" data-testid="trigger">
           <SelectValue placeholder="Pick" />
@@ -63,6 +64,7 @@ describe("Select", () => {
     await user.click(screen.getByTestId("trigger"));
     const label = await screen.findByText("Label");
     expect(label).toHaveClass("px-2", "py-1.5", "text-sm", "font-semibold", "custom");
+
   });
 
   it("SelectSeparator renders default and custom classes", async () => {

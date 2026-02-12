@@ -1,0 +1,166 @@
+{
+  "seo": {
+    "title": "Az Istenek Ösvénye Amalfi buszjárattal",
+    "description": "Utazz SITA busszal Amalfin keresztül Bomeranóba, túrázz Nocelléig, majd térj vissza kisbusszal egy egész napos terv szerint."
+  },
+  "linkLabel": "Az Istenek Ösvénye Amalfin át (busz + túra)",
+  "intro": [
+    "Inkább maradnál a kerekeken? Ez az útvonal a SITA busszal visz Positanóból Amalfin át Bomeranóba, majd onnan a Path of the Gods ösvényen sétálsz vissza Nocelle irányába. Hullámos tenger esetén is megbízható, és gyakran ez a leggyorsabb módja, hogy a teljes túrára eljuss.",
+    "A buszok főszezonban zsúfoltak, ezért ha lehet, egy nappal korábban vedd meg a jegyeket, és minden megállóban érkezz időben."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Jegyek vásárlása és időzítés",
+      "body": [
+        "Fejenként három buszjegyre lesz szükséged: Positano → Amalfi, Amalfi → Bomerano és Nocelle → Positano. Kérdezd meg a Bar Internazionale személyzetét, melyik kombináció éri meg jobban (egyjegy vagy kombinált).",
+        "Nézd meg a SITA menetrendet a bárban kifüggesztve vagy az Unico Campania alkalmazásban. Törekedj reggeli indulásra, így elkerülöd a sorokat és a déli hőséget az ösvényen.",
+        "Pakolj vizet, harapnivalót és napvédelmet – Bomerano és Nocelle között nincs szolgáltatás."
+      ]
+    },
+    {
+      "id": "bus-to-amalfi",
+      "title": "Utazás a Bar Internazionalétól Amalfig",
+      "body": [
+        "Lépj ki a hostelből, fordulj balra, és nagyjából két perc alatt érsz a Bar Internazionaléhoz. Vedd meg a jegyeket, majd várj az út túloldalán az Amalfi felé tartó buszra.",
+        "Érvényesítsd a jegyet felszálláskor. Az út 45–60 percig tart a forgalomtól függően, és több hajtűkanyart is tartalmaz, ahonnan pazar tengeri kilátás nyílik.",
+        "Amalfi megérkezésekor maradj ugyanannál a buszöbölnél – innen indul az Agerola járat is."
+      ]
+    },
+    {
+      "id": "wait-in-amalfi",
+      "title": "Szünet Amalfi városában (opcionális)",
+      "body": [
+        "Ha van időd a következő buszig, sétálj be egy kávéra vagy péksütire. Indulás előtt legalább 10 perccel térj vissza az állomásra.",
+        "Nyáron állj sorba időben, mert a busz gyorsan megtelik. A sofőr korlátozhatja a felszállást, ha minden ülő- és biztonságos állóhely megtelt."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Busz Bomerano felé",
+      "body": [
+        "Szállj fel az \\\\\"Agerola/Bomerano\\\\\" jelzésű buszra. Használd a második jegyet, és tartsd szabadon az egyik kezed, hogy az éles kanyarokban kapaszkodhass.",
+        "Szállj le a Bomerano megállónál, a Ristorante Jerlával szemben. Menj át az úton, sétálj fel a mellékutcán a piazzáig, majd kövesd a táblákat a Path of the Gods ösvény kezdetéig."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Túra Nocelléig",
+      "body": [
+        "Kövesd a Sentiero degli Dei jelzéseit a teraszok és gerincek mentén. Fotószünetekkel együtt hagyj 2,5–3 órát a túrára.",
+        "Vidd magaddal a szemetet, és tartsd tiszteletben a magánföldeket az ösvény mentén."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Tájékozódás Nocellében és a buszmegálló",
+      "body": [
+        "Amikor az ösvény betonra vált, megérkeztél Nocellébe. Az első elágazásnál tarts jobbra, így elkerülöd a Positano felé vezető hosszú lépcsősort.",
+        "Sétálj körülbelül 175 métert a kis parkolóig és buszmegállóig. Érkezz korán; ha tele a parkoló, a busz a megálló előtt áll meg."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Vissza Positanóba",
+      "body": [
+        "Használd az utolsó jegyedet, és utazz a Nocelle/Montepertuso busszal vissza a Bar Internazionaléhoz vagy a Chiesa Nuovához.",
+        "Ha lekésed a buszt, legyalogolhatod az utat (kb. 4 km), de készülj hosszan tartó lejtmenetre forgalommal."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Mintamenetrend",
+      "body": [
+        "07:00 indulás a hostelből → 07:15 busz Amalfi felé → 08:10 érkezés Amalfi → 08:30 busz Bomeranóba → 09:10 túra indul → 12:00 érkezés Nocellébe → 12:30 busz vissza Positanóba.",
+        "Későbbi opció: a 08:00-s indulás is visszahoz a kora délutáni órákra, ha jól sikerülnek az átszállások."
+      ]
+    }
+  ],
+  "essentialsTitle": "Alapvető tudnivalók",
+  "essentials": [
+    "Fejenként három SITA jegy (Positano → Amalfi, Amalfi → Bomerano, Nocelle → Positano) plusz tartalék.",
+    "Víz, harapnivaló, naptej és réteges öltözet a kitett gerinctúrához.",
+    "Kényelmes, tapadós túracipő és feltöltött telefon offline térképpel."
+  ],
+  "typicalCostsTitle": "Jellemző költségek",
+  "typicalCosts": [
+    "SITA buszjegyek: 2–4 € szakaszonként, bérlet vagy kombinált jegy függvényében.",
+    "Kávé vagy nasi az amalfi átszállásnál: 2–6 €.",
+    "Az ösvény használata: ingyenes."
+  ],
+  "tipsTitle": "Útvonaltippek",
+  "tips": [
+    "Minden megállóba érkezz 10–15 perccel korábban – a buszok főszezonban megtelhetnek indulás előtt.",
+    "Positanóból indulva ülj a jobb oldalra a látványos tengerparti kilátásért, visszafelé Amalfi felől pedig a bal oldalra.",
+    "Tarts magadnál aprót, ha útközben extra jegyet kell érvényesítened."
+  ],
+  "warningsTitle": "Figyelmeztetések",
+  "warnings": [
+    "Ne vágj neki a 1700 lépcsős nocellei lépcsősornak, hacsak nem vagy felkészülve egy megterhelő, térdet próbáló ereszkedésre.",
+    "Hétvégi járatok késhetnek; legyen nálad plusz víz és harapnivaló, ha a vártnál tovább kell várnod.",
+    "Csúcsidőben korlátozhatják az álló utasokat — készülj fel rá, hogy egy buszt el kell engedned, és a következővel utazol."
+  ],
+  "steps": [
+    {
+      "name": "SITA jegyek megvásárlása",
+      "text": "Vedd meg a szükséges buszjegyeket indulás előtt a Bar Internazionaléban."
+    },
+    {
+      "name": "Busz Amalfi felé",
+      "text": "Szállj fel az Amalfi irányú buszra a Bar Internazionalétól, és maradj rajta a parti falvakon át."
+    },
+    {
+      "name": "Átszállás az Agerola buszra",
+      "text": "Várakozz az amalfi terminálnál, és szállj fel az Agerola/Bomerano feliratú járatra."
+    },
+    {
+      "name": "Érkezés a túra kezdetéhez",
+      "text": "Szállj le Bomeranóban, kövesd a táblákat a piazzán át, és csatlakozz a Sentiero degli Dei ösvényhez."
+    },
+    {
+      "name": "Túra Nocelléig",
+      "text": "Kövesd a CAI jelzéseket a gerincen, amíg el nem éred a városba vezető betonösvényt."
+    },
+    {
+      "name": "Visszaút busszal",
+      "text": "Szállj fel a Nocelle/Montepertuso buszra, és térj vissza a Bar Internazionaléhoz vagy a Chiesa Nuovához."
+    }
+  ],
+  "faqsTitle": "Gyakori kérdések",
+  "faqs": [
+    {
+      "q": "Mennyire zsúfoltak a buszok?",
+      "a": [
+        "A reggeli járatok nyáron gyorsan megtelnek. Érkezz korán, állj sorba nyugodtan, és készülj fel rá, hogy állva utazol. Ha a folyosó megtelik, a sofőr megállíthatja a felszállást."
+      ]
+    },
+    {
+      "q": "Megállhatok Amalfinál nézelődni?",
+      "a": [
+        "Igen — hagyj ki legalább egy teljes buszfordulót (30–60 percet), hogy legyen időd felfedezni, és még visszaérj a sorba a következő Agerola járat előtt."
+      ]
+    },
+    {
+      "q": "Mi történik, ha lekésem a nocellei buszt visszafelé?",
+      "a": [
+        "Nézd meg a megállóban kifüggesztett menetrendet. Ha a következő járat több mint egy óra múlva érkezik, legyalogolhatod az aszfaltos utat Positanóig körülbelül 45–60 perc alatt."
+      ]
+    },
+    {
+      "q": "Hogyan olvassam a SITA busz menetrendet?",
+      "a": [
+        "**A sorok olvasása:** Az első oszlop sorai az útvonal mentén különböző buszmegállókat jelölnek.",
+        "**Az oszlopok olvasása:** A menetrend minden egyes tervezett járathoz egy betűt rendel, amelyek minden oszlop fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, keresse a 'G' és 'H' oszlopokat.",
+        "**A sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokat, hogy mikor vannak buszok, és mikor érkeznek meg a célállomásra. Például a Sorrento indulási idejének megtekintéséhez nézze meg a Sorrento sort. A Positano (Chiesa Nuova / Bar Internazionale) érkezési idejének megtekintéséhez nézze meg a Positano (Chiesa Nuova) sort."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "essentials": "Alapvető tudnivalók",
+    "costs": "Jellemző költségek",
+    "tips": "Útvonaltippek",
+    "warnings": "Figyelmeztetések",
+    "faqs": "Gyakori kérdések"
+  }
+}

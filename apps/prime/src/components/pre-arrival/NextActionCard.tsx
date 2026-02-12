@@ -5,6 +5,8 @@
  * Displays contextual messaging based on what's not yet completed.
  */
 
+import { type FC, memo, type ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowRight,
   CheckCircle2,
@@ -15,10 +17,9 @@ import {
   Navigation,
   Sparkles,
 } from 'lucide-react';
-import { FC, memo, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+
+import { getChecklistItemLabel, getNextChecklistItem } from '../../lib/preArrival';
 import type { ChecklistProgress } from '../../types/preArrival';
-import { getNextChecklistItem } from '../../lib/preArrival';
 
 interface NextActionCardProps {
   /** Current checklist progress */
@@ -32,6 +33,8 @@ interface NextActionCardProps {
   };
   /** Optional class name */
   className?: string;
+  /** Optional recently completed item for adaptive copy */
+  recentlyCompletedItem?: keyof ChecklistProgress | null;
 }
 
 /**
@@ -46,7 +49,8 @@ function getActionContent(
   title: string;
   description: string;
   buttonText: string;
-  gradient: string;
+  bg: string;
+  fg: string;
 } {
   if (!item) {
     // All complete
@@ -55,7 +59,8 @@ function getActionContent(
       title: t('nextAction.allComplete.title'),
       description: t('nextAction.allComplete.description'),
       buttonText: t('nextAction.allComplete.button'),
-      gradient: 'from-green-500 to-emerald-600',
+      bg: 'bg-success',
+      fg: 'text-success-foreground',
     };
   }
 
@@ -66,7 +71,8 @@ function getActionContent(
         title: t('nextAction.routePlanned.title'),
         description: t('nextAction.routePlanned.description'),
         buttonText: t('nextAction.routePlanned.button'),
-        gradient: 'from-blue-500 to-indigo-600',
+        bg: 'bg-primary',
+        fg: 'text-primary-foreground',
       };
     case 'etaConfirmed':
       return {
@@ -74,7 +80,8 @@ function getActionContent(
         title: t('nextAction.etaConfirmed.title'),
         description: t('nextAction.etaConfirmed.description'),
         buttonText: t('nextAction.etaConfirmed.button'),
-        gradient: 'from-purple-500 to-violet-600',
+        bg: 'bg-accent',
+        fg: 'text-accent-foreground',
       };
     case 'cashPrepared':
       const totalCash = cashAmounts
@@ -87,7 +94,8 @@ function getActionContent(
           ? t('nextAction.cashPrepared.descriptionWithAmount', { amount: totalCash })
           : t('nextAction.cashPrepared.description'),
         buttonText: t('nextAction.cashPrepared.button'),
-        gradient: 'from-amber-500 to-orange-600',
+        bg: 'bg-warning',
+        fg: 'text-warning-foreground',
       };
     case 'rulesReviewed':
       return {
@@ -95,7 +103,8 @@ function getActionContent(
         title: t('nextAction.rulesReviewed.title'),
         description: t('nextAction.rulesReviewed.description'),
         buttonText: t('nextAction.rulesReviewed.button'),
-        gradient: 'from-teal-500 to-cyan-600',
+        bg: 'bg-info',
+        fg: 'text-info-foreground',
       };
     case 'locationSaved':
       return {
@@ -103,7 +112,8 @@ function getActionContent(
         title: t('nextAction.locationSaved.title'),
         description: t('nextAction.locationSaved.description'),
         buttonText: t('nextAction.locationSaved.button'),
-        gradient: 'from-rose-500 to-pink-600',
+        bg: 'bg-danger',
+        fg: 'text-danger-foreground',
       };
     default:
       return {
@@ -111,7 +121,8 @@ function getActionContent(
         title: t('nextAction.default.title'),
         description: t('nextAction.default.description'),
         buttonText: t('nextAction.default.button'),
-        gradient: 'from-gray-500 to-slate-600',
+        bg: 'bg-muted',
+        fg: 'text-foreground',
       };
   }
 }
@@ -120,31 +131,35 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
   checklist,
   onAction,
   cashAmounts,
+  recentlyCompletedItem,
   className = '',
 }) {
   const { t } = useTranslation('PreArrival');
   const nextItem = getNextChecklistItem(checklist);
   const content = getActionContent(nextItem, t, cashAmounts);
   const isComplete = !nextItem;
+  const recentCompletionPrefix = recentlyCompletedItem
+    ? `Nice work on ${getChecklistItemLabel(recentlyCompletedItem)}. `
+    : '';
 
   return (
     <div
       className={`
         relative overflow-hidden rounded-2xl p-5
-        bg-gradient-to-br ${content.gradient}
-        text-white shadow-lg
+        ${content.bg} ${content.fg}
+        shadow-lg
         ${className}
       `}
     >
       {/* Background decoration */}
-      <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-white/10" />
-      <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-white/5" />
+      <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-background/10" />
+      <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-background/5" />
 
       {/* Content */}
       <div className="relative">
         {/* Icon and title */}
         <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/20">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-background/20">
             {content.icon}
           </div>
           <div className="flex-1">
@@ -155,7 +170,8 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
         </div>
 
         {/* Description */}
-        <p className="mb-4 text-sm text-white/90">
+        <p className={`mb-4 text-sm ${content.fg} opacity-90`}>
+          {recentCompletionPrefix}
           {content.description}
         </p>
 
@@ -166,8 +182,8 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
             onClick={() => onAction(nextItem)}
             className="
               flex w-full items-center justify-center gap-2
-              rounded-xl bg-white px-4 py-3
-              font-medium text-gray-900
+              rounded-xl bg-background px-4 py-3
+              font-medium text-foreground
               transition-transform duration-200
               hover:scale-[1.02] active:scale-[0.98]
             "
@@ -179,7 +195,7 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
 
         {/* Complete state - subtle celebration */}
         {isComplete && (
-          <div className="flex items-center justify-center gap-2 rounded-xl bg-white/20 py-3">
+          <div className="flex items-center justify-center gap-2 rounded-xl bg-background/20 py-3">
             <Sparkles className="h-5 w-5" />
             <span className="font-medium">{content.buttonText}</span>
           </div>

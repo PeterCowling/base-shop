@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Week-end de 48 heures à Positano",
+    "description": "Programme condensé sur deux jours : incontournables, horaires proposés et idées repas."
+  },
+  "linkLabel": "Week-end de 48 heures à Positano",
+  "intro": [
+    "Un weekend de 48 heures à Positano est faisable si vous voyagez léger, optimisez l’arrivée et cherchez les vues hors des pics de chaleur."
+  ],
+  "sections": [
+    {
+      "id": "day1-morning",
+      "title": "Jour 1 — arrivée & matinée",
+      "body": [
+        "Arrivez avec le premier bus SITA ou ferry, déposez vos bagages à l’hébergement ou en consigne, puis prenez un espresso et une sfogliatella Via dei Mulini.",
+        "Descendez à la plage de Fornillo pour une baignade avant midi, quand les lidos sont calmes et les zones publiques disponibles."
+      ]
+    },
+    {
+      "id": "day1-afternoon",
+      "title": "Jour 1 — après-midi & coucher de soleil",
+      "body": [
+        "Prenez le bus local vers Nocelle pour un aperçu du Sentier des Dieux ; revenez à temps pour le coucher de soleil sur la Via Cristoforo Colombo.",
+        "Réservez un dîner en terrasse ou composez un pique-nique traiteur pour la terrasse de l’auberge."
+      ]
+    },
+    {
+      "id": "day2-morning",
+      "title": "Jour 2 — matinée à la carte",
+      "body": [
+        "Option A : ferry pour Amalfi puis saut à Ravello et aux jardins de la Villa Cimbrone ; option B : sortie en bateau partagé pour longer la côte.",
+        "Préparez un petit-déjeuner à emporter depuis la boulangerie pour démarrer tôt sans attendre le service en salle."
+      ]
+    },
+    {
+      "id": "day2-afternoon",
+      "title": "Jour 2 — derniers moments & départ",
+      "body": [
+        "Glissez une séance shopping chez les artisans de sandales ou céramistes avant le déjeuner.",
+        "Récupérez les bagages 90 minutes avant le départ afin de gérer escaliers et files au quai ou à l’arrêt de bus."
+      ]
+    }
+  ],
+  "tips": [
+    "Choisissez un sac à dos de moins de 10 kg (22 lb) pour franchir les escaliers sans difficulté.",
+    "Enregistrez hors ligne les horaires ferry/bus : les services du week-end changent souvent."
+  ],
+  "faqs": [
+    {
+      "q": "Une seule nuit suffit-elle ?",
+      "a": [
+        "Oui si vous ciblez les incontournables et logez au centre, mais deux nuits offrent un rythme plus doux et un plan B météo."
+      ]
+    },
+    {
+      "q": "Où admirer le coucher du soleil ?",
+      "a": [
+        "Via Cristoforo Colombo et la terrasse de l’auberge sont des valeurs sûres ; les bars de plage fonctionnent aussi mais prévoyez un budget plus élevé."
+      ]
+    }
+  ]
+}

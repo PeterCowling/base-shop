@@ -25,17 +25,32 @@ const OPTION_BASE = [
   "transition-colors",
 ] as const;
 
+const OPTION_INACTIVE = [
+  "border-brand-primary/30",
+  "bg-brand-surface/70",
+  "text-brand-heading",
+  "hover:bg-brand-primary/10",
+  "dark:border-brand-secondary/40",
+  "dark:bg-brand-surface/10",
+  "dark:text-brand-surface",
+  "dark:hover:bg-brand-secondary/20",
+] as const;
+
 const OPTION_INTERACTION = [
   "focus-visible:outline-none",
   "focus-visible:ring-2",
   "focus-visible:ring-brand-primary",
   "focus-visible:ring-offset-2",
+  "focus-visible:ring-offset-brand-bg",
+  "dark:focus-visible:ring-offset-brand-text",
   "sm:basis-1/2",
 ] as const;
 
 const OPTION_ACTIVE = [
+  "border-brand-primary",
   "bg-brand-primary",
-  "text-brand-heading",
+  "text-brand-bg",
+  "hover:bg-brand-primary/90",
   "dark:bg-brand-primary",
 ] as const;
 
@@ -69,8 +84,6 @@ function LanguageModal({
 }: LanguageModalProps): JSX.Element | null {
   if (!isOpen) return null;
 
-  const themeClass = theme === "dark" ? "lang-dark" : "lang-light";
-
   return (
     <ModalFrame
       isOpen={isOpen}
@@ -82,9 +95,10 @@ function LanguageModal({
       <div className="flex min-h-full items-center justify-center p-4 text-center">
         <ModalPanel
           widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full sm:w-96"}
-          className="layer-modal-panel pointer-events-auto transform bg-brand-bg p-6 text-start dark:bg-brand-text dark:text-brand-surface motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200"
+          data-theme={theme}
+          className="layer-modal-panel transform p-6 text-start motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200"
         >
-          <DialogTitle className="mb-4 text-xl font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
+          <DialogTitle className="mb-4 text-xl font-semibold text-brand-heading">
             {copy.title}
           </DialogTitle>
 
@@ -95,7 +109,11 @@ function LanguageModal({
                 type="button"
                 onClick={() => onSelect(code)}
                 aria-current={code === currentCode ? "true" : undefined}
-                className={clsx(OPTION_BASE, themeClass, OPTION_INTERACTION, code === currentCode && OPTION_ACTIVE)}
+                className={clsx(
+                  OPTION_BASE,
+                  OPTION_INTERACTION,
+                  code === currentCode ? OPTION_ACTIVE : OPTION_INACTIVE,
+                )}
               >
                 {label}
               </button>
@@ -103,7 +121,12 @@ function LanguageModal({
           </Cluster>
 
           <div className="mt-6 text-end">
-            <ModalFooterButton onClick={onClose}>{copy.closeLabel}</ModalFooterButton>
+            <ModalFooterButton
+              onClick={onClose}
+              className="border border-brand-primary bg-transparent text-brand-primary shadow-none drop-shadow-none hover:bg-brand-primary/10 dark:border-brand-secondary dark:bg-transparent dark:text-brand-secondary dark:hover:bg-brand-secondary/15"
+            >
+              {copy.closeLabel}
+            </ModalFooterButton>
           </div>
         </ModalPanel>
       </div>

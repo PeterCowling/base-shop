@@ -43,9 +43,25 @@ describe("GET /api/agent/businesses", () => {
     expect(business).toHaveProperty("name");
     expect(business).toHaveProperty("description");
     expect(business).toHaveProperty("owner");
+    expect(business).toHaveProperty("category");
     expect(business).toHaveProperty("status");
     expect(business).toHaveProperty("created");
     expect(business).toHaveProperty("tags");
+    expect(business).toHaveProperty("apps");
+
+    const returnedIds = new Set(
+      data.businesses.map((entry: { id: string }) => entry.id)
+    );
+    expect(returnedIds).toEqual(
+      new Set(["PLAT", "BRIK", "BOS", "PIPE", "XA", "HEAD", "PET", "HBAG"])
+    );
+    const brik = data.businesses.find((entry: { id: string }) => entry.id === "BRIK");
+    expect(brik?.category).toBe("operating-business");
+    expect(brik?.apps).toEqual(
+      expect.arrayContaining(["brikette", "reception", "prime"])
+    );
+    const bos = data.businesses.find((entry: { id: string }) => entry.id === "BOS");
+    expect(bos?.category).toBe("internal-system");
   });
 
   it("TC-02: filters to active businesses only when status=active", async () => {

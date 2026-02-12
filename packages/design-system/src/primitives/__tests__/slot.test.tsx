@@ -1,11 +1,12 @@
 // packages/ui/src/components/atoms/primitives/__tests__/slot.test.tsx
 import React from "react";
 import { render } from "@testing-library/react";
+import { axe } from "jest-axe";
 
 import { Slot } from "../slot";
 
 describe("Slot primitive", () => {
-  test("merges props, className and forwards refs", () => {
+  test("merges props, className and forwards refs", async () => {
     const parentRef = React.createRef<HTMLButtonElement>();
     const childRef = React.createRef<HTMLButtonElement>();
 
@@ -17,6 +18,7 @@ describe("Slot primitive", () => {
 
     const btn = container.querySelector("button[data-id='button']")!;
     expect(btn).toBeTruthy();
+
     // className merged
     expect(btn.className).toContain("parent");
     expect(btn.className).toContain("child");

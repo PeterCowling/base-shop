@@ -1,0 +1,219 @@
+{
+  "seo": {
+    "title": "Götterweg über Amalfi mit der Fähre",
+    "description": "Mit der Fähre von Positano nach Amalfi, dem Bus nach Bomerano und dem Sentiero degli Dei zurück nach Nocelle – inklusive Tickettipps und Zeitplanung."
+  },
+  "linkLabel": "Path of the Gods über Amalfi (Fähre + Wanderung)",
+  "intro": [
+    "Diese Route kombiniert eine panoramareiche Fährfahrt nach Amalfi mit der klassischen Bomerano-→-Nocelle-Etappe des Sentiero degli Dei. Sie ist das kompletteste Erlebnis ab dem Hostel Brikette und lässt dich die Klippen erst vom Meer und dann von oben bestaunen.",
+    "Plane einen kompletten Vormittag oder frühen Nachmittag ein. Fähren sind in der Hochsaison schnell ausverkauft, daher solltest du Tickets am Hafen so früh wie möglich sichern und einen Busfahrplan als Backup bereithalten, falls das Meer zu rau wird."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Vor der Abfahrt vom Hostel",
+      "body": [
+        "Pack Wasser, Snacks, Sonnencreme und Zwiebelschichten. Zwischen Bomerano und Nocelle gibt es nach den Dörfern keine Services.",
+        "Prüfe die aktuellen Fährzeiten (Travelmar oder Lucibello) und die SITA-Fahrpläne. Starte am besten morgens, um der Mittagshitze auf dem exponierten Grat zu entgehen.",
+        "Nimm pro Person drei SITA-Tickets mit: Amalfi → Bomerano, Nocelle → Positano und ein Reserve-Ticket für Verzögerungen."
+      ]
+    },
+    {
+      "id": "walk-to-port",
+      "title": "Zum Hafen gehen und Bustickets kaufen",
+      "body": [
+        "Verlass das Hostel, biege links ab und geh etwa 100 Meter zur Bar Internazionale. Kauf deine SITA-Tickets am Tabacchi, bevor du weiter bergab gehst.",
+        "Nimm die Abkürzung über die Treppen Richtung Spiaggia Grande. Der Fußweg dauert rund 20–30 Minuten; bei viel Betrieb etwas mehr Zeit einplanen.",
+        "Am Strand angekommen, biege rechts ab zum kleinen Hafen, wo die Ticketstände der Fährgesellschaften nebeneinander liegen."
+      ]
+    },
+    {
+      "id": "buy-ferry-ticket",
+      "title": "Fährticket nach Amalfi sichern",
+      "body": [
+        "Schau auf den Tafeln vor Lucibello und Travelmar nach der nächsten Abfahrt. Morgens fahren in der Saison meist alle 30–60 Minuten Boote.",
+        "Kaufe ein einfaches Ticket nach Amalfi und halte es fürs Boarding bereit; die Anbieter rufen Passagiere wenige Minuten vor Abfahrt auf.",
+        "Die Warteschlangen füllen sich schnell – sei mindestens 15 Minuten vor deiner bevorzugten Fähre vor Ort, um dir einen Platz an Deck zu sichern."
+      ]
+    },
+    {
+      "id": "sail-to-amalfi",
+      "title": "Auf der Fähre nach Amalfi genießen",
+      "body": [
+        "Die Überfahrt dauert etwa 25 Minuten. Stell dich an die Steuerbordseite für den Blick zurück nach Positano und Praiano.",
+        "Nach dem Anlegen steigst du zügig aus und gehst geradeaus weiter zum Busbahnhof links der Hafenpiazza.",
+        "Wenn du Zeit hast, schau kurz auf dem Domplatz vorbei oder gönn dir einen Espresso – behalte aber den Bussteig für die Agerola-Abfahrt im Auge."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Bus nach Bomerano nehmen",
+      "body": [
+        "Halte Ausschau nach dem SITA-Bus mit der Aufschrift \\\\\"Agerola/Bomerano\\\\\". Entwerte dein Ticket beim Einsteigen und setz dich möglichst weit nach vorne, dort gibt es weniger Serpentinen.",
+        "Nach rund 45 Minuten steigst du an der Haltestelle Bomerano neben dem Ristorante Jerla aus. Überquere die Straße und folge der Seitenstraße hinunter zur Piazza.",
+        "Geh links über den Platz und folge den Schildern \\\\\"Sentiero degli Dei\\\\\" bis zur Infotafel am Einstieg."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/12-nav.jpg",
+          "alt": "Side street from Bomerano bus stop descending toward the piazza",
+          "caption": "2. Überquere die Straße von der Bushaltestelle und folge dieser Seitenstraße hinunter zur Piazza"
+        }
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Von Bomerano nach Nocelle wandern",
+      "body": [
+        "Der Weg verläuft rund 6 Kilometer mit Auf und Ab. Dich erwarten Steintritte, schmale Pfade und spektakuläre Balkone über der Küste.",
+        "Leg Pausen an markierten Aussichtspunkten ein und nimm deinen Müll wieder mit. Respektiere die Felder der Einheimischen und bleib auf dem ausgeschilderten Pfad.",
+        "Sobald der Schotterweg in den betonierten Spazierweg nach Nocelle übergeht, hast du das Ziel erreicht."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/13-nav.jpg",
+          "alt": "Town square (piazza) in Bomerano with left-hand route markers",
+          "caption": "3. Geh links über die Piazza und folge den Schildern 'Sentiero degli Dei'"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/14-nav.jpg",
+          "alt": "Wooden steps ascending along the hiking trail ridge",
+          "caption": "4. Nach der Piazza such die Infotafel und biege links ab – hier beginnt der Weg. Folge dem Pfad bis zu einem Abschnitt mit Holzstufen."
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/15-nav.jpg",
+          "alt": "Concrete paved walkway marking entry into Nocelle village",
+          "caption": "Wenn der Schotterweg in diesen betonierten Spazierweg übergeht, hast du Nocelle erreicht"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/16-nav.jpg",
+          "alt": "Nocelle village navigation map showing route to bus stop and staircase warning",
+          "caption": "Nocelle-Karte — geh durchs Dorf und biege an der Gabelung rechts ab zur Bushaltestelle; vermeide die 1.700-Stufen-Treppe nach Positano um jeden Preis!"
+        }
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Durch Nocelle navigieren",
+      "body": [
+        "Folge dem gepflasterten Weg ins Dorf, bleib an der ersten Gabelung rechts, um die 1.700 Stufen nach Positano zu vermeiden.",
+        "Geh etwa 175 Meter weiter bis zur Bushaltestelle am kleinen Parkplatz. Der Kiosk an der Kirche verkauft in der Saison kalte Getränke.",
+        "Sei mindestens 10 Minuten vorher da; wenn viel los ist, hält der Bus manchmal ein Stück vor der Wartehalle."
+      ],
+      "images": [
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/17-nav.jpg",
+          "alt": "Directional signpost in Nocelle showing the stairs-to-Positano option to avoid",
+          "caption": "KRITISCH: Folge NICHT den Schildern nach 'Positano' die Treppen hinab — biege hier stattdessen rechts ab"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/18-nav.jpg",
+          "alt": "Stone steps ascending through Nocelle streets toward the bus stop",
+          "caption": "Steig diese Stufen etwa 175 Meter hinauf zur Bushaltestelle am Parkplatz"
+        },
+        {
+          "src": "/img/guides/path-of-the-gods-ferry/19-nav.jpg",
+          "alt": "Bus stop arrival point in Nocelle",
+          "caption": "Du hast die Bushaltestelle erreicht."
+        }
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Zurück nach Positano",
+      "body": [
+        "Nimm den Bus Montepertuso/Nocelle zurück nach Positano und steig bei der Bar Internazionale oder Chiesa Nuova aus – so ist der Fußweg zum Hostel am kürzesten.",
+        "Wenn du stattdessen die Straße hinunterlaufen willst, kalkuliere 45–60 Minuten ein und achte auf Verkehr in den Kurven.",
+        "Zurück im Ort belohnst du dich mit einer Granita oder einem späten Mittagessen – der anstrengendste Teil liegt hinter dir."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Beispiel-Zeitpläne",
+      "body": [
+        "06:30 Abmarsch vom Hostel → 07:10 Fähre → 08:40 Ankunft Bomerano → 3-stündige Wanderung → 12:30 Bus zurück → 13:00 zurück in Positano.",
+        "08:00 Start passt noch vor das Mittagessen: 08:00 Abmarsch, 08:40 Fähre, 10:15 Trailstart, 14:30 zurück in der Stadt.",
+        "Spätere Abfahrten funktionieren in der Nebensaison, aber prüfe immer den letzten Bus ab Nocelle, bevor du einen Nachmittagstermin wählst."
+      ]
+    }
+  ],
+  "essentialsTitle": "Das Wichtigste",
+  "essentials": [
+    "Fährticket Positano ⇄ Amalfi plus drei SITA-Bustickets pro Person (Amalfi → Bomerano, Nocelle → Positano, Reserve).",
+    "1,5–2 Liter Wasser, Snacks oder ein Panino, Sonnencreme und Hut.",
+    "Bequeme Schuhe mit Grip für unebenes Gelände."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "Fähre Positano → Amalfi: 12–16 € pro Strecke je nach Anbieter und Saison.",
+    "SITA-Bus Amalfi → Bomerano und Nocelle → Positano: 2–4 € pro Fahrt beim Vorverkauf.",
+    "Snacks oder Panini aus dem Minimarkt unterwegs: 4–8 €."
+  ],
+  "tipsTitle": "Routentipps",
+  "tips": [
+    "Starte früh, um Hitze zu vermeiden und dir Sitzplätze auf der Fähre zu sichern – die ersten Fahrten sind am ruhigsten.",
+    "Hol dir ein Panino zum Mitnehmen im zweiten Minimarkt an der Via Pasitea für ein günstiges Trail-Lunch.",
+    "Bewahre Fähren- und Bustickets gemeinsam in einer wasserdichten Hülle auf, damit du sie beim Einsteigen schnell vorzeigen kannst."
+  ],
+  "warningsTitle": "Darauf achten",
+  "warnings": [
+    "Folge nicht den ausgeschilderten Treppen von Nocelle nach Positano, es sei denn, du willst bewusst 1.700 Stufen laufen, die weit vom Hostel enden.",
+    "Bei rauer See werden Fähren kurzfristig gestrichen – checke die Lage im Hafen und weiche bei Bedarf auf die Busroute aus.",
+    "Sommerliche Nachmittage sind heiß und ungeschützt; wenn du die Morgenfähre verpasst, verschiebe besser auf den späten Nachmittag statt in der Mittagssonne zu wandern."
+  ],
+  "steps": [
+    {
+      "name": "Zum Hafen laufen",
+      "text": "Verlass das Hostel Brikette, kauf Bustickets in der Bar Internazionale und geh hinunter zur Spiaggia Grande."
+    },
+    {
+      "name": "Fährtickets kaufen",
+      "text": "Wähle die nächste Travelmar- oder Lucibello-Abfahrt nach Amalfi und stell dich 15 Minuten vorher an."
+    },
+    {
+      "name": "Nach Amalfi fahren",
+      "text": "Genieß die 25-minütige Überfahrt und geh direkt zu den Bussteigen neben dem Hafen."
+    },
+    {
+      "name": "Bus nach Bomerano",
+      "text": "Steig in den SITA-Bus mit Ziel Agerola/Bomerano und folge der Seitenstraße zum Trailhead."
+    },
+    {
+      "name": "Nach Nocelle wandern",
+      "text": "Folge den Markierungen des Sentiero degli Dei über den Grat, bis der Betonweg beginnt."
+    },
+    {
+      "name": "Zurück nach Positano",
+      "text": "Nimm den Nocelle-Bus zurück zur Bar Internazionale oder geh die Straße, falls die Busse voll sind."
+    }
+  ],
+  "faqsTitle": "Häufige Fragen",
+  "faqs": [
+    {
+      "q": "Wo kaufe ich die Tickets?",
+      "a": [
+        "Hol die SITA-Tickets in der Bar Internazionale, bevor du bergab gehst, und kauf das Fährticket direkt bei Lucibello oder Travelmar an den Hafenständen."
+      ]
+    },
+    {
+      "q": "Wie viel Zeit sollte ich in Amalfi einplanen?",
+      "a": [
+        "Plane 20–30 Minuten Puffer, um von der Fähre auf den Agerola-Bus zu wechseln. Nutze die Zeit für einen schnellen Kaffee, bleib aber in Sichtweite der Bussteige, um das Boarding nicht zu verpassen."
+      ]
+    },
+    {
+      "q": "Was, wenn die Fähre ausfällt?",
+      "a": [
+        "Checke die Bedingungen im Hafen. Wenn die Boote eingestellt werden, steig auf die Busroute über Amalfi um – der Wanderweg ab Bomerano bleibt derselbe."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "essentials": "Das Wichtigste",
+    "costs": "Typische Kosten",
+    "tips": "Routentipps",
+    "warnings": "Darauf achten",
+    "faqs": "Häufige Fragen"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Amalfi Town Guide: history, sights, and visiting tips",
+    "description": "Church, paper museum, cloister, beaches, and how to get there from Positano."
+  },
+  "linkLabel": "Amalfi Town Guide: history, sights, and visiting tips",
+  "intro": [
+    "Make the most of a day in Amalfi town: key sights, how to get there, and timing tips to beat tour-bus crowds."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Top sights",
+      "body": [
+        "Climb the 62 steps to Amalfi Cathedral for the striped facade, cloister, and museum (modest dress required).",
+        "Visit the Museo della Carta to see hand-made paper demonstrations and bring home lightweight souvenirs."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Getting there",
+      "body": [
+        "Ferries from Positano take 20 minutes; buses take 40–50 minutes depending on traffic. Arrive before 10:00 to snag shade on the piazza.",
+        "Buy return ferry tickets early afternoon in case sailings adjust for wind."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "When to go",
+      "body": [
+        "Mornings (before 11:00) or evenings (after 17:00) are quietest once day-trippers depart.",
+        "Pair Amalfi with Atrani (five-minute walk) for dinner on the smaller piazza before heading back."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack a lightweight scarf for church visits and to block sun on the ferry ride.",
+    "Grab lemon granita from the waterfront kiosks to cool down between stops."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "How long do I need in Amalfi?",
+      "a": [
+        "Allow three to four hours to cover the cathedral, paper museum, and a relaxed meal. Add extra time if you plan to swim at the small town beach."
+      ]
+    },
+    {
+      "q": "Are there luggage storage options?",
+      "a": [
+        "Yes, luggage deposits sit near the ferry pier. Expect €5–€8 per bag for the day."
+      ]
+    }
+  ]
+}

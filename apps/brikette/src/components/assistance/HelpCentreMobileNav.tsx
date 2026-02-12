@@ -18,7 +18,7 @@ import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useHelpDrawer } from "@/hooks/useHelpDrawer";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import assistanceFallback from "@/locales/en/assistanceCommon.json";
-import { guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { type GuideKey,guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
 
 /* ── helpers ─────────────────────────────────────────────────── */

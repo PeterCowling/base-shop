@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → molo dei traghetti di Positano (porto)",
+    "description": "Percorso pedonale passo dopo passo verso il porto di Positano con punti di riferimento sulla mappa, consigli per i biglietti e istruzioni per l'imbarco."
+  },
+  "linkLabel": "Hostel Brikette → molo dei traghetti (porto)",
+  "intro": [
+    "Ti dirigi al porto di Positano per prendere un traghetto? Questa è la passeggiata più semplice che abbiamo trovato dall'Hostel Brikette a Spiaggia Grande — con una mappa veloce e punti di riferimento fotografici per i punti 1-5.",
+    "Calcola 20-30 minuti a piedi (di più con i bagagli) e nota che Google Maps a volte suggerisce deviazioni più lunghe per raggiungere la spiaggia — segui invece il percorso qui sotto."
+  ],
+  "beforeList": [
+    "Controlla gli orari e i prezzi dei traghetti presso le cabine degli operatori al porto (elencano la prossima partenza sul cartello).",
+    "Lascia un margine se hai bagagli — ci sono scale su questo percorso e il porto si riempie nelle ore di punta.",
+    "Cerca di arrivare presto in modo da poter acquistare i biglietti, trovare il molo giusto ed essere pronto quando inizia l'imbarco."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "Raggiungere il porto",
+      "body": [
+        "Inizia dall'ostello e dirigiti verso Spiaggia Grande (la spiaggia principale di Positano).",
+        "Il porto si trova sul lato destro della spiaggia.",
+        "Calcola 20-30 minuti per la passeggiata dall'ostello al porto.",
+        "Google Maps potrebbe non fornire sempre il percorso più diretto per la spiaggia — usa la mappa e le indicazioni passo dopo passo qui sotto.",
+        "[Vedi qui se preferisci le indicazioni sulla mappa](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Camminata dall'Hostel Brikette al porto (punti 1-5)",
+      "body": [
+        "Riferimento mappa (Ostello → Porto):",
+        "[[figure:map]]",
+        "Inizia uscendo dall'ostello attraverso la porta principale.",
+        "Scendi i gradini fino alla strada.",
+        "Gira a sinistra e cammina poco più di 100 metri (330 piedi) fino a raggiungere il punto 1 sulla mappa.",
+        "Al punto 1, prendi la svolta a destra.",
+        "[[figure:point-1]]",
+        "Non appena giri a destra al punto 1, vedrai il tabacchi sulla destra.",
+        "[[figure:tabacchi]]",
+        "Segui la strada in discesa.",
+        "Al primo tornante, avrai raggiunto il punto 2 sulla mappa.",
+        "Al punto 2, lascia la strada e cammina dritto avanti, prendendo le scale.",
+        "[[figure:point-2]]",
+        "Quando raggiungi la fine delle scale, sarai arrivato al punto 3 sulla mappa.",
+        "Attraversa la strada e prendi il sentiero dritto avanti.",
+        "Segui le scale in discesa fino a raggiungere il livello successivo.",
+        "[[figure:point-3]]",
+        "Quando raggiungi la fine delle scale, arriverai alla strada.",
+        "Attraversa la strada e gira a sinistra, camminando 10 metri (30 piedi) fino a raggiungere il punto 4 sulla mappa.",
+        "Al punto 4, gira a destra e prendi le scale che si allontanano dalla strada e scendono.",
+        "[[figure:point-4]]",
+        "Segui le scale in discesa fino a raggiungere il fondo. In fondo alle scale, gira a destra.",
+        "Questo ti porterà al punto 5 sulla mappa.",
+        "Continua sotto l'arco sulla destra.",
+        "[[figure:point-5]]",
+        "Dopo 50 metri (160 piedi), raggiungerai il porto."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Acquisto dei biglietti del traghetto",
+      "body": [
+        "Al porto di Positano puoi prendere traghetti per luoghi come Amalfi, Capri e oltre. Ogni operatore di traghetti ha una cabina e il cartello sulla cabina mostra informazioni sul prossimo traghetto che gestiranno.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Imbarco su un traghetto",
+      "body": [
+        "Una volta che hai il tuo biglietto, cammina fino alla fine del porto e aspetta che il traghetto inizi l'imbarco.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Esci dall'ostello e gira a sinistra lungo la strada fino al punto 1 sulla mappa, poi gira a destra.",
+    "Segui il percorso in discesa attraverso i punti 2-5 (scale e attraversamenti) fino a raggiungere il porto.",
+    "Acquista i biglietti presso le cabine degli operatori e controlla il cartello per la prossima partenza.",
+    "Cammina fino alla fine del porto e aspetta l'imbarco."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "Quanto tempo ci vuole per camminare dall'Hostel Brikette al porto?",
+      "a": [
+        "Prevedi 20-30 minuti a piedi. Aggiungi tempo extra se hai bagagli o vuoi fermarti ad acquistare i biglietti prima dell'imbarco."
+      ]
+    },
+    {
+      "q": "Dove compro i biglietti del traghetto a Positano?",
+      "a": [
+        "Al porto vedrai cabine per ogni operatore di traghetti. Il cartello sulla cabina mostra informazioni sul prossimo traghetto che gestiranno."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Segui il percorso della mappa dall'ostello fino al porto",
+    "Usa i punti di riferimento fotografici ai punti 1-5 per rimanere sul percorso",
+    "Acquista i biglietti presso le cabine degli operatori e conferma la prossima partenza",
+    "Aspetta al molo e imbarcati quando chiamato"
+  ]
+}

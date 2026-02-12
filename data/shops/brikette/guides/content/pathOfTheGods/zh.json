@@ -1,0 +1,123 @@
+{
+  "seo": {
+    "title": "从Hostel Brikette出发的众神之路",
+    "description": "从旅舍前往步道入口的精确路线，交通选择与安全提示。"
+  },
+  "linkLabel": "从Brikette出发的众神之路",
+  "intro": [
+    "Sentiero degli Dei（众神之路）将悬崖顶的露台、栗树林和阿马尔菲海岸一览无余的景色串联在一起。从 Hostel Brikette 出发，您可以乘坐当地渡轮和 SITA 巴士到达步道，而无需参加昂贵的旅游团。",
+    "从旅舍出发有三种主要方式：乘船前往阿马尔菲，然后乘巴士前往博梅拉诺，全程乘坐巴士网络，或者跳过换乘，从诺切勒徒步往返。使用此概述来决定哪条详细路线适合您的时间、预算和高度舒适度。"
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "推荐路线",
+      "body": [
+        "经典全程：乘 SITA 公交到 Bomerano，沿山脊步道前往 Nocelle，再换车或步行回波西塔诺。",
+        "轻量路线：从 Nocelle 出发，走至 Colle Serra 观景点折返，适合时间有限或想避开长下坡的旅客。"
+      ]
+    },
+    {
+      "id": "prep",
+      "title": "装备与准备",
+      "body": [
+        "穿抓地力好的徒步鞋或厚底运动鞋，携带 1.5–2 升饮水、防晒与零食。",
+        "夏季 11:00–16:00 日照最强，建议清晨或傍晚出发，并随身带一件轻外套应对山顶风。"
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "交通与返程",
+      "body": [
+        "Bomerano 方向可在 ‘Chiesa Nuova’ 站搭乘 SITA，经 Amalfi 转车后抵达 Agerola。",
+        "从 Nocelle 返回：可乘本地巴士或徒步 1,700 级阶梯到 Arienzo，然后换乘 SITA 回波西塔诺。"
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "补给与返程",
+      "body": [
+        "出发前在 Bomerano 广场补齐饮水、糕点与最后一间公共洗手间；Nocelle 教堂附近有小卖部与柠檬刨冰摊。",
+        "若要回波西塔诺，可沿阶梯下到 Arienzo 海滩或在 Nocelle／Montepertuso 搭 SITA，记得在背包放一张打好票的备用票。"
+      ]
+    }
+  ],
+  "essentialsTitle": "必备提醒",
+  "essentials": [
+    "穿抓地力好的鞋、携带足够饮水与防晒，夏季避开正午高温。",
+    "SITA 车票需先在烟草店等处购买并上车刷卡。",
+    "连同交通与拍照停留，整段行程约需 4 小时。"
+  ],
+  "typicalCostsTitle": "大致花费",
+  "typicalCosts": [
+    "SITA 公交（波西塔诺 ⇄ Nocelle/Bomerano）：单趟约 €2–€4，视票种而定",
+    "零食／饮水：约 €3–€8（自备更省）",
+    "步道：免费，无需门票"
+  ],
+  "steps": [
+    {
+      "name": "步行至 Chiesa Nuova 公交站",
+      "text": "从旅舍向上走约 80 米抵达 Chiesa Nuova 的 SITA 站。"
+    },
+    {
+      "name": "搭车前往 Nocelle 或 Bomerano",
+      "text": "乘 SITA 往阿马尔菲方向；在 Nocelle 下车体验短程终点，或继续转车到 Agerola/Bomerano 走完整路段。"
+    },
+    {
+      "name": "进入步道",
+      "text": "在 Nocelle 按指示前往 Sentiero degli Dei 终点；在 Bomerano 则依广场指示牌找到步道入口。"
+    },
+    {
+      "name": "返程选择",
+      "text": "在 Nocelle 收尾后可沿阶梯下山或搭公交回到 Chiesa Nuova。"
+    }
+  ],
+  "faq": [
+    {
+      "q": "从哪里出发？",
+      "a": "经典路线从 Bomerano（Agerola）到 Nocelle；若想轻松些，可在 Nocelle 来回。"
+    },
+    {
+      "q": "全程需要多久？",
+      "a": "含交通与拍照停留约 4 小时，可视体力调整。"
+    },
+    {
+      "q": "要准备什么装备？",
+      "a": "抓地鞋、饮水、防晒，并避开夏季正午时段。"
+    }
+  ],
+  "faqsTitle": "常见问题",
+  "toc": {
+    "onThisPage": "本页内容",
+    "essentials": "必备提醒",
+    "costs": "大致花费",
+    "faqs": "常见问题",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "7 月至 8 月，请在 09:00 之前出发，或者选择春季和秋季的黄金时段，以获得凉爽的气温和柔和的光线。",
+    "除非您的膝盖很舒服，否则请避免走 1,700 级台阶下坡到波西塔诺 - 经过长途徒步旅行后，走下 Montepertuso 楼梯是很残酷的。",
+    "使用轻便的背包，并将登山杖折叠起来，直到到达更陡峭的楼梯。"
+  ],
+  "faqs": [
+    {
+      "q": "挨家挨户徒步需要多长时间？",
+      "a": [
+        "预算 3-5 小时，包括交通。轮渡航线最长；诺塞尔来回需要半天时间。"
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "可以，只要您脚步稳定且高度舒适即可。没有技术性的攀登，只有稳定的上升和下降。"
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "转乘经阿马尔菲的巴士或直接乘坐巴士前往诺塞尔。始终保留一张备用巴士票，以便您适应海况或天气状况。"
+      ]
+    }
+  ]
+}

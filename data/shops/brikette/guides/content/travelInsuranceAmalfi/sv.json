@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Reseförsäkring för Amalfikusten",
+    "description": "Vad du ska tänka på när du väljer reseförsäkring för Positano och Amalfikusten."
+  },
+  "linkLabel": "Reseförsäkring för Amalfikusten",
+  "intro": [
+    "Grunderna för reseförsäkringar för Amalfikusten: hälsa, avbokningar, elektronik och aktivitetsskydd."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Coverage essentials",
+      "body": [
+        "Hälsa/olycka, avbokningar/förseningar och elektronik; överväga vandring täckning för Path of the Gods."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Claims & docs",
+      "body": [
+        "Spara kvitton, polisanmälningar för stöld och bekräftelser på förseningar/inställda; kontrollera deadlines och krav på original/kopia."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need special coverage for ferries?",
+      "a": [
+        "Vanligtvis omfattas av allmänna transporter; väderrelaterade förseningar/avbokningar varierar beroende på policy - kontrollera villkoren."
+      ]
+    }
+  ]
+}

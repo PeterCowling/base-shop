@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Kempingezés az Amalfi-parton",
+    "description": "Kempinghelyek, felszerelések, közlekedés és szabályok a sátras utazóknak."
+  },
+  "linkLabel": "Kempingezés az Amalfi-parton",
+  "intro": [
+    "Az Amalfi-part közelében kempingezni kijelölt helyeken lehet Positano központján kívül – mindig ellenőrizze a szabályokat és a szabad helyeket."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Hol lehet kempingezni",
+      "body": [
+        "Kijelölt kempingek Positano központján kívül találhatók; indulás előtt nézze át a helyi előírásokat és foglaltságot."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Megközelítés és közlekedés",
+      "body": [
+        "Számoljon buszokkal vagy gyaloglással a kempingektől; a part menti utak keskenyek, a parkolóhely pedig korlátozott."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikett és biztonság",
+      "body": [
+        "Tartsa be a csendes órákat és a tűzrakási szabályokat, a szemetet vigye magával, kerülje a sziklaszéleket és a jelöletlen területeket."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Szabad a vadkemping?",
+      "a": [
+        "Általában nem; használja a hivatalos kempingeket, és kövesse a kiírt szabályokat."
+      ]
+    }
+  ]
+}

@@ -1,11 +1,14 @@
 // src/components/till/ReconciliationWorkbench.tsx
+"use client";
 
-import { memo, useEffect, useMemo } from "react";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
 import useTerminalBatches from "../../hooks/data/till/useTerminalBatches";
+import { usePmsPostingsMutations } from "../../hooks/mutations/usePmsPostingsMutations";
+import { useTerminalBatchesMutations } from "../../hooks/mutations/useTerminalBatchesMutations";
 import { type CashCount } from "../../types/hooks/data/cashCountData";
 import { showToast } from "../../utils/toastUtils";
 
@@ -19,14 +22,155 @@ const diffClass = (value: number): string =>
   Math.abs(value) < 0.01 ? "text-success-main" : "text-error-main";
 
 /* -------------------------------------------------------------------------- */
+/* Inline entry form                                                          */
+/* -------------------------------------------------------------------------- */
+
+interface PmsPostingFormProps {
+  onSubmit: (amount: number, method: "CASH" | "CC", note?: string) => Promise<void>;
+}
+
+const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingFormProps) {
+  const [amount, setAmount] = useState("");
+  const [method, setMethod] = useState<"CASH" | "CC">("CASH");
+  const [note, setNote] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = useCallback(async () => {
+    const parsed = parseFloat(amount);
+    if (isNaN(parsed) || parsed <= 0) {
+      showToast("Amount must be greater than zero", "error");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await onSubmit(parsed, method, note || undefined);
+      setAmount("");
+      setNote("");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [amount, method, note, onSubmit]);
+
+  return (
+    <div className="flex items-end gap-2 flex-wrap">
+      <div>
+        <label className="block text-xs mb-1">Amount</label>
+        <input
+          type="number"
+          inputMode="decimal"
+          className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          placeholder="0.00"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          disabled={submitting}
+        />
+      </div>
+      <div>
+        <label className="block text-xs mb-1">Method</label>
+        <select
+          className="rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          value={method}
+          onChange={(e) => setMethod(e.target.value as "CASH" | "CC")}
+          disabled={submitting}
+        >
+          <option value="CASH">Cash</option>
+          <option value="CC">CC</option>
+        </select>
+      </div>
+      <div>
+        <label className="block text-xs mb-1">Note</label>
+        <input
+          type="text"
+          className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          placeholder="Optional"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          disabled={submitting}
+        />
+      </div>
+      <button
+        onClick={handleSubmit}
+        disabled={submitting}
+        className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
+      >
+        {submitting ? "Saving…" : "Add PMS Posting"}
+      </button>
+    </div>
+  );
+});
+
+interface TerminalBatchFormProps {
+  onSubmit: (amount: number, note?: string) => Promise<void>;
+}
+
+const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: TerminalBatchFormProps) {
+  const [amount, setAmount] = useState("");
+  const [note, setNote] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = useCallback(async () => {
+    const parsed = parseFloat(amount);
+    if (isNaN(parsed) || parsed <= 0) {
+      showToast("Amount must be greater than zero", "error");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await onSubmit(parsed, note || undefined);
+      setAmount("");
+      setNote("");
+    } finally {
+      setSubmitting(false);
+    }
+  }, [amount, note, onSubmit]);
+
+  return (
+    <div className="flex items-end gap-2 flex-wrap">
+      <div>
+        <label className="block text-xs mb-1">Amount</label>
+        <input
+          type="number"
+          inputMode="decimal"
+          className="w-28 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          placeholder="0.00"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          disabled={submitting}
+        />
+      </div>
+      <div>
+        <label className="block text-xs mb-1">Note</label>
+        <input
+          type="text"
+          className="w-40 rounded border px-2 py-1 text-sm dark:bg-darkBg dark:text-darkAccentGreen"
+          placeholder="Optional"
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          disabled={submitting}
+        />
+      </div>
+      <button
+        onClick={handleSubmit}
+        disabled={submitting}
+        className="rounded bg-primary-main px-3 py-1 text-sm text-white hover:opacity-90 disabled:opacity-50"
+      >
+        {submitting ? "Saving…" : "Add Terminal Batch"}
+      </button>
+    </div>
+  );
+});
+
+/* -------------------------------------------------------------------------- */
 /* Component                                                                  */
 /* -------------------------------------------------------------------------- */
 
 const ReconciliationWorkbenchContent = memo(
   function ReconciliationWorkbenchContent() {
     const { transactions, cashCounts } = useTillData();
-    const { postings } = usePmsPostings();
-    const { batches } = useTerminalBatches();
+    const { postings, loading: pmsLoading } = usePmsPostings();
+    const { batches, loading: batchLoading } = useTerminalBatches();
+    const { addPmsPosting } = usePmsPostingsMutations();
+    const { addTerminalBatch } = useTerminalBatchesMutations();
 
     /* ------------------------------- POS totals ------------------------------ */
     const posCashTotal = useMemo(
@@ -106,6 +250,10 @@ const ReconciliationWorkbenchContent = memo(
     const safePmsCcTotal = pmsCcParse.success ? pmsCcParse.data : 0;
     const safeTerminalTotal = terminalParse.success ? terminalParse.data : 0;
 
+    /* ----------------------- Missing data warnings ------------------------- */
+    const hasPmsData = !pmsLoading && postings.length > 0;
+    const hasBatchData = !batchLoading && batches.length > 0;
+
     /* --------------------------------- UI ---------------------------------- */
     return (
       <div className="p-4 space-y-4">
@@ -113,6 +261,17 @@ const ReconciliationWorkbenchContent = memo(
         {hasParseError && (
           <p className="text-sm text-warning-main dark:text-darkAccentGreen">
             Some values could not be parsed.
+          </p>
+        )}
+
+        {!pmsLoading && !hasPmsData && (
+          <p className="text-sm text-warning-main" data-cy="pms-missing-warning">
+            No PMS postings entered for today. Add entries below.
+          </p>
+        )}
+        {!batchLoading && !hasBatchData && (
+          <p className="text-sm text-warning-main" data-cy="batch-missing-warning">
+            No terminal batch entered for today. Add an entry below.
           </p>
         )}
 
@@ -195,6 +354,18 @@ const ReconciliationWorkbenchContent = memo(
             </tr>
           </tbody>
         </table>
+
+        {/* Entry forms */}
+        <div className="space-y-4 pt-2">
+          <div>
+            <h3 className="text-sm font-semibold mb-2">Add PMS Posting</h3>
+            <PmsPostingForm onSubmit={addPmsPosting} />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold mb-2">Add Terminal Batch</h3>
+            <TerminalBatchForm onSubmit={addTerminalBatch} />
+          </div>
+        </div>
       </div>
     );
   }

@@ -10,10 +10,11 @@
  * - 'mixed': Default CTAs
  */
 
-import { Calendar, Eye, Map, MessageCircle, Users } from 'lucide-react';
-import Link from 'next/link';
-import { FC, memo, useMemo } from 'react';
+import { type FC, memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
+import { Calendar, Eye, Map, MessageCircle, Users } from 'lucide-react';
+
 import { useChat } from '../../contexts/messaging/ChatProvider';
 import type { GuestIntent } from '../../types/guestProfile';
 

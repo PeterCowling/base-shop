@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/Italien-Bahnpass: Amalfiküste besuchen",
+    "description": "So nutzt du Bahnpässe für die Küste – inklusive letzter Meile nach Positano."
+  },
+  "linkLabel": "Interrail/Italy Rail Pass an der Amalfiküste",
+  "intro": [
+    "Mit Interrail/Pässen erreichst du Positano bequem über Neapel oder Salerno – plane Reservierungen und letzte Meilen rechtzeitig ein."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Hauptrouten",
+      "body": [
+        "Rom → Neapel/Salerno per Hochgeschwindigkeitszug (Reservierungspflicht), anschließend Circumvesuviana/Campania Express nach Sorrent oder Regionalzug nach Salerno; ab Sorrent weiter mit SITA-Bus, ab Salerno saisonal mit Fähre oder Bus über Amalfi."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Aufpreise & Reservierungen",
+      "body": [
+        "Frecciarossa/Frecciargento und Italo verlangen Sitzplatzreservierung (10–15 €); Regionalzüge sind reservierungsfrei. Campania Express (Sorrent-Strecke) ist passkompatibel, benötigt aber Aufpreis/Platzkarte – online reservieren."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Letzte Etappe nach Positano",
+      "body": [
+        "Ab Sorrent: SITA-Bus nach Positano (Ticket am Tabacchi kaufen, entwerten beim Einstieg). Ab Salerno: Fähre (Apr–Okt) oder Bus via Amalfi; bei schlechtem Wetter auf Bus + Taxi umsteigen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Lohnt sich ein Pass?",
+      "a": [
+        "Nur wenn du mehrere Fernstrecken (z. B. Mailand → Rom → Neapel/Salerno → Florenz) kombinierst. Für einzelne Verbindungen sind Sparpreise oft günstiger."
+      ]
+    }
+  ]
+}

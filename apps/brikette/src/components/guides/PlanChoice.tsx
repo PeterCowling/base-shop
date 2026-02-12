@@ -76,6 +76,8 @@ function PlanChoice({ onSelect, className = "", title, lang: explicitLang }: Pro
     "items-center",
     "rounded-md",
     "border",
+    "min-h-11",
+    "min-w-11",
     "px-3",
     "py-2",
     "text-sm",
@@ -89,9 +91,9 @@ function PlanChoice({ onSelect, className = "", title, lang: explicitLang }: Pro
     "border-brand-primary",
     "bg-brand-primary/10",
     "text-brand-primary",
-    "dark:border-brand-primary/70",
-    "dark:bg-brand-primary/20",
-    "dark:text-brand-primary/80"
+    "dark:border-brand-secondary/70",
+    "dark:bg-brand-secondary/15",
+    "dark:text-brand-secondary"
   );
   const inactiveClasses = clsx(
     "border-brand-outline/30",

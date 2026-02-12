@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Clases de cocina en la Costa Amalfitana",
+    "description": "Cómo son las clases, qué cocinarás y cómo elegir la mejor opción."
+  },
+  "linkLabel": "Clases de cocina en la Costa Amalfitana",
+  "intro": [
+    "Las clases prácticas de cocina en la Costa Amalfitana combinan limones sfusato, pasta fresca y recetas familiares en cocinas pequeñas con vistas.",
+    "Usa esta guía para elegir una clase que encaje con tu presupuesto y horarios y para confirmar los detalles antes de pagar la reserva."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Cómo transcurre una clase típica",
+      "body": [
+        "Los anfitriones suelen recibirte con café o prosecco antes de repasar los ingredientes: limones recién rallados, verduras de temporada y la masa que amasarás.",
+        "Prepárate para cocinar dos o tres platos — normalmente una pasta fresca, una salsa y un postre al limón — y luego comer en grupo; las sesiones duran 2,5–4 horas con la comida incluida."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Cómo elegir la clase adecuada",
+      "body": [
+        "Comprueba el tamaño del grupo y si la cocina está en Positano, en una granja de las colinas o en un pueblo cercano; algunos incluyen traslados y otros los cobran aparte.",
+        "Aclara qué incluye el precio: ingredientes, maridajes de vino, recetas impresas y si te quedas con delantal o sobras."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logística y horarios",
+      "body": [
+        "En temporada alta las clases se agotan semanas antes; reserva antes de llegar, sobre todo para sesiones vespertinas tras las excursiones.",
+        "Si el lugar está fuera de Positano, confirma puntos de recogida o calcula un taxi; las cuestas exigen calzado cómodo aunque vayas en shuttle."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Notas dietéticas y etiqueta",
+      "body": [
+        "Informa de alergias, preferencias vegetarianas/veganas o intolerancia al gluten al reservar; con aviso suelen adaptarse.",
+        "Usa calzado cerrado, recoge el pelo largo y modera el perfume: las cocinas son pequeñas y trabajarás encima de ingredientes frescos."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Las clases de cocina sirven para principiantes?",
+      "a": [
+        "Sí. El instructor demuestra cada paso, corrige la técnica sobre la marcha y reparte tareas para que nadie se agobie."
+      ]
+    },
+    {
+      "q": "¿Necesito hablar italiano?",
+      "a": [
+        "No. La mayoría se imparten en inglés o en formato bilingüe, y las demostraciones visuales facilitan seguir el ritmo."
+      ]
+    },
+    {
+      "q": "¿Qué debo llevar?",
+      "a": [
+        "Lleva una libreta si te gusta apuntar trucos, mantén el móvil cargado para fotos y lleva efectivo para abonar extras o transporte."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Pasta, salsas y postres de limón prácticos; grupos pequeños y cocinas panorámicas en temporada."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Qué esperar"
+      },
+      {
+        "href": "#choose",
+        "label": "Cómo elegir"
+      },
+      {
+        "href": "#tips",
+        "label": "Consejos"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Qué esperar",
+        "body": [
+          "Pasta, salsas y postres de limón prácticos; grupos pequeños y cocinas panorámicas en temporada."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Cómo elegir",
+        "body": [
+          "Comprueba el tamaño del grupo, la duración, lo que incluye y las opciones de transporte."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Consejos",
+        "body": [
+          "Reserva con antelación en los meses de mayor demanda e informa a los anfitriones sobre necesidades dietéticas."
+        ]
+      }
+    ]
+  }
+}

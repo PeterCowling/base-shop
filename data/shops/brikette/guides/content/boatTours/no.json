@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Båtturer i Positano",
+    "description": "Private og delte båtturer: hva du kan forvente, prisrammer og bookingtips i sesong."
+  },
+  "linkLabel": "Båtturer: Solnedgangscruise til Private Chartere",
+  "intro": [
+    "Båtturer lar deg følge Amalfikystens klipper uten trafikkaos; bestill i god tid i høysesongen og ha en værbackup."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Gruppeturer og delte båter",
+      "body": [
+        "Delte turer på rundt tre timer går fra Positano på formiddagen og inkluderer badestopp; regn med €85–€120 per person i juli–august.",
+        "Ta med badesko og et lett plagg – vinden på sjøen er kjøligere enn på terrassene."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Private charterturer",
+      "body": [
+        "Skippere tar gjerne €550–€850 for halvdags gozzo-charter (opptil 6 personer) pluss drivstoff; avklar om prosecco eller håndklær er inkludert.",
+        "Avtal starttid ved soloppgang eller sen ettermiddag hvis du vil ha mykere lys og færre bølger fra ferjer."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Vær og reserveplaner",
+      "body": [
+        "Operatører avlyser når vinden overstiger styrke 4; ha en buss- eller strandplan klar for en avslappet dag likevel.",
+        "Havet kan være urolig selv om sommeren – ta med reisesykearmbånd hvis du er utsatt."
+      ]
+    }
+  ],
+  "tips": [
+    "Møt opp 20 minutter før avgang for betaling og for å ta på eventuelle dekk­sko.",
+    "Ha med vanntett pose til telefoner og en flaske på minst én liter; det er begrenset skygge om bord."
+  ],
+  "faqs": [
+    {
+      "q": "Må jeg bestille på forhånd?",
+      "a": [
+        "Ja, fra mai til september blir båtene ofte fullbooket flere dager i forveien, spesielt rundt solnedgangstider."
+      ]
+    },
+    {
+      "q": "Er håndklær inkludert?",
+      "a": [
+        "Gruppeturer gir som regel ett håndkle per person; private skippere varierer, så ta med et hurtigtørkende håndkle for sikkerhets skyld."
+      ]
+    }
+  ],
+  "galleryHeading": "Bildegalleri"
+}

@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Viajar en pareja en albergues",
+    "description": "Consejos para dormitorios o habitaciones privadas, encontrar tranquilidad y establecer expectativas."
+  },
+  "linkLabel": "Viajar en pareja en albergues",
+  "intro": [
+    "Los albergues funcionan para parejas cuando eliges el tipo de habitación correcto, empacas ligero y establecen expectativas juntos."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Tipos de habitaciones",
+      "body": [
+        "Reserva una habitación privada para privacidad; si estás ajustando el presupuesto, compartan literas en el mismo dormitorio y mantengan el equipaje ligero para las escaleras."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Encontrar tranquilidad",
+      "body": [
+        "Lleva tapones para los oídos y un antifaz, elige habitaciones alejadas del bar o áreas comunes, y usa las mañanas tempranas para un turismo más tranquilo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Es un albergue adecuado para parejas?",
+      "a": [
+        "Sí — obtienes energía social y buen valor; las habitaciones privadas equilibran comodidad y costo."
+      ]
+    }
+  ]
+}

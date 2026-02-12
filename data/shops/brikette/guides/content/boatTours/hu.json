@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Hajós túrák Positanóban",
+    "description": "Privát és csoportos hajótúrák: mire számítson, árkategóriák és foglalási tippek a szezonban."
+  },
+  "linkLabel": "Hajótúrák: Napnyugtás körutazástól privát bérlésig",
+  "intro": [
+    "A hajótúrák lehetővé teszik, hogy az Amalfi-part szikláit bejárja anélkül, hogy a közúti forgalommal küzdene; foglaljon előre a csúcshónapokban és tartson készen időjárási tartalékot."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Csoportos túrák és közös hajók",
+      "body": [
+        "A 3 órás közös körutazások délelőtt közepén indulnak Positanóból és úszómegállókat tartalmaznak; számítson €85–€120-ra személyenként július-augusztusban.",
+        "Hozzon vízi cipőt és könnyű réteget—a szél a tengeren hűvösebb, mint a teraszokon."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Privát bérlések",
+      "body": [
+        "A hajósok fél napos gozzo bérléséért (legfeljebb 6 fő) €550–€850-ot plusz üzemanyagot kérnek; erősítse meg a tartalmazott elemeket, mint a prosecco vagy törölközők.",
+        "Tárgyaljon a napkelte körüli vagy késő délutáni kezdési időkről, ha lágyabb fényt és kevesebb kompok hullámát szeretné."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Időjárás és tartaléktervek",
+      "body": [
+        "Az üzemeltetők lemondják a túrát, amikor a szél meghaladja a 4-es erősséget; tartson készenlétben egy buszt vagy strand tervet, hogy a nap laza maradjon.",
+        "A tengerek nyáron is hullámosak lehetnek—csomagoljon be tengeribetegség-elleni karperecet, ha hajlamos rá."
+      ]
+    }
+  ],
+  "tips": [
+    "Érkezzen 20 perccel az indulás előtt, hogy rendezze az egyenleget és felvegye a biztosított fedélzeti cipőt.",
+    "Vigyen vízálló táskát a telefonokhoz és egy 1 literes (34 uncia) kulacsot; az árnyék korlátozott a fedélzeten."
+  ],
+  "faqs": [
+    {
+      "q": "Előre kell foglalnom?",
+      "a": [
+        "Igen májustól szeptemberig—a hajók gyakran néhány nappal előre megtelnek, különösen a napnyugtás időpontok."
+      ]
+    },
+    {
+      "q": "Törölközőket biztosítanak?",
+      "a": [
+        "A csoportos túrák általában személyenként egyet adnak; a privát hajósok változóak, ezért csomagoljon gyorsan száradó törölközőt a biztonság kedvéért."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotógaléria"
+}

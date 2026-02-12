@@ -7,8 +7,8 @@
 
 'use client';
 
-import { FC, memo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { type FC, memo } from 'react';
+
 import { useServiceWorker } from '../../lib/pwa';
 
 interface UpdatePromptProps {
@@ -24,7 +24,6 @@ interface UpdatePromptProps {
 export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
   className = '',
 }) {
-  const { t } = useTranslation('Common');
   const { updateAvailable, applyUpdate } = useServiceWorker();
 
   // Don't render when no update available
@@ -38,9 +37,9 @@ export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
       className={`
         fixed bottom-4 left-4 right-4 z-50
         max-w-sm mx-auto
-        bg-white dark:bg-gray-800
+        bg-card
         rounded-lg shadow-lg
-        border border-gray-200 dark:border-gray-700
+        border border-border
         p-4
         animate-slideUp
         ${className}
@@ -49,9 +48,9 @@ export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
       <div className="flex items-start gap-3">
         {/* Update icon */}
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900 rounded-full flex items-center justify-center">
+          <div className="w-10 h-10 bg-info-soft rounded-full flex items-center justify-center">
             <svg
-              className="w-5 h-5 text-primary-600 dark:text-primary-400"
+              className="w-5 h-5 text-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -69,20 +68,18 @@ export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
 
         {/* Content */}
         <div className="flex-1">
-          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-            {t('update.title', 'Update available')}
-          </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {t('update.message', 'A new version is ready. Refresh to update.')}
+          <h3 className="text-sm font-medium text-foreground">Update available</h3>
+          <p className="text-sm text-muted-foreground mt-1">
+            A new version is ready. Refresh to update.
           </p>
 
           {/* Actions */}
           <div className="mt-3 flex gap-2">
             <button
               onClick={applyUpdate}
-              className="px-3 py-1.5 text-sm font-medium text-white bg-primary-600 rounded hover:bg-primary-700 transition-colors"
+              className="px-3 py-1.5 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary/90 transition-colors"
             >
-              {t('update.refresh', 'Refresh now')}
+              Refresh now
             </button>
           </div>
         </div>

@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Positano költségvetés – részletek",
+    "description": "Mire mennyit költesz egy nap alatt: szállás, étkezés, programok és közlekedés."
+  },
+  "linkLabel": "Positano költségvetés",
+  "intro": [
+    "Mutatjuk, milyen kiadással számolj, ha így vagy úgy költöd a napodat Positanóban."
+  ],
+  "sections": [
+    {
+      "id": "meals",
+      "title": "Étkezés",
+      "body": [
+        "Reggelire kérj gyors espresso + sfogliatella kombót; az ebéd lehet egy közeli trattoria napi ajánlata.",
+        "Oszd meg az antipasti tálat, és vacsorára válassz napi halételeket a tengerparton."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Szállás",
+      "body": [
+        "A dormok és apartmanok a felső városrészekben a legolcsóbbak; pénzt spórolsz, ha nem közvetlenül a partról nézel ki.",
+        "Az árak 70–120 € körül mozognak, de a vállszezonban könnyen lehet 20–30% kedvezmény."
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "Extrák",
+      "body": [
+        "Számolj egy nagy beach klub nap áraival, egy komppal Capri felé és egy partmenti koktéllal.",
+        "Ha súlyos poggyásszal érkezel, használj porter szolgáltatást egyszer, célozd a csomag nélküli napokat."
+      ]
+    }
+  ],
+  "tips": [
+    "Készíts részletes napi költségtervet, hogy ne vigyen el a szemeddel történő apró elköltés.",
+    "Figyeld az árakat a szezon alatt, és válassz időpontokat, amikor több kedvezményt kapsz."
+  ],
+  "faqs": [
+    {
+      "q": "Mennyibe kerül egy átlagos nap?",
+      "a": [
+        "Kb. 120–150 €, ha egy hostel ágyat, etetést delikátoktól, közlekedést és egy kiemelt programot is számolsz."
+      ]
+    },
+    {
+      "q": "Hogyan lehet spórólni a közlekedésen?",
+      "a": [
+        "Vegyél SITA jegyet előre, és kombinálj ugyanolyan úton buszt és kompot, hogy kihasználd az egyedi kedvezményeket."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "Áttekintés",
+    "tocTitle": "Ezen az oldalon",
+    "tipsTitle": "Hol spórolhatsz",
+    "faqsTitle": "GYIK"
+  }
+}

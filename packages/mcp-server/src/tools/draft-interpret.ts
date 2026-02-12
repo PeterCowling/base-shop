@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { type ScenarioCategory } from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
 type IntentItem = {
@@ -23,7 +24,13 @@ type WorkflowTriggers = {
 };
 
 type ScenarioClassification = {
-  category: string;
+  category: ScenarioCategory;
+  confidence: number;
+};
+
+type EscalationClassification = {
+  tier: "NONE" | "HIGH" | "CRITICAL";
+  triggers: string[];
   confidence: number;
 };
 
@@ -54,6 +61,7 @@ export type EmailActionPlan = {
   agreement: AgreementDetection;
   workflow_triggers: WorkflowTriggers;
   scenario: ScenarioClassification;
+  escalation: EscalationClassification;
   thread_summary?: ThreadSummary;
 };
 
@@ -110,10 +118,18 @@ function normalizeThread(body: string): string {
   const lines = body.split("\n");
   const cleaned: string[] = [];
 
-  for (const line of lines) {
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
     const trimmed = line.trim();
+    const nextTrimmed = lines[i + 1]?.trim() ?? "";
     if (trimmed.startsWith(">")) {
       continue;
+    }
+    if (/^On .+$/i.test(trimmed) && /^wrote:$/i.test(nextTrimmed)) {
+      break;
+    }
+    if (/^wrote:$/i.test(trimmed) && i > 0 && /^On .+$/i.test(lines[i - 1].trim())) {
+      break;
     }
     if (/^On .*wrote:$/i.test(trimmed)) {
       break;
@@ -251,11 +267,15 @@ function summarizeThreadContext(
   };
 }
 
+const SIGN_OFF_PATTERN = /^(thank|thanks|cheers|regards|kind regards|best|sincerely|looking forward)/i;
+
 function extractQuestions(text: string): IntentItem[] {
-  return text
-    .split("?")
+  const parts = text.split("?");
+  // Only segments followed by ? are questions; the last segment has no trailing ?
+  return parts
+    .slice(0, -1)
     .map(segment => segment.trim())
-    .filter(segment => segment.length > 0)
+    .filter(segment => segment.length > 0 && !SIGN_OFF_PATTERN.test(segment))
     .map(segment => ({
       text: `${segment}?`,
       evidence: segment,
@@ -290,6 +310,7 @@ function extractConfirmations(text: string): IntentItem[] {
 function detectAgreement(text: string, language: string): AgreementDetection {
   const lower = text.toLowerCase();
   const explicitPatterns = [
+    /^\s*agree(?:[!.,\s]|$)/i,
     /\b(i agree|we agree|agreed)\b/i,
     /\baccetto\b/i,
     /\bde acuerdo\b/i,
@@ -332,8 +353,14 @@ function detectAgreement(text: string, language: string): AgreementDetection {
   }
 
   const contrast = contrastPatterns.some(pattern => pattern.test(text));
+  const residual = explicitMatch
+    ? lower.replace(explicitMatch[0].toLowerCase(), "")
+    : lower;
+  const normalizedResidual = residual
+    .replace(/[^\p{L}\p{N}]+/gu, "")
+    .trim();
   const additional_content = explicitMatch
-    ? lower.replace(explicitMatch[0].toLowerCase(), "").trim().length > 0
+    ? normalizedResidual.length > 0
     : lower.trim().length > 0;
 
   if (negated) {
@@ -401,19 +428,243 @@ function detectWorkflowTriggers(text: string): WorkflowTriggers {
 
 function classifyScenario(text: string): ScenarioClassification {
   const lower = text.toLowerCase();
-  if (/(payment|card|bank transfer|invoice|charge)/.test(lower)) {
-    return { category: "payment", confidence: 0.8 };
+  const rules: Array<{ category: ScenarioCategory; confidence: number; pattern: RegExp }> = [
+    {
+      category: "prepayment",
+      confidence: 0.9,
+      pattern: /(prepayment|payment link|secure link|octorate|hostelworld.*payment)/,
+    },
+    {
+      category: "cancellation",
+      confidence: 0.88,
+      pattern: /(cancel|cancellation|refund|non[-\s]?refundable|no show)/,
+    },
+    {
+      category: "payment",
+      confidence: 0.85,
+      pattern: /(payment|card|credit card|debit card|bank transfer|invoice|charge|iban)/,
+    },
+    {
+      category: "booking-changes",
+      confidence: 0.84,
+      pattern: /(change date|date change|booking change|modify booking|reschedul|extend stay|extra night|upgrade|add (one )?more person|add guest)/,
+    },
+    {
+      category: "booking-issues",
+      confidence: 0.86,
+      pattern: /(check availability|availability.*(from|for).*(to|through)|do you have availability|availability for|available for these dates|available from)/,
+    },
+    {
+      category: "breakfast",
+      confidence: 0.84,
+      pattern: /(breakfast|meal|morning food|colazione)/,
+    },
+    {
+      category: "luggage",
+      confidence: 0.84,
+      pattern: /(luggage|bag drop|baggage|suitcase|storage)/,
+    },
+    {
+      category: "wifi",
+      confidence: 0.84,
+      pattern: /(wi[\s-]?fi|internet|network connection)/,
+    },
+    {
+      category: "transportation",
+      confidence: 0.82,
+      pattern: /(transport|bus|ferry|taxi|train|airport|how to get)/,
+    },
+    {
+      category: "check-in",
+      confidence: 0.8,
+      pattern: /(check[-\s]?in|arrival|arrive early|late arrival|out of hours)/,
+    },
+    {
+      category: "checkout",
+      confidence: 0.8,
+      pattern: /(check[-\s]?out|checkout|departure|late checkout)/,
+    },
+    {
+      category: "house-rules",
+      confidence: 0.78,
+      pattern: /(house rules|quiet hours|visitor policy|noise policy)/,
+    },
+    {
+      category: "policies",
+      confidence: 0.76,
+      pattern: /(policy|policies|terms|t&c|age restriction|pet policy|alcohol policy)/,
+    },
+    {
+      category: "access",
+      confidence: 0.78,
+      pattern: /(main door|access code|entry code|door code|building access)/,
+    },
+    {
+      category: "employment",
+      confidence: 0.82,
+      pattern: /(job application|employment|volunteer|work exchange|receptionist)/,
+    },
+    {
+      category: "lost-found",
+      confidence: 0.8,
+      pattern: /(lost item|left behind|forgot|missing item|found item)/,
+    },
+    {
+      category: "promotions",
+      confidence: 0.78,
+      pattern: /(coupon|discount|promo|promotion|voucher)/,
+    },
+    {
+      category: "activities",
+      confidence: 0.8,
+      pattern: /(activity|activities|path of the gods|hike|tour|excursion)/,
+    },
+    {
+      category: "booking-issues",
+      confidence: 0.74,
+      pattern: /(booking issue|reservation issue|why cancelled|booking inquiry|capacity clarification)/,
+    },
+    {
+      category: "faq",
+      confidence: 0.7,
+      pattern: /(availability|available|price|cost|private room|how much|facilities|services)/,
+    },
+  ];
+
+  for (const rule of rules) {
+    if (rule.pattern.test(lower)) {
+      return {
+        category: rule.category,
+        confidence: rule.confidence,
+      };
+    }
   }
-  if (/(cancel|cancellation|refund)/.test(lower)) {
-    return { category: "cancellation", confidence: 0.8 };
+
+  return {
+    category: "general",
+    confidence: 0.6,
+  };
+}
+
+const DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR = 500;
+const HIGH_VALUE_DISPUTE_THRESHOLD_EUR = (() => {
+  const raw = process.env.EMAIL_AUTODRAFT_HIGH_VALUE_DISPUTE_EUR_THRESHOLD;
+  if (!raw) {
+    return DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR;
   }
-  if (/(policy|terms|t&c|non[-\s]?refundable)/.test(lower)) {
-    return { category: "policy", confidence: 0.75 };
+
+  const parsed = Number.parseFloat(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    return DEFAULT_HIGH_VALUE_DISPUTE_THRESHOLD_EUR;
   }
-  if (/(check-in|check out|availability|available|price|cost|private room|how much)/.test(lower)) {
-    return { category: "faq", confidence: 0.7 };
+
+  return parsed;
+})();
+
+function extractEuroAmounts(text: string): number[] {
+  const amounts: number[] = [];
+  const regex = /(?:€\s?(\d+(?:[.,]\d+)?)|(\d+(?:[.,]\d+)?)\s?(?:€|eur))/gi;
+  let match: RegExpExecArray | null;
+
+  while ((match = regex.exec(text)) !== null) {
+    const rawAmount = match[1] ?? match[2];
+    if (!rawAmount) {
+      continue;
+    }
+    const amount = Number.parseFloat(rawAmount.replace(",", "."));
+    if (Number.isFinite(amount)) {
+      amounts.push(amount);
+    }
   }
-  return { category: "general", confidence: 0.6 };
+
+  return amounts;
+}
+
+function classifyEscalation(
+  text: string,
+  threadSummary?: ThreadSummary
+): EscalationClassification {
+  const lower = text.toLowerCase();
+  const highTriggers: string[] = [];
+  const criticalTriggers: string[] = [];
+
+  const hasRefundOrCancellation = /(cancel|cancellation|refund)/.test(lower);
+  const hasDisputeLanguage = /(disput|complaint|unacceptable|issue|problem|chargeback|request (a )?refund|want (a )?refund)/.test(lower);
+  if (hasRefundOrCancellation && hasDisputeLanguage) {
+    highTriggers.push("cancellation_refund_dispute");
+  }
+
+  if (
+    /(chargeback|card dispute|dispute (the |this )?charge|reverse (the |this )?charge|bank dispute)/.test(lower)
+  ) {
+    highTriggers.push("chargeback_hint");
+  }
+
+  if (
+    /(medical|hospital|emergency|disability|pregnan|bereave|funeral|vulnerable)/.test(lower)
+  ) {
+    highTriggers.push("vulnerable_circumstance");
+  }
+
+  const hasComplaintTone = /(still waiting|no response|unanswered|ignored|unacceptable|frustrated|upset|complaint|complain|again|already)/.test(lower);
+  if ((threadSummary?.previous_response_count ?? 0) >= 3 && hasComplaintTone) {
+    highTriggers.push("repeated_complaint");
+  }
+
+  if (/(lawyer|attorney|legal action|lawsuit|sue|court|solicitor|small claims)/.test(lower)) {
+    criticalTriggers.push("legal_threat");
+  }
+
+  const hasPlatformMention = /(booking\.com|airbnb|expedia|tripadvisor|google review|regulator|consumer authority|ombudsman)/.test(lower);
+  const hasEscalationVerb = /(contact|report|complain|complaint|escalate|open case|file)/.test(lower);
+  if (hasPlatformMention && hasEscalationVerb) {
+    criticalTriggers.push("platform_escalation_threat");
+  }
+
+  const hasPublicThreat = /(social media|instagram|facebook|tiktok|twitter|x\.com|press|media|public review|go public|viral)/.test(lower);
+  const hasPublicThreatVerb = /(post|publish|share|report|expose|name and shame|contact)/.test(lower);
+  if (hasPublicThreat && hasPublicThreatVerb) {
+    criticalTriggers.push("public_media_threat");
+  }
+
+  if (/(fraud|scam|theft|stole|criminal|misconduct|dishonest|illegal charge)/.test(lower)) {
+    criticalTriggers.push("fraud_or_misconduct_accusation");
+  }
+
+  const amounts = extractEuroAmounts(lower);
+  const hasHighValueDispute = amounts.some(
+    (amount) => amount >= HIGH_VALUE_DISPUTE_THRESHOLD_EUR
+  );
+  const hasDisputeContext = /(refund|dispute|chargeback|cancel|cancellation|complaint|legal)/.test(lower);
+  if (hasHighValueDispute && hasDisputeContext) {
+    criticalTriggers.push("high_value_dispute");
+  }
+
+  const uniqueTriggers = Array.from(new Set([...criticalTriggers, ...highTriggers]));
+
+  if (criticalTriggers.length > 0) {
+    const confidence = Math.min(0.99, 0.86 + (criticalTriggers.length - 1) * 0.04);
+    return {
+      tier: "CRITICAL",
+      triggers: uniqueTriggers,
+      confidence: Number(confidence.toFixed(2)),
+    };
+  }
+
+  if (highTriggers.length > 0) {
+    const confidence = Math.min(0.95, 0.74 + (highTriggers.length - 1) * 0.06);
+    return {
+      tier: "HIGH",
+      triggers: uniqueTriggers,
+      confidence: Number(confidence.toFixed(2)),
+    };
+  }
+
+  return {
+    tier: "NONE",
+    triggers: [],
+    confidence: 0,
+  };
 }
 
 export async function handleDraftInterpretTool(name: string, args: unknown) {
@@ -429,6 +680,8 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
     const requests = extractRequests(normalized);
     const confirmations = extractConfirmations(normalized);
     const agreement = detectAgreement(normalized, language);
+    const threadSummary = summarizeThreadContext(threadContext, normalized);
+    const escalation = classifyEscalation(`${subject ?? ""}\n${normalized}`, threadSummary);
 
     const plan: EmailActionPlan = {
       normalized_text: normalized,
@@ -441,9 +694,9 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
       agreement,
       workflow_triggers: detectWorkflowTriggers(`${subject ?? ""}\n${normalized}`),
       scenario: classifyScenario(`${subject ?? ""}\n${normalized}`),
+      escalation,
     };
 
-    const threadSummary = summarizeThreadContext(threadContext, normalized);
     if (threadSummary) {
       plan.thread_summary = threadSummary;
     }

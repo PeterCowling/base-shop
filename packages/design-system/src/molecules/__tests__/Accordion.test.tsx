@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe } from "jest-axe";
 
 import type { AccordionItem } from "../Accordion";
 import { Accordion } from "../Accordion";
@@ -13,14 +14,15 @@ describe("Accordion", () => {
     { title: "Section 3", content: "Content 3" },
   ];
 
-  it("renders items closed by default", () => {
-    render(<Accordion items={items} />);
+  it("renders items closed by default", async () => {
+    const { container } = render(<Accordion items={items} />);
 
     items.forEach(({ content, title }) => {
       const header = screen.getByRole("button", {
         name: (name) => name.startsWith(String(title)),
       });
       expect(header).toHaveAttribute("aria-expanded", "false");
+
       expect(screen.queryByText(content as string)).not.toBeInTheDocument();
     });
   });

@@ -1,0 +1,76 @@
+{
+  "seo": {
+    "title": "Da Positano al centro di Napoli in traghetto | Hostel Brikette",
+    "description": "Percorso passo dopo passo dall'Hostel Brikette al porto di Positano, con acquisto dei biglietti, imbarco e suggerimenti per l'arrivo in traghetto a Napoli centro."
+  },
+  "intro": {
+    "title": "Positano verso Napoli centro – Traghetto",
+    "body": "Segui questi passaggi per raggiungere a piedi il porto di Positano dall'Hostel Brikette, acquistare i biglietti del traghetto e navigare verso Napoli. Troverai consigli sugli operatori, note stagionali e indicazioni per l'arrivo a Napoli Centrale."
+  },
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Immagine del passo del percorso 1",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Immagine del passo del percorso 2",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Immagine del passo del percorso 3",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Immagine del passo del percorso 4",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Immagine del passo del percorso 5",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Immagine del passo del percorso 6",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Immagine del passo del percorso 7",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Immagine del passo del percorso 8",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Immagine del passo del percorso 9",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Immagine del passo del percorso 10",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

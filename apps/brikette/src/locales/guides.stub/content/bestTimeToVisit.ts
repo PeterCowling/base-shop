@@ -3,7 +3,7 @@
 // Single-purpose stub: Best time to visit
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
+ 
 
 export const bestTimeToVisit = {
   seo: {
@@ -17,5 +17,5 @@ export const bestTimeToVisit = {
   faqs: [{ q: "Is winter quiet?", a: ["Yes, many closures but great value."] }],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
+ 
 

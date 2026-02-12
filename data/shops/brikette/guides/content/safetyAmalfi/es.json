@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Seguridad en la Costa Amalfitana: consejos clave",
+    "description": "Cómo moverte con seguridad por buses, escaleras y senderos en la Costa Amalfitana, con tips para sol, calor y aglomeraciones."
+  },
+  "linkLabel": "Seguridad en Positano y la Costa Amalfitana",
+  "intro": [
+    "Seguridad práctica en buses, ferris, escaleras y senderos: planifica con el calor, el sol y las aglomeraciones en mente.",
+    "Estas pautas te ayudan a evitar resbalones, golpes de calor y sobresaltos mientras exploras la Costa Amalfitana a tu ritmo."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "Buses y ferris sin sobresaltos",
+      "body": [
+        "Llega con margen y forma fila pegada a la pared para no invadir la calzada.",
+        "En los buses SITA sujeta equipaje en el pasillo; las curvas son cerradas.",
+        "En el muelle revisa avisos de oleaje antes de embarcar; si hay viento fuerte, ten un plan B en tierra."
+      ]
+    },
+    {
+      "id": "stairs",
+      "title": "Escaleras y superficies",
+      "body": [
+        "Calzado con suela antideslizante: evita chanclas lisas o tacones.",
+        "Haz pausas en rellanos y mantente a la derecha para dejar pasar a quien sube más rápido.",
+        "Tras la lluvia los peldaños se vuelven resbaladizos: usa el pasamanos y camina con pasos cortos."
+      ]
+    },
+    {
+      "id": "heat",
+      "title": "Sol, calor y golpes de calor",
+      "body": [
+        "Hidrátate con frecuencia; lleva una botella de 1 L y electrolitos si caminas en verano.",
+        "Planifica las actividades intensas antes de las 11:00 o después de las 17:00.",
+        "Protege la piel con FPS 30+, gorra y gafas de sol; reaplica tras nadar o sudar."
+      ]
+    },
+    {
+      "id": "personal",
+      "title": "Objetos personales y emergencias",
+      "body": [
+        "Lleva bolso cruzado y mantén documentación y tarjetas en bolsillos interiores.",
+        "Guarda el número de emergencia europeo 112; funciona para ambulancia, policía y bomberos.",
+        "Descarga mapas offline de Google Maps por si pierdes cobertura en senderos."
+      ]
+    }
+  ],
+  "tips": [
+    "Comparte tu ruta si haces senderismo solo; el Sentiero degli Dei y otros senderos tienen cobertura irregular.",
+    "En playas de guijarros usa escarpines para evitar resbalones al entrar al agua."
+  ],
+  "faqs": [
+    {
+      "q": "¿Es seguro caminar de noche?",
+      "a": [
+        "Sí, Positano es tranquilo; usa las calles principales iluminadas y evita atajos sin luz."
+      ]
+    },
+    {
+      "q": "¿Cómo llamar a emergencias?",
+      "a": [
+        "Marca 112 desde cualquier móvil; menciona tu ubicación (nombre del hotel, parada o kilómetro de carretera)."
+      ]
+    },
+    {
+      "q": "¿Qué hago si me mareo en el bus?",
+      "a": [
+        "Siéntate cerca del conductor, mira al frente y lleva pastillas o pulseras antimareo; pide al conductor que abra una ventana si es posible."
+      ]
+    }
+  ]
+}

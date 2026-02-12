@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console, complexity -- GS-001 [ttl=2026-12-31] CLI coverage reporter intentionally writes terminal output. */
 /**
  * Coverage reporting for guide cross-references and inline links
  *
@@ -41,12 +42,17 @@
  *   4 guides contain Google Maps links
  */
 
-import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { listGuideManifestEntries } from "../src/routes/guides/guide-manifest";
+import {
+  extractStringsFromContent,
+  listJsonFiles,
+  readJson,
+} from "@acme/guides-core";
+
 import type { GuideManifestEntry, GuideStatus } from "../src/routes/guides/guide-manifest";
+import { listGuideManifestEntries } from "../src/routes/guides/guide-manifest";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -113,61 +119,10 @@ function containsGoogleMapsUrl(content: string): boolean {
 }
 
 /**
- * List all JSON files in a directory recursively
- */
-const listJsonFiles = async (rootDir: string, relativeDir = ""): Promise<string[]> => {
-  const entries = await readdir(path.join(rootDir, relativeDir), { withFileTypes: true });
-  const files: string[] = [];
-
-  for (const entry of entries) {
-    const nextRelative = relativeDir ? path.join(relativeDir, entry.name) : entry.name;
-    if (entry.isDirectory()) {
-      files.push(...await listJsonFiles(rootDir, nextRelative));
-      continue;
-    }
-    if (entry.isFile() && entry.name.endsWith(".json")) {
-      files.push(nextRelative);
-    }
-  }
-
-  return files.sort();
-};
-
-/**
- * Read and parse JSON file
- */
-const readJson = async (filePath: string): Promise<unknown> => {
-  const raw = await readFile(filePath, "utf8");
-  return JSON.parse(raw) as unknown;
-};
-
-/**
- * Recursively extract all string values from content JSON
- */
-function extractStringsFromContent(obj: unknown): string[] {
-  const strings: string[] = [];
-
-  if (typeof obj === "string") {
-    strings.push(obj);
-  } else if (Array.isArray(obj)) {
-    for (const item of obj) {
-      strings.push(...extractStringsFromContent(item));
-    }
-  } else if (obj && typeof obj === "object") {
-    for (const value of Object.values(obj)) {
-      strings.push(...extractStringsFromContent(value));
-    }
-  }
-
-  return strings;
-}
-
-/**
  * Scan guide content files and collect link usage statistics
  */
 async function scanGuideContent(
   locale: string,
-  manifest: GuideManifestEntry[]
 ): Promise<Map<string, { inlineLinks: Array<{ type: string; target: string }>; hasMapsUrl: boolean }>> {
   const contentStats = new Map<string, { inlineLinks: Array<{ type: string; target: string }>; hasMapsUrl: boolean }>();
   const localeDir = path.join(LOCALES_ROOT, locale);
@@ -176,7 +131,7 @@ async function scanGuideContent(
   let contentFiles: string[];
   try {
     contentFiles = await listJsonFiles(guidesContentDir);
-  } catch (error) {
+  } catch {
     console.warn(`Warning: Could not read guides content directory for locale "${locale}"`);
     return contentStats;
   }
@@ -198,7 +153,7 @@ async function scanGuideContent(
         inlineLinks: linkTokens,
         hasMapsUrl,
       });
-    } catch (error) {
+    } catch {
       if (verbose) {
         console.warn(`Warning: Could not parse ${locale}/${relativeFile}`);
       }
@@ -487,7 +442,7 @@ const main = async (): Promise<void> => {
   console.log("");
 
   const manifest = listGuideManifestEntries();
-  const contentStats = await scanGuideContent(localeFilter, manifest);
+  const contentStats = await scanGuideContent(localeFilter);
   const inboundLinks = buildInboundLinksMap(manifest, contentStats);
 
   const report = generateReport(manifest, contentStats, inboundLinks);

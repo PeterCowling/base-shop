@@ -1,0 +1,104 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Positano kompkikötő (kikötő)",
+    "description": "Lépésről lépésre gyalogos útvonal Positano kikötőjéhez térképes tereptárgyakkal, jegyvásárlási tippekkel és beszállási útmutatóval."
+  },
+  "linkLabel": "Hostel Brikette → kompkikötő (kikötő)",
+  "intro": [
+    "Positano kikötőjébe tartasz kompra? Ez a legkönnyebb séta, amit találtunk a Hostel Brikette-től a Spiaggia Grande-ig — gyors térképpel és fotós tereptárgyakkal az 1-5 pontokhoz.",
+    "Számolj 20-30 perccel gyalog (többel poggyásszal), és vedd figyelembe, hogy a Google Maps néha hosszabb kerülőutakat javasol a strandhoz — ehelyett kövesd az alábbi útvonalat."
+  ],
+  "beforeList": [
+    "Ellenőrizd a komp időpontokat és árakat az üzemeltető standoknál a kikötőben (a táblán jelzik a következő indulást).",
+    "Hagyj időt, ha poggyászod van — vannak lépcsők ezen az útvonalon, és a kikötő zsúfolt lesz csúcsidőben.",
+    "Célozd meg a korai érkezést, hogy jegyet tudj vásárolni, megtaláld a megfelelő mólót, és készen állj, amikor kezdődik a beszállás."
+  ],
+  "sections": [
+    {
+      "id": "getting-to-the-port",
+      "title": "A kikötőhöz jutás",
+      "body": [
+        "Kezdd a szállónál és menj a Spiaggia Grande (Positano fő strandja) felé.",
+        "A kikötő a strand jobb oldalán található.",
+        "Számolj 20-30 perccel a sétához a szállótól a kikötőig.",
+        "Lehet, hogy a Google Maps nem mindig adja meg a legközvetlenebb útvonalat a strandhoz — használd az alábbi térképet és lépésről lépésre szóló útmutatást.",
+        "[Nézd meg itt, ha térképes útmutatást részesítesz előnyben](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2)."
+      ]
+    },
+    {
+      "id": "walking-route",
+      "title": "Séta a Hostel Brikette-től a kikötőig (1-5 pontok)",
+      "body": [
+        "Térképreferencia (Szálló → Kikötő):",
+        "[[figure:map]]",
+        "Kezdd úgy, hogy elhagyod a szállót a főbejáraton keresztül.",
+        "Menj le a lépcsőn az útra.",
+        "Fordulj balra és sétálj kicsit több mint 100 métert (330 lábat), amíg eléred az 1-es pontot a térképen.",
+        "Az 1-es pontnál fordulj jobbra.",
+        "[[figure:point-1]]",
+        "Amint jobbra fordulsz az 1-es pontnál, látni fogod a tabacchit a jobb oldalon.",
+        "[[figure:tabacchi]]",
+        "Kövesd lefelé az utat.",
+        "Az első kanyarulatnál elérted a 2-es pontot a térképen.",
+        "A 2-es pontnál hagyd el az utat és menj egyenesen előre, a lépcsőt használva.",
+        "[[figure:point-2]]",
+        "Amikor eléred a lépcső végét, elérted a 3-as pontot a térképen.",
+        "Kelj át az úton és vedd az egyenes előre vezető ösvényt.",
+        "Kövesd lefelé a lépcsőt, amíg eléred a következő szintet.",
+        "[[figure:point-3]]",
+        "Amikor eléred a lépcső végét, megérkezel az úthoz.",
+        "Kelj át az úton és fordulj balra, sétálj 10 métert (30 lábat), amíg eléred a 4-es pontot a térképen.",
+        "A 4-es pontnál fordulj jobbra és vedd a lépcsőt, amely elhagyja az utat és lefelé vezet.",
+        "[[figure:point-4]]",
+        "Kövesd lefelé a lépcsőt, amíg eléred az aljat. A lépcső alján fordulj jobbra.",
+        "Ez elvisz az 5-ös ponthoz a térképen.",
+        "Folytasd a jobb oldali boltív alatt.",
+        "[[figure:point-5]]",
+        "50 méter (160 láb) után eléred a kikötőt."
+      ]
+    },
+    {
+      "id": "buying-tickets",
+      "title": "Kompjegyek vásárlása",
+      "body": [
+        "A Positano kikötőben olyan helyekre indulhatsz komppal, mint Amalfi, Capri és még tovább. Minden kompüzemeltetőnek van standja, és a standon lévő tábla információt jelenít meg a következő kompról, amit üzemeltetnek.",
+        "[[figure:tickets]]"
+      ]
+    },
+    {
+      "id": "boarding",
+      "title": "Beszállás egy kompra",
+      "body": [
+        "Miután megvan a jegyed, sétálj a kikötő végéig és várd meg, hogy a komp megkezdje a beszállást.",
+        "[[figure:port]]"
+      ]
+    }
+  ],
+  "stepsList": [
+    "Hagyd el a szállót és fordulj balra az úton az 1-es pontig a térképen, majd fordulj jobbra.",
+    "Kövesd lefelé az útvonalat a 2-5 pontokon keresztül (lépcsők és átkelők), amíg eléred a kikötőt.",
+    "Vásárolj jegyet az üzemeltető standoknál és ellenőrizd a táblát a következő indulásért.",
+    "Sétálj a kikötő végéig és várd meg a beszállást."
+  ],
+  "kneesList": [],
+  "faqs": [
+    {
+      "q": "Mennyi ideig tart gyalog eljutni a Hostel Brikette-től a kikötőig?",
+      "a": [
+        "Tervezz 20-30 percet gyalog. Adj hozzá extra időt, ha poggyászod van, vagy ha meg akarsz állni jegyet vásárolni a beszállás előtt."
+      ]
+    },
+    {
+      "q": "Hol vásároljak kompjegyeket Positanóban?",
+      "a": [
+        "A kikötőben standokat fogsz látni minden kompüzemeltető számára. A standon lévő tábla információt jelenít meg a következő kompról, amit üzemeltetnek."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Kövesd a térképes útvonalat a szállótól lefelé a kikötőig",
+    "Használj fotós tereptárgyakat az 1-5 pontoknál, hogy a nyomon maradj",
+    "Vásárolj jegyet az üzemeltető standoknál és erősítsd meg a következő indulást",
+    "Várj a mólónál és szállj fel, amikor hívnak"
+  ]
+}

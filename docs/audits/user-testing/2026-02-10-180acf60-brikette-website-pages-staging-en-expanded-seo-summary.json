@@ -1,0 +1,195 @@
+{
+  "type": "seo-audit-summary",
+  "created": "2026-02-10T08:00:11.329Z",
+  "targetBase": "2026-02-10-180acf60-brikette-website-pages-staging-en-expanded",
+  "tool": "lighthouse",
+  "categories": [
+    "seo"
+  ],
+  "runs": [
+    {
+      "artifact": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-seo-artifacts/lh-seo-home-desktop.json",
+      "finalUrl": "https://180acf60.brikette-website.pages.dev/en",
+      "fetchTime": "2026-02-10T07:57:13.689Z",
+      "seoScore": 92,
+      "failedAudits": [
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0,
+          "scoreDisplayMode": "binary",
+          "displayValue": null,
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "source",
+                "valueType": "code",
+                "label": "Blocking Directive Source"
+              }
+            ],
+            "items": [
+              {
+                "source": "x-robots-tag: noindex"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-seo-artifacts/lh-seo-home-mobile.json",
+      "finalUrl": "https://180acf60.brikette-website.pages.dev/en",
+      "fetchTime": "2026-02-10T07:57:49.542Z",
+      "seoScore": 93,
+      "failedAudits": [
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0,
+          "scoreDisplayMode": "binary",
+          "displayValue": null,
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "source",
+                "valueType": "code",
+                "label": "Blocking Directive Source"
+              }
+            ],
+            "items": [
+              {
+                "source": "x-robots-tag: noindex"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-seo-artifacts/lh-seo-rooms-desktop.json",
+      "finalUrl": "https://180acf60.brikette-website.pages.dev/en/rooms",
+      "fetchTime": "2026-02-10T07:57:31.667Z",
+      "seoScore": 92,
+      "failedAudits": [
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0,
+          "scoreDisplayMode": "binary",
+          "displayValue": null,
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "source",
+                "valueType": "code",
+                "label": "Blocking Directive Source"
+              }
+            ],
+            "items": [
+              {
+                "source": "x-robots-tag: noindex"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-seo-artifacts/lh-seo-rooms-mobile.json",
+      "finalUrl": "https://180acf60.brikette-website.pages.dev/en/rooms",
+      "fetchTime": "2026-02-10T07:58:10.522Z",
+      "seoScore": 93,
+      "failedAudits": [
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0,
+          "scoreDisplayMode": "binary",
+          "displayValue": null,
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "source",
+                "valueType": "code",
+                "label": "Blocking Directive Source"
+              }
+            ],
+            "items": [
+              {
+                "source": "x-robots-tag: noindex"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-seo-artifacts/lh-seo-help-desktop.json",
+      "finalUrl": "https://180acf60.brikette-website.pages.dev/en/help",
+      "fetchTime": "2026-02-10T07:58:53.403Z",
+      "seoScore": 92,
+      "failedAudits": [
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0,
+          "scoreDisplayMode": "binary",
+          "displayValue": null,
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "source",
+                "valueType": "code",
+                "label": "Blocking Directive Source"
+              }
+            ],
+            "items": [
+              {
+                "source": "x-robots-tag: noindex"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "artifact": "docs/audits/user-testing/2026-02-10-180acf60-brikette-website-pages-staging-en-expanded-seo-artifacts/lh-seo-help-mobile.json",
+      "finalUrl": "https://180acf60.brikette-website.pages.dev/en/help",
+      "fetchTime": "2026-02-10T07:59:05.377Z",
+      "seoScore": 93,
+      "failedAudits": [
+        {
+          "id": "is-crawlable",
+          "title": "Page is blocked from indexing",
+          "score": 0,
+          "scoreDisplayMode": "binary",
+          "displayValue": null,
+          "details": {
+            "type": "table",
+            "headings": [
+              {
+                "key": "source",
+                "valueType": "code",
+                "label": "Blocking Directive Source"
+              }
+            ],
+            "items": [
+              {
+                "source": "x-robots-tag: noindex"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "consolidatedFindings": {
+    "allRunsNoindexBlocked": true,
+    "averageSeoScore": 93
+  }
+}

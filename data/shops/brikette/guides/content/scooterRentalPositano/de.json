@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Roller mieten in Positano: Guide",
+    "description": "Wo du mietest, Regeln, Sicherheit und wann du lieber verzichtest."
+  },
+  "linkLabel": "Roller mieten in Positano",
+  "intro": [
+    "Roller sind praktisch, aber die Küstenstraße ist eng und anspruchsvoll – so mietest du sicher oder findest Alternativen."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Wo mieten",
+      "body": [
+        "Verleiher sitzen vor allem in Sorrent und Salerno mit größeren Flotten und stabileren Preisen; in Positano selbst ist das Kontingent knapp und meist nur mit Reservierung verfügbar."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Regeln & Unterlagen",
+      "body": [
+        "Internationaler Führerschein (bei Nicht-EU-Lizenzen), Reisepass und Kreditkarte sind Pflicht – genau prüfen, was die Versicherung abdeckt."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Sicherheit & wann lieber nicht",
+      "body": [
+        "Die SS163 ist schmal, kurvig und buslastig; bei Regen oder nachts steigt das Risiko stark – Fähren und Busse sind für Unerfahrene die sicherere Wahl."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Sollten Anfänger hier einen Roller mieten?",
+      "a": [
+        "Nein – nur mieten, wenn du an Stadt- und Bergstraßen gewöhnt bist. Sonst Bus/Fähre nutzen oder Taxi teilen."
+      ]
+    }
+  ]
+}

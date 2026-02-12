@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Napoli til Positano: sådan gør du",
+    "description": "Ferry, tog + bus, shuttle og bil — sammenlignet med tider og priser."
+  },
+  "linkLabel": "Napoli til Positano: sådan gør du",
+  "intro": [
+    "Napoli → Positano: shuttle til Sorrento + SITA-bus året rundt; sommerfærger, når havet er roligt; transfers til sene ankomster."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Tog + bus (året rundt)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Færge (sommer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Sene ankomster og transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "Ofte stillede spørgsmål"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Tog + bus (året rundt)",
+      "body": [
+        "Fra NAP-ankomst: tag Curreri-shuttlen (eller Alibus + Circumvesuviana) til Sorrento og fortsæt med SITA-bussen mod Amalfi.",
+        "Køb billetter før ombordstigning, tjek dagens afgangstavle, og stig af ved ‘Chiesa Nuova’ for færrest trapper til Hostel Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Færge (sommer)",
+      "body": [
+        "Alibus → Molo Beverello; tag færgen til Positano og bekræft billetpriser hos operatøren samme dag.",
+        "Hold øje med aflysninger og undgå dagens sidste båd, hvis du skal videre samme dag."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Sene ankomster og transfers",
+      "body": [
+        "Ankommer du efter sidste færge/bus? Book privat transfer eller overnat i Napoli/Sorrento.",
+        "Bekræft aflevering tæt på din indkvartering, og spørg til håndtering af bagage."
+      ]
+    }
+  ],
+  "faqsTitle": "Ofte stillede spørgsmål",
+  "faqs": [
+    {
+      "q": "Hvor køber jeg SITA-billetter?",
+      "a": [
+        "Hos kiosker/tabacchi nær stationerne. Køb før du stiger på, og husk at stemple i bussen."
+      ]
+    },
+    {
+      "q": "Hvor mange trapper er der til hostellet?",
+      "a": [
+        "Fra ‘Chiesa Nuova’-stoppet er der ca. 80 m uden trapper."
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 /* src/hooks/client/till/useTillShifts.ts */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { MONTHLY_DISCREPANCY_LIMIT } from "../../../constants/cash";
 import { settings } from "../../../constants/settings";
@@ -23,6 +23,7 @@ import { useSafeCountsData } from "../../data/useSafeCountsData";
 import { useCashCountsMutations } from "../../mutations/useCashCountsMutations";
 import { useCashDiscrepanciesMutations } from "../../mutations/useCashDiscrepanciesMutations";
 import { useCCIrregularitiesMutations } from "../../mutations/useCCIrregularitiesMutations";
+import { useDrawerAlertsMutations } from "../../mutations/useDrawerAlertsMutations";
 import { useKeycardDiscrepanciesMutations } from "../../mutations/useKeycardDiscrepanciesMutations";
 import { useShiftEventsMutations } from "../../mutations/useShiftEventsMutations";
 import { useTillShiftsMutations } from "../../mutations/useTillShiftsMutations";
@@ -52,6 +53,7 @@ export function useTillShifts() {
   const { addKeycardDiscrepancy } = useKeycardDiscrepanciesMutations();
   const { addShiftEvent } = useShiftEventsMutations();
   const { recordShiftOpen, recordShiftClose } = useTillShiftsMutations();
+  const { logDrawerAlert } = useDrawerAlertsMutations();
 
   // Map occupantId -> occupant record for quick lookups
   const occupantsById = useMemo<Record<string, Booking>>(() => {
@@ -154,6 +156,15 @@ export function useTillShifts() {
     finalCashCount,
     cashDrawerLimit: cashDrawerLimit ?? undefined,
   });
+
+  // Log to drawerAlerts when drawer goes over limit
+  const prevOverLimit = useRef(false);
+  useEffect(() => {
+    if (isDrawerOverLimit && !prevOverLimit.current && cashDrawerLimit) {
+      logDrawerAlert(expectedCashAtClose, cashDrawerLimit);
+    }
+    prevOverLimit.current = isDrawerOverLimit;
+  }, [isDrawerOverLimit, expectedCashAtClose, cashDrawerLimit, logDrawerAlert]);
 
   /**
    * Attempt to find a booking whose occupantId matches the one we are looking for.

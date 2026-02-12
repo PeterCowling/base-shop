@@ -1,0 +1,64 @@
+{
+  "seo": {
+    "title": "Itinerarios por la Costa Amalfitana sin coche",
+    "description": "Planes de 2 a 7 días por Positano, Amalfi, Ravello y Capri/Sorrento usando ferris y autobuses."
+  },
+  "linkLabel": "Itinerarios por la Costa Amalfitana sin coche",
+  "intro": [
+    "No necesitas coche para exprimir la Costa Amalfitana: combina ferris panorámicos, buses SITA y horarios inteligentes para evitar multitudes.",
+    "Empieza con estos modelos como base y ajústalos según la meteorología, tu energía y los eventos especiales del momento."
+  ],
+  "sections": [
+    {
+      "id": "two-three-days",
+      "title": "2–3 días: base en Positano",
+      "body": [
+        "Día 1: llegada, deja las maletas (usa consigna si la habitación no está lista) y recorre Via dei Mulini, Spiaggia Grande y el paseo a Fornillo antes del atardecer.",
+        "Día 2: elige entre Path of the Gods desde Nocelle o un combo Amalfi + Ravello; vuelve con tiempo para cenar ligero y disfrutar de las terrazas iluminadas.",
+        "¿Tercer día? Dedícalo a playas secundarias como Arienzo o a un paseo sin prisas por Praiano sin cambiar de base."
+      ]
+    },
+    {
+      "id": "four-five-days",
+      "title": "4–5 días: excursiones enfocadas",
+      "body": [
+        "Reserva dos noches iniciales en Positano para aclimatarte y organizar billetes; después pasa 1–2 noches en Amalfi o Minori para reducir traslados hacia Ravello y la Valle delle Ferriere.",
+        "Programa un día completo para Capri o Pompeya saliendo en la primera salida; deja margen al regreso por si el mar se complica o hay retrasos en la Circumvesuviana."
+      ]
+    },
+    {
+      "id": "full-week",
+      "title": "7 días: rota de bases",
+      "body": [
+        "Divide la semana entre Positano (3 noches), Amalfi/Ravello (2 noches) y Sorrento o Salerno (2 noches) para amanecer cerca de ferris, trenes y buses interurbanos.",
+        "Alterna días de playa o descanso activo con experiencias puntuales: cata en Tramonti, clase de cocina o un atardecer en Praiano."
+      ]
+    },
+    {
+      "id": "weather-buffer",
+      "title": "Margen y logística",
+      "body": [
+        "Reserva ferris o tours con opción de cambio y guarda offline los horarios de SITA/Travelmar; si el mar se levanta, cambia al plan B por carretera sin perder el día.",
+        "Coordina check-out y equipaje con consignas o porter; elegir alojamientos cerca de Chiesa Nuova, Sponda o Piazza Flavio Gioia reduce escaleras cuando cambias de base."
+      ]
+    }
+  ],
+  "tips": [
+    "Incluye medio día de descanso cada dos jornadas para que las escaleras y el calor no te pasen factura.",
+    "Revisa la previsión y los horarios la noche anterior: en temporada baja algunos servicios se ajustan con aviso corto."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuántas bases conviene usar?",
+      "a": [
+        "Dos bases (Positano + Amalfi o Sorrento) equilibran presupuesto y traslados; añade una tercera solo si tienes vuelos o trenes muy tempranos/tardíos."
+      ]
+    },
+    {
+      "q": "¿Cómo gestiono el equipaje al cambiar de alojamiento?",
+      "a": [
+        "Viaja con mochila blanda o trolley ligero, reserva porter los días de traslado y usa consignas en muelles o estaciones para explorar sin peso extra."
+      ]
+    }
+  ]
+}

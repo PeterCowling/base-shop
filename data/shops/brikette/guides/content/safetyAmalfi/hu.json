@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Biztonságban Positanóban és az Amalfi-parton",
+    "description": "Gyakorlati tanácsok buszokhoz, kompokhoz, lépcsőkhöz, napsütéshez és vészhelyzeti elérhetőségekhez – mire figyelj indulás előtt."
+  },
+  "linkLabel": "Biztonságban Positanóban és az Amalfi-parton",
+  "intro": [
+    "Néhány egyszerű szokással biztonságban maradhatsz Positano lépcsőin, buszain és strandjain."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Lépcsők és gyalogutak",
+      "body": [
+        "Tervezd meg az útvonalat kevesebb lépcsővel (Chiesa Nuova vagy Sponda), és oszd el a terhet hátizsák és könnyű gurulós bőrönd között, ha érzékeny a térded.",
+        "Hosszabb emelkedők előtt pihenj meg egy teraszfalnál, vagy használj összecsukható túrabotot olyan szakaszokon, mint az Isteni ösvény."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Buszok és kompok",
+      "body": [
+        "Érvényesítsd a SITA jegyet, kapaszkodj, és tedd a csomagot a dedikált rakodótérbe – a vak kanyarok miatt a busz hirtelen fékezhet.",
+        "Kompon tartsd magadnál az értékeidet, és kövesd a személyzet utasításait a nehezebb bőröndök elhelyezésénél."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Tenger és nap",
+      "body": [
+        "Figyeld a strandzászlókat, kavicsos parton viselj vízicipőt, és minden fürdés után kend újra a korallbarát fényvédőt.",
+        "Hidratálj sűrűn: forró napokon fejenként legalább 1 liter vizet vigyél, és 12:00–15:00 között keress árnyékot."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Értékek és elérhetőségek",
+      "body": [
+        "Oszd szét a készpénzt/kártyákat, és tartsd a fontos iratokat a hostel szekrényeiben vagy széfben.",
+        "Mentsd el az vészszámokat (112 általános segélyhívó, Parti Őrség 1530) és a közeli patikák nyitvatartását offline is, ha gyenge a térerő."
+      ]
+    }
+  ],
+  "tips": [
+    "Hosszabb túrák előtt mondd el egy barátnak vagy a recepción, mikor várható a visszaérkezésed, és ellenőrizd az időjárási riasztást.",
+    "Legyen nálad kis zseblámpa éjszakai lépcsőkhöz – egyes sikátorokban éjfél után gyengébb a világítás."
+  ],
+  "faqs": [
+    {
+      "q": "Iható a csapvíz?",
+      "a": [
+        "Igen, Positano csapvize iható – töltsd újra a kulacsot, így kevesebb műanyagot használsz és hidratált maradsz."
+      ]
+    },
+    {
+      "q": "Vannak kerülendő részek éjszaka?",
+      "a": [
+        "A város általában nyugodt, de maradj kivilágított útvonalon, és használj taxit, ha későn térsz vissza Amalfi, Sorrento vagy Nápoly felől."
+      ]
+    }
+  ]
+}

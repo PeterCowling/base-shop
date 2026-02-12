@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salernóból Positanóba komppal | Hostel Brikette",
+    "description": "Salernóból Positanóba komppal: menetrendek, jegytippek és útmutató, hogyan juthatsz el a Hostel Brikette-hez a kikötőtől hordárokkal vagy helyi busszal."
+  },
+  "intro": {
+    "title": "Salernóból Positanóba — komp",
+    "body": "Használd ezt az útmutatót, hogy Salernóból Positanóba utazz komppal. Bemutatja a jegyeket, hol szállj fel Salernóban, menetrendi tippeket ad, és elmagyarázza, hogyan juthatsz el a Hostel Brikette-hez a positanói kikötőből."
+  },
+  "callouts": {
+    "tip": "Más közlekedési lehetőségeket keresel? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% buszokért, kombinált útvonalakért és reptéri transzferekért."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Utazás áttekintése",
+      "list": [
+        "Szezonális kompok közlekednek Salernóból Positanóba látványos tengerparti kilátással.",
+        "A Travelmar üzemelteti a leggyakoribb járatokat; főszezonban hagyj extra időt.",
+        "Rossz időjárás esetén törölhetik a kompokat — indulás előtt mindig ellenőrizd az aktuális tájékoztatást."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és menetrendek",
+      "body": "Aktuális időpontok és árak a %URL:https://travelmar.it/en|Travelmar% és a %URL:https://www.positano.com/en/ferry-schedule|Positano.com – Kompmenetrendek% oldalakon.",
+      "list": [
+        "Csúcsidőszakban vásárolj jegyet előre online.",
+        "Érkezz 15–20 perccel indulás előtt a nyugodt beszálláshoz.",
+        "Tartsd kéznél a jegyet; a személyzet beszállás előtt szkenneli vagy letépi."
+      ]
+    },
+    {
+      "id": "salernoBoarding",
+      "title": "Beszállás Salernóban",
+      "list": [
+        "A legtöbb járat Salerno Piazza della Concordia kikötőjéről indul (Travelmar).",
+        "Néhány indulás a Molo Manfredit használja — ellenőrizd a terminált a jegyen.",
+        "Kövesd a vízparti táblákat; a személyzet segít a megfelelő móló megtalálásában."
+      ]
+    },
+    {
+      "id": "positanoArrival",
+      "title": "Érkezés Positanóba",
+      "body": "Lépésről lépésre útvonal a kikötőtől a hostel ajtajáig: %LINK:ferryDockToBrikette|Komp kikötő → Hostel Brikette, csomagútmutatóval%.",
+      "list": [
+        "A positanói fő komp kikötőnél (Spiaggia Grande) fogsz megérkezni.",
+        "Csomaggal javasoljuk a hordárszolgálatot vagy a helyi Interno buszt.",
+        "Nyári melegben nehéz csomaggal nem ajánlott felfelé gyalogolni."
+      ]
+    }
+  ],
+  "lastUpdated": "2026-01-31"
+}

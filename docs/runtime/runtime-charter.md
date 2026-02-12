@@ -5,9 +5,9 @@ Last-reviewed: 2025-12-02
 
 Primary code entrypoints:
 - packages/template-app/src
-- apps/storefront/src
 - apps/cover-me-pretty/src
-- apps/shop-secret/src
+- apps/brikette/src
+- apps/front-door-worker/src
 - packages/platform-core/src
 
 If behaviour in this doc contradicts the code, treat the code as canonical and update this doc as a follow‑up.

@@ -1,0 +1,83 @@
+{
+  "seo": {
+    "title": "Neapel centrum till Positano med tåg och buss | Hostel Brikette",
+    "description": "Steg-för-steg-instruktioner för att resa från Neapel centrum till Hostel Brikette via Circumvesuviana-tåget och SITA-bussen, inklusive biljettips och foton från ankomsten i Positano."
+  },
+  "lastUpdated": "2026-01-31",
+  "intro": {
+    "title": "Neapel centrum till Positano – tåg och sedan buss",
+    "body": "Följ de här anvisningarna för att resa från centrala Neapel till Hostel Brikette via Circumvesuviana-tåget till Sorrento och SITA-bussen till Positano. Guiden innehåller biljettips, råd om busstidtabellen och bilder av den sista sträckan fram till vandrarhemmet."
+  },
+  "callouts": {
+    "tip": "Behöver du andra rutter? Utforska hela uppsättningen ankomstvägar på sidan %HOWTO:how-to-get-here|Så tar du dig hit%."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Översikt: tåg och sedan buss",
+      "body": "Den här resan täcker den snabbaste kollektivtrafikkombinationen från Neapel centrum: Circumvesuviana-tåget till Sorrento följt av SITA-bussen till Positano. Den omfattar inte resor från Neapels flygplats."
+    },
+    {
+      "id": "naplesStation",
+      "title": "Tågstationen i Neapel",
+      "body": "Circumvesuviana-avgångar mot Sorrento går från nedre planet i stationen Napoli Garibaldi (under Napoli Centrale). Köp din biljett innan du går ner till plattformarna, kontrollera vilket spår din avgång använder och gå ombord på tåget mot Sorrento."
+    },
+    {
+      "id": "sorrentoStation",
+      "title": "Stationen i Sorrento",
+      "body": "När du anländer till Sorrento, gå ut från stationen och köp din SITA-biljett i baren, kiosken eller tobaksbutiken intill — biljetter säljs inte ombord. SITA-hållplatsen ligger längst ner förbi trappan utanför stationen; vänta på bussen mot Amalfi och åk den till Positano."
+    },
+    {
+      "id": "timetable",
+      "title": "Så läser du SITA-tidtabellen",
+      "body": "SITA:s busstidtabell kan vara svårtolkad — använd de här snabba tipsen för att hitta rätt tur:"
+    },
+    {
+      "id": "positanoStop",
+      "title": "Busshållplatsen i Positano",
+      "list": [
+        "Den närmaste hållplatsen är Positano (Chiesa Nuova), cirka 140 meter (490 fot) från vandrarhemmet.",
+        "Den ligger utanför caféet/baren Bar Internazionale.",
+        "Bussen släpper av dig på gatunivå — inga långa trappor krävs för att nå oss."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Promenera från busshållplatsen"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hur mycket kostar det att ta sig från Neapel centrum till Positano med tåg och buss?",
+      "a": "Den totala kostnaden är cirka 7,20 €: 4,60 € för Circumvesuviana-tåget från Neapel till Sorrento, plus 2,60 € för SITA-bussen från Sorrento till Positano (priser 2026). Detta är det billigaste alternativet för kollektivtrafik."
+    },
+    {
+      "q": "Hur lång tid tar resan från Neapel till Positano?",
+      "a": "Total restid är 2,5–3 timmar: 70 minuter på tåget, 50 minuter på bussen, plus 20–40 minuter väntan på anslutningar i Sorrento. Räkna med totalt 3–3,5 timmar för att ta höjd för eventuella förseningar."
+    },
+    {
+      "q": "Kan jag köpa biljetter på tåget eller bussen?",
+      "a": "Du kan köpa tågbiljetter på Napoli Garibaldi-stationen från biljettautomater eller biljettluckan, men du måste stämpla innan du går ombord. SITA-bussbiljetter kan inte köpas ombord — du måste köpa dem i en bar, tabacchi eller kiosk i närheten av Sorrento-stationen innan du går på bussen."
+    },
+    {
+      "q": "Är denna rutt lämplig för resenärer med tungt bagage?",
+      "a": "Ja, men det kan vara utmanande under högtrafik. Både tåget och bussen har begränsat bagageutrymme, så gå ombord tidigt om du har stora väskor. Promenaden från Chiesa Nuova-busshållplatsen till vandrarhemmet är platt och tar under 2 minuter, så bagaget är hanterbart när du väl anlänt. Om du föredrar det, överväg att använda våra bärartjänster eller en privat transfer."
+    },
+    {
+      "q": "Vilken tid går sista bussen från Sorrento till Positano?",
+      "a": "Sista bussen varierar beroende på säsong. På sommaren (juli–augusti) går sista bussen vanligtvis runt 21–22. På vintern (november–mars) kan det vara så tidigt som 19–20. Kontrollera alltid den aktuella tidtabellen på sitasudtrasporti.it innan du reser, särskilt på söndagar och helgdagar när trafiken är reducerad."
+    },
+    {
+      "q": "Finns det ett direkttåg eller buss från Neapel till Positano?",
+      "a": "Det finns inget direkttåg — du måste byta i Sorrento. Curreri-bussen erbjuder en direktförbindelse från Neapel till Positano, men tidtabellerna är begränsade (vanligtvis 2–3 avgångar per dag). Tåg-busskombinationen går oftare och är billigare."
+    },
+    {
+      "q": "Hur läser jag SITA busstidtabellen?",
+      "a": [
+        "**Läsning av raderna:** Raderna i den första kolumnen representerar olika busshållplatser längs rutten.",
+        "**Läsning av kolumnerna:** Tidtabellen tilldelar en alfabetisk bokstav till varje planerad resa, som listas som rubriker i varje kolumn. Om du reser måndag till lördag, leta efter kolumnerna 'F' och 'G'. Om du reser på en söndag eller helgdag, leta efter kolumnerna 'G' och 'H'.",
+        "**Kombinering av rader och kolonner:** Välj dina avgångs- och ankomsthållplatser och kontrollera sedan kolumnerna för att se när bussar är tillgängliga och när de kommer att anlända till din destination. Till exempel, för att se avgångstiden från Sorrento, titta på Sorrento-raden. För att se ankomsttiden i Positano (Chiesa Nuova / Bar Internazionale), titta på Positano (Chiesa Nuova)-raden."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Budget för Positano: kostnadsuppdelning",
+    "description": "Daglig kostnadsöversikt för boende, mat, transporter och upplevelser i Positano."
+  },
+  "linkLabel": "Budget för Positano: kostnadsuppdelning",
+  "intro": [
+    "Få grepp om vad Positano kostar per dag och var du kan dra ned utan att tumma på upplevelsen."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transportkostnader",
+      "body": [
+        "Flygbuss till Sorrento kostar i snitt 10–12 €; lägg till 2–3 € för SITA-bussen vidare till Positano. Färjor mellan orter ligger på 8–20 € beroende på sträcka.",
+        "Sätt av cirka 5 € per dag för lokala bussar; taxiresor upp till byn efter midnatt startar runt 20 €."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Boendebudget",
+      "body": [
+        "Sovsalar på Hostel Brikette kostar 30–55 € beroende på säsong; privata rum börjar runt 110 €.",
+        "Lägenheter och boutiquehotell i centrum passerar snabbt 200 € per natt – välj Praiano eller Sorrento för billigare självhushållsbas."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Mat och dryck",
+      "body": [
+        "Frukostbakverk och kaffe kostar 4–6 €; enkla paniniluncher hamnar kring 8 €.",
+        "Middagar på medelklass-trattorior ligger på 20–30 € per person exklusive vin; dela förrätter för att prova mer utan att dubbla notan."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Aktiviteter och extra",
+      "body": [
+        "Båtturer sträcker sig från 40 € för mindre solnedgångsturer till 120 €+ för privata charter. Ett budgetalternativ är att ta färjan till Amalfi för 9 € och utforska på egen hand.",
+        "Avsätt 5–10 € för gelato, granita eller spontana drickspengar så känns dagen generös men kontrollerad."
+      ]
+    }
+  ],
+  "tips": [
+    "Res i april, maj eller slutet av september/oktober för mellansäsongspriser medan färjorna fortfarande går ofta.",
+    "Använd bankomater i Sorrento eller Neapel för lägre uttagsavgifter och dela upp kontanterna i dagskuvert."
+  ],
+  "faqs": [
+    {
+      "q": "Vad är en rimlig dagsbudget?",
+      "a": [
+        "Backpackers klarar sig på 70–90 € per dag för sovsal, måltider och en betald aktivitet. För mellanklassen ligger komfortnivån närmare 140 €."
+      ]
+    },
+    {
+      "q": "Kan jag betala allt med kort?",
+      "a": [
+        "De flesta restauranger tar kort, men bussar, små delis och souvenirstånd föredrar ofta kontanter. Ha 20 € i småsedlar redo varje dag."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "At a glance",
+    "tocTitle": "On this page",
+    "tipsTitle": "Where to save",
+    "faqsTitle": "FAQs"
+  }
+}

@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 
 import {
   listCardsForBoard as listCardsFromD1,
-  listInboxIdeas,
 } from "@acme/platform-core/repositories/businessOs.server";
 
 import { BoardView } from "@/components/board/BoardView";
@@ -35,11 +34,8 @@ export default async function BoardPage({ params }: PageProps) {
     }
   }
 
-  // Fetch ALL cards (unfiltered) and ideas from D1
-  const [allCards, allIdeas] = await Promise.all([
-    listCardsFromD1(db, {}),
-    listInboxIdeas(db, {}),
-  ]);
+  // Fetch ALL cards (unfiltered) from D1
+  const allCards = await listCardsFromD1(db, {});
 
   // BOS-14: Filter cards for this board type
   const boardType = businessCode === "global" ? "global" : "business";
@@ -70,18 +66,11 @@ export default async function BoardPage({ params }: PageProps) {
     {} as Record<Lane, typeof filteredCards>
   );
 
-  // Filter ideas for business boards (global board shows all)
-  const filteredIdeas =
-    businessCode === "global"
-      ? allIdeas
-      : allIdeas.filter((idea) => idea.Business === businessCode);
-
   return (
     <BoardView
       businessCode={businessCode}
       businesses={BUSINESSES}
       cardsByLane={cardsByLane}
-      inboxIdeas={filteredIdeas}
       currentUser={currentUser}
     />
   );

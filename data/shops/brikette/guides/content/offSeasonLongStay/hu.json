@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Téli hosszabb tartózkodási tippek Positanóra",
+    "description": "Kapcsolódás, zárva tartások és mindennapi élet a csendesebb hónapokban."
+  },
+  "linkLabel": "Téli hosszabb tartózkodási tippek",
+  "intro": [
+    "Néhány hetes télies tartózkodás hűvösebb időt, kevesebb kompot és több helyi ritmust jelent."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Szállás és árak",
+      "body": [
+        "alkudozz közvetlenül a positanói felső negyedekben lévő vendégházakkal havi tartózkodásra; novembertől márciusig 20–30% kedvezmény gyakori.",
+        "Ha szupermarketet és sík sétát szeretnél, nézd Praiano vagy Minori helyszíneit; buszozz, amikor Positano esti hangulatára vágysz."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Időjárás és csomagolás",
+      "body": [
+        "Nappali maximumok 12–16 °C között, némi esővel — pakolj rétegeket, vízálló kabátot és tapadós cipőt a csúszós lépcsők miatt.",
+        "Tarts magadnál egy kompakt esernyőt; a völgyekbe befújó szelek erősebbeknek érződnek a meteorológiai térképnél."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Munka és napi ritmus",
+      "body": [
+        "Sok kávézó csökkenti a nyitvatartást, így a coworkinget a hostel vagy a lakás stabil Wi-Fi-jéhez igazítsd.",
+        "Főzz többször — Meta vagy Sorrento piacai szélesebb választékot adnak, a bevásárlóutak pedig csendesebbek a buszokon."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Közösségi élet",
+      "body": [
+        "Csatlakozz helyi Facebook vagy WhatsApp csoportokhoz nyelvgyakorlásért és közösségi vacsorákért.",
+        "Önkénteskedj szemétszedésen vagy kulturális eseményeken; a közösség a Piazza dei Mulini mellett kifüggesztett táblákon jelzi az ütemterveket."
+      ]
+    }
+  ],
+  "tips": [
+    "Tarts néhány eurócentet a fűtésre és mosodákra — télen sok géphez pénzbedobós rendszer tartozik.",
+    "Kövesd hétenként a csökkentett busz- és kompmenetrendeket; a menetrendek ünnepekhez igazodnak."
+  ],
+  "faqs": [
+    {
+      "q": "Maradnak nyitva éttermek?",
+      "a": [
+        "Néhány hely egész évben nyitva tart Positanóban, de több választék Amalfi és Sorrento részen van — tervezd oda az esti vacsorákat."
+      ]
+    },
+    {
+      "q": "Télies napokon biztonságos a Szlak Bogok?",
+      "a": [
+        "Száraz napokon igen, de nagy eső után kerüld — a sziklák csúszósak, kisebb földcsuszamlások is gyakoribbak."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "Tartalom",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Kapcsolódás"
+      },
+      {
+        "href": "#groceries",
+        "label": "Bevásárlás és alapok"
+      },
+      {
+        "href": "#transport",
+        "label": "Téli közlekedés"
+      },
+      {
+        "href": "#weather",
+        "label": "Időjárás és csomagolás"
+      },
+      {
+        "href": "#faqs",
+        "label": "GYIK"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Kapcsolódás",
+        "body": [
+          "Kombináld a stabil Wi-Fi kávézókat eSIM tartalékokkal; ellenőrizd a szolgáltatók (TIM/Vodafone/WindTre) térképeit."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Bevásárlás és alapok",
+        "body": [
+          "A téli órák változóak; vásárolj korábban a nap folyamán és hétköznap."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Téli közlekedés",
+        "body": [
+          "A kompok lecsökkentik a járatokat; buszokra támaszkodj és tervezz esős/ szeles napokra."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Időjárás és csomagolás",
+        "body": [
+          "Hozz rétegeket és esővédőt; jó cipők kellenek a vizes lépcsőkön."
+        ]
+      }
+    ],
+    "faqsTitle": "GYIK",
+    "faqs": [
+      {
+        "q": "Nyitva van valami télen?",
+        "a": [
+          "Igen, de kevesebb lehetőség van. Koncentrálj bevásárlásra, túrákra, kilátókra és közeli városokra."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+name = "prime"
+pages_build_output_dir = "out"
+compatibility_date = "2025-06-20"
+compatibility_flags = ["nodejs_compat"]
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "f3d56007e07d494cb3ab0db1995fd958"
+preview_id = "f49512da7ac246e7bac8d97375a42809"
+
+[vars]
+CF_FIREBASE_DATABASE_URL = "https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app"
+
+# API key is set as a Cloudflare Pages secret (not in source control):
+#   wrangler pages secret put CF_FIREBASE_API_KEY --project-name prime

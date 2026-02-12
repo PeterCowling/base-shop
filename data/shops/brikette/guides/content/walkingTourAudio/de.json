@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Kostenlose Audio-Walking-Tour Positano",
+    "description": "DIY-Audioguide von Chiesa Nuova bis zum Strand mit Highlights."
+  },
+  "linkLabel": "Kostenlose Audio-Walking-Tour Positano",
+  "intro": [
+    "Lade unseren kostenlosen Positano-Audiowalk herunter: Start an der Chiesa Nuova, durch die Altstadt und Abschluss an der Spiaggia Grande.",
+    "Folge der Route und den Hörtipps unten und speichere die Dateien im WLAN, bevor du nach draußen gehst."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Strecke"
+    },
+    {
+      "href": "#listen",
+      "label": "So hörst du"
+    },
+    {
+      "href": "#faqs",
+      "label": "Häufige Fragen"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Strecke",
+      "body": [
+        "Starte an der Bushaltestelle Chiesa Nuova → Pause an den Aussichtspunkten der Via Pasitea → schlängle dich durch die Gassen → Ziel an der Spiaggia Grande.",
+        "Nimm dir Zeit auf den Terrassen, bleib dabei aber aufmerksam für Einheimische und Porter, die die Treppen für Lieferungen nutzen."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "So hörst du",
+      "body": [
+        "Lade die Audios im Hostel-WLAN herunter oder streame an bekannten Hotspots entlang der Route.",
+        "Stell die Lautstärke auf den Treppen niedrig und nimm einen Ohrstöpsel heraus, wenn du Straßen überquerst oder an anderen Spaziergängern vorbeigehst."
+      ]
+    }
+  ],
+  "faqHeading": "Häufige Fragen",
+  "faqs": [
+    {
+      "q": "Ist die Runde steil?",
+      "a": [
+        "Ja – rechne mit vielen Stufen. Dreh die Runde um oder nimm bergauf den SITA-Bus, wenn deine Knie eine Pause brauchen."
+      ]
+    },
+    {
+      "q": "Kann ich offline hören?",
+      "a": [
+        "Klar. Speichere die Dateien auf deinem Handy, damit du nicht auf wackelige mobile Daten in den Gassen angewiesen bist."
+      ]
+    },
+    {
+      "q": "Wie lange dauert das?",
+      "a": [
+        "Plane 45–60 Minuten inklusive Fotostopps und Terrassenpausen ein."
+      ]
+    }
+  ]
+}

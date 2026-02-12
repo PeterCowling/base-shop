@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "@acme/design-system/primitives";
 import { AppLink as Link } from "@acme/ui/atoms/Link";
+import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
 import Page from "@/components/common/Page";
 import { BASE_URL } from "@/config/site";
@@ -12,7 +13,6 @@ import * as ModalCtx from "@/context/ModalContext";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { resolveI18nMeta } from "@/utils/i18nMeta";
 import { buildRouteLinks,buildRouteMeta } from "@/utils/routeHead";

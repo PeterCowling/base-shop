@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Positano til Ravello: sådan gør du",
+    "description": "Sådan når du Ravello fra Positano med bus, færge + bus eller privat transfer."
+  },
+  "linkLabel": "Positano til Ravello: sådan gør du",
+  "intro": [
+    "Positano → Ravello via Amalfi: busser hele året; færge + bus i sæsonen.",
+    "Læg buffer ind til skiftet i Amalfi, og planlæg at være tilbage før solnedgang, hvis du er afhængig af de sidste færger."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Via Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Haver og villaer"
+    },
+    {
+      "href": "#timing",
+      "label": "Timing og retur"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Via Amalfi",
+      "body": [
+        "Tag SITA-bussen eller sæsonfærgen til Amalfi; køb billetter, før du stiger på, og afsæt tid til køer.",
+        "Skift i Amalfi (stand 5) til bussen mod Ravello, og gå cirka 10 minutter til Villa Rufolo og Villa Cimbrone."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Haver og villaer",
+      "body": [
+        "Villa Rufolo byder på koncerter og terrasser med udsigt over bugten; Villa Cimbrone er kendt for Infinity-terrassen.",
+        "Reserver billetter online i højsæsonen for at undgå kø ved indgangen."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing og retur",
+      "body": [
+        "Afrejs tidligt fra Positano for at undgå den varmeste tid og de travleste skift.",
+        "Vend tilbage før solnedgang, hvis du har brug for dagslys på trapperne eller en garanteret færge."
+      ]
+    }
+  ],
+  "tipsTitle": "Tips",
+  "tips": [
+    "Medbring vand og snacks – udvalget omkring busstationen i Amalfi er begrænset og dyrt.",
+    "Brug komfortable sko med godt greb til Ravellos stigninger og gåturen mellem villaerne."
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Er ruten familievenlig?",
+      "a": [
+        "Ja med pauser og fleksibelt tempo; klapvogne fungerer kun i Amalfi, ikke på Ravellos trapper."
+      ]
+    },
+    {
+      "q": "Kan jeg kombinere Capri samme dag?",
+      "a": [
+        "Muligt men presset – planlæg separate dage, så du kan nyde begge destinationer."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "SITA-bus eller sæsonfærge til Amalfi."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "Skift til Ravello-bussen i Amalfi; køb billetter, før du går ombord."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Rejs via Amalfi. Om sommeren kan færge til Amalfi og en kort bus op til Ravello spare tid."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Via Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Færge til Amalfi (sæson)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Via Amalfi (bus + bus)",
+        "body": [
+          "Skift i Amalfi til bussen mod Ravello; køb billetter i forvejen, og stil dig i kø i god tid."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Færge til Amalfi (sæson)",
+        "body": [
+          "Overvej en morgenfærge til Amalfi og derefter bus op til Ravello; tjek sidste returmulighed."
+        ]
+      }
+    ],
+    "tipsTitle": "Tips",
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Hvor lang tid skal jeg sætte af i Ravello?",
+        "a": [
+          "Planlæg mindst 3–4 timer til villaer og udsigter; mere hvis du deltager i arrangementer."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Bức tranh tổng thể: di chuyển, hoạt động và mẹo thực tế cho kỳ nghỉ Positano."
+  },
+  "linkLabel": "Positano Travel Guide",
+  "intro": [
+    "Bản dịch đang được chuẩn bị.",
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "sections": [
+    {
+      "id": "when",
+      "title": "When to visit",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "getting-around",
+      "title": "Getting around",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "highlights",
+      "title": "Highlights",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Where to stay",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need a car?",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "How many days?",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Bản dịch đang được chuẩn bị."
+    ],
+    "sections": {
+      "whereToStay": {
+        "title": "Where to stay",
+        "body": "Bản dịch đang được chuẩn bị."
+      },
+      "whenToVisit": {
+        "title": "When to visit",
+        "body": "Bản dịch đang được chuẩn bị."
+      },
+      "gettingAround": {
+        "title": "Getting around",
+        "arrivals": "Bản dịch đang được chuẩn bị.",
+        "withinTown": "Bản dịch đang được chuẩn bị.",
+        "ferries": "Bản dịch đang được chuẩn bị."
+      },
+      "thingsToDo": {
+        "title": "Things to do",
+        "beaches": "Bản dịch đang được chuẩn bị.",
+        "pathOfTheGods": "Bản dịch đang được chuẩn bị.",
+        "dayTrips": "Bản dịch đang được chuẩn bị."
+      },
+      "moneySavers": {
+        "title": "Money savers",
+        "eat": "Bản dịch đang được chuẩn bị.",
+        "travel": "Bản dịch đang được chuẩn bị.",
+        "stay": "Bản dịch đang được chuẩn bị."
+      }
+    },
+    "tipsTitle": "Where to save",
+    "faqHeading": "FAQs",
+    "faqs": [
+      {
+        "question": "Bản dịch đang được chuẩn bị.",
+        "answer": "Bản dịch đang được chuẩn bị."
+      },
+      {
+        "question": "Bản dịch đang được chuẩn bị.",
+        "answer": "Bản dịch đang được chuẩn bị."
+      }
+    ],
+    "tips": [
+      "Đặt trước phà và xe buýt khi có thể; vé vào phút cuối có giá cao hơn và có thể bán hết.",
+      "Mang theo tiền mặt khi đến các câu lạc bộ bãi biển, tiền boa cho người khuân vác và đồ ăn nhanh - các máy ATM trong thị trấn thường hết pin sau bữa tối.",
+      "Chia sẻ dịch vụ đưa đón sân bay hoặc đi xe buýt Bờ biển Amalfi; việc chia nhỏ giá vé giúp giảm chi phí đến."
+    ]
+  }
+}

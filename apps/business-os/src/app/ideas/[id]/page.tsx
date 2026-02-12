@@ -49,7 +49,7 @@ export default async function IdeaPage({ params }: PageProps) {
 
   const breadcrumbItems = [
     { label: "Home", href: "/" },
-    { label: "Ideas", href: "/" },
+    { label: "Ideas", href: "/ideas" },
     { label: idea.ID || "Idea" },
   ];
 

@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Przylot do Salerno czy Neapolu",
+    "description": "Porównanie lotnisk i dworców: dojazd, częstotliwość połączeń i koszty dla podróżujących na Amalfi."
+  },
+  "linkLabel": "Przylot do Salerno czy Neapolu",
+  "intro": [
+    "Oba porty działają: latem Salerno często wygrywa dzięki dodatkowym promom i spokojniejszym kolejkom."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Gdy Salerno wygrywa",
+      "body": [
+        "Sezonowe promy kursują bezpośrednio do Positano lub Amalfi i zwykle są mniej zatłoczone niż nabrzeża w Neapolu.",
+        "Połącz lotnisko Salerno Costa d'Amalfi (QSR) z transferem Airlink, aby zachować prostotę przesiadek."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Gdy Neapol wygrywa",
+      "body": [
+        "Poza sezonem niezawodność: szybkie pociągi plus SITA przez Sorrento działają nawet wtedy, gdy promy się wstrzymują.",
+        "Późne przyloty mają więcej opcji noclegowych i dalszych połączeń wokół Neapolu."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Bagaż i schody",
+      "body": [
+        "Przyjedź do Chiesa Nuova, aby zminimalizować schody prowadzące do hostelu.",
+        "Przylatujesz promem? Zamów bagażowego na nabrzeże lub wjedź autobusem SITA pod górę zamiast dźwigać torby."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Czy warto przylecieć na lotnisko w Salerno (QSR)?",
+      "a": [
+        "Latem coraz częściej tak: łącz QSR z transferem Airlink i promem przy spokojnym morzu, a w razie pogody wybierz autobusy."
+      ]
+    }
+  ]
+}

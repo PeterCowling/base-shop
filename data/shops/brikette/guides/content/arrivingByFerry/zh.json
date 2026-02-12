@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "乘渡轮抵达",
+    "description": "从波西塔诺渡轮码头到旅舍的分步指南。"
+  },
+  "linkLabel": "乘渡轮抵达",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "波西塔诺港 → 搭乘内部公交到旅舍",
+      "body": [
+        "**提示 1：** %URL:https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26|内部公交时刻表与票价%。 **提示 2：** 可在任何 *Tabacchi* / 报刊亭购买车票。 **提示 3：** 携带行李旅行？码头的搬运工可将行李直接送达旅舍。"
+      ]
+    },
+    {
+      "id": "portToPiazza",
+      "title": "港口至德伊穆利尼广场",
+      "body": [
+        "按照 %URL:https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2|这段步行路线%，从大海滩 (Spiaggia Grande) 前往德伊穆利尼广场 (Piazza Dei Mulini)。"
+      ]
+    },
+    {
+      "id": "piazzaToStop",
+      "title": "德伊穆利尼广场 → 当地公交站",
+      "body": [
+        "* 避免楼梯：乘坐内部公交。\n* 运营时间约每 30 分钟一班，8:00–24:00。\n* 在 %URL:https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0|Google 地图%查看路线。"
+      ]
+    },
+    {
+      "id": "busLook",
+      "title": "如何识别公交？",
+      "body": [
+        "车辆类型多样，但 LED 显示屏始终标示 *“Interno Positano”*。"
+      ]
+    },
+    {
+      "id": "busLookExtra",
+      "title": "备用车款",
+      "body": [
+        "偶尔会遇到红色车身的 Interno Positano 小巴，同样会显示 LED 路牌，请放心搭乘。"
+      ]
+    },
+    {
+      "id": "stopToHostel",
+      "title": "当地公交站 → 旅舍",
+      "body": [
+        "* 公交在下方所示的 Tabacchi 店前停靠。\n* 下车后，向**右转**到主路。\n* 再**左转**，直行约 100 米 / 330 英尺。\n* 旅舍在右侧：上楼梯至前台。\n* 需要详细路线？%URL:https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2|打开 Google 地图%。"
+      ]
+    },
+    {
+      "id": "approach",
+      "title": "提示：接近旅舍",
+      "body": [
+        "* 接近旅舍时，你会在二层露台看到我们的招牌。\n* 经过招牌，沿弯道前行，然后在右侧上楼梯即可抵达前台。"
+      ]
+    }
+  ]
+}

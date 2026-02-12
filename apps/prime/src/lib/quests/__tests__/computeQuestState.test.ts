@@ -1,13 +1,14 @@
 import "@testing-library/jest-dom";
+
+import type { OccupantCompletedTasks } from '../../../types/completedTasks';
+import type { GuestProfile } from '../../../types/guestProfile';
+import type { QuestProgress } from '../../../types/questProgress';
 import {
   computeQuestState,
-  isTierReadyForCompletion,
   getTiersReadyForCompletion,
+  isTierReadyForCompletion,
   type QuestStateInput,
 } from '../computeQuestState';
-import type { OccupantCompletedTasks } from '../../../types/completedTasks';
-import type { QuestProgress } from '../../../types/questProgress';
-import type { GuestProfile } from '../../../types/guestProfile';
 
 // Helper to create a base input
 function createInput(

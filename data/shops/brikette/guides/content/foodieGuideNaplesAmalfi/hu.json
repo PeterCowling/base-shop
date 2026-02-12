@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Gasztroútmutató Nápoly és Amalfi között",
+    "description": "Mit egyél, hol és hogyan vásárolj minőségi helyi ízeket anélkül, hogy túlfizetnél."
+  },
+  "linkLabel": "Gasztroútmutató Nápoly-Amalfi",
+  "intro": [
+    "A gasztronómiai élvezetek Nápoly és az Amalfi-part között könnyen beilleszthetők a napjaidba. Ebben a kalauzban azt találod, hova menj, mit kóstolj és hogyan vigyázz az árakra."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Nápoly ízei",
+      "body": [
+        "A pizza az egyik legkézenfekvőbb érv, de figyelj a valódi fatüzelésű kemencékre és a rövid sorokra. Kóstolj meg egy olaszország széles körben dicsért \\\"ragù” ragut és a sfogliatellét egy kávé mellé.",
+        "Ha lazább élményre vágysz, keress családi trattoriát a Spaccanapoli környékén, és kérj ajánlást helyi pincérektől."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi part menti ínyencségek",
+      "body": [
+        "Amalfi híres a citromjáról — limoncello, citromhab és colatura di alici (ansziovaszósz) mellőzhetetlen. Nézz be egy kis kézműves boltba, ahol saját üvegeiket árulják.",
+        "Keress kiülős déli teraszt, ahol friss halételek, kagylók és a helyi sajtok szerepelnek. Egy pizzettát is beilleszthetsz, ha a város központjában vagy."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Piacok és alapanyagok",
+      "body": [
+        "Nápolyban szedd össze a friss zöldségeket és a házi szalámit a Mercato di Porta Nolana gyalogos részén.",
+        "Amalfi vagy Maiori piacain keress pácolt citromot, kecskesajtot és a caffe sospesot, amit simán készíthetsz reggel vagy piknikhez."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha valamelyik étteremben bizonytalan vagy, kérj \\\"antipasti” tálat – több kis falatból álló élmény, ami megmutatja a konyha karakterét.",
+    "Vásárolj helyi olívaolajat vagy szárított tésztát kisebb csomagolásban; a kézműves üzletek általában gondosan csomagolnak a hazaszállításhoz."
+  ],
+  "faqs": [
+    {
+      "q": "Hol van a legjobb pizza?",
+      "a": [
+        "Nápolyban a híres pizzeriák (például Da Michele vagy Sorbillo) a klasszikus nevet viselik, de a kisebb éttermek is óriásit dobhatnak. Válassz kemencét és kóstold meg a margherita vagy a marinara verziót."
+      ]
+    },
+    {
+      "q": "Milyen ajándékot érdemes vinni haza?",
+      "a": [
+        "Kis üveges limoncello, olívaolaj vagy kolbászcsomag jól tűri az utazást. Kérd, hogy buborékfóliával vagy ruhával védjék a törékeny tárgyakat."
+      ]
+    }
+  ]
+}

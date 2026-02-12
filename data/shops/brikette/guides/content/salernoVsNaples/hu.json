@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vagy Nápoly: melyik érkezés jobb?",
+    "description": "Érkezési lehetőségek összehasonlítása szezon, költség és poggyász szempontjából."
+  },
+  "linkLabel": "Salerno vagy Nápoly: melyik érkezés jobb?",
+  "intro": [
+    "Mindkét érkezési pont működik; nyáron Salerno gyakran csendben győz a több komp és a rövidebb sorok miatt."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "Mikor éri meg Salernót választani",
+      "body": [
+        "Időszakos kompok közvetlenül Positanóba vagy Amalfiba indulnak, és kevésbé zsúfoltak, mint a nápolyi kikötők.",
+        "A Salerno Costa d'Amalfi (QSR) repülőteret az Airlink shuttle-lel kombinálva egyszerű marad az átszállás."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "Mikor jobb Nápoly",
+      "body": [
+        "Szezonon kívül megbízható: a nagysebességű vonatok és a Szorrentón át közlekedő SITA buszok akkor is járnak, amikor a kompok szünetelnek.",
+        "Késői érkezésnél Nápoly környékén több szállás- és továbbutazási lehetőség közül választhat."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Csomagok és lépcsők",
+      "body": [
+        "A Chiesa Nuova megállónál szálljon le, hogy minimalizálja a hostelhez vezető lépcsőket.",
+        "Komppal érkezik? Foglaljon hordárt a kikötőben, vagy inkább menjen fel SITA busszal, ahelyett hogy cipelné a csomagokat."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Megéri a Salerno-i (QSR) repülőteret választani?",
+      "a": [
+        "Nyárra egyre inkább: a QSR járatokat kombinálja az Airlink shuttle-lel és a komppal, ha nyugodt a tenger, rossz idő esetén pedig válthat buszra."
+      ]
+    }
+  ]
+}

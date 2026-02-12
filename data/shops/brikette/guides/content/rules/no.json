@@ -1,0 +1,25 @@
+{
+  "seo": {
+    "title": "Hostel‑regler og retningslinjer – Positano",
+    "description": "Les og følg våre grunnregler — inkludert forbud mot medbrakt alkohol og retningslinjer for omsorgsplikt — for å holde alle trygge og sikre et godt opphold."
+  },
+  "linkLabel": "Hostel‑regler og retningslinjer – Positano",
+  "sections": [
+    {
+      "id": "alcoholPolicy",
+      "title": "Forbud mot medbrakt alkohol",
+      "body": [
+        "Som en lisensiert virksomhet er det ikke tillatt å ta med eller konsumere alkohol kjøpt utenfor på hostellets område. Hvis du ankommer med medbrakt alkohol, vil teamet vårt oppbevare den trygt og returnere ved utsjekk (eller når du bekrefter at den konsumeres utenfor). Teamets avgjørelse er endelig. Å ta med eller drikke medbrakt alkohol medfører umiddelbar kansellering, registreres som no‑show og det gis ingen refusjon."
+      ]
+    },
+    {
+      "id": "dutyOfCare",
+      "title": "Din omsorgsplikt",
+      "body": [
+        "Under oppholdet deler du hostelet med andre gjester, ansatte og leverandører. Vennligst:",
+        "* Respekter andres privatliv og personlige rom.\n* Unngå å skade hostellets eller gjesters eiendom.\n* Hold støynivået rimelig og bidra til en rolig, vennlig atmosfære.\n* Følg eventuelle tilleggregler eller instruksjoner gitt av vårt personale.",
+        "Hvis du ignorerer disse pliktene, kan vi kansellere bestillingen umiddelbart (registrert som no‑show), be deg forlate uten refusjon og holde deg økonomisk ansvarlig for bøter, juridiske kostnader, omdømmetap eller andre utgifter. Ulovlig aktivitet rapporteres umiddelbart til lokale myndigheter."
+      ]
+    }
+  ]
+}

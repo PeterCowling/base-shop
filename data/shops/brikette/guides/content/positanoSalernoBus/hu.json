@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positanóból Salernóba busszal – Lépésről lépésre",
+    "description": "Ajtótól ajtóig tartó buszos útmutató a Hostel Brikette-től Salernóba Amalfín keresztül: hol szállj fel, hol vásárolj jegyet, hogyan olvasd a menetrendet és miként válts buszt Amalfiban."
+  },
+  "sections": [
+    {
+      "id": "journey",
+      "title": "Az út áttekintése"
+    },
+    {
+      "id": "tickets",
+      "title": "SITA buszok és jegyek"
+    },
+    {
+      "id": "timetable",
+      "title": "Menetrend és tervezés",
+      "body": "A legfrissebb menetrendeket a %URL:https://www.positano.com/en/bus-schedule|Positano.com% oldalon találod. Nézd meg mindkét szakaszt, és hagyj időt az amalfi átszállásra."
+    },
+    {
+      "id": "positanoStop",
+      "title": "Positanói (Chiesa Nuova) buszmegálló"
+    },
+    {
+      "id": "walk",
+      "title": "Séta a hosteltől a megállóig"
+    },
+    {
+      "id": "wait",
+      "title": "Jegyvásárlás és várakozás"
+    },
+    {
+      "id": "transfer",
+      "title": "Átszállás Amalfiban"
+    },
+    {
+      "id": "arrival",
+      "title": "Érkezés Salernóba"
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hogyan olvassam a SITA buszmenetrendet?",
+      "a": [
+        "**Sorok olvasása:** Az első oszlopban lévő sorok az útvonal mentén található különböző buszmegállókat jelölik.",
+        "**Oszlopok olvasása:** A menetrend minden ütemezett járathoz egy betűt rendel, amelyek az egyes oszlopok fejlécében szerepelnek. Ha hétfőtől szombatig utazik, keresse az 'F' és 'G' oszlopokat. Ha vasárnap vagy ünnepnapon utazik, használja a 'G' és 'H' oszlopokat.",
+        "**Sorok és oszlopok kombinálása:** Válassza ki az indulási és érkezési megállókat, majd ellenőrizze az oszlopokban, hogy mikor közlekednek a buszok, és mikor érkeznek meg a célállomásra. Például a sorrentói indulási időt a Sorrento sorban találja. A positanói (Chiesa Nuova / Bar Internazionale) érkezési időt a Positano (Chiesa Nuova) sorban láthatja."
+      ]
+    }
+  ],
+  "callouts": {
+    "tip": "Más közlekedési lehetőséget keresel? Nyisd meg a %HOWTO:how-to-get-here|Hogyan juthatsz el hozzánk áttekintést% kompokhoz, taxikhoz és kombinált útvonalakhoz."
+  }
+}

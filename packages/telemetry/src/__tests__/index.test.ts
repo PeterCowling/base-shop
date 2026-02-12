@@ -45,6 +45,8 @@ describe("telemetry index", () => {
   test("__flush sends buffered events and retries on failure", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
+    // Suppress expected console.error from "Failed to send telemetry"
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const mod = await import("../index");
     const fetchMock = jest
       .fn<any, any[]>()
@@ -58,6 +60,7 @@ describe("telemetry index", () => {
     const body = JSON.parse((fetchMock.mock.calls[0][1] as any).body as string);
     expect(body[0].name).toBe("evt");
     expect(mod.__buffer.length).toBe(0);
+    errorSpy.mockRestore();
   });
 
   test("__flush does nothing when buffer empty", async () => {
@@ -72,6 +75,8 @@ describe("telemetry index", () => {
   test("__flush restores events when all retries fail", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
+    // Suppress expected console.error from "Failed to send telemetry"
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const mod = await import("../index");
     const fetchMock = jest.fn<any, any[]>().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
@@ -80,6 +85,7 @@ describe("telemetry index", () => {
     await mod.__flush();
     expect(fetchMock).toHaveBeenCalledTimes(3);
     expect(mod.__buffer.map((e) => e.name)).toEqual(["evt"]);
+    errorSpy.mockRestore();
   });
 
   test("uses custom endpoint when provided", async () => {

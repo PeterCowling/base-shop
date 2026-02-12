@@ -1,0 +1,93 @@
+{
+  "seo": {
+    "title": "Ravello útikalauz",
+    "description": "Villák, koncertek, kertek – miként érkezz Ragellóba Amalfi/Positano felől."
+  },
+  "linkLabel": "Ravello útikalauz",
+  "intro": [
+    "Ravello az Amalfi fölött magasodik villakertjeivel, klasszikus koncertjeivel és lenyűgöző teraszaival. Használja ezt az útmutatót, hogy gördülékenyen megtervezze a látogatását."
+  ],
+  "sections": [
+    {
+      "id": "villas",
+      "title": "Villák és kertek",
+      "body": [
+        "A Villa Rufolo panorámás teraszokat és a tenger fölé nyúló ikonikus koncertszínpadot kínál.",
+        "A Villa Cimbrone Végtelen Terasza kihagyhatatlan fotóhely; érkezzen korán, hogy elkerülje a sorokat a keskeny sétányon."
+      ]
+    },
+    {
+      "id": "music",
+      "title": "Zene és események",
+      "body": [
+        "Nézze meg a Ravello Fesztivál (június–szeptember) esti koncertjeinek programját; a jegyek ülőhelytől függően 25–70 € között mozognak.",
+        "Vigyen magával egy könnyű felsőt: a 365 méteres magasságban este fújó szellők nyáron is hűvösnek érződhetnek."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Megközelítés",
+      "body": [
+        "Amalfiból SITA busszal 25 perc alatt ér fel Ravellóba, vagy osszon meg egy taxit, ha a 15 perces gyorsabb utat választaná.",
+        "Az esti visszaútra hagyjon extra időt: a késő délutáni buszok gyorsan megtelnek, ezért sorakozzon legalább 20 perccel korábban."
+      ]
+    }
+  ],
+  "tips": [
+    "Viseljen kényelmes cipőt – Ravello macskaköves utcái enyhe emelkedőket is tartalmaznak.",
+    "Érdemes megállót beiktatni Minoriban, és Sal De Riso cukrászdájában friss süteményt venni, mielőtt visszatér Positanóba."
+  ],
+  "faqs": [
+    {
+      "q": "Fel lehet gyalogolni Amalfiból Ravellóba?",
+      "a": [
+        "Meredek, 5 km-es emelkedő az ősi lépcsőkön. Csak jó kondícióban, korai indulással és elegendő vízzel vágjon neki."
+      ]
+    },
+    {
+      "q": "Előre kell foglalni a villa belépőket?",
+      "a": [
+        "A jegyeket a bejáratnál adják el. A nyári csúcsidőben délután kisebb sorokra számíthat, ezért a gördülékeny bejutás érdekében célozza meg a délelőtti sávot."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#villas",
+        "label": "Villák és kertek"
+      },
+      {
+        "href": "#concerts",
+        "label": "Koncertek"
+      },
+      {
+        "href": "#getting",
+        "label": "Megközelítés"
+      }
+    ],
+    "sections": [
+      {
+        "id": "villas",
+        "title": "Villák és kertek",
+        "body": [
+          "A Villa Rufolo és a Villa Cimbrone ikonikus kilátást kínál. Érkezzen korán, hogy elkerülje a sorokat."
+        ]
+      },
+      {
+        "id": "concerts",
+        "title": "Koncertek",
+        "body": [
+          "A Ravello Fesztivál nyáron zajlik – ellenőrizze a hivatalos programot, és készüljön réteges öltözettel a szeles estékhez."
+        ]
+      },
+      {
+        "id": "getting",
+        "title": "Megközelítés",
+        "body": [
+          "Amalfiból busszal lehet feljutni, de a késői visszajáratok ritkulnak. Hagyjon extra időt az esti hazautazásra."
+        ]
+      }
+    ]
+  }
+}

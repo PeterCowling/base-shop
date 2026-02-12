@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Du lịch bụi miền Nam nước Ý: Lộ trình bao gồm Bờ biển Amalfi",
+    "description": "Một vòng lặp hợp lý qua các điểm nổi bật với ghi chú về phương tiện tiết kiệm."
+  },
+  "linkLabel": "Du lịch bụi miền Nam nước Ý: Lộ trình bao gồm Amalfi",
+  "intro": [
+    "Lập kế hoạch một vòng quanh miền Nam nước Ý với Positano ở trung tâm mà không làm vỡ ngân sách."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Lộ trình đề xuất",
+      "body": [
+        "Bắt đầu tại Naples để đi máy bay và tàu hỏa, nghỉ 2–3 đêm tại Positano hoặc Praiano gần đó, tiếp tục đến Salerno, sau đó đi vào nội địa đến Matera hoặc Puglia trước khi quay lại.",
+        "Sử dụng tàu vùng và xe khách để di chuyển các đoạn dài một cách rẻ; đặt trước 4–6 tuần để có chỗ ngồi €15–€25."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Đến nơi & đóng gói",
+      "body": [
+        "Di chuyển với ba lô 40 L để có thể dễ dàng di chuyển trên cầu thang và giá để hành lý trên xe buýt.",
+        "Đóng gói quần áo khô nhanh, khăn nhỏ gọn và dép cho vòi sen ký túc xá; tiệm giặt ở Positano tính €12–€15 cho mỗi mẻ giặt và sấy."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Mẹo tiết kiệm",
+      "body": [
+        "Kết hợp mua sắm tạp hóa (focaccia tươi, trái cây, mozzarella) với dã ngoại trên sân thượng; dành €8 cho bữa trưa thay vì €18 cho bữa ăn ngồi.",
+        "Chia sẻ các chuyến đi trong ngày với bạn ở ký túc xá: chia taxi đến đầu đường mòn hoặc thuê xe tay ga ở Salerno/Praiano nơi giá giảm xuống còn €35 mỗi ngày."
+      ]
+    }
+  ],
+  "tips": [
+    "Kích hoạt SIM vùng hoặc eSIM (TIM/Vodafone) để bạn có thể tải lịch trình xe buýt và nhận phòng ký túc xá khi di chuyển.",
+    "Đặt trước ký túc xá hoặc nhà khách cho đêm đầu tiên và cuối cùng của vòng lặp của bạn, sau đó giữ linh hoạt giữa chuyến đi để thay đổi theo thời tiết."
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có cần thuê ô tô không?",
+      "a": [
+        "Không. Tàu hỏa, xe buýt và phà bao phủ toàn bộ vòng lặp. Thuê xe tay ga cho các đoạn ngắn có thể vui, nhưng giao thông đường bộ quanh Amalfi đòi hỏi sự tự tin."
+      ]
+    },
+    {
+      "q": "Tôi nên dành bao nhiêu ngày cho Positano?",
+      "a": [
+        "Dành cho mình ít nhất ba đêm: một đêm cho chính Positano, một đêm cho Con Đường của Các Vị Thần hoặc ngày đi thuyền, và một ngày linh hoạt cho Amalfi/Ravello hoặc dự phòng thời tiết."
+      ]
+    }
+  ]
+}

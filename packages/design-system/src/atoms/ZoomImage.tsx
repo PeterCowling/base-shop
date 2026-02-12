@@ -10,47 +10,55 @@ export interface ZoomImageProps extends ImageProps {
   ariaLabel?: string;
 }
 
-export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
-  ({ alt, className, zoomScale = 1.25, ariaLabel, ...props }, ref) => {
-    const [zoom, setZoom] = React.useState(false);
-    const toggle = React.useCallback(() => setZoom((z) => !z), []);
-    const onKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
-      (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          toggle();
-        }
-      },
-      [toggle],
-    );
-    const accessibleLabel =
-      ariaLabel ?? (zoom ? "Zoomed image, press to zoom out" : "Zoom image, press to zoom in");
-    return (
-      <figure
-        ref={ref}
-        role="button"
-        tabIndex={0}
-        aria-pressed={zoom}
-        aria-label={accessibleLabel}
-        onClick={toggle}
-        onKeyDown={onKeyDown}
-        className={cn(
-          "relative w-full cursor-zoom-in overflow-hidden transition motion-reduce:transition-none focus-visible:focus-ring",
-          zoom && "cursor-zoom-out"
-        )}
-      >
-        <Image
-          alt={alt ?? ""}
-          {...props}
-          className={cn(
-            "object-cover transition-transform duration-300 motion-reduce:transition-none",
-            className
-          )}
-          style={{ transform: zoom ? `scale(${zoomScale})` : "scale(1)" }}
-        />
-        <span className="sr-only">{accessibleLabel}</span>
-      </figure>
-    );
+export const ZoomImage = (
+  {
+    ref,
+    alt,
+    className,
+    zoomScale = 1.25,
+    ariaLabel,
+    ...props
+  }: ZoomImageProps & {
+    ref?: React.Ref<HTMLDivElement>;
   }
-);
-ZoomImage.displayName = "ZoomImage";
+) => {
+  const [zoom, setZoom] = React.useState(false);
+  const toggle = React.useCallback(() => setZoom((z) => !z), []);
+  const onKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
+    (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggle();
+      }
+    },
+    [toggle],
+  );
+  const accessibleLabel =
+    ariaLabel ?? (zoom ? "Zoomed image, press to zoom out" : "Zoom image, press to zoom in");
+  return (
+    <figure
+      ref={ref}
+      role="button"
+      tabIndex={0}
+      aria-pressed={zoom}
+      aria-label={accessibleLabel}
+      onClick={toggle}
+      onKeyDown={onKeyDown}
+      className={cn(
+        "relative w-full cursor-zoom-in overflow-hidden transition motion-reduce:transition-none focus-visible:focus-ring",
+        zoom && "cursor-zoom-out"
+      )}
+    >
+      <Image
+        alt={alt ?? ""}
+        {...props}
+        className={cn(
+          "object-cover transition-transform duration-300 motion-reduce:transition-none",
+          className
+        )}
+        style={{ transform: zoom ? `scale(${zoomScale})` : "scale(1)" }}
+      />
+      <span className="sr-only">{accessibleLabel}</span>
+    </figure>
+  );
+};

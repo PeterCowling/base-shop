@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Resa med husdjur på Amalfikusten",
+    "description": "Regler, transporter och boende för dig som reser med husdjur."
+  },
+  "linkLabel": "Resa med husdjur på Amalfikusten",
+  "intro": [
+    "Res tryggt med husdjur på Amalfikusten: rätt papper, djurvänliga boenden och lokal etikett."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Inför avresa",
+      "body": [
+        "Ta med bevis på EU-godkänt mikrochip, vaccinationsintyg mot rabies och avmaskning om ursprungslandet kräver det.",
+        "Packa hopfällbara skålar, en lätt matta och bajspåsar – utbudet är begränsat i mindre kuststäder."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Ta sig runt",
+      "body": [
+        "Små husdjur åker gratis på SITA-bussar om de hålls kopplade eller i bur; större hundar behöver munkorg och rabatterad biljett.",
+        "Färjor tillåter husdjur på utedäck – ta med kort koppel och kom i god tid för att hitta skugga."
+      ]
+    },
+    {
+      "id": "where",
+      "title": "Var husdjur är välkomna",
+      "body": [
+        "Många boenden tar emot små hundar om de förvarnas – kontrollera avgifter och ordningsregler innan du bokar.",
+        "Hundvänliga stränder inkluderar Bau Bau Beach i Maiori samt delar av Marina di Praia utanför högsäsongstider."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha vatten och hopfällbara skålar till hands; hetta och trappor tröttar husdjur snabbt sommartid.",
+    "Undvik kyrktrappor och gå bara in i kaféer om du blir inbjuden – uteserveringar är oftast djurvänliga."
+  ],
+  "faqs": [
+    {
+      "q": "Pratar veterinärer engelska?",
+      "a": [
+        "Många gör det, särskilt i Sorrento och Salerno. Spara en lista över kliniker och journummer innan du reser."
+      ]
+    },
+    {
+      "q": "Är taxi hundvänliga?",
+      "a": [
+        "De flesta förare accepterar små husdjur om de får veta det vid bokning. Ta med filt som skydd för sätena och ge gärna lite extra dricks för städningen."
+      ]
+    }
+  ]
+}

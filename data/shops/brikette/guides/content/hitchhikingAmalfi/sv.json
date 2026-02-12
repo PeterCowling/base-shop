@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Lifta längs Amalfikusten",
+    "description": "Risker och alternativ till liftning på Amalfikusten, samt tips om du ändå försöker."
+  },
+  "linkLabel": "Lifta längs Amalfikusten",
+  "intro": [
+    "Att lifta på Amalfikusten låter äventyrligt, men SS163 är smal med blinda kurvor och nästan inga säkra avfarter.",
+    "Luta dig på kollektivtrafiknätet istället: ta med dig validerade biljetter, planera reservrutter och förvara akuta kontanter för taxibilar eller bärare om tjänsterna stannar."
+  ],
+  "tocTitle": "On this page",
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Safety reality",
+      "body": [
+        "Bussar, bussar och skotrar delar redan ett enda körfält inhuggen i klippan. Förare kan inte se dig i tid och polisen kommer ofta att flytta med människor för sin egen säkerhet.",
+        "Sikten på natten är dålig och axlarna är små - att vänta på körbanan riskerar skador och böter."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Better alternatives",
+      "body": [
+        "SITA-bussar, lokala skyttlar och skåpbilar går hela dagen; köp biljetter i förväg på tabacchi och validera ombord.",
+        "Säsongens färjor ger natursköna humle mellan städerna; när havet avbryter dem, återgå till buss + portierservice eller delade taxibilar.",
+        "Korta vandringsleder (Nocelle ↔ Positano, Praiano ↔ kustbyar) ger natursköna backuper i dagsljus."
+      ]
+    },
+    {
+      "id": "stranded",
+      "title": "If you’re stranded",
+      "body": [
+        "Ring en licensierad taxi (nummer anges vid större hållplatser) eller be ditt boende/vandrarhemsbar att boka en; Priserna för sena nätter är högre, så dela priserna med andra resenärer när det är möjligt.",
+        "Meddela din värd om du är försenad. Vandrarhemsteamet kan föreslå det säkraste hämtningsstället eller övernattningsalternativen i Sorrento/Amalfi."
+      ]
+    }
+  ],
+  "tips": [
+    "Skärmdump buss- och färjetidtabeller från UnicoCampania eller Travelmar varje morgon så att du vet den sista garanterade avgången.",
+    "Bär en liten ficklampa eller reflexband om du förväntar dig att gå efter solnedgången - vägkantsbelysningen är begränsad."
+  ],
+  "warnings": [
+    "Vänta aldrig inne i tunnlar eller i blinda kurvor – lokal polis kan bötfälla dig och förare har inget utrymme att undvika fotgängare."
+  ],
+  "faqs": [
+    {
+      "q": "Är det lagligt att lifta på Amalfikusten?",
+      "a": [
+        "Det finns inget uttryckligt regionalt förbud, men brottsbekämpande myndigheter avråder från det och kan be dig att flytta för säkerhets skull. Om poliser ingriper, följ deras instruktioner och flytta till en busshållplats."
+      ]
+    },
+    {
+      "q": "What if the last bus has already left?",
+      "a": [
+        "Använd upplagda taxinummer, samåkningsappar som fungerar lokalt eller be närliggande hotell/barer att ringa en chaufför. Som en sista reserv kan du åka till Amalfi eller Sorrento (större städer) där nattbussar och tåg är vanligare."
+      ]
+    }
+  ]
+}

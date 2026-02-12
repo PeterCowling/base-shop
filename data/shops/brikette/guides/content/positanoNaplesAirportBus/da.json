@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Positano til Napoli Lufthavn med bus | Hostel Brikette",
+    "description": "Trin for trin fra Hostel Brikette til Napoli Lufthavn via SITA-bus til Sorrento og Curreri-bussen – med billettips og links til køreplaner."
+  },
+  "intro": {
+    "title": "Positano til Napoli Lufthavn – bus via Sorrento",
+    "body": "Tag SITA Sud-bussen fra Positano til Sorrento, og fortsæt derefter med Curreri-bussen til Napoli Capodichino Lufthavn. Det er den mest ligetil løsning med offentlig transport, med hyppige afgange og enkle skift på Sorrentos busstation."
+  },
+  "callouts": {
+    "aside": "Åbn %HOWTO:how-to-get-here|Find vej-oversigten% for taxa, færge og alternative rejseplaner."
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Rejseoverblik",
+      "list": [
+        "Gå til Positano (Chiesa Nuova)-stoppet foran Bar Internazionale.",
+        "Tag SITA-bussen til Sorrentos bus-/togstation.",
+        "Skift til Curreri-bussen fra Sorrento til Napoli Aeroporto (Capodichino)."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Gå til Positano-stoppet",
+      "list": [
+        "Forlad hostellet og gå ned ad trappen til hovedvejen.",
+        "Drej til venstre og fortsæt cirka 100 meter (330 fod).",
+        "Bar Internazionale ligger på venstre hånd; SITA-stoppet er lige udenfor."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billetter og ventetid",
+      "list": [
+        "Køb en SITA-billet til Sorrento hos Bar Internazionale eller i en nærliggende kiosk.",
+        "Gem billetten efter ombordstigning; chaufføren kan stemple eller rive den.",
+        "Til Curreri-bussen kan du købe online eller på stationen (hvis muligt)."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "På Sorrentos busstation",
+      "body": "Stig af ved Sorrentos centrale bus- og togstation. Fra busbanerne går du ombord på %URL:https://www.curreriviaggi.it/|Curreri Viaggi%-bussen til Napoli Aeroporto (Capodichino). Tjek den seneste køreplan, og overvej at købe billetter online i højsæsonen."
+    },
+    {
+      "id": "timetables",
+      "title": "Køreplaner"
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "seo": {
+    "title": "Wymagania wiekowe i dostępność w Hostel Brikette (Positano)",
+    "description": "Zapoznaj się z naszym dostępem po schodach, oczekiwaniami dotyczącymi bagażu i samodzielności, polityką dotyczącą nieletnich, wskazówkami dotyczącymi zwierząt asystujących i praktycznymi wskazówkami dotyczącymi przyjazdu (prom i autobus) przed dokonaniem rezerwacji."
+  },
+  "linkLabel": "Wymagania wiekowe i dostępność",
+  "sections": [
+    {
+      "id": "quickChecklist",
+      "title": "Przed rezerwacją (szybka lista kontrolna)",
+      "body": [
+        "Chcemy, aby Twój przyjazd był płynny – Positano jest piękne, ale nie jest \\\\\"płaskie i łatwe\\\\\". Oto, co jest najważniejsze:",
+        "* **Schody są nieuniknione:** do recepcji prowadzi ≈30 zewnętrznych kamiennych stopni, a większość sal wieloosobowych znajduje się 1-2 dodatkowe piętra wyżej.\n* **Brak windy / brak dostępu bez schodów:** nasz historyczny budynek nie został zbudowany dla ramp lub wind.\n* **Zaplanuj swój bagaż:** nie mamy usługi concierge/bell – przynieś to, co możesz unieść, lub zorganizuj tragarza.\n* **Zasady dotyczące nieletnich są surowe:** osoby poniżej 17 roku życia tylko w pokojach prywatnych; 17-latkowie wymagają opiekuna dorosłego + dokumentacji.\n* **Jeśli nie jesteś pewien, wyślij nam e-mail przed rezerwacją:** szczegółowo opiszemy układ i typowe trasy spacerowe."
+      ]
+    },
+    {
+      "id": "accessibilityRequirements",
+      "title": "Wymagania dotyczące dostępności",
+      "body": [
+        "Hostel Brikette znajduje się w zabytkowym budynku Positano wbudowanym w zbocze wzgórza. To część uroku – a także główna kwestia dostępności: **nie ma windy i nie ma trasy bez schodów**.",
+        "**Czego oczekiwać w hostelu:**\n* ≈30 zewnętrznych kamiennych stopni od najbliższego pasa dla pieszych do recepcji.\n* Większość sal wieloosobowych znajduje się **o jedno lub dwa dodatkowe wewnętrzne piętra** powyżej recepcji.",
+        "Samo Positano jest również strome. Wiele tras do/z plaży i portu obejmuje schody i nierówne powierzchnie.",
+        "Jeśli schody, równowaga lub noszenie bagażu mogą być wyzwaniem, wyślij nam e-mail przed rezerwacją. Wyjaśnimy układ i pomożemy Ci podjąć świadomą decyzję."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/hostel-brikette-entrance-steps.webp",
+          "alt": "Schody do wejścia do Hostel Brikette, tuż przy głównej drodze w Positano.",
+          "caption": "Spodziewaj się zewnętrznych schodów, aby dotrzeć do recepcji – nie ma windy ani dostępu bez schodów."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByFerry",
+      "title": "Przyjazd promem",
+      "body": [
+        "Przyjazd promem jest malowniczy, ale port znajduje się daleko poniżej hostelu, a trasy w górę obejmują strome odcinki i schody.",
+        "**Z bagażem nie zalecamy chodzenia** z portu do hostelu – szczególnie w letnim upale.",
+        "Niezawodny plan to:\n* Zorganizuj zarejestrowanego tragarza w porcie, aby dostarczyć bagaż bezpośrednio do hostelu.\n* Weź lokalny autobus Interno z centrum (obszar Piazza dei Mulini), a następnie przejdź krótki końcowy odcinek.",
+        "Aby uzyskać wskazówki krok po kroku, zobacz %LINK:arrivingByFerry|Przewodnik Port Positano → Hostel%."
+      ],
+      "images": [
+        {
+          "src": "/img/directions/ferry-dock-positano-spiaggia-view.jpg",
+          "alt": "Przystań promowa Positano na poziomie plaży z łodziami w zatoce.",
+          "caption": "Port znajduje się na poziomie plaży – zaplanuj pomoc w bagażu (tragarz) plus przejazd autobusem pod górę."
+        }
+      ]
+    },
+    {
+      "id": "arrivalByBus",
+      "title": "Przyjazd autobusem",
+      "body": [
+        "Najbliższy przystanek autobusowy znajduje się około **100 m / 330 stóp** dalej. Trasa między przystankiem a hostelem jest krótka i w większości płaska.",
+        "Z ulicy nadal będziesz musiał poradzić sobie ze schodami:\n* schody do recepcji\n* dodatkowe wewnętrzne piętra do większości pokoi"
+      ],
+      "images": [
+        {
+          "src": "/img/directions/positano-bus-stop.webp",
+          "alt": "Oznakowanie przystanku autobusowego Positano przy drodze.",
+          "caption": "Z przystanku jest to krótki spacer – następnie schody do recepcji."
+        }
+      ]
+    },
+    {
+      "id": "generalArrivalTips",
+      "title": "Ogólne wskazówki dotyczące przyjazdu",
+      "body": [
+        "Kilka małych wyborów robi wielką różnicę w Positano:",
+        "* Pakuj lekko, gdzie to możliwe.\n* Preferuj plecak zamiast dużej walizki na kółkach.\n* Noś buty z dobrym uchwytem (kamienne schody mogą być śliskie).\n* Jeśli przybywasz promem z bagażem, zaplanuj z wyprzedzeniem kombinację tragarz + autobus."
+      ]
+    },
+    {
+      "id": "reducedMobility",
+      "title": "Wskazówki dotyczące ograniczonej mobilności",
+      "body": [
+        "Jeśli masz ograniczoną mobilność, upośledzenie wzroku, przewlekły ból, problemy z równowagą lub polegasz na urządzeniach pomocniczych, wyślij nam e-mail przed rezerwacją.",
+        "Możemy opisać układ (schody, typowe trasy spacerowe, opcje rozmieszczenia pokoi), abyś mógł ocenić, czy nasza lokalizacja i udogodnienia spełniają Twoje potrzeby."
+      ]
+    },
+    {
+      "id": "serviceAnimals",
+      "title": "Zwierzęta asystujące",
+      "body": [
+        "Możemy gościć **certyfikowane zwierzęta asystujące** w **tylko prywatnych pokojach**, podlegając wcześniejszemu uzgodnieniu i obowiązującym przepisom.",
+        "Skontaktuj się z nami z wyprzedzeniem, abyśmy mogli potwierdzić wymagania dokumentacyjne i najlepszą opcję pokoju."
+      ]
+    },
+    {
+      "id": "assistedSleeping",
+      "title": "Urządzenia wspomagające sen",
+      "body": [
+        "Aby zachować spokojną atmosferę w wspólnych salach wieloosobowych, urządzenia, które tworzą ciągły lub przerywany dźwięk (na przykład maszyny CPAP, generatory białego szumu, głośniki do medytacji lub mówiące zegary), mogą być używane **tylko z rezerwacją pokoju prywatnego**."
+      ]
+    },
+    {
+      "id": "selfSufficiencyPolicy",
+      "title": "Polityka samodzielności",
+      "body": [
+        "Hostel Brikette to hostel w stylu backpackerskim: przyjazny i wspierający, ale **nie jest placówką opiekuńczą**.",
+        "Nasz zespół może pomóc w uzyskaniu informacji i praktycznych wskazówek, ale nie możemy świadczyć usług medycznych lub opiekuńczych, a także nie możemy przechowywać ani podawać leków na receptę.",
+        "**Aby pozostać z nami, goście muszą być w stanie:**\n* nieść swój bagaż (lub zorganizować tragarza)\n* wspinać się po schodach opisanych powyżej\n* samodzielnie meldować się/wymeldować\n* samodzielnie zarządzać higieną osobistą\n* korzystać ze wspólnych przestrzeni bez wymagania nadzoru personelu"
+      ]
+    },
+    {
+      "id": "essentialMedicine",
+      "title": "Podstawowe leki",
+      "body": [
+        "Jeśli podróżujesz z podstawowymi lekami wymagającymi chłodzenia, zazwyczaj możemy je przechować dla Ciebie – wyślij nam e-mail przed przyjazdem, aby zarezerwować miejsce.",
+        "Opcje w pobliżu:\n* Apteka: ~450 m na Viale Pasitea.\n* Publiczna klinika medyczna: Praiano (~3 km autobusem).",
+        "W nagłych wypadkach personel skontaktuje się z włoskimi służbami ratunkowymi (112 / 118). Nie możemy świadczyć profesjonalnej pomocy medycznej na miejscu.",
+        "Jeśli podczas pobytu stanie się jasne, że nie możesz spełnić minimalnych wymagań samodzielności opisanych powyżej, możemy nie być w stanie bezpiecznie Cię gościć. W przypadku powiązanych warunków, zobacz %LINK:changingCancelling|Zmiana i anulowanie% i %LINK:rules|Regulamin%."
+      ]
+    },
+    {
+      "id": "minorsPolicy",
+      "title": "Polityka dotycząca nieletnich",
+      "body": [
+        "Włoskie zasady gościnności dotyczące nieletnich są surowe i my je przestrzegamy. Chroni to młodych podróżnych i utrzymuje hostel w zgodzie – przeczytaj uważnie przed rezerwacją.",
+        "**Wiek 16 lat i poniżej:**\n* Tylko pokoje prywatne.\n* Musi towarzyszyć rodzic/opiekun prawny w wieku 18+.\n* Opiekun musi pozostać w tym samym pokoju przez cały pobyt.",
+        "**Wiek 17:** łóżka w salach wieloosobowych mogą być możliwe tylko z opiekunem dorosłym (18+) w tej samej sali wieloosobowej i odpowiednią dokumentacją zgody/opieki po przyjeździe (wyślij nam e-mail z wyprzedzeniem, abyśmy mogli potwierdzić, co jest potrzebne w Twojej sytuacji).",
+        "**Grupy (szkoła/sport/harcerze) poniżej 18 lat:** muszą zorganizować wyłączną rezydencję i dostarczyć pisemną dokumentację odpowiedzialności od instytucji organizującej co najmniej 7 dni przed przyjazdem.",
+        "Nieletni nie mogą być pozostawieni bez opieki w pomieszczeniach wspólnych. Jeśli wymagania nie zostaną spełnione podczas meldowania, możemy być prawnie zobowiązani do odmowy pobytu."
+      ]
+    },
+    {
+      "id": "locationOverview",
+      "title": "Przegląd lokalizacji",
+      "body": [
+        "Jesteśmy blisko lokalnych udogodnień:\n* główna droga i przystanki autobusowe (~100 m / 330 stóp)\n* sklepy spożywcze, bankomat, restauracje i małe artykuły pierwszej potrzeby w pobliżu",
+        "Obszar plaży Positano i port promowy znajdują się dalej w dół wzgórza; lokalny autobus jest najłatwiejszym sposobem podróżowania tam i z powrotem."
+      ]
+    },
+    {
+      "id": "transportationGuide",
+      "title": "Przewodnik transportowy",
+      "body": [
+        "Aby zaplanować trasę krok po kroku, użyj tych przewodników jako punktu wyjścia:",
+        "Popularne trasy:\n* Z lotniska w Neapolu: %LINK:naplesAirportPositanoBus|Lotnisko w Neapolu → Positano%.\n* Z centrum Neapolu: %LINK:naplesCenterTrainBus|Centrum Neapolu → Positano%.\n* Promem (sezonowo): %LINK:arrivingByFerry|Port Positano → Hostel%.",
+        "Przyjazd samochodem jest możliwy, ale nie zalecany w szczycie sezonu ze względu na ograniczony i drogi parking. Jeśli jedziesz, zaplanuj parking z wyprzedzeniem i utrzymuj bagaż tak lekki, jak to możliwe."
+      ]
+    }
+  ]
+}

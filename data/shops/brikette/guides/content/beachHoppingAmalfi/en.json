@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Beach hopping on the Amalfi Coast",
+    "description": "Which beaches to combine in a day, access tips, and costs."
+  },
+  "linkLabel": "Beach hopping on the Amalfi Coast",
+  "intro": [
+    "Plan a beach-hopping day that balances ferry rides, cliffside views, and downtime on the sand."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Morning: Positano to Fornillo",
+      "body": [
+        "Start early on Spiaggia Grande for a quick dip, then walk the coastal path to Fornillo by 09:30 for calmer water.",
+        "Reserve sunbeds ahead if you want shade; otherwise pack a lightweight umbrella."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Midday: Amalfi or Atrani",
+      "body": [
+        "Take a late-morning ferry to Amalfi and lunch on the pier before swimming at the town beach or Atrani's pocket cove.",
+        "Store bags in Amalfi's deposit so you can explore hands-free."
+      ]
+    },
+    {
+      "id": "group-tours",
+      "title": "Group tours & shared boats",
+      "body": [
+        "See our %LINK:boatTours|Boat tours in Positano guide% if you'd rather hop between beaches on a shared boat instead of ferries.",
+        "Operators depart from Positano's main pier; arrive 15 minutes early and confirm Laurito or Arienzo swim stops when booking."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Evening: Sunset swim",
+      "body": [
+        "Finish at Laurito or Arienzo for golden-hour views; both face west for warm light and fewer crowds after 17:00.",
+        "Take the last ferry or book a return taxi to avoid uphill hikes in the dark."
+      ]
+    }
+  ],
+  "tips": [
+    "Carry a quick-dry towel and change of clothes so you stay comfortable on ferries.",
+    "Pack snacks and at least 1 L / 34 oz of water—beach kiosks can run low on busy days."
+  ],
+  "faqs": [
+    {
+      "q": "Do I need to pre-book sunbeds?",
+      "a": [
+        "Yes in July–August. Contact beach clubs via WhatsApp the day before to secure front rows."
+      ]
+    },
+    {
+      "q": "Can I bring my own food?",
+      "a": [
+        "Most free sections allow picnics. Beach clubs typically permit small snacks but prefer you purchase drinks from their bar."
+      ]
+    }
+  ]
+}

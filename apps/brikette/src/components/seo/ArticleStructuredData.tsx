@@ -6,8 +6,7 @@ import { buildCanonicalUrl } from "@acme/ui/lib/seo";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildArticlePayload } from "@/utils/seo/jsonld";
-import { serializeJsonLdValue } from "@/utils/seo/jsonld";
+import { buildArticlePayload , serializeJsonLdValue } from "@/utils/seo/jsonld";
 
 import { ensureLeadingSlash, useOptionalRouterPathname } from "./locationUtils";
 

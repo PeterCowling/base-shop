@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Ungewöhnliche Dörfer an der Amalfiküste",
+    "description": "Cetara, Minori/Maiori, Atrani, Vietri, Furore – ruhigere Highlights."
+  },
+  "linkLabel": "Ungewöhnliche Dörfer an der Amalfiküste",
+  "intro": [
+    "Fünf ruhigere Amalfi-Orte, die sich für einen Abstecher lohnen – inklusive Anreisehinweisen."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Traditionelle Anchovis-Produktion und ein ruhiger Strand mit Fischerbooten.",
+        "Erreichbar per SITA-Bus oder saisonaler Fähre ab Amalfi bzw. Salerno."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Flache Uferpromenaden und beliebte Pasticcerien für ein entspannteres Tempo.",
+        "Anreise mit Bus oder Fähre; kombiniere den Besuch mit dem Zitronenpfad zwischen den Zwillingen."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Kleine Piazza östlich von Amalfi mit engen Gassen und direktem Strandzugang.",
+        "Zu Fuß in Minuten ab Amalfi oder eine Haltestelle mit dem Ortsbus."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Keramik-Hauptstadt nahe Salerno, deren Werkstätten die Straßen säumen.",
+        "Zug nach Salerno, dann kurzer Bus- oder Fährhop."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Spektakuläre Fjordkulisse mit begrenztem Strandbereich – früh kommen für ruhige Fotos.",
+        "SITA-Busse Richtung Amalfi nutzen; Sommerfähren halten gelegentlich in der Nähe."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich mehrere Orte an einem Tag besuchen?",
+      "a": [
+        "Ja – kombiniere Cetara, Vietri und Minori per Fähre oder Bus. Früh starten und Rückfahrzeiten im Blick behalten."
+      ]
+    },
+    {
+      "q": "Akzeptieren kleine Orte Kartenzahlung?",
+      "a": [
+        "Nimm Bargeld für Cafés und Kioske mit; viele haben €10-Mindestbeträge oder sind nur Barzahlung."
+      ]
+    }
+  ]
+}

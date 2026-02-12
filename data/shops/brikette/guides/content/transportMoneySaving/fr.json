@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Conseils pour économiser sur les transports de la côte amalfitaine",
+    "description": "Trucs pour payer moins : billets multi-trajets, choix d'horaires, applications et alternatives à prévoir."
+  },
+  "linkLabel": "Conseils pour économiser sur les transports de la côte amalfitaine",
+  "intro": [
+    "Astuces concrètes pour réduire les coûts de transport : pass, horaires, mix bus/ferry et plans météo."
+  ],
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Pass ou billets à l'unité",
+      "body": [
+        "N'utilisez les pass journée que si vous enchaînez plusieurs trajets ; sinon, les billets simples reviennent moins cher. Validez systématiquement."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Horaires & itinéraires",
+      "body": [
+        "Voyagez hors plage 10 h – 16 h les jours de pointe ; privilégiez les bus directs pour les villages perchés et les ferries pour les traversées panoramiques."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Mixer bus et ferry",
+      "body": [
+        "Choisissez une seule traversée payante (Positano ↔ Amalfi) et utilisez le bus pour le reste : confort et économies au rendez-vous."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Plan météo",
+      "body": [
+        "La mer agitée annule les ferries : gardez un plan B 100 % bus et évitez de dépendre du dernier bateau de la journée."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Les billets combinés valent-ils le coup ?",
+      "a": [
+        "Parfois, pour une journée avec plusieurs traversées : comparez avec le total des billets simples."
+      ]
+    }
+  ]
+}

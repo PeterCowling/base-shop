@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "Buss tillbaka till Hostel Brikette från Arienzo Beach",
+    "description": "Gå upp från stranden till vägen, ta bussen mot Positano, kliv av vid Bar Internazionale/Chiesa Nuova och följ sedan de korta anvisningarna tillbaka till Hostel Brikette."
+  },
+  "linkLabel": "Buss tillbaka till Hostel Brikette från Arienzo Beach",
+  "intro": [
+    "Skanna för att dela",
+    "Tips: Busstidtabell. Observera att tidtabellen inkluderar Positano-tider, men inte Arienzo-tider. Arienzos busshållplats ligger cirka 2–5 minuter före Sponda.",
+    "Viktigt! Om du inte har en bussbiljett för din returresa kan du antingen gå tillbaka till Sponda och åka buss därifrån, eller ta vattenshutteln tillbaka till huvudstranden i Positano. Kom ihåg att det inte finns några biljettförsäljare nära Arienzo Beach, så det är viktigt att planera i förväg och köpa dina biljetter i förväg för returresan.",
+    "Tips: Se vår %LINK:arienzoBeachClub|Arienzo Beach-guide%",
+    "Tips: Se vår %LINK:positanoBeaches|Strandöversikt%"
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Gå upp till busshållplatsen",
+      "body": [
+        "För att ta bussen tillbaka till vandrarhemmet, gå upp för trapporna från stranden till vägen och leta efter busshållplatsen på motsatt sida av vägen. Busshållplatsskylten är blå och vit, monterad på en metallstång (se bilden för referens). Vänta vid busshållplatsen på att bussen ska komma."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Ta bussen",
+      "body": [
+        "Antalet gånger som bussen kommer att stanna innan du behöver kliva av kommer att variera. Avståndet du behöver resa är cirka 3 km / 1,9 miles."
+      ]
+    },
+    {
+      "id": "get-off-bus",
+      "title": "Kliv av bussen",
+      "body": [
+        "Du kommer att kliva av vid busshållplatsen Bar Internazionale/Chiesa Nuova."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Gå till vandrarhemmet",
+      "body": [
+        "Vägbeskrivning:",
+        "* Fortsätt i riktningen som bussen du just klev av från tar i drygt 100 m / 330 fot.",
+        "* Ta trapporna upp till vandrarshemmets huvudentré."
+      ]
+    }
+  ],
+  "tipsTitle": "Busstips",
+  "tips": [
+    "Tryckta tidtabeller listar endast Positano-hållplatser; förvänta dig Arienzo cirka 2–5 minuter före Positano Sponda på vägen tillbaka.",
+    "Det finns inga biljettförsäljare nära Arienzo Beach. Köp din returbiljett i staden i förväg, eller gå till Sponda för att åka därifrån, eller ta vattenshutteln tillbaka till huvudstranden i Positano.",
+    "Läs vår %LINK:arienzoBeachClub|Arienzo Beach-guide% för faciliteter, shuttlar och planeringstips.",
+    "Bläddra i %LINK:positanoBeaches|Strandöversikten% för att jämföra andra vikar och planera framtida besök."
+  ]
+}

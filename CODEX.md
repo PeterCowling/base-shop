@@ -28,7 +28,7 @@ Codex has no tool-level safety hooks in this repo. Treat the following as **forb
 | `git push --force`, `git push -f`, `git push --force-with-lease` | Overwrites remote history; can destroy teammates’ commits | STOP. Do not run. Ask for human guidance. |
 | `git checkout -- .`, `git restore .` | Discards local modifications across the repo | STOP. Do not run. Ask for human guidance. |
 | `git restore -- <pathspec...>`, `git checkout -- <pathspec...>` (bulk discard) | Discards local modifications across many files (multiple paths, directories, or globs) | STOP. Do not run. Ask for human guidance. |
-| `git stash drop`, `git stash clear` | Permanently deletes stashed work | STOP. Do not run. Ask for human guidance. |
+| `git stash` mutations (`push`, `pop`, `apply`, `drop`, `clear`, including bare `git stash`) | Creates hidden stash debt, conflict risk, or permanent stash loss | STOP. Do not run. Ask for human guidance. |
 | `git rebase` (incl. `-i`), `git commit --amend` | Rewrites history; often leads to force-push pressure | STOP. Do not run. Ask for human guidance. |
 | `rm -rf` on project directories | Irreversible deletion | STOP. Do not run. Ask for human guidance. |
 | `pnpm test` (unfiltered) | Spawns too many Jest workers; can crash the machine | Use targeted tests instead. |
@@ -79,7 +79,7 @@ run Codex inside the repo’s “integrator mode” (writer lock + git guard):
 scripts/agents/integrator-shell.sh -- codex
 ```
 
-This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, `stash`, and `commit --amend`,
+This blocks commands like `git reset --hard`, `git clean -fd`, force pushes, `rebase`, stash mutations, and `commit --amend`,
 blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
 blocks repo-wide/bulk discard patterns (`git restore` / `git checkout --`), and enforces a single-writer lock for commits/pushes.
 

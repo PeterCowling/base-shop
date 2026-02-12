@@ -1,0 +1,76 @@
+{
+  "seo": {
+    "title": "Từ Positano đến trung tâm Naples bằng phà | Hostel Brikette",
+    "description": "Các bước từ Hostel Brikette xuống cảng Positano, mua vé, lên tàu và mẹo khi đến trung tâm Naples bằng phà."
+  },
+  "intro": {
+    "title": "Positano đến trung tâm Naples – Phà",
+    "body": "Làm theo các bước này để đi bộ từ Hostel Brikette tới cảng Positano, mua vé phà và đi tàu tới Naples. Bài viết có mẹo chọn hãng, ghi chú theo mùa và hướng dẫn khi tới ga Napoli Centrale."
+  },
+  "galleries": [
+    {
+      "items": [
+        {
+          "src": "/img/directions/positano-capri-ferry-img01.png",
+          "alt": "Hình ảnh bước tuyến đường 1",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img02.jpg",
+          "alt": "Hình ảnh bước tuyến đường 2",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img03.jpg",
+          "alt": "Hình ảnh bước tuyến đường 3",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img04.png",
+          "alt": "Hình ảnh bước tuyến đường 4",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img05.jpg",
+          "alt": "Hình ảnh bước tuyến đường 5",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img06.jpg",
+          "alt": "Hình ảnh bước tuyến đường 6",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img07.jpg",
+          "alt": "Hình ảnh bước tuyến đường 7",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img08.jpg",
+          "alt": "Hình ảnh bước tuyến đường 8",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Hình ảnh bước tuyến đường 9",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        },
+        {
+          "src": "/img/directions/positano-capri-ferry-img10.jpg",
+          "alt": "Hình ảnh bước tuyến đường 10",
+          "aspectRatio": "4/3",
+          "preset": "gallery"
+        }
+      ]
+    }
+  ]
+}

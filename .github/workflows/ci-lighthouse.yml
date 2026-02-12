@@ -27,6 +27,7 @@ jobs:
     outputs:
       shop_skylar: ${{ steps.filter.outputs.shop_skylar }}
       brikette: ${{ steps.brikette-filter.outputs.brikette }}
+      lhci_configs: ${{ steps.scope-config.outputs.configs }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,6 +49,42 @@ jobs:
           else
             echo "brikette=false" >> "$GITHUB_OUTPUT"
           fi
+      - name: Build LHCI config matrix
+        id: scope-config
+        shell: bash
+        run: |
+          configs=(
+            "lighthouserc.shop.json"
+            "lighthouserc.shop.desktop.json"
+            "lighthouserc.skylar.json"
+            "lighthouserc.skylar.desktop.json"
+            "lighthouserc.brikette.json"
+            "lighthouserc.brikette.desktop.json"
+          )
+
+          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
+            label_csv="${{ join(github.event.pull_request.labels.*.name, ',') }}"
+            if [[ "$label_csv" == *"promote-app:"* ]]; then
+              configs=()
+              if [[ "$label_csv" == *"promote-app:shop"* ]]; then
+                configs+=("lighthouserc.shop.json" "lighthouserc.shop.desktop.json")
+              fi
+              if [[ "$label_csv" == *"promote-app:skylar"* ]]; then
+                configs+=("lighthouserc.skylar.json" "lighthouserc.skylar.desktop.json")
+              fi
+              if [[ "$label_csv" == *"promote-app:brikette"* ]]; then
+                configs+=("lighthouserc.brikette.json" "lighthouserc.brikette.desktop.json")
+              fi
+            fi
+          fi
+
+          if [[ "${#configs[@]}" -eq 0 ]]; then
+            echo "configs=[]" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          json="$(jq -nc '$ARGS.positional' --args "${configs[@]}")"
+          echo "configs=${json}" >> "$GITHUB_OUTPUT"
 
   lhci:
     name: Lighthouse (${{ matrix.config }})
@@ -68,6 +105,9 @@ jobs:
       github.event_name == 'push' ||
       (github.event_name == 'pull_request' &&
         (
+          contains(github.event.pull_request.labels.*.name, 'promote-app:brikette') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:shop') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:skylar') ||
           needs.changes.outputs.shop_skylar == 'true' ||
           needs.changes.outputs.brikette == 'true' ||
           contains(github.event.pull_request.labels.*.name, 'run-lhci')
@@ -79,22 +119,24 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config:
-          [
-            lighthouserc.shop.json,
-            lighthouserc.shop.desktop.json,
-            lighthouserc.skylar.json,
-            lighthouserc.skylar.desktop.json,
-            lighthouserc.brikette.json,
-            lighthouserc.brikette.desktop.json,
-          ]
+        config: ${{ fromJson(needs.changes.outputs.lhci_configs) }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
 
       - name: Build apps for LHCI
         run: |
-          pnpm --filter @apps/cover-me-pretty... --filter @apps/skylar... --filter @apps/brikette... build
+          config="${{ matrix.config }}"
+          if [[ "$config" == lighthouserc.shop* ]]; then
+            pnpm --filter @apps/cover-me-pretty... build
+          elif [[ "$config" == lighthouserc.skylar* ]]; then
+            pnpm --filter @apps/skylar... build
+          elif [[ "$config" == lighthouserc.brikette* ]]; then
+            pnpm --filter @apps/brikette... build
+          else
+            echo "Unsupported LHCI config: $config" >&2
+            exit 1
+          fi
 
       - name: Setup Chrome for LHCI
         id: chrome

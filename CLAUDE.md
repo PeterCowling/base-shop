@@ -24,8 +24,8 @@ Monorepo: Turborepo + pnpm workspaces.
 
 ## Model Usage Policy
 
-Always use **sonnet** as the default model for all sub-agents and delegated tasks.
-If a task appears too complex, pause and ask the user before switching models.
+Always pass `model: "sonnet"` on every Task tool call. Never inherit the parent model (opus) for subagents.
+If a task appears too complex for sonnet, pause and ask the user before switching to a heavier model.
 
 ## Subagent Usage Policy
 
@@ -54,7 +54,7 @@ If a task appears too complex, pause and ask the user before switching models.
 
 ## Workflow
 
-Feature flow: `/fact-find` → `/plan-feature` → `/sequence-plan` → `/build-feature` → `/re-plan` (if confidence <80%).
+Feature flow: `/fact-find` → `/plan-feature` → `/wf-sequence` → `/build-feature` → `/re-plan` (if confidence <80%).
 Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
 
 ## Type Intelligence (MCP)

@@ -163,7 +163,10 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Ensure base branch ref is available (may already exist with fetch-depth: 0)
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
             echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
@@ -225,7 +228,10 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Ensure base branch ref is available (may already exist with fetch-depth: 0)
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
             echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
@@ -258,7 +264,10 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            # Ensure base branch ref is available (may already exist with fetch-depth: 0)
+            if ! git rev-parse --verify "origin/${{ github.base_ref }}" >/dev/null 2>&1; then
+              git fetch --no-tags origin "+${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}"
+            fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
             echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"

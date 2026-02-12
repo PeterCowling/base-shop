@@ -65,7 +65,7 @@ Brikette/
 ```
 
 #### Trigger Mechanism for Pete
-- **Option 1 (Recommended):** Pete checks email count when starting `/process-emails`
+- **Option 1 (Recommended):** Pete checks email count when starting `/ops-inbox`
 - **Option 2 (Future):** Daily summary email at 09:00 and 17:00 with pending count
 - **Option 3 (Future):** Slack/Discord notification when queue exceeds N emails
 
@@ -119,7 +119,7 @@ claude
 
 Then uses the skill:
 ```
-/process-emails
+/ops-inbox
 ```
 
 Or conversationally:
@@ -561,7 +561,7 @@ Progress saved:
 - 2 emails remaining in queue
 
 The remaining emails will still be in your queue when you return.
-Run `/process-emails` to continue.
+Run `/ops-inbox` to continue.
 
 Drafts created this session:
 1. RE: Availability June 15-18? - Draft in Gmail
@@ -580,7 +580,7 @@ Remember to review and send these drafts in Gmail!
 
 ## Skill Creation
 
-### Recommendation: Yes - Create `/process-emails` Skill
+### Recommendation: Yes - Create `/ops-inbox` Skill
 
 **Rationale:**
 - Provides consistent entry point for email workflow
@@ -590,11 +590,11 @@ Remember to review and send these drafts in Gmail!
 
 ### Skill Design
 
-**File:** `.claude/skills/process-emails/SKILL.md`
+**File:** `.claude/skills/ops-inbox/SKILL.md`
 
 ```markdown
 ---
-name: process-emails
+name: ops-inbox
 description: Process pending Brikette customer emails and generate draft responses
 ---
 
@@ -994,7 +994,7 @@ export async function handleBriketteResource(uri: string) {
 
 ---
 
-## Task Seeds for `/plan-feature`
+## Task Seeds for `/wf-plan`
 
 ### Phase 1: Infrastructure Setup
 
@@ -1041,7 +1041,7 @@ export async function handleBriketteResource(uri: string) {
 **TASK-06: Create Process-Emails Skill**
 - Type: IMPLEMENT
 - Effort: M
-- Affects: `.claude/skills/process-emails/SKILL.md`
+- Affects: `.claude/skills/ops-inbox/SKILL.md`
 - Description: Create the skill file with complete workflow documentation
 - Acceptance: Skill works end-to-end with MCP tools
 
@@ -1100,7 +1100,7 @@ export async function handleBriketteResource(uri: string) {
 - Extends existing MCP server infrastructure
 - Gmail tools for email operations
 - Knowledge base as MCP resources
-- Custom `/process-emails` skill
+- Custom `/ops-inbox` skill
 ```
 
 ### 2. Update Agent Card
@@ -1116,7 +1116,7 @@ export async function handleBriketteResource(uri: string) {
 **File:** `docs/guides/brikette-email-workflow.md`
 
 **Contents:**
-- Quick start (how to run `/process-emails`)
+- Quick start (how to run `/ops-inbox`)
 - Prerequisites (MCP server setup)
 - Daily workflow suggestions
 - Troubleshooting common issues
@@ -1132,14 +1132,14 @@ export async function handleBriketteResource(uri: string) {
 | Human-initiated or automated? | Resolved | Human-initiated |
 | Comfortable with MCP server? | Resolved | Yes |
 | Pattern A or B? | Resolved | Pattern B (MCP Tools) |
-| Create skill? | Resolved | Yes - `/process-emails` |
+| Create skill? | Resolved | Yes - `/ops-inbox` |
 
 ---
 
 ## Next Steps
 
-1. **Immediate:** Update fact-find and agent card with resolved decisions
-2. **Then:** Run `/plan-feature` using this design as input
+1. **Immediate:** Update wf-fact-find and agent card with resolved decisions
+2. **Then:** Run `/wf-plan` using this design as input
 3. **Build order:** Tasks 01-03 (infrastructure) -> 04-05 (Gmail setup) -> 06-08 (integration) -> 09-10 (validation)
 
 ---

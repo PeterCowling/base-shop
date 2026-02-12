@@ -14,7 +14,7 @@ Related-Plan: docs/plans/commerce-core-readiness-plan.md
 ## Audit Metadata
 
 - **Repo-Root:** `/Users/petercowling/base-shop`
-- **Audit-Ref:** `working-tree` (uncommitted changes in fact-find doc)
+- **Audit-Ref:** `working-tree` (uncommitted changes in wf-fact-find doc)
 - **Base-Commit:** `fbc1d0d7f50ff4acf7da8c25b1bf92f5e767d1d6`
 - **Audit-Date:** 2026-02-01
 - **Method:** Grep (ripgrep), Read (file inspection), Git (history/show), package.json inspection
@@ -569,7 +569,7 @@ Before implementation work begins, these decisions must be made:
 
 ---
 
-## Updated Confidence Inputs (for /plan-feature)
+## Updated Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 60%
   - Critical gaps identified: repricing not wired, hold idempotency broken, no rate limiting

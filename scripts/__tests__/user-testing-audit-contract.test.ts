@@ -4,34 +4,34 @@ import path from "node:path";
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const FOCUSED_AUDIT_SCRIPT = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/scripts/run-user-testing-audit.mjs"
+  ".claude/skills/meta-user-test/scripts/run-meta-user-test.mjs"
 );
 const FULL_CRAWL_AUDIT_SCRIPT = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/scripts/run-full-js-off-sitemap-crawl.mjs"
+  ".claude/skills/meta-user-test/scripts/run-full-js-off-sitemap-crawl.mjs"
 );
 const AUDIT_NO_JS_MODULE = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/scripts/no-js-predicates.cjs"
+  ".claude/skills/meta-user-test/scripts/no-js-predicates.cjs"
 );
 const AUDIT_BOOKING_MODULE = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/scripts/booking-transaction-predicates.cjs"
+  ".claude/skills/meta-user-test/scripts/booking-transaction-predicates.cjs"
 );
 const AUDIT_DISCOVERY_POLICY_MODULE = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/scripts/discovery-policy-predicates.cjs"
+  ".claude/skills/meta-user-test/scripts/discovery-policy-predicates.cjs"
 );
 const AUDIT_SKILL = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/SKILL.md"
+  ".claude/skills/meta-user-test/SKILL.md"
 );
 const AUDIT_REPORT_TEMPLATE = path.join(
   REPO_ROOT,
-  ".claude/skills/user-testing-audit/references/report-template.md"
+  ".claude/skills/meta-user-test/references/report-template.md"
 );
 
-describe("user-testing-audit expanded contract", () => {
+describe("meta-user-test expanded contract", () => {
   it("enforces focused no-JS + booking + discovery policy checks", () => {
     const source = fs.readFileSync(FOCUSED_AUDIT_SCRIPT, "utf8");
     const moduleSource = fs.readFileSync(AUDIT_NO_JS_MODULE, "utf8");

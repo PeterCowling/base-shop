@@ -112,11 +112,11 @@ Push significant local work to GitHub safely, ensuring changes go only to stagin
 7 files with local changes:
 - `docs/business-os/cards/BRIK-ENG-0020.user.md` (modified)
 - `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md` (modified)
-- `docs/plans/commerce-core-readiness-fact-find.md` (modified)
+- `docs/plans/commerce-core-readiness-wf-fact-find.md` (modified)
 - `pnpm-lock.yaml` (modified)
 - `apps/brikette-scripts/` (new, untracked)
-- `docs/audits/commerce-core-readiness-fact-check-2026-02-01.md` (new)
-- `docs/plans/email-autodraft-response-system-fact-find.md` (new)
+- `docs/audits/commerce-core-readiness-review-fact-check-2026-02-01.md` (new)
+- `docs/plans/email-autodraft-response-system-wf-fact-find.md` (new)
 
 ## Questions
 
@@ -142,7 +142,7 @@ Push significant local work to GitHub safely, ensuring changes go only to stagin
   - Default assumption: Continue with current PR to `main` since staging branch doesn't exist yet; create staging/dev later
   - Risk: Low, since production deployment requires manual trigger
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 90%
   - The path is clear: continue using `work/**` branches and PRs

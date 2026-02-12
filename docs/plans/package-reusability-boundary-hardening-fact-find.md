@@ -9,7 +9,7 @@ Last-updated: 2026-02-11
 Feature-Slug: package-reusability-boundary-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
+Primary-Execution-Skill: wf-build
 Supporting-Skills: none
 Related-Plan: docs/plans/package-reusability-boundary-hardening-plan.md
 Business-OS-Integration: off
@@ -28,7 +28,7 @@ Audit package structure and dependency boundaries to determine whether monorepo 
 - Provide planning-ready constraints and task seeds for a cleanup initiative.
 
 ### Non-goals
-- No implementation or refactor in this fact-find.
+- No implementation or refactor in this wf-fact-find.
 - No package API removals or migration execution in this step.
 - No CI workflow rewiring in this step.
 
@@ -141,7 +141,7 @@ Likely blast radius for remediation:
 - `087acc45ab`, `7a437b1775`, `e1f8474c50` (`@acme/design-system`) - ongoing design-system feature and test work; dependencies still tightly interwoven with platform contexts.
 
 ## External Research (If needed)
-- None required; repository evidence was sufficient for this first-pass architectural fact-find.
+- None required; repository evidence was sufficient for this first-pass architectural wf-fact-find.
 
 ## Questions
 ### Resolved
@@ -161,7 +161,7 @@ Likely blast radius for remediation:
   - Decision impacted: Scope and sequencing of deduplication/migration tasks.
   - Default assumption + risk: Default to `@acme/cms-ui` as CMS owner, keep `@acme/ui` compatibility shims temporarily. Risk: short-term dual-path imports during transition.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 - **Implementation:** 86%
   - Evidence is strong and file-level issues are concrete; execution is mostly deterministic refactor + rule enforcement.
   - To reach >=90: spike one package slice (`media` or `campaign`) end-to-end to validate migration mechanics and CI timing impact.
@@ -174,7 +174,7 @@ Likely blast radius for remediation:
   - To reach >=80: generate full call-site inventories for `@acme/ui/components/cms/*` and `@acme/cms-ui/*` consumers.
   - To reach >=90: execute staged rollout rehearsal with targeted app validations (`apps/cms`, one non-CMS app, one root-test suite).
 - **Delivery-Readiness:** 84%
-  - Deliverable is clear (code-change), execution path clear (`/build-feature`), validation gate known.
+  - Deliverable is clear (code-change), execution path clear (`/wf-build`), validation gate known.
   - To reach >=90: predefine exact acceptance checklist for each migration phase and add CI rule for forbidden import patterns.
 - **Testability:** 72%
   - Current tests are abundant but noisy/duplicative due boundary leaks and mirrored suites.
@@ -202,7 +202,7 @@ Likely blast radius for remediation:
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `build-feature`
+  - `wf-build`
 - Supporting skills:
   - none
 - Deliverable acceptance package (what must exist before task can be marked complete):
@@ -220,4 +220,4 @@ Likely blast radius for remediation:
 - Blocking items (if any):
   - None blocking planning; ownership decision is the first task in planning.
 - Recommended next step:
-  - Proceed to `/plan-feature` using this brief and lock canonical CMS ownership in task 1.
+  - Proceed to `/wf-plan` using this brief and lock canonical CMS ownership in task 1.

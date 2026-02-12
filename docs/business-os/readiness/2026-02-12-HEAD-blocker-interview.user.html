@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEAD Blocker Interview Pack</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>HEAD Blocker Interview Pack</h1>
+<h2>A) Blocker Summary</h2>
+<p>Current blockers are no longer app-mapping blockers. Remaining blockers are decision-quality blockers for HEAD execution:</p>
+<ol>
+<li>Outcome contract not yet locked in canonical plan.</li>
+<li>Baseline demand/conversion metrics not yet defined in working scorecard terms.</li>
+<li>Operational confirmations (stock, pricing, compatibility, payments, returns SLA) incomplete.</li>
+<li>Recalibration and weekly decision artifacts not started.</li>
+</ol>
+<h2>B) Blocker-to-Question Table</h2>
+<table>
+<thead>
+<tr>
+<th>Blocker</th>
+<th>Why it matters</th>
+<th>Required question(s)</th>
+<th>Acceptable evidence</th>
+<th>Priority</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Outcome contract missing in <code>plan.user.md</code></td>
+<td>Planning/build priorities cannot be objectively scored</td>
+<td>What is the single active HEAD outcome contract (statement, baseline, target, deadline, owner, leading indicators, decision link)?</td>
+<td>Updated <code>docs/business-os/strategy/HEAD/plan.user.md</code> with explicit outcome fields</td>
+<td>critical</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>Demand/conversion baseline undefined</td>
+<td>No clear go/no-go thresholds</td>
+<td>What are week-1 minimum thresholds for sessions, CVR, paid CAC, and return rate?</td>
+<td>Baseline table in <code>plan.user.md</code> and/or <code>HEAD-forecast-seed.user.md</code></td>
+<td>high</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>In-stock date and sellable units not confirmed</td>
+<td>Spend and launch timing remain assumption-led</td>
+<td>What exact date and unit count are launch-available?</td>
+<td>Inventory snapshot note in <code>HEAD-forecast-seed.user.md</code></td>
+<td>critical</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>Price architecture not finalized</td>
+<td>Contribution and CAC guardrails cannot be validated</td>
+<td>What is launch price structure (single/bundle) and target contribution per order?</td>
+<td>Price matrix in <code>HEAD-forecast-seed.user.md</code></td>
+<td>high</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>Compatibility matrix not finalized</td>
+<td>High wrong-buy and return risk</td>
+<td>Which processor families/models are confirmed supported at launch?</td>
+<td>Compatibility table in site-upgrade brief and seed docs</td>
+<td>critical</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>Payment stack and returns SLA unconfirmed</td>
+<td>Checkout and trust risk at launch</td>
+<td>Which payment methods are live day one and what is returns response SLA?</td>
+<td>Checklist entry in seed + policy copy in strategy docs</td>
+<td>high</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>Forecast recalibration artifact missing</td>
+<td>No mechanism to update assumptions from live data</td>
+<td>When will first recalibration run and what minimum sample thresholds apply?</td>
+<td><code>docs/business-os/strategy/HEAD/&#x3C;date>-forecast-recalibration.user.md</code></td>
+<td>medium</td>
+<td>Pete</td>
+</tr>
+<tr>
+<td>Weekly K/P/C/S decision log missing</td>
+<td>No recurring operating decision record</td>
+<td>When is weekly decision cadence starting and who owns updates?</td>
+<td><code>docs/business-os/strategy/HEAD/&#x3C;date>-weekly-kpcs-decision.user.md</code></td>
+<td>medium</td>
+<td>Pete</td>
+</tr>
+</tbody>
+</table>
+<h2>C) Interview Script (Ordered)</h2>
+<ol>
+<li>Confirm active outcome contract fields exactly as they should appear in <code>plan.user.md</code>.</li>
+<li>Confirm launch inventory facts: in-stock date and sellable units.</li>
+<li>Confirm launch pricing architecture and contribution target assumptions.</li>
+<li>Confirm compatibility matrix scope for day-one launch.</li>
+<li>Confirm payment stack and returns SLA commitment.</li>
+<li>Confirm week-1 baseline thresholds and week-2 recalibration criteria.</li>
+<li>Confirm weekly K/P/C/S cadence start date and owner.</li>
+</ol>
+<h2>D) Closure Checklist</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Pass criteria</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Outcome contract</td>
+<td><code>plan.user.md</code> has explicit outcome statement, baseline, target, by, owner, indicators, decision link</td>
+</tr>
+<tr>
+<td>Inventory confirmation</td>
+<td>Seed doc contains exact in-stock date and unit count</td>
+</tr>
+<tr>
+<td>Price architecture</td>
+<td>Seed doc contains single/bundle pricing and contribution assumptions</td>
+</tr>
+<tr>
+<td>Compatibility</td>
+<td>Launch compatibility matrix persisted in canonical doc</td>
+</tr>
+<tr>
+<td>Payments + returns</td>
+<td>Day-one methods and returns SLA documented</td>
+</tr>
+<tr>
+<td>Recalibration</td>
+<td>First forecast recalibration doc created with thresholds</td>
+</tr>
+<tr>
+<td>Weekly decision</td>
+<td>First weekly K/P/C/S decision doc created</td>
+</tr>
+</tbody>
+</table>
+<h2>E) Residual Risks After Closure</h2>
+<ul>
+<li>If live CVR/CAC diverges materially from assumptions, recalibration may still force pivot.</li>
+<li>If returns spike despite compatibility clarity, product/fit iteration remains required.</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/readiness/2026-02-12-HEAD-blocker-interview.user.md</code></div>
+      <div>Generated: 2026-02-12T11:29:21.440Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

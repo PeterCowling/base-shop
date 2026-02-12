@@ -7,6 +7,13 @@ import { usePreArrivalState } from '../../../hooks/usePreArrivalState';
 const mockPush = jest.fn();
 const mockUseCheckInCode = jest.fn();
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, opts?: Record<string, unknown>) =>
+      (opts && typeof opts.defaultValue === 'string') ? opts.defaultValue : key,
+  }),
+}));
+
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: mockPush,

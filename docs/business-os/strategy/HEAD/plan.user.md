@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Active
 Business: HEAD
 Created: 2026-02-11
-Updated: 2026-02-11
-Last-reviewed: 2026-02-11
+Updated: 2026-02-12
+Last-reviewed: 2026-02-12
 Owner: Pete
 ---
 
@@ -12,11 +12,15 @@ Owner: Pete
 
 ## Strategy
 
-### Current Focus (2026-02-11)
+### Current Focus (2026-02-12)
 
-1. **First Outcome Lock-In** (Priority: High)
-   - Status: New business scaffolded; no locked current-cycle outcome yet.
-   - Next: Define one clear commercial outcome with baseline, target, deadline, owner, and decision link.
+1. **Active Outcome Contract (Locked)** (Priority: High)
+   - Outcome: Achieve first reliable direct sales for HEAD in Italy, then stabilize weekly sales with controlled CAC and returns.
+   - Baseline: orders/revenue/CAC/returns not yet measured (week-0 baseline).
+   - Target by 2026-05-13: 110 net orders, EUR 3,000 net revenue, blended CAC <= EUR 13, return rate <= 7%.
+   - Owner: Pete
+   - Leading indicators: sessions by channel, CVR by channel, paid + blended CAC, payment success rate, return reason distribution.
+   - Decision Link: `DEC-HEAD-01` (scale paid expansion vs hold and fix).
 
 2. **Offer Definition** (Priority: High)
    - Status: Product proposition and differentiation are not yet finalized.

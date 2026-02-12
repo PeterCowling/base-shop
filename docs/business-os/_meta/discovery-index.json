@@ -1,5 +1,5 @@
 {
-  "generated": "2026-02-10T14:55:34Z",
+  "generated": "2026-02-12T15:21:24Z",
   "rawIdeas": [
     {"id": "BRIK-OPP-0002", "title": "Hostel booking FAQs content", "business": "BRIK"},
     {"id": "PIPE-OPP-0001", "title": "Dropship-first logistics model validation", "business": "PIPE"},
@@ -27,40 +27,26 @@
     {"id": "PLAT-ENG-0015", "title": "SEO & Machine-Readable Implementation Plan", "business": "PLAT"}
   ],
   "readyForPlanning": [
-    {"slug": "article-generation-pipeline", "title": "Article Generation Pipeline", "cardId": "", "business": "PLAT"},
-    {"slug": "bos-agent-api-availability", "title": "Business OS Agent API Availability —", "cardId": "Card-ID:", "business": "BOS"},
-    {"slug": "brikette-ci-targeted-test-selection", "title": "Brikette CI Targeted Test Selection -", "cardId": "Card-ID:", "business": "PLAT"},
-    {"slug": "business-os-ideas-surface-and-automation", "title": "Business OS Ideas Surface and Automation", "cardId": "Card-ID:", "business": "BOS"},
-    {"slug": "composite-email-templates", "title": "Composite Email Templates", "cardId": "", "business": ""},
-    {"slug": "faster-staging-ci", "title": "Brikette CI Test Sharding Acceleration —", "cardId": "Card-ID:", "business": "PLAT"},
-    {"slug": "guide-production-unified-experience", "title": "Unified Guide Production Experience", "cardId": "", "business": "BOS"},
-    {"slug": "ideas-go-faster-process-hardening", "title": "Ideas-Go-Faster Process Hardening", "cardId": "", "business": "BOS"},
-    {"slug": "ideas-go-faster-redesign", "title": "Ideas-Go-Faster Skill Redesign —", "cardId": "", "business": "BOS"},
-    {"slug": "kanban-sweep-agent", "title": "Kanban Sweep Agent", "cardId": "", "business": "PLAT"},
-    {"slug": "xa-deploy-readiness", "title": "XA Cloudflare Deployment Readiness —", "cardId": "", "business": ""}
+    {"slug": "agent-setup-improvement", "title": "Agent Setup Improvement —", "cardId": "(pending — BOS_AGENT_API_BASE_URL not set; create manually or re-run with env)", "business": "PLAT"},
+    {"slug": "brikette-booking-funnel-usability-hardening", "title": "Brikette Booking Funnel Usability Hardening", "cardId": "none", "business": "BRIK"},
+    {"slug": "package-reusability-boundary-hardening", "title": "Package Reusability And Boundary Hardening", "cardId": "", "business": ""},
+    {"slug": "prime-design-refresh", "title": "Prime App Design Refresh", "cardId": "BRIK-002", "business": "BRIK"},
+    {"slug": "prime-find-booking-api-fix", "title": "Fix find-booking & guest-session APIs —", "cardId": "", "business": ""},
+    {"slug": "reception-guest-email-cutover", "title": "Reception Guest Email Cutover", "cardId": "BRIK-ENG-0020", "business": "BRIK"},
+    {"slug": "writer-lock-enforcement-queue-hardening", "title": "Writer Lock Enforcement + Queue Hardening", "cardId": "Card-ID:", "business": "PLAT"}
   ],
   "readyForBuild": [
     {"slug": "administrative-debt", "title": "Plan: Administrative & Infrastructure Debt", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "agent-enhancement", "title": "Agent Enhancement", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "article-generation-pipeline", "title": "Article Generation Pipeline", "cardId": "", "business": "PLAT", "pendingTasks": 0},
-    {"slug": "brikette-deferred", "title": "Brikette Deferred Work", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "brikette-translation-coverage", "title": "Brikette Translation Coverage Fix", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "business-os-ideas-kanban-flow", "title": "Business OS Ideas-to-Delivery Flow", "cardId": "", "business": "BOS", "pendingTasks": 0},
-    {"slug": "cabinet-system", "title": "Cabinet System", "cardId": "", "business": "BOS", "pendingTasks": 0},
+    {"slug": "brikette-ssr-seo-signal-hardening", "title": "Brikette SSR + SEO Signal Hardening", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "ci-test-parallelization", "title": "CI Test Parallelization", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "commerce-core-readiness", "title": "Commerce Core Readiness", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "content-translation-pipeline", "title": "Content Translation Pipeline", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "design-system", "title": "Design System (v4 — Adoption-Driven)", "cardId": "PLAT-ENG-0009", "business": "PLAT", "pendingTasks": 0},
-    {"slug": "email-autodraft-world-class-upgrade", "title": "Email Autodraft World-Class Upgrade", "cardId": "BRIK-ENG-0020", "business": "BRIK", "pendingTasks": 0},
-    {"slug": "faster-staging-ci", "title": "Brikette CI Test Sharding Acceleration", "cardId": "Card-ID:", "business": "PLAT", "pendingTasks": 0},
-    {"slug": "handbag-configurator-implementation", "title": "Handbag Configurator — (Repo‑Aligned)", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "kanban-sweep-agent", "title": "Kanban Sweep Agent", "cardId": "", "business": "PLAT", "pendingTasks": 0},
     {"slug": "launch-3hr-v2", "title": "Plan: Rapid Shop Launch (v2)", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "prime-guest-portal-gap", "title": "Prime Guest Portal — Bridge", "cardId": "BRIK-ENG-0017", "business": "BRIK", "pendingTasks": 0},
+    {"slug": "nextjs-16-upgrade", "title": "Next.js 16 Upgrade", "cardId": "", "business": "", "pendingTasks": 0},
+    {"slug": "reception-guest-email-cutover", "title": "Reception Guest Email Cutover", "cardId": "BRIK-ENG-0020", "business": "BRIK", "pendingTasks": 0},
+    {"slug": "startup-from-spec-skill-library", "title": "Startup-From-Spec Skill Library", "cardId": "", "business": "BOS", "pendingTasks": 0},
     {"slug": "test-sweep", "title": "Test Sweep", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "test-typechecking", "title": "Test Typechecking", "cardId": "", "business": "", "pendingTasks": 0},
-    {"slug": "xa-client-readiness", "title": "XA Client Readiness", "cardId": "", "business": "", "pendingTasks": 6},
-    {"slug": "xa-publish-privacy", "title": "XA Publish + Privacy (Stealth Staging) —", "cardId": "", "business": "", "pendingTasks": 0}
+    {"slug": "xa-v2", "title": "XA v2", "cardId": "", "business": "", "pendingTasks": 0}
   ],
   "planned": [
     {"id": "BRIK-ENG-0001", "title": "Brikette Deferred Work Plan", "business": "BRIK", "planLink": ""},

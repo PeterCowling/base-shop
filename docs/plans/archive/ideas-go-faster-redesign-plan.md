@@ -4,7 +4,7 @@ Status: Historical
 Domain: Business-OS
 Created: 2026-02-09
 Last-updated: 2026-02-09
-Feature-Slug: ideas-go-faster-redesign
+Feature-Slug: idea-generate-redesign
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-Unit: BOS
@@ -14,7 +14,7 @@ Business-Unit: BOS
 
 ## Summary
 
-Rewrite the `/ideas-go-faster` SKILL.md from a kanban board health checker into a radical business growth process auditor. The current skill counts WIP, finds aging cards, and diagnoses kanban lane bottlenecks. The redesigned skill audits the business machine itself — identifying missing processes, broken feedback loops, unmeasured outcomes, and stalled growth levers — using the Elon Musk 5-step algorithm as the ordering principle for all recommendations. It reads business plans and people profiles as living inputs, tracks progress against targets, and produces simple trajectory forecasts.
+Rewrite the `/idea-generate` SKILL.md from a kanban board health checker into a radical business growth process auditor. The current skill counts WIP, finds aging cards, and diagnoses kanban lane bottlenecks. The redesigned skill audits the business machine itself — identifying missing processes, broken feedback loops, unmeasured outcomes, and stalled growth levers — using the Elon Musk 5-step algorithm as the ordering principle for all recommendations. It reads business plans and people profiles as living inputs, tracks progress against targets, and produces simple trajectory forecasts.
 
 ## Goals
 
@@ -31,7 +31,7 @@ Rewrite the `/ideas-go-faster` SKILL.md from a kanban board health checker into 
 - Card-level backlog grooming (split/merge/reorder)
 - Kanban lane health as primary output (signals only, not the point)
 - Building forecasting infrastructure (define needs, don't build the system)
-- Replacing `/scan-repo` (complementary — scan detects changes, sweep audits state)
+- Replacing `/idea-scan` (complementary — scan detects changes, sweep audits state)
 
 ## Constraints & Assumptions
 
@@ -46,7 +46,7 @@ Rewrite the `/ideas-go-faster` SKILL.md from a kanban board health checker into 
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/ideas-go-faster-redesign-fact-find.md`
+- Related brief: `docs/plans/idea-generate-redesign-wf-fact-find.md`
 - Key findings:
   - Current skill is a kanban flow analyzer — wrong problem
   - Zero business plans exist; zero people profiles exist
@@ -58,14 +58,14 @@ Rewrite the `/ideas-go-faster` SKILL.md from a kanban board health checker into 
 
 ## Existing System Notes
 
-- Current skill: `.claude/skills/ideas-go-faster/SKILL.md` (626 lines)
+- Current skill: `.claude/skills/idea-generate/SKILL.md` (626 lines)
 - Business plans expected at: `docs/business-os/strategy/<BUSINESS>/plan.user.md` (none exist)
 - People profiles expected at: `docs/business-os/people/people.user.md` (doesn't exist)
 - Agent API: `${BOS_AGENT_API_BASE_URL}/api/agent/{businesses,people,cards,ideas,stage-docs}`
 - Sweep reports output to: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`
 - Draft pack (reference): `~/Downloads/kanban-sweep-agent-draft/` (constitution, playbooks, templates)
 - Maturity model: `docs/business-os/strategy/business-maturity-model.md`
-- Related skills: `/update-business-plan`, `/update-people`, `/scan-repo`, `/work-idea`
+- Related skills: `/biz-update-plan`, `/biz-update-people`, `/idea-scan`, `/idea-develop`
 
 ## Proposed Approach
 
@@ -94,7 +94,7 @@ Ingest (plans + profiles + cards + ideas)
 
 5. **Full AI-driven idea pipeline (two-stage priority)** — No human in the loop between diagnosis and kanban entry. The sweep:
    - **Stage 1 (Raw):** Generates all ideas with a raw priority score from the scoring rubric. Logs to inbox via API, tagged `raw`, `sweep-generated`, `sweep-<date>`.
-   - **Stage 2 (Auto-work-up):** For ideas scoring above a threshold, automatically works them up into cards. This means the sweep invokes `/work-idea` logic inline — creating a card with kanban priority (P0-P3), description, business assignment, and an initial fact-find stage doc. Cards enter the kanban at the Inbox lane, ready for `/fact-find`.
+   - **Stage 2 (Auto-work-up):** For ideas scoring above a threshold, automatically works them up into cards. This means the sweep invokes `/idea-develop` logic inline — creating a card with kanban priority (P0-P3), description, business assignment, and an initial wf-fact-find stage doc. Cards enter the kanban at the Inbox lane, ready for `/wf-fact-find`.
    - **Safeguards:** Max 3 auto-worked-up cards per sweep. All auto-created cards tagged `sweep-auto` so Pete can identify AI-generated work. Ideas below the threshold remain raw in the inbox for manual review.
    - **Two-stage priority:** The raw score is a triage signal from business process analysis (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk)). The kanban priority (P0-P3) is a commitment signal assigned during work-up based on constraint severity, business maturity stage, and plan alignment.
 
@@ -124,11 +124,11 @@ Ingest (plans + profiles + cards + ideas)
 ### TASK-01: Write the redesigned SKILL.md
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/ideas-go-faster/SKILL.md`
+- **Affects:** `.claude/skills/idea-generate/SKILL.md`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
 - **Confidence:** 85%
-  - Implementation: 88% — Clear structure from fact-find, draft pack materials available as source, existing skill as starting point. Single file rewrite.
+  - Implementation: 88% — Clear structure from wf-fact-find, draft pack materials available as source, existing skill as starting point. Single file rewrite.
   - Approach: 85% — User direction is clear (Elon Musk philosophy, business process auditor). MACRO framework is well-defined. Minor uncertainty: exact forecasting format.
   - Impact: 82% — Replaces current skill entirely. Integration points with other skills well-mapped. Risk: first sweep may bootstrap missing plans/profiles awkwardly.
 - **Effort:** L
@@ -146,7 +146,7 @@ Ingest (plans + profiles + cards + ideas)
   - Includes trajectory forecast per business
   - Two-stage idea pipeline: raw ideas with priority scores → auto-work-up top ideas into cards
   - Raw ideas tagged `raw`, `sweep-generated`, `sweep-<date>` with scoring rubric scores
-  - Auto-work-up for ideas above priority threshold: creates card + fact-find stage doc, tagged `sweep-auto`
+  - Auto-work-up for ideas above priority threshold: creates card + wf-fact-find stage doc, tagged `sweep-auto`
   - Max 3 auto-created cards per sweep; remaining ideas stay raw in inbox
   - No `--create-ideas` flag or human gatekeeping — fully AI-driven
   - Self-evaluation is a pass/fail checklist (not a 30-point rubric)
@@ -154,7 +154,7 @@ Ingest (plans + profiles + cards + ideas)
   - Integration section references correct skill names and data flows
 - **Test contract:**
   - **Test cases (enumerated):**
-    - TC-01: Skill frontmatter has `name: ideas-go-faster` and updated description → matches new purpose
+    - TC-01: Skill frontmatter has `name: idea-generate` and updated description → matches new purpose
     - TC-02: Constitution section includes all 5 Musk algorithm steps in strict order → present and ordered
     - TC-03: MACRO framework defines 5 categories with ≥3 diagnostic questions each → framework is actionable, not vague
     - TC-04: Workflow section reads business plans from `docs/business-os/strategy/<BIZ>/plan.user.md` → file paths correct
@@ -166,7 +166,7 @@ Ingest (plans + profiles + cards + ideas)
     - TC-10: Trajectory forecast section uses prose, not models → "At current pace..." format
     - TC-11: Two-stage idea pipeline defined: Stage 1 (raw with scores) → Stage 2 (auto-work-up to card) → no human gate between them
     - TC-12: Raw idea format includes priority score from rubric (Impact, Confidence, Time-to-signal, Effort, Risk) → score is computed, not arbitrary
-    - TC-13: Auto-work-up section creates card + fact-find stage doc for top-scoring ideas → uses `/work-idea` or card-operations conventions
+    - TC-13: Auto-work-up section creates card + wf-fact-find stage doc for top-scoring ideas → uses `/idea-develop` or card-operations conventions
     - TC-14: Max 3 auto-created cards per sweep; threshold for auto-work-up defined → safeguard against noise
     - TC-15: All auto-created cards tagged `sweep-auto` → traceable, reviewable by Pete
     - TC-16: No `--create-ideas` flag or human confirmation → fully AI-driven pipeline
@@ -188,15 +188,15 @@ Ingest (plans + profiles + cards + ideas)
   - `~/Downloads/kanban-sweep-agent-draft/playbooks/scoring_rubric.md` — Priority formula
   - `~/Downloads/kanban-sweep-agent-draft/evaluation/red_flags.md` — Anti-patterns
   - `docs/business-os/strategy/business-maturity-model.md` — L1/L2/L3 framework
-  - `.claude/skills/update-business-plan/SKILL.md` — Plan schema reference
-  - `.claude/skills/update-people/SKILL.md` — People profile schema reference
+  - `.claude/skills/biz-update-plan/SKILL.md` — Plan schema reference
+  - `.claude/skills/biz-update-people/SKILL.md` — People profile schema reference
   - `.claude/skills/_shared/card-operations.md` — API conventions
 - **What would make this ≥90%:**
   - Bootstrap one business plan (BRIK) as a concrete reference before writing the skill
   - Define exact trajectory forecast calculations with sample data
 - **Rollout / rollback:**
-  - Rollout: Replace `.claude/skills/ideas-go-faster/SKILL.md` entirely. Available immediately for `/ideas-go-faster` invocation.
-  - Rollback: `git checkout -- .claude/skills/ideas-go-faster/SKILL.md` restores the current kanban version.
+  - Rollout: Replace `.claude/skills/idea-generate/SKILL.md` entirely. Available immediately for `/idea-generate` invocation.
+  - Rollback: `git checkout -- .claude/skills/idea-generate/SKILL.md` restores the current kanban version.
 - **Documentation impact:**
   - None — the SKILL.md is self-documenting
 - **Notes / references:**
@@ -242,30 +242,30 @@ Ingest (plans + profiles + cards + ideas)
 ### TASK-02: Update cross-references in related skills
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/update-business-plan/SKILL.md`, `.claude/skills/update-people/SKILL.md`
+- **Affects:** `.claude/skills/biz-update-plan/SKILL.md`, `.claude/skills/biz-update-people/SKILL.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03
 - **Confidence:** 90%
   - Implementation: 95% — Simple text replacements in known files
-  - Approach: 90% — Clear what needs updating: trigger references from generic "sweep" or `/scan-repo` to `/ideas-go-faster`
+  - Approach: 90% — Clear what needs updating: trigger references from generic "sweep" or `/idea-scan` to `/idea-generate`
   - Impact: 85% — Low blast radius; only updating integration section references
 - **Effort:** S
 - **Acceptance:**
-  - `update-business-plan/SKILL.md` references `/ideas-go-faster` as a trigger for plan updates
-  - `update-people/SKILL.md` references `/ideas-go-faster` for workload-based availability updates
+  - `biz-update-plan/SKILL.md` references `/idea-generate` as a trigger for plan updates
+  - `biz-update-people/SKILL.md` references `/idea-generate` for workload-based availability updates
   - No references to `kanban-sweep` remain in any active skill file
 - **Test contract:**
   - **Test cases (enumerated):**
     - TC-01: `grep -r "kanban-sweep" .claude/skills/` returns zero results → no stale references
-    - TC-02: `update-business-plan/SKILL.md` mentions `/ideas-go-faster` in its integration section → correct trigger documented
-    - TC-03: `update-people/SKILL.md` mentions `/ideas-go-faster` in its integration section → correct trigger documented
+    - TC-02: `biz-update-plan/SKILL.md` mentions `/idea-generate` in its integration section → correct trigger documented
+    - TC-03: `biz-update-people/SKILL.md` mentions `/idea-generate` in its integration section → correct trigger documented
   - **Acceptance coverage:** TC-01 covers stale refs; TC-02-03 cover forward refs
   - **Test type:** grep verification
   - **Test location:** `.claude/skills/`
   - **Run:** `grep -r "kanban-sweep" .claude/skills/`
 - **TDD execution plan:**
   - **Red:** Run grep for "kanban-sweep" — should find zero (already renamed, but verify)
-  - **Green:** Update any remaining references to point to `/ideas-go-faster` with correct context
+  - **Green:** Update any remaining references to point to `/idea-generate` with correct context
   - **Refactor:** Verify integration descriptions match the redesigned skill's actual behavior
 - **Rollout / rollback:**
   - Rollout: Direct file edits. Immediate effect.
@@ -279,15 +279,15 @@ Ingest (plans + profiles + cards + ideas)
   - Test cases executed: TC-01, TC-02, TC-03
   - Red-green cycles: 1
   - `grep -r "kanban-sweep" .claude/skills/` → zero results (TC-01 PASS)
-  - `update-business-plan/SKILL.md` mentions `/ideas-go-faster` (TC-02 PASS)
-  - `update-people/SKILL.md` mentions `/ideas-go-faster` (TC-03 PASS)
+  - `biz-update-plan/SKILL.md` mentions `/idea-generate` (TC-02 PASS)
+  - `biz-update-people/SKILL.md` mentions `/idea-generate` (TC-03 PASS)
 - **Confidence reassessment:**
   - Original: 90%
   - Post-test: 90%
   - Delta reason: Tests validated — straightforward edits as expected
 - **Validation:** grep verification passed
 - **Documentation updated:** None required
-- **Implementation notes:** Added `/ideas-go-faster` integration line to both skills' Integration sections
+- **Implementation notes:** Added `/idea-generate` integration line to both skills' Integration sections
 
 ### TASK-03: Validation run — invoke skill against current state
 
@@ -296,7 +296,7 @@ Ingest (plans + profiles + cards + ideas)
 - **Depends on:** TASK-01
 - **Blocks:** -
 - **Confidence:** 80%
-  - Implementation: 85% — Invoke `/ideas-go-faster` and review output
+  - Implementation: 85% — Invoke `/idea-generate` and review output
   - Approach: 80% — Output quality is subjective; need to evaluate against acceptance criteria
   - Impact: 75% — May create ideas via API; may attempt to read nonexistent plans/profiles. Need API to be running.
 - **Effort:** S
@@ -310,7 +310,7 @@ Ingest (plans + profiles + cards + ideas)
   - Missing people profiles degrade gracefully
 - **Test contract:**
   - **Test cases (enumerated):**
-    - TC-01: Invoke `/ideas-go-faster` → completes without error → sweep report created
+    - TC-01: Invoke `/idea-generate` → completes without error → sweep report created
     - TC-02: Report mentions Brikette's missing analytics as a constraint → radical finding, not soft
     - TC-03: Report mentions PIPE's missing Amazon account / first product as a blocker → business-level, not card-level
     - TC-04: Report does NOT contain WIP counts, aging tables, or lane distribution as primary analysis → kanban housekeeping removed
@@ -319,7 +319,7 @@ Ingest (plans + profiles + cards + ideas)
   - **Acceptance coverage:** TC-01 covers basic function; TC-02-03 covers radical diagnosis; TC-04 covers non-goals; TC-05-06 covers new features
   - **Test type:** Manual invocation and review
   - **Test location:** Run in Claude Code session
-  - **Run:** `/ideas-go-faster`
+  - **Run:** `/idea-generate`
 - **TDD execution plan:**
   - **Red:** Attempt to invoke skill before TASK-01 → would produce kanban-focused output (wrong)
   - **Green:** After TASK-01, invoke skill → produces business-focused output matching acceptance criteria
@@ -339,7 +339,7 @@ Ingest (plans + profiles + cards + ideas)
 | Risk | Mitigation |
 |------|------------|
 | Skill falls back to conventional kanban analysis despite redesign | Red Flags section explicitly bans WIP tables, aging metrics, lane health as primary output. Review TASK-03 output for regression. |
-| Business plans don't exist, making plan-vs-reality comparison empty | Skill handles gracefully: flags missing plans as finding #1, recommends bootstrapping via `/update-business-plan`. |
+| Business plans don't exist, making plan-vs-reality comparison empty | Skill handles gracefully: flags missing plans as finding #1, recommends bootstrapping via `/biz-update-plan`. |
 | Agent API not running during validation | TASK-03 can be deferred. TASK-01 acceptance can be verified by manual SKILL.md review. |
 | Skill becomes too long/complex (current is 626 lines) | Target ~500 lines. Cut kanban-specific sections (flow signals, WIP calculations, lane analysis). Add business process sections. Net change should be approximately neutral. |
 | Related skills expect old kanban-sweep behavior | TASK-02 updates cross-references. The fundamental outputs (sweep report, draft ideas) remain compatible — only the analysis method changes. |
@@ -352,7 +352,7 @@ Ingest (plans + profiles + cards + ideas)
 
 ## Acceptance Criteria (overall)
 
-- [ ] `/ideas-go-faster` SKILL.md is a business growth process auditor, not a kanban health checker
+- [ ] `/idea-generate` SKILL.md is a business growth process auditor, not a kanban health checker
 - [ ] Elon Musk 5-step algorithm is the ordering principle for all interventions
 - [ ] MACRO framework (Measure, Acquire, Convert, Retain, Operate) replaces kanban flow signals
 - [ ] Business plans and people profiles are read and compared to reality
@@ -370,5 +370,5 @@ Ingest (plans + profiles + cards + ideas)
 - 2026-02-09: Chose file reads for plans/profiles over API-only — pragmatic Phase 0 decision. API endpoints can be added later.
 - 2026-02-09: Chose per-business constraint diagnosis over system-wide — each business has a different bottleneck. System-wide diagnosis hides the specifics.
 - 2026-02-09: Chose prose trajectory forecasts over quantitative models — no time-series DB exists. Simple, useful, doesn't require infrastructure.
-- 2026-02-09: Chose to inline plan/profile reading logic rather than sub-invoking `/update-business-plan` and `/update-people` — keeps sweep self-contained; recommends full skills for deeper updates.
+- 2026-02-09: Chose to inline plan/profile reading logic rather than sub-invoking `/biz-update-plan` and `/biz-update-people` — keeps sweep self-contained; recommends full skills for deeper updates.
 - 2026-02-09: Chose full AI-driven idea pipeline (no human gatekeeping) — sweep generates raw ideas with priority scores, then auto-works-up top-scoring ideas into cards with kanban priority. Max 3 auto-created cards per sweep. Pete reviews output (cards in kanban), not input (raw ideas). This removes the human bottleneck from the idea-to-card pipeline.

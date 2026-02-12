@@ -10,7 +10,7 @@ Relates-to-charter: docs/plans/edge-commerce-standardization-implementation-plan
 Overall-confidence: 71%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Feature-Slug: commerce-core-readiness
-Fact-Find-Reference: docs/plans/commerce-core-readiness-fact-find.md
+Fact-Find-Reference: docs/plans/commerce-core-readiness-wf-fact-find.md
 ---
 
 # Commerce Core Readiness Implementation Plan
@@ -22,7 +22,7 @@ No active tasks at this time.
 
 ## Summary
 
-This plan addresses the launch-blocking gaps identified in the commerce core readiness fact-find, enabling production-grade checkout for CochlearFit headbands. The work is phased to prioritize checkout correctness (Phase 1), then contract coherence and webhook hardening (Phase 2), followed by CochlearFit integration (Phase 3), and finally platform hardening (Phase 4).
+This plan addresses the launch-blocking gaps identified in the commerce core readiness wf-fact-find, enabling production-grade checkout for CochlearFit headbands. The work is phased to prioritize checkout correctness (Phase 1), then contract coherence and webhook hardening (Phase 2), followed by CochlearFit integration (Phase 3), and finally platform hardening (Phase 4).
 
 **Key outcomes:**
 - Server-side repricing wired into checkout session creation (no price tampering)
@@ -66,7 +66,7 @@ This plan addresses the launch-blocking gaps identified in the commerce core rea
 
 ## Fact-Find Reference
 
-See `docs/plans/commerce-core-readiness-fact-find.md` for:
+See `docs/plans/commerce-core-readiness-wf-fact-find.md` for:
 - Detailed code evidence (file paths, line numbers)
 - Gap analysis (Gap 1-6) with proof tests
 - Launch readiness assessment
@@ -437,7 +437,7 @@ Production-grade reliability:
 
 **Depends on:** - (removed COM-D01 dependency - repricing is platform correctness regardless of architecture)
 
-**Problem:** Gap 3 from fact-find - `repriceCart` exists but is unused. Checkout currently trusts `item.sku.price` from cart state, which could be stale or incorrect.
+**Problem:** Gap 3 from wf-fact-find - `repriceCart` exists but is unused. Checkout currently trusts `item.sku.price` from cart state, which could be stale or incorrect.
 
 **Evidence:**
 - `packages/platform-core/src/checkout/createSession.ts:63-76`: `buildInventorySnapshot` hashes `line.sku.price` + `line.sku.deposit` into the Stripe idempotency key payload (so cart-stored prices matter today)
@@ -545,7 +545,7 @@ Production-grade reliability:
 
 **Depends on:** COM-101 (idempotency key may include pricing/cart normalization; lock repricing decisions first)
 
-**Problem:** Gap 2 from fact-find - Each checkout retry creates a NEW hold (keyed on ULID). If Stripe session creation fails after hold creation, the hold is NOT released (orphaned until TTL).
+**Problem:** Gap 2 from wf-fact-find - Each checkout retry creates a NEW hold (keyed on ULID). If Stripe session creation fails after hold creation, the hold is NOT released (orphaned until TTL).
 
 **Evidence:**
 - `packages/platform-core/src/inventoryHolds.ts:45`: `const holdId = ulid();` — new ID per call, not idempotent
@@ -740,7 +740,7 @@ Production-grade reliability:
 
 **Depends on:** COM-D04 (rate limiting backend choice)
 
-**Problem:** Gap 6 from fact-find - No rate limiting on checkout-session creation. Anonymous checkout + no rate limiting = abuse vector for inventory hold exhaustion, Stripe rate limit exhaustion, and card testing attacks.
+**Problem:** Gap 6 from wf-fact-find - No rate limiting on checkout-session creation. Anonymous checkout + no rate limiting = abuse vector for inventory hold exhaustion, Stripe rate limit exhaustion, and card testing attacks.
 
 **Evidence:**
 - `apps/checkout-gateway-worker/src/index.ts:41-92`: No rate limiting; only routing + auth header injection
@@ -950,7 +950,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 
 **Depends on:** -
 
-**Problem:** Gap 1 from fact-find - Per-tenant webhook routes pass hardcoded shop IDs, bypassing tenant resolution. If a webhook arrives at the wrong tenant endpoint, it will be processed with the wrong shop ID.
+**Problem:** Gap 1 from wf-fact-find - Per-tenant webhook routes pass hardcoded shop IDs, bypassing tenant resolution. If a webhook arrives at the wrong tenant endpoint, it will be processed with the wrong shop ID.
 
 **Evidence:**
 - `apps/cover-me-pretty/src/api/stripe-webhook/route.ts:24-25`: `await handleStripeWebhook("cover-me-pretty", event);`
@@ -1148,7 +1148,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 
 **Depends on:** COM-D01 (if converging to platform, this may be handled differently), COM-D05 (Stripe account topology)
 
-**Problem:** Gap 4 from fact-find - CochlearFit uses placeholder Stripe Price IDs (`price_${prefix}_${size}_${color}`).
+**Problem:** Gap 4 from wf-fact-find - CochlearFit uses placeholder Stripe Price IDs (`price_${prefix}_${size}_${color}`).
 
 **Evidence:**
 - `apps/cochlearfit-worker/src/index.ts:111`: `stripePriceId: \`price_${prefix}_${size.key}_${color.key}\``
@@ -1344,7 +1344,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 
 **Depends on:** COM-D03
 
-**Problem:** Gap 5 from fact-find - Silent fallback to per-shop inventory when central is unavailable. No environment-specific policy.
+**Problem:** Gap 5 from wf-fact-find - Silent fallback to per-shop inventory when central is unavailable. No environment-specific policy.
 
 **Implementation:**
 1. Add `requiresCentralInventory` flag to shop settings schema + defaults
@@ -1521,7 +1521,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 
 | Date | Decision | Rationale | Reference |
 |------|----------|-----------|-----------|
-| 2026-02-01 | Plan created | Based on commerce-core-readiness-fact-find.md | This document |
+| 2026-02-01 | Plan created | Based on commerce-core-readiness-wf-fact-find.md | This document |
 | 2026-02-01 | Plan revised | Address correctness, safety, and sequencing issues | Issues 1-12 |
 | 2026-02-02 | Re-plan update applied | Added test contracts + corrected confidence math; converted COM-302/COM-402 to INVESTIGATE | Re-plan Updates in tasks |
 | 2026-02-02 | Investigation pass | Identified inventory-hold stub gaps + clarified D04/D05 evidence | Re-plan Updates in tasks |
@@ -1576,9 +1576,9 @@ These files currently use `it.todo()` and **do not satisfy the TDD gate**. Conve
 
 ## Re-plan Handoff (2026-02-02)
 
-- **Ready to build (≥80% + test contracts):** - (none; complete COM-D0x decisions + re-plan COM-102 next)
+- **Ready to build (≥80% + test contracts):** - (none; complete COM-D0x decisions + wf-replan COM-102 next)
 - **Ready after dependencies:** COM-401 (after COM-D03)
-- **Needs re-plan before build:** COM-102 (L-effort; TODO stubs must become enforcing tests), COM-104 (blocked on COM-D04), COM-301 (blocked on COM-D05)
+- **Needs wf-replan before build:** COM-102 (L-effort; TODO stubs must become enforcing tests), COM-104 (blocked on COM-D04), COM-301 (blocked on COM-D05)
 - **Investigation required:** COM-302, COM-402
 
 ---

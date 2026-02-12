@@ -350,7 +350,7 @@ None required — all patterns established in the codebase.
 
 ---
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 | Dimension | Score | Rationale |
 |-----------|-------|-----------|
@@ -407,7 +407,7 @@ None required — all patterns established in the codebase.
 
 - **Status:** Ready-for-planning
 - **Blocking items:** None — all open questions have safe defaults
-- **Recommended next step:** Proceed to `/plan-feature` to create the cleanup task breakdown
+- **Recommended next step:** Proceed to `/wf-plan` to create the cleanup task breakdown
 
 ---
 

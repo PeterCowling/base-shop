@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Brikette — Business Plan</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Brikette — Business Plan</h1>
+<h2>Strategy</h2>
+<h3>Current Focus (2026-02-09)</h3>
+<ol>
+<li>
+<p><strong>L3 Transition: Reception Infrastructure</strong> (Priority: High)</p>
+<ul>
+<li>Status: Building reception app with live till, loan items, shift management; addressing Firebase prerender errors and client boundary issues</li>
+<li>Next: Complete BRIK-ENG-0018 (Dashboard Upgrade Aggregator) to unify reception metrics</li>
+</ul>
+</li>
+<li>
+<p><strong>Analytics &#x26; Visibility Gap</strong> (Priority: High)</p>
+<ul>
+<li>Status: GA infrastructure exists but NO GA_MEASUREMENT_ID configured; zero analytics data; no Search Console setup</li>
+<li>Next: Configure Google Analytics and Search Console to establish measurement baseline (execution note: <code>docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Content Commerce Maturity</strong> (Priority: Medium)</p>
+<ul>
+<li>Status: 168+ guides across 18 locales operational; Cloudflare staging deployed (staging.brikette-website.pages.dev)</li>
+<li>Next: Validate guide translation quality, establish content update workflow</li>
+</ul>
+</li>
+</ol>
+<h2>Risks</h2>
+<h3>Active Risks</h3>
+<ul>
+<li>
+<p><strong>Zero Analytics Data</strong> (Severity: High, Added: 2026-02-09)</p>
+<ul>
+<li>Source: GA infrastructure exists but GA_MEASUREMENT_ID not configured; no Search Console</li>
+<li>Impact: No visibility into traffic, conversions, search performance, or user behavior; flying blind on L2→L3 transition</li>
+<li>Mitigation: Immediate GA and Search Console configuration; establish measurement baseline before L3 launch</li>
+</ul>
+</li>
+<li>
+<p><strong>Translation Quality Unknown</strong> (Severity: Medium, Added: 2026-02-09)</p>
+<ul>
+<li>Source: 168+ guides × 18 locales = 3,024 guide pages; structure-first translation workflow established but quality gates unvalidated at scale</li>
+<li>Impact: Potential SEO penalties, user trust issues, booking conversion impact</li>
+<li>Mitigation: Run strict-mode i18n audit, spot-check high-traffic guides, establish ongoing quality monitoring</li>
+</ul>
+</li>
+<li>
+<p><strong>Reception App Stability</strong> (Severity: Medium, Added: 2026-02-09)</p>
+<ul>
+<li>Source: Recent Firebase prerender errors, client boundary issues (SafeDataContext, TillShiftProvider, Live.tsx, Till.tsx)</li>
+<li>Impact: Reception staff workflow disruption, manual fallback required</li>
+<li>Mitigation: Comprehensive error boundary strategy, server/client separation enforcement, monitoring</li>
+</ul>
+</li>
+</ul>
+<h2>Opportunities</h2>
+<h3>Validated (Ready for Cards)</h3>
+<p><em>None yet — to be populated by Cabinet sweeps</em></p>
+<h3>Under Investigation</h3>
+<p><em>None yet</em></p>
+<h2>Learnings</h2>
+<p><em>No learnings recorded yet. This section is append-only — learnings are added after card reflections.</em></p>
+<h2>Metrics</h2>
+<h3>Traffic &#x26; Engagement (Established: 2026-02-09)</h3>
+<ul>
+<li>
+<p><strong>Monthly Active Users:</strong> Not measured</p>
+<ul>
+<li>Target: Establish baseline, then 10% MoM growth</li>
+<li>Measurement: Google Analytics (pending GA_MEASUREMENT_ID configuration)</li>
+</ul>
+</li>
+<li>
+<p><strong>Guide Pageviews:</strong> Not measured</p>
+<ul>
+<li>Target: Track engagement with 168+ guides</li>
+<li>Measurement: Google Analytics + Search Console</li>
+</ul>
+</li>
+</ul>
+<h3>Conversion (Established: 2026-02-09)</h3>
+<ul>
+<li><strong>Booking Conversion Rate:</strong> Not measured
+<ul>
+<li>Target: Establish baseline, industry standard is 2-3%</li>
+<li>Measurement: GA ecommerce tracking (requires configuration)</li>
+</ul>
+</li>
+</ul>
+<h3>Content Quality (Established: 2026-02-09)</h3>
+<ul>
+<li><strong>i18n Parity Score:</strong> Passing (strict-mode audit; last verified manually — re-run command below to confirm)
+<ul>
+<li>Target: 100% structural parity across 18 locales</li>
+<li>Measurement: <code>CONTENT_READINESS_MODE=fail pnpm --filter brikette test i18n-parity-quality-audit</code></li>
+</ul>
+</li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/plan.user.md</code></div>
+      <div>Generated: 2026-02-12T12:59:18.240Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

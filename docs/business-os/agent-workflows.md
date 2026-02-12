@@ -42,7 +42,7 @@ Agent writes must go through the Business OS agent API. Markdown writes are **no
 
 Business OS provides 5 specialized agent skills for coordination work. Read only the skill you need for the current task:
 
-### 1. `/work-idea` — Convert Raw Idea to Card
+### 1. `/idea-develop` — Convert Raw Idea to Card
 
 **When to use:**
 - A raw idea exists in `docs/business-os/ideas/inbox/`
@@ -56,11 +56,11 @@ Business OS provides 5 specialized agent skills for coordination work. Read only
 - Creates initial Fact-finding stage doc
 - Links idea to card via Card-ID
 
-**Full instructions:** `.claude/skills/work-idea/SKILL.md`
+**Full instructions:** `.claude/skills/idea-develop/SKILL.md`
 
 **Example:**
 ```
-Pete: /work-idea BRIK-OPP-0001
+Pete: /idea-develop BRIK-OPP-0001
 
 Agent:
 1. Reads raw idea BRIK-OPP-0001 from inbox
@@ -72,7 +72,7 @@ Agent:
 
 ---
 
-### 2. `/propose-lane-move` — Exception Lane Transition Proposals
+### 2. `/idea-advance` — Exception Lane Transition Proposals
 
 **When to use:**
 - You need a non-mechanical lane transition outside the default loop contracts
@@ -85,15 +85,15 @@ Agent:
 - Proposes `Proposed-Lane` with rationale and evidence
 
 **Important:** baseline core-loop transitions are deterministic in skill execution:
-- `/plan-feature`: `Fact-finding -> Planned`
-- `/build-feature`: `Planned -> In progress` and `In progress -> Done`
+- `/wf-plan`: `Fact-finding -> Planned`
+- `/wf-build`: `Planned -> In progress` and `In progress -> Done`
 
-Use `/propose-lane-move` only when you intentionally need an exception path.
+Use `/idea-advance` only when you intentionally need an exception path.
 
-**Full instructions:** `.claude/skills/propose-lane-move/SKILL.md`
+**Full instructions:** `.claude/skills/idea-advance/SKILL.md`
 ---
 
-### 3. `/scan-repo` — Scan for Changes and Create Ideas
+### 3. `/idea-scan` — Scan for Changes and Create Ideas
 
 **When to use:**
 - Weekly or daily scan to detect Business OS document changes
@@ -107,7 +107,7 @@ Use `/propose-lane-move` only when you intentionally need an exception path.
 - Optionally creates ideas for significant findings (e.g., blocked cards)
 - Saves scan artifacts to `docs/business-os/scans/`
 
-**Full instructions:** `.claude/skills/scan-repo/SKILL.md`
+**Full instructions:** `.claude/skills/idea-scan/SKILL.md`
 
 **Scan modes:**
 - **Incremental (default):** Changes since last scan
@@ -115,7 +115,7 @@ Use `/propose-lane-move` only when you intentionally need an exception path.
 
 **Example:**
 ```
-Pete: /scan-repo
+Pete: /idea-scan
 
 Agent:
 1. Loads last scan timestamp from last-scan.json
@@ -127,7 +127,7 @@ Agent:
 
 ---
 
-### 4. `/update-business-plan` — Update Business Plans from Evidence
+### 4. `/biz-update-plan` — Update Business Plans from Evidence
 
 **When to use:**
 - After completing a card (reflection stage)
@@ -140,7 +140,7 @@ Agent:
 - Merges updates into business plan at `docs/business-os/strategy/<BIZ>/plan.user.md`
 - Maintains dual-audience format (.user.md + .agent.md)
 
-**Full instructions:** `.claude/skills/update-business-plan/SKILL.md`
+**Full instructions:** `.claude/skills/biz-update-plan/SKILL.md`
 
 **Business plan sections:**
 - **Strategy:** Current focus areas and priorities
@@ -151,7 +151,7 @@ Agent:
 
 **Example:**
 ```
-Pete: /update-business-plan BRIK --card BRIK-ENG-0001
+Pete: /biz-update-plan BRIK --card BRIK-ENG-0001
 
 Agent:
 1. Reads reflection from BRIK-ENG-0001
@@ -163,7 +163,7 @@ Agent:
 
 ---
 
-### 5. `/update-people` — Update People Doc from Evidence
+### 5. `/biz-update-people` — Update People Doc from Evidence
 
 **When to use:**
 - After completing a card (reflection captures skill changes)
@@ -176,7 +176,7 @@ Agent:
 - Updates people doc at `docs/business-os/people/people.user.md`
 - Maintains dual-audience format (.user.md + .agent.md)
 
-**Full instructions:** `.claude/skills/update-people/SKILL.md`
+**Full instructions:** `.claude/skills/biz-update-people/SKILL.md`
 
 **People doc sections:**
 - **Roles:** Who does what (primary responsibilities)
@@ -187,7 +187,7 @@ Agent:
 
 **Example:**
 ```
-Pete: /update-people --card BRIK-ENG-0001
+Pete: /biz-update-people --card BRIK-ENG-0001
 
 Agent:
 1. Reads reflection from BRIK-ENG-0001
@@ -203,24 +203,24 @@ Agent:
 
 ### Feature Workflow Skills with Business OS Integration (Default)
 
-The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-feature`) integrates with Business OS by default.
+The core loop (`/idea-generate` -> `/wf-fact-find` -> `/wf-plan` -> `/wf-build`) integrates with Business OS by default.
 
 **Baseline mode:** `Business-OS-Integration` omitted or `on`.
 
-**Escape hatch:** set `Business-OS-Integration: off` in controlling fact-find/plan frontmatter for intentionally standalone work.
+**Escape hatch:** set `Business-OS-Integration: off` in controlling wf-fact-find/plan frontmatter for intentionally standalone work.
 
 **Automated behavior:**
 
 | Skill | Baseline integration behavior |
 |-------|-------------------------------|
-| `/ideas-go-faster` | Creates prioritized ideas/cards and seeds top-K fact-find stage docs via latest-wins upsert (`GET /stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
-| `/fact-find` | On card selection, reads latest `fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `fact-find` stage doc via latest-wins upsert |
-| `/plan-feature` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
-| `/build-feature` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
+| `/idea-generate` | Creates prioritized ideas/cards and seeds top-K wf-fact-find stage docs via latest-wins upsert (`GET /stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
+| `/wf-fact-find` | On card selection, reads latest `wf-fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `wf-fact-find` stage doc via latest-wins upsert |
+| `/wf-plan` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
+| `/wf-build` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
 
 **Ideas triage UI:** `/ideas` is the backlog triage surface. It lists ideas in deterministic order (`P0 -> P5`, then created date DESC, then ID ASC) with server-driven filters/search via URL params and click-through to `/ideas/[id]`.
 
-**Automated idea routing:** idea writes from `/ideas-go-faster` (`POST /api/agent/ideas`) are persisted to D1 in `inbox`/`worked` and become visible on `/ideas` immediately (page is `force-dynamic`). Kanban lanes remain card-only and do not render idea entities.
+**Automated idea routing:** idea writes from `/idea-generate` (`POST /api/agent/ideas`) are persisted to D1 in `inbox`/`worked` and become visible on `/ideas` immediately (page is `force-dynamic`). Kanban lanes remain card-only and do not render idea entities.
 
 **Discovery index freshness (fail-closed):**
 - Loop write paths rebuild `docs/business-os/_meta/discovery-index.json`.
@@ -232,7 +232,7 @@ The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-
   - exact rerun command for operator reconciliation.
 - Success completion messages must not claim fresh discovery while stale persists.
 
-**Partial sweep reconciliation (ideas-go-faster):**
+**Partial sweep reconciliation (idea-generate):**
 - When persistence is partial (or index is stale), sweep report must include a reconciliation checklist:
   - success/failure counts by entity type,
   - failed endpoint/status summary,
@@ -240,44 +240,44 @@ The core loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-
   - owner handoff.
 
 **Stage-doc latest-wins upsert contract (canonical):**
-- Applies to both `/ideas-go-faster` stage seeding and `/fact-find` stage updates.
+- Applies to both `/idea-generate` stage seeding and `/wf-fact-find` stage updates.
 - Treat each `cardId + stage` as one logical current document.
 - Write flow: `GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` when present (`baseEntitySha` required) -> `POST` only when missing (`404`).
 - On `PATCH` conflict (`409`): refetch and retry once; if still conflicting, fail-closed and surface error.
 - Repository internals may append records over time, but workflow semantics are latest-wins for operator behavior.
 
 **Fact-find seeded-doc consumption contract:**
-- If `/ideas-go-faster` seeded a `fact-find` stage doc, `/fact-find` must load it when a card is selected.
+- If `/idea-generate` seeded a `wf-fact-find` stage doc, `/wf-fact-find` must load it when a card is selected.
 - Seeded content is starting context (questions/findings/recommendations), not a planning bypass.
-- `/fact-find` deepens evidence and refreshes the same logical `fact-find` stage doc via latest-wins upsert.
+- `/wf-fact-find` deepens evidence and refreshes the same logical `wf-fact-find` stage doc via latest-wins upsert.
 
 **Compatibility:** existing documents without `Business-OS-Integration` field default to `on`; set `off` only for exception paths.
 
 ### Typical Card Lifecycle (Agent-Assisted)
 
 ```
-1. /ideas-go-faster -> prioritized ideas + cards + top-K fact-find stage docs
+1. /idea-generate -> prioritized ideas + cards + top-K wf-fact-find stage docs
    ↓
-2. /fact-find -> loads seeded fact-find stage doc (if present), produces evidence brief, refreshes fact-find stage doc (latest-wins)
+2. /wf-fact-find -> loads seeded wf-fact-find stage doc (if present), produces evidence brief, refreshes wf-fact-find stage doc (latest-wins)
    ↓
-3. /plan-feature -> plan doc + planned stage doc
+3. /wf-plan -> plan doc + planned stage doc
    ↓
-4. /plan-feature applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
+4. /wf-plan applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
    ↓
-5. /build-feature starts execution and applies deterministic lane move: Planned -> In progress
+5. /wf-build starts execution and applies deterministic lane move: Planned -> In progress
    ↓
-6. /build-feature completes eligible implementation tasks with validation evidence
+6. /wf-build completes eligible implementation tasks with validation evidence
    ↓
-7. /build-feature applies deterministic lane move: In progress -> Done (when completion gate passes)
+7. /wf-build applies deterministic lane move: In progress -> Done (when completion gate passes)
    ↓
-8. /update-business-plan and /update-people capture reflections and capability updates
+8. /biz-update-plan and /biz-update-people capture reflections and capability updates
 ```
 
 ### Recommended Scan Schedule
 
-- **Daily scans (active development):** `/scan-repo` to catch blocked cards quickly
-- **Weekly scans (maintenance):** `/scan-repo` to review progress and update plans
-- **Monthly scans (audit):** `/scan-repo --full` to verify consistency
+- **Daily scans (active development):** `/idea-scan` to catch blocked cards quickly
+- **Weekly scans (maintenance):** `/idea-scan` to review progress and update plans
+- **Monthly scans (audit):** `/idea-scan --full` to verify consistency
 
 ### Agent Identity and Commits
 
@@ -327,19 +327,19 @@ Every Business OS operation requires **evidence**. Use evidence source types fro
 - Document assumptions explicitly if evidence unavailable
 
 ### Deterministic lane transition failed
-- Check completion/transition gates in `/plan-feature` and `/build-feature` skill docs
+- Check completion/transition gates in `/wf-plan` and `/wf-build` skill docs
 - Check for unresolved dependencies
 - Verify stage doc completeness (all questions answered)
 
 ### Scan creates duplicate ideas
 - Check `docs/business-os/scans/last-scan.json` timestamp
 - Verify git history is clean (no rebases since last scan)
-- Run full scan to reset: `/scan-repo --full`
+- Run full scan to reset: `/idea-scan --full`
 
 ### Business plan update conflicts
 - Pete resolves conflicts manually (no automatic merges)
 - Review git diff before committing
-- Use `/update-business-plan` only after card reflection complete
+- Use `/biz-update-plan` only after card reflection complete
 
 ### People doc update missing capabilities
 - Check reflection doc for Learnings section
@@ -366,11 +366,11 @@ Before any agent skill commits:
 
 ## Next Steps
 
-1. For new ideas → Use `/work-idea` to create cards
-2. For card progression → Run core loop stages; deterministic lane updates occur inside `/plan-feature` and `/build-feature`
-3. For weekly reviews → Use `/scan-repo` to detect changes
-4. For plan updates → Use `/update-business-plan` after reflections
-5. For team tracking → Use `/update-people` after capabilities/gaps change
+1. For new ideas → Use `/idea-develop` to create cards
+2. For card progression → Run core loop stages; deterministic lane updates occur inside `/wf-plan` and `/wf-build`
+3. For weekly reviews → Use `/idea-scan` to detect changes
+4. For plan updates → Use `/biz-update-plan` after reflections
+5. For team tracking → Use `/biz-update-people` after capabilities/gaps change
 
 ## References
 

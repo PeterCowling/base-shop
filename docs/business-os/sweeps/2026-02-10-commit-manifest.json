@@ -98,7 +98,7 @@
       "depends_on": ["card-brik-measurement-baseline"],
       "endpoint": "/api/agent/stage-docs",
       "method": "POST",
-      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BRIK Measurement Baseline Sprint\"}"
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"wf-fact-find\",\"content\":\"# Fact-Finding: BRIK Measurement Baseline Sprint\"}"
     },
     {
       "operation_id": "factfind-plat-build-reliability-baseline",
@@ -108,7 +108,7 @@
       "depends_on": ["card-plat-build-reliability-baseline"],
       "endpoint": "/api/agent/stage-docs",
       "method": "POST",
-      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: PLAT Build Reliability Baseline\"}"
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"wf-fact-find\",\"content\":\"# Fact-Finding: PLAT Build Reliability Baseline\"}"
     },
     {
       "operation_id": "factfind-bos-cabinet-outcome-scoreboard",
@@ -118,7 +118,7 @@
       "depends_on": ["card-bos-cabinet-outcome-scoreboard"],
       "endpoint": "/api/agent/stage-docs",
       "method": "POST",
-      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BOS Cabinet Outcome Scoreboard\"}"
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"wf-fact-find\",\"content\":\"# Fact-Finding: BOS Cabinet Outcome Scoreboard\"}"
     }
   ]
 }

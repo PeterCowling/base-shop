@@ -4,7 +4,7 @@ Status: Draft
 Domain: User-Testing
 Target-URL: https://5bd676c0.brikette-website.pages.dev/en
 Created: 2026-02-10
-Created-by: Claude (user-testing-audit skill)
+Created-by: Claude (meta-user-test skill)
 Audit-Timestamp: 2026-02-10T13:48:31.987Z
 Deployment-URL: https://5bd676c0.brikette-website.pages.dev/en
 Deployment-Run: https://github.com/PeterCowling/base-shop/actions/runs/21866080730

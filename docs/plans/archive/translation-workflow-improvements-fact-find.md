@@ -15,7 +15,7 @@ Related-Plan: docs/plans/translation-workflow-improvements-plan.md
 
 ### Summary
 
-Improve the `improve-translate-guide` skill workflow to prevent false-positive completion reports and reduce rework cycles by implementing a "structure-first, translate-second" pattern with mandatory validation gates.
+Improve the `guide-translate` skill workflow to prevent false-positive completion reports and reduce rework cycles by implementing a "structure-first, translate-second" pattern with mandatory validation gates.
 
 ### Goals
 
@@ -46,15 +46,15 @@ Improve the `improve-translate-guide` skill workflow to prevent false-positive c
 
 ### Entry Points
 
-- `.claude/skills/improve-translate-guide/SKILL.md` — Primary skill defining translation workflow
+- `.claude/skills/guide-translate/SKILL.md` — Primary skill defining translation workflow
 - `apps/brikette/scripts/fix-batch-1-2-structures.py` — Example structural repair script created in session
 - `apps/brikette/scripts/fix-travelhelp-translations.py` — Example structural repair script
 - `apps/brikette/scripts/fix-laurito-translations.py` — Example structural repair script
 
 ### Key Modules / Files
 
-- `.claude/skills/improve-translate-guide/SKILL.md` (L180-250) — Current workflow section
-- `.claude/skills/improve-translate-guide/SKILL.md` (L318-340) — Post-translation validation (weak gate)
+- `.claude/skills/guide-translate/SKILL.md` (L180-250) — Current workflow section
+- `.claude/skills/guide-translate/SKILL.md` (L318-340) — Post-translation validation (weak gate)
 - `/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/memory/MEMORY.md` — Personal agent memory for workflow patterns
 
 ### Patterns & Conventions Observed
@@ -121,7 +121,7 @@ Evidence: Session work on 102 locale files (6 guides × 17 locales)
 - i18n-parity-quality-audit.test.ts (validates structural integrity)
 
 **Likely blast radius:**
-- Skill changes affect all future translation work using improve-translate-guide
+- Skill changes affect all future translation work using guide-translate
 - MEMORY.md changes affect only personal agent sessions
 - No impact on existing translated content (process improvements only)
 
@@ -132,7 +132,7 @@ Evidence: Session work on 102 locale files (6 guides × 17 locales)
 - **Frameworks:** Jest
 - **Commands:** `CONTENT_READINESS_MODE=fail pnpm --filter brikette test i18n-parity-quality-audit`
 - **CI integration:** i18n audit runs in CI but doesn't block (warning only, `STRICT_MODE=false` by default). Locally, `CONTENT_READINESS_MODE=fail` or `I18N_PARITY_MODE=fail` enables strict mode where issues cause test failure.
-- **CI blocking decision:** Out of scope for this fact-find. The workflow gates compensate by requiring agents to run the strict-mode test locally and paste output in the completion report. CI blocking can be considered as follow-up work once the workflow is proven.
+- **CI blocking decision:** Out of scope for this wf-fact-find. The workflow gates compensate by requiring agents to run the strict-mode test locally and paste output in the completion report. CI blocking can be considered as follow-up work once the workflow is proven.
 - **Coverage tools:** None specific to translations; structural validation via custom test
 
 #### Existing Test Coverage
@@ -168,7 +168,7 @@ Evidence: Session work on 102 locale files (6 guides × 17 locales)
 
 ### Recent Git History (Targeted)
 
-Session commits relevant to this fact-find:
+Session commits relevant to this wf-fact-find:
 
 - `78f153fc99` (2026-02-06) — "fix(brikette): complete travelHelp translations for 12 locales"
   - Successfully used Python structural fix + translation agents pattern
@@ -211,7 +211,7 @@ Session commits relevant to this fact-find:
 
 None - sufficient evidence gathered from session to proceed with improvements.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 95%
   - Strong evidence from session: proven Python scripts + validation commands already exist
@@ -227,7 +227,7 @@ None - sufficient evidence gathered from session to proceed with improvements.
   - Missing 10%: Edge cases for guides with variable structure (TOC, images optional)
 
 - **Impact:** 85%
-  - Blast radius limited to improve-translate-guide skill workflow
+  - Blast radius limited to guide-translate skill workflow
   - No changes to existing translated content
   - Personal MEMORY.md changes affect only future agent sessions
   - Missing 15%: Need to verify no other skills depend on current weak validation
@@ -371,8 +371,8 @@ This directly addresses the "reported complete but work didn't persist" failure 
 
 ## Suggested Task Seeds (Non-binding)
 
-### TASK-01: Add mandatory structural validation gate to improve-translate-guide
-- Update `.claude/skills/improve-translate-guide/SKILL.md` workflow section
+### TASK-01: Add mandatory structural validation gate to guide-translate
+- Update `.claude/skills/guide-translate/SKILL.md` workflow section
 - Add Phase 1 structural gate: exact section count + ID match, required keys/types, JSON parseable
 - Add Phase 2 translation gate: body array length parity, token preservation, no empty strings, passes strict-mode audit
 - Add "If validation fails" handling (do not proceed to translation; if Phase 2 fails, identify failed locales and remediate)
@@ -394,7 +394,7 @@ This directly addresses the "reported complete but work didn't persist" failure 
 - Add "Translation Workflow (Brikette Guides)" section
 - Document structure-first pattern with script template
 - Include validation checkpoints and evidence
-- Reference from improve-translate-guide skill
+- Reference from guide-translate skill
 
 ### TASK-05: Create reusable validation script
 - Extract validation logic into `apps/brikette/scripts/validate-guide-structure.sh`
@@ -406,11 +406,11 @@ This directly addresses the "reported complete but work didn't persist" failure 
 
 - **Status:** Ready-for-planning
 - **Blocking items:** None
-- **Recommended next step:** Proceed to `/plan-feature translation-workflow-improvements`
+- **Recommended next step:** Proceed to `/wf-plan translation-workflow-improvements`
 
 ### Evidence Quality
 
-This fact-find is based on:
+This wf-fact-find is based on:
 - ✅ Quantified time costs (3 hours wasted, 2+ hour reduction with new approach)
 - ✅ Concrete session artifacts (3 Python scripts created, 102 files fixed, git commits)
 - ✅ Measurable success rates (0% vs. 100% between approaches)

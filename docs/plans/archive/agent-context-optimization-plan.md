@@ -65,7 +65,7 @@ Both files currently duplicate:
 - Git rules (destructive command prohibitions)
 - Testing rules (`--maxWorkers`, ESM/CJS handling)
 - Validation commands (`pnpm typecheck && pnpm lint`)
-- Feature workflow description (`/fact-find` → `/plan-feature` → `/build-feature`)
+- Feature workflow description (`/wf-fact-find` → `/wf-plan` → `/wf-build`)
 
 This redundancy costs tokens and creates drift risk when only one file is updated.
 
@@ -201,7 +201,7 @@ Reduced to contain only:
 - Model usage policy (sonnet default, escalation rules)
 - Pointer: "Operational rules: see AGENTS.md"
 - Pointer: "Repo layout, commands, invariants: see PROJECT_DIGEST.md"
-- Workflow reference (one line: `/fact-find` → `/plan-feature` → `/build-feature`)
+- Workflow reference (one line: `/wf-fact-find` → `/wf-plan` → `/wf-build`)
 
 **Not loaded as always-on context** — it becomes a reference doc that agents can read when needed, or that IDE extensions inject separately.
 

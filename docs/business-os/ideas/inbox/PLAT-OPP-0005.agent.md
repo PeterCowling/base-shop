@@ -26,7 +26,7 @@ The Business OS tracks plans, tasks, and people -- but the system doesn't curren
 4. **Bottlenecks shift without being re-identified.** After a constraint is relieved, the next one isn't diagnosed -- the team keeps optimising the old bottleneck.
 5. **No closed loop.** Work ships but there's no systematic check of whether it moved the metric. Reflection happens ad-hoc if at all.
 
-The existing skill pipeline (`/fact-find` -> `/plan-feature` -> `/build-feature` -> `/session-reflect`) handles individual features well. What's missing is the **meta-level** loop that decides *which* feature to work on next by examining the whole system.
+The existing skill pipeline (`/wf-fact-find` -> `/wf-plan` -> `/wf-build` -> `/meta-reflect`) handles individual features well. What's missing is the **meta-level** loop that decides *which* feature to work on next by examining the whole system.
 
 ## Proposed approach
 
@@ -85,13 +85,13 @@ The sweep agent reads from the same data the Business OS already manages:
 Sweep outputs map to existing artifacts:
 - New ideas -> `/api/agent/ideas` (or idea cards in inbox)
 - Bottleneck briefs -> stored in `docs/business-os/sweeps/<date>/`
-- Experiment cards -> feed into `/fact-find` -> `/plan-feature` pipeline
+- Experiment cards -> feed into `/wf-fact-find` -> `/wf-plan` pipeline
 - Backlog suggestions -> human-reviewed, then applied via card PATCH API
 
 ### What this is NOT
 
 - **Not a replacement for human judgment.** The sweep proposes, humans decide. Read-only by default.
-- **Not a replacement for the feature pipeline.** `/fact-find` -> `/plan-feature` -> `/build-feature` remains the execution path. The sweep decides what to feed into that pipeline.
+- **Not a replacement for the feature pipeline.** `/wf-fact-find` -> `/wf-plan` -> `/wf-build` remains the execution path. The sweep decides what to feed into that pipeline.
 - **Not a metrics dashboard.** It computes flow signals from the kanban snapshot, not from analytics/billing/support systems. Those integrations come later.
 - **Not a general-purpose chatbot.** It's a structured, periodic process with defined inputs, outputs, and quality criteria.
 
@@ -108,7 +108,7 @@ A complete generic draft pack exists at `~/Downloads/kanban-sweep-agent-draft/` 
 
 This draft is generic. The next step is to bind it to the actual Business OS data model, agent APIs, skill conventions, and repo structure.
 
-## Key architectural questions (for fact-find)
+## Key architectural questions (for wf-fact-find)
 
 1. **Snapshot source:** Build from the agent APIs (`GET /api/agent/cards`, `GET /api/agent/people`) or directly from the markdown files in `docs/business-os/`? API is cleaner but may not expose all fields.
 2. **Skill structure:** One monolithic `/kanban-sweep` skill, or a skill-set (10 sub-skills as in the draft)? The existing skill convention is one SKILL.md per skill -- a meta-orchestrator that calls sub-steps internally may be the right fit.
@@ -120,8 +120,8 @@ This draft is generic. The next step is to bind it to the actual Business OS dat
 ## Relationship to other work
 
 - **Business OS app** (`apps/business-os/`) -- The sweep reads from the same system. If the BoS app exposes richer APIs (lane history, card timestamps), the sweep gets better inputs.
-- **`/session-reflect`** -- Reflection on individual sessions. The sweep is reflection on the whole system.
-- **`/scan-repo`** -- Scans `docs/business-os/` for changes and creates ideas. The sweep is broader: it analyses flow, capacity, and bottlenecks, not just doc changes.
+- **`/meta-reflect`** -- Reflection on individual sessions. The sweep is reflection on the whole system.
+- **`/idea-scan`** -- Scans `docs/business-os/` for changes and creates ideas. The sweep is broader: it analyses flow, capacity, and bottlenecks, not just doc changes.
 - **Business maturity model** (`docs/business-os/strategy/business-maturity-model.md`) -- The sweep should be aware of each business's maturity stage when diagnosing bottlenecks.
 
 ## Next steps

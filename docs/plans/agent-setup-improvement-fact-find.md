@@ -9,7 +9,7 @@ Last-updated: 2026-02-11
 Feature-Slug: agent-setup-improvement
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: /build-feature
+Primary-Execution-Skill: /wf-build
 Supporting-Skills: none
 Related-Plan: docs/plans/agent-setup-improvement-plan.md
 Supersedes: docs/plans/agent-enhancement-plan.md
@@ -80,11 +80,11 @@ Audit the current multi-agent configuration in Base-Shop and identify concrete i
   - Codex: must read `.claude/skills/<name>/SKILL.md` directly by path
   - Other agents: no standard discovery mechanism
 - **Largest skills** (top 5 by lines):
-  - `ideas-go-faster` — 1,147 lines
-  - `plan-feature` — 971 lines
-  - `fact-find` — 909 lines
-  - `build-feature` — 699 lines
-  - `re-plan` — 585 lines
+  - `idea-generate` — 1,147 lines
+  - `wf-plan` — 971 lines
+  - `wf-fact-find` — 909 lines
+  - `wf-build` — 699 lines
+  - `wf-replan` — 585 lines
 
 ### Safety Enforcement Architecture
 
@@ -129,7 +129,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 3. **Dead infrastructure**:
    - `scripts/validate-agent-manifest.js` is a stub (prints "PASS", exits) — CI runs it but it validates nothing
-   - `.agents/learnings/` is deprecated per README — use `/session-reflect` instead
+   - `.agents/learnings/` is deprecated per README — use `/meta-reflect` instead
    - `.agents/status/` is empty — no orchestration protocol was ever built
 
 4. **Skill discovery is Claude Code-specific**: The `.claude/skills/` path convention works for Claude Code (auto-discovery) but is opaque to other agents. CODEX.md lists 8 skills manually; the other 32 are effectively invisible to Codex.
@@ -164,7 +164,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - CI workflow (`.github/workflows/ci.yml`)
 - Downstream dependents:
   - All agent sessions (every conversation loads these files)
-  - Feature workflow (fact-find → plan → build → re-plan)
+  - Feature workflow (wf-fact-find → plan → build → wf-replan)
   - Business OS integration (card/stage-doc operations)
   - Guide translation workflow
 - Likely blast radius:
@@ -233,7 +233,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - Why it matters: Codex loads this every session; 11KB of always-loaded context vs. Claude's 2.7KB
   - Default assumption: Reduce by extracting duplicated content to shared locations. Risk: Codex may be less reliable if safety rules aren't inline.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 85%
   - Strong: all config files, scripts, and conventions are well-understood from this audit
@@ -290,7 +290,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/build-feature`
+- Primary execution skill: `/wf-build`
 - Supporting skills: none (all tasks are config/documentation changes)
 - Deliverable acceptance package:
   - Safety rules are derived from single source (no manual sync)
@@ -307,4 +307,4 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Status: **Ready-for-planning** (with 2 non-blocking open questions)
 - Blocking items: none (open questions have safe defaults)
-- Recommended next step: Proceed to `/plan-feature` — the open questions can be resolved during planning with user input
+- Recommended next step: Proceed to `/wf-plan` — the open questions can be resolved during planning with user input

@@ -41,9 +41,10 @@ export const ServicesList = memo(function ServicesList({
 
   return (
     <div className={className}>
-      <h2 className="text-center text-2xl font-bold text-gray-800 mb-4">
+      <h2 className="text-center text-2xl font-bold text-foreground mb-4">
         {t('ourServices')}
       </h2>
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-002 card grid container with dynamic children */}
       <div className="flex flex-wrap justify-center gap-5">
         {visibleServices.map((card) => {
           const baseKey = `services.${card.id}`;

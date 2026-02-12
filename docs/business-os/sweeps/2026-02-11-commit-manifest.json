@@ -127,7 +127,7 @@
       "slug": "PIPE-product-selection-competitive-landscape",
       "payload_fingerprint": "c16a93aed5b66a54",
       "depends_on": ["op-008"],
-      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/fact-find",
+      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/wf-fact-find",
       "method": "POST"
     },
     {
@@ -136,7 +136,7 @@
       "slug": "XA-outcome-contract",
       "payload_fingerprint": "071fdbe93db1ffba",
       "depends_on": ["op-009"],
-      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/fact-find",
+      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/wf-fact-find",
       "method": "POST"
     },
     {
@@ -145,7 +145,7 @@
       "slug": "cross-cutting-api-business-registration",
       "payload_fingerprint": "b40d8d6b0b3212a5",
       "depends_on": ["op-013"],
-      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/fact-find",
+      "endpoint": "POST /api/agent/stage-docs/{{CARD_ID}}/wf-fact-find",
       "method": "POST"
     }
   ]

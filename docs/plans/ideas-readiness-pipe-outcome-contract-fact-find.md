@@ -8,11 +8,11 @@ Created: 2026-02-11
 Last-updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-readiness-pipe-outcome-contract
+Feature-Slug: idea-readiness-pipe-outcome-contract
 Deliverable-Type: product-brief
 Execution-Track: business-artifact
-Primary-Execution-Skill: update-business-plan
-Supporting-Skills: ideas-readiness
+Primary-Execution-Skill: biz-update-plan
+Supporting-Skills: idea-readiness
 Business-OS-Integration: on
 Business-Unit: PIPE
 ---
@@ -75,4 +75,4 @@ Specify the precise outcome data required for PIPE to move from implementation-f
 
 ## Recommended Next Step
 - Add completed outcome contract to `docs/business-os/strategy/PIPE/plan.user.md`.
-- Re-run `/ideas-readiness`.
+- Re-run `/idea-readiness`.

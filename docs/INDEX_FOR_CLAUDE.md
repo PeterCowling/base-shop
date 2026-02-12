@@ -16,10 +16,10 @@ This is a fast-reference guide to help Claude navigate this monorepo efficiently
 
 ### Workflow (Progressive Disclosure)
 - [docs/agents/feature-workflow-guide.md](agents/feature-workflow-guide.md) - Short entrypoint (all agents)
-- [.claude/skills/fact-find/SKILL.md](../.claude/skills/fact-find/SKILL.md) - Fact-find mode
-- [.claude/skills/plan-feature/SKILL.md](../.claude/skills/plan-feature/SKILL.md) - Planning mode
-- [.claude/skills/build-feature/SKILL.md](../.claude/skills/build-feature/SKILL.md) - Building mode
-- [.claude/skills/re-plan/SKILL.md](../.claude/skills/re-plan/SKILL.md) - Re-plan mode
+- [.claude/skills/wf-fact-find/SKILL.md](../.claude/skills/wf-fact-find/SKILL.md) - Fact-find mode
+- [.claude/skills/wf-plan/SKILL.md](../.claude/skills/wf-plan/SKILL.md) - Planning mode
+- [.claude/skills/wf-build/SKILL.md](../.claude/skills/wf-build/SKILL.md) - Building mode
+- [.claude/skills/wf-replan/SKILL.md](../.claude/skills/wf-replan/SKILL.md) - Re-plan mode
 
 ### Key Policies
 - [docs/testing-policy.md](testing-policy.md) - Testing rules (MANDATORY)

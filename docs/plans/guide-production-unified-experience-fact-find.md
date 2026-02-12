@@ -16,7 +16,7 @@ Business-Unit: BOS
 
 ### Summary
 
-Guide production is already partially AI-driven: `/improve-en-guide` handles SEO audit/fixes, `/improve-translate-guide` handles parallel 17-locale translation, and business-os provides a web-based WYSIWYG editor with editorial sidebar, SEO scoring, and validation dashboards. But the workflow has a **gap at the start** (no AI-driven guide creation) and **gaps in the middle** (manual manifest editing, no readiness assessment, no publication automation). The goal is to make guide production end-to-end AI-driven via Claude CLI skills, with the user participating when they want/need to, and business-os serving as the monitoring/review surface.
+Guide production is already partially AI-driven: `/guide-audit` handles SEO audit/fixes, `/guide-translate` handles parallel 17-locale translation, and business-os provides a web-based WYSIWYG editor with editorial sidebar, SEO scoring, and validation dashboards. But the workflow has a **gap at the start** (no AI-driven guide creation) and **gaps in the middle** (manual manifest editing, no readiness assessment, no publication automation). The goal is to make guide production end-to-end AI-driven via Claude CLI skills, with the user participating when they want/need to, and business-os serving as the monitoring/review surface.
 
 ### Architecture Principle
 
@@ -32,11 +32,11 @@ Guide production is already partially AI-driven: `/improve-en-guide` handles SEO
 [MANUAL] Paste manifest entry into guide-manifest.ts          ← GAP
 [MANUAL] Write initial EN content                             ← GAP
     ↓
-/improve-en-guide (AI: SEO audit + iterative fixes)           ✅ WORKS
+/guide-audit (AI: SEO audit + iterative fixes)           ✅ WORKS
     ↓
 [OPTIONAL] Review in business-os web editor                   ✅ WORKS
     ↓
-/improve-translate-guide (AI: parallel 17-locale translation) ✅ WORKS
+/guide-translate (AI: parallel 17-locale translation) ✅ WORKS
     ↓
 [MANUAL] Change status to "live" in manifest                  ← GAP
 [MANUAL] Regenerate manifest snapshot                         ← GAP
@@ -49,11 +49,11 @@ Guide Published
 ```
 /create-guide <topic> (AI: scaffold + initial content + manifest entry)
     ↓
-/improve-en-guide (AI: SEO audit + iterative fixes)
+/guide-audit (AI: SEO audit + iterative fixes)
     ↓
 [OPTIONAL] Review in business-os / manual adjustments
     ↓
-/improve-translate-guide (AI: parallel 17-locale translation)
+/guide-translate (AI: parallel 17-locale translation)
     ↓
 /publish-guide <key> (AI: readiness check + status change + snapshot regen)
     ↓
@@ -73,7 +73,7 @@ User can intervene at any point. Each skill is independently useful. Business-os
 ### Non-goals
 
 - Replacing the existing WYSIWYG editor in business-os (it works, keep it for manual refinement)
-- Replacing `/improve-en-guide` or `/improve-translate-guide` (battle-tested, 100% success rate)
+- Replacing `/guide-audit` or `/guide-translate` (battle-tested, 100% success rate)
 - Building web UI forms for guide creation (the AI is the creation tool)
 - Automated translation without the structure-first pattern (proven 0% success rate)
 - Real-time collaborative editing
@@ -98,9 +98,9 @@ User can intervene at any point. Each skill is independently useful. Business-os
 
 | Capability | Skill/Tool | Maturity |
 |-----------|-----------|----------|
-| EN content SEO audit + iterative fixes | `/improve-en-guide` | Production — score-gated, snapshot-safe |
-| 17-locale parallel translation | `/improve-translate-guide` | Production — 100% success rate with structure-first |
-| Interactive workflow selection | `/improve-guide` | Production — orchestrates audit + translate |
+| EN content SEO audit + iterative fixes | `/guide-audit` | Production — score-gated, snapshot-safe |
+| 17-locale parallel translation | `/guide-translate` | Production — 100% success rate with structure-first |
+| Interactive workflow selection | `/guide-improve` | Production — orchestrates audit + translate |
 | JSON baseline validation | `baseline-validate-and-fix-json.ts` | Production — restores corrupted files from git |
 | Structural validation (phases 1+2) | `validate-guide-structure.sh` | Production — section counts, IDs, body lengths |
 | SEO scoring | `audit-guide-seo.ts` | Production — 10-point scale, issue categorization |
@@ -134,7 +134,7 @@ User can intervene at any point. Each skill is independently useful. Business-os
 - Adds the key+tags entry to `guides.index.ts`
 - Creates content stubs for all 18 locales
 - Regenerates the manifest snapshot
-- Leaves guide in `"draft"` status, ready for `/improve-en-guide`
+- Leaves guide in `"draft"` status, ready for `/guide-audit`
 
 **Why AI-driven, not web form:** The AI can make intelligent decisions about guide type, block configuration, structured data types, related guides, and initial content structure — things a web form would need complex conditional logic for. The AI already edits these same files in other skills.
 
@@ -148,7 +148,7 @@ User can intervene at any point. Each skill is independently useful. Business-os
 - Updates status in manifest (draft → review → live)
 - Regenerates manifest snapshot
 - Reports what passed/failed with evidence
-- Optionally: auto-runs `/improve-en-guide` if SEO score is below threshold
+- Optionally: auto-runs `/guide-audit` if SEO score is below threshold
 
 #### GAP-3: No dashboard search/filter
 
@@ -185,9 +185,9 @@ User can intervene at any point. Each skill is independently useful. Business-os
 
 ### Entry Points (Skills)
 
-- `/improve-guide` — `.claude/skills/improve-guide/SKILL.md` (orchestrator)
-- `/improve-en-guide` — `.claude/skills/improve-en-guide/SKILL.md` (EN audit + fixes)
-- `/improve-translate-guide` — `.claude/skills/improve-translate-guide/SKILL.md` (parallel translation)
+- `/guide-improve` — `.claude/skills/guide-improve/SKILL.md` (orchestrator)
+- `/guide-audit` — `.claude/skills/guide-audit/SKILL.md` (EN audit + fixes)
+- `/guide-translate` — `.claude/skills/guide-translate/SKILL.md` (parallel translation)
 
 ### Entry Points (Business-OS Web)
 
@@ -221,10 +221,10 @@ User can intervene at any point. Each skill is independently useful. Business-os
 
 ### Patterns & Conventions Observed
 
-- **AI edits TypeScript directly** — all existing skills (build-feature, improve-en-guide, etc.) edit TS files. No AST manipulation needed — the AI understands the file structure.
-- **Validation-gated workflows** — every skill runs validation scripts before and after changes. Evidence: `/improve-en-guide` runs `baseline-validate-and-fix-json.ts` first, `audit-guide-seo.ts` after each edit.
+- **AI edits TypeScript directly** — all existing skills (wf-build, guide-audit, etc.) edit TS files. No AST manipulation needed — the AI understands the file structure.
+- **Validation-gated workflows** — every skill runs validation scripts before and after changes. Evidence: `/guide-audit` runs `baseline-validate-and-fix-json.ts` first, `audit-guide-seo.ts` after each edit.
 - **Structure-first, translate-second** — translation must never happen alongside structural changes. Evidence: 0% success rate for combined approach vs 100% for structure-first. Memory note in `MEMORY.md`.
-- **Snapshot-safe editing** — skills take snapshots before modifying content files. Evidence: `/improve-en-guide` SKILL.md safety protocol.
+- **Snapshot-safe editing** — skills take snapshots before modifying content files. Evidence: `/guide-audit` SKILL.md safety protocol.
 - **Manifest override pattern** — business-os layers JSON overrides on TS manifest. Evidence: `manifest-overrides-fs.ts`.
 
 ### Data & Contracts
@@ -318,24 +318,24 @@ User can intervene at any point. Each skill is independently useful. Business-os
   - Evidence: `create-guide.ts` source code
 
 - Q: Are there existing patterns for skills that edit multiple files atomically?
-  - A: Yes — `/build-feature` routinely edits multiple files, runs validation, and commits. The writer lock prevents concurrent clobbering. Pre-commit hooks catch errors.
-  - Evidence: `scripts/agents/with-writer-lock.sh`, all build-feature task executions
+  - A: Yes — `/wf-build` routinely edits multiple files, runs validation, and commits. The writer lock prevents concurrent clobbering. Pre-commit hooks catch errors.
+  - Evidence: `scripts/agents/with-writer-lock.sh`, all wf-build task executions
 
 - Q: Should `/create-guide` generate full initial content or just structural scaffolding?
-  - A: Full initial content (AI-written sections, FAQs, intro). The AI generates content, `/improve-en-guide` refines it, the user can review/adjust in business-os before translation. Draft status + user review step mitigates risk of inaccurate local knowledge.
+  - A: Full initial content (AI-written sections, FAQs, intro). The AI generates content, `/guide-audit` refines it, the user can review/adjust in business-os before translation. Draft status + user review step mitigates risk of inaccurate local knowledge.
   - Evidence: User decision (2026-02-08)
 
 ### Open (User Input Needed)
 
 None — all questions resolved.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 85%
   - Strong existing patterns — skills already edit TS files, run validation scripts, and use parallel subagents. The main new work is a `/create-guide` skill and a `/publish-guide` skill. The AI knows how to edit `guide-manifest.ts` (proven this session). Dashboard search is straightforward React. What would raise to 90%: run a dry-run of the `/create-guide` workflow manually (add one guide via AI) and verify all validation passes.
 
 - **Approach:** 88%
-  - AI-driven via CLI skills is the right architecture — it's how the existing guide workflow works, it's how the entire build-feature system works, and it avoids building complex web UI forms. Business-os as monitoring surface is the right split. What would raise to 90%: confirm the user is happy with this architecture (answered — they explicitly asked for CLI/skill-driven).
+  - AI-driven via CLI skills is the right architecture — it's how the existing guide workflow works, it's how the entire wf-build system works, and it avoids building complex web UI forms. Business-os as monitoring surface is the right split. What would raise to 90%: confirm the user is happy with this architecture (answered — they explicitly asked for CLI/skill-driven).
 
 - **Impact:** 85%
   - Blast radius is well-understood — new skills are isolated, file edits are validated by existing toolchain (typecheck, eslint, validation scripts). Business-os dashboard changes are internal only. What would raise to 90%: verify that a full create→improve→translate→publish cycle produces correct output end-to-end.
@@ -386,4 +386,4 @@ None — all questions resolved.
 
 - Status: Ready-for-planning
 - Blocking items: None — all questions resolved
-- Recommended next step: Proceed to `/plan-feature guide-production-unified-experience`
+- Recommended next step: Proceed to `/wf-plan guide-production-unified-experience`

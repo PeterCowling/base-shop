@@ -1,0 +1,26 @@
+month,bookings_count,gross_booking_value,channel_source,notes
+2024-02,66,17934.65,Direct:10; OTA:56,observed from export_19519177.xls; raw_rows=69; duplicate_refs_removed=3
+2024-03,174,46615.13,Direct:42; OTA:132,observed from export_19519177.xls; raw_rows=184; duplicate_refs_removed=10
+2024-04,263,86892.32,Direct:48; OTA:215,observed from export_19519177.xls; raw_rows=274; duplicate_refs_removed=11
+2024-05,281,91610.90,Direct:52; OTA:229,observed from export_19519177.xls; raw_rows=295; duplicate_refs_removed=14
+2024-06,352,104807.43,Direct:49; OTA:303,observed from export_19519177.xls; raw_rows=367; duplicate_refs_removed=15
+2024-07,339,90304.64,Direct:39; OTA:300,observed from export_19519177.xls; raw_rows=350; duplicate_refs_removed=11
+2024-08,333,75758.66,Direct:27; OTA:306,observed from export_19519177.xls; raw_rows=337; duplicate_refs_removed=4
+2024-09,208,43348.01,Direct:20; OTA:188,observed from export_19519177.xls; raw_rows=210; duplicate_refs_removed=2
+2024-10,86,15946.00,Direct:16; OTA:70,observed from export_19519177.xls; raw_rows=87; duplicate_refs_removed=1
+2024-11,13,4120.47,OTA:13,observed from export_19519177.xls; raw_rows=13; duplicate_refs_removed=0
+2024-12,23,7794.72,Direct:4; OTA:19,observed from export_19519177.xls; raw_rows=24; duplicate_refs_removed=1
+2025-01,67,21964.53,Direct:5; OTA:62,observed from export_19519177.xls; raw_rows=68; duplicate_refs_removed=1
+2025-02,103,28646.47,Direct:23; OTA:80,observed from export_19519177.xls; raw_rows=116; duplicate_refs_removed=13
+2025-03,195,46193.54,Direct:43; OTA:152,observed from export_19519177.xls; raw_rows=221; duplicate_refs_removed=26
+2025-04,232,64471.32,Direct:43; OTA:189,observed from export_19519177.xls; raw_rows=236; duplicate_refs_removed=4
+2025-05,256,73571.33,Direct:62; OTA:194,observed from export_19519177.xls; raw_rows=263; duplicate_refs_removed=7
+2025-06,296,81317.03,Direct:50; OTA:246,observed from export_19519177.xls; raw_rows=305; duplicate_refs_removed=9
+2025-07,263,69696.17,Direct:56; OTA:207,observed from export_19519177.xls; raw_rows=273; duplicate_refs_removed=10
+2025-08,234,69100.15,Direct:56; OTA:178,observed from export_19519177.xls; raw_rows=239; duplicate_refs_removed=5
+2025-09,153,37049.13,Direct:25; OTA:128,observed from export_19519177.xls; raw_rows=163; duplicate_refs_removed=10
+2025-10,74,15827.30,Direct:15; OTA:59,observed from export_19519177.xls; raw_rows=82; duplicate_refs_removed=8
+2025-11,13,3118.65,Direct:2; OTA:11,observed from export_19519177.xls; raw_rows=14; duplicate_refs_removed=1
+2025-12,24,7618.52,Direct:8; OTA:16,observed from export_19519177.xls; raw_rows=24; duplicate_refs_removed=0
+2026-01,63,18190.62,Direct:8; OTA:55,observed from export_19519177.xls; raw_rows=69; duplicate_refs_removed=6
+2026-02,44,13316.63,Direct:6; OTA:38,observed from export_19519177.xls; raw_rows=49; duplicate_refs_removed=5

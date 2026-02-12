@@ -9,8 +9,8 @@ Last-reviewed: 2026-02-09
 Feature-Slug: business-os-ideas-surface-and-automation
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: build-feature
-Supporting-Skills: ideas-go-faster, fact-find, plan-feature
+Primary-Execution-Skill: wf-build
+Supporting-Skills: idea-generate, wf-fact-find, wf-plan
 Overall-confidence: 100%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Relates-to charter: docs/business-os/business-os-charter.md
@@ -27,7 +27,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 ## Goals
 - Ensure no idea entities are rendered in board lanes.
 - Make `/ideas` the canonical triage UI for all priorities with clear primary/secondary lists.
-- Preserve workflow continuity from idea generation to fact-find, plan, and build.
+- Preserve workflow continuity from idea generation to wf-fact-find, plan, and build.
 - Reduce automation drift/failure blind spots (partial sweep writes, stale discovery index, fairness gaps).
 
 ## Non-goals
@@ -38,25 +38,25 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 ## Constraints & Assumptions
 - Constraints:
   - D1 + agent API remain the source of truth.
-  - Deterministic lane transitions remain in `/plan-feature` and `/build-feature`.
+  - Deterministic lane transitions remain in `/wf-plan` and `/wf-build`.
   - Keep changes backward-compatible with current ideas/card data.
 - Assumptions:
   - Default policy for this increment is Option A: keep P1-P3 auto-card creation and keep ideas visible in `/ideas` with explicit dual-presence labeling.
   - Stage 7b remains disabled unless explicitly approved and gated.
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/business-os-ideas-surface-and-automation-fact-find.md`
+- Related brief: `docs/plans/business-os-ideas-surface-and-automation-wf-fact-find.md`
 - Key findings:
   - Board currently loads and renders inbox ideas in lanes (`BoardPage` -> `BoardView` -> `BoardLane`).
   - `/ideas` route exists and already supports server-driven filtering.
-  - Highest weak points: partial sweep drift, fairness starvation for older P1/P2 without fact-find docs, discovery-index fragility.
+  - Highest weak points: partial sweep drift, fairness starvation for older P1/P2 without wf-fact-find docs, discovery-index fragility.
 
 ## Existing System Notes
 - Key modules/files:
   - `apps/business-os/src/app/boards/[businessCode]/page.tsx` — board data assembly.
   - `apps/business-os/src/components/board/BoardView.tsx` and `apps/business-os/src/components/board/BoardLane.tsx` — lane rendering.
   - `apps/business-os/src/components/ideas/*` and `apps/business-os/src/app/ideas/page.tsx` — ideas surface.
-  - `.claude/skills/ideas-go-faster/SKILL.md` — Stage 6/7 behavior and determinism contract.
+  - `.claude/skills/idea-generate/SKILL.md` — Stage 6/7 behavior and determinism contract.
 - Patterns to follow:
   - Server-driven URL query state for list pages.
   - Deterministic ordering and fail-closed behavior for workflow-critical writes.
@@ -88,7 +88,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 | TASK-04A | IMPLEMENT | Automation contract hardening: partial sweep reconciliation and stale-index surfacing in skill/workflow docs | 92% | S | Completed (2026-02-09) | - | TASK-06 |
 | TASK-04B | IMPLEMENT | Optional instrumentation: status endpoint + header signal for sweep/index health | 82% | M | Completed (2026-02-09) | TASK-04A | - |
 | TASK-05 | INVESTIGATE | Stage 7b backfill budget feasibility and rollout shape | 91% | M | Completed (2026-02-09) | - | - |
-| TASK-06 | CHECKPOINT | End-to-end workflow verification (ideas-go-faster -> fact-find -> plan-feature -> build-feature) | 92% | S | Completed (2026-02-09) | TASK-01, TASK-02, TASK-04A | - |
+| TASK-06 | CHECKPOINT | End-to-end workflow verification (idea-generate -> wf-fact-find -> wf-plan -> wf-build) | 92% | S | Completed (2026-02-09) | TASK-01, TASK-02, TASK-04A | - |
 
 > Effort scale: S=1, M=2, L=3
 
@@ -109,7 +109,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - **Type:** IMPLEMENT
 - **Status:** Completed (2026-02-09)
 - **Deliverable:** Board UI and data path render cards only (no `Idea` components in lanes).
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:** `apps/business-os/src/app/boards/[businessCode]/page.tsx`, `apps/business-os/src/components/board/BoardView.tsx`, `apps/business-os/src/components/board/BoardLane.tsx`, `apps/business-os/src/hooks/useBoardFilters.ts`, `apps/business-os/src/components/board/CompactIdea.tsx`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -155,7 +155,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - **Type:** IMPLEMENT
 - **Status:** Completed (2026-02-09)
 - **Deliverable:** `/ideas` page shows two priority buckets with clear headers, counts, and click-through detail links.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:** `apps/business-os/src/app/ideas/page.tsx`, `apps/business-os/src/components/ideas/IdeasList.tsx`, `apps/business-os/src/components/ideas/IdeasFilters.tsx`, `apps/business-os/src/components/ideas/IdeasPagination.tsx`, `apps/business-os/src/components/ideas/query-params.ts`, tests under `apps/business-os/src/components/ideas/*.test.ts*`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -207,8 +207,8 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - **Type:** DECISION
 - **Status:** Completed (2026-02-09)
 - **Deliverable:** Confirm/override note for default Option A + final UX label string set.
-- **Execution-Skill:** build-feature
-- **Affects:** `docs/business-os/agent-workflows.md`, `.claude/skills/ideas-go-faster/SKILL.md`, `/ideas` copy keys and labels
+- **Execution-Skill:** wf-build
+- **Affects:** `docs/business-os/agent-workflows.md`, `.claude/skills/idea-generate/SKILL.md`, `/ideas` copy keys and labels
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 78%
@@ -223,17 +223,17 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
   - Keep auto-card creation for P1-P3.
   - Keep all ideas in `/ideas` (primary P1-P3 + secondary P4-P5 lists).
   - Kanban lanes remain card-only (no idea entities rendered).
-  - Enforce automated routing contract: persisted ideas from `/ideas-go-faster` are visible on `/ideas` without manual lane movement.
+  - Enforce automated routing contract: persisted ideas from `/idea-generate` are visible on `/ideas` without manual lane movement.
 - **Acceptance:**
   - Policy confirmation/override is documented in skill + workflow docs.
-  - If overridden to Option B, create explicit follow-up re-plan note for impacted tasks.
+  - If overridden to Option B, create explicit follow-up wf-replan note for impacted tasks.
 
 ### TASK-04A: Automation contract hardening: partial sweep reconciliation + discovery-index visibility
 - **Type:** IMPLEMENT
 - **Status:** Completed (2026-02-09)
 - **Deliverable:** Explicit contract updates and operator procedure for partial sweeps and stale index states.
-- **Execution-Skill:** build-feature
-- **Affects:** `.claude/skills/ideas-go-faster/SKILL.md`, `.claude/skills/fact-find/SKILL.md`, `.claude/skills/plan-feature/SKILL.md`, `.claude/skills/build-feature/SKILL.md`, `docs/business-os/agent-workflows.md`
+- **Execution-Skill:** wf-build
+- **Affects:** `.claude/skills/idea-generate/SKILL.md`, `.claude/skills/wf-fact-find/SKILL.md`, `.claude/skills/wf-plan/SKILL.md`, `.claude/skills/wf-build/SKILL.md`, `docs/business-os/agent-workflows.md`
 - **Depends on:** -
 - **Blocks:** TASK-06
 - **Confidence:** 92%
@@ -245,8 +245,8 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
   - Discovery-index stale state handling is explicitly documented across all loop skills.
   - Retry/fail-closed behavior remains deterministic and consistent in skill docs.
 - **Validation contract:**
-  - VC-01: ideas-go-faster contract includes persistence accounting + reconciliation steps.
-  - VC-02: fact-find/plan/build contracts each include stale-index failure behavior.
+  - VC-01: idea-generate contract includes persistence accounting + reconciliation steps.
+  - VC-02: wf-fact-find/plan/build contracts each include stale-index failure behavior.
   - VC-03: workflow guide reflects same behavior without contradictions.
   - **Acceptance coverage:** drift reduction + observability.
   - **Validation type:** review checklist.
@@ -254,7 +254,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
   - **Run/verify:** targeted grep + consistency read.
 - **Execution plan:** Draft -> Review -> Finalize
 - **Validation executed (2026-02-09):**
-  - `rg -n "discovery-index stale|reconciliation checklist|fail-closed|retry" .claude/skills/ideas-go-faster/SKILL.md .claude/skills/fact-find/SKILL.md .claude/skills/plan-feature/SKILL.md .claude/skills/build-feature/SKILL.md docs/business-os/agent-workflows.md`
+  - `rg -n "discovery-index stale|reconciliation checklist|fail-closed|retry" .claude/skills/idea-generate/SKILL.md .claude/skills/wf-fact-find/SKILL.md .claude/skills/wf-plan/SKILL.md .claude/skills/wf-build/SKILL.md docs/business-os/agent-workflows.md`
   - Consistency read confirms fail-closed stale-index + reconciliation contract is aligned in all 5 targets.
 - **Planning validation:**
   - Tests run: N/A (planning phase)
@@ -264,13 +264,13 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - **Rollout / rollback:**
   - Rollout: docs/contracts update.
   - Rollback: revert skill/workflow edits.
-- **Documentation impact:** `docs/business-os/agent-workflows.md`, `.claude/skills/ideas-go-faster/SKILL.md`
+- **Documentation impact:** `docs/business-os/agent-workflows.md`, `.claude/skills/idea-generate/SKILL.md`
 
 ### TASK-04B: Optional instrumentation: status/health endpoint and UI signal for sweep/index health
 - **Type:** IMPLEMENT
 - **Status:** Completed (2026-02-09)
 - **Deliverable:** `/api/automation/status` endpoint + navigation header status signal for sweep/index health visibility.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:** `apps/business-os/src/app/api/automation/status/route.ts`, `apps/business-os/src/components/navigation/NavigationHeader.tsx`, `apps/business-os/src/components/navigation/NavigationHeader.test.tsx`, `apps/business-os/src/app/api/automation/status/__tests__/route.test.ts`
 - **Depends on:** TASK-04A
 - **Blocks:** -
@@ -278,7 +278,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
   - Implementation: 84% — bounded API + header indicator + targeted test surface.
   - Approach: 82% — canonical contract now fixed (endpoint schema + UI state mapping).
   - Impact: 82% — makes partial/stale automation states visible without opening sweep logs.
-- **Canonical contract (re-plan outcome):**
+- **Canonical contract (wf-replan outcome):**
   - Endpoint: `GET /api/automation/status`
   - Response shape:
     - `status`: `ok|degraded`
@@ -319,9 +319,9 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 ### TASK-05: Stage 7b backfill budget feasibility and rollout shape
 - **Type:** INVESTIGATE
 - **Status:** Completed (2026-02-09)
-- **Deliverable:** Decision memo + implementation-ready contract for optional Stage 7b (`max 1 existing P1/P2 card without fact-find doc`).
-- **Execution-Skill:** build-feature
-- **Affects:** `.claude/skills/ideas-go-faster/SKILL.md`, follow-on implementation plan sections
+- **Deliverable:** Decision memo + implementation-ready contract for optional Stage 7b (`max 1 existing P1/P2 card without wf-fact-find doc`).
+- **Execution-Skill:** wf-build
+- **Affects:** `.claude/skills/idea-generate/SKILL.md`, follow-on implementation plan sections
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 91%
@@ -334,15 +334,15 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
   - Non-mixed reporting semantics preserved (newly promoted pool vs backfill slot clearly separated).
 - **Validation executed (2026-02-09):**
   - Decision memo written: `docs/plans/business-os-stage-7b-backfill-decision-memo.md`.
-  - Skill contract updated with explicit optional Stage 7b activation/selector/reporting rules in `.claude/skills/ideas-go-faster/SKILL.md`.
+  - Skill contract updated with explicit optional Stage 7b activation/selector/reporting rules in `.claude/skills/idea-generate/SKILL.md`.
 - **Notes / references:**
   - `docs/plans/business-os-stage-7b-backfill-decision-memo.md`
 
-### TASK-06: End-to-end workflow verification (ideas-go-faster -> fact-find -> plan-feature -> build-feature)
+### TASK-06: End-to-end workflow verification (idea-generate -> wf-fact-find -> wf-plan -> wf-build)
 - **Type:** CHECKPOINT
 - **Status:** Completed (2026-02-09)
 - **Deliverable:** Verification memo in this plan confirming updated behavior and known exceptions.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:** `docs/plans/business-os-ideas-surface-and-automation-plan.md`
 - **Depends on:** TASK-01, TASK-02, TASK-04A
 - **Blocks:** -
@@ -357,7 +357,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
   - Optional instrumentation and Stage 7b items are either completed or explicitly deferred with rationale and next-step owner.
 - **Validation contract:**
   - VC-01: run one sweep and confirm ideas appear in `/ideas` buckets.
-  - VC-02: run representative `/fact-find`, `/plan-feature`, `/build-feature` flow and confirm lane transitions remain deterministic.
+  - VC-02: run representative `/wf-fact-find`, `/wf-plan`, `/wf-build` flow and confirm lane transitions remain deterministic.
   - VC-03: exercise failure-path visibility checks for reconciliation/stale-index behavior.
   - **Validation type:** end-to-end checklist.
   - **Run/verify:** local scenario walkthrough with evidence notes.
@@ -383,7 +383,7 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - Logging:
   - Sweep run status (`complete|partial|failed-preflight`) plus failed API call set IDs.
 - Metrics:
-  - Primary bucket count (P1-P3), secondary bucket count (P4-P5), ideas without fact-find docs.
+  - Primary bucket count (P1-P3), secondary bucket count (P4-P5), ideas without wf-fact-find docs.
 - Alerts/Dashboards:
   - Discovery-index stale signal and sweep partial-failure count trend.
 
@@ -402,9 +402,9 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - Outcomes:
   - TASK-04A promoted to **Ready** at 92% based on stabilized integration seams.
   - TASK-06 raised to 92% because 2 of its 4 acceptance points are now already verified by completed implementation.
-  - TASK-03 was 78% at re-plan time and is now completed via explicit Option A confirmation (2026-02-09).
+  - TASK-03 was 78% at wf-replan time and is now completed via explicit Option A confirmation (2026-02-09).
   - TASK-04B and TASK-05 were below threshold at this pass and were explicitly deferred pending follow-up evidence.
-- Next buildable sequence at re-plan time:
+- Next buildable sequence at wf-replan time:
   - `TASK-04A` -> `TASK-06` (completed)
 
 ## Re-Plan Update (2026-02-09, pass 2)
@@ -437,12 +437,12 @@ This plan moves idea entities completely out of Kanban lanes and makes `/ideas` 
 - 2026-02-09: set TASK-03 to confirm/override mode (default Option A), not a hard critical-path blocker.
 - 2026-02-09: completed TASK-01 (board lanes now card-only; idea lane component removed).
 - 2026-02-09: completed TASK-02 (`/ideas` split into primary/secondary sections with independent pagination).
-- 2026-02-09: re-plan pass after TASK-01/TASK-02 marked TASK-04A and TASK-06 as next build-ready path.
-- 2026-02-09: completed TASK-04A with fail-closed reconciliation + stale-index contract alignment across ideas-go-faster/fact-find/plan-feature/build-feature and workflow docs.
+- 2026-02-09: wf-replan pass after TASK-01/TASK-02 marked TASK-04A and TASK-06 as next build-ready path.
+- 2026-02-09: completed TASK-04A with fail-closed reconciliation + stale-index contract alignment across idea-generate/wf-fact-find/wf-plan/wf-build and workflow docs.
 - 2026-02-09: completed TASK-06 checkpoint with fresh board + ideas + API tests and package validation evidence.
 - 2026-02-09: completed TASK-03 decision: Option A confirmed with explicit policy that ideas route to `/ideas` automatically while Kanban lanes stay card-only.
 - 2026-02-09: completed TASK-05 via Stage 7b memo and codified optional backfill contract (disabled by default).
-- 2026-02-09: re-planned TASK-04B with canonical `/api/automation/status` contract and header signal mapping; confidence raised to 82%.
+- 2026-02-09: wf-replanned TASK-04B with canonical `/api/automation/status` contract and header signal mapping; confidence raised to 82%.
 - 2026-02-09: completed TASK-04B by implementing `/api/automation/status` and the navigation automation status badge (`Healthy|Attention|Unknown`) with targeted tests.
 
 ## Overall-confidence calculation

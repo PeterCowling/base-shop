@@ -48,7 +48,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Completed**: Pre-existing (discovered during 2026-02-09 fact-check)
+- **Completed**: Pre-existing (discovered during 2026-02-09 review-fact-check)
 - **Implementation**:
   - `TURBO_TOKEN` (secret) and `TURBO_TEAM` (variable) are already configured in GitHub
   - Referenced in 35+ locations across CI workflows (`ci.yml`, `reusable-app.yml`, `cms.yml`, `test.yml`)
@@ -103,7 +103,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Completed**: Pre-existing (discovered during 2026-02-09 re-plan)
+- **Completed**: Pre-existing (discovered during 2026-02-09 wf-replan)
 - **Implementation**:
   - `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are already configured as GitHub secrets
   - Referenced in `ci.yml`, `cms.yml`, `reusable-app.yml`, `business-os-export.yml`, `xa.yml`
@@ -304,7 +304,7 @@ These items primarily affect:
 - **Estimated effort**: Small (administrative)
 
 #### Re-plan Update (2026-02-09)
-- **Still valid.** Code is complete and verified (auth.ts, api-context.ts, db.ts all confirmed during fact-check). Product-pipeline has a CI workflow (`.github/workflows/product-pipeline.yml`) deploying to Cloudflare Pages.
+- **Still valid.** Code is complete and verified (auth.ts, api-context.ts, db.ts all confirmed during review-fact-check). Product-pipeline has a CI workflow (`.github/workflows/product-pipeline.yml`) deploying to Cloudflare Pages.
 - **Dependency updated:** No longer blocked by ADMIN-03 (Cloudflare secrets already configured). Still practically blocked by ADMIN-02 (D1/R2 placeholder IDs mean the app can't fully function even with auth).
 - **Note:** Product-pipeline deploys as static export to Pages (`OUTPUT_EXPORT=1`), but `wrangler.toml` defines D1/R2/Queue bindings for the Worker runtime. The API key auth is in the Worker code path. Need to verify which deployment mode is active for the API endpoints.
 
@@ -389,7 +389,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE** (core requirement met)
 - **Priority**: P2
 - **Estimated effort**: Small
-- **Completed**: Pre-existing (discovered during 2026-02-09 fact-check)
+- **Completed**: Pre-existing (discovered during 2026-02-09 review-fact-check)
 - **Implementation**:
   - `pnpm audit --audit-level=high` already runs in `ci.yml` (lines 56-60)
   - Ignores known false positive: `--ignore GHSA-p6mc-m468-83gw`

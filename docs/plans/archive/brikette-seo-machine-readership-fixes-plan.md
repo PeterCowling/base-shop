@@ -283,8 +283,8 @@ if (key) {
 - Current middleware: `middleware.ts:71-111` (rewrite only, no redirects)
 - Slug maps: `slug-map.ts` (SLUGS), `middleware.ts:18-36` (INTERNAL_SEGMENT_BY_KEY)
 - No tests: `rg middleware apps/brikette/src/test` → zero results
-- Duplicate content observed: `/de/rooms/` and `/de/zimmer/` both serve (fact-find evidence)
-- Trailing-slash decision: TASK-SEO-4 re-plan (keep slashes)
+- Duplicate content observed: `/de/rooms/` and `/de/zimmer/` both serve (wf-fact-find evidence)
+- Trailing-slash decision: TASK-SEO-4 wf-replan (keep slashes)
 
 #### Re-plan Update (2026-01-28)
 
@@ -1207,7 +1207,7 @@ Create contract tests that validate all machine-document URLs return expected st
 - **Rationale:** Quick fix; defer API implementation to separate feature work
 
 ### Decision 3: Trailing-slash policy (TASK-SEO-4)
-- **When:** 2026-01-28 (re-planning investigation)
+- **When:** 2026-01-28 (wf-replanning investigation)
 - **Context:** Canonical URLs strip slashes but Cloudflare Pages enforces them
 - **Options:**
   - A: Keep trailing slashes (align with server)
@@ -1218,7 +1218,7 @@ Create contract tests that validate all machine-document URLs return expected st
 - **Impact:** Unblocks TASK-SEO-3 (middleware) and TASK-SEO-7 (generator)
 
 ### Decision 4: Social metadata implementation (TASK-SEO-9)
-- **When:** 2026-01-28 (re-planning investigation)
+- **When:** 2026-01-28 (wf-replanning investigation)
 - **Context:** Root layout defines social metadata but it doesn't render on pages
 - **Root cause:** Next.js App Router page metadata overrides root layout (doesn't merge)
 - **Options:**
@@ -1229,7 +1229,7 @@ Create contract tests that validate all machine-document URLs return expected st
 - **Evidence:** Production `curl` shows NO twitter tags, NO og:site_name despite layout.tsx definitions
 
 ### Decision 5: Metadata testing approach (TASK-SEO-2)
-- **When:** 2026-01-28 (re-planning investigation)
+- **When:** 2026-01-28 (wf-replanning investigation)
 - **Context:** No precedent in repo for testing App Router metadata
 - **Options:**
   - A: Unit tests for buildAppMetadata() wrapper
@@ -1240,7 +1240,7 @@ Create contract tests that validate all machine-document URLs return expected st
 - **Evidence:** No existing generateMetadata tests in repo; unit approach matches existing test patterns
 
 ### Decision 6: Wire SEO generator (TASK-SEO-7)
-- **When:** 2026-01-28 (re-planning investigation)
+- **When:** 2026-01-28 (wf-replanning investigation)
 - **Context:** Generator script exists but not wired into build
 - **Options:**
   - A: Wire existing generator into prebuild script

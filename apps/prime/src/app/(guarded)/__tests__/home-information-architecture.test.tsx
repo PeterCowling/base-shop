@@ -4,6 +4,13 @@ import GuardedHomeExperience from '../../../components/homepage/GuardedHomeExper
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { usePreArrivalState } from '../../../hooks/usePreArrivalState';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, opts?: Record<string, unknown>) =>
+      (opts && typeof opts.defaultValue === 'string') ? opts.defaultValue : key,
+  }),
+}));
+
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: jest.fn(),

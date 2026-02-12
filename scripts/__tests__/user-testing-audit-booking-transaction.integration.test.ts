@@ -1,11 +1,11 @@
-import bookingTransactionPredicates from "../../.claude/skills/user-testing-audit/scripts/booking-transaction-predicates.cjs";
+import bookingTransactionPredicates from "../../.claude/skills/meta-user-test/scripts/booking-transaction-predicates.cjs";
 
 const {
   evaluateBookingTransactionCheck,
   collectBookingTransactionRegressionIssues,
 } = bookingTransactionPredicates;
 
-describe("user-testing-audit booking transaction integration", () => {
+describe("meta-user-test booking transaction integration", () => {
   it("returns no issue when all booking transaction flows pass", () => {
     const checks = {
       homeModalHandoff: evaluateBookingTransactionCheck({

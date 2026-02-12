@@ -6,9 +6,9 @@ Shared helper for creating and managing Business OS stage documents. Stage docs 
 
 | Stage | File Name | When Created | Purpose |
 |-------|-----------|--------------|---------|
-| `fact-find` | `fact-finding.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
-| `plan` | `planned.user.md` | `/plan-feature` completes with Card-ID | Link to plan doc, track confidence |
-| `build` | `build.user.md` | `/build-feature` starts first task | Track task completion progress |
+| `wf-fact-find` | `fact-finding.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
+| `plan` | `planned.user.md` | `/wf-plan` completes with Card-ID | Link to plan doc, track confidence |
+| `build` | `build.user.md` | `/wf-build` starts first task | Track task completion progress |
 | `reflect` | `reflect.user.md` | Card enters Reflected lane | Post-mortem and learnings |
 
 ## File Location
@@ -45,7 +45,7 @@ Plan-Confidence: <%>         # Overall plan confidence (Planned stage)
 
 ### Fact-Finding Stage Doc
 
-Created when a card enters the Fact-finding lane (typically from `/fact-find` or `/work-idea`).
+Created when a card enters the Fact-finding lane (typically from `/wf-fact-find` or `/idea-develop`).
 
 ```markdown
 ---
@@ -103,7 +103,7 @@ _To be completed during Fact-finding phase_
 
 ### Planned Stage Doc
 
-Created when `/plan-feature` completes with a Card-ID.
+Created when `/wf-plan` completes with a Card-ID.
 
 ```markdown
 ---
@@ -146,12 +146,12 @@ Plan-Confidence: {%}
 **To In Progress:**
 - Plan approved
 - At least one task ready to build
-- `/build-feature` initiated
+- `/wf-build` initiated
 ```
 
 ### Build Stage Doc
 
-Created when `/build-feature` starts the first task.
+Created when `/wf-build` starts the first task.
 
 ```markdown
 ---
@@ -246,7 +246,7 @@ Plan-Link: docs/plans/{feature-slug}-plan.md
 ## Artifacts
 
 - Plan: `docs/plans/{feature-slug}-plan.md`
-- Fact-find: `docs/plans/{feature-slug}-fact-find.md`
+- Fact-find: `docs/plans/{feature-slug}-wf-fact-find.md`
 - Commits: {List of relevant commits}
 ```
 
@@ -303,28 +303,28 @@ fi
 
 ## Integration with Skills
 
-### From /fact-find
+### From /wf-fact-find
 
-When `/fact-find` completes with `Business-Unit`:
+When `/wf-fact-find` completes with `Business-Unit`:
 1. Create card (see card-operations.md)
-2. Create fact-finding stage doc with initial questions from the fact-find brief
+2. Create fact-finding stage doc with initial questions from the wf-fact-find brief
 3. Card starts in `Fact-finding` lane
 
-### From /plan-feature
+### From /wf-plan
 
-When `/plan-feature` completes with `Card-ID`:
+When `/wf-plan` completes with `Card-ID`:
 1. Create planned stage doc with plan link and confidence
 2. Update card frontmatter with `Plan-Link` and `Plan-Confidence`
 3. Suggest lane transition to `Planned`
 
-### From /build-feature
+### From /wf-build
 
-When `/build-feature` starts first task with `Card-ID`:
+When `/wf-build` starts first task with `Card-ID`:
 1. Create build stage doc with task list from plan
 2. Update stage doc after each task completion
 3. Suggest lane transition to `Done` when all tasks complete
 
-### From /session-reflect
+### From /meta-reflect
 
 When reflecting on completed work with `Card-ID`:
 1. Create reflect stage doc with post-mortem
@@ -340,11 +340,11 @@ When reflecting on completed work with `Card-ID`:
 | build.user.md | Planned -> In progress |
 | reflect.user.md | Done -> Reflected |
 
-Use `/propose-lane-move` to formally propose transitions.
+Use `/idea-advance` to formally propose transitions.
 
 ## Related Resources
 
 - Card operations: `.claude/skills/_shared/card-operations.md`
-- Lane transitions: `.claude/skills/propose-lane-move/SKILL.md`
+- Lane transitions: `.claude/skills/idea-advance/SKILL.md`
 - Stage types reference: `apps/business-os/src/lib/types.ts` (StageType enum)
 - Example stage doc: `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md`

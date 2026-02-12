@@ -7,12 +7,12 @@ Created: 2026-02-10
 Last-updated: 2026-02-10
 Last-reviewed: 2026-02-10
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-go-faster-deliberation-upgrade
-Related-Fact-Find: docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md
+Feature-Slug: idea-generate-deliberation-upgrade
+Related-Fact-Find: docs/plans/idea-generate-deliberation-upgrade-wf-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: build-feature
-Supporting-Skills: re-plan
+Primary-Execution-Skill: wf-build
+Supporting-Skills: wf-replan
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact) after scope right-sizing + mechanism hardening
 Business-OS-Integration: off
@@ -134,7 +134,7 @@ Add:
 Still in monolithic orchestrator, but split commit behavior:
 
 - 3A Prepare:
-  - generate card payloads + fact-find templates + dependency manifest.
+  - generate card payloads + wf-fact-find templates + dependency manifest.
   - perform zero writes.
 - 3B Commit/Reconcile:
   - apply dependency-ordered writes.
@@ -248,7 +248,7 @@ Debug mode may emit separate supporting files:
 
 Immediate rollback if any occur:
 
-- one write-safety defect (duplicate create or broken card->fact-find linkage).
+- one write-safety defect (duplicate create or broken card->wf-fact-find linkage).
 - two rubric categories at `baseline - 2` or worse in a single live run.
 - mean rubric delta < -0.5 across two consecutive live runs.
 
@@ -326,7 +326,7 @@ Immediate rollback if any occur:
 - **Type:** IMPLEMENT
 - **Acceptance:**
   - manifest and ledger include required fields defined above.
-  - card->fact-find dependency injection is enforced and testable.
+  - card->wf-fact-find dependency injection is enforced and testable.
   - rerun skip behavior uses `operation_id + payload_fingerprint`.
   - dry-run emits `would_create` entries with zero writes.
 
@@ -334,7 +334,7 @@ Immediate rollback if any occur:
 
 - **Type:** IMPLEMENT
 - **Acceptance:**
-  - extend `scripts/check-ideas-go-faster-contracts.sh` for new SKILL contract checks.
+  - extend `scripts/check-idea-generate-contracts.sh` for new SKILL contract checks.
   - add output validator for report sections + 3A/3B artifacts.
   - add mapping matrix for legacy 24 checklist items + 20 red flags to revised flow.
   - deliberate-failure checks cover at least 5 defect types.
@@ -390,9 +390,9 @@ Immediate rollback if any occur:
 - 2026-02-10: Scope reduced to right-sized staged rollout.
 - 2026-02-10: Retained pushback: 3A/3B required for write safety.
 - 2026-02-10: Latest critique integrated: RS-02 split, RS-03 hard-spec, report-first artifacts, anchored rubric, validator scope clarified, legacy controls restored, dependency fixes applied.
-- 2026-02-10: Implementation progress: RS-02A/RS-02B/RS-02C contract updates applied in `.claude/skills/ideas-go-faster/SKILL.md`; checker extended for F1-F6 + assumptions/verbosity/applies_to/economics gate contracts.
-- 2026-02-10: Implementation progress: RS-03 3A/3B contract applied in `.claude/skills/ideas-go-faster/SKILL.md` (Stage 5.5 prepare manifest, Stage 6/7 commit with write ledger + card-id map + rerun skip guard); checker extended with F22 persistence-split assertions.
-- 2026-02-10: Implementation progress: RS-04 completed with new output validator (`scripts/check-ideas-go-faster-output.sh`), deliberate-failure self-test suite (1 pass + 6 failure fixtures), legacy control mapping (`docs/business-os/ideas-go-faster-legacy-control-mapping.md`), and checker integration (F23).
+- 2026-02-10: Implementation progress: RS-02A/RS-02B/RS-02C contract updates applied in `.claude/skills/idea-generate/SKILL.md`; checker extended for F1-F6 + assumptions/verbosity/applies_to/economics gate contracts.
+- 2026-02-10: Implementation progress: RS-03 3A/3B contract applied in `.claude/skills/idea-generate/SKILL.md` (Stage 5.5 prepare manifest, Stage 6/7 commit with write ledger + card-id map + rerun skip guard); checker extended with F22 persistence-split assertions.
+- 2026-02-10: Implementation progress: RS-04 completed with new output validator (`scripts/check-idea-generate-output.sh`), deliberate-failure self-test suite (1 pass + 6 failure fixtures), legacy control mapping (`docs/business-os/idea-generate-legacy-control-mapping.md`), and checker integration (F23).
 
 ## Overall-confidence Calculation
 

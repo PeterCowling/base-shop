@@ -9,8 +9,8 @@ Last-updated: 2026-02-11
 Feature-Slug: writer-lock-enforcement-queue-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: re-plan, safe-commit-push-ci
+Primary-Execution-Skill: wf-build
+Supporting-Skills: wf-replan, ops-ship
 Related-Plan: docs/plans/writer-lock-enforcement-queue-hardening-plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -220,7 +220,7 @@ Audit the newly introduced queued writer-lock flow and command-guard UX for fail
   - Decision owner: Pete
   - Default assumption + risk: default to restrict; risk is slower emergency recovery if no alternate path is provided.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 - Implementation: 90%
   - Root causes are concrete and line-level reproducible.
 - Approach: 82%
@@ -252,9 +252,9 @@ Audit the newly introduced queued writer-lock flow and command-guard UX for fail
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `build-feature`
+  - `wf-build`
 - Supporting skills:
-  - `re-plan`, `safe-commit-push-ci`
+  - `wf-replan`, `ops-ship`
 - Deliverable acceptance package:
   - queue invariants enforced under failure scenarios,
   - docs/guidance aligned with real lock lifecycle,
@@ -271,7 +271,7 @@ Audit the newly introduced queued writer-lock flow and command-guard UX for fail
 - Blocking items:
   - None for planning.
 - Recommended next step:
-  - Proceed to `/plan-feature` using this brief as source of truth.
+  - Proceed to `/wf-plan` using this brief as source of truth.
 
 ## Pending Audit Work
 - Perform targeted git-history review of lock-related files to identify recently introduced regressions vs longstanding behavior.

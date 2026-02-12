@@ -24,7 +24,7 @@ Investigate why Brikette staging CI runtime has regressed (latest test step `116
 - Produce planning-ready implementation seeds.
 
 ### Non-goals
-- Changing CI behavior in this fact-find step.
+- Changing CI behavior in this wf-fact-find step.
 - Relaxing quality gates without explicit policy decision.
 - Solving unrelated platform-wide CI reliability issues.
 
@@ -190,7 +190,7 @@ Interpretation:
   - Decision impacted: workflow trigger/path policy and guardrail design.
   - Default recommendation: yes, if equivalent validation remains enforced elsewhere.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 - **Implementation:** 90%
   - CI mechanics are straightforward and already proven in `.github/workflows/cms.yml`.
 - **Approach:** 87%
@@ -285,4 +285,4 @@ NODE
   - Choose initial shard count (`3` vs `4`).
   - Confirm deploy policy for test-only/doc-only Brikette changes.
 - Recommended next step:
-  - Proceed to `/plan-feature` for implementation sequencing.
+  - Proceed to `/wf-plan` for implementation sequencing.

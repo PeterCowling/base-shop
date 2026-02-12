@@ -12,7 +12,7 @@
     "domain": "Repo / Agents"
   },
   {
-    "path": "docs/audits/commerce-core-readiness-fact-check-2026-02-01.md",
+    "path": "docs/audits/commerce-core-readiness-review-fact-check-2026-02-01.md",
     "type": "Audit",
     "status": "Historical",
     "domain": null
@@ -24,7 +24,7 @@
     "domain": "Design System"
   },
   {
-    "path": "docs/audits/fact-check-multi-writer-git-locking-plan-2026-02-01.md",
+    "path": "docs/audits/review-fact-check-multi-writer-git-locking-plan-2026-02-01.md",
     "type": "Fact-Check Audit",
     "status": "Historical",
     "domain": null
@@ -234,7 +234,7 @@
     "domain": "Automation"
   },
   {
-    "path": "docs/briefs/git-conflict-enforcement-balance-fact-find.md",
+    "path": "docs/briefs/git-conflict-enforcement-balance-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Repo/Git"
@@ -864,13 +864,13 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/cards/PLAT-OPP-0001/fact-find.agent.md",
+    "path": "docs/business-os/cards/PLAT-OPP-0001/wf-fact-find.agent.md",
     "type": "Stage",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/cards/PLAT-OPP-0001/fact-find.user.md",
+    "path": "docs/business-os/cards/PLAT-OPP-0001/wf-fact-find.user.md",
     "type": "Stage",
     "status": "Active",
     "domain": null
@@ -888,7 +888,7 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/ideas-go-faster-legacy-control-mapping.md",
+    "path": "docs/business-os/idea-generate-legacy-control-mapping.md",
     "type": "Reference",
     "status": "Active",
     "domain": "Business-OS"
@@ -1074,13 +1074,13 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/readiness/2026-02-10-ideas-readiness.agent.md",
+    "path": "docs/business-os/readiness/2026-02-10-idea-readiness.agent.md",
     "type": "Ideas-Readiness",
     "status": "Historical",
     "domain": null
   },
   {
-    "path": "docs/business-os/readiness/2026-02-10-ideas-readiness.user.md",
+    "path": "docs/business-os/readiness/2026-02-10-idea-readiness.user.md",
     "type": "Ideas-Readiness",
     "status": "Historical",
     "domain": null
@@ -1098,13 +1098,13 @@
     "domain": null
   },
   {
-    "path": "docs/business-os/readiness/2026-02-11-ideas-readiness.agent.md",
+    "path": "docs/business-os/readiness/2026-02-11-idea-readiness.agent.md",
     "type": "Ideas-Readiness",
     "status": "Active",
     "domain": null
   },
   {
-    "path": "docs/business-os/readiness/2026-02-11-ideas-readiness.user.md",
+    "path": "docs/business-os/readiness/2026-02-11-idea-readiness.user.md",
     "type": "Ideas-Readiness",
     "status": "Active",
     "domain": null
@@ -1806,7 +1806,7 @@
     "domain": "DevEx/Tooling"
   },
   {
-    "path": "docs/plans/agent-setup-improvement-fact-find.md",
+    "path": "docs/plans/agent-setup-improvement-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "DevEx/Tooling"
@@ -1818,7 +1818,7 @@
     "domain": "DevEx/Tooling"
   },
   {
-    "path": "docs/plans/archive/agent-git-instructions-update-fact-find.md",
+    "path": "docs/plans/archive/agent-git-instructions-update-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Repo"
@@ -1836,7 +1836,7 @@
     "domain": "DevEx/Tooling"
   },
   {
-    "path": "docs/plans/archive/agent-safety-net-hardening-fact-find.md",
+    "path": "docs/plans/archive/agent-safety-net-hardening-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Infra"
@@ -1866,7 +1866,7 @@
     "domain": "CMS"
   },
   {
-    "path": "docs/plans/archive/board-auto-refresh-fact-find.md",
+    "path": "docs/plans/archive/board-auto-refresh-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Platform"
@@ -1956,7 +1956,7 @@
     "domain": "SEO"
   },
   {
-    "path": "docs/plans/archive/brikette-staging-localized-slug-routing-fact-find.md",
+    "path": "docs/plans/archive/brikette-staging-localized-slug-routing-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Brikette/Routing"
@@ -2040,7 +2040,7 @@
     "domain": "Commerce"
   },
   {
-    "path": "docs/plans/archive/ci-integration-speed-control-fact-find.md",
+    "path": "docs/plans/archive/ci-integration-speed-control-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "CI/Infrastructure"
@@ -2052,7 +2052,7 @@
     "domain": "CI/Infrastructure"
   },
   {
-    "path": "docs/plans/archive/ci-quality-overnight-fixes-fact-find.md",
+    "path": "docs/plans/archive/ci-quality-overnight-fixes-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Infra"
@@ -2082,7 +2082,7 @@
     "domain": "Repo"
   },
   {
-    "path": "docs/plans/archive/coverage-caching-fact-find.md",
+    "path": "docs/plans/archive/coverage-caching-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Testing"
@@ -2094,7 +2094,7 @@
     "domain": "Testing"
   },
   {
-    "path": "docs/plans/archive/database-backed-business-os-fact-find.md",
+    "path": "docs/plans/archive/database-backed-business-os-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Superseded",
     "domain": "Platform"
@@ -2130,7 +2130,7 @@
     "domain": "Automation"
   },
   {
-    "path": "docs/plans/archive/email-autodraft-consolidation-fact-find.md",
+    "path": "docs/plans/archive/email-autodraft-consolidation-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Automation"
@@ -2208,7 +2208,7 @@
     "domain": "Guides / Content / SEO"
   },
   {
-    "path": "docs/plans/archive/guide-publication-decoupling-fact-find.md",
+    "path": "docs/plans/archive/guide-publication-decoupling-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "CMS"
@@ -2220,7 +2220,7 @@
     "domain": "CMS"
   },
   {
-    "path": "docs/plans/archive/guide-status-single-source-fact-find.md",
+    "path": "docs/plans/archive/guide-status-single-source-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "CMS"
@@ -2268,7 +2268,7 @@
     "domain": "UI"
   },
   {
-    "path": "docs/plans/archive/guides-inline-images-fact-find.md",
+    "path": "docs/plans/archive/guides-inline-images-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "UI"
@@ -2298,7 +2298,7 @@
     "domain": "CMS"
   },
   {
-    "path": "docs/plans/archive/how-to-get-here-guides-migration-fact-find.md",
+    "path": "docs/plans/archive/how-to-get-here-guides-migration-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "CMS"
@@ -2322,7 +2322,7 @@
     "domain": "UI"
   },
   {
-    "path": "docs/plans/archive/i18n-missing-key-detection-fact-find.md",
+    "path": "docs/plans/archive/i18n-missing-key-detection-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "UI / i18n"
@@ -2334,13 +2334,13 @@
     "domain": "UI / i18n / Testing"
   },
   {
-    "path": "docs/plans/archive/ideas-go-faster-process-hardening-plan.md",
+    "path": "docs/plans/archive/idea-generate-process-hardening-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/archive/ideas-go-faster-redesign-plan.md",
+    "path": "docs/plans/archive/idea-generate-redesign-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Business-OS"
@@ -2472,7 +2472,7 @@
     "domain": "Reception"
   },
   {
-    "path": "docs/plans/archive/reception-ui-theme-centralization-fact-find.md",
+    "path": "docs/plans/archive/reception-ui-theme-centralization-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "UI"
@@ -2484,7 +2484,7 @@
     "domain": "UI"
   },
   {
-    "path": "docs/plans/archive/remove-gallery-feature-plan.md",
+    "path": "docs/plans/archive/remove-gallery-featuwf-replan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "CMS"
@@ -2526,7 +2526,7 @@
     "domain": "i18n"
   },
   {
-    "path": "docs/plans/archive/translation-workflow-improvements-fact-find.md",
+    "path": "docs/plans/archive/translation-workflow-improvements-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Platform"
@@ -2538,7 +2538,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/archive/transport-renderer-content-unification-fact-find.md",
+    "path": "docs/plans/archive/transport-renderer-content-unification-wf-fact-find.md",
     "type": "Fact-Find Brief",
     "status": "Historical",
     "domain": "CMS / UI"
@@ -2568,13 +2568,13 @@
     "domain": "Platform/UI"
   },
   {
-    "path": "docs/plans/archive/work-idea-inline-edit-fact-find.md",
+    "path": "docs/plans/archive/idea-develop-inline-edit-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "UI"
   },
   {
-    "path": "docs/plans/archive/work-idea-inline-edit-plan.md",
+    "path": "docs/plans/archive/idea-develop-inline-edit-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "UI"
@@ -2586,7 +2586,7 @@
     "domain": "Repo/Git"
   },
   {
-    "path": "docs/plans/archive/writer-lock-stale-locks-fact-find.md",
+    "path": "docs/plans/archive/writer-lock-stale-locks-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Repo"
@@ -2610,13 +2610,13 @@
     "domain": "Commerce"
   },
   {
-    "path": "docs/plans/archive/xa-deploy-readiness-fact-find.md",
+    "path": "docs/plans/archive/xa-deploy-readiness-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Archived",
     "domain": "Infra"
   },
   {
-    "path": "docs/plans/archive/xa-publish-privacy-fact-find.md",
+    "path": "docs/plans/archive/xa-publish-privacy-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
     "domain": "Commerce / Deploy"
@@ -2628,25 +2628,25 @@
     "domain": "Commerce / Deploy"
   },
   {
-    "path": "docs/plans/article-generation-pipeline-fact-find.md",
+    "path": "docs/plans/article-generation-pipeline-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/bos-agent-api-availability-fact-find.md",
+    "path": "docs/plans/bos-agent-api-availability-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "BOS/Infrastructure"
   },
   {
-    "path": "docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md",
+    "path": "docs/plans/brikette-booking-funnel-usability-hardening-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "Brikette/UX"
   },
   {
-    "path": "docs/plans/brikette-ci-targeted-test-selection-fact-find.md",
+    "path": "docs/plans/brikette-ci-targeted-test-selection-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "CI/Infrastructure"
@@ -2658,7 +2658,7 @@
     "domain": "Repo"
   },
   {
-    "path": "docs/plans/brikette-live-delivery-speed-fact-find.md",
+    "path": "docs/plans/brikette-live-delivery-speed-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Active",
     "domain": "Brikette"
@@ -2670,13 +2670,13 @@
     "domain": "Brikette/SEO"
   },
   {
-    "path": "docs/plans/brikette-staging-launch-fact-find.md",
+    "path": "docs/plans/brikette-staging-launch-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "CI-Deploy"
   },
   {
-    "path": "docs/plans/brikette-staging-to-live-launch-fact-find.md",
+    "path": "docs/plans/brikette-staging-to-live-launch-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Deploy"
@@ -2688,13 +2688,13 @@
     "domain": null
   },
   {
-    "path": "docs/plans/business-os-card-presentation-fact-find.md",
+    "path": "docs/plans/business-os-card-presentation-wf-fact-find.md",
     "type": "Fact-find",
     "status": "Reference",
     "domain": null
   },
   {
-    "path": "docs/plans/business-os-ideas-surface-and-automation-fact-find.md",
+    "path": "docs/plans/business-os-ideas-surface-and-automation-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
@@ -2706,7 +2706,7 @@
     "domain": "Business OS"
   },
   {
-    "path": "docs/plans/business-os-skill-integration-fact-find.md",
+    "path": "docs/plans/business-os-skill-integration-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Agents / Business OS"
@@ -2724,13 +2724,13 @@
     "domain": "Business OS"
   },
   {
-    "path": "docs/plans/business-os-unified-writes-fact-find.md",
+    "path": "docs/plans/business-os-unified-writes-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Platform / Business OS"
   },
   {
-    "path": "docs/plans/cabinet-system-fact-find.md",
+    "path": "docs/plans/cabinet-system-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
@@ -2748,7 +2748,7 @@
     "domain": "CI/Infrastructure"
   },
   {
-    "path": "docs/plans/commerce-core-readiness-fact-find.md",
+    "path": "docs/plans/commerce-core-readiness-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Platform / Commerce"
@@ -2760,7 +2760,7 @@
     "domain": "Platform / Commerce"
   },
   {
-    "path": "docs/plans/composite-email-templates-fact-find.md",
+    "path": "docs/plans/composite-email-templates-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Platform"
@@ -2784,7 +2784,7 @@
     "domain": "Platform, Commerce"
   },
   {
-    "path": "docs/plans/email-autodraft-response-system-fact-find.md",
+    "path": "docs/plans/email-autodraft-response-system-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Automation"
@@ -2796,13 +2796,13 @@
     "domain": "Business-Ops"
   },
   {
-    "path": "docs/plans/email-autodraft-world-class-upgrade-fact-find.md",
+    "path": "docs/plans/email-autodraft-world-class-upgrade-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Active",
     "domain": "Automation"
   },
   {
-    "path": "docs/plans/faster-staging-ci-fact-find.md",
+    "path": "docs/plans/faster-staging-ci-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "CI/Infrastructure"
@@ -2820,7 +2820,7 @@
     "domain": "Repo/Git"
   },
   {
-    "path": "docs/plans/github-update-strategy-fact-find.md",
+    "path": "docs/plans/github-update-strategy-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Infra"
@@ -2832,19 +2832,19 @@
     "domain": "CMS"
   },
   {
-    "path": "docs/plans/guide-cross-referencing-fact-find.md",
+    "path": "docs/plans/guide-cross-referencing-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Guides / Content / SEO"
   },
   {
-    "path": "docs/plans/guide-production-unified-experience-fact-find.md",
+    "path": "docs/plans/guide-production-unified-experience-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "BOS"
   },
   {
-    "path": "docs/plans/guide-system-improvements-fact-find.md",
+    "path": "docs/plans/guide-system-improvements-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "CMS / UI / Platform"
@@ -2862,103 +2862,103 @@
     "domain": null
   },
   {
-    "path": "docs/plans/guides-hydration-fix-fact-find.md",
+    "path": "docs/plans/guides-hydration-fix-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "UI"
   },
   {
-    "path": "docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md",
+    "path": "docs/plans/idea-generate-deliberation-upgrade-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-go-faster-deliberation-upgrade-plan.md",
+    "path": "docs/plans/idea-generate-deliberation-upgrade-plan.md",
     "type": "Plan",
     "status": "Draft",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-go-faster-process-hardening-fact-find.md",
+    "path": "docs/plans/idea-generate-process-hardening-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-go-faster-redesign-fact-find.md",
+    "path": "docs/plans/idea-generate-redesign-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-bos-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-bos-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-brik-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-brik-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-code-to-plan-traceability-fact-find.md",
+    "path": "docs/plans/idea-readiness-code-to-plan-traceability-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-hbag-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-hbag-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-head-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-head-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-missing-data-fact-find-index.md",
+    "path": "docs/plans/idea-readiness-missing-data-wf-fact-find-index.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-pet-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-pet-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-pipe-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-pipe-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-plat-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-plat-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-tooling-prerequisites-fact-find.md",
+    "path": "docs/plans/idea-readiness-tooling-prerequisites-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/ideas-readiness-xa-outcome-contract-fact-find.md",
+    "path": "docs/plans/idea-readiness-xa-outcome-contract-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
   },
   {
-    "path": "docs/plans/kanban-sweep-agent-fact-find.md",
+    "path": "docs/plans/kanban-sweep-agent-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Platform"
@@ -2976,7 +2976,7 @@
     "domain": "Launch"
   },
   {
-    "path": "docs/plans/legacy-booking-gas-takeover-fact-find.md",
+    "path": "docs/plans/legacy-booking-gas-takeover-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Automation"
@@ -2994,7 +2994,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/package-reusability-boundary-hardening-fact-find.md",
+    "path": "docs/plans/package-reusability-boundary-hardening-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "Platform"
@@ -3006,19 +3006,19 @@
     "domain": null
   },
   {
-    "path": "docs/plans/postbuild-tsx-esm-fix-fact-find.md",
+    "path": "docs/plans/postbuild-tsx-esm-fix-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Build"
   },
   {
-    "path": "docs/plans/prime-find-booking-api-fix-fact-find.md",
+    "path": "docs/plans/prime-find-booking-api-fix-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "API"
   },
   {
-    "path": "docs/plans/prime-hardcoded-copy-i18n-remediation-fact-find.md",
+    "path": "docs/plans/prime-hardcoded-copy-i18n-remediation-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Prime"
@@ -3042,13 +3042,13 @@
     "domain": "Prime"
   },
   {
-    "path": "docs/plans/prime-ui-theme-centralization-fact-find.md",
+    "path": "docs/plans/prime-ui-theme-centralization-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Accepted",
     "domain": "UI"
   },
   {
-    "path": "docs/plans/reception-guest-email-cutover-fact-find.md",
+    "path": "docs/plans/reception-guest-email-cutover-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "Automation"
@@ -3060,7 +3060,7 @@
     "domain": "Automation"
   },
   {
-    "path": "docs/plans/remove-gallery-feature-fact-find.md",
+    "path": "docs/plans/remove-gallery-feature-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "CMS"
@@ -3078,7 +3078,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/startup-from-spec-skill-library-fact-find.md",
+    "path": "docs/plans/startup-from-spec-skill-library-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
@@ -3096,7 +3096,7 @@
     "domain": "Testing"
   },
   {
-    "path": "docs/plans/writer-lock-enforcement-queue-hardening-fact-find.md",
+    "path": "docs/plans/writer-lock-enforcement-queue-hardening-wf-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "Repo/Git"

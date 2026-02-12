@@ -13,7 +13,7 @@ Relates-to charter: none
 Build-progress: 9/9 tasks complete
 Business-Unit: PLAT
 Card-ID: PLAT-OPP-0004
-Fact-Find: docs/plans/agent-safety-net-hardening-fact-find.md
+Fact-Find: docs/plans/agent-safety-net-hardening-wf-fact-find.md
 Critical-Findings:
   - Layer 4 (Claude Code PreToolUse hooks) is currently a no-op — empty hooks array
   - settings.local.json explicitly allows destructive wildcards (git reset:*, git push:*, etc.)
@@ -67,8 +67,8 @@ All tasks complete. See Build Completion section below.
 
 ## Fact-Find Reference
 
-- Brief: `docs/plans/agent-safety-net-hardening-fact-find.md` (rev3, Ready-for-planning)
-- Confidence inputs from fact-find: Implementation 92%, Approach 90%, Impact 95%, Testability 75%
+- Brief: `docs/plans/agent-safety-net-hardening-wf-fact-find.md` (rev3, Ready-for-planning)
+- Confidence inputs from wf-fact-find: Implementation 92%, Approach 90%, Impact 95%, Testability 75%
 
 ## Existing System Notes (code truth)
 

@@ -8,11 +8,11 @@ Created: 2026-02-11
 Last-updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-readiness-code-to-plan-traceability
+Feature-Slug: idea-readiness-code-to-plan-traceability
 Deliverable-Type: spreadsheet
 Execution-Track: mixed
-Primary-Execution-Skill: create-ops-spreadsheet
-Supporting-Skills: ideas-readiness, update-business-plan
+Primary-Execution-Skill: biz-spreadsheet
+Supporting-Skills: idea-readiness, biz-update-plan
 Business-OS-Integration: on
 Business-Unit: BOS
 ---
@@ -34,7 +34,7 @@ Define the exact mapping data required to link changed code/doc paths to busines
 
 ## Evidence Audit (Current State)
 - High-volume changed-path set across multiple domains without complete confirmed mappings.
-  - `docs/business-os/readiness/2026-02-10-ideas-readiness.user.md:42`
+  - `docs/business-os/readiness/2026-02-10-idea-readiness.user.md:42`
 - Initial mapping registry exists but includes unresolved questions.
   - `docs/business-os/readiness/path-business-map.user.yaml:70`
 
@@ -86,4 +86,4 @@ Every unmapped changed path must be captured with:
 ## Recommended Next Step
 - Maintain `docs/business-os/readiness/path-business-map.user.yaml` as authoritative registry.
 - Add/refresh per-path outcome and decision-link mapping.
-- Re-run `/ideas-readiness`.
+- Re-run `/idea-readiness`.

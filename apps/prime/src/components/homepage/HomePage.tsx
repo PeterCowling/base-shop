@@ -85,9 +85,9 @@ export const HomePage = memo(function HomePage() {
   // --- Loading state ---
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center w-full min-h-[calc(100vh-120px)]">
+      <div className="flex items-center justify-center w-full min-h-dvh">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           <p className="text-muted-foreground">{t('loading', { defaultValue: 'Loading...' })}</p>
         </div>
       </div>
@@ -97,7 +97,7 @@ export const HomePage = memo(function HomePage() {
   // --- Error state ---
   if (error) {
     return (
-      <div className="p-4 text-center mt-5 text-red-600">
+      <div className="p-4 text-center mt-5 text-danger-fg">
         {t('error.loadInfo', { defaultValue: 'Error loading information. Please try again.' })}
       </div>
     );
@@ -106,7 +106,7 @@ export const HomePage = memo(function HomePage() {
   // --- Missing data state ---
   if (!occupantData) {
     return (
-      <div className="p-4 text-center mt-5 text-red-600">
+      <div className="p-4 text-center mt-5 text-danger-fg">
         {t('error.missingData', { defaultValue: 'Unable to load your booking information.' })}
       </div>
     );
@@ -148,9 +148,10 @@ export const HomePage = memo(function HomePage() {
   };
 
   return (
-    <div className="pt-6 max-w-[400px] w-full mx-auto pb-24 relative px-4">
+    // eslint-disable-next-line ds/container-widths-only-at -- BRIK-002 page-level content container
+    <div className="pt-6 max-w-md w-full mx-auto pb-24 relative px-4">
       {/* Welcome header */}
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+      <h1 className="text-2xl font-bold text-foreground mb-6">
         {t('welcome.greeting', { firstName, defaultValue: `Welcome, ${firstName}!` })}
       </h1>
 

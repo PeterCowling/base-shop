@@ -9,7 +9,7 @@ Max-Age-Days: 21
 
 # Ideas Readiness Audit
 
-Readiness status: BLOCKED. Do not run `/ideas-go-faster` until listed blockers are resolved.
+Readiness status: BLOCKED. Do not run `/idea-generate` until listed blockers are resolved.
 
 ## 1. Scope and Inputs
 
@@ -87,8 +87,8 @@ Readiness status: BLOCKED. Do not run `/ideas-go-faster` until listed blockers a
 
 - Created `docs/business-os/readiness/path-business-map.user.yaml`
 - Created `docs/business-os/readiness/2026-02-10-missing-context-register.user.md`
-- Created `docs/business-os/readiness/2026-02-10-ideas-readiness.user.md`
+- Created `docs/business-os/readiness/2026-02-10-idea-readiness.user.md`
 
 ## 7. Go / No-Go
 
-Readiness status: BLOCKED. Do not run `/ideas-go-faster` until listed blockers are resolved.
+Readiness status: BLOCKED. Do not run `/idea-generate` until listed blockers are resolved.

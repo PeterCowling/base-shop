@@ -100,6 +100,7 @@ export default function GuidedOnboardingFlow({
   const didInitRef = useRef(false);
   const celebrationTimeoutRef = useRef<number | null>(null);
   const flowCompletedRef = useRef(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isLoading || didInitRef.current) {
@@ -147,6 +148,19 @@ export default function GuidedOnboardingFlow({
   // Keep step accessible to the abandon cleanup via a ref
   const stepRef = useRef(step);
   stepRef.current = step;
+
+  // Focus the step heading after step transitions for screen readers
+  const prevStepRef = useRef(step);
+  useEffect(() => {
+    if (prevStepRef.current !== step) {
+      prevStepRef.current = step;
+      const heading = cardRef.current?.querySelector('h1');
+      if (heading) {
+        heading.setAttribute('tabindex', '-1');
+        heading.focus();
+      }
+    }
+  }, [step]);
 
   // Track flow abandonment on unmount (if not completed)
   useEffect(() => {
@@ -369,7 +383,7 @@ export default function GuidedOnboardingFlow({
 
   return (
     <main className="min-h-screen bg-muted px-4 py-6">
-      <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
+      <div ref={cardRef} className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
         <StepFlowShell
           currentStep={step}
           totalSteps={3}

@@ -326,6 +326,48 @@ describe('GuidedOnboardingFlow', () => {
     });
   });
 
+  // Skip: focus management not yet implemented in GuidedOnboardingFlow
+  describe('OB-06: ARIA and focus management', () => {
+    it('TC-02: navigate from Step 1 to Step 2 → Step 2 heading receives focus', async () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+
+      await waitFor(() => {
+        const heading = screen.getByRole('heading', { level: 1 });
+        expect(document.activeElement).toBe(heading);
+      });
+    });
+
+    it('TC-03: navigate from Step 2 to Step 3 → Step 3 heading receives focus', async () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      // Advance to Step 2
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      // Advance to Step 3
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+
+      await waitFor(() => {
+        const heading = screen.getByRole('heading', { level: 1 });
+        expect(document.activeElement).toBe(heading);
+      });
+    });
+
+    it('TC-04: navigate back from Step 2 to Step 1 → Step 1 heading receives focus', async () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      // Advance to Step 2
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      // Go back to Step 1
+      fireEvent.click(screen.getByRole('button', { name: /back/i }));
+
+      await waitFor(() => {
+        const heading = screen.getByRole('heading', { level: 1 });
+        expect(document.activeElement).toBe(heading);
+      });
+    });
+  });
+
   describe('OB-03: error toast on API failures', () => {
     it('TC-01: setPersonalization rejects → danger toast rendered with retry action', async () => {
       mockSetPersonalization.mockRejectedValueOnce(new Error('Network error'));

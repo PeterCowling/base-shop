@@ -141,7 +141,16 @@ for file in $CHANGED; do
     case "$file" in
         packages/*)
             PKG_NAME=$(echo "$file" | cut -d/ -f2)
-            PKG_KEY="packages__${PKG_NAME}"
+            # Handle nested packages (e.g., packages/themes/prime) where the
+            # parent directory has no package.json.
+            if [ ! -f "packages/${PKG_NAME}/package.json" ]; then
+                SUB_NAME=$(echo "$file" | cut -d/ -f3)
+                if [ -n "$SUB_NAME" ] && [ -f "packages/${PKG_NAME}/${SUB_NAME}/package.json" ]; then
+                    PKG_NAME="${PKG_NAME}/${SUB_NAME}"
+                fi
+            fi
+            # Use ~ as separator for nested names to avoid / in temp file paths
+            PKG_KEY="packages__$(echo "$PKG_NAME" | tr '/' '~')"
             ;;
         apps/*)
             PKG_NAME=$(echo "$file" | cut -d/ -f2)
@@ -219,9 +228,10 @@ for pkg_file in "$PKG_MAP"/*; do
     [ -f "$pkg_file" ] || continue
 
     # Parse type and name from key (e.g., "packages__ui" -> type=packages, name=ui)
+    # Nested packages use ~ as separator (e.g., "packages__themes~prime" -> name=themes/prime)
     PKG_KEY=$(basename "$pkg_file")
     PKG_TYPE=$(echo "$PKG_KEY" | sed 's/__.*$//')
-    PKG_NAME=$(echo "$PKG_KEY" | sed 's/^[^_]*__//')
+    PKG_NAME=$(echo "$PKG_KEY" | sed 's/^[^_]*__//' | tr '~' '/')
     PKG_PATH="./${PKG_TYPE}/${PKG_NAME}"
 
     if [ ! -d "$PKG_PATH" ]; then

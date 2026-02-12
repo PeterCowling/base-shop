@@ -1,5 +1,5 @@
 {
-  "generated": "2026-02-12T21:10:44Z",
+  "generated": "2026-02-12T21:27:02Z",
   "rawIdeas": [
     {"id": "BRIK-OPP-0002", "title": "Hostel booking FAQs content", "business": "BRIK"},
     {"id": "PIPE-OPP-0001", "title": "Dropship-first logistics model validation", "business": "PIPE"},
@@ -38,18 +38,23 @@
     {"slug": "ds-skylar-migration", "title": "P4 — Design System: Skylar CSS Variable Migration", "cardId": "pending", "business": "PLAT"},
     {"slug": "package-reusability-boundary-hardening", "title": "Package Reusability And Boundary Hardening", "cardId": "", "business": ""},
     {"slug": "prime-find-booking-api-fix", "title": "Fix find-booking & guest-session APIs —", "cardId": "", "business": ""},
+    {"slug": "prime-onboarding-audit", "title": "Prime Onboarding Audit —", "cardId": "", "business": "BRIK"},
     {"slug": "reception-guest-email-cutover", "title": "Reception Guest Email Cutover", "cardId": "BRIK-ENG-0020", "business": "BRIK"},
     {"slug": "writer-lock-enforcement-queue-hardening", "title": "Writer Lock Enforcement + Queue Hardening", "cardId": "Card-ID:", "business": "PLAT"}
   ],
   "readyForBuild": [
     {"slug": "administrative-debt", "title": "Plan: Administrative & Infrastructure Debt", "cardId": "", "business": "", "pendingTasks": 0},
+    {"slug": "brik-ga4-world-class", "title": "World-Class GA4 Setup", "cardId": "BRIK-004", "business": "BRIK", "pendingTasks": 0},
     {"slug": "brikette-ssr-seo-signal-hardening", "title": "Brikette SSR + SEO Signal Hardening", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "ci-test-parallelization", "title": "CI Test Parallelization", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "commerce-core-readiness", "title": "Commerce Core Readiness", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "content-translation-pipeline", "title": "Content Translation Pipeline", "cardId": "", "business": "", "pendingTasks": 0},
+    {"slug": "ds-business-os-migration", "title": "P2 — Design System: Business-OS Token Migration", "cardId": "pending", "business": "BOS", "pendingTasks": 0},
     {"slug": "ds-customer-facing-lint-escalation", "title": "P1 — Design System: Customer-Facing Lint Escalation", "cardId": "pending", "business": "PLAT", "pendingTasks": 0},
     {"slug": "ds-dashboard-migration", "title": "P3 — Design System: Dashboard Token Migration", "cardId": "pending", "business": "PLAT", "pendingTasks": 0},
+    {"slug": "ds-reception-migration", "title": "P5 — Design System: Reception Full Migration", "cardId": "pending", "business": "BRIK", "pendingTasks": 0},
     {"slug": "ds-shared-packages-cleanup", "title": "P0 — Design System: Shared Packages Cleanup", "cardId": "pending", "business": "PLAT", "pendingTasks": 0},
+    {"slug": "ds-skylar-migration", "title": "P4 — Design System: Skylar CSS Variable Migration", "cardId": "pending", "business": "PLAT", "pendingTasks": 0},
     {"slug": "head-pet-outcome-contract", "title": "HEAD + PET Outcome Contract Execution", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "launch-3hr-v2", "title": "Plan: Rapid Shop Launch (v2)", "cardId": "", "business": "", "pendingTasks": 0},
     {"slug": "nextjs-16-upgrade", "title": "Next.js 16 Upgrade", "cardId": "", "business": "", "pendingTasks": 0},

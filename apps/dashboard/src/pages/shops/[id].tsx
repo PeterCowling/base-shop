@@ -108,22 +108,22 @@ export default function ShopDetail() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-bg p-4 shadow-sm">
         <div className="space-y-1">
-          <h1 className="text-lg font-semibold text-slate-900">
+          <h1 className="text-lg font-semibold text-fg">
             Shop {meta?.name ?? shopId}
           </h1>
-          <p className="text-sm text-slate-700">
+          <p className="text-sm text-fg-muted">
             Diff, history, and metrics tabs. Diff uses the existing Upgrade experience.
           </p>
           {state === "loading" && (
-            <p className="text-xs text-slate-600">Loading shop context…</p>
+            <p className="text-xs text-fg-muted">Loading shop context…</p>
           )}
           {state === "error" && (
             <p className="text-xs text-danger">{error}</p>
           )}
           {state === "idle" && meta && (
-            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-700">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
               <StatusBadge status={meta.status ?? "unknown"} />
               {meta.region && <span>Region: {meta.region}</span>}
               {meta.lastUpgrade && (
@@ -136,20 +136,20 @@ export default function ShopDetail() {
         </div>
         <Link
           href="/shops"
-          className="rounded border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-300"
+          className="rounded border border-border bg-bg px-3 py-2 text-sm font-semibold text-fg shadow-sm transition hover:border-border-strong"
         >
           Back to shops
         </Link>
       </div>
-      <div className="flex flex-wrap items-center gap-3 text-sm font-semibold text-slate-700">
+      <div className="flex flex-wrap items-center gap-3 text-sm font-semibold text-fg-muted">
         <TabButton label="Diff" active={activeTab === "diff"} onClick={() => setActiveTab("diff")} />
         <TabButton label="History" active={activeTab === "history"} onClick={() => setActiveTab("history")} />
         <TabButton label="Metrics (coming soon)" active={activeTab === "metrics"} onClick={() => setActiveTab("metrics")} />
       </div>
       {activeTab === "diff" && <Upgrade />}
       {activeTab === "history" && (
-        <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-          <h2 className="text-sm font-semibold text-slate-900">History</h2>
+        <div className="space-y-3 rounded-lg border border-border bg-bg p-4 shadow-sm">
+          <h2 className="text-sm font-semibold text-fg">History</h2>
           {retryStatus !== "idle" && (
             <p
               className={`text-xs ${
@@ -160,36 +160,36 @@ export default function ShopDetail() {
             </p>
           )}
           {historyState === "loading" && (
-            <p className="text-xs text-slate-600">Loading history…</p>
+            <p className="text-xs text-fg-muted">Loading history…</p>
           )}
           {historyState === "error" && (
             <p className="text-xs text-danger">{historyError}</p>
           )}
           {historyState === "idle" && history.length === 0 && (
-            <p className="text-sm text-slate-700">No history yet.</p>
+            <p className="text-sm text-fg-muted">No history yet.</p>
           )}
           {historyState === "error" && (
-            <p className="text-xs text-amber-700">
+            <p className="text-xs text-warning-fg">
               If the CMS base URL is missing or unreachable, history and retry may fail.
             </p>
           )}
-          <ul className="divide-y divide-slate-200">
+          <ul className="divide-y divide-border">
             {history.map((job) => (
               <li key={job.id} className="space-y-1 py-3">
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-700">
-                  <span className="font-semibold text-slate-900">{job.id}</span>
+                <div className="flex flex-wrap items-center gap-2 text-xs text-fg-muted">
+                  <span className="font-semibold text-fg">{job.id}</span>
                   <StatusBadge status={job.status === "failed" ? "failed" : "up_to_date"} />
                   <span>{new Date(job.timestamp).toLocaleString()}</span>
                   {job.user && <span>User: {job.user}</span>}
                   {job.duration && <span>Duration: {job.duration}</span>}
                 </div>
-                <p className="text-sm text-slate-800">
+                <p className="text-sm text-fg">
                   Components: {(job.components ?? []).join(", ") || "—"}
                 </p>
                 {job.error && <p className="text-sm text-danger">Error: {job.error}</p>}
                 <div className="flex flex-wrap gap-2 text-xs">
                   <Link
-                    className="rounded border border-blue-200 px-2 py-1 font-semibold text-blue-700 hover:border-blue-300 hover:text-blue-900"
+                    className="rounded border border-primary-soft px-2 py-1 font-semibold text-link hover:border-primary hover:text-link"
                     href={`/Upgrade?id=${encodeURIComponent(shopId)}${
                       job.components && job.components.length
                         ? `&components=${encodeURIComponent(job.components.join(","))}`
@@ -200,7 +200,7 @@ export default function ShopDetail() {
                   </Link>
                   <button
                     type="button"
-                    className="min-h-11 min-w-11 rounded border border-emerald-200 px-3 py-2 text-sm font-semibold text-emerald-700 transition hover:border-emerald-300 hover:text-emerald-900"
+                    className="min-h-11 min-w-11 rounded border border-success px-3 py-2 text-sm font-semibold text-success-fg transition hover:border-success hover:text-success-fg"
                     onClick={() => {
                       setRetryTarget(job);
                       setRetryStatus("idle");
@@ -216,7 +216,7 @@ export default function ShopDetail() {
         </div>
       )}
       {activeTab === "metrics" && (
-        <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm text-sm text-slate-700">
+        <div className="rounded-lg border border-border bg-bg p-4 shadow-sm text-sm text-fg-muted">
           Metrics coming soon.
         </div>
       )}
@@ -274,8 +274,8 @@ function TabButton({
       onClick={onClick}
       className={`rounded px-3 py-1 ${
         active
-          ? "bg-blue-50 text-blue-800"
-          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+          ? "bg-primary-soft text-primary"
+          : "bg-bg-4 text-fg-muted hover:bg-bg-5"
       }`}
     >
       {label}
@@ -289,10 +289,10 @@ function StatusBadge({
   status: "ready" | "failed" | "up_to_date" | "unknown";
 }) {
   const map: Record<typeof status, string> = {
-    ready: "bg-emerald-100 text-emerald-800",
-    failed: "bg-red-100 text-danger",
-    up_to_date: "bg-blue-100 text-blue-800",
-    unknown: "bg-slate-100 text-slate-700",
+    ready: "bg-success-soft text-success-fg",
+    failed: "bg-danger-soft text-danger-fg",
+    up_to_date: "bg-info-soft text-info-fg",
+    unknown: "bg-bg-4 text-fg-muted",
   };
   const label: Record<typeof status, string> = {
     ready: "Needs review",
@@ -365,21 +365,21 @@ function RetryModal({
     <Dialog open onOpenChange={(isOpen) => !isOpen && onCancel()}>
       <DialogContent>
         <DialogHeader className="text-start">
-          <DialogTitle className="text-lg font-semibold text-slate-900">
+          <DialogTitle className="text-lg font-semibold text-fg">
             Retry publish
           </DialogTitle>
-          <p className="text-sm text-slate-700">
+          <p className="text-sm text-fg-muted">
             You are retrying job {entry.id} for shop {shopId}. Selected components:
           </p>
         </DialogHeader>
-        <ul className="list-disc space-y-1 rounded bg-slate-50 px-3 py-2 text-sm text-slate-800">
+        <ul className="list-disc space-y-1 rounded bg-bg-2 px-3 py-2 text-sm text-fg">
           {(entry.components ?? []).length === 0 && <li>None specified</li>}
           {(entry.components ?? []).map((c) => (
             <li key={c}>{c}</li>
           ))}
         </ul>
         {entry.error && (
-          <p className="rounded bg-amber-50 px-3 py-2 text-sm text-amber-900">
+          <p className="rounded bg-warning-soft px-3 py-2 text-sm text-warning-fg">
             Last error: {entry.error}
           </p>
         )}
@@ -387,14 +387,14 @@ function RetryModal({
           <button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 rounded border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:border-slate-300"
+            className="min-h-11 min-w-11 rounded border border-border px-3 py-2 text-sm font-semibold text-fg-muted hover:border-border-strong"
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={() => void onConfirm()}
-            className="min-h-11 min-w-11 rounded bg-emerald-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
+            className="min-h-11 min-w-11 rounded bg-success px-3 py-2 text-sm font-semibold text-success-fg shadow-sm transition hover:bg-success/90"
           >
             Retry publish
           </button>

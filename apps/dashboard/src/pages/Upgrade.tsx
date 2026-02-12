@@ -233,14 +233,14 @@ export default function Upgrade() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm md:flex-row md:items-center md:justify-between">
+      <header className="flex flex-col gap-3 rounded-lg border border-border bg-bg p-4 shadow-sm md:flex-row md:items-center md:justify-between">
         <div className="space-y-1">
-          <p className="text-sm font-medium text-slate-700">Shop</p>
+          <p className="text-sm font-medium text-fg-muted">Shop</p>
           <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded bg-slate-900 px-3 py-1 text-sm font-semibold text-white">
+            <span className="rounded bg-fg px-3 py-1 text-sm font-semibold text-bg">
               {shopId ?? "Unknown"}
             </span>
-            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
+            <span className="rounded-full bg-bg-4 px-3 py-1 text-xs font-semibold text-fg-muted">
               {totalComponents} pending
             </span>
             <StatusPill
@@ -261,7 +261,7 @@ export default function Upgrade() {
               }
             />
           </div>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-fg-muted">
             Last updated:{" "}
             {lastRefreshed ? new Date(lastRefreshed).toLocaleString() : "Not yet"}
           </p>
@@ -270,51 +270,51 @@ export default function Upgrade() {
           <button
             onClick={() => loadDiff(shopId)}
             disabled={loadState === "loading"}
-            className="inline-flex items-center gap-2 rounded border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded border border-border bg-bg px-3 py-2 text-sm font-semibold text-fg shadow-sm transition hover:border-border-strong disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <span className="h-2 w-2 rounded-full bg-slate-400" />
+            <span className="h-2 w-2 rounded-full bg-fg-muted" />
             Refresh
           </button>
           {status === "success" && (
-            <span className="text-xs font-medium text-green-700">
+            <span className="text-xs font-medium text-success-fg">
               Published successfully.
             </span>
           )}
         </div>
       </header>
 
-      <div className="space-y-4 rounded-lg border border-slate-200 bg-white/70 p-4 shadow-sm">
+      <div className="space-y-4 rounded-lg border border-border bg-bg/70 p-4 shadow-sm">
         {loadState === "loading" && (
-          <div className="flex items-center gap-2 text-sm text-slate-700">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-blue-500" />
+          <div className="flex items-center gap-2 text-sm text-fg-muted">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
             <p>{t("cms.upgrade.preparing")}</p>
           </div>
         )}
         {isForbidden && (
-          <div className="rounded border border-amber-200 bg-amber-50 p-3 text-amber-900">
-            <p className="font-semibold">You don’t have access to this shop.</p>
+          <div className="rounded border border-warning bg-warning-soft p-3 text-warning-fg">
+            <p className="font-semibold">You don&apos;t have access to this shop.</p>
             <p className="text-sm">Sign in again or request access to continue.</p>
           </div>
         )}
         {loadError && !isForbidden && (
-          <div className="rounded border border-red-200 bg-red-50 p-3 text-red-800">
+          <div className="rounded border border-danger bg-danger-soft p-3 text-danger-fg">
             <p>{loadError}</p>
             <button
               onClick={() => loadDiff(shopId)}
-              className="mt-2 inline-flex items-center gap-2 rounded border border-red-200 bg-white px-3 py-1 text-sm font-semibold text-red-700 transition hover:border-red-300"
+              className="mt-2 inline-flex items-center gap-2 rounded border border-danger bg-bg px-3 py-1 text-sm font-semibold text-danger-fg transition hover:border-danger"
             >
               Retry
             </button>
           </div>
         )}
         {showEmptyState && (
-          <div className="flex items-center gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-4">
-            <div className="h-10 w-10 rounded-full bg-white/80 shadow-inner" aria-hidden="true" />
+          <div className="flex items-center gap-3 rounded-md border border-border bg-bg-2 px-3 py-4">
+            <div className="h-10 w-10 rounded-full bg-bg/80 shadow-inner" aria-hidden="true" />
             <div className="space-y-1">
-              <p className="font-medium text-slate-900">
+              <p className="font-medium text-fg">
                 {t("cms.upgrade.noUpdates")}
               </p>
-              <p className="text-sm text-slate-700">
+              <p className="text-sm text-fg-muted">
                 {t("cms.upgrade.stepsBackground")}
               </p>
             </div>
@@ -335,16 +335,16 @@ export default function Upgrade() {
         )}
       </div>
       {selected.size > 0 && (
-        <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="space-y-3 rounded-lg border border-border bg-bg p-4 shadow-sm">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold text-slate-900">
+            <h2 className="font-semibold text-fg">
               {t("upgrade.selectedComponents")}
             </h2>
-            <span className="text-sm text-slate-600">
+            <span className="text-sm text-fg-muted">
               {selected.size} selected
             </span>
           </div>
-          <ul className="list-disc space-y-1 pl-4 text-slate-800">
+          <ul className="list-disc space-y-1 pl-4 text-fg">
             {Array.from(selected).map((file) => (
               <li key={file}>{file}</li>
             ))}
@@ -353,17 +353,17 @@ export default function Upgrade() {
             <button
               onClick={() => setShowConfirm(true)}
               disabled={status === "loading"}
-              className="inline-flex min-h-11 min-w-24 items-center justify-center rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-blue-300"
+              className="inline-flex min-h-11 min-w-24 items-center justify-center rounded bg-primary px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:bg-primary/50"
             >
               {status === "loading"
                 ? t("upgrade.publishing")
                 : t("upgrade.publishCta")}
             </button>
             {status === "success" && (
-              <p className="text-sm text-green-600">{message}</p>
+              <p className="text-sm text-success-fg">{message}</p>
             )}
             {status === "error" && (
-              <p className="text-sm text-red-600">{message}</p>
+              <p className="text-sm text-danger-fg">{message}</p>
             )}
           </div>
         </div>
@@ -410,13 +410,13 @@ function StatusPill({
     typeof status,
     { label: string; className: string }
   > = {
-    idle: { label: "Idle", className: "bg-slate-100 text-slate-700" },
-    loading: { label: "Loading", className: "bg-blue-100 text-blue-800" },
-    forbidden: { label: "No access", className: "bg-amber-100 text-amber-900" },
-    error: { label: "Error", className: "bg-red-100 text-red-700" },
-    publish_error: { label: "Publish failed", className: "bg-red-100 text-red-700" },
-    publishing: { label: "Publishing", className: "bg-blue-100 text-blue-800" },
-    success: { label: "Healthy", className: "bg-green-100 text-green-800" },
+    idle: { label: "Idle", className: "bg-bg-4 text-fg-muted" },
+    loading: { label: "Loading", className: "bg-info-soft text-info-fg" },
+    forbidden: { label: "No access", className: "bg-warning-soft text-warning-fg" },
+    error: { label: "Error", className: "bg-danger-soft text-danger-fg" },
+    publish_error: { label: "Publish failed", className: "bg-danger-soft text-danger-fg" },
+    publishing: { label: "Publishing", className: "bg-info-soft text-info-fg" },
+    success: { label: "Healthy", className: "bg-success-soft text-success-fg" },
   };
   const cfg = map[status];
   return (
@@ -462,23 +462,23 @@ function UpgradeGroupTable({
   toggle: (file: string) => void;
 }) {
   return (
-    <div className="space-y-2 rounded-md border border-slate-200 bg-slate-50/80 p-3">
+    <div className="space-y-2 rounded-md border border-border bg-bg-2/80 p-3">
       <div className="flex items-center justify-between">
-        <h2 className="font-semibold capitalize text-slate-900">{group}</h2>
-        <span className="rounded-full bg-white px-2 py-0.5 text-xs font-medium text-slate-600">
+        <h2 className="font-semibold capitalize text-fg">{group}</h2>
+        <span className="rounded-full bg-bg px-2 py-0.5 text-xs font-medium text-fg-muted">
           {components.length}
         </span>
       </div>
-      <div className="overflow-hidden rounded border border-slate-200 bg-white">
-        <div className="grid grid-cols-[24px,1.5fr,1fr,1fr] gap-2 bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-700">
+      <div className="overflow-hidden rounded border border-border bg-bg">
+        <div className="grid grid-cols-[24px,1.5fr,1fr,1fr] gap-2 bg-bg-2 px-3 py-2 text-xs font-semibold text-fg-muted">
           <span aria-hidden />
           <span>Component</span>
           <span>Current</span>
           <span>New</span>
         </div>
-        <ul className="divide-y divide-slate-100">
+        <ul className="divide-y divide-border-muted">
           {components.map((c) => (
-            <li key={c.file} className="grid grid-cols-[24px,1.5fr,1fr,1fr] items-center gap-2 px-3 py-2 text-sm text-slate-800">
+            <li key={c.file} className="grid grid-cols-[24px,1.5fr,1fr,1fr] items-center gap-2 px-3 py-2 text-sm text-fg">
               <input
                 type="checkbox"
                 aria-label={`Select ${c.componentName}`}
@@ -487,12 +487,12 @@ function UpgradeGroupTable({
               />
               <div className="space-y-1">
                 <p className="font-medium">{c.componentName}</p>
-                <p className="text-xs text-slate-600 break-all">{c.file}</p>
+                <p className="text-xs text-fg-muted break-all">{c.file}</p>
               </div>
-              <span className="text-xs text-slate-600 break-all">
+              <span className="text-xs text-fg-muted break-all">
                 {c.oldChecksum ?? "—"}
               </span>
-              <span className="text-xs font-mono text-slate-900 break-all">
+              <span className="text-xs font-mono text-fg break-all">
                 {c.newChecksum}
               </span>
             </li>
@@ -515,16 +515,16 @@ function ConfirmModal({
   message?: string;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
-      <div className="w-full max-w-lg space-y-4 rounded-lg border border-slate-200 bg-white p-5 shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-overlay-scrim-1 p-4">
+      <div className="w-full max-w-lg space-y-4 rounded-lg border border-border bg-bg p-5 shadow-xl">
         <div className="space-y-1">
-          <h2 className="text-lg font-semibold text-slate-900">Confirm publish</h2>
-          <p className="text-sm text-slate-700">
-            You’re about to publish the selected components. Review the list before continuing.
+          <h2 className="text-lg font-semibold text-fg">Confirm publish</h2>
+          <p className="text-sm text-fg-muted">
+            You&apos;re about to publish the selected components. Review the list before continuing.
           </p>
         </div>
-        {message && <p className="rounded bg-amber-50 px-3 py-2 text-sm text-amber-900">{message}</p>}
-        <ul className="max-h-48 overflow-y-auto rounded border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-800">
+        {message && <p className="rounded bg-warning-soft px-3 py-2 text-sm text-warning-fg">{message}</p>}
+        <ul className="max-h-48 overflow-y-auto rounded border border-border bg-bg-2 px-3 py-2 text-sm text-fg">
           {selected.map((file) => (
             <li key={file} className="py-1">
               {file}
@@ -534,13 +534,13 @@ function ConfirmModal({
         <div className="flex justify-end gap-2">
           <button
             onClick={onCancel}
-            className="rounded border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:border-slate-300"
+            className="rounded border border-border bg-bg px-4 py-2 text-sm font-semibold text-fg hover:border-border-strong"
           >
             Cancel
           </button>
           <button
             onClick={onConfirm}
-            className="rounded bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+            className="rounded bg-primary px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm transition hover:bg-primary-hover"
           >
             Publish now
           </button>

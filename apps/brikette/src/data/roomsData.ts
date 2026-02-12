@@ -21,7 +21,8 @@ export type RoomId =
   | "room_5"
   | "room_6"
   | "room_9"
-  | "room_8";
+  | "room_8"
+  | "apartment";
 
 export interface RateCodes {
   direct: { nr: string; flex: string };
@@ -312,6 +313,27 @@ const roomsData: Room[] = [
     imagesRaw: ["/images/8/landing.webp", "/images/8/8_1.webp"],
     landingImage: "/images/8/landing.webp",
     roomsHref: "/rooms#room_8",
+  },
+
+  /* ── Apartment → apartment ───────────────────────────────────────── */
+  {
+    id: "apartment",
+    sku: "apartment",
+    widgetRoomCode: "TODO", // TODO: Get from Octorate after apartment is added
+    widgetRateCodeNR: "TODO_NR", // TODO: Get actual rate plan IDs
+    widgetRateCodeFlex: "TODO_FLEX", // TODO: Get actual rate plan IDs
+    rateCodes: {
+      direct: { nr: "TODO_NR", flex: "TODO_FLEX" },
+      ota: { nr: "TODO_NR_OTA", flex: "TODO_FLEX_OTA" },
+    },
+    occupancy: 4,
+    pricingModel: "perRoom",
+    basePrice: { amount: 150.0, currency: "EUR" }, // TODO: Update with actual pricing
+    seasonalPrices: SEASONAL,
+    availability: { totalBeds: 4, defaultRelease: 4 },
+    imagesRaw: ["/images/apartment/landing.webp"], // TODO: Add actual apartment images
+    landingImage: "/images/apartment/landing.webp",
+    roomsHref: "/apartment",
   },
 ];
 

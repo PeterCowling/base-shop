@@ -21,7 +21,8 @@ export type RoomId =
   | "room_5"
   | "room_6"
   | "room_9"
-  | "room_8";
+  | "room_8"
+  | "apartment";
 
 export interface RateCodes {
   direct: { nr: string; flex: string };

@@ -11,6 +11,15 @@
 # Legacy /directions/* URLs (no lang prefix) -> English how-to-get-here routes
 /directions/:slug  /en/how-to-get-here/:slug  301
 
+# stepfreepositano.com -> apartment hub (requires custom domain on Pages project)
+# Once DNS is configured, these catch requests to the custom domain.
+https://stepfreepositano.com  /en/apartment/  301
+https://stepfreepositano.com/  /en/apartment/  301
+https://stepfreepositano.com/*  /en/apartment/:splat  301
+https://www.stepfreepositano.com  /en/apartment/  301
+https://www.stepfreepositano.com/  /en/apartment/  301
+https://www.stepfreepositano.com/*  /en/apartment/:splat  301
+
 # BEGIN GENERATED LOCALIZED STATIC-EXPORT REDIRECTS
 /es/experiencias/etiquetas  /es/experiences/tags  200
 /es/experiencias/etiquetas/  /es/experiences/tags/  200

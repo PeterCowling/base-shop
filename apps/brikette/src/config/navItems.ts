@@ -5,6 +5,7 @@
 export const NAV_ITEMS = [
   "home",
   "rooms",
+  "apartment",
   "experiences",
   "howToGetHere",
   "deals",

@@ -120,8 +120,8 @@ const filterButtonActiveClass = [
   "ring-inset",
   "ring-brand-primary/40",
   "dark:border-brand-secondary",
-  "dark:bg-brand-secondary/30",
-  "dark:text-brand-text",
+  "dark:bg-brand-secondary",
+  "dark:text-brand-bg",
   "dark:ring-brand-secondary/40",
 ].join(" ");
 

@@ -212,7 +212,7 @@ function SlideItemBase(
 
           <Button
             onClick={handleCheckDates}
-            className="h-auto min-h-11 w-full whitespace-normal break-words transition-colors hover:text-white dark:text-white"
+            className="h-auto min-h-11 w-full whitespace-normal break-words transition-colors"
           >
             {availabilityLabel}
           </Button>

@@ -45,12 +45,18 @@ Scale only if all are true:
 4. On-time ship rate `>= 95%`
 5. Payment success rate `>= 97%`
 
+Gate validity thresholds:
+- CVR decision-valid only with `sessions >= 500` and `orders >= 10`
+- Refund decision-valid only with `orders_shipped >= 25`
+- Payment decision-valid only with `payment_attempts >= 100`
+
 If any fail, move to fix-first mode:
 
 - hold cold scale
 - keep retargeting
 - fix PDP/checkout/trust frictions
 - re-forecast remaining 10 weeks from observed data
+- assign named owner within 48 hours and re-test failed gate within 7 days
 
 ## 5) Top Risks
 

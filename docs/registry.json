@@ -150,6 +150,78 @@
     "domain": "Delivery-Speed"
   },
   {
+    "path": "docs/audits/user-testing/2026-02-11-4539dced-brikette-website-pages-staging-en-focused.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-4539dced-brikette-website-pages-staging-en-full-js-off-crawl.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-4539dced-brikette-website-pages-staging-en-postfix-full-js-off-crawl.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-ad824098-brikette-website-pages-staging-en-full-full-js-off-crawl.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-booking-transaction-smoke-v2.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-booking-transaction-smoke-v3.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-booking-transaction-smoke-v4.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-booking-transaction-smoke.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-crawl-hardening-check.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-crawl-hardening-discovery-policy.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-hostel-positano-com-en-postfix-full-js-off-crawl.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
+    "path": "docs/audits/user-testing/2026-02-11-local-booking-flow.md",
+    "type": "Audit-Report",
+    "status": "Draft",
+    "domain": "User-Testing"
+  },
+  {
     "path": "docs/benchmarks/repo-benchmark.md",
     "type": "Benchmark",
     "status": "Reference",
@@ -1026,6 +1098,30 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/readiness/2026-02-11-ideas-readiness.agent.md",
+    "type": "Ideas-Readiness",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-11-ideas-readiness.user.md",
+    "type": "Ideas-Readiness",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-11-missing-context-register.agent.md",
+    "type": "Ideas-Readiness-Missing-Context-Register",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/readiness/2026-02-11-missing-context-register.user.md",
+    "type": "Ideas-Readiness-Missing-Context-Register",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/security.md",
     "type": "Documentation",
     "status": "Active",
@@ -1056,6 +1152,138 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/strategy/HBAG/plan.agent.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HBAG/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.agent.md",
+    "type": "Dry-Run",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md",
+    "type": "Dry-Run",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1-exec-summary.agent.md",
+    "type": "Forecast-Summary",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1-exec-summary.user.md",
+    "type": "Forecast-Summary",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1.agent.md",
+    "type": "Forecast",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v1.user.md",
+    "type": "Forecast",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/launch-readiness-action-backlog.agent.md",
+    "type": "Action-Backlog",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md",
+    "type": "Action-Backlog",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/plan.agent.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/HEAD/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.agent.md",
+    "type": "Dry-Run",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md",
+    "type": "Dry-Run",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2-exec-summary.agent.md",
+    "type": "Forecast-Summary",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2-exec-summary.user.md",
+    "type": "Forecast-Summary",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.agent.md",
+    "type": "Forecast",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md",
+    "type": "Forecast",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/launch-readiness-action-backlog.agent.md",
+    "type": "Action-Backlog",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md",
+    "type": "Action-Backlog",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/plan.agent.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/PET/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/strategy/PIPE/plan.agent.md",
     "type": "Business-Plan",
     "status": "Active",
@@ -1075,6 +1303,18 @@
   },
   {
     "path": "docs/business-os/strategy/PLAT/plan.user.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/XA/plan.agent.md",
+    "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/XA/plan.user.md",
     "type": "Business-Plan",
     "status": "Active",
     "domain": null
@@ -1107,6 +1347,18 @@
     "path": "docs/business-os/sweeps/2026-02-10-sweep.user.md",
     "type": "Sweep",
     "status": "Historical",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/sweeps/2026-02-11-progress.user.md",
+    "type": "Sweep-Progress",
+    "status": null,
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/sweeps/2026-02-11-sweep.user.md",
+    "type": "Sweep",
+    "status": null,
     "domain": null
   },
   {
@@ -1550,7 +1802,13 @@
   {
     "path": "docs/plans/agent-enhancement-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Superseded",
+    "domain": "DevEx/Tooling"
+  },
+  {
+    "path": "docs/plans/agent-setup-improvement-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
     "domain": "DevEx/Tooling"
   },
   {
@@ -1902,6 +2160,12 @@
     "domain": "Automation"
   },
   {
+    "path": "docs/plans/archive/email-autodraft-world-class-upgrade-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Automation"
+  },
+  {
     "path": "docs/plans/archive/experiences-page-refactor-plan.md",
     "type": "Plan",
     "status": "Historical",
@@ -1923,6 +2187,12 @@
     "path": "docs/plans/archive/git-conflict-ops-hardening-plan.md",
     "type": "Plan",
     "status": "Historical",
+    "domain": "Repo/Git"
+  },
+  {
+    "path": "docs/plans/archive/git-stash-elimination-plan.md",
+    "type": "Plan",
+    "status": "Archived",
     "domain": "Repo/Git"
   },
   {
@@ -2008,6 +2278,12 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Brikette Guides"
+  },
+  {
+    "path": "docs/plans/archive/handbag-configurator-implementation-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Commerce"
   },
   {
     "path": "docs/plans/archive/handbag-configurator-lint-enablement-plan.md",
@@ -2118,6 +2394,12 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/archive/multi-writer-git-locking-plan.md",
+    "type": "Plan",
+    "status": "Superseded",
+    "domain": "Repo"
+  },
+  {
     "path": "docs/plans/archive/nextjs-15-3-6-upgrade-plan.md",
     "type": "Plan",
     "status": "Historical",
@@ -2142,10 +2424,22 @@
     "domain": "Build"
   },
   {
+    "path": "docs/plans/archive/prime-find-booking-api-fix-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "API"
+  },
+  {
     "path": "docs/plans/archive/prime-guest-portal-gap-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/archive/prime-ui-theme-centralization-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "UI"
   },
   {
     "path": "docs/plans/archive/react-audit-design-system-plan.md",
@@ -2286,6 +2580,12 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/archive/writer-lock-enforcement-queue-hardening-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Repo/Git"
+  },
+  {
     "path": "docs/plans/archive/writer-lock-stale-locks-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
@@ -2298,15 +2598,33 @@
     "domain": "Infra"
   },
   {
+    "path": "docs/plans/archive/xa-client-readiness-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Commerce"
+  },
+  {
     "path": "docs/plans/archive/xa-coverage-80-plan.md",
     "type": "Plan",
     "status": "Historical",
     "domain": "Commerce"
   },
   {
+    "path": "docs/plans/archive/xa-deploy-readiness-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Archived",
+    "domain": "Infra"
+  },
+  {
     "path": "docs/plans/archive/xa-publish-privacy-fact-find.md",
     "type": "Fact-Find",
     "status": "Historical",
+    "domain": "Commerce / Deploy"
+  },
+  {
+    "path": "docs/plans/archive/xa-publish-privacy-plan.md",
+    "type": "Plan",
+    "status": "Archived",
     "domain": "Commerce / Deploy"
   },
   {
@@ -2320,6 +2638,12 @@
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "BOS/Infrastructure"
+  },
+  {
+    "path": "docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Brikette/UX"
   },
   {
     "path": "docs/plans/brikette-ci-targeted-test-selection-fact-find.md",
@@ -2478,12 +2802,6 @@
     "domain": "Automation"
   },
   {
-    "path": "docs/plans/email-autodraft-world-class-upgrade-plan.md",
-    "type": "Plan",
-    "status": "Accepted",
-    "domain": "Automation"
-  },
-  {
     "path": "docs/plans/faster-staging-ci-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
@@ -2499,12 +2817,6 @@
     "path": "docs/plans/git-conflict-ops-hardening-plan.md",
     "type": "Plan",
     "status": "Draft",
-    "domain": "Repo/Git"
-  },
-  {
-    "path": "docs/plans/git-stash-elimination-plan.md",
-    "type": "Plan",
-    "status": "Accepted",
     "domain": "Repo/Git"
   },
   {
@@ -2556,12 +2868,6 @@
     "domain": "UI"
   },
   {
-    "path": "docs/plans/handbag-configurator-implementation-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Commerce"
-  },
-  {
     "path": "docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
@@ -2586,6 +2892,72 @@
     "domain": "Business-OS"
   },
   {
+    "path": "docs/plans/ideas-readiness-bos-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-brik-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-code-to-plan-traceability-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-hbag-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-head-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-missing-data-fact-find-index.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-pet-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-pipe-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-plat-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-tooling-prerequisites-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-readiness-xa-outcome-contract-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/plans/kanban-sweep-agent-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
@@ -2604,21 +2976,27 @@
     "domain": "Launch"
   },
   {
+    "path": "docs/plans/legacy-booking-gas-takeover-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Automation"
+  },
+  {
     "path": "docs/plans/mcp-server-implementation-plan.md",
     "type": "Plan",
     "status": "Draft",
     "domain": "Infrastructure"
   },
   {
-    "path": "docs/plans/multi-writer-git-locking-plan.md",
-    "type": "Plan",
-    "status": "Draft",
-    "domain": "Repo"
-  },
-  {
     "path": "docs/plans/nextjs-16-upgrade-plan.md",
     "type": "Plan",
     "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/package-reusability-boundary-hardening-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
     "domain": "Platform"
   },
   {
@@ -2632,6 +3010,24 @@
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Build"
+  },
+  {
+    "path": "docs/plans/prime-find-booking-api-fix-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/prime-hardcoded-copy-i18n-remediation-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-hardcoded-copy-i18n-remediation-plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Prime"
   },
   {
     "path": "docs/plans/prime-messaging-processor-decision.md",
@@ -2652,10 +3048,16 @@
     "domain": "UI"
   },
   {
-    "path": "docs/plans/prime-ui-theme-centralization-plan.md",
+    "path": "docs/plans/reception-guest-email-cutover-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/reception-guest-email-cutover-plan.md",
     "type": "Plan",
-    "status": "Accepted",
-    "domain": "UI"
+    "status": "Active",
+    "domain": "Automation"
   },
   {
     "path": "docs/plans/remove-gallery-feature-fact-find.md",
@@ -2676,28 +3078,34 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/startup-from-spec-skill-library-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Proposed",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/startup-from-spec-skill-library-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/plans/test-sweep-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Testing"
   },
   {
-    "path": "docs/plans/xa-client-readiness-plan.md",
+    "path": "docs/plans/writer-lock-enforcement-queue-hardening-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Repo/Git"
+  },
+  {
+    "path": "docs/plans/xa-v2-plan.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Commerce"
-  },
-  {
-    "path": "docs/plans/xa-deploy-readiness-fact-find.md",
-    "type": "Fact-Find",
-    "status": "Proposed",
-    "domain": "Infra"
-  },
-  {
-    "path": "docs/plans/xa-publish-privacy-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Commerce / Deploy"
   },
   {
     "path": "docs/product-pipeline/3pl-shipping-approach-decision-v0.md",

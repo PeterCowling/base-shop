@@ -1,5 +1,6 @@
 // src/components/rooms/RoomCard.tsx
 // Adapter that composes app-specific data/hooks and renders the shared UI RoomCard.
+/* eslint-disable ds/no-hardcoded-copy, max-lines-per-function -- LINT-1007 [ttl=2026-12-31] Fallback copy and adapter complexity retained while i18n + extraction follow-up is scheduled. */
 
 import { isValidElement, memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -108,6 +109,16 @@ function coerceString(value: unknown): string {
   return "";
 }
 
+const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+
+function resolveTranslatedCopy(value: unknown, key: string, fallback: string): string {
+  const trimmed = coerceString(value).trim();
+  if (!trimmed) return fallback;
+  if (trimmed === key) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}
+
 export default memo(function RoomCard({
   room,
   checkIn: checkInProp,
@@ -150,7 +161,9 @@ export default memo(function RoomCard({
   const { lowestPrice, soldOut, loading: priceLoading } = useRoomPricing(room);
 
   const price: RoomCardPrice = (() => {
-    const loadingLabel = ready ? (t("loadingPrice") as string) : "";
+    const loadingLabel = ready
+      ? resolveTranslatedCopy(t("loadingPrice"), "loadingPrice", "Loading price...")
+      : "";
     const formatted =
       !priceLoading && lowestPrice !== undefined
         ? (t("ratesFrom", { price: lowestPrice.toFixed(2) }) as string)
@@ -287,17 +300,41 @@ export default memo(function RoomCard({
     });
   }, []);
 
-  const title = t(`${baseKey}.title`) as string;
-  const imageAlt = t("roomImage.photoAlt", { room: title }) as string;
+  const title = resolveTranslatedCopy(
+    t(`${baseKey}.title`, { defaultValue: room.id.replace(/_/gu, " ") }),
+    `${baseKey}.title`,
+    room.id.replace(/_/gu, " ")
+  );
+  const imageAlt = resolveTranslatedCopy(
+    t("roomImage.photoAlt", { room: title, defaultValue: `${title} room` }),
+    "roomImage.photoAlt",
+    `${title} room`
+  );
   const imageLabels: RoomCardImageLabels = (() => {
     if (!ready) {
       return { enlarge: "", prevAria: "", nextAria: "", empty: "" };
     }
     return {
-      enlarge: t("roomImage.clickToEnlarge") as string,
-      prevAria: t("roomImage.prevAria") as string,
-      nextAria: t("roomImage.nextAria") as string,
-      empty: t("roomImage.noImage", { defaultValue: "No image available" }) as string,
+      enlarge: resolveTranslatedCopy(
+        t("roomImage.clickToEnlarge", { defaultValue: "Click to enlarge image" }),
+        "roomImage.clickToEnlarge",
+        "Click to enlarge image"
+      ),
+      prevAria: resolveTranslatedCopy(
+        t("roomImage.prevAria", { defaultValue: "Previous image" }),
+        "roomImage.prevAria",
+        "Previous image"
+      ),
+      nextAria: resolveTranslatedCopy(
+        t("roomImage.nextAria", { defaultValue: "Next image" }),
+        "roomImage.nextAria",
+        "Next image"
+      ),
+      empty: resolveTranslatedCopy(
+        t("roomImage.noImage", { defaultValue: "No image available" }),
+        "roomImage.noImage",
+        "No image available"
+      ),
     };
   })();
 

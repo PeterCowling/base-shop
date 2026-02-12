@@ -85,7 +85,7 @@ const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className
         "sm:py-14",
         "lg:py-16",
         "motion-safe:animate-fade-up",
-        "dark:bg-brand-text",
+        "dark:bg-brand-bg",
         className
       )}
     >
@@ -95,7 +95,7 @@ const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className
           titleParts ? (
             <h2
               aria-label={rawTitle}
-              className="mx-auto text-balance text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl"
+              className="mx-auto text-balance text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl dark:text-brand-secondary"
             >
               <Inline className="justify-center gap-x-2 sm:gap-x-4">
                 <Stack className="items-end text-end leading-none">
@@ -103,7 +103,7 @@ const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className
                   <span className="pe-1 sm:pe-2">{titleParts.between}</span>
                 </Stack>
                 <span
-                  className="self-center whitespace-nowrap text-5xl leading-none text-brand-bougainvillea sm:text-6xl md:text-7xl"
+                  className="self-center whitespace-nowrap text-5xl leading-none text-brand-bougainvillea sm:text-6xl md:text-7xl dark:text-brand-secondary"
                   aria-hidden="true"
                 >
                   {titleParts.home}
@@ -112,7 +112,7 @@ const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className
             </h2>
           ) : (
             /* Fallback when the pattern doesn’t match (other locales) */
-            <h2 className="text-balance text-center text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl">
+            <h2 className="text-balance text-center text-3xl font-extrabold tracking-tight text-brand-primary sm:text-4xl md:text-5xl dark:text-brand-secondary">
               {rawTitle}
             </h2>
           )
@@ -131,7 +131,7 @@ const IntroTextBox: FC<IntroTextBoxProps> = ({ lang, showTitle = true, className
           {paragraphs.map(({ id, content }) => (
             <p
               key={id}
-              className="prose md:prose-lg prose-p:my-0 text-brand-text dark:text-brand-surface"
+              className="prose md:prose-lg prose-p:my-0 text-brand-text dark:text-brand-text"
               dangerouslySetInnerHTML={{ __html: content }}
             />
           ))}

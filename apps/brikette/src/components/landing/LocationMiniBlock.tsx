@@ -84,7 +84,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
               <button
                 type="button"
                 onClick={handleDirections}
-                className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-md transition-colors hover:bg-brand-primary/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-md transition-colors hover:bg-brand-primary/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-bg dark:hover:text-brand-bg"
               >
                 {resolveTranslatedCopy(
                   tModals("location.getDirections", { defaultValue: "Get directions" }),
@@ -95,7 +95,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-surface"
+                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-surface dark:hover:text-brand-secondary"
               >
                 {resolveTranslatedCopy(
                   tModals("location.justShowMap", { defaultValue: "Show map" }),
@@ -148,7 +148,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 </div>
               </div>
             </div>
-            <span className="mt-6 text-xs font-semibold uppercase tracking-widest text-brand-primary">
+            <span className="mt-6 text-xs font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">
               {resolveTranslatedCopy(
                 t("locationSection.mapCta", { defaultValue: "View map" }),
                 "View map"

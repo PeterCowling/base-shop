@@ -27,6 +27,8 @@ Owner: Pete
 3. **Evidence and Tooling Baseline** (Priority: Medium)
    - Status: Demand, margin, and fulfillment instrumentation are not yet in place.
    - Next: Define minimum tooling/data stack needed for decision-grade signals.
+   - Dry-run Evidence: `docs/business-os/strategy/PET/2026-02-11-week2-gate-dry-run.user.md`
+   - Action Backlog: `docs/business-os/strategy/PET/launch-readiness-action-backlog.user.md`
 
 ## Risks
 

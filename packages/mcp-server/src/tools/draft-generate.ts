@@ -5,6 +5,7 @@ import { z } from "zod";
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
+import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import {
   type EmailTemplate,
@@ -610,7 +611,7 @@ function stripGreeting(body: string): string {
 }
 
 function stripSignature(body: string): string {
-  return body.replace(/\r?\n\r?\n\s*(Best\s+regards|Kind\s+regards|Regards)[\s\S]*$/i, "");
+  return stripLegacySignatureBlock(body);
 }
 
 function stripThankYouOpener(body: string): string {

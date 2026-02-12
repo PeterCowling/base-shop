@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2026-02-10
+Last-reviewed: 2026-02-11
 
 # Git Safety Guide (Agent Runbook)
 

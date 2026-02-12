@@ -57,9 +57,9 @@ function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
     "border-brand-primary",
     "bg-brand-primary/10",
     "text-brand-primary",
-    "dark:border-brand-primary/70",
-    "dark:bg-brand-primary/20",
-    "dark:text-brand-primary/80"
+    "dark:border-brand-secondary/70",
+    "dark:bg-brand-secondary/15",
+    "dark:text-brand-secondary"
   );
   const inactiveClasses = clsx(
     "border-brand-outline/30",

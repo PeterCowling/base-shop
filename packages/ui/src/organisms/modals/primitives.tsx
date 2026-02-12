@@ -152,6 +152,8 @@ const FOOTER_BUTTON_BASE = [
   "text-sm",
   "font-medium",
   "text-brand-bg",
+  "dark:bg-brand-secondary",
+  "dark:text-brand-bg",
   "drop-shadow-brand-primary-40",
   "transition-all",
   "hover:bg-brand-primary/90",
@@ -159,6 +161,7 @@ const FOOTER_BUTTON_BASE = [
   "focus-visible:ring-2",
   "focus-visible:ring-brand-primary",
   "focus-visible:ring-offset-2",
+  "dark:focus-visible:ring-offset-brand-surface",
 ];
 
 export function ModalFooterButton({ className, ...rest }: ModalFooterButtonProps): JSX.Element {

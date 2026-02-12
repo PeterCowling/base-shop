@@ -1,0 +1,52 @@
+[
+  {
+    "mode": "light",
+    "route": "/en",
+    "violations": []
+  },
+  {
+    "mode": "light",
+    "route": "/en/experiences",
+    "violations": []
+  },
+  {
+    "mode": "light",
+    "route": "/en/rooms",
+    "violations": []
+  },
+  {
+    "mode": "light",
+    "route": "/en/how-to-get-here",
+    "violations": []
+  },
+  {
+    "mode": "light",
+    "route": "/en/deals",
+    "violations": []
+  },
+  {
+    "mode": "dark",
+    "route": "/en",
+    "violations": []
+  },
+  {
+    "mode": "dark",
+    "route": "/en/experiences",
+    "violations": []
+  },
+  {
+    "mode": "dark",
+    "route": "/en/rooms",
+    "violations": []
+  },
+  {
+    "mode": "dark",
+    "route": "/en/how-to-get-here",
+    "violations": []
+  },
+  {
+    "mode": "dark",
+    "route": "/en/deals",
+    "violations": []
+  }
+]

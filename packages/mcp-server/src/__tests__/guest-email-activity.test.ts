@@ -90,6 +90,34 @@ describe("guest email activity helper", () => {
     expect(decoded).toContain("Subject: Prepayment - 1st Attempt Failed (Hostelworld)");
   });
 
+  it("strips legacy text signature lines from template bodies", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-8", message: { id: "msg-8" } } });
+    const gmail = {
+      users: {
+        drafts: {
+          create: createDraftMock,
+        },
+      },
+    };
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    await sendGuestEmailActivity({
+      bookingRef: "BOOK123",
+      activityCode: 8,
+      recipients: ["guest@example.com"],
+    });
+
+    const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
+    const decoded = decodeRawEmail(raw);
+
+    expect(decoded).not.toContain("Warm regards,");
+    expect(decoded).not.toContain("Peter Cowling");
+    expect(decoded).not.toContain("Owner");
+  });
+
   it("defers unsupported activity codes without creating drafts", async () => {
     const result = await sendGuestEmailActivity({
       bookingRef: "BOOK123",

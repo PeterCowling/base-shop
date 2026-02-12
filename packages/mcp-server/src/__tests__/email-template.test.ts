@@ -32,8 +32,9 @@ describe("generateEmailHtml", () => {
 
     expect(html).toContain("Cristiana's Signature");
     expect(html).toContain("Peter's Signature");
-    expect(html).toContain("Cristiana Marzano Cowling");
-    expect(html).toContain("Peter Cowling");
+    expect(html).not.toContain("With warm regards,");
+    expect(html).not.toContain("Peter Cowling</div>");
+    expect(html).not.toContain("Cristiana Marzano Cowling</div>");
   });
 
   it("includes social links and terms link in footer", () => {

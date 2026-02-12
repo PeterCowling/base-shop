@@ -1,11 +1,11 @@
 ---
-name: wf-sequence
+name: lp-sequence
 description: Topologically sort plan tasks into correct implementation order, renumber sequentially, and add explicit dependency/blocker metadata to enable parallel subagent execution.
 ---
 
 # Sequence Plan
 
-Analyze an existing plan's tasks, determine correct implementation order based on dependencies and file overlap, renumber tasks sequentially, and add explicit blocking relationships so `/wf-build` can dispatch parallel subagents safely.
+Analyze an existing plan's tasks, determine correct implementation order based on dependencies and file overlap, renumber tasks sequentially, and add explicit blocking relationships so `/lp-build` can dispatch parallel subagents safely.
 
 ## Operating Mode
 
@@ -17,23 +17,23 @@ Analyze an existing plan's tasks, determine correct implementation order based o
 
 ## When to Use
 
-Run `/wf-sequence` when:
+Run `/lp-sequence` when:
 
-- A plan has been created or updated via `/wf-plan` and tasks need correct execution ordering
+- A plan has been created or updated via `/lp-plan` and tasks need correct execution ordering
 - Tasks were added in phases/batches and the implementation order isn't optimized
-- You want to enable parallel subagent execution for `/wf-build` by making blocking relationships explicit
-- A `/wf-replan` added or removed tasks and the numbering/dependencies need cleanup
-- Planning or wf-replanning decomposed tasks (split into precursor chains/subtasks): run this after all structural edits and before build handoff/resume
+- You want to enable parallel subagent execution for `/lp-build` by making blocking relationships explicit
+- A `/lp-replan` added or removed tasks and the numbering/dependencies need cleanup
+- Planning or replanning decomposed tasks (split into precursor chains/subtasks): run this after all structural edits and before build handoff/resume
 
-Do **not** use `/wf-sequence` if:
+Do **not** use `/lp-sequence` if:
 
-- The plan doesn't exist yet -> use `/wf-plan`
-- Tasks need scope/confidence changes -> use `/wf-replan`
-- You want to build tasks -> use `/wf-build`
+- The plan doesn't exist yet -> use `/lp-plan`
+- Tasks need scope/confidence changes -> use `/lp-replan`
+- You want to build tasks -> use `/lp-build`
 
 ## Fast Path (with argument)
 
-**If user provides a slug** (e.g., `/wf-sequence design-system`):
+**If user provides a slug** (e.g., `/lp-sequence design-system`):
 - Read `docs/plans/<slug>-plan.md` directly
 - Skip discovery
 
@@ -111,7 +111,7 @@ Sort tasks using topological ordering (Kahn's algorithm or DFS-based):
    - Lower phase number
    - Smaller effort (S before M before L)
    - Alphabetical by description (stable tiebreak)
-3. Detect cycles — if found, report them and STOP (cycles indicate a planning error that needs `/wf-replan`)
+3. Detect cycles — if found, report them and STOP (cycles indicate a planning error that needs `/lp-replan`)
 
 ### 4) Renumber Tasks
 
@@ -227,7 +227,7 @@ Report what changed:
 - Max parallelism: P tasks in wave N
 - Critical path length: W waves
 
-Ready for `/wf-build`.
+Ready for `/lp-build`.
 ```
 
 ## Handling Edge Cases
@@ -268,10 +268,10 @@ Some tasks use range syntax (e.g., `DS-73–DS-77`). Expand these to explicit li
 ## Completion Messages
 
 **Success:**
-> "Plan sequenced. N tasks reordered into K execution waves (max parallelism: P). Critical path: W waves. Rename map applied. Ready for `/wf-build`."
+> "Plan sequenced. N tasks reordered into K execution waves (max parallelism: P). Critical path: W waves. Rename map applied. Ready for `/lp-build`."
 
 **Cycle detected:**
-> "Cannot sequence — circular dependency detected between TASK-A and TASK-B. Run `/wf-replan` to resolve the cycle before sequencing."
+> "Cannot sequence — circular dependency detected between TASK-A and TASK-B. Run `/lp-replan` to resolve the cycle before sequencing."
 
 **No changes needed:**
 > "Plan is already correctly sequenced. No reordering required."

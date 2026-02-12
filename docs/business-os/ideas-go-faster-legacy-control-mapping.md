@@ -38,7 +38,7 @@ This matrix preserves legacy quality controls from the pre-RS revision and maps 
 | LC-20 | Drucker/Porter priority assigned | Stage 5 priority contract before Stage 6 writes | Contracted in SKILL.md; red flags enforce no out-of-order writes |
 | LC-21 | 3B write ledger emitted | Stage 6 `write-ledger.jsonl` contract | `check-idea-generate-output.sh` artifact + schema checks |
 | LC-22 | Card ID resolution honored | Stage 7 `{{CARD_ID}}` injection via card-id-map contract | `check-idea-generate-output.sh` manifest factfind dependency/placeholder checks |
-| LC-23 | Fact-find seeding or previewed | Stage 7 wf-fact-find seeding (live) / preview (dry-run) contract | Contracted in SKILL.md; run output section required in review |
+| LC-23 | Fact-find seeding or previewed | Stage 7 lp-fact-find seeding (live) / preview (dry-run) contract | Contracted in SKILL.md; run output section required in review |
 | LC-24 | Top-K pool deterministic | Stage 7 deterministic ordering and newly-promoted-only rule | Contracted in SKILL.md; red flags enforce violations |
 
 ## Legacy Red Flag Mapping (20)
@@ -52,7 +52,7 @@ This matrix preserves legacy quality controls from the pre-RS revision and maps 
 | LR-05 | Skipped clustering | Stage 3 clustering requirement + red flag #5 |
 | LR-06 | Skipped Munger/Buffett filter | Stage 4 verdict requirement + red flag #6 |
 | LR-07 | Created cards without Drucker/Porter priority | Stage 5 before Stage 6 ordering + red flag #7 |
-| LR-08 | Created wf-fact-find docs for low-priority cards | Stage 7 top-K constraint + red flag #8 |
+| LR-08 | Created lp-fact-find docs for low-priority cards | Stage 7 top-K constraint + red flag #8 |
 | LR-09 | Persisted hunches | Confidence gate eligibility constraints + red flag #9 |
 | LR-10 | Ignored stance | Stance-sensitive generation/prioritization contract + red flag #10 |
 | LR-11 | Invented unsupported metrics | Evidence-pointer and observable-data requirement + red flag #11 |

@@ -5,7 +5,7 @@ description: Radical business growth process auditor. Cabinet Secretary orchestr
 
 # Ideas Go Faster — Cabinet Secretary
 
-Cabinet Secretary orchestrates composite business idea generation across multiple expert lenses. Not a kanban health checker. Not a WIP counter. This is a multi-stage pipeline that produces ideas, scores them, clusters them, filters them, prioritizes them, creates cards for top-priority ideas, and seeds wf-fact-find stage docs for immediate investigation.
+Cabinet Secretary orchestrates composite business idea generation across multiple expert lenses. Not a kanban health checker. Not a WIP counter. This is a multi-stage pipeline that produces ideas, scores them, clusters them, filters them, prioritizes them, creates cards for top-priority ideas, and seeds lp-fact-find stage docs for immediate investigation.
 
 Pete triggers the sweep via `/idea-generate`. Everything after that is autonomous.
 
@@ -97,7 +97,7 @@ For `/idea-generate`, operate in **sales-first mode**:
 - Read persona files from `_shared/cabinet/` as needed during execution
 - Create ideas via `POST /api/agent/ideas` (live mode only)
 - Create cards via `POST /api/agent/cards` (live mode only)
-- Create wf-fact-find stage docs via `POST /api/agent/stage-docs` (live mode only)
+- Create lp-fact-find stage docs via `POST /api/agent/stage-docs` (live mode only)
 - Write sweep report to `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`
 
 **Persistence mode (run-level):**
@@ -111,8 +111,8 @@ For `/idea-generate`, operate in **sales-first mode**:
 
 **Not allowed:**
 - Modify existing cards or ideas (no PATCH on cards/ideas — Drucker/Porter runs before card creation, so no priority updates needed)
-- Stage-doc PATCH is allowed only for latest-wins `wf-fact-find` upsert safety (avoid duplicate stage-doc POSTs)
-- Move cards between lanes directly (baseline deterministic lane transitions are handled downstream by /wf-plan and /wf-build)
+- Stage-doc PATCH is allowed only for latest-wins `lp-fact-find` upsert safety (avoid duplicate stage-doc POSTs)
+- Move cards between lanes directly (baseline deterministic lane transitions are handled downstream by /lp-plan and /lp-build)
 - Run destructive commands
 - Auto-schedule or self-invoke
 
@@ -177,7 +177,7 @@ During Stages 6–7 (live-mode creates):
 - In `--dry-run`, do NOT issue write calls (`POST/PATCH`) to ideas/cards/stage-docs endpoints; record preview output instead.
 - Ideas/cards are non-idempotent POST creates. Do NOT blind-retry create calls.
 - On idea/card create failure: run one reconciliation read. If entity is confirmed, treat as success; if not, record failure and continue.
-- Stage docs use latest-wins upsert semantics (`GET /api/agent/stage-docs/{cardId}/wf-fact-find` -> `PATCH` when present, `POST` only when missing).
+- Stage docs use latest-wins upsert semantics (`GET /api/agent/stage-docs/{cardId}/lp-fact-find` -> `PATCH` when present, `POST` only when missing).
 - Mark sweep report `Run-Status: partial` and list all failed creates/updates
 - Never create a stage doc unless its card exists
 - Emit a reconciliation checklist in the sweep report (what succeeded, what failed, exact repair commands, and next action owner)
@@ -652,7 +652,7 @@ Under `grow-business`:
 **Traction mode (under `grow-business`, market-facing L1-L2 businesses only):**
 - Use traction-mode Decision Log format for P1/P2 (includes Traction Objective, Test Plan, Porter Fit, Abandonment)
 - Output a **Rigor Pack** for each P1/P2 (5 components: Objective & Contribution Card, Traction Test Card, Trade-off Statement, Evidence & Unknowns, Abandonment Note)
-- Rigor Pack content is passed to Stage 7 for wf-fact-find doc pre-population
+- Rigor Pack content is passed to Stage 7 for lp-fact-find doc pre-population
 - P1 cap: max 3 P1s per business per sweep
 - Reversibility rule: if Munger/Buffett noted "bounded and reversible downside" → Rigor Pack sufficient; if cautious → require Full Strategy Pack
 - Infrastructure businesses (PLAT, BOS) use standard format under `grow-business`, no traction mode
@@ -756,13 +756,13 @@ Body: {
 
 **Card ID map contract (`docs/business-os/sweeps/<YYYY-MM-DD>-card-id-map.json`):**
 - On every successful or reconciled `card_create`, write `slug -> cardId` mapping.
-- Stage 7 must resolve `{{CARD_ID}}` using this map before any wf-fact-find upsert.
+- Stage 7 must resolve `{{CARD_ID}}` using this map before any lp-fact-find upsert.
 
 **Stance sensitivity:** INVARIANT (card creation mechanics do not change by stance)
 
 ### Stage 7: Fact-Find Seeding (Global Top-K)
 
-Use manifest `factfind_upsert` operations to seed wf-fact-find docs for selected cards.
+Use manifest `factfind_upsert` operations to seed lp-fact-find docs for selected cards.
 
 **Top-K pool (deterministic): newly promoted ideas from this sweep only.**
 - Pool source: ideas promoted through Stages 1–5 and converted to cards in Stage 6 during this invocation.
@@ -777,7 +777,7 @@ Use manifest `factfind_upsert` operations to seed wf-fact-find docs for selected
 5. **Confidence-Score** — higher first (tiebreaker)
 6. **Card ID** — ASC (final deterministic tiebreaker)
 
-K=3 (default, max 3 wf-fact-find docs per sweep)
+K=3 (default, max 3 lp-fact-find docs per sweep)
 
 **Dry-run override (mandatory):**
 - If `--dry-run`, compute Top-K and any Stage 7b candidate exactly as live, but do NOT call stage-doc endpoints.
@@ -793,12 +793,12 @@ K=3 (default, max 3 wf-fact-find docs per sweep)
 **Stage-doc write mode (live mode only, latest-wins, mandatory):**
 - Execute `factfind_upsert` operations after all dependent `card_create` operations settle.
 - For each op:
-  1) `GET /api/agent/stage-docs/{cardId}/wf-fact-find`
-  2) If exists (200): `PATCH /api/agent/stage-docs/{cardId}/wf-fact-find` using `baseEntitySha` and patch `{ "content": "<new stage markdown body>" }`
+  1) `GET /api/agent/stage-docs/{cardId}/lp-fact-find`
+  2) If exists (200): `PATCH /api/agent/stage-docs/{cardId}/lp-fact-find` using `baseEntitySha` and patch `{ "content": "<new stage markdown body>" }`
   3) If missing (404): `POST /api/agent/stage-docs`
   4) If PATCH returns 409: refetch once and retry once; if still conflicting, record failure and continue (run becomes partial)
 - Apply rerun skip rule from Stage 6 (`operation_id + payload_fingerprint`).
-- This preserves one logical wf-fact-find stage doc per card with latest content while keeping append-only repository internals.
+- This preserves one logical lp-fact-find stage doc per card with latest content while keeping append-only repository internals.
 
 **For each selected card (standard template — used for `improve-data` or non-traction ideas):**
 ```
@@ -806,7 +806,7 @@ POST ${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs
 Headers: X-Agent-API-Key: ${BOS_AGENT_API_KEY}, Content-Type: application/json
 Body: {
   "cardId": "<card-id>",
-  "stage": "wf-fact-find",
+  "stage": "lp-fact-find",
   "content": "# Fact-Finding: <Card Title>\n\n**Source:** Sweep <YYYY-MM-DD>\n**Originator:** <Expert> (<Lens>)\n**Confidence:** <Score>/100\n**Priority:** <P1-P5>\n**Impact:** <Impact-Band> (<Impact-Type> via <Impact-Mechanism>)\n\n## Questions to Answer\n\n1. <Key question about feasibility>\n2. <Key question about approach>\n3. <Key question about measurement>\n\n## Evidence From Sweep\n\n- <evidence bullet 1>\n- <evidence bullet 2>\n\n## Contrarian Gate Summary\n\n**Contrarian Status:** PASS\n**Thiel Secret:** <1-sentence contrarian secret from gate>\n**Competition Escape:** <wedge + by-cycle-N milestone from gate>\n**Capture-Value:** <pricing power thesis from gate>\n\n## Decision Log (from Cabinet)\n\n<Include relevant Decision Log entries from Dossier — both Contrarian Gate block and Munger-Buffett Filter block>\n\n## Recommendations\n\n- First step: <concrete action>\n- Measurement: <what to track>\n\n## Transition Decision\n\n**Status:** Ready for fact-finding\n**Next Lane:** Fact-finding (when Pete reviews)"
 }
 ```
@@ -817,18 +817,18 @@ POST ${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs
 Headers: X-Agent-API-Key: ${BOS_AGENT_API_KEY}, Content-Type: application/json
 Body: {
   "cardId": "<card-id>",
-  "stage": "wf-fact-find",
-  "content": "# Fact-Finding (Traction Fast-Track): <Card Title>\n\n**Source:** Sweep <YYYY-MM-DD>\n**Originator:** <Expert> (<Lens>)\n**Confidence:** <Score>/100\n**Priority:** <P1|P2>\n**Impact:** <Impact-Band> (<Impact-Type> via <Impact-Mechanism>)\n**Mode:** Traction (Rigor Pack pre-populated)\n\n## 1. Objective & Contribution Card\n- Objective: <baseline → target → date>\n- Customer: <who specifically>\n- Contribution thesis: <why this produces traction>\n- Owner + check-in: <name + date>\n\n## 2. Traction Test Card\n- Hypothesis: <market / offer / channel>\n- Market contact mechanism: <how we reach buyers this cycle>\n- Offer: <what we're selling/testing>\n- Success metrics: <leading + lagging>\n- Timebox: <days>\n- Kill / iterate / scale criteria: <decision thresholds>\n\n## 3. Trade-off Statement\n<One sentence: We will not do X / serve Y / optimize Z, because we are prioritizing position A.>\n\n## 4. Evidence & Unknowns\n- Known: <1-3 facts>\n- Unknown: <1-2 critical unknowns>\n- Fastest test: <test + owner + deadline>\n\n## 5. Abandonment Note\n- Stop/pause: <what creates capacity>\n- Capacity source: <explicit if nothing stops>\n\n## Contrarian Gate Summary\n\n**Contrarian Status:** PASS\n**Thiel Secret:** <1-sentence contrarian secret from gate>\n**Competition Escape:** <wedge + by-cycle-N milestone from gate>\n**Capture-Value:** <pricing power thesis from gate>\n\n## Decision Log (from Cabinet)\n\n<Include traction-mode Decision Log + Contrarian Gate block + Munger-Buffett Filter block>\n\n## Transition Decision\n\n**Status:** Ready for fact-finding (fast-track evidence pack)\n**Next Lane:** Fact-finding\n**Note:** This wf-fact-find doc was pre-populated from the Drucker/Porter Rigor Pack to accelerate `/wf-fact-find`. It does not replace `/wf-fact-find` and does not skip planning prerequisites."
+  "stage": "lp-fact-find",
+  "content": "# Fact-Finding (Traction Fast-Track): <Card Title>\n\n**Source:** Sweep <YYYY-MM-DD>\n**Originator:** <Expert> (<Lens>)\n**Confidence:** <Score>/100\n**Priority:** <P1|P2>\n**Impact:** <Impact-Band> (<Impact-Type> via <Impact-Mechanism>)\n**Mode:** Traction (Rigor Pack pre-populated)\n\n## 1. Objective & Contribution Card\n- Objective: <baseline → target → date>\n- Customer: <who specifically>\n- Contribution thesis: <why this produces traction>\n- Owner + check-in: <name + date>\n\n## 2. Traction Test Card\n- Hypothesis: <market / offer / channel>\n- Market contact mechanism: <how we reach buyers this cycle>\n- Offer: <what we're selling/testing>\n- Success metrics: <leading + lagging>\n- Timebox: <days>\n- Kill / iterate / scale criteria: <decision thresholds>\n\n## 3. Trade-off Statement\n<One sentence: We will not do X / serve Y / optimize Z, because we are prioritizing position A.>\n\n## 4. Evidence & Unknowns\n- Known: <1-3 facts>\n- Unknown: <1-2 critical unknowns>\n- Fastest test: <test + owner + deadline>\n\n## 5. Abandonment Note\n- Stop/pause: <what creates capacity>\n- Capacity source: <explicit if nothing stops>\n\n## Contrarian Gate Summary\n\n**Contrarian Status:** PASS\n**Thiel Secret:** <1-sentence contrarian secret from gate>\n**Competition Escape:** <wedge + by-cycle-N milestone from gate>\n**Capture-Value:** <pricing power thesis from gate>\n\n## Decision Log (from Cabinet)\n\n<Include traction-mode Decision Log + Contrarian Gate block + Munger-Buffett Filter block>\n\n## Transition Decision\n\n**Status:** Ready for fact-finding (fast-track evidence pack)\n**Next Lane:** Fact-finding\n**Note:** This lp-fact-find doc was pre-populated from the Drucker/Porter Rigor Pack to accelerate `/lp-fact-find`. It does not replace `/lp-fact-find` and does not skip planning prerequisites."
 }
 ```
 
-**Rigor Pack integration:** When a P1/P2 idea has a Rigor Pack from Stage 5, the Rigor Pack content pre-populates the wf-fact-find stage doc. This accelerates `/wf-fact-find`, but does not replace it. Cards still proceed through the normal `wf-fact-find → wf-plan → wf-build` loop.
+**Rigor Pack integration:** When a P1/P2 idea has a Rigor Pack from Stage 5, the Rigor Pack content pre-populates the lp-fact-find stage doc. This accelerates `/lp-fact-find`, but does not replace it. Cards still proceed through the normal `lp-fact-find → lp-plan → lp-build` loop.
 
-**Cards NOT in top K:** Get cards but no wf-fact-find docs (Pete can manually trigger `/wf-fact-find` later if desired)
+**Cards NOT in top K:** Get cards but no lp-fact-find docs (Pete can manually trigger `/lp-fact-find` later if desired)
 
 **Stage 7b backfill budget (optional; disabled by default in Phase 0):**
 - Activation: `--stage7b` flag only. This maps to run-level `stage7b_backfill_enabled=true`.
-- Budget: max 1 existing `P1|P2` card without a wf-fact-find doc per sweep.
+- Budget: max 1 existing `P1|P2` card without a lp-fact-find doc per sweep.
 - Selector (deterministic): Priority (`P1` before `P2`) -> Created-Date ASC (oldest first) -> Card ID ASC.
 - Reporting: Stage 7 Top-K remains newly promoted ideas only; Stage 7b selection is reported in a separate backfill section (never mixed into Top-K).
 - In dry-run: Stage 7b output is preview-only (no stage-doc writes).
@@ -1103,7 +1103,7 @@ After producing the sweep report, verify each item. If any FAIL, revise before f
 - [ ] **Cards created (or previewed):** Live mode persists via API with tags `["sweep-generated", "cabinet-v1"]`; dry-run records would-create outputs with zero write attempts
 - [ ] **Drucker/Porter priority assigned:** P1-P5 distribution recorded
 - [ ] **3B write ledger emitted:** `docs/business-os/sweeps/<YYYY-MM-DD>-write-ledger.jsonl` includes operation/status/fingerprint records
-- [ ] **Card ID resolution honored:** wf-fact-find writes occur only after `{{CARD_ID}}` resolution via card-id-map
+- [ ] **Card ID resolution honored:** lp-fact-find writes occur only after `{{CARD_ID}}` resolution via card-id-map
 - [ ] **Fact-find seeding (or previewed):** Live mode creates stage docs; dry-run records would-seed outputs with zero write attempts
 - [ ] **Top-K pool deterministic:** Top-K selection used only newly promoted ideas from this sweep
 - [ ] **Existing cards handled separately:** Existing cards were reported as reaffirmation/addendum only (not mixed into Top-K)
@@ -1133,7 +1133,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 5. **Skipped clustering.** Must attempt to group semantically similar ideas.
 6. **Skipped Munger/Buffett filter.** All presentable ideas must receive Kill/Hold/Promote verdict.
 7. **Created cards without Drucker/Porter priority.** Drucker/Porter (Stage 5) must run before card creation (Stage 6). All cards must have P1-P5 ranking at creation time.
-8. **Created wf-fact-find docs for low-priority cards.** Only global top K (default K=3) get wf-fact-find docs.
+8. **Created lp-fact-find docs for low-priority cards.** Only global top K (default K=3) get lp-fact-find docs.
 9. **Persisted hunches.** Confidence-Score 0-29 ideas must NOT be persisted (log in report only).
 10. **Ignored stance.** Generation and prioritization must reflect stance (improve-data vs grow-business).
 11. **Invents metrics not present in the data.** All evidence must be observable.
@@ -1183,7 +1183,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 | Context budget exceeded | Switch to summary-block mode. Record coverage ratio. If coverage <80%, mark partial + set `Quality-Rerun-Required: yes` + emit rerun focus packet. If coverage >=80%, continue with residual-risk note. |
 | Write call attempted during `--dry-run` | Stop persistence branch, mark run partial, record attempted endpoint as contract violation, continue with preview-only reporting. |
 | Commit manifest missing/invalid | Stop persistence branch, mark run partial, record manifest validation failure and required remediation. |
-| Card ID unresolved for wf-fact-find upsert | Record failed `factfind_upsert` operation, skip write, keep run partial with reconciliation note. |
+| Card ID unresolved for lp-fact-find upsert | Record failed `factfind_upsert` operation, skip write, keep run partial with reconciliation note. |
 | Create idea fails | No blind retry. Reconcile once via list/read; if unresolved, record failure; continue; mark run partial. |
 | Create card fails | No blind retry. Reconcile once via list/read; if unresolved, record failure; continue; mark run partial. |
 | Upsert stage doc fails | Use latest-wins flow (GET -> PATCH/POST). Retry once only on PATCH 409; if still failing, record; continue; mark run partial. |
@@ -1201,13 +1201,13 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 |---|---|---|
 | Missing business plan | `/biz-update-plan` | Bootstrap or update the plan |
 | Missing people profiles | `/biz-update-people` | Bootstrap profiles with current-state data |
-| Top-priority card with wf-fact-find doc | `/wf-fact-find <card-id>` | Deep-dive investigation |
-| Card without wf-fact-find doc | `/wf-fact-find <card-id>` | Manual wf-fact-find if desired |
-| Card ready for planning | `/wf-plan <slug>` | After wf-fact-find completes |
+| Top-priority card with lp-fact-find doc | `/lp-fact-find <card-id>` | Deep-dive investigation |
+| Card without lp-fact-find doc | `/lp-fact-find <card-id>` | Manual lp-fact-find if desired |
+| Card ready for planning | `/lp-plan <slug>` | After lp-fact-find completes |
 | DGP created (data gap) | Next sweep with `improve-data` stance | DGP pickup for investigation |
 | DGP created (timing gap) | Trigger condition met | Re-evaluate when trigger fires |
 | DGP created (dependency gap) | Prerequisite work completes | Re-evaluate after dependency resolved |
-| DGP resurfaced (ready-now) | `/idea-develop <idea-id>` -> `/wf-fact-find <card-id>` | Convert resurfaced idea to card, then execute investigation |
+| DGP resurfaced (ready-now) | `/idea-develop <idea-id>` -> `/lp-fact-find <card-id>` | Convert resurfaced idea to card, then execute investigation |
 | Technical cabinet not triggered | Next sweep with trigger conditions | Run occurs automatically when stance/flags/diff artifacts trigger |
 
 ---
@@ -1215,7 +1215,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 ## Completion Messages
 
 **Standard:**
-> "Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Stance: `{stance}`. {N} sub-experts run. {X} presentable ideas, {Y} decision-gaps, {Z} hunches. {N} cards created (P1: A, P2: B, P3: C). {K} wf-fact-find docs seeded. Technical cabinet: {status}."
+> "Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Stance: `{stance}`. {N} sub-experts run. {X} presentable ideas, {Y} decision-gaps, {Z} hunches. {N} cards created (P1: A, P2: B, P3: C). {K} lp-fact-find docs seeded. Technical cabinet: {status}."
 
 **First sweep (no plans):**
 > "First Cabinet sweep complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. CRITICAL: No business plans exist. Drucker/Porter operating in degraded mode with maturity model fallback. Recommendation: Bootstrap plans via `/biz-update-plan`."
@@ -1224,7 +1224,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 > "Cabinet sweep complete with context degradation. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Context limit reached after {N} of {M} sub-experts. Switched to summary-block mode. {X} presentable ideas generated. {N} cards created."
 
 **Dry run:**
-> "Cabinet sweep dry-run complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Persistence mode: dry-run (no ideas/cards/stage-doc writes). {X} presentable ideas, {Y} would-create cards, {K} would-seed wf-fact-find docs."
+> "Cabinet sweep dry-run complete. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. Persistence mode: dry-run (no ideas/cards/stage-doc writes). {X} presentable ideas, {Y} would-create cards, {K} would-seed lp-fact-find docs."
 
 **Dry run (API degraded fallback):**
 > "Cabinet sweep dry-run complete with API degraded fallback. Report: `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`. Progress log: `docs/business-os/sweeps/<YYYY-MM-DD>-progress.user.md`. API-Preflight-Mode: degraded-filesystem-only. Dedup baseline confidence reduced; review reaffirmations manually."
@@ -1236,7 +1236,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 - **Pete-triggered only.** No automated scheduling or self-invocation.
 - **Agent identity.** All API calls use the agent API key. Ideas tagged `["sweep-generated", "cabinet-v1"]`. DGPs tagged `["sweep-generated", "cabinet-v1", "dgp", "gap:<type>"]` (plus `held` when applicable). Cards tagged `["sweep-generated", "cabinet-v1"]`.
 - **Prompt-only.** All orchestration logic lives in this SKILL.md. No TypeScript modules. Extract to code later if patterns stabilize.
-- **Max 3 wf-fact-find docs per sweep.** Prevents flooding the fact-finding queue.
+- **Max 3 lp-fact-find docs per sweep.** Prevents flooding the fact-finding queue.
 - **File reads for plans/profiles/personas.** Agent API doesn't expose these yet. Read directly from filesystem.
 - **Sweep outputs per invocation.** One final sweep report plus one progress artifact in `docs/business-os/sweeps/`.
 - **Default stance:** `improve-data` if no `--stance` parameter provided.
@@ -1258,7 +1258,7 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 - Clustering reduces duplicate ideas (at least 20% reduction if semantic overlap exists)
 - Munger/Buffett filter kills at least 10% of presentable ideas (prevents "everything is good" bias)
 - Drucker/Porter produces meaningful P1-P5 distribution (not all P3)
-- Top K cards receive wf-fact-find docs for immediate investigation
+- Top K cards receive lp-fact-find docs for immediate investigation
 - DGPs created with VOI-Scores for future sweep pickup
 - Existing DGP backlog is resurfaced each sweep with ready-now/watch states
 - Context discipline prevents token exhaustion
@@ -1276,14 +1276,14 @@ If any of these are true, the sweep report is **invalid** and must be revised:
 - **v3.2** (2026-02-10): RS-02C input/UX contract update: added assumptions precedence contract (inline vs `--assumptions-file`), `Verbosity-Mode` frontmatter + word-limit policy (`compact|standard|extended`), and technical cabinet `applies_to` semantics (`[<BIZ>...]` or `["cross-cutting"]`) with checklist/red-flag enforcement.
 - **v3.1** (2026-02-10): RS-02A transparency contract update: added deterministic report sections for Who Said What (F1), Tool-Gap Register (F2), Kill/Hold Rationale (F4), and Delta/Coverage (F6); updated Evaluation Checklist and Red Flags to require these sections.
 - **v3.0** (2026-02-10): Added `--dry-run` preview mode for persistence-safe sweep execution. Dry-run now computes full pipeline outputs (including ranking and Top-K) while blocking Stage 6/7 API writes (ideas/cards/stage-docs), adding explicit preview reporting, persistence-mode frontmatter, dry-run safety checklist items, red-flag enforcement, and completion messaging.
-- **v2.9** (2026-02-10): Contrarian Gate integration: Stage 4 now runs two-phase process (Munger-Thiel Contrarian Gate producing PASS/UNRESOLVED/FAIL → Munger-Buffett Capital-Allocation Verdict constrained by gate status); Stages 5-6 enforce input validation (Promote + PASS only); Stage 7 adds Contrarian Status boost to Top-K selection and gate artifact summaries to wf-fact-find templates; Sweep Report adds Contrarian Gate counts and dedicated report section; Evaluation Checklist gains gate verification items; Red Flags expanded with gate violation rules (12-14).
+- **v2.9** (2026-02-10): Contrarian Gate integration: Stage 4 now runs two-phase process (Munger-Thiel Contrarian Gate producing PASS/UNRESOLVED/FAIL → Munger-Buffett Capital-Allocation Verdict constrained by gate status); Stages 5-6 enforce input validation (Promote + PASS only); Stage 7 adds Contrarian Status boost to Top-K selection and gate artifact summaries to lp-fact-find templates; Sweep Report adds Contrarian Gate counts and dedicated report section; Evaluation Checklist gains gate verification items; Red Flags expanded with gate violation rules (12-14).
 - **v2.8** (2026-02-09): Stage 7b optional contract formalized (explicit activation flag, deterministic single-slot selector, separate reporting section, disable path, decision memo reference); remains disabled by default in Phase 0.
 - **v2.7** (2026-02-09): DGP resurfacing made explicit (preflight queue with ready-now/watch states and report section); Stage 7 Top-K pool made deterministic (newly promoted ideas from this sweep only); existing cards explicitly handled as reaffirmation/addendum only.
-- **v2.6** (2026-02-09): Consistency/hardening patch: generic sourcing sub-experts now align to `finder/bridge/mover` (replacing stale `cook/fung/ohno` routing); confidence tier standardized to `decision-gap`; DGP tag schema normalized to `["sweep-generated", "cabinet-v1", "dgp", "gap:<type>"]`; traction fast-track wording now explicitly preserves the `wf-fact-find → wf-plan → wf-build` gate (Rigor Pack pre-populates wf-fact-find but does not bypass it).
-- **v2.5** (2026-02-09): Traction-mode integration: Stage 5 now activates traction mode under grow-business for market-facing L1-L2 businesses (Rigor Pack output, P1 cap, reversibility rule wiring, traction-mode Decision Log format); Stage 7 uses Rigor Pack content to pre-populate wf-fact-find stage docs for traction P1/P2 (fast-track wf-fact-find prep); infrastructure businesses excluded from traction mode.
+- **v2.6** (2026-02-09): Consistency/hardening patch: generic sourcing sub-experts now align to `finder/bridge/mover` (replacing stale `cook/fung/ohno` routing); confidence tier standardized to `decision-gap`; DGP tag schema normalized to `["sweep-generated", "cabinet-v1", "dgp", "gap:<type>"]`; traction fast-track wording now explicitly preserves the `lp-fact-find → lp-plan → lp-build` gate (Rigor Pack pre-populates lp-fact-find but does not bypass it).
+- **v2.5** (2026-02-09): Traction-mode integration: Stage 5 now activates traction mode under grow-business for market-facing L1-L2 businesses (Rigor Pack output, P1 cap, reversibility rule wiring, traction-mode Decision Log format); Stage 7 uses Rigor Pack content to pre-populate lp-fact-find stage docs for traction P1/P2 (fast-track lp-fact-find prep); infrastructure businesses excluded from traction mode.
 - **v2.4** (2026-02-09): v2.1 operational changes: API as business source-of-truth (not businesses.json); preflight reads existing priorities to prevent re-creating ideas (Existing Priority Set + Canon, reaffirmation/addendum mechanism); Impact fields added to dossiers (Impact-Type, Impact-Mechanism, Impact-Band, Impact-Confidence); Drucker/Porter reordered before card creation (no PATCH needed); P1-P3 card creation threshold; global top-K selection (Priority > Impact > Confidence); Decision Gap Proposals replace Data Gap Proposals (Gap-Type: data/timing/dependency); two-phase failure policy (fatal preflight + best-effort persistence); Technical Cabinet revised with explicit diff artifact triggers; sweep report adds Run-Status, reaffirmations, persistence accounting.
 - **v2.3** (2026-02-09): Replaced Ellison with Benioff (startup challenger positioning); split sales experts into individual files; updated persona file reading for both marketing and sales split files.
 - **v2.2** (2026-02-09): Updated persona file reading for split marketing expert files; Marketing lens now has coordinator + 4 individual expert files.
 - **v2.1** (2026-02-09): Added BRIK-specific lens routing — Brikette lens (15 sub-experts across 6 hostel domains) replaces sourcing lens for BRIK. Hopkins/Ogilvy run twice for BRIK (marketing + brikette framing).
-- **v2.0** (2026-02-09): Cabinet Secretary orchestrator with 7-stage pipeline, multi-lens composite generation, confidence gating, clustering, Munger/Buffett filter, Drucker/Porter priority, wf-fact-find seeding. Replaces v1 constraint-diagnostic approach.
+- **v2.0** (2026-02-09): Cabinet Secretary orchestrator with 7-stage pipeline, multi-lens composite generation, confidence gating, clustering, Munger/Buffett filter, Drucker/Porter priority, lp-fact-find seeding. Replaces v1 constraint-diagnostic approach.
 - **v1.0** (2026-02-06): Original constraint-diagnostic sweep (preserved in `SKILL.md.pre-cabinet`)

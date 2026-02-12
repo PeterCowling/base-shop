@@ -6,7 +6,7 @@ Shared template for per-business brand language documents. These live at:
 docs/business-os/strategy/<BIZ>/brand-language.user.md
 ```
 
-Each operating business should have one. The `/design-spec` skill reads these as input and writes back stable new patterns as output.
+Each operating business should have one. The `/lp-design-spec` skill reads these as input and writes back stable new patterns as output.
 
 ## Template
 
@@ -105,7 +105,7 @@ Theme package: `packages/themes/{theme}/src/tokens.ts`
 
 ## Signature Patterns
 
-{Recurring design patterns specific to this business. Added over time as `/design-spec` identifies stable patterns.}
+{Recurring design patterns specific to this business. Added over time as `/lp-design-spec` identifies stable patterns.}
 
 ### {Pattern Name}
 
@@ -129,6 +129,6 @@ Theme package: `packages/themes/{theme}/src/tokens.ts`
 ## Usage Notes
 
 - **TBD sections:** Mark unknowns as `TBD — {what's needed}`. The doc is useful even partially complete.
-- **Feedback loop:** `/design-spec` updates the Signature Patterns and Token Overrides sections when it discovers stable new patterns during feature work.
+- **Feedback loop:** `/lp-design-spec` updates the Signature Patterns and Token Overrides sections when it discovers stable new patterns during feature work.
 - **Review cadence:** Brand language should be reviewed when business strategy changes or after major design work.
 - **One per business:** Even if a business has multiple apps (e.g., BRIK has brikette + prime), there's one brand language doc. Per-app differences are captured in the App Coverage table and Token Overrides section.

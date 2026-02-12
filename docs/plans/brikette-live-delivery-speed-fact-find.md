@@ -613,7 +613,7 @@ Re-ordered based on measured impact (12MB layout is 17x worse than 714KB rates):
   - Added detailed file references and measurements
   - Re-prioritized recommendations based on measured impact
   - Added comprehensive acceptance criteria with specific metrics
-- **2026-02-01**: Initial wf-fact-find
+- **2026-02-01**: Initial lp-fact-find
   - Identified rates.json (714KB) site-wide loading
   - Identified eager i18n preloading
   - Identified missing cache headers

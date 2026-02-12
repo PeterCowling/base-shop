@@ -1,12 +1,12 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Needs-input
+Status: Active
 Domain: Business-OS
 Workstream: Mixed
 Created: 2026-02-11
-Last-updated: 2026-02-11
-Last-reviewed: 2026-02-11
+Last-updated: 2026-02-12
+Last-reviewed: 2026-02-12
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: idea-readiness-pet-outcome-contract
 Deliverable-Type: product-brief
@@ -20,32 +20,43 @@ Business-Unit: PET
 # Ideas Readiness — PET Outcome Contract Fact-Find
 
 ## Scope
-Define the PET business outcome contract so ideation can rank opportunities by measurable value.
+Define and freeze the PET business outcome contract so ideation and weekly operations can rank actions by measurable commercial value.
 
 ## Evidence Audit (Current State)
-- PET has a planning scaffold but no active outcome contract.
-  - `docs/business-os/strategy/PET/plan.user.md:14`
 
-## Missing Data Contract (PET)
+- PET outcome contract is now explicitly locked in the canonical strategy file.
+  - `docs/business-os/strategy/PET/plan.user.md`
+- Forecast and intake artifacts align to the same 90-day target window and contribution/CAC guardrails.
+  - `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`
+  - `docs/business-os/startup-baselines/PET-forecast-seed.user.md`
+- PET website-reference quality has been upgraded from source-family placeholders to URL-level references.
+  - `docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md`
 
-| Field | Type | Required Validation |
+## Locked Contract Snapshot (PET)
+
+| Field | Locked value |
+|---|---|
+| Outcome-ID | `PET-OUT-2026Q1-01` |
+| Outcome | Achieve first reliable PET sales in Italy via pre-website execution, then stabilize contribution-positive growth |
+| Baseline | 2026-02-12: orders 0, gross revenue EUR 0, CAC/returns unmeasured |
+| Target | 178 orders and EUR 5,874 gross revenue incl VAT |
+| By | 2026-05-13 |
+| Owner | Pete |
+| Weekly leading indicators | Sessions, CVR, blended CAC, CAC/contribution ratio, payment success, on-time ship, return rate |
+| Decision-Link | `DEC-PET-01` |
+| Margin threshold | Blended CAC must remain <=70% of observed contribution/order pre-ads |
+
+## Remaining Weak Gaps (Post-Lock)
+
+| Gap | Why it still matters | Owner |
 |---|---|---|
-| Outcome-ID | string (`PET-OUT-YYYYQ#-NN`) | Unique in PET plan |
-| Outcome | result statement | Must be business-result language |
-| Baseline | metric + date + source | Evidence-backed |
-| Target | metric + date | Comparable to baseline |
-| By | `YYYY-MM-DD` | Bounded to decision cycle |
-| Owner | person | Named owner |
-| Leading Indicators | 2 weekly metrics | Collectible weekly |
-| Decision-Link | `DEC-PET-NN` | Explicit decision unlocked |
-| Margin Threshold | metric rule | Defines viable economics floor |
-
-## Question Set (User Input Needed)
-1. What is PET’s top outcome for the next 30-90 days?
-2. What baseline and target values define success?
-3. Which decision does that outcome unlock?
-4. What minimum margin threshold keeps work viable?
+| Exact sellable units + in-stock date confirmation | Needed to validate inventory-constrained forecast realism | Pete |
+| Final single/bundle pricing architecture | Needed to validate CAC and contribution ceilings | Pete |
+| Payment + shipping day-1 reliability evidence | Needed before traffic scale decisions | Pete |
+| TAM denominator URL-level citation refresh | Needed to upgrade top-of-funnel sizing confidence | Pete |
 
 ## Planning Readiness Gate
-- [ ] PET outcome contract complete in `docs/business-os/strategy/PET/plan.user.md`.
-- [ ] Decision link and margin threshold explicitly defined.
+
+- [x] PET outcome contract is complete in `docs/business-os/strategy/PET/plan.user.md`.
+- [x] Decision link and margin threshold are explicit and measurable.
+- [x] PET research references include URL-level website evidence for core claims.

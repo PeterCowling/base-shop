@@ -1,23 +1,23 @@
 ---
-name: design-spec
+name: lp-design-spec
 description: Translate a feature requirement into a concrete frontend design specification mapped to the design system, theme tokens, and per-business brand language. Sits between fact-find and plan.
 ---
 
 # Design Spec
 
-Produce a design specification that maps a feature requirement to concrete design-system components, semantic tokens, and layout decisions — grounded in the business's brand language. Feeds directly into `/wf-plan` to raise confidence on UI tasks.
+Produce a design specification that maps a feature requirement to concrete design-system components, semantic tokens, and layout decisions — grounded in the business's brand language. Feeds directly into `/lp-plan` to raise confidence on UI tasks.
 
 ## Operating Mode
 
 **ALLOWED:** Read codebase, read docs, read theme tokens, create/update design spec docs, create/update brand language docs.
-**NOT ALLOWED:** Write application code, modify components, change tokens, run builds. Design only — implementation is `/wf-build`'s job.
+**NOT ALLOWED:** Write application code, modify components, change tokens, run builds. Design only — implementation is `/lp-build`'s job.
 
 ## When to Use
 
 - New page, section, or significant UI component
 - Visual refresh or rebrand work
 - Any feature where fact-find flags `Design-Spec-Required: yes`
-- When `/wf-plan` produces low-confidence UI tasks (design decisions unmade)
+- When `/lp-plan` produces low-confidence UI tasks (design decisions unmade)
 - Standalone brand language bootstrapping for a new business
 
 ## Invocation
@@ -25,7 +25,7 @@ Produce a design specification that maps a feature requirement to concrete desig
 ### Fast Path
 
 ```
-/design-spec <feature-slug>
+/lp-design-spec <feature-slug>
 ```
 
 Expects `docs/plans/<feature-slug>-fact-find.md` to exist. Reads it, resolves the business unit, loads brand language, and begins spec creation.
@@ -33,7 +33,7 @@ Expects `docs/plans/<feature-slug>-fact-find.md` to exist. Reads it, resolves th
 ### Discovery Path
 
 ```
-/design-spec
+/lp-design-spec
 ```
 
 No argument — presents the app-to-business mapping and asks what you're designing for.
@@ -41,7 +41,7 @@ No argument — presents the app-to-business mapping and asks what you're design
 ### Brand Bootstrap Mode
 
 ```
-/design-spec --bootstrap <BIZ-CODE>
+/lp-design-spec --bootstrap <BIZ-CODE>
 ```
 
 Creates or updates the brand language doc for a business unit without producing a feature design spec. Use when onboarding a new business or after a brand pivot.
@@ -55,7 +55,7 @@ Creates or updates the brand language doc for a business unit without producing 
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Concrete token values for the target app |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Default token system (overridden by theme) |
 | Design system handbook | `docs/design-system-handbook.md` | Component catalog, atomic design layers |
-| Token reference | `.claude/skills/code-design-system/SKILL.md` | Quick-reference for token classes |
+| Token reference | `.claude/skills/lp-design-system/SKILL.md` | Quick-reference for token classes |
 | Typography & color | `docs/typography-and-color.md` | Font model, HSL system, dark mode |
 | Fact-find (optional) | `docs/plans/<slug>-fact-find.md` | Feature context, audience, requirements |
 
@@ -77,7 +77,7 @@ Use `businesses.json` to resolve which business owns the target app, then locate
 | XA | XA | xa | _(TBD)_ |
 | Platform | PLAT | design-system, storybook, etc. | `base` |
 
-**When theme package doesn't exist:** Note this in the spec as a prerequisite task for `/wf-plan`.
+**When theme package doesn't exist:** Note this in the spec as a prerequisite task for `/lp-plan`.
 
 ## Workflow
 
@@ -142,7 +142,7 @@ For each visual property in the design, specify the exact semantic token:
 
 **Rules:**
 - Every color must map to a semantic token. No hex, no Tailwind palette colors.
-- Reference `code-design-system` skill for the canonical token list.
+- Reference `lp-design-system` skill for the canonical token list.
 - If a needed token doesn't exist, document it as a prerequisite (new token to add to theme package).
 - Dark mode: verify every chosen token has a dark variant. Flag gaps.
 
@@ -311,11 +311,11 @@ PageLayout
 - [ ] Accessibility section is non-empty with concrete ARIA/focus/contrast items
 - [ ] Brand language doc consulted (or bootstrapped)
 - [ ] Token bindings match actual values in theme package (not invented)
-- [ ] Prerequisites list is complete — no hidden assumptions for `/wf-plan`
+- [ ] Prerequisites list is complete — no hidden assumptions for `/lp-plan`
 
 ## Integration
 
-### With `/wf-fact-find`
+### With `/lp-fact-find`
 
 When a fact-find classifies a feature as UI-heavy, it should add to its output:
 
@@ -323,9 +323,9 @@ When a fact-find classifies a feature as UI-heavy, it should add to its output:
 Design-Spec-Required: yes
 ```
 
-This signals that `/design-spec` should run before `/wf-plan`.
+This signals that `/lp-design-spec` should run before `/lp-plan`.
 
-### With `/wf-plan`
+### With `/lp-plan`
 
 Plan reads the design spec and uses it to:
 - Pre-populate `Affects` lists with component file paths from the component map
@@ -333,7 +333,7 @@ Plan reads the design spec and uses it to:
 - Create concrete validation contracts referencing the spec's token bindings
 - Generate prerequisite tasks for missing tokens or components
 
-### With `/wf-build`
+### With `/lp-build`
 
 During build, the design spec serves as a reference:
 - Exact token classes to use (no guessing)
@@ -356,15 +356,15 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 > **Component map:** {N} reused, {M} new components needed.
 > **Prerequisites:** {list any blockers for plan}.
 >
-> Ready for `/wf-plan {slug}`. The plan should reference this spec for UI task confidence.
+> Ready for `/lp-plan {slug}`. The plan should reference this spec for UI task confidence.
 
 ### Spec Complete (standalone)
 
 > Design spec complete: `docs/plans/{slug}-design-spec.md`
 >
 > This is a standalone spec (no fact-find). To proceed:
-> 1. `/wf-fact-find {slug}` — if the feature needs broader investigation
-> 2. `/wf-plan {slug}` — if scope is clear and you want to go straight to planning
+> 1. `/lp-fact-find {slug}` — if the feature needs broader investigation
+> 2. `/lp-plan {slug}` — if scope is clear and you want to go straight to planning
 
 ### Brand Bootstrap Complete
 

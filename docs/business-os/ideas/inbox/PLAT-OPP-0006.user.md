@@ -92,7 +92,7 @@ edit → run local pre-flight (30 sec) → catches 5 issues → fix all → push
 - The static export constraints are well-defined enough to encode as lint rules
 - GitHub Actions supports conditional step execution based on changed files (it does, via `paths` filters and `dorny/paths-filter` action)
 
-## Rough approach (for wf-fact-find to validate)
+## Rough approach (for lp-fact-find to validate)
 
 1. **Phase 1: Change-set aware CI** — Add a "classify changes" step to `reusable-app.yml` that determines which pipeline stages to run. Use `dorny/paths-filter` or similar. Quick win, high impact.
 2. **Phase 2: Local pre-flight script** — `scripts/preflight-deploy.sh <app> <target>` that validates route tree compatibility, platform constraints, and deploy config. Catches the "five failures in a row" class of problems.

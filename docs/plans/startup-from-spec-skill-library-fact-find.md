@@ -11,8 +11,8 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-from-spec-skill-library
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
-Primary-Execution-Skill: wf-build
-Supporting-Skills: wf-fact-find, wf-plan, idea-generate, idea-readiness
+Primary-Execution-Skill: lp-build
+Supporting-Skills: lp-fact-find, lp-plan, idea-generate, idea-readiness
 Business-OS-Integration: on
 Business-Unit: BOS
 ---
@@ -22,7 +22,7 @@ Business-Unit: BOS
 ## Scope
 
 ### Summary
-Design a reusable, agent-executable startup skill library for venture-studio B2C businesses where the user provides a product spec and the system contributes heavily from the first run. The system must be startup-native (fast learning loops, commercial outcomes, bounded risk), while still handing approved execution into the existing delivery path: `wf-fact-find -> wf-plan -> wf-build`.
+Design a reusable, agent-executable startup skill library for venture-studio B2C businesses where the user provides a product spec and the system contributes heavily from the first run. The system must be startup-native (fast learning loops, commercial outcomes, bounded risk), while still handing approved execution into the existing delivery path: `lp-fact-find -> lp-plan -> lp-build`.
 
 ### Goals
 - Convert one product spec into a 90-day execution system with minimal operator burden.
@@ -43,7 +43,7 @@ Design a reusable, agent-executable startup skill library for venture-studio B2C
 4. Initial rollout businesses: `HEAD` and `PET` (parallel, no single-pilot-only approach).
 5. Budgets: separate per business.
 6. Budget/channels/kill thresholds/manual-vs-automation should be computed by skills, not pre-specified.
-7. Ideas stage may be bypassed, but any approved work must enter the existing `wf-fact-find -> wf-plan -> wf-build` pipeline.
+7. Ideas stage may be bypassed, but any approved work must enter the existing `lp-fact-find -> lp-plan -> lp-build` pipeline.
 8. Common scorecard is acceptable across startup businesses.
 9. Supply lead-time assumption: ~60 days order-to-availability.
 
@@ -56,7 +56,7 @@ Design a reusable, agent-executable startup skill library for venture-studio B2C
   - Evidence: `.claude/skills/idea-generate/SKILL.md:79`
 - Fact-find seeding is currently fixed to global Top-K with `K=3` max.
   - Evidence: `.claude/skills/idea-generate/SKILL.md:763`, `.claude/skills/idea-generate/SKILL.md:780`, `.claude/skills/idea-generate/SKILL.md:1239`
-- Existing flow already preserves downstream delivery path (`wf-fact-find -> wf-plan -> wf-build`).
+- Existing flow already preserves downstream delivery path (`lp-fact-find -> lp-plan -> lp-build`).
   - Evidence: `.claude/skills/idea-generate/SKILL.md:825`, `.claude/skills/idea-generate/SKILL.md:1204`, `.claude/skills/idea-generate/SKILL.md:1206`
 
 ### Current startup data quality is low
@@ -112,7 +112,7 @@ Read and normalize, per business (`HEAD`, `PET`):
 Read and normalize via Business OS sources:
 1. Existing cards by lane/priority/business/blocked state.
 2. Existing ideas (`inbox` + `worked`) and prior stage-doc context.
-3. Existing wf-fact-find/plan/build artifacts linked to active cards.
+3. Existing lp-fact-find/plan/build artifacts linked to active cards.
 
 #### Stage 0c: Startup Baseline Merge
 Produce one merged baseline per business:
@@ -141,7 +141,7 @@ This baseline is a required input to startup decision-pack generation.
 | `startup-ops-mode` | Choose manual now vs automate later | Stage-gated ops mode contract |
 | `startup-weekly-kpcs-loop` | Weekly Kill/Pivot/Continue/Scale governance | Weekly decision memo template |
 | `startup-go-seeding-adaptive` | Compute how many Go items can be safely seeded | Dynamic seeding manifest |
-| `startup-handoff-delivery` | Push approved work into existing pipeline | `wf-fact-find` seeds + plan handoff list |
+| `startup-handoff-delivery` | Push approved work into existing pipeline | `lp-fact-find` seeds + plan handoff list |
 
 ## Adaptive Seeding Contract (Context-Budget Driven)
 
@@ -206,9 +206,9 @@ Do not use kanban alone for:
 By design, this startup library may bypass classic idea-generation output, but not execution discipline.
 
 Approved Go items must route to:
-1. `wf-fact-find` (deep dive)
-2. `wf-plan` (confidence-gated plan)
-3. `wf-build` (implementation)
+1. `lp-fact-find` (deep dive)
+2. `lp-plan` (confidence-gated plan)
+3. `lp-build` (implementation)
 
 No direct bypass of delivery gates for implementation work.
 
@@ -239,7 +239,7 @@ When optional fields are missing, the system must:
 2. Risk: context loss in high-volume seeding.
    - Control: adaptive seeding with reserve + degradation clamps.
 3. Risk: startup speed undermines quality gates.
-   - Control: retain downstream `wf-fact-find -> wf-plan -> wf-build` contract.
+   - Control: retain downstream `lp-fact-find -> lp-plan -> lp-build` contract.
 4. Risk: parallel business runs cross-contaminate priorities.
    - Control: strict per-business context and budget separation.
 
@@ -249,7 +249,7 @@ When optional fields are missing, the system must:
 2. Minimum compliance checklist for Italy-first launch in each product category.
 3. Whether adaptive seeding should expose manual override (`--seed-cap`) for exceptional weeks.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - Implementation: 80%
   - Rationale: mostly skill-contract and orchestration changes, not deep platform rewrite.
@@ -272,6 +272,6 @@ When optional fields are missing, the system must:
 2. Implement `startup-spec-intake-normalize` + `startup-clarify-blockers`.
 3. Implement budget/channel/econ/supply skill set with Italy-first defaults.
 4. Implement adaptive seeding engine and manifest schema.
-5. Wire handoff to `wf-fact-find -> wf-plan -> wf-build`.
+5. Wire handoff to `lp-fact-find -> lp-plan -> lp-build`.
 6. Add dry-run validation suite for HEAD/PET parallel execution.
 7. Update operator docs and runbooks.

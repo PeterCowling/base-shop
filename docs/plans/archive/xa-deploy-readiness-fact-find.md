@@ -17,7 +17,7 @@ Audit-Ref: 42bc667052
 
 ### Summary
 
-The XA member rewards storefront (`apps/xa`) has a CI workflow (`.github/workflows/xa.yml`) but **cannot deploy** due to multiple infrastructure gaps. This wf-fact-find compares against the working Brikette deployment and identifies exactly what must change.
+The XA member rewards storefront (`apps/xa`) has a CI workflow (`.github/workflows/xa.yml`) but **cannot deploy** due to multiple infrastructure gaps. This lp-fact-find compares against the working Brikette deployment and identifies exactly what must change.
 
 ### Goals
 

@@ -45,7 +45,7 @@ Decouple guide drafting from brikette so the consumer site is a pure publication
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/guide-publication-decoupling-wf-fact-find.md`
+- Related brief: `docs/plans/guide-publication-decoupling-lp-fact-find.md`
 - Key findings:
   - Two-tier status system (`live` → `published`) is unnecessary after decoupling
   - ALL 168 guide content files bundled regardless of status (~26.6 MB across 18 locales)
@@ -164,7 +164,7 @@ _Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Status:** Complete (2026-02-08)
 - **Implementation notes:**
   - Created 5 test cases (TC-01 through TC-05) in `guide-status-filtering.test.ts`
-  - TC-04 expected count: 119 published guides (wf-fact-find estimated 166 — corrected from actual data)
+  - TC-04 expected count: 119 published guides (lp-fact-find estimated 166 — corrected from actual data)
   - TC-05 snapshots 12 non-published guide keys (ageAccessibility, arrivingByFerry, bookingBasics, changingCancelling, checkinCheckout, defectsDamages, depositsPayments, legal, naplesAirportBus, rules, security, travelHelp)
   - Used `toBe()` instead of `toMatchInlineSnapshot()` — Jest 29 + Prettier 3 incompatibility
 - **Validation evidence:**
@@ -214,8 +214,8 @@ _Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollback: `git revert`
 - **Documentation impact:** None
 - **Notes / references:**
-  - Draft route files listed in wf-fact-find `§ Entry Points → Brikette Draft Routes`
-  - API route files listed in wf-fact-find `§ Entry Points → Brikette API Routes`
+  - Draft route files listed in lp-fact-find `§ Entry Points → Brikette Draft Routes`
+  - API route files listed in lp-fact-find `§ Entry Points → Brikette API Routes`
 - **Status:** Complete (2026-02-08)
 - **Implementation notes:**
   - Deleted `apps/brikette/src/app/[lang]/draft/` (21 files) and `apps/brikette/src/app/api/guides/` (6 files)
@@ -517,7 +517,7 @@ _Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollout: Single commit. Optional field, fully backwards compatible.
   - Rollback: `git revert`
 - **Documentation impact:**
-  - Update `docs/plans/guide-publication-decoupling-wf-fact-find.md` status to Complete
+  - Update `docs/plans/guide-publication-decoupling-lp-fact-find.md` status to Complete
 - **Notes / references:**
   - Pattern: Existing optional fields in `GuideManifestEntry` (`metaKey?`, `options?`, `expectations?`, `template?`, `focusKeyword?`)
   - `manifest-types.ts:132-152` — current type definition

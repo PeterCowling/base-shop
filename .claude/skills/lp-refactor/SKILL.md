@@ -1,5 +1,5 @@
 ---
-name: code-refactor
+name: lp-refactor
 description: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition.
 ---
 

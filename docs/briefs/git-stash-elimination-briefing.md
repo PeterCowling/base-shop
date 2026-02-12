@@ -161,7 +161,7 @@ The agent-bin/git wrapper currently allows bare `git stash` (line 284-286). This
 
 ### 3. Close the PreToolUse hook gap for pop/apply
 
-The PreToolUse hook does NOT block `stash pop` or `stash apply` (acknowledged gap in `docs/briefs/git-conflict-enforcement-balance-wf-fact-find.md`, Finding 4). Add these to the deny patterns.
+The PreToolUse hook does NOT block `stash pop` or `stash apply` (acknowledged gap in `docs/briefs/git-conflict-enforcement-balance-fact-find.md`, Finding 4). Add these to the deny patterns.
 
 ### 4. Update policy docs
 

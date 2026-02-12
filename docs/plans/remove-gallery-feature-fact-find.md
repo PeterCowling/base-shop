@@ -6,7 +6,7 @@ Domain: CMS
 Created: 2026-01-30
 Last-updated: 2026-01-30
 Feature-Slug: remove-gallery-feature
-Related-Plan: docs/plans/remove-gallery-featuwf-replan.md
+Related-Plan: docs/plans/remove-gallery-featulp-replan.md
 ---
 
 # Remove Gallery Feature Fact-Find Brief
@@ -228,7 +228,7 @@ Not needed — gallery is an internal feature with no external dependencies.
 
 None — all requirements clarified during intake.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 ### Implementation: 85%
 
@@ -410,7 +410,7 @@ None — all requirements clarified during intake.
 
 **Blocking items:** None
 
-**Recommended next step:** Proceed to `/wf-plan` to create atomic tasks with confidence assessments.
+**Recommended next step:** Proceed to `/lp-plan` to create atomic tasks with confidence assessments.
 
 **Notes:**
 - High confidence scores (Implementation: 85%, Approach: 90%, Impact: 80%)

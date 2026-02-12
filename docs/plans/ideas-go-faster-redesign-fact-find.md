@@ -211,9 +211,9 @@ Core principles:
 | `/biz-update-people` | Sweep should trigger profile updates; profiles inform allocation |
 | `/idea-scan` | Complementary — detects git changes; sweep audits business state |
 | `/idea-develop` | Sweep generates ideas; idea-develop converts them to cards |
-| `/wf-fact-find` | Sweep identifies areas needing investigation; wf-fact-find does the deep dive |
+| `/lp-fact-find` | Sweep identifies areas needing investigation; lp-fact-find does the deep dive |
 | `/idea-advance` | Sweep may recommend lane transitions for stale/blocked cards |
-| `/wf-plan` | Sweep output feeds planning priorities |
+| `/lp-plan` | Sweep output feeds planning priorities |
 
 ---
 
@@ -257,7 +257,7 @@ Core principles:
 
 ---
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 80%
   - Strong existing skill to refactor (626 lines of working SKILL.md)
@@ -326,4 +326,4 @@ Core principles:
 
 - Status: **Ready-for-planning**
 - Blocking items: None — open questions have safe defaults
-- Recommended next step: Proceed to `/wf-plan idea-generate-redesign`
+- Recommended next step: Proceed to `/lp-plan idea-generate-redesign`

@@ -1,5 +1,5 @@
 ---
-name: wf-fact-find
+name: lp-fact-find
 description: Gather evidence and context before planning or as a standalone briefing. Supports code and business deliverables by classifying execution track and routing to progressive execution skills.
 ---
 
@@ -11,12 +11,12 @@ Gather evidence and context before planning or as a standalone briefing.
 
 **Outcomes:**
 
-- **Outcome A — Planning Fact-Find Brief:** a structured brief that feeds directly into `/wf-plan`.
+- **Outcome A — Planning Fact-Find Brief:** a structured brief that feeds directly into `/lp-plan`.
 - **Outcome B — System Briefing Note:** an explainer of how something works today (no planning deliverable).
 
 ## Execution Model (Outcome A)
 
-`/wf-fact-find` is now a business-wide intake/orchestrator step, not just a code preflight.
+`/lp-fact-find` is now a business-wide intake/orchestrator step, not just a code preflight.
 
 For Outcome A, classify each request into:
 
@@ -38,7 +38,7 @@ For Outcome A, classify each request into:
   - `startup-weekly-kpcs-memo`
   - `website-upgrade-backlog`
 
-This classification drives `/wf-plan` task design and `/wf-build` execution routing.
+This classification drives `/lp-plan` task design and `/lp-build` execution routing.
 
 ## Operating Mode
 
@@ -49,13 +49,13 @@ This classification drives `/wf-plan` task design and `/wf-build` execution rout
 **Not allowed:** code changes, refactors, migrations applied, destructive commands.
 
 **Commits allowed:**
-- Brief/note file (`docs/plans/<slug>-wf-fact-find.md` or `docs/briefs/<slug>-briefing.md`)
+- Brief/note file (`docs/plans/<slug>-fact-find.md` or `docs/briefs/<slug>-briefing.md`)
 
 ## Step 0: Discovery and Selection
 
 ### Fast Path (with argument)
 
-**If user provides a card ID or topic** (e.g., `/wf-fact-find PLAT-ENG-0002` or `/wf-fact-find email templates`):
+**If user provides a card ID or topic** (e.g., `/lp-fact-find PLAT-ENG-0002` or `/lp-fact-find email templates`):
 - Skip discovery entirely
 - If card ID: read card via agent API (`GET /api/agent/cards/:id`)
 - If topic: proceed to "Ask for minimum inputs"
@@ -76,7 +76,7 @@ This index contains all raw ideas, inbox cards, and fact-finding cards. Present 
    ```markdown
    ## Available for Fact-Finding
 
-   ### Raw Ideas (need /idea-develop first, then wf-fact-find)
+   ### Raw Ideas (need /idea-develop first, then lp-fact-find)
    | ID | Title | Business | Summary |
    |----|-------|----------|---------|
    | BRIK-OPP-0002 | Hostel booking FAQs | BRIK | FAQ content for bookings |
@@ -94,11 +94,11 @@ This index contains all raw ideas, inbox cards, and fact-finding cards. Present 
    ```
 
 3. **Ask user to select:**
-   - "Which would you like to wf-fact-find? Enter an ID (e.g., `PLAT-ENG-0002`) or describe a new topic."
+   - "Which would you like to lp-fact-find? Enter an ID (e.g., `PLAT-ENG-0002`) or describe a new topic."
    - Note: Raw ideas require `/idea-develop` first to create a card before fact-finding.
 
 4. **If user selects a card:** Read the card via agent API to extract context, then proceed.
-   **If user selects a raw idea:** Inform them to run `/idea-develop {ID}` first, then return to `/wf-fact-find`.
+   **If user selects a raw idea:** Inform them to run `/idea-develop {ID}` first, then return to `/lp-fact-find`.
    **If user describes a new topic:** Proceed to intake questions.
 
 ### When user selects an existing card
@@ -106,18 +106,18 @@ This index contains all raw ideas, inbox cards, and fact-finding cards. Present 
 If the user selects a card ID from the discovery table:
 
 1. **Read the card via agent API** (`GET /api/agent/cards/{CARD-ID}`)
-2. **Read latest wf-fact-find stage doc (if any)** via agent API:
-   - `GET /api/agent/stage-docs?cardId={CARD-ID}&stage=wf-fact-find`
+2. **Read latest lp-fact-find stage doc (if any)** via agent API:
+   - `GET /api/agent/stage-docs?cardId={CARD-ID}&stage=lp-fact-find`
    - If multiple docs exist, use the latest one as working context
 3. **Extract pre-populated context:**
    - `Title` → Topic/area
    - `Business` → Business-Unit for frontmatter
    - Card description → Initial scope context
-   - `Plan-Link` (if exists) → Check for existing wf-fact-find brief
-   - Existing wf-fact-find stage doc (if present) → import Questions/Findings/Recommendations as starting context
+   - `Plan-Link` (if exists) → Check for existing lp-fact-find brief
+   - Existing lp-fact-find stage doc (if present) → import Questions/Findings/Recommendations as starting context
 4. **Confirm intent:**
    - Cards in **Inbox lane**: Default to Outcome A (building/changing) and propose lane transition to **Fact-finding** before deep investigation
-   - Cards in **Fact-finding lane**: Ask if completing existing wf-fact-find or starting fresh
+   - Cards in **Fact-finding lane**: Ask if completing existing lp-fact-find or starting fresh
 5. **Set frontmatter defaults:**
    - `Business-Unit`: from card's `Business` field
    - `Card-ID`: from the selected card
@@ -127,7 +127,7 @@ If the user selects a card ID from the discovery table:
 **Example flow for selected card:**
 ```
 User: PLAT-ENG-0002
-Agent: I'll wf-fact-find on "Agent Context Optimization Plan" (PLAT-ENG-0002).
+Agent: I'll lp-fact-find on "Agent Context Optimization Plan" (PLAT-ENG-0002).
 
 Pre-populated from card:
 - Business-Unit: PLAT
@@ -135,10 +135,10 @@ Pre-populated from card:
 - Current lane: Fact-finding (in progress)
 
 This card is already in Fact-finding lane. Would you like to:
-A) Complete the existing wf-fact-find investigation
-B) Start a fresh wf-fact-find with new scope
+A) Complete the existing lp-fact-find investigation
+B) Start a fresh lp-fact-find with new scope
 
-What's the specific goal or question you want this wf-fact-find to answer?
+What's the specific goal or question you want this lp-fact-find to answer?
 ```
 
 ### Ask for minimum inputs (new topics only)
@@ -146,7 +146,7 @@ What's the specific goal or question you want this wf-fact-find to answer?
 For new topics not linked to an existing card, collect enough to choose the correct outcome and scope the investigation.
 
 **Intent (choose one):**
-- A. I want to build/change something (this should feed into `/wf-plan`)
+- A. I want to build/change something (this should feed into `/lp-plan`)
 - B. I only want to understand how something works (briefing/audit)
 
 **Topic / area:**
@@ -206,24 +206,24 @@ Use only what's needed to get unblocked.
 **Default rules:**
 - If the user mentions implementing, adding, changing, fixing, migrating, refactoring, rolling out → **Outcome A**.
 - If the user mentions understanding, remembering, explaining, auditing, tracing behavior → **Outcome B**.
-- If mixed, treat it as **Outcome A**, but include a "Current Behavior Briefing" section in the wf-fact-find.
+- If mixed, treat it as **Outcome A**, but include a "Current Behavior Briefing" section in the lp-fact-find.
 
 ---
 
-## Outcome A: Planning Fact-Find Brief (feeds /wf-plan)
+## Outcome A: Planning Fact-Find Brief (feeds /lp-plan)
 
 ### Purpose
 
-Produce a planning-ready evidence brief with impact mapping, execution routing, and confidence inputs aligned to `/wf-plan`'s confidence rubric.
+Produce a planning-ready evidence brief with impact mapping, execution routing, and confidence inputs aligned to `/lp-plan`'s confidence rubric.
 
 ### Output File
 
 Create/update:
 ```
-docs/plans/<feature-slug>-wf-fact-find.md
+docs/plans/<feature-slug>-fact-find.md
 ```
 
-(Use the same `<feature-slug>` that `/wf-plan` will use for `docs/plans/<feature-slug>-plan.md`.)
+(Use the same `<feature-slug>` that `/lp-plan` will use for `docs/plans/<feature-slug>-plan.md`.)
 
 ### Progressive Skill Routing (Outcome A)
 
@@ -231,13 +231,13 @@ Set `Primary-Execution-Skill` in the brief based on the dominant deliverable:
 
 | Deliverable-Type | Primary-Execution-Skill | Supporting-Skills (example) |
 |---|---|---|
-| `code-change` | `/wf-build` | `/create-api-endpoint`, `/create-server-action`, `/create-ui-component` |
+| `code-change` | `/lp-build` | `/create-api-endpoint`, `/create-server-action`, `/create-ui-component` |
 | `email-message` | `/draft-email` | `/ops-inbox` |
 | `product-brief` | `/biz-product-brief` | `/biz-update-plan` |
 | `marketing-asset` | `/draft-marketing` | `/biz-update-plan` |
 | `spreadsheet` | `/biz-spreadsheet` | `/biz-update-plan` |
 | `whatsapp-message` | `/draft-whatsapp` | `/biz-update-plan` |
-| `multi-deliverable` | `/wf-build` (orchestrator mode) | select per task in plan |
+| `multi-deliverable` | `/lp-build` (orchestrator mode) | select per task in plan |
 
 Startup aliases map to canonical deliverables for planning clarity:
 
@@ -248,7 +248,7 @@ Startup aliases map to canonical deliverables for planning clarity:
 | `startup-demand-test-protocol` | `product-brief` | `/biz-product-brief` |
 | `startup-supply-timeline` | `spreadsheet` | `/biz-spreadsheet` |
 | `startup-weekly-kpcs-memo` | `product-brief` | `/biz-product-brief` |
-| `website-upgrade-backlog` | `multi-deliverable` | `/wf-build` |
+| `website-upgrade-backlog` | `multi-deliverable` | `/lp-build` |
 
 ### Workflow (Outcome A)
 
@@ -298,7 +298,7 @@ Always audit the sources that matter for the selected execution track.
   - Existing signal coverage — what evidence already exists vs. what must be gathered
   - Falsifiability assessment — how easy/hard/expensive is each hypothesis to test
   - Recommended validation approach — which hypotheses get quick probes vs. structured tests vs. deferred validation
-  - This feeds `/wf-plan`'s VC-first fail-first loop and Business VC Quality Checklist
+  - This feeds `/lp-plan`'s VC-first fail-first loop and Business VC Quality Checklist
 
 **Website-upgrade prompt presentation rule (when prerequisites are missing/stale):**
 - include the specific missing/stale reason
@@ -309,9 +309,9 @@ Always audit the sources that matter for the selected execution track.
 - include exact save path for returned output artifact(s)
 
 **If you discover factual inaccuracies in an existing plan or related docs that would change confidence scores:**
-- Note the inaccuracies in the wf-fact-find brief, with evidence.
+- Note the inaccuracies in the lp-fact-find brief, with evidence.
 - Flag the confidence impact explicitly (which task(s), which dimension(s)).
-- Recommend `/wf-replan` to update the plan’s confidence scores accordingly.
+- Recommend `/lp-replan` to update the plan's confidence scores accordingly.
 
 #### 3) External research (only if needed)
 
@@ -335,7 +335,7 @@ When you do ask:
 - Each question must state what decision it gates
 - Include a recommended default with risk assessment if appropriate
 
-#### 5) Produce confidence inputs for /wf-plan
+#### 5) Produce confidence inputs for /lp-plan
 
 Provide three "feature-level" scores (0–100) that calibrate planning:
 - **Implementation** — do we know how to execute this deliverable correctly?
@@ -366,7 +366,7 @@ Focus on risks that are specific to this work, not generic software risks. Commo
 
 Include:
 - Planning constraints (patterns to follow, rollout expectations, observability expectations)
-- Suggested task seeds (non-binding), to accelerate `/wf-plan`
+- Suggested task seeds (non-binding), to accelerate `/lp-plan`
 - Execution routing packet:
   - `Primary-Execution-Skill`
   - `Supporting-Skills`
@@ -379,7 +379,7 @@ Include:
 
 If status is **Needs-input**, ask the user the open questions and stop (do not proceed to planning).
 
-**Card creation timing:** Business OS card creation (Steps 1-5 in the integration workflow below) happens regardless of Planning Readiness status. A brief with `Needs-input` status still gets a card (tracked in `Fact-finding` lane) and a `Card-ID` in frontmatter. This ensures all wf-fact-find work is visible on the board even before open questions are resolved.
+**Card creation timing:** Business OS card creation (Steps 1-5 in the integration workflow below) happens regardless of Planning Readiness status. A brief with `Needs-input` status still gets a card (tracked in `Fact-finding` lane) and a `Card-ID` in frontmatter. This ensures all lp-fact-find work is visible on the board even before open questions are resolved.
 
 ### Brief Template (Outcome A)
 
@@ -396,7 +396,7 @@ Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-upgrade-backlog>
 Execution-Track: <code | business-artifact | mixed>
-Primary-Execution-Skill: <wf-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
+Primary-Execution-Skill: <lp-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Related-Plan: docs/plans/<feature-slug>-plan.md
 # Business OS Integration (default-on in core loop; set `off` to opt out intentionally)
@@ -478,7 +478,7 @@ Card-ID: <auto-generated when card is created>
 
 ### Hypothesis & Validation Landscape (required for `business-artifact` or `mixed`; optional otherwise)
 
-_This section is the business-artifact equivalent of the Test Landscape. It gives `/wf-plan` the groundwork to write quality VC-XX checks that satisfy the Business VC Quality Checklist (isolated, pre-committed, time-boxed, minimum viable sample, diagnostic, repeatable, observable)._
+_This section is the business-artifact equivalent of the Test Landscape. It gives `/lp-plan` the groundwork to write quality VC-XX checks that satisfy the Business VC Quality Checklist (isolated, pre-committed, time-boxed, minimum viable sample, diagnostic, repeatable, observable)._
 
 #### Key Hypotheses
 | # | Hypothesis | Depends on | Falsification cost | Falsification time |
@@ -504,7 +504,7 @@ _This section is the business-artifact equivalent of the Test Landscape. It give
 - **Quick probes for:** <which hypotheses can be tested in <7 days with <€100>
 - **Structured tests for:** <which need designed experiments with control/treatment>
 - **Deferred validation for:** <which require operational data that won't exist until post-launch>
-- **Note:** This informs VC-XX design in `/wf-plan` — each hypothesis maps to one or more VCs
+- **Note:** This informs VC-XX design in `/lp-plan` — each hypothesis maps to one or more VCs
 
 ### Best-Of Synthesis Matrix (required when `Startup-Deliverable-Alias: website-upgrade-backlog`)
 
@@ -553,7 +553,7 @@ _This section is the business-artifact equivalent of the Test Landscape. It give
 - **Integration tests for:** <what needs integration testing>
 - **E2E tests for:** <critical user flows>
 - **Contract tests for:** <API boundaries, if applicable>
-- **Note:** This informs test case enumeration in `/wf-plan`
+- **Note:** This informs test case enumeration in `/lp-plan`
 
 ### Recent Git History (Targeted)
 - `path/to/area/*` — <what changed + implications>
@@ -575,7 +575,7 @@ _This section is the business-artifact equivalent of the Test Landscape. It give
   - Decision owner: <name or role>
   - Default assumption (if any) + risk: ...
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 - **Implementation:** <0–100>%
   - <why + evidence; what's missing>
 - **Approach:** <0–100>%
@@ -620,7 +620,7 @@ _This section is the business-artifact equivalent of the Test Landscape. It give
 - Blocking items (if any):
   - ...
 - Recommended next step:
-  - If ready: proceed to `/wf-plan`
+  - If ready: proceed to `/lp-plan`
   - If needs input: answer the open questions above
 ```
 
@@ -760,7 +760,7 @@ Topic-Slug: <kebab-case>
 
 Provide a concise summary to the user and point to the saved briefing note.
 
-If the user then decides to implement a change, instruct them to run `/wf-fact-find` again in Outcome A mode (or reuse the existing briefing as an input and add the missing planning-specific sections).
+If the user then decides to implement a change, instruct them to run `/lp-fact-find` again in Outcome A mode (or reuse the existing briefing as an input and add the missing planning-specific sections).
 
 ---
 
@@ -792,7 +792,7 @@ If the user then decides to implement a change, instruct them to run `/wf-fact-f
 ## Final Hand-off Messages
 
 **Outcome A (Planning):**
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-wf-fact-find.md`. Status: Ready-for-planning (or Needs-input). Primary execution skill: `<skill>`. Proceed to `/wf-plan` once blocking questions are answered."
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-lp-fact-find.md`. Status: Ready-for-planning (or Needs-input). Primary execution skill: `<skill>`. Proceed to `/lp-plan` once blocking questions are answered."
 
 **Outcome B (Briefing):**
 > "Briefing complete. Note saved to `<path>`. This documents the current behavior and evidence pointers. No planning artifact was produced."
@@ -822,7 +822,7 @@ Set `Business-OS-Integration: off` when:
 
 ### Card Creation Workflow (After Brief Completion)
 
-**When:** During Outcome A brief writing, if integration is on (`Business-OS-Integration` omitted or `on`) and `Business-Unit` is present in frontmatter. Card creation happens regardless of Planning Readiness status (even `Needs-input`), so all wf-fact-find work is tracked on the board.
+**When:** During Outcome A brief writing, if integration is on (`Business-OS-Integration` omitted or `on`) and `Business-Unit` is present in frontmatter. Card creation happens regardless of Planning Readiness status (even `Needs-input`), so all lp-fact-find work is tracked on the board.
 
 **Fail-closed:** run API steps first; if any API call fails, stop and surface the error. Do not finalize brief markdown writes until API workflow succeeds.
 
@@ -870,12 +870,12 @@ Use the returned ID (or the existing Card-ID). Include `Feature-Slug` and `Plan-
   "body": {
     "business": "PLAT",
     "title": "{Feature title from brief}",
-    "description": "{Summary from wf-fact-find brief}",
+    "description": "{Summary from lp-fact-find brief}",
     "lane": "Fact-finding",
     "priority": "P3",
     "owner": "Pete",
     "Feature-Slug": "{feature-slug}",
-    "Plan-Link": "docs/plans/{feature-slug}-wf-fact-find.md"
+    "Plan-Link": "docs/plans/{feature-slug}-lp-fact-find.md"
   }
 }
 ```
@@ -901,12 +901,12 @@ Use the returned ID (or the existing Card-ID). Include `Feature-Slug` and `Plan-
 
 **Step 4: Upsert fact-finding stage doc (API, latest-wins)**
 
-First, check if a wf-fact-find stage doc already exists:
+First, check if a lp-fact-find stage doc already exists:
 
 ```json
 {
   "method": "GET",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/wf-fact-find",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/fact-find",
   "headers": { "X-Agent-API-Key": "${BOS_AGENT_API_KEY}" }
 }
 ```
@@ -919,7 +919,7 @@ PATCH example (existing stage doc):
 ```json
 {
   "method": "PATCH",
-  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/wf-fact-find",
+  "url": "${BOS_AGENT_API_BASE_URL}/api/agent/stage-docs/PLAT-ENG-0023/fact-find",
   "headers": {
     "X-Agent-API-Key": "${BOS_AGENT_API_KEY}",
     "Content-Type": "application/json"
@@ -927,7 +927,7 @@ PATCH example (existing stage doc):
   "body": {
     "baseEntitySha": "<entitySha from GET>",
     "patch": {
-      "content": "# Fact-Finding: {Feature Title}\n\n## Execution Profile\n\n- Deliverable-Type: {from brief}\n- Startup-Deliverable-Alias: {from brief or none}\n- Execution-Track: {from brief}\n- Primary-Execution-Skill: {from brief}\n- Supporting-Skills: {from brief}\n\n## Questions to Answer\n\n{Import questions from wf-fact-find brief}\n\n## Findings\n\n{Import findings from wf-fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
+      "content": "# Fact-Finding: {Feature Title}\n\n## Execution Profile\n\n- Deliverable-Type: {from brief}\n- Startup-Deliverable-Alias: {from brief or none}\n- Execution-Track: {from brief}\n- Primary-Execution-Skill: {from brief}\n- Supporting-Skills: {from brief}\n\n## Questions to Answer\n\n{Import questions from lp-fact-find brief}\n\n## Findings\n\n{Import findings from lp-fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
     }
   }
 }
@@ -945,8 +945,8 @@ POST example (no existing stage doc):
   },
   "body": {
     "cardId": "PLAT-ENG-0023",
-    "stage": "wf-fact-find",
-    "content": "# Fact-Finding: {Feature Title}\n\n## Execution Profile\n\n- Deliverable-Type: {from brief}\n- Startup-Deliverable-Alias: {from brief or none}\n- Execution-Track: {from brief}\n- Primary-Execution-Skill: {from brief}\n- Supporting-Skills: {from brief}\n\n## Questions to Answer\n\n{Import questions from wf-fact-find brief}\n\n## Findings\n\n{Import findings from wf-fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
+    "stage": "fact-find",
+    "content": "# Fact-Finding: {Feature Title}\n\n## Execution Profile\n\n- Deliverable-Type: {from brief}\n- Startup-Deliverable-Alias: {from brief or none}\n- Execution-Track: {from brief}\n- Primary-Execution-Skill: {from brief}\n- Supporting-Skills: {from brief}\n\n## Questions to Answer\n\n{Import questions from lp-fact-find brief}\n\n## Findings\n\n{Import findings from lp-fact-find brief or \"To be completed\"}\n\n## Recommendations\n\n{Import recommendations or \"To be completed based on findings\"}\n\n## Transition Decision\n\n**Status:** {Ready-for-planning | Needs-input | Needs more fact-finding}\n**Next Lane:** {If ready: Planned | Otherwise: Fact-finding}\n"
   }
 }
 ```
@@ -957,7 +957,7 @@ POST example (no existing stage doc):
 
 **Step 5: Update brief frontmatter**
 
-- Add `Card-ID` to the wf-fact-find brief.
+- Add `Card-ID` to the lp-fact-find brief.
 - If a card already existed, read `Feature-Slug` from the card and align the brief frontmatter (do not re-derive from title).
 
 ```yaml
@@ -976,23 +976,23 @@ Feature-Slug: my-feature
 
 When Business-Unit is present and card is created:
 
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-wf-fact-find.md`. Status: Ready-for-planning.
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-lp-fact-find.md`. Status: Ready-for-planning.
 >
 > **Business OS Integration:**
 > - Created card via API: `<Card-ID>`
-> - Stage doc created via API: `wf-fact-find`
+> - Stage doc created via API: `fact-find`
 > - Card-ID added to brief frontmatter
-> Proceed to `/wf-plan` once blocking questions are answered."
+> Proceed to `/lp-plan` once blocking questions are answered."
 
 When Business-Unit is present but card already exists:
 
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-wf-fact-find.md`. Status: Ready-for-planning.
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-lp-fact-find.md`. Status: Ready-for-planning.
 >
 > **Business OS Integration:**
 > - Using existing card via API: `<Card-ID>`
-> - Stage doc created/updated via API: `wf-fact-find`
+> - Stage doc created/updated via API: `fact-find`
 >
-> Proceed to `/wf-plan` once blocking questions are answered."
+> Proceed to `/lp-plan` once blocking questions are answered."
 
 ### Backward Compatibility
 
@@ -1005,15 +1005,15 @@ When Business-Unit is present but card already exists:
 
 ## Discovery Index Freshness (Loop Contract)
 
-`docs/business-os/_meta/discovery-index.json` powers zero-argument discovery in `/wf-fact-find`, `/wf-plan`, and `/wf-build`.
+`docs/business-os/_meta/discovery-index.json` powers zero-argument discovery in `/lp-fact-find`, `/lp-plan`, and `/lp-build`.
 
 ### Trigger Points
 
 Rebuild index immediately after successful loop writes:
 - Idea/card/stage-doc create or update in `/idea-generate`
-- Card/stage-doc writes in `/wf-fact-find`
-- Card/stage-doc writes and deterministic `Fact-finding -> Planned` transition in `/wf-plan`
-- Card/stage-doc writes and deterministic lane transitions in `/wf-build`
+- Card/stage-doc writes in `/lp-fact-find`
+- Card/stage-doc writes and deterministic `Fact-finding -> Planned` transition in `/lp-plan`
+- Card/stage-doc writes and deterministic lane transitions in `/lp-build`
 
 ### Rebuild Command
 

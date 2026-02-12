@@ -9,7 +9,7 @@ Last-updated: 2026-02-10
 Feature-Slug: brikette-ci-targeted-test-selection
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
+Primary-Execution-Skill: lp-build
 Supporting-Skills: none
 Related-Plan: docs/plans/brikette-ci-targeted-test-selection-plan.md
 Business-Unit: PLAT
@@ -29,7 +29,7 @@ Investigate why Deploy Brikette CI still feels slow after sharding and determine
 - Produce implementation-ready remediation options.
 
 ### Non-goals
-- Implementing workflow changes in this wf-fact-find.
+- Implementing workflow changes in this lp-fact-find.
 - Reducing quality gates without explicit fallback behavior.
 - Changing app deploy policies outside Brikette scope.
 
@@ -91,7 +91,7 @@ Investigate why Deploy Brikette CI still feels slow after sharding and determine
   - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3`
 
 #### Existing Test Coverage
-- Brikette suite in recent runs: 104 suites / 699 tests (historic baseline from prior wf-fact-find).
+- Brikette suite in recent runs: 104 suites / 699 tests (historic baseline from prior lp-fact-find).
 - Current deploy path always runs full Brikette suite when validation is on.
 
 #### Test Patterns & Conventions
@@ -122,7 +122,7 @@ Investigate why Deploy Brikette CI still feels slow after sharding and determine
 - Example commit behind run `21860231934` included prime + workflow edits:
   - `.github/workflows/brikette.yml`
   - `apps/prime/src/components/homepage/HomePage.tsx`
-  - `docs/plans/prime-ui-theme-centralization-wf-fact-find.md`
+  - `docs/plans/prime-ui-theme-centralization-lp-fact-find.md`
   - `docs/plans/prime-ui-theme-centralization-plan.md`
   - `eslint.config.mjs`
 - Classifier treats `apps/prime/...` as runtime for Brikette because runtime prefix is `apps/`.
@@ -149,7 +149,7 @@ Investigate why Deploy Brikette CI still feels slow after sharding and determine
   - only use related-test mode for supported code file types,
   - fallback to full suite for uncertain/non-code/runtime-mixed cases.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 - **Implementation:** 89%
   - Existing scripts and Jest capabilities already support related-test selection patterns.
 - **Approach:** 86%
@@ -186,7 +186,7 @@ What would raise to >=90 across all dimensions:
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `wf-build`
+  - `lp-build`
 - Supporting skills:
   - none
 - Deliverable acceptance package:
@@ -202,4 +202,4 @@ What would raise to >=90 across all dimensions:
 - Blocking items:
   - none for conservative first cut
 - Recommended next step:
-  - proceed to `/wf-plan` (or implement directly) for Brikette targeted test selection in deploy CI.
+  - proceed to `/lp-plan` (or implement directly) for Brikette targeted test selection in deploy CI.

@@ -9,8 +9,8 @@ Feature-Slug: prime-design-refresh
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /wf-build
-Supporting-Skills: /code-design-system
+Primary-Execution-Skill: /lp-build
+Supporting-Skills: /lp-design-system
 Overall-confidence: 90%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: on
@@ -54,7 +54,7 @@ Refresh the Prime guest portal's visual design to align with its target demograp
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/prime-design-refresh-wf-fact-find.md`
+- Related brief: `docs/plans/prime-design-refresh-lp-fact-find.md`
 - Key findings:
   - Token source: `packages/themes/prime/src/tokens.ts` (TypeScript `TokenMap` with HSL light/dark pairs)
   - Build: `pnpm build:tokens` generates `packages/themes/prime/tokens.css`
@@ -110,7 +110,7 @@ Single approach — no alternatives needed given the clear token architecture:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `packages/themes/prime/src/tokens.ts` + generated `packages/themes/prime/tokens.css`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /wf-build
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - **Primary:** `packages/themes/prime/src/tokens.ts`
   - **Secondary:** `[readonly] packages/themes/base/src/tokens.ts` (for TokenMap type reference)
@@ -163,7 +163,7 @@ Single approach — no alternatives needed given the clear token architecture:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — `apps/prime/src/app/layout.tsx`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /wf-build
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - **Primary:** `apps/prime/src/app/layout.tsx`
   - **Secondary:** `[readonly] apps/business-os/src/app/layout.tsx` (reference pattern for `next/font/google` usage)
@@ -205,7 +205,7 @@ Single approach — no alternatives needed given the clear token architecture:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — 5 component files in `apps/prime/src/components/`
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /wf-build
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - **Primary:** `apps/prime/src/components/homepage/GuardedHomeExperience.tsx`, `apps/prime/src/components/homepage/HomePage.tsx`, `apps/prime/src/components/homepage/cards/SocialHighlightsCard.tsx`, `apps/prime/src/components/homepage/DoList.tsx`, `apps/prime/src/components/homepage/ServicesList.tsx`
   - **Secondary:** `[readonly] packages/themes/base/tokens.css` (semantic token reference)
@@ -268,7 +268,7 @@ Single approach — no alternatives needed given the clear token architecture:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — none (validation-only; may produce minor token adjustments)
 - **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /wf-build
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - **Primary:** (validation only — may adjust `packages/themes/prime/src/tokens.ts` if contrast check fails)
   - **Secondary:** `[readonly] apps/prime/src/` (all guest pages for visual review)
@@ -304,7 +304,7 @@ Single approach — no alternatives needed given the clear token architecture:
 - **Rollout / rollback:**
   - Rollout: All changes commit together as one atomic deployment
   - Rollback: Revert the full PR/commit (tokens.ts + layout.tsx + component fixes)
-- **Documentation impact:** None — design policy already documented in startup-loop-workflow.user.md during wf-fact-find
+- **Documentation impact:** None — design policy already documented in startup-loop-workflow.user.md during lp-fact-find
 - **Notes / references:**
   - Contrast ratio for coral `hsl(6, 78%, 57%)` on white: ~4.7:1 (AA pass for normal text)
   - If contrast fails, increase saturation or decrease lightness (e.g., `6 78% 52%` → ~5.8:1)

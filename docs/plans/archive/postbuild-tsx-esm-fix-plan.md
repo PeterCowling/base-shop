@@ -60,7 +60,7 @@ The issue occurs when running `apps/brikette/scripts/generate-public-seo.ts` via
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/postbuild-tsx-esm-fix-wf-fact-find.md`
+- Related brief: `docs/plans/postbuild-tsx-esm-fix-lp-fact-find.md`
 - Key findings:
   - Root cause confirmed: `apps/brikette/tsconfig.json` maps `@acme/guides-core` to `.d.ts` first (lines 31-34)
   - `tsx` applies TS path mapping at runtime and resolves to empty `.d.ts` file
@@ -95,7 +95,7 @@ Update `apps/brikette` postbuild script invocation to run `tsx` with `--tsconfig
 This approach:
 - Fixes the root cause (runtime resolution to `.d.ts`)
 - Is localized (doesn't affect Next.js app build or IDE behavior)
-- Is proven to work (validated in wf-fact-find)
+- Is proven to work (validated in lp-fact-find)
 - Can be extended to other scripts as optional hardening
 
 ## Task Summary
@@ -120,7 +120,7 @@ This approach:
 - **Status:** Complete (2026-01-30)
 - **Confidence:** 90%
   - Implementation: 92% — Standard tsconfig extension pattern; clear mapping from existing tsconfig
-  - Approach: 90% — Proven to work in wf-fact-find validation; main uncertainty is choosing which package path mappings must be made runtime-safe beyond `@acme/guides-core`
+  - Approach: 90% — Proven to work in lp-fact-find validation; main uncertainty is choosing which package path mappings must be made runtime-safe beyond `@acme/guides-core`
   - Impact: 95% — Zero impact on app build/IDE; only affects `tsx` script runtime when explicitly selected via `--tsconfig`
 - **Acceptance:**
   - ✅ File created at `apps/brikette/tsconfig.scripts.json`
@@ -136,7 +136,7 @@ This approach:
 - **Planning validation:**
   - Tests run: N/A (config file - no direct tests)
   - Test stubs written: N/A (S effort)
-  - Unexpected findings: None - wf-fact-find already validated this approach works
+  - Unexpected findings: None - lp-fact-find already validated this approach works
   - Evidence: Fact-find line 199-204 shows successful run with scripts tsconfig
 - **Rollout / rollback:**
   - Rollout: Create file (no runtime impact until BUILD-02)
@@ -145,7 +145,7 @@ This approach:
   - None (internal build config change)
 - **Notes / references:**
   - Template based on `apps/brikette/tsconfig.json` lines 1-56
-  - Solution validated in wf-fact-find (line 199-204)
+  - Solution validated in lp-fact-find (line 199-204)
   - Pattern: Prefer `src/index.ts` for fast iteration, `dist/index.js` as fallback
 
 #### Build Completion (2026-01-30)

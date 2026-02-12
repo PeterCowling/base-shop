@@ -1,5 +1,5 @@
 ---
-name: wf-replan
+name: lp-replan
 description: Resolve low-confidence tasks in an existing plan. Investigate, remove uncertainty, make decisions with evidence, and update the plan doc so that remaining work can proceed safely.
 ---
 
@@ -14,7 +14,7 @@ Resolve low-confidence tasks in an existing plan. Investigate, remove uncertaint
 
 ## Scientific Confidence Protocol (Mandatory)
 
-Treat wf-replanning as hypothesis testing, not narrative scoring.
+Treat lp-replanning as hypothesis testing, not narrative scoring.
 
 ### Core rule
 
@@ -55,8 +55,8 @@ When evidence is insufficient to promote a task above 80%, **create formal precu
 **Why formal tasks, not notes:** Inline "precursor evidence needed" notes hide real work behind a single confidence number. A task at 70% with "needs spike" looks like one task — but it's actually two: the spike and the implementation. Making precursors formal tasks means:
 - The dependency chain is visible and sequenceable
 - Precursor tasks get their own confidence assessment (they may themselves be blocked)
-- `/wf-build` can build the precursor independently
-- `/wf-sequence` correctly orders the full chain
+- `/lp-build` can build the precursor independently
+- `/lp-sequence` correctly orders the full chain
 - Progress tracking reflects actual work remaining
 
 **Precursor task requirements:**
@@ -92,7 +92,7 @@ This makes the confidence chain transparent. The task stays at 74% until precurs
 - Code/mixed tasks require a `Test contract` with `TC-XX` cases.
 - Business-artifact/mixed tasks require a `Validation contract` with `VC-XX` checks plus fail-first execution evidence (Red, Green, Refactor).
 
-A task without required validation cases for its track (TC-XX or VC-XX) cannot proceed to `/wf-build`, regardless of confidence score. Re-plan must add missing contracts and evidence.
+A task without required validation cases for its track (TC-XX or VC-XX) cannot proceed to `/lp-build`, regardless of confidence score. Re-plan must add missing contracts and evidence.
 
 **Code/mixed test contract format:**
 ```markdown
@@ -138,16 +138,16 @@ A task without required validation cases for its track (TC-XX or VC-XX) cannot p
 ## Inputs
 
 - An existing plan doc: `docs/plans/<feature-slug>-plan.md`
-- The task IDs to wf-replan (explicit from user or inferred from below-threshold tasks)
-- Optional: wf-fact-find brief `docs/plans/<feature-slug>-wf-fact-find.md`
+- The task IDs to lp-replan (explicit from user or inferred from below-threshold tasks)
+- Optional: lp-fact-find brief `docs/plans/<feature-slug>-lp-fact-find.md`
 
 **If the plan doc does not exist:**
-- **With wf-fact-find:** Offer to create initial plan from wf-fact-find, then proceed with wf-replanning
-- **Without wf-fact-find:** Stop and instruct: "No plan exists. Run `/wf-plan` to create initial plan first."
+- **With lp-fact-find:** Offer to create initial plan from lp-fact-find, then proceed with lp-replanning
+- **Without lp-fact-find:** Stop and instruct: "No plan exists. Run `/lp-plan` to create initial plan first."
 
 **If the plan doc is stale/out-of-sync:**
 - Create a minimal recovery plan if salvageable (preserve task IDs, update with current reality)
-- Otherwise, recommend `/wf-plan` for clean rebuild
+- Otherwise, recommend `/lp-plan` for clean rebuild
 
 ## Outputs
 
@@ -157,7 +157,7 @@ A task without required validation cases for its track (TC-XX or VC-XX) cannot p
 
 ## When to Use
 
-Run `/wf-replan` when any of the following occurs:
+Run `/lp-replan` when any of the following occurs:
 
 - A plan task has overall confidence <80% (or is explicitly flagged as blocked).
 - **A task is missing a required validation contract (TC-XX or VC-XX) — cannot proceed to build without it.**
@@ -165,14 +165,14 @@ Run `/wf-replan` when any of the following occurs:
 - A review-fact-check or repo audit finds factual inaccuracies in the plan that materially affect confidence.
 - New information invalidates assumptions, dependencies, or approach decisions.
 - Build was stopped due to uncertainty and needs a structured reset.
-- `/wf-build` rejected a task due to missing validation contract/evidence.
-- **A CHECKPOINT task was reached during `/wf-build`** — triggers a mid-build reassessment of all remaining tasks using evidence from completed work.
+- `/lp-build` rejected a task due to missing validation contract/evidence.
+- **A CHECKPOINT task was reached during `/lp-build`** — triggers a mid-build reassessment of all remaining tasks using evidence from completed work.
 
-**Note:** `/wf-replan` is not for generating a plan from scratch; that is `/wf-plan`. `/wf-replan` operates on a specific plan and task IDs.
+**Note:** `/lp-replan` is not for generating a plan from scratch; that is `/lp-plan`. `/lp-replan` operates on a specific plan and task IDs.
 
 ### Checkpoint-Triggered Re-Assessment
 
-When `/wf-replan` is invoked at a CHECKPOINT during `/wf-build`, it operates in **mid-build reassessment mode**:
+When `/lp-replan` is invoked at a CHECKPOINT during `/lp-build`, it operates in **mid-build reassessment mode**:
 
 1. **Gather implementation evidence:** Read the completed tasks' build completion notes, commits, and confidence reassessments. This is E2/E3 evidence (executable verification from real implementation).
 
@@ -190,7 +190,7 @@ When `/wf-replan` is invoked at a CHECKPOINT during `/wf-build`, it operates in 
    - **Integration boundary tests:** Run existing tests that cross boundaries the remaining tasks will depend on.
 
    **Business-artifact/mixed scouts:**
-   - **Hypothesis freshness:** Check whether key hypotheses from the wf-fact-find's Hypothesis & Validation Landscape still hold (supplier quotes, pricing, channel costs, regulatory rules, competitive positioning). Flag any >14 days old with time-sensitive dependencies.
+   - **Hypothesis freshness:** Check whether key hypotheses from the lp-fact-find's Hypothesis & Validation Landscape still hold (supplier quotes, pricing, channel costs, regulatory rules, competitive positioning). Flag any >14 days old with time-sensitive dependencies.
    - **Signal updates:** Check whether new evidence has appeared since planning (completed demand tests, conversion data, competitor launches) that changes existing signal coverage.
    - **Channel/approval drift:** Verify platform policies, approval paths, and compliance constraints haven't changed.
 
@@ -202,13 +202,13 @@ When `/wf-replan` is invoked at a CHECKPOINT during `/wf-build`, it operates in 
    - Remove or defer tasks that are no longer viable
    - Add new tasks discovered during implementation or scouting
 
-5. **Apply the standard wf-replan workflow** (steps 1–7) to the remaining tasks, with the key difference that completed tasks and scout results provide E2/E3 evidence that was unavailable during initial planning.
+5. **Apply the standard lp-replan workflow** (steps 1–7) to the remaining tasks, with the key difference that completed tasks and scout results provide E2/E3 evidence that was unavailable during initial planning.
 
-6. **After wf-replan completes:** `/wf-build` will check the results and either continue building or stop if remaining tasks dropped below threshold.
+6. **After lp-replan completes:** `/lp-build` will check the results and either continue building or stop if remaining tasks dropped below threshold.
 
 ## Workflow
 
-### 1) Select tasks and establish the wf-replan scope
+### 1) Select tasks and establish the lp-replan scope
 
 Identify the target tasks:
 - Prefer explicit task IDs provided by the user.
@@ -256,10 +256,10 @@ If you cannot define a falsifiable check, confidence must not increase.
 - Run at least one executable check where possible (existing targeted test, probe, or script) for high-impact claims.
 
 **Minimum actions (business-artifact/mixed):**
-- Verify the wf-fact-find's Hypothesis & Validation Landscape is still current (key hypotheses, existing signal coverage, falsifiability assessment).
+- Verify the lp-fact-find's Hypothesis & Validation Landscape is still current (key hypotheses, existing signal coverage, falsifiability assessment).
 - Confirm channel constraints and format requirements haven't changed since planning.
 - Verify the approval path still works (reviewer available, process unchanged).
-- Check whether existing signal coverage has improved or decayed since wf-fact-find (new data available? prior signals stale?).
+- Check whether existing signal coverage has improved or decayed since lp-fact-find (new data available? prior signals stale?).
 
 **Evidence to capture:**
 - file paths (and key symbol names) for code/mixed
@@ -314,7 +314,7 @@ If you cannot define a falsifiable check, confidence must not increase.
 - Check whether market, competitive, or regulatory landscape has shifted since planning.
 - Verify supplier quotes, pricing assumptions, or availability timelines are still valid.
 - Confirm audience/channel assumptions haven't drifted (ad costs, platform policy changes, audience behaviour shifts).
-- Check whether any hypothesis from the wf-fact-find's Hypothesis & Validation Landscape has been confirmed or invalidated by events since planning.
+- Check whether any hypothesis from the lp-fact-find's Hypothesis & Validation Landscape has been confirmed or invalidated by events since planning.
 - Identify rollback/pivot requirements: what happens if the VC fails after execution (sunk cost, reversibility).
 
 **Evidence to capture:**
@@ -400,9 +400,9 @@ Business-artifact/mixed format:
 Update `docs/plans/<feature-slug>-plan.md` as follows:
 
 **Plan frontmatter:**
-- Set `Status: Active` after wf-replan updates unless the user explicitly wants it to remain Draft.
+- Set `Status: Active` after lp-replan updates unless the user explicitly wants it to remain Draft.
 
-**For each wf-replanned task:**
+**For each lp-replanned task:**
 - Preserve the same TASK-ID (do not renumber).
 - Add a **Re-plan Update** block containing:
   - Previous confidence → new confidence
@@ -435,11 +435,11 @@ Do NOT add inline "Precursor evidence needed" notes. Instead:
 
 **After creating precursor tasks, re-assess the full dependency graph** — new tasks may unblock or reorder existing work.
 
-**Decomposition closure rule:** after all confidence/dependency/content edits are complete, run `/wf-sequence` as the final structural step before deciding readiness or handing off to `/wf-build`.
+**Decomposition closure rule:** after all confidence/dependency/content edits are complete, run `/lp-sequence` as the final structural step before deciding readiness or handing off to `/lp-build`.
 
 **Also update:**
 - `Last-updated` in frontmatter
-- `Overall-confidence` (effort-weighted as defined in `/wf-plan`)
+- `Overall-confidence` (effort-weighted as defined in `/lp-plan`)
 - Task Summary table (confidence, effort, dependencies)
 
 ### 5a) Confidence Score Validation Checklist (Mandatory Before Finalizing)
@@ -502,7 +502,7 @@ Update those tasks' confidence (and notes) if materially affected.
 
 ### 6a) Sequence the plan (mandatory after decomposition/topology changes)
 
-After updating tasks and re-assessing knock-on effects, run `/wf-sequence` on the plan. This:
+After updating tasks and re-assessing knock-on effects, run `/lp-sequence` on the plan. This:
 
 - Re-sorts tasks into correct implementation order (accounting for new/changed dependencies)
 - Renumbers tasks sequentially (preserving domain prefix)
@@ -511,11 +511,11 @@ After updating tasks and re-assessing knock-on effects, run `/wf-sequence` on th
 
 **Mandatory when:** tasks were decomposed (split), added, removed, or dependencies changed. New tasks must appear in correct execution order — precursors before the tasks they unblock.
 
-**Execution order rule:** complete all substantive wf-replan edits first (confidence updates, acceptance changes, dependency rewrites), then run `/wf-sequence`, then move to step 7 handoff.
+**Execution order rule:** complete all substantive lp-replan edits first (confidence updates, acceptance changes, dependency rewrites), then run `/lp-sequence`, then move to step 7 handoff.
 
-**Skip conditions:** Only skip if wf-replan touched a single task with no dependency changes and no tasks were created/split/removed.
+**Skip conditions:** Only skip if lp-replan touched a single task with no dependency changes and no tasks were created/split/removed.
 
-**Note:** `/wf-sequence` does not change task scope, confidence, or acceptance — it only reorders, renumbers, and maps dependencies. All substantive changes were made in steps 1–6.
+**Note:** `/lp-sequence` does not change task scope, confidence, or acceptance — it only reorders, renumbers, and maps dependencies. All substantive changes were made in steps 1–6.
 
 ### 7) Decision point and handoff
 
@@ -529,8 +529,8 @@ End by classifying the plan state:
 **Validation gate is mandatory.** A task with 90% confidence but missing required TC/VC or fail-first evidence is NOT ready for build.
 
 Provide the recommended next action:
-- `/wf-build` if ready (confidence ≥80% AND validation contracts complete) — and sequencing is up-to-date after any decomposition
-- `/wf-replan` again if remaining blocked tasks exist or validation contracts/evidence are missing
+- `/lp-build` if ready (confidence ≥80% AND validation contracts complete) — and sequencing is up-to-date after any decomposition
+- `/lp-replan` again if remaining blocked tasks exist or validation contracts/evidence are missing
 - Ask user questions if genuinely required
 
 ## Plan Update Snippet (insert into each affected task)
@@ -590,28 +590,28 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 - [ ] **Precursor compliance:** unresolved unknowns are represented as formal precursor tasks (with TASK-ID, confidence, acceptance) — not inline notes or "precursor evidence needed" bullets.
 - [ ] **Precursor confidence:** each precursor task has its own min-of-dimensions confidence assessment. If a precursor is <80%, it has its own precursors (recursive decomposition).
 - [ ] **Dependency chain:** blocked tasks have explicit `Depends on` referencing precursor TASK-IDs. Conditional confidence recorded on the blocked task.
-- [ ] **Sequencing applied:** `/wf-sequence` has been run — tasks reordered, renumbered, `Blocks` fields updated, Parallelism Guide regenerated.
+- [ ] **Sequencing applied:** `/lp-sequence` has been run — tasks reordered, renumbered, `Blocks` fields updated, Parallelism Guide regenerated.
 - [ ] **Decomposition closure:** when tasks were split/added/removed, sequencing was run after final structural edits and before handoff.
 
 ## Completion Messages
 
 **All ≥80% with complete validation contracts:**
-> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete validation contracts (TC/VC + required fail-first evidence). Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/wf-build`."
+> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete validation contracts (TC/VC + required fail-first evidence). Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/lp-build`."
 
 **Confidence ≥80% but missing validation contracts/evidence:**
-> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing required validation contracts/evidence (TC/VC or Red/Green/Refactor). Tasks re-sequenced. Run `/wf-replan` again to add missing validation elements before proceeding to build."
+> "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing required validation contracts/evidence (TC/VC or Red/Green/Refactor). Tasks re-sequenced. Run `/lp-replan` again to add missing validation elements before proceeding to build."
 
 **Some tasks <80% with precursor chain created:**
-> "Re-plan complete. Updated plan. Tasks <IDs> remain <80% with conditional confidence pending precursor completion. Created N new precursor tasks (TASK-XX, TASK-YY) — all ≥80% and ready for `/wf-build`. Tasks re-sequenced into N execution waves. Build precursor tasks first, then `/wf-replan` to promote blocked tasks."
+> "Re-plan complete. Updated plan. Tasks <IDs> remain <80% with conditional confidence pending precursor completion. Created N new precursor tasks (TASK-XX, TASK-YY) — all ≥80% and ready for `/lp-build`. Tasks re-sequenced into N execution waves. Build precursor tasks first, then `/lp-replan` to promote blocked tasks."
 
 **Blocked / needs user input:**
 > "Re-plan complete but still blocked on <IDs> (<%>) due to <dimension>. Tasks re-sequenced where possible. I need the following decisions from you: <questions>."
 
 **Checkpoint-triggered — remaining tasks confirmed:**
-> "Checkpoint re-assessment complete. Horizon assumptions validated against completed work. N remaining tasks reassessed — all ≥80% with complete validation contracts/evidence. Tasks re-sequenced. Resuming `/wf-build`."
+> "Checkpoint re-assessment complete. Horizon assumptions validated against completed work. N remaining tasks reassessed — all ≥80% with complete validation contracts/evidence. Tasks re-sequenced. Resuming `/lp-build`."
 
 **Checkpoint-triggered — remaining tasks revised:**
-> "Checkpoint re-assessment complete. Found: <findings from completed work>. Revised N tasks, added M new tasks, deferred/removed K tasks. Updated plan re-sequenced into N execution waves. Resuming `/wf-build` for eligible tasks."
+> "Checkpoint re-assessment complete. Found: <findings from completed work>. Revised N tasks, added M new tasks, deferred/removed K tasks. Updated plan re-sequenced into N execution waves. Resuming `/lp-build` for eligible tasks."
 
 **Checkpoint-triggered — approach invalidated:**
 > "Checkpoint re-assessment complete. Completed work revealed: <evidence>. Remaining approach is no longer viable because: <reason>. Recommend: <alternative approach or scope reduction>. Build paused pending direction."

@@ -254,7 +254,7 @@ Turbo's `^build` dependsOn in `turbo.json` handles transitive deps. This would f
 
 ---
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 90%
   - All fixes are well-understood with clear code changes. Only brikette (#2) needs verification.
@@ -289,4 +289,4 @@ Turbo's `^build` dependsOn in `turbo.json` handles transitive deps. This would f
 
 - Status: Ready-for-planning
 - Blocking items: None (prime lint question has a safe default)
-- Recommended next step: proceed to `/wf-plan`
+- Recommended next step: proceed to `/lp-plan`

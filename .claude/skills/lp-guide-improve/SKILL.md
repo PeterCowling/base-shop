@@ -1,5 +1,5 @@
 ---
-name: guide-improve
+name: lp-guide-improve
 description: Main entry point for guide improvement - interactive workflow selection for audit, translation, or both
 ---
 
@@ -33,7 +33,7 @@ When this skill is invoked, it **first asks the user which workflow to run** bef
 **Use this skill as the main entry point** for all guide improvement work. The interactive selection lets you choose the right workflow for your situation.
 
 **Direct sub-skill invocation (skip selection prompt):**
-- Use `guide-audit` directly if you always want EN-only processing
+- Use `lp-guide-audit` directly if you always want EN-only processing
 - Use `guide-translate` directly if EN is already clean and you just need translation
 
 ---
@@ -42,7 +42,7 @@ When this skill is invoked, it **first asks the user which workflow to run** bef
 
 This skill orchestrates sub-skills. If you need fine-grained control over specific phases or want to skip the selection prompt entirely, invoke the sub-skills directly:
 
-- **`guide-audit`** - EN audit and fixes only
+- **`lp-guide-audit`** - EN audit and fixes only
 - **`guide-translate`** - Translation only (requires clean EN)
 
 ---
@@ -61,12 +61,12 @@ This skill orchestrates sub-skills. If you need fine-grained control over specif
 
 All flags are passed through to the appropriate sub-skill:
 
-- `--skip-json-fix` - Skip baseline JSON validation/fixing (passed to guide-audit)
+- `--skip-json-fix` - Skip baseline JSON validation/fixing (passed to lp-guide-audit)
 - `--skip-validation` - Skip EN audit validation in translation phase (NOT RECOMMENDED, passed to guide-translate)
 
 ### Optional (but recommended)
 
-- Readership/audience (passed to guide-audit)
+- Readership/audience (passed to lp-guide-audit)
 - Tone constraints + must-include details
 
 ---
@@ -87,16 +87,16 @@ All flags are passed through to the appropriate sub-skill:
 ### Step 2: Execute Selected Workflow
 
 **If user selects "Audit EN content only":**
-1. Invoke `guide-audit` skill with guide reference and any flags
+1. Invoke `lp-guide-audit` skill with guide reference and any flags
 2. Report EN audit results
-3. STOP - Provide guidance: "EN content is now audit-clean. Review the changes, make any manual adjustments, then run /guide-improve again and select 'Translate to all locales'."
+3. STOP - Provide guidance: "EN content is now audit-clean. Review the changes, make any manual adjustments, then run /lp-guide-improve again and select 'Translate to all locales'."
 
 **If user selects "Translate to all locales":**
 1. Invoke `guide-translate` skill with guide reference and any flags
 2. Report translation results for all 17 locales
 
 **If user selects "Audit + Translate (full workflow)":**
-1. Invoke `guide-audit` skill with guide reference and any flags
+1. Invoke `lp-guide-audit` skill with guide reference and any flags
 2. **Gate:** Phase 1 must complete successfully before Phase 2 begins
 3. If Phase 1 fails: Report failure, STOP, provide guidance
 4. Invoke `guide-translate` skill with guide reference and any flags
@@ -112,15 +112,15 @@ Report results based on selected workflow (see Completion Report section).
 
 Most common workflow for careful iteration:
 
-1. Run `/guide-improve` and select **"Audit EN content only"**
+1. Run `/lp-guide-improve` and select **"Audit EN content only"**
 2. Review the EN content fixes made by the audit
 3. Make any manual adjustments to EN content
-4. Run `/guide-improve` again and select **"Translate to all locales"**
+4. Run `/lp-guide-improve` again and select **"Translate to all locales"**
 
 This pattern ensures EN content is reviewed before propagating to 17 locales.
 
 **For quick end-to-end processing** (no manual review):
-- Run `/guide-improve` and select **"Audit + Translate (full workflow)"**
+- Run `/lp-guide-improve` and select **"Audit + Translate (full workflow)"**
 
 ---
 
@@ -137,7 +137,7 @@ This pattern ensures EN content is reviewed before propagating to 17 locales.
 **Next Steps Guidance:**
 - Review EN changes at the guide URL
 - Make any manual adjustments
-- Run `/guide-improve` again and select "Translate to all locales"
+- Run `/lp-guide-improve` again and select "Translate to all locales"
 
 ### If "Translate to all locales" was selected:
 
@@ -193,7 +193,7 @@ Non-EN locale content may have drifted. Check and reconcile entire locale conten
 **Phase 1 failure (EN audit):**
 - Report specific EN audit issues
 - STOP before translation
-- User can fix manually and re-run, or use guide-audit directly
+- User can fix manually and re-run, or use lp-guide-audit directly
 
 **Phase 2 failure (translation):**
 - Report which locales failed
@@ -222,5 +222,5 @@ Non-EN locale content may have drifted. Check and reconcile entire locale conten
 
 For detailed documentation on each phase:
 
-- **Phase 1:** See `.claude/skills/guide-audit/SKILL.md`
+- **Phase 1:** See `.claude/skills/lp-guide-audit/SKILL.md`
 - **Phase 2:** See `.claude/skills/guide-translate/SKILL.md`

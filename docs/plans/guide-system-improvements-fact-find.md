@@ -246,7 +246,7 @@ None. All questions resolved through codebase evidence.
 
 ---
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 ### Implementation: 85%
 
@@ -422,7 +422,7 @@ None. All questions resolved through codebase evidence.
 
 **Status:** Ready-for-planning
 
-**Recommended next step:** Proceed to `/wf-plan` with focus on quick wins for immediate impact. Prioritize:
+**Recommended next step:** Proceed to `/lp-plan` with focus on quick wins for immediate impact. Prioritize:
 
 1. **Developer tooling** (highest ROI, lowest risk)
 2. **Content validation** (catches errors early, improves quality)

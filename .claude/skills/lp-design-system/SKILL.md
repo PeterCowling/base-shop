@@ -1,5 +1,5 @@
 ---
-name: code-design-system
+name: lp-design-system
 description: Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.
 ---
 

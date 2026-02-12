@@ -69,7 +69,7 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
   - Overall confidence = min(Implementation, Approach, Impact)
   - Document in "Re-plan Update" section
 
-  **Example (from brikette-seo wf-replan session):**
+  **Example (from brikette-seo lp-replan session):**
   ```
   Task: Align canonical/trailing-slash policy
   Before: 52% (Approach unknown: keep or remove slashes?)
@@ -354,7 +354,7 @@ Business OS artifacts live under `docs/business-os/` and follow a **dual-audienc
 Each card has subdirectory: `docs/business-os/cards/<ID>/`
 
 **Fact-Find**
-- **Location:** `docs/business-os/cards/<ID>/wf-fact-find.user.md` + `.agent.md`
+- **Location:** `docs/business-os/cards/<ID>/fact-find.user.md` + `.agent.md`
 - **Required frontmatter:**
   - `Type: Fact-Find`
   - `Status: Draft | Active | Complete`

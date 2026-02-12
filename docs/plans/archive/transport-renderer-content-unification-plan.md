@@ -8,7 +8,7 @@ Last-reviewed: 2026-01-27
 Last-updated: 2026-01-27
 Completed: 2026-01-27
 Feature-Slug: transport-renderer-content-unification
-Fact-Find: docs/plans/transport-renderer-content-unification-wf-fact-find.md
+Fact-Find: docs/plans/transport-renderer-content-unification-fact-find.md
 Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 ---
@@ -901,7 +901,7 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
 
 ### TASK-08: Batch migrate remaining routes (scripted, small batches)
 
-**SPLIT INTO TASK-08a + TASK-08b after wf-replan (2026-01-27)**
+**SPLIT INTO TASK-08a + TASK-08b after lp-replan (2026-01-27)**
 
 ---
 
@@ -1009,7 +1009,7 @@ Map directly to HowTo steps. However, most routes don't have this - reuse sectio
   - Repo: All 24 route definitions in `src/data/how-to-get-here/routes.json`
   - Content: 24 route content files across `src/locales/*/how-to-get-here/routes/`
   - Migration CLI: `scripts/migrate-transport-route.ts`
-  - Pattern breakdown (see wf-replan notes below)
+  - Pattern breakdown (see lp-replan notes below)
 
 - **Decision / resolution:**
   - **Discovery:** 14 routes failed migration with "missing header block" error.

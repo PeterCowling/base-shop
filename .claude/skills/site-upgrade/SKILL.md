@@ -1,6 +1,6 @@
 ---
 name: site-upgrade
-description: "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) wf-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints."
+description: "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) lp-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints."
 ---
 
 # Site Upgrade Best Of
@@ -84,14 +84,14 @@ Business upgrade brief:
 
 ### Stage 3: Build Fact-Find Handoff Packet
 
-From the business brief, produce a wf-fact-find-ready packet in the same brief (or a linked addendum) containing:
+From the business brief, produce a lp-fact-find-ready packet in the same brief (or a linked addendum) containing:
 - outcome frame and decision links
 - best-of synthesis matrix (`Adopt/Adapt/Defer/Reject`)
 - prioritized backlog candidates with acceptance criteria
 - dependencies and open questions
 - source evidence pointers
 
-Then hand off to `/wf-fact-find` for formal planning brief generation and task seeding.
+Then hand off to `/lp-fact-find` for formal planning brief generation and task seeding.
 
 ## Prompt Presentation Rules (Required)
 

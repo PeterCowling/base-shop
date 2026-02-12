@@ -47,7 +47,7 @@ Scan `docs/plans/*.md` (exclude `docs/plans/archive/`). For each plan:
 
 1. Parse YAML frontmatter for `Status` and `Type` fields.
 2. **Include** plans where:
-   - `Type: Plan` (skip wf-fact-finds, references, decision memos, briefings)
+   - `Type: Plan` (skip fact-finds, references, decision memos, briefings)
    - `Status` is one of: `Active`, `Draft`, `Accepted`, `Proposed` (i.e., not completed/done)
 3. **Exclude** plans where:
    - `Status` is `Historical`, `Superseded`, `Reference`, `Complete`, or `Archived`
@@ -149,7 +149,7 @@ After the detailed breakdown, add a brief observations section:
 | After report... | Consider... |
 |-----------------|-------------|
 | Plan 100% complete | Set `Status: Archived` and move to `docs/plans/archive/` |
-| Plan near completion | `/wf-build` to finish remaining tasks |
-| Plan stale (0% progress, old dates) | Archive or `/wf-replan` |
+| Plan near completion | `/lp-build` to finish remaining tasks |
+| Plan stale (0% progress, old dates) | Archive or `/lp-replan` |
 | Many stale statuses found by review-fact-check | Review and commit review-fact-check fixes |
-| Plan has no tasks | `/wf-plan` to add structured tasks |
+| Plan has no tasks | `/lp-plan` to add structured tasks |

@@ -14,12 +14,12 @@ description: Propagate updated EN guide content to all locales using parallel tr
 - Uses parallel subagents for concurrent translation (required in Claude; Codex runs sequentially)
 - Validates translations after propagation
 
-**Prerequisite:** Run `guide-audit` first to ensure EN content is audit-clean.
+**Prerequisite:** Run `lp-guide-audit` first to ensure EN content is audit-clean.
 
 ## Core Commitments (Non-Negotiable)
 
 **EN must be clean before translating.**
-The skill validates EN audit status before any translation work. If EN has unresolved issues, the skill FAILS immediately with guidance to run `guide-audit` first.
+The skill validates EN audit status before any translation work. If EN has unresolved issues, the skill FAILS immediately with guidance to run `lp-guide-audit` first.
 
 **Every write is validated immediately.**
 After each locale file write, validate JSON parseability, token integrity, and structure parity before doing anything else.
@@ -56,7 +56,7 @@ Non-EN locale content may have drifted. You must check and reconcile the entire 
 
 ## Not Allowed
 
-- **Modifying EN content** (use guide-audit for that)
+- **Modifying EN content** (use lp-guide-audit for that)
 - Third-party SEO tools/APIs
 - Changing link targets in localization (only translate visible anchor text)
 - Translating or altering any "preserve exactly" tokens
@@ -110,7 +110,7 @@ pnpm --filter brikette tsx scripts/audit-guide-seo.ts {guideKey}
 Check: score >= 9.0, zero critical issues, zero improvements.
 
 **If EN audit fails:**
-- STOP with message: "EN content has unresolved audit issues. Run guide-audit first."
+- STOP with message: "EN content has unresolved audit issues. Run lp-guide-audit first."
 - Do NOT proceed.
 
 **B. List expected locale file paths**
@@ -369,7 +369,7 @@ done
 **EN audit validation fails**
 - Report specific issues
 - STOP immediately
-- Direct user to run `guide-audit` first
+- Direct user to run `lp-guide-audit` first
 
 ---
 

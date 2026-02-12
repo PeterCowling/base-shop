@@ -189,7 +189,7 @@ Use forecast evidence to propose these fields; do not leave them blank.
 1. Forecasting runs before idea prioritization when startup context is sparse.
 2. Approved forecast outcomes seed SFS-00 business intent baseline.
 3. `idea-generate` should use approved forecast outcomes as steering constraints.
-4. `wf-fact-find` / `wf-plan` / `wf-build` remain the delivery path for selected go items.
+4. `lp-fact-find` / `lp-plan` / `lp-build` remain the delivery path for selected go items.
 
 ## Red Flags (invalid output)
 

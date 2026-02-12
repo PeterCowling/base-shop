@@ -10,8 +10,8 @@ Last-reviewed: 2026-02-11
 Feature-Slug: brikette-booking-funnel-usability-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
-Supporting-Skills: meta-user-test,wf-replan
+Primary-Execution-Skill: lp-build
+Supporting-Skills: meta-user-test,lp-replan
 Related-Plan: docs/plans/brikette-booking-funnel-usability-hardening-plan.md
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -25,7 +25,7 @@ Relates-to charter: none
 
 ### Summary
 
-This wf-fact-find converts the latest Brikette usability-testing findings into a planning-ready engineering brief for booking-funnel reliability, translation integrity, and no-JS server HTML quality.
+This lp-fact-find converts the latest Brikette usability-testing findings into a planning-ready engineering brief for booking-funnel reliability, translation integrity, and no-JS server HTML quality.
 
 Primary intent: ensure users can complete booking-critical actions even when hydration is delayed or fails, and remove trust-eroding untranslated strings in the conversion funnel.
 
@@ -216,11 +216,11 @@ Existing active plan `docs/plans/brikette-ssr-seo-signal-hardening-plan.md` over
 Confidence impact on the active plan:
 
 - `BSS-06/BSS-07` impact confidence should be treated as lower until CTA fallback design and booking-funnel no-JS contracts are added.
-- Recommendation: `/wf-replan` current active plan (or supersede with dedicated booking-funnel hardening plan) before build execution.
+- Recommendation: `/lp-replan` current active plan (or supersede with dedicated booking-funnel hardening plan) before build execution.
 
 ## External Research (If needed)
 
-- Not required for this wf-fact-find. All critical findings came from repo evidence and live deployment HTML probes.
+- Not required for this lp-fact-find. All critical findings came from repo evidence and live deployment HTML probes.
 
 ## Questions
 
@@ -242,7 +242,7 @@ Confidence impact on the active plan:
 
 - None blocking for planning.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - Implementation: 86%
   - Why: root causes and concrete files are identified; extension points for audit checks are clear.
@@ -290,10 +290,10 @@ Confidence impact on the active plan:
 ## Execution Routing Packet
 
 - Primary execution skill:
-  - `wf-build`
+  - `lp-build`
 - Supporting skills:
   - `meta-user-test`
-  - `wf-replan`
+  - `lp-replan`
 - Deliverable acceptance package:
   - Updated code for booking CTA fallback + route rendering/i18n integrity.
   - Updated no-JS audit script and contract tests covering booking-funnel predicates.
@@ -308,4 +308,4 @@ Confidence impact on the active plan:
 - Blocking items:
   - None.
 - Recommended next step:
-  - Proceed to `/wf-plan` using this brief and either supersede or wf-replan `docs/plans/brikette-ssr-seo-signal-hardening-plan.md` to include booking-funnel P0 scope.
+  - Proceed to `/lp-plan` using this brief and either supersede or lp-replan `docs/plans/brikette-ssr-seo-signal-hardening-plan.md` to include booking-funnel P0 scope.

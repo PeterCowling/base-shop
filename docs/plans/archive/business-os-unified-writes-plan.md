@@ -178,7 +178,7 @@ This policy exists for rare emergencies (e.g., broken export job, urgent data fi
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/business-os-unified-writes-wf-fact-find.md`
+- Related brief: `docs/plans/business-os-unified-writes-lp-fact-find.md`
 - Key findings:
   - D1-canonical premise locked per `docs/plans/database-backed-business-os-plan.md`
   - UI has functional create and edit pages writing to D1
@@ -194,13 +194,13 @@ The following skill changes impact this plan:
 
 | Skill | Change | Impact on Plan |
 |-------|--------|----------------|
-| **wf-fact-find** | Added `Feature-Slug` to card frontmatter during BOS integration | TASK-02 must support `Feature-Slug` field in POST/PATCH |
-| **wf-fact-find** | Creates fact-finding stage doc via BOS integration | TASK-02b (stage-docs API) required before TASK-11 |
-| **wf-plan** | Reads `Feature-Slug` from card (Slug Stability rule) | API must return `Feature-Slug` in GET responses |
-| **wf-plan** | Added Test Foundation Check | No direct impact (documentation change) |
-| **wf-build** | Automatic `Planned → In progress` lane transition on first task | TASK-10 must handle lane PATCH on build start |
-| **wf-build** | Creates `build.user.md` stage doc on first task | TASK-10 depends on TASK-02b |
-| **wf-build** | Updates `Last-Progress` field after each task | TASK-02 must support `Last-Progress` field in PATCH |
+| **lp-fact-find** | Added `Feature-Slug` to card frontmatter during BOS integration | TASK-02 must support `Feature-Slug` field in POST/PATCH |
+| **lp-fact-find** | Creates fact-finding stage doc via BOS integration | TASK-02b (stage-docs API) required before TASK-11 |
+| **lp-plan** | Reads `Feature-Slug` from card (Slug Stability rule) | API must return `Feature-Slug` in GET responses |
+| **lp-plan** | Added Test Foundation Check | No direct impact (documentation change) |
+| **lp-build** | Automatic `Planned → In progress` lane transition on first task | TASK-10 must handle lane PATCH on build start |
+| **lp-build** | Creates `build.user.md` stage doc on first task | TASK-10 depends on TASK-02b |
+| **lp-build** | Updates `Last-Progress` field after each task | TASK-02 must support `Last-Progress` field in PATCH |
 | **All three** | Broadened commit permissions for BOS integration | Skills can commit card files + stage docs (already planned) |
 
 ## Existing System Notes
@@ -251,8 +251,8 @@ The following skill changes impact this plan:
 | TASK-07 | IMPLEMENT | Add CI guard + branch protection for `docs/business-os/` | 85% | M | Complete (2026-02-02) | TASK-06 |
 | TASK-08 | IMPLEMENT | Update `card-operations.md` to use agent API | 85% | S | Complete (2026-02-02) | TASK-02, TASK-02a, TASK-02b, TASK-03 |
 | TASK-09 | IMPLEMENT | Migrate `/idea-develop` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08 |
-| TASK-10 | IMPLEMENT | Migrate `/wf-build` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08, TASK-02b |
-| TASK-11 | IMPLEMENT | Migrate remaining skills (`/wf-fact-find`, etc.) | 82% | M | Complete (2026-02-02) | TASK-08 |
+| TASK-10 | IMPLEMENT | Migrate `/lp-build` skill to API writes | 82% | M | Complete (2026-02-02) | TASK-08, TASK-02b |
+| TASK-11 | IMPLEMENT | Migrate remaining skills (`/lp-fact-find`, etc.) | 82% | M | Complete (2026-02-02) | TASK-08 |
 | TASK-12 | IMPLEMENT | Update Business OS charter for D1-canonical reality | 90% | S | Complete (2026-02-02) | TASK-09 |
 | TASK-13 | IMPLEMENT | Remove deprecated `repo-writer.ts` and scan-based allocation | 80% | S | Complete (2026-02-02) | TASK-11, TASK-06 |
 
@@ -415,8 +415,8 @@ The following skill changes impact this plan:
   - PATCH supports field-level patching (see Concurrency Model section)
   - All endpoints record `actor: "agent"` in audit log
   - Request/response schemas match existing `/api/cards` endpoints **plus skill-required fields:**
-    - `Feature-Slug` (string, optional) — for slug stability across wf-fact-find → plan → build
-    - `Last-Progress` (date string, optional) — for wf-build progress tracking
+    - `Feature-Slug` (string, optional) — for slug stability across lp-fact-find → plan → build
+    - `Last-Progress` (date string, optional) — for lp-build progress tracking
     - `Plan-Link` (string, optional) — for linking to plan documents
   - Returns 409 on conflict (baseEntitySha mismatch)
 - **Test contract:**
@@ -559,7 +559,7 @@ The following skill changes impact this plan:
 - **Confidence:** 82%
   - Implementation: 85% — follows cards pattern but with composite key (cardId + stage)
   - Approach: 80% — stage docs have card-id + stage type as composite key
-  - Impact: 80% — new endpoint; needed for `/wf-fact-find` skill migration
+  - Impact: 80% — new endpoint; needed for `/lp-fact-find` skill migration
 - **Acceptance:**
   - GET `/api/agent/stage-docs` returns list of stage docs (supports `?cardId=BRIK-ENG-0021` filter)
   - GET `/api/agent/stage-docs/:cardId/:stage` returns single stage doc with `entitySha`
@@ -592,7 +592,7 @@ The following skill changes impact this plan:
   - Tests run: Reviewed stage doc schema in types.ts
   - Test stubs written: N/A (M effort)
   - Unexpected findings: Stage docs are stored in subdirectories; API must handle path generation
-- **What would make this ≥90%:** Test with `/wf-fact-find` skill creating stage doc
+- **What would make this ≥90%:** Test with `/lp-fact-find` skill creating stage doc
 - **Rollout / rollback:**
   - Rollout: Deploy endpoint
   - Rollback: Remove endpoint; skills fail with clear error (fail-closed)
@@ -686,7 +686,7 @@ The following skill changes impact this plan:
 - **Depends on:** -
 - **Confidence:** 82%
   - Implementation: 85% — query pattern clear; need to join audit_log with entity tables
-  - Approach: 85% — cursor-based delta is specified in wf-fact-find
+  - Approach: 85% — cursor-based delta is specified in lp-fact-find
   - Impact: 75% — UI polling will need update to use new endpoint
 - **Acceptance:**
   - GET `/api/board-changes?cursor=12345&business=BRIK` returns changes since cursor
@@ -860,7 +860,7 @@ The following skill changes impact this plan:
 - **Planning validation:**
   - Tests run: Reviewed `entity-sha.ts` for stable JSON serialization pattern
   - Test stubs written: N/A (M effort)
-  - Unexpected findings: Need to handle `.agent.md` derivation rules from wf-fact-find
+  - Unexpected findings: Need to handle `.agent.md` derivation rules from lp-fact-find
 - **What would make this ≥90%:** Validate against 10+ existing cards to ensure format compatibility
 - **Rollout / rollback:**
   - Rollout: Used by export job only; no direct impact until job is enabled
@@ -868,7 +868,7 @@ The following skill changes impact this plan:
 - **Documentation impact:**
   - None
 - **Notes / references:**
-  - Serialization rules: These canonicalization rules supersede any conflicting guidance in wf-fact-find
+  - Serialization rules: These canonicalization rules supersede any conflicting guidance in lp-fact-find
 
 #### Build Completion (2026-02-02)
 - **Status:** Complete
@@ -1241,7 +1241,7 @@ The following skill changes impact this plan:
 - **Notes / references:**
   - Skill: `.claude/skills/idea-develop/SKILL.md`
 
-### TASK-10: Migrate `/wf-build` skill to API writes
+### TASK-10: Migrate `/lp-build` skill to API writes
 
 #### Build Completion (2026-02-02)
 - **Status:** Complete
@@ -1257,11 +1257,11 @@ The following skill changes impact this plan:
   - Delta reason: Skill updated to API-only workflow with conflict guidance
 - **Validation:**
   - Not run: tests (documentation-only change)
-- **Documentation updated:** `.claude/skills/wf-build/SKILL.md`
+- **Documentation updated:** `.claude/skills/lp-build/SKILL.md`
 - **Implementation notes:** Replaced markdown file operations with agent API calls for card progress, stage-doc creation/updates, and lane transitions; added explicit 409 conflict retry guidance; enforced fail-closed behavior.
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/wf-build/SKILL.md`
+- **Affects:** `.claude/skills/lp-build/SKILL.md`
 - **Depends on:** TASK-08, TASK-02b
 - **Confidence:** 82%
   - Implementation: 85% — follow pattern from TASK-09
@@ -1298,7 +1298,7 @@ The following skill changes impact this plan:
     - Invalid API URL → skill errors with "API unavailable", no markdown written
   - **Test type:** Integration (skill invocation with real API)
   - **Test location:** Manual validation during build session
-  - **Run:** Invoke `/wf-build` on test plan; verify API calls in D1 audit log
+  - **Run:** Invoke `/lp-build` on test plan; verify API calls in D1 audit log
 - **Planning validation:**
   - Tests run: Reviewed skill structure
   - Test stubs written: N/A (M effort)
@@ -1310,9 +1310,9 @@ The following skill changes impact this plan:
 - **Documentation impact:**
   - None
 - **Notes / references:**
-  - Skill: `.claude/skills/wf-build/SKILL.md`
+  - Skill: `.claude/skills/lp-build/SKILL.md`
 
-### TASK-11: Migrate remaining skills (`/wf-fact-find`, `/idea-advance`, etc.)
+### TASK-11: Migrate remaining skills (`/lp-fact-find`, `/idea-advance`, etc.)
 
 #### Build Completion (2026-02-02)
 - **Status:** Complete
@@ -1329,15 +1329,15 @@ The following skill changes impact this plan:
 - **Validation:**
   - Not run: tests (documentation-only change)
 - **Documentation updated:**
-  - `.claude/skills/wf-fact-find/SKILL.md`
-  - `.claude/skills/wf-plan/SKILL.md`
+  - `.claude/skills/lp-fact-find/SKILL.md`
+  - `.claude/skills/lp-plan/SKILL.md`
   - `.claude/skills/idea-advance/SKILL.md`
 - **Implementation notes:** Replaced all card/stage-doc markdown writes with agent API calls, added fail-closed behavior and 409 retry guidance, and aligned templates to content-only payloads.
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `.claude/skills/wf-fact-find/SKILL.md` (creates stage docs, cards)
-  - `.claude/skills/wf-plan/SKILL.md` (creates/updates cards, stage docs)
+  - `.claude/skills/lp-fact-find/SKILL.md` (creates stage docs, cards)
+  - `.claude/skills/lp-plan/SKILL.md` (creates/updates cards, stage docs)
   - `.claude/skills/idea-advance/SKILL.md` (updates card frontmatter)
   - `[readonly] .claude/skills/idea-scan/SKILL.md` (excluded — see notes)
   - `[readonly] .claude/skills/biz-update-plan/SKILL.md` (excluded — see notes)
@@ -1354,26 +1354,26 @@ The following skill changes impact this plan:
   - No skill writes to `docs/business-os/cards/`, `docs/business-os/ideas/`, or `docs/business-os/cards/*/` directly
   - **Fail-closed:** All skills fail with clear error if API unavailable
   - **Excluded from migration:** idea-scan, biz-update-plan, biz-update-people (see notes)
-  - **wf-fact-find BOS integration:**
+  - **lp-fact-find BOS integration:**
     - Uses `/api/agent/allocate-id` instead of scan-based allocation (replaces Step 2)
     - Uses POST `/api/agent/cards` to create card with `Feature-Slug` field (replaces Step 3)
     - Uses POST `/api/agent/stage-docs` to create fact-finding stage doc (replaces Step 4)
     - Reads `Feature-Slug` from card frontmatter for consistency (per Slug Stability rule)
-  - **wf-plan BOS integration:**
+  - **lp-plan BOS integration:**
     - Reads `Feature-Slug` from card frontmatter (not re-derived from title)
     - Uses PATCH `/api/agent/cards/:id` to update `Plan-Link` field
     - Uses POST `/api/agent/stage-docs` to create planned stage doc (if applicable)
   - **idea-advance BOS integration:**
     - Uses PATCH `/api/agent/cards/:id` to update `Proposed-Lane` field
 - **Test contract:**
-  - **TC-01:** wf-fact-find allocates ID via API → no scan-based allocation
-    - Invoke `/wf-fact-find` with Business-Unit → calls POST `/api/agent/allocate-id` → returns valid ID
-  - **TC-02:** wf-fact-find creates card via API → card visible in UI
-    - Invoke `/wf-fact-find` → POST `/api/agent/cards` with `Feature-Slug` → card appears in UI
-  - **TC-03:** wf-fact-find creates stage doc via API → stage doc visible
-    - Invoke `/wf-fact-find` → POST `/api/agent/stage-docs` → fact-finding stage doc created
-  - **TC-04:** wf-plan reads Feature-Slug from card → not re-derived
-    - Card has `Feature-Slug: my-feature` → plan uses `my-featuwf-replan.md` (not derived from title)
+  - **TC-01:** lp-fact-find allocates ID via API → no scan-based allocation
+    - Invoke `/lp-fact-find` with Business-Unit → calls POST `/api/agent/allocate-id` → returns valid ID
+  - **TC-02:** lp-fact-find creates card via API → card visible in UI
+    - Invoke `/lp-fact-find` → POST `/api/agent/cards` with `Feature-Slug` → card appears in UI
+  - **TC-03:** lp-fact-find creates stage doc via API → stage doc visible
+    - Invoke `/lp-fact-find` → POST `/api/agent/stage-docs` → fact-finding stage doc created
+  - **TC-04:** lp-plan reads Feature-Slug from card → not re-derived
+    - Card has `Feature-Slug: my-feature` → plan uses `my-featulp-replan.md` (not derived from title)
   - **TC-05:** idea-advance updates Proposed-Lane via API → visible in UI
     - Invoke `/idea-advance` → PATCH card with `Proposed-Lane: Done` → UI shows proposal
   - **TC-06:** API unavailable → skill fails with clear error (fail-closed)
@@ -1388,7 +1388,7 @@ The following skill changes impact this plan:
   - Unexpected findings: Three skills write to paths outside cards/ideas/stage-docs scope
 - **What would make this ≥90%:** All skills tested end-to-end with real API; excluded skills verified as unaffected by CI guard
 - **Rollout / rollback:**
-  - Rollout: Update skills incrementally (wf-fact-find first, then wf-plan, then idea-advance)
+  - Rollout: Update skills incrementally (lp-fact-find first, then lp-plan, then idea-advance)
   - Rollback: Revert individual skills (emergency only)
 - **Documentation impact:**
   - None
@@ -1422,7 +1422,7 @@ The following skill changes impact this plan:
   - Impact: 80% — full skill inventory mapped; excluded paths identified
 - **Investigation performed:**
   - Repo: Searched all skills for `docs/business-os` references
-  - Found 8 skills total: wf-build, wf-plan, wf-fact-find, ops-inbox, biz-update-people, idea-develop, idea-scan, biz-update-plan
+  - Found 8 skills total: lp-build, lp-plan, lp-fact-find, ops-inbox, biz-update-people, idea-develop, idea-scan, biz-update-plan
   - Categorized: 3 in TASK-11 scope, 2 in earlier tasks (TASK-09/10), 3 excluded (non-entity paths)
 - **Decision / resolution:**
   - Skills writing to cards/ideas/stage-docs: migrate to API (in scope)
@@ -1629,7 +1629,7 @@ The following skill changes impact this plan:
 - 2026-02-02: CI guard mechanism — Export-Run-ID (workflow-verifiable) selected over labels (label can be added by any collaborator)
 - 2026-02-02: Export format — Pre-serialized markdown strings in JSON envelope (not raw JSON entities)
 - 2026-02-02: API key validation — Constant-time comparison required; timing attacks prevented
-- 2026-02-02 (wf-replan): Skill migration scope — Skills writing to scans/, strategy/, people/ excluded from D1 migration. These paths added to CI guard allowlist. Rationale: These are reference/metadata paths, not core business entities; adding API endpoints would expand scope without proportional benefit.
-- 2026-02-02 (skill review): API schema expansion — Added `Feature-Slug`, `Last-Progress`, `Plan-Link` fields to TASK-02 acceptance criteria. These fields are required by updated skill BOS integration: wf-fact-find sets Feature-Slug on card creation; wf-build updates Last-Progress and performs lane transitions; wf-plan reads Feature-Slug for slug stability.
-- 2026-02-02 (skill review): wf-build dependencies — Added TASK-02b dependency to TASK-10. wf-build creates build stage docs on first task start, requiring the stage-docs API endpoint.
-- 2026-02-02 (wf-replan TDD): Test contract compliance — Added TC-XX enumeration to all IMPLEMENT tasks per revised `/wf-replan` TDD Compliance Requirement. Tasks TASK-00, TASK-01, TASK-02, TASK-02a, TASK-02b, TASK-03, TASK-04, TASK-05a, TASK-06, TASK-07, TASK-08, TASK-09, TASK-12, TASK-13 now have complete test contracts. All tasks meet minimum TC requirements (S: ≥1, M: ≥3).
+- 2026-02-02 (lp-replan): Skill migration scope — Skills writing to scans/, strategy/, people/ excluded from D1 migration. These paths added to CI guard allowlist. Rationale: These are reference/metadata paths, not core business entities; adding API endpoints would expand scope without proportional benefit.
+- 2026-02-02 (skill review): API schema expansion — Added `Feature-Slug`, `Last-Progress`, `Plan-Link` fields to TASK-02 acceptance criteria. These fields are required by updated skill BOS integration: lp-fact-find sets Feature-Slug on card creation; lp-build updates Last-Progress and performs lane transitions; lp-plan reads Feature-Slug for slug stability.
+- 2026-02-02 (skill review): lp-build dependencies — Added TASK-02b dependency to TASK-10. lp-build creates build stage docs on first task start, requiring the stage-docs API endpoint.
+- 2026-02-02 (lp-replan TDD): Test contract compliance — Added TC-XX enumeration to all IMPLEMENT tasks per revised `/lp-replan` TDD Compliance Requirement. Tasks TASK-00, TASK-01, TASK-02, TASK-02a, TASK-02b, TASK-03, TASK-04, TASK-05a, TASK-06, TASK-07, TASK-08, TASK-09, TASK-12, TASK-13 now have complete test contracts. All tasks meet minimum TC requirements (S: ≥1, M: ≥3).

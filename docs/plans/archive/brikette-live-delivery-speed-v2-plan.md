@@ -122,7 +122,7 @@ None — plan complete. TASK-04 (GA4 verification) and TASK-07 (chunk reduction)
   - Implementation: 95% — the 22-rule `_headers` on `dev` is correct and within CF Pages limits. PR #7201 adds exactly these rules.
   - Approach: 90% — root cause fully understood. Staging currently has only **2 rules** (static assets). Commit `c68b59f774` moved the expanded rules to `config/_headers` for Worker mode, leaving `public/_headers` minimal. PR #7201 restores 22 rules (well within CF Pages 100-rule limit).
   - Impact: 88% — cache headers have never taken effect on staging due to the minimal 2-rule `_headers`. Fix is straightforward merge.
-- **Root cause (corrected after wf-replan investigation):**
+- **Root cause (corrected after lp-replan investigation):**
   - Staging branch `_headers` has **2 rules** (not 311 as previously claimed). The 311-rule version was the original `public/_headers` before commit `c68b59f774` moved it to `config/_headers`.
   - After that commit, `public/_headers` was left with only `/_next/static/*` and `/img/*` immutable rules.
   - The `config/_headers` (24 rules) is parsed by `next.config.mjs:110-119` for Worker/dev mode but is **completely ignored** in static export mode (staging).
@@ -363,7 +363,7 @@ Production is NOT using an OpenNext Worker build — the deployment workflow (`b
     4. **Candidate approaches (ranked):** At minimum: (a) codegen bundling, (b) webpack splitChunks, (c) hybrid. For each: pros, cons, estimated chunk reduction, complexity, compatibility with guide publishing.
     5. **Recommended approach with rationale.**
   - Investigation must stop before implementing.
-- **Pre-investigation findings (from wf-replan):**
+- **Pre-investigation findings (from lp-replan):**
   - **CF Pages free-tier:** 20K file limit confirmed. Current ~4K chunks well within limit.
   - **Guide publishing:** Business OS writes individual JSON via `apps/business-os/src/app/api/guides/[guideKey]/route.ts:119`. Bundling at build time does NOT break this.
   - **i18n complexity:** `locale-loader.ts` (client, top-level, one `webpackInclude`), `locale-loader.guides.ts` (server, `fs.readFileSync`, NO webpack), `guides.imports.ts` (client, 3-tier), `content-modules.ts` (client, separate `webpackInclude` for how-to-get-here).

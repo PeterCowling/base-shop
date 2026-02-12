@@ -27,7 +27,7 @@ Add a periodic "kanban sweep" capability to the Business OS that uses an AI agen
 - Generate 3-10 ranked interventions following Delete > Simplify > Accelerate > Automate preference order
 - Score ideas using: Priority = (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk))
 - Produce a single decision-ready sweep report (`docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`)
-- Suggest concrete next-step skill invocations (e.g., `/idea-develop X`, `/wf-fact-find Y`, `/idea-advance Z`)
+- Suggest concrete next-step skill invocations (e.g., `/idea-develop X`, `/lp-fact-find Y`, `/idea-advance Z`)
 - Compare to previous sweep if one exists (reflection: did the bottleneck shift? were recommendations accepted?)
 - Optionally create draft ideas in inbox when `--create-ideas` flag is passed
 
@@ -91,13 +91,13 @@ Add a periodic "kanban sweep" capability to the Business OS that uses an AI agen
 ### Patterns & Conventions Observed
 
 - **Single SKILL.md per directory** — every skill has exactly one file, frontmatter with `name` and `description`, standard sections (Operating Mode, Inputs, Workflow, Edge Cases, Integration, Example, Error Handling, Phase 0 Constraints, Quality Checks, Completion Messages). Evidence: all 29 skills in `.claude/skills/*/SKILL.md`
-- **Operating Mode as safety boundary** — bold declaration (e.g., `**READ-ONLY ANALYSIS + PROPOSAL**`) followed by explicit Allowed/Not-allowed lists. Evidence: `idea-scan/SKILL.md`, `idea-advance/SKILL.md`, `wf-fact-find/SKILL.md`
+- **Operating Mode as safety boundary** — bold declaration (e.g., `**READ-ONLY ANALYSIS + PROPOSAL**`) followed by explicit Allowed/Not-allowed lists. Evidence: `idea-scan/SKILL.md`, `idea-advance/SKILL.md`, `lp-fact-find/SKILL.md`
 - **Fail-closed API pattern** — if any API call fails, stop and surface the error; do not write markdown directly. Evidence: `.claude/skills/_shared/card-operations.md`
-- **Discovery/fast path pattern** — skills that can be invoked with or without arguments provide both paths (fast path <2s start). Evidence: `wf-fact-find/SKILL.md`, `wf-plan/SKILL.md`
+- **Discovery/fast path pattern** — skills that can be invoked with or without arguments provide both paths (fast path <2s start). Evidence: `lp-fact-find/SKILL.md`, `lp-plan/SKILL.md`
 - **Structured JSON output for scan artifacts** — `idea-scan` outputs `active-docs.json` and `last-scan.json`. Evidence: `docs/business-os/scans/`
 - **YAML frontmatter + markdown for all persistent docs** — cards, ideas, stage docs, plans, briefs all use this format. Evidence: `docs/business-os/cards/*.user.md`, `docs/plans/*.md`
 - **Optimistic concurrency via entitySha** — PATCH operations require `baseEntitySha` to detect conflicts (409). Evidence: `apps/business-os/src/app/api/agent/cards/[id]/route.ts`
-- **Business OS Integration section** — optional section in skills that creates/updates cards and stage docs via API when `Business-Unit` is in frontmatter. Evidence: `wf-fact-find/SKILL.md`, `wf-plan/SKILL.md`
+- **Business OS Integration section** — optional section in skills that creates/updates cards and stage docs via API when `Business-Unit` is in frontmatter. Evidence: `lp-fact-find/SKILL.md`, `lp-plan/SKILL.md`
 
 ### Data & Contracts
 
@@ -166,7 +166,7 @@ Add a periodic "kanban sweep" capability to the Business OS that uses an AI agen
   - Agent API endpoints (cards, ideas, stage-docs, **businesses** (new), **people** (new)) — must be available at runtime
   - Previous sweep outputs (optional, for reflection/comparison) — located by most-recent filename date in `docs/business-os/sweeps/`
 - **Downstream dependents:**
-  - Sweep ideas (if `--create-ideas`) → feed into `/idea-develop` → `/wf-fact-find` → `/wf-plan` pipeline
+  - Sweep ideas (if `--create-ideas`) → feed into `/idea-develop` → `/lp-fact-find` → `/lp-plan` pipeline
   - Sweep report → consumed by Pete for weekly prioritization decisions
   - Sweep next-action suggestions → concrete skill invocations Pete can copy-paste
   - Backlog suggestions → implemented via card PATCH API after human review
@@ -248,7 +248,7 @@ No external research required. All information sourced from repo audit and draft
   - Rationale: Clean data contract, portable (no repo access needed), consistent auth/rate-limiting, right long-term pattern.
 
 - **Q: Skill structure — single orchestrator or 10 sub-skills?**
-  - A: **Single `/kanban-sweep` skill** with internal sub-steps in the workflow section. The existing convention strongly favors one SKILL.md per skill with modes (like `wf-fact-find` has Outcome A/B, `idea-scan` has full/incremental).
+  - A: **Single `/kanban-sweep` skill** with internal sub-steps in the workflow section. The existing convention strongly favors one SKILL.md per skill with modes (like `lp-fact-find` has Outcome A/B, `idea-scan` has full/incremental).
   - Evidence: All 29 existing skills are single SKILL.md files. No multi-skill orchestration pattern exists.
 
 - **Q: Output location — new directory or existing APIs?**
@@ -307,7 +307,7 @@ No external research required. All information sourced from repo audit and draft
   - A: **Numeric 0-10 with explicit thresholds.** <4 = discovery needed, 4-6 = weak evidence, 7-8 = solid, 9-10 = strong. Must list evidence gaps when confidence < 7.
 
 - **Q: Should sweep suggest skill invocations as next actions?**
-  - A: **Yes.** Each recommendation includes a concrete next step (e.g., `/idea-develop PLAT-OPP-0005`, `/wf-fact-find <topic>`, `/idea-advance <card-id>`). Closes the sweep → execution loop.
+  - A: **Yes.** Each recommendation includes a concrete next step (e.g., `/idea-develop PLAT-OPP-0005`, `/lp-fact-find <topic>`, `/idea-advance <card-id>`). Closes the sweep → execution loop.
 
 - **Q: Prompt-only or code-backed?**
   - A: **Prompt-only for Phase 0.** All logic in the SKILL.md. No app code changes except the 2 new API endpoints. Extract to TypeScript modules later if patterns stabilize and consistency matters.
@@ -321,7 +321,7 @@ No external research required. All information sourced from repo audit and draft
 - **Q: Default capacity model for Phase 0?**
   - A: **Max active WIP = 3 per person** unless overridden by people profile data. Active WIP = cards in Fact-finding + In progress + Blocked lanes owned by that person. This prevents hand-wavy "capacity mismatch" diagnoses.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 85%
   - Strong: Skill convention is well-established (29 examples), API endpoints exist and are well-tested, draft pack provides comprehensive structure to adapt. All questions resolved. Rate limit budget verified. Prompt-only approach minimizes build risk.
@@ -384,4 +384,4 @@ No external research required. All information sourced from repo audit and draft
 - **Status: Ready-for-planning**
 - Blocking items: None. All questions resolved.
 - Prerequisite tasks: 2 new API endpoints (businesses, people) must be built before the skill can run.
-- Recommended next step: Proceed to `/wf-plan` to break these task seeds into atomic, confidence-gated implementation tasks.
+- Recommended next step: Proceed to `/lp-plan` to break these task seeds into atomic, confidence-gated implementation tasks.

@@ -7,9 +7,9 @@ description: Verify the accuracy of statements in markdown documents by auditing
 
 Verify the accuracy of statements in markdown documents by auditing the actual repository state. When inaccuracies are found, **directly update the source document** to correct them.
 
-## Key Distinction: review-fact-check vs wf-fact-find
+## Key Distinction: review-fact-check vs lp-fact-find
 
-| Aspect | `/wf-fact-find` | `/review-fact-check` |
+| Aspect | `/lp-fact-find` | `/review-fact-check` |
 |--------|-------------|---------------|
 | Direction | Forward-looking | Documentation-to-repo conformance |
 | Purpose | Gather evidence BEFORE planning | Verify and fix existing documentation |
@@ -17,7 +17,7 @@ Verify the accuracy of statements in markdown documents by auditing the actual r
 | Output | Planning brief or system briefing | **Updated source document(s)** |
 | When | Before creating a plan | After documentation exists |
 
-**wf-fact-find:** "What do we need to know to build this?"
+**lp-fact-find:** "What do we need to know to build this?"
 **review-fact-check:** "Is what we wrote still true? Fix it if not."
 
 ## Operating Mode
@@ -59,7 +59,7 @@ To determine the anchor:
 ## Inputs
 
 **Required:**
-- Path to the markdown document to verify (e.g., `docs/plans/featuwf-replan.md`, `README.md`, `docs/architecture.md`)
+- Path to the markdown document to verify (e.g., `docs/plans/feature-replan.md`, `README.md`, `docs/architecture.md`)
 
 **Optional:**
 - Scope: `focused` or `full` (see Scope Definitions below)
@@ -396,8 +396,8 @@ The old auth system uses session cookies stored in Redis.
 - Before a release to verify release notes accuracy
 
 **Not appropriate for:**
-- Gathering new information about a system (use `/wf-fact-find`)
-- Planning a feature (use `/wf-fact-find` then `/wf-plan`)
+- Gathering new information about a system (use `/lp-fact-find`)
+- Planning a feature (use `/lp-fact-find` then `/lp-plan`)
 - Verifying external documentation (only for this repo's docs)
 - Real-time validation during builds (too slow)
 
@@ -438,8 +438,8 @@ Fact-check fixes facts, not intent. If a section's purpose is unclear, flag for 
 | After review-fact-check... | Consider... |
 |---------------------|-------------|
 | Many fixes made | User reviews changes, commits |
-| Architecture docs heavily outdated | `/wf-fact-find` to create fresh briefing |
-| Plan doc inaccurate | `/wf-replan` to update the plan |
+| Architecture docs heavily outdated | `/lp-fact-find` to create fresh briefing |
+| Plan doc inaccurate | `/lp-replan` to update the plan |
 | Obsolete sections flagged | User decides to remove or archive |
 
 ## Quality Checks

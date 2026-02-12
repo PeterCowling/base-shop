@@ -38,7 +38,7 @@ The overnight scheduled `Workspace CI` run on `main` (run 21774140195) failed 9 
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/ci-quality-overnight-fixes-wf-fact-find.md`
+- Related brief: `docs/plans/ci-quality-overnight-fixes-lp-fact-find.md`
 - Key findings:
   - 3 build failures share a root cause: CI workflow `test.yml:55` uses `pnpm --filter` which doesn't build transitive deps
   - API test failures are caused by Jest mock hoisting: `testHelpers.ts` has mocks but doesn't import the module under test

@@ -5,7 +5,7 @@ Domain: CMS / UI
 Relates-to: transport-renderer-content-unification-plan.md
 Created: 2026-01-27
 Last-reviewed: 2026-01-27
-Intent: Planning (Outcome A - feeds into /wf-plan)
+Intent: Planning (Outcome A - feeds into /lp-plan)
 User Priorities: Long-term maintainability, Feature parity, Risk minimization
 ---
 
@@ -13,7 +13,7 @@ User Priorities: Long-term maintainability, Feature parity, Risk minimization
 
 ## Executive Summary
 
-This wf-fact-find investigates the three options proposed in `transport-renderer-content-unification-plan.md` for migrating transport routes from `HowToGetHereContent` to a unified guide system. Based on codebase analysis, **Option A (Adapt to GuideSeoTemplate)** is the recommended approach, with Option C (Hybrid Wrapper) as a viable transitional step if risk concerns warrant it.
+This lp-fact-find investigates the three options proposed in `transport-renderer-content-unification-plan.md` for migrating transport routes from `HowToGetHereContent` to a unified guide system. Based on codebase analysis, **Option A (Adapt to GuideSeoTemplate)** is the recommended approach, with Option C (Hybrid Wrapper) as a viable transitional step if risk concerns warrant it.
 
 ## Research Scope
 
@@ -305,4 +305,4 @@ Option A scores highest on the user's top two priorities (maintainability, featu
 
 1. Mark TASK-01 (DECISION) as complete with Option A selected.
 2. Update `transport-renderer-content-unification-plan.md` with confidence scores from this brief.
-3. Proceed with `/wf-plan` refinement for TASK-02 (galleryBlock) if needed.
+3. Proceed with `/lp-plan` refinement for TASK-02 (galleryBlock) if needed.

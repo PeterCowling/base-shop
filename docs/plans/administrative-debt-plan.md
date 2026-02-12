@@ -103,7 +103,7 @@ These items primarily affect:
 - **Status**: ✅ **COMPLETE**
 - **Priority**: P0
 - **Estimated effort**: Small (administrative)
-- **Completed**: Pre-existing (discovered during 2026-02-09 wf-replan)
+- **Completed**: Pre-existing (discovered during 2026-02-09 lp-replan)
 - **Implementation**:
   - `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are already configured as GitHub secrets
   - Referenced in `ci.yml`, `cms.yml`, `reusable-app.yml`, `business-os-export.yml`, `xa.yml`

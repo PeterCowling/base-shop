@@ -56,7 +56,7 @@ Improve guide discoverability by making related guides blocks render by default 
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/guide-cross-referencing-wf-fact-find.md`
+- Related brief: `docs/plans/guide-cross-referencing-lp-fact-find.md`
 - Key findings:
   - 167 English guides total
   - 135 guides have `relatedGuides` in manifest, but only 78 have `relatedGuides` blocks (rendering gap)
@@ -106,7 +106,7 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
 - ❌ Conflates content (which guides?) with layout (should render?)
 - ✅ Explicit opt-in maintains status quo
 
-**Decision:** Option A chosen because it reduces editor friction and treats cross-references as first-class content feature per wf-fact-find recommendation.
+**Decision:** Option A chosen because it reduces editor friction and treats cross-references as first-class content feature per lp-fact-find recommendation.
 
 ## Related Plans / Dependencies
 
@@ -254,12 +254,12 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
     - Google Maps URL usage count
   - Output format: Markdown table or CSV for easy review
   - Script runs via `pnpm report-coverage`
-  - Default scope matches the wf-fact-find baseline (`--locale=en`); script supports `--locale=<lang>` to expand reporting beyond EN
+  - Default scope matches the lp-fact-find baseline (`--locale=en`); script supports `--locale=<lang>` to expand reporting beyond EN
   - Non-blocking (informational only)
 - **Test plan:**
   - Add: Unit tests for counting logic (mock small manifest subset)
   - Manual: Run script against real manifest, review output for accuracy
-  - Verify: Counts match wf-fact-find numbers (135 with relatedGuides, 30 with %LINK:, 4 with maps)
+  - Verify: Counts match lp-fact-find numbers (135 with relatedGuides, 30 with %LINK:, 4 with maps)
 - **Planning validation:**
   - Tests run: `pnpm --filter @apps/brikette validate-links` verified it can scan all guides
   - Code study: Script can reuse token-scanning logic from `validate-guide-links.ts`
@@ -373,7 +373,7 @@ Require explicit `relatedGuides` block for every guide that wants rendering.
   - Add: Examples from real guides (positanoMainBeach, pathOfTheGodsFerry)
 - **Notes / references:**
   - Fact-find: Sections "Editorial playbook" (line 205), "Google Maps route links" (line 251)
-  - Existing: `assistanceKeywords.json` has Google Maps URLs (wf-fact-find line 88)
+  - Existing: `assistanceKeywords.json` has Google Maps URLs (lp-fact-find line 88)
   - Standards: Google Maps API documentation for `api=1` URL format
 - **Implementation notes:**
   - Created comprehensive `guide-authoring-best-practices.md` (302 lines)

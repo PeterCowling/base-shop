@@ -64,7 +64,7 @@ Required sections:
 - [ ] Objective and metric are explicit.
 - [ ] Scope boundaries are unambiguous.
 - [ ] Risks and dependencies are actionable.
-- [ ] Brief can directly feed `/wf-plan`.
+- [ ] Brief can directly feed `/lp-plan`.
 
 ## Completion Message
 

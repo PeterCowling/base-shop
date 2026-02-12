@@ -19,7 +19,7 @@ Relates-to charter: none
 
 Centralise guide data out of Brikette into the platform layer (following the product repository pattern), extract translation and validation tooling into shared packages, build CMS guide management pages, and create an AI-assisted content pipeline for producing multilingual guides across all businesses. This replaces the CMS Sanity blog system and is the key enabler for L1-to-L2 business progression.
 
-The work is divided into four delivery slices, each independently shippable: (1) centralise read path + data model, (2) translation + validation as shared tooling, (3) CMS authoring + workflow, (4) AI pipeline. This plan covers **Slice 1 in full detail** (ready to build) and **Slices 2-4 at seed level** (requiring `/wf-plan` once Slice 1 lands).
+The work is divided into four delivery slices, each independently shippable: (1) centralise read path + data model, (2) translation + validation as shared tooling, (3) CMS authoring + workflow, (4) AI pipeline. This plan covers **Slice 1 in full detail** (ready to build) and **Slices 2-4 at seed level** (requiring `/lp-plan` once Slice 1 lands).
 
 ## Goals
 
@@ -34,14 +34,14 @@ The work is divided into four delivery slices, each independently shippable: (1)
 - AI drafting pipeline (Slice 4 -- planned separately)
 - Retiring Brikette draft routes (Slice 3 dependency)
 - Retiring CMS Sanity blog (Slice 3 dependency)
-- Block type centralisation (deferred -- blocks stay app-specific per wf-fact-find default)
+- Block type centralisation (deferred -- blocks stay app-specific per lp-fact-find default)
 
 ## Constraints & Assumptions
 
 - Constraints:
   - Must not break Brikette during migration (dual-read during transition)
   - Guide content must remain structured JSON (not free-form rich text)
-  - Product repository pattern invariants must be followed (10 invariants from wf-fact-find)
+  - Product repository pattern invariants must be followed (10 invariants from lp-fact-find)
   - Risk-tier field must be present in types even if enforcement is Slice 3+
 - Assumptions:
   - Pete is the primary editor (content-as-code decision stands)
@@ -50,7 +50,7 @@ The work is divided into four delivery slices, each independently shippable: (1)
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/article-generation-pipeline-wf-fact-find.md`
+- Related brief: `docs/plans/article-generation-pipeline-lp-fact-find.md`
 - Key findings:
   - Zero guide types in `@acme/types` -- all live in `apps/brikette/src/routes/guides/`
   - CMS has zero guide functionality -- only Sanity blog
@@ -155,7 +155,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Depends on:** -
 - **Confidence:** 90%
   - Implementation: 95% — Direct pattern from `Product.ts`: define `GuideCore` interface + `GuidePublication` extension. `ProductCore`/`ProductPublication` at `packages/types/src/Product.ts` is the exact template.
-  - Approach: 90% — Types mirror resolved decisions from wf-fact-find (unified status enum, risk tier, schemaVersion, content-as-code). Block types as `unknown[]` is the simplest viable approach.
+  - Approach: 90% — Types mirror resolved decisions from lp-fact-find (unified status enum, risk tier, schemaVersion, content-as-code). Block types as `unknown[]` is the simplest viable approach.
   - Impact: 85% — New file, additive only. Re-exported from barrel. No existing consumers to break.
 - **Acceptance:**
   - `GuideCore` interface exists with fields: `key` (string), `slug` (string), `contentKey` (string), `areas` (string[]), `primaryArea` (string), `template` (string, optional), `focusKeyword` (string, optional), `primaryQuery` (string, optional), `blocks` (unknown[]), `relatedGuides` (string[]), `structuredData` (unknown[]), `options` (Record<string, unknown>, optional), `riskTier` (0 | 1 | 2), `schemaVersion` (number)
@@ -184,7 +184,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Notes / references:**
   - Pattern: `packages/types/src/Product.ts` lines 78-119
   - Content schema source: `apps/brikette/src/routes/guides/content-schema.ts`
-  - Status enum resolution: wf-fact-find "Resolved Questions" section
+  - Status enum resolution: lp-fact-find "Resolved Questions" section
 
 #### Build Completion (2026-02-09)
 - **Status:** Complete
@@ -281,7 +281,7 @@ apps/brikette                        ← Switches from local content to readGuid
   - `[readonly] packages/platform-core/src/shops/universal.ts`
 - **Depends on:** TASK-02
 - **Confidence:** 85%
-  - Implementation: 90% — Direct replication of `products.json.server.ts` pattern. Every helper function and CRUD operation is documented in wf-fact-find with exact signatures. Split content storage adds complexity vs products.
+  - Implementation: 90% — Direct replication of `products.json.server.ts` pattern. Every helper function and CRUD operation is documented in lp-fact-find with exact signatures. Split content storage adds complexity vs products.
   - Approach: 85% — Split storage (metadata in `guides.json`, content in `guides/content/{key}/{locale}.json`) is more complex than the single-file product pattern but necessary for 168 guides × 18 locales.
   - Impact: 80% — New file. Touches filesystem under `data/shops/{shopId}/`. Must validate `ensureDir` creates nested content directories correctly.
 - **Acceptance:**
@@ -544,7 +544,7 @@ apps/brikette                        ← Switches from local content to readGuid
   - Manifest source: `apps/brikette/src/routes/guides/guide-manifest.ts` (`listGuideManifestEntries()`)
   - Content source: `apps/brikette/src/locales/{locale}/guides/content/{contentKey}.json`
   - Override source: `apps/brikette/src/data/guides/guide-manifest-overrides.json`
-  - Status mapping: wf-fact-find "Status enum divergence" section
+  - Status mapping: lp-fact-find "Status enum divergence" section
 
 #### Build Completion (2026-02-09)
 - **Status:** Complete
@@ -616,7 +616,7 @@ apps/brikette                        ← Switches from local content to readGuid
   - Rollback: Set `USE_CENTRAL_GUIDES=0` (instant, no deploy needed).
 - **Documentation impact:** None
 - **Notes / references:**
-  - Rendering chain documented in wf-fact-find: route → `resolveGuideKeyFromSlug` → `loadGuideManifestOverridesFromFs` → `<GuideContent>` → `useTranslation("guides")` → `tGuides("content.{key}.{field}", { returnObjects: true })`
+  - Rendering chain documented in lp-fact-find: route → `resolveGuideKeyFromSlug` → `loadGuideManifestOverridesFromFs` → `<GuideContent>` → `useTranslation("guides")` → `tGuides("content.{key}.{field}", { returnObjects: true })`
   - i18n resource bundle API: `i18next.addResourceBundle(locale, "guides", data)`
   - Feature flag pattern: other env-based feature flags exist in the codebase (e.g., `ENABLE_GUIDE_AUTHORING`)
 
@@ -732,7 +732,7 @@ apps/brikette                        ← Switches from local content to readGuid
 - **Affects:** `docs/plans/archive/article-generation-pipeline-plan.md` (this doc)
 - **Depends on:** TASK-07
 - **Confidence:** 70% ⚠️
-  - Implementation: 80% — Slice boundaries are well-defined in wf-fact-find
+  - Implementation: 80% — Slice boundaries are well-defined in lp-fact-find
   - Approach: 65% — Requires user input on business priority
   - Impact: 65% — Wrong sequencing wastes effort; correct sequencing maximises value per slice
 
@@ -767,19 +767,19 @@ apps/brikette                        ← Switches from local content to readGuid
   - ~~User confirms next slice priority~~ ✅ User chose Option A (Slice 2 first) on 2026-02-09
   - Plan updated with sequencing decision ✅
   - Decision logged in Decision Log ✅
-  - Next slice's `/wf-plan` is scoped accordingly — run `/wf-plan` for Slice 2 when ready
+  - Next slice's `/lp-plan` is scoped accordingly — run `/lp-plan` for Slice 2 when ready
 
 #### Build Completion (2026-02-09)
 - **Status:** Complete
 - **Decision:** Slice 2 (Translation + Validation as Shared Tooling) is the next slice after Slice 1.
 - **Sequencing confirmed:** Slice 2 → Slice 3 → Slice 4 (sequential)
-- **Next action:** Run `/wf-plan` for Slice 2.
+- **Next action:** Run `/lp-plan` for Slice 2.
 
 ---
 
 ## Slice 2-4 Task Seeds (Non-binding)
 
-These are carried over from the wf-fact-find brief. Each will get its own `/wf-plan` run when ready.
+These are carried over from the lp-fact-find brief. Each will get its own `/lp-plan` run when ready.
 
 ### Slice 2: Translation + Validation as Shared Tooling
 

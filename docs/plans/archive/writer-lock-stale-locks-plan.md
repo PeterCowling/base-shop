@@ -14,7 +14,7 @@ Confidence-Method: Post-implementation validation (tests + manual lock-flow chec
 
 ## Summary
 
-Harden the writer lock system so stale locks from dead subagent processes are recovered automatically, bypass mechanisms are removed from user-facing guidance, and the agent-bin/git guard closes a gap where `SKIP_WRITER_LOCK=1` as an env var prefix is not caught. The error message fix in `require-writer-lock.sh` is already done (see wf-fact-find). This plan covers the remaining items.
+Harden the writer lock system so stale locks from dead subagent processes are recovered automatically, bypass mechanisms are removed from user-facing guidance, and the agent-bin/git guard closes a gap where `SKIP_WRITER_LOCK=1` as an env var prefix is not caught. The error message fix in `require-writer-lock.sh` is already done (see lp-fact-find). This plan covers the remaining items.
 
 Outcome: completed and archived on 2026-02-07.
 
@@ -29,7 +29,7 @@ Outcome: completed and archived on 2026-02-07.
 
 - Removing the `SKIP_WRITER_LOCK=1` code path from `require-writer-lock.sh` entirely (deferred until `clean-stale` is proven)
 - Investigating Task tool termination signals (external dependency; tracked as open question)
-- Implementing shared lock token inheritance (Priority 4 from wf-fact-find; not needed yet)
+- Implementing shared lock token inheritance (Priority 4 from lp-fact-find; not needed yet)
 - Redesigning the lock system architecture
 
 ## Constraints & Assumptions
@@ -44,7 +44,7 @@ Outcome: completed and archived on 2026-02-07.
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/archive/writer-lock-stale-locks-wf-fact-find.md`
+- Related brief: `docs/plans/archive/writer-lock-stale-locks-lp-fact-find.md`
 - Key findings:
   - Stale lock detection already exists in `break_stale_lock_if_safe()` (line 159) but only runs during `acquire`, not as a standalone command
   - `require-writer-lock.sh` error message fix already applied (no longer suggests bypass)
@@ -197,7 +197,7 @@ No alternatives considered — these are all targeted fixes to known gaps with c
 - **Depends on:** TASK-01
 - **Confidence:** 95%
   - Implementation: 98% — Text replacement on line 16
-  - Approach: 95% — Reasoning-first guidance (explain invariant → decision framework → tools) is well-established in the wf-fact-find
+  - Approach: 95% — Reasoning-first guidance (explain invariant → decision framework → tools) is well-established in the lp-fact-find
   - Impact: 92% — repo guidance is now canonical and enforced via runbooks + guardrails
 - **Acceptance:**
   - Repo runbooks document the decision framework (status → clean-stale if dead PID → acquire --wait)
@@ -245,7 +245,7 @@ No alternatives considered — these are all targeted fixes to known gaps with c
 
 ## Decision Log
 
-- 2026-02-07: Plan created from wf-fact-find. Error message fix already applied. Scoped to 4 remaining tasks.
+- 2026-02-07: Plan created from lp-fact-find. Error message fix already applied. Scoped to 4 remaining tasks.
 - 2026-02-07: Deferred `SKIP_WRITER_LOCK=1` code path removal — keep as last-resort escape hatch until `clean-stale` is proven in practice.
 - 2026-02-07: Completed TASK-01/TASK-02/TASK-03 (clean-stale command, guard env-var block, docs/runbook guidance refresh).
 - 2026-02-07: Closed TASK-04 at repo scope by treating runbooks as canonical; external `MEMORY.md` is out-of-repo.

@@ -1,5 +1,5 @@
 ---
-name: wf-build
+name: lp-build
 description: Execute tasks from an approved plan, one task at a time, with strict confidence gating and mandatory validation for code and business-artifact deliverables.
 ---
 
@@ -26,13 +26,13 @@ Execute tasks from an approved plan, one task at a time, with strict confidence 
   - All dependencies completed
   - No blockers noted in the task
 
-**If any selected IMPLEMENT task is <80% → STOP and run `/wf-replan` for that task.**
+**If any selected IMPLEMENT task is <80% → STOP and run `/lp-replan` for that task.**
 
 **If a selected task is 80–89%:** it is eligible to build, but treat the “unknowns” as real—ensure the task has explicit risks/verification steps (or update the plan before proceeding).
 
 ## Fast Path (with argument)
 
-**If user provides a slug or card ID** (e.g., `/wf-build commerce-core` or `/wf-build BRIK-ENG-0020`):
+**If user provides a slug or card ID** (e.g., `/lp-build commerce-core` or `/lp-build BRIK-ENG-0020`):
 - Skip discovery entirely
 - If slug: read `docs/plans/<slug>-plan.md` directly
 - If card ID: look up plan link from card file
@@ -63,7 +63,7 @@ Also check the `planned` array for cards with plan links.
 ## Inputs
 
 - The plan doc: `docs/plans/<feature-slug>-plan.md`
-- Optional: wf-fact-find brief: `docs/plans/<feature-slug>-wf-fact-find.md`
+- Optional: lp-fact-find brief: `docs/plans/<feature-slug>-lp-fact-find.md`
 - Optional: user-specified task IDs to build first
 
 If the user does not specify tasks, build in ascending TASK order among eligible IMPLEMENT tasks.
@@ -74,13 +74,13 @@ For each task, read `Deliverable` and `Execution-Skill` from the plan and route 
 
 | Deliverable Type | Primary Execution Skill | Notes |
 |---|---|---|
-| `code-change` | `/wf-build` | Native TDD path in this skill |
+| `code-change` | `/lp-build` | Native TDD path in this skill |
 | `email-message` | `/draft-email` | Use `/ops-inbox` when tied to inbox triage |
 | `product-brief` | `/biz-product-brief` | Decision-quality brief artifact |
 | `marketing-asset` | `/draft-marketing` | Campaign/channel asset package |
 | `spreadsheet` | `/biz-spreadsheet` | Spreadsheet spec + starter CSV |
 | `whatsapp-message` | `/draft-whatsapp` | Channel-safe copy with compliance checks |
-| `multi-deliverable` | `/wf-build` orchestrates per-task dispatch | One task per cycle still applies |
+| `multi-deliverable` | `/lp-build` orchestrates per-task dispatch | One task per cycle still applies |
 
 Startup aliases (from plan field `Startup-Deliverable-Alias`) are clarity labels, not replacement deliverable types:
 
@@ -92,7 +92,7 @@ Startup aliases (from plan field `Startup-Deliverable-Alias`) are clarity labels
 | `startup-supply-timeline` | `spreadsheet` | `/biz-spreadsheet` |
 | `startup-weekly-kpcs-memo` | `product-brief` | `/biz-product-brief` |
 
-If a referenced execution skill is missing, stop and run `/wf-replan` to either:
+If a referenced execution skill is missing, stop and run `/lp-replan` to either:
 - add the missing skill as a prerequisite task, or
 - re-scope the task to an available execution path.
 
@@ -108,7 +108,7 @@ Before executing any task work, verify all of the following:
   - For `business-artifact`/`mixed` tasks: Artifact-Destination, Reviewer, Approval-Evidence, Measurement-Readiness.
 - The task is not marked `Superseded`/`Blocked`/`Needs-input`.
 
-**If any required task fields are missing → treat as a confidence drop → STOP → `/wf-replan`.**
+**If any required task fields are missing → treat as a confidence drop → STOP → `/lp-replan`.**
 
 ### B) Eligibility gate
 
@@ -120,7 +120,7 @@ Confirm:
 
 **Task type differences:**
 - **IMPLEMENT:** Standard execution work. Use TDD for code/mixed tasks, artifact cycle for business-artifact tasks.
-- **SPIKE:** Produces a prototype or executable proof. Must have explicit validation criteria. On completion, its output (evidence) may be used by `/wf-replan` to promote downstream tasks.
+- **SPIKE:** Produces a prototype or executable proof. Must have explicit validation criteria. On completion, its output (evidence) may be used by `/lp-replan` to promote downstream tasks.
 - **INVESTIGATE:** Produces a decision memo or analysis artifact — not implementation delivery. Validation is: the decision memo exists and answers the question. Commit the memo/notes, then mark complete. Skip step 3 execution cycles and instead: perform investigation, produce artifact, verify exit criteria, commit artifact, update plan.
 - **CHECKPOINT:** Horizon re-assessment gate — not code. See "CHECKPOINT Handling" below.
 
@@ -128,7 +128,7 @@ Confirm:
 - **`code` or `mixed`:** Use the TDD cycle (tests first, fail, implement, pass).
 - **`business-artifact`:** Use the artifact cycle (draft, review against validation contract, finalize, evidence capture).
 
-**If not eligible → STOP → `/wf-replan`.**
+**If not eligible → STOP → `/lp-replan`.**
 
 ### C) Local readiness gate
 
@@ -150,8 +150,8 @@ Before changing anything:
 - **`[readonly]` files**: must NOT be modified — these are dependencies for understanding only
 
 **If you need to modify:**
-- A file not in "Affects" → STOP → `/wf-replan` (new scope)
-- A `[readonly]` file → STOP → `/wf-replan` (scope was wrong, dependency is actually a modification target)
+- A file not in "Affects" → STOP → `/lp-replan` (new scope)
+- A `[readonly]` file → STOP → `/lp-replan` (scope was wrong, dependency is actually a modification target)
 
 ### E) Validation Contract Gate
 
@@ -169,7 +169,7 @@ Before implementing, verify the task has a complete validation contract:
   - [ ] Approval-Evidence capture path/method is defined
   - [ ] Measurement-Readiness is explicit (owner + cadence + tracking location)
 
-**If validation contract is incomplete → treat as confidence drop → STOP → `/wf-replan`.**
+**If validation contract is incomplete → treat as confidence drop → STOP → `/lp-replan`.**
 
 A task without enumerated validation cases cannot be built, regardless of its stated confidence.
 
@@ -177,20 +177,20 @@ A task without enumerated validation cases cannot be built, regardless of its st
 
 If the task has a `Scouts` field, verify each scouted assumption still holds before building:
 
-- **Re-run any probe tests** from planning — if they now fail, the assumption has changed. STOP → `/wf-replan`.
+- **Re-run any probe tests** from planning — if they now fail, the assumption has changed. STOP → `/lp-replan`.
 - **Re-check doc lookups** if a dependency version has changed since planning.
 - **Verify type-level scouts** by running `tsc` on any type assertions from planning.
 
 If scouts were marked "inconclusive" during planning, treat them as risks — proceed cautiously but be ready to stop if the assumption proves false during implementation.
 
-**If any scout fails → treat as confidence drop → STOP → `/wf-replan`.**
+**If any scout fails → treat as confidence drop → STOP → `/lp-replan`.**
 
-### G) Topology freshness gate (required after wf-replan decomposition)
+### G) Topology freshness gate (required after lp-replan decomposition)
 
-If the most recent `/wf-replan` split tasks, added/removed tasks, or changed dependency topology, ensure `/wf-sequence` has already run on the updated plan before continuing build.
+If the most recent `/lp-replan` split tasks, added/removed tasks, or changed dependency topology, ensure `/lp-sequence` has already run on the updated plan before continuing build.
 
 - Verify active task IDs/dependencies/`Blocks` are internally consistent and the Parallelism Guide reflects the current graph.
-- If decomposition occurred but sequencing is stale or missing, STOP and run `/wf-sequence` first, then resume `/wf-build`.
+- If decomposition occurred but sequencing is stale or missing, STOP and run `/lp-sequence` first, then resume `/lp-build`.
 
 ## Build Loop (One Task per Cycle)
 
@@ -203,7 +203,7 @@ If the most recent `/wf-replan` split tasks, added/removed tasks, or changed dep
 - **If the next task is a CHECKPOINT → execute the checkpoint protocol (see below) instead of the normal build loop.**
 
 **Dispatch rule:**
-- If `Execution-Skill` for the selected task is not `wf-build`, invoke that specialized skill with the task context and expected output path.
+- If `Execution-Skill` for the selected task is not `lp-build`, invoke that specialized skill with the task context and expected output path.
 - After specialized execution, return to this workflow for confidence reassessment, final validation, commit, and plan updates.
 
 ### 2) Restate the task constraints (from the plan)
@@ -215,7 +215,7 @@ Extract from the plan into your working context:
 - Observability expectations (logging/metrics)
 - Documentation impact (standing docs to update)
 
-**If any of these are unclear during execution → treat as confidence drop → STOP → `/wf-replan`.**
+**If any of these are unclear during execution → treat as confidence drop → STOP → `/lp-replan`.**
 
 ### 3) Execute using track-appropriate cycle
 
@@ -273,14 +273,14 @@ test('should return 409 when entity was modified', async () => {
 **c) [Code/mixed] Run tests — verify they fail for the right reasons**
 - Tests should fail because the feature/fix doesn't exist yet
 - If tests pass unexpectedly → investigate (feature may already exist, or test is wrong)
-- If tests fail for unexpected reasons → STOP → `/wf-replan`
+- If tests fail for unexpected reasons → STOP → `/lp-replan`
 
 **d) [Code/mixed] Implement minimum code to make tests pass**
 - Write only what's needed to make tests green
 - Keep changes tightly scoped to the task
 - Follow established patterns referenced in the plan (or discovered during file-reading)
 - If implementation duplicates existing code, use the existing pattern or extract a shared utility — note any new shared abstractions in the commit message
-- Do not "sneak in" refactors or over-engineer; if refactor is required, add a new task via `/wf-replan`
+- Do not "sneak in" refactors or over-engineer; if refactor is required, add a new task via `/lp-replan`
 
 **e) [Code/mixed] Refactor if needed (tests stay green)**
 - Clean up implementation while keeping tests passing
@@ -292,8 +292,8 @@ test('should return 409 when entity was modified', async () => {
 - If implementation revealed additional docs needing updates not listed in the plan, update them and note the deviation
 
 **g) [Business-artifact] Staleness check on hypothesis landscape**
-- If the wf-fact-find brief includes a Hypothesis & Validation Landscape, scan it for time-sensitive assumptions (supplier quotes, market pricing, regulatory rules, competitor positioning, demand signals) whose validity may have decayed since planning.
-- If any key hypothesis depends on data older than 14 days, flag it and verify before drafting. If the assumption no longer holds, STOP → `/wf-replan`.
+- If the lp-fact-find brief includes a Hypothesis & Validation Landscape, scan it for time-sensitive assumptions (supplier quotes, market pricing, regulatory rules, competitor positioning, demand signals) whose validity may have decayed since planning.
+- If any key hypothesis depends on data older than 14 days, flag it and verify before drafting. If the assumption no longer holds, STOP → `/lp-replan`.
 - If no hypothesis landscape exists or all inputs are fresh, proceed.
 
 **h) [Business-artifact] Draft the artifact**
@@ -304,7 +304,7 @@ test('should return 409 when entity was modified', async () => {
 **i) [Business-artifact] Run validation checks (VC-XX)**
 - Execute every enumerated VC from the validation contract.
 - Verify channel/format constraints and compliance/brand requirements.
-- If any VC fails unexpectedly and fix is non-obvious → STOP → `/wf-replan`.
+- If any VC fails unexpectedly and fix is non-obvious → STOP → `/lp-replan`.
 
 **j) [Business-artifact] Review and approval handoff**
 - Route artifact to the owner/reviewer specified in the plan (or capture review-ready evidence if async).
@@ -332,8 +332,8 @@ After the execution cycle completes, reassess task confidence based on what vali
 |--------------------|-------------------|--------|
 | All TCs/VCs pass on first execution | Confidence holds or +5% (max) | Note in plan: "Validation confirmed assumptions" |
 | TC/VC reveals edge case not in plan | Confidence -5 to -10% | Add case to plan; note the gap |
-| TC/VC reveals missing dependency/contract | Confidence -10 to -20% | May need to update "Affects" or routing; consider `/wf-replan` |
-| Validation reveals architectural/strategic issue | Confidence drops to <80% | STOP → `/wf-replan` |
+| TC/VC reveals missing dependency/contract | Confidence -10 to -20% | May need to update "Affects" or routing; consider `/lp-replan` |
+| Validation reveals architectural/strategic issue | Confidence drops to <80% | STOP → `/lp-replan` |
 | Validation case was wrong (not execution) | Confidence holds | Fix case; note correction |
 | Execution required >1 cycle (red-green or draft-review) | Confidence -5% per additional cycle | Document iteration in plan |
 
@@ -342,7 +342,7 @@ After the execution cycle completes, reassess task confidence based on what vali
 **If post-validation confidence drops below 80%:**
 - STOP immediately — do not commit
 - Document what validation revealed
-- Run `/wf-replan` for this task and any dependent tasks
+- Run `/lp-replan` for this task and any dependent tasks
 
 This creates a feedback loop: validation outcomes directly inform confidence, which gates further work.
 
@@ -355,7 +355,7 @@ Run validation aligned to execution track:
 **Rule: never commit failing execution outputs.** If failures occur:
 - If the fix is straightforward and clearly within the task scope, fix it
 - If the failure indicates unclear behavior, unexpected dependencies, or uncertain approach:
-  - STOP → `/wf-replan`
+  - STOP → `/lp-replan`
 
 ### 5) Confidence and effort re-check during execution
 
@@ -369,7 +369,7 @@ If you encounter any of the following, treat it as a **confidence regression**:
 
 **Effort misclassification check:**
 
-If the actual work exceeds the classified effort level, STOP and `/wf-replan`:
+If the actual work exceeds the classified effort level, STOP and `/lp-replan`:
 - S-effort task requires 3+ files → should be M or L
 - M-effort task requires 6+ files or 3+ integration boundaries → should be L
 - Any task introduces a new pattern but wasn't classified L → should be L
@@ -380,7 +380,7 @@ Do not continue building an under-classified task. The validation requirements e
 **Action:**
 - STOP immediately
 - Capture what you learned (files, symptoms, failing tests, actual scope)
-- Run `/wf-replan` for the task with corrected effort classification
+- Run `/lp-replan` for the task with corrected effort classification
 
 ### 6) Commit (task-scoped)
 
@@ -415,7 +415,7 @@ Add or update:
 
 If execution changed understanding:
 - note confidence changes (and why)
-- if confidence would now be <80%, do not "paper over" it—stop and `/wf-replan`
+- if confidence would now be <80%, do not "paper over" it—stop and `/lp-replan`
 
 **Plan-level updates:**
 - Update `Last-updated`
@@ -468,22 +468,22 @@ Summarize what was learned during the build so far:
 - Any unexpected findings, scope changes, or confidence adjustments
 - Whether the "Horizon assumptions to validate" listed in the CHECKPOINT have been confirmed or disproved
 
-### 2) Run `/wf-replan` on remaining tasks
+### 2) Run `/lp-replan` on remaining tasks
 
-Invoke `/wf-replan` targeting all tasks that come **after** the CHECKPOINT in the plan. This re-assessment uses evidence from completed tasks (E2/E3 class) to:
+Invoke `/lp-replan` targeting all tasks that come **after** the CHECKPOINT in the plan. This re-assessment uses evidence from completed tasks (E2/E3 class) to:
 - Reassess confidence on remaining tasks using real implementation evidence
 - Split tasks that are too large or depend on unproven assumptions
 - Abandon or defer tasks that are no longer viable given what was learned
 - Insert new tasks discovered during execution
 - Update the plan with any new findings
 
-If `/wf-replan` decomposes or topology-edits the remaining tasks, run `/wf-sequence` before evaluating readiness to continue building.
+If `/lp-replan` decomposes or topology-edits the remaining tasks, run `/lp-sequence` before evaluating readiness to continue building.
 
-### 3) Evaluate wf-replan results
+### 3) Evaluate lp-replan results
 
-After `/wf-replan` completes:
+After `/lp-replan` completes:
 
-- **If decomposition/topology changes occurred and sequencing has not run yet:** STOP and run `/wf-sequence`, then re-evaluate.
+- **If decomposition/topology changes occurred and sequencing has not run yet:** STOP and run `/lp-sequence`, then re-evaluate.
 - **If remaining tasks are ≥80% and no open questions:** Mark the CHECKPOINT as complete, then continue the build loop with the next eligible task.
 - **If some tasks were revised but are still ≥80%:** Mark CHECKPOINT complete, continue building the revised tasks.
 - **If remaining tasks dropped below 80%:** Mark CHECKPOINT complete, then follow the normal below-threshold protocol (stop building those tasks, report to user).
@@ -498,21 +498,21 @@ Mark the CHECKPOINT task as `Complete (YYYY-MM-DD)` with a note summarizing:
 
 ### Why CHECKPOINTs matter
 
-Without CHECKPOINTs, a plan with 8 dependent tasks could build all 8 before discovering task 2's assumption was wrong — wasting tasks 3–8. With a CHECKPOINT after task 3, the re-assessment catches the problem after 3 tasks instead of 8. The cost of a CHECKPOINT (one `/wf-replan` invocation) is far less than the cost of a dead-end deep in implementation.
+Without CHECKPOINTs, a plan with 8 dependent tasks could build all 8 before discovering task 2's assumption was wrong — wasting tasks 3–8. With a CHECKPOINT after task 3, the re-assessment catches the problem after 3 tasks instead of 8. The cost of a CHECKPOINT (one `/lp-replan` invocation) is far less than the cost of a dead-end deep in implementation.
 
 ## Stopping Conditions (Hard Stops)
 
 | Condition | Action |
 |-----------|--------|
-| Task is <80% confidence (or becomes unclear mid-build) | Stop immediately → `/wf-replan` |
-| Task requires modifying files not listed in "Affects" | Stop → update plan or `/wf-replan` |
-| Unexpected dependency / larger blast radius discovered | Stop → `/wf-replan` (and update affected tasks) |
-| Actual scope exceeds classified effort level | Stop → `/wf-replan` with corrected effort (validation must match risk) |
-| Validation fails and fix is non-obvious | Stop → `/wf-replan` |
+| Task is <80% confidence (or becomes unclear mid-build) | Stop immediately → `/lp-replan` |
+| Task requires modifying files not listed in "Affects" | Stop → update plan or `/lp-replan` |
+| Unexpected dependency / larger blast radius discovered | Stop → `/lp-replan` (and update affected tasks) |
+| Actual scope exceeds classified effort level | Stop → `/lp-replan` with corrected effort (validation must match risk) |
+| Validation fails and fix is non-obvious | Stop → `/lp-replan` |
 | A DECISION is required (product/UX preference) | Stop → ask user via DECISION task in plan |
 | Baseline repo is failing unrelated checks | Stop → document and resolve via separate planned work |
-| Re-plan decomposed tasks but plan was not re-sequenced | Stop → run `/wf-sequence`, then resume build |
-| Next task is a CHECKPOINT | Pause build → execute CHECKPOINT protocol → `/wf-replan` remaining tasks → resume if still viable |
+| Re-plan decomposed tasks but plan was not re-sequenced | Stop → run `/lp-sequence`, then resume build |
+| Next task is a CHECKPOINT | Pause build → execute CHECKPOINT protocol → `/lp-replan` remaining tasks → resume if still viable |
 
 ## Rules
 
@@ -529,12 +529,12 @@ When confidence changes based on validation outcomes, capture the learning for f
 
 | Finding Type | Feedback Action |
 |--------------|-----------------|
-| Edge case was missed | Note category of edge case for future wf-fact-finds |
+| Edge case was missed | Note category of edge case for future lp-fact-finds |
 | Dependency was missed | Note discovery pattern for future impact analysis |
 | Architecture issue found | Flag for architectural review; update conventions docs |
 | Validation revealed undocumented behavior | Update system docs or briefs/playbooks |
 
-This feedback loop improves future `/wf-fact-find` and `/wf-plan` accuracy. When completing a task, explicitly note any learnings that should inform future planning.
+This feedback loop improves future `/lp-fact-find` and `/lp-plan` accuracy. When completing a task, explicitly note any learnings that should inform future planning.
 
 **Escalation to user:** Only ask the user when:
 - Business rules/UX intent cannot be inferred from repo or docs
@@ -559,19 +559,19 @@ A build cycle is considered complete only if:
 - [ ] Business-artifact tasks: reviewer/owner acknowledgement captured and linked in Approval-Evidence.
 - [ ] Business-artifact tasks: post-delivery tracking readiness confirmed in Measurement-Readiness destination.
 - [ ] Implementation is scoped exactly to the task (no scope creep).
-- [ ] Actual scope matched classified effort (if not, stopped and wf-replanned with correct effort).
+- [ ] Actual scope matched classified effort (if not, stopped and lp-replanned with correct effort).
 - [ ] Standing documentation updated per "Documentation impact" field (or confirmed "None").
 - [ ] All required validations passed (code commands and/or VC checklists).
 - [ ] Commits include TASK ID and are scoped to the task.
 - [ ] Plan doc updated with Status, Commits, Validation evidence.
-- [ ] Confidence was re-assessed; if <80%, stopped and triggered `/wf-replan`.
+- [ ] Confidence was re-assessed; if <80%, stopped and triggered `/lp-replan`.
 - [ ] No failing execution output was committed.
 
 ### Execution Quality Checks
 
 - [ ] Confidence was reassessed after execution cycle completed.
 - [ ] Post-validation confidence is documented in plan.
-- [ ] If confidence dropped below 80%, stopped and triggered `/wf-replan`.
+- [ ] If confidence dropped below 80%, stopped and triggered `/lp-replan`.
 - [ ] Cycle counts documented (red-green for code, draft-review for business artifacts).
 - [ ] All enumerated validation cases (TC-XX and/or VC-XX) from plan were executed.
 
@@ -583,14 +583,14 @@ Use one of the following outcomes:
 > "All eligible IMPLEMENT tasks are complete and validated. Plan updated with completion status and validation evidence. Remaining work: <none / list>. Ready for PR review."
 
 **B) Some tasks remain but are not eligible:**
-> "Completed N/M IMPLEMENT tasks (≥80% confidence). Tasks <IDs> are not eligible (confidence <80% or blocked). Recommend `/wf-replan` for those tasks before continuing."
+> "Completed N/M IMPLEMENT tasks (≥80% confidence). Tasks <IDs> are not eligible (confidence <80% or blocked). Recommend `/lp-replan` for those tasks before continuing."
 
 **C) Stopped mid-task due to confidence regression:**
-> "Stopped during TASK-XX due to newly discovered complexity or unclear blast radius. No further execution will proceed until `/wf-replan` updates the plan for TASK-XX (and any dependent tasks)."
+> "Stopped during TASK-XX due to newly discovered complexity or unclear blast radius. No further execution will proceed until `/lp-replan` updates the plan for TASK-XX (and any dependent tasks)."
 
 ## Business OS Integration (Default)
 
-When plan frontmatter includes `Card-ID`, `/wf-build` integrates with Business OS by default.
+When plan frontmatter includes `Card-ID`, `/lp-build` integrates with Business OS by default.
 
 **Escape hatch:** set `Business-OS-Integration: off` in plan frontmatter to skip card/stage-doc/lane writes for intentionally standalone work.
 

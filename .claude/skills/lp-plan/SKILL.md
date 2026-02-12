@@ -1,5 +1,5 @@
 ---
-name: wf-plan
+name: lp-plan
 description: Create a confidence-gated execution plan for a feature or business deliverable, then auto-continue to build if eligible. Produces a plan doc with atomic tasks, acceptance criteria, execution routing, and per-task confidence assessments.
 ---
 
@@ -7,9 +7,9 @@ description: Create a confidence-gated execution plan for a feature or business 
 
 Create a confidence-gated execution plan for a feature or business deliverable, then auto-continue to build when eligible. Produces a plan doc with atomic tasks, acceptance criteria, and per-task confidence assessments.
 
-**CI policy:** CI≥90 is a motivation/diagnostic, not a quota. Preserve breadth by phasing/deferment and by adding "What would make this ≥90%" notes. The **build gate** is still confidence-based: only IMPLEMENT tasks ≥80% proceed to `/wf-build`.
+**CI policy:** CI≥90 is a motivation/diagnostic, not a quota. Preserve breadth by phasing/deferment and by adding "What would make this ≥90%" notes. The **build gate** is still confidence-based: only IMPLEMENT tasks ≥80% proceed to `/lp-build`.
 
-**Auto-continue:** After planning completes, if there are no open questions and ≥1 IMPLEMENT task at ≥80% confidence, this skill automatically invokes `/wf-build` on the plan. No user intervention required for the handoff.
+**Auto-continue:** After planning completes, if there are no open questions and ≥1 IMPLEMENT task at ≥80% confidence, this skill automatically invokes `/lp-build` on the plan. No user intervention required for the handoff.
 
 ## Operating Mode
 
@@ -19,7 +19,7 @@ Create a confidence-gated execution plan for a feature or business deliverable, 
 
 **Not allowed during planning:** implementation code changes, refactors, migrations applied, running destructive commands, opening PRs.
 
-**Auto-continue phase:** After the plan is persisted and sequenced, if auto-continue criteria are met (see step 12), invoke `/wf-build` which transitions to full build mode.
+**Auto-continue phase:** After the plan is persisted and sequenced, if auto-continue criteria are met (see step 12), invoke `/lp-build` which transitions to full build mode.
 
 **Commits allowed:**
 - Plan file (`docs/plans/<slug>-plan.md`)
@@ -30,18 +30,18 @@ Create a confidence-gated execution plan for a feature or business deliverable, 
 
 Use the best available sources, in this priority order:
 
-1. Fact-find brief from `/wf-fact-find` (preferred)
+1. Fact-find brief from `/lp-fact-find` (preferred)
 2. Existing plan doc(s) in `docs/plans/`
 3. Feature request / ticket / user prompt
 4. Repo and operating reality (current systems, assets, channels, and validations)
 
-If a wf-fact-find brief does not exist, proceed only if the feature is genuinely well-understood; otherwise, create INVESTIGATION tasks to raise confidence rather than guessing.
+If a lp-fact-find brief does not exist, proceed only if the feature is genuinely well-understood; otherwise, create INVESTIGATION tasks to raise confidence rather than guessing.
 
-### Validation Foundation Check (Required when wf-fact-find exists)
+### Validation Foundation Check (Required when lp-fact-find exists)
 
-When starting from a wf-fact-find brief, verify the brief provides adequate validation foundation for the chosen execution track.
+When starting from a lp-fact-find brief, verify the brief provides adequate validation foundation for the chosen execution track.
 
-**Required in wf-fact-find brief (all tracks):**
+**Required in lp-fact-find brief (all tracks):**
 - [ ] `Deliverable-Type`, `Execution-Track`, and `Primary-Execution-Skill`
 - [ ] `Startup-Deliverable-Alias` is set to a supported value for startup work, otherwise `none`
 - [ ] `Delivery-Readiness` confidence input (0-100%)
@@ -57,12 +57,12 @@ When starting from a wf-fact-find brief, verify the brief provides adequate vali
 
 **If required validation foundation is missing or incomplete:**
 - Do NOT proceed with planning
-- Return to `/wf-fact-find` to complete missing sections
+- Return to `/lp-fact-find` to complete missing sections
 - Planning without validation foundation leads to low-quality execution
 
 ### Consuming Fact-Find Confidence Inputs
 
-If the wf-fact-find brief includes Confidence Inputs (Implementation, Approach, Impact, Delivery-Readiness, Testability), use them as **starting baselines** for task confidence:
+If the lp-fact-find brief includes Confidence Inputs (Implementation, Approach, Impact, Delivery-Readiness, Testability), use them as **starting baselines** for task confidence:
 
 | Fact-Find Input | Informs |
 |-----------------|---------|
@@ -73,18 +73,18 @@ If the wf-fact-find brief includes Confidence Inputs (Implementation, Approach, 
 | Testability confidence | Validation contract completeness expectations (especially for code/mixed) |
 
 **Handoff rules:**
-- If any wf-fact-find confidence input is <80%, the plan MUST include tasks to raise it (INVESTIGATION or DECISION)
+- If any lp-fact-find confidence input is <80%, the plan MUST include tasks to raise it (INVESTIGATION or DECISION)
 - If Delivery-Readiness is <80%, add explicit enablement tasks (owner assignment, approval path, quality rubric, channel/tool setup)
-- Do not claim 90%+ task confidence if wf-fact-find's testability confidence was <70%
-- Task confidence cannot exceed wf-fact-find's implementation confidence by >10% without new evidence
+- Do not claim 90%+ task confidence if lp-fact-find's testability confidence was <70%
+- Task confidence cannot exceed lp-fact-find's implementation confidence by >10% without new evidence
 
 ### Slug Stability
 
-When a Card-ID is present (BOS integration), read `Feature-Slug` from the card frontmatter rather than re-deriving it. This ensures consistency across wf-fact-find → plan → build.
+When a Card-ID is present (BOS integration), read `Feature-Slug` from the card frontmatter rather than re-deriving it. This ensures consistency across lp-fact-find → plan → build.
 
 ### Execution Routing Stability
 
-When wf-fact-find provides `Primary-Execution-Skill` and `Supporting-Skills`, preserve them unless new evidence justifies a change.
+When lp-fact-find provides `Primary-Execution-Skill` and `Supporting-Skills`, preserve them unless new evidence justifies a change.
 
 - If changing execution routing, record the reason in the plan Decision Log.
 - Every IMPLEMENT task must carry an explicit `Execution-Skill` field.
@@ -109,22 +109,22 @@ When wf-fact-find provides `Primary-Execution-Skill` and `Supporting-Skills`, pr
 
 ## When to Use
 
-Run `/wf-plan` when:
+Run `/lp-plan` when:
 
-- A wf-fact-find brief is complete and ready for planning (preferred entry point)
+- A lp-fact-find brief is complete and ready for planning (preferred entry point)
 - The feature is well-understood and doesn't require extensive investigation
 - An existing plan needs significant revision or new tasks added
 
-Do **not** use `/wf-plan` if:
-- You need to understand the current system first → use `/wf-fact-find`
-- You're addressing low-confidence tasks in an existing plan → use `/wf-replan`
-- You're ready to implement → use `/wf-build`
+Do **not** use `/lp-plan` if:
+- You need to understand the current system first → use `/lp-fact-find`
+- You're addressing low-confidence tasks in an existing plan → use `/lp-replan`
+- You're ready to implement → use `/lp-build`
 
 ## Fast Path (with argument)
 
-**If user provides a slug or card ID** (e.g., `/wf-plan commerce-core` or `/wf-plan BRIK-ENG-0020`):
+**If user provides a slug or card ID** (e.g., `/lp-plan commerce-core` or `/lp-plan BRIK-ENG-0020`):
 - Skip discovery entirely
-- If slug: read `docs/plans/<slug>-wf-fact-find.md` directly (or create new plan)
+- If slug: read `docs/plans/<slug>-lp-fact-find.md` directly (or create new plan)
 - If card ID: look up plan link from card file
 - **Target: <2 seconds to start planning**
 
@@ -155,7 +155,7 @@ Use these values consistently across all plan documents:
 
 **Plan Status** (frontmatter):
 - `Draft` — plan is being written and not ready for build (do not ship as final output)
-- `Active` — plan is approved and work may proceed (set when ready for `/wf-build`)
+- `Active` — plan is approved and work may proceed (set when ready for `/lp-build`)
 - `Complete` — all tasks done
 - `Superseded` — replaced by a newer plan
 
@@ -229,7 +229,7 @@ Run validation appropriate to the execution track to verify understanding matche
 Before relying on existing tests for validation, verify they are still valid:
 - Read test assertions and confirm they test *current* behavior, not obsolete contracts
 - Tests are "extinct" if they assert behavior that no longer exists or test removed APIs
-- Note any extinct tests found — they must be updated or removed during `/wf-build`
+- Note any extinct tests found — they must be updated or removed during `/lp-build`
 - Do not count extinct test results as validation evidence
 
 **What to capture for each task:**
@@ -252,7 +252,7 @@ Before relying on existing tests for validation, verify they are still valid:
 - Translate acceptance criteria into test skeletons using `test.todo()` or `it.skip()` (non-failing)
 - Include the test name, TC-XX reference, and a comment describing the expected assertion
 - These validate that you understand what "done" looks like in executable terms
-- Stubs become the starting point for wf-build's TDD cycle (code/mixed tasks only)
+- Stubs become the starting point for lp-build's TDD cycle (code/mixed tasks only)
 - Commit test stubs with the plan (allowed exception to "no code changes")
 
 **Test stub format (non-failing):**
@@ -355,7 +355,7 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
 **Insert CHECKPOINT tasks at horizon boundaries:**
 - When a plan has **>3 IMPLEMENT tasks in a dependency chain**, insert a `CHECKPOINT` task after the first 2–3 IMPLEMENT tasks.
 - A CHECKPOINT is a lightweight re-assessment gate: "Given what we've built so far, does the rest of the plan still make sense?"
-- CHECKPOINTs don't produce code — they produce an updated plan (via `/wf-replan`).
+- CHECKPOINTs don't produce code — they produce an updated plan (via `/lp-replan`).
 - Auto-continue builds up to the first CHECKPOINT, then pauses for re-assessment before continuing.
 
 **CHECKPOINT task format:**
@@ -366,7 +366,7 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
 - **Blocks:** <first IMPLEMENT task after the boundary>
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/wf-replan` on all tasks after this checkpoint
+  - Run `/lp-replan` on all tasks after this checkpoint
   - Reassess remaining task confidence using evidence from completed tasks
   - Confirm or revise the approach for remaining work
   - Update plan with any new findings, splits, or abandoned tasks
@@ -388,8 +388,8 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
 
 **Rules:**
 - One logical unit per task (typically one file or one cohesive change set).
-- Order tasks so riskiest assumptions are validated first, then by prerequisites (infra/contracts before consumers). This is an initial authoring heuristic — `/wf-sequence` (step 10a) will formalize the ordering, renumber tasks, and add blocker metadata.
-- If decomposition is needed (for example, splitting one task into precursor + implementation tasks), complete all task content edits first, then run `/wf-sequence` before any completion message or auto-continue handoff.
+- Order tasks so riskiest assumptions are validated first, then by prerequisites (infra/contracts before consumers). This is an initial authoring heuristic — `/lp-sequence` (step 10a) will formalize the ordering, renumber tasks, and add blocker metadata.
+- If decomposition is needed (for example, splitting one task into precursor + implementation tasks), complete all task content edits first, then run `/lp-sequence` before any completion message or auto-continue handoff.
 - Each task must include:
   - **Affects** (file paths/modules — see format below)
   - **Deliverable** (type + artifact/output location)
@@ -411,7 +411,7 @@ Plans with many tasks in a dependency chain carry **compounding uncertainty** �
 - **Primary** (files being modified): `src/path/to/file.ts`
 - **Secondary** (read-only dependencies): `[readonly] src/path/to/types.ts`
 
-Use `[readonly]` prefix for files that must be read to understand contracts but won't be changed. This helps `/wf-build` distinguish scope boundaries — modifying a `[readonly]` file is a scope expansion that requires wf-replanning.
+Use `[readonly]` prefix for files that must be read to understand contracts but won't be changed. This helps `/lp-build` distinguish scope boundaries — modifying a `[readonly]` file is a scope expansion that requires lp-replanning.
 
 **Validation contract requirements:**
 - Every acceptance criterion must map to a concrete verification step.
@@ -458,7 +458,7 @@ Effort classification determines validation requirements. Classify based on obje
 **Anti-gaming provisions:**
 - Do not artificially split tasks to reduce effort classification. If the logical unit of work is L-effort, plan it as L-effort.
 - Do not defer complex tasks because they require stronger validation artifacts (test stubs, rehearsal evidence, or approval gates). The validation work is proportional to the risk—skipping it doesn't reduce the risk, it just hides it.
-- If during build the actual scope exceeds the classified effort, wf-build will trigger `/wf-replan`.
+- If during build the actual scope exceeds the classified effort, lp-build will trigger `/lp-replan`.
 
 ### 8) Confidence scoring (per task, evidence-based)
 
@@ -477,7 +477,7 @@ For each task, assign three dimension scores (0–100%). The overall confidence 
 - **90–100:** Clear precedent + low novelty + testable + isolated impact
 - **80–89:** Straightforward, minor unknowns, mitigations identified
 - **60–79:** Material uncertainty remains; proceed only with explicit risks and verification steps
-- **<60:** Do not build. Convert to INVESTIGATION/DECISION and trigger `/wf-replan` for that area.
+- **<60:** Do not build. Convert to INVESTIGATION/DECISION and trigger `/lp-replan` for that area.
 
 **Interpretation note:** Confidence ≥90% is not required to plan or build. If a task is <90, keep it in scope but include a short “What would make this ≥90%” note (tests, spikes, evidence, rollout rehearsal) that would raise confidence without deleting work.
 
@@ -528,14 +528,14 @@ Set frontmatter `Status: Active` in the final persisted plan unless the user exp
 
 ### 10a) Sequence the plan (automatic; mandatory after decomposition)
 
-After persisting the plan doc, run `/wf-sequence` on it. This:
+After persisting the plan doc, run `/lp-sequence` on it. This:
 
 - Topologically sorts tasks into correct implementation order based on explicit dependencies, file-overlap analysis, and phase ordering
 - Renumbers tasks sequentially (`TASK-01`, `TASK-02`, ... or `DS-01`, `DS-02`, ... preserving domain prefix)
 - Adds a `Blocks` field to every task (inverse of `Depends on`) so agents know what they unblock
 - Generates a **Parallelism Guide** showing which tasks can be dispatched to concurrent subagents
 
-**Decomposition rule:** if any task was split, added, removed, or had dependency topology changes during planning, `/wf-sequence` is required and cannot be skipped.
+**Decomposition rule:** if any task was split, added, removed, or had dependency topology changes during planning, `/lp-sequence` is required and cannot be skipped.
 
 **This step modifies the plan doc that was just persisted in step 10.** The completion message (step 11) should reflect the sequenced state.
 
@@ -546,8 +546,8 @@ After persisting the plan doc, run `/wf-sequence` on it. This:
 At the end, tell the user:
 - Which tasks are **Ready** (≥80%)
 - Which are **Caution** (60–79%)
-- Which are **Blocked** (<60%) and require `/wf-replan`
-- The recommended next action (`/wf-build` or `/wf-replan`)
+- Which are **Blocked** (<60%) and require `/lp-replan`
+- The recommended next action (`/lp-build` or `/lp-replan`)
 
 ## Plan Template
 
@@ -563,14 +563,14 @@ Feature-Slug: <kebab-case>
 Deliverable-Type: <code-change | email-message | product-brief | marketing-asset | spreadsheet | whatsapp-message | multi-deliverable>
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo>
 Execution-Track: <code | business-artifact | mixed>
-Primary-Execution-Skill: <wf-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
+Primary-Execution-Skill: <lp-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
 Overall-confidence: <weighted average %>
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 # Business OS Integration (default-on; set Business-OS-Integration: off for standalone work)
 Business-OS-Integration: <on | off>  # default: on
 Business-Unit: <BRIK | PLAT | PIPE | BOS | etc.>
-Card-ID: <from wf-fact-find or manually provided>
+Card-ID: <from lp-fact-find or manually provided>
 ---
 
 # <Feature Name> Plan
@@ -593,7 +593,7 @@ Card-ID: <from wf-fact-find or manually provided>
   - <only if necessary>
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/<feature-slug>-wf-fact-find.md` (if exists)
+- Related brief: `docs/plans/<feature-slug>-lp-fact-find.md` (if exists)
 - Key findings: <inline bullets of key findings + resolved questions>
 
 ## Existing System Notes
@@ -619,7 +619,7 @@ Card-ID: <from wf-fact-find or manually provided>
 
 ## Parallelism Guide
 
-_Generated by `/wf-sequence` (step 10a). Shows which tasks can run concurrently via subagents._
+_Generated by `/lp-sequence` (step 10a). Shows which tasks can run concurrently via subagents._
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
@@ -633,14 +633,14 @@ _Generated by `/wf-sequence` (step 10a). Shows which tasks can run concurrently 
 - **Type:** IMPLEMENT
 - **Deliverable:** <deliverable type + output location/path>
 - **Startup-Deliverable-Alias:** <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo>
-- **Execution-Skill:** <wf-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
+- **Execution-Skill:** <lp-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 - **Artifact-Destination:** <required for business-artifact/mixed; where final output is published/handed off>
 - **Reviewer:** <required for business-artifact/mixed; named owner/approver>
 - **Approval-Evidence:** <required for business-artifact/mixed; link/path/comment proving acknowledgement>
 - **Measurement-Readiness:** <required for business-artifact/mixed; metric owner + cadence + tracking location>
 - **Affects:** `path/to/file.ts`, `path/to/other.ts`
 - **Depends on:** <TASK-IDs or "-">
-- **Blocks:** <TASK-IDs or "-"> _(populated by `/wf-sequence`)_
+- **Blocks:** <TASK-IDs or "-"> _(populated by `/lp-sequence`)_
 - **Confidence:** 92%
   - Implementation: 95% — <why>
   - Approach: 90% — <why>
@@ -687,10 +687,10 @@ _Generated by `/wf-sequence` (step 10a). Shows which tasks can run concurrently 
 ### TASK-02: <description>
 - **Type:** INVESTIGATE
 - **Deliverable:** <analysis artifact output path>
-- **Execution-Skill:** <wf-build or specialized skill>
+- **Execution-Skill:** <lp-build or specialized skill>
 - **Affects:** <areas to inspect>
 - **Depends on:** <TASK-IDs or "-">
-- **Blocks:** <TASK-IDs or "-"> _(populated by `/wf-sequence`)_
+- **Blocks:** <TASK-IDs or "-"> _(populated by `/lp-sequence`)_
 - **Confidence:** 55% ⚠️ BELOW THRESHOLD
   - Implementation: 70% — <why unknown>
   - Approach: 50% — <decision unresolved>
@@ -705,10 +705,10 @@ _Generated by `/wf-sequence` (step 10a). Shows which tasks can run concurrently 
 ### TASK-03: <description>
 - **Type:** DECISION
 - **Deliverable:** <decision artifact output path>
-- **Execution-Skill:** <wf-build or specialized skill>
+- **Execution-Skill:** <lp-build or specialized skill>
 - **Affects:** <areas impacted by this decision>
 - **Depends on:** <TASK-IDs or "-">
-- **Blocks:** <TASK-IDs or "-"> _(populated by `/wf-sequence`)_
+- **Blocks:** <TASK-IDs or "-"> _(populated by `/lp-sequence`)_
 - **Confidence:** 60% ⚠️ BELOW THRESHOLD
   - Implementation: 80% — both options are implementable
   - Approach: 50% — genuinely equivalent options; requires preference
@@ -763,11 +763,11 @@ A plan is considered complete only if:
 - [ ] For M/L tasks claiming >80% confidence: validation evidence is documented.
 - [ ] INVESTIGATE/DECISION tasks are used for uncertainty (not buried in IMPLEMENT tasks).
 - [ ] Dependencies are explicitly mapped and ordered correctly.
-- [ ] `/wf-sequence` has been run: tasks are topologically sorted, renumbered, `Blocks` fields added, and Parallelism Guide generated.
-- [ ] If tasks were decomposed (split/added/removed) during planning, `/wf-sequence` ran after the final structural edit and before any `/wf-build` handoff.
+- [ ] `/lp-sequence` has been run: tasks are topologically sorted, renumbered, `Blocks` fields added, and Parallelism Guide generated.
+- [ ] If tasks were decomposed (split/added/removed) during planning, `/lp-sequence` ran after the final structural edit and before any `/lp-build` handoff.
 - [ ] Risks and mitigations are documented.
 - [ ] User questions were asked only when genuinely unavoidable.
-- [ ] Auto-continue criteria evaluated: no open questions + ≥1 task ≥80% → `/wf-build` invoked; otherwise reason for stopping documented.
+- [ ] Auto-continue criteria evaluated: no open questions + ≥1 task ≥80% → `/lp-build` invoked; otherwise reason for stopping documented.
 
 ### Validation Quality Checks
 
@@ -786,7 +786,7 @@ A plan is considered complete only if:
 
 ### Validation Foundation Check (from Fact-Find)
 
-Before planning tasks, verify the wf-fact-find brief includes:
+Before planning tasks, verify the lp-fact-find brief includes:
 - [ ] Deliverable-Type, Execution-Track, Primary-Execution-Skill
 - [ ] Startup-Deliverable-Alias (startup task) or `none` (non-startup task)
 - [ ] Delivery-Readiness confidence input
@@ -800,11 +800,11 @@ Before planning tasks, verify the wf-fact-find brief includes:
 
 | Situation | Action |
 |-----------|--------|
-| All IMPLEMENT tasks ≥80%, no open questions | **Auto-continue:** invoke `/wf-build` immediately |
-| Some tasks ≥80%, others 60–79%, no open questions | **Auto-continue:** invoke `/wf-build` for eligible tasks; note remaining tasks need `/wf-replan` |
+| All IMPLEMENT tasks ≥80%, no open questions | **Auto-continue:** invoke `/lp-build` immediately |
+| Some tasks ≥80%, others 60–79%, no open questions | **Auto-continue:** invoke `/lp-build` for eligible tasks; note remaining tasks need `/lp-replan` |
 | ≥1 IMPLEMENT task ≥80% but open DECISION/Needs-Input tasks exist | **Stop and ask:** present open questions to user; do NOT auto-continue |
-| All IMPLEMENT tasks <80% | Do NOT build. Recommend `/wf-replan` |
-| Any IMPLEMENT task <60% | Do NOT build it. Convert to INVESTIGATE/DECISION and run `/wf-replan` for that area |
+| All IMPLEMENT tasks <80% | Do NOT build. Recommend `/lp-replan` |
+| Any IMPLEMENT task <60% | Do NOT build it. Convert to INVESTIGATE/DECISION and run `/lp-replan` for that area |
 | Genuine product/UX ambiguity | Ask the user only after repo/doc investigation |
 
 ## Auto-Continue to Build (Step 12)
@@ -816,33 +816,33 @@ After the completion message (step 11), evaluate whether to auto-continue:
 1. **No open questions:** No DECISION tasks with status `Needs-Input`, no unresolved user questions
 2. **≥1 eligible task:** At least one IMPLEMENT task has confidence ≥80%
 3. **Plan status is Active:** The plan was set to `Active` (not left as `Draft`)
-4. **Topology is sequenced:** If tasks were decomposed or dependencies changed, `/wf-sequence` has run after those edits
+4. **Topology is sequenced:** If tasks were decomposed or dependencies changed, `/lp-sequence` has run after those edits
 
 ### Auto-continue scope (CHECKPOINT-bounded)
 
 Auto-continue builds only up to the **first CHECKPOINT task** in the plan. This prevents committing to deep implementation before validating near-horizon assumptions.
 
 - If the plan has no CHECKPOINTs: auto-continue builds all eligible tasks (plan is short enough that horizon risk is acceptable)
-- If the plan has CHECKPOINTs: auto-continue builds eligible tasks up to the first CHECKPOINT, then the CHECKPOINT triggers `/wf-replan` on remaining tasks before continuing
+- If the plan has CHECKPOINTs: auto-continue builds eligible tasks up to the first CHECKPOINT, then the CHECKPOINT triggers `/lp-replan` on remaining tasks before continuing
 
 This means a plan with 8 tasks and a CHECKPOINT after task 3 will:
 1. Auto-continue → build tasks 1–3
-2. Hit CHECKPOINT → run `/wf-replan` on tasks 5–8 using evidence from tasks 1–3
-3. If wf-replan confirms remaining tasks → continue building
-4. If wf-replan reveals problems → revise before wasting more effort
+2. Hit CHECKPOINT → run `/lp-replan` on tasks 5–8 using evidence from tasks 1–3
+3. If lp-replan confirms remaining tasks → continue building
+4. If lp-replan reveals problems → revise before wasting more effort
 
 ### When criteria are met
 
 - Output the completion message (step 11) noting auto-continuation
-- Invoke `/wf-build <feature-slug>` immediately
+- Invoke `/lp-build <feature-slug>` immediately
 - The build skill takes over from here with its own operating mode
 - Build will automatically pause at the first CHECKPOINT for re-assessment
 
 ### When criteria are NOT met
 
 - Output the completion message (step 11) with the blocking reason
-- Do NOT invoke `/wf-build`
-- Recommend the appropriate next action (`/wf-replan`, answer DECISION tasks, etc.)
+- Do NOT invoke `/lp-build`
+- Recommend the appropriate next action (`/lp-replan`, answer DECISION tasks, etc.)
 
 ### Override
 
@@ -851,16 +851,16 @@ If the user explicitly says the plan should remain Draft or asks NOT to auto-bui
 ## Completion Output (what to say to the user)
 
 **If all ≥80% and auto-continuing:**
-> "Plan ready. All implementation tasks are ≥80% confidence. Tasks sequenced into N execution waves (max parallelism: P). Auto-continuing to `/wf-build`..."
+> "Plan ready. All implementation tasks are ≥80% confidence. Tasks sequenced into N execution waves (max parallelism: P). Auto-continuing to `/lp-build`..."
 
 **If some ≥80% and auto-continuing (others below threshold):**
-> "Plan ready with blockers. Tasks <IDs> are below threshold (<%>). Tasks sequenced into N execution waves. Auto-continuing to `/wf-build` for eligible tasks. Recommend `/wf-replan` for blocked tasks after initial build completes."
+> "Plan ready with blockers. Tasks <IDs> are below threshold (<%>). Tasks sequenced into N execution waves. Auto-continuing to `/lp-build` for eligible tasks. Recommend `/lp-replan` for blocked tasks after initial build completes."
 
 **If blocked from auto-continue (open questions):**
-> "Plan ready but has open questions. Tasks <IDs> need decisions before build can proceed. Please resolve DECISION tasks, then run `/wf-build`."
+> "Plan ready but has open questions. Tasks <IDs> need decisions before build can proceed. Please resolve DECISION tasks, then run `/lp-build`."
 
 **If blocked from auto-continue (all tasks <80%):**
-> "Plan ready with blockers. No tasks are above the 80% build threshold. Recommend `/wf-replan` to raise confidence before building."
+> "Plan ready with blockers. No tasks are above the 80% build threshold. Recommend `/lp-replan` to raise confidence before building."
 
 ---
 
@@ -881,7 +881,7 @@ Set `Business-OS-Integration: off` in plan frontmatter for intentionally standal
 **Step 1: Read card via API and lock Feature-Slug**
 
 - Fetch the card via API.
-- If card is missing: stop (it should exist from `/wf-fact-find` or explicit setup).
+- If card is missing: stop (it should exist from `/lp-fact-find` or explicit setup).
 - Read `Feature-Slug` from card frontmatter (do not re-derive from title).
 
 ```json
@@ -985,7 +985,7 @@ When Card-ID is present and auto-continuing:
 > - Card updated with Plan-Link via API
 > - Deterministic lane transition applied: `Fact-finding -> Planned`
 >
-> Auto-continuing to `/wf-build`..."
+> Auto-continuing to `/lp-build`..."
 
 When Card-ID is present but some tasks are below threshold:
 
@@ -997,7 +997,7 @@ When Card-ID is present but some tasks are below threshold:
 > - Card updated with Plan-Link via API
 > - Lane remains `Fact-finding` until blockers are resolved
 >
-> Auto-continuing to `/wf-build` for eligible tasks. Recommend `/wf-replan` for blocked tasks after initial build."
+> Auto-continuing to `/lp-build` for eligible tasks. Recommend `/lp-replan` for blocked tasks after initial build."
 
 When Card-ID is present but auto-continue is blocked:
 
@@ -1009,7 +1009,7 @@ When Card-ID is present but auto-continue is blocked:
 > - Card updated with Plan-Link via API
 > - Lane remains `Fact-finding` until gating conditions are met
 >
-> Recommend `/wf-replan` for blocked tasks."
+> Recommend `/lp-replan` for blocked tasks."
 
 ### Backward Compatibility
 

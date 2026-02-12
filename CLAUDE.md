@@ -54,7 +54,7 @@ If a task appears too complex for sonnet, pause and ask the user before switchin
 
 ## Workflow
 
-Feature flow: `/wf-fact-find` → `/wf-plan` → `/wf-sequence` → `/wf-build` → `/wf-replan` (if confidence <80%).
+Feature flow: `/lp-fact-find` → `/lp-plan` → `/lp-sequence` → `/lp-build` → `/lp-replan` (if confidence <80%).
 Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guide.md`.
 
 ## Type Intelligence (MCP)

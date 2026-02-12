@@ -9,7 +9,7 @@ Relates-to charter: none
 Feature-Slug: xa-v2
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
+Primary-Execution-Skill: lp-build
 Supporting-Skills: ops-ship
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by Effort

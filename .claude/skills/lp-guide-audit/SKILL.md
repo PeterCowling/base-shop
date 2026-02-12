@@ -1,5 +1,5 @@
 ---
-name: guide-audit
+name: lp-guide-audit
 description: Run SEO audit and iteratively fix all issues for English guide content only. No translation.
 ---
 

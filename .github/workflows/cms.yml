@@ -59,6 +59,13 @@ concurrency:
 jobs:
   lint-typecheck:
     name: Lint & typecheck
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:cms')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -76,6 +83,13 @@ jobs:
 
   test:
     name: Test (shard ${{ matrix.shard }}/4)
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:cms')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -108,6 +122,13 @@ jobs:
 
   build:
     name: Build
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:cms')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [lint-typecheck, test]
@@ -124,7 +145,14 @@ jobs:
 
   deploy:
     name: Deploy
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging'
+    if: >-
+      ${{
+        (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') &&
+        (github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:cms'))
+      }}
     needs: [build]
     runs-on: ubuntu-latest
     timeout-minutes: 15

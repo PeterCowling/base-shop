@@ -80,27 +80,78 @@ jobs:
             };
 
             const requiredWorkflows = [];
-            if (need.core) requiredWorkflows.push({ id: "ci.yml", name: "Core Platform CI" });
-            if (need.cms_e2e) requiredWorkflows.push({ id: "cypress.yml", name: "CMS E2E & Component Tests" });
-            if (need.cms_deploy) requiredWorkflows.push({ id: "cms.yml", name: "Deploy CMS" });
-            if (need.skylar) requiredWorkflows.push({ id: "skylar.yml", name: "Deploy Skylar" });
-            if (need.brikette) requiredWorkflows.push({ id: "brikette.yml", name: "Deploy Brikette" });
-            if (need.prime) requiredWorkflows.push({ id: "prime.yml", name: "Deploy Prime" });
-            if (need.product_pipeline) requiredWorkflows.push({ id: "product-pipeline.yml", name: "Deploy Product Pipeline" });
-            if (need.storybook) requiredWorkflows.push({ id: "storybook.yml", name: "Storybook CI" });
-            if (need.consent_analytics) requiredWorkflows.push({ id: "consent-analytics.yml", name: "Consent & Analytics Checks" });
+            const labels = context.eventName === "pull_request"
+              ? (context.payload.pull_request.labels || []).map((l) => l.name)
+              : [];
+            const scopedPromotionApps = labels
+              .filter((label) => label.startsWith("promote-app:"))
+              .map((label) => label.slice("promote-app:".length))
+              .filter(Boolean);
+            const isScopedMainPromotion =
+              context.eventName === "pull_request" &&
+              context.payload.pull_request.base?.ref === "main" &&
+              scopedPromotionApps.length > 0;
 
-            // LHCI only runs on PRs when paths changed OR label `run-lhci` is present.
-            // Require it only in those cases.
-            if (context.eventName === "pull_request") {
-              const labels = (context.payload.pull_request.labels || []).map((l) => l.name);
-              const hasRunLabel = labels.includes("run-lhci");
-              if (need.lhci || hasRunLabel) {
-                requiredWorkflows.push({ id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+            if (isScopedMainPromotion) {
+              core.notice(
+                `Scoped promotion detected for app(s): ${scopedPromotionApps.join(", ")}. Merge Gate will require only scoped workflows.`
+              );
+              const scopeWorkflowMap = {
+                brikette: [{ id: "brikette.yml", name: "Deploy Brikette" }],
+                "business-os": [{ id: "business-os-deploy.yml", name: "Deploy Business OS" }],
+                cms: [
+                  { id: "cms.yml", name: "Deploy CMS" },
+                  { id: "cypress.yml", name: "CMS E2E & Component Tests" },
+                ],
+                core: [
+                  { id: "ci.yml", name: "Core Platform CI" },
+                  { id: "storybook.yml", name: "Storybook CI" },
+                  { id: "consent-analytics.yml", name: "Consent & Analytics Checks" },
+                ],
+                prime: [{ id: "prime.yml", name: "Deploy Prime" }],
+                "product-pipeline": [{ id: "product-pipeline.yml", name: "Deploy Product Pipeline" }],
+                reception: [{ id: "reception.yml", name: "Validate Reception" }],
+                skylar: [{ id: "skylar.yml", name: "Deploy Skylar" }],
+                shop: [{ id: "ci.yml", name: "Core Platform CI" }],
+                xa: [{ id: "xa.yml", name: "Deploy XA (Stealth Staging)" }],
+              };
+              const dedup = new Map();
+              for (const scopedApp of scopedPromotionApps) {
+                const workflows = scopeWorkflowMap[scopedApp];
+                if (!workflows) {
+                  core.warning(`Unknown promotion scope label: promote-app:${scopedApp}`);
+                  continue;
+                }
+                for (const workflow of workflows) {
+                  dedup.set(workflow.id, workflow);
+                }
+                if (scopedApp === "brikette" || scopedApp === "shop" || scopedApp === "skylar") {
+                  dedup.set("ci-lighthouse.yml", { id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+                }
               }
-            } else if (context.eventName === "push" && context.ref === "refs/heads/main") {
-              // On main, LHCI always runs (but not necessarily required for merges).
-              // Don't block the gate on it for push runs.
+              requiredWorkflows.push(...dedup.values());
+            } else {
+              if (need.core) requiredWorkflows.push({ id: "ci.yml", name: "Core Platform CI" });
+              if (need.cms_e2e) requiredWorkflows.push({ id: "cypress.yml", name: "CMS E2E & Component Tests" });
+              if (need.cms_deploy) requiredWorkflows.push({ id: "cms.yml", name: "Deploy CMS" });
+              if (need.skylar) requiredWorkflows.push({ id: "skylar.yml", name: "Deploy Skylar" });
+              if (need.brikette) requiredWorkflows.push({ id: "brikette.yml", name: "Deploy Brikette" });
+              if (need.prime) requiredWorkflows.push({ id: "prime.yml", name: "Deploy Prime" });
+              if (need.product_pipeline) requiredWorkflows.push({ id: "product-pipeline.yml", name: "Deploy Product Pipeline" });
+              if (need.storybook) requiredWorkflows.push({ id: "storybook.yml", name: "Storybook CI" });
+              if (need.consent_analytics) requiredWorkflows.push({ id: "consent-analytics.yml", name: "Consent & Analytics Checks" });
+
+              // LHCI only runs on PRs when paths changed OR label `run-lhci` is present.
+              // Require it only in those cases.
+              if (context.eventName === "pull_request") {
+                const hasRunLabel = labels.includes("run-lhci");
+                if (need.lhci || hasRunLabel) {
+                  requiredWorkflows.push({ id: "ci-lighthouse.yml", name: "Lighthouse CI" });
+                }
+              } else if (context.eventName === "push" && context.ref === "refs/heads/main") {
+                // On main, LHCI always runs (but not necessarily required for merges).
+                // Don't block the gate on it for push runs.
+              }
             }
 
             if (requiredWorkflows.length === 0) {

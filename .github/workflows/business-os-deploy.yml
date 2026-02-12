@@ -28,6 +28,13 @@ concurrency:
 jobs:
   production:
     name: Deploy (production)
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:business-os')
+      }}
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/business-os"

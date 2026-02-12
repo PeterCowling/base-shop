@@ -18,6 +18,13 @@ on:
 
 jobs:
   validate:
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:reception')
+      }}
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/reception"

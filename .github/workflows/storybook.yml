@@ -45,6 +45,13 @@ concurrency:
 jobs:
   coverage:
     name: Story coverage policy
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -55,6 +62,13 @@ jobs:
 
   chromatic:
     name: Chromatic visual regression
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -80,6 +94,13 @@ jobs:
 
   ui-smoke:
     name: UI smoke tests (tokens + RTL)
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -98,6 +119,13 @@ jobs:
 
   runner:
     name: Storybook interaction tests
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

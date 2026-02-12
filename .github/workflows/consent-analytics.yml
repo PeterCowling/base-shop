@@ -17,6 +17,13 @@ concurrency:
 jobs:
   consent-analytics:
     name: Analytics & consent tests
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

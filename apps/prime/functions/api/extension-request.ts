@@ -8,17 +8,15 @@
  * - dispatches a structured email payload to operations
  */
 
-import { dispatchPrimeEmail } from '../lib/email-dispatch';
 import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
+import { writeOutboundDraft } from '../lib/outbound-draft';
 import { buildPrimeRequestId, createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
   RATE_LIMIT?: KVNamespace;
-  PRIME_EMAIL_WEBHOOK_URL?: string;
-  PRIME_EMAIL_WEBHOOK_TOKEN?: string;
 }
 
 interface ExtensionRequestBody {
@@ -142,14 +140,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       `Request ID: ${requestId}`,
     ].join('\n');
 
-    const dispatchResult = await dispatchPrimeEmail(
-      {
-        to: TARGET_EMAIL,
-        subject: `[Prime] Extension request ${authResult.session.bookingId}`,
-        text: emailText,
-      },
-      env,
-    );
+    await writeOutboundDraft(firebase, requestId, {
+      to: TARGET_EMAIL,
+      subject: `[Prime] Extension request ${authResult.session.bookingId}`,
+      bodyText: emailText,
+      category: 'extension-ops',
+      guestName,
+      bookingCode: authResult.session.bookingId,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    });
 
     if (env.RATE_LIMIT) {
       const dedupeKey = `extension-dedupe:${guestUuid}:${requestedCheckOutDate}`;
@@ -161,7 +161,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return jsonResponse({
       success: true,
       requestId,
-      deliveryMode: dispatchResult.deliveryMode,
+      deliveryMode: 'outbox',
       message: 'Extension request sent. Reception usually replies by email within one business day.',
     });
   } catch (error) {

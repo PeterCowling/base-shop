@@ -10,6 +10,7 @@ import { gmailTools, handleGmailTool } from "./gmail.js";
 import { handleHealthTool,healthTools } from "./health.js";
 import { handleInventoryTool,inventoryTools } from "./inventory.js";
 import { handleOrderTool,orderTools } from "./orders.js";
+import { handleOutboundDraftTool, outboundDraftTools } from "./outbound-drafts.js";
 import { handlePageTool,pageTools } from "./pages.js";
 import { handleProductTool,productTools } from "./products.js";
 import { handleSectionTool,sectionTools } from "./sections.js";
@@ -36,6 +37,7 @@ export const toolDefinitions = [
   ...draftInterpretTools,
   ...draftGenerateTools,
   ...draftQualityTools,
+  ...outboundDraftTools,
 ];
 
 const shopToolNames = new Set(shopTools.map((t) => t.name));
@@ -55,6 +57,7 @@ const bookingEmailToolNames = new Set(bookingEmailTools.map((t) => t.name));
 const draftInterpretToolNames = new Set(draftInterpretTools.map((t) => t.name));
 const draftGenerateToolNames = new Set(draftGenerateTools.map((t) => t.name));
 const draftQualityToolNames = new Set(draftQualityTools.map((t) => t.name));
+const outboundDraftToolNames = new Set(outboundDraftTools.map((t) => t.name));
 
 export async function handleToolCall(name: string, args: unknown) {
   if (shopToolNames.has(name as never)) {
@@ -107,6 +110,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (draftQualityToolNames.has(name as never)) {
     return handleDraftQualityTool(name, args);
+  }
+  if (outboundDraftToolNames.has(name as never)) {
+    return handleOutboundDraftTool(name, args);
   }
   return errorResult(`Unknown tool: ${name}`);
 }

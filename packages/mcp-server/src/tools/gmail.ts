@@ -7,6 +7,7 @@
  * - gmail_get_email: Get full email details with thread context
  * - gmail_create_draft: Create a draft reply
  * - gmail_mark_processed: Update email queue status via labels
+ * - gmail_reconcile_in_progress: Resolve stale in-progress items via policy
  */
 
 import type { gmail_v1 } from "googleapis";
@@ -34,25 +35,56 @@ import {
  * Gmail label names for Brikette email workflow
  * These must be created manually in Gmail before use
  */
-const LABELS = {
-  NEEDS_PROCESSING: "Brikette/Inbox/Needs-Processing",
-  PROCESSING: "Brikette/Inbox/Processing",
-  AWAITING_AGREEMENT: "Brikette/Inbox/Awaiting-Agreement",
-  DEFERRED: "Brikette/Inbox/Deferred",
+export const LABELS = {
+  NEEDS_PROCESSING: "Brikette/Queue/Needs-Processing",
+  PROCESSING: "Brikette/Queue/In-Progress",
+  AWAITING_AGREEMENT: "Brikette/Queue/Needs-Decision",
+  DEFERRED: "Brikette/Queue/Deferred",
   READY_FOR_REVIEW: "Brikette/Drafts/Ready-For-Review",
   SENT: "Brikette/Drafts/Sent",
-  PROCESSED_DRAFTED: "Brikette/Processed/Drafted",
-  PROCESSED_ACKNOWLEDGED: "Brikette/Processed/Acknowledged",
-  PROCESSED_SKIPPED: "Brikette/Processed/Skipped",
+  PROCESSED_DRAFTED: "Brikette/Outcome/Drafted",
+  PROCESSED_ACKNOWLEDGED: "Brikette/Outcome/Acknowledged",
+  PROCESSED_SKIPPED: "Brikette/Outcome/Skipped",
   WORKFLOW_PREPAYMENT_CHASE_1: "Brikette/Workflow/Prepayment-Chase-1",
   WORKFLOW_PREPAYMENT_CHASE_2: "Brikette/Workflow/Prepayment-Chase-2",
   WORKFLOW_PREPAYMENT_CHASE_3: "Brikette/Workflow/Prepayment-Chase-3",
   WORKFLOW_AGREEMENT_RECEIVED: "Brikette/Workflow/Agreement-Received",
+  PROMOTIONAL: "Brikette/Outcome/Promotional",
+  SPAM: "Brikette/Outcome/Spam",
+  AGENT_CODEX: "Brikette/Agent/Codex",
+  AGENT_CLAUDE: "Brikette/Agent/Claude",
+  AGENT_HUMAN: "Brikette/Agent/Human",
+  OUTBOUND_PRE_ARRIVAL: "Brikette/Outbound/Pre-Arrival",
+  OUTBOUND_OPERATIONS: "Brikette/Outbound/Operations",
+} as const;
+
+const LEGACY_LABELS = {
+  NEEDS_PROCESSING: "Brikette/Inbox/Needs-Processing",
+  PROCESSING: "Brikette/Inbox/Processing",
+  AWAITING_AGREEMENT: "Brikette/Inbox/Awaiting-Agreement",
+  DEFERRED: "Brikette/Inbox/Deferred",
+  PROCESSED_DRAFTED: "Brikette/Processed/Drafted",
+  PROCESSED_ACKNOWLEDGED: "Brikette/Processed/Acknowledged",
+  PROCESSED_SKIPPED: "Brikette/Processed/Skipped",
   PROMOTIONAL: "Brikette/Promotional",
   SPAM: "Brikette/Spam",
 } as const;
 
-const REQUIRED_LABELS = [
+const LEGACY_TO_CURRENT_LABEL_MAP: Record<string, string> = {
+  [LEGACY_LABELS.NEEDS_PROCESSING]: LABELS.NEEDS_PROCESSING,
+  [LEGACY_LABELS.PROCESSING]: LABELS.PROCESSING,
+  [LEGACY_LABELS.AWAITING_AGREEMENT]: LABELS.AWAITING_AGREEMENT,
+  [LEGACY_LABELS.DEFERRED]: LABELS.DEFERRED,
+  [LEGACY_LABELS.PROCESSED_DRAFTED]: LABELS.PROCESSED_DRAFTED,
+  [LEGACY_LABELS.PROCESSED_ACKNOWLEDGED]: LABELS.PROCESSED_ACKNOWLEDGED,
+  [LEGACY_LABELS.PROCESSED_SKIPPED]: LABELS.PROCESSED_SKIPPED,
+  [LEGACY_LABELS.PROMOTIONAL]: LABELS.PROMOTIONAL,
+  [LEGACY_LABELS.SPAM]: LABELS.SPAM,
+};
+
+type AgentActor = "codex" | "claude" | "human";
+
+export const REQUIRED_LABELS = [
   LABELS.NEEDS_PROCESSING,
   LABELS.PROCESSING,
   LABELS.AWAITING_AGREEMENT,
@@ -68,6 +100,11 @@ const REQUIRED_LABELS = [
   LABELS.WORKFLOW_AGREEMENT_RECEIVED,
   LABELS.PROMOTIONAL,
   LABELS.SPAM,
+  LABELS.AGENT_CODEX,
+  LABELS.AGENT_CLAUDE,
+  LABELS.AGENT_HUMAN,
+  LABELS.OUTBOUND_PRE_ARRIVAL,
+  LABELS.OUTBOUND_OPERATIONS,
 ];
 
 const PROCESSING_TIMEOUT_MS = 30 * 60 * 1000;
@@ -226,6 +263,7 @@ const listQuerySchema = z.object({
 const getEmailSchema = z.object({
   emailId: z.string().min(1),
   includeThread: z.boolean().optional().default(true),
+  actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
 });
 
 const createDraftSchema = z.object({
@@ -242,6 +280,7 @@ const markProcessedSchema = z.object({
     "skipped",
     "spam",
     "deferred",
+    "requeued",
     "acknowledged",
     "promotional",
     "awaiting_agreement",
@@ -250,7 +289,20 @@ const markProcessedSchema = z.object({
     "prepayment_chase_2",
     "prepayment_chase_3",
   ]),
+  actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
   prepaymentProvider: z.enum(["octorate", "hostelworld"]).optional(),
+});
+
+const migrateLabelsSchema = z.object({
+  dryRun: z.boolean().optional().default(true),
+  limitPerLabel: z.number().int().min(1).max(1000).optional().default(500),
+});
+
+const reconcileInProgressSchema = z.object({
+  dryRun: z.boolean().optional().default(true),
+  staleHours: z.number().min(1).max(24 * 30).optional().default(24),
+  limit: z.number().min(1).max(200).optional().default(100),
+  actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
 });
 
 type PrepaymentAction = "prepayment_chase_1" | "prepayment_chase_2" | "prepayment_chase_3";
@@ -270,7 +322,7 @@ function isPrepaymentAction(action: string): action is PrepaymentAction {
 export const gmailTools = [
   {
     name: "gmail_organize_inbox",
-    description: "Scan unread inbox emails (all unread by default), trash known garbage patterns, and label customer emails as Brikette/Inbox/Needs-Processing.",
+    description: "Scan unread inbox emails (all unread by default), trash known garbage patterns, and label customer emails as Brikette/Queue/Needs-Processing.",
     inputSchema: {
       type: "object",
       properties: {
@@ -283,7 +335,7 @@ export const gmailTools = [
   },
   {
     name: "gmail_list_pending",
-    description: "List customer emails in the Brikette inbox that need responses. Returns emails with the 'Brikette/Inbox/Needs-Processing' label.",
+    description: "List customer emails in the Brikette inbox that need responses. Returns emails with the 'Brikette/Queue/Needs-Processing' label.",
     inputSchema: {
       type: "object",
       properties: {
@@ -311,6 +363,12 @@ export const gmailTools = [
       properties: {
         emailId: { type: "string", description: "Gmail message ID" },
         includeThread: { type: "boolean", description: "Include previous messages in thread", default: true },
+        actor: {
+          type: "string",
+          enum: ["codex", "claude", "human"],
+          description: "Actor claiming processing ownership for Agent/* labels.",
+          default: "codex",
+        },
       },
       required: ["emailId"],
     },
@@ -341,6 +399,12 @@ export const gmailTools = [
           enum: ["octorate", "hostelworld"],
           description: "Optional prepayment provider for chase templates.",
         },
+        actor: {
+          type: "string",
+          enum: ["codex", "claude", "human"],
+          description: "Actor applying the state transition for Agent/* labels.",
+          default: "codex",
+        },
         action: {
           type: "string",
           enum: [
@@ -348,6 +412,7 @@ export const gmailTools = [
             "skipped",
             "spam",
             "deferred",
+            "requeued",
             "acknowledged",
             "promotional",
             "awaiting_agreement",
@@ -356,10 +421,39 @@ export const gmailTools = [
             "prepayment_chase_2",
             "prepayment_chase_3",
           ],
-          description: "How the email was handled: drafted (draft created), skipped (no response needed), spam (mark as spam), deferred (pause processing), acknowledged (informational email - no reply needed but noted), promotional (marketing/newsletter - archive for batch review), awaiting_agreement (T&C reply needed), agreement_received (T&C confirmed), prepayment_chase_1/2/3 (payment reminders).",
+          description: "How the email was handled: drafted (draft created), skipped (no response needed), spam (mark as spam), deferred (pause processing), requeued (return to Needs-Processing for prompt handling), acknowledged (informational email - no reply needed but noted), promotional (marketing/newsletter - archive for batch review), awaiting_agreement (T&C reply needed), agreement_received (T&C confirmed), prepayment_chase_1/2/3 (payment reminders).",
         },
       },
       required: ["emailId", "action"],
+    },
+  },
+  {
+    name: "gmail_migrate_labels",
+    description: "Migrate legacy Brikette label taxonomy (Inbox/Processed) to Queue/Outcome labels.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        dryRun: { type: "boolean", description: "Preview migration without mutating labels.", default: true },
+        limitPerLabel: { type: "number", description: "Max messages to migrate per legacy label.", default: 500 },
+      },
+    },
+  },
+  {
+    name: "gmail_reconcile_in_progress",
+    description: "Reconcile stale In-Progress emails: route stale agreement replies to agreement_received and stale unresolved customer threads back to Needs-Processing.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        dryRun: { type: "boolean", description: "Preview only; do not modify labels.", default: true },
+        staleHours: { type: "number", description: "Age threshold in hours before reconciliation applies.", default: 24 },
+        limit: { type: "number", description: "Maximum in-progress messages to inspect.", default: 100 },
+        actor: {
+          type: "string",
+          enum: ["codex", "claude", "human"],
+          description: "Actor applying transitions.",
+          default: "codex",
+        },
+      },
     },
   },
 ] as const;
@@ -522,7 +616,7 @@ function extractAttachments(payload: {
 /**
  * Get label ID by name
  */
-async function ensureLabelMap(
+export async function ensureLabelMap(
   gmail: gmail_v1.Gmail,
   labelNames: string[]
 ): Promise<Map<string, string>> {
@@ -560,13 +654,25 @@ async function ensureLabelMap(
   return labelMap;
 }
 
-function collectLabelIds(
+export function collectLabelIds(
   labelMap: Map<string, string>,
   labelNames: string[]
 ): string[] {
   return labelNames
     .map(labelName => labelMap.get(labelName))
     .filter((labelId): labelId is string => !!labelId);
+}
+
+function actorToLabelName(actor: AgentActor): string {
+  switch (actor) {
+    case "claude":
+      return LABELS.AGENT_CLAUDE;
+    case "human":
+      return LABELS.AGENT_HUMAN;
+    case "codex":
+    default:
+      return LABELS.AGENT_CODEX;
+  }
 }
 
 function isProcessingLockStale(
@@ -590,6 +696,49 @@ function formatGmailQueryDate(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}/${month}/${day}`;
+}
+
+function parseMessageTimestamp(
+  dateHeader: string | undefined,
+  internalDate: string | null | undefined
+): number | null {
+  if (dateHeader) {
+    const parsedHeader = Date.parse(dateHeader);
+    if (!Number.isNaN(parsedHeader)) {
+      return parsedHeader;
+    }
+  }
+
+  if (internalDate) {
+    const parsedInternal = Number(internalDate);
+    if (!Number.isNaN(parsedInternal)) {
+      return parsedInternal;
+    }
+  }
+
+  return null;
+}
+
+function isAgreementReplySignal(subject: string, snippet: string): boolean {
+  const subjectMatches = subject
+    .toLowerCase()
+    .includes("re: your hostel brikette reservation");
+  if (!subjectMatches) {
+    return false;
+  }
+
+  const normalizedSnippet = normalizeWhitespace(snippet).toLowerCase();
+  const opening = normalizedSnippet.slice(0, 160);
+  const hasAgreeSignal =
+    opening.startsWith("agree") ||
+    opening.startsWith("i agree") ||
+    opening.includes(" agree ") ||
+    opening.includes(" agreed ");
+  const hasNegativeSignal =
+    opening.includes("do not agree") ||
+    opening.includes("don't agree");
+
+  return hasAgreeSignal && !hasNegativeSignal;
 }
 
 function extractSenderEmailAddress(fromRaw: string): string {
@@ -1602,21 +1751,42 @@ async function handleListPending(
   const { limit } = listPendingSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
-  const labelId = labelMap.get(LABELS.NEEDS_PROCESSING);
-  if (!labelId) {
+  const pendingLabelIds = collectLabelIds(labelMap, [
+    LABELS.NEEDS_PROCESSING,
+    LEGACY_LABELS.NEEDS_PROCESSING,
+  ]);
+  if (pendingLabelIds.length === 0) {
     return errorResult(
       `Label "${LABELS.NEEDS_PROCESSING}" not found in Gmail. ` +
       `Please create the Brikette label hierarchy first.`
     );
   }
 
-  const response = await gmail.users.messages.list({
-    userId: "me",
-    labelIds: [labelId],
-    maxResults: limit,
-  });
+  const messageMap = new Map<string, { id: string }>();
+  let sawMaxPage = false;
+  for (const labelId of pendingLabelIds) {
+    const response = await gmail.users.messages.list({
+      userId: "me",
+      labelIds: [labelId],
+      maxResults: limit,
+    });
+    const messages = response.data.messages || [];
+    if (messages.length === limit) {
+      sawMaxPage = true;
+    }
+    for (const message of messages) {
+      if (!message.id || messageMap.has(message.id)) continue;
+      messageMap.set(message.id, { id: message.id });
+      if (messageMap.size >= limit) {
+        break;
+      }
+    }
+    if (messageMap.size >= limit) {
+      break;
+    }
+  }
 
-  const messages = response.data.messages || [];
+  const messages = Array.from(messageMap.values());
   const emails: PendingEmail[] = [];
 
   for (const msg of messages) {
@@ -1656,7 +1826,7 @@ async function handleListPending(
   return jsonResult({
     emails,
     total: emails.length,
-    hasMore: messages.length === limit,
+    hasMore: sawMaxPage || messages.length === limit,
   });
 }
 
@@ -1714,7 +1884,7 @@ async function handleGetEmail(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
-  const { emailId, includeThread } = getEmailSchema.parse(args);
+  const { emailId, includeThread, actor } = getEmailSchema.parse(args);
 
   const response = await gmail.users.messages.get({
     userId: "me",
@@ -1728,15 +1898,27 @@ async function handleGetEmail(
   }
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
-  const processingLabelId = labelMap.get(LABELS.PROCESSING);
-  const needsProcessingLabelId = labelMap.get(LABELS.NEEDS_PROCESSING);
-
-  if (!processingLabelId) {
+  const processingLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+  ]);
+  const needsProcessingLabelIds = collectLabelIds(labelMap, [
+    LABELS.NEEDS_PROCESSING,
+    LEGACY_LABELS.NEEDS_PROCESSING,
+  ]);
+  const currentProcessingLabelId = labelMap.get(LABELS.PROCESSING);
+  if (!currentProcessingLabelId) {
     return errorResult(`Label "${LABELS.PROCESSING}" not found in Gmail.`);
   }
+  const agentLabelId = labelMap.get(actorToLabelName(actor));
+  const allAgentLabelIds = collectLabelIds(labelMap, [
+    LABELS.AGENT_CODEX,
+    LABELS.AGENT_CLAUDE,
+    LABELS.AGENT_HUMAN,
+  ]);
 
   const messageLabelIds = msg.labelIds || [];
-  if (messageLabelIds.includes(processingLabelId)) {
+  if (messageLabelIds.some(labelId => processingLabelIds.includes(labelId))) {
     const isStale = isProcessingLockStale(
       processingLocks.get(emailId),
       msg.internalDate
@@ -1746,7 +1928,7 @@ async function handleGetEmail(
         userId: "me",
         id: emailId,
         requestBody: {
-          removeLabelIds: [processingLabelId],
+          removeLabelIds: processingLabelIds,
         },
       });
       processingLocks.delete(emailId);
@@ -1759,8 +1941,14 @@ async function handleGetEmail(
     userId: "me",
     id: emailId,
     requestBody: {
-      addLabelIds: [processingLabelId],
-      removeLabelIds: needsProcessingLabelId ? [needsProcessingLabelId] : undefined,
+      addLabelIds: [
+        currentProcessingLabelId,
+        ...(agentLabelId ? [agentLabelId] : []),
+      ],
+      removeLabelIds: [
+        ...needsProcessingLabelIds,
+        ...allAgentLabelIds,
+      ],
     },
   });
   processingLocks.set(emailId, Date.now());
@@ -1890,41 +2078,58 @@ async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult>> {
-  const { emailId, action, prepaymentProvider } = markProcessedSchema.parse(args);
+  const { emailId, action, actor, prepaymentProvider } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
-  const needsProcessingId = labelMap.get(LABELS.NEEDS_PROCESSING);
-  const processingId = labelMap.get(LABELS.PROCESSING);
+  const actorLabelId = labelMap.get(actorToLabelName(actor));
+  const queueLabelIds = collectLabelIds(labelMap, [
+    LABELS.NEEDS_PROCESSING,
+    LABELS.PROCESSING,
+    LABELS.AWAITING_AGREEMENT,
+    LABELS.DEFERRED,
+    LEGACY_LABELS.NEEDS_PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+    LEGACY_LABELS.AWAITING_AGREEMENT,
+    LEGACY_LABELS.DEFERRED,
+  ]);
+  const outcomeLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSED_DRAFTED,
+    LABELS.PROCESSED_ACKNOWLEDGED,
+    LABELS.PROCESSED_SKIPPED,
+    LABELS.PROMOTIONAL,
+    LABELS.SPAM,
+    LEGACY_LABELS.PROCESSED_DRAFTED,
+    LEGACY_LABELS.PROCESSED_ACKNOWLEDGED,
+    LEGACY_LABELS.PROCESSED_SKIPPED,
+    LEGACY_LABELS.PROMOTIONAL,
+    LEGACY_LABELS.SPAM,
+  ]);
+  const allAgentLabelIds = collectLabelIds(labelMap, [
+    LABELS.AGENT_CODEX,
+    LABELS.AGENT_CLAUDE,
+    LABELS.AGENT_HUMAN,
+  ]);
   const workflowLabelIds = collectLabelIds(labelMap, [
     LABELS.WORKFLOW_PREPAYMENT_CHASE_1,
     LABELS.WORKFLOW_PREPAYMENT_CHASE_2,
     LABELS.WORKFLOW_PREPAYMENT_CHASE_3,
     LABELS.WORKFLOW_AGREEMENT_RECEIVED,
   ]);
-  const processedLabelIds = collectLabelIds(labelMap, [
-    LABELS.PROCESSED_DRAFTED,
-    LABELS.PROCESSED_ACKNOWLEDGED,
-    LABELS.PROCESSED_SKIPPED,
-  ]);
-  const inboxStateLabelIds = collectLabelIds(labelMap, [
-    LABELS.AWAITING_AGREEMENT,
-    LABELS.DEFERRED,
-  ]);
 
   const addLabelIds: string[] = [];
-  const removeLabelIds: string[] = [];
-
-  if (needsProcessingId) {
-    removeLabelIds.push(needsProcessingId);
-  }
-  if (processingId) {
-    removeLabelIds.push(processingId);
+  const removeLabelIds: string[] = [
+    ...queueLabelIds,
+    ...outcomeLabelIds,
+    ...workflowLabelIds,
+    ...allAgentLabelIds,
+  ];
+  if (actorLabelId) {
+    addLabelIds.push(actorLabelId);
   }
 
   switch (action) {
     case "drafted": {
       const draftedLabelId = labelMap.get(LABELS.PROCESSED_DRAFTED);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       if (draftedLabelId) {
         addLabelIds.push(draftedLabelId);
       }
@@ -1932,7 +2137,6 @@ async function handleMarkProcessed(
     }
     case "skipped": {
       const skippedLabelId = labelMap.get(LABELS.PROCESSED_SKIPPED);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       if (skippedLabelId) {
         addLabelIds.push(skippedLabelId);
       }
@@ -1940,7 +2144,6 @@ async function handleMarkProcessed(
     }
     case "acknowledged": {
       const acknowledgedLabelId = labelMap.get(LABELS.PROCESSED_ACKNOWLEDGED);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       if (acknowledgedLabelId) {
         addLabelIds.push(acknowledgedLabelId);
       }
@@ -1948,7 +2151,6 @@ async function handleMarkProcessed(
     }
     case "spam": {
       const spamLabelId = labelMap.get(LABELS.SPAM);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       if (spamLabelId) {
         addLabelIds.push(spamLabelId);
       }
@@ -1957,7 +2159,6 @@ async function handleMarkProcessed(
     }
     case "promotional": {
       const promoLabelId = labelMap.get(LABELS.PROMOTIONAL);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       if (promoLabelId) {
         addLabelIds.push(promoLabelId);
       }
@@ -1966,16 +2167,20 @@ async function handleMarkProcessed(
     }
     case "deferred": {
       const deferredLabelId = labelMap.get(LABELS.DEFERRED);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
-      removeLabelIds.push(...collectLabelIds(labelMap, [LABELS.AWAITING_AGREEMENT]));
       if (deferredLabelId) {
         addLabelIds.push(deferredLabelId);
       }
       break;
     }
+    case "requeued": {
+      const queueLabelId = labelMap.get(LABELS.NEEDS_PROCESSING);
+      if (queueLabelId) {
+        addLabelIds.push(queueLabelId);
+      }
+      break;
+    }
     case "awaiting_agreement": {
       const awaitingLabelId = labelMap.get(LABELS.AWAITING_AGREEMENT);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
       if (awaitingLabelId) {
         addLabelIds.push(awaitingLabelId);
       }
@@ -1983,7 +2188,10 @@ async function handleMarkProcessed(
     }
     case "agreement_received": {
       const agreementLabelId = labelMap.get(LABELS.WORKFLOW_AGREEMENT_RECEIVED);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      const decisionLabelId = labelMap.get(LABELS.AWAITING_AGREEMENT);
+      if (decisionLabelId) {
+        addLabelIds.push(decisionLabelId);
+      }
       if (agreementLabelId) {
         addLabelIds.push(agreementLabelId);
       }
@@ -1991,7 +2199,10 @@ async function handleMarkProcessed(
     }
     case "prepayment_chase_1": {
       const chaseLabelId = labelMap.get(LABELS.WORKFLOW_PREPAYMENT_CHASE_1);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      const decisionLabelId = labelMap.get(LABELS.AWAITING_AGREEMENT);
+      if (decisionLabelId) {
+        addLabelIds.push(decisionLabelId);
+      }
       if (chaseLabelId) {
         addLabelIds.push(chaseLabelId);
       }
@@ -1999,7 +2210,10 @@ async function handleMarkProcessed(
     }
     case "prepayment_chase_2": {
       const chaseLabelId = labelMap.get(LABELS.WORKFLOW_PREPAYMENT_CHASE_2);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      const decisionLabelId = labelMap.get(LABELS.AWAITING_AGREEMENT);
+      if (decisionLabelId) {
+        addLabelIds.push(decisionLabelId);
+      }
       if (chaseLabelId) {
         addLabelIds.push(chaseLabelId);
       }
@@ -2007,7 +2221,10 @@ async function handleMarkProcessed(
     }
     case "prepayment_chase_3": {
       const chaseLabelId = labelMap.get(LABELS.WORKFLOW_PREPAYMENT_CHASE_3);
-      removeLabelIds.push(...processedLabelIds, ...workflowLabelIds, ...inboxStateLabelIds);
+      const decisionLabelId = labelMap.get(LABELS.AWAITING_AGREEMENT);
+      if (decisionLabelId) {
+        addLabelIds.push(decisionLabelId);
+      }
       if (chaseLabelId) {
         addLabelIds.push(chaseLabelId);
       }
@@ -2016,7 +2233,9 @@ async function handleMarkProcessed(
   }
 
   const uniqueAddLabelIds = Array.from(new Set(addLabelIds));
-  const uniqueRemoveLabelIds = Array.from(new Set(removeLabelIds));
+  const uniqueRemoveLabelIds = Array.from(
+    new Set(removeLabelIds.filter(labelId => !uniqueAddLabelIds.includes(labelId)))
+  );
 
   await gmail.users.messages.modify({
     userId: "me",
@@ -2041,7 +2260,293 @@ async function handleMarkProcessed(
     success: true,
     message: `Email marked as ${action}`,
     action,
+    actor,
     workflow,
+  });
+}
+
+async function handleMigrateLabels(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult>> {
+  const { dryRun, limitPerLabel } = migrateLabelsSchema.parse(args);
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+
+  const labelSummaries: Array<{
+    legacyLabel: string;
+    targetLabel: string;
+    scanned: number;
+    migrated: number;
+    legacyLabelFound: boolean;
+    targetLabelFound: boolean;
+  }> = [];
+
+  let totalScanned = 0;
+  let totalMigrated = 0;
+
+  for (const [legacyLabelName, targetLabelName] of Object.entries(LEGACY_TO_CURRENT_LABEL_MAP)) {
+    const legacyLabelId = labelMap.get(legacyLabelName);
+    const targetLabelId = labelMap.get(targetLabelName);
+
+    if (!legacyLabelId || !targetLabelId) {
+      labelSummaries.push({
+        legacyLabel: legacyLabelName,
+        targetLabel: targetLabelName,
+        scanned: 0,
+        migrated: 0,
+        legacyLabelFound: Boolean(legacyLabelId),
+        targetLabelFound: Boolean(targetLabelId),
+      });
+      continue;
+    }
+
+    let scannedForLabel = 0;
+    let migratedForLabel = 0;
+    let pageToken: string | undefined;
+
+    while (scannedForLabel < limitPerLabel) {
+      const pageSize = Math.min(100, limitPerLabel - scannedForLabel);
+      const response = await gmail.users.messages.list({
+        userId: "me",
+        labelIds: [legacyLabelId],
+        maxResults: pageSize,
+        pageToken,
+      });
+
+      const messages = response.data.messages || [];
+      if (messages.length === 0) {
+        break;
+      }
+
+      scannedForLabel += messages.length;
+
+      for (const message of messages) {
+        if (!message.id) continue;
+        if (!dryRun) {
+          await gmail.users.messages.modify({
+            userId: "me",
+            id: message.id,
+            requestBody: {
+              addLabelIds: [targetLabelId],
+              removeLabelIds: [legacyLabelId],
+            },
+          });
+        }
+        migratedForLabel += 1;
+      }
+
+      if (!response.data.nextPageToken || messages.length < pageSize) {
+        break;
+      }
+      pageToken = response.data.nextPageToken;
+    }
+
+    totalScanned += scannedForLabel;
+    totalMigrated += migratedForLabel;
+    labelSummaries.push({
+      legacyLabel: legacyLabelName,
+      targetLabel: targetLabelName,
+      scanned: scannedForLabel,
+      migrated: migratedForLabel,
+      legacyLabelFound: true,
+      targetLabelFound: true,
+    });
+  }
+
+  return jsonResult({
+    success: true,
+    dryRun,
+    limitPerLabel,
+    totals: {
+      scanned: totalScanned,
+      migrated: totalMigrated,
+    },
+    labels: labelSummaries,
+  });
+}
+
+async function handleReconcileInProgress(
+  gmail: gmail_v1.Gmail,
+  args: unknown
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { dryRun, staleHours, limit, actor } = reconcileInProgressSchema.parse(args);
+  const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+
+  const processingLabelIds = collectLabelIds(labelMap, [
+    LABELS.PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+  ]);
+
+  if (processingLabelIds.length === 0) {
+    return errorResult(
+      `Label "${LABELS.PROCESSING}" not found in Gmail. ` +
+      `Please create the Brikette label hierarchy first.`
+    );
+  }
+
+  const messageMap = new Map<string, { id: string }>();
+  for (const labelId of processingLabelIds) {
+    const response = await gmail.users.messages.list({
+      userId: "me",
+      labelIds: [labelId],
+      maxResults: limit,
+    });
+
+    const messages = response.data.messages || [];
+    for (const message of messages) {
+      if (!message.id || messageMap.has(message.id)) continue;
+      messageMap.set(message.id, { id: message.id });
+      if (messageMap.size >= limit) {
+        break;
+      }
+    }
+    if (messageMap.size >= limit) {
+      break;
+    }
+  }
+
+  const messages = Array.from(messageMap.values());
+  const samples: Array<{
+    emailId: string;
+    subject: string;
+    from: string;
+    ageHours: number | null;
+    action: "agreement_received" | "requeued" | "promotional" | "spam" | "skipped";
+    reason: string;
+  }> = [];
+
+  const counts = {
+    scanned: 0,
+    keptFresh: 0,
+    routedAgreementReceived: 0,
+    routedRequeued: 0,
+    routedPromotional: 0,
+    routedSpam: 0,
+    routedSkipped: 0,
+  };
+
+  for (const msg of messages) {
+    if (!msg.id) continue;
+    counts.scanned += 1;
+
+    const detail = await gmail.users.messages.get({
+      userId: "me",
+      id: msg.id,
+      format: "metadata",
+      metadataHeaders: [
+        "From",
+        "Subject",
+        "Date",
+        "List-Unsubscribe",
+        "List-Id",
+        "Precedence",
+      ],
+    });
+
+    const headers = (detail.data.payload?.headers || []) as EmailHeader[];
+    const subject = getHeader(headers, "Subject") || "(no subject)";
+    const from = getHeader(headers, "From") || "";
+    const snippet = detail.data.snippet || "";
+    const messageTs = parseMessageTimestamp(
+      getHeader(headers, "Date"),
+      detail.data.internalDate
+    );
+    const ageHours =
+      messageTs === null ? null : Math.max(0, (Date.now() - messageTs) / (1000 * 60 * 60));
+
+    if (ageHours !== null && ageHours < staleHours) {
+      counts.keptFresh += 1;
+      continue;
+    }
+
+    let action: "agreement_received" | "requeued" | "promotional" | "spam" | "skipped";
+    let reason: string;
+
+    if (isAgreementReplySignal(subject, snippet)) {
+      action = "agreement_received";
+      reason = "stale-agreement-reply";
+    } else {
+      const classification = classifyOrganizeDecision(
+        from,
+        subject,
+        snippet,
+        Boolean(getHeader(headers, "List-Unsubscribe")),
+        Boolean(getHeader(headers, "List-Id")),
+        /bulk|list/i.test(getHeader(headers, "Precedence") || "")
+      );
+
+      switch (classification.decision) {
+        case "promotional": {
+          action = "promotional";
+          reason = `stale-${classification.reason}`;
+          break;
+        }
+        case "spam": {
+          action = "spam";
+          reason = `stale-${classification.reason}`;
+          break;
+        }
+        case "trash": {
+          action = "skipped";
+          reason = `stale-${classification.reason}`;
+          break;
+        }
+        default: {
+          action = "requeued";
+          reason = `stale-requeue-${classification.reason}`;
+          break;
+        }
+      }
+    }
+
+    if (!dryRun) {
+      await handleMarkProcessed(gmail, {
+        emailId: msg.id,
+        action,
+        actor,
+      });
+    }
+
+    switch (action) {
+      case "agreement_received":
+        counts.routedAgreementReceived += 1;
+        break;
+      case "requeued":
+        counts.routedRequeued += 1;
+        break;
+      case "promotional":
+        counts.routedPromotional += 1;
+        break;
+      case "spam":
+        counts.routedSpam += 1;
+        break;
+      case "skipped":
+        counts.routedSkipped += 1;
+        break;
+    }
+
+    if (samples.length < 50) {
+      samples.push({
+        emailId: msg.id,
+        subject,
+        from,
+        ageHours,
+        action,
+        reason,
+      });
+    }
+  }
+
+  return jsonResult({
+    success: true,
+    dryRun,
+    staleHours,
+    limit,
+    actor,
+    counts,
+    samples,
+    policy:
+      "Stale customer threads are requeued for prompt handling; stale agreement replies are routed to agreement_received.",
   });
 }
 
@@ -2091,6 +2596,14 @@ export async function handleGmailTool(name: string, args: unknown) {
 
       case "gmail_mark_processed": {
         return await handleMarkProcessed(gmail, args);
+      }
+
+      case "gmail_migrate_labels": {
+        return await handleMigrateLabels(gmail, args);
+      }
+
+      case "gmail_reconcile_in_progress": {
+        return await handleReconcileInProgress(gmail, args);
       }
 
       default:

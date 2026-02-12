@@ -11,8 +11,6 @@ export interface MockEnv {
   NODE_ENV?: string;
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
   PRIME_STAFF_OWNER_GATE_TOKEN?: string;
-  PRIME_EMAIL_WEBHOOK_URL?: string;
-  PRIME_EMAIL_WEBHOOK_TOKEN?: string;
   PRIME_STAFF_PIN_HASH?: string;
   PRIME_STAFF_AUTH_UID?: string;
   PRIME_STAFF_AUTH_ROLE?: string;

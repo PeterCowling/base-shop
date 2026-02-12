@@ -38,7 +38,6 @@ describe('email provider smoke spike', () => {
   const getSpy = jest.spyOn(FirebaseRest.prototype, 'get');
   const setSpy = jest.spyOn(FirebaseRest.prototype, 'set');
   const updateSpy = jest.spyOn(FirebaseRest.prototype, 'update');
-  const originalFetch = global.fetch;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -55,11 +54,6 @@ describe('email provider smoke spike', () => {
     });
     setSpy.mockResolvedValue(undefined);
     updateSpy.mockResolvedValue(undefined);
-    global.fetch = jest.fn() as unknown as typeof fetch;
-  });
-
-  afterEach(() => {
-    global.fetch = originalFetch;
   });
 
   afterAll(() => {
@@ -68,55 +62,7 @@ describe('email provider smoke spike', () => {
     updateSpy.mockRestore();
   });
 
-  it('TC-01: valid staging config sends one deterministic smoke message', async () => {
-    const fetchMock = global.fetch as unknown as jest.Mock;
-    fetchMock.mockResolvedValue(
-      new Response(JSON.stringify({ accepted: true }), { status: 202 }),
-    );
-
-    const response = await onRequestPost(
-      createPagesContext({
-        url: 'https://prime.example.com/api/process-messaging-queue',
-        method: 'POST',
-        body: {
-          eventId: 'msg_smoke_123',
-        },
-        env: createMockEnv({
-          PRIME_EMAIL_WEBHOOK_URL: 'https://email.example.com/webhook',
-          PRIME_EMAIL_WEBHOOK_TOKEN: 'stage-token-abc',
-        }),
-      }),
-    );
-
-    const payload = await response.json() as {
-      outcome: string;
-      transition?: { status: string; retryCount: number; lastError: string | null };
-    };
-
-    expect(response.status).toBe(200);
-    expect(payload.outcome).toBe('sent');
-    expect(payload.transition).toMatchObject({
-      status: 'sent',
-      retryCount: 0,
-      lastError: null,
-    });
-
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://email.example.com/webhook',
-      expect.objectContaining({
-        method: 'POST',
-        headers: expect.objectContaining({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer stage-token-abc',
-        }),
-      }),
-    );
-  });
-
-  it('TC-02: missing provider config fails fast with actionable diagnostics', async () => {
-    const fetchMock = global.fetch as unknown as jest.Mock;
-
+  it('TC-01: valid config writes outbound draft to Firebase outbox', async () => {
     const response = await onRequestPost(
       createPagesContext({
         url: 'https://prime.example.com/api/process-messaging-queue',
@@ -134,18 +80,61 @@ describe('email provider smoke spike', () => {
     };
 
     expect(response.status).toBe(200);
-    expect(payload.outcome).toBe('failed');
+    expect(payload.outcome).toBe('sent');
     expect(payload.transition).toMatchObject({
-      status: 'failed',
-      retryCount: 1,
-      lastError: 'Prime email provider is not configured',
+      status: 'sent',
+      retryCount: 0,
+      lastError: null,
     });
-    expect(fetchMock).not.toHaveBeenCalled();
+
+    // Verify outbound draft was written to Firebase
+    expect(setSpy).toHaveBeenCalledWith(
+      'outboundDrafts/msg_smoke_123',
+      expect.objectContaining({
+        to: 'guest@example.com',
+        subject: expect.stringContaining('Arriving soon, Alex'),
+        bodyText: expect.stringContaining('Alex'),
+        category: 'pre-arrival',
+        guestName: 'Alex',
+        bookingCode: 'BOOK-123',
+        eventId: 'msg_smoke_123',
+        status: 'pending',
+        createdAt: expect.any(String),
+      }),
+    );
   });
 
-  it('TC-03: invalid token/key fails closed and records explicit error', async () => {
-    const fetchMock = global.fetch as unknown as jest.Mock;
-    fetchMock.mockResolvedValue(new Response('Unauthorized', { status: 401 }));
+  it('TC-02: outbound draft body includes luggage warning and deep link', async () => {
+    await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/process-messaging-queue',
+        method: 'POST',
+        body: {
+          eventId: 'msg_smoke_123',
+        },
+        env: createMockEnv(),
+      }),
+    );
+
+    const outboxCall = setSpy.mock.calls.find(
+      ([path]) => typeof path === 'string' && path.startsWith('outboundDrafts/'),
+    );
+    expect(outboxCall).toBeDefined();
+
+    const record = outboxCall![1] as { bodyText: string; subject: string };
+    expect(record.bodyText).toContain('DO NOT arrive by ferry');
+    expect(record.bodyText).toContain('EUR 32.00');
+    expect(record.bodyText).toContain('/g/');
+    expect(record.subject).toContain('read this before you travel');
+  });
+
+  it('TC-03: queue record for non-pending status returns idempotent', async () => {
+    getSpy.mockImplementation(async (path: string) => {
+      if (path.startsWith('messagingQueue/')) {
+        return { ...createArrival48HoursQueueRecord(), status: 'sent' };
+      }
+      return null;
+    });
 
     const response = await onRequestPost(
       createPagesContext({
@@ -154,25 +143,16 @@ describe('email provider smoke spike', () => {
         body: {
           eventId: 'msg_smoke_123',
         },
-        env: createMockEnv({
-          PRIME_EMAIL_WEBHOOK_URL: 'https://email.example.com/webhook',
-          PRIME_EMAIL_WEBHOOK_TOKEN: 'invalid-stage-token',
-        }),
+        env: createMockEnv(),
       }),
     );
 
-    const payload = await response.json() as {
-      outcome: string;
-      transition?: { status: string; retryCount: number; lastError: string | null };
-    };
-
+    const payload = await response.json() as { outcome: string };
     expect(response.status).toBe(200);
-    expect(payload.outcome).toBe('failed');
-    expect(payload.transition).toMatchObject({
-      status: 'failed',
-      retryCount: 1,
-      lastError: 'Email webhook failed: 401',
-    });
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(payload.outcome).toBe('idempotent');
+    expect(setSpy).not.toHaveBeenCalledWith(
+      expect.stringContaining('outboundDrafts/'),
+      expect.anything(),
+    );
   });
 });

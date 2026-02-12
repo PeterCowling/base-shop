@@ -149,8 +149,8 @@ describe("gmail_organize_inbox", () => {
   });
 
   it("trashes explicit garbage sender patterns", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const spam = { id: "label-spam", name: "Brikette/Spam" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const spam = { id: "label-spam", name: "Brikette/Outcome/Spam" };
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, spam],
       threads: {
@@ -186,7 +186,7 @@ describe("gmail_organize_inbox", () => {
   });
 
   it("labels customer inquiry emails as Needs-Processing", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing],
       threads: {
@@ -220,8 +220,8 @@ describe("gmail_organize_inbox", () => {
   });
 
   it("skips threads that already have Brikette labels", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const processed = { id: "label-processed", name: "Brikette/Processed/Drafted" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const processed = { id: "label-processed", name: "Brikette/Outcome/Drafted" };
     const { gmail } = createGmailStub({
       labels: [needsProcessing, processed],
       threads: {
@@ -254,8 +254,8 @@ describe("gmail_organize_inbox", () => {
   });
 
   it("reports actions in dryRun mode without mutating labels", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const spam = { id: "label-spam", name: "Brikette/Spam" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const spam = { id: "label-spam", name: "Brikette/Outcome/Spam" };
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, spam],
       threads: {
@@ -294,7 +294,7 @@ describe("gmail_organize_inbox", () => {
   });
 
   it("scans all unread inbox emails by default (no date window)", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const { gmail } = createGmailStub({
       labels: [needsProcessing],
       threads: {
@@ -337,7 +337,7 @@ describe("gmail_organize_inbox classification", () => {
   });
 
   it("skips promotional false positives from mailing domains and list headers", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing],
       threads: {
@@ -372,7 +372,7 @@ describe("gmail_organize_inbox classification", () => {
   });
 
   it("skips generic no-reply senders even if domain is not pre-listed", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const { gmail } = createGmailStub({
       labels: [needsProcessing],
       threads: {
@@ -405,8 +405,8 @@ describe("gmail_organize_inbox classification", () => {
   });
 
   it("routes strong non-customer senders to promotional even with booking keywords", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const promotional = { id: "label-promo", name: "Brikette/Promotional" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const promotional = { id: "label-promo", name: "Brikette/Outcome/Promotional" };
     const { gmail } = createGmailStub({
       labels: [needsProcessing, promotional],
       threads: {
@@ -440,8 +440,8 @@ describe("gmail_organize_inbox classification", () => {
   });
 
   it("processes Octorate NEW RESERVATION emails into guest drafts", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const processedDrafted = { id: "label-processed-drafted", name: "Brikette/Processed/Drafted" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const processedDrafted = { id: "label-processed-drafted", name: "Brikette/Outcome/Drafted" };
     const { gmail, messageStore, draftStore } = createGmailStub({
       labels: [needsProcessing, processedDrafted],
       threads: {
@@ -528,8 +528,8 @@ describe("gmail_organize_inbox classification", () => {
   });
 
   it("defers NEW RESERVATION emails when guest email cannot be parsed", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const deferred = { id: "label-deferred", name: "Brikette/Inbox/Deferred" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const deferred = { id: "label-deferred", name: "Brikette/Queue/Deferred" };
     const { gmail, messageStore } = createGmailStub({
       labels: [needsProcessing, deferred],
       threads: {
@@ -574,8 +574,8 @@ describe("gmail_organize_inbox classification", () => {
   });
 
   it("defers low-confidence emails and reports sender email for instruction", async () => {
-    const needsProcessing = { id: "label-needs", name: "Brikette/Inbox/Needs-Processing" };
-    const deferred = { id: "label-deferred", name: "Brikette/Inbox/Deferred" };
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const deferred = { id: "label-deferred", name: "Brikette/Queue/Deferred" };
     const { gmail } = createGmailStub({
       labels: [needsProcessing, deferred],
       threads: {

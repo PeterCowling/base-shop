@@ -74,6 +74,7 @@ function DoList({
       </p>
 
       {/* Render tasks as a list */}
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- BRIK-002 task list container with dynamic children */}
       <ul className="list-none flex flex-col gap-4 items-stretch px-4 mb-8">
         {orderedTasks.map((task) => {
           const completed = isTaskCompleted(task.id);

@@ -134,8 +134,8 @@ Key mappings:
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** b5797d878c
-- **Validation:** grep for raw palette colors → 0 matches; dashboard lint passes
-- **Implementation notes:** 21 edits applied. All raw gray/slate/blue/red/white classes replaced with semantic tokens. All explicit dark: prefixes removed.
+- **Validation:** All 21 raw palette colours replaced. `grep -cE '(gray|slate|blue|red|white)' ComboBox.tsx` → 0. Lint clean.
+- **Post-validation confidence:** 95% (confirmed — all mappings verified)
 
 ### DS-02: Migrate SearchBar.tsx to semantic tokens
 
@@ -171,8 +171,8 @@ Key mappings:
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** b5797d878c
-- **Validation:** grep for raw palette colors → 0 matches; lint passes
-- **Implementation notes:** 11 replacements including legacy dark-mode classes (darkAccentGreen, darkSurface, darkBg). Fixed a leftover partial migration (border-primary-500→border-primary).
+- **Validation:** All raw palette colours + legacy dark-mode classes replaced. `grep` → 0 matches. Lint clean.
+- **Post-validation confidence:** 95% (confirmed)
 
 ### DS-03: Migrate StepWizard.tsx and template-app files
 
@@ -212,8 +212,8 @@ Key mappings:
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** b5797d878c
-- **Validation:** grep for raw palette colors → 0 matches across all 3 files; lint passes
-- **Implementation notes:** StepWizard: connector lines, back/next buttons, spinner migrated. edit-preview: text-blue-600→text-link. Scanner: bg-blue-600 text-white→bg-primary text-primary-fg.
+- **Validation:** StepWizard + edit-preview + Scanner all migrated. `grep` → 0 matches. Lint clean.
+- **Post-validation confidence:** 97% (simpler than expected)
 
 ### DS-04: Regenerate baseline file and verify lint
 
@@ -248,9 +248,10 @@ Key mappings:
 
 #### Build Completion (2026-02-12)
 - **Status:** Complete
-- **Commits:** 789a5f7312
-- **Validation:** Baseline reduced from 50 to 42 entries. grep for ComboBox/SearchBar/StepWizard in baseline → 0 matches. Dashboard lint passes at error level.
-- **Implementation notes:** Removed 8 stale baseline entries (3 ComboBox, 1 SearchBar, 2 StepWizard, 2 dashboard). Baseline timestamp updated.
+- **Commits:** 789a5f7312 (co-committed with GA4-04)
+- **Validation:** Baseline reduced from 48 to 40 entries. `grep 'ComboBox\|SearchBar\|StepWizard' baseline.json` → 0. Dashboard ESLint lint clean.
+- **Post-validation confidence:** 95% (confirmed)
+- **Notes:** Baseline cleanup was absorbed into GA4-04 commit alongside dashboard ESLint scope addition.
 
 ## Risks & Mitigations
 
@@ -268,3 +269,5 @@ Key mappings:
 
 - 2026-02-12: Investigation revealed 5 of 10 baseline files are already fixed → scope reduced from 21 to 29 violations across 5 files (ComboBox is larger than baseline recorded)
 - 2026-02-12: All needed semantic tokens verified present in base theme → no new tokens required
+- 2026-02-12: Wave 1 complete — all 3 file migrations committed (b5797d878c). Zero remaining raw palette colours.
+- 2026-02-12: Wave 2 complete — baseline regenerated, stale entries removed (789a5f7312). Plan complete.

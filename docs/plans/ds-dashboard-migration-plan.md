@@ -112,12 +112,12 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
-| DASH-01 | IMPLEMENT | Migrate _app.tsx (layout shell) | 95% | S | Complete | - | DASH-07 |
-| DASH-02 | IMPLEMENT | Migrate dashboard.tsx | 92% | S | Complete | - | DASH-07 |
-| DASH-03 | IMPLEMENT | Migrate shops.tsx | 90% | S | Complete | - | DASH-07 |
-| DASH-04 | IMPLEMENT | Migrate shops/[id].tsx | 88% | M | Complete | - | DASH-07 |
-| DASH-05 | IMPLEMENT | Migrate Upgrade.tsx | 88% | M | Complete | - | DASH-07 |
-| DASH-06 | IMPLEMENT | Migrate history.tsx + workboard.tsx | 90% | S | Complete | - | DASH-07 |
+| DASH-01 | IMPLEMENT | Migrate _app.tsx (layout shell) | 95% | S | Complete (2026-02-12) | - | DASH-07 |
+| DASH-02 | IMPLEMENT | Migrate dashboard.tsx | 92% | S | Complete (2026-02-12) | - | DASH-07 |
+| DASH-03 | IMPLEMENT | Migrate shops.tsx | 90% | S | Complete (2026-02-12) | - | DASH-07 |
+| DASH-04 | IMPLEMENT | Migrate shops/[id].tsx | 88% | M | Complete (2026-02-12) | - | DASH-07 |
+| DASH-05 | IMPLEMENT | Migrate Upgrade.tsx | 88% | M | Complete (2026-02-12) | - | DASH-07 |
+| DASH-06 | IMPLEMENT | Migrate history.tsx + workboard.tsx | 90% | S | Complete (2026-02-12) | - | DASH-07 |
 | DASH-07 | IMPLEMENT | ESLint config escalation + baseline cleanup | 95% | S | Complete | DASH-01..06 | - |
 
 ## Parallelism Guide
@@ -232,8 +232,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** Extensive edits across search input, action buttons, table structure, and status badges. StatusBadge mapping function migrated to semantic variants (bg-danger-soft text-danger-fg, bg-info-soft text-info-fg, bg-surface-1 text-fg-muted). All table headers, borders, dividers, and links migrated to design system tokens.
-- **Confidence reassessment:** 90% → 95% (Pattern C (status badges) performed well; visual verification confirms contrast is maintained)
+- **Validation:** StatusBadge map migrated to semantic soft variants. All neutral surfaces migrated. Grep → 0. Lint clean.
+- **Post-validation confidence:** 93%
 
 ### DASH-04: Migrate shops/[id].tsx
 
@@ -272,8 +272,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** All tab states, status badges, deploy actions, and history list items migrated. TabButton component updated with semantic tokens for active/inactive states. StatusBadge mapping for deployment statuses migrated. RetryModal confirmation dialog and history timeline all use design system tokens.
-- **Confidence reassessment:** 88% → 93% (emerald→success mapping worked well for deploy actions; tab states visually consistent)
+- **Validation:** TabButton, StatusBadge, RetryModal, history list all migrated. All emerald→success, amber→warning, blue→primary mappings applied. Grep → 0. Lint clean.
+- **Post-validation confidence:** 92%
 
 ### DASH-05: Migrate Upgrade.tsx
 
@@ -314,8 +314,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** 55+ violations migrated across the most complex file in the set. StatusPill component updated with 7-state semantic token map (idle/loading/forbidden/error/success/publishing/unknown). ConfirmModal overlay and container migrated to bg-overlay-scrim-1 and bg-panel. UpgradeGroupTable with all status badges, error banners, and dividers migrated. Pre-existing unescaped apostrophe lint errors fixed ("can't"→"can&apos;t", "Let's"→"Let&apos;s").
-- **Confidence reassessment:** 88% → 95% (overlay scrim opacity looks correct; status badge contrast verified across all 7 states; error banner red-on-soft maintains readability)
+- **Validation:** 55+ violations migrated (heaviest file). StatusPill 7-state map, ConfirmModal overlay, UpgradeGroupTable all migrated. Fixed pre-existing lint issue (unescaped apostrophes). Grep → 0. Lint clean.
+- **Post-validation confidence:** 92%
 
 ### DASH-06: Migrate history.tsx and workboard.tsx
 
@@ -350,8 +350,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** history.tsx: inverted badge migrated (bg-slate-900 text-white→bg-fg text-bg), event list with status badges migrated. workboard.tsx: Badge status map migrated to semantic tokens, card hover states updated. All slate/blue/amber/green colors eliminated from both files.
-- **Confidence reassessment:** 90% → 95% (inverted badge pattern (bg-fg text-bg) renders correctly; all status badges maintain contrast)
+- **Validation:** Both history.tsx and workboard.tsx migrated. Inverted badge (bg-fg text-bg), status badges, dividers all migrated. Grep → 0. Lint clean.
+- **Post-validation confidence:** 93%
 
 ### DASH-07: ESLint config escalation + baseline cleanup
 
@@ -384,9 +384,10 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 #### Build Completion (2026-02-12)
 - **Status:** Complete
-- **Commits:** 789a5f7312 (changes included in GA4 commit via shared staging branch)
-- **Validation:** ESLint config updated with scoped override for apps/dashboard/** escalating ds/no-raw-tailwind-color to error level. Dashboard baseline entries removed from tools/eslint-baselines/ds-no-raw-tailwind-color.json. Verified: pnpm lint passes with zero violations on all dashboard files.
-- **Confidence reassessment:** 95% → 98% (config pattern applied successfully; lint enforcement active; zero baseline entries remain)
+- **Commits:** 789a5f7312 (co-committed with GA4-04)
+- **Validation:** Dashboard ESLint scope added at error level (follows CMS pattern). 2 dashboard baseline entries removed. `npx eslint "apps/dashboard/**/*.{ts,tsx}" --no-warn-ignored` → 0 errors. Grep → 0 dashboard entries in baseline.
+- **Post-validation confidence:** 97%
+- **Notes:** Changes absorbed into GA4-04 commit by concurrent agent.
 
 ## Risks & Mitigations
 
@@ -407,3 +408,5 @@ border-emerald-200 text-emerald-700 → border-success text-success
 - 2026-02-12: Investigation reveals 143 violations (vs fact-find estimate of ~30) — all mechanical, same patterns
 - 2026-02-12: Emerald actions mapped to success tokens (deploy = success action semantically)
 - 2026-02-12: Inverted badges (`bg-slate-900 text-white`) mapped to `bg-fg text-bg` — unconventional but semantically correct
+- 2026-02-12: Wave 1 complete — all 6 file migrations committed (720b459e01). Zero remaining raw palette colours across all 7 dashboard files.
+- 2026-02-12: Wave 2 complete — ESLint config escalated to error for dashboard, baseline cleaned (789a5f7312). Plan complete.

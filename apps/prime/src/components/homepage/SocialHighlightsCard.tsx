@@ -103,7 +103,7 @@ const SocialHighlightsCard: FC<SocialHighlightsCardProps> = memo(
               </Link>
               <Link
                 href="/activities"
-                className="flex items-center justify-center rounded-lg bg-background/60 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background/80"
+                className="inline-flex items-center justify-center rounded-lg bg-background/60 px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-background/80"
               >
                 {t(ctaKeys.seeAll)}
               </Link>

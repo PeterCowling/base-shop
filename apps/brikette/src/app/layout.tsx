@@ -6,6 +6,7 @@ import Script from "next/script";
 
 import { initTheme } from "@acme/platform-core/utils";
 
+import { CookieConsentBanner } from "@/components/consent/CookieConsent";
 import { GA_MEASUREMENT_ID, IS_PROD, NOINDEX_PREVIEW, PUBLIC_DOMAIN, SITE_DOMAIN } from "@/config/env";
 import { BASE_URL } from "@/config/site";
 import { buildGA4InlineScript } from "@/utils/ga4-consent-script";
@@ -117,7 +118,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </>
         ) : null}
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <CookieConsentBanner />
+      </body>
     </html>
   );
 }

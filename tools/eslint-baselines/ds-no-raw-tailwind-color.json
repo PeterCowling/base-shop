@@ -1,21 +1,7 @@
 {
   "ruleId": "ds/no-raw-tailwind-color",
-  "generatedAt": "2026-01-23T10:43:26.834Z",
+  "generatedAt": "2026-02-12T00:00:00.000Z",
   "violations": [
-    {
-      "filePath": "apps/dashboard/src/pages/shops/[id].tsx",
-      "line": 156,
-      "column": 45,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-green-700'"
-    },
-    {
-      "filePath": "apps/dashboard/src/pages/shops/[id].tsx",
-      "line": 156,
-      "column": 64,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-700'"
-    },
     {
       "filePath": "apps/skylar/src/app/[lang]/page.tsx",
       "line": 25,
@@ -290,34 +276,6 @@
       "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-white/10'"
     },
     {
-      "filePath": "packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx",
-      "line": 417,
-      "column": 66,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-gray-300'"
-    },
-    {
-      "filePath": "packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx",
-      "line": 419,
-      "column": 21,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-red-500'"
-    },
-    {
-      "filePath": "packages/ui/src/components/organisms/operations/ComboBox/ComboBox.tsx",
-      "line": 425,
-      "column": 67,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-gray-500'"
-    },
-    {
-      "filePath": "packages/ui/src/components/organisms/operations/SearchBar/SearchBar.tsx",
-      "line": 167,
-      "column": 75,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'border-gray-300'"
-    },
-    {
       "filePath": "packages/ui/src/components/organisms/operations/SplitPane/SplitPane.tsx",
       "line": 351,
       "column": 25,
@@ -330,20 +288,6 @@
       "column": 27,
       "messageId": "noRawTw",
       "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-blue-500'"
-    },
-    {
-      "filePath": "packages/ui/src/components/organisms/operations/StepWizard/StepWizard.tsx",
-      "line": 206,
-      "column": 25,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-green-600'"
-    },
-    {
-      "filePath": "packages/ui/src/components/organisms/operations/StepWizard/StepWizard.tsx",
-      "line": 219,
-      "column": 25,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-green-600'"
     },
     {
       "filePath": "packages/ui/src/organisms/modals/primitives.tsx",

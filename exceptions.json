@@ -57,6 +57,12 @@
     "BOS-UX-12": {},
     "BOS-UX-13": {},
     "BOS-UX-14": {},
+    "BRIK-002": {
+      "allow": [
+        "apps/prime/src/**"
+      ],
+      "notes": "Prime design refresh DS lint exceptions (layout, containers, grids)."
+    },
     "BRK-001": {},
     "BRIK-DS-001": {},
     "BRIK-ENG-0017": {},

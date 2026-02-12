@@ -48,6 +48,13 @@ concurrency:
 jobs:
   staging:
     name: Deploy (staging)
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:xa')
+      }}
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/xa-c"

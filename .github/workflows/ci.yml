@@ -21,6 +21,14 @@ concurrency:
 jobs:
   changes:
     name: Detect changes
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -41,6 +49,14 @@ jobs:
 
   security-audit:
     name: Security Audit
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -57,6 +73,14 @@ jobs:
 
   secret-scanning:
     name: Secret Scanning
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -69,6 +93,14 @@ jobs:
 
   dep-alignment:
     name: Dependency Alignment
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -78,6 +110,14 @@ jobs:
 
   license-check:
     name: License Compliance
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -91,6 +131,14 @@ jobs:
 
   lint:
     name: Lint
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -147,6 +195,14 @@ jobs:
 
   typecheck:
     name: Typecheck
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -170,6 +226,14 @@ jobs:
 
   test:
     name: Unit tests
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -205,7 +269,16 @@ jobs:
     name: Business OS Mirror Guard
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    if: github.event_name == 'pull_request'
+    if: >-
+      ${{
+        github.event_name == 'pull_request' &&
+        (
+          github.base_ref != 'main' ||
+          !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+        )
+      }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -264,6 +337,14 @@ jobs:
           fi
   storybook-visual:
     name: Storybook Visual Regression
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [lint, typecheck]
@@ -282,6 +363,14 @@ jobs:
 
   build:
     name: Build
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+      }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: [lint, typecheck, test, storybook-visual]
@@ -309,7 +398,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [changes, build]
-    if: needs.changes.outputs.shop == 'true'
+    if: >-
+      ${{
+        needs.changes.outputs.shop == 'true' &&
+        (
+          github.event_name != 'pull_request' ||
+          github.base_ref != 'main' ||
+          !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:core') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
+        )
+      }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo

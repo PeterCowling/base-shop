@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 config globs are not user-facing copy */
 import baseConfig from "../../tailwind.config.mjs";
 
 const baseTheme = baseConfig.theme ?? {};

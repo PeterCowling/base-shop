@@ -118,7 +118,7 @@ border-emerald-200 text-emerald-700 → border-success text-success
 | DASH-04 | IMPLEMENT | Migrate shops/[id].tsx | 88% | M | Complete (2026-02-12) | - | DASH-07 |
 | DASH-05 | IMPLEMENT | Migrate Upgrade.tsx | 88% | M | Complete (2026-02-12) | - | DASH-07 |
 | DASH-06 | IMPLEMENT | Migrate history.tsx + workboard.tsx | 90% | S | Complete (2026-02-12) | - | DASH-07 |
-| DASH-07 | IMPLEMENT | ESLint config escalation + baseline cleanup | 95% | S | Complete | DASH-01..06 | - |
+| DASH-07 | IMPLEMENT | ESLint config escalation + baseline cleanup | 95% | S | Complete (2026-02-12) | DASH-01..06 | - |
 
 ## Parallelism Guide
 
@@ -162,8 +162,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** 5 edits applied. bg-slate-50→bg-bg-2, border-slate-200→border-border, text-slate-600/700→text-fg-muted, text-blue-700→text-link. Grep → 0 matches. Lint clean.
-- **Post-validation confidence:** 97%
+- **Validation:** grep for raw palette colors → 0 matches; lint passes
+- **Implementation notes:** 5 edits: bg-slate-50→bg-bg-2, border-slate-200→border-border, text-slate-600→text-fg-muted, text-slate-700→text-fg-muted, text-blue-700→text-link.
 
 ### DASH-02: Migrate dashboard.tsx
 
@@ -195,8 +195,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** 3 edits. border-slate-200→border-border, bg-white→bg-bg, text-slate-900→text-fg, text-slate-700→text-fg-muted. Grep → 0. Lint clean.
-- **Post-validation confidence:** 95%
+- **Validation:** grep for raw palette colors → 0 matches; lint passes
+- **Implementation notes:** 3 edits: border-border bg-bg, text-fg, text-fg-muted.
 
 ### DASH-03: Migrate shops.tsx
 
@@ -232,8 +232,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** StatusBadge map migrated to semantic soft variants. All neutral surfaces migrated. Grep → 0. Lint clean.
-- **Post-validation confidence:** 93%
+- **Validation:** grep for raw palette colors → 0 matches; lint passes
+- **Implementation notes:** Extensive edits including StatusBadge map (ready→bg-success-soft, failed→bg-danger-soft, up_to_date→bg-info-soft, unknown→bg-bg-4). Input focus states, action buttons, table styling all migrated.
 
 ### DASH-04: Migrate shops/[id].tsx
 
@@ -272,8 +272,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** TabButton, StatusBadge, RetryModal, history list all migrated. All emerald→success, amber→warning, blue→primary mappings applied. Grep → 0. Lint clean.
-- **Post-validation confidence:** 92%
+- **Validation:** grep for raw palette colors → 0 matches; lint passes
+- **Implementation notes:** TabButton (active bg-primary-soft, inactive bg-bg-4), StatusBadge, RetryModal (bg-bg-2, bg-warning-soft, bg-success), history list all migrated. Retry buttons use border-success/text-success-fg pattern.
 
 ### DASH-05: Migrate Upgrade.tsx
 
@@ -314,8 +314,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** 55+ violations migrated (heaviest file). StatusPill 7-state map, ConfirmModal overlay, UpgradeGroupTable all migrated. Fixed pre-existing lint issue (unescaped apostrophes). Grep → 0. Lint clean.
-- **Post-validation confidence:** 92%
+- **Validation:** grep for raw palette colors → 0 matches; lint passes
+- **Implementation notes:** 55+ violations migrated (largest file). StatusPill 7-state map, ConfirmModal overlay (bg-overlay-scrim-1), UpgradeGroupTable full migration. Fixed pre-existing lint issue: unescaped apostrophes→&apos;.
 
 ### DASH-06: Migrate history.tsx and workboard.tsx
 
@@ -350,8 +350,8 @@ border-emerald-200 text-emerald-700 → border-success text-success
 #### Build Completion (2026-02-12)
 - **Status:** Complete
 - **Commits:** 720b459e01
-- **Validation:** Both history.tsx and workboard.tsx migrated. Inverted badge (bg-fg text-bg), status badges, dividers all migrated. Grep → 0. Lint clean.
-- **Post-validation confidence:** 93%
+- **Validation:** grep for raw palette colors → 0 matches in both files; lint passes
+- **Implementation notes:** history.tsx: inverted badge (bg-fg text-bg), StatusBadge, all neutrals migrated. workboard.tsx: Badge map (needs_review/publishing/failed/done), lane cards hover:border-primary, all neutrals migrated.
 
 ### DASH-07: ESLint config escalation + baseline cleanup
 
@@ -384,10 +384,9 @@ border-emerald-200 text-emerald-700 → border-success text-success
 
 #### Build Completion (2026-02-12)
 - **Status:** Complete
-- **Commits:** 789a5f7312 (co-committed with GA4-04)
-- **Validation:** Dashboard ESLint scope added at error level (follows CMS pattern). 2 dashboard baseline entries removed. `npx eslint "apps/dashboard/**/*.{ts,tsx}" --no-warn-ignored` → 0 errors. Grep → 0 dashboard entries in baseline.
-- **Post-validation confidence:** 97%
-- **Notes:** Changes absorbed into GA4-04 commit by concurrent agent.
+- **Commits:** 789a5f7312
+- **Validation:** Dashboard lint passes at error level. grep for 'dashboard' in baseline → 0 matches. ESLint config contains dashboard scope with error rule.
+- **Implementation notes:** Added scoped ESLint block for apps/dashboard/** with ds/no-raw-tailwind-color: "error". Removed 2 dashboard entries from baseline.
 
 ## Risks & Mitigations
 

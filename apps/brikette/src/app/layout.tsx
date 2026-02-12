@@ -107,7 +107,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             {/* Consent Mode v2 defaults + gtag config — synchronous in <head> before gtag.js loads */}
             <script
               dangerouslySetInnerHTML={{
-                __html: buildGA4InlineScript({ measurementId: gaMeasurementId }),
+                __html: buildGA4InlineScript({ measurementId: gaMeasurementId, isInternalTraffic: !IS_PROD }),
               }}
             />
             {/* gtag.js CDN — loaded after page becomes interactive for better performance */}

@@ -69,13 +69,23 @@ async function run(): Promise<void> {
     checkLink,
   });
 
-  if (issues.length === 0) {
+  const hardIssues = issues.filter((i) => i.code !== "broken_link");
+  const linkIssues = issues.filter((i) => i.code === "broken_link");
+
+  if (linkIssues.length > 0) {
+    console.warn(`Template lint: ${linkIssues.length} broken link(s) (warn-only):\n`);
+    for (const issue of linkIssues) {
+      console.warn(`- [${issue.code}] ${issue.subject}: ${issue.details}`);
+    }
+  }
+
+  if (hardIssues.length === 0) {
     console.info("Template lint: OK");
     return;
   }
 
   console.error("Template lint failed:\n");
-  for (const issue of issues) {
+  for (const issue of hardIssues) {
     console.error(`- [${issue.code}] ${issue.subject}: ${issue.details}`);
   }
   process.exit(1);

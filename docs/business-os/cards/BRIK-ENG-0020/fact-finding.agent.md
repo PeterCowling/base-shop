@@ -190,7 +190,7 @@ _To be completed during Fact-finding phase_
 **Go/No-Go Recommendation:**
 - **GO** - Technical foundation is strong (existing scripts, proven patterns)
 - **All blockers resolved or deferred** - Fast-track approved
-- **Proceeding to `/plan-feature`** with INVESTIGATE task for baseline validation
+- **Proceeding to `/wf-plan`** with INVESTIGATE task for baseline validation
 
 ---
 
@@ -210,12 +210,12 @@ _To be completed during Fact-finding phase_
 2. ✅ Plan will include INVESTIGATE tasks for:
    - Email volume/pattern validation (can run in parallel with build)
    - Baseline metrics collection
-3. ✅ Proceeding to `/plan-feature` after script source code analysis
+3. ✅ Proceeding to `/wf-plan` after script source code analysis
 
 **Script source code analysis complete:**
 - All 5 booking monitor files now captured in `apps/brikette-scripts/src/booking-monitor/`
 - See `apps/brikette-scripts/docs/booking-monitor-architecture.md` for full analysis
-- Ready to proceed to `/plan-feature`
+- Ready to proceed to `/wf-plan`
 
 **Exit criteria (if discovered during planning):**
 - INVESTIGATE shows <40% of inquiries can be templated
@@ -253,7 +253,7 @@ _To be completed during Fact-finding phase_
 **Implementation Approach:**
 - Gmail API accessed via MCP tools (list pending, get details, create draft, mark processed)
 - Knowledge base exposed as MCP resources (FAQ, rooms, pricing, policies)
-- Custom `/process-emails` skill for guided workflow
+- Custom `/ops-inbox` skill for guided workflow
 - Human-in-loop maintained: Pete reviews all drafts before sending
 
 **Workflow Design:** See `docs/plans/email-autodraft-workflow-design.md`
@@ -264,4 +264,4 @@ _To be completed during Fact-finding phase_
 
 **Last Updated:** 2026-02-01 (7 of 7 questions resolved)
 
-All architectural decisions are now complete. Ready for `/plan-feature`.
+All architectural decisions are now complete. Ready for `/wf-plan`.

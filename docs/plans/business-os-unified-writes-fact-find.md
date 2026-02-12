@@ -153,7 +153,7 @@ Export must produce byte-identical output for identical D1 state. Rules:
 
 **Markdown Write Path (to be deprecated):**
 - `.claude/skills/_shared/card-operations.md` — scan-based ID allocation instructions
-- `.claude/skills/work-idea/SKILL.md` — creates `.user.md` + `.agent.md` via `Write` tool
+- `.claude/skills/idea-develop/SKILL.md` — creates `.user.md` + `.agent.md` via `Write` tool
 
 **Board Version Polling (existing):**
 - `apps/business-os/src/app/api/board-version/route.ts` — returns `MAX(updated_at)` per business
@@ -274,12 +274,12 @@ Response:
 1. Implement `/api/agent/cards` endpoint with API key auth
 2. Implement `/api/agent/allocate-id` endpoint
 3. Update `card-operations.md` to use API instead of `Write` tool
-4. Update `/work-idea` skill to use API
+4. Update `/idea-develop` skill to use API
 5. **Skills using old pattern will create orphan markdown files** (not visible in UI)
 
 ### Phase 2: Skill Migration
 
-1. Update all remaining skills (`/fact-find`, `/build-feature`, etc.)
+1. Update all remaining skills (`/wf-fact-find`, `/wf-build`, etc.)
 2. Add deprecation warning to `Write` tool usage for `docs/business-os/`
 3. Document migration guide for custom skills
 
@@ -318,7 +318,7 @@ To avoid silent drift from old skills creating orphan markdown:
 - Validation of deterministic serialization before full cutover
 - Git history showing gradual migration progress
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 ### Implementation: 78%
 - ✅ D1 schema and repositories exist
@@ -348,7 +348,7 @@ To avoid silent drift from old skills creating orphan markdown:
 - ✅ CI guard prevents accidental drift
 - ⚠️ Skill author communication needed
 
-**To reach 90%:** Test migration with `/work-idea` skill end-to-end
+**To reach 90%:** Test migration with `/idea-develop` skill end-to-end
 
 ## Planning Readiness
 
@@ -358,7 +358,7 @@ To avoid silent drift from old skills creating orphan markdown:
   2. Agent write interface: **Option A — direct HTTP** (clean break)
   3. Real-time notification: **Option A — cursor-based polling** (contract in Decision 3)
 - **No blocking unknowns remain**
-- **Recommended next step:** Proceed to `/plan-feature` with specified options
+- **Recommended next step:** Proceed to `/wf-plan` with specified options
 
 ## Suggested Task Seeds
 
@@ -374,9 +374,9 @@ To avoid silent drift from old skills creating orphan markdown:
 
 **Phase 2: Skill Migration**
 7. **BOS-UW-07:** Update `card-operations.md` shared helper to use API for create + edit
-8. **BOS-UW-08:** Migrate `/work-idea` skill to API writes (create)
-9. **BOS-UW-09:** Migrate `/build-feature` skill to API writes (edit — task status updates)
-10. **BOS-UW-10:** Migrate remaining skills (`/fact-find`, `/propose-lane-move`, etc.)
+8. **BOS-UW-08:** Migrate `/idea-develop` skill to API writes (create)
+9. **BOS-UW-09:** Migrate `/wf-build` skill to API writes (edit — task status updates)
+10. **BOS-UW-10:** Migrate remaining skills (`/wf-fact-find`, `/idea-advance`, etc.)
 
 **Phase 3: Documentation & Cleanup**
 11. **BOS-UW-11:** Update Business OS charter for D1-canonical reality

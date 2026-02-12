@@ -7,11 +7,11 @@ Created: 2026-02-09
 Last-updated: 2026-02-10
 Relates-to charter: none
 Feature-Slug: ci-integration-speed-control
-Related-Fact-Find: docs/plans/ci-integration-speed-control-fact-find.md
+Related-Fact-Find: docs/plans/ci-integration-speed-control-wf-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: re-plan, safe-commit-push-ci
+Primary-Execution-Skill: wf-build
+Supporting-Skills: wf-replan, ops-ship
 Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by effort, dependency risk, and unresolved audit inputs
 Business-Unit: PLAT
@@ -47,7 +47,7 @@ All tasks complete. No remaining work.
 - Building merge-conflict assistant tooling in this plan (tracked separately as backlog extraction).
 
 ## Baseline and Targets
-Source: `docs/plans/ci-integration-speed-control-fact-find.md` (captured 2026-02-09 UTC).
+Source: `docs/plans/ci-integration-speed-control-wf-fact-find.md` (captured 2026-02-09 UTC).
 
 Baseline:
 - Core Platform CI runtime (last 30 runs): p50 `10.30m`, p90 `15.90m`, avg `11.15m`.
@@ -68,7 +68,7 @@ Targets (first stabilization window, 10 consecutive required-check runs):
 - External Action/API availability can remain variable.
 
 ## Fact-Find Reference
-- `docs/plans/ci-integration-speed-control-fact-find.md`
+- `docs/plans/ci-integration-speed-control-wf-fact-find.md`
 
 ## Existing System Notes
 - Affected-scoped integration checks already exist in `.github/workflows/ci.yml:116`, `.github/workflows/ci.yml:153`, `.github/workflows/ci.yml:172`.
@@ -133,14 +133,14 @@ Merge order:
 2. CI-SC-02 and CI-SC-07 (either order)
 3. CI-SC-03 (after CI-SC-09 spike confirms timeout feasibility and CI-SC-02 merged)
 4. CI-SC-05 (after CI-SC-04 parity map complete and confidence raised)
-5. CI-SC-06 and CI-SC-08 outputs feed re-plan decisions
+5. CI-SC-06 and CI-SC-08 outputs feed wf-replan decisions
 
 ## Tasks
 
 ### CI-SC-01: Make plan lint archive-aware while preserving active-plan strictness
 - **Type:** IMPLEMENT
 - **Deliverable:** Updated lint behavior and tests for active-vs-archive scope
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `wf-build`
 - **Affects:** `scripts/src/plans-lint.ts`, `scripts/__tests__/plans-lint.test.ts` (new)
 - **Depends on:** -
 - **Effort:** S
@@ -195,7 +195,7 @@ Merge order:
 ### CI-SC-02: Split integration test scripts from coverage scripts
 - **Type:** IMPLEMENT
 - **Deliverable:** Integration `test` scripts without forced coverage and explicit `test:coverage` scripts
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `wf-build`
 - **Affects:** `packages/design-system/package.json:67`, `packages/cms-ui/package.json:137`, `packages/ui/package.json:318-319`, `apps/cms/package.json:12`
 - **Depends on:** -
 - **Effort:** M
@@ -233,7 +233,7 @@ Merge order:
   - Impact: 84% — `turbo run test` callers unaffected (same script name, faster execution). Nightly lane must be updated to call `test:coverage`. CMS workflow (`cms.yml:105-107`) already passes `--coverage` explicitly via CLI, so CMS integration unaffected.
 - **Investigation performed:**
   - Repo: `packages/design-system/package.json:67`, `packages/cms-ui/package.json:137`, `packages/ui/package.json:318-319`, `apps/cms/package.json:12`
-  - Docs: fact-find Finding #3
+  - Docs: wf-fact-find Finding #3
 - **Decision / resolution:**
   - Mechanical split: remove `--coverage` from `test`, add `test:coverage` with original command.
 - **Changes to task:**
@@ -259,7 +259,7 @@ Merge order:
 ### CI-SC-03: Move CMS coverage from integration to overnight/manual quality lane
 - **Type:** IMPLEMENT
 - **Deliverable:** CMS integration workflow coverage-off, overnight/manual CMS coverage-on
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `wf-build`
 - **Affects:** `.github/workflows/cms.yml:104-107`, `.github/workflows/test.yml` (new job), `apps/cms/jest.config.cjs:107`
 - **Depends on:** CI-SC-02 (done), CI-SC-09 (done — FAIL informed approach)
 - **Effort:** M
@@ -373,7 +373,7 @@ Merge order:
 ### CI-SC-04: Build full parity map for existing `paths-filter` expressions
 - **Type:** INVESTIGATE
 - **Deliverable:** Canonical parity map and acceptance fixtures for classifier replacement
-- **Execution-Skill:** `re-plan`
+- **Execution-Skill:** `wf-replan`
 - **Affects:** `.github/workflows/ci.yml:32-44,187-199`, `.github/workflows/merge-gate.yml:30-168`, `.github/workflows/ci-lighthouse.yml:24-34`
 - **Depends on:** -
 - **Effort:** M
@@ -458,7 +458,7 @@ Merge order:
 ### CI-SC-05: Replace external `dorny/paths-filter` in required workflows
 - **Type:** IMPLEMENT
 - **Deliverable:** Repo-local path classifier and workflow integration
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `wf-build`
 - **Affects:** `.github/workflows/ci.yml`, `.github/workflows/merge-gate.yml`, `.github/workflows/ci-lighthouse.yml`, `scripts/src/ci/path-classifier.ts` (new), `scripts/src/ci/filter-config.ts` (new), `scripts/__tests__/ci/path-classifier.test.ts` (new)
 - **Depends on:** CI-SC-04 (complete)
 - **Effort:** L
@@ -551,7 +551,7 @@ Merge order:
 ### CI-SC-06: Audit CI cache effectiveness and propose optimizations
 - **Type:** INVESTIGATE
 - **Deliverable:** Cache behavior report and prioritized optimization shortlist
-- **Execution-Skill:** `re-plan`
+- **Execution-Skill:** `wf-replan`
 - **Affects:** `.github/workflows/ci.yml`, `.github/workflows/test.yml`, `.github/workflows/cms.yml`, `.github/workflows/storybook.yml`, `.github/workflows/cypress.yml`, `.github/workflows/reusable-app.yml`, `turbo.json`
 - **Depends on:** -
 - **Effort:** M
@@ -628,7 +628,7 @@ Recommendations 1-3 are low-risk mechanical changes suitable for follow-on IMPLE
 ### CI-SC-07: Optimize `validate-changes.sh` related-test discovery
 - **Type:** IMPLEMENT
 - **Deliverable:** Faster related-test discovery without changing strict behavior
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `wf-build`
 - **Affects:** `scripts/validate-changes.sh:259-298`
 - **Depends on:** -
 - **Effort:** M
@@ -690,7 +690,7 @@ Recommendations 1-3 are low-risk mechanical changes suitable for follow-on IMPLE
 ### CI-SC-08: Investigate dynamic affected-test sharding thresholds
 - **Type:** INVESTIGATE
 - **Deliverable:** Threshold model and promote/hold recommendation
-- **Execution-Skill:** `re-plan`
+- **Execution-Skill:** `wf-replan`
 - **Affects:** `.github/workflows/ci.yml`, potential `scripts/src/ci/*`
 - **Depends on:** -
 - **Effort:** M
@@ -709,11 +709,11 @@ Recommendations 1-3 are low-risk mechanical changes suitable for follow-on IMPLE
 - **Previous confidence:** 70%
 - **Updated confidence:** 75%
   - **Evidence class:** E1 (static audit of test fan-out evidence)
-  - Implementation: 77% — Test fan-out evidence from fact-find: run `21838129021` launched 57 turbo `*:test` groups. This gives a baseline count for threshold calibration.
+  - Implementation: 77% — Test fan-out evidence from wf-fact-find: run `21838129021` launched 57 turbo `*:test` groups. This gives a baseline count for threshold calibration.
   - Approach: 75% — Two-phase benchmark methodology is sound. Remaining uncertainty: how to run controlled comparisons on same change sets (need to identify representative diff sets and run them with/without sharding).
   - Impact: 75% — Sharding adds workflow complexity and potential flake. Impact assessment requires E2 evidence from actual benchmark runs.
 - **Investigation performed:**
-  - Repo: fact-find baseline data (run `21838129021`, 57 turbo test groups)
+  - Repo: wf-fact-find baseline data (run `21838129021`, 57 turbo test groups)
   - Docs: turbo.json test task configuration (`turbo.json:41-62`)
 - **Decision / resolution:**
   - Minor uplift from 70% to 75% based on fan-out baseline evidence. Methodology still needs E2 validation (controlled benchmark runs). Stays below 80% — not promotable without executing benchmarks.
@@ -779,7 +779,7 @@ Risk factors for expanding sharding:
 ### CI-SC-09: Spike — Verify CMS tests complete within nightly job timeout without sharding
 - **Type:** SPIKE
 - **Deliverable:** Timing evidence for unsharded CMS test suite execution
-- **Execution-Skill:** `build-feature`
+- **Execution-Skill:** `wf-build`
 - **Affects:** `apps/cms/` (read-only probe)
 - **Depends on:** -
 - **Effort:** S
@@ -799,7 +799,7 @@ Risk factors for expanding sharding:
   - **Run:** `time pnpm --filter ./apps/cms exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --coverage --config jest.config.cjs`
 - **Exit criteria:**
   - **Pass:** CMS tests complete in <15 minutes with coverage → CI-SC-03 approach (a) is viable, promote CI-SC-03 confidence to 84%
-  - **Fail:** CMS tests exceed 15 minutes or fail → CI-SC-03 needs approach (b) with shard support in nightly, re-plan CI-SC-03
+  - **Fail:** CMS tests exceed 15 minutes or fail → CI-SC-03 needs approach (b) with shard support in nightly, wf-replan CI-SC-03
 - **Rollout/Rollback:** Read-only spike, no rollback needed.
 - **Spike Result (2026-02-09):**
   - **Outcome: FAIL** — Unsharded `--runInBand` run exceeded 21 minutes (384/421 suites at 21min mark, still running). 421 total test files.
@@ -837,22 +837,22 @@ Risk factors for expanding sharding:
 - 2026-02-09: Extracted merge-assistant work out of this plan scope.
 - 2026-02-09: Promoted pending audit items to explicit tasks (CI-SC-04, CI-SC-06, CI-SC-08).
 - 2026-02-09: Added baseline metrics and quantitative targets.
-- 2026-02-09 (re-plan): Created CI-SC-09 (SPIKE) as precursor for CI-SC-03 to resolve CMS nightly timeout uncertainty.
-- 2026-02-09 (re-plan): Promoted CI-SC-06 from 72% to 82% based on comprehensive cache inventory (E1).
-- 2026-02-09 (re-plan): Promoted CI-SC-08 from 70% to 75% based on test fan-out evidence (E1).
-- 2026-02-09 (re-plan): Added test contracts (TC-XX) to all IMPLEMENT tasks: CI-SC-01, 02, 03, 05, 07.
-- 2026-02-09 (re-plan): Added test contract to CI-SC-09 (SPIKE).
-- 2026-02-09 (re-plan): CI-SC-03 confidence recorded as conditional: 79% → 84% on CI-SC-09 completion.
-- 2026-02-09 (re-plan): CI-SC-05 confidence recorded as conditional: 74% → 84% on CI-SC-04 completion.
+- 2026-02-09 (wf-replan): Created CI-SC-09 (SPIKE) as precursor for CI-SC-03 to resolve CMS nightly timeout uncertainty.
+- 2026-02-09 (wf-replan): Promoted CI-SC-06 from 72% to 82% based on comprehensive cache inventory (E1).
+- 2026-02-09 (wf-replan): Promoted CI-SC-08 from 70% to 75% based on test fan-out evidence (E1).
+- 2026-02-09 (wf-replan): Added test contracts (TC-XX) to all IMPLEMENT tasks: CI-SC-01, 02, 03, 05, 07.
+- 2026-02-09 (wf-replan): Added test contract to CI-SC-09 (SPIKE).
+- 2026-02-09 (wf-replan): CI-SC-03 confidence recorded as conditional: 79% → 84% on CI-SC-09 completion.
+- 2026-02-09 (wf-replan): CI-SC-05 confidence recorded as conditional: 74% → 84% on CI-SC-04 completion.
 - 2026-02-09 (build): CI-SC-01 completed. Archive/historical plans now exempt from metadata checks. 8 tests added (TC-01–TC-08), all passing. Duplicate `terminalStatuses` definition removed.
-- 2026-02-09 (spike): CI-SC-09 completed with FAIL result. Unsharded `--runInBand` CMS tests exceeded 21min (384/421 suites). CI-SC-03 needs re-plan: approach (a) not viable, consider approach (b) shard support in nightly or (c) unsharded with Jest parallelism.
+- 2026-02-09 (spike): CI-SC-09 completed with FAIL result. Unsharded `--runInBand` CMS tests exceeded 21min (384/421 suites). CI-SC-03 needs wf-replan: approach (a) not viable, consider approach (b) shard support in nightly or (c) unsharded with Jest parallelism.
 - 2026-02-09 (build): CI-SC-02 completed. Removed `--coverage` from `test` scripts in 4 packages, added `test:coverage` scripts. Note: CMS config-level `collectCoverage: true` is redundant with CLI flag — config-level change is CI-SC-03 scope.
 - 2026-02-09 (build): CI-SC-07 completed. Batched per-package jest probe replaces per-file loop. Validated with 2-file diff (10 related tests found in single probe).
 - 2026-02-09 (investigate): CI-SC-04 completed. Full parity map: 14 filter expressions across 3 workflows. Fixture matrix with 9 scenarios. Edge cases: negation patterns, universal match, renames/deletions. CI-SC-05 promoted from 74% to 82%.
 - 2026-02-09 (investigate): CI-SC-06 completed. Cache audit: 7 cache types, 5 prioritized recommendations. Top finding: turbo globalDependencies includes 5 test-only files that bust all task caches. Recommendations 1-3 are low-risk follow-on IMPLEMENT tasks.
 - 2026-02-09 (investigate): CI-SC-08 completed. Sharding threshold model: 200+ files → 2-way, 400+ → 4-way. Recommendation: HOLD on expanding sharding. Turbo cache optimization (CI-SC-06 rec 1-2) is higher leverage for CI speed.
 - 2026-02-09 (build): CI-SC-05 completed. Replaced all 4 `dorny/paths-filter` uses across 3 workflows with `scripts/ci/path-classifier.cjs` (zero-dependency standalone CJS). Custom `matchGlob()` replaces picomatch — CI detection jobs have no `setup-repo`/`pnpm install`. 37 tests pass. actionlint clean. Post-build confidence: 86%.
-- 2026-02-10 (re-plan): CI-SC-03 re-planned after CI-SC-09 FAIL. Approach (a) rejected (unsharded >21min). Approach (b) selected: dedicated 4-way sharded CMS coverage job in nightly `test.yml`. Also: `collectCoverage: false` in jest.config to make `test` script truly coverage-free. Confidence promoted 79% → 84%.
+- 2026-02-10 (wf-replan): CI-SC-03 wf-replanned after CI-SC-09 FAIL. Approach (a) rejected (unsharded >21min). Approach (b) selected: dedicated 4-way sharded CMS coverage job in nightly `test.yml`. Also: `collectCoverage: false` in jest.config to make `test` script truly coverage-free. Confidence promoted 79% → 84%.
 - 2026-02-10 (build): CI-SC-03 completed. Three-part change: `collectCoverage: false`, remove `--coverage` from cms.yml, add `cms-coverage` 4-way sharded job to test.yml. All 6 TCs pass. actionlint clean. Post-build confidence: 88%. All plan tasks now complete.
 
 ## Scope Extraction
@@ -876,9 +876,9 @@ The following item is intentionally excluded from this plan and should be tracke
 ## Decision Points
 | Condition | Action |
 |---|---|
-| IMPLEMENT task <80% and on merge path | Run `/re-plan` for that task before build |
-| IMPLEMENT task >=80% with prerequisites met and test contracts complete | Proceed with `/build-feature` |
+| IMPLEMENT task <80% and on merge path | Run `/wf-replan` for that task before build |
+| IMPLEMENT task >=80% with prerequisites met and test contracts complete | Proceed with `/wf-build` |
 | CI-SC-09 spike passes (<15min) | Promote CI-SC-03 to 84%, proceed with build |
 | CI-SC-09 spike fails (>15min) | Re-plan CI-SC-03 with shard support in nightly |
 | Investigation completed with new evidence | Re-score dependent IMPLEMENT tasks immediately |
-| No eligible IMPLEMENT tasks | Continue investigation track and re-plan |
+| No eligible IMPLEMENT tasks | Continue investigation track and wf-replan |

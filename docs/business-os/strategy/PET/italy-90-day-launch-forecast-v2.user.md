@@ -113,7 +113,7 @@ If any gate fails, switch to fix-first mode:
 | CAC inflation | destroys contribution at low AOV | retargeting-first, fast creative pruning, strict CAC gate |
 | Conversion underperformance | low order volume despite traffic | simplify PDP/checkout, improve shipping/returns clarity |
 | Returns spike | erodes margin and cash flow | tighter fit/use expectations, explicit product dimensions, usage proof |
-| Inventory delay/shortage | constrains realizable revenue | pre-order transparency + inventory-capped weekly re-plan |
+| Inventory delay/shortage | constrains realizable revenue | pre-order transparency + inventory-capped weekly wf-replan |
 | Benchmark staleness | wrong priors for decisioning | refresh market/CVR references during week-2 recalibration |
 
 ## Required Data to Upgrade v2 -> Decision-Grade

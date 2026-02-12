@@ -11,8 +11,8 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: business-os-ideas-kanban-flow
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
-Supporting-Skills: ideas-go-faster, fact-find, plan-feature
+Primary-Execution-Skill: wf-build
+Supporting-Skills: idea-generate, wf-fact-find, wf-plan
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Business-Unit: BOS
@@ -22,7 +22,7 @@ Business-Unit: BOS
 
 ## Summary
 
-This plan aligns Business OS behavior with the intended loop (`/ideas-go-faster` -> `/fact-find` -> `/plan-feature` -> `/build-feature`) so the board reflects progress without additional user steps. It also introduces a dedicated Ideas screen for high-volume priority triage. Current state has two gaps: workflow contracts still include optional/manual integration paths, and ideas lack first-class priority plus a scalable index UI.
+This plan aligns Business OS behavior with the intended loop (`/idea-generate` -> `/wf-fact-find` -> `/wf-plan` -> `/wf-build`) so the board reflects progress without additional user steps. It also introduces a dedicated Ideas screen for high-volume priority triage. Current state has two gaps: workflow contracts still include optional/manual integration paths, and ideas lack first-class priority plus a scalable index UI.
 
 ## Re-Plan Update (2026-02-09)
 
@@ -31,7 +31,7 @@ This revision incorporates critique feedback:
 - Corrects critical path to schema/API priority -> ideas UI -> checkpoint.
 - Adds explicit idea priority semantics (values, default, source, mutability, backfill behavior).
 - Adds concrete Ideas screen UX spec.
-- Makes `/ideas-go-faster` priority assignment an explicit requirement.
+- Makes `/idea-generate` priority assignment an explicit requirement.
 - Adds risks for concurrent agent writes and manual-workflow regression.
 - Defines explicit standalone escape hatch mechanism.
 - Clarifies `/ideas` data fetching model for 500+ idea scale.
@@ -66,10 +66,10 @@ This revision incorporates critique feedback:
 - Board refreshes on cards/ideas/stage docs: `apps/business-os/src/components/board/useBoardAutoRefresh.ts`
 - Delta source includes cards/ideas/stage docs: `apps/business-os/src/app/api/board-changes/route.ts`
 - Skill contracts still include optional/manual language in parts of core loop:
-  - `.claude/skills/fact-find/SKILL.md`
-  - `.claude/skills/plan-feature/SKILL.md`
-  - `.claude/skills/build-feature/SKILL.md`
-- `/ideas-go-faster` currently creates ideas/cards/stage docs but idea priority is not first-class in repo schemas.
+  - `.claude/skills/wf-fact-find/SKILL.md`
+  - `.claude/skills/wf-plan/SKILL.md`
+  - `.claude/skills/wf-build/SKILL.md`
+- `/idea-generate` currently creates ideas/cards/stage docs but idea priority is not first-class in repo schemas.
 - Idea schema lacks priority:
   - `apps/business-os/src/lib/types.ts`
   - `packages/platform-core/src/repositories/businessOsIdeas.server.ts`
@@ -82,7 +82,7 @@ This revision incorporates critique feedback:
 - Valid values: `P0 | P1 | P2 | P3 | P4 | P5`.
 - Ordering semantics: `P0` highest urgency, `P5` lowest.
 - Source at creation:
-  - `/ideas-go-faster`: must set idea priority explicitly from Stage-5 prioritization output.
+  - `/idea-generate`: must set idea priority explicitly from Stage-5 prioritization output.
   - Manual `/api/ideas` create: default `P3` when not provided.
 - Mutability:
   - Priority is mutable via PATCH (`/api/agent/ideas/:id`) with optimistic concurrency.
@@ -93,13 +93,13 @@ This revision incorporates critique feedback:
 ## Standalone Escape Hatch
 
 Baseline behavior is always-on Business OS integration. Exception flow is explicit:
-- Mechanism: `Business-OS-Integration: off` frontmatter field in the controlling fact-find/plan document.
+- Mechanism: `Business-OS-Integration: off` frontmatter field in the controlling wf-fact-find/plan document.
 - Behavior: when set, downstream skill stages skip card/stage-doc/lane writes for that work item.
 - Scope: exception-only, not default, and must be called out in skill completion output.
 
 ## Discovery Index Problem Statement
 
-`docs/business-os/_meta/discovery-index.json` powers zero-argument discovery in `/fact-find`, `/plan-feature`, and `/build-feature`. It can become stale because rebuild is currently described as manual. User-visible symptom: skills present outdated selectable items even though board/API state has moved.
+`docs/business-os/_meta/discovery-index.json` powers zero-argument discovery in `/wf-fact-find`, `/wf-plan`, and `/wf-build`. It can become stale because rebuild is currently described as manual. User-visible symptom: skills present outdated selectable items even though board/API state has moved.
 
 Required behavior in this plan: core loop write paths must keep discovery data fresh automatically for normal usage, with explicit failure behavior.
 
@@ -181,12 +181,12 @@ Relationship to board:
 ### TASK-01: Unify skill contracts for deterministic always-on loop behavior
 - **Type:** IMPLEMENT
 - **Deliverable:** Contract-level updates in skills/docs only (no runtime code path changes in this task).
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:**
-  - `.claude/skills/fact-find/SKILL.md`
-  - `.claude/skills/plan-feature/SKILL.md`
-  - `.claude/skills/build-feature/SKILL.md`
-  - `.claude/skills/ideas-go-faster/SKILL.md`
+  - `.claude/skills/wf-fact-find/SKILL.md`
+  - `.claude/skills/wf-plan/SKILL.md`
+  - `.claude/skills/wf-build/SKILL.md`
+  - `.claude/skills/idea-generate/SKILL.md`
   - `docs/agents/feature-workflow-guide.md`
   - `docs/business-os/agent-workflows.md`
 - **Depends on:** -
@@ -201,13 +201,13 @@ Relationship to board:
     - Fact-finding -> Planned (when plan gate satisfied)
     - Planned -> In progress (already mechanical)
     - In progress -> Done (when completion gate satisfied)
-  - `/ideas-go-faster` explicitly sets idea priority at idea creation time.
+  - `/idea-generate` explicitly sets idea priority at idea creation time.
   - Discovery-index freshness behavior is defined as loop-driven for normal use.
   - Escape hatch is explicitly documented as `Business-OS-Integration: off` (exception flow).
 - **Validation contract:**
   - VC-01: skill docs consistently describe always-on baseline integration.
-  - VC-02: transition semantics are consistent across fact-find/plan/build/docs.
-  - VC-03: ideas-go-faster section explicitly includes priority assignment in create payload.
+  - VC-02: transition semantics are consistent across wf-fact-find/plan/build/docs.
+  - VC-03: idea-generate section explicitly includes priority assignment in create payload.
   - VC-04: discovery index behavior documented with trigger points and failure mode.
   - VC-05: escape hatch mechanism and scope are documented.
   - **Validation type:** review checklist
@@ -225,19 +225,19 @@ Relationship to board:
 - **Build completion (2026-02-09):**
   - Status: Complete
   - Validation evidence:
-    - VC-01/VC-02: verified always-on integration and deterministic transitions across `fact-find`, `plan-feature`, `build-feature`, and workflow guides.
-    - VC-03: verified `/ideas-go-faster` create payload includes explicit priority assignment (`"priority": "<P1|P2|P3|P4|P5>"`).
+    - VC-01/VC-02: verified always-on integration and deterministic transitions across `wf-fact-find`, `wf-plan`, `wf-build`, and workflow guides.
+    - VC-03: verified `/idea-generate` create payload includes explicit priority assignment (`"priority": "<P1|P2|P3|P4|P5>"`).
     - VC-04: verified discovery-index trigger points and fail behavior (`discovery-index stale`) documented.
     - VC-05: verified explicit escape hatch (`Business-OS-Integration: off`) in skill and guide contracts.
   - Validation commands:
-    - `rg -n "Business OS Integration \(Default\)|Business-OS-Integration: off|Fact-finding -> Planned|Planned -> In progress|In progress -> Done|discovery-index stale" .claude/skills/fact-find/SKILL.md .claude/skills/plan-feature/SKILL.md .claude/skills/build-feature/SKILL.md docs/agents/feature-workflow-guide.md docs/business-os/agent-workflows.md`
-    - `rg -n "priority" .claude/skills/ideas-go-faster/SKILL.md`
+    - `rg -n "Business OS Integration \(Default\)|Business-OS-Integration: off|Fact-finding -> Planned|Planned -> In progress|In progress -> Done|discovery-index stale" .claude/skills/wf-fact-find/SKILL.md .claude/skills/wf-plan/SKILL.md .claude/skills/wf-build/SKILL.md docs/agents/feature-workflow-guide.md docs/business-os/agent-workflows.md`
+    - `rg -n "priority" .claude/skills/idea-generate/SKILL.md`
     - `pnpm docs:lint` (passes with pre-existing repository warnings unrelated to this task)
 
 ### TASK-02: Add first-class idea priority in schema/repositories/APIs
 - **Type:** IMPLEMENT
 - **Deliverable:** Persisted and queryable idea priority with deterministic fallback.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:**
   - `apps/business-os/src/lib/types.ts`
   - `packages/platform-core/src/repositories/businessOs.server.ts`
@@ -304,7 +304,7 @@ Relationship to board:
 ### TASK-03: Build `/ideas` priority-first index UI and navigation
 - **Type:** IMPLEMENT
 - **Deliverable:** New dedicated ideas list view and navigation path.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:**
   - `apps/business-os/src/app/ideas/page.tsx` (new)
   - `apps/business-os/src/components/ideas/*` (new)
@@ -373,7 +373,7 @@ Relationship to board:
 ### TASK-04: Horizon checkpoint - end-to-end loop verification and rollout gate
 - **Type:** CHECKPOINT
 - **Deliverable:** Verification memo in this plan confirming behavior from idea creation to delivery visibility.
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** wf-build
 - **Affects:** `docs/plans/archive/business-os-ideas-kanban-flow-plan.md`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** -
@@ -398,7 +398,7 @@ Relationship to board:
   - Unexpected findings: N/A
 - **Rollout / rollback:**
   - Rollout: proceed only on checkpoint pass.
-  - Rollback: hold and `/re-plan` failed areas.
+  - Rollback: hold and `/wf-replan` failed areas.
 - **Documentation impact:** this plan file checkpoint notes
 - **Build completion (2026-02-09):**
   - Status: Complete

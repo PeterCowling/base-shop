@@ -13,7 +13,7 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 
 ## Summary
 
-Overhaul the `improve-translate-guide` skill to implement a "structure-first, translate-second" workflow with mandatory validation gates and persistence verification. The current workflow conflates structural repair with translation, causing agents to produce condensed summaries instead of faithful translations (observed: 0% batch success for Batches 1-2, 100% success with structure-first approach in Batch 3). Changes are confined to skill markdown, one new validation script, and a MEMORY.md update.
+Overhaul the `guide-translate` skill to implement a "structure-first, translate-second" workflow with mandatory validation gates and persistence verification. The current workflow conflates structural repair with translation, causing agents to produce condensed summaries instead of faithful translations (observed: 0% batch success for Batches 1-2, 100% success with structure-first approach in Batch 3). Changes are confined to skill markdown, one new validation script, and a MEMORY.md update.
 
 ## Goals
 
@@ -41,7 +41,7 @@ Overhaul the `improve-translate-guide` skill to implement a "structure-first, tr
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/translation-workflow-improvements-fact-find.md`
+- Related brief: `docs/plans/translation-workflow-improvements-wf-fact-find.md`
 - Key findings:
   - Agent-only workflow: 0% success (Batches 1-2, 102 locale files all wrong)
   - Structure-first workflow: 100% success (Batch 3 travelHelp, 12 locales)
@@ -50,14 +50,14 @@ Overhaul the `improve-translate-guide` skill to implement a "structure-first, tr
   - Python deep-copy + ID-match merge preserves locale text while forcing EN structure
   - Validation contract defined: Phase 1 (structural) and Phase 2 (translation) gates
   - Persistence verification required: `git diff --stat` + existence checks + re-run of validation
-  - Blast radius: 3 skills (improve-translate-guide primary, improve-en-guide + improve-guide reference it)
+  - Blast radius: 3 skills (guide-translate primary, guide-audit + guide-improve reference it)
 
 ## Existing System Notes
 
 - Key modules/files:
-  - `.claude/skills/improve-translate-guide/SKILL.md` (276 lines) — primary target; current workflow at L95-211, validation at L167-189, quality gates at L239-251
-  - `.claude/skills/improve-guide/SKILL.md` — orchestrator that invokes improve-translate-guide; no changes needed
-  - `.claude/skills/improve-en-guide/SKILL.md` — references improve-translate-guide as next step; no changes needed
+  - `.claude/skills/guide-translate/SKILL.md` (276 lines) — primary target; current workflow at L95-211, validation at L167-189, quality gates at L239-251
+  - `.claude/skills/guide-improve/SKILL.md` — orchestrator that invokes guide-translate; no changes needed
+  - `.claude/skills/guide-audit/SKILL.md` — references guide-translate as next step; no changes needed
   - `apps/brikette/src/test/content-readiness/i18n/i18n-parity-quality-audit.test.ts` — existing validation test (strict mode via `CONTENT_READINESS_MODE=fail`)
   - `apps/brikette/scripts/fix-batch-1-2-structures.py` (103 lines) — proven structural repair pattern with ID-based section matching
   - `apps/brikette/scripts/validate-guide-content.ts` (230 lines) — Zod schema validation for guide JSON
@@ -72,7 +72,7 @@ Overhaul the `improve-translate-guide` skill to implement a "structure-first, tr
 Single approach (no alternatives needed — the structure-first pattern is empirically validated):
 
 1. **Rewrite the skill workflow** to enforce a three-phase pattern: Phase 1 (structural repair via Python) → Gate 1 → Phase 2 (translation-only agents) → Gate 2 → Phase 3 (completion with persistence proof)
-2. **Replace the weak post-translation validation** (L167-189, line count ±5) with precise Phase 1 + Phase 2 gates from the fact-find's validation contracts
+2. **Replace the weak post-translation validation** (L167-189, line count ±5) with precise Phase 1 + Phase 2 gates from the wf-fact-find's validation contracts
 3. **Add persistence verification** to the completion report requirements
 4. **Extract validation into a reusable script** so both the skill and manual runs use the same checks
 5. **Add merge policy documentation** to the skill so structural repair scripts have a defined contract
@@ -159,14 +159,14 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `.claude/skills/improve-translate-guide/SKILL.md` (primary — rewrite workflow sections)
+  - `.claude/skills/guide-translate/SKILL.md` (primary — rewrite workflow sections)
   - `[readonly] apps/brikette/scripts/fix-batch-1-2-structures.py` (pattern reference for structural repair template)
   - `[readonly] apps/brikette/scripts/validate-guide-structure.sh` (referenced in gate commands)
 - **Depends on:** TASK-01
 - **Confidence:** 90%
-  - Implementation: 92% — modifying existing markdown with well-defined content from fact-find runbook; all workflow steps are documented
-  - Approach: 90% — structure-first pattern validated in production (Batch 3: 100% success); workflow v2 runbook in fact-find is deterministic
-  - Impact: 88% — affects all future translation work using this skill; improve-guide orchestrator doesn't need changes (it just invokes improve-translate-guide)
+  - Implementation: 92% — modifying existing markdown with well-defined content from wf-fact-find runbook; all workflow steps are documented
+  - Approach: 90% — structure-first pattern validated in production (Batch 3: 100% success); workflow v2 runbook in wf-fact-find is deterministic
+  - Impact: 88% — affects all future translation work using this skill; guide-improve orchestrator doesn't need changes (it just invokes guide-translate)
 - **Effort:** M (1 file modified but significant rewrite of workflow section ~100 lines; crosses 1 integration boundary: references validation script from TASK-01)
 - **Acceptance:**
   - Workflow section rewritten to three-phase pattern: Phase 0 (preparation) → Phase 1 (structural repair + Gate 1) → Phase 2 (translation-only agents + Gate 2) → Phase 3 (completion)
@@ -187,20 +187,20 @@ Tasks are ordered to build incrementally: validation script first (foundational 
     - TC-11: Verify "do NOT proceed if Gate 1 fails" instruction is present
   - **Acceptance coverage:** TC-06 covers structure; TC-07/11 cover Gate 1; TC-08 covers merge policy; TC-09 covers agent constraints; TC-10 covers preservation
   - **Test type:** manual review (skill markdown)
-  - **Test location:** `.claude/skills/improve-translate-guide/SKILL.md`
+  - **Test location:** `.claude/skills/guide-translate/SKILL.md`
   - **Run:** Manual read-through + verify structure
 - **Planning validation:**
   - Read current SKILL.md (276 lines): workflow at L95-211, post-validation at L167-189, quality gates at L239-251
   - Current weak point: L181 "Line count within ±5 of EN source" — this is the gate that fails to catch condensed summaries
   - Current workflow step 2 (L114-134) spawns agents immediately without structural repair — this is where Phase 1 inserts
   - Current workflow step 4 (L167-189) validation is too late and too weak — replaced by Gate 1 + Gate 2
-  - Confirmed improve-guide orchestrator (L95-97) just calls "run improve-translate-guide" — no coupling to internal workflow steps
+  - Confirmed guide-improve orchestrator (L95-97) just calls "run guide-translate" — no coupling to internal workflow steps
   - Unexpected findings: None
 - **What would make this ≥95%:**
   - Run the updated skill end-to-end on a real guide batch and confirm 100% success
 - **Rollout / rollback:**
   - Rollout: Update skill markdown in place
-  - Rollback: `git restore .claude/skills/improve-translate-guide/SKILL.md`
+  - Rollback: `git restore .claude/skills/guide-translate/SKILL.md`
 - **Documentation impact:** None (the skill IS the documentation)
 - **Notes / references:**
   - Fact-find Workflow v2 Runbook (deterministic checklist)
@@ -227,10 +227,10 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 ### TASK-03: Add Phase 2 translation gate and completion reporting
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/improve-translate-guide/SKILL.md` (add Phase 2 gate + rewrite completion report section)
+- **Affects:** `.claude/skills/guide-translate/SKILL.md` (add Phase 2 gate + rewrite completion report section)
 - **Depends on:** TASK-02
 - **Confidence:** 90%
-  - Implementation: 92% — completion report template is defined in fact-find; Gate 2 references same validation script
+  - Implementation: 92% — completion report template is defined in wf-fact-find; Gate 2 references same validation script
   - Approach: 90% — persistence verification directly addresses the "reported complete but didn't persist" failure class
   - Impact: 88% — same blast radius as TASK-02 (skill markdown only)
 - **Effort:** S (1 file, same file as TASK-02 but different sections; additive content)
@@ -252,7 +252,7 @@ Tasks are ordered to build incrementally: validation script first (foundational 
     - TC-15: Verify Quality Gates section references Phase 1 + Phase 2 gates (not old "line count ±5" criterion)
   - **Acceptance coverage:** TC-12 covers Gate 2; TC-13 covers failure handling; TC-14 covers completion report; TC-15 covers quality gates update
   - **Test type:** manual review (skill markdown)
-  - **Test location:** `.claude/skills/improve-translate-guide/SKILL.md`
+  - **Test location:** `.claude/skills/guide-translate/SKILL.md`
   - **Run:** Manual read-through
 - **Planning validation:**
   - Current completion report section (L190-211) requires only: EN audit result, validation command output, locales updated count, per-guide confirmation checklist
@@ -261,7 +261,7 @@ Tasks are ordered to build incrementally: validation script first (foundational 
   - Unexpected findings: None
 - **Rollout / rollback:**
   - Rollout: Update skill markdown (same file as TASK-02, different sections)
-  - Rollback: `git restore .claude/skills/improve-translate-guide/SKILL.md`
+  - Rollback: `git restore .claude/skills/guide-translate/SKILL.md`
 - **Documentation impact:** None
 - **Notes / references:**
   - Fact-find: Persistence verification section, Acceptance Criteria section
@@ -289,7 +289,7 @@ Tasks are ordered to build incrementally: validation script first (foundational 
 - **Affects:** `/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/memory/MEMORY.md`
 - **Depends on:** -
 - **Confidence:** 95%
-  - Implementation: 98% — adding a new section to an existing markdown file; content is well-defined from fact-find
+  - Implementation: 98% — adding a new section to an existing markdown file; content is well-defined from wf-fact-find
   - Approach: 95% — MEMORY.md is the right place for cross-session workflow patterns; 31 lines currently, well under 200-line limit
   - Impact: 90% — affects only personal agent sessions; no production code impact
 - **Effort:** S (1 file, additive content, 0 integration boundaries)
@@ -297,7 +297,7 @@ Tasks are ordered to build incrementally: validation script first (foundational 
   - New "## Translation Workflow (Brikette Guides)" section added
   - Documents: structure-first pattern (Phase 1 → Gate 1 → Phase 2 → Gate 2 → completion)
   - Includes: validation command reference, merge policy summary, success evidence
-  - References skill: `.claude/skills/improve-translate-guide/SKILL.md`
+  - References skill: `.claude/skills/guide-translate/SKILL.md`
   - Total MEMORY.md stays under 200 lines (currently 31 lines + ~15 lines for new section = ~46 lines)
 - **Test contract:**
   - **Test cases (enumerated):**

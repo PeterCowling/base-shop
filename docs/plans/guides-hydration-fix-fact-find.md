@@ -18,7 +18,7 @@ React hydration errors in the guides system are caused by **server/client diverg
 - **Verified (dev/preview origin):** `PreviewBanner` eligibility can differ between SSR and the first client render due to client-only inputs (search params and optionally `localStorage` status overrides), shifting JSON-LD scripts in `HeadSection`.
 - **Verified (published pages too):** `FaqStructuredDataBlock` can render a hidden placeholder element on the client while SSR renders an FAQ JSON-LD `<script>`, when `hasLocalizedContent` differs between SSR and the first client render (commonly due to i18n readiness differences).
 
-This fact-find documents verified causes, contributing factors, testing gaps, and safe improvement opportunities.
+This wf-fact-find documents verified causes, contributing factors, testing gaps, and safe improvement opportunities.
 
 ### Goals
 - Eliminate hydration mismatches in guides pages
@@ -278,7 +278,7 @@ Not required - this is a Next.js/React hydration issue with well-documented patt
   - Run a hydration regression test against 1–2 published guides (no preview token, status `published`) and confirm `onRecoverableError` is silent.
   - Specifically verify that i18n readiness cannot change the presence/order of structured data scripts (e.g., `howToJson`) between SSR and first client render.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 85%
   - **Why:** The primary `<script>`↔`<div>` mismatch has a clear causal chain (search/status divergence → `PreviewBanner` eligibility → sibling ordering in the structured-data subtree).
@@ -333,7 +333,7 @@ Not required - this is a Next.js/React hydration issue with well-documented patt
 ## Planning Readiness
 - **Status:** Ready-for-planning
 - **Blocking items:** None
-- **Recommended next step:** Proceed to `/plan-feature` with the following priorities:
+- **Recommended next step:** Proceed to `/wf-plan` with the following priorities:
   1. Fix PreviewBanner/search mismatch (eliminate `<div>`↔`<script>` root mismatch)
   2. Create hydration test infrastructure (SSR → hydrate) as a safety net
   3. Fix remaining high-impact issues (render-time head mutation, dev-only divergence)

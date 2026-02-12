@@ -17,12 +17,12 @@ Card-ID:
 
 ### Summary
 
-Make the Business OS agent API reliably accessible so that skills (`/fact-find`, `/plan-feature`, `/build-feature`, `/work-idea`, `/propose-lane-move`, `/kanban-sweep`) can always create and update cards throughout the workflow pipeline. Currently the API is local-only (Phase 0) and requires manually starting the dev server — when it's not running, card tracking silently drops off the entire skill pipeline.
+Make the Business OS agent API reliably accessible so that skills (`/wf-fact-find`, `/wf-plan`, `/wf-build`, `/idea-develop`, `/idea-advance`, `/kanban-sweep`) can always create and update cards throughout the workflow pipeline. Currently the API is local-only (Phase 0) and requires manually starting the dev server — when it's not running, card tracking silently drops off the entire skill pipeline.
 
 ### Goals
 
 - Agent API is always reachable when skills run (no manual dev server startup required)
-- Cards are created at idea generation and automatically updated as they progress through fact-find → plan → build
+- Cards are created at idea generation and automatically updated as they progress through wf-fact-find → plan → build
 - Zero change to the existing skill code (they already use `${BOS_AGENT_API_BASE_URL}` — just need a live URL)
 - Export workflow (`bos-export.yml`) continues to work (git mirror of D1 state)
 
@@ -104,11 +104,11 @@ Make the Business OS agent API reliably accessible so that skills (`/fact-find`,
   - Cloudflare D1 database `91101d18-6ba2-41e2-97ab-1ac438cd56c8`
   - `@acme/platform-core` — repository layer for D1 operations
 - Downstream dependents (skills that need this API):
-  - `/work-idea` — Creates cards (required — entire skill fails without API)
-  - `/fact-find` — Creates cards (optional — brief works, card tracking lost)
-  - `/plan-feature` — Updates cards, creates plan stage docs
-  - `/build-feature` — Updates cards, creates build stage docs, lane transitions
-  - `/propose-lane-move` — Updates Proposed-Lane field
+  - `/idea-develop` — Creates cards (required — entire skill fails without API)
+  - `/wf-fact-find` — Creates cards (optional — brief works, card tracking lost)
+  - `/wf-plan` — Updates cards, creates plan stage docs
+  - `/wf-build` — Updates cards, creates build stage docs, lane transitions
+  - `/idea-advance` — Updates Proposed-Lane field
   - `/kanban-sweep` — Reads cards, ideas, stage docs, creates ideas
   - `bos-export.yml` — Reads `/api/admin/export-snapshot` for Git mirror
 - Likely blast radius:
@@ -327,7 +327,7 @@ Make the Business OS agent API reliably accessible so that skills (`/fact-find`,
   - Decision impacted: Whether to add Cloudflare Access or rely solely on API key auth.
   - Default assumption: API key auth only (same as brikette production). The key is 32+ chars with timing-safe comparison + rate limiting — sufficient for Phase 1 with a single user. Risk: Low — rate limiting prevents brute force, key is not exposed in client-side code.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 90%
   - The deployment follows the exact pattern used for brikette production. `@opennextjs/cloudflare` is already a dependency. All agent API routes are Edge-compatible. D1 binding is configured. The only unknowns are: (a) whether Node.js-dependent routes need to be stubbed or if the build handles them gracefully, and (b) whether D1 migrations are applied to the production database.
@@ -381,4 +381,4 @@ Make the Business OS agent API reliably accessible so that skills (`/fact-find`,
 
 - Status: **Ready-for-planning**
 - Blocking items: None — the open question (API key auth vs Cloudflare Access) has a safe default.
-- Recommended next step: Proceed to `/plan-feature bos-agent-api-availability`
+- Recommended next step: Proceed to `/wf-plan bos-agent-api-availability`

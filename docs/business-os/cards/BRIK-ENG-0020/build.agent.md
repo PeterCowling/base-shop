@@ -32,7 +32,7 @@ Last-updated: 2026-02-05
 | TASK-11 | Hybrid template ranker | Complete | 2026-02-02 |
 | TASK-12 | Classification examples resource | Complete | 2026-02-02 |
 | TASK-13 | Enhanced draft generation | Complete | 2026-02-02 |
-| TASK-14 | Update process-emails skill | Complete | 2026-02-02 |
+| TASK-14 | Update ops-inbox skill | Complete | 2026-02-02 |
 | TASK-15 | Template governance & linting | Complete | 2026-02-02 |
 | TASK-17 | Reception email routing | Complete | 2026-02-02 |
 | TASK-18 | Integration testing | Complete | 2026-02-02 |
@@ -109,7 +109,7 @@ Last-updated: 2026-02-05
 - **Action:** Added prepayment chase workflow helpers, template selection, and workflow metadata for Gmail processing.
 - **Commits:** 02d3e5a113
 - **Validation:** `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/workflow-triggers.test.ts packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` (pass; Jest warned about an exiting worker), `pnpm --filter mcp-server lint` (pass), `pnpm --filter mcp-server build` (pass)
-- **Notes:** Added prepayment workflow mappings and documented chase steps in the process-emails skill.
+- **Notes:** Added prepayment workflow mappings and documented chase steps in the ops-inbox skill.
 
 
 
@@ -138,7 +138,7 @@ Last-updated: 2026-02-05
 
 
 ### 2026-02-02 - TASK-14
-- **Action:** Updated process-emails skill to the three-stage pipeline with agreement handling.
+- **Action:** Updated ops-inbox skill to the three-stage pipeline with agreement handling.
 - **Commits:** b5b0aa4513
 - **Validation:** Manual review (documentation)
 - **Notes:** Added draft_interpret → draft_generate → draft_quality_check flow and resource references.

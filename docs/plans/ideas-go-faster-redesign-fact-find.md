@@ -5,8 +5,8 @@ Status: Proposed
 Domain: Business-OS
 Created: 2026-02-09
 Last-updated: 2026-02-09
-Feature-Slug: ideas-go-faster-redesign
-Related-Plan: docs/plans/ideas-go-faster-redesign-plan.md
+Feature-Slug: idea-generate-redesign
+Related-Plan: docs/plans/idea-generate-redesign-plan.md
 Business-Unit: BOS
 ---
 
@@ -16,7 +16,7 @@ Business-Unit: BOS
 
 ### Summary
 
-Redesign the `/ideas-go-faster` skill from a kanban board health checker into a radical business growth process auditor. The current skill counts WIP, finds aging cards, and diagnoses lane bottlenecks — that's housekeeping, not growth. The redesigned skill should audit the business machine itself: identifying missing processes, broken feedback loops, unmeasured outcomes, and stalled growth levers. It should maintain and use business plans and people profiles as living inputs to idea generation, task allocation, progress tracking, and forecasting.
+Redesign the `/idea-generate` skill from a kanban board health checker into a radical business growth process auditor. The current skill counts WIP, finds aging cards, and diagnoses lane bottlenecks — that's housekeeping, not growth. The redesigned skill should audit the business machine itself: identifying missing processes, broken feedback loops, unmeasured outcomes, and stalled growth levers. It should maintain and use business plans and people profiles as living inputs to idea generation, task allocation, progress tracking, and forecasting.
 
 ### Goals
 
@@ -44,7 +44,7 @@ Redesign the `/ideas-go-faster` skill from a kanban board health checker into a 
 - Assumptions:
   - Business plans will be bootstrapped before or during first sweep (currently zero plans exist)
   - People profiles will be bootstrapped similarly (currently only auth data exists)
-  - The skill can call `/update-business-plan` and `/update-people` as sub-invocations or incorporate their logic
+  - The skill can call `/biz-update-plan` and `/biz-update-people` as sub-invocations or incorporate their logic
 
 ---
 
@@ -52,7 +52,7 @@ Redesign the `/ideas-go-faster` skill from a kanban board health checker into a 
 
 ### The Current Skill: What It Does
 
-**File:** `.claude/skills/ideas-go-faster/SKILL.md` (626 lines)
+**File:** `.claude/skills/idea-generate/SKILL.md` (626 lines)
 
 The current skill is a **kanban flow analyzer**:
 1. Ingests snapshot via agent API (businesses, people, cards, ideas, stage docs)
@@ -79,9 +79,9 @@ The current skill is a **kanban flow analyzer**:
 **What exists:**
 - `docs/business-os/strategy/businesses.json` — 4 businesses defined (PLAT, BRIK, BOS, PIPE)
 - `docs/business-os/strategy/business-maturity-model.md` — L1/L2/L3 progression framework
-- `.claude/skills/update-business-plan/SKILL.md` — Full spec for plan schema and update workflow
+- `.claude/skills/biz-update-plan/SKILL.md` — Full spec for plan schema and update workflow
 
-**Plan schema (from update-business-plan skill):**
+**Plan schema (from biz-update-plan skill):**
 - Strategy (current focus, priorities with status/outcome/impact projections)
 - Risks (severity, source, impact, mitigation)
 - Opportunities (evidence, value proposition, effort, recommendation)
@@ -98,10 +98,10 @@ The current skill is a **kanban flow analyzer**:
 
 **What exists:**
 - `docs/business-os/people/users.json` — 3 users (Pete, Cristiana, Avery) with auth fields only
-- `.claude/skills/update-people/SKILL.md` — Full spec for people profile schema
+- `.claude/skills/biz-update-people/SKILL.md` — Full spec for people profile schema
 - Agent API (`/api/agent/people`) — Returns hardcoded `maxActiveWip: 3` for all users
 
-**People schema (from update-people skill):**
+**People schema (from biz-update-people skill):**
 - Roles, responsibilities, business affiliations
 - Current projects (card IDs)
 - Technical skills, domain knowledge, process skills
@@ -205,15 +205,15 @@ Core principles:
 
 ### Related Skills (Integration Surface)
 
-| Skill | Relationship to ideas-go-faster |
+| Skill | Relationship to idea-generate |
 |-------|-------------------------------|
-| `/update-business-plan` | Sweep should trigger plan updates; plans are primary input to sweep |
-| `/update-people` | Sweep should trigger profile updates; profiles inform allocation |
-| `/scan-repo` | Complementary — detects git changes; sweep audits business state |
-| `/work-idea` | Sweep generates ideas; work-idea converts them to cards |
-| `/fact-find` | Sweep identifies areas needing investigation; fact-find does the deep dive |
-| `/propose-lane-move` | Sweep may recommend lane transitions for stale/blocked cards |
-| `/plan-feature` | Sweep output feeds planning priorities |
+| `/biz-update-plan` | Sweep should trigger plan updates; plans are primary input to sweep |
+| `/biz-update-people` | Sweep should trigger profile updates; profiles inform allocation |
+| `/idea-scan` | Complementary — detects git changes; sweep audits business state |
+| `/idea-develop` | Sweep generates ideas; idea-develop converts them to cards |
+| `/wf-fact-find` | Sweep identifies areas needing investigation; wf-fact-find does the deep dive |
+| `/idea-advance` | Sweep may recommend lane transitions for stale/blocked cards |
+| `/wf-plan` | Sweep output feeds planning priorities |
 
 ---
 
@@ -231,7 +231,7 @@ Core principles:
 
 - Q: Should business plans exist before the first sweep?
   - A: The skill should bootstrap initial plans if none exist, using the maturity model + card/idea data as inputs. This is a one-time operation.
-  - Evidence: Zero plans currently exist. The update-business-plan skill already has create-from-template logic.
+  - Evidence: Zero plans currently exist. The biz-update-plan skill already has create-from-template logic.
 
 - Q: What forecasting is realistic in Phase 0?
   - A: Simple trend detection and gap-to-target projections. Not ML models. The skill should compare current state to plan targets, compute burn rate on objectives, and flag when trajectory misses targets. The math primitives (EWMA, Holt) exist in `@acme/lib`.
@@ -243,7 +243,7 @@ Core principles:
 
 ### Open (User Input Needed)
 
-- Q: Should the skill call `/update-business-plan` and `/update-people` as sub-skill invocations, or inline their logic?
+- Q: Should the skill call `/biz-update-plan` and `/biz-update-people` as sub-skill invocations, or inline their logic?
   - Why it matters: Inlining keeps the skill self-contained but creates duplication. Sub-invocation is cleaner but adds complexity.
   - Default assumption: Inline the essential read/compare/update logic; recommend the full skill for deeper updates. Low risk.
 
@@ -257,7 +257,7 @@ Core principles:
 
 ---
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 80%
   - Strong existing skill to refactor (626 lines of working SKILL.md)
@@ -269,7 +269,7 @@ Core principles:
 - **Approach:** 85%
   - Clear user direction on philosophy (Elon Musk algorithm, business process auditor not kanban checker)
   - Strong draft pack materials for constitution, scoring, deletion-first
-  - Existing skill ecosystem for integration (update-business-plan, update-people, work-idea)
+  - Existing skill ecosystem for integration (biz-update-plan, biz-update-people, idea-develop)
   - Gap: Forecasting approach is still directional — need to decide on specific calculations
   - What would raise to 90%: Define the exact forecasting calculations and data sources
 
@@ -326,4 +326,4 @@ Core principles:
 
 - Status: **Ready-for-planning**
 - Blocking items: None — open questions have safe defaults
-- Recommended next step: Proceed to `/plan-feature ideas-go-faster-redesign`
+- Recommended next step: Proceed to `/wf-plan idea-generate-redesign`

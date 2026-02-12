@@ -107,11 +107,11 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-**Feature workflow**: `/fact-find` → `/plan-feature` → `/build-feature` → `/re-plan` (if confidence <80%)
+**Feature workflow**: `/wf-fact-find` → `/wf-plan` → `/wf-build` → `/wf-replan` (if confidence <80%)
 
-**Idea generation**: `/ideas-go-faster` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/ideas-go-faster` → `/fact-find` → `/plan-feature` → `/build-feature`
-- Spec: `.claude/skills/ideas-go-faster/SKILL.md`
+**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds wf-fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/idea-generate` → `/wf-fact-find` → `/wf-plan` → `/wf-build`
+- Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
 
@@ -125,7 +125,7 @@ In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 - **CI ≥90 is a motivation, not a quota.** Do not “raise CI” by deleting planned work or narrowing scope without an explicit user decision.
 - **How to raise CI credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small spike/INVESTIGATE task to remove uncertainty.
 - **If CI <90:** keep the work, but add a clear **“What would make this ≥90%”** section (concrete actions/evidence that would raise confidence).
-- **Build gate still applies:** `/build-feature` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/re-plan`.
+- **Build gate still applies:** `/wf-build` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/wf-replan`.
 
 ## Progressive Context Loading
 
@@ -151,8 +151,8 @@ Error: Cannot use import statement outside a module
 | Error Pattern | Skill | Location |
 |---------------|-------|----------|
 | `Cannot use import statement outside a module` | jest-esm-issues | `.claude/skills/jest-esm-issues/SKILL.md` |
-| `git status` confusing / lost commits | git-recovery | `.claude/skills/git-recovery/SKILL.md` |
-| `ERESOLVE` / peer dependency errors | dependency-conflicts | `.claude/skills/dependency-conflicts/SKILL.md` |
+| `git status` confusing / lost commits | ops-git-recover | `.claude/skills/ops-git-recover/SKILL.md` |
+| `ERESOLVE` / peer dependency errors | code-fix-deps | `.claude/skills/code-fix-deps/SKILL.md` |
 
 ### When to Ask vs. When to Load Context
 
@@ -230,7 +230,7 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Use `/session-reflect` (or read `.claude/skills/session-reflect/SKILL.md`)
+1. Use `/meta-reflect` (or read `.claude/skills/meta-reflect/SKILL.md`)
 2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
 3. All improvements go into existing target files — no separate learnings store
 

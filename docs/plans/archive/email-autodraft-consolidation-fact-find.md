@@ -121,7 +121,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - Assumptions:
   - Current email templates (18) cover ~70% of scenarios
   - MCP resources provide accurate, up-to-date information
-  - The `/process-emails` skill workflow is sound, needs richer context
+  - The `/ops-inbox` skill workflow is sound, needs richer context
   - GAS email formatting patterns (`_EmailsConfig.gs`) can be ported to MCP server
 
 ## Repo Audit: Current State Analysis
@@ -216,7 +216,7 @@ Code 21: AGREED_NONREFUNDABLE_TNC (agreement received)
 - **Quality:** Real templates from Pete's sent emails
 - **Gap:** Templates exist as static data, no intelligent matching or personalization engine
 
-**5. Workflow Skill** (`.claude/skills/process-emails/SKILL.md` ~500 lines)
+**5. Workflow Skill** (`.claude/skills/ops-inbox/SKILL.md` ~500 lines)
 - Complete classification guide
 - Decision tree for email types
 - Draft guidelines and quality checks
@@ -233,7 +233,7 @@ Code 21: AGREED_NONREFUNDABLE_TNC (agreement received)
 ### Architecture Diagram (Current)
 
 ```
-                     /process-emails Skill
+                     /ops-inbox Skill
                             |
                             v
     +---------------------------------------------------+
@@ -890,14 +890,14 @@ Guests can include adversarial text in emails. Mitigations:
   - Evidence: email-templates.json with category metadata
 
 - Q: What's the current workflow?
-  - A: Documented in /process-emails skill with classification guide
+  - A: Documented in /ops-inbox skill with classification guide
   - Evidence: SKILL.md ~500 lines of workflow documentation
 
 ### Open (User Input Needed)
 
 None - all components are available, consolidation is the work.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 **Note:** Confidence cannot exceed 80% until TASK-00 (baseline measurement) is complete.
 
@@ -1235,4 +1235,4 @@ The key insight: **Quality frameworks (TASK-01, 02) come FIRST** because without
 - Draft quality framework addresses length/content/format/tone questions
 - Task seeds balance efficiency AND effectiveness
 - **Plan created:** `docs/plans/email-autodraft-consolidation-plan.md`
-- **Next step:** `/build-feature email-autodraft-consolidation` (start with TASK-00)
+- **Next step:** `/wf-build email-autodraft-consolidation` (start with TASK-00)

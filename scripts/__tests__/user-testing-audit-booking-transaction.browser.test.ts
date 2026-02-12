@@ -3,7 +3,7 @@ import { createServer, type Server } from "node:http";
 
 import { type Browser, chromium, type Page } from "playwright";
 
-import bookingTransactionPredicates from "../../.claude/skills/user-testing-audit/scripts/booking-transaction-predicates.cjs";
+import bookingTransactionPredicates from "../../.claude/skills/meta-user-test/scripts/booking-transaction-predicates.cjs";
 
 const { evaluateBookingTransactionCheck, collectBookingTransactionRegressionIssues } =
   bookingTransactionPredicates;
@@ -284,7 +284,7 @@ async function runRoomTransaction(browser: Browser, origin: string) {
   }
 }
 
-describe("user-testing-audit booking transaction browser flow", () => {
+describe("meta-user-test booking transaction browser flow", () => {
   jest.setTimeout(90000);
 
   let browser: Browser | null = null;

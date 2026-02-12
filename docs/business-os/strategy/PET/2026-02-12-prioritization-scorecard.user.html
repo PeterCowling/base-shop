@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PET Prioritization Scorecard</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>PET Prioritization Scorecard</h1>
+<h2>A) Scoring Rubric</h2>
+<p>Scale: 0-5 per criterion.</p>
+<ul>
+<li>Outcome impact</li>
+<li>Speed to value</li>
+<li>Confidence</li>
+<li>Dependency complexity (inverse: higher score = lower complexity)</li>
+<li>Risk if delayed</li>
+<li>Validation leverage</li>
+</ul>
+<h2>B) Scored Item Table</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th align="right">Impact</th>
+<th align="right">Speed</th>
+<th align="right">Confidence</th>
+<th align="right">Dependency</th>
+<th align="right">Delay risk</th>
+<th align="right">Validation leverage</th>
+<th align="right">Weighted score</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Launch pre-website conversion surface with instrumentation</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">28</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Run week-1 price + messaging tests with pass/fail thresholds</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">25</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Validate ops gates (payment success, ship SLA, return reasons)</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">25</td>
+<td>P1</td>
+</tr>
+<tr>
+<td>Week-2 recalibration and re-forecast remaining 10 weeks</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">23</td>
+<td>P2</td>
+</tr>
+</tbody>
+</table>
+<h2>C) Top Backlog (P1/P2/P3)</h2>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Item</th>
+<th>Why now</th>
+<th>Acceptance criteria</th>
+<th>Dependencies</th>
+<th>Evidence refs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1</td>
+<td>Pre-website conversion surface + instrumentation</td>
+<td>Converts intent into measurable signal fast</td>
+<td>Conversion surface live, funnel metrics captured daily</td>
+<td>Product availability + checkout path</td>
+<td><code>PET-forecast-seed.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Week-1 price/messaging test matrix</td>
+<td>Determines WTP and best-performing angle</td>
+<td>At least 2 price variants and 2 message variants tested with daily readout</td>
+<td>Product media + traffic source</td>
+<td><code>2026-02-12-upgrade-brief.user.md</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>Ops gate validation</td>
+<td>Prevents scaling broken flows</td>
+<td>Payment success, ship SLA, and return reason tracking reviewed daily</td>
+<td>Ops process owner + reporting</td>
+<td><code>italy-90-day-launch-forecast-v2.user.md</code></td>
+</tr>
+<tr>
+<td>P2</td>
+<td>Week-2 recalibration</td>
+<td>Replaces assumptions with observed economics</td>
+<td>Recalibration doc published with updated scenarios and decision posture</td>
+<td>Week-1 observed data</td>
+<td><code>italy-90-day-launch-forecast-v2.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2>D) Deferred Items and Rationale</h2>
+<ul>
+<li>Loyalty mechanics (defer until repeat baseline exists).</li>
+<li>Expanded multi-channel rollout (defer until conversion and reliability gates pass).</li>
+</ul>
+<h2>E) Execution Recommendation</h2>
+<p>Run <code>fact-find -> plan-feature -> build-feature</code> first on:</p>
+<ol>
+<li>Pre-website conversion surface + instrumentation.</li>
+<li>Week-1 price/messaging test matrix with explicit pass/fail thresholds.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md</code></div>
+      <div>Generated: 2026-02-12T11:31:58.156Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

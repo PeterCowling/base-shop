@@ -1,4 +1,4 @@
-import noJsPredicates from "../../.claude/skills/user-testing-audit/scripts/no-js-predicates.cjs";
+import noJsPredicates from "../../.claude/skills/meta-user-test/scripts/no-js-predicates.cjs";
 
 const {
   detectBookingFunnelI18nKeyLeaks,
@@ -8,7 +8,7 @@ const {
   evaluateNoJsRoute,
 } = noJsPredicates;
 
-describe("user-testing-audit no-JS predicates (unit)", () => {
+describe("meta-user-test no-JS predicates (unit)", () => {
   it("detects booking-funnel i18n key tokens and deduplicates them", () => {
     const text =
       "loadingPrice roomImage.photoAlt roomImage.photoAlt filters.resultsCount checkRatesFlexible moreAboutThisRoom";

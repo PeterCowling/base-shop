@@ -13,7 +13,7 @@ Relates-to plan: docs/plans/business-os-ideas-surface-and-automation-plan.md
 ## Decision
 - Keep Stage 7b **disabled by default** in Phase 0.
 - Approve an implementation-ready optional contract for later activation:
-  - max **1** existing P1/P2 card without a fact-find doc per sweep,
+  - max **1** existing P1/P2 card without a wf-fact-find doc per sweep,
   - selected deterministically,
   - reported separately from Stage 7 Top-K newly promoted ideas.
 
@@ -33,7 +33,7 @@ Relates-to plan: docs/plans/business-os-ideas-surface-and-automation-plan.md
 A card is eligible only if all are true:
 - It existed before current sweep start time.
 - Priority is `P1` or `P2`.
-- No existing `fact-find` stage doc.
+- No existing `wf-fact-find` stage doc.
 - Not archived/completed (`Lane` not `Done`/`Reflected`/archived equivalent).
 
 Exclusions:
@@ -51,7 +51,7 @@ When Stage 7b is enabled:
 - Stage 7 output remains: Top-K from newly promoted ideas only.
 - Stage 7b output is separate section:
   - `Backfill-Selected: <card-id|none>`
-  - `Backfill-Reason: oldest eligible P1/P2 without fact-find`
+  - `Backfill-Reason: oldest eligible P1/P2 without wf-fact-find`
   - `Backfill-Selector-Version: v1`
 - Never merge Stage 7b into Stage 7 Top-K list.
 
@@ -68,7 +68,7 @@ When Stage 7b is enabled:
 ## Worked Example (20-Idea Fixture)
 Assume sweep result summary:
 - Newly promoted this sweep: 6 ideas (P1x2, P2x2, P3x2)
-- Existing eligible backlog cards (no fact-find):
+- Existing eligible backlog cards (no wf-fact-find):
   - `BRIK-OPP-0014` (P1, created 2026-01-10)
   - `PLAT-ENG-0009` (P1, created 2026-01-22)
   - `CMS-OPP-0007` (P2, created 2026-01-05)

@@ -26,7 +26,7 @@ Add a periodic `/kanban-sweep` skill that reads a snapshot of the entire Busines
 - Single-file sweep report output at `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`
 - Constraint-first bottleneck diagnosis with numeric 0-10 confidence scoring
 - Ranked interventions using Priority = (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk))
-- Concrete next-step skill invocations (e.g., `/work-idea X`, `/fact-find Y`) in every recommendation
+- Concrete next-step skill invocations (e.g., `/idea-develop X`, `/wf-fact-find Y`) in every recommendation
 - Reflection against previous sweep when one exists
 
 ## Non-goals
@@ -57,7 +57,7 @@ Add a periodic `/kanban-sweep` skill that reads a snapshot of the entire Busines
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/kanban-sweep-agent-fact-find.md`
+- Related brief: `docs/plans/kanban-sweep-agent-wf-fact-find.md`
 - Key findings:
   - 29 existing skills all follow single-SKILL.md-per-directory convention
   - Agent API routes are well-tested (cards, ideas, stage-docs all have TC-XX test suites)
@@ -77,8 +77,8 @@ Add a periodic `/kanban-sweep` skill that reads a snapshot of the entire Busines
   - `apps/business-os/src/lib/types.ts` — `Business`, `Card`, `Idea`, `Lane`, `StageDoc` types
   - `apps/business-os/src/lib/auth/agent-auth.ts` — auth middleware + `__resetAgentRateLimitForTests()`
   - `apps/business-os/src/lib/d1.server.ts` — D1 accessor (mocked in tests)
-  - `.claude/skills/scan-repo/SKILL.md` — closest analogue skill (reads BoS state, generates ideas)
-  - `.claude/skills/propose-lane-move/SKILL.md` — read-only analysis skill pattern
+  - `.claude/skills/idea-scan/SKILL.md` — closest analogue skill (reads BoS state, generates ideas)
+  - `.claude/skills/idea-advance/SKILL.md` — read-only analysis skill pattern
 - Patterns to follow:
   - Edge runtime: `export const runtime = "edge";`
   - Auth: `const auth = await requireAgentAuth(request); if (auth instanceof NextResponse) return auth;`
@@ -96,7 +96,7 @@ The feature is built in 5 ordered tasks: two prerequisite API endpoints, the swe
 3. **SKILL.md** — Single file containing: operating mode, inputs, full workflow (8 steps from ingest to reflection), constitution invariants, scoring rubric, bottleneck categories, evaluation rubric, red flags, edge cases, integration with other skills, Phase 0 constraints, completion messages. Embeds the sweep report template as a section.
 4. **Directory + prototype** — Create `docs/business-os/sweeps/` with `.gitkeep`, then manually invoke the skill to validate output quality.
 
-No alternatives considered — the approach was fully resolved during the fact-find critique walkthrough.
+No alternatives considered — the approach was fully resolved during the wf-fact-find critique walkthrough.
 
 ## Active tasks
 
@@ -258,8 +258,8 @@ No alternatives considered — the approach was fully resolved during the fact-f
   - `[readonly] ~/Downloads/kanban-sweep-agent-draft/templates/sweep_report_template.md`
   - `[readonly] ~/Downloads/kanban-sweep-agent-draft/templates/bottleneck_brief_template.md`
   - `[readonly] ~/Downloads/kanban-sweep-agent-draft/templates/idea_card_template.md`
-  - `[readonly] .claude/skills/scan-repo/SKILL.md`
-  - `[readonly] .claude/skills/propose-lane-move/SKILL.md`
+  - `[readonly] .claude/skills/idea-scan/SKILL.md`
+  - `[readonly] .claude/skills/idea-advance/SKILL.md`
 - **Depends on:** TASK-01, TASK-02 (SKILL.md references both endpoints in its workflow)
 - **Effort:** M (1 file, but substantial content: ~400-600 lines. Crosses 0 integration boundaries. Introduces a new pattern (sweep/bottleneck diagnosis) but adapts existing skill conventions. No external dependencies. No data model changes. Unit test layer only needed for validation — but prompt-only skill means no unit-testable code.)
 - **Confidence:** 85%
@@ -278,7 +278,7 @@ No alternatives considered — the approach was fully resolved during the fact-f
   - 7 red flags listed as guardrails
   - Sweep report template embedded with YAML frontmatter
   - Edge cases section (4+ cases)
-  - Integration with other skills section (references `/work-idea`, `/fact-find`, `/propose-lane-move`, `/scan-repo`)
+  - Integration with other skills section (references `/idea-develop`, `/wf-fact-find`, `/idea-advance`, `/idea-scan`)
   - Phase 0 constraints section
   - Completion messages section
 - **Test contract:**
@@ -296,7 +296,7 @@ No alternatives considered — the approach was fully resolved during the fact-f
   - **Test location:** Manual review checklist — verify against acceptance criteria after writing
   - **Run:** Manual: read the file and verify each acceptance criterion
 - **Planning validation:**
-  - Tests run: Read 4 existing SKILL.md files (`scan-repo`, `propose-lane-move`, `session-reflect`, `work-idea`) to confirm conventions. Read 9 draft pack files (constitution, 3 playbooks, 2 evaluation files, 3 templates) to confirm source material.
+  - Tests run: Read 4 existing SKILL.md files (`idea-scan`, `idea-advance`, `meta-reflect`, `idea-develop`) to confirm conventions. Read 9 draft pack files (constitution, 3 playbooks, 2 evaluation files, 3 templates) to confirm source material.
   - Test stubs written: N/A (no executable code — prompt-only skill)
   - Unexpected findings: None. All conventions are consistent across existing skills.
 - **What would make this ≥90%:**
@@ -308,10 +308,10 @@ No alternatives considered — the approach was fully resolved during the fact-f
   - Rollback: Delete `.claude/skills/kanban-sweep/` directory.
 - **Documentation impact:** None (SKILL.md is self-documenting)
 - **Notes / references:**
-  - Convention source: `.claude/skills/scan-repo/SKILL.md` (closest analogue — reads BoS, generates ideas)
+  - Convention source: `.claude/skills/idea-scan/SKILL.md` (closest analogue — reads BoS, generates ideas)
   - Draft pack sources: `~/Downloads/kanban-sweep-agent-draft/` (constitution, playbooks, evaluation, templates)
-  - Fact-find "keep vs drop" table: `docs/plans/kanban-sweep-agent-fact-find.md` lines 114-131
-  - Key design decisions (all resolved in fact-find):
+  - Fact-find "keep vs drop" table: `docs/plans/kanban-sweep-agent-wf-fact-find.md` lines 114-131
+  - Key design decisions (all resolved in wf-fact-find):
     - Portfolio-wide scope with per-business sections
     - Single-file output at `docs/business-os/sweeps/<YYYY-MM-DD>-sweep.user.md`
     - Opt-in idea creation via `--create-ideas` flag
@@ -392,7 +392,7 @@ No alternatives considered — the approach was fully resolved during the fact-f
 - **Depends on:** TASK-03, TASK-04
 - **Effort:** M (no code changes, but requires running the Business OS API locally, invoking the sweep skill, and evaluating output against the 6-dimension rubric. Crosses 1 integration boundary: skill ↔ live API.)
 - **Confidence:** 80%
-  - Implementation: 82% — Invoking `/kanban-sweep` is straightforward. The main risk is whether the Business OS API will be running locally when this task is attempted (it wasn't during the fact-find session).
+  - Implementation: 82% — Invoking `/kanban-sweep` is straightforward. The main risk is whether the Business OS API will be running locally when this task is attempted (it wasn't during the wf-fact-find session).
   - Approach: 82% — Evaluate using the embedded 6-dimension rubric (constraint quality, actionability, deletion-first bias, measurement discipline, flow literacy, people/system framing). Score 0-5 per dimension, total /30. Threshold: ≥18/30 for Phase 0 acceptance.
   - Impact: 78% — If the prototype reveals the SKILL.md instructions are inadequate, TASK-03 needs revision. This is expected and healthy — the prototype is a validation step.
 - **Acceptance:**
@@ -419,7 +419,7 @@ No alternatives considered — the approach was fully resolved during the fact-f
 - **Planning validation:**
   - Tests run: N/A (requires live API — cannot validate during planning)
   - Test stubs written: N/A (M effort, manual validation)
-  - Unexpected findings: Business OS API was not running locally during fact-find. Must ensure it's running before attempting this task.
+  - Unexpected findings: Business OS API was not running locally during wf-fact-find. Must ensure it's running before attempting this task.
 - **What would make this ≥90%:**
   - Successful prototype with score ≥22/30
   - Pete confirms the bottleneck diagnosis matches his intuition

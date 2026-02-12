@@ -5,8 +5,8 @@ Status: Draft
 Domain: UI
 Created: 2026-01-29
 Last-updated: 2026-01-29
-Feature-Slug: work-idea-inline-edit
-Related-Plan: docs/plans/work-idea-inline-edit-plan.md
+Feature-Slug: idea-develop-inline-edit
+Related-Plan: docs/plans/idea-develop-inline-edit-plan.md
 ---
 
 # Work Idea Inline Edit Fact-Find Brief
@@ -24,7 +24,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages 
 - Update idea Status from "raw" to "worked" when editing begins (one-way transition)
 
 ### Non-goals
-- Moving idea files between inbox/ and worked/ directories (existing `/work-idea` skill handles that workflow)
+- Moving idea files between inbox/ and worked/ directories (existing `/idea-develop` skill handles that workflow)
 - Creating cards from ideas (existing "Convert to Card" button handles that)
 - Full-featured markdown WYSIWYG editor (Phase 0: simple textarea with markdown preview)
 - Reversibility (working an idea is one-way per user requirement)
@@ -100,7 +100,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages 
   - @acme/design-system (EXISTS — UI components)
 - Downstream dependents:
   - Idea detail page rendering (must show edit mode when active)
-  - `/work-idea` skill (should detect already-worked ideas and skip file move)
+  - `/idea-develop` skill (should detect already-worked ideas and skip file move)
 - Likely blast radius:
   - **Small** — isolated to idea detail page + new server action
   - No changes to existing "Convert to Card" functionality
@@ -142,7 +142,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages 
 - Q: Should worked ideas move to a separate directory?
   - A: No — ideas stay in inbox with Status="worked"
   - Evidence: User requirement says "inline editing mode", not file movement
-  - Evidence: `/work-idea` skill handles the inbox→worked file movement workflow
+  - Evidence: `/idea-develop` skill handles the inbox→worked file movement workflow
 
 - Q: Can users revert a worked idea back to raw?
   - A: No — one-way transition per user requirement
@@ -161,7 +161,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages 
 ### Open (User Input Needed)
 None — sufficient information to proceed to planning.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 85%
   - Existing patterns are well-established (server actions, form handling, git operations)
@@ -180,7 +180,7 @@ None — sufficient information to proceed to planning.
 - **Impact:** 85%
   - Blast radius is small (isolated to idea detail page)
   - No changes to existing workflows (Convert to Card, board views)
-  - `/work-idea` skill may need update to check for Status="worked" (minor)
+  - `/idea-develop` skill may need update to check for Status="worked" (minor)
   - Risk: Concurrent edits (worktree must be clean) — existing checks handle this
 
 **What would raise Implementation to ≥90:**
@@ -192,7 +192,7 @@ None — sufficient information to proceed to planning.
 - Prototype: Quick mockup to confirm UX flow (edit → save → see updated content)
 
 **What would raise Impact to ≥90:**
-- Code review: Verify `/work-idea` skill handles Status="worked" ideas correctly
+- Code review: Verify `/idea-develop` skill handles Status="worked" ideas correctly
 - Test: Ensure concurrent edit prevention works (worktree cleanliness check)
 
 ## Planning Constraints & Notes
@@ -256,4 +256,4 @@ None — sufficient information to proceed to planning.
 
 - Status: **Ready-for-planning**
 - Blocking items: None
-- Recommended next step: Proceed to `/plan-feature` with this fact-find brief
+- Recommended next step: Proceed to `/wf-plan` with this wf-fact-find brief

@@ -133,7 +133,7 @@ Add package-level coverage caching to avoid re-collecting coverage for unchanged
   - Decision impacted: Cache invalidation strategy
   - Default assumption: Invalidate cache on ANY source/test change (conservative) + risk: some unnecessary re-runs
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 85%
   - High: Clear patterns exist (run-changed-tests.ts, Turbo outputs)
@@ -177,4 +177,4 @@ Add package-level coverage caching to avoid re-collecting coverage for unchanged
 
 - Status: **Ready-for-planning**
 - Blocking items: None (open questions have sensible defaults)
-- Recommended next step: Proceed to `/plan-feature` to select approach and define tasks
+- Recommended next step: Proceed to `/wf-plan` to select approach and define tasks

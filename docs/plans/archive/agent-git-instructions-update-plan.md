@@ -48,7 +48,7 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/agent-git-instructions-update-fact-find.md`
+- Related brief: `docs/plans/agent-git-instructions-update-wf-fact-find.md`
 
 ## Existing System Notes
 
@@ -125,7 +125,7 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 ### TASK-03: Update guide-editing skills to avoid `git restore` guidance
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/improve-en-guide/SKILL.md`, `.claude/skills/improve-translate-guide/SKILL.md`
+- **Affects:** `.claude/skills/guide-audit/SKILL.md`, `.claude/skills/guide-translate/SKILL.md`
 - **Depends on:** TASK-02
 - **Confidence:** 85%
   - Implementation: 90% — wording change, consistent with snapshot-first protocol
@@ -138,7 +138,7 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
   - **Test cases (enumerated):**
     - TC-01: `rg` over the two skill files contains no “use git restore” guidance → prevents accidental adoption.
   - **Test type:** documentation
-  - **Run:** `rg -n \"git restore|git checkout --\" .claude/skills/improve-en-guide/SKILL.md .claude/skills/improve-translate-guide/SKILL.md`
+  - **Run:** `rg -n \"git restore|git checkout --\" .claude/skills/guide-audit/SKILL.md .claude/skills/guide-translate/SKILL.md`
 
 ### TASK-04: Harden git guard wrapper to block worktree restore/checkout pathspec
 
@@ -178,7 +178,7 @@ This plan focuses on documentation + local agent guardrails (not CI/CD infrastru
 
 ## Decision Log
 
-- 2026-02-02: Plan expanded to address accidental work loss from bulk `git restore -- <paths>` operations (see fact-find brief).
+- 2026-02-02: Plan expanded to address accidental work loss from bulk `git restore -- <paths>` operations (see wf-fact-find brief).
 - 2026-02-07: Completed. Final policy outcome aligns with Option B: single-file restore pathspecs may pass in guarded flows; bulk, directory, glob, repo-wide, and force/worktree discard patterns are blocked.
 
 ## Risks and Mitigations

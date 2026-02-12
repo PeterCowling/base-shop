@@ -9,7 +9,7 @@ Last-updated: 2026-02-11
 Feature-Slug: prime-find-booking-api-fix
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: /build-feature
+Primary-Execution-Skill: /wf-build
 Supporting-Skills: none
 Related-Plan: docs/plans/prime-find-booking-api-fix-plan.md
 Business-OS-Integration: off
@@ -196,7 +196,7 @@ The `/api/find-booking` and `/api/guest-session` (POST) Cloudflare Pages Functio
 
 None — all questions resolved from evidence.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 92%
   - Working reference implementation exists in `guest-booking.ts`. The exact data access patterns are proven and can be directly reused. Firebase REST helper is battle-tested.
@@ -238,7 +238,7 @@ None — all questions resolved from evidence.
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/build-feature`
+- Primary execution skill: `/wf-build`
 - Supporting skills: none
 - Deliverable acceptance:
   - Both endpoints return correct responses for real Firebase data
@@ -252,4 +252,4 @@ None — all questions resolved from evidence.
 
 - Status: **Ready-for-planning**
 - Blocking items: none
-- Recommended next step: proceed to `/plan-feature prime-find-booking-api-fix`
+- Recommended next step: proceed to `/wf-plan prime-find-booking-api-fix`

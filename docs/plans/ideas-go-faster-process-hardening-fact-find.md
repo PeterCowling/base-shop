@@ -8,12 +8,12 @@ Created: 2026-02-10
 Last-updated: 2026-02-10
 Last-reviewed: 2026-02-10
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-go-faster-process-hardening
+Feature-Slug: idea-generate-process-hardening
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: build-feature
+Primary-Execution-Skill: wf-build
 Supporting-Skills: none
-Related-Plan: docs/plans/ideas-go-faster-process-hardening-plan.md
+Related-Plan: docs/plans/idea-generate-process-hardening-plan.md
 Business-OS-Integration: off
 Business-Unit: BOS
 ---
@@ -22,7 +22,7 @@ Business-Unit: BOS
 
 ## Scope
 ### Summary
-Audit the `/ideas-go-faster` pipeline contract as an executable process definition and identify high-severity reliability, consistency, and drift risks before further feature additions. The immediate output is a hardened implementation plan that closes contract contradictions across the orchestrator skill, shared cabinet specs, and live Business OS agent API schemas.
+Audit the `/idea-generate` pipeline contract as an executable process definition and identify high-severity reliability, consistency, and drift risks before further feature additions. The immediate output is a hardened implementation plan that closes contract contradictions across the orchestrator skill, shared cabinet specs, and live Business OS agent API schemas.
 
 ### Goals
 - Produce a severity-ranked defect inventory with direct evidence references.
@@ -31,13 +31,13 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 - Preserve the strategic model (multi-lens cabinet) while making execution deterministic.
 
 ### Non-goals
-- Implementing the hardening changes in this fact-find step.
+- Implementing the hardening changes in this wf-fact-find step.
 - Replacing the cabinet model with a simpler workflow.
-- Redesigning unrelated skills outside the `ideas-go-faster` dependency surface.
+- Redesigning unrelated skills outside the `idea-generate` dependency surface.
 
 ### Constraints and Assumptions
 - Constraints:
-  - `ideas-go-faster` remains prompt-orchestrated in Phase 0 (`.claude/skills/ideas-go-faster/SKILL.md:872`).
+  - `idea-generate` remains prompt-orchestrated in Phase 0 (`.claude/skills/idea-generate/SKILL.md:872`).
   - Existing workflow loop contracts must remain intact (`docs/business-os/agent-workflows.md:206`).
   - No destructive git operations.
 - Assumptions:
@@ -46,7 +46,7 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 
 ## Evidence Audit (Current State)
 ### Entry Points
-- `.claude/skills/ideas-go-faster/SKILL.md` - orchestrator contract and stage pipeline.
+- `.claude/skills/idea-generate/SKILL.md` - orchestrator contract and stage pipeline.
 - `.claude/skills/_shared/cabinet/data-gap-lifecycle.md` - DGP storage, tags, resurfacing semantics.
 - `.claude/skills/_shared/cabinet/lens-code-review.md` - technical cabinet trigger and identity contract.
 - `.claude/skills/_shared/cabinet/prioritize-drucker-porter.md` - Stage 5 gate and rigor pack contract.
@@ -56,7 +56,7 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 - `packages/platform-core/src/repositories/businessOsStageDocs.server.ts` - stage-doc ID generation behavior.
 
 ### Key Modules / Files
-- `.claude/skills/ideas-go-faster/SKILL.md` - extensive policy definition, but currently mixes normative rules and partially stale behavior.
+- `.claude/skills/idea-generate/SKILL.md` - extensive policy definition, but currently mixes normative rules and partially stale behavior.
 - `.claude/skills/_shared/cabinet/*` - distributed contract surface where drift now occurs.
 - `apps/business-os/src/app/api/agent/*` - authoritative write-path behavior; this is the real execution substrate behind sweep persistence.
 
@@ -69,7 +69,7 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 ### Data and Contracts
 - Ideas POST schema: `business`, `content`, optional `tags`, `priority`, `location`; ID allocated server-side (`apps/business-os/src/app/api/agent/ideas/route.ts:22`, `apps/business-os/src/app/api/agent/ideas/route.ts:117`).
 - Cards POST schema: requires lane/priority/owner and description or content; ID allocated server-side (`apps/business-os/src/app/api/agent/cards/route.ts:21`, `apps/business-os/src/app/api/agent/cards/route.ts:121`).
-- Stage-doc POST schema: requires existing parent card; stage enum is `fact-find|plan|build|reflect` (`apps/business-os/src/app/api/agent/stage-docs/route.ts:18`, `packages/platform-core/src/repositories/businessOsStageDocs.server.ts:25`).
+- Stage-doc POST schema: requires existing parent card; stage enum is `wf-fact-find|plan|build|reflect` (`apps/business-os/src/app/api/agent/stage-docs/route.ts:18`, `packages/platform-core/src/repositories/businessOsStageDocs.server.ts:25`).
 - Stage-doc IDs are random per create (`packages/platform-core/src/repositories/businessOsStageDocs.server.ts:226`).
 
 ### Dependency and Impact Map
@@ -77,8 +77,8 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
   - Cabinet shared specs in `.claude/skills/_shared/cabinet/`.
   - Business OS workflow contract in `docs/business-os/agent-workflows.md`.
 - Downstream dependents:
-  - `/fact-find` discovery freshness contract depends on sweep write correctness (`.claude/skills/fact-find/SKILL.md:825`).
-  - `/plan-feature` and `/build-feature` depend on card/stage-doc integrity for lane progression.
+  - `/wf-fact-find` discovery freshness contract depends on sweep write correctness (`.claude/skills/wf-fact-find/SKILL.md:825`).
+  - `/wf-plan` and `/wf-build` depend on card/stage-doc integrity for lane progression.
 - Likely blast radius:
   - Duplicate or inconsistent entities in ideas/cards/stage-docs.
   - Wrong prioritization or resurfacing decisions from tag/status drift.
@@ -90,7 +90,7 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 - Channel constraints:
   - Source-of-truth is repo markdown plus API route behavior.
 - Existing templates/assets:
-  - Fact-find and plan templates in `.claude/skills/fact-find/SKILL.md` and `.claude/skills/plan-feature/SKILL.md`.
+  - Fact-find and plan templates in `.claude/skills/wf-fact-find/SKILL.md` and `.claude/skills/wf-plan/SKILL.md`.
 - Approvals/owners:
   - Repo owner/maintainer review for process contract changes.
 - Compliance constraints:
@@ -120,11 +120,11 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 
 #### Coverage Gaps (Planning Inputs)
 - Untested paths:
-  - No automated test that reconciles `ideas-go-faster` write/retry semantics with non-idempotent API behavior.
+  - No automated test that reconciles `idea-generate` write/retry semantics with non-idempotent API behavior.
   - No contract test ensuring DGP tags emitted by orchestrator align with lifecycle docs.
   - No check for internal contradiction in orchestrator trigger/failure rules.
 - Extinct tests:
-  - None identified in this fact-find scope.
+  - None identified in this wf-fact-find scope.
 
 #### Testability Assessment
 - Easy to test:
@@ -142,15 +142,15 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 ## Findings
 ### F1 (Critical): Technical cabinet activation state is contradictory
 - Evidence:
-  - Triggered by stance/flags/diff artifacts (`.claude/skills/ideas-go-faster/SKILL.md:604`).
-  - Also marked deferred pending CS-13 (`.claude/skills/ideas-go-faster/SKILL.md:877`, `.claude/skills/ideas-go-faster/SKILL.md:851`).
+  - Triggered by stance/flags/diff artifacts (`.claude/skills/idea-generate/SKILL.md:604`).
+  - Also marked deferred pending CS-13 (`.claude/skills/idea-generate/SKILL.md:877`, `.claude/skills/idea-generate/SKILL.md:851`).
   - Lens persona already exists and is active (`.claude/skills/_shared/cabinet/lens-code-review.md:17`).
 - Impact:
   - Operators cannot know expected behavior; runs can be interpreted as both compliant and non-compliant.
 
 ### F2 (Critical): Retry policy plus non-idempotent POST semantics risks duplicate entities
 - Evidence:
-  - Retry-on-failure guidance in sweep (`.claude/skills/ideas-go-faster/SKILL.md:90`).
+  - Retry-on-failure guidance in sweep (`.claude/skills/idea-generate/SKILL.md:90`).
   - Server allocates new IDs on idea/card creation (`apps/business-os/src/app/api/agent/ideas/route.ts:117`, `apps/business-os/src/app/api/agent/cards/route.ts:121`).
   - Stage-doc IDs are random (`packages/platform-core/src/repositories/businessOsStageDocs.server.ts:226`).
 - Impact:
@@ -158,14 +158,14 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 
 ### F3 (Critical): DGP contract drift (`gate-unresolved` tag missing in orchestrator)
 - Evidence:
-  - Orchestrator hold tags omit `gate-unresolved` (`.claude/skills/ideas-go-faster/SKILL.md:418`).
+  - Orchestrator hold tags omit `gate-unresolved` (`.claude/skills/idea-generate/SKILL.md:418`).
   - Lifecycle contract requires `gate-unresolved` for specific handling and VOI boost (`.claude/skills/_shared/cabinet/data-gap-lifecycle.md:214`, `.claude/skills/_shared/cabinet/data-gap-lifecycle.md:222`).
 - Impact:
   - Contrarian-gate unresolved items can be under-prioritized and lose artifact-specific resurfacing behavior.
 
 ### F4 (High): DGP resurfacing query assumptions are under-specified against API defaults
 - Evidence:
-  - Resurfacing requires DGPs with `status=raw` (`.claude/skills/ideas-go-faster/SKILL.md:191`).
+  - Resurfacing requires DGPs with `status=raw` (`.claude/skills/idea-generate/SKILL.md:191`).
   - Ideas list defaults to `location=inbox` when unspecified (`apps/business-os/src/app/api/agent/ideas/route.ts:68`).
   - Lifecycle includes raw-to-worked progression (`.claude/skills/_shared/cabinet/data-gap-lifecycle.md:617`).
 - Impact:
@@ -173,23 +173,23 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 
 ### F5 (High): Lens identity mismatch (`engineering` vs `code-review`)
 - Evidence:
-  - Orchestrator assigns `Originator-Lens: engineering` for technical cabinet output (`.claude/skills/ideas-go-faster/SKILL.md:620`).
+  - Orchestrator assigns `Originator-Lens: engineering` for technical cabinet output (`.claude/skills/idea-generate/SKILL.md:620`).
   - Technical lens defines canonical originator as `code-review` (`.claude/skills/_shared/cabinet/lens-code-review.md:3`).
 - Impact:
   - Clustering, reporting, and filtering can fragment technical ideas.
 
 ### F6 (High): Stage 7b activation contract has no invocation surface
 - Evidence:
-  - Stage 7b needs explicit `stage7b_backfill_enabled=true` (`.claude/skills/ideas-go-faster/SKILL.md:573`).
-  - Invocation examples expose stance and force-code-review only (`.claude/skills/ideas-go-faster/SKILL.md:17`).
+  - Stage 7b needs explicit `stage7b_backfill_enabled=true` (`.claude/skills/idea-generate/SKILL.md:573`).
+  - Invocation examples expose stance and force-code-review only (`.claude/skills/idea-generate/SKILL.md:17`).
 - Impact:
   - Optional feature cannot be reliably invoked as documented.
 
 ### F7 (Medium): Internal consistency quality debt in report grammar/rules
 - Evidence:
-  - Duplicate section numbering (`.claude/skills/ideas-go-faster/SKILL.md:700`, `.claude/skills/ideas-go-faster/SKILL.md:701`).
-  - Fatal fallback paradox around report writing (`.claude/skills/ideas-go-faster/SKILL.md:84`, `.claude/skills/ideas-go-faster/SKILL.md:86`).
-  - Hardcoded owner in card payload despite ownership invariants (`.claude/skills/ideas-go-faster/SKILL.md:517`).
+  - Duplicate section numbering (`.claude/skills/idea-generate/SKILL.md:700`, `.claude/skills/idea-generate/SKILL.md:701`).
+  - Fatal fallback paradox around report writing (`.claude/skills/idea-generate/SKILL.md:84`, `.claude/skills/idea-generate/SKILL.md:86`).
+  - Hardcoded owner in card payload despite ownership invariants (`.claude/skills/idea-generate/SKILL.md:517`).
 - Impact:
   - Reduces operator trust and increases interpretation drift.
 
@@ -205,7 +205,7 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 ### Open (User Input Needed)
 - None required for planning. The plan can proceed with defaults and includes any strategic choices as explicit DECISION tasks where needed.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 - Implementation: 87%
   - Strong evidence map and concrete file-level defect locations.
   - Remaining uncertainty is mostly around implementation shape for idempotency.
@@ -221,7 +221,7 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 ## Planning Constraints and Notes
 - Must-follow patterns:
   - Keep top-k deterministic semantics once normalized.
-  - Preserve workflow loop (`ideas-go-faster -> fact-find -> plan-feature -> build-feature`).
+  - Preserve workflow loop (`idea-generate -> wf-fact-find -> wf-plan -> wf-build`).
 - Rollout/rollback expectations:
   - Deploy in bounded slices: docs contract first, idempotency next, then regression checks.
   - Keep reversible migrations for API behavior changes.
@@ -237,9 +237,9 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 
 ## Execution Routing Packet
 - Primary execution skill:
-  - `/build-feature`
+  - `/wf-build`
 - Supporting skills:
-  - `/sequence-plan` for dependency waves.
+  - `/wf-sequence` for dependency waves.
 - Deliverable acceptance package:
   - Updated orchestrator/shared cabinet docs, targeted API behavior tests, and documented reconciliation runbook.
 - Post-delivery measurement plan:
@@ -250,4 +250,4 @@ Audit the `/ideas-go-faster` pipeline contract as an executable process definiti
 - Blocking items:
   - None
 - Recommended next step:
-  - Proceed to `/plan-feature ideas-go-faster-process-hardening`
+  - Proceed to `/wf-plan idea-generate-process-hardening`

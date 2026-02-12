@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Historical Baseline Prompt</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Historical Baseline Prompt</h1>
+<p>Use the prompt below directly (agent or Deep Research) to consolidate historical BRIK performance data.</p>
+<pre><code class="language-text">You are a performance baseline analyst for an existing ecommerce business.
+
+Task:
+Build a historical performance baseline pack for:
+- Business code: BRIK
+- Business name: Brikette
+- Region: Europe (primary Italy)
+- Date: 2026-02-12
+
+Context:
+- BRIK is an existing website-live business.
+- GA4 coverage is missing/insufficient.
+- For this run, scope is narrowed to net-value + Cloudflare proxies only.
+
+Input sources to request/ingest:
+- Net booking value exports by month/year
+- Cloudflare analytics by month/year (traffic proxies, top pages, geos/devices if available)
+- Reception/ops logs related to booking fulfillment issues (if available)
+
+Requirements:
+1) Consolidate trailing 24 months (or max available) by month.
+2) Provide these metrics where available:
+   - net booking value
+   - Cloudflare traffic proxies (visits/requests/top pages/geo/device)
+3) Clearly mark unavailable metrics.
+4) Provide data-quality notes and confidence by metric family.
+5) Provide 90-day decision implications for BRIK execution priorities.
+
+Output format (strict):
+A) Data coverage summary
+B) Historical monthly baseline table
+C) KPI trend highlights
+D) Data quality + blind spots register
+E) Decision implications (next 90 days)
+F) Missing-data acquisition checklist
+
+Rules:
+- Do not invent values.
+- Mark every metric as observed, estimated, or unavailable.
+- Keep month definitions consistent.
+- For this run, treat bookings/cancellations level metrics as out-of-scope.
+</code></pre>
+<p>After output is produced:</p>
+<ol>
+<li>Save to <code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code> (or newer dated equivalent).</li>
+<li>Render HTML:
+<code>pnpm docs:render-user-html -- docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+</ol>
+<p>If output status is <code>Blocked</code> because core datasets are missing:</p>
+<ol>
+<li>Hand the user this data-request prompt immediately:
+<code>docs/business-os/strategy/BRIK/2026-02-12-historical-data-request-prompt.user.md</code></li>
+<li>Pause S2/S6 progression for BRIK until data is supplied.</li>
+<li>Re-run this baseline prompt after data files are provided.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-12-historical-baseline-prompt.user.md</code></div>
+      <div>Generated: 2026-02-12T12:21:12.370Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ---
 Type: Fact-Find
-Outcome: Planning          # doc intent: this fact-find exists to enable /plan-feature
+Outcome: Planning          # doc intent: this wf-fact-find exists to enable /wf-plan
 Status: Proposed
 Domain: Business-OS
 Created: 2026-02-09
@@ -24,7 +24,7 @@ Business-Unit: BOS
 
 ### Summary
 
-Evolve the `/ideas-go-faster` skill from a single-skill sweep into a multi-agent "Cabinet" system — a composite "team of rivals" idea factory where multiple expert lenses independently generate ideas, Munger+Buffett gatekeep and assign first priorities, Drucker+Porter re-prioritize against business plans, and a parallel technical cabinet reviews the codebase. The system introduces structured attribution, confidence gating (ideas vs data gaps vs hunches), persona fidelity testing, and a Q&A-seeded knowledge base for plans and profiles that is maintained as a byproduct of operating.
+Evolve the `/idea-generate` skill from a single-skill sweep into a multi-agent "Cabinet" system — a composite "team of rivals" idea factory where multiple expert lenses independently generate ideas, Munger+Buffett gatekeep and assign first priorities, Drucker+Porter re-prioritize against business plans, and a parallel technical cabinet reviews the codebase. The system introduces structured attribution, confidence gating (ideas vs data gaps vs hunches), persona fidelity testing, and a Q&A-seeded knowledge base for plans and profiles that is maintained as a byproduct of operating.
 
 ### Goals
 
@@ -56,7 +56,7 @@ Evolve the `/ideas-go-faster` skill from a single-skill sweep into a multi-agent
   - Phase 0: Pete triggers, system executes autonomously
 - Assumptions: [ASSUMPTION — believed true but not yet verified]
   - Expert lenses are implemented as prompt sections within skill files, not separate processes
-  - A single orchestrator skill can invoke sub-skills (precedent: `improve-guide` orchestrating `improve-en-guide` + `improve-translate-guide`)
+  - A single orchestrator skill can invoke sub-skills (precedent: `guide-improve` orchestrating `guide-audit` + `guide-translate`)
   - The current agent API can be extended with new fields (attribution, confidence) but this is implementation work, not a prerequisite for Phase 0
   - Context window can hold orchestrator + all persona definitions + all business data without degradation (unverified — this is the highest-risk assumption)
 
@@ -70,9 +70,9 @@ This section explains the current system architecture and processes so that the 
 
 Claude Code is Anthropic's official CLI tool for Claude — an AI coding assistant that runs in the terminal. It can read files, edit code, run commands, search the web, and interact with APIs. It operates in a conversational loop: the user gives instructions, Claude Code reads the codebase, proposes changes, and the user approves or refines.
 
-Claude Code has a **skill system**: reusable prompt files (`.claude/skills/<name>/SKILL.md`) that encode domain-specific workflows. When a user types `/<skill-name>` (e.g., `/fact-find`, `/build-feature`), the skill's prompt is loaded into Claude's context, giving it structured instructions for how to perform that task. Skills are **prompt-only** — they contain no executable code (no TypeScript, no Python). They are markdown files that shape Claude's behavior.
+Claude Code has a **skill system**: reusable prompt files (`.claude/skills/<name>/SKILL.md`) that encode domain-specific workflows. When a user types `/<skill-name>` (e.g., `/wf-fact-find`, `/wf-build`), the skill's prompt is loaded into Claude's context, giving it structured instructions for how to perform that task. Skills are **prompt-only** — they contain no executable code (no TypeScript, no Python). They are markdown files that shape Claude's behavior.
 
-Skills can reference shared resources in `.claude/skills/_shared/` (reusable helpers like API calling conventions). Skills can also invoke other skills — for example, `improve-guide` orchestrates `improve-en-guide` and `improve-translate-guide` as sub-tasks. The largest skill is `plan-feature` at ~900 lines. The repo currently has 31 skills.
+Skills can reference shared resources in `.claude/skills/_shared/` (reusable helpers like API calling conventions). Skills can also invoke other skills — for example, `guide-improve` orchestrates `guide-audit` and `guide-translate` as sub-tasks. The largest skill is `wf-plan` at ~900 lines. The repo currently has 31 skills.
 
 All skill execution happens within a single Claude Code session. There is no concurrent multi-agent runtime — when a skill says "step through each expert lens," that means Claude systematically works through each lens one at a time within one conversation.
 
@@ -95,7 +95,7 @@ The system tracks four businesses, all currently owned by Pete (the sole team me
 | **PLAT** | Platform | Shared infrastructure: `@acme/platform-core`, `@acme/design-system`, `@acme/ui`, `@acme/i18n`, auth, CMS. Supports all other businesses. | Infrastructure layer |
 | **BOS** | Business OS | The kanban coordination system itself. Internal tooling for managing the other businesses. | Meta-coordination layer |
 
-**Critical finding from the initial redesign fact-find** (2026-02-09, `docs/plans/ideas-go-faster-redesign-fact-find.md`):
+**Critical finding from the initial redesign wf-fact-find** (2026-02-09, `docs/plans/idea-generate-redesign-wf-fact-find.md`):
 
 [FACT] Despite Brikette having 168 guides, analytics is implemented but not active:
 - Google Analytics: GA4 infrastructure is fully implemented (`apps/brikette/src/app/layout.tsx:102-119` — conditional script injection, `reportWebVitals.ts` — web vitals tracking, `BookPageContent.tsx:119-121` — `begin_checkout` conversion event). However, **no `GA_MEASUREMENT_ID` is configured** in any environment, so all tracking is disabled at runtime. The conditional `shouldLoadGA = IS_PROD && typeof GA_MEASUREMENT_ID === "string" && GA_MEASUREMENT_ID.length > 0` means GA never loads.
@@ -107,7 +107,7 @@ The system tracks four businesses, all currently owned by Pete (the sole team me
 
 [FACT] XA (fashion e-commerce apps — exist in the monorepo at `apps/xa*` but are NOT one of the four tracked businesses in Business OS) is stuck at L1, blocked on guide infrastructure that Brikette has but XA has not adopted. Evidence: XA apps exist in `apps/` but have no guide/content system. XA is relevant to the Cabinet system only as context for the Sourcing/Quality lens (China supplier relationships) and as a potential future business to track.
 
-[ASSUMPTION] Platform telemetry is disabled by default. No telemetry configuration code was found in `platform-core` during this audit — the claim originates from the initial redesign fact-find but could not be re-verified. If telemetry code exists, it is not in an obvious location.
+[ASSUMPTION] Platform telemetry is disabled by default. No telemetry configuration code was found in `platform-core` during this audit — the claim originates from the initial redesign wf-fact-find but could not be re-verified. If telemetry code exists, it is not in an obvious location.
 
 **Bottom line:** No business in the portfolio has analytics *producing data* — Brikette has the infrastructure but no configuration. This is the primary motivation for the `improve-data` stance. The fix may be as simple as setting a `GA_MEASUREMENT_ID` environment variable.
 
@@ -133,15 +133,15 @@ Each stage has a corresponding **Claude Code skill** that drives the transition:
 
 | Transition | Skill | What Happens |
 |---|---|---|
-| Raw Idea → Worked Idea | `/work-idea` | Idea enriched with structured analysis, converted to a card |
-| Card → Fact-finding | `/fact-find` | Evidence gathered about current state, blast radius, constraints |
-| Fact-finding → Planned | `/plan-feature` | Implementation plan created with tasks, acceptance criteria, confidence scores |
-| Planned → In progress | `/build-feature` | Tasks implemented via TDD, one at a time, with validation |
-| In progress → Done | `/build-feature` | All tasks complete, proposes lane transition |
+| Raw Idea → Worked Idea | `/idea-develop` | Idea enriched with structured analysis, converted to a card |
+| Card → Fact-finding | `/wf-fact-find` | Evidence gathered about current state, blast radius, constraints |
+| Fact-finding → Planned | `/wf-plan` | Implementation plan created with tasks, acceptance criteria, confidence scores |
+| Planned → In progress | `/wf-build` | Tasks implemented via TDD, one at a time, with validation |
+| In progress → Done | `/wf-build` | All tasks complete, proposes lane transition |
 | Done → Reflected | Manual | Post-mortem captures learnings |
-| (Any stage) | `/re-plan` | When confidence drops below 80%, investigate and update the plan |
+| (Any stage) | `/wf-replan` | When confidence drops below 80%, investigate and update the plan |
 
-**Confidence gating** is central: every task in a plan has a confidence score (0-100%). Tasks below 80% cannot be built — they must go through `/re-plan` first. This prevents building on uncertain foundations.
+**Confidence gating** is central: every task in a plan has a confidence score (0-100%). Tasks below 80% cannot be built — they must go through `/wf-replan` first. This prevents building on uncertain foundations.
 
 **Ideas** are the earliest-stage items. They have a simple schema:
 - `Type`: "Idea" or "Opportunity"
@@ -177,31 +177,31 @@ All write operations use **optimistic concurrency** — you must provide a `base
 Skills form an interconnected ecosystem. The core **feature workflow** is a linear pipeline:
 
 ```
-/fact-find → /plan-feature → /sequence-plan → /build-feature → /re-plan (if needed)
+/wf-fact-find → /wf-plan → /wf-sequence → /wf-build → /wf-replan (if needed)
 ```
 
 Each produces a specific artifact:
-- `/fact-find` → `docs/plans/<slug>-fact-find.md` (evidence brief)
-- `/plan-feature` → `docs/plans/<slug>-plan.md` (implementation plan with tasks)
-- `/build-feature` → code changes, commits, plan updates
-- `/re-plan` → updated plan with revised confidence scores
+- `/wf-fact-find` → `docs/plans/<slug>-wf-fact-find.md` (evidence brief)
+- `/wf-plan` → `docs/plans/<slug>-plan.md` (implementation plan with tasks)
+- `/wf-build` → code changes, commits, plan updates
+- `/wf-replan` → updated plan with revised confidence scores
 
 **Business OS coordination skills** operate alongside the feature workflow:
-- `/ideas-go-faster` — business growth process auditor (the skill being evolved into the Cabinet system)
-- `/scan-repo` — scans the codebase for changes and creates business-relevant ideas
-- `/work-idea` — converts raw ideas into worked cards
-- `/propose-lane-move` — proposes kanban lane transitions based on evidence
-- `/update-business-plan` — updates business strategy documents
-- `/update-people` — updates people/team profiles
+- `/idea-generate` — business growth process auditor (the skill being evolved into the Cabinet system)
+- `/idea-scan` — scans the codebase for changes and creates business-relevant ideas
+- `/idea-develop` — converts raw ideas into worked cards
+- `/idea-advance` — proposes kanban lane transitions based on evidence
+- `/biz-update-plan` — updates business strategy documents
+- `/biz-update-people` — updates people/team profiles
 
 **Content skills** handle guide management:
-- `/improve-guide` → orchestrates `/improve-en-guide` + `/improve-translate-guide`
+- `/guide-improve` → orchestrates `/guide-audit` + `/guide-translate`
 
-Skills reference each other's outputs. For example, `/ideas-go-faster` generates raw ideas that feed into `/work-idea`, which creates cards that feed into `/fact-find`, which produces briefs that feed into `/plan-feature`.
+Skills reference each other's outputs. For example, `/idea-generate` generates raw ideas that feed into `/idea-develop`, which creates cards that feed into `/wf-fact-find`, which produces briefs that feed into `/wf-plan`.
 
-### What ideas-go-faster Does Today
+### What idea-generate Does Today
 
-The `/ideas-go-faster` skill was recently rewritten (730 lines) from a kanban board health checker into a business growth process auditor. In concrete terms, when invoked it:
+The `/idea-generate` skill was recently rewritten (730 lines) from a kanban board health checker into a business growth process auditor. In concrete terms, when invoked it:
 
 1. **Reads all business data** via the Agent API — cards, ideas, business catalog, maturity model
 2. **Reads business plans and people profiles** from the filesystem (if they exist — currently none do)
@@ -214,7 +214,7 @@ The `/ideas-go-faster` skill was recently rewritten (730 lines) from a kanban bo
 4. **Diagnoses the #1 constraint** per business using the Elon Musk 5-step algorithm (Question every requirement → Delete unnecessary process → Simplify → Accelerate → Automate — in strict order)
 5. **Generates 3-5 interventions** per business, scored by `Priority = (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk))`
 6. **Creates raw ideas** via the Agent API (tagged `sweep-generated`)
-7. **Auto-works-up the top 3 ideas** into cards with fact-find stage documents (tagged `sweep-auto`)
+7. **Auto-works-up the top 3 ideas** into cards with wf-fact-find stage documents (tagged `sweep-auto`)
 8. **Produces a sweep report** with constraint diagnosis, interventions, plan/profile gaps, and trajectory forecasts
 
 **What it lacks** (and what the Cabinet system addresses):
@@ -230,18 +230,18 @@ The `/ideas-go-faster` skill was recently rewritten (730 lines) from a kanban bo
 Two supporting data stores are defined but currently **completely empty**:
 
 **Business Plans** (`docs/business-os/strategy/<BIZ>/plan.user.md`):
-- Schema defined in the `/update-business-plan` skill
+- Schema defined in the `/biz-update-plan` skill
 - Sections: Strategy (focus areas), Risks (active threats), Opportunities (validated ideas), Learnings (append-only log), Metrics (KPIs)
 - Intended to be living documents updated after card reflections, repo scans, and strategic decisions
 - **Current state: No plans exist for any business**
 
 **People Profiles** (`docs/business-os/people/people.user.md`):
-- Schema defined in the `/update-people` skill
+- Schema defined in the `/biz-update-people` skill
 - Sections: Roles, Responsibilities, Capabilities, Gaps, Availability
 - Intended to track team capacity, skills, and allocation
 - **Current state: No profiles exist**
 
-Both the current `/ideas-go-faster` skill and the proposed Cabinet system depend on these as inputs. The current skill handles their absence gracefully (flags it as a critical finding). The Cabinet system amplifies this dependency because the Drucker/Porter prioritization stage needs business plans to weight priorities, and the task assignment stage needs people profiles to assess feasibility.
+Both the current `/idea-generate` skill and the proposed Cabinet system depend on these as inputs. The current skill handles their absence gracefully (flags it as a critical finding). The Cabinet system amplifies this dependency because the Drucker/Porter prioritization stage needs business plans to weight priorities, and the task assignment stage needs people profiles to assess feasibility.
 
 ---
 
@@ -249,21 +249,21 @@ Both the current `/ideas-go-faster` skill and the proposed Cabinet system depend
 
 ### What Exists Today
 
-The current `/ideas-go-faster` skill (730 lines, just rewritten) provides:
+The current `/idea-generate` skill (730 lines, just rewritten) provides:
 
 | Capability | Current Implementation | Evidence |
 |---|---|---|
-| Business process audit | MACRO framework — 31 diagnostic questions across Measure, Acquire, Convert, Retain, Operate (see System Context above) | `ideas-go-faster/SKILL.md` |
-| Constraint diagnosis | One constraint per business, evidence-required, confidence-scored | `ideas-go-faster/SKILL.md` |
-| Intervention ordering | Elon Musk 5-step algorithm (Question → Delete → Simplify → Accelerate → Automate, strict ordering) | `ideas-go-faster/SKILL.md` |
-| Idea generation | Single-lens (Musk framework only), 3-5 interventions per business, scored by priority formula | `ideas-go-faster/SKILL.md` |
-| Idea pipeline | Two-stage: raw ideas created via API → auto-work-up top 3 to cards with fact-find stage docs | `ideas-go-faster/SKILL.md` |
-| Plan integration | Reads business plans from filesystem, compares stated strategy to observable reality | `ideas-go-faster/SKILL.md` |
-| Profile integration | Reads people profiles from filesystem, uses for task allocation feasibility | `ideas-go-faster/SKILL.md` |
-| Forecasting | Prose trajectory statements per business (where will this business be in 30/60/90 days?) | `ideas-go-faster/SKILL.md` |
-| Attribution | None — ideas are tagged `sweep-generated` and `sweep-auto` but no originator tracking or reasoning chain | `ideas-go-faster/SKILL.md` |
-| Confidence gating | Scoring rubric (`Priority = (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk))`) but no classification into tiers (idea vs data gap vs hunch) | `ideas-go-faster/SKILL.md` |
-| Expert lenses | One lens only (Musk algorithm embedded in skill constitution) | `ideas-go-faster/SKILL.md` |
+| Business process audit | MACRO framework — 31 diagnostic questions across Measure, Acquire, Convert, Retain, Operate (see System Context above) | `idea-generate/SKILL.md` |
+| Constraint diagnosis | One constraint per business, evidence-required, confidence-scored | `idea-generate/SKILL.md` |
+| Intervention ordering | Elon Musk 5-step algorithm (Question → Delete → Simplify → Accelerate → Automate, strict ordering) | `idea-generate/SKILL.md` |
+| Idea generation | Single-lens (Musk framework only), 3-5 interventions per business, scored by priority formula | `idea-generate/SKILL.md` |
+| Idea pipeline | Two-stage: raw ideas created via API → auto-work-up top 3 to cards with wf-fact-find stage docs | `idea-generate/SKILL.md` |
+| Plan integration | Reads business plans from filesystem, compares stated strategy to observable reality | `idea-generate/SKILL.md` |
+| Profile integration | Reads people profiles from filesystem, uses for task allocation feasibility | `idea-generate/SKILL.md` |
+| Forecasting | Prose trajectory statements per business (where will this business be in 30/60/90 days?) | `idea-generate/SKILL.md` |
+| Attribution | None — ideas are tagged `sweep-generated` and `sweep-auto` but no originator tracking or reasoning chain | `idea-generate/SKILL.md` |
+| Confidence gating | Scoring rubric (`Priority = (Impact × Confidence × Time-to-signal) / (Effort × (1 + Risk))`) but no classification into tiers (idea vs data gap vs hunch) | `idea-generate/SKILL.md` |
+| Expert lenses | One lens only (Musk algorithm embedded in skill constitution) | `idea-generate/SKILL.md` |
 
 ### What the Cabinet System Requires
 
@@ -304,8 +304,8 @@ The current `/ideas-go-faster` skill (730 lines, just rewritten) provides:
    - What information/trigger/prerequisite is missing that prevented a full idea?
    - What would you need to learn/wait for/complete to make this presentable?
    - Where should this entity live?
-     - [FACT] The current idea status enum is hard-coded as `raw|worked|converted|dropped` in a Zod schema (`IdeaStatusSchema` in `businessOsIdeas.server.ts:25`). Adding `data-gap` would require an API migration. The `/work-idea` skill hard-requires `Status: raw` at entry (`work-idea/SKILL.md:77`).
-     - **Phase 0 decision: No new status values.** Decision Gap Proposals are stored as Idea entities with `Status: raw` and `Tags: ["decision-gap", "sweep-generated"]`. The `Confidence-Tier: data-gap|timing-gap|dependency-gap` field lives in the Dossier Header inside the `content` field. This avoids API migration and preserves `/work-idea` compatibility.
+     - [FACT] The current idea status enum is hard-coded as `raw|worked|converted|dropped` in a Zod schema (`IdeaStatusSchema` in `businessOsIdeas.server.ts:25`). Adding `data-gap` would require an API migration. The `/idea-develop` skill hard-requires `Status: raw` at entry (`idea-develop/SKILL.md:77`).
+     - **Phase 0 decision: No new status values.** Decision Gap Proposals are stored as Idea entities with `Status: raw` and `Tags: ["decision-gap", "sweep-generated"]`. The `Confidence-Tier: data-gap|timing-gap|dependency-gap` field lives in the Dossier Header inside the `content` field. This avoids API migration and preserves `/idea-develop` compatibility.
      - Phase 1 may add `decision-gap` as a status value if query/filter performance requires it.
    - Who picks up Decision Gap Proposals? They feed into the next sweep under `improve-data` stance as prioritized investigation targets (identified by `Tags` containing `decision-gap`).
    - How do they become presentable ideas later? When the gap is filled (e.g., analytics installed for data gaps, milestone reached for timing gaps, blocking card completed for dependency gaps), the next sweep can promote the DGP by updating its Dossier Header `Confidence-Tier` to `presentable` and removing the `decision-gap` tag.
@@ -353,12 +353,12 @@ Composite generation → Confidence gate → Cluster/dedup → Munger/Buffett fi
 | Confidence gate | Idea Candidates → Presentable Ideas / Decision Gap Proposals / Hunches | — | Gate determines persistence |
 | Cluster/dedup | Presentable Ideas → Clustered Dossiers | — | Merge similar ideas |
 | Munger/Buffett filter | Dossiers → Kill / Hold / Promote | Raw Idea | Promoted dossiers become `Status: raw` ideas in D1 |
-| Work-up | Raw Ideas → Worked Ideas | Worked Idea | Uses existing `/work-idea` skill |
+| Work-up | Raw Ideas → Worked Ideas | Worked Idea | Uses existing `/idea-develop` skill |
 | Drucker/Porter priority | Worked Ideas → P1-P5 priorities | — | Prioritizes BEFORE card creation (v2.1 stage reorder) |
 | Card creation | P1-P3 Worked Ideas → Cards | Card (Inbox) | Only P1-P3 get cards; P4-P5 remain as worked ideas |
-| Kanban execution | Cards flow through fact-find → plan → build | Fact-finding → Planned → In progress → Done | Uses existing feature workflow |
+| Kanban execution | Cards flow through wf-fact-find → plan → build | Fact-finding → Planned → In progress → Done | Uses existing feature workflow |
 
-**Critical change from current behavior:** [PROPOSAL] The current `/ideas-go-faster` auto-works-up the top 3 ideas immediately (no filter stage). Under the Cabinet model, ideas must pass through Munger/Buffett *before* work-up. This means the auto-work-up behavior moves from Step 7-8 to after the filter stage.
+**Critical change from current behavior:** [PROPOSAL] The current `/idea-generate` auto-works-up the top 3 ideas immediately (no filter stage). Under the Cabinet model, ideas must pass through Munger/Buffett *before* work-up. This means the auto-work-up behavior moves from Step 7-8 to after the filter stage.
 
 **v2.1 stage reorder:** [PROPOSAL] Drucker/Porter now runs BEFORE card creation (Stage 5 before Stage 6). Worked ideas receive priorities from Drucker/Porter, then only P1-P3 become cards. This eliminates PATCH operations to update card priorities after creation. Cards are created once with correct final priority.
 
@@ -488,14 +488,14 @@ This separation keeps the header strictly machine-parseable (no free text) while
 
 ### Gap Detail: Skill Architecture
 
-**Current pattern:** Single skill (`.claude/skills/ideas-go-faster/SKILL.md`) does everything in one invocation.
+**Current pattern:** Single skill (`.claude/skills/idea-generate/SKILL.md`) does everything in one invocation.
 
 **Cabinet requires:**
 - An orchestrator skill that dispatches to sub-processes
 - Expert lens definitions (either inline in the orchestrator or as separate files)
 - A multi-stage pipeline with gates between stages
 
-**Precedent in the repo:** `improve-guide` orchestrates `improve-en-guide` + `improve-translate-guide`. This proves parent/child skill architecture works.
+**Precedent in the repo:** `guide-improve` orchestrates `guide-audit` + `guide-translate`. This proves parent/child skill architecture works.
 
 **Key constraint:** All "expert lenses" execute within a single Claude Code session. They are prompt sections that structure the agent's thinking, not separate LLM calls. The "composite" effect comes from the agent systematically stepping through each lens, not from parallel execution.
 
@@ -531,8 +531,8 @@ This separation keeps the header strictly machine-parseable (no free text) while
 ### Gap Detail: Knowledge System
 
 **Current state:**
-- Business plans: schema defined (`update-business-plan/SKILL.md`) but NO plans exist
-- People profiles: schema defined (`update-people/SKILL.md`) but NO profiles exist
+- Business plans: schema defined (`biz-update-plan/SKILL.md`) but NO plans exist
+- People profiles: schema defined (`biz-update-people/SKILL.md`) but NO profiles exist
 - Maturity model: exists and is comprehensive (`business-maturity-model.md`)
 - Business catalog: exists (`businesses.json` — 4 businesses)
 
@@ -542,7 +542,7 @@ This separation keeps the header strictly machine-parseable (no free text) while
 - Versioned with diffable changes and attributable decisions
 - Q&A interface for initial seeding
 
-**Gap:** The schemas exist but nothing is populated. The Cabinet system needs these as inputs — the current ideas-go-faster skill already flags missing plans/profiles as critical findings. The Cabinet system amplifies this dependency.
+**Gap:** The schemas exist but nothing is populated. The Cabinet system needs these as inputs — the current idea-generate skill already flags missing plans/profiles as critical findings. The Cabinet system amplifies this dependency.
 
 **[PROPOSAL] Maintenance loop — what events trigger plan/profile updates:**
 
@@ -550,10 +550,10 @@ The brief states plans and profiles should be "maintained as a byproduct of oper
 
 | Event | What Gets Updated | Mechanism |
 |---|---|---|
-| After each Cabinet sweep | Plan: gaps/metrics sections (what's missing, what's measured) | Orchestrator calls `/update-business-plan` with sweep findings |
-| After each card reflection (Done → Reflected) | Plan: learnings section. Profile: capabilities (skills learned), gaps (discovered needs) | `/session-reflect` or manual `/update-business-plan` + `/update-people` |
-| After a large build completes | Profile: capabilities (what skills were exercised), responsibilities (ownership changes) | `/update-people` triggered by `/build-feature` completion |
-| After supplier/partner interactions | Plan: risks, opportunities. Profile: domain knowledge | Manual `/update-business-plan` |
+| After each Cabinet sweep | Plan: gaps/metrics sections (what's missing, what's measured) | Orchestrator calls `/biz-update-plan` with sweep findings |
+| After each card reflection (Done → Reflected) | Plan: learnings section. Profile: capabilities (skills learned), gaps (discovered needs) | `/meta-reflect` or manual `/biz-update-plan` + `/biz-update-people` |
+| After a large build completes | Profile: capabilities (what skills were exercised), responsibilities (ownership changes) | `/biz-update-people` triggered by `/wf-build` completion |
+| After supplier/partner interactions | Plan: risks, opportunities. Profile: domain knowledge | Manual `/biz-update-plan` |
 | Monthly review | Plan: full audit. Profile: full audit | Pete-triggered comprehensive review |
 
 **Minimal plan/profile content to be useful for the Cabinet system:**
@@ -568,7 +568,7 @@ Without at least this minimum, the Drucker/Porter stage has nothing to weight ag
 
 | File/Area | Role | Change Type |
 |---|---|---|
-| `.claude/skills/ideas-go-faster/SKILL.md` | Current sweep skill | REPLACE with Cabinet Secretary orchestrator (accepts `--stance` parameter) |
+| `.claude/skills/idea-generate/SKILL.md` | Current sweep skill | REPLACE with Cabinet Secretary orchestrator (accepts `--stance` parameter) |
 | `.claude/skills/_shared/cabinet/` | Expert lens definitions library (new) | CREATE |
 | `.claude/skills/_shared/cabinet/lens-musk.md` | Musk persona (feasibility/constraint) | CREATE |
 | `.claude/skills/_shared/cabinet/lens-bezos.md` | Bezos persona (customer-backwards) | CREATE |
@@ -588,7 +588,7 @@ Without at least this minimum, the Drucker/Porter stage has nothing to weight ag
 
 ## Patterns & Conventions Observed
 
-- **Skill orchestration precedent:** The `improve-guide` skill invokes `improve-en-guide` and `improve-translate-guide` as sub-tasks. This proves that a parent skill can dispatch to child skills within a single Claude Code session — critical for the Cabinet Secretary orchestrator pattern.
+- **Skill orchestration precedent:** The `guide-improve` skill invokes `guide-audit` and `guide-translate` as sub-tasks. This proves that a parent skill can dispatch to child skills within a single Claude Code session — critical for the Cabinet Secretary orchestrator pattern.
 - **Shared resources pattern:** Reusable helper files in `.claude/skills/_shared/` (e.g., `card-operations.md` for API calling conventions, `stage-doc-operations.md` for stage document lifecycle) are referenced by multiple skills. The proposed Cabinet persona library would follow this same pattern.
 - **Frameworks-as-personas:** The codebase already uses analytical frameworks as implicit personas — MACRO framework acts as a business auditor, the maturity model acts as a strategic evaluator, the confidence rubric acts as an evidence assessor. The Cabinet system makes this pattern explicit and formal.
 - **Prompt-only architecture:** All skills are SKILL.md files containing instructions in markdown. No executable code (no TypeScript, no Python). The Cabinet system must follow this constraint — expert "personas" are prompt sections, not software agents.
@@ -601,8 +601,8 @@ Without at least this minimum, the Drucker/Porter stage has nothing to weight ag
 ### Resolved
 
 - Q: Can skills invoke other skills?
-  - A: Yes. Precedent: `improve-guide` invokes `improve-en-guide` and `improve-translate-guide`. `plan-feature` auto-invokes `build-feature`.
-  - Evidence: `.claude/skills/improve-guide/SKILL.md:43`, `.claude/skills/plan-feature/SKILL.md:725`
+  - A: Yes. Precedent: `guide-improve` invokes `guide-audit` and `guide-translate`. `wf-plan` auto-invokes `wf-build`.
+  - Evidence: `.claude/skills/guide-improve/SKILL.md:43`, `.claude/skills/wf-plan/SKILL.md:725`
 
 - Q: Can expert lenses run independently within a single session?
   - A: Yes, but sequentially, not in parallel. A single Claude Code session processes one prompt at a time. "Composite generation" means the agent systematically steps through each lens one by one, not parallel LLM calls.
@@ -614,7 +614,7 @@ Without at least this minimum, the Drucker/Porter stage has nothing to weight ag
 
 - Q: Do business plans and people profiles need to exist before the Cabinet system works?
   - A: Not strictly — the current skill already handles missing plans/profiles gracefully. But the Cabinet system's Drucker/Porter stage and task assignment realism depend heavily on them. They should be bootstrapped in parallel or as a prerequisite.
-  - Evidence: `ideas-go-faster/SKILL.md:396-425` handles missing plans/profiles.
+  - Evidence: `idea-generate/SKILL.md:396-425` handles missing plans/profiles.
 
 ### Resolved (User Decisions — 2026-02-09)
 
@@ -672,7 +672,7 @@ Decisions below were made by Pete during the initial Cabinet system design sessi
   - Default assumption: Start with 2 stances (`improve-data`, `grow-business`). Add more as patterns emerge. The starting stance is `improve-data`.
 
 - Q: **What triggers a stance change?**
-  - Why it matters: Should the stance be a parameter to the skill invocation (e.g., `/ideas-go-faster --stance=grow-business`), or should it be stored as state that persists across sweeps?
+  - Why it matters: Should the stance be a parameter to the skill invocation (e.g., `/idea-generate --stance=grow-business`), or should it be stored as state that persists across sweeps?
   - Default assumption: Parameter to the invocation, defaulting to `improve-data`. No persistent state. Low risk.
 
 ### Resolved (Defaults Adopted — 2026-02-09)
@@ -736,7 +736,7 @@ These decisions were made during the v2.1 operational design session and documen
    - Old approach (implied): Per-business top-N work-up
    - New approach: Global top-K selection across all businesses. If BRIK has 10 P1 ideas and PIPE has 0, all K slots can go to BRIK.
    - Rationale: Pete's attention is the constraint. Allocate to highest-value opportunities regardless of business boundary.
-   - Impact: [PROPOSAL] Orchestrator collects all promoted dossiers, sorts globally, takes top K. The `/work-idea` invocations follow the global ranking.
+   - Impact: [PROPOSAL] Orchestrator collects all promoted dossiers, sorts globally, takes top K. The `/idea-develop` invocations follow the global ranking.
 
 9. **Technical cabinet triggers (v2.1 section 15)**
    - A: **Explicit file-based diff artifact at `docs/business-os/engineering/repo-diff.user.md`.** If technical cabinet is triggered but no diff artifact exists, skip code-review lenses with a note in sweep report.
@@ -750,10 +750,10 @@ These decisions were made during the v2.1 operational design session and documen
      - P2 = within 14-30 days, enables or compounds traction
      - P1 cap: max 3 per business per sweep
      - Rigor Pack (5 components) mandatory for P1/P2: Objective & Contribution Card, Traction Test Card, Trade-off Statement, Evidence & Unknowns, Abandonment Note
-     - Rigor Pack pre-populates fact-find stage doc (Stage 7), enabling fast-track execution
+     - Rigor Pack pre-populates wf-fact-find stage doc (Stage 7), enabling fast-track execution
      - Reversibility rule: Munger/Buffett's downside assessment determines rigor level (bounded/reversible → Rigor Pack; cautious → Full Strategy Pack)
-   - Rationale: Early-stage market-facing businesses need speed-to-traction, not heavy analysis. Rigor Pack ensures minimum viable rigor without becoming a delay mechanism. Reconciles with fact-find by making the Rigor Pack the fact-find doc for traction P1/P2.
-   - Impact: [PROPOSAL] Stage 5 outputs Rigor Pack alongside Decision Log for traction-mode P1/P2. Stage 7 uses Rigor Pack as fact-find template instead of standard template. Weekly traction cadence documented as recommended rhythm.
+   - Rationale: Early-stage market-facing businesses need speed-to-traction, not heavy analysis. Rigor Pack ensures minimum viable rigor without becoming a delay mechanism. Reconciles with wf-fact-find by making the Rigor Pack the wf-fact-find doc for traction P1/P2.
+   - Impact: [PROPOSAL] Stage 5 outputs Rigor Pack alongside Decision Log for traction-mode P1/P2. Stage 7 uses Rigor Pack as wf-fact-find template instead of standard template. Weekly traction cadence documented as recommended rhythm.
 
 - Q: **Stance boundary — which stages are stance-sensitive?**
   - A: **Generators are stance-sensitive. Gatekeepers are mostly stance-invariant. Prioritizers use stance as plan-weight emphasis.**
@@ -764,20 +764,20 @@ These decisions were made during the v2.1 operational design session and documen
 
 - Q: **Priority formula: Time-to-signal definition**
   - A: **Rename to `Signal-Speed` and define as a score (0-1 where 1 = fastest feedback).** The formula becomes: `Priority = (Impact × Confidence × Signal-Speed) / (Effort × (1 + Risk))`.
-  - Rationale: [FACT] The current `ideas-go-faster/SKILL.md` does not define the unit or scale of `Time-to-signal`. If interpreted as literal duration, the formula is inverted (slower = higher priority). Renaming eliminates the ambiguity. The current SKILL.md should also be patched to use `Signal-Speed` for consistency.
+  - Rationale: [FACT] The current `idea-generate/SKILL.md` does not define the unit or scale of `Time-to-signal`. If interpreted as literal duration, the formula is inverted (slower = higher priority). Renaming eliminates the ambiguity. The current SKILL.md should also be patched to use `Signal-Speed` for consistency.
 
 - Q: **Technical cabinet trigger conditions**
   - A: **Integrated with skip logic.** "Integrated" (Pete's decision) defines the deployment model (part of the sweep), not the execution policy. The orchestrator checks trigger conditions before invoking technical lenses:
-    - Run technical cabinet when any of: `/scan-repo` has detected meaningful diffs since last sweep, OR stance is `improve-data`, OR Pete explicitly requests it (e.g., `/ideas-go-faster --force-code-review`)
+    - Run technical cabinet when any of: `/idea-scan` has detected meaningful diffs since last sweep, OR stance is `improve-data`, OR Pete explicitly requests it (e.g., `/idea-generate --force-code-review`)
     - If no trigger fires, the orchestrator skips technical lenses and notes "Technical cabinet: skipped (no trigger)" in the sweep report.
   - Rationale: This preserves Pete's "integrated" intent while avoiding wasted attention on unchanged code.
 
 ---
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 60% *(revised up from 55% — v2.1 operational design provides concrete runtime behaviors, failure policies, and stage ordering)*
-  - Strong: Skill orchestration pattern exists (improve-guide precedent). Single SKILL.md architecture proven at 900+ lines (plan-feature). Expert framework embedding proven (Musk algorithm in ideas-go-faster). Shared resource pattern (`_shared/`) supports modular persona files. Two-phase failure policy (fatal for preflight, best-effort for persistence) is well-defined. Stage reordering (Drucker/Porter before card creation) eliminates PATCH operations. Dedup mechanism (Existing Priority Set check) prevents duplicate work. Impact fields provide transparent priority justification.
+  - Strong: Skill orchestration pattern exists (guide-improve precedent). Single SKILL.md architecture proven at 900+ lines (wf-plan). Expert framework embedding proven (Musk algorithm in idea-generate). Shared resource pattern (`_shared/`) supports modular persona files. Two-phase failure policy (fatal for preflight, best-effort for persistence) is well-defined. Stage reordering (Drucker/Porter before card creation) eliminates PATCH operations. Dedup mechanism (Existing Priority Set check) prevents duplicate work. Impact fields provide transparent priority justification.
   - Weak: ALL lenses from day one + in-depth personas = massive content creation scope (18+ expert personas with full specs under multiple stances). Multi-stage pipeline with gates hasn't been done in this repo. Parseable attribution format needs design before any implementation. Confidence gate mechanism needs "presentable idea" definition. Dedup/clustering (lens-level, not just vs existing) has no precedent in the repo. Stance system adds a multiplier to persona definitions. Context window pressure — loading orchestrator + all persona files + all data sources in one session (unverified).
   - What would raise to 80%: (1) Write 3 persona definitions (Musk, Bezos, Munger) with stance variants and test them in a dry-run. (2) Validate context window can hold orchestrator + persona library + business data without degradation. (3) Prototype the Dossier Header format and verify it round-trips (write → parse → extract fields). (4) Prototype dedup/clustering on a synthetic example with 3 lenses.
 
@@ -787,7 +787,7 @@ These decisions were made during the v2.1 operational design session and documen
   - What would raise to 85%: (1) Prototype Dossier Header round-trip (write → parse → extract). (2) Validate with a hand-run example under `improve-data` stance. (3) Confirm remaining open question defaults don't conflict.
 
 - **Impact:** 88%
-  - Strong: Multi-lens ideation with stance control is a significant upgrade. `improve-data` stance directly addresses the #1 finding from the ideas-go-faster redesign (no analytics, no plans, no profiles). Full technical cabinet integrated means repo improvements are systematically identified. Confidence gating prevents noise.
+  - Strong: Multi-lens ideation with stance control is a significant upgrade. `improve-data` stance directly addresses the #1 finding from the idea-generate redesign (no analytics, no plans, no profiles). Full technical cabinet integrated means repo improvements are systematically identified. Confidence gating prevents noise.
   - Weak: Complexity may slow sweeps to 20-30 minutes. Volume of output may overwhelm review. Expert personas need fidelity to be useful — low-fidelity personas add noise, not signal.
   - What would raise to 90%: Comparative test showing Cabinet under `improve-data` stance identifies gaps the current single-lens sweep misses.
 
@@ -830,9 +830,9 @@ These decisions were made during the v2.1 operational design session and documen
 
 4. **Design the stance system + stance boundary** — Define how `improve-data` and `grow-business` stances propagate to each lens, each filter stage, and the orchestrator. Resolve: generators are stance-sensitive; Munger/Buffett mostly stance-invariant; Drucker/Porter stance = plan emphasis shift. Fix the priority formula (Time-to-signal definition).
 
-5. **Bootstrap business plans** — The Cabinet system needs plans as inputs for Drucker/Porter. Bootstrap BRIK, PIPE, PLAT, BOS plans via `/update-business-plan` with at least minimum content (top 3 priorities, top 3 risks, at least 1 metric per business).
+5. **Bootstrap business plans** — The Cabinet system needs plans as inputs for Drucker/Porter. Bootstrap BRIK, PIPE, PLAT, BOS plans via `/biz-update-plan` with at least minimum content (top 3 priorities, top 3 risks, at least 1 metric per business).
 
-6. **Bootstrap people profiles** — Same dependency. Bootstrap via `/update-people` with at least minimum content (current workload, primary skills, availability).
+6. **Bootstrap people profiles** — Same dependency. Bootstrap via `/biz-update-people` with at least minimum content (current workload, primary skills, availability).
 
 **Content layer (personas):**
 
@@ -844,7 +844,7 @@ These decisions were made during the v2.1 operational design session and documen
 
 **Integration layer (orchestrator + validation):**
 
-10. **Write the Cabinet Secretary orchestrator skill** — Replaces ideas-go-faster SKILL.md. Accepts stance parameter. Implements full pipeline: composite generation → confidence gate → cluster/dedup → Munger/Buffett filter → work-up → Drucker/Porter priority. Reads persona definitions from `_shared/cabinet/`. Enforces parseable Dossier Header format.
+10. **Write the Cabinet Secretary orchestrator skill** — Replaces idea-generate SKILL.md. Accepts stance parameter. Implements full pipeline: composite generation → confidence gate → cluster/dedup → Munger/Buffett filter → work-up → Drucker/Porter priority. Reads persona definitions from `_shared/cabinet/`. Enforces parseable Dossier Header format.
 
 11. **Design business linting/typechecking/testing checklists** — Business tooling analogs that systematically validate dossiers before routing.
 
@@ -857,6 +857,6 @@ These decisions were made during the v2.1 operational design session and documen
 ## Planning Readiness
 
 - Status: **Ready-for-planning**
-- Open questions: 7 remain in "Open (User Input Needed)" — all have documented default assumptions that are safe to proceed with. None block planning; all can be confirmed or overridden during `/plan-feature`.
+- Open questions: 7 remain in "Open (User Input Needed)" — all have documented default assumptions that are safe to proceed with. None block planning; all can be confirmed or overridden during `/wf-plan`.
 - Resolved in this revision: Stance boundary, priority formula (`Signal-Speed`), technical cabinet triggers, data-gap lifecycle (content-only, no new status values), dossier header grammar.
-- Recommended next step: Proceed to `/plan-feature cabinet-system`
+- Recommended next step: Proceed to `/wf-plan cabinet-system`

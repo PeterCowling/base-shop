@@ -16,7 +16,7 @@ Business-Unit: BOS
 
 ## Summary
 
-Evolve the `/ideas-go-faster` skill from a single-lens sweep into a multi-agent "Cabinet" system — a composite idea factory where multiple expert personas independently generate ideas, gatekeepers filter and prioritize, and a technical cabinet reviews the codebase. The system is implemented entirely as prompt-only skill files (SKILL.md + shared library files in `_shared/cabinet/`), with no TypeScript code changes in Phase 0. Ideas flow through a structured pipeline with confidence gating, attribution tracking via a parseable Dossier Header format stored in the existing `content` field, and stance-driven focus control.
+Evolve the `/idea-generate` skill from a single-lens sweep into a multi-agent "Cabinet" system — a composite idea factory where multiple expert personas independently generate ideas, gatekeepers filter and prioritize, and a technical cabinet reviews the codebase. The system is implemented entirely as prompt-only skill files (SKILL.md + shared library files in `_shared/cabinet/`), with no TypeScript code changes in Phase 0. Ideas flow through a structured pipeline with confidence gating, attribution tracking via a parseable Dossier Header format stored in the existing `content` field, and stance-driven focus control.
 
 ## Goals
 
@@ -46,7 +46,7 @@ Evolve the `/ideas-go-faster` skill from a single-lens sweep into a multi-agent 
 - Assumptions:
   - Context window can hold orchestrator (~800 lines) + largest persona file (~200 lines) + business data without degradation (HIGH RISK — mitigated by context discipline strategy in CS-11, validated by CS-12 dry-run)
   - The `_shared/cabinet/` pattern works for persona file loading (same pattern as `_shared/card-operations.md` — MEDIUM confidence)
-  - 7 open fact-find questions proceed with documented defaults (all low-risk):
+  - 7 open wf-fact-find questions proceed with documented defaults (all low-risk):
     1. Single skill vs multi-skill architecture? → Option D (orchestrator + persona library in `_shared/cabinet/`)
     2. Attribution in data model vs content? → Phase 0 uses structured markdown in `content` field
     3. Idea Dossier format — how structured? → Full format (provenance, confidence ledger, rivalry record)
@@ -57,10 +57,10 @@ Evolve the `/ideas-go-faster` skill from a single-lens sweep into a multi-agent 
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/cabinet-system-fact-find.md`
+- Related brief: `docs/plans/cabinet-system-wf-fact-find.md`
 - Key findings:
-  - Current `ideas-go-faster` is 730 lines, single-lens (Musk only), no attribution, no confidence tiers
-  - Skill orchestration precedent: `improve-guide` → `improve-en-guide` + `improve-translate-guide`
+  - Current `idea-generate` is 730 lines, single-lens (Musk only), no attribution, no confidence tiers
+  - Skill orchestration precedent: `guide-improve` → `guide-audit` + `guide-translate`
   - `_shared/` pattern proven for reusable skill helpers (card-operations.md, stage-doc-operations.md)
   - Business plans and people profiles are empty — critical dependency for Drucker/Porter stage
   - Idea `content` field is free-form markdown — Dossier Header stores attribution without API changes
@@ -71,25 +71,25 @@ Evolve the `/ideas-go-faster` skill from a single-lens sweep into a multi-agent 
 ## Existing System Notes
 
 - Key modules/files:
-  - `.claude/skills/ideas-go-faster/SKILL.md` (730 lines) — current sweep skill, will be replaced by orchestrator
+  - `.claude/skills/idea-generate/SKILL.md` (730 lines) — current sweep skill, will be replaced by orchestrator
   - `.claude/skills/_shared/card-operations.md` (164 lines) — API calling patterns
   - `.claude/skills/_shared/stage-doc-operations.md` (350 lines) — stage doc lifecycle
-  - `.claude/skills/improve-guide/SKILL.md` (226 lines) — orchestration precedent
-  - `.claude/skills/work-idea/SKILL.md` — requires `Status: raw` at entry
+  - `.claude/skills/guide-improve/SKILL.md` (226 lines) — orchestration precedent
+  - `.claude/skills/idea-develop/SKILL.md` — requires `Status: raw` at entry
   - `packages/platform-core/src/repositories/businessOsIdeas.server.ts` — Idea Zod schema, Status enum
   - `docs/business-os/strategy/businesses.json` — business catalog (4 businesses)
   - `docs/business-os/strategy/business-maturity-model.md` — L1/L2/L3 model
 - Patterns to follow:
   - Fail-closed API-first (card-operations.md)
-  - Progressive disclosure with user choice (improve-guide)
-  - Append-only learnings (update-business-plan)
-  - Strict Musk algorithm ordering (ideas-go-faster constitution)
+  - Progressive disclosure with user choice (guide-improve)
+  - Append-only learnings (biz-update-plan)
+  - Strict Musk algorithm ordering (idea-generate constitution)
 
 ## Proposed Approach
 
 **Option D (Hybrid):** Orchestrator SKILL.md + persona definitions in `_shared/cabinet/` + filter/priority stages inline in orchestrator.
 
-- **Orchestrator** (`.claude/skills/ideas-go-faster/SKILL.md`): Replaces current skill. ~800 lines. Implements the full pipeline, stance parameter, confidence gate, clustering, and API integration. Reads persona files from `_shared/cabinet/` as needed.
+- **Orchestrator** (`.claude/skills/idea-generate/SKILL.md`): Replaces current skill. ~800 lines. Implements the full pipeline, stance parameter, confidence gate, clustering, and API integration. Reads persona files from `_shared/cabinet/` as needed.
 - **Persona library** (`.claude/skills/_shared/cabinet/`): One file per lens/stage. Each ~100-200 lines. Contains principles, signature questions, failure modes, domain boundaries, stance-specific behavior.
 - **Templates** (`.claude/skills/_shared/cabinet/`): Dossier template, stances definition, business tooling checklists.
 
@@ -124,7 +124,7 @@ Why Option D over alternatives:
 
 ## Parallelism Guide
 
-_Generated by `/sequence-plan`. Tasks within a wave can run in parallel via subagents._
+_Generated by `/wf-sequence`. Tasks within a wave can run in parallel via subagents._
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
@@ -148,7 +148,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** -
 - **Blocks:** CS-06, CS-07, CS-08, CS-09, CS-10, CS-11
 - **Confidence:** 85%
-  - Implementation: 88% — Stance concept well-defined in fact-find. Two stances with clear descriptions.
+  - Implementation: 88% — Stance concept well-defined in wf-fact-find. Two stances with clear descriptions.
   - Approach: 85% — Stance boundary resolved: generators sensitive, gatekeepers invariant, prioritizers use as plan-weight.
   - Impact: 82% — Stance propagation to every lens is the primary risk. If the stance-behavior spec is vague, every persona inherits that vagueness.
 - **Effort:** S (1 new file, definitions only)
@@ -176,7 +176,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find stance decisions: `cabinet-system-fact-find.md` § "Questions > Resolved (User Decisions)" > stance entries
+  - Fact-find stance decisions: `cabinet-system-wf-fact-find.md` § "Questions > Resolved (User Decisions)" > stance entries
   - User quote: "when the stance is 'improve data' the ideas should be more about filling gaps in current data"
 
 ---
@@ -194,8 +194,8 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** - (foundation data — prerequisite for meaningful Drucker/Porter evaluation)
 - **Blocks:** CS-11
 - **Confidence:** 80%
-  - Implementation: 85% — Schemas defined in `/update-business-plan` and `/update-people` skills. Content needs to come from Pete (Q&A or manual input).
-  - Approach: 82% — Minimum viable content defined in fact-find: top 3 priorities, top 3 risks, 1+ metric per business; workload, skills, availability per person.
+  - Implementation: 85% — Schemas defined in `/biz-update-plan` and `/biz-update-people` skills. Content needs to come from Pete (Q&A or manual input).
+  - Approach: 82% — Minimum viable content defined in wf-fact-find: top 3 priorities, top 3 risks, 1+ metric per business; workload, skills, availability per person.
   - Impact: 75% — Without plans, Drucker/Porter operates in degraded mode (maturity model proxy only). Without profiles, task assignment has no feasibility input. Moved to Wave 1 so dry-run (CS-12) tests real Drucker/Porter behavior, not fallback mode.
 - **Effort:** M (5 new files, content requires user input or inference from existing business data)
 - **Acceptance:**
@@ -206,14 +206,14 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
     - Opportunities and Learnings sections (can be empty initially)
   - 1 people profile bootstrapped with minimum content:
     - Pete: Current workload (cards in progress from discovery-index), primary skills, availability
-  - Created via `/update-business-plan` and `/update-people` skill invocations (not direct file writes)
+  - Created via `/biz-update-plan` and `/biz-update-people` skill invocations (not direct file writes)
   - Content sourced from: businesses.json, maturity model, discovery-index.json, card inventory
 - **Test contract:**
   - **Test cases (enumerated):**
     - TC-01: Each business plan file exists and contains Strategy, Risks, Metrics sections
     - TC-02: People profile exists and contains workload, skills, availability for Pete
     - TC-03: Drucker/Porter stage can read plans and weight priorities (no longer falls back to maturity model)
-    - TC-04: Plans follow schema from `/update-business-plan` skill
+    - TC-04: Plans follow schema from `/biz-update-plan` skill
   - **Acceptance coverage:** TC-01-02 cover existence; TC-03 covers integration; TC-04 covers schema compliance
   - **Test type:** File existence + content validation
   - **Test location:** Manual review + CS-14 integration
@@ -228,9 +228,9 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete files (Drucker/Porter gracefully degrades to maturity model)
 - **Documentation impact:** None (these ARE the documentation)
 - **Notes / references:**
-  - Plan schema: `.claude/skills/update-business-plan/SKILL.md`
-  - Profile schema: `.claude/skills/update-people/SKILL.md`
-  - Fact-find minimum content: `cabinet-system-fact-find.md` § "Gap Detail: Knowledge System" > maintenance loop proposal
+  - Plan schema: `.claude/skills/biz-update-plan/SKILL.md`
+  - Profile schema: `.claude/skills/biz-update-people/SKILL.md`
+  - Fact-find minimum content: `cabinet-system-wf-fact-find.md` § "Gap Detail: Knowledge System" > maintenance loop proposal
 
 ---
 
@@ -242,7 +242,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** -
 - **Blocks:** CS-04, CS-05, CS-06, CS-07, CS-08, CS-09, CS-10, CS-11
 - **Confidence:** 88%
-  - Implementation: 90% — Well-defined grammar in fact-find (Dossier Header delimiters, field specs, Decision Log format). Follows existing markdown template patterns in stage-doc-operations.md.
+  - Implementation: 90% — Well-defined grammar in wf-fact-find (Dossier Header delimiters, field specs, Decision Log format). Follows existing markdown template patterns in stage-doc-operations.md.
   - Approach: 88% — Parseable format with HTML comment delimiters is proven (similar to frontmatter parsing). Fact-find defines complete grammar rules.
   - Impact: 85% — Core artifact that all other tasks depend on. Must be correct — parsing errors cascade.
 - **Effort:** M (1 new file, defines format contract used by all other tasks, needs careful grammar spec)
@@ -256,7 +256,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Enum values for Pipeline-Stage: `candidate` / `filtered` / `promoted` / `worked` / `prioritized`
   - Decision Log block with `<!-- DECISION-LOG -->` / `<!-- /DECISION-LOG -->` delimiters
   - Per-expert sections with Verdict + Rationale
-  - "Presentable Idea" minimum completeness checklist (5 criteria from fact-find)
+  - "Presentable Idea" minimum completeness checklist (5 criteria from wf-fact-find)
   - Business tooling checklists (lint: missing fields, typecheck: consistency, test: hypothesis)
   - Priority formula with Signal-Speed: `Priority = (Impact × Confidence × Signal-Speed) / (Effort × (1 + Risk))`
   - Example dossier showing complete format with all fields populated
@@ -280,7 +280,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file
 - **Documentation impact:** None (self-documenting template)
 - **Notes / references:**
-  - Fact-find Dossier Header grammar: `cabinet-system-fact-find.md` § "Gap Detail: Data Model" > Dossier Header grammar rules
+  - Fact-find Dossier Header grammar: `cabinet-system-wf-fact-find.md` § "Gap Detail: Data Model" > Dossier Header grammar rules
   - Precedent: `_shared/stage-doc-operations.md` template patterns
 
 ---
@@ -293,9 +293,9 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** CS-03
 - **Blocks:** CS-11
 - **Confidence:** 85%
-  - Implementation: 88% — Lifecycle fully defined in fact-find: store as Idea with `Tags: ["data-gap"]` + Dossier Header `Confidence-Tier: data-gap`.
+  - Implementation: 88% — Lifecycle fully defined in wf-fact-find: store as Idea with `Tags: ["data-gap"]` + Dossier Header `Confidence-Tier: data-gap`.
   - Approach: 85% — No API changes needed. Uses existing Tags field and content field.
-  - Impact: 82% — Must integrate cleanly with `/work-idea` (which requires `Status: raw`). Verified: DGPs keep `Status: raw`.
+  - Impact: 82% — Must integrate cleanly with `/idea-develop` (which requires `Status: raw`). Verified: DGPs keep `Status: raw`.
 - **Effort:** S (1 new file, lifecycle definition)
 - **Acceptance:**
   - DGP storage: Idea entity, `Status: raw`, `Tags: ["data-gap", "sweep-generated"]`, `Confidence-Tier: data-gap` in Dossier Header
@@ -303,15 +303,15 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Pickup mechanism: Next sweep under `improve-data` stance reads DGPs ordered by VOI-Score as prioritized investigation targets
   - Promotion path: When data gap filled, update Dossier Header `Confidence-Tier` to `presentable`, remove `data-gap` tag
   - Hunch suppression: Items below both presentable and data-gap thresholds are logged in sweep report only, not persisted
-  - Compatible with `/work-idea` entry requirement (`Status: raw`)
-  - **DGP→build guardrail:** DGPs MUST convert to fact-finding cards, never directly to build cards. The DGP lifecycle produces investigation tasks (fact-find stage docs), not implementation tasks. Only after a DGP is promoted to `presentable` and passes Munger/Buffett filter can it enter the build lane via normal pipeline.
+  - Compatible with `/idea-develop` entry requirement (`Status: raw`)
+  - **DGP→build guardrail:** DGPs MUST convert to fact-finding cards, never directly to build cards. The DGP lifecycle produces investigation tasks (wf-fact-find stage docs), not implementation tasks. Only after a DGP is promoted to `presentable` and passes Munger/Buffett filter can it enter the build lane via normal pipeline.
 - **Test contract:**
   - **Test cases (enumerated):**
     - TC-01: DGP creation — idea fails presentable checklist → stored with correct Tags and Dossier Header
     - TC-02: DGP pickup — next sweep under `improve-data` queries ideas with `data-gap` tag
     - TC-03: DGP promotion — data gap filled → `Confidence-Tier` updated to `presentable`, tag removed
     - TC-04: Hunch suppression — idea fails both thresholds → not persisted, only in sweep report
-    - TC-05: `/work-idea` compatibility — DGP with `Status: raw` can be processed by `/work-idea`
+    - TC-05: `/idea-develop` compatibility — DGP with `Status: raw` can be processed by `/idea-develop`
   - **Acceptance coverage:** TC-01-05 cover full lifecycle
   - **Test type:** Scenario walkthrough
   - **Test location:** Manual validation during CS-12 dry-run
@@ -325,7 +325,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find DGP lifecycle: `cabinet-system-fact-find.md` § "Gap Detail: Confidence Gate Mechanism" > Data Gap Proposal lifecycle
+  - Fact-find DGP lifecycle: `cabinet-system-wf-fact-find.md` § "Gap Detail: Confidence Gate Mechanism" > Data Gap Proposal lifecycle
   - Idea Status enum constraint: `businessOsIdeas.server.ts` — `raw|worked|converted|dropped`
 
 ---
@@ -338,7 +338,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** CS-03
 - **Blocks:** CS-11
 - **Confidence:** 82%
-  - Implementation: 82% — Concept defined in fact-find but no repo precedent for clustering. Agent must cluster semantically similar ideas within a single session.
+  - Implementation: 82% — Concept defined in wf-fact-find but no repo precedent for clustering. Agent must cluster semantically similar ideas within a single session.
   - Approach: 85% — Single-session clustering is feasible (agent reads all ideas, groups by problem/opportunity, merges into dossiers). No external tooling needed.
   - Impact: 80% — Without clustering, Munger/Buffett waste attention on duplicates. The mechanism must handle 4 businesses × 6 lenses = up to 24 idea candidates per sweep.
 - **Effort:** S (1 new file, mechanism definition)
@@ -373,7 +373,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find clustering proposal: `cabinet-system-fact-find.md` § "Gap Detail: Dedup / Rival Clustering"
+  - Fact-find clustering proposal: `cabinet-system-wf-fact-find.md` § "Gap Detail: Dedup / Rival Clustering"
 
 ---
 
@@ -435,7 +435,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** CS-03, CS-01, CS-06
 - **Blocks:** CS-11
 - **Confidence:** 90%
-  - Implementation: 95% — Musk algorithm already exists in `ideas-go-faster/SKILL.md` (§ "Constitution"). Extract, formalize, add stance variants.
+  - Implementation: 95% — Musk algorithm already exists in `idea-generate/SKILL.md` (§ "Constitution"). Extract, formalize, add stance variants.
   - Approach: 90% — Proven pattern (already embedded as constitutional invariant). Just needs formalization as a standalone persona file.
   - Impact: 85% — Core lens. Must preserve existing behavior under `grow-business` stance while adding `improve-data` variant.
 - **Effort:** M (1 new file ~150-200 lines, requires extracting and enriching existing algorithm + adding stance variants + full persona spec)
@@ -469,8 +469,8 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file
 - **Documentation impact:** None
 - **Notes / references:**
-  - Current Musk embedding: `ideas-go-faster/SKILL.md` § "Constitution" (5-step algorithm), § "Intervention Ordering"
-  - Fact-find expert lens table: `cabinet-system-fact-find.md` § "Gap Detail: Expert Lenses" > cabinet generators table
+  - Current Musk embedding: `idea-generate/SKILL.md` § "Constitution" (5-step algorithm), § "Intervention Ordering"
+  - Fact-find expert lens table: `cabinet-system-wf-fact-find.md` § "Gap Detail: Expert Lenses" > cabinet generators table
 
 ---
 
@@ -516,7 +516,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find expert lens table: `cabinet-system-fact-find.md` § "Gap Detail: Expert Lenses" > cabinet generators table
+  - Fact-find expert lens table: `cabinet-system-wf-fact-find.md` § "Gap Detail: Expert Lenses" > cabinet generators table
 
 ---
 
@@ -565,7 +565,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete files
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find expert lens table: `cabinet-system-fact-find.md` § "Gap Detail: Expert Lenses" > cabinet generators table
+  - Fact-find expert lens table: `cabinet-system-wf-fact-find.md` § "Gap Detail: Expert Lenses" > cabinet generators table
 
 ---
 
@@ -579,7 +579,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Depends on:** CS-03, CS-01, CS-06
 - **Blocks:** CS-11
 - **Confidence:** 85%
-  - Implementation: 85% — Gatekeeper/prioritizer roles are well-defined in fact-find. Munger/Buffett evaluate truth (stance-invariant). Drucker/Porter weight against business plans (stance as plan emphasis).
+  - Implementation: 85% — Gatekeeper/prioritizer roles are well-defined in wf-fact-find. Munger/Buffett evaluate truth (stance-invariant). Drucker/Porter weight against business plans (stance as plan emphasis).
   - Approach: 88% — Clear separation of concerns: filter (kill/hold/promote) vs priority (rank against plan targets). Stance boundary resolved.
   - Impact: 82% — Critical pipeline stages. If gatekeepers are too aggressive, good ideas die. If too permissive, noise passes through.
 - **Effort:** L (2 new files × ~150-200 lines each, complex decision frameworks, stance boundary enforcement)
@@ -620,8 +620,8 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete files
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find filter/priority table: `cabinet-system-fact-find.md` § "Gap Detail: Expert Lenses" > filter/prioritization stages table
-  - Stance boundary: `cabinet-system-fact-find.md` § "Questions > Resolved (User Decisions)" > stance boundary entries
+  - Fact-find filter/priority table: `cabinet-system-wf-fact-find.md` § "Gap Detail: Expert Lenses" > filter/prioritization stages table
+  - Stance boundary: `cabinet-system-wf-fact-find.md` § "Questions > Resolved (User Decisions)" > stance boundary entries
 
 ---
 
@@ -630,42 +630,42 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Status:** Complete (2026-02-09) — Commit `c9eed936cc`
 - **Type:** IMPLEMENT
 - **Affects:**
-  - `.claude/skills/ideas-go-faster/SKILL.md` — REPLACE (backup current as `.claude/skills/ideas-go-faster/SKILL.md.pre-cabinet`)
+  - `.claude/skills/idea-generate/SKILL.md` — REPLACE (backup current as `.claude/skills/idea-generate/SKILL.md.pre-cabinet`)
   - [readonly] `.claude/skills/_shared/cabinet/` — reads all persona files
   - [readonly] `.claude/skills/_shared/card-operations.md` — API patterns
   - [readonly] `.claude/skills/_shared/stage-doc-operations.md` — stage doc lifecycle
 - **Depends on:** CS-01, CS-02, CS-03, CS-04, CS-05, CS-06, CS-07, CS-08, CS-09, CS-10
 - **Blocks:** CS-12
 - **Confidence:** 80%
-  - Implementation: 80% — Largest single deliverable (~800 lines). Integrates all persona files, implements 6-stage pipeline, stance parameter, API calls, confidence gate, clustering, and sweep report. Precedent: `plan-feature/SKILL.md` at 912 lines proves this scale works.
-  - Approach: 82% — Hybrid architecture (orchestrator + library) proven by `improve-guide` pattern. Pipeline is well-defined in fact-find.
-  - Impact: 78% — Replaces the current working `ideas-go-faster` skill. Must preserve all existing capabilities (MACRO audit, API integration, auto-work-up) while adding Cabinet pipeline.
+  - Implementation: 80% — Largest single deliverable (~800 lines). Integrates all persona files, implements 6-stage pipeline, stance parameter, API calls, confidence gate, clustering, and sweep report. Precedent: `wf-plan/SKILL.md` at 912 lines proves this scale works.
+  - Approach: 82% — Hybrid architecture (orchestrator + library) proven by `guide-improve` pattern. Pipeline is well-defined in wf-fact-find.
+  - Impact: 78% — Replaces the current working `idea-generate` skill. Must preserve all existing capabilities (MACRO audit, API integration, auto-work-up) while adding Cabinet pipeline.
 - **Effort:** L (1 major file ~800 lines replacing existing 730-line skill, complex multi-stage pipeline)
 - **Acceptance:**
   - Accepts `--stance` parameter (default: `improve-data`)
   - Reads business data via Agent API (existing pattern from current skill)
   - Reads persona definitions from `_shared/cabinet/` files
-  - Implements full pipeline (corrected ordering — fact-find docs AFTER priority ranking):
+  - Implements full pipeline (corrected ordering — wf-fact-find docs AFTER priority ranking):
     1. Composite generation: Each business × each sub-expert (sequentially, one persona file loaded at a time)
     2. Confidence gate: Classify as presentable / data-gap / hunch. Assign VOI-Score to data-gap proposals.
     3. Cluster/dedup: Group similar ideas (hard boundaries: never across JTBD or business), create merged dossiers
     4. Munger/Buffett filter: Kill / Hold / Promote each dossier
-    5. Card creation: Promoted ideas → raw ideas via API → create cards (NO fact-find docs yet)
+    5. Card creation: Promoted ideas → raw ideas via API → create cards (NO wf-fact-find docs yet)
     6. Drucker/Porter priority: Re-rank cards against business plans
-    7. Fact-find seeding: Top K cards (per Drucker/Porter ranking) get fact-find stage docs. K defaults to 3.
+    7. Fact-find seeding: Top K cards (per Drucker/Porter ranking) get wf-fact-find stage docs. K defaults to 3.
   - Preserves MACRO framework (31 diagnostic questions)
   - Preserves Musk algorithm ordering as constitutional invariant
   - Creates ideas via Agent API with Dossier Header in content field
-  - Work-up is split: card creation (step 5) before Drucker/Porter (step 6), fact-find seeding (step 7) after. This ensures fact-find docs are only created for ideas that survive priority ranking.
+  - Work-up is split: card creation (step 5) before Drucker/Porter (step 6), wf-fact-find seeding (step 7) after. This ensures wf-fact-find docs are only created for ideas that survive priority ranking.
   - Sweep report includes: per-expert contributions (person-level attribution), clustering decisions, filter verdicts, priority assignments, DGPs created (with VOI-Scores), hunches suppressed
   - **Context discipline strategy (first-order design constraint):**
     - Each persona file includes a 20-40 line "persona summary block" at the top — a compressed version loadable when full file would exceed budget
     - After each sub-expert's generation pass, compress-and-carry-forward: carry scored ideas + Dossier Headers only, drop reasoning chains
     - Orchestrator tracks running context estimate; switches from full persona file to summary block when approaching limit
     - If context is exhausted before all lenses complete: finish with summary-only passes, flag as degraded in sweep report
-  - Technical cabinet integrated with trigger conditions (runs when: scan-repo detected diffs, OR stance is `improve-data`, OR `--force-code-review`)
+  - Technical cabinet integrated with trigger conditions (runs when: idea-scan detected diffs, OR stance is `improve-data`, OR `--force-code-review`)
   - Handles missing business plans/profiles gracefully (flags as findings, uses maturity model as proxy)
-  - Backup: Current `ideas-go-faster/SKILL.md` preserved as `.pre-cabinet` file
+  - Backup: Current `idea-generate/SKILL.md` preserved as `.pre-cabinet` file
 - **Test contract:**
   - **Test cases (enumerated):**
     - TC-01: Full sweep under `improve-data` stance for BRIK → produces ideas from all 5 business lenses with Dossier Headers
@@ -673,7 +673,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
     - TC-03: Clustering merges duplicate ideas from different lenses into single dossiers
     - TC-04: Munger/Buffett filter produces Kill/Hold/Promote verdicts in Decision Log
     - TC-05: Promoted ideas are created as raw ideas via Agent API with correct Tags and Dossier Header
-    - TC-06: Work-up creates cards for promoted ideas WITHOUT fact-find stage docs
+    - TC-06: Work-up creates cards for promoted ideas WITHOUT wf-fact-find stage docs
     - TC-07: Drucker/Porter re-ranks cards based on business plans (or maturity model if no plans)
     - TC-08: Fact-find stage docs created ONLY for top K cards after Drucker/Porter ranking
     - TC-09: Sweep report shows per-expert attribution (person-level), clustering decisions, filter verdicts
@@ -684,7 +684,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - **Acceptance coverage:** TC-01-13 cover full pipeline, pipeline ordering, stance, context discipline, graceful degradation, and tech cabinet triggers
   - **Test type:** End-to-end scenario (manual invocation)
   - **Test location:** CS-12 dry-run and CS-14 full validation
-  - **Run:** Invoke `/ideas-go-faster --stance=improve-data` and review full output
+  - **Run:** Invoke `/idea-generate --stance=improve-data` and review full output
   - **End-to-end coverage:** TC-01 is the primary e2e scenario — full sweep producing ideas via API
 - **TDD execution plan:**
   - **Red:** Invoke the new skill — expect full pipeline output with attribution, clustering, and filter verdicts
@@ -692,14 +692,14 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - **Refactor:** Trim orchestrator if any sections are redundant with persona files
 - **What would make this >=90%:** Successful dry-run (CS-12) producing correct API calls, Dossier Headers, and sweep report
 - **Rollout / rollback:**
-  - Rollout: Replace `ideas-go-faster/SKILL.md` with Cabinet Secretary version. Keep `.pre-cabinet` backup.
+  - Rollout: Replace `idea-generate/SKILL.md` with Cabinet Secretary version. Keep `.pre-cabinet` backup.
   - Rollback: Restore `.pre-cabinet` backup to `SKILL.md`
 - **Documentation impact:**
-  - Update fact-find brief status to reflect implementation
+  - Update wf-fact-find brief status to reflect implementation
 - **Notes / references:**
-  - Current skill: `ideas-go-faster/SKILL.md` (730 lines)
-  - Orchestration precedent: `improve-guide/SKILL.md` (226 lines)
-  - Largest existing skill: `plan-feature/SKILL.md` (912 lines)
+  - Current skill: `idea-generate/SKILL.md` (730 lines)
+  - Orchestration precedent: `guide-improve/SKILL.md` (226 lines)
+  - Largest existing skill: `wf-plan/SKILL.md` (912 lines)
 
 ---
 
@@ -711,7 +711,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Blocks:** CS-13, CS-14
 - **Confidence:** 95%
 - **Acceptance:**
-  - Run `/ideas-go-faster --stance=improve-data` (the new Cabinet Secretary) against current business state
+  - Run `/idea-generate --stance=improve-data` (the new Cabinet Secretary) against current business state
   - Verify: All 5 business lenses produce output with correct Dossier Header format
   - Verify: Confidence gate classifies ideas correctly (most should be data-gap under improve-data, given missing analytics)
   - Verify: Clustering produces sensible groups (not everything in one cluster, not all singletons)
@@ -723,7 +723,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Verify: Fact-find stage docs created only for top K cards AFTER Drucker/Porter ranking
   - Verify: Persona outputs pass fidelity rubric (CS-06) with mean score ≥ 3.5
   - Verify: Context discipline operates correctly (compress-and-carry-forward between lens passes)
-  - Run `/re-plan` on CS-13, CS-14 using evidence from dry-run
+  - Run `/wf-replan` on CS-13, CS-14 using evidence from dry-run
   - Reassess remaining task confidence
   - Update plan with any new findings
 - **Horizon assumptions to validate:**
@@ -731,7 +731,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Persona definitions produce differentiated, non-overlapping ideas (scored via fidelity rubric)
   - Clustering mechanism works on real (not synthetic) idea output, respects hard boundaries
   - Dossier Header round-trips correctly through API create/read (including Originator-Expert and VOI-Score)
-  - Pipeline ordering correct: cards created before Drucker/Porter, fact-find docs seeded after
+  - Pipeline ordering correct: cards created before Drucker/Porter, wf-fact-find docs seeded after
   - Sweep completes in reasonable time (<30 minutes)
 
 ---
@@ -752,7 +752,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Sub-experts defined: Fowler (refactoring), Beck (TDD/XP), Martin (clean code), Kim (DevOps/flow), Gregg (systems performance), Schneier (security), plus others as appropriate
   - Each sub-expert: principles, signature questions, failure modes, domain boundaries
   - Stance-specific behavior: `improve-data` → focus on observability/measurement/testing gaps; `grow-business` → focus on scalability/reliability/developer velocity
-  - Trigger conditions: Run when scan-repo detected diffs, OR stance is `improve-data`, OR `--force-code-review`
+  - Trigger conditions: Run when idea-scan detected diffs, OR stance is `improve-data`, OR `--force-code-review`
   - Output: Technical improvement ideas in Dossier Header format with `Originator-Lens: code-review`
   - Integration: Reads codebase (not just business data) — search patterns, architecture review, test coverage gaps
 - **Test contract:**
@@ -776,7 +776,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollback: Delete file; orchestrator skips technical cabinet when file is absent
 - **Documentation impact:** None
 - **Notes / references:**
-  - Fact-find technical cabinet: `cabinet-system-fact-find.md` § "Gap Detail: Expert Lenses" + § "Questions > Resolved" > technical cabinet entries
+  - Fact-find technical cabinet: `cabinet-system-wf-fact-find.md` § "Gap Detail: Expert Lenses" + § "Questions > Resolved" > technical cabinet entries
 
 ---
 
@@ -785,7 +785,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - **Type:** IMPLEMENT
 - **Affects:**
   - [readonly] All `_shared/cabinet/` files
-  - [readonly] `.claude/skills/ideas-go-faster/SKILL.md`
+  - [readonly] `.claude/skills/idea-generate/SKILL.md`
   - Creates ideas via Agent API (side effect)
 - **Depends on:** CS-12, CS-13
 - **Blocks:** -
@@ -822,7 +822,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - **Acceptance coverage:** TC-01-10 cover full end-to-end validation
   - **Test type:** End-to-end integration test (manual invocation)
   - **Test location:** Live invocation
-  - **Run:** `/ideas-go-faster --stance=improve-data`
+  - **Run:** `/idea-generate --stance=improve-data`
 - **TDD execution plan:**
   - **Red:** Invoke full sweep — expect comprehensive multi-lens output with attribution
   - **Green:** All prior tasks produce correct artifacts, sweep integrates them
@@ -832,7 +832,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Rollout: This IS the validation — no deployment
   - Rollback: If validation fails, iterate on individual personas/orchestrator
 - **Documentation impact:**
-  - Update fact-find brief status to "Implemented"
+  - Update wf-fact-find brief status to "Implemented"
   - Update this plan with validation results
 - **Notes / references:**
   - Compare with current single-lens sweep output for quality assessment
@@ -859,7 +859,7 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 
 - [x] Persona fidelity rubric and regression scenarios exist as first-class Phase 0 artifacts
 - [x] All persona files exist in `_shared/cabinet/` with full specs (principles, questions, failure modes, stance behavior) and pass fidelity rubric
-- [x] Cabinet Secretary orchestrator replaces `ideas-go-faster/SKILL.md` with full pipeline
+- [x] Cabinet Secretary orchestrator replaces `idea-generate/SKILL.md` with full pipeline
 - [x] Stance parameter works (`--stance=improve-data` default, `--stance=grow-business` alternative)
 - [x] Ideas created via API with parseable Dossier Headers (person-level attribution via Originator-Expert)
 - [x] Confidence gate classifies ideas into three tiers (presentable/data-gap/hunch)
@@ -877,13 +877,13 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
 - 2026-02-09: Stance system with `improve-data` (default) and `grow-business` — Pete's concept
 - 2026-02-09: Option D (hybrid orchestrator + persona library) chosen over monolithic/sub-skill alternatives — balances modularity with simplicity
 - 2026-02-09: Phase 0 uses content-field attribution (Dossier Header), not D1 schema changes — avoids API migration
-- 2026-02-09: Data Gap Proposals stored as Ideas with `Tags: ["data-gap"]`, no new Status values — preserves `/work-idea` compatibility
+- 2026-02-09: Data Gap Proposals stored as Ideas with `Tags: ["data-gap"]`, no new Status values — preserves `/idea-develop` compatibility
 - 2026-02-09: Generators are stance-sensitive, Munger/Buffett stance-invariant, Drucker/Porter stance = plan-weight shift — prevents incoherent priority arguments
 - 2026-02-09: Signal-Speed (0-1 score) replaces Time-to-signal in priority formula — fixes ambiguity
 - 2026-02-09: Technical cabinet: integrated with skip logic (runs on scan diffs, improve-data stance, or force flag)
-- 2026-02-09: 7 open fact-find questions proceed with documented defaults (all low-risk, enumerated in Constraints & Assumptions)
+- 2026-02-09: 7 open wf-fact-find questions proceed with documented defaults (all low-risk, enumerated in Constraints & Assumptions)
 - 2026-02-09: **Plan revision (feedback incorporation):**
-  - Pipeline reordered: fact-find stage docs now created AFTER Drucker/Porter ranking (top K only), not during work-up
+  - Pipeline reordered: wf-fact-find stage docs now created AFTER Drucker/Porter ranking (top K only), not during work-up
   - Attribution upgraded from lens-level to person-level: `Originator-Expert` (e.g. `hopkins`) is primary, `Originator-Lens` (e.g. `marketing`) is grouping field
   - CS-02 (bootstrap plans/profiles) moved from post-checkpoint to Wave 1 — prerequisite for meaningful Drucker/Porter evaluation
   - CS-06 added: persona fidelity rubric + regression scenarios as explicit Phase 0 deliverables, gating all persona tasks
@@ -893,4 +893,4 @@ _Generated by `/sequence-plan`. Tasks within a wave can run in parallel via suba
   - Hard clustering boundaries added (never merge across JTBD or business, max 4 variants per cluster)
   - Line-number references replaced with heading-based references throughout
   - Sub-expert independent passes required for all multi-expert lenses
-- 2026-02-09: **Sequenced by `/sequence-plan`:** 14 tasks renumbered into topological order. Rename map: old CS-02→CS-01, CS-12→CS-02, CS-01→CS-03, CS-03→CS-04, CS-04→CS-05, CS-14→CS-06, CS-05→CS-07, CS-06→CS-08, CS-07→CS-09, CS-08→CS-10, CS-09→CS-11, CS-10→CS-12, CS-11→CS-13, CS-13→CS-14. All Blocks fields corrected to strict inverse of Depends on (removed transitive dependencies).
+- 2026-02-09: **Sequenced by `/wf-sequence`:** 14 tasks renumbered into topological order. Rename map: old CS-02→CS-01, CS-12→CS-02, CS-01→CS-03, CS-03→CS-04, CS-04→CS-05, CS-14→CS-06, CS-05→CS-07, CS-06→CS-08, CS-07→CS-09, CS-08→CS-10, CS-09→CS-11, CS-10→CS-12, CS-11→CS-13, CS-13→CS-14. All Blocks fields corrected to strict inverse of Depends on (removed transitive dependencies).

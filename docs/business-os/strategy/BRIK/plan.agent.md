@@ -20,7 +20,7 @@ Owner: Pete
 
 2. **Analytics & Visibility Gap** (Priority: High)
    - Status: GA infrastructure exists but NO GA_MEASUREMENT_ID configured; zero analytics data; no Search Console setup
-   - Next: Configure Google Analytics and Search Console to establish measurement baseline
+   - Next: Configure Google Analytics and Search Console to establish measurement baseline (execution note: `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md`)
 
 3. **Content Commerce Maturity** (Priority: Medium)
    - Status: 168+ guides across 18 locales operational; Cloudflare staging deployed (staging.brikette-website.pages.dev)

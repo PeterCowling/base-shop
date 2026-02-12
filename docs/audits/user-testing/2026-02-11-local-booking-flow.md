@@ -4,7 +4,7 @@ Status: Draft
 Domain: User-Testing
 Target-URL: http://localhost:4020/en
 Created: 2026-02-11
-Created-by: Claude (user-testing-audit skill)
+Created-by: Claude (meta-user-test skill)
 Audit-Timestamp: 2026-02-11T18:39:26.132Z
 Artifacts-JSON: docs/audits/user-testing/2026-02-11-local-booking-flow.json
 Artifacts-Screenshots: docs/audits/user-testing/2026-02-11-local-booking-flow-screenshots

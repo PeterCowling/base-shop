@@ -60,7 +60,7 @@ The implementation follows a two-phase approach: first establish the worktree-as
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/board-auto-refresh-fact-find.md`
+- Related brief: `docs/plans/board-auto-refresh-wf-fact-find.md`
 - Key findings:
   - Board is currently static snapshot at page load (no auto-refresh)
   - Polling pattern exists in `RunStatus.tsx` (5s interval for agent status)
@@ -282,7 +282,7 @@ Lightweight polling approach using git HEAD as version signal:
   - Tests run: Manual validation steps above (no automated test suite for this)
   - Test stubs written: N/A (validation task, not implementation)
   - Unexpected findings: TBD during validation (record in plan)
-  - Evidence collected: Authorization layer compatible (fact-find verification), Repo lock compatible (fact-find verification)
+  - Evidence collected: Authorization layer compatible (wf-fact-find verification), Repo lock compatible (wf-fact-find verification)
 - **What would make this ≥90%:**
   - Automated integration test for read/write coherence
   - Test with multiple concurrent writes (verify repo lock prevents corruption)
@@ -419,7 +419,7 @@ Lightweight polling approach using git HEAD as version signal:
   - Tests run: N/A (UI polish, manual testing sufficient)
   - Test stubs written: N/A
   - Unexpected findings: None
-  - Pattern reference: Toast system already integrated (fact-find: ToastProvider exists)
+  - Pattern reference: Toast system already integrated (wf-fact-find: ToastProvider exists)
 - **What would make this ≥90%:**
   - Show number of changes in toast ("3 cards updated")
   - Add animation/transition for smoother UX
@@ -430,7 +430,7 @@ Lightweight polling approach using git HEAD as version signal:
 - **Documentation impact:**
   - None (UI feedback, no docs needed)
 - **Notes / references:**
-  - Toast system: Already integrated (fact-find: ToastProvider in layout)
+  - Toast system: Already integrated (wf-fact-find: ToastProvider in layout)
   - Pattern: Use existing toast.success() or similar API
 
 ---
@@ -463,7 +463,7 @@ Lightweight polling approach using git HEAD as version signal:
   - **Validation**: TASK-02 acceptance includes env var documentation
 
 - **Risk**: Authorization or lock mechanisms fail in worktree context
-  - **Mitigation**: Already validated in fact-find (authorize.ts:19-41, RepoLock.ts compatible)
+  - **Mitigation**: Already validated in wf-fact-find (authorize.ts:19-41, RepoLock.ts compatible)
   - **Severity**: Low (already validated)
   - **Validation**: TASK-03 re-validates in practice
 
@@ -519,5 +519,5 @@ Lightweight polling approach using git HEAD as version signal:
 - **2026-01-30 (initial)**: Worktree architecture decision — Initialize worktree and set `BUSINESS_OS_REPO_ROOT` to worktree root (not abandon worktree). Rationale: Preserves architectural intent of isolating WIP changes; maintains multi-user story; authorization and lock mechanisms already compatible.
 - **2026-01-30 (initial)**: Phase 1 approach decision — Polling (not SSE/WebSocket). Rationale: Simpler implementation, acceptable 30s latency, $0 infrastructure, easy rollback. Phase 2 can add SSE if real-time needed.
 - **2026-01-30 (initial)**: Version signal decision — Git HEAD commit hash (not mtime scanning). Rationale: Detects all committed changes (all API mutations commit via RepoWriter), extremely lightweight, multi-user compatible. Phase 2 can add mtime if uncommitted edits must be detected.
-- **2026-01-30 (revision)**: **CRITICAL PLAN/REPO DRIFT IDENTIFIED** — Fact-find claimed setup script doesn't exist, but it DOES exist at `apps/business-os/scripts/setup-worktree.sh` (created Jan 28, 2 days before fact-find). Script has bug: creates branch from current HEAD not origin/main. Plan updated to fix script (TASK-01) instead of creating from scratch. Added TASK-00 to fix Jest TSX config (test blocker). Overall confidence dropped 82% → 79% due to added complexity.
+- **2026-01-30 (revision)**: **CRITICAL PLAN/REPO DRIFT IDENTIFIED** — Fact-find claimed setup script doesn't exist, but it DOES exist at `apps/business-os/scripts/setup-worktree.sh` (created Jan 28, 2 days before wf-fact-find). Script has bug: creates branch from current HEAD not origin/main. Plan updated to fix script (TASK-01) instead of creating from scratch. Added TASK-00 to fix Jest TSX config (test blocker). Overall confidence dropped 82% → 79% due to added complexity.
 - **2026-01-30 (revision)**: Scope clarification — "Plan tasks complete (reflected in cards)" is OUT OF SCOPE. Board reads cards + ideas only; deriving card state from plan tasks would require separate feature. This plan only refreshes current view when documents change.

@@ -501,7 +501,7 @@ Tabs: **All / Planning / Active / Complete**
    - ✅ Blocked visual: Badge + tint + border (recommended)
 
 ### Next Session
-3. **Create implementation plan** - Use `/plan-feature` to generate detailed Phase 1 plan with:
+3. **Create implementation plan** - Use `/wf-plan` to generate detailed Phase 1 plan with:
    - Task breakdown for all 10 Phase 1 features
    - Component architecture decisions (QuickCapture, BoardViewSwitcher, etc.)
    - Testing strategy (especially mobile device testing)
@@ -524,7 +524,7 @@ Tabs: **All / Planning / Active / Complete**
 ## Evidence Sources
 
 - **Repo diff:** Business OS Phase 0 implementation (commit 05f8ca205d)
-- **Customer input:** User requirements for card presentation (original fact-find session)
+- **Customer input:** User requirements for card presentation (original wf-fact-find session)
 - **UX audit:** Comprehensive UX/UI audit identifying navigation, search, feedback gaps (agent a7f7b2f)
 - **Latest UX direction:** Capture-first, mobile/laptop intent, board view switcher approach (this revision)
 - **Code analysis:**

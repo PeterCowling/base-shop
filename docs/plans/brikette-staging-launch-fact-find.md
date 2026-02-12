@@ -27,7 +27,7 @@ You want to **finalise a “launch to staging”** for the `apps/brikette` app: 
 ### Non-goals
 
 - Publishing Brikette to production / custom domain promotion (Brikette has a manual `workflow_dispatch` “publish_to_production” path, but this brief focuses on staging).
-- Making code changes (this is a fact-find only deliverable).
+- Making code changes (this is a wf-fact-find only deliverable).
 
 ### Constraints & Assumptions
 
@@ -155,7 +155,7 @@ If Brikette is deployed via `reusable-app.yml` without overriding `EXTRA_ROUTES`
   - Why it matters: It controls the deploy target and the computed staging URL `https://staging.<project>.pages.dev`.
   - Decision impacted: Where you should look for the deployed site and which Pages project needs setup.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 60%
   - Blockers: unclear current env source for `validate-deploy-env` and missing evidence of `/api/health` route in Brikette.

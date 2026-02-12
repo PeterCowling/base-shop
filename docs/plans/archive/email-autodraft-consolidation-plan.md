@@ -19,7 +19,7 @@ Audit-Ref: working-tree
 
 ## Active tasks
 
-Plan complete. All IMPLEMENT tasks done. TASK-07 and TASK-19 deferred to informal production use — note rendering issues and acceptance rates ad-hoc during real `/process-emails` sessions.
+Plan complete. All IMPLEMENT tasks done. TASK-07 and TASK-19 deferred to informal production use — note rendering issues and acceptance rates ad-hoc during real `/ops-inbox` sessions.
 
 ## Summary
 
@@ -27,7 +27,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ## Goals
 
-- Achieve category-level acceptance targets (see Success Definition in fact-find)
+- Achieve category-level acceptance targets (see Success Definition in wf-fact-find)
 - Implement three-stage pipeline: Interpretation → Composition → Quality Gate
 - Port professional email formatting from GAS to MCP server (dual signatures, logo, branded colors)
 - Automate T&C agreement detection with 0% false positive rate
@@ -58,12 +58,12 @@ Consolidate the disparate email autodraft system components into a world-class d
 - Assumptions:
   - Current email templates (18) cover ~70% of scenarios (validate in TASK-00)
   - MCP resources provide accurate, up-to-date information
-  - The `/process-emails` skill workflow is sound, needs richer context
+  - The `/ops-inbox` skill workflow is sound, needs richer context
   - GAS email formatting patterns (`_EmailsConfig.gs`) can be ported to MCP server
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/email-autodraft-consolidation-fact-find.md`
+- Related brief: `docs/plans/email-autodraft-consolidation-wf-fact-find.md`
 - Key findings:
   - Three-stage pipeline is industry best practice for debuggable, improvable, measurable system
   - Gmail label state machine prevents race conditions (proven pattern)
@@ -80,7 +80,7 @@ Consolidate the disparate email autodraft system components into a world-class d
   - `packages/mcp-server/src/resources/brikette-knowledge.ts` — Knowledge resources (348 lines)
   - `packages/mcp-server/src/utils/email-template.ts` — Current HTML email generation
   - `packages/mcp-server/data/email-templates.json` — 18 response templates
-  - `.claude/skills/process-emails/SKILL.md` — Workflow skill (~500 lines)
+  - `.claude/skills/ops-inbox/SKILL.md` — Workflow skill (~500 lines)
   - `apps/brikette-scripts/src/booking-monitor/_EmailsConfig.gs` — GAS professional email formatting
   - `apps/reception/src/constants/emailCodes.ts` — Reception activity codes
 
@@ -144,7 +144,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | TASK-11 | IMPLEMENT | Hybrid template ranker | 85% ✅ | L | Complete (2026-02-02) | TASK-04 |
 | TASK-12 | IMPLEMENT | Classification examples resource | 85% | S | Complete (2026-02-02) | TASK-00 |
 | TASK-13 | IMPLEMENT | Enhanced draft generation | 80% ✅ | L | Complete (2026-02-02) | TASK-01, TASK-03, TASK-04, TASK-11 |
-| TASK-14 | IMPLEMENT | Update process-emails skill | 82% | M | Complete (2026-02-02) | TASK-01, TASK-03, TASK-13 |
+| TASK-14 | IMPLEMENT | Update ops-inbox skill | 82% | M | Complete (2026-02-02) | TASK-01, TASK-03, TASK-13 |
 | TASK-15 | IMPLEMENT | Template governance & linting | 85% | S | Complete (2026-02-02) | TASK-04 |
 | TASK-16 | INVESTIGATE | Security & logging review | 90% | S | Complete (2026-02-02) | TASK-01, TASK-13 |
 | TASK-17 | IMPLEMENT | Reception email routing | 80% ✅ | L | Complete (2026-02-02) | TASK-06, TASK-08 |
@@ -170,7 +170,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** -
 - **Confidence:** 90%
   - Implementation: 95% — Standard measurement task, Gmail API access works
-  - Approach: 90% — Methodology defined in fact-find
+  - Approach: 90% — Methodology defined in wf-fact-find
   - Impact: 85% — Baseline informs all subsequent confidence assessments
 - **Acceptance:**
   - Sample 50 threads from last 3 months via Gmail API
@@ -181,7 +181,7 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Produce baseline report: `docs/plans/email-autodraft-consolidation-baseline.md`
 - **Test plan:**
   - Run: Use Gmail MCP tools to fetch sample threads
-  - Validate: Categories match fact-find definitions
+  - Validate: Categories match wf-fact-find definitions
 - **Planning validation:** N/A (INVESTIGATE task)
 - **What would make this ≥95%:** Automated categorization script to speed sampling
 - **Rollout / rollback:**
@@ -304,10 +304,10 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Add tool, enable in MCP server config
   - Rollback: Remove tool registration, revert to manual interpretation
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (reference new tool)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (reference new tool)
 - **Notes / references:**
   - Pattern: `packages/mcp-server/src/tools/gmail.ts` (Zod validation, typed handlers)
-  - EmailActionPlan interface defined in fact-find
+  - EmailActionPlan interface defined in wf-fact-find
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:** `gmail.ts:200-247` shows `extractBody()` already handles multipart messages, thread context extraction in `gmail_get_email` (lines 476-499)
@@ -374,9 +374,9 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Extended output format, backward compatible
   - Rollback: Return to basic thread context (current state)
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (thread context usage)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (thread context usage)
 - **Notes / references:**
-  - ThreadSummary interface defined in fact-find
+  - ThreadSummary interface defined in wf-fact-find
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:** `gmail.ts:476-499` already extracts thread context with messages[].from, date, snippet
@@ -413,7 +413,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-01
 - **Confidence:** 80%
   - Implementation: 85% — Rules-based checks are straightforward
-  - Approach: 80% — Quality gate pattern is established in fact-find
+  - Approach: 80% — Quality gate pattern is established in wf-fact-find
   - Impact: 75% — Critical for preventing critical errors
 - **Acceptance:**
   - Create `draft_quality_check` MCP tool
@@ -444,16 +444,16 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Test stubs written: N/A (M-effort)
   - Unexpected findings: None
 - **What would make this ≥90%:**
-  - All 11 critical error types from fact-find have explicit checks
+  - All 11 critical error types from wf-fact-find have explicit checks
   - Zero false negatives (missed errors) in pilot
 - **Rollout / rollback:**
   - Rollout: Enable in workflow, non-blocking initially (warn only)
   - Rollback: Disable checks, revert to current manual review
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (quality gate workflow)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (quality gate workflow)
 - **Notes / references:**
-  - Critical error definitions in fact-find
-  - Prohibited claims list in fact-find
+  - Critical error definitions in wf-fact-find
+  - Prohibited claims list in wf-fact-find
 
 ---
 
@@ -484,21 +484,21 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-00
 - **Confidence:** 85%
   - Implementation: 90% — MCP resource pattern is established (`brikette-knowledge.ts`)
-  - Approach: 85% — Content extracted from templates in fact-find
+  - Approach: 85% — Content extracted from templates in wf-fact-find
   - Impact: 80% — Foundation for consistent draft quality
 - **Acceptance:**
   - Create `brikette://draft-guide` MCP resource
   - Content includes:
     - Length calibration by scenario type (50-100 words FAQ, 100-150 standard, etc.)
     - Content selection rules (ALWAYS, IF, NEVER)
-    - Information ordering rules (1-6 priority order from fact-find)
+    - Information ordering rules (1-6 priority order from wf-fact-find)
     - Format decision tree (text vs links vs lists)
     - Tone variation triggers (payment issue → firm, complaint → empathetic)
     - Quality checklist
   - Source from 18 templates + GAS scripts
 - **Test plan:**
   - Add: Unit tests for resource loading
-  - Validate: All scenario types from fact-find covered
+  - Validate: All scenario types from wf-fact-find covered
   - Run: `pnpm --filter mcp-server test`
 - **Test contract:**
   - TC-01: Resource loads and caches (first call loads, second hits cache).
@@ -516,10 +516,10 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Add resource, reference in skill
   - Rollback: Remove resource, revert to implicit patterns
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (reference draft guide)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (reference draft guide)
 - **Notes / references:**
   - Pattern: `packages/mcp-server/src/resources/brikette-knowledge.ts`
-  - Content extracted in fact-find "Draft Quality Framework Gap Analysis"
+  - Content extracted in wf-fact-find "Draft Quality Framework Gap Analysis"
 
 ---
 
@@ -579,7 +579,7 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Add resource, reference in composition stage
   - Rollback: Remove resource, rely on general LLM reasoning
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (reference voice examples)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (reference voice examples)
 - **Notes / references:**
   - Source: `packages/mcp-server/data/email-templates.json`
 
@@ -646,7 +646,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-06
 - **Confidence:** 88%
   - Implementation: 90% — Standard testing procedure
-  - Approach: 90% — Testing matrix defined in fact-find
+  - Approach: 90% — Testing matrix defined in wf-fact-find
   - Impact: 85% — Ensures emails render correctly across clients
 - **Acceptance:**
   - Test HTML rendering in:
@@ -668,7 +668,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation impact:**
   - Create: `docs/plans/email-autodraft-consolidation-deliverability.md`
 - **Notes / references:**
-  - Testing matrix in fact-find "Email Deliverability Requirements"
+  - Testing matrix in wf-fact-find "Email Deliverability Requirements"
 
 ---
 
@@ -679,10 +679,10 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** -
 - **Confidence:** 80%
   - Implementation: 85% — Extends existing gmail.ts, patterns clear
-  - Approach: 80% — State machine defined in fact-find
+  - Approach: 80% — State machine defined in wf-fact-find
   - Impact: 75% — Prevents race conditions, enables workflow automation
 - **Acceptance:**
-  - Implement Gmail label taxonomy per fact-find specification
+  - Implement Gmail label taxonomy per wf-fact-find specification
   - Add new labels: Processing, Awaiting-Agreement, Deferred, Workflow/* hierarchy
   - Implement lock mechanism (Processing label = locked)
   - Prevent race conditions (check before processing, return "being processed")
@@ -712,9 +712,9 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Create labels in Gmail, deploy updated tools
   - Rollback: Remove new labels, revert gmail.ts
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (workflow labels)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (workflow labels)
 - **Notes / references:**
-  - State machine diagram in fact-find
+  - State machine diagram in wf-fact-find
   - Reception activity codes: `apps/reception/src/constants/emailCodes.ts`
 
 #### Build Completion (2026-02-02)
@@ -804,7 +804,7 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Approach: 80% — Conservative classification + human confirmation for non-confirmed achieves 0% FP
   - Impact: 78% — High-stakes but mitigated by human-in-loop for 'likely'/'unclear'
 - **Acceptance:**
-  - Implement agreement detection per fact-find specification:
+  - Implement agreement detection per wf-fact-find specification:
     - status: 'confirmed' | 'likely' | 'unclear' | 'none'
     - confidence: 0-100
     - evidence_spans with text, position, is_negated
@@ -840,10 +840,10 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Enable detection, human confirmation required for 'likely' and 'unclear'
   - Rollback: Disable detection, manual agreement checking
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (agreement workflow)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (agreement workflow)
 - **Notes / references:**
-  - Agreement detection specification in fact-find
-  - Confidence thresholds in fact-find
+  - Agreement detection specification in wf-fact-find
+  - Confidence thresholds in wf-fact-find
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:** Reception app has working agreement state machine:
@@ -878,12 +878,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Ran: `pnpm exec jest --runTestsByPath packages/mcp-server/src/__tests__/workflow-triggers.test.ts packages/mcp-server/src/__tests__/gmail-label-state.test.ts --config ./jest.config.cjs` — PASS (note: Jest reported a worker process not exiting cleanly; consider `--detectOpenHandles` if it recurs)
   - Ran: `pnpm --filter mcp-server lint` — PASS
   - Ran: `pnpm --filter mcp-server build` — PASS
-- **Documentation updated:** `.claude/skills/process-emails/SKILL.md`
+- **Documentation updated:** `.claude/skills/ops-inbox/SKILL.md`
 - **Implementation notes:** Added workflow trigger helpers, prepayment template selection + activity code mapping, and Gmail mark_processed workflow metadata.
 
 
 - **Type:** IMPLEMENT
-- **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/utils/workflow-triggers.ts` (new), `.claude/skills/process-emails/SKILL.md`
+- **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/utils/workflow-triggers.ts` (new), `.claude/skills/ops-inbox/SKILL.md`
 - **Depends on:** TASK-08, TASK-09
 - **Confidence:** 82% ✅ RAISED FROM 78%
   - Implementation: 85% — Templates exist, activity codes well-documented in reception app
@@ -919,7 +919,7 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Enable workflow, human confirmation for chase emails
   - Rollback: Disable automation, manual template selection
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (prepayment workflow)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (prepayment workflow)
 - **Notes / references:**
   - Prepayment templates in `email-templates.json`
   - Activity codes in `apps/reception/src/constants/emailCodes.ts`
@@ -1002,7 +1002,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation impact:**
   - None (internal utility)
 - **Notes / references:**
-  - Hybrid ranker design in fact-find
+  - Hybrid ranker design in wf-fact-find
   - Template categories in `email-templates.json`
 
 **Re-plan Update (2026-02-02):**
@@ -1074,9 +1074,9 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Add resource, reference in interpretation stage
   - Rollback: Remove resource
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (reference examples)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (reference examples)
 - **Notes / references:**
-  - Classification guide in process-emails SKILL.md
+  - Classification guide in ops-inbox SKILL.md
 
 ---
 
@@ -1144,9 +1144,9 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Enable tool, human review all drafts
   - Rollback: Disable tool, revert to current manual process
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (pipeline workflow)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (pipeline workflow)
 - **Notes / references:**
-  - Composition stage specification in fact-find
+  - Composition stage specification in wf-fact-find
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:**
@@ -1181,12 +1181,12 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Delta reason: Documentation updates completed
 - **Validation:**
   - Manual review only (skill documentation)
-- **Documentation updated:** `.claude/skills/process-emails/SKILL.md`
+- **Documentation updated:** `.claude/skills/ops-inbox/SKILL.md`
 - **Implementation notes:** Updated workflow to use three-stage pipeline with interpretation, composition, and quality gate; added agreement/mixed-response handling and resource references.
 
 
 - **Type:** IMPLEMENT
-- **Affects:** `.claude/skills/process-emails/SKILL.md`
+- **Affects:** `.claude/skills/ops-inbox/SKILL.md`
 - **Depends on:** TASK-01, TASK-03, TASK-13
 - **Confidence:** 82%
   - Implementation: 85% — Skill structure is established
@@ -1221,9 +1221,9 @@ Consolidate the disparate email autodraft system components into a world-class d
   - Rollout: Update skill, test with Pete
   - Rollback: Git revert to previous skill version
 - **Documentation impact:**
-  - Update: `.claude/skills/process-emails/SKILL.md` (primary deliverable)
+  - Update: `.claude/skills/ops-inbox/SKILL.md` (primary deliverable)
 - **Notes / references:**
-  - Current skill: `.claude/skills/process-emails/SKILL.md`
+  - Current skill: `.claude/skills/ops-inbox/SKILL.md`
 
 ---
 
@@ -1256,7 +1256,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-04
 - **Confidence:** 85%
   - Implementation: 90% — Linting is straightforward
-  - Approach: 85% — Governance rules defined in fact-find
+  - Approach: 85% — Governance rules defined in wf-fact-find
   - Impact: 80% — Ensures template quality over time
 - **Acceptance:**
   - Create template linter:
@@ -1286,7 +1286,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation impact:**
   - Create: `packages/mcp-server/docs/template-governance.md`
 - **Notes / references:**
-  - Governance requirements in fact-find
+  - Governance requirements in wf-fact-find
 
 ---
 
@@ -1304,7 +1304,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-01, TASK-13
 - **Confidence:** 90%
   - Implementation: 95% — Standard security review
-  - Approach: 90% — Security requirements defined in fact-find
+  - Approach: 90% — Security requirements defined in wf-fact-find
   - Impact: 85% — Ensures PII protection
 - **Acceptance:**
   - Audit all new tools for PII exposure in logs
@@ -1326,7 +1326,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation impact:**
   - Create: `docs/plans/email-autodraft-consolidation-security.md`
 - **Notes / references:**
-  - Security requirements in fact-find
+  - Security requirements in wf-fact-find
 
 ---
 
@@ -1459,7 +1459,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-13, TASK-14
 - **Confidence:** 82% ✅ RAISED FROM 75%
   - Implementation: 85% — Testing procedure clear; MCP tools support automation
-  - Approach: 80% — Success criteria defined in fact-find; category targets measurable
+  - Approach: 80% — Success criteria defined in wf-fact-find; category targets measurable
   - Impact: 80% — Validates entire system; dependencies now well-understood
 - **Acceptance:**
   - Test with 50+ real emails from TASK-00 sample:
@@ -1468,7 +1468,7 @@ Consolidate the disparate email autodraft system components into a world-class d
     - Thread replies (test context handling)
     - Prepayment scenarios
     - Mixed responses (agree + question)
-  - Measure against success criteria per category (from fact-find)
+  - Measure against success criteria per category (from wf-fact-find)
   - Document results: acceptance rate, edit rate, critical error rate
   - MUST achieve category targets before declaring complete
 - **Test plan:**
@@ -1485,19 +1485,19 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation impact:**
   - Create: `docs/plans/email-autodraft-consolidation-test-results.md`
 - **Notes / references:**
-  - Category targets in fact-find "Success Definition"
+  - Category targets in wf-fact-find "Success Definition"
 
 **Re-plan Update (2026-02-02):**
 - **Evidence found:**
   - `gmail_list_pending` and `gmail_get_email` already support fetching test samples
-  - Category targets clearly defined in fact-find (FAQ ≥85%, Policy ≥75%, Payment ≥70%, etc.)
+  - Category targets clearly defined in wf-fact-find (FAQ ≥85%, Policy ≥75%, Payment ≥70%, etc.)
   - MCP tool architecture enables reproducible test runs
 - **Dependency confidence raised:** TASK-13 now at 80%, TASK-11 at 85%, improving integration test feasibility
 - **Decision:** Build test harness that:
   1. Uses `gmail_list_pending` with test label to get sample emails
   2. Runs full pipeline (interpret → generate → quality gate)
   3. Records results in structured format for category-level analysis
-  4. Compares against fact-find targets
+  4. Compares against wf-fact-find targets
 - **Confidence raised:** 75% → 82% — Dependencies resolved; testing approach clear
 
 ---
@@ -1506,7 +1506,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 #### Deferred (2026-02-08)
 - **Status:** Deferred — informal production use replaces formal pilot
-- **Rationale:** All IMPLEMENT tasks complete, critical error targets confirmed at 0%. Acceptance rate targets will be validated informally through real `/process-emails` sessions. TASK-07 deliverability testing folded in — note any rendering issues during real email sends.
+- **Rationale:** All IMPLEMENT tasks complete, critical error targets confirmed at 0%. Acceptance rate targets will be validated informally through real `/ops-inbox` sessions. TASK-07 deliverability testing folded in — note any rendering issues during real email sends.
 - **What to watch for:**
   - Draft quality: are edits minor (tone tweaks) or major (wrong info)?
   - Agreement detection: does standalone "Agree" cause missed detections? (GAP-01)
@@ -1518,7 +1518,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Depends on:** TASK-18
 - **Confidence:** 85%
   - Implementation: 90% — Standard measurement
-  - Approach: 85% — Metrics defined in fact-find
+  - Approach: 85% — Metrics defined in wf-fact-find
   - Impact: 80% — Validates system in production
 - **Acceptance:**
   - Track metrics during first two weeks:
@@ -1541,7 +1541,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 - **Documentation impact:**
   - Create: `docs/plans/email-autodraft-consolidation-pilot-results.md`
 - **Notes / references:**
-  - Success metrics in fact-find
+  - Success metrics in wf-fact-find
 
 ---
 
@@ -1554,7 +1554,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 | GAS email formatting doesn't port cleanly to TypeScript | TASK-07 deliverability testing before deployment, fallback to current template |
 | Thread context extraction fails on complex threads | Graceful degradation (treat as new thread), flag for human review |
 | Reception integration affects production workflow | Feature flag, gradual rollout, extensive testing |
-| Baseline measurement reveals fundamental issues | Adjust plan based on findings, may need to re-plan |
+| Baseline measurement reveals fundamental issues | Adjust plan based on findings, may need to wf-replan |
 | Quality gate blocks too many drafts | Tune thresholds, start with warning-only mode |
 
 ## Observability
@@ -1593,7 +1593,7 @@ Consolidate the disparate email autodraft system components into a world-class d
 
 ## Decision Log
 
-- 2026-02-02: Plan created based on comprehensive fact-find brief
+- 2026-02-02: Plan created based on comprehensive wf-fact-find brief
 - 2026-02-02: Three-stage pipeline architecture adopted (interpretation → composition → quality gate)
 - 2026-02-02: 0% false positive tolerance for agreement detection confirmed
 - 2026-02-02: Reception integration (TASK-17) included but flagged as lower confidence (65%)
@@ -1609,4 +1609,4 @@ Consolidate the disparate email autodraft system components into a world-class d
 - 2026-02-02: Overall confidence raised 74%→82% (all tasks now build-eligible)
 - 2026-02-02: Fact-check corrections (file paths/line counts) did not materially affect confidence; scores unchanged.
 - 2026-02-08: **TASK-18 complete** — 41 integration tests passing, 0% critical error rate, 0% agreement FP rate. 3 gaps documented (GAP-01: standalone "Agree", GAP-02: quality gate design, GAP-03: category overlap).
-- 2026-02-08: **Plan closed** — TASK-07 and TASK-19 deferred to informal production use. All 17 IMPLEMENT tasks complete. HTML templates ported from working GAS system (low rendering risk). Acceptance rate targets validated informally through real `/process-emails` sessions.
+- 2026-02-08: **Plan closed** — TASK-07 and TASK-19 deferred to informal production use. All 17 IMPLEMENT tasks complete. HTML templates ported from working GAS system (low rendering risk). Acceptance rate targets validated informally through real `/ops-inbox` sessions.

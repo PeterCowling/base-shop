@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Active
 Business: PET
 Created: 2026-02-11
-Updated: 2026-02-11
-Last-reviewed: 2026-02-11
+Updated: 2026-02-12
+Last-reviewed: 2026-02-12
 Owner: Pete
 ---
 
@@ -12,11 +12,15 @@ Owner: Pete
 
 ## Strategy
 
-### Current Focus (2026-02-11)
+### Current Focus (2026-02-12)
 
-1. **Outcome Contract Setup** (Priority: High)
-   - Status: Business scaffolded; outcome contract not yet defined.
-   - Next: Define one measurable 30-90 day commercial outcome and decision link.
+1. **Active Outcome Contract (Locked)** (Priority: High)
+   - Outcome: Achieve first reliable PET sales in Italy via pre-website execution, then stabilize contribution-positive growth with bundle/attach economics.
+   - Baseline: orders/revenue/CAC/returns not yet measured (week-0 baseline).
+   - Target by 2026-05-13: 178 orders, EUR 5,874 gross revenue incl VAT, blended CAC <= EUR 10-12, return rate <= 8%.
+   - Owner: Pete
+   - Leading indicators: sessions by channel, CVR by channel, paid + blended CAC, payment success rate, on-time ship rate, return reason distribution.
+   - Decision Link: `DEC-PET-01` (scale spend/channel breadth vs hold and fix).
 
 2. **Category and Segment Prioritization** (Priority: High)
    - Status: Initial category options exist but no ranked decision set.

@@ -161,7 +161,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌───────────────┐
-│  fact-find   │────▶│ plan-feature  │────▶│ build-feature  │
+│  wf-fact-find   │────▶│ wf-plan  │────▶│ wf-build  │
 │             │     │              │     │               │
 │ Audit repo  │     │ Tasks with   │     │ Only builds   │
 │ Map impact  │     │ confidence % │     │ tasks ≥80%    │
@@ -169,7 +169,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 └─────────────┘     └──────────────┘     └───────┬───────┘
        ▲                    ▲                     │
        │              ┌─────┴─────┐               │
-       └──────────────│  re-plan   │◀──────────────┘
+       └──────────────│  wf-replan   │◀──────────────┘
                       │            │  confidence <80%
                       └────────────┘
 ```
@@ -178,10 +178,10 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 | Phase | Action | Skill file |
 |-------|--------|-----------|
-| Fact-find | Read and follow | `.claude/skills/fact-find/SKILL.md` |
-| Plan | Read and follow | `.claude/skills/plan-feature/SKILL.md` |
-| Build | Read and follow | `.claude/skills/build-feature/SKILL.md` |
-| Re-plan | Read and follow | `.claude/skills/re-plan/SKILL.md` |
+| Fact-find | Read and follow | `.claude/skills/wf-fact-find/SKILL.md` |
+| Plan | Read and follow | `.claude/skills/wf-plan/SKILL.md` |
+| Build | Read and follow | `.claude/skills/wf-build/SKILL.md` |
+| Re-plan | Read and follow | `.claude/skills/wf-replan/SKILL.md` |
 
 ### Confidence System
 
@@ -211,15 +211,15 @@ When uncertain about the right approach:
 ### Example Session
 
 ```
-1. Read `.claude/skills/fact-find/SKILL.md`
+1. Read `.claude/skills/wf-fact-find/SKILL.md`
 2. Audit the affected codebase areas, produce a brief
-3. Read `.claude/skills/plan-feature/SKILL.md`
+3. Read `.claude/skills/wf-plan/SKILL.md`
 4. Create plan at `docs/plans/<feature>-plan.md` with confidence scores
 5. If all tasks ≥80%:
-   - Read `.claude/skills/build-feature/SKILL.md`
+   - Read `.claude/skills/wf-build/SKILL.md`
    - Build tasks one at a time
 6. If any task <80%:
-   - Read `.claude/skills/re-plan/SKILL.md`
+   - Read `.claude/skills/wf-replan/SKILL.md`
    - Investigate, update confidence, loop back to step 5
 ```
 
@@ -229,28 +229,28 @@ When uncertain about the right approach:
 
 | Skill | Purpose | Location |
 |-------|---------|----------|
-| `fact-find` | Gather evidence before planning or as standalone briefing | `.claude/skills/fact-find/SKILL.md` |
-| `plan-feature` | Create confidence-gated implementation plan | `.claude/skills/plan-feature/SKILL.md` |
-| `build-feature` | Implement tasks from approved plan with confidence gating | `.claude/skills/build-feature/SKILL.md` |
-| `re-plan` | Resolve low-confidence tasks in existing plan | `.claude/skills/re-plan/SKILL.md` |
+| `wf-fact-find` | Gather evidence before planning or as standalone briefing | `.claude/skills/wf-fact-find/SKILL.md` |
+| `wf-plan` | Create confidence-gated implementation plan | `.claude/skills/wf-plan/SKILL.md` |
+| `wf-build` | Implement tasks from approved plan with confidence gating | `.claude/skills/wf-build/SKILL.md` |
+| `wf-replan` | Resolve low-confidence tasks in existing plan | `.claude/skills/wf-replan/SKILL.md` |
 
 **Specialized Skills:**
 
 | Skill | Purpose | Location |
 |-------|---------|----------|
-| `fact-check` | Verify documentation accuracy against repo state | `.claude/skills/fact-check/SKILL.md` |
+| `review-fact-check` | Verify documentation accuracy against repo state | `.claude/skills/review-fact-check/SKILL.md` |
 | `jest-esm-issues` | Fix ESM/CJS test errors | `.claude/skills/jest-esm-issues/SKILL.md` |
-| `git-recovery` | Recover from confusing git state | `.claude/skills/git-recovery/SKILL.md` |
-| `dependency-conflicts` | Resolve pnpm workspace issues | `.claude/skills/dependency-conflicts/SKILL.md` |
-| `session-reflect` | Capture learnings and improve docs/skills | `.claude/skills/session-reflect/SKILL.md` |
-| `improve-guide` | Main entry point for guide improvement (audit, translation, or both) | `.claude/skills/improve-guide/SKILL.md` |
-| `improve-en-guide` | Run SEO audit for English guide content only | `.claude/skills/improve-en-guide/SKILL.md` |
-| `improve-translate-guide` | Propagate EN guide content to all locales | `.claude/skills/improve-translate-guide/SKILL.md` |
+| `ops-git-recover` | Recover from confusing git state | `.claude/skills/ops-git-recover/SKILL.md` |
+| `code-fix-deps` | Resolve pnpm workspace issues | `.claude/skills/code-fix-deps/SKILL.md` |
+| `meta-reflect` | Capture learnings and improve docs/skills | `.claude/skills/meta-reflect/SKILL.md` |
+| `guide-improve` | Main entry point for guide improvement (audit, translation, or both) | `.claude/skills/guide-improve/SKILL.md` |
+| `guide-audit` | Run SEO audit for English guide content only | `.claude/skills/guide-audit/SKILL.md` |
+| `guide-translate` | Propagate EN guide content to all locales | `.claude/skills/guide-translate/SKILL.md` |
 
 ## What Stays the Same
 
 - Read `AGENTS.md` for commands and rules
 - Follow `docs/plans/` workflow
-- Use the fact-find → plan → build → re-plan loop (see above)
+- Use the wf-fact-find → plan → build → wf-replan loop (see above)
 - Run validation before committing (when possible)
 - Never take shortcuts on large-scale fixes

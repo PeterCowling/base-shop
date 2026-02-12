@@ -7,7 +7,7 @@ Deployment-ID: 712b2b5d
 Deployment-URL: https://712b2b5d.brikette-website.pages.dev
 Source-Commit: 36808e4
 Created: 2026-02-10
-Created-by: Claude (build-feature skill)
+Created-by: Claude (wf-build skill)
 Plan: docs/plans/brikette-live-delivery-speed-v2-plan.md
 ---
 

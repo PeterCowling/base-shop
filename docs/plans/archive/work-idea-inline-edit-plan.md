@@ -6,7 +6,7 @@ Domain: UI
 Relates-to charter: none
 Created: 2026-01-29
 Last-updated: 2026-01-29
-Feature-Slug: work-idea-inline-edit
+Feature-Slug: idea-develop-inline-edit
 Overall-confidence: 85%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 ---
@@ -20,7 +20,7 @@ No active tasks at this time.
 
 ## Summary
 
-Add inline editing functionality to the "Work Idea" button on idea detail pages. When clicked, users can edit the idea content directly on the page using a textarea with markdown preview. Saving transitions the idea Status from "raw" to "worked" (one-way). This enables users to refine ideas before converting them to cards, without navigating to a separate page or using the full `/work-idea` agent skill.
+Add inline editing functionality to the "Work Idea" button on idea detail pages. When clicked, users can edit the idea content directly on the page using a textarea with markdown preview. Saving transitions the idea Status from "raw" to "worked" (one-way). This enables users to refine ideas before converting them to cards, without navigating to a separate page or using the full `/idea-develop` agent skill.
 
 ## Goals
 
@@ -32,7 +32,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages.
 
 ## Non-goals
 
-- Moving idea files between inbox/ and worked/ directories (existing `/work-idea` skill handles that)
+- Moving idea files between inbox/ and worked/ directories (existing `/idea-develop` skill handles that)
 - Creating cards from ideas (existing "Convert to Card" button handles that)
 - Full WYSIWYG markdown editor (Phase 0: simple textarea sufficient)
 - Reversibility (working an idea is one-way per user requirement)
@@ -53,7 +53,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages.
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/work-idea-inline-edit-fact-find.md`
+- Related brief: `docs/plans/idea-develop-inline-edit-wf-fact-find.md`
 - Key findings:
   - `RepoWriter.updateCard()` provides proven pattern for `updateIdea()` implementation
   - `ConvertToCardButton` provides proven client component pattern
@@ -465,7 +465,7 @@ Add inline editing functionality to the "Work Idea" button on idea detail pages.
   - Spike: Write test stubs first to validate acceptance criteria are testable
   - Evidence: Run tests after implementation to confirm ≥80% coverage
 - **Rollout / rollback:**
-  - Rollout: Commit tests with implementation (TDD workflow during build-feature)
+  - Rollout: Commit tests with implementation (TDD workflow during wf-build)
   - Rollback: N/A (test-only changes)
 - **Documentation impact:**
   - None — test code only

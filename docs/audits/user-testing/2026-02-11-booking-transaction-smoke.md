@@ -4,7 +4,7 @@ Status: Draft
 Domain: User-Testing
 Target-URL: https://2d506a9c.brikette-website.pages.dev/en
 Created: 2026-02-11
-Created-by: Claude (user-testing-audit skill)
+Created-by: Claude (meta-user-test skill)
 Audit-Timestamp: 2026-02-11T18:32:34.111Z
 Artifacts-JSON: docs/audits/user-testing/2026-02-11-booking-transaction-smoke.json
 Artifacts-Screenshots: docs/audits/user-testing/2026-02-11-booking-transaction-smoke-screenshots

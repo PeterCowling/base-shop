@@ -1,4 +1,4 @@
-import noJsPredicates from "../../.claude/skills/user-testing-audit/scripts/no-js-predicates.cjs";
+import noJsPredicates from "../../.claude/skills/meta-user-test/scripts/no-js-predicates.cjs";
 
 const { evaluateNoJsRoute, collectNoJsRegressionIssues } = noJsPredicates;
 
@@ -23,7 +23,7 @@ function runNoJsAuditFlow(fixtures: RouteFixture[]) {
   return collectNoJsRegressionIssues(routeChecks);
 }
 
-describe("user-testing-audit no-JS flow (e2e-style)", () => {
+describe("meta-user-test no-JS flow (e2e-style)", () => {
   it("catches booking-funnel and CTA regressions in a full route matrix", () => {
     const issues = runNoJsAuditFlow([
       {

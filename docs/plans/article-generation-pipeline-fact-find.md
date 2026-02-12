@@ -304,7 +304,7 @@ For a single-author, batch-editing workflow, content-as-code is the simpler choi
   - Decision impacted: How many guides to target for the MVP's "1 additional shop" success criterion.
   - Default assumption: 10-15 guides covering top customer intents (product care, sizing, shipping, returns) + top SEO opportunities. Risk: may be too few to demonstrate measurable organic traffic impact.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 - **Implementation:** 72%
   - Product repository pattern is thoroughly documented with exact replication steps. Guide data model is fully mapped. Status enum divergence is resolvable. Script extractability is assessed per-script.
@@ -384,4 +384,4 @@ For a single-author, batch-editing workflow, content-as-code is the simpler choi
 
 - Status: **Ready-for-planning**
 - Blocking items: None -- open questions have reasonable defaults.
-- Recommended next step: Proceed to `/plan-feature` starting with Slice 1 (lowest risk, unblocks everything else). The block type question and L2 readiness thresholds can be resolved during Slice 1 planning without blocking.
+- Recommended next step: Proceed to `/wf-plan` starting with Slice 1 (lowest risk, unblocks everything else). The block type question and L2 readiness thresholds can be resolved during Slice 1 planning without blocking.

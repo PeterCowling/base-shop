@@ -22,7 +22,7 @@ claude
 
 Run the skill:
 ```
-/process-emails
+/ops-inbox
 ```
 
 Or ask conversationally:
@@ -47,13 +47,13 @@ Open Gmail, review your drafts, and send.
 ## Daily Workflow Suggestions
 
 ### Morning Triage (09:00)
-1. Run `/process-emails`
+1. Run `/ops-inbox`
 2. Process availability inquiries first (time-sensitive)
 3. Handle FAQ-type questions in batch
 4. Defer complex inquiries for afternoon
 
 ### Afternoon Follow-up (17:00)
-1. Run `/process-emails` for new emails
+1. Run `/ops-inbox` for new emails
 2. Handle deferred complex inquiries
 3. Review and send all drafts
 
@@ -221,7 +221,7 @@ Claude classifies emails to help with processing:
 
 | Command | Effect |
 |---------|--------|
-| `/process-emails` | Start email processing session |
+| `/ops-inbox` | Start email processing session |
 | "Process all" | Work through entire queue |
 | "Process #N" | Handle specific email |
 | "Skip #N" | Remove without response |
@@ -320,9 +320,20 @@ Brikette/
    - You should see:
      ```
      Brikette
-       Inbox
+       Queue
          Needs-Processing
-         Processing
+         In-Progress
+         Needs-Decision
+         Deferred
+       Outcome
+         Drafted
+         Acknowledged
+         Promotional
+         Spam
+       Agent
+         Codex
+         Claude
+         Human
        Drafts
          Ready-For-Review
          Sent
@@ -332,8 +343,16 @@ Brikette/
 
 | Label | Purpose | Applied By | Removed By |
 |-------|---------|------------|------------|
-| `Brikette/Inbox/Needs-Processing` | Customer inquiry awaiting response | GAS monitor script (automatic) | MCP tool when processing starts |
-| `Brikette/Inbox/Processing` | Email currently being handled | MCP tool when fetching email | MCP tool when draft created |
+| `Brikette/Queue/Needs-Processing` | Customer inquiry awaiting response | MCP organize tool | MCP tool when processing starts |
+| `Brikette/Queue/In-Progress` | Email currently being handled | MCP tool when fetching email | MCP tool when marked processed |
+| `Brikette/Queue/Needs-Decision` | Workflow/manual decision needed | MCP tool (`awaiting_agreement`/workflow actions) | MCP tool when resolved |
+| `Brikette/Queue/Deferred` | Deferred for manual follow-up | MCP organize/mark tool | MCP tool when resumed |
+| `Brikette/Outcome/Drafted` | Draft created for review | MCP tool when draft created | Manual cleanup/migration |
+| `Brikette/Outcome/Promotional` | Marketing/newsletter classification | MCP organize/mark tool | Manual cleanup/migration |
+| `Brikette/Outcome/Spam` | Spam classification | MCP organize/mark tool | Manual cleanup/migration |
+| `Brikette/Agent/Codex` | Last processing owner (Codex) | MCP tool when claiming/marking | Replaced by next actor label |
+| `Brikette/Agent/Claude` | Last processing owner (Claude) | MCP tool when claiming/marking | Replaced by next actor label |
+| `Brikette/Agent/Human` | Last processing owner (Human) | MCP tool when claiming/marking | Replaced by next actor label |
 | `Brikette/Drafts/Ready-For-Review` | Draft ready for Pete to review | MCP tool when draft created | GAS script when draft sent |
 | `Brikette/Drafts/Sent` | Response was sent (for archival) | GAS script when draft sent | Never (archive marker) |
 
@@ -341,7 +360,9 @@ Brikette/
 
 For visual clarity, you can assign colors:
 - `Needs-Processing`: Yellow (attention needed)
-- `Processing`: Blue (in progress)
+- `In-Progress`: Blue (in progress)
+- `Needs-Decision`: Orange (manual decision)
+- `Deferred`: Gray (parked)
 - `Ready-For-Review`: Green (action available)
 - `Sent`: Gray (archived)
 

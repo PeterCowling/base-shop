@@ -1,14 +1,14 @@
 ---
 Type: Plan
 Status: Superseded
-Superseded-by: docs/plans/agent-setup-improvement-fact-find.md
+Superseded-by: docs/plans/agent-setup-improvement-wf-fact-find.md
 Domain: DevEx/Tooling
 Last-reviewed: 2026-01-27
 Relates-to charter: none
 Created: 2026-01-20
 Created-by: Claude Opus 4.5
 Last-updated: 2026-02-11
-Last-updated-by: Claude Opus 4.6 (fact-check + superseded by fresh fact-find)
+Last-updated-by: Claude Opus 4.6 (review-fact-check + superseded by fresh wf-fact-find)
 ---
 
 # Agent Enhancement Plan
@@ -70,14 +70,14 @@ Key insight from external research: **Tools should be agent-first** — designed
 
 ### Skill Inventory (Current)
 
-> **Note (2026-02-11 fact-check):** This snapshot listed 14 skills at plan creation (2026-01-20). The repo now contains **40 skills** in `.claude/skills/`. The original 14 are listed below; see `.claude/skills/*/SKILL.md` for the full current set. Skills were NOT migrated to `.agents/skills/` (see Phase 2 tasks).
+> **Note (2026-02-11 review-fact-check):** This snapshot listed 14 skills at plan creation (2026-01-20). The repo now contains **40 skills** in `.claude/skills/`. The original 14 are listed below; see `.claude/skills/*/SKILL.md` for the full current set. Skills were NOT migrated to `.agents/skills/` (see Phase 2 tasks).
 
 ```
 .claude/skills/
-├── fact-find/SKILL.md            ✅ Core workflow
-├── plan-feature/SKILL.md         ✅ Core workflow
-├── build-feature/SKILL.md        ✅ Core workflow
-├── re-plan/SKILL.md              ✅ Core workflow
+├── wf-fact-find/SKILL.md            ✅ Core workflow
+├── wf-plan/SKILL.md         ✅ Core workflow
+├── wf-build/SKILL.md        ✅ Core workflow
+├── wf-replan/SKILL.md              ✅ Core workflow
 ├── create-ui-component/SKILL.md  ✅ Component creation
 ├── add-component-tests/SKILL.md  ✅ Testing
 ├── add-form-validation/SKILL.md  ✅ Forms
@@ -85,8 +85,8 @@ Key insight from external research: **Tools should be agent-first** — designed
 ├── create-server-action/SKILL.md ✅ Next.js
 ├── create-api-endpoint/SKILL.md  ✅ API routes
 ├── create-prisma-model/SKILL.md  ✅ Database
-├── refactor-component/SKILL.md   ✅ Refactoring
-├── apply-design-system/SKILL.md  ✅ Design tokens
+├── code-refactor/SKILL.md   ✅ Refactoring
+├── code-design-system/SKILL.md  ✅ Design tokens
 └── migrate-to-app-router/SKILL.md ✅ Migration
 ```
 
@@ -231,7 +231,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - **Fact-check (2026-02-11)**: Partially done. `scripts/validate-agent-manifest.js` exists but is a stub (`console.log('PASS'); process.exit(0)`) — no actual validation logic. CI step exists in `.github/workflows/ci.yml` (line 127) but runs the no-op stub. `js-yaml` is not a direct dependency.
 
 - [ ] **AGENT-05**: Migrate core skills to `.agents/`
-  - **Scope**: Migrate only core workflow skills first (`plan-feature.md`, `build-feature.md`)
+  - **Scope**: Migrate only core workflow skills first (`wf-plan.md`, `wf-build.md`)
   - **Remaining 10 skills**: Left in `.claude/skills/` for now; migrate incrementally in follow-up tasks or leave in place if working
   - Update references in `AGENTS.md`, `CODEX.md`, `CLAUDE.md`
   - **Backward compatibility strategy (no symlinks)**:
@@ -239,7 +239,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
       ```markdown
       # Moved
 
-      This skill has moved to `.agents/skills/workflows/plan-feature.md`.
+      This skill has moved to `.agents/skills/workflows/wf-plan.md`.
 
       Please read the new location.
       ```
@@ -268,10 +268,10 @@ Phases are thematic groupings; the critical path is the actual execution order a
 - [x] **AGENT-08**: Create troubleshooting skill tree
   - Extract troubleshooting from `CLAUDE.md` into discrete skills
   - Jest ESM/CJS issues → `testing/jest-esm-issues.md`
-  - Git state confusion → `safety/git-recovery.md`
-  - Dependency conflicts → `domain/dependency-conflicts.md`
+  - Git state confusion → `safety/ops-git-recover.md`
+  - Dependency conflicts → `domain/code-fix-deps.md`
   - Affects: New skill files
-  - **Fact-check (2026-02-11)**: Done, but skills live in `.claude/skills/` (not `.agents/skills/`): `jest-esm-issues/SKILL.md`, `git-recovery/SKILL.md`, `dependency-conflicts/SKILL.md`.
+  - **Fact-check (2026-02-11)**: Done, but skills live in `.claude/skills/` (not `.agents/skills/`): `jest-esm-issues/SKILL.md`, `ops-git-recover/SKILL.md`, `code-fix-deps/SKILL.md`.
 
 - [ ] **AGENT-09**: Add "load more context" protocol to AGENTS.md
   - Document how agents should discover and load skills
@@ -288,12 +288,12 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - Skill template for end-of-session reflection
   - Questions: problems, patterns, skill gaps, tooling ideas
   - Output format: structured markdown in `.agents/learnings/`
-  - Affects: `.claude/skills/session-reflect/SKILL.md` (actual location; planned `.agents/skills/workflows/session-reflection.md` was never created)
-  - **Fact-check (2026-02-11)**: Done, but at `.claude/skills/session-reflect/SKILL.md` not the planned `.agents/` path. `.agents/README.md` notes the original learnings-based approach is DEPRECATED in favor of the active feedback-loop in `/session-reflect`.
+  - Affects: `.claude/skills/meta-reflect/SKILL.md` (actual location; planned `.agents/skills/workflows/meta-reflection.md` was never created)
+  - **Fact-check (2026-02-11)**: Done, but at `.claude/skills/meta-reflect/SKILL.md` not the planned `.agents/` path. `.agents/README.md` notes the original learnings-based approach is DEPRECATED in favor of the active feedback-loop in `/meta-reflect`.
 
 - [x] **AGENT-11**: Initialize learnings directory
   - Directory: `.agents/learnings/` with `.gitkeep` only
-  - **Note**: Template lives in `.agents/skills/workflows/session-reflection.md` (AGENT-10), not in learnings dir
+  - **Note**: Template lives in `.agents/skills/workflows/meta-reflection.md` (AGENT-10), not in learnings dir
   - **Rationale**: `learnings/` is gitignored for ephemeral outputs; tracked templates belong in `skills/`
   - Cleanup instructions in `.agents/README.md`
   - Affects: `.agents/learnings/.gitkeep`
@@ -516,7 +516,7 @@ If the `.agents/` migration causes problems:
 
 1. **Immediate**: Stub files in `.claude/skills/` still work — agents can follow redirects or ignore them
 2. **Short-term**: Restore **original** skill files (not stubs) to `.claude/skills/` from git history
-   - Use: `git checkout <commit-before-migration> -- .claude/skills/plan-feature/SKILL.md .claude/skills/build-feature/SKILL.md`
+   - Use: `git checkout <commit-before-migration> -- .claude/skills/wf-plan/SKILL.md .claude/skills/wf-build/SKILL.md`
 3. **Full rollback**:
    - `git rm -r .agents/`
    - Restore original `.claude/skills/` files from commit before migration (replaces stubs with originals)
@@ -538,7 +538,7 @@ The `.claude/` directory is Claude Code-specific. OpenAI's Codex may not read it
 
 During migration:
 1. Keep stub files in `.claude/skills/` that redirect to `.agents/skills/`
-   - Example stub content: `# Moved to .agents/skills/workflows/plan-feature.md`
+   - Example stub content: `# Moved to .agents/skills/workflows/wf-plan.md`
 2. Update documentation to reference new locations
 3. Remove stubs after confirming both agents use `.agents/` paths reliably
 

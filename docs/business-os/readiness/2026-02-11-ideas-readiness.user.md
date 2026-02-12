@@ -9,7 +9,7 @@ Max-Age-Days: 21
 
 # Ideas Readiness Refresh
 
-Readiness status: BLOCKED. Do not run `/ideas-go-faster` until unmapped app ownership is resolved.
+Readiness status: BLOCKED. Do not run `/idea-generate` until unmapped app ownership is resolved.
 
 ## 1. Scope and Method
 

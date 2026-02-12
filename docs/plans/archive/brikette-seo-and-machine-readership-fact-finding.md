@@ -315,7 +315,7 @@ Evidence: No recent commits directly touching `metadata.ts` or `seo.ts` — href
 
 ## External Research (If needed)
 
-Not required for this fact-find. All necessary information available in repo and production inspection.
+Not required for this wf-fact-find. All necessary information available in repo and production inspection.
 
 ## Questions
 
@@ -341,7 +341,7 @@ Not required for this fact-find. All necessary information available in repo and
 
 None. All questions resolved via repo audit and production inspection.
 
-## Confidence Inputs (for /plan-feature)
+## Confidence Inputs (for /wf-plan)
 
 ### Implementation: 85%
 
@@ -496,7 +496,7 @@ None. All questions resolved via repo audit and production inspection.
 
 **Blocking items:** None
 
-**Recommended next step:** Proceed to `/plan-feature` with the following task priorities:
+**Recommended next step:** Proceed to `/wf-plan` with the following task priorities:
 - P0 (must-do): Tasks 1, 2, 3, 4 (hreflang, tests, canonical, API refs)
 - P1 (should-do): Tasks 5, 6, 9 (social metadata, SearchAction, redirects)
 - P2 (nice-to-have): Tasks 7, 8 (artifact sync, validation checklist)

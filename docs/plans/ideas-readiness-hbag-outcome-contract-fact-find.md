@@ -8,11 +8,11 @@ Created: 2026-02-11
 Last-updated: 2026-02-11
 Last-reviewed: 2026-02-11
 Relates-to charter: docs/business-os/business-os-charter.md
-Feature-Slug: ideas-readiness-hbag-outcome-contract
+Feature-Slug: idea-readiness-hbag-outcome-contract
 Deliverable-Type: product-brief
 Execution-Track: business-artifact
-Primary-Execution-Skill: update-business-plan
-Supporting-Skills: ideas-readiness
+Primary-Execution-Skill: biz-update-plan
+Supporting-Skills: idea-readiness
 Business-OS-Integration: on
 Business-Unit: HBAG
 ---

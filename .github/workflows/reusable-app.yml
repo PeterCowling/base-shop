@@ -51,6 +51,11 @@ on:
         required: false
         type: string
         default: ""
+      # Extra routes to check after deploy (space-separated, e.g. "/api/health /shop")
+      healthcheck-extra-routes:
+        required: false
+        type: string
+        default: "/api/health"
       # Number of Jest test shards. Set >1 to enable sharded parallel tests
       # with changed-file detection. Default 1 = single test job, full suite.
       test-shard-count:
@@ -687,7 +692,7 @@ jobs:
         # copy-pasting it.)
         env:
           BASE_URL: ${{ inputs.healthcheck-base-url }}
-          EXTRA_ROUTES: "/api/health"
+          EXTRA_ROUTES: ${{ inputs.healthcheck-extra-routes }}
           MAX_RETRIES: "10"
           RETRY_DELAY: "6"
 

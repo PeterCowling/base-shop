@@ -58,6 +58,7 @@ type TopicGuideSectionListProps = {
   keyPrefix: "content" | "directions";
   topics: TopicConfig[];
   groupedGuides: GroupedGuides;
+  guideCountOverrides?: Partial<Record<string, number>>;
   lang: AppLanguage;
   translate: Translator;
   fallbackTranslate: Translator;
@@ -176,6 +177,7 @@ function TopicGuideSectionList({
   keyPrefix,
   topics,
   groupedGuides,
+  guideCountOverrides,
   lang,
   translate,
   fallbackTranslate,
@@ -194,6 +196,7 @@ function TopicGuideSectionList({
             key={`${keyPrefix}-${topic.id}`}
             topic={topic}
             guides={topicGuides}
+            guideCountOverride={guideCountOverrides?.[topic.id]}
             lang={lang}
             translate={translate}
             fallbackTranslate={fallbackTranslate}
@@ -254,8 +257,16 @@ function GroupedGuideCollection({
     () => filterTopicConfigsForSection(topicConfigs, groupedContentGuides, normalizedTopicParam),
     [topicConfigs, groupedContentGuides, normalizedTopicParam],
   );
+  const contentGuideCountOverrides = useMemo<Partial<Record<string, number>>>(() => {
+    const beachesGuideCount = groupedGuides.beaches?.length ?? 0;
+    if (beachesGuideCount === 0) return {};
+    return { beaches: beachesGuideCount };
+  }, [groupedGuides]);
   const directionsTopicConfigs = useMemo(
-    () => filterTopicConfigsForSection(topicConfigs, groupedDirectionsGuides, normalizedTopicParam),
+    () =>
+      filterTopicConfigsForSection(topicConfigs, groupedDirectionsGuides, normalizedTopicParam).filter(
+        (config) => config.id !== "beaches",
+      ),
     [topicConfigs, groupedDirectionsGuides, normalizedTopicParam],
   );
 
@@ -287,6 +298,7 @@ function GroupedGuideCollection({
           keyPrefix="content"
           topics={contentTopicConfigs}
           groupedGuides={groupedContentGuides}
+          guideCountOverrides={contentGuideCountOverrides}
           lang={lang}
           translate={translate}
           fallbackTranslate={fallbackGuidesT}

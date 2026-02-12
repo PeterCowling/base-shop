@@ -36,6 +36,7 @@ export type TopicConfig = {
 export type GroupedGuideSectionProps = {
   topic: TopicConfig;
   guides: GuideMeta[];
+  guideCountOverride?: number;
   lang: AppLanguage;
   translate: (key: string) => string;
   fallbackTranslate?: (key: string) => string;
@@ -44,7 +45,7 @@ export type GroupedGuideSectionProps = {
   resolveSummary?: (guide: GuideMeta) => string | undefined;
 };
 
-// Hero-style header with image background and overlay
+// Hero-style header with image background
 const HEADER_CLASSES = [
   "relative",
   "overflow-hidden",
@@ -63,22 +64,6 @@ const IMAGE_CLASSES = [
   "inset-0",
   "size-full",
   "object-cover",
-] as const;
-
-// Gradient overlay for text readability
-const OVERLAY_CLASSES = [
-  "absolute",
-  "inset-0",
-  // Mobile: stronger gradient from bottom
-  "bg-gradient-to-t",
-  "from-black/80",
-  "via-black/40",
-  "to-transparent",
-  // Desktop: add side gradient for wider layouts
-  "lg:bg-gradient-to-r",
-  "lg:from-black/70",
-  "lg:via-black/30",
-  "lg:to-transparent",
 ] as const;
 
 // Content container positioned over the image
@@ -142,6 +127,7 @@ const DESCRIPTION_CLASSES = [
 function GroupedGuideSection({
   topic,
   guides,
+  guideCountOverride,
   lang,
   translate,
   fallbackTranslate,
@@ -152,7 +138,7 @@ function GroupedGuideSection({
   // Don't render section header if there are no guides (e.g., all guides in category are draft)
   if (!guides.length) return null;
 
-  const guideCount = guides.length;
+  const guideCount = guideCountOverride ?? guides.length;
   const countLabel = String(guideCount);
 
   const resolveLabel = (guideKey: string): string => {
@@ -200,9 +186,6 @@ function GroupedGuideSection({
           height={640}
           priority={false}
         />
-
-        {/* Gradient overlay */}
-        <div className={clsx(OVERLAY_CLASSES)} aria-hidden="true" />
 
         {/* Content */}
         <div className={clsx(CONTENT_CLASSES)}>

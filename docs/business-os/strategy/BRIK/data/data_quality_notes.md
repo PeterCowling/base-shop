@@ -1,3 +1,8 @@
+---
+Type: Reference
+Status: Active
+---
+
 # Cloudflare monthly proxies extraction
 
 - generated-at: 2026-02-12T12:48:13.090Z

@@ -1,3 +1,8 @@
+---
+Type: Reference
+Status: Active
+---
+
 # net_value_by_month.csv provenance
 
 - derived from `bookings_by_month.csv` values produced from `export_19519177.xls`.

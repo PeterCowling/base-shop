@@ -174,6 +174,15 @@ export function useGuideSearch(
 
       setResults(searchResults);
 
+      // Fire GA4 search event (GA4-06)
+      const win = window as unknown as { gtag?: (...args: unknown[]) => void };
+      if (typeof win.gtag === "function") {
+        win.gtag("event", "search", {
+          search_term: searchQuery,
+          results_count: searchResults.length,
+        });
+      }
+
       // Get suggestions if no results and suggestions are enabled
       if (includeSuggestions && searchResults.length === 0) {
         const words = searchQuery.trim().split(/\s+/);

@@ -51,16 +51,28 @@ function ApartmentBookContent({ lang }: Props) {
     const plan = selectedPlan || "flex";
     const octorateUrl = buildOctorateLink(checkin, checkout, plan);
 
+    // Calculate nights for GA4 e-commerce (GA4-07)
+    const nights = Math.max(
+      1,
+      Math.round(
+        (new Date(checkout).getTime() - new Date(checkin).getTime()) /
+          (1000 * 60 * 60 * 24),
+      ),
+    );
+
     // Fire GA4 event
     const win = window as unknown as { gtag?: (...args: unknown[]) => void };
     if (typeof win.gtag === "function") {
       win.gtag("event", "begin_checkout", {
         currency: "EUR",
+        value: nights * 150,
         items: [
           {
             item_id: "apartment",
             item_name: "apartment",
             item_category: plan,
+            price: 150,
+            quantity: nights,
           },
         ],
       });

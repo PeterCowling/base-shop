@@ -229,6 +229,46 @@ describe('GuidedOnboardingFlow', () => {
     });
   });
 
+  describe('OB-04: support/help link', () => {
+    it('TC-01: Step 1 renders "Need help?" link with correct mailto href', () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      const helpLink = screen.getByRole('link', { name: /helpLink/i });
+      expect(helpLink).toBeDefined();
+      expect(helpLink.getAttribute('href')).toContain('mailto:hostelbrikette@gmail.com');
+      expect(helpLink.getAttribute('href')).toContain('step-1');
+    });
+
+    it('TC-02: clicking help link fires utility_action_used analytics event', () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+      (recordActivationFunnelEvent as jest.Mock).mockClear();
+
+      fireEvent.click(screen.getByRole('link', { name: /helpLink/i }));
+
+      expect(recordActivationFunnelEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'utility_action_used',
+          context: expect.objectContaining({ surface: 'onboarding' }),
+        }),
+      );
+    });
+
+    it('TC-03: help link present on all 3 steps', () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      // Step 1
+      expect(screen.getByRole('link', { name: /helpLink/i })).toBeDefined();
+
+      // Advance to Step 2
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      expect(screen.getByRole('link', { name: /helpLink/i })).toBeDefined();
+
+      // Advance to Step 3
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      expect(screen.getByRole('link', { name: /helpLink/i })).toBeDefined();
+    });
+  });
+
   describe('OB-03: error toast on API failures', () => {
     it('TC-01: setPersonalization rejects → danger toast rendered with retry action', async () => {
       mockSetPersonalization.mockRejectedValueOnce(new Error('Network error'));

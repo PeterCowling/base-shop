@@ -13,11 +13,13 @@ Use this skill to invert planning: user provides the business idea and products,
 /ideas-forecasting
 /ideas-forecasting --biz=HEAD
 /ideas-forecasting --biz=PET --country=IT --horizon-days=90
+/ideas-forecasting --biz=PET --launch-surface=pre-website
 ```
 
 Defaults:
 - `horizon-days=90`
 - `country=IT` if not provided
+- `launch-surface=website-live` unless user states no site is ready
 - focus: speed to first sales for startup businesses
 
 ## Inputs
@@ -32,7 +34,43 @@ Strongly recommended:
 - `Channels`: DTC site, marketplaces, social commerce, retail, etc.
 - `Budget guardrails`: launch budget cap and ad budget guardrail
 - `Stock timeline`: date first sellable stock is available
+- `Launch surface`: `website-live` or `pre-website`
 - `Constraints`: legal, ops, brand, geography, supply chain
+
+## Launch Surface Modes
+
+### `website-live`
+
+Use standard ecommerce funnel forecasting.
+
+Core forecast metrics:
+- sessions
+- conversion rate
+- AOV
+- orders
+- gross revenue
+- gross margin
+- CAC
+
+### `pre-website`
+
+Use this when no production website is ready. Forecast around early sales validation channels and assisted commerce.
+
+Core forecast metrics:
+- qualified leads
+- assisted order attempts
+- assisted order conversion rate
+- pre-order/deposit count (if used)
+- average order value proxy
+- gross revenue
+- gross margin
+- blended acquisition cost proxy
+
+Channel focus for research and recommendations:
+- lightweight landing + form capture
+- social DM/WhatsApp assisted sales
+- marketplace trial listing (if appropriate)
+- community/partner channels
 
 ## Operating Rules
 
@@ -55,7 +93,8 @@ Strongly recommended:
 
 1. Load `references/deep-research-prompt-template.md`.
 2. Fill placeholders from intake packet.
-3. Keep expected outputs contract intact.
+3. Set `launch-surface` explicitly and enforce mode-specific metric guidance.
+4. Keep expected outputs contract intact.
 
 ### Stage 3: Run Research
 
@@ -66,15 +105,9 @@ Strongly recommended:
 ### Stage 4: Forecast and Goal Proposal
 
 Produce:
-1. 90-day scenario forecast (`P10/P50/P90`) for:
-   - sessions
-   - conversion rate
-   - AOV
-   - orders
-   - gross revenue
-   - gross margin
-   - CAC (if paid channel assumed)
-   - payback proxy (when enough data exists)
+1. 90-day scenario forecast (`P10/P50/P90`) using mode-appropriate metrics:
+   - if `website-live`: sessions, conversion rate, AOV, orders, gross revenue, gross margin, CAC, payback proxy
+   - if `pre-website`: qualified leads, assisted order attempts, assisted conversion, pre-orders/deposits (if used), AOV proxy, gross revenue, gross margin, acquisition cost proxy
 2. competitor benchmark table (pricing, offer structure, channel posture)
 3. proposed targets for first 90 days and first 4 weeks
 4. assumption register with confidence tags (`high/medium/low`)
@@ -95,15 +128,16 @@ If this run is intended to seed SFS-00, also write:
 
 1. `Executive Summary` (<=12 bullets)
 2. `Input Packet` (what user provided)
-3. `Competitor Benchmark Table` (with source links)
-4. `90-Day Forecast Table (P10/P50/P90)`
-5. `Proposed Outcome Statement`
-6. `Proposed Targets`
-7. `Assumptions Register`
-8. `Risk Register`
-9. `First-14-Day Validation Plan`
-10. `Source List` (URL + access date)
-11. `Confidence and Caveats`
+3. `Launch Surface Mode` (`website-live` or `pre-website`) and chosen metric set
+4. `Competitor Benchmark Table` (with source links)
+5. `90-Day Forecast Table (P10/P50/P90)`
+6. `Proposed Outcome Statement`
+7. `Proposed Targets`
+8. `Assumptions Register`
+9. `Risk Register`
+10. `First-14-Day Validation Plan`
+11. `Source List` (URL + access date)
+12. `Confidence and Caveats`
 
 ## Definition of Expected Outcomes
 
@@ -131,3 +165,4 @@ Use forecast evidence to propose these fields; do not leave them blank.
 3. No distinction between observed data and inferred estimates.
 4. No first-14-day validation plan.
 5. Proposed goals that ignore user budget/stock constraints.
+6. Uses website-only metrics in `pre-website` mode without conversion mapping.

@@ -40,7 +40,15 @@ jobs:
           node scripts/ci/path-classifier.cjs --config merge_gate --paths-file /tmp/changed-files.txt --format outputs >> "$GITHUB_OUTPUT"
 
       - name: Lint GitHub Actions workflows
-        if: ${{ steps.filter.outputs.github_config == 'true' }}
+        if: >-
+          ${{
+            steps.filter.outputs.github_config == 'true' &&
+            (
+              github.event_name != 'pull_request' ||
+              github.base_ref != 'main' ||
+              !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:')
+            )
+          }}
         uses: rhysd/actionlint@v1.7.10
 
       - name: Wait for required workflows

@@ -68,8 +68,8 @@ describe('GuidedOnboardingFlow', () => {
 
     expect(screen.getByText('Privacy reassurance')).toBeDefined();
 
-    fireEvent.click(screen.getByRole('button', { name: 'ferry' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Confident' }));
+    fireEvent.click(screen.getByRole('radio', { name: /Ferry/i }));
+    fireEvent.click(screen.getByRole('radio', { name: /Confident/i }));
     fireEvent.click(screen.getByRole('button', { name: /Save and continue/i }));
 
     await waitFor(() => {
@@ -85,7 +85,7 @@ describe('GuidedOnboardingFlow', () => {
     fireEvent.change(methodSelect, {
       target: { value: 'train' },
     });
-    fireEvent.click(screen.getByRole('button', { name: /Save ETA/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Save and continue/i }));
 
     await waitFor(() => {
       expect(mockSetEta).toHaveBeenCalledWith('17:30-18:00', 'train', '');
@@ -98,7 +98,7 @@ describe('GuidedOnboardingFlow', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
     fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Skip to dashboard' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
 
     await waitFor(() => {
       expect(onComplete).toHaveBeenCalled();

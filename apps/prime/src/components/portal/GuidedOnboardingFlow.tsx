@@ -4,6 +4,7 @@ import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from 'react-i18next';
 import { Check, ChevronRight, ExternalLink, MapPin } from 'lucide-react';
 
+import { Toast } from '@acme/design-system/atoms';
 import { StepFlowShell } from '@acme/design-system/primitives';
 import ExperimentGate from '@acme/ui/components/ab/ExperimentGate';
 
@@ -94,6 +95,7 @@ export default function GuidedOnboardingFlow({
   const [rulesReviewed, setRulesReviewed] = useState(false);
   const [locationSaved, setLocationSaved] = useState(false);
   const [lastCompletedItem, setLastCompletedItem] = useState<keyof ChecklistProgress | null>(null);
+  const [errorToast, setErrorToast] = useState<{ message: string; retry: () => void } | null>(null);
 
   const didInitRef = useRef(false);
   const celebrationTimeoutRef = useRef<number | null>(null);
@@ -241,6 +243,12 @@ export default function GuidedOnboardingFlow({
 
       showCelebration(t('guidedFlow.step1.celebration'));
       setStep(2);
+    } catch {
+      setErrorToast({
+        message: t('guidedFlow.errors.step1'),
+        retry: () => void handleStepOneContinue(),
+      });
+      setStep(2);
     } finally {
       setIsSaving(false);
     }
@@ -264,6 +272,12 @@ export default function GuidedOnboardingFlow({
         },
       });
       showCelebration(t('guidedFlow.step2.celebration'));
+      setStep(3);
+    } catch {
+      setErrorToast({
+        message: t('guidedFlow.errors.step2'),
+        retry: () => void handleStepTwoContinue(),
+      });
       setStep(3);
     } finally {
       setIsSaving(false);
@@ -303,6 +317,13 @@ export default function GuidedOnboardingFlow({
       });
 
       showCelebration(t('guidedFlow.step3.celebration'));
+      flowCompletedRef.current = true;
+      onComplete();
+    } catch {
+      setErrorToast({
+        message: t('guidedFlow.errors.step3'),
+        retry: () => void handleFinish(),
+      });
       flowCompletedRef.current = true;
       onComplete();
     } finally {
@@ -720,6 +741,16 @@ export default function GuidedOnboardingFlow({
           </section>
         )}
         </StepFlowShell>
+
+        <Toast
+          open={errorToast !== null}
+          message={errorToast?.message ?? ''}
+          variant="danger"
+          duration={5000}
+          actionLabel={t('guidedFlow.errors.retry')}
+          onAction={errorToast?.retry}
+          onClose={() => setErrorToast(null)}
+        />
       </div>
     </main>
   );

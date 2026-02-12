@@ -28,6 +28,21 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+jest.mock('@acme/design-system/atoms', () => ({
+  Toast: ({ open, message, actionLabel, onAction, variant }: {
+    open: boolean; message: string; actionLabel?: string;
+    onAction?: () => void; variant?: string;
+  }) =>
+    open ? (
+      <div data-cy="error-toast" data-variant={variant}>
+        <span>{message}</span>
+        {actionLabel && onAction && (
+          <button type="button" onClick={onAction}>{actionLabel}</button>
+        )}
+      </div>
+    ) : null,
+}));
+
 describe('GuidedOnboardingFlow', () => {
   const mockSetPersonalization = jest.fn().mockResolvedValue(undefined);
   const mockSaveRoute = jest.fn().mockResolvedValue(undefined);
@@ -211,6 +226,104 @@ describe('GuidedOnboardingFlow', () => {
         ([arg]: [{ type: string }]) => arg.type === 'guided_flow_abandoned',
       );
       expect(abandonCalls).toHaveLength(0);
+    });
+  });
+
+  describe('OB-03: error toast on API failures', () => {
+    it('TC-01: setPersonalization rejects → danger toast rendered with retry action', async () => {
+      mockSetPersonalization.mockRejectedValueOnce(new Error('Network error'));
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      fireEvent.click(screen.getByRole('radio', { name: /ferry/i }));
+      fireEvent.click(screen.getByRole('radio', { name: /confident/i }));
+      fireEvent.click(screen.getByRole('button', { name: /saveAndContinue/i }));
+
+      await waitFor(() => {
+        const toast = screen.getByTestId('error-toast');
+        expect(toast).toBeDefined();
+        expect(toast.getAttribute('data-variant')).toBe('danger');
+        expect(screen.getByText('guidedFlow.errors.step1')).toBeDefined();
+      });
+    });
+
+    it('TC-02: clicking "Try again" on error toast retries setPersonalization', async () => {
+      mockSetPersonalization.mockRejectedValueOnce(new Error('Network error'));
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      fireEvent.click(screen.getByRole('radio', { name: /ferry/i }));
+      fireEvent.click(screen.getByRole('radio', { name: /confident/i }));
+      fireEvent.click(screen.getByRole('button', { name: /saveAndContinue/i }));
+
+      await waitFor(() => {
+        expect(screen.getByTestId('error-toast')).toBeDefined();
+      });
+
+      // Reset mock to succeed on retry
+      mockSetPersonalization.mockResolvedValueOnce(undefined);
+      fireEvent.click(screen.getByText('guidedFlow.errors.retry'));
+
+      await waitFor(() => {
+        expect(mockSetPersonalization).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    it('TC-03: setEta rejects → toast rendered; flow advances to Step 3', async () => {
+      mockSetEta.mockRejectedValueOnce(new Error('Network error'));
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      // Advance to Step 2 via skip
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+
+      // Submit Step 2
+      fireEvent.click(screen.getByRole('button', { name: /saveAndContinue/i }));
+
+      await waitFor(() => {
+        const toast = screen.getByTestId('error-toast');
+        expect(toast.getAttribute('data-variant')).toBe('danger');
+        expect(screen.getByText('guidedFlow.errors.step2')).toBeDefined();
+      });
+
+      // Flow should have advanced to Step 3 despite error
+      expect(screen.getByText('guidedFlow.step3.title')).toBeDefined();
+    });
+
+    it('TC-04: updateChecklistItem rejects → toast rendered; flow completes', async () => {
+      mockUpdateChecklistItem.mockRejectedValueOnce(new Error('Network error'));
+      const onComplete = jest.fn();
+      render(<GuidedOnboardingFlow onComplete={onComplete} guestFirstName="Jane" />);
+
+      // Advance to Step 3 via skips
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+
+      // Toggle one checklist item (cash)
+      fireEvent.click(screen.getByText('guidedFlow.step3.cashTitle'));
+
+      // Click Finish
+      fireEvent.click(screen.getByRole('button', { name: /finish/i }));
+
+      await waitFor(() => {
+        const toast = screen.getByTestId('error-toast');
+        expect(toast.getAttribute('data-variant')).toBe('danger');
+        expect(screen.getByText('guidedFlow.errors.step3')).toBeDefined();
+      });
+
+      // Flow should still complete despite error
+      expect(onComplete).toHaveBeenCalled();
+    });
+
+    it('TC-05: successful save → no error toast rendered', async () => {
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      fireEvent.click(screen.getByRole('radio', { name: /ferry/i }));
+      fireEvent.click(screen.getByRole('radio', { name: /confident/i }));
+      fireEvent.click(screen.getByRole('button', { name: /saveAndContinue/i }));
+
+      await waitFor(() => {
+        expect(mockSetPersonalization).toHaveBeenCalled();
+      });
+
+      expect(screen.queryByTestId('error-toast')).toBeNull();
     });
   });
 

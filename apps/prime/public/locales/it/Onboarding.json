@@ -34,6 +34,12 @@
       "methodLabel": "Mezzo di trasporto",
       "title": "Condividi il tuo orario di arrivo"
     },
+    "errors": {
+      "retry": "Riprova",
+      "step1": "Non \u00e8 stato possibile salvare le tue preferenze. Tocca per riprovare.",
+      "step2": "Non \u00e8 stato possibile salvare il tuo orario. Tocca per riprovare.",
+      "step3": "Non \u00e8 stato possibile salvare la checklist. Tocca per riprovare."
+    },
     "step3": {
       "cashDescription": "Tassa di soggiorno + deposito chiave in contanti \u2014 evita ritardi alla reception",
       "cashTitle": "Contanti per il check-in",

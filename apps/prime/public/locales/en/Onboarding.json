@@ -34,6 +34,12 @@
       "methodLabel": "Travel method",
       "title": "Share your ETA"
     },
+    "errors": {
+      "retry": "Try again",
+      "step1": "Couldn\u2019t save your preferences. Tap to retry.",
+      "step2": "Couldn\u2019t save your ETA. Tap to retry.",
+      "step3": "Couldn\u2019t save checklist. Tap to retry."
+    },
     "step3": {
       "cashDescription": "City tax + keycard deposit in cash \u2014 avoids delays at reception",
       "cashTitle": "Cash for check-in",

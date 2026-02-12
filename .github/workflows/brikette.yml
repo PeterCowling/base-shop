@@ -15,6 +15,8 @@ on:
       - "packages/platform-core/**"
       - "packages/telemetry/**"
       - "packages/ui/**"
+      - "lighthouserc.brikette.json"
+      - "lighthouserc.brikette.desktop.json"
       - ".github/workflows/brikette.yml"
       - ".github/workflows/reusable-app.yml"
   pull_request:
@@ -28,6 +30,8 @@ on:
       - "packages/platform-core/**"
       - "packages/telemetry/**"
       - "packages/ui/**"
+      - "lighthouserc.brikette.json"
+      - "lighthouserc.brikette.desktop.json"
       - ".github/workflows/brikette.yml"
       - ".github/workflows/reusable-app.yml"
   workflow_dispatch:

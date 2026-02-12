@@ -24,6 +24,10 @@ jest.mock('../../../lib/experiments/activationExperiments', () => ({
   }),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
+
 describe('GuidedOnboardingFlow', () => {
   const mockSetPersonalization = jest.fn().mockResolvedValue(undefined);
   const mockSaveRoute = jest.fn().mockResolvedValue(undefined);
@@ -78,26 +82,26 @@ describe('GuidedOnboardingFlow', () => {
   it('TC-02: step navigation preserves entered data between steps', async () => {
     render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
 
-    expect(screen.getByText('Privacy reassurance')).toBeDefined();
+    expect(screen.getByText('guidedFlow.step1.privacyTitle')).toBeDefined();
 
-    fireEvent.click(screen.getByRole('radio', { name: /Ferry/i }));
-    fireEvent.click(screen.getByRole('radio', { name: /Confident/i }));
-    fireEvent.click(screen.getByRole('button', { name: /Save and continue/i }));
+    fireEvent.click(screen.getByRole('radio', { name: /ferry/i }));
+    fireEvent.click(screen.getByRole('radio', { name: /confident/i }));
+    fireEvent.click(screen.getByRole('button', { name: /saveAndContinue/i }));
 
     await waitFor(() => {
       expect(mockSetPersonalization).toHaveBeenCalledWith('ferry', 'confident');
     });
 
-    const methodSelect = screen.getByLabelText('Travel method') as HTMLSelectElement;
+    const methodSelect = screen.getByLabelText('guidedFlow.step2.methodLabel') as HTMLSelectElement;
     expect(methodSelect.value).toBe('ferry');
 
-    fireEvent.change(screen.getByLabelText('Arrival time window'), {
+    fireEvent.change(screen.getByLabelText('guidedFlow.step2.etaLabel'), {
       target: { value: '17:30-18:00' },
     });
     fireEvent.change(methodSelect, {
       target: { value: 'train' },
     });
-    fireEvent.click(screen.getByRole('button', { name: /Save and continue/i }));
+    fireEvent.click(screen.getByRole('button', { name: /saveAndContinue/i }));
 
     await waitFor(() => {
       expect(mockSetEta).toHaveBeenCalledWith('17:30-18:00', 'train', '');
@@ -108,9 +112,9 @@ describe('GuidedOnboardingFlow', () => {
     const onComplete = jest.fn();
     render(<GuidedOnboardingFlow onComplete={onComplete} guestFirstName="Jane" />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+    fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+    fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+    fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
 
     await waitFor(() => {
       expect(onComplete).toHaveBeenCalled();
@@ -122,7 +126,7 @@ describe('GuidedOnboardingFlow', () => {
     it('TC-01: clicking Skip on Step 1 fires guided_step_skipped event', () => {
       render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
 
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
 
       expect(recordActivationFunnelEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -136,11 +140,11 @@ describe('GuidedOnboardingFlow', () => {
       render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
 
       // Advance to Step 2 via skip
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
       (recordActivationFunnelEvent as jest.Mock).mockClear();
 
       // Now on Step 2 — skip it
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
 
       expect(recordActivationFunnelEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -154,12 +158,12 @@ describe('GuidedOnboardingFlow', () => {
       render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
 
       // Advance to Step 3 via skips
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
       (recordActivationFunnelEvent as jest.Mock).mockClear();
 
       // Now on Step 3 — skip it
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
 
       expect(recordActivationFunnelEvent).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -192,9 +196,9 @@ describe('GuidedOnboardingFlow', () => {
       );
 
       // Complete the full flow via skips
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
-      fireEvent.click(screen.getByRole('button', { name: 'Skip for now' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
+      fireEvent.click(screen.getByRole('button', { name: 'guidedFlow.skipButton' }));
 
       await waitFor(() => {
         expect(onComplete).toHaveBeenCalled();
@@ -207,6 +211,48 @@ describe('GuidedOnboardingFlow', () => {
         ([arg]: [{ type: string }]) => arg.type === 'guided_flow_abandoned',
       );
       expect(abandonCalls).toHaveLength(0);
+    });
+  });
+
+  describe('OB-02: i18n extraction', () => {
+    it('TC-06: en/Onboarding.json has guidedFlow section with all required keys', () => {
+      const en = require('../../../../public/locales/en/Onboarding.json');
+      expect(en.guidedFlow).toBeDefined();
+      expect(en.guidedFlow.step1.title).toBeDefined();
+      expect(en.guidedFlow.step1.titleWithName).toContain('{{name}}');
+      expect(en.guidedFlow.step2.title).toBeDefined();
+      expect(en.guidedFlow.step3.title).toBeDefined();
+      expect(en.guidedFlow.skipButton).toBeDefined();
+      expect(en.guidedFlow.saveAndContinue).toBeDefined();
+      expect(en.guidedFlow.finish).toBeDefined();
+      expect(en.guidedFlow.methods.ferry).toBeDefined();
+      expect(en.guidedFlow.methods.bus).toBeDefined();
+      expect(en.guidedFlow.methods.train).toBeDefined();
+      expect(en.guidedFlow.methods.taxi).toBeDefined();
+      expect(en.guidedFlow.methods.private).toBeDefined();
+      expect(en.guidedFlow.methods.other).toBeDefined();
+    });
+
+    it('TC-07: it/Onboarding.json guidedFlow section has same key structure as EN', () => {
+      const en = require('../../../../public/locales/en/Onboarding.json');
+      const it = require('../../../../public/locales/it/Onboarding.json');
+
+      function collectKeys(obj: Record<string, unknown>, prefix = ''): string[] {
+        const keys: string[] = [];
+        for (const [key, value] of Object.entries(obj)) {
+          const fullKey = prefix ? `${prefix}.${key}` : key;
+          if (typeof value === 'object' && value !== null) {
+            keys.push(...collectKeys(value as Record<string, unknown>, fullKey));
+          } else {
+            keys.push(fullKey);
+          }
+        }
+        return keys.sort();
+      }
+
+      const enKeys = collectKeys(en.guidedFlow);
+      const itKeys = collectKeys(it.guidedFlow);
+      expect(itKeys).toEqual(enKeys);
     });
   });
 });

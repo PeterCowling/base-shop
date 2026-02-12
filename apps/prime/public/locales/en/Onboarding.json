@@ -1,4 +1,52 @@
 {
+  "guidedFlow": {
+    "finish": "Finish",
+    "methods": {
+      "bus": "Bus",
+      "ferry": "Ferry",
+      "other": "Other",
+      "private": "Private",
+      "taxi": "Taxi",
+      "train": "Train"
+    },
+    "saveAndContinue": "Save and continue",
+    "skipButton": "Skip for now",
+    "step1": {
+      "arrivalMethodLabel": "How are you most likely arriving?",
+      "celebration": "Great start. Your arrival path is now personalized.",
+      "confident": "Confident",
+      "confidenceLabel": "How confident do you feel about getting here?",
+      "descriptionControl": "Finish these quick steps to reduce reception wait time and avoid arrival surprises.",
+      "descriptionValueLed": "Unlock faster check-in and sharper local recommendations by completing these steps now.",
+      "needGuidance": "Need guidance",
+      "privacyDescription": "We only use this information for your current stay and reception operations.",
+      "privacyTitle": "Privacy reassurance",
+      "routeGroupLabel": "Recommended routes",
+      "routeLabel": "Pick a route",
+      "routeOptional": "(optional)",
+      "title": "Let\u2019s get you arrival-ready",
+      "titleWithName": "Welcome {{name}}, let\u2019s get you arrival-ready"
+    },
+    "step2": {
+      "celebration": "ETA shared. Reception can now prepare your arrival.",
+      "description": "Sharing your ETA helps reception prepare for a faster check-in.",
+      "etaLabel": "Arrival time window",
+      "methodLabel": "Travel method",
+      "title": "Share your ETA"
+    },
+    "step3": {
+      "cashDescription": "City tax + keycard deposit in cash \u2014 avoids delays at reception",
+      "cashTitle": "Cash for check-in",
+      "celebration": "Nice work. Your arrival checklist is moving forward.",
+      "description": "Tick off what you can \u2014 update any time from the dashboard.",
+      "lastCompleted": "Last completed: {{item}}",
+      "locationAction": "Open in Maps",
+      "locationTitle": "Save hostel location",
+      "rulesDescription": "Quick read \u2014 helps your stay go smoothly",
+      "rulesTitle": "House rules",
+      "title": "Final checks"
+    }
+  },
   "guestProfile": {
     "goals": {
       "adventure": "Adventure",

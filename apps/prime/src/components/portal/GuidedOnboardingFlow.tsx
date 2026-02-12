@@ -1,6 +1,7 @@
 'use client';
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Check, ChevronRight, ExternalLink, MapPin } from 'lucide-react';
 
 import { StepFlowShell } from '@acme/design-system/primitives';
@@ -66,15 +67,12 @@ function normalizeConfidence(confidence: string | null): ArrivalConfidence | nul
   return null;
 }
 
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
 export default function GuidedOnboardingFlow({
   guestFirstName,
   onComplete,
   onClose,
 }: GuidedOnboardingFlowProps) {
+  const { t } = useTranslation('Onboarding');
   const [step, setStep] = useState<Step>(1);
   const [isSaving, setIsSaving] = useState(false);
   const [celebration, setCelebration] = useState<string | null>(null);
@@ -160,7 +158,6 @@ export default function GuidedOnboardingFlow({
         });
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- stepRef is stable
   }, []);
 
   const routeSuggestions = useMemo(() => {
@@ -182,14 +179,14 @@ export default function GuidedOnboardingFlow({
   const stepTitle = useMemo(() => {
     if (step === 1) {
       return guestFirstName
-        ? `Welcome ${guestFirstName}, let\u2019s get you arrival-ready`
-        : 'Let\u2019s get you arrival-ready';
+        ? t('guidedFlow.step1.titleWithName', { name: guestFirstName })
+        : t('guidedFlow.step1.title');
     }
     if (step === 2) {
-      return 'Share your ETA';
+      return t('guidedFlow.step2.title');
     }
-    return 'Final checks';
-  }, [step, guestFirstName]);
+    return t('guidedFlow.step3.title');
+  }, [step, guestFirstName, t]);
 
   const stepDescription = useMemo((): ReactNode => {
     if (step === 1) {
@@ -197,17 +194,17 @@ export default function GuidedOnboardingFlow({
         <ExperimentGate
           flag="prime-onboarding-cta-copy"
           enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
-          fallback="Finish these quick steps to reduce reception wait time and avoid arrival surprises."
+          fallback={t('guidedFlow.step1.descriptionControl')}
         >
-          Unlock faster check-in and sharper local recommendations by completing these steps now.
+          {t('guidedFlow.step1.descriptionValueLed')}
         </ExperimentGate>
       );
     }
     if (step === 2) {
-      return 'Sharing your ETA helps reception prepare for a faster check-in.';
+      return t('guidedFlow.step2.description');
     }
-    return 'Tick off what you can \u2014 update any time from the dashboard.';
-  }, [step, experimentVariants.onboardingCtaCopy]);
+    return t('guidedFlow.step3.description');
+  }, [step, experimentVariants.onboardingCtaCopy, t]);
 
   function showCelebration(message: string) {
     if (celebrationTimeoutRef.current) {
@@ -242,7 +239,7 @@ export default function GuidedOnboardingFlow({
         },
       });
 
-      showCelebration('Great start. Your arrival path is now personalized.');
+      showCelebration(t('guidedFlow.step1.celebration'));
       setStep(2);
     } finally {
       setIsSaving(false);
@@ -266,7 +263,7 @@ export default function GuidedOnboardingFlow({
           stepOrder: experimentVariants.onboardingStepOrder,
         },
       });
-      showCelebration('ETA shared. Reception can now prepare your arrival.');
+      showCelebration(t('guidedFlow.step2.celebration'));
       setStep(3);
     } finally {
       setIsSaving(false);
@@ -305,7 +302,7 @@ export default function GuidedOnboardingFlow({
         },
       });
 
-      showCelebration('Nice work. Your arrival checklist is moving forward.');
+      showCelebration(t('guidedFlow.step3.celebration'));
       flowCompletedRef.current = true;
       onComplete();
     } finally {
@@ -345,8 +342,8 @@ export default function GuidedOnboardingFlow({
           title={stepTitle}
           description={stepDescription}
           trustCue={step === 1 ? {
-            title: 'Privacy reassurance',
-            description: 'We only use this information for your current stay and reception operations.',
+            title: t('guidedFlow.step1.privacyTitle'),
+            description: t('guidedFlow.step1.privacyDescription'),
           } : undefined}
           milestoneMessage={celebration}
           onBack={handleBack}
@@ -358,11 +355,11 @@ export default function GuidedOnboardingFlow({
             {showConfidenceBeforeMethod ? (
               <>
                 <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">How confident do you feel about getting here?</legend>
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
                   <div className="grid grid-cols-2 gap-2">
                     {([
-                      { value: 'confident' as const, label: 'Confident' },
-                      { value: 'need-guidance' as const, label: 'Need guidance' },
+                      { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
+                      { value: 'need-guidance' as const, label: t('guidedFlow.step1.needGuidance') },
                     ]).map(({ value, label }) => (
                       <button
                         key={value}
@@ -383,7 +380,7 @@ export default function GuidedOnboardingFlow({
                   </div>
                 </fieldset>
                 <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">How are you most likely arriving?</legend>
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
@@ -399,7 +396,7 @@ export default function GuidedOnboardingFlow({
                         }`}
                       >
                         {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
-                        {capitalize(method)}
+                        {t(`guidedFlow.methods.${method}`)}
                       </button>
                     ))}
                   </div>
@@ -408,7 +405,7 @@ export default function GuidedOnboardingFlow({
             ) : (
               <>
                 <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">How are you most likely arriving?</legend>
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
@@ -424,17 +421,17 @@ export default function GuidedOnboardingFlow({
                         }`}
                       >
                         {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
-                        {capitalize(method)}
+                        {t(`guidedFlow.methods.${method}`)}
                       </button>
                     ))}
                   </div>
                 </fieldset>
                 <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">How confident do you feel about getting here?</legend>
+                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
                   <div className="grid grid-cols-2 gap-2">
                     {([
-                      { value: 'confident' as const, label: 'Confident' },
-                      { value: 'need-guidance' as const, label: 'Need guidance' },
+                      { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
+                      { value: 'need-guidance' as const, label: t('guidedFlow.step1.needGuidance') },
                     ]).map(({ value, label }) => (
                       <button
                         key={value}
@@ -459,8 +456,8 @@ export default function GuidedOnboardingFlow({
 
             {arrivalMethodPreference && (
               <fieldset className="space-y-2">
-                <legend className="text-sm font-medium text-foreground">Pick a route <span className="font-normal text-foreground/60">(optional)</span></legend>
-                <div className="space-y-2" role="radiogroup" aria-label="Recommended routes">
+                <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.routeLabel')} <span className="font-normal text-foreground/60">{t('guidedFlow.step1.routeOptional')}</span></legend>
+                <div className="space-y-2" role="radiogroup" aria-label={t('guidedFlow.step1.routeGroupLabel')}>
                   {routeSuggestions.map((route) => {
                     const isSelected = selectedRouteSlug === route.slug;
                     return (
@@ -511,7 +508,7 @@ export default function GuidedOnboardingFlow({
                 }}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip for now
+                {t('guidedFlow.skipButton')}
               </button>
               <button
                 type="button"
@@ -519,7 +516,7 @@ export default function GuidedOnboardingFlow({
                 disabled={isSaving}
                 className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Save and continue
+                {t('guidedFlow.saveAndContinue')}
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
@@ -530,7 +527,7 @@ export default function GuidedOnboardingFlow({
         {step === 2 && (
           <section className="space-y-4">
             <label className="block text-sm font-medium text-foreground">
-              Arrival time window
+              {t('guidedFlow.step2.etaLabel')}
               <select
                 value={etaWindow}
                 onChange={(event) => setEtaWindow(event.target.value)}
@@ -545,7 +542,7 @@ export default function GuidedOnboardingFlow({
             </label>
 
             <label className="block text-sm font-medium text-foreground">
-              Travel method
+              {t('guidedFlow.step2.methodLabel')}
               <select
                 value={etaMethod}
                 onChange={(event) => setEtaMethod(normalizeMethod(event.target.value) ?? 'other')}
@@ -553,7 +550,7 @@ export default function GuidedOnboardingFlow({
               >
                 {(['ferry', 'bus', 'train', 'taxi', 'private', 'other'] as const).map((method) => (
                   <option key={method} value={method}>
-                    {capitalize(method)}
+                    {t(`guidedFlow.methods.${method}`)}
                   </option>
                 ))}
               </select>
@@ -575,7 +572,7 @@ export default function GuidedOnboardingFlow({
                 }}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip for now
+                {t('guidedFlow.skipButton')}
               </button>
               <button
                 type="button"
@@ -583,7 +580,7 @@ export default function GuidedOnboardingFlow({
                 disabled={isSaving}
                 className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Save and continue
+                {t('guidedFlow.saveAndContinue')}
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
@@ -614,10 +611,10 @@ export default function GuidedOnboardingFlow({
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-semibold text-foreground">
-                  Cash for check-in
+                  {t('guidedFlow.step3.cashTitle')}
                 </span>
                 <span className="block text-xs text-foreground/70">
-                  City tax + keycard deposit in cash — avoids delays at reception
+                  {t('guidedFlow.step3.cashDescription')}
                 </span>
               </span>
             </button>
@@ -643,10 +640,10 @@ export default function GuidedOnboardingFlow({
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-semibold text-foreground">
-                  House rules
+                  {t('guidedFlow.step3.rulesTitle')}
                 </span>
                 <span className="block text-xs text-foreground/70">
-                  Quick read — helps your stay go smoothly
+                  {t('guidedFlow.step3.rulesDescription')}
                 </span>
               </span>
             </button>
@@ -676,10 +673,10 @@ export default function GuidedOnboardingFlow({
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-semibold text-foreground">
-                  Save hostel location
+                  {t('guidedFlow.step3.locationTitle')}
                 </span>
                 <span className="flex items-center gap-1 text-xs text-primary">
-                  Open in Maps
+                  {t('guidedFlow.step3.locationAction')}
                   <ExternalLink className="h-3 w-3" />
                 </span>
               </span>
@@ -687,7 +684,7 @@ export default function GuidedOnboardingFlow({
 
             {lastCompletedItem && (
               <p className="rounded-lg bg-info-soft px-3 py-2 text-xs font-medium text-info-foreground">
-                Last completed: {getChecklistItemLabel(lastCompletedItem)}
+                {t('guidedFlow.step3.lastCompleted', { item: getChecklistItemLabel(lastCompletedItem) })}
               </p>
             )}
 
@@ -708,7 +705,7 @@ export default function GuidedOnboardingFlow({
                 }}
                 className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
-                Skip for now
+                {t('guidedFlow.skipButton')}
               </button>
               <button
                 type="button"
@@ -716,7 +713,7 @@ export default function GuidedOnboardingFlow({
                 disabled={isSaving}
                 className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
-                Finish
+                {t('guidedFlow.finish')}
                 <Check className="h-4 w-4" />
               </button>
             </div>

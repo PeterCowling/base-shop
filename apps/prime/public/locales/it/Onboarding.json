@@ -1,4 +1,52 @@
 {
+  "guidedFlow": {
+    "finish": "Completa",
+    "methods": {
+      "bus": "Autobus",
+      "ferry": "Traghetto",
+      "other": "Altro",
+      "private": "Privato",
+      "taxi": "Taxi",
+      "train": "Treno"
+    },
+    "saveAndContinue": "Salva e continua",
+    "skipButton": "Salta per ora",
+    "step1": {
+      "arrivalMethodLabel": "Come arrivi molto probabilmente?",
+      "celebration": "Ottimo inizio. Il tuo percorso di arrivo \u00e8 ora personalizzato.",
+      "confident": "Sicuro",
+      "confidenceLabel": "Quanto ti senti sicuro di arrivare qui?",
+      "descriptionControl": "Completa questi passaggi rapidi per ridurre l\u2019attesa alla reception ed evitare sorprese all\u2019arrivo.",
+      "descriptionValueLed": "Sblocca un check-in pi\u00f9 veloce e consigli locali migliori completando questi passaggi ora.",
+      "needGuidance": "Ho bisogno di indicazioni",
+      "privacyDescription": "Utilizziamo queste informazioni solo per il tuo soggiorno attuale e le operazioni della reception.",
+      "privacyTitle": "Rassicurazione sulla privacy",
+      "routeGroupLabel": "Percorsi consigliati",
+      "routeLabel": "Scegli un percorso",
+      "routeOptional": "(opzionale)",
+      "title": "Prepariamoci per il tuo arrivo",
+      "titleWithName": "Benvenuto {{name}}, prepariamoci per il tuo arrivo"
+    },
+    "step2": {
+      "celebration": "Orario condiviso. La reception pu\u00f2 ora preparare il tuo arrivo.",
+      "description": "Condividere il tuo orario di arrivo aiuta la reception a preparare un check-in pi\u00f9 veloce.",
+      "etaLabel": "Fascia oraria di arrivo",
+      "methodLabel": "Mezzo di trasporto",
+      "title": "Condividi il tuo orario di arrivo"
+    },
+    "step3": {
+      "cashDescription": "Tassa di soggiorno + deposito chiave in contanti \u2014 evita ritardi alla reception",
+      "cashTitle": "Contanti per il check-in",
+      "celebration": "Ben fatto. La tua checklist di arrivo sta procedendo.",
+      "description": "Spunta quello che puoi \u2014 aggiorna in qualsiasi momento dalla dashboard.",
+      "lastCompleted": "Ultimo completato: {{item}}",
+      "locationAction": "Apri in Mappe",
+      "locationTitle": "Salva la posizione dell\u2019ostello",
+      "rulesDescription": "Lettura veloce \u2014 aiuta il tuo soggiorno ad andare liscio",
+      "rulesTitle": "Regole della casa",
+      "title": "Ultimi controlli"
+    }
+  },
   "guestProfile": {
     "goals": {
       "adventure": "Avventura",

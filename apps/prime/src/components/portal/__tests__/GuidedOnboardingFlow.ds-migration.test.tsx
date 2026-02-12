@@ -28,6 +28,10 @@ jest.mock('../../../lib/experiments/activationExperiments', () => ({
   }),
 }));
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
+
 jest.mock('@acme/design-system/primitives', () => ({
   StepFlowShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));

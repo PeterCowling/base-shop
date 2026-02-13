@@ -20,6 +20,11 @@
       "types": "./dist/metadata/index.d.ts",
       "import": "./dist/metadata/index.js",
       "default": "./dist/metadata/index.js"
+    },
+    "./jsonld": {
+      "types": "./dist/jsonld/index.d.ts",
+      "import": "./dist/jsonld/index.js",
+      "default": "./dist/jsonld/index.js"
     }
   },
   "files": [

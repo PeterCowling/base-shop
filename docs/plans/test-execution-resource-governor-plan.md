@@ -176,7 +176,7 @@ Event schema (MVP):
 | TEG-07A | IMPLEMENT | Add governed-run telemetry emission for calibration-quality samples | 83% | M | Completed (2026-02-13) | TEG-01, TEG-06 | TEG-07B, TEG-07 |
 | TEG-07B | SPIKE | Build day-zero calibration harness and sample summarizer for governed telemetry | 83% | M | Completed (2026-02-13) | TEG-07A | TEG-07, TEG-08 |
 | TEG-07 | INVESTIGATE | Run multi-day calibration soak and finalize tuned class budgets/overrides | 76% (-> 82% conditional on soak gates) ⚠️ | M | Blocked (confidence <80; soak gates pending) | TEG-01, TEG-04, TEG-07A, TEG-07B | TEG-09 |
-| TEG-08 | IMPLEMENT | Ship memory+CPU admission engine with seeded defaults, provisional calibration, and queue-on-pressure | 81% | L | Pending | TEG-06, TEG-07B | TEG-09 |
+| TEG-08 | IMPLEMENT | Ship memory+CPU admission engine with seeded defaults, provisional calibration, and queue-on-pressure | 81% | L | Completed (2026-02-13) | TEG-06, TEG-07B | TEG-09 |
 | TEG-09 | IMPLEMENT | Add drift prevention (docs lint + policy updates + operator docs) | 84% | M | Pending | TEG-06, TEG-07, TEG-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -728,6 +728,27 @@ Schedule note:
     - **Evidence class:** E1 (dependency topology reassessment).
   - **Decision / resolution:** no scoring change; admission now gated on day-zero calibration precursor (`TEG-07A` -> `TEG-07B`) while multi-day soak remains a final-hardening dependency for TEG-09.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `52d7a39f4b`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06, TC-07
+  - Cycles: 3 (initial implementation, probe ambiguity hardening, test stabilization)
+  - Initial validation: FAIL (intermittent `probe-unknown` and timing-sensitive runner assertions)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 81%
+  - Post-validation: 84%
+  - Delta reason: executable validation confirmed formula conformance, queue-on-pressure behavior, and atomic history durability.
+- **Validation:**
+  - Ran: `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts __tests__/resource-admission.test.ts __tests__/governed-runner-admission.test.ts` - PASS
+- **Documentation updated:** `docs/testing-policy.md`
+- **Implementation notes:**
+  - Added `scripts/tests/resource-admission.sh` with canonical memory/CPU admission formulas, seeded class budgets, history-backed P90 prediction, and probe-ambiguity fail-safe handling.
+  - Added `scripts/tests/history-store.sh` for atomic, lock-guarded history updates (`history.json` temp-write + rename).
+  - Integrated admission and peak-RSS history recording into `scripts/tests/run-governed-test.sh`, including telemetry fields (`admitted`, `peak_rss_mb`, `pressure_level`) and admission wait diagnostics.
+  - Added new admission-focused tests and stabilized legacy governed-runner tests impacted by admission timing.
+
 ### TEG-09: Drift prevention and documentation hardening
 - **Type:** IMPLEMENT
 - **Deliverable:** docs lint rule + policy/runbook updates + command example normalization.
@@ -820,3 +841,4 @@ Schedule note:
 - 2026-02-13: After TEG-07A completion, telemetry audit still showed insufficient organic calibration depth (`total=33`, `governed=1`, governed classes=`governed-jest`, days=1), so lp-replan introduced `TEG-07B` as a deterministic day-zero calibration precursor.
 - 2026-02-13: Re-sequenced remaining dependency graph to `TEG-07A -> TEG-07B -> TEG-08`, with `TEG-07` soak continuing as final-hardening gate before `TEG-09`.
 - 2026-02-13: Completed TEG-07B and appended day-zero synthetic calibration evidence (`34 governed samples`, `3 governed classes`, `9 contention samples`) to `docs/plans/test-execution-resource-governor-calibration.md`; TEG-08 is now build-eligible.
+- 2026-02-13: Completed TEG-08 by shipping admission + history-store primitives and integrating telemetry-visible queue-on-pressure behavior in `run-governed-test.sh`; final hardening remains gated on TEG-07 soak before TEG-09.

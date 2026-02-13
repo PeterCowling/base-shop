@@ -94,7 +94,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | ASM-01 | IMPLEMENT | Create similarity module scaffold + shared validation contract | 90% | S | Complete (2026-02-13) | - | ASM-02, ASM-03, ASM-05, ASM-06, ASM-07 |
 | ASM-02 | IMPLEMENT | Implement Hoeffding's D + deterministic fixtures/tests | 83% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
 | ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
-| ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Pending | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
+| ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Complete (2026-02-13) | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
 | ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
 | ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Pending | ASM-04 | ASM-09 |
 | ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Pending | ASM-04 | ASM-09 |
@@ -105,7 +105,8 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Active tasks
 
-- ASM-04 - Checkpoint reassessment required before Wave 4 tasks.
+- ASM-06 - Unblocked, ready to build.
+- ASM-07 - Unblocked, ready to build.
 - ASM-05 - Required investigation gate before ASM-08 can start.
 
 ## Parallelism Guide
@@ -316,6 +317,18 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Shared contract utility is sufficient for all remaining metrics.
   - NMI complexity remains isolated to calibration/API decisions.
   - Export and test structure scales cleanly to integration stage.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Execution cycle:** Checkpoint protocol executed (evidence review + remaining-task reassessment)
+- **Evidence reviewed:** `ASM-02` (`67259859f2`), `ASM-03` (`a704cd9f74`)
+- **Assumptions validated:**
+  - Shared validation contract is reusable across implemented metrics without contract drift.
+  - Similarity export surface scales as planned (`common`, `hoeffding`, `distance-correlation`).
+  - NMI uncertainty remains isolated to binning/normalization decisions and is still correctly represented by `ASM-05`.
+- **Plan decisions after reassessment:**
+  - Keep `ASM-05` as investigation gate before `ASM-08`.
+  - Continue build with `ASM-06` and `ASM-07` (both remain >=80% and unblocked).
 
 ### ASM-05: Resolve NMI contract/binning calibration before implementation
 - **Type:** INVESTIGATE

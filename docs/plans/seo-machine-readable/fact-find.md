@@ -28,8 +28,8 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 ### Goals
 
 - Consolidate reusable SEO utilities from Brikette (reference implementation) into `@acme/seo`
-- Bring Cochlearfit and Skylar up to parity with Cover-Me-Pretty's SEO maturity
-- Add machine-readable AI support (llms.txt, ai-plugin.json) to all customer-facing apps
+- Bring Cochlearfit and Skylar up to SEO parity (see [SEO Parity Checklist](#seo-parity-checklist) below)
+- Add llms.txt to all customer-facing apps; ai-plugin.json only where an app has a meaningful API (currently Brikette only)
 - Fix known bugs: CMP phantom ai-sitemap.xml reference, Cochlearfit placeholder `SITE_URL` (`cochlearfit.example`)
 
 ### Non-goals
@@ -38,6 +38,7 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 - OpenAPI spec generation (only Brikette has an API worth documenting)
 - Brikette-specific schema types (hotel, hostel, room, guide) — these stay local
 - React Router / non-Next.js framework support (all apps are Next.js App Router)
+- ai-plugin.json for apps without an API — publishing a plugin manifest without a backing API is misleading and a maintenance liability; require explicit opt-in per app
 
 ### Constraints & Assumptions
 
@@ -203,6 +204,145 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 - `apps/cover-me-pretty/src/lib/jsonld.tsx` — Stable.
 - Storefront app retired Feb 11 2026 (commit `c4c44428a9`) — no longer in scope.
 
+## Architectural Decisions
+
+### Endpoint Serving Strategy
+
+**Decision:** `@acme/seo` exports builder functions; each app owns its route entrypoints.
+
+Next.js App Router requires route files to live in each app's `src/app/` tree. You cannot centralize a route file in a shared package and have Next.js treat it as a metadata route. Therefore:
+
+- **`robots.ts`** — each app has `src/app/robots.ts` that calls `@acme/seo/robots` builders
+- **`sitemap.ts`** — each app has `src/app/sitemap.ts` that calls `@acme/seo/sitemap` helpers
+- **`llms.txt`** — served from `public/llms.txt` (static file). For static-export-compatible apps, this is the only safe option. Content generated at build time by a prebuild script calling `@acme/seo/ai` generators, writing output to each app's `public/`.
+- **`ai-plugin.json`** — served from `public/.well-known/ai-plugin.json` (static file, opt-in per app). Same prebuild approach.
+- **Brikette static sitemaps** — `public/sitemap.xml` and `public/sitemap_index.xml` remain as-is (checked into git). `@acme/seo` may provide validation utilities but does not replace Brikette's static sitemap generation.
+
+**Rationale:** Build-time file generation into `public/` is the lowest operational risk given the static export constraint. Runtime route handlers work for robots/sitemap (which Next.js handles natively) but not for arbitrary static files in export mode.
+
+### Package Dependency Posture
+
+**Decision:** `@acme/seo` declares `next` and `react` as `peerDependencies` (and `devDependencies` for local typecheck).
+
+- Core utility functions (buildLinks, serializeJsonLdValue, generateRobotsTxt, etc.) are pure — no Next.js or React runtime imports.
+- The `@acme/seo/metadata` subpath uses `import type { Metadata } from "next"` (type-only, erased at runtime).
+- The `@acme/seo/jsonld` subpath exports React components (`<JsonLdScript />`), requiring React as a peer.
+- In strict pnpm, the package must explicitly declare these peer deps for module resolution to succeed during typecheck.
+
+### Extraction Boundaries
+
+| Moves to `@acme/seo` (shared) | Stays app-local |
+|-------------------------------|-----------------|
+| `ensureTrailingSlash()` | Brikette hotel/hostel/room/guide schema nodes |
+| Generic canonical URL builder | Brikette slug translation / route constants |
+| Generic hreflang/alternates builder (no slug translation) | Brikette `buildHomeGraph()`, `buildHotelNode()`, `buildOffer()` |
+| `serializeJsonLdValue()` + shared `<JsonLdScript />` component | Brikette static sitemap artifacts (`public/sitemap*.xml`) |
+| Generic structured data builders: Organization, Product, Article/BlogPosting, BreadcrumbList, FAQPage, WebSite+SearchAction, ItemList, Event, Service | CMP `getSeo()` shop-settings integration (thin wrapper over `@acme/seo/metadata`) |
+| `buildRobotsTxt()` (configurable paths + AI bot list) | Cochlearfit `buildMetadata()` (thin wrapper over `@acme/seo/metadata`) |
+| Sitemap helpers for Next.js metadata routes | Each app's `src/app/robots.ts`, `src/app/sitemap.ts` route files |
+| `buildLlmsTxt()` template generator | |
+| `buildAiPluginManifest()` (opt-in) | |
+
+### Package API Proposal (Draft)
+
+```
+@acme/seo/config
+  SeoSiteConfig     — siteName, siteUrl, defaultLocale, locales, twitterHandle, defaultOgImage
+  SeoRobotsConfig   — allowIndexing, disallowPaths, sitemapPaths, aiBotPolicy
+  SeoAiConfig       — llmsTxt sections, pluginManifest fields (optional)
+
+@acme/seo/metadata
+  buildMetadata(config, pageSeo) → Metadata
+  buildAlternates(config, { canonicalPath, locales }) → alternates object
+  ensureTrailingSlash(path) → string
+
+@acme/seo/jsonld
+  serializeJsonLdValue(value) → string (XSS-safe)
+  <JsonLdScript value={...} />
+  organizationJsonLd(config) → object
+  productJsonLd(input) → object
+  articleJsonLd(input) → object
+  breadcrumbJsonLd(items) → object
+  faqJsonLd(items) → object
+  websiteSearchJsonLd(config) → object
+  itemListJsonLd(items) → object
+  eventJsonLd(input) → object
+  serviceJsonLd(input) → object
+
+@acme/seo/robots
+  buildRobotsTxt(config) → string
+  buildRobotsMetadataRoute(config) → MetadataRoute.Robots
+
+@acme/seo/sitemap
+  buildSitemapEntry(url, options) → MetadataRoute.Sitemap entry
+  buildSitemapWithAlternates(pages, config) → MetadataRoute.Sitemap[]
+
+@acme/seo/ai
+  buildLlmsTxt(config) → string
+  buildAiPluginManifest(config) → object
+```
+
+**Key design constraint:** Everything in `@acme/seo/config`, `@acme/seo/robots`, `@acme/seo/ai` is pure (no React, no Next.js runtime). Only `@acme/seo/metadata` uses Next.js types (type-only imports). Only `@acme/seo/jsonld` exports React components.
+
+### SEO Parity Checklist
+
+Measurable definition of "SEO parity" — the feature set each customer-facing app should have after this work:
+
+| Feature | Brikette | CMP | Cochlearfit | Skylar | Notes |
+|---------|----------|-----|-------------|--------|-------|
+| Canonical URL + `alternates.languages` (hreflang) | Has | Has | **Add** | **Add** | For all localized pages |
+| OpenGraph + Twitter cards with default images | Has | Has | Has (OG only) | **Add** | Cochlearfit missing Twitter cards |
+| `robots.ts` with environment-aware noindex for staging | Has | Has | **Add** | **Add** | |
+| `sitemap.ts` with indexable pages + i18n alternates | Has (static) | Has | **Add** | **Add** | |
+| Organization JSON-LD on all pages | Has | Has | **Add** | **Add** | |
+| Product JSON-LD on product detail pages | Has | Has | **Add** | N/A | Skylar has no products |
+| Article/BlogPosting JSON-LD on blog pages | Has | Has | N/A | N/A | Only CMP + Brikette have blogs |
+| BreadcrumbList JSON-LD where navigation is hierarchical | Has | N/A | **Add** (if applicable) | N/A | |
+| FAQ JSON-LD on FAQ pages | Has | N/A | **Add** | N/A | Cochlearfit has `/faq` page |
+| `llms.txt` for AI crawler discovery | Has | **Add** | **Add** | **Add** | |
+| `ai-plugin.json` (opt-in, only with backing API) | Has | Skip | Skip | Skip | |
+
+### Config Precedence Rules
+
+When multiple config sources provide SEO values, precedence is:
+
+1. **Per-page overrides** (`generateMetadata()` args) — highest priority
+2. **Shop settings `seo`** (runtime/config from `@acme/types`)
+3. **App defaults** (`site.ts` constants like `SITE_NAME`, `SITE_URL`)
+4. **Package fallbacks** (`@acme/seo` sensible defaults) — lowest priority
+
+`metadataBase` is set once per app in root layout from `SITE_URL` or environment variable. For static export compatibility, it cannot depend on request headers.
+
+### Environment Behavior (Prod vs Staging vs Preview)
+
+| Environment | `robots` | `sitemap` | `canonical host` |
+|------------|----------|-----------|-------------------|
+| **Production** | `index, follow` + AI bot allowlisting | Full sitemap with all indexable pages | Real domain (e.g., `hostel-positano.com`) |
+| **Staging** (static export) | `noindex, nofollow` via `<meta>` or robots.txt `Disallow: /` | Omit or return empty | Staging domain (no canonical confusion) |
+| **Preview** (PR deploys) | `noindex, nofollow` | Omit | Preview domain |
+
+Implementation: `@acme/seo/robots` builder accepts an `allowIndexing` flag. Apps set it based on environment variable (e.g., `NEXT_PUBLIC_ALLOW_INDEXING !== 'true'` → noindex). This is already partially implemented in CMP's robots.ts.
+
+### SEO Correctness Invariants
+
+These regress easily during refactors and should become unit tests in `packages/seo/`:
+
+1. **Canonical URLs are absolute and stable** — host + path + trailing slash policy applied consistently
+2. **hreflang alternates cover all locales** and use valid BCP 47 language tags (not mixed `en` / `en-US` / `pt_BR` formats)
+3. **robots.txt includes correct sitemap URLs** that actually resolve (no phantom references like CMP's current `ai-sitemap.xml`)
+4. **JSON-LD serialization is XSS-safe** and stable across SSR/CSR (no hydration mismatch)
+5. **`metadataBase` is consistent with canonical host** — prevents indexation of multiple hosts
+6. **Trailing slash policy is uniform** — canonical, sitemap, and hreflang URLs all use the same trailing slash convention
+
+### Brikette Extraction Decision
+
+**Decision:** Incremental extraction with re-exports.
+
+- **Phase 1:** Extract shared utilities into `@acme/seo`. Brikette re-exports from its existing paths (e.g., `apps/brikette/src/utils/seo.ts` re-exports from `@acme/seo/metadata`). Zero breaking changes for Brikette consumers.
+- **Phase 2 (follow-up):** Migrate Brikette consumers to import directly from `@acme/seo`. Remove re-export shims.
+
+**Rationale:** Minimizes blast radius. 32 files import from `seo.ts` — changing all of them simultaneously is high-risk. Re-exports preserve existing import paths while contract tests verify no behavioral regression. Temporary dual import paths are acceptable.
+
 ## Questions
 
 ### Resolved
@@ -231,13 +371,13 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
   - A: Static — `public/sitemap.xml` (371KB) and `public/sitemap_index.xml` are checked into version control.
   - Evidence: `apps/brikette/public/sitemap.xml`, `apps/brikette/public/sitemap_index.xml`
 
+- Q: For Brikette extraction — incremental with re-exports or full migration?
+  - A: Incremental extraction with re-exports (decided — see [Brikette Extraction Decision](#brikette-extraction-decision)).
+  - Rationale: 32 importers, high blast radius. Re-exports preserve paths while contract tests verify behavior.
+
 ### Open (User Input Needed)
 
-- Q: For Brikette extraction — should we extract utilities first (keeping Brikette imports working via re-exports) or do a full migration in one pass?
-  - Why it matters: Incremental extraction is safer but creates a period of dual imports. Full migration is cleaner but riskier.
-  - Decision impacted: Task decomposition and sequencing.
-  - Decision owner: Pete
-  - Default assumption: Incremental extraction (extract shared code, re-export from Brikette initially, migrate consumers in follow-up). Risk: temporary dual import paths.
+- (None — all questions resolved with sensible defaults)
 
 ## Confidence Inputs (for /lp-plan)
 
@@ -261,18 +401,26 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 | Cochlearfit `SITE_URL` is placeholder domain (`cochlearfit.example`) — may affect canonical URLs and sitemaps | Medium | Medium | Verify whether Cochlearfit is deployed with a real domain; update `SITE_URL` in `src/lib/site.ts` before adding robots/sitemap. |
 | Cover-Me-Pretty `ai-sitemap.xml` referenced in robots.ts but doesn't exist (404) | High | Low | Remove reference or implement ai-sitemap. Decision: remove reference for now, add proper ai-sitemap later. |
 | Static sitemap approach (Brikette) vs dynamic sitemap approach (CMP) creates two patterns | Low | Low | Accept both patterns. Brikette's static sitemap is checked in and works well for its use case. Shared package provides the dynamic generator for apps that need it. |
+| Canonical + trailing slash policy drift between canonical URLs, sitemap, and hreflang | Medium | Medium | Enforce single normalization rule in `@acme/seo/metadata`. Add unit tests that canonical, sitemap entry, and hreflang URL formatting match for the same page. |
+| hreflang BCP 47 correctness — mixed locale formats (`en`, `en-US`, `pt_BR`) silently break hreflang | Low | Medium | Central locale normalization function in `@acme/seo` + tests for all supported locales. |
+| AI bot allowlist ages silently as new crawlers appear | Low | Low | Make bot list config-driven (not hard-coded). Keep defaults minimal and app-overrideable. |
 
 ## Planning Constraints & Notes
 
 - Must-follow patterns:
   - New package: `packages/seo/` with `@acme/seo` name, `workspace:*`, composite TS, `dist/` output
+  - `next` and `react` as `peerDependencies` + `devDependencies` in `packages/seo/package.json`
   - Path aliases in `tsconfig.base.json`: `@acme/seo` and `@acme/seo/*`
   - Jest config extending `@acme/config/jest.preset.cjs`
   - Module mapper entry in `jest.moduleMapper.cjs`
   - JSON-LD components use `suppressHydrationWarning` + `serializeJsonLdValue()` for safety
+  - `@acme/seo` exports builders; apps keep route entrypoints (`robots.ts`, `sitemap.ts`) — see [Endpoint Serving Strategy](#endpoint-serving-strategy)
+  - Machine-readable static files (`llms.txt`, `ai-plugin.json`) generated at build time into `public/` — see [Endpoint Serving Strategy](#endpoint-serving-strategy)
+  - Environment-aware indexing: staging/preview = noindex; production = index — see [Environment Behavior](#environment-behavior-prod-vs-staging-vs-preview)
+  - [SEO Correctness Invariants](#seo-correctness-invariants) must be unit-tested in `packages/seo/`
 - Rollout/rollback expectations:
-  - Brikette extraction should be behind the same import paths initially (re-export pattern)
-  - Each app integration is independently deployable
+  - Brikette extraction uses incremental re-export pattern — see [Brikette Extraction Decision](#brikette-extraction-decision)
+  - Each app integration is independently deployable (staged — see acceptance package)
   - No feature flags needed — changes are additive for Cochlearfit/Skylar, import-swap for Brikette/CMP
 - Observability expectations:
   - Google Search Console validation after rollout (manual)
@@ -297,13 +445,13 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 
 - Primary execution skill: `/lp-build`
 - Supporting skills: none required
-- Deliverable acceptance package:
-  - `packages/seo/` exists with passing tests
-  - All four apps pass `pnpm typecheck && pnpm lint`
-  - Brikette JSON-LD contract tests still pass
-  - Cochlearfit and Skylar have robots.ts, sitemap.ts, Organization structured data
-  - CMP robots.ts no longer references phantom ai-sitemap.xml
-  - Cochlearfit `SITE_URL` updated from placeholder to real production domain
+- Deliverable acceptance package (staged):
+  - **Stage 1 — Bug fixes (standalone):** CMP robots.ts phantom reference removed; Cochlearfit `SITE_URL` updated from placeholder
+  - **Stage 2 — Package scaffold:** `packages/seo/` exists with passing unit tests; path aliases registered; `pnpm typecheck` passes monorepo-wide
+  - **Stage 3 — CMP integration:** CMP imports from `@acme/seo`; existing SEO behavior preserved; `pnpm test --filter cover-me-pretty` passes
+  - **Stage 4 — Cochlearfit integration:** robots.ts, sitemap.ts, Organization + Product + FAQ structured data added; `pnpm test --filter cochlearfit` passes
+  - **Stage 5 — Skylar integration:** robots.ts, sitemap.ts, Organization structured data, per-page metadata added
+  - **Stage 6 — Brikette extraction:** Generic imports migrated to `@acme/seo` via re-exports; Brikette JSON-LD contract tests still pass; all 32 `seo.ts` importers unchanged
 - Post-delivery measurement plan:
   - Google Search Console: verify no coverage errors after rollout
   - Rich Results Test: validate structured data on representative pages

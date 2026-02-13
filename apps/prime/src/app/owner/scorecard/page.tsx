@@ -390,7 +390,7 @@ function ActionCard({ action }: ActionCardProps) {
         <p className="text-xs text-muted-foreground mb-1">
           <strong>Suggested Action:</strong>
         </p>
-        <p className="text-sm text-gray-800">{action.suggestedAction}</p>
+        <p className="text-sm text-fg">{action.suggestedAction}</p>
       </div>
 
       <div className="grid grid-cols-2 gap-4 text-sm">

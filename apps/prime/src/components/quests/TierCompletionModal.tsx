@@ -50,7 +50,7 @@ const TierCompletionModal: FC<TierCompletionModalProps> = memo(function TierComp
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        className="absolute inset-0 bg-overlay-scrim-1 backdrop-blur-sm"
         onClick={onClose}
       />
 

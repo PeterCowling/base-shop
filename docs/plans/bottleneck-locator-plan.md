@@ -147,9 +147,9 @@ Normalize `stage_blocked` reason codes:
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
 | BL-01 | DECISION | Define canonical schema, metric model, and deterministic contracts | 90% | S | Complete (2026-02-13) | - | BL-02, BL-03 |
-| BL-02 | IMPLEMENT | Implement metrics extraction into canonical diagnosis input shape | 85% | M | Pending | BL-01 | BL-04 |
-| BL-03 | IMPLEMENT | Implement deterministic bottleneck detector with upstream attribution | 84% | M | Pending | BL-01 | BL-04 |
-| BL-04 | IMPLEMENT | Generate per-run diagnosis snapshot with deterministic prior comparison | 87% | S | Pending | BL-02, BL-03 | BL-05 |
+| BL-02 | IMPLEMENT | Implement metrics extraction into canonical diagnosis input shape | 85% | M | Complete (2026-02-13) | BL-01 | BL-04 |
+| BL-03 | IMPLEMENT | Implement deterministic bottleneck detector with upstream attribution | 84% | M | Complete (2026-02-13) | BL-01 | BL-04 |
+| BL-04 | IMPLEMENT | Generate per-run diagnosis snapshot with deterministic prior comparison | 87% | S | Complete (2026-02-13) | BL-02, BL-03 | BL-05 |
 | BL-05 | IMPLEMENT | Implement idempotent bottleneck history ledger and persistence check | 87% | M | Pending | BL-04 | BL-06 |
 | BL-06 | IMPLEMENT | Add guarded replan trigger with severity gate and lifecycle state | 86% | M | Pending | BL-05 | BL-07 |
 | BL-07 | IMPLEMENT | Integrate diagnosis pipeline into S10 completion flow | 84% | S | Pending | BL-06 | - |

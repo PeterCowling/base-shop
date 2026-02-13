@@ -68,8 +68,8 @@ Primary reference: `docs/plans/advanced-math-algorithms-fact-find.md` (Opportuni
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
-| HW-00 | IMPLEMENT | Contracts + shared forecasting utils scaffold | 91% | S | Pending | - | HW-01, HW-02, HW-03, HW-04, HW-05, HW-06 |
-| HW-01 | IMPLEMENT | Seasonal decomposition with explicit edge semantics | 86% | M | Pending | HW-00 | HW-02, HW-03 |
+| HW-00 | IMPLEMENT | Contracts + shared forecasting utils scaffold | 91% | S | Complete (2026-02-13) | - | HW-01, HW-02, HW-03, HW-04, HW-05, HW-06 |
+| HW-01 | IMPLEMENT | Seasonal decomposition with explicit edge semantics | 86% | M | Complete (2026-02-13) | HW-00 | HW-02, HW-03 |
 | HW-02 | IMPLEMENT | Holt-Winters additive model with deterministic initialization | 84% | M | Pending | HW-00, HW-01 | HW-04, HW-05, HW-06 |
 | HW-03 | IMPLEMENT | Holt-Winters multiplicative model with strict positivity contract | 83% | M | Pending | HW-00, HW-01 | HW-04, HW-05, HW-06 |
 | HW-04 | IMPLEMENT | Model-selection helpers (log-likelihood, AIC/BIC, nEffective) | 85% | S | Pending | HW-02, HW-03 | HW-06 |

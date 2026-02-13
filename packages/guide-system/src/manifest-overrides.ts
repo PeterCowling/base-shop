@@ -9,7 +9,8 @@
  */
 import { z } from "zod";
 
-import { GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES, type GuideArea, type GuideStatus } from "./manifest-types";
+import { GUIDE_AREA_VALUES, GUIDE_STATUS_VALUES } from "./manifest-types";
+import type { GuideArea, GuideStatus } from "./manifest-types";
 
 const seoAuditIssueSchema = z.object({
   issue: z.string(),

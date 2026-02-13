@@ -5,9 +5,9 @@
 
 import {
   createManifestEntrySchema,
-  type GuideManifestEntry,
   resolveGuideStatusForSite,
 } from "../manifest-types";
+import type { GuideManifestEntry } from "../manifest-types";
 
 const TEST_KEYS = ["testGuide", "anotherGuide"] as const;
 const { schema } = createManifestEntrySchema(TEST_KEYS);

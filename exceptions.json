@@ -63,6 +63,13 @@
       ],
       "notes": "Prime design refresh DS lint exceptions (layout, containers, grids)."
     },
+    "BRIK-004": {
+      "allow": [
+        "apps/brikette/src/components/consent/CookieConsent.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "CMP configuration strings; i18n via vanilla-cookieconsent translations API is a future task."
+    },
     "BRK-001": {},
     "BRIK-DS-001": {},
     "BRIK-ENG-0017": {},

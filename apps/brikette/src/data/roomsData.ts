@@ -328,7 +328,7 @@ const roomsData: Room[] = [
     },
     occupancy: 4,
     pricingModel: "perRoom",
-    basePrice: { amount: 150.0, currency: "EUR" }, // TODO: Update with actual pricing
+    basePrice: { amount: 265.0, currency: "EUR" },
     seasonalPrices: SEASONAL,
     availability: { totalBeds: 4, defaultRelease: 4 },
     imagesRaw: ["/images/apartment/landing.webp"], // TODO: Add actual apartment images

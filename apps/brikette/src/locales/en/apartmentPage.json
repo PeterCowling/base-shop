@@ -1,14 +1,14 @@
 {
   "slug": "apartment",
   "meta": {
-    "title": "Apartment Accommodation",
-    "description": "Learn about our self-catering apartment in Positano."
+    "title": "Private Apartment in Positano — Step-Free Arrival",
+    "description": "100sqm private apartment with step-free arrival, full kitchen, 2 bathrooms. Ideal for couples. Professionally managed with optional terrace and breakfast next door. From €265/night."
   },
-  "title": "Apartment",
-  "body": "Our apartment offers a comfortable stay with stunning views.",
+  "title": "Private Serviced Apartment in Positano",
+  "body": "A 100sqm private apartment designed for couples who want independence with support. Step-free arrival from the road, full kitchen, 2 bathrooms, and space to spread out. Managed by a professional hospitality team next door. From €265/night in shoulder season.",
   "heroImageAlt": "Exterior of the apartment building",
-  "heroTitle": "Private Apartment",
-  "heroIntro": "Enjoy a fully equipped space with stunning Positano views.",
+  "heroTitle": "Your Private Positano Apartment",
+  "heroIntro": "100sqm of independence with step-free arrival. Full kitchen, 2 bathrooms, and professional hospitality support next door. Perfect for couples seeking authentic Positano character.",
   "bookButton": "Book Now",
   "galleryHeading": "Gallery",
   "galleryAlt": "Apartment interior and terrace views",
@@ -16,10 +16,10 @@
   "detailsHeading": "Details",
   "detailsList": [
     "Sleeps up to 4 guests",
-    "Kitchenette with fridge",
-    "Private bathroom",
+    "Full kitchen with appliances",
+    "2 full bathrooms",
     "Air conditioning",
-    "Sea-view balcony"
+    "100sqm split-level interior"
   ],
   "amenitiesHeading": "Amenities",
   "amenitiesImageAlt": "Apartment amenities image",
@@ -27,7 +27,9 @@
     "Wi-Fi included",
     "Fully equipped kitchen",
     "Air conditioning",
-    "Washer and dryer"
+    "Washer and dryer",
+    "2 full bathrooms",
+    "100sqm living space"
   ],
   "fitCheck": {
     "heading": "Is this apartment right for you?",
@@ -56,18 +58,18 @@
     "sectionTitle": "Apartment Highlights",
     "slides": [
       {
-        "title": "Panoramic Views",
-        "text": "Wake up to sweeping vistas every morning.",
+        "title": "Step-Free Arrival",
+        "text": "Rare in Positano: walk straight from the road to your front door. No street stairs, no struggle with luggage.",
         "alt": "View from apartment balcony"
       },
       {
-        "title": "Comfortable Spaces",
-        "text": "Plenty of room to relax after exploring.",
+        "title": "Space to Spread Out",
+        "text": "100sqm with full kitchen, 2 bathrooms, washer and dryer. Everything you need for a comfortable stay.",
         "alt": "Spacious living area"
       },
       {
-        "title": "Central Location",
-        "text": "Steps from shops and the beach.",
+        "title": "Independence with Support",
+        "text": "Your own private apartment, with professional hospitality next door when you need it.",
         "alt": "Streets of Positano"
       }
     ]

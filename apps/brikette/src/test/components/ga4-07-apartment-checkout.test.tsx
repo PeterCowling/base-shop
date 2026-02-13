@@ -76,11 +76,11 @@ describe("ApartmentBookContent GA4 enrichment (GA4-07 TC-02/TC-04)", () => {
       "begin_checkout",
       expect.objectContaining({
         currency: "EUR",
-        value: 450, // 3 nights * 150
+        value: 795, // 3 nights * 265
         items: expect.arrayContaining([
           expect.objectContaining({
             item_id: "apartment",
-            price: 150,
+            price: 265,
             quantity: 3,
           }),
         ]),

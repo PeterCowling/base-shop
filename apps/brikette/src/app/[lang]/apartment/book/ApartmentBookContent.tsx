@@ -65,13 +65,13 @@ function ApartmentBookContent({ lang }: Props) {
     if (typeof win.gtag === "function") {
       win.gtag("event", "begin_checkout", {
         currency: "EUR",
-        value: nights * 150,
+        value: nights * 265,
         items: [
           {
             item_id: "apartment",
             item_name: "apartment",
             item_category: plan,
-            price: 150,
+            price: 265,
             quantity: nights,
           },
         ],

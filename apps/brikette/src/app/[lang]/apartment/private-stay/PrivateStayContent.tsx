@@ -17,6 +17,8 @@ type Props = {
   lang: AppLanguage;
 };
 
+const WHATSAPP_URL = "https://wa.me/393287073695";
+
 function PrivateStayContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
@@ -81,7 +83,7 @@ function PrivateStayContent({ lang }: Props) {
             {t("privateStay.checkAvailability")}
           </Link>
           <a
-            href="https://wa.me/"
+            href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackApartmentEvent("click_whatsapp", { source: "private-stay" })}

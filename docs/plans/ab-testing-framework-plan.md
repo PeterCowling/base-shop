@@ -84,7 +84,7 @@ Implement a statistically rigorous experimentation module in `packages/lib/src/m
 | ABT-06 | IMPLEMENT | Thompson sampling and regret simulation for Beta-Bernoulli bandits | 84% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-05 | - |
 | ABT-07A | IMPLEMENT | Group-sequential testing using documented O'Brien-Fleming approximation | 80% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-03 | - |
 | ABT-08 | INVESTIGATE | mSPRT variant specification and mathematical formulation for binomial A/B tests | 88% | S | Complete (2026-02-13) | - | ABT-09 |
-| ABT-09 | SPIKE | mSPRT simulation harness prototype with type-I error validation | 82% | S | Pending | ABT-00, ABT-01, ABT-05, ABT-08 | ABT-07B |
+| ABT-09 | SPIKE | mSPRT simulation harness prototype with type-I error validation | 82% | S | Complete (2026-02-13) | ABT-00, ABT-01, ABT-05, ABT-08 | ABT-07B |
 | ABT-07B | IMPLEMENT | Always-valid inference (mSPRT) with simulation-based error-control validation | 68% (→ 82% conditional on ABT-08, ABT-09) | L | Pending | ABT-00, ABT-01, ABT-05, ABT-08, ABT-09 | - |
 
 ## Parallelism Guide
@@ -764,6 +764,25 @@ where:
   - **Test location:** `packages/lib/__tests__/math/experimentation/internal/msprt-spike.test.ts` (new)
   - **Run:** `npx jest --config jest.config.cjs --testPathPattern='experimentation/internal/msprt-spike'`
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending
+- **Execution cycle:**
+  - Validation cases executed: TC-09-01, TC-09-02, TC-09-03
+  - Cycles: 2 (implementation + import path correction)
+  - Initial validation: FAIL (module import path); Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 82%
+  - Delta reason: 10k-run null gate and deterministic replay both passed with the selected mSPRT variant.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- __tests__/math/experimentation/internal/msprt-spike.test.ts` — PASS (7/7)
+  - Ran: `pnpm --filter @acme/lib test -- __tests__/math/experimentation/sample-size.test.ts __tests__/math/experimentation/hypothesis-tests.test.ts __tests__/math/experimentation/confidence-intervals.test.ts __tests__/math/experimentation/bayesian.test.ts __tests__/math/experimentation/thompson-sampling.test.ts __tests__/math/experimentation/group-sequential.test.ts __tests__/math/experimentation/internal/msprt-spike.test.ts` — PASS (87/87)
+  - Ran: `pnpm --filter @acme/lib build` — PASS
+  - Ran: `pnpm --filter @acme/lib lint` — PASS with 2 pre-existing warnings in `packages/lib/src/growth/__tests__/store.test.ts`
+- **Documentation updated:** This plan document only.
+- **Implementation notes:** Added internal mSPRT spike primitives for transformed-effect e-values, sequential stop simulation, and null type-I Monte Carlo calibration harness.
+
 ---
 
 ### ABT-07B: Always-valid inference (mSPRT, phase 2)
@@ -872,6 +891,7 @@ where:
 | 2026-02-13 | Split ABT-07B precursors into ABT-08 (INVESTIGATE) + ABT-09 (SPIKE) | mSPRT has two blocking unknowns: variant selection and type-I calibration. Sequential precursors resolve each before committing to full L-effort implementation. |
 | 2026-02-13 | ABT-08 can run in Wave 1 (parallel with ABT-00, ABT-01) | INVESTIGATE task requires no code dependencies — literature review only. Enables early start on mSPRT specification while foundational code is built. |
 | 2026-02-13 | ABT-08 selected arcsine-CLT Gaussian-mixture mSPRT for binary A/B tests | Matches Johari et al. deployment guidance for binary data while providing a closed-form LR suitable for deterministic simulation calibration in ABT-09. |
+| 2026-02-13 | ABT-09 simulation gate passed | Internal spike harness met TC-09 criteria (finite e-values, 10k null calibration <=0.055, deterministic seed replay), clearing the ABT-07B precursor. |
 | 2026-02-13 | Promote ABT-00 from 78% → 80% with E2 evidence | Existing `normalQuantile()` in prediction-intervals.ts:230-253 + 505 passing math tests prove numerical computation capability at the required level. |
 
 ## References

@@ -512,7 +512,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete
-- **Commits:** pending (this task updates code/tests + plan in current cycle)
+- **Commits:** `490938ad11`
 - **Execution cycle:**
   - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
   - Cycles: 1 red-green cycle

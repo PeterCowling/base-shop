@@ -19,6 +19,7 @@
     "@acme/next-config": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/sanity": "workspace:*",
+    "@acme/seo": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",

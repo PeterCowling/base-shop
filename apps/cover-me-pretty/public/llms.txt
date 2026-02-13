@@ -1,0 +1,6 @@
+# Cover Me Pretty
+> Curated fashion accessories and home goods — online store with multilingual support.
+
+## Machine-readable sources
+- [Sitemap](/sitemap.xml)
+- [Robots](/robots.txt)

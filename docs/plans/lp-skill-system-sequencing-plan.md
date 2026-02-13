@@ -71,7 +71,7 @@ Primary references:
 | LPSP-02 | IMPLEMENT | Add runtime-authoritative loop spec and align wrapper/workflow/prompt index | 85% | M | Done | LPSP-01 | LPSP-06A, LPSP-08 |
 | LPSP-03A | IMPLEMENT | Define stage-result schema + data-plane ownership contract | 88% | S | Done | LPSP-01 | LPSP-03B, LPSP-04A |
 | LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 86% | M | Done | LPSP-03A | LPSP-07 |
-| LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 85% | M | Pending | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
+| LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 89% | M | Done | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
 | LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% (→84%) | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
 | LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 84% | M | Pending | LPSP-01 | LPSP-06A |
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 90% | S | Pending | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
@@ -87,9 +87,11 @@ Primary references:
 - `LPSP-02` (IMPLEMENT) — **Done**.
 - `LPSP-03A` (IMPLEMENT) — **Done**.
 - `LPSP-03B` (IMPLEMENT) — **Done**.
+- `LPSP-04A` (IMPLEMENT) — **Done**.
 - `LPSP-05` (IMPLEMENT) — Unblocked, ready to build (Wave 2).
-- `LPSP-04A`, `LPSP-06A` — Newly unblocked (Wave 3).
-- `LPSP-07` — Newly unblocked (Wave 4, depends on LPSP-03B Done).
+- `LPSP-06A` — Unblocked (Wave 3, depends on LPSP-02+05).
+- `LPSP-06B`, `LPSP-06C` — Newly unblocked by LPSP-04A (Wave 4, still need LPSP-06A).
+- `LPSP-07` — Unblocked (Wave 4, depends on LPSP-03B Done).
 
 ## Parallelism Guide
 
@@ -236,12 +238,13 @@ Primary references:
   - Created `scripts/src/startup-loop/__tests__/manifest-update.test.ts` — 8 tests covering all 3 VCs.
   - Learning: when using discriminated unions with `"key" in obj`, ensure the discriminant key doesn't collide with domain fields (StageResult.error vs validation error).
 
-### LPSP-04A: Event schema + derived state + deterministic derivation (happy-path)
+### LPSP-04A: Event schema + derived state + deterministic derivation (happy-path) — DONE
 
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change + business-artifact.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 85%
+- **Confidence:** 85% → 89% post-validation
 - **Replan note:** Split from original LPSP-04 (74%). Scoped to happy-path event/state schemas and derivation. Recovery automation deferred to LPSP-04B.
 - **Depends on:** LPSP-03A (stage-result format feeds event schema).
 - **Scope:**
@@ -265,6 +268,29 @@ Primary references:
   - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-events/`.
   - **Run/verify:** Create fixture `events.jsonl`, invoke derivation function, compare `state.json` output to expected snapshot.
 - **Deferred to LPSP-04B:** Automated recovery actions, event stream corruption detection, partial artifact cleanup, failure injection test harness.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c85fcb0953
+- **Execution cycle:**
+  - Validation cases executed: VC-04A-01, VC-04A-02, VC-04A-03, VC-04A-04
+  - Cycles: 1 (single red-green pass, no fixes needed)
+  - Initial validation: PASS (all 9 tests green on first run)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 89%
+  - Delta reason: all VCs passed first time; pure function made derivation trivially testable; launch-QA compatibility confirmed with all 17 stages
+- **Validation:**
+  - Ran: `npx jest --testPathPattern="derive-state"` — PASS (9/9)
+  - Ran: `npx tsc --project scripts/tsconfig.json --noEmit` — PASS
+  - Ran: `npx eslint scripts/src/startup-loop/` — PASS
+- **Documentation updated:** `docs/business-os/startup-loop/event-state-schema.md` (new), stage-result-schema.md relationship table (LPSP-04A rows now reference this doc)
+- **Implementation notes:**
+  - Created `docs/business-os/startup-loop/event-state-schema.md` — event ledger and derived state schemas, derivation algorithm, launch-QA compatibility notes.
+  - Created `scripts/src/startup-loop/derive-state.ts` — pure `deriveState()` function. No I/O — caller reads/writes files.
+  - Created `scripts/src/startup-loop/__tests__/derive-state.test.ts` — 9 tests covering all 4 VCs.
+  - Design choice: `deriveState` is a pure function taking events + options, returning state. This makes testing trivial and keeps I/O at the edges.
 
 ### LPSP-04B: Recovery automation + event validation + failure injection
 

@@ -49,8 +49,224 @@ async function writeFixtureFile(sourcePath: string, targetPath: string) {
   await fs.writeFile(targetPath, content, "utf-8");
 }
 
+async function writeMetricsFile(
+  targetPath: string,
+  rows: Array<{ timestamp: string; metric_name: string; value: number; run_id?: string }>
+) {
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  const content = rows
+    .map((row) =>
+      JSON.stringify({
+        timestamp: row.timestamp,
+        run_id: row.run_id ?? "run-001",
+        metric_name: row.metric_name,
+        value: row.value,
+      })
+    )
+    .join("\n");
+  await fs.writeFile(targetPath, `${content}\n`, "utf-8");
+}
+
 function parseResultPayload(result: { content: Array<{ text: string }> }) {
   return JSON.parse(result.content[0].text) as Record<string, unknown>;
+}
+
+async function runTc08RefreshLifecycle(tempRoot: string): Promise<void> {
+  const runRoot = path.join(
+    tempRoot,
+    "docs/business-os/startup-baselines/BRIK/runs/run-001"
+  );
+  const businessRoot = path.join(tempRoot, "docs/business-os/startup-baselines/BRIK");
+
+  await writeFixtureFile(
+    path.join(LOOP_FIXTURES, "manifest.complete.json"),
+    path.join(runRoot, "baseline.manifest.json")
+  );
+  await writeFixtureFile(
+    path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+    path.join(runRoot, "metrics.jsonl")
+  );
+
+  const enqueueFirst = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "manual refresh request from startup loop",
+    reason: "collector stale",
+    requestedBy: "startup-loop",
+  });
+  const enqueueFirstPayload = parseResultPayload(enqueueFirst);
+  expect(enqueueFirst.isError).toBeUndefined();
+  expect(enqueueFirstPayload.refreshRequest).toEqual(
+    expect.objectContaining({
+      requestId: "req-refresh-001",
+      state: "enqueued",
+    })
+  );
+
+  const queuePath = String(enqueueFirstPayload.queuePath);
+  const queueStatBefore = await fs.stat(queuePath);
+
+  const enqueueDuplicate = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "duplicate enqueue should be idempotent",
+    reason: "collector stale",
+    requestedBy: "startup-loop",
+  });
+  const enqueueDuplicatePayload = parseResultPayload(enqueueDuplicate);
+  expect(enqueueDuplicatePayload.idempotent).toBe(true);
+  expect(enqueueDuplicatePayload.refreshRequest).toEqual(
+    expect.objectContaining({
+      requestId: "req-refresh-001",
+      state: "enqueued",
+    })
+  );
+
+  const queueStatAfter = await fs.stat(queuePath);
+  expect(queueStatAfter.mtimeMs).toBe(queueStatBefore.mtimeMs);
+
+  const transitionPending = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "collector accepted refresh request",
+    reason: "collector queue accepted",
+    requestedBy: "startup-loop",
+    transitionTo: "pending",
+  });
+  const transitionPendingPayload = parseResultPayload(transitionPending);
+  expect(transitionPendingPayload.refreshRequest.state).toBe("pending");
+
+  const transitionRunning = await handleLoopTool("refresh_enqueue_guarded", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    collector: "metrics",
+    requestId: "req-refresh-001",
+    write_reason: "collector running request",
+    reason: "collector worker started",
+    requestedBy: "startup-loop",
+    transitionTo: "running",
+  });
+  const transitionRunningPayload = parseResultPayload(transitionRunning);
+  expect(transitionRunningPayload.refreshRequest.state).toBe("running");
+
+  const collectorStatusPath = path.join(
+    businessRoot,
+    "refresh",
+    "collectors",
+    "metrics.status.json"
+  );
+  await fs.mkdir(path.dirname(collectorStatusPath), { recursive: true });
+  await fs.writeFile(
+    collectorStatusPath,
+    JSON.stringify(
+      {
+        schemaVersion: "refresh.collector.status.v1",
+        collector: "metrics",
+        state: "failed",
+        lastRunAt: "2026-01-01T00:00:00Z",
+        updatedAt: "2026-01-01T00:00:00Z",
+        error: {
+          code: "UPSTREAM_TIMEOUT",
+          message: "collector timed out waiting for upstream",
+        },
+      },
+      null,
+      2
+    ),
+    "utf-8"
+  );
+
+  process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS = "60";
+
+  const refreshStatus = await handleLoopTool("refresh_status_get", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    collector: "metrics",
+  });
+  const refreshStatusPayload = parseResultPayload(refreshStatus);
+  expect(refreshStatusPayload.freshness).toEqual(
+    expect.objectContaining({
+      status: "stale",
+    })
+  );
+  expect(Number(refreshStatusPayload.lagSeconds)).toBeGreaterThan(60);
+  expect(refreshStatusPayload.collector).toEqual(
+    expect.objectContaining({
+      state: "failed",
+    })
+  );
+  expect(refreshStatusPayload.collector.error).toEqual(
+    expect.objectContaining({
+      code: "UPSTREAM_TIMEOUT",
+    })
+  );
+}
+
+async function runTc09AnomalyDetectors(tempRoot: string): Promise<void> {
+  const runRoot = path.join(
+    tempRoot,
+    "docs/business-os/startup-baselines/BRIK/runs/run-001"
+  );
+  const metricsPath = path.join(runRoot, "metrics.jsonl");
+
+  await writeFixtureFile(
+    path.join(LOOP_FIXTURES, "manifest.complete.json"),
+    path.join(runRoot, "baseline.manifest.json")
+  );
+
+  await writeMetricsFile(metricsPath, [
+    { timestamp: "2026-02-01T00:00:00Z", metric_name: "traffic_requests", value: 100 },
+    { timestamp: "2026-02-02T00:00:00Z", metric_name: "traffic_requests", value: 101 },
+    { timestamp: "2026-02-03T00:00:00Z", metric_name: "traffic_requests", value: 99 },
+  ]);
+
+  const coldStart = await handleLoopTool("anomaly_detect_traffic", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    grain: "day",
+  });
+  const coldStartPayload = parseResultPayload(coldStart);
+  expect(coldStartPayload.quality).toBe("blocked");
+  expect(coldStartPayload.severity).toBeNull();
+  expect(coldStartPayload.qualityNotes).toContain("insufficient-history");
+
+  const fullSeries = Array.from({ length: 30 }).map((_, index) => ({
+    timestamp: new Date(Date.UTC(2026, 0, index + 1)).toISOString(),
+    metric_name: "traffic_requests",
+    value: index === 29 ? 280 : 100 + (index % 3),
+  }));
+  await writeMetricsFile(metricsPath, fullSeries);
+
+  const warmSeries = await handleLoopTool("anomaly_detect_traffic", {
+    business: "BRIK",
+    runId: "run-001",
+    current_stage: "S7",
+    grain: "day",
+  });
+  const warmSeriesPayload = parseResultPayload(warmSeries);
+  expect(warmSeriesPayload.quality).toBe("ok");
+  expect(["moderate", "critical"]).toContain(String(warmSeriesPayload.severity));
+  expect(warmSeriesPayload.detector).toEqual(
+    expect.objectContaining({
+      schemaVersion: "anomaly.detector.v1",
+      primary: "ewma-zscore.v1",
+    })
+  );
+  expect(warmSeriesPayload.detector.methods).toEqual(
+    expect.arrayContaining(["ewma", "zscore"])
+  );
 }
 
 describe("startup-loop MCP integration suite", () => {
@@ -59,6 +275,7 @@ describe("startup-loop MCP integration suite", () => {
   const originalApiKey = process.env.BOS_AGENT_API_KEY;
   const originalArtifactRoot = process.env.STARTUP_LOOP_ARTIFACT_ROOT;
   const originalStaleThreshold = process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS;
+  const originalRefreshStatusStaleThreshold = process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS;
 
   let tempRoot = "";
   let bosStatusCase: BosStatusCase = "success";
@@ -122,6 +339,7 @@ describe("startup-loop MCP integration suite", () => {
     process.env.BOS_AGENT_API_KEY = originalApiKey;
     process.env.STARTUP_LOOP_ARTIFACT_ROOT = originalArtifactRoot;
     process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS = originalStaleThreshold;
+    process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS = originalRefreshStatusStaleThreshold;
     global.fetch = originalFetch;
     await fs.rm(tempRoot, { recursive: true, force: true });
     jest.resetAllMocks();
@@ -372,5 +590,13 @@ describe("startup-loop MCP integration suite", () => {
     const markdownTwo = await fs.readFile(String(packTwoPayload.packMarkdownPath), "utf-8");
     expect(jsonOne).toBe(jsonTwo);
     expect(markdownOne).toBe(markdownTwo);
+  });
+
+  it("TC-08: refresh lifecycle is idempotent and stale collector status includes lag/error detail", async () => {
+    await runTc08RefreshLifecycle(tempRoot);
+  });
+
+  it("TC-09: anomaly detectors enforce cold-start baseline gate and emit detector metadata", async () => {
+    await runTc09AnomalyDetectors(tempRoot);
   });
 });

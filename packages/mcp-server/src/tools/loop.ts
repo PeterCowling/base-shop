@@ -11,9 +11,13 @@ import {
   resolveLoopArtifactPaths,
 } from "../lib/loop-artifact-reader.js";
 import {
+  anomalyGrainSchema,
+  assertRefreshStateTransition,
   buildEnvelope,
   determineWave2Quality,
+  evaluateAnomalyBaseline,
   parseWave2MetricRecord,
+  refreshEnqueueStateSchema,
   validateRunPacketBounds,
 } from "../lib/wave2-contracts.js";
 import { formatError, jsonResult } from "../utils/validation.js";
@@ -60,6 +64,26 @@ const packBuildInputSchema = loopStatusInputSchema.extend({
   packetId: z.string().min(1).optional(),
 });
 
+const collectorNameSchema = z.string().regex(/^[a-zA-Z0-9_.-]+$/);
+
+const refreshStatusInputSchema = loopStatusInputSchema.extend({
+  collector: collectorNameSchema.default("metrics"),
+});
+
+const refreshEnqueueInputSchema = loopStatusInputSchema.extend({
+  collector: collectorNameSchema.default("metrics"),
+  requestId: z.string().min(1),
+  write_reason: z.string().min(1),
+  reason: z.string().min(1),
+  requestedBy: z.string().min(1),
+  transitionTo: refreshEnqueueStateSchema.optional(),
+});
+
+const anomalyDetectInputSchema = loopStatusInputSchema.extend({
+  grain: anomalyGrainSchema.default("day"),
+  metric: z.string().min(1).optional(),
+});
+
 const manifestSchema = z.object({
   run_id: z.string().optional(),
   status: z.string().optional(),
@@ -85,6 +109,45 @@ const metricEntrySchema = z.object({
   timestamp: z.string().optional(),
   metric_name: z.string().optional(),
   value: z.number().optional(),
+});
+
+const refreshCollectorStatusSchema = z.object({
+  schemaVersion: z.literal("refresh.collector.status.v1"),
+  collector: z.string().min(1),
+  state: refreshEnqueueStateSchema,
+  lastRunAt: z.string().datetime({ offset: true }).optional(),
+  lastSuccessAt: z.string().datetime({ offset: true }).optional(),
+  updatedAt: z.string().datetime({ offset: true }).optional(),
+  error: z
+    .object({
+      code: z.string().min(1),
+      message: z.string().min(1),
+    })
+    .optional(),
+});
+
+const refreshRequestHistoryEntrySchema = z.object({
+  from: refreshEnqueueStateSchema,
+  to: refreshEnqueueStateSchema,
+  at: z.string().datetime({ offset: true }),
+});
+
+const refreshRequestEntrySchema = z.object({
+  requestId: z.string().min(1),
+  state: refreshEnqueueStateSchema,
+  requestedAt: z.string().datetime({ offset: true }),
+  updatedAt: z.string().datetime({ offset: true }),
+  writeReason: z.string().min(1),
+  reason: z.string().min(1),
+  requestedBy: z.string().min(1),
+  history: z.array(refreshRequestHistoryEntrySchema).default([]),
+});
+
+const refreshQueueSchema = z.object({
+  schemaVersion: z.literal("refresh.queue.v1"),
+  collector: z.string().min(1),
+  updatedAt: z.string().datetime({ offset: true }),
+  requests: z.array(refreshRequestEntrySchema).default([]),
 });
 
 export const loopToolPoliciesRaw = {
@@ -141,6 +204,46 @@ export const loopToolPoliciesRaw = {
     sideEffects: "filesystem_write",
     allowedStages: [...STARTUP_LOOP_STAGES],
     auditTag: "pack:weekly-s10:build",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  refresh_status_get: {
+    permission: "read",
+    sideEffects: "none",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "refresh:status:get",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  refresh_enqueue_guarded: {
+    permission: "guarded_write",
+    sideEffects: "filesystem_write",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "refresh:enqueue:guarded",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  anomaly_detect_traffic: {
+    permission: "read",
+    sideEffects: "none",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "anomaly:traffic:detect",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  anomaly_detect_revenue: {
+    permission: "read",
+    sideEffects: "none",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "anomaly:revenue:detect",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  anomaly_detect_errors: {
+    permission: "read",
+    sideEffects: "none",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "anomaly:errors:detect",
     contextRequired: ["business", "runId", "current_stage"],
     sensitiveFields: ["baseEntitySha"],
   },
@@ -237,6 +340,88 @@ export const loopTools = [
         runId: { type: "string", description: "Startup-loop run identifier" },
         current_stage: { type: "string", description: "Current startup-loop stage" },
         packetId: { type: "string", description: "Optional packet identifier" },
+      },
+      required: ["business", "runId", "current_stage"],
+    },
+  },
+  {
+    name: "refresh_status_get",
+    description: "Read collector health and refresh queue status for a business/run",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        collector: { type: "string", description: "Collector key", default: "metrics" },
+      },
+      required: ["business", "runId", "current_stage"],
+    },
+  },
+  {
+    name: "refresh_enqueue_guarded",
+    description: "Create or transition a guarded refresh request using idempotent request IDs",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        collector: { type: "string", description: "Collector key", default: "metrics" },
+        requestId: { type: "string", description: "Stable refresh request identifier" },
+        write_reason: { type: "string", description: "Reason for guarded write request" },
+        reason: { type: "string", description: "Operational reason for refresh" },
+        requestedBy: { type: "string", description: "Requesting operator/system" },
+        transitionTo: {
+          type: "string",
+          description: "Optional lifecycle transition target",
+          enum: ["enqueued", "pending", "running", "complete", "failed", "expired"],
+        },
+      },
+      required: ["business", "runId", "current_stage", "requestId", "write_reason", "reason", "requestedBy"],
+    },
+  },
+  {
+    name: "anomaly_detect_traffic",
+    description: "Detect traffic anomalies using EWMA + z-score with minimum history gate",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        grain: { type: "string", enum: ["day", "week", "month"], default: "day" },
+        metric: { type: "string", description: "Optional metric override" },
+      },
+      required: ["business", "runId", "current_stage"],
+    },
+  },
+  {
+    name: "anomaly_detect_revenue",
+    description: "Detect revenue anomalies using EWMA + z-score with minimum history gate",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        grain: { type: "string", enum: ["day", "week", "month"], default: "day" },
+        metric: { type: "string", description: "Optional metric override" },
+      },
+      required: ["business", "runId", "current_stage"],
+    },
+  },
+  {
+    name: "anomaly_detect_errors",
+    description: "Detect error-rate anomalies using EWMA + z-score with minimum history gate",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        grain: { type: "string", enum: ["day", "week", "month"], default: "day" },
+        metric: { type: "string", description: "Optional metric override" },
       },
       required: ["business", "runId", "current_stage"],
     },
@@ -392,6 +577,58 @@ function topItemsFromPrefix(
     .sort((a, b) => b[1] - a[1])
     .slice(0, maxItems)
     .map(([key]) => key.slice(prefix.length));
+}
+
+function refreshQueuePath(paths: { businessRoot: string }, collector: string): string {
+  return path.join(paths.businessRoot, "refresh", "requests", `${collector}.json`);
+}
+
+function refreshCollectorStatusPath(paths: { businessRoot: string }, collector: string): string {
+  return path.join(paths.businessRoot, "refresh", "collectors", `${collector}.status.json`);
+}
+
+function parseCollectorFreshnessTimestamp(status: z.infer<typeof refreshCollectorStatusSchema> | null): string | null {
+  if (!status) {
+    return null;
+  }
+  return status.updatedAt ?? status.lastRunAt ?? status.lastSuccessAt ?? null;
+}
+
+function toWeekBucket(date: Date): string {
+  const current = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  const day = current.getUTCDay() || 7;
+  current.setUTCDate(current.getUTCDate() + 4 - day);
+  const yearStart = new Date(Date.UTC(current.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(((current.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+  return `${current.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function bucketTimestamp(isoTimestamp: string, grain: z.infer<typeof anomalyGrainSchema>): string {
+  const date = new Date(isoTimestamp);
+  if (grain === "week") {
+    return toWeekBucket(date);
+  }
+  if (grain === "month") {
+    return isoTimestamp.slice(0, 7);
+  }
+  return isoTimestamp.slice(0, 10);
+}
+
+function mean(values: number[]): number {
+  if (values.length === 0) {
+    return 0;
+  }
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function standardDeviation(values: number[]): number {
+  if (values.length <= 1) {
+    return 0;
+  }
+  const avg = mean(values);
+  const variance =
+    values.reduce((sum, value) => sum + (value - avg) ** 2, 0) / values.length;
+  return Math.sqrt(variance);
 }
 
 async function writeJsonArtifact(filePath: string, value: unknown): Promise<void> {
@@ -762,6 +999,337 @@ async function handlePackWeeklyS10Build(args: unknown): Promise<ToolCallResult> 
   });
 }
 
+async function handleRefreshStatusGet(args: unknown): Promise<ToolCallResult> {
+  const parsed = refreshStatusInputSchema.parse(args);
+  const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
+  const queuePath = refreshQueuePath(paths, parsed.collector);
+  const statusPath = refreshCollectorStatusPath(paths, parsed.collector);
+
+  const queueRaw = await readJsonFile(queuePath);
+  const queue = queueRaw
+    ? refreshQueueSchema.parse(queueRaw)
+    : {
+        schemaVersion: "refresh.queue.v1" as const,
+        collector: parsed.collector,
+        updatedAt: new Date(0).toISOString(),
+        requests: [],
+      };
+
+  const collectorRaw = await readJsonFile(statusPath);
+  const collector = collectorRaw ? refreshCollectorStatusSchema.parse(collectorRaw) : null;
+  const freshness = buildFreshnessEnvelope(
+    parseCollectorFreshnessTimestamp(collector),
+    Number(process.env.REFRESH_STATUS_STALE_THRESHOLD_SECONDS || 60 * 60)
+  );
+
+  const states = queue.requests.reduce<Record<string, number>>((acc, request) => {
+    acc[request.state] = (acc[request.state] ?? 0) + 1;
+    return acc;
+  }, {});
+
+  return jsonResult({
+    schemaVersion: "refresh.status.v1",
+    business: parsed.business,
+    runId: parsed.runId,
+    collector: {
+      collector: parsed.collector,
+      state: collector?.state ?? "failed",
+      lastRunAt: collector?.lastRunAt ?? null,
+      lastSuccessAt: collector?.lastSuccessAt ?? null,
+      updatedAt: collector?.updatedAt ?? null,
+      error: collector?.error ?? null,
+    },
+    freshness,
+    lagSeconds: freshness.ageSeconds,
+    queue: {
+      requestCount: queue.requests.length,
+      states,
+      latestRequest: queue.requests.slice().sort((a, b) => a.updatedAt.localeCompare(b.updatedAt)).at(-1) ?? null,
+    },
+    queuePath,
+    statusPath,
+  });
+}
+
+async function handleRefreshEnqueueGuarded(args: unknown): Promise<ToolCallResult> {
+  const parsed = refreshEnqueueInputSchema.parse(args);
+  const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
+  const queuePath = refreshQueuePath(paths, parsed.collector);
+  const queueRaw = await readJsonFile(queuePath);
+  const queue = queueRaw
+    ? refreshQueueSchema.parse(queueRaw)
+    : {
+        schemaVersion: "refresh.queue.v1" as const,
+        collector: parsed.collector,
+        updatedAt: new Date(0).toISOString(),
+        requests: [],
+      };
+
+  const existingRequest = queue.requests.find((request) => request.requestId === parsed.requestId);
+  if (existingRequest && !parsed.transitionTo) {
+    return jsonResult({
+      schemaVersion: "refresh.enqueue.v1",
+      business: parsed.business,
+      runId: parsed.runId,
+      collector: parsed.collector,
+      idempotent: true,
+      transitioned: false,
+      refreshRequest: existingRequest,
+      queuePath,
+      lifecycle: ["enqueued", "pending", "running", "complete|failed|expired"],
+    });
+  }
+
+  const now = new Date().toISOString();
+
+  if (!existingRequest) {
+    const initialState = parsed.transitionTo ?? "enqueued";
+    if (initialState !== "enqueued") {
+      return toolError(
+        "CONTRACT_MISMATCH",
+        "New refresh requests must start in enqueued state.",
+        false,
+        { requestId: parsed.requestId, transitionTo: parsed.transitionTo }
+      );
+    }
+
+    const createdRequest = refreshRequestEntrySchema.parse({
+      requestId: parsed.requestId,
+      state: "enqueued",
+      requestedAt: now,
+      updatedAt: now,
+      writeReason: parsed.write_reason,
+      reason: parsed.reason,
+      requestedBy: parsed.requestedBy,
+      history: [],
+    });
+
+    const updatedQueue = {
+      ...queue,
+      updatedAt: now,
+      requests: [...queue.requests, createdRequest],
+    };
+
+    await writeJsonArtifact(queuePath, updatedQueue);
+
+    return jsonResult({
+      schemaVersion: "refresh.enqueue.v1",
+      business: parsed.business,
+      runId: parsed.runId,
+      collector: parsed.collector,
+      idempotent: false,
+      transitioned: false,
+      refreshRequest: createdRequest,
+      queuePath,
+      lifecycle: ["enqueued", "pending", "running", "complete|failed|expired"],
+    });
+  }
+
+  const targetState = parsed.transitionTo ?? existingRequest.state;
+  if (targetState === existingRequest.state) {
+    return jsonResult({
+      schemaVersion: "refresh.enqueue.v1",
+      business: parsed.business,
+      runId: parsed.runId,
+      collector: parsed.collector,
+      idempotent: true,
+      transitioned: false,
+      refreshRequest: existingRequest,
+      queuePath,
+      lifecycle: ["enqueued", "pending", "running", "complete|failed|expired"],
+    });
+  }
+
+  assertRefreshStateTransition(existingRequest.state, targetState);
+
+  const transitionedRequest = refreshRequestEntrySchema.parse({
+    ...existingRequest,
+    state: targetState,
+    updatedAt: now,
+    writeReason: parsed.write_reason,
+    reason: parsed.reason,
+    requestedBy: parsed.requestedBy,
+    history: [
+      ...existingRequest.history,
+      {
+        from: existingRequest.state,
+        to: targetState,
+        at: now,
+      },
+    ],
+  });
+
+  const updatedQueue = {
+    ...queue,
+    updatedAt: now,
+    requests: queue.requests.map((request) =>
+      request.requestId === parsed.requestId ? transitionedRequest : request
+    ),
+  };
+
+  await writeJsonArtifact(queuePath, updatedQueue);
+
+  return jsonResult({
+    schemaVersion: "refresh.enqueue.v1",
+    business: parsed.business,
+    runId: parsed.runId,
+    collector: parsed.collector,
+    idempotent: false,
+    transitioned: true,
+    refreshRequest: transitionedRequest,
+    queuePath,
+    lifecycle: ["enqueued", "pending", "running", "complete|failed|expired"],
+  });
+}
+
+async function handleAnomalyDetect(
+  args: unknown,
+  defaults: {
+    toolName: string;
+    defaultMetric: string;
+  }
+): Promise<ToolCallResult> {
+  const parsed = anomalyDetectInputSchema.parse(args);
+  const metricName = parsed.metric ?? defaults.defaultMetric;
+  const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
+  const metricsRaw = await readJsonLines(paths.metricsPath);
+  if (!metricsRaw) {
+    return buildMissingArtifactError(paths.metricsPath);
+  }
+
+  const metricEntries = metricsRaw
+    .map((entry) => metricEntrySchema.parse(entry))
+    .filter((entry) => entry.metric_name === metricName && typeof entry.value === "number")
+    .map((entry) => ({ timestamp: parseMetricTimestamp(entry), value: entry.value as number }));
+
+  const buckets = new Map<string, number>();
+  for (const entry of metricEntries) {
+    const bucket = bucketTimestamp(entry.timestamp, parsed.grain);
+    buckets.set(bucket, (buckets.get(bucket) ?? 0) + entry.value);
+  }
+
+  const series = [...buckets.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([, value]) => value);
+
+  const baseline = evaluateAnomalyBaseline({
+    grain: parsed.grain,
+    observedPoints: series.length,
+  });
+
+  const latestTimestamp = metricEntries.map((entry) => entry.timestamp).sort().at(-1) ?? new Date(0).toISOString();
+  if (!baseline.eligible || series.length < 2) {
+    const envelope = buildEnvelope({
+      schemaVersion: "anomaly.detect.v1",
+      refreshedAt: latestTimestamp,
+      qualityNotes: ["insufficient-history"],
+      coverage: {
+        expectedPoints: baseline.minimumPoints,
+        observedPoints: series.length,
+        samplingFraction: baseline.minimumPoints > 0 ? Math.min(1, series.length / baseline.minimumPoints) : 0,
+      },
+      provenance: {
+        schemaVersion: "provenance.v1",
+        querySignature: `sha256:${hashPayload({ metricName, grain: parsed.grain, series })}`,
+        generatedAt: latestTimestamp,
+        datasetId: `${parsed.business}-${parsed.runId}-anomaly-${metricName}`,
+        sourceRef: defaults.toolName,
+        artifactRefs: [paths.metricsPath],
+        quality: "blocked",
+      },
+    });
+
+    return jsonResult({
+      ...envelope,
+      business: parsed.business,
+      runId: parsed.runId,
+      metric: metricName,
+      grain: parsed.grain,
+      minimumHistoryPoints: baseline.minimumPoints,
+      severity: null,
+      detector: {
+        schemaVersion: "anomaly.detector.v1",
+        primary: "ewma-zscore.v1",
+        methods: ["ewma", "zscore"],
+        settings: {
+          ewmaAlpha: 0.3,
+          moderateZ: 2,
+          criticalZ: 3,
+          minimumHistoryPoints: baseline.minimumPoints,
+        },
+      },
+    });
+  }
+
+  const history = series.slice(0, -1);
+  const currentValue = series.at(-1) ?? 0;
+  const avg = mean(history);
+  const std = standardDeviation(history);
+  const ewmaAlpha = 0.3;
+  let ewma = history[0] ?? 0;
+  for (const value of history.slice(1)) {
+    ewma = ewmaAlpha * value + (1 - ewmaAlpha) * ewma;
+  }
+
+  const zScore =
+    std === 0 ? (currentValue === avg ? 0 : Math.sign(currentValue - avg) * 10) : (currentValue - avg) / std;
+  const ewmaScore =
+    std === 0 ? (currentValue === ewma ? 0 : Math.sign(currentValue - ewma) * 10) : (currentValue - ewma) / std;
+  const anomalyScore = Math.max(Math.abs(zScore), Math.abs(ewmaScore));
+  const severity =
+    anomalyScore >= 3 ? "critical" : anomalyScore >= 2 ? "moderate" : "none";
+
+  const envelope = buildEnvelope({
+    schemaVersion: "anomaly.detect.v1",
+    refreshedAt: latestTimestamp,
+    qualityNotes: baseline.qualityNotes,
+    coverage: {
+      expectedPoints: baseline.minimumPoints,
+      observedPoints: series.length,
+      samplingFraction: Math.min(1, series.length / baseline.minimumPoints),
+    },
+    provenance: {
+      schemaVersion: "provenance.v1",
+      querySignature: `sha256:${hashPayload({ metricName, grain: parsed.grain, series })}`,
+      generatedAt: latestTimestamp,
+      datasetId: `${parsed.business}-${parsed.runId}-anomaly-${metricName}`,
+      sourceRef: defaults.toolName,
+      artifactRefs: [paths.metricsPath],
+      quality: baseline.quality,
+    },
+  });
+
+  return jsonResult({
+    ...envelope,
+    business: parsed.business,
+    runId: parsed.runId,
+    metric: metricName,
+    grain: parsed.grain,
+    minimumHistoryPoints: baseline.minimumPoints,
+    detector: {
+      schemaVersion: "anomaly.detector.v1",
+      primary: "ewma-zscore.v1",
+      methods: ["ewma", "zscore"],
+      settings: {
+        ewmaAlpha,
+        moderateZ: 2,
+        criticalZ: 3,
+        minimumHistoryPoints: baseline.minimumPoints,
+      },
+    },
+    baseline: {
+      average: avg,
+      stddev: std,
+      expectedValue: ewma,
+    },
+    currentValue,
+    zScore,
+    ewmaScore,
+    anomalyScore,
+    severity: severity === "none" ? null : severity,
+  });
+}
+
 export async function handleLoopTool(name: string, args: unknown): Promise<ToolCallResult> {
   try {
     switch (name) {
@@ -779,6 +1347,25 @@ export async function handleLoopTool(name: string, args: unknown): Promise<ToolC
         return handleAppRunPacketGet(args);
       case "pack_weekly_s10_build":
         return handlePackWeeklyS10Build(args);
+      case "refresh_status_get":
+        return handleRefreshStatusGet(args);
+      case "refresh_enqueue_guarded":
+        return handleRefreshEnqueueGuarded(args);
+      case "anomaly_detect_traffic":
+        return handleAnomalyDetect(args, {
+          toolName: "anomaly_detect_traffic",
+          defaultMetric: "traffic_requests",
+        });
+      case "anomaly_detect_revenue":
+        return handleAnomalyDetect(args, {
+          toolName: "anomaly_detect_revenue",
+          defaultMetric: "revenue_total",
+        });
+      case "anomaly_detect_errors":
+        return handleAnomalyDetect(args, {
+          toolName: "anomaly_detect_errors",
+          defaultMetric: "error_count",
+        });
 
       default:
         return toolError("NOT_FOUND", `Unknown loop tool: ${name}`, false);

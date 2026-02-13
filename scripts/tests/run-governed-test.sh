@@ -35,6 +35,19 @@ if [[ $# -gt 0 ]]; then
   raw_args=("$@")
 fi
 
+# Package scripts can inject additional `--` separators when forwarding args.
+# Normalize these tokens so downstream CLI flags keep their intended meaning.
+if [[ ${#raw_args[@]} -gt 0 ]]; then
+  declare -a normalized_args=()
+  for arg in "${raw_args[@]}"; do
+    if [[ "$arg" == "--" ]]; then
+      continue
+    fi
+    normalized_args+=("$arg")
+  done
+  raw_args=("${normalized_args[@]}")
+fi
+
 if [[ ${#raw_args[@]} -gt 0 ]]; then
   if ! baseshop_runner_validate_watch_policy "$intent" "${raw_args[@]}"; then
     exit 2
@@ -100,21 +113,32 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
-"$test_lock_script" acquire --wait --command-sig "$command_sig"
-lock_held="1"
-
-heartbeat_interval="${BASESHOP_TEST_LOCK_HEARTBEAT_SEC:-30}"
-if ! [[ "$heartbeat_interval" =~ ^[0-9]+$ ]] || [[ "$heartbeat_interval" == "0" ]]; then
-  heartbeat_interval="30"
+ci_compat_mode="0"
+if [[ "${BASESHOP_GOVERNED_CI_MODE:-auto}" != "off" ]]; then
+  if [[ "${CI:-}" == "true" || "${CI:-}" == "1" ]]; then
+    ci_compat_mode="1"
+  fi
 fi
 
-(
-  while true; do
-    sleep "$heartbeat_interval"
-    "$test_lock_script" heartbeat --command-sig "$command_sig" >/dev/null 2>&1 || true
-  done
-) &
-heartbeat_pid="$!"
+if [[ "$ci_compat_mode" == "1" ]]; then
+  echo "Running in governed CI compatibility mode: scheduler/admission bypassed, shaping enforced." >&2
+else
+  "$test_lock_script" acquire --wait --command-sig "$command_sig"
+  lock_held="1"
+
+  heartbeat_interval="${BASESHOP_TEST_LOCK_HEARTBEAT_SEC:-30}"
+  if ! [[ "$heartbeat_interval" =~ ^[0-9]+$ ]] || [[ "$heartbeat_interval" == "0" ]]; then
+    heartbeat_interval="30"
+  fi
+
+  (
+    while true; do
+      sleep "$heartbeat_interval"
+      "$test_lock_script" heartbeat --command-sig "$command_sig" >/dev/null 2>&1 || true
+    done
+  ) &
+  heartbeat_pid="$!"
+fi
 
 export BASESHOP_GOVERNED_CONTEXT=1
 

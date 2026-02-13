@@ -109,9 +109,16 @@ const POLICY_TABLE: GuardCase[] = [
     description: "package-local test with explicit test file",
     cwd: path.join(REPO_ROOT, "apps/cms"),
   },
+  {
+    id: "PT-16",
+    args: ["exec", "jest", "--version"],
+    expectedDecision: "allow",
+    description: "pnpm exec jest remains warn-only in phase 0",
+  },
 ];
 
 let mockPnpmDir: string;
+let mockRepoRoot: string;
 
 function invokeGuard(
   args: string[],
@@ -126,6 +133,7 @@ function invokeGuard(
     timeout: 5000,
     env: {
       ...process.env,
+      BASESHOP_GOVERNED_CONTEXT: "0",
       ...env,
       PATH: pathWithMock,
     },
@@ -142,6 +150,7 @@ beforeAll(() => {
   fs.chmodSync(PNPM_GUARD, 0o755);
 
   mockPnpmDir = fs.mkdtempSync(path.join(os.tmpdir(), "mock-pnpm-"));
+  mockRepoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mock-repo-root-"));
   const mockPnpmPath = path.join(mockPnpmDir, "pnpm");
   fs.writeFileSync(mockPnpmPath, "#!/bin/bash\nexit 0\n");
   fs.chmodSync(mockPnpmPath, 0o755);
@@ -150,6 +159,9 @@ beforeAll(() => {
 afterAll(() => {
   if (mockPnpmDir && fs.existsSync(mockPnpmDir)) {
     fs.rmSync(mockPnpmDir, { recursive: true, force: true });
+  }
+  if (mockRepoRoot && fs.existsSync(mockRepoRoot)) {
+    fs.rmSync(mockRepoRoot, { recursive: true, force: true });
   }
 });
 
@@ -184,5 +196,25 @@ describe("PNPM Test Safety Policy — Coverage", () => {
     const ids = POLICY_TABLE.map((tc) => tc.id);
     const uniqueIds = new Set(ids);
     expect(uniqueIds.size).toBe(ids.length);
+  });
+});
+
+describe("PNPM Test Safety Policy — Warn-only Jest bypass telemetry", () => {
+  test("PT-17 warns on pnpm exec jest outside governed context", () => {
+    const result = invokeGuard(["exec", "jest", "--version"], REPO_ROOT, {
+      BASESHOP_GUARD_REPO_ROOT: mockRepoRoot,
+    });
+    expect(result.status).toBe(0);
+    expect(result.stderr).toContain("WARNED");
+    expect(result.stderr).toContain("pnpm-exec-jest");
+  });
+
+  test("PT-18 suppresses warning in governed context", () => {
+    const result = invokeGuard(["exec", "jest", "--version"], REPO_ROOT, {
+      BASESHOP_GOVERNED_CONTEXT: "1",
+      BASESHOP_GUARD_REPO_ROOT: mockRepoRoot,
+    });
+    expect(result.status).toBe(0);
+    expect(result.stderr).not.toContain("WARNED");
   });
 });

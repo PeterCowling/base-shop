@@ -39,6 +39,12 @@ jest                                # Runs all tests in current directory
   - `scripts/agent-bin/npx` warns on `npx jest`
   - `scripts/agent-bin/pnpm` warns on `pnpm exec jest`
   - `scripts/agents/guarded-shell-hooks.sh` warns on raw direct forms (`node ...jest/bin/jest.js`, `./node_modules/.bin/jest`)
+- Governed test entrypoint is `pnpm run test:governed -- <intent> -- <args>`:
+  - `intent=jest` and `intent=changed` inject `--maxWorkers=2` unless overridden.
+  - `intent=turbo` injects `--concurrency=2` unless overridden.
+  - Watch flags are blocked unless using explicit `watch-exclusive` opt-in.
+  - `CI=true` runs in governed compatibility mode (shaping enabled; scheduler/admission bypassed).
+- Migrated package `test` scripts now route through `test:governed` (or documented delegated wrappers).
 - If a full monorepo run is explicitly required, use:
   - `BASESHOP_ALLOW_BROAD_TESTS=1 pnpm test:all`
 
@@ -124,7 +130,7 @@ pnpm --filter @acme/ui test -- --runInBand
 
 **Editor note:** The repo includes `.vscode/settings.json` to disable VS Code Jest auto-run/watch. Keep it enabled to avoid unintended background runners.
 
-### Test Scheduler Primitive (Foundation)
+### Test Scheduler and Governed Runner
 
 The repository now includes `scripts/tests/test-lock.sh` as the scheduler primitive for governed test execution.
 
@@ -134,7 +140,7 @@ The repository now includes `scripts/tests/test-lock.sh` as the scheduler primit
   - `repo` (default): lock state under `<repo>/.cache/test-governor/test-lock`
   - `machine`: lock state under a machine-global root (default under `${TMPDIR:-/tmp}`; override with `BASESHOP_TEST_LOCK_MACHINE_ROOT`)
 
-This primitive is intentionally additive in this phase; command routing into the governed runner is handled in later tasks.
+Use this with `scripts/tests/run-governed-test.sh` (`pnpm run test:governed`) as the canonical entrypoint for local test execution.
 
 ---
 

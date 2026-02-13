@@ -533,8 +533,8 @@ export default function StageMQueueCard({
             <span
               className={
                 queueMessage.tone === "success"
-                  ? ("text-xs text-emerald-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
-                  : ("text-xs text-red-600" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+                  ? ("text-xs text-success-fg" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
+                  : ("text-xs text-danger-fg" /* i18n-exempt -- PP-1100 status tone class [ttl=2026-06-30] */)
               }
             >
               {queueMessage.text}

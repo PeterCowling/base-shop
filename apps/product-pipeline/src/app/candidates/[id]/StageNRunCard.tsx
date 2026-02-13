@@ -168,8 +168,8 @@ export default function StageNRunCard({
               <span
                 className={
                   message.tone === "success"
-                    ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-                    : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                    ? "text-xs text-success-fg" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                    : "text-xs text-danger-fg" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
                 }
               >
                 {message.text}

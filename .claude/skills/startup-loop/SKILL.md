@@ -1,6 +1,6 @@
 ---
 name: startup-loop
-description: Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks.
+description: Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. Routes to lp-* stage skills at each stage.
 ---
 
 # Startup Loop
@@ -59,19 +59,22 @@ bos_sync_actions:
 
 Stages: `S0`..`S10`
 
-- `S0` Intake
-- `S1` Readiness preflight
-- `S1B` Pre-website measurement bootstrap
-- `S2A` Existing-business historical baseline (website-live only)
-- `S2` Market intelligence
-- `S3` Forecasting
-- `S4` Startup baseline merge (SFS-00)
-- `S5` Prioritization
-- `S6` Site-upgrade synthesis
-- `S7` Fact-find
-- `S8` Plan
-- `S9` Build
-- `S10` Weekly K/P/C/S decision loop
+- `S0` Intake — `/startup-loop start`
+- `S1` Readiness preflight — `/lp-readiness`
+- `S1B` Pre-website measurement bootstrap — `/lp-measure --mode pre-website`
+- `S2A` Existing-business historical baseline (website-live only) — operator prompt handoff
+- `S2` Market intelligence — Deep Research prompt handoff
+- `S2B` Offer design — `/lp-offer`
+- `S3` Forecasting — `/lp-forecast`
+- `S4` Startup baseline merge (SFS-00) — operator prompt handoff
+- `S5` Prioritization — `/lp-prioritize`
+- `S6` Site-upgrade synthesis — `/lp-site-upgrade`
+- `S6B` Channel strategy + GTM — `/lp-channels`, `/lp-seo`, `/draft-outreach`
+- `S7` Fact-find — `/lp-fact-find`
+- `S8` Plan — `/lp-plan`
+- `S9` Build — `/lp-build`
+- `S9B` Launch QA — `/lp-launch-qa`, `/lp-design-qa`, `/lp-measure --mode website-live`
+- `S10` Weekly readout + experiments — `/lp-experiment`
 
 ## Command Behavior
 

@@ -263,7 +263,7 @@ export default function LaneVersionList({
                     <span>{strings.labels.noActuals}</span>
                   )}
                   {eligibleForC3 ? (
-                    <div className="mt-2 text-emerald-600">
+                    <div className="mt-2 text-success-fg">
                       {strings.labels.eligibleForC3}
                     </div>
                   ) : null}

@@ -232,9 +232,9 @@ Set `Primary-Execution-Skill` in the brief based on the dominant deliverable:
 | Deliverable-Type | Primary-Execution-Skill | Supporting-Skills (example) |
 |---|---|---|
 | `code-change` | `/lp-build` | `/create-api-endpoint`, `/create-server-action`, `/create-ui-component` |
-| `email-message` | `/draft-email` | `/ops-inbox` |
+| `email-message` | `/draft-email` | `/ops-inbox`, `/draft-outreach` |
 | `product-brief` | `/biz-product-brief` | `/biz-update-plan` |
-| `marketing-asset` | `/draft-marketing` | `/biz-update-plan` |
+| `marketing-asset` | `/draft-marketing` | `/lp-channels`, `/lp-seo`, `/biz-update-plan` |
 | `spreadsheet` | `/biz-spreadsheet` | `/biz-update-plan` |
 | `whatsapp-message` | `/draft-whatsapp` | `/biz-update-plan` |
 | `multi-deliverable` | `/lp-build` (orchestrator mode) | select per task in plan |

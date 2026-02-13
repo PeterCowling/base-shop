@@ -2377,38 +2377,17 @@ export default [
     },
   },
 
-  /* ▸ Prime: DS color rules enforced after full migration (TASK-01–13).
-   *   Non-color DS rules at "warn" for progressive hardening.
+  /* ▸ Prime: DS rules at error (inherited from CMS/UI/Apps block).
+   *   Non-color DS rules escalated in ds-compliance-v2 (DS-07).
    *   complexity/max-lines relaxed (large components in guest portal). */
   {
     files: ["apps/prime/**"],
-    plugins: { ds: dsPlugin },
     rules: {
       "max-lines-per-function": "off",
       "complexity": "off",
-      // Non-color DS rules — progressive hardening (warn, not error)
-      "ds/no-raw-spacing": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-radius": "warn",
-      "ds/no-raw-shadow": "warn",
-      "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
-      "ds/no-important": "warn",
-      "ds/no-naked-img": "warn",
-      "ds/require-aspect-ratio-on-media": "warn",
-      "ds/no-negative-margins": "warn",
-      "ds/no-margins-on-atoms": "warn",
-      "ds/enforce-layout-primitives": "warn",
-      "ds/no-unsafe-viewport-units": "warn",
-      "ds/container-widths-only-at": "warn",
-      "ds/no-hardcoded-copy": "warn",
-      "ds/min-tap-size": "warn",
-      "ds/enforce-focus-ring-token": "warn",
-      "ds/no-physical-direction-classes-in-rtl": "warn",
-      "ds/absolute-parent-guard": "warn",
-      "ds/no-nonlayered-zindex": "warn",
+      // Preserve Prime's specific ticketPattern for require-disable-justification
       "ds/require-disable-justification": [
-        "warn",
+        "error",
         { ticketPattern: "[A-Z]{2,}(?:-[A-Z0-9]{2,})*-\\d+" },
       ],
     },

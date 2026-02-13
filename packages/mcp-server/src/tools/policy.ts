@@ -73,7 +73,7 @@ type PolicyResolution =
       mode: "unknown";
     };
 
-const STRICT_TOOL_PREFIXES = ["bos_", "loop_"] as const;
+const STRICT_TOOL_PREFIXES = ["bos_", "loop_", "exp_", "ops_"] as const;
 
 const DEFAULT_SENSITIVE_FIELDS = [
   "token",

@@ -27,11 +27,11 @@ export function CatalogProductClothingFields({
           <input
             value={draft.sizes ?? ""}
             onChange={(event) => onChange({ ...draft, sizes: event.target.value })}
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
             placeholder="S|M|L|XL"
           />
           {fieldErrors.sizes ? (
-            <div className="mt-1 text-xs text-red-700">{fieldErrors.sizes}</div>
+            <div className="mt-1 text-xs text-danger-fg">{fieldErrors.sizes}</div>
           ) : null}
         </label>
 
@@ -45,7 +45,7 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, occasion: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
           />
         </label>
 
@@ -56,7 +56,7 @@ export function CatalogProductClothingFields({
             onChange={(event) =>
               onChange({ ...draft, taxonomy: { ...draft.taxonomy, fit: event.target.value } })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
           />
         </label>
 
@@ -67,7 +67,7 @@ export function CatalogProductClothingFields({
             onChange={(event) =>
               onChange({ ...draft, taxonomy: { ...draft.taxonomy, length: event.target.value } })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
           />
         </label>
 
@@ -81,7 +81,7 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, neckline: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
           />
         </label>
 
@@ -95,7 +95,7 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, sleeveLength: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
           />
         </label>
 
@@ -109,7 +109,7 @@ export function CatalogProductClothingFields({
                 taxonomy: { ...draft.taxonomy, pattern: event.target.value },
               })
             }
-            className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+            className="mt-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
           />
         </label>
 
@@ -124,7 +124,7 @@ export function CatalogProductClothingFields({
                   details: { ...draft.details, modelHeight: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
               placeholder={t("placeholderModelHeight")}
             />
             <input
@@ -135,7 +135,7 @@ export function CatalogProductClothingFields({
                   details: { ...draft.details, modelSize: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
               placeholder={t("placeholderModelSize")}
             />
             <input
@@ -146,7 +146,7 @@ export function CatalogProductClothingFields({
                   details: { ...draft.details, fabricFeel: event.target.value },
                 })
               }
-              className="w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
               placeholder={t("placeholderFabricFeel")}
             />
             <input
@@ -154,7 +154,7 @@ export function CatalogProductClothingFields({
               onChange={(event) =>
                 onChange({ ...draft, details: { ...draft.details, care: event.target.value } })
               }
-              className="w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
               placeholder={t("placeholderCare")}
             />
             <textarea
@@ -166,7 +166,7 @@ export function CatalogProductClothingFields({
                 })
               }
               rows={2}
-              className="md:col-span-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="md:col-span-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
               placeholder={t("placeholderFitNote")}
             />
             <textarea
@@ -178,7 +178,7 @@ export function CatalogProductClothingFields({
                 })
               }
               rows={2}
-              className="md:col-span-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)]"
+              className="md:col-span-2 w-full rounded-md border border-border-2 bg-surface px-3 py-2 text-sm text-[color:var(--gate-ink)]"
               placeholder={t("placeholderSizeGuide")}
             />
           </div>

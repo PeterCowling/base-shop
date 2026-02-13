@@ -26,6 +26,8 @@ export const toolDefinitions = [
   ...d1Tools,
 ];
 
+export const CLOUD_FLARE_ANALYTICS_CONTRACT_VERSION = "measure.cloudflare.v1";
+
 const pagesToolNames = new Set(pagesTools.map((t) => t.name));
 const dnsToolNames = new Set(dnsTools.map((t) => t.name));
 const r2ToolNames = new Set(r2Tools.map((t) => t.name));

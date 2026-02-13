@@ -4,6 +4,12 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
+import { projectZoneTrafficMetrics } from "../../../mcp-cloudflare/src/tools/analytics";
+import {
+  parseMetricsRegistry,
+  parseWave2MetricRecord,
+  validateMetricRecordAgainstRegistry,
+} from "../lib/wave2-contracts";
 import { handleBosTool } from "../tools/bos";
 import { handleLoopTool } from "../tools/loop";
 
@@ -598,5 +604,140 @@ describe("startup-loop MCP integration suite", () => {
 
   it("TC-09: anomaly detectors enforce cold-start baseline gate and emit detector metadata", async () => {
     await runTc09AnomalyDetectors(tempRoot);
+  });
+});
+
+describe("cloudflare adapter contract harness", () => {
+  it("TC-10: projected Cloudflare metrics pass registry validation and fail on mismatches", () => {
+    const registry = parseMetricsRegistry({
+      schemaVersion: "metrics-registry.v1",
+      metrics: [
+        {
+          metric: "traffic_requests_total",
+          valueType: "count",
+          unit: "count",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_requests_cached",
+          valueType: "count",
+          unit: "count",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_bandwidth_total_bytes",
+          valueType: "count",
+          unit: "bytes",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_threats_total",
+          valueType: "count",
+          unit: "count",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "sum",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+        {
+          metric: "traffic_cache_hit_ratio",
+          valueType: "ratio",
+          unit: "ratio",
+          preferredGrains: ["day"],
+          defaultWindow: "7d",
+          allowedDimensions: ["provider", "zoneId"],
+          aggregationMethod: "ratio",
+          sourcePriority: ["cloudflare"],
+          piiRisk: "low",
+        },
+      ],
+    });
+
+    const projected = projectZoneTrafficMetrics({
+      zoneId: "zone_123",
+      totals: {
+        requests: 1000,
+        cachedRequests: 700,
+        bytes: 900000,
+        cachedBytes: 600000,
+        threats: 8,
+        pageViews: 420,
+        uniques: 300,
+      },
+    });
+
+    const validRecord = parseWave2MetricRecord({
+      schemaVersion: "measure.record.v1",
+      business: "BRIK",
+      source: "cloudflare",
+      metric: projected[0].metric,
+      window: {
+        startAt: "2026-02-01T00:00:00Z",
+        endAt: "2026-02-01T00:00:00Z",
+        grain: projected[0].grain,
+        timezone: "UTC",
+      },
+      segmentSchemaVersion: "segments.v1",
+      segments: projected[0].segments,
+      valueType: projected[0].valueType,
+      value: projected[0].value,
+      unit: projected[0].unit,
+      quality: "ok",
+      qualityNotes: [],
+      coverage: {
+        expectedPoints: 1,
+        observedPoints: 1,
+        samplingFraction: 1,
+      },
+      refreshedAt: "2026-02-01T00:00:00Z",
+      provenance: {
+        schemaVersion: "provenance.v1",
+        querySignature: "sha256:cloudflare-contract",
+        generatedAt: "2026-02-01T00:00:00Z",
+        datasetId: "cloudflare-zone-123",
+        sourceRef: "analytics_zone_traffic",
+        artifactRefs: ["artifact://cloudflare/zone_123/traffic"],
+        quality: "ok",
+      },
+    });
+
+    expect(() => validateMetricRecordAgainstRegistry(validRecord, registry)).not.toThrow();
+
+    const invalidUnitRecord = {
+      ...validRecord,
+      unit: "ratio",
+    };
+    expect(() =>
+      validateMetricRecordAgainstRegistry(parseWave2MetricRecord(invalidUnitRecord), registry)
+    ).toThrow(/unit/i);
+
+    const invalidDimensionRecord = {
+      ...validRecord,
+      segments: {
+        provider: "cloudflare",
+        zoneId: "zone_123",
+        colo: "LHR",
+      },
+    };
+    expect(() =>
+      validateMetricRecordAgainstRegistry(parseWave2MetricRecord(invalidDimensionRecord), registry)
+    ).toThrow(/dimension/i);
   });
 });

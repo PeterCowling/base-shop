@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Venture-Studio
 Workstream: Process
 Created: 2026-02-13
@@ -166,8 +166,8 @@ Routing rules:
 | LC-03 | IMPLEMENT | Implement canonical priors extraction/indexing/serialization | 86% | M | Complete (2026-02-13) | LC-00, LC-01 | LC-04, LC-05 |
 | LC-04 | IMPLEMENT | Implement compiler with prior-ref routing and invertible deltas | 85% | M | Complete (2026-02-13) | LC-02, LC-03 | LC-06 |
 | LC-05 | IMPLEMENT | Implement bounded writer with deterministic snapshot paths and replay safety | 84% | M | Complete (2026-02-13) | LC-03, LC-04 | LC-06 |
-| LC-06 | IMPLEMENT | Integrate compiler into S10 with manifest lifecycle and correction handling | 86% | M | Pending | LC-01, LC-04, LC-05 | LC-07 |
-| LC-07 | CHECKPOINT | Validate two-run seed propagation and supersede correctness | 88% | M | Pending | LC-06 | - |
+| LC-06 | IMPLEMENT | Integrate compiler into S10 with manifest lifecycle and correction handling | 86% | M | Complete (2026-02-13) | LC-01, LC-04, LC-05 | LC-07 |
+| LC-07 | CHECKPOINT | Validate two-run seed propagation and supersede correctness | 88% | M | Complete (2026-02-13) | LC-06 | - |
 
 ## Tasks
 

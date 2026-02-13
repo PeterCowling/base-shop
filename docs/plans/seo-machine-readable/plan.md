@@ -98,16 +98,16 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
-| SEO-01 | IMPLEMENT | Fix CMP robots.ts phantom ai-sitemap.xml | 95% | S | Pending | - | SEO-09 |
-| SEO-02 | IMPLEMENT | Fix Cochlearfit SITE_URL to env-driven pattern | 88% | S | Pending | - | SEO-07 |
-| SEO-03 | IMPLEMENT | Create @acme/seo package — scaffold, config types, metadata builders | 85% | M | Pending | - | SEO-04, SEO-05 |
-| SEO-04 | IMPLEMENT | Extract JSON-LD utilities and structured data builders | 82% | M | Pending | SEO-03 | SEO-06 |
-| SEO-05 | IMPLEMENT | Extract robots, sitemap, and AI discovery generators | 88% | M | Pending | SEO-03 | SEO-06 |
-| SEO-06 | CHECKPOINT | Verify package API, reassess app integrations | 95% | S | Pending | SEO-04, SEO-05 | SEO-07, SEO-08, SEO-09, SEO-10 |
-| SEO-07 | IMPLEMENT | Integrate @acme/seo into Cochlearfit | 84% | M | Pending | SEO-02, SEO-06 | - |
-| SEO-08 | IMPLEMENT | Integrate @acme/seo into Skylar | 82% | M | Pending | SEO-06 | - |
-| SEO-09 | IMPLEMENT | Integrate @acme/seo into Cover-Me-Pretty | 84% | M | Pending | SEO-01, SEO-06 | SEO-10 |
-| SEO-10 | IMPLEMENT | Begin Brikette extraction with re-exports | 75% ⚠️ | L | Pending | SEO-06, SEO-09 | - |
+| SEO-01 | IMPLEMENT | Fix CMP robots.ts phantom ai-sitemap.xml | 95% | S | Complete (2026-02-13) | - | SEO-09 |
+| SEO-02 | IMPLEMENT | Fix Cochlearfit SITE_URL to env-driven pattern | 88% | S | Complete (2026-02-13) | - | SEO-07 |
+| SEO-03 | IMPLEMENT | Create @acme/seo package — scaffold, config types, metadata builders | 85% | M | Complete (2026-02-13) | - | SEO-04, SEO-05 |
+| SEO-04 | IMPLEMENT | Extract JSON-LD utilities and structured data builders | 82% | M | Complete (2026-02-13) | SEO-03 | SEO-06 |
+| SEO-05 | IMPLEMENT | Extract robots, sitemap, and AI discovery generators | 88% | M | Complete (2026-02-13) | SEO-03 | SEO-06 |
+| SEO-06 | CHECKPOINT | Verify package API, reassess app integrations | 95% | S | Complete (2026-02-13) | SEO-04, SEO-05 | SEO-07, SEO-08, SEO-09, SEO-10 |
+| SEO-07 | IMPLEMENT | Integrate @acme/seo into Cochlearfit | 86% | M | Complete (2026-02-13) | SEO-02, SEO-06 | - |
+| SEO-08 | IMPLEMENT | Integrate @acme/seo into Skylar | 85% | M | Complete (2026-02-13) | SEO-06 | - |
+| SEO-09 | IMPLEMENT | Integrate @acme/seo into Cover-Me-Pretty | 88% | M | Complete (2026-02-13) | SEO-01, SEO-06 | SEO-10 |
+| SEO-10 | IMPLEMENT | Begin Brikette extraction with re-exports | 78% ⚠️ | L | Pending | SEO-06, SEO-09 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -164,6 +164,23 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes:** CMP robots.ts line 15: `sitemap: [\`${base}/sitemap.xml\`, \`${base}/ai-sitemap.xml\`]` — second entry references nonexistent file.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 0d93bc3123
+- **Execution cycle:**
+  - Validation cases executed: TC-01
+  - Cycles: 1 red-green
+  - Initial validation: FAIL expected (test asserted only `/sitemap.xml`, source still had phantom entry)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 95%
+  - Post-validation: 95%
+  - Delta reason: validation confirmed — single-line fix, no surprises
+- **Validation:**
+  - Ran: `pnpm exec jest --testPathPattern='(robots|sitemap|seo).test'` — 3 suites, 5 tests PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Removed phantom `ai-sitemap.xml` from sitemap array. Updated extinct test that previously asserted the incorrect 2-element array.
+
 ---
 
 ### SEO-02: Fix Cochlearfit SITE_URL to env-driven pattern
@@ -202,6 +219,23 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: Revert `site.ts`; fallback value preserves current behavior
 - **Documentation impact:** None
 - **Notes:** Current `SITE_URL = "https://cochlearfit.example"`. CMP pattern: `loadCoreEnv()` → `NEXT_PUBLIC_BASE_URL`. Cochlearfit may not have `loadCoreEnv()` — use `process.env.NEXT_PUBLIC_BASE_URL` directly.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 8f3af9bb0c (co-committed with ds-compliance-v2 due to concurrent agent staging)
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1 red-green
+  - Initial validation: TC-01 FAIL expected (SITE_URL was hardcoded); TC-02 PASS (fallback already correct)
+  - Final validation: PASS (both TCs)
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 88%
+  - Delta reason: validation confirmed — env-driven pattern works as expected
+- **Validation:**
+  - Ran: `pnpm exec jest --testPathPattern='site.test'` — 1 suite, 2 tests PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Changed `SITE_URL` from hardcoded `"https://cochlearfit.example"` to `process.env["NEXT_PUBLIC_BASE_URL"] || "https://cochlearfit.example"`. Used bracket notation for TypeScript TS4111 compliance. TC-03 (buildMetadata integration) deferred — Cochlearfit doesn't have a `buildMetadata()` function; metadata is inline per-page. Test file placed at `apps/cochlearfit/__tests__/site.test.ts`.
 
 ---
 
@@ -260,6 +294,25 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `buildMetadata()` is a generic refactor of Brikette's `buildAppMetadata()` — accepts `SeoSiteConfig` instead of importing site constants
   - `buildAlternates()` is a generic hreflang builder — does NOT include Brikette slug translation (that stays local)
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 398ac4f0d5
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 1 red-green
+  - Initial validation: 17 FAIL expected (stub "Not implemented" throws); 2 PASS (type safety)
+  - Final validation: 19/19 PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 88%
+  - Delta reason: validation confirmed — all builders work correctly; `new URL()` for metadataBase verified
+- **Validation:**
+  - Ran: `pnpm exec jest --config packages/seo/jest.config.cjs` — 1 suite, 19 tests PASS
+  - Ran: `pnpm --filter @acme/seo build` — exits 0 (TC-01)
+  - Ran: `pnpm typecheck` — 52/52 packages pass (TC-06)
+- **Documentation updated:** None required
+- **Implementation notes:** Created `packages/seo/` with 3 subpath exports (`.`, `./config`, `./metadata`). Config types: SeoSiteConfig, SeoRobotsConfig, SeoAiConfig. Metadata builders: `buildMetadata()` (generic version of Brikette's `buildAppMetadata()`), `buildAlternates()` (generic hreflang without slug translation), `ensureTrailingSlash()`. Added path aliases to `tsconfig.base.json` and `jest.moduleMapper.cjs`. ESLint import sorting fixed during commit.
+
 ---
 
 ### SEO-04: Extract JSON-LD utilities and structured data builders
@@ -317,6 +370,24 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Brikette-specific builders (`buildHotelNode`, `buildOffer`, `buildHomeGraph`) stay in `apps/brikette/src/utils/schema/`
   - Some Brikette normalize.ts functions (`normalizeHowToSteps`, `unifyNormalizedFaqEntries`) depend on Brikette-specific modules — these stay local or get refactored to accept callbacks
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 73472bc80b
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-03, TC-04, TC-05, TC-06, TC-07
+  - Cycles: 1 red-green
+  - Initial validation: 16 FAIL expected (stub "Not implemented" throws)
+  - Final validation: 16/16 PASS + build exits 0
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 85%
+  - Delta reason: validation confirmed — all builders produce valid Schema.org JSON-LD; XSS escaping works correctly
+- **Validation:**
+  - Ran: `pnpm exec jest --config packages/seo/jest.config.cjs` — 2 suites, 35 tests PASS
+  - Ran: `pnpm --filter @acme/seo build` — exits 0
+- **Documentation updated:** None required
+- **Implementation notes:** Created `@acme/seo/jsonld` subpath with 11 exports: serializeJsonLdValue, JsonLdScript, organizationJsonLd, productJsonLd, articleJsonLd, breadcrumbJsonLd, faqJsonLd, websiteSearchJsonLd, itemListJsonLd, eventJsonLd, serviceJsonLd. TC-02/TC-09 (React component rendering tests) deferred — requires React Testing Library setup. TC-08 (`@acme/ui` re-export wiring) deferred to SEO-10 Brikette extraction.
+
 ---
 
 ### SEO-05: Extract robots, sitemap, and AI discovery generators
@@ -372,6 +443,24 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `buildRobotsMetadataRoute()` is the preferred API for apps using Next.js metadata convention
   - `buildRobotsTxt()` kept for apps that need plain text (e.g., Brikette's `robots.txt/route.ts`)
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c6650f2e91
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 1 red-green
+  - Initial validation: 19 FAIL expected (stub "Not implemented" throws)
+  - Final validation: 19/19 PASS + build exits 0 + 54 total tests pass
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 90%
+  - Delta reason: validation confirmed — all builders produce correct output; config-driven API works cleanly
+- **Validation:**
+  - Ran: `jest --config packages/seo/jest.config.cjs` — 5 suites, 54 tests PASS
+  - Ran: `pnpm --filter @acme/seo build` — exits 0
+- **Documentation updated:** None required
+- **Implementation notes:** Created 3 new subpath exports (robots, sitemap, ai) with 6 builder functions. `buildRobotsTxt` returns plain text (Brikette pattern); `buildRobotsMetadataRoute` returns MetadataRoute.Robots shape (CMP pattern). `buildSitemapWithAlternates` generates hreflang entries for i18n sitemap. `buildLlmsTxt` generates markdown. `buildAiPluginManifest` generates OpenAI v1 JSON. All config-driven, no hardcoded site values.
+
 ---
 
 ### SEO-06: Horizon checkpoint — verify package API, reassess app integrations
@@ -394,6 +483,23 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `buildMetadata()` config injection pattern is ergonomic enough for all 4 apps
   - Sitemap/robots MetadataRoute types resolve correctly as peerDep
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Execution cycle:** Checkpoint reassessment via `/lp-replan`
+- **Horizon assumptions validated:**
+  - ✅ Package API shape works correctly — 7 subpath exports, 54 tests, build exits 0, typecheck passes 52 packages
+  - ⚠️ `@acme/ui/lib/seo` re-export NOT YET TESTED — deferred to SEO-10; `buildCanonicalUrl` is NOT yet in `@acme/seo` (blocker)
+  - ✅ JSON-LD builders produce valid Schema.org output with XSS escaping
+  - ✅ `buildMetadata()` config injection is ergonomic for all apps
+  - ✅ Sitemap/robots MetadataRoute types resolve correctly as peerDep
+- **Confidence reassessments:**
+  - SEO-07: 84% → 86% (Cochlearfit already has `buildMetadata()` helper — reduces integration friction)
+  - SEO-08: 82% → 80% (client component concern + no existing helpers; may need layout-only metadata)
+  - SEO-09: 84% → 88% (CMP's existing JSON-LD/robots/sitemap nearly identical to `@acme/seo` signatures — clean swap)
+  - SEO-10: 75% → 78% (fewer importers than feared: 5 direct, but `buildCanonicalUrl` missing blocks re-export chain)
+- **Blocker identified:** SEO-10 cannot reach ≥80% until `buildCanonicalUrl` is extracted to `@acme/seo/metadata`
+- **Decision:** SEO-07, SEO-08, SEO-09 proceed. SEO-10 remains below threshold — build remaining eligible tasks first, then revisit.
+
 ---
 
 ### SEO-07: Integrate @acme/seo into Cochlearfit
@@ -407,8 +513,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **[readonly]** `apps/cochlearfit/src/lib/site.ts` (site constants), `apps/cover-me-pretty/src/app/robots.ts` (pattern ref), `apps/cover-me-pretty/src/app/sitemap.ts` (pattern ref)
 - **Depends on:** SEO-02, SEO-06
 - **Blocks:** -
-- **Confidence:** 84%
-  - Implementation: 86% — CMP provides clear integration pattern; Cochlearfit already has 15 pages with `generateMetadata()`
+- **Confidence:** 86% _(checkpoint reassessment: +2%)_
+  - Implementation: 88% — Cochlearfit already has `buildMetadata()` helper + `SITE_URL` env pattern from SEO-02; reduces integration friction (E2 evidence)
   - Approach: 88% — additive work, no existing SEO code to break
   - Impact: 82% — adding robots/sitemap/JSON-LD to a live app; low traffic mitigates risk
 - **Acceptance:**
@@ -446,6 +552,32 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `buildMetadata()` already exists and works; update to add hreflang alternates via `@acme/seo/metadata`
   - JSON-LD components use `@acme/seo/jsonld` generic builders
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 4953c280ce
+- **Execution cycle:**
+  - Validation cases executed: TC-01 through TC-06 (robots, sitemap, Organization JSON-LD, FAQ JSON-LD, llms.txt)
+  - Cycles: 2 (first cycle caught exactOptionalPropertyTypes TS error in robots.ts — fixed with spread pattern)
+  - Initial validation: Tests PASS (7/7); typecheck failed on first attempt
+  - Final validation: PASS (typecheck + lint + 7 tests)
+- **Confidence reassessment:**
+  - Original: 86%
+  - Post-validation: 90%
+  - Delta reason: All integration files created and validated; typecheck with exactOptionalPropertyTypes passed; pre-existing test failures are unrelated Haste module map issues
+- **Validation:**
+  - Ran: `jest --testPathPattern='cochlearfit/src/test/seo' -- 7/7 PASS`
+  - Ran: `jest --testPathPattern='cochlearfit/__tests__/site.test' -- 2/2 PASS` (SEO-02 regression check)
+  - Pre-commit hooks: typecheck (16 packages), lint (17 packages) — all PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Created robots.ts with env-driven indexing control; used spread pattern to avoid `exactOptionalPropertyTypes` issues
+  - Created sitemap.ts with 11 pages across 4 locales (en/it/es/de)
+  - Created jsonld.tsx as re-export barrel from @acme/seo/jsonld (Organization, FAQ, Product, JsonLdScript)
+  - Added Organization JSON-LD to root layout via `<head>` element
+  - Added FAQ JSON-LD to faq/page.tsx (4 Q&A pairs from i18n)
+  - Created static llms.txt
+  - Note: cart, checkout, thank-you excluded from sitemap (transactional pages)
+
 ---
 
 ### SEO-08: Integrate @acme/seo into Skylar
@@ -459,10 +591,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **[readonly]** `apps/cochlearfit/src/lib/seo.ts` (pattern ref after SEO-07)
 - **Depends on:** SEO-06
 - **Blocks:** -
-- **Confidence:** 82%
-  - Implementation: 84% — most work from scratch but following patterns established in Cochlearfit integration; Skylar has only 5 pages
-  - Approach: 85% — same pattern as Cochlearfit integration
-  - Impact: 82% — minimal existing app; adding new features to near-empty SEO surface
+- **Confidence:** 85% _(post-validation: +5% — pages were server components, not client; integration straightforward)_
+  - Implementation: 88% — all pages are server components; `generateMetadata()` worked on all 4 localized pages with i18n
+  - Approach: 85% — same pattern as Cochlearfit; thin `skylarMetadata()` wrapper works well
+  - Impact: 85% — all 7 tests pass; no regressions; new SEO surface added cleanly
 - **Acceptance:**
   - `robots.ts` returns environment-aware robots config
   - `sitemap.ts` includes all 5 pages with hreflang alternates
@@ -483,9 +615,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Validation location: `apps/skylar/src/test/seo/` (new directory)
   - Run: `pnpm --filter skylar test && pnpm --filter skylar build`
 - **Execution plan:** Red → Green → Refactor
-  - Red evidence: _(to be captured during build)_
-  - Green evidence: _(to be captured during build)_
-  - Refactor evidence: _(to be captured during build)_
+  - Red evidence: Tests written for TC-01 through TC-06; all fail (no implementation yet)
+  - Green evidence: Created `seo.ts` helper, added `generateMetadata()` to all 4 localized pages, infrastructure files (robots.ts, sitemap.ts, jsonld.tsx, llms.txt, layout.tsx JSON-LD) pre-existed from concurrent agent — all 7 tests pass
+  - Refactor evidence: Lint autofix applied; no structural refactoring needed
 - **What would make this ≥90%:** Map Skylar's exact page structure and i18n setup to confirm integration points
 - **Rollout / rollback:**
   - Rollout: Deploy to Skylar production
@@ -493,8 +625,32 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes:**
   - Skylar currently has zero `generateMetadata()` exports — all 5 pages need to add it
-  - Skylar pages are client components; may need to convert some to server components for `generateMetadata()` or use root layout metadata only
+  - Checkpoint assumption that pages were client components was incorrect — all are async server components
   - `metadataBase` currently hardcoded to `https://skylarsrl.com` — keep this as production value with env override
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c0e26d8139
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-01b, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 1 (red-green)
+  - Initial validation: FAIL expected (no generateMetadata on pages)
+  - Final validation: PASS (7/7 tests)
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 85%
+  - Delta reason: Checkpoint incorrectly assumed pages were client components; all are server components, so generateMetadata() worked directly. Integration straightforward.
+- **Validation:**
+  - Ran: `./node_modules/.bin/jest --config jest.config.cjs --testPathPattern='seo-integration' --forceExit --no-coverage --testTimeout=30000` — 7/7 PASS
+  - Ran: `pnpm exec tsc -p apps/skylar/tsconfig.json --noEmit` — PASS
+  - Ran: `pnpm exec eslint apps/skylar/src --fix` — PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Created `apps/skylar/src/lib/seo.ts` — thin `skylarMetadata()` wrapper using `buildMetadata` from `@acme/seo/metadata`
+  - Added `generateMetadata()` to all 4 localized pages: home, products, real-estate, people
+  - Infrastructure files (robots.ts, sitemap.ts, jsonld.tsx, llms.txt, layout.tsx with Organization JSON-LD) were already created by a concurrent agent
+  - Test file created at `apps/skylar/src/test/seo/seo-integration.test.ts` — 7 tests covering all TCs
+  - Sitemap has 4 entries (not 5 as originally planned) — Skylar only has 4 localized pages under `[lang]/`
 
 ---
 
@@ -509,10 +665,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **[readonly]** `apps/cover-me-pretty/src/app/robots.ts`, `apps/cover-me-pretty/src/app/sitemap.ts`, `apps/cover-me-pretty/src/app/[lang]/layout.tsx`
 - **Depends on:** SEO-01, SEO-06
 - **Blocks:** SEO-10
-- **Confidence:** 84%
-  - Implementation: 86% — CMP already has working SEO; replace local implementations with shared package calls
-  - Approach: 88% — thin wrapper pattern: `getSeo()` delegates to `@acme/seo/metadata`, `jsonld.tsx` uses `@acme/seo/jsonld` builders
-  - Impact: 82% — replacing working code with shared implementations; CMP has existing tests to catch regressions
+- **Confidence:** 88% _(checkpoint reassessment: +4%)_
+  - Implementation: 90% — CMP's existing JSON-LD/robots/sitemap signatures nearly identical to `@acme/seo` — clean swap confirmed by code audit (E2 evidence)
+  - Approach: 90% — thin wrapper pattern: `getSeo()` delegates to `@acme/seo/metadata`, `jsonld.tsx` uses `@acme/seo/jsonld` builders
+  - Impact: 85% — replacing working code with shared implementations; CMP has existing tests to catch regressions
 - **Acceptance:**
   - `getSeo()` returns identical metadata output when backed by `@acme/seo/metadata`
   - All JSON-LD functions (Organization, Product, Article, BlogPosting) produce identical output via `@acme/seo/jsonld`
@@ -546,6 +702,32 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - CMP's `JsonLdScript` component can be replaced with `@acme/seo/jsonld`'s version
   - CMP's robots.ts and sitemap.ts stay as-is — they already use Next.js MetadataRoute pattern
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 8d9658b617
+- **Execution cycle:**
+  - Validation cases executed: TC-02, TC-03, TC-04, TC-06 (JSON-LD swap + llms.txt)
+  - TC-01 skipped: CMP's `getSeo()` uses `NextSeoProps` from `next-seo`, not Next.js `Metadata` — different type from `@acme/seo/metadata`'s `buildMetadata()`. Left unchanged (correct decision — CMP-specific wrapper).
+  - TC-05 confirmed: robots.ts already fixed by SEO-01 (no phantom ai-sitemap.xml)
+  - Cycles: 1 (green on first implementation)
+  - Initial validation: JSON-LD builders have identical signatures — clean swap
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 90%
+  - Delta reason: Clean swap confirmed; CMP seo tests pass (3/3); @acme/seo tests pass (54/54); pre-commit typecheck+lint pass
+- **Validation:**
+  - Ran: `jest --testPathPattern='cover-me-pretty/__tests__/seo.test' -- 3/3 PASS`
+  - Ran: `jest --testPathPattern='packages/seo' -- 54/54 PASS`
+  - Pre-commit hooks: typecheck (24 packages), lint (26 packages) — all PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Replaced local `organizationJsonLd`, `productJsonLd`, `articleJsonLd` with re-exports from `@acme/seo/jsonld`
+  - Kept local `JsonLdScript` adapter (CMP uses `{ data }` prop vs `@acme/seo`'s `{ value }`) — uses shared `serializeJsonLdValue()` for XSS safety
+  - Kept `blogItemListJsonLd` local (CMP-specific with `toIsoDate` date normalization)
+  - Did NOT modify `seo.ts` — uses `NextSeoProps` (next-seo library), incompatible with `@acme/seo/metadata`'s `Metadata` type
+  - Created static `public/llms.txt` with site description and machine-readable source links
+
 ---
 
 ### SEO-10: Begin Brikette extraction with re-exports
@@ -559,11 +741,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **[readonly]** 32 files importing from `apps/brikette/src/utils/seo.ts` (verify no breakage), 14 files importing from `@acme/ui/lib/seo` (verify re-export works), `apps/brikette/src/test/components/seo-jsonld-contract.test.tsx`, `apps/brikette/src/test/utils/seo.test.ts`
 - **Depends on:** SEO-06, SEO-09
 - **Blocks:** -
-- **Confidence:** 75% ⚠️ BELOW THRESHOLD
-  - Implementation: 80% — re-export pattern is well-defined; `seo.ts` can re-export `ensureTrailingSlash`, `buildMeta` from `@acme/seo` while keeping Brikette-specific `buildLinks` and `buildBreadcrumb` local
-  - Approach: 85% — incremental approach with re-exports decided; Phase 2 full migration deferred
-  - Impact: 72% — 32 `seo.ts` importers + 14 `@acme/ui/lib/seo` importers; i18n slug translation coupling is the key risk; need to verify no import resolution breakage across all Brikette test shards
-  - **Conditional confidence:** 75% → 82% conditional on SEO-06 checkpoint completion (E2 evidence from built package validates re-export approach and contract compatibility)
+- **Confidence:** 78% ⚠️ BELOW THRESHOLD _(checkpoint reassessment: +3%)_
+  - Implementation: 78% — re-export pattern is well-defined; fewer importers than feared (5 direct `@/utils/seo`, not 32); BUT `buildCanonicalUrl` is NOT yet in `@acme/seo/metadata` — blocks re-export chain for 14 `@acme/ui/lib/seo` importers
+  - Approach: 80% — incremental approach confirmed sound by E2 evidence from package build; but incomplete API surface (`buildCanonicalUrl` missing)
+  - Impact: 75% — actual importer count lower than feared; main risk is `buildCanonicalUrl` extraction gap
+  - **Conditional confidence:** 78% → 84% conditional on `buildCanonicalUrl` extraction to `@acme/seo/metadata`
+  - **Blocker:** `buildCanonicalUrl` from `@acme/ui/lib/seo` was NOT extracted in SEO-04 (TC-08 deferred). Re-export chain cannot work until this is in `@acme/seo`
 - **Acceptance:**
   - All 32 `seo.ts` importers compile without changes (re-export shim preserves API surface)
   - `buildAppMetadata()` output is identical before/after extraction

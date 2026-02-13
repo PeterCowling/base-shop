@@ -78,7 +78,7 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
-| REC-01 | INVESTIGATE | Enable warn + capture violation inventory | 95% | S | Pending | - | REC-02..08 |
+| REC-01 | INVESTIGATE | Enable warn + capture violation inventory | 95% | S | Complete (2026-02-13) | - | REC-02..08 |
 | REC-02 | IMPLEMENT | Migrate small directories (~20 files) | 85% | M | Pending | REC-01 | REC-09 |
 | REC-03 | IMPLEMENT | Migrate common/ shared components (16 files) | 82% | M | Pending | REC-01 | REC-09 |
 | REC-04 | IMPLEMENT | Migrate room grid subsystem (27 files + theme + statusColors) | 82% | L | Pending | REC-01 | REC-09 |
@@ -117,13 +117,13 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - Approach: 95% — warn-first surfaces the real count before committing to timeline
   - Impact: 95% — warn doesn't break CI
 - **Blockers / questions to answer:**
-  - Exact violation count per directory
-  - Which files have the most violations
-  - Whether any violations are in dynamically constructed class strings (harder to fix)
+  - ~~Exact violation count per directory~~ → ANSWERED: see inventory below
+  - ~~Which files have the most violations~~ → ANSWERED: useProducts.ts (86), CategoryHeader.tsx (18)
+  - ~~Whether any violations are in dynamically constructed class strings~~ → ANSWERED: none found; all are static class strings or hex constants
 - **Acceptance:**
-  - `eslint.config.mjs` updated: Reception's `offAllDsRules` replaced with selective colour rules at `warn`
-  - Violation inventory captured: per-directory counts, top offending files, total count
-  - Plan updated with precise scope data
+  - ✅ `eslint.config.mjs` updated: Reception's `offAllDsRules` replaced with selective colour rules at `warn`
+  - ✅ Violation inventory captured: per-directory counts, top offending files, total count
+  - ✅ Plan updated with precise scope data
 - **Validation contract:**
   - TC-01: `pnpm lint -- --filter reception 2>&1 | grep 'ds/no-raw-tailwind-color' | wc -l` → captured count
   - TC-02: `pnpm lint` still passes (warn doesn't fail CI)
@@ -132,6 +132,41 @@ Start with small directories to establish patterns, then tackle the large ones. 
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** Update this plan with actual violation counts
 - **Notes:** This task replaces guesswork with data. The plan's confidence scores and task scoping should be revised after this task completes.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `df2980a4b4`
+- **Validation:**
+  - TC-01: 128 `ds/no-raw-tailwind-color` + 60 `ds/no-raw-color` = 188 total warnings
+  - TC-02: `pnpm lint` → PASS (67/67, all cached after reception re-lint)
+- **Violation Inventory (188 warnings, 33 files):**
+
+| Directory | Violations | Files | Top offender |
+|-----------|-----------|-------|--------------|
+| hooks/ | 91 | 5 | `useProducts.ts` (86 hex colour constants) |
+| roomgrid/ | 35 | 10 | `theme.ts` (9), `statusColors.ts` (7), tests (13) |
+| bar/ | 22 | 5 | `CategoryHeader.tsx` (18) |
+| reports/ | 7 | 1 | `RealTimeDashboard.tsx` (7) |
+| analytics/ | 6 | 1 | `MenuPerformanceDashboard.tsx` (6) |
+| constants/ | 4 | 1 | `colors.ts` (4) |
+| search/ | 4 | 2 | `Search.tsx` (3) |
+| loans/ | 4 | 2 | `LoanModal.tsx` (3) |
+| checkins/ | 4 | 3 | `PaymentMethodSelector.tsx` (2) |
+| man/ | 2 | 2 | `Extension.tsx` (1), `DateSelectorAllo.tsx` (1) |
+| common/ | 2 | 1 | `DifferenceBadge.test.tsx` (2) |
+| app/ | 2 | 1 | `layout.tsx` (2) |
+| prepare/ | 1 | 1 | `DateSelectorPP.tsx` (1) |
+| checkout/ | 1 | 1 | `DaySelector.tsx` (1) |
+| **till/** | **0** | **0** | **(clean!)** |
+| **dashboard/** | **0** | **0** | **(clean!)** |
+
+- **Key scope findings:**
+  - Actual violations (188) are **68% fewer** than the plan estimated (~580)
+  - `hooks/data/bar/useProducts.ts` (86 violations) is 46% of all violations — NOT in any task's Affects
+  - till/ (49 files) and dashboard/ (4 files) have ZERO violations
+  - checkins/ (62 files) has only 4 violations — dramatically smaller than planned L-effort
+  - Plan task scoping should be revised at CHECKPOINT or via replan
+- **Implementation notes:** Replaced the DarkModeToggle/dashboard colour override block (no longer needed since all reception files now have colour rules at warn). Preserved `ds/no-raw-font: "warn"` for DarkModeToggle/dashboard only.
 
 ### REC-02: Migrate small directories (~20 files)
 

@@ -45,8 +45,8 @@ function DateSelector({
             px-4 py-2 border rounded text-sm font-medium w-[100px] text-center transition-colors
             ${
               isSelected
-                ? "bg-primary-main text-white border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
-                : "bg-white text-gray-700 border-gray-400 hover:bg-gray-100 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+                ? "bg-primary-main text-primary-fg border-primary-main dark:bg-darkAccentGreen dark:text-darkBg dark:border-darkAccentGreen"
+                : "bg-surface text-foreground border-border-2 hover:bg-surface-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
             }
           `}
           onClick={() => onDateChange(day)}
@@ -140,9 +140,11 @@ function DateSelector({
               }}
               classNames={{
                 root: defaultNames.root,
+                /* eslint-disable ds/no-raw-tailwind-color -- REC-02: calendar accent colour; no semantic token maps to amber-500 selection highlight */
                 today: "border-amber-500",
-                selected: "bg-amber-500 border-amber-500 text-white",
+                selected: "bg-amber-500 border-amber-500 text-primary-fg",
                 chevron: `${defaultNames.chevron} fill-amber-500`,
+                /* eslint-enable ds/no-raw-tailwind-color */
               }}
             />
           </div>
@@ -153,7 +155,7 @@ function DateSelector({
 
   // The final layout, combining quick selectors and the optional calendar.
   return (
-    <div className="relative pb-5 bg-gray-50 rounded border border-gray-400 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface">
+    <div className="relative pb-5 bg-surface-2 rounded border border-border-2 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface">
       <div className="flex items-center gap-2">
         {daySelectors}
         {toggleAndCalendar}

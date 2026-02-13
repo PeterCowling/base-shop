@@ -98,14 +98,14 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Complete (2026-02-13) | ASM-04 | ASM-08 |
 | ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Complete (2026-02-13) | ASM-04 | ASM-09 |
-| ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Pending | ASM-05 | ASM-09 |
+| ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Complete (2026-02-13) | ASM-05 | ASM-09 |
 | ASM-09 | IMPLEMENT | Add integration suite, docs, and final export hardening | 83% | M | Pending | ASM-06, ASM-07, ASM-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
 ## Active tasks
 
-- ASM-08 - Unblocked by ASM-05 calibration decisions; ready to build.
+- ASM-09 - Unblocked after ASM-08 completion; ready to build.
 
 ## Parallelism Guide
 
@@ -351,7 +351,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete
-- **Commits:** pending (this task updates investigation artifact + plan in current cycle)
+- **Commits:** `29ecfd314b`
 - **Execution cycle:**
   - Investigation questions answered: normalization variant, binning default, fixture thresholds
   - Cycles: 1 investigation cycle
@@ -509,6 +509,25 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Rollback: remove NMI export and files, keep investigation artifact for future attempts.
 - **Documentation impact:** document binning strategy defaults and interpretation limits in similarity README (ASM-09).
 - **Notes / references:** requires completed `docs/plans/advanced-similarity-metrics-nmi-calibration.md`.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending (this task updates code/tests + plan in current cycle)
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Cycles: 1 red-green cycle
+  - Initial validation: FAIL expected (`Cannot find module '../mutual-information'`)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 81%
+  - Post-validation: 84%
+  - Delta reason: calibration decisions translated cleanly into deterministic tests and implementation behavior.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/mutual-information.test.ts` - PASS (10 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__` - PASS (6 suites, 43 tests)
+  - Ran: `pnpm --filter @acme/lib lint` - PASS (warnings only outside task scope)
+- **Documentation updated:** None required (ASM-09 owns final README updates)
+- **Implementation notes:** Added canonical NMI discrete and binned entry points with sqrt normalization, quantile-default binning, deterministic entropy edge handling, and strategy/bin validation.
 
 ### ASM-09: Add integration suite, docs, and final export hardening
 - **Type:** IMPLEMENT

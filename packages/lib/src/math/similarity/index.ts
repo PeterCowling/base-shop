@@ -22,3 +22,9 @@ export {
   type JensenShannonOptions,
 } from "./jensen-shannon";
 export { type KendallOptions,kendallTau } from "./kendall";
+export {
+  normalizedMutualInformationBinned,
+  type NormalizedMutualInformationBinnedOptions,
+  normalizedMutualInformationDiscrete,
+  type NormalizedMutualInformationDiscreteOptions,
+} from "./mutual-information";

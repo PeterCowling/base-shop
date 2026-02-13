@@ -11,7 +11,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-sequence, lp-replan
-Overall-confidence: 75%
+Overall-confidence: 78%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1,M=2)
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -79,12 +79,14 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | DECISION | Select credential/tenancy model for provider connectors | 60% | S | Complete (2026-02-13) | - | TASK-07 |
 | TASK-02 | INVESTIGATE | Build blast-radius + consumer map to raise Impact confidence | 74% | M | Complete (2026-02-13) | - | TASK-03 |
-| TASK-03 | IMPLEMENT | Implement shared wave-2 contracts + policy middleware | 82% | M | Complete (2026-02-13) | TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08 |
+| TASK-03 | IMPLEMENT | Implement shared wave-2 contracts + policy middleware | 82% | M | Complete (2026-02-13) | TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Deliver vertical slice (`measure` + `app_packet` + `pack`) over artifacts | 80% | M | Complete (2026-02-13) | TASK-03 | TASK-05 |
-| TASK-05 | CHECKPOINT | Reassess post-slice before broad expansion | 95% | S | Pending | TASK-04 | TASK-06, TASK-07, TASK-08 |
-| TASK-06 | IMPLEMENT | Add refresh lifecycle + anomaly detection layer | 74% | M | Pending | TASK-03, TASK-05 | - |
-| TASK-07 | IMPLEMENT | Expand measurement sources + enforce `analytics_*` loop sunset trigger | 70% | M | Blocked | TASK-01, TASK-03, TASK-05 | TASK-08 |
-| TASK-08 | IMPLEMENT | Add experiment runtime MCP + one guarded `ops_*` pilot | 68% | M | Pending | TASK-03, TASK-05, TASK-07 | - |
+| TASK-05 | CHECKPOINT | Reassess post-slice before broad expansion | 95% | S | Complete (2026-02-13) | TASK-04 | TASK-06, TASK-09, TASK-10 |
+| TASK-06 | IMPLEMENT | Add refresh status/enqueue lifecycle and anomaly detection tools | 81% | M | Pending | TASK-03, TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Expand measurement adapters and enforce startup-loop `analytics_*` sunset trigger | 70% | M | Blocked | TASK-01, TASK-03, TASK-05, TASK-09 | TASK-08 |
+| TASK-08 | IMPLEMENT | Add experiment runtime MCP and a guarded ops pilot | 74% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10 | - |
+| TASK-09 | SPIKE | Add `@acme/mcp-cloudflare` contract harness + package-local analytics tests | 84% | M | Pending | TASK-03, TASK-05 | TASK-07 |
+| TASK-10 | SPIKE | Probe `exp_*` runtime contract and guarded `ops_*` audit envelope | 83% | M | Pending | TASK-03, TASK-05 | TASK-08 |
 
 > Effort scale: S=1, M=2 (used for Overall-confidence weighting)
 
@@ -92,14 +94,15 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-01, TASK-02 | - | Decision + investigation can run in parallel |
-| 2 | TASK-03 | TASK-02 | Contract kernel starts after impact map |
+| 1 | TASK-01, TASK-02 | - | Decision + impact map can run in parallel |
+| 2 | TASK-03 | TASK-02 | Contract kernel starts after impact mapping |
 | 3 | TASK-04 | TASK-03 | Vertical slice implementation |
-| 4 | TASK-05 | TASK-04 | Mandatory checkpoint before expansion |
-| 5 | TASK-06, TASK-07 | TASK-03, TASK-05 (+ TASK-01 for TASK-07) | Read-only expansion branch |
-| 6 | TASK-08 | TASK-03, TASK-05, TASK-07 | Experiment + ops pilot after measurement expansion |
+| 4 | TASK-05 | TASK-04 | Completed checkpoint gate |
+| 5 | TASK-06, TASK-09, TASK-10 | TASK-03, TASK-05 | Ready branch: refresh/anomaly + two precursor spikes |
+| 6 | TASK-07 | TASK-01, TASK-03, TASK-05, TASK-09 | Source expansion after Cloudflare harness |
+| 7 | TASK-08 | TASK-03, TASK-05, TASK-07, TASK-10 | Experiment/ops pilot after adapter + runtime precursors |
 
-**Max parallelism:** 2 | **Critical path:** 6 waves | **Total tasks:** 8
+**Max parallelism:** 3 | **Critical path:** 7 waves | **Total tasks:** 10
 
 ## Tasks
 
@@ -239,7 +242,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Measurement-Readiness:** Owner PLAT; cadence weekly; track contract pass/fail in `docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/contract-checks.json`
 - **Affects:** `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/tools/policy.ts`, `packages/mcp-server/src/__tests__/tool-policy-gates.test.ts`, `[readonly] docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md`
 - **Depends on:** TASK-02
-- **Blocks:** TASK-04, TASK-06, TASK-07, TASK-08
+- **Blocks:** TASK-04, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10
 - **Confidence:** 82%
   - Implementation: 82% — existing policy preflight and tests provide a direct extension path.
   - Approach: 84% — shared kernel prevents contract drift across tool families.
@@ -381,7 +384,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Execution-Skill:** lp-replan
 - **Affects:** `docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md`
 - **Depends on:** TASK-04
-- **Blocks:** TASK-06, TASK-07, TASK-08
+- **Blocks:** TASK-06, TASK-09, TASK-10
 - **Confidence:** 95%
   - Implementation: 95% — deterministic checkpoint workflow is straightforward.
   - Approach: 95% — required to prevent long-horizon error compounding.
@@ -415,6 +418,25 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - Shared contracts are stable enough for broader source expansion.
   - Vertical slice replay behavior generalizes to additional tool families.
 
+#### Checkpoint Completion (2026-02-13)
+- **Status:** Complete
+- **Validation:** `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/replan-trigger.test.ts scripts/src/startup-loop/__tests__/metrics-aggregate.test.ts packages/mcp-server/src/__tests__/bos-tools.test.ts packages/mcp-server/src/__tests__/bos-tools-write.test.ts --maxWorkers=2 --modulePathIgnorePatterns='/\\.open-next/' '/\\.worktrees/' '/\\.ts-jest/'` — PASS (4 suites, 40 tests)
+- **Go/No-Go outcome:** GO for TASK-06, TASK-09, TASK-10; HOLD TASK-07 and TASK-08 pending precursor evidence.
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 95%
+- **Updated confidence:** 95%
+  - **Evidence class:** E2 (executable verification)
+- **Investigation performed:**
+  - Repo: `scripts/src/startup-loop/replan-trigger.ts:117`, `scripts/src/startup-loop/metrics-aggregate.ts:54`, `packages/mcp-server/src/tools/index.ts:50`, `packages/mcp-cloudflare/src/tools/index.ts:15`
+  - Tests: `scripts/src/startup-loop/__tests__/replan-trigger.test.ts`, `scripts/src/startup-loop/__tests__/metrics-aggregate.test.ts`, `packages/mcp-server/src/__tests__/bos-tools.test.ts`, `packages/mcp-server/src/__tests__/bos-tools-write.test.ts`
+- **Decision / resolution:**
+  - Refresh/anomaly and guarded-write kernels are validated and reusable.
+  - Source-expansion and experiment-runtime work still contain unresolved implementation unknowns; added explicit SPIKE precursors.
+- **Changes to task:**
+  - Dependencies: checkpoint now directly unblocks TASK-06, TASK-09, TASK-10.
+  - Validation plan: upgraded from E1-only audit to E2 execution evidence.
+
 ### TASK-06: Add refresh status/enqueue lifecycle and anomaly detection tools
 - **Type:** IMPLEMENT
 - **Deliverable:** `refresh_status_*`, guarded `refresh_enqueue_*`, `anomaly_detect_*` handlers + tests
@@ -426,11 +448,11 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Measurement-Readiness:** Owner PLAT; cadence each run; track queue lag + anomaly false-positive rate in `docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/anomalies.json`
 - **Affects:** `packages/mcp-server/src/tools/loop.ts`, `packages/mcp-server/src/tools/policy.ts`, `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts`, `[readonly] scripts/src/startup-loop/metrics-aggregate.ts`, `[readonly] scripts/src/startup-loop/replan-trigger.ts`
 - **Depends on:** TASK-03, TASK-05
-- **Blocks:** -
-- **Confidence:** 74%
-  - Implementation: 76% — kernels exist but queue lifecycle contracts are new.
-  - Approach: 74% — policy is clear, but detector calibration requires real-world tuning.
-  - Impact: 74% — touches control signals and refresh orchestration semantics.
+- **Blocks:** TASK-07
+- **Confidence:** 81%
+  - Implementation: 82% — lifecycle and severity-gate kernels already exist with passing tests.
+  - Approach: 81% — refresh state machine + anomaly gates align with wave-2 artifact-reader spine.
+  - Impact: 81% — blast radius is bounded to loop tool handlers + fixture contracts.
 - **Acceptance:**
   - `refresh_enqueue_*` uses idempotent `requestId` lifecycle (`enqueued -> pending -> running -> complete/failed/expired`).
   - Duplicate enqueue requests return prior state without rewriting artifacts.
@@ -452,9 +474,9 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - Green evidence: implement lifecycle/anomaly handlers until TC-01..TC-04 pass.
   - Refactor evidence: extract shared queue-state and detector metadata helpers; re-run suite.
 - **Planning validation:**
-  - Checks run: relied on passing policy + S10 suites; no direct refresh/anomaly tests yet.
+  - Checks run: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/replan-trigger.test.ts scripts/src/startup-loop/__tests__/metrics-aggregate.test.ts --maxWorkers=2 --modulePathIgnorePatterns='/\\.open-next/' '/\\.worktrees/' '/\\.ts-jest/'` — PASS
   - Validation artifacts written: none (M effort).
-  - Unexpected findings: existing Jest environment needs scoped ignore filters for reliable targeted runs.
+  - Unexpected findings: governed runs require explicit `modulePathIgnorePatterns` because of known haste-map collisions in generated/worktree paths.
 - **What would make this >=90%:**
   - Add passing fixture coverage for all lifecycle transitions plus one real historical anomaly replay.
 - **Rollout / rollback:**
@@ -463,8 +485,23 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Documentation impact:**
   - Update weekly operations runbook with refresh queue state semantics.
 - **Notes / references:**
-  - `scripts/src/startup-loop/metrics-aggregate.ts`
-  - `scripts/src/startup-loop/replan-trigger.ts`
+  - `scripts/src/startup-loop/metrics-aggregate.ts:54`
+  - `scripts/src/startup-loop/replan-trigger.ts:117`
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 74%
+- **Updated confidence:** 81%
+  - **Evidence class:** E2 (executable verification)
+  - Implementation: 82% — persistent constraint lifecycle already proven by `replan-trigger` tests.
+  - Approach: 81% — thresholded warning logic already exercised by `metrics-aggregate` tests.
+  - Impact: 81% — handler boundaries confirmed in `packages/mcp-server/src/tools/loop.ts:90`.
+- **Investigation performed:**
+  - Repo: `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/metrics-aggregate.ts`, `packages/mcp-server/src/tools/loop.ts`
+  - Tests: `scripts/src/startup-loop/__tests__/replan-trigger.test.ts`, `scripts/src/startup-loop/__tests__/metrics-aggregate.test.ts`
+- **Decision / resolution:**
+  - Task is now build-eligible without adding a precursor because the key lifecycle/anomaly assumptions are validated in executable suites.
+- **Changes to task:**
+  - Dependencies/order: TASK-06 now explicitly blocks TASK-07 to enforce lifecycle-first expansion.
 
 ### TASK-07: Expand measurement adapters and enforce startup-loop `analytics_*` sunset trigger
 - **Type:** IMPLEMENT
@@ -476,12 +513,12 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-07.md`
 - **Measurement-Readiness:** Owner PLAT; cadence weekly S10; track source coverage + sunset readiness in `docs/plans/mcp-startup-loop-data-plane-wave-2/coverage-report.md`
 - **Affects:** `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/tools/analytics.ts`, `packages/mcp-cloudflare/src/tools/index.ts`, `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts`, `[readonly] docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md`
-- **Depends on:** TASK-01, TASK-03, TASK-05
+- **Depends on:** TASK-01, TASK-03, TASK-05, TASK-09
 - **Blocks:** TASK-08
-- **Confidence:** 70%
-  - Implementation: 72% — adapter approach is clear but multi-provider normalization is broad.
-  - Approach: 70% — sunset policy is well-defined, but rollout coordination is required.
-  - Impact: 70% — touches both MCP packages and tool-selection behavior.
+- **Confidence:** 70% (→ 84% conditional on TASK-09)
+  - Implementation: 72% — adapter approach is clear but cross-package Cloudflare coverage is still missing.
+  - Approach: 70% — sunset policy is defined, but enforcement seam is not yet proven.
+  - Impact: 70% — touches MCP server routing and package boundaries.
 - **Acceptance:**
   - `measure_*` covers prioritized sources: Stripe, D1/Prisma, Cloudflare, GA4/Search Console, support/email summaries.
   - `@acme/mcp-cloudflare` has package-local tests for covered endpoints and adapter contract tests in `@acme/mcp-server`.
@@ -503,9 +540,9 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - Green evidence: adapter and policy tests pass for all covered sources.
   - Refactor evidence: consolidate shared normalization helpers to remove duplication.
 - **Planning validation:**
-  - Checks run: no provider-specific adapter tests executed yet; baseline evidence only from policy and S10 suites.
+  - Checks run: static audit of `packages/mcp-server/src/tools/index.ts:50`, `packages/mcp-server/src/tools/analytics.ts:58`, `packages/mcp-cloudflare/src/tools/index.ts:15`; no package-local tests found in `@acme/mcp-cloudflare` and no `test` script in `packages/mcp-cloudflare/package.json`.
   - Validation artifacts written: none (M effort).
-  - Unexpected findings: this task is blocked pending credential decision (TASK-01).
+  - Unexpected findings: coexistence of `analytics_*` and new wave-2 surfaces remains permissive until explicit sunset guard logic is added.
 - **What would make this >=90%:**
   - Complete one full provider expansion pair (Stripe + Cloudflare) with passing cross-package contracts and sunset dry-run.
 - **Rollout / rollback:**
@@ -514,8 +551,22 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Documentation impact:**
   - Update MCP tool catalog and loop operator migration notes for `analytics_*` sunset.
 - **Notes / references:**
-  - `packages/mcp-server/src/tools/index.ts:111`
+  - `packages/mcp-server/src/tools/index.ts:50`
+  - `packages/mcp-server/src/tools/analytics.ts:58`
   - `packages/mcp-cloudflare/src/tools/index.ts:15`
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 70%
+- **Updated confidence:** 70% (→ 84% conditional on TASK-09)
+  - **Evidence class:** E1 (static audit)
+  - Confidence cannot be promoted until Cloudflare contract-test seams are proven with executable evidence.
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/src/tools/analytics.ts`, `packages/mcp-cloudflare/src/tools/index.ts`
+  - Package scripts: `packages/mcp-cloudflare/package.json`
+- **Decision / resolution:**
+  - Keep scope intact; add SPIKE precursor TASK-09 to produce missing cross-package evidence instead of speculatively promoting confidence.
+- **Changes to task:**
+  - Dependencies updated to require TASK-09 before source expansion begins.
 
 ### TASK-08: Add experiment runtime MCP and a guarded ops pilot
 - **Type:** IMPLEMENT
@@ -527,12 +578,12 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-08.md`
 - **Measurement-Readiness:** Owner BOS/PLAT; cadence weekly; track experiment decision quality in `docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/experiment-summary.json`
 - **Affects:** `packages/mcp-server/src/tools/bos.ts`, `packages/mcp-server/src/tools/policy.ts`, `packages/mcp-server/src/__tests__/bos-tools.test.ts`, `[readonly] apps/business-os/src/app/api/agent/cards/[id]/route.ts`, `[readonly] scripts/src/hypothesis-portfolio/storage.ts`
-- **Depends on:** TASK-03, TASK-05, TASK-07
+- **Depends on:** TASK-03, TASK-05, TASK-07, TASK-10
 - **Blocks:** -
-- **Confidence:** 68%
-  - Implementation: 70% — partial building blocks exist, but write-path governance is stricter.
-  - Approach: 68% — good long-term fit but sensitive to policy mistakes.
-  - Impact: 68% — spans MCP, BOS APIs, and experiment runtime consumers.
+- **Confidence:** 74% (→ 82% conditional on TASK-10)
+  - Implementation: 78% — guarded BOS write path is already proven in focused MCP tests.
+  - Approach: 74% — experiment tool contracts are still undefined in MCP.
+  - Impact: 74% — blast radius includes BOS APIs plus new hypothesis-runtime integration seams.
 - **Acceptance:**
   - `exp_allocate_id`, `exp_register`, `exp_rollout_status`, `exp_results_snapshot` implemented with policy preflight and provenance envelopes.
   - One guarded `ops_*` pilot requires `write_reason`, concurrency token (`entitySha` or equivalent), stage allowlist, audit tag.
@@ -557,9 +608,9 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - BOS conflict control viability -> `apps/business-os/src/app/api/agent/cards/[id]/route.ts:140` -> confirmed.
   - Strict policy gate for guarded writes -> `packages/mcp-server/src/__tests__/tool-policy-gates.test.ts:88` -> confirmed.
 - **Planning validation:**
-  - Checks run: policy-gate test pass; BOS route test currently failing in this environment due moduleNameMapper mismatch.
+  - Checks run: `pnpm run test:governed -- jest -- --runTestsByPath packages/mcp-server/src/__tests__/bos-tools.test.ts packages/mcp-server/src/__tests__/bos-tools-write.test.ts --maxWorkers=2 --modulePathIgnorePatterns='/\\.open-next/' '/\\.worktrees/' '/\\.ts-jest/'` — PASS
   - Validation artifacts written: none (M effort).
-  - Unexpected findings: existing BOS route test harness may need mapping fix before reliable gatekeeping.
+  - Unexpected findings: experiment-specific MCP tools are absent; only BOS guarded primitives are currently tested.
 - **What would make this >=90%:**
   - Add passing end-to-end mocked BOS conflict suite covering both experiment and ops guarded paths.
 - **Rollout / rollback:**
@@ -569,13 +620,123 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
   - Update BOS agent API contract notes for guarded experiment/ops operations.
 - **Notes / references:**
   - `apps/business-os/src/app/api/agent/cards/[id]/route.ts:140`
-  - `packages/mcp-server/src/__tests__/tool-policy-gates.test.ts:88`
+  - `packages/mcp-server/src/__tests__/bos-tools-write.test.ts:63`
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 68%
+- **Updated confidence:** 74% (→ 82% conditional on TASK-10)
+  - **Evidence class:** E2 (executable verification) + E1 (static audit)
+  - Implementation: 78% — conflict and guarded-write semantics are validated in passing BOS tool suites.
+  - Approach: 74% — no finalized `exp_*` contract yet.
+  - Impact: 74% — cross-app dependency on hypothesis storage and BOS APIs remains non-trivial.
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/src/tools/bos.ts:271`, `apps/business-os/src/app/api/agent/cards/[id]/route.ts:140`, `scripts/src/hypothesis-portfolio/storage.ts:48`
+  - Tests: `packages/mcp-server/src/__tests__/bos-tools.test.ts`, `packages/mcp-server/src/__tests__/bos-tools-write.test.ts`
+- **Decision / resolution:**
+  - Promote confidence modestly from new E2 evidence but keep task below threshold until experiment-specific contracts are probed in TASK-10.
+- **Changes to task:**
+  - Dependencies now include TASK-10 precursor.
+
+### TASK-09: Spike Cloudflare adapter contract harness and package-local test baseline
+- **Type:** SPIKE
+- **Deliverable:** Contract-test harness + package-local analytics tests proving adapter compatibility
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Artifact-Destination:** `packages/mcp-cloudflare/src/__tests__/`, `packages/mcp-server/src/__tests__/`
+- **Reviewer:** PLAT engineering owner
+- **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-09.md`
+- **Measurement-Readiness:** Owner PLAT; cadence per build; track contract pass/fail in CI annotations
+- **Affects:** `packages/mcp-cloudflare/src/tools/analytics.ts`, `packages/mcp-cloudflare/src/tools/index.ts`, `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts`, `[readonly] packages/mcp-server/src/tools/analytics.ts`
+- **Depends on:** TASK-03, TASK-05
+- **Blocks:** TASK-07
+- **Confidence:** 84%
+  - Implementation: 85% — scope is bounded to tests/harness and existing adapters.
+  - Approach: 84% — establishing executable contracts is the smallest path to de-risk TASK-07.
+  - Impact: 84% — limited runtime impact; primary effect is evidence generation.
+- **Uncertainty statement:** Can `@acme/mcp-cloudflare` be safely reused behind `measure_*` without contract drift?
+- **Falsifiable check:** If package-local Cloudflare tests plus MCP-side adapter contract tests pass with deterministic fixtures, reuse is viable; otherwise TASK-07 must revise adapter strategy.
+- **Evidence target class:** E2
+- **Acceptance:**
+  - Add package-local tests for Cloudflare analytics endpoints used by wave-2.
+  - Add MCP adapter contract tests that validate normalized metric shape/unit/segment mapping for Cloudflare-derived records.
+  - Document test command(s) in plan build-completion notes for TASK-07 promotion.
+  - Produce clear pass/fail outcome that either unblocks TASK-07 or triggers approach revision.
+- **Validation contract:**
+  - TC-01: package-local Cloudflare analytics test fixtures pass.
+  - TC-02: MCP-side adapter contract tests fail on dimension/unit mismatch and pass on valid mappings.
+  - TC-03: contract harness remains deterministic across two consecutive runs.
+  - Acceptance coverage: TC-01..TC-03 cover all acceptance bullets.
+  - Validation type: unit + contract.
+  - Validation location/evidence: `packages/mcp-cloudflare/src/__tests__/` and `packages/mcp-server/src/__tests__/`.
+  - Run/verify: governed targeted Jest run for both package test paths.
+- **Execution plan:**
+  - Red -> Green -> Refactor.
+  - Red evidence: introduce intentionally invalid mapping fixture and verify contract failure.
+  - Green evidence: implement harness/tests until TC-01..TC-03 pass.
+  - Refactor evidence: extract shared fixture helpers and re-run tests.
+- **Planning validation:**
+  - Checks run: static verification that no package-local tests currently exist.
+  - Validation artifacts written: none (M effort).
+  - Unexpected findings: package currently has no `test` script, so harness command wiring is part of the spike.
+- **Rollout / rollback:**
+  - Rollout: merge harness first, then allow TASK-07 to consume it.
+  - Rollback: keep harness-only changes isolated; do not alter runtime tool dispatch in this task.
+- **Documentation impact:**
+  - Update wave-2 plan notes with verified Cloudflare reuse path.
+
+### TASK-10: Spike experiment-runtime tool contracts and guarded ops audit envelope
+- **Type:** SPIKE
+- **Deliverable:** Executable contract draft for `exp_*` + guarded `ops_*` payload/response envelopes
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Artifact-Destination:** `packages/mcp-server/src/__tests__/`, `packages/mcp-server/src/tools/`
+- **Reviewer:** PLAT engineering owner + BOS governance reviewer
+- **Approval-Evidence:** `docs/plans/mcp-startup-loop-data-plane-wave-2/approvals/TASK-10.md`
+- **Measurement-Readiness:** Owner BOS/PLAT; cadence per run; track conflict-rate and guardrail-fail metrics in weekly S10 notes
+- **Affects:** `packages/mcp-server/src/tools/bos.ts`, `packages/mcp-server/src/tools/policy.ts`, `packages/mcp-server/src/__tests__/bos-tools-write.test.ts`, `[readonly] scripts/src/hypothesis-portfolio/storage.ts`
+- **Depends on:** TASK-03, TASK-05
+- **Blocks:** TASK-08
+- **Confidence:** 83%
+  - Implementation: 84% — guarded-write and policy primitives already pass in MCP tests.
+  - Approach: 83% — spike isolates contract risk before full runtime implementation.
+  - Impact: 83% — scoped to contract probing, not full feature rollout.
+- **Uncertainty statement:** What is the minimal safe `exp_*` + `ops_*` contract shape that preserves BOS guardrails and reproducibility?
+- **Falsifiable check:** If mock-driven contract tests can enforce required fields (`write_reason`, concurrency token, auditTag, provenance), TASK-08 can promote; if not, TASK-08 approach must split or reduce scope.
+- **Evidence target class:** E2
+- **Acceptance:**
+  - Define test-first schema expectations for `exp_allocate_id`, `exp_register`, `exp_rollout_status`, `exp_results_snapshot`.
+  - Define and test one guarded `ops_*` pilot payload envelope including audit and concurrency fields.
+  - Prove deterministic 409 conflict handling and redaction requirements through tests.
+  - Produce a concrete go/no-go recommendation for TASK-08 scope.
+- **Validation contract:**
+  - TC-01: `exp_register` without guarded fields fails closed.
+  - TC-02: valid guarded payload includes audit and provenance metadata.
+  - TC-03: stale `entitySha` returns deterministic conflict envelope.
+  - TC-04: response redaction preserves safety fields and removes sensitive values.
+  - Acceptance coverage: TC-01..TC-04 cover all acceptance bullets.
+  - Validation type: integration + contract.
+  - Validation location/evidence: `packages/mcp-server/src/__tests__/bos-tools-write.test.ts` and new `exp_*` contract test file.
+  - Run/verify: governed targeted Jest run over BOS and experiment contract tests.
+- **Execution plan:**
+  - Red -> Green -> Refactor.
+  - Red evidence: add failing tests for missing required fields and stale-sha conflict handling.
+  - Green evidence: add minimal contract handlers/mocks so TC-01..TC-04 pass.
+  - Refactor evidence: extract shared guarded-envelope helper reused by experiment and ops probe tests.
+- **Planning validation:**
+  - Checks run: BOS guarded tool suites are passing and provide reusable conflict semantics.
+  - Validation artifacts written: none (M effort).
+  - Unexpected findings: experiment-runtime contract tests do not yet exist and must be created in this spike.
+- **Rollout / rollback:**
+  - Rollout: keep spike outputs behind test-only or non-public contract paths.
+  - Rollback: remove spike contract scaffolding if TASK-08 direction changes.
+- **Documentation impact:**
+  - Update wave-2 plan with final experiment/ops contract decision before TASK-08 implementation.
 
 ## Risks & Mitigations
 - Test harness instability (Jest haste collisions) could distort validation signals.
   - Mitigation: use governed targeted tests with explicit `modulePathIgnorePatterns`; track harness cleanup as follow-up.
-- Credential/tenancy decision delay can stall source expansion.
-  - Mitigation: lock decision in TASK-01 before TASK-07 starts.
+- Missing cross-package adapter tests can stall source expansion confidence.
+  - Mitigation: execute TASK-09 before TASK-07 and require contract pass evidence.
 - Provider data heterogeneity may produce low-confidence metrics.
   - Mitigation: enforce registry mapping + deterministic quality thresholds in shared kernel.
 
@@ -594,3 +755,5 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - 2026-02-13: Chose artifact-reader MCP spine over live connector fan-out for reproducibility and governance.
 - 2026-02-13: Added mandatory checkpoint after vertical slice to cap horizon risk before expansion.
 - 2026-02-13: User approved Option A (BOS-scoped connector profiles + centralized secret references) for credential/tenancy model.
+- 2026-02-13: Checkpoint re-assessment completed with E2 evidence; promoted TASK-06 to build-eligible (81%).
+- 2026-02-13: Added precursor spikes TASK-09 and TASK-10; kept TASK-07 and TASK-08 below threshold until precursor evidence lands.

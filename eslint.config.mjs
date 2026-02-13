@@ -303,6 +303,33 @@ export default [
     },
   },
 
+  /* ▸ Brikette: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/brikette/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Prime: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/prime/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ XA: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
   /* ▸ Design-system motion safety: ban transition-all in DS + mirrored atoms */
   {
     files: [

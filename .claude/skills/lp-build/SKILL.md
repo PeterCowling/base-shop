@@ -453,9 +453,17 @@ Move to the next eligible IMPLEMENT task and repeat the cycle.
 
 When all tasks in the plan are marked Complete, archive the plan:
 
-1. Set frontmatter `Status: Archived` (not `Complete`).
-2. Move the plan file to `docs/plans/archive/`.
-3. Commit: `docs(plans): archive <plan-name> — all tasks complete`
+1. Set frontmatter `Status: Archived` (not `Complete`) in the plan file.
+2. **Move** (not copy) the plan file to `docs/plans/archive/` using `git mv`.
+3. If a companion fact-find brief exists (`docs/plans/<slug>-lp-fact-find.md` or `docs/plans/<slug>/fact-find.md`), set its `Status: Archived` and `git mv` it to `docs/plans/archive/` too.
+4. If the plan used a workspace directory (`docs/plans/<slug>/`), move the entire directory contents to `docs/plans/archive/<slug>/`.
+5. Verify no stale copies remain in `docs/plans/` — run `ls docs/plans/*<slug>*` and confirm empty.
+6. Commit: `docs(plans): archive <plan-name> — all tasks complete`
+
+**Common mistakes to avoid:**
+- Do NOT set status to `Complete` — it must be `Archived`.
+- Do NOT copy files — use `git mv` so the originals are removed in the same commit.
+- Do NOT leave the fact-find brief behind in `docs/plans/`.
 
 ## CHECKPOINT Handling
 

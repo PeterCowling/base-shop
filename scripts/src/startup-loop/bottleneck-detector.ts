@@ -49,9 +49,9 @@ export interface FunnelMetricsInput {
   blocked_stages: BlockedStage[];
   data_quality: DataQuality;
   sources: {
-    s3_forecast: string;
-    s10_readout: string;
-    events: string;
+    s3_forecast: string | null;
+    s10_readout: string | null;
+    events: string | null;
   };
 }
 

@@ -17,6 +17,8 @@ export type MetricDirection = "higher_is_better" | "lower_is_better";
 
 export type MetricClass = "primitive" | "derived";
 
+export type ReasonCode = "data_missing" | "deps_blocked" | "compliance" | "ops_capacity" | "unclear_requirements" | "other";
+
 export interface MetricCatalogEntry {
   class: MetricClass;
   direction: MetricDirection;
@@ -36,7 +38,7 @@ export interface FunnelMetric {
 
 export interface BlockedStage {
   stage: string;
-  reason_code: string;
+  reason_code: ReasonCode;
   blocking_reason: string;
   timestamp: string;
 }
@@ -124,10 +126,10 @@ const REASON_CODE_PATTERNS: Array<{ pattern: RegExp; code: string }> = [
   { pattern: /unclear|undefined|ambiguous/i, code: "unclear_requirements" },
 ];
 
-function normalizeReasonCode(blockingReason: string): string {
+function normalizeReasonCode(blockingReason: string): ReasonCode {
   for (const { pattern, code } of REASON_CODE_PATTERNS) {
     if (pattern.test(blockingReason)) {
-      return code;
+      return code as ReasonCode;
     }
   }
   return "other";

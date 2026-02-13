@@ -1,5 +1,5 @@
 // src/components/bar/orderTaking/CategoryHeader.tsx
-/* eslint-disable ds/no-raw-tailwind-color -- menu category colour-coding (bg-blue/green/pink/orange/purple/red); domain-specific, no semantic token equivalent */
+/* eslint-disable ds/no-raw-tailwind-color -- menu category colour-coding (bg-blue/green/pink/orange/purple/red); domain-specific, no semantic token equivalent [REC-09] */
 
 import React, { type FC, useCallback, useMemo } from "react";
 

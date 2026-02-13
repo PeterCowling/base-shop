@@ -181,7 +181,7 @@ export default function DateSelector({
                 : {})}
               classNames={{
                 root: `${defaultNames.root} bg-white shadow-lg p-5 rounded dark:bg-darkSurface dark:text-darkAccentGreen`,
-                /* eslint-disable ds/no-raw-tailwind-color -- calendar day-picker accent styling (amber-500); no semantic token equivalent */
+                /* eslint-disable ds/no-raw-tailwind-color -- calendar day-picker accent styling (amber-500); no semantic token equivalent [REC-09] */
                 today: "border-amber-500",
                 selected: "bg-amber-500 border-amber-500 text-white",
                 chevron: `${defaultNames.chevron} fill-amber-500`,

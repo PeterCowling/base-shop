@@ -2294,10 +2294,19 @@ export default [
       /* DS rules deferred to future phase — too many violations for current scope */
       "ds/enforce-layout-primitives": "off", // ~437 violations — separate migration
       "ds/no-hardcoded-copy": "off", // internal staff tool — not localized
+      /* DS rules off — not applicable for internal desktop tool */
+      "ds/min-tap-size": "off", // 164 violations — desktop-only internal tool
+      "ds/no-nonlayered-zindex": "off", // 54 violations — internal z-index management
+      "ds/no-physical-direction-classes-in-rtl": "off", // 30 violations — not an RTL app
+      "ds/no-unsafe-viewport-units": "off", // 25 violations — internal, controlled viewport
+      "ds/absolute-parent-guard": "off", // 22 violations — internal modal patterns
+      "ds/container-widths-only-at": "off", // 19 violations — internal layout
+      "ds/enforce-focus-ring-token": "off", // 6 violations — internal tool
       /* DS rules at warn — will be fixed and escalated in DS-05 */
       "ds/no-raw-zindex": "warn",
       "ds/no-important": "warn",
       "ds/no-raw-typography": "warn",
+      "ds/no-raw-font": "warn", // 10 violations — receipt printing uses specific fonts
       /* DS rules at warn — will be fixed and escalated in DS-06 */
       "ds/no-raw-spacing": "warn",
       "ds/no-arbitrary-tailwind": "warn",

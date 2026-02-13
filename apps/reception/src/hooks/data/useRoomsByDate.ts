@@ -1,5 +1,5 @@
 // /Users/petercowling/reception/src/hooks/data/useRoomsByDate.ts
-/* eslint-disable ds/no-raw-color -- default room occupancy color is domain data constant */
+/* eslint-disable ds/no-raw-color -- default room occupancy color is domain data constant [REC-09] */
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {

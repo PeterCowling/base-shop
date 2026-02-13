@@ -12,6 +12,11 @@ export { HoltWintersAdditive, HoltWintersMultiplicative } from "./holt-winters";
 export type { ModelCandidate, ModelComparisonResult } from "./model-selection";
 export { compareModels, selectBestModel } from "./model-selection";
 export type {
+  OptimizationOptions,
+  OptimizationResult,
+} from "./parameter-optimization";
+export { optimizeParameters } from "./parameter-optimization";
+export type {
   ForecastInterval,
   IntervalOptions,
 } from "./prediction-intervals";

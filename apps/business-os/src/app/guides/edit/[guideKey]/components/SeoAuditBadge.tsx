@@ -11,10 +11,10 @@ interface SeoAuditBadgeProps {
 export default function SeoAuditBadge({ score, className = "" }: SeoAuditBadgeProps) {
   const colorClass =
     score >= 9.0
-      ? "border-emerald-300 bg-emerald-100 text-emerald-900"
+      ? "border-success-soft bg-success-soft text-success-fg"
       : score >= 7.0
-        ? "border-amber-300 bg-amber-100 text-amber-900"
-        : "border-red-300 bg-red-100 text-red-900";
+        ? "border-warning-soft bg-warning-soft text-warning-fg"
+        : "border-danger-soft bg-danger-soft text-danger-fg";
 
   return (
     <span

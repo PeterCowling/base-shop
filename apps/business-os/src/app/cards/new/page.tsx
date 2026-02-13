@@ -19,20 +19,20 @@ export default async function NewCardPage() {
   const businesses = await reader.getBusinesses();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-bg py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Link
               href="/boards/global"
-              className="text-blue-600 hover:text-blue-800"
+              className="text-info-fg hover:text-info-fg"
             >
               ← Back to Board
             </Link>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Create New Card</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-fg">Create New Card</h1>
+          <p className="mt-2 text-muted">
             Create a card to track work through the kanban workflow. Cards start
             at a specific lane and progress through fact-finding, planning,
             execution, and reflection.
@@ -40,16 +40,16 @@ export default async function NewCardPage() {
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-panel rounded-lg shadow p-6">
           <CardEditorForm businesses={businesses} mode="create" />
         </div>
 
         {/* Help Text */}
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-          <h2 className="text-sm font-medium text-blue-900 mb-2">
+        <div className="mt-6 p-4 bg-info-soft border border-info-soft rounded-md">
+          <h2 className="text-sm font-medium text-info-fg mb-2">
             About Cards
           </h2>
-          <ul className="text-sm text-blue-800 space-y-1">
+          <ul className="text-sm text-info-fg space-y-1">
             <li>
               • Cards represent work items that flow through the kanban system
             </li>

@@ -74,10 +74,10 @@ export default function GuideDashboardPage() {
                       <div className="mt-2 flex items-center gap-2">
                         <span className={`inline-block rounded-full px-2 py-0.5 text-xs font-medium ${
                           entry.status === "live"
-                            ? "bg-green-100 text-green-800"
+                            ? "bg-success-soft text-success-fg"
                             : entry.status === "review"
-                              ? "bg-amber-100 text-amber-800"
-                              : "bg-gray-100 text-gray-700"
+                              ? "bg-warning-soft text-warning-fg"
+                              : "bg-surface-1 text-secondary"
                         }`}>
                           {entry.status}
                         </span>

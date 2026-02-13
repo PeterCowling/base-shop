@@ -101,8 +101,8 @@ export default async function ArchivePage() {
       {/* Footer Note */}
       {isAdmin && (
         <div className="px-6 pb-6">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <p className="text-sm text-blue-900">
+          <div className="bg-info-soft border border-info-soft rounded-lg p-4">
+            <p className="text-sm text-info-fg">
               <strong>Admin View:</strong> You (
               {currentUser.name}) can see all archived cards from all users.
             </p>

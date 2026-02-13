@@ -48,19 +48,19 @@ export function CardStageDocs({ stageDocs }: CardStageDocsProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">Stage Documents</h2>
+    <div className="bg-panel rounded-lg border border-border-1 p-6">
+      <h2 className="text-lg font-semibold text-fg mb-4">Stage Documents</h2>
       <div className="space-y-3">
         {availableStages.map(({ key, label, doc }) => (
-          <div key={key} className="border border-gray-200 rounded-lg">
+          <div key={key} className="border border-border-1 rounded-lg">
             <button
               type="button"
               onClick={() => toggleStage(key)}
-              className="w-full flex items-center justify-between px-4 py-3 text-start hover:bg-gray-50"
+              className="w-full flex items-center justify-between px-4 py-3 text-start hover:bg-surface-1"
             >
-              <span className="text-sm font-medium text-gray-900">{label}</span>
+              <span className="text-sm font-medium text-fg">{label}</span>
               <svg
-                className={`w-5 h-5 text-gray-500 transition-transform ${
+                className={`w-5 h-5 text-muted transition-transform ${
                   openStages.has(key) ? "transform rotate-180" : ""
                 }`}
                 fill="none"
@@ -76,7 +76,7 @@ export function CardStageDocs({ stageDocs }: CardStageDocsProps) {
               </svg>
             </button>
             {openStages.has(key) && doc && (
-              <div className="px-4 pb-4 border-t border-gray-200">
+              <div className="px-4 pb-4 border-t border-border-1">
                 <MarkdownContent content={doc.content} />
               </div>
             )}

@@ -19,17 +19,17 @@ function formatDate(value: string): string {
 function priorityClasses(priority: string): string {
   switch (priority) {
     case "P0":
-      return "bg-red-100 text-red-800";
+      return "bg-danger-soft text-danger-fg";
     case "P1":
-      return "bg-orange-100 text-orange-800";
+      return "bg-warning-soft text-warning-fg";
     case "P2":
-      return "bg-amber-100 text-amber-800";
+      return "bg-warning-soft text-warning-fg";
     case "P3":
-      return "bg-blue-100 text-blue-800";
+      return "bg-info-soft text-info-fg";
     case "P4":
-      return "bg-slate-100 text-slate-700";
+      return "bg-surface-1 text-secondary";
     default:
-      return "bg-gray-100 text-gray-700";
+      return "bg-surface-1 text-secondary";
   }
 }
 
@@ -38,17 +38,17 @@ export function IdeasList({ items }: IdeasListProps) {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-lg border border-dashed border-gray-300 bg-white p-10 text-center text-sm text-gray-600">
+      <div className="rounded-lg border border-dashed border-border-2 bg-panel p-10 text-center text-sm text-muted">
         No ideas matched this filter set.
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white">
+    <div className="rounded-lg border border-border-1 bg-panel">
       <div className="hidden overflow-x-auto md:block">
         <table className="min-w-full table-auto text-start text-sm">
-          <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase tracking-wide text-gray-600">
+          <thead className="border-b border-border-1 bg-bg text-xs uppercase tracking-wide text-muted">
             <tr>
               <th className="px-4 py-3 font-semibold">Priority</th>
               <th className="px-4 py-3 font-semibold">Idea ID</th>
@@ -67,7 +67,7 @@ export function IdeasList({ items }: IdeasListProps) {
                 role="link"
                 tabIndex={0}
                 aria-label={`Open idea ${item.id}`}
-                className="cursor-pointer border-b border-gray-100 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600"
+                className="cursor-pointer border-b border-border-1 hover:bg-surface-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
                 onClick={() => router.push(`/ideas/${item.id}`)}
                 onKeyDown={(event) => {
                   if (event.key === "Enter" || event.key === " ") {
@@ -83,13 +83,13 @@ export function IdeasList({ items }: IdeasListProps) {
                     {item.priority}
                   </span>
                 </td>
-                <td className="px-4 py-3 font-mono text-xs text-gray-700">{item.id}</td>
-                <td className="px-4 py-3 font-medium text-gray-900">{item.title}</td>
-                <td className="px-4 py-3 text-gray-700">{item.business}</td>
-                <td className="px-4 py-3 text-gray-700">{item.status}</td>
-                <td className="px-4 py-3 text-gray-700">{item.location}</td>
-                <td className="px-4 py-3 text-gray-700">{formatDate(item.createdDate)}</td>
-                <td className="px-4 py-3 text-gray-700">
+                <td className="px-4 py-3 font-mono text-xs text-secondary">{item.id}</td>
+                <td className="px-4 py-3 font-medium text-fg">{item.title}</td>
+                <td className="px-4 py-3 text-secondary">{item.business}</td>
+                <td className="px-4 py-3 text-secondary">{item.status}</td>
+                <td className="px-4 py-3 text-secondary">{item.location}</td>
+                <td className="px-4 py-3 text-secondary">{formatDate(item.createdDate)}</td>
+                <td className="px-4 py-3 text-secondary">
                   {item.tags.length > 0 ? item.tags.join(", ") : "—"}
                 </td>
               </tr>
@@ -104,7 +104,7 @@ export function IdeasList({ items }: IdeasListProps) {
             <button
               type="button"
               aria-label={`Open idea ${item.id}`}
-              className="min-h-11 min-w-11 w-full rounded-lg border border-gray-200 bg-white p-4 text-start shadow-sm hover:bg-gray-50"
+              className="min-h-11 min-w-11 w-full rounded-lg border border-border-1 bg-panel p-4 text-start shadow-sm hover:bg-surface-1"
               onClick={() => router.push(`/ideas/${item.id}`)}
             >
               <div className="mb-2 flex items-center justify-between gap-2">
@@ -113,24 +113,24 @@ export function IdeasList({ items }: IdeasListProps) {
                 >
                   {item.priority}
                 </span>
-                <span className="font-mono text-xs text-gray-600">{item.id}</span>
+                <span className="font-mono text-xs text-muted">{item.id}</span>
               </div>
-              <h2 className="text-sm font-semibold text-gray-900">{item.title}</h2>
-              <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-gray-600">
+              <h2 className="text-sm font-semibold text-fg">{item.title}</h2>
+              <dl className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted">
                 <div>
-                  <dt className="font-medium text-gray-700">Business</dt>
+                  <dt className="font-medium text-secondary">Business</dt>
                   <dd>{item.business}</dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-gray-700">Status</dt>
+                  <dt className="font-medium text-secondary">Status</dt>
                   <dd>{item.status}</dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-gray-700">Location</dt>
+                  <dt className="font-medium text-secondary">Location</dt>
                   <dd>{item.location}</dd>
                 </div>
                 <div>
-                  <dt className="font-medium text-gray-700">Created</dt>
+                  <dt className="font-medium text-secondary">Created</dt>
                   <dd>{formatDate(item.createdDate)}</dd>
                 </div>
               </dl>

@@ -19,36 +19,36 @@ export default async function NewIdeaPage() {
   const businesses = await reader.getBusinesses();
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="min-h-screen bg-bg py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Link
               href="/boards/global"
-              className="text-blue-600 hover:text-blue-800"
+              className="text-info-fg hover:text-info-fg"
             >
               ← Back to Board
             </Link>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">Create New Idea</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-3xl font-bold text-fg">Create New Idea</h1>
+          <p className="mt-2 text-muted">
             Submit a raw idea to the inbox. It will be reviewed and potentially
             worked up into a card.
           </p>
         </div>
 
         {/* Form */}
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-panel rounded-lg shadow p-6">
           <IdeaForm businesses={businesses} />
         </div>
 
         {/* Help Text */}
-        <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
-          <h2 className="text-sm font-medium text-blue-900 mb-2">
+        <div className="mt-6 p-4 bg-info-soft border border-info-soft rounded-md">
+          <h2 className="text-sm font-medium text-info-fg mb-2">
             About Ideas
           </h2>
-          <ul className="text-sm text-blue-800 space-y-1">
+          <ul className="text-sm text-info-fg space-y-1">
             <li>
               • Ideas are raw thoughts that need refinement before becoming work
               items

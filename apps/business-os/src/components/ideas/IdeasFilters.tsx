@@ -18,28 +18,28 @@ export function IdeasFilters({ businesses, state }: IdeasFiltersProps) {
     <form
       method="get"
       action="/ideas"
-      className="rounded-lg border border-gray-200 bg-white p-4"
+      className="rounded-lg border border-border-1 bg-panel p-4"
     >
       <input type="hidden" name="primaryPage" value="1" />
       <input type="hidden" name="secondaryPage" value="1" />
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Search
           <input
             type="search"
             name="q"
             defaultValue={state.q}
             placeholder="ID, title, content, tags"
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Business
           <select
             name="business"
             defaultValue={state.business}
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           >
             <option value="">All businesses</option>
             {businesses.map((business) => (
@@ -50,12 +50,12 @@ export function IdeasFilters({ businesses, state }: IdeasFiltersProps) {
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Status
           <select
             name="status"
             defaultValue={state.status}
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           >
             <option value="all">All statuses</option>
             {IDEA_STATUSES.map((status) => (
@@ -66,12 +66,12 @@ export function IdeasFilters({ businesses, state }: IdeasFiltersProps) {
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Location
           <select
             name="location"
             defaultValue={state.location}
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           >
             {IDEA_LOCATIONS.map((location) => (
               <option key={location} value={location}>
@@ -81,23 +81,23 @@ export function IdeasFilters({ businesses, state }: IdeasFiltersProps) {
           </select>
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Tag contains
           <input
             type="text"
             name="tag"
             defaultValue={state.tag}
             placeholder="ops"
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           />
         </label>
 
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Primary page size
           <select
             name="primaryPageSize"
             defaultValue={String(state.primaryPageSize)}
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           >
             {IDEAS_PAGE_SIZE_OPTIONS.map((option) => (
               <option key={option} value={String(option)}>
@@ -106,12 +106,12 @@ export function IdeasFilters({ businesses, state }: IdeasFiltersProps) {
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-sm text-gray-700">
+        <label className="flex flex-col gap-1 text-sm text-secondary">
           Secondary page size
           <select
             name="secondaryPageSize"
             defaultValue={String(state.secondaryPageSize)}
-            className="rounded-md border border-gray-300 px-3 py-2"
+            className="rounded-md border border-border-2 px-3 py-2"
           >
             {IDEAS_PAGE_SIZE_OPTIONS.map((option) => (
               <option key={option} value={String(option)}>
@@ -125,13 +125,13 @@ export function IdeasFilters({ businesses, state }: IdeasFiltersProps) {
       <div className="mt-4 flex items-center gap-2">
         <button
           type="submit"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-fg hover:bg-accent/90"
         >
           Apply filters
         </button>
         <a
           href="/ideas"
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-border-2 px-4 py-2 text-sm font-medium text-secondary hover:bg-surface-1"
         >
           Reset
         </a>

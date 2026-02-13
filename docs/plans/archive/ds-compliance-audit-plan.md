@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-13
-Last-updated: 2026-02-13
+Last-updated: 2026-02-14
 Feature-Slug: ds-compliance-audit
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -77,17 +77,17 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
-| DSA-01 | IMPLEMENT | Archive stale fact-find docs | 95% | S | Pending | - | - |
-| DSA-02 | IMPLEMENT | Fix cochlearfit (2 violations) + escalate | 95% | S | Pending | - | - |
-| DSA-03 | IMPLEMENT | Fix handbag-configurator (2 violations) + escalate | 95% | S | Pending | - | - |
-| DSA-04 | IMPLEMENT | Fix template-app baseline (5 violations) | 92% | S | Pending | - | - |
-| DSA-05 | IMPLEMENT | Fix cover-me-pretty (10 violations) + escalate | 88% | M | Pending | - | - |
-| DSA-06 | IMPLEMENT | Fix xa-j + xa-b (78 violations) + escalate both | 85% | M | Pending | - | - |
-| DSA-07 | IMPLEMENT | Fix xa-uploader (80 violations) + escalate | 85% | M | Pending | - | - |
-| DSA-08 | IMPLEMENT | Fix product-pipeline (39 violations) + escalate | 85% | M | Pending | - | - |
-| DSA-09 | IMPLEMENT | Fix SplitPane + modals baseline (3 violations) | 90% | S | Pending | - | - |
-| DSA-10 | DECISION | RatingsBar: baseline exception vs new tokens | 60% | S | Needs-Input | - | DSA-11 |
-| DSA-11 | IMPLEMENT | Execute RatingsBar decision (9 violations) | 80% | S | Pending | DSA-10 | - |
+| DSA-01 | IMPLEMENT | Archive stale fact-find docs | 95% | S | Complete (2026-02-13) | - | - |
+| DSA-02 | IMPLEMENT | Fix cochlearfit (2 violations) + escalate | 95% | S | Complete (2026-02-13) | - | - |
+| DSA-03 | IMPLEMENT | Fix handbag-configurator (2 violations) + escalate | 95% | S | Complete (2026-02-13) | - | - |
+| DSA-04 | IMPLEMENT | Fix template-app baseline (5 violations) | 92% | S | Complete (2026-02-13) | - | - |
+| DSA-05 | IMPLEMENT | Fix cover-me-pretty (10 violations) + escalate | 88% | M | Complete (2026-02-13) | - | - |
+| DSA-06 | IMPLEMENT | Fix xa-j + xa-b (78 violations) + escalate both | 85% | M | Complete (2026-02-13) | - | - |
+| DSA-07 | IMPLEMENT | Fix xa-uploader (80 violations) + escalate | 85% | M | Complete (2026-02-13) | - | - |
+| DSA-08 | IMPLEMENT | Fix product-pipeline (39 violations) + escalate | 85% | M | Complete (2026-02-13) | - | - |
+| DSA-09 | IMPLEMENT | Fix SplitPane + modals baseline (3 violations) | 90% | S | Complete (2026-02-13) | - | - |
+| DSA-10 | DECISION | RatingsBar: baseline exception vs new tokens | 95% | S | Complete (2026-02-14) | - | DSA-11 |
+| DSA-11 | IMPLEMENT | Execute RatingsBar decision (8 violations) | 92% | S | Complete (2026-02-14) | DSA-10 | - |
 
 ## Parallelism Guide
 
@@ -130,6 +130,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `d1be616f82`
+- **Execution cycle:** TC-01..03 verified via `ls`; 1 cycle
+- **Validation:** `ls docs/plans/archive/ds-*-migration-fact-find.md` — both exist; originals gone — PASS
+- **Implementation notes:** Moved `ds-skylar-migration-fact-find.md` and `ds-business-os-migration-fact-find.md` to archive. No broken references.
+
 ### DSA-02: Fix cochlearfit (2 violations) + escalate to error
 
 - **Type:** IMPLEMENT
@@ -158,6 +165,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `c9f10329a9`
+- **Execution cycle:** TC-01..02 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS (67/67)
+- **Implementation notes:** Fixed `CheckoutPanel.tsx:88` and `ThankYouPanel.tsx:72` — `border-red-200 bg-red-50 text-red-700` → `border-danger bg-danger-soft text-danger-fg`. Added scoped error block in eslint.config.mjs.
+
 ### DSA-03: Fix handbag-configurator (2 violations) + escalate to error
 
 - **Type:** IMPLEMENT
@@ -185,6 +199,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `5133f98854`
+- **Execution cycle:** TC-01..02 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS (67/67)
+- **Implementation notes:** Fixed `ViewerCanvas.tsx:80` (`bg-black/60 text-white` → `bg-foreground/60 text-primary-fg`) and `:311` (`bg-black/70 text-white` → `bg-foreground/70 text-primary-fg`). Added scoped error block.
 
 ### DSA-04: Fix template-app baseline (5 violations)
 
@@ -218,6 +239,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `4bdd81da97`
+- **Execution cycle:** TC-01..02 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS; `grep -c 'template-app' baseline` → 0 — PASS
+- **Implementation notes:** Code was already fixed in prior work. Only baseline cleanup needed — removed 5 template-app entries from `ds-no-raw-tailwind-color.json`.
+
 ### DSA-05: Fix cover-me-pretty (10 violations) + escalate to error
 
 - **Type:** IMPLEMENT
@@ -246,6 +274,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **What would make this ≥90%:** Verify all 10 mappings individually against running dev server
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `2a02f8c332`
+- **Execution cycle:** TC-01..02 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS
+- **Implementation notes:** Fixed 10 violations across 8 files. Key mappings: `text-blue-600` → `text-primary`, `bg-gray-800` → `bg-foreground`, `bg-gray-100` → `bg-muted`, `text-white` → `text-primary-fg`, `bg-emerald-600` → `bg-success`. Added scoped error block.
 
 ### DSA-06: Fix xa-j + xa-b (78 violations) + escalate both to error
 
@@ -278,6 +313,14 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `f189a1660f`
+- **Execution cycle:** TC-01..03 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS; `pnpm typecheck` — PASS
+- **Implementation notes:** xa-j and xa-b are independent directory copies (not symlinks). Fixed ~44 violations in each app independently across 11 files each. Dominant: `bg-white` → `bg-surface`, `text-white` → `text-primary-fg`, `text-black` → `text-foreground`. Added 2 scoped error blocks (one per app).
+- **Finding:** xa-j/xa-b are NOT shared code — they are independent copies requiring separate fixes.
+
 ### DSA-07: Fix xa-uploader (80 violations) + escalate to error
 
 - **Type:** IMPLEMENT
@@ -306,6 +349,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **What would make this ≥90%:** Verify `bg-surface` renders white on xa-uploader's light-only theme
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `9a3cac3601`, `1d406a6d82`
+- **Execution cycle:** TC-01..02 verified; 1 cycle (2 commits: code fix + eslint rule)
+- **Validation:** `pnpm lint` — PASS; `pnpm typecheck` — PASS
+- **Implementation notes:** Fixed ~82 violations across 11 catalog form files. Dominant: `bg-white` → `bg-surface` (61x), `text-red-700` → `text-danger-fg` (13x). Added scoped error block.
 
 ### DSA-08: Fix product-pipeline (39 violations) + escalate to error
 
@@ -338,6 +388,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `547c8e849f`
+- **Execution cycle:** TC-01..03 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS; grep for `emerald|amber` → 0 — PASS
+- **Implementation notes:** Fixed 39 violations across 17 files. Status colour mappings: `text-emerald-600` → `text-success-fg`, `text-red-600` → `text-danger-fg`, `text-amber-800/600` → `text-warning-fg`, plus soft background variants. Added scoped error block.
+
 ### DSA-09: Fix SplitPane + modals baseline (3 violations)
 
 - **Type:** IMPLEMENT
@@ -368,6 +425,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `da633fe437`
+- **Execution cycle:** TC-01..03 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS; `grep -c 'SplitPane\|primitives' baseline` → 0 — PASS
+- **Implementation notes:** Code for SplitPane and modals/primitives.tsx was already fixed in prior work. Only baseline cleanup needed — removed 3 entries. Baseline now has 8 entries (all RatingsBar).
+
 ### DSA-10: DECISION — RatingsBar: baseline exception vs new opacity tokens
 
 - **Type:** DECISION
@@ -392,7 +456,12 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
   - Decision recorded in plan Decision Log
   - DSA-11 unblocked with clear implementation direction
 
-### DSA-11: Execute RatingsBar decision (9 violations)
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Decision:** Option A — inline eslint-disable comments. Rationale: 5 distinct opacity levels serve a single component; creating tokens adds DS complexity without reuse value.
+- **Implementation notes:** User chose Option A (recommended). DSA-11 unblocked.
+
+### DSA-11: Execute RatingsBar decision (8 violations)
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change — fix or annotate 9 violations + update baseline
@@ -424,6 +493,13 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 - **Documentation impact:** None
 - **Notes:** Actual implementation depends on DSA-10 decision. If DSA-09 already fixes the modals/primitives.tsx violation, skip that file here.
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** `ac60649b30`
+- **Execution cycle:** TC-01..03 verified; 1 cycle
+- **Validation:** `pnpm lint` — PASS (67/67); `grep -c 'RatingsBar' baseline` → 0 — PASS
+- **Implementation notes:** RatingsBar.tsx was already fully migrated to `brand-*` tokens in prior work. All 8 baseline entries referenced stale line numbers with violations that no longer exist. No eslint-disable comments needed. Simply removed all 8 entries — baseline now empty (0 violations).
+
 ## Risks & Mitigations
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -443,13 +519,16 @@ Follow the proven P1–P4 migration pattern: fix violations → add scoped `erro
 ## Acceptance Criteria (overall)
 
 - [x] All 7 warn-level apps have tokens imported (already true)
-- [ ] `ds/no-raw-tailwind-color` at `error` level for cochlearfit, handbag-configurator, cover-me-pretty, xa-j, xa-b, xa-uploader, product-pipeline
-- [ ] Baseline entry count: 0 (or 0 with inline eslint-disable for RatingsBar)
-- [ ] Stale fact-find docs archived
-- [ ] `pnpm lint` green repo-wide
-- [ ] `pnpm typecheck` green repo-wide
+- [x] `ds/no-raw-tailwind-color` at `error` level for cochlearfit, handbag-configurator, cover-me-pretty, xa-j, xa-b, xa-uploader, product-pipeline
+- [x] Baseline entry count: 0 — all 16 entries resolved (code was already migrated; stale entries removed)
+- [x] Stale fact-find docs archived
+- [x] `pnpm lint` green repo-wide
+- [x] `pnpm typecheck` green repo-wide
 
 ## Decision Log
 
 - 2026-02-13: Plan created. All status tokens confirmed available (`success-fg`, `warning-fg`, `danger-fg`). Product-pipeline does not need new tokens.
 - 2026-02-13: xa-j / xa-b confirmed identical violation patterns — treated as single task.
+- 2026-02-13: DSA-01 through DSA-09 all completed. 7 apps escalated to error. Baseline reduced from 16 to 8 (all RatingsBar). xa-j and xa-b confirmed as independent directory copies (not shared code). DSA-04 and DSA-09 found code already fixed — only baseline cleanup needed.
+- 2026-02-14: DSA-10 DECISION resolved — Option A (inline eslint-disable). 5 opacity levels for single consumer doesn't justify new tokens.
+- 2026-02-14: DSA-11 completed. RatingsBar.tsx was already migrated — only stale baseline entries needed removal. Baseline now at 0. All 11 tasks complete. Plan archived.

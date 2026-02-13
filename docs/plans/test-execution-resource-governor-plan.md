@@ -289,6 +289,7 @@ Schedule note:
 - **Notes / references:** mirror patterns from `scripts/git/writer-lock.sh`.
 - **Build completion (2026-02-13):**
   - **Status:** Complete
+  - **Commits:** `8da798ad58`
   - **Implementation notes:** added `scripts/tests/test-lock.sh` and `scripts/tests/test-lock-config.sh` with FIFO queueing, cancellation, stale cleanup, heartbeat updates, and scope-aware status metadata; added `scripts/__tests__/test-lock-queue.test.ts` covering TC-01..TC-05.
   - **Validation evidence:** `pnpm --filter scripts test -- __tests__/test-lock-queue.test.ts` (PASS).
   - **Documentation updated:** `docs/testing-policy.md` (scheduler primitive and scope semantics).

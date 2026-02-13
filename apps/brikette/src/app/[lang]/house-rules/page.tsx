@@ -60,7 +60,7 @@ export default async function HouseRulesPage({ params }: Props) {
           </header>
 
           {/* Mobile TOC */}
-          <details className="mb-4 rounded-lg border border-neutral-200 bg-brand-bg/60 backdrop-blur lg:hidden dark:border-neutral-800 dark:bg-neutral-900/60">
+          <details className="mb-4 rounded-lg border border-1 bg-brand-bg/60 backdrop-blur lg:hidden">
             <summary className="min-h-10 cursor-pointer px-4 py-3 font-semibold">
               {t("toc.title")}
             </summary>
@@ -87,13 +87,13 @@ export default async function HouseRulesPage({ params }: Props) {
                 aria-label={t("toc.aria") as string}
                 className="sticky top-24 max-h-screen overflow-auto pr-2"
               >
-                <div className="rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
+                <div className="rounded-lg border border-1 p-4">
                   <h2 className="mb-3 text-base font-semibold">{t("toc.title")}</h2>
                   <ol className="space-y-2 text-sm">
                     {sections.map((s) => (
                       <li key={s.id}>
                         <a
-                          className="inline-block min-h-11 min-w-11 text-neutral-700 hover:text-neutral-900 hover:underline dark:text-neutral-300 dark:hover:text-brand-heading"
+                          className="inline-block min-h-11 min-w-11 text-secondary hover:text-fg hover:underline"
                           href={`#${s.id}`}
                         >
                           {s.label}
@@ -115,7 +115,7 @@ export default async function HouseRulesPage({ params }: Props) {
                     (p, i) => (
                       <p
                         key={`${s.key}-${i}`}
-                        className="text-base leading-7 text-neutral-900 sm:text-lg sm:leading-8 dark:text-neutral-100"
+                        className="text-base leading-7 text-fg sm:text-lg sm:leading-8"
                       >
                         {p}
                       </p>

@@ -65,7 +65,7 @@ function StreetLevelArrivalContent({ lang }: Props) {
           <Link
             href={`/${lang}/apartment/book/`}
             onClick={() => trackApartmentEvent("click_check_availability", { source: "street-level-arrival" })}
-            className="rounded-lg bg-brand-primary px-8 py-3 text-center font-semibold text-white transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
+            className="rounded-lg bg-brand-primary px-8 py-3 text-center font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
           >
             {t("streetLevelArrival.checkAvailability")}
           </Link>

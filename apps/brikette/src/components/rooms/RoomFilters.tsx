@@ -30,10 +30,7 @@ const BASE_BUTTON_CLASSES = [
 const SELECTED_BUTTON_CLASSES = [
   "border-brand-primary",
   "bg-brand-primary",
-  "text-white",
-  "dark:border-brand-secondary",
-  "dark:bg-brand-secondary",
-  "dark:text-brand-bg",
+  "text-fg-inverse",
 ] as const;
 
 const IDLE_BUTTON_CLASSES = [
@@ -41,10 +38,6 @@ const IDLE_BUTTON_CLASSES = [
   "bg-brand-bg",
   "text-brand-primary",
   "hover:bg-brand-primary/10",
-  "dark:border-brand-secondary/60",
-  "dark:bg-brand-bg",
-  "dark:text-brand-text",
-  "dark:hover:bg-brand-secondary/20",
 ] as const;
 
 function RoomFilters({ selected, onChange, lang }: RoomFiltersProps): JSX.Element {

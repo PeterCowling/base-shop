@@ -44,7 +44,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
     <section id="location" className="py-12 scroll-mt-24">
       <Section as="div" padding="none" width="full" className="mx-auto max-w-6xl px-4">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch">
-          <Stack className="gap-4 rounded-3xl border border-brand-outline/30 bg-brand-bg p-6 shadow-sm dark:border-white/10 dark:bg-brand-surface">
+          <Stack className="gap-4 rounded-3xl border border-brand-outline/30 bg-brand-bg p-6 shadow-sm border-fg-inverse/10 dark:bg-brand-surface">
             <div>
               <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">
                 {resolveTranslatedCopy(
@@ -64,13 +64,13 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
             </div>
 
             <Cluster className="text-xs font-medium text-brand-text/80 dark:text-brand-text/80">
-              <span className="rounded-full bg-brand-surface/70 px-3 py-1 dark:bg-white/10">
+              <span className="rounded-full bg-brand-surface/70 px-3 py-1 bg-fg-inverse/10">
                 {resolveTranslatedCopy(
                   tModals("location.nearbyBusCompact", { defaultValue: "100 m to SITA bus stop" }),
                   "100 m to SITA bus stop"
                 )}
               </span>
-              <span className="rounded-full bg-brand-surface/70 px-3 py-1 dark:bg-white/10">
+              <span className="rounded-full bg-brand-surface/70 px-3 py-1 bg-fg-inverse/10">
                 {resolveTranslatedCopy(
                   t("locationSection.nearbyBeach", { defaultValue: "≈350 m to the beach" }),
                   "≈350 m to the beach"
@@ -84,7 +84,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
               <button
                 type="button"
                 onClick={handleDirections}
-                className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-md transition-colors hover:bg-brand-primary/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-bg dark:hover:text-brand-bg"
+                className="min-h-11 min-w-11 rounded-full bg-brand-secondary px-6 py-3 text-sm font-semibold text-brand-text shadow-md transition-colors hover:bg-brand-primary/90 hover:text-fg-inverse focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-bg dark:hover:text-brand-bg"
               >
                 {resolveTranslatedCopy(
                   tModals("location.getDirections", { defaultValue: "Get directions" }),
@@ -95,7 +95,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-surface dark:hover:text-brand-secondary"
+                className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary text-brand-surface dark:hover:text-brand-secondary"
               >
                 {resolveTranslatedCopy(
                   tModals("location.justShowMap", { defaultValue: "Show map" }),
@@ -110,12 +110,12 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
             href={mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group h-full justify-between rounded-3xl border border-brand-outline/30 bg-brand-surface/80 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md dark:border-white/10 dark:bg-brand-surface"
+            className="group h-full justify-between rounded-3xl border border-brand-outline/30 bg-brand-surface/80 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md border-fg-inverse/10 dark:bg-brand-surface"
           >
             <Inline className="gap-3 text-brand-heading dark:text-brand-text">
               <Inline
                 as="span"
-                className="size-11 justify-center rounded-full bg-brand-bg text-brand-primary dark:bg-white/10"
+                className="size-11 justify-center rounded-full bg-brand-bg text-brand-primary bg-fg-inverse/10"
               >
                 <MapPin className="size-5" aria-hidden />
               </Inline>
@@ -142,8 +142,8 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 alt=""
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-black/40 via-transparent to-transparent">
-                <div className="rounded-full bg-white/90 p-2 shadow-lg dark:bg-brand-surface/90">
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-overlay-scrim-1 via-transparent to-transparent">
+                <div className="rounded-full bg-panel/90 p-2 shadow-lg dark:bg-brand-surface/90">
                   <MapPin className="size-5 text-brand-primary" aria-hidden />
                 </div>
               </div>

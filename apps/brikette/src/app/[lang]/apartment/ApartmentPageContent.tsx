@@ -43,7 +43,7 @@ function ApartmentPageContent({ lang }: Props) {
             <div className="grid gap-4 sm:grid-cols-2">
               <Link
                 href={`/${lang}/apartment/street-level-arrival/`}
-                className="group rounded-2xl border border-brand-outline/30 bg-white/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
+                className="group rounded-2xl border border-brand-outline/30 bg-panel/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
@@ -62,7 +62,7 @@ function ApartmentPageContent({ lang }: Props) {
 
               <Link
                 href={`/${lang}/apartment/private-stay/`}
-                className="group rounded-2xl border border-brand-outline/30 bg-white/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
+                className="group rounded-2xl border border-brand-outline/30 bg-panel/90 p-5 shadow-sm backdrop-blur transition-shadow hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
@@ -91,7 +91,7 @@ function ApartmentPageContent({ lang }: Props) {
             <Link
               href={`/${lang}/apartment/book/`}
               onClick={() => trackApartmentEvent("click_check_availability", { source: "hub" })}
-              className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
+              className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-fg-inverse shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
             >
               {t("checkAvailability")}
             </Link>

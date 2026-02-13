@@ -245,7 +245,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
         tabIndex={0}
         onClick={openDeals}
         onKeyDown={handleActivation}
-        className="relative flex min-h-10 w-full min-w-10 cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 pe-16 text-white shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
+        className="relative flex min-h-10 w-full min-w-10 cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 pe-16 text-fg-inverse shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
       >
         <p className="text-balance text-center text-lg font-semibold leading-snug md:text-xl">
           <span data-notification-banner="message" className="font-semibold md:font-bold">
@@ -262,7 +262,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
           type="button"
           ref={registerDismissButton}
           aria-label={closeLabel}
-          className="absolute end-2 top-2 inline-flex size-11 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg"
+          className="absolute end-2 top-2 inline-flex size-11 items-center justify-center rounded-full bg-fg-inverse/15 text-fg-inverse transition hover:bg-fg-inverse/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg"
         >
           <span
             aria-hidden="true"

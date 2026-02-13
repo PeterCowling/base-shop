@@ -76,7 +76,7 @@ function PrivateStayContent({ lang }: Props) {
           <Link
             href={`/${lang}/apartment/book/`}
             onClick={() => trackApartmentEvent("click_check_availability", { source: "private-stay" })}
-            className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-primary/90"
+            className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90"
           >
             {t("privateStay.checkAvailability")}
           </Link>

@@ -255,8 +255,8 @@ function BookPageContent({ lang }: Props) {
               </div>
 
               {unavailableFor === room.sku && (
-                <div className="mt-4 rounded-md border border-red-200 bg-red-50 p-4">
-                  <p className="font-medium text-red-800">{t("unavailable.title")}</p>
+                <div className="mt-4 rounded-md border border-danger bg-danger-soft p-4">
+                  <p className="font-medium text-danger-fg">{t("unavailable.title")}</p>
                   {alternatives?.items?.length ? (
                     <div className="mt-2 space-y-2">
                       {alternatives.items.map((alt) => (

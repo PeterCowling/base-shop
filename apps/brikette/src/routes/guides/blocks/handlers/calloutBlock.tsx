@@ -29,9 +29,9 @@ const VARIANT_STYLES = {
     body: "mt-2 leading-relaxed text-brand-text dark:text-brand-text",
   },
   aside: {
-    container: "rounded-2xl border border-gray-200 bg-gray-50 p-5 text-sm dark:border-gray-700 dark:bg-gray-800/50",
-    title: "font-medium uppercase tracking-wide text-gray-600 dark:text-gray-400",
-    body: "mt-2 leading-relaxed text-gray-700 dark:text-gray-300",
+    container: "rounded-2xl border border-1 bg-surface-1 p-5 text-sm",
+    title: "font-medium uppercase tracking-wide text-muted",
+    body: "mt-2 leading-relaxed text-secondary",
   },
 } as const;
 

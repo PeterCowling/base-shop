@@ -204,11 +204,11 @@ const BookingWidget = memo(function BookingWidget({
       className="relative -translate-y-4 scroll-mt-24 sm:-translate-y-8 lg:-translate-y-10"
     >
       <Section as="div" padding="none" className="max-w-5xl px-4">
-        <div className="rounded-2xl border border-black/10 bg-white/95 p-3 shadow-lg backdrop-blur dark:border-white/10 dark:bg-brand-text/90">
+        <div className="rounded-2xl border border-overlay-scrim-1/10 bg-panel/95 p-3 shadow-lg backdrop-blur border-fg-inverse/10 dark:bg-brand-text/90">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
             <label
               htmlFor={BOOKING_FIELD_IDS.checkIn}
-              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading dark:text-brand-surface md:col-span-4"
+              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface md:col-span-4"
             >
               {tModals("booking.checkInLabel")}
               <input
@@ -220,13 +220,13 @@ const BookingWidget = memo(function BookingWidget({
                 onChange={handleCheckInChange}
                 placeholder={placeholder}
                 ref={checkInRef}
-                className="min-h-11 rounded-xl border border-brand-outline/40 bg-white/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
+                className="min-h-11 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
               />
             </label>
 
             <label
               htmlFor={BOOKING_FIELD_IDS.checkOut}
-              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading dark:text-brand-surface md:col-span-4"
+              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface md:col-span-4"
             >
               {tModals("booking.checkOutLabel")}
               <input
@@ -237,13 +237,13 @@ const BookingWidget = memo(function BookingWidget({
                 value={checkOut}
                 onChange={handleCheckOutChange}
                 placeholder={placeholder}
-                className="min-h-11 rounded-xl border border-brand-outline/40 bg-white/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
+                className="min-h-11 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
               />
             </label>
 
             <label
               htmlFor={BOOKING_FIELD_IDS.guests}
-              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading dark:text-brand-surface md:col-span-2"
+              className="flex flex-col gap-1.5 text-sm font-semibold text-brand-heading text-brand-surface md:col-span-2"
             >
               {tModals("booking.guestsLabel")}
               <input
@@ -253,7 +253,7 @@ const BookingWidget = memo(function BookingWidget({
                 max={8}
                 value={guests}
                 onChange={handleGuestsChange}
-                className="min-h-11 rounded-xl border border-brand-outline/40 bg-white/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
+                className="min-h-11 rounded-xl border border-brand-outline/40 bg-panel/90 px-3 py-2 text-sm text-brand-heading shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:bg-brand-surface"
               />
             </label>
 

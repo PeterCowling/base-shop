@@ -159,13 +159,13 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
 
       <Section className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="mb-2 text-3xl font-bold tracking-tight lg:text-4xl">{resolvedTitle}</h1>
-        <p className="mb-2 text-sm text-slate-600 dark:text-slate-400">
+        <p className="mb-2 text-sm text-muted">
           {t("tagPage.articleCount", { count: summary?.count ?? items.length })}
         </p>
         {hasCustomIntro ? (
-          <p className="mb-6 text-slate-700 dark:text-slate-300">{customIntro}</p>
+          <p className="mb-6 text-secondary">{customIntro}</p>
         ) : resolvedDescription ? (
-          <p className="mb-6 text-slate-700 dark:text-slate-300">{resolvedDescription}</p>
+          <p className="mb-6 text-secondary">{resolvedDescription}</p>
         ) : null}
         <Grid className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {resolvedGuides.map(({ key, href, label }) => (
@@ -180,17 +180,17 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
           ))}
         </Grid>
         {top5.length > 0 && (
-          <aside className="mt-8 rounded-md border border-slate-200 p-4 dark:border-slate-700">
+          <aside className="mt-8 rounded-md border border-1 p-4">
             <h2 className="mb-2 text-base font-semibold">{t("tagPage.topTagsHeading")}</h2>
             <Inline className="flex flex-wrap gap-2 text-sm">
               {top5.map(({ tag: tname, count }) => (
                 <li key={tname}>
                   <Link
                     href={`${tagsBasePath}/${encodeURIComponent(tname)}`}
-                    className="inline-flex items-center rounded-full border border-slate-300 px-3 py-1 hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800"
+                    className="inline-flex items-center rounded-full border border-2 px-3 py-1 hover:bg-surface-1"
                   >
                     {tname}
-                    <span className="ms-2 rounded bg-slate-100 px-1.5 py-0.5 text-xs dark:bg-slate-700">{count}</span>
+                    <span className="ms-2 rounded bg-surface-1 px-1.5 py-0.5 text-xs">{count}</span>
                   </Link>
                 </li>
               ))}

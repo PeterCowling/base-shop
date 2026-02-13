@@ -84,7 +84,7 @@ function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
       </Link>
       <PlanChoiceAnalytics />
       {loadError ? (
-        <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-6 text-center text-neutral-600">
+        <div className="rounded-lg border border-1 bg-surface-1 p-6 text-center text-muted">
           <p className="text-sm">This content could not be loaded. Please try refreshing the page.</p>
         </div>
       ) : (

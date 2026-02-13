@@ -75,3 +75,14 @@ export type {
   SampleSizeForProportionsResult,
 } from "./sample-size";
 export { sampleSizeForProportions } from "./sample-size";
+export type {
+  ThompsonSamplingArm,
+  ThompsonSamplingOptions,
+  ThompsonSamplingResult,
+  ThompsonSamplingSimulationOptions,
+  ThompsonSamplingSimulationResult,
+} from "./thompson-sampling";
+export {
+  thompsonSampling,
+  thompsonSamplingSimulation,
+} from "./thompson-sampling";

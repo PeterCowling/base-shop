@@ -77,7 +77,7 @@ Primary references:
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 92% | S | Done | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 85% | M | Done | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
 | LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 84% | M | Done | LPSP-06A, LPSP-04A | LPSP-08 |
-| LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03B | LPSP-08 |
+| LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 85% | M | Done | LPSP-03B | LPSP-08 |
 | LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 82% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
 | LPSP-09 | CHECKPOINT | Validate end-to-end supervised dry run on one business path | 86% | M | Pending | LPSP-08, LPSP-04B | - |
 
@@ -525,6 +525,29 @@ Primary references:
   - **Validation type:** review checklist + cross-reference.
   - **Validation location/evidence:** Autonomy policy document (new artifact) + loop-spec.yaml cross-check.
   - **Run/verify:** Enumerate all stage actions from loop-spec, verify each is classified; verify guarded stages have signal emission documented.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** fe85b82802
+- **Execution cycle:**
+  - Validation cases executed: VC-07-01, VC-07-02, VC-07-03
+  - Cycles: 1 draft-review cycle
+  - Initial validation: Draft produced
+  - Final validation: PASS (all 3 VCs verified)
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 85%
+  - Delta reason: classification was straightforward — loop-spec bos_sync fields clearly distinguish local writes (autonomous) from API calls (guarded). 11 autonomous + 6 guarded = 17/17 stages covered.
+- **Validation:**
+  - VC-07-01: 17/17 stages classified, no overlaps, no gaps — PASS
+  - VC-07-02: S5B explicitly guarded; S7/S8/S9/S9B/S10 (D1 API via bos_sync) all guarded — PASS
+  - VC-07-03: Guarded Action Protocol (section 3) requires stage_started event before execution, traceable in events.jsonl — PASS
+- **Documentation updated:** None required (this task IS the documentation artifact)
+- **Implementation notes:**
+  - Created `docs/business-os/startup-loop/autonomy-policy.md` (136 lines)
+  - 3 tiers: autonomous (local-only, 11 stages), guarded (D1 API + lane transitions, 6 stages), prohibited (destructive actions, 0 stages — applies to actions not stages)
+  - Guarded protocol: emit stage_started → verify preconditions → idempotent API calls → emit stage_completed/stage_blocked → write stage-result.json
+  - Decision criteria flowchart for classifying new stages/actions added in section 4
 
 ### LPSP-08: Contract lint + controlled-velocity triggers + concurrency gate
 

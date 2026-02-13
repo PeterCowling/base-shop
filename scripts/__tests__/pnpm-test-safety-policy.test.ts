@@ -112,13 +112,14 @@ const POLICY_TABLE: GuardCase[] = [
   {
     id: "PT-16",
     args: ["exec", "jest", "--version"],
-    expectedDecision: "allow",
-    description: "pnpm exec jest remains warn-only in phase 0",
+    expectedDecision: "deny",
+    description: "pnpm exec jest is hard-blocked outside governed context",
   },
 ];
 
 let mockPnpmDir: string;
 let mockRepoRoot: string;
+let mockPnpmLogPath: string;
 
 function invokeGuard(
   args: string[],
@@ -151,8 +152,18 @@ beforeAll(() => {
 
   mockPnpmDir = fs.mkdtempSync(path.join(os.tmpdir(), "mock-pnpm-"));
   mockRepoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "mock-repo-root-"));
+  mockPnpmLogPath = path.join(mockPnpmDir, "mock-pnpm.log");
   const mockPnpmPath = path.join(mockPnpmDir, "pnpm");
-  fs.writeFileSync(mockPnpmPath, "#!/bin/bash\nexit 0\n");
+  fs.writeFileSync(
+    mockPnpmPath,
+    `#!/bin/bash
+set -euo pipefail
+if [[ -n "\${BASESHOP_MOCK_PNPM_LOG:-}" ]]; then
+  printf '%s\\n' "$*" >> "\${BASESHOP_MOCK_PNPM_LOG}"
+fi
+exit 0
+`,
+  );
   fs.chmodSync(mockPnpmPath, 0o755);
 });
 
@@ -199,22 +210,38 @@ describe("PNPM Test Safety Policy — Coverage", () => {
   });
 });
 
-describe("PNPM Test Safety Policy — Warn-only Jest bypass telemetry", () => {
-  test("PT-17 warns on pnpm exec jest outside governed context", () => {
+describe("PNPM Test Safety Policy — Enforced Jest bypass policy", () => {
+  test("PT-17 blocks pnpm exec jest outside governed context", () => {
     const result = invokeGuard(["exec", "jest", "--version"], REPO_ROOT, {
       BASESHOP_GUARD_REPO_ROOT: mockRepoRoot,
     });
-    expect(result.status).toBe(0);
-    expect(result.stderr).toContain("WARNED");
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain("BLOCKED");
     expect(result.stderr).toContain("pnpm-exec-jest");
+    expect(result.stderr).toContain("test:governed");
   });
 
-  test("PT-18 suppresses warning in governed context", () => {
+  test("PT-18 allows path in governed context", () => {
     const result = invokeGuard(["exec", "jest", "--version"], REPO_ROOT, {
       BASESHOP_GOVERNED_CONTEXT: "1",
       BASESHOP_GUARD_REPO_ROOT: mockRepoRoot,
     });
     expect(result.status).toBe(0);
-    expect(result.stderr).not.toContain("WARNED");
+    expect(result.stderr).not.toContain("BLOCKED");
+  });
+
+  test("PT-19 bypass-policy override reroutes to governed runner", () => {
+    const result = invokeGuard(["exec", "jest", "--runInBand"], REPO_ROOT, {
+      BASESHOP_GUARD_REPO_ROOT: mockRepoRoot,
+      BASESHOP_ALLOW_BYPASS_POLICY: "1",
+      BASESHOP_MOCK_PNPM_LOG: mockPnpmLogPath,
+    });
+    expect(result.status).toBe(0);
+    expect(result.stderr).toContain("BYPASS POLICY OVERRIDE");
+
+    const logged = fs.existsSync(mockPnpmLogPath)
+      ? fs.readFileSync(mockPnpmLogPath, "utf8")
+      : "";
+    expect(logged).toContain("-w run test:governed -- jest -- --runInBand");
   });
 });

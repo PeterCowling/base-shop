@@ -172,7 +172,7 @@ Event schema (MVP):
 | TEG-03 | IMPLEMENT | Add intent-based governed runner (`test:governed`) with scheduler and shaping caps | 82% | M | Completed (2026-02-13) | TEG-02 | TEG-04, TEG-05, TEG-07 |
 | TEG-04 | CHECKPOINT | Horizon checkpoint after interception + scheduler baseline | 95% | S | Completed (2026-02-13) | TEG-03 | TEG-05, TEG-06, TEG-07 |
 | TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Completed (2026-02-13) | TEG-04 | TEG-06 |
-| TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Pending | TEG-01, TEG-05 | TEG-08, TEG-09 |
+| TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Completed (2026-02-13) | TEG-01, TEG-05 | TEG-08, TEG-09 |
 | TEG-07 | INVESTIGATE | Collect calibration telemetry (20+ runs) and tune per-class budgets | 74% ⚠️ | M | Pending | TEG-01, TEG-04 | TEG-08 |
 | TEG-08 | IMPLEMENT | Ship memory+CPU admission engine with seeded defaults, P90 history, and queue-on-pressure | 81% | L | Pending | TEG-06, TEG-07 | TEG-09 |
 | TEG-09 | IMPLEMENT | Add drift prevention (docs lint + policy updates + operator docs) | 84% | M | Pending | TEG-06, TEG-08 | - |
@@ -488,6 +488,23 @@ Schedule note:
   - Rollback: temporary revert to warn-only classifier.
 - **Documentation impact:** add split-override policy and allowed command matrix to `docs/testing-policy.md`.
 - **Notes / references:** fact-find execution-path map and A4 proof points.
+- **Build completion (2026-02-13):**
+  - **Status:** Complete
+  - **Implementation notes:**
+    - Enforced hard-blocking for ungoverned Jest bypass patterns across wrappers and shell guard hooks:
+      - `scripts/agent-bin/pnpm` (`pnpm exec jest`)
+      - `scripts/agent-bin/npm` (`npm exec jest` / `npm x jest`)
+      - `scripts/agent-bin/npx` (`npx jest`)
+      - `scripts/agents/guarded-shell-hooks.sh` (`node ...jest/bin/jest.js`, `./node_modules/.bin/jest`)
+    - Added split-override behavior:
+      - `BASESHOP_ALLOW_BYPASS_POLICY=1` reroutes blocked bypass invocations to `pnpm -w run test:governed -- jest -- <args>`.
+      - `BASESHOP_ALLOW_OVERLOAD=1` remains telemetry-visible but does not bypass command-policy blocking.
+    - Updated `scripts/agents/with-git-guard.sh` command-mode handling to honor hook enforcement exit codes and perform override rerouting for raw direct Jest forms.
+    - Expanded policy tests to cover hard-block mode and reroute semantics, including overload-override telemetry tagging.
+    - Updated testing policy documentation from warn-only wording to enforced blocking with split override semantics.
+  - **Validation evidence:**
+    - `pnpm --filter scripts test -- __tests__/pnpm-test-safety-policy.test.ts __tests__/turbo-test-safety-policy.test.ts __tests__/guarded-shell-hooks.test.ts` (PASS)
+  - **Documentation updated:** `docs/testing-policy.md`.
 
 ### TEG-07: Calibration telemetry and budget tuning
 - **Type:** INVESTIGATE
@@ -648,3 +665,4 @@ Schedule note:
 - 2026-02-13: During TEG-05 migration, added governed CI compatibility mode and separator normalization in runner to keep package-script forwarding stable without queueing in CI.
 - 2026-02-13: TEG-05 was temporarily blocked on unrelated baseline (`@acme/template-app` build failure from `packages/lib` changes) while migrating `apps/xa*` scripts.
 - 2026-02-13: Resolved the `packages/lib`/`template-app` baseline blocker and completed remaining TEG-05 app package manifest migrations in commit `2ce513bf06`.
+- 2026-02-13: Completed TEG-06 by flipping wrapper/shell bypass handling from warn-only to hard-block mode with split override behavior and governed reroute semantics.

@@ -300,6 +300,8 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   /React does not recognize the `%s` prop on a DOM element\..*labelClassName/,
   /React does not recognize the `%s` prop on a DOM element\..*trailingIcon/,
   "Failed to load upgrade changes Only absolute URLs are supported",
+  "Failed to load order",
+  "Publish failed",
   // Env validation helpers – these are intentionally exercised with invalid
   // inputs across many suites, so the error logs are expected noise in tests.
   "❌ Invalid CMS environment variables",

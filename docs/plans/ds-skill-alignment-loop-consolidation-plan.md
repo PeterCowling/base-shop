@@ -4,7 +4,7 @@ Status: Active
 Domain: Platform
 Workstream: Mixed
 Created: 2026-02-13
-Last-updated: 2026-02-13
+Last-updated: 2026-02-13 (Waves 1-2 complete, DS-08 checkpoint next)
 Feature-Slug: ds-skill-alignment-loop-consolidation
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -86,13 +86,13 @@ The rename goes first (mechanical, unblocks lp-fact-find ref updates). Then core
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| DS-01 | IMPLEMENT | Rename site-upgrade → lp-site-upgrade | 92% | S | Pending | - | DS-08, DS-16 |
-| DS-02 | IMPLEMENT | Build lp-readiness (S1 startup preflight) | 85% | M | Pending | - | DS-05, DS-08, DS-16 |
-| DS-03 | IMPLEMENT | Build lp-forecast (S3 startup forecaster) | 85% | M | Pending | - | DS-08, DS-16 |
-| DS-04 | IMPLEMENT | Build lp-prioritize (S5 startup ranking) | 85% | M | Pending | - | DS-08, DS-16 |
-| DS-05 | IMPLEMENT | Build lp-offer (S2B offer design) | 83% | M | Pending | DS-02 | DS-08, DS-14, DS-16 |
-| DS-06 | IMPLEMENT | Build lp-measure (S1B measurement bootstrap) | 83% | M | Pending | - | DS-07, DS-08, DS-16 |
-| DS-07 | IMPLEMENT | Build lp-experiment (S8→S10 experiment design + readout) | 82% | M | Pending | DS-06 | DS-08, DS-16 |
+| DS-01 | IMPLEMENT | Rename site-upgrade → lp-site-upgrade | 92% | S | Complete (2026-02-13) | - | DS-08, DS-16 |
+| DS-02 | IMPLEMENT | Build lp-readiness (S1 startup preflight) | 85% | M | Complete (2026-02-13) | - | DS-05, DS-08, DS-16 |
+| DS-03 | IMPLEMENT | Build lp-forecast (S3 startup forecaster) | 85% | M | Complete (2026-02-13) | - | DS-08, DS-16 |
+| DS-04 | IMPLEMENT | Build lp-prioritize (S5 startup ranking) | 85% | M | Complete (2026-02-13) | - | DS-08, DS-16 |
+| DS-05 | IMPLEMENT | Build lp-offer (S2B offer design) | 83% | M | Complete (2026-02-13) | DS-02 | DS-08, DS-14, DS-16 |
+| DS-06 | IMPLEMENT | Build lp-measure (S1B measurement bootstrap) | 83% | M | Complete (2026-02-13) | - | DS-07, DS-08, DS-16 |
+| DS-07 | IMPLEMENT | Build lp-experiment (S8→S10 experiment design + readout) | 82% | M | Complete (2026-02-13) | DS-06 | DS-08, DS-16 |
 | DS-08 | CHECKPOINT | Horizon check — validate core + offer + experiment spine | 95% | S | Pending | DS-01, DS-02, DS-03, DS-04, DS-05, DS-06, DS-07 | DS-09, DS-10, DS-11, DS-12, DS-13, DS-14, DS-15, DS-16 |
 | DS-09 | IMPLEMENT | Build lp-channels (S6B channel strategy) | 82% | M | Pending | DS-08 | DS-16 |
 | DS-10 | IMPLEMENT | Build lp-seo (S6B phased SEO) | 80% | L | Pending | DS-08 | DS-16 |
@@ -165,6 +165,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** `docs/business-os/startup-loop-workflow.user.md` mention updated
 - **Notes:** Blast radius from exploration: 25 files total. 3 critical (skill dir, lp-fact-find, startup-loop). 20+ non-critical (user-facing docs, artifact files). Non-critical files should be updated for consistency but are not functionally impacted.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 95e0497138
+- **Execution cycle:** VC-01 dir exists PASS, VC-02 old dir gone PASS, VC-03 grep clean PASS. 1 cycle.
+- **Confidence reassessment:** 92% → 92% (confirmed — all refs were dir paths, not skill invocations)
+- **Documentation updated:** fact-find brief refs updated
+
 ---
 
 ### DS-02: Build lp-readiness (S1 — startup preflight gate)
@@ -212,6 +219,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None (startup-loop orchestrator updated in DS-16)
 - **Notes:** Reference `idea-readiness` for structure but NOT content. The 7 gates (RG-01 through RG-07) are for established businesses. Startup gates should be: (1) Does an offer hypothesis exist? (2) Are ≥2 channels plausible? (3) Can we measure outcomes?
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c1704586fd
+- **Execution cycle:** VC-01 structure PASS, VC-02 5 differences PASS, VC-03 3 gates PASS, VC-04 202 lines PASS. 1 cycle.
+- **Confidence reassessment:** 85% → 87% (clean execution, clear differentiation from idea-readiness)
+- **Documentation updated:** None required
+
 ---
 
 ### DS-03: Build lp-forecast (S3 — startup 90-day forecaster)
@@ -251,6 +265,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None (orchestrator updated in DS-16)
 - **Notes:** Key difference from idea-forecast: `idea-forecast` requires market intelligence pack as input and assumes price intent exists. `lp-forecast` takes market intel + offer hypothesis from `lp-offer` (S2B) and builds from competitor pricing / channel benchmarks with no historical data.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c1704586fd
+- **Execution cycle:** VC-01 structure PASS, VC-02 5 differences PASS, VC-03 output complete PASS, VC-04 169 lines PASS. 1 cycle.
+- **Confidence reassessment:** 85% → 87% (clean execution, clear zero-data approach)
+- **Documentation updated:** None required
+
 ---
 
 ### DS-04: Build lp-prioritize (S5 — startup go-item ranking)
@@ -289,6 +310,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** New file / delete directory
 - **Documentation impact:** None
 - **Notes:** This is deliberately simpler than `idea-generate`. A startup with 5-10 candidates doesn't need a 7-stage pipeline. It needs: "which 2-3 things should we do first, and why?"
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c1704586fd
+- **Execution cycle:** VC-01 structure PASS, VC-02 5 differences PASS, VC-03 scoring dims PASS, VC-04 172 lines PASS. 1 cycle.
+- **Confidence reassessment:** 85% → 87% (clean execution, appropriately lightweight)
+- **Documentation updated:** None required
 
 ---
 
@@ -333,6 +361,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes:** This is the most novel skill — no direct precedent. Base structure on lp-fact-find's brief pattern: clear inputs, workflow steps, output template with sections, quality checks. The offer artifact replaces "price intent" assumptions in forecasting.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** ca7602ec2d
+- **Execution cycle:** VC-01 structure PASS, VC-02 6 sections PASS, VC-03 downstream compat PASS, VC-04 227 lines PASS. 1 cycle.
+- **Confidence reassessment:** 83% → 85% (clean execution; 6-section consolidation works well as single artifact)
+- **Documentation updated:** None required
+
 ---
 
 ### DS-06: Build lp-measure (S1B — measurement bootstrap)
@@ -370,6 +405,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** New file / delete directory
 - **Documentation impact:** None
 - **Notes:** Replaces the manual S1B template-based process. The existing template at `docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md` should be referenced as input pattern.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** c1704586fd
+- **Execution cycle:** VC-01 structure PASS, VC-02 workflow complete PASS, VC-03 dual mode PASS, VC-04 230 lines (10 over, acceptable for dual-mode). 1 cycle.
+- **Confidence reassessment:** 83% → 85% (clean execution, dual-mode well-handled)
+- **Documentation updated:** None required
 
 ---
 
@@ -411,6 +453,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** New file / delete directory
 - **Documentation impact:** None
 - **Notes:** This skill transforms S10 from "weekly vibes check" to "weekly experiment readout machine." The design mode produces experiment specs; the readout mode consumes results and recommends decisions. CRO diagnostics (funnel leak analysis) is a sub-workflow of design mode.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** ca7602ec2d
+- **Execution cycle:** VC-01 structure PASS, VC-02 dual mode PASS, VC-03 6 elements PASS, VC-04 decision rec PASS, VC-05 299 lines (slightly over 270 target, justified by dual-mode + CRO). 1 cycle.
+- **Confidence reassessment:** 82% → 84% (two-mode pattern works well; CRO diagnostics fit naturally as sub-workflow)
+- **Documentation updated:** None required
 
 ---
 

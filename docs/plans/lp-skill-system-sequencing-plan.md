@@ -72,7 +72,7 @@ Primary references:
 | LPSP-03A | IMPLEMENT | Define stage-result schema + data-plane ownership contract | 88% | S | Done | LPSP-01 | LPSP-03B, LPSP-04A |
 | LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 86% | M | Done | LPSP-03A | LPSP-07 |
 | LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 89% | M | Done | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
-| LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% (→84%) | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
+| LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 88% | M | Done | LPSP-04A, LPSP-06B | LPSP-09 |
 | LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 87% | M | Done | LPSP-01 | LPSP-06A |
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 92% | S | Done | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 85% | M | Done | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
@@ -297,8 +297,8 @@ Primary references:
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + business-artifact.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 78%
-- **Replan note:** Split from original LPSP-04 (74%). Hardening phase — builds on proven LPSP-04A foundation.
+- **Confidence:** 84%
+- **Replan note:** Split from original LPSP-04 (74%). Hardening phase — builds on proven LPSP-04A foundation. Promoted from 78%→84% after LPSP-04A+06B completion (E2 evidence).
 - **Depends on:** LPSP-04A (needs event/state schemas), LPSP-06B (needs merge barrier for failure scenarios).
 - **Scope:**
   - Recovery event types: `run_resumed`, `run_restarted`, `run_aborted` (with operator, reason, timestamp).
@@ -320,11 +320,10 @@ Primary references:
 
 #### Re-plan Update (2026-02-13)
 - **Previous confidence:** 78%
-- **Updated confidence:** 78% (→ 84% conditional on LPSP-04A, LPSP-06B)
-  - Confidence cannot be promoted until precursor tasks complete and provide E2/E3 evidence.
-  - Implementation: 78% — no existing recovery patterns; greenfield design required.
-  - Approach: 82% — decision tree approach is clear, follows existing optimistic-concurrency patterns (`entity-sha.ts`, `optimistic-concurrency.test.ts`).
-  - Impact: 80% — well-scoped to recovery/validation layer; no blast radius beyond run directory.
+- **Updated confidence:** 84% (promoted — LPSP-04A + LPSP-06B complete, E2 evidence)
+  - Implementation: 84% — derive-state.ts already handles resume (stage_started after stage_blocked); bosSync demonstrates failure→retry→success pattern (VC-06C-03); event schema well-defined.
+  - Approach: 85% — decision tree follows existing patterns; recovery events extend proven event ledger.
+  - Impact: 84% — well-scoped to recovery/validation layer; no blast radius beyond run directory.
 - **Investigation performed:**
   - Repo: `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/` — no existing recovery logic.
   - Patterns: `apps/business-os/src/lib/optimistic-concurrency.test.ts`, `apps/business-os/src/lib/entity-sha.ts` — SHA-based conflict detection reusable.
@@ -333,6 +332,31 @@ Primary references:
   - Dependencies are real blockers (event schema from LPSP-04A, merge barrier from LPSP-06B). Confidence remains conditional.
   - No precursor tasks needed — LPSP-04A and LPSP-06B already exist as formal tasks.
   - Scope decisions: no hidden cleanup (partial artifacts stay on disk for forensics), resume is stage-level only (no sub-stage checkpoints in first cut).
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 877b53bd60
+- **Execution cycle:**
+  - Validation cases executed: VC-04B-01, VC-04B-02, VC-04B-03
+  - Cycles: 1 red-green cycle (16/16 tests passed first try after implementation)
+  - Initial validation: FAIL expected (module not found)
+  - Final validation: PASS (16/16 tests, typecheck clean)
+- **Confidence reassessment:**
+  - Original: 84% (promoted from 78% after deps completed)
+  - Post-validation: 88%
+  - Delta reason: derive-state already handled resume natively (stage_started after stage_blocked); recovery module cleanly extends with decision tree + abort. Event validation covers all corruption patterns from VC-04B-02.
+- **Validation:**
+  - VC-04B-01: Mid-run S4 block → resume event → re-derived state shows S4 Active, blocking_reason null — PASS
+  - VC-04B-02: Missing fields, invalid event type, schema mismatch, missing artifacts/reason all detected — PASS (9 validation tests)
+  - VC-04B-03: Abort creates run_aborted event with operator/reason; artifacts remain on disk — PASS
+  - Ran: `npx jest --config scripts/jest.config.cjs --testPathPattern=startup-loop --no-coverage` — 57/57 PASS
+  - Ran: `npx tsc --project scripts/tsconfig.json --noEmit` — clean
+- **Documentation updated:** None required (decision tree documented in recovery.ts JSDoc)
+- **Implementation notes:**
+  - Created `scripts/src/startup-loop/event-validation.ts` — validateEventStream + parseEventStream for schema/field/structural checks
+  - Created `scripts/src/startup-loop/recovery.ts` — createResumeEvents (→stage_started), createAbortEvent (→run_aborted), recoveryDecision (deterministic Blocked→resume, Pending→restart, Done→no-action)
+  - No changes to derive-state.ts — resume already handled natively
+  - No hidden cleanup policy: abort records event but never deletes artifacts
 
 ### LPSP-05: Workspace canonicalization + stage-doc key policy
 

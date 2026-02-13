@@ -75,7 +75,7 @@ Primary references:
 | LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% (→84%) | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
 | LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 87% | M | Done | LPSP-01 | LPSP-06A |
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 92% | S | Done | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
-| LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
+| LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 85% | M | Done | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
 | LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-08 |
 | LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03B | LPSP-08 |
 | LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 82% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
@@ -437,6 +437,30 @@ Primary references:
   - **Validation type:** dry-run (fixture stage-result files).
   - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-merge/stages/`.
   - **Run/verify:** Create fixture S3 + S6B stage-result files, invoke merge skill, verify snapshot + manifest outputs.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 073d7ef737
+- **Execution cycle:**
+  - Validation cases executed: VC-06B-01, VC-06B-02, VC-06B-03
+  - Cycles: 1 red-green cycle (tests failed on missing module, then all 9 passed first try)
+  - Initial validation: FAIL expected (module not found)
+  - Final validation: PASS (9/9 tests, typecheck clean)
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 85%
+  - Delta reason: implementation was straightforward given LPSP-06A contract; determinism fix (wall-clock → max upstream timestamp) was anticipated during implementation
+- **Validation:**
+  - Ran: `npx jest --config scripts/jest.config.cjs --testPathPattern=baseline-merge --no-coverage` — 9/9 PASS
+  - Ran: `npx tsc --project scripts/tsconfig.json --noEmit` — clean
+  - Pre-commit hooks: PASS (after eslint --fix for import sorting)
+- **Documentation updated:** None required (skill contract already exists from LPSP-06A)
+- **Implementation notes:**
+  - Created `scripts/src/startup-loop/baseline-merge.ts` with `baselineMerge()` function
+  - Reuses `StageResult` type from `manifest-update.ts`
+  - Determinism: snapshot Generated timestamp uses max upstream stage-result timestamp, not wall-clock
+  - S4 writes only to `stages/S4/` (stage-result.json + baseline.snapshot.md) — manifest is control-plane owned
+  - Acceptance criterion 2 ("draft manifest with status: candidate") is handled by LPSP-03B `updateManifest`, not by S4 directly — consistent with LPSP-06A contract decision
 
 ### LPSP-06C: Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit)
 

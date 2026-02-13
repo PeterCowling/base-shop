@@ -41,7 +41,7 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 ## Constraints & Assumptions
 
 - Constraints:
-  - Must not break existing Brikette SEO (28 structured data components, 32 `seo.ts` importers)
+  - Must not break existing Brikette SEO (28 structured data components, 5 direct `seo.ts` importers + 27 `jsonld/` importers)
   - Must follow `@acme/*` package patterns (workspace:*, composite TS, dist/ output, ESM)
   - Extend existing `seoSettingsSchema` in `@acme/types` — don't replace
   - Static export builds (Brikette staging) must continue working — machine-readable files go in `public/`
@@ -107,7 +107,7 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 | SEO-07 | IMPLEMENT | Integrate @acme/seo into Cochlearfit | 86% | M | Complete (2026-02-13) | SEO-02, SEO-06 | - |
 | SEO-08 | IMPLEMENT | Integrate @acme/seo into Skylar | 85% | M | Complete (2026-02-13) | SEO-06 | - |
 | SEO-09 | IMPLEMENT | Integrate @acme/seo into Cover-Me-Pretty | 88% | M | Complete (2026-02-13) | SEO-01, SEO-06 | SEO-10 |
-| SEO-10 | IMPLEMENT | Begin Brikette extraction with re-exports | 78% ⚠️ (→82% after SEO-11) | L | Pending | SEO-06, SEO-09, SEO-11 | - |
+| SEO-10 | IMPLEMENT | Begin Brikette extraction with re-exports | 80% | L | Pending | SEO-06, SEO-09, SEO-11 | - |
 | SEO-11 | IMPLEMENT | Extract buildCanonicalUrl to @acme/seo/metadata | 92% | S | Complete (2026-02-13) | SEO-06 | SEO-10 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -130,7 +130,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 **Critical path:** SEO-03 → SEO-04 → SEO-06 → SEO-09 → SEO-11 → SEO-10 (6 waves)
 **Total tasks:** 11 (10 IMPLEMENT + 1 CHECKPOINT)
 **Auto-continue boundary:** Waves 1–2 build automatically; Wave 3 (CHECKPOINT) pauses for reassessment.
-**Current state:** Waves 1–5 complete. SEO-10 (Wave 6) is next eligible task — was 78%, now conditionally promotable to 82% with SEO-11 E2 evidence.
+**Current state:** Waves 1–5 complete. SEO-10 (Wave 6) promoted to 80% after SEO-11 E2 evidence — ready for build.
 
 ## Tasks
 
@@ -741,17 +741,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Affects:**
   - **Primary:** `apps/brikette/src/utils/seo.ts` (update — re-export generic functions from @acme/seo), `apps/brikette/src/utils/seo/jsonld/serialize.ts` (update — re-export from @acme/seo), `apps/brikette/src/app/_lib/metadata.ts` (update — use @acme/seo/metadata internally), `apps/brikette/package.json` (add @acme/seo dep), `apps/brikette/public/llms.txt` (optional: wire to generator)
-  - **[readonly]** 32 files importing from `apps/brikette/src/utils/seo.ts` (verify no breakage), 14 files importing from `@acme/ui/lib/seo` (verify re-export works), `apps/brikette/src/test/components/seo-jsonld-contract.test.tsx`, `apps/brikette/src/test/utils/seo.test.ts`
+  - **[readonly]** 5 files importing from `apps/brikette/src/utils/seo.ts` (verify no breakage), 27 files importing from `apps/brikette/src/utils/seo/jsonld/` (verify JSON-LD chain), 12 files importing from `@acme/ui/lib/seo` (verify re-export works), `apps/brikette/src/test/components/seo-jsonld-contract.test.tsx`, `apps/brikette/src/test/utils/seo.test.ts`
 - **Depends on:** SEO-06, SEO-09, SEO-11
 - **Blocks:** -
-- **Confidence:** 78% ⚠️ BELOW THRESHOLD (→ 82% conditional on SEO-11)
-  - Implementation: 78% — re-export pattern is well-defined; fewer importers than feared (5 direct `@/utils/seo`, not 32); BUT `buildCanonicalUrl` is NOT yet in `@acme/seo/metadata` — blocks re-export chain for 11 Brikette consumers
-  - Approach: 80% — incremental approach confirmed sound by E2 evidence from SEO-07/08/09 builds
-  - Impact: 75% — actual importer count lower than feared; main risk is `buildCanonicalUrl` extraction gap
-  - **Conditional confidence:** 78% → 82% conditional on SEO-11 (`buildCanonicalUrl` extraction)
-  - **Blocker:** `buildCanonicalUrl` from `@acme/ui/lib/seo` was NOT extracted in SEO-04 (TC-08 deferred). SEO-11 resolves this.
+- **Confidence:** 80%
+  - Implementation: 84% — re-export pattern proven; `buildCanonicalUrl` now in `@acme/seo/metadata` (SEO-11 E2); `seo.ts` has only 5 direct importers (not 32); all building blocks available
+  - Approach: 82% — incremental approach confirmed sound by E2 evidence from 4 app integrations (SEO-07/08/09/11)
+  - Impact: 80% — precise importer mapping: 5 `seo.ts`, 27 `jsonld/`, 25 `metadata.ts`, 12 `@acme/ui/lib/seo`; 67 active tests cover affected paths; SEO-11 verified re-export chain works
 - **Acceptance:**
-  - All 32 `seo.ts` importers compile without changes (re-export shim preserves API surface)
+  - All 5 `seo.ts` importers + 27 `jsonld/` importers compile without changes (re-export shim preserves API surface)
   - `buildAppMetadata()` output is identical before/after extraction
   - All 28 structured data components render valid JSON-LD (contract tests pass)
   - `buildLinks()` with Brikette slug translation still produces correct hreflang for all 10+ languages
@@ -759,7 +757,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `buildBreadcrumb()` with localized paths still works
   - Full Brikette test suite passes across all 3 CI shards
 - **Validation contract:**
-  - TC-01: All 32 seo.ts importers compile → `pnpm typecheck` exits 0 with no new errors in `apps/brikette/`
+  - TC-01: All seo.ts + jsonld/ importers compile → `pnpm typecheck` exits 0 with no new errors in `apps/brikette/`
   - TC-02: `buildAppMetadata()` with test fixture → identical Metadata output before/after
   - TC-03: All JSON-LD contract tests pass → `pnpm --filter brikette test -- --testPathPattern=seo-jsonld-contract`
   - TC-04: `buildLinks("en", "/rooms", origin)` → produces correct canonical + 10+ hreflang alternates
@@ -808,6 +806,24 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Precursor task created:**
   - SEO-11 (IMPLEMENT): Extract `buildCanonicalUrl` to `@acme/seo/metadata` — resolves Implementation blocker
 - **Dependencies updated:** Now depends on SEO-06, SEO-09, SEO-11
+
+#### Re-plan Update #2 (2026-02-13)
+- **Previous confidence:** 78% (conditional on SEO-11)
+- **Updated confidence:** 80%
+  - **Evidence class:** E2 (executable verification from SEO-11 build)
+  - Implementation: 78% → 84% — SEO-11 resolved the sole blocker: `buildCanonicalUrl` now lives in `@acme/seo/metadata`, re-export chain from `@acme/ui` verified by 4/4 backward-compat tests + `pnpm typecheck` (commit `15ef1af8a3`)
+  - Approach: 80% → 82% — 4 app integrations now complete (SEO-07/08/09/11); re-export pattern proven in production-equivalent conditions
+  - Impact: 75% → 80% — precise importer mapping revealed much narrower scope: `seo.ts` has 5 direct importers (not 32 as originally claimed); `jsonld/` has 27; `metadata.ts` has 25; `@acme/ui/lib/seo` has 12. 67 active Brikette SEO tests cover affected paths with 0 extinct tests. 6 `test.todo` stubs pre-written for extraction contract.
+- **Investigation performed:**
+  - Repo: `apps/brikette/src/utils/seo.ts` (8 exports: 4 generic, 3 Brikette-specific, 1 mixed; only 5 direct importers), `apps/brikette/src/utils/seo/jsonld/` (11 exports, 27 importers), `apps/brikette/src/app/_lib/metadata.ts` (3 exports, 25 importers — all Brikette-specific, stays local)
+  - Tests: 67 active tests across 12 Brikette SEO test files; 6 `test.todo` stubs in `seo-extraction-contract.test.ts`; 0 skipped or extinct tests
+  - E2 evidence: SEO-11 commit `15ef1af8a3` — `buildCanonicalUrl` extracted, `@acme/ui` re-export verified, 23/23 metadata tests + 4/4 backward-compat tests PASS
+- **Falsifiable checks verified:**
+  - "All 11 `buildCanonicalUrl` consumers resolve via `@acme/seo/metadata` re-export chain" → CONFIRMED (pnpm typecheck pass, commit `15ef1af8a3`)
+  - "Re-export pattern preserves API surface for seo.ts importers" → CONFIRMED (E2 from SEO-07/08/09/11)
+- **Changes to task:**
+  - Confidence: promoted from 78% to 80% (min(84, 82, 80) = 80)
+  - Affects [readonly]: corrected importer counts from E1 audit (5 seo.ts, 27 jsonld/, 12 @acme/ui/lib/seo)
 
 ---
 
@@ -925,3 +941,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-13: `ai-plugin.json` is opt-in per app — only Brikette (which has an API) gets it; prevents misleading manifests
 - 2026-02-13: CHECKPOINT after package extraction — validates API before committing to 4 app integrations
 - 2026-02-13: (Re-plan) Split `buildCanonicalUrl` extraction into SEO-11 precursor — resolves SEO-10 blocker (TC-08 deferred from SEO-04). Pattern matches `ensureTrailingSlash` extraction already completed.
+- 2026-02-13: (Re-plan #2) SEO-10 promoted from 78% to 80% — SEO-11 E2 evidence resolved Implementation blocker; importer audit corrected blast radius (5 seo.ts importers, not 32); 67 active tests with 0 gaps.

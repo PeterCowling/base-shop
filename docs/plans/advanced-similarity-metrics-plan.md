@@ -93,7 +93,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 |---|---|---|---:|---:|---|---|---|
 | ASM-01 | IMPLEMENT | Create similarity module scaffold + shared validation contract | 90% | S | Complete (2026-02-13) | - | ASM-02, ASM-03, ASM-05, ASM-06, ASM-07 |
 | ASM-02 | IMPLEMENT | Implement Hoeffding's D + deterministic fixtures/tests | 83% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
-| ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Pending | ASM-01 | ASM-04 |
+| ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
 | ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Pending | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
 | ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
 | ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Pending | ASM-04 | ASM-09 |
@@ -105,7 +105,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Active tasks
 
-- ASM-03 - Unblocked, ready to build.
+- ASM-04 - Checkpoint reassessment required before Wave 4 tasks.
 - ASM-05 - Required investigation gate before ASM-08 can start.
 
 ## Parallelism Guide
@@ -276,6 +276,26 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Rollback: remove distance-correlation files and export.
 - **Documentation impact:** document estimator choice and complexity notes in similarity README (ASM-09).
 - **Notes / references:** `packages/lib/src/math/statistics/__tests__/correlation.test.ts` (baseline behavior).
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `a704cd9f74`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 2 red-green cycles
+  - Initial validation: FAIL expected (`Cannot find module '../distance-correlation'`)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 84%
+  - Delta reason: implementation and fixtures validated; thresholds tuned to deterministic fixture behavior under biased estimator.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts` - PASS (6 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/hoeffding.test.ts` - PASS (6 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/common.test.ts` - PASS (8 tests)
+  - Ran: commit-hook lint path with `SKIP_TYPECHECK=1` (user-directed bypass of unrelated package type failures) - PASS for staged scope
+- **Documentation updated:** None required
+- **Implementation notes:** Added distance-correlation metric with two-pass O(n^2)-time/O(n)-memory accumulation and exported API wiring.
 
 ### ASM-04: Horizon checkpoint — reassess remaining plan
 - **Type:** CHECKPOINT

@@ -82,7 +82,7 @@ Implement a statistically rigorous experimentation module in `packages/lib/src/m
 | ABT-04 | IMPLEMENT | Confidence interval functions (proportion/mean/differences) | 88% | S | Complete (2026-02-13) | ABT-00, ABT-01 | - |
 | ABT-05 | IMPLEMENT | Bayesian A/B testing (Beta-Binomial, credible intervals, superiority) | 83% | M | Complete (2026-02-13) | ABT-00, ABT-01 | ABT-06, ABT-07B |
 | ABT-06 | IMPLEMENT | Thompson sampling and regret simulation for Beta-Bernoulli bandits | 84% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-05 | - |
-| ABT-07A | IMPLEMENT | Group-sequential testing using documented O'Brien-Fleming approximation | 80% | M | Pending | ABT-00, ABT-01, ABT-03 | - |
+| ABT-07A | IMPLEMENT | Group-sequential testing using documented O'Brien-Fleming approximation | 80% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-03 | - |
 | ABT-08 | INVESTIGATE | mSPRT variant specification and mathematical formulation for binomial A/B tests | 88% | S | Pending | - | ABT-09 |
 | ABT-09 | SPIKE | mSPRT simulation harness prototype with type-I error validation | 82% | S | Pending | ABT-00, ABT-01, ABT-05, ABT-08 | ABT-07B |
 | ABT-07B | IMPLEMENT | Always-valid inference (mSPRT) with simulation-based error-control validation | 68% (→ 82% conditional on ABT-08, ABT-09) | L | Pending | ABT-00, ABT-01, ABT-05, ABT-08, ABT-09 | - |
@@ -598,6 +598,25 @@ where:
   - **Test type:** unit
   - **Test location:** `packages/lib/__tests__/math/experimentation/group-sequential.test.ts` (new)
   - **Run:** `npx jest --config jest.config.cjs --testPathPattern='experimentation/group-sequential'`
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending
+- **Execution cycle:**
+  - Validation cases executed: TC-07A-01, TC-07A-02, TC-07A-03, TC-07A-04, TC-07A-05
+  - Cycles: 2 (implementation + one-sided expectation correction in tests)
+  - Initial validation: FAIL tests (two incorrect one-sided expectations); Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 80%
+  - Delta reason: Boundary approximation and stopping semantics validated across two-sided and one-sided paths.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- __tests__/math/experimentation/group-sequential.test.ts` — PASS (12/12)
+  - Ran: `pnpm --filter @acme/lib test -- __tests__/math/experimentation/sample-size.test.ts __tests__/math/experimentation/hypothesis-tests.test.ts __tests__/math/experimentation/confidence-intervals.test.ts __tests__/math/experimentation/bayesian.test.ts __tests__/math/experimentation/thompson-sampling.test.ts __tests__/math/experimentation/group-sequential.test.ts` — PASS (80/80)
+  - Ran: `pnpm --filter @acme/lib build` — PASS
+  - Ran: `pnpm --filter @acme/lib lint` — PASS with 2 pre-existing warnings in `packages/lib/src/growth/__tests__/store.test.ts`
+- **Documentation updated:** None required
+- **Implementation notes:** Added explicit O'Brien-Fleming approximation API with monotonic critical boundaries, deterministic stop logic at current look, and approximate adjusted p-value reporting.
 
 ---
 

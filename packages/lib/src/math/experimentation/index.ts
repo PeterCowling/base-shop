@@ -57,6 +57,11 @@ export {
   proportionDifferenceCI,
 } from "./confidence-intervals";
 export type {
+  GroupSequentialTestOptions,
+  GroupSequentialTestResult,
+} from "./group-sequential";
+export { groupSequentialTest } from "./group-sequential";
+export type {
   ChiSquareGoodnessOfFitOptions,
   ChiSquareGoodnessOfFitResult,
   WelchTTestOptions,

@@ -1,6 +1,7 @@
 /**
  * File: /Users/petercowling/reception/src/components/checkins/DateSel.tsx
  */
+/* eslint-disable ds/no-raw-tailwind-color -- calendar accent colors for DayPicker component */
 import {
   memo,
   type ReactElement,

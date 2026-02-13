@@ -76,7 +76,7 @@ Primary references:
 | LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 87% | M | Done | LPSP-01 | LPSP-06A |
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 92% | S | Done | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 85% | M | Done | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
-| LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-08 |
+| LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 84% | M | Done | LPSP-06A, LPSP-04A | LPSP-08 |
 | LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03B | LPSP-08 |
 | LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 82% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
 | LPSP-09 | CHECKPOINT | Validate end-to-end supervised dry run on one business path | 86% | M | Pending | LPSP-08, LPSP-04B | - |
@@ -483,6 +483,29 @@ Primary references:
   - **Validation type:** dry-run + API simulation (mock BOS Agent API responses).
   - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-bos-sync/`.
   - **Run/verify:** Create fixture prioritized items + mock API, invoke S5B, verify card creation + manifest commit; re-invoke and verify idempotency.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** a6c173378a
+- **Execution cycle:**
+  - Validation cases executed: VC-06C-01, VC-06C-02, VC-06C-03
+  - Cycles: 1 red-green cycle (all 5 tests passed first try after implementation)
+  - Initial validation: FAIL expected (module not found)
+  - Final validation: PASS (5/5 tests, typecheck clean)
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 84%
+  - Delta reason: injectable BosApiClient pattern cleanly separated API concerns; manifest commit is control-plane responsibility (S5B only signals via stage-result Done)
+- **Validation:**
+  - Ran: `npx jest --config scripts/jest.config.cjs --testPathPattern=bos-sync --no-coverage` — 5/5 PASS
+  - Ran: `npx tsc --project scripts/tsconfig.json --noEmit` — clean
+  - Pre-commit hooks: PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Created `scripts/src/startup-loop/bos-sync.ts` with `bosSync()` function
+  - Injectable `BosApiClient` interface for testability (upsertCard, upsertStageDoc)
+  - S5B writes only to `stages/S5B/` — manifest promotion (candidate→current) is triggered by control plane reading S5B's Done result
+  - Idempotent via API upsert semantics (entitySha-based dedup in real API)
 
 ### LPSP-07: Autonomy policy tiers and guarded actions
 

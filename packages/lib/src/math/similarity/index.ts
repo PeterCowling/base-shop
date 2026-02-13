@@ -21,3 +21,4 @@ export {
   jensenShannonDivergence,
   type JensenShannonOptions,
 } from "./jensen-shannon";
+export { type KendallOptions,kendallTau } from "./kendall";

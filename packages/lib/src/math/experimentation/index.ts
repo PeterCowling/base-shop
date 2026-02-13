@@ -43,4 +43,9 @@
  *
  * Note: APIs are introduced incrementally by ABT plan tasks.
  */
-export type AlternativeHypothesis = "two-sided" | "greater" | "less";
+export type {
+  AlternativeHypothesis,
+  SampleSizeForProportionsOptions,
+  SampleSizeForProportionsResult,
+} from "./sample-size";
+export { sampleSizeForProportions } from "./sample-size";

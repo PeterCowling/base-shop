@@ -16,3 +16,8 @@ export {
   type DistanceCorrelationOptions,
 } from "./distance-correlation";
 export { hoeffding, type HoeffdingOptions } from "./hoeffding";
+export {
+  jensenShannonDistance,
+  jensenShannonDivergence,
+  type JensenShannonOptions,
+} from "./jensen-shannon";

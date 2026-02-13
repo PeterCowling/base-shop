@@ -96,7 +96,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
 | ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Complete (2026-02-13) | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
 | ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
-| ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Pending | ASM-04 | ASM-09 |
+| ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Pending | ASM-04 | ASM-09 |
 | ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Pending | ASM-05 | ASM-09 |
 | ASM-09 | IMPLEMENT | Add integration suite, docs, and final export hardening | 83% | M | Pending | ASM-06, ASM-07, ASM-08 | - |
@@ -105,7 +105,6 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Active tasks
 
-- ASM-06 - Unblocked, ready to build.
 - ASM-07 - Unblocked, ready to build.
 - ASM-05 - Required investigation gate before ASM-08 can start.
 
@@ -384,6 +383,26 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Rollback: remove jensen-shannon files and export.
 - **Documentation impact:** add JSD examples and caveats in similarity README (ASM-09).
 - **Notes / references:** current invalid-input precedent in `packages/lib/src/math/statistics/correlation.ts`.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `cce490fb49`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Cycles: 1 red-green cycle
+  - Initial validation: FAIL expected (`Cannot find module '../jensen-shannon'`)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 88%
+  - Delta reason: validation confirmed contract behavior and edge-case handling.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/jensen-shannon.test.ts` - PASS (7 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts` - PASS (6 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/hoeffding.test.ts` - PASS (6 tests)
+  - Ran: commit-hook lint path with `SKIP_TYPECHECK=1` (user-directed bypass of unrelated package type failures) - PASS for staged scope
+- **Documentation updated:** None required
+- **Implementation notes:** Added Jensen-Shannon divergence and distance functions with count-vector auto-normalization and strict-mode validation behavior.
 
 ### ASM-07: Implement Kendall's Tau-b (O(n log n))
 - **Type:** IMPLEMENT

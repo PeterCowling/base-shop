@@ -7,6 +7,9 @@
  * Task: LC-00 from docs/plans/learning-compiler-plan.md
  */
 
+import type { Prior } from '../baseline-priors';
+import { extractPriors, replaceMachineBlock, serializePriors } from '../baseline-priors';
+
 // Fixture: Sample baseline doc with Priors (Machine) block
 const FIXTURE_BASELINE_DOC = `---
 Type: Startup-Baseline-Seed
@@ -63,76 +66,6 @@ Last updated: 2026-02-13 12:00 UTC
 
 More narrative content below the machine block.
 `;
-
-interface Prior {
-  id: string;
-  type: 'assumption' | 'constraint' | 'target' | 'preference' | 'risk';
-  statement: string;
-  confidence: number;
-  value?: number | null;
-  unit?: string | null;
-  operator?: 'eq' | 'lt' | 'lte' | 'gt' | 'gte' | null;
-  range?: { min: number; max: number } | null;
-  last_updated: string;
-  evidence: string[];
-}
-
-/**
- * Extract priors from the machine block in a baseline artifact.
- * Only reads the `## Priors (Machine)` section with JSON code fence.
- */
-function extractPriors(markdown: string): Prior[] {
-  // Find the Priors (Machine) section
-  const machineBlockRegex = /## Priors \(Machine\)[\s\S]*?```json\s*([\s\S]*?)```/;
-  const match = markdown.match(machineBlockRegex);
-
-  if (!match) {
-    throw new Error('No Priors (Machine) block found in markdown');
-  }
-
-  const jsonContent = match[1].trim();
-
-  if (!jsonContent) {
-    throw new Error('Priors (Machine) block is empty');
-  }
-
-  try {
-    const priors = JSON.parse(jsonContent);
-
-    if (!Array.isArray(priors)) {
-      throw new Error('Priors must be an array');
-    }
-
-    return priors;
-  } catch (e) {
-    throw new Error(`Failed to parse priors JSON: ${e}`);
-  }
-}
-
-/**
- * Serialize priors back into the machine block format.
- * Returns the full `## Priors (Machine)` section with metadata and JSON fence.
- */
-function serializePriors(priors: Prior[], timestamp?: string): string {
-  const updatedTimestamp = timestamp || new Date().toISOString().split('T')[0] + ' 12:00 UTC';
-  const jsonContent = JSON.stringify(priors, null, 2);
-
-  return `## Priors (Machine)
-
-Last updated: ${updatedTimestamp}
-
-\`\`\`json
-${jsonContent}
-\`\`\``;
-}
-
-/**
- * Replace the machine block in original markdown with new priors.
- */
-function replaceMachineBlock(originalMarkdown: string, newMachineBlock: string): string {
-  const machineBlockRegex = /## Priors \(Machine\)[\s\S]*?```json\s*[\s\S]*?```/;
-  return originalMarkdown.replace(machineBlockRegex, newMachineBlock);
-}
 
 describe('baseline-priors-extraction', () => {
   describe('extractPriors', () => {

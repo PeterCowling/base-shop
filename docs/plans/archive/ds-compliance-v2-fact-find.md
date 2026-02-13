@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-13
@@ -265,6 +265,6 @@ None — all questions resolved from repo evidence.
 
 ## Planning Readiness
 
-- Status: Ready-for-planning
+- Status: Archived
 - Blocking items: None
 - Recommended next step: Proceed to `/lp-plan`

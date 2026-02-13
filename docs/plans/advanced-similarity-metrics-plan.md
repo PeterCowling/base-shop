@@ -97,7 +97,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Complete (2026-02-13) | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
 | ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
 | ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Complete (2026-02-13) | ASM-04 | ASM-09 |
-| ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Pending | ASM-04 | ASM-09 |
+| ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Pending | ASM-05 | ASM-09 |
 | ASM-09 | IMPLEMENT | Add integration suite, docs, and final export hardening | 83% | M | Pending | ASM-06, ASM-07, ASM-08 | - |
 
@@ -105,8 +105,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Active tasks
 
-- ASM-07 - Unblocked, ready to build.
-- ASM-05 - Required investigation gate before ASM-08 can start.
+- ASM-05 - Investigation gate pending; required before ASM-08.
 
 ## Parallelism Guide
 
@@ -440,6 +439,24 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Rollback: remove kendall files and export.
 - **Documentation impact:** add tau-b tie semantics note in similarity README (ASM-09).
 - **Notes / references:** existing rank treatment in `packages/lib/src/math/statistics/correlation.ts`.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `1b1e132b54`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1 red-green cycle
+  - Initial validation: FAIL expected (`Cannot find module '../kendall'`)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 85%
+  - Delta reason: validation confirmed tie-correction behavior and contract-aligned error handling.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/kendall.test.ts` - PASS (6 tests)
+  - Ran: `pnpm --filter @acme/lib lint` - PASS (warnings only outside task scope)
+- **Documentation updated:** None required
+- **Implementation notes:** Added O(n log n) tau-b implementation using grouped-x processing with Fenwick tree rank accumulation and tie-corrected denominator handling.
 
 ### ASM-08: Implement NMI discrete + binned modes using ASM-05 decisions
 - **Type:** IMPLEMENT

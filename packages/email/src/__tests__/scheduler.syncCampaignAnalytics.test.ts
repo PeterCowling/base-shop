@@ -1,13 +1,26 @@
-// Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
-import { syncCampaignAnalytics } from "../scheduler";
-
-import { fetchCampaignAnalytics,setupTest, teardown } from "./testUtils";
-
+// Mocks must be hoisted before scheduler imports @acme/lib and analytics.server
 jest.mock("@acme/i18n/useTranslations.server", () => ({
+  __esModule: true,
   useTranslations: jest.fn(() =>
     Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
   ),
 }));
+jest.mock("@acme/lib", () => ({
+  validateShopName: jest.fn((s: string) => s),
+}));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
+  listEvents: jest.fn().mockResolvedValue([]),
+}));
+jest.mock("../analytics", () => ({
+  __esModule: true,
+  syncCampaignAnalytics: jest.fn().mockResolvedValue(undefined),
+}));
+
+// eslint-disable-next-line import/first
+import { syncCampaignAnalytics } from "../scheduler";
+
+// eslint-disable-next-line import/first
+import { fetchCampaignAnalytics, setupTest, teardown } from "./testUtils";
 
 describe("syncCampaignAnalytics", () => {
   beforeEach(() => {

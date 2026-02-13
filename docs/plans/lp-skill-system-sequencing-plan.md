@@ -74,7 +74,7 @@ Primary references:
 | LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 89% | M | Done | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
 | LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% (→84%) | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
 | LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 87% | M | Done | LPSP-01 | LPSP-06A |
-| LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 90% | S | Pending | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
+| LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 92% | S | Done | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
 | LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-08 |
 | LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03B | LPSP-08 |
@@ -396,6 +396,25 @@ Primary references:
   - **Validation type:** review checklist.
   - **Validation location/evidence:** `.claude/skills/lp-baseline-merge/SKILL.md` (artifact to produce).
   - **Run/verify:** Cross-reference skill contract against loop-spec.yaml S4 entry; verify all blocking scenarios enumerated.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 959b52c558
+- **Execution cycle:**
+  - Validation cases executed: VC-06A-01, VC-06A-02
+  - Cycles: 1 draft-review cycle
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-validation: 92%
+  - Delta reason: validation confirmed all 13 blocking scenarios enumerated; loop-spec alignment verified (stage ID, inputs, outputs, join_barrier flag all match)
+- **Validation:**
+  - VC-06A-01: 13 input scenarios documented (3 missing, 3 Failed, 3 Blocked, 3 malformed, 1 happy-path)
+  - VC-06A-02: S4 entry cross-referenced — `id: S4`, `skill: /lp-baseline-merge`, all `required_inputs` match, `join_barrier: true` implemented
+- **Documentation updated:** Created `.claude/skills/lp-baseline-merge/SKILL.md`
+- **Implementation notes:**
+  - Skill contract covers: operating mode, required inputs, blocking logic, snapshot composition algorithm, determinism guarantee, outputs, canonical paths, data-plane ownership, error handling
+  - Key decision: S4 does NOT write `baseline.manifest.json` — that remains control-plane (LPSP-03B) responsibility. S4 only writes snapshot + stage-result.json.
 
 ### LPSP-06B: Implement `/lp-baseline-merge` (S4 join barrier)
 

@@ -70,6 +70,25 @@ This skill reads candidate go-items from upstream outputs (lp-readiness, lp-offe
 
 Higher combined score = better ROI on time/effort.
 
+## Hypothesis Portfolio Bridge (Optional)
+
+When candidate records include explicit hypothesis linkage, `/lp-prioritize` can inject portfolio-normalized scoring:
+
+- Linkage forms:
+  - `hypothesis_id: <id>`
+  - tag `hypothesis:<id>`
+- Linked + portfolio metadata present:
+  - score via hypothesis portfolio bridge mapping (normalized to 1-5)
+- Linked + blocked hypothesis:
+  - surface explicit blocked reason
+  - apply neutral/zero injection (per bridge output) instead of silent fallback
+- Linked + metadata missing:
+  - do not fail run; keep baseline score and mark as `metadata_missing`
+- Unlinked:
+  - keep baseline formula unchanged
+
+Reference implementation: `scripts/src/hypothesis-portfolio/prioritize-bridge.ts`
+
 ## Workflow
 
 **Stage 1: Collect Candidates**

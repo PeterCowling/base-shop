@@ -68,7 +68,7 @@ Primary references:
 |---|---|---|---:|---|---|---|---|
 | LPSP-01 | DECISION | Finalize runtime contract decisions (stage set, baseline commit stage, concurrency policy, alias sunset gate) | 88% | S | Done | - | LPSP-02, LPSP-03A, LPSP-05 |
 | LPSP-02 | IMPLEMENT | Add runtime-authoritative loop spec and align wrapper/workflow/prompt index | 85% | M | Done | LPSP-01 | LPSP-06A, LPSP-08 |
-| LPSP-03A | IMPLEMENT | Define stage-result schema + data-plane ownership contract | 84% | S | Pending | LPSP-01 | LPSP-03B, LPSP-04A |
+| LPSP-03A | IMPLEMENT | Define stage-result schema + data-plane ownership contract | 88% | S | Done | LPSP-01 | LPSP-03B, LPSP-04A |
 | LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 82% | M | Pending | LPSP-03A | LPSP-07 |
 | LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 85% | M | Pending | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
 | LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
@@ -82,8 +82,11 @@ Primary references:
 
 ## Active Tasks
 
-- `LPSP-01` (DECISION) — **Done**. Decisions recorded in Decision Log below.
-- `LPSP-02`, `LPSP-03A`, `LPSP-05` are now unblocked (Wave 2).
+- `LPSP-01` (DECISION) — **Done**.
+- `LPSP-02` (IMPLEMENT) — **Done**.
+- `LPSP-03A` (IMPLEMENT) — **Done**.
+- `LPSP-05` (IMPLEMENT) — Unblocked, ready to build (Wave 2).
+- `LPSP-03B`, `LPSP-04A`, `LPSP-06A` — Newly unblocked (Wave 3).
 
 ## Parallelism Guide
 
@@ -147,24 +150,37 @@ Primary references:
   - Delta reason: validation confirmed assumptions; no surprises
 - **Implementation notes:** Created loop-spec.yaml as canonical source, aligned wrapper (SKILL.md), workflow (stage table, BOS sync matrix, state snapshot, mermaid diagram), and prompt index. Fixed one legacy alias (`idea-readiness`).
 
-### LPSP-03A: Stage-result schema + data-plane ownership contract
+### LPSP-03A: Stage-result schema + data-plane ownership contract — DONE
 
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
 - **Deliverable:** business-artifact (schema definition + examples).
 - **Execution-Skill:** /lp-build
-- **Confidence:** 84%
+- **Confidence:** 84% → 88% post-validation
 - **Replan note:** Split from original LPSP-03 (76%) to separate schema design from control-plane implementation.
 - **Scope:**
   - Define stage-result file format that parallel workers emit after completing stage work.
   - Document directory ownership contract: `runs/<run_id>/stages/<stage>/` is stage-owned, `baseline.manifest.json` is control-plane-owned.
-- **Acceptance:**
-  - Stage-result schema defined: `{ schema_version, run_id, stage, status: "Done"|"Failed"|"Blocked", produced_keys[], artifacts{}, error?, blocking_reason? }`.
-  - Schema examples for 3+ stages (S2B, S3, S6B).
-  - Clear contract: workers write only to stage-owned directories + emit `stage-result.json`.
-  - No worker touches manifest or shared state files.
-- **Validation contract (VC-03A):**
-  - Hand-crafted stage-result files from simulated parallel workers can be consumed by control plane.
-  - Missing/malformed stage-result files are detectable and reportable.
+- **Acceptance:** Met.
+  - Stage-result schema defined with all required fields + `loop_spec_version` and `timestamp`.
+  - 5 schema examples (S2B Done, S3 Done, S6B Done with optionals, S4 Blocked, S3 Failed).
+  - Directory ownership contract with explicit rules.
+  - Control-plane consumption contract with malformed detection.
+- **Validation contract (VC-03A):** PASS.
+  - Consumption contract defines discovery, validation, rejection, and progression steps.
+  - Malformed detection rules enumerate all failure cases.
+
+#### Build Completion (2026-02-13)
+- **Commits:** 48d14e4133
+- **Execution cycle:**
+  - Validation cases executed: VC-03A (6 sub-checks)
+  - Cycles: 1 (single pass)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 88%
+  - Delta reason: validation confirmed; schema aligned cleanly with briefing doc reference examples
+- **Implementation notes:** Created `docs/business-os/startup-loop/stage-result-schema.md` with v1 schema, 5 examples, directory ownership contract, and control-plane consumption contract.
 
 ### LPSP-03B: Single-writer manifest update mechanism
 

@@ -90,7 +90,7 @@ const RoomsGrid: FC = () => {
           <input
             id="start-date"
             type="date"
-            className="border rounded px-2 py-1 text-gray-900 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+            className="border rounded px-2 py-1 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
             value={startDate}
             onChange={handleStartChange}
           />
@@ -100,13 +100,13 @@ const RoomsGrid: FC = () => {
           <input
             id="end-date"
             type="date"
-            className="border rounded px-2 py-1 text-gray-900 dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
+            className="border rounded px-2 py-1 text-foreground dark:bg-darkSurface dark:text-darkAccentGreen dark:border-darkSurface"
             value={endDate}
             onChange={handleEndChange}
           />
         </div>
         {loading && (
-          <p className="p-4 italic text-gray-600 dark:text-darkAccentGreen">Loading rooms...</p>
+          <p className="p-4 italic text-muted-foreground dark:text-darkAccentGreen">Loading rooms...</p>
         )}
 
         {!loading && error != null && (

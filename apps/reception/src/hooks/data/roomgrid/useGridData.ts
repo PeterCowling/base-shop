@@ -169,6 +169,7 @@ const getActivityStatus = (
 };
 
 const getStatusColor = (status: MyLocalStatus): string => {
+  // eslint-disable-next-line ds/no-raw-color -- fallback for chart/grid color config
   return statusColors[status] ?? "#1E90FF";
 };
 

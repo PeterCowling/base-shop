@@ -3,16 +3,17 @@ import type { MyLocalStatus } from "../../../types/MyLocalStatus";
 /**
  * Centralized color map for booking and activity statuses.
  * All components should reference this constant to stay consistent.
+ * Uses CSS custom properties from reception semantic tokens.
  */
 export const statusColors: Record<MyLocalStatus, string> = {
-  free: "gray-200",
-  disabled: "#ed6c02",
-  awaiting: "info.light",
-  confirmed: "info.light",
-  "1": "#42a5f5",
-  "8": "#1976d2",
-  "23": "#ff9800",
-  "12": "#4caf50",
-  "14": "#DCDCDC",
-  "16": "#7a807b",
+  free: "transparent",
+  disabled: "var(--reception-signal-warning-fg)",
+  awaiting: "var(--reception-signal-info-bg)",
+  confirmed: "var(--reception-signal-info-fg)",
+  "1": "var(--reception-signal-info-bg)",
+  "8": "var(--reception-signal-info-fg)",
+  "23": "var(--reception-signal-warning-fg)",
+  "12": "var(--reception-signal-ready-fg)",
+  "14": "var(--color-border)",
+  "16": "var(--color-muted-foreground)",
 };

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-tailwind-color -- test fixtures */
 import "@testing-library/jest-dom";
 
 import React from "react";

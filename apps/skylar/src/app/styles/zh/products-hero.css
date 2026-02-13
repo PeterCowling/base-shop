@@ -2,14 +2,14 @@
   margin: clamp(2rem, 5vw, 4rem) auto clamp(2.5rem, 5.5vw, 4.5rem);
   width: min(100%, 1180px);
   border-radius: 48px;
-  border: 1px solid rgba(247, 213, 114, 0.35);
-  background: radial-gradient(circle at top left, #1c1710, #050403);
-  color: #f8e7c1;
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.35);
+  background: radial-gradient(circle at top left, hsl(var(--zh-dark)), hsl(0 0% 2%));
+  color: hsl(var(--zh-gold));
   padding: clamp(2.25rem, 5vw, 4.5rem);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: clamp(1.75rem, 4vw, 3.25rem);
-  box-shadow: 0 55px 65px -60px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 55px 65px -60px hsl(0 0% 0% / 0.8);
 }
 
 .zh-products-hero__copy {
@@ -23,7 +23,7 @@
   font-size: 0.8rem;
   letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: rgba(247, 213, 114, 0.85);
+  color: hsl(var(--zh-gold-bright) / 0.85);
 }
 
 .zh-products-hero__title {
@@ -39,7 +39,7 @@
   font-size: 1rem;
   line-height: 1.9;
   letter-spacing: 0.1em;
-  color: rgba(248, 231, 193, 0.9);
+  color: hsl(41 85% 86% / 0.9);
 }
 
 .zh-products-hero__media {
@@ -51,8 +51,8 @@
   width: min(100%, 460px);
   height: auto;
   border-radius: 36px;
-  border: 1px solid rgba(247, 213, 114, 0.35);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.35);
+  background: hsl(0 0% 100% / 0.08);
   padding: 1rem;
 }
 

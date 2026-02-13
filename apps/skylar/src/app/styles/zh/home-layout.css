@@ -7,13 +7,13 @@
 .zh-card {
   border-radius: 36px;
   padding: clamp(1.75rem, 3vw, 3rem);
-  background: radial-gradient(circle at top left, #110f0c, #050505);
-  border: 1px solid rgba(246, 213, 142, 0.35);
-  color: #f6dfb4;
+  background: radial-gradient(circle at top left, hsl(0 0% 5%), hsl(0 0% 2%));
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.35);
+  color: hsl(var(--zh-gold));
   display: flex;
   flex-direction: column;
   gap: clamp(0.9rem, 2vw, 1.5rem);
-  box-shadow: 0 35px 45px -40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 35px 45px -40px hsl(0 0% 0% / 0.8);
 }
 
 .zh-people-grid {

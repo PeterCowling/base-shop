@@ -30,7 +30,7 @@
   text-transform: uppercase;
   letter-spacing: 0.4em;
   font-size: 0.8rem;
-  color: rgba(228, 61, 18, 0.8);
+  color: hsl(var(--skylar-en-accent) / 0.8);
 }
 
 .loket-split__text h2 {
@@ -46,14 +46,14 @@
   font-size: 1rem;
   line-height: 1.9;
   letter-spacing: 0.05em;
-  color: rgba(22, 19, 16, 0.85);
+  color: hsl(30 16% 7% / 0.85);
 }
 
 .loket-split__media {
   border-radius: 32px;
   overflow: hidden;
-  border: 1px solid rgba(228, 61, 18, 0.2);
-  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
+  background: hsl(0 0% 100% / 0.6);
 }
 
 .loket-split__media--stacked {
@@ -80,13 +80,13 @@
 
 .loket-split__image--stacked {
   border-radius: 24px;
-  border: 1px solid rgba(228, 61, 18, 0.1);
-  box-shadow: 0 30px 60px -45px rgba(24, 8, 0, 0.45);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.1);
+  box-shadow: 0 30px 60px -45px hsl(40 100% 5% / 0.45);
 }
 
 .loket-split__image--paired {
   border-radius: 24px;
-  border: 1px solid rgba(228, 61, 18, 0.1);
-  box-shadow: 0 30px 60px -45px rgba(24, 8, 0, 0.45);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.1);
+  box-shadow: 0 30px 60px -45px hsl(40 100% 5% / 0.45);
   flex: 1 1 260px;
 }

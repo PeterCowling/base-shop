@@ -1,10 +1,10 @@
 .zh-panel {
   border-radius: 40px;
   padding: 2.5rem;
-  background: radial-gradient(circle at top left, #1d1b18, #050505);
-  border: 1px solid rgba(213, 177, 105, 0.35);
-  color: #f5dfb4;
-  box-shadow: 0 45px 65px -55px rgba(0, 0, 0, 0.85);
+  background: radial-gradient(circle at top left, hsl(var(--zh-dark)), hsl(0 0% 2%));
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.35);
+  color: hsl(var(--zh-gold));
+  box-shadow: 0 45px 65px -55px hsl(0 0% 0% / 0.85);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
@@ -37,25 +37,25 @@
   letter-spacing: 0.55em;
   text-transform: uppercase;
   font-size: 1.25rem;
-  color: #f8d572;
+  color: hsl(var(--zh-gold-bright));
 }
 
 .zh-panel__company,
 .zh-panel__tagline {
   letter-spacing: 0.22em;
-  color: rgba(247, 222, 170, 0.85);
+  color: hsl(var(--zh-gold) / 0.85);
   margin-top: 0.2rem;
 }
 
 .zh-panel__since {
   letter-spacing: 0.3em;
-  color: rgba(247, 213, 142, 0.8);
+  color: hsl(var(--zh-gold-bright) / 0.8);
   font-size: 0.75rem;
 }
 
 .zh-panel__support {
   letter-spacing: 0.18em;
-  color: rgba(247, 213, 142, 0.8);
+  color: hsl(var(--zh-gold-bright) / 0.8);
   margin-top: -0.2rem;
 }
 
@@ -69,7 +69,7 @@
 .zh-panel__link {
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(248, 213, 114, 0.4);
+  border-bottom: 1px solid hsl(var(--zh-gold-bright) / 0.4);
   padding-bottom: 0.3rem;
 }
 
@@ -81,7 +81,7 @@
 
 .zh-panel__name-cn {
   font-size: 1.5rem;
-  color: #ffd060;
+  color: hsl(45 100% 69%);
 }
 
 .zh-panel__name-en {
@@ -92,7 +92,7 @@
 
 .zh-panel__role {
   letter-spacing: 0.15em;
-  color: rgba(247, 222, 170, 0.85);
+  color: hsl(var(--zh-gold) / 0.85);
 }
 
 .zh-panel__services-card {
@@ -116,14 +116,14 @@
   letter-spacing: 0.3em;
   text-transform: uppercase;
   font-size: 0.85rem;
-  color: rgba(246, 213, 142, 0.85);
+  color: hsl(var(--zh-gold-bright) / 0.85);
 }
 
 .zh-panel__description {
   margin: 0;
   font-size: 0.95rem;
   letter-spacing: 0.08em;
-  color: rgba(244, 241, 231, 0.9);
+  color: hsl(46 43% 93% / 0.9);
 }
 
 .zh-panel__contacts p {

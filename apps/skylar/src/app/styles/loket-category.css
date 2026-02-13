@@ -13,13 +13,13 @@
 
 .loket-category-card {
   border-radius: 28px;
-  border: 1px solid rgba(228, 61, 18, 0.15);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.15);
   padding: 1.75rem;
-  background: #fffdf9;
+  background: hsl(40 100% 98%);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  box-shadow: 0 20px 40px rgba(13, 0, 0, 0.05);
+  box-shadow: 0 20px 40px hsl(0 100% 3% / 0.05);
 }
 
 .loket-category-card h3 {
@@ -41,7 +41,7 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 14px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
   display: inline-flex;
   align-items: center;
   justify-content: center;

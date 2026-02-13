@@ -2,10 +2,10 @@
   display: grid;
   gap: 3rem;
   border-radius: 36px;
-  border: 1px solid rgba(228, 61, 18, 0.18);
-  background: linear-gradient(135deg, #fffaf4 0%, #fff5ea 45%, #ffffff 100%);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.18);
+  background: linear-gradient(135deg, hsl(39 100% 98%), hsl(35 100% 96%) 45%, hsl(0 0% 100%) 100%);
   padding: 3rem;
-  box-shadow: inset 0 1px 0 rgba(228, 61, 18, 0.08);
+  box-shadow: inset 0 1px 0 hsl(var(--skylar-en-accent) / 0.08);
 }
 
 .products-en-hero__copy {
@@ -30,18 +30,18 @@
   letter-spacing: 0.3em;
   line-height: 1.75;
   text-transform: uppercase;
-  color: rgba(228, 61, 18, 0.7);
+  color: hsl(var(--skylar-en-accent) / 0.7);
 }
 
 .products-en-hero__visual {
   border-radius: 28px;
-  border: 1px dashed rgba(228, 61, 18, 0.4);
-  background: rgba(255, 255, 255, 0.65);
+  border: 1px dashed hsl(var(--skylar-en-accent) / 0.4);
+  background: hsl(0 0% 100% / 0.65);
   padding: 2rem;
   font-size: 0.82rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(19, 19, 19, 0.6);
+  color: hsl(0 0% 7% / 0.6);
   display: flex;
   align-items: center;
 }
@@ -57,13 +57,13 @@
 
 .products-en-hero__pills li {
   border-radius: 999px;
-  border: 1px solid rgba(12, 12, 12, 0.2);
+  border: 1px solid hsl(0 0% 5% / 0.2);
   padding: 0.65rem 1.2rem;
   font-size: 0.68rem;
   letter-spacing: 0.32em;
   line-height: 1.8;
   text-transform: uppercase;
-  color: rgba(19, 18, 18, 0.7);
+  color: hsl(0 0% 7% / 0.7);
 }
 
 .products-hero {
@@ -85,12 +85,12 @@
 
 .products-hero__secondary-image {
   border-radius: 24px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
-  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
+  background: hsl(0 0% 100% / 0.8);
   padding: 0.75rem;
   width: min(50vw, 520px);
   height: auto;
-  box-shadow: 0 30px 45px -40px rgba(20, 6, 0, 0.45);
+  box-shadow: 0 30px 45px -40px hsl(0 0% 0% / 0.45);
 }
 
 .products-en-posters {
@@ -100,7 +100,7 @@
   width: min(100%, 1180px);
   margin: clamp(3rem, 6vw, 5.5rem) auto clamp(2.5rem, 6vw, 5rem);
   padding-top: clamp(2rem, 4vw, 3.5rem);
-  border-top: 1px solid rgba(228, 61, 18, 0.15);
+  border-top: 1px solid hsl(var(--skylar-en-accent) / 0.15);
   align-items: stretch;
   text-align: center;
 }
@@ -114,15 +114,15 @@
 .products-en-poster,
 .realestate-poster {
   border-radius: 40px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
-  background: linear-gradient(145deg, rgba(255, 252, 250, 0.95), #ffffff);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
+  background: linear-gradient(145deg, hsl(35 100% 99% / 0.95), hsl(0 0% 100%));
   padding: clamp(1.6rem, 3vw, 3rem);
   display: flex;
   flex-direction: column;
   gap: clamp(1rem, 2vw, 2rem);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 35px 45px -40px rgba(12, 5, 0, 0.35);
+  box-shadow: 0 35px 45px -40px hsl(0 0% 0% / 0.35);
 }
 
 .products-en-poster {
@@ -135,7 +135,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(140deg, rgba(228, 61, 18, 0.08), transparent 60%);
+  background: linear-gradient(140deg, hsl(var(--skylar-en-accent) / 0.08), transparent 60%);
   pointer-events: none;
 }
 
@@ -155,7 +155,7 @@
   font-size: clamp(1.2rem, 2vw, 1.8rem);
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(228, 61, 18, 0.9);
+  color: hsl(var(--skylar-en-accent) / 0.9);
 }
 
 .products-en-poster__content {
@@ -219,10 +219,10 @@
 
 .products-en-section {
   border-radius: 30px;
-  border: 1px solid rgba(228, 61, 18, 0.15);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.15);
   background: var(--skylar-en-panel);
   padding: 2.5rem;
-  box-shadow: 0 20px 45px rgba(15, 9, 0, 0.05);
+  box-shadow: 0 20px 45px hsl(0 0% 0% / 0.05);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -230,7 +230,7 @@
 
 .products-en-section.is-contrast {
   background: var(--skylar-en-panel);
-  border-color: rgba(228, 61, 18, 0.15);
+  border-color: hsl(var(--skylar-en-accent) / 0.15);
 }
 
 .products-en-section__header {
@@ -245,7 +245,7 @@
   font-size: 0.85rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: rgba(228, 61, 18, 0.85);
+  color: hsl(var(--skylar-en-accent) / 0.85);
 }
 
 .products-en-section__heading {
@@ -262,7 +262,7 @@
   font-size: 1rem;
   letter-spacing: 0.06em;
   line-height: 1.85;
-  color: rgba(34, 24, 17, 0.8);
+  color: hsl(21 33% 13% / 0.8);
 }
 
 .products-en-section__list {
@@ -281,7 +281,7 @@
   letter-spacing: 0.18em;
   line-height: 1.8;
   text-transform: uppercase;
-  color: rgba(17, 17, 17, 0.8);
+  color: hsl(0 0% 7% / 0.8);
 }
 
 .products-en-section__categories {
@@ -303,7 +303,7 @@
   font-size: 0.95rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: rgba(17, 17, 17, 0.85);
+  color: hsl(0 0% 7% / 0.85);
 }
 
 .products-en-section__list-copy {
@@ -311,7 +311,7 @@
   font-size: 0.9rem;
   line-height: 1.8;
   letter-spacing: 0.06em;
-  color: rgba(17, 17, 17, 0.75);
+  color: hsl(0 0% 7% / 0.75);
 }
 
 .products-en-section__bullet {
@@ -326,13 +326,13 @@
   width: 3.25rem;
   height: 3.25rem;
   border-radius: 16px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--skylar-en-accent);
   font-size: 1.1rem;
-  background: rgba(228, 61, 18, 0.05);
+  background: hsl(var(--skylar-en-accent) / 0.05);
   margin-bottom: 0.25rem;
 }
 
@@ -372,7 +372,7 @@
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: rgba(17, 17, 17, 0.75);
+  color: hsl(0 0% 7% / 0.75);
 }
 
 .products-en-section__image-note {
@@ -380,7 +380,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: rgba(17, 17, 17, 0.5);
+  color: hsl(0 0% 7% / 0.5);
 }
 
 .products-en-catalog {
@@ -410,14 +410,14 @@
 
 .products-en-category-card {
   border-radius: 26px;
-  border: 1px solid rgba(228, 61, 18, 0.2);
+  border: 1px solid hsl(var(--skylar-en-accent) / 0.2);
   background: var(--skylar-en-panel);
   padding: clamp(1.5rem, 3vw, 2.35rem);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   min-height: 100%;
-  box-shadow: 0 30px 45px -40px rgba(15, 9, 0, 0.15);
+  box-shadow: 0 30px 45px -40px hsl(0 0% 0% / 0.15);
   text-align: left;
   align-items: flex-start;
 }

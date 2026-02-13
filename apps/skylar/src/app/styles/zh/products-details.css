@@ -7,9 +7,9 @@
 
 .zh-products-detail {
   border-radius: 30px;
-  border: 1px solid rgba(247, 213, 114, 0.3);
-  background: #080706;
-  color: rgba(248, 231, 193, 0.9);
+  border: 1px solid hsl(var(--zh-gold-bright) / 0.3);
+  background: hsl(0 0% 3%);
+  color: hsl(41 85% 86% / 0.9);
   padding: clamp(1.5rem, 3vw, 2.5rem);
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
   font-size: 0.8rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
-  color: rgba(247, 213, 114, 0.85);
+  color: hsl(var(--zh-gold-bright) / 0.85);
 }
 
 .zh-products-detail h3 {
@@ -29,7 +29,7 @@
   letter-spacing: 0.25em;
   text-transform: uppercase;
   font-size: 1rem;
-  color: rgba(247, 213, 114, 0.9);
+  color: hsl(var(--zh-gold-bright) / 0.9);
 }
 
 .zh-products-detail p {

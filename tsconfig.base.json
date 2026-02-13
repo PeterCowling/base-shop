@@ -148,6 +148,14 @@
         "packages/date-utils/src/*",
         "packages/date-utils/dist/*"
       ],
+      "@acme/seo": [
+        "packages/seo/src/index.ts",
+        "packages/seo/dist/index.d.ts"
+      ],
+      "@acme/seo/*": [
+        "packages/seo/src/*",
+        "packages/seo/dist/*"
+      ],
       "@acme/config": [
         "packages/config/src/index.ts",
         "packages/config/dist/index.d.ts"

@@ -112,6 +112,8 @@ const moduleMapper = {
   "^@acme/lib/(.*)$": " /packages/lib/src/$1",
   "^@acme/sanity$": " /packages/sanity/src/index.ts",
   "^@acme/sanity/(.*)$": " /packages/sanity/src/$1",
+  "^@acme/seo$": " /packages/seo/src/index.ts",
+  "^@acme/seo/(.*)$": " /packages/seo/src/$1",
   "^@acme/types$": " /packages/types/src/index.ts",
   "^@acme/types/(.*)$": " /packages/types/src/$1",
   "^@acme/platform-machine/src/(.*)$": " /packages/platform-machine/src/$1",

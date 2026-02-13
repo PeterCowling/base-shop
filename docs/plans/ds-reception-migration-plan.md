@@ -4,14 +4,14 @@ Status: Active
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-12
-Last-updated: 2026-02-12
+Last-updated: 2026-02-13
 Feature-Slug: ds-reception-migration
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: /lp-design-system
-Overall-confidence: 75%
+Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -44,7 +44,7 @@ Migrate `apps/reception/` — the property management system used daily for host
 - Only `DarkModeToggle.tsx` and `dashboard/**` have DS rules at `warn`
 - No automated visual regression tests; no Storybook
 - Must not disrupt daily operations (check-ins, bookings, financial reporting)
-- Room grid uses `@daminort/reservation-grid` with a custom theme object (dot-notation keys)
+- Room grid uses a LOCAL custom ReservationGrid (replaced `@daminort/reservation-grid`); theme values applied as inline `backgroundColor` style — CSS `var()` compatible
 
 ## Fact-Find Reference
 
@@ -81,11 +81,11 @@ Start with small directories to establish patterns, then tackle the large ones. 
 | REC-01 | INVESTIGATE | Enable warn + capture violation inventory | 95% | S | Pending | - | REC-02..08 |
 | REC-02 | IMPLEMENT | Migrate small directories (~20 files) | 85% | M | Pending | REC-01 | REC-09 |
 | REC-03 | IMPLEMENT | Migrate common/ shared components (16 files) | 82% | M | Pending | REC-01 | REC-09 |
-| REC-04 | IMPLEMENT | Migrate room grid subsystem (27 files + theme + statusColors) | 72% | L | Pending | REC-01 | REC-09 |
-| REC-05 | IMPLEMENT | Migrate checkins/ (62 files) | 78% | L | Pending | REC-03 | REC-09 |
-| REC-06 | IMPLEMENT | Migrate till/ (49 files) | 78% | L | Pending | REC-03 | REC-09 |
-| REC-07 | IMPLEMENT | Migrate bar/ (38 files) | 78% | L | Pending | REC-03 | REC-09 |
-| REC-08 | IMPLEMENT | Migrate remaining directories (~110 files) | 75% | L | Pending | REC-03 | REC-09 |
+| REC-04 | IMPLEMENT | Migrate room grid subsystem (27 files + theme + statusColors) | 82% | L | Pending | REC-01 | REC-09 |
+| REC-05 | IMPLEMENT | Migrate checkins/ (62 files) | 80% | L | Pending | REC-03 | REC-09 |
+| REC-06 | IMPLEMENT | Migrate till/ (49 files) | 80% | L | Pending | REC-03 | REC-09 |
+| REC-07 | IMPLEMENT | Migrate bar/ (38 files) | 80% | L | Pending | REC-03 | REC-09 |
+| REC-08 | IMPLEMENT | Migrate remaining directories (~110 files) | 80% | L | Pending | REC-03 | REC-09 |
 | CHECKPOINT | CHECKPOINT | Reassess after core migration | 95% | - | Pending | REC-04 | REC-05..08 |
 | REC-09 | IMPLEMENT | ESLint config: replace offAllDsRules with error | 95% | S | Pending | REC-02..08 | - |
 
@@ -199,29 +199,53 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - **Primary:** `apps/reception/src/components/roomgrid/constants/statusColors.ts`
   - **Primary:** `apps/reception/src/components/roomgrid/constants/theme.ts`
   - **Primary:** `apps/reception/src/components/roomgrid/constants/__theme.ts` (duplicate — delete)
+  - **Primary:** `apps/reception/src/components/roomgrid/rvg.css` (dark mode uses `theme()` — update to CSS vars)
 - **Depends on:** REC-01
 - **Blocks:** CHECKPOINT, REC-09
-- **Confidence:** 72%
-  - Implementation: 75% — `statusColors.ts` has mixed notation (hex + Tailwind + pseudo-MUI); `theme.ts` passes hex to `@daminort/reservation-grid` which may not support CSS variables
-  - Approach: 75% — hospitality tokens exist and map well semantically; but `@daminort/reservation-grid`'s theme interface may require hex strings
-  - Impact: 70% — room grid is the primary operational view; staff use colour cues for booking states hourly
+- **Confidence:** 82%
+  - Implementation: 84% — ReservationGrid is LOCAL custom code (not @daminort library); `GridCell.tsx:130` applies colors via inline `style={{ backgroundColor }}` — CSS `var()` works. statusColors.ts has 10 entries (7 hex, 1 Tailwind, 2 MUI-dot) to normalize. Only 10 raw palette violations in 4 TSX files.
+  - Approach: 85% — hospitality tokens map semantically; no external library constraint; rvg.css already uses --rvg-* CSS custom properties
+  - Impact: 82% — 0 tests in roomgrid/ (no breakage risk); blast radius bounded to 4 files with raw palette + 2 constant files + rvg.css dark mode; git revert as rollback
 - **Acceptance:**
-  - `statusColors.ts`: all values use semantic tokens or CSS custom properties referencing hospitality tokens
-  - `theme.ts`: hex values replaced with CSS custom property references where the library supports it; documented exemptions where it doesn't
+  - `statusColors.ts`: all values use CSS custom property references (`var(--reception-*)` or `var(--hospitality-*)`)
+  - `theme.ts`: hex values replaced with CSS custom property references (confirmed compatible — theme values flow to inline `backgroundColor` style)
+  - `rvg.css`: dark mode values updated from `theme('colors.*')` to `var(--reception-*)` / `var(--hospitality-*)`
   - `__theme.ts`: deleted (duplicate file)
-  - 27 TSX files: all raw palette classes → semantic tokens
+  - 4 TSX files: raw palette classes → semantic tokens (RoomGrid.tsx, RoomsGrid.tsx, BookingDetailsModal.tsx, _BookingTooltip.tsx)
   - Room grid renders correctly with token-based colours
 - **Validation contract:**
   - TC-01: Status colours are visually distinguishable in the room grid
-  - TC-02: `grep -c '#[0-9a-fA-F]' statusColors.ts theme.ts` → 0 (or documented exemptions)
+  - TC-02: `grep -c '#[0-9a-fA-F]' statusColors.ts theme.ts` → 0
   - TC-03: Zero violations in roomgrid/ from lint
+  - TC-04: `rvg.css` dark mode uses CSS custom properties, not `theme()` function
   - Validation type: lint + visual check of room grid with various booking states
   - Run/verify: `pnpm lint -- --filter reception` + manual room grid check
 - **Execution plan:** Red → Green → Refactor
-- **What would make this ≥90%:** Confirming `@daminort/reservation-grid` accepts CSS variables for theme colours; verifying room grid renders correctly with all booking states
+- **What would make this ≥90%:** Verifying room grid renders correctly with all booking states after migration; having automated visual regression tests
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
-- **Notes:** The `@daminort/reservation-grid` library may require hex strings in its theme object. If so, create a runtime bridge that reads CSS variable computed values — or document as a ticketed exemption.
+- **Notes:** ~~The `@daminort/reservation-grid` library may require hex strings~~ RESOLVED: ReservationGrid is a local custom component (`ReservationGrid.tsx:1-8` — "Custom ReservationGrid component to replace @daminort/reservation-grid"). Theme values flow through `GridCell.tsx` as inline `backgroundColor` style — any string including CSS `var()` works.
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 72%
+- **Updated confidence:** 82%
+  - **Evidence class:** E1 (static code audit — definitive closure of primary blocking unknown)
+  - Implementation: 75% → 84% — ReservationGrid confirmed LOCAL (not external library). `GridCell.tsx:97-100,124-130` applies statusColors as inline `backgroundColor` style. Only 10 raw palette violations in 4 TSX files. statusColors.ts has 10 entries to normalize (clear path).
+  - Approach: 75% → 85% — No library constraint eliminates the main approach concern. Hospitality tokens already bridged in globals.css. rvg.css already uses --rvg-* CSS custom properties.
+  - Impact: 70% → 82% — 0 tests in roomgrid/ (grep confirmed). Blast radius bounded: 4 TSX files, 2 constant files, 1 CSS file. git revert rollback.
+- **Investigation performed:**
+  - Repo: `ReservationGrid.tsx` (163 lines, local custom component), `GridCell.tsx` (137 lines, inline style application), `theme.interface.ts` (TTheme uses `Record<string, string>` for date.status), `statusColors.ts` (10 entries), `theme.ts` (10 hex values), `rvg.css` (16 CSS custom properties + dark mode)
+  - Tests: `grep '\.test\.\|\.spec\.'` in roomgrid/ → 0 test files
+  - Pattern: room grid color data flow: theme.ts → THEME["date.status"] → ReservationGrid → GridCell → inline `style={{ backgroundColor }}`
+- **Decision / resolution:**
+  - @daminort/reservation-grid concern ELIMINATED — it's local code
+  - CSS `var()` confirmed compatible with inline style backgroundColor
+  - Migration strategy: normalize statusColors.ts entries to `var(--reception-*)` references; update theme.ts hex to `var(--rvg-*)` or `var(--reception-*)`; update rvg.css dark mode from `theme()` to CSS vars
+- **Changes to task:**
+  - Acceptance: refined to list exact 4 TSX files + rvg.css dark mode update
+  - Affects: added `rvg.css` as primary
+  - Validation contract: added TC-04 for rvg.css dark mode
+  - Notes: updated to reflect @daminort concern resolution
 
 ### CHECKPOINT: Reassess after core migration
 
@@ -248,10 +272,10 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - **Primary:** `apps/reception/src/components/checkins/` (62 files)
 - **Depends on:** REC-03, CHECKPOINT
 - **Blocks:** REC-09
-- **Confidence:** 78%
-  - Implementation: 80% — largest directory; patterns should be established from earlier batches
-  - Approach: 80% — mechanical mapping
-  - Impact: 75% — check-in flow is mission-critical for daily operations
+- **Confidence:** 80%
+  - Implementation: 82% — largest directory; ~70% violations are mechanical 1:1 token swaps (text-white→text-primary-fg, bg-white→bg-surface, etc.); 0 inline hex
+  - Approach: 80% — mechanical mapping; patterns established from earlier batches
+  - Impact: 80% — check-in flow is mission-critical but 0 tests assert on color classes; migration won't break tests; git revert rollback
 - **Acceptance:**
   - Zero violations in checkins/ from lint
   - Check-in workflow functions correctly
@@ -261,9 +285,21 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - Validation type: lint + visual
   - Run/verify: `pnpm lint -- --filter reception`
 - **Execution plan:** Red → Green → Refactor
-- **What would make this ≥90%:** Exact violation count from REC-01 + established patterns from earlier waves
+- **What would make this ≥90%:** Exact violation count from REC-01 + established patterns from earlier waves + velocity data
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 78%
+- **Updated confidence:** 80%
+  - **Evidence class:** E1 (static code audit — violation pattern analysis across reception/)
+  - Implementation: 80% → 82% — confirmed ~70% of violations repo-wide are simple 1:1 swaps; 0 inline hex in any reception directory
+  - Approach: 80% → 80% — unchanged (mechanical mapping)
+  - Impact: 75% → 80% — confirmed 0 tests assert on color classes (grep for color class assertions across reception/); sufficient semantic tokens exist for all top patterns (text-white→text-primary-fg, bg-white→bg-surface, border-gray-400→border-border-2, text-gray-900→text-foreground)
+- **Investigation performed:**
+  - Repo: grep across all reception/ component directories for violation patterns
+  - Tests: confirmed 0 test files assert on color Tailwind classes
+  - Pattern analysis: top patterns are text-white (89 occurrences), bg-white (39), border-gray-400 (24), text-gray-900 (19) — all have direct token equivalents
 
 ### REC-06: Migrate till/ (49 files)
 
@@ -274,10 +310,10 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - **Primary:** `apps/reception/src/components/till/` (49 files)
 - **Depends on:** REC-03, CHECKPOINT
 - **Blocks:** REC-09
-- **Confidence:** 78%
-  - Implementation: 80% — second largest; till/POS patterns
-  - Approach: 80% — mechanical mapping
-  - Impact: 75% — till is used for guest transactions
+- **Confidence:** 80%
+  - Implementation: 82% — second largest; ~70% mechanical 1:1 swaps; 0 inline hex
+  - Approach: 80% — mechanical mapping; patterns from earlier batches
+  - Impact: 80% — till used for guest transactions but 0 tests on color classes; git revert rollback
 - **Acceptance:**
   - Zero violations in till/ from lint
 - **Validation contract:**
@@ -288,6 +324,14 @@ Start with small directories to establish patterns, then tackle the large ones. 
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
 
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 78%
+- **Updated confidence:** 80%
+  - **Evidence class:** E1 (static code audit)
+  - Implementation: 80% → 82% — confirmed mechanical swap patterns; 0 inline hex
+  - Approach: 80% → 80% — unchanged
+  - Impact: 75% → 80% — 0 tests on color classes; tokens exist for all patterns
+
 ### REC-07: Migrate bar/ (38 files)
 
 - **Type:** IMPLEMENT
@@ -297,10 +341,10 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - **Primary:** `apps/reception/src/components/bar/` (38 files)
 - **Depends on:** REC-03, CHECKPOINT
 - **Blocks:** REC-09
-- **Confidence:** 78%
-  - Implementation: 80% — bar service components
-  - Approach: 80% — mechanical mapping
-  - Impact: 75% — bar POS is used for food/drink service
+- **Confidence:** 80%
+  - Implementation: 82% — bar service components; ~70% mechanical 1:1 swaps; 0 inline hex
+  - Approach: 80% — mechanical mapping; patterns from earlier batches
+  - Impact: 80% — bar POS but 0 tests on color classes; git revert rollback
 - **Acceptance:**
   - Zero violations in bar/ from lint
 - **Validation contract:**
@@ -310,6 +354,14 @@ Start with small directories to establish patterns, then tackle the large ones. 
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 78%
+- **Updated confidence:** 80%
+  - **Evidence class:** E1 (static code audit)
+  - Implementation: 80% → 82% — confirmed mechanical swap patterns; 0 inline hex
+  - Approach: 80% → 80% — unchanged
+  - Impact: 75% → 80% — 0 tests on color classes; tokens exist for all patterns
 
 ### REC-08: Migrate remaining directories (~110 files)
 
@@ -328,10 +380,10 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - **Primary:** `apps/reception/src/components/emailAutomation/` (6 files)
 - **Depends on:** REC-03, CHECKPOINT
 - **Blocks:** REC-09
-- **Confidence:** 75%
-  - Implementation: 78% — large batch but individual files should be small; patterns established
-  - Approach: 78% — mechanical mapping
-  - Impact: 72% — search and reports are heavily used; FinancialTransactionSearch was a top offending file
+- **Confidence:** 80%
+  - Implementation: 82% — large batch but ~70% mechanical 1:1 swaps; 0 inline hex; patterns from earlier batches
+  - Approach: 80% — mechanical mapping; all top patterns have token equivalents
+  - Impact: 80% — search/reports heavily used but 0 tests on color classes; FinancialTransactionSearch uses standard patterns (text-gray-*, bg-white, border-gray-*); git revert rollback
 - **Acceptance:**
   - Zero violations in all remaining directories
   - FinancialTransactionSearch and EndOfDayPacket render correctly
@@ -341,9 +393,17 @@ Start with small directories to establish patterns, then tackle the large ones. 
   - Validation type: lint + visual
   - Run/verify: `pnpm lint -- --filter reception`
 - **Execution plan:** Red → Green → Refactor
-- **What would make this ≥90%:** Exact violation count from REC-01 + established patterns
+- **What would make this ≥90%:** Exact violation count from REC-01 + velocity data from earlier waves
 - **Rollout / rollback:** direct commit / `git revert`
 - **Documentation impact:** None
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 75%
+- **Updated confidence:** 80%
+  - **Evidence class:** E1 (static code audit)
+  - Implementation: 78% → 82% — confirmed ~70% mechanical swaps; 0 inline hex across all directories
+  - Approach: 78% → 80% — all top patterns (text-white, bg-white, border-gray-400, text-gray-900) have direct token mappings
+  - Impact: 72% → 80% — 0 tests on color classes; confirmed FinancialTransactionSearch uses standard patterns; blast radius understood
 
 ### REC-09: ESLint config: replace offAllDsRules with error for colour rules
 
@@ -377,10 +437,11 @@ Start with small directories to establish patterns, then tackle the large ones. 
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|-----------|--------|------------|
-| `@daminort/reservation-grid` doesn't accept CSS variables in theme | Medium | Medium | Runtime bridge to read computed values; or ticketed exemption for theme.ts |
+| ~~`@daminort/reservation-grid` doesn't accept CSS variables in theme~~ | ~~Medium~~ | ~~Medium~~ | **ELIMINATED** — ReservationGrid is local code; CSS var() confirmed compatible |
 | Staff confusion from colour changes in room grid | Medium | Medium | Map to visually similar hospitality tokens; brief staff if notable changes |
 | Scope much larger than expected after REC-01 reveals real count | Medium | Low | CHECKPOINT gate after core migration; replan if patterns don't hold |
 | Migration takes many sessions; risk of half-migrated state | Medium | Low | Each directory commit is self-contained; partial migration is safe |
+| rvg.css dark mode uses `theme()` function (Tailwind v3) | Low | Low | Update to CSS custom properties in REC-04; straightforward replacement |
 
 ## Acceptance Criteria (overall)
 
@@ -398,3 +459,5 @@ Start with small directories to establish patterns, then tackle the large ones. 
 - 2026-02-12: CHECKPOINT inserted after Wave 2 (small dirs + common + room grid) — replan before committing to 260-file large-directory migration
 - 2026-02-12: Defaulting to hospitality tokens for booking status colours (already bridged in globals.css)
 - 2026-02-12: Colour-only enforcement first; other DS rules (spacing, typography, layout) deferred to future phase
+- 2026-02-13: **Re-plan — @daminort risk eliminated.** ReservationGrid is local custom code (`ReservationGrid.tsx:1-8`). Theme values flow through `GridCell.tsx` as inline `backgroundColor` style — CSS `var()` references work. Primary blocking unknown closed. All 5 below-threshold tasks promoted to ≥80%.
+- 2026-02-13: **Re-plan — violation pattern analysis.** ~70% of violations across all directories are simple 1:1 token swaps. 0 inline hex. 0 tests asserting on color classes. All top patterns have direct semantic token equivalents.

@@ -1586,13 +1586,10 @@ export default [
     },
   },
 
-  /* ▸ Reception app: internal tooling, not localized yet */
+  /* ▸ Reception app: internal tooling — non-DS complexity relaxations */
   {
     files: ["apps/reception/**"],
     rules: {
-      ...offAllDsRules,
-      // Reception is a legacy internal tool; DS governance rules are enforced as part of the
-      // design-system migration plan, not as a lint gate today.
       "max-lines-per-function": "off",
       "max-depth": "off",
       "max-params": "off",
@@ -2287,14 +2284,24 @@ export default [
       complexity: ["error", 35],
     },
   },
-  /* ▸ LINT-01: Relaxed limits for Reception app (legacy internal tooling) */
+  /* ▸ LINT-01: Reception app DS rules — phased migration (ds-compliance-v2) */
   {
     files: ["apps/reception/src/**/*.{ts,tsx}"],
     rules: {
-      ...offAllDsRules,
-      /* DS colour rules at error — P5 reception migration complete (REC-09) */
+      /* DS colour rules at error — reception migration complete (REC-09) */
       "ds/no-raw-color": "error",
       "ds/no-raw-tailwind-color": "error",
+      /* DS rules deferred to future phase — too many violations for current scope */
+      "ds/enforce-layout-primitives": "off", // ~437 violations — separate migration
+      "ds/no-hardcoded-copy": "off", // internal staff tool — not localized
+      /* DS rules at warn — will be fixed and escalated in DS-05 */
+      "ds/no-raw-zindex": "warn",
+      "ds/no-important": "warn",
+      "ds/no-raw-typography": "warn",
+      /* DS rules at warn — will be fixed and escalated in DS-06 */
+      "ds/no-raw-spacing": "warn",
+      "ds/no-arbitrary-tailwind": "warn",
+      /* Non-DS relaxations */
       complexity: ["error", 60],
       "max-lines-per-function": [
         "error",

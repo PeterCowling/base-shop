@@ -10,8 +10,7 @@
  */
 import { z } from "zod";
 
-import type { GuideBlockDeclaration } from "./block-types";
-import { GUIDE_BLOCK_DECLARATION_SCHEMA } from "./block-types";
+import { GUIDE_BLOCK_DECLARATION_SCHEMA, type GuideBlockDeclaration } from "./block-types";
 
 export const GUIDE_STATUS_VALUES = ["draft", "review", "live"] as const;
 export type GuideStatus = (typeof GUIDE_STATUS_VALUES)[number];

@@ -3,9 +3,9 @@
  * Created as part of guide-publication-decoupling TASK-07.
  */
 
-import type { GuideManifestEntry } from "../manifest-types";
 import {
   createManifestEntrySchema,
+  type GuideManifestEntry,
   resolveGuideStatusForSite,
 } from "../manifest-types";
 

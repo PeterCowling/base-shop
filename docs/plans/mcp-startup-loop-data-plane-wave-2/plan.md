@@ -82,7 +82,7 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 | TASK-03 | IMPLEMENT | Implement shared wave-2 contracts + policy middleware | 82% | M | Complete (2026-02-13) | TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Deliver vertical slice (`measure` + `app_packet` + `pack`) over artifacts | 80% | M | Complete (2026-02-13) | TASK-03 | TASK-05 |
 | TASK-05 | CHECKPOINT | Reassess post-slice before broad expansion | 95% | S | Complete (2026-02-13) | TASK-04 | TASK-06, TASK-09, TASK-10 |
-| TASK-06 | IMPLEMENT | Add refresh status/enqueue lifecycle and anomaly detection tools | 81% | M | Pending | TASK-03, TASK-05 | TASK-07 |
+| TASK-06 | IMPLEMENT | Add refresh status/enqueue lifecycle and anomaly detection tools | 81% | M | Complete (2026-02-13) | TASK-03, TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Expand measurement adapters and enforce startup-loop `analytics_*` sunset trigger | 70% | M | Blocked | TASK-01, TASK-03, TASK-05, TASK-09 | TASK-08 |
 | TASK-08 | IMPLEMENT | Add experiment runtime MCP and a guarded ops pilot | 74% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10 | - |
 | TASK-09 | SPIKE | Add `@acme/mcp-cloudflare` contract harness + package-local analytics tests | 84% | M | Pending | TASK-03, TASK-05 | TASK-07 |
@@ -503,6 +503,25 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Changes to task:**
   - Dependencies/order: TASK-06 now explicitly blocks TASK-07 to enforce lifecycle-first expansion.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `4166298ae4`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 2 (red-green)
+  - Initial validation: FAIL (expected red; new `refresh_*`/`anomaly_*` tools were not implemented yet)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 81%
+  - Post-validation: 84%
+  - Delta reason: lifecycle, idempotency, stale status lag reporting, and cold-start anomaly gating are now exercised by passing integration tests.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS (9 tests, includes TC-08/TC-09)
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only)
+- **Documentation updated:** `docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md`
+- **Implementation notes:** Added `refresh_status_get`, `refresh_enqueue_guarded`, and `anomaly_detect_{traffic,revenue,errors}` in `packages/mcp-server/src/tools/loop.ts` with guarded refresh lifecycle transitions and deterministic EWMA/z-score detector metadata.
+
 ### TASK-07: Expand measurement adapters and enforce startup-loop `analytics_*` sunset trigger
 - **Type:** IMPLEMENT
 - **Deliverable:** Additional `measure_*` adapters + Cloudflare test coverage + startup-loop surface containment
@@ -757,3 +776,4 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - 2026-02-13: User approved Option A (BOS-scoped connector profiles + centralized secret references) for credential/tenancy model.
 - 2026-02-13: Checkpoint re-assessment completed with E2 evidence; promoted TASK-06 to build-eligible (81%).
 - 2026-02-13: Added precursor spikes TASK-09 and TASK-10; kept TASK-07 and TASK-08 below threshold until precursor evidence lands.
+- 2026-02-13: Completed TASK-06 with passing startup-loop integration tests for refresh lifecycle and anomaly baseline gates.

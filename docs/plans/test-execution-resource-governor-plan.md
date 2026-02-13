@@ -340,6 +340,7 @@ Schedule note:
 - **Notes / references:** execution-path map from fact-find.
 - **Build completion (2026-02-13):**
   - **Status:** Complete
+  - **Commits:** `3d6f5e6d03`
   - **Implementation notes:** added intent-based runner (`scripts/tests/run-governed-test.sh`) and shaping policy helpers (`scripts/tests/runner-shaping.sh`); wired root `test:governed` script in `package.json`; added integration coverage in `scripts/__tests__/test-governed-runner.test.ts` for TC-01..TC-08.
   - **Validation evidence:** `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts` (PASS).
   - **Documentation updated:** None in this task; command-guidance normalization remains tracked by TEG-09.

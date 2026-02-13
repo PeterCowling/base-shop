@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-13
@@ -11,7 +11,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 86%
+Overall-confidence: 87%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: on
 Business-Unit: PLAT
@@ -107,7 +107,7 @@ Create a centralized `@acme/seo` shared package that consolidates SEO logic (met
 | SEO-07 | IMPLEMENT | Integrate @acme/seo into Cochlearfit | 86% | M | Complete (2026-02-13) | SEO-02, SEO-06 | - |
 | SEO-08 | IMPLEMENT | Integrate @acme/seo into Skylar | 85% | M | Complete (2026-02-13) | SEO-06 | - |
 | SEO-09 | IMPLEMENT | Integrate @acme/seo into Cover-Me-Pretty | 88% | M | Complete (2026-02-13) | SEO-01, SEO-06 | SEO-10 |
-| SEO-10 | IMPLEMENT | Begin Brikette extraction with re-exports | 80% | L | Pending | SEO-06, SEO-09, SEO-11 | - |
+| SEO-10 | IMPLEMENT | Begin Brikette extraction with re-exports | 82% | L | Complete (2026-02-13) | SEO-06, SEO-09, SEO-11 | - |
 | SEO-11 | IMPLEMENT | Extract buildCanonicalUrl to @acme/seo/metadata | 92% | S | Complete (2026-02-13) | SEO-06 | SEO-10 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -128,6 +128,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 **Max parallelism:** 3 (Waves 1 and 4)
 **Critical path:** SEO-03 → SEO-04 → SEO-06 → SEO-09 → SEO-11 → SEO-10 (6 waves)
+**Current state:** All 11 tasks complete.
 **Total tasks:** 11 (10 IMPLEMENT + 1 CHECKPOINT)
 **Auto-continue boundary:** Waves 1–2 build automatically; Wave 3 (CHECKPOINT) pauses for reassessment.
 **Current state:** Waves 1–5 complete. SEO-10 (Wave 6) promoted to 80% after SEO-11 E2 evidence — ready for build.
@@ -825,6 +826,34 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Confidence: promoted from 78% to 80% (min(84, 82, 80) = 80)
   - Affects [readonly]: corrected importer counts from E1 audit (5 seo.ts, 27 jsonld/, 12 @acme/ui/lib/seo)
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 652012ab6b
+- **Execution cycle:**
+  - Validation cases executed: TC-01 (typecheck), TC-02 (ensureTrailingSlash re-export), TC-04 (buildLinks hreflang), TC-05 (serializeJsonLdValue import chain), TC-06 (buildBreadcrumb JSON-LD), TC-07 (full SEO test suite — 35/35 pass)
+  - TC-03 (JSON-LD contract tests): covered by TC-07 full suite pass
+  - Cycles: 1 (characterization tests all green; implementation green on first pass)
+  - Initial validation: 5 characterization tests pass on existing code (pre-extraction baseline)
+  - Final validation: PASS — all 5 tests pass after extraction, plus 30 existing SEO tests
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 82%
+  - Delta reason: Clean extraction confirmed; scope narrower than planned — only `ensureTrailingSlash` and `serializeJsonLd` import sources changed; `buildMeta`, `pageHead`, `buildLinks`, `buildBreadcrumb` remain local (correct — tightly coupled to Brikette slug/i18n). 35 Brikette SEO tests pass, 58 @acme/seo tests pass, typecheck clean.
+- **Validation:**
+  - Ran: `jest --testPathPattern 'seo-extraction'` — PASS (5/5 active, 1 todo)
+  - Ran: `jest --testPathPattern 'seo.test|seo-jsonld'` — PASS (30/30 existing SEO tests)
+  - Ran: `pnpm --filter @acme/seo test` — PASS (58/58)
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS (clean, no errors)
+  - Pre-commit hooks: typecheck (20 packages), lint (21 packages), ESLint — all PASS
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Replaced local `ensureTrailingSlash` with re-export from `@acme/seo/metadata` (1 line changed in `seo.ts`)
+  - Changed `serialize.ts` import source from `@acme/ui/lib/seo/serializeJsonLd` to `@acme/seo/jsonld` (using `serializeJsonLdValue as serializeJsonLd` alias)
+  - Added `@acme/seo: workspace:*` to Brikette `package.json`
+  - Added `@acme/seo` and `@acme/seo/*` path mappings to `tsconfig.json` (dist-first order to avoid TS6059 rootDir errors)
+  - `metadata.ts` (`buildAppMetadata`) unchanged — uses `* as seo` namespace import which automatically picks up re-exported `ensureTrailingSlash`
+  - Phase 2 (future): migrate Brikette consumers to import directly from `@acme/seo`; remove re-export shims
+
 ---
 
 ### SEO-11: Extract buildCanonicalUrl to @acme/seo/metadata
@@ -942,3 +971,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-13: CHECKPOINT after package extraction — validates API before committing to 4 app integrations
 - 2026-02-13: (Re-plan) Split `buildCanonicalUrl` extraction into SEO-11 precursor — resolves SEO-10 blocker (TC-08 deferred from SEO-04). Pattern matches `ensureTrailingSlash` extraction already completed.
 - 2026-02-13: (Re-plan #2) SEO-10 promoted from 78% to 80% — SEO-11 E2 evidence resolved Implementation blocker; importer audit corrected blast radius (5 seo.ts importers, not 32); 67 active tests with 0 gaps.
+- 2026-02-13: (Build) All 11 tasks complete — plan archived. SEO-10 extraction scope was narrower than planned: only `ensureTrailingSlash` and `serializeJsonLd` import sources changed; Brikette-specific functions stay local for Phase 2.

@@ -85,7 +85,7 @@ Implement a statistically rigorous experimentation module in `packages/lib/src/m
 | ABT-07A | IMPLEMENT | Group-sequential testing using documented O'Brien-Fleming approximation | 80% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-03 | - |
 | ABT-08 | INVESTIGATE | mSPRT variant specification and mathematical formulation for binomial A/B tests | 88% | S | Complete (2026-02-13) | - | ABT-09 |
 | ABT-09 | SPIKE | mSPRT simulation harness prototype with type-I error validation | 82% | S | Complete (2026-02-13) | ABT-00, ABT-01, ABT-05, ABT-08 | ABT-07B |
-| ABT-07B | IMPLEMENT | Always-valid inference (mSPRT) with simulation-based error-control validation | 68% (→ 82% conditional on ABT-08, ABT-09) | L | Pending | ABT-00, ABT-01, ABT-05, ABT-08, ABT-09 | - |
+| ABT-07B | IMPLEMENT | Always-valid inference (mSPRT) with simulation-based error-control validation | 82% | L | Complete (2026-02-13) | ABT-00, ABT-01, ABT-05, ABT-08, ABT-09 | - |
 
 ## Parallelism Guide
 
@@ -790,11 +790,10 @@ where:
 - **Type**: IMPLEMENT
 - **Deliverable**: code-change + tests
 - **Execution-Skill**: /lp-build
-- **Confidence**: 68% (→ 82% conditional on ABT-08, ABT-09)
-  - Confidence cannot be promoted until precursor tasks complete and provide E2/E3 evidence
-  - Implementation: 68% — mSPRT method not yet specified (ABT-08 resolves), simulation harness feasibility not yet proven (ABT-09 resolves)
-  - Approach: 75% — approach depends on ABT-08 decision; simulation-gated release is sound
-  - Impact: 70% — no downstream dependents, but must clearly document limitations and assumptions
+- **Confidence**: 82%
+  - Implementation: 82% — ABT-08/09 provided explicit method + calibration harness; production wrapper and API constraints are straightforward.
+  - Approach: 82% — two-sided first with explicit assumptions is conservative and operationally clear.
+  - Impact: 82% — additive module with simulation-backed safeguards; no external callsites modified in this task.
 - **Effort**: L (1-2 days)
 - **Depends on**: ABT-00, ABT-01, ABT-05, ABT-08, ABT-09
 - **Blocks**: -
@@ -825,10 +824,29 @@ where:
   - **Test location:** `packages/lib/__tests__/math/experimentation/always-valid-inference.test.ts` (new)
   - **Run:** `npx jest --config jest.config.cjs --testPathPattern='experimentation/always-valid-inference'`
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending
+- **Execution cycle:**
+  - Validation cases executed: TC-07B-01, TC-07B-02, TC-07B-03, TC-07B-04
+  - Cycles: 2 (implementation + finite/default max-log evidence handling + lint sort fixes)
+  - Initial validation: FAIL (state-default validation bug + lint sort), Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 68% (conditional)
+  - Post-validation: 82%
+  - Delta reason: ABT-08/09 precursors plus passing simulation gates remove the two identified blocking unknowns.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- __tests__/math/experimentation/always-valid-inference.test.ts` — PASS (12/12)
+  - Ran: `pnpm --filter @acme/lib test -- __tests__/math/experimentation/sample-size.test.ts __tests__/math/experimentation/hypothesis-tests.test.ts __tests__/math/experimentation/confidence-intervals.test.ts __tests__/math/experimentation/bayesian.test.ts __tests__/math/experimentation/thompson-sampling.test.ts __tests__/math/experimentation/group-sequential.test.ts __tests__/math/experimentation/internal/msprt-spike.test.ts __tests__/math/experimentation/always-valid-inference.test.ts` — PASS (99/99)
+  - Ran: `pnpm --filter @acme/lib build` — PASS
+  - Ran: `pnpm --filter @acme/lib lint` — PASS with 2 pre-existing warnings in `packages/lib/src/growth/__tests__/store.test.ts`
+- **Documentation updated:** This plan document only.
+- **Implementation notes:** Added production always-valid API (`alwaysValidPValue`) with running-max evidence state, assumptions metadata, two-sided scope guard, and deterministic type-I/power simulation helpers.
+
 #### Re-plan Update (2026-02-13)
 - **Previous confidence:** 68%
-- **Updated confidence:** 68% (→ 82% conditional on ABT-08, ABT-09)
-  - Confidence cannot be promoted until precursor tasks complete and provide E2/E3 evidence
+- **Updated confidence:** 82%
+  - Precursor tasks ABT-08 and ABT-09 completed and validated; confidence promotion applied.
 - **Investigation performed:**
   - Reviewed plan scope: mSPRT requires specific variant selection (mixture prior, likelihood ratio formulation) and simulation-based error control
   - Identified two blocking unknowns: (1) which mSPRT variant to use for binomial data, (2) whether the chosen variant achieves acceptable type-I control under continuous monitoring
@@ -892,6 +910,7 @@ where:
 | 2026-02-13 | ABT-08 can run in Wave 1 (parallel with ABT-00, ABT-01) | INVESTIGATE task requires no code dependencies — literature review only. Enables early start on mSPRT specification while foundational code is built. |
 | 2026-02-13 | ABT-08 selected arcsine-CLT Gaussian-mixture mSPRT for binary A/B tests | Matches Johari et al. deployment guidance for binary data while providing a closed-form LR suitable for deterministic simulation calibration in ABT-09. |
 | 2026-02-13 | ABT-09 simulation gate passed | Internal spike harness met TC-09 criteria (finite e-values, 10k null calibration <=0.055, deterministic seed replay), clearing the ABT-07B precursor. |
+| 2026-02-13 | ABT-07B completed with two-sided always-valid API and simulation helpers | Production module now wraps calibrated mSPRT evidence into a stable API (`pValue`, `eValue`, `canStop`, assumptions) and preserves deterministic validation paths. |
 | 2026-02-13 | Promote ABT-00 from 78% → 80% with E2 evidence | Existing `normalQuantile()` in prediction-intervals.ts:230-253 + 505 passing math tests prove numerical computation capability at the required level. |
 
 ## References

@@ -44,6 +44,20 @@
  * Note: APIs are introduced incrementally by ABT plan tasks.
  */
 export type {
+  AlwaysValidMixturePrior,
+  AlwaysValidPowerSimulationOptions,
+  AlwaysValidPowerSimulationResult,
+  AlwaysValidPValueOptions,
+  AlwaysValidPValueResult,
+  AlwaysValidType1SimulationOptions,
+  AlwaysValidType1SimulationResult,
+} from "./always-valid-inference";
+export {
+  alwaysValidPValue,
+  simulateAlwaysValidPower,
+  simulateAlwaysValidType1,
+} from "./always-valid-inference";
+export type {
   BayesianABTestOptions,
   BayesianABTestResult,
   BetaPosteriorSummary,

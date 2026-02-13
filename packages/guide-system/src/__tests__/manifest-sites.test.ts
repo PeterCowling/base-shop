@@ -3,11 +3,11 @@
  * Created as part of guide-publication-decoupling TASK-07.
  */
 
+import type { GuideManifestEntry } from "../manifest-types";
 import {
   createManifestEntrySchema,
   resolveGuideStatusForSite,
 } from "../manifest-types";
-import type { GuideManifestEntry } from "../manifest-types";
 
 const TEST_KEYS = ["testGuide", "anotherGuide"] as const;
 const { schema } = createManifestEntrySchema(TEST_KEYS);

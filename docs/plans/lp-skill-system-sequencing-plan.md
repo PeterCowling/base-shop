@@ -73,7 +73,7 @@ Primary references:
 | LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 86% | M | Done | LPSP-03A | LPSP-07 |
 | LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 89% | M | Done | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
 | LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% (→84%) | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
-| LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 84% | M | Pending | LPSP-01 | LPSP-06A |
+| LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 87% | M | Done | LPSP-01 | LPSP-06A |
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 90% | S | Pending | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
 | LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-08 |
@@ -352,6 +352,29 @@ Primary references:
   - **Validation type:** dry-run (create test workspace + verify resolution).
   - **Validation location/evidence:** `docs/plans/test-workspace/` (temporary test fixture).
   - **Run/verify:** Create canonical workspace, attempt resolution via old and new paths, verify read/write behavior.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** b3499ab256
+- **Execution cycle:**
+  - Validation cases executed: VC-05-01, VC-05-02, VC-05-03
+  - Cycles: 1 draft-review cycle
+  - Initial validation: draft + grep verification of path references
+  - Final validation: PASS (all legacy write paths removed from core skills; fallback read paths preserved)
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 87%
+  - Delta reason: validation confirmed clean separation — no stray legacy write paths in core 5 skills; stage-doc key normalization documented with backward-compatible note
+- **Validation:**
+  - Ran: `grep -r 'docs/plans/<.*>-plan\.md' .claude/skills/{lp-fact-find,lp-plan,lp-build,lp-replan,lp-sequence}/` — only legacy fallback (read-only) references remain
+  - Pre-commit hooks: PASS
+- **Documentation updated:** workspace-paths.md (new), stage-doc-operations.md (stage key normalization + canonical path templates)
+- **Implementation notes:**
+  - Created `.claude/skills/_shared/workspace-paths.md` — canonical directory layout, alias map, resolution algorithm, write blocking rules, stage-doc API key policy
+  - Normalized stage-doc API key: `fact-find` (canonical) replaces `lp-fact-find` (legacy read-only alias)
+  - Updated all 5 core workflow skills (lp-fact-find, lp-plan, lp-build, lp-replan, lp-sequence)
+  - Supporting skills (idea-generate, idea-develop, idea-advance) still use `lp-fact-find` key — acceptable during migration, documented in stage-doc-operations.md note
+  - 7 files changed, 157 insertions, 42 deletions
 
 ### LPSP-06A: Define `/lp-baseline-merge` skill contract
 

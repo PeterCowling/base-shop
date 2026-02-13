@@ -419,6 +419,7 @@ Schedule note:
 - **Notes / references:** unbounded script list in fact-find Appendix A3.
 - **Build completion (2026-02-13):**
   - **Status:** Complete
+  - **Commit:** `ba140336f7`
   - **Implementation notes:**
     - Migrated package/root `test` script archetypes to governed intent entrypoints (`pnpm run test:governed -- jest|turbo ...`) for root, `apps/prime`, `functions`, `packages/tailwind-config`, `packages/telemetry`, `packages/theme`, `scripts`, and `__tests__`.
     - Updated root `test:affected` to governed turbo intent with explicit `--concurrency=2`.
@@ -445,7 +446,7 @@ Schedule note:
       - `typecheck-staged` (PASS)
       - `lint-staged-packages` (PASS)
     - Remaining app package migrations committed: `2ce513bf06` (`apps/prime`, `apps/xa*` package manifests).
-  - **Documentation updated:** `docs/testing-policy.md`.
+  - **Documentation updated:** `docs/testing-policy.md` (working tree update; docs commit deferred to TEG-09 drift-hardening sweep).
 
 ### TEG-06: Enforce hard blocking for bypass paths
 - **Type:** IMPLEMENT

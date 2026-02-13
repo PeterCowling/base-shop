@@ -43,6 +43,13 @@
  *
  * Note: APIs are introduced incrementally by ABT plan tasks.
  */
+export type { ConfidenceIntervalResult } from "./confidence-intervals";
+export {
+  meanConfidenceInterval,
+  meanDifferenceCI,
+  proportionConfidenceInterval,
+  proportionDifferenceCI,
+} from "./confidence-intervals";
 export type {
   ChiSquareGoodnessOfFitOptions,
   ChiSquareGoodnessOfFitResult,

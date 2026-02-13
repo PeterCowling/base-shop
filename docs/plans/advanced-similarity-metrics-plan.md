@@ -95,7 +95,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | ASM-02 | IMPLEMENT | Implement Hoeffding's D + deterministic fixtures/tests | 83% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
 | ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
 | ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Complete (2026-02-13) | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
-| ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
+| ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Complete (2026-02-13) | ASM-04 | ASM-08 |
 | ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Pending | ASM-05 | ASM-09 |
@@ -105,7 +105,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Active tasks
 
-- ASM-05 - Investigation gate pending; required before ASM-08.
+- ASM-08 - Unblocked by ASM-05 calibration decisions; ready to build.
 
 ## Parallelism Guide
 
@@ -348,6 +348,24 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Produce deterministic fixture set and acceptance thresholds for ASM-08.
   - Raise ASM-08 confidence inputs to >=80% (or explicitly record waiver).
 - **Notes / references:** NMI uncertainty was the only sub-80 IMPLEMENT area in previous revision and is now isolated.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending (this task updates investigation artifact + plan in current cycle)
+- **Execution cycle:**
+  - Investigation questions answered: normalization variant, binning default, fixture thresholds
+  - Cycles: 1 investigation cycle
+  - Final validation: PASS (artifact produced with deterministic calibration evidence)
+- **Confidence reassessment:**
+  - Original: 76%
+  - Post-validation: 84%
+  - Delta reason: core NMI ambiguity removed by explicit policy and fixture contracts.
+- **Validation:**
+  - Produced: `docs/plans/advanced-similarity-metrics-nmi-calibration.md` - PASS
+  - Verified: heavy-tail outlier stability strongly favored quantile binning
+  - Verified: canonical normalization locked to `MI / sqrt(H(X) * H(Y))`
+- **Documentation updated:** `docs/plans/advanced-similarity-metrics-nmi-calibration.md`
+- **Implementation notes:** Calibration artifact now defines canonical NMI defaults and deterministic thresholds that gate ASM-08 implementation.
 
 ### ASM-06: Implement Jensen-Shannon divergence/distance
 - **Type:** IMPLEMENT

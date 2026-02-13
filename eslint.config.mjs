@@ -348,6 +348,24 @@ export default [
     },
   },
 
+  /* ▸ XA-J: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa-j/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ XA-B: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/xa-b/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
   /* ▸ Cover-me-pretty: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/cover-me-pretty/**/*.{ts,tsx,js,jsx,mdx}"],

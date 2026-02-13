@@ -174,8 +174,8 @@ Event schema (MVP):
 | TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Completed (2026-02-13) | TEG-04 | TEG-06 |
 | TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Completed (2026-02-13) | TEG-01, TEG-05 | TEG-07A, TEG-08, TEG-09 |
 | TEG-07A | IMPLEMENT | Add governed-run telemetry emission for calibration-quality samples | 83% | M | Completed (2026-02-13) | TEG-01, TEG-06 | TEG-07B, TEG-07 |
-| TEG-07B | SPIKE | Build day-zero calibration harness and sample summarizer for governed telemetry | 83% | M | Pending | TEG-07A | TEG-07, TEG-08 |
-| TEG-07 | INVESTIGATE | Run multi-day calibration soak and finalize tuned class budgets/overrides | 76% (-> 82% conditional on TEG-07B + soak gates) ⚠️ | M | Blocked (confidence <80; soak gates pending) | TEG-01, TEG-04, TEG-07A, TEG-07B | TEG-09 |
+| TEG-07B | SPIKE | Build day-zero calibration harness and sample summarizer for governed telemetry | 83% | M | Completed (2026-02-13) | TEG-07A | TEG-07, TEG-08 |
+| TEG-07 | INVESTIGATE | Run multi-day calibration soak and finalize tuned class budgets/overrides | 76% (-> 82% conditional on soak gates) ⚠️ | M | Blocked (confidence <80; soak gates pending) | TEG-01, TEG-04, TEG-07A, TEG-07B | TEG-09 |
 | TEG-08 | IMPLEMENT | Ship memory+CPU admission engine with seeded defaults, provisional calibration, and queue-on-pressure | 81% | L | Pending | TEG-06, TEG-07B | TEG-09 |
 | TEG-09 | IMPLEMENT | Add drift prevention (docs lint + policy updates + operator docs) | 84% | M | Pending | TEG-06, TEG-07, TEG-08 | - |
 
@@ -612,6 +612,26 @@ Schedule note:
   - Rollback: remove harness and revert to passive-only telemetry collection.
 - **Documentation impact:** update `docs/plans/test-execution-resource-governor-calibration.md` with day-zero methodology.
 - **Notes / references:** uses existing governed runner/shaping/queue contract; no policy bypass required.
+- **Build completion (2026-02-13):**
+  - **Status:** Complete
+  - **Commits:** `84c34c83f2`
+  - **Execution cycle:**
+    - Validation cases executed: TC-01, TC-02, TC-03, TC-04.
+    - Cycles: 1 (harness output interpolation fixed before final baseline generation).
+    - Initial validation: PASS.
+    - Final validation: PASS.
+  - **Confidence reassessment:**
+    - Original: 83%
+    - Post-validation: 86%
+    - Delta reason: deterministic harness path now produces governed multi-class and contention-rich baseline data with reproducible summary output.
+  - **Validation evidence:**
+    - `pnpm --filter scripts test -- __tests__/governed-calibration-harness.test.ts` (PASS, 4 tests).
+    - `PATH=<mock-pnpm> scripts/tests/run-governed-calibration.sh --profile synthetic-day-zero --events-file .cache/test-governor/events.jsonl --summary-json .cache/test-governor/day-zero-synthetic-summary.json --summary-md .cache/test-governor/day-zero-synthetic-summary.md --report-path docs/plans/test-execution-resource-governor-calibration.md` (PASS).
+  - **Documentation updated:** `docs/plans/test-execution-resource-governor-calibration.md` now includes a tagged day-zero synthetic baseline section.
+  - **Implementation notes:**
+    - Added `scripts/tests/run-governed-calibration.sh` profile runner to seed bounded governed telemetry across `jest`/`turbo`/`changed` intents and contention pairs.
+    - Added `scripts/tests/summarize-governor-telemetry.mjs` deterministic JSON/markdown summarizer with explicit gate checks.
+    - Added `scripts/__tests__/governed-calibration-harness.test.ts` integration coverage for class coverage, contention thresholds, ungoverned exclusion, and output determinism.
 
 ### TEG-07: Calibration telemetry and budget tuning (multi-day soak)
 - **Type:** INVESTIGATE
@@ -620,7 +640,7 @@ Schedule note:
 - **Affects:** governed telemetry output + calibration report.
 - **Depends on:** TEG-01, TEG-04, TEG-07A, TEG-07B
 - **Blocks:** TEG-09
-- **Confidence:** 76% (-> 82% conditional on TEG-07B + soak gates) ⚠️ BELOW THRESHOLD
+- **Confidence:** 76% (-> 82% conditional on soak gates) ⚠️ BELOW THRESHOLD
   - Implementation: 82% - mechanics are known after TEG-07A, but longitudinal sampling remains incomplete.
   - Approach: 76% - budget tuning quality depends on multi-day, multi-intent organic signal.
   - Impact: 76% - poor final calibration can either over-throttle developers or under-protect hosts.
@@ -636,7 +656,7 @@ Schedule note:
   - Confidence is re-scored to >=80% (or explicitly waived) before closing TEG-07 and TEG-09.
 - **Re-plan Update (2026-02-13):**
   - **Previous confidence:** 74%
-  - **Updated confidence:** 76% (-> 82% conditional on TEG-07B + soak gates)
+  - **Updated confidence:** 76% (-> 82% conditional on soak gates)
     - **Evidence class:** E2 (post-TEG-07A telemetry emission validation + fresh dataset probe), with E1 dependency topology audit.
     - Implementation: 82% - governed telemetry emission now verified in runner + tests.
     - Approach: 76% - still lacks multi-day governed class diversity for stable tuning decisions.
@@ -799,3 +819,4 @@ Schedule note:
 - 2026-02-13: lp-replan introduced precursor task `TEG-07A` after telemetry audit showed calibration data quality gap (`governed=0`, `queued_ms>0=0`) in local event stream.
 - 2026-02-13: After TEG-07A completion, telemetry audit still showed insufficient organic calibration depth (`total=33`, `governed=1`, governed classes=`governed-jest`, days=1), so lp-replan introduced `TEG-07B` as a deterministic day-zero calibration precursor.
 - 2026-02-13: Re-sequenced remaining dependency graph to `TEG-07A -> TEG-07B -> TEG-08`, with `TEG-07` soak continuing as final-hardening gate before `TEG-09`.
+- 2026-02-13: Completed TEG-07B and appended day-zero synthetic calibration evidence (`34 governed samples`, `3 governed classes`, `9 contention samples`) to `docs/plans/test-execution-resource-governor-calibration.md`; TEG-08 is now build-eligible.

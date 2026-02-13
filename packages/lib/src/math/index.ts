@@ -1,5 +1,6 @@
 export * from "./animation";
 export * from "./color";
+export type * from "./experimentation";
 export * from "./financial";
 export * from "./forecasting";
 export * from "./geometry";

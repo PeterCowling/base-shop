@@ -1,0 +1,222 @@
+# Startup Loop Specification
+# Runtime-authoritative source of truth for the stage graph.
+# All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
+# Version bumps require downstream alignment check (VC-02).
+
+spec_version: "1.0.0"
+created: "2026-02-13"
+decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
+
+# ─────────────────────────────────────────────────────────
+# Stage Graph
+# ─────────────────────────────────────────────────────────
+
+stages:
+  - id: S0
+    name: Intake
+    skill: /startup-loop start
+    prompt_required: true
+    prompt_template: intake-normalizer-prompt.md
+    conditional: false
+    bos_sync: "Update docs/business-os/strategy/<BIZ>/plan.user.md"
+
+  - id: S1
+    name: Readiness
+    skill: /lp-readiness
+    prompt_required: true
+    prompt_template: readiness-blocker-interview-prompt.md
+    conditional: false
+    bos_sync: "Record blockers/warnings in readiness docs + strategy plan risk section"
+
+  - id: S1B
+    name: Measurement bootstrap
+    skill: prompt-handoff
+    prompt_required: true
+    prompt_template: pre-website-measurement-bootstrap-prompt.md
+    conditional: true
+    condition: "launch-surface = pre-website"
+    bos_sync: "Record measurement setup status under docs/business-os/strategy/<BIZ>/"
+
+  - id: S2A
+    name: Historical baseline
+    skill: prompt-handoff
+    prompt_required: true
+    prompt_template: existing-business-historical-baseline-prompt.md
+    conditional: true
+    condition: "launch-surface = website-live"
+    bos_sync: "Persist baseline under docs/business-os/strategy/<BIZ>/"
+
+  - id: S2
+    name: Market intelligence
+    skill: prompt-handoff
+    prompt_required: true
+    prompt_template: docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md
+    conditional: false
+    bos_sync: "Update latest.user.md pointer + strategy assumptions"
+
+  - id: S2B
+    name: Offer design
+    skill: /lp-offer
+    prompt_required: false
+    conditional: false
+    bos_sync: "Persist offer artifact under docs/business-os/startup-baselines/<BIZ>/"
+
+  # ── Parallel fan-out ──────────────────────────────────
+  # S3 and S6B may execute concurrently after S2B completes.
+  # Both must complete before S4 (join barrier) can proceed.
+
+  - id: S3
+    name: Forecast
+    skill: /lp-forecast
+    prompt_required: false
+    conditional: false
+    parallel_group: fan-out-1
+    bos_sync: "Update latest pointer + strategy assumptions/targets"
+
+  - id: S6B
+    name: Channel strategy + GTM
+    skill: /lp-channels
+    secondary_skills:
+      - /lp-seo
+      - /draft-outreach
+    prompt_required: false
+    conditional: false
+    parallel_group: fan-out-1
+    bos_sync: "Persist channel artifact under docs/business-os/startup-baselines/<BIZ>/"
+
+  # ── Parallel fan-in (join barrier) ────────────────────
+
+  - id: S4
+    name: Baseline merge
+    skill: /lp-baseline-merge
+    prompt_required: false
+    conditional: false
+    join_barrier: true
+    required_inputs:
+      - stage: S2B
+        artifact_key: offer
+        required: true
+      - stage: S3
+        artifact_key: forecast
+        required: true
+      - stage: S6B
+        artifact_key: channels
+        required: true
+      - stage: S6B
+        artifact_key: seo
+        required: false
+      - stage: S6B
+        artifact_key: outreach
+        required: false
+    bos_sync: "Write candidate baseline snapshot + draft manifest (uncommitted)"
+
+  - id: S5A
+    name: Prioritize
+    skill: /lp-prioritize
+    prompt_required: true
+    prompt_template: prioritization-scorer-prompt.md
+    conditional: false
+    side_effects: none
+    bos_sync: none
+
+  - id: S5B
+    name: BOS sync
+    skill: /lp-bos-sync
+    prompt_required: false
+    conditional: false
+    side_effects: guarded
+    bos_sync: "Persist cards/stage-docs to D1 via /api/agent/*; commit manifest pointer"
+
+  - id: S6
+    name: Site-upgrade synthesis
+    skill: /lp-site-upgrade
+    prompt_required: true
+    prompt_template: docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md
+    conditional: false
+    bos_sync: "Update latest.user.md pointer"
+
+  - id: S7
+    name: Fact-find
+    skill: /lp-fact-find
+    prompt_required: false
+    conditional: false
+    bos_sync: "Upsert fact-find stage doc via /api/agent/stage-docs/:cardId/fact-find"
+
+  - id: S8
+    name: Plan
+    skill: /lp-plan
+    prompt_required: false
+    conditional: false
+    bos_sync: "Upsert plan stage doc + lane transition Fact-finding -> Planned"
+
+  - id: S9
+    name: Build
+    skill: /lp-build
+    prompt_required: false
+    conditional: false
+    bos_sync: "Upsert build stage doc + lane transitions to In progress / Done"
+
+  - id: S9B
+    name: QA gates
+    skill: /lp-launch-qa
+    secondary_skills:
+      - /lp-design-qa
+    prompt_required: false
+    conditional: false
+    bos_sync: "Record QA results in build stage doc"
+
+  - id: S10
+    name: Weekly readout + experiments
+    skill: /lp-experiment
+    prompt_required: true
+    prompt_template: weekly-kpcs-decision-prompt.md
+    conditional: false
+    bos_sync: "Record K/P/C/S decision + update card/plan state"
+
+# ─────────────────────────────────────────────────────────
+# Stage Ordering Constraints
+# ─────────────────────────────────────────────────────────
+
+ordering:
+  sequential:
+    - [S0, S1]
+    - [S1, S1B]          # conditional
+    - [S1, S2A]          # conditional
+    - [S2A, S2]          # S2A gates S2 for website-live
+    - [S1B, S2]          # S1B gates S2 for pre-website (warning quality)
+    - [S2, S2B]
+    - [S2B, S3]
+    - [S2B, S6B]         # fan-out: S3 and S6B both start after S2B
+    - [S3, S4]           # fan-in: S4 waits for S3
+    - [S6B, S4]          # fan-in: S4 waits for S6B
+    - [S4, S5A]
+    - [S5A, S5B]
+    - [S5B, S6]
+    - [S5B, S7]          # S7 can start after S5B (or after S6 if site-upgrade in scope)
+    - [S6, S7]
+    - [S7, S8]
+    - [S8, S9]
+    - [S9, S9B]
+    - [S9B, S10]
+
+  parallel_groups:
+    fan-out-1:
+      members: [S3, S6B]
+      join_at: S4
+
+# ─────────────────────────────────────────────────────────
+# Run Packet Contract
+# ─────────────────────────────────────────────────────────
+
+run_packet:
+  required_fields:
+    - run_id          # SFS-<BIZ>-<YYYYMMDD>-<hhmm>
+    - business
+    - current_stage
+    - status          # ready | blocked | awaiting-input | complete
+    - blocking_reason
+    - next_action
+    - prompt_file
+    - required_output_path
+    - bos_sync_actions
+    - loop_spec_version   # must match this spec's spec_version

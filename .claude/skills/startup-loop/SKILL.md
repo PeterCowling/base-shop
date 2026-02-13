@@ -32,6 +32,7 @@ Not allowed:
 
 ## Canonical References
 
+- **Loop spec (runtime authority):** `docs/business-os/startup-loop/loop-spec.yaml`
 - Workflow contract: `docs/business-os/startup-loop-workflow.user.md`
 - Prompt index: `docs/business-os/workflow-prompts/README.user.md`
 - Operator handoff template:
@@ -44,6 +45,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
+loop_spec_version: 1.0.0
 current_stage: <S#>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
@@ -57,23 +59,28 @@ bos_sync_actions:
 
 ## Stage Model
 
-Stages: `S0`..`S10`
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.0.0).
 
-- `S0` Intake — `/startup-loop start`
-- `S1` Readiness preflight — `/lp-readiness`
-- `S1B` Pre-website measurement bootstrap — `/lp-measure --mode pre-website`
-- `S2A` Existing-business historical baseline (website-live only) — operator prompt handoff
-- `S2` Market intelligence — Deep Research prompt handoff
+Stages: `S0`..`S10` (17 stages total):
+
+- `S0`  Intake — `/startup-loop start`
+- `S1`  Readiness preflight — `/lp-readiness`
+- `S1B` Pre-website measurement bootstrap — prompt handoff (conditional: pre-website)
+- `S2A` Existing-business historical baseline — prompt handoff (conditional: website-live)
+- `S2`  Market intelligence — Deep Research prompt handoff
 - `S2B` Offer design — `/lp-offer`
-- `S3` Forecasting — `/lp-forecast`
-- `S4` Startup baseline merge (SFS-00) — operator prompt handoff
-- `S5` Prioritization — `/lp-prioritize`
-- `S6` Site-upgrade synthesis — `/lp-site-upgrade`
+- ── parallel fan-out (S3 and S6B run concurrently) ──
+- `S3`  Forecast — `/lp-forecast`
 - `S6B` Channel strategy + GTM — `/lp-channels`, `/lp-seo`, `/draft-outreach`
-- `S7` Fact-find — `/lp-fact-find`
-- `S8` Plan — `/lp-plan`
-- `S9` Build — `/lp-build`
-- `S9B` Launch QA — `/lp-launch-qa`, `/lp-design-qa`, `/lp-measure --mode website-live`
+- ── parallel fan-in ──
+- `S4`  Baseline merge (join barrier) — `/lp-baseline-merge`
+- `S5A` Prioritize (pure ranking, no side effects) — `/lp-prioritize`
+- `S5B` BOS sync (sole mutation boundary) — `/lp-bos-sync`
+- `S6`  Site-upgrade synthesis — `/lp-site-upgrade`
+- `S7`  Fact-find — `/lp-fact-find`
+- `S8`  Plan — `/lp-plan`
+- `S9`  Build — `/lp-build`
+- `S9B` QA gates — `/lp-launch-qa`, `/lp-design-qa`
 - `S10` Weekly readout + experiments — `/lp-experiment`
 
 ## Command Behavior
@@ -175,7 +182,8 @@ For each stage, require appropriate sync actions:
 
 - `S0`: update `docs/business-os/strategy/<BIZ>/plan.user.md` scope and constraints.
 - `S1/S1B/S2/S3/S10`: persist strategy/readiness artifacts under `docs/business-os/...` and update any `latest.user.md` pointers.
-- `S5`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`).
+- `S5A`: no BOS sync (pure ranking, no side effects).
+- `S5B`: create/update ideas/cards via Business OS API (`/api/agent/ideas`, `/api/agent/cards`); commit manifest pointer.
 - `S7/S8/S9`: upsert stage docs and lane transitions via `/api/agent/stage-docs` and `/api/agent/cards`.
 
 Never allow stage advance when BOS sync has failed.

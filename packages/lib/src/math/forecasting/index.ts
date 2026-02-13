@@ -7,6 +7,8 @@ export {
   SimpleExponentialSmoothing,
   weightedMovingAverage,
 } from "./ewma";
+export type { HoltWintersOptions } from "./holt-winters";
+export { HoltWintersAdditive, HoltWintersMultiplicative } from "./holt-winters";
 export type { DecompositionResult } from "./seasonal-decomposition";
 export {
   decomposeAdditive,

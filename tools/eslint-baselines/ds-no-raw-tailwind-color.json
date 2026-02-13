@@ -3,41 +3,6 @@
   "generatedAt": "2026-02-12T00:00:00.000Z",
   "violations": [
     {
-      "filePath": "packages/template-app/src/app/[lang]/product/[slug]/PdpClient.client.tsx",
-      "line": 24,
-      "column": 22,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-gray-700'"
-    },
-    {
-      "filePath": "packages/template-app/src/app/account/returns/ReturnForm.tsx",
-      "line": 129,
-      "column": 30,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
-    },
-    {
-      "filePath": "packages/template-app/src/app/edit-preview/page.tsx",
-      "line": 118,
-      "column": 43,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
-    },
-    {
-      "filePath": "packages/template-app/src/app/returns/mobile/Scanner.tsx",
-      "line": 134,
-      "column": 30,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
-    },
-    {
-      "filePath": "packages/template-app/src/app/upgrade-preview/page.tsx",
-      "line": 117,
-      "column": 35,
-      "messageId": "noRawTw",
-      "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'text-red-600'"
-    },
-    {
       "filePath": "packages/ui/src/atoms/RatingsBar.tsx",
       "line": 131,
       "column": 3,

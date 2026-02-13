@@ -1,514 +1,473 @@
 ---
 Type: Plan
-Status: Proposed
+Status: Active
 Domain: Platform
-Workstream: Core-Capability
+Workstream: Engineering
 Created: 2026-02-13
 Last-updated: 2026-02-13
 Last-reviewed: 2026-02-13
-Replan-date: Not-set
-Relates-to charter: docs/plans/advanced-math-algorithms-fact-find.md
+Relates-to charter: none
 Feature-Slug: advanced-similarity-metrics
-Deliverable-Type: multi-deliverable
+Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Execution-Track: implementation
+Execution-Track: code
 Primary-Execution-Skill: /lp-build
-Supporting-Skills: none
+Supporting-Skills: /lp-replan
 Overall-confidence: 84%
-Confidence-Method: min(Implementation,Approach,Impact) — well-defined mathematical formulas with reference implementations; TypeScript-only; pure functions with comprehensive tests
+Confidence-Method: min(Implementation,Approach,Impact) per task; Overall is effort-weighted average (S=1, M=2, L=3)
 Business-OS-Integration: off
 Business-Unit: PLAT
+Card-ID:
 ---
 
-# Advanced Similarity Metrics Library — Implementation Plan
+# Advanced Similarity Metrics Library Plan
 
 ## Summary
 
-Implement a new `packages/lib/src/math/similarity/` module providing advanced dependency and similarity measures that detect relationships beyond Pearson/Spearman:
-
-1. **Hoeffding's D** — detects arbitrary non-monotonic dependencies (e.g., ring-shaped, X-shaped patterns)
-2. **Distance Correlation** — detects both linear and non-linear dependencies that Pearson misses
-3. **Jensen-Shannon Divergence** — information-theoretic symmetric divergence measure
-4. **Normalised Mutual Information** — measures dependency for discrete labels and binned continuous variables
-5. **Kendall's Tau** — rank-based concordance measure with O(n log n) implementation
-
-All implementations are TypeScript-native pure functions following existing `@acme/lib/math/` conventions.
-
-**Business context:** These metrics enrich correlation analytics for booking/browsing behavior analysis, enable better re-ranking in search pipelines (two-stage retrieval), and provide richer A/B test analysis beyond linear measures.
-
-**Reference implementations:**
-- [fast_vector_similarity](https://github.com/Dicklesworthstone/fast_vector_similarity) (Rust, reference for algorithms)
-- [hoeffdings_d_explainer](https://github.com/Dicklesworthstone/hoeffdings_d_explainer) (75-line NumPy reference)
+This plan adds a new `packages/lib/src/math/similarity/` module with five advanced dependence/similarity metrics: Hoeffding's D, Distance Correlation, Jensen-Shannon Divergence, Kendall's Tau, and Normalized Mutual Information. Work is staged so the highest-risk assumptions are validated early, then a horizon checkpoint is used before finishing remaining metrics and integration. The plan keeps the implementation TypeScript-only, pure-function-first, and aligned with existing math-module patterns in `@acme/lib`. It uses explicit validation contracts per metric and targeted package test commands (`pnpm --filter @acme/lib test -- ...`) rather than unscoped Jest invocations.
 
 ## Goals
 
-1. Port 5 advanced similarity metrics to TypeScript as pure functions
-2. Follow existing math library conventions (pure functions, comprehensive tests, TypeScript-native)
-3. Validate numerical accuracy against known reference values from academic literature
-4. Enable richer analytics beyond Pearson/Spearman for correlation analysis
+- Add five advanced similarity/dependence metrics under `packages/lib/src/math/similarity/`.
+- Preserve existing library design standards: pure functions, deterministic behavior, explicit edge-case handling.
+- Provide reliable numerical validation coverage for each metric and a cross-metric integration suite.
+- Keep rollout low-risk by using a checkpoint and an explicit NMI investigation gate before final implementation.
 
 ## Non-goals
 
-1. Rust/Python dependencies or sidecars (TypeScript-only constraint)
-2. GPU acceleration or SIMD optimizations (future work)
-3. Streaming/online versions in first release (batch-only initially)
-4. Integration into specific apps (library-only; consumption is separate work)
+- Integrating these metrics into app-level ranking/search pipelines in this task.
+- Adding Rust/Python dependencies or sidecars.
+- Shipping ANN/vector index infrastructure.
+- Introducing runtime logging/telemetry in these math functions.
 
 ## Constraints & Assumptions
 
-- **Constraints:**
-  - TypeScript-only — no Python/Rust dependencies
-  - Pure functions — no I/O, all side-effect-free
-  - Must follow existing `packages/lib/src/math/` module conventions
-  - Numerical validation against reference values required
-- **Assumptions:**
-  - Input arrays fit in memory (no streaming in first release)
-  - Float64 precision sufficient (standard TypeScript number type)
-  - O(n²) complexity acceptable for Hoeffding's D and Distance Correlation (batch analytics use case)
+- Constraints:
+  - TypeScript-only implementation.
+  - Public APIs accept `ReadonlyArray<number>` and remain side-effect free.
+  - Invalid-input behavior must be explicit and consistent across metrics.
+  - Testing must use targeted package commands (`pnpm --filter @acme/lib test -- ...`).
+- Assumptions:
+  - O(n^2) metrics are acceptable for current planned analytical usage.
+  - A two-pass design for Distance Correlation is sufficient to avoid memory blow-ups.
+  - Existing math test infrastructure remains the primary validation harness.
 
-## Common Input Contract (All Metrics)
+## Fact-Find Reference
 
-1. **Input type:** Public APIs accept `ReadonlyArray<number>` and never mutate inputs.
-2. **Length checks:** Length mismatch or empty arrays are invalid for all metrics.
-3. **Finite values:** `NaN`, `Infinity`, and `-Infinity` are invalid.
-4. **Error policy:** Default behavior returns `NaN` for invalid inputs; `options?.strict === true` throws `RangeError` with actionable messages.
-5. **Minimum sample size:** Minimum valid `n` is metric-specific (e.g., Hoeffding `n >= 5`; most pair metrics `n >= 2`).
-6. **Constant arrays:** Behavior is explicitly documented per metric when denominators collapse (e.g., zero variance/zero entropy cases).
-7. **Deterministic tests:** Validation uses fixed fixtures or seeded PRNGs only (no unseeded randomness in assertions).
+- Related brief: `docs/plans/advanced-math-algorithms-fact-find.md`
+- Key findings carried into this plan:
+  - Opportunity K identified this work as TypeScript-feasible and high leverage for richer dependency analysis.
+  - Existing library already supports Pearson/Spearman but lacks non-monotonic dependence metrics.
+  - External references (fast_vector_similarity, hoeffdings_d_explainer) are algorithm references only; no runtime dependency adoption.
+- Validation-foundation note:
+  - The legacy fact-find predates current `/lp-fact-find` validation-frontmatter standards. This plan backfills confidence using repository evidence and targeted baseline test runs.
+
+## Existing System Notes
+
+- Key modules/files:
+  - `packages/lib/src/math/index.ts` - current math barrel export surface.
+  - `packages/lib/src/math/statistics/correlation.ts` - existing Pearson/Spearman baseline and NaN-on-invalid behavior.
+  - `packages/lib/src/math/statistics/__tests__/correlation.test.ts` - current correlation validation style.
+  - `packages/lib/src/math/statistics/__tests__/descriptive.test.ts` - extensive deterministic fixtures/patterns.
+  - `packages/lib/src/index.ts` - top-level export aggregation patterns.
+  - `packages/lib/package.json` - package export map (`./math/*`) relevant to new module exposure.
+- Patterns to follow:
+  - Pure-function module style from `packages/lib/src/math/statistics/`.
+  - Explicit edge-case tests and NaN behavior assertions in existing statistics suites.
+  - Package-scoped targeted test execution from `@acme/lib` script conventions.
+
+## Proposed Approach
+
+- Option A: Implement all five metrics in one uninterrupted batch.
+  - Trade-off: faster on paper, but high compounding uncertainty (especially NMI binning/contract choices).
+- Option B (chosen): Stage implementation with early core metrics + checkpoint + explicit NMI investigation gate.
+  - Trade-off: one additional planning/control task, but lower risk and clearer confidence progression.
+- Option C: Use external implementation bindings (Rust/Python).
+  - Trade-off: rejected by hard constraints.
+
+Chosen: Option B, because it validates the hardest assumptions early, keeps implementation quality high, and avoids committing deeply before evidence is gathered.
 
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
-|---|---|---|---:|---|---|---|---|
-| ASM-01 | IMPLEMENT | Create module structure + exports + type definitions | 92% | S | Pending | - | ASM-02, ASM-03, ASM-04, ASM-05, ASM-06 |
-| ASM-02 | IMPLEMENT | Implement Hoeffding's D with reference validation tests | 82% | M | Pending | ASM-01 | ASM-07 |
-| ASM-03 | IMPLEMENT | Implement Distance Correlation with reference validation tests | 84% | M | Pending | ASM-01 | ASM-07 |
-| ASM-04 | IMPLEMENT | Implement Jensen-Shannon Divergence with reference validation tests | 88% | S | Pending | ASM-01 | ASM-07 |
-| ASM-05 | IMPLEMENT | Implement Normalised Mutual Information with reference validation tests | 78% | M | Pending | ASM-01 | ASM-07 |
-| ASM-06 | IMPLEMENT | Implement Kendall's Tau with O(n log n) merge-sort algorithm | 86% | M | Pending | ASM-01 | ASM-07 |
-| ASM-07 | CHECKPOINT | Validate all metrics against published test cases + integration tests | 85% | S | Pending | ASM-02, ASM-03, ASM-04, ASM-05, ASM-06 | - |
+|---|---|---|---:|---:|---|---|---|
+| ASM-01 | IMPLEMENT | Create similarity module scaffold + shared validation contract | 90% | S | Complete (2026-02-13) | - | ASM-02, ASM-03, ASM-05, ASM-06, ASM-07 |
+| ASM-02 | IMPLEMENT | Implement Hoeffding's D + deterministic fixtures/tests | 83% | M | Pending | ASM-01 | ASM-04 |
+| ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Pending | ASM-01 | ASM-04 |
+| ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Pending | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
+| ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
+| ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Pending | ASM-04 | ASM-09 |
+| ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Pending | ASM-04 | ASM-09 |
+| ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Pending | ASM-05 | ASM-09 |
+| ASM-09 | IMPLEMENT | Add integration suite, docs, and final export hardening | 83% | M | Pending | ASM-06, ASM-07, ASM-08 | - |
 
-## Active Tasks
+> Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
-- `ASM-01` — Unblocked, ready to build.
+## Active tasks
+
+- ASM-02 - Unblocked, ready to build.
+- ASM-03 - Unblocked, ready to build.
+- ASM-05 - Required investigation gate before ASM-08 can start.
 
 ## Parallelism Guide
 
 | Wave | Tasks | Prerequisites | Notes |
-|---|---|---|---|
-| 1 | ASM-01 | - | Create module scaffold |
-| 2 | ASM-02, ASM-03, ASM-04, ASM-05, ASM-06 | ASM-01 | All 5 metrics can be implemented in parallel |
-| 3 | ASM-07 | ASM-02..ASM-06 | Final integration validation |
+|------|-------|---------------|-------|
+| 1 | ASM-01 | - | Foundation scaffold + contract utilities |
+| 2 | ASM-02, ASM-03 | ASM-01 | Core dependency metrics can build in parallel |
+| 3 | ASM-04 | ASM-02, ASM-03 | Reassess horizon before committing to remaining work |
+| 4 | ASM-05, ASM-06, ASM-07 | ASM-04 | Investigation + two independent implementations |
+| 5 | ASM-08 | ASM-05 | NMI implementation gated on calibration decisions |
+| 6 | ASM-09 | ASM-06, ASM-07, ASM-08 | Cross-metric integration + docs hardening |
+
+**Max parallelism:** 3 | **Critical path:** 6 waves | **Total tasks:** 9
 
 ## Tasks
 
-### ASM-01: Create module structure + exports + type definitions
-
+### ASM-01: Create similarity module scaffold + shared validation contract
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change
+- **Deliverable:** code-change (`packages/lib/src/math/similarity/*`) + baseline tests.
+- **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
-- **Confidence:** 92%
-- **Affects:**
-  - `packages/lib/src/math/similarity/` (new directory)
-  - `packages/lib/src/math/similarity/index.ts` (new)
-  - `packages/lib/src/math/index.ts` (add export)
+- **Affects:** `packages/lib/src/math/similarity/index.ts`, `packages/lib/src/math/similarity/common.ts`, `packages/lib/src/math/similarity/__tests__/common.test.ts`, `packages/lib/src/math/index.ts`, `[readonly] packages/lib/package.json`
+- **Depends on:** -
+- **Blocks:** ASM-02, ASM-03, ASM-05, ASM-06, ASM-07
+- **Confidence:** 90%
+  - Implementation: 91% - module/barrel and shared validator patterns match established math package conventions.
+  - Approach: 90% - centralizing validation avoids duplicate edge-case logic across all metrics.
+  - Impact: 90% - blast radius is local to `@acme/lib/math` exports.
 - **Acceptance:**
-  - Directory structure follows existing math module conventions
-  - Index file exports all similarity functions with TypeScript types
-  - README/JSDoc module documentation describes use cases
-  - TypeScript compilation passes
-- **Validation contract (VC-01):**
-  - **VC-01-01:** Module structure — `similarity/` directory exists with `index.ts`, `__tests__/` subdirectory
-  - **VC-01-02:** Export surface — `packages/lib/src/math/index.ts` includes `export * from "./similarity"`
-  - **VC-01-03:** Type safety — `npx tsc --project packages/lib/tsconfig.json --noEmit` passes
-  - **Acceptance coverage:** VC-01-01 covers criteria 1,2; VC-01-02 covers criteria 2; VC-01-03 covers criteria 4
-  - **Validation type:** static check (file existence + typecheck)
-  - **Run/verify:** `ls packages/lib/src/math/similarity/ && npx tsc --noEmit`
+  - New `similarity` module directory exists with barrel and shared validation utility.
+  - Validation utility enforces common input policy (length checks, finite values, strict-mode throw path).
+  - `packages/lib/src/math/index.ts` exports the new module.
+- **Validation contract:**
+  - TC-01: new module files compile and import cleanly.
+  - TC-02: validation utility returns `NaN` in default mode for invalid inputs.
+  - TC-03: strict mode throws `RangeError` with actionable message.
+  - **Acceptance coverage:** TC-01 covers module scaffold/export; TC-02..TC-03 cover contract behavior.
+  - **Validation type:** unit tests + package test run.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/common.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/common.test.ts`
+- **Execution plan:** Red -> Green -> Refactor.
+- **Planning validation:**
+  - Checks run: `pnpm --filter @acme/lib test -- packages/lib/src/math/statistics/__tests__/correlation.test.ts` (23 passing).
+  - Validation artifacts written: none.
+  - Unexpected findings: no existing `similarity` module currently exists.
+- **Rollout / rollback:**
+  - Rollout: additive module introduction only.
+  - Rollback: remove `similarity` export from math barrel and module directory.
+- **Documentation impact:** none.
+- **Notes / references:** `packages/lib/src/math/statistics/correlation.ts`.
 
-### ASM-02: Implement Hoeffding's D with reference validation tests
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03
+  - Cycles: 1 red-green cycle
+  - Initial validation: FAIL expected (`Cannot find module '../common'`)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 90%
+  - Post-validation: 90%
+  - Delta reason: validation confirmed assumptions
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/common.test.ts` - PASS (8 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/statistics/__tests__/correlation.test.ts` - PASS (23 tests)
+  - Ran: `pnpm --filter @acme/lib lint` - PASS
+  - Ran: `pnpm --filter @acme/lib build` - PASS
+- **Documentation updated:** None required
+- **Implementation notes:** Added similarity scaffold and shared validation helpers, plus math-barrel export wiring.
 
+### ASM-02: Implement Hoeffding's D + deterministic fixtures/tests
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change
+- **Deliverable:** code-change + unit tests.
+- **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
-- **Confidence:** 82%
+- **Affects:** `packages/lib/src/math/similarity/hoeffding.ts`, `packages/lib/src/math/similarity/__tests__/hoeffding.test.ts`, `packages/lib/src/math/similarity/index.ts`
 - **Depends on:** ASM-01
-- **Scope:**
-  - Implement `hoeffding(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Detects arbitrary dependencies (non-monotonic, ring-shaped, X-shaped)
-  - Based on bivariate rank-count estimator using `Rᵢ`, `Sᵢ`, `Qᵢ` terms and `D1/D2/D3` aggregation
-  - Uses the scaled convention `D* = 30 × D` (Harrell/DescTools-style reporting)
-  - Reported range target is `[-0.5, 1]` under no-tie conditions for this scaling convention
-  - Reference: Hoeffding (1948), "A Non-Parametric Test of Independence"
-- **Implementation notes:**
-  - Use rank/count estimator (not explicit quadruple enumeration)
-  - Compute `Qᵢ` as count of points where both coordinates are strictly less than point `i`
-  - `Qᵢ` implementation: start with O(n²) scan (acceptable), optional future Fenwick-tree optimization to O(n log n)
-  - Minimum valid sample size is `n >= 5` for the normalization used (`(n-4)` denominator)
-  - Tie policy: use average ranks plus strict `<` for `Qᵢ`; document that heavy ties/discrete marginals reduce interpretability
-  - Tie semantics are fully deterministic: midranks, stable tie-breaking via original index, and strict comparison in both coordinates for `Qᵢ`
-  - Reference: [hoeffdings_d_explainer](https://github.com/Dicklesworthstone/hoeffdings_d_explainer) (75-line NumPy version)
-- **Affects:**
-  - `packages/lib/src/math/similarity/hoeffding.ts` (new)
-  - `packages/lib/src/math/similarity/__tests__/hoeffding.test.ts` (new)
-  - `packages/lib/src/math/similarity/index.ts` (add export)
+- **Blocks:** ASM-04
+- **Confidence:** 83%
+  - Implementation: 84% - algorithm is well-defined but tie semantics and scaling must be explicit.
+  - Approach: 83% - adds genuinely missing non-monotonic dependency detection.
+  - Impact: 83% - isolated function surface with targeted tests keeps regression risk bounded.
 - **Acceptance:**
-  - Pure function signature: `hoeffding(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Returns `NaN` for invalid inputs in default mode; throws `RangeError` in strict mode
-  - Invalid inputs include empty arrays, mismatched lengths, non-finite values, and `n < 5`
-  - Detects perfect independence (returns ~0 for uncorrelated data)
-  - Detects non-monotonic patterns (e.g., ring: x² + y² = r²)
-  - Tie-heavy datasets have deterministic behavior with documented caveat on discontinuous marginals
-  - Scaling convention is documented in JSDoc and fixtures (`D* = 30 × D`) to avoid cross-library constant-factor mismatches
-  - Comprehensive tests validate against known reference values
-- **Validation contract (VC-02):**
-  - **VC-02-01:** Perfect independence (deterministic fixture) — `hoeffding(fixtureIndependentX, fixtureIndependentY)` returns value close to 0 (within ±0.15)
-  - **VC-02-02:** Perfect positive linear — `hoeffding([1,2,3,4,5], [2,4,6,8,10])` returns positive value (> 0.5)
-  - **VC-02-03:** Ring pattern — `hoeffding(cosine_points, sine_points)` for unit circle detects dependency (> 0.3)
-  - **VC-02-04:** Invalid inputs — empty arrays, mismatched lengths, non-finite values, and `n < 5` return `NaN` (or throw in strict mode)
-  - **VC-02-05:** Reference validation — test against published values from Hoeffding (1948) Table 1
-  - **VC-02-06:** Tie-heavy fixture — deterministic output with exact fixture value assertion (tolerance `<= 1e-12`)
-  - **VC-02-07:** Scaling validation — canonical fixture matches documented scaled convention (`D* = 30 × D`)
-  - **Acceptance coverage:** VC-02-01..02-07 cover criteria 1-7
-  - **Validation type:** unit tests with numerical assertions
-  - **Run/verify:** `npx jest --testPathPattern=hoeffding.test`
+  - Implements documented Hoeffding's D variant with deterministic tie handling.
+  - Handles invalid inputs and minimum sample-size constraints consistently with shared contract.
+  - Includes deterministic fixtures for linear, independent, and non-monotonic patterns.
+- **Validation contract:**
+  - TC-01: independent fixture returns near-zero signal.
+  - TC-02: monotonic fixture returns strong positive signal.
+  - TC-03: non-monotonic deterministic fixture returns non-zero dependence.
+  - TC-04: invalid inputs return `NaN` or throw in strict mode.
+  - TC-05: repeated runs on tie-heavy fixture are deterministic.
+  - **Acceptance coverage:** TC-01..TC-05 map 1:1 to correctness, edge handling, and determinism.
+  - **Validation type:** unit tests.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/hoeffding.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/hoeffding.test.ts`
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - Rank/tie precedent -> `packages/lib/src/math/statistics/correlation.ts` tie-ranking helper confirms deterministic tie pattern baseline.
+- **Planning validation:**
+  - Checks run: baseline correlation suite confirms current NaN/edge-case expectations.
+  - Validation artifacts written: none.
+  - Unexpected findings: none.
+- **What would make this >=90%:** verify fixture outputs against two independent references (NumPy/R) committed as snapshots.
+- **Rollout / rollback:**
+  - Rollout: additive export in similarity barrel.
+  - Rollback: remove metric export and test file only.
+- **Documentation impact:** add metric usage caveats in similarity README (added in ASM-09).
+- **Notes / references:** `docs/plans/advanced-math-algorithms-fact-find.md` Opportunity K.
 
-### ASM-03: Implement Distance Correlation with reference validation tests
-
+### ASM-03: Implement Distance Correlation + memory-safe two-pass tests
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change
+- **Deliverable:** code-change + unit tests.
+- **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/math/similarity/distance-correlation.ts`, `packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts`, `packages/lib/src/math/similarity/index.ts`
+- **Depends on:** ASM-01
+- **Blocks:** ASM-04
 - **Confidence:** 84%
-- **Depends on:** ASM-01
-- **Scope:**
-  - Implement `distanceCorrelation(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Detects both linear and non-linear dependencies
-  - Based on distance matrices (Székely, Rizzo, Bakirov 2007)
-  - Range: 0 to 1 (0 = independence, 1 = affine dependence under theorem conditions)
-  - Reference: "Measuring and Testing Dependence by Correlation of Distances" (Annals of Statistics, 2007)
-- **Implementation notes:**
-  - Use a two-pass O(n²)-time/O(n)-memory algorithm (avoid storing full `n x n` matrices)
-  - Pass 1: accumulate row means and grand means for X/Y distance matrices
-  - Pass 2: recompute centered distances and accumulate covariance/variance sums
-  - Document estimator choice explicitly: biased estimator (`1/n²` scaling) in v1
-  - Unbiased estimator is deferred to a future revision to avoid low-value API complexity in v1
-  - Distance correlation = dCov(X,Y) / sqrt(dVar(X) * dVar(Y))
-  - O(n²) time complexity for distance computation
-- **Affects:**
-  - `packages/lib/src/math/similarity/distance-correlation.ts` (new)
-  - `packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts` (new)
-  - `packages/lib/src/math/similarity/index.ts` (add export)
+  - Implementation: 85% - formula is standard; memory-safe accumulation requires care.
+  - Approach: 84% - fills a concrete detection gap where Pearson can miss nonlinear dependence.
+  - Impact: 84% - function is isolated and testable with deterministic fixtures.
 - **Acceptance:**
-  - Pure function signature: `distanceCorrelation(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Returns `NaN` for invalid inputs in default mode; throws `RangeError` in strict mode
-  - Returns near 0 on independent fixtures; population distance correlation is 0 iff independence
-  - Can return 1 for affine dependence under theorem conditions (linear + shift/scale/rotation)
-  - For non-linear deterministic relationships (e.g., `y = x²`), returns high values but generally `< 1`
-  - Constant-array behavior: if either input has zero distance variance (constant sample), return `NaN` (or throw in strict mode)
-  - Detects non-linear relationships that Pearson misses (e.g., y = x²)
-  - Comprehensive tests validate against reference implementation values
-- **Validation contract (VC-03):**
-  - **VC-03-01:** Independence (deterministic fixture) — `distanceCorrelation(fixtureIndependentX, fixtureIndependentY)` returns value close to 0 (< 0.2)
-  - **VC-03-02:** Perfect linear — `distanceCorrelation([1,2,3,4,5], [2,4,6,8,10])` returns value close to 1 (> 0.95)
-  - **VC-03-03:** Non-linear detection — with symmetric `x` around 0, `distanceCorrelation(x, x²)` returns high value (> 0.8) while `pearson(x, x²)` remains near 0
-  - **VC-03-04:** Invalid inputs — empty arrays, mismatched lengths, non-finite values return `NaN` (or throw in strict mode)
-  - **VC-03-05:** Reference validation — test against examples from Székely et al. (2007) paper
-  - **VC-03-06:** Constant-array handling — constant `xs` or `ys` returns `NaN` (or throws in strict mode)
-  - **Acceptance coverage:** VC-03-01..03-06 cover criteria 1-7
-  - **Validation type:** unit tests with numerical assertions
-  - **Run/verify:** `npx jest --testPathPattern=distance-correlation.test`
+  - Implements distance correlation using two-pass accumulation to avoid full matrix allocation.
+  - Returns near-zero for independence fixtures and high values for deterministic nonlinear dependence.
+  - Follows shared invalid-input policy.
+- **Validation contract:**
+  - TC-01: linear deterministic fixture returns value close to 1.
+  - TC-02: symmetric quadratic fixture returns high value while Pearson baseline remains near 0.
+  - TC-03: independent fixture returns low value.
+  - TC-04: invalid/constant-input paths return `NaN` or strict errors.
+  - **Acceptance coverage:** TC-01..TC-04 cover correctness and failure handling.
+  - **Validation type:** unit tests.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/distance-correlation.test.ts`
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - Runtime feasibility -> O(n)-memory requirement selected to avoid large in-memory matrices in Node runtime.
+- **Planning validation:**
+  - Checks run: `pnpm --filter @acme/lib test -- packages/lib/src/math/statistics/__tests__/descriptive.test.ts` (73 passing).
+  - Validation artifacts written: none.
+  - Unexpected findings: none.
+- **What would make this >=90%:** add benchmark snapshot for n=1k and n=10k fixture sizes.
+- **Rollout / rollback:**
+  - Rollout: additive metric export.
+  - Rollback: remove distance-correlation files and export.
+- **Documentation impact:** document estimator choice and complexity notes in similarity README (ASM-09).
+- **Notes / references:** `packages/lib/src/math/statistics/__tests__/correlation.test.ts` (baseline behavior).
 
-### ASM-04: Implement Jensen-Shannon Divergence with reference validation tests
-
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
-- **Confidence:** 88%
-- **Depends on:** ASM-01
-- **Scope:**
-  - Implement `jensenShannonDivergence(p: ReadonlyArray<number>, q: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Implement `jensenShannonDistance(p: ReadonlyArray<number>, q: ReadonlyArray<number>, options?: { strict?: boolean }): number` as `sqrt(JSD)`
-  - Information-theoretic symmetric divergence measure
-  - Based on Kullback-Leibler divergence
-  - Range: 0 to 1 (after normalization with log2)
-  - Reference: "Divergence measures based on the Shannon entropy" (Lin, 1991)
-- **Implementation notes:**
-  - JS(P||Q) = 0.5 * KL(P||M) + 0.5 * KL(Q||M), where M = 0.5*(P+Q)
-  - KL divergence: sum(p[i] * log(p[i] / q[i]))
-  - Inputs must be non-negative; auto-normalize count vectors by default
-  - Compute with log base 2 (or natural log divided by `log(2)`) to guarantee [0,1] bound
-  - If both inputs sum to 0, return `NaN` (or throw in strict mode)
-  - Handle log(0) edge cases (define 0*log(0) = 0)
-- **Affects:**
-  - `packages/lib/src/math/similarity/jensen-shannon.ts` (new)
-  - `packages/lib/src/math/similarity/__tests__/jensen-shannon.test.ts` (new)
-  - `packages/lib/src/math/similarity/index.ts` (add export)
-- **Acceptance:**
-  - Pure function signatures include divergence and distance variants
-  - Returns `NaN` for invalid inputs in default mode; throws `RangeError` in strict mode
-  - Invalid inputs include empty arrays, mismatched lengths, negative values, and both-zero totals
-  - Returns 0 for identical distributions
-  - Returns 1 for completely disjoint distributions (maximum divergence)
-  - Symmetric: JSD(P,Q) = JSD(Q,P)
-  - Handles edge cases: zeros in distributions, near-zero probabilities
-- **Validation contract (VC-04):**
-  - **VC-04-01:** Identical distributions — `jensenShannonDivergence([0.5,0.5], [0.5,0.5])` returns 0
-  - **VC-04-02:** Disjoint distributions — `jensenShannonDivergence([1,0,0], [0,0,1])` returns value close to 1
-  - **VC-04-03:** Symmetry — `JSD(P,Q) === JSD(Q,P)` for all test cases
-  - **VC-04-04:** Edge cases — handles [1,0,0] vs [0.99,0.005,0.005] without NaN/Infinity; both-zero totals return `NaN` (or throw in strict mode)
-  - **VC-04-05:** Distance metric — `jensenShannonDistance(P,Q) === Math.sqrt(jensenShannonDivergence(P,Q))`
-  - **VC-04-06:** Reference validation — test against known JSD values from information theory literature
-  - **Acceptance coverage:** VC-04-01..04-06 cover criteria 1-7
-  - **Validation type:** unit tests with numerical assertions
-  - **Run/verify:** `npx jest --testPathPattern=jensen-shannon.test`
-
-### ASM-05: Implement Normalised Mutual Information with reference validation tests
-
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
-- **Confidence:** 78%
-- **Replan note:** Lower confidence due to binning strategy complexity for continuous variables
-- **Depends on:** ASM-01
-- **Scope:**
-  - Implement `normalisedMutualInformationDiscrete(labelsX: ReadonlyArray<number>, labelsY: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Implement `normalisedMutualInformationBinned(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { bins?: number; binning?: "equalWidth" | "quantile"; strict?: boolean }): number`
-  - Discrete API is for category labels; binned API is for continuous measurements
-  - Based on entropy: NMI(X,Y) = 2*I(X;Y) / (H(X) + H(Y))
-  - Range: 0 to 1 (0 = independence, 1 = perfect dependency)
-  - Reference: "Normalized Mutual Information Feature Selection" (Estévez et al., 2009)
-- **Implementation notes:**
-  - `normalisedMutualInformationDiscrete` treats each unique numeric value as a category label
-  - `normalisedMutualInformationBinned` bins continuous variables (default 10 bins, configurable)
-  - Mutual Information: I(X;Y) = sum(p(x,y) * log(p(x,y) / (p(x)*p(y))))
-  - Entropy: H(X) = -sum(p(x) * log(p(x)))
-  - Definition used in this module is fixed to `2I/(H(X)+H(Y))`
-  - Binning strategy supports both `equalWidth` and `quantile` (equal-frequency) to handle outliers/heavy tails
-  - Constant-array policy: if both entropies are zero, return `NaN` (or throw in strict mode); if one entropy is zero and the other non-zero, return 0
-- **Affects:**
-  - `packages/lib/src/math/similarity/mutual-information.ts` (new)
-  - `packages/lib/src/math/similarity/__tests__/mutual-information.test.ts` (new)
-  - `packages/lib/src/math/similarity/index.ts` (add export)
-- **Acceptance:**
-  - Pure function signatures separate discrete-label and binned-continuous modes
-  - Returns `NaN` for invalid inputs in default mode; throws `RangeError` in strict mode
-  - Returns near 0 on independent fixtures
-  - Returns 1 for information-preserving dependence (bijective relationship after discretization/binning)
-  - Deterministic many-to-one mappings can be strongly dependent with NMI `< 1`
-  - Binned mode supports configurable binning (`equalWidth` and `quantile`)
-  - Handles edge cases: constant arrays, identical arrays, heavy-tail distributions
-- **Validation contract (VC-05):**
-  - **VC-05-01:** Independence (deterministic fixture) — `NMI(fixtureIndependentX, fixtureIndependentY)` returns value close to 0 (< 0.2)
-  - **VC-05-02:** Information-preserving dependence — discrete labels with bijective remap return value close to 1 (> 0.95)
-  - **VC-05-03:** Deterministic many-to-one mapping — NMI is high but `< 1` on canonical fixture
-  - **VC-05-04:** Binning sensitivity — compare `equalWidth` vs `quantile` on heavy-tail fixture; quantile shows improved stability
-  - **VC-05-05:** Constant entropy handling — both-constant returns `NaN` (or throws in strict mode); one-constant-one-variable returns 0
-  - **VC-05-06:** Reference validation — test against published NMI values from clustering/feature-selection papers
-  - **VC-05-07:** Mode semantics — discrete mode and binned mode produce expected, mode-specific fixture values
-  - **Acceptance coverage:** VC-05-01..05-07 cover criteria 1-7
-  - **Validation type:** unit tests with numerical assertions
-  - **Run/verify:** `npx jest --testPathPattern=mutual-information.test`
-
-### ASM-06: Implement Kendall's Tau with O(n log n) merge-sort algorithm
-
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change
-- **Execution-Skill:** /lp-build
-- **Confidence:** 86%
-- **Depends on:** ASM-01
-- **Scope:**
-  - Implement `kendallTau(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Rank-based concordance measure (complements existing Spearman)
-  - O(n log n) via merge-sort inversion counting (not naive O(n²))
-  - Range: -1 to 1 (-1 = perfect discordance, 0 = no association, 1 = perfect concordance)
-  - Reference: "A New Measure of Rank Correlation" (Kendall, 1938)
-- **Implementation notes:**
-  - Kendall's τ = (C - D) / (C + D), where C = concordant pairs, D = discordant pairs
-  - Naive algorithm: O(n²) all-pairs comparison
-  - Efficient algorithm: O(n log n) using merge-sort inversion counting
-  - Pair (xᵢ,yᵢ), (xⱼ,yⱼ) is concordant if (xᵢ-xⱼ)(yᵢ-yⱼ) > 0
-  - Merge-sort approach: sort by x, count y-inversions during merge
-  - Handles ties with tau-b formula: τb = (C-D) / sqrt((n₀-nₓ)(n₀-nᵧ))
-- **Affects:**
-  - `packages/lib/src/math/similarity/kendall.ts` (new)
-  - `packages/lib/src/math/similarity/__tests__/kendall.test.ts` (new)
-  - `packages/lib/src/math/similarity/index.ts` (add export)
-- **Acceptance:**
-  - Pure function signature: `kendallTau(xs: ReadonlyArray<number>, ys: ReadonlyArray<number>, options?: { strict?: boolean }): number`
-  - Returns `NaN` for invalid inputs in default mode; throws `RangeError` in strict mode
-  - Returns 1 for perfect concordance (monotonic increasing)
-  - Returns -1 for perfect discordance (monotonic decreasing)
-  - Returns ~0 for uncorrelated data
-  - O(n log n) complexity validated via benchmark harness (not hard fail unit threshold)
-  - Handles ties correctly (tau-b variant)
-- **Validation contract (VC-06):**
-  - **VC-06-01:** Perfect concordance — `kendallTau([1,2,3,4,5], [2,4,6,8,10])` returns 1
-  - **VC-06-02:** Perfect discordance — `kendallTau([1,2,3,4,5], [5,4,3,2,1])` returns -1
-  - **VC-06-03:** Independence (deterministic fixture) — `kendallTau(fixtureIndependentX, fixtureIndependentY)` returns value close to 0 (within ±0.2)
-  - **VC-06-04:** Tie handling — arrays with duplicate values produce valid tau-b in [-1, 1]
-  - **VC-06-05:** Performance benchmark — n=10,000 runtime is reported and tracked (non-flaky benchmark, CI informational)
-  - **VC-06-06:** Reference validation — test against published tau values from Kendall (1938)
-  - **Acceptance coverage:** VC-06-01..06-04 cover criteria 1-7; VC-06-05 covers performance; VC-06-06 covers validation
-  - **Validation type:** unit tests with numerical + performance assertions
-  - **Run/verify:** `npx jest --testPathPattern=kendall.test`
-
-### ASM-07: Validate all metrics against published test cases + integration tests
-
+### ASM-04: Horizon checkpoint — reassess remaining plan
 - **Type:** CHECKPOINT
-- **Deliverable:** validation report + integration tests
-- **Execution-Skill:** /lp-build
-- **Confidence:** 85%
-- **Depends on:** ASM-02, ASM-03, ASM-04, ASM-05, ASM-06
-- **Scope:**
-  - Cross-metric validation suite (compare against Pearson/Spearman on same data)
-  - Integration tests consuming all 5 metrics together
-  - Documentation examples (JSDoc) verified to run
-  - Performance benchmarks for all metrics
-  - Edge case matrix (empty, single, ties, constant, large arrays)
-- **Affects:**
-  - `packages/lib/src/math/similarity/__tests__/integration.test.ts` (new)
-  - `packages/lib/src/math/similarity/README.md` (new, usage guide)
-  - `packages/lib/src/math/similarity/index.ts` (final JSDoc review)
+- **Deliverable:** plan update/re-sequencing artifact.
+- **Execution-Skill:** /lp-replan
+- **Affects:** `docs/plans/advanced-similarity-metrics-plan.md`
+- **Depends on:** ASM-02, ASM-03
+- **Blocks:** ASM-05, ASM-06, ASM-07
+- **Confidence:** 95%
+  - Implementation: 95% - procedural checkpoint task.
+  - Approach: 95% - reduces compounding uncertainty before second phase.
+  - Impact: 95% - low cost, high risk reduction.
 - **Acceptance:**
-  - Integration test suite covers all 5 metrics together
-  - Cross-metric comparison test (same dataset, different results expected)
-  - Performance baseline established (n=100, n=1000, n=10000) using benchmark harness
-  - Documentation examples all execute successfully
-  - No TypeScript errors, no lint errors
-  - Test coverage ≥ 90% for similarity module
-- **Validation contract (VC-07):**
-  - **VC-07-01:** Cross-metric comparison — linear data: Pearson ≈ Distance Corr ≈ 1, Hoeffding > 0.5, Kendall ≈ 1
-  - **VC-07-02:** Non-linear detection (symmetric x around 0) — y=x²: Distance Corr > 0.8, Pearson near 0, Hoeffding > 0.3
-  - **VC-07-03:** Performance baseline — benchmark report records n=1000 runtimes for all metrics (no strict CI wall-clock assertion)
-  - **VC-07-04:** Documentation — all JSDoc examples run without errors
-  - **VC-07-05:** Test coverage — `npx jest --coverage --testPathPattern=similarity` shows ≥ 90% line coverage
-  - **VC-07-06:** Dataset cookbook — README includes deterministic fixtures: linear up/down, symmetric quadratic, circle/ring, and tie-heavy discrete example
-  - **Acceptance coverage:** VC-07-01..07-06 cover criteria 1-6
-  - **Validation type:** integration tests + coverage report
-  - **Run/verify:** `npx jest --coverage --testPathPattern=similarity`
+  - Re-score ASM-05..ASM-09 using evidence from ASM-02/ASM-03 outputs.
+  - Confirm shared validation contract and fixture strategy are holding.
+  - Update dependencies/confidence if observed runtime or numerical behavior differs from assumptions.
+- **Horizon assumptions to validate:**
+  - Shared contract utility is sufficient for all remaining metrics.
+  - NMI complexity remains isolated to calibration/API decisions.
+  - Export and test structure scales cleanly to integration stage.
 
-## Validation Strategy
+### ASM-05: Resolve NMI contract/binning calibration before implementation
+- **Type:** INVESTIGATE
+- **Deliverable:** analysis artifact (`docs/plans/advanced-similarity-metrics-nmi-calibration.md`) + plan update.
+- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/math/similarity/mutual-information.ts` (planned), `packages/lib/src/math/similarity/__tests__/mutual-information.test.ts` (planned), `docs/plans/advanced-similarity-metrics-plan.md`
+- **Depends on:** ASM-04
+- **Blocks:** ASM-08
+- **Confidence:** 76% ⚠️ BELOW THRESHOLD
+  - Implementation: 80% - formulas are known, but practical binning/normalization choices need proof.
+  - Approach: 76% - unresolved API semantics can create inconsistent results.
+  - Impact: 76% - poor calibration can mislead downstream analytics.
+- **Blockers / questions to answer:**
+  - Which NMI normalization variant is canonical for this module (fixed formula and documented range guarantees)?
+  - What default binning strategy is stable for heavy-tail fixtures (`equalWidth` vs `quantile`)?
+  - Which fixture set best prevents regressions while avoiding overfitting to one distribution shape?
+- **Acceptance:**
+  - Lock one canonical NMI API contract with explicit normalization/binning defaults.
+  - Produce deterministic fixture set and acceptance thresholds for ASM-08.
+  - Raise ASM-08 confidence inputs to >=80% (or explicitly record waiver).
+- **Notes / references:** NMI uncertainty was the only sub-80 IMPLEMENT area in previous revision and is now isolated.
 
-1. **Numerical accuracy** — validate against frozen fixtures generated once via external R/Python scripts; check fixture files into repo
-2. **Edge case robustness** — empty/mismatched arrays, non-finite values, constant arrays, and ties handled per common contract
-3. **Performance** — O(n²) metrics benchmarked with reporting harness; Kendall O(n log n) behavior benchmarked separately
-4. **Integration** — cross-metric deterministic dataset cookbook ensures coherent behavior and non-flaky comparisons
-5. **Fixture-first assertions** — prefer fixture-based numeric assertions over heuristic threshold-only checks
-6. **Documentation** — JSDoc examples executable and correct
+### ASM-06: Implement Jensen-Shannon divergence/distance
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + unit tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/math/similarity/jensen-shannon.ts`, `packages/lib/src/math/similarity/__tests__/jensen-shannon.test.ts`, `packages/lib/src/math/similarity/index.ts`
+- **Depends on:** ASM-04
+- **Blocks:** ASM-09
+- **Confidence:** 88%
+  - Implementation: 89% - stable formula and well-known edge cases.
+  - Approach: 88% - adds information-theoretic divergence not covered by existing module.
+  - Impact: 88% - contained API + deterministic fixtures keep blast radius low.
+- **Acceptance:**
+  - Exposes divergence and distance variants.
+  - Handles normalized and count-style non-negative inputs per chosen contract.
+  - Correctly handles zero-probability edge cases.
+- **Validation contract:**
+  - TC-01: identical distributions return 0.
+  - TC-02: disjoint distributions approach maximum divergence.
+  - TC-03: symmetry property holds (`JSD(P,Q) = JSD(Q,P)`).
+  - TC-04: distance equals `sqrt(divergence)`.
+  - TC-05: invalid inputs follow shared error policy.
+  - **Acceptance coverage:** TC-01..TC-05 map directly to formula correctness and contract behavior.
+  - **Validation type:** unit tests.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/jensen-shannon.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/jensen-shannon.test.ts`
+- **Execution plan:** Red -> Green -> Refactor.
+- **What would make this >=90%:** add snapshot fixtures generated from a second independent implementation.
+- **Rollout / rollback:**
+  - Rollout: additive export.
+  - Rollback: remove jensen-shannon files and export.
+- **Documentation impact:** add JSD examples and caveats in similarity README (ASM-09).
+- **Notes / references:** current invalid-input precedent in `packages/lib/src/math/statistics/correlation.ts`.
 
-Runtime remains TypeScript-only; external R/Python tools are one-time dev-only fixture generators.
+### ASM-07: Implement Kendall's Tau-b (O(n log n))
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + unit tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/math/similarity/kendall.ts`, `packages/lib/src/math/similarity/__tests__/kendall.test.ts`, `packages/lib/src/math/similarity/index.ts`
+- **Depends on:** ASM-04
+- **Blocks:** ASM-09
+- **Confidence:** 85%
+  - Implementation: 86% - merge-sort inversion counting is known but tie-correction details require care.
+  - Approach: 85% - complements existing Spearman by adding pairwise concordance metric.
+  - Impact: 85% - isolated function and deterministic fixtures reduce systemic risk.
+- **Acceptance:**
+  - Implements tau-b with tie correction.
+  - Achieves O(n log n) algorithmic structure.
+  - Handles perfect concordance/discordance and tie-heavy edge cases.
+- **Validation contract:**
+  - TC-01: perfect concordance returns 1.
+  - TC-02: perfect discordance returns -1.
+  - TC-03: tie-heavy fixtures stay within [-1, 1] and deterministic.
+  - TC-04: invalid inputs follow shared error policy.
+  - **Acceptance coverage:** TC-01..TC-04 cover correctness and edge behavior.
+  - **Validation type:** unit tests + informational benchmark assertion.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/kendall.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/kendall.test.ts`
+- **Execution plan:** Red -> Green -> Refactor.
+- **Planning validation:**
+  - Checks run: existing correlation tests confirm current rank-based behavior expectations.
+  - Validation artifacts written: none.
+  - Unexpected findings: none.
+- **What would make this >=90%:** cross-check merge-sort result against naive O(n^2) reference for randomized seeded fixtures.
+- **Rollout / rollback:**
+  - Rollout: additive export.
+  - Rollback: remove kendall files and export.
+- **Documentation impact:** add tau-b tie semantics note in similarity README (ASM-09).
+- **Notes / references:** existing rank treatment in `packages/lib/src/math/statistics/correlation.ts`.
 
-## Risks
+### ASM-08: Implement NMI discrete + binned modes using ASM-05 decisions
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + unit tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/math/similarity/mutual-information.ts`, `packages/lib/src/math/similarity/__tests__/mutual-information.test.ts`, `packages/lib/src/math/similarity/index.ts`
+- **Depends on:** ASM-05
+- **Blocks:** ASM-09
+- **Confidence:** 81%
+  - Implementation: 82% - feasible once calibration decisions are fixed.
+  - Approach: 81% - API is useful, but must be tightly specified to avoid misuse.
+  - Impact: 81% - moderate risk due interpretation sensitivity, controlled by explicit fixtures/docs.
+- **Acceptance:**
+  - Implements both discrete-label and binned-continuous entry points.
+  - Uses canonical normalization and defaults from ASM-05.
+  - Edge cases (constant arrays, sparse bins, non-finite values) are deterministic and documented.
+- **Validation contract:**
+  - TC-01: independent fixture returns near 0.
+  - TC-02: bijective mapping fixture returns near 1.
+  - TC-03: many-to-one mapping fixture returns high but <1.
+  - TC-04: heavy-tail fixture comparison demonstrates deterministic behavior across configured binning modes.
+  - TC-05: invalid inputs follow shared error policy.
+  - **Acceptance coverage:** TC-01..TC-05 map to correctness, stability, and failure behavior.
+  - **Validation type:** unit tests.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/mutual-information.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/mutual-information.test.ts`
+- **Execution plan:** Red -> Green -> Refactor.
+- **What would make this >=90%:** calibrate and snapshot one real-world heavy-tail dataset from internal analytics export.
+- **Rollout / rollback:**
+  - Rollout: additive export after ASM-05 decisions are locked.
+  - Rollback: remove NMI export and files, keep investigation artifact for future attempts.
+- **Documentation impact:** document binning strategy defaults and interpretation limits in similarity README (ASM-09).
+- **Notes / references:** requires completed `docs/plans/advanced-similarity-metrics-nmi-calibration.md`.
 
-| Risk | Severity | Mitigation |
-|---|---|---|
-| Hoeffding's D tie/discrete-data defect can mislead interpretation | High | Lock deterministic tie strategy; document caveat; recommend Distance Corr/NMI for heavy-tie datasets |
-| Distance correlation matrix computation expensive or memory-heavy | Medium | Use two-pass O(n²)-time/O(n)-memory algorithm; avoid full matrix allocation |
-| Mutual information binning strategy affects accuracy | Medium | Support `equalWidth` and `quantile`; document when to use each |
-| Kendall's tau merge-sort implementation complexity | Low | Follow established algorithm (Knight, 1966); validate against naive O(n²) version |
-| Reference validation data hard to reproduce from papers | Medium | Generate and version frozen fixtures from one-time R/Python scripts; validate TS outputs against fixtures |
+### ASM-09: Add integration suite, docs, and final export hardening
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + integration tests + module documentation.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/math/similarity/__tests__/integration.test.ts`, `packages/lib/src/math/similarity/README.md`, `packages/lib/src/math/similarity/index.ts`, `packages/lib/src/math/index.ts`, `[readonly] packages/lib/src/index.ts`
+- **Depends on:** ASM-06, ASM-07, ASM-08
+- **Blocks:** -
+- **Confidence:** 83%
+  - Implementation: 84% - integration and docs are straightforward once metric APIs are stable.
+  - Approach: 83% - final hardening reduces drift and clarifies use-cases.
+  - Impact: 83% - broadest touchpoint in this plan, but still package-local.
+- **Acceptance:**
+  - Cross-metric integration tests confirm expected relative behavior on shared deterministic datasets.
+  - Similarity module README documents API signatures, edge cases, and recommended usage.
+  - Package tests for all similarity metrics pass via targeted commands.
+- **Validation contract:**
+  - TC-01: integration fixture demonstrates metrics diverge where expected (linear vs nonlinear datasets).
+  - TC-02: full similarity test set passes in `@acme/lib` package.
+  - TC-03: docs examples execute with matching outputs.
+  - TC-04: lint passes for changed package files.
+  - **Acceptance coverage:** TC-01..TC-04 cover integration behavior, functional correctness, docs, and code quality.
+  - **Validation type:** integration tests + package lint.
+  - **Validation location/evidence:** `packages/lib/src/math/similarity/__tests__/integration.test.ts`, `packages/lib/src/math/similarity/README.md`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/integration.test.ts` and `pnpm --filter @acme/lib lint`
+- **Execution plan:** Red -> Green -> Refactor.
+- **Planning validation:**
+  - Checks run: baseline package tests prove current harness stability for math modules.
+  - Validation artifacts written: none.
+  - Unexpected findings: `pnpm --filter @acme/lib test -- --listTests` returns "No tests found" under current script wiring; direct targeted-path runs remain reliable and are used in this plan.
+- **What would make this >=90%:** run full `@acme/lib` test suite clean plus benchmark snapshot artifact.
+- **Rollout / rollback:**
+  - Rollout: merge as additive package API extension.
+  - Rollback: remove similarity export line(s) and module directory.
+- **Documentation impact:** add/maintain `packages/lib/src/math/similarity/README.md` and update any affected library docs referencing available math metrics.
+- **Notes / references:** `packages/lib/src/math/index.ts`, `packages/lib/package.json` export map.
 
-## What Would Make Confidence ≥90%
+## Risks & Mitigations
 
-1. Complete ASM-02 (Hoeffding's D) with validated reference implementation → proves TypeScript port feasibility
-2. Performance benchmarks on n=10,000 show acceptable runtime (< 2s for Distance Correlation)
-3. Cross-metric integration tests pass showing coherent behavior across all 5 metrics
-4. Reference validation for at least 3/5 metrics against published values
-5. Test coverage ≥ 95% with comprehensive edge case matrix
+- NMI binning/normalization ambiguity can produce misleading outputs.
+  - Mitigation: isolate in ASM-05 investigation gate before ASM-08 implementation.
+- O(n^2) metrics may become slow for very large inputs.
+  - Mitigation: document practical limits; keep deterministic benchmark snapshots in integration stage.
+- Tie handling differences between references can cause fixture mismatches.
+  - Mitigation: lock tie semantics in docs and tests per metric.
+- Cross-metric behavior may appear inconsistent to consumers.
+  - Mitigation: ship integration cookbook test cases plus README interpretation notes.
+
+## Observability
+
+- Logging: none in runtime API (pure functions).
+- Metrics: benchmark outputs captured in test artifacts for regression tracking.
+- Alerts/Dashboards: not applicable in this package-level scope.
+
+## Acceptance Criteria (overall)
+
+- [ ] `packages/lib/src/math/similarity/` exists with all planned metrics and shared contract utilities.
+- [ ] All metric-specific validation contracts pass through targeted `@acme/lib` tests.
+- [ ] NMI implementation is gated by completed calibration investigation (ASM-05).
+- [ ] Integration tests and README provide coherent cross-metric usage guidance.
+- [ ] Export surface remains stable and package lint passes.
 
 ## Decision Log
 
-### DL-01: Binning strategy for Mutual Information (ASM-05)
-
-**Decided:** 2026-02-13
-**Chosen option:** Equal-width as default, plus quantile binning option for robustness.
-
-**Rationale:**
-- Equal-width is simple and predictable for near-uniform distributions
-- Quantile binning is more stable for heavy tails/outliers
-- Default 10 bins remains configurable for both strategies
-- This resolves the lowest-confidence area in ASM-05 with minimal API complexity
-
----
-
-### DL-02: Kendall's tau tie-handling variant (ASM-06)
-
-**Decided:** 2026-02-13
-**Chosen option:** Implement tau-b (tie correction for both X and Y).
-
-**Rationale:**
-- Tau-b is the most widely used variant in statistical software (R, Python scipy)
-- Handles ties in both variables symmetrically
-- Formula: τb = (C-D) / sqrt((n₀-nₓ)(n₀-nᵧ)), where n₀ = n(n-1)/2, nₓ = ties in X, nᵧ = ties in Y
-- More robust than tau-a (no tie correction) or tau-c (optimized for contingency tables)
-
----
-
-### DL-03: Auto-normalization for Jensen-Shannon Divergence (ASM-04)
-
-**Decided:** 2026-02-13
-**Chosen option:** Auto-normalize non-negative inputs if they don't sum to 1, with optional strict mode.
-
-**Rationale:**
-- Convenience: users can pass raw counts without manual normalization
-- Safety: strict mode available for cases requiring exact probability distributions
-- Follows precedent in existing `packages/lib` modules (e.g., color gamut mapping auto-clips)
-- Default signatures:
-  - `jensenShannonDivergence(p: ReadonlyArray<number>, q: ReadonlyArray<number>, options?: { strict?: boolean })`
-  - `jensenShannonDistance(p: ReadonlyArray<number>, q: ReadonlyArray<number>, options?: { strict?: boolean })`
-- Strict mode throws if inputs are invalid or not pre-normalized (within 1e-10 tolerance)
-- Both-zero totals are invalid (`NaN` default, throw in strict)
-
----
-
-### DL-04: Module-wide invalid-input behavior
-
-**Decided:** 2026-02-13
-**Chosen option:** Uniform policy across all metrics: default `NaN`, optional strict throwing.
-
-**Rationale:**
-- Keeps numeric workflows tolerant by default (`NaN` propagation)
-- Supports fail-fast callers with `strict` mode
-- Eliminates cross-metric inconsistency in tests and docs
-
----
-
-### DL-05: Distance Correlation estimator + memory model
-
-**Decided:** 2026-02-13
-**Chosen option:** Biased estimator (`1/n²`) only in v1, implemented with two-pass O(n²)-time/O(n)-memory accumulation.
-
-**Rationale:**
-- Avoids infeasible `n x n` allocation for large arrays (e.g., n=10,000)
-- Matches common reference implementations by default
-- Defers lower-priority unbiased mode until there is concrete consumer demand and fixtures for both variants
-
----
-
-### DL-06: Hoeffding scaling + tie semantics
-
-**Decided:** 2026-02-13
-**Chosen option:** Report scaled Hoeffding statistic `D* = 30 × D` with explicit deterministic tie semantics.
-
-**Rationale:**
-- Removes ambiguity across references that differ by a constant factor
-- Keeps documented range expectations aligned with selected convention
-- Guarantees fixture reproducibility for tie-heavy datasets
-
-## External References
-
-- [fast_vector_similarity](https://github.com/Dicklesworthstone/fast_vector_similarity) — Rust library with reference implementations
-- [hoeffdings_d_explainer](https://github.com/Dicklesworthstone/hoeffdings_d_explainer) — 75-line NumPy reference for Hoeffding's D
-- Hoeffding, W. (1948). "A Non-Parametric Test of Independence". *Annals of Mathematical Statistics*, 19(4), 546-557.
-- Székely, G. J., Rizzo, M. L., & Bakirov, N. K. (2007). "Measuring and Testing Dependence by Correlation of Distances". *Annals of Statistics*, 35(6), 2769-2794.
-- Lin, J. (1991). "Divergence measures based on the Shannon entropy". *IEEE Transactions on Information Theory*, 37(1), 145-151.
-- Kendall, M. G. (1938). "A New Measure of Rank Correlation". *Biometrika*, 30(1/2), 81-93.
-- Knight, W. R. (1966). "A Computer Method for Calculating Kendall's Tau with Ungrouped Data". *Journal of the American Statistical Association*, 61(314), 436-439.
-
-## Next Steps
-
-- [ ] Review plan with platform team; confirm scope and priority
-- [ ] Execute ASM-01 (module scaffold) to unblock parallel work on ASM-02..ASM-06
-- [ ] Generate frozen fixture vectors (R/Python one-time scripts) and commit JSON fixtures for deterministic validation
-- [ ] Add dataset cookbook to `packages/lib/src/math/similarity/README.md` (linear, quadratic symmetric, circle/ring, tie-heavy discrete)
-- [ ] Schedule ASM-07 checkpoint after Wave 2 completion
-- [ ] Plan downstream integration work (search re-ranking, analytics dashboards) as separate effort
+- 2026-02-13: Kept `ASM-*` lineage but re-sequenced with an explicit mid-horizon checkpoint (ASM-04).
+- 2026-02-13: Converted prior sub-threshold NMI implementation risk into an explicit INVESTIGATE gate (ASM-05) before implementation (ASM-08).
+- 2026-02-13: Standardized validation commands to package-scoped `pnpm --filter @acme/lib test -- ...` usage.
+- 2026-02-13: Retained TypeScript-only implementation boundary from fact-find constraints.

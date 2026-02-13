@@ -7,4 +7,5 @@ export * from "./probabilistic";
 export * from "./random";
 export * from "./rate-limit";
 export * from "./search";
+export * from "./similarity";
 export * from "./statistics";

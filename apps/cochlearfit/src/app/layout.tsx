@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Fraunces, Space_Grotesk } from "next/font/google";
 
 import HtmlLangUpdater from "@/components/HtmlLangUpdater";
+import { JsonLdScript, organizationJsonLd } from "@/lib/jsonld";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const fraunces = Fraunces({
@@ -36,6 +37,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${fraunces.variable} ${spaceGrotesk.variable}`}>
+      <head>
+        <JsonLdScript value={organizationJsonLd({ name: SITE_NAME, url: SITE_URL })} />
+      </head>
       <body className="min-h-screen bg-background font-sans text-foreground antialiased">
         <HtmlLangUpdater />
         {children}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import PageHeader from "@/components/PageHeader";
 import Section from "@/components/Section";
+import { faqJsonLd, JsonLdScript } from "@/lib/jsonld";
 import { resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
 import { buildMetadata } from "@/lib/seo";
@@ -35,9 +36,14 @@ export default async function FaqPage({
   const t = createTranslator(messages);
 
   const faqKeys = ["faq.q1", "faq.q2", "faq.q3", "faq.q4"];
+  const faqEntries = faqKeys.map((key, index) => ({
+    question: t(key),
+    answer: t(`faq.a${index + 1}`),
+  }));
 
   return (
     <Section>
+      <JsonLdScript value={faqJsonLd(faqEntries)} />
       <PageHeader
         eyebrow={t("faq.eyebrow")}
         title={t("faq.title")}

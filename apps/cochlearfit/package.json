@@ -14,6 +14,7 @@
   "dependencies": {
     "@acme/design-system": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/seo": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "next": "^15.3.9",

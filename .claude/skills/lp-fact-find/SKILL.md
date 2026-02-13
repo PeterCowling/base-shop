@@ -49,7 +49,7 @@ This classification drives `/lp-plan` task design and `/lp-build` execution rout
 **Not allowed:** code changes, refactors, migrations applied, destructive commands.
 
 **Commits allowed:**
-- Brief/note file (`docs/plans/<slug>-fact-find.md` or `docs/briefs/<slug>-briefing.md`)
+- Brief/note file (`docs/plans/<slug>/fact-find.md` or `docs/briefs/<slug>-briefing.md`)
 
 ## Step 0: Discovery and Selection
 
@@ -107,7 +107,7 @@ If the user selects a card ID from the discovery table:
 
 1. **Read the card via agent API** (`GET /api/agent/cards/{CARD-ID}`)
 2. **Read latest lp-fact-find stage doc (if any)** via agent API:
-   - `GET /api/agent/stage-docs?cardId={CARD-ID}&stage=lp-fact-find`
+   - `GET /api/agent/stage-docs?cardId={CARD-ID}&stage=fact-find`
    - If multiple docs exist, use the latest one as working context
 3. **Extract pre-populated context:**
    - `Title` → Topic/area
@@ -220,10 +220,10 @@ Produce a planning-ready evidence brief with impact mapping, execution routing, 
 
 Create/update:
 ```
-docs/plans/<feature-slug>-fact-find.md
+docs/plans/<feature-slug>/fact-find.md
 ```
 
-(Use the same `<feature-slug>` that `/lp-plan` will use for `docs/plans/<feature-slug>-plan.md`.)
+(Use the same `<feature-slug>` that `/lp-plan` will use for `docs/plans/<feature-slug>/plan.md`. Create the workspace directory first: `mkdir -p docs/plans/<feature-slug>/`.)
 
 ### Progressive Skill Routing (Outcome A)
 
@@ -398,7 +398,7 @@ Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-pla
 Execution-Track: <code | business-artifact | mixed>
 Primary-Execution-Skill: <lp-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
-Related-Plan: docs/plans/<feature-slug>-plan.md
+Related-Plan: docs/plans/<feature-slug>/plan.md
 # Business OS Integration (default-on in core loop; set `off` to opt out intentionally)
 Business-OS-Integration: <on | off>
 Business-Unit: <BRIK | PLAT | PIPE | BOS | etc.>
@@ -792,7 +792,7 @@ If the user then decides to implement a change, instruct them to run `/lp-fact-f
 ## Final Hand-off Messages
 
 **Outcome A (Planning):**
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-lp-fact-find.md`. Status: Ready-for-planning (or Needs-input). Primary execution skill: `<skill>`. Proceed to `/lp-plan` once blocking questions are answered."
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: Ready-for-planning (or Needs-input). Primary execution skill: `<skill>`. Proceed to `/lp-plan` once blocking questions are answered."
 
 **Outcome B (Briefing):**
 > "Briefing complete. Note saved to `<path>`. This documents the current behavior and evidence pointers. No planning artifact was produced."
@@ -875,7 +875,7 @@ Use the returned ID (or the existing Card-ID). Include `Feature-Slug` and `Plan-
     "priority": "P3",
     "owner": "Pete",
     "Feature-Slug": "{feature-slug}",
-    "Plan-Link": "docs/plans/{feature-slug}-lp-fact-find.md"
+    "Plan-Link": "docs/plans/{feature-slug}/fact-find.md"
   }
 }
 ```
@@ -976,7 +976,7 @@ Feature-Slug: my-feature
 
 When Business-Unit is present and card is created:
 
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-lp-fact-find.md`. Status: Ready-for-planning.
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: Ready-for-planning.
 >
 > **Business OS Integration:**
 > - Created card via API: `<Card-ID>`
@@ -986,7 +986,7 @@ When Business-Unit is present and card is created:
 
 When Business-Unit is present but card already exists:
 
-> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>-lp-fact-find.md`. Status: Ready-for-planning.
+> "Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: Ready-for-planning.
 >
 > **Business OS Integration:**
 > - Using existing card via API: `<Card-ID>`

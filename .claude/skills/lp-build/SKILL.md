@@ -19,7 +19,7 @@ Execute tasks from an approved plan, one task at a time, with strict confidence 
 
 ## Prerequisites
 
-- **Plan exists:** `docs/plans/<feature-slug>-plan.md`
+- **Plan exists:** `docs/plans/<feature-slug>/plan.md` (legacy fallback: `docs/plans/<feature-slug>-plan.md`)
 - **Task(s) to build are:**
   - Type: `IMPLEMENT`
   - Confidence ≥80% (overall and all implied dimension minimums via the plan rubric)
@@ -34,7 +34,7 @@ Execute tasks from an approved plan, one task at a time, with strict confidence 
 
 **If user provides a slug or card ID** (e.g., `/lp-build commerce-core` or `/lp-build BRIK-ENG-0020`):
 - Skip discovery entirely
-- If slug: read `docs/plans/<slug>-plan.md` directly
+- If slug: read `docs/plans/<slug>/plan.md` directly (legacy fallback: `docs/plans/<slug>-plan.md`)
 - If card ID: look up plan link from card file
 - **Target: <2 seconds to start building**
 
@@ -62,8 +62,8 @@ Also check the `planned` array for cards with plan links.
 
 ## Inputs
 
-- The plan doc: `docs/plans/<feature-slug>-plan.md`
-- Optional: lp-fact-find brief: `docs/plans/<feature-slug>-lp-fact-find.md`
+- The plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback: `docs/plans/<feature-slug>-plan.md`)
+- Optional: lp-fact-find brief: `docs/plans/<feature-slug>/fact-find.md` (legacy fallback: `docs/plans/<feature-slug>-lp-fact-find.md`)
 - Optional: user-specified task IDs to build first
 
 If the user does not specify tasks, build in ascending TASK order among eligible IMPLEMENT tasks.
@@ -403,7 +403,7 @@ docs(plans): mark TASK-XX complete
 
 ### 7) Update the plan (required after each task)
 
-After committing the task, update `docs/plans/<feature-slug>-plan.md`:
+After committing the task, update the plan doc (canonical: `docs/plans/<feature-slug>/plan.md`):
 
 **Per-task updates:**
 

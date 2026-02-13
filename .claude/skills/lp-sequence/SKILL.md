@@ -34,7 +34,7 @@ Do **not** use `/lp-sequence` if:
 ## Fast Path (with argument)
 
 **If user provides a slug** (e.g., `/lp-sequence design-system`):
-- Read `docs/plans/<slug>-plan.md` directly
+- Read `docs/plans/<slug>/plan.md` directly (legacy fallback: `docs/plans/<slug>-plan.md`)
 - Skip discovery
 
 ## Discovery Path (no argument)
@@ -53,7 +53,7 @@ Enter a slug to sequence.
 
 ## Inputs
 
-- The plan doc: `docs/plans/<feature-slug>-plan.md`
+- The plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback: `docs/plans/<feature-slug>-plan.md`)
 - Source files referenced in `Affects` fields (read-only, for overlap analysis)
 
 ## Outputs
@@ -210,7 +210,7 @@ Report what changed:
 ```markdown
 ## Sequencing Complete
 
-**Plan:** docs/plans/<slug>-plan.md
+**Plan:** docs/plans/<slug>/plan.md
 **Tasks sequenced:** N active tasks reordered and renumbered
 **Rename map:**
 - DS-30 -> DS-01

@@ -137,9 +137,9 @@ A task without required validation cases for its track (TC-XX or VC-XX) cannot p
 
 ## Inputs
 
-- An existing plan doc: `docs/plans/<feature-slug>-plan.md`
+- An existing plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback: `docs/plans/<feature-slug>-plan.md`)
 - The task IDs to lp-replan (explicit from user or inferred from below-threshold tasks)
-- Optional: lp-fact-find brief `docs/plans/<feature-slug>-lp-fact-find.md`
+- Optional: lp-fact-find brief `docs/plans/<feature-slug>/fact-find.md` (legacy fallback: `docs/plans/<feature-slug>-lp-fact-find.md`)
 
 **If the plan doc does not exist:**
 - **With lp-fact-find:** Offer to create initial plan from lp-fact-find, then proceed with lp-replanning
@@ -151,8 +151,8 @@ A task without required validation cases for its track (TC-XX or VC-XX) cannot p
 
 ## Outputs
 
-- Update the existing plan doc in-place: `docs/plans/<feature-slug>-plan.md`
-- Optional (only if the investigation is extensive): add a short supporting note: `docs/plans/<feature-slug>-replan-notes.md`
+- Update the existing plan doc in-place: `docs/plans/<feature-slug>/plan.md` (or legacy path if that's where the plan lives)
+- Optional (only if the investigation is extensive): add a short supporting note: `docs/plans/<feature-slug>/replan-notes.md`
 - No code changes. No commits except doc updates.
 
 ## When to Use
@@ -397,7 +397,7 @@ Business-artifact/mixed format:
 
 ### 5) Update the plan doc with deltas (mandatory structure)
 
-Update `docs/plans/<feature-slug>-plan.md` as follows:
+Update the plan doc (canonical: `docs/plans/<feature-slug>/plan.md`) as follows:
 
 **Plan frontmatter:**
 - Set `Status: Active` after lp-replan updates unless the user explicitly wants it to remain Draft.
@@ -596,7 +596,7 @@ Also add a short entry to the plan's **Decision Log** whenever an approach decis
 ## Completion Messages
 
 **All ≥80% with complete validation contracts:**
-> "Re-plan complete. Updated `docs/plans/<feature-slug>-plan.md`. All implementation tasks are ≥80% confidence with complete validation contracts (TC/VC + required fail-first evidence). Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/lp-build`."
+> "Re-plan complete. Updated `docs/plans/<feature-slug>/plan.md`. All implementation tasks are ≥80% confidence with complete validation contracts (TC/VC + required fail-first evidence). Tasks re-sequenced into N execution waves (max parallelism: P). Proceed to `/lp-build`."
 
 **Confidence ≥80% but missing validation contracts/evidence:**
 > "Re-plan complete. Updated plan. Tasks <IDs> are ≥80% confidence but missing required validation contracts/evidence (TC/VC or Red/Green/Refactor). Tasks re-sequenced. Run `/lp-replan` again to add missing validation elements before proceeding to build."

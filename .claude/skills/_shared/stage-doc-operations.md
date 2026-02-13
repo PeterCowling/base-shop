@@ -4,12 +4,14 @@ Shared helper for creating and managing Business OS stage documents. Stage docs 
 
 ## Stage Types
 
-| Stage | File Name | When Created | Purpose |
-|-------|-----------|--------------|---------|
-| `lp-fact-find` | `fact-finding.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
-| `plan` | `planned.user.md` | `/lp-plan` completes with Card-ID | Link to plan doc, track confidence |
-| `build` | `build.user.md` | `/lp-build` starts first task | Track task completion progress |
-| `reflect` | `reflect.user.md` | Card enters Reflected lane | Post-mortem and learnings |
+| Stage | Canonical API Key | File Name | When Created | Purpose |
+|-------|-------------------|-----------|--------------|---------|
+| Fact-finding | `fact-find` | `fact-finding.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
+| Planned | `plan` | `planned.user.md` | `/lp-plan` completes with Card-ID | Link to plan doc, track confidence |
+| Build | `build` | `build.user.md` | `/lp-build` starts first task | Track task completion progress |
+| Reflect | `reflect` | `reflect.user.md` | Card enters Reflected lane | Post-mortem and learnings |
+
+**Note:** Always use the canonical API key when creating or updating stage docs via the Agent API. See `.claude/skills/_shared/workspace-paths.md` for the full key policy. Legacy alias `lp-fact-find` is accepted for reads but must not be used for writes.
 
 ## File Location
 
@@ -112,7 +114,7 @@ Card-ID: {CARD-ID}
 Stage: Planned
 Created: {DATE}
 Owner: Pete
-Plan-Link: docs/plans/{feature-slug}-plan.md
+Plan-Link: docs/plans/{feature-slug}/plan.md
 Plan-Confidence: {%}
 ---
 
@@ -120,7 +122,7 @@ Plan-Confidence: {%}
 
 ## Plan Reference
 
-**Plan Document:** `docs/plans/{feature-slug}-plan.md`
+**Plan Document:** `docs/plans/{feature-slug}/plan.md`
 
 **Overall Confidence:** {%}
 
@@ -161,7 +163,7 @@ Stage: Build
 Created: {DATE}
 Owner: Pete
 Updated: {DATE}
-Plan-Link: docs/plans/{feature-slug}-plan.md
+Plan-Link: docs/plans/{feature-slug}/plan.md
 ---
 
 # Build: {CARD-TITLE}
@@ -206,7 +208,7 @@ Card-ID: {CARD-ID}
 Stage: Reflect
 Created: {DATE}
 Owner: Pete
-Plan-Link: docs/plans/{feature-slug}-plan.md
+Plan-Link: docs/plans/{feature-slug}/plan.md
 ---
 
 # Reflect: {CARD-TITLE}
@@ -245,8 +247,8 @@ Plan-Link: docs/plans/{feature-slug}-plan.md
 
 ## Artifacts
 
-- Plan: `docs/plans/{feature-slug}-plan.md`
-- Fact-find: `docs/plans/{feature-slug}-lp-fact-find.md`
+- Plan: `docs/plans/{feature-slug}/plan.md`
+- Fact-find: `docs/plans/{feature-slug}/fact-find.md`
 - Commits: {List of relevant commits}
 ```
 

@@ -22,7 +22,7 @@ Create a confidence-gated execution plan for a feature or business deliverable, 
 **Auto-continue phase:** After the plan is persisted and sequenced, if auto-continue criteria are met (see step 12), invoke `/lp-build` which transitions to full build mode.
 
 **Commits allowed:**
-- Plan file (`docs/plans/<slug>-plan.md`)
+- Plan file (`docs/plans/<slug>/plan.md`)
 - Test stub files for L-effort code tasks
 - If BOS integration active: card/stage-doc updates via agent API (no markdown writes)
 
@@ -91,7 +91,7 @@ When lp-fact-find provides `Primary-Execution-Skill` and `Supporting-Skills`, pr
 
 ## Outputs
 
-- Create or update one plan file: `docs/plans/<feature-slug>-plan.md`
+- Create or update one plan file: `docs/plans/<feature-slug>/plan.md`
 - For L-effort code tasks: test stub files (failing tests that define acceptance criteria)
 - No implementation code changes
 - Commits: plan file only (S/M) or plan file + test stubs (L code tasks)
@@ -124,7 +124,7 @@ Do **not** use `/lp-plan` if:
 
 **If user provides a slug or card ID** (e.g., `/lp-plan commerce-core` or `/lp-plan BRIK-ENG-0020`):
 - Skip discovery entirely
-- If slug: read `docs/plans/<slug>-lp-fact-find.md` directly (or create new plan)
+- If slug: read `docs/plans/<slug>/fact-find.md` directly (or legacy fallback `docs/plans/<slug>-lp-fact-find.md`; or create new plan)
 - If card ID: look up plan link from card file
 - **Target: <2 seconds to start planning**
 
@@ -522,7 +522,7 @@ When you do ask:
 
 ### 10) Persist the plan doc
 
-Write/update `docs/plans/<feature-slug>-plan.md` using the template below.
+Write/update `docs/plans/<feature-slug>/plan.md` using the template below. Create the workspace directory first: `mkdir -p docs/plans/<feature-slug>/`.
 
 Set frontmatter `Status: Active` in the final persisted plan unless the user explicitly says the plan should remain Draft.
 
@@ -593,7 +593,7 @@ Card-ID: <from lp-fact-find or manually provided>
   - <only if necessary>
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/<feature-slug>-lp-fact-find.md` (if exists)
+- Related brief: `docs/plans/<feature-slug>/fact-find.md` (if exists; legacy fallback: `docs/plans/<feature-slug>-lp-fact-find.md`)
 - Key findings: <inline bullets of key findings + resolved questions>
 
 ## Existing System Notes
@@ -905,7 +905,7 @@ Set `Business-OS-Integration: off` in plan frontmatter for intentionally standal
   "body": {
     "cardId": "PLAT-ENG-0023",
     "stage": "plan",
-    "content": "# Planned: {Feature Title}\n\n## Plan Reference\n\n**Plan Document:** `docs/plans/{feature-slug}-plan.md`\n\n**Overall Confidence:** {OVERALL-CONFIDENCE}%\n\n## Task Summary\n\n| Task ID | Description | Confidence | Status |\n|---------|-------------|------------|--------|\n{Table from plan document}\n\n## Key Decisions\n\n{Summarize key decisions from plan document}\n\n## Build Prerequisites\n\n- [ ] All IMPLEMENT tasks >=80% confidence\n- [ ] Dependencies resolved\n- [ ] Validation foundation ready for execution track\n\n## Transition Criteria\n\n**To Planned lane:**\n- Plan approved\n- No open `Needs-Input` decision gates\n- At least one build-eligible IMPLEMENT task\n"
+    "content": "# Planned: {Feature Title}\n\n## Plan Reference\n\n**Plan Document:** `docs/plans/{feature-slug}/plan.md`\n\n**Overall Confidence:** {OVERALL-CONFIDENCE}%\n\n## Task Summary\n\n| Task ID | Description | Confidence | Status |\n|---------|-------------|------------|--------|\n{Table from plan document}\n\n## Key Decisions\n\n{Summarize key decisions from plan document}\n\n## Build Prerequisites\n\n- [ ] All IMPLEMENT tasks >=80% confidence\n- [ ] Dependencies resolved\n- [ ] Validation foundation ready for execution track\n\n## Transition Criteria\n\n**To Planned lane:**\n- Plan approved\n- No open `Needs-Input` decision gates\n- At least one build-eligible IMPLEMENT task\n"
   }
 }
 ```
@@ -924,7 +924,7 @@ Set `Business-OS-Integration: off` in plan frontmatter for intentionally standal
   },
   "body": {
     "baseEntitySha": "<entitySha from GET>",
-    "patch": { "Plan-Link": "docs/plans/{feature-slug}-plan.md" }
+    "patch": { "Plan-Link": "docs/plans/{feature-slug}/plan.md" }
   }
 }
 ```

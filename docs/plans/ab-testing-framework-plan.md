@@ -83,7 +83,7 @@ Implement a statistically rigorous experimentation module in `packages/lib/src/m
 | ABT-05 | IMPLEMENT | Bayesian A/B testing (Beta-Binomial, credible intervals, superiority) | 83% | M | Complete (2026-02-13) | ABT-00, ABT-01 | ABT-06, ABT-07B |
 | ABT-06 | IMPLEMENT | Thompson sampling and regret simulation for Beta-Bernoulli bandits | 84% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-05 | - |
 | ABT-07A | IMPLEMENT | Group-sequential testing using documented O'Brien-Fleming approximation | 80% | M | Complete (2026-02-13) | ABT-00, ABT-01, ABT-03 | - |
-| ABT-08 | INVESTIGATE | mSPRT variant specification and mathematical formulation for binomial A/B tests | 88% | S | Pending | - | ABT-09 |
+| ABT-08 | INVESTIGATE | mSPRT variant specification and mathematical formulation for binomial A/B tests | 88% | S | Complete (2026-02-13) | - | ABT-09 |
 | ABT-09 | SPIKE | mSPRT simulation harness prototype with type-I error validation | 82% | S | Pending | ABT-00, ABT-01, ABT-05, ABT-08 | ABT-07B |
 | ABT-07B | IMPLEMENT | Always-valid inference (mSPRT) with simulation-based error-control validation | 68% (→ 82% conditional on ABT-08, ABT-09) | L | Pending | ABT-00, ABT-01, ABT-05, ABT-08, ABT-09 | - |
 
@@ -651,6 +651,82 @@ where:
   - **Test location:** `docs/plans/ab-testing-framework-plan.md` (decision memo section)
   - **Run:** Manual review of appended decision memo
 
+#### Decision Memo (2026-02-13)
+
+**Decision:** For ABT-09 and ABT-07B, use a two-stream Gaussian-mixture mSPRT on a variance-stabilized Bernoulli effect scale (arcsine-sqrt transform), with sequential p-value computed from the running maximum likelihood ratio.
+
+**Why this variant:**
+- It is aligned with Johari et al. deployment guidance for binary A/B tests (CLT-based approximation for two-stream mSPRT under Bernoulli outcomes).
+- It yields a closed-form mixture likelihood ratio with a normal prior, which avoids per-look numerical integration.
+- It keeps the implementation deterministic, testable, and computationally cheap for large simulation runs.
+
+**Mathematical specification (ABT-09 implementation target):**
+- Inputs at look `n` (paired stream count):
+  - control: successes `x_n`, total `n`
+  - treatment: successes `y_n`, total `n`
+- Smoothed rates (Jeffreys smoothing for stability):
+  - `p_c = (x_n + 0.5) / (n + 1)`
+  - `p_t = (y_n + 0.5) / (n + 1)`
+- Variance-stabilized effect estimate:
+  - `u_n = 2 * asin(sqrt(p_t)) - 2 * asin(sqrt(p_c))`
+- CLT approximation under null:
+  - `u_n ~ N(0, sigma_n^2)` with `sigma_n^2 = 2 / n`
+- Alternative prior on transformed effect:
+  - `theta ~ N(0, tau^2)` with default `tau = 0.10` (configurable)
+- Mixture LR at look `n` (normal-normal conjugate closed form):
+  - `Lambda_n = sqrt(sigma_n^2 / (sigma_n^2 + tau^2)) * exp((u_n^2 * tau^2) / (2 * sigma_n^2 * (sigma_n^2 + tau^2)))`
+- Sequential rejection rule at level `alpha`:
+  - reject if `max_{k<=n} Lambda_k >= 1 / alpha`
+- Always-valid p-value process for dashboard/API output:
+  - `p_n = min(1, 1 / max_{k<=n} Lambda_k)`
+
+**Alternative handling decision (scope guard):**
+- ABT-09 prototype is two-sided only.
+- ABT-07B v1 keeps this two-sided core as canonical.
+- If one-sided support is required later, add a follow-on task with directional mixture design (half-normal or signed-evidence variant) and dedicated calibration tests.
+
+**Simulation harness requirements (ABT-09 pass/fail contract):**
+- Sequential monitoring frequency: every paired observation.
+- Null scenarios (`p_c = p_t`):
+  - `p in {0.01, 0.05, 0.10, 0.20, 0.50}`
+- Alternative scenarios (power sanity only, non-gating for ABT-09):
+  - `(p_c, p_t)` pairs with deltas in `{+0.005, +0.01, +0.02}` where feasible in `[0,1]`.
+- Per-scenario runs:
+  - null: `>= 10,000` Monte Carlo experiments
+  - optional power scenarios: `>= 2,000` each
+- Maximum horizon per experiment:
+  - `n_max = 50,000` paired observations
+- Primary gate:
+  - empirical type-I error at `alpha=0.05` must be `<= 0.055` on each null scenario.
+- Failure condition:
+  - any null scenario `> 0.06` fails ABT-09 and blocks ABT-07B until rescope/recalibration.
+
+**Numerical stability and implementation constraints:**
+- Compute in log-space for LR accumulation:
+  - `logLambda_n = 0.5 * (log(sigma_n^2) - log(sigma_n^2 + tau^2)) + (u_n^2 * tau^2) / (2 * sigma_n^2 * (sigma_n^2 + tau^2))`
+- Track `maxLogLambda` over looks; derive `p_n` as `exp(-maxLogLambda)` with clamp to `[0,1]`.
+- Keep smoothing fixed (`+0.5`, `+1`) to avoid undefined `asin(sqrt(p))` at extreme counts.
+- Reject non-finite intermediate values; surface deterministic error messages in prototype code.
+
+**Evidence basis (primary sources):**
+- Johari et al. define always-valid p-values from sequential tests (`p_n = inf{alpha : T(alpha) <= n, delta(alpha)=1}`) and mSPRT thresholding via mixture LR crossing `alpha^-1`.
+- The deployment section specifies binary A/B use via CLT approximation and two-stream mSPRT construction; supplement text states two-stream LR depends on treatment-control contrast and supports normal-mixture mSPRT formulation.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending
+- **Execution cycle:**
+  - Validation cases executed: TC-08-01, TC-08-02 (manual review)
+  - Cycles: 1
+  - Final validation: PASS (decision memo includes explicit formula + simulation gate)
+- **Confidence reassessment:**
+  - Original: 88%
+  - Post-validation: 88%
+  - Delta reason: Implementation target for ABT-09 is now explicit and test-gated.
+- **Validation:**
+  - Manual review completed in `docs/plans/ab-testing-framework-plan.md` decision memo section.
+- **Documentation updated:** This plan document only.
+
 ---
 
 ### ABT-09: mSPRT simulation harness prototype (SPIKE)
@@ -795,6 +871,7 @@ where:
 |---|---|---|
 | 2026-02-13 | Split ABT-07B precursors into ABT-08 (INVESTIGATE) + ABT-09 (SPIKE) | mSPRT has two blocking unknowns: variant selection and type-I calibration. Sequential precursors resolve each before committing to full L-effort implementation. |
 | 2026-02-13 | ABT-08 can run in Wave 1 (parallel with ABT-00, ABT-01) | INVESTIGATE task requires no code dependencies — literature review only. Enables early start on mSPRT specification while foundational code is built. |
+| 2026-02-13 | ABT-08 selected arcsine-CLT Gaussian-mixture mSPRT for binary A/B tests | Matches Johari et al. deployment guidance for binary data while providing a closed-form LR suitable for deterministic simulation calibration in ABT-09. |
 | 2026-02-13 | Promote ABT-00 from 78% → 80% with E2 evidence | Existing `normalQuantile()` in prediction-intervals.ts:230-253 + 505 passing math tests prove numerical computation capability at the required level. |
 
 ## References

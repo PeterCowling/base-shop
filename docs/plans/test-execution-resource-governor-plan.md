@@ -173,8 +173,8 @@ Event schema (MVP):
 | TEG-04 | CHECKPOINT | Horizon checkpoint after interception + scheduler baseline | 95% | S | Completed (2026-02-13) | TEG-03 | TEG-05, TEG-06, TEG-07 |
 | TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Completed (2026-02-13) | TEG-04 | TEG-06 |
 | TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Completed (2026-02-13) | TEG-01, TEG-05 | TEG-07A, TEG-08, TEG-09 |
-| TEG-07A | IMPLEMENT | Add governed-run telemetry emission for calibration-quality samples | 83% | M | Pending | TEG-01, TEG-06 | TEG-07 |
-| TEG-07 | INVESTIGATE | Collect calibration telemetry (20+ runs) and tune per-class budgets | 74% (-> 82% conditional on TEG-07A) ⚠️ | M | Blocked (waiting TEG-07A) | TEG-01, TEG-04, TEG-07A | TEG-08 |
+| TEG-07A | IMPLEMENT | Add governed-run telemetry emission for calibration-quality samples | 83% | M | Completed (2026-02-13) | TEG-01, TEG-06 | TEG-07 |
+| TEG-07 | INVESTIGATE | Collect calibration telemetry (20+ runs) and tune per-class budgets | 74% (-> 82% conditional on TEG-07A + governed sample gates) ⚠️ | M | Blocked (confidence <80; calibration gates pending) | TEG-01, TEG-04, TEG-07A | TEG-08 |
 | TEG-08 | IMPLEMENT | Ship memory+CPU admission engine with seeded defaults, P90 history, and queue-on-pressure | 81% | L | Pending | TEG-06, TEG-07 | TEG-09 |
 | TEG-09 | IMPLEMENT | Add drift prevention (docs lint + policy updates + operator docs) | 84% | M | Pending | TEG-06, TEG-08 | - |
 
@@ -184,7 +184,7 @@ Event schema (MVP):
 
 - IMPLEMENT build threshold: `>=80%`.
 - IMPLEMENT tasks `<80%` must be handled as INVESTIGATE/DECISION blockers before dependent IMPLEMENT tasks proceed, unless explicitly waived by user decision.
-- In this plan, TEG-07 remains below threshold until TEG-07A completes and telemetry quality gates are met (or explicitly waived) before TEG-08 begins.
+- In this plan, TEG-07 remains below threshold until telemetry quality gates are met (or explicitly waived) before TEG-08 begins.
 
 ## Parallelism Guide
 
@@ -549,6 +549,26 @@ Schedule note:
   - Rollback: feature-flag governed emission while retaining policy-event logging.
 - **Documentation impact:** None in this task (policy docs addressed in TEG-09).
 - **Notes / references:** calibration readiness gap confirmed from telemetry snapshot.
+- **Build completion (2026-02-13):**
+  - **Status:** Complete
+  - **Commits:** `adc6b4f48c`
+  - **Execution cycle:**
+    - Validation cases executed: TC-01, TC-02, TC-03, TC-04.
+    - Cycles: 2 (initial run exposed lock-cleanup regression from sourced telemetry trap; refactor to executable telemetry invocation fixed it).
+    - Initial validation: FAIL (existing TC-04 lock release assertion failed due trap override side effect).
+    - Final validation: PASS.
+  - **Confidence reassessment:**
+    - Original: 83%
+    - Post-validation: 86%
+    - Delta reason: governed telemetry contract now validated for success, contention queue timing, failure exits, and overload override tagging.
+  - **Validation evidence:**
+    - `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts` (PASS, 15 tests).
+    - `pnpm --filter scripts typecheck` (N/A; package has no `typecheck` script).
+    - `pnpm --filter scripts lint` (N/A; package has no `lint` script).
+  - **Documentation updated:** None required.
+  - **Implementation notes:**
+    - `scripts/tests/run-governed-test.sh` now emits governed telemetry events (`governed`, `policy_mode`, `class`, `normalized_sig`, `queued_ms`, `workers`, `exit_code`, override flags) after each governed run.
+    - `scripts/__tests__/test-governed-runner.test.ts` now covers all TEG-07A telemetry contracts, including contention and non-zero exit scenarios.
 
 ### TEG-07: Calibration telemetry and budget tuning
 - **Type:** INVESTIGATE
@@ -557,7 +577,7 @@ Schedule note:
 - **Affects:** governed telemetry output + calibration report.
 - **Depends on:** TEG-01, TEG-04, TEG-07A
 - **Blocks:** TEG-08
-- **Confidence:** 74% (-> 82% conditional on TEG-07A) ⚠️ BELOW THRESHOLD
+- **Confidence:** 74% (-> 82% conditional on TEG-07A + governed sample gates) ⚠️ BELOW THRESHOLD
   - Implementation: 78% - data collection mechanics are clear but sample quality can vary.
   - Approach: 74% - class budgets require real workload shape validation.
   - Impact: 74% - poor calibration can either over-throttle or under-protect.
@@ -574,7 +594,7 @@ Schedule note:
   - Confidence is re-scored to >=80% (or explicitly waived) before TEG-08 starts, per Confidence Gate Policy.
 - **Re-plan Update (2026-02-13):**
   - **Previous confidence:** 74%
-  - **Updated confidence:** 74% (-> 82% conditional on TEG-07A)
+  - **Updated confidence:** 74% (-> 82% conditional on TEG-07A + governed sample gates)
     - **Evidence class:** E2 (telemetry snapshot + executed policy tests), with E1 code audit for runner/emit wiring.
     - Implementation: 78% - calibration mechanics are executable, but governed telemetry signal is not yet emitted from runner path.
     - Approach: 74% - budget tuning requires representative governed and contention samples over time.

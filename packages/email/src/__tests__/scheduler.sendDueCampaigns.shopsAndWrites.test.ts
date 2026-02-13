@@ -1,18 +1,22 @@
 // Mock i18n to avoid dynamic import issues (Jest hoists this above imports)
-import { sendDueCampaigns } from "../scheduler";
-
-import { sendCampaignEmail,setupTest, shop, teardown } from "./testUtils";
-
 jest.mock("@acme/i18n/useTranslations.server", () => ({
   __esModule: true,
   useTranslations: jest.fn(() =>
     Promise.resolve((key: string) => key === "email.unsubscribe" ? "Unsubscribe" : key)
   ),
 }));
-
 jest.mock("@acme/lib", () => ({
   validateShopName: jest.fn((s: string) => s),
 }));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
+  listEvents: jest.fn().mockResolvedValue([]),
+}));
+
+// eslint-disable-next-line import/first
+import { sendDueCampaigns } from "../scheduler";
+
+// eslint-disable-next-line import/first
+import { sendCampaignEmail, setupTest, shop, teardown } from "./testUtils";
 
 describe("sendDueCampaigns – shops and writes", () => {
   let ctx: ReturnType<typeof setupTest>;

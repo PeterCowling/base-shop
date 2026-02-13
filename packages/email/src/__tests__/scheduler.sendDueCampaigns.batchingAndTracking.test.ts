@@ -1,4 +1,4 @@
-// Mocks for modules the scheduler imports statically or dynamically.
+// Mocks for modules the scheduler imports dynamically.
 // testUtils also mocks ../send and ../hooks, but the i18n and lib mocks must
 // live here so Jest hoists them before the scheduler module loads.
 jest.mock("@acme/i18n/useTranslations.server", () => ({
@@ -9,6 +9,9 @@ jest.mock("@acme/i18n/useTranslations.server", () => ({
 }));
 jest.mock("@acme/lib", () => ({
   validateShopName: jest.fn((s: string) => s),
+}));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({
+  listEvents: jest.fn().mockResolvedValue([]),
 }));
 
 // eslint-disable-next-line import/first

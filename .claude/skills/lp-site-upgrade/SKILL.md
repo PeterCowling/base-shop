@@ -1,5 +1,5 @@
 ---
-name: site-upgrade
+name: lp-site-upgrade
 description: "Build website-upgrade strategy in three layers: (1) periodic platform capability baseline, (2) per-business upgrade brief from reference sites, and (3) lp-fact-find handoff packet for prioritized implementation backlog. Use when upgrading an existing site by synthesizing best-of patterns with platform-fit constraints."
 ---
 
@@ -10,10 +10,10 @@ Use this skill when you want to upgrade an existing site using reference website
 ## Invocation
 
 ```bash
-/site-upgrade --mode=platform-baseline
-/site-upgrade --mode=platform-baseline --baseline-max-age-days=30
-/site-upgrade --biz=HEAD --existing-site=https://example.com --reference-sites="siteA.com,siteB.com"
-/site-upgrade --biz=PET --launch-surface=pre-website --brief-max-age-days=21
+/lp-site-upgrade --mode=platform-baseline
+/lp-site-upgrade --mode=platform-baseline --baseline-max-age-days=30
+/lp-site-upgrade --biz=HEAD --existing-site=https://example.com --reference-sites="siteA.com,siteB.com"
+/lp-site-upgrade --biz=PET --launch-surface=pre-website --brief-max-age-days=21
 ```
 
 Defaults:

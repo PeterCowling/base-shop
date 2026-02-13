@@ -117,7 +117,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
       <div className="flex flex-wrap gap-2">
         <Button
-          className="xa-pdp-action flex-[2] h-11 rounded-none bg-black text-white hover:bg-neutral-900"
+          className="xa-pdp-action flex-[2] h-11 rounded-none bg-fg text-fg-inverse hover:bg-fg/90"
           disabled={soldOut}
           onClick={() => void addToCart()}
         >
@@ -125,7 +125,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         </Button>
         <Button
           variant="outline"
-          className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-black text-black hover:bg-black hover:text-white"
+          className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-fg text-fg hover:bg-fg hover:text-fg-inverse"
           aria-pressed={isWishlisted}
           aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
           onClick={() => wishlistDispatch({ type: "toggle", sku: product })}
@@ -166,7 +166,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                   <Link
                     key={`${variant.slug}-variant`}
                     href={`/products/${variant.slug}`}
-                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-white ${isCurrent ? "border-black" : "border-border-2"}`}
+                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-panel ${isCurrent ? "border-fg" : "border-border-2"}`}
                     title={label}
                     aria-label={label}
                     aria-current={isCurrent ? "page" : undefined}
@@ -198,7 +198,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                 return (
                   <div
                     key={`${product.slug}-color-${color}`}
-                    className="relative h-12 w-12 overflow-hidden rounded-none border border-border-2 bg-white"
+                    className="relative h-12 w-12 overflow-hidden rounded-none border border-border-2 bg-panel"
                     title={formatLabel(color)}
                   >
                     {media ? (

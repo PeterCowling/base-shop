@@ -228,18 +228,18 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
             <input
               value={token}
               onChange={(event) => setToken(event.target.value)}
-              className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 w-full rounded-md border border-border-2 bg-panel px-3 py-3 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
               autoComplete="off"
             />
           </label>
           <button
             type="submit"
             disabled={busy}
-            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-fg-inverse transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy ? "Verifying..." : "Enter console"}
           </button>
-          {error ? <div className="text-sm text-red-700">{error}</div> : null}
+          {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
         </form>
       </div>
     );
@@ -286,7 +286,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
         </div>
       ) : null}
 
-      <section className="rounded-xl border border-border-2 bg-white p-6 shadow-elevation-1">
+      <section className="rounded-xl border border-border-2 bg-panel p-6 shadow-elevation-1">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
@@ -312,7 +312,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               value={label}
               onChange={(event) => setLabel(event.target.value)}
               placeholder="Inner circle"
-              className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 w-full rounded-md border border-border-2 bg-panel px-3 py-2 text-sm text-[color:var(--gate-ink)] placeholder:text-[color:var(--gate-muted)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
             />
           </label>
           <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
@@ -322,7 +322,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               onChange={(event) => setMaxUses(event.target.value)}
               type="number"
               min="1"
-              className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 w-full rounded-md border border-border-2 bg-panel px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
             />
           </label>
           <label className="block text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
@@ -331,20 +331,20 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
               value={expiresAt}
               onChange={(event) => setExpiresAt(event.target.value)}
               type="datetime-local"
-              className="mt-2 w-full rounded-md border border-border-2 bg-white px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
+              className="mt-2 w-full rounded-md border border-border-2 bg-panel px-3 py-2 text-sm text-[color:var(--gate-ink)] focus:border-[color:var(--gate-ink)] focus:outline-none focus:ring-2 focus:ring-[color:var(--gate-ink)]/20"
             />
           </label>
           <button
             type="submit"
             disabled={busy}
-            className="md:col-span-3 inline-flex items-center justify-center rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+            className="md:col-span-3 inline-flex items-center justify-center rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-4 py-2 text-sm font-semibold text-fg-inverse transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {busy ? "Creating..." : "Generate key"}
           </button>
         </form>
       </section>
 
-      <section className="rounded-xl border border-border-2 bg-white p-6 shadow-elevation-1">
+      <section className="rounded-xl border border-border-2 bg-panel p-6 shadow-elevation-1">
         <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
           Pending requests
         </div>
@@ -377,7 +377,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
                   type="button"
                   onClick={() => handleIssueRequest(request.id, request.handle)}
                   disabled={busy || request.status !== "pending"}
-                  className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-3 py-1 text-xs uppercase tracking-[0.3em] text-white transition hover:opacity-90 disabled:opacity-50"
+                  className="rounded-md border border-[color:var(--gate-ink)] bg-[color:var(--gate-ink)] px-3 py-1 text-xs uppercase tracking-[0.3em] text-fg-inverse transition hover:opacity-90 disabled:opacity-50"
                 >
                   Issue key
                 </button>
@@ -400,7 +400,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
         </div>
       </section>
 
-      <section className="rounded-xl border border-border-2 bg-white p-6 shadow-elevation-1">
+      <section className="rounded-xl border border-border-2 bg-panel p-6 shadow-elevation-1">
         <div className="text-xs uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
           Issued keys
         </div>
@@ -437,7 +437,7 @@ export default function AdminConsole({ monoClassName }: AdminConsoleProps) {
         </div>
       </section>
 
-      {error ? <div className="text-sm text-red-700">{error}</div> : null}
+      {error ? <div className="text-sm text-danger-fg">{error}</div> : null}
     </div>
   );
 }

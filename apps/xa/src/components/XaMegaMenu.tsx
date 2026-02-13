@@ -54,8 +54,8 @@ export function XaMegaMenu({
       <PopoverContent
         align="center"
         sideOffset={0}
-        className="w-screen max-w-none rounded-none border-0 bg-white px-0 pb-10 pt-8 shadow-none"
-        style={{ backgroundColor: "#ffffff" }}
+        className="w-screen max-w-none rounded-none border-0 bg-panel px-0 pb-10 pt-8 shadow-none"
+        style={{ backgroundColor: "var(--panel)" }}
       >
         <div className="mx-auto flex w-full max-w-screen-2xl gap-10 px-6">
           <div className="grid flex-1 gap-6 md:grid-cols-5">
@@ -121,7 +121,7 @@ export function XaMegaMenu({
               href={`/products/${featuredProduct.slug}`}
               className="hidden w-52 shrink-0 lg:block"
             >
-              <div className="relative aspect-[3/4] overflow-hidden bg-white">
+              <div className="relative aspect-[3/4] overflow-hidden bg-panel">
                 <XaFadeImage
                   src={featuredMedia.url}
                   alt={featuredMedia.altText ?? featuredProduct.title}

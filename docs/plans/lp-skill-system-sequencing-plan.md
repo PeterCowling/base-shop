@@ -13,8 +13,8 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: /lp-sequence, /lp-replan
-Overall-confidence: 80%
-Confidence-Method: min(Implementation,Approach,Impact) — LPSP-01 resolved, no unresolved DECISION tasks
+Overall-confidence: 82%
+Confidence-Method: min(Implementation,Approach,Impact) — LPSP-01 resolved; sub-80% tasks split and replanned
 Business-OS-Integration: off
 Business-Unit: BOS
 ---
@@ -66,32 +66,35 @@ Primary references:
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---|---|---|---|
-| LPSP-01 | DECISION | Finalize runtime contract decisions (stage set, baseline commit stage, concurrency policy, alias sunset gate) | 88% | S | Done | - | LPSP-02, LPSP-03, LPSP-05 |
-| LPSP-02 | IMPLEMENT | Add runtime-authoritative loop spec and align wrapper/workflow/prompt index | 82% | M | Pending | LPSP-01 | LPSP-06, LPSP-08 |
-| LPSP-03 | IMPLEMENT | Introduce stage-result + single-writer control semantics (manifest + derived state updates) | 76% | L | Pending | LPSP-01 | LPSP-04, LPSP-07 |
-| LPSP-04 | IMPLEMENT | Add event-sourced run ledger + derived state schema + recovery semantics | 74% | L | Pending | LPSP-03 | LPSP-06, LPSP-08 |
-| LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 84% | M | Pending | LPSP-01 | LPSP-06 |
-| LPSP-06 | IMPLEMENT | Implement deterministic S4 merge barrier and S5A/S5B split (`lp-prioritize` + `lp-bos-sync`) | 78% | L | Pending | LPSP-02, LPSP-04, LPSP-05 | LPSP-08 |
-| LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03 | LPSP-08 |
-| LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 79% | M | Pending | LPSP-02, LPSP-04, LPSP-06, LPSP-07 | LPSP-09 |
-| LPSP-09 | CHECKPOINT | Validate end-to-end supervised dry run on one business path | 86% | M | Pending | LPSP-08 | - |
+| LPSP-01 | DECISION | Finalize runtime contract decisions (stage set, baseline commit stage, concurrency policy, alias sunset gate) | 88% | S | Done | - | LPSP-02, LPSP-03A, LPSP-05 |
+| LPSP-02 | IMPLEMENT | Add runtime-authoritative loop spec and align wrapper/workflow/prompt index | 85% | M | Done | LPSP-01 | LPSP-06A, LPSP-08 |
+| LPSP-03A | IMPLEMENT | Define stage-result schema + data-plane ownership contract | 84% | S | Pending | LPSP-01 | LPSP-03B, LPSP-04A |
+| LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 82% | M | Pending | LPSP-03A | LPSP-07 |
+| LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 85% | M | Pending | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
+| LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
+| LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 84% | M | Pending | LPSP-01 | LPSP-06A |
+| LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 90% | S | Pending | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
+| LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
+| LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-08 |
+| LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03B | LPSP-08 |
+| LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 80% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
+| LPSP-09 | CHECKPOINT | Validate end-to-end supervised dry run on one business path | 86% | M | Pending | LPSP-08, LPSP-04B | - |
 
 ## Active Tasks
 
 - `LPSP-01` (DECISION) — **Done**. Decisions recorded in Decision Log below.
-- `LPSP-02` (IMPLEMENT), `LPSP-03` (IMPLEMENT), `LPSP-05` (IMPLEMENT) are now unblocked (Wave 2/3).
+- `LPSP-02`, `LPSP-03A`, `LPSP-05` are now unblocked (Wave 2).
 
 ## Parallelism Guide
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | LPSP-01 | - | Resolve remaining contract decisions once, before code/docs divergence increases |
-| 2 | LPSP-02, LPSP-05 | LPSP-01 | Stage/spec alignment and workspace/key policy can proceed in parallel |
-| 3 | LPSP-03 | LPSP-01 | Establish single-writer semantics before event-derived runtime |
-| 4 | LPSP-04, LPSP-07 | LPSP-03 | Recovery/event model and autonomy policy can progress together |
-| 5 | LPSP-06 | LPSP-02, LPSP-04, LPSP-05 | Merge barrier and S5 split depend on contract + runtime state |
-| 6 | LPSP-08 | LPSP-02, LPSP-04, LPSP-06, LPSP-07 | Guardrails and metrics after core orchestration semantics are in place |
-| 7 | LPSP-09 | LPSP-08 | End-to-end supervised dry-run validation |
+| 1 | LPSP-01 | - | Done. Contract decisions recorded. |
+| 2 | LPSP-02, LPSP-03A, LPSP-05 | LPSP-01 | All three can run in parallel: spec alignment, stage-result schema, workspace policy |
+| 3 | LPSP-03B, LPSP-04A, LPSP-06A | LPSP-03A, LPSP-02+05 | Single-writer impl, event schema, and merge-barrier contract can run in parallel |
+| 4 | LPSP-06B, LPSP-06C, LPSP-07 | LPSP-06A, LPSP-04A, LPSP-03B | Merge impl, bos-sync impl, and autonomy policy can run in parallel |
+| 5 | LPSP-04B, LPSP-08 | LPSP-06B, LPSP-06C, LPSP-07 | Recovery hardening and contract lint after core orchestration |
+| 6 | LPSP-09 | LPSP-08, LPSP-04B | End-to-end supervised dry-run with failure injection |
 
 ## Tasks
 
@@ -111,62 +114,126 @@ Primary references:
   - All four decisions recorded with chosen option and rationale in Decision Log.
   - Downstream tasks (LPSP-02, LPSP-03, LPSP-05) now reference these as fixed inputs.
 
-### LPSP-02: Add runtime-authoritative loop spec and align docs/wrapper
+### LPSP-02: Add runtime-authoritative loop spec and align docs/wrapper — DONE
 
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
 - **Deliverable:** business-artifact + code-change.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 82%
+- **Confidence:** 82% → 85% post-validation
 - **Affects:**
   - `docs/business-os/startup-loop/loop-spec.yaml` (new)
   - `.claude/skills/startup-loop/SKILL.md`
   - `docs/business-os/startup-loop-workflow.user.md`
   - `docs/business-os/workflow-prompts/README.user.md`
-- **Acceptance:**
+- **Acceptance:** Met.
   - Wrapper stage graph matches loop spec.
   - Workflow stage graph matches loop spec.
   - Prompt index covers all spec stages or marks `no-prompt-required`.
   - Run packet contract includes `loop_spec_version`.
-- **Validation contract (VC-02):**
-  - Spec/doc/wrapper graph diff check passes.
-  - No unresolved stage aliasing in active stage map.
+- **Validation contract (VC-02):** PASS.
+  - Spec/doc/wrapper graph diff check passes (all 17 stages aligned).
+  - No unresolved stage aliasing in active stage map (fixed `idea-readiness` → `lp-readiness`).
 
-### LPSP-03: Stage-result + single-writer control semantics
+#### Build Completion (2026-02-13)
+- **Commits:** 3a97532ace
+- **Execution cycle:**
+  - Validation cases executed: VC-02 (7 sub-checks)
+  - Cycles: 1 (single pass + 1 alias fix from validation)
+  - Final validation: PASS (all 7 checks)
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 85%
+  - Delta reason: validation confirmed assumptions; no surprises
+- **Implementation notes:** Created loop-spec.yaml as canonical source, aligned wrapper (SKILL.md), workflow (stage table, BOS sync matrix, state snapshot, mermaid diagram), and prompt index. Fixed one legacy alias (`idea-readiness`).
+
+### LPSP-03A: Stage-result schema + data-plane ownership contract
 
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change + business-artifact.
+- **Deliverable:** business-artifact (schema definition + examples).
 - **Execution-Skill:** /lp-build
-- **Confidence:** 76%
-- **Affects (expected):**
-  - Startup-loop orchestration implementation path.
-  - Baseline manifest update mechanism.
-  - Stage result file schema (new).
+- **Confidence:** 84%
+- **Replan note:** Split from original LPSP-03 (76%) to separate schema design from control-plane implementation.
+- **Scope:**
+  - Define stage-result file format that parallel workers emit after completing stage work.
+  - Document directory ownership contract: `runs/<run_id>/stages/<stage>/` is stage-owned, `baseline.manifest.json` is control-plane-owned.
 - **Acceptance:**
-  - Stage workers publish stage-owned outputs and stage result files only.
+  - Stage-result schema defined: `{ schema_version, run_id, stage, status: "Done"|"Failed"|"Blocked", produced_keys[], artifacts{}, error?, blocking_reason? }`.
+  - Schema examples for 3+ stages (S2B, S3, S6B).
+  - Clear contract: workers write only to stage-owned directories + emit `stage-result.json`.
+  - No worker touches manifest or shared state files.
+- **Validation contract (VC-03A):**
+  - Hand-crafted stage-result files from simulated parallel workers can be consumed by control plane.
+  - Missing/malformed stage-result files are detectable and reportable.
+
+### LPSP-03B: Single-writer manifest update mechanism
+
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change.
+- **Execution-Skill:** /lp-build
+- **Confidence:** 82%
+- **Replan note:** Split from original LPSP-03 (76%). Adapts existing BOS optimistic-concurrency patterns (`computeEntitySha`) to manifest updates.
+- **Depends on:** LPSP-03A (needs stage-result schema as input contract).
+- **Scope:**
+  - Single entry point (function/module) responsible for manifest pointer updates.
+  - Reads stage-result files from `runs/<run_id>/stages/*/stage-result.json`.
+  - Updates `baseline.manifest.json` only when all required upstream stage results are `Done`.
+  - Rejects update if any required stage result is missing, malformed, or `Failed`/`Blocked`.
+- **Acceptance:**
   - Shared control artifacts are updated by single-writer control path only.
   - Manifest pointer updates reject unresolved or invalid stage results.
-- **Validation contract (VC-03):**
-  - Simulated parallel stage completion cannot produce manifest write contention.
-  - Single-writer path can deterministically re-derive pointers.
+  - Re-running the update with identical inputs produces identical manifest (idempotent).
+- **Validation contract (VC-03B):**
+  - Simulated parallel completion: write S3 and S6B stage results concurrently, verify S4 merge can consume both deterministically.
+  - Simulated failure: S3 completes, S6B fails → manifest update blocked with explicit reason.
+  - Re-derivation: given valid stage results, re-running produces identical manifest pointers.
 
-### LPSP-04: Event-sourced run ledger + derived state + recovery
+### LPSP-04A: Event schema + derived state + deterministic derivation (happy-path)
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + business-artifact.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 74%
-- **Affects (expected):**
-  - `runs/<run_id>/events.jsonl` schema
-  - `runs/<run_id>/state.json` derived view
-  - Recovery handling in startup-loop orchestration
+- **Confidence:** 85%
+- **Replan note:** Split from original LPSP-04 (74%). Scoped to happy-path event/state schemas and derivation. Recovery automation deferred to LPSP-04B.
+- **Depends on:** LPSP-03A (stage-result format feeds event schema).
+- **Scope:**
+  - Define minimal event types: `stage_started`, `stage_completed`, `stage_blocked`.
+  - Define derived state schema (`state.json`) satisfying `/lp-launch-qa` contract.
+  - Implement deterministic state derivation function (replay events → state).
+  - Single-writer control plane appends events and regenerates derived state.
+  - Manual resume supported: operator appends `stage_started` event, re-derives state.
 - **Acceptance:**
-  - Runs append events as source of truth.
-  - Derived state reproduces stage statuses and blockers.
-  - Recovery actions (`resume`, `restart`, `abort`) are recorded and replayable.
-- **Validation contract (VC-04):**
-  - Mid-run failure simulation resumes from last `Done` stage.
-  - Corrupt event stream simulation triggers controlled restart behavior.
-  - No hidden cleanup of partial artifacts.
+  - Event schema versioned: `{ schema_version, event, run_id, stage, timestamp, loop_spec_version, artifact_key?, blocking_reason? }`.
+  - Derived state schema: `{ schema_version, business, run_id, loop_spec_version, active_stage, stages: { [stage]: { status, artifact_key?, blocking_reason? } } }`.
+  - Derivation is deterministic and idempotent (same events → same state).
+  - Manual resume works (operator edits events.jsonl, re-derives).
+- **Validation contract (VC-04A):**
+  - Given a valid event stream, derivation reproduces expected stage statuses.
+  - Given a manually injected `stage_completed` event, derivation updates state correctly.
+  - Derived state satisfies `/lp-launch-qa` expected contract fields.
+- **Deferred to LPSP-04B:** Automated recovery actions, event stream corruption detection, partial artifact cleanup, failure injection test harness.
+
+### LPSP-04B: Recovery automation + event validation + failure injection
+
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + business-artifact.
+- **Execution-Skill:** /lp-build
+- **Confidence:** 78%
+- **Replan note:** Split from original LPSP-04 (74%). Hardening phase — builds on proven LPSP-04A foundation.
+- **Depends on:** LPSP-04A (needs event/state schemas), LPSP-06B (needs merge barrier for failure scenarios).
+- **Scope:**
+  - Recovery event types: `run_resumed`, `run_restarted`, `run_aborted` (with operator, reason, timestamp).
+  - Event stream validation: schema version checks, ordering validation, integrity checks.
+  - Resume/restart/abort decision tree: deterministic and documented.
+  - No hidden cleanup policy: partial artifacts remain on disk for forensics.
+- **Acceptance:**
+  - Recovery decision tree is documented and deterministic.
+  - Event stream validation detects common corruption (truncated file, schema mismatch, missing fields).
+  - Resume/restart/abort actions are recorded as explicit events.
+- **Validation contract (VC-04B):**
+  - Mid-run failure simulation: kill during S4, verify derived state shows Active/Blocked, manual resume continues from correct checkpoint.
+  - Corrupt event stream simulation: truncate events.jsonl, verify validation detects corruption and recommends restart.
+  - No hidden cleanup: after abort, all partial artifacts remain accessible.
 
 ### LPSP-05: Workspace canonicalization + stage-doc key policy
 
@@ -182,20 +249,57 @@ Primary references:
   - New fact-find/plan/build chain resolves canonical workspace files.
   - Legacy path inputs remain readable during migration window.
 
-### LPSP-06: Deterministic S4 merge + S5A/S5B split
+### LPSP-06A: Define `/lp-baseline-merge` skill contract
+
+- **Type:** DECISION
+- **Deliverable:** business-artifact (`.claude/skills/lp-baseline-merge/SKILL.md`).
+- **Execution-Skill:** /lp-build
+- **Confidence:** 90%
+- **Replan note:** Split from original LPSP-06 (78%). Tractable design task with clear inputs from DL-01/DL-02.
+- **Depends on:** LPSP-02 (loop spec), LPSP-05 (canonical paths).
+- **Acceptance:**
+  - Required inputs documented: `offer` (S2B), `forecast` (S3), `channels` (S6B); optional: `seo`, `outreach`.
+  - Blocking logic: S4 blocks with explicit reason when required inputs missing/invalid.
+  - Snapshot composition algorithm documented (priority order, conflict resolution).
+  - Canonical output paths: `docs/business-os/startup-baselines/<BIZ>/S4-baseline-merge/baseline.snapshot.md` + draft `baseline.manifest.json`.
+- **Validation contract (VC-06A):**
+  - Blocking logic examples cover all required input scenarios.
+  - Skill contract aligns with loop-spec stage graph from LPSP-02.
+
+### LPSP-06B: Implement `/lp-baseline-merge` (S4 join barrier)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change + skill-contract update.
+- **Deliverable:** code-change + tests.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 78%
+- **Confidence:** 80%
+- **Replan note:** Split from original LPSP-06 (78%). Implementation follows contract from LPSP-06A.
+- **Depends on:** LPSP-06A (skill contract), LPSP-04A (stage-result schema for upstream validation).
 - **Acceptance:**
-  - `/lp-baseline-merge` validates required upstream artifacts and composes deterministic snapshot.
-  - `S5A` remains side-effect free (`/lp-prioritize`).
-  - `S5B` (`/lp-bos-sync`) is sole mutation boundary for BOS writes.
-  - `bos-sync` is idempotent under retry.
-- **Validation contract (VC-06):**
-  - Join stage blocks on missing required inputs with explicit reasons.
-  - Re-running S5B does not duplicate or diverge BOS records.
+  - S4 joins S3/S6B outputs into deterministic snapshot following documented merge algorithm.
+  - S4 writes snapshot to canonical path + draft manifest with `status: candidate`.
+  - S4 blocks on missing required inputs with explicit reasons from stage-result files.
+  - Snapshot composition is deterministic (same inputs → same output).
+- **Validation contract (VC-06B):**
+  - Simulated missing S3 output → S4 blocks with reason "forecast artifact missing".
+  - Valid S3 + S6B outputs → S4 produces snapshot + manifest.
+
+### LPSP-06C: Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit)
+
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + tests.
+- **Execution-Skill:** /lp-build
+- **Confidence:** 80%
+- **Replan note:** Split from original LPSP-06 (78%). Leverages existing BOS Agent API with optimistic concurrency (entitySha).
+- **Depends on:** LPSP-06A (contract), LPSP-04A (stage-result schema for S5A→S5B gating).
+- **Acceptance:**
+  - S5B gates on S5A completion (derived state shows `S5A.status=Done`).
+  - S5B persists cards/stage-docs via BOS Agent API (`upsertCard`, `upsertStageDoc`).
+  - S5B commits manifest pointer (`status: candidate → current`) after BOS writes succeed.
+  - Retry with same input produces no duplicate cards (entitySha match = no-op).
+- **Validation contract (VC-06C):**
+  - S5A incomplete → S5B blocks with explicit reason.
+  - S5B retry (same prioritized items) → BOS card count unchanged, entitySha confirms idempotency.
+  - S5B partial failure (BOS write succeeds, manifest commit fails) → resume completes manifest without duplicate writes.
 
 ### LPSP-07: Autonomy policy tiers and guarded actions
 
@@ -260,10 +364,11 @@ Primary references:
 
 ## What Would Make Confidence >=90%
 
-1. Complete `LPSP-01` decisions and remove current architectural ambiguity.
-2. Demonstrate one successful end-to-end supervised run with injected failure resume.
-3. Prove idempotent `S5B` behavior in repeated mutation attempts.
-4. Show contract-lint catches all previously observed drift classes (SQ-01..SQ-12).
+1. ~~Complete `LPSP-01` decisions and remove current architectural ambiguity.~~ Done.
+2. Complete Wave 2-3 (LPSP-02, 03A, 03B, 04A, 05, 06A) — all design + schema tasks resolved, removing remaining specification uncertainty.
+3. Demonstrate one successful end-to-end supervised run with injected failure resume (LPSP-09).
+4. Prove idempotent `S5B` behavior in repeated mutation attempts (LPSP-06C).
+5. Show contract-lint catches all previously observed drift classes SQ-01..SQ-12 (LPSP-08).
 
 ## Decision Log
 

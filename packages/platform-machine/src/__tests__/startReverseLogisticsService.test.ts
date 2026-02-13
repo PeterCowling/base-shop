@@ -1,16 +1,26 @@
 /** @jest-environment node */
-import { startReverseLogisticsService } from "../startReverseLogisticsService";
 
-import {
-  logger,
-  readdir,
-  readFile,
-  resetReverseLogisticsMocks,
-} from "./reverseLogisticsTestHelpers";
+// Mock declarations must be in the test file for Jest hoisting to work.
+// When placed in a helper file, jest.mock is NOT hoisted above imports.
+const readdir = jest.fn();
+const readFile = jest.fn();
+jest.mock("fs/promises", () => ({ readdir, readFile }));
+
+const logger = { error: jest.fn() };
+jest.mock("@acme/platform-core/utils", () => ({ logger }));
+
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({}));
+jest.mock("@acme/platform-core/repositories/reverseLogisticsEvents.server", () => ({}));
+jest.mock("crypto", () => ({ randomUUID: jest.fn(() => "uuid") }));
+
+// eslint-disable-next-line import/first
+import { startReverseLogisticsService } from "../startReverseLogisticsService";
 
 describe("startReverseLogisticsService", () => {
   beforeEach(() => {
-    resetReverseLogisticsMocks();
+    readdir.mockReset();
+    readFile.mockReset();
+    logger.error.mockReset();
   });
 
   it("skips disabled configs and schedules enabled shops", async () => {
@@ -96,13 +106,3 @@ describe("startReverseLogisticsService", () => {
     clearSpy.mockRestore();
   });
 });
-
-afterAll(() => {
-  jest.resetModules();
-  jest.unmock("fs/promises");
-  jest.unmock("@acme/platform-core/repositories/rentalOrders.server");
-  jest.unmock("@acme/platform-core/repositories/reverseLogisticsEvents.server");
-  jest.unmock("@acme/platform-core/utils");
-  jest.unmock("crypto");
-});
-

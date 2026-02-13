@@ -163,7 +163,7 @@ Routing rules:
 | LC-00 | MIGRATE | Migrate active baseline docs to canonical `Priors (Machine)` block | 92% | M | Complete (2026-02-13) | - | LC-03, LC-05 |
 | LC-01 | DECISION | Finalize schemas, supersede semantics, prior refs, and manifest lifecycle | 90% | S | Complete (2026-02-13) | - | LC-02, LC-03, LC-06 |
 | LC-02 | IMPLEMENT | Implement learning ledger append/query with deterministic dedup and effective-view semantics | 88% | S | Complete (2026-02-13) | LC-01 | LC-04 |
-| LC-03 | IMPLEMENT | Implement canonical priors extraction/indexing/serialization | 86% | M | Pending | LC-00, LC-01 | LC-04, LC-05 |
+| LC-03 | IMPLEMENT | Implement canonical priors extraction/indexing/serialization | 86% | M | Complete (2026-02-13) | LC-00, LC-01 | LC-04, LC-05 |
 | LC-04 | IMPLEMENT | Implement compiler with prior-ref routing and invertible deltas | 85% | M | Pending | LC-02, LC-03 | LC-06 |
 | LC-05 | IMPLEMENT | Implement bounded writer with deterministic snapshot paths and replay safety | 84% | M | Pending | LC-03, LC-04 | LC-06 |
 | LC-06 | IMPLEMENT | Integrate compiler into S10 with manifest lifecycle and correction handling | 86% | M | Pending | LC-01, LC-04, LC-05 | LC-07 |

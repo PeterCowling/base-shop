@@ -11,3 +11,4 @@ export {
   type SimilarityValidationOptions,
   validateNumericPairInputs,
 } from "./common";
+export { hoeffding, type HoeffdingOptions } from "./hoeffding";

@@ -99,13 +99,13 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | ASM-06 | IMPLEMENT | Implement Jensen-Shannon divergence/distance | 88% | S | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-07 | IMPLEMENT | Implement Kendall's Tau-b (O(n log n)) | 85% | M | Complete (2026-02-13) | ASM-04 | ASM-09 |
 | ASM-08 | IMPLEMENT | Implement NMI discrete + binned modes using ASM-05 decisions | 81% | M | Complete (2026-02-13) | ASM-05 | ASM-09 |
-| ASM-09 | IMPLEMENT | Add integration suite, docs, and final export hardening | 83% | M | Pending | ASM-06, ASM-07, ASM-08 | - |
+| ASM-09 | IMPLEMENT | Add integration suite, docs, and final export hardening | 83% | M | Complete (2026-02-13) | ASM-06, ASM-07, ASM-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
 ## Active tasks
 
-- ASM-09 - Unblocked after ASM-08 completion; ready to build.
+- None. All tasks are complete.
 
 ## Parallelism Guide
 
@@ -566,6 +566,25 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 - **Documentation impact:** add/maintain `packages/lib/src/math/similarity/README.md` and update any affected library docs referencing available math metrics.
 - **Notes / references:** `packages/lib/src/math/index.ts`, `packages/lib/package.json` export map.
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** pending (this task updates code/tests/docs + plan in current cycle)
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1 red-green cycle
+  - Initial validation: FAIL expected (`No tests found` for missing integration suite path)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 83%
+  - Post-validation: 85%
+  - Delta reason: integration suite and executable README examples reduced cross-metric interpretation risk.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/integration.test.ts` - PASS (3 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__` - PASS (7 suites, 46 tests)
+  - Ran: `pnpm --filter @acme/lib lint` - PASS (warnings only outside task scope)
+- **Documentation updated:** `packages/lib/src/math/similarity/README.md`
+- **Implementation notes:** Added cross-metric integration coverage, stabilized module docs with executable examples, and finalized similarity export surface hardening.
+
 ## Risks & Mitigations
 
 - NMI binning/normalization ambiguity can produce misleading outputs.
@@ -585,11 +604,11 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Acceptance Criteria (overall)
 
-- [ ] `packages/lib/src/math/similarity/` exists with all planned metrics and shared contract utilities.
-- [ ] All metric-specific validation contracts pass through targeted `@acme/lib` tests.
-- [ ] NMI implementation is gated by completed calibration investigation (ASM-05).
-- [ ] Integration tests and README provide coherent cross-metric usage guidance.
-- [ ] Export surface remains stable and package lint passes.
+- [x] `packages/lib/src/math/similarity/` exists with all planned metrics and shared contract utilities.
+- [x] All metric-specific validation contracts pass through targeted `@acme/lib` tests.
+- [x] NMI implementation is gated by completed calibration investigation (ASM-05).
+- [x] Integration tests and README provide coherent cross-metric usage guidance.
+- [x] Export surface remains stable and package lint passes.
 
 ## Decision Log
 

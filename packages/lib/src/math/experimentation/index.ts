@@ -43,6 +43,12 @@
  *
  * Note: APIs are introduced incrementally by ABT plan tasks.
  */
+export type {
+  BayesianABTestOptions,
+  BayesianABTestResult,
+  BetaPosteriorSummary,
+} from "./bayesian";
+export { bayesianABTest } from "./bayesian";
 export type { ConfidenceIntervalResult } from "./confidence-intervals";
 export {
   meanConfidenceInterval,

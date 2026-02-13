@@ -44,6 +44,7 @@
     "@acme/guides-core": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/platform-core": "workspace:*",
+    "@acme/seo": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/ui": "workspace:*",
     "@anthropic-ai/sdk": "^0.32.1",

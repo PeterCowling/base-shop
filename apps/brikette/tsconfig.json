@@ -28,6 +28,14 @@
         "../../packages/ui/dist/*",
         "../../packages/ui/src/*"
       ],
+      "@acme/seo": [
+        "../../packages/seo/dist/index.d.ts",
+        "../../packages/seo/src/index.ts"
+      ],
+      "@acme/seo/*": [
+        "../../packages/seo/dist/*",
+        "../../packages/seo/src/*"
+      ],
       "@acme/guides-core": [
         "../../packages/guides-core/dist/index.d.ts",
         "../../packages/guides-core/src/index.ts"

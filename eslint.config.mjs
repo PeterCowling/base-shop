@@ -294,6 +294,15 @@ export default [
     },
   },
 
+  /* ▸ Business OS: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/business-os/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
   /* ▸ Design-system motion safety: ban transition-all in DS + mirrored atoms */
   {
     files: [

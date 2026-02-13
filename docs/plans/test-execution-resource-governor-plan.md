@@ -169,7 +169,7 @@ Event schema (MVP):
 |---|---|---|---:|---:|---|---|---|
 | TEG-01 | IMPLEMENT | Add warn-only command interception (`npm`/`npx` wrappers + shell hook) and telemetry contract | 84% | M | Completed (2026-02-13) | - | TEG-06, TEG-07 |
 | TEG-02 | IMPLEMENT | Build test scheduler primitives (`test-lock.sh`) with FIFO, cancel, stale cleanup | 83% | M | Completed (2026-02-13) | - | TEG-03 |
-| TEG-03 | IMPLEMENT | Add intent-based governed runner (`test:governed`) with scheduler and shaping caps | 82% | M | Pending | TEG-02 | TEG-04, TEG-05, TEG-07 |
+| TEG-03 | IMPLEMENT | Add intent-based governed runner (`test:governed`) with scheduler and shaping caps | 82% | M | Completed (2026-02-13) | TEG-02 | TEG-04, TEG-05, TEG-07 |
 | TEG-04 | CHECKPOINT | Horizon checkpoint after interception + scheduler baseline | 95% | S | Pending | TEG-03 | TEG-05, TEG-06, TEG-07 |
 | TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Pending | TEG-04 | TEG-06 |
 | TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Pending | TEG-01, TEG-05 | TEG-08, TEG-09 |
@@ -299,7 +299,7 @@ Schedule note:
 - **Deliverable:** governed runner script and root script wiring.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
-- **Affects:** `scripts/tests/run-governed-test.sh`, `scripts/tests/runner-shaping.sh`, `package.json`, `[readonly] scripts/tests/test-lock.sh`
+- **Affects:** `scripts/tests/run-governed-test.sh`, `scripts/tests/runner-shaping.sh`, `scripts/__tests__/test-governed-runner.test.ts`, `package.json`, `[readonly] scripts/tests/test-lock.sh`
 - **Depends on:** TEG-02
 - **Blocks:** TEG-04, TEG-05, TEG-07
 - **Confidence:** 82%
@@ -338,6 +338,11 @@ Schedule note:
   - Rollback: keep lock primitives, disable runner script path.
 - **Documentation impact:** update root testing command guidance in `AGENTS.md` and `docs/testing-policy.md`.
 - **Notes / references:** execution-path map from fact-find.
+- **Build completion (2026-02-13):**
+  - **Status:** Complete
+  - **Implementation notes:** added intent-based runner (`scripts/tests/run-governed-test.sh`) and shaping policy helpers (`scripts/tests/runner-shaping.sh`); wired root `test:governed` script in `package.json`; added integration coverage in `scripts/__tests__/test-governed-runner.test.ts` for TC-01..TC-08.
+  - **Validation evidence:** `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts` (PASS).
+  - **Documentation updated:** None in this task; command-guidance normalization remains tracked by TEG-09.
 
 ### TEG-04: Horizon checkpoint - reassess remaining plan
 - **Type:** CHECKPOINT

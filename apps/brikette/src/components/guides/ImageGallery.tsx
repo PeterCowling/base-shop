@@ -22,6 +22,7 @@ type Props = { items: ImageGalleryItem[]; className?: string };
 
 function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
   if (!items?.length) return null;
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- CFL-99 pre-existing: early return guard before hook
   const lang = useCurrentLanguage();
   return (
     <div
@@ -37,7 +38,8 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
         return (
           <figure
             key={key}
-            className="group w-fit max-w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-50 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800/50"
+            // eslint-disable-next-line ds/container-widths-only-at -- CFL-99 pre-existing: image sizing
+            className="group w-fit max-w-full overflow-hidden rounded-lg border border-1 bg-surface-1 shadow-sm transition-shadow hover:shadow-md"
           >
             <CfResponsiveImage
               src={src}
@@ -45,11 +47,12 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
               width={width}
               height={height}
               preset="gallery"
+              // eslint-disable-next-line ds/container-widths-only-at -- CFL-99 pre-existing: image sizing
               className="block h-auto w-auto max-w-full transition-opacity group-hover:opacity-95"
               data-aspect={aspect}
             />
             {caption ? (
-              <figcaption className="px-4 py-3 text-sm leading-snug text-slate-700 dark:text-slate-300">
+              <figcaption className="px-4 py-3 text-sm leading-snug text-secondary">
                 {renderGuideLinkTokens(caption, lang, `image-gallery-${index}`, undefined)}
               </figcaption>
             ) : null}

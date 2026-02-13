@@ -329,6 +329,17 @@ describe("Governed Test Runner", () => {
     expect(result.stderr).toContain("test:governed");
   });
 
+  test("compat: leading separator token before intent is normalized", () => {
+    const repo = newRepo();
+    const mockBinDir = newTempDir("mock-pnpm-");
+    createMockPnpm(mockBinDir);
+    const logPath = path.join(newTempDir("governed-log-"), "events.log");
+    const env = baseEnv(repo, mockBinDir, logPath);
+
+    const result = runRunner(["--", "jest", "--", "--testPathPattern=foo"], repo, env);
+    expect(result.status).toBe(0);
+  });
+
   test("TC-03: watch policies enforce explicit watch-exclusive opt-in", () => {
     const repo = newRepo();
     const mockBinDir = newTempDir("mock-pnpm-");

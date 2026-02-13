@@ -8,6 +8,11 @@ test_lock_script="${script_dir}/test-lock.sh"
 # shellcheck source=scripts/tests/runner-shaping.sh
 source "$runner_shaping_script"
 
+# pnpm run forwards a separator token before script args; normalize it.
+while [[ "${1:-}" == "--" ]]; do
+  shift
+done
+
 intent="${1:-}"
 if [[ -z "$intent" ]]; then
   baseshop_runner_usage >&2

@@ -170,7 +170,7 @@ Event schema (MVP):
 | TEG-01 | IMPLEMENT | Add warn-only command interception (`npm`/`npx` wrappers + shell hook) and telemetry contract | 84% | M | Completed (2026-02-13) | - | TEG-06, TEG-07 |
 | TEG-02 | IMPLEMENT | Build test scheduler primitives (`test-lock.sh`) with FIFO, cancel, stale cleanup | 83% | M | Completed (2026-02-13) | - | TEG-03 |
 | TEG-03 | IMPLEMENT | Add intent-based governed runner (`test:governed`) with scheduler and shaping caps | 82% | M | Completed (2026-02-13) | TEG-02 | TEG-04, TEG-05, TEG-07 |
-| TEG-04 | CHECKPOINT | Horizon checkpoint after interception + scheduler baseline | 95% | S | Pending | TEG-03 | TEG-05, TEG-06, TEG-07 |
+| TEG-04 | CHECKPOINT | Horizon checkpoint after interception + scheduler baseline | 95% | S | Completed (2026-02-13) | TEG-03 | TEG-05, TEG-06, TEG-07 |
 | TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Pending | TEG-04 | TEG-06 |
 | TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Pending | TEG-01, TEG-05 | TEG-08, TEG-09 |
 | TEG-07 | INVESTIGATE | Collect calibration telemetry (20+ runs) and tune per-class budgets | 74% ⚠️ | M | Pending | TEG-01, TEG-04 | TEG-08 |
@@ -364,6 +364,14 @@ Schedule note:
   - package migration surface remains manageable after runner rollout.
   - hard enforcement will not break core workflows once scripts are migrated.
   - telemetry tags (`governed`, `policy_mode`) are reliable enough for calibration.
+- **Build completion (2026-02-13):**
+  - **Status:** Complete
+  - **Evidence reviewed:** `TEG-02` queue primitives/tests (`scripts/__tests__/test-lock-queue.test.ts` PASS), `TEG-03` runner/shaping tests (`scripts/__tests__/test-governed-runner.test.ts` PASS), guarded policy regression (`scripts/__tests__/pnpm-test-safety-policy.test.ts` PASS), and live runner invocation (`pnpm run test:governed -- jest --version`).
+  - **Checkpoint assessment:**
+    - Migration surface remains broad but manageable; no new structural blockers discovered.
+    - Enforcement boundary remains valid: governed context + intent routing works, including `pnpm run` separator compatibility.
+    - Telemetry contract from TEG-01 remains stable enough for calibration collection in TEG-07.
+  - **Replan outcome:** no topology changes required; task ordering and dependency graph remain valid as sequenced.
 
 ### TEG-05: Migrate package scripts and affected test path
 - **Type:** IMPLEMENT
@@ -607,3 +615,4 @@ Schedule note:
 - 2026-02-13: Chose intent-based governed runner (`jest|turbo|changed|watch-exclusive`) instead of arbitrary command passthrough.
 - 2026-02-13: Chose split overrides (`BASESHOP_ALLOW_BYPASS_POLICY`, `BASESHOP_ALLOW_OVERLOAD`) to avoid policy bypass automatically disabling resource safety.
 - 2026-02-13: Set enforcement boundary to guarded shells + migrated scripts; non-guarded shells are explicitly unsupported.
+- 2026-02-13: Completed TEG-04 checkpoint with no dependency/topology changes; proceed to TEG-05 package migration.

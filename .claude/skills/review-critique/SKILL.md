@@ -1,11 +1,11 @@
 ---
 name: review-critique
-description: Hardnosed critic for lp-fact-find, lp-plan, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.
+description: Hardnosed critic for lp-fact-find, lp-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.
 ---
 
 # Critique Document (Compact Hardnosed Mode)
 
-Critique lp-fact-find, lp-plan, or process/skill documents for decision quality.
+Critique lp-fact-find, lp-plan, lp-offer, or process/skill documents for decision quality.
 No compliments, no filler, no vibe-based approval.
 
 ## Operating Mode
@@ -31,6 +31,7 @@ Required:
 Supported targets:
 - Planning docs (`docs/plans/*-lp-fact-find.md`, `docs/plans/*-plan.md`)
 - Domain plan docs (for example `docs/cms-plan/*.md`)
+- Offer artifacts (`docs/business-os/strategy/*/*-offer.user.md` or similar)
 - Process/skill docs (for example `.claude/skills/*/SKILL.md`)
 
 Optional:
@@ -43,14 +44,15 @@ Optional:
 Detection order:
 1. If frontmatter `Type` is `Fact-Find` or `Plan` and structure is consistent, use Section A or B.
 2. Else if structure is consistent with planning docs, use Section A or B (filename is supportive, not required).
-3. Else use Section C (Process schema mode).
+3. Else if structure is consistent with offer docs, use Section D (Offer schema mode).
+4. Else use Section C (Process schema mode).
 
 If `Type` conflicts with structure:
 - Route by structure
 - Downgrade confidence
 - Record `Header/Structure override: Yes`
 
-Structure consistency rubric (A/B routing):
+Structure consistency rubric (A/B/D routing):
 - Fact-Find consistent if >=3 of 4 headings exist with substantive content:
   - `Scope` or `Scope & Intent`
   - `Evidence Audit` or `Evidence Audit (Current State)`
@@ -61,12 +63,18 @@ Structure consistency rubric (A/B routing):
   - `Task Summary` or `Task List`
   - `Tasks` or `Implementation Tasks`
   - `Risks & Mitigations` or `Risks and Mitigations`
+- Offer consistent if >=3 of 4 headings exist with substantive content:
+  - `ICP Segmentation` or `ICP`
+  - `Pain/Promise Mapping` or `Pain` or `Promise`
+  - `Offer Structure` or `Core Offer`
+  - `Pricing` or `Pricing/Packaging`
 - Substantive content means at least one concrete bullet, table row, or sentence with verifiable detail.
 
 Schema modes:
 - Current: aligns with current templates/policies
 - Legacy: older/different schema
-- Process: non Fact-Find/Plan docs
+- Offer: offer artifacts (lp-offer output)
+- Process: non Fact-Find/Plan/Offer docs
 
 Current/Legacy classification is separate from defect scoring.
 A doc can be Current and still contain decision-quality defects.
@@ -301,6 +309,90 @@ Required checks:
 - Output template enforces method steps
 - Alignment with source-of-truth docs and legacy handling
 
+## Section D: Offer Lens
+
+Required checks for each of the 6 lp-offer sections:
+
+### 1. ICP Segmentation
+- Demographics are falsifiable and narrow (not "25-45, all income levels")
+- Psychographics tied to observable behaviors (not "likes quality")
+- JTBD is specific and non-generic (not "wants to save time")
+- Buying triggers include external events or internal thresholds
+
+### 2. Pain/Promise Mapping
+- Each pain row includes: pain statement, promise, quantified outcome, evidence source
+- Promise claims are measurable (not "feel better" but "reduce X by Y%")
+- Evidence exists and is cited (customer quotes, usage data, competitive intel)
+- Pain-promise alignment is direct (promise addresses stated pain, not tangential benefit)
+
+### 3. Offer Structure
+- Core offer deliverables are enumerated with format/quantity/timeline
+- Bundles differentiate clearly (not "more of everything" but distinct use cases)
+- Exclusions prevent scope creep (what's explicitly NOT included)
+- Guarantees are specific (refund conditions, performance thresholds, liability caps)
+- Risk reversals shift buyer risk to seller (money-back, trial period, pay-on-results)
+
+### 4. Positioning One-Pager (Geoffrey Moore template)
+- "For [target customer] who [statement of need/opportunity], [product name] is a [product category] that [statement of key benefit]. Unlike [primary competitive alternative], [product name] [statement of primary differentiation]."
+- Each blank filled with concrete, non-hand-wavy text
+- Differentiation is defensible (not "better quality" but specific capability gap)
+
+### 5. Pricing/Packaging Hypothesis
+- Price points anchored to competitor data or willingness-to-pay research
+- Justification includes cost structure, value metric, and margin requirements
+- Confidence assessment includes what's known/unknown and validation plan
+- Competitor comparison table exists with like-for-like feature/price mapping
+
+### 6. Objection Map + Risk Reversal
+- Each objection row includes: objection, response, proof/mechanism
+- Objections cover price, trust, timing, alternatives, and implementation cost
+- Responses are specific (not "we're great" but "here's how we de-risk")
+- Proof is tangible (case study, money-back guarantee, free trial, social proof)
+
+### Offer-Specific Quality Dimensions
+
+For scoring, weight these dimensions for Offer artifacts:
+- **ICP Specificity** (0.20): Demographics/psychographics narrow enough to guide channel and copy decisions
+- **Positioning Distinctiveness** (0.20): Differentiation is defensible and tied to observable capability gaps
+- **Pricing Justification** (0.15): Price anchored to evidence (competitor data, willingness-to-pay, cost structure)
+- **Objection Completeness** (0.15): Covers top 5 objections (price, trust, timing, alternatives, implementation) with specific responses
+- **Risk Reversal Strength** (0.15): Guarantee/trial/reversal mechanisms shift meaningful risk to seller
+- **Evidence Quality** (0.15): Pain, promise, and positioning claims cite sources (not hypothetical)
+
+### Munger Inversion Attacks (Offer-Specific)
+
+Apply "Why would this offer fail?" to each section:
+
+**ICP Inversion:**
+- Is the ICP so broad that channel selection becomes impossible?
+- Are psychographics so generic they could describe any customer?
+- Is JTBD stated at such a high level it offers no differentiation?
+
+**Pain/Promise Inversion:**
+- Are promises unfalsifiable or untestable within a reasonable timeframe?
+- Is the pain stated in the customer's language, or in consultant-speak?
+- Could a competitor make the same promise with equal credibility?
+
+**Offer Structure Inversion:**
+- Are exclusions missing, inviting scope creep and margin erosion?
+- Is the guarantee so weak (or absent) that it signals low confidence?
+- Are risk reversals cosmetic (7-day refund) rather than substantive (pay-on-results)?
+
+**Positioning Inversion:**
+- Is the "primary competitive alternative" a strawman (outdated product, manual process) rather than the real threat?
+- Is differentiation a feature list rather than a single defendable capability?
+- Could this positioning apply to 3+ competitors with minor word swaps?
+
+**Pricing Inversion:**
+- Is price set by gut feel rather than anchored to willingness-to-pay or competitor data?
+- Is the confidence assessment hand-wavy ("we think it's right") rather than evidence-based?
+- Is the validation plan missing or non-falsifiable?
+
+**Objection Inversion:**
+- Are top objections missing (price, trust, timing, alternatives, implementation cost)?
+- Are responses generic reassurances ("we're the best") rather than specific mechanisms?
+- Is proof absent or weak (testimonials without metrics, vague case studies)?
+
 ## Cross-Document Consistency (Plan + Fact-Find)
 
 If a plan references a lp-fact-find:
@@ -362,7 +454,7 @@ Anchor definitions:
 The document is **(credible / partially credible / not credible)** because: ...
 
 Decision frame: **Decision owner:** ... | **Decision/question:** ...
-Schema mode: **Current / Legacy / Process**
+Schema mode: **Current / Legacy / Offer / Process**
 Header/Structure override: **Yes/No** - <if yes, why>
 Mode evidence: <matched headings/markers used for routing>
 
@@ -438,6 +530,11 @@ Recommended next actions:
 - Plan confidence inflation -> `/lp-replan`
 - Plan missing validation contracts -> revise plan before `/lp-build`
 - Plan contradicts lp-fact-find -> `/lp-replan` with lp-fact-find input
+- Offer ICP too broad -> return to `/lp-offer` with narrower segmentation
+- Offer pricing unjustified -> gather competitor/WTP data, then re-run `/lp-offer`
+- Offer positioning generic -> research competitive alternatives, then revise positioning
+- Offer objections incomplete -> conduct customer interviews or competitive research
+- Offer risk reversals weak -> strengthen guarantees/trials before `/lp-forecast`
 - Unresolved source conflict -> reconcile source docs, then re-critique
 - Process/skill contradictions -> revise rules, then re-critique
 - Document fundamentally sound -> proceed

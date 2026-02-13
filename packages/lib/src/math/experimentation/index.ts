@@ -44,6 +44,19 @@
  * Note: APIs are introduced incrementally by ABT plan tasks.
  */
 export type {
+  ChiSquareGoodnessOfFitOptions,
+  ChiSquareGoodnessOfFitResult,
+  WelchTTestOptions,
+  WelchTTestResult,
+  ZTestProportionsOptions,
+  ZTestProportionsResult,
+} from "./hypothesis-tests";
+export {
+  chiSquareGoodnessOfFit,
+  welchTTest,
+  zTestProportions,
+} from "./hypothesis-tests";
+export type {
   AlternativeHypothesis,
   SampleSizeForProportionsOptions,
   SampleSizeForProportionsResult,

@@ -206,6 +206,32 @@ async function waitForCondition(
   throw new Error(`Condition not met within ${timeoutMs}ms`);
 }
 
+function telemetryEventsPath(repoDir: string): string {
+  return path.join(repoDir, ".cache/test-governor/events.jsonl");
+}
+
+function readTelemetryEvents(repoDir: string): Array<Record<string, unknown>> {
+  const eventsPath = telemetryEventsPath(repoDir);
+  if (!fs.existsSync(eventsPath)) {
+    return [];
+  }
+
+  return fs
+    .readFileSync(eventsPath, "utf8")
+    .trim()
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => JSON.parse(line) as Record<string, unknown>);
+}
+
+function lastTelemetryEvent(repoDir: string): Record<string, unknown> {
+  const events = readTelemetryEvents(repoDir);
+  if (events.length === 0) {
+    throw new Error(`Expected telemetry events at ${telemetryEventsPath(repoDir)}`);
+  }
+  return events[events.length - 1];
+}
+
 describe("Governed Test Runner", () => {
   const tempRepos: string[] = [];
   const childProcesses: ChildProcess[] = [];
@@ -523,5 +549,92 @@ describe("Governed Test Runner", () => {
 
     const log = fs.readFileSync(logPath, "utf8");
     expect(log).toContain("exec jest --maxWorkers=2");
+  });
+
+  test("TEG-07A TC-01: governed run emits classed telemetry for jest intent", () => {
+    const repo = newRepo();
+    const mockBinDir = newTempDir("mock-pnpm-");
+    createMockPnpm(mockBinDir);
+    const logPath = path.join(newTempDir("governed-log-"), "events.log");
+    const env = baseEnv(repo, mockBinDir, logPath);
+
+    const result = runRunner(["jest", "--", "--testPathPattern=telemetry"], repo, env);
+    expect(result.status).toBe(0);
+
+    const event = lastTelemetryEvent(repo);
+    expect(event.governed).toBe(true);
+    expect(event.policy_mode).toBe("enforce");
+    expect(event.class).toBe("governed-jest");
+    expect(event.normalized_sig).toBe("governed-jest");
+    expect(event.workers).toBe(2);
+    expect(event.exit_code).toBe(0);
+  });
+
+  test(
+    "TEG-07A TC-02: contention emits queued_ms > 0 for at least one governed run",
+    async () => {
+      const repo = newRepo();
+      const mockBinDir = newTempDir("mock-pnpm-");
+      createMockPnpm(mockBinDir);
+      const logPath = path.join(newTempDir("governed-log-"), "events.log");
+      const env = baseEnv(repo, mockBinDir, logPath, {
+        BASESHOP_TEST_GOVERNED_SLEEP_SEC: "1",
+      });
+
+      const first = trackChild(spawnRunner(["jest", "--", "--testPathPattern=first"], repo, env));
+      await waitForOutput(first, /Joined test queue as ticket/, 10_000);
+      const second = trackChild(spawnRunner(["jest", "--", "--testPathPattern=second"], repo, env));
+      await waitForOutput(second, /Joined test queue as ticket/, 10_000);
+
+      const firstExit = await waitForExit(first, 20_000);
+      const secondExit = await waitForExit(second, 20_000);
+      expect(firstExit.code).toBe(0);
+      expect(secondExit.code).toBe(0);
+
+      const jestEvents = readTelemetryEvents(repo).filter(
+        (event) => event.class === "governed-jest",
+      );
+      expect(jestEvents.length).toBeGreaterThanOrEqual(2);
+      const hasQueuedContention = jestEvents.some((event) => {
+        const queued = event.queued_ms;
+        return typeof queued === "number" && queued > 0;
+      });
+      expect(hasQueuedContention).toBe(true);
+    },
+    35_000,
+  );
+
+  test("TEG-07A TC-03: failed governed run emits non-zero exit_code", () => {
+    const repo = newRepo();
+    const mockBinDir = newTempDir("mock-pnpm-");
+    createMockPnpm(mockBinDir);
+    const logPath = path.join(newTempDir("governed-log-"), "events.log");
+    const env = baseEnv(repo, mockBinDir, logPath, {
+      BASESHOP_TEST_GOVERNED_FAIL: "1",
+    });
+
+    const result = runRunner(["jest"], repo, env);
+    expect(result.status).toBe(17);
+
+    const event = lastTelemetryEvent(repo);
+    expect(event.class).toBe("governed-jest");
+    expect(event.exit_code).toBe(17);
+  });
+
+  test("TEG-07A TC-04: overload override usage is telemetry tagged in governed path", () => {
+    const repo = newRepo();
+    const mockBinDir = newTempDir("mock-pnpm-");
+    createMockPnpm(mockBinDir);
+    const logPath = path.join(newTempDir("governed-log-"), "events.log");
+    const env = baseEnv(repo, mockBinDir, logPath, {
+      BASESHOP_ALLOW_OVERLOAD: "1",
+    });
+
+    const result = runRunner(["jest"], repo, env);
+    expect(result.status).toBe(0);
+
+    const event = lastTelemetryEvent(repo);
+    expect(event.class).toBe("governed-jest");
+    expect(event.override_overload_used).toBe(true);
   });
 });

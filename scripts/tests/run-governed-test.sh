@@ -4,9 +4,87 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 runner_shaping_script="${script_dir}/runner-shaping.sh"
 test_lock_script="${script_dir}/test-lock.sh"
+telemetry_script="${script_dir}/telemetry-log.sh"
 
 # shellcheck source=scripts/tests/runner-shaping.sh
 source "$runner_shaping_script"
+
+baseshop_emit_governed_telemetry() {
+  if [[ ! -x "$telemetry_script" ]]; then
+    return 0
+  fi
+
+  "$telemetry_script" emit "$@" >/dev/null 2>&1 || true
+}
+
+baseshop_runner_extract_worker_count() {
+  local intent="$1"
+  shift || true
+  local -a args=()
+  if [[ $# -gt 0 ]]; then
+    args=("$@")
+  fi
+
+  local idx arg next
+
+  if [[ "$intent" == "turbo" ]]; then
+    for ((idx=0; idx<${#args[@]}; idx++)); do
+      arg="${args[$idx]}"
+      case "$arg" in
+        --concurrency=*)
+          next="${arg#--concurrency=}"
+          if [[ "$next" =~ ^[0-9]+$ ]]; then
+            printf %s "$next"
+            return 0
+          fi
+          ;;
+        --concurrency)
+          if (( idx + 1 < ${#args[@]} )); then
+            next="${args[$((idx + 1))]}"
+            if [[ "$next" =~ ^[0-9]+$ ]]; then
+              printf %s "$next"
+              return 0
+            fi
+          fi
+          ;;
+      esac
+    done
+
+    printf 0
+    return 0
+  fi
+
+  for arg in "${args[@]}"; do
+    if [[ "$arg" == "--runInBand" ]]; then
+      printf 1
+      return 0
+    fi
+  done
+
+  for ((idx=0; idx<${#args[@]}; idx++)); do
+    arg="${args[$idx]}"
+    case "$arg" in
+      --maxWorkers=*)
+        next="${arg#--maxWorkers=}"
+        if [[ "$next" =~ ^[0-9]+$ ]]; then
+          printf %s "$next"
+          return 0
+        fi
+        ;;
+      --maxWorkers)
+        if (( idx + 1 < ${#args[@]} )); then
+          next="${args[$((idx + 1))]}"
+          if [[ "$next" =~ ^[0-9]+$ ]]; then
+            printf %s "$next"
+            return 0
+          fi
+        fi
+        ;;
+    esac
+  done
+
+  printf 0
+}
 
 # pnpm run forwards a separator token before script args; normalize it.
 while [[ "${1:-}" == "--" ]]; do
@@ -66,6 +144,8 @@ if [[ ${#BASESHOP_SHAPED_ARGS[@]} -gt 0 ]]; then
 fi
 
 command_sig="${intent}"
+telemetry_class="governed-${intent}"
+normalized_sig="${telemetry_class}"
 
 case "$intent" in
   jest)
@@ -86,10 +166,17 @@ if [[ ${#shaped_args[@]} -gt 0 ]]; then
   command+=("${shaped_args[@]}")
 fi
 
+workers="$(baseshop_runner_extract_worker_count "$intent" "${shaped_args[@]}")"
+if ! [[ "$workers" =~ ^[0-9]+$ ]]; then
+  workers="0"
+fi
+
 lock_held="0"
 heartbeat_pid=""
 command_pid=""
 cleanup_running="0"
+queued_ms="0"
+command_exit="0"
 
 cleanup() {
   if [[ "$cleanup_running" == "1" ]]; then
@@ -123,7 +210,10 @@ fi
 if [[ "$ci_compat_mode" == "1" ]]; then
   echo "Running in governed CI compatibility mode: scheduler/admission bypassed, shaping enforced." >&2
 else
+  queue_start_sec="$SECONDS"
   "$test_lock_script" acquire --wait --command-sig "$command_sig"
+  queue_end_sec="$SECONDS"
+  queued_ms="$(( (queue_end_sec - queue_start_sec) * 1000 ))"
   lock_held="1"
 
   heartbeat_interval="${BASESHOP_TEST_LOCK_HEARTBEAT_SEC:-30}"
@@ -148,5 +238,18 @@ command_pid="$!"
 wait "$command_pid"
 command_exit="$?"
 set -e
+
+baseshop_emit_governed_telemetry \
+  --governed true \
+  --policy-mode enforce \
+  --class "$telemetry_class" \
+  --normalized-sig "$normalized_sig" \
+  --admitted true \
+  --queued-ms "$queued_ms" \
+  --pressure-level unknown \
+  --workers "$workers" \
+  --exit-code "$command_exit" \
+  --override-policy-used false \
+  --override-overload-used "${BASESHOP_ALLOW_OVERLOAD:-0}"
 
 exit "$command_exit"

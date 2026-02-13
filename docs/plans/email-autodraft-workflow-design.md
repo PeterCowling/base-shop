@@ -994,7 +994,7 @@ export async function handleBriketteResource(uri: string) {
 
 ---
 
-## Task Seeds for `/wf-plan`
+## Task Seeds for `/lp-plan`
 
 ### Phase 1: Infrastructure Setup
 
@@ -1138,8 +1138,8 @@ export async function handleBriketteResource(uri: string) {
 
 ## Next Steps
 
-1. **Immediate:** Update wf-fact-find and agent card with resolved decisions
-2. **Then:** Run `/wf-plan` using this design as input
+1. **Immediate:** Update lp-fact-find and agent card with resolved decisions
+2. **Then:** Run `/lp-plan` using this design as input
 3. **Build order:** Tasks 01-03 (infrastructure) -> 04-05 (Gmail setup) -> 06-08 (integration) -> 09-10 (validation)
 
 ---

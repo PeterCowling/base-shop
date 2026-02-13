@@ -120,7 +120,7 @@ Theme package: `packages/themes/prime/src/tokens.ts` (Prime guest portal)
 **Implementation:** `bg-primary text-primary-foreground hover:bg-primary-hover rounded-md px-4 py-2 font-medium`.
 **Example:** Standard across Prime app.
 
-_More patterns will be added as `/design-spec` identifies them during feature work._
+_More patterns will be added as `/lp-design-spec` identifies them during feature work._
 
 ## App Coverage
 

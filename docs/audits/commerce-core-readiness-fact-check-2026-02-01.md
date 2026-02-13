@@ -4,11 +4,11 @@ Status: Historical
 Last-updated: 2026-02-01
 ---
 
-# Fact-Check Audit: commerce-core-readiness-wf-fact-find.md
+# Fact-Check Audit: commerce-core-readiness-fact-find.md
 
 **Audit Date:** 2026-02-01
 **Auditor:** Claude Opus 4.5 (automated verification)
-**Document Audited:** `/Users/petercowling/base-shop/docs/plans/commerce-core-readiness-wf-fact-find.md`
+**Document Audited:** `/Users/petercowling/base-shop/docs/plans/commerce-core-readiness-fact-find.md`
 **Audit Anchor:** working-tree (uncommitted changes)
 **Commit SHA (base):** `fbc1d0d7f50ff4acf7da8c25b1bf92f5e767d1d6`
 **Scope:** Full audit (Categories 1-6)
@@ -344,7 +344,7 @@ if (!db.inventoryItem) {
 
 **Evidence:**
 - Grep search for `repriceCart|from.*reprice` found:
-  - Only references in the wf-fact-find document itself
+  - Only references in the fact-find document itself
   - Definition in `/packages/platform-core/src/checkout/reprice.ts` at line 49
   - NO imports or calls in any production code
 
@@ -414,7 +414,7 @@ if (!db.inventoryItem) {
 **Evidence:**
 - Grep for `extendInventoryHold` found only:
   - Definition in inventoryHolds.ts
-  - References in wf-fact-find document
+  - References in fact-find document
   - NO calls in checkout flow or webhook handlers
 
 **Classification:** ACCURATE - extendInventoryHold is not wired into any flow
@@ -640,7 +640,7 @@ mode:\s*["']sale["']
 
 ## Conclusion
 
-The commerce-core-readiness-wf-fact-find document is **highly accurate** (91.0% accuracy rate). The Opus agent's additions in the "Critical Architecture Questions (Resolved)" section are **well-supported by code evidence**. The key findings about:
+The commerce-core-readiness-fact-find document is **highly accurate** (91.0% accuracy rate). The Opus agent's additions in the "Critical Architecture Questions (Resolved)" section are **well-supported by code evidence**. The key findings about:
 
 - **repriceCart being unused** - CONFIRMED
 - **Hold creation not being idempotent** - CONFIRMED
@@ -649,4 +649,4 @@ The commerce-core-readiness-wf-fact-find document is **highly accurate** (91.0% 
 
 These are genuine architectural gaps that the planning phase should address. The risk assessments (HIGH, MEDIUM, BLOCKER) are justified by the evidence.
 
-**Recommendation:** Proceed to planning with confidence in the wf-fact-find accuracy.
+**Recommendation:** Proceed to planning with confidence in the fact-find accuracy.

@@ -45,6 +45,6 @@ Scale: 0-5 per criterion.
 
 ## E) Execution Recommendation
 
-Run `wf-fact-find -> wf-plan -> wf-build` first on:
+Run `lp-fact-find -> lp-plan -> lp-build` first on:
 1. Pre-website conversion surface + instrumentation.
 2. Week-1 price/messaging test matrix with explicit pass/fail thresholds.

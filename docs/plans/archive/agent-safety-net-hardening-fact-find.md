@@ -113,7 +113,7 @@ Close the gaps in the existing 4-layer agent safety system so that destructive g
 
 ### Command Policy Matrix
 
-See **`docs/git-safety.md` § Command Policy Matrix** — that is the canonical, stable source of truth for all deny/ask/allow decisions. The wf-fact-find brief does not duplicate the matrix; all enforcement points reference the canonical doc.
+See **`docs/git-safety.md` § Command Policy Matrix** — that is the canonical, stable source of truth for all deny/ask/allow decisions. The lp-fact-find brief does not duplicate the matrix; all enforcement points reference the canonical doc.
 
 Key decisions captured there:
 - **Deny:** instant-destruction commands (reset --hard, clean -f, push --force, checkout -f, switch --discard-changes, stash drop/clear, worktree, rebase, amend, core.hooksPath overrides, absolute-path git with destructive args)
@@ -250,7 +250,7 @@ Key decisions captured there:
 
 None — all questions resolved.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 92%
   - The Claude Code hook API is well-documented and confirmed to support everything we need (PreToolUse blocking, SessionStart PATH injection, permissions.deny). The git guard pattern matching fixes are straightforward shell script edits. The pre-commit chain wiring is a one-line change to `package.json`.
@@ -275,7 +275,7 @@ None — all questions resolved.
   - Git hook chain changes go in `package.json` `simple-git-hooks` section + `pnpm run prepare`
   - All deny/ask rules use the same `Bash(pattern)` syntax as existing allow rules
   - SessionStart hook uses `CLAUDE_ENV_FILE` (only available in SessionStart, not other hook types)
-  - **Rule drift prevention:** The Command Policy Matrix in `docs/git-safety.md` is the single source of truth (canonical, stable — survives wf-fact-find archival). All three enforcement points (PreToolUse hook, permissions rules, git guard) must include a comment referencing it. When patterns change, update all three plus the matrix.
+  - **Rule drift prevention:** The Command Policy Matrix in `docs/git-safety.md` is the single source of truth (canonical, stable — survives lp-fact-find archival). All three enforcement points (PreToolUse hook, permissions rules, git guard) must include a comment referencing it. When patterns change, update all three plus the matrix.
 - Rollout/rollback expectations:
   - Incremental rollout: hooks first, then deny/ask rules, then settings cleanup
   - Each change is a single file edit — rollback is `git revert` of one commit
@@ -336,4 +336,4 @@ After rollout, verify these scenarios manually:
 
 - Status: **Ready-for-planning**
 - Blocking items: None. All questions resolved (deny vs ask policy decided, wrapper recursion confirmed safe, stash policy explicit, command coverage expanded, maintenance hazard addressed).
-- Recommended next step: Proceed to `/wf-plan agent-safety-net-hardening`
+- Recommended next step: Proceed to `/lp-plan agent-safety-net-hardening`

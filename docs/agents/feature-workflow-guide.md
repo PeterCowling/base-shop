@@ -21,13 +21,13 @@ This is the **entrypoint** for feature work in Base-Shop. It is intentionally sh
 
 Read only the skill you need for the current phase:
 
-- **Fact-find:** `.claude/skills/wf-fact-find/SKILL.md`
-- **Plan:** `.claude/skills/wf-plan/SKILL.md` (auto-runs `/wf-sequence` at the end)
-- **Sequence:** `.claude/skills/wf-sequence/SKILL.md` (also runnable standalone)
-- **Build:** `.claude/skills/wf-build/SKILL.md`
-- **Re-plan:** `.claude/skills/wf-replan/SKILL.md` (auto-runs `/wf-sequence` at the end)
+- **Fact-find:** `.claude/skills/lp-fact-find/SKILL.md`
+- **Plan:** `.claude/skills/lp-plan/SKILL.md` (auto-runs `/lp-sequence` at the end)
+- **Sequence:** `.claude/skills/lp-sequence/SKILL.md` (also runnable standalone)
+- **Build:** `.claude/skills/lp-build/SKILL.md`
+- **Re-plan:** `.claude/skills/lp-replan/SKILL.md` (auto-runs `/lp-sequence` at the end)
 
-For non-code deliverables, `/wf-build` dispatches to progressive execution skills (for example: `/draft-email`, `/biz-product-brief`, `/draft-marketing`, `/biz-spreadsheet`, `/draft-whatsapp`).
+For non-code deliverables, `/lp-build` dispatches to progressive execution skills (for example: `/draft-email`, `/biz-product-brief`, `/draft-marketing`, `/biz-spreadsheet`, `/draft-whatsapp`).
 
 ## Phase Selection (Decision Tree)
 
@@ -44,13 +44,13 @@ In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 - **CI ≥90:** target/motivation (aim for it when credible)
 - **CI 80–89:** build-eligible, but treat remaining unknowns as real (explicit verification steps)
 - **CI 60–79:** planning-only/caution; split into INVESTIGATE/DECISION or add “What would make this ≥90%”
-- **CI <60:** do not build; wf-replan first
+- **CI <60:** do not build; lp-replan first
 
 **Build gate:** only **IMPLEMENT** tasks that are **≥80%** confidence and unblocked proceed to build.
 
 ## Scientific Re-Plan Rules
 
-When running `/wf-replan`, confidence increases must be evidence-led:
+When running `/lp-replan`, confidence increases must be evidence-led:
 
 - Do not raise CI from narrative reasoning alone.
 - Use an evidence ladder:
@@ -68,7 +68,7 @@ When running `/wf-replan`, confidence increases must be evidence-led:
 
 ## Outputs by Phase
 
-- **Fact-find:** `docs/plans/<feature>-wf-fact-find.md` (evidence + impact map)
+- **Fact-find:** `docs/plans/<feature>-lp-fact-find.md` (evidence + impact map)
 - **Plan-feature:** `docs/plans/<feature>-plan.md` (atomic tasks + CI per task)
 - **Build-feature:** code and/or business artifacts + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/CIs (no implementation changes)
@@ -79,16 +79,16 @@ The core loop updates Business OS automatically. No extra user action is require
 
 ### Baseline Behavior
 
-1. Set `Business-Unit` in wf-fact-find frontmatter (or inherit from existing card).
+1. Set `Business-Unit` in lp-fact-find frontmatter (or inherit from existing card).
 2. Keep `Business-OS-Integration` omitted or `on` (default).
 3. Use `Business-OS-Integration: off` only for intentionally standalone work.
 
 ### What is automated
 
-- `/idea-generate`: creates prioritized ideas/cards and seeds top-K wf-fact-find stage docs.
-- `/wf-fact-find`: creates/updates card + `wf-fact-find` stage doc.
-- `/wf-plan`: creates `plan` stage doc and applies deterministic `Fact-finding -> Planned` when plan gate passes.
-- `/wf-build`: applies deterministic `Planned -> In progress` at build start and `In progress -> Done` at completion gate.
+- `/idea-generate`: creates prioritized ideas/cards and seeds top-K lp-fact-find stage docs.
+- `/lp-fact-find`: creates/updates card + `lp-fact-find` stage doc.
+- `/lp-plan`: creates `plan` stage doc and applies deterministic `Fact-finding -> Planned` when plan gate passes.
+- `/lp-build`: applies deterministic `Planned -> In progress` at build start and `In progress -> Done` at completion gate.
 
 ### Discovery freshness
 

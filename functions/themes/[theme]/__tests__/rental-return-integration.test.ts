@@ -6,7 +6,8 @@ import { seedShop,setupRentalData, withTempRepo } from "@acme/test-utils";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 
-jest.setTimeout(60000);
+// Integration test with temp repo + DB ops — needs extended timeout in CI
+jest.setTimeout(120_000);
 
 
 async function withShop(

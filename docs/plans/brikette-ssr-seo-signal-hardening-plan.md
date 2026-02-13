@@ -9,8 +9,8 @@ Last-reviewed: 2026-02-10
 Feature-Slug: brikette-ssr-seo-signal-hardening
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
-Supporting-Skills: wf-replan,meta-user-test
+Primary-Execution-Skill: lp-build
+Supporting-Skills: lp-replan,meta-user-test
 Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact) per task; overall is effort-weighted average (S=1,M=2,L=3)
 Relates-to charter: none
@@ -58,10 +58,10 @@ The implementation strategy is to make high-intent pages render meaningful serve
 - No task is merge-ready unless targeted tests, affected-package lint, and affected-package typecheck pass.
 - i18n-sensitive tasks must include server-HTML checks for raw translation-key leakage (for example heroSection.*, socialProof.*, locationSection.*).
 - Route-rendering tasks must include no-JS SSR checks that assert: no BAILOUT_TO_CLIENT_SIDE_RENDERING markers, required H1 presence, and meaningful body content.
-- If a task cannot be driven by tests first, work pauses and the task is converted to INVESTIGATE or wf-replanned.
+- If a task cannot be driven by tests first, work pauses and the task is converted to INVESTIGATE or lp-replanned.
 ## Validation Foundation Check (from Fact-Find)
 
-Primary wf-fact-find input is an audit artifact (`docs/audits/user-testing/2026-02-10-5bd676c0-brikette-website-pages-staging-en-expanded-rerun.md`) plus manual no-JS HTML probes. The audit artifact does not include full wf-fact-find confidence inputs (`Delivery-Readiness`, `Testability`) in canonical wf-fact-find format.
+Primary lp-fact-find input is an audit artifact (`docs/audits/user-testing/2026-02-10-5bd676c0-brikette-website-pages-staging-en-expanded-rerun.md`) plus manual no-JS HTML probes. The audit artifact does not include full lp-fact-find confidence inputs (`Delivery-Readiness`, `Testability`) in canonical lp-fact-find format.
 
 Mitigation in this plan:
 - Add explicit audit-contract hardening work (BSS-01, BSS-08) before final regression gate closure.
@@ -185,7 +185,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** INVESTIGATE
 - **Deliverable:** baseline contract note embedded in this plan’s Decision Log + acceptance fixtures for `/en`, `/en/rooms`, `/en/experiences`, `/en/how-to-get-here`, `/en/deals`
-- **Execution-Skill:** wf-replan
+- **Execution-Skill:** lp-replan
 - **Affects:** `docs/audits/user-testing/2026-02-10-5bd676c0-brikette-website-pages-staging-en-expanded-rerun.md`, `[readonly] .claude/skills/meta-user-test/SKILL.md`
 - **Depends on:** -
 - **Blocks:** BSS-02, BSS-03, BSS-04, BSS-05, BSS-08
@@ -204,7 +204,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** server HTML on `/en` contains resolved copy (not key tokens) for hero/section labels and alt text
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/app/[lang]/page.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `packages/ui/src/organisms/LandingHeroSection.tsx`, `apps/brikette/src/components/landing/SocialProofSection.tsx`, `apps/brikette/src/components/landing/LocationMiniBlock.tsx`
 - **Depends on:** BSS-01
 - **Blocks:** BSS-09
@@ -239,7 +239,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `/en/deals` title/description/OG/Twitter metadata match active/expired state rendered in body content
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/locales/en/dealsPage.json`, `apps/brikette/src/routes/deals/deals.ts`, `apps/brikette/src/app/[lang]/deals/page.tsx`
 - **Depends on:** BSS-01
 - **Blocks:** BSS-09
@@ -273,7 +273,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** social-proof values explicitly labeled as November 2025 snapshot in visible UI and schema-relevant outputs
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/config/hotel.ts`, `packages/ui/src/atoms/RatingsBar.tsx`, `apps/brikette/src/components/landing/SocialProofSection.tsx`, `apps/brikette/src/schema/hostel-brikette/hotel.jsonld`, `apps/brikette/src/schema/hostel-brikette/graph.jsonld`, `apps/brikette/src/utils/schema/builders.ts`, `apps/brikette/src/locales/en/ratingsBar.json`
 - **Depends on:** BSS-01
 - **Blocks:** BSS-09
@@ -307,7 +307,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** INVESTIGATE
 - **Deliverable:** route strategy note with exact remediations for `rooms`, `experiences`, `how-to-get-here`
-- **Execution-Skill:** wf-replan
+- **Execution-Skill:** lp-replan
 - **Affects:** `[readonly] apps/brikette/src/app/[lang]/rooms/page.tsx`, `[readonly] apps/brikette/src/app/[lang]/experiences/page.tsx`, `[readonly] apps/brikette/src/app/[lang]/how-to-get-here/page.tsx`, `[readonly] apps/brikette/src/app/[lang]/experiences/ExperiencesPageContent.tsx`, `[readonly] apps/brikette/src/routes/how-to-get-here/useDestinationFilters.ts`, `[readonly] packages/ui/src/organisms/RoomsSection.tsx`
 - **Depends on:** BSS-01
 - **Blocks:** BSS-06, BSS-07
@@ -326,7 +326,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** `/en/rooms` initial HTML has meaningful room body (heading/cards/CTA path) and no bailout marker
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/app/[lang]/rooms/page.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`
 - **Depends on:** BSS-05
 - **Blocks:** BSS-10
@@ -372,7 +372,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** both routes serve meaningful SSR body content and no bailout marker in initial HTML
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/app/[lang]/experiences/page.tsx`, `apps/brikette/src/app/[lang]/how-to-get-here/page.tsx`, `apps/brikette/src/app/[lang]/experiences/ExperiencesPageContent.tsx`, `apps/brikette/src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx`, `apps/brikette/src/routes/how-to-get-here/useDestinationFilters.ts`
 - **Depends on:** BSS-05
 - **Blocks:** BSS-10
@@ -422,7 +422,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** audit skill/tooling enforces raw-HTML checks and automatically targets newest staging preview URL
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `.claude/skills/meta-user-test/SKILL.md`, `.claude/skills/meta-user-test/scripts/resolve-brikette-staging-url.mjs`, `.claude/skills/meta-user-test/scripts/run-meta-user-test.mjs`, `.claude/skills/meta-user-test/references/report-template.md`
 - **Depends on:** BSS-01
 - **Blocks:** BSS-09
@@ -456,7 +456,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** IMPLEMENT
 - **Deliverable:** automated tests cover the fixed issue classes at unit/integration/contract layers
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/test/**/*`, `packages/ui/src/**/*.test.tsx`, `scripts/**` (if audit check harness assertions are added)
 - **Depends on:** BSS-02, BSS-03, BSS-04, BSS-08, BSS-10
 - **Blocks:** -
@@ -507,7 +507,7 @@ Max parallelism: 5 tasks in Wave 2
 
 - **Type:** CHECKPOINT
 - **Deliverable:** confidence re-score and sequence adjustment after top-nav SSR hardening
-- **Execution-Skill:** wf-replan
+- **Execution-Skill:** lp-replan
 - **Affects:** `docs/plans/brikette-ssr-seo-signal-hardening-plan.md`
 - **Depends on:** BSS-06, BSS-07
 - **Blocks:** BSS-09
@@ -558,7 +558,7 @@ Max parallelism: 5 tasks in Wave 2
 - 2026-02-10: Kept top-nav route hardening split with a prerequisite strategy task (BSS-05) due confidence below build threshold.
 - 2026-02-10: Adopted dated social-proof snapshot policy (November 2025) as requested.
 - 2026-02-10: Added explicit CHECKPOINT before final regression-net closure to prevent long-chain planning drift.
-- 2026-02-10 (wf-replan): BSS-06 promoted 79%→83% via E1 code audit (single consumer, static data, narrow useSearchParams scope). BSS-07 updated 74%→76% with tightened evidence and expanded test contract (5 TCs for L effort); conditional target →82% on BSS-05 confirmed credible. BSS-09 promoted 78%→80% via E1 test infrastructure mapping.
+- 2026-02-10 (lp-replan): BSS-06 promoted 79%→83% via E1 code audit (single consumer, static data, narrow useSearchParams scope). BSS-07 updated 74%→76% with tightened evidence and expanded test contract (5 TCs for L effort); conditional target →82% on BSS-05 confirmed credible. BSS-09 promoted 78%→80% via E1 test infrastructure mapping.
 
 ## Overall-confidence calculation
 
@@ -598,4 +598,4 @@ Blocked (<80 by prerequisite confidence condition):
 - BSS-07 requires BSS-05 outputs for confidence uplift.
 
 Recommended next action:
-- Start `/wf-build` with Wave 1 (BSS-01) then Wave 2 (BSS-02/BSS-03/BSS-04/BSS-05/BSS-08 in parallel). BSS-06 is ready for Wave 3 after BSS-05. BSS-07 remains conditional — promote after BSS-05 completion via `/wf-replan`.
+- Start `/lp-build` with Wave 1 (BSS-01) then Wave 2 (BSS-02/BSS-03/BSS-04/BSS-05/BSS-08 in parallel). BSS-06 is ready for Wave 3 after BSS-05. BSS-07 remains conditional — promote after BSS-05 completion via `/lp-replan`.

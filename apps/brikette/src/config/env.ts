@@ -88,3 +88,4 @@ export const DEBUG_GUIDE_TITLES = readEnv([
   "VITE_DEBUG_GUIDES",
 ]);
 export const DEBUG_GUIDES = readEnv(["NEXT_PUBLIC_DEBUG_GUIDES", "VITE_DEBUG_GUIDES"]);
+export const CONSENT_BANNER = readEnv(["NEXT_PUBLIC_CONSENT_BANNER"]);

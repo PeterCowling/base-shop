@@ -161,7 +161,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌───────────────┐
-│  wf-fact-find   │────▶│ wf-plan  │────▶│ wf-build  │
+│  lp-fact-find   │────▶│ lp-plan  │────▶│ lp-build  │
 │             │     │              │     │               │
 │ Audit repo  │     │ Tasks with   │     │ Only builds   │
 │ Map impact  │     │ confidence % │     │ tasks ≥80%    │
@@ -169,7 +169,7 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 └─────────────┘     └──────────────┘     └───────┬───────┘
        ▲                    ▲                     │
        │              ┌─────┴─────┐               │
-       └──────────────│  wf-replan   │◀──────────────┘
+       └──────────────│  lp-replan   │◀──────────────┘
                       │            │  confidence <80%
                       └────────────┘
 ```
@@ -178,10 +178,10 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 | Phase | Action | Skill file |
 |-------|--------|-----------|
-| Fact-find | Read and follow | `.claude/skills/wf-fact-find/SKILL.md` |
-| Plan | Read and follow | `.claude/skills/wf-plan/SKILL.md` |
-| Build | Read and follow | `.claude/skills/wf-build/SKILL.md` |
-| Re-plan | Read and follow | `.claude/skills/wf-replan/SKILL.md` |
+| Fact-find | Read and follow | `.claude/skills/lp-fact-find/SKILL.md` |
+| Plan | Read and follow | `.claude/skills/lp-plan/SKILL.md` |
+| Build | Read and follow | `.claude/skills/lp-build/SKILL.md` |
+| Re-plan | Read and follow | `.claude/skills/lp-replan/SKILL.md` |
 
 ### Confidence System
 
@@ -211,15 +211,15 @@ When uncertain about the right approach:
 ### Example Session
 
 ```
-1. Read `.claude/skills/wf-fact-find/SKILL.md`
+1. Read `.claude/skills/lp-fact-find/SKILL.md`
 2. Audit the affected codebase areas, produce a brief
-3. Read `.claude/skills/wf-plan/SKILL.md`
+3. Read `.claude/skills/lp-plan/SKILL.md`
 4. Create plan at `docs/plans/<feature>-plan.md` with confidence scores
 5. If all tasks ≥80%:
-   - Read `.claude/skills/wf-build/SKILL.md`
+   - Read `.claude/skills/lp-build/SKILL.md`
    - Build tasks one at a time
 6. If any task <80%:
-   - Read `.claude/skills/wf-replan/SKILL.md`
+   - Read `.claude/skills/lp-replan/SKILL.md`
    - Investigate, update confidence, loop back to step 5
 ```
 
@@ -229,10 +229,10 @@ When uncertain about the right approach:
 
 | Skill | Purpose | Location |
 |-------|---------|----------|
-| `wf-fact-find` | Gather evidence before planning or as standalone briefing | `.claude/skills/wf-fact-find/SKILL.md` |
-| `wf-plan` | Create confidence-gated implementation plan | `.claude/skills/wf-plan/SKILL.md` |
-| `wf-build` | Implement tasks from approved plan with confidence gating | `.claude/skills/wf-build/SKILL.md` |
-| `wf-replan` | Resolve low-confidence tasks in existing plan | `.claude/skills/wf-replan/SKILL.md` |
+| `lp-fact-find` | Gather evidence before planning or as standalone briefing | `.claude/skills/lp-fact-find/SKILL.md` |
+| `lp-plan` | Create confidence-gated implementation plan | `.claude/skills/lp-plan/SKILL.md` |
+| `lp-build` | Implement tasks from approved plan with confidence gating | `.claude/skills/lp-build/SKILL.md` |
+| `lp-replan` | Resolve low-confidence tasks in existing plan | `.claude/skills/lp-replan/SKILL.md` |
 
 **Specialized Skills:**
 
@@ -243,14 +243,14 @@ When uncertain about the right approach:
 | `ops-git-recover` | Recover from confusing git state | `.claude/skills/ops-git-recover/SKILL.md` |
 | `code-fix-deps` | Resolve pnpm workspace issues | `.claude/skills/code-fix-deps/SKILL.md` |
 | `meta-reflect` | Capture learnings and improve docs/skills | `.claude/skills/meta-reflect/SKILL.md` |
-| `guide-improve` | Main entry point for guide improvement (audit, translation, or both) | `.claude/skills/guide-improve/SKILL.md` |
-| `guide-audit` | Run SEO audit for English guide content only | `.claude/skills/guide-audit/SKILL.md` |
+| `lp-guide-improve` | Main entry point for guide improvement (audit, translation, or both) | `.claude/skills/lp-guide-improve/SKILL.md` |
+| `lp-guide-audit` | Run SEO audit for English guide content only | `.claude/skills/lp-guide-audit/SKILL.md` |
 | `guide-translate` | Propagate EN guide content to all locales | `.claude/skills/guide-translate/SKILL.md` |
 
 ## What Stays the Same
 
 - Read `AGENTS.md` for commands and rules
 - Follow `docs/plans/` workflow
-- Use the wf-fact-find → plan → build → wf-replan loop (see above)
+- Use the lp-fact-find → plan → build → lp-replan loop (see above)
 - Run validation before committing (when possible)
 - Never take shortcuts on large-scale fixes

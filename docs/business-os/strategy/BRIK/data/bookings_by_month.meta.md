@@ -1,3 +1,8 @@
+---
+Type: Reference
+Status: Active
+---
+
 # bookings_by_month.csv provenance
 
 - source file: `/Users/petercowling/Downloads/export_19519177.xls`

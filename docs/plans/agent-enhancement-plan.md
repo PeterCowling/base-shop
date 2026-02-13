@@ -1,14 +1,14 @@
 ---
 Type: Plan
 Status: Superseded
-Superseded-by: docs/plans/agent-setup-improvement-wf-fact-find.md
+Superseded-by: docs/plans/agent-setup-improvement-lp-fact-find.md
 Domain: DevEx/Tooling
 Last-reviewed: 2026-01-27
 Relates-to charter: none
 Created: 2026-01-20
 Created-by: Claude Opus 4.5
 Last-updated: 2026-02-11
-Last-updated-by: Claude Opus 4.6 (review-fact-check + superseded by fresh wf-fact-find)
+Last-updated-by: Claude Opus 4.6 (review-fact-check + superseded by fresh lp-fact-find)
 ---
 
 # Agent Enhancement Plan
@@ -74,10 +74,10 @@ Key insight from external research: **Tools should be agent-first** — designed
 
 ```
 .claude/skills/
-├── wf-fact-find/SKILL.md            ✅ Core workflow
-├── wf-plan/SKILL.md         ✅ Core workflow
-├── wf-build/SKILL.md        ✅ Core workflow
-├── wf-replan/SKILL.md              ✅ Core workflow
+├── lp-fact-find/SKILL.md            ✅ Core workflow
+├── lp-plan/SKILL.md         ✅ Core workflow
+├── lp-build/SKILL.md        ✅ Core workflow
+├── lp-replan/SKILL.md              ✅ Core workflow
 ├── create-ui-component/SKILL.md  ✅ Component creation
 ├── add-component-tests/SKILL.md  ✅ Testing
 ├── add-form-validation/SKILL.md  ✅ Forms
@@ -85,8 +85,8 @@ Key insight from external research: **Tools should be agent-first** — designed
 ├── create-server-action/SKILL.md ✅ Next.js
 ├── create-api-endpoint/SKILL.md  ✅ API routes
 ├── create-prisma-model/SKILL.md  ✅ Database
-├── code-refactor/SKILL.md   ✅ Refactoring
-├── code-design-system/SKILL.md  ✅ Design tokens
+├── lp-refactor/SKILL.md   ✅ Refactoring
+├── lp-design-system/SKILL.md  ✅ Design tokens
 └── migrate-to-app-router/SKILL.md ✅ Migration
 ```
 
@@ -231,7 +231,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
   - **Fact-check (2026-02-11)**: Partially done. `scripts/validate-agent-manifest.js` exists but is a stub (`console.log('PASS'); process.exit(0)`) — no actual validation logic. CI step exists in `.github/workflows/ci.yml` (line 127) but runs the no-op stub. `js-yaml` is not a direct dependency.
 
 - [ ] **AGENT-05**: Migrate core skills to `.agents/`
-  - **Scope**: Migrate only core workflow skills first (`wf-plan.md`, `wf-build.md`)
+  - **Scope**: Migrate only core workflow skills first (`lp-plan.md`, `lp-build.md`)
   - **Remaining 10 skills**: Left in `.claude/skills/` for now; migrate incrementally in follow-up tasks or leave in place if working
   - Update references in `AGENTS.md`, `CODEX.md`, `CLAUDE.md`
   - **Backward compatibility strategy (no symlinks)**:
@@ -239,7 +239,7 @@ Phases are thematic groupings; the critical path is the actual execution order a
       ```markdown
       # Moved
 
-      This skill has moved to `.agents/skills/workflows/wf-plan.md`.
+      This skill has moved to `.agents/skills/workflows/lp-plan.md`.
 
       Please read the new location.
       ```
@@ -516,7 +516,7 @@ If the `.agents/` migration causes problems:
 
 1. **Immediate**: Stub files in `.claude/skills/` still work — agents can follow redirects or ignore them
 2. **Short-term**: Restore **original** skill files (not stubs) to `.claude/skills/` from git history
-   - Use: `git checkout <commit-before-migration> -- .claude/skills/wf-plan/SKILL.md .claude/skills/wf-build/SKILL.md`
+   - Use: `git checkout <commit-before-migration> -- .claude/skills/lp-plan/SKILL.md .claude/skills/lp-build/SKILL.md`
 3. **Full rollback**:
    - `git rm -r .agents/`
    - Restore original `.claude/skills/` files from commit before migration (replaces stubs with originals)
@@ -538,7 +538,7 @@ The `.claude/` directory is Claude Code-specific. OpenAI's Codex may not read it
 
 During migration:
 1. Keep stub files in `.claude/skills/` that redirect to `.agents/skills/`
-   - Example stub content: `# Moved to .agents/skills/workflows/wf-plan.md`
+   - Example stub content: `# Moved to .agents/skills/workflows/lp-plan.md`
 2. Update documentation to reference new locations
 3. Remove stubs after confirming both agents use `.agents/` paths reliably
 

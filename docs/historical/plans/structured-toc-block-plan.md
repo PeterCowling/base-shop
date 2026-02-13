@@ -21,7 +21,7 @@ Completed: 2026-01-15
 
 ## Active Tasks
 
-- [~] GUIDE-01: Inventory current guide-specific logic (pwf-replan output)
+- [~] GUIDE-01: Inventory current guide-specific logic (lp-replan output)
   - Scope: enumerate every `guideKey` branch in `StructuredTocBlock.tsx`, including dynamic checks, and classify each decision (suppress template ToC, allow with GenericContent, render minimal ToC, render minimal localized content, render minimal unlocalized intro/sections, title exceptions, section filtering).
   - Dependencies: none.
   - Definition of done: table added to this plan under "Inventory" with guide key, condition, and decision category; duplicates called out.

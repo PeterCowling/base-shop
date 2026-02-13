@@ -115,8 +115,8 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
-      <h3 className="text-sm font-semibold text-gray-900 mb-3">Actions</h3>
+    <div className="bg-panel rounded-lg border border-border-1 p-4">
+      <h3 className="text-sm font-semibold text-fg mb-3">Actions</h3>
 
       <div className="space-y-2">
         {isUnclaimed && (
@@ -124,7 +124,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
             type="button"
             onClick={() => mutateCard("/api/cards/claim", "Failed to claim card")}
             disabled={isUpdatingCard}
-            className="w-full px-3 py-3 text-sm font-medium text-white bg-blue-600 border border-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-3 text-sm font-medium text-accent-fg bg-accent border border-accent rounded-md hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingCard ? "Claiming..." : "Claim Card"}
           </button>
@@ -135,7 +135,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
             type="button"
             onClick={() => mutateCard("/api/cards/accept", "Failed to accept card")}
             disabled={isUpdatingCard}
-            className="w-full px-3 py-3 text-sm font-medium text-white bg-green-600 border border-green-600 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-3 text-sm font-medium text-success-fg bg-success border border-success rounded-md hover:bg-success/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingCard ? "Accepting..." : "Accept & Start"}
           </button>
@@ -146,20 +146,20 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
             type="button"
             onClick={() => mutateCard("/api/cards/complete", "Failed to mark card complete")}
             disabled={isUpdatingCard}
-            className="w-full px-3 py-3 text-sm font-medium text-white bg-purple-600 border border-purple-600 rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-3 text-sm font-medium text-primary-fg bg-primary border border-primary rounded-md hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isUpdatingCard ? "Completing..." : "Mark Complete"}
           </button>
         )}
 
         {actionError && (
-          <div className="px-3 py-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+          <div className="px-3 py-2 text-sm text-danger-fg bg-danger-soft border border-danger-soft rounded-md">
             {actionError}
           </div>
         )}
 
         {agentSuccess && (
-          <div className="px-3 py-2 text-sm text-green-600 bg-green-50 border border-green-200 rounded-md">
+          <div className="px-3 py-2 text-sm text-success-fg bg-success-soft border border-success-soft rounded-md">
             {agentSuccess}
           </div>
         )}
@@ -167,12 +167,12 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
         {userCanEdit ? (
           <Link
             href={`/cards/${card.ID}/edit`}
-            className="block w-full px-3 py-2 text-sm font-medium text-center text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
+            className="block w-full px-3 py-2 text-sm font-medium text-center text-secondary bg-surface-1 border border-border-2 rounded-md hover:bg-surface-1"
           >
             Edit Card
           </Link>
         ) : (
-          <div className="px-3 py-2 text-sm text-gray-500 text-center">
+          <div className="px-3 py-2 text-sm text-muted text-center">
             Only {card.Owner || "owner"} and admins can edit
           </div>
         )}
@@ -181,7 +181,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
           <select
             onChange={(e) => handleAgentSelect(e.target.value, e.currentTarget)}
             disabled={isRequestingAgent}
-            className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-3 py-2 text-sm font-medium text-secondary bg-surface-1 border border-border-2 rounded-md hover:bg-surface-1 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <option value="">
               {isRequestingAgent ? "Requesting..." : "Ask Agent..."}
@@ -194,7 +194,7 @@ export function CardActionsPanel(props: { card: Card; userCanEdit: boolean; curr
 
         <button
           type="button"
-          className="w-full px-3 py-3 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100"
+          className="w-full px-3 py-3 text-sm font-medium text-secondary bg-surface-1 border border-border-2 rounded-md hover:bg-surface-1"
           disabled
         >
           Add Comment (Coming Soon)

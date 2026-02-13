@@ -43,7 +43,7 @@ Remediate the 8 findings from the React 19.2 audit of `@acme/design-system`. The
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/react-audit-design-system-wf-fact-find.md`
+- Related brief: `docs/plans/react-audit-design-system-lp-fact-find.md`
 - Key findings:
   - Finding 1: 53 files with `forwardRef` (82 instances) — 3 complexity tiers
   - Finding 2: SearchBar data transform in `useEffect` — High severity

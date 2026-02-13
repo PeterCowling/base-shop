@@ -20,7 +20,7 @@ Deploy the Business OS app to Cloudflare Pages so the agent API is always reacha
 ## Goals
 
 - Agent API always reachable (no manual dev server required)
-- Cards created at idea generation and updated through wf-fact-find → plan → build
+- Cards created at idea generation and updated through lp-fact-find → plan → build
 - Export workflow (`bos-export.yml`) gets a live URL
 - Zero changes to existing skill code
 
@@ -44,7 +44,7 @@ Deploy the Business OS app to Cloudflare Pages so the agent API is always reacha
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/bos-agent-api-availability-wf-fact-find.md`
+- Related brief: `docs/plans/bos-agent-api-availability-lp-fact-find.md`
 - Key findings:
   - All 27 API routes export `runtime = "edge"` — fully Edge-compatible
   - Agent API routes (`/api/agent/*`) have zero Node.js module imports
@@ -72,7 +72,7 @@ Deploy the Business OS app to Cloudflare Pages so the agent API is always reacha
 
 ## Proposed Approach
 
-Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The wf-fact-find evaluated 4 options (deploy, auto-start, queue, direct D1) and Option A (deploy) is unambiguously correct. See wf-fact-find for full analysis.
+Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The lp-fact-find evaluated 4 options (deploy, auto-start, queue, direct D1) and Option A (deploy) is unambiguously correct. See lp-fact-find for full analysis.
 
 **Build concern:** Two UI pages (`people/page.tsx`, `plans/PlanDocumentPage.tsx`) import `safe-fs` which uses Node.js `fs`. The OpenNext build may fail or tree-shake these. TASK-02 handles this — if the build fails, we stub these pages with Edge-compatible alternatives.
 
@@ -357,7 +357,7 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
   - GitHub repository variable `BOS_AGENT_API_BASE_URL` set to deployed URL
   - GitHub repository variable `BOS_EXPORT_API_BASE_URL` set to deployed URL
   - `bos-export.yml` runs successfully with new URL (hourly cron or manual trigger)
-  - At least one skill (`/wf-fact-find` or `/idea-develop`) successfully creates a card via the deployed API
+  - At least one skill (`/lp-fact-find` or `/idea-develop`) successfully creates a card via the deployed API
 - **Test contract:**
   - **Test cases:**
     - TC-17: Export workflow → manual trigger of `bos-export.yml` succeeds (or creates "no changes" PR)
@@ -411,7 +411,7 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
   - Rollback: Revert edits (trivial)
 - **Documentation impact:** This IS the documentation task
 - **Notes / references:**
-  - MEMORY.md already fixed (outdated `getRequestContext` note removed in wf-fact-find session)
+  - MEMORY.md already fixed (outdated `getRequestContext` note removed in lp-fact-find session)
 
 #### Build Completion (2026-02-07)
 - **Status:** Complete (merged with TASK-06)
@@ -451,5 +451,5 @@ Single approach — deploy Business OS to Cloudflare Pages with D1 binding. The 
 
 ## Decision Log
 
-- 2026-02-07: Deploy to Cloudflare Pages (Option A) — only option that solves root cause, requires zero skill changes, enables export workflow. Options B/C/D rejected (see wf-fact-find).
+- 2026-02-07: Deploy to Cloudflare Pages (Option A) — only option that solves root cause, requires zero skill changes, enables export workflow. Options B/C/D rejected (see lp-fact-find).
 - 2026-02-07: API key auth only (no Cloudflare Access) for Phase 1 — 32+ char key with timing-safe comparison + rate limiting is sufficient for single-user. Cloudflare Access can be added later if needed.

@@ -8,11 +8,11 @@ Last-updated: 2026-02-10
 Last-reviewed: 2026-02-10
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: idea-generate-deliberation-upgrade
-Related-Fact-Find: docs/plans/idea-generate-deliberation-upgrade-wf-fact-find.md
+Related-Fact-Find: docs/plans/idea-generate-deliberation-upgrade-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: wf-build
-Supporting-Skills: wf-replan
+Primary-Execution-Skill: lp-build
+Supporting-Skills: lp-replan
 Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact) after scope right-sizing + mechanism hardening
 Business-OS-Integration: off
@@ -134,7 +134,7 @@ Add:
 Still in monolithic orchestrator, but split commit behavior:
 
 - 3A Prepare:
-  - generate card payloads + wf-fact-find templates + dependency manifest.
+  - generate card payloads + lp-fact-find templates + dependency manifest.
   - perform zero writes.
 - 3B Commit/Reconcile:
   - apply dependency-ordered writes.
@@ -248,7 +248,7 @@ Debug mode may emit separate supporting files:
 
 Immediate rollback if any occur:
 
-- one write-safety defect (duplicate create or broken card->wf-fact-find linkage).
+- one write-safety defect (duplicate create or broken card->lp-fact-find linkage).
 - two rubric categories at `baseline - 2` or worse in a single live run.
 - mean rubric delta < -0.5 across two consecutive live runs.
 
@@ -326,7 +326,7 @@ Immediate rollback if any occur:
 - **Type:** IMPLEMENT
 - **Acceptance:**
   - manifest and ledger include required fields defined above.
-  - card->wf-fact-find dependency injection is enforced and testable.
+  - card->lp-fact-find dependency injection is enforced and testable.
   - rerun skip behavior uses `operation_id + payload_fingerprint`.
   - dry-run emits `would_create` entries with zero writes.
 

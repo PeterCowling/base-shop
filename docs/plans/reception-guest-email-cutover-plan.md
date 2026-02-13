@@ -10,7 +10,7 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-guest-email-cutover
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
+Primary-Execution-Skill: lp-build
 Supporting-Skills: ops-inbox
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
@@ -51,7 +51,7 @@ This plan removes the remaining direct Google Apps Script dependency from recept
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/reception-guest-email-cutover-wf-fact-find.md`
+- Related brief: `docs/plans/reception-guest-email-cutover-lp-fact-find.md`
 - Key findings used here:
   - `useEmailGuest` still calls GAS directly (`apps/reception/src/services/useEmailGuest.ts:36`).
   - Activity-trigger seam is centralized in `useActivitiesMutations` (`apps/reception/src/hooks/mutations/useActivitiesMutations.ts:34`).
@@ -126,7 +126,7 @@ Create a new MCP guest-activity draft helper and reception API route for activit
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change - `packages/mcp-server/src/tools/guest-email-activity.ts` (+ export shim)
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `packages/mcp-server/src/tools/guest-email-activity.ts`, `packages/mcp-server/src/guest-email-activity.ts`, `packages/mcp-server/src/tools/index.ts`, `[readonly] packages/mcp-server/data/email-templates.json`, `[readonly] apps/reception/src/constants/activities.ts`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-04
@@ -176,7 +176,7 @@ Create a new MCP guest-activity draft helper and reception API route for activit
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change - new route + hook API update
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/reception/src/app/api/mcp/guest-email-activity/route.ts`, `apps/reception/src/services/useEmailGuest.ts`, `[readonly] apps/reception/src/app/api/mcp/booking-email/route.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04
@@ -224,7 +224,7 @@ Create a new MCP guest-activity draft helper and reception API route for activit
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change - activity side-effect callsite migration
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/reception/src/hooks/mutations/useActivitiesMutations.ts`, `[readonly] apps/reception/src/constants/activities.ts`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04, TASK-05
@@ -271,7 +271,7 @@ Create a new MCP guest-activity draft helper and reception API route for activit
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change - updated/new tests for reception and mcp-server
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `apps/reception/src/services/__tests__/useEmailGuest.test.tsx`, `apps/reception/src/hooks/mutations/__tests__/useActivitiesMutations.test.ts` (new), `packages/mcp-server/src/__tests__/guest-email-activity.test.ts` (new), `[readonly] packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-05
@@ -326,7 +326,7 @@ Create a new MCP guest-activity draft helper and reception API route for activit
 
 - **Type:** CHECKPOINT
 - **Deliverable:** plan reassessment record in this plan + dry-run evidence summary
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `docs/plans/reception-guest-email-cutover-plan.md` (status updates + findings)
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-06
@@ -348,7 +348,7 @@ Create a new MCP guest-activity draft helper and reception API route for activit
 
 - **Type:** INVESTIGATE
 - **Deliverable:** parity matrix artifact + recommended mapping update
-- **Execution-Skill:** wf-build
+- **Execution-Skill:** lp-build
 - **Affects:** `[readonly] live GAS endpoint behavior`, `docs/plans/reception-guest-email-cutover-plan.md`, potential follow-up changes in `packages/mcp-server/src/tools/guest-email-activity.ts`
 - **Depends on:** TASK-05
 - **Blocks:** -

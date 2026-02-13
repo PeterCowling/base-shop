@@ -43,12 +43,12 @@ export function ConvertToCardButton({ ideaId }: ConvertToCardButtonProps) {
         type="button"
         onClick={handleConvert}
         disabled={isConverting}
-        className="w-full px-3 py-2 text-sm font-medium text-white bg-blue-600 border border-blue-700 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full px-3 py-2 text-sm font-medium text-accent-fg bg-accent border border-accent rounded-md hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isConverting ? "Converting..." : "Convert to Card"}
       </button>
       {error && (
-        <p className="text-xs text-red-600">{error}</p>
+        <p className="text-xs text-danger-fg">{error}</p>
       )}
     </div>
   );

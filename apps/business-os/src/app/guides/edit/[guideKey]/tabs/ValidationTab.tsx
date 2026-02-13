@@ -95,8 +95,8 @@ export function ValidationTab({ guideKey }: Props) {
   if (error) {
     return (
       <div className="flex flex-col gap-4">
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-          <p className="text-sm text-red-800">Error loading validation: {error}</p>
+        <div className="rounded-lg border border-danger-soft bg-danger-soft p-4">
+          <p className="text-sm text-danger-fg">Error loading validation: {error}</p>
         </div>
       </div>
     );
@@ -116,21 +116,21 @@ export function ValidationTab({ guideKey }: Props) {
       <div
         className={`rounded-lg border p-4 ${
           validation.hasViolations || validation.isOrphan || validation.relatedGuidesCount < validation.minimumRequired
-            ? "border-amber-200 bg-amber-50"
-            : "border-green-200 bg-green-50"
+            ? "border-warning-soft bg-warning-soft"
+            : "border-success-soft bg-success-soft"
         }`}
       >
         {validation.hasViolations || validation.isOrphan || validation.relatedGuidesCount < validation.minimumRequired ? (
           <>
-            <h3 className="mb-2 font-semibold text-amber-900">Validation Issues Found</h3>
-            <p className="text-sm text-amber-800">
+            <h3 className="mb-2 font-semibold text-warning-fg">Validation Issues Found</h3>
+            <p className="text-sm text-warning-fg">
               This guide has some quality or cross-referencing issues that should be addressed.
             </p>
           </>
         ) : (
           <>
-            <h3 className="mb-2 font-semibold text-green-900">All Validations Passed</h3>
-            <p className="text-sm text-green-800">
+            <h3 className="mb-2 font-semibold text-success-fg">All Validations Passed</h3>
+            <p className="text-sm text-success-fg">
               This guide meets all quality and cross-referencing requirements.
             </p>
           </>
@@ -138,19 +138,19 @@ export function ValidationTab({ guideKey }: Props) {
       </div>
 
       {validation.hasViolations && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4">
-          <h3 className="mb-2 font-semibold text-red-900">Manifest Violations</h3>
+        <div className="rounded-lg border border-danger-soft bg-danger-soft p-4">
+          <h3 className="mb-2 font-semibold text-danger-fg">Manifest Violations</h3>
           <div className="flex flex-col gap-2">
             {validation.violations.map((v, idx) => (
-              <div key={idx} className="rounded bg-white p-3 text-sm">
-                <p className="mb-1 font-medium text-red-900">{v.violation}</p>
+              <div key={idx} className="rounded bg-panel p-3 text-sm">
+                <p className="mb-1 font-medium text-danger-fg">{v.violation}</p>
                 {v.relatedGuide && (
-                  <p className="text-xs text-red-700">
-                    Related guide: <code className="rounded bg-red-100 px-1">{v.relatedGuide}</code>
+                  <p className="text-xs text-danger-fg">
+                    Related guide: <code className="rounded bg-danger-soft px-1">{v.relatedGuide}</code>
                   </p>
                 )}
                 {v.suggestion && (
-                  <p className="mt-1 text-xs italic text-blue-700">
+                  <p className="mt-1 text-xs italic text-info-fg">
                     Suggestion: {v.suggestion}
                   </p>
                 )}
@@ -171,7 +171,7 @@ export function ValidationTab({ guideKey }: Props) {
           </span>
         </div>
         {validation.relatedGuidesCount < validation.minimumRequired && (
-          <p className="mt-2 text-sm text-amber-700">
+          <p className="mt-2 text-sm text-warning-fg">
             This guide needs {validation.minimumRequired - validation.relatedGuidesCount} more
             related guide{validation.minimumRequired - validation.relatedGuidesCount > 1 ? "s" : ""}.
           </p>
@@ -179,9 +179,9 @@ export function ValidationTab({ guideKey }: Props) {
       </div>
 
       {validation.isOrphan && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
-          <h3 className="mb-2 font-semibold text-amber-900">Orphan Guide</h3>
-          <p className="text-sm text-amber-800">
+        <div className="rounded-lg border border-warning-soft bg-warning-soft p-4">
+          <h3 className="mb-2 font-semibold text-warning-fg">Orphan Guide</h3>
+          <p className="text-sm text-warning-fg">
             This guide has no inbound links from other guides, making it harder for users to discover.
             Consider adding links to this guide from related content.
           </p>
@@ -189,16 +189,16 @@ export function ValidationTab({ guideKey }: Props) {
       )}
 
       {validation.missingReciprocals.length > 0 && (
-        <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
-          <h3 className="mb-2 font-semibold text-blue-900">Missing Reciprocal Links</h3>
-          <p className="mb-3 text-sm text-blue-800">
+        <div className="rounded-lg border border-info-soft bg-info-soft p-4">
+          <h3 className="mb-2 font-semibold text-info-fg">Missing Reciprocal Links</h3>
+          <p className="mb-3 text-sm text-info-fg">
             This guide links to other guides that don&apos;t link back:
           </p>
           <div className="flex flex-col gap-1">
             {validation.missingReciprocals.map((target) => (
               <code
                 key={target}
-                className="rounded bg-white px-2 py-1 text-xs font-mono text-blue-900"
+                className="rounded bg-panel px-2 py-1 text-xs font-mono text-info-fg"
               >
                 {target}
               </code>

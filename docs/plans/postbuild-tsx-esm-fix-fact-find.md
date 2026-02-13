@@ -239,7 +239,7 @@ The failing stack trace shows `node:internal/modules/cjs/loader` and a `tsx` CJS
 
 *None - ready for planning.*
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 95%
   - Root cause is clear: runtime resolution to `.d.ts` via `apps/brikette/tsconfig.json` `paths` when running under `tsx`
@@ -332,7 +332,7 @@ The failing stack trace shows `node:internal/modules/cjs/loader` and a `tsx` CJS
 
 - **Status:** Ready-for-planning
 - **Blocking items:** None
-- **Recommended next step:** Proceed to `/wf-plan` with Solution A as the primary approach (scripts-specific tsconfig + `tsx --tsconfig ...` for postbuild), with Solution B only if we explicitly decide that `apps/brikette/tsconfig.json` can be safely changed without harming editor/typecheck expectations.
+- **Recommended next step:** Proceed to `/lp-plan` with Solution A as the primary approach (scripts-specific tsconfig + `tsx --tsconfig ...` for postbuild), with Solution B only if we explicitly decide that `apps/brikette/tsconfig.json` can be safely changed without harming editor/typecheck expectations.
 
 ## Evidence Summary
 

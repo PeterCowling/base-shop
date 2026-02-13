@@ -10,10 +10,10 @@ Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: idea-generate-process-hardening
 Deliverable-Type: docs-change
 Execution-Track: docs
-Primary-Execution-Skill: wf-build
-Supporting-Skills: wf-sequence
+Primary-Execution-Skill: lp-build
+Supporting-Skills: lp-sequence
 Overall-confidence: HIGH
-Confidence-Method: All tasks are doc edits with verified evidence from wf-fact-find. No runtime code changes.
+Confidence-Method: All tasks are doc edits with verified evidence from lp-fact-find. No runtime code changes.
 Business-OS-Integration: off
 Business-Unit: BOS
 ---
@@ -37,7 +37,7 @@ No runtime code changes. No API modifications. No schema migrations.
 - Building observability infrastructure (no metrics pipeline exists; don't pretend one is coming).
 
 ## Fact-Find Reference
-- Related brief: `docs/plans/idea-generate-process-hardening-wf-fact-find.md`
+- Related brief: `docs/plans/idea-generate-process-hardening-lp-fact-find.md`
 - Findings addressed by this plan: F1, F3, F4, F5, F6, F7.
 - Finding deferred: F2 (non-idempotent POST creates).
 
@@ -74,7 +74,7 @@ Prompt-only patching. All defects addressed in this plan are documentation contr
 - **Affects:** `.claude/skills/idea-generate/SKILL.md`
 - **Depends on:** -
 - **Blocks:** TASK-03
-- **Confidence:** HIGH — all edits are localized, evidence-backed, and verified in wf-fact-find.
+- **Confidence:** HIGH — all edits are localized, evidence-backed, and verified in lp-fact-find.
 - **Specific changes:**
   1. **Remove deferred-cabinet contradiction (F1):** Delete the line at ~L877 (`Technical cabinet deferred: Conditional on CS-13 completion`) in the Phase 0 Constraints section. The technical cabinet is already active with explicit trigger conditions (L604) and `lens-code-review.md` already exists. The "deferred pending CS-13" reference at ~L851 in the Integration table should be updated to reflect the active trigger contract.
   2. **Fix lens identity mismatch (F5):** Change `Originator-Lens: engineering` to `Originator-Lens: code-review` at ~L620. The canonical name in `lens-code-review.md:3` is `code-review`.
@@ -101,7 +101,7 @@ Prompt-only patching. All defects addressed in this plan are documentation contr
   - `.claude/skills/_shared/cabinet/prioritize-drucker-porter.md`
 - **Depends on:** -
 - **Blocks:** TASK-03
-- **Confidence:** HIGH — contract deltas are explicit and verified in wf-fact-find.
+- **Confidence:** HIGH — contract deltas are explicit and verified in lp-fact-find.
 - **Specific changes:**
   1. **Add `gate-unresolved` tag to orchestrator (F3):** At ~L418, the held-idea tag list omits `gate-unresolved`. `data-gap-lifecycle.md:214` requires it for VOI boost and artifact-specific resurfacing. Add `"gate-unresolved"` to the Contrarian Gate UNRESOLVED hold tag example.
   2. **Specify resurfacing query semantics (F4):** At ~L191, resurfacing requires `status=raw` but doesn't specify `location`. The ideas API defaults to `location=inbox` when unspecified (`route.ts:68`). Add an explicit note that resurfacing queries must pass `location=all` (or omit location filter) to avoid missing eligible items outside inbox.
@@ -171,7 +171,7 @@ Prompt-only patching. All defects addressed in this plan are documentation contr
 
 ## Deferred Work: API Idempotency (F2)
 
-The wf-fact-find's F2 finding (non-idempotent POST creates + retry guidance = duplicate entity risk) is real but is a fundamentally different class of work from the doc fixes above. It requires:
+The lp-fact-find's F2 finding (non-idempotent POST creates + retry guidance = duplicate entity risk) is real but is a fundamentally different class of work from the doc fixes above. It requires:
 
 - **D1 schema changes** to store idempotency keys or deduplication state.
 - **Response contract design**: what to return on duplicate detection (200 with original entity? 409?).
@@ -179,12 +179,12 @@ The wf-fact-find's F2 finding (non-idempotent POST creates + retry guidance = du
 - **Backward compatibility**: existing sweep doesn't send idempotency keys.
 - **Partial-failure semantics**: if the create succeeded but the response was lost, the idempotency layer needs to return the original response — which means storing responses.
 
-This deserves its own wf-fact-find and plan. The current retry guidance in the orchestrator (3 attempts with backoff) is a tolerable risk given that:
+This deserves its own lp-fact-find and plan. The current retry guidance in the orchestrator (3 attempts with backoff) is a tolerable risk given that:
 1. The sweep runs infrequently (human-triggered).
 2. Duplicate entities are detectable and deletable.
 3. The sweep report documents what was created.
 
-**Recommended next step:** `/wf-fact-find api-idempotency-agent-endpoints` when this becomes a priority.
+**Recommended next step:** `/lp-fact-find api-idempotency-agent-endpoints` when this becomes a priority.
 
 ## Risks and Mitigations
 - **Risk:** Edits to SKILL.md accidentally break other sweep behavior.
@@ -201,8 +201,8 @@ This deserves its own wf-fact-find and plan. The current retry guidance in the o
 - [x] Drift-check script passes on clean state.
 
 ## Decision Log
-- 2026-02-10: Initialized from `docs/plans/idea-generate-process-hardening-wf-fact-find.md`.
-- 2026-02-10: Restructured plan after critique. Removed DECISION gate for cabinet policy (answer is obvious: keep active, delete stale deferral). Extracted API idempotency (F2) to deferred work — it needs its own wf-fact-find with schema migration scoping. Collapsed 6 tasks to 3. Removed false-precision confidence percentages. Made contract-check task concrete with actual script content.
+- 2026-02-10: Initialized from `docs/plans/idea-generate-process-hardening-lp-fact-find.md`.
+- 2026-02-10: Restructured plan after critique. Removed DECISION gate for cabinet policy (answer is obvious: keep active, delete stale deferral). Extracted API idempotency (F2) to deferred work — it needs its own lp-fact-find with schema migration scoping. Collapsed 6 tasks to 3. Removed false-precision confidence percentages. Made contract-check task concrete with actual script content.
 - 2026-02-10: Completed TASK-01. Implemented active technical-cabinet policy throughout orchestrator, removed stale CS-13/deferred references, normalized `Originator-Lens` to `code-review`, rewrote fatal preflight wording to remove stop/report paradox, and fixed report-section numbering to sequential 1-19.
 - 2026-02-10: Completed TASK-02. Added `gate-unresolved` handling to Contrarian UNRESOLVED DGP holds, added explicit resurfacing query location semantics (`location=all` or equivalent dual-query), and added `--stage7b` invocation example for optional backfill activation.
 - 2026-02-10: Completed TASK-03. Added executable drift-check script at `scripts/check-idea-generate-contracts.sh` and validated clean pass on current state.

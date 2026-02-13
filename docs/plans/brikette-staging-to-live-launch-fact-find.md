@@ -146,7 +146,7 @@ This likely means: even if deploy succeeds, the post-deploy health check will fa
   - Decision impacted: Release pipeline reliability (green deploys) and operational monitoring endpoints.
   - Default recommendation + risk: Add a minimal `/api/health` endpoint in Brikette and keep the shared `EXTRA_ROUTES` policy. Risk: small code change; benefit: consistent monitoring across apps.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 70%
   - Evidence: Deploy workflow and build/typecheck are in place and `build` succeeds locally.
@@ -188,5 +188,5 @@ This likely means: even if deploy succeeds, the post-deploy health check will fa
   - Release policy for failing tests / content readiness (Q2)
   - Health check strategy (Q3)
 - Recommended next step:
-  - Answer Q1–Q3, then proceed to `/wf-plan` to produce `docs/plans/brikette-staging-to-live-launch-plan.md`.
+  - Answer Q1–Q3, then proceed to `/lp-plan` to produce `docs/plans/brikette-staging-to-live-launch-plan.md`.
 

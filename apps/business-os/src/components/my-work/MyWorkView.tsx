@@ -30,30 +30,30 @@ export function MyWorkView({
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-panel border-b border-border-1 px-6 py-4">
         <div className="mb-4">
           <Breadcrumb items={breadcrumbItems} />
         </div>
 
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">My Work</h1>
-            <p className="text-sm text-gray-600 mt-1">
+            <h1 className="text-2xl font-bold text-fg">My Work</h1>
+            <p className="text-sm text-muted mt-1">
               Tasks assigned to {currentUser.name}
             </p>
           </div>
           <div className="flex gap-2">
             <Link
               href="/boards/global"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-secondary bg-panel border border-border-2 rounded-md hover:bg-surface-1"
             >
               View All Boards
             </Link>
             <Link
               href="/"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-secondary bg-panel border border-border-2 rounded-md hover:bg-surface-1"
             >
               Home
             </Link>
@@ -67,16 +67,16 @@ export function MyWorkView({
           {/* Waiting Acceptance Section */}
           <section>
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-fg">
                 Waiting Acceptance
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted">
                 Cards assigned to you in Inbox (click &quot;Accept & Start&quot;
                 to begin)
               </p>
             </div>
             {waitingAcceptance.length === 0 ? (
-              <div className="bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500">
+              <div className="bg-panel rounded-lg border border-border-1 p-6 text-center text-muted">
                 No cards waiting acceptance
               </div>
             ) : (
@@ -96,10 +96,10 @@ export function MyWorkView({
           {dueSoon.length > 0 && (
             <section>
               <div className="mb-4">
-                <h2 className="text-lg font-semibold text-gray-900">
+                <h2 className="text-lg font-semibold text-fg">
                   Due Soon (Next 7 Days)
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted">
                   Cards with upcoming deadlines
                 </p>
               </div>
@@ -118,19 +118,19 @@ export function MyWorkView({
           {/* Assigned to Me Section */}
           <section>
             <div className="mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-fg">
                 All Assigned ({assignedToMe.length})
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted">
                 All active cards assigned to you (excluding Done)
               </p>
             </div>
             {assignedToMe.length === 0 ? (
-              <div className="bg-white rounded-lg border border-gray-200 p-6 text-center text-gray-500">
+              <div className="bg-panel rounded-lg border border-border-1 p-6 text-center text-muted">
                 No active cards assigned to you. Visit the{" "}
                 <Link
                   href="/boards/global"
-                  className="text-blue-600 hover:underline"
+                  className="text-info-fg hover:underline"
                 >
                   board
                 </Link>{" "}

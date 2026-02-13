@@ -4,11 +4,12 @@ Status: Active
 Domain: Commerce
 Created: 2026-02-11
 Last-updated: 2026-02-11
+Last-reviewed: 2026-02-11
 Relates-to charter: none
 Feature-Slug: xa-v2
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
+Primary-Execution-Skill: lp-build
 Supporting-Skills: ops-ship
 Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by Effort
@@ -60,7 +61,7 @@ XA is a member rewards storefront (Next.js 15 + React 19). The app is locally ve
 | XA-V2-07 | INVESTIGATE | Establish test coverage baseline | 85% | S | Pending | - | XA-V2-08 |
 | XA-V2-08 | IMPLEMENT | Progress toward 80% coverage | 75% | L | Pending | XA-V2-07 | - |
 
-## Tasks
+## Active tasks
 
 ### XA-V2-01: Deploy to Cloudflare staging + verify
 - **Type:** IMPLEMENT

@@ -250,14 +250,14 @@ Users want to access guides without internet connection during travel.
 - OR user asks agent `/idea-develop {ID}` (agent transforms)
 - Both paths lead to same result: worked idea ready to convert
 
-#### 3. `/wf-fact-find` Skill
+#### 3. `/lp-fact-find` Skill
 
 **Purpose:** Gather evidence and context before planning
 
 **Workflow:**
 1. Agent asks user: "What are you trying to understand/build?"
 2. Reads relevant repo files, traces dependencies
-3. Documents findings in wf-fact-find brief: `docs/plans/{feature-slug}-wf-fact-find.md`
+3. Documents findings in lp-fact-find brief: `docs/plans/{feature-slug}-lp-fact-find.md`
 4. Resolves questions through code exploration
 5. Provides confidence inputs for planning
 
@@ -268,16 +268,16 @@ Users want to access guides without internet connection during travel.
 
 **Integration with user workflow:**
 - User starts with vague feature idea
-- Agent wf-fact-finds to understand current state
+- Agent lp-fact-finds to understand current state
 - User reviews brief, provides missing product context
 - Agent then plans with full context
 
-#### 4. `/wf-plan` Skill
+#### 4. `/lp-plan` Skill
 
 **Purpose:** Create confidence-gated implementation plan
 
 **Workflow:**
-1. Reads wf-fact-find brief (if exists)
+1. Reads lp-fact-find brief (if exists)
 2. Studies codebase, runs existing tests
 3. Breaks work into atomic tasks with dependencies
 4. Assigns confidence scores (min of Implementation, Approach, Impact)
@@ -295,7 +295,7 @@ Users want to access guides without internet connection during travel.
 - User approves plan (or requests changes)
 - Agent then builds tasks ≥80% confidence
 
-#### 5. `/wf-build` Skill
+#### 5. `/lp-build` Skill
 
 **Purpose:** Implement tasks from approved plan using TDD
 
@@ -319,7 +319,7 @@ Users want to access guides without internet connection during travel.
 - User reviews PRs/commits
 - User provides feedback if confidence was wrong
 
-#### 6. `/wf-replan` Skill
+#### 6. `/lp-replan` Skill
 
 **Purpose:** Resolve low-confidence tasks through investigation
 
@@ -337,7 +337,7 @@ Users want to access guides without internet connection during travel.
 
 **Integration with user workflow:**
 - Agent hits low-confidence task during build
-- Stops, triggers `/wf-replan`
+- Stops, triggers `/lp-replan`
 - User reviews updated plan
 - Agent continues build with higher confidence
 
@@ -1080,7 +1080,7 @@ export const USERS: Record<string, User> = {
 3. Agent reads idea file, generates plan, commits
 4. User refreshes board → sees worked idea
 5. User converts idea to card
-6. User asks Claude Code: `/wf-build`
+6. User asks Claude Code: `/lp-build`
 7. Agent reads plan, implements tasks, commits
 8. User reviews PR, merges
 
@@ -1321,7 +1321,7 @@ function PlanApprovalCard({ plan }: { plan: AgentGeneratedPlan }) {
   const handleReject = async () => {
     await rejectAgentPlan(plan.id, { reason: "Approach is too complex" });
     setStatus("rejected");
-    // Agent wf-replans with feedback
+    // Agent lp-replans with feedback
   };
 
   return (
@@ -1730,7 +1730,7 @@ docs/business-os/
 │   │   └── BRIK-OLD-001.user.md
 │   └── stages/         # Stage documents
 │       └── BRIK-001/
-│           ├── wf-fact-find.user.md
+│           ├── lp-fact-find.user.md
 │           ├── plan.user.md
 │           ├── build.user.md
 │           └── reflect.user.md

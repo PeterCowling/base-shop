@@ -208,7 +208,7 @@ LastUpdated: 2026-01-29T14:32:10Z
 
 **Current (Phase 0-2):**
 - User: Pete edits markdown directly or via local UI
-- Agent: Pete runs Claude Code CLI in terminal with `/idea-develop`, `/wf-plan`, etc.
+- Agent: Pete runs Claude Code CLI in terminal with `/idea-develop`, `/lp-plan`, etc.
 - Identity: Dev cookie (forgeable)
 - ID allocation: Manual or "scan dir + increment"
 - Git writes: Uncoordinated (only one user, so no collision yet)
@@ -1619,7 +1619,7 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - V2 raises Implementation confidence (logging proven)
   - V3 raises Impact confidence (lock integration proven)
   - V4+V5 raise Impact confidence (operational risk mitigated)
-  - Once complete, update Impact: 80% → 85%, proceed to `/wf-build`
+  - Once complete, update Impact: 80% → 85%, proceed to `/lp-build`
 
 #### Re-plan Update (2026-01-30)
 - **Previous confidence:** 78%
@@ -1651,7 +1651,7 @@ These were the two tasks originally at 78% confidence. Investigation work (tests
   - Build V1-V3 as test-first code (unit + integration tests)
   - Write V4 as documentation (runbook + PM2 config)
   - Build V5 as small feature (health endpoint or status file)
-  - Run `/wf-replan` on MVP-E3 after all validations complete
+  - Run `/lp-replan` on MVP-E3 after all validations complete
   - Expect Impact: 80% → 85% after validation
 
 #### Build Completion (2026-01-30)
@@ -2225,7 +2225,7 @@ Enable dual-locale support (en, it) for all Business OS UI and content. Translat
 - **Documentation updated:**
   - None required for infrastructure (UI docs deferred to Phase 2)
 - **Implementation notes:**
-  - API-route triggering pattern used as decided in wf-replan (not RepoWriter hooks)
+  - API-route triggering pattern used as decided in lp-replan (not RepoWriter hooks)
   - Translation queueing occurs in: POST /api/cards, convertToCard(), updateIdea()
   - Translation execution pending MVP-E3 (agent runner daemon)
   - UI locale selector deferred (locale can be set via API for now)
@@ -2341,7 +2341,7 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 ## Next Steps
 
 1. **Review this plan** with Pete - confirm epic priority and scope
-2. ~~**Run `/wf-replan`** to assess confidence for each task~~ ✓ **COMPLETED 2026-01-29**
+2. ~~**Run `/lp-replan`** to assess confidence for each task~~ ✓ **COMPLETED 2026-01-29**
 3. **Start with Epic A** (production run mode) - lowest risk, enables all other work
 4. **Iterate through epics** A → B → C → D → E → F
 5. **Test with 5 real users** after Epic E complete (agent integration)
@@ -2357,7 +2357,7 @@ This is the clean migration boundary - swap storage layer, keep domain logic.
 - **Tasks blocked (<60%):** 0/18 tasks
 - **Overall confidence:** 86% (effort-weighted)
 - **Critical finding:** Confirmed collision-prone ID allocator in `apps/business-os/src/lib/id-generator.ts` (lines 34-74) - validates expert review
-- **Next action:** `/wf-build` starting with Epic A (MVP-A1)
+- **Next action:** `/lp-build` starting with Epic A (MVP-A1)
 
 **Audit Summary (2026-01-30):**
 - **Complete:** 7/18 (MVP-A1, MVP-A2, MVP-A3, MVP-B1, MVP-B2, MVP-B3, MVP-C1) — **Epic A complete! ✅ Epic B complete! ✅**

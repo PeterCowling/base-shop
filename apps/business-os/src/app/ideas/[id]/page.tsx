@@ -54,9 +54,9 @@ export default async function IdeaPage({ params }: PageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-bg">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
+      <header className="bg-panel border-b border-1 px-6 py-4">
         {/* Breadcrumb */}
         <div className="mb-4">
           <Breadcrumb items={breadcrumbItems} />
@@ -66,18 +66,18 @@ export default async function IdeaPage({ params }: PageProps) {
           <div className="flex items-center gap-4">
             <Link
               href={`/boards/${businessCode}`}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+              className="text-sm font-medium text-muted hover:text-fg"
             >
               ← Back to Board
             </Link>
             {business && (
-              <span className="text-sm text-gray-500">{business.name}</span>
+              <span className="text-sm text-muted">{business.name}</span>
             )}
           </div>
           <div className="flex gap-2">
             <Link
               href="/"
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium text-secondary bg-panel border border-2 rounded-md hover:bg-surface-1"
             >
               Home
             </Link>
@@ -87,23 +87,23 @@ export default async function IdeaPage({ params }: PageProps) {
         {/* Title and metadata */}
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <span className="text-sm font-mono text-gray-600">{idea.ID}</span>
-            <span className="text-xs px-2 py-0.5 bg-yellow-200 text-yellow-900 rounded font-medium">
+            <span className="text-sm font-mono text-muted">{idea.ID}</span>
+            <span className="text-xs px-2 py-0.5 bg-warning-soft text-warning-fg rounded font-medium">
               Idea
             </span>
             {idea.Status && (
-              <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 rounded">
+              <span className="text-xs px-2 py-0.5 bg-info-soft text-info-fg rounded">
                 {idea.Status}
               </span>
             )}
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+          <h1 className="text-3xl font-bold text-fg mb-2">{title}</h1>
           {idea.Tags && idea.Tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {idea.Tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2 py-1 bg-gray-100 text-gray-700 rounded"
+                  className="text-xs px-2 py-1 bg-surface-1 text-secondary rounded"
                 >
                   #{tag}
                 </span>
@@ -123,40 +123,40 @@ export default async function IdeaPage({ params }: PageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left column - Content */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <div className="bg-panel rounded-lg border border-1 p-6">
               <MarkdownContent content={idea.content} />
             </div>
           </div>
 
           {/* Right column - Metadata */}
           <div className="space-y-6">
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="bg-panel rounded-lg border border-1 p-4">
+              <h3 className="text-sm font-semibold text-fg mb-3">
                 Details
               </h3>
               <dl className="space-y-3">
                 {idea.Business && (
                   <div>
-                    <dt className="text-xs text-gray-500 font-medium">
+                    <dt className="text-xs text-muted font-medium">
                       Business
                     </dt>
-                    <dd className="text-sm text-gray-900 mt-1">
+                    <dd className="text-sm text-fg mt-1">
                       {idea.Business}
                     </dd>
                   </div>
                 )}
                 {idea.Status && (
                   <div>
-                    <dt className="text-xs text-gray-500 font-medium">Status</dt>
-                    <dd className="text-sm text-gray-900 mt-1">{idea.Status}</dd>
+                    <dt className="text-xs text-muted font-medium">Status</dt>
+                    <dd className="text-sm text-fg mt-1">{idea.Status}</dd>
                   </div>
                 )}
                 {idea["Created-Date"] && (
                   <div>
-                    <dt className="text-xs text-gray-500 font-medium">
+                    <dt className="text-xs text-muted font-medium">
                       Created
                     </dt>
-                    <dd className="text-sm text-gray-900 mt-1">
+                    <dd className="text-sm text-fg mt-1">
                       {new Date(idea["Created-Date"]).toLocaleDateString()}
                     </dd>
                   </div>
@@ -165,8 +165,8 @@ export default async function IdeaPage({ params }: PageProps) {
             </div>
 
             {/* Quick actions */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="bg-panel rounded-lg border border-1 p-4">
+              <h3 className="text-sm font-semibold text-fg mb-3">
                 Actions
               </h3>
               <div className="space-y-2">

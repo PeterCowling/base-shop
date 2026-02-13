@@ -7,12 +7,12 @@ Last-updated: 2026-02-10 (closeout)
 Last-reviewed: 2026-02-09
 Relates-to charter: none
 Feature-Slug: article-generation-slice-2-translation-tooling
-Related-Fact-Find: docs/plans/article-generation-pipeline-wf-fact-find.md
+Related-Fact-Find: docs/plans/article-generation-pipeline-fact-find.md
 Parent-Plan: docs/plans/archive/article-generation-pipeline-plan.md
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
-Supporting-Skills: wf-replan, ops-ship
+Primary-Execution-Skill: lp-build
+Supporting-Skills: lp-replan, ops-ship
 Overall-confidence: 86%
 Confidence-Method: weighted by task effort and execution readiness
 Business-Unit: PLAT
@@ -40,7 +40,7 @@ Slice 2 extracts reusable translation/validation tooling from Brikette scripts i
 
 ## Validation Foundation Check
 
-Fact-find foundation from `docs/plans/article-generation-pipeline-wf-fact-find.md` is usable for code-track planning:
+Fact-find foundation from `docs/plans/article-generation-pipeline-lp-fact-find.md` is usable for code-track planning:
 - Test landscape present (frameworks, coverage, gaps, testability assessment).
 - Execution track and deliverable are code-focused for this slice.
 - Translation script inventory and extractability assessment are present.
@@ -92,7 +92,7 @@ Gap noted:
 ### S2-01: Extract shared JSON/content traversal utilities to `@acme/guides-core`
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Affects:**
   - `packages/guides-core/src/index.ts`
   - `packages/guides-core/src/fsContent.ts` (new)
@@ -135,7 +135,7 @@ Gap noted:
 ### S2-02: Adopt shared utilities in validation/report scripts
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Affects:**
   - `apps/brikette/scripts/validate-guide-content.ts`
   - `apps/brikette/scripts/validate-guide-links.ts`
@@ -178,7 +178,7 @@ Gap noted:
 ### S2-03: Extract schema-injected guide content validation runner
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Depends on:** S2-02
 - **Confidence:** 83%
   - Implementation: 84% — current `validate-guide-content.ts` logic is already isolated (file walk + schema parse + opt-out handling), requiring extraction not redesign.
@@ -235,7 +235,7 @@ Gap noted:
 ### S2-04: Generalize backfill script locale sourcing
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Depends on:** S2-01
 - **Confidence:** 82%
 - **Acceptance:**
@@ -261,7 +261,7 @@ Gap noted:
 ### S2-05: Rewrite translation runner into configurable engine
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Depends on:** S2-01, S2-09, S2-10
 - **Status:** Complete
 - **Confidence:** 83%
@@ -322,7 +322,7 @@ Gap noted:
 ### S2-09: Decide translation execution policy + provider contract for generic runner
 
 - **Type:** INVESTIGATE
-- **Execution-Skill:** `wf-replan`
+- **Execution-Skill:** `lp-replan`
 - **Depends on:** S2-02
 - **Confidence:** 86%
 - **Acceptance:**
@@ -350,7 +350,7 @@ Gap noted:
 ### S2-10: Spike generic translation runner parity using mock provider and token fixtures
 
 - **Type:** SPIKE
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Depends on:** S2-09
 - **Confidence:** 82%
 - **Acceptance:**
@@ -381,7 +381,7 @@ Gap noted:
 ### S2-06: Drift detection + schemaVersion migration support scaffolding
 
 - **Type:** INVESTIGATE
-- **Execution-Skill:** `wf-replan`
+- **Execution-Skill:** `lp-replan`
 - **Depends on:** S2-02
 - **Confidence:** 78%
 - **Deliverable:** follow-on implementation-ready tasks with explicit schema and CLI contracts.
@@ -402,7 +402,7 @@ Gap noted:
 ### S2-07: Implement translation drift manifest + check command
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Depends on:** S2-02, S2-06
 - **Confidence:** 83%
 - **Acceptance:**
@@ -439,7 +439,7 @@ Gap noted:
 ### S2-08: Implement guide content schema migration runner
 
 - **Type:** IMPLEMENT
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Depends on:** S2-01, S2-06
 - **Confidence:** 81%
 - **Acceptance:**
@@ -481,7 +481,7 @@ Gap noted:
 
 | Condition | Action |
 |---|---|
-| Any IMPLEMENT task <80% | Run `/wf-replan` for that task before build |
+| Any IMPLEMENT task <80% | Run `/lp-replan` for that task before build |
 | S2-01 complete and validated | Proceed to S2-02 |
 | S2-02 reveals shared utility API gaps | Update S2-01 API via additive patch + revalidate |
 | S2-06 complete | Proceed to S2-07 and S2-08 |
@@ -499,14 +499,14 @@ Gap noted:
 ## Decision Log
 
 - 2026-02-09: Slice 2 split into six tasks with only S2-01/S2-02/S2-04 currently build-eligible under confidence gate.
-- 2026-02-09: S2-03 and S2-05 kept below gate intentionally pending deeper contract work (`/wf-replan` required).
+- 2026-02-09: S2-03 and S2-05 kept below gate intentionally pending deeper contract work (`/lp-replan` required).
 - 2026-02-09: Chosen to create a dedicated Slice 2 plan doc rather than overloading Slice 1 plan details.
 - 2026-02-09: S2-01 completed with new `@acme/guides-core` file/content utility exports and focused tests.
 - 2026-02-09: S2-02 completed; four Brikette scripts now consume shared file/content utilities from `@acme/guides-core`.
 - 2026-02-09: S2-04 completed; backfill script no longer imports app runtime i18n config and now supports `--dry-run`.
 - 2026-02-09: S2-06 completed; investigation created S2-07 (drift manifest/check) and S2-08 (schemaVersion migration runner) as implementation follow-ons.
-- 2026-02-09 (wf-replan): S2-03 promoted from 79% to 83% based on executable seam verification and is now build-eligible.
-- 2026-02-09 (wf-replan): S2-05 remains blocked at 74%; added S2-09 (policy decision) and S2-10 (parity spike) as formal precursors.
+- 2026-02-09 (lp-replan): S2-03 promoted from 79% to 83% based on executable seam verification and is now build-eligible.
+- 2026-02-09 (lp-replan): S2-05 remains blocked at 74%; added S2-09 (policy decision) and S2-10 (parity spike) as formal precursors.
 - 2026-02-09 (build): S2-03 completed with shared schema-injected validation runner extraction and wrapper-preserving CLI behavior.
 - 2026-02-09 (build): S2-09 completed; adopted dual-mode policy (fixture default, explicit provider abstraction contract, guarded external mode).
 - 2026-02-09 (build): S2-10 completed; fixture-driven spike runner and parity matrix validated token/JSON invariants.

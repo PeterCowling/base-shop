@@ -1,18 +1,19 @@
 {
   "cache": {
-    "clear": "Clear",
-    "cleared": "Cleared",
-    "clearing": "Clearing",
-    "quota": "Quota",
+    "clear": "Clear cached data",
+    "cleared": "Cleared!",
+    "clearing": "Clearing\u2026",
+    "description": "Cached data helps the app work offline. Clearing it may require re-downloading content.",
+    "quota": "{{percent}}% of available storage",
     "refresh": "Refresh",
-    "title": "Title",
-    "usage": "Usage"
+    "title": "Cached Data",
+    "usage": "Storage used"
   },
   "chat": {
     "optIn": {
-      "description": "Description",
-      "label": "Label",
-      "optedOutNote": "Opted Out Note"
+      "description": "Allow other guests to see you in the guest directory and send you messages.",
+      "label": "Guest chat",
+      "optedOutNote": "You won't appear in the guest directory or receive new messages. Existing conversations are still visible."
     }
   }
 }

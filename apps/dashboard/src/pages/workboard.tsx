@@ -112,36 +112,36 @@ export default function WorkboardPage() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h1 className="text-lg font-semibold text-slate-900">Workboard</h1>
-        <p className="text-sm text-slate-700">
+      <div className="rounded-lg border border-border bg-bg p-4 shadow-sm">
+        <h1 className="text-lg font-semibold text-fg">Workboard</h1>
+        <p className="text-sm text-fg-muted">
           Lightweight lanes to see where shops sit. Click a card to open its diff. (Drag/drop and bulk actions to come later.)
         </p>
-        {state === "loading" && <p className="text-xs text-slate-600">Loading shops…</p>}
-        {state === "error" && <p className="text-xs text-red-700">{error}</p>}
+        {state === "loading" && <p className="text-xs text-fg-muted">Loading shops…</p>}
+        {state === "error" && <p className="text-xs text-danger-fg">{error}</p>}
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {lanes.map((lane) => (
-          <div key={lane.key} className="space-y-3 rounded-lg border border-slate-200 bg-white p-3 shadow-sm">
+          <div key={lane.key} className="space-y-3 rounded-lg border border-border bg-bg p-3 shadow-sm">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-slate-900">{lane.title}</h2>
-              <span className="text-xs text-slate-600">{lane.shops.length}</span>
+              <h2 className="text-sm font-semibold text-fg">{lane.title}</h2>
+              <span className="text-xs text-fg-muted">{lane.shops.length}</span>
             </div>
             <div className="space-y-2">
               {lane.shops.map((shop) => (
                 <Link
                   key={shop.id}
                   href={`/shops/${shop.id}`}
-                  className="block rounded border border-slate-200 bg-slate-50 px-3 py-2 transition hover:border-blue-200 hover:bg-white"
+                  className="block rounded border border-border bg-bg-2 px-3 py-2 transition hover:border-primary hover:bg-bg"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-semibold text-slate-900">{shop.name}</span>
+                    <span className="text-sm font-semibold text-fg">{shop.name}</span>
                     <Badge status={shop.status} />
                   </div>
-                  <p className="text-xs text-slate-600">{shop.id}</p>
-                  <p className="text-xs text-slate-600">{shop.pending} pending</p>
+                  <p className="text-xs text-fg-muted">{shop.id}</p>
+                  <p className="text-xs text-fg-muted">{shop.pending} pending</p>
                   {historyMap[shop.id] && (
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-fg-muted">
                       Last publish:{" "}
                       {historyMap[shop.id].status === "failed" ? "Failed" : "Success"} @{" "}
                       {new Date(historyMap[shop.id].timestamp).toLocaleString()}
@@ -150,7 +150,7 @@ export default function WorkboardPage() {
                 </Link>
               ))}
               {lane.shops.length === 0 && (
-                <p className="text-xs text-slate-600">Nothing here yet.</p>
+                <p className="text-xs text-fg-muted">Nothing here yet.</p>
               )}
             </div>
           </div>
@@ -162,10 +162,10 @@ export default function WorkboardPage() {
 
 function Badge({ status }: { status: WorkboardShop["status"] }) {
   const map: Record<WorkboardShop["status"], string> = {
-    needs_review: "bg-emerald-100 text-emerald-800",
-    publishing: "bg-blue-100 text-blue-800",
-    failed: "bg-red-100 text-red-700",
-    done: "bg-slate-100 text-slate-700",
+    needs_review: "bg-success-soft text-success-fg",
+    publishing: "bg-info-soft text-info-fg",
+    failed: "bg-danger-soft text-danger-fg",
+    done: "bg-bg-4 text-fg-muted",
   };
   return (
     <span className={`rounded-full px-2 py-1 text-xs font-semibold ${map[status]}`}>

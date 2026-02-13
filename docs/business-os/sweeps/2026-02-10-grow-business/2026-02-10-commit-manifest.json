@@ -98,7 +98,7 @@
       "depends_on": ["card-pipe-first-customer-sprint"],
       "endpoint": "/api/agent/stage-docs",
       "method": "POST",
-      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"wf-fact-find\",\"content\":\"# Fact-Finding: PIPE First-Customer Sprint\"}"
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: PIPE First-Customer Sprint\"}"
     },
     {
       "operation_id": "factfind-brik-direct-booking-conversion-sprint",
@@ -108,7 +108,7 @@
       "depends_on": ["card-brik-direct-booking-conversion-sprint"],
       "endpoint": "/api/agent/stage-docs",
       "method": "POST",
-      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"wf-fact-find\",\"content\":\"# Fact-Finding: BRIK Direct-Booking Conversion Sprint\"}"
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BRIK Direct-Booking Conversion Sprint\"}"
     },
     {
       "operation_id": "factfind-bos-growth-experiment-review-cadence",
@@ -118,7 +118,7 @@
       "depends_on": ["card-bos-growth-experiment-review-cadence"],
       "endpoint": "/api/agent/stage-docs",
       "method": "POST",
-      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"wf-fact-find\",\"content\":\"# Fact-Finding: BOS Growth Experiment Review Cadence\"}"
+      "payload_template": "{\"cardId\":\"{{CARD_ID}}\",\"stage\":\"fact-find\",\"content\":\"# Fact-Finding: BOS Growth Experiment Review Cadence\"}"
     }
   ]
 }

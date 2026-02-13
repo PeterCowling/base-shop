@@ -413,17 +413,14 @@ export function ComboBox<T = string>({
         aria-haspopup="listbox"
         tabIndex={disabled ? -1 : 0}
         className={`
-          flex w-full items-center justify-between gap-2 rounded-lg border bg-white transition-colors
+          flex w-full items-center justify-between gap-2 rounded-lg border bg-bg transition-colors
           ${sizeClasses[size]}
-          ${isOpen ? 'border-blue-500 ring-2 ring-blue-500/20' : 'border-border'}
-          ${disabled ? 'cursor-not-allowed bg-gray-100 opacity-60' : 'hover:border-gray-400'}
+          ${isOpen ? 'border-primary ring-2 ring-primary/20' : 'border-border'}
+          ${disabled ? 'cursor-not-allowed bg-bg-2 opacity-60' : 'hover:border-border-strong'}
           ${error ? 'border-danger' : ''}
-          dark:bg-slate-800 dark:border-slate-600
-          ${isOpen ? 'dark:border-blue-400 dark:ring-blue-400/20' : ''}
-          ${disabled ? 'dark:bg-slate-900' : 'dark:hover:border-slate-500'}
         `}
       >
-        <span className={`flex-1 truncate text-left ${!hasValue ? 'text-muted-foreground' : 'text-gray-900 dark:text-slate-100'}`}>
+        <span className={`flex-1 truncate text-left ${!hasValue ? 'text-muted-foreground' : 'text-fg'}`}>
           {hasValue ? (
             renderValue ? (
               renderValue(multiple ? selectedOptions : selectedOptions[0])
@@ -432,7 +429,7 @@ export function ComboBox<T = string>({
                 {selectedOptions.slice(0, 3).map((opt) => (
                   <span
                     key={String(opt.value)}
-                    className="inline-flex items-center gap-1 rounded bg-blue-100 px-1.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300"
+                    className="inline-flex items-center gap-1 rounded bg-primary-soft px-1.5 py-0.5 text-xs font-medium text-primary"
                   >
                     {opt.label}
                   </span>
@@ -453,44 +450,44 @@ export function ComboBox<T = string>({
 
         <div className="flex items-center gap-1">
           {loading && (
-            <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+            <Loader2 className="h-4 w-4 animate-spin text-fg-muted" />
           )}
           {clearable && hasValue && !disabled && (
             <button
               type="button"
               onClick={handleClear}
-              className="rounded p-0.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+              className="rounded p-0.5 text-fg-muted hover:bg-bg-2 hover:text-fg"
               aria-label="Clear selection"
             >
               <X className="h-4 w-4" />
             </button>
           )}
           <ChevronDown
-            className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`h-4 w-4 text-fg-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
           />
         </div>
       </div>
 
       {/* Error message */}
       {error && (
-        <p className="mt-1 text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="mt-1 text-sm text-danger-fg">{error}</p>
       )}
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-800">
+        <div className="absolute top-full z-50 mt-1 w-full rounded-lg border border-border bg-bg shadow-lg">
           {/* Search Input */}
           {searchable && (
-            <div className="border-b border-gray-200 p-2 dark:border-slate-700">
+            <div className="border-b border-border p-2">
               <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-fg-muted" />
                 <input
                   ref={inputRef}
                   type="text"
                   value={query}
                   onChange={handleSearchChange}
                   placeholder={searchPlaceholder}
-                  className="w-full rounded-md border border-border bg-transparent py-1.5 pl-8 pr-3 text-sm text-gray-900 placeholder-gray-500 outline-none focus:border-blue-500 focus-visible:focus:ring-1 focus-visible:focus:ring-blue-500 dark:border-slate-600 dark:text-slate-100 dark:placeholder-slate-400 dark:focus:border-blue-400"
+                  className="w-full rounded-md border border-border bg-transparent py-1.5 pl-8 pr-3 text-sm text-fg placeholder-fg-muted outline-none focus:border-primary focus-visible:focus:ring-1 focus-visible:focus:ring-primary"
                 />
               </div>
             </div>
@@ -504,14 +501,14 @@ export function ComboBox<T = string>({
             className="max-h-60 overflow-y-auto py-1"
           >
             {flatOptions.length === 0 ? (
-              <li className="px-3 py-2 text-center text-sm text-muted-foreground dark:text-slate-400">
+              <li className="px-3 py-2 text-center text-sm text-muted-foreground">
                 {loading ? 'Loading...' : emptyMessage}
               </li>
             ) : grouped ? (
               Object.entries(groupedOptions).map(([group, groupOptions]) => (
                 <React.Fragment key={group || 'ungrouped'}>
                   {group && (
-                    <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground dark:text-slate-400">
+                    <li className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                       {group}
                     </li>
                   )}
@@ -545,7 +542,7 @@ export function ComboBox<T = string>({
 
           {/* Selection info for multiple */}
           {multiple && maxSelections && (
-            <div className="border-t border-gray-200 px-3 py-2 text-xs text-muted-foreground dark:border-slate-700 dark:text-slate-400">
+            <div className="border-t border-border px-3 py-2 text-xs text-muted-foreground">
               {selectedOptions.length} / {maxSelections} selected
             </div>
           )}
@@ -595,19 +592,19 @@ function OptionItem<T>({
       }}
       className={`
         flex cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors
-        ${highlighted ? 'bg-blue-50 dark:bg-slate-700' : ''}
-        ${selected ? 'bg-blue-100 dark:bg-blue-900/50' : ''}
-        ${option.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-50 dark:hover:bg-slate-700'}
+        ${highlighted ? 'bg-primary-soft' : ''}
+        ${selected ? 'bg-primary-soft' : ''}
+        ${option.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-bg-2'}
       `}
     >
       {multiple && (
         <div
           className={`
             flex h-4 w-4 items-center justify-center rounded border
-            ${selected ? 'border-blue-500 bg-blue-500' : 'border-border dark:border-slate-600'}
+            ${selected ? 'border-primary bg-primary' : 'border-border'}
           `}
         >
-          {selected && <Check className="h-3 w-3 text-white" />}
+          {selected && <Check className="h-3 w-3 text-primary-fg" />}
         </div>
       )}
 
@@ -615,19 +612,19 @@ function OptionItem<T>({
         renderOption(option, selected)
       ) : (
         <>
-          {Icon && <Icon className="h-4 w-4 flex-shrink-0 text-gray-400" />}
+          {Icon && <Icon className="h-4 w-4 flex-shrink-0 text-fg-muted" />}
           <div className="flex-1 min-w-0">
-            <div className={`truncate ${selected ? 'font-medium' : ''} text-gray-900 dark:text-slate-100`}>
+            <div className={`truncate ${selected ? 'font-medium' : ''} text-fg`}>
               {option.label}
             </div>
             {option.description && (
-              <div className="truncate text-xs text-muted-foreground dark:text-slate-400">
+              <div className="truncate text-xs text-muted-foreground">
                 {option.description}
               </div>
             )}
           </div>
           {!multiple && selected && (
-            <Check className="h-4 w-4 flex-shrink-0 text-blue-500" />
+            <Check className="h-4 w-4 flex-shrink-0 text-primary" />
           )}
         </>
       )}

@@ -1,184 +1,217 @@
 {
   "arrival": {
-    "badge": "[IT] Badge",
-    "cashAmount": "[IT] Cash Amount",
-    "cashReady": "[IT] Cash Ready",
-    "cashReminder": "[IT] Cash Reminder",
-    "cityTaxLabel": "[IT] City Tax Label",
-    "codeStaleWarning": "[IT] Code Stale Warning",
-    "codeUnavailable": "[IT] Code Unavailable",
-    "depositLabel": "[IT] Deposit Label",
-    "findUs": "[IT] Find Us",
-    "generatingCode": "[IT] Generating Code",
-    "idNote": "[IT] Id Note",
-    "idReminder": "[IT] Id Reminder",
-    "offlineNoCache": "[IT] Offline No Cache",
-    "refreshCode": "[IT] Refresh Code",
-    "showAtReception": "[IT] Show At Reception",
-    "step1": "[IT] Step1",
-    "step2": "[IT] Step2",
-    "step3": "[IT] Step3",
-    "step4": "[IT] Step4",
-    "subtitle": "Sottotitolo",
+    "badge": "Arrivo",
+    "cashAmount": "{{amount}} in contanti necessari",
+    "cashReady": "Contanti pronti",
+    "cashReminder": "Ricorda di portare contanti per il pagamento all'arrivo.",
+    "cityTaxLabel": "Tassa di soggiorno",
+    "codeStaleWarning": "Questo codice potrebbe essere scaduto. Tocca aggiorna per ottenerne uno nuovo.",
+    "codeUnavailable": "Codice di check-in non ancora disponibile.",
+    "depositLabel": "Deposito cauzionale",
+    "findUs": "Trovaci",
+    "generatingCode": "Generazione del codice\u2026",
+    "idNote": "Un documento d'identit\u00e0 valido con foto \u00e8 richiesto per ogni ospite al check-in.",
+    "idReminder": "Porta il tuo documento",
+    "offlineNoCache": "Sei offline e non c'\u00e8 un codice salvato disponibile.",
+    "refreshCode": "Aggiorna codice",
+    "showAtReception": "Mostra questo alla reception",
+    "step1": "Arriva all'indirizzo e suona il campanello.",
+    "step2": "Mostra il codice di check-in alla reception.",
+    "step3": "Completa il pagamento e consegna il documento.",
+    "step4": "Ritira le chiavi e goditi il soggiorno!",
+    "subtitle": "Tutto il necessario per un arrivo senza problemi.",
     "welcome": "Benvenuto",
-    "whatHappensNext": "[IT] What Happens Next"
+    "whatHappensNext": "Cosa succede dopo"
   },
   "calendar": {
-    "addToCalendar": "[IT] Add To Calendar",
-    "downloading": "[IT] Downloading"
+    "addToCalendar": "Aggiungi al calendario",
+    "downloading": "Download in corso\u2026"
   },
   "cash": {
     "back": "Indietro",
-    "cardNote": "[IT] Card Note",
-    "cashOnly": "[IT] Cash Only",
+    "cardNote": "I pagamenti con carta non sono accettati. Porta contanti.",
+    "cashOnly": "Solo contanti",
     "cityTax": {
-      "label": "Etichetta",
-      "perNight": "[IT] Per Night"
+      "label": "Tassa di soggiorno",
+      "perNight": "a notte, a persona"
     },
     "confirm": {
-      "cityTax": "[IT] City Tax",
-      "deposit": "[IT] Deposit"
+      "cityTax": "Ho la tassa di soggiorno pronta",
+      "deposit": "Ho il deposito pronto"
     },
-    "confirmPartial": "[IT] Confirm Partial",
+    "confirmPartial": "Ho una parte di questi pronti",
     "deposit": {
-      "label": "Etichetta",
-      "refundable": "[IT] Refundable"
+      "label": "Deposito cauzionale",
+      "refundable": "Completamente rimborsabile al check-out"
     },
     "done": "Fatto",
     "info": {
-      "message": "Messaggio"
+      "message": "Questi importi sono dovuti in contanti all'arrivo."
     },
-    "subtitle": "Sottotitolo",
-    "title": "Titolo",
-    "total": "[IT] Total"
+    "subtitle": "Prepara i seguenti importi in contanti.",
+    "title": "Contanti da preparare",
+    "total": "Totale"
   },
   "checkIn": {
-    "codeCopied": "[IT] Code Copied",
-    "dayLeft": "[IT] Day Left",
-    "daysLeft": "[IT] Days Left",
-    "label": "Etichetta",
-    "qrAlt": "[IT] Qr Alt",
-    "qrError": "[IT] Qr Error",
+    "codeCopied": "Codice copiato!",
+    "dayLeft": "{{count}} giorno rimasto",
+    "daysLeft": "{{count}} giorni rimasti",
+    "label": "Check-in",
+    "qrAlt": "Codice QR per il check-in",
+    "qrError": "Impossibile generare il codice QR.",
     "today": "Oggi",
-    "yourCode": "[IT] Your Code"
+    "yourCode": "Il tuo codice di check-in"
   },
   "checklist": {
     "cashPrepared": {
-      "amount": "[IT] Amount"
+      "amount": "{{cityTax}} tassa di soggiorno + {{deposit}} deposito",
+      "title": "Contanti preparati"
     },
     "completed": "Completato",
-    "title": "Titolo"
+    "etaConfirmed": {
+      "title": "Orario di arrivo confermato"
+    },
+    "etaMethod": {
+      "bus": "Autobus",
+      "car": "Auto",
+      "ferry": "Traghetto",
+      "other": "Altro",
+      "taxi": "Taxi",
+      "train": "Treno"
+    },
+    "locationSaved": {
+      "title": "Posizione salvata"
+    },
+    "routePlanned": {
+      "title": "Percorso pianificato"
+    },
+    "rulesReviewed": {
+      "title": "Regole della casa lette"
+    },
+    "title": "Checklist pre-arrivo"
   },
   "eta": {
     "back": "Indietro",
-    "confirm": "Conferma",
+    "confirm": "Salva e continua",
+    "helperText": "Puoi aggiornare i dettagli di arrivo in qualsiasi momento.",
     "lateArrival": {
-      "message": "Messaggio",
-      "title": "Titolo"
+      "message": "Facci sapere se arriverai dopo le 22:00 cos\u00ec possiamo organizzare l'accesso.",
+      "title": "Arrivo tardivo"
     },
-    "methodLabel": "[IT] Method Label",
-    "noteLabel": "[IT] Note Label",
-    "notePlaceholder": "[IT] Note Placeholder",
-    "subtitle": "Sottotitolo",
-    "timeLabel": "[IT] Time Label",
-    "title": "Titolo"
+    "methodLabel": "Come viaggi?",
+    "methods": {
+      "bus": "Autobus",
+      "ferry": "Traghetto",
+      "other": "Altro",
+      "private": "Auto privata",
+      "taxi": "Taxi",
+      "train": "Treno"
+    },
+    "noteLabel": "Note per noi",
+    "notePlaceholder": "es. Avremo bagagli pesanti",
+    "required": "Obbligatorio",
+    "skip": "Salta per ora",
+    "stepProgress": "Passaggio {{current}} di {{total}}",
+    "subtitle": "Facci sapere quando aspettarti.",
+    "timeLabel": "Orario di arrivo stimato",
+    "title": "Conferma il tuo arrivo"
   },
   "header": {
-    "arrivalDay": "[IT] Arrival Day",
-    "arrivalDaySubtitle": "[IT] Arrival Day Subtitle",
-    "preArrival": "[IT] Pre Arrival",
-    "subtitle": "Sottotitolo",
-    "welcome": "Benvenuto",
-    "welcomeArrivalDay": "[IT] Welcome Arrival Day"
+    "arrivalDay": "Giorno di arrivo",
+    "arrivalDaySubtitle": "Arrivi oggi \u2014 ecco tutto quello che ti serve.",
+    "preArrival": "Pre-arrivo",
+    "subtitle": "Alcune cose da preparare prima del tuo arrivo.",
+    "welcome": "Benvenuto, {{name}}!",
+    "welcomeArrivalDay": "Benvenuto, {{name}} \u2014 oggi \u00e8 il grande giorno!"
   },
   "location": {
     "address": "Indirizzo"
   },
   "nextAction": {
     "allComplete": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "title": "Titolo"
+      "button": "Vedi dettagli check-in",
+      "description": "Sei pronto. Non vediamo l'ora di accoglierti!",
+      "title": "Sei pronto!"
     },
     "cashPrepared": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "descriptionWithAmount": "[IT] Description With Amount",
-      "title": "Titolo"
+      "button": "Prepara contanti",
+      "description": "Controlla gli importi da portare.",
+      "descriptionWithAmount": "Ti serviranno {{amount}} in contanti all'arrivo.",
+      "title": "Prepara i contanti"
     },
     "default": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "title": "Titolo"
+      "button": "Inizia",
+      "description": "Completa alcuni rapidi passaggi per preparare il tuo soggiorno.",
+      "title": "Preparati per il viaggio"
     },
     "etaConfirmed": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "title": "Titolo"
+      "button": "Imposta orario di arrivo",
+      "description": "Facci sapere quando aspettarti.",
+      "title": "Conferma l'orario di arrivo"
     },
     "locationSaved": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "title": "Titolo"
+      "button": "Salva posizione",
+      "description": "Salva il nostro indirizzo per trovarci facilmente.",
+      "title": "Salva la nostra posizione"
     },
     "routePlanned": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "title": "Titolo"
+      "button": "Pianifica il percorso",
+      "description": "Scopri i modi migliori per raggiungerci.",
+      "title": "Pianifica il percorso"
     },
     "rulesReviewed": {
-      "button": "[IT] Button",
-      "description": "Descrizione",
-      "title": "Titolo"
+      "button": "Leggi le regole",
+      "description": "Una rapida lettura per un soggiorno senza problemi.",
+      "title": "Leggi le regole della casa"
     }
   },
   "readiness": {
-    "score": "Punteggio"
+    "score": "{{score}}% pronto"
   },
   "routes": {
-    "arrival": "[IT] Arrival",
+    "arrival": "Arrivo",
     "back": "Indietro",
-    "cost": "[IT] Cost",
-    "fromOrigin": "[IT] From Origin",
-    "importantNotes": "[IT] Important Notes",
-    "journey": "[IT] Journey",
-    "noRoutes": "[IT] No Routes",
-    "recommended": "[IT] Recommended",
-    "routeSaved": "[IT] Route Saved",
-    "saveRoute": "[IT] Save Route",
-    "savedRoute": "[IT] Saved Route",
-    "selectRoute": "[IT] Select Route",
-    "subtitle": "Sottotitolo",
-    "title": "Titolo",
-    "totalTime": "[IT] Total Time",
-    "viewFullGuide": "[IT] View Full Guide"
+    "cost": "Costo",
+    "fromOrigin": "Da {{origin}}",
+    "importantNotes": "Note importanti",
+    "journey": "Viaggio",
+    "noRoutes": "Nessun percorso disponibile per la tua posizione.",
+    "recommended": "Consigliato",
+    "routeSaved": "Percorso salvato!",
+    "saveRoute": "Salva questo percorso",
+    "savedRoute": "Il tuo percorso salvato",
+    "selectRoute": "Seleziona un percorso",
+    "subtitle": "Scegli il modo migliore per raggiungerci.",
+    "title": "Come arrivare",
+    "totalTime": "Tempo totale",
+    "viewFullGuide": "Vedi la guida completa"
   },
   "staffLookup": {
     "back": "Indietro",
-    "code": "[IT] Code",
-    "dates": "[IT] Dates",
-    "eta": "[IT] Eta",
-    "guestName": "[IT] Guest Name",
-    "loading": "Caricamento",
+    "code": "Codice",
+    "dates": "Date",
+    "eta": "Orario arrivo",
+    "guestName": "Nome ospite",
+    "loading": "Caricamento\u2026",
     "nights": "Notti",
-    "noCode": "[IT] No Code",
-    "payment": "[IT] Payment",
-    "placeholder": "[IT] Placeholder",
+    "noCode": "Nessun codice generato",
+    "payment": "Pagamento",
+    "placeholder": "Inserisci codice prenotazione",
     "room": "Camera",
-    "subtitle": "Sottotitolo",
-    "title": "Titolo",
+    "subtitle": "Cerca una prenotazione ospite.",
+    "title": "Ricerca staff",
     "tryAgain": "Riprova"
   },
   "stay": {
     "location": "Posizione",
-    "night": "Notte",
-    "nights": "Notti"
+    "night": "notte",
+    "nights": "notti"
   },
   "welcome": {
-    "subtitle": "Sottotitolo",
-    "tapToDismiss": "[IT] Tap To Dismiss",
-    "tip1": "[IT] Tip1",
-    "tip2": "[IT] Tip2",
-    "title": "Titolo"
+    "subtitle": "Ecco cosa devi sapere prima del tuo arrivo.",
+    "tapToDismiss": "Tocca per chiudere",
+    "tip1": "Completa ogni passaggio per sbloccare il codice di check-in.",
+    "tip2": "Puoi tornare su questa pagina in qualsiasi momento.",
+    "title": "Benvenuto su Prime"
   }
 }

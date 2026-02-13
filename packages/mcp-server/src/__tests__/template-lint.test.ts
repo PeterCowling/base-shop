@@ -6,7 +6,7 @@ import { join } from "path";
 import {
   findPlaceholders,
   lintTemplates,
-  type TemplateLintIssue,
+  partitionIssues,
 } from "../utils/template-lint";
 
 type StoredTemplate = {
@@ -63,9 +63,23 @@ describe("template linting", () => {
     );
 
     const policyIssue = issues.find(
-      (issue: TemplateLintIssue) => issue.code === "policy_mismatch"
+      (issue) => issue.code === "policy_mismatch"
     );
     expect(policyIssue).toBeDefined();
+  });
+
+  it("partitions broken_link issues as warnings and others as hard failures", () => {
+    const issues = [
+      { subject: "A", code: "broken_link", details: "Link failed (404): https://example.com" },
+      { subject: "B", code: "placeholder", details: "Unfilled placeholder: {name}" },
+      { subject: "C", code: "broken_link", details: "Link failed (404): https://example.com/2" },
+      { subject: "D", code: "policy_mismatch", details: "Missing policy keywords" },
+    ];
+    const { hard, warnings } = partitionIssues(issues);
+    expect(hard).toHaveLength(2);
+    expect(warnings).toHaveLength(2);
+    expect(hard.every((i) => i.code !== "broken_link")).toBe(true);
+    expect(warnings.every((i) => i.code === "broken_link")).toBe(true);
   });
 
   it("TASK-09 TC-01/TC-02: rewritten non-refundable cancellation template is empathetic and avoids rigid legacy phrasing", () => {

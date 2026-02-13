@@ -6,7 +6,7 @@ Last-reviewed: 2026-02-07
 Relates-to:
   - docs/business-os/business-os-charter.md
 Feature-Slug: brikette-staging-localized-slug-routing
-Related-Fact-Find: docs/plans/brikette-staging-localized-slug-routing-wf-fact-find.md
+Related-Fact-Find: docs/plans/brikette-staging-localized-slug-routing-fact-find.md
 ---
 
 # Brikette Staging Localized Slug Routing — Implementation Plan

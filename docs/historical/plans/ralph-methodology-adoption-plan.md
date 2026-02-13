@@ -172,8 +172,8 @@ Multiple worktrees on one machine can exhaust resources:
 | File | Purpose |
 |------|---------|
 | `CODEX.md` | Codex-specific context (conditional, not absolute) |
-| `.claude/prompts/wf-plan.md` | Planning mode prompt |
-| `.claude/prompts/wf-build.md` | Building mode prompt |
+| `.claude/prompts/lp-plan.md` | Planning mode prompt |
+| `.claude/prompts/lp-build.md` | Building mode prompt |
 | `scripts/validate-changes.sh` | Robust backpressure script (pre-commit) |
 | `scripts/post-deploy-health-check.sh` | Post-deploy verification (closes the deploy→verify loop) |
 | `.github/CODEOWNERS` | Enforce custodian review for high-conflict files |
@@ -250,8 +250,8 @@ Last-updated-by: <same format>      # Optional
 
 - [x] Create `docs/testing-policy.md` — extract from AGENTS.md § "Testing Policy"
 - [x] Create `CODEX.md` — conditional guidance (not absolute "no network")
-- [x] Create `.claude/prompts/wf-plan.md` — planning mode prompt (use spec in § "Detailed Specifications")
-- [x] Create `.claude/prompts/wf-build.md` — building mode prompt (use spec in § "Detailed Specifications")
+- [x] Create `.claude/prompts/lp-plan.md` — planning mode prompt (use spec in § "Detailed Specifications")
+- [x] Create `.claude/prompts/lp-build.md` — building mode prompt (use spec in § "Detailed Specifications")
 - [x] Create `scripts/validate-changes.sh` — robust validation script (use spec in § "Detailed Specifications")
 - [x] Create `scripts/post-deploy-health-check.sh` — post-deploy verification (use spec in § "Detailed Specifications")
 - [x] Wire `post-deploy-health-check.sh` into `.github/workflows/reusable-app.yml` after deploy step
@@ -367,8 +367,8 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-Planning prompt: `.claude/prompts/wf-plan.md`
-Building prompt: `.claude/prompts/wf-build.md`
+Planning prompt: `.claude/prompts/lp-plan.md`
+Building prompt: `.claude/prompts/lp-build.md`
 
 ## Plan Documentation
 
@@ -404,7 +404,7 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
 ```
 
-### .claude/prompts/wf-plan.md (NEW)
+### .claude/prompts/lp-plan.md (NEW)
 
 ```markdown
 # Plan Feature
@@ -487,7 +487,7 @@ Last-updated-by: <same format>
 Tell user: "Plan ready at `docs/plans/<name>-plan.md`. Review and approve, then switch to build mode."
 ```
 
-### .claude/prompts/wf-build.md (NEW)
+### .claude/prompts/lp-build.md (NEW)
 
 ```markdown
 # Build Feature
@@ -1036,7 +1036,7 @@ Co-Authored-By: Codex <noreply@openai.com>
 
 - Read `AGENTS.md` for commands and rules
 - Follow `docs/plans/` workflow
-- Use `.claude/prompts/wf-plan.md` and `wf-build.md` patterns
+- Use `.claude/prompts/lp-plan.md` and `lp-build.md` patterns
 - Run validation before committing (when possible)
 - Never take shortcuts on large-scale fixes
 ```
@@ -1099,8 +1099,8 @@ For historical context, see original sprint tracking below.
 Add without modifying existing:
 1. `docs/testing-policy.md` — extracted from AGENTS.md
 2. `CODEX.md` — conditional Codex guidance
-3. `.claude/prompts/wf-plan.md`
-4. `.claude/prompts/wf-build.md`
+3. `.claude/prompts/lp-plan.md`
+4. `.claude/prompts/lp-build.md`
 5. `scripts/validate-changes.sh`
 
 ### Step 2: Update Indexes
@@ -1130,8 +1130,8 @@ Add without modifying existing:
 
 ### Step 6: Validation
 
-1. Test wf-plan.md prompt with Claude
-2. Test wf-build.md prompt with Claude
+1. Test lp-plan.md prompt with Claude
+2. Test lp-build.md prompt with Claude
 3. Test validate-changes.sh catches failures
 4. Test validate-changes.sh warns on missing tests
 5. Verify context load reduced

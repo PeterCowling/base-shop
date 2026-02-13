@@ -1,11 +1,11 @@
 ---
 name: review-critique
-description: Hardnosed critic for wf-fact-find, wf-plan, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.
+description: Hardnosed critic for lp-fact-find, lp-plan, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.
 ---
 
 # Critique Document (Compact Hardnosed Mode)
 
-Critique wf-fact-find, wf-plan, or process/skill documents for decision quality.
+Critique lp-fact-find, lp-plan, or process/skill documents for decision quality.
 No compliments, no filler, no vibe-based approval.
 
 ## Operating Mode
@@ -29,7 +29,7 @@ Required:
 - Path to target doc
 
 Supported targets:
-- Planning docs (`docs/plans/*-wf-fact-find.md`, `docs/plans/*-plan.md`)
+- Planning docs (`docs/plans/*-lp-fact-find.md`, `docs/plans/*-plan.md`)
 - Domain plan docs (for example `docs/cms-plan/*.md`)
 - Process/skill docs (for example `.claude/skills/*/SKILL.md`)
 
@@ -144,7 +144,7 @@ Precedence:
 1. Direct user instruction in current request
 2. `AGENTS.md`
 3. `docs/AGENTS.docs.md`
-4. Skill templates (`/wf-plan`, `/wf-fact-find`)
+4. Skill templates (`/lp-plan`, `/lp-fact-find`)
 5. Target doc assertions
 
 Tie-breakers:
@@ -213,7 +213,7 @@ Required checks:
   - `Type`, `Outcome`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`, `Related-Plan`
   - `Business-OS-Integration` must be explicit (`on`/`off`)
   - If `on`, require `Business-Unit` and `Card-ID`
-  - **Card-ID timing:** The wf-fact-find skill creates cards even at `Needs-input` status. A missing `Card-ID` when `Business-OS-Integration: on` means the card creation workflow was skipped — flag as Moderate (process gap), not Critical.
+  - **Card-ID timing:** The lp-fact-find skill creates cards even at `Needs-input` status. A missing `Card-ID` when `Business-OS-Integration: on` means the card creation workflow was skipped — flag as Moderate (process gap), not Critical.
   - In Legacy mode, missing BOS fields are template drift unless higher-precedence policy says mandatory
 - Sections present and substantive:
   - Scope (summary/goals/non-goals)
@@ -223,15 +223,15 @@ Required checks:
   - Planning Readiness
   - Test Landscape for code/mixed
   - Delivery and Channel Landscape for business-artifact/mixed
-  - Hypothesis & Validation Landscape for business-artifact/mixed (key hypotheses, existing signal coverage, falsifiability assessment, recommended validation approach) — this feeds `/wf-plan`'s Business VC Quality Checklist. Missing on a business-artifact/mixed brief is Major (downstream VCs will lack grounding).
+  - Hypothesis & Validation Landscape for business-artifact/mixed (key hypotheses, existing signal coverage, falsifiability assessment, recommended validation approach) — this feeds `/lp-plan`'s Business VC Quality Checklist. Missing on a business-artifact/mixed brief is Major (downstream VCs will lack grounding).
 
 Fact-Find confidence dimensions:
-- The wf-fact-find skill defines **5 dimensions**: Implementation, Approach, Impact, Delivery-Readiness, Testability.
-- Do NOT penalize wf-fact-finds for having 5 dimensions instead of 3. The 3-dimension model (Implementation/Approach/Impact) applies to plan tasks, not wf-fact-find briefs.
+- The lp-fact-find skill defines **5 dimensions**: Implementation, Approach, Impact, Delivery-Readiness, Testability.
+- Do NOT penalize lp-fact-finds for having 5 dimensions instead of 3. The 3-dimension model (Implementation/Approach/Impact) applies to plan tasks, not lp-fact-find briefs.
 
 Fact-Find `Related-Plan` field:
-- `Related-Plan` is a **forward pointer** to the plan that will be created by `/wf-plan`.
-- It is normal and expected for this file to not exist at wf-fact-find time.
+- `Related-Plan` is a **forward pointer** to the plan that will be created by `/lp-plan`.
+- It is normal and expected for this file to not exist at lp-fact-find time.
 - Do NOT flag a non-existent `Related-Plan` target as an issue.
 
 Open questions checks:
@@ -303,7 +303,7 @@ Required checks:
 
 ## Cross-Document Consistency (Plan + Fact-Find)
 
-If a plan references a wf-fact-find:
+If a plan references a lp-fact-find:
 - Compare goals, approach, open questions, confidence transitions, execution routing, and coverage gaps.
 - If conflicts arise, apply Step 2A and record resolution.
 
@@ -367,7 +367,7 @@ Header/Structure override: **Yes/No** - <if yes, why>
 Mode evidence: <matched headings/markers used for routing>
 
 Biggest decision-quality failures: ...
-Recommended action: **proceed** / **revise and re-critique** / **return to /wf-fact-find** / **run /wf-replan** / **revise process or skill doc and re-critique**
+Recommended action: **proceed** / **revise and re-critique** / **return to /lp-fact-find** / **run /lp-replan** / **revise process or skill doc and re-critique**
 
 ### 2) Top Issues (ranked)
 
@@ -433,11 +433,11 @@ Include:
 ## Workflow Integration
 
 Recommended next actions:
-- Fact-find has major evidence gaps -> additional `/wf-fact-find`
+- Fact-find has major evidence gaps -> additional `/lp-fact-find`
 - Fact-find confidence unjustified -> rework confidence with evidence
-- Plan confidence inflation -> `/wf-replan`
-- Plan missing validation contracts -> revise plan before `/wf-build`
-- Plan contradicts wf-fact-find -> `/wf-replan` with wf-fact-find input
+- Plan confidence inflation -> `/lp-replan`
+- Plan missing validation contracts -> revise plan before `/lp-build`
+- Plan contradicts lp-fact-find -> `/lp-replan` with lp-fact-find input
 - Unresolved source conflict -> reconcile source docs, then re-critique
 - Process/skill contradictions -> revise rules, then re-critique
 - Document fundamentally sound -> proceed

@@ -122,7 +122,7 @@ export default function Scanner({ allowedZips }: ScannerProps) {
             </select>
           </label>
           <button
-            className="bg-blue-600 px-4 py-2 text-white disabled:opacity-50 min-h-11 min-w-11"
+            className="bg-primary px-4 py-2 text-primary-fg disabled:opacity-50 min-h-11 min-w-11"
             disabled={!zip}
             onClick={() => result && finalize(result)}
           >

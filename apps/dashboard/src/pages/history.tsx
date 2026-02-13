@@ -73,35 +73,35 @@ export default function HistoryPage() {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <h1 className="text-lg font-semibold text-slate-900">Release history</h1>
-        <p className="text-sm text-slate-700">
+      <div className="rounded-lg border border-border bg-bg p-4 shadow-sm">
+        <h1 className="text-lg font-semibold text-fg">Release history</h1>
+        <p className="text-sm text-fg-muted">
           Cross-shop publish history. Uses available shop list until a history endpoint is provided.
         </p>
-        {state === "loading" && <p className="text-xs text-slate-600">Loading…</p>}
-        {state === "error" && <p className="text-xs text-red-700">{error}</p>}
+        {state === "loading" && <p className="text-xs text-fg-muted">Loading…</p>}
+        {state === "error" && <p className="text-xs text-danger-fg">{error}</p>}
       </div>
-      <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-        <ul className="divide-y divide-slate-200">
+      <div className="space-y-3 rounded-lg border border-border bg-bg p-4 shadow-sm">
+        <ul className="divide-y divide-border">
           {entries.map((job) => (
             <li key={job.id} className="space-y-1 py-3">
               <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white">
+                <span className="rounded bg-fg px-2 py-1 text-xs font-semibold text-bg">
                   {job.shopId}
                 </span>
-                <span className="text-xs text-slate-600">Job: {job.id}</span>
+                <span className="text-xs text-fg-muted">Job: {job.id}</span>
                 <StatusBadge status={job.status} />
-                <span className="text-xs text-slate-600">User: {job.user ?? "—"}</span>
-                <span className="text-xs text-slate-600">Duration: {job.duration ?? "—"}</span>
-                <span className="text-xs text-slate-600">
+                <span className="text-xs text-fg-muted">User: {job.user ?? "—"}</span>
+                <span className="text-xs text-fg-muted">Duration: {job.duration ?? "—"}</span>
+                <span className="text-xs text-fg-muted">
                   {new Date(job.timestamp).toLocaleString()}
                 </span>
               </div>
-              <p className="text-sm text-slate-800">
+              <p className="text-sm text-fg">
                 Components: {(job.components ?? []).join(", ")}
               </p>
               {job.error && (
-                <p className="text-sm text-red-700">Error: {job.error}</p>
+                <p className="text-sm text-danger-fg">Error: {job.error}</p>
               )}
             </li>
           ))}
@@ -116,8 +116,8 @@ function StatusBadge({ status }: { status: "success" | "failed" }) {
     <span
       className={`rounded-full px-3 py-1 text-xs font-semibold ${
         status === "success"
-          ? "bg-green-100 text-green-800"
-          : "bg-red-100 text-red-700"
+          ? "bg-success-soft text-success-fg"
+          : "bg-danger-soft text-danger-fg"
       }`}
     >
       {status === "success" ? "Success" : "Failed"}

@@ -13,8 +13,8 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 Supersedes: docs/plans/archive/design-ui-theming-v2-plan.md
 Relates-to charter: docs/architecture.md
 Relates-to: docs/audits/design-system-audit-2026-01.md
-Relates-to: docs/plans/design-system-wf-fact-find.md
-Relates-to: docs/plans/react-audit-design-system-wf-fact-find.md
+Relates-to: docs/plans/design-system-lp-fact-find.md
+Relates-to: docs/plans/react-audit-design-system-lp-fact-find.md
 Incorporates: docs/plans/archive/brikette-lint-enablement-plan.md
 Business-Unit: PLAT
 Card-ID: PLAT-ENG-0009
@@ -234,7 +234,7 @@ _Make what already exists discoverable and modern. This is the highest-leverage 
 - **Effort:** M
 - **Affects:**
   - Primary: 53 files across `packages/design-system/src/` (primitives, atoms, molecules)
-  - [readonly] `docs/plans/react-audit-design-system-wf-fact-find.md` (Finding 1)
+  - [readonly] `docs/plans/react-audit-design-system-lp-fact-find.md` (Finding 1)
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 88%
@@ -1744,7 +1744,7 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 - [x] Missing token scales added (opacity, letter-spacing, sizes, containers, disabled states) — DS-16/17
 - [x] CommandPalette re-export wrapper removed — DS-18
 - [x] Toast consolidated (reception → shared useToast) — DS-19
-- [ ] Brikette local layout primitives replaced with DS imports — DS-21a/21b (unblocked after wf-replan)
+- [ ] Brikette local layout primitives replaced with DS imports — DS-21a/21b (unblocked after lp-replan)
 - [x] CarouselSlides consolidated (already complete as of 2026-02-07)
 - [x] jest-axe assertions in all design-system component tests — DS-23
 - [x] Brikette passes full ESLint sweep and lint re-enabled in CI — DS-24–29
@@ -1850,8 +1850,8 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 
 ## Decision Log
 
-- 2026-02-07: All 29 active IMPLEMENT tasks completed (28 complete, 1 blocked). DS-21 blocked at 60% due to polymorphic `as` vs `asChild` API incompatibility — needs `/wf-replan`. All 3 deferred tasks remain deferred. Brikette fully lint-enabled in CI.
-- 2026-02-07: DS-21 wf-replanned. Decision: refactor brikette to use `asChild` pattern (not add `as` prop to DS). Rationale: `asChild` is the established DS pattern (Button, LinkText, Stack, Inline); adding `as` would create two competing polymorphism APIs. Split into DS-21a (add asChild to Cluster + tests for all 3 primitives, 88%) and DS-21b (migrate 40 brikette call sites, 82%). Both now above 80% threshold. Evidence: E1 (code audit of all 6 primitives + 40 usage sites + cross-app usage).
+- 2026-02-07: All 29 active IMPLEMENT tasks completed (28 complete, 1 blocked). DS-21 blocked at 60% due to polymorphic `as` vs `asChild` API incompatibility — needs `/lp-replan`. All 3 deferred tasks remain deferred. Brikette fully lint-enabled in CI.
+- 2026-02-07: DS-21 lp-replanned. Decision: refactor brikette to use `asChild` pattern (not add `as` prop to DS). Rationale: `asChild` is the established DS pattern (Button, LinkText, Stack, Inline); adding `as` would create two competing polymorphism APIs. Split into DS-21a (add asChild to Cluster + tests for all 3 primitives, 88%) and DS-21b (migrate 40 brikette call sites, 82%). Both now above 80% threshold. Evidence: E1 (code audit of all 6 primitives + 40 usage sites + cross-app usage).
 - **SearchBar refactor**: React audit Finding 2 — data transform in useEffect should be useMemo. Finding 3 — complex state structure
 - **DataGrid decomposition**: React audit Finding 4 — 417-line god component
 - **Context.Provider simplification**: React audit Finding 7 — accordion can use `<Context value={}>` (React 19)
@@ -1869,9 +1869,9 @@ This section outlines what each app would need to reach higher DS adoption. Thes
 - 2026-02-07: DS-15 format decision — recommend px as canonical format
 - 2026-02-07: DS-03 added — forwardRef → ref-as-prop migration (53 files) from React audit
 - 2026-02-07: DS-26 re-scoped — DS rule violations (raw spacing/typography/color), not hex colors
-- 2026-02-07: Fact-find brief created — `docs/plans/design-system-wf-fact-find.md`
+- 2026-02-07: Fact-find brief created — `docs/plans/design-system-lp-fact-find.md`
 - 2026-02-07: Batch 1 build complete — DS-01 (`7aa38337ca`), DS-13 (`22a6c50ea9`), DS-14 (`9cae3f8849`), DS-18 (`d29a4f3cd4`)
-- 2026-02-07: DS-21 blocked — API incompatibility discovered: brikette uses polymorphic `as` prop (38+ call sites), DS uses `asChild` pattern. Needs `/wf-replan`.
+- 2026-02-07: DS-21 blocked — API incompatibility discovered: brikette uses polymorphic `as` prop (38+ call sites), DS uses `asChild` pattern. Needs `/lp-replan`.
 - 2026-02-07: Batch 2 build complete — DS-09 (`0b8dfdd05c`), DS-10 (`188d441489`), DS-05 (`c0afe274f3`), DS-06 (`c718b5b6c8`), DS-08 (`1db29685a2`). 23 new tests, all passing. 5 Radix deps added. Lint fixes: import sort autofix, transition-all → transition-colors.
 - 2026-02-07: Plan restructured to v4 — adoption-driven phases (Foundation/DX → Component Gaps → Token Unification → Consolidation → Enforcement). Added 3 new tasks: DS-04 (Form integration), DS-14 (ConfirmDialog), DS-21 (brikette layout dedup). Renumbered all tasks DS-01 through DS-29. Per-app adoption data added from fresh audit. Spinner task dropped (Loader/Spinner atom already exists).
 - 2026-02-07: Batch 3 build complete — DS-07 Combobox (`f8097a9ffc`), DS-11 DatePicker token audit (`e0510e2870`), DS-12 Stepper (`13123244f9`), DS-22 Theme guide (`f091ca7497`). 26 new tests across 3 suites, all passing. DatePicker: 2 hardcoded colors replaced with tokens. Stepper: complexity refactored to helpers. Theme guide: 895 lines covering full token architecture.

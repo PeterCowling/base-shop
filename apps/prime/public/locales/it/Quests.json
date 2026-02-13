@@ -1,18 +1,18 @@
 {
   "account": {
-    "badgesTitle": "I Tuoi Distintivi",
-    "questsCompleted": "Quest Completate"
+    "badgesTitle": "I tuoi distintivi",
+    "questsCompleted": "Sfide completate"
   },
   "completion": {
-    "badgeEarned": "Distintivo Ottenuto",
+    "badgeEarned": "Distintivo ottenuto",
     "continue": "Continua",
-    "title": "Titolo"
+    "title": "Complimenti!"
   },
   "labels": {
-    "allComplete": "Tutto Completato",
+    "allComplete": "Tutte le sfide completate!",
     "badges": "Distintivi",
-    "currentQuest": "Quest Attuale",
-    "lockedUntil": "Bloccato Fino A",
+    "currentQuest": "Sfida attuale",
+    "lockedUntil": "Disponibile tra {{hours}} ore",
     "progress": "Progresso"
   }
 }

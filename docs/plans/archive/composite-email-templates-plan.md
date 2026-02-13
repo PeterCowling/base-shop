@@ -44,7 +44,7 @@ The email autodraft pipeline currently selects a single template to answer guest
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/composite-email-templates-wf-fact-find.md`
+- Related brief: `docs/plans/composite-email-templates-lp-fact-find.md`
 - Key findings:
   - Ranker already returns top 3 candidates — only `candidates[0]` is used
   - "Hostel Facilities and Services" template covers WiFi + luggage + breakfast (natural composite fallback)
@@ -195,7 +195,7 @@ This approach requires changes to only `draft-generate.ts` (~40 lines). The rank
 - **Depends on:** -
 - **Blocks:** TASK-04
 - **Confidence:** 88%
-  - Implementation: 90% — Clear change point at lines 187-193; pure function logic; wf-fact-find confirmed "Hostel Facilities and Services" template covers FAQ-05 topics
+  - Implementation: 90% — Clear change point at lines 187-193; pure function logic; lp-fact-find confirmed "Hostel Facilities and Services" template covers FAQ-05 topics
   - Approach: 85% — Compositing from approved templates preserves content safety; risk is ranker not returning diverse enough candidates
   - Impact: 88% — Changes isolated to body assembly in draft-generate.ts; quality check benefits from larger body; HTML generator handles multi-paragraph
 - **Acceptance:**
@@ -247,7 +247,7 @@ This approach requires changes to only `draft-generate.ts` (~40 lines). The rank
   - `draft-generate.ts:187-193` — current single-template selection
   - `draft-quality-check.ts:165-188` — `answersQuestions()` logic to reuse for coverage detection
   - `email-templates.json` — "Hostel Facilities and Services" template at end of file
-  - Fact-find design: `docs/plans/composite-email-templates-wf-fact-find.md` § "Design: Composite Template Approach"
+  - Fact-find design: `docs/plans/composite-email-templates-lp-fact-find.md` § "Design: Composite Template Approach"
 
 ### TASK-04: Raise pass rate target and validate
 
@@ -280,7 +280,7 @@ This approach requires changes to only `draft-generate.ts` (~40 lines). The rank
   - **Refactor:** Adjust threshold to actual achieved rate if 90% not reached (e.g., 0.87 for 27/31)
 - **Planning validation:**
   - Tests run: `npx jest --testPathPattern 'packages/mcp-server'` — all pass at current 25/31 (81%)
-  - Expected post-fix: ≥28/31 (90%) based on wf-fact-find analysis
+  - Expected post-fix: ≥28/31 (90%) based on lp-fact-find analysis
 - **Rollout / rollback:**
   - Rollout: Test-only change
   - Rollback: Revert threshold back to `0.8`

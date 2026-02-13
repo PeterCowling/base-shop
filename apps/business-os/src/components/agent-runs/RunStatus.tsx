@@ -96,10 +96,10 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
 
   if (loading && !runStatus) {
     return (
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+      <div className="bg-info-soft border border-info-soft rounded-lg p-4">
         <div className="flex items-center gap-2">
-          <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full" />
-          <span className="text-sm text-blue-900">Checking agent status...</span>
+          <div className="animate-spin h-4 w-4 border-2 border-accent border-t-transparent rounded-full" />
+          <span className="text-sm text-info-fg">Checking agent status...</span>
         </div>
       </div>
     );
@@ -107,8 +107,8 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p className="text-sm text-red-900">Error: {error}</p>
+      <div className="bg-danger-soft border border-danger-soft rounded-lg p-4">
+        <p className="text-sm text-danger-fg">Error: {error}</p>
       </div>
     );
   }
@@ -118,9 +118,9 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
   }
 
   const statusColors = {
-    "in-progress": "bg-blue-50 border-blue-200 text-blue-900",
-    complete: "bg-green-50 border-green-200 text-green-900",
-    failed: "bg-red-50 border-red-200 text-red-900",
+    "in-progress": "bg-info-soft border-info-soft text-info-fg",
+    complete: "bg-success-soft border-success-soft text-success-fg",
+    failed: "bg-danger-soft border-danger-soft text-danger-fg",
   };
 
   const statusLabels = {
@@ -136,7 +136,7 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           {runStatus.status === "in-progress" && (
-            <div className="animate-spin h-4 w-4 border-2 border-blue-600 border-t-transparent rounded-full" />
+            <div className="animate-spin h-4 w-4 border-2 border-accent border-t-transparent rounded-full" />
           )}
           <span className="text-sm font-semibold">
             {statusLabels[runStatus.status]}
@@ -157,19 +157,19 @@ export function RunStatus({ entityId: _entityId, taskId }: RunStatusProps) {
       )}
 
       {runStatus.error && (
-        <div className="text-sm text-red-800 mt-2 p-2 bg-red-100 rounded">
+        <div className="text-sm text-danger-fg mt-2 p-2 bg-danger-soft rounded">
           <span className="font-medium">Error:</span> {runStatus.error}
         </div>
       )}
 
       {runStatus.commitHash && (
-        <div className="text-xs text-gray-600 mt-2">
+        <div className="text-xs text-muted mt-2">
           <span className="font-medium">Commit:</span>{" "}
           <code className="font-mono">{runStatus.commitHash.slice(0, 8)}</code>
         </div>
       )}
 
-      <div className="text-xs text-gray-500 mt-2">
+      <div className="text-xs text-muted mt-2">
         Started: {new Date(runStatus.started).toLocaleString()}
         {runStatus.completed && (
           <> • Completed: {new Date(runStatus.completed).toLocaleString()}</>

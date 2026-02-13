@@ -49,7 +49,7 @@ Convert forecast controls into concrete execution work that improves odds of pro
 
 - Trigger scale-up: all week-2 gates pass and denominator validity thresholds are met.
 - Trigger hold/fix: any gate fails or denominator thresholds are not met.
-- Trigger wf-replan: two consecutive weekly gate failures on the same metric.
+- Trigger lp-replan: two consecutive weekly gate failures on the same metric.
 
 ## Next Review
 

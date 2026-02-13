@@ -20,19 +20,19 @@ No active tasks at this time.
 
 ## Summary
 
-Integrate Business OS card lifecycle management into the `/wf-fact-find`, `/wf-plan`, and `/wf-build` skills so that completing work through these skills automatically creates and updates Business OS cards. Currently, running the feature workflow produces artifacts in `docs/plans/` but the Business OS kanboard remains stale. This integration bridges the gap by:
+Integrate Business OS card lifecycle management into the `/lp-fact-find`, `/lp-plan`, and `/lp-build` skills so that completing work through these skills automatically creates and updates Business OS cards. Currently, running the feature workflow produces artifacts in `docs/plans/` but the Business OS kanboard remains stale. This integration bridges the gap by:
 
-1. Enabling automatic card creation when `/wf-fact-find` completes (with Business-Unit context)
-2. Creating stage documents when `/wf-plan` completes and proposing lane transitions
-3. Tracking task progress when `/wf-build` executes
+1. Enabling automatic card creation when `/lp-fact-find` completes (with Business-Unit context)
+2. Creating stage documents when `/lp-plan` completes and proposing lane transitions
+3. Tracking task progress when `/lp-build` executes
 
 The integration is opt-in (via frontmatter) and backward compatible.
 
 ## Goals
 
-- Automatic Business OS card creation when `/wf-fact-find` completes with Business-Unit context
-- Automatic stage document creation when `/wf-plan` completes
-- Automatic card progress tracking when `/wf-build` executes
+- Automatic Business OS card creation when `/lp-fact-find` completes with Business-Unit context
+- Automatic stage document creation when `/lp-plan` completes
+- Automatic card progress tracking when `/lp-build` executes
 - Idempotent operation (running skills multiple times does not duplicate cards)
 - Reuse existing patterns from `/idea-develop` and `/idea-advance`
 
@@ -59,7 +59,7 @@ The integration is opt-in (via frontmatter) and backward compatible.
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/business-os-skill-integration-wf-fact-find.md`
+- Related brief: `docs/plans/business-os-skill-integration-lp-fact-find.md`
 - Key findings:
   - `/idea-develop` skill provides complete card creation pattern (lines 62-323)
   - `/idea-advance` provides lane transition pattern (lines 79-122)
@@ -71,9 +71,9 @@ The integration is opt-in (via frontmatter) and backward compatible.
 ## Existing System Notes
 
 - Key modules/files:
-  - `.claude/skills/wf-fact-find/SKILL.md` (436 lines) - produces wf-fact-find briefs
-  - `.claude/skills/wf-plan/SKILL.md` (446 lines) - creates implementation plans
-  - `.claude/skills/wf-build/SKILL.md` (308 lines) - implements tasks with TDD
+  - `.claude/skills/lp-fact-find/SKILL.md` (436 lines) - produces lp-fact-find briefs
+  - `.claude/skills/lp-plan/SKILL.md` (446 lines) - creates implementation plans
+  - `.claude/skills/lp-build/SKILL.md` (308 lines) - implements tasks with TDD
   - `.claude/skills/idea-develop/SKILL.md` (414 lines) - card creation pattern to reuse
   - `.claude/skills/idea-advance/SKILL.md` (214 lines) - lane transition pattern
   - `apps/business-os/src/lib/repo/IDAllocator.ts` (159 lines) - collision-proof ID allocation
@@ -101,7 +101,7 @@ Extend existing skill instructions with optional Business OS integration hooks:
 
 ### Option B: New Wrapper Skills
 
-Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
+Create `/lp-fact-find-with-card`, `/lp-plan-with-card`, etc.
 
 **Trade-offs:**
 - Pros: Clean separation, no changes to existing skills
@@ -133,11 +133,11 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 | BOS-101 | IMPLEMENT | Add Business OS frontmatter schema to plan docs | 90% | S | Complete | - |
 | BOS-102 | IMPLEMENT | Create card creation helper module | 85% | M | Complete | BOS-101 |
 | BOS-103 | IMPLEMENT | Create stage doc creation helper module | 85% | M | Complete | BOS-101 |
-| BOS-104 | IMPLEMENT | Extend /wf-fact-find with card creation hook | 82% | M | Complete | BOS-102, BOS-103 |
+| BOS-104 | IMPLEMENT | Extend /lp-fact-find with card creation hook | 82% | M | Complete | BOS-102, BOS-103 |
 | BOS-105 | IMPLEMENT | Add idempotency checks for card operations | 88% | S | Complete | BOS-102 |
-| BOS-106 | IMPLEMENT | Extend /wf-plan with planned stage doc creation | 82% | M | Complete | BOS-103 |
-| BOS-107 | IMPLEMENT | Add lane transition proposal after /wf-plan | 85% | S | Complete | BOS-106 |
-| BOS-108 | IMPLEMENT | Extend /wf-build with task progress tracking | 80% | M | Complete | BOS-103 |
+| BOS-106 | IMPLEMENT | Extend /lp-plan with planned stage doc creation | 82% | M | Complete | BOS-103 |
+| BOS-107 | IMPLEMENT | Add lane transition proposal after /lp-plan | 85% | S | Complete | BOS-106 |
+| BOS-108 | IMPLEMENT | Extend /lp-build with task progress tracking | 80% | M | Complete | BOS-103 |
 | BOS-109 | IMPLEMENT | Add lane transition to Done after all tasks complete | 82% | S | Complete | BOS-108 |
 | BOS-110 | IMPLEMENT | Update skill documentation with Business OS integration | 88% | S | Complete | BOS-104, BOS-106, BOS-108 |
 | BOS-111 | INVESTIGATE | Validate IDAllocator integration for card creation | 80% | S | Complete | - |
@@ -149,7 +149,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 ### BOS-101: Add Business OS frontmatter schema to plan docs
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-02)
-- **Affects:** `.claude/skills/wf-fact-find/SKILL.md`, `.claude/skills/wf-plan/SKILL.md`
+- **Affects:** `.claude/skills/lp-fact-find/SKILL.md`, `.claude/skills/lp-plan/SKILL.md`
 - **Depends on:** -
 - **Confidence:** 90%
   - Implementation: 95% - Simple frontmatter additions to existing templates
@@ -171,10 +171,10 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - Rollout: Direct commit; additive change
   - Rollback: Revert commit
 - **Documentation impact:**
-  - Update: `.claude/skills/wf-fact-find/SKILL.md` (Brief Template section)
-  - Update: `.claude/skills/wf-plan/SKILL.md` (Plan Template section)
+  - Update: `.claude/skills/lp-fact-find/SKILL.md` (Brief Template section)
+  - Update: `.claude/skills/lp-plan/SKILL.md` (Plan Template section)
 - **Implementation notes (2026-02-02):**
-  - Added `Business-Unit` and `Card-ID` to wf-fact-find brief template (line 177)
+  - Added `Business-Unit` and `Card-ID` to lp-fact-find brief template (line 177)
   - Added `Business-Unit` and `Card-ID` to plan doc template (line 280)
   - Added "Business OS Integration (Optional)" documentation section to both skills
   - Documentation explains when to use, how it works, business unit codes, and backward compatibility
@@ -235,7 +235,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - [x] Shared helper documented in `.claude/skills/_shared/stage-doc-operations.md`
   - [x] Helper describes: stage doc file structure, frontmatter requirements, stage types
   - [x] Helper includes: templates for fact-finding, planned, build, reflect stage docs
-  - [x] Stage types match `StageType` enum: `wf-fact-find | plan | build | reflect`
+  - [x] Stage types match `StageType` enum: `lp-fact-find | plan | build | reflect`
 - **Test plan:**
   - Add/Update: N/A (skill instruction documentation)
   - Run: Manual validation that instructions are complete and correct
@@ -252,27 +252,27 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - Create: `.claude/skills/_shared/stage-doc-operations.md`
 - **Implementation notes (2026-02-02):**
   - Created comprehensive stage-doc-operations.md helper (280+ lines)
-  - Documented all 4 stage types: wf-fact-find, plan, build, reflect
+  - Documented all 4 stage types: lp-fact-find, plan, build, reflect
   - Included templates for each stage type
   - Added evidence type reference table
-  - Documented integration with /wf-fact-find, /wf-plan, /wf-build skills
+  - Documented integration with /lp-fact-find, /lp-plan, /lp-build skills
 - **Notes / references:**
   - Pattern source: `.claude/skills/idea-develop/SKILL.md` lines 256-299
   - Stage types: `apps/business-os/src/lib/types.ts` line 91
 
 ---
 
-### BOS-104: Extend /wf-fact-find with card creation hook
+### BOS-104: Extend /lp-fact-find with card creation hook
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-02)
-- **Affects:** `.claude/skills/wf-fact-find/SKILL.md`
+- **Affects:** `.claude/skills/lp-fact-find/SKILL.md`
 - **Depends on:** BOS-102, BOS-103
 - **Confidence:** 82%
   - Implementation: 85% - Clear pattern from `/idea-develop`; extension is straightforward
   - Approach: 82% - Optional hook approach maintains backward compatibility
-  - Impact: 80% - Only affects `/wf-fact-find`; other skills unaffected
+  - Impact: 80% - Only affects `/lp-fact-find`; other skills unaffected
 - **Acceptance:**
-  - [x] `/wf-fact-find` checks for `Business-Unit` in user input or existing brief
+  - [x] `/lp-fact-find` checks for `Business-Unit` in user input or existing brief
   - [x] If `Business-Unit` present and no `Card-ID` exists:
     - Create card using helper from BOS-102 with `Lane: Fact-finding`
     - Create fact-finding stage doc using helper from BOS-103
@@ -282,18 +282,18 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - [x] Skills continue to work without Business-Unit (backward compatible)
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
-  - Run: Manual test by running `/wf-fact-find` with and without `Business-Unit`
+  - Run: Manual test by running `/lp-fact-find` with and without `Business-Unit`
 - **Planning validation:**
-  - Tests run: Reviewed `/wf-fact-find` SKILL.md completion flow (lines 429-435)
+  - Tests run: Reviewed `/lp-fact-find` SKILL.md completion flow (lines 429-435)
   - Test stubs written: N/A (M-effort, but documentation-only change)
   - Unexpected findings: None
 - **What would make this >=90%:**
-  - Actually run `/wf-fact-find` with Business-Unit and verify card + stage doc creation
+  - Actually run `/lp-fact-find` with Business-Unit and verify card + stage doc creation
 - **Rollout / rollback:**
   - Rollout: Direct commit; additive section in skill file
   - Rollback: Remove the Business OS integration section
 - **Documentation impact:**
-  - Update: `.claude/skills/wf-fact-find/SKILL.md` (add Business OS integration section)
+  - Update: `.claude/skills/lp-fact-find/SKILL.md` (add Business OS integration section)
 - **Implementation notes (2026-02-02):**
   - Expanded Business OS Integration section with full 6-step workflow
   - Added card creation templates (user.md + agent.md)
@@ -337,23 +337,23 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 - **Implementation notes (2026-02-02):**
   - Enhanced idempotency section with full algorithm
   - Added bash scripts for Card-ID check, Feature-Slug fallback, and combined check
-  - Added skill integration notes for /wf-fact-find, /wf-plan, /wf-build
+  - Added skill integration notes for /lp-fact-find, /lp-plan, /lp-build
 - **Notes / references:**
   - Edge case in `/idea-develop`: SKILL.md lines 335-339
 
 ---
 
-### BOS-106: Extend /wf-plan with planned stage doc creation
+### BOS-106: Extend /lp-plan with planned stage doc creation
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-02)
-- **Affects:** `.claude/skills/wf-plan/SKILL.md`
+- **Affects:** `.claude/skills/lp-plan/SKILL.md`
 - **Depends on:** BOS-103
 - **Confidence:** 82%
   - Implementation: 85% - Clear pattern; uses stage doc helper
   - Approach: 82% - Optional hook maintains backward compatibility
-  - Impact: 80% - Only affects `/wf-plan`; other skills unaffected
+  - Impact: 80% - Only affects `/lp-plan`; other skills unaffected
 - **Acceptance:**
-  - [x] `/wf-plan` checks for `Card-ID` in wf-fact-find brief or plan frontmatter
+  - [x] `/lp-plan` checks for `Card-ID` in lp-fact-find brief or plan frontmatter
   - [x] If `Card-ID` present:
     - Create planned stage doc using helper from BOS-103
     - Stage doc links to plan file path
@@ -362,13 +362,13 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - [x] Completion message notes stage doc creation
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
-  - Run: Manual test by running `/wf-plan` with and without `Card-ID`
+  - Run: Manual test by running `/lp-plan` with and without `Card-ID`
 - **Planning validation:**
-  - Tests run: Reviewed `/wf-plan` SKILL.md completion flow (lines 439-445)
+  - Tests run: Reviewed `/lp-plan` SKILL.md completion flow (lines 439-445)
   - Test stubs written: N/A (M-effort, but documentation-only change)
   - Unexpected findings: None
 - **What would make this >=90%:**
-  - Actually run `/wf-plan` with Card-ID and verify stage doc creation
+  - Actually run `/lp-plan` with Card-ID and verify stage doc creation
 - **Implementation notes (2026-02-02):**
   - Expanded Business OS Integration section with full 4-step workflow
   - Added planned stage doc template with task summary table
@@ -379,7 +379,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - Rollout: Direct commit; additive section in skill file
   - Rollback: Remove the Business OS integration section
 - **Documentation impact:**
-  - Update: `.claude/skills/wf-plan/SKILL.md` (add Business OS integration section)
+  - Update: `.claude/skills/lp-plan/SKILL.md` (add Business OS integration section)
   - Update: `docs/business-os/agent-workflows.md` (reference new integration)
 - **Notes / references:**
   - Integration point: After "Persist the plan doc" step in workflow
@@ -387,15 +387,15 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 
 ---
 
-### BOS-107: Add lane transition proposal after /wf-plan
+### BOS-107: Add lane transition proposal after /lp-plan
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-02)
-- **Affects:** `.claude/skills/wf-plan/SKILL.md`
+- **Affects:** `.claude/skills/lp-plan/SKILL.md`
 - **Depends on:** BOS-106
 - **Confidence:** 85%
   - Implementation: 90% - Pattern exists in `/idea-advance` SKILL.md
   - Approach: 85% - Reuses existing proposal mechanism
-  - Impact: 80% - Only affects `/wf-plan` completion message
+  - Impact: 80% - Only affects `/lp-plan` completion message
 - **Acceptance:**
   - [x] After planned stage doc is created, skill suggests lane transition
   - [x] Proposal: `Fact-finding -> Planned`
@@ -404,7 +404,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - [x] Alternative: Inline proposal (set `Proposed-Lane: Planned` in card frontmatter)
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
-  - Run: Manual test by running `/wf-plan` with Card-ID
+  - Run: Manual test by running `/lp-plan` with Card-ID
 - **Planning validation:**
   - Tests run: N/A (S-effort)
   - Test stubs written: N/A
@@ -419,24 +419,24 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - Rollout: Direct commit; additive step in skill workflow
   - Rollback: Remove the lane proposal step
 - **Documentation impact:**
-  - Update: `.claude/skills/wf-plan/SKILL.md`
+  - Update: `.claude/skills/lp-plan/SKILL.md`
 - **Notes / references:**
   - Lane transition criteria: `docs/business-os/agent-workflows.md` lines 69-74
   - Pattern: `/idea-advance` SKILL.md lines 39-45
 
 ---
 
-### BOS-108: Extend /wf-build with task progress tracking
+### BOS-108: Extend /lp-build with task progress tracking
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-02)
-- **Affects:** `.claude/skills/wf-build/SKILL.md`
+- **Affects:** `.claude/skills/lp-build/SKILL.md`
 - **Depends on:** BOS-103
 - **Confidence:** 80%
   - Implementation: 82% - Clear pattern; update card with progress info
   - Approach: 80% - Progress tracking is straightforward but adds complexity to build loop
   - Impact: 78% - Affects build loop; must not interfere with core build functionality
 - **Acceptance:**
-  - [x] `/wf-build` checks for `Card-ID` in plan frontmatter
+  - [x] `/lp-build` checks for `Card-ID` in plan frontmatter
   - [x] If `Card-ID` present:
     - After each task completion, update card's `Last-Progress` field with date
     - Optionally update card body with task completion status
@@ -445,13 +445,13 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - [x] Build loop remains unaffected for core functionality
 - **Test plan:**
   - Add/Update: N/A (skill instruction modification)
-  - Run: Manual test by running `/wf-build` with and without `Card-ID`
+  - Run: Manual test by running `/lp-build` with and without `Card-ID`
 - **Planning validation:**
-  - Tests run: Reviewed `/wf-build` SKILL.md build loop (lines 81-246)
+  - Tests run: Reviewed `/lp-build` SKILL.md build loop (lines 81-246)
   - Test stubs written: N/A (M-effort, but documentation-only change)
   - Unexpected findings: Build loop is complex; integration must be lightweight
 - **What would make this >=90%:**
-  - Actually run `/wf-build` with Card-ID through multiple tasks
+  - Actually run `/lp-build` with Card-ID through multiple tasks
 - **Implementation notes (2026-02-02):**
   - Added full "Business OS Integration (Optional)" section after Completion Messages
   - Documented 3-step workflow: check for build stage doc, update card progress, check for completion
@@ -463,7 +463,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - Rollout: Direct commit; additive section in skill file
   - Rollback: Remove the Business OS integration section
 - **Documentation impact:**
-  - Update: `.claude/skills/wf-build/SKILL.md` (add Business OS integration section)
+  - Update: `.claude/skills/lp-build/SKILL.md` (add Business OS integration section)
   - Update: `docs/business-os/agent-workflows.md` (reference new integration)
 - **Notes / references:**
   - Integration point: After "Update the plan" step (step 7 in build loop)
@@ -474,7 +474,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 ### BOS-109: Add lane transition to Done after all tasks complete
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-02)
-- **Affects:** `.claude/skills/wf-build/SKILL.md`
+- **Affects:** `.claude/skills/lp-build/SKILL.md`
 - **Depends on:** BOS-108
 - **Confidence:** 82%
   - Implementation: 85% - Pattern exists in `/idea-advance`
@@ -502,7 +502,7 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
   - Rollout: Direct commit; additive step in skill completion
   - Rollback: Remove the lane proposal step
 - **Documentation impact:**
-  - Update: `.claude/skills/wf-build/SKILL.md`
+  - Update: `.claude/skills/lp-build/SKILL.md`
 - **Notes / references:**
   - Lane transition criteria: `docs/business-os/agent-workflows.md` lines 72-73
   - Pattern: `/idea-advance` SKILL.md lines 54-60
@@ -602,12 +602,12 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 
 ## Acceptance Criteria (overall)
 
-- [ ] `/wf-fact-find` with `Business-Unit` creates a card and fact-finding stage doc
-- [ ] `/wf-fact-find` without `Business-Unit` works unchanged (backward compatible)
-- [ ] `/wf-plan` with `Card-ID` creates planned stage doc and proposes lane move
-- [ ] `/wf-plan` without `Card-ID` works unchanged (backward compatible)
-- [ ] `/wf-build` with `Card-ID` updates card progress and proposes lane move on completion
-- [ ] `/wf-build` without `Card-ID` works unchanged (backward compatible)
+- [ ] `/lp-fact-find` with `Business-Unit` creates a card and fact-finding stage doc
+- [ ] `/lp-fact-find` without `Business-Unit` works unchanged (backward compatible)
+- [ ] `/lp-plan` with `Card-ID` creates planned stage doc and proposes lane move
+- [ ] `/lp-plan` without `Card-ID` works unchanged (backward compatible)
+- [ ] `/lp-build` with `Card-ID` updates card progress and proposes lane move on completion
+- [ ] `/lp-build` without `Card-ID` works unchanged (backward compatible)
 - [ ] Running skills multiple times does not create duplicate cards (idempotent)
 - [ ] All skill documentation updated with Business OS integration examples
 - [ ] Shared helpers created for card and stage doc operations
@@ -616,20 +616,20 @@ Create `/wf-fact-find-with-card`, `/wf-plan-with-card`, etc.
 
 Since skills are markdown instruction files (not executable code), testing is manual:
 
-1. **Integration Test 1:** Run `/wf-fact-find` with `Business-Unit: PLAT` on new topic
+1. **Integration Test 1:** Run `/lp-fact-find` with `Business-Unit: PLAT` on new topic
    - Verify card created in `docs/business-os/cards/`
    - Verify stage doc created in `docs/business-os/cards/<ID>/`
-   - Verify `Card-ID` added to wf-fact-find brief frontmatter
+   - Verify `Card-ID` added to lp-fact-find brief frontmatter
 
-2. **Integration Test 2:** Run `/wf-fact-find` on existing topic with `Card-ID`
+2. **Integration Test 2:** Run `/lp-fact-find` on existing topic with `Card-ID`
    - Verify no duplicate card created
    - Verify stage doc created/updated
 
-3. **Integration Test 3:** Run `/wf-plan` with existing `Card-ID`
+3. **Integration Test 3:** Run `/lp-plan` with existing `Card-ID`
    - Verify planned stage doc created
    - Verify `Proposed-Lane: Planned` set on card
 
-4. **Integration Test 4:** Run `/wf-build` with existing `Card-ID` through 2+ tasks
+4. **Integration Test 4:** Run `/lp-build` with existing `Card-ID` through 2+ tasks
    - Verify `Last-Progress` updated after each task
    - Verify `Proposed-Lane: Done` set when all tasks complete
 
@@ -668,9 +668,9 @@ Last-updated: YYYY-MM-DD
 Feature-Slug: <kebab-case>
 Overall-confidence: <%>
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
-# NEW: Business OS Integration (optional, inherited from wf-fact-find)
+# NEW: Business OS Integration (optional, inherited from lp-fact-find)
 Business-Unit: <BRIK | PLAT | PIPE | BOS | etc.>  # Optional
-Card-ID: <ID from wf-fact-find or manually provided>  # Optional
+Card-ID: <ID from lp-fact-find or manually provided>  # Optional
 ---
 ```
 

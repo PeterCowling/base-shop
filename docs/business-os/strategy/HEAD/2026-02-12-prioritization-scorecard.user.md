@@ -45,6 +45,6 @@ Scale: 0-5 per criterion.
 
 ## E) Execution Recommendation
 
-Run `wf-fact-find -> wf-plan -> wf-build` first on:
+Run `lp-fact-find -> lp-plan -> lp-build` first on:
 1. Analytics + payment reliability baseline.
 2. Compatibility/fit guidance and support path.

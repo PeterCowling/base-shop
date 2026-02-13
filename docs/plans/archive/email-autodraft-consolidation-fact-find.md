@@ -897,7 +897,7 @@ Guests can include adversarial text in emails. Mitigations:
 
 None - all components are available, consolidation is the work.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 **Note:** Confidence cannot exceed 80% until TASK-00 (baseline measurement) is complete.
 
@@ -1235,4 +1235,4 @@ The key insight: **Quality frameworks (TASK-01, 02) come FIRST** because without
 - Draft quality framework addresses length/content/format/tone questions
 - Task seeds balance efficiency AND effectiveness
 - **Plan created:** `docs/plans/email-autodraft-consolidation-plan.md`
-- **Next step:** `/wf-build email-autodraft-consolidation` (start with TASK-00)
+- **Next step:** `/lp-build email-autodraft-consolidation` (start with TASK-00)

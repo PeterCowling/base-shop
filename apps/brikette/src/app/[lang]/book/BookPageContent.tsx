@@ -37,6 +37,31 @@ function defaultAdultsForSku(sku?: string | null): number {
   return 1; // dorms default to single-occupancy pricing
 }
 
+function calcNights(checkin: string, checkout: string): number {
+  return Math.max(1, Math.round((new Date(checkout).getTime() - new Date(checkin).getTime()) / 86_400_000));
+}
+
+function getOrderedRooms(sku: string | null) {
+  const list = [...roomsData];
+  if (sku) {
+    list.sort((a, b) => (a.sku === sku ? -1 : b.sku === sku ? 1 : 0));
+  }
+  return list;
+}
+
+function fireCheckoutGA4(roomSku: string, plan: "flex" | "nr", confirmUrl: string | undefined, checkin: string, checkout: string) {
+  const win = window as unknown as { gtag?: (...args: unknown[]) => void };
+  if (typeof win.gtag === "function" && confirmUrl) {
+    const nights = calcNights(checkin, checkout);
+    const price = roomsData.find((r) => r.sku === roomSku)?.basePrice?.amount ?? 0;
+    win.gtag("event", "begin_checkout", {
+      currency: "EUR",
+      value: price * nights,
+      items: [{ item_id: roomSku, item_name: roomSku, item_category: plan, price, quantity: nights }],
+    });
+  }
+}
+
 function buildOctorateLink(
   checkin: string,
   checkout: string,
@@ -69,9 +94,7 @@ function BookPageContent({ lang }: Props) {
   const { t } = useTranslation("bookPage", { lng: lang });
   const searchParams = useSearchParams();
   const [unavailableFor, setUnavailableFor] = useState<string | null>(null);
-  const [alternatives, setAlternatives] = useState<
-    null | { items: { sku: string; plan: "flex" | "nr"; confirmUrl: string }[]; resultUrl: string }
-  >(null);
+  const [alternatives, setAlternatives] = useState<null | { items: { sku: string; plan: "flex" | "nr"; confirmUrl: string }[]; resultUrl: string }>(null);
   const [pending, setPending] = useState<string | null>(null);
   usePagePreload({ lang, namespaces: ["bookPage", "translation"] });
 
@@ -83,13 +106,7 @@ function BookPageContent({ lang }: Props) {
 
   const octorateHref = buildOctorateLink(checkin, checkout, adults, children, searchParams ?? new URLSearchParams());
 
-  const orderedRooms = (() => {
-    const list = [...roomsData];
-    if (sku) {
-      list.sort((a, b) => (a.sku === sku ? -1 : b.sku === sku ? 1 : 0));
-    }
-    return list;
-  })();
+  const orderedRooms = getOrderedRooms(sku);
 
   const buildConfirmParams = useCallback(
     (roomSku: string, plan: "flex" | "nr") => {
@@ -115,15 +132,11 @@ function BookPageContent({ lang }: Props) {
     [checkin, checkout, searchParams]
   );
 
-  const fireCheckoutEvent = useCallback((roomSku: string, plan: "flex" | "nr", confirmUrl?: string) => {
-    const win = window as unknown as { gtag?: (...args: unknown[]) => void };
-    if (typeof win.gtag === "function" && confirmUrl) {
-      win.gtag("event", "begin_checkout", {
-        currency: "EUR",
-        items: [{ item_id: roomSku, item_name: roomSku, item_category: plan }],
-      });
-    }
-  }, []);
+  const fireCheckoutEvent = useCallback(
+    (roomSku: string, plan: "flex" | "nr", confirmUrl?: string) =>
+      fireCheckoutGA4(roomSku, plan, confirmUrl, checkin, checkout),
+    [checkin, checkout]
+  );
 
   const fetchAlternatives = useCallback(
     async (roomSku: string, plan: "flex" | "nr") => {

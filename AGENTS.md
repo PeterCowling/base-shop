@@ -107,10 +107,10 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-**Feature workflow**: `/wf-fact-find` → `/wf-plan` → `/wf-build` → `/wf-replan` (if confidence <80%)
+**Feature workflow**: `/lp-fact-find` → `/lp-plan` → `/lp-build` → `/lp-replan` (if confidence <80%)
 
-**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds wf-fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/idea-generate` → `/wf-fact-find` → `/wf-plan` → `/wf-build`
+**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-fact-find docs. Feeds into the feature workflow above.
+- Full pipeline: `/idea-generate` → `/lp-fact-find` → `/lp-plan` → `/lp-build`
 - Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
@@ -122,10 +122,10 @@ For a short entrypoint into the workflow (progressive disclosure), see `docs/age
 
 In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
 
-- **CI ≥90 is a motivation, not a quota.** Do not “raise CI” by deleting planned work or narrowing scope without an explicit user decision.
+- **CI ≥90 is a motivation, not a quota.** Do not "raise CI" by deleting planned work or narrowing scope without an explicit user decision.
 - **How to raise CI credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small spike/INVESTIGATE task to remove uncertainty.
-- **If CI <90:** keep the work, but add a clear **“What would make this ≥90%”** section (concrete actions/evidence that would raise confidence).
-- **Build gate still applies:** `/wf-build` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/wf-replan`.
+- **If CI <90:** keep the work, but add a clear **"What would make this ≥90%"** section (concrete actions/evidence that would raise confidence).
+- **Build gate still applies:** `/lp-build` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/lp-replan`.
 
 ## Progressive Context Loading
 

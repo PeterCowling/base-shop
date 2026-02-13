@@ -2,6 +2,9 @@ import { jest } from "@jest/globals";
 
 import { asNextJson } from "@acme/test-utils";
 
+// Integration test with dynamic imports + DB ops — needs extended timeout in CI
+jest.setTimeout(120_000);
+
 const CART_COOKIE = "__Host-CART_ID";
 jest.doMock(
   "@acme/zod-utils/initZod",

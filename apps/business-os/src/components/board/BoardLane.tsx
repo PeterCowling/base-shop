@@ -80,7 +80,7 @@ export function BoardLane({
   const totalCount = cards.length;
 
   return (
-    <div className="flex flex-col min-w-[320px] max-w-[320px] md:min-w-[320px] md:max-w-[320px] max-md:min-w-full max-md:max-w-full bg-gray-100 rounded-lg">
+    <div className="flex flex-col min-w-[320px] max-w-[320px] md:min-w-[320px] md:max-w-[320px] max-md:min-w-full max-md:max-w-full bg-surface-1 rounded-lg">
       {/* Lane header - sticky on desktop, static on mobile */}
       <div
         className={`md:sticky top-0 z-10 px-4 py-3 border-b border-border ${headerColor}`}

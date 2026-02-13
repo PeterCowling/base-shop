@@ -1,24 +1,66 @@
 {
   "cta": {
-    "popularWithGuests": "Popular With Guests",
-    "poweredBy": "Powered By"
+    "popularWithGuests": "Guest favourites",
+    "poweredBy": "Powered by Brikette"
+  },
+  "guides": {
+    "boatTours": {
+      "description": "Explore the Amalfi Coast from the water with a boat tour from Positano.",
+      "tag": "Popular",
+      "title": "Boat Tours"
+    },
+    "cheapEats": {
+      "description": "Delicious and affordable places to eat in Positano, picked by locals.",
+      "tag": "Budget-friendly",
+      "title": "Cheap Eats"
+    },
+    "eatingOut": {
+      "description": "The best restaurants and trattorias in Positano for every budget.",
+      "tag": "Essential",
+      "title": "Eating Out"
+    },
+    "fornilloBeach": {
+      "description": "A quieter alternative to the main beach, just a short walk away.",
+      "tag": "Local secret",
+      "title": "Fornillo Beach"
+    },
+    "pathOfTheGods": {
+      "description": "A stunning coastal hike with breathtaking views of the Amalfi Coast.",
+      "tag": "Must-do",
+      "title": "Path of the Gods"
+    },
+    "positanoBeaches": {
+      "description": "Your complete guide to every beach in and around Positano.",
+      "tag": "Essential",
+      "title": "Positano Beaches"
+    },
+    "sunriseHike": {
+      "description": "Start your day with a magical sunrise hike above Positano.",
+      "tag": "Early bird",
+      "title": "Sunrise Hike"
+    },
+    "sunsetViewpoints": {
+      "description": "The most spectacular spots to watch the sunset over the Tyrrhenian Sea.",
+      "tag": "Unmissable",
+      "title": "Sunset Viewpoints"
+    }
   },
   "meta": {
-    "subtitle": "Subtitle",
-    "title": "Title"
+    "subtitle": "Curated tips from locals and past guests.",
+    "title": "Positano Guide"
   },
   "sections": {
     "afternoon": {
-      "subtitle": "Subtitle",
-      "title": "Title"
+      "subtitle": "Beaches, hiking, and coastal adventures.",
+      "title": "Afternoon"
     },
     "evening": {
-      "subtitle": "Subtitle",
-      "title": "Title"
+      "subtitle": "Dining and spectacular sunset views.",
+      "title": "Evening"
     },
     "morning": {
-      "subtitle": "Subtitle",
-      "title": "Title"
+      "subtitle": "Early adventures and breakfast spots.",
+      "title": "Morning"
     }
   }
 }

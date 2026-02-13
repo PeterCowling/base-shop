@@ -34,7 +34,7 @@ Analyze a Business OS card's current state and propose a lane transition based o
 
 ### From Inbox → Fact-finding
 - **Evidence required:** None (always allowed)
-- **Action:** Agent creates `wf-fact-find` stage doc via `/idea-develop` (API-backed)
+- **Action:** Agent creates `lp-fact-find` stage doc via `/idea-develop` (API-backed)
 
 ### From Fact-finding → Planned
 - **Evidence required:**
@@ -112,7 +112,7 @@ Analyze a Business OS card's current state and propose a lane transition based o
      ## Lane Move Proposal: Fact-finding → Planned
 
      **Evidence:**
-     - Fact-finding stage doc complete (API stage `wf-fact-find`)
+     - Fact-finding stage doc complete (API stage `lp-fact-find`)
      - Key questions answered in FAQ section
      - Blast radius: Medium (affects 3 files in `apps/brikette/src/components/`)
      - Evidence sources: repo-diff (commit abc123), measurement (page load reduced 200ms)
@@ -184,7 +184,7 @@ Agent:
 I'll analyze BRIK-ENG-0001 and propose a lane move.
 
 [Reads card: currently in Fact-finding lane]
-[Reads stage docs: wf-fact-find stage exists]
+[Reads stage docs: fact-find stage exists]
 [Checks evidence: contains repo-diff evidence, measurement data, clear findings]
 
 Based on the analysis:

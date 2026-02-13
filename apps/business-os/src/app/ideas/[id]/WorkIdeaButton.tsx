@@ -59,7 +59,7 @@ export function WorkIdeaButton({
       type="button"
       onClick={() => setIsEditing(true)}
       disabled={isDisabled}
-      className="w-full px-3 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+      className="w-full px-3 py-2 text-sm font-medium text-secondary bg-surface-1 border border-2 rounded-md hover:bg-surface-1 disabled:opacity-50 disabled:cursor-not-allowed"
     >
       {isDisabled ? "Already Worked" : "Work Idea"}
     </button>

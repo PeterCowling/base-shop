@@ -51,7 +51,7 @@ Remove the gallery block feature from the guides system completely. Gallery imag
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/remove-gallery-feature-wf-fact-find.md`
+- Related brief: `docs/plans/remove-gallery-feature-lp-fact-find.md`
 - Key findings:
   - Only 2 of 29 guides with gallery JSON actually display galleries
   - Inline images already supported via `section.images` array (evidence: positanoMainBeach.json, fornilloBeachGuide.json)
@@ -119,7 +119,7 @@ Remove the gallery block feature from the guides system completely. Gallery imag
 - **Depends on:** -
 - **Confidence:** 90%
   - Implementation: 92% — Inline images already work (evidence: positanoMainBeach.json has section.images, GenericContent.tsx:283 renders them)
-  - Approach: 90% — Straightforward data transformation, credits append to caption per wf-fact-find pattern
+  - Approach: 90% — Straightforward data transformation, credits append to caption per lp-fact-find pattern
   - Impact: 88% — Isolated to positanoBeaches, gallery removal in manifest is low-risk
 - **Acceptance:**
   - All 8 gallery images moved to appropriate section.images arrays
@@ -474,7 +474,7 @@ Remove the gallery block feature from the guides system completely. Gallery imag
   - Run `pnpm build` — must succeed
   - Spot-check 5 random guide files for correct removal
 - **Planning validation:**
-  - Tests run: Listed 29 EN guides with gallery JSON (wf-fact-find)
+  - Tests run: Listed 29 EN guides with gallery JSON (lp-fact-find)
   - Verified none have gallery blocks in manifest (except positanoBeaches, luggageStorage)
   - Test stubs written: N/A (M-effort)
   - Unexpected findings: None
@@ -560,7 +560,7 @@ Remove the gallery block feature from the guides system completely. Gallery imag
 - **Documentation impact:**
   - None (unless validation reveals need for migration notes)
 - **Notes / references:**
-  - Validation checklist based on wf-fact-find acceptance criteria
+  - Validation checklist based on lp-fact-find acceptance criteria
 
 ## Risks & Mitigations
 

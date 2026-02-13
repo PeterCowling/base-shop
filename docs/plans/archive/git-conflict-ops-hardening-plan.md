@@ -7,12 +7,12 @@ Created: 2026-02-09
 Last-updated: 2026-02-10
 Relates-to charter: none
 Feature-Slug: git-conflict-ops-hardening
-Related-Fact-Find: docs/plans/ci-integration-speed-control-wf-fact-find.md
-Related-Briefing: docs/briefs/git-conflict-enforcement-balance-wf-fact-find.md
+Related-Fact-Find: docs/plans/ci-integration-speed-control-fact-find.md
+Related-Briefing: docs/briefs/git-conflict-enforcement-balance-lp-fact-find.md
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: wf-build
-Supporting-Skills: wf-replan, ops-ship
+Primary-Execution-Skill: lp-build
+Supporting-Skills: lp-replan, ops-ship
 Overall-confidence: 78%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by evidence completeness and safety risk
 Business-Unit: PLAT
@@ -90,7 +90,7 @@ For this plan, "no-loss" means all of the following:
 ## Fact-Find and Evidence Base
 
 - Extraction source: `docs/plans/ci-integration-speed-control-plan.md` (Scope Extraction).
-- Enforcement-balance audit: `docs/briefs/git-conflict-enforcement-balance-wf-fact-find.md` (2026-02-10).
+- Enforcement-balance audit: `docs/briefs/git-conflict-enforcement-balance-lp-fact-find.md` (2026-02-10).
 - Existing conflict-process evidence: `docs/git-safety.md` (manual merge conflict process and safety guidance).
 - Policy references:
   - `AGENTS.md` (destructive command prohibitions, writer lock requirements)
@@ -164,7 +164,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** INVESTIGATE
 - **Deliverable:** Catalog of conflict types, operator failure modes, and current resolution pain points
-- **Execution-Skill:** `wf-replan`
+- **Execution-Skill:** `lp-replan`
 - **Affects:** `docs/git-safety.md`, git workflow docs, conflict fixture definitions
 - **Depends on:** -
 - **Effort:** M
@@ -183,7 +183,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** PLAN
 - **Deliverable:** Per-enforcement-point spec defining inputs, outputs, failure modes, and test expectations
-- **Execution-Skill:** `wf-replan`
+- **Execution-Skill:** `lp-replan`
 - **Affects:** `scripts/agent-bin/git`, `scripts/git-hooks/`, `scripts/validate-changes.sh`, `.claude/hooks/session-start.sh`, `scripts/__tests__/git-safety-policy.test.ts`
 - **Depends on:** GIT-COH-01
 - **Effort:** S (reduced from M — integration points are now well-defined)
@@ -207,7 +207,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Guard extension, config change, hook extension, and validation extension — all integrated into existing infrastructure
-- **Execution-Skill:** `wf-build`
+- **Execution-Skill:** `lp-build`
 - **Affects:** `scripts/agent-bin/git`, `.claude/hooks/session-start.sh`, `scripts/git-hooks/`, `scripts/validate-changes.sh`
 - **Depends on:** GIT-COH-02
 - **Effort:** M
@@ -274,7 +274,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 
 - **Type:** INVESTIGATE + IMPLEMENT (mixed)
 - **Deliverable:** Extended test coverage, slimmed skill, compliance report, and go/no-go decision
-- **Execution-Skill:** `wf-replan` (compliance) + `wf-build` (tests + skill edit)
+- **Execution-Skill:** `lp-replan` (compliance) + `lp-build` (tests + skill edit)
 - **Affects:** `scripts/__tests__/git-safety-policy.test.ts`, `.claude/skills/ops-ship/SKILL.md`, `docs/git-safety.md`
 - **Depends on:** GIT-COH-03
 - **Effort:** S
@@ -348,7 +348,7 @@ Note: All four sub-parts of GIT-COH-03 can be implemented in parallel within Wav
 - 2026-02-09: Extracted from `ci-integration-speed-control-plan` to avoid scope creep and confidence dilution.
 - 2026-02-09: Expanded from stub into draft plan with explicit execution profile, constraints, and blocked implementation path.
 - 2026-02-09: Completed GIT-COH-01 with taxonomy artifact at `docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md`.
-- 2026-02-10: **Major reframe (v2).** Enforcement-balance audit (`docs/briefs/git-conflict-enforcement-balance-wf-fact-find.md`) identified that conflict resolution procedure is 100% soft control while destructive command prevention is 4x redundant. Reframed from standalone merge-assistant script (opt-in, token-heavy) to mechanistic enforcement extensions (always-on, zero token cost). GIT-COH-02 through GIT-COH-04 rewritten. Confidence raised from 69% to 78% due to clearer implementation path and well-defined integration points.
+- 2026-02-10: **Major reframe (v2).** Enforcement-balance audit (`docs/briefs/git-conflict-enforcement-balance-lp-fact-find.md`) identified that conflict resolution procedure is 100% soft control while destructive command prevention is 4x redundant. Reframed from standalone merge-assistant script (opt-in, token-heavy) to mechanistic enforcement extensions (always-on, zero token cost). GIT-COH-02 through GIT-COH-04 rewritten. Confidence raised from 69% to 78% due to clearer implementation path and well-defined integration points.
 
 ## Overall-confidence calculation
 

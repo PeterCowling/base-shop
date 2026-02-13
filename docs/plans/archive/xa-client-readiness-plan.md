@@ -159,7 +159,7 @@ Variants can be mentioned but won't be demoed. They share 95%+ code with the mai
 ### Phase 2: Cloudflare Worker Deploy + CI (blocking for client review)
 
 > **Approach decision (2026-02-08):** Use `@opennextjs/cloudflare` Worker deploy, matching Brikette production.
-> See `docs/plans/xa-deploy-readiness-wf-fact-find.md` for evidence. Old XA-READY-06/07/08 superseded by 06a–06d/07/08.
+> See `docs/plans/xa-deploy-readiness-lp-fact-find.md` for evidence. Old XA-READY-06/07/08 superseded by 06a–06d/07/08.
 
 7. **XA-READY-06a** ✅ - Install OpenNext adapter and remove edge runtime
    - **Status:** Complete (2026-02-08)
@@ -321,7 +321,7 @@ Next infrastructure task: unblock/complete XA-READY-08 (staging deploy + verify)
 - 2026-01-21: Plan created with generic deployment approach
 - 2026-02-03: `.github/workflows/xa.yml` added (uses `next-on-pages`)
 - 2026-02-08: Fact-check corrected outdated claims (CI workflow exists, `XA_ALLOWED_HOSTS` not set)
-- 2026-02-08: Fact-find completed (`xa-deploy-readiness-wf-fact-find.md`) — compared Brikette production deploy with XA gaps
+- 2026-02-08: Fact-find completed (`xa-deploy-readiness-lp-fact-find.md`) — compared Brikette production deploy with XA gaps
 - 2026-02-08: **Approach decision:** Use `@opennextjs/cloudflare` Worker deploy (matching Brikette production). Phase 2 tasks rewritten with concrete, evidence-based acceptance criteria.
 - 2026-02-08: **XA-READY-06a complete.** Installed `@opennextjs/cloudflare`, removed edge runtime from `robots.ts` and `search/sync/route.ts`. Typecheck + lint pass. Commit: `0f785adadc`.
 - 2026-02-08: **XA-READY-06b, 06c, 07 complete.** Rewrote `wrangler.toml` to Worker format, updated CI workflow with OpenNext build chain + artifact handoff + `wrangler deploy`.

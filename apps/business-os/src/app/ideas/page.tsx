@@ -70,26 +70,26 @@ export default async function IdeasPage({ searchParams }: IdeasPageProps) {
   const normalizedState = { ...state, primaryPage, secondaryPage };
 
   return (
-    <main className="min-h-dvh bg-gray-50 p-4 md:p-6">
+    <main className="min-h-dvh bg-bg p-4 md:p-6">
       <div className="mx-auto w-full space-y-4">
-        <header className="rounded-lg border border-gray-200 bg-white p-5">
+        <header className="rounded-lg border border-1 bg-panel p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Ideas</h1>
-              <p className="mt-1 text-sm text-gray-600">
+              <h1 className="text-2xl font-bold text-fg">Ideas</h1>
+              <p className="mt-1 text-sm text-muted">
                 Priority-first backlog triage. Sorted by priority, created date, then ID.
               </p>
             </div>
             <div className="flex items-center gap-2">
               <Link
                 href="/ideas/new"
-                className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-fg hover:bg-accent/90"
               >
                 + New Idea
               </Link>
               <Link
                 href="/boards/global"
-                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="rounded-md border border-2 px-4 py-2 text-sm font-medium text-secondary hover:bg-surface-1"
               >
                 Open Board
               </Link>
@@ -100,9 +100,9 @@ export default async function IdeasPage({ searchParams }: IdeasPageProps) {
         <IdeasFilters businesses={BUSINESSES} state={normalizedState} />
 
         <section className="space-y-3">
-          <header className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
-            <h2 className="text-lg font-semibold text-blue-900">Primary Ideas (P1-P3)</h2>
-            <p className="text-sm text-blue-700">
+          <header className="rounded-lg border border-info-soft bg-info-soft px-4 py-3">
+            <h2 className="text-lg font-semibold text-info-fg">Primary Ideas (P1-P3)</h2>
+            <p className="text-sm text-info-fg">
               Top-priority ideas for immediate fact-find and execution planning.
             </p>
           </header>
@@ -119,9 +119,9 @@ export default async function IdeasPage({ searchParams }: IdeasPageProps) {
         </section>
 
         <section className="space-y-3">
-          <header className="rounded-lg border border-gray-200 bg-gray-100 px-4 py-3">
-            <h2 className="text-lg font-semibold text-gray-900">Secondary Ideas (P4-P5)</h2>
-            <p className="text-sm text-gray-700">
+          <header className="rounded-lg border border-1 bg-surface-1 px-4 py-3">
+            <h2 className="text-lg font-semibold text-fg">Secondary Ideas (P4-P5)</h2>
+            <p className="text-sm text-secondary">
               Lower-priority backlog ideas tracked separately from immediate execution candidates.
             </p>
           </header>

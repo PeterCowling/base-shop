@@ -9,7 +9,7 @@ Last-updated: 2026-02-11
 Feature-Slug: agent-setup-improvement
 Deliverable-Type: code-change
 Execution-Track: mixed
-Primary-Execution-Skill: /wf-build
+Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
 Related-Plan: docs/plans/agent-setup-improvement-plan.md
 Supersedes: docs/plans/agent-enhancement-plan.md
@@ -81,10 +81,10 @@ Audit the current multi-agent configuration in Base-Shop and identify concrete i
   - Other agents: no standard discovery mechanism
 - **Largest skills** (top 5 by lines):
   - `idea-generate` — 1,147 lines
-  - `wf-plan` — 971 lines
-  - `wf-fact-find` — 909 lines
-  - `wf-build` — 699 lines
-  - `wf-replan` — 585 lines
+  - `lp-plan` — 971 lines
+  - `lp-fact-find` — 909 lines
+  - `lp-build` — 699 lines
+  - `lp-replan` — 585 lines
 
 ### Safety Enforcement Architecture
 
@@ -164,7 +164,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - CI workflow (`.github/workflows/ci.yml`)
 - Downstream dependents:
   - All agent sessions (every conversation loads these files)
-  - Feature workflow (wf-fact-find → plan → build → wf-replan)
+  - Feature workflow (lp-fact-find → plan → build → lp-replan)
   - Business OS integration (card/stage-doc operations)
   - Guide translation workflow
 - Likely blast radius:
@@ -233,7 +233,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - Why it matters: Codex loads this every session; 11KB of always-loaded context vs. Claude's 2.7KB
   - Default assumption: Reduce by extracting duplicated content to shared locations. Risk: Codex may be less reliable if safety rules aren't inline.
 
-## Confidence Inputs (for /wf-plan)
+## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 85%
   - Strong: all config files, scripts, and conventions are well-understood from this audit
@@ -290,7 +290,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 ## Execution Routing Packet
 
-- Primary execution skill: `/wf-build`
+- Primary execution skill: `/lp-build`
 - Supporting skills: none (all tasks are config/documentation changes)
 - Deliverable acceptance package:
   - Safety rules are derived from single source (no manual sync)
@@ -307,4 +307,4 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
 
 - Status: **Ready-for-planning** (with 2 non-blocking open questions)
 - Blocking items: none (open questions have safe defaults)
-- Recommended next step: Proceed to `/wf-plan` — the open questions can be resolved during planning with user input
+- Recommended next step: Proceed to `/lp-plan` — the open questions can be resolved during planning with user input

@@ -29,6 +29,29 @@
     "Air conditioning",
     "Washer and dryer"
   ],
+  "fitCheck": {
+    "heading": "Is this apartment right for you?",
+    "arrival": {
+      "label": "Arrival",
+      "text": "No street stairs from the road to the apartment entrance."
+    },
+    "inside": {
+      "label": "Inside",
+      "text": "Split-level interior with internal stairs between living area and bedroom."
+    },
+    "sleeping": {
+      "label": "Sleeping",
+      "text": "Sofa bed downstairs; double bed upstairs."
+    },
+    "sound": {
+      "label": "Sound",
+      "text": "Some road and terrace ambience; terrace quiet hours from midnight."
+    },
+    "bestFit": {
+      "label": "Best fit",
+      "text": "Ideal for couples. If anyone in your group prefers to avoid stairs, the downstairs sofa bed is a comfortable alternative. Not recommended for very light sleepers."
+    }
+  },
   "highlights": {
     "sectionTitle": "Apartment Highlights",
     "slides": [
@@ -48,5 +71,72 @@
         "alt": "Streets of Positano"
       }
     ]
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Street-level arrival",
+      "subtitle": "No street stairs from road to entrance",
+      "cta": "Learn more"
+    },
+    "privateStayCard": {
+      "title": "Private serviced stay",
+      "subtitle": "With optional terrace, bar & breakfast next door",
+      "cta": "Learn more"
+    }
+  },
+  "checkAvailability": "Check availability",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Step-Free Arrival in Positano — No Street Stairs",
+      "description": "Our apartment offers step-free access from the road to the entrance — rare in steep Positano. No stairs, no struggle with luggage."
+    },
+    "heroTitle": "Step-free arrival",
+    "heroSubtitle": "No street stairs from the road to the apartment entrance",
+    "heroBody": "In a town famous for hundreds of steps, our apartment is different. Walk straight from the road to your front door — no stairs, no struggle with luggage or strollers.",
+    "videoPlaceholder": "Street-to-door video coming soon",
+    "clarification": "The apartment entrance is step-free from the street. Inside, the apartment is split-level with internal stairs between the living area and bedroom.",
+    "whatsappCta": "WhatsApp for quick answers",
+    "checkAvailability": "Check availability"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Private Serviced Apartment in Positano",
+      "description": "A private 100sqm apartment with full kitchen, professionally managed with optional access to terrace, breakfast, and bar next door."
+    },
+    "heroTitle": "Your private apartment in Positano",
+    "heroSubtitle": "Professionally managed with hospitality-grade support next door",
+    "sections": {
+      "privacy": {
+        "title": "Complete independence",
+        "body": "A 100sqm apartment that is entirely yours. Full kitchen, washer and dryer, two bathrooms, and space to spread out. No shared spaces, no check-in desk — just your own front door."
+      },
+      "support": {
+        "title": "Professional support when you need it",
+        "body": "Managed by an experienced hospitality team based right next door. Need restaurant recommendations, help with directions, or assistance with anything? Professional support is a short walk away."
+      },
+      "amenities": {
+        "title": "Optional extras next door",
+        "body": "If you want them, a terrace with sea views, breakfast service, and a bar are available next door. Enjoy them on your schedule, or skip them entirely — the choice is yours."
+      }
+    },
+    "whatsappCta": "WhatsApp for quick answers",
+    "checkAvailability": "Check availability"
+  },
+  "book": {
+    "meta": {
+      "title": "Book Our Positano Apartment",
+      "description": "Check availability and book our private apartment in Positano. Step-free arrival, full kitchen, sleeps 4."
+    },
+    "heroTitle": "Book your stay",
+    "heroSubtitle": "Private apartment in Positano",
+    "dateLabel": "Select dates",
+    "checkinLabel": "Check-in",
+    "checkoutLabel": "Check-out",
+    "rateNonRefundable": "Non-refundable",
+    "rateFlexible": "Flexible (free cancellation)",
+    "checkAvailability": "Check availability",
+    "orBookingCom": "Or book on Booking.com",
+    "whatsappCta": "WhatsApp for quick answers",
+    "backLink": "\u2190 Back to apartment details"
   }
 }

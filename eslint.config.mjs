@@ -339,6 +339,15 @@ export default [
     },
   },
 
+  /* ▸ Handbag-configurator: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
   /* ▸ Cochlearfit: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/cochlearfit/**/*.{ts,tsx,js,jsx,mdx}"],

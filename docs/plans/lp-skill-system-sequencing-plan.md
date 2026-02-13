@@ -78,7 +78,7 @@ Primary references:
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 85% | M | Done | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
 | LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 84% | M | Done | LPSP-06A, LPSP-04A | LPSP-08 |
 | LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 85% | M | Done | LPSP-03B | LPSP-08 |
-| LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 82% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
+| LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 86% | M | Done | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
 | LPSP-09 | CHECKPOINT | Validate end-to-end supervised dry run on one business path | 86% | M | Pending | LPSP-08, LPSP-04B | - |
 
 ## Active Tasks
@@ -593,6 +593,33 @@ Primary references:
   - Metrics storage: per-run `metrics.jsonl` in run directory, aggregated by CLI script on demand.
   - Lint scope: startup-loop system only (`lp-*` skills + core docs). Not all 47 skills.
   - CI timing: merge-gate step (too slow for pre-commit; comprehensive validation needed).
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 624234a29c
+- **Execution cycle:**
+  - Validation cases executed: VC-08-01, VC-08-02, VC-08-03, VC-08-04
+  - Cycles: 1 red-green cycle (concurrency: 5/5, metrics: 5/5 on second run after case-sensitivity fix)
+  - Initial validation: FAIL expected (module not found)
+  - Final validation: PASS (10/10 tests, typecheck clean, lint detects real drift)
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 86%
+  - Delta reason: all 3 components (lint, metrics, concurrency) are clean, well-tested, and the lint correctly detects pre-existing drift (SQ-02 missing lp-bos-sync SKILL.md, SQ-12 experiment stage mismatch). CI integration deferred as graduated severity — lint is executable standalone now.
+- **Validation:**
+  - VC-08-01: lint detects SQ-02 + SQ-12 violations with SQ-ID references — PASS
+  - VC-08-02: metrics test simulates median=5 > threshold=2 → "Stabilization warning" emitted — PASS
+  - VC-08-03: concurrency test blocks second run with "one active run per business" — PASS
+  - VC-08-04: 15 checks mapped to all 12 SQ classes — PASS
+  - Ran: `npx jest --config scripts/jest.config.cjs --testPathPattern=startup-loop --no-coverage` — 41/41 PASS
+  - Ran: `npx tsc --project scripts/tsconfig.json --noEmit` — clean
+  - Ran: `scripts/check-startup-loop-contracts.sh` — detects 2 pre-existing violations (expected)
+- **Documentation updated:** None required
+- **Implementation notes:**
+  - Created `scripts/check-startup-loop-contracts.sh` (bash, 15 checks, all 12 SQ drift classes)
+  - Created `scripts/src/startup-loop/metrics-aggregate.ts` with rolling-window median + stabilization thresholds
+  - Created `scripts/src/startup-loop/run-concurrency.ts` with one-active-run-per-business gate
+  - CI integration (merge-gate step) deferred — lint works standalone; graduated severity policy documented
 
 ### LPSP-09: Supervised dry-run checkpoint
 

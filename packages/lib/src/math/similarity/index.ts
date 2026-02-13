@@ -11,4 +11,8 @@ export {
   type SimilarityValidationOptions,
   validateNumericPairInputs,
 } from "./common";
+export {
+  distanceCorrelation,
+  type DistanceCorrelationOptions,
+} from "./distance-correlation";
 export { hoeffding, type HoeffdingOptions } from "./hoeffding";

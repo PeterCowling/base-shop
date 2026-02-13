@@ -92,7 +92,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | ASM-01 | IMPLEMENT | Create similarity module scaffold + shared validation contract | 90% | S | Complete (2026-02-13) | - | ASM-02, ASM-03, ASM-05, ASM-06, ASM-07 |
-| ASM-02 | IMPLEMENT | Implement Hoeffding's D + deterministic fixtures/tests | 83% | M | Pending | ASM-01 | ASM-04 |
+| ASM-02 | IMPLEMENT | Implement Hoeffding's D + deterministic fixtures/tests | 83% | M | Complete (2026-02-13) | ASM-01 | ASM-04 |
 | ASM-03 | IMPLEMENT | Implement Distance Correlation + memory-safe two-pass tests | 84% | M | Pending | ASM-01 | ASM-04 |
 | ASM-04 | CHECKPOINT | Horizon checkpoint after first core metrics | 95% | S | Pending | ASM-02, ASM-03 | ASM-05, ASM-06, ASM-07 |
 | ASM-05 | INVESTIGATE | Resolve NMI contract/binning calibration before implementation | 76% ⚠️ | M | Pending | ASM-04 | ASM-08 |
@@ -105,7 +105,6 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 ## Active tasks
 
-- ASM-02 - Unblocked, ready to build.
 - ASM-03 - Unblocked, ready to build.
 - ASM-05 - Required investigation gate before ASM-08 can start.
 
@@ -161,6 +160,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete
+- **Commits:** `ee1ff2a6ba`
 - **Execution cycle:**
   - Validation cases executed: TC-01, TC-02, TC-03
   - Cycles: 1 red-green cycle
@@ -217,6 +217,26 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Rollback: remove metric export and test file only.
 - **Documentation impact:** add metric usage caveats in similarity README (added in ASM-09).
 - **Notes / references:** `docs/plans/advanced-math-algorithms-fact-find.md` Opportunity K.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** `67259859f2`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Cycles: 2 red-green cycles
+  - Initial validation: FAIL expected (`Cannot find module '../hoeffding'`)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 83%
+  - Post-validation: 83%
+  - Delta reason: validation confirmed implementation approach; ring-fixture threshold refined during red-green.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/hoeffding.test.ts` - PASS (6 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/similarity/__tests__/common.test.ts` - PASS (8 tests)
+  - Ran: `pnpm --filter @acme/lib test -- packages/lib/src/math/statistics/__tests__/correlation.test.ts` - PASS (23 tests)
+  - Ran: commit-hook lint path with `SKIP_TYPECHECK=1` (user-directed bypass of unrelated package type failures) - PASS for staged scope
+- **Documentation updated:** None required
+- **Implementation notes:** Added Hoeffding's D (scaled `D* = 30*D`), deterministic tie handling, strict `<` Q-count semantics, and metric export wiring.
 
 ### ASM-03: Implement Distance Correlation + memory-safe two-pass tests
 - **Type:** IMPLEMENT

@@ -23,7 +23,7 @@ export function SignedViewLink({ objectUrl, label }: { objectUrl: string; label:
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex min-h-11 min-w-11 items-center rounded px-2 text-sm text-blue-600 underline"
+      className="inline-flex min-h-11 min-w-11 items-center rounded px-2 text-sm text-primary underline"
     >
       {label}
     </a>

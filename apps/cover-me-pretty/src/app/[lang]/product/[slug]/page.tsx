@@ -169,7 +169,7 @@ export default async function ProductDetailPage({
       />
       {latestPost && <BlogListing posts={[latestPost]} />}
       <PdpClient product={product} />
-      <div className="p-6 space-y-1 text-sm text-gray-600">
+      <div className="p-6 space-y-1 text-sm text-muted-foreground">
         {cfg.requireTags && (
           <p>{t("returns.requireTags")}</p>
         )}

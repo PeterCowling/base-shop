@@ -224,7 +224,7 @@ export default function TryOnPanel({ product }: Props) {
           type="button"
           onClick={startUpload}
           disabled={!pendingFile || isVideo}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-black px-3 py-1 text-white disabled:opacity-50"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-foreground px-3 py-1 text-primary-fg disabled:opacity-50"
         >{t("tryon.upload")}</button>
         {ctrl.state.sourceImageUrl && (
           <SignedViewLink objectUrl={ctrl.state.sourceImageUrl} label={t("tryon.viewUploaded") as string} />
@@ -312,7 +312,7 @@ export default function TryOnPanel({ product }: Props) {
           type="button"
           onClick={startEnhance}
           disabled={!ctrl.state.sourceImageUrl || !ctrl.canEnhance}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-primary px-3 py-1 text-white disabled:opacity-50"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-primary px-3 py-1 text-primary-fg disabled:opacity-50"
         >{t("tryon.enhance")}</button>
         {ctrl.state.phase === 'enhancing' && typeof ctrl.progress === 'number' && (
           <div className="h-2 w-48 rounded bg-muted">
@@ -346,7 +346,7 @@ export default function TryOnPanel({ product }: Props) {
         <button
           type="button"
           onClick={addToCartWithTag}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-emerald-600 px-3 py-1 text-white"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-success px-3 py-1 text-success-fg"
         >
           {t("tryon.addToCart")}
         </button>

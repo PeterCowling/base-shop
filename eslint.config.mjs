@@ -339,6 +339,15 @@ export default [
     },
   },
 
+  /* ▸ Cover-me-pretty: disallow raw Tailwind palette colors (migrated to semantic tokens) */
+  {
+    files: ["apps/cover-me-pretty/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
   /* ▸ Handbag-configurator: disallow raw Tailwind palette colors (migrated to semantic tokens) */
   {
     files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx,mdx}"],

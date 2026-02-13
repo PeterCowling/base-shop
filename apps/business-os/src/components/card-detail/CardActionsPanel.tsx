@@ -1,6 +1,7 @@
 "use client";
 
 /* eslint-disable ds/no-hardcoded-copy -- BOS-12: Phase 0 scaffold UI [ttl=2026-03-31] */
+/* eslint-disable ds/min-tap-size -- internal desktop tool; card action buttons don't need 44px mobile tap targets [DS-03] */
 
 import { useState } from "react";
 import Link from "next/link";

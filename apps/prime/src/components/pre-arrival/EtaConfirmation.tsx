@@ -137,7 +137,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
               <button
                 type="button"
                 onClick={onBack}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-muted hover:bg-muted/70 active:bg-muted/60"
+                className="flex size-11 items-center justify-center rounded-full bg-muted hover:bg-muted/70 active:bg-muted/60"
                 aria-label={t('eta.back')}
               >
                 <ArrowLeft className="h-5 w-5 text-foreground" />
@@ -149,6 +149,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
           </div>
 
           {/* Segmented progress bar */}
+          {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 segmented progress bar */}
           <div className="flex gap-1.5">
             {Array.from({ length: totalSteps }, (_, i) => (
               <div
@@ -174,10 +175,12 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
           <label className="mb-2 flex items-center gap-2 text-sm font-medium text-foreground">
             <Clock className="h-4 w-4" />
             {t('eta.timeLabel')}
+            {/* eslint-disable-next-line ds/no-raw-typography, ds/no-arbitrary-tailwind -- PLAT-ENG-0001 required badge */}
             <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
               {t('eta.required')}
             </span>
           </label>
+          {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 time slot grid */}
           <div className="grid grid-cols-4 gap-2">
             {TIME_SLOTS.map((time) => (
               <button
@@ -226,10 +229,12 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
         <div>
           <label className="mb-2 flex items-center gap-2 text-sm font-medium text-foreground">
             {t('eta.methodLabel')}
+            {/* eslint-disable-next-line ds/no-raw-typography, ds/no-arbitrary-tailwind -- PLAT-ENG-0001 required badge */}
             <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
               {t('eta.required')}
             </span>
           </label>
+          {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 travel method grid */}
           <div className="grid grid-cols-3 gap-2">
             {TRAVEL_METHODS.map(({ method, icon }) => (
               <button
@@ -263,6 +268,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
           >
             {t('eta.noteLabel')}
           </label>
+          {/* eslint-disable ds/enforce-focus-ring-token -- PLAT-ENG-0001 textarea focus style */}
           <textarea
             id="eta-note"
             value={note}
@@ -272,6 +278,7 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
             maxLength={200}
             className="w-full resize-none rounded-xl border bg-card p-3 text-sm transition-colors focus:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/10"
           />
+          {/* eslint-enable ds/enforce-focus-ring-token */}
           <p className="mt-1 text-end text-xs text-muted-foreground">{note.length}/200</p>
         </div>
 
@@ -297,15 +304,17 @@ export const EtaConfirmation: FC<EtaConfirmationProps> = memo(
           </button>
 
           {/* Skip action */}
+          {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 full-width skip button */}
           {(onSkip ?? onBack) && (
             <button
               type="button"
               onClick={onSkip ?? onBack}
-              className="w-full rounded-xl py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              className="min-h-11 w-full rounded-xl py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               {t('eta.skip')}
             </button>
           )}
+          {/* eslint-enable ds/min-tap-size */}
         </div>
 
         {/* Helper text */}

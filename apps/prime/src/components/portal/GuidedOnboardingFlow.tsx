@@ -362,7 +362,8 @@ export default function GuidedOnboardingFlow({
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-muted px-4 py-6">
+      <main className="min-h-svh bg-muted px-4 py-6">
+        {/* eslint-disable-next-line ds/container-widths-only-at -- PLAT-ENG-0001 top-level card container */}
         <div className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
           <Skeleton className="h-6 w-3/4 rounded" />
           <Skeleton className="h-4 w-full rounded" />
@@ -382,7 +383,8 @@ export default function GuidedOnboardingFlow({
   }
 
   return (
-    <main className="min-h-screen bg-muted px-4 py-6">
+    <main className="min-h-svh bg-muted px-4 py-6">
+      {/* eslint-disable-next-line ds/container-widths-only-at -- PLAT-ENG-0001 top-level card container */}
       <div ref={cardRef} className="mx-auto max-w-md space-y-5 rounded-2xl bg-background p-5 shadow-md">
         <StepFlowShell
           currentStep={step}
@@ -404,6 +406,7 @@ export default function GuidedOnboardingFlow({
               <>
                 <fieldset className="space-y-2">
                   <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {([
                       { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
@@ -415,7 +418,7 @@ export default function GuidedOnboardingFlow({
                         role="radio"
                         aria-checked={arrivalConfidence === value}
                         onClick={() => setArrivalConfidence(value)}
-                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalConfidence === value
                             ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                             : 'border-border text-foreground hover:border-border-strong'
@@ -429,6 +432,7 @@ export default function GuidedOnboardingFlow({
                 </fieldset>
                 <fieldset className="space-y-2">
                   <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
@@ -437,7 +441,7 @@ export default function GuidedOnboardingFlow({
                         role="radio"
                         aria-checked={arrivalMethodPreference === method}
                         onClick={() => setArrivalMethodPreference(method)}
-                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalMethodPreference === method
                             ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                             : 'border-border text-foreground hover:border-border-strong'
@@ -454,6 +458,7 @@ export default function GuidedOnboardingFlow({
               <>
                 <fieldset className="space-y-2">
                   <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
                       <button
@@ -462,7 +467,7 @@ export default function GuidedOnboardingFlow({
                         role="radio"
                         aria-checked={arrivalMethodPreference === method}
                         onClick={() => setArrivalMethodPreference(method)}
-                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalMethodPreference === method
                             ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                             : 'border-border text-foreground hover:border-border-strong'
@@ -476,6 +481,7 @@ export default function GuidedOnboardingFlow({
                 </fieldset>
                 <fieldset className="space-y-2">
                   <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
+                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
                   <div className="grid grid-cols-2 gap-2">
                     {([
                       { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
@@ -487,7 +493,7 @@ export default function GuidedOnboardingFlow({
                         role="radio"
                         aria-checked={arrivalConfidence === value}
                         onClick={() => setArrivalConfidence(value)}
-                        className={`flex items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
                           arrivalConfidence === value
                             ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                             : 'border-border text-foreground hover:border-border-strong'
@@ -540,6 +546,7 @@ export default function GuidedOnboardingFlow({
               </fieldset>
             )}
 
+            {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
             <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
@@ -554,7 +561,7 @@ export default function GuidedOnboardingFlow({
                   });
                   setStep(2);
                 }}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="min-h-11 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {t('guidedFlow.skipButton')}
               </button>
@@ -562,12 +569,13 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleStepOneContinue()}
                 disabled={isSaving}
-                className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
+                className="ms-auto flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
                 {t('guidedFlow.saveAndContinue')}
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
+            {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
 
@@ -604,6 +612,7 @@ export default function GuidedOnboardingFlow({
               </select>
             </label>
 
+            {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
             <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
@@ -618,7 +627,7 @@ export default function GuidedOnboardingFlow({
                   });
                   setStep(3);
                 }}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="min-h-11 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {t('guidedFlow.skipButton')}
               </button>
@@ -626,12 +635,13 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleStepTwoContinue()}
                 disabled={isSaving}
-                className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
+                className="ms-auto flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
                 {t('guidedFlow.saveAndContinue')}
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
+            {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
 
@@ -736,6 +746,7 @@ export default function GuidedOnboardingFlow({
               </p>
             )}
 
+            {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="button"
@@ -751,7 +762,7 @@ export default function GuidedOnboardingFlow({
                   flowCompletedRef.current = true;
                   onComplete();
                 }}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="min-h-11 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 {t('guidedFlow.skipButton')}
               </button>
@@ -759,16 +770,18 @@ export default function GuidedOnboardingFlow({
                 type="button"
                 onClick={() => void handleFinish()}
                 disabled={isSaving}
-                className="ml-auto flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
+                className="ms-auto flex min-h-11 items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:shadow-md disabled:opacity-60"
               >
                 {t('guidedFlow.finish')}
                 <Check className="h-4 w-4" />
               </button>
             </div>
+            {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
         </StepFlowShell>
 
+        {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 link text+padding exceeds 44px at runtime */}
         <a
           href={`mailto:hostelbrikette@gmail.com?subject=Onboarding help (step-${step})`}
           onClick={() => {
@@ -779,10 +792,11 @@ export default function GuidedOnboardingFlow({
               context: { surface: 'onboarding', stepId: `step-${step}` },
             });
           }}
-          className="block pt-2 text-center text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className="block min-h-11 pt-2 text-center text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           {t('guidedFlow.helpLink')}
         </a>
+        {/* eslint-enable ds/min-tap-size */}
 
         <Toast
           open={errorToast !== null}

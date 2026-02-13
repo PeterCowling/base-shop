@@ -122,7 +122,8 @@ describe("TokenBucket", () => {
 
       // Consume all tokens
       bucket.consume(10);
-      expect(bucket.peek().tokens).toBe(0);
+      // Use toBeCloseTo: peek() calls refill() which may add fractional tokens
+      expect(bucket.peek().tokens).toBeCloseTo(0, 1);
 
       // Wait 50ms - should refill 5 tokens
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -189,7 +190,8 @@ describe("TokenBucket", () => {
       const bucket = new TokenBucket({ capacity: 10, refillRate: 5 });
 
       bucket.consume(10);
-      expect(bucket.peek().tokens).toBe(0);
+      // Use toBeCloseTo: peek() calls refill() which may add fractional tokens
+      expect(bucket.peek().tokens).toBeCloseTo(0, 1);
 
       bucket.reset();
       expect(bucket.peek().tokens).toBe(10);

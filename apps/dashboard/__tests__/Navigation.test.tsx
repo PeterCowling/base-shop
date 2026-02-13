@@ -15,7 +15,7 @@ const originalFetch = global.fetch;
 let consoleErrorSpy: jest.SpyInstance;
 
 // Dashboard pages use dynamic require() which is slow in CI
-jest.setTimeout(15_000);
+jest.setTimeout(30_000);
 
 describe("Dashboard navigation surfaces", () => {
   beforeEach(() => {

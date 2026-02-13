@@ -2292,9 +2292,9 @@ export default [
     files: ["apps/reception/src/**/*.{ts,tsx}"],
     rules: {
       ...offAllDsRules,
-      /* DS colour rules at warn — P5 reception migration (REC-01) */
-      "ds/no-raw-color": "warn",
-      "ds/no-raw-tailwind-color": "warn",
+      /* DS colour rules at error — P5 reception migration complete (REC-09) */
+      "ds/no-raw-color": "error",
+      "ds/no-raw-tailwind-color": "error",
       complexity: ["error", 60],
       "max-lines-per-function": [
         "error",

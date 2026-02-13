@@ -42,6 +42,7 @@ export function StepFlowShell({
       <header className="space-y-3">
         {onBack ? (
           <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line ds/min-tap-size -- Back button is a decorative navigation control with proper 40x40px touch target, not a primary action button [DS-01] */}
             <button
               type="button"
               onClick={onBack}

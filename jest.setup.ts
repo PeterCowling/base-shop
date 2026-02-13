@@ -327,6 +327,10 @@ const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,
   // Firebase RTDB emits permission_denied warnings during security rules tests
   /@firebase\/database: FIREBASE WARNING:/,
+  // RedisCartStore emits operational warnings on transient Redis failures (tested in fallback tests)
+  "Redis operation failed",
+  // Unrecognized email provider errors (tested in email provider fallback tests)
+  /^Unrecognized provider error/,
 ];
 
 const shouldIgnoreConsoleMessage = (

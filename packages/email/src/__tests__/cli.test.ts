@@ -80,7 +80,7 @@ test("campaign create writes campaign file", async () => {
     "--send-at",
     "2020-01-01T00:00:00.000Z",
   ];
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../cli");
   await run();
 
@@ -114,7 +114,7 @@ test("campaign create with segment and no recipients", async () => {
     "--send-at",
     "2020-01-01T00:00:00.000Z",
   ];
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../cli");
   await run();
 
@@ -149,7 +149,7 @@ test("campaign create rejects when writing fails", async () => {
     "--send-at",
     "2020-01-01T00:00:00.000Z",
   ];
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const error = new Error("nope");
   fsMock.promises.writeFile.mockRejectedValueOnce(error);
   const { run } = await import("../cli");
@@ -173,7 +173,7 @@ test("campaign list outputs campaigns", async () => {
   ];
   files[campaignsPath] = JSON.stringify(campaigns);
 
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../cli");
   await run(["node", "email", "campaign", "list", "shop"]);
 
@@ -187,7 +187,7 @@ test("campaign list outputs [] when file missing", async () => {
   fsMock.promises.readFile.mockRejectedValueOnce(
     Object.assign(new Error("ENOENT"), { code: "ENOENT" }),
   );
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../cli");
   await run(["node", "email", "campaign", "list", "shop"]);
 
@@ -200,7 +200,7 @@ test("campaign list outputs [] when file missing", async () => {
 });
 
 test("campaign send invokes scheduler", async () => {
-  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const logSpy = jest.spyOn(console, "info").mockImplementation(() => {});
   const { run } = await import("../cli");
   await run(["node", "email", "campaign", "send"]);
   expect(sendDueCampaigns).toHaveBeenCalled();

@@ -27,15 +27,13 @@ describe("startReverseLogisticsService", () => {
         })
       );
 
-    const setSpy = jest
-      .spyOn(global, "setInterval")
-      .mockImplementation((fn: any) => {
-        fn();
-        return 1 as any;
-      });
-    const clearSpy = jest
-      .spyOn(global, "clearInterval")
-      .mockImplementation(() => undefined as any);
+    const setSpy = jest.spyOn(global, "setInterval").mockImplementation((fn) => {
+      fn();
+      return 1;
+    });
+    const clearSpy = jest.spyOn(global, "clearInterval").mockImplementation(() => {
+      return undefined;
+    });
 
     const stop = await startReverseLogisticsService({}, "/data");
 
@@ -43,7 +41,7 @@ describe("startReverseLogisticsService", () => {
     expect(setSpy).toHaveBeenCalledTimes(1);
 
     stop();
-    expect(clearSpy).toHaveBeenCalledWith(1 as any);
+    expect(clearSpy).toHaveBeenCalledWith(1);
 
     setSpy.mockRestore();
     clearSpy.mockRestore();
@@ -74,10 +72,10 @@ describe("startReverseLogisticsService", () => {
 
     const processor = jest.fn().mockRejectedValueOnce(new Error("fail"));
 
-    const setSpy = jest.spyOn(global, "setInterval").mockReturnValue(1 as any);
+    const setSpy = jest.spyOn(global, "setInterval").mockReturnValue(1);
     const clearSpy = jest
       .spyOn(global, "clearInterval")
-      .mockImplementation(() => undefined as any);
+      .mockImplementation(() => undefined);
 
     const stop = await startReverseLogisticsService(
       {},
@@ -92,7 +90,7 @@ describe("startReverseLogisticsService", () => {
     );
 
     stop();
-    expect(clearSpy).toHaveBeenCalledWith(1 as any);
+    expect(clearSpy).toHaveBeenCalledWith(1);
 
     setSpy.mockRestore();
     clearSpy.mockRestore();

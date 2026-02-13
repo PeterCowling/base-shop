@@ -119,7 +119,7 @@ jobs:
         if: matrix.workspace == 'packages/next-config'
         run: pnpm --filter ./packages/next-config test:coverage
       - name: E2E (if present)
-        run: pnpm --filter ./${{ matrix.workspace }} run e2e --if-present
+        run: pnpm --filter "./${{ matrix.workspace }}" --if-present run e2e
       - name: Compute coverage artifact metadata
         id: coverage-meta
         if: always()

@@ -2,11 +2,16 @@
 
 describe("releaseExpiredInventoryHoldsOnce", () => {
   afterEach(() => {
+    jest.useRealTimers();
     jest.resetModules();
     jest.clearAllMocks();
   });
 
   it("releases expired holds and restores inventory", async () => {
+    jest.useFakeTimers();
+    const startTime = new Date("2025-01-01T00:00:00.000Z");
+    jest.setSystemTime(startTime);
+
     const { prisma } = await import("@acme/platform-core/db");
     const { variantKey } = await import("@acme/platform-core/types/inventory");
     const { createInventoryHold } = await import("@acme/platform-core/inventoryHolds");
@@ -14,28 +19,30 @@ describe("releaseExpiredInventoryHoldsOnce", () => {
 
     const shopId = "shop1";
     const sku = "sku_1";
+    const productId = "prod_1";
     const key = variantKey(sku, {});
     await prisma.inventoryItem.createMany({
-      data: [{ shopId, sku, variantKey: key, quantity: 2 }],
+      data: [{ shopId, sku, productId, variantKey: key, quantity: 2 }],
     });
 
-    const now = new Date("2025-01-01T00:00:00.000Z");
     const hold = await createInventoryHold({
       shopId,
-      holdId: "hold_1",
       requests: [{ sku, quantity: 1, variantAttributes: {} }],
-      ttlMs: 1000,
-      now,
+      ttlSeconds: 30, // minimum is 30 seconds
     });
-    expect(hold.ok).toBe(true);
+    expect(hold.holdId).toBeTruthy();
+    expect(hold.expiresAt).toBeInstanceOf(Date);
 
     const itemAfterHold = await prisma.inventoryItem.findUnique({
       where: { shopId_sku_variantKey: { shopId, sku, variantKey: key } },
     });
     expect(itemAfterHold?.quantity).toBe(1);
 
+    // Advance time by 31 seconds (past the 30 second ttl)
+    jest.advanceTimersByTime(31000);
+    const nowAfterAdvance = new Date();
     const res = await releaseExpiredInventoryHoldsOnce({
-      now: new Date(now.getTime() + 2000),
+      now: nowAfterAdvance,
     });
     expect(res.scanned).toBe(1);
     expect(res.released).toBe(1);
@@ -46,12 +53,16 @@ describe("releaseExpiredInventoryHoldsOnce", () => {
     expect(itemAfterRelease?.quantity).toBe(2);
 
     const holdAfterRelease = await prisma.inventoryHold.findUnique({
-      where: { shopId_holdId: { shopId, holdId: "hold_1" } },
+      where: { shopId_holdId: { shopId, holdId: hold.holdId } },
     });
     expect(holdAfterRelease?.status).toBe("released");
   });
 
   it("does not release holds that have not expired", async () => {
+    jest.useFakeTimers();
+    const startTime = new Date("2025-01-01T00:00:00.000Z");
+    jest.setSystemTime(startTime);
+
     const { prisma } = await import("@acme/platform-core/db");
     const { variantKey } = await import("@acme/platform-core/types/inventory");
     const { createInventoryHold } = await import("@acme/platform-core/inventoryHolds");
@@ -59,21 +70,21 @@ describe("releaseExpiredInventoryHoldsOnce", () => {
 
     const shopId = "shop2";
     const sku = "sku_2";
+    const productId = "prod_2";
     const key = variantKey(sku, {});
     await prisma.inventoryItem.createMany({
-      data: [{ shopId, sku, variantKey: key, quantity: 1 }],
+      data: [{ shopId, sku, productId, variantKey: key, quantity: 1 }],
     });
 
-    const now = new Date("2025-01-01T00:00:00.000Z");
     await createInventoryHold({
       shopId,
-      holdId: "hold_2",
       requests: [{ sku, quantity: 1, variantAttributes: {} }],
-      ttlMs: 60_000,
-      now,
+      ttlSeconds: 60,
     });
 
-    const res = await releaseExpiredInventoryHoldsOnce({ now: new Date(now.getTime() + 1000) });
+    // Advance by 1 second (hold has 60 second ttl, so it's not expired)
+    jest.advanceTimersByTime(1000);
+    const res = await releaseExpiredInventoryHoldsOnce({ now: new Date() });
     expect(res.scanned).toBe(0);
     expect(res.released).toBe(0);
   });

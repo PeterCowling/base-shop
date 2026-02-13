@@ -58,8 +58,8 @@ describe("Upgrade page accessibility (color-contrast)", () => {
 
     const { container } = render(<Upgrade />);
 
-    // Ensure content is present before running axe
-    await screen.findByText("core");
+    // Ensure content is present before running axe (longer timeout for CI)
+    await screen.findByText("core", {}, { timeout: 5000 });
 
     const results = await axe(container, {
       runOnly: { type: "rule", values: ["color-contrast"] },

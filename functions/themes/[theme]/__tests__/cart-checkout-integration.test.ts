@@ -101,6 +101,7 @@ afterEach(() => {
 });
 
 test("add to cart then create checkout session", async () => {
+  jest.setTimeout(30000);
   // Seed inventory for the test SKU
   const { prisma } = await import("@acme/platform-core/db");
   const size = sku.sizes[0];

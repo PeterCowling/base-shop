@@ -52,7 +52,7 @@ describe('email cli', () => {
     jest.doMock('@acme/i18n/useTranslations.server', () => ({
       useTranslations: () => Promise.resolve((key: string) => key),
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const log = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
     await run(['node', 'cli', 'campaign', 'list', 'shop']);
@@ -74,7 +74,7 @@ describe('email cli', () => {
     jest.doMock('@acme/i18n/useTranslations.server', () => ({
       useTranslations: () => Promise.resolve((key: string) => key),
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const log = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
     await run([
@@ -112,7 +112,7 @@ describe('email cli', () => {
     jest.doMock('@acme/i18n/useTranslations.server', () => ({
       useTranslations: () => Promise.resolve((key: string) => key),
     }));
-    const log = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const log = jest.spyOn(console, 'info').mockImplementation(() => {});
 
     const { run } = await import('../../cli');
     await run([

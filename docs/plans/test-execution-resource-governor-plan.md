@@ -171,7 +171,7 @@ Event schema (MVP):
 | TEG-02 | IMPLEMENT | Build test scheduler primitives (`test-lock.sh`) with FIFO, cancel, stale cleanup | 83% | M | Completed (2026-02-13) | - | TEG-03 |
 | TEG-03 | IMPLEMENT | Add intent-based governed runner (`test:governed`) with scheduler and shaping caps | 82% | M | Completed (2026-02-13) | TEG-02 | TEG-04, TEG-05, TEG-07 |
 | TEG-04 | CHECKPOINT | Horizon checkpoint after interception + scheduler baseline | 95% | S | Completed (2026-02-13) | TEG-03 | TEG-05, TEG-06, TEG-07 |
-| TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Pending | TEG-04 | TEG-06 |
+| TEG-05 | IMPLEMENT | Migrate package `test` scripts + `test:affected` path to governed entrypoints/caps | 80% | L | Completed (2026-02-13) | TEG-04 | TEG-06 |
 | TEG-06 | IMPLEMENT | Flip from warn-only to hard enforcement for bypass patterns (split policy/overload overrides) | 80% | M | Pending | TEG-01, TEG-05 | TEG-08, TEG-09 |
 | TEG-07 | INVESTIGATE | Collect calibration telemetry (20+ runs) and tune per-class budgets | 74% ⚠️ | M | Pending | TEG-01, TEG-04 | TEG-08 |
 | TEG-08 | IMPLEMENT | Ship memory+CPU admission engine with seeded defaults, P90 history, and queue-on-pressure | 81% | L | Pending | TEG-06, TEG-07 | TEG-09 |
@@ -287,8 +287,8 @@ Schedule note:
   - Rollback: disable runner integration and keep script isolated.
 - **Documentation impact:** add scheduler semantics section in `docs/testing-policy.md`.
 - **Notes / references:** mirror patterns from `scripts/git/writer-lock.sh`.
-- **Build completion (2026-02-13):**
-  - **Status:** Complete
+- **Build progress (2026-02-13):**
+  - **Status:** Blocked (external baseline)
   - **Commits:** `8da798ad58`
   - **Implementation notes:** added `scripts/tests/test-lock.sh` and `scripts/tests/test-lock-config.sh` with FIFO queueing, cancellation, stale cleanup, heartbeat updates, and scope-aware status metadata; added `scripts/__tests__/test-lock-queue.test.ts` covering TC-01..TC-05.
   - **Validation evidence:** `pnpm --filter scripts test -- __tests__/test-lock-queue.test.ts` (PASS).
@@ -378,7 +378,7 @@ Schedule note:
 - **Deliverable:** package script rewrites + targeted test command updates.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
-- **Affects:** `package.json`, `apps/prime/package.json`, `apps/xa/package.json`, `apps/xa-b/package.json`, `apps/xa-drop-worker/package.json`, `apps/xa-j/package.json`, `apps/xa-uploader/package.json`, `functions/package.json`, `packages/tailwind-config/package.json`, `packages/telemetry/package.json`, `packages/theme/package.json`, `scripts/package.json`, `__tests__/package.json`, `[readonly] packages/design-tokens/jest-runner.cjs`
+- **Affects:** `package.json`, `apps/prime/package.json`, `apps/xa/package.json`, `apps/xa-b/package.json`, `apps/xa-drop-worker/package.json`, `apps/xa-j/package.json`, `apps/xa-uploader/package.json`, `functions/package.json`, `packages/tailwind-config/package.json`, `packages/telemetry/package.json`, `packages/theme/package.json`, `scripts/package.json`, `__tests__/package.json`, `scripts/tests/run-governed-test.sh`, `scripts/__tests__/test-governed-runner.test.ts`, `scripts/__tests__/pnpm-test-safety-policy.test.ts`, `docs/testing-policy.md`, `[readonly] packages/design-tokens/jest-runner.cjs`
 - **Depends on:** TEG-04
 - **Blocks:** TEG-06
 - **Confidence:** 80%
@@ -417,6 +417,35 @@ Schedule note:
   - Rollback: per-package revert path if a script regression appears.
 - **Documentation impact:** update command examples in `docs/testing-policy.md` and active plan docs using bypass forms (`npx jest`, `npm exec jest`, `pnpm exec jest`, `./node_modules/.bin/jest`, `node ...jest.js`).
 - **Notes / references:** unbounded script list in fact-find Appendix A3.
+- **Build completion (2026-02-13):**
+  - **Status:** Complete
+  - **Implementation notes:**
+    - Migrated package/root `test` script archetypes to governed intent entrypoints (`pnpm run test:governed -- jest|turbo ...`) for root, `apps/prime`, `functions`, `packages/tailwind-config`, `packages/telemetry`, `packages/theme`, `scripts`, and `__tests__`.
+    - Updated root `test:affected` to governed turbo intent with explicit `--concurrency=2`.
+    - Added governed CI compatibility mode in `scripts/tests/run-governed-test.sh` (`CI=true` bypasses queue/scheduler while preserving shaping).
+    - Normalized forwarded separator tokens in governed runner args to keep appended script flags (`pnpm ... test -- ...`) stable.
+    - Added regression coverage for separator normalization and CI compatibility in `scripts/__tests__/test-governed-runner.test.ts`.
+    - Updated policy harness env defaults in `scripts/__tests__/pnpm-test-safety-policy.test.ts` so warn-only assertions remain valid when tests run inside governed context.
+    - Updated `docs/testing-policy.md` to document canonical governed usage and CI compatibility behavior.
+  - **Validation evidence:**
+    - `pnpm --filter scripts test -- __tests__/pnpm-test-safety-policy.test.ts` (PASS)
+    - `pnpm --filter scripts test -- __tests__/test-governed-runner.test.ts` (PASS)
+    - `pnpm --filter @apps/prime test -- --testPathPattern='^$' --passWithNoTests` (PASS)
+    - `pnpm --filter functions test -- --testPathPattern='^$' --passWithNoTests` (PASS)
+    - `pnpm --filter @acme/theme test -- --testPathPattern='^$' --passWithNoTests` (PASS)
+    - `CI=true pnpm --filter functions test -- --testPathPattern='^$' --passWithNoTests` (PASS; CI compatibility message emitted, no queue join)
+    - Script audit command over affected package manifests reported `script-audit: OK (0 violations)` for disallowed raw Jest forms.
+    - `CI=true pnpm -s run test:governed -- turbo -- --affected --concurrency=2 --dry=json` (PASS; governed turbo intent path exercised with explicit concurrency).
+    - Baseline fix verification passed for the previously blocked path:
+      - `pnpm --filter @acme/lib build` (PASS)
+      - `pnpm --filter @acme/ui build` (PASS)
+      - `pnpm --filter @acme/template-app build` (PASS; warnings only)
+      - `pnpm exec turbo run typecheck --filter=@apps/xa-c --filter=@apps/xa-b --filter=@apps/xa-drop-worker --filter=@apps/xa-j --filter=@apps/xa-uploader` (PASS)
+    - Commit hook path passed with remaining package migrations:
+      - `typecheck-staged` (PASS)
+      - `lint-staged-packages` (PASS)
+    - Remaining app package migrations committed: `2ce513bf06` (`apps/prime`, `apps/xa*` package manifests).
+  - **Documentation updated:** `docs/testing-policy.md`.
 
 ### TEG-06: Enforce hard blocking for bypass paths
 - **Type:** IMPLEMENT
@@ -616,3 +645,6 @@ Schedule note:
 - 2026-02-13: Chose split overrides (`BASESHOP_ALLOW_BYPASS_POLICY`, `BASESHOP_ALLOW_OVERLOAD`) to avoid policy bypass automatically disabling resource safety.
 - 2026-02-13: Set enforcement boundary to guarded shells + migrated scripts; non-guarded shells are explicitly unsupported.
 - 2026-02-13: Completed TEG-04 checkpoint with no dependency/topology changes; proceed to TEG-05 package migration.
+- 2026-02-13: During TEG-05 migration, added governed CI compatibility mode and separator normalization in runner to keep package-script forwarding stable without queueing in CI.
+- 2026-02-13: TEG-05 was temporarily blocked on unrelated baseline (`@acme/template-app` build failure from `packages/lib` changes) while migrating `apps/xa*` scripts.
+- 2026-02-13: Resolved the `packages/lib`/`template-app` baseline blocker and completed remaining TEG-05 app package manifest migrations in commit `2ce513bf06`.

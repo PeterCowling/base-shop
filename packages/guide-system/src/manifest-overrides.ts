@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- guide manifest structure definitions — internal labels for guide structure [DS-02] */
 /**
  * Manifest override schema and types for editable guide areas.
  *

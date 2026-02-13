@@ -6,6 +6,7 @@ Workstream: Process
 Created: 2026-02-13
 Last-updated: 2026-02-13
 Last-reviewed: 2026-02-13
+Replan-date: 2026-02-13
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: lp-skill-system-sequencing
 Deliverable-Type: multi-deliverable
@@ -13,8 +14,8 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: /lp-sequence, /lp-replan
-Overall-confidence: 82%
-Confidence-Method: min(Implementation,Approach,Impact) — LPSP-01 resolved; sub-80% tasks split and replanned
+Overall-confidence: 83%
+Confidence-Method: min(Implementation,Approach,Impact) — LPSP-01 resolved; sub-80% tasks split and replanned; VC contracts enumerated 2026-02-13
 Business-OS-Integration: off
 Business-Unit: BOS
 ---
@@ -69,15 +70,15 @@ Primary references:
 | LPSP-01 | DECISION | Finalize runtime contract decisions (stage set, baseline commit stage, concurrency policy, alias sunset gate) | 88% | S | Done | - | LPSP-02, LPSP-03A, LPSP-05 |
 | LPSP-02 | IMPLEMENT | Add runtime-authoritative loop spec and align wrapper/workflow/prompt index | 85% | M | Done | LPSP-01 | LPSP-06A, LPSP-08 |
 | LPSP-03A | IMPLEMENT | Define stage-result schema + data-plane ownership contract | 88% | S | Done | LPSP-01 | LPSP-03B, LPSP-04A |
-| LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 82% | M | Pending | LPSP-03A | LPSP-07 |
+| LPSP-03B | IMPLEMENT | Implement single-writer manifest update mechanism | 86% | M | Done | LPSP-03A | LPSP-07 |
 | LPSP-04A | IMPLEMENT | Define event schema + derived state schema + deterministic derivation (happy-path) | 85% | M | Pending | LPSP-03A | LPSP-06B, LPSP-06C, LPSP-08 |
-| LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
+| LPSP-04B | IMPLEMENT | Add recovery automation (resume/restart/abort) + event validation + failure injection | 78% (→84%) | M | Pending | LPSP-04A, LPSP-06B | LPSP-09 |
 | LPSP-05 | IMPLEMENT | Canonicalize feature workspace + stage-doc key policy + alias handling | 84% | M | Pending | LPSP-01 | LPSP-06A |
 | LPSP-06A | DECISION | Define `/lp-baseline-merge` skill contract (inputs, blocking logic, output paths) | 90% | S | Pending | LPSP-02, LPSP-05 | LPSP-06B, LPSP-06C |
 | LPSP-06B | IMPLEMENT | Implement `/lp-baseline-merge` (S4 join barrier) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-04B, LPSP-08 |
 | LPSP-06C | IMPLEMENT | Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit) | 80% | M | Pending | LPSP-06A, LPSP-04A | LPSP-08 |
 | LPSP-07 | IMPLEMENT | Define autonomy policy tiers and enforce guarded side-effect boundary | 80% | M | Pending | LPSP-03B | LPSP-08 |
-| LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 80% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
+| LPSP-08 | IMPLEMENT | Add contract lint + controlled-velocity metrics/triggers + run-concurrency gate | 82% | M | Pending | LPSP-02, LPSP-04A, LPSP-06B, LPSP-06C, LPSP-07 | LPSP-09 |
 | LPSP-09 | CHECKPOINT | Validate end-to-end supervised dry run on one business path | 86% | M | Pending | LPSP-08, LPSP-04B | - |
 
 ## Active Tasks
@@ -85,8 +86,10 @@ Primary references:
 - `LPSP-01` (DECISION) — **Done**.
 - `LPSP-02` (IMPLEMENT) — **Done**.
 - `LPSP-03A` (IMPLEMENT) — **Done**.
+- `LPSP-03B` (IMPLEMENT) — **Done**.
 - `LPSP-05` (IMPLEMENT) — Unblocked, ready to build (Wave 2).
-- `LPSP-03B`, `LPSP-04A`, `LPSP-06A` — Newly unblocked (Wave 3).
+- `LPSP-04A`, `LPSP-06A` — Newly unblocked (Wave 3).
+- `LPSP-07` — Newly unblocked (Wave 4, depends on LPSP-03B Done).
 
 ## Parallelism Guide
 
@@ -182,12 +185,13 @@ Primary references:
   - Delta reason: validation confirmed; schema aligned cleanly with briefing doc reference examples
 - **Implementation notes:** Created `docs/business-os/startup-loop/stage-result-schema.md` with v1 schema, 5 examples, directory ownership contract, and control-plane consumption contract.
 
-### LPSP-03B: Single-writer manifest update mechanism
+### LPSP-03B: Single-writer manifest update mechanism — DONE
 
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
 - **Deliverable:** code-change.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 82%
+- **Confidence:** 82% → 86% post-validation
 - **Replan note:** Split from original LPSP-03 (76%). Adapts existing BOS optimistic-concurrency patterns (`computeEntitySha`) to manifest updates.
 - **Depends on:** LPSP-03A (needs stage-result schema as input contract).
 - **Scope:**
@@ -200,9 +204,37 @@ Primary references:
   - Manifest pointer updates reject unresolved or invalid stage results.
   - Re-running the update with identical inputs produces identical manifest (idempotent).
 - **Validation contract (VC-03B):**
-  - Simulated parallel completion: write S3 and S6B stage results concurrently, verify S4 merge can consume both deterministically.
-  - Simulated failure: S3 completes, S6B fails → manifest update blocked with explicit reason.
-  - Re-derivation: given valid stage results, re-running produces identical manifest pointers.
+  - **VC-03B-01:** Simulated parallel completion — write S3 and S6B stage results concurrently → S4 merge consumes both deterministically and manifest artifact pointers are correct.
+  - **VC-03B-02:** Simulated upstream failure — S3 completes, S6B fails → manifest update blocked with explicit reason referencing S6B failure.
+  - **VC-03B-03:** Idempotent re-derivation — given identical valid stage results, re-running manifest update produces byte-identical manifest pointers.
+  - **Acceptance coverage:** VC-03B-01 covers criteria 1,2; VC-03B-02 covers criteria 2; VC-03B-03 covers criteria 3.
+  - **Validation type:** dry-run (simulated stage-result files on disk).
+  - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/` (test fixture directory).
+  - **Run/verify:** Create test fixture stage-result files, invoke manifest update function, diff outputs.
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** f77f7b217e
+- **Execution cycle:**
+  - Validation cases executed: VC-03B-01, VC-03B-02, VC-03B-03
+  - Cycles: 1 (red-green) + 1 lint fix
+  - Initial validation: FAIL (discriminant collision — `"error" in result` always true because StageResult has an `error` field)
+  - Fix: renamed validation error key to `validation_error`
+  - Final validation: PASS (8/8 tests, typecheck clean, lint clean)
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 86%
+  - Delta reason: validation confirmed; all VCs pass cleanly; schema is well-defined; idempotency proven
+- **Validation:**
+  - Ran: `npx jest --testPathPattern="manifest-update"` — PASS (8/8)
+  - Ran: `npx tsc --project scripts/tsconfig.json --noEmit` — PASS
+  - Ran: `npx eslint scripts/src/startup-loop/` — PASS
+- **Documentation updated:** `docs/business-os/startup-loop/manifest-schema.md` (new), `docs/business-os/startup-loop/stage-result-schema.md` updated relationship table reference (LPSP-03B row now says "This document")
+- **Implementation notes:**
+  - Created `docs/business-os/startup-loop/manifest-schema.md` — defines baseline manifest schema v1 (candidate/current lifecycle, artifact pointers, stage completions).
+  - Created `scripts/src/startup-loop/manifest-update.ts` — `updateManifest()` function with discovery, validation, gate check, and deterministic write.
+  - Created `scripts/src/startup-loop/__tests__/manifest-update.test.ts` — 8 tests covering all 3 VCs.
+  - Learning: when using discriminated unions with `"key" in obj`, ensure the discriminant key doesn't collide with domain fields (StageResult.error vs validation error).
 
 ### LPSP-04A: Event schema + derived state + deterministic derivation (happy-path)
 
@@ -224,9 +256,14 @@ Primary references:
   - Derivation is deterministic and idempotent (same events → same state).
   - Manual resume works (operator edits events.jsonl, re-derives).
 - **Validation contract (VC-04A):**
-  - Given a valid event stream, derivation reproduces expected stage statuses.
-  - Given a manually injected `stage_completed` event, derivation updates state correctly.
-  - Derived state satisfies `/lp-launch-qa` expected contract fields.
+  - **VC-04A-01:** Happy-path derivation — given a valid event stream (S0→S2B→S3→S6B→S4→S5A→S5B) → derivation produces expected stage statuses for all 7 stages.
+  - **VC-04A-02:** Manual resume — inject `stage_started` event for a Blocked stage → re-derive state → stage status updates to Active.
+  - **VC-04A-03:** Launch-QA contract — derived state includes all fields expected by `/lp-launch-qa` (active_stage, per-stage status, artifact keys).
+  - **VC-04A-04:** Deterministic replay — replay identical event stream twice → byte-identical derived state output.
+  - **Acceptance coverage:** VC-04A-01 covers criteria 1,2; VC-04A-02 covers criteria 4; VC-04A-03 covers criteria 2; VC-04A-04 covers criteria 3.
+  - **Validation type:** dry-run (fixture event files + derivation script).
+  - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-events/`.
+  - **Run/verify:** Create fixture `events.jsonl`, invoke derivation function, compare `state.json` output to expected snapshot.
 - **Deferred to LPSP-04B:** Automated recovery actions, event stream corruption detection, partial artifact cleanup, failure injection test harness.
 
 ### LPSP-04B: Recovery automation + event validation + failure injection
@@ -247,9 +284,29 @@ Primary references:
   - Event stream validation detects common corruption (truncated file, schema mismatch, missing fields).
   - Resume/restart/abort actions are recorded as explicit events.
 - **Validation contract (VC-04B):**
-  - Mid-run failure simulation: kill during S4, verify derived state shows Active/Blocked, manual resume continues from correct checkpoint.
-  - Corrupt event stream simulation: truncate events.jsonl, verify validation detects corruption and recommends restart.
-  - No hidden cleanup: after abort, all partial artifacts remain accessible.
+  - **VC-04B-01:** Mid-run failure — simulate kill during S4 (stage-result absent) → derived state shows S4 as Active, upstream stages Done → manual `run_resumed` event re-derives correctly and S4 restarts.
+  - **VC-04B-02:** Corrupt event stream — truncate `events.jsonl` mid-line → validation detects corruption (JSON parse failure) and recommends restart with explicit error.
+  - **VC-04B-03:** No hidden cleanup — after `run_aborted` event, all partial artifacts remain on disk (verify with `ls stages/*/`).
+  - **Acceptance coverage:** VC-04B-01 covers criteria 1,3; VC-04B-02 covers criteria 2; VC-04B-03 covers criteria 3.
+  - **Validation type:** dry-run (fixture files + simulated failures).
+  - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-recovery/`.
+  - **Run/verify:** Create fixture run directory with partial state, invoke recovery actions, verify state transitions and artifact preservation.
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 78%
+- **Updated confidence:** 78% (→ 84% conditional on LPSP-04A, LPSP-06B)
+  - Confidence cannot be promoted until precursor tasks complete and provide E2/E3 evidence.
+  - Implementation: 78% — no existing recovery patterns; greenfield design required.
+  - Approach: 82% — decision tree approach is clear, follows existing optimistic-concurrency patterns (`entity-sha.ts`, `optimistic-concurrency.test.ts`).
+  - Impact: 80% — well-scoped to recovery/validation layer; no blast radius beyond run directory.
+- **Investigation performed:**
+  - Repo: `.claude/skills/startup-loop/SKILL.md`, `docs/business-os/startup-loop/` — no existing recovery logic.
+  - Patterns: `apps/business-os/src/lib/optimistic-concurrency.test.ts`, `apps/business-os/src/lib/entity-sha.ts` — SHA-based conflict detection reusable.
+  - Tests: `apps/prime/cypress/e2e/expired-token-recovery.cy.ts` — E2E recovery test structure exists.
+- **Decision / resolution:**
+  - Dependencies are real blockers (event schema from LPSP-04A, merge barrier from LPSP-06B). Confidence remains conditional.
+  - No precursor tasks needed — LPSP-04A and LPSP-06B already exist as formal tasks.
+  - Scope decisions: no hidden cleanup (partial artifacts stay on disk for forensics), resume is stage-level only (no sub-stage checkpoints in first cut).
 
 ### LPSP-05: Workspace canonicalization + stage-doc key policy
 
@@ -262,8 +319,13 @@ Primary references:
   - Stage-doc canonical keys enforced for writes.
   - Legacy alias reads remain supported during migration; legacy writes blocked.
 - **Validation contract (VC-05):**
-  - New fact-find/plan/build chain resolves canonical workspace files.
-  - Legacy path inputs remain readable during migration window.
+  - **VC-05-01:** Canonical resolution — new fact-find/plan/build chain resolves canonical workspace files at `docs/plans/<slug>/` paths.
+  - **VC-05-02:** Legacy read compatibility — legacy path inputs (flat `docs/plans/<slug>-*.md`) remain readable during migration window via alias resolver.
+  - **VC-05-03:** Legacy write block — attempt to write via legacy path → blocked with actionable error directing to canonical path.
+  - **Acceptance coverage:** VC-05-01 covers criteria 1,2; VC-05-02 covers criteria 3; VC-05-03 covers criteria 3.
+  - **Validation type:** dry-run (create test workspace + verify resolution).
+  - **Validation location/evidence:** `docs/plans/test-workspace/` (temporary test fixture).
+  - **Run/verify:** Create canonical workspace, attempt resolution via old and new paths, verify read/write behavior.
 
 ### LPSP-06A: Define `/lp-baseline-merge` skill contract
 
@@ -279,8 +341,12 @@ Primary references:
   - Snapshot composition algorithm documented (priority order, conflict resolution).
   - Canonical output paths: `docs/business-os/startup-baselines/<BIZ>/S4-baseline-merge/baseline.snapshot.md` + draft `baseline.manifest.json`.
 - **Validation contract (VC-06A):**
-  - Blocking logic examples cover all required input scenarios.
-  - Skill contract aligns with loop-spec stage graph from LPSP-02.
+  - **VC-06A-01:** Blocking logic completeness — contract documents blocking behavior for all required input scenarios (S3 missing, S6B missing, both missing, both present, one Failed).
+  - **VC-06A-02:** Spec alignment — skill contract stage ID, inputs, outputs, and routing match `loop-spec.yaml` S4 entry exactly.
+  - **Acceptance coverage:** VC-06A-01 covers criteria 1,2,3; VC-06A-02 covers criteria 4.
+  - **Validation type:** review checklist.
+  - **Validation location/evidence:** `.claude/skills/lp-baseline-merge/SKILL.md` (artifact to produce).
+  - **Run/verify:** Cross-reference skill contract against loop-spec.yaml S4 entry; verify all blocking scenarios enumerated.
 
 ### LPSP-06B: Implement `/lp-baseline-merge` (S4 join barrier)
 
@@ -296,8 +362,13 @@ Primary references:
   - S4 blocks on missing required inputs with explicit reasons from stage-result files.
   - Snapshot composition is deterministic (same inputs → same output).
 - **Validation contract (VC-06B):**
-  - Simulated missing S3 output → S4 blocks with reason "forecast artifact missing".
-  - Valid S3 + S6B outputs → S4 produces snapshot + manifest.
+  - **VC-06B-01:** Missing required input — S3 stage-result absent → S4 blocks with reason "forecast artifact missing" and writes `stage-result.json` with `status: Blocked`.
+  - **VC-06B-02:** Happy-path merge — valid S3 + S6B stage-result files present → S4 produces `baseline.snapshot.md` + draft `baseline.manifest.json` with `status: candidate`.
+  - **VC-06B-03:** Deterministic composition — same S3 + S6B inputs → identical snapshot and manifest output (byte-comparable after whitespace normalization).
+  - **Acceptance coverage:** VC-06B-01 covers criteria 3; VC-06B-02 covers criteria 1,2; VC-06B-03 covers criteria 4.
+  - **Validation type:** dry-run (fixture stage-result files).
+  - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-merge/stages/`.
+  - **Run/verify:** Create fixture S3 + S6B stage-result files, invoke merge skill, verify snapshot + manifest outputs.
 
 ### LPSP-06C: Implement `/lp-bos-sync` (S5B idempotent persistence + manifest commit)
 
@@ -313,9 +384,13 @@ Primary references:
   - S5B commits manifest pointer (`status: candidate → current`) after BOS writes succeed.
   - Retry with same input produces no duplicate cards (entitySha match = no-op).
 - **Validation contract (VC-06C):**
-  - S5A incomplete → S5B blocks with explicit reason.
-  - S5B retry (same prioritized items) → BOS card count unchanged, entitySha confirms idempotency.
-  - S5B partial failure (BOS write succeeds, manifest commit fails) → resume completes manifest without duplicate writes.
+  - **VC-06C-01:** S5A gate — S5A stage-result absent or `status: Blocked` → S5B blocks with reason "S5A not complete" and writes `stage-result.json` with `status: Blocked`.
+  - **VC-06C-02:** Idempotent retry — S5B retry with same prioritized items → BOS card count unchanged, entitySha match confirms no-op on duplicate writes.
+  - **VC-06C-03:** Partial failure recovery — BOS card write succeeds but manifest commit fails → resume completes manifest commit without re-creating cards (entitySha-based dedup).
+  - **Acceptance coverage:** VC-06C-01 covers criteria 1; VC-06C-02 covers criteria 4; VC-06C-03 covers criteria 2,3.
+  - **Validation type:** dry-run + API simulation (mock BOS Agent API responses).
+  - **Validation location/evidence:** `docs/business-os/startup-baselines/TEST/runs/test-bos-sync/`.
+  - **Run/verify:** Create fixture prioritized items + mock API, invoke S5B, verify card creation + manifest commit; re-invoke and verify idempotency.
 
 ### LPSP-07: Autonomy policy tiers and guarded actions
 
@@ -328,24 +403,58 @@ Primary references:
   - Core loop actions mapped into tiers with examples.
   - Side-effect stages explicitly marked guarded.
 - **Validation contract (VC-07):**
-  - Policy classification is referenced by wrapper route behavior.
-  - Guarded actions emit explicit state transition or review signals.
+  - **VC-07-01:** Tier completeness — every stage action in loop-spec.yaml is classified into exactly one tier (`autonomous`, `guarded`, `prohibited`).
+  - **VC-07-02:** Side-effect marking — S5B (BOS sync) and any stage with `bos_writes: true` are explicitly marked `guarded`.
+  - **VC-07-03:** Guarded action signals — guarded-tier actions emit explicit state transition event or review signal before execution (traceable in events.jsonl).
+  - **Acceptance coverage:** VC-07-01 covers criteria 1,2; VC-07-02 covers criteria 3; VC-07-03 covers criteria 3.
+  - **Validation type:** review checklist + cross-reference.
+  - **Validation location/evidence:** Autonomy policy document (new artifact) + loop-spec.yaml cross-check.
+  - **Run/verify:** Enumerate all stage actions from loop-spec, verify each is classified; verify guarded stages have signal emission documented.
 
 ### LPSP-08: Contract lint + controlled-velocity triggers + concurrency gate
 
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change + business-artifact.
 - **Execution-Skill:** /lp-build
-- **Confidence:** 79%
+- **Confidence:** 82%
 - **Acceptance:**
   - Contract lint covers stage graph, skill existence, root policies, alias sunset.
   - Controlled-velocity metrics collected (manual interventions, join-block recurrence, replan frequency, lint failure trend, resume success).
   - Stabilization triggers enforce pause conditions.
   - One-active-run-per-business gate enforced; relaxation requires threshold pass.
+- **Scope (clarified):**
+  - **Lint script:** Modeled on `scripts/check-ideas-go-faster-contracts.sh` (26-check pattern). Validates loop-spec.yaml, wrapper SKILL.md, workflow guide, prompt index, and all `lp-*` skills (23 skills). Detects all SQ-01..SQ-12 drift classes.
+  - **Metrics collection:** Append per-run metrics to `runs/<run_id>/metrics.jsonl` during control-plane updates. Schema: `{ timestamp, run_id, metric_name, value }`.
+  - **Metrics aggregation:** CLI script `scripts/startup-loop-metrics.sh --window 20 --business <BIZ>`. Outputs current vs threshold values.
+  - **Concurrency gate:** Function in control plane: `checkRunConcurrency(business)` → allow|block. One-run-per-business until DL-04 relaxation criteria met.
+  - **CI integration:** Add contract lint to merge gate. Graduated severity: warning-level for first 20 runs, then error-level for SQ-01..SQ-08.
 - **Validation contract (VC-08):**
-  - Intentional contract violations fail lint.
-  - Simulated threshold breach toggles stabilization mode.
-  - Concurrent second run request is queued/blocked per policy.
+  - **VC-08-01:** Drift detection — introduce intentional contract violations (rename a stage in SKILL.md, remove a prompt entry) → lint script detects and reports each violation with SQ-ID reference.
+  - **VC-08-02:** Stabilization trigger — simulate threshold breach (manual interventions median > 2 in rolling window) → metrics aggregation script emits stabilization warning.
+  - **VC-08-03:** Concurrency gate — submit concurrent second run request for same business → request blocked with reason "one active run per business".
+  - **VC-08-04:** Drift coverage — lint script has at least one check mapped to each of SQ-01 through SQ-12 (12 drift classes covered).
+  - **Acceptance coverage:** VC-08-01 covers criteria 1; VC-08-02 covers criteria 2,3; VC-08-03 covers criteria 4; VC-08-04 covers criteria 1.
+  - **Validation type:** dry-run + self-test (lint script with deliberate violations).
+  - **Validation location/evidence:** `scripts/check-startup-loop-contracts.sh` (new script).
+  - **Run/verify:** Run lint with clean state (PASS), introduce violations (FAIL), verify each SQ-ID detected.
+
+#### Re-plan Update (2026-02-13)
+- **Previous confidence:** 79%
+- **Updated confidence:** 82%
+  - **Evidence class:** E1 (static code/doc audit)
+  - Implementation: 82% — mature contract lint pattern exists (`scripts/check-ideas-go-faster-contracts.sh`, 26 checks). Direct adaptation to startup-loop contracts.
+  - Approach: 85% — graduated severity (warning→error) decided; CLI-first metrics; merge-gate CI integration. No architectural unknowns.
+  - Impact: 82% — scope bounded to startup-loop system only (23 `lp-*` skills + 5 core docs). No blast radius beyond startup-loop contracts.
+- **Investigation performed:**
+  - Repo: `scripts/check-ideas-go-faster-contracts.sh` — 26-check contract validator, reusable pattern.
+  - Repo: `apps/brikette/scripts/validate-guide-structure.sh` — two-phase validation pattern.
+  - Docs: `docs/plans/lp-skill-system-sequencing-fact-find.md` (SQ-01..SQ-12) — all 12 drift classes enumerated with detection methods.
+  - Docs: Plan DL-04 — velocity metrics, thresholds, relaxation criteria already documented.
+- **Decision / resolution:**
+  - Lint severity: graduated (warning → error after 20 runs). High-severity SQ-01..SQ-08 escalate to error; medium SQ-09..SQ-12 remain warning.
+  - Metrics storage: per-run `metrics.jsonl` in run directory, aggregated by CLI script on demand.
+  - Lint scope: startup-loop system only (`lp-*` skills + core docs). Not all 47 skills.
+  - CI timing: merge-gate step (too slow for pre-commit; comprehensive validation needed).
 
 ### LPSP-09: Supervised dry-run checkpoint
 
@@ -359,8 +468,13 @@ Primary references:
   - No shared-state contention observed.
   - BOS mutation boundaries honored (`S5B` only).
 - **Validation contract (VC-09):**
-  - Dry-run trace includes run events, derived state snapshots, and decision log.
-  - All blocking reasons are explicit and reproducible.
+  - **VC-09-01:** Full run trace — dry-run produces `events.jsonl`, derived `state.json` snapshots at each stage transition, and decision log entries for all gate decisions.
+  - **VC-09-02:** Blocking reproducibility — all blocking reasons in the trace are explicit (reference stage-result `blocking_reason` or event `error` fields) and re-running from the same state reproduces the same block.
+  - **VC-09-03:** Failure injection resume — inject one failure scenario (S4 kill or S6B timeout) → verify derived state shows correct blocked stage → manual resume continues from correct checkpoint.
+  - **Acceptance coverage:** VC-09-01 covers criteria 1,4; VC-09-02 covers criteria 2; VC-09-03 covers criteria 2.
+  - **Validation type:** dry-run (supervised end-to-end run on one business path).
+  - **Validation location/evidence:** `docs/business-os/startup-baselines/<BIZ>/runs/<dry-run-id>/`.
+  - **Run/verify:** Execute `/startup-loop start --business <BIZ> --mode dry`, trace through all stages, inject one failure, verify recovery.
 
 ## Validation Strategy
 

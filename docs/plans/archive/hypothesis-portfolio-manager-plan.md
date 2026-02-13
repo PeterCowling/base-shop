@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-13
@@ -118,7 +118,7 @@ Chosen: Option B, because it delivers long-term maintainability without violatin
 | HPM-06 | IMPLEMENT | Ship ranking and constraint engine with deterministic blocked reasons | 80% | M | Complete (2026-02-13) | HPM-02, HPM-03, HPM-05 | HPM-07, HPM-09 |
 | HPM-07 | IMPLEMENT | Ship hypothesis registry CLI and lifecycle activation guard | 80% | M | Complete (2026-02-13) | HPM-06 | HPM-08, HPM-09 |
 | HPM-08 | IMPLEMENT | Integrate portfolio scores into `/lp-prioritize` via explicit linkage | 80% | M | Complete (2026-02-13) | HPM-05, HPM-07 | HPM-09 |
-| HPM-09 | IMPLEMENT | Run end-to-end rehearsal and publish operator runbook + evidence | 81% | M | Pending | HPM-06, HPM-07, HPM-08 | - |
+| HPM-09 | IMPLEMENT | Run end-to-end rehearsal and publish operator runbook + evidence | 81% | M | Complete (2026-02-13) | HPM-06, HPM-07, HPM-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -548,6 +548,7 @@ HPM-04 completed on 2026-02-13.
 
 ### HPM-09: Run end-to-end rehearsal and publish operator runbook + evidence
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
 - **Deliverable:** validation report + operator docs
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
@@ -591,6 +592,26 @@ HPM-04 completed on 2026-02-13.
 - **Documentation impact:** adds validation report and operator runbook.
 - **Notes / references:** `scripts/src/startup-loop/__tests__/bos-sync.test.ts`
 
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** b8a4c3fe3b
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 2 (red via initial fixture/report draft, green after deterministic rehearsal + runbook hardening)
+  - Initial validation: FAIL expected until fixture outputs and runbook assertions aligned
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 81%
+  - Post-validation: 84%
+  - Delta reason: deterministic rehearsal output and reproducible operator steps are now captured with explicit go/no-go and rollback evidence.
+- **Validation:**
+  - Ran: `node --import tsx scripts/src/hypothesis-portfolio/rehearsal-fixtures.ts` -> PASS (deterministic output captured in report)
+  - Ran: `pnpm --filter scripts test -- src/hypothesis-portfolio/__tests__/cli.test.ts` -> PASS (5 tests)
+  - Ran: `pnpm --filter scripts test -- src/hypothesis-portfolio/__tests__/prioritize-bridge.test.ts` -> PASS (4 tests)
+  - Ran: `pnpm --filter scripts exec eslint src/hypothesis-portfolio/rehearsal-fixtures.ts` -> PASS
+- **Documentation updated:** `docs/plans/hypothesis-portfolio-manager-validation-report.md`, `docs/business-os/hypothesis-portfolio/runbook.md`
+- **Implementation notes:** Added deterministic five-hypothesis rehearsal fixture, captured ranking/blocked/lifecycle/prioritize outputs in validation report, and published an operator runbook with explicit override policy and troubleshooting.
+
 ## Risks & Mitigations
 
 - Hypothesis estimates are noisy and can produce unstable rankings.
@@ -620,11 +641,11 @@ HPM-04 completed on 2026-02-13.
 
 ## Acceptance Criteria (overall)
 
-- [ ] Canonical hypothesis schema and storage contract are published and consumed by code.
-- [ ] Ranking and constraints are deterministic and surface explicit blocked reasons.
-- [ ] CLI lifecycle transitions enforce activation guardrails with audited overrides.
-- [ ] `/lp-prioritize` integration is additive and backward-compatible for unlinked items.
-- [ ] Rehearsal report and runbook prove operator readiness for first business rollout.
+- [x] Canonical hypothesis schema and storage contract are published and consumed by code.
+- [x] Ranking and constraints are deterministic and surface explicit blocked reasons.
+- [x] CLI lifecycle transitions enforce activation guardrails with audited overrides.
+- [x] `/lp-prioritize` integration is additive and backward-compatible for unlinked items.
+- [x] Rehearsal report and runbook prove operator readiness for first business rollout.
 
 ## Decision Log
 

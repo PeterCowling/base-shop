@@ -48,13 +48,13 @@ jest.mock("../../../hooks/data/useAllFinancialTransactionsData", () => ({
 
 jest.mock("react-chartjs-2", () => ({
   Bar: ({ data }: { data: unknown }) => (
-    <pre data-testid="bar">{JSON.stringify(data)}</pre>
+    <pre data-cy="bar">{JSON.stringify(data)}</pre>
   ),
   Doughnut: ({ data }: { data: unknown }) => (
-    <pre data-testid="doughnut">{JSON.stringify(data)}</pre>
+    <pre data-cy="doughnut">{JSON.stringify(data)}</pre>
   ),
   Line: ({ data }: { data: unknown }) => (
-    <pre data-testid="line">{JSON.stringify(data)}</pre>
+    <pre data-cy="line">{JSON.stringify(data)}</pre>
   ),
 }));
 

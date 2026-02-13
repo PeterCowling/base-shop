@@ -8,55 +8,55 @@ import Extension from "../Extension";
 jest.mock("../modals/ExtensionPayModal", () => ({
   __esModule: true,
   default: ({ onClose }: { onClose: () => void }) => (
-    <div data-testid="pay-modal">
+    <div data-cy="pay-modal">
       <button onClick={onClose}>close</button>
     </div>
   ),
 }));
 
-const useBookingsMock = jest.fn();
+const bookingsMock = jest.fn();
 jest.mock("../../../hooks/data/useBookingsData", () => ({
   __esModule: true,
-  default: useBookingsMock,
+  default: (...args: unknown[]) => bookingsMock(...args),
 }));
 
-const useGuestDetailsMock = jest.fn();
+const guestDetailsMock = jest.fn();
 jest.mock("../../../hooks/data/useGuestDetails", () => ({
   __esModule: true,
-  default: useGuestDetailsMock,
+  default: (...args: unknown[]) => guestDetailsMock(...args),
 }));
 
-const useGuestByRoomMock = jest.fn();
+const guestByRoomMock = jest.fn();
 jest.mock("../../../hooks/data/useGuestByRoom", () => ({
   __esModule: true,
-  default: useGuestByRoomMock,
+  default: (...args: unknown[]) => guestByRoomMock(...args),
 }));
 
-const useFinancialsRoomMock = jest.fn();
+const financialsRoomMock = jest.fn();
 jest.mock("../../../hooks/data/useFinancialsRoom", () => ({
   __esModule: true,
-  default: useFinancialsRoomMock,
+  default: (...args: unknown[]) => financialsRoomMock(...args),
 }));
 
-const useActivitiesMock = jest.fn();
+const activitiesMock = jest.fn();
 jest.mock("../../../hooks/data/useActivitiesByCodeData", () => ({
   __esModule: true,
-  default: useActivitiesMock,
+  default: (...args: unknown[]) => activitiesMock(...args),
 }));
 
-const useCityTaxMock = jest.fn();
+const cityTaxMock = jest.fn();
 jest.mock("../../../hooks/data/useCityTax", () => ({
   __esModule: true,
-  default: useCityTaxMock,
+  default: (...args: unknown[]) => cityTaxMock(...args),
 }));
 
-const useRoomConfigsMock = jest.fn();
+const roomConfigsMock = jest.fn();
 jest.mock("../../../hooks/client/checkin/useRoomConfigs", () => ({
   __esModule: true,
-  default: () => ({ getBedCount: useRoomConfigsMock }),
+  default: () => ({ getBedCount: (...args: unknown[]) => roomConfigsMock(...args) }),
 }));
 
-jest.mock("../../../utils/dateUtils", async () => {
+jest.mock("../../../utils/dateUtils", () => {
   const actual = jest.requireActual("../../../utils/dateUtils");
   return {
     ...actual,
@@ -68,7 +68,7 @@ jest.mock("../../../utils/dateUtils", async () => {
 describe("Extension", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    useBookingsMock.mockReturnValue({
+    bookingsMock.mockReturnValue({
       bookings: {
         b1: {
           o1: {
@@ -81,55 +81,55 @@ describe("Extension", () => {
       loading: false,
       error: null,
     });
-    useGuestDetailsMock.mockReturnValue({
+    guestDetailsMock.mockReturnValue({
       guestsDetails: { b1: { o1: { firstName: "Alice", lastName: "Smith" } } },
       loading: false,
       error: null,
       validationError: null,
     });
-    useGuestByRoomMock.mockReturnValue({
+    guestByRoomMock.mockReturnValue({
       guestByRoom: { o1: { allocated: "101" } },
       loading: false,
       error: null,
     });
-    useFinancialsRoomMock.mockReturnValue({
+    financialsRoomMock.mockReturnValue({
       financialsRoom: { b1: { totalPaid: 100 } },
       loading: false,
       error: null,
     });
-    useActivitiesMock.mockReturnValue({
+    activitiesMock.mockReturnValue({
       activitiesByCodes: { "14": {} },
       loading: false,
       error: null,
     });
-    useCityTaxMock.mockReturnValue({
+    cityTaxMock.mockReturnValue({
       cityTax: {},
       loading: false,
       error: null,
     });
-    useRoomConfigsMock.mockReturnValue(1);
+    roomConfigsMock.mockReturnValue(1);
   });
 
   it("shows loading state", () => {
-    useBookingsMock.mockReturnValue({ bookings: {}, loading: true, error: null });
+    bookingsMock.mockReturnValue({ bookings: {}, loading: true, error: null });
     render(<Extension />);
     expect(screen.getByText(/Loading extension data/)).toBeInTheDocument();
   });
 
   it("shows error state", () => {
-    useBookingsMock.mockReturnValue({ bookings: {}, loading: false, error: "boom" });
+    bookingsMock.mockReturnValue({ bookings: {}, loading: false, error: "boom" });
     render(<Extension />);
     expect(screen.getByText(/Error loading data: boom/)).toBeInTheDocument();
   });
 
   it("shows empty state", () => {
-    useBookingsMock.mockReturnValue({ bookings: {}, loading: false, error: null });
+    bookingsMock.mockReturnValue({ bookings: {}, loading: false, error: null });
     render(<Extension />);
     expect(screen.getByText(/No guests in house/)).toBeInTheDocument();
   });
 
   it("renders rows and opens modal", async () => {
-    useBookingsMock.mockReturnValue({
+    bookingsMock.mockReturnValue({
       bookings: {
         b1: {
           o1: {
@@ -142,33 +142,33 @@ describe("Extension", () => {
       loading: false,
       error: null,
     });
-    useGuestDetailsMock.mockReturnValue({
+    guestDetailsMock.mockReturnValue({
       guestsDetails: { b1: { o1: { firstName: "Alice", lastName: "Smith" } } },
       loading: false,
       error: null,
       validationError: null,
     });
-    useGuestByRoomMock.mockReturnValue({
+    guestByRoomMock.mockReturnValue({
       guestByRoom: { o1: { allocated: "101" } },
       loading: false,
       error: null,
     });
-    useFinancialsRoomMock.mockReturnValue({
+    financialsRoomMock.mockReturnValue({
       financialsRoom: { b1: { totalPaid: 100 } },
       loading: false,
       error: null,
     });
-    useActivitiesMock.mockReturnValue({
+    activitiesMock.mockReturnValue({
       activitiesByCodes: { "14": {} },
       loading: false,
       error: null,
     });
-    useCityTaxMock.mockReturnValue({
+    cityTaxMock.mockReturnValue({
       cityTax: {},
       loading: false,
       error: null,
     });
-    useRoomConfigsMock.mockReturnValue(1);
+    roomConfigsMock.mockReturnValue(1);
     render(<Extension />);
     expect(screen.getByText("101")).toBeInTheDocument();
     const input = screen.getByRole("spinbutton");
@@ -182,7 +182,7 @@ describe("Extension", () => {
   });
 
   it("filters rows based on search input", async () => {
-    useBookingsMock.mockReturnValue({
+    bookingsMock.mockReturnValue({
       bookings: {
         b1: {
           o1: {
@@ -202,7 +202,7 @@ describe("Extension", () => {
       loading: false,
       error: null,
     });
-    useGuestDetailsMock.mockReturnValue({
+    guestDetailsMock.mockReturnValue({
       guestsDetails: {
         b1: { o1: { firstName: "Alice", lastName: "Smith" } },
         b2: { o2: { firstName: "Bob", lastName: "Jones" } },
@@ -211,27 +211,27 @@ describe("Extension", () => {
       error: null,
       validationError: null,
     });
-    useGuestByRoomMock.mockReturnValue({
+    guestByRoomMock.mockReturnValue({
       guestByRoom: { o1: { allocated: "101" }, o2: { allocated: "202" } },
       loading: false,
       error: null,
     });
-    useFinancialsRoomMock.mockReturnValue({
+    financialsRoomMock.mockReturnValue({
       financialsRoom: { b1: { totalPaid: 100 }, b2: { totalPaid: 200 } },
       loading: false,
       error: null,
     });
-    useActivitiesMock.mockReturnValue({
+    activitiesMock.mockReturnValue({
       activitiesByCodes: { "14": {} },
       loading: false,
       error: null,
     });
-    useCityTaxMock.mockReturnValue({
+    cityTaxMock.mockReturnValue({
       cityTax: {},
       loading: false,
       error: null,
     });
-    useRoomConfigsMock.mockReturnValue(1);
+    roomConfigsMock.mockReturnValue(1);
 
     render(<Extension />);
     const searchInput = screen.getByLabelText("Search");

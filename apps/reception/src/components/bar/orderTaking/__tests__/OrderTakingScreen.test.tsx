@@ -41,7 +41,7 @@ describe("OrderTakingScreen", () => {
   it("renders children", () => {
     render(
       <OrderTakingScreen {...baseProps}>
-        <div data-testid="child" />
+        <div data-cy="child" />
       </OrderTakingScreen>
     );
     expect(screen.getByTestId("child")).toBeInTheDocument();

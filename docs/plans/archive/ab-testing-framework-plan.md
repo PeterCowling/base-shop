@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Analytics
 Created: 2026-02-13

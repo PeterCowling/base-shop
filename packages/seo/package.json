@@ -25,6 +25,21 @@
       "types": "./dist/jsonld/index.d.ts",
       "import": "./dist/jsonld/index.js",
       "default": "./dist/jsonld/index.js"
+    },
+    "./robots": {
+      "types": "./dist/robots/index.d.ts",
+      "import": "./dist/robots/index.js",
+      "default": "./dist/robots/index.js"
+    },
+    "./sitemap": {
+      "types": "./dist/sitemap/index.d.ts",
+      "import": "./dist/sitemap/index.js",
+      "default": "./dist/sitemap/index.js"
+    },
+    "./ai": {
+      "types": "./dist/ai/index.d.ts",
+      "import": "./dist/ai/index.js",
+      "default": "./dist/ai/index.js"
     }
   },
   "files": [

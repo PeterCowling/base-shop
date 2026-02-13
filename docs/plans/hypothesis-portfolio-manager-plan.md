@@ -117,7 +117,7 @@ Chosen: Option B, because it delivers long-term maintainability without violatin
 | HPM-05 | INVESTIGATE | Calibrate normalization/domain defaults and integration rules | 82% | M | Complete (2026-02-13) | HPM-04 | HPM-06, HPM-08 |
 | HPM-06 | IMPLEMENT | Ship ranking and constraint engine with deterministic blocked reasons | 80% | M | Complete (2026-02-13) | HPM-02, HPM-03, HPM-05 | HPM-07, HPM-09 |
 | HPM-07 | IMPLEMENT | Ship hypothesis registry CLI and lifecycle activation guard | 80% | M | Complete (2026-02-13) | HPM-06 | HPM-08, HPM-09 |
-| HPM-08 | IMPLEMENT | Integrate portfolio scores into `/lp-prioritize` via explicit linkage | 80% | M | Pending | HPM-05, HPM-07 | HPM-09 |
+| HPM-08 | IMPLEMENT | Integrate portfolio scores into `/lp-prioritize` via explicit linkage | 80% | M | Complete (2026-02-13) | HPM-05, HPM-07 | HPM-09 |
 | HPM-09 | IMPLEMENT | Run end-to-end rehearsal and publish operator runbook + evidence | 81% | M | Pending | HPM-06, HPM-07, HPM-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -484,6 +484,7 @@ HPM-04 completed on 2026-02-13.
 
 ### HPM-08: Integrate portfolio scores into `/lp-prioritize` via explicit linkage
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
 - **Deliverable:** skill and integration docs updates
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
@@ -526,6 +527,24 @@ HPM-04 completed on 2026-02-13.
   - Rollback: disable bridge and retain baseline prioritize scoring.
 - **Documentation impact:** adds integration guide and prioritize skill update.
 - **Notes / references:** `.claude/skills/lp-prioritize/SKILL.md`
+
+#### Build Completion (2026-02-13)
+- **Status:** Complete
+- **Commits:** 75c671af39
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 2 (red with failing bridge tests, green with bridge + docs integration)
+  - Initial validation: FAIL expected on new bridge tests
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 80%
+  - Post-validation: 82%
+  - Delta reason: bridge behavior is now tested end-to-end for linked/unlinked/blocked/missing metadata paths, and docs are aligned to explicit-linkage semantics.
+- **Validation:**
+  - Ran: `pnpm --filter scripts test -- src/hypothesis-portfolio/__tests__/prioritize-bridge.test.ts` -> PASS (4 tests)
+  - Ran: `pnpm --filter scripts exec eslint src/hypothesis-portfolio/prioritize-bridge.ts src/hypothesis-portfolio/__tests__/prioritize-bridge.test.ts` -> PASS
+- **Documentation updated:** `.claude/skills/lp-prioritize/SKILL.md`, `docs/business-os/hypothesis-portfolio/integration-guide.md`
+- **Implementation notes:** Added explicit-linkage scoring bridge (`hypothesis_id` or `hypothesis:<id>`), preserved baseline scoring for unlinked candidates, added graceful metadata-missing behavior, and surfaced deterministic blocked reasons with zero injection for inadmissible linked hypotheses.
 
 ### HPM-09: Run end-to-end rehearsal and publish operator runbook + evidence
 - **Type:** IMPLEMENT

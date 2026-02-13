@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 import PageShell from "@/components/PageShell";
 import PeopleCard from "@/components/PeopleCard";
 import { Grid } from "@/components/primitives/Grid";
@@ -5,6 +7,24 @@ import { PEOPLE } from "@/data/people";
 import { joinClasses } from "@/lib/joinClasses";
 import { getLocaleFromParams, type LangRouteParams, type Locale,LOCALES } from "@/lib/locales";
 import { createTranslator, getMessages } from "@/lib/messages";
+import { skylarMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<LangRouteParams>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const lang = getLocaleFromParams(resolvedParams);
+  const messages = getMessages(lang);
+  const t = createTranslator(messages);
+  return skylarMetadata({
+    locale: lang,
+    title: t("people.heading"),
+    description: t("people.companyLine"),
+    path: "/people",
+  });
+}
 
 export default async function PeoplePage({ params }: { params?: Promise<LangRouteParams> }) {
   const resolvedParams = params ? await params : undefined;

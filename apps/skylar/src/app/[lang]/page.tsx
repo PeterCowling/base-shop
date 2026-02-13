@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import HeroSection from "@/components/HeroSection";
@@ -11,8 +12,26 @@ import { joinClasses } from "@/lib/joinClasses";
 import { getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
 import { createTranslator,getMessages } from "@/lib/messages";
 import { localizedPath } from "@/lib/routes";
+import { skylarMetadata } from "@/lib/seo";
 
 export { generateStaticParams } from "./generateStaticParams";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<LangRouteParams>;
+}): Promise<Metadata> {
+  const resolvedParams = await params;
+  const lang = getLocaleFromParams(resolvedParams);
+  const messages = getMessages(lang);
+  const t = createTranslator(messages);
+  return skylarMetadata({
+    locale: lang,
+    title: t("hero.headline"),
+    description: t("hero.copy"),
+    path: "",
+  });
+}
 
 export default async function HomePage({ params }: { params?: Promise<LangRouteParams> }) {
   const resolvedParams = params ? await params : undefined;

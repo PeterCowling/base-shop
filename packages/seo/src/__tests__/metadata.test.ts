@@ -1,14 +1,16 @@
 /**
- * Tests for @acme/seo metadata builders (SEO-03)
+ * Tests for @acme/seo metadata builders (SEO-03, SEO-11)
  *
  * TC-02: buildMetadata returns valid Metadata with correct fields
  * TC-03: buildAlternates generates hreflang entries for all locales
  * TC-04: ensureTrailingSlash handles edge cases
  * TC-05: SeoSiteConfig enforces required fields (compile-time; runtime proxy test)
+ * SEO-11 TC-01: buildCanonicalUrl exported from @acme/seo/metadata
  */
 
 import type { SeoSiteConfig } from "../config";
 import { buildAlternates } from "../metadata/buildAlternates";
+import { buildCanonicalUrl } from "../metadata/buildCanonicalUrl";
 import { buildMetadata } from "../metadata/buildMetadata";
 import { ensureTrailingSlash } from "../metadata/ensureTrailingSlash";
 
@@ -193,6 +195,40 @@ describe("buildMetadata (TC-02)", () => {
     expect(languages.en).toBeDefined();
     expect(languages.it).toBeDefined();
     expect(languages.de).toBeDefined();
+  });
+});
+
+describe("buildCanonicalUrl (SEO-11 TC-01)", () => {
+  it("joins base URL and path correctly", () => {
+    expect(buildCanonicalUrl("https://example.com/", "/en/guide/")).toBe(
+      "https://example.com/en/guide/",
+    );
+    expect(buildCanonicalUrl("https://example.com", "en/guide")).toBe(
+      "https://example.com/en/guide",
+    );
+  });
+
+  it("returns absolute path unchanged", () => {
+    expect(
+      buildCanonicalUrl("https://example.com", "https://cdn.example/foo/"),
+    ).toBe("https://cdn.example/foo/");
+  });
+
+  it("handles empty inputs", () => {
+    expect(buildCanonicalUrl("", "/en/guide")).toBe("/en/guide");
+    expect(buildCanonicalUrl("https://example.com/", "")).toBe(
+      "https://example.com",
+    );
+    expect(buildCanonicalUrl("", "")).toBe("");
+  });
+
+  it("preserves trailing slashes", () => {
+    expect(buildCanonicalUrl("https://example.com", "/en/")).toBe(
+      "https://example.com/en/",
+    );
+    expect(buildCanonicalUrl("https://example.com", "/")).toBe(
+      "https://example.com/",
+    );
   });
 });
 

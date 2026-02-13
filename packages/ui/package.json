@@ -324,6 +324,7 @@
   "dependencies": {
     "@acme/auth": "workspace:*",
     "@acme/design-system": "workspace:*",
+    "@acme/seo": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",

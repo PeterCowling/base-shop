@@ -7,6 +7,11 @@ export {
   SimpleExponentialSmoothing,
   weightedMovingAverage,
 } from "./ewma";
+export type { DecompositionResult } from "./seasonal-decomposition";
+export {
+  decomposeAdditive,
+  decomposeMultiplicative,
+} from "./seasonal-decomposition";
 export type { ModelScore } from "./utils";
 export {
   assertFiniteArray,

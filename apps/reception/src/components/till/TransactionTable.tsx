@@ -127,11 +127,13 @@ const TransactionTable = memo(function TransactionTable({
               <td className="p-3 whitespace-pre-line">
                 {summary ? summary.split(/\s+/).join("\n") : "-"}
                 {isVoided && (
+                  // eslint-disable-next-line ds/no-raw-typography -- transaction status badge custom text size [DS-05]
                   <div className="text-[11px] text-error-main no-underline">
                     VOIDED{t.voidReason ? `: ${t.voidReason}` : ""}
                   </div>
                 )}
                 {isCorrection && (
+                  // eslint-disable-next-line ds/no-raw-typography -- transaction status badge custom text size [DS-05]
                   <div className="text-[11px] text-warning-main no-underline">
                     CORRECTION
                     {t.correctionKind ? ` (${t.correctionKind})` : ""}

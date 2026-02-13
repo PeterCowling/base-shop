@@ -286,6 +286,7 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
         </span>
 
         {/* Badge with item count */}
+        {/* eslint-disable-next-line ds/no-raw-typography -- preorder badge custom text size [DS-05] */}
         <span className="mt-0.5 rounded-full bg-white/20 px-2 text-[10px] font-bold backdrop-blur-sm dark:bg-darkSurface dark:text-darkAccentGreen">
           {data.items.length} items
         </span>
@@ -296,6 +297,7 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
         type="button"
         aria-label="Delete preorder"
         onClick={openDeleteModal}
+        // eslint-disable-next-line ds/no-raw-typography -- delete button custom text size [DS-05]
         className={`
           absolute right-0 top-0 z-20 flex h-5 w-5 translate-x-1/2 -translate-y-1/2
           items-center justify-center rounded-full bg-red-500 text-[11px] font-bold text-white
@@ -309,6 +311,7 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
       {/* Tooltip */}
       {isHovered && (
         <div
+          // eslint-disable-next-line ds/no-raw-typography -- tooltip custom text size [DS-05]
           className={`
             absolute bottom-full left-1/2 z-30 w-60 -translate-x-1/2
             whitespace-pre-line rounded-md bg-black/90 px-3 py-2 text-[13px] font-medium text-white

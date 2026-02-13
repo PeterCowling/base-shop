@@ -37,6 +37,7 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
       </span>
 
       {/* Price badge */}
+      {/* eslint-disable-next-line ds/no-raw-typography -- POS product badge custom text size [DS-05] */}
       <span className="absolute bottom-1 right-1 rounded bg-black/50 px-1.5 py-0.5 text-[0.65rem] font-bold text-white">
         €{product.price.toFixed(2)}
       </span>

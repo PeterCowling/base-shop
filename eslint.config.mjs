@@ -2302,14 +2302,14 @@ export default [
       "ds/absolute-parent-guard": "off", // 22 violations — internal modal patterns
       "ds/container-widths-only-at": "off", // 19 violations — internal layout
       "ds/enforce-focus-ring-token": "off", // 6 violations — internal tool
-      /* DS rules at warn — will be fixed and escalated in DS-05 */
-      "ds/no-raw-zindex": "warn",
-      "ds/no-important": "warn",
-      "ds/no-raw-typography": "warn",
-      "ds/no-raw-font": "warn", // 10 violations — receipt printing uses specific fonts
-      /* DS rules at warn — will be fixed and escalated in DS-06 */
-      "ds/no-raw-spacing": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
+      /* DS rules escalated to error — fixed in DS-05 */
+      "ds/no-raw-zindex": "error",
+      "ds/no-important": "error",
+      "ds/no-raw-typography": "error",
+      "ds/no-raw-font": "off", // receipt printing is domain-specific for POS system
+      /* DS spacing rules — escalation per DS-06 */
+      "ds/no-raw-spacing": "error", // escalated in DS-06 after fixing 8 violations
+      "ds/no-arbitrary-tailwind": "warn", // stays at warn — 69 legitimate POS patterns
       /* Non-DS relaxations */
       complexity: ["error", 60],
       "max-lines-per-function": [

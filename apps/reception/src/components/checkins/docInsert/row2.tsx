@@ -213,6 +213,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   );
 
   return (
+    // eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06]
     <div className="flex flex-wrap gap-12 mb-[75px] dark:text-darkAccentGreen">
       {/* Place of Birth */}
       <div className="flex flex-col w-[300px]">

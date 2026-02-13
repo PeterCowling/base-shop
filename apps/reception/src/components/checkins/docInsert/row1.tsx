@@ -200,6 +200,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
 
   return (
     <>
+      {/* eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06] */}
       <div className="flex flex-wrap gap-12 mt-[100px] mb-[75px] dark:text-darkAccentGreen">
         {/* First Name */}
         <div className="flex flex-col w-[300px]">

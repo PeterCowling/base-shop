@@ -15,16 +15,16 @@ import TooltipComponent from "../tooltip/Tooltip";
 function getKeycardIconClass(depositType?: LoanMethod): string {
   const normalized = depositType ? depositType.toUpperCase() : undefined;
 
-  if (normalized === "NO_CARD") return "fas fa-ban fa-lg text-red-500";
-  if (normalized === "CASH") return "fas fa-id-card fa-lg text-green-600";
+  if (normalized === "NO_CARD") return "fas fa-ban fa-lg text-error-main";
+  if (normalized === "CASH") return "fas fa-id-card fa-lg text-success-main";
   if (
     normalized === "PASSPORT" ||
     normalized === "LICENSE" ||
     normalized === "ID"
   ) {
-    return "fas fa-id-card fa-lg text-yellow-600";
+    return "fas fa-id-card fa-lg text-warning-main";
   }
-  return "fas fa-id-card fa-lg text-gray-700";
+  return "fas fa-id-card fa-lg text-muted-foreground";
 }
 
 interface BookingRowViewProps {
@@ -102,7 +102,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           {booking.isFirstForBooking ? (
             <RoomPaymentButton booking={booking} />
           ) : (
-            <em className="text-gray-600">—</em>
+            <em className="text-muted-foreground">—</em>
           )}
         </div>
       </td>

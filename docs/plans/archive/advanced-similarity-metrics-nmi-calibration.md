@@ -1,6 +1,6 @@
 ---
 Type: Reference
-Status: Active
+Status: Archived
 Domain: Platform
 Last-reviewed: 2026-02-13
 Relates-to charter: none

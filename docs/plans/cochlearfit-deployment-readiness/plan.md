@@ -558,6 +558,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `pnpm exec eslint scripts/bundle-worker-catalog.ts` — PASS
   - TC-02/TC-03 failure-mode checks executed via `node --import tsx scripts/bundle-worker-catalog.ts --data-dir <fixture>` — PASS
 - **Confidence reassessment:** 85% -> 90% (validation confirmed assumptions; build + failure modes verified)
+- **Documentation updated:** `apps/cochlearfit-worker/README.md` (commit 4210264862)
 - **Implementation notes:**
   - Added `scripts/bundle-worker-catalog.ts` to generate `apps/cochlearfit-worker/src/worker-catalog.generated.ts` from `data/shops/cochlearfit/*.json`.
   - Seeded `data/shops/cochlearfit/{products,variants,inventory}.json` with placeholder `price_...` IDs; real Stripe Price IDs remain a TASK-08 requirement.
@@ -622,6 +623,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `pnpm --filter @apps/cochlearfit-worker build` — PASS
   - TC-03 example from plan: `node --import tsx -e "import { catalog } from './apps/cochlearfit-worker/src/worker-catalog.generated.ts'; console.log(catalog.length)"` — prints `12`
 - **Confidence reassessment:** 90% -> 90% (wiring change validated; Stripe integration deferred until real Price IDs in TASK-08/TASK-11)
+- **Documentation updated:** `apps/cochlearfit-worker/README.md` (commit 4210264862)
 - **Implementation notes:**
   - `apps/cochlearfit-worker/src/index.ts` now imports `catalog` from `./worker-catalog.generated`.
   - Removed the hardcoded `COLORS`/`SIZES`/`buildVariants()` and inline catalog array.

@@ -22,7 +22,7 @@ describe("POST /api/password-reset/[token]", () => {
     const { POST } = await import("./route");
     const res = await POST(
       makeReq({ password: "short" }),
-      { params: { token: "t1" } },
+      { params: Promise.resolve({ token: "t1" }) },
     );
     expect(res.status).toBe(400);
   });
@@ -42,7 +42,7 @@ describe("POST /api/password-reset/[token]", () => {
     const { POST } = await import("./route");
     const res = await POST(
       makeReq({ password: "verysecure" }),
-      { params: { token: "t1" } },
+      { params: Promise.resolve({ token: "t1" }) },
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ ok: true });
@@ -63,7 +63,7 @@ describe("POST /api/password-reset/[token]", () => {
     const { POST } = await import("./route");
     const res = await POST(
       makeReq({ password: "verysecure" }),
-      { params: { token: "t1" } },
+      { params: Promise.resolve({ token: "t1" }) },
     );
     expect(res.status).toBe(400);
   });

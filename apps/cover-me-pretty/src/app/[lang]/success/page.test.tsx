@@ -6,7 +6,7 @@ import Success from "./page";
 
 describe('Success page (localized)', () => {
   it("renders thank-you heading and receipt message", async () => {
-    const ui = await Success({ params: { lang: "en" as Locale } });
+    const ui = await Success({ params: Promise.resolve({ lang: "en" as Locale }) });
     render(ui);
     expect(
       screen.getByRole('heading', {

@@ -123,7 +123,7 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add activity code 27, rename 25 | 90% | S | Complete (2026-02-14) | - | TASK-02,TASK-04,TASK-05 |
 | TASK-02 | IMPLEMENT | Update UI labels for code 25 | 88% | S | Complete (2026-02-14) | TASK-01 | - |
-| TASK-03 | IMPLEMENT | Add cancellation email template | 92% | S | Pending | - | TASK-04 |
+| TASK-03 | IMPLEMENT | Add cancellation email template | 92% | S | Complete (2026-02-14) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Wire code 27 to MCP | 90% | S | Pending | TASK-01,TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Add code 27 to relevantCodes | 90% | S | Pending | TASK-01,TASK-04 | TASK-11 |
 | TASK-06 | IMPLEMENT | Fix codes 2,3,4 silent failures | 92% | S | Pending | - | - |
@@ -317,6 +317,32 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Notes / references:**
   - Evidence: `packages/mcp-server/data/email-templates.json` (existing templates for reference)
   - Template content approved by Pete in fact-find
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** b16c7328ba
+- **Execution cycle:**
+  - Validation cases executed: TC-01 (JSON validation), TC-02 (template entry check), TC-03 (grep verification)
+  - Cycles: 1 (direct implementation with validation)
+  - Initial validation: Tests created first (test file for structure validation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 92% (Implementation: 95%, Approach: 92%, Impact: 90%)
+  - Post-validation: 92% (confirmed - validation matched expectations)
+  - Delta reason: validation confirmed JSON structure and template fields correct
+- **Validation:**
+  - TC-01 ✓: Template exists with subject="Cancellation Confirmation", body contains "cancelled", category="cancellation"
+  - TC-02 ✓: JSON is valid and well-formed (python json.tool validation passed)
+  - TC-03 ✓: Grep found template (1 occurrence)
+  - Lint: PASS (0 errors, 49 pre-existing warnings in mcp-server unrelated to changes)
+  - Typecheck: Pre-existing errors unrelated to JSON file change
+- **Documentation updated:** None required (internal template data)
+- **Implementation notes:**
+  - Added "Cancellation Confirmation" template to email-templates.json at index 40
+  - Template includes refund policy guidance for both OTA and direct bookings
+  - Template positioned after other cancellation templates in the array
+  - Created test file at packages/mcp-server/data/__tests__/email-templates.test.ts
+  - Total templates in file: 43
 
 ### TASK-04: Wire activity code 27 to MCP email trigger
 - **Type:** IMPLEMENT

@@ -14,7 +14,7 @@ usage() {
   echo "Options:"
   echo "  --read-only       Guard-only mode (no writer lock; use for long audits/dry-runs)"
   echo "  --write           Force write mode (default)"
-  echo "  --timeout <sec>   Lock wait timeout in write mode (default: 300s in non-interactive; 0 = wait forever in interactive)"
+  echo "  --timeout <sec>   Lock wait timeout in write mode (default: 300s in non-interactive agents; 0 = wait forever only in interactive shells)"
   echo "  --poll <sec>      Lock polling interval in write mode (default: 30)"
   echo "  --no-wait         Do not wait for lock in write mode"
   echo "  --wait-forever    Wait indefinitely for lock in write mode"
@@ -149,6 +149,14 @@ fi
 if ! [[ "$lock_poll" =~ ^[0-9]+$ ]]; then
   echo "ERROR: --poll must be an integer number of seconds (0 or greater)." >&2
   exit 2
+fi
+
+# Non-interactive agents must not wait forever, and must poll (check) periodically.
+if [[ ! -t 0 ]]; then
+  lock_poll="30"
+  if [[ "$lock_wait" == "1" ]]; then
+    lock_timeout="300"
+  fi
 fi
 
 writer_lock_args=(--timeout "$lock_timeout" --poll "$lock_poll")

@@ -67,7 +67,7 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
-    - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, default wait is **5 minutes** with a **30s poll** (then stop and report). Use `--wait-forever` (or `--timeout 0`) only when explicitly intended.
+    - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, waiting is **poll-based** (**30s** checks) and **hard-stops after 5 minutes** with an error so the agent can report the issue (stale locks are auto-cleaned only when PID is dead on this host).
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
   - If lock handling blocks your git write:

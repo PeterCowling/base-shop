@@ -15,6 +15,7 @@ It is designed to prevent multiple agents (or a human + agents) from writing to 
 Notes:
 - The lock is stored in the git common dir so it covers all checkouts that share a git dir.
 - `acquire --wait` uses a FIFO queue (first-come, first-served).
+- In non-interactive agent runs, `acquire --wait` polls every 30s and times out after 5 minutes.
 - To use the lock conveniently (and export the token), prefer:
     scripts/agents/with-writer-lock.sh
 EOF
@@ -45,8 +46,8 @@ queue_mutex_meta="${queue_mutex_dir}/meta"
 cmd="${1:-}"
 shift || true
 
-poll_sec="2"
-timeout_sec="0"
+poll_sec=""
+timeout_sec=""
 wait="0"
 force="0"
 print_token="0"
@@ -464,6 +465,28 @@ case "$cmd" in
 
   acquire)
     parse_common_flags "$@"
+    # Default behavior:
+    # - Agents (non-interactive) poll every 30s and give up after 5 minutes.
+    # - Interactive runs default to wait-forever unless caller provides --timeout.
+    if [[ -z "$poll_sec" ]]; then
+      poll_sec="30"
+    fi
+    if [[ -z "$timeout_sec" ]]; then
+      if [[ "$wait" == "1" && ! -t 0 ]]; then
+        timeout_sec="300"
+      else
+        timeout_sec="0"
+      fi
+    fi
+    # Even if the caller requested --timeout 0, non-interactive agent runs must not wait forever.
+    if [[ "$wait" == "1" && ! -t 0 && "$timeout_sec" == "0" ]]; then
+      timeout_sec="300"
+    fi
+    # Keep polling at 30s for non-interactive agent runs (avoid "wait forever without checking").
+    if [[ "$wait" == "1" && ! -t 0 && "$poll_sec" != "30" ]]; then
+      poll_sec="30"
+    fi
+
     start_epoch="$(date +%s)"
     queue_ticket=""
     queue_cleanup_trap() {
@@ -484,6 +507,12 @@ case "$cmd" in
       cleanup_stale_queue_entries
       queue_mutex_unlock
 
+      # If the lock is stale (e.g., previous process crashed), recover it automatically and
+      # retry acquisition immediately (don't wait an extra poll interval).
+      if [[ -d "$lock_dir" ]] && break_stale_lock_if_safe; then
+        echo "Detected stale writer lock; cleaned it. Retrying acquisition immediately." >&2
+      fi
+
       # DS-02: If our own ticket was cleaned (parent PID died), exit immediately
       # rather than attempting to acquire as an orphan.
       if [[ -n "$queue_ticket" && ! -f "${queue_entries_dir}/${queue_ticket}.meta" ]]; then
@@ -499,9 +528,6 @@ case "$cmd" in
         trap - EXIT INT TERM
         exit 0
       fi
-
-      # If the lock is stale (e.g., previous process crashed), recover it automatically.
-      break_stale_lock_if_safe || true
 
       if [[ "$wait" != "1" ]]; then
         queue_mutex_lock
@@ -525,13 +551,20 @@ case "$cmd" in
         now_epoch="$(date +%s)"
         elapsed="$((now_epoch - start_epoch))"
         if [[ "$elapsed" -ge "$timeout_sec" ]]; then
-          echo "ERROR: timed out waiting for writer lock (${timeout_sec}s)" >&2
+          if [[ "$timeout_sec" == "300" ]]; then
+            echo "ERROR: timed out waiting for writer lock (300s / 5 minutes). Giving up to avoid waiting forever." >&2
+          else
+            echo "ERROR: timed out waiting for writer lock (${timeout_sec}s)" >&2
+          fi
           if [[ -n "$queue_ticket" ]]; then
             queue_pos="$(queue_position_for_ticket "$queue_ticket")"
             queue_place="${queue_pos%%:*}"
             queue_total="${queue_pos##*:}"
             echo "Queue position at timeout: ${queue_place}/${queue_total}" >&2
           fi
+          echo "Next steps:" >&2
+          echo "  - Check lock owner: scripts/git/writer-lock.sh status" >&2
+          echo "  - If lock looks stale (dead PID on this host): scripts/git/writer-lock.sh clean-stale" >&2
           print_status >&2
           exit 1
         fi

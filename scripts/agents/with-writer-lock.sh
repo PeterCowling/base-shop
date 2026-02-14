@@ -10,7 +10,7 @@ usage() {
   echo "for child processes (git hooks use this to enforce single-writer commits/pushes)."
   echo ""
   echo "Options:"
-  echo "  --timeout <sec>   Wait timeout while acquiring lock (default: 300s in non-interactive; 0 = wait forever in interactive)"
+  echo "  --timeout <sec>   Wait timeout while acquiring lock (default: 300s in non-interactive agents; 0 = wait forever only in interactive shells)"
   echo "  --poll <sec>      Poll interval while waiting (default: 30)"
   echo "  --no-wait         Do not wait; fail immediately if lock is held"
   echo "  --wait            Wait for lock (default)"
@@ -101,6 +101,14 @@ fi
 if ! [[ "$poll_sec" =~ ^[0-9]+$ ]]; then
   echo "ERROR: --poll must be an integer number of seconds (0 or greater)." >&2
   exit 2
+fi
+
+# Non-interactive agents must not wait forever, and must poll (check) periodically.
+if [[ ! -t 0 ]]; then
+  poll_sec="30"
+  if [[ "$wait_for_lock" == "1" ]]; then
+    timeout_sec="300"
+  fi
 fi
 
 acquire_args=(acquire --timeout "$timeout_sec" --poll "$poll_sec")

@@ -5,7 +5,7 @@ Status: Needs-input
 Domain: Data | Platform
 Workstream: Engineering
 Created: 2026-02-14
-Last-updated: 2026-02-14
+Last-updated: 2026-02-14 12:00 CET
 Feature-Slug: octorate-reservations-extraction
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -163,11 +163,16 @@ Build automated extraction of historical booking/reservation data from Octorate 
   - **Issue**: Can't find `p-select[formcontrolname="type"]` element (10-second timeout)
   - **Last attempted**: 2026-02-14
 
-**Debug Script**:
+**Debug/Diagnostic Scripts**:
 - `packages/mcp-server/debug-reservations-page.mjs` — Page structure inspector
   - **Status**: ❌ Failed to save HTML (`.tmp` directory missing)
   - **Intent**: Capture actual page structure to fix selectors
   - **Last attempted**: 2026-02-14
+- `packages/mcp-server/capture-reservations-page-state.mjs` — Session state validator
+  - **Status**: ✅ Working (executed successfully: 2026-02-14 ~12:00 CET)
+  - **Purpose**: Verify session validity before export attempts
+  - **Outputs**: Screenshot (`.tmp/reservations-page-state.png`), HTML (`.tmp/reservations-page-state.html`), console diagnostics
+  - **Finding**: Session expired, showed login page instead of reservations
 
 **Calendar Export (Reference Implementation)**:
 - `packages/mcp-server/export-via-navigation.mjs` — Working calendar export
@@ -380,16 +385,17 @@ No conflicts expected with reservations extraction work.
   3. Analyze Excel structure to document schema
 - **Blocking**: Yes - cannot design transformation logic without knowing source structure
 
-**Q5: Are we currently on the reservations page or redirected to MFA/login?**
-- **Why it matters**: Export script reaches the reservations URL but can't find expected elements - could be session expired or page structure different
-- **Decision impacted**: Whether we need to re-authenticate or just fix selectors
-- **Decision owner**: Pete (requires manual inspection or debug script success)
-- **How to resolve**:
-  1. Open browser with saved session manually
-  2. Check if we land on reservations page or MFA screen
-  3. If MFA: complete MFA and save new session
-  4. If reservations page: inspect actual element structure
-- **Blocking**: Yes - cannot fix export script without knowing current state
+**Q5: Are we currently on the reservations page or redirected to MFA/login?** ✅ RESOLVED
+- **Answer**: Session expired. URL shows reservations page (`/octobook/user/reservation/list.xhtml`) but content is login page.
+- **Evidence**: `capture-reservations-page-state.mjs` executed successfully (2026-02-14):
+  - Captured HTML contains login form: `<form id="j_idt34" ... action="/octobook/login.xhtml">`
+  - Page elements: username field, password field, "Login now" button
+  - This is JSF/Jakarta Faces behavior: session expiry triggers content change without URL redirect
+  - Element inventory: 0 p-select, 0 datepickers, 0 tree selects, 3 buttons (all login UI)
+- **Discovery**: Angular context points to different URL: `const angularContext = 'https://admin.octorate.com/pms';`
+  - Modern UI may be at `/pms` instead of `/octobook`
+  - Requires investigation after re-authentication
+- **Next action**: Re-run `login-octorate.mjs` to complete MFA and save fresh session
 
 **Q6: What is the historical date range available in Octorate reservations?**
 - **Why it matters**: Need to know how far back we can extract data (affects YoY analysis feasibility)
@@ -553,35 +559,33 @@ No conflicts expected with reservations extraction work.
 
 **Two critical artifacts needed before planning can proceed:**
 
-### Artifact 1: Reservations Page State Capture
+### Artifact 1: Reservations Page State Capture ✅ COMPLETED
 
 **Goal**: Prove whether saved session lands on reservations page or redirects to MFA
 
-**Script**: `packages/mcp-server/capture-reservations-page-state.mjs` (to be created)
+**Script**: `packages/mcp-server/capture-reservations-page-state.mjs` ✅ Created and executed
 
-**Reproducible commands**:
-```bash
-cd packages/mcp-server
-mkdir -p .tmp  # Ensure directory exists (previous failure mode)
-node capture-reservations-page-state.mjs
+**Status**: ✅ COMPLETED (2026-02-14 ~12:00 CET)
+
+**Findings**:
+- **Session status**: ❌ Expired (redirected to login page)
+- **URL**: `https://admin.octorate.com/octobook/user/reservation/list.xhtml` (shows reservations URL)
+- **Page title**: "Octorate" (generic, not specific to reservations)
+- **Page content**: Login form (username, password, "Login now" button)
+- **Element inventory**: 0 PrimeNG components (0 p-select, 0 datepickers, 0 tree selects, 3 buttons)
+- **Captured artifacts**:
+  - `.tmp/reservations-page-state.html` ✅ (login page HTML)
+  - `.tmp/reservations-page-state.png` ✅ (login page screenshot)
+
+**Root cause**: JSF/Jakarta Faces behavior - session expiry triggers content replacement without URL redirect. URL appears correct but content is login page.
+
+**Discovery**: Angular context variable found in HTML:
+```javascript
+const angularContext = 'https://admin.octorate.com/pms';
 ```
+This suggests the modern Angular UI may be at `/pms` instead of `/octobook`. Requires investigation after re-authentication.
 
-**Script behavior**:
-1. Open browser with saved session from `.secrets/octorate/storage-state.json`
-2. Navigate to `https://admin.octorate.com/octobook/user/reservation/list.xhtml`
-3. Wait 10 seconds for page to load/redirect
-4. Capture:
-   - Screenshot: `.tmp/reservations-page-state.png`
-   - Page HTML: `.tmp/reservations-page-state.html`
-   - Current URL → log to console
-   - Page title → log to console
-5. Exit (leave browser open for 5s for manual inspection)
-
-**Success criteria**: Screenshot + HTML saved, console shows current URL and title
-
-**Interpretation**:
-- URL contains `/mfa.xhtml` OR title contains "MFA"/"Authentication" → **Session expired**, run `login-octorate.mjs`
-- URL contains `/reservation/list` OR title contains "Reservations"/"Prenotazioni" → **Session valid**, proceed to Artifact 2
+**Interpretation**: **Session expired** → Must re-run `login-octorate.mjs` to complete MFA and save fresh session before proceeding to Artifact 2.
 
 ---
 
@@ -659,10 +663,21 @@ node capture-reservations-page-state.mjs
 - **Q5 (Critical)**: Are we on the reservations page or redirected to MFA? Need to inspect actual page state.
 - **Q4 (Critical)**: What is the Excel export structure? Need first successful export to analyze.
 
+**Progress update** (2026-02-14 ~12:00 CET):
+- ✅ Artifact 1 completed: Session state captured, diagnosis complete
+- ✅ Q5 resolved: Session expired (login page instead of reservations)
+- ❌ Q4 still blocking: Need first Excel export to document schema
+- ⏳ Next: Re-authenticate, then manual export (Artifact 2)
+
 **Recommended next steps**:
 
-1. **Immediate** (unblock export):
-   - Manually open browser with saved session
+1. **Immediate** (re-authenticate):
+   - Run `login-octorate.mjs` to complete MFA and save fresh session
+   - Verify new session lands on reservations page (not login)
+   - Investigate Angular context: Check if `/pms` URL has different reservations UI
+
+2. **After re-authentication** (unblock export):
+   - Manually open browser with fresh session
    - Check if session valid (on reservations page) or expired (on MFA screen)
    - If expired: complete MFA, save new session
    - If valid: inspect page HTML, save to file, identify correct selectors

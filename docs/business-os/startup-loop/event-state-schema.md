@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Event Ledger + Derived Run State Schema
 
 Canonical schemas for `events.jsonl` (append-only event ledger) and `state.json`

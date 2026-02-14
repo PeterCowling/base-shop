@@ -1,3 +1,10 @@
+---
+Type: Template
+Status: Reference
+Domain: Business-OS
+Last-reviewed: 2026-02-12
+---
+
 # Prompt — S10 Weekly K/P/C/S Decision
 
 Replace all `{{...}}` placeholders before use.

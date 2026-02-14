@@ -1,3 +1,10 @@
+---
+Type: Policy
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Startup Loop Autonomy Policy
 
 Execution policy for the startup loop stage graph. Classifies every stage action

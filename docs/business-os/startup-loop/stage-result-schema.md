@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Stage Result Schema + Data-Plane Ownership Contract
 
 Canonical schema for stage-result files emitted by parallel stage workers.

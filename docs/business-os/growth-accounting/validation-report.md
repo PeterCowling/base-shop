@@ -1,3 +1,10 @@
+---
+Type: Report
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Growth Accounting Validation Report (GAK-08)
 
 Date: 2026-02-13

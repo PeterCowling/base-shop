@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Baseline Prior Schema
 
 Canonical schema for machine-owned priors blocks in baseline artifacts and the prior

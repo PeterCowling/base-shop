@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Bottleneck Diagnosis Schema
 
 Canonical schemas for bottleneck diagnosis artifacts: `bottleneck-diagnosis.json` (per-run snapshot), `bottleneck-history.jsonl` (append-only ledger), and `replan-trigger.json` (lifecycle state). All three are control-plane-owned files.

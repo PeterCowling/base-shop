@@ -1,3 +1,10 @@
+---
+Type: Build-Validation
+Status: Reference
+Domain: Platform
+Last-reviewed: 2026-02-13
+---
+
 # MCP Startup Loop Data Plane Build Validation
 
 ## TASK-01

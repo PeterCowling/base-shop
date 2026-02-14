@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Learning Ledger Schema
 
 Canonical schema for `learning-ledger.jsonl` — the append-only, control-plane-owned

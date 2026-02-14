@@ -115,7 +115,7 @@ Upgrade Brikette's GA4 implementation from basic client-side gtag tracking to a 
 
 ## Active tasks
 
-None — all eligible tasks complete. GA4-09 deferred (70%, below threshold).
+No active tasks — all tasks complete. GA4-09 deferred (70%, below threshold).
 
 ## Parallelism Guide
 

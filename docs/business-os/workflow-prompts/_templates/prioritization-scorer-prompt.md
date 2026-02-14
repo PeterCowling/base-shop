@@ -1,3 +1,10 @@
+---
+Type: Template
+Status: Reference
+Domain: Business-OS
+Last-reviewed: 2026-02-12
+---
+
 # Prompt — S5 Prioritization Scorer
 
 Replace all `{{...}}` placeholders before use.

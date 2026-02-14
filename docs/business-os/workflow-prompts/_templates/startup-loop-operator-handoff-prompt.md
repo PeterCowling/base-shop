@@ -1,3 +1,10 @@
+---
+Type: Template
+Status: Reference
+Domain: Business-OS
+Last-reviewed: 2026-02-12
+---
+
 You are the Startup Loop operator for a single business run.
 
 Your job:

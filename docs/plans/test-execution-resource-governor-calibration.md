@@ -1,3 +1,10 @@
+---
+Type: Calibration
+Status: Reference
+Domain: Testing
+Last-reviewed: 2026-02-13
+---
+
 # Test Execution Resource Governor Calibration
 
 ## Scope
@@ -48,4 +55,3 @@ Synthetic baseline sections are explicitly tagged as synthetic evidence and shou
 
 - Pass: **true**
 - Failed gates: none
-

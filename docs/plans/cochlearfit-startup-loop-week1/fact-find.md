@@ -45,7 +45,7 @@ The business strategy and 90-day outcome contract are already defined in `docs/b
     - Evidence: `docs/business-os/strategy/HEAD/plan.user.md`
   - Avoid medical efficacy claims; position as accessory/comfort/retention.
     - Evidence: `apps/cochlearfit/i18n/en.json` (terms/policy language)
-  - CochlearFit is currently a static-export Next.js app with an external Worker for checkout.
+  - CochlearFit is currently a static-export Next.js app with a separate Cloudflare Worker for Stripe checkout.
     - Evidence: `apps/cochlearfit/README.md`
 - Assumptions:
   - Initial launch geo is Italy.
@@ -69,27 +69,71 @@ The business strategy and 90-day outcome contract are already defined in `docs/b
   - `apps/cochlearfit/src/app/[lang]/checkout/page.tsx` (checkout)
 - Storefront runtime wiring:
   - `apps/cochlearfit/src/app/[lang]/layout.tsx` passes `products` into `CartProvider`.
-- Catalog sources (currently inconsistent):
-  - Server catalog: `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts` reads `data/shops/cochlearfit/{products,variants,inventory}.json`.
-  - Client catalog helper: `apps/cochlearfit/src/lib/catalog.ts` reads `apps/cochlearfit/src/data/products.ts`.
+- Checkout backend (separate Worker):
+  - Evidence: `apps/cochlearfit/README.md` (worker + routing expectations)
 
 ### Key Modules / Files
-- Product definition (i18n-keyed): `apps/cochlearfit/src/data/products.ts` (USD pricing + placeholder Stripe price IDs).
-- UI expects i18n keys for product strings:
-  - `apps/cochlearfit/src/components/ProductDetail.tsx` uses `t(product.*)`.
-  - `apps/cochlearfit/src/app/[lang]/product/[slug]/page.tsx` uses `t(product.name)` for metadata.
+#### Catalog and Pricing
+- In-repo fallback catalog (i18n-keyed): `apps/cochlearfit/src/data/products.ts`.
+- Server-side catalog loader + data-backed path: `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts`.
+- Client catalog helper (for client components, default arg): `apps/cochlearfit/src/lib/catalog.ts`.
 - Data directory for CochlearFit catalog is empty in-repo (currently only `.DS_Store`).
   - Evidence: `data/shops/cochlearfit/`
 
+#### Cart
+- Cart state management: `apps/cochlearfit/src/contexts/cart/CartContext.tsx`.
+- Cart persistence: `apps/cochlearfit/src/contexts/cart/cartStorage.ts` (localStorage key `cochlearfit:cart`).
+
+#### Checkout and Confirmation
+- Worker topology and required env vars: `apps/cochlearfit/README.md`.
+- Thank-you flow depends on reading checkout session status (worker GET endpoint).
+  - Evidence: `docs/plans/commerce-core-readiness-plan.md` (COM-302 notes on GET session details)
+
+#### Policies / Compliance Copy
+- EU terms (and brand disclaimers): `apps/cochlearfit/i18n/en.json`, `apps/cochlearfit/i18n/it.json`.
+
+### Deployment Topology & Configuration (Supplement)
+This section integrates the useful parts of the retired deployment-readiness fact-find (now merged here).
+
+**Deployment channels**
+- Cloudflare Pages (frontend static export).
+- Cloudflare Worker (backend `/api/*` for checkout + Stripe webhooks).
+- Stripe hosted checkout (external redirect).
+
+**Frontend build/deploy shape**
+- Static export preview and Pages dev flow exist.
+  - Evidence: `apps/cochlearfit/package.json` (`preview`, `preview:pages`)
+
+**Frontend env**
+- Optional: `NEXT_PUBLIC_API_BASE_URL` (points frontend to worker when not same-origin).
+  - Evidence: `apps/cochlearfit/README.md`
+
+**Worker env/secrets (Wrangler)**
+- Required secrets:
+  - `STRIPE_SECRET_KEY`
+  - `STRIPE_WEBHOOK_SECRET`
+  - `INVENTORY_AUTHORITY_TOKEN`
+- Required env vars:
+  - `SITE_URL` (used for Stripe return URLs)
+  - `PAGES_ORIGIN` (used for CORS/allowed origin)
+  - `INVENTORY_AUTHORITY_URL`
+  - Evidence: `apps/cochlearfit/README.md`
+
+**Inventory validation behavior (worker)**
+- Checkout creation should fail-closed when inventory validation fails/unavailable (launch risk if misconfigured).
+  - Evidence: `docs/plans/commerce-core-readiness-fact-find.md` (inventory authority contract + fail-closed posture)
+
+**Compliance notes (current posture)**
+- PCI: Stripe hosted checkout keeps card data out of our worker.
+- GDPR: cart payload is client-side localStorage; avoid introducing PII into storage/events.
+
 ### Current Gaps (Launch-Blocking)
-- Catalog risk: server catalog reads from empty `data/shops/cochlearfit/` which implies product lists can render empty in real runtime (and `CartProvider` will have no variant mapping).
-  - Evidence: `apps/cochlearfit/src/app/[lang]/layout.tsx`, `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts`, `data/shops/cochlearfit/`
-- i18n contract mismatch risk: server catalog returns localized strings, but components/tests treat product fields as i18n keys.
-  - Evidence: `apps/cochlearfit/src/components/ProductDetail.tsx`, `apps/cochlearfit/__tests__/pages.test.tsx`
-- Pricing/currency mismatch vs Italy launch: products are currently priced in `USD` in code.
+- Pricing/currency mismatch vs Italy launch: products are currently priced in `USD` in the in-repo fallback catalog.
   - Evidence: `apps/cochlearfit/src/data/products.ts` vs `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
-- Stripe integration readiness is currently placeholder-driven in some paths.
-  - Evidence: `apps/cochlearfit/src/data/products.ts` builds `stripePriceId: price_${...}`
+- Stripe integration readiness is placeholder-driven in the fallback catalog (`price_${...}`).
+  - Evidence: `apps/cochlearfit/src/data/products.ts`
+- Data-backed catalog path (`data/shops/cochlearfit/*`) is not populated, so ops cannot update pricing/stock without code changes yet.
+  - Evidence: `data/shops/cochlearfit/`, `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts`
 - Measurement: no obvious analytics instrumentation in `apps/cochlearfit/src` (needs explicit plan).
 
 ### Related Plans
@@ -186,7 +230,7 @@ The business strategy and 90-day outcome contract are already defined in `docs/b
 
 ## Confidence Inputs (for /lp-plan)
 - Implementation: 80%
-  - App/test patterns exist; key gap is catalog/source-of-truth alignment.
+  - App/test patterns exist; key gap is pricing/Stripe readiness and measurement instrumentation.
 - Approach: 70%
   - Week-1 needs speed-to-learning; long-term commerce convergence decisions remain open.
 - Impact: 75%
@@ -199,21 +243,22 @@ The business strategy and 90-day outcome contract are already defined in `docs/b
 ## Risks
 | Risk | Likelihood | Impact | Mitigation / Open Question |
 |------|-----------|--------|---------------------------|
-| Storefront shows empty/incorrect catalog due to server/client source mismatch | High | High | Unify catalog contract and add regression tests |
 | EUR/Italy launch conflicts with USD pricing in code | Medium | High | Decide currency/pricing and encode in single source of truth |
+| Placeholder Stripe price IDs accidentally ship | High | High | Make placeholder ID grep a validation gate |
 | Checkout appears “working” but payment success is low due to payment-method mismatch | Medium | High | Run reliability pack before spend; ship required methods |
+| Inventory authority URL/token misconfigured blocks checkout | Medium | High | Add explicit preflight and a clear fail-closed policy |
 | Returns spike due to compatibility confusion | Medium | High | Publish compatibility guidance + tag return reasons day 1 |
 
 ## Planning Constraints & Notes
 - Keep HEAD guardrails as coded in strategy docs; do not “move goalposts” mid-week.
-- Prefer changes that preserve a clean long-term path (e.g., a fallback catalog strategy instead of ripping out future data-driven catalog).
+- Prefer changes that preserve a clean long-term path (e.g., add a data-backed catalog later rather than ripping out the model).
 
 ## Suggested Task Seeds (Non-binding)
-- Unify CochlearFit catalog source-of-truth and i18n contract.
 - Decide Week-1 checkout architecture (worker vs platform).
 - Define EUR pricing + Stripe price mapping and remove placeholder IDs.
 - Add measurement events required for weekly scorecard.
 - Publish compatibility/fit guidance surface and support path.
+- Add a data-backed catalog packet (`data/shops/cochlearfit/*`) if ops needs no-code updates.
 
 ## Execution Routing Packet
 - Primary execution skill: `/lp-build`

@@ -106,9 +106,9 @@ Chosen: Option A.
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | BIC v0.1 types + errors + risk/redaction (pure) + mcp-server Jest config | 88% | M | Complete (2026-02-14) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 |
 | TASK-02 | IMPLEMENT | Session + observation epoch engine (stateful) | 82% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07, TASK-10 |
-| TASK-03 | SPIKE | CDP AX extraction + backend node resolution + selector builder (fixtures + unit tests) | 82% | L | Pending | TASK-01 | TASK-06 |
-| TASK-04 | IMPLEMENT | Observe shaping (ranking + paging + forms derivation) (pure) | 85% | M | Pending | TASK-01 | TASK-06 |
-| TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 85% | M | Pending | TASK-01 | TASK-07 |
+| TASK-03 | SPIKE | CDP AX extraction + backend node resolution + selector builder (fixtures + unit tests) | 87% | L | Complete (2026-02-14) | TASK-01 | TASK-06 |
+| TASK-04 | IMPLEMENT | Observe shaping (ranking + paging + forms derivation) (pure) | 90% | M | Complete (2026-02-14) | TASK-01 | TASK-06 |
+| TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 90% | M | Complete (2026-02-14) | TASK-01 | TASK-07 |
 | TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Pending | TASK-02 | TASK-06, TASK-07 |
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 82% | M | Pending | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 78% | L | Pending | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |

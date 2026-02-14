@@ -1,3 +1,10 @@
+---
+Type: Template
+Status: Reference
+Domain: Business-OS
+Last-reviewed: 2026-02-12
+---
+
 # Deep Research Prompt — Market Intelligence Pack
 
 Replace all `{{...}}` placeholders, then submit to Deep Research.

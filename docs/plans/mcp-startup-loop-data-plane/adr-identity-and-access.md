@@ -1,3 +1,10 @@
+---
+Type: ADR
+Status: Accepted
+Domain: Platform
+Last-reviewed: 2026-02-13
+---
+
 # ADR: MCP Startup-Loop Identity and Access Model
 
 - Date: 2026-02-13

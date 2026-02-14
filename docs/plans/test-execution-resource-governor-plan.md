@@ -181,6 +181,11 @@ Event schema (MVP):
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
+## Active tasks
+
+- TEG-07: Run multi-day calibration soak and finalize tuned class budgets/overrides (INVESTIGATE; Blocked; 76%)
+- TEG-09: Add drift prevention (docs lint + policy updates + operator docs) (IMPLEMENT; Pending; 84%)
+
 ## Confidence Gate Policy
 
 - IMPLEMENT build threshold: `>=80%`.

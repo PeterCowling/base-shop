@@ -1,3 +1,10 @@
+---
+Type: Reference
+Status: Canonical
+Domain: Business-OS
+Last-reviewed: 2026-02-13
+---
+
 # Baseline Manifest Schema
 
 Canonical schema for `baseline.manifest.json` — the control-plane-owned pointer file

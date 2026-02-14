@@ -86,6 +86,10 @@ This plan operationalizes the highest-priority BRIK P1 item from the startup-loo
 
 **Max parallelism:** 3 | **Critical path:** 2 waves | **Total tasks:** 4
 
+## Active tasks
+
+- TASK-04: Add direct test coverage plan for `reportWebVitals.ts` to raise testability confidence (INVESTIGATE; Pending; 76%)
+
 ## Tasks
 
 ### TASK-01: Capture event-level verification evidence (`web_vitals`, `begin_checkout`) in measurement note

@@ -894,6 +894,36 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/growth-accounting/ledger-schema.md",
+    "type": "Reference",
+    "status": "Draft",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/growth-accounting/metrics-adapter-contract.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/growth-accounting/operator-guide.md",
+    "type": "Runbook",
+    "status": "Active",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/growth-accounting/store-contract.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/growth-accounting/validation-report.md",
+    "type": "Report",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
     "path": "docs/business-os/hypothesis-portfolio/integration-guide.md",
     "type": "Guide",
     "status": "Active",
@@ -904,6 +934,18 @@
     "type": "Runbook",
     "status": "Active",
     "domain": "Platform"
+  },
+  {
+    "path": "docs/business-os/hypothesis-portfolio/schema.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Business OS"
+  },
+  {
+    "path": "docs/business-os/hypothesis-portfolio/storage-contract.md",
+    "type": "Reference",
+    "status": "Active",
+    "domain": "Business OS"
   },
   {
     "path": "docs/business-os/ideas-go-faster-legacy-control-mapping.md",
@@ -1080,6 +1122,78 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md",
+    "type": "Market-Intelligence-Pack",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/BRIK/latest.user.md",
+    "type": "Market-Intelligence-Pointer",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HBAG/latest.user.md",
+    "type": "Market-Intelligence-Pointer",
+    "status": "Missing",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md",
+    "type": "Market-Intelligence-Pack",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/HEAD/latest.user.md",
+    "type": "Market-Intelligence-Pointer",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/PET/2026-02-12-market-intelligence.user.md",
+    "type": "Market-Intelligence-Pack",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/PET/latest.user.md",
+    "type": "Market-Intelligence-Pointer",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/PIPE/latest.user.md",
+    "type": "Market-Intelligence-Pointer",
+    "status": "Missing",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/XA/latest.user.md",
+    "type": "Market-Intelligence-Pointer",
+    "status": "Missing",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/market-research/_templates/market-intelligence-pack-template.user.md",
+    "type": "Market-Intelligence-Pack",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/people/people.agent.md",
     "type": "People-Profile",
     "status": "Active",
@@ -1090,6 +1204,30 @@
     "type": "People-Profile",
     "status": "Active",
     "domain": null
+  },
+  {
+    "path": "docs/business-os/platform-capability/2026-02-12-platform-capability-baseline.user.md",
+    "type": "Platform-Capability-Baseline",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/business-os/platform-capability/_templates/deep-research-platform-capability-baseline-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/platform-capability/_templates/platform-capability-baseline-template.user.md",
+    "type": "Platform-Capability-Baseline",
+    "status": "Draft",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/business-os/platform-capability/latest.user.md",
+    "type": "Platform-Capability-Pointer",
+    "status": "Active",
+    "domain": "Platform"
   },
   {
     "path": "docs/business-os/readiness/2026-02-10-ideas-readiness.agent.md",
@@ -1170,6 +1308,84 @@
     "domain": "Business OS"
   },
   {
+    "path": "docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md",
+    "type": "Deep-Research-Prompt",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md",
+    "type": "Site-Upgrade-Brief",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/BRIK/latest.user.md",
+    "type": "Site-Upgrade-Pointer",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/HBAG/latest.user.md",
+    "type": "Site-Upgrade-Pointer",
+    "status": "Missing",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md",
+    "type": "Site-Upgrade-Brief",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/HEAD/latest.user.md",
+    "type": "Site-Upgrade-Pointer",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/PET/2026-02-12-upgrade-brief.user.md",
+    "type": "Site-Upgrade-Brief",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/PET/latest.user.md",
+    "type": "Site-Upgrade-Pointer",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/PIPE/latest.user.md",
+    "type": "Site-Upgrade-Pointer",
+    "status": "Missing",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/XA/latest.user.md",
+    "type": "Site-Upgrade-Pointer",
+    "status": "Missing",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/site-upgrades/_templates/site-upgrade-brief-template.user.md",
+    "type": "Site-Upgrade-Brief",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-baselines/BRIK-forecast-seed.user.md",
+    "type": "Startup-Baseline-Seed",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/startup-baselines/BRIK-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
@@ -1200,10 +1416,58 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/startup-loop-current-vs-proposed.user.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "Venture-Studio"
+  },
+  {
     "path": "docs/business-os/startup-loop-workflow.user.md",
     "type": "Workflow-Guide",
     "status": "Active",
     "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/business-os/startup-loop/autonomy-policy.md",
+    "type": "Policy",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/baseline-prior-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/bottleneck-diagnosis-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/event-state-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/learning-ledger-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/manifest-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/startup-loop/stage-result-schema.md",
+    "type": "Reference",
+    "status": "Canonical",
+    "domain": "Business-OS"
   },
   {
     "path": "docs/business-os/strategy/BOS/plan.agent.md",
@@ -1214,6 +1478,12 @@
   {
     "path": "docs/business-os/strategy/BOS/plan.user.md",
     "type": "Business-Plan",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/2026-02-12-apartment-revenue-architecture.user.md",
+    "type": "Fact-Find",
     "status": "Active",
     "domain": null
   },
@@ -1238,6 +1508,36 @@
   {
     "path": "docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md",
     "type": "Historical-Performance-Baseline",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md",
+    "type": "Measurement-Verification",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md",
+    "type": "Prioritization-Scorecard",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md",
+    "type": "Forecast-Summary",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md",
+    "type": "Forecast",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md",
+    "type": "Weekly-KPCS-Decision",
     "status": "Active",
     "domain": null
   },
@@ -1528,6 +1828,78 @@
     "type": "Prompt-Pack-Index",
     "status": "Active",
     "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/existing-business-historical-baseline-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/forecast-recalibration-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md",
+    "type": "Prompt-Template",
+    "status": "Active",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/monthly-channel-economics-refresh-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/monthly-market-pulse-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/prioritization-scorer-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/quarterly-regulatory-claims-watch-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/readiness-blocker-interview-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/startup-loop-operator-handoff-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
+  },
+  {
+    "path": "docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md",
+    "type": "Template",
+    "status": "Reference",
+    "domain": "Business-OS"
   },
   {
     "path": "docs/cms-plan/index.md",
@@ -1962,12 +2334,6 @@
     "domain": "CMS"
   },
   {
-    "path": "docs/plans/ab-testing-framework-plan.md",
-    "type": "Plan",
-    "status": "Active",
-    "domain": "Platform"
-  },
-  {
     "path": "docs/plans/administrative-debt-plan.md",
     "type": "Plan",
     "status": "Active",
@@ -1990,6 +2356,12 @@
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "DevEx/Tooling"
+  },
+  {
+    "path": "docs/plans/archive/ab-testing-framework-plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/archive/advanced-similarity-metrics-nmi-calibration.md",
@@ -3006,6 +3378,18 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/brik-ga4-baseline-lock/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/plans/brik-ga4-baseline-lock/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Venture-Studio"
+  },
+  {
     "path": "docs/plans/brik-ga4-world-class-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -3206,7 +3590,7 @@
   {
     "path": "docs/plans/growth-accounting-kernel-plan.md",
     "type": "Plan",
-    "status": "Active",
+    "status": "Archived",
     "domain": "Platform"
   },
   {
@@ -3261,6 +3645,12 @@
     "path": "docs/plans/holt-winters-forecasting-plan.md",
     "type": "Plan",
     "status": "Archived",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/hypothesis-portfolio-manager-calibration.md",
+    "type": "Reference",
+    "status": "Active",
     "domain": "Platform"
   },
   {
@@ -3390,9 +3780,57 @@
     "domain": "Automation"
   },
   {
+    "path": "docs/plans/lp-skill-system-sequencing-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Active",
+    "domain": "Venture-Studio"
+  },
+  {
     "path": "docs/plans/mcp-server-implementation-plan.md",
     "type": "Plan",
     "status": "Draft",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane-wave-2/impact-map.md",
+    "type": "Analysis",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane/adr-identity-and-access.md",
+    "type": "ADR",
+    "status": "Accepted",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane/build-validation.md",
+    "type": "Build-Validation",
+    "status": "Reference",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/mcp-startup-loop-data-plane/plan.md",
+    "type": "Plan",
+    "status": "Complete",
     "domain": "Infrastructure"
   },
   {
@@ -3496,6 +3934,36 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/startup-loop-markdown-for-agents/decisions/markdown-adapter-policy.md",
+    "type": "ADR",
+    "status": "Accepted",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/startup-loop-markdown-for-agents/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/startup-loop-markdown-for-agents/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Infrastructure"
+  },
+  {
+    "path": "docs/plans/test-execution-resource-governor-calibration.md",
+    "type": "Calibration",
+    "status": "Reference",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/plans/test-execution-resource-governor-fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Testing/Infra"
   },
   {
     "path": "docs/plans/test-execution-resource-governor-plan.md",

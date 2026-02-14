@@ -267,7 +267,7 @@ Worker (Needs fixes):
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-02, TASK-09 |
 | TASK-21 | IMPLEMENT | Fix ESLint flat-config crash (unblock Worker lint) | 85% | S | Complete (2026-02-14) | - | TASK-14 |
-| TASK-22 | IMPLEMENT | Add `x-shop-id` to inventory authority requests (Worker) | 85% | M | Pending | TASK-18, TASK-21 | TASK-02 |
+| TASK-22 | IMPLEMENT | Add `x-shop-id` to inventory authority requests (Worker) | 85% | M | Complete (2026-02-14) | TASK-18, TASK-21 | TASK-02 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -494,6 +494,25 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Note: This is safe to ship before TASK-02 completes; it only adds a header on already-authenticated requests.
 - **Documentation impact:**
   - Update `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` to document shop context requirements (header/body) and align with `apps/cms` authority behavior.
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** d59b87afc5
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 85% (validation confirmed)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/cochlearfit-worker test -- inventory-authority-shop-id` — PASS
+  - Ran: `pnpm --filter @apps/cochlearfit-worker typecheck` — PASS
+  - Ran: `pnpm --filter @apps/cochlearfit-worker lint` — PASS
+- **Documentation updated:** `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
+- **Implementation notes:**
+  - Worker now sends `x-shop-id: cochlearfit` when calling the inventory authority.
+  - Added a unit test that asserts header presence and keeps request body items-only.
 
 ### TASK-03: Select and configure email service
 - **Type:** IMPLEMENT

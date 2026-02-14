@@ -145,6 +145,9 @@ export default [
       "react-hooks/refs": "off",
       "react-hooks/purity": "off",
       "react-hooks/static-components": "off",
+      "react-hooks/unsupported-syntax": "off",
+      "react-hooks/use-memo": "off",
+      "react-hooks/preserve-manual-memoization": "off",
     },
   },
 

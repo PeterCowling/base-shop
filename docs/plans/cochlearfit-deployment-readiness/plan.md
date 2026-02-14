@@ -262,7 +262,7 @@ Worker (Needs fixes):
 | TASK-14 | IMPLEMENT | Add minimal Worker tests (pre-launch) | 75% ⚠️ | S | Pending | TASK-18 | TASK-12 |
 | TASK-15 | IMPLEMENT | Document fulfillment runbook (draft pre-launch) | 85% | S | Pending | TASK-01 | - |
 | TASK-16 | IMPLEMENT | Add comprehensive Worker tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
-| TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Pending | TASK-05 | TASK-09, TASK-10 |
+| TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Complete (2026-02-14) | TASK-05 | TASK-09, TASK-10 |
 | TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Pending | TASK-05 | TASK-14 |
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Pending | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Pending | - | TASK-02, TASK-09 |
@@ -1438,6 +1438,23 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-01: Secret hygiene → `rg -n "REPLACE_ME|dev-inventory-token|INVENTORY_AUTHORITY_TOKEN\s*=\s*"" apps/cochlearfit-worker/wrangler.toml` → no matches
   - TC-02: Topology present → inspect `wrangler.toml` → `[env.staging]` and `[env.production]` exist
   - TC-03: Build → `pnpm --filter @apps/cochlearfit-worker build` → PASS
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 26e93dfeec
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03
+  - Cycles: 1
+  - Final validation: PASS
+- **Validation Evidence:**
+  - `rg -n "REPLACE_ME|dev-inventory-token|INVENTORY_AUTHORITY_TOKEN\s*=\s*\"\"" apps/cochlearfit-worker/wrangler.toml` — PASS (no matches)
+  - `pnpm --filter @apps/cochlearfit-worker build` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker typecheck` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker lint` — PASS
+- **Documentation updated:** `docs/plans/cochlearfit-deployment-readiness/worker-config.md` (new)
+- **Implementation notes:**
+  - Replaced committed token placeholders in `apps/cochlearfit-worker/wrangler.toml` with non-secret vars + per-env topology (`[env.staging]`, `[env.production]`).
+  - No secret values are committed; secrets remain `wrangler secret put --env <staging|production>` responsibilities (TASK-09).
 
 ### TASK-18: Spike: Jest test harness for cochlearfit-worker
 - **Type:** SPIKE

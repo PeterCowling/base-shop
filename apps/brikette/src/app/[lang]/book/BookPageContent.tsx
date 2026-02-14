@@ -49,9 +49,14 @@ function getOrderedRooms(sku: string | null) {
   return list;
 }
 
-function fireCheckoutGA4(roomSku: string, plan: "flex" | "nr", confirmUrl: string | undefined, checkin: string, checkout: string) {
+export function fireCheckoutGA4(
+  roomSku: string,
+  plan: "flex" | "nr",
+  checkin: string,
+  checkout: string
+) {
   const win = window as unknown as { gtag?: (...args: unknown[]) => void };
-  if (typeof win.gtag === "function" && confirmUrl) {
+  if (typeof win.gtag === "function") {
     const nights = calcNights(checkin, checkout);
     const price = roomsData.find((r) => r.sku === roomSku)?.basePrice?.amount ?? 0;
     win.gtag("event", "begin_checkout", {
@@ -133,8 +138,7 @@ function BookPageContent({ lang }: Props) {
   );
 
   const fireCheckoutEvent = useCallback(
-    (roomSku: string, plan: "flex" | "nr", confirmUrl?: string) =>
-      fireCheckoutGA4(roomSku, plan, confirmUrl, checkin, checkout),
+    (roomSku: string, plan: "flex" | "nr") => fireCheckoutGA4(roomSku, plan, checkin, checkout),
     [checkin, checkout]
   );
 
@@ -165,12 +169,12 @@ function BookPageContent({ lang }: Props) {
       setUnavailableFor(null);
       setAlternatives(null);
 
+      fireCheckoutEvent(roomSku, plan);
+
       try {
         const params = buildConfirmParams(roomSku, plan);
         const res = await fetch(`/api/octorate/confirm-link?${params.toString()}`);
         const data = await res.json();
-
-        fireCheckoutEvent(roomSku, plan, data?.confirmUrl);
 
         if (data.status === "available" && data.confirmUrl) {
           window.location.assign(data.confirmUrl as string);

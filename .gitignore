@@ -128,3 +128,6 @@ packages/types/src/**/*.d.ts.map
 # OAuth tokens (contain access/refresh tokens)
 **/token.json
 docs/plans/email-autodraft-consolidation-baseline-sample.txt
+
+# GA4 service-account keys (local only)
+.secrets/ga4/*.json

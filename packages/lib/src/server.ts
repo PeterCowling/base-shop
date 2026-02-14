@@ -9,3 +9,6 @@ export * from "./logger/index.server";
 // Server-only: generateMeta (uses fs module)
 export type { GeneratedMeta, ProductData } from "./generateMeta";
 export { generateMeta } from "./generateMeta";
+
+// Server-only: growth ledger persistence (uses fs module)
+export * from "./growth/store";

@@ -89,6 +89,31 @@ export function parseWave2MetricRecord(input: unknown): Wave2MetricRecord {
   return wave2MetricRecordSchema.parse(input);
 }
 
+export const contentSourceRecordSchema = z.object({
+  schemaVersion: z.literal("content.source.v1"),
+  sourceId: z.string().min(1),
+  url: z.string().url(),
+  requestUrl: z.string().url(),
+  finalUrl: z.string().url(),
+  fetchedAt: z.string().datetime({ offset: true }),
+  status: z.number().int().nonnegative(),
+  contentType: z.string().nullable(),
+  markdownPath: z.string().min(1),
+  checksum: z.string().min(1),
+  charCount: z.number().int().nonnegative(),
+  truncated: z.boolean(),
+  quality: wave2QualitySchema,
+  qualityNotes: z.array(z.string()).default([]),
+  coverage: wave2CoverageSchema,
+  provenance: wave2ProvenanceSchema,
+});
+
+export type ContentSourceRecord = z.infer<typeof contentSourceRecordSchema>;
+
+export function parseContentSourceRecord(input: unknown): ContentSourceRecord {
+  return contentSourceRecordSchema.parse(input);
+}
+
 function coverageRatio(coverage: Wave2Coverage): number {
   if (coverage.expectedPoints <= 0) {
     return 0;

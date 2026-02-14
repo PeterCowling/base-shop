@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Startup-Loop 90-Day Forecast (v1)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Startup-Loop 90-Day Forecast (v1)</h1>
+<h2>Input Packet</h2>
+<ul>
+<li>Business: <code>BRIK</code> (Brikette)</li>
+<li>Launch surface: <code>website-live</code></li>
+<li>Horizon: 90 days (<code>2026-02-14</code> to <code>2026-05-13</code>)</li>
+<li>Core inputs:
+<ul>
+<li><code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code></li>
+<li><code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></li>
+</ul>
+</li>
+</ul>
+<h2>Launch Surface Mode</h2>
+<ul>
+<li>Mode used: <code>website-live</code></li>
+<li>Forecast focus: sessions, bookings, net booking value, channel mix, and guardrails for paid/cancellation risk.</li>
+<li>Constraint: GA4/Search Console core setup is now live, but event-level verification and first 7-day baseline are still in progress.</li>
+</ul>
+<h2>1) Scenario Summary (P10 / P50 / P90)</h2>
+<p>Calibration anchors:</p>
+<ul>
+<li>(observed) 2025-02..2025-05 net booking value: EUR 212,882.66 total (avg EUR 53,220.67/month).</li>
+<li>(observed) 2025-02..2025-05 bookings: 786 total (avg 196.5/month).</li>
+<li>(observed) Weighted realized value per booking in that window: EUR 270.84.</li>
+<li>(observed) Direct share in that window: 21.8% (<code>Direct:171 / Total:786</code>).</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Metric (90-day total)</th>
+<th align="right">P10</th>
+<th align="right">P50</th>
+<th align="right">P90</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tracked sessions (GA4)</td>
+<td align="right">32,000</td>
+<td align="right">40,000</td>
+<td align="right">48,000</td>
+</tr>
+<tr>
+<td>Session -> booking CVR</td>
+<td align="right">1.6%</td>
+<td align="right">1.9%</td>
+<td align="right">2.1%</td>
+</tr>
+<tr>
+<td>Total bookings</td>
+<td align="right">512</td>
+<td align="right">760</td>
+<td align="right">1,008</td>
+</tr>
+<tr>
+<td>Realized value per booking (EUR)</td>
+<td align="right">250</td>
+<td align="right">270</td>
+<td align="right">285</td>
+</tr>
+<tr>
+<td>Net booking value (EUR)</td>
+<td align="right">128,000</td>
+<td align="right">205,200</td>
+<td align="right">287,280</td>
+</tr>
+<tr>
+<td>Direct booking share</td>
+<td align="right">22%</td>
+<td align="right">27%</td>
+<td align="right">32%</td>
+</tr>
+<tr>
+<td>Direct bookings</td>
+<td align="right">113</td>
+<td align="right">205</td>
+<td align="right">323</td>
+</tr>
+<tr>
+<td>OTA bookings</td>
+<td align="right">399</td>
+<td align="right">555</td>
+<td align="right">685</td>
+</tr>
+<tr>
+<td>Paid spend (retargeting + high-intent search) EUR</td>
+<td align="right">9,000</td>
+<td align="right">12,000</td>
+<td align="right">16,000</td>
+</tr>
+<tr>
+<td>Paid-attributed bookings</td>
+<td align="right">70</td>
+<td align="right">140</td>
+<td align="right">220</td>
+</tr>
+<tr>
+<td>Paid CAC (EUR)</td>
+<td align="right">128.57</td>
+<td align="right">85.71</td>
+<td align="right">72.73</td>
+</tr>
+<tr>
+<td>Contribution margin after channel costs</td>
+<td align="right">15%</td>
+<td align="right">22%</td>
+<td align="right">30%</td>
+</tr>
+<tr>
+<td>Contribution margin value (EUR)</td>
+<td align="right">19,200</td>
+<td align="right">45,144</td>
+<td align="right">86,184</td>
+</tr>
+</tbody>
+</table>
+<p>Interpretation:</p>
+<ul>
+<li>P50 is slightly below the same-season historical window and assumes recovery through conversion-quality improvements, not broad demand expansion.</li>
+<li>P90 requires successful execution of the S6 backlog priorities (policy clarity, mobile performance, offer module, cancellation instrumentation).</li>
+<li>P10 reflects weaker execution and/or slower instrumentation reliability.</li>
+</ul>
+<h2>2) Unit Economics (Per Scenario)</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th align="right">P10</th>
+<th align="right">P50</th>
+<th align="right">P90</th>
+<th>Evidence type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Realized booking value/order (EUR)</td>
+<td align="right">250</td>
+<td align="right">270</td>
+<td align="right">285</td>
+<td>observed anchor + assumption band</td>
+</tr>
+<tr>
+<td>Blended CVR</td>
+<td align="right">1.6%</td>
+<td align="right">1.9%</td>
+<td align="right">2.1%</td>
+<td>assumption (to be measured)</td>
+</tr>
+<tr>
+<td>Paid CAC (EUR)</td>
+<td align="right">128.57</td>
+<td align="right">85.71</td>
+<td align="right">72.73</td>
+<td>assumption (bounded by channel guardrails)</td>
+</tr>
+<tr>
+<td>Direct share of bookings</td>
+<td align="right">22%</td>
+<td align="right">27%</td>
+<td align="right">32%</td>
+<td>observed anchor + assumption uplift</td>
+</tr>
+<tr>
+<td>Realized-value leakage pressure (cancellations/refunds)</td>
+<td align="right">high</td>
+<td align="right">medium</td>
+<td align="right">controlled</td>
+<td>assumption (reason coding not complete yet)</td>
+</tr>
+<tr>
+<td>Contribution margin after channel cost</td>
+<td align="right">15%</td>
+<td align="right">22%</td>
+<td align="right">30%</td>
+<td>assumption (requires measured channel + cancellation mix)</td>
+</tr>
+</tbody>
+</table>
+<p>Decision-grade note:</p>
+<ul>
+<li>This v1 forecast is operationally usable for guardrails and sequencing, but not fully decision-grade until event-level GA4 checks and 7-14 day measured funnel baselines are captured.</li>
+</ul>
+<h2>3) Channel Ranges (S3 working set for BRIK)</h2>
+<p>No S6B channel artifact exists yet, so this section uses the active S2/S6 evidence set as a provisional channel model.</p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Traffic/session share range</th>
+<th>Booking conversion expectation</th>
+<th align="right">CAC range (EUR)</th>
+<th>Why this range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Organic search + content discovery</td>
+<td>40%-50%</td>
+<td>1.7%-2.2%</td>
+<td align="right">n/a</td>
+<td>Large multilingual footprint + SEO demand capture</td>
+</tr>
+<tr>
+<td>Direct/referral/repeat (CRM-assisted)</td>
+<td>30%-40%</td>
+<td>2.0%-2.8%</td>
+<td align="right">n/a</td>
+<td>Existing brand demand + direct-offer mechanics</td>
+</tr>
+<tr>
+<td>Paid retargeting + high-intent search</td>
+<td>15%-25%</td>
+<td>1.2%-1.9%</td>
+<td align="right">70-130</td>
+<td>Keep spend constrained until attribution quality improves</td>
+</tr>
+<tr>
+<td>OTA share (booking outcome channel)</td>
+<td>65%-78% of bookings in baseline; target gradual direct-share lift</td>
+<td>n/a</td>
+<td align="right">n/a</td>
+<td>Historical booking export shows OTA-dominant mix</td>
+</tr>
+</tbody>
+</table>
+<h2>4) First-14-Day Validation Plan (Primary Output)</h2>
+<h3>Metrics + Thresholds</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Day-7 threshold</th>
+<th>Day-14 threshold</th>
+<th>Data source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tracked sessions</td>
+<td>>= 2,800</td>
+<td>>= 6,000</td>
+<td>GA4 traffic reports</td>
+</tr>
+<tr>
+<td>Session -> booking CVR</td>
+<td>>= 1.4% with >= 2,500 sessions</td>
+<td>>= 1.6% with >= 5,000 sessions</td>
+<td>GA4 + booking confirmation events</td>
+</tr>
+<tr>
+<td>Paid CAC</td>
+<td>&#x3C;= EUR 110</td>
+<td>&#x3C;= EUR 95</td>
+<td>Ad platforms + booking joins</td>
+</tr>
+<tr>
+<td>Direct booking share</td>
+<td>>= 21%</td>
+<td>>= 23%</td>
+<td>Monthly/weekly booking export channel split</td>
+</tr>
+<tr>
+<td>Booking-step p75 performance</td>
+<td>&#x3C;= 2.8s</td>
+<td>&#x3C;= 2.5s</td>
+<td>Web-vitals + RUM pipeline</td>
+</tr>
+<tr>
+<td>Cancellation reason coding coverage</td>
+<td>>= 80%</td>
+<td>>= 90%</td>
+<td>Ops + booking cancellation logs</td>
+</tr>
+</tbody>
+</table>
+<h3>Decision Gates</h3>
+<ol>
+<li>If CVR &#x3C; 1.2% after >= 5,000 sessions, pause spend increases and prioritize S6 P1 funnel fixes.</li>
+<li>If paid CAC > EUR 130 for 7 consecutive days, reduce paid to retargeting-only mode.</li>
+<li>If direct share stays &#x3C; 20% by day 14, accelerate member-rate/perk experiment from S6 backlog.</li>
+<li>If p75 booking-step load > 3.0s for 3 consecutive days, freeze offer experiments until performance is restored.</li>
+<li>If measurement event coverage is &#x3C; 95% for core funnel events, block scale decisions and classify outcome as <code>insufficient-sample</code>.</li>
+</ol>
+<h3>14-Day Execution Sequence</h3>
+<ol>
+<li>Confirm event-level measurement (<code>web_vitals</code>, <code>begin_checkout</code>, booking confirmation) in GA4 UI.</li>
+<li>Launch policy/fee clarity module on top booking routes/locales.</li>
+<li>Launch one controlled direct-offer cohort test (<code>member-rate</code> vs control).</li>
+<li>Start cancellation reason coding with standardized taxonomy.</li>
+<li>Review KPI thresholds on Day 7 and Day 14; trigger re-forecast if any hard gate fails.</li>
+</ol>
+<h2>5) Assumption Register (with confidence tags)</h2>
+<table>
+<thead>
+<tr>
+<th>Assumption</th>
+<th>Confidence</th>
+<th>Evidence / basis</th>
+<th>Impact if wrong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>90-day demand can recover toward historical shoulder-to-peak pattern</td>
+<td>Medium</td>
+<td>2025-02..2025-05 baseline + strong macro demand in S2 pack</td>
+<td>Revenue bands overstate achievable bookings</td>
+</tr>
+<tr>
+<td>Direct share can rise from ~22% to ~27% in base case</td>
+<td>Medium</td>
+<td>Competitor loyalty/perk patterns + S6 priority backlog</td>
+<td>Margin and net-value gains are delayed</td>
+</tr>
+<tr>
+<td>CVR can move into 1.6%-2.1% range with funnel improvements</td>
+<td>Medium-Low</td>
+<td>S2 priors + S6 implementation plan</td>
+<td>P50/P90 booking bands are too optimistic</td>
+</tr>
+<tr>
+<td>Paid CAC can be contained under EUR 95 in base case</td>
+<td>Low-Medium</td>
+<td>Retargeting/high-intent constrained spend strategy</td>
+<td>Paid channel contribution turns negative</td>
+</tr>
+<tr>
+<td>Contribution margin can reach 22% in base case</td>
+<td>Low-Medium</td>
+<td>Unit-econ prior corridor in S2 + assumed cancellation control</td>
+<td>Forecasted value creation is overstated</td>
+</tr>
+<tr>
+<td>Measurement readiness is sufficient for 14-day gating</td>
+<td>Medium</td>
+<td>2026-02-13 measurement verification doc</td>
+<td>Forecast remains hypothesis-grade beyond Day 14</td>
+</tr>
+</tbody>
+</table>
+<h2>6) Source List</h2>
+<p>Internal (primary):</p>
+<ul>
+<li><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/net_value_by_month.csv</code></li>
+<li><code>docs/business-os/strategy/BRIK/data/bookings_by_month.csv</code></li>
+<li><code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></li>
+<li><code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code></li>
+<li><code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code></li>
+</ul>
+<p>External references reused from active S2/S6 evidence set (accessed 2026-02-13):</p>
+<ul>
+<li><a href="https://www.istat.it/en/archivio/299062">https://www.istat.it/en/archivio/299062</a></li>
+<li><a href="https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/statistiche_ITI_04072025.pdf?language_id=1">https://www.bancaditalia.it/pubblicazioni/indagine-turismo-internazionale/2025-indagine-turismo-internazionale/statistiche_ITI_04072025.pdf?language_id=1</a></li>
+<li><a href="https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251020-1">https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251020-1</a></li>
+<li><a href="https://www.hostelworldgroup.com/sites/default/files/2025-03/Hostelworld%20FY24%20Annual%20Report.pdf">https://www.hostelworldgroup.com/sites/default/files/2025-03/Hostelworld%20FY24%20Annual%20Report.pdf</a></li>
+<li><a href="https://www.booking.com/genius.html">https://www.booking.com/genius.html</a></li>
+<li><a href="https://www.airbnb.com/help/article/1857">https://www.airbnb.com/help/article/1857</a></li>
+<li><a href="https://www.meininger-hotels.com/en/meininger-club/">https://www.meininger-hotels.com/en/meininger-club/</a></li>
+<li><a href="https://www.aohostels.com/en/aoclub/">https://www.aohostels.com/en/aoclub/</a></li>
+<li><a href="https://www.st-christophers.co.uk/rewards">https://www.st-christophers.co.uk/rewards</a></li>
+</ul>
+<h2>7) Next Recalibration Trigger</h2>
+<p>Run <code>forecast-recalibration</code> as soon as either condition is met:</p>
+<ul>
+<li>first complete 14-day measured data window is available, or</li>
+<li>any hard decision gate in section 4 fails.</li>
+</ul>
+<p>Target recalibration artifact path:</p>
+<ul>
+<li><code>docs/business-os/strategy/BRIK/2026-02-27-forecast-recalibration.user.md</code></li>
+</ul>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md</code></div>
+      <div>Generated: 2026-02-13T22:29:37.044Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

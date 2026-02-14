@@ -326,6 +326,8 @@ const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   /ALLOW_EN_FALLBACKS=1 set; found \d+ English strings/,
   /\[WARN\] i18n parity\/quality issues found/,
   /\[WARN\] Guide content parity\/quality issues found/,
+  // Funnel metrics extractor expected warnings (BL-02)
+  /\[extractFunnelMetrics\] Failed to read/,
   /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,
   // Firebase RTDB emits permission_denied warnings during security rules tests
   /@firebase\/database: FIREBASE WARNING:/,

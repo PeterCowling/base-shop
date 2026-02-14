@@ -2,7 +2,7 @@
 Type: Runbook
 Status: Canonical
 Domain: Repo
-Last-reviewed: 2026-02-10
+Last-reviewed: 2026-02-13
 ---
 
 # AGENTS.md — Operational Runbook
@@ -117,6 +117,44 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
+
+## Skills
+
+A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
+
+### Available `lp-*` skills
+
+- `lp-baseline-merge`: Join startup-loop fan-out outputs into a baseline snapshot/manifest at S4. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
+- `lp-brand-bootstrap`: Bootstrap `brand-language.user.md` for a business entering the startup loop. (file: `.claude/skills/lp-brand-bootstrap/SKILL.md`)
+- `lp-build`: Execute approved plan tasks with confidence gating and required validation. (file: `.claude/skills/lp-build/SKILL.md`)
+- `lp-channels`: Build startup channel strategy + GTM plan from offer outputs. (file: `.claude/skills/lp-channels/SKILL.md`)
+- `lp-design-qa`: Audit implemented UI against design spec/system, accessibility, and responsiveness. (file: `.claude/skills/lp-design-qa/SKILL.md`)
+- `lp-design-spec`: Convert requirements into concrete frontend design specs mapped to design tokens/system. (file: `.claude/skills/lp-design-spec/SKILL.md`)
+- `lp-design-system`: Apply design tokens/system patterns correctly and avoid arbitrary UI values. (file: `.claude/skills/lp-design-system/SKILL.md`)
+- `lp-experiment`: Run startup experiment design/readout workflow for S8/S10 build-measure-decide loops. (file: `.claude/skills/lp-experiment/SKILL.md`)
+- `lp-fact-find`: Gather evidence/context before planning or as a standalone briefing. (file: `.claude/skills/lp-fact-find/SKILL.md`)
+- `lp-forecast`: Produce startup 90-day P10/P50/P90 scenario forecasts. (file: `.claude/skills/lp-forecast/SKILL.md`)
+- `lp-guide-audit`: Run English-guide SEO audit and iterative fixes. (file: `.claude/skills/lp-guide-audit/SKILL.md`)
+- `lp-guide-improve`: Entry point for guide improvement workflow (audit, translation, or both). (file: `.claude/skills/lp-guide-improve/SKILL.md`)
+- `lp-launch-qa`: Run pre-launch QA gate for startup loop readiness (conversion, SEO, performance, legal). (file: `.claude/skills/lp-launch-qa/SKILL.md`)
+- `lp-measure`: Bootstrap startup measurement infrastructure pre-launch or post-launch. (file: `.claude/skills/lp-measure/SKILL.md`)
+- `lp-offer`: Build startup offer artifact (ICP, positioning, pricing, objections). (file: `.claude/skills/lp-offer/SKILL.md`)
+- `lp-onboarding-audit`: Audit product onboarding using the "Onboarding Done Right" checklist and produce a planning-ready brief. (file: `.claude/skills/lp-onboarding-audit/SKILL.md`)
+- `lp-plan`: Create confidence-gated execution plans and auto-continue to build when eligible. (file: `.claude/skills/lp-plan/SKILL.md`)
+- `lp-prioritize`: Rank startup go-items and select top priorities to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
+- `lp-readiness`: Run startup preflight gate before offer-building. (file: `.claude/skills/lp-readiness/SKILL.md`)
+- `lp-refactor`: Refactor React components for maintainability, performance, and pattern quality. (file: `.claude/skills/lp-refactor/SKILL.md`)
+- `lp-replan`: Resolve low-confidence plan tasks with additional evidence and decisions. (file: `.claude/skills/lp-replan/SKILL.md`)
+- `lp-seo`: Produce phased SEO strategy (keywords, clusters, SERP, technical, snippets). (file: `.claude/skills/lp-seo/SKILL.md`)
+- `lp-sequence`: Topologically sequence/renumber plan tasks and dependency metadata. (file: `.claude/skills/lp-sequence/SKILL.md`)
+- `lp-site-upgrade`: Create layered website-upgrade strategy and `lp-fact-find` handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
+
+### How to use `lp-*` skills
+
+- Trigger rule: if a user asks for a specific `lp-*` skill (for example `/lp-plan`) or the task clearly matches one above, load that skill file and follow it.
+- Progressive loading: read only the needed sections first; load referenced files on-demand.
+- Path resolution: resolve relative paths from the skill directory before trying alternatives.
+- Reuse over rewrite: prefer referenced templates/scripts/assets shipped with the skill.
 
 ## Confidence Index (CI) Policy (Planning)
 

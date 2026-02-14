@@ -3,8 +3,8 @@ Type: Workflow-Guide
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-12
-Last-reviewed: 2026-02-12
+Updated: 2026-02-13
+Last-reviewed: 2026-02-13
 Owner: Pete
 ---
 
@@ -52,6 +52,76 @@ flowchart TD
 Rule: BRIK does not proceed past S2/S6 while the historical baseline is missing or draft.
 When S2A is blocked due to missing data, the workflow must hand the user the S2A data-request prompt and pause progression until the data pack is supplied.
 
+### 2.2 Human Operator View: MCP Overlay + Data Connections
+
+```mermaid
+flowchart LR
+    subgraph LOOP[Startup Loop Control]
+      U[Operator / Skill Runner] --> ST[S0..S10 stage execution]
+    end
+
+    subgraph MCP[MCP Data Plane - packages/mcp-server]
+      PG[Policy gate\nallowedStages + permission + sideEffects]
+      BOSR[bos_cards_list\nbos_stage_doc_get]
+      LOOPR[loop_manifest_status\nloop_learning_ledger_status\nloop_metrics_summary]
+      BOSW[bos_stage_doc_patch_guarded]
+      MEAS[measure_* connectors\nwave-2 planned]
+    end
+
+    subgraph SOURCES[Pull Sources]
+      API[Business OS agent API\napps/business-os/src/app/api/agent/*]
+      RUN[startup-loop run artifacts\ndocs/business-os/startup-baselines/[BIZ]/runs/*\nstages/*/stage-result.json]
+      DOCS[Strategy + readiness docs\ndocs/business-os/strategy/*\ndocs/business-os/readiness/*]
+      APPS[Operational apps\napps/brikette + apps/prime + apps/reception]
+      EXT[External analytics\nGA4 + Search Console + Cloudflare]
+    end
+
+    subgraph SINKS[Push / Process Targets]
+      D1[BOS persisted entities\ncards + stage docs]
+      LEDGER[S10 outputs\ndata/shops/[shopId]/growth-ledger.json\nstages/S10/growth-event-payload.json]
+      PLAN[Planning artifacts\ndocs/plans/* + docs/business-os/*.user.md]
+    end
+
+    ST --> PG
+    PG --> BOSR
+    PG --> LOOPR
+    PG --> BOSW
+    PG -. planned .-> MEAS
+
+    BOSR -- pull --> API
+    LOOPR -- pull --> RUN
+    LOOPR -- pull --> DOCS
+    MEAS -. pull .-> APPS
+    MEAS -. pull .-> EXT
+
+    BOSW -- guarded push --> API
+    API --> D1
+    ST --> LEDGER
+    ST --> PLAN
+```
+
+What this means for operators:
+
+1. `bos_*` and `loop_*` tools are the current MCP startup-loop tools and are policy-gated by stage.
+2. `measure_*` tools are not in current wave and remain a planned dependency for stronger S2A/S3/S10 measurement.
+3. Writes to BOS remain guarded (`entitySha` + stage policy) through API contracts.
+
+### 2.3 Open Tasks (Required Now, Simple Language)
+
+| Required task | Why it is required | Evidence path |
+|---|---|---|
+| HEAD and PET operational confirmations are required. | Forecasts cannot become decision-grade without stock/date/units/price/compatibility/payments/returns confirmation. | `docs/business-os/startup-loop-workflow.user.md` section 5.2 and 5.3 |
+| HEAD and PET forecast recalibration documents are required. | Weekly decisions need measured data, not only seed assumptions. | `docs/business-os/startup-loop-workflow.user.md` section 5.2 and 5.3 |
+| BRIK GA4 verification for `web_vitals` plus post-deploy 7-day `begin_checkout` report confirmation is required. | S2A measurement is partially closed: live `begin_checkout` collect is verified, but report-level closure is pending until refreshed extraction confirms sustained signal. | `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
+| BRIK first 7-day measured KPI baseline is now locked; weekly refresh is required. | Baseline now exists, but decision quality depends on continuous refresh and restoring non-zero funnel/vitals signals. | `docs/business-os/strategy/BRIK/plan.user.md`; `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
+| BRIK day-14 forecast recalibration artifact is required. | S3 v1 assumptions must be replaced with measured week-1/2 evidence for reliable scale decisions. | `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md` |
+| BRIK prioritization execution routing packet is active; P1-01 baseline lock and production checkout deployment alignment are complete, and next action is post-deploy report refresh plus P1-02/P1-03 execution. | Routing and baseline artifacts are in place; remaining risk is execution throughput and signal restoration at report level. | `docs/plans/brik-ga4-baseline-lock/fact-find.md`; `docs/plans/brik-ga4-baseline-lock/plan.md`; `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`; `docs/business-os/strategy/BRIK/plan.user.md` |
+| BRIK weekly decision cadence continuation is required. | First S10 artifact exists, but loop health depends on sustained weekly decision updates. | `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md` |
+| Startup standing refresh artifacts are required. | Market/channel/regulatory inputs go stale without periodic refresh documents. | `docs/business-os/startup-loop-workflow.user.md` section 5.1 and 12 |
+| MCP TASK-05 identity/deployment decision is required. | Guarded write rollout cannot proceed safely without this decision. | `docs/plans/mcp-startup-loop-data-plane/plan.md` TASK-05 |
+| MCP TASK-06 guarded BOS write rollout is required. | S5B/S7/S8/S9/S10 write paths need governed MCP write capability. | `docs/plans/mcp-startup-loop-data-plane/plan.md` TASK-06 |
+| MCP wave-2 `measure_*` connectors are required. | S2A/S3/S10 need normalized cross-source measurement contracts. | `docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md` |
+
 ## 3) Website Upgrade Sub-Loop
 
 ```mermaid
@@ -86,7 +156,7 @@ Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1
 | S8. Plan | Fact-find brief | Confidence-gated implementation plan | Plan doc with tasks/VCs/checkpoints |
 | S9. Build | Approved plan tasks | Implement + validate + track outputs | Shipped work + validation evidence |
 | S9B. QA gates | Build outputs + design spec + performance budget | Launch QA, design QA, measurement verification | QA report + go/no-go recommendation |
-| S10. Weekly decision loop | KPI scoreboard + gate metrics + costs + operational reliability | K/P/C/S decisioning | Continue/Pivot/Scale/Kill decision + loop-back updates |
+| S10. Weekly decision loop | KPI scoreboard + gate metrics + costs + operational reliability + growth ledger outputs (`stage_statuses`, `overall_status`, `guardrail_signal`, `threshold_set_hash`) | K/P/C/S decisioning + replayability check against growth event payload | Continue/Pivot/Scale/Kill decision + linked growth artifacts (`stages/S10/stage-result.json`, `data/shops/{shopId}/growth-ledger.json`, `stages/S10/growth-event-payload.json`) + loop-back updates |
 
 ## 5) Current Missing Information (HEAD, PET, and BRIK)
 
@@ -101,13 +171,13 @@ Resolved recently (no longer missing):
 - Market intelligence packs are active for HEAD and PET:
   - `docs/business-os/market-research/HEAD/latest.user.md`
   - `docs/business-os/market-research/PET/latest.user.md`
-- BRIK market intelligence seed is active:
+- BRIK market intelligence pack is active (decision-grade):
   - `docs/business-os/market-research/BRIK/latest.user.md`
 - HEAD site-upgrade brief is active:
   - `docs/business-os/site-upgrades/HEAD/latest.user.md`
 - PET site-upgrade brief is active:
   - `docs/business-os/site-upgrades/PET/latest.user.md`
-- BRIK site-upgrade seed is active:
+- BRIK site-upgrade brief is active (decision-grade):
   - `docs/business-os/site-upgrades/BRIK/latest.user.md`
 - Intake packets are active for HEAD and PET:
   - `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
@@ -122,12 +192,15 @@ Resolved recently (no longer missing):
 - Outcome contracts are now locked in canonical plans:
   - `docs/business-os/strategy/HEAD/plan.user.md`
   - `docs/business-os/strategy/PET/plan.user.md`
-- Prioritization scorecards are active for HEAD and PET:
+  - `docs/business-os/strategy/BRIK/plan.user.md`
+- Prioritization scorecards are active for HEAD, PET, and BRIK:
   - `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md`
   - `docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md`
-- Weekly K/P/C/S decision logs have started for HEAD and PET:
+  - `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`
+- Weekly K/P/C/S decision logs have started for HEAD, PET, and BRIK:
   - `docs/business-os/strategy/HEAD/2026-02-12-weekly-kpcs-decision.user.md`
   - `docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md`
+  - `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md`
 
 ### 5.2 HEAD-specific gaps
 
@@ -152,46 +225,47 @@ Resolved recently (no longer missing):
 
 | Stage | Missing information | Gap type | Evidence |
 |---|---|---|---|
-| S1 Readiness | Outcome contract is not yet in startup-loop canonical format | Input/contract gap | `docs/business-os/strategy/BRIK/plan.user.md` |
-| S1 Readiness | Baseline demand/conversion metrics still unmeasured | Input missing | `docs/business-os/strategy/BRIK/plan.user.md` metrics section |
+| S1 Readiness | Outcome contract is now in canonical startup-loop format; maintain weekly refresh against measured data | Freshness/cadence risk | `docs/business-os/strategy/BRIK/plan.user.md`; `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` |
+| S1 Readiness | First 7-day measured baseline is now locked (sessions/users/page_view); conversion and vitals signals remain zero in current window | Signal-quality gap | `docs/business-os/strategy/BRIK/plan.user.md` metrics section; `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
 | S2A Historical baseline | Baseline is active but Cloudflare proxies are partial (11/24 months request totals only; no page/geo/device splits) and older months are unavailable under current access | Data quality gap | `docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md` (`Status: Active`); `docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv`; `docs/business-os/strategy/BRIK/data/data_quality_notes.md` |
-| S2A Measurement setup | GA4 + Search Console are still not configured in production, so funnel/source conversion analysis remains unavailable | Input/instrumentation gap | `docs/business-os/strategy/BRIK/plan.user.md`; setup note: `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md` |
-| S2 Market intelligence | Seed pack exists but Deep Research completion is still pending | Output quality gap | `docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md` (`Status: Draft`); handoff prompt: `docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md` |
-| S3 Forecasting | BRIK startup-loop forecast artifact not yet created | Output missing | No `docs/business-os/strategy/BRIK/*forecast*.user.md` aligned to startup-loop model |
-| S4 Baseline merge | BRIK forecast seed artifact not yet created | Output missing | No `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` |
-| S5 Prioritization | No explicit scored prioritization artifact exists yet | Output missing | No `docs/business-os/strategy/BRIK/*-prioritization-scorecard.user.md` |
-| S6 Website synthesis | Seed brief exists but Deep Research completion is still pending | Output quality gap | `docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md` (`Status: Draft`); handoff prompt: `docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md` |
-| S10 Weekly decision loop | No weekly decision artifact exists yet | Output missing | No `docs/business-os/strategy/BRIK/*-weekly-kpcs-decision.user.md` |
+| S2A Measurement setup | Data API access is enabled, first extract is captured, and production click-path now verifies live `begin_checkout` collection after deployment alignment; `web_vitals` verification and refreshed report-window confirmation remain pending | Signal-quality/verification gap | `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md`; `docs/business-os/strategy/BRIK/plan.user.md`; setup note: `docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md` |
+| S2 Market intelligence | Decision-grade pack is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md` |
+| S3 Forecasting | Startup-loop forecast artifact is now active (`v1`); first measured-data recalibration remains pending | Refresh/recalibration risk | `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md` (`Status: Active`); exec summary: `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md` |
+| S4 Baseline merge | Forecast seed is active and integrated into canonical plan; next action is controlled refresh/recalibration after measured week-1/2 data | Refresh/recalibration risk | `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md` (`Status: Active`) + `docs/business-os/strategy/BRIK/plan.user.md` |
+| S5 Prioritization | Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open | Execution sequencing risk | `docs/plans/brik-ga4-baseline-lock/fact-find.md`; `docs/plans/brik-ga4-baseline-lock/plan.md`; `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md` (`Status: Active`) |
+| S6 Website synthesis | Decision-grade brief is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md` |
+| S10 Weekly decision loop | First weekly decision artifact is now active; maintain strict weekly cadence and link to gate evidence | Cadence risk | `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md` (`Status: Active`) |
 
 ## 6) Current State Snapshot by Stage (HEAD vs PET vs BRIK)
 
 | Stage | HEAD | PET | BRIK |
 |---|---|---|---|
 | S0 Intake | Canonical intake packet active | Canonical intake packet active | Canonical intake packet active |
-| S1 Readiness | Mapping gate clear; business-level outcome/metrics gaps remain | Mapping gate clear; business-level outcome/metrics gaps remain | Mapping gate clear; outcome/metrics contract needs startup-loop normalization |
-| S2A Historical baseline | Not required (startup mode) | Not required (startup mode) | Baseline active with partial Cloudflare coverage; GA4/Search Console still missing |
-| S2 Market intelligence | Active canonical output (`latest` active) | Active canonical output (`latest` active) | Seed active; Deep Research completion pending |
+| S1 Readiness | Mapping gate clear; business-level outcome/metrics gaps remain | Mapping gate clear; business-level outcome/metrics gaps remain | Mapping gate clear; outcome contract normalized, but measured baseline metrics remain incomplete |
+| S2A Historical baseline | Not required (startup mode) | Not required (startup mode) | Baseline active with partial Cloudflare coverage; GA4/Search Console core setup verified, event-level verification pending |
+| S2 Market intelligence | Active canonical output (`latest` active) | Active canonical output (`latest` active) | Active canonical output (`latest` active; decision-grade) |
 | S2B Offer design | Not yet started | Not yet started | Not yet started |
-| S3 Forecast | v2 + market-intelligence inputs exist; still needs operational confirmations | v2 + market-intelligence inputs exist; still not decision-grade without observed data | Startup-loop forecast artifact missing |
+| S3 Forecast | v2 + market-intelligence inputs exist; still needs operational confirmations | v2 + market-intelligence inputs exist; still not decision-grade without observed data | Startup-loop forecast artifact active (`v1`); recalibration pending after first 14-day measured window |
 | S6B Channel strategy + GTM | Not yet started | Not yet started | Not yet started |
-| S4 Baseline merge | Draft seed exists (pre-merge format) | Draft seed exists (pre-merge format) | Forecast seed missing |
-| S5A Prioritize | Scored prioritization artifact active | Scored prioritization artifact active | Scored prioritization artifact missing |
+| S4 Baseline merge | Draft seed exists (pre-merge format) | Draft seed exists (pre-merge format) | Seed active and integrated into canonical plan |
+| S5A Prioritize | Scored prioritization artifact active | Scored prioritization artifact active | Scored prioritization artifact active |
 | S5B BOS sync | Not yet started | Not yet started | Not yet started |
-| S6 Website best-of synthesis | Active brief available | Active brief available | Seed brief active; Deep Research completion pending |
-| S7 Fact-find handoff quality | Possible but weaker due missing upstream canonical artifacts | Possible but weaker due missing upstream canonical artifacts | Possible but currently weak due missing S2/S4/S6 artifacts |
-| S8/S9 Plan/Build | Available in process, but depends on stronger upstream inputs | Available in process, but depends on stronger upstream inputs | Available in process, but startup-loop inputs need completion first |
+| S6 Website best-of synthesis | Active brief available | Active brief available | Active brief available (`latest` active; decision-grade) |
+| S7 Fact-find handoff quality | Possible but weaker due missing upstream canonical artifacts | Possible but weaker due missing upstream canonical artifacts | Possible with improved quality; still constrained by measurement completeness and S6B artifact gaps |
+| S8/S9 Plan/Build | Available in process, but depends on stronger upstream inputs | Available in process, but depends on stronger upstream inputs | Available in process; confidence improved after S2/S3/S4/S5/S6 completion, still constrained by instrumentation completeness |
 | S9B QA gates | Not yet started | Not yet started | Not yet started |
-| S10 Weekly decision loop | Active weekly decision log started | Active weekly decision log started | Weekly decision log missing |
+| S10 Weekly decision loop | Active weekly decision log started | Active weekly decision log started | Active weekly decision log started |
 
 ## 7) Minimal Closure Set to Make the Loop Operationally Strong
 
-1. Resolve HEAD and PET operational confirmations from seeds (`stock/date/units/price/compatibility/payments/returns SLA`).
-2. Create first forecast recalibration artifacts for HEAD and PET from week-1/2 observed data.
-3. Execute BRIK GA4 + Search Console setup and validate event capture in production.
-4. Complete BRIK Deep Research upgrades for market intelligence and site-upgrade seed docs.
-5. Create BRIK forecast seed + prioritization scorecard + first weekly decision log.
-6. Start periodic standing refresh artifacts (market pulse, channel economics, regulatory watch).
-7. Register `HOLDCO` in business catalog (taxonomy hygiene item from readiness warning).
+1. HEAD and PET operational confirmations are required (`stock/date/units/price/compatibility/payments/returns SLA`).
+2. HEAD and PET forecast recalibration artifacts from measured week-1/2 data are required.
+3. BRIK GA4 Realtime/DebugView verification for `web_vitals` and `begin_checkout` is required.
+4. BRIK weekly baseline refresh is required, with non-zero `begin_checkout`/`web_vitals` signal restoration or explicit root-cause evidence.
+5. BRIK S2/S6 Deep Research freshness checks (monthly or on major outcome/ICP/channel/product change) are required.
+6. BRIK sustained weekly decision cadence and first measured-data forecast recalibration are required.
+7. Standing refresh artifacts (market pulse, channel economics, regulatory watch) are required.
+8. `HOLDCO` registration in business catalog is required (taxonomy hygiene item from readiness warning).
 
 ## 8) Practical Reading Order for Operators
 
@@ -351,6 +425,12 @@ These are recurring research prompts for standing information refresh.
 | Channel economics refresh | Monthly | CPC/CAC/CVR/returns shift or spend-plan review cycle | `docs/business-os/workflow-prompts/_templates/monthly-channel-economics-refresh-prompt.md` | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-channel-economics-refresh.user.md` |
 | Regulatory and claims watch | Quarterly | New policy/compliance/claims risks in target region | `docs/business-os/workflow-prompts/_templates/quarterly-regulatory-claims-watch-prompt.md` | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-regulatory-claims-watch.user.md` |
 
+Markdown source artifact contract for standing refresh:
+
+- Collector index path: `docs/business-os/startup-baselines/<BIZ>/runs/<runId>/collectors/content/sources.index.json`
+- Markdown artifact path pattern: `docs/business-os/startup-baselines/<BIZ>/runs/<runId>/collectors/content/<sourceId>.md`
+- Operators must pass the index path into monthly/quarterly refresh prompts and keep citations aligned to persisted artifacts.
+
 Generic operator hand-off message:
 
 ```text
@@ -360,6 +440,8 @@ Use prompt template:
 {{PROMPT_TEMPLATE_PATH}}
 
 Fill placeholders using latest canonical docs for {{BIZ}}.
+Use persisted source index:
+{{MARKDOWN_SOURCE_INDEX_PATH}}
 
 Save result to:
 {{OUTPUT_PATH}}

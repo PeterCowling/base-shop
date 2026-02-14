@@ -36,6 +36,7 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/boards", label: "Boards" },
+  { href: "/workflows", label: "Workflows" },
   { href: "/ideas", label: "Ideas" },
   { href: "/people", label: "People" },
   { href: "/plans", label: "Plans" },
@@ -72,11 +73,11 @@ function mapAutomationBadgeState(payload: AutomationStatusResponse): AutomationB
 function badgeClasses(state: AutomationBadgeState): string {
   switch (state) {
     case "Healthy":
-      return "border border-emerald-300 bg-emerald-50 text-emerald-900";
+      return "border border-success-soft bg-success-soft text-success-fg";
     case "Attention":
-      return "border border-amber-300 bg-amber-50 text-amber-900";
+      return "border border-warning-soft bg-warning-soft text-warning-fg";
     default:
-      return "border border-slate-300 bg-slate-100 text-slate-700";
+      return "border border-border-2 bg-surface-1 text-secondary";
   }
 }
 

@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LP Skills System Sequencing + Parallelization Fact-Find</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>LP Skills System Sequencing + Parallelization Fact-Find</h1>
+<h2>1) Scope</h2>
+<p>Audit how the <code>lp-*</code> skill system currently composes end-to-end through Startup Loop, with emphasis on:</p>
+<ol>
+<li>Stage-to-stage sequencing integrity.</li>
+<li>Skill-to-skill contract integrity (inputs, outputs, names, paths).</li>
+<li>Parallelization opportunities that are safe and high-leverage.</li>
+</ol>
+<h2>2) Executive Summary</h2>
+<p>The LP skill library is materially stronger in coverage and includes clear specialist roles (<code>lp-offer</code>, <code>lp-forecast</code>, <code>lp-channels</code>, <code>lp-site-upgrade</code>, <code>lp-fact-find</code>, <code>lp-plan</code>, <code>lp-build</code>, <code>lp-replan</code>, <code>lp-sequence</code>, QA/measurement skills).<br>
+The main current risk is not missing capability; it is contract drift between:</p>
+<ol>
+<li>The Startup Loop workflow guide.</li>
+<li>The <code>/startup-loop</code> wrapper skill.</li>
+<li>Individual <code>lp-*</code> skill file contracts.</li>
+</ol>
+<p>Highest-impact sequencing breaks are:</p>
+<ol>
+<li>Stage model drift (<code>S2B/S6B/S9B</code> exists in skill but not workflow/prompt contract).</li>
+<li>Artifact path drift (<code>lp-offer</code>/<code>lp-channels</code> flat files vs <code>lp-forecast</code> nested directories).</li>
+<li>Handoff filename drift (<code>-fact-find.md</code> vs <code>-lp-fact-find.md</code>).</li>
+<li>BOS lane/persistence drift (<code>S5</code> requires API card writes, but <code>lp-prioritize</code> explicitly does not persist).</li>
+<li>Launch path drift (<code>lp-launch-qa</code> expects <code>/lp-launch</code> and <code>loop-state.json</code>, neither currently wired in loop contract/artifacts).</li>
+</ol>
+<h2>3) Current Composition Map</h2>
+<h3>3.1 Skills inventory (LP family)</h3>
+<p>Current LP-prefixed skills discovered:
+<code>lp-brand-bootstrap</code>, <code>lp-build</code>, <code>lp-channels</code>, <code>lp-design-qa</code>, <code>lp-design-spec</code>, <code>lp-design-system</code>, <code>lp-experiment</code>, <code>lp-fact-find</code>, <code>lp-forecast</code>, <code>lp-guide-audit</code>, <code>lp-guide-improve</code>, <code>lp-launch-qa</code>, <code>lp-measure</code>, <code>lp-offer</code>, <code>lp-onboarding-audit</code>, <code>lp-plan</code>, <code>lp-prioritize</code>, <code>lp-readiness</code>, <code>lp-refactor</code>, <code>lp-replan</code>, <code>lp-seo</code>, <code>lp-sequence</code>, <code>lp-site-upgrade</code>.</p>
+<p>Evidence: <code>.claude/skills</code> listing.</p>
+<h3>3.2 Intended stage routes in <code>/startup-loop</code></h3>
+<p><code>/startup-loop</code> currently defines:</p>
+<ol>
+<li><code>S1 -> /lp-readiness</code></li>
+<li><code>S2B -> /lp-offer</code></li>
+<li><code>S3 -> /lp-forecast</code></li>
+<li><code>S5 -> /lp-prioritize</code></li>
+<li><code>S6 -> /lp-site-upgrade</code></li>
+<li><code>S6B -> /lp-channels, /lp-seo, /draft-outreach</code></li>
+<li><code>S7 -> /lp-fact-find</code></li>
+<li><code>S8 -> /lp-plan</code></li>
+<li><code>S9 -> /lp-build</code></li>
+<li><code>S9B -> /lp-launch-qa, /lp-design-qa, /lp-measure</code></li>
+<li><code>S10 -> /lp-experiment</code></li>
+</ol>
+<p>Evidence: <code>.claude/skills/startup-loop/SKILL.md:62</code>, <code>.claude/skills/startup-loop/SKILL.md:67</code>, <code>.claude/skills/startup-loop/SKILL.md:68</code>, <code>.claude/skills/startup-loop/SKILL.md:70</code>, <code>.claude/skills/startup-loop/SKILL.md:71</code>, <code>.claude/skills/startup-loop/SKILL.md:72</code>, <code>.claude/skills/startup-loop/SKILL.md:73</code>, <code>.claude/skills/startup-loop/SKILL.md:74</code>, <code>.claude/skills/startup-loop/SKILL.md:75</code>, <code>.claude/skills/startup-loop/SKILL.md:76</code>, <code>.claude/skills/startup-loop/SKILL.md:77</code>.</p>
+<h2>4) Sequencing Findings (Stage-to-Stage, Skill-to-Skill)</h2>
+<h3>4.1 High-severity findings</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Why it breaks flow</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQ-01</td>
+<td>Workflow guide and wrapper skill use different stage graphs</td>
+<td>Operators cannot follow one canonical stage progression; automation and human execution will diverge</td>
+<td>Workflow table only defines <code>S0,S1,S1B,S2A,S2,S3,S4,S5,S6,S7,S8,S9,S10</code> in <code>docs/business-os/startup-loop-workflow.user.md:69</code>; wrapper adds <code>S2B,S6B,S9B</code> in <code>.claude/skills/startup-loop/SKILL.md:67</code>, <code>.claude/skills/startup-loop/SKILL.md:72</code>, <code>.claude/skills/startup-loop/SKILL.md:76</code></td>
+</tr>
+<tr>
+<td>SQ-02</td>
+<td>S1 route mismatch (<code>idea-readiness</code> vs <code>lp-readiness</code>)</td>
+<td>First gate behavior differs depending on which doc the operator follows</td>
+<td>Mermaid high-level flow uses <code>idea-readiness</code> in <code>docs/business-os/startup-loop-workflow.user.md:21</code>; wrapper routes to <code>/lp-readiness</code> in <code>.claude/skills/startup-loop/SKILL.md:63</code></td>
+</tr>
+<tr>
+<td>SQ-03</td>
+<td>Artifact contract mismatch between <code>lp-offer/lp-channels</code> and <code>lp-forecast</code></td>
+<td><code>lp-forecast</code> cannot reliably consume upstream outputs from nominal prior stages</td>
+<td><code>lp-offer</code> writes <code>docs/business-os/startup-baselines/&#x3C;BIZ>-offer.md</code> in <code>.claude/skills/lp-offer/SKILL.md:26</code>; <code>lp-channels</code> reads/writes same flat convention in <code>.claude/skills/lp-channels/SKILL.md:36</code>, <code>.claude/skills/lp-channels/SKILL.md:156</code>; <code>lp-forecast</code> expects nested paths <code>.../&#x3C;BIZ>/S2-offer-hypothesis/</code> and <code>.../&#x3C;BIZ>/S2-channel-selection/</code> in <code>.claude/skills/lp-forecast/SKILL.md:47</code>, <code>.claude/skills/lp-forecast/SKILL.md:48</code></td>
+</tr>
+<tr>
+<td>SQ-04</td>
+<td>Actual repo shape does not match nested startup-baseline path assumptions</td>
+<td>Skills expecting nested baseline directories or <code>loop-state.json</code> will fail or require manual workaround</td>
+<td>Only flat startup-baseline files currently present (<code>matching_files=0</code> for offer/channels/lp-forecast/loop-state pattern; and no subdirs under startup-baselines) from <code>find docs/business-os/startup-baselines</code> output; existing files shown in <code>docs/business-os/startup-baselines</code> root only</td>
+</tr>
+<tr>
+<td>SQ-05</td>
+<td>Fact-find handoff filename mismatch into plan/build fast paths</td>
+<td><code>lp-plan</code> and <code>lp-build</code> may miss <code>lp-fact-find</code> output unless user manually points to path</td>
+<td><code>lp-fact-find</code> output: <code>docs/plans/&#x3C;feature-slug>-fact-find.md</code> in <code>.claude/skills/lp-fact-find/SKILL.md:223</code>; <code>lp-plan</code> fast path expects <code>docs/plans/&#x3C;slug>-lp-fact-find.md</code> in <code>.claude/skills/lp-plan/SKILL.md:127</code>; <code>lp-build</code> optional brief path also uses <code>-lp-fact-find.md</code> in <code>.claude/skills/lp-build/SKILL.md:66</code></td>
+</tr>
+<tr>
+<td>SQ-06</td>
+<td>BOS persistence contract mismatch at S5</td>
+<td>Workflow requires promoting prioritized items to cards via API, but prioritization skill says no persistence</td>
+<td>Workflow sync matrix requires API writes at <code>S5</code> in <code>docs/business-os/startup-loop-workflow.user.md:423</code>; <code>lp-prioritize</code> says "No card creation, no idea persistence" in <code>.claude/skills/lp-prioritize/SKILL.md:36</code>, <code>.claude/skills/lp-prioritize/SKILL.md:160</code></td>
+</tr>
+<tr>
+<td>SQ-07</td>
+<td>Stage-doc naming mismatch for fact-find stage</td>
+<td>Stage docs may be written/read under different stage keys (<code>fact-find</code> vs <code>lp-fact-find</code>) causing hidden drift</td>
+<td>Workflow BOS matrix uses <code>stage-docs/:cardId/fact-find</code> in <code>docs/business-os/startup-loop-workflow.user.md:424</code>; <code>lp-fact-find</code> reads stage <code>lp-fact-find</code> in <code>.claude/skills/lp-fact-find/SKILL.md:109</code></td>
+</tr>
+<tr>
+<td>SQ-08</td>
+<td>Launch gate depends on non-wired contracts</td>
+<td>S9B→S10 may block indefinitely in real use</td>
+<td><code>lp-launch-qa</code> expects <code>docs/business-os/startup-baselines/&#x3C;BIZ>/loop-state.json</code> in <code>.claude/skills/lp-launch-qa/SKILL.md:80</code>, <code>.claude/skills/lp-launch-qa/SKILL.md:97</code>; startup-baselines currently has no such file; skill also routes to <code>/lp-launch</code> in <code>.claude/skills/lp-launch-qa/SKILL.md:41</code>, <code>.claude/skills/lp-launch-qa/SKILL.md:596</code> while wrapper routes S10 to <code>/lp-experiment</code> in <code>.claude/skills/startup-loop/SKILL.md:77</code></td>
+</tr>
+</tbody>
+</table>
+<h3>4.2 Medium-severity findings</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Finding</th>
+<th>Why it matters</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SQ-09</td>
+<td>Prompt-pack does not cover all wrapper stages</td>
+<td>Wrapper introduces stages without explicit prompt handoff templates in stage index (<code>S2B/S4/S6B/S9B</code>)</td>
+<td>Prompt index includes only <code>S0,S1,S1B,S2A,S3,S5,S10</code> in <code>docs/business-os/workflow-prompts/README.user.md:21</code></td>
+</tr>
+<tr>
+<td>SQ-10</td>
+<td><code>lp-seo</code> path contracts don’t match BOS folder topology</td>
+<td>SEO artifacts risk landing outside canonical business-os structure</td>
+<td><code>lp-seo</code> expects inputs in <code>docs/business-os/&#x3C;BIZ>/strategy/...</code> and outputs to <code>docs/business-os/&#x3C;BIZ>/seo/</code> in <code>.claude/skills/lp-seo/SKILL.md:47</code>, <code>.claude/skills/lp-seo/SKILL.md:48</code>, <code>.claude/skills/lp-seo/SKILL.md:37</code>; actual topology is <code>docs/business-os/strategy/&#x3C;BIZ>/...</code> and no <code>docs/business-os/&#x3C;BIZ>/</code> directory exists (<code>find docs/business-os -maxdepth 2 -type d</code>)</td>
+</tr>
+<tr>
+<td>SQ-11</td>
+<td>Some integration references are stale (<code>lp-channel</code>, <code>lp-content</code>)</td>
+<td>Misnamed dependencies degrade maintainability and can misroute users</td>
+<td><code>lp-measure</code> integration references <code>lp-channel</code> and <code>lp-content</code> in <code>.claude/skills/lp-measure/SKILL.md:227</code>, <code>.claude/skills/lp-measure/SKILL.md:228</code>; <code>lp-experiment</code> does same in <code>.claude/skills/lp-experiment/SKILL.md:293</code>, <code>.claude/skills/lp-experiment/SKILL.md:294</code></td>
+</tr>
+<tr>
+<td>SQ-12</td>
+<td>Stage semantics drift in experiment integration</td>
+<td>Feedback loop references inconsistent stage numbers, making loop-level dashboards harder to trust</td>
+<td><code>lp-experiment</code> says downstream <code>lp-prioritize (S3)</code> in <code>.claude/skills/lp-experiment/SKILL.md:292</code>, while workflow table defines prioritization at <code>S5</code> in <code>docs/business-os/startup-loop-workflow.user.md:78</code></td>
+</tr>
+</tbody>
+</table>
+<h2>5) Parallelization Opportunities</h2>
+<h3>5.1 Already-available opportunities (not fully exploited)</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Opportunity</th>
+<th>Safe parallel shape</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PX-01</td>
+<td>Forecast + channels split after offer</td>
+<td>Run <code>lp-forecast</code> and <code>lp-channels</code> in parallel immediately after <code>lp-offer</code>, then join before <code>S5</code></td>
+<td>Explicitly allowed in <code>.claude/skills/lp-channels/SKILL.md:234</code></td>
+</tr>
+<tr>
+<td>PX-02</td>
+<td>S2 and S6 deep-research packs for existing businesses</td>
+<td>After <code>S2A</code> becomes <code>Active</code>, run market-intelligence and site-upgrade deep-research requests in parallel</td>
+<td>Existing-business route currently sequences S2 then S6 (<code>docs/business-os/startup-loop-workflow.user.md:46</code>, <code>docs/business-os/startup-loop-workflow.user.md:47</code>), but both consume same S2A gate and are independent outputs</td>
+</tr>
+<tr>
+<td>PX-03</td>
+<td>S6B trio fan-out</td>
+<td>After channel strategy is set, run <code>lp-seo</code> and <code>draft-outreach</code> in parallel while channel owner finalizes GTM calendar</td>
+<td>Wrapper groups these at S6B in <code>.claude/skills/startup-loop/SKILL.md:72</code></td>
+</tr>
+<tr>
+<td>PX-04</td>
+<td>Build execution waves</td>
+<td>Keep using <code>lp-sequence</code> + <code>lp-plan</code> + <code>lp-build</code> wave model to parallelize implementation safely by dependency graph</td>
+<td><code>lp-plan</code> requires a generated parallelism guide in <code>.claude/skills/lp-plan/SKILL.md:620</code>; <code>lp-build</code> enforces sequence freshness in <code>.claude/skills/lp-build/SKILL.md:190</code>; <code>lp-replan</code> re-sequences after decomposition in <code>.claude/skills/lp-replan/SKILL.md:593</code></td>
+</tr>
+<tr>
+<td>PX-05</td>
+<td>Multi-item throughput after prioritization</td>
+<td>For top 2-3 go items, run separate <code>lp-fact-find</code> passes in parallel (one card/feature slug each) before converging at planning/build</td>
+<td><code>lp-prioritize</code> selects top 2-3 in <code>.claude/skills/lp-prioritize/SKILL.md:93</code>; downstream handoff is per-item into <code>lp-fact-find</code> in <code>.claude/skills/lp-prioritize/SKILL.md:153</code></td>
+</tr>
+</tbody>
+</table>
+<h3>5.2 Parallelization blockers to fix first</h3>
+<table>
+<thead>
+<tr>
+<th>Blocker</th>
+<th>Why it blocks parallel scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Artifact path drift (<code>offer/channels/forecast</code>)</td>
+<td>Parallel workers won’t find each other’s outputs deterministically.</td>
+</tr>
+<tr>
+<td>Stage graph drift (<code>S2B/S6B/S9B</code> missing in workflow contract)</td>
+<td>Operators cannot coordinate branches consistently.</td>
+</tr>
+<tr>
+<td>Missing <code>loop-state.json</code> contract</td>
+<td>No shared checkpoint state for QA branches to converge safely.</td>
+</tr>
+<tr>
+<td>BOS persistence drift at S5</td>
+<td>Parallel fact-finds cannot fan out cleanly without stable card creation/update contract.</td>
+</tr>
+</tbody>
+</table>
+<h2>6) Proposed Canonical Sequencing Baseline (Tightened)</h2>
+<p>Recommended canonical loop (single source of truth):</p>
+<ol>
+<li><code>S0</code> Intake.</li>
+<li><code>S1</code> Readiness (<code>lp-readiness</code> for startup loop, with explicit documented distinction from idea-readiness).</li>
+<li><code>S1B</code> Measurement bootstrap (mandatory for pre-website).</li>
+<li><code>S2A</code> Historical baseline (mandatory for website-live).</li>
+<li><code>S2</code> Deep research market intelligence.</li>
+<li><code>S2B</code> Offer design (<code>lp-offer</code>).</li>
+<li>Parallel branch:
+<ul>
+<li><code>S3</code> Forecast (<code>lp-forecast</code>)</li>
+<li><code>S6B</code> Channels/SEO/Outreach (<code>lp-channels</code> first, then fan-out)</li>
+</ul>
+</li>
+<li><code>S4</code> Baseline merge (consolidate branch outputs to one canonical baseline artifact).</li>
+<li><code>S5</code> Prioritize + BOS card persistence.</li>
+<li><code>S6</code> Site-upgrade synthesis (if website scope active; can be precomputed earlier once baseline exists).</li>
+<li><code>S7 -> S8 -> S9</code> (<code>lp-fact-find -> lp-plan -> lp-build</code>).</li>
+<li><code>S9B</code> QA gates.</li>
+<li><code>S10</code> Weekly readout/experiments.</li>
+</ol>
+<h2>7) Recommended Fix Order (Minimal-Risk)</h2>
+<ol>
+<li><strong>Unify stage contract</strong> across wrapper + workflow + prompt pack (<code>S2B/S6B/S9B</code> included consistently).</li>
+<li><strong>Unify artifact paths</strong> for startup-baselines (<code>flat</code> vs <code>nested</code>) and update all LP skills to one convention.</li>
+<li><strong>Unify fact-find filename convention</strong> (<code>-fact-find.md</code> vs <code>-lp-fact-find.md</code>) in <code>lp-plan</code> and <code>lp-build</code>.</li>
+<li><strong>Unify BOS stage keys</strong> (<code>fact-find</code> vs <code>lp-fact-find</code>) and persistence responsibilities at S5.</li>
+<li><strong>Decide S10 launch primitive</strong> (<code>/lp-launch</code> vs <code>/lp-experiment</code>) and update <code>lp-launch-qa</code> + wrapper accordingly.</li>
+<li><strong>Normalize stale integration names</strong> (<code>lp-channel</code>, <code>lp-content</code>) to existing skills.</li>
+</ol>
+<h2>8) Readiness Verdict</h2>
+<p>Current LP system status for end-to-end reliable operation:</p>
+<ul>
+<li><strong>Coverage:</strong> Strong (skills exist for most startup-loop activities).</li>
+<li><strong>Sequencing integrity:</strong> <strong>At Risk</strong> (high-severity contract drift).</li>
+<li><strong>Parallelization potential:</strong> High after contract normalization.</li>
+</ul>
+<p>Go/No-go for broad operational use:</p>
+<blockquote>
+<p><strong>NO-GO for fully automated end-to-end loop</strong> until SQ-01..SQ-08 are resolved.<br>
+<strong>GO for supervised/manual use</strong> if operators explicitly bridge the known contract gaps.</p>
+</blockquote>
+<h2>9) External Review Adjudication (Point-by-Point)</h2>
+<p>This section adjudicates the external expert review against current repo state.</p>
+<table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Verdict</th>
+<th>Evidence in repo</th>
+<th>Incorporate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Single canonical Loop Spec</td>
+<td><strong>Correct</strong></td>
+<td>Stage contract is duplicated/drifted between workflow guide, wrapper, and skill contracts (SQ-01, SQ-09).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>2. Artifact resolver + manifest</td>
+<td><strong>Correct</strong></td>
+<td>Upstream/downstream skills currently disagree on baseline artifact paths (<code>lp-offer</code>/<code>lp-channels</code> flat vs <code>lp-forecast</code> nested).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>3. Feature workspace folder (<code>docs/plans/&#x3C;slug>/...</code>)</td>
+<td><strong>Correct</strong></td>
+<td><code>lp-fact-find</code>/<code>lp-plan</code>/<code>lp-build</code> naming drift exists (<code>-fact-find.md</code> vs <code>-lp-fact-find.md</code>) and causes fast-path ambiguity (SQ-05).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>4. Split prioritize vs persist (<code>lp-bos-sync</code>)</td>
+<td><strong>Correct</strong></td>
+<td>Workflow requires S5 BOS persistence; <code>lp-prioritize</code> explicitly says no persistence (SQ-06).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>5. Canonical stage-doc keys + aliases</td>
+<td><strong>Correct</strong></td>
+<td><code>fact-find</code> vs <code>lp-fact-find</code> naming drift exists in contracts (SQ-07).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>6. <code>loop-state.json</code> as convergence primitive</td>
+<td><strong>Correct</strong></td>
+<td><code>lp-launch-qa</code> depends on loop-state, but artifact contract is not wired in baseline flow (SQ-08).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>7. Decide S10 primitive (<code>/lp-experiment</code> vs <code>/lp-launch</code>)</td>
+<td><strong>Correct</strong></td>
+<td>Wrapper uses <code>/lp-experiment</code>; <code>lp-launch-qa</code> still references <code>/lp-launch</code> (not implemented) (SQ-08).</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>8. Automated drift detection (CI linters)</td>
+<td><strong>Correct</strong></td>
+<td>Current drift was detected manually via audit; no contract lint guardrails are present.</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>9. Explicit fan-out/join barrier (<code>lp-baseline-merge</code>)</td>
+<td><strong>Correct</strong></td>
+<td>Parallel opportunities are identified but join semantics are not codified as a skill/contract.</td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr>
+<td>10. Fix <code>/draft-outreach</code> gap</td>
+<td><strong>Outdated</strong></td>
+<td><code>/draft-outreach</code> skill now exists and is referenced by wrapper.</td>
+<td><strong>No</strong> (already resolved)</td>
+</tr>
+<tr>
+<td>11. Fix order with acceptance criteria</td>
+<td><strong>Correct</strong></td>
+<td>Existing fix order is directionally right but not yet testable as a strict DoD checklist.</td>
+<td><strong>Yes</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>10) Incorporated Architecture Amendments</h2>
+<p>The following amendments are now adopted as the target remediation shape:</p>
+<ol>
+<li>Add a canonical machine-readable loop contract at <code>docs/business-os/startup-loop/loop-spec.yaml</code>.</li>
+<li>Introduce per-business baseline manifest at <code>docs/business-os/startup-baselines/&#x3C;BIZ>/baseline.manifest.json</code> as a control-plane artifact (single-writer updates only).</li>
+<li>Move plan-chain canonical outputs to workspace folders:
+<ul>
+<li><code>docs/plans/&#x3C;slug>/fact-find.md</code></li>
+<li><code>docs/plans/&#x3C;slug>/plan.md</code></li>
+<li><code>docs/plans/&#x3C;slug>/sequence.json</code></li>
+<li><code>docs/plans/&#x3C;slug>/build-log.md</code></li>
+</ul>
+</li>
+<li>Split S5 responsibilities:
+<ul>
+<li><code>S5A</code>: <code>/lp-prioritize</code> (pure ranking, no side effects).</li>
+<li><code>S5B</code>: <code>/lp-bos-sync</code> (ideas/cards/stage-doc persistence).</li>
+</ul>
+</li>
+<li>Standardize stage-doc canonical keys:
+<ul>
+<li><code>S7.fact-find</code>, <code>S8.plan</code>, <code>S9.build</code>, <code>S9B.qa</code>, <code>S10.experiment</code>.</li>
+<li>Support legacy aliases during migration.</li>
+</ul>
+</li>
+<li>Treat run state as an append-only event stream plus derived state view:
+<ul>
+<li><code>runs/&#x3C;run_id>/events.jsonl</code> (source of truth)</li>
+<li><code>runs/&#x3C;run_id>/state.json</code> (derived)</li>
+<li>Business-level pointers updated only by single-writer control plane.</li>
+</ul>
+</li>
+<li>Make S10 primitive explicit: keep <code>/lp-experiment</code> as canonical loop continuation; treat launch as a state transition, not a separate unresolved route.</li>
+<li>Add contract lint checks to prevent graph/path/reference drift from reappearing.</li>
+<li>Add an explicit merge barrier skill (<code>/lp-baseline-merge</code>) for fan-out/fan-in sequencing.</li>
+</ol>
+<h2>11) Revised Fix Order with Acceptance Criteria</h2>
+<ol>
+<li>
+<p><strong>Loop Spec Canonicalization</strong></p>
+<ul>
+<li>Done when <code>docs/business-os/startup-loop/loop-spec.yaml</code> exists and is authoritative.</li>
+<li>Done when wrapper stage model and workflow stage table match spec exactly.</li>
+<li>Done when prompt-pack stage index covers all stages declared in spec.</li>
+</ul>
+</li>
+<li>
+<p><strong>Artifact Path Normalization + Manifest</strong></p>
+<ul>
+<li>Done when stage workers emit stage-owned outputs plus stage result files (data plane).</li>
+<li>Done when single-writer control plane updates <code>baseline.manifest.json</code> and derived state from stage results.</li>
+<li>Done when baseline-consuming skills resolve inputs from manifest first, with legacy fallback.</li>
+<li>Done when flat/nested path drift no longer exists in active contracts.</li>
+</ul>
+</li>
+<li>
+<p><strong>Plan Workspace Canonicalization</strong></p>
+<ul>
+<li>Done when <code>lp-fact-find</code> writes <code>docs/plans/&#x3C;slug>/fact-find.md</code> as canonical output.</li>
+<li>Done when <code>lp-plan</code> and <code>lp-build</code> read canonical workspace paths by default.</li>
+<li>Done when legacy <code>-fact-find</code>/<code>-lp-fact-find</code> names are supported only as compatibility reads.</li>
+</ul>
+</li>
+<li>
+<p><strong>S5 Split: Prioritize vs Persist</strong></p>
+<ul>
+<li>Done when <code>/lp-prioritize</code> remains side-effect free.</li>
+<li>Done when <code>/lp-bos-sync</code> exists and performs BOS API writes for selected items.</li>
+<li>Done when loop contracts route S5 through both steps explicitly.</li>
+</ul>
+</li>
+<li>
+<p><strong>Stage-Doc Key Unification</strong></p>
+<ul>
+<li>Done when canonical stage-doc keys are declared once (spec).</li>
+<li>Done when all stage-doc writes use canonical keys.</li>
+<li>Done when alias reads support existing legacy keys during transition.</li>
+</ul>
+</li>
+<li>
+<p><strong>Run-State Convergence (run events + derived state)</strong></p>
+<ul>
+<li>Done when run event schema is defined and versioned.</li>
+<li>Done when derived state schema is defined and versioned.</li>
+<li>Done when branch stages publish result files and control-plane derives deterministic transitions (<code>Active/Done/Blocked</code>).</li>
+<li>Done when launch QA and S10 progression gate on derived run-state rather than ad-hoc file checks.</li>
+</ul>
+</li>
+<li>
+<p><strong>S10 Primitive Unification</strong></p>
+<ul>
+<li>Done when <code>lp-launch-qa</code> handoff aligns to canonical S10 route (<code>/lp-experiment</code>) or an explicitly implemented launch wrapper.</li>
+<li>Done when unresolved <code>/lp-launch</code> references are removed or replaced with a real skill.</li>
+</ul>
+</li>
+<li>
+<p><strong>Contract Lint Guardrails</strong></p>
+<ul>
+<li>Done when CI checks fail on stage graph mismatch, missing skill references, and non-canonical artifact roots.</li>
+<li>Done when stale names (for example <code>lp-channel</code>, <code>lp-content</code>) are blocked by lint.</li>
+</ul>
+</li>
+<li>
+<p><strong>Parallel Join Barrier (<code>lp-baseline-merge</code>)</strong></p>
+<ul>
+<li>Done when <code>/lp-baseline-merge</code> consumes S2B/S3/S6B branch outputs and writes a single canonical baseline snapshot.</li>
+<li>Done when S4 cannot complete unless required upstream branch artifacts are present and valid.</li>
+</ul>
+</li>
+</ol>
+<h2>12) Third-Pass Hardening (Autonomy + Parallel Scale)</h2>
+<p>Latest external review validates direction and tightens implementation semantics. The core requirement is now explicit:</p>
+<ol>
+<li><strong>Data plane:</strong> parallel workers write only stage-owned outputs.</li>
+<li><strong>Control plane:</strong> a single writer updates shared pointers and stage transitions.</li>
+</ol>
+<p>If this split is violated, contract drift will be replaced by shared-state contention and nondeterministic run behavior.</p>
+<h3>12.1 Additional non-negotiables</h3>
+<ol>
+<li>Runtime-authoritative loop spec (not documentation-only).</li>
+<li>Single-writer control plane for <code>manifest</code>/derived state transitions.</li>
+<li>Append-only run events as source of truth; state as derived view.</li>
+<li>Deterministic mechanical join stage (<code>S4</code>) with explicit block reasons.</li>
+<li>Idempotent side-effect boundary (<code>/lp-bos-sync</code>).</li>
+</ol>
+<h3>12.2 Recovery and replay semantics (added)</h3>
+<ol>
+<li>Resume by default from last <code>Done</code> stage in derived state.</li>
+<li>Restart only when event-stream integrity is compromised.</li>
+<li>Partial outputs are not complete unless stage result file is <code>status: Done</code>.</li>
+<li>Recovery actions (<code>resume</code>, <code>restart</code>, <code>abort</code>) must be explicit run events.</li>
+<li>No hidden cleanup of partial artifacts.</li>
+</ol>
+<h3>12.3 Concurrency policy (added)</h3>
+<p>Initial policy:</p>
+<ol>
+<li>One active run per business.</li>
+</ol>
+<p>Relaxation gate (all required over rolling window):</p>
+<ol>
+<li>Median manual interventions &#x3C;= 1 per run.</li>
+<li>Shared-state contention incidents = 0.</li>
+<li>Join-stage race failures = 0.</li>
+<li>Resume success rate >= 95%.</li>
+<li>Contract-lint failure rate &#x3C; 10%.</li>
+</ol>
+<h3>12.4 Controlled-velocity thresholds (added)</h3>
+<p>Initial stabilization triggers (calibrate after first 20 production-like runs):</p>
+<ol>
+<li>Manual interventions > 2 per run (rolling median over last 10 runs).</li>
+<li>Same join-blocking root cause in >= 3 of last 10 runs.</li>
+<li>Contract-lint failures > 10% over last 20 merges.</li>
+<li>Replan-loop median > 2 per run over last 10 runs.</li>
+</ol>
+<p>When trigger fires: pause expansion work and prioritize control-system hardening.</p>
+<h2>13) Final Position</h2>
+<p>Architecture verdict after three review passes:</p>
+<ol>
+<li>Direction is correct and now structurally robust for autonomous scale.</li>
+<li>Remaining risk is implementation discipline, not design gaps.</li>
+<li>Highest-leverage implementation rule: preserve data-plane/control-plane separation.</li>
+</ol>
+<p>Go/No-go update:</p>
+<blockquote>
+<p><strong>NO-GO for unsupervised scale</strong> until single-writer control semantics + event/derived-state model + idempotent <code>bos-sync</code> are implemented and validated.<br>
+<strong>GO for supervised rollout</strong> with controlled-velocity thresholds and explicit recovery semantics.</p>
+</blockquote>
+    <div class="meta">
+      <div>Source: <code>docs/plans/lp-skill-system-sequencing-fact-find.md</code></div>
+      <div>Generated: 2026-02-13T12:16:08.829Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

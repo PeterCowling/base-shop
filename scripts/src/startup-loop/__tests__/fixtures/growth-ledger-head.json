@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "ledger_revision": 1,
+  "business": "HEAD",
+  "period": {
+    "period_id": "2026-W07",
+    "start_date": "2026-02-09",
+    "end_date": "2026-02-15",
+    "forecast_id": "HEAD-FC-2026Q1"
+  },
+  "threshold_set_id": "gts_6941c4e9026f",
+  "threshold_set_hash": "sha256:6941c4e9026fac7951c3af77d7c8d86cb72947bae14352258d39fb27a703dc69",
+  "threshold_locked_at": "2026-02-13T12:00:00.000Z",
+  "updated_at": "2026-02-13T12:00:00.000Z",
+  "stages": {
+    "acquisition": {
+      "status": "red",
+      "policy": {
+        "blocking_mode": "always"
+      },
+      "metrics": {
+        "spend_eur_cents": 958500,
+        "new_customers_count": 213,
+        "blended_cac_eur_cents": 4500
+      },
+      "reasons": [
+        "blended_cac_eur_cents=4500 cents (green=1300, red=1500, direction=lower)."
+      ]
+    },
+    "activation": {
+      "status": "green",
+      "policy": {
+        "blocking_mode": "always"
+      },
+      "metrics": {
+        "sessions_count": 8500,
+        "orders_count": 213,
+        "sitewide_cvr_bps": 250
+      },
+      "reasons": [
+        "sitewide_cvr_bps=250 bps (green=140, red=90, direction=higher)."
+      ]
+    },
+    "revenue": {
+      "status": "green",
+      "policy": {
+        "blocking_mode": "always"
+      },
+      "metrics": {
+        "gross_revenue_eur_cents": 3088500,
+        "orders_count": 213,
+        "aov_eur_cents": 14500
+      },
+      "reasons": [
+        "aov_eur_cents=14500 cents (green=3300, red=3100, direction=higher)."
+      ]
+    },
+    "retention": {
+      "status": "not_tracked",
+      "policy": {
+        "blocking_mode": "after_valid"
+      },
+      "metrics": {
+        "orders_shipped_count": null,
+        "returned_orders_count": null,
+        "return_rate_30d_bps": null
+      },
+      "reasons": [
+        "Metric 'return_rate_30d_bps' is not tracked in the current payload."
+      ]
+    },
+    "referral": {
+      "status": "not_tracked",
+      "policy": {
+        "blocking_mode": "never"
+      },
+      "metrics": {
+        "referral_sessions_count": null,
+        "referral_orders_count": null,
+        "referral_conversion_rate_bps": null
+      },
+      "reasons": [
+        "Metric 'referral_conversion_rate_bps' is not tracked in the current payload."
+      ]
+    }
+  }
+}

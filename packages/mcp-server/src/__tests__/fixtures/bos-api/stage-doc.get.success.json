@@ -1,0 +1,10 @@
+{
+  "entity": {
+    "Card-ID": "BRIK-ENG-0001",
+    "Stage": "plan",
+    "Created": "2026-02-13",
+    "Updated": "2026-02-13",
+    "content": "# Planned\n\nInitial plan body."
+  },
+  "entitySha": "sha-plan-current"
+}

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BRIK Forecast Seed for SFS-00</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>BRIK Forecast Seed for SFS-00</h1>
+<h2>0a) Business-Now (Outcome Contract Proposal)</h2>
+<ul>
+<li>Outcome-ID: <code>BRIK-OUT-2026Q2-01</code></li>
+<li>Outcome statement: Stabilize and grow BRIK net booking value over the next 90 days by improving conversion quality, direct-share economics, and cancellation control under measured weekly decisioning.</li>
+<li>Baseline (2026-02-13):
+<ul>
+<li>trailing 90-day net booking value (2025-11..2026-01): EUR 28,927.79</li>
+<li>trailing 90-day bookings (2025-11..2026-01): 100</li>
+<li>direct booking share (same window): 18%</li>
+<li>paid CAC: not measured at decision-grade quality</li>
+</ul>
+</li>
+<li>Target (90 days):
+<ul>
+<li>net booking value: EUR 205,200 (forecast P50)</li>
+<li>bookings: 760 (forecast P50)</li>
+<li>direct booking share: 27% (forecast P50)</li>
+<li>paid CAC: &#x3C;=EUR 95 by day 14 and &#x3C;=EUR 90 by day 60-90</li>
+</ul>
+</li>
+<li>By (deadline): 2026-05-13</li>
+<li>Owner: Pete</li>
+<li>Leading indicators (weekly):
+<ul>
+<li>tracked sessions</li>
+<li>session-to-booking CVR</li>
+<li>paid CAC and spend efficiency</li>
+<li>direct share vs OTA share</li>
+<li>booking-step p75 performance</li>
+<li>cancellation reason coding coverage</li>
+</ul>
+</li>
+<li>Decision link: <code>DEC-BRIK-02</code> (whether BRIK has recovered into a reliable positive trend and can scale controlled growth investments)</li>
+<li>Stop/Pivot guardrails:
+<ul>
+<li>if CVR &#x3C;1.2% after >=5,000 sessions, hold spend expansion and prioritize funnel fixes</li>
+<li>if paid CAC >EUR 130 for 7 consecutive days, reduce to retargeting-only mode</li>
+<li>if direct share &#x3C;20% by day 14, accelerate member-rate/perk experiment and re-check margin impact</li>
+<li>if booking-step p75 load >3.0s for 3 consecutive days, freeze offer experiments until performance is restored</li>
+</ul>
+</li>
+</ul>
+<h2>0b) Existing-Work-Now (From Current Evidence)</h2>
+<p>Confirmed available now:</p>
+<ul>
+<li>Historical baseline pack is active (<code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code>).</li>
+<li>Market intelligence pack is decision-grade active (<code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code>).</li>
+<li>Site-upgrade synthesis brief is decision-grade active (<code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code>).</li>
+<li>S3 startup-loop forecast is active (<code>docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md</code>).</li>
+<li>Core GA4 + Search Console production setup is live (<code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code>).</li>
+</ul>
+<p>Still missing / needs confirmation:</p>
+<ul>
+<li>event-level GA4 UI verification for <code>web_vitals</code> and <code>begin_checkout</code></li>
+<li>first 7-day measured KPI baseline persisted in business plan</li>
+<li>cancellation reason taxonomy adoption and >=90% coding coverage</li>
+<li>S6B channel strategy artifact for explicit channel mix ownership</li>
+<li>S5 prioritization scorecard and first S10 weekly decision artifact</li>
+</ul>
+<h2>0c) Merge + Classification for First Execution Pack</h2>
+<p>Reuse-existing:</p>
+<ul>
+<li>demand, competitor, and regulatory priors from <code>2026-02-12-market-intelligence.user.md</code></li>
+<li>conversion and UX priority set from <code>2026-02-12-upgrade-brief.user.md</code></li>
+<li>historical seasonality and booking-value anchors from <code>2026-02-12-historical-performance-baseline.user.md</code></li>
+<li>P10/P50/P90 scenario bands and day-14 gates from <code>2026-02-13-startup-loop-90-day-forecast-v1.user.md</code></li>
+</ul>
+<p>Adapt-existing:</p>
+<ul>
+<li>convert S3 threshold set into a live weekly KPI scorecard with owner and cadence</li>
+<li>adapt direct-offer hypotheses into channel-specific tests with margin guardrails</li>
+</ul>
+<p>New required artifacts:</p>
+<ul>
+<li>BRIK weekly KPI scorecard artifact (S10 input contract)</li>
+<li>BRIK S5 prioritization scorecard</li>
+<li>BRIK first weekly K/P/C/S decision log</li>
+<li>BRIK first forecast recalibration artifact after 14-day measured window</li>
+</ul>
+<h2>Ready-to-Execute Go Items (Seed)</h2>
+<ol>
+<li>Complete GA4 UI event verification and lock first 7-day KPI baseline in <code>plan.user.md</code>.</li>
+<li>Execute S6 P1 conversion fixes (policy/fee clarity, mobile performance hardening, direct-offer module).</li>
+<li>Implement cancellation reason coding and enforce >=90% coverage by day 14.</li>
+<li>Run day-14 gate review and either keep P50 posture or trigger immediate recalibration artifact.</li>
+</ol>
+<h2>Priors (Machine)</h2>
+<p>Last updated: 2026-02-13 23:59 UTC</p>
+<pre><code class="language-json">[
+  {
+    "id": "forecast.target.net_booking_value_90d",
+    "type": "target",
+    "statement": "Net booking value target for the next 90 days is EUR 205200 (P50 forecast)",
+    "confidence": 0.55,
+    "value": 205200,
+    "unit": "EUR",
+    "last_updated": "2026-02-13T00:00:00Z",
+    "evidence": [
+      "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md"
+    ]
+  },
+  {
+    "id": "forecast.target.bookings_90d",
+    "type": "target",
+    "statement": "Bookings target for the next 90 days is 760 (P50 forecast)",
+    "confidence": 0.55,
+    "value": 760,
+    "unit": "bookings",
+    "last_updated": "2026-02-13T00:00:00Z",
+    "evidence": [
+      "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md"
+    ]
+  },
+  {
+    "id": "forecast.target.direct_share",
+    "type": "target",
+    "statement": "Direct booking share target is 27% in the P50 scenario",
+    "confidence": 0.5,
+    "value": 27,
+    "unit": "percent",
+    "operator": "gte",
+    "last_updated": "2026-02-13T00:00:00Z",
+    "evidence": [
+      "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md",
+      "docs/business-os/strategy/BRIK/data/bookings_by_month.csv"
+    ]
+  },
+  {
+    "id": "forecast.constraint.paid_cac",
+    "type": "constraint",
+    "statement": "Paid CAC must be &#x3C;=EUR 95 by day 14 and trend to &#x3C;=EUR 90 by day 60-90",
+    "confidence": 0.45,
+    "value": 95,
+    "unit": "EUR",
+    "operator": "lte",
+    "range": {
+      "min": 90,
+      "max": 95
+    },
+    "last_updated": "2026-02-13T00:00:00Z",
+    "evidence": [
+      "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md"
+    ]
+  },
+  {
+    "id": "forecast.constraint.min_cvr",
+    "type": "constraint",
+    "statement": "Session-to-booking CVR should remain >=1.2% after >=5000 sessions",
+    "confidence": 0.6,
+    "value": 1.2,
+    "unit": "percent",
+    "operator": "gte",
+    "last_updated": "2026-02-13T00:00:00Z",
+    "evidence": [
+      "docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md"
+    ]
+  }
+]
+</code></pre>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code></div>
+      <div>Generated: 2026-02-13T22:46:06.552Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

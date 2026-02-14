@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Startup Loop Workflow (HEAD + PET + BRIK)</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #101418;
+      --muted: #5a6570;
+      --border: #d9e0e7;
+      --header: #f5f8fb;
+      --link: #0b63ce;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1, h2, h3 {
+      line-height: 1.25;
+    }
+    p, li {
+      line-height: 1.5;
+    }
+    a {
+      color: var(--link);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    pre {
+      background: #f7f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--header);
+      font-weight: 700;
+    }
+    tr:nth-child(even) td {
+      background: #fcfdff;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+    blockquote {
+      border-left: 4px solid var(--border);
+      margin: 16px 0;
+      padding: 0 12px;
+      color: var(--muted);
+    }
+    .meta {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main>
+<h1>Startup Loop Workflow (HEAD + PET + BRIK)</h1>
+<h2>1) Purpose</h2>
+<p>Define the full startup operating loop from idea/spec input to execution and lp-replanning, with explicit inputs, processing, outputs, and current remaining data gaps for HEAD, PET, and BRIK.</p>
+<h2>2) End-to-End Loop (High Level)</h2>
+<pre class="mermaid">flowchart TD
+    A[User Inputs<br/>Business idea + product spec + constraints] --> B[Readiness + Mapping Preflight<br/>lp-readiness]
+    B -->|Blocked| B1[Collect missing data<br/>owner mapping/outcomes/research prompts]
+    B1 --> B
+    B -->|Ready| C[Market Intelligence Layer<br/>Deep Research prompts + saved packs]
+    C --> D[Forecast Layer<br/>idea-forecast]
+    D --> E[SFS-00 Baseline Merge<br/>0a intent + 0b existing work + 0c classification]
+    E --> F[Prioritized Go Items / Backlog Seeds]
+    F --> G[lp-fact-find]
+    G --> H[lp-plan]
+    H --> I[lp-build]
+    I --> J[Launch + Measure<br/>weekly K/P/C/S review]
+    J --> K{Keep / Pivot / Scale / Kill}
+    K -->|Continue/Pivot| C
+    K -->|Scale| F
+    K -->|Kill| L[Archive + Learning Capture]</pre>
+<h3>2.1 Existing-Business Route (BRIK)</h3>
+<p>For website-live businesses like BRIK, use this route:</p>
+<pre class="mermaid">flowchart TD
+    A[Existing Business Intake] --> B[Readiness]
+    B --> C[Historical Performance Baseline<br/>net value/cloudflare]
+    C --> D[Deep Research S2<br/>must consume baseline]
+    D --> E[Deep Research S6<br/>must consume baseline]
+    E --> F[Forecast/Recalibration + Prioritization]
+    F --> G[lp-fact-find -> lp-plan -> lp-build]</pre>
+<p>Rule: BRIK does not proceed past S2/S6 while the historical baseline is missing or draft.
+When S2A is blocked due to missing data, the workflow must hand the user the S2A data-request prompt and pause progression until the data pack is supplied.</p>
+<h3>2.2 Human Operator View: MCP Overlay + Data Connections</h3>
+<pre class="mermaid">flowchart LR
+    subgraph LOOP[Startup Loop Control]
+      U[Operator / Skill Runner] --> ST[S0..S10 stage execution]
+    end
+
+    subgraph MCP[MCP Data Plane - packages/mcp-server]
+      PG[Policy gate<br/>allowedStages + permission + sideEffects]
+      BOSR[bos_cards_list<br/>bos_stage_doc_get]
+      LOOPR[loop_manifest_status<br/>loop_learning_ledger_status<br/>loop_metrics_summary]
+      BOSW[bos_stage_doc_patch_guarded]
+      MEAS[measure_* connectors<br/>wave-2 planned]
+    end
+
+    subgraph SOURCES[Pull Sources]
+      API[Business OS agent API<br/>apps/business-os/src/app/api/agent/*]
+      RUN[startup-loop run artifacts<br/>docs/business-os/startup-baselines/[BIZ]/runs/*<br/>stages/*/stage-result.json]
+      DOCS[Strategy + readiness docs<br/>docs/business-os/strategy/*<br/>docs/business-os/readiness/*]
+      APPS[Operational apps<br/>apps/brikette + apps/prime + apps/reception]
+      EXT[External analytics<br/>GA4 + Search Console + Cloudflare]
+    end
+
+    subgraph SINKS[Push / Process Targets]
+      D1[BOS persisted entities<br/>cards + stage docs]
+      LEDGER[S10 outputs<br/>data/shops/[shopId]/growth-ledger.json<br/>stages/S10/growth-event-payload.json]
+      PLAN[Planning artifacts<br/>docs/plans/* + docs/business-os/*.user.md]
+    end
+
+    ST --> PG
+    PG --> BOSR
+    PG --> LOOPR
+    PG --> BOSW
+    PG -. planned .-> MEAS
+
+    BOSR -- pull --> API
+    LOOPR -- pull --> RUN
+    LOOPR -- pull --> DOCS
+    MEAS -. pull .-> APPS
+    MEAS -. pull .-> EXT
+
+    BOSW -- guarded push --> API
+    API --> D1
+    ST --> LEDGER
+    ST --> PLAN</pre>
+<p>What this means for operators:</p>
+<ol>
+<li><code>bos_*</code> and <code>loop_*</code> tools are the current MCP startup-loop tools and are policy-gated by stage.</li>
+<li><code>measure_*</code> tools are not in current wave and remain a planned dependency for stronger S2A/S3/S10 measurement.</li>
+<li>Writes to BOS remain guarded (<code>entitySha</code> + stage policy) through API contracts.</li>
+</ol>
+<h3>2.3 Open Tasks (Required Now, Simple Language)</h3>
+<table>
+<thead>
+<tr>
+<th>Required task</th>
+<th>Why it is required</th>
+<th>Evidence path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HEAD and PET operational confirmations are required.</td>
+<td>Forecasts cannot become decision-grade without stock/date/units/price/compatibility/payments/returns confirmation.</td>
+<td><code>docs/business-os/startup-loop-workflow.user.md</code> section 5.2 and 5.3</td>
+</tr>
+<tr>
+<td>HEAD and PET forecast recalibration documents are required.</td>
+<td>Weekly decisions need measured data, not only seed assumptions.</td>
+<td><code>docs/business-os/startup-loop-workflow.user.md</code> section 5.2 and 5.3</td>
+</tr>
+<tr>
+<td>BRIK GA4 verification for <code>web_vitals</code> plus post-deploy 7-day <code>begin_checkout</code> report confirmation is required.</td>
+<td>S2A measurement is partially closed: live <code>begin_checkout</code> collect is verified, but report-level closure is pending until refreshed extraction confirms sustained signal.</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></td>
+</tr>
+<tr>
+<td>BRIK first 7-day measured KPI baseline is now locked; weekly refresh is required.</td>
+<td>Baseline now exists, but decision quality depends on continuous refresh and restoring non-zero funnel/vitals signals.</td>
+<td><code>docs/business-os/strategy/BRIK/plan.user.md</code>; <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></td>
+</tr>
+<tr>
+<td>BRIK day-14 forecast recalibration artifact is required.</td>
+<td>S3 v1 assumptions must be replaced with measured week-1/2 evidence for reliable scale decisions.</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md</code></td>
+</tr>
+<tr>
+<td>BRIK prioritization execution routing packet is active; P1-01 baseline lock and production checkout deployment alignment are complete, and next action is post-deploy report refresh plus P1-02/P1-03 execution.</td>
+<td>Routing and baseline artifacts are in place; remaining risk is execution throughput and signal restoration at report level.</td>
+<td><code>docs/plans/brik-ga4-baseline-lock/fact-find.md</code>; <code>docs/plans/brik-ga4-baseline-lock/plan.md</code>; <code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code>; <code>docs/business-os/strategy/BRIK/plan.user.md</code></td>
+</tr>
+<tr>
+<td>BRIK weekly decision cadence continuation is required.</td>
+<td>First S10 artifact exists, but loop health depends on sustained weekly decision updates.</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md</code></td>
+</tr>
+<tr>
+<td>Startup standing refresh artifacts are required.</td>
+<td>Market/channel/regulatory inputs go stale without periodic refresh documents.</td>
+<td><code>docs/business-os/startup-loop-workflow.user.md</code> section 5.1 and 12</td>
+</tr>
+<tr>
+<td>MCP TASK-05 identity/deployment decision is required.</td>
+<td>Guarded write rollout cannot proceed safely without this decision.</td>
+<td><code>docs/plans/mcp-startup-loop-data-plane/plan.md</code> TASK-05</td>
+</tr>
+<tr>
+<td>MCP TASK-06 guarded BOS write rollout is required.</td>
+<td>S5B/S7/S8/S9/S10 write paths need governed MCP write capability.</td>
+<td><code>docs/plans/mcp-startup-loop-data-plane/plan.md</code> TASK-06</td>
+</tr>
+<tr>
+<td>MCP wave-2 <code>measure_*</code> connectors are required.</td>
+<td>S2A/S3/S10 need normalized cross-source measurement contracts.</td>
+<td><code>docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md</code></td>
+</tr>
+</tbody>
+</table>
+<h2>3) Website Upgrade Sub-Loop</h2>
+<pre class="mermaid">flowchart LR
+    P[Platform Capability Baseline<br/>periodic] --> U[Per-Business Upgrade Brief<br/>reference-site synthesis]
+    U --> M[Best-Of Matrix<br/>Adopt/Adapt/Defer/Reject]
+    M --> Q[lp-fact-find backlog packet]
+    Q --> R[lp-plan/lp-build]</pre>
+<p>This sub-loop feeds the main startup loop at the lp-fact-find stage.</p>
+<h2>4) Stage-by-Stage Workflow (Input -> Processing -> Output)</h2>
+<p>Canonical source: <code>docs/business-os/startup-loop/loop-spec.yaml</code> (spec_version 1.0.0).</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Inputs</th>
+<th>Processing</th>
+<th>Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0. Intake</td>
+<td>Business idea, product spec, channels, constraints, stock timeline</td>
+<td>Normalize raw user intent into structured startup context</td>
+<td>Intake packet per business</td>
+</tr>
+<tr>
+<td>S1. Readiness preflight</td>
+<td>Strategy plan, people profile, path-business mapping, prior cards/ideas</td>
+<td>Run readiness gates (<code>RG-01..RG-07</code>) and detect blockers</td>
+<td>Readiness report + missing-context register + blocker questions/prompts</td>
+</tr>
+<tr>
+<td>S1B. Pre-website measurement bootstrap (conditional: pre-website)</td>
+<td>Launch-surface mode = <code>pre-website</code> + intake packet + business plan</td>
+<td>Run mandatory analytics/measurement setup gate and operator handoff (GA4/Search Console/API prereqs)</td>
+<td>Measurement setup note + verification checklist + blocker list</td>
+</tr>
+<tr>
+<td>S2A. Historical performance baseline (conditional: website-live)</td>
+<td>Monthly net booking value exports + Cloudflare analytics + ops logs</td>
+<td>Consolidate internal history into decision baseline with data-quality notes</td>
+<td>Historical baseline pack (<code>Status: Active</code> required before S2/S6 for existing businesses)</td>
+</tr>
+<tr>
+<td>S2. Market intelligence</td>
+<td>Deep Research prompt template + business intake packet (+ S2A baseline for existing businesses)</td>
+<td>Competitor/demand/pricing/regulatory research, confidence tagging</td>
+<td>Market Intelligence Pack per business + <code>latest</code> pointer</td>
+</tr>
+<tr>
+<td>S2B. Offer design</td>
+<td>Market intelligence + intake packet + constraints</td>
+<td>Consolidate ICP, positioning, pricing, offer design into validated hypothesis</td>
+<td>Offer artifact (<code>/lp-offer</code> output)</td>
+</tr>
+<tr>
+<td><em>S3. Forecast</em> (parallel with S6B)</td>
+<td>Business intake + fresh market intelligence + offer hypothesis</td>
+<td>Build P10/P50/P90 forecast, guardrails, assumptions, 14-day tests</td>
+<td>Forecast doc + exec summary + forecast seed</td>
+</tr>
+<tr>
+<td><em>S6B. Channel strategy + GTM</em> (parallel with S3)</td>
+<td>Offer hypothesis + market intelligence + launch surface</td>
+<td>Channel-customer fit analysis, 2-3 launch channels, 30-day GTM timeline</td>
+<td>Channel plan + SEO strategy + outreach drafts</td>
+</tr>
+<tr>
+<td>S4. Baseline merge (join barrier)</td>
+<td>Offer (S2B) + forecast (S3) + channels (S6B)</td>
+<td>Validate required upstream artifacts; compose deterministic baseline snapshot</td>
+<td>Candidate baseline snapshot + draft manifest</td>
+</tr>
+<tr>
+<td>S5A. Prioritize (no side effects)</td>
+<td>Baseline snapshot + forecast + constraints</td>
+<td>Score and rank go-item candidates</td>
+<td>Prioritized backlog candidates (pure ranking, no persistence)</td>
+</tr>
+<tr>
+<td>S5B. BOS sync (sole mutation boundary)</td>
+<td>Prioritized items from S5A</td>
+<td>Persist cards/stage-docs to D1; commit manifest pointer as current</td>
+<td>BOS cards created/updated + manifest committed</td>
+</tr>
+<tr>
+<td>S6. Website upgrade synthesis</td>
+<td>Platform baseline + business upgrade brief + reference sites</td>
+<td>Best-of decomposition and fit matrix (Adopt/Adapt/Defer/Reject)</td>
+<td>Fact-find-ready website backlog packet</td>
+</tr>
+<tr>
+<td>S7. Fact-find</td>
+<td>Chosen go-item(s), evidence docs, constraints</td>
+<td>Deep evidence audit and task seeds</td>
+<td>Fact-find brief (<code>Ready-for-planning</code> or <code>Needs-input</code>)</td>
+</tr>
+<tr>
+<td>S8. Plan</td>
+<td>Fact-find brief</td>
+<td>Confidence-gated implementation plan</td>
+<td>Plan doc with tasks/VCs/checkpoints</td>
+</tr>
+<tr>
+<td>S9. Build</td>
+<td>Approved plan tasks</td>
+<td>Implement + validate + track outputs</td>
+<td>Shipped work + validation evidence</td>
+</tr>
+<tr>
+<td>S9B. QA gates</td>
+<td>Build outputs + design spec + performance budget</td>
+<td>Launch QA, design QA, measurement verification</td>
+<td>QA report + go/no-go recommendation</td>
+</tr>
+<tr>
+<td>S10. Weekly decision loop</td>
+<td>KPI scoreboard + gate metrics + costs + operational reliability + growth ledger outputs (<code>stage_statuses</code>, <code>overall_status</code>, <code>guardrail_signal</code>, <code>threshold_set_hash</code>)</td>
+<td>K/P/C/S decisioning + replayability check against growth event payload</td>
+<td>Continue/Pivot/Scale/Kill decision + linked growth artifacts (<code>stages/S10/stage-result.json</code>, <code>data/shops/{shopId}/growth-ledger.json</code>, <code>stages/S10/growth-event-payload.json</code>) + loop-back updates</td>
+</tr>
+</tbody>
+</table>
+<h2>5) Current Missing Information (HEAD, PET, and BRIK)</h2>
+<h3>5.1 Cross-cutting blockers (impact HEAD, PET, and BRIK)</h3>
+<table>
+<thead>
+<tr>
+<th>Missing item</th>
+<th>Type</th>
+<th>Why it blocks</th>
+<th>Current evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Standing refresh outputs not yet started</td>
+<td>Input freshness risk (Periodic)</td>
+<td>Prompt templates exist, but no recurring refresh artifacts are persisted yet</td>
+<td>No <code>market-pulse</code>, <code>channel-economics-refresh</code>, or <code>regulatory-claims-watch</code> docs found under <code>docs/business-os/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Resolved recently (no longer missing):</p>
+<ul>
+<li>Platform baseline is active: <code>docs/business-os/platform-capability/latest.user.md</code>.</li>
+<li>Market intelligence packs are active for HEAD and PET:
+<ul>
+<li><code>docs/business-os/market-research/HEAD/latest.user.md</code></li>
+<li><code>docs/business-os/market-research/PET/latest.user.md</code></li>
+</ul>
+</li>
+<li>BRIK market intelligence pack is active (decision-grade):
+<ul>
+<li><code>docs/business-os/market-research/BRIK/latest.user.md</code></li>
+</ul>
+</li>
+<li>HEAD site-upgrade brief is active:
+<ul>
+<li><code>docs/business-os/site-upgrades/HEAD/latest.user.md</code></li>
+</ul>
+</li>
+<li>PET site-upgrade brief is active:
+<ul>
+<li><code>docs/business-os/site-upgrades/PET/latest.user.md</code></li>
+</ul>
+</li>
+<li>BRIK site-upgrade brief is active (decision-grade):
+<ul>
+<li><code>docs/business-os/site-upgrades/BRIK/latest.user.md</code></li>
+</ul>
+</li>
+<li>Intake packets are active for HEAD and PET:
+<ul>
+<li><code>docs/business-os/startup-baselines/HEAD-intake-packet.user.md</code></li>
+<li><code>docs/business-os/startup-baselines/PET-intake-packet.user.md</code></li>
+</ul>
+</li>
+<li>Intake packet is active for BRIK:
+<ul>
+<li><code>docs/business-os/startup-baselines/BRIK-intake-packet.user.md</code></li>
+</ul>
+</li>
+<li>Readiness mapping gate now passes for active scope:
+<ul>
+<li><code>docs/business-os/readiness/2026-02-12-idea-readiness.user.md</code> (<code>Run-Status: warning</code>)</li>
+</ul>
+</li>
+<li>Blocker interview packs are active for HEAD and PET:
+<ul>
+<li><code>docs/business-os/readiness/2026-02-12-HEAD-blocker-interview.user.md</code></li>
+<li><code>docs/business-os/readiness/2026-02-12-PET-blocker-interview.user.md</code></li>
+</ul>
+</li>
+<li>Outcome contracts are now locked in canonical plans:
+<ul>
+<li><code>docs/business-os/strategy/HEAD/plan.user.md</code></li>
+<li><code>docs/business-os/strategy/PET/plan.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/plan.user.md</code></li>
+</ul>
+</li>
+<li>Prioritization scorecards are active for HEAD, PET, and BRIK:
+<ul>
+<li><code>docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md</code></li>
+<li><code>docs/business-os/strategy/PET/2026-02-12-prioritization-scorecard.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code></li>
+</ul>
+</li>
+<li>Weekly K/P/C/S decision logs have started for HEAD, PET, and BRIK:
+<ul>
+<li><code>docs/business-os/strategy/HEAD/2026-02-12-weekly-kpcs-decision.user.md</code></li>
+<li><code>docs/business-os/strategy/PET/2026-02-12-weekly-kpcs-decision.user.md</code></li>
+<li><code>docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md</code></li>
+</ul>
+</li>
+</ul>
+<h3>5.2 HEAD-specific gaps</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Missing information</th>
+<th>Gap type</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1 Readiness</td>
+<td>Demand/conversion baselines still not measured</td>
+<td>Input missing</td>
+<td><code>docs/business-os/strategy/HEAD/plan.user.md</code> metrics section</td>
+</tr>
+<tr>
+<td>S3 Forecast</td>
+<td>Region/tax still unresolved in some active decision docs (<code>Region: TBD</code>)</td>
+<td>Input/consistency gap</td>
+<td><code>docs/business-os/strategy/HEAD/2026-02-11-week2-gate-dry-run.user.md</code>, <code>docs/business-os/strategy/HEAD/launch-readiness-action-backlog.user.md</code></td>
+</tr>
+<tr>
+<td>S3 Forecast</td>
+<td>Key operational confirmations missing: in-stock date, sellable units, price architecture, compatibility matrix, payment readiness, returns SLA</td>
+<td>Input missing</td>
+<td><code>docs/business-os/startup-baselines/HEAD-forecast-seed.user.md</code> section "Still missing / needs confirmation"</td>
+</tr>
+<tr>
+<td>S3 Forecast</td>
+<td>No post-launch recalibration artifact exists yet</td>
+<td>Output missing</td>
+<td>No <code>docs/business-os/strategy/HEAD/*-forecast-recalibration.user.md</code></td>
+</tr>
+<tr>
+<td>S4 Baseline merge</td>
+<td>Baseline exists but remains draft and not yet promoted into canonical strategy outcome contract</td>
+<td>Output not integrated</td>
+<td><code>docs/business-os/startup-baselines/HEAD-forecast-seed.user.md</code> + <code>docs/business-os/strategy/HEAD/plan.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<h3>5.3 PET-specific gaps</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Missing information</th>
+<th>Gap type</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1 Readiness</td>
+<td>Demand/margin baselines not measured in canonical plan</td>
+<td>Input missing</td>
+<td><code>docs/business-os/strategy/PET/plan.user.md</code> metrics section</td>
+</tr>
+<tr>
+<td>S3 Forecast</td>
+<td>Forecast is not decision-grade until inventory units/arrival, real costs, and observed CPC/CVR are captured</td>
+<td>Input missing</td>
+<td><code>docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md</code> section "Required Data to Upgrade v2 -> Decision-Grade"</td>
+</tr>
+<tr>
+<td>S3 Forecast</td>
+<td>No post-launch recalibration artifact exists yet</td>
+<td>Output missing</td>
+<td>No <code>docs/business-os/strategy/PET/*-forecast-recalibration.user.md</code></td>
+</tr>
+<tr>
+<td>S4 Baseline merge</td>
+<td>PET baseline now exists but remains draft and not yet promoted into canonical strategy outcome contract</td>
+<td>Output not integrated</td>
+<td><code>docs/business-os/startup-baselines/PET-forecast-seed.user.md</code> + <code>docs/business-os/strategy/PET/plan.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<h3>5.4 BRIK-specific gaps</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Missing information</th>
+<th>Gap type</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S1 Readiness</td>
+<td>Outcome contract is now in canonical startup-loop format; maintain weekly refresh against measured data</td>
+<td>Freshness/cadence risk</td>
+<td><code>docs/business-os/strategy/BRIK/plan.user.md</code>; <code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code></td>
+</tr>
+<tr>
+<td>S1 Readiness</td>
+<td>First 7-day measured baseline is now locked (sessions/users/page_view); conversion and vitals signals remain zero in current window</td>
+<td>Signal-quality gap</td>
+<td><code>docs/business-os/strategy/BRIK/plan.user.md</code> metrics section; <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></td>
+</tr>
+<tr>
+<td>S2A Historical baseline</td>
+<td>Baseline is active but Cloudflare proxies are partial (11/24 months request totals only; no page/geo/device splits) and older months are unavailable under current access</td>
+<td>Data quality gap</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-12-historical-performance-baseline.user.md</code> (<code>Status: Active</code>); <code>docs/business-os/strategy/BRIK/data/cloudflare_monthly_proxies.csv</code>; <code>docs/business-os/strategy/BRIK/data/data_quality_notes.md</code></td>
+</tr>
+<tr>
+<td>S2A Measurement setup</td>
+<td>Data API access is enabled, first extract is captured, and production click-path now verifies live <code>begin_checkout</code> collection after deployment alignment; <code>web_vitals</code> verification and refreshed report-window confirmation remain pending</td>
+<td>Signal-quality/verification gap</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code>; <code>docs/business-os/strategy/BRIK/plan.user.md</code>; setup note: <code>docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</code></td>
+</tr>
+<tr>
+<td>S2 Market intelligence</td>
+<td>Decision-grade pack is now active; enforce monthly freshness + change-trigger refresh</td>
+<td>Refresh cadence risk</td>
+<td><code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code> (<code>Status: Active</code>); handoff prompt retained at <code>docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md</code></td>
+</tr>
+<tr>
+<td>S3 Forecasting</td>
+<td>Startup-loop forecast artifact is now active (<code>v1</code>); first measured-data recalibration remains pending</td>
+<td>Refresh/recalibration risk</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md</code> (<code>Status: Active</code>); exec summary: <code>docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1-exec-summary.user.md</code></td>
+</tr>
+<tr>
+<td>S4 Baseline merge</td>
+<td>Forecast seed is active and integrated into canonical plan; next action is controlled refresh/recalibration after measured week-1/2 data</td>
+<td>Refresh/recalibration risk</td>
+<td><code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code> (<code>Status: Active</code>) + <code>docs/business-os/strategy/BRIK/plan.user.md</code></td>
+</tr>
+<tr>
+<td>S5 Prioritization</td>
+<td>Scored prioritization artifact is active; P1-01 routing, baseline lock, and production checkout telemetry deployment alignment are complete, while report refresh verification and P1-02/P1-03 execution remain open</td>
+<td>Execution sequencing risk</td>
+<td><code>docs/plans/brik-ga4-baseline-lock/fact-find.md</code>; <code>docs/plans/brik-ga4-baseline-lock/plan.md</code>; <code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code> (<code>Status: Active</code>)</td>
+</tr>
+<tr>
+<td>S6 Website synthesis</td>
+<td>Decision-grade brief is now active; enforce monthly freshness + change-trigger refresh</td>
+<td>Refresh cadence risk</td>
+<td><code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code> (<code>Status: Active</code>); handoff prompt retained at <code>docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md</code></td>
+</tr>
+<tr>
+<td>S10 Weekly decision loop</td>
+<td>First weekly decision artifact is now active; maintain strict weekly cadence and link to gate evidence</td>
+<td>Cadence risk</td>
+<td><code>docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md</code> (<code>Status: Active</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2>6) Current State Snapshot by Stage (HEAD vs PET vs BRIK)</h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>HEAD</th>
+<th>PET</th>
+<th>BRIK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0 Intake</td>
+<td>Canonical intake packet active</td>
+<td>Canonical intake packet active</td>
+<td>Canonical intake packet active</td>
+</tr>
+<tr>
+<td>S1 Readiness</td>
+<td>Mapping gate clear; business-level outcome/metrics gaps remain</td>
+<td>Mapping gate clear; business-level outcome/metrics gaps remain</td>
+<td>Mapping gate clear; outcome contract normalized, but measured baseline metrics remain incomplete</td>
+</tr>
+<tr>
+<td>S2A Historical baseline</td>
+<td>Not required (startup mode)</td>
+<td>Not required (startup mode)</td>
+<td>Baseline active with partial Cloudflare coverage; GA4/Search Console core setup verified, event-level verification pending</td>
+</tr>
+<tr>
+<td>S2 Market intelligence</td>
+<td>Active canonical output (<code>latest</code> active)</td>
+<td>Active canonical output (<code>latest</code> active)</td>
+<td>Active canonical output (<code>latest</code> active; decision-grade)</td>
+</tr>
+<tr>
+<td>S2B Offer design</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+</tr>
+<tr>
+<td>S3 Forecast</td>
+<td>v2 + market-intelligence inputs exist; still needs operational confirmations</td>
+<td>v2 + market-intelligence inputs exist; still not decision-grade without observed data</td>
+<td>Startup-loop forecast artifact active (<code>v1</code>); recalibration pending after first 14-day measured window</td>
+</tr>
+<tr>
+<td>S6B Channel strategy + GTM</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+</tr>
+<tr>
+<td>S4 Baseline merge</td>
+<td>Draft seed exists (pre-merge format)</td>
+<td>Draft seed exists (pre-merge format)</td>
+<td>Seed active and integrated into canonical plan</td>
+</tr>
+<tr>
+<td>S5A Prioritize</td>
+<td>Scored prioritization artifact active</td>
+<td>Scored prioritization artifact active</td>
+<td>Scored prioritization artifact active</td>
+</tr>
+<tr>
+<td>S5B BOS sync</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+</tr>
+<tr>
+<td>S6 Website best-of synthesis</td>
+<td>Active brief available</td>
+<td>Active brief available</td>
+<td>Active brief available (<code>latest</code> active; decision-grade)</td>
+</tr>
+<tr>
+<td>S7 Fact-find handoff quality</td>
+<td>Possible but weaker due missing upstream canonical artifacts</td>
+<td>Possible but weaker due missing upstream canonical artifacts</td>
+<td>Possible with improved quality; still constrained by measurement completeness and S6B artifact gaps</td>
+</tr>
+<tr>
+<td>S8/S9 Plan/Build</td>
+<td>Available in process, but depends on stronger upstream inputs</td>
+<td>Available in process, but depends on stronger upstream inputs</td>
+<td>Available in process; confidence improved after S2/S3/S4/S5/S6 completion, still constrained by instrumentation completeness</td>
+</tr>
+<tr>
+<td>S9B QA gates</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+<td>Not yet started</td>
+</tr>
+<tr>
+<td>S10 Weekly decision loop</td>
+<td>Active weekly decision log started</td>
+<td>Active weekly decision log started</td>
+<td>Active weekly decision log started</td>
+</tr>
+</tbody>
+</table>
+<h2>7) Minimal Closure Set to Make the Loop Operationally Strong</h2>
+<ol>
+<li>HEAD and PET operational confirmations are required (<code>stock/date/units/price/compatibility/payments/returns SLA</code>).</li>
+<li>HEAD and PET forecast recalibration artifacts from measured week-1/2 data are required.</li>
+<li>BRIK GA4 Realtime/DebugView verification for <code>web_vitals</code> and <code>begin_checkout</code> is required.</li>
+<li>BRIK weekly baseline refresh is required, with non-zero <code>begin_checkout</code>/<code>web_vitals</code> signal restoration or explicit root-cause evidence.</li>
+<li>BRIK S2/S6 Deep Research freshness checks (monthly or on major outcome/ICP/channel/product change) are required.</li>
+<li>BRIK sustained weekly decision cadence and first measured-data forecast recalibration are required.</li>
+<li>Standing refresh artifacts (market pulse, channel economics, regulatory watch) are required.</li>
+<li><code>HOLDCO</code> registration in business catalog is required (taxonomy hygiene item from readiness warning).</li>
+</ol>
+<h2>8) Practical Reading Order for Operators</h2>
+<ol>
+<li><code>docs/business-os/platform-capability/latest.user.md</code></li>
+<li><code>docs/business-os/market-research/&#x3C;BIZ>/latest.user.md</code></li>
+<li><code>docs/business-os/site-upgrades/&#x3C;BIZ>/latest.user.md</code></li>
+<li><code>docs/business-os/strategy/&#x3C;BIZ>/plan.user.md</code></li>
+<li>Existing-business route only: <code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-historical-performance-baseline.user.md</code></li>
+<li><code>docs/business-os/startup-baselines/&#x3C;BIZ>-forecast-seed.user.md</code></li>
+<li>latest readiness report in <code>docs/business-os/readiness/</code></li>
+<li>prompt pack index: <code>docs/business-os/workflow-prompts/_templates/</code></li>
+<li>then run <code>lp-fact-find -> lp-plan -> lp-build</code> for top P1 item</li>
+</ol>
+<h2>9) Deep Research Gate (S2 + S6)</h2>
+<h3>9.1 Mandatory hand-off rule</h3>
+<p>When either S2 (market intelligence) or S6 (site-upgrade brief) is in a seed/draft state, the workflow must:</p>
+<ol>
+<li>Stop progression for that business at the affected stage.</li>
+<li>Hand the user a ready-to-run Deep Research prompt file (not a template with placeholders).</li>
+<li>Require Deep Research completion and persistence before continuing downstream stages.</li>
+</ol>
+<p>Seed/draft trigger conditions:</p>
+<ul>
+<li><code>latest.user.md</code> is <code>Missing</code>, or</li>
+<li><code>latest.user.md</code> points to a source doc with <code>Status: Draft</code>, or</li>
+<li>source doc is stale (<code>Last-reviewed</code> older than 30 days), or</li>
+<li>major outcome/ICP/channel/product change occurred.</li>
+</ul>
+<p>Additional existing-business trigger:</p>
+<ul>
+<li>For <code>website-live</code> businesses, if S2A historical baseline is missing, <code>Draft</code>, or <code>Blocked</code>, S2/S6 must remain blocked.</li>
+<li>If S2A result is <code>Blocked</code> due to missing data, hand the user an S2A data-request prompt immediately and pause until data is supplied.</li>
+</ul>
+<p>Pre-website measurement trigger:</p>
+<ul>
+<li>For <code>pre-website</code> businesses, S2 onward should be treated as <code>warning</code> quality unless S1B measurement bootstrap output exists and its verification checklist has passed.</li>
+<li>If S1B output is missing, hand the user the S1B measurement-bootstrap prompt immediately and pause paid-traffic launch planning until completed.</li>
+</ul>
+<h3>9.2 Required operator hand-off message</h3>
+<pre><code class="language-text">Deep Research completion is required for {{BIZ}} at stage {{S2|S6}}.
+
+Use this ready-to-run prompt file:
+{{PROMPT_FILE_PATH}}
+
+Run Deep Research, then save/replace target output:
+{{TARGET_OUTPUT_PATH}}
+
+After saving:
+1) Ensure output doc is decision-grade and set Status: Active.
+2) Update latest pointer (`latest.user.md`) with source path.
+3) Render HTML companion:
+   pnpm docs:render-user-html -- {{TARGET_OUTPUT_PATH}}
+</code></pre>
+<h3>9.3 Current required hand-offs (now)</h3>
+<ul>
+<li>HEAD S1B pre-website measurement bootstrap:
+<ul>
+<li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md</code></li>
+<li>Target output: <code>docs/business-os/strategy/HEAD/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></li>
+</ul>
+</li>
+<li>PET S1B pre-website measurement bootstrap:
+<ul>
+<li>Prompt file: <code>docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md</code></li>
+<li>Target output: <code>docs/business-os/strategy/PET/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></li>
+</ul>
+</li>
+<li>BRIK S2 market intelligence:
+<ul>
+<li>Prompt file: <code>docs/business-os/market-research/BRIK/2026-02-12-deep-research-market-intelligence-prompt.user.md</code></li>
+<li>Target output: <code>docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md</code></li>
+</ul>
+</li>
+<li>BRIK S6 site-upgrade brief:
+<ul>
+<li>Prompt file: <code>docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md</code></li>
+<li>Target output: <code>docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md</code></li>
+</ul>
+</li>
+</ul>
+<h3>9.4 Output gate</h3>
+<p>S2/S6 is complete only when:</p>
+<ul>
+<li>Target doc status is <code>Active</code> (not <code>Draft</code>).</li>
+<li><code>latest.user.md</code> points to that active doc.</li>
+<li>HTML companion exists.</li>
+<li>Source list and evidence sections are populated (decision-grade quality bar met).</li>
+</ul>
+<h2>10) Prompt Hand-Off Map (By Stage)</h2>
+<p>Use this map to decide when the user should be handed a prompt and what output must be produced.</p>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Trigger</th>
+<th>Prompt template</th>
+<th>Required inputs</th>
+<th>Required output path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0 Intake</td>
+<td>New business/product idea enters loop or major scope shift</td>
+<td><code>docs/business-os/workflow-prompts/_templates/intake-normalizer-prompt.md</code></td>
+<td>Raw user idea + product spec + constraints</td>
+<td><code>docs/business-os/startup-baselines/&#x3C;BIZ>-intake-packet.user.md</code></td>
+</tr>
+<tr>
+<td>S1 Readiness</td>
+<td>Readiness has <code>block</code>/<code>warning</code> or missing-context register exists</td>
+<td><code>docs/business-os/workflow-prompts/_templates/readiness-blocker-interview-prompt.md</code></td>
+<td>latest readiness report + plan + baseline seed</td>
+<td><code>docs/business-os/readiness/&#x3C;YYYY-MM-DD>-&#x3C;BIZ>-blocker-interview.user.md</code></td>
+</tr>
+<tr>
+<td>S1B Pre-website measurement bootstrap</td>
+<td>Launch-surface mode is <code>pre-website</code> and measurement bootstrap doc is missing/stale</td>
+<td><code>docs/business-os/workflow-prompts/_templates/pre-website-measurement-bootstrap-prompt.md</code></td>
+<td>intake packet + business plan + launch-surface mode + runtime/deploy details</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></td>
+</tr>
+<tr>
+<td>S2A-1 Historical data request (existing businesses)</td>
+<td>Business is <code>website-live</code> and latest baseline is <code>Blocked</code> or unavailable fields prevent decision-grade output</td>
+<td><code>docs/business-os/workflow-prompts/_templates/historical-data-request-prompt.md</code> (or business-specific handoff prompt file)</td>
+<td>blocker summary + required metric list + known source systems</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-historical-data-request-prompt.user.md</code></td>
+</tr>
+<tr>
+<td>S2A-2 Historical baseline consolidation (existing businesses)</td>
+<td>Required S2A data pack has been supplied</td>
+<td><code>docs/business-os/workflow-prompts/_templates/existing-business-historical-baseline-prompt.md</code> (or business-specific handoff prompt file)</td>
+<td>net booking value history + Cloudflare analytics + ops logs</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-historical-performance-baseline.user.md</code></td>
+</tr>
+<tr>
+<td>S2 Market intelligence</td>
+<td><code>latest.user.md</code> missing, stale, or points to <code>Draft</code>; market conditions changed materially</td>
+<td><code>docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md</code> (or business-specific handoff prompt file)</td>
+<td>intake packet + current constraints + channel intent</td>
+<td><code>docs/business-os/market-research/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-market-intelligence.user.md</code></td>
+</tr>
+<tr>
+<td>S3 Forecast recalibration</td>
+<td>Week-1/2 data available, gate failed, or major assumption breaks</td>
+<td><code>docs/business-os/workflow-prompts/_templates/forecast-recalibration-prompt.md</code></td>
+<td>previous forecast + measured KPI data + active constraints</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-forecast-recalibration.user.md</code></td>
+</tr>
+<tr>
+<td>S5 Prioritization</td>
+<td>>=3 candidate go-items or conflicting priorities</td>
+<td><code>docs/business-os/workflow-prompts/_templates/prioritization-scorer-prompt.md</code></td>
+<td>baseline seed + forecast + constraints + candidate set</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-prioritization-scorecard.user.md</code></td>
+</tr>
+<tr>
+<td>S6 Site upgrade</td>
+<td><code>latest.user.md</code> missing, stale, or points to <code>Draft</code>; outcome/ICP/channel/product changed</td>
+<td><code>docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md</code> (or business-specific handoff prompt file)</td>
+<td>platform baseline + market intel + plan + baseline seed</td>
+<td><code>docs/business-os/site-upgrades/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-upgrade-brief.user.md</code></td>
+</tr>
+<tr>
+<td>S10 Weekly decision</td>
+<td>Weekly cadence checkpoint</td>
+<td><code>docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md</code></td>
+<td>weekly KPI pack + outcome contract + experiment results</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-weekly-kpcs-decision.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>Output hygiene for every prompt run:</p>
+<ol>
+<li>Save markdown output at required path.</li>
+<li>Render HTML companion:
+<code>pnpm docs:render-user-html -- &#x3C;output.user.md></code></li>
+<li>Update relevant <code>latest.user.md</code> pointer when applicable.</li>
+</ol>
+<h2>11) Design Policy (Cross-Cutting)</h2>
+<p>Design decisions for customer-facing surfaces must be grounded in demographic evidence, not developer defaults. This section seeds the design policy for each business.</p>
+<h3>11.1 BRIK Design Policy (Prime Guest Portal)</h3>
+<p><strong>Target Demographic (observed):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Segment</th>
+<th>Share</th>
+<th>Implication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Female</td>
+<td>~99%</td>
+<td>Avoid cold/corporate palettes. Favor warm, expressive, lifestyle-aligned aesthetics.</td>
+</tr>
+<tr>
+<td>Age 18-25</td>
+<td>~60%</td>
+<td>Mobile-native generation. Expect app-quality design (Instagram, Airbnb, Pinterest level). High sensitivity to visual polish and micro-interactions.</td>
+</tr>
+<tr>
+<td>Age 26-35</td>
+<td>~39%</td>
+<td>Similar expectations but slightly more tolerance for functional design. Still mobile-first.</td>
+</tr>
+<tr>
+<td>Age 35+</td>
+<td>~1%</td>
+<td>Not a design driver.</td>
+</tr>
+<tr>
+<td>Mobile-only</td>
+<td>100%</td>
+<td>Prime is accessed on guests' phones during their stay. No desktop/tablet use case.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Design Principles (BRIK customer-facing surfaces):</strong></p>
+<ol>
+<li><strong>Warm over cold</strong> — Primary palette should use warm hues (coral, rose, warm violet, sage) rather than cold corporate blues/teals. The current teal (<code>192° 80% 34%</code>) reads as fintech, not travel/lifestyle.</li>
+<li><strong>Approachable typography</strong> — Prefer friendly geometric sans-serifs (Plus Jakarta Sans, DM Sans) over developer-oriented fonts (Geist Sans, SF Mono). Rounded terminals signal warmth.</li>
+<li><strong>Expressive but not noisy</strong> — Subtle gradients, soft shadows, and gentle motion. Avoid flat gray backgrounds. Slight warm tints on surfaces (e.g., <code>bg-rose-50</code> instead of <code>bg-gray-50</code>).</li>
+<li><strong>Mobile-only, thumb-first</strong> — Prime is a phone-only app. Design exclusively for mobile viewports. Optimize for one-handed use, thumb-zone reachability, and handheld viewing distance. No desktop or tablet breakpoints. Primary actions belong in the bottom half of the screen.</li>
+<li><strong>Mobile-native quality bar</strong> — This demographic benchmarks against Airbnb, Pinterest, Hostelworld, and Instagram. Card-based layouts with generous radius, smooth transitions, and high-quality imagery. The quality bar is set by the best apps on their home screen, not by web standards.</li>
+<li><strong>Inclusive, not stereotyped</strong> — "Designed for young women" does not mean "pink everything." It means warm, polished, photography-forward, and emotionally resonant. Avoid patronizing color choices.</li>
+<li><strong>Token-driven</strong> — All visual changes flow through the theme token system (<code>packages/themes/prime/tokens.css</code>). No hardcoded Tailwind colors. This ensures dark mode, accessibility, and future theme variants work automatically.</li>
+</ol>
+<p><strong>Surfaces governed by this policy:</strong></p>
+<ul>
+<li>Prime guest portal (all guest-facing pages)</li>
+<li>Brikette website (booking and guide pages) — to be aligned in a future pass</li>
+<li>Email templates sent to guests</li>
+</ul>
+<p><strong>Surfaces NOT governed (internal tools):</strong></p>
+<ul>
+<li>Reception app (staff-facing, operational)</li>
+<li>Business OS (internal admin)</li>
+<li>Owner/admin dashboards within Prime</li>
+</ul>
+<p><strong>Active fact-find:</strong> <code>docs/plans/prime-design-refresh-fact-find.md</code></p>
+<h3>11.2 HEAD / PET Design Policies</h3>
+<p>Not yet established. Will be seeded when customer-facing surfaces are built for these businesses. Demographic research should inform design token choices from day one — do not default to framework/template aesthetics.</p>
+<h2>12) Standing Refresh Prompts (Periodic)</h2>
+<p>These are recurring research prompts for standing information refresh.</p>
+<table>
+<thead>
+<tr>
+<th>Refresh area</th>
+<th>Cadence</th>
+<th>Trigger</th>
+<th>Prompt template</th>
+<th>Output path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platform capability baseline</td>
+<td>Every 30-45 days</td>
+<td>New platform primitives, major app architecture shifts, or stale baseline</td>
+<td><code>docs/business-os/platform-capability/_templates/deep-research-platform-capability-baseline-prompt.md</code></td>
+<td><code>docs/business-os/platform-capability/&#x3C;YYYY-MM-DD>-platform-capability-baseline.user.md</code></td>
+</tr>
+<tr>
+<td>Market pulse per business</td>
+<td>Monthly</td>
+<td>Competitor/offer/channel shifts suspected</td>
+<td><code>docs/business-os/workflow-prompts/_templates/monthly-market-pulse-prompt.md</code></td>
+<td><code>docs/business-os/market-research/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-market-pulse.user.md</code></td>
+</tr>
+<tr>
+<td>Channel economics refresh</td>
+<td>Monthly</td>
+<td>CPC/CAC/CVR/returns shift or spend-plan review cycle</td>
+<td><code>docs/business-os/workflow-prompts/_templates/monthly-channel-economics-refresh-prompt.md</code></td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-channel-economics-refresh.user.md</code></td>
+</tr>
+<tr>
+<td>Regulatory and claims watch</td>
+<td>Quarterly</td>
+<td>New policy/compliance/claims risks in target region</td>
+<td><code>docs/business-os/workflow-prompts/_templates/quarterly-regulatory-claims-watch-prompt.md</code></td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-regulatory-claims-watch.user.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>Markdown source artifact contract for standing refresh:</p>
+<ul>
+<li>Collector index path: <code>docs/business-os/startup-baselines/&#x3C;BIZ>/runs/&#x3C;runId>/collectors/content/sources.index.json</code></li>
+<li>Markdown artifact path pattern: <code>docs/business-os/startup-baselines/&#x3C;BIZ>/runs/&#x3C;runId>/collectors/content/&#x3C;sourceId>.md</code></li>
+<li>Operators must pass the index path into monthly/quarterly refresh prompts and keep citations aligned to persisted artifacts.</li>
+</ul>
+<p>Generic operator hand-off message:</p>
+<pre><code class="language-text">Research refresh required for {{BIZ}}.
+
+Use prompt template:
+{{PROMPT_TEMPLATE_PATH}}
+
+Fill placeholders using latest canonical docs for {{BIZ}}.
+Use persisted source index:
+{{MARKDOWN_SOURCE_INDEX_PATH}}
+
+Save result to:
+{{OUTPUT_PATH}}
+
+Then render HTML:
+pnpm docs:render-user-html -- {{OUTPUT_PATH}}
+</code></pre>
+<h2>13) Operator Interface (How User Engages Startup Loop)</h2>
+<p>Startup Loop needs a single operator interaction pattern so users do not guess the next step.
+Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.</p>
+<h3>13.1 Command-style interaction contract</h3>
+<p>Use this command pattern in agent chat:</p>
+<ol>
+<li><code>/startup-loop start --business &#x3C;BIZ> --mode &#x3C;dry|live> --launch-surface &#x3C;pre-website|website-live></code></li>
+<li><code>/startup-loop status --business &#x3C;BIZ></code></li>
+<li><code>/startup-loop submit --business &#x3C;BIZ> --stage &#x3C;S#> --artifact &#x3C;path></code></li>
+<li><code>/startup-loop advance --business &#x3C;BIZ></code></li>
+</ol>
+<h3>13.2 Required run packet (agent response format)</h3>
+<p>Every <code>start</code>, <code>status</code>, and <code>advance</code> response must return:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>run_id</code></td>
+<td>Stable run identifier (<code>SFS-&#x3C;BIZ>-&#x3C;YYYYMMDD>-&#x3C;hhmm></code>)</td>
+</tr>
+<tr>
+<td><code>business</code></td>
+<td>Target business code (<code>HEAD</code>, <code>PET</code>, <code>BRIK</code>, etc.)</td>
+</tr>
+<tr>
+<td><code>current_stage</code></td>
+<td>Active stage (<code>S0..S10</code>)</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>ready</code> / <code>blocked</code> / <code>awaiting-input</code> / <code>complete</code></td>
+</tr>
+<tr>
+<td><code>blocking_reason</code></td>
+<td>Empty if not blocked; explicit gate reason if blocked</td>
+</tr>
+<tr>
+<td><code>next_action</code></td>
+<td>Exact next user action in one sentence</td>
+</tr>
+<tr>
+<td><code>prompt_file</code></td>
+<td>Prompt file path when user handoff is required</td>
+</tr>
+<tr>
+<td><code>required_output_path</code></td>
+<td>Exact output artifact path expected next</td>
+</tr>
+<tr>
+<td><code>bos_sync_actions</code></td>
+<td>List of required Business OS updates before advancing</td>
+</tr>
+</tbody>
+</table>
+<h3>13.3 Advance rule</h3>
+<p>A stage is considered complete only when both are true:</p>
+<ol>
+<li>Required artifact is written and valid.</li>
+<li>Required Business OS sync actions are confirmed complete.</li>
+</ol>
+<p>If either is missing, the run stays <code>blocked</code> at current stage.</p>
+<h2>14) Business OS Sync Contract (No Loop-to-BOS Drift)</h2>
+<p>Startup Loop artifacts and Business OS state must move together.</p>
+<h3>14.1 Write-path rule</h3>
+<p>For cards, ideas, and stage docs:</p>
+<ul>
+<li>Canonical write path is Business OS UI/API (<code>/api/agent/*</code>) to D1.</li>
+<li>Do not treat markdown mirror under <code>docs/business-os/cards/</code> and <code>docs/business-os/ideas/</code> as editable source-of-truth.</li>
+</ul>
+<p>Reference:</p>
+<ul>
+<li><code>docs/business-os/README.md</code></li>
+<li><code>docs/business-os/agent-workflows.md</code></li>
+</ul>
+<h3>14.2 Stage-to-BOS update matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Required BOS update</th>
+<th>Write path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>S0 Intake</td>
+<td>Update business strategy context (intent, scope, constraints)</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/plan.user.md</code></td>
+</tr>
+<tr>
+<td>S1 Readiness</td>
+<td>Record blockers/warnings and owner actions</td>
+<td><code>docs/business-os/readiness/&#x3C;YYYY-MM-DD>-*.user.md</code> + strategy plan risk section</td>
+</tr>
+<tr>
+<td>S1B Measurement bootstrap</td>
+<td>Record measurement setup status and blockers</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-pre-website-measurement-setup.user.md</code></td>
+</tr>
+<tr>
+<td>S2/S3 Research + Forecast</td>
+<td>Update canonical latest pointers and strategy assumptions/targets</td>
+<td><code>latest.user.md</code> pointer + <code>docs/business-os/strategy/&#x3C;BIZ>/plan.user.md</code></td>
+</tr>
+<tr>
+<td>S5A Prioritize</td>
+<td>No BOS sync (pure ranking, no side effects)</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>S5B BOS sync</td>
+<td>Promote selected go-items into Business OS ideas/cards; commit manifest pointer</td>
+<td><code>POST /api/agent/ideas</code>, <code>POST /api/agent/cards</code></td>
+</tr>
+<tr>
+<td>S7 Fact-find</td>
+<td>Upsert <code>fact-find</code> stage doc for selected card</td>
+<td><code>GET/PATCH/POST /api/agent/stage-docs/:cardId/fact-find</code></td>
+</tr>
+<tr>
+<td>S8 Plan</td>
+<td>Upsert <code>plan</code> stage doc + lane transition <code>Fact-finding -> Planned</code></td>
+<td><code>PATCH /api/agent/cards/:id</code> + <code>GET/PATCH/POST /api/agent/stage-docs/:cardId/plan</code></td>
+</tr>
+<tr>
+<td>S9 Build</td>
+<td>Upsert <code>build</code> stage doc + lane transitions to <code>In progress</code>/<code>Done</code></td>
+<td><code>PATCH /api/agent/cards/:id</code> + <code>GET/PATCH/POST /api/agent/stage-docs/:cardId/build</code></td>
+</tr>
+<tr>
+<td>S10 Weekly decision</td>
+<td>Record K/P/C/S decision and update card/business plan state</td>
+<td><code>docs/business-os/strategy/&#x3C;BIZ>/&#x3C;YYYY-MM-DD>-weekly-kpcs-decision.user.md</code> + card updates via API</td>
+</tr>
+</tbody>
+</table>
+<h3>14.3 Sync guardrails</h3>
+<ol>
+<li>No <code>advance</code> when required BOS writes fail.</li>
+<li>No <code>advance</code> when <code>latest.user.md</code> pointer is stale for the completed stage.</li>
+<li>If API write fails, return <code>blocked</code> with retry command and exact failing endpoint.</li>
+<li>Weekly K/P/C/S decision must include links to related card IDs and latest stage docs.</li>
+</ol>
+    <div class="meta">
+      <div>Source: <code>docs/business-os/startup-loop-workflow.user.md</code></div>
+      <div>Generated: 2026-02-14T01:43:43.392Z</div>
+    </div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+  </script>
+</body>
+</html>

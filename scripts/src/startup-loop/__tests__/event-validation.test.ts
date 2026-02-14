@@ -114,4 +114,24 @@ describe("validateEventStream", () => {
     expect(result.valid).toBe(false);
     expect(result.errors.some((e) => e.includes("blocking_reason"))).toBe(true);
   });
+
+  it("accepts stage_completed events with additional growth_accounting payload", () => {
+    const eventWithGrowthPayload = {
+      ...makeEvent({
+        event: "stage_completed",
+        stage: "S10",
+        artifacts: { readout: "stages/S10/readout.json", growth_ledger: "../../../../../data/shops/HEAD/growth-ledger.json" },
+      }),
+      growth_accounting: {
+        output: {
+          overall_status: "yellow",
+          guardrail_signal: "hold",
+        },
+      },
+    } as unknown as RunEvent;
+
+    const result = validateEventStream([eventWithGrowthPayload]);
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
 });

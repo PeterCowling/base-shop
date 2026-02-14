@@ -3,7 +3,9 @@ export { SHOP_NAME_RE, validateShopName } from "./validateShopName";
 // Migrated from @acme/shared-utils - universal exports
 export * from "./array";
 export * from "./format";
+export * from "./growth";
 export * from "./http";
+export * from "./hypothesis-portfolio";
 export * from "./json";
 export * from "./security";
 export * from "./shop";

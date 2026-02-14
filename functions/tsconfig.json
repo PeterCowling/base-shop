@@ -47,6 +47,6 @@
   ],
 
   /* production Workers source only */
-  "include": ["src/**/*.ts", "*.ts"],
+  "include": ["src/**/*.ts", "api/**/*.ts", "*.ts"],
   "exclude": ["dist", "__tests__/**"]
 }

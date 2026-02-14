@@ -8,7 +8,7 @@ export default function HomePage() {
       <h1 className="text-3xl font-bold text-brand-heading">Business OS</h1>
 
       {/* eslint-disable-next-line ds/container-widths-only-at -- GS-001: landing page layout */}
-      <div className="grid w-full max-w-xl grid-cols-2 gap-6">
+      <div className="grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
         <Link
           href="/guides"
           className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-primary/50 hover:shadow-md"
@@ -39,6 +39,21 @@ export default function HomePage() {
           <span className="text-lg font-semibold text-brand-heading">Kanban Board</span>
           <span className="text-center text-sm text-brand-text/70">
             Plan and track work across boards for humans and agents
+          </span>
+        </Link>
+
+        <Link
+          href="/workflows"
+          className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-accent/50 hover:shadow-md"
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-accent">
+            <rect x="3" y="4" width="18" height="4" rx="1" />
+            <rect x="3" y="10" width="18" height="4" rx="1" />
+            <rect x="3" y="16" width="18" height="4" rx="1" />
+          </svg>
+          <span className="text-lg font-semibold text-brand-heading">Workflows</span>
+          <span className="text-center text-sm text-brand-text/70">
+            View rendered workflow artifacts including platform capability baselines
           </span>
         </Link>
       </div>

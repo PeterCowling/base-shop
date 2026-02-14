@@ -86,7 +86,7 @@
   <main>
 <h1>Brikette — Business Plan</h1>
 <h2>Strategy</h2>
-<h3>Current Focus (2026-02-09)</h3>
+<h3>Current Focus (2026-02-13)</h3>
 <ol>
 <li>
 <p><strong>L3 Transition: Reception Infrastructure</strong> (Priority: High)</p>
@@ -98,8 +98,8 @@
 <li>
 <p><strong>Analytics &#x26; Visibility Gap</strong> (Priority: High)</p>
 <ul>
-<li>Status: GA infrastructure exists but NO GA_MEASUREMENT_ID configured; zero analytics data; no Search Console setup</li>
-<li>Next: Configure Google Analytics and Search Console to establish measurement baseline (execution note: <code>docs/business-os/strategy/BRIK/2026-02-12-ga4-search-console-setup-note.user.md</code>)</li>
+<li>Status: GA4 config is live in production (<code>G-2ZSYXG8R7T</code>), Data API access is now working, and first 7-day baseline is locked (sessions/users/page_view measured)</li>
+<li>Next: Verify report-layer non-zero <code>begin_checkout</code> after deployment propagation and close <code>web_vitals</code> verification path</li>
 </ul>
 </li>
 <li>
@@ -110,21 +110,79 @@
 </ul>
 </li>
 </ol>
+<h2>Startup-Loop Outcome Contract (Canonical)</h2>
+<p>Promoted from:</p>
+<ul>
+<li>
+<p><code>docs/business-os/startup-baselines/BRIK-forecast-seed.user.md</code></p>
+</li>
+<li>
+<p><code>docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md</code></p>
+</li>
+<li>
+<p><code>docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md</code></p>
+</li>
+<li>
+<p>Outcome-ID: <code>BRIK-OUT-2026Q2-01</code></p>
+</li>
+<li>
+<p>Outcome statement: Stabilize and grow BRIK net booking value over the next 90 days by improving conversion quality, direct-share economics, and cancellation control under measured weekly decisioning.</p>
+</li>
+<li>
+<p>Baseline (2026-02-13):</p>
+<ul>
+<li>trailing 90-day net booking value (2025-11..2026-01): EUR 28,927.79</li>
+<li>trailing 90-day bookings (2025-11..2026-01): 100</li>
+<li>direct booking share (same window): 18%</li>
+<li>paid CAC: not measured at decision-grade quality</li>
+</ul>
+</li>
+<li>
+<p>Target (90 days, by 2026-05-13):</p>
+<ul>
+<li>net booking value: EUR 205,200 (forecast P50)</li>
+<li>bookings: 760 (forecast P50)</li>
+<li>direct booking share: 27% (forecast P50)</li>
+<li>paid CAC: &#x3C;=EUR 95 by day 14 and &#x3C;=EUR 90 by day 60-90</li>
+</ul>
+</li>
+<li>
+<p>Leading indicators (weekly):</p>
+<ul>
+<li>tracked sessions</li>
+<li>session-to-booking CVR</li>
+<li>paid CAC and spend efficiency</li>
+<li>direct share vs OTA share</li>
+<li>booking-step p75 performance</li>
+<li>cancellation reason coding coverage</li>
+</ul>
+</li>
+<li>
+<p>Decision link: <code>DEC-BRIK-02</code> (whether BRIK has recovered into a reliable positive trend and can scale controlled growth investments)</p>
+</li>
+</ul>
+<h3>Guardrails</h3>
+<ul>
+<li>If CVR &#x3C;1.2% after >=5,000 sessions, hold spend expansion and prioritize funnel fixes.</li>
+<li>If paid CAC >EUR 130 for 7 consecutive days, reduce to retargeting-only mode.</li>
+<li>If direct share &#x3C;20% by day 14, accelerate member-rate/perk experiment and re-check margin impact.</li>
+<li>If booking-step p75 load >3.0s for 3 consecutive days, freeze offer experiments until performance is restored.</li>
+</ul>
 <h2>Risks</h2>
 <h3>Active Risks</h3>
 <ul>
 <li>
-<p><strong>Zero Analytics Data</strong> (Severity: High, Added: 2026-02-09)</p>
+<p><strong>Measurement Signal Quality Incomplete</strong> (Severity: Medium, Added: 2026-02-09, Updated: 2026-02-13)</p>
 <ul>
-<li>Source: GA infrastructure exists but GA_MEASUREMENT_ID not configured; no Search Console</li>
-<li>Impact: No visibility into traffic, conversions, search performance, or user behavior; flying blind on L2→L3 transition</li>
-<li>Mitigation: Immediate GA and Search Console configuration; establish measurement baseline before L3 launch</li>
+<li>Source: First 7-day GA4 baseline is measured and production deploy alignment is complete, but current 7-day report still shows <code>begin_checkout=0</code> and <code>web_vitals=0</code></li>
+<li>Impact: Traffic baseline exists, but conversion and performance decisioning remain partially blind until report-layer confirmation stabilizes</li>
+<li>Mitigation: Re-run bounded GA4 extracts after propagation window, verify non-zero <code>begin_checkout</code>, and close <code>web_vitals</code> verification with weekly refresh discipline</li>
 </ul>
 </li>
 <li>
 <p><strong>Translation Quality Unknown</strong> (Severity: Medium, Added: 2026-02-09)</p>
 <ul>
-<li>Source: 168+ guides × 18 locales = 3,024 guide pages; structure-first translation workflow established but quality gates unvalidated at scale</li>
+<li>Source: 168+ guides x 18 locales = 3,024 guide pages; structure-first translation workflow established but quality gates unvalidated at scale</li>
 <li>Impact: Potential SEO penalties, user trust issues, booking conversion impact</li>
 <li>Mitigation: Run strict-mode i18n audit, spot-check high-traffic guides, establish ongoing quality monitoring</li>
 </ul>
@@ -146,29 +204,107 @@
 <h2>Learnings</h2>
 <p><em>No learnings recorded yet. This section is append-only — learnings are added after card reflections.</em></p>
 <h2>Metrics</h2>
-<h3>Traffic &#x26; Engagement (Established: 2026-02-09)</h3>
+<h3>First 7-Day Measured Baseline (Locked: 2026-02-13)</h3>
+<p>Window source:</p>
+<ul>
+<li>GA4 Data API <code>runReport</code></li>
+<li>Window queried: <code>7daysAgo..today</code> on 2026-02-13 (property timezone)</li>
+<li>Evidence note: <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th align="right">Value</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sessions</td>
+<td align="right">73</td>
+<td>Initial traffic baseline established</td>
+</tr>
+<tr>
+<td>Total users</td>
+<td align="right">53</td>
+<td>Initial unique-user baseline established</td>
+</tr>
+<tr>
+<td>Total event count</td>
+<td align="right">563</td>
+<td>Event collection active overall</td>
+</tr>
+<tr>
+<td><code>page_view</code> events</td>
+<td align="right">258</td>
+<td>Page-level tracking active</td>
+</tr>
+<tr>
+<td><code>user_engagement</code> events</td>
+<td align="right">145</td>
+<td>Engagement signal present</td>
+</tr>
+<tr>
+<td><code>begin_checkout</code> events</td>
+<td align="right">0</td>
+<td>Booking-funnel signal currently absent in GA4 window</td>
+</tr>
+<tr>
+<td><code>web_vitals</code> events</td>
+<td align="right">0</td>
+<td>Performance telemetry signal currently absent in GA4 window</td>
+</tr>
+<tr>
+<td>Conversions</td>
+<td align="right">0</td>
+<td>No conversion events recorded in current 7-day window</td>
+</tr>
+<tr>
+<td>Session-to-booking proxy CVR (<code>begin_checkout/sessions</code>)</td>
+<td align="right">0.00%</td>
+<td>Fails decision-grade funnel threshold</td>
+</tr>
+</tbody>
+</table>
+<h3>Traffic &#x26; Engagement (Established: 2026-02-09, Updated: 2026-02-13)</h3>
 <ul>
 <li>
-<p><strong>Monthly Active Users:</strong> Not measured</p>
+<p><strong>7-day sessions baseline:</strong> 73</p>
 <ul>
-<li>Target: Establish baseline, then 10% MoM growth</li>
-<li>Measurement: Google Analytics (pending GA_MEASUREMENT_ID configuration)</li>
+<li>Target: Weekly growth with stable quality signals</li>
+<li>Measurement: GA4 Data API (<code>7daysAgo..today</code> query, locked 2026-02-13)</li>
 </ul>
 </li>
 <li>
-<p><strong>Guide Pageviews:</strong> Not measured</p>
+<p><strong>7-day users baseline:</strong> 53</p>
 <ul>
-<li>Target: Track engagement with 168+ guides</li>
-<li>Measurement: Google Analytics + Search Console</li>
+<li>Target: Establish stable week-over-week user growth trend</li>
+<li>Measurement: GA4 Data API (<code>7daysAgo..today</code> query, locked 2026-02-13)</li>
+</ul>
+</li>
+<li>
+<p><strong>Guide Pageviews:</strong> Partially measured (<code>page_view</code> aggregate only)</p>
+<ul>
+<li>Target: Track guide-specific engagement with route-level breakdown</li>
+<li>Measurement: GA4 page-level reports + Search Console</li>
 </ul>
 </li>
 </ul>
-<h3>Conversion (Established: 2026-02-09)</h3>
+<h3>Conversion (Established: 2026-02-09, Updated: 2026-02-13)</h3>
 <ul>
-<li><strong>Booking Conversion Rate:</strong> Not measured
+<li>
+<p><strong>Booking conversion rate (sessions -> conversions):</strong> 0.00% in first measured 7-day window</p>
 <ul>
-<li>Target: Establish baseline, industry standard is 2-3%</li>
-<li>Measurement: GA ecommerce tracking (requires configuration)</li>
+<li>Target: Establish reliable non-zero baseline, then move toward 2-3% range</li>
+<li>Measurement: GA4 conversions/sessions</li>
+</ul>
+</li>
+<li>
+<p><strong><code>begin_checkout</code> booking intent signal:</strong> 0 events in first measured 7-day window</p>
+<ul>
+<li>Target: Non-zero weekly event volume with payload integrity</li>
+<li>Measurement: GA4 event counts + DebugView/Realtime verification</li>
 </ul>
 </li>
 </ul>
@@ -183,7 +319,7 @@
 </ul>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/BRIK/plan.user.md</code></div>
-      <div>Generated: 2026-02-12T12:59:18.240Z</div>
+      <div>Generated: 2026-02-13T23:46:57.236Z</div>
     </div>
   </main>
   <script type="module">

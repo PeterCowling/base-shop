@@ -108,6 +108,20 @@ pnpm run test:governed -- jest -- --config ./jest.config.cjs -- src/startup-loop
 # Business OS growth card rendering
 pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx
 ```
+
+### Startup-Loop MCP Data Plane (Targeted)
+
+Use the dedicated startup-loop Jest wrapper config for MCP integration tests. Do not pass ad hoc ignore flags.
+
+```bash
+# Startup-loop MCP integration suite
+pnpm --filter @acme/mcp-server test:startup-loop
+
+# Startup-loop MCP policy + tool contracts (individual suites)
+CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/tool-policy-gates.test.ts
+CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/bos-tools-write.test.ts
+CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/loop-tools.test.ts
+```
 ---
 
 ## Rule 3: Limit Jest Workers

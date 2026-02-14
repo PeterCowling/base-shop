@@ -24,8 +24,7 @@ Monorepo: Turborepo + pnpm workspaces.
 
 ## Model Usage Policy
 
-Always pass `model: "sonnet"` on every Task tool call. Never inherit the parent model (opus) for subagents.
-If a task appears too complex for sonnet, pause and ask the user before switching to a heavier model.
+Always pass `model: "sonnet"` on every Task tool call. Never use opus or haiku — sonnet is the only permitted model for all occasions.
 
 ## Subagent Usage Policy
 

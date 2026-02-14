@@ -1,495 +1,603 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Platform
-Workstream: Business-OS
+Workstream: Engineering
 Created: 2026-02-13
 Last-updated: 2026-02-13
 Last-reviewed: 2026-02-13
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: growth-accounting-kernel
-Deliverable-Type: multi-deliverable
+Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Execution-Track: platform-infra
+Execution-Track: code
 Primary-Execution-Skill: /lp-build
-Supporting-Skills: /lp-fact-find, /lp-plan, /lp-sequence
-Overall-confidence: 81%
-Confidence-Method: min(Implementation,Approach,Impact) — no novel algorithms, clear integration surface, startup-loop contract dependency
-Business-OS-Integration: on
+Supporting-Skills: /lp-replan, /lp-sequence
+Overall-confidence: 82%
+Confidence-Method: min(Implementation,Approach,Impact) per task; Overall is effort-weighted average (S=1, M=2, L=3)
+Business-OS-Integration: off
 Business-Unit: PLAT
+Card-ID:
 ---
 
-# Growth Accounting Kernel — Implementation Plan
+# Growth Accounting Kernel Plan
 
 ## Summary
 
-This plan implements Opportunity M from the Advanced Math Algorithms fact-find: a canonical growth accounting kernel that makes scale/hold/kill decisions explicit and auditable. Currently, growth metrics (CAC, CVR, AOV, LTV) appear scattered across forecast docs, weekly decision logs, and business plan artifacts, but there is no single runtime-authoritative growth ledger enforced as a decision gate.
+This plan implements Opportunity M from the Advanced Math Algorithms fact-find: a canonical growth-accounting kernel that makes startup-loop scale/hold/kill decisions explicit, deterministic, and replayable. The kernel introduces one per-business ledger (`data/shops/{shopId}/growth-ledger.json`) with AARRR stage state, threshold snapshots, and guardrail outputs.
 
-The core deliverable is a per-business **growth ledger** following the AARRR funnel model (Acquisition → Activation → Revenue → Retention → Referral), with strict pass/fail thresholds at each stage and explicit scale/hold/kill guardrails. The immutable audit trail is the startup-loop event ledger/stage-result outputs; `growth-ledger.json` is a materialized latest snapshot rebuilt from those events if needed. This ledger becomes the canonical source of truth for growth decisioning in the startup loop, particularly at S10 (weekly decision loop) and as input to S3 (forecast recalibration).
-
-Primary references:
-- `docs/plans/advanced-math-algorithms-fact-find.md` (Opportunity M)
-- `docs/business-os/startup-loop-workflow.user.md` (stage definitions, S10 decision contract)
-- `docs/business-os/strategy/HEAD/plan.user.md` (outcome contracts, weekly guardrails)
-- `docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md` (week-2 recalibration gates)
-- `apps/prime/src/lib/owner/businessScorecard.ts` (existing metric evaluation pattern)
+The design preserves immutable audit history in startup-loop stage-result and event artifacts, while the ledger remains a materialized latest-state view. Integration targets S10 weekly decisioning first, then scorecard/operator visibility. The plan front-loads risk by validating reducer and persistence contracts before S10 wiring, and inserts a checkpoint before downstream integration.
 
 ## Goals
 
-1. Define a canonical growth ledger schema following AARRR funnel stages with stage-level pass/fail thresholds.
-2. Create per-business growth ledger artifacts that live alongside forecast/baseline artifacts in `data/shops/{shopId}/`.
-3. Implement scale/hold/kill guardrail evaluation logic that consumes growth ledger state.
-4. Integrate growth ledger updates into the startup loop control plane (S10 weekly decision loop).
-5. Surface growth ledger state in business scorecard for operator visibility.
+- Define and type a canonical AARRR growth-ledger schema with deterministic numeric semantics.
+- Implement deterministic stage evaluation (`overallStatus` + `guardrailSignal`) with blocking-policy controls.
+- Implement atomic, idempotent, CAS-safe persistence for per-business growth ledger snapshots.
+- Integrate growth accounting into S10 stage execution and replayable event payloads.
+- Expose growth state in Business OS with safe API boundaries and explicit empty states.
 
 ## Non-goals
 
-1. Building a full analytics ingestion pipeline (tracking and raw ETL remain in existing systems; this plan adds a narrow metrics adapter contract only).
-2. Multi-business aggregation or portfolio-level growth reporting (first cut is per-business only).
-3. Predictive modeling or ML-based forecasting (this is descriptive accounting, not predictive).
-4. Replacing existing KPI aggregator (businessScorecard.ts remains for operational health; growth ledger is for strategic decisioning).
+- Building a new analytics ingestion/ETL pipeline.
+- Cross-business portfolio reporting in v1.
+- Replacing existing KPI aggregation systems.
+- ML-based forecasting or autonomous policy optimization.
 
 ## Constraints & Assumptions
 
 - Constraints:
-  - TypeScript-only implementation (no Python/Rust sidecars per compatibility constraint).
-  - Must integrate with existing startup loop control plane patterns (event ledger, manifest updates, stage-result files).
-  - Growth ledger updates must be deterministic and idempotent (same inputs → same state).
+  - TypeScript-only implementation in current workspace packages/apps.
+  - Deterministic replay requirement (integer-unit math + explicit threshold snapshots).
+  - Startup-loop audit artifacts remain the immutable system of record.
 - Assumptions:
-  - Growth metrics can be sourced from existing data stores through adapter implementations (GA4 exports, Cloudflare analytics, order data, forecast docs) without introducing new raw ETL in v1.
-  - Weekly measurement cadence is sufficient for decisioning (no real-time alerting in first cut).
-  - Per-business growth ledger is adequate during stabilization (multi-business rollups deferred).
+  - Required weekly metrics can be sourced via adapter seams from existing aggregates.
+  - S10 weekly cadence is sufficient for first rollout.
+  - `HEAD` or `PET` can be used as realistic dry-run fixtures.
+
+## Fact-Find Reference
+
+- Related brief: `docs/plans/advanced-math-algorithms-fact-find.md`
+- Key findings carried into this plan:
+  - Opportunity M explicitly identified missing runtime growth ledger and guardrail gate.
+  - HEAD/PET docs already define concrete guardrails (CAC/CVR) that can seed threshold contracts.
+  - Existing startup-loop code has tested patterns for JSONL/event validation and atomic file writes.
+
+## Existing System Notes
+
+- Key modules/files:
+  - `scripts/src/startup-loop/s10-learning-hook.ts` - S10 orchestration and atomic write pattern.
+  - `scripts/src/startup-loop/event-validation.ts` - schema validation pattern for replay artifacts.
+  - `scripts/src/startup-loop/__tests__/s10-learning-hook.test.ts` - integration seam for S10 behavior.
+  - `scripts/src/startup-loop/__tests__/event-validation.test.ts` - event contract test baseline.
+  - `apps/prime/src/lib/owner/businessScorecard.ts` - status-threshold evaluation pattern.
+  - `apps/prime/src/lib/owner/__tests__/businessScorecard.test.ts` - deterministic metric/status tests.
+- Patterns to follow:
+  - Pure-function reducers with table-driven tests in `packages/lib`.
+  - Atomic file writes via temp file + rename.
+  - Explicit typed route contracts and authz checks for Next.js API handlers.
+
+## Proposed Approach
+
+- Option A: Document-only design with later code implementation.
+  - Trade-off: low immediate risk, but delays production guardrail enforcement.
+- Option B: Direct S10 integration first, schema/persistence hardening after.
+  - Trade-off: faster visible output, but higher risk of replay drift and schema churn.
+- Option C (chosen): kernel-first sequence (schema -> reducer -> persistence) then S10/UI integration with checkpoint gating.
+  - Trade-off: slightly longer path, but significantly lower long-term operational risk.
+
+Chosen: Option C because it validates deterministic contracts before high-blast-radius integration work.
 
 ## Task Summary
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
-|---|---|---|---:|---|---|---|---|
-| GAK-01 | DESIGN | Define growth ledger schema (AARRR stages + metrics + thresholds + status) | 88% | S | Pending | - | GAK-02, GAK-03, GAK-04 |
-| GAK-02 | IMPLEMENT | Create per-business growth ledger file structure and versioning | 85% | S | Pending | GAK-01 | GAK-05, GAK-06 |
-| GAK-03 | DESIGN | Define scale/hold/kill guardrail evaluation rules per funnel stage | 86% | M | Pending | GAK-01 | GAK-05 |
-| GAK-04 | DESIGN | Map growth ledger to existing startup loop stages (S3/S10/forecast integration) | 84% | S | Pending | GAK-01 | GAK-05, GAK-07 |
-| GAK-05 | IMPLEMENT | Implement growth ledger evaluation engine (pure function: ledger + thresholds → decision signal) | 82% | M | Pending | GAK-02, GAK-03, GAK-04 | GAK-06, GAK-07 |
-| GAK-06 | IMPLEMENT | Implement growth ledger persistence (update/read API with idempotency guarantees) | 80% | M | Pending | GAK-02, GAK-05 | GAK-07 |
-| GAK-07 | IMPLEMENT | Integrate growth ledger into S10 weekly decision loop control plane | 78% | M | Pending | GAK-04, GAK-05, GAK-06 | GAK-08 |
-| GAK-08 | IMPLEMENT | Surface growth ledger state in business scorecard UI | 82% | S | Pending | GAK-07 | GAK-09 |
-| GAK-09 | CHECKPOINT | Validate end-to-end with one business (HEAD or PET) dry-run | 80% | M | Pending | GAK-08 | - |
+|---|---|---|---:|---:|---|---|---|
+| GAK-01 | IMPLEMENT | Define growth-ledger schema/types and threshold-set contract | 86% | S | Complete (2026-02-13) | - | GAK-02, GAK-03 |
+| GAK-02 | IMPLEMENT | Build guardrail reducer and blocking-policy evaluator | 83% | M | Complete (2026-02-13) | GAK-01 | GAK-04, GAK-06 |
+| GAK-03 | IMPLEMENT | Build persistence layer (atomic writes, canonical JSON, CAS revision) | 82% | M | Complete (2026-02-13) | GAK-01 | GAK-04, GAK-06 |
+| GAK-04 | CHECKPOINT | Horizon checkpoint after kernel core | 95% | S | Complete (2026-02-13) | GAK-02, GAK-03 | GAK-05 |
+| GAK-05 | INVESTIGATE | Validate S10 metrics-adapter ownership and source contract | 86% | M | Complete (2026-02-13) | GAK-04 | GAK-06 |
+| GAK-06 | IMPLEMENT | Integrate growth kernel into S10 stage-result and event outputs | 81% | M | Complete (2026-02-13) | GAK-02, GAK-03, GAK-05 | GAK-07 |
+| GAK-07 | IMPLEMENT | Add Business OS API + UI surface for growth ledger | 80% | M | Complete (2026-02-13) | GAK-06 | GAK-08 |
+| GAK-08 | IMPLEMENT | Run replayable end-to-end dry-run on HEAD/PET fixture | 82% | M | Complete (2026-02-13) | GAK-07 | GAK-09 |
+| GAK-09 | IMPLEMENT | Harden docs/policy and operator runbook for governed usage | 84% | S | Complete (2026-02-13, user-waived docs-lint baseline) | GAK-08 | - |
 
-## Active Tasks
+> Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
-- `GAK-01` (DESIGN) — Unblocked, ready to start (Wave 1).
-- `GAK-02`, `GAK-03`, `GAK-04` — Unblocked after GAK-01 (Wave 2, can run in parallel).
-- `GAK-05` — Unblocked after GAK-02+03+04 (Wave 3).
-- `GAK-06` — Unblocked after GAK-02+05 (Wave 3, parallel with GAK-05 after initial design done).
-- `GAK-07` — Unblocked after GAK-04+05+06 (Wave 4).
-- `GAK-08` — Unblocked after GAK-07 (Wave 5).
-- `GAK-09` — Final validation (Wave 6).
+## Active tasks
+
+- GAK-01: complete (2026-02-13).
+- GAK-02: complete (2026-02-13).
+- GAK-03: complete (2026-02-13).
+- GAK-04: complete (2026-02-13).
+- GAK-05: complete (2026-02-13).
+- GAK-06: complete (2026-02-13).
+- GAK-07: complete (2026-02-13).
+- GAK-08: complete (2026-02-13).
+- GAK-09: complete (2026-02-13, user waived repo-wide docs-lint baseline gate for this task).
+
+## Confidence Gate Policy
+
+- IMPLEMENT build threshold: `>=80%`.
+- IMPLEMENT tasks below threshold require INVESTIGATE/DECISION closure before execution.
+- Confidence gate satisfied: GAK-05 completed on 2026-02-13; GAK-06 can proceed.
 
 ## Parallelism Guide
 
 | Wave | Tasks | Prerequisites | Notes |
-|---|---|---|---|
-| 1 | GAK-01 | - | Schema design (AARRR stages, metrics, thresholds, status enum) |
-| 2 | GAK-02, GAK-03, GAK-04 | GAK-01 | File structure, guardrail rules, startup-loop mapping can run in parallel |
-| 3 | GAK-05, GAK-06 | GAK-02+03+04 | Evaluation engine and persistence can start in parallel after schema/rules complete |
-| 4 | GAK-07 | GAK-04+05+06 | S10 integration after core engine and persistence ready |
-| 5 | GAK-08 | GAK-07 | UI surface after control plane integration |
-| 6 | GAK-09 | GAK-08 | End-to-end validation |
+|------|-------|---------------|-------|
+| 1 | GAK-01 | - | Establish schema/type contract first |
+| 2 | GAK-02, GAK-03 | GAK-01 | Reducer and persistence can proceed in parallel |
+| 3 | GAK-04 | GAK-02, GAK-03 | Checkpoint before S10 integration |
+| 4 | GAK-05 | GAK-04 | Remove adapter ownership uncertainty |
+| 5 | GAK-06 | GAK-02, GAK-03, GAK-05 | S10 integration after contract closure |
+| 6 | GAK-07 | GAK-06 | API/UI surface once control-plane output is stable |
+| 7 | GAK-08 | GAK-07 | End-to-end replay validation |
+| 8 | GAK-09 | GAK-08 | Policy/docs hardening after implementation evidence |
+
+**Max parallelism:** 2 | **Critical path:** 8 waves | **Total tasks:** 9
 
 ## Tasks
 
-### GAK-01: Define growth ledger schema
-
-- **Type:** DESIGN
-- **Deliverable:** business-artifact (schema document + TypeScript types).
-- **Execution-Skill:** /lp-build
-- **Confidence:** 88%
-- **Scope:**
-  - Define AARRR funnel stage model: Acquisition, Activation, Revenue, Retention, Referral, including `stage_policy: { blocking_mode: "always"|"after_valid"|"never" }` (v1 defaults: Acquisition/Activation/Revenue = `always`, Retention = `after_valid`, Referral = `never`).
-  - Define canonical metric catalog with explicit primitive and derived metrics, formulas, units, and denominator semantics:
-    - Acquisition primitives: `spend_eur_cents`, `new_customers`; derived: `cac_eur_cents = spend_eur_cents / new_customers`.
-    - Activation primitives: `sessions`, `checkout_started`, `orders`; derived: `session_to_order_cvr_bps = (orders * 10000) / sessions`, `checkout_to_order_cvr_bps = (orders * 10000) / checkout_started`.
-    - Revenue primitives: `gross_revenue_eur_cents`, `refund_amount_eur_cents`, `discount_amount_eur_cents`, `orders`; derived: `aov_eur_cents = gross_revenue_eur_cents / orders`, `net_revenue_eur_cents = gross_revenue_eur_cents - refund_amount_eur_cents - discount_amount_eur_cents`, `refund_amount_rate_bps = (refund_amount_eur_cents * 10000) / gross_revenue_eur_cents`.
-    - Retention primitives: `repeat_customers_30d`, `active_customers_30d`; derived: `repeat_customer_rate_30d_bps = (repeat_customers_30d * 10000) / active_customers_30d`.
-    - Referral primitives: `referral_sessions`, `referral_orders`; derived: `referral_conversion_rate_bps = (referral_orders * 10000) / referral_sessions` (stage may still emit `not_tracked` in v1 until instrumentation is available).
-  - Define numeric determinism rules: currency values are integer minor units (`*_eur_cents`), rates are integer basis points (`*_bps`), no floating-point threshold comparisons in reducer logic.
-  - Define per-stage threshold schema: `{ metric, unit, direction: "higher"|"lower", green_threshold, red_threshold, validity_min_denominator }` with deterministic integer comparison rules for both directions.
-  - Define growth ledger status enum: `green`, `yellow`, `red`, `insufficient_data`, `not_tracked`.
-  - Define per-business growth ledger file schema: `{ schema_version, ledger_revision, business, period: { period_id, start_date, end_date, forecast_id }, threshold_set_id, threshold_set_hash, threshold_locked_at, updated_at, stages: { acquisition: {...}, activation: {...}, revenue: {...}, retention: {...}, referral: {...} } }`.
-  - Document threshold update policy (thresholds are locked per forecast period, updated only during recalibration) with immutable threshold sets (`threshold_set_id` content-addressed from canonical threshold JSON and never mutated after lock).
-- **Acceptance:**
-  - Schema covers all 5 AARRR stages with concrete primitive and derived metric definitions, formulas, units, and validity denominators.
-  - Threshold schema supports validity gates (minimum denominators before decision-valid, matching PET/HEAD forecast pattern).
-  - Numeric representation is deterministic (integer cents/basis-points, no floating comparisons).
-  - Status enum clearly separates insufficient-data (not enough observations) from red (sufficient data, threshold missed).
-  - Stage blocking semantics are explicit and machine-readable (`always|after_valid|never` with deterministic defaults).
-  - TypeScript type definitions cover ledger structure, stage metrics, threshold definitions, and evaluation results.
-- **Validation contract (VC-GAK-01):**
-  - **VC-GAK-01-01:** Schema coverage — all 5 AARRR stages define at least 2 metrics each, and every derived metric references declared primitive metrics.
-  - **VC-GAK-01-02:** Threshold validity — threshold schema includes `validity_min_denominator` for all rate-based metrics (CVR, repeat rate, etc.).
-  - **VC-GAK-01-03:** Numeric determinism — all currency/rate metrics use integer units (`*_eur_cents`, `*_bps`) with no floating comparisons in evaluation rules.
-  - **VC-GAK-01-04:** HEAD/PET compatibility — schema can represent all existing HEAD and PET outcome contract thresholds (including explicit CAC ceiling and CVR floor contracts).
-  - **VC-GAK-01-05:** Stage policy coverage — `blocking_mode` behavior (`always|after_valid|never`) is represented in schema and validated against v1 defaults.
-  - **VC-GAK-01-06:** Threshold immutability — `threshold_set_id`/`threshold_set_hash` are content-addressed and threshold sets are immutable after lock.
-  - **VC-GAK-01-07:** TypeScript type safety — schema compiles with strict TypeScript, no `any` types, all fields documented with JSDoc.
-  - **Acceptance coverage:** VC-GAK-01-01 covers acceptance criteria 1; VC-GAK-01-02 covers 2; VC-GAK-01-03 covers 3; VC-GAK-01-04 covers compatibility; VC-GAK-01-05 covers 5; VC-GAK-01-06 covers immutability; VC-GAK-01-07 covers 6.
-  - **Validation type:** review checklist + type compilation.
-  - **Validation location/evidence:** `docs/business-os/growth-accounting/ledger-schema.md` (new doc), `packages/lib/src/growth/types.ts` (new file), `docs/business-os/growth-accounting/metric-catalog.md` (new doc).
-  - **Run/verify:** Review schema against existing HEAD/PET forecast docs; compile TypeScript types with `--strict`; verify primitive/derived formula dependencies and units in metric catalog; verify threshold set hash is stable under canonical serialization.
-
----
-
-### GAK-02: Create per-business growth ledger file structure
+### GAK-01: Define growth-ledger schema/types and threshold-set contract
 
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change (file I/O module).
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** code-change (`packages/lib/src/growth/types.ts`, `packages/lib/src/growth/schema.ts`) + schema docs.
+- **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
-- **Confidence:** 85%
-- **Depends on:** GAK-01 (schema).
-- **Scope:**
-  - Define canonical file path: `data/shops/{shopId}/growth-ledger.json` (single latest snapshot per business in first cut).
-  - Implement versioned schema support (schema_version field, forward-compatible reads).
-  - Implement atomic write operations (write to temp file, rename on success to avoid partial writes).
-  - Implement canonical JSON serialization for persistence and tests (stable key ordering, fixed indentation, newline normalization) so deterministic runs are byte-comparable.
-  - Document audit model: startup-loop event ledger/stage-result artifacts are immutable audit history; `growth-ledger.json` is a materialized current-state view.
-  - Document ledger lifecycle: created at S3 (forecast), updated at S10 (weekly decision loop), closed at outcome contract close with final immutable `growth_ledger_closed` event and frozen snapshot pointer.
-- **Acceptance:**
-  - Growth ledger files live in `data/shops/{shopId}/` alongside existing shop data.
-  - Writes are atomic (no partial state ever visible).
-  - Schema versioning allows future schema migrations without breaking existing readers.
-  - Ledger creation is idempotent (re-creating with same inputs produces identical file bytes via canonical serialization).
-- **Validation contract (VC-GAK-02):**
-  - **VC-GAK-02-01:** Atomic writes — simulate write interruption (kill process mid-write) → verify ledger file is either fully written or absent (no corrupt partial state).
-  - **VC-GAK-02-02:** Idempotent creation — create ledger twice with same inputs → verify byte-identical outputs (deterministic timestamps via explicit input + canonical serializer).
-  - **VC-GAK-02-03:** Schema versioning — read v1 ledger with v2 reader (backward-compatible migration path documented).
-  - **VC-GAK-02-04:** Audit-model contract — documentation explicitly defines immutable event ledger/stage-results as source-of-truth history and snapshot rebuild path.
-  - **Acceptance coverage:** VC-GAK-02-01 covers criteria 2; VC-GAK-02-02 covers 4; VC-GAK-02-03 covers 3; VC-GAK-02-04 covers 1.
-  - **Validation type:** unit test (simulated writes + corruption scenarios).
-  - **Validation location/evidence:** `packages/lib/src/growth/__tests__/ledger-io.test.ts` (new test file), `docs/business-os/growth-accounting/startup-loop-integration.md` (new doc).
-  - **Run/verify:** `npx jest --testPathPattern=growth/ledger-io`.
-
----
-
-### GAK-03: Define scale/hold/kill guardrail evaluation rules
-
-- **Type:** DESIGN
-- **Deliverable:** business-artifact (guardrail decision tree).
-- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/growth/types.ts`, `packages/lib/src/growth/schema.ts`, `packages/lib/src/growth/index.ts`, `packages/lib/src/growth/__tests__/schema.test.ts`, `docs/business-os/growth-accounting/ledger-schema.md`, `[readonly] docs/business-os/strategy/HEAD/plan.user.md`, `[readonly] docs/business-os/strategy/PET/italy-90-day-launch-forecast-v2.user.md`
+- **Depends on:** -
+- **Blocks:** GAK-02, GAK-03
 - **Confidence:** 86%
-- **Depends on:** GAK-01 (schema).
-- **Scope:**
-  - Define decision outputs with explicit separation:
-    - `overallStatus`: `green|yellow|red` (state outcome).
-    - `guardrailSignal`: `scale|hold|kill` (action outcome), with fixed mapping `green -> scale`, `yellow -> hold`, `red -> kill`.
-  - Map per-stage status to `overallStatus` using effective blocking semantics from `blocking_mode`:
-    - Any effective blocking stage `red` → overall `red`.
-    - Else any effective blocking stage `yellow` or `insufficient_data` or `not_tracked` → overall `yellow`.
-    - Else all effective blocking stages `green` → overall `green`.
-    - Effective blocking rule: `always` stages are always blocking; `after_valid` stages become blocking only when validity denominator is met; `never` stages are advisory-only.
-    - Advisory (`never`) stages never force overall `red`; they affect coverage visibility but not blocking gate decisions.
-  - Define stage-specific guardrail actions:
-    - Acquisition red → stop cold acquisition expansion, retargeting only.
-    - Activation red → pause spend increases, run conversion fixes.
-    - Revenue red → hold growth, investigate unit economics or fulfillment issues.
-    - Retention red → pause expansion, fix product/service quality.
-    - Referral red/yellow/insufficient_data → advisory only in first cut (referral is non-blocking in v1).
-  - Document escalation policy: red status triggers named owner, remediation plan within 48 hours, re-test within 7 days (matches PET gate ownership pattern).
+  - Implementation: 88% - schema/type work follows well-established workspace patterns.
+  - Approach: 86% - AARRR + threshold snapshot is aligned with startup-loop contracts.
+  - Impact: 86% - isolated to additive files and read-only strategy references.
 - **Acceptance:**
-  - Decision tree covers all combinations of stage statuses across the 5-stage funnel (`5^5 = 3125` combinations) and maps each to exactly one `overallStatus` and one `guardrailSignal`.
-  - `overallStatus` and `guardrailSignal` are non-duplicative and contractually distinct (state vs action).
-  - Each guardrail signal has explicit actions (`scale|hold|kill`) documented.
-  - Stage-specific actions match existing HEAD/PET forecast gate logic (CAC gate → retargeting-only; CVR gate → conversion fixes).
-  - Blocking behavior is explicit and deterministic for `always|after_valid|never` stage policies and for `red|yellow|insufficient_data|not_tracked` statuses.
-  - Escalation policy is deterministic and time-bound.
-- **Validation contract (VC-GAK-03):**
-  - **VC-GAK-03-01:** Decision tree completeness — enumerate all 3125 stage-status combinations (`5^5`) → verify each maps to exactly one `overallStatus` and one `guardrailSignal`.
-  - **VC-GAK-03-02:** HEAD/PET mapping — existing HEAD CAC guardrail and PET week-2 gates map cleanly to decision tree actions (no semantic loss).
-  - **VC-GAK-03-03:** Stage policy semantics — `after_valid` stages are non-blocking before validity and blocking after validity, with deterministic transition behavior.
-  - **VC-GAK-03-04:** Non-blocking semantics — referral `red` with all effective blocking stages `green` results in overall `green` or `yellow` per configured policy, never forced `red`.
-  - **VC-GAK-03-05:** Escalation SLA — decision tree includes explicit owner assignment and remediation timeline for every effective-blocking red status.
-  - **Acceptance coverage:** VC-GAK-03-01 covers criteria 1; VC-GAK-03-02 covers 4; VC-GAK-03-03 covers 5; VC-GAK-03-04 covers 5; VC-GAK-03-05 covers 2,6.
-  - **Validation type:** review checklist + cross-reference with forecast docs.
-  - **Validation location/evidence:** `docs/business-os/growth-accounting/guardrail-decision-tree.md` (new doc).
-  - **Run/verify:** Cross-reference decision tree against HEAD/PET forecast gate logic; execute exhaustive 3125-state reducer test table.
+  - Ledger schema covers all 5 AARRR stages with deterministic integer-unit metrics.
+  - Threshold sets are versioned and content-addressed (`threshold_set_id`, `threshold_set_hash`).
+  - Status enums explicitly separate `insufficient_data` from `red`.
+  - TypeScript types compile under strict settings and ban `any`.
+- **Validation contract:**
+  - TC-01: schema declares 5 stages and required stage-level policy fields.
+  - TC-02: integer-unit invariants enforced (`*_eur_cents`, `*_bps`) and float comparisons excluded.
+  - TC-03: strict compilation passes for new growth schema/types.
+  - TC-04: HEAD/PET guardrails map into schema without semantic loss.
+  - **Acceptance coverage:** TC-01 covers stage coverage; TC-02 covers determinism; TC-03 covers type safety; TC-04 covers compatibility.
+  - **Validation type:** unit + typecheck + doc cross-check.
+  - **Validation location/evidence:** `packages/lib/src/growth/__tests__/schema.test.ts`, `docs/business-os/growth-accounting/ledger-schema.md`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- src/growth/__tests__/schema.test.ts` and `pnpm --filter @acme/lib build`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - HEAD/PET threshold compatibility -> doc review -> confirmed representative CAC/CVR contracts exist.
+- **What would make this >=90%:** schema spike merged with two real threshold fixtures (`HEAD`, `PET`) and passing compile/tests.
+- **Rollout / rollback:**
+  - Rollout: add schema/types behind unused module exports.
+  - Rollback: isolate by removing growth module exports.
+- **Documentation impact:**
+  - Update `docs/business-os/growth-accounting/ledger-schema.md`.
+- **Notes / references:**
+  - Opportunity M in `docs/plans/advanced-math-algorithms-fact-find.md`.
 
----
+- **Build validation (2026-02-13):******
+  - Added: `packages/lib/src/growth/types.ts`, `packages/lib/src/growth/schema.ts`, `packages/lib/src/growth/index.ts`, `packages/lib/src/growth/__tests__/schema.test.ts`, `docs/business-os/growth-accounting/ledger-schema.md`.
+  - Pass: `pnpm --filter @acme/lib test -- src/growth/__tests__/schema.test.ts`.
+  - Pass: `pnpm exec eslint packages/lib/src/growth/types.ts packages/lib/src/growth/schema.ts packages/lib/src/growth/__tests__/schema.test.ts`.
+  - Pass: `pnpm exec tsc --noEmit --pretty false --strict --moduleResolution bundler --module ESNext --target ES2022 --types node packages/lib/src/growth/types.ts packages/lib/src/growth/schema.ts`.
+  - Known unrelated failure: `pnpm --filter @acme/lib build` currently fails in pre-existing `src/hypothesis-portfolio/validation.ts` (outside GAK-01 scope).
 
-### GAK-04: Map growth ledger to startup loop stages
-
-- **Type:** DESIGN
-- **Deliverable:** business-artifact (integration contract).
-- **Execution-Skill:** /lp-build
-- **Confidence:** 84%
-- **Depends on:** GAK-01 (schema).
-- **Scope:**
-  - Define where growth ledger is created: S3 (forecast stage) writes initial ledger with target thresholds from forecast assumptions.
-  - Define where growth ledger is updated: S10 (weekly decision loop) reads observed metrics via adapter boundary, updates ledger snapshot, emits `overallStatus` + `guardrailSignal` and immutable audit event.
-  - Define where growth ledger is consumed:
-    - S10 weekly decision logs reference ledger status and guardrail actions.
-    - S3 forecast recalibration consumes previous-period ledger as input priors.
-    - Business scorecard (apps/business-os) surfaces current ledger state for operator visibility.
-  - Define ledger lifecycle hooks: created (S3), updated (S10 weekly), closed (outcome contract closed with final event + frozen snapshot pointer).
-  - Define audit boundary explicitly: immutable event ledger + stage-result payloads are the historical record; `growth-ledger.json` is current-state materialization only.
-- **Acceptance:**
-  - Growth ledger creation/update/consumption is explicitly documented in startup-loop stage table.
-  - S3 forecast artifact includes growth ledger initialization as a deliverable.
-  - S10 weekly decision loop contract specifies ledger update as mandatory step before decision output.
-  - Lifecycle hooks prevent orphaned or stale ledgers (explicit close event + frozen snapshot when outcome contract closes).
-- **Validation contract (VC-GAK-04):**
-  - **VC-GAK-04-01:** Stage table integration — `docs/business-os/startup-loop-workflow.user.md` stage table includes growth ledger in S3/S10 outputs column.
-  - **VC-GAK-04-02:** Lifecycle coverage — ledger lifecycle (create/update/close) mapped to startup-loop events (forecast created, weekly decision run, outcome closed).
-  - **VC-GAK-04-03:** Consumption paths — all three consumers (S10 decision logs, S3 recalibration, business scorecard) documented with data flow diagrams.
-  - **VC-GAK-04-04:** Audit contract — startup-loop docs define growth event payload fields (inputs, denominators, `threshold_set_id`, `threshold_set_hash`, threshold snapshot, outputs, actions) and snapshot rebuild semantics.
-  - **Acceptance coverage:** VC-GAK-04-01 covers criteria 1,2,3; VC-GAK-04-02 covers 4; VC-GAK-04-03 covers 3; VC-GAK-04-04 covers 1,3.
-  - **Validation type:** review checklist + documentation cross-reference.
-  - **Validation location/evidence:** `docs/business-os/growth-accounting/startup-loop-integration.md` (new doc).
-  - **Run/verify:** Cross-reference integration doc against startup-loop stage table; verify all lifecycle hooks mapped to startup-loop events.
-
----
-
-### GAK-05: Implement growth ledger evaluation engine
+### GAK-02: Build guardrail reducer and blocking-policy evaluator
 
 - **Type:** IMPLEMENT
-- **Deliverable:** code-change (pure evaluation function).
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** code-change (`packages/lib/src/growth/evaluate.ts`) + reducer tests.
+- **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/growth/evaluate.ts`, `packages/lib/src/growth/index.ts`, `packages/lib/src/growth/__tests__/evaluate.test.ts`, `[readonly] apps/prime/src/lib/owner/businessScorecard.ts`
+- **Depends on:** GAK-01
+- **Blocks:** GAK-04, GAK-06
+- **Confidence:** 83%
+  - Implementation: 84% - pure-function reducer and test matrix are straightforward.
+  - Approach: 83% - explicit status/signal split reduces ambiguity in downstream consumers.
+  - Impact: 83% - additive kernel surface with bounded call sites.
+- **Acceptance:**
+  - Reducer returns deterministic `overallStatus` and `guardrailSignal`.
+  - Blocking policy (`always|after_valid|never`) is enforced exactly.
+  - Referral/advisory stage cannot force global red by itself.
+  - Reducer emits actionable stage-level remediation actions.
+- **Validation contract:**
+  - TC-01: threshold-direction matrix passes for higher/lower and green/red bounds.
+  - TC-02: validity-denominator gaps emit `insufficient_data`, not false red.
+  - TC-03: blocking-policy transitions for `after_valid` are deterministic.
+  - TC-04: deterministic replay check returns identical outputs for identical inputs.
+  - TC-05: referral-only red does not force overall red when blocking stages are green.
+  - **Acceptance coverage:** TC-01/TC-02 cover threshold semantics; TC-03/TC-05 cover policy semantics; TC-04 covers determinism.
+  - **Validation type:** unit tests (table-driven + edge cases).
+  - **Validation location/evidence:** `packages/lib/src/growth/__tests__/evaluate.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- src/growth/__tests__/evaluate.test.ts`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - Existing status-threshold evaluation pattern -> `apps/prime/src/lib/owner/businessScorecard.ts` -> confirmed reusable comparison semantics.
+- **Planning validation:**
+  - Checks run: `pnpm --filter @apps/prime test -- src/lib/owner/__tests__/businessScorecard.test.ts` - pass (13 tests).
+  - Validation artifacts written: none (planning phase).
+  - Unexpected findings: none.
+- **What would make this >=90%:** exhaustive 3125-combination fixture coverage plus mutation test pass.
+- **Rollout / rollback:**
+  - Rollout: ship reducer standalone; no control-plane call sites until GAK-06.
+  - Rollback: remove growth reducer export.
+- **Documentation impact:**
+  - Add reducer semantics to `docs/business-os/growth-accounting/guardrails.md`.
+- **Notes / references:**
+  - Stage policy semantics align with plan constraints in this doc.
+
+- **Build validation (2026-02-13):****
+  - Added: `packages/lib/src/growth/evaluate.ts`, `packages/lib/src/growth/__tests__/evaluate.test.ts`.
+  - Updated: `packages/lib/src/growth/index.ts` (export surface).
+  - Pass: `pnpm --filter @acme/lib test -- src/growth/__tests__/evaluate.test.ts src/growth/__tests__/schema.test.ts`.
+  - Pass: `pnpm exec eslint packages/lib/src/growth/evaluate.ts packages/lib/src/growth/__tests__/evaluate.test.ts packages/lib/src/growth/index.ts packages/lib/src/growth/schema.ts packages/lib/src/growth/types.ts packages/lib/src/growth/__tests__/schema.test.ts`.
+  - Pass: `pnpm exec tsc --noEmit --pretty false --strict --moduleResolution bundler --module ESNext --target ES2022 --types node packages/lib/src/growth/types.ts packages/lib/src/growth/schema.ts packages/lib/src/growth/evaluate.ts`.
+
+### GAK-03: Build persistence layer (atomic writes, canonical JSON, CAS revision)
+
+- **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** code-change (`packages/lib/src/growth/store.ts`) + persistence tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `packages/lib/src/growth/store.ts`, `packages/lib/src/growth/serialize.ts`, `packages/lib/src/growth/__tests__/store.test.ts`, `docs/business-os/growth-accounting/store-contract.md`, `[readonly] scripts/src/startup-loop/s10-learning-hook.ts`
+- **Depends on:** GAK-01
+- **Blocks:** GAK-04, GAK-06
 - **Confidence:** 82%
-- **Depends on:** GAK-02 (file structure), GAK-03 (guardrail rules), GAK-04 (startup-loop contract).
-- **Scope:**
-  - Implement pure function: `evaluateGrowthLedger(currentMetrics, thresholds, stagePolicies, validityRules) -> { ledgerState, stageStatuses, overallStatus, guardrailSignal, blockingConfidence, overallCoverage, actions[] }`.
-  - Per-stage status evaluation: compare metric value against `green_threshold`/`red_threshold` using `direction`, check validity denominator, emit status (`green|yellow|red|insufficient_data|not_tracked`) using integer-unit comparisons (cents/bps/count).
-  - Overall status derivation: apply effective blocking-stage semantics from GAK-03 (`always|after_valid|never` policy).
-  - Guardrail signal derivation: deterministic mapping from `overallStatus` (`green -> scale`, `yellow -> hold`, `red -> kill`).
-  - Action list generation: map red stages to concrete actions (stop cold acquisition, run conversion fixes, etc.) per GAK-03 decision tree.
-  - Compute confidence/coverage outputs with non-overlapping semantics:
-    - `blockingConfidence` = decision-valid coverage across effective blocking stages only.
-    - `overallCoverage` = decision-valid coverage across all stages including advisory stages.
-  - Deterministic evaluation: same inputs → same outputs (no wall-clock timestamps; use explicit input timestamp).
+  - Implementation: 83% - atomic write and CAS patterns are already present in repo.
+  - Approach: 82% - canonical serialization + CAS is the safest long-term durability model.
+  - Impact: 82% - affects only new growth paths under `data/shops/{shopId}`.
 - **Acceptance:**
-  - Evaluation function is pure (no I/O, no side effects, deterministic).
-  - Per-stage status correctly implements `green_threshold`/`red_threshold`/direction logic from schema.
-  - Validity rules block decision-making when denominators are below threshold (emits `insufficient_data` status).
-  - `overallStatus` and `guardrailSignal` are explicitly distinct and consistent (`status` drives `signal` via fixed mapping).
-  - Overall status matches GAK-03 blocking/non-blocking decision tree logic.
-  - Referral red (non-blocking) does not automatically force overall red in v1.
-  - Advisory-stage data quality can reduce `overallCoverage` without reducing `blockingConfidence`.
-  - Action list is non-empty when `overallStatus=red` / `guardrailSignal=kill` (explicit remediation actions).
-- **Validation contract (VC-GAK-05):**
-  - **VC-GAK-05-01:** Threshold logic — test all 4 direction/threshold outcomes (higher-above-green → green, higher-below-red → red, lower-below-green → green, lower-above-red → red).
-  - **VC-GAK-05-02:** Validity gates — test insufficient denominator scenarios (CVR with <500 sessions → `insufficient_data`, not red), including `after_valid` transition behavior.
-  - **VC-GAK-05-03:** Status/signal derivation — test combination scenarios (1 effective blocking red stage → `overallStatus=red` + `guardrailSignal=kill`; 3 effective blocking yellow → `yellow` + `hold`; all effective blocking green → `green` + `scale`; referral red only does not force overall red).
-  - **VC-GAK-05-04:** Deterministic evaluation — same inputs replayed twice → structurally identical outputs; canonical serializer produces identical bytes for persisted snapshot payloads.
-  - **VC-GAK-05-05:** HEAD compatibility — HEAD outcome contract thresholds (CAC <= EUR 13, CVR >= 1.4%) map to correct stage statuses, overall status, and guardrail signal.
-  - **VC-GAK-05-06:** Confidence semantics — advisory-stage `insufficient_data` lowers `overallCoverage` while leaving `blockingConfidence` unchanged when effective blocking coverage is unchanged.
-  - **VC-GAK-05-07:** Numeric determinism — threshold edge tests in cents/bps produce stable outcomes without floating-point drift.
-  - **Acceptance coverage:** VC-GAK-05-01 covers criteria 2; VC-GAK-05-02 covers 3; VC-GAK-05-03 covers 4,5; VC-GAK-05-04 covers 1; VC-GAK-05-05 covers compatibility; VC-GAK-05-06 covers 6; VC-GAK-05-07 covers 2.
-  - **Validation type:** unit test (parameterized test cases).
-  - **Validation location/evidence:** `packages/lib/src/growth/__tests__/ledger-evaluation.test.ts` (new test file).
-  - **Run/verify:** `npx jest --testPathPattern=growth/ledger-evaluation`.
+  - `readGrowthLedger`, `writeGrowthLedger`, and CAS-safe `updateGrowthLedger` APIs exist.
+  - Writes are atomic and idempotent with canonical JSON bytes.
+  - `ledger_revision` increments only when content changes.
+  - CAS mismatch returns explicit conflict errors.
+- **Validation contract:**
+  - TC-01: missing ledger returns null and does not crash.
+  - TC-02: interrupted write never leaves partial/corrupt JSON.
+  - TC-03: same-input update is byte-identical and does not increment revision.
+  - TC-04: changed-input update increments revision exactly once.
+  - TC-05: stale expected revision returns conflict and preserves latest persisted state.
+  - **Acceptance coverage:** TC-01 covers graceful reads; TC-02 covers atomicity; TC-03/TC-04 cover idempotency/revision rules; TC-05 covers concurrency safety.
+  - **Validation type:** unit/integration tests with temporary filesystem fixtures.
+  - **Validation location/evidence:** `packages/lib/src/growth/__tests__/store.test.ts`.
+  - **Run/verify:** `pnpm --filter @acme/lib test -- src/growth/__tests__/store.test.ts`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - Atomic write implementation precedent -> `scripts/src/startup-loop/s10-learning-hook.ts` -> confirmed temp-file + rename pattern.
+- **Planning validation:**
+  - Checks run: `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-learning-hook.test.ts` - pass (8 tests).
+  - Validation artifacts written: none (planning phase).
+  - Unexpected findings: none.
+- **What would make this >=90%:** stress loop with 100+ concurrent CAS attempts and zero corruption.
+- **Rollout / rollback:**
+  - Rollout: introduce store APIs behind new module; no runtime call sites until GAK-06.
+  - Rollback: disable store import path in S10 integration.
+- **Documentation impact:**
+  - Document on-disk format and lifecycle in `docs/business-os/growth-accounting/store-contract.md`.
+- **Notes / references:**
+  - Current shop data root conventions under `data/shops/`.
 
----
+- **Build validation (2026-02-13):****
+  - Added: `packages/lib/src/growth/store.ts`, `packages/lib/src/growth/serialize.ts`, `packages/lib/src/growth/__tests__/store.test.ts`, `docs/business-os/growth-accounting/store-contract.md`.
+  - Updated: `packages/lib/src/growth/index.ts`, `packages/lib/src/growth/schema.ts`.
+  - Pass: `pnpm --filter @acme/lib test -- src/growth/__tests__/store.test.ts`.
+  - Pass: `pnpm --filter @acme/lib test -- src/growth/__tests__/schema.test.ts src/growth/__tests__/evaluate.test.ts src/growth/__tests__/store.test.ts`.
+  - Pass: `pnpm exec tsc --noEmit --pretty false --strict --moduleResolution bundler --module ESNext --target ES2022 --types node packages/lib/src/growth/types.ts packages/lib/src/growth/schema.ts packages/lib/src/growth/evaluate.ts packages/lib/src/growth/serialize.ts packages/lib/src/growth/store.ts`.
+  - Pass (warnings-only): `pnpm exec eslint packages/lib/src/growth/schema.ts packages/lib/src/growth/store.ts packages/lib/src/growth/serialize.ts packages/lib/src/growth/index.ts packages/lib/src/growth/__tests__/store.test.ts`.
 
-### GAK-06: Implement growth ledger persistence
-
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change (read/write API).
-- **Execution-Skill:** /lp-build
-- **Confidence:** 80%
-- **Depends on:** GAK-02 (file structure), GAK-05 (evaluation engine).
-- **Scope:**
-  - Implement `readGrowthLedger(shopId) -> GrowthLedger | null`.
-  - Implement `writeGrowthLedger(shopId, ledgerState) -> void` (atomic write via temp file + rename).
-  - Implement `updateGrowthLedger(shopId, currentMetrics, timestamp, expectedRevision) -> { ledgerState, overallStatus, guardrailSignal }` (read → evaluate → compare-and-set write chain).
-  - Implement optimistic concurrency control via `ledger_revision` CAS semantics to prevent lost updates when overlapping S10 runs occur.
-  - Define no-op update semantics: if recomputed ledger content is unchanged, skip write, keep `ledger_revision` unchanged, and return existing snapshot (fast path).
-  - Idempotency: re-running update with identical inputs produces identical ledger state (timestamps must be explicit inputs, not wall-clock; serialized output must be canonical).
-  - Error handling: missing ledger file → null (not crash); write failure → explicit error (no silent data loss).
-- **Acceptance:**
-  - Read API returns null for non-existent ledgers (graceful degradation).
-  - Write API is atomic (no partial writes).
-  - Update API chains read → evaluate → write deterministically.
-  - Update idempotency verified (same inputs → same output bytes via canonical serializer).
-  - `ledger_revision` increments only when persisted ledger content changes; no-op updates do not increment revision.
-  - Concurrency conflicts are surfaced explicitly (CAS mismatch returns conflict error; no silent last-writer-wins overwrite).
-- **Validation contract (VC-GAK-06):**
-  - **VC-GAK-06-01:** Read missing ledger → returns null, no crash.
-  - **VC-GAK-06-02:** Write interruption — kill process mid-write → ledger file is either complete or absent (no corruption).
-  - **VC-GAK-06-03:** Idempotent no-op update — run update twice with same metrics + timestamp + revision → byte-identical ledger and unchanged `ledger_revision`.
-  - **VC-GAK-06-04:** Revision behavior — changed inputs produce persisted update and incremented `ledger_revision`; unchanged inputs do not write.
-  - **VC-GAK-06-05:** Concurrency safety — simulate overlapping updates with stale `expectedRevision` → conflict error, no lost update.
-  - **VC-GAK-06-06:** Error propagation — simulate write failure (e.g., read-only filesystem) → explicit error thrown, not silent failure.
-  - **Acceptance coverage:** VC-GAK-06-01 covers criteria 1,5; VC-GAK-06-02 covers 2; VC-GAK-06-03 covers 3,4; VC-GAK-06-04 covers 5; VC-GAK-06-05 covers 6; VC-GAK-06-06 covers 5.
-  - **Validation type:** unit test (simulated I/O failures).
-  - **Validation location/evidence:** `packages/lib/src/growth/__tests__/ledger-persistence.test.ts` (new test file).
-  - **Run/verify:** `npx jest --testPathPattern=growth/ledger-persistence`.
-
----
-
-### GAK-07: Integrate growth ledger into S10 weekly decision loop
-
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change (startup-loop control plane integration).
-- **Execution-Skill:** /lp-build
-- **Confidence:** 78%
-- **Depends on:** GAK-04 (startup-loop contract), GAK-05 (evaluation engine), GAK-06 (persistence).
-- **Scope:**
-  - Add growth ledger update as mandatory step in S10 weekly decision loop control plane.
-  - Introduce metrics adapter boundary: `getWeeklyGrowthMetrics(shopId, weekRange) -> CurrentMetrics` so S10 integration is decoupled from raw data-source plumbing.
-  - Control plane reads observed metrics through adapter implementations (fixture/mock in tests; production adapter for existing aggregates).
-  - Control plane calls `updateGrowthLedger()` with current-week metrics.
-  - Control plane emits stage-result file and event ledger entry (`growth_ledger_evaluated`) with full inputs/outputs:
-    - Inputs: metrics, denominators, threshold snapshot, `threshold_set_id`/`threshold_set_hash`, period_id, evaluation timestamp, expected revision.
-    - Outputs: per-stage statuses, overall status, guardrail signal, `blockingConfidence`, `overallCoverage`, actions.
-  - S10 decision log template includes growth ledger status section (mandatory checklist item).
-- **Acceptance:**
-  - Growth ledger update runs automatically during S10 control plane execution (no manual intervention).
-  - Overall status (`green|yellow|red`) and guardrail signal (`scale|hold|kill`) appear in stage-result output.
-  - Event payload is sufficient to audit/replay decisions without consulting mutable snapshot history.
-  - S10 decision log template enforces growth ledger review (mandatory section, not optional).
-  - Integration is testable via dry-run (simulated metrics → control plane → stage-result → verify `overallStatus` + `guardrailSignal`).
-- **Validation contract (VC-GAK-07):**
-  - **VC-GAK-07-01:** Control plane integration — simulate S10 run with mock metrics → growth ledger updated, `overallStatus` + `guardrailSignal` written to stage-result.json.
-  - **VC-GAK-07-02:** Audit payload completeness — emitted event/stage-result include required replay fields (metrics + denominators + threshold snapshot + threshold hash/id + statuses + signal + actions + coverage metrics).
-  - **VC-GAK-07-03:** Decision log template — new S10 decision log includes growth ledger status section with all 5 AARRR stages + `overallStatus` + `guardrailSignal`.
-  - **VC-GAK-07-04:** Error handling — simulate missing adapter data → control plane emits `insufficient_data` status, not crash.
-  - **Acceptance coverage:** VC-GAK-07-01 covers criteria 1,2,4; VC-GAK-07-02 covers 3; VC-GAK-07-03 covers 4; VC-GAK-07-04 covers 1.
-  - **Validation type:** integration test (simulated S10 run with fixture data).
-  - **Validation location/evidence:** `scripts/src/startup-loop/__tests__/s10-growth-ledger.test.ts` (new test file).
-  - **Run/verify:** `npx jest --testPathPattern=startup-loop/s10-growth-ledger`.
-
----
-
-### GAK-08: Surface growth ledger in business scorecard
-
-- **Type:** IMPLEMENT
-- **Deliverable:** code-change (business-os UI integration).
-- **Execution-Skill:** /lp-build
-- **Confidence:** 82%
-- **Depends on:** GAK-07 (control plane integration).
-- **Scope:**
-  - Extend `apps/business-os` business detail page to include growth ledger card.
-  - Card displays: 5 AARRR stages with current status (green/yellow/red/insufficient_data), last updated timestamp, overall status (`green|yellow|red`), guardrail signal (`scale|hold|kill`), active guardrail actions (if red).
-  - Read growth ledger via API: `GET /api/business/:business/growth-ledger`.
-  - API implementation: authz-check business access, sanitize/validate `business` route param, read `data/shops/{shopId}/growth-ledger.json`, return serialized ledger state.
-  - API behavior contract: existing ledger → HTTP 200; missing ledger → HTTP 404 with typed empty-state code (`ledger_not_initialized`) for deterministic UI handling.
-  - Empty state: if ledger does not exist (S3 not yet run), display "Growth ledger not initialized" with link to forecast stage.
-- **Acceptance:**
-  - Business scorecard page displays growth ledger card with all 5 AARRR stages.
-  - Status colors match `overallStatus` (green = good, yellow = warning, red = action required).
-  - Last updated timestamp visible (operators can verify freshness).
-  - API enforces authorization and rejects invalid business identifiers (no path traversal).
-  - Empty state handled gracefully (no crash when ledger missing).
-- **Validation contract (VC-GAK-08):**
-  - **VC-GAK-08-01:** Render happy path — existing ledger with mixed statuses (2 green, 2 yellow, 1 red) → all stages displayed correctly with status colors.
-  - **VC-GAK-08-02:** Empty state — missing ledger file → empty state message displayed, no crash.
-  - **VC-GAK-08-03:** API integration — API call `/api/business/HEAD/growth-ledger` → returns ledger JSON, HTTP 200.
-  - **VC-GAK-08-04:** API auth/security — unauthorized request denied; malformed/path-traversal `business` param rejected; missing ledger returns 404 + `ledger_not_initialized`.
-  - **Acceptance coverage:** VC-GAK-08-01 covers criteria 1,2,3; VC-GAK-08-02 covers 5; VC-GAK-08-03 covers API contract; VC-GAK-08-04 covers 4,5.
-  - **Validation type:** component test (React Testing Library) + API integration test.
-  - **Validation location/evidence:** `apps/business-os/src/components/GrowthLedgerCard.test.tsx` (new test file), `apps/business-os/src/app/api/business/[business]/growth-ledger/route.test.ts` (new test file).
-  - **Run/verify:** `pnpm --filter business-os test GrowthLedgerCard`.
-
----
-
-### GAK-09: End-to-end validation with HEAD or PET dry-run
+### GAK-04: Horizon checkpoint after kernel core
 
 - **Type:** CHECKPOINT
-- **Deliverable:** validation report.
-- **Execution-Skill:** /lp-build
-- **Confidence:** 80%
-- **Depends on:** GAK-08 (UI integration).
-- **Scope:**
-  - Select one business (HEAD or PET) for dry-run validation.
-  - Create fixture growth ledger with realistic metrics from existing forecast doc (HEAD outcome contract or PET week-2 gates).
-  - Simulate S10 weekly decision loop: read fixture metrics → update ledger → verify `overallStatus` + `guardrailSignal` → check decision log output.
-  - Verify immutable event/stage-result payload captures full replay inputs/outputs for the dry-run decision.
-  - Verify business scorecard displays ledger correctly.
-  - Document validation results: did `overallStatus`/`guardrailSignal` match expected outcomes? Were threshold violations detected correctly? Did empty states render?
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** plan update/re-sequencing artifact.
+- **Execution-Skill:** /lp-replan
+- **Affects:** `docs/plans/growth-accounting-kernel-plan.md`
+- **Depends on:** GAK-02, GAK-03
+- **Blocks:** GAK-05
+- **Confidence:** 95%
+  - Implementation: 95% - procedural reassessment task.
+  - Approach: 95% - reduces compounded risk before integration.
+  - Impact: 95% - prevents deep execution on stale assumptions.
 - **Acceptance:**
-  - One full S10 cycle completes with growth ledger update (no manual intervention beyond fixture setup).
-  - Overall status and guardrail signal match hand-calculated expectation (e.g., HEAD CAC = EUR 16 with ceiling EUR 13 → `overallStatus=red`, `guardrailSignal=kill`).
-  - Decision log includes growth ledger section with correct status.
-  - Stage-result/event payload is replay-auditable (decision can be reconstructed without mutable history files).
-  - Business scorecard card renders ledger state.
-- **Validation contract (VC-GAK-09):**
-  - **VC-GAK-09-01:** Full cycle trace — S10 dry-run produces ledger file, stage-result with overall status + guardrail signal, decision log with ledger section.
-  - **VC-GAK-09-02:** Threshold accuracy — test case with known threshold violation (e.g., CVR = 0.8% with `red_threshold = 0.9%`) → red status detected and action emitted.
-  - **VC-GAK-09-03:** Audit replayability — stage-result/event payload contains required fields to recompute decision deterministically.
-  - **VC-GAK-09-04:** UI rendering — business scorecard page loads with ledger card showing correct stage statuses.
-  - **Acceptance coverage:** VC-GAK-09-01 covers criteria 1,3; VC-GAK-09-02 covers 2; VC-GAK-09-03 covers 4; VC-GAK-09-04 covers 5.
-  - **Validation type:** end-to-end dry-run (fixture data + real control plane execution).
-  - **Validation location/evidence:** `docs/business-os/growth-accounting/validation-report-GAK-09.md` (new report), `data/shops/HEAD/growth-ledger.json` (fixture ledger).
-  - **Run/verify:** Execute S10 control plane script with fixture HEAD metrics; load business-os page for HEAD; document outputs in validation report.
+  - Re-score GAK-05..GAK-09 confidence using completed-task evidence.
+  - Confirm reducer and persistence contracts are stable for S10 integration.
+  - Update dependencies if adapter ownership or API-surface assumptions change.
+- **Horizon assumptions to validate:**
+  - S10 can consume growth outputs without changing existing event contracts.
+  - Business OS has suitable placement for growth card/API without routing churn.
 
----
+- **Checkpoint findings (2026-02-13):**
+  - GAK-01/GAK-02/GAK-03 implementation evidence is complete and green on targeted tests.
+  - Reducer and persistence contracts are stable and export-ready for S10 integration.
+  - No dependency changes were required; sequencing remains valid (`GAK-05 -> GAK-06 -> GAK-07`).
+  - Main remaining uncertainty remains metrics-adapter ownership; GAK-05 stays below threshold until contract is written.
+- **Confidence re-score (post-checkpoint):**
+  - GAK-05: 76% (unchanged, still blocked on ownership decisions).
+  - GAK-06: 81% (unchanged; integration seam still depends on adapter ownership closure).
+  - GAK-07: 80% (unchanged).
+  - GAK-08: 82% (unchanged).
+  - GAK-09: 84% (unchanged).
 
-## Validation Strategy
+### GAK-05: Validate S10 metrics-adapter ownership and source contract
 
-1. Schema validation at design stage (GAK-01) ensures all existing forecast thresholds can be represented.
-2. Exhaustive reducer validation (3125 combinations) verifies guardrail mapping completeness and deterministic blocking-stage semantics.
-3. Unit tests for pure functions and persistence cover deterministic integer-unit math (cents/bps), canonical serialization, idempotency/no-op behavior, and CAS conflict handling.
-4. Integration tests for control plane (S10 integration) verify adapter input path, event/stage-result audit payload completeness, and end-to-end data flow.
-5. UI/API tests for business scorecard ensure correct rendering, empty-state handling, authz checks, and route parameter sanitization.
-6. End-to-end dry-run with HEAD/PET validates real-world integration and replayability from immutable artifacts.
+- **Type:** INVESTIGATE
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** analysis artifact (`docs/business-os/growth-accounting/metrics-adapter-contract.md`).
+- **Execution-Skill:** /lp-build
+- **Affects:** `docs/business-os/growth-accounting/metrics-adapter-contract.md`, `[readonly] scripts/src/startup-loop/metrics-aggregate.ts`, `[readonly] scripts/src/startup-loop/funnel-metrics-extractor.ts`, `[readonly] docs/business-os/startup-loop-workflow.user.md`
+- **Depends on:** GAK-04
+- **Blocks:** GAK-06
+- **Confidence:** 86%
+  - Implementation: 87% - ownership and source traversal are now explicitly specified with concrete paths.
+  - Approach: 86% - dedicated adapter boundary removes ambiguity between diagnosis and growth modules.
+  - Impact: 86% - integration churn risk reduced by fixed field ownership and fixture contract.
+- **Blockers / questions to answer:**
+  - Which module owns `getWeeklyGrowthMetrics(shopId, weekRange)` in v1?
+  - Which metrics are source-of-truth versus derived at S10 time?
+  - Which missing fields can safely emit `not_tracked` in v1?
+- **Acceptance:**
+  - Produce signed-off adapter contract with explicit field ownership and units.
+  - Define fallback semantics for missing/late metrics.
+  - Provide test fixture shape used by GAK-06 integration tests.
+- **Planning validation:**
+  - Checks run: `pnpm --filter scripts test -- src/startup-loop/__tests__/event-validation.test.ts` - pass (9 tests).
+  - Validation artifacts written: none (planning phase).
+  - Unexpected findings: no existing dedicated growth adapter seam found.
+- **What would make this >=90%:** approved adapter contract with one implemented fixture-backed prototype call in S10 harness.
+- **Notes / references:**
+  - Existing startup-loop aggregation files in `scripts/src/startup-loop/`.
 
-## Risks
+- **Build validation (2026-02-13):****
+  - Added: `docs/business-os/growth-accounting/metrics-adapter-contract.md`.
+  - Pass: `pnpm --filter scripts test -- src/startup-loop/__tests__/funnel-metrics-extractor.test.ts`.
+  - Decision: adapter ownership fixed to `scripts/src/startup-loop/growth-metrics-adapter.ts` (to be implemented in GAK-06).
 
-| Risk | Severity | Mitigation |
-|---|---|---|
-| Metric definitions drift between forecast docs and ledger schema | High | Explicit schema versioning; migration guide; startup-loop contract lint checks for drift |
-| Threshold updates bypass ledger (manual doc edits not reflected in runtime) | High | Lock thresholds during forecast period; enforce updates only during S3 recalibration |
-| Insufficient data handling ambiguous (operators ignore `insufficient_data` status) | Medium | Explicit validity rules in schema; UI warning badges for insufficient-data states; decision log template requires acknowledgment |
-| Growth ledger becomes stale (not updated during S10) | Medium | S10 control plane enforces ledger update as mandatory step; contract lint checks for missing updates |
-| Overlapping S10 runs overwrite each other (lost update) | Medium | `ledger_revision` compare-and-set writes; explicit conflict errors and retry policy |
-| API endpoint leaks business data or allows path traversal | Medium | Mandatory authz checks; strict business-id validation/sanitization; security tests in VC-GAK-08-04 |
-| Floating-point edge cases cause threshold drift on replay | Medium | Represent money in integer cents and rates in basis points; forbid float threshold comparisons in reducer |
-| Blocking-stage bootstrapping causes premature global holds | Medium | Use `blocking_mode=after_valid` for ramp-sensitive stages (Retention in v1) and test transition semantics |
-| Threshold-set replay mismatch due mutable references | Medium | Content-address threshold sets (`threshold_set_id`/`threshold_set_hash`) and embed threshold snapshot in `growth_ledger_evaluated` payload |
+### GAK-06: Integrate growth kernel into S10 stage-result and event outputs
 
-## What Would Make Confidence >=90%
+- **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** code-change in startup-loop control plane and tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `scripts/src/startup-loop/growth-metrics-adapter.ts`, `scripts/src/startup-loop/s10-growth-accounting.ts`, `scripts/src/startup-loop/s10-diagnosis-integration.ts`, `scripts/src/startup-loop/__tests__/s10-growth-accounting.test.ts`, `scripts/src/startup-loop/__tests__/s10-diagnosis-integration.test.ts`, `scripts/src/startup-loop/__tests__/event-validation.test.ts`, `packages/lib/src/index.ts`, `[readonly] packages/lib/src/growth/evaluate.ts`, `[readonly] packages/lib/src/growth/store.ts`
+- **Depends on:** GAK-02, GAK-03, GAK-05
+- **Blocks:** GAK-07
+- **Confidence:** 81%
+  - Implementation: 82% - startup-loop integration seams and test harness exist.
+  - Approach: 81% - stage-result + event payload integration matches current audit model.
+  - Impact: 81% - touches high-value S10 flow but remains bounded by fixture tests.
+- **Acceptance:**
+  - S10 flow computes and persists growth ledger each weekly run.
+  - Stage-result payload includes stage statuses, `overallStatus`, `guardrailSignal`, and coverage values.
+  - Event payload is replay-complete (inputs + threshold snapshot + outputs).
+  - Missing metrics paths emit `insufficient_data`/`not_tracked` without crashing S10.
+- **Validation contract:**
+  - TC-01: S10 fixture run writes growth ledger and stage-result fields.
+  - TC-02: emitted event contains replay-required inputs/outputs.
+  - TC-03: adapter missing fields produce safe statuses and no process crash.
+  - TC-04: rerun with identical inputs yields identical ledger and deterministic outputs.
+  - **Acceptance coverage:** TC-01 covers integration path; TC-02 covers replayability; TC-03 covers failure handling; TC-04 covers determinism.
+  - **Validation type:** integration tests with fixture metrics and event assertions.
+  - **Validation location/evidence:** `scripts/src/startup-loop/__tests__/s10-growth-accounting.test.ts`.
+  - **Run/verify:** `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-growth-accounting.test.ts`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - Existing S10 orchestration seam -> `scripts/src/startup-loop/s10-learning-hook.ts` -> confirmed injection point.
+- **Planning validation:**
+  - Checks run: `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-learning-hook.test.ts` - pass (8 tests).
+  - Validation artifacts written: none (planning phase).
+  - Unexpected findings: none.
+- **What would make this >=90%:** one real `HEAD` dry-run artifact captured and replayed from event payload alone.
+- **Rollout / rollback:**
+  - Rollout: feature-flag growth integration in S10 path.
+  - Rollback: disable growth hook while retaining kernel modules.
+- **Documentation impact:**
+  - Update `docs/business-os/startup-loop-workflow.user.md` S10 output contract.
+- **Notes / references:**
+  - Event schema pattern in `scripts/src/startup-loop/event-validation.ts`.
 
-1. Complete a multi-week pilot with HEAD or PET (S3 forecast → S10 weekly update × 4 weeks → S3 recalibration) proving ledger lifecycle end-to-end (post-GAK-09 expansion).
-2. Demonstrate threshold violation correctly triggering guardrail action (e.g., CAC ceiling breached → cold acquisition stopped).
-3. Prove ledger state correctly feeds back into S3 forecast recalibration (previous-period actuals become next-period priors).
-4. Show contract lint detecting drift between forecast doc thresholds and ledger thresholds (schema drift caught before runtime).
+- **Build validation (2026-02-13):****
+  - Added: `scripts/src/startup-loop/growth-metrics-adapter.ts`, `scripts/src/startup-loop/s10-growth-accounting.ts`, `scripts/src/startup-loop/__tests__/s10-growth-accounting.test.ts`.
+  - Updated: `scripts/src/startup-loop/s10-diagnosis-integration.ts`, `scripts/src/startup-loop/__tests__/s10-diagnosis-integration.test.ts`, `scripts/src/startup-loop/__tests__/event-validation.test.ts`, `packages/lib/src/index.ts`.
+  - Pass: `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-growth-accounting.test.ts`.
+  - Pass: `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-diagnosis-integration.test.ts`.
+  - Pass: `pnpm --filter scripts test -- src/startup-loop/__tests__/event-validation.test.ts`.
+  - Pass: `pnpm exec eslint packages/lib/src/index.ts scripts/src/startup-loop/growth-metrics-adapter.ts scripts/src/startup-loop/s10-growth-accounting.ts scripts/src/startup-loop/s10-diagnosis-integration.ts scripts/src/startup-loop/__tests__/s10-growth-accounting.test.ts scripts/src/startup-loop/__tests__/s10-diagnosis-integration.test.ts scripts/src/startup-loop/__tests__/event-validation.test.ts`.
+  - Pass: `pnpm --filter @acme/lib build`.
+
+### GAK-07: Add Business OS API + UI surface for growth ledger
+
+- **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-13)
+- **Deliverable:** API route + UI component + tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `apps/business-os/src/app/api/business/[business]/growth-ledger/route.ts`, `apps/business-os/src/app/api/business/[business]/growth-ledger/route.test.ts`, `apps/business-os/src/components/board/GrowthLedgerCard.tsx`, `apps/business-os/src/components/board/GrowthLedgerCardContainer.tsx`, `apps/business-os/src/components/board/GrowthLedgerCard.test.tsx`, `apps/business-os/src/app/boards/[businessCode]/page.tsx`, `packages/i18n/src/en.json`
+- **Depends on:** GAK-06
+- **Blocks:** GAK-08
+- **Confidence:** 80%
+  - Implementation: 81% - Next.js route/component patterns are established.
+  - Approach: 80% - board-level surface provides low-friction operator visibility.
+  - Impact: 80% - medium blast radius with authz and rendering concerns.
+- **Acceptance:**
+  - API returns ledger payload for valid authorized business.
+  - Missing ledger returns typed 404 (`ledger_not_initialized`).
+  - Invalid business identifiers are rejected safely.
+  - Board UI shows 5 stages + overall signal + freshness timestamp.
+- **Validation contract:**
+  - TC-01: authorized request with existing ledger returns 200 and typed payload.
+  - TC-02: missing ledger returns 404 with `ledger_not_initialized`.
+  - TC-03: unauthorized or malformed business id is rejected.
+  - TC-04: UI renders mixed-status fixture and empty-state path.
+  - **Acceptance coverage:** TC-01/TC-02/TC-03 cover API contract; TC-04 covers UI behavior.
+  - **Validation type:** API integration tests + React component tests.
+  - **Validation location/evidence:** `apps/business-os/src/app/api/business/[business]/growth-ledger/route.test.ts`, `apps/business-os/src/components/board/GrowthLedgerCard.test.tsx`.
+  - **Run/verify:** `pnpm --filter @apps/business-os test -- src/app/api/business/[business]/growth-ledger/route.test.ts` and `pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **Scouts:**
+  - API auth middleware usage -> `apps/business-os/src/app/api/agent/businesses/route.ts` -> confirmed guard pattern.
+- **Planning validation:**
+  - Checks run: `pnpm --filter @apps/prime test -- src/lib/owner/__tests__/businessScorecard.test.ts` - pass (13 tests).
+  - Validation artifacts written: none (planning phase).
+  - Unexpected findings: `apps/business-os` currently has no existing `/api/business/[business]` routes, so new route family is needed.
+- **What would make this >=90%:** add one end-to-end board-page test that exercises API fetch + card rendering together.
+- **Rollout / rollback:**
+  - Rollout: gated card rendering when ledger exists.
+  - Rollback: hide card and disable route registration.
+- **Documentation impact:**
+  - Add API contract section in `docs/business-os/growth-accounting/operator-guide.md`.
+- **Notes / references:**
+  - Board/page paths under `apps/business-os/src/app/boards/[businessCode]/page.tsx`.
+
+- **Build validation (2026-02-13):****
+  - Added: `apps/business-os/src/app/api/business/[business]/growth-ledger/route.ts`, `apps/business-os/src/app/api/business/[business]/growth-ledger/route.test.ts`, `apps/business-os/src/components/board/GrowthLedgerCard.tsx`, `apps/business-os/src/components/board/GrowthLedgerCardContainer.tsx`, `apps/business-os/src/components/board/GrowthLedgerCard.test.tsx`.
+  - Updated: `apps/business-os/src/app/boards/[businessCode]/page.tsx`, `packages/i18n/src/en.json`.
+  - Pass: `pnpm --filter @apps/business-os exec jest --config jest.config.cjs --ci --runInBand --detectOpenHandles --runTestsByPath "src/app/api/business/[business]/growth-ledger/route.test.ts"`.
+  - Pass: `pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx`.
+  - Pass: `pnpm --filter @apps/business-os typecheck`.
+  - Pass: `pnpm --filter @apps/business-os lint`.
+
+### GAK-08: Run replayable end-to-end dry-run on HEAD/PET fixture
+
+- **Type:** IMPLEMENT
+- **Deliverable:** validation report + reproducible fixture run artifacts.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `docs/business-os/growth-accounting/validation-report.md`, `data/shops/HEAD/growth-ledger.json`, `scripts/src/startup-loop/__tests__/fixtures/growth-ledger-head.json`
+- **Depends on:** GAK-07
+- **Blocks:** GAK-09
+- **Confidence:** 82%
+  - Implementation: 83% - fixture-based S10 dry-run is straightforward once integration exists.
+  - Approach: 82% - replay validation is the right reliability gate before broader rollout.
+  - Impact: 82% - primarily validation artifacts and fixture data.
+- **Acceptance:**
+  - One complete S10 dry-run produces ledger, stage-result, and event artifacts.
+  - Hand-calculated threshold breach scenario matches reducer output.
+  - Replay from event payload alone reconstructs identical decision outputs.
+  - UI card displays produced fixture state correctly.
+- **Validation contract:**
+  - TC-01: full dry-run generates all expected artifacts.
+  - TC-02: known breach fixture (e.g., CAC above ceiling) maps to expected red/kill output.
+  - TC-03: replay script reproduces identical output JSON from emitted payload.
+  - TC-04: board UI reflects dry-run fixture state.
+  - **Acceptance coverage:** TC-01 covers end-to-end path; TC-02 covers threshold correctness; TC-03 covers replayability; TC-04 covers operator surface.
+  - **Validation type:** integration + fixture replay + UI smoke.
+  - **Validation location/evidence:** `docs/business-os/growth-accounting/validation-report.md`.
+  - **Run/verify:** `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-growth-accounting.test.ts` and `pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **Planning validation:**
+  - Checks run: baseline targeted tests completed for S10/event/scorecard seams (see Decision Log).
+  - Validation artifacts written: none (planning phase).
+  - Unexpected findings: none.
+- **What would make this >=90%:** two consecutive weekly dry-runs with unchanged replay output hashes.
+- **Rollout / rollback:**
+  - Rollout: keep to `HEAD`/`PET` pilot businesses first.
+  - Rollback: remove pilot fixture and disable growth hook flag.
+- **Documentation impact:**
+  - Publish dry-run report and replay instructions.
+- **Notes / references:**
+  - Pilot businesses: `HEAD`, `PET`.
+
+- **Build validation (2026-02-13):**
+  - Added: `docs/business-os/growth-accounting/validation-report.md`, `data/shops/HEAD/growth-ledger.json`, `scripts/src/startup-loop/__tests__/fixtures/growth-ledger-head.json`.
+  - Pass: `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-growth-accounting.test.ts --modulePathIgnorePatterns=\.open-next/ --modulePathIgnorePatterns=\.worktrees/ --modulePathIgnorePatterns=\.ts-jest/`.
+  - Pass: `pnpm --filter @apps/business-os test -- src/components/board/GrowthLedgerCard.test.tsx`.
+  - Evidence: `docs/business-os/growth-accounting/validation-report.md` documents TC-01..TC-04 and replay-equivalence outputs for HEAD/PET.
+  - Confidence reassessment: 82% -> 83% (validation confirmed replay and fixture assumptions).
+  - Commit status: task-scoped commit attempt blocked by unrelated pre-existing hook failures in `packages/lib` (simple-import-sort lint errors outside GAK-08 scope).
+
+### GAK-09: Harden docs/policy and operator runbook
+
+- **Type:** IMPLEMENT
+- **Deliverable:** policy/doc updates and guardrail operating guide.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** `docs/business-os/startup-loop-workflow.user.md`, `docs/testing-policy.md`, `docs/business-os/growth-accounting/operator-guide.md`, `docs/plans/growth-accounting-kernel-plan.md`
+- **Depends on:** GAK-08
+- **Blocks:** -
+- **Confidence:** 84%
+  - Implementation: 85% - doc changes are direct once behavior is finalized.
+  - Approach: 84% - runbook hardening prevents drift and operational ambiguity.
+  - Impact: 84% - low runtime risk, broad operator clarity gains.
+- **Acceptance:**
+  - Startup-loop workflow docs include growth-ledger output contract at S10.
+  - Testing policy references targeted growth-kernel test commands.
+  - Operator guide documents override/fallback semantics and replay procedure.
+  - Plan reflects final calibration, confidence, and follow-on backlog.
+- **Validation contract:**
+  - TC-01: docs lint passes after updates.
+  - TC-02: operator guide includes replay steps and failure modes.
+  - TC-03: startup-loop S10 table includes growth output fields.
+  - **Acceptance coverage:** TC-01 covers docs hygiene; TC-02 covers operator readiness; TC-03 covers contract visibility.
+  - **Validation type:** docs lint + manual checklist.
+  - **Validation location/evidence:** updated docs listed in Affects.
+  - **Run/verify:** `pnpm docs:lint`.
+- **Execution plan:** Red -> Green -> Refactor.
+- **What would make this >=90%:** one operator walkthrough using guide with no clarification requests.
+- **Rollout / rollback:**
+  - Rollout: publish docs with pilot release notes.
+  - Rollback: revert docs to pre-growth state if integration is pulled.
+- **Documentation impact:**
+  - This task is documentation hardening itself.
+- **Notes / references:**
+  - Keep command examples aligned with targeted-test policy.
+
+- **Build validation (2026-02-13):**
+  - Added: `docs/business-os/growth-accounting/operator-guide.md`.
+  - Updated: `docs/business-os/startup-loop-workflow.user.md`, `docs/testing-policy.md`, `docs/plans/growth-accounting-kernel-plan.md`.
+  - Validation waiver: `pnpm docs:lint` remains failing repository-wide on pre-existing baseline issues outside GAK-09 scope; user explicitly waived this gate for GAK-09 completion.
+  - Manual checks: operator guide includes replay steps + failure modes; S10 stage table includes growth output fields.
+  - Confidence reassessment: 84% -> 86% (task content complete; waiver applied for non-local docs-lint baseline debt).
+  - Commit status: intentionally skipped per user instruction.
+
+## Risks & Mitigations
+
+- Adapter ownership ambiguity can stall S10 integration.
+  - Mitigation: explicit INVESTIGATE gate (GAK-05) before integration.
+- Incorrect threshold semantics can cause false scale/kill signals.
+  - Mitigation: table-driven reducer tests and fixture replay validation.
+- File persistence race conditions can corrupt growth state.
+  - Mitigation: CAS revision semantics and atomic writes.
+- API surface may expose unauthorized business data.
+  - Mitigation: strict authz checks + malformed-id rejection tests.
+- Operator confusion between immutable audit and mutable snapshot.
+  - Mitigation: explicit runbook language and replay-first validation report.
+
+## Observability
+
+- Logging:
+  - Growth reducer decision records (stage statuses, signal, threshold-set hash).
+  - S10 integration log line for adapter completeness and fallback statuses.
+- Metrics:
+  - Count of `insufficient_data`/`not_tracked` fields per run.
+  - CAS conflict count and retry outcomes.
+  - API request volume and 404 (`ledger_not_initialized`) rate.
+- Dashboards/alerts:
+  - Weekly pilot summary for HEAD/PET growth status trends.
+  - Alert on repeated replay mismatch in dry-run verification.
+
+## Acceptance Criteria (overall)
+
+- [x] Canonical growth-ledger schema/types compile and represent HEAD/PET guardrails.
+- [x] Reducer + persistence produce deterministic, replayable outputs.
+- [x] S10 writes growth decisions into stage-result/event artifacts.
+- [x] Business OS API/UI exposes growth state with secure boundaries and safe empty states.
+- [x] Pilot dry-run artifacts replay cleanly and docs/runbook are updated.
 
 ## Decision Log
 
-1. 2026-02-13 — Overall guardrail reducer completeness is validated across all `5^5 = 3125` stage-status combinations (not `5x5`).
-2. 2026-02-13 — Blocking behavior is first-class via `blocking_mode` (`always|after_valid|never`), with Referral `never` and Retention `after_valid` in v1.
-3. 2026-02-13 — CAC is a required first-class metric in schema and HEAD/PET compatibility checks.
-4. 2026-02-13 — Immutable audit history lives in startup-loop event ledger/stage-result artifacts; `growth-ledger.json` is a materialized latest snapshot.
-5. 2026-02-13 — Deterministic byte-level persistence comparisons require canonical JSON serialization.
-6. 2026-02-13 — Decision outputs are split into `overallStatus` (`green|yellow|red`) and `guardrailSignal` (`scale|hold|kill`) to avoid duplicated semantics.
-7. 2026-02-13 — Confidence is split into `blockingConfidence` and `overallCoverage` so advisory-stage sparsity is visible without altering blocking gate confidence.
-8. 2026-02-13 — `ledger_revision` increments only on state change; idempotent no-op updates do not write.
-9. 2026-02-13 — Numeric determinism uses integer units only (`*_eur_cents`, `*_bps`) for threshold comparisons and replay stability.
-10. 2026-02-13 — Threshold sets are content-addressed and immutable after lock; event payload includes threshold snapshot for replay.
-
-## Open Questions
-
-1. **Metric adapter ownership:** Which existing service owns the first production implementation of `getWeeklyGrowthMetrics(shopId, weekRange)`? (Assumption: hybrid adapter — sessions from Cloudflare aggregate, orders/customers from order database, spend from forecast tracking source.)
-2. **Retention policy calibration:** Is `blocking_mode=after_valid` for Retention sufficient for all launch profiles, or do we need per-business policy overrides during ramp? (Assumption: default `after_valid` in v1, with explicit override field available later if needed.)
-3. **Referral tracking:** How do we attribute referral sessions? UTM tags? Referrer headers? (Assumption: defer referral attribution to a later phase; first cut marks referral stage as `not_tracked`.)
-
-## Dependencies
-
-- Startup loop control plane event ledger (LPSP-04A, completed).
-- Startup loop stage-result schema (LPSP-03A, completed).
-- Startup loop S10 weekly decision loop contract (documented in startup-loop-workflow.user.md).
-- Existing business scorecard infrastructure (apps/prime/src/lib/owner/businessScorecard.ts).
-
-## Integration Points
-
-- `data/shops/{shopId}/growth-ledger.json` — canonical per-business latest snapshot (materialized view).
-- `packages/lib/src/growth/` — evaluation engine and persistence layer.
-- `scripts/src/startup-loop/` — S10 control plane integration.
-- Startup-loop event ledger + stage-result artifacts — immutable audit/replay history for growth decisions.
-- `apps/business-os/src/app/api/business/[business]/growth-ledger/` — API endpoint.
-- `apps/business-os/src/components/GrowthLedgerCard.tsx` — UI component.
-
-## Success Criteria
-
-1. Growth ledger schema can represent all existing HEAD/PET outcome contract thresholds with no semantic loss.
-2. S10 weekly decision loop automatically updates growth ledger with no manual intervention.
-3. `overallStatus` (`green|yellow|red`) and `guardrailSignal` (`scale|hold|kill`) are deterministic and reproducible (same metrics → same outputs).
-4. Business scorecard displays current growth ledger state with correct status colors and actions.
-5. One end-to-end S10 dry-run cycle completes successfully with HEAD or PET, including replayable audit artifacts.
+- 2026-02-13: Reframed plan to current `/lp-plan` format with checkpoint gating after kernel core.
+- 2026-02-13: Chose kernel-first sequence (schema/reducer/persistence before S10 wiring).
+- 2026-02-13: Added explicit INVESTIGATE gate (GAK-05) for metrics-adapter ownership uncertainty.
+- 2026-02-13: Planning validation executed on existing seams:
+  - `pnpm --filter scripts test -- src/startup-loop/__tests__/event-validation.test.ts` (pass: 9 tests)
+  - `pnpm --filter scripts test -- src/startup-loop/__tests__/s10-learning-hook.test.ts` (pass: 8 tests)
+  - `pnpm --filter @apps/prime test -- src/lib/owner/__tests__/businessScorecard.test.ts` (pass: 13 tests)
+- 2026-02-13: Build gate policy retained: IMPLEMENT tasks require >=80 confidence; below-threshold uncertainty routed to INVESTIGATE before dependent IMPLEMENT tasks.
+- 2026-02-13: Completed GAK-09 docs hardening (startup-loop S10 contract update, testing policy command normalization, operator runbook with replay/failure procedure).
+- 2026-02-13: GAK-09 had repo-wide `pnpm docs:lint` baseline failures unrelated to changed files; completion proceeded under explicit user waiver for this gate.

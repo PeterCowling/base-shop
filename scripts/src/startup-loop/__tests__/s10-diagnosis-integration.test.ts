@@ -16,6 +16,7 @@ import * as path from "node:path";
 import { appendBottleneckHistory, checkConstraintPersistence } from "../bottleneck-history";
 import { type DiagnosisSnapshot } from "../diagnosis-snapshot";
 import { generateDiagnosisSnapshot } from "../diagnosis-snapshot";
+import { runMcpPreflight } from "../mcp-preflight";
 import { checkAndTriggerReplan, type ReplanTrigger } from "../replan-trigger";
 import { runDiagnosisPipeline } from "../s10-diagnosis-integration";
 
@@ -23,6 +24,7 @@ import { runDiagnosisPipeline } from "../s10-diagnosis-integration";
 jest.mock("../diagnosis-snapshot");
 jest.mock("../bottleneck-history");
 jest.mock("../replan-trigger");
+jest.mock("../mcp-preflight");
 
 const mockGenerateDiagnosisSnapshot = generateDiagnosisSnapshot as jest.MockedFunction<
   typeof generateDiagnosisSnapshot
@@ -36,6 +38,9 @@ const mockCheckConstraintPersistence = checkConstraintPersistence as jest.Mocked
 const mockCheckAndTriggerReplan = checkAndTriggerReplan as jest.MockedFunction<
   typeof checkAndTriggerReplan
 >;
+const mockRunMcpPreflight = runMcpPreflight as jest.MockedFunction<
+  typeof runMcpPreflight
+>;
 
 describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   let tempDir: string;
@@ -45,6 +50,13 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "s10-diagnosis-integration-test-"));
     consoleWarnSpy = jest.spyOn(console, "warn").mockImplementation();
     jest.clearAllMocks();
+    mockRunMcpPreflight.mockReturnValue({
+      ok: true,
+      profile: "local",
+      errors: [],
+      warnings: [],
+      checks: [],
+    });
   });
 
   afterEach(() => {
@@ -116,7 +128,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-01: Happy path — S10 completion generates snapshot, updates history, evaluates trigger
    */
-  test("TC-01: happy path pipeline execution", () => {
+  test("TC-01: happy path pipeline execution", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -131,7 +143,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline
-    const result = runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    const result = await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify all pipeline steps were called
     expect(mockGenerateDiagnosisSnapshot).toHaveBeenCalledWith(runId, business, tempDir);
@@ -166,7 +178,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-02: First run — snapshot generated with null prior comparison, history appended, no trigger
    */
-  test("TC-02: first run with no prior", () => {
+  test("TC-02: first run with no prior", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -183,7 +195,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline
-    const result = runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    const result = await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify snapshot has null comparison (first run)
     expect(result.snapshot.comparison_to_prior_run).toBeNull();
@@ -202,7 +214,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-03: Persistence path — 3 persistent moderate+ runs results in open trigger
    */
-  test("TC-03: persistent constraint triggers replan", () => {
+  test("TC-03: persistent constraint triggers replan", async () => {
     const runId = "2026-02-13-003";
     const business = "HEAD";
 
@@ -238,7 +250,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline
-    const result = runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    const result = await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify persistence check returned persistent
     expect(result.persistenceCheck.persistent).toBe(true);
@@ -256,7 +268,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-04: Missing artifact path — generateDiagnosisSnapshot throws, pipeline logs warning and returns partial result
    */
-  test("TC-04: pipeline continues on diagnosis snapshot error", () => {
+  test("TC-04: pipeline continues on diagnosis snapshot error", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -270,7 +282,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline — should not throw
-    const result = runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    const result = await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify snapshot is null
     expect(result.snapshot).toBeNull();
@@ -309,7 +321,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-05: Stage-result artifact pointer — bottleneck_diagnosis path present in stage-result JSON after pipeline completes
    */
-  test("TC-05: stage-result artifact pointer is written", () => {
+  test("TC-05: stage-result artifact pointer is written", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -335,7 +347,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     );
 
     // Execute pipeline
-    runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify stage-result was updated (not overwritten)
     const stageResultPath = path.join(stageResultDir, "stage-result.json");
@@ -353,7 +365,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-05b: Stage-result created if missing
    */
-  test("TC-05b: stage-result created if missing", () => {
+  test("TC-05b: stage-result created if missing", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -368,7 +380,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline
-    runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify stage-result was created
     const stageResultPath = path.join(
@@ -388,7 +400,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-06: History append failure — pipeline continues and logs warning
    */
-  test("TC-06: pipeline continues on history append error", () => {
+  test("TC-06: pipeline continues on history append error", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -405,7 +417,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline — should not throw
-    const result = runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    const result = await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify snapshot was generated
     expect(result.snapshot).toEqual(mockSnapshot);
@@ -436,7 +448,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
   /**
    * TC-07: Replan trigger evaluation failure — pipeline continues and logs warning
    */
-  test("TC-07: pipeline continues on replan trigger error", () => {
+  test("TC-07: pipeline continues on replan trigger error", async () => {
     const runId = "2026-02-13-001";
     const business = "HEAD";
 
@@ -453,7 +465,7 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
     createStageResultDir(business, runId);
 
     // Execute pipeline — should not throw
-    const result = runDiagnosisPipeline(runId, business, { baseDir: tempDir });
+    const result = await runDiagnosisPipeline(runId, business, { baseDir: tempDir });
 
     // Verify snapshot and history were successful
     expect(result.snapshot).toEqual(mockSnapshot);
@@ -477,5 +489,56 @@ describe("BL-07: S10 Diagnosis Pipeline Integration", () => {
       "stages/S10/stage-result.json"
     );
     expect(fs.existsSync(stageResultPath)).toBe(true);
+  });
+
+  test("TC-08: MCP preflight advisories are recorded when enabled", async () => {
+    const runId = "2026-02-13-001";
+    const business = "HEAD";
+
+    const mockSnapshot = createMockSnapshot(runId, business, "S3/cvr", "moderate");
+    mockGenerateDiagnosisSnapshot.mockReturnValue(mockSnapshot);
+    mockAppendBottleneckHistory.mockReturnValue({ appended: true });
+    mockCheckConstraintPersistence.mockReturnValue({ persistent: false, constraint_key: null });
+    mockCheckAndTriggerReplan.mockReturnValue(null);
+
+    mockRunMcpPreflight.mockReturnValue({
+      ok: true,
+      profile: "ci",
+      errors: [],
+      warnings: [
+        {
+          code: "MCP_PREFLIGHT_ARTIFACTS_MISSING",
+          message: "No startup-loop artifacts found for freshness evaluation.",
+        },
+      ],
+      checks: [
+        {
+          id: "registration",
+          status: "pass",
+          message: "ok",
+        },
+      ],
+    });
+
+    createStageResultDir(business, runId);
+
+    const result = await runDiagnosisPipeline(runId, business, {
+      baseDir: tempDir,
+      mcpPreflight: {
+        enabled: true,
+        profile: "ci",
+      },
+    });
+
+    expect(mockRunMcpPreflight).toHaveBeenCalledWith(
+      {
+        profile: "ci",
+        repoRoot: tempDir,
+      },
+      process.env,
+    );
+    expect(result.warnings.some((warning) => warning.includes("MCP preflight reported advisory warnings"))).toBe(
+      true,
+    );
   });
 });

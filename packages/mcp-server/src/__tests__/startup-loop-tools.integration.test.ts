@@ -742,6 +742,10 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
       ])
     );
   });
+});
+
+describe("startup-loop MCP integration suite: sunset + content source collection", () => {
+  const env = setupStartupLoopIntegrationEnvironment();
 
   it("TC-11: analytics_* sunset blocks startup-loop calls after two full-coverage S10 runs but allows non-loop callers", async () => {
     const runs = [
@@ -821,10 +825,140 @@ describe("startup-loop MCP integration suite: packets, anomalies, and sunset gat
     });
     expect(gateForNonLoop).toBeNull();
   });
+
+  it("TC-12: content source collector persists markdown artifacts and exposes them via list/status/pack evidence", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+      path.join(runRoot, "metrics.jsonl")
+    );
+
+    const collectResult = await handleLoopTool("loop_content_sources_collect", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S7",
+      sources: [
+        {
+          sourceId: "market_pulse",
+          url: "https://content.example/ok",
+        },
+      ],
+    });
+    const collectPayload = parseResultPayload(collectResult);
+    expect(collectResult.isError).toBeUndefined();
+    expect(collectPayload.schemaVersion).toBe("content.sources.index.v1");
+    expect(collectPayload.sourceCount).toBe(1);
+
+    const indexPath = String(collectPayload.contentSourcesIndexPath);
+    const sourcePath = String((collectPayload.sources as Array<{ markdownPath: string }>)[0].markdownPath);
+    await expect(fs.readFile(indexPath, "utf-8")).resolves.toContain("content.sources.index.v1");
+    await expect(fs.readFile(sourcePath, "utf-8")).resolves.toContain("# Market Pulse");
+
+    const listResult = await handleLoopTool("loop_content_sources_list", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S7",
+    });
+    const listPayload = parseResultPayload(listResult);
+    expect(listPayload.sourceCount).toBe(1);
+    expect(listPayload.sources).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          sourceId: "market_pulse",
+          markdownPath: sourcePath,
+        }),
+      ])
+    );
+
+    const statusResult = await handleLoopTool("refresh_status_get", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S7",
+      collector: "content_sources",
+    });
+    const statusPayload = parseResultPayload(statusResult);
+    expect(statusPayload.contentSources).toEqual(
+      expect.objectContaining({
+        sourceCount: 1,
+        indexPath,
+      })
+    );
+
+    const packetResult = await handleLoopTool("app_run_packet_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S10",
+    });
+    const packetPayload = parseResultPayload(packetResult);
+
+    const packResult = await handleLoopTool("pack_weekly_s10_build", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S10",
+      packetId: String(packetPayload.packetId),
+    });
+    const packPayload = parseResultPayload(packResult);
+    expect(packPayload.evidenceRefs).toEqual(expect.arrayContaining([indexPath, sourcePath]));
+    await expect(fs.readFile(String(packPayload.packMarkdownPath), "utf-8")).resolves.toContain(
+      "Content sources: 1"
+    );
+  });
+
+  it("TC-13: content source collector returns structured markdown classifications and avoids partial writes", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "metrics.partial.jsonl"),
+      path.join(runRoot, "metrics.jsonl")
+    );
+
+    const unavailable = await handleLoopTool("loop_content_sources_collect", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S7",
+      sources: [{ sourceId: "missing_page", url: "https://content.example/missing" }],
+    });
+    const unavailablePayload = parseResultPayload(unavailable);
+    expect(unavailable.isError).toBe(true);
+    expect(unavailablePayload.error.code).toBe("CONTRACT_MISMATCH");
+    expect(String(unavailablePayload.error.message)).toContain("MARKDOWN_UNAVAILABLE");
+
+    await expect(
+      fs.access(
+        path.join(
+          env.getTempRoot(),
+          "docs/business-os/startup-baselines/BRIK/runs/run-001/collectors/content/sources.index.json"
+        )
+      )
+    ).rejects.toBeTruthy();
+
+    const mismatch = await handleLoopTool("loop_content_sources_collect", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S7",
+      sources: [{ sourceId: "html_fallback", url: "https://content.example/html" }],
+    });
+    const mismatchPayload = parseResultPayload(mismatch);
+    expect(mismatch.isError).toBe(true);
+    expect(String(mismatchPayload.error.message)).toContain("MARKDOWN_CONTRACT_MISMATCH");
+  });
 });
 
 describe("cloudflare adapter contract harness", () => {
-  it("TC-12: projected Cloudflare metrics pass registry validation and fail on mismatches", () => {
+  it("TC-14: projected Cloudflare metrics pass registry validation and fail on mismatches", () => {
     const registry = parseMetricsRegistry({
       schemaVersion: "metrics-registry.v1",
       metrics: [

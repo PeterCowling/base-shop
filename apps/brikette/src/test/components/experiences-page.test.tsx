@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests/renderers";
 
@@ -40,11 +40,26 @@ jest.mock("@/data/guides.index", () => ({
       status: "live",
       tags: ["beaches", "positano"],
     },
+    {
+      key: "positanoMainBeachBusDown",
+      section: "experiences",
+      status: "live",
+      tags: ["beaches", "positano", "bus"],
+    },
+    {
+      key: "positanoMainBeachBusBack",
+      section: "experiences",
+      status: "live",
+      tags: ["beaches", "positano", "bus"],
+    },
   ],
-  splitGuidesByType: (guides: unknown[]) => ({
-    contentGuides: guides,
-    directionsGuides: [],
-  }),
+  splitGuidesByType: (guides: Array<{ key: string }>) => {
+    const directionKeys = new Set(["positanoMainBeachBusDown", "positanoMainBeachBusBack"]);
+    return {
+      contentGuides: guides.filter((guide) => !directionKeys.has(guide.key)),
+      directionsGuides: guides.filter((guide) => directionKeys.has(guide.key)),
+    };
+  },
 }));
 
 const experiencesPageCopy = {
@@ -191,5 +206,18 @@ describe("<ExperiencesPageContent />", () => {
 
     await user.click(screen.getByRole("button", { name: /chat with the concierge/i }));
     expect(openModalSpy).toHaveBeenCalledWith("contact");
+  });
+
+  it("shows merged beaches count and renders beaches once when beach directions are wired in", () => {
+    renderWithProviders(<ExperiencesPageContent lang="en" />);
+
+    const beachHeadings = screen.getAllByRole("heading", { name: "Beaches" });
+    expect(beachHeadings).toHaveLength(1);
+
+    const beachesSection = beachHeadings[0].closest("section");
+    expect(beachesSection).not.toBeNull();
+    if (!beachesSection) return;
+
+    expect(within(beachesSection).getByText("3")).toBeInTheDocument();
   });
 });

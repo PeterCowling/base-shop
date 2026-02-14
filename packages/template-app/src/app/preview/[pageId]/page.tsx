@@ -2,8 +2,7 @@ import { notFound } from "next/navigation";
 
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
-import { type Page, type PageComponent,pageSchema } from "@acme/page-builder-core";
-import { exportComponents } from "@acme/page-builder-core";
+import { exportComponents, type Page, type PageComponent, pageSchema } from "@acme/page-builder-core";
 import { devicePresets, getLegacyPreset } from "@acme/ui/utils/devicePresets";
 
 import PreviewClient from "./PreviewClient";
@@ -32,8 +31,8 @@ export default async function PreviewPage({
     notFound();
   }
   if (res.status === 401) {
-    // Pages can't return a Response; treat unauthorized preview as not-found.
-    notFound();
+    // Mirror the underlying preview route response for better UX (prompt re-auth, etc.).
+    return new Response("Unauthorized", { status: 401 });
   }
   if (!res.ok) {
     // Use server translations for thrown error message

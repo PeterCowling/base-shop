@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Active
 Business: BRIK
 Created: 2026-02-09
-Updated: 2026-02-13
-Last-reviewed: 2026-02-13
+Updated: 2026-02-14
+Last-reviewed: 2026-02-14
 Owner: Pete
 ---
 
@@ -40,6 +40,11 @@ Promoted from:
   - trailing 90-day bookings (2025-11..2026-01): 100
   - direct booking share (same window): 18%
   - paid CAC: not measured at decision-grade quality
+- Operational data baseline (2026-02-14):
+  - Octorate calendar export: Mar 2025 - Oct 2026 (18 months, 612 date rows)
+  - Room inventory: 11 total rooms (9 numbered: 3-6, 8-12; 2 year-named: 2022-7, 2025-14)
+  - Data sheets: Price, Availability, Length of stay, Real availability
+  - Source: `data/octorate/octorate-calendar-2026-02-14.xlsx` + metadata JSONs
 - Target (90 days, by 2026-05-13):
   - net booking value: EUR 205,200 (forecast P50)
   - bookings: 760 (forecast P50)

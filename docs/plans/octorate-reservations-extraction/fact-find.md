@@ -156,12 +156,13 @@ Build automated extraction of historical booking/reservation data from Octorate 
   - Session cookie: `octobooksessionid`
   - **Status**: ✅ Working (last verified: 2026-02-14 ~11:00 CET)
 
-**Reservations Export Script** (In progress):
-- `packages/mcp-server/export-octorate-reservations.mjs` — Automated reservations export
-  - Target URL: `https://admin.octorate.com/octobook/user/reservation/list.xhtml`
-  - **Status**: ⚠️ Failing at Step 4 (element selector timeout)
-  - **Issue**: Can't find `p-select[formcontrolname="type"]` element (10-second timeout)
-  - **Last attempted**: 2026-02-14
+**Reservations Export Script** (Working):
+- `packages/mcp-server/octorate-export-final-working.mjs` — Automated reservations export ✅
+  - Target URL: `https://admin.octorate.com/octobook/user/reservation/export.xhtml`
+  - **Status**: ✅ Working (production-ready, multiple successful runs 2026-02-14)
+  - **Method**: BIC pattern with MCP browser automation tools
+  - **Last successful run**: 2026-02-14 22:11 (16KB export, 90-day window)
+  - **Documentation**: `packages/mcp-server/OCTORATE_EXPORT_README.md` (Note: README currently documents calendar export; reservations export uses same pattern)
 
 **Debug/Diagnostic Scripts**:
 - `packages/mcp-server/debug-reservations-page.mjs` — Page structure inspector

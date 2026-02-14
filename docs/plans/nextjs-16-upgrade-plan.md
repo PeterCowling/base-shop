@@ -102,7 +102,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 | TASK-01 | IMPLEMENT | Foundation: bump Next.js to 16.x + React alignment + enforce Node >=20.9.0 + remove deprecated config | 83% | L | Complete (2026-02-14) | - | TASK-02, TASK-03, TASK-04, TASK-05 |
 | TASK-02 | IMPLEMENT | Add --webpack flag to all build/dev scripts | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-03 | IMPLEMENT | Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl) | 82% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
-| TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Pending | TASK-01 | TASK-06 |
+| TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Pending | TASK-01 | TASK-06 |
 | TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Pending | TASK-06 | TASK-08 |
@@ -342,6 +342,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes / references:**
   - Next.js codemods include `next-async-request-api` for this migration class.
+
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** a4f14ba62b
+- **Validation:**
+  - `rg -n "@next-codemod-error|@next/codemod|UnsafeUnwrapped" apps packages` -> 0 matches
+  - `NEXT_TELEMETRY_DISABLED=1 NODE_OPTIONS="--max-old-space-size=10240" NEXT_BUILD_CPUS=1 pnpm --filter @apps/cms build` -> PASS (warnings include middleware/proxy deprecation, allowed by plan)
+  - `pnpm --filter @apps/cover-me-pretty build` -> PASS
+- **Implementation notes:**
+  - Ran Async Request APIs migration repo-wide and cleared codemod marker comments/casts.
+  - Fixed Next 16 build resolution and monorepo tracing stability in `packages/next-config/next.config.mjs` (set `outputFileTracingRoot`, add workspace package aliases).
+  - Reduced CMS theme-token bundling pressure by standardizing on `@themes/*/tailwind-tokens` and adding a Prime adapter (`packages/themes/prime/src/tailwind-tokens.ts`).
+  - Added source-level entrypoints in `@acme/lib` (`packages/lib/src/context/index.ts`, `packages/lib/src/logger/index.ts`, `packages/lib/src/http/server.ts`) to avoid relying on TypeScript-only `moduleSuffixes` during Next builds.
+  - Updated `apps/cover-me-pretty/tsconfig.json` paths/refs for `@acme/cms-ui`, `@acme/design-system`, and `@acme/seo` so Next build typechecking can resolve workspace modules.
 
 ### TASK-05: Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist)
 

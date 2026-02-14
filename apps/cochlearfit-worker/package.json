@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev src/index.ts --local --port 8788",
+    "prebuild": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
     "build": "wrangler build",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit"

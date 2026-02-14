@@ -247,11 +247,31 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 - Read before editing
 - Study existing patterns before adding code
 
+## Multi-Agent Environment
+
+Base-Shop supports multiple agents working concurrently. The writer lock system ensures only one agent writes at a time, but you may encounter:
+
+- **Expected:** Files, commits, or branches created by other agents or the user
+- **Expected:** Uncommitted changes from another agent currently holding the writer lock
+- **Normal operation:** Pull the latest changes with `git fetch origin && git pull --ff-only origin dev` before starting work
+
+When to STOP and ask:
+- Git state is internally inconsistent (conflicts, detached HEAD, corrupt objects)
+- You're asked to perform work that conflicts with visible uncommitted changes
+- Merge conflicts appear that you cannot safely resolve
+- Branch structure doesn't match expected flow (`dev -> staging -> main`)
+
+When to proceed normally:
+- Files exist that you didn't create (other agents' work)
+- Recent commits from other agents on `dev`
+- Untracked files outside your work scope
+
 ## Quick Reference
 
 | Scenario | Action |
 |----------|--------|
-| Git state confusing | STOP. Run `git status`, share output, ask user |
+| Git state internally inconsistent | STOP. Run `git status`, share output, ask user |
+| Files/commits from other agents | Normal — pull latest and proceed |
 | Tests failing | Fix before commit. Never skip validation |
 | Need to undo | Use `git revert`, never `reset --hard` |
 | Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |

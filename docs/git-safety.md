@@ -28,7 +28,9 @@ Forbidden in agent flow:
 - bulk discard patterns (`git checkout -- ...`, `git restore ...` across multiple paths/dirs/globs)
 - stash mutation ops (`git stash` bare, `git stash push|pop|apply|drop|clear`)
 
-If git state is confusing: stop, capture diagnostics, and ask for direction.
+**Multi-agent environment:** Base-Shop supports multiple agents working concurrently. Finding files, commits, or branches created by other agents is **normal and expected**. The writer lock ensures only one agent writes at a time, but you may see work from other agents between your sessions.
+
+**When to stop:** If git state is internally inconsistent (conflicts, detached HEAD, branch structure violations, corrupt state), stop, capture diagnostics, and ask for direction. Proceed normally when you encounter files or commits from other agents.
 
 ### 2) Use single-writer lock for any write operation
 

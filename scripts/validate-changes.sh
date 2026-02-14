@@ -187,7 +187,7 @@ run_jest_exec() {
         return $?
     fi
 
-    pnpm --filter "$pkg_path" exec jest "$@"
+    pnpm -C "$pkg_path" exec jest "$@"
 }
 
 # For broad related sets, run only tests adjacent to changed source files.

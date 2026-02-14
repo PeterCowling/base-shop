@@ -263,7 +263,7 @@ Worker (Needs fixes):
 | TASK-15 | IMPLEMENT | Document fulfillment runbook (draft pre-launch) | 85% | S | Pending | TASK-01 | - |
 | TASK-16 | IMPLEMENT | Add comprehensive Worker tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
 | TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Complete (2026-02-14) | TASK-05 | TASK-09, TASK-10 |
-| TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Pending | TASK-05 | TASK-14 |
+| TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Complete (2026-02-14) | TASK-05 | TASK-14 |
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Pending | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Pending | - | TASK-02, TASK-09 |
 
@@ -1478,6 +1478,22 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:**
   - TC-01: Harness boots → `pnpm --filter @apps/cochlearfit-worker test` → PASS
   - TC-02: Catalog import → test imports `catalog` and asserts length 12
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 2545c6cb6b
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1
+  - Final validation: PASS
+- **Validation Evidence:**
+  - `pnpm --filter @apps/cochlearfit-worker test` — PASS (1 test)
+  - `pnpm --filter @apps/cochlearfit-worker typecheck` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker lint` — PASS
+- **Implementation notes:**
+  - Added `apps/cochlearfit-worker/jest.config.cjs` with `testEnvironment: node`.
+  - Added `apps/cochlearfit-worker/src/__tests__/catalog-wireup.test.ts` asserting generated catalog length is 12.
+  - Added `pretest` hook to run the catalog bundler before tests.
 
 ### TASK-19: Stripe setup memo + stripe-setup.md scaffold
 - **Type:** INVESTIGATE

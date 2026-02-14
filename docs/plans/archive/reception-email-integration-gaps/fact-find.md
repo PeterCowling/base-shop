@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-14

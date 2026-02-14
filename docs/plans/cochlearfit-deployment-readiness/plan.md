@@ -259,7 +259,7 @@ Worker (Needs fixes):
 | TASK-11 | IMPLEMENT | Run end-to-end staging tests | 85% | M | Pending | TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Deploy frontend to production | 90% | S | Pending | TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Run production smoke test | 85% | S | Pending | TASK-12 | TASK-16 |
-| TASK-14 | IMPLEMENT | Add minimal Worker tests (pre-launch) | 75% ⚠️ | S | Pending | TASK-18 | TASK-12 |
+| TASK-14 | IMPLEMENT | Add minimal Worker tests (pre-launch) | 80% | S | Pending | TASK-18 | TASK-12 |
 | TASK-15 | IMPLEMENT | Document fulfillment runbook (draft pre-launch) | 85% | S | Pending | TASK-01 | - |
 | TASK-16 | IMPLEMENT | Add comprehensive Worker tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
 | TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Complete (2026-02-14) | TASK-05 | TASK-09, TASK-10 |
@@ -1250,10 +1250,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `[readonly] scripts/bundle-worker-catalog.ts` (catalog bundler validation)
 - **Depends on:** TASK-18
 - **Blocks:** TASK-12
-- **Confidence:** 75% ⚠️
-  - Implementation: 80% — Jest harness exists (TASK-18), but Worker-runtime integration testing may require extra setup
-  - Approach: 80% — Keep pre-launch tests focused on build-time/catalog correctness; runtime-heavy tests deferred to TASK-16
-  - Impact: 75% — Adds regression guards before production deploy (even without full runtime harness)
+- **Confidence:** 80%
+  - Implementation: 90% — Jest harness feasibility verified by TASK-18 (E2: `pnpm --filter @apps/cochlearfit-worker test` PASS; commit 2545c6cb6b)
+  - Approach: 85% — Pre-launch scope stays focused on build-time/catalog correctness; runtime-heavy tests deferred to TASK-16
+  - Impact: 80% — Adds regression guards before production deploy; blast radius is limited to test files
 
 #### Re-plan Update (2026-02-14)
 - **Previous confidence:** 75% (Vitest-based plan text)
@@ -1261,6 +1261,19 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **Evidence class:** E1 (repo testing-policy + validation gate inspection)
 - **Decision / resolution:**
   - Align Worker tests to Jest (repo standard and `scripts/validate-changes.sh` runner), remove Vitest-only assumptions.
+
+#### Re-plan Update (2026-02-14) — Post TASK-18 Evidence
+- **Previous confidence:** 75%
+- **Updated confidence:** 80%
+  - **Evidence class:** E2 (executable verification: Jest harness boots and imports generated catalog)
+  - Implementation: 90% — `pnpm --filter @apps/cochlearfit-worker test` PASS (TASK-18)
+  - Approach: 85% — Tests are scoped to bundler/catalog correctness; avoids Worker runtime harness complexity
+  - Impact: 80% — Adds pre-launch regression guard without touching production code
+- **Investigation performed:**
+  - Read: `apps/cochlearfit-worker/jest.config.cjs`, `apps/cochlearfit-worker/src/__tests__/catalog-wireup.test.ts`
+  - Ran: `pnpm --filter @apps/cochlearfit-worker test` — PASS (commit 2545c6cb6b)
+- **Changes to task:**
+  - Confidence promoted above build threshold based on E2 evidence; no scope change
 
 - **Acceptance:**
   - [ ] Add at least 2 additional Jest tests under `apps/cochlearfit-worker/src/__tests__/` (beyond the TASK-18 spike)

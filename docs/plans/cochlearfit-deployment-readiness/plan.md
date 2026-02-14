@@ -246,22 +246,26 @@ Worker (Needs fixes):
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | - | TASK-08, TASK-09 |
-| TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | - | TASK-09 |
-| TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
+| TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | TASK-19 | TASK-08, TASK-09 |
+| TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | TASK-20 | TASK-09 |
+| TASK-03 | IMPLEMENT | Select and configure email service | 75% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
 | TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Complete (2026-02-14) | - | TASK-05 |
 | TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Complete (2026-02-14) | TASK-04 | TASK-09 |
 | TASK-06 | IMPLEMENT | Create email receipt template | 85% | M | Pending | TASK-03 | TASK-07 |
 | TASK-07 | IMPLEMENT | Implement email sending in Worker webhook | 80% | L | Pending | TASK-03, TASK-06 | TASK-10 |
 | TASK-08 | IMPLEMENT | Populate production data files with real Price IDs | 85% | S | Pending | TASK-01 | TASK-09 |
-| TASK-09 | IMPLEMENT | Configure Worker secrets and environment variables | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05, TASK-08 | TASK-10 |
+| TASK-09 | IMPLEMENT | Configure Worker secrets and environment variables | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-17 | TASK-10 |
 | TASK-10 | IMPLEMENT | Deploy Worker and frontend to staging | 80% | M | Pending | TASK-07, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Run end-to-end staging tests | 85% | M | Pending | TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Deploy frontend to production | 90% | S | Pending | TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Run production smoke test | 85% | S | Pending | TASK-12 | TASK-16 |
-| TASK-14 | IMPLEMENT | Add minimal Worker tests (pre-launch) | 80% | S | Pending | TASK-10 | TASK-12 |
+| TASK-14 | IMPLEMENT | Add minimal Worker tests (pre-launch) | 75% ⚠️ | S | Pending | TASK-18 | TASK-12 |
 | TASK-15 | IMPLEMENT | Document fulfillment runbook (draft pre-launch) | 85% | S | Pending | TASK-01 | - |
 | TASK-16 | IMPLEMENT | Add comprehensive Worker tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
+| TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Pending | TASK-05 | TASK-09, TASK-10 |
+| TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Pending | TASK-05 | TASK-14 |
+| TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Pending | - | TASK-01, TASK-08, TASK-09 |
+| TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Pending | - | TASK-02, TASK-09 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -272,21 +276,20 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-01, TASK-02, TASK-03 | - | Independent foundation tasks (Stripe, Inventory API, Email service setup) |
-| 2 | TASK-04, TASK-06, TASK-08, TASK-15 | Wave 1: TASK-03 (for 06); TASK-01 (for 08, 15) | Build catalog system, email template, populate data files, draft fulfillment runbook (can run in parallel) |
-| 3 | TASK-05, TASK-07 | Wave 2: TASK-04 (for 05), TASK-06 (for 07); Wave 1: TASK-03 (for 07) | Replace hardcoded catalog, implement email webhook |
-| 4 | TASK-09 | Waves 1-3: TASK-01, TASK-02, TASK-03, TASK-05, TASK-08 | Configure all secrets (blocked by all setup tasks) |
-| 5 | TASK-10 | Wave 4: TASK-09; Wave 3: TASK-07 | Deploy to staging |
-| 6 | TASK-11, TASK-14 | Wave 5: TASK-10 | Run staging tests + minimal Worker tests (can run in parallel) |
-| 7 | TASK-12 | Wave 6: TASK-11, TASK-14 | Deploy to production (requires staging tests + minimal code tests to pass) |
-| 8 | TASK-13 | Wave 7: TASK-12 | Production smoke test (validates fulfillment runbook with real order) |
-| 9 | TASK-16 | Wave 8: TASK-13 | Post-launch: Comprehensive Worker test suite |
+| 1 | TASK-17, TASK-18, TASK-19, TASK-20 | TASK-05 (for 17,18) | Internal hardening + precursors (no external accounts required) |
+| 2 | TASK-01, TASK-02, TASK-03 | Wave 1: TASK-19 (for 01); TASK-20 (for 02) | External setup tasks (Stripe/Inventory/Email). TASK-03 remains blocked by domain + business timing |
+| 3 | TASK-06, TASK-08, TASK-15 | Wave 2: TASK-03 (for 06); TASK-01 (for 08,15) | Email template, real price IDs in data files, fulfillment runbook |
+| 4 | TASK-07 | Wave 3: TASK-06; Wave 2: TASK-03 | Email sending in webhook |
+| 5 | TASK-09 | Wave 1: TASK-17; Wave 2: TASK-01, TASK-02, TASK-03 | Secrets/KV provisioning (external) |
+| 6 | TASK-10 | Wave 5: TASK-09; Wave 4: TASK-07 | Deploy to staging |
+| 7 | TASK-11, TASK-14 | Wave 6: TASK-10; Wave 1: TASK-18 (for 14) | E2E staging tests + Worker unit tests |
+| 8 | TASK-12 | Wave 7: TASK-11, TASK-14 | Deploy to production |
+| 9 | TASK-13 | Wave 8: TASK-12 | Production smoke test |
+| 10 | TASK-16 | Wave 9: TASK-13 | Post-launch comprehensive tests |
 
-**Max parallelism:** 3 (Wave 1: Stripe + Inventory API + Email service setup in parallel)
-**Critical path:** TASK-04 → TASK-05 → TASK-09 → TASK-10 → TASK-14 → TASK-12 → TASK-13 → TASK-16 (8 waves)
-
-> Note: TASK-01 (real Stripe Price IDs) is still required before launch; TASK-04/05 can proceed using placeholder `price_...` IDs to unblock build and remove hardcoding.
-**Total tasks:** 16
+**Max parallelism:** 4 (Wave 1)
+**Critical path (to production):** TASK-19 -> TASK-01 -> TASK-08 -> TASK-17 -> TASK-09 -> TASK-10 -> TASK-14 -> TASK-12 -> TASK-13
+**Total tasks:** 20
 
 ## Tasks
 
@@ -296,12 +299,25 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:** External (Stripe Dashboard), `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md`
-- **Depends on:** -
+- **Depends on:** TASK-19
 - **Blocks:** TASK-08, TASK-09
 - **Confidence:** 75%
   - Implementation: 80% — Stripe Dashboard is well-documented, straightforward product/variant setup
   - Approach: 75% — Standard Stripe Checkout pattern, but account verification adds uncertainty
   - Impact: 70% — Account verification can take 1-3 days (blocks critical path), webhook configuration requires DNS
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 75%
+- **Updated confidence:** 75% (no uplift; external setup still required)
+  - **Evidence class:** E1 (plan/contract audit)
+- **Investigation performed:**
+  - Verified current constraint: `cochlearfit.com` is NXDOMAIN on 2026-02-14 (public DNS).
+- **Decision / resolution:**
+  - Added TASK-19 (INVESTIGATE) as explicit precursor for `stripe-setup.md` scaffolding.
+- **Changes to task:**
+  - Dependencies: now depends on TASK-19
+
+
 - **Acceptance:**
   - [ ] Stripe account created (or access granted to existing account)
   - [ ] Test mode enabled with API keys generated (secret key, publishable key)
@@ -352,12 +368,26 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:** External (Inventory API deployment), `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
-- **Depends on:** -
+- **Depends on:** TASK-20
 - **Blocks:** TASK-09
 - **Confidence:** 70%
   - Implementation: 75% — Contract is well-defined (line 204-244 of Worker index.ts shows payload format), straightforward REST API
   - Approach: 70% — Unclear if API already exists elsewhere or needs greenfield build
   - Impact: 65% — If API doesn't exist, deployment path unclear (hosting, DB, auth middleware)
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 70%
+- **Updated confidence:** 70% (no uplift; external API may be greenfield)
+  - **Evidence class:** E1 (code audit)
+- **Investigation performed:**
+  - Worker inventory contract is explicit in `apps/cochlearfit-worker/src/index.ts:170-194`.
+- **Decision / resolution:**
+  - Added TASK-20 (INVESTIGATE) to create `inventory-api.md` scaffold before provisioning.
+- **Changes to task:**
+  - Dependencies: now depends on TASK-20
+  - Correctness note: Worker currently fails closed (503) when inventory URL/token missing; plan should not claim inventory can be disabled by empty URL without a code change.
+
+
 - **Acceptance:**
   - [ ] API endpoint deployed and accessible (e.g., `https://inventory-api.example.com`)
   - [ ] Authentication token generated (Bearer token)
@@ -395,7 +425,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **What would make this ≥90%:** Confirm if API already exists (reuse existing inventory system) or needs greenfield build; if greenfield, clarify hosting platform and data source
 - **Rollout / rollback:**
   - Rollout: Deploy API to hosting platform (e.g., Cloudflare Worker, Vercel, AWS Lambda)
-  - Rollback: Revert deployment if issues found during testing; Worker can be configured with `INVENTORY_AUTHORITY_URL=""` to disable validation temporarily
+  - Rollback: Revert API deployment if issues found during testing; the Worker currently fails closed (503) when inventory config is missing, so there is no safe "disable" rollback without a code change
 - **Documentation impact:**
   - Create `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` with:
     - API endpoint URL
@@ -416,7 +446,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:** External (Email service provider), `docs/plans/cochlearfit-deployment-readiness/email-setup.md`
 - **Depends on:** -
 - **Blocks:** TASK-06, TASK-07, TASK-09
-- **Confidence:** 80%
+- **Confidence:** 75%
   - Implementation: 85% — Well-documented providers (Resend, SendGrid), straightforward account setup and domain verification
   - Approach: 80% — Resend recommended for best DX (React email templates, 100 emails/day free), but SendGrid also proven
   - Impact: 75% — Domain DNS verification can take 24-48 hours (SPF, DKIM, DMARC records propagation)
@@ -462,6 +492,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - SendGrid docs: https://docs.sendgrid.com
   - DNS verification guide: SPF, DKIM, DMARC records
   - Recommended: Resend (best DX, React email templates, 100 emails/day free)
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 80%
+- **Updated confidence:** 75% (min-of-dim correction)
+  - **Evidence class:** E2 (public DNS probe)
+  - Impact: 75% — Domain DNS verification is blocked because `cochlearfit.com` is NXDOMAIN.
+- **Investigation performed:**
+  - `dig @1.1.1.1 cochlearfit.com` and `dig @8.8.8.8 cochlearfit.com` -> NXDOMAIN (2026-02-14).
+- **Decision / resolution:**
+  - Keep TASK-03 explicitly deferred/blocked until domain is registered/configured and you decide to proceed with email.
+
 
 #### Build Attempt (2026-02-14)
 - **Status:** Blocked (external prerequisite)
@@ -806,7 +847,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-05: Stripe Price ID format → inspect variants.json → all `stripePriceId` values start with `price_`
   - **Acceptance coverage:** TC-01 covers schemas, TC-02 covers frontend integration, TC-03 covers SKU consistency, TC-04 covers localization, TC-05 covers Stripe IDs
   - **Validation type:** integration testing (frontend + build script)
-  - **Run/verify:** `pnpm --filter cochlearfit dev` → open http://localhost:3011 → verify products display, run build script → verify no errors
+  - **Run/verify:** `pnpm --filter @apps/cochlearfit dev` → open http://localhost:3011 → verify products display, run build script → verify no errors
 - **Execution plan:**
   - **Red → Green → Refactor**
   - **Red evidence:** First frontend load will fail (products.json missing, falls back to products.ts)
@@ -842,12 +883,25 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `[readonly] docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` (secret values reference)
   - `[readonly] docs/plans/cochlearfit-deployment-readiness/email-setup.md` (secret values reference)
   - `[readonly] docs/plans/cochlearfit-deployment-readiness/inventory-api.md` (secret values reference)
-- **Depends on:** TASK-01, TASK-02, TASK-03, TASK-05, TASK-08
+- **Depends on:** TASK-01, TASK-02, TASK-03, TASK-17
 - **Blocks:** TASK-10
-- **Confidence:** 80%
+- **Confidence:** 75%
   - Implementation: 85% — Wrangler environments are well-documented, cleaner than runtime URL detection
   - Approach: 80% — Separate `[env.staging]` and `[env.production]` sections eliminate fragile URL substring matching
   - Impact: 75% — Must remove committed secrets from wrangler.toml (security issue), must configure separate KV namespaces
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 80%
+- **Updated confidence:** 75% (min-of-dim correction)
+  - **Evidence class:** E1 (config audit)
+- **Investigation performed:**
+  - `apps/cochlearfit-worker/wrangler.toml` currently contains committed token placeholders (e.g., `INVENTORY_AUTHORITY_TOKEN`).
+- **Decision / resolution:**
+  - Added TASK-17 (IMPLEMENT) to separate repo-side config hardening from external secrets/KV provisioning.
+- **Changes to task:**
+  - Dependencies: now depends on TASK-17 (plus external setup tasks TASK-01/02/03)
+
+
 - **Acceptance:**
   - [ ] Committed secrets removed from wrangler.toml (lines 9-14: `INVENTORY_AUTHORITY_TOKEN` placeholders deleted)
   - [ ] **Rotate all secrets** (assume compromise from previous commits):
@@ -1189,53 +1243,56 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:**
-  - `apps/cochlearfit-worker/src/__tests__/` (new test directory)
-  - `apps/cochlearfit-worker/vitest.config.ts` (new file, Vitest configuration)
-  - `apps/cochlearfit-worker/package.json` (add test script)
-  - `[readonly] apps/cochlearfit-worker/src/index.ts` (test subjects)
-- **Depends on:** TASK-10
+  - `apps/cochlearfit-worker/src/__tests__/` (expand test directory created in TASK-18)
+  - `[readonly] apps/cochlearfit-worker/jest.config.cjs` (created in TASK-18)
+  - `[readonly] apps/cochlearfit-worker/package.json` (test script created in TASK-18)
+  - `[readonly] apps/cochlearfit-worker/src/worker-catalog.generated.ts` (generated dependency)
+  - `[readonly] scripts/bundle-worker-catalog.ts` (catalog bundler validation)
+- **Depends on:** TASK-18
 - **Blocks:** TASK-12
-- **Confidence:** 80%
-  - Implementation: 85% — Focused on critical paths only (webhook signature, inventory, catalog bundling), straightforward Vitest setup
-  - Approach: 80% — Minimal test coverage for launch readiness (pre-launch requirement), comprehensive tests deferred to TASK-16
-  - Impact: 75% — Tests validate most critical failure modes before production deployment
+- **Confidence:** 75% ⚠️
+  - Implementation: 80% — Jest harness exists (TASK-18), but Worker-runtime integration testing may require extra setup
+  - Approach: 80% — Keep pre-launch tests focused on build-time/catalog correctness; runtime-heavy tests deferred to TASK-16
+  - Impact: 75% — Adds regression guards before production deploy (even without full runtime harness)
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 75% (Vitest-based plan text)
+- **Updated confidence:** 75% (tooling alignment; no uplift)
+  - **Evidence class:** E1 (repo testing-policy + validation gate inspection)
+- **Decision / resolution:**
+  - Align Worker tests to Jest (repo standard and `scripts/validate-changes.sh` runner), remove Vitest-only assumptions.
+
 - **Acceptance:**
-  - [ ] Vitest configured for Cloudflare Workers environment (minimal config)
-  - [ ] Critical test files created:
-    - `__tests__/signature-verification.test.ts` — test webhook signature verification (valid + invalid signatures)
-    - `__tests__/inventory-validation.test.ts` — test inventory validation handler (in-stock, out-of-stock, API error)
-    - `__tests__/catalog-bundling.test.ts` — test build script validates Stripe Price IDs correctly
-  - [ ] All tests pass: `pnpm --filter cochlearfit-worker test`
-  - [ ] Tests added to CI pipeline (run on every commit)
+  - [ ] Add at least 2 additional Jest tests under `apps/cochlearfit-worker/src/__tests__/` (beyond the TASK-18 spike)
+  - [ ] Catalog bundler failure-mode test exists and passes:
+    - Invalid `stripePriceId` in fixture data → bundler exits non-zero with a helpful error
+  - [ ] Catalog bundler happy-path test exists and passes:
+    - Valid fixture data → bundler succeeds; generated catalog imports and has 12 variants
+  - [ ] All Worker tests pass locally: `pnpm --filter @apps/cochlearfit-worker test`
 - **Validation contract:**
-  - TC-01: Webhook signature valid → test with valid signature → verification passes
-  - TC-02: Webhook signature invalid → test with invalid signature → verification fails, returns 401
-  - TC-03: Inventory in-stock → test with available SKU → returns 200
-  - TC-04: Inventory out-of-stock → test with unavailable SKU → returns 409
-  - TC-05: Catalog bundling → test with invalid Price ID → build fails with error message
-  - **Acceptance coverage:** TC-01+TC-02 cover webhook security, TC-03+TC-04 cover inventory, TC-05 covers catalog validation
-  - **Validation type:** unit testing (Vitest)
-  - **Run/verify:** `pnpm --filter cochlearfit-worker test`
+  - TC-01: Bundler rejects malformed Price ID → run test → process exits non-zero and stderr contains variant identifier
+  - TC-02: Bundler accepts valid data → run test → process exits 0
+  - TC-03: Generated catalog wiring → Jest imports generated catalog and asserts `catalog.length === 12`
+  - **Acceptance coverage:** TC-01 covers failure mode, TC-02 covers happy path, TC-03 covers generated wiring
+  - **Validation type:** unit tests (Jest) using child-process execution of the bundler
+  - **Run/verify:** `pnpm --filter @apps/cochlearfit-worker test`
 - **Execution plan:**
   - **Red → Green → Refactor**
-  - **Red evidence:** First test run will fail (Vitest config incomplete, mocks not set up)
-  - **Green evidence:** After minimal Vitest setup, critical path tests pass
-  - **Refactor evidence:** Add test helpers for signature mocking, improve error messages
+  - **Red evidence:** First run will fail until fixtures + assertions exist
+  - **Green evidence:** Jest suite runs deterministically and covers bundler failure + success paths
+  - **Refactor evidence:** Extract fixture helpers for readability; keep assertions diagnostic
 - **Planning validation:**
-  - Checks run: Reviewed Vitest for Cloudflare Workers documentation
-  - Unexpected findings: None (focused scope reduces complexity)
-- **What would make this ≥90%:** Run tests against staging deployment to validate Worker environment compatibility
+  - Checks run: Reviewed `scripts/validate-changes.sh` (Jest-based gate)
+  - Unexpected findings: Existing TASK-14/TASK-16 text referenced Vitest; updated to match repo tooling
+- **What would make this ≥90%:** Add a Worker-runtime harness test (Miniflare/wrangler dev) to cover request handling (deferred to TASK-16)
 - **Rollout / rollback:**
-  - Rollout: Tests added to CI pipeline, block merge if failing
-  - Rollback: N/A (tests don't affect production; can disable temporarily if blocking merge)
+  - Rollout: Tests run locally and in validation gate; no production changes
+  - Rollback: N/A (tests only)
 - **Documentation impact:**
   - Update `apps/cochlearfit-worker/README.md`:
-    - How to run tests (`pnpm test`)
-    - Test coverage scope (minimal pre-launch, comprehensive in TASK-16)
-- **Notes / references:**
-  - Pre-launch requirement from fact-find: "Worker has zero tests (must add minimal tests before launch)"
-  - Vitest for Cloudflare Workers: https://developers.cloudflare.com/workers/testing/vitest-integration/
-  - Comprehensive test suite in TASK-16 (post-launch)
+    - How to run Worker tests (`pnpm --filter @apps/cochlearfit-worker test`)
+    - Scope: pre-launch tests cover catalog/bundler correctness; runtime tests deferred
+
 
 ### TASK-15: Document fulfillment runbook (draft pre-launch)
 - **Type:** IMPLEMENT
@@ -1298,56 +1355,146 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:**
-  - `apps/cochlearfit-worker/src/__tests__/` (expand existing test directory)
-  - `apps/cochlearfit-worker/vitest.config.ts` (update for full coverage)
+  - `apps/cochlearfit-worker/src/__tests__/` (expand test directory)
+  - `apps/cochlearfit-worker/package.json` (add coverage script and any required dev deps)
+  - `apps/cochlearfit-worker/jest.config.cjs` (update config as needed)
   - `[readonly] apps/cochlearfit-worker/src/index.ts` (test subjects)
 - **Depends on:** TASK-13
 - **Blocks:** -
 - **Confidence:** 70% ⚠️ BELOW THRESHOLD
-  - Implementation: 75% — Vitest for Workers is straightforward, but comprehensive mocking adds complexity
-  - Approach: 70% — Standard unit testing pattern, but Worker runtime differences from Node.js require careful setup
-  - Impact: 65% — Tests must mock Stripe API, email service API, KV storage, and all edge cases
+  - Implementation: 75% — Jest unit tests are straightforward; Worker-runtime integration tests may require Miniflare or a custom harness
+  - Approach: 70% — Need to decide the least-fragile mocking strategy for Stripe + KV + fetch
+  - Impact: 65% — Broad edge-case surface (Stripe, email, inventory, KV idempotency) and risk of brittle mocks
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 70% (Vitest-based plan text)
+- **Updated confidence:** 70% (tooling alignment; no uplift)
+  - **Evidence class:** E1 (repo testing-policy + validation gate inspection)
+- **Decision / resolution:**
+  - Keep comprehensive testing as a post-launch hardening task, aligned to Jest; if a Workers-native harness is needed, add a precursor SPIKE when ready.
+
 - **Acceptance:**
-  - [ ] Comprehensive test files added:
-    - `__tests__/stripe-session.test.ts` — test Stripe session creation with various payloads
-    - `__tests__/webhook-handler.test.ts` — test complete webhook handler flow (idempotency, order persistence, email)
-    - `__tests__/email-sending.test.ts` — test email sending with mocked email service (success, failure, retry)
-    - `__tests__/order-persistence.test.ts` — test KV order writes (success, failure, idempotency by session.id)
-  - [ ] All tests pass: `pnpm --filter cochlearfit-worker test`
-  - [ ] Coverage report generated (aim for >70% coverage)
-  - [ ] Edge cases covered: missing email, KV failure, API timeout, malformed webhook payload
+  - [ ] Add comprehensive test files (or equivalents) covering:
+    - Stripe session creation
+    - Webhook handler flow (idempotency, persistence)
+    - Email sending behavior (success/failure)
+    - Inventory validation behavior (in-stock/out-of-stock/timeout)
+  - [ ] Add coverage run capability (Jest `--coverage` or a `test:coverage` script)
+  - [ ] All tests pass: `pnpm --filter @apps/cochlearfit-worker test`
+  - [ ] Coverage report generated (aim for >70% statement coverage)
+  - [ ] Edge cases covered: missing email, KV failure, upstream API timeout, malformed webhook payload
 - **Validation contract:**
-  - TC-01: Stripe session creation → test with valid payload → session created with correct line items
-  - TC-02: Webhook idempotency → trigger same session.id twice → second write is idempotent (no error)
-  - TC-03: Event deduplication → trigger same event.id twice → second returns 200 without processing
-  - TC-04: Email sending → test with valid order → email API called with correct payload
-  - TC-05: Email failure → test with API error → logs error, returns 200 to Stripe (no retry)
-  - TC-06: KV write failure → simulate error → webhook returns 500 (Stripe will retry)
-  - TC-07: Missing email → webhook with no customer_details.email → logs warning, continues processing
-  - **Acceptance coverage:** All critical paths + edge cases
-  - **Validation type:** unit testing (Vitest with comprehensive mocks)
-  - **Run/verify:** `pnpm --filter cochlearfit-worker test && pnpm --filter cochlearfit-worker test:coverage`
+  - TC-01: Stripe session creation → valid payload → session request built correctly (mocked Stripe client)
+  - TC-02: Webhook idempotency → same `session.id` twice → idempotent persistence
+  - TC-03: Event deduplication → same `event.id` twice → second returns 200 without processing
+  - TC-04: Email sending → success path → email client called with expected payload
+  - TC-05: Email failure → provider error → webhook returns 200; error logged
+  - TC-06: KV write failure → persistence error → webhook returns 500
+  - TC-07: Inventory timeout → upstream timeout → checkout session creation fails with 503
+  - **Acceptance coverage:** Critical paths + edge cases
+  - **Validation type:** unit/integration tests (Jest)
+  - **Run/verify:** `pnpm --filter @apps/cochlearfit-worker test -- --coverage`
 - **Execution plan:**
   - **Red → Green → Refactor**
-  - **Red evidence:** First comprehensive test run will fail (edge cases not handled, mocks incomplete)
-  - **Green evidence:** After adding error handling and complete mocks, all tests pass
-  - **Refactor evidence:** Add test helpers for common patterns, improve coverage of error paths
+  - **Red evidence:** First comprehensive run will surface missing seams/mocks
+  - **Green evidence:** Stable mocks + harness; tests pass consistently
+  - **Refactor evidence:** Consolidate mock helpers; reduce brittleness; add regression tests for prior incidents
 - **Planning validation:**
-  - Checks run: Reviewed Vitest documentation and miniflare for KV mocking
-  - Unexpected findings: Worker environment requires miniflare integration for KV mocks (not just in-memory stubs)
-- **What would make this ≥90%:** Complete miniflare setup, achieve >80% coverage, test against staging Worker
+  - Checks run: Reviewed `scripts/validate-changes.sh` (Jest)
+  - Unexpected findings: Existing TASK-16 text referenced Vitest/Miniflare; retained Miniflare as an option but kept runner consistent (Jest)
+- **What would make this ≥90%:** Add a precursor SPIKE to validate a Workers-native runtime harness (Miniflare or Wrangler) with one passing request-level test
 - **Rollout / rollback:**
-  - Rollout: Tests added to CI pipeline, run on every commit
-  - Rollback: N/A (tests don't affect production; can be temporarily disabled if blocking)
+  - Rollout: Tests added to validation gate / CI
+  - Rollback: N/A (tests only)
 - **Documentation impact:**
   - Update `apps/cochlearfit-worker/README.md`:
-    - Full test suite coverage map
-    - How to add new tests for edge cases
-    - Mock setup patterns (Stripe, email, KV)
-- **Notes / references:**
-  - Builds on TASK-14 minimal tests (pre-launch requirement satisfied)
-  - Vitest for Cloudflare Workers: https://developers.cloudflare.com/workers/testing/vitest-integration/
-  - Miniflare for KV mocking: https://miniflare.dev
+    - Test suite map + mocking strategy
+    - How to run coverage
+
+
+
+
+### TASK-17: Sanitize wrangler.toml + add env topology (no committed secrets)
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/wrangler.toml` (remove committed secrets; add `[env.staging]` + `[env.production]` topology with no secret values)
+  - `docs/plans/cochlearfit-deployment-readiness/worker-config.md` (new doc: secret names + wrangler commands; no values)
+  - `[readonly] apps/cochlearfit-worker/src/index.ts` (env vars consumed)
+- **Depends on:** TASK-05
+- **Blocks:** TASK-09, TASK-10
+- **Confidence:** 85%
+  - Implementation: 90% — Mechanical config edits, validated by local `wrangler build`
+  - Approach: 85% — Wrangler env sections are the repo’s preferred isolation pattern
+  - Impact: 85% — Removes a known security footgun and clarifies deploy topology
+- **Acceptance:**
+  - [ ] `apps/cochlearfit-worker/wrangler.toml` contains no committed secret values/placeholders for `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `EMAIL_SERVICE_API_KEY`, `INVENTORY_AUTHORITY_TOKEN`
+  - [ ] `wrangler.toml` defines `[env.staging]` and `[env.production]` with distinct Worker names and KV namespace bindings
+  - [ ] `docs/plans/cochlearfit-deployment-readiness/worker-config.md` created (secret names only; no values)
+  - [ ] Local build succeeds: `pnpm --filter @apps/cochlearfit-worker build`
+- **Validation contract:**
+  - TC-01: Secret hygiene → `rg -n "REPLACE_ME|dev-inventory-token|INVENTORY_AUTHORITY_TOKEN\s*=\s*"" apps/cochlearfit-worker/wrangler.toml` → no matches
+  - TC-02: Topology present → inspect `wrangler.toml` → `[env.staging]` and `[env.production]` exist
+  - TC-03: Build → `pnpm --filter @apps/cochlearfit-worker build` → PASS
+
+### TASK-18: Spike: Jest test harness for cochlearfit-worker
+- **Type:** SPIKE
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/package.json` (add `test` script)
+  - `apps/cochlearfit-worker/jest.config.cjs` (new)
+  - `apps/cochlearfit-worker/src/__tests__/catalog-wireup.test.ts` (new)
+  - `[readonly] apps/cochlearfit-worker/src/worker-catalog.generated.ts` (generated dependency)
+- **Depends on:** TASK-05
+- **Blocks:** TASK-14
+- **Confidence:** 82%
+  - Implementation: 85% — Jest is the repo standard; spike scope is one passing test
+  - Approach: 82% — Confirms Worker code is testable under Node/Jest
+  - Impact: 80% — Produces E2 evidence to promote/execute TASK-14 safely
+- **Acceptance:**
+  - [ ] `pnpm --filter @apps/cochlearfit-worker test` runs and passes
+  - [ ] At least one test imports generated `catalog` and asserts `catalog.length === 12`
+- **Validation contract:**
+  - TC-01: Harness boots → `pnpm --filter @apps/cochlearfit-worker test` → PASS
+  - TC-02: Catalog import → test imports `catalog` and asserts length 12
+
+### TASK-19: Stripe setup memo + stripe-setup.md scaffold
+- **Type:** INVESTIGATE
+- **Deliverable:** Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` (new)
+  - `[readonly] data/shops/cochlearfit/variants.json` (variant IDs)
+- **Depends on:** -
+- **Blocks:** TASK-01, TASK-08, TASK-09
+- **Confidence:** 85%
+- **Acceptance:**
+  - [ ] `stripe-setup.md` exists with required product/variant list (12 variants, IDs aligned to `variants.json`)
+  - [ ] Keys are documented as names/placeholders only (no secret values committed)
+- **Validation contract:**
+  - TC-01: Doc exists and references variant IDs from `data/shops/cochlearfit/variants.json`
+
+### TASK-20: Inventory authority API contract memo + inventory-api.md scaffold
+- **Type:** INVESTIGATE
+- **Deliverable:** Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` (new)
+  - `[readonly] apps/cochlearfit-worker/src/index.ts` (contract)
+- **Depends on:** -
+- **Blocks:** TASK-02, TASK-09
+- **Confidence:** 85%
+- **Acceptance:**
+  - [ ] `inventory-api.md` exists and matches `apps/cochlearfit-worker/src/index.ts:170-194`
+- **Validation contract:**
+  - TC-01: Doc exists
+
 
 ## Risks & Mitigations
 
@@ -1358,10 +1505,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | **Inventory authority API not ready at launch** | Medium | High | **Blocker per requirements** — TASK-02 must complete before TASK-09; delay launch if API not ready |
 | **Email deliverability issues (spam filters)** | Medium | Medium | Use reputable provider (Resend/SendGrid in TASK-03); verify sender domain DNS; test with multiple clients in TASK-06 |
 | **Customer email not in webhook payload** | High | High | **Mitigated** — TASK-07 implements session expansion for `customer_details.email` |
-| **Secrets leaked via wrangler.toml** | High | High | **Fix required** — TASK-09 removes committed secrets from wrangler.toml, uses `wrangler secret put` |
+| **Secrets leaked via wrangler.toml** | High | High | **Fix required** — TASK-17 removes committed secrets from `wrangler.toml`; TASK-09 rotates/configures secrets via `wrangler secret put` |
 | **CORS blocks production Pages origin** | Low | High | Test CORS in TASK-10 staging deployment; verify `PAGES_ORIGIN` includes all deployed origins |
 | **Stripe API version breaking change** | Low | Medium | **Mitigated** — Pin Stripe API version via `Stripe-Version` header to the account's pinned version; verify webhook endpoint version alignment (TASK-01 + TASK-07) |
-| **Worker tests missing cause regressions** | Medium | Medium | TASK-14 adds minimal Worker tests post-launch (inventory mock, email mock, signature verification) |
+| **Worker tests missing cause regressions** | Medium | Medium | TASK-18 + TASK-14 add minimal Jest tests for catalog/bundler correctness; TASK-16 expands coverage post-launch |
 | **KV namespace not provisioned in production** | Low | High | Verify KV binding in wrangler.toml matches production namespace in TASK-10; test in staging first |
 | **Environment isolation fails (wrong secrets used)** | Low | High | Wrangler environments provide true isolation (separate deployments, KV namespaces, secrets); TASK-10+TASK-11 verify staging uses staging secrets; TASK-12+TASK-13 verify production uses production secrets |
 | **Email template rendering breaks in Outlook** | Medium | Medium | TASK-06 tests email rendering across Gmail, Outlook, Apple Mail; use inline CSS and table layouts |
@@ -1461,6 +1608,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - [ ] Product/business stakeholder informed of go-live: __________ (name + date)
 
 ## Decision Log
+
+- 2026-02-14: Replanned low-confidence external setup tasks by adding explicit precursors TASK-17..TASK-20
 
 - 2026-02-13: Initial plan created with 8 decisions from fact-find
 - 2026-02-13: **REVISED Decision 4:** Changed from "single Worker with runtime URL detection" to "Wrangler environments with [env.staging] and [env.production]" for better isolation and elimination of fragile URL substring matching

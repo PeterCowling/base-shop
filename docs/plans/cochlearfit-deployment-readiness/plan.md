@@ -265,7 +265,7 @@ Worker (Needs fixes):
 | TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Complete (2026-02-14) | TASK-05 | TASK-09, TASK-10 |
 | TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Complete (2026-02-14) | TASK-05 | TASK-14 |
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
-| TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Pending | - | TASK-02, TASK-09 |
+| TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-02, TASK-09 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -1535,6 +1535,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - [ ] `inventory-api.md` exists and matches `apps/cochlearfit-worker/src/index.ts:170-194`
 - **Validation contract:**
   - TC-01: Doc exists
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 92c9c549f7
+- **Implementation notes:**
+  - Created `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` matching the Worker contract in `apps/cochlearfit-worker/src/index.ts:170-194` (Bearer auth, 200/409/503 semantics).
 
 
 ## Risks & Mitigations

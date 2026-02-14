@@ -29,6 +29,13 @@ Where `INVENTORY_AUTHORITY_URL` is configured per environment (Wrangler var) and
 - Header: `Authorization: Bearer ${INVENTORY_AUTHORITY_TOKEN}`
 - The Worker treats missing URL or token as **503 Inventory backend unavailable** (fail-closed) before any checkout is created.
 
+## Shop Context
+
+The inventory authority endpoint is multi-tenant and requires a shop identifier.
+
+- Header: `x-shop-id: cochlearfit`
+- The current Cochlearfit Worker sends shop context via the header (it does **not** include `shopId` in the request body).
+
 ## Request Body
 
 ```json
@@ -64,6 +71,7 @@ Response body is ignored by the current Worker implementation.
 ```bash
 curl -sS -X POST \
   -H "Content-Type: application/json" \
+  -H "x-shop-id: cochlearfit" \
   -H "Authorization: Bearer $INVENTORY_AUTHORITY_TOKEN" \
   -d {items:[sku:classic-kids-sand]} \
   "$INVENTORY_AUTHORITY_URL/api/inventory/validate" \

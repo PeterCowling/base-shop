@@ -182,6 +182,8 @@ const validateInventoryWithAuthority = async (
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      // Inventory authority requires shop context (multi-tenant); this Worker is single-tenant.
+      "x-shop-id": "cochlearfit",
     },
     body: JSON.stringify({ items: buildInventoryAuthorityItems(items) }),
   });

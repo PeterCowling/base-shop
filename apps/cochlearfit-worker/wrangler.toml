@@ -1,19 +1,40 @@
-name = "cochlearfit-api"
+name = "cochlearfit-worker-dev"
 main = "src/index.ts"
 compatibility_date = "2025-06-20"
+workers_dev = true
 
 [vars]
 PAGES_ORIGIN = "http://localhost:3011"
 SITE_URL = "http://localhost:3011"
-# Override these in production via the Cloudflare dashboard or Wrangler secrets.
 INVENTORY_AUTHORITY_URL = "http://localhost:3000"
-INVENTORY_AUTHORITY_TOKEN = "dev-inventory-token"
 
-[env.production.vars]
-INVENTORY_AUTHORITY_URL = "https://inventory-authority.example"
-INVENTORY_AUTHORITY_TOKEN = "REPLACE_ME"
-
+# Local/dev KV binding placeholder. Real namespace IDs are set per environment.
 [[kv_namespaces]]
 binding = "ORDERS_KV"
 id = "00000000000000000000000000000000"
 preview_id = "11111111111111111111111111111111"
+
+[env.staging]
+name = "cochlearfit-worker-staging"
+workers_dev = true
+
+[env.staging.vars]
+PAGES_ORIGIN = "https://cochlearfit-staging.pages.dev"
+SITE_URL = "https://cochlearfit-staging.pages.dev"
+INVENTORY_AUTHORITY_URL = "https://inventory-api-staging.example.com"
+
+[[env.staging.kv_namespaces]]
+binding = "ORDERS_KV"
+id = "22222222222222222222222222222222"
+
+[env.production]
+name = "cochlearfit-worker-production"
+
+[env.production.vars]
+PAGES_ORIGIN = "https://cochlearfit.com"
+SITE_URL = "https://cochlearfit.com"
+INVENTORY_AUTHORITY_URL = "https://inventory-api.example.com"
+
+[[env.production.kv_namespaces]]
+binding = "ORDERS_KV"
+id = "33333333333333333333333333333333"

@@ -187,12 +187,14 @@ run_jest_exec() {
         return $?
     fi
 
-    if [ -f "$pkg_path/jest.config.cjs" ]; then
-        pnpm -C "$pkg_path" exec jest --config ./jest.config.cjs "$@"
-        return $?
-    fi
-
-    pnpm -C "$pkg_path" exec jest "$@"
+    (
+        cd "$pkg_path" || exit 1
+        if [ -f "jest.config.cjs" ]; then
+            pnpm exec jest --config ./jest.config.cjs "$@"
+            exit $?
+        fi
+        pnpm exec jest "$@"
+    )
 }
 
 # For broad related sets, run only tests adjacent to changed source files.

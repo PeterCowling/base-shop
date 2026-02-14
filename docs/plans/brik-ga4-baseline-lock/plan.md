@@ -4,8 +4,8 @@ Status: Active
 Domain: Venture-Studio
 Workstream: Mixed
 Created: 2026-02-13
-Last-updated: 2026-02-13
-Last-reviewed: 2026-02-13
+Last-updated: 2026-02-14
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-ga4-baseline-lock
 Deliverable-Type: multi-deliverable
@@ -18,6 +18,8 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 Business-OS-Integration: off
 Business-Unit: BRIK
 Card-ID:
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # BRIK GA4 Event Verification + 7-Day Baseline Lock Plan

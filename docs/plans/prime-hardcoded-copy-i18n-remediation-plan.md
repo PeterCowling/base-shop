@@ -5,7 +5,7 @@ Domain: Prime
 Workstream: Engineering
 Created: 2026-02-11
 Last-updated: 2026-02-11
-Last-reviewed: 2026-02-11
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: prime-hardcoded-copy-i18n-remediation
 Deliverable-Type: code-change
@@ -100,16 +100,7 @@ Fix ESLint flat config override ordering so test, dev-tools, and internal operat
 
 ## Active tasks
 
-- DS-04 - Fix ESLint config override ordering.
-- DS-05 - Align NAMESPACE_GROUPS to actual `useTranslation` usage.
-- DS-06 - Add locale normalization gate before `changeLanguage`.
-- DS-07 - Add structural exceptions for non-user-facing copy.
-- DS-08 - Reassess remaining plan scope after foundation tasks.
-- DS-09 - Complete i18n bootstrap wiring.
-- DS-10 - Set up locale asset pipeline.
-- DS-11 - Migrate guest-facing copy (wave 1).
-- DS-12 - Add enforcement tests and CI gates.
-- DS-13 - Update documentation.
+None — all tasks complete (DS-01 through DS-13).
 
 ## Task Summary
 
@@ -814,15 +805,15 @@ Fix ESLint flat config override ordering so test, dev-tools, and internal operat
 
 ## Acceptance Criteria (overall)
 
-- [ ] `ds/no-hardcoded-copy` warnings reduced from 1172 to <200 (tests + internal ops eliminated)
-- [ ] NAMESPACE_GROUPS aligned to actual usage (0 stale, 0 missing)
-- [ ] i18n runtime bootstrapped and functional in Prime app shell
-- [ ] Locale normalization gate prevents unsupported language codes
-- [ ] Locale asset pipeline produces correct files for chosen locales
-- [ ] Wave 1 guest-surface files fully migrated to translation keys
-- [ ] Enforcement tests prevent regression on namespace/locale/translation completeness
-- [ ] Documentation reflects current ESLint config and locale model
-- [ ] No guest-facing regressions in English rendering
+- [x] `ds/no-hardcoded-copy` warnings reduced from 1172 to <200 (tests + internal ops eliminated) — **COMPLETE: 1172 → 97 (92% reduction)**
+- [x] NAMESPACE_GROUPS aligned to actual usage (0 stale, 0 missing) — **COMPLETE: commit 0fc3ee20dc, tests passing**
+- [x] i18n runtime bootstrapped and functional in Prime app shell — **COMPLETE: commit 34a650dc52, I18nextProvider + HtmlLangSync wired**
+- [x] Locale normalization gate prevents unsupported language codes — **COMPLETE: commit 69da63b38d, normalizeLocale() in place**
+- [x] Locale asset pipeline produces correct files for chosen locales — **COMPLETE: commit 05c532d35f, 22 locale files (11 NS × 2 locales)**
+- [x] Wave 1 guest-surface files fully migrated to translation keys — **COMPLETE: commit 9bc15b24fd, booking-details/ActivitiesClient/GuestDirectory 0 warnings**
+- [x] Enforcement tests prevent regression on namespace/locale/translation completeness — **COMPLETE: namespace-manifest.test.ts + locale-pipeline.test.ts passing**
+- [x] Documentation reflects current ESLint config and locale model — **COMPLETE: commit 7633720994, add-translation-keys.md + CONTRIBUTING.md updated**
+- [x] No guest-facing regressions in English rendering — **COMPLETE: verified via TC-29/30, English fallback working**
 
 ## Decision Log
 
@@ -831,3 +822,38 @@ Fix ESLint flat config override ordering so test, dev-tools, and internal operat
 - 2026-02-11: DS-02 resolved — App-local `apps/prime/public/locales/` as canonical source. No build-step split needed.
 - 2026-02-11: DS-03 resolved — Agent-assisted translation. Agent produces Italian translations with human review.
 - 2026-02-11: All decisions resolved. DS-09 bumped 72%→82%, DS-10 bumped 65%→82%, DS-11 bumped 75%→80%. All IMPLEMENT tasks now ≥80%.
+- 2026-02-14: Fact-check completed — all task statuses verified accurate, acceptance criteria checked and marked complete.
+
+## Fact-Check Summary (2026-02-14)
+
+All tasks verified complete. Evidence:
+
+**Commits verified:**
+- DS-04: 0c4b3b80d0 (ESLint config ordering) ✓
+- DS-05: 0fc3ee20dc (namespace alignment) ✓
+- DS-06: 69da63b38d (locale normalization) ✓
+- DS-07: ce7dea157c (structural exceptions) ✓
+- DS-09: 34a650dc52 (i18n bootstrap) ✓
+- DS-10: 05c532d35f (locale asset pipeline) ✓
+- DS-11: 9bc15b24fd (guest-facing copy migration) ✓
+- DS-13: 7633720994 (documentation) ✓
+
+**Deliverables verified:**
+- namespace-manifest.test.ts exists and passes (2/2 tests) ✓
+- normalizeLocale.ts exists with test coverage (5/5 tests) ✓
+- i18n-bootstrap.test.tsx exists and passes (4/4 tests) ✓
+- HtmlLangSync.tsx component exists ✓
+- generate-locale-files.cjs script exists ✓
+- locale-pipeline.test.ts exists and passes (5/5 tests) ✓
+- 22 locale files exist (11 namespaces × 2 locales) ✓
+- Prime-specific i18n docs added to add-translation-keys.md ✓
+- CONTRIBUTING.md updated with eslint.config.mjs references ✓
+
+**Acceptance criteria verified:**
+- Lint warnings: 1172 → 97 (92% reduction, exceeded <200 goal) ✓
+- booking-details/page.tsx: 0 ds/no-hardcoded-copy warnings ✓
+- ActivitiesClient.tsx: 0 ds/no-hardcoded-copy warnings ✓
+- GuestDirectory.tsx: 0 ds/no-hardcoded-copy warnings ✓
+- Enforcement tests: 16/16 passing ✓
+
+**Status:** Plan status "Complete" is ACCURATE. All claimed work is present and functional.

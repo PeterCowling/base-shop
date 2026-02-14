@@ -1,17 +1,19 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Business OS
 Created: 2026-01-29
-Last-reviewed: 2026-01-29
+Last-reviewed: 2026-02-14
 Relates-to charter: none
-Last-updated: 2026-01-29 (BOS-P2-01/02/05 complete, BOS-P2-04 deferred)
+Last-updated: 2026-02-14 (Superseded by business-os-multi-user-mvp-plan.md)
 Feature-Slug: business-os-phase-2
-Overall-confidence: TBD
+Overall-confidence: N/A (Plan superseded)
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Supersedes:
-  - docs/plans/business-os-kanban-plan.md (Phase 0/1 complete)
-  - docs/plans/business-os-board-ux-overhaul-plan.md (Phase 1 complete)
+  - docs/plans/archive/business-os-kanban-plan.md (Phase 0/1 complete)
+  - docs/plans/archive/business-os-board-ux-overhaul-plan.md (Phase 1 complete)
+Superseded-by:
+  - docs/plans/archive/business-os-multi-user-mvp-plan.md (Completed Feb 2026, archived)
 ---
 
 # Business OS Phase 2+ Plan
@@ -23,21 +25,25 @@ No active tasks at this time.
 
 ## Summary
 
-This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS plans and defines Phase 2+ priorities. Phase 1 delivered a fully functional Pete-only local Kanban system with Universal Capture, search/filtering, and archive functionality. Phase 2 focuses on multi-user support, mobile optimization, and advanced features.
+**PLAN STATUS: SUPERSEDED AND ARCHIVED**
 
-**Phase 1 Achievements** (Jan 28-29, 2026):
-- ✅ Core Kanban infrastructure (32 tasks: BOS-01 through BOS-32)
-- ✅ Board UX Overhaul (17 tasks: BOS-UX-01 through BOS-UX-17)
-- ✅ Archive view with permission-based filtering
-- ✅ Universal Capture workflow (FAB + modal + keyboard shortcuts)
-- ✅ Search, filtering, and board view switcher
-- ✅ Toast notifications and navigation infrastructure
+This plan has been superseded by `docs/plans/archive/business-os-multi-user-mvp-plan.md` which was completed and archived in February 2026. The MVP plan implemented multi-user authentication, hosted deployment, agent coordination, and many other features that were planned for Phase 2.
 
-**Phase 2 Focus**:
-- Multi-user authentication and permissions
-- Mobile-optimized responsive layout
-- Docs registry sync automation
-- Advanced filtering and keyboard power features
+**Original Intent:** This plan consolidated remaining incomplete tasks from Phase 0/1 Business OS plans and defined Phase 2+ priorities. Phase 1 delivered a fully functional Pete-only local Kanban system with Universal Capture, search/filtering, and archive functionality. Phase 2 focused on multi-user support, mobile optimization, and advanced features.
+
+**What Actually Happened:**
+- BOS-P2-00 through BOS-P2-03, BOS-P2-05 were completed as planned (Jan 29, 2026)
+- Multi-user work was then re-scoped into a comprehensive MVP plan (Jan 29 - Feb 5, 2026)
+- MVP plan delivered: authentication, hosted deployment, agent coordination, git-backed queue, collision-proof IDs, and more
+- This Phase 2 plan was effectively abandoned in favor of the MVP approach
+
+**Completed Phase 2 Tasks** (Jan 29, 2026):
+- ✅ BOS-P2-00: Jest TypeScript fixes
+- ✅ BOS-P2-01: User switcher for dev/testing
+- ✅ BOS-P2-02: Owner-only card editing permissions
+- ✅ BOS-P2-03: Mobile vertical lane stacking (all phases)
+- ✅ BOS-P2-05: Keyboard arrow navigation
+- ⚠️ BOS-P2-04: Advanced filters (correctly deferred to Phase 3)
 
 ## Goals
 
@@ -175,13 +181,14 @@ This plan consolidates remaining incomplete tasks from Phase 0/1 Business OS pla
 - **Type:** IMPLEMENT
 - **Affects:** `apps/business-os/src/lib/repo/registry-sync.ts`, BOS-10 write operations
 - **Depends on:** BOS-07 (complete)
-- **Status:** Deferred from Phase 1
+- **Status:** ❌ NOT IMPLEMENTED - Superseded by MVP plan
 - **Confidence:** 60%
   - Implementation: 65% — Registry generation logic understood; sync mechanism straightforward
   - Approach: 60% — Two approaches: (1) call `pnpm docs:lint` on Sync, (2) replicate registry logic in app
   - Impact: 55% — Stale registry breaks queries; non-critical for single-user Phase 1
 - **Effort:** S (Small)
 - **Priority:** P2 (Medium - needed for multi-user Phase 2)
+- **NOTE:** File `apps/business-os/src/lib/repo/registry-sync.ts` does NOT exist in repo. Task was never implemented before plan was superseded.
 - **Description:**
   - Problem: After app writes new docs, registry is stale until `pnpm docs:lint` runs manually
   - Solution: Run `pnpm docs:lint` on Sync after merging origin/main, commit updated `docs/registry.json`, then push
@@ -879,11 +886,8 @@ export const FEATURE_FLAGS = {
 - **Type:** DECISION
 - **Affects:** Deployment architecture, credentials management
 - **Depends on:** -
-- **Status:** Needs-Input (carry forward from BOS-00-A)
-- **Confidence:** 40%
-  - Implementation: 40% — Unproven mechanism for writable git checkout
-  - Approach: 40% — Multiple options, no clear winner
-  - Impact: 40% — Blocks hosted deployment for Phase 2
+- **Status:** ✅ RESOLVED - Superseded by MVP-A3 (Free tunnel deployment)
+- **Confidence:** N/A (Superseded)
 - **Effort:** N/A (Decision)
 - **Priority:** P1 (High - blocks multi-user hosted deployment)
 - **Description:**
@@ -893,14 +897,12 @@ export const FEATURE_FLAGS = {
     - **Option B:** GitHub API commits (no local git, requires token management)
     - **Option C:** Serverless function triggers separate worker (complex)
     - **Option D:** Keep local-only permanently (Pete's machine = deployment)
-- **Acceptance:**
-  - Hosted deployment mechanism proven (writable checkout OR GitHub API)
-  - Credentials management strategy defined
-  - Concurrency model defined (if multi-instance)
-  - BOS-10 updated with Phase 2 constraints
-- **Impact on other tasks:**
-  - Blocks BOS-P2-07 (hosted deployment setup)
-  - May require BOS-10 refactor (git CLI vs GitHub API)
+- **Resolution:**
+  - **Implemented in MVP plan (Feb 2026):** Option A was chosen (self-hosted with git checkout)
+  - **MVP-A3:** Free tunnel deployment (TryCloudflare/ngrok) implemented
+  - **MVP-A1:** Production repo root config implemented
+  - Single-host, git-only architecture with serialized writes via repo lock
+  - See: `docs/plans/archive/business-os-multi-user-mvp-plan.md`
 
 ---
 
@@ -909,8 +911,8 @@ export const FEATURE_FLAGS = {
 - **Type:** IMPLEMENT
 - **Affects:** Deployment infrastructure, CI/CD
 - **Depends on:** BOS-P2-06
-- **Status:** Blocked (waiting on BOS-P2-06 decision)
-- **Confidence:** TBD (depends on BOS-P2-06 choice)
+- **Status:** ✅ IMPLEMENTED - Superseded by MVP-A3 (Feb 2026)
+- **Confidence:** N/A (Superseded)
 - **Effort:** L (Large)
 - **Priority:** P1 (High - enables multi-user access)
 - **Description:**
@@ -919,19 +921,15 @@ export const FEATURE_FLAGS = {
   - Set up CI/CD pipeline for deployments
   - Configure environment variables and secrets
   - Add health check and monitoring
-- **Acceptance:**
-  - App accessible via public URL (with auth)
-  - Git write operations work correctly
-  - CI/CD deploys on merge to main
-  - Monitoring and error tracking configured
-  - Performance meets Phase 1 baseline
-- **Test plan:**
-  - End-to-end: Submit idea → Sync → verify PR created
-  - End-to-end: Edit card → Sync → verify changes committed
-  - Load test: 10 concurrent users, 100 cards per board
-- **Rollout / rollback:**
-  - Rollout: Deploy to staging first, validate, then production
-  - Rollback: Revert to local-only deployment
+- **Resolution:**
+  - **Implemented in MVP plan (Feb 2026):**
+  - **MVP-A3:** Remote access runbook and tunnel script created
+  - **MVP-A2:** Health check endpoint implemented (`/api/health`)
+  - **MVP-B1:** Authentication system with login UI and middleware
+  - Free tunnel (TryCloudflare/ngrok) chosen for $0 infrastructure constraint
+  - Git write operations serialized via repo lock
+  - See: `docs/plans/archive/business-os-multi-user-mvp-plan.md`
+  - See: `apps/business-os/scripts/tunnel.sh` (if exists)
 
 ---
 
@@ -942,7 +940,7 @@ export const FEATURE_FLAGS = {
   - `apps/business-os/src/lib/monitoring/` (new)
   - Error boundaries in key components
 - **Depends on:** BOS-P2-07
-- **Status:** Pending
+- **Status:** ❌ NOT IMPLEMENTED - Plan superseded before implementation
 - **Confidence:** 88%
   - Implementation: 90% — Sentry integration straightforward
   - Approach: 88% — Standard monitoring patterns
@@ -954,71 +952,63 @@ export const FEATURE_FLAGS = {
   - Add performance monitoring (board render time, filter latency)
   - Create audit log for sensitive operations (plan edits, lane moves)
   - Add health check endpoint
-- **Acceptance:**
-  - Errors automatically reported to Sentry
-  - Performance metrics tracked (render time, API latency)
-  - Audit log captures plan/people edits with user identity
-  - Health check endpoint returns 200 OK when healthy
-- **Test plan:**
-  - Manual: Trigger error, verify Sentry report
-  - Manual: Check performance metrics dashboard
-  - Manual: Verify audit log entries for plan edit
-- **Rollout / rollback:**
-  - Rollout: Add monitoring incrementally
-  - Rollback: Disable monitoring, keep app functional
+- **NOTE:**
+  - Directory `apps/business-os/src/lib/monitoring/` does NOT exist in repo
+  - Health check endpoint WAS implemented in MVP-A2 (`/api/health`)
+  - Audit attribution WAS implemented in MVP-B3 (git commit attribution)
+  - Full monitoring/error tracking remains unimplemented
+  - Consider as future work if Business OS continues development
 
 ---
 
 ## Phase Prioritization
 
+**NOTE: This prioritization is HISTORICAL ONLY. Plan was superseded by business-os-multi-user-mvp-plan.md in February 2026.**
+
 ### Phase 0: Infrastructure Fixes (Immediate)
 **Priority: CRITICAL BLOCKER**
-- BOS-P2-00: Fix Jest matcher TypeScript errors (BLOCKS ALL WORK)
+- ✅ BOS-P2-00: Fix Jest matcher TypeScript errors (COMPLETED Jan 29, 2026)
 
 ### Phase 2A: Multi-User Foundation (Target: Q1 2026)
 **Priority: CRITICAL**
-- BOS-P2-01: User switcher (dev/testing)
-- BOS-P2-02: Owner-only card editing permissions
-- BOS-P2-06: Hosted deployment decision
-- BOS-P2-07: Hosted deployment setup
-- BOS-P2-08: Monitoring and error tracking
+- ✅ BOS-P2-01: User switcher (dev/testing) (COMPLETED Jan 29, 2026)
+- ✅ BOS-P2-02: Owner-only card editing permissions (COMPLETED Jan 29, 2026)
+- ✅ BOS-P2-06: Hosted deployment decision (RESOLVED in MVP plan Feb 2026)
+- ✅ BOS-P2-07: Hosted deployment setup (IMPLEMENTED in MVP-A3 Feb 2026)
+- ❌ BOS-P2-08: Monitoring and error tracking (NOT IMPLEMENTED - partial in MVP-A2/B3)
 
-**Success criteria:**
-- Cristiana and Avery can use Business OS
-- Permission checks work correctly per user
-- App accessible via public URL
-- No production outages >5 minutes
+**Actual outcome:**
+- Multi-user work was re-scoped into comprehensive MVP plan
+- MVP plan completed Feb 2026 with authentication, hosted deployment, agent coordination
+- Success criteria mostly met through MVP implementation
 
 ### Phase 2B: Mobile Optimization (Target: Q2 2026)
 **Priority: HIGH**
-- BOS-P2-03: Mobile vertical lane stacking
-- Mobile-specific polish (touch targets, swipe gestures)
+- ✅ BOS-P2-03: Mobile vertical lane stacking (COMPLETED Jan 29, 2026 - all phases)
 
-**Success criteria:**
-- Mobile usage ≥30% of total sessions
-- Mobile NPS score ≥8/10
-- No horizontal scrolling on mobile
+**Actual outcome:**
+- Mobile optimization completed as planned
+- Bottom tab bar, responsive layout, touch-friendly interactions all implemented
 
 ### Phase 2C: Advanced Features (Target: Q3 2026)
 **Priority: MEDIUM**
-- BOS-00-C: Registry sync automation
-- BOS-P2-04: Advanced multi-select filters
-- Server-side search (if >500 cards)
+- ❌ BOS-00-C: Registry sync automation (NOT IMPLEMENTED)
+- ⚠️ BOS-P2-04: Advanced multi-select filters (CORRECTLY DEFERRED)
+- ❓ Server-side search (UNKNOWN - not tracked in this plan)
 
-**Success criteria:**
-- Registry always in sync
-- Power users report increased productivity
-- Search latency <100ms for 1000 cards
+**Actual outcome:**
+- Advanced features mostly skipped in favor of MVP priorities
+- Basic filtering sufficient for 5-user MVP
 
 ### Phase 2D: Power User Features (Target: Q4 2026)
 **Priority: LOW**
-- BOS-P2-05: Keyboard arrow navigation
-- Bulk actions (assign, tag, priority)
-- Saved filter presets
+- ✅ BOS-P2-05: Keyboard arrow navigation (COMPLETED Jan 29, 2026)
+- ❓ Bulk actions (UNKNOWN - not tracked in this plan)
+- ❓ Saved filter presets (UNKNOWN - not tracked in this plan)
 
-**Success criteria:**
-- Keyboard power features used by ≥10% of users
-- Positive feedback from power users
+**Actual outcome:**
+- Keyboard navigation completed early
+- Other power user features deprioritized for MVP
 
 ## Success Metrics
 
@@ -1057,6 +1047,29 @@ export const FEATURE_FLAGS = {
 | Performance degradation on mobile | Medium | Medium | Performance budget, lazy loading |
 
 ## Notes
+
+**PLAN ARCHIVED: 2026-02-14**
+
+This plan was superseded by `docs/plans/archive/business-os-multi-user-mvp-plan.md` which was completed and archived in February 2026. This fact-check audit (2026-02-14) found:
+
+**Completed Tasks (Jan 29, 2026):**
+- ✅ BOS-P2-00: Jest TypeScript fixes (verified: commit a14fe903ea)
+- ✅ BOS-P2-01: User switcher (verified: commit 275c61a808, files exist)
+- ✅ BOS-P2-02: Owner-only editing (verified: commit 7026caf4a0, canEditCard() exists)
+- ✅ BOS-P2-03: Mobile layout (verified: commits 50592a2a46, f1e6ba49f3, 6553521be8, MobileLanePicker.tsx exists)
+- ✅ BOS-P2-05: Keyboard navigation (verified: commit c77a04e9f6, useRovingTabindex.ts exists)
+- ⚠️ BOS-P2-04: Advanced filters (correctly marked as deferred to Phase 3)
+
+**Not Implemented:**
+- ❌ BOS-00-C: Registry sync (file registry-sync.ts does NOT exist)
+- ❌ BOS-P2-08: Monitoring (directory monitoring/ does NOT exist, partial implementation in MVP-A2/B3)
+
+**Superseded by MVP:**
+- ✅ BOS-P2-06: Deployment decision (resolved in MVP plan)
+- ✅ BOS-P2-07: Hosted deployment (implemented in MVP-A3)
+
+**Path References Fixed:**
+- Corrected supersedes references to point to `docs/plans/archive/` (not root)
 
 **Phase 1 Complete:** All original Business OS Kanban plan tasks (BOS-01 through BOS-32) and Board UX Overhaul tasks (BOS-UX-01 through BOS-UX-17) are complete as of 2026-01-29.
 

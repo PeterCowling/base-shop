@@ -1,16 +1,20 @@
 ---
 Type: Plan
-Last-reviewed: 2026-02-05
-Status: Active
+Last-reviewed: 2026-02-14
+Status: Archived
 Domain: Platform / Commerce
 Relates-to charter: none
 Created: 2026-02-01
-Last-updated: 2026-02-03
+Last-updated: 2026-02-14
+Last-updated-by: Codex (archived)
+Archived-Date: 2026-02-14
 Relates-to-charter: docs/plans/edge-commerce-standardization-implementation-plan.md
 Overall-confidence: 71%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (S=1, M=2, L=3)
 Feature-Slug: commerce-core-readiness
-Fact-Find-Reference: docs/plans/commerce-core-readiness-lp-fact-find.md
+Fact-Find-Reference: docs/plans/commerce-core-readiness-fact-find.md
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Commerce Core Readiness Implementation Plan
@@ -66,7 +70,7 @@ This plan addresses the launch-blocking gaps identified in the commerce core rea
 
 ## Fact-Find Reference
 
-See `docs/plans/commerce-core-readiness-lp-fact-find.md` for:
+See `docs/plans/commerce-core-readiness-fact-find.md` for:
 - Detailed code evidence (file paths, line numbers)
 - Gap analysis (Gap 1-6) with proof tests
 - Launch readiness assessment
@@ -146,14 +150,14 @@ Production-grade reliability:
 | COM-D03 | Inventory Enforcement Policy Decision | DECISION | S | 80% | 0 | - |
 | COM-D04 | Gateway Rate Limiting Backend Choice | DECISION | S | 60% | 0 | - |
 | COM-D05 | Stripe Account Topology Decision | DECISION | S | 70% | 0 | - |
-| COM-101 | Wire repricing into checkout session creation | IMPLEMENT | M | 80% | 1 | - |
+| COM-101 | Wire repricing into checkout session creation | **COMPLETE** | M | 100% | 1 | - |
 | COM-102 | Fix inventory hold idempotency | IMPLEMENT | L | 70% | 1 | COM-101 |
 | COM-103 | Release holds on definitive Stripe failures only | IMPLEMENT | S | 80% | 1 | COM-102 |
 | COM-104 | Add rate limiting to checkout endpoints | IMPLEMENT | M | 60% | 1 | COM-D04 |
-| COM-201 | Unify inventory authority contract | IMPLEMENT | M | 80% | 2 | - |
-| COM-202 | Add fail-closed webhook tenant assertion | IMPLEMENT | M | 80% | 2 | - |
-| COM-203 | Add contract tests for inventory validate | IMPLEMENT | M | 80% | 2 | COM-201 |
-| COM-204 | Add sale mode exercised test | IMPLEMENT | S | 85% | 2 | - |
+| COM-201 | Unify inventory authority contract | **COMPLETE** | M | 100% | 2 | - |
+| COM-202 | Add fail-closed webhook tenant assertion | **COMPLETE** | M | 100% | 2 | - |
+| COM-203 | Add contract tests for inventory validate | **COMPLETE** | M | 100% | 2 | COM-201 |
+| COM-204 | Add sale mode exercised test | **COMPLETE** | S | 100% | 2 | - |
 | COM-301 | Replace CochlearFit placeholder Stripe Price IDs | IMPLEMENT | S | 60% | 3 | COM-D01, COM-D05 |
 | COM-302 | Wire CochlearFit to platform cart/checkout APIs | INVESTIGATE | L | 55% | 3 | COM-D01, COM-D02, COM-101, COM-102, COM-201 |
 | COM-303 | Clear cart on payment success | IMPLEMENT | S | 80% | 3 | COM-302 |
@@ -823,11 +827,11 @@ Production-grade reliability:
 
 **Before proceeding to Phase 2, must demonstrate:**
 
-- [ ] **Retries converge:** Same request twice returns same hold + same session (or deterministic 409)
-- [ ] **Unknown Stripe error path doesn't oversell:** Holds NOT released on timeouts/5xx/network errors
-- [ ] **Repricing enforced:** All checkout sessions use server-authoritative prices
-- [ ] **Rate limiting active:** Checkout endpoints protected from abuse
-- [ ] **Contract tests pass:** Inventory validate contract enforced
+- [ ] **Retries converge:** Same request twice returns same hold + same session (or deterministic 409) — *Pending COM-102*
+- [ ] **Unknown Stripe error path doesn't oversell:** Holds NOT released on timeouts/5xx/network errors — *Pending COM-103*
+- [x] **Repricing enforced:** All checkout sessions use server-authoritative prices — *COM-101 COMPLETE*
+- [ ] **Rate limiting active:** Checkout endpoints protected from abuse — *Pending COM-104*
+- [x] **Contract tests pass:** Inventory validate contract enforced — *COM-203 COMPLETE*
 
 **Proof tests:**
 ```bash
@@ -912,12 +916,12 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 - **Changes to task:** Added concrete backward-compat mechanism (`parseVariantKey`) and updated confidence to reflect known caller map.
 
 **Acceptance:**
-- [ ] All endpoints accept canonical request shape
-- [ ] CochlearFit worker can call any endpoint
-- [ ] Backward compatibility for `variantKey` field
-- [ ] Contract types exported from platform-core
-- [ ] **If both `x-shop-id` and `shopId` exist and differ: return 400 (never silently pick one)**
-- [ ] **If `variantKey` and `variantAttributes` mismatch: return 400**
+- [x] All endpoints accept canonical request shape
+- [x] CochlearFit worker can call any endpoint
+- [x] Backward compatibility for `variantKey` field
+- [x] Contract types exported from platform-core
+- [x] **If both `x-shop-id` and `shopId` exist and differ: return 400 (never silently pick one)**
+- [x] **If `variantKey` and `variantAttributes` mismatch: return 400**
 
 **Test contract:**
 - **TC-01:** CMS endpoint: `{ shopId, items:[{ sku, quantity, variantAttributes }] }` → 200 `{ ok: true }`
@@ -932,6 +936,11 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 **Rollout/rollback:** Additive changes, no breaking changes (except fail-closed on conflicts)
 
 **Documentation impact:** Create `docs/contracts/inventory-authority-contract.md`
+
+#### Build Update (2026-02-03)
+- **Commit:** `03b45c32fc`
+- **Implemented:** Unified inventory authority contract with canonical request shape, fail-closed mismatch rules, and backward-compatible `variantKey` support
+- **Files:** Contract doc created, platform-core types updated, CMS and tenant routes updated, schema tests added
 
 ---
 
@@ -987,13 +996,13 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 - **Changes to task:** Updated confidence + clarified that the assertion is route-layer (not inside `handleStripeWebhook`).
 
 **Acceptance:**
-- [ ] Webhook with mismatched `shop_id` metadata is rejected with 400 or 403
-- [ ] **If tenant cannot be resolved at all: return 503 (not 400) so Stripe retries**
-- [ ] **Never return 400 for unresolvable tenant (causes permanent event loss)**
-- [ ] Rejection logged with event ID and shop mismatch details
-- [ ] Metrics: `webhook_tenant_mismatch_total` counter
-- [ ] Test: Mismatched tenant scenario
-- [ ] Test: Event with no shop_id returns 503 (not silent processing)
+- [x] Webhook with mismatched `shop_id` metadata is rejected with 400 or 403
+- [x] **If tenant cannot be resolved at all: return 503 (not 400) so Stripe retries**
+- [x] **Never return 400 for unresolvable tenant (causes permanent event loss)**
+- [x] Rejection logged with event ID and shop mismatch details
+- [x] Metrics: `webhook_tenant_mismatch_total` counter
+- [x] Test: Mismatched tenant scenario
+- [x] Test: Event with no shop_id returns 503 (not silent processing)
 
 **Test contract:**
 - **TC-01:** Event resolves to different shop than route tenant → 403 (or 400) + `webhook_tenant_mismatch_total` increments
@@ -1013,6 +1022,11 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 **Notes/references:**
 - 5xx causes Stripe retry; 4xx can cause permanent loss if event is dropped
 - Use existing resolver: `resolveShopIdFromStripeEventWithFallback(event)`
+
+#### Build Update (2026-02-03)
+- **Commit:** `4c916f54c5`
+- **Implemented:** Fail-closed webhook tenant assertion at route layer with 503 for unresolvable tenants, metrics, and comprehensive test coverage
+- **Files:** Webhook routes updated (cover-me-pretty + template-app), tenant resolver enhanced, webhook tests added, docs/orders.md updated
 
 ---
 
@@ -1054,10 +1068,10 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 - **Changes to task:** Added explicit test contract (TC-XX) instead of “this task is the test plan”.
 
 **Acceptance:**
-- [ ] Contract test for CMS endpoint
-- [ ] Contract test for tenant endpoint
-- [ ] Tests verify all response codes
-- [ ] Tests run in CI
+- [x] Contract test for CMS endpoint
+- [x] Contract test for tenant endpoint
+- [x] Tests verify all response codes
+- [x] Tests run in CI
 
 **Test contract:**
 - **TC-01:** CMS endpoint accepts canonical `{ shopId, items:[{ sku, quantity, variantAttributes }] }` → 200 `{ ok: true }`
@@ -1114,9 +1128,9 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 - **Changes to task:** Added explicit test contract (TC-XX) instead of “this task is the test plan”.
 
 **Acceptance:**
-- [ ] Integration test for sale mode checkout
-- [ ] Test verifies no deposit line items
-- [ ] Test verifies `rentalDays: 0` in metadata
+- [x] Integration test for sale mode checkout
+- [x] Test verifies no deposit line items
+- [x] Test verifies `rentalDays: 0` in metadata
 
 **Test contract:**
 - **TC-01:** Tenant checkout-session route with sale shop type → Stripe session created without deposit line-items
@@ -1130,6 +1144,16 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 **Rollout/rollback:** N/A - tests only
 
 **Documentation impact:** None
+
+#### Build Update (2026-02-03)
+- **Commit:** `f4c4216159`
+- **Implemented:** Sale mode checkout integration test added to template-app with deposit/rental verification
+- **Files:** checkout-session.success.test.ts extended, jest config updated
+
+#### Build Update (2026-02-03)
+- **Commit:** `effdeb6053`
+- **Implemented:** Comprehensive contract test coverage for inventory validate endpoints across platform-core, CMS, and tenant apps
+- **Files:** platform-core contract test, cover-me-pretty route test, CMS route test all added
 
 ---
 
@@ -1521,7 +1545,7 @@ pnpm --filter @apps/cover-me-pretty test -- stripe-webhook.test.ts
 
 | Date | Decision | Rationale | Reference |
 |------|----------|-----------|-----------|
-| 2026-02-01 | Plan created | Based on commerce-core-readiness-lp-fact-find.md | This document |
+| 2026-02-01 | Plan created | Based on commerce-core-readiness-fact-find.md | This document |
 | 2026-02-01 | Plan revised | Address correctness, safety, and sequencing issues | Issues 1-12 |
 | 2026-02-02 | Re-plan update applied | Added test contracts + corrected confidence math; converted COM-302/COM-402 to INVESTIGATE | Re-plan Updates in tasks |
 | 2026-02-02 | Investigation pass | Identified inventory-hold stub gaps + clarified D04/D05 evidence | Re-plan Updates in tasks |

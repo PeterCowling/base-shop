@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "name": "octobooksessionid",
+      "value": "bcce694367866fd0641f8a36cd58",
+      "domain": "admin.octorate.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}

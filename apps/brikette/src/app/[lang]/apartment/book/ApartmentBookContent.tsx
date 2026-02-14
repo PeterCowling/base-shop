@@ -5,12 +5,12 @@
 import type React from "react";
 import { memo, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
 
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 
 import FitCheck from "@/components/apartment/FitCheck";
+import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
@@ -18,9 +18,6 @@ import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 type Props = {
   lang: AppLanguage;
 };
-
-const BOOKING_COM_URL = "https://www.booking.com/hotel/it/stepfree-chiesa-nuova.en-gb.html";
-const WHATSAPP_URL = "https://wa.me/393287073695";
 
 function buildOctorateLink(
   checkin: string,
@@ -41,7 +38,10 @@ function buildOctorateLink(
 
 function ApartmentBookContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
-  usePagePreload({ lang, namespaces: ["apartmentPage", "translation"] });
+  const { t: tBook } = useTranslation("bookPage", { lng: lang });
+  const { t: tModals } = useTranslation("modals", { lng: lang });
+
+  usePagePreload({ lang, namespaces: ["apartmentPage", "bookPage", "footer", "modals", "translation"] });
 
   const [checkin, setCheckin] = useState(getTodayIso());
   const [checkout, setCheckout] = useState(getDatePlusTwoDays(getTodayIso()));
@@ -84,16 +84,14 @@ function ApartmentBookContent({ lang }: Props) {
 
   return (
     <Section padding="default" className="mx-auto max-w-4xl">
-      <h1 className="mb-2 text-3xl font-bold text-brand-heading">
-        {t("book.heroTitle")}
-      </h1>
-      <p className="text-lg text-brand-text/80">{t("book.heroSubtitle")}</p>
+      <h1 className="mb-2 text-3xl font-bold text-brand-heading">{tBook("heading")}</h1>
+      <p className="text-lg text-brand-text/80">{t("title")}</p>
 
       <div className="mt-8 space-y-6">
         {/* Date Selection */}
         <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold text-brand-heading">
-            {t("book.dateLabel")}
+            {tModals("booking2.selectDatesTitle")}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -101,7 +99,7 @@ function ApartmentBookContent({ lang }: Props) {
                 htmlFor="checkin"
                 className="mb-1 block text-sm font-medium text-brand-text"
               >
-                {t("book.checkinLabel")}
+                {tModals("booking2.checkInDate")}
               </label>
               <input
                 type="date"
@@ -117,7 +115,7 @@ function ApartmentBookContent({ lang }: Props) {
                 htmlFor="checkout"
                 className="mb-1 block text-sm font-medium text-brand-text"
               >
-                {t("book.checkoutLabel")}
+                {tModals("booking2.checkOutDate")}
               </label>
               <input
                 type="date"
@@ -134,7 +132,7 @@ function ApartmentBookContent({ lang }: Props) {
         {/* Rate Options */}
         <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
           <h2 className="mb-4 text-lg font-semibold text-brand-heading">
-            {t("book.dateLabel")}
+            {tBook("roomLabel")}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <button
@@ -147,12 +145,12 @@ function ApartmentBookContent({ lang }: Props) {
               }`}
             >
               <h3 className="font-semibold text-brand-heading">
-                {t("book.rateNonRefundable")}
+                {tBook("nr.title")}
               </h3>
-              {/* eslint-disable-next-line ds/no-hardcoded-copy -- LINT-1008 [ttl=2026-12-31] Rate plan description pending i18n */}
-              <p className="mt-1 text-sm text-brand-text/70">
-                Best rate, no refunds
-              </p>
+              <ul className="mt-2 text-sm list-disc pl-5 text-brand-text/70">
+                <li>{tBook("nr.bullets.0")}</li>
+                <li>{tBook("nr.bullets.1")}</li>
+              </ul>
             </button>
             <button
               type="button"
@@ -164,18 +162,20 @@ function ApartmentBookContent({ lang }: Props) {
               }`}
             >
               <h3 className="font-semibold text-brand-heading">
-                {t("book.rateFlexible")}
+                {tBook("flex.title")}
               </h3>
-              {/* eslint-disable-next-line ds/no-hardcoded-copy -- LINT-1008 [ttl=2026-12-31] Rate plan description pending i18n */}
-              <p className="mt-1 text-sm text-brand-text/70">
-                Free cancellation until 48h before
-              </p>
+              <ul className="mt-2 text-sm list-disc pl-5 text-brand-text/70">
+                <li>{tBook("flex.bullets.0")}</li>
+                <li>{tBook("flex.bullets.1")}</li>
+              </ul>
             </button>
           </div>
         </div>
 
         {/* Fit Check */}
         <FitCheck />
+
+        <PolicyFeeClarityPanel lang={lang} variant="apartment" />
 
         {/* CTA */}
         <div className="flex flex-col gap-4">
@@ -185,45 +185,9 @@ function ApartmentBookContent({ lang }: Props) {
             onClick={handleCheckAvailability}
             className="w-full text-lg py-6"
           >
-            {t("book.checkAvailability")}
+            {selectedPlan === "nr" ? tBook("cta.nr") : tBook("cta.flex")}
           </Button>
-
-          <div className="text-center">
-            <p className="text-sm text-brand-text/60">
-              {t("book.orBookingCom")}
-            </p>
-            <a
-              href={BOOKING_COM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium text-brand-primary hover:underline"
-            >
-              Booking.com
-            </a>
-          </div>
-
-          <div className="mt-2 text-center">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="gap-2 text-sm font-medium text-brand-primary hover:underline"
-            >
-              {t("book.whatsappCta")}
-            </a>
-          </div>
         </div>
-      </div>
-
-      {/* Back link */}
-      <div className="mt-8 text-sm">
-        <Link
-          href={`/${lang}/apartment`}
-          prefetch={true}
-          className="text-brand-primary hover:underline"
-        >
-          {t("book.backLink")}
-        </Link>
       </div>
     </Section>
   );

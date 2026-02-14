@@ -51,14 +51,14 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 
 ## Evidence Audit (Current State)
 ### Entry Points
-- `docs/plans/mcp-server-implementation-plan.md` - legacy MCP plan baseline (still draft; scaffolding-era assumptions).
+- `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md` - legacy MCP plan baseline (still draft; scaffolding-era assumptions).
 - `packages/mcp-server/src/server.ts` - current MCP server registration and dispatch.
 - `packages/mcp-server/src/tools/index.ts` - actual tool inventory and routing.
 - `docs/business-os/startup-loop/loop-spec.yaml` - runtime-authoritative startup-loop stage contract.
 - `docs/business-os/startup-loop-workflow.user.md` - current gaps and operational blockers.
 
 ### Key Modules / Files
-- `docs/plans/mcp-server-implementation-plan.md`
+- `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md`
   - Still frames MCP as "create package + basic CRUD"; already outdated versus current code.
 - `packages/mcp-server/src/tools/index.ts`
   - Large tool surface exists (shops/orders/inventory/CMS/settings/products/analytics/SEO/themes/Gmail/drafting).
@@ -159,7 +159,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 | H1 | Loop spec expects API-based BOS sync and stage-doc upserts; APIs already implemented. | `docs/business-os/startup-loop/loop-spec.yaml`, `apps/business-os/src/app/api/agent/*` | Medium |
 | H2 | Startup-loop scripts already validate manifest/ledger/metrics contracts; current workflow shows data freshness blockers. | `scripts/src/startup-loop/*`, `docs/business-os/startup-loop-workflow.user.md` | Medium |
 | H3 | Workflow explicitly flags missing measurement readiness and no standing refresh outputs. | `docs/business-os/startup-loop-workflow.user.md` | Medium |
-| H4 | Legacy MCP plan states read-only-by-default policy, but current tool surface mixes reads and writes without stage-aware policy gates. | `docs/plans/mcp-server-implementation-plan.md`, `packages/mcp-server/src/tools/index.ts` | Medium |
+| H4 | Legacy MCP plan states read-only-by-default policy, but current tool surface mixes reads and writes without stage-aware policy gates. | `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md`, `packages/mcp-server/src/tools/index.ts` | Medium |
 
 #### Falsifiability Assessment
 - Easy to test:
@@ -260,7 +260,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 ### Resolved
 - Q: Is `mcp-server-implementation-plan.md` still useful?
   - A: Yes, as a historical baseline for security principles and package conventions, but not as current scope authority.
-  - Evidence: `docs/plans/mcp-server-implementation-plan.md`, `packages/mcp-server/src/tools/index.ts`.
+  - Evidence: `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md`, `packages/mcp-server/src/tools/index.ts`.
 - Q: Does startup-loop already define where controlled mutations should happen?
   - A: Yes. `S5A` is side-effect-free and `S5B` is guarded mutation boundary.
   - Evidence: `docs/business-os/startup-loop/loop-spec.yaml`.
@@ -352,7 +352,7 @@ Reframe MCP from a "shop/CMS utility server" into a startup-loop data plane that
 
 ## Source Baseline
 - Legacy source used as baseline input:
-  - `docs/plans/mcp-server-implementation-plan.md`
+  - `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md`
 
 ## External Review Resolution Addendum (2026-02-13)
 

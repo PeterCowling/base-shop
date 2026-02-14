@@ -6,7 +6,7 @@ Domain: Platform / Commerce
 Created: 2026-02-01
 Last-updated: 2026-02-01
 Feature-Slug: commerce-core-readiness
-Related-Plan: docs/plans/commerce-core-readiness-plan.md
+Related-Plan: docs/plans/archive/commerce-core-readiness-plan-archived-2026-02-14.md
 ---
 
 # Commerce Core Readiness Fact-Find Brief

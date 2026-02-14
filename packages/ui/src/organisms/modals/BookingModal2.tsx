@@ -1,6 +1,7 @@
 import {
   type ChangeEvent,
   memo,
+  type ReactNode,
 } from "react";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
@@ -21,6 +22,8 @@ export interface BookingModal2Props {
   readonly checkIn: string;
   readonly checkOut: string;
   readonly adults: number;
+  /** Optional content rendered between fields and confirm/cancel buttons. */
+  readonly extraContent?: ReactNode;
   readonly onCheckInChange: (event: ChangeEvent<HTMLInputElement>) => void;
   readonly onCheckOutChange: (event: ChangeEvent<HTMLInputElement>) => void;
   readonly onAdultsChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -35,6 +38,7 @@ const BookingModal2 = memo(function BookingModal2({
   checkIn,
   checkOut,
   adults,
+  extraContent,
   onCheckInChange,
   onCheckOutChange,
   onAdultsChange,
@@ -110,6 +114,8 @@ const BookingModal2 = memo(function BookingModal2({
             />
           </div>
         </div>
+
+        {extraContent ? <div className="mt-4">{extraContent}</div> : null}
 
         <div className="mt-6 flex justify-end gap-3">
           <button

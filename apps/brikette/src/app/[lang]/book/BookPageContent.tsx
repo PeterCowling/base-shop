@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { LinkText, Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 
+import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import roomsData from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -101,7 +102,7 @@ function BookPageContent({ lang }: Props) {
   const [unavailableFor, setUnavailableFor] = useState<string | null>(null);
   const [alternatives, setAlternatives] = useState<null | { items: { sku: string; plan: "flex" | "nr"; confirmUrl: string }[]; resultUrl: string }>(null);
   const [pending, setPending] = useState<string | null>(null);
-  usePagePreload({ lang, namespaces: ["bookPage", "translation"] });
+  usePagePreload({ lang, namespaces: ["bookPage", "footer", "translation"] });
 
   const checkin = searchParams?.get("checkin") ?? getTodayIso();
   const checkout = searchParams?.get("checkout") ?? getDatePlusTwoDays(checkin);
@@ -294,16 +295,8 @@ function BookPageContent({ lang }: Props) {
         })}
       </div>
 
-      <div className="mt-8 rounded-md border border-brand-outline/30 bg-brand-bg p-4 text-sm text-brand-text/80 dark:bg-brand-text">
-        <h3 className="font-medium text-brand-heading">{t("policies.title")}</h3>
-        <ul className="mt-2 list-disc pl-5 space-y-1">
-          <li>{t("policies.items.0")}</li>
-          <li>{t("policies.items.1")}</li>
-          <li>{t("policies.items.2")}</li>
-          <li>{t("policies.items.3")}</li>
-          <li>{t("policies.items.4")}</li>
-        </ul>
-        <p className="mt-2 text-xs">{t("policies.footer")}</p>
+      <div className="mt-8">
+        <PolicyFeeClarityPanel lang={lang} variant="hostel" />
       </div>
 
       <div className="mt-6 text-sm">

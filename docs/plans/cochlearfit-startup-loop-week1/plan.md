@@ -15,6 +15,8 @@ Supporting-Skills: /lp-channels, /lp-seo
 Business-Unit: HEAD
 Overall-confidence: 72%
 Confidence-Method: min(Implementation,Approach,Impact) with gating on Delivery-Readiness/Testability
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # CochlearFit (HEAD) Startup Loop - Week 1 Execution Plan
@@ -40,7 +42,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 ### CF-D01: Week-1 Checkout Architecture
 **Question:** Keep `apps/cochlearfit-worker` for Week-1 learning, or converge onto platform checkout primitives now?
 - Default: keep `apps/cochlearfit-worker` for Week-1, and treat platform convergence as a parallel/next plan.
-- Evidence: `apps/cochlearfit/README.md`, `docs/plans/commerce-core-readiness-plan.md`
+- Evidence: `apps/cochlearfit/README.md`, `docs/plans/archive/commerce-core-readiness-plan-archived-2026-02-14.md`
 
 ### CF-D02: Italy Pricing + Currency + Stripe Topology
 **Question:** Final EUR pricing architecture (single vs bundle/threshold) and which Stripe account owns prices?
@@ -108,7 +110,7 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Depends on: CF-D01, CF-D02
 
 **Question:** Hosted Stripe Checkout (current worker-style) vs custom UI checkout (platform-core style).
-- Evidence: `docs/plans/commerce-core-readiness-plan.md` (COM-D02)
+- Evidence: `docs/plans/archive/commerce-core-readiness-plan-archived-2026-02-14.md` (COM-D02)
 
 **Acceptance criteria**
 - Decision recorded (ADR or within this plan) with constraints and rollback plan.

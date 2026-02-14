@@ -2346,7 +2346,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/agent-enhancement-plan.md",
+    "path": "docs/plans/archive/agent-enhancement-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Superseded",
     "domain": "DevEx/Tooling"
@@ -3504,7 +3504,7 @@
     "domain": "CI-Deploy"
   },
   {
-    "path": "docs/plans/ci-test-parallelization-plan.md",
+    "path": "docs/plans/archive/ci-test-parallelization-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Active",
     "domain": "CI/Infrastructure"
@@ -3528,7 +3528,7 @@
     "domain": "Platform / Commerce"
   },
   {
-    "path": "docs/plans/commerce-core-readiness-plan.md",
+    "path": "docs/plans/archive/commerce-core-readiness-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Platform / Commerce"
@@ -3588,7 +3588,7 @@
     "domain": "Repo/Git"
   },
   {
-    "path": "docs/plans/git-conflict-ops-hardening-plan.md",
+    "path": "docs/plans/archive/git-conflict-ops-hardening-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Draft",
     "domain": "Repo/Git"
@@ -3630,7 +3630,7 @@
     "domain": "CMS / UI / Platform"
   },
   {
-    "path": "docs/plans/guide-system-phase3-candidates.md",
+    "path": "docs/plans/archive/guide-system-phase3-candidates-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Reference",
     "domain": "Repo"
@@ -3768,7 +3768,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/launch-3hr-v2-plan.md",
+    "path": "docs/plans/archive/launch-3hr-v2-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Launch"
@@ -3798,7 +3798,7 @@
     "domain": "Venture-Studio"
   },
   {
-    "path": "docs/plans/mcp-server-implementation-plan.md",
+    "path": "docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Draft",
     "domain": "Infrastructure"
@@ -3984,7 +3984,7 @@
     "domain": "Infra"
   },
   {
-    "path": "docs/plans/test-sweep-plan.md",
+    "path": "docs/plans/archive/test-sweep-plan-archived-2026-02-14.md",
     "type": "Plan",
     "status": "Active",
     "domain": "Testing"

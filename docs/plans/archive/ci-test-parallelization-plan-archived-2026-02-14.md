@@ -1,15 +1,18 @@
 ---
 Type: Plan
-Last-reviewed: 2026-02-05
-Status: Active
+Last-reviewed: 2026-02-14
+Status: Archived
 Domain: CI/Infrastructure
 Relates-to charter: none
 Created: 2026-01-22
 Created-by: Claude Opus 4.5
-Last-updated: 2026-01-22
-Last-updated-by: Claude Opus 4.5
+Last-updated: 2026-02-14
+Last-updated-by: Codex (archived)
+Archived-Date: 2026-02-14
 Relates-to: docs/plans/archive/ui-package-split-plan.md
 Priority: P2 — Improvement
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # CI Test Parallelization Plan
@@ -21,16 +24,16 @@ No active tasks at this time.
 
 ## Background
 
-This plan was extracted from the UI Package Split Plan (`docs/plans/ui-package-split-plan.md`), which was superseded by the UI Architecture Consolidation Plan. The consolidation plan achieved the architectural goals (single source of truth in `@acme/design-system`) via a shim-based approach rather than mass import rewrites.
+This plan was extracted from the UI Package Split Plan (`docs/plans/archive/ui-package-split-plan.md`), which was superseded by the UI Architecture Consolidation Plan. The consolidation plan achieved the architectural goals (single source of truth in `@acme/design-system`) via a shim-based approach rather than mass import rewrites.
 
 The original split plan's motivation included CI parallelization (running tests for `@acme/design-system`, `@acme/cms-ui`, and `@acme/ui` in parallel). This goal was not achieved by the consolidation plan and is worth evaluating independently.
 
 ## Current State
 
 ### Package Structure (achieved)
-- `@acme/design-system`: 305 source files, 66 test files
-- `@acme/cms-ui`: 1102 source files, 239 test files
-- `@acme/ui`: 2247 source files, 489 test files
+- `@acme/design-system`: 286 `*.ts/tsx` under `packages/design-system/src`, 82 test files
+- `@acme/cms-ui`: 1117 `*.ts/tsx` under `packages/cms-ui/src`, 244 test files
+- `@acme/ui`: 2256 `*.ts/tsx` under `packages/ui/src`, 506 test files
 
 ### CI Structure (current)
 - Single `test` job runs `pnpm test:affected`
@@ -40,10 +43,10 @@ The original split plan's motivation included CI parallelization (running tests 
 ### Test Distribution
 | Package | Test Files | % of Total |
 |---------|------------|------------|
-| `@acme/design-system` | 66 | 8% |
-| `@acme/cms-ui` | 239 | 30% |
-| `@acme/ui` | 489 | 62% |
-| **Total** | 794 | 100% |
+| `@acme/design-system` | 82 | 8% |
+| `@acme/cms-ui` | 239 | 24% |
+| `@acme/ui` | 684 | 68% |
+| **Total** | 1005 | 100% |
 
 ## Goals
 
@@ -131,7 +134,7 @@ The original split plan's motivation included CI parallelization (running tests 
 - [ ] **CI-PAR-06**: Document CI test structure
   - Status: ☐
   - Scope:
-    - Update `CONTRIBUTING.md` or CI docs with test job structure
+    - Create/update CI docs with test job structure (Note: `CONTRIBUTING.md` does not exist in repo)
     - Document how to run package-specific tests locally
   - Dependencies: CI-PAR-05 (if implemented) or CI-PAR-03 (if not)
   - Definition of done:
@@ -191,6 +194,7 @@ The original split plan's motivation included CI parallelization (running tests 
 
 ## Related
 
-- Supersedes: `docs/plans/ui-package-split-plan.md` tasks UI-21 (parallel CI), UI-28 (CI measurement)
+- Supersedes: `docs/plans/archive/ui-package-split-plan.md` tasks UI-21 (parallel CI), UI-28 (CI measurement)
 - Related: `docs/plans/archive/ui-architecture-consolidation-plan.md` (achieved architecture goals)
 - CI workflow: `.github/workflows/ci.yml`
+- Note: `.github/workflows/test.yml` exists but is for nightly package quality matrix, not standard CI tests

@@ -8,7 +8,9 @@ import { useTranslation } from "react-i18next";
 
 import type { BookingModal2Copy } from "@acme/ui/organisms/modals";
 
+import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import i18n from "@/i18n";
 import { getDatePlusTwoDays } from "@/utils/dateUtils";
 
 import { BOOKING_CODE } from "../constants";
@@ -32,6 +34,11 @@ export function Booking2GlobalModal(): JSX.Element | null {
     setCheckOut(data.checkOut ?? (data.checkIn ? getDatePlusTwoDays(data.checkIn) : ""));
     setAdults(typeof data.adults === "number" ? data.adults : 1);
   }, [modalData]);
+
+  useEffect(() => {
+    // Ensure policies + terms label resolve without flashing raw keys in the modal.
+    void i18n.loadNamespaces?.(["bookPage", "footer"]);
+  }, []);
 
   const booking2Copy: BookingModal2Copy = {
     title: tModals("booking2.selectDatesTitle"),
@@ -62,6 +69,7 @@ export function Booking2GlobalModal(): JSX.Element | null {
       checkIn={checkIn}
       checkOut={checkOut}
       adults={adults}
+      extraContent={<PolicyFeeClarityPanel lang={lang} variant="hostel" className="bg-brand-surface/30" />}
       onCheckInChange={(event: ChangeEvent<HTMLInputElement>) => setCheckIn(event.target.value)}
       onCheckOutChange={(event: ChangeEvent<HTMLInputElement>) => setCheckOut(event.target.value)}
       onAdultsChange={(event: ChangeEvent<HTMLInputElement>) => setAdults(parseInt(event.target.value, 10) || 1)}

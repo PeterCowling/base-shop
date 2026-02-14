@@ -124,12 +124,12 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 | TASK-01 | IMPLEMENT | Add activity code 27, rename 25 | 90% | S | Complete (2026-02-14) | - | TASK-02,TASK-04,TASK-05 |
 | TASK-02 | IMPLEMENT | Update UI labels for code 25 | 88% | S | Complete (2026-02-14) | TASK-01 | - |
 | TASK-03 | IMPLEMENT | Add cancellation email template | 92% | S | Complete (2026-02-14) | - | TASK-04 |
-| TASK-04 | IMPLEMENT | Wire code 27 to MCP | 90% | S | Pending | TASK-01,TASK-03 | TASK-05 |
-| TASK-05 | IMPLEMENT | Add code 27 to relevantCodes | 90% | S | Pending | TASK-01,TASK-04 | TASK-11 |
-| TASK-06 | IMPLEMENT | Fix codes 2,3,4 silent failures | 92% | S | Pending | - | - |
-| TASK-07 | IMPLEMENT | Implement useArchiveBooking mutation | 85% | M | Pending | - | TASK-08,TASK-09,TASK-11 |
+| TASK-04 | IMPLEMENT | Wire code 27 to MCP | 90% | S | Complete (2026-02-14) | TASK-01,TASK-03 | TASK-05 |
+| TASK-05 | IMPLEMENT | Add code 27 to relevantCodes | 90% | S | Complete (2026-02-14) | TASK-01,TASK-04 | TASK-11 |
+| TASK-06 | IMPLEMENT | Fix codes 2,3,4 silent failures | 92% | S | Complete (2026-02-14) | - | - |
+| TASK-07 | IMPLEMENT | Implement useArchiveBooking mutation | 85% | M | Complete (2026-02-14) | - | TASK-08,TASK-09,TASK-11 |
 | TASK-08 | IMPLEMENT | Add Firebase security rules | 88% | S | Pending | TASK-07 | - |
-| TASK-09 | IMPLEMENT | Update bulk actions to soft-delete | 88% | S | Pending | TASK-07 | - |
+| TASK-09 | IMPLEMENT | Update bulk actions to soft-delete | 88% | S | Complete (2026-02-14) | TASK-07 | - |
 | TASK-10 | IMPLEMENT | Add UI filter for cancelled bookings | 85% | M | Pending | TASK-07 | - |
 | TASK-11 | IMPLEMENT | Wire useCancelBooking mutation | 82% | M | Pending | TASK-05,TASK-07 | - |
 | TASK-12 | CHECKPOINT | Reassess Phase 3 approach | 95% | S | Pending | TASK-02,TASK-06,TASK-08,TASK-09,TASK-10,TASK-11 | TASK-13 |
@@ -380,6 +380,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Evidence: `packages/mcp-server/src/tools/guest-email-activity.ts:96-118` (existing code mappings for 5,6,7,8,21)
   - Pattern: Case statement returns `{category: "cancellation"}`, existing template selection logic handles lookup
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 2e58c7bc0a
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03
+  - Cycles: 1 (red → green)
+  - Initial validation: FAIL as expected (no case 27 mapping)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 90% (Implementation: 95%, Approach: 90%, Impact: 85%)
+  - Post-validation: 90% (confirmed - validation matched expectations)
+  - Delta reason: validation confirmed template wiring correct
+- **Validation:**
+  - Ran: `pnpm --filter mcp-server test` — PASS (0 errors, 49 pre-existing warnings)
+  - Ran: `pnpm --filter mcp-server typecheck` — PASS
+  - Dry-run test confirmed cancellation template selected for code 27
+- **Documentation updated:** None required (internal MCP mapping)
+- **Implementation notes:**
+  - Added case 27 to resolveTemplateSubject function mapping to "Cancellation Confirmation" template
+  - Template lookup uses existing findTemplateBySubject mechanism
+  - Code 27 now triggers email draft generation via MCP when activity logged
+
 ### TASK-05: Add code 27 to relevantCodes array
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (array update)
@@ -414,6 +436,29 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Notes / references:**
   - Evidence: `apps/reception/src/hooks/mutations/useActivitiesMutations.ts:34` (current array: [2,3,4,21,5,6,7,8])
   - Pattern: Auto-email trigger on activity log when code in relevantCodes
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** cd0e4ab2f3
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1 (direct implementation with test validation)
+  - Initial validation: N/A (test added simultaneously with implementation)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 90% (Implementation: 95%, Approach: 90%, Impact: 85%)
+  - Post-validation: 90% (confirmed - test verifies code 27 triggers email)
+  - Delta reason: validation confirmed auto-trigger integration works
+- **Validation:**
+  - Ran: `pnpm --filter reception test -- useActivitiesMutations.test.ts` — PASS (test added)
+  - Ran: `pnpm --filter reception typecheck` — PASS
+  - Ran: `pnpm --filter reception lint` — PASS
+- **Documentation updated:** None required (internal array update)
+- **Implementation notes:**
+  - Added code 27 to relevantCodes array at line 36 (now [21, 5, 6, 7, 8, 27])
+  - Removed codes 2, 3, 4 in same commit (TASK-06 bundled for atomic change)
+  - Test added to verify code 27 in relevantCodes triggers sendEmailGuest invocation
+  - When activity code 27 logged, maybeSendEmailGuest automatically drafts cancellation email
 
 ### TASK-06: Fix silent email failures for codes 2, 3, 4
 - **Type:** IMPLEMENT
@@ -452,6 +497,30 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Evidence: `apps/reception/src/hooks/mutations/useActivitiesMutations.ts:34` (codes 2,3,4 in array)
   - Evidence: `packages/mcp-server/src/tools/guest-email-activity.ts:112-115` (codes 2,3,4 explicitly deferred as unsupported)
   - Rationale: Codes 2 (FIRST_REMINDER), 3 (SECOND_REMINDER), 4 (AUTO_CANCEL_NO_TNC) have no MCP templates and no business requirement
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** cd0e4ab2f3 (bundled with TASK-05)
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1 (direct implementation)
+  - Initial validation: N/A (tests added simultaneously)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 92% (Implementation: 95%, Approach: 92%, Impact: 88%)
+  - Post-validation: 92% (confirmed - no silent failures observed)
+  - Delta reason: validation confirmed codes 2,3,4 no longer trigger email attempts
+- **Validation:**
+  - Ran: `pnpm --filter reception test -- useActivitiesMutations.test.ts` — PASS (3 tests added for codes 2,3,4)
+  - Verified console warnings no longer appear for unsupported codes
+  - Ran: `pnpm --filter reception typecheck` — PASS
+  - Ran: `pnpm --filter reception lint` — PASS
+- **Documentation updated:** None required (internal bug fix)
+- **Implementation notes:**
+  - Removed codes 2, 3, 4 from relevantCodes array (now [21, 5, 6, 7, 8, 27])
+  - Tests verify maybeSendEmailGuest NOT called for these codes
+  - Fixes silent failures where codes without MCP templates caused error logs
+  - Comment added explaining removal reason (no templates, no business requirement)
 
 ### TASK-07: Implement useArchiveBooking mutation
 - **Type:** IMPLEMENT
@@ -503,6 +572,33 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Schema design: Use `/bookingMeta/{reservationCode}/*` to avoid breaking `/bookings/{reservationCode}/*` occupant enumeration
   - Evidence: Fact-find documents read amplification tradeoff (Option A: separate path chosen for Phase 1)
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** e3a5a1661e
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05, TC-06
+  - Cycles: 1 (red → green)
+  - Initial validation: FAIL as expected (hook didn't exist)
+  - Final validation: PASS (all 8 tests passing)
+- **Confidence reassessment:**
+  - Original: 85% (Implementation: 90%, Approach: 85%, Impact: 80%)
+  - Post-validation: 85% (confirmed - soft-delete pattern works correctly)
+  - Delta reason: validation confirmed /bookingMeta writes don't interfere with /bookings enumeration
+- **Validation:**
+  - Ran: `pnpm --filter reception test -- useArchiveBooking.test.ts` — PASS (8/8 tests)
+  - Ran: `pnpm --filter reception typecheck` — PASS
+  - Ran: `pnpm --filter reception lint` — PASS (0 errors)
+- **Documentation updated:** None required (internal hook, will be documented when wired to UI)
+- **Implementation notes:**
+  - Created new hook at `apps/reception/src/hooks/mutations/useArchiveBooking.ts`
+  - Writes to `/bookingMeta/{bookingRef}/status`, `/bookingMeta/{bookingRef}/cancelledAt`, `/bookingMeta/{bookingRef}/cancellationSource`
+  - Does NOT delete occupant data from `/bookings/` or activities from `/activities/`
+  - Uses atomic update() with multiple paths for consistency
+  - cancelledAt timestamp uses getItalyIsoString() helper
+  - cancellationSource defaults to "staff" if not provided
+  - Includes loading state and error handling
+  - Test coverage: status write, occupant preservation, activity preservation, timestamp format, source defaults, error cases
+
 ### TASK-08: Add Firebase security rules for /bookingMeta
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (security rules update)
@@ -541,6 +637,33 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Pattern: Existing rules in `apps/reception/firebase.rules` for `/bookings`, `/guestsDetails`, etc.
   - Evidence: Fact-find notes "Follow existing pattern: likely write access for authenticated staff, read access for booking queries"
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 8621ef9bdb
+- **Execution cycle:**
+  - Validation cases executed: JSON validation, structure check
+  - Cycles: 1 (direct implementation)
+  - Initial validation: N/A (rules addition)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88% (Implementation: 90%, Approach: 90%, Impact: 85%)
+  - Post-validation: 88% (confirmed - rules follow existing pattern)
+  - Delta reason: validation confirmed JSON structure correct and pattern consistent
+- **Validation:**
+  - Ran: `python3 -c "import json; json.load(open(...))` — PASS (JSON valid)
+  - Ran: `pnpm --filter reception typecheck` — PASS (19/19 tasks successful)
+  - Ran: `pnpm --filter reception lint` — PASS (0 errors, 68 pre-existing warnings)
+  - Ran: `validate:agent-context` — PASS
+- **Documentation updated:** None required (internal security rules)
+- **Implementation notes:**
+  - Added explicit security rules for `/bookingMeta/{reservationCode}` path
+  - Rules follow existing pattern: authenticated staff with any role can read and write
+  - Pattern matches tillShifts, tillEvents, cashCounts, etc. (staff write + auth read)
+  - Security policy: owner/developer/admin/manager/staff roles can write, all auth users can read
+  - Rules added to `apps/reception/database.rules.json` (not firebase.rules as originally noted)
+  - Rules placed before `$other` catch-all rule for explicit control
+  - Enables useArchiveBooking mutation writes to be properly secured
+
 ### TASK-09: Update bulk actions to use soft-delete
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (wire new hook)
@@ -577,6 +700,38 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Notes / references:**
   - Evidence: `apps/reception/src/hooks/mutations/useBulkBookingActions.ts:113-145` (bulk cancel calls deleteBooking)
   - Pattern: Existing bulk action error handling and loading state management
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 9221a3dc25
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05
+  - Cycles: 1 (red → green)
+  - Initial validation: FAIL as expected (tests used deleteBooking)
+  - Final validation: PASS (all 5 tests passing)
+- **Confidence reassessment:**
+  - Original: 88% (Implementation: 92%, Approach: 90%, Impact: 82%)
+  - Post-validation: 88% (confirmed - hook replacement straightforward)
+  - Delta reason: validation confirmed error handling and loading states preserved
+- **Validation:**
+  - Ran: `pnpm --filter reception test -- useBulkBookingActions.test.ts` — PASS (5/5 tests)
+  - Ran: `pnpm --filter reception typecheck` — PASS (19/19 tasks successful)
+  - Ran: `pnpm --filter reception lint` — PASS (0 errors, 68 pre-existing warnings)
+- **Documentation updated:** None required (internal hook replacement)
+- **Implementation notes:**
+  - Replaced `useDeleteBooking` import with `useArchiveBooking`
+  - Updated hook to call `archiveBooking` instead of `deleteBooking`
+  - Updated comment to note soft-delete behavior (preserves booking history)
+  - Error handling preserved: partial failures don't block other cancellations
+  - Loading states preserved: same UX as before
+  - Toast notifications unchanged: same user feedback
+  - Created comprehensive test suite with 5 test cases:
+    - TC-01: Bulk cancel calls archiveBooking for each booking ref
+    - TC-02: Verifies archiveBooking hook usage (not deleteBooking)
+    - TC-03: Error handling works correctly (partial failures)
+    - TC-04: Loading state management preserved
+    - TC-05: CSV export functionality unaffected
+  - Fixed React hooks lint error by restructuring mock setup
 
 ### TASK-10: Add UI filter for cancelled bookings
 - **Type:** IMPLEMENT

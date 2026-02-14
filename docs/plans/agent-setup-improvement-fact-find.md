@@ -12,7 +12,7 @@ Execution-Track: mixed
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
 Related-Plan: docs/plans/agent-setup-improvement-plan.md
-Supersedes: docs/plans/agent-enhancement-plan.md
+Supersedes: docs/plans/archive/agent-enhancement-plan-archived-2026-02-14.md
 Business-OS-Integration: on
 Business-Unit: PLAT
 Card-ID: (pending — BOS_AGENT_API_BASE_URL not set; create manually or re-run with env)

@@ -1,14 +1,19 @@
 ---
 Type: Plan
-Status: Reference
+Status: Archived
 Domain: Repo
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-14
 Relates-to charter: none
+Last-updated: 2026-02-14
+Last-updated-by: Codex (archived)
+Archived-Date: 2026-02-14
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Guide System — Phase 3 Candidates
 
-> Captured from the [Unified Guide System Plan](../../.claude/plans/vivid-scribbling-pumpkin.md).
+> Captured from the [Unified Guide System Plan](guide-system-unification-plan.md).
 > These are candidates for future work, not committed tasks.
 
 ## Active tasks

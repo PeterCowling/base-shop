@@ -2,11 +2,11 @@
 Type: Plan
 Status: Active
 Domain: Infra
-Last-reviewed: 2026-02-12
+Last-reviewed: 2026-02-14
 Relates-to charter: none
 Workstream: Mixed
 Created: 2026-02-12
-Last-updated: 2026-02-13
+Last-updated: 2026-02-14
 Feature-Slug: brik-ga4-world-class
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -18,6 +18,8 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 Business-OS-Integration: on
 Business-Unit: BRIK
 Card-ID: BRIK-004
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # World-Class GA4 Setup Plan

@@ -1,14 +1,17 @@
 ---
 Type: Plan
-Status: Superseded
-Superseded-by: docs/plans/agent-setup-improvement-lp-fact-find.md
+Status: Archived
+Superseded-by: docs/plans/agent-setup-improvement-fact-find.md
 Domain: DevEx/Tooling
-Last-reviewed: 2026-01-27
+Last-reviewed: 2026-02-14
 Relates-to charter: none
 Created: 2026-01-20
 Created-by: Claude Opus 4.5
-Last-updated: 2026-02-11
-Last-updated-by: Claude Opus 4.6 (review-fact-check + superseded by fresh lp-fact-find)
+Last-updated: 2026-02-14
+Last-updated-by: Codex (archived)
+Archived-Date: 2026-02-14
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Agent Enhancement Plan
@@ -30,7 +33,7 @@ Analysis of current agent configuration revealed:
 |--------|-------------|-------|-----|
 | Project instructions | `CLAUDE.md` (comprehensive) | `CODEX.md` (thin overlay) | Codex relies heavily on shared docs |
 | Safety hooks | 2 hooks + deny/ask/allow permissions in `.claude/settings.json` | None | **Codex has no guardrails** |
-| Skills/Prompts | 40 implemented | References Claude's | Works but not agent-agnostic |
+| Skills/Prompts | 49 implemented (`.claude/skills/*/SKILL.md`, excluding `_shared`) | References Claude's | Works but not agent-agnostic |
 | Progressive disclosure | None | None | Everything dumped at once |
 | Self-reflection | None | None | No learning mechanism |
 | Orchestration | None | None | No multi-agent patterns |

@@ -1,6 +1,7 @@
 ---
 name: review-fact-check
 description: Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report.
+allowed-tools: Read, Glob, Grep, Edit, Write, Bash, mcp__brikette__*, mcp__base-shop__*, mcp__ts-language__*
 ---
 
 # Fact Check

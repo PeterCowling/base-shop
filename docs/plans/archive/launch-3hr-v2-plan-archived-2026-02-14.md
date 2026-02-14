@@ -1,12 +1,17 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Launch
 Created: 2026-01-23
 Created-by: Claude Opus 4.5
-Last-reviewed: 2026-01-23
+Last-reviewed: 2026-02-14
 Relates-to charter: none
 Predecessor: docs/plans/archive/launch-shop-pipeline-plan.md
+Last-updated: 2026-02-14
+Last-updated-by: Codex (archived)
+Archived-Date: 2026-02-14
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Plan: Rapid Shop Launch (v2)

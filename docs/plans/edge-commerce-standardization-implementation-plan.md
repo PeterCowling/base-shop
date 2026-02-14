@@ -3,10 +3,12 @@ Type: Plan
 Status: Draft
 Status-note: Revised after repo review + follow-up refinements
 Domain: Platform, Commerce
-Last-reviewed: 2025-12-26
+Last-reviewed: 2026-02-14
 Relates-to charter: docs/commerce-charter.md
-Last-updated: 2026-01-17
-Last-updated-by: Codex
+Last-updated: 2026-02-14
+Last-updated-by: Codex (review-fact-check)
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 <!-- docs/plans/edge-commerce-standardization-implementation-plan.md -->

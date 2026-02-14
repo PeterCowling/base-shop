@@ -410,7 +410,7 @@ MCP Server (packages/mcp-server)
 **MCP Server (potential coordination layer):**
 - `packages/mcp-server/` - Existing MCP server for shop data access
 - Could be extended to provide email/draft management tools
-- See `docs/plans/mcp-server-implementation-plan.md` for patterns
+- See `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md` for patterns
 
 ### Patterns & Conventions Observed
 
@@ -547,7 +547,7 @@ MCP Server (packages/mcp-server)
   - `email_draft_review` - View draft content
   - `email_template_list` - List response templates
 - Would enable Claude Code to assist with draft review/editing
-- See `docs/plans/mcp-server-implementation-plan.md` for implementation patterns
+- See `docs/plans/archive/mcp-server-implementation-plan-archived-2026-02-14.md` for implementation patterns
 
 ## Questions
 

@@ -1,0 +1,1365 @@
+---
+Type: Plan
+Status: Active
+Domain: Platform
+Workstream: Engineering
+Created: 2026-02-13
+Last-updated: 2026-02-13
+Last-reviewed: 2026-02-14
+Feature-Slug: cochlearfit-deployment-readiness
+Deliverable-Type: multi-deliverable
+Startup-Deliverable-Alias: none
+Execution-Track: mixed
+Primary-Execution-Skill: /lp-build
+Supporting-Skills: none
+Overall-confidence: 69%
+Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
+Business-OS-Integration: off
+Business-Unit: HEAD
+Card-ID:
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
+---
+
+# Cochlear Fit Deployment Readiness Plan
+
+## Summary
+
+Deploy the Cochlear Fit e-commerce website to production with full checkout functionality. The frontend cart and Stripe integration are production-ready, but **the Worker catalog is hardcoded with placeholder Stripe Price IDs** (critical blocker). Implementation requires: Stripe account setup, Worker catalog bundling system, inventory validation API configuration, email receipt implementation, data file population, and staging/production deployment with environment detection.
+
+**Architecture:** Cloudflare Pages (frontend) + Cloudflare Worker (checkout API) + Stripe Checkout (payments) + Email service (receipts) + Inventory Authority API (stock validation). Single Worker serves both staging and production via runtime environment detection (free tier optimized at 100k requests/day).
+
+**Timeline:** 9-14 business days (depends on Stripe account verification).
+
+## Goals
+
+- Fix Worker catalog hardcoding blocker with build-time bundling system
+- Deploy functional e-commerce checkout to production
+- Implement inventory validation before checkout (launch requirement)
+- Implement email order confirmations (launch requirement)
+- Set up Stripe accounts (staging + production or test/live mode)
+- Configure all secrets and environment variables securely
+- Run end-to-end staging tests before production deployment
+- Monitor first 5 production orders for errors
+
+## Non-goals
+
+- Redesigning cart or checkout architecture (already production-quality)
+- Adding features beyond core e-commerce (order history, multi-currency, discounts)
+- Implementing abandoned cart recovery or advanced analytics
+- Building admin dashboard or inventory management UI
+- Multi-language support (English only for MVP)
+
+## Constraints & Assumptions
+
+**Constraints:**
+- Must maintain existing architecture (Cloudflare Pages + Worker backend)
+- Must use Stripe Checkout hosted payment flow (already implemented)
+- Must validate inventory against external authority API before go-live
+- Must send email order confirmations before go-live
+- Data files must follow existing schema contracts in `cochlearfitCatalog.server.ts`
+- **Cloudflare free tier:** 100k requests/day (all Workers combined), 1k KV writes/day, 100k KV reads/day
+- CORS policy: `PAGES_ORIGIN` is comma-separated allowlist
+- **Secrets policy:** Never commit secret values to repo; docs may list secret names and locations only (store values in 1Password/Cloudflare secrets)
+- **Fulfillment:** Orders fulfilled manually from Stripe Dashboard (CSV export) — no automated shipping integration for MVP
+
+**Assumptions:**
+- Stripe account setup will take 1-3 days (business verification)
+- Inventory authority API will be configured before launch
+- Email service provider (Resend or SendGrid) will be chosen during implementation
+- Product catalog data is available in some format (needs JSON transformation)
+- Cloudflare Workers KV namespace can be provisioned
+- Sender email domain DNS can be configured
+
+## Fact-Find Reference
+
+- Related brief: `docs/plans/cochlearfit-deployment-readiness/fact-find.md`
+- Key findings:
+  - Frontend cart/checkout are production-ready (comprehensive tests exist)
+  - **CRITICAL BLOCKER:** Worker catalog hardcoded with placeholder Stripe Price IDs (lines 122-128 of `apps/cochlearfit-worker/src/index.ts`)
+  - Customer email available via `session.customer_details.email` (nested field, retrieve session with `expand[]=line_items` for order details)
+  - Secrets committed in `wrangler.toml` (security issue, must fix)
+  - Worker has zero tests (must add minimal tests before launch)
+  - Wrangler environments needed (not runtime URL detection)
+  - CORS handling documented (falls back to first origin if missing/not allowed)
+
+## Existing System Notes
+
+**Key modules/files:**
+
+Frontend (Production-ready):
+- `apps/cochlearfit/src/contexts/cart/` — Cart Context + Reducer (complete)
+- `apps/cochlearfit/src/lib/cart.ts` — Totals calculation
+- `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts` — Server catalog loader (lines 14-51: schemas, 206-216: fallback behavior)
+- `apps/cochlearfit/src/data/products.ts` — In-repo fallback catalog
+- `apps/cochlearfit/src/app/[lang]/checkout/page.tsx` — Checkout page
+
+Worker (Needs fixes):
+- `apps/cochlearfit-worker/src/index.ts` — Checkout API
+  - Lines 122-128: **HARDCODED CATALOG** (blocker)
+  - Lines 204-244: Inventory validation logic
+  - Lines 262-305: Stripe session creation
+  - Lines 307-331: Stripe session fetch (needs `customer_details` expansion)
+  - Lines 333-360: Webhook signature verification
+  - Lines 64-90: Order record builder (needs `customerEmail` field)
+- `apps/cochlearfit-worker/wrangler.toml` — Configuration (lines 9-14: committed secrets)
+
+**Patterns to follow:**
+- Cart architecture: existing Context + Reducer pattern (no changes)
+- Data schemas: `CochlearfitProductRecord`, `VariantPricingRecord`, `InventoryRecord` (lines 14-51 of `cochlearfitCatalog.server.ts`)
+- Fallback behavior: Falls back to in-repo `products.ts` if `products.json` missing (line 206-216)
+- Secrets: Use `wrangler secret put --env <staging|production>` (never commit)
+- Environments: Wrangler manages separate deployments (no runtime detection)
+
+## Proposed Approach
+
+**Build-time catalog bundling** (Decision 6 from fact-find):
+- Create `scripts/bundle-worker-catalog.ts` to generate `worker-catalog.generated.ts` from `data/shops/cochlearfit/*.json`
+- Add validation: fail build if Stripe Price IDs missing or malformed
+- Run as prebuild step in Worker package.json
+- Replace hardcoded `buildVariants()` calls with `import { catalog } from './worker-catalog.generated'`
+- Generated file excluded from git, regenerated on every build
+- **Single source of truth:** Frontend and Worker read from same data files
+
+**Wrangler environments for staging/production** (Decision 4 revised):
+- Use Wrangler `[env.staging]` and `[env.production]` sections in `wrangler.toml`
+- Separate deployment targets: `wrangler deploy --env staging` / `wrangler deploy --env production`
+- Separate KV namespaces (true isolation — no runtime detection, no key prefixes)
+- Separate secrets per environment (no suffixes — Wrangler manages per-env secrets)
+- Eliminates runtime URL detection fragility
+- Same 100k requests/day cap (shared across all Workers), but better isolation
+
+**Routing Strategy** (same-origin to avoid CORS):
+- **Production:** Route `cochlearfit.com/api/*` to Worker (via Cloudflare zone route), Pages serves `cochlearfit.com/*`
+- **Staging:** Use real staging domain `staging.cochlearfit.com` with same routing pattern, OR accept cross-origin calls from `*.pages.dev` to Worker with strict CORS
+- **Workers.dev URLs are for development only** — production traffic uses custom domain routes
+- Same-origin routing eliminates CORS complexity (recommended Cloudflare pattern)
+- Worker name format: `cochlearfit-worker-staging` / `cochlearfit-worker-production` (derives `<account>.workers.dev` URLs for dev testing)
+
+**Email recipient from Stripe session** (Decision 7 corrected):
+- Read `session.customer_details.email` from webhook payload (no expand needed — it's a nested field, not a linked object)
+- If not in webhook payload, retrieve session with `expand[]=line_items` (for order details)
+- `customer_details` is already included in retrieved session object (not an expandable field)
+- No frontend changes (Stripe Checkout already collects email)
+
+**Stripe API version pinning** (Decision 5 updated):
+- Pin to Stripe API version matching account default (check Stripe Dashboard → Developers → API version)
+- Add `Stripe-Version` header to all API calls: `"Stripe-Version": "<account-pinned-version>"`
+- Format: `"YYYY-MM-DD.release"` (e.g., `"2026-01-28.clover"` — use exact string from dashboard)
+- Include webhook endpoint version alignment (Stripe webhooks have their own version pin — configure in webhook settings)
+
+**Critical path:**
+1. Stripe account setup (Phase 1) — longest lead time due to verification
+2. Worker catalog bundling (Phase 2) — **BLOCKER**, depends on Stripe Price IDs
+3. Email service integration (Phase 3) — launch requirement
+4. Data files + secrets config (Phase 4) — depends on Stripe Price IDs
+5. Staging deployment + tests (Phase 5) — gate before production
+6. Production deployment (Phase 6) — final go-live
+
+## Capacity & Limits
+
+**Cloudflare Free Tier:**
+- **Workers requests:** 100k/day across all Worker scripts (staging + production combined)
+- **KV writes:** 1,000/day (across all namespaces)
+- **KV reads:** 100,000/day (across all namespaces)
+
+**Expected Usage Model:**
+- **Order volume estimate:** 10-50 orders/day initially (well below caps)
+- **KV operations per order:**
+  - 1 write: order record (`orders:{orderId}`)
+  - 1 read: idempotency check (`webhook_events:{eventId}`)
+  - 1 write: idempotency marker (`webhook_events:{eventId}`)
+  - **Total:** 2 writes + 1 read per order
+- **Scaling capacity:** Can handle ~500 orders/day before hitting KV write cap (1000 / 2 writes per order)
+
+**Failure Modes:**
+- **KV write failure:** Return 500 to Stripe webhook (triggers retry with idempotency protection)
+- **Request cap exceeded (100k/day):** Cloudflare returns 1027 error page (fail closed) or bypasses Worker (fail open, configured per route); resets at midnight UTC
+- **KV read failure:** Webhook processes anyway (risk of duplicate order if idempotency check fails — acceptable with order ID uniqueness constraint)
+
+**Monitoring Thresholds:**
+- Alert if daily requests > 80k (80% of cap)
+- Alert if daily KV writes > 800 (80% of cap)
+- Alert if KV write errors > 0 in 10-minute window
+
+## Webhook Correctness Contract
+
+**Required guarantees (pre-launch):**
+
+1. **Idempotency:** Use Stripe `event.id` as idempotency key
+   - Check KV for `webhook_events:{eventId}` before processing
+   - If exists: return 200 immediately (already processed)
+   - If not exists: process order → persist order → mark event processed
+
+2. **Persistence failure handling:**
+   - If order persistence fails: return 500 (Stripe retries with idempotency protection)
+   - If order write succeeds but idempotency marker write fails: return 200 (prevents infinite retry loop; risk: Stripe retry bypasses idempotency read check, but duplicate order write should fail on order ID uniqueness constraint)
+
+3. **Email failure handling:**
+   - Email send failures: log error, return 200 (don't block webhook)
+   - Email service unavailable: queue for retry (or manual follow-up from Stripe Dashboard)
+
+4. **Inventory re-check policy:**
+   - **MVP decision:** Do NOT re-check inventory at webhook time (accept oversell risk)
+   - Inventory checked at session creation only
+   - **Post-MVP:** Add webhook inventory re-check + automatic refund if out-of-stock
+
+5. **Stripe signature verification:**
+   - Must verify webhook signature before processing
+   - Invalid signature: return 401 (not 200)
+   - Signature mismatch: log incident, alert team
+
+## Security Requirements
+
+**Beyond secret management:**
+
+1. **Secret rotation after committed secrets removed:**
+   - Assume compromise of any secrets previously in `wrangler.toml`
+   - Rotate: Stripe keys, inventory API token, email service key
+   - Update all secrets in Cloudflare dashboard + external services
+
+2. **Log scrubbing (PII protection):**
+   - Do NOT log: full customer email, shipping address, payment details
+   - OK to log: order ID, SKU, quantity, anonymized customer ID (last 4 of email: `****@domain.com`)
+   - Worker logs are public in Cloudflare dashboard — treat as untrusted
+
+3. **Rate limiting (abuse prevention):**
+   - **MVP:** Rely on Stripe's built-in rate limits (no additional Worker-level limiting)
+   - **Post-MVP:** Consider KV-based per-IP rate limiting (10 session creates per IP per minute) — adds KV read+write per attempt, can exhaust 1k writes/day cap during bot activity
+   - Bots can spam session creation → costs Stripe API calls (rate limited by Stripe)
+
+4. **Input validation:**
+   - Validate all JSON payloads before processing (malformed JSON → 400)
+   - Validate SKUs against catalog (unknown SKU → 400)
+   - Validate quantities (< 1 or > 10 → 400)
+
+5. **CORS policy enforcement:**
+   - Only allow `PAGES_ORIGIN` domains (staging + production Pages URLs)
+   - Reject requests from unknown origins (prevents CSRF)
+
+## Task Summary
+
+| Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
+|---|---|---|---:|---:|---|---|---|
+| TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | - | TASK-04, TASK-08, TASK-09 |
+| TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | - | TASK-09 |
+| TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Pending | - | TASK-06, TASK-07, TASK-09 |
+| TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Pending | TASK-01 | TASK-05 |
+| TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Pending | TASK-04 | TASK-09 |
+| TASK-06 | IMPLEMENT | Create email receipt template | 85% | M | Pending | TASK-03 | TASK-07 |
+| TASK-07 | IMPLEMENT | Implement email sending in Worker webhook | 80% | L | Pending | TASK-03, TASK-06 | TASK-10 |
+| TASK-08 | IMPLEMENT | Populate production data files with real Price IDs | 85% | S | Pending | TASK-01 | TASK-09 |
+| TASK-09 | IMPLEMENT | Configure Worker secrets and environment variables | 75% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05, TASK-08 | TASK-10 |
+| TASK-10 | IMPLEMENT | Deploy Worker and frontend to staging | 80% | M | Pending | TASK-07, TASK-09 | TASK-11 |
+| TASK-11 | IMPLEMENT | Run end-to-end staging tests | 85% | M | Pending | TASK-10 | TASK-12 |
+| TASK-12 | IMPLEMENT | Deploy frontend to production | 90% | S | Pending | TASK-11 | TASK-13 |
+| TASK-13 | IMPLEMENT | Run production smoke test | 85% | S | Pending | TASK-12 | TASK-14 |
+| TASK-14 | IMPLEMENT | Add Worker unit tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
+| TASK-15 | IMPLEMENT | Document fulfillment runbook | 85% | S | Pending | TASK-13 | - |
+
+> Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
+
+## Parallelism Guide
+
+Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
+Tasks in a later wave require all blocking tasks from earlier waves to complete.
+
+| Wave | Tasks | Prerequisites | Notes |
+|------|-------|---------------|-------|
+| 1 | TASK-01, TASK-02, TASK-03 | - | Independent foundation tasks (Stripe, Inventory API, Email service setup) |
+| 2 | TASK-04, TASK-06, TASK-08 | Wave 1: TASK-01 (for 04, 08), TASK-03 (for 06) | Build catalog system, email template, populate data files |
+| 3 | TASK-05, TASK-07 | Wave 2: TASK-04 (for 05), TASK-06 (for 07); Wave 1: TASK-03 (for 07) | Replace hardcoded catalog, implement email webhook |
+| 4 | TASK-09 | Waves 1-3: TASK-01, TASK-02, TASK-03, TASK-05, TASK-08 | Configure all secrets (blocked by all setup tasks) |
+| 5 | TASK-10 | Wave 4: TASK-09; Wave 3: TASK-07 | Deploy to staging |
+| 6 | TASK-11 | Wave 5: TASK-10 | Run staging tests (gate before production) |
+| 7 | TASK-12 | Wave 6: TASK-11 | Deploy to production |
+| 8 | TASK-13 | Wave 7: TASK-12 | Production smoke test |
+| 9 | TASK-14, TASK-15 | Wave 8: TASK-13 | Post-launch: Add Worker unit tests, document fulfillment runbook (can run in parallel) |
+
+**Max parallelism:** 3 (Wave 1: Stripe + Inventory API + Email service setup in parallel)
+**Critical path:** TASK-01 → TASK-04 → TASK-05 → TASK-09 → TASK-10 → TASK-11 → TASK-12 → TASK-13 → TASK-14 (9 waves, or TASK-15 if done sequentially)
+**Total tasks:** 15
+
+## Tasks
+
+### TASK-01: Set up Stripe account and products
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable + Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** External (Stripe Dashboard), `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md`
+- **Depends on:** -
+- **Blocks:** TASK-04, TASK-08, TASK-09
+- **Confidence:** 75%
+  - Implementation: 80% — Stripe Dashboard is well-documented, straightforward product/variant setup
+  - Approach: 75% — Standard Stripe Checkout pattern, but account verification adds uncertainty
+  - Impact: 70% — Account verification can take 1-3 days (blocks critical path), webhook configuration requires DNS
+- **Acceptance:**
+  - [ ] Stripe account created (or access granted to existing account)
+  - [ ] Test mode enabled with API keys generated (secret key, publishable key)
+  - [ ] Production mode enabled with API keys generated (secret key, publishable key)
+  - [ ] 2 products created in Stripe Dashboard: "Classic Sound Sleeve", "Sport Sound Sleeve"
+  - [ ] 12 variants created (kids/adult × sand/ocean/berry for each product)
+  - [ ] All 12 Stripe Price IDs documented in `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` (Price IDs are safe to commit)
+  - [ ] Webhook endpoints configured (URLs noted in doc, but using placeholder hostnames — actual Workers.dev URL depends on account subdomain)
+  - [ ] Test webhook delivery verified with Stripe CLI: `stripe listen --forward-to localhost:8788/api/stripe/webhook`
+  - [ ] **Secret values stored securely:** Test/production secret keys + webhook secrets stored in 1Password (never commit values to repo)
+- **Validation contract:**
+  - TC-01: Stripe Dashboard login → products visible → 2 products exist with 6 variants each
+  - TC-02: Stripe CLI `stripe listen` → webhook event forwarded → returns 200 (Worker receives event)
+  - TC-03: Test mode API call → `POST https://api.stripe.com/v1/checkout/sessions` with test secret key → session created successfully
+  - TC-04: Webhook secret verification → test signature with `stripe trigger checkout.session.completed` → signature validates correctly
+  - **Acceptance coverage:** TC-01 covers products/variants, TC-02+TC-04 cover webhook config, TC-03 covers API keys
+  - **Validation type:** manual verification + CLI testing
+  - **Run/verify:** Stripe Dashboard visual check + `stripe listen` + `stripe trigger` commands
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First webhook attempt will fail signature verification (no webhook secret configured yet)
+  - **Green evidence:** After configuring webhook secret and endpoint, `stripe trigger checkout.session.completed` returns 200 from Worker
+  - **Refactor evidence:** Document webhook secrets and Price IDs in standalone doc (not in code comments)
+- **Planning validation:**
+  - Checks run: Reviewed Stripe documentation for Checkout setup, webhook configuration, and product/variant API
+  - Unexpected findings: None (standard Stripe Checkout pattern)
+- **What would make this ≥90%:** Complete account verification early (start immediately), have backup plan for webhook DNS if custom domain not ready (use Workers.dev subdomain first)
+- **Rollout / rollback:**
+  - Rollout: No code deployment for this task; purely Stripe Dashboard configuration
+  - Rollback: N/A (configuration changes are non-destructive; can delete products/webhooks if needed)
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` with:
+    - Account details (email, account ID)
+    - Test mode keys (secret, publishable, webhook secret)
+    - Production mode keys (secret, publishable, webhook secret)
+    - Product IDs and names
+    - All 12 Price IDs in table format (product, size, color, Price ID)
+    - Webhook endpoint URLs (test + production)
+- **Notes / references:**
+  - Stripe Checkout docs: https://stripe.com/docs/payments/checkout
+  - Stripe webhook docs: https://stripe.com/docs/webhooks
+  - Stripe CLI: https://stripe.com/docs/stripe-cli
+  - Estimated lead time: 1-3 days for business verification
+
+### TASK-02: Set up inventory authority API
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** External (Inventory API deployment), `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
+- **Depends on:** -
+- **Blocks:** TASK-09
+- **Confidence:** 70%
+  - Implementation: 75% — Contract is well-defined (line 204-244 of Worker index.ts shows payload format), straightforward REST API
+  - Approach: 70% — Unclear if API already exists elsewhere or needs greenfield build
+  - Impact: 65% — If API doesn't exist, deployment path unclear (hosting, DB, auth middleware)
+- **Acceptance:**
+  - [ ] API endpoint deployed and accessible (e.g., `https://inventory-api.example.com`)
+  - [ ] Authentication token generated (Bearer token)
+  - [ ] Contract implemented: `POST /api/inventory/validate` accepts payload:
+    ```json
+    {
+      "items": [{
+        "sku": "variant-id",
+        "quantity": 1,
+        "variantAttributes": { "size": "adult" }
+      }]
+    }
+    ```
+  - [ ] Response codes: 200 (OK), 409 (Insufficient stock), 503 (Service unavailable)
+  - [ ] Test SKUs return expected validation results (in-stock → 200, out-of-stock → 409)
+  - [ ] API contract documented in `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
+  - [ ] Error responses (409, 503) tested with sample payloads
+- **Validation contract:**
+  - TC-01: In-stock validation → POST with available SKU → returns 200
+  - TC-02: Out-of-stock validation → POST with unavailable SKU → returns 409
+  - TC-03: Authentication → POST without Bearer token → returns 401
+  - TC-04: Malformed payload → POST with invalid JSON → returns 400
+  - TC-05: Service unavailable → API down or slow → returns 503 or times out
+  - **Acceptance coverage:** TC-01+TC-02 cover validation logic, TC-03 covers auth, TC-04 covers error handling, TC-05 covers availability
+  - **Validation type:** integration testing (manual API calls with curl/Postman)
+  - **Run/verify:** `curl -X POST -H "Authorization: Bearer TOKEN" -d '{"items":[...]}' https://inventory-api.example.com/api/inventory/validate`
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First API call will fail 401 (no auth token configured)
+  - **Green evidence:** After adding Bearer token middleware, test SKU returns 200 (in-stock) and 409 (out-of-stock)
+  - **Refactor evidence:** Add request logging for debugging, error response includes helpful message
+- **Planning validation:**
+  - Checks run: Reviewed Worker inventory validation logic (lines 204-244 of `apps/cochlearfit-worker/src/index.ts`)
+  - Unexpected findings: None (contract is clear from Worker code)
+- **What would make this ≥90%:** Confirm if API already exists (reuse existing inventory system) or needs greenfield build; if greenfield, clarify hosting platform and data source
+- **Rollout / rollback:**
+  - Rollout: Deploy API to hosting platform (e.g., Cloudflare Worker, Vercel, AWS Lambda)
+  - Rollback: Revert deployment if issues found during testing; Worker can be configured with `INVENTORY_AUTHORITY_URL=""` to disable validation temporarily
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` with:
+    - API endpoint URL
+    - Authentication method (Bearer token)
+    - Request/response contract with examples
+    - Error codes and meanings
+    - Test SKUs for staging validation
+- **Notes / references:**
+  - Worker inventory validation logic: `apps/cochlearfit-worker/src/index.ts:204-244`
+  - Payload format: `{ items: [{ sku, quantity, variantAttributes }] }`
+  - Launch requirement per user decision
+
+### TASK-03: Select and configure email service
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable + Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:** External (Email service provider), `docs/plans/cochlearfit-deployment-readiness/email-setup.md`
+- **Depends on:** -
+- **Blocks:** TASK-06, TASK-07, TASK-09
+- **Confidence:** 80%
+  - Implementation: 85% — Well-documented providers (Resend, SendGrid), straightforward account setup and domain verification
+  - Approach: 80% — Resend recommended for best DX (React email templates, 100 emails/day free), but SendGrid also proven
+  - Impact: 75% — Domain DNS verification can take 24-48 hours (SPF, DKIM, DMARC records propagation)
+- **Acceptance:**
+  - [ ] Email service provider selected (Resend or SendGrid)
+  - [ ] Account created with API credentials
+  - [ ] Sender domain configured (e.g., `orders@cochlearfit.com`)
+  - [ ] DNS records verified (SPF, DKIM, DMARC records added and propagated)
+  - [ ] Test email successfully sent and delivered (check inbox, spam folder)
+  - [ ] **Secret values stored securely:** API credentials stored in 1Password (never commit values to repo)
+  - [ ] Email service metadata documented in `docs/plans/cochlearfit-deployment-readiness/email-setup.md` (provider name, sender domain, test mode configuration)
+  - [ ] Test mode/sandbox verified (emails don't go to real customers during development)
+- **Validation contract:**
+  - TC-01: DNS verification → Check DNS records with `dig` → SPF, DKIM, DMARC records exist
+  - TC-02: Test email send → Call API with test credentials → email delivered to inbox (not spam)
+  - TC-03: API authentication → Call API without credentials → returns 401
+  - TC-04: Rate limit check → Send multiple test emails → no rate limit errors for free tier
+  - **Acceptance coverage:** TC-01 covers DNS, TC-02+TC-04 cover deliverability, TC-03 covers auth
+  - **Validation type:** manual verification + API testing
+  - **Run/verify:** `dig TXT orders.cochlearfit.com` (SPF), provider dashboard for DKIM/DMARC, send test email via API
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First DNS verification will fail (records not added yet)
+  - **Green evidence:** After adding DNS records and waiting for propagation, provider dashboard shows "Verified" status
+  - **Refactor evidence:** Test email rendering across multiple clients (Gmail, Outlook, Apple Mail)
+- **Planning validation:**
+  - Checks run: Reviewed Resend and SendGrid documentation, pricing, and free tier limits
+  - Unexpected findings: None (standard email service setup)
+- **What would make this ≥90%:** Pre-register domain early, start DNS verification immediately (24-48 hour propagation delay)
+- **Rollout / rollback:**
+  - Rollout: No code deployment for this task; purely email service configuration
+  - Rollback: N/A (configuration changes are non-destructive; can switch providers if needed)
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/email-setup.md` with:
+    - Provider name and account details
+    - Secret storage location (1Password vault reference — never document secret values in repo)
+    - Sender email address and domain
+    - DNS records (SPF, DKIM, DMARC values)
+    - Test mode configuration
+    - API endpoint URLs
+- **Notes / references:**
+  - Resend docs: https://resend.com/docs
+  - SendGrid docs: https://docs.sendgrid.com
+  - DNS verification guide: SPF, DKIM, DMARC records
+  - Recommended: Resend (best DX, React email templates, 100 emails/day free)
+
+### TASK-04: Implement build-time catalog bundling system
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `scripts/bundle-worker-catalog.ts` (new file)
+  - `apps/cochlearfit-worker/package.json` (add prebuild script)
+  - `apps/cochlearfit-worker/.gitignore` (exclude generated file)
+  - `[readonly] data/shops/cochlearfit/*.json` (read-only input)
+  - `[readonly] apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts` (schema reference)
+- **Depends on:** TASK-01
+- **Blocks:** TASK-05
+- **Confidence:** 85%
+  - Implementation: 90% — Frontend catalog loading (cochlearfitCatalog.server.ts) already exists as reference, script logic is straightforward (read JSON → generate TypeScript)
+  - Approach: 85% — Build-time bundling is best long-term pattern (single source of truth), but requires build infrastructure setup
+  - Impact: 80% — Generated file must be excluded from git; build failure modes must be handled gracefully
+- **Acceptance:**
+  - [ ] Script `scripts/bundle-worker-catalog.ts` created
+  - [ ] Script reads `data/shops/cochlearfit/*.json` (products, variants, inventory)
+  - [ ] Script generates `apps/cochlearfit-worker/src/worker-catalog.generated.ts` with:
+    ```typescript
+    export const catalog = [
+      {
+        id: "classic-kids-sand",
+        name: "Classic Sound Sleeve",
+        size: "kids",
+        color: "sand",
+        price: 3400,
+        stripePriceId: "price_1ABC...",
+        inStock: true,
+      },
+      // ... 11 more variants
+    ];
+    ```
+  - [ ] Script validates: fail build if Stripe Price IDs missing or malformed (not `price_1...` format)
+  - [ ] Script validates: fail build if products.json, variants.json, or inventory.json missing
+  - [ ] Script added to Worker package.json: `"prebuild": "tsx scripts/bundle-worker-catalog.ts"`
+  - [ ] Generated file added to `apps/cochlearfit-worker/.gitignore`
+  - [ ] Build succeeds with template data files (Stripe Price IDs present)
+  - [ ] Build fails gracefully with helpful error if data files missing or Price IDs invalid
+- **Validation contract:**
+  - TC-01: Build with valid data → run `pnpm --filter cochlearfit-worker build` → succeeds, generated file exists
+  - TC-02: Build with missing products.json → run build → fails with error "products.json not found"
+  - TC-03: Build with invalid Price ID → run build → fails with error "Stripe Price ID malformed for variant X"
+  - TC-04: Generated catalog structure → inspect generated file → matches expected TypeScript format
+  - TC-05: Gitignore exclusion → run `git status` → generated file not shown as untracked
+  - **Acceptance coverage:** TC-01+TC-04 cover happy path, TC-02+TC-03 cover validation, TC-05 covers git exclusion
+  - **Validation type:** unit testing (build script execution)
+  - **Run/verify:** `pnpm --filter cochlearfit-worker build`, `git status`, inspect generated file
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First build attempt will fail (script doesn't exist yet, data files incomplete)
+  - **Green evidence:** After writing script and populating data files, build succeeds and generated file contains 12 variants
+  - **Refactor evidence:** Add helpful error messages for validation failures, add TypeScript type safety to generated file
+- **Planning validation:**
+  - Checks run: Reviewed frontend catalog loading (cochlearfitCatalog.server.ts lines 178-223) as reference implementation
+  - Validation artifacts written: None (script will be written during task execution)
+  - Unexpected findings: None (straightforward TypeScript code generation)
+- **What would make this ≥90%:** Test with real Stripe Price IDs from TASK-01 (currently only have template structure)
+- **Rollout / rollback:**
+  - Rollout: Build script runs automatically via prebuild hook; no manual intervention required
+  - Rollback: If script fails, build will fail (safe default); fix script or revert to placeholder catalog temporarily
+- **Documentation impact:**
+  - Update `apps/cochlearfit-worker/README.md` with:
+    - Build process explanation (prebuild script runs automatically)
+    - Data file requirements (products.json, variants.json, inventory.json)
+    - Validation rules (Stripe Price IDs must be `price_1...` format)
+    - How to update catalog (edit data files, rebuild Worker)
+- **Notes / references:**
+  - Reference implementation: `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts:178-223`
+  - Schema contracts: lines 14-51 of cochlearfitCatalog.server.ts
+  - Decision 6 from fact-find: Build-time bundling (single source of truth)
+
+### TASK-05: Replace hardcoded catalog with generated import
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/src/index.ts` (lines 108-128: remove hardcoded catalog, import generated)
+  - `[readonly] apps/cochlearfit-worker/src/worker-catalog.generated.ts` (import source)
+- **Depends on:** TASK-04
+- **Blocks:** TASK-09
+- **Confidence:** 90%
+  - Implementation: 95% — Straightforward import replacement, generated catalog already has correct structure
+  - Approach: 90% — Clean removal of hardcoded logic, no side effects
+  - Impact: 85% — Must verify line items match Stripe products after change (integration test)
+- **Acceptance:**
+  - [ ] Import statement added: `import { catalog } from './worker-catalog.generated';`
+  - [ ] Hardcoded `buildVariants()` calls removed (lines 122-124)
+  - [ ] `buildVariants()` function removed (lines 108-120, no longer needed)
+  - [ ] Types updated to match generated catalog format
+  - [ ] Build succeeds with no TypeScript errors
+  - [ ] Local test: create Stripe session → verify line items match generated catalog
+  - [ ] Local test: verify correct Price IDs sent to Stripe (not placeholder `price_classic_kids_sand`)
+  - [ ] Commit changes (excluding generated file)
+- **Validation contract:**
+  - TC-01: TypeScript compilation → run `pnpm --filter cochlearfit-worker typecheck` → no errors
+  - TC-02: Generated catalog import → run `pnpm --filter cochlearfit-worker build` → import resolves correctly
+  - TC-03: Stripe session creation → POST `/api/checkout/session` locally → line items include real Price IDs (not placeholder format)
+  - TC-04: Price ID format → inspect session payload → Price IDs start with `price_1` (Stripe format, not `price_classic_kids_sand`)
+  - **Acceptance coverage:** TC-01+TC-02 cover compilation, TC-03+TC-04 cover Stripe integration
+  - **Validation type:** unit testing (typecheck) + integration testing (local session creation)
+  - **Run/verify:** `pnpm --filter cochlearfit-worker typecheck && pnpm --filter cochlearfit-worker build`, test Stripe session creation locally
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First session creation will fail (old hardcoded catalog still active, placeholder Price IDs)
+  - **Green evidence:** After import replacement, session creation succeeds with real Price IDs from generated catalog
+  - **Refactor evidence:** Remove unused `buildVariants()` function, clean up imports
+- **Planning validation:**
+  - Checks run: Reviewed Worker index.ts lines 108-128 (hardcoded catalog to be removed)
+  - Unexpected findings: None (straightforward import replacement)
+- **What would make this ≥90%:** Already at 90% (straightforward implementation with real Price IDs from TASK-01)
+- **Rollout / rollback:**
+  - Rollout: Worker build includes generated catalog; no runtime changes required
+  - Rollback: Revert to hardcoded catalog if generated import fails (temporary fallback)
+- **Documentation impact:**
+  - Update `apps/cochlearfit-worker/README.md`: Explain that catalog is now generated from data files (not hardcoded)
+- **Notes / references:**
+  - Hardcoded catalog location: `apps/cochlearfit-worker/src/index.ts:108-128`
+  - Decision 6 from fact-find: Build-time bundling removes code duplication
+
+### TASK-06: Create email receipt template
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/src/templates/order-receipt.html` (new file, HTML template)
+  - `apps/cochlearfit-worker/src/templates/order-receipt.txt` (new file, plain-text fallback)
+  - `[readonly] apps/cochlearfit-worker/src/index.ts` (template import location)
+- **Depends on:** TASK-03
+- **Blocks:** TASK-07
+- **Confidence:** 85%
+  - Implementation: 90% — Email templates are straightforward HTML + plain-text, well-documented patterns
+  - Approach: 85% — HTML template approach is standard (inline CSS for email clients), but requires client testing
+  - Impact: 80% — Email rendering varies across clients (Gmail, Outlook, Apple Mail); must test all major clients
+- **Acceptance:**
+  - [ ] HTML email template created with:
+    - Order details (items, quantities, prices, subtotal, total)
+    - Order ID and date
+    - Customer email
+    - Company branding (logo, colors)
+    - Contact information (support email, website)
+    - Inline CSS (required for email clients)
+  - [ ] Plain-text fallback created with same information (ASCII formatting)
+  - [ ] Template uses dynamic variables: `{{orderId}}`, `{{orderDate}}`, `{{items}}`, `{{total}}`, `{{customerEmail}}`
+  - [ ] Template tested across email clients (Gmail, Outlook, Apple Mail, mobile)
+  - [ ] Template renders correctly in all tested clients (no layout breaks, images load, links work)
+  - [ ] Template includes unsubscribe footer (if required by provider)
+- **Validation contract:**
+  - TC-01: HTML rendering → Open template in browser → renders correctly with test data
+  - TC-02: Gmail rendering → Send test email to Gmail → renders correctly (no layout breaks)
+  - TC-03: Outlook rendering → Send test email to Outlook → renders correctly
+  - TC-04: Apple Mail rendering → Send test email to Apple Mail → renders correctly
+  - TC-05: Mobile rendering → Open email on mobile device → renders correctly (responsive)
+  - TC-06: Plain-text fallback → Disable HTML in email client → plain-text version is readable
+  - **Acceptance coverage:** TC-01 covers basic HTML, TC-02-TC-05 cover cross-client rendering, TC-06 covers plain-text fallback
+  - **Validation type:** manual verification (send test emails to multiple clients)
+  - **Run/verify:** Send test email via provider API with template, check inbox across clients
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First email will have rendering issues (CSS not inlined, layout breaks in Outlook)
+  - **Green evidence:** After inlining CSS and testing, email renders correctly across all clients
+  - **Refactor evidence:** Add company logo, improve mobile responsiveness, add clear CTA (contact support)
+- **Planning validation:**
+  - Checks run: Reviewed email template best practices (inline CSS, table layouts for Outlook compatibility)
+  - Unexpected findings: None (standard email template patterns)
+- **What would make this ≥90%:** Complete cross-client testing with real order data (currently only template structure)
+- **Rollout / rollback:**
+  - Rollout: Template is bundled with Worker deployment; no separate deployment step
+  - Rollback: Revert to previous template version if rendering issues found
+- **Documentation impact:**
+  - Add `apps/cochlearfit-worker/README.md` section:
+    - Email template location
+    - Dynamic variables available
+    - How to update template (edit HTML/TXT files, rebuild Worker)
+- **Notes / references:**
+  - Email template best practices: inline CSS, table layouts, alt text for images
+  - Provider-specific requirements: Resend supports React email templates, SendGrid uses Handlebars
+
+### TASK-07: Implement email sending in Worker webhook
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/src/index.ts` (lines 307-331: retrieve session with expand[]=line_items, lines ~470: send email, idempotency logic)
+  - `apps/cochlearfit-worker/package.json` (add email service client library)
+  - `[readonly] apps/cochlearfit-worker/src/templates/order-receipt.html` (template source)
+- **Depends on:** TASK-03, TASK-06
+- **Blocks:** TASK-10
+- **Confidence:** 80%
+  - Implementation: 85% — Email service client libraries are well-documented, straightforward API integration
+  - Approach: 80% — Session expansion for email is standard pattern, but must handle missing email gracefully
+  - Impact: 75% — Email failures must not block webhook (return 200 to Stripe even if email fails), requires careful error handling
+- **Acceptance:**
+  - [ ] **Webhook idempotency implemented** (critical for payment system):
+    - Use Stripe `event.id` as idempotency key
+    - Check KV for `webhook_events:{eventId}` before processing
+    - If exists: return 200 immediately (already processed)
+    - If not exists: process order → persist order → mark event processed
+    - Write idempotency marker to KV: `webhook_events:{eventId} = "processed"`
+  - [ ] **Order persistence with failure handling:**
+    - If order persistence fails: return 500 (Stripe retries, safe with idempotency)
+    - If order write succeeds but idempotency marker write fails: return 200 (prevents retry loop; duplicate order write protected by order ID uniqueness if implemented)
+  - [ ] Email service client library added to dependencies (e.g., `@sendgrid/mail` or `resend`)
+  - [ ] Session retrieval corrected: `session.customer_details.email` is a nested field (no expand needed for customer_details itself)
+  - [ ] If session not in webhook payload: retrieve with `expand[]=line_items` (for order details)
+  - [ ] `StripeSessionPayload` type updated to include `customer_details?: { email?: string }` (line 33)
+  - [ ] `buildOrderRecord()` updated to include `customerEmail?: string` field (line 64)
+  - [ ] Webhook handler extracts email: `const email = session.customer_details?.email`
+  - [ ] Email sending logic added after payment success (line ~470):
+    - Load email template (HTML + plain-text)
+    - Replace dynamic variables (order ID, items, total, customer email)
+    - Call email service API with rendered template
+    - Log success or error
+  - [ ] Error handling added: log email failures, return 200 to Stripe (prevent retries)
+  - [ ] Handle missing email gracefully: log warning, continue webhook processing (don't fail order)
+  - [ ] Local test: `stripe trigger checkout.session.completed` → email sent and received
+  - [ ] Idempotency test: trigger same event twice → second trigger returns 200 immediately, no duplicate order
+- **Validation contract:**
+  - TC-01: Idempotency check → trigger webhook with `event.id=evt_test_123` → KV checked for `webhook_events:evt_test_123`
+  - TC-02: Idempotency marker → after processing webhook → KV contains `webhook_events:evt_test_123 = "processed"`
+  - TC-03: Duplicate event handling → trigger same `event.id` twice → first creates order, second returns 200 immediately without processing
+  - TC-04: Order persistence failure → simulate KV write error → webhook returns 500 (Stripe will retry)
+  - TC-05: Session retrieval → inspect fetched session → `customer_details.email` field present (nested, not expanded)
+  - TC-06: Email extraction → log email value → matches customer email from Stripe Checkout
+  - TC-07: Email sending → trigger test webhook → email delivered to inbox (check spam folder)
+  - TC-08: Template rendering → inspect sent email → dynamic variables replaced correctly (order ID, items, total)
+  - TC-09: Email failure handling → simulate API error (invalid credentials) → webhook returns 200 to Stripe, error logged
+  - TC-10: Missing email handling → trigger webhook with session missing customer_details → webhook returns 200, warning logged
+  - **Acceptance coverage:** TC-01-TC-04 cover idempotency, TC-05+TC-06 cover email extraction, TC-07+TC-08 cover email delivery, TC-09+TC-10 cover error handling
+  - **Validation type:** integration testing (Stripe CLI webhook trigger + KV inspection + email delivery verification)
+  - **Run/verify:** `stripe trigger checkout.session.completed`, `wrangler kv:key get webhook_events:evt_test_123`, check inbox, inspect Worker logs
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First webhook will fail to send email (API credentials not configured, customer_details not expanded)
+  - **Green evidence:** After configuring API credentials and expanding customer_details, test webhook sends email successfully
+  - **Refactor evidence:** Add retry logic for transient email failures (503 from email service), improve error logging
+- **Planning validation:**
+  - Checks run: Reviewed Worker webhook handler (lines 362-490 of index.ts), Stripe session fetch logic (lines 307-331)
+  - Unexpected findings: None (standard webhook + email integration pattern)
+- **What would make this ≥90%:** Test with real Stripe session data (currently only test webhook events)
+- **Rollout / rollback:**
+  - Rollout: Worker deployment includes email functionality; email failures don't block checkout
+  - Rollback: Disable email sending via environment variable if issues found (`EMAIL_ENABLED=false`)
+- **Documentation impact:**
+  - Update `apps/cochlearfit-worker/README.md`:
+    - Email sending logic location
+    - Error handling strategy (log but don't fail webhook)
+    - How to test email sending locally (Stripe CLI)
+- **Notes / references:**
+  - Decision 7 from fact-find: Expand session customer_details for email (no frontend changes)
+  - Worker webhook handler: `apps/cochlearfit-worker/src/index.ts:362-490`
+  - Stripe session expansion docs: https://stripe.com/docs/api/checkout/sessions/object#checkout_session_object-customer_details
+
+### TASK-08: Populate production data files with real Price IDs
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `data/shops/cochlearfit/products.json`
+  - `data/shops/cochlearfit/variants.json`
+  - `data/shops/cochlearfit/inventory.json`
+  - `[readonly] docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` (Price ID reference)
+- **Depends on:** TASK-01
+- **Blocks:** TASK-09
+- **Confidence:** 85%
+  - Implementation: 90% — Data file population is straightforward (copy Price IDs from Stripe setup doc, fill JSON fields)
+  - Approach: 85% — JSON schemas are well-defined in cochlearfitCatalog.server.ts (lines 14-51)
+  - Impact: 80% — Must validate JSON structure matches schemas exactly (field names, types, localization format)
+- **Acceptance:**
+  - [ ] `products.json` created with 2 products:
+    - Classic Sound Sleeve (SKU: `classic`)
+    - Sport Sound Sleeve (SKU: `sport`)
+    - Localized fields: `title`, `description`, `shortDescription`, `longDescription`, `featureBullets`
+    - Media array with image URLs (type: `image`, `altText` field)
+  - [ ] `variants.json` created with 12 variants:
+    - Real Stripe Price IDs (from TASK-01 stripe-setup.md)
+    - Fields: `id`, `productSlug`, `size`, `color`, `price`, `currency`, `stripePriceId`
+  - [ ] `inventory.json` created with 12 inventory records:
+    - Fields: `sku` (matches variant `id`), `quantity` (realistic stock levels)
+  - [ ] JSON structure validated against schemas (cochlearfitCatalog.server.ts lines 14-51)
+  - [ ] Frontend catalog loading tested: verify products display correctly
+  - [ ] Verify fallback behavior: remove products.json temporarily → frontend falls back to products.ts
+  - [ ] Commit data files to repo
+- **Validation contract:**
+  - TC-01: JSON schema validation → run build script from TASK-04 → no validation errors
+  - TC-02: Frontend catalog loading → start dev server → products display with correct titles, prices, images
+  - TC-03: Variant SKU matching → inspect inventory.json `sku` values → match variant `id` values in variants.json
+  - TC-04: Localization format → inspect products.json → `title` is `Record<string, string>` with at least `en` key
+  - TC-05: Stripe Price ID format → inspect variants.json → all `stripePriceId` values start with `price_1`
+  - **Acceptance coverage:** TC-01 covers schemas, TC-02 covers frontend integration, TC-03 covers SKU consistency, TC-04 covers localization, TC-05 covers Stripe IDs
+  - **Validation type:** integration testing (frontend + build script)
+  - **Run/verify:** `pnpm --filter cochlearfit dev` → open http://localhost:3011 → verify products display, run build script → verify no errors
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First frontend load will fail (products.json missing, falls back to products.ts)
+  - **Green evidence:** After creating products.json with real data, frontend loads products from data files
+  - **Refactor evidence:** Add product images, improve localized descriptions, set realistic inventory quantities
+- **Planning validation:**
+  - Checks run: Reviewed schema contracts in cochlearfitCatalog.server.ts (lines 14-51)
+  - Unexpected findings: None (schemas are well-defined)
+- **What would make this ≥90%:** Complete with real product images and localized descriptions (currently only structure)
+- **Rollout / rollback:**
+  - Rollout: Data files committed to repo, deployed with Worker build
+  - Rollback: Revert to fallback products.ts if data files have errors (frontend gracefully falls back)
+- **Documentation impact:**
+  - Update `data/shops/cochlearfit/README.md` (create if missing):
+    - Data file schemas and required fields
+    - How to add new products/variants
+    - SKU matching rules (inventory.json `sku` must match variants.json `id`)
+    - Localization format (at least `en` key required)
+- **Notes / references:**
+  - Schema reference: `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts:14-51`
+  - Fallback behavior: lines 206-216 (falls back to products.ts if products.json missing)
+  - Fact-find: "Expected JSON File Schemas" section has corrected field names
+
+### TASK-09: Configure Worker secrets and environment variables
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable + Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/wrangler.toml` (remove committed secrets, add env var comments)
+  - External (Cloudflare Workers secrets via `wrangler secret put`)
+  - `docs/plans/cochlearfit-deployment-readiness/worker-config.md` (new doc)
+  - `[readonly] docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` (secret values reference)
+  - `[readonly] docs/plans/cochlearfit-deployment-readiness/email-setup.md` (secret values reference)
+  - `[readonly] docs/plans/cochlearfit-deployment-readiness/inventory-api.md` (secret values reference)
+- **Depends on:** TASK-01, TASK-02, TASK-03, TASK-05, TASK-08
+- **Blocks:** TASK-10
+- **Confidence:** 80%
+  - Implementation: 85% — Wrangler environments are well-documented, cleaner than runtime URL detection
+  - Approach: 80% — Separate `[env.staging]` and `[env.production]` sections eliminate fragile URL substring matching
+  - Impact: 75% — Must remove committed secrets from wrangler.toml (security issue), must configure separate KV namespaces
+- **Acceptance:**
+  - [ ] Committed secrets removed from wrangler.toml (lines 9-14: `INVENTORY_AUTHORITY_TOKEN` placeholders deleted)
+  - [ ] **Rotate all secrets** (assume compromise from previous commits):
+    - Generate new Stripe keys (test + live mode)
+    - Generate new email service API keys (test + production)
+    - Generate new inventory API tokens (staging + production)
+  - [ ] Wrangler.toml updated with environment sections:
+    ```toml
+    # Shared vars (common to both environments)
+    [vars]
+    EMAIL_FROM_ADDRESS = "orders@cochlearfit.com"
+    EMAIL_FROM_NAME = "Cochlear Fit Orders"
+
+    # Staging environment
+    [env.staging]
+    name = "cochlearfit-worker-staging"
+    # Option A: Real staging domain (same-origin, no CORS):
+    # routes = [{ pattern = "staging.cochlearfit.com/api/*", zone_name = "cochlearfit.com" }]
+    # Option B: Workers.dev for staging (cross-origin, strict CORS):
+    workers_dev = true
+    [env.staging.vars]
+    PAGES_ORIGIN = "https://cochlearfit-staging.pages.dev"
+    INVENTORY_AUTHORITY_URL = "https://inventory-api-staging.example.com"
+    [[env.staging.kv_namespaces]]
+    binding = "ORDERS"
+    id = "<staging-kv-namespace-id>"
+
+    # Production environment
+    [env.production]
+    name = "cochlearfit-worker-production"
+    # Production MUST use custom domain routing (not workers.dev):
+    routes = [{ pattern = "cochlearfit.com/api/*", zone_name = "cochlearfit.com" }]
+    [env.production.vars]
+    PAGES_ORIGIN = "https://cochlearfit.com"
+    INVENTORY_AUTHORITY_URL = "https://inventory-api.example.com"
+    [[env.production.kv_namespaces]]
+    binding = "ORDERS"
+    id = "<production-kv-namespace-id>"
+    ```
+    **Note:** `workers.dev` URLs are for development/testing only (format: `cochlearfit-worker-staging.<account>.workers.dev`). Production uses custom domain routing.
+  - [ ] Secrets configured per environment (4 secrets × 2 environments = 8 total):
+    - `wrangler secret put STRIPE_SECRET_KEY --env staging` (test mode)
+    - `wrangler secret put STRIPE_WEBHOOK_SECRET --env staging`
+    - `wrangler secret put EMAIL_SERVICE_API_KEY --env staging`
+    - `wrangler secret put INVENTORY_AUTHORITY_TOKEN --env staging`
+    - `wrangler secret put STRIPE_SECRET_KEY --env production` (live mode)
+    - `wrangler secret put STRIPE_WEBHOOK_SECRET --env production`
+    - `wrangler secret put EMAIL_SERVICE_API_KEY --env production`
+    - `wrangler secret put INVENTORY_AUTHORITY_TOKEN --env production`
+  - [ ] KV namespaces created: one for staging, one for production (true isolation, not key prefixes)
+  - [ ] Worker code **does NOT include runtime environment detection** (Wrangler handles it via separate deployments)
+  - [ ] Documentation created in `worker-config.md` with:
+    - Secret list and wrangler commands
+    - Wrangler environment configuration
+    - Deployment commands: `wrangler deploy --env staging` / `wrangler deploy --env production`
+    - KV namespace IDs and binding names
+  - [ ] Test: `wrangler dev --env staging` → Worker runs with staging secrets → checkout works
+- **Validation contract:**
+  - TC-01: Secret removal → `git diff wrangler.toml` → no committed secrets (INVENTORY_AUTHORITY_TOKEN deleted)
+  - TC-02: Secret rotation → new Stripe/Email/Inventory keys generated (different from committed values)
+  - TC-03: Staging secrets → `wrangler secret list --env staging` → 4 secrets listed (not suffixed)
+  - TC-04: Production secrets → `wrangler secret list --env production` → 4 secrets listed (not suffixed)
+  - TC-05: KV namespaces → `wrangler kv:namespace list` → 2 namespaces (staging + production)
+  - TC-06: Wrangler config → inspect wrangler.toml → `[env.staging]` and `[env.production]` sections exist with separate KV bindings
+  - TC-07: Local development → `wrangler dev --env staging` → Worker starts with staging secrets
+  - TC-08: Checkout test → local staging Worker → session creation succeeds with test mode Stripe key
+  - **Acceptance coverage:** TC-01+TC-02 cover security, TC-03+TC-04 cover secrets, TC-05+TC-06 cover Wrangler environments, TC-07+TC-08 cover local testing
+  - **Validation type:** manual verification (wrangler CLI commands, Worker logs)
+  - **Run/verify:** `wrangler secret list --env staging`, `wrangler kv:namespace list`, `wrangler dev --env staging`, test checkout locally
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First deployment will fail (secrets not configured, Worker crashes on missing env vars)
+  - **Green evidence:** After configuring secrets via `wrangler secret put --env <staging|production>`, both Workers start successfully with correct isolation
+  - **Refactor evidence:** Add startup health checks for secrets and KV bindings, validate all required env vars are present
+- **Planning validation:**
+  - Checks run: Reviewed wrangler.toml (lines 9-14: committed secrets identified)
+  - Unexpected findings: Committed secrets found (security issue flagged in fact-find)
+- **What would make this ≥90%:** Test with real checkout flow using staging secrets (currently only Worker startup)
+- **Rollout / rollback:**
+  - Rollout: Secrets configured via `wrangler secret put`, Worker deployed with updated wrangler.toml
+  - Rollback: Secrets persist across deployments (not deleted by rollback), can update secrets independently
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/worker-config.md`:
+    - Secret names and 1Password vault references (never document secret values in repo)
+    - Wrangler environment configuration ([env.staging] and [env.production])
+    - How to configure secrets (`wrangler secret put --env <staging|production>` commands)
+    - Environment variable descriptions
+    - Deployment commands (`wrangler deploy --env <staging|production>`)
+    - KV namespace isolation (separate namespace per environment)
+- **Notes / references:**
+  - **Decision 4 REVISED:** Changed from "single Worker with runtime URL detection" to "Wrangler environments" for better isolation
+  - Eliminates fragile `req.url.includes('staging')` substring matching
+  - Security requirement: rotate all secrets after removing committed values (assume compromise)
+  - Wrangler environments docs: https://developers.cloudflare.com/workers/wrangler/configuration/#environments
+  - Wrangler secrets docs: https://developers.cloudflare.com/workers/wrangler/commands/#secret
+
+### TASK-10: Deploy Worker and frontend to staging
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - External (Cloudflare Workers deployment)
+  - External (Cloudflare Pages staging deployment)
+  - `[readonly] apps/cochlearfit-worker/wrangler.toml` (deployment config)
+  - `[readonly] apps/cochlearfit/package.json` (build config)
+- **Depends on:** TASK-07, TASK-09
+- **Blocks:** TASK-11
+- **Confidence:** 85%
+  - Implementation: 90% — Wrangler environments are well-documented, separate deployments eliminate detection fragility
+  - Approach: 85% — Separate staging deployment with own KV namespace; routing verified per Routing Strategy
+  - Impact: 80% — Routing must work (same-origin /api/* OR cross-origin with CORS), KV namespace must be bound correctly
+- **Acceptance:**
+  - [ ] Staging Worker deployed: `wrangler deploy --env staging` → Worker deployed with staging KV + secrets
+  - [ ] Frontend deployed to Cloudflare Pages staging: `https://cochlearfit-staging.pages.dev` (or `staging.cochlearfit.com`)
+  - [ ] Routing verified per strategy:
+    - **If same-origin:** `curl https://staging.cochlearfit.com/api/health` → Worker responds (routed via zone)
+    - **If cross-origin:** `curl https://cochlearfit-worker-staging.<account>.workers.dev/api/health` → Worker responds, CORS headers present
+  - [ ] Staging KV namespace bound: `wrangler kv:namespace list` shows staging namespace ID matches wrangler.toml
+  - [ ] Staging secrets verified: `wrangler secret list --env staging` shows 4 secrets (no suffixes)
+  - [ ] CORS verified (if cross-origin): frontend fetch → no CORS errors in browser console
+  - [ ] Worker logs accessible: Cloudflare Workers dashboard → Logs → filter by `cochlearfit-worker-staging`
+- **Validation contract:**
+  - TC-01: Staging Worker deployment → `wrangler deploy --env staging` → succeeds, shows staging KV binding
+  - TC-02: Frontend deployment → git push to staging branch → Cloudflare Pages build succeeds
+  - TC-03: Routing → `curl <staging-worker-url>/api/checkout/session` (method: OPTIONS for CORS preflight) → responds
+  - TC-04: KV binding → Worker logs show successful KV write test (no binding errors)
+  - TC-05: Secrets isolation → staging Worker uses staging Stripe key (verify session created in Stripe test mode, not live mode)
+  - TC-06: CORS (if needed) → frontend fetch from Pages → `Access-Control-Allow-Origin` header present
+  - **Acceptance coverage:** TC-01+TC-02 cover deployment, TC-03+TC-06 cover routing/CORS, TC-04 covers KV, TC-05 covers secrets isolation
+  - **Validation type:** deployment verification + manual testing
+  - **Run/verify:** `wrangler deploy --env staging`, check Cloudflare dashboard, test routing
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First deployment will have routing issues (CORS errors if cross-origin, route not configured if same-origin)
+  - **Green evidence:** After configuring routing per strategy, staging frontend successfully calls Worker API
+  - **Refactor evidence:** Add deployment checklist, automate staging deployment via CI/CD
+- **Planning validation:**
+  - Checks run: Reviewed Cloudflare Workers and Pages documentation
+  - Unexpected findings: None (standard Cloudflare deployment pattern)
+- **What would make this ≥90%:** Complete staging deployment with successful end-to-end checkout test (covered in TASK-11)
+- **Rollout / rollback:**
+  - Rollout: Staging Worker deployed independently (`wrangler deploy --env staging`), frontend deployed to staging branch
+  - Rollback: Revert staging Worker via `wrangler rollback --env staging`, revert Pages via git
+- **Documentation impact:**
+  - Update `apps/cochlearfit-worker/README.md`:
+    - Deployment instructions (`wrangler deploy --env staging` / `--env production`)
+    - How to verify deployment (check logs, test routing, verify KV binding)
+  - Update `apps/cochlearfit/README.md`:
+    - Staging deployment process (git push to staging branch)
+- **Notes / references:**
+  - Cloudflare Workers deployment docs: https://developers.cloudflare.com/workers/get-started/guide/
+  - Cloudflare Pages deployment docs: https://developers.cloudflare.com/pages/
+
+### TASK-11: Run end-to-end staging tests
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - External (staging environment testing)
+  - `docs/plans/cochlearfit-deployment-readiness/staging-test-results.md` (new doc)
+  - `[readonly] data/shops/cochlearfit/inventory.json` (modify for out-of-stock test, then revert)
+- **Depends on:** TASK-10
+- **Blocks:** TASK-12
+- **Confidence:** 85%
+  - Implementation: 90% — End-to-end testing is straightforward (manual checkout flow, verify results)
+  - Approach: 85% — Test coverage is comprehensive (happy path, out-of-stock, email delivery, webhook)
+  - Impact: 80% — Must fix all issues found before production deployment
+- **Acceptance:**
+  - [ ] Happy path test passed:
+    - Add item to cart → checkout → pay with test card (`4242 4242 4242 4242`)
+    - Order persists to KV (verify via Wrangler dashboard or CLI)
+    - Webhook returns 200 to Stripe (check Stripe Dashboard)
+    - Email receipt sent and received (check inbox, verify rendering)
+    - Thank you page displays correctly (session ID, items, total, order ID)
+  - [ ] Out-of-stock test passed:
+    - Set inventory quantity to 0 in inventory.json for one variant
+    - Attempt checkout → returns 409 (Insufficient stock)
+    - Order not created (verify KV, Stripe Dashboard)
+  - [ ] Email rendering test passed:
+    - Check email in Gmail → renders correctly
+    - Check email in Outlook → renders correctly
+    - Check email in Apple Mail → renders correctly
+    - Check email on mobile → renders correctly
+  - [ ] CORS test passed (if cross-origin):
+    - Frontend calls Worker API → no CORS errors
+  - [ ] Environment isolation test passed:
+    - Staging checkout creates Stripe session in test mode (verify in Stripe Dashboard → filter by "test mode")
+    - KV order record written to staging namespace (verify via `wrangler kv:key list --env staging --binding ORDERS`)
+    - Email sent from staging email service account (check logs for staging API key usage)
+  - [ ] All issues fixed before proceeding to production deployment
+  - [ ] Test results documented in `staging-test-results.md`
+- **Validation contract:**
+  - TC-01: Happy path checkout → complete checkout flow → order created, email sent, thank you page displays
+  - TC-02: Out-of-stock blocking → checkout with zero quantity → returns 409, order not created
+  - TC-03: Email delivery → check inbox → email received within 60 seconds
+  - TC-04: Email rendering → open email in Gmail/Outlook/Apple Mail → no layout breaks
+  - TC-05: Webhook success → Stripe Dashboard shows webhook delivery (test mode) → returns 200
+  - TC-06: KV persistence → `wrangler kv:key list --env staging --binding ORDERS` → order record exists in staging namespace
+  - TC-07: Secrets isolation → Stripe Dashboard → session created in test mode (not live mode), confirms staging secrets used
+  - **Acceptance coverage:** TC-01 covers happy path, TC-02 covers out-of-stock, TC-03+TC-04 cover email, TC-05 covers webhook, TC-06+TC-07 cover namespace isolation
+  - **Validation type:** manual end-to-end testing
+  - **Run/verify:** Run checkout on staging, `wrangler kv:key list --env staging`, check Stripe Dashboard test mode, verify email inbox
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First staging test will reveal issues (email not sent, CORS error, wrong environment secrets)
+  - **Green evidence:** After fixing issues, all tests pass successfully
+  - **Refactor evidence:** Document test procedure for future deployments, add automated E2E tests (TASK-14)
+- **Planning validation:**
+  - Checks run: Reviewed staging deployment requirements, identified critical test cases
+  - Unexpected findings: None (standard staging testing pattern)
+- **What would make this ≥90%:** Automate E2E tests with Playwright or Cypress (covered in post-launch TASK-14)
+- **Rollout / rollback:**
+  - Rollout: No deployment for this task; purely testing and validation
+  - Rollback: N/A (testing task, no deployment changes)
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/staging-test-results.md`:
+    - Test cases executed
+    - Test results (pass/fail)
+    - Issues found and fixes applied
+    - Screenshots/evidence of successful tests
+- **Notes / references:**
+  - Go/No-Go checklist from fact-find (Phase 5: Staging Deployment & Testing)
+
+### TASK-12: Deploy frontend to production
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - External (Cloudflare Pages production deployment)
+  - `[readonly] apps/cochlearfit/package.json` (build config)
+- **Depends on:** TASK-11
+- **Blocks:** TASK-13
+- **Confidence:** 92%
+  - Implementation: 95% — Production deployment mirrors staging (separate Wrangler environment)
+  - Approach: 92% — Production Worker deployed independently with own KV namespace + secrets
+  - Impact: 88% — Routing must work per strategy (same-origin /api/* route configured), production secrets must be isolated
+- **Acceptance:**
+  - [ ] Production Worker deployed: `wrangler deploy --env production` → Worker deployed with production KV + secrets
+  - [ ] Production secrets already configured in TASK-09 (via `wrangler secret put --env production`, no suffixes)
+  - [ ] Frontend deployed to Cloudflare Pages production: `https://cochlearfit.com`
+  - [ ] Routing verified per strategy:
+    - **Same-origin (recommended):** `curl https://cochlearfit.com/api/health` → Worker responds (routed via zone)
+    - **Cross-origin:** CORS headers present in response
+  - [ ] Production KV namespace bound: `wrangler kv:namespace list` shows production namespace ID matches wrangler.toml
+  - [ ] Production secrets verified: `wrangler secret list --env production` shows 4 secrets (no suffixes)
+- **Validation contract:**
+  - TC-01: Production Worker deployment → `wrangler deploy --env production` → succeeds, shows production KV binding
+  - TC-02: Frontend deployment → git push to production branch → Cloudflare Pages build succeeds
+  - TC-03: Routing → `curl https://cochlearfit.com/api/checkout/session` (OPTIONS for CORS preflight) → responds
+  - TC-04: KV namespace isolation → production Worker uses production KV (different namespace ID than staging)
+  - TC-05: Secrets isolation → production Worker uses production Stripe key (Stripe Dashboard live mode, not test mode)
+  - TC-06: CORS (if needed) → frontend fetch → `Access-Control-Allow-Origin` header present
+  - **Acceptance coverage:** TC-01+TC-02 cover deployment, TC-03+TC-06 cover routing, TC-04+TC-05 cover isolation
+  - **Validation type:** deployment verification + manual testing
+  - **Run/verify:** `wrangler deploy --env production`, check Cloudflare dashboard, test routing
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First production deployment will have routing issues (route not configured for same-origin, or CORS misconfigured)
+  - **Green evidence:** After configuring production routing, frontend successfully calls Worker API
+  - **Refactor evidence:** Add deployment checklist, automate production deployment via CI/CD with manual approval gate
+- **Planning validation:**
+  - Checks run: Reviewed production deployment requirements
+  - Unexpected findings: None (standard deployment pattern)
+- **What would make this ≥90%:** Already at 90% (straightforward deployment after staging tests passed)
+- **Rollout / rollback:**
+  - Rollout: Production Worker deployed independently (`wrangler deploy --env production`), frontend deployed to production branch
+  - Rollback: Revert production Worker via `wrangler rollback --env production`, revert Pages via git
+- **Documentation impact:**
+  - Update `apps/cochlearfit/README.md`:
+    - Production deployment process (git push to production branch)
+    - How to verify deployment (check logs, test routing)
+- **Notes / references:**
+  - Go/No-Go checklist from fact-find (Phase 6: Production Deployment)
+
+### TASK-13: Run production smoke test
+- **Type:** IMPLEMENT
+- **Deliverable:** multi-deliverable
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - External (production environment testing)
+  - `docs/plans/cochlearfit-deployment-readiness/production-smoke-test.md` (new doc)
+- **Depends on:** TASK-12
+- **Blocks:** TASK-14
+- **Confidence:** 85%
+  - Implementation: 90% — Smoke test is straightforward (small-value real purchase, verify results)
+  - Approach: 85% — Real Stripe payment in live mode adds risk (must refund immediately)
+  - Impact: 80% — Production traffic will be live; errors affect real customers
+- **Acceptance:**
+  - [ ] Production Pages deployment verified (https://cochlearfit.com accessible)
+  - [ ] Smoke test executed:
+    - Real small-value purchase (e.g., $1 test product or lowest-priced variant)
+    - Use Stripe live mode (real card, real charge)
+    - Verify environment isolation: checkout uses production Stripe secret (check Stripe Dashboard for live mode payment)
+    - Email receipt arrives at customer email
+    - Order persists to production KV namespace (verify via `wrangler kv:key list --env production --binding ORDERS`)
+    - Thank you page displays correctly
+  - [ ] Production Worker logs monitored for first 5 orders (Cloudflare dashboard → `cochlearfit-worker-production` logs)
+  - [ ] No errors found in logs (Stripe API errors, email failures, inventory validation errors)
+  - [ ] Smoke test order refunded via Stripe Dashboard
+  - [ ] Test results documented in `production-smoke-test.md`
+- **Validation contract:**
+  - TC-01: Production checkout → complete real purchase → order created, email sent
+  - TC-02: Environment isolation → Stripe Dashboard → payment in live mode (confirms production secrets used)
+  - TC-03: KV namespace isolation → `wrangler kv:key list --env production --binding ORDERS` → order exists in production namespace
+  - TC-04: Email delivery → check inbox → email received within 60 seconds
+  - TC-05: Stripe Dashboard → payment visible in live mode → charge succeeded
+  - TC-06: Refund → Stripe Dashboard → refund succeeds
+  - **Acceptance coverage:** TC-01 covers smoke test, TC-02+TC-03 cover environment isolation, TC-04 covers email, TC-05+TC-06 cover Stripe
+  - **Validation type:** manual smoke testing with real payment
+  - **Run/verify:** Run checkout on production site with real card, verify results in Stripe Dashboard, KV dashboard, email inbox, Worker logs
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First production checkout will reveal deployment issues (wrong Worker bound to domain, CORS misconfigured)
+  - **Green evidence:** After verifying routing and secrets, production checkout uses production secrets and writes to production KV namespace
+  - **Refactor evidence:** Set up monitoring alerts for checkout errors, email failures, inventory validation errors
+- **Planning validation:**
+  - Checks run: Reviewed production smoke test requirements
+  - Unexpected findings: None (standard smoke testing pattern)
+- **What would make this ≥90%:** Automate smoke test with synthetic monitoring (e.g., Cloudflare Workers Analytics)
+- **Rollout / rollback:**
+  - Rollout: No deployment for this task; purely testing and validation
+  - Rollback: N/A (testing task, but can revert frontend deployment if critical issues found)
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/production-smoke-test.md`:
+    - Smoke test procedure
+    - Test results (pass/fail)
+    - Issues found and fixes applied
+    - Monitoring setup (alerts configured)
+- **Notes / references:**
+  - Go/No-Go checklist from fact-find (Phase 6: Production Deployment)
+
+### TASK-14: Add Worker unit tests (post-launch)
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/src/__tests__/` (new test directory)
+  - `apps/cochlearfit-worker/vitest.config.ts` (new file, Vitest configuration)
+  - `apps/cochlearfit-worker/package.json` (add test script)
+  - `[readonly] apps/cochlearfit-worker/src/index.ts` (test subjects)
+- **Depends on:** TASK-13
+- **Blocks:** -
+- **Confidence:** 70% ⚠️ BELOW THRESHOLD
+  - Implementation: 75% — Vitest for Workers is straightforward (recommended by Cloudflare), but Worker environment mocking adds complexity
+  - Approach: 70% — Standard unit testing pattern, but Worker runtime differences from Node.js require special setup
+  - Impact: 65% — Tests must mock Stripe API, email service API, inventory API, KV storage, and fetch requests
+- **Acceptance:**
+  - [ ] Vitest configured for Cloudflare Workers environment
+  - [ ] Test files created:
+    - `__tests__/inventory-validation.test.ts` — test inventory validation with mocked fetch
+    - `__tests__/stripe-session.test.ts` — test Stripe session creation with mocked Stripe API
+    - `__tests__/webhook-handler.test.ts` — test webhook handler with fixture payloads
+    - `__tests__/email-sending.test.ts` — test email sending with mocked email service
+    - `__tests__/signature-verification.test.ts` — test webhook signature verification with test secrets
+  - [ ] All tests pass: `pnpm --filter cochlearfit-worker test`
+  - [ ] Coverage report generated (aim for >70% coverage)
+  - [ ] Tests added to CI pipeline (run on every commit)
+- **Validation contract:**
+  - TC-01: Inventory validation → test in-stock → returns 200
+  - TC-02: Inventory validation → test out-of-stock → returns 409
+  - TC-03: Stripe session creation → test with valid payload → session created with correct line items
+  - TC-04: Webhook signature → test with valid signature → verification passes
+  - TC-05: Webhook signature → test with invalid signature → verification fails
+  - TC-06: Email sending → test with valid order → email API called with correct payload
+  - TC-07: Email sending → test with API error → logs error, returns 200 to Stripe (no retry)
+  - **Acceptance coverage:** TC-01+TC-02 cover inventory, TC-03 covers Stripe, TC-04+TC-05 cover signatures, TC-06+TC-07 cover email
+  - **Validation type:** unit testing (Vitest)
+  - **Run/verify:** `pnpm --filter cochlearfit-worker test`
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First test run will fail (mocks not set up, Worker environment issues)
+  - **Green evidence:** After setting up mocks and Worker environment, all tests pass
+  - **Refactor evidence:** Add test helpers for common mocks, improve test readability
+- **Planning validation:**
+  - Checks run: Reviewed Vitest for Cloudflare Workers documentation (Cloudflare recommended testing framework)
+  - Unexpected findings: Worker environment requires Vitest pool configuration and miniflare integration for KV mocking
+- **What would make this ≥90%:** Complete Worker-specific test setup (Vitest pool workers, miniflare for KV mocking, fetch mock for external APIs), achieve >80% coverage
+- **Rollout / rollback:**
+  - Rollout: Tests added to CI pipeline, run on every commit
+  - Rollback: N/A (tests don't affect production; can be skipped temporarily if blocking)
+- **Documentation impact:**
+  - Update `apps/cochlearfit-worker/README.md`:
+    - How to run tests (`pnpm test`)
+    - How to add new tests
+    - Mock setup patterns
+- **Notes / references:**
+  - Coverage gap identified in fact-find: "Worker has zero tests"
+  - Vitest for Cloudflare Workers (Cloudflare recommended): https://developers.cloudflare.com/workers/testing/vitest-integration/
+
+### TASK-15: Document fulfillment runbook
+- **Type:** IMPLEMENT
+- **Deliverable:** Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` (new doc)
+  - `[readonly] Stripe Dashboard` (order lookup reference)
+- **Depends on:** TASK-13
+- **Blocks:** -
+- **Confidence:** 85%
+  - Implementation: 90% — Straightforward documentation task, manual CSV export process is well-documented by Stripe
+  - Approach: 85% — Manual fulfillment via Stripe Dashboard is acceptable for MVP (no automated shipping integration needed)
+  - Impact: 80% — Operations team needs clear runbook to avoid fulfillment errors (wrong items shipped, missed orders)
+- **Acceptance:**
+  - [ ] Fulfillment runbook created in `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` with:
+    - Order lookup procedure (Stripe Dashboard → Payments → filter by date range)
+    - CSV export instructions (export columns: Order ID, Customer Email, Items, Quantities, Shipping Address)
+    - Inventory reconciliation steps (match exported orders against inventory.json stock levels)
+    - Fulfillment workflow (pick → pack → ship → mark fulfilled)
+    - Refund workflow (Stripe Dashboard → Refunds → issue refund, update inventory)
+    - Email remediation workflow (if order confirmation failed to send, manually resend from template)
+    - Error handling (duplicate orders, payment disputes, address issues)
+  - [ ] Runbook tested with real production order from TASK-13 smoke test
+  - [ ] Runbook includes screenshots of Stripe Dashboard for critical steps
+  - [ ] Runbook reviewed by operations team (or DRI for fulfillment)
+- **Validation contract:**
+  - TC-01: Order lookup → follow runbook to find production smoke test order → order found in Stripe Dashboard
+  - TC-02: CSV export → export test order → CSV contains expected columns (Order ID, Email, Items, Address)
+  - TC-03: Inventory reconciliation → match exported order against inventory.json → quantity reduction documented
+  - TC-04: Refund workflow → follow runbook to issue test refund → refund succeeds in Stripe Dashboard
+  - **Acceptance coverage:** TC-01+TC-02 cover lookup/export, TC-03 covers reconciliation, TC-04 covers refunds
+  - **Validation type:** manual verification (follow runbook steps)
+  - **Run/verify:** Follow runbook with production smoke test order, verify each step completes successfully
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First draft will be missing screenshots and error handling edge cases
+  - **Green evidence:** After adding screenshots and testing with real order, runbook is complete and operational
+  - **Refactor evidence:** Add troubleshooting section, document common errors (payment disputes, address validation failures)
+- **Planning validation:**
+  - Checks run: Reviewed Stripe Dashboard export features, confirmed CSV export includes necessary fields
+  - Unexpected findings: None (standard manual fulfillment pattern for MVP)
+- **What would make this ≥90%:** Test runbook with 5+ orders, get operations team sign-off on clarity and completeness
+- **Rollout / rollback:**
+  - Rollout: Documentation artifact, no deployment required
+  - Rollback: N/A (documentation only)
+- **Documentation impact:**
+  - Create `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` (this is the deliverable)
+- **Notes / references:**
+  - Overall acceptance criterion: "Fulfillment process documented (manual CSV export from Stripe Dashboard)"
+  - Manual fulfillment is acceptable for MVP per constraints section
+  - Future enhancement: integrate with shipping provider API (ShipStation, Shippo) for automated fulfillment
+
+## Parallelism Guide
+
+_Tasks will be sequenced and this section will be populated by `/lp-sequence` after plan is persisted._
+
+## Risks & Mitigations
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| **Stripe account setup delays (business verification)** | Medium | High | Start TASK-01 immediately; setup typically takes 1-3 days for verification. Have fallback plan for demo mode if verification delayed. |
+| **Worker catalog hardcoding missed in planning** | Low | Critical | **Already addressed** — TASK-04 and TASK-05 explicitly fix hardcoded catalog before deployment |
+| **Inventory authority API not ready at launch** | Medium | High | **Blocker per requirements** — TASK-02 must complete before TASK-09; delay launch if API not ready |
+| **Email deliverability issues (spam filters)** | Medium | Medium | Use reputable provider (Resend/SendGrid in TASK-03); verify sender domain DNS; test with multiple clients in TASK-06 |
+| **Customer email not in webhook payload** | High | High | **Mitigated** — TASK-07 implements session expansion for `customer_details.email` |
+| **Secrets leaked via wrangler.toml** | High | High | **Fix required** — TASK-09 removes committed secrets from wrangler.toml, uses `wrangler secret put` |
+| **CORS blocks production Pages origin** | Low | High | Test CORS in TASK-10 staging deployment; verify `PAGES_ORIGIN` includes all deployed origins |
+| **Stripe API version breaking change** | Low | Medium | **Mitigated** — TASK-07 pins API version with `Stripe-Version: "2024-12-18"` header |
+| **Worker tests missing cause regressions** | Medium | Medium | TASK-14 adds minimal Worker tests post-launch (inventory mock, email mock, signature verification) |
+| **KV namespace not provisioned in production** | Low | High | Verify KV binding in wrangler.toml matches production namespace in TASK-10; test in staging first |
+| **Environment isolation fails (wrong secrets used)** | Low | High | Wrangler environments provide true isolation (separate deployments, KV namespaces, secrets); TASK-10+TASK-11 verify staging uses staging secrets; TASK-12+TASK-13 verify production uses production secrets |
+| **Email template rendering breaks in Outlook** | Medium | Medium | TASK-06 tests email rendering across Gmail, Outlook, Apple Mail; use inline CSS and table layouts |
+
+## Observability
+
+**Logging:**
+- Worker logs all checkout session creation attempts (success/failure)
+- Worker logs all inventory validation API calls (in-stock/out-of-stock/error)
+- Worker logs all email sending attempts (success/failure, recipient email)
+- Worker logs all webhook deliveries (signature verification, payment status, order ID)
+- Worker deployment environment visible via Cloudflare dashboard (staging vs production Workers listed separately)
+
+**Metrics:**
+- Stripe Dashboard: payment success/failure rates, average order value
+- Email service dashboard: delivery/bounce/open rates
+- Cloudflare Workers Analytics: request volume, error rate, latency
+
+**Alerts:**
+- Checkout session creation failures (error rate > 5%)
+- Email sending failures (error rate > 10%)
+- Inventory validation API unavailability (503 errors)
+- Webhook signature verification failures
+- KV write errors
+
+**Dashboards:**
+- Stripe Dashboard: payment metrics
+- Email service dashboard: delivery metrics
+- Cloudflare Workers dashboard: request metrics, logs
+
+## Acceptance Criteria (overall)
+
+- [ ] Worker catalog no longer hardcoded (build-time bundling implemented)
+- [ ] Stripe account set up with test + production modes
+- [ ] Inventory validation API configured and blocking out-of-stock checkouts
+- [ ] Email order confirmations sent after payment success
+- [ ] All secrets configured via `wrangler secret put` (no committed secret values in repo)
+- [ ] Webhook idempotency implemented (duplicate Stripe events don't create duplicate orders)
+- [ ] Staging deployment tested end-to-end (checkout, email, webhook)
+- [ ] Production deployment tested with smoke test (real purchase, email sent)
+- [ ] No regressions (frontend cart tests still passing)
+- [ ] Wrangler environments configured (staging + production with separate KV namespaces)
+- [ ] CORS working (frontend can call Worker API)
+- [ ] First 5 production orders monitored with no critical errors
+- [ ] Fulfillment process documented (manual CSV export from Stripe Dashboard)
+
+## Launch Readiness Gate (Enforceable Checklist)
+
+**Run this 10-minute check before go-live:**
+
+### Configuration
+- [ ] `wrangler whoami` shows correct Cloudflare account
+- [ ] `wrangler kv:namespace list` shows 2 namespaces (staging + production)
+- [ ] `wrangler secret list --env staging` shows 4 secrets (Stripe, Email, Inventory token)
+- [ ] `wrangler secret list --env production` shows 4 secrets (Stripe, Email, Inventory token)
+- [ ] `git log --oneline --grep="secret"` returns no commits with secret values (verify rotation complete)
+
+### Stripe
+- [ ] Stripe Dashboard → Developers → Webhooks shows 2 endpoints (staging + production) with status "Enabled"
+- [ ] `stripe listen --forward-to <staging-worker-url>` forwards events successfully
+- [ ] Stripe Dashboard → API version matches `Stripe-Version` header in Worker code
+
+### Worker Health
+- [ ] `curl <staging-worker-url>/api/health` returns 200 (if health endpoint exists) OR session creation returns 200
+- [ ] `curl <production-worker-url>/api/health` returns 200 OR session creation returns 200
+- [ ] KV write test: `wrangler kv:key put --env staging "test:launch-check" "OK"` succeeds
+- [ ] KV write test: `wrangler kv:key put --env production "test:launch-check" "OK"` succeeds
+- [ ] KV read test: `wrangler kv:key get --env staging "test:launch-check"` returns "OK"
+- [ ] KV read test: `wrangler kv:key get --env production "test:launch-check"` returns "OK"
+
+### Inventory API
+- [ ] `curl -H "Authorization: Bearer <staging-token>" <staging-inventory-url>/api/inventory/validate` returns 200 or 400 (not 401/403/500)
+- [ ] Inventory API p95 latency < 500ms (check logs/dashboard)
+- [ ] Inventory API error rate < 1% over last 24 hours
+
+### Email Service
+- [ ] Email provider dashboard shows domain verified (green checkmark)
+- [ ] DNS verification: `dig TXT <sender-domain>` shows SPF, DKIM records
+- [ ] Test email send: `curl` email service API with test payload → email delivered to inbox (not spam)
+
+### Rollback Procedure
+- [ ] Rollback tested in staging: revert Worker deployment via `wrangler rollback --env staging` succeeds
+- [ ] Cloudflare Pages rollback tested: revert to previous deployment via dashboard succeeds
+- [ ] Rollback runbook documented with exact commands
+
+### On-Call Coverage
+- [ ] DRI assigned for launch window (name:_____________)
+- [ ] On-call escalation path documented (PagerDuty/Slack/Phone)
+- [ ] Monitoring dashboards accessible (Cloudflare Workers, Stripe, Email service)
+- [ ] Incident response runbook ready (common failure modes + fixes)
+
+**Sign-off:**
+- [ ] Technical lead reviewed: __________ (name + date)
+- [ ] Product/business stakeholder informed of go-live: __________ (name + date)
+
+## Decision Log
+
+- 2026-02-13: Initial plan created with 8 decisions from fact-find
+- 2026-02-13: **REVISED Decision 4:** Changed from "single Worker with runtime URL detection" to "Wrangler environments with [env.staging] and [env.production]" for better isolation and elimination of fragile URL substring matching
+- 2026-02-13: **REVISED Decision 5:** Updated Stripe API version from hardcoded "2024-12-18" to "use account-pinned version from Stripe Dashboard" (more maintainable)
+- 2026-02-13: **REVISED Decision 7:** Corrected email logic — `customer_details.email` is a nested field (not an expandable), already included in session retrieval
+- 2026-02-13: Added webhook idempotency requirement (critical for payment system reliability)
+- 2026-02-13: Added capacity/limits modeling (KV writes: 1k/day, can handle ~500 orders/day)
+- 2026-02-13: Added security requirements (secret rotation, log scrubbing, rate limiting, input validation)
+- 2026-02-13: Added enforceable launch readiness gate (10-minute checklist before go-live)

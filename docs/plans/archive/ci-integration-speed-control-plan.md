@@ -857,7 +857,7 @@ Risk factors for expanding sharding:
 
 ## Scope Extraction
 The following item is intentionally excluded from this plan and should be tracked separately:
-- Conflict-safe merge assistant (`scripts/git/*` + runbook changes) is tracked in `docs/plans/git-conflict-ops-hardening-plan.md`.
+- Conflict-safe merge assistant (`scripts/git/*` + runbook changes) is tracked in `docs/plans/archive/git-conflict-ops-hardening-plan-archived-2026-02-14.md`.
 
 ## Overall-confidence calculation
 - Complete IMPLEMENT: CI-SC-01 (91%), CI-SC-02 (84%), CI-SC-03 (88%), CI-SC-05 (86%), CI-SC-07 (82%).

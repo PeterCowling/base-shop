@@ -87,7 +87,7 @@ The business strategy and 90-day outcome contract are already defined in `docs/b
 #### Checkout and Confirmation
 - Worker topology and required env vars: `apps/cochlearfit/README.md`.
 - Thank-you flow depends on reading checkout session status (worker GET endpoint).
-  - Evidence: `docs/plans/commerce-core-readiness-plan.md` (COM-302 notes on GET session details)
+  - Evidence: `docs/plans/archive/commerce-core-readiness-plan-archived-2026-02-14.md` (COM-302 notes on GET session details)
 
 #### Policies / Compliance Copy
 - EU terms (and brand disclaimers): `apps/cochlearfit/i18n/en.json`, `apps/cochlearfit/i18n/it.json`.
@@ -139,7 +139,7 @@ This section integrates the useful parts of the retired deployment-readiness fac
 ### Related Plans
 - Platform commerce hardening and CochlearFit integration work is already planned (not Week-1 scoped by default):
   - `docs/plans/commerce-core-readiness-fact-find.md`
-  - `docs/plans/commerce-core-readiness-plan.md`
+  - `docs/plans/archive/commerce-core-readiness-plan-archived-2026-02-14.md`
 
 ### Delivery & Channel Landscape (mixed)
 - Audience/recipient:

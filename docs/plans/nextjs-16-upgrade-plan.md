@@ -2,19 +2,21 @@
 Type: Plan
 Status: Active
 Domain: Platform
-Last-reviewed: 2026-02-10
+Last-reviewed: 2026-02-14
 Relates-to charter: none
 Workstream: Engineering
 Created: 2026-01-24
-Last-updated: 2026-02-10
+Last-updated: 2026-02-14
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Execution-Track: code
-Primary-Execution-Skill: build-feature
+Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
 Overall-confidence: 84%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Next.js 16 Upgrade Plan
@@ -489,3 +491,16 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-10: **Middleware stays as `middleware.ts`.** All 3 middleware files (brikette, cms, business-os) use Edge runtime features. `proxy.ts` only supports Node runtime. No migration needed.
 - 2026-02-10: **next-intl upgrade deferred.** Usage is minimal (1 file in template-app). Will check peer dep compatibility at CHECKPOINT and upgrade only if required.
 - 2026-02-10: **next-auth stays on v4.** Upgrade to 4.24.12+ for Next 16 peer dep support, not to v5 (separate migration).
+
+## Fact-Check Log
+
+- 2026-02-14: **Pre-execution verification completed.** All 8 tasks verified as Pending. Repository state confirms:
+  - Next.js 15.3.9 installed (node_modules/next/package.json)
+  - All 14 apps reference `^15.3.9` in package.json
+  - Root pnpm.overrides.next = "15.3.9"
+  - No `--webpack` flags in any build/dev scripts
+  - eslint config present in apps/prime/next.config.mjs:14-16 and apps/cms/next.config.mjs:163-166
+  - Synchronous params patterns found in cover-me-pretty (collections/[slug]/page.tsx:5, blog/page.tsx:26,92) and cms (preview/[token]/page.tsx:23, api/auth/[...nextauth]/route.ts:35)
+  - next-auth 4.24.11, eslint-config-next 15.3.8
+  - @opennextjs/cloudflare ^1.16.3 in all 4 CF apps
+  - Plan is accurate and ready for execution. No status corrections needed.

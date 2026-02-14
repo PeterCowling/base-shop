@@ -68,7 +68,7 @@ describe("ApartmentBookContent GA4 enrichment (GA4-07 TC-02/TC-04)", () => {
   it("fires begin_checkout with price, quantity (nights), value, and currency", () => {
     render(<ApartmentBookContent lang="en" />);
 
-    const ctaButton = screen.getByText("book.checkAvailability");
+    const ctaButton = screen.getByText("cta.flex");
     fireEvent.click(ctaButton);
 
     expect(window.gtag).toHaveBeenCalledWith(
@@ -92,7 +92,7 @@ describe("ApartmentBookContent GA4 enrichment (GA4-07 TC-02/TC-04)", () => {
   it("still fires begin_checkout with item_id and item_name (regression)", () => {
     render(<ApartmentBookContent lang="en" />);
 
-    const ctaButton = screen.getByText("book.checkAvailability");
+    const ctaButton = screen.getByText("cta.flex");
     fireEvent.click(ctaButton);
 
     expect(window.gtag).toHaveBeenCalledWith(

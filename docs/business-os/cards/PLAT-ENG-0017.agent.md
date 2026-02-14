@@ -39,4 +39,4 @@ Run tests in dependency order (leaf packages first, apps last). This ensures:
 
 ### Phase 1: Leaf Packages (No Internal Dependencies)
 
-[... see full plan in docs/plans/test-sweep-plan.md]
+[... see full plan in docs/plans/archive/test-sweep-plan-archived-2026-02-14.md]

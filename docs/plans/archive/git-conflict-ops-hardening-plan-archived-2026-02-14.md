@@ -1,13 +1,14 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Domain: Repo/Git
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-02-14
 Created: 2026-02-09
-Last-updated: 2026-02-09
+Last-updated: 2026-02-14
 Relates-to charter: none
 Feature-Slug: git-conflict-ops-hardening
-Related-Fact-Find: docs/plans/ci-integration-speed-control-fact-find.md
+Related-Fact-Find: docs/briefs/git-conflict-enforcement-balance-fact-find.md
+Prior-Fact-Find: docs/plans/archive/ci-integration-speed-control-fact-find.md (archived)
 Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: lp-build
@@ -16,12 +17,26 @@ Overall-confidence: 69%
 Confidence-Method: min(Implementation,Approach,Impact); weighted by evidence completeness and safety risk
 Business-Unit: PLAT
 Card-ID:
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
+Archived-Date: 2026-02-14
 ---
 
 # Git Conflict Ops Hardening Plan
 
 ## Summary
 This plan defines a safe, no-loss conflict-resolution workflow and tooling track that was extracted from CI speed optimization scope. It is investigation-first and remains `Draft` until safety evidence is complete.
+
+**NOTE:** This is the original v1 approach (standalone merge-assistant script). A v2 reframing exists at `docs/plans/archive/git-conflict-ops-hardening-plan.md` (dated 2026-02-10, Status: Historical) that shifts to embedding controls in existing enforcement infrastructure. This v1 plan remains as the baseline investigation-first approach.
+
+### Fact-Check Audit (2026-02-14)
+**Status verification completed. Key findings:**
+- GIT-COH-01: ✓ Complete with verified deliverable at `docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md`
+- GIT-COH-02: Pending (no contract doc exists)
+- GIT-COH-03: Pending (no merge-assistant script exists)
+- GIT-COH-04: Pending (no compliance report exists)
+- Fact-find references updated to reflect archived source and new primary briefing
+- Plan evolution (v1→v2) documented in decision log
 
 ## Plan Framing
 This is a pre-activation draft with one blocked IMPLEMENT task.
@@ -69,7 +84,8 @@ For this plan, “no-loss” means all of the following:
 - Conflict resolutions are auditable (snapshot before/after and explicit changed-file list).
 
 ## Fact-Find and Evidence Base
-- Extraction source: `docs/plans/ci-integration-speed-control-plan.md` (Scope Extraction).
+- Extraction source: `docs/plans/archive/ci-integration-speed-control-plan.md` (Scope Extraction, archived).
+- Primary fact-find: `docs/briefs/git-conflict-enforcement-balance-fact-find.md` (2026-02-10, identifies mechanistic enforcement gaps).
 - Existing conflict-process evidence: `docs/git-safety.md` (manual merge conflict process and safety guidance).
 - Policy references:
   - `AGENTS.md` (destructive command prohibitions, writer lock requirements)
@@ -126,7 +142,7 @@ For this plan, “no-loss” means all of the following:
   - Explicit list of gaps automation can safely address vs gaps requiring human intervention.
 - **Validation contract:**
   - Validation type: evidence review and reproducible fixture list.
-  - Evidence: `docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md`.
+  - Evidence: `docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md` (VERIFIED: file exists, dated 2026-02-09, Status: Active).
 - **What would make this >=90%:** run taxonomy against three recent real conflict incidents from git history and confirm coverage.
 
 ### GIT-COH-02: Define script contract and fixture matrix
@@ -136,7 +152,7 @@ For this plan, “no-loss” means all of the following:
 - **Affects:** planned `scripts/git/*` interface, docs contract section, test fixture definitions
 - **Depends on:** GIT-COH-01
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Pending (VERIFIED 2026-02-14: no contract doc or fixture matrix exists)
 - **Confidence:** 74% (Implementation 76%, Approach 74%, Impact 74%)
 - **Acceptance:**
   - Script entry/exit contract defined (inputs, outputs, failure modes, audit logs).
@@ -155,7 +171,7 @@ For this plan, “no-loss” means all of the following:
 - **Affects:** `scripts/git/*`, script tests, operator docs
 - **Depends on:** GIT-COH-02
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Pending (VERIFIED 2026-02-14: no merge-assistant script exists in scripts/git/)
 - **Confidence:** 66% (Implementation 68%, Approach 66%, Impact 66%)
 - **Acceptance:**
   - Script performs snapshot -> additive merge attempt -> explicit conflict inventory -> no-loss checks.
@@ -177,7 +193,7 @@ For this plan, “no-loss” means all of the following:
 - **Affects:** `AGENTS.md` references, `docs/git-safety.md`, adoption protocol docs
 - **Depends on:** GIT-COH-03
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Pending (VERIFIED 2026-02-14: no compliance report or go/no-go decision exists)
 - **Confidence:** 72% (Implementation 74%, Approach 72%, Impact 72%)
 - **Acceptance:**
   - Compliance checklist completed against all forbidden command classes.
@@ -205,6 +221,8 @@ For this plan, “no-loss” means all of the following:
 - 2026-02-09: Extracted from `ci-integration-speed-control-plan` to avoid scope creep and confidence dilution.
 - 2026-02-09: Expanded from stub into draft plan with explicit execution profile, constraints, and blocked implementation path.
 - 2026-02-09: Completed GIT-COH-01 with taxonomy artifact at `docs/plans/git-conflict-ops-hardening-conflict-taxonomy.md`.
+- 2026-02-10: Plan reframed in v2 (archived version) based on `docs/briefs/git-conflict-enforcement-balance-fact-find.md`. V2 shifts approach from standalone script to embedded mechanistic controls. This v1 remains as baseline.
+- 2026-02-14: Fact-check audit - Updated fact-find references, clarified v1/v2 distinction. GIT-COH-01 deliverable verified present. GIT-COH-02/03/04 remain pending with no deliverables yet.
 
 ## Overall-confidence calculation
 - Investigation and planning readiness: moderate (`70-74%`) due incomplete evidence baseline.

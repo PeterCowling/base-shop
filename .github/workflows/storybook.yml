@@ -84,7 +84,7 @@ jobs:
       - uses: actions/setup-node@v4
         if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         with:
-          node-version: 20
+          node-version: 20.19.4
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
         if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}

@@ -14,12 +14,9 @@ export default async function LocaleLayout({
   params,
 }: {
   children: ReactNode;
-  /** `[lang]` is now an *optional catch-all*, so the param is `string[] | undefined` */
-  params: Promise<{ lang?: string[] }>;
+  params: Promise<{ lang: string }>;
 }) {
-  /* `lang` will be `undefined` for `/`, or e.g. `"en"` for `/en`          */
-  const { lang: langParam } = await params;
-  const [raw] = langParam ?? [];
+  const { lang: raw } = await params;
   const lang: Locale = resolveLocale(raw);
 
   /* Dynamic import of the locale JSON. Webpack bundles only en/de/it.     */

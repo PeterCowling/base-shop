@@ -11,9 +11,6 @@ const nextConfig = {
   ),
   // Trailing slashes required for Cloudflare Pages static routing
   trailingSlash: true,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 export default nextConfig;

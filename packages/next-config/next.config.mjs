@@ -12,7 +12,6 @@ const coreEnv = {
 };
 
 export default withShopCode(coreEnv.SHOP_CODE, {
-  eslint: { ignoreDuringBuilds: true },
   webpack(config, { isServer, webpack }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {

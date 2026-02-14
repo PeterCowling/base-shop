@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@10.12.1",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.9.0"
   },
   "scripts": {
     "dev": "turbo run dev",
@@ -231,7 +231,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jose": "^4.15.9",
     "jsonwebtoken": "^9.0.2",
-    "next": "15.3.9",
+    "next": "16.1.6",
     "next-auth": "4.24.11",
     "next-intl": "^3.5.0",
     "next-secure-headers": "^2.2.0",
@@ -345,7 +345,7 @@
     "minimatch": "^9.0.5",
     "msw": "^2.6.5",
     "msw-storybook-addon": "^2.0.3",
-    "next": "15.3.9",
+    "next": "16.1.6",
     "nock": "^13.4.0",
     "nyc": "^15.1.0",
     "playwright": "^1.55.1",
@@ -380,7 +380,7 @@
   },
   "pnpm": {
     "overrides": {
-      "next": "15.3.9",
+      "next": "16.1.6",
       "@shadcn/ui": "0.0.4",
       "yallist": "4.0.0",
       "dom-serializer": "2.0.0",

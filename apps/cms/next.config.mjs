@@ -160,10 +160,6 @@ const nextConfig = {
       },
     ];
   },
-  eslint: {
-    // Speed up CI and avoid blocking builds on lint-only rules
-    ignoreDuringBuilds: true,
-  },
 
   // Allow CI/test builds even if TypeScript type-checking complains about
   // workspace path aliases that are resolved at webpack-level only.

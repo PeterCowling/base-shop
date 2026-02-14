@@ -32,8 +32,8 @@ export default async function PreviewPage({
     notFound();
   }
   if (res.status === 401) {
-    // i18n-exempt — HTTP status text; not rendered UI
-    return new Response("Unauthorized", { status: 401 });
+    // Pages can't return a Response; treat unauthorized preview as not-found.
+    notFound();
   }
   if (!res.ok) {
     // Use server translations for thrown error message

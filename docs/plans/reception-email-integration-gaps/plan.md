@@ -4,14 +4,14 @@ Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-14
-Last-updated: 2026-02-14 (TASK-14 re-planned)
+Last-updated: 2026-02-14 (TASK-15 re-planned to 80%)
 Feature-Slug: reception-email-integration-gaps
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 80%
+Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (pending tasks only)
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -134,8 +134,8 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 | TASK-11 | IMPLEMENT | Wire useCancelBooking mutation | 85% | M | Complete (2026-02-14) | TASK-05,TASK-07 | - |
 | TASK-12 | CHECKPOINT | Reassess Phase 3 approach | 95% | S | Complete (2026-02-14) | TASK-02,TASK-06,TASK-08,TASK-09,TASK-10,TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Create cancellation email parser | 85% | M | Complete (2026-02-14) | TASK-12 | TASK-14 |
-| TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 80% | L | Pending | TASK-13 | TASK-15 |
-| TASK-15 | IMPLEMENT | Integrate with Gmail organize | 75% ⚠️ | M | Pending | TASK-14 | TASK-16 |
+| TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 80% | L | Complete (2026-02-14) | TASK-13 | TASK-15 |
+| TASK-15 | IMPLEMENT | Integrate with Gmail organize | 80% | M | Pending | TASK-14 | TASK-16 |
 | TASK-16 | IMPLEMENT | Add failure queue labels | 90% | S | Pending | TASK-15 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -1188,10 +1188,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Execution-Skill:** /lp-build
 - **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/process-cancellation-email.ts`
 - **Depends on:** TASK-14
-- **Confidence:** 75% ⚠️ BELOW THRESHOLD
-  - Implementation: 80% — Clear integration point in Gmail organize workflow (before line 166)
-  - Approach: 80% — Exception path pattern validated by scout (NON_CUSTOMER_SUBJECT_PATTERNS at line 166)
-  - Impact: 75% — OTA filtering clear (from-address check), false positive risk reduced
+- **Confidence:** 80%
+  - Implementation: 80% — Exception path precedent confirmed at gmail.ts:824-832 (BOOKING_MONITOR pattern)
+  - Approach: 80% — From + subject dual-check pattern proven in production
+  - Impact: 80% — OTA filtering proven by TASK-13 (parser rejects non-Octorate), tool API proven by TASK-14 (6/6 tests), false positive eliminated by exception path
 - **Acceptance:**
   - Gmail organize workflow detects cancellation pattern BEFORE non-customer classification
   - Pattern: subject `/new cancellation/i` + from `noreply@smtp.octorate.com` ONLY
@@ -1232,7 +1232,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Evidence: Fact-find documents exception path must run BEFORE non-customer classification
   - Evidence: `/ops-inbox` skill invokes gmail-organize-inbox (manual trigger mechanism)
 
-#### Re-plan Update (2026-02-14)
+#### Re-plan Update (2026-02-14) - Initial Scout
 - **Previous confidence:** 75% (Implementation: 80%, Approach: 75%, Impact: 70%)
 - **Updated confidence:** 75% (Implementation: 80%, Approach: 80%, Impact: 75%)
   - **Evidence class:** E1 (static audit from scout)
@@ -1253,6 +1253,31 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Acceptance: validated (pattern detection clear, label names defined)
   - Validation plan: unchanged
   - What would make this ≥80%: Complete TASK-13 and TASK-14 first, then reassess with full workflow in place
+
+#### Re-plan Update (2026-02-14) - Post-TASK-14 Evidence
+- **Previous confidence:** 75% (Implementation: 80%, Approach: 80%, Impact: 75%)
+- **Updated confidence:** 80% ✅ ABOVE THRESHOLD (Implementation: 80%, Approach: 80%, Impact: 80%)
+  - **Evidence class:** E2 (executable verification from TASK-14 completion + TASK-13 parser tests)
+  - Implementation: 80% — Integration point confirmed at gmail.ts:824-832 (BOOKING_MONITOR exception path precedent)
+  - Approach: 80% — Exception path pattern proven in production (from + subject dual-check runs before NON_CUSTOMER classification)
+  - Impact: 80% — OTA filtering proven by TASK-13 parser tests (7/7 passing, returns null for non-Octorate senders), tool API proven by TASK-14 (6/6 tests passing, all failure modes handled), false positive risk eliminated by exception path precedent
+- **Investigation performed:**
+  - Evidence: TASK-14 completion (hash: 2fcee5b832) — processCancellationEmail tool with 6/6 tests passing
+  - Evidence: TASK-13 completion — parser OTA filtering proven (isFromOctorate check returns null for hostelworld/booking.com)
+  - Repo: `packages/mcp-server/src/tools/gmail.ts:824-832` (BOOKING_MONITOR exception handler pattern)
+  - Tool API: `processCancellationEmail(emailId, emailHtml, from, firebaseUrl, apiKey?)` → `{status, reason?, reservationCode?, activitiesWritten?}`
+  - Error modes: parse-failed, booking-not-found, write-failed (all tested and working)
+- **Decision / resolution:**
+  - TASK-14 completion provides E2 evidence for tool integration (proven API, comprehensive error handling)
+  - TASK-13 completion provides E2 evidence for OTA filtering (parser rejects non-Octorate emails before tool invocation)
+  - Exception path pattern validated by BOOKING_MONITOR precedent (lines 824-832)
+  - Impact confidence raised from 75% → 80% based on E2 evidence closing all uncertainty
+  - **Task is now above 80% threshold and ready for `/lp-build`**
+- **Changes to task:**
+  - Status: Ready for build (dependencies complete, confidence ≥80%)
+  - Acceptance: unchanged
+  - Validation plan: unchanged (TC-01 through TC-05 already enumerated)
+  - Dependencies: TASK-14 complete
 
 ### TASK-16: Add failure queue Gmail labels
 - **Type:** IMPLEMENT

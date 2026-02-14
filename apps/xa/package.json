@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.16.3",
-    "next": "^15.3.9",
+    "next": "^16.1.6",
     "typescript": "5.8.3"
   }
 }

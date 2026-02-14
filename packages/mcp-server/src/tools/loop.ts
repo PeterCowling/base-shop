@@ -14,8 +14,10 @@ import {
   anomalyGrainSchema,
   assertRefreshStateTransition,
   buildEnvelope,
+  contentSourceRecordSchema,
   determineWave2Quality,
   evaluateAnomalyBaseline,
+  parseContentSourceRecord,
   parseWave2MetricRecord,
   refreshEnqueueStateSchema,
   validateRunPacketBounds,
@@ -50,8 +52,21 @@ const loopStatusInputSchema = z.object({
   current_stage: z.string().min(1),
 });
 
+const MEASURE_CONNECTOR_SOURCES = [
+  "stripe",
+  "d1_prisma",
+  "cloudflare",
+  "ga4_search_console",
+  "email_support",
+] as const;
+
+const MEASURE_ALL_SOURCES = [...MEASURE_CONNECTOR_SOURCES, "startup_loop_metrics"] as const;
+
+const measureSourceSchema = z.enum(MEASURE_ALL_SOURCES);
+
 const measureSnapshotInputSchema = loopStatusInputSchema.extend({
   metric: z.string().min(1).optional(),
+  source: measureSourceSchema.optional(),
 });
 
 const packetBuildInputSchema = loopStatusInputSchema;
@@ -77,6 +92,23 @@ const refreshEnqueueInputSchema = loopStatusInputSchema.extend({
   reason: z.string().min(1),
   requestedBy: z.string().min(1),
   transitionTo: refreshEnqueueStateSchema.optional(),
+});
+
+const contentSourceIdSchema = z.string().regex(/^[a-z0-9][a-z0-9_-]{1,62}$/);
+
+const contentSourceInputSchema = z.object({
+  sourceId: contentSourceIdSchema,
+  url: z.string().url(),
+  preferSuffix: z.boolean().optional().default(false),
+  maxChars: z.number().int().min(1).max(250_000).optional().default(120_000),
+});
+
+const loopContentSourcesCollectInputSchema = loopStatusInputSchema.extend({
+  sources: z.array(contentSourceInputSchema).min(1).max(20),
+});
+
+const loopContentSourcesListInputSchema = loopStatusInputSchema.extend({
+  sourceId: contentSourceIdSchema.optional(),
 });
 
 const anomalyDetectInputSchema = loopStatusInputSchema.extend({
@@ -109,6 +141,41 @@ const metricEntrySchema = z.object({
   timestamp: z.string().optional(),
   metric_name: z.string().optional(),
   value: z.number().optional(),
+});
+
+const sourceMetricPointSchema = z.object({
+  metric: z.string().min(1),
+  value: z.number(),
+  valueType: z.enum(["currency", "count", "ratio", "duration"]),
+  unit: z.string().min(1),
+  segments: z.record(z.string(), z.string().or(z.number()).or(z.boolean())).default({}),
+});
+
+const sourceMetricsArtifactSchema = z.object({
+  schemaVersion: z.literal("measure.source.metrics.v1"),
+  source: z.enum(MEASURE_CONNECTOR_SOURCES),
+  observedAt: z.string().datetime({ offset: true }),
+  points: z.array(sourceMetricPointSchema).default([]),
+});
+
+const analyticsSunsetRunSchema = z.object({
+  runId: z.string().min(1),
+  generatedAt: z.string().datetime({ offset: true }),
+  fullCoverage: z.boolean(),
+  sourceCoverage: z.record(z.string(), z.number().int().nonnegative()),
+});
+
+const analyticsSunsetStatusSchema = z.object({
+  schemaVersion: z.literal("analytics-sunset.v1"),
+  business: z.string().min(1),
+  requiredSources: z.array(z.enum(MEASURE_CONNECTOR_SOURCES)).min(1),
+  minimumConsecutiveRuns: z.number().int().positive(),
+  transitionWindowDays: z.number().int().positive(),
+  updatedAt: z.string().datetime({ offset: true }),
+  runs: z.array(analyticsSunsetRunSchema).default([]),
+  consecutiveFullCoverageRuns: z.number().int().nonnegative(),
+  sunsetEffectiveAt: z.string().datetime({ offset: true }).nullable(),
+  sunsetActive: z.boolean(),
 });
 
 const refreshCollectorStatusSchema = z.object({
@@ -148,6 +215,33 @@ const refreshQueueSchema = z.object({
   collector: z.string().min(1),
   updatedAt: z.string().datetime({ offset: true }),
   requests: z.array(refreshRequestEntrySchema).default([]),
+});
+
+const contentSourcesIndexSchema = z.object({
+  schemaVersion: z.literal("content.sources.index.v1"),
+  business: z.string().min(1),
+  runId: z.string().min(1),
+  collector: z.literal("content_sources"),
+  collectedAt: z.string().datetime({ offset: true }),
+  sourceCount: z.number().int().nonnegative(),
+  quality: z.enum(["ok", "partial", "blocked"]),
+  qualityNotes: z.array(z.string()).default([]),
+  coverage: z.object({
+    expectedPoints: z.number().int().positive(),
+    observedPoints: z.number().int().nonnegative(),
+    samplingFraction: z.number().min(0).max(1),
+  }),
+  provenance: z.object({
+    schemaVersion: z.literal("provenance.v1"),
+    querySignature: z.string().min(1),
+    generatedAt: z.string().datetime({ offset: true }),
+    datasetId: z.string().min(1),
+    sourceRef: z.literal("loop_content_sources_collect"),
+    artifactRefs: z.array(z.string().min(1)).min(1),
+    quality: z.enum(["ok", "partial", "blocked"]),
+  }),
+  artifactRefs: z.array(z.string().min(1)).min(1),
+  sources: z.array(contentSourceRecordSchema).default([]),
 });
 
 export const loopToolPoliciesRaw = {
@@ -220,6 +314,22 @@ export const loopToolPoliciesRaw = {
     sideEffects: "filesystem_write",
     allowedStages: [...STARTUP_LOOP_STAGES],
     auditTag: "refresh:enqueue:guarded",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  loop_content_sources_collect: {
+    permission: "read",
+    sideEffects: "filesystem_write",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "loop:content-sources:collect",
+    contextRequired: ["business", "runId", "current_stage"],
+    sensitiveFields: ["baseEntitySha"],
+  },
+  loop_content_sources_list: {
+    permission: "read",
+    sideEffects: "none",
+    allowedStages: [...STARTUP_LOOP_STAGES],
+    auditTag: "loop:content-sources:list",
     contextRequired: ["business", "runId", "current_stage"],
     sensitiveFields: ["baseEntitySha"],
   },
@@ -299,6 +409,11 @@ export const loopTools = [
         runId: { type: "string", description: "Startup-loop run identifier" },
         current_stage: { type: "string", description: "Current startup-loop stage" },
         metric: { type: "string", description: "Optional metric filter" },
+        source: {
+          type: "string",
+          description: "Optional source filter",
+          enum: [...MEASURE_ALL_SOURCES],
+        },
       },
       required: ["business", "runId", "current_stage"],
     },
@@ -379,6 +494,47 @@ export const loopTools = [
         },
       },
       required: ["business", "runId", "current_stage", "requestId", "write_reason", "reason", "requestedBy"],
+    },
+  },
+  {
+    name: "loop_content_sources_collect",
+    description: "Collect and persist markdown source artifacts for standing refresh workflows",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        sources: {
+          type: "array",
+          minItems: 1,
+          items: {
+            type: "object",
+            properties: {
+              sourceId: { type: "string", description: "Stable source identifier" },
+              url: { type: "string", description: "Public URL to fetch as markdown" },
+              preferSuffix: { type: "boolean", description: "Append /markdown suffix", default: false },
+              maxChars: { type: "number", description: "Maximum markdown characters", default: 120000 },
+            },
+            required: ["sourceId", "url"],
+          },
+        },
+      },
+      required: ["business", "runId", "current_stage", "sources"],
+    },
+  },
+  {
+    name: "loop_content_sources_list",
+    description: "Read persisted markdown source metadata for a run",
+    inputSchema: {
+      type: "object",
+      properties: {
+        business: { type: "string", description: "Business code" },
+        runId: { type: "string", description: "Startup-loop run identifier" },
+        current_stage: { type: "string", description: "Current startup-loop stage" },
+        sourceId: { type: "string", description: "Optional source identifier filter" },
+      },
+      required: ["business", "runId", "current_stage"],
     },
   },
   {
@@ -556,6 +712,206 @@ function mapMetricEntryToRecord(
   });
 }
 
+function buildMeasureRecordFromPoint(input: {
+  business: string;
+  source: z.infer<typeof measureSourceSchema>;
+  observedAt: string;
+  point: z.infer<typeof sourceMetricPointSchema>;
+  sourceRef: string;
+}): ReturnType<typeof parseWave2MetricRecord> {
+  return parseWave2MetricRecord({
+    schemaVersion: "measure.record.v1",
+    business: input.business,
+    source: input.source,
+    metric: input.point.metric,
+    window: {
+      startAt: input.observedAt,
+      endAt: input.observedAt,
+      grain: "day",
+      timezone: "UTC",
+    },
+    segmentSchemaVersion: "segments.v1",
+    segments: input.point.segments,
+    valueType: input.point.valueType,
+    value: input.point.value,
+    unit: input.point.unit,
+    quality: "ok",
+    qualityNotes: [],
+    coverage: {
+      expectedPoints: 1,
+      observedPoints: 1,
+      samplingFraction: 1,
+    },
+    refreshedAt: input.observedAt,
+    provenance: {
+      schemaVersion: "provenance.v1",
+      querySignature: `sha256:${hashPayload({ source: input.source, point: input.point })}`,
+      generatedAt: input.observedAt,
+      datasetId: `${input.business}-${input.source}-${input.point.metric}`,
+      sourceRef: input.sourceRef,
+      artifactRefs: [input.sourceRef],
+      quality: "ok",
+    },
+  });
+}
+
+async function collectMeasureRecords(params: {
+  business: string;
+  runId: string;
+  metricFilter?: string;
+  sourceFilter?: z.infer<typeof measureSourceSchema>;
+}): Promise<{
+  records: Array<ReturnType<typeof parseWave2MetricRecord>>;
+  sourceCoverage: Record<string, number>;
+  artifactRefs: string[];
+  latestTimestamp: string;
+}> {
+  const paths = resolveLoopArtifactPaths(params.business, params.runId);
+  const artifactRefs: string[] = [];
+  const records: Array<ReturnType<typeof parseWave2MetricRecord>> = [];
+  const sourceCoverage: Record<string, number> = Object.fromEntries(
+    MEASURE_ALL_SOURCES.map((source) => [source, 0])
+  );
+
+  const metricsRaw = await readJsonLines(paths.metricsPath);
+  if (metricsRaw) {
+    artifactRefs.push(paths.metricsPath);
+    const parsedEntries = metricsRaw.map((entry) => metricEntrySchema.parse(entry));
+    for (const [index, entry] of parsedEntries.entries()) {
+      if (params.metricFilter && entry.metric_name !== params.metricFilter) {
+        continue;
+      }
+      if (params.sourceFilter && params.sourceFilter !== "startup_loop_metrics") {
+        continue;
+      }
+      const record = mapMetricEntryToRecord(
+        params.business,
+        entry,
+        `${paths.metricsPath}#${index}`
+      );
+      records.push(record);
+      sourceCoverage.startup_loop_metrics += 1;
+    }
+  }
+
+  for (const source of MEASURE_CONNECTOR_SOURCES) {
+    if (params.sourceFilter && params.sourceFilter !== source) {
+      continue;
+    }
+    const artifactPath = sourceMetricsArtifactPath(paths, source);
+    const sourceArtifactRaw = await readJsonFile(artifactPath);
+    if (!sourceArtifactRaw) {
+      continue;
+    }
+    artifactRefs.push(artifactPath);
+    const sourceArtifact = sourceMetricsArtifactSchema.parse(sourceArtifactRaw);
+    for (const [index, point] of sourceArtifact.points.entries()) {
+      if (params.metricFilter && point.metric !== params.metricFilter) {
+        continue;
+      }
+      const record = buildMeasureRecordFromPoint({
+        business: params.business,
+        source: sourceArtifact.source,
+        observedAt: sourceArtifact.observedAt,
+        point,
+        sourceRef: `${artifactPath}#${index}`,
+      });
+      records.push(record);
+      sourceCoverage[sourceArtifact.source] += 1;
+    }
+  }
+
+  const latestTimestamp =
+    records.map((record) => record.refreshedAt).sort().at(-1) ?? new Date(0).toISOString();
+
+  return {
+    records,
+    sourceCoverage,
+    artifactRefs,
+    latestTimestamp,
+  };
+}
+
+function hasFullConnectorCoverage(sourceCoverage: Record<string, number>): boolean {
+  return MEASURE_CONNECTOR_SOURCES.every((source) => (sourceCoverage[source] ?? 0) > 0);
+}
+
+function countConsecutiveFullCoverageRuns(
+  runs: Array<z.infer<typeof analyticsSunsetRunSchema>>
+): number {
+  const sorted = runs.slice().sort((left, right) => left.generatedAt.localeCompare(right.generatedAt));
+  let count = 0;
+  for (let index = sorted.length - 1; index >= 0; index -= 1) {
+    if (!sorted[index]?.fullCoverage) {
+      break;
+    }
+    count += 1;
+  }
+  return count;
+}
+
+async function updateAnalyticsSunsetStatus(params: {
+  business: string;
+  runId: string;
+  generatedAt: string;
+  sourceCoverage: Record<string, number>;
+  paths: { businessRoot: string };
+}): Promise<z.infer<typeof analyticsSunsetStatusSchema>> {
+  const statusPath = analyticsSunsetStatusPath(params.paths);
+  const existingRaw = await readJsonFile(statusPath);
+  const existing = existingRaw
+    ? analyticsSunsetStatusSchema.parse(existingRaw)
+    : {
+        schemaVersion: "analytics-sunset.v1" as const,
+        business: params.business,
+        requiredSources: [...MEASURE_CONNECTOR_SOURCES],
+        minimumConsecutiveRuns: 2,
+        transitionWindowDays: 14,
+        updatedAt: new Date(0).toISOString(),
+        runs: [],
+        consecutiveFullCoverageRuns: 0,
+        sunsetEffectiveAt: null,
+        sunsetActive: false,
+      };
+
+  const nextRuns = [
+    ...existing.runs.filter((entry) => entry.runId !== params.runId),
+    {
+      runId: params.runId,
+      generatedAt: params.generatedAt,
+      fullCoverage: hasFullConnectorCoverage(params.sourceCoverage),
+      sourceCoverage: params.sourceCoverage,
+    },
+  ]
+    .sort((left, right) => left.generatedAt.localeCompare(right.generatedAt))
+    .slice(-26);
+
+  const consecutiveFullCoverageRuns = countConsecutiveFullCoverageRuns(nextRuns);
+  const latestRun = nextRuns.at(-1);
+  const latestTimestampMs = Date.parse(latestRun?.generatedAt ?? new Date(0).toISOString());
+  const sunsetEffectiveAt =
+    consecutiveFullCoverageRuns >= existing.minimumConsecutiveRuns && Number.isFinite(latestTimestampMs)
+      ? new Date(
+          latestTimestampMs + existing.transitionWindowDays * 24 * 60 * 60 * 1000
+        ).toISOString()
+      : null;
+
+  const sunsetActive = sunsetEffectiveAt ? Date.now() >= Date.parse(sunsetEffectiveAt) : false;
+
+  const nextStatus = analyticsSunsetStatusSchema.parse({
+    ...existing,
+    business: params.business,
+    updatedAt: params.generatedAt,
+    runs: nextRuns,
+    consecutiveFullCoverageRuns,
+    sunsetEffectiveAt,
+    sunsetActive,
+  });
+
+  await writeJsonArtifact(statusPath, nextStatus);
+  return nextStatus;
+}
+
 function metricsToTotals(entries: Array<z.infer<typeof metricEntrySchema>>): Record<string, number> {
   const totals: Record<string, number> = {};
   for (const entry of entries) {
@@ -563,6 +919,16 @@ function metricsToTotals(entries: Array<z.infer<typeof metricEntrySchema>>): Rec
       continue;
     }
     totals[entry.metric_name] = (totals[entry.metric_name] ?? 0) + entry.value;
+  }
+  return totals;
+}
+
+function measureRecordsToTotals(
+  records: Array<ReturnType<typeof parseWave2MetricRecord>>
+): Record<string, number> {
+  const totals: Record<string, number> = {};
+  for (const record of records) {
+    totals[record.metric] = (totals[record.metric] ?? 0) + record.value;
   }
   return totals;
 }
@@ -587,11 +953,182 @@ function refreshCollectorStatusPath(paths: { businessRoot: string }, collector: 
   return path.join(paths.businessRoot, "refresh", "collectors", `${collector}.status.json`);
 }
 
+function sourceMetricsArtifactPath(
+  paths: { runRoot: string },
+  source: z.infer<typeof measureSourceSchema>
+): string {
+  return path.join(paths.runRoot, "collectors", `${source}.metrics.json`);
+}
+
+function contentSourceMarkdownPath(
+  paths: { contentSourcesDir: string },
+  sourceId: string
+): string {
+  return path.join(paths.contentSourcesDir, `${sourceId}.md`);
+}
+
+function contentSourceChecksum(markdown: string): string {
+  return crypto.createHash("sha256").update(markdown).digest("hex");
+}
+
+function buildContentSourceRequestUrl(url: string, preferSuffix: boolean): string {
+  const parsed = new URL(url);
+  if (!preferSuffix) {
+    return parsed.toString();
+  }
+
+  if (!parsed.pathname.endsWith("/markdown")) {
+    parsed.pathname = `${parsed.pathname.replace(/\/$/, "")}/markdown`;
+  }
+
+  return parsed.toString();
+}
+
+function isMarkdownContentType(contentType: string | null): boolean {
+  return (contentType || "").toLowerCase().includes("text/markdown");
+}
+
+class ContentSourceFetchError extends Error {
+  readonly classification: "MARKDOWN_UNAVAILABLE" | "MARKDOWN_CONTRACT_MISMATCH";
+  readonly details: Record<string, unknown>;
+  readonly retryable: boolean;
+
+  constructor(
+    classification: "MARKDOWN_UNAVAILABLE" | "MARKDOWN_CONTRACT_MISMATCH",
+    message: string,
+    details: Record<string, unknown>,
+    retryable = false
+  ) {
+    super(message);
+    this.classification = classification;
+    this.details = details;
+    this.retryable = retryable;
+  }
+}
+
+type CollectedContentSource = {
+  sourceId: string;
+  url: string;
+  requestUrl: string;
+  finalUrl: string;
+  fetchedAt: string;
+  status: number;
+  contentType: string | null;
+  markdown: string;
+  checksum: string;
+  charCount: number;
+  truncated: boolean;
+  quality: "ok" | "partial" | "blocked";
+  qualityNotes: string[];
+};
+
+async function collectContentSource(source: z.infer<typeof contentSourceInputSchema>): Promise<CollectedContentSource> {
+  const requestUrl = buildContentSourceRequestUrl(source.url, source.preferSuffix);
+  const response = await fetch(requestUrl, {
+    headers: {
+      Accept: "text/markdown, text/plain;q=0.7",
+      "User-Agent": "acme-mcp-server/startup-loop-content-collector",
+    },
+  });
+
+  const status = response.status;
+  const finalUrl = response.url || requestUrl;
+  const contentType = response.headers.get("content-type");
+  const body = await response.text();
+  const fetchedAt = new Date().toISOString();
+
+  if (!response.ok) {
+    throw new ContentSourceFetchError(
+      "MARKDOWN_UNAVAILABLE",
+      `Markdown fetch failed with status ${status}.`,
+      {
+        sourceId: source.sourceId,
+        url: source.url,
+        requestUrl,
+        finalUrl,
+        status,
+      },
+      status >= 500
+    );
+  }
+
+  if (!isMarkdownContentType(contentType)) {
+    throw new ContentSourceFetchError(
+      "MARKDOWN_CONTRACT_MISMATCH",
+      `Expected text/markdown but received ${contentType || "unknown"}.`,
+      {
+        sourceId: source.sourceId,
+        url: source.url,
+        requestUrl,
+        finalUrl,
+        status,
+        contentType,
+      },
+      false
+    );
+  }
+
+  if (body.trim().length === 0) {
+    throw new ContentSourceFetchError(
+      "MARKDOWN_CONTRACT_MISMATCH",
+      "Received empty markdown content.",
+      {
+        sourceId: source.sourceId,
+        url: source.url,
+        requestUrl,
+        finalUrl,
+        status,
+      },
+      false
+    );
+  }
+
+  const markdown = body.slice(0, source.maxChars);
+  const truncated = body.length > source.maxChars;
+  const qualityNotes = truncated ? ["truncated"] : [];
+  const quality = markdown.trim().length < 200 ? "partial" : "ok";
+  if (quality === "partial") {
+    qualityNotes.push("low-content-volume");
+  }
+
+  return {
+    sourceId: source.sourceId,
+    url: source.url,
+    requestUrl,
+    finalUrl,
+    fetchedAt,
+    status,
+    contentType,
+    markdown,
+    checksum: contentSourceChecksum(markdown),
+    charCount: markdown.length,
+    truncated,
+    quality,
+    qualityNotes,
+  };
+}
+
+function analyticsSunsetStatusPath(paths: { businessRoot: string }): string {
+  return path.join(paths.businessRoot, "coverage", "analytics-sunset-status.json");
+}
+
 function parseCollectorFreshnessTimestamp(status: z.infer<typeof refreshCollectorStatusSchema> | null): string | null {
   if (!status) {
     return null;
   }
   return status.updatedAt ?? status.lastRunAt ?? status.lastSuccessAt ?? null;
+}
+
+async function readContentSourcesIndex(paths: { contentSourcesIndexPath: string }) {
+  const raw = await readJsonFile(paths.contentSourcesIndexPath);
+  if (!raw) {
+    return null;
+  }
+  const parsed = contentSourcesIndexSchema.parse(raw);
+  return {
+    ...parsed,
+    sources: parsed.sources.map((source) => parseContentSourceRecord(source)),
+  };
 }
 
 function toWeekBucket(date: Date): string {
@@ -644,6 +1181,7 @@ function buildPackMarkdown(payload: {
   stageCompletionCount: number;
   metricCount: number;
   packetId: string;
+  contentSourceCount: number;
   evidenceRefs: string[];
 }): string {
   return [
@@ -655,6 +1193,7 @@ function buildPackMarkdown(payload: {
     `- Stage completions: ${payload.stageCompletionCount}`,
     `- Metric keys: ${payload.metricCount}`,
     `- Packet: ${payload.packetId}`,
+    `- Content sources: ${payload.contentSourceCount}`,
     "",
     "## Evidence",
     ...payload.evidenceRefs.map((ref) => `- ${ref}`),
@@ -744,43 +1283,51 @@ async function handleLoopMetricsSummary(args: unknown): Promise<ToolCallResult> 
 
 async function handleMeasureSnapshotGet(args: unknown): Promise<ToolCallResult> {
   const parsed = measureSnapshotInputSchema.parse(args);
-  const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
-  const metricsRaw = await readJsonLines(paths.metricsPath);
-  if (!metricsRaw) {
+  const { records, sourceCoverage, artifactRefs, latestTimestamp } = await collectMeasureRecords({
+    business: parsed.business,
+    runId: parsed.runId,
+    metricFilter: parsed.metric,
+    sourceFilter: parsed.source,
+  });
+
+  if (records.length === 0) {
+    const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
     return buildMissingArtifactError(paths.metricsPath);
   }
 
-  const parsedEntries = metricsRaw.map((entry) => metricEntrySchema.parse(entry));
-  const filteredEntries = parsed.metric
-    ? parsedEntries.filter((entry) => entry.metric_name === parsed.metric)
-    : parsedEntries;
-
-  const records = filteredEntries.map((entry, index) =>
-    mapMetricEntryToRecord(parsed.business, entry, `${paths.metricsPath}#${index}`)
-  );
-
-  const latest =
-    filteredEntries.map(parseMetricTimestamp).sort().at(-1) ?? new Date(0).toISOString();
-  const expectedPoints = Math.max(filteredEntries.length, 1);
-  const observedPoints = filteredEntries.length;
-  const quality = determineWave2Quality({ expectedPoints, observedPoints });
+  const observedCoverageSources = parsed.source
+    ? (sourceCoverage[parsed.source] ?? 0) > 0
+      ? 1
+      : 0
+    : MEASURE_CONNECTOR_SOURCES.filter((source) => (sourceCoverage[source] ?? 0) > 0).length;
+  const expectedCoverageSources = parsed.source ? 1 : MEASURE_CONNECTOR_SOURCES.length;
+  const quality = determineWave2Quality({
+    expectedPoints: expectedCoverageSources,
+    observedPoints: observedCoverageSources,
+  });
+  const missingConnectorSources = parsed.source
+    ? []
+    : MEASURE_CONNECTOR_SOURCES.filter((source) => (sourceCoverage[source] ?? 0) === 0);
 
   const envelope = buildEnvelope({
     schemaVersion: "measure.snapshot.v1",
-    refreshedAt: latest,
-    qualityNotes: quality === "blocked" ? ["insufficient-coverage"] : [],
+    refreshedAt: latestTimestamp,
+    qualityNotes: missingConnectorSources.map((source) => `missing-source:${source}`),
     coverage: {
-      expectedPoints,
-      observedPoints,
-      samplingFraction: expectedPoints > 0 ? observedPoints / expectedPoints : 0,
+      expectedPoints: expectedCoverageSources,
+      observedPoints: observedCoverageSources,
+      samplingFraction:
+        expectedCoverageSources > 0
+          ? observedCoverageSources / expectedCoverageSources
+          : 0,
     },
     provenance: {
       schemaVersion: "provenance.v1",
-      querySignature: `sha256:${hashPayload(filteredEntries)}`,
-      generatedAt: latest,
+      querySignature: `sha256:${hashPayload(records.map((record) => record.metric))}`,
+      generatedAt: latestTimestamp,
       datasetId: `${parsed.business}-${parsed.runId}-measure-snapshot`,
-      sourceRef: paths.metricsPath,
-      artifactRefs: [paths.metricsPath],
+      sourceRef: "measure_snapshot_get",
+      artifactRefs,
       quality,
     },
   });
@@ -790,7 +1337,10 @@ async function handleMeasureSnapshotGet(args: unknown): Promise<ToolCallResult> 
     business: parsed.business,
     runId: parsed.runId,
     metric: parsed.metric ?? null,
+    source: parsed.source ?? null,
     recordCount: records.length,
+    sourceCoverage,
+    fullConnectorCoverage: hasFullConnectorCoverage(sourceCoverage),
     records,
   });
 }
@@ -805,15 +1355,17 @@ async function handleAppRunPacketBuild(args: unknown): Promise<ToolCallResult> {
   }
   const manifest = manifestSchema.parse(manifestRaw);
 
-  const metricsRaw = await readJsonLines(paths.metricsPath);
-  if (!metricsRaw) {
+  const { records, sourceCoverage, latestTimestamp } = await collectMeasureRecords({
+    business: parsed.business,
+    runId: parsed.runId,
+  });
+  if (records.length === 0) {
     return buildMissingArtifactError(paths.metricsPath);
   }
 
-  const entries = metricsRaw.map((entry) => metricEntrySchema.parse(entry));
-  const totals = metricsToTotals(entries);
+  const totals = measureRecordsToTotals(records);
   const packetId = packetIdFor(parsed.business, parsed.runId);
-  const latest = entries.map(parseMetricTimestamp).sort().at(-1) ?? new Date(0).toISOString();
+  const latest = latestTimestamp;
 
   const basePacket = {
     schemaVersion: "run.packet.v1" as const,
@@ -848,26 +1400,33 @@ async function handleAppRunPacketBuild(args: unknown): Promise<ToolCallResult> {
       bookingsSummary: [paths.metricsPath],
       funnelStats: [paths.metricsPath],
       topSupportIssues: [paths.learningLedgerPath],
+      sourceCoverage: [sourceMetricsArtifactPath(paths, "stripe")],
     },
     refreshedAt: latest,
     quality: determineWave2Quality({
-      expectedPoints: Math.max(entries.length, 1),
-      observedPoints: entries.length,
+      expectedPoints: Math.max(MEASURE_CONNECTOR_SOURCES.length, 1),
+      observedPoints: MEASURE_CONNECTOR_SOURCES.filter((source) => (sourceCoverage[source] ?? 0) > 0).length,
     }),
-    qualityNotes: entries.length === 0 ? ["insufficient-coverage"] : [],
+    qualityNotes: MEASURE_CONNECTOR_SOURCES.filter((source) => (sourceCoverage[source] ?? 0) === 0).map(
+      (source) => `missing-source:${source}`
+    ),
     coverage: {
-      expectedPoints: Math.max(entries.length, 1),
-      observedPoints: entries.length,
-      samplingFraction: 1,
+      expectedPoints: Math.max(MEASURE_CONNECTOR_SOURCES.length, 1),
+      observedPoints: MEASURE_CONNECTOR_SOURCES.filter((source) => (sourceCoverage[source] ?? 0) > 0).length,
+      samplingFraction:
+        MEASURE_CONNECTOR_SOURCES.length > 0
+          ? MEASURE_CONNECTOR_SOURCES.filter((source) => (sourceCoverage[source] ?? 0) > 0).length /
+            MEASURE_CONNECTOR_SOURCES.length
+          : 0,
     },
     provenance: {
       schemaVersion: "provenance.v1" as const,
-      querySignature: `sha256:${hashPayload({ manifest, totals })}`,
+      querySignature: `sha256:${hashPayload({ manifest, totals, sourceCoverage })}`,
       generatedAt: latest,
       datasetId: `${parsed.business}-${parsed.runId}-run-packet`,
       sourceRef: "app_run_packet_build",
       artifactRefs: [paths.manifestPath, paths.metricsPath],
-      quality: entries.length === 0 ? "blocked" : "ok",
+      quality: hasFullConnectorCoverage(sourceCoverage) ? "ok" : "partial",
     },
   };
 
@@ -905,6 +1464,179 @@ async function handleAppRunPacketGet(args: unknown): Promise<ToolCallResult> {
   });
 }
 
+async function handleLoopContentSourcesCollect(args: unknown): Promise<ToolCallResult> {
+  const parsed = loopContentSourcesCollectInputSchema.parse(args);
+  const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
+
+  const duplicateSourceIds = parsed.sources.reduce<string[]>((duplicates, source, index, items) => {
+    if (items.findIndex((entry) => entry.sourceId === source.sourceId) !== index) {
+      duplicates.push(source.sourceId);
+    }
+    return duplicates;
+  }, []);
+
+  if (duplicateSourceIds.length > 0) {
+    return toolError(
+      "CONTRACT_MISMATCH",
+      "Duplicate sourceId values are not allowed in loop_content_sources_collect.",
+      false,
+      { duplicateSourceIds: [...new Set(duplicateSourceIds)] }
+    );
+  }
+
+  const orderedSources = parsed.sources.slice().sort((left, right) => left.sourceId.localeCompare(right.sourceId));
+  const collected: CollectedContentSource[] = [];
+
+  for (const source of orderedSources) {
+    try {
+      collected.push(await collectContentSource(source));
+    } catch (error) {
+      if (error instanceof ContentSourceFetchError) {
+        return toolError(
+          "CONTRACT_MISMATCH",
+          `${error.classification}: ${error.message}`,
+          error.retryable,
+          error.details
+        );
+      }
+      throw error;
+    }
+  }
+
+  const sourceRecords = [];
+  const artifactRefs: string[] = [];
+  const qualityNotes: string[] = [];
+
+  for (const source of collected) {
+    const markdownPath = contentSourceMarkdownPath(paths, source.sourceId);
+    await fs.mkdir(path.dirname(markdownPath), { recursive: true });
+    await fs.writeFile(markdownPath, source.markdown, "utf-8");
+    artifactRefs.push(markdownPath);
+    qualityNotes.push(...source.qualityNotes.map((note) => `${source.sourceId}:${note}`));
+
+    sourceRecords.push(
+      parseContentSourceRecord({
+        schemaVersion: "content.source.v1",
+        sourceId: source.sourceId,
+        url: source.url,
+        requestUrl: source.requestUrl,
+        finalUrl: source.finalUrl,
+        fetchedAt: source.fetchedAt,
+        status: source.status,
+        contentType: source.contentType,
+        markdownPath,
+        checksum: source.checksum,
+        charCount: source.charCount,
+        truncated: source.truncated,
+        quality: source.quality,
+        qualityNotes: source.qualityNotes,
+        coverage: {
+          expectedPoints: 1,
+          observedPoints: 1,
+          samplingFraction: 1,
+        },
+        provenance: {
+          schemaVersion: "provenance.v1",
+          querySignature: `sha256:${hashPayload({ sourceId: source.sourceId, checksum: source.checksum })}`,
+          generatedAt: source.fetchedAt,
+          datasetId: `${parsed.business}-${parsed.runId}-${source.sourceId}-content-source`,
+          sourceRef: "loop_content_sources_collect",
+          artifactRefs: [markdownPath],
+          quality: source.quality,
+        },
+      })
+    );
+  }
+
+  artifactRefs.push(paths.contentSourcesIndexPath);
+  const sourceCount = sourceRecords.length;
+  const coverage = {
+    expectedPoints: sourceCount > 0 ? sourceCount : 1,
+    observedPoints: sourceCount,
+    samplingFraction: sourceCount > 0 ? 1 : 0,
+  };
+  const quality = sourceRecords.every((source) => source.quality === "ok") ? "ok" : "partial";
+  const collectedAt = sourceRecords
+    .map((source) => source.fetchedAt)
+    .sort((left, right) => left.localeCompare(right))
+    .at(-1) ?? new Date(0).toISOString();
+
+  const indexArtifact = contentSourcesIndexSchema.parse({
+    schemaVersion: "content.sources.index.v1",
+    business: parsed.business,
+    runId: parsed.runId,
+    collector: "content_sources",
+    collectedAt,
+    sourceCount,
+    quality,
+    qualityNotes,
+    coverage,
+    provenance: {
+      schemaVersion: "provenance.v1",
+      querySignature: `sha256:${hashPayload({ sources: sourceRecords.map((source) => source.sourceId) })}`,
+      generatedAt: collectedAt,
+      datasetId: `${parsed.business}-${parsed.runId}-content-sources-index`,
+      sourceRef: "loop_content_sources_collect",
+      artifactRefs: artifactRefs.filter((ref) => ref !== paths.contentSourcesIndexPath),
+      quality,
+    },
+    artifactRefs,
+    sources: sourceRecords,
+  });
+
+  await writeJsonArtifact(paths.contentSourcesIndexPath, indexArtifact);
+
+  const envelope = buildEnvelope({
+    schemaVersion: "content.sources.index.v1",
+    refreshedAt: collectedAt,
+    qualityNotes,
+    coverage,
+    provenance: indexArtifact.provenance,
+  });
+
+  return jsonResult({
+    ...envelope,
+    business: parsed.business,
+    runId: parsed.runId,
+    collector: "content_sources",
+    contentSourcesIndexPath: paths.contentSourcesIndexPath,
+    sourceCount,
+    sources: sourceRecords,
+    artifactRefs,
+  });
+}
+
+async function handleLoopContentSourcesList(args: unknown): Promise<ToolCallResult> {
+  const parsed = loopContentSourcesListInputSchema.parse(args);
+  const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
+  const index = await readContentSourcesIndex(paths);
+  if (!index) {
+    return buildMissingArtifactError(paths.contentSourcesIndexPath);
+  }
+
+  const sources = parsed.sourceId
+    ? index.sources.filter((source) => source.sourceId === parsed.sourceId)
+    : index.sources;
+  const freshness = buildFreshnessEnvelope(index.collectedAt);
+
+  return jsonResult({
+    schemaVersion: index.schemaVersion,
+    business: index.business,
+    runId: index.runId,
+    collector: index.collector,
+    collectedAt: index.collectedAt,
+    sourceCount: sources.length,
+    quality: index.quality,
+    qualityNotes: index.qualityNotes,
+    coverage: index.coverage,
+    provenance: index.provenance,
+    freshness,
+    contentSourcesIndexPath: paths.contentSourcesIndexPath,
+    artifactRefs: index.artifactRefs,
+    sources,
+  });
+}
+
 async function handlePackWeeklyS10Build(args: unknown): Promise<ToolCallResult> {
   const parsed = packBuildInputSchema.parse(args);
   const paths = resolveLoopArtifactPaths(parsed.business, parsed.runId);
@@ -923,8 +1655,33 @@ async function handlePackWeeklyS10Build(args: unknown): Promise<ToolCallResult> 
   }
   const packet = validateRunPacketBounds(packetRaw);
 
+  const measureSnapshot = await collectMeasureRecords({
+    business: parsed.business,
+    runId: parsed.runId,
+  });
+  const sunsetStatus = await updateAnalyticsSunsetStatus({
+    business: parsed.business,
+    runId: parsed.runId,
+    generatedAt: packet.refreshedAt,
+    sourceCoverage: measureSnapshot.sourceCoverage,
+    paths,
+  });
+
   const generatedAt = packet.refreshedAt;
-  const evidenceRefs = [paths.manifestPath, packetPath, paths.metricsPath];
+  const contentSourcesIndex = await readContentSourcesIndex(paths);
+  const contentSourceEvidenceRefs = contentSourcesIndex
+    ? [
+        paths.contentSourcesIndexPath,
+        ...contentSourcesIndex.sources.map((source) => source.markdownPath),
+      ]
+    : [];
+  const evidenceRefs = [
+    paths.manifestPath,
+    packetPath,
+    paths.metricsPath,
+    analyticsSunsetStatusPath(paths),
+    ...contentSourceEvidenceRefs,
+  ];
 
   const packJson = {
     schemaVersion: "pack.weekly-s10.v1",
@@ -941,6 +1698,21 @@ async function handlePackWeeklyS10Build(args: unknown): Promise<ToolCallResult> 
     },
     measurements: {
       metricCount: Object.keys(packet.data.funnelStats as Record<string, number>).length,
+      sourceCoverage: measureSnapshot.sourceCoverage,
+      fullConnectorCoverage: hasFullConnectorCoverage(measureSnapshot.sourceCoverage),
+    },
+    contentSources: contentSourcesIndex
+      ? {
+          sourceCount: contentSourcesIndex.sourceCount,
+          quality: contentSourcesIndex.quality,
+          collectedAt: contentSourcesIndex.collectedAt,
+        }
+      : null,
+    triggerStatus: {
+      schemaVersion: sunsetStatus.schemaVersion,
+      consecutiveFullCoverageRuns: sunsetStatus.consecutiveFullCoverageRuns,
+      sunsetEffectiveAt: sunsetStatus.sunsetEffectiveAt,
+      sunsetActive: sunsetStatus.sunsetActive,
     },
     anomalies: [],
     recommendedActions: [],
@@ -963,6 +1735,7 @@ async function handlePackWeeklyS10Build(args: unknown): Promise<ToolCallResult> 
       stageCompletionCount: Object.keys(manifest.stage_completions ?? {}).length,
       metricCount: Object.keys(packet.data.funnelStats as Record<string, number>).length,
       packetId: packet.packetId,
+      contentSourceCount: contentSourcesIndex?.sourceCount ?? 0,
       evidenceRefs,
     }),
     "utf-8"
@@ -1026,6 +1799,8 @@ async function handleRefreshStatusGet(args: unknown): Promise<ToolCallResult> {
     acc[request.state] = (acc[request.state] ?? 0) + 1;
     return acc;
   }, {});
+  const contentSourcesIndex =
+    parsed.collector === "content_sources" ? await readContentSourcesIndex(paths) : null;
 
   return jsonResult({
     schemaVersion: "refresh.status.v1",
@@ -1046,6 +1821,16 @@ async function handleRefreshStatusGet(args: unknown): Promise<ToolCallResult> {
       states,
       latestRequest: queue.requests.slice().sort((a, b) => a.updatedAt.localeCompare(b.updatedAt)).at(-1) ?? null,
     },
+    contentSources:
+      parsed.collector === "content_sources"
+        ? {
+            indexPath: paths.contentSourcesIndexPath,
+            sourceCount: contentSourcesIndex?.sourceCount ?? 0,
+            quality: contentSourcesIndex?.quality ?? "blocked",
+            collectedAt: contentSourcesIndex?.collectedAt ?? null,
+            artifactRefs: contentSourcesIndex?.artifactRefs ?? [],
+          }
+        : null,
     queuePath,
     statusPath,
   });
@@ -1351,6 +2136,10 @@ export async function handleLoopTool(name: string, args: unknown): Promise<ToolC
         return handleRefreshStatusGet(args);
       case "refresh_enqueue_guarded":
         return handleRefreshEnqueueGuarded(args);
+      case "loop_content_sources_collect":
+        return handleLoopContentSourcesCollect(args);
+      case "loop_content_sources_list":
+        return handleLoopContentSourcesList(args);
       case "anomaly_detect_traffic":
         return handleAnomalyDetect(args, {
           toolName: "anomaly_detect_traffic",

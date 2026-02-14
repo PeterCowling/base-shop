@@ -10,6 +10,7 @@ import {
   parseWave2MetricRecord,
   validateMetricRecordAgainstRegistry,
 } from "../lib/wave2-contracts";
+import { preflightAnalyticsSunsetGate } from "../tools/analytics-sunset";
 import { handleBosTool } from "../tools/bos";
 import { handleLoopTool } from "../tools/loop";
 
@@ -23,10 +24,15 @@ type MockResponse = {
   ok: boolean;
   status: number;
   statusText: string;
+  url: string;
+  headers: {
+    get: (name: string) => string | null;
+  };
+  text: () => Promise<string>;
   json: () => Promise<unknown>;
 };
 
-function makeJsonResponse(status: number, body: unknown): MockResponse {
+function makeTextResponse(status: number, body: string, contentType: string, url: string): MockResponse {
   return {
     ok: status >= 200 && status < 300,
     status,
@@ -37,11 +43,26 @@ function makeJsonResponse(status: number, body: unknown): MockResponse {
           ? "Unauthorized"
           : status === 404
             ? "Not Found"
-            : status === 409
+          : status === 409
               ? "Conflict"
               : "Service Unavailable",
-    json: async () => body,
+    url,
+    headers: {
+      get: (name: string) => (name.toLowerCase() === "content-type" ? contentType : null),
+    },
+    text: async () => body,
+    json: async () => {
+      try {
+        return JSON.parse(body);
+      } catch {
+        return {};
+      }
+    },
   };
+}
+
+function makeJsonResponse(status: number, body: unknown, url = "http://localhost/mock"): MockResponse {
+  return makeTextResponse(status, JSON.stringify(body), "application/json; charset=utf-8", url);
 }
 
 async function readFixtureJson<T>(directory: string, fileName: string): Promise<T> {
@@ -71,6 +92,36 @@ async function writeMetricsFile(
     )
     .join("\n");
   await fs.writeFile(targetPath, `${content}\n`, "utf-8");
+}
+
+async function writeSourceMetricsArtifact(
+  runRoot: string,
+  source: "stripe" | "d1_prisma" | "cloudflare" | "ga4_search_console" | "email_support",
+  observedAt: string,
+  points: Array<{
+    metric: string;
+    value: number;
+    valueType: "currency" | "count" | "ratio" | "duration";
+    unit: string;
+    segments?: Record<string, string | number | boolean>;
+  }>
+) {
+  const artifactPath = path.join(runRoot, "collectors", `${source}.metrics.json`);
+  await fs.mkdir(path.dirname(artifactPath), { recursive: true });
+  await fs.writeFile(
+    artifactPath,
+    JSON.stringify(
+      {
+        schemaVersion: "measure.source.metrics.v1",
+        source,
+        observedAt,
+        points,
+      },
+      null,
+      2
+    ),
+    "utf-8"
+  );
 }
 
 function parseResultPayload(result: { content: Array<{ text: string }> }) {
@@ -275,7 +326,7 @@ async function runTc09AnomalyDetectors(tempRoot: string): Promise<void> {
   );
 }
 
-describe("startup-loop MCP integration suite", () => {
+function setupStartupLoopIntegrationEnvironment() {
   const originalFetch = global.fetch;
   const originalBaseUrl = process.env.BOS_AGENT_API_BASE_URL;
   const originalApiKey = process.env.BOS_AGENT_API_KEY;
@@ -310,6 +361,21 @@ describe("startup-loop MCP integration suite", () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = typeof input === "string" ? input : input.toString();
       const method = (init?.method ?? "GET").toUpperCase();
+
+      if (method === "GET" && url.startsWith("https://content.example/")) {
+        if (url.includes("/ok")) {
+          return makeTextResponse(
+            200,
+            "# Market Pulse\n\n- Competitor price update\n- Channel shift to short-video ads",
+            "text/markdown; charset=utf-8",
+            url
+          );
+        }
+        if (url.includes("/html")) {
+          return makeTextResponse(200, "<html>fallback</html>", "text/html; charset=utf-8", url);
+        }
+        return makeTextResponse(404, "not found", "text/plain; charset=utf-8", url);
+      }
 
       if (bosStatusCase === "auth") {
         return makeJsonResponse(401, fixtures.error401);
@@ -350,6 +416,17 @@ describe("startup-loop MCP integration suite", () => {
     await fs.rm(tempRoot, { recursive: true, force: true });
     jest.resetAllMocks();
   });
+
+  return {
+    getTempRoot: () => tempRoot,
+    setBosStatusCase: (value: BosStatusCase) => {
+      bosStatusCase = value;
+    },
+  };
+}
+
+describe("startup-loop MCP integration suite: BOS + baseline flows", () => {
+  const env = setupStartupLoopIntegrationEnvironment();
 
   it("TC-01: BOS read tools succeed with fixture-backed API stubs", async () => {
     const cards = await handleBosTool("bos_cards_list", {
@@ -399,7 +476,7 @@ describe("startup-loop MCP integration suite", () => {
   });
 
   it("TC-03: guarded write stale-sha path returns CONFLICT_ENTITY_SHA", async () => {
-    bosStatusCase = "conflict";
+    env.setBosStatusCase("conflict");
 
     const result = await handleBosTool("bos_stage_doc_patch_guarded", {
       business: "BRIK",
@@ -460,10 +537,13 @@ describe("startup-loop MCP integration suite", () => {
     );
 
     const runRoot = path.join(
-      tempRoot,
+      env.getTempRoot(),
       "docs/business-os/startup-baselines/BRIK/runs/run-001"
     );
-    const businessRoot = path.join(tempRoot, "docs/business-os/startup-baselines/BRIK");
+    const businessRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK"
+    );
 
     await writeFixtureFile(
       path.join(LOOP_FIXTURES, "manifest.complete.json"),
@@ -509,6 +589,10 @@ describe("startup-loop MCP integration suite", () => {
       })
     );
   });
+});
+
+describe("startup-loop MCP integration suite: packets, anomalies, and sunset gating", () => {
+  const env = setupStartupLoopIntegrationEnvironment();
 
   it("TC-06: startup-loop Jest wrapper config captures stable ignore patterns", async () => {
     const configPath = path.join(process.cwd(), "packages/mcp-server/jest.startup-loop.config.cjs");
@@ -522,7 +606,7 @@ describe("startup-loop MCP integration suite", () => {
 
   it("TC-07: wave-2 vertical slice builds deterministic packet and pack artifacts", async () => {
     const runRoot = path.join(
-      tempRoot,
+      env.getTempRoot(),
       "docs/business-os/startup-baselines/BRIK/runs/run-001"
     );
 
@@ -599,16 +683,148 @@ describe("startup-loop MCP integration suite", () => {
   });
 
   it("TC-08: refresh lifecycle is idempotent and stale collector status includes lag/error detail", async () => {
-    await runTc08RefreshLifecycle(tempRoot);
+    await runTc08RefreshLifecycle(env.getTempRoot());
   });
 
   it("TC-09: anomaly detectors enforce cold-start baseline gate and emit detector metadata", async () => {
-    await runTc09AnomalyDetectors(tempRoot);
+    await runTc09AnomalyDetectors(env.getTempRoot());
+  });
+
+  it("TC-10: measure_snapshot_get emits normalized records across required connector sources", async () => {
+    const runRoot = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/runs/run-001"
+    );
+
+    await writeFixtureFile(
+      path.join(LOOP_FIXTURES, "manifest.complete.json"),
+      path.join(runRoot, "baseline.manifest.json")
+    );
+    await writeMetricsFile(path.join(runRoot, "metrics.jsonl"), [
+      { timestamp: "2026-01-10T00:00:00Z", metric_name: "traffic_requests", value: 100 },
+    ]);
+
+    await writeSourceMetricsArtifact(runRoot, "stripe", "2026-01-10T00:00:00Z", [
+      { metric: "stripe_revenue_total", value: 1200, valueType: "currency", unit: "EUR" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "d1_prisma", "2026-01-10T00:00:00Z", [
+      { metric: "d1_bookings_total", value: 24, valueType: "count", unit: "count" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "cloudflare", "2026-01-10T00:00:00Z", [
+      { metric: "traffic_requests_total", value: 5000, valueType: "count", unit: "count" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "ga4_search_console", "2026-01-10T00:00:00Z", [
+      { metric: "ga4_queries_total", value: 340, valueType: "count", unit: "count" },
+    ]);
+    await writeSourceMetricsArtifact(runRoot, "email_support", "2026-01-10T00:00:00Z", [
+      { metric: "support_ticket_volume_total", value: 14, valueType: "count", unit: "count" },
+    ]);
+
+    const measure = await handleLoopTool("measure_snapshot_get", {
+      business: "BRIK",
+      runId: "run-001",
+      current_stage: "S7",
+    });
+    const payload = parseResultPayload(measure);
+    const records = payload.records as Array<{ source: string }>;
+    const sourceSet = new Set(records.map((record) => record.source));
+
+    expect(payload.fullConnectorCoverage).toBe(true);
+    expect(payload.quality).toBe("ok");
+    expect(sourceSet).toEqual(
+      new Set([
+        "startup_loop_metrics",
+        "stripe",
+        "d1_prisma",
+        "cloudflare",
+        "ga4_search_console",
+        "email_support",
+      ])
+    );
+  });
+
+  it("TC-11: analytics_* sunset blocks startup-loop calls after two full-coverage S10 runs but allows non-loop callers", async () => {
+    const runs = [
+      { runId: "run-001", observedAt: "2026-01-01T00:00:00Z" },
+      { runId: "run-002", observedAt: "2026-01-08T00:00:00Z" },
+    ];
+
+    for (const run of runs) {
+      const runRoot = path.join(
+        env.getTempRoot(),
+        "docs/business-os/startup-baselines/BRIK/runs",
+        run.runId
+      );
+      await writeFixtureFile(
+        path.join(LOOP_FIXTURES, "manifest.complete.json"),
+        path.join(runRoot, "baseline.manifest.json")
+      );
+      await writeMetricsFile(path.join(runRoot, "metrics.jsonl"), [
+        { timestamp: run.observedAt, metric_name: "traffic_requests", value: 100 },
+      ]);
+
+      await writeSourceMetricsArtifact(runRoot, "stripe", run.observedAt, [
+        { metric: "stripe_revenue_total", value: 1000, valueType: "currency", unit: "EUR" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "d1_prisma", run.observedAt, [
+        { metric: "d1_bookings_total", value: 20, valueType: "count", unit: "count" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "cloudflare", run.observedAt, [
+        { metric: "traffic_requests_total", value: 4000, valueType: "count", unit: "count" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "ga4_search_console", run.observedAt, [
+        { metric: "ga4_queries_total", value: 300, valueType: "count", unit: "count" },
+      ]);
+      await writeSourceMetricsArtifact(runRoot, "email_support", run.observedAt, [
+        { metric: "support_ticket_volume_total", value: 8, valueType: "count", unit: "count" },
+      ]);
+
+      await handleLoopTool("app_run_packet_build", {
+        business: "BRIK",
+        runId: run.runId,
+        current_stage: "S10",
+      });
+      await handleLoopTool("pack_weekly_s10_build", {
+        business: "BRIK",
+        runId: run.runId,
+        current_stage: "S10",
+      });
+    }
+
+    const sunsetStatusPath = path.join(
+      env.getTempRoot(),
+      "docs/business-os/startup-baselines/BRIK/coverage/analytics-sunset-status.json"
+    );
+    const sunsetStatus = JSON.parse(await fs.readFile(sunsetStatusPath, "utf-8")) as {
+      sunsetActive: boolean;
+      consecutiveFullCoverageRuns: number;
+    };
+    expect(sunsetStatus.consecutiveFullCoverageRuns).toBeGreaterThanOrEqual(2);
+    expect(sunsetStatus.sunsetActive).toBe(true);
+
+    const blocked = await preflightAnalyticsSunsetGate("analytics_summary", {
+      shopId: "shop",
+      business: "BRIK",
+      runId: "run-002",
+      current_stage: "S10",
+    });
+    expect(blocked).not.toBeNull();
+    const blockedPayload = parseResultPayload(
+      blocked as { content: Array<{ text: string }>; isError?: boolean }
+    );
+    expect(blocked?.isError).toBe(true);
+    expect(blockedPayload.error.code).toBe("FORBIDDEN_STAGE");
+    expect(String(blockedPayload.error.details.requiredToolFamily)).toBe("measure_*");
+
+    const gateForNonLoop = await preflightAnalyticsSunsetGate("analytics_summary", {
+      shopId: "shop",
+    });
+    expect(gateForNonLoop).toBeNull();
   });
 });
 
 describe("cloudflare adapter contract harness", () => {
-  it("TC-10: projected Cloudflare metrics pass registry validation and fail on mismatches", () => {
+  it("TC-12: projected Cloudflare metrics pass registry validation and fail on mismatches", () => {
     const registry = parseMetricsRegistry({
       schemaVersion: "metrics-registry.v1",
       metrics: [

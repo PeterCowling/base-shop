@@ -1,7 +1,9 @@
 import { errorResult } from "../utils/validation.js";
 
 import { analyticsTools, handleAnalyticsTool } from "./analytics.js";
+import { preflightAnalyticsSunsetGate } from "./analytics-sunset.js";
 import { bookingEmailTools, handleBookingEmailTool } from "./booking-email.js";
+import { bosToolPoliciesRaw, bosTools, handleBosTool } from "./bos.js";
 import { discountTools, handleDiscountTool } from "./discounts.js";
 import { draftGenerateTools, handleDraftGenerateTool } from "./draft-generate.js";
 import { draftInterpretTools, handleDraftInterpretTool } from "./draft-interpret.js";
@@ -9,9 +11,11 @@ import { draftQualityTools, handleDraftQualityTool } from "./draft-quality-check
 import { gmailTools, handleGmailTool } from "./gmail.js";
 import { handleHealthTool,healthTools } from "./health.js";
 import { handleInventoryTool,inventoryTools } from "./inventory.js";
+import { handleLoopTool, loopToolPoliciesRaw, loopTools } from "./loop.js";
 import { handleOrderTool,orderTools } from "./orders.js";
 import { handleOutboundDraftTool, outboundDraftTools } from "./outbound-drafts.js";
 import { handlePageTool,pageTools } from "./pages.js";
+import { parsePolicyMap, preflightToolCallPolicy } from "./policy.js";
 import { handleProductTool,productTools } from "./products.js";
 import { handleSectionTool,sectionTools } from "./sections.js";
 import { handleSeoTool,seoTools } from "./seo.js";
@@ -32,6 +36,8 @@ export const toolDefinitions = [
   ...seoTools,
   ...discountTools,
   ...themeTools,
+  ...bosTools,
+  ...loopTools,
   ...gmailTools,
   ...bookingEmailTools,
   ...draftInterpretTools,
@@ -39,6 +45,15 @@ export const toolDefinitions = [
   ...draftQualityTools,
   ...outboundDraftTools,
 ];
+
+const knownToolNames = new Set(toolDefinitions.map((tool) => tool.name));
+
+// Strict metadata enforcement is scoped to startup-loop tools in phase 1 (`bos_*`, `loop_*`).
+// Existing legacy tools run through compatibility mode until a dedicated annotation wave.
+const toolPolicyMap = parsePolicyMap({
+  ...bosToolPoliciesRaw,
+  ...loopToolPoliciesRaw,
+});
 
 const shopToolNames = new Set(shopTools.map((t) => t.name));
 const orderToolNames = new Set(orderTools.map((t) => t.name));
@@ -52,6 +67,8 @@ const healthToolNames = new Set(healthTools.map((t) => t.name));
 const seoToolNames = new Set(seoTools.map((t) => t.name));
 const discountToolNames = new Set(discountTools.map((t) => t.name));
 const themeToolNames = new Set(themeTools.map((t) => t.name));
+const bosToolNames = new Set(bosTools.map((t) => t.name));
+const loopToolNames = new Set(loopTools.map((t) => t.name));
 const gmailToolNames = new Set(gmailTools.map((t) => t.name));
 const bookingEmailToolNames = new Set(bookingEmailTools.map((t) => t.name));
 const draftInterpretToolNames = new Set(draftInterpretTools.map((t) => t.name));
@@ -60,6 +77,22 @@ const draftQualityToolNames = new Set(draftQualityTools.map((t) => t.name));
 const outboundDraftToolNames = new Set(outboundDraftTools.map((t) => t.name));
 
 export async function handleToolCall(name: string, args: unknown) {
+  const analyticsSunsetError = await preflightAnalyticsSunsetGate(name, args);
+  if (analyticsSunsetError) {
+    return analyticsSunsetError;
+  }
+
+  const preflightError = preflightToolCallPolicy({
+    toolName: name,
+    args,
+    knownToolNames,
+    policyMap: toolPolicyMap,
+  });
+
+  if (preflightError) {
+    return preflightError;
+  }
+
   if (shopToolNames.has(name as never)) {
     return handleShopTool(name, args);
   }
@@ -95,6 +128,12 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (themeToolNames.has(name as never)) {
     return handleThemeTool(name, args);
+  }
+  if (bosToolNames.has(name as never)) {
+    return handleBosTool(name, args);
+  }
+  if (loopToolNames.has(name as never)) {
+    return handleLoopTool(name, args);
   }
   if (gmailToolNames.has(name as never)) {
     return handleGmailTool(name, args);

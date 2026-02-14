@@ -18,6 +18,7 @@ ALLOW_TEST_PROCS="${ALLOW_TEST_PROCS:-0}"
 VALIDATE_RANGE="${VALIDATE_RANGE:-}"
 # Hard cap for batched --findRelatedTests breadth. Above this we run source-adjacent tests.
 RELATED_TEST_LIMIT="${RELATED_TEST_LIMIT:-20}"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 echo "========================================"
 echo "  Validation Gate"
@@ -180,8 +181,9 @@ run_jest_exec() {
     shift
 
     if [ "$pkg_path" = "./packages/mcp-server" ]; then
-        JEST_FORCE_CJS=1 pnpm exec jest \
-            --config ./jest.config.cjs \
+        # Always run via the governed runner to comply with test policy.
+        JEST_FORCE_CJS=1 bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- \
+            --config "$REPO_ROOT/jest.config.cjs" \
             --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' \
             "$@"
         return $?
@@ -190,10 +192,10 @@ run_jest_exec() {
     (
         cd "$pkg_path" || exit 1
         if [ -f "jest.config.cjs" ]; then
-            pnpm exec jest --config ./jest.config.cjs "$@"
+            bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config ./jest.config.cjs "$@"
             exit $?
         fi
-        pnpm exec jest "$@"
+        bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- "$@"
     )
 }
 

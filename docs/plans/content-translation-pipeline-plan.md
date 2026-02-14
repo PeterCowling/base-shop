@@ -10,6 +10,8 @@ Audit-Date: 2026-02-14
 
 # Content Translation Pipeline Plan
 
+## Related docs
+- Startup loop integration fact-find: `docs/plans/content-translation-pipeline-startup-loop-fact-find.md`
 
 ## Active tasks
 

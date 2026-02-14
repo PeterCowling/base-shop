@@ -106,7 +106,7 @@ function EmailBookingButton({
         placement="left" /* display tooltip on the left side of the icon */
       >
         <span
-          // eslint-disable-next-line ds/no-raw-typography -- info badge custom text size [DS-05]
+           
           className={[
             "absolute top-0 left-1/2",
             "-translate-x-8 -translate-y-8",

@@ -34,6 +34,7 @@ This plan was replanned to reduce churn during build by locking contracts and ma
   - Evidence (E2): running Jest with the repo-root config can fail when `.open-next` artifacts exist (haste-map duplicate packages). We hit this when running governed tests: `tool-policy-gates` passed, but `template-ranker` failed due to a duplicate `@acme/lib` package coming from an `.open-next` output directory.
 - Decompose `browser_observe` / `browser_act` into (a) pure contract logic tasks and (b) tool-handler integration tasks.
 - Expand validation contracts to meet minimum case counts (M >= 3, L >= 5) so `/lp-build` has an executable contract per task.
+- Add explicit precursors for the missing "actionId -> target" mapping and driver contract so `browser_act` does not require re-observing and guessing targets.
 
 ## Goals
 
@@ -108,6 +109,8 @@ Chosen: Option A.
 | TASK-03 | SPIKE | CDP AX extraction + backend node resolution + selector builder (fixtures + unit tests) | 82% | L | Pending | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Observe shaping (ranking + paging + forms derivation) (pure) | 85% | M | Pending | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 85% | M | Pending | TASK-01 | TASK-07 |
+| TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Pending | TASK-02 | TASK-06, TASK-07 |
+| TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 82% | M | Pending | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 78% | L | Pending | TASK-02, TASK-03, TASK-04 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 74% | L | Pending | TASK-02, TASK-05, TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07 | TASK-09 |
@@ -122,13 +125,13 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-01 | - | Contract types + pure helpers + Jest scoping |
-| 2 | TASK-02, TASK-03, TASK-04, TASK-05 | Wave 1: TASK-01 | Session, CDP spike, observe shaping, act shaping |
-| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04 | Observe handler |
-| 4 | TASK-07 | Wave 3: TASK-06; Wave 2: TASK-05, TASK-02 | Act handler |
+| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-10, TASK-11 | Wave 1: TASK-01 | Session, CDP spike, shaping, plus action-target registry + driver contract |
+| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | Observe handler |
+| 4 | TASK-07 | Wave 3: TASK-06; Wave 2: TASK-05, TASK-10, TASK-11 | Act handler |
 | 5 | TASK-08 | Wave 3: TASK-06; Wave 4: TASK-07 | Tool wiring + smoke |
 | 6 | TASK-09 | Wave 5: TASK-08 | Checkpoint gate |
 
-**Max parallelism:** 4 (Wave 2) | **Critical path:** TASK-01 -> TASK-02 -> TASK-06 -> TASK-07 -> TASK-08 -> TASK-09 (6 waves) | **Total tasks:** 9
+**Max parallelism:** 6 (Wave 2) | **Critical path:** TASK-01 -> TASK-02 -> TASK-10 -> TASK-06 -> TASK-07 -> TASK-08 -> TASK-09 (6 waves) | **Total tasks:** 11
 
 ## Tasks
 
@@ -326,9 +329,9 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/observe.ts`
   - `packages/mcp-server/src/__tests__/browser-observe.contract.test.ts`
-- **Depends on:** TASK-02, TASK-03, TASK-04
+- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-10, TASK-11
 - **Blocks:** TASK-07, TASK-08
-- **Confidence:** 78% (-> 84% conditional on TASK-03 outcomes)
+- **Confidence:** 78% (-> 84% conditional on TASK-03, TASK-04, TASK-10, TASK-11)
   - Implementation: 80% -- once CDP + selectors are proven, observe composition is straightforward.
   - Approach: 78% -- identity/blocker extraction and affordance sizing controls need iteration.
   - Impact: 78% -- wrong ranking/paging harms agent usability; must be tested.
@@ -337,6 +340,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Response includes `nextCursor` + `hasMore` and stable ordering within same page state (best-effort).
   - Consent banners and modals are detected and prioritized.
   - `forms[].fields[]` reference `actionId` only.
+  - Observe stores the per-observation `actionId -> target` map in the session so `browser_act` can resolve action targets without re-observing.
 - **Test contract:**
   - TC-01: observe() on fixture inputs returns BIC with expected `page.domain/url/lang/title` -> pass
   - TC-02: observe() truncates affordances to `maxAffordances` and returns `hasMore=true` with `nextCursor` -> pass
@@ -359,9 +363,9 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Affects:**
   - `packages/mcp-server/src/tools/browser/act.ts`
   - `packages/mcp-server/src/__tests__/browser-act.contract.test.ts`
-- **Depends on:** TASK-02, TASK-05, TASK-06
+- **Depends on:** TASK-02, TASK-05, TASK-06, TASK-10, TASK-11
 - **Blocks:** TASK-08
-- **Confidence:** 74% (-> 82% conditional on TASK-06 contract stability)
+- **Confidence:** 74% (-> 82% conditional on TASK-06 contract stability and TASK-10, TASK-11)
   - Implementation: 78% -- action taxonomy is known; biggest risk is reliable element targeting via best-effort selectors.
   - Approach: 74% -- needs careful error taxonomy mapping + consistent verification deltas.
   - Impact: 74% -- incorrect gating or mis-targeted actions is high severity.
@@ -377,12 +381,75 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - TC-03: stale observationId -> returns `STALE_OBSERVATION` -> pass
   - TC-04: navigate action does not require actionId and updates URL (mock driver) -> pass
   - TC-05: expect.urlContains mismatch -> `verification.matched=false` with diagnostic reason (still returns nextObservation) -> pass
+  - TC-06: unknown actionId in current observation -> returns `ACTION_NOT_FOUND` (still returns nextObservation) -> pass
   - **Test type:** unit/contract (mock driver)
   - **Test location:** `packages/mcp-server/src/__tests__/browser-act.contract.test.ts`
   - **Run:** `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-act.contract.test.ts --runInBand`
 - **Execution plan:** Red -> Green -> Refactor
 - **What would make this >=90%:** add an integration smoke that runs act() against a local static fixture page and asserts DOM changes.
 - **Re-plan Update (2026-02-14):** safety/expect shaping moved to TASK-05.
+
+### TASK-10: Session Action Registry (actionId -> target map)
+
+- **Type:** IMPLEMENT
+- **Deliverable:** Extend session state to store the current observation's action targets so `browser_act` can resolve element targets deterministically for the latest observation epoch.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `packages/mcp-server/src/tools/browser/session.ts`
+  - `packages/mcp-server/src/__tests__/browser-session.unit.test.ts`
+- **Depends on:** TASK-02
+- **Blocks:** TASK-06, TASK-07
+- **Confidence:** 84%
+  - Implementation: 88% -- small in-memory map + existing error envelope/types (`packages/mcp-server/src/tools/browser/errors.ts`).
+  - Approach: 84% -- aligns with the core contract: actionIds are epoch-scoped and must be resolvable without re-scraping.
+  - Impact: 84% -- reduces mis-targeted actions and eliminates a major source of flakiness.
+- **Acceptance:**
+  - Session stores a per-observation map: `actionId -> target` (target includes at least `selector` and `bestEffort`; may include `frameId`).
+  - `browser_act` can resolve an actionId without re-observing.
+  - Resolution rejects stale `observationId` (uses existing `STALE_OBSERVATION`) and unknown `actionId` returns `ACTION_NOT_FOUND`.
+- **Test contract:**
+  - TC-01: set current observation + targets, then resolve actionId -> returns expected target -> pass
+  - TC-02: resolve unknown actionId -> returns `ACTION_NOT_FOUND` -> pass
+  - TC-03: resolve with stale observationId -> returns `STALE_OBSERVATION` -> pass
+  - **Test type:** unit
+  - **Test location:** `packages/mcp-server/src/__tests__/browser-session.unit.test.ts`
+  - **Run:** `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-session.unit.test.ts --runInBand`
+- **Execution plan:** Red -> Green -> Refactor
+- **What would make this >=90%:** add a contract test that ensures the target map is cleared/rotated on every new observationId update (guards against mixed-epoch actionIds).
+- **Re-plan Update (2026-02-14):**
+  - Added as an explicit precursor after discovering the current session store only tracks `currentObservationId` (no action target registry), which would force act() to re-observe and guess (violates BIC contract intent).
+
+### TASK-11: BrowserDriver Contract + Mock Driver Harness
+
+- **Type:** IMPLEMENT
+- **Deliverable:** Expand `BrowserDriver` into a v0.1 contract that supports fixture-based observe/act tests without importing Playwright types in unit tests; provide a minimal mock driver used by contract tests.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `packages/mcp-server/src/tools/browser/driver.ts`
+  - `packages/mcp-server/src/__tests__/browser-driver.unit.test.ts`
+- **Depends on:** TASK-01
+- **Blocks:** TASK-06, TASK-07
+- **Confidence:** 82%
+  - Implementation: 84% -- TypeScript interface + trivial in-memory mock.
+  - Approach: 82% -- keeps observe/act tests deterministic and CI-safe by avoiding Playwright object mocking.
+  - Impact: 82% -- makes tool handler integration tasks smaller and reduces churn from mocking details.
+- **Acceptance:**
+  - `BrowserDriver` defines the minimal v0.1 methods needed by `browser_observe` and `browser_act`.
+  - A mock driver exists and is used by at least one contract test in TASK-06/TASK-07.
+  - Existing session tests remain straightforward to keep updated when driver surface grows.
+- **Test contract:**
+  - TC-01: mock driver conforms to `BrowserDriver` and can simulate identity + affordances snapshot -> pass
+  - TC-02: mock driver can record/verify invoked actions (click/fill/navigate) -> pass
+  - TC-03: mock driver can simulate navigation/state changes between observations -> pass
+  - **Test type:** unit
+  - **Test location:** `packages/mcp-server/src/__tests__/browser-driver.unit.test.ts`
+  - **Run:** `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-driver.unit.test.ts --runInBand`
+- **Execution plan:** Red -> Green -> Refactor
+- **What would make this >=90%:** keep the driver interface minimal and add a single Playwright-backed adapter behind the same interface (optional; likely part of TASK-06/TASK-07 wiring).
+- **Re-plan Update (2026-02-14):**
+  - Added as an explicit precursor because `BrowserDriver` currently only supports `close()` (`packages/mcp-server/src/tools/browser/driver.ts`), but TASK-06/TASK-07 require a consistent abstraction for fixture-based tests.
 
 ### TASK-08: MCP Tool Wiring + Integration Tests + Smoke Runner
 

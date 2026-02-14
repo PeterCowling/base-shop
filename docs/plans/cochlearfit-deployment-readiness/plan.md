@@ -25,9 +25,9 @@ Audit-Date: 2026-02-14
 
 ## Summary
 
-Deploy the Cochlear Fit e-commerce website to production with full checkout functionality. The frontend cart and Stripe integration are production-ready, but **the Worker catalog is hardcoded with placeholder Stripe Price IDs** (critical blocker). Implementation requires: Stripe account setup, Worker catalog bundling system, inventory validation API configuration, email receipt implementation, data file population, and staging/production deployment with environment detection.
+Deploy the Cochlear Fit e-commerce website to production with full checkout functionality. The frontend cart and Stripe integration are production-ready, but **the Worker catalog is hardcoded with placeholder Stripe Price IDs** (critical blocker). Implementation requires: Stripe account setup, Worker catalog bundling system, inventory validation API configuration, email receipt implementation, data file population, and staging/production deployment.
 
-**Architecture:** Cloudflare Pages (frontend) + Cloudflare Worker (checkout API) + Stripe Checkout (payments) + Email service (receipts) + Inventory Authority API (stock validation). Single Worker serves both staging and production via runtime environment detection (free tier optimized at 100k requests/day).
+**Architecture:** Cloudflare Pages (frontend) + Cloudflare Worker (checkout API) + Stripe Checkout (payments) + Email service (receipts) + Inventory Authority API (stock validation). Same Worker codebase deployed as two Wrangler environments (staging + production) with isolated secrets + KV namespaces; routing uses same-origin `/api/*` on production custom domain (free tier: 100k requests/day shared across both Workers).
 
 **Timeline:** 9-14 business days (depends on Stripe account verification).
 
@@ -99,7 +99,7 @@ Worker (Needs fixes):
   - Lines 122-128: **HARDCODED CATALOG** (blocker)
   - Lines 204-244: Inventory validation logic
   - Lines 262-305: Stripe session creation
-  - Lines 307-331: Stripe session fetch (needs `customer_details` expansion)
+  - Lines 307-331: Stripe session retrieval (retrieve with `expand[]=line_items` for order details; customer email is in `customer_details.email` nested field)
   - Lines 333-360: Webhook signature verification
   - Lines 64-90: Order record builder (needs `customerEmail` field)
 - `apps/cochlearfit-worker/wrangler.toml` — Configuration (lines 9-14: committed secrets)
@@ -137,9 +137,9 @@ Worker (Needs fixes):
 - Worker name format: `cochlearfit-worker-staging` / `cochlearfit-worker-production` (derives `<account>.workers.dev` URLs for dev testing)
 
 **Email recipient from Stripe session** (Decision 7 corrected):
-- Read `session.customer_details.email` from webhook payload (no expand needed — it's a nested field, not a linked object)
-- If not in webhook payload, retrieve session with `expand[]=line_items` (for order details)
-- `customer_details` is already included in retrieved session object (not an expandable field)
+- Read `session.customer_details.email` from webhook payload (nested field, always included in session object)
+- Retrieve session with `expand[]=line_items` to get itemized order details (product names, quantities, prices)
+- `customer_details` is a nested object on the session, not an expandable linked resource
 - No frontend changes (Stripe Checkout already collects email)
 
 **Stripe API version pinning** (Decision 5 updated):
@@ -186,14 +186,18 @@ Worker (Needs fixes):
 
 **Required guarantees (pre-launch):**
 
-1. **Idempotency:** Use Stripe `event.id` as idempotency key
-   - Check KV for `webhook_events:{eventId}` before processing
-   - If exists: return 200 immediately (already processed)
-   - If not exists: process order → persist order → mark event processed
+1. **Idempotency:** Use Stripe `session.id` as stable order key (idempotent by construction)
+   - Define `orderId = session.id` (stable Stripe identifier)
+   - Store order record as `ORDERS.put("orders:" + session.id, JSON.stringify(order))`
+   - Repeated webhook processing overwrites same key with same data (safe)
+   - **Best-effort event deduplication:** Check KV for `webhook_events:{event.id}` before processing
+     - If exists: return 200 immediately (already processed)
+     - If not exists: process order → persist order → mark event processed
+   - **KV eventual consistency:** Event marker may be stale during rapid retries; order key idempotency provides safety net
 
 2. **Persistence failure handling:**
-   - If order persistence fails: return 500 (Stripe retries with idempotency protection)
-   - If order write succeeds but idempotency marker write fails: return 200 (prevents infinite retry loop; risk: Stripe retry bypasses idempotency read check, but duplicate order write should fail on order ID uniqueness constraint)
+   - If order persistence fails: return 500 (Stripe retries, safe with idempotent order key)
+   - If order write succeeds but event marker write fails: return 200 (prevents infinite retry loop; duplicate order writes are safe because order key is session.id)
 
 3. **Email failure handling:**
    - Email send failures: log error, return 200 (don't block webhook)
@@ -233,9 +237,10 @@ Worker (Needs fixes):
    - Validate SKUs against catalog (unknown SKU → 400)
    - Validate quantities (< 1 or > 10 → 400)
 
-5. **CORS policy enforcement:**
+5. **Origin allowlist (browser-based abuse prevention):**
    - Only allow `PAGES_ORIGIN` domains (staging + production Pages URLs)
-   - Reject requests from unknown origins (prevents CSRF)
+   - Reject requests from unknown origins (reduces browser-based abuse, e.g., unauthorized API calls from unrelated sites)
+   - **Note:** Production uses same-origin `/api/*` routing (no CORS needed); staging may use cross-origin Workers.dev URL (strict CORS required)
 
 ## Task Summary
 
@@ -253,9 +258,10 @@ Worker (Needs fixes):
 | TASK-10 | IMPLEMENT | Deploy Worker and frontend to staging | 80% | M | Pending | TASK-07, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Run end-to-end staging tests | 85% | M | Pending | TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Deploy frontend to production | 90% | S | Pending | TASK-11 | TASK-13 |
-| TASK-13 | IMPLEMENT | Run production smoke test | 85% | S | Pending | TASK-12 | TASK-14 |
-| TASK-14 | IMPLEMENT | Add Worker unit tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
-| TASK-15 | IMPLEMENT | Document fulfillment runbook | 85% | S | Pending | TASK-13 | - |
+| TASK-13 | IMPLEMENT | Run production smoke test | 85% | S | Pending | TASK-12 | TASK-16 |
+| TASK-14 | IMPLEMENT | Add minimal Worker tests (pre-launch) | 80% | S | Pending | TASK-10 | TASK-12 |
+| TASK-15 | IMPLEMENT | Document fulfillment runbook (draft pre-launch) | 85% | S | Pending | TASK-01 | - |
+| TASK-16 | IMPLEMENT | Add comprehensive Worker tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -267,18 +273,18 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-01, TASK-02, TASK-03 | - | Independent foundation tasks (Stripe, Inventory API, Email service setup) |
-| 2 | TASK-04, TASK-06, TASK-08 | Wave 1: TASK-01 (for 04, 08), TASK-03 (for 06) | Build catalog system, email template, populate data files |
+| 2 | TASK-04, TASK-06, TASK-08, TASK-15 | Wave 1: TASK-01 (for 04, 08, 15), TASK-03 (for 06) | Build catalog system, email template, populate data files, draft fulfillment runbook (can run in parallel) |
 | 3 | TASK-05, TASK-07 | Wave 2: TASK-04 (for 05), TASK-06 (for 07); Wave 1: TASK-03 (for 07) | Replace hardcoded catalog, implement email webhook |
 | 4 | TASK-09 | Waves 1-3: TASK-01, TASK-02, TASK-03, TASK-05, TASK-08 | Configure all secrets (blocked by all setup tasks) |
 | 5 | TASK-10 | Wave 4: TASK-09; Wave 3: TASK-07 | Deploy to staging |
-| 6 | TASK-11 | Wave 5: TASK-10 | Run staging tests (gate before production) |
-| 7 | TASK-12 | Wave 6: TASK-11 | Deploy to production |
-| 8 | TASK-13 | Wave 7: TASK-12 | Production smoke test |
-| 9 | TASK-14, TASK-15 | Wave 8: TASK-13 | Post-launch: Add Worker unit tests, document fulfillment runbook (can run in parallel) |
+| 6 | TASK-11, TASK-14 | Wave 5: TASK-10 | Run staging tests + minimal Worker tests (can run in parallel) |
+| 7 | TASK-12 | Wave 6: TASK-11, TASK-14 | Deploy to production (requires staging tests + minimal code tests to pass) |
+| 8 | TASK-13 | Wave 7: TASK-12 | Production smoke test (validates fulfillment runbook with real order) |
+| 9 | TASK-16 | Wave 8: TASK-13 | Post-launch: Comprehensive Worker test suite |
 
 **Max parallelism:** 3 (Wave 1: Stripe + Inventory API + Email service setup in parallel)
-**Critical path:** TASK-01 → TASK-04 → TASK-05 → TASK-09 → TASK-10 → TASK-11 → TASK-12 → TASK-13 → TASK-14 (9 waves, or TASK-15 if done sequentially)
-**Total tasks:** 15
+**Critical path:** TASK-01 → TASK-04 → TASK-05 → TASK-09 → TASK-10 → TASK-14 → TASK-12 → TASK-13 → TASK-16 (9 waves)
+**Total tasks:** 16
 
 ## Tasks
 
@@ -490,7 +496,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
       // ... 11 more variants
     ];
     ```
-  - [ ] Script validates: fail build if Stripe Price IDs missing or malformed (not `price_1...` format)
+  - [ ] Script validates: fail build if Stripe Price IDs missing or malformed (must start with `price_`)
   - [ ] Script validates: fail build if products.json, variants.json, or inventory.json missing
   - [ ] Script added to Worker package.json: `"prebuild": "tsx scripts/bundle-worker-catalog.ts"`
   - [ ] Generated file added to `apps/cochlearfit-worker/.gitignore`
@@ -499,7 +505,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:**
   - TC-01: Build with valid data → run `pnpm --filter cochlearfit-worker build` → succeeds, generated file exists
   - TC-02: Build with missing products.json → run build → fails with error "products.json not found"
-  - TC-03: Build with invalid Price ID → run build → fails with error "Stripe Price ID malformed for variant X"
+  - TC-03: Build with invalid Price ID → run build with Price ID not starting with `price_` → fails with error "Stripe Price ID malformed for variant X"
   - TC-04: Generated catalog structure → inspect generated file → matches expected TypeScript format
   - TC-05: Gitignore exclusion → run `git status` → generated file not shown as untracked
   - **Acceptance coverage:** TC-01+TC-04 cover happy path, TC-02+TC-03 cover validation, TC-05 covers git exclusion
@@ -522,7 +528,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Update `apps/cochlearfit-worker/README.md` with:
     - Build process explanation (prebuild script runs automatically)
     - Data file requirements (products.json, variants.json, inventory.json)
-    - Validation rules (Stripe Price IDs must be `price_1...` format)
+    - Validation rules (Stripe Price IDs must start with `price_`)
     - How to update catalog (edit data files, rebuild Worker)
 - **Notes / references:**
   - Reference implementation: `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts:178-223`
@@ -556,7 +562,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-01: TypeScript compilation → run `pnpm --filter cochlearfit-worker typecheck` → no errors
   - TC-02: Generated catalog import → run `pnpm --filter cochlearfit-worker build` → import resolves correctly
   - TC-03: Stripe session creation → POST `/api/checkout/session` locally → line items include real Price IDs (not placeholder format)
-  - TC-04: Price ID format → inspect session payload → Price IDs start with `price_1` (Stripe format, not `price_classic_kids_sand`)
+  - TC-04: Price ID format → inspect session payload → Price IDs start with `price_` (Stripe format, not `price_classic_kids_sand`)
   - **Acceptance coverage:** TC-01+TC-02 cover compilation, TC-03+TC-04 cover Stripe integration
   - **Validation type:** unit testing (typecheck) + integration testing (local session creation)
   - **Run/verify:** `pnpm --filter cochlearfit-worker typecheck && pnpm --filter cochlearfit-worker build`, test Stripe session creation locally
@@ -654,17 +660,18 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Impact: 75% — Email failures must not block webhook (return 200 to Stripe even if email fails), requires careful error handling
 - **Acceptance:**
   - [ ] **Webhook idempotency implemented** (critical for payment system):
-    - Use Stripe `event.id` as idempotency key
-    - Check KV for `webhook_events:{eventId}` before processing
-    - If exists: return 200 immediately (already processed)
+    - **Order key is session.id** (stable Stripe identifier → idempotent writes by construction)
+    - Store order as `ORDERS.put("orders:" + session.id, JSON.stringify(order))`
+    - **Best-effort event deduplication:** Check KV for `webhook_events:{event.id}` before processing
+    - If event marker exists: return 200 immediately (already processed)
     - If not exists: process order → persist order → mark event processed
-    - Write idempotency marker to KV: `webhook_events:{eventId} = "processed"`
+    - Write event marker to KV: `webhook_events:{event.id} = "processed"`
   - [ ] **Order persistence with failure handling:**
-    - If order persistence fails: return 500 (Stripe retries, safe with idempotency)
-    - If order write succeeds but idempotency marker write fails: return 200 (prevents retry loop; duplicate order write protected by order ID uniqueness if implemented)
+    - If order persistence fails: return 500 (Stripe retries, safe with idempotent order key)
+    - If order write succeeds but event marker write fails: return 200 (prevents retry loop; duplicate order writes are safe because key is session.id)
   - [ ] Email service client library added to dependencies (e.g., `@sendgrid/mail` or `resend`)
-  - [ ] Session retrieval corrected: `session.customer_details.email` is a nested field (no expand needed for customer_details itself)
-  - [ ] If session not in webhook payload: retrieve with `expand[]=line_items` (for order details)
+  - [ ] Session retrieval: retrieve with `expand[]=line_items` to get itemized order details
+  - [ ] Customer email extracted from `session.customer_details.email` (nested field, always included in session object)
   - [ ] `StripeSessionPayload` type updated to include `customer_details?: { email?: string }` (line 33)
   - [ ] `buildOrderRecord()` updated to include `customerEmail?: string` field (line 64)
   - [ ] Webhook handler extracts email: `const email = session.customer_details?.email`
@@ -678,17 +685,18 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - [ ] Local test: `stripe trigger checkout.session.completed` → email sent and received
   - [ ] Idempotency test: trigger same event twice → second trigger returns 200 immediately, no duplicate order
 - **Validation contract:**
-  - TC-01: Idempotency check → trigger webhook with `event.id=evt_test_123` → KV checked for `webhook_events:evt_test_123`
-  - TC-02: Idempotency marker → after processing webhook → KV contains `webhook_events:evt_test_123 = "processed"`
-  - TC-03: Duplicate event handling → trigger same `event.id` twice → first creates order, second returns 200 immediately without processing
-  - TC-04: Order persistence failure → simulate KV write error → webhook returns 500 (Stripe will retry)
-  - TC-05: Session retrieval → inspect fetched session → `customer_details.email` field present (nested, not expanded)
-  - TC-06: Email extraction → log email value → matches customer email from Stripe Checkout
-  - TC-07: Email sending → trigger test webhook → email delivered to inbox (check spam folder)
-  - TC-08: Template rendering → inspect sent email → dynamic variables replaced correctly (order ID, items, total)
-  - TC-09: Email failure handling → simulate API error (invalid credentials) → webhook returns 200 to Stripe, error logged
-  - TC-10: Missing email handling → trigger webhook with session missing customer_details → webhook returns 200, warning logged
-  - **Acceptance coverage:** TC-01-TC-04 cover idempotency, TC-05+TC-06 cover email extraction, TC-07+TC-08 cover email delivery, TC-09+TC-10 cover error handling
+  - TC-01: Order key idempotency → trigger webhook with `session.id=cs_test_123` → order stored as `orders:cs_test_123`
+  - TC-02: Duplicate order write → trigger same `session.id` twice → both writes succeed (idempotent), order value unchanged
+  - TC-03: Event deduplication → trigger same `event.id` twice → KV checked for `webhook_events:evt_test_123`, second returns 200 immediately
+  - TC-04: Event marker persistence → after processing webhook → KV contains `webhook_events:evt_test_123 = "processed"`
+  - TC-05: Order persistence failure → simulate KV write error → webhook returns 500 (Stripe will retry)
+  - TC-06: Session retrieval → inspect fetched session → `customer_details.email` field present (nested, not expanded)
+  - TC-07: Email extraction → log email value → matches customer email from Stripe Checkout
+  - TC-08: Email sending → trigger test webhook → email delivered to inbox (check spam folder)
+  - TC-09: Template rendering → inspect sent email → dynamic variables replaced correctly (order ID, items, total)
+  - TC-10: Email failure handling → simulate API error (invalid credentials) → webhook returns 200 to Stripe, error logged
+  - TC-11: Missing email handling → trigger webhook with session missing customer_details → webhook returns 200, warning logged
+  - **Acceptance coverage:** TC-01-TC-05 cover idempotency, TC-06+TC-07 cover email extraction, TC-08+TC-09 cover email delivery, TC-10+TC-11 cover error handling
   - **Validation type:** integration testing (Stripe CLI webhook trigger + KV inspection + email delivery verification)
   - **Run/verify:** `stripe trigger checkout.session.completed`, `wrangler kv:key get webhook_events:evt_test_123`, check inbox, inspect Worker logs
 - **Execution plan:**
@@ -749,7 +757,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-02: Frontend catalog loading → start dev server → products display with correct titles, prices, images
   - TC-03: Variant SKU matching → inspect inventory.json `sku` values → match variant `id` values in variants.json
   - TC-04: Localization format → inspect products.json → `title` is `Record<string, string>` with at least `en` key
-  - TC-05: Stripe Price ID format → inspect variants.json → all `stripePriceId` values start with `price_1`
+  - TC-05: Stripe Price ID format → inspect variants.json → all `stripePriceId` values start with `price_`
   - **Acceptance coverage:** TC-01 covers schemas, TC-02 covers frontend integration, TC-03 covers SKU consistency, TC-04 covers localization, TC-05 covers Stripe IDs
   - **Validation type:** integration testing (frontend + build script)
   - **Run/verify:** `pnpm --filter cochlearfit dev` → open http://localhost:3011 → verify products display, run build script → verify no errors
@@ -1129,7 +1137,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Go/No-Go checklist from fact-find (Phase 6: Production Deployment)
 
-### TASK-14: Add Worker unit tests (post-launch)
+### TASK-14: Add minimal Worker tests (pre-launch)
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change
 - **Startup-Deliverable-Alias:** none
@@ -1139,56 +1147,51 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `apps/cochlearfit-worker/vitest.config.ts` (new file, Vitest configuration)
   - `apps/cochlearfit-worker/package.json` (add test script)
   - `[readonly] apps/cochlearfit-worker/src/index.ts` (test subjects)
-- **Depends on:** TASK-13
-- **Blocks:** -
-- **Confidence:** 70% ⚠️ BELOW THRESHOLD
-  - Implementation: 75% — Vitest for Workers is straightforward (recommended by Cloudflare), but Worker environment mocking adds complexity
-  - Approach: 70% — Standard unit testing pattern, but Worker runtime differences from Node.js require special setup
-  - Impact: 65% — Tests must mock Stripe API, email service API, inventory API, KV storage, and fetch requests
+- **Depends on:** TASK-10
+- **Blocks:** TASK-12
+- **Confidence:** 80%
+  - Implementation: 85% — Focused on critical paths only (webhook signature, inventory, catalog bundling), straightforward Vitest setup
+  - Approach: 80% — Minimal test coverage for launch readiness (pre-launch requirement), comprehensive tests deferred to TASK-16
+  - Impact: 75% — Tests validate most critical failure modes before production deployment
 - **Acceptance:**
-  - [ ] Vitest configured for Cloudflare Workers environment
-  - [ ] Test files created:
-    - `__tests__/inventory-validation.test.ts` — test inventory validation with mocked fetch
-    - `__tests__/stripe-session.test.ts` — test Stripe session creation with mocked Stripe API
-    - `__tests__/webhook-handler.test.ts` — test webhook handler with fixture payloads
-    - `__tests__/email-sending.test.ts` — test email sending with mocked email service
-    - `__tests__/signature-verification.test.ts` — test webhook signature verification with test secrets
+  - [ ] Vitest configured for Cloudflare Workers environment (minimal config)
+  - [ ] Critical test files created:
+    - `__tests__/signature-verification.test.ts` — test webhook signature verification (valid + invalid signatures)
+    - `__tests__/inventory-validation.test.ts` — test inventory validation handler (in-stock, out-of-stock, API error)
+    - `__tests__/catalog-bundling.test.ts` — test build script validates Stripe Price IDs correctly
   - [ ] All tests pass: `pnpm --filter cochlearfit-worker test`
-  - [ ] Coverage report generated (aim for >70% coverage)
   - [ ] Tests added to CI pipeline (run on every commit)
 - **Validation contract:**
-  - TC-01: Inventory validation → test in-stock → returns 200
-  - TC-02: Inventory validation → test out-of-stock → returns 409
-  - TC-03: Stripe session creation → test with valid payload → session created with correct line items
-  - TC-04: Webhook signature → test with valid signature → verification passes
-  - TC-05: Webhook signature → test with invalid signature → verification fails
-  - TC-06: Email sending → test with valid order → email API called with correct payload
-  - TC-07: Email sending → test with API error → logs error, returns 200 to Stripe (no retry)
-  - **Acceptance coverage:** TC-01+TC-02 cover inventory, TC-03 covers Stripe, TC-04+TC-05 cover signatures, TC-06+TC-07 cover email
+  - TC-01: Webhook signature valid → test with valid signature → verification passes
+  - TC-02: Webhook signature invalid → test with invalid signature → verification fails, returns 401
+  - TC-03: Inventory in-stock → test with available SKU → returns 200
+  - TC-04: Inventory out-of-stock → test with unavailable SKU → returns 409
+  - TC-05: Catalog bundling → test with invalid Price ID → build fails with error message
+  - **Acceptance coverage:** TC-01+TC-02 cover webhook security, TC-03+TC-04 cover inventory, TC-05 covers catalog validation
   - **Validation type:** unit testing (Vitest)
   - **Run/verify:** `pnpm --filter cochlearfit-worker test`
 - **Execution plan:**
   - **Red → Green → Refactor**
-  - **Red evidence:** First test run will fail (mocks not set up, Worker environment issues)
-  - **Green evidence:** After setting up mocks and Worker environment, all tests pass
-  - **Refactor evidence:** Add test helpers for common mocks, improve test readability
+  - **Red evidence:** First test run will fail (Vitest config incomplete, mocks not set up)
+  - **Green evidence:** After minimal Vitest setup, critical path tests pass
+  - **Refactor evidence:** Add test helpers for signature mocking, improve error messages
 - **Planning validation:**
-  - Checks run: Reviewed Vitest for Cloudflare Workers documentation (Cloudflare recommended testing framework)
-  - Unexpected findings: Worker environment requires Vitest pool configuration and miniflare integration for KV mocking
-- **What would make this ≥90%:** Complete Worker-specific test setup (Vitest pool workers, miniflare for KV mocking, fetch mock for external APIs), achieve >80% coverage
+  - Checks run: Reviewed Vitest for Cloudflare Workers documentation
+  - Unexpected findings: None (focused scope reduces complexity)
+- **What would make this ≥90%:** Run tests against staging deployment to validate Worker environment compatibility
 - **Rollout / rollback:**
-  - Rollout: Tests added to CI pipeline, run on every commit
-  - Rollback: N/A (tests don't affect production; can be skipped temporarily if blocking)
+  - Rollout: Tests added to CI pipeline, block merge if failing
+  - Rollback: N/A (tests don't affect production; can disable temporarily if blocking merge)
 - **Documentation impact:**
   - Update `apps/cochlearfit-worker/README.md`:
     - How to run tests (`pnpm test`)
-    - How to add new tests
-    - Mock setup patterns
+    - Test coverage scope (minimal pre-launch, comprehensive in TASK-16)
 - **Notes / references:**
-  - Coverage gap identified in fact-find: "Worker has zero tests"
-  - Vitest for Cloudflare Workers (Cloudflare recommended): https://developers.cloudflare.com/workers/testing/vitest-integration/
+  - Pre-launch requirement from fact-find: "Worker has zero tests (must add minimal tests before launch)"
+  - Vitest for Cloudflare Workers: https://developers.cloudflare.com/workers/testing/vitest-integration/
+  - Comprehensive test suite in TASK-16 (post-launch)
 
-### TASK-15: Document fulfillment runbook
+### TASK-15: Document fulfillment runbook (draft pre-launch)
 - **Type:** IMPLEMENT
 - **Deliverable:** Documentation artifact
 - **Startup-Deliverable-Alias:** none
@@ -1196,14 +1199,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:**
   - `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` (new doc)
   - `[readonly] Stripe Dashboard` (order lookup reference)
-- **Depends on:** TASK-13
+- **Depends on:** TASK-01
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 90% — Straightforward documentation task, manual CSV export process is well-documented by Stripe
   - Approach: 85% — Manual fulfillment via Stripe Dashboard is acceptable for MVP (no automated shipping integration needed)
   - Impact: 80% — Operations team needs clear runbook to avoid fulfillment errors (wrong items shipped, missed orders)
 - **Acceptance:**
-  - [ ] Fulfillment runbook created in `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` with:
+  - [ ] Fulfillment runbook **draft** created in `docs/plans/cochlearfit-deployment-readiness/fulfillment-runbook.md` with:
     - Order lookup procedure (Stripe Dashboard → Payments → filter by date range)
     - CSV export instructions (export columns: Order ID, Customer Email, Items, Quantities, Shipping Address)
     - Inventory reconciliation steps (match exported orders against inventory.json stock levels)
@@ -1211,26 +1214,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
     - Refund workflow (Stripe Dashboard → Refunds → issue refund, update inventory)
     - Email remediation workflow (if order confirmation failed to send, manually resend from template)
     - Error handling (duplicate orders, payment disputes, address issues)
-  - [ ] Runbook tested with real production order from TASK-13 smoke test
   - [ ] Runbook includes screenshots of Stripe Dashboard for critical steps
   - [ ] Runbook reviewed by operations team (or DRI for fulfillment)
+  - [ ] **Validation with real order deferred to post-TASK-13** (runbook complete but not field-tested until production smoke test)
 - **Validation contract:**
-  - TC-01: Order lookup → follow runbook to find production smoke test order → order found in Stripe Dashboard
-  - TC-02: CSV export → export test order → CSV contains expected columns (Order ID, Email, Items, Address)
-  - TC-03: Inventory reconciliation → match exported order against inventory.json → quantity reduction documented
-  - TC-04: Refund workflow → follow runbook to issue test refund → refund succeeds in Stripe Dashboard
-  - **Acceptance coverage:** TC-01+TC-02 cover lookup/export, TC-03 covers reconciliation, TC-04 covers refunds
-  - **Validation type:** manual verification (follow runbook steps)
-  - **Run/verify:** Follow runbook with production smoke test order, verify each step completes successfully
+  - TC-01: Runbook structure → inspect doc → all sections present (lookup, export, reconciliation, fulfillment, refund, email remediation, error handling)
+  - TC-02: Stripe Dashboard screenshots → inspect doc → critical steps illustrated with annotated screenshots
+  - TC-03: CSV export columns → verify doc lists correct export fields (Order ID, Email, Items, Quantities, Address)
+  - TC-04: Operations review → DRI reviews runbook → confirms clarity and completeness
+  - TC-05 (post-TASK-13): Real order test → follow runbook with production smoke test order → all steps complete successfully
+  - **Acceptance coverage:** TC-01-TC-04 cover draft completeness, TC-05 validates with real production order (deferred to post-TASK-13)
+  - **Validation type:** documentation review + post-launch field test
+  - **Run/verify:** Review runbook sections + screenshots; after TASK-13, execute runbook with real order
 - **Execution plan:**
   - **Red → Green → Refactor**
   - **Red evidence:** First draft will be missing screenshots and error handling edge cases
-  - **Green evidence:** After adding screenshots and testing with real order, runbook is complete and operational
-  - **Refactor evidence:** Add troubleshooting section, document common errors (payment disputes, address validation failures)
+  - **Green evidence:** After adding screenshots and operations review, runbook draft is complete (field test deferred to post-TASK-13)
+  - **Refactor evidence:** Add troubleshooting section after real order experience, document common errors discovered
 - **Planning validation:**
   - Checks run: Reviewed Stripe Dashboard export features, confirmed CSV export includes necessary fields
   - Unexpected findings: None (standard manual fulfillment pattern for MVP)
-- **What would make this ≥90%:** Test runbook with 5+ orders, get operations team sign-off on clarity and completeness
+- **What would make this ≥90%:** Field test runbook with 5+ production orders (post-TASK-13), get operations team sign-off after field validation
 - **Rollout / rollback:**
   - Rollout: Documentation artifact, no deployment required
   - Rollback: N/A (documentation only)
@@ -1239,11 +1243,65 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Overall acceptance criterion: "Fulfillment process documented (manual CSV export from Stripe Dashboard)"
   - Manual fulfillment is acceptable for MVP per constraints section
+  - **Two-phase approach:** Draft runbook pre-launch (depends on TASK-01 Stripe setup), field test with real order post-TASK-13
   - Future enhancement: integrate with shipping provider API (ShipStation, Shippo) for automated fulfillment
 
-## Parallelism Guide
-
-_Tasks will be sequenced and this section will be populated by `/lp-sequence` after plan is persisted._
+### TASK-16: Add comprehensive Worker tests (post-launch)
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/src/__tests__/` (expand existing test directory)
+  - `apps/cochlearfit-worker/vitest.config.ts` (update for full coverage)
+  - `[readonly] apps/cochlearfit-worker/src/index.ts` (test subjects)
+- **Depends on:** TASK-13
+- **Blocks:** -
+- **Confidence:** 70% ⚠️ BELOW THRESHOLD
+  - Implementation: 75% — Vitest for Workers is straightforward, but comprehensive mocking adds complexity
+  - Approach: 70% — Standard unit testing pattern, but Worker runtime differences from Node.js require careful setup
+  - Impact: 65% — Tests must mock Stripe API, email service API, KV storage, and all edge cases
+- **Acceptance:**
+  - [ ] Comprehensive test files added:
+    - `__tests__/stripe-session.test.ts` — test Stripe session creation with various payloads
+    - `__tests__/webhook-handler.test.ts` — test complete webhook handler flow (idempotency, order persistence, email)
+    - `__tests__/email-sending.test.ts` — test email sending with mocked email service (success, failure, retry)
+    - `__tests__/order-persistence.test.ts` — test KV order writes (success, failure, idempotency by session.id)
+  - [ ] All tests pass: `pnpm --filter cochlearfit-worker test`
+  - [ ] Coverage report generated (aim for >70% coverage)
+  - [ ] Edge cases covered: missing email, KV failure, API timeout, malformed webhook payload
+- **Validation contract:**
+  - TC-01: Stripe session creation → test with valid payload → session created with correct line items
+  - TC-02: Webhook idempotency → trigger same session.id twice → second write is idempotent (no error)
+  - TC-03: Event deduplication → trigger same event.id twice → second returns 200 without processing
+  - TC-04: Email sending → test with valid order → email API called with correct payload
+  - TC-05: Email failure → test with API error → logs error, returns 200 to Stripe (no retry)
+  - TC-06: KV write failure → simulate error → webhook returns 500 (Stripe will retry)
+  - TC-07: Missing email → webhook with no customer_details.email → logs warning, continues processing
+  - **Acceptance coverage:** All critical paths + edge cases
+  - **Validation type:** unit testing (Vitest with comprehensive mocks)
+  - **Run/verify:** `pnpm --filter cochlearfit-worker test && pnpm --filter cochlearfit-worker test:coverage`
+- **Execution plan:**
+  - **Red → Green → Refactor**
+  - **Red evidence:** First comprehensive test run will fail (edge cases not handled, mocks incomplete)
+  - **Green evidence:** After adding error handling and complete mocks, all tests pass
+  - **Refactor evidence:** Add test helpers for common patterns, improve coverage of error paths
+- **Planning validation:**
+  - Checks run: Reviewed Vitest documentation and miniflare for KV mocking
+  - Unexpected findings: Worker environment requires miniflare integration for KV mocks (not just in-memory stubs)
+- **What would make this ≥90%:** Complete miniflare setup, achieve >80% coverage, test against staging Worker
+- **Rollout / rollback:**
+  - Rollout: Tests added to CI pipeline, run on every commit
+  - Rollback: N/A (tests don't affect production; can be temporarily disabled if blocking)
+- **Documentation impact:**
+  - Update `apps/cochlearfit-worker/README.md`:
+    - Full test suite coverage map
+    - How to add new tests for edge cases
+    - Mock setup patterns (Stripe, email, KV)
+- **Notes / references:**
+  - Builds on TASK-14 minimal tests (pre-launch requirement satisfied)
+  - Vitest for Cloudflare Workers: https://developers.cloudflare.com/workers/testing/vitest-integration/
+  - Miniflare for KV mocking: https://miniflare.dev
 
 ## Risks & Mitigations
 
@@ -1256,7 +1314,7 @@ _Tasks will be sequenced and this section will be populated by `/lp-sequence` af
 | **Customer email not in webhook payload** | High | High | **Mitigated** — TASK-07 implements session expansion for `customer_details.email` |
 | **Secrets leaked via wrangler.toml** | High | High | **Fix required** — TASK-09 removes committed secrets from wrangler.toml, uses `wrangler secret put` |
 | **CORS blocks production Pages origin** | Low | High | Test CORS in TASK-10 staging deployment; verify `PAGES_ORIGIN` includes all deployed origins |
-| **Stripe API version breaking change** | Low | Medium | **Mitigated** — TASK-07 pins API version with `Stripe-Version: "2024-12-18"` header |
+| **Stripe API version breaking change** | Low | Medium | **Mitigated** — Pin Stripe API version via `Stripe-Version` header to the account's pinned version; verify webhook endpoint version alignment (TASK-01 + TASK-07) |
 | **Worker tests missing cause regressions** | Medium | Medium | TASK-14 adds minimal Worker tests post-launch (inventory mock, email mock, signature verification) |
 | **KV namespace not provisioned in production** | Low | High | Verify KV binding in wrangler.toml matches production namespace in TASK-10; test in staging first |
 | **Environment isolation fails (wrong secrets used)** | Low | High | Wrangler environments provide true isolation (separate deployments, KV namespaces, secrets); TASK-10+TASK-11 verify staging uses staging secrets; TASK-12+TASK-13 verify production uses production secrets |
@@ -1339,9 +1397,12 @@ _Tasks will be sequenced and this section will be populated by `/lp-sequence` af
 - [ ] Test email send: `curl` email service API with test payload → email delivered to inbox (not spam)
 
 ### Rollback Procedure
-- [ ] Rollback tested in staging: revert Worker deployment via `wrangler rollback --env staging` succeeds
+- [ ] Rollback tested in staging: revert Worker deployment via `wrangler rollback --env staging --message "rollback reason"` succeeds
 - [ ] Cloudflare Pages rollback tested: revert to previous deployment via dashboard succeeds
-- [ ] Rollback runbook documented with exact commands
+- [ ] Rollback runbook documented with exact commands for both envs:
+  - Staging Worker: `wrangler rollback --env staging --message "<reason>"`
+  - Production Worker: `wrangler rollback --env production --message "<reason>"`
+  - Pages: Cloudflare dashboard → Deployments → select previous deployment → "Rollback to this deployment"
 
 ### On-Call Coverage
 - [ ] DRI assigned for launch window (name:_____________)

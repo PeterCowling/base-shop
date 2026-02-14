@@ -9,8 +9,6 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
-import { LinkText } from "@acme/design-system/atoms";
-
 import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
 
@@ -61,11 +59,13 @@ export default memo(function PolicyFeeClarityPanel({
     >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h3 className="font-medium text-brand-heading">{tBook("policies.title")}</h3>
-        <LinkText asChild className="text-xs">
-          <Link href={termsHref} prefetch={true}>
-            {tFooter("terms")}
-          </Link>
-        </LinkText>
+        <Link
+          href={termsHref}
+          prefetch={true}
+          className="text-xs font-medium text-brand-primary hover:underline"
+        >
+          {tFooter("terms")}
+        </Link>
       </div>
 
       {resolved.length > 0 && (
@@ -80,4 +80,3 @@ export default memo(function PolicyFeeClarityPanel({
     </div>
   );
 });
-

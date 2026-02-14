@@ -187,6 +187,11 @@ run_jest_exec() {
         return $?
     fi
 
+    if [ -f "$pkg_path/jest.config.cjs" ]; then
+        pnpm -C "$pkg_path" exec jest --config ./jest.config.cjs "$@"
+        return $?
+    fi
+
     pnpm -C "$pkg_path" exec jest "$@"
 }
 

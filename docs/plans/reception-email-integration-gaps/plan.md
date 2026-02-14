@@ -4,7 +4,7 @@ Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-14
-Last-updated: 2026-02-14 (CHECKPOINT-12 reassessment)
+Last-updated: 2026-02-14 (TASK-13 complete)
 Feature-Slug: reception-email-integration-gaps
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -133,7 +133,7 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 | TASK-10 | IMPLEMENT | Add UI filter for cancelled bookings | 87% | M | Complete (2026-02-14) | TASK-07 | - |
 | TASK-11 | IMPLEMENT | Wire useCancelBooking mutation | 85% | M | Complete (2026-02-14) | TASK-05,TASK-07 | - |
 | TASK-12 | CHECKPOINT | Reassess Phase 3 approach | 95% | S | Complete (2026-02-14) | TASK-02,TASK-06,TASK-08,TASK-09,TASK-10,TASK-11 | TASK-13 |
-| TASK-13 | IMPLEMENT | Create cancellation email parser | 85% | M | Pending | TASK-12 | TASK-14 |
+| TASK-13 | IMPLEMENT | Create cancellation email parser | 85% | M | Complete (2026-02-14) | TASK-12 | TASK-14 |
 | TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 75% ⚠️ | L | Pending | TASK-13 | TASK-15 |
 | TASK-15 | IMPLEMENT | Integrate with Gmail organize | 75% ⚠️ | M | Pending | TASK-14 | TASK-16 |
 | TASK-16 | IMPLEMENT | Add failure queue labels | 90% | S | Pending | TASK-15 | - |
@@ -1021,6 +1021,32 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Acceptance: unchanged (format assumptions now validated)
   - Validation plan: Can use existing test sample for TC-01 (parse sample email → extract reservation code 6896451364)
   - Rollout/rollback: unchanged
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 6dae78a7f9
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04, TC-05 + 2 additional edge cases
+  - Cycles: 1 (red → green)
+  - Initial validation: FAIL as expected (parser module didn't exist)
+  - Final validation: PASS (all 7 tests passing)
+- **Confidence reassessment:**
+  - Original: 85% (Implementation: 85%, Approach: 80%, Impact: 75%)
+  - Post-validation: 85% (confirmed - validation matched expectations)
+  - Delta reason: validation confirmed compound ID extraction works correctly with multiple pattern fallbacks
+- **Validation:**
+  - Ran: `pnpm run test:governed -- jest -- --testPathPattern=cancellation-email-parser --no-coverage` — PASS (7/7 tests)
+  - Ran: `pnpm --filter mcp-server typecheck` — PASS
+  - Ran: `pnpm --filter mcp-server lint` — PASS (0 errors, 50 pre-existing warnings)
+- **Documentation updated:** None required (internal parser module)
+- **Implementation notes:**
+  - Created `packages/mcp-server/src/parsers/cancellation-email-parser.ts` with `parseCancellationEmail` function
+  - Multiple pattern fallbacks: subject line (`NEW CANCELLATION {id}`), HTML table (`reservation code` row), plain text compound ID
+  - Extracts first number from compound ID format (e.g., 6896451364 from 6896451364_5972003394)
+  - OTA filtering: returns null for Hostelworld/Booking.com emails (Octorate only)
+  - Graceful failure handling: returns null for unparseable emails
+  - Test coverage: 7 tests including all 5 validation contract cases plus 2 edge cases (Booking.com OTA, subject-only extraction)
+  - Pattern matches gmail.ts extraction approach for consistency
 
 ### TASK-14: Add process_cancellation_email MCP tool
 - **Type:** IMPLEMENT

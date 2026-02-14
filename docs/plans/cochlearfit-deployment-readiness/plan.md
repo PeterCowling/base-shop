@@ -4,7 +4,7 @@ Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-13
-Last-updated: 2026-02-13
+Last-updated: 2026-02-14
 Last-reviewed: 2026-02-14
 Feature-Slug: cochlearfit-deployment-readiness
 Deliverable-Type: multi-deliverable
@@ -248,7 +248,7 @@ Worker (Needs fixes):
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | - | TASK-04, TASK-08, TASK-09 |
 | TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | - | TASK-09 |
-| TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Pending | - | TASK-06, TASK-07, TASK-09 |
+| TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
 | TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Pending | TASK-01 | TASK-05 |
 | TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Pending | TASK-04 | TASK-09 |
 | TASK-06 | IMPLEMENT | Create email receipt template | 85% | M | Pending | TASK-03 | TASK-07 |
@@ -460,6 +460,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - SendGrid docs: https://docs.sendgrid.com
   - DNS verification guide: SPF, DKIM, DMARC records
   - Recommended: Resend (best DX, React email templates, 100 emails/day free)
+
+#### Build Attempt (2026-02-14)
+- **Status:** Blocked (external prerequisite)
+- **Blocker:** `cochlearfit.com` does not resolve (NXDOMAIN), so sender-domain DNS verification cannot be completed.
+- **Evidence:** `dig @1.1.1.1 cochlearfit.com` -> `status: NXDOMAIN`; `dig @8.8.8.8 cochlearfit.com` -> `status: NXDOMAIN` on 2026-02-14.
+- **Next action:** Register/configure the domain (or confirm the correct production domain) before continuing TASK-03 and any routing tasks (TASK-10/TASK-12/TASK-13).
 
 ### TASK-04: Implement build-time catalog bundling system
 - **Type:** IMPLEMENT

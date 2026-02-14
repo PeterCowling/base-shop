@@ -1683,9 +1683,6 @@ importers:
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../platform-core
-      '@acme/seo':
-        specifier: workspace:*
-        version: link:../seo
       '@acme/telemetry':
         specifier: workspace:*
         version: link:../telemetry
@@ -2434,6 +2431,9 @@ importers:
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../platform-core
+      '@acme/seo':
+        specifier: workspace:*
+        version: link:../seo
       '@acme/telemetry':
         specifier: workspace:*
         version: link:../telemetry

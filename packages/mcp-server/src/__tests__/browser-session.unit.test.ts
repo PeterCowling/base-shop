@@ -68,3 +68,74 @@ describe("browser session store", () => {
   });
 });
 
+describe("browser session action registry (TASK-10)", () => {
+  test("TC-01: set current observation + targets, then resolve actionId -> returns expected target", () => {
+    const store = new BrowserSessionStore();
+    const session = store.createSession({ driver: createNoopDriver() });
+
+    store.setCurrentObservation({
+      sessionId: session.sessionId,
+      observationId: "obs_123",
+      actionTargets: {
+        a_1: { selector: "#place-order", bestEffort: false },
+      },
+    });
+
+    const resolved = store.resolveActionTarget({
+      sessionId: session.sessionId,
+      observationId: "obs_123",
+      actionId: "a_1",
+    });
+
+    expect(resolved.ok).toBe(true);
+    if (resolved.ok) {
+      expect(resolved.value).toEqual({ selector: "#place-order", bestEffort: false });
+    }
+  });
+
+  test("TC-02: resolve unknown actionId -> returns ACTION_NOT_FOUND", () => {
+    const store = new BrowserSessionStore();
+    const session = store.createSession({ driver: createNoopDriver() });
+
+    store.setCurrentObservation({
+      sessionId: session.sessionId,
+      observationId: "obs_123",
+      actionTargets: {},
+    });
+
+    const resolved = store.resolveActionTarget({
+      sessionId: session.sessionId,
+      observationId: "obs_123",
+      actionId: "a_missing",
+    });
+
+    expect(resolved.ok).toBe(false);
+    if (!resolved.ok) {
+      expect(resolved.error.code).toBe("ACTION_NOT_FOUND");
+    }
+  });
+
+  test("TC-03: resolve with stale observationId -> returns STALE_OBSERVATION", () => {
+    const store = new BrowserSessionStore();
+    const session = store.createSession({ driver: createNoopDriver() });
+
+    store.setCurrentObservation({
+      sessionId: session.sessionId,
+      observationId: "obs_current",
+      actionTargets: {
+        a_1: { selector: "#place-order", bestEffort: false },
+      },
+    });
+
+    const resolved = store.resolveActionTarget({
+      sessionId: session.sessionId,
+      observationId: "obs_stale",
+      actionId: "a_1",
+    });
+
+    expect(resolved.ok).toBe(false);
+    if (!resolved.ok) {
+      expect(resolved.error.code).toBe("STALE_OBSERVATION");
+    }
+  });
+});

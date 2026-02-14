@@ -7,11 +7,18 @@ export type BrowserSession = {
   sessionId: string;
   driver: BrowserDriver;
   currentObservationId: string | null;
+  currentActionTargets: Map<string, BrowserActionTarget>;
 };
 
 export type BrowserSessionResult<T> =
   | { ok: true; value: T }
   | { ok: false; error: BrowserToolErrorEnvelope };
+
+export type BrowserActionTarget = {
+  selector: string;
+  bestEffort: boolean;
+  frameId?: string;
+};
 
 function makeError(
   code: BrowserToolErrorEnvelope["code"],
@@ -34,6 +41,7 @@ export class BrowserSessionStore {
       sessionId: `bs_${randomUUID()}`,
       driver: input.driver,
       currentObservationId: null,
+      currentActionTargets: new Map(),
     };
 
     this.sessions.set(session.sessionId, session);
@@ -54,6 +62,26 @@ export class BrowserSessionStore {
     }
 
     session.currentObservationId = observationId;
+    session.currentActionTargets.clear();
+    return { ok: true, value: undefined };
+  }
+
+  setCurrentObservation(input: {
+    sessionId: string;
+    observationId: string;
+    actionTargets: Readonly<Record<string, BrowserActionTarget>>;
+  }): BrowserSessionResult<void> {
+    const session = this.sessions.get(input.sessionId);
+    if (!session) {
+      return {
+        ok: false,
+        error: makeError("SESSION_NOT_FOUND", `Unknown sessionId: ${input.sessionId}`),
+      };
+    }
+
+    session.currentObservationId = input.observationId;
+    session.currentActionTargets = new Map(Object.entries(input.actionTargets));
+
     return { ok: true, value: undefined };
   }
 
@@ -82,6 +110,30 @@ export class BrowserSessionStore {
     return { ok: true, value: session };
   }
 
+  resolveActionTarget(input: {
+    sessionId: string;
+    observationId: string;
+    actionId: string;
+  }): BrowserSessionResult<BrowserActionTarget> {
+    const fresh = this.assertFreshObservation({
+      sessionId: input.sessionId,
+      observationId: input.observationId,
+    });
+    if (!fresh.ok) {
+      return fresh;
+    }
+
+    const target = fresh.value.currentActionTargets.get(input.actionId);
+    if (!target) {
+      return {
+        ok: false,
+        error: makeError("ACTION_NOT_FOUND", `Unknown actionId for this observation: ${input.actionId}`),
+      };
+    }
+
+    return { ok: true, value: target };
+  }
+
   async closeSession(sessionId: string): Promise<BrowserSessionResult<void>> {
     const session = this.sessions.get(sessionId);
     if (!session) {
@@ -98,4 +150,3 @@ export class BrowserSessionStore {
     return { ok: true, value: undefined };
   }
 }
-

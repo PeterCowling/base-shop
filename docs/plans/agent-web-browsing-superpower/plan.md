@@ -104,7 +104,7 @@ Chosen: Option A.
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | BIC v0.1 types + errors + risk/redaction (pure) + mcp-server Jest config | 88% | M | Complete (2026-02-14) | - | TASK-02, TASK-03, TASK-04, TASK-05 |
-| TASK-02 | IMPLEMENT | Session + observation epoch engine (stateful) | 82% | M | Pending | TASK-01 | TASK-06, TASK-07 |
+| TASK-02 | IMPLEMENT | Session + observation epoch engine (stateful) | 82% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
 | TASK-03 | SPIKE | CDP AX extraction + backend node resolution + selector builder (fixtures + unit tests) | 82% | L | Pending | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Observe shaping (ranking + paging + forms derivation) (pure) | 85% | M | Pending | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 85% | M | Pending | TASK-01 | TASK-07 |
@@ -210,6 +210,15 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - **Run:** `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-session.unit.test.ts --runInBand`
 - **Execution plan:** Red -> Green -> Refactor
 - **What would make this >=90%:** add a minimal integration smoke that opens Chrome and validates resource cleanup (optional).
+
+#### Build Completion (2026-02-14)
+
+- **Status:** Complete (2026-02-14)
+- **Commit:** 92352a6ead
+- **Validation evidence:**
+  - `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-session.unit.test.ts --runInBand` -- PASS
+  - `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
 
 ### TASK-03: SPIKE - CDP AX Extraction + Node Resolution + Selector Builder
 

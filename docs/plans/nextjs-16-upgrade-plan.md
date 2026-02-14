@@ -12,7 +12,7 @@ Deliverable-Type: code-change
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 84%
+Overall-confidence: 83%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
 Audit-Ref: working-tree
@@ -49,6 +49,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
   - Node.js >=20.9.0 required (repo `engines.node` must be >=20.9.0; `>=20` is insufficient)
   - TypeScript >=5.1.0 required (current `5.8.3` meets this)
   - Next.js 16 upgrade surface includes React, react-dom, and @types/react/@types/react-dom alignment (TypeScript repos must upgrade these in lockstep)
+  - ESLint: repo already uses ESLint 9 + flat config (`eslint.config.mjs`), so upgrading `eslint-config-next` should not require an ESLint major migration
 - Assumptions:
   - The `--webpack` flag preserves full backward compatibility with existing webpack configs
   - next-auth 4.24.12+ has Next 16 peer dep support
@@ -74,7 +75,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 1. Bump Next.js + React (+ types) and enforce Node engine >=20.9.0
 2. Remove removed config options (`eslint` in next.config, check `experimental.externalDir`, config flag renames)
 3. Add `--webpack` flag to all `next build` and `next dev` commands
-4. Remove/replace Next lint usage; ensure lint runs via `pnpm lint` (ESLint/Biome), not via `next lint` or implicit build-time linting
+4. Remove/replace Next lint usage; ensure lint runs via `pnpm lint` (ESLint CLI), not via `next lint` or implicit build-time linting
 5. Run codemods + manual fixes for Async Request APIs repo-wide (not just params/searchParams in a subset of apps)
 6. Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl, @opennextjs/cloudflare)
 7. Validate builds, types, tests, and Cloudflare deploys
@@ -98,8 +99,8 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Foundation: bump Next.js to 16.x + React alignment + enforce Node >=20.9.0 + remove deprecated config | 83% | L | Pending | - | TASK-02, TASK-03, TASK-04, TASK-05 |
-| TASK-02 | IMPLEMENT | Add --webpack flag to all build/dev scripts | 90% | S | Pending | TASK-01 | TASK-06 |
+| TASK-01 | IMPLEMENT | Foundation: bump Next.js to 16.x + React alignment + enforce Node >=20.9.0 + remove deprecated config | 83% | L | Complete (2026-02-14) | - | TASK-02, TASK-03, TASK-04, TASK-05 |
+| TASK-02 | IMPLEMENT | Add --webpack flag to all build/dev scripts | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-03 | IMPLEMENT | Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl) | 82% | S | Pending | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Pending | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Pending | TASK-01 | TASK-06 |
@@ -130,9 +131,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated package.json files and next.config.mjs files across the monorepo
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - `package.json` (root — `next` in deps/devDeps and `pnpm.overrides`; `react`/`react-dom` and @types; `engines.node`)
+  - `.github/workflows/*.yml` (Node setup must use >=20.9.0; `node-version: 20` is not a guarantee)
+  - `.github/actions/setup-repo/action.yml` (used by many workflows; must pin Node >=20.9.0 too)
+  - `.nvmrc` or `.node-version` (pin minimum locally to avoid "works on my machine" drift)
   - `apps/cover-me-pretty/package.json`, `apps/skylar/package.json`, `apps/cochlearfit/package.json`, `apps/handbag-configurator/package.json`, `apps/prime/package.json`, `apps/xa-uploader/package.json`, `apps/reception/package.json`, `apps/business-os/package.json`, `apps/xa-b/package.json`, `apps/product-pipeline/package.json`, `apps/xa-j/package.json`, `apps/xa/package.json`, `apps/cms/package.json`, `apps/brikette/package.json` (14 apps — `next` version)
   - `apps/prime/next.config.mjs` (remove `eslint: { ignoreDuringBuilds }`)
   - `apps/cms/next.config.mjs` (remove `eslint: { ignoreDuringBuilds }`, check `experimental: { externalDir }`)
@@ -148,6 +152,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `next` version is 16.x in root package.json deps, devDeps, and `pnpm.overrides.next`
   - `react` and `react-dom` are upgraded to the Next 16-supported major (and kept in sync across the repo), with `@types/react` + `@types/react-dom` aligned for TypeScript
   - Repo Node engine enforces Next 16 minimum: `engines.node` is `>=20.9.0` (not `>=20`)
+  - CI and local dev are pinned to Node >=20.9.0 (workflows updated and at least one local pin file exists: `.nvmrc` or `.node-version`)
   - All 14 app package.json files reference `^16.x` for next
   - `eslint` config block removed from `apps/prime/next.config.mjs` and `apps/cms/next.config.mjs`
   - `experimental.externalDir` checked and handled (removed if deprecated, kept if still supported)
@@ -159,6 +164,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **TC-04:** `eslint` key absent from `apps/prime/next.config.mjs` and `apps/cms/next.config.mjs` → verified by grep
   - **TC-05:** `node -p "require('./package.json').engines?.node"` is `>=20.9.0` → passes
   - **TC-06:** `pnpm list react react-dom @types/react @types/react-dom` shows aligned majors and a single resolved version family → passes
+  - **TC-07:** `.github/workflows/*.yml` and `.github/actions/setup-repo/action.yml` use `actions/setup-node` with an explicit semver >=20.9.0 (not just `20`) → passes
+  - **TC-08:** `.nvmrc` or `.node-version` exists and pins a Node version >=20.9.0 → passes
   - **Acceptance coverage:** TC-01,02 cover Next bump; TC-05 covers Node engine; TC-06 covers React alignment; TC-03 covers install health; TC-04 covers config removals
   - **Validation type:** unit (grep verification) + integration (pnpm install)
   - **Validation location:** manual verification
@@ -177,11 +184,24 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Next.js 16 upgrade guide: https://nextjs.org/docs/app/guides/upgrading/version-16
   - pnpm override at `package.json:379` controls all workspace package versions
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 71b64ca646, b3752ad4af
+- **Validation evidence:**
+  - Next installed: `node -e "console.log(require('./node_modules/next/package.json').version)"` -> `16.1.6`
+  - React installed: `node -e "console.log(require('./node_modules/react/package.json').version)"` -> `19.2.1` (react-dom `19.2.1`)
+  - Node engine: `node -p "require('./package.json').engines.node"` -> `>=20.9.0`
+  - Local Node pin: `.nvmrc` -> `20.19.4`
+  - App versions: `rg -n '"next": "\^16\.' apps/*/package.json | wc -l` -> `14`
+  - Deprecated Next config `eslint` key removed: `rg -n "eslint:\s*\{" apps/*/next.config.mjs packages/next-config/next.config.mjs` -> no matches
+  - CI pins Node >=20.9.0: workflows use `node-version: 20.19.4`
+- **Implementation notes:** Upgraded root + all 14 apps to Next `16.1.6`, enforced Node minimum, aligned React/ReactDOM + types, removed deprecated Next config options, updated lockfile.
+
 ### TASK-02: Add --webpack flag to all build and dev scripts
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated package.json scripts across all apps
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - `apps/cover-me-pretty/package.json` (`build`, `dev`)
   - `apps/cochlearfit/package.json` (`build`, `dev`, `preview`, `preview:pages`)
@@ -227,11 +247,19 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Next 16 docs: "you can keep using Webpack by using the `--webpack` flag"
   - Note: `opennextjs-cloudflare build` wraps `next build` — need to verify it passes `--webpack` through or uses its own invocation
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 5e27a4655c
+- **Validation evidence:**
+  - Script coverage: `rg -n '\bnext (dev|build)\b' apps/*/package.json` shows `--webpack` on all occurrences
+  - Representative build: `pnpm --filter @apps/reception build` -> PASS
+- **Implementation notes:** Added `--webpack` to all `next dev`/`next build` scripts to opt out of Turbopack defaults in Next 16.
+
 ### TASK-03: Upgrade ecosystem dependencies (next-auth, eslint-config-next, next-intl)
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated dependency versions
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - `package.json` (root — `next-auth`, `eslint-config-next`, `next-intl` if present)
   - `packages/ui/package.json` (`next-auth` peer dep)
@@ -251,12 +279,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `next-intl` resolves to a version that peers with Next 16 (upgrade to v4 if needed)
   - `pnpm install` succeeds
   - CMS auth flow still works (JWT token decoding in middleware unchanged)
+  - `pnpm lint` remains driven by ESLint CLI (repo already uses ESLint 9 + flat config); `eslint-config-next` upgrade does not require a config-style migration
 - **Validation contract:**
   - **TC-01:** `next-auth` resolved version is >=4.24.12 → `pnpm list next-auth` shows correct version
   - **TC-02:** `eslint-config-next` resolved version matches `16.x` → `pnpm list eslint-config-next` shows correct version
   - **TC-02b:** `pnpm list next-intl` shows a Next 16-compatible major (expected v4) → passes
-  - **TC-03:** `pnpm lint --filter @apps/cms` passes (eslint-config-next works with Next 16) → exits 0
-  - **Acceptance coverage:** TC-01 covers criteria 1; TC-02 covers criteria 2; TC-02b covers criteria 4; TC-03 covers criteria 5
+  - **TC-03:** `pnpm --filter @apps/cms lint` passes (eslint-config-next works with Next 16 + flat config) → exits 0
+  - **Acceptance coverage:** TC-01 covers criteria 1; TC-02 covers criteria 2; TC-02b covers criteria 4; TC-03 covers criteria 6
   - **Validation type:** unit (version check) + integration (lint)
   - **Validation location:** manual verification
   - **Run:** `pnpm list next-auth && pnpm list eslint-config-next`
@@ -274,7 +303,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — remove all synchronous Async Request API usage across the repo
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - All Next.js App Router entrypoints that can receive request context: `page.tsx`, `layout.tsx`, `route.ts`, `generateMetadata`, icons/sitemaps/robots handlers, etc.
   - Known hotspots (from pre-audit): cover-me-pretty and cms (but task is explicitly repo-wide)
@@ -295,7 +324,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - **Acceptance coverage:** TC-01 covers completeness; TC-02/03 validate two complex apps
   - **Validation type:** unit (grep) + integration (build)
   - **Validation location:** repo-wide
-  - **Run:** `npx @next/codemod@canary next-async-request-api .`
+  - **Run:** `npx @next/codemod@latest next-async-request-api .`
 - **Execution plan:** Red → Green → Refactor
 - **What would make this ≥90%:** After codemod, collect an exact count of touched files and confirm no remaining markers via grep
 - **Rollout / rollback:**
@@ -309,7 +338,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — eliminate known upgrade-guide breakpoints that are easy to miss until CI/runtime
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - Root/package/app scripts that reference `next lint`
   - Any CI scripts invoking `next lint` or relying on `next build` to lint
@@ -322,24 +351,38 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Approach: 90% — catching known breakpoints early reduces runtime churn
   - Impact: 90% — low code surface, high leverage
 - **Acceptance:**
-  - Repo has zero `next lint` usage (scripts/CI) and lint is executed via `pnpm lint` (ESLint/Biome)
+  - Repo has zero `next lint` usage (scripts/CI) and lint is executed via `pnpm lint` (ESLint CLI)
   - Next config audit checklist is clean (or updated) for:
     - `images.domains` deprecation (migrate to `images.remotePatterns`)
     - local images with query strings (ensure `images.localPatterns.search` if needed)
     - `next/legacy/image` usage
     - removed runtime config: `publicRuntimeConfig`/`serverRuntimeConfig` and `getConfig()`
     - middleware/proxy config key renames (for example `skipMiddlewareUrlNormalize` -> `skipProxyUrlNormalize`)
+    - AMP removal (Next 16 hard-removes AMP): `useAmp` / `amp: true`
+    - removed `devIndicators` options
+    - PPR/dynamicIO flags and exports (`experimental.ppr`, `experimental.dynamicIO`, `export const experimental_ppr`, etc.)
+    - caching API drift (`revalidateTag` signature changes; `cacheTag`/`unstable_cacheTag`/`updateTag` usage)
+    - parallel routes: validate `@slot` directories have `default.(js|jsx|ts|tsx)` where required
+    - `experimental.turbopack` config moved/removed; ensure we are not carrying stale config keys
+    - images defaults that may change behavior (identify `<Image quality={...}>` usage and decide whether to set `images.qualities`)
 - **Validation contract:**
-  - **TC-01:** `rg -n \"\\bnext lint\\b\" .` returns zero matches → passes
-  - **TC-02:** `rg -n \"\\bgetConfig\\(\" .` returns zero matches → passes
-  - **TC-03:** `rg -n \"\\bpublicRuntimeConfig\\b|\\bserverRuntimeConfig\\b\" .` returns zero matches → passes
-  - **TC-04:** `rg -n \"next/legacy/image\" .` returns zero matches → passes
-  - **TC-05:** `rg -n \"images\\.domains\" apps/*/next.config.* packages/*/next.config.*` returns zero matches (or is migrated) → passes
-  - **TC-06:** `rg -n \"skipMiddlewareUrlNormalize\" apps/*/next.config.* packages/*/next.config.*` returns zero matches (or is migrated) → passes
-  - **Acceptance coverage:** TC-01 covers lint; TC-02/03 cover runtime config removal; TC-04/05 cover image breakpoints; TC-06 covers middleware/proxy key renames
+  - **TC-01:** `rg -n "\\bnext lint\\b" .` returns zero matches → passes
+  - **TC-02:** `rg -n "\\bgetConfig\\(" .` returns zero matches → passes
+  - **TC-03:** `rg -n "\\bpublicRuntimeConfig\\b|\\bserverRuntimeConfig\\b" .` returns zero matches → passes
+  - **TC-04:** `rg -n "next/legacy/image" .` returns zero matches → passes
+  - **TC-05:** `rg -n "images\\.domains" apps/*/next.config.* packages/*/next.config.*` returns zero matches (or is migrated) → passes
+  - **TC-06:** `rg -n "skipMiddlewareUrlNormalize" apps/*/next.config.* packages/*/next.config.*` returns zero matches (or is migrated) → passes
+  - **TC-07:** `rg -n "\\buseAmp\\b|\\bamp\\s*:\\s*true\\b" .` returns zero matches → passes
+  - **TC-08:** `rg -n "\\bdevIndicators\\b" apps/*/next.config.* packages/*/next.config.*` returns zero matches (or is migrated) → passes
+  - **TC-09:** `rg -n "experimental\\.ppr|experimental\\.dynamicIO|experimental_ppr|cacheComponents" .` returns zero matches (or is migrated) → passes
+  - **TC-10:** `rg -n "\\brevalidateTag\\s*\\(|\\bcacheTag\\s*\\(|unstable_cacheTag\\s*\\(|\\bupdateTag\\s*\\(" .` is reviewed and updated for Next 16 semantics → passes
+  - **TC-11:** `rg -n "experimental\\.turbopack" apps/*/next.config.* packages/*/next.config.*` returns zero matches (or is migrated) → passes
+  - **TC-12:** `rg -n "<Image[^>]*\\bquality\\s*=\\s*\\{|\\bquality\\s*=\\s*\\{" apps packages` is reviewed; decide whether to set `images.qualities` to preserve intent → passes
+  - **TC-13:** Parallel routes audit: `find apps packages -type d -path "*/src/app/@*" -print` and verify each slot has `default.(js|jsx|ts|tsx)` where required → passes
+  - **Acceptance coverage:** TC-01 covers lint; TC-02/03 cover runtime config removal; TC-04/05/12 cover image breakpoints/behavior; TC-06 covers middleware/proxy key renames; TC-07/08/09/10/11 cover known Next 16 removals/renames; TC-13 covers parallel routes structural requirement
   - **Validation type:** unit (grep)
   - **Validation location:** repo-wide
-  - **Run:** `rg -n \"\\bnext lint\\b|\\bgetConfig\\(|\\bpublicRuntimeConfig\\b|\\bserverRuntimeConfig\\b|next/legacy/image|images\\.domains|skipMiddlewareUrlNormalize\" .`
+  - **Run:** `rg -n "\\bnext lint\\b|\\bgetConfig\\(|\\bpublicRuntimeConfig\\b|\\bserverRuntimeConfig\\b|next/legacy/image|images\\.domains|skipMiddlewareUrlNormalize|\\buseAmp\\b|\\bamp\\s*:\\s*true\\b|\\bdevIndicators\\b|experimental\\.ppr|experimental\\.dynamicIO|experimental_ppr|cacheComponents|\\brevalidateTag\\s*\\(|\\bcacheTag\\s*\\(|unstable_cacheTag\\s*\\(|\\bupdateTag\\s*\\(|experimental\\.turbopack" .`
 - **Execution plan:** Red → Green → Refactor
 - **What would make this ≥90%:** Add a short “before/after” note in the Fact-Check Log once these greps are clean
 - **Rollout / rollback:**
@@ -372,7 +415,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — updated @opennextjs/cloudflare version + verified Cloudflare builds
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - `apps/brikette/package.json` (`@opennextjs/cloudflare`)
   - `apps/business-os/package.json` (`@opennextjs/cloudflare`)
@@ -416,7 +459,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — fix any test failures or regressions from the Next 16 upgrade
-- **Execution-Skill:** build-feature
+- **Execution-Skill:** /lp-build
 - **Affects:**
   - Any test files that fail due to Next 16 changes (unknown scope until tests run)
   - `[readonly] apps/*/src/**/__tests__/*.{test,spec}.{ts,tsx}` (test files to run)
@@ -503,3 +546,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Broadened migrations to repo-wide Async Request APIs (TASK-04), not just params/searchParams in two apps.
   - Added deterministic repo-wide upgrade audit checklist for `next lint` removal + images/runtime-config + middleware/proxy key renames (TASK-05).
   - Pulled next-intl upgrade earlier to avoid deterministic Next 16 peer-dep conflicts (TASK-03).
+
+- 2026-02-14: **Current repo/tooling evidence (pre-upgrade).**
+  - Root lint stack is already ESLint 9 + flat config: `eslint` is `^9.30.1` and `eslint.config.mjs` exists.
+  - Root `engines.node` currently allows `>=20` and GitHub Actions workflows currently use `node-version: 20` (must be tightened to >=20.9.0 to match Next 16).

@@ -103,7 +103,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 | TASK-02 | IMPLEMENT | Add --webpack flag to all build/dev scripts | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-03 | IMPLEMENT | Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl) | 82% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Complete (2026-02-14) | TASK-01 | TASK-06 |
-| TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Pending | TASK-01 | TASK-06 |
+| TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Pending | TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Full test validation and regression fixes | 80% | M | Pending | TASK-06, TASK-07 | - |
@@ -415,6 +415,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** None
 - **Notes / references:**
   - Next 16 removes `next lint` and stops running lint during `next build`; scripts/CI must run lint explicitly.
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 8b6c1ec1a7
+- **Validation evidence:**
+  - `rg -n "\\bnext lint\\b" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "from ['\\\"]next/config['\\\"]|require\\(['\\\"]next/config['\\\"]\\)" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "\\bpublicRuntimeConfig\\b|\\bserverRuntimeConfig\\b" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "next/legacy/image" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "images\\.domains" apps packages` -> 0 matches
+  - `rg -n "skipMiddlewareUrlNormalize|skipProxyUrlNormalize" apps/*/next.config.* packages/*/next.config.*` -> 0 matches
+  - `rg -n "\\buseAmp\\b|\\bamp\\s*:\\s*true\\b" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "\\bdevIndicators\\b" apps/*/next.config.* packages/*/next.config.*` -> 0 matches
+  - `rg -n "experimental\\.ppr|experimental\\.dynamicIO|experimental_ppr|cacheComponents" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "\\brevalidateTag\\s*\\(|\\bcacheTag\\s*\\(|unstable_cacheTag\\s*\\(|\\bupdateTag\\s*\\(" --glob '!docs/**' .` -> 0 matches
+  - `rg -n "experimental\\.turbopack" apps/*/next.config.* packages/*/next.config.*` -> 0 matches
+  - Parallel routes: `find apps packages -type d -path "*/src/app/@*" -print | wc -l` -> `0`
+  - `<Image quality={...}>` usage identified: `rg -n "quality=\\{\\s*\\d+" apps packages` -> 6 matches (80/85/90)
+  - Config sanity: `node -e "import('./packages/next-config/index.mjs').then(()=>console.log('ok')).catch(()=>process.exit(1))"` -> ok
+- **Implementation notes:**
+  - Set `images.qualities` in `packages/next-config/index.mjs` to `[75, 80, 85, 90]` to preserve existing `<Image quality={...}>` intent under Next 16 defaults.
 
 ### TASK-06: CHECKPOINT — Mid-upgrade validation
 

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3015",
-    "build": "next build",
+    "dev": "next dev --webpack -p 3015",
+    "build": "next build --webpack",
     "start": "next start -p 3015",
     "lint": "./scripts/lint-wrapper.sh",
     "typecheck": "tsc -p tsconfig.json --noEmit",

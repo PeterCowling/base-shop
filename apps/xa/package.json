@@ -2,7 +2,7 @@
   "name": "@apps/xa-c",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3010",
+    "dev": "next dev --webpack -p 3010",
     "build": "node ./scripts/build-xa.mjs",
     "start": "next start -p 3010",
     "lint": "eslint .",

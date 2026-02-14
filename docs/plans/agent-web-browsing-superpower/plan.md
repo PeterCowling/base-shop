@@ -111,7 +111,7 @@ Chosen: Option A.
 | TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 90% | M | Complete (2026-02-14) | TASK-01 | TASK-07 |
 | TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Complete (2026-02-14) | TASK-02 | TASK-06, TASK-07 |
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 86% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Pending | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
+| TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 74% | L | Pending | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
 | TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Pending | TASK-08 | - |
@@ -548,6 +548,27 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Dependencies: now depends on TASK-10, TASK-11
   - Acceptance: observe must store the per-observation target map in session (so act can resolve actionIds deterministically)
   - Validation: added act/observe contract cases to cover action registry integration (see TASK-07 TC-06)
+
+#### Build Completion (2026-02-14)
+
+- **Status:** Complete (2026-02-14)
+- **Commits:** cbf4aa4b67
+- **Execution cycle:**
+  - Validation cases executed: TC-01..TC-05
+  - Cycles: 1
+  - Initial validation: FAIL expected (missing observe handler)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 86%
+  - Delta reason: fixture-based observe integration proven end-to-end (BIC shape + paging + session action targets) under contract tests (E2).
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-observe.contract.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/tools/browser/observe.ts` with `browserObserve()` implementation.
+  - Added `packages/mcp-server/src/__tests__/browser-observe.contract.test.ts` to lock BIC output shaping, paging, and action target registry wiring.
 
 ### TASK-07: Implement `browser_act` (Tool Handler Integration)
 

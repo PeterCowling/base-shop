@@ -34,7 +34,7 @@ async function writeSegments(shop: string, items: Segment[]): Promise<void> {
   await writeJsonFile(segmentsPath(shop), items);
 }
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function GET(req: NextRequest): Promise<Response> {
   const shopParam = req.nextUrl.searchParams.get("shop");
   const parsed = z.string().min(1).safeParse(shopParam);
   if (!parsed.success) {
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ segments });
 }
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export async function POST(req: NextRequest): Promise<Response> {
   const parsed = await parseJsonBody(
     req,
     segmentSchema.extend({ shop: z.string() }),
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(req: NextRequest): Promise<NextResponse> {
+export async function DELETE(req: NextRequest): Promise<Response> {
   const shopParam = req.nextUrl.searchParams.get("shop");
   const idParam = req.nextUrl.searchParams.get("id");
   const shopParsed = z.string().min(1).safeParse(shopParam);

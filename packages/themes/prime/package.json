@@ -11,6 +11,7 @@
   "exports": {
     ".": "./src/tokens.ts",
     "./tokens": "./src/tokens.ts",
+    "./tailwind-tokens": "./src/tailwind-tokens.ts",
     "./tokens.css": "./tokens.css"
   },
   "sideEffects": false,

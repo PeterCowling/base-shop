@@ -49,7 +49,13 @@ type LayoutProps = {
   params?: Promise<LangRouteParams>;
 };
 
-export default async function LanguageLayout({ children, params }: LayoutProps) {
+export default async function LanguageLayout(props: LayoutProps) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const resolvedParams = params ? await params : undefined;
   const locale: Locale = getLocaleFromParams(resolvedParams);
   const fontClassName = localeFonts[locale]?.join(" ") ?? "";

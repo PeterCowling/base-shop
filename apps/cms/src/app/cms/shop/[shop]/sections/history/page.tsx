@@ -18,7 +18,8 @@ type SectionHistoryEvent = {
   detectedAt?: string;
 };
 
-export default async function SectionsHistoryPage({ params }: { params: { shop: string } }) {
+export default async function SectionsHistoryPage(props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   await requirePermission("manage_pages");
   const { shop } = params;
   const history = await listSectionHistory(shop);

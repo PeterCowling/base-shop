@@ -150,6 +150,10 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     externalDir: true,
+    // Next 16's build uses multiple workers for static/data collection. On
+    // large apps (CMS), this can exceed Node's heap limit in some environments.
+    // Allow overriding, but keep a conservative default for stability.
+    cpus: Number.parseInt(process.env.NEXT_BUILD_CPUS ?? "2", 10),
   },
   // Ensure UI calls to `/cms/api/*` hit route handlers under `/api/*`
   async rewrites() {

@@ -19,13 +19,14 @@ const shop: BlogShop = shopJson;
 
 export const revalidate = 60;
 
-export default async function BlogPage({
-  params,
-  searchParams,
-}: {
-  params: { lang: string };
-  searchParams?: Record<string, string | string[] | undefined>;
-}) {
+export default async function BlogPage(
+  props0: {
+    params: Promise<{ lang: string }>;
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  }
+) {
+  const searchParams = await props0.searchParams;
+  const params = await props0.params;
   if (!shop.luxuryFeatures.blog) {
     return notFound();
   }
@@ -85,13 +86,14 @@ export default async function BlogPage({
   );
 }
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: {
-  params: { lang: string };
-  searchParams?: Record<string, string | string[] | undefined>;
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ lang: string }>;
+    searchParams?: Promise<Record<string, string | string[] | undefined>>;
+  }
+): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const lang = resolveLocale(params.lang);
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";

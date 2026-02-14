@@ -7,11 +7,14 @@ import { baseConfig, withShopCode } from "./index.mjs";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const repoRoot = path.resolve(__dirname, "../..");
+
 const coreEnv = {
   SHOP_CODE: process.env.SHOP_CODE,
 };
 
 export default withShopCode(coreEnv.SHOP_CODE, {
+  outputFileTracingRoot: repoRoot,
   webpack(config, { isServer, webpack }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {
@@ -43,6 +46,10 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "drizzle-orm": false,
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../themes"),
+      "@acme/design-system": path.resolve(__dirname, "../design-system/src"),
+      "@acme/cms-ui": path.resolve(__dirname, "../cms-ui/src"),
+      "@acme/lib": path.resolve(__dirname, "../lib/src"),
+      "@acme/seo": path.resolve(__dirname, "../seo/src"),
       // Keep explicit i18n alias: removing this currently breaks template-app Next builds
       "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
     };

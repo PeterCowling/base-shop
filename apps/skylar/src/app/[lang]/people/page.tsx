@@ -26,7 +26,8 @@ export async function generateMetadata({
   });
 }
 
-export default async function PeoplePage({ params }: { params?: Promise<LangRouteParams> }) {
+export default async function PeoplePage(props: { params?: Promise<LangRouteParams> }) {
+  const params = await props.params;
   const resolvedParams = params ? await params : undefined;
   const lang: Locale = getLocaleFromParams(resolvedParams);
   const messages = getMessages(lang);

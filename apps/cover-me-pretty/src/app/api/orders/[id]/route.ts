@@ -15,10 +15,8 @@ import shop from "../../../../../shop.json";
 // @acme/auth relies on Node APIs, so use Node runtime
 export const runtime = "nodejs";
 
-export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function GET(_req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await getCustomerSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt -- I18N-123 HTTP status label; UI translates by status [ttl=2025-06-30]
@@ -36,10 +34,8 @@ export async function GET(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } },
-) {
+export async function PATCH(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const session = await getCustomerSession();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt -- I18N-123 HTTP status label; UI translates by status [ttl=2025-06-30]

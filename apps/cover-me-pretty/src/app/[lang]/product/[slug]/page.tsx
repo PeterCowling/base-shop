@@ -38,11 +38,12 @@ export async function generateStaticParams() {
 
 export const revalidate = 60;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string; lang: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ slug: string; lang: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const lang = resolveLocale(params.lang);
 
   try {
@@ -113,11 +114,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function ProductDetailPage({
-  params,
-}: {
-  params: { slug: string; lang: string };
-}) {
+export default async function ProductDetailPage(
+  props: {
+    params: Promise<{ slug: string; lang: string }>;
+  }
+) {
+  const params = await props.params;
   const { isEnabled } = await draftMode();
   const t = await getTranslations(resolveLocale(params.lang));
   const product = await getProduct(

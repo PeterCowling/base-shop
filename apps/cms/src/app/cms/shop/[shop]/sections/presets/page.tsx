@@ -9,7 +9,8 @@ import { listPresets } from "@acme/platform-core/repositories/sections/presets.s
 
 export const dynamic = "force-dynamic";
 
-export default async function PresetsAdminPage({ params }: { params: { shop: string } }) {
+export default async function PresetsAdminPage(props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   await requirePermission("manage_pages");
   const { shop } = params;
   const presets = await listPresets(shop);

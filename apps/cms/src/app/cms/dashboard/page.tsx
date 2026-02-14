@@ -35,11 +35,12 @@ function SeverityFilter({ brokenOnly }: { brokenOnly: boolean }) {
   );
 }
 
-export default async function DashboardIndexPage({
-  searchParams,
-}: {
-  searchParams?: { severity?: string };
-}) {
+export default async function DashboardIndexPage(
+  props: {
+    searchParams?: Promise<{ severity?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const t = await getTranslations("en");
   const shops = await listShops();
   const healthEntries = await Promise.all(

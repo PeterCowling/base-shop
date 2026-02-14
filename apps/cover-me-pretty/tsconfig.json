@@ -19,13 +19,16 @@
         "../../packages/editorial/dist"
       ],
       "@acme/editorial/*": [
-        "../../packages/editorial/src/*", "../../packages/editorial/dist/*"
+        "../../packages/editorial/src/*",
+        "../../packages/editorial/dist/*"
       ],
       "@ui/*": [
-        "../../packages/ui/src/*", "../../packages/ui/dist/src/*"
+        "../../packages/ui/src/*",
+        "../../packages/ui/dist/src/*"
       ],
       "@ui/src/*": [
-        "../../packages/ui/src/*", "../../packages/ui/dist/src/*"
+        "../../packages/ui/src/*",
+        "../../packages/ui/dist/src/*"
       ],
       "@acme/ui": [
         "../../packages/ui/dist/index",
@@ -34,7 +37,8 @@
         "../../packages/ui/src"
       ],
       "@acme/ui/*": [
-        "../../packages/ui/dist/*", "../../packages/ui/src/*"
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
       ],
       "@acme/config": [
         "../../packages/config/src/index.ts",
@@ -43,19 +47,24 @@
         "../../packages/config/dist"
       ],
       "@acme/config/*": [
-        "../../packages/config/src/*", "../../packages/config/dist/*"
+        "../../packages/config/src/*",
+        "../../packages/config/dist/*"
       ],
       "@platform-core": [
-        "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index"
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index"
       ],
       "@platform-core/*": [
-        "../../packages/platform-core/src/*", "../../packages/platform-core/dist/*"
+        "../../packages/platform-core/src/*",
+        "../../packages/platform-core/dist/*"
       ],
       "@acme/platform-core": [
-        "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index"
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index"
       ],
       "@acme/platform-core/*": [
-        "../../packages/platform-core/src/*", "../../packages/platform-core/dist/*"
+        "../../packages/platform-core/src/*",
+        "../../packages/platform-core/dist/*"
       ],
       "@auth": [
         "../../packages/auth/src/index.ts",
@@ -64,7 +73,8 @@
         "../../packages/auth/dist"
       ],
       "@auth/*": [
-        "../../packages/auth/src/*", "../../packages/auth/dist/*"
+        "../../packages/auth/src/*",
+        "../../packages/auth/dist/*"
       ],
       "@acme/auth": [
         "../../packages/auth/src/index.ts",
@@ -73,7 +83,8 @@
         "../../packages/auth/dist"
       ],
       "@acme/auth/*": [
-        "../../packages/auth/src/*", "../../packages/auth/dist/*"
+        "../../packages/auth/src/*",
+        "../../packages/auth/dist/*"
       ],
       "@date-utils": [
         "../../packages/date-utils/src/index.ts",
@@ -82,7 +93,8 @@
         "../../packages/date-utils/dist"
       ],
       "@date-utils/*": [
-        "../../packages/date-utils/src/*", "../../packages/date-utils/dist/*"
+        "../../packages/date-utils/src/*",
+        "../../packages/date-utils/dist/*"
       ],
       "@acme/date-utils": [
         "../../packages/date-utils/src/index.ts",
@@ -91,7 +103,8 @@
         "../../packages/date-utils/dist"
       ],
       "@acme/date-utils/*": [
-        "../../packages/date-utils/src/*", "../../packages/date-utils/dist/*"
+        "../../packages/date-utils/src/*",
+        "../../packages/date-utils/dist/*"
       ],
       "@acme/email": [
         "../../packages/email/src/index.ts",
@@ -100,7 +113,8 @@
         "../../packages/email/dist"
       ],
       "@acme/email/*": [
-        "../../packages/email/src/*", "../../packages/email/dist/*"
+        "../../packages/email/src/*",
+        "../../packages/email/dist/*"
       ],
       "@acme/lib": [
         "../../packages/lib/src/index.ts",
@@ -109,7 +123,8 @@
         "../../packages/lib/dist"
       ],
       "@acme/lib/*": [
-        "../../packages/lib/src/*", "../../packages/lib/dist/*"
+        "../../packages/lib/src/*",
+        "../../packages/lib/dist/*"
       ],
       "@acme/email-templates": [
         "../../packages/email-templates/src/index.ts",
@@ -128,7 +143,8 @@
         "../../scripts/dist"
       ],
       "@scripts/*": [
-        "../../scripts/src/*", "../../scripts/dist/*"
+        "../../scripts/src/*",
+        "../../scripts/dist/*"
       ],
       "@acme/types": [
         "../../packages/types/src/index.ts",
@@ -137,7 +153,8 @@
         "../../packages/types/dist"
       ],
       "@acme/types/*": [
-        "../../packages/types/src/*", "../../packages/types/dist/*"
+        "../../packages/types/src/*",
+        "../../packages/types/dist/*"
       ],
       "@acme/sanity": [
         "../../packages/sanity/src/index.ts",
@@ -146,7 +163,8 @@
         "../../packages/sanity/dist"
       ],
       "@acme/sanity/*": [
-        "../../packages/sanity/src/*", "../../packages/sanity/dist/*"
+        "../../packages/sanity/src/*",
+        "../../packages/sanity/dist/*"
       ],
       "@acme/stripe": [
         "../../packages/stripe/src/index.ts",
@@ -155,7 +173,8 @@
         "../../packages/stripe/dist"
       ],
       "@acme/stripe/*": [
-        "../../packages/stripe/src/*", "../../packages/stripe/dist/*"
+        "../../packages/stripe/src/*",
+        "../../packages/stripe/dist/*"
       ],
       "@acme/zod-utils": [
         "../../packages/zod-utils/src/index.ts",
@@ -164,7 +183,8 @@
         "../../packages/zod-utils/dist"
       ],
       "@acme/zod-utils/*": [
-        "../../packages/zod-utils/src/*", "../../packages/zod-utils/dist/*"
+        "../../packages/zod-utils/src/*",
+        "../../packages/zod-utils/dist/*"
       ],
       "@acme/telemetry": [
         "../../packages/telemetry/src/index.ts",
@@ -183,6 +203,36 @@
       "@acme/page-builder-core/*": [
         "../../packages/page-builder-core/src/*",
         "../../packages/page-builder-core/dist/*"
+      ],
+      "@acme/design-system": [
+        "../../packages/design-system/src/index.ts",
+        "../../packages/design-system/src",
+        "../../packages/design-system/dist/index",
+        "../../packages/design-system/dist"
+      ],
+      "@acme/design-system/*": [
+        "../../packages/design-system/src/*",
+        "../../packages/design-system/dist/*"
+      ],
+      "@acme/cms-ui": [
+        "../../packages/cms-ui/src/index.ts",
+        "../../packages/cms-ui/src",
+        "../../packages/cms-ui/dist/index",
+        "../../packages/cms-ui/dist"
+      ],
+      "@acme/cms-ui/*": [
+        "../../packages/cms-ui/src/*",
+        "../../packages/cms-ui/dist/*"
+      ],
+      "@acme/seo": [
+        "../../packages/seo/src/index.ts",
+        "../../packages/seo/src",
+        "../../packages/seo/dist/index",
+        "../../packages/seo/dist"
+      ],
+      "@acme/seo/*": [
+        "../../packages/seo/src/*",
+        "../../packages/seo/dist/*"
       ]
     },
     "module": "ESNext",
@@ -263,6 +313,15 @@
     },
     {
       "path": "../../packages/page-builder-core"
+    },
+    {
+      "path": "../../packages/design-system"
+    },
+    {
+      "path": "../../packages/cms-ui"
+    },
+    {
+      "path": "../../packages/seo"
     }
   ]
 }

@@ -6,14 +6,16 @@ import type { SectionPreset } from "@acme/types";
 
 export const runtime = "nodejs";
 
-export async function GET(_req: Request, { params }: { params: { shop: string } }) {
+export async function GET(_req: Request, props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   try { await requirePermission("manage_pages"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
   const { shop } = params;
   const items = await listPresets(shop);
   return NextResponse.json(items, { status: 200 });
 }
 
-export async function POST(req: Request, { params }: { params: { shop: string } }) {
+export async function POST(req: Request, props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   try { await requirePermission("manage_pages"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
   const { shop } = params;
   const ctype = req.headers.get("content-type") || "";
@@ -50,7 +52,8 @@ export async function POST(req: Request, { params }: { params: { shop: string } 
   return NextResponse.json({ error: "Unsupported content-type" }, { status: 400 });
 }
 
-export async function DELETE(req: Request, { params }: { params: { shop: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ shop: string }> }) {
+  const params = await props.params;
   try { await requirePermission("manage_pages"); } catch { return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); }
   const { shop } = params;
   const { searchParams } = new URL(req.url);

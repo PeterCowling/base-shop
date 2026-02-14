@@ -19,7 +19,7 @@ function resolveRole(session: SessionWithRole | null): string | undefined {
 
 export async function POST(
   req: NextRequest,
-  context: { params: { shop: string } },
+  context: { params: Promise<{ shop: string }> },
 ) {
   const session = await getServerSession(authOptions);
   const role = resolveRole(session);
@@ -27,7 +27,7 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const { shop } = context.params;
+  const { shop } = (await context.params);
   const url = new URL(req.url);
   const envParam = url.searchParams.get("env") as Environment | null;
   const env: Environment = envParam ?? "stage";

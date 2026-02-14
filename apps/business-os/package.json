@@ -6,7 +6,7 @@
     "build": "next build",
     "build:worker": "opennextjs-cloudflare build",
     "start": "next start -p 3020",
-    "lint": "eslint .",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --cache --cache-location .eslintcache",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests",
     "e2e": "cypress run",

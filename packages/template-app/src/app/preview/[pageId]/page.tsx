@@ -31,8 +31,8 @@ export default async function PreviewPage({
     notFound();
   }
   if (res.status === 401) {
-    // Mirror the underlying preview route response for better UX (prompt re-auth, etc.).
-    return new Response("Unauthorized", { status: 401 });
+    // Pages must return React; treat unauthorized preview as not-found.
+    notFound();
   }
   if (!res.ok) {
     // Use server translations for thrown error message

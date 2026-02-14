@@ -89,6 +89,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 - TASK-05 - Repo-wide Next 16 upgrade audit (next lint removal, images/runtime config/middleware-proxy flag grep checklist).
 - TASK-09 - Fix typecheck regressions discovered at CHECKPOINT (editorial d.ts emit + cover-me-pretty test props).
 - TASK-10 - Repo baseline fix discovered at CHECKPOINT: commit missing @acme/mcp-server browser tool entrypoint (unblocks typecheck/lint).
+- TASK-11 - Fix Next 16 lint gate regression (reception: remove setState side-effect from useMemo).
 - TASK-06 - Run mid-upgrade validation (build, typecheck, lint).
 - TASK-07 - Upgrade `@opennextjs/cloudflare` for Next 16.
 - TASK-08 - Run full test validation and regression fixes.
@@ -108,7 +109,8 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 | TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-09 | IMPLEMENT | Fix typecheck regressions: editorial d.ts emit + cover-me-pretty async-props tests | 85% | M | Complete (2026-02-14) | TASK-04 | TASK-06 |
 | TASK-10 | IMPLEMENT | Repo baseline fix: commit missing mcp-server browser tool entrypoint | 85% | S | Complete (2026-02-14) | - | TASK-06 |
-| TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10 | TASK-07, TASK-08 |
+| TASK-11 | IMPLEMENT | Fix reception lint regression (setState-in-useMemo) | 85% | S | Pending | - | TASK-06 |
+| TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10, TASK-11 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Pending | TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Full test validation and regression fixes | 80% | M | Pending | TASK-06, TASK-07 | - |
 
@@ -122,8 +124,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-01 | - | Foundation: version bump + config removals |
-| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10 | Wave 1: TASK-01 | Safe parallel: scripts, deps, codemod migrations, audit checklist, and checkpoint fixups |
-| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10 | CHECKPOINT: builds, typecheck, lint before proceeding |
+| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10, TASK-11 | Wave 1: TASK-01 | Safe parallel: scripts, deps, codemod migrations, audit checklist, and checkpoint fixups |
+| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10, TASK-11 | CHECKPOINT: builds, typecheck, lint before proceeding |
 | 4 | TASK-07 | Wave 3: TASK-06 | Cloudflare adapter upgrade + worker build verification |
 | 5 | TASK-08 | Wave 4: TASK-07 | Final validation gate: typecheck, lint, full test suite |
 
@@ -519,10 +521,34 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `pnpm --filter @acme/mcp-server lint` -> PASS (warnings only)
   - Clean checkout: `pnpm typecheck` -> PASS (after pulling 9636462aa0)
 
+### TASK-11: Fix Next 16 lint gate regression — reception hook must not set state in useMemo
+
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change — restore green `pnpm lint` in a clean checkout
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/reception/src/hooks/data/bar/useUnconfirmedBarOrderData.ts` (remove setState side-effect from `useMemo`)
+- **Depends on:** -
+- **Blocks:** TASK-06
+- **Confidence:** 85%
+  - Implementation: 90% — localized hook fix
+  - Approach: 85% — compute parse errors purely; no state updates during memoization
+  - Impact: 85% — behavior change is limited to error reporting path
+- **Acceptance:**
+  - `pnpm --filter @apps/reception lint` exits 0 (no `react-hooks/set-state-in-render` errors)
+  - Clean checkout `pnpm lint` no longer fails on @apps/reception
+- **Validation contract:**
+  - **TC-01:** `pnpm --filter @apps/reception lint` -> PASS
+  - **TC-02:** Clean checkout `pnpm lint` -> PASS
+- **Rollout / rollback:**
+  - Rollout: single commit
+  - Rollback: revert commit
+- **Documentation impact:** None
+
 ### TASK-06: CHECKPOINT — Mid-upgrade validation
 
 - **Type:** CHECKPOINT
-- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10
+- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10, TASK-11
 - **Blocks:** TASK-07, TASK-08
 - **Confidence:** 95%
 - **Acceptance:**

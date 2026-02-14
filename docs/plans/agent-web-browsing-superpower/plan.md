@@ -310,6 +310,27 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **What would make this >=90%:** add a second fixture for SPA-style nav/footer duplication to validate dedupe rules.
 - **Re-plan Update (2026-02-14):** split out from `browser_observe` integration so ranking can be iterated under TDD.
 
+#### Build Completion (2026-02-14)
+
+- **Status:** Complete (2026-02-14)
+- **Commits:** b896288ba3
+- **Execution cycle:**
+  - Validation cases executed: TC-01..TC-03
+  - Cycles: 1
+  - Initial validation: FAIL expected (missing modules)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 90%
+  - Delta reason: ranking/paging cursor + forms derivation proven under contract tests (E2).
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-observe-shaping.contract.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/tools/browser/ranking.ts` (`rankAffordances`, `paginateAffordances`) with deterministic tie-breakers and cursor encoding.
+  - Added `packages/mcp-server/src/tools/browser/forms.ts` (`deriveFormsFromAffordances`) that emits `forms[].fields[]` as `{ actionId }` only.
+
 ### TASK-05: Act Shaping - Expectations + Safety Confirmation (Pure)
 
 - **Type:** IMPLEMENT

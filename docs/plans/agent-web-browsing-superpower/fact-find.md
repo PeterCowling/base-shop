@@ -76,7 +76,7 @@ When an agent is given raw HTML, partial text, or a screenshot, it often cannot:
 - Understand required inputs and constraints.
 - Reliably refer to a specific target element ("click the blue button") without a stable identifier.
 
-This drives repeated misclicks, dead ends, and "I can’t find it" failures.
+This drives repeated misclicks, dead ends, and "I can't find it" failures.
 
 ### Finding 2: Accessibility-first extraction is the most stable cross-site representation
 
@@ -537,9 +537,9 @@ Test layers:
 
 | # | Hypothesis | Depends on | Falsification cost | Falsification time |
 |---|-----------|-----------|-------------------|-------------------|
-| H1 | Structured page identity + enumerated affordances reduce agent misclick loops by ≥50% vs raw HTML | BIC v0.1 implemented, baseline task set defined | 2-4 dev days (build + eval) | 2 days |
-| H2 | Tool-enforced observe→act→verify discipline prevents guess-click loops (stale observation rejection works) | H1 pass, action protocol implemented | 1 day (add tests) | <1 day |
-| H3 | Accessibility-first extraction provides usable affordances on ≥80% of modern SPAs | H1 pass, external site eval set | 1 day (manual eval) | 1 day |
+| H1 | Structured page identity + enumerated affordances reduce agent misclick loops by >=50% vs raw HTML | BIC v0.1 implemented, baseline task set defined | 2-4 dev days (build + eval) | 2 days |
+| H2 | Tool-enforced observe->act->verify discipline prevents guess-click loops (stale observation rejection works) | H1 pass, action protocol implemented | 1 day (add tests) | <1 day |
+| H3 | Accessibility-first extraction provides usable affordances on >=80% of modern SPAs | H1 pass, external site eval set | 1 day (manual eval) | 1 day |
 | H4 | Safety risk classification correctly gates destructive actions (no false negatives on payment/delete buttons) | H2 pass, risk classifier implemented | 1 day (test on fixtures + manual review) | 1 day |
 
 ### Existing Signal Coverage
@@ -579,12 +579,12 @@ Test layers:
 - MCP tool registration pattern exists (`packages/mcp-server/src/tools/`)
 - Core primitives are well-understood (a11y snapshots, DOM traversal, action execution)
 
-**What's missing to reach ≥80%:**
+**What's missing to reach >=80%:**
 - No established test pattern for MCP tools with browser automation (coverage gap)
 - Observation payload sizing and cursor paging need prototyping (unknown: stable ranking across steps)
 - Verification protocol needs concrete implementation design (how to check "modalOpened" or "elementAppeared" reliably)
 
-**What would raise to ≥90%:**
+**What would raise to >=90%:**
 - Spike: build minimal observe() that returns a11y snapshot + test on 3 local fixtures (2 days)
 - Spike: prove cursor paging works with stable ordering on a fixture with 500+ affordances (1 day)
 - Design doc: verification matcher implementation (0.5 days)
@@ -596,11 +596,11 @@ Test layers:
 - Safety gating protocol is explicit and enforceable at tool layer (not prompt-only)
 - Industry precedent: accessibility-first extraction is a known reliable pattern (Playwright, WebDriver)
 
-**What's missing to reach ≥90%:**
+**What's missing to reach >=90%:**
 - Unknown: will a11y extraction provide sufficient signal on sites with poor accessible naming? (need external site testing)
 - Unknown: will deterministic affordance ranking prevent "important button buried on page 3" failures? (need real-world validation)
 
-**What would raise to ≥90%:**
+**What would raise to >=90%:**
 - External site eval: test BIC extraction on 5 real sites (Stripe, Cloudflare, Google Sheets, GitHub, example SPA) and measure affordance coverage (2 days)
 - User testing: have another engineer attempt 3 agent browsing tasks with BIC v0.1 and collect qualitative feedback (1 day)
 
@@ -610,11 +610,11 @@ Test layers:
 - Blast radius is contained: new MCP tools, no changes to existing product code
 - Risk is low: agents can't break production systems via browsing (read-only observation, gated actions)
 
-**What's missing to reach ≥80%:**
+**What's missing to reach >=80%:**
 - Unknown: will agents use the tools correctly, or will prompt engineering be required? (need agent testing)
 - Unknown: will observation payload size cause MCP response limits or latency issues? (need sizing validation)
 
-**What would raise to ≥90%:**
+**What would raise to >=90%:**
 - Load test: generate BIC observations for 10 real pages and measure payload size distribution (0.5 days)
 - Agent integration test: wire up BIC tools in Claude Code and attempt 2 tasks end-to-end, measure usability and error modes (1 day)
 - Rollback plan: BIC tools are opt-in (no forced migration), so rollback is trivial (remove tools from MCP server manifest)
@@ -626,11 +626,11 @@ Test layers:
 - Clear channel (MCP server, local agent runtime - no external deployment required)
 - Clear quality gate (typecheck, lint, unit tests, contract tests)
 
-**What's missing to reach ≥90%:**
+**What's missing to reach >=90%:**
 - Measurement plan is qualitative only (no automated metrics collection for agent task success rate)
 - External site evaluation set is not yet defined (which sites, which tasks, which success criteria)
 
-**What would raise to ≥90%:**
+**What would raise to >=90%:**
 - Define: curated task set (5-10 tasks) with success criteria and baseline measurement protocol (1 day)
 - Build: metrics collection layer (log observations/actions/verification results to structured format for analysis) (1 day)
 
@@ -641,11 +641,11 @@ Test layers:
 - Integration test strategy is defined (local fixtures + Playwright)
 - Existing Playwright test pattern exists in repo (`*.browser.test.ts`)
 
-**What's missing to reach ≥80%:**
+**What's missing to reach >=80%:**
 - No established MCP tool test infrastructure (need to prove MCP tools can be tested in CI)
 - No fixture server or golden snapshot mechanism yet (need to build test infrastructure first)
 
-**What would raise to ≥90%:**
+**What would raise to >=90%:**
 - Build: local HTML fixture server + 3 deterministic fixtures (login form, checkout, modal flow) (1 day)
 - Build: golden snapshot test for BIC output (prove observation stability) (0.5 days)
 - Prove: run a Playwright MCP tool test in CI successfully (unblock CI integration) (0.5 days)
@@ -662,10 +662,10 @@ Test layers:
 Status: Ready-for-planning.
 
 **Foundation completion (2026-02-14):**
-- ✅ Test Landscape: Existing Playwright patterns documented, coverage gaps identified, testability assessment complete
-- ✅ Delivery & Channel Landscape: MCP tool delivery mechanics, approval path, measurement hooks defined
-- ✅ Hypothesis & Validation Landscape: 4 key hypotheses with falsifiability assessment and validation approach
-- ✅ Confidence Inputs: All 5 dimensions scored (Implementation 75%, Approach 85%, Impact 70%, Delivery-Readiness 80%, Testability 70%) with clear ≥90% paths
+- [x] Test Landscape: Existing Playwright patterns documented, coverage gaps identified, testability assessment complete
+- [x] Delivery & Channel Landscape: MCP tool delivery mechanics, approval path, measurement hooks defined
+- [x] Hypothesis & Validation Landscape: 4 key hypotheses with falsifiability assessment and validation approach
+- [x] Confidence Inputs: All 5 dimensions scored (Implementation 75%, Approach 85%, Impact 70%, Delivery-Readiness 80%, Testability 70%) with clear >=90% paths
 
 **Blocking items:** None. Open questions are non-blocking (agent priority, log location, external eval set, headful mode) - can be resolved during planning or deferred to implementation.
 

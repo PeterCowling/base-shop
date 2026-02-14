@@ -109,6 +109,9 @@ function resolveTemplateSubject(
       return { subject: "Prepayment - Cancelled post 3rd Attempt" };
     case 8:
       return { subject: "Prepayment Successful" };
+    case 27:
+      // TASK-04: Wire activity code 27 (CANCELLED) to cancellation confirmation template
+      return { subject: "Cancellation Confirmation" };
     case 2:
     case 3:
     case 4:

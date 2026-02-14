@@ -156,4 +156,68 @@ describe("guest email activity helper", () => {
     );
     expect(getGmailClientMock).not.toHaveBeenCalled();
   });
+
+  // TASK-04: Wire activity code 27 to MCP email trigger
+  it("creates cancellation confirmation draft for activity code 27", async () => {
+    const createDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "draft-27", message: { id: "msg-27" } } });
+    const gmail = {
+      users: {
+        drafts: {
+          create: createDraftMock,
+        },
+      },
+    };
+
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await sendGuestEmailActivity({
+      bookingRef: "BOOK123",
+      activityCode: 27,
+      recipients: ["guest@example.com"],
+    });
+
+    // TC-01: Call sendGuestEmailActivity with code 27 → returns draft with cancellation template
+    expect(result).toMatchObject({
+      success: true,
+      status: "drafted",
+      subject: "Cancellation Confirmation",
+      draftId: "draft-27",
+      messageId: "msg-27",
+    });
+
+    const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
+    const decoded = decodeRawEmail(raw);
+
+    // TC-02: Draft subject matches "Cancellation Confirmation"
+    expect(decoded).toContain("Subject: Cancellation Confirmation");
+
+    // TC-03: Draft body contains "We have received your cancellation request"
+    expect(decoded).toContain("We have received your cancellation request");
+  });
+
+  it("returns cancellation preview in dry-run mode for code 27", async () => {
+    const result = await sendGuestEmailActivity({
+      bookingRef: "BOOK123",
+      activityCode: 27,
+      recipients: ["guest@example.com"],
+      dryRun: true,
+    });
+
+    expect(result).toMatchObject({
+      success: true,
+      status: "drafted",
+      subject: "Cancellation Confirmation",
+      reason: "dry-run-no-draft-created",
+      dryRun: true,
+      preview: {
+        subject: "Cancellation Confirmation",
+      },
+    });
+    expect(result.preview?.bodyPlain).toContain(
+      "We have received your cancellation request"
+    );
+    expect(getGmailClientMock).not.toHaveBeenCalled();
+  });
 });

@@ -47,7 +47,7 @@
     "next": "^16.1.6",
     "react": "19.2.1",
     "react-dom": "19.2.1",
-    "@opennextjs/cloudflare": "^1.16.3",
+    "@opennextjs/cloudflare": "^1.16.5",
     "supertest": "^6.3.3"
   }
 }

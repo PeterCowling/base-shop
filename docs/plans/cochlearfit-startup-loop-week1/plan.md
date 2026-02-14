@@ -47,6 +47,10 @@ Canonical guardrails live in `docs/business-os/strategy/HEAD/plan.user.md` and m
 - Default: pick a single EUR price point in the observed competitor band, then add bundles only after first signal.
 - Evidence: `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
 
+## Active tasks
+- CF-101
+- CF-102
+
 ## Work Plan
 
 ### Phase 0: Unblock Catalog + Source-of-Truth (Launch-Blocking)

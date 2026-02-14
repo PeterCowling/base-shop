@@ -3510,6 +3510,18 @@
     "domain": "CI/Infrastructure"
   },
   {
+    "path": "docs/plans/cochlearfit-startup-loop-week1/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "HEAD / CochlearFit"
+  },
+  {
+    "path": "docs/plans/cochlearfit-startup-loop-week1/plan.md",
+    "type": "Plan",
+    "status": "Draft",
+    "domain": "HEAD / CochlearFit"
+  },
+  {
     "path": "docs/plans/commerce-core-readiness-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",

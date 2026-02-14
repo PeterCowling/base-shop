@@ -4,14 +4,14 @@ Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-14
-Last-updated: 2026-02-14 (TASK-13 complete)
+Last-updated: 2026-02-14 (TASK-14 re-planned)
 Feature-Slug: reception-email-integration-gaps
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 79%
+Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (pending tasks only)
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -134,7 +134,7 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 | TASK-11 | IMPLEMENT | Wire useCancelBooking mutation | 85% | M | Complete (2026-02-14) | TASK-05,TASK-07 | - |
 | TASK-12 | CHECKPOINT | Reassess Phase 3 approach | 95% | S | Complete (2026-02-14) | TASK-02,TASK-06,TASK-08,TASK-09,TASK-10,TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Create cancellation email parser | 85% | M | Complete (2026-02-14) | TASK-12 | TASK-14 |
-| TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 75% ⚠️ | L | Pending | TASK-13 | TASK-15 |
+| TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 80% | L | Pending | TASK-13 | TASK-15 |
 | TASK-15 | IMPLEMENT | Integrate with Gmail organize | 75% ⚠️ | M | Pending | TASK-14 | TASK-16 |
 | TASK-16 | IMPLEMENT | Add failure queue labels | 90% | S | Pending | TASK-15 | - |
 
@@ -1055,10 +1055,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Execution-Skill:** /lp-build
 - **Affects:** `packages/mcp-server/src/tools/process-cancellation-email.ts` (new file), `[readonly] packages/mcp-server/src/parsers/cancellation-email-parser.ts`, `[readonly] packages/mcp-server/src/tools/outbound-drafts.ts` (Firebase REST pattern)
 - **Depends on:** TASK-13
-- **Confidence:** 75% ⚠️ BELOW THRESHOLD
-  - Implementation: 75% — Multi-step workflow (parse, validate, enumerate, write activities, write status)
-  - Approach: 80% — Firebase REST pattern exists in `outbound-drafts.ts` (firebaseGet/firebasePatch helpers)
-  - Impact: 75% — Complexity reduced by Phase 2 validation (error handling patterns proven)
+- **Confidence:** 80%
+  - Implementation: 82% — Parser API tested and working, Firebase REST helpers ready, activityId pattern known, multi-step coordination validated
+  - Approach: 80% — Firebase REST pattern proven in MCP server (outbound-drafts.ts), parser integration straightforward
+  - Impact: 80% — Error handling patterns validated by TASK-11 (Phase 2), isolated MCP tool, graceful failure modes
 - **Acceptance:**
   - MCP tool: `processCancellationEmail(emailId: string, emailHtml: string, from: string) => {status: string, reason?: string}`
   - Workflow:
@@ -1129,6 +1129,30 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Acceptance: unchanged
   - Validation plan: unchanged
   - What would make this ≥80%: Implement TASK-13 first, then reassess with parser in place
+
+#### Re-plan Update (2026-02-14) - Post-TASK-13 Evidence
+- **Previous confidence:** 75% (Implementation: 75%, Approach: 80%, Impact: 75%)
+- **Updated confidence:** 80% ✅ ABOVE THRESHOLD (Implementation: 82%, Approach: 80%, Impact: 80%)
+  - **Evidence class:** E2 (executable verification from TASK-13 completion)
+  - Implementation: 82% — Parser API signature known and tested (`parseCancellationEmail` with 7/7 tests passing), Firebase REST helpers confirmed (`firebaseGet`/`firebasePatch` at outbound-drafts.ts:82-110), activityId generation pattern known (`act_${Date.now()}` at useActivitiesMutations.ts:20), multi-step workflow pattern validated by TASK-11 completion
+  - Approach: 80% — Firebase REST pattern proven in MCP server, parser integration straightforward (call parser + null check), error handling pattern validated by Phase 2
+  - Impact: 80% — Error handling patterns proven by TASK-11 (partial success with Promise.all coordination), isolated MCP tool won't affect reception client, parser failure modes handled gracefully (returns null)
+- **Investigation performed:**
+  - Parser: `packages/mcp-server/src/parsers/cancellation-email-parser.ts` (completed TASK-13, 7/7 tests passing)
+  - Firebase REST: `packages/mcp-server/src/tools/outbound-drafts.ts:82-110` (firebaseGet/firebasePatch helpers working)
+  - ActivityId pattern: `apps/reception/src/hooks/mutations/useActivitiesMutations.ts:20` (`act_${Date.now()}` format)
+  - Multi-step coordination: TASK-11 completion evidence (6/6 tests passing for useCancelBooking workflow)
+- **Decision / resolution:**
+  - TASK-13 completion removed implementation uncertainty — parser API is concrete and tested
+  - Firebase REST pattern is proven and ready to use in MCP tool
+  - ActivityId collision-safe generation needs index suffix for batch writes: `act_${Date.now()}_${index}`
+  - Multi-step workflow complexity remains but patterns are validated by Phase 2
+  - **Task is now above 80% threshold and ready for `/lp-build`**
+- **Changes to task:**
+  - Status: Ready for build (dependencies complete, confidence ≥80%)
+  - Acceptance: unchanged
+  - Validation plan: Can use TASK-13 parser directly for TC-01-06
+  - Implementation notes: Collision-safe activityId pattern clarified (`act_${Date.now()}_${index}` for batch writes)
 
 ### TASK-15: Integrate cancellation parser with Gmail organize
 - **Type:** IMPLEMENT

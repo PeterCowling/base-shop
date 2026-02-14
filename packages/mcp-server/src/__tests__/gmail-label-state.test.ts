@@ -244,6 +244,11 @@ describe("gmail label state machine", () => {
     const createdNames = labelsStore.map(label => label.name);
     expect(createdNames).toContain("Brikette/Queue/Needs-Decision");
     expect(messageStore["msg-4"].labelIds.length).toBeGreaterThan(0);
+
+    // TC-01/02/03: Verify cancellation workflow labels are created
+    expect(createdNames).toContain("Brikette/Workflow/Cancellation-Parse-Failed");
+    expect(createdNames).toContain("Brikette/Workflow/Cancellation-Booking-Not-Found");
+    expect(createdNames).toContain("Brikette/Workflow/Cancellation-Processed");
   });
 
   it("moves deferred emails out of active queue", async () => {

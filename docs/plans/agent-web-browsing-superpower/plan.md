@@ -112,7 +112,7 @@ Chosen: Option A.
 | TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Complete (2026-02-14) | TASK-02 | TASK-06, TASK-07 |
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 86% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 74% | L | Pending | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
+| TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 82% | L | Pending | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
 | TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Pending | TASK-08 | - |
 
@@ -581,10 +581,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - `packages/mcp-server/src/__tests__/browser-act.contract.test.ts`
 - **Depends on:** TASK-02, TASK-05, TASK-06, TASK-10, TASK-11
 - **Blocks:** TASK-08
-- **Confidence:** 74% (-> 82% conditional on TASK-06 contract stability and TASK-10, TASK-11)
-  - Implementation: 78% -- action taxonomy is known; biggest risk is reliable element targeting via best-effort selectors.
-  - Approach: 74% -- needs careful error taxonomy mapping + consistent verification deltas.
-  - Impact: 74% -- incorrect gating or mis-targeted actions is high severity.
+- **Confidence:** 82%
+  - Implementation: 84% -- driver harness + action target registry + safety/expect helpers are all proven; act is now compositional.
+  - Approach: 82% -- deterministic contract tests (mock driver) can lock verification/safety semantics early.
+  - Impact: 82% -- scoped to new browser tools; safety gating is tool-enforced (no prompt bypass).
 - **Acceptance:**
   - `ActRequest` supports `target.kind = element | page`.
   - `navigate` is page-targeted (no `actionId`).
@@ -617,6 +617,18 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Changes to task:**
   - Dependencies: now depends on TASK-10, TASK-11
   - Validation: add `ACTION_NOT_FOUND` contract case (TC-06)
+
+#### Re-plan Update (2026-02-14) - Post-TASK-06 Evidence
+
+- **Previous confidence:** 74% (conditional)
+- **Updated confidence:** 82% ✅ ABOVE THRESHOLD
+  - **Evidence class:** E2 (executable contract evidence from TASK-06 + precursors)
+  - `browser_observe` contract is stable and fixture-driven (TASK-06).
+  - ActionId -> target determinism exists (TASK-10) and is exercised by TASK-06 TC-01.
+  - Safety + expect helpers exist and are contract-tested (TASK-05).
+  - Mock driver can record actions + navigate state (TASK-11).
+- **Decision / resolution:**
+  - Proceed with `browser_act` implementation via mock-driver contract tests to lock: safety confirmation protocol, action taxonomy dispatch, expectation verification, and nextObservation return shape.
 
 ### TASK-08: MCP Tool Wiring + Integration Tests + Smoke Runner
 

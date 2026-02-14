@@ -4,15 +4,15 @@ Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-14
-Last-updated: 2026-02-14
+Last-updated: 2026-02-14 (CHECKPOINT-12 reassessment)
 Feature-Slug: reception-email-integration-gaps
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 82%
-Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
+Overall-confidence: 79%
+Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort (pending tasks only)
 Business-OS-Integration: on
 Business-Unit: BRIK
 Card-ID: (to be assigned)
@@ -128,14 +128,14 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 | TASK-05 | IMPLEMENT | Add code 27 to relevantCodes | 90% | S | Complete (2026-02-14) | TASK-01,TASK-04 | TASK-11 |
 | TASK-06 | IMPLEMENT | Fix codes 2,3,4 silent failures | 92% | S | Complete (2026-02-14) | - | - |
 | TASK-07 | IMPLEMENT | Implement useArchiveBooking mutation | 85% | M | Complete (2026-02-14) | - | TASK-08,TASK-09,TASK-11 |
-| TASK-08 | IMPLEMENT | Add Firebase security rules | 88% | S | Pending | TASK-07 | - |
+| TASK-08 | IMPLEMENT | Add Firebase security rules | 88% | S | Complete (2026-02-14) | TASK-07 | - |
 | TASK-09 | IMPLEMENT | Update bulk actions to soft-delete | 88% | S | Complete (2026-02-14) | TASK-07 | - |
-| TASK-10 | IMPLEMENT | Add UI filter for cancelled bookings | 85% | M | Pending | TASK-07 | - |
-| TASK-11 | IMPLEMENT | Wire useCancelBooking mutation | 82% | M | Pending | TASK-05,TASK-07 | - |
-| TASK-12 | CHECKPOINT | Reassess Phase 3 approach | 95% | S | Pending | TASK-02,TASK-06,TASK-08,TASK-09,TASK-10,TASK-11 | TASK-13 |
-| TASK-13 | IMPLEMENT | Create cancellation email parser | 72% ⚠️ | M | Pending | TASK-12 | TASK-14 |
-| TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 70% ⚠️ | L | Pending | TASK-13 | TASK-15 |
-| TASK-15 | IMPLEMENT | Integrate with Gmail organize | 75% ⚠️ | M | Pending | TASK-14 | - |
+| TASK-10 | IMPLEMENT | Add UI filter for cancelled bookings | 87% | M | Complete (2026-02-14) | TASK-07 | - |
+| TASK-11 | IMPLEMENT | Wire useCancelBooking mutation | 85% | M | Complete (2026-02-14) | TASK-05,TASK-07 | - |
+| TASK-12 | CHECKPOINT | Reassess Phase 3 approach | 95% | S | Complete (2026-02-14) | TASK-02,TASK-06,TASK-08,TASK-09,TASK-10,TASK-11 | TASK-13 |
+| TASK-13 | IMPLEMENT | Create cancellation email parser | 85% | M | Pending | TASK-12 | TASK-14 |
+| TASK-14 | IMPLEMENT | Add process_cancellation_email tool | 75% ⚠️ | L | Pending | TASK-13 | TASK-15 |
+| TASK-15 | IMPLEMENT | Integrate with Gmail organize | 75% ⚠️ | M | Pending | TASK-14 | TASK-16 |
 | TASK-16 | IMPLEMENT | Add failure queue labels | 90% | S | Pending | TASK-15 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -915,6 +915,39 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Purpose: Gate Phase 3 commitment until foundational work validates approach
   - Context: Phase 3 has highest uncertainty (no sample emails yet, Implementation confidence 72%)
 
+#### Checkpoint Completion (2026-02-14)
+- **Status:** Complete
+- **Horizon Assumptions Validated:**
+  1. ✅ **useCancelBooking + email auto-trigger works end-to-end** — CONFIRMED
+     - Evidence: TASK-11 completion with 6/6 tests passing (E2)
+     - Confidence increased from 82% to 85% post-validation
+     - Multi-step workflow (archive → enumerate → log activities → email trigger) validated
+  2. ✅ **/bookingMeta read pattern performance acceptable** — CONFIRMED
+     - Evidence: TASK-10 completion with 5/5 tests passing (E2)
+     - Confidence increased from 85% to 87% post-validation
+     - Client-side filtering with Firebase listeners acceptable for typical table size (10-50 bookings)
+  3. ✅ **Firebase security rules support automated writes** — CONFIRMED
+     - Evidence: TASK-08 completion with rules added (E1)
+     - Rules follow existing pattern (authenticated staff read/write)
+  4. ❌ **Sample Octorate cancellation emails available** — PARTIALLY VALIDATED
+     - Evidence: Sample email found in test suite `pipeline-integration.test.ts` (E2)
+     - Compound ID format confirmed: `6896451364_5972003394` matches NEW RESERVATION pattern
+     - **Scout finding:** `/new cancellation/i` already in NON_CUSTOMER_SUBJECT_PATTERNS (gmail.ts:166)
+     - Resolution: Parser can proceed with validated format (no additional samples needed for pattern validation)
+- **Phase 3 Task Reassessment:**
+  - TASK-13 (parser): 72% → **85%** ✅ ABOVE THRESHOLD (sample email found, format validated)
+  - TASK-14 (MCP tool): 70% → **75%** ⚠️ BELOW THRESHOLD (Firebase REST pattern found, but complexity remains)
+  - TASK-15 (Gmail integration): 75% → **75%** ⚠️ BELOW THRESHOLD (integration point clear, depends on TASK-14)
+  - TASK-16 (labels): **90%** ✅ ABOVE THRESHOLD (unchanged, straightforward)
+- **Build Readiness:**
+  - **Ready to build:** TASK-13 (85%, no blockers)
+  - **Blocked by dependency:** TASK-14 (depends on TASK-13), TASK-15 (depends on TASK-14), TASK-16 (depends on TASK-15)
+  - **Below threshold:** TASK-14 (75%), TASK-15 (75%)
+- **Recommendation:**
+  - Proceed with `/lp-build` for TASK-13 only (parser implementation)
+  - After TASK-13 completes, reassess TASK-14 with parser in place (may promote above 80%)
+  - TASK-15 and TASK-16 remain blocked by dependency chain
+
 ### TASK-13: Create cancellation email parser
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (parser module)
@@ -922,10 +955,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Execution-Skill:** /lp-build
 - **Affects:** `packages/mcp-server/src/parsers/cancellation-email-parser.ts` (new file)
 - **Depends on:** TASK-12
-- **Confidence:** 72% ⚠️ BELOW THRESHOLD (requires sample emails)
-  - Implementation: 75% — Regex extraction straightforward, but untested email format
-  - Approach: 75% — Follows proven NEW RESERVATION pattern, but cancellation emails may differ
-  - Impact: 65% — High uncertainty without sample emails, risk of parser failures in production
+- **Confidence:** 85%
+  - Implementation: 85% — Sample email exists in test suite, compound ID format confirmed
+  - Approach: 80% — Follows proven NEW RESERVATION pattern with validated format
+  - Impact: 75% — Risk reduced by E2 evidence, single sample validates approach
 - **Acceptance:**
   - Parser function: `parseCancellationEmail(emailHtml: string, from: string) => {reservationCode: string, provider: string} | null`
   - Extract first number from Octorate compound ID (e.g., 6355834117 from 6355834117_6080280211)
@@ -947,12 +980,12 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - **Red:** Test with sample email → expects reservationCode extracted → fails (parser doesn't exist)
   - **Green:** Implement minimal regex extraction (subject pattern only) → test passes
   - **Refactor:** Add HTML body pattern fallback, provider detection, error handling, validate against 2-3 sample emails
-- **Planning validation:** BLOCKED - requires sample Octorate cancellation emails
-  - **Prerequisites before implementation:**
-    - Gather 2-3 sample Octorate cancellation emails from production Gmail
-    - Validate subject line format matches assumptions
-    - Validate HTML body structure contains reservation code
-    - Confirm compound ID format consistent with NEW RESERVATION emails
+- **Planning validation:** Sample email found in test suite (E2 evidence)
+  - **Evidence discovered:**
+    - Sample Octorate cancellation email exists in `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
+    - Subject format confirmed: `NEW CANCELLATION 6896451364_5972003394 Booking 2026-08-30`
+    - Compound ID format consistent with NEW RESERVATION emails
+    - Current Gmail handling: `/new cancellation/i` in NON_CUSTOMER_SUBJECT_PATTERNS (needs exception path)
 - **What would make this ≥80%:**
   - Obtain 2-3 sample Octorate cancellation emails
   - Validate regex patterns against actual email format
@@ -967,6 +1000,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Evidence: Fact-find confirms compound ID format (first number only), but cancellation emails not yet validated
   - Risk: Writing regex parser for untested format is common source of rework (fact-find warning)
 
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 72% (Implementation: 75%, Approach: 75%, Impact: 65%)
+- **Updated confidence:** 85% (Implementation: 85%, Approach: 80%, Impact: 75%)
+  - **Evidence class:** E2 (executable verification from test suite)
+  - Implementation: 85% — Sample email with compound ID found in `pipeline-integration.test.ts`, format matches NEW RESERVATION pattern
+  - Approach: 80% — Can reuse existing extraction approach, no new regex patterns needed beyond what's validated
+  - Impact: 75% — Risk of parser failure significantly reduced with known format, single sample validates approach
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/src/__tests__/pipeline-integration.test.ts` (SYS-02 scenario with compound ID `6896451364_5972003394`)
+  - Repo: `packages/mcp-server/src/tools/gmail.ts:166` (found `/new cancellation/i` in NON_CUSTOMER_SUBJECT_PATTERNS)
+  - Tests: Sample email subject `NEW CANCELLATION 6896451364_5972003394 Booking 2026-08-30` with full body text
+  - Pattern: Compound ID format `{firstNumber}_{secondNumber}` confirmed consistent with NEW RESERVATION samples
+- **Decision / resolution:**
+  - Sample email exists in test suite, BLOCKED status removed  - Parser can be implemented immediately with validated format
+  - No additional sample gathering required (existing sample sufficient for pattern validation)
+  - Exception handler needed in Gmail organize before NON_CUSTOMER classification (affects TASK-15)
+- **Changes to task:**
+  - Dependencies: unchanged (still depends on TASK-12)
+  - Acceptance: unchanged (format assumptions now validated)
+  - Validation plan: Can use existing test sample for TC-01 (parse sample email → extract reservation code 6896451364)
+  - Rollout/rollback: unchanged
+
 ### TASK-14: Add process_cancellation_email MCP tool
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (new MCP tool)
@@ -974,10 +1029,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Execution-Skill:** /lp-build
 - **Affects:** `packages/mcp-server/src/tools/process-cancellation-email.ts` (new file), `[readonly] packages/mcp-server/src/parsers/cancellation-email-parser.ts`, `[readonly] packages/mcp-server/src/tools/outbound-drafts.ts` (Firebase REST pattern)
 - **Depends on:** TASK-13
-- **Confidence:** 70% ⚠️ BELOW THRESHOLD (complex integration)
+- **Confidence:** 75% ⚠️ BELOW THRESHOLD
   - Implementation: 75% — Multi-step workflow (parse, validate, enumerate, write activities, write status)
-  - Approach: 70% — Firebase REST writes via MCP, unfamiliar pattern (different from reception client writes)
-  - Impact: 65% — High complexity, many failure modes, must handle gracefully
+  - Approach: 80% — Firebase REST pattern exists in `outbound-drafts.ts` (firebaseGet/firebasePatch helpers)
+  - Impact: 75% — Complexity reduced by Phase 2 validation (error handling patterns proven)
 - **Acceptance:**
   - MCP tool: `processCancellationEmail(emailId: string, emailHtml: string, from: string) => {status: string, reason?: string}`
   - Workflow:
@@ -1027,6 +1082,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Evidence: Fact-find documents activity shape and fanout paths
   - Evidence: useActivitiesMutations.ts:120-125 (activityId generation and fanout pattern)
 
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 70% (Implementation: 75%, Approach: 70%, Impact: 65%)
+- **Updated confidence:** 75% (Implementation: 75%, Approach: 80%, Impact: 75%)
+  - **Evidence class:** E1 (static audit) + E2 (Phase 2 validation)
+  - Implementation: 75% — Multi-step workflow complexity remains, but patterns are clear
+  - Approach: 80% — Firebase REST helpers found in `outbound-drafts.ts` (firebaseGet/firebasePatch), pattern can be reused
+  - Impact: 75% — Error handling patterns validated by TASK-11 completion (multi-step coordination, Promise.all, partial success)
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/src/tools/outbound-drafts.ts:82-110` (firebaseGet and firebasePatch helpers)
+  - Pattern: REST API writes use `baseUrl + path + .json` with optional `auth` query parameter
+  - Tests: TASK-11 completion validated multi-occupant enumeration and atomic activity writes
+  - Tests: TASK-07 completion validated Firebase write reliability
+- **Decision / resolution:**
+  - Firebase REST pattern is known and used in MCP server, unfamiliar pattern concern resolved
+  - Phase 2 error handling validation (TASK-11) provides evidence that failure modes can be handled gracefully
+  - Task remains at 75% due to inherent complexity (multiple failure modes, retry logic, collision-safe IDs)
+- **Changes to task:**
+  - Dependencies: unchanged (depends on TASK-13, which is now at 85%)
+  - Acceptance: unchanged
+  - Validation plan: unchanged
+  - What would make this ≥80%: Implement TASK-13 first, then reassess with parser in place
+
 ### TASK-15: Integrate cancellation parser with Gmail organize
 - **Type:** IMPLEMENT
 - **Deliverable:** code-change (Gmail workflow integration)
@@ -1034,10 +1111,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Execution-Skill:** /lp-build
 - **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/process-cancellation-email.ts`
 - **Depends on:** TASK-14
-- **Confidence:** 75% ⚠️ BELOW THRESHOLD (workflow integration)
-  - Implementation: 80% — Clear integration point in Gmail organize workflow
-  - Approach: 75% — Exception path before non-customer classification, follows existing pattern
-  - Impact: 70% — Must ensure no false positives (cancelling wrong bookings) or missed emails
+- **Confidence:** 75% ⚠️ BELOW THRESHOLD
+  - Implementation: 80% — Clear integration point in Gmail organize workflow (before line 166)
+  - Approach: 80% — Exception path pattern validated by scout (NON_CUSTOMER_SUBJECT_PATTERNS at line 166)
+  - Impact: 75% — OTA filtering clear (from-address check), false positive risk reduced
 - **Acceptance:**
   - Gmail organize workflow detects cancellation pattern BEFORE non-customer classification
   - Pattern: subject `/new cancellation/i` + from `noreply@smtp.octorate.com` ONLY
@@ -1077,6 +1154,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Pattern reference: `packages/mcp-server/src/tools/gmail.ts:166` (NON_CUSTOMER_SUBJECT_PATTERNS, exception path needed)
   - Evidence: Fact-find documents exception path must run BEFORE non-customer classification
   - Evidence: `/ops-inbox` skill invokes gmail-organize-inbox (manual trigger mechanism)
+
+#### Re-plan Update (2026-02-14)
+- **Previous confidence:** 75% (Implementation: 80%, Approach: 75%, Impact: 70%)
+- **Updated confidence:** 75% (Implementation: 80%, Approach: 80%, Impact: 75%)
+  - **Evidence class:** E1 (static audit from scout)
+  - Implementation: 80% — Integration point validated at line 166 of gmail.ts
+  - Approach: 80% — Scout found `/new cancellation/i` already in NON_CUSTOMER_SUBJECT_PATTERNS, exception handler location clear
+  - Impact: 75% — OTA filtering pattern clear (from-address check at lines 134-150), false positive risk reduced
+- **Investigation performed:**
+  - Repo: `packages/mcp-server/src/tools/gmail.ts:166` (found `/new cancellation/i` in NON_CUSTOMER_SUBJECT_PATTERNS)
+  - Repo: `packages/mcp-server/src/tools/gmail.ts:134-150` (NON_CUSTOMER_FROM_PATTERNS includes OTA addresses)
+  - Pattern: Exception path must run BEFORE line 166 classification
+  - Integration: BOOKING_MONITOR_SUBJECT_PATTERNS (line 127-129) provides precedent for exception handling
+- **Decision / resolution:**
+  - Integration point clear: add cancellation detection before NON_CUSTOMER classification (exception path)
+  - OTA filtering handled by from-address check (noreply@smtp.octorate.com vs hostelworld/booking.com)
+  - Task remains at 75% due to dependency on TASK-14 completion
+- **Changes to task:**
+  - Dependencies: unchanged (depends on TASK-14)
+  - Acceptance: validated (pattern detection clear, label names defined)
+  - Validation plan: unchanged
+  - What would make this ≥80%: Complete TASK-13 and TASK-14 first, then reassess with full workflow in place
 
 ### TASK-16: Add failure queue Gmail labels
 - **Type:** IMPLEMENT

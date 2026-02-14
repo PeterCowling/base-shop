@@ -87,6 +87,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 - TASK-03 - Upgrade ecosystem deps (`next-auth`, `eslint-config-next`, `next-intl`).
 - TASK-04 - Repo-wide Async Request APIs migration (codemod + cleanup).
 - TASK-05 - Repo-wide Next 16 upgrade audit (next lint removal, images/runtime config/middleware-proxy flag grep checklist).
+- TASK-09 - Fix typecheck regressions discovered at CHECKPOINT (editorial d.ts emit + cover-me-pretty test props).
 - TASK-06 - Run mid-upgrade validation (build, typecheck, lint).
 - TASK-07 - Upgrade `@opennextjs/cloudflare` for Next 16.
 - TASK-08 - Run full test validation and regression fixes.
@@ -104,7 +105,8 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 | TASK-03 | IMPLEMENT | Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl) | 82% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
-| TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07, TASK-08 |
+| TASK-09 | IMPLEMENT | Fix typecheck regressions: editorial d.ts emit + cover-me-pretty async-props tests | 85% | M | Complete (2026-02-14) | TASK-04 | TASK-06 |
+| TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Pending | TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Full test validation and regression fixes | 80% | M | Pending | TASK-06, TASK-07 | - |
 
@@ -118,8 +120,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-01 | - | Foundation: version bump + config removals |
-| 2 | TASK-02, TASK-03, TASK-04, TASK-05 | Wave 1: TASK-01 | Safe parallel: scripts, deps, codemod migrations, audit checklist |
-| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-05 | CHECKPOINT: builds, typecheck, lint before proceeding |
+| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09 | Wave 1: TASK-01 | Safe parallel: scripts, deps, codemod migrations, audit checklist, and checkpoint fixups |
+| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-05, TASK-09 | CHECKPOINT: builds, typecheck, lint before proceeding |
 | 4 | TASK-07 | Wave 3: TASK-06 | Cloudflare adapter upgrade + worker build verification |
 | 5 | TASK-08 | Wave 4: TASK-07 | Final validation gate: typecheck, lint, full test suite |
 
@@ -437,10 +439,54 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Implementation notes:**
   - Set `images.qualities` in `packages/next-config/index.mjs` to `[75, 80, 85, 90]` to preserve existing `<Image quality={...}>` intent under Next 16 defaults.
 
+### TASK-09: Fix typecheck regressions discovered at CHECKPOINT (editorial d.ts emit + cover-me-pretty async-props tests)
+
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change — ensure repo typecheck is green after Async Request APIs migration
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `packages/editorial/tsconfig.json` (ensure build emits `dist/index.d.ts`)
+  - `apps/cover-me-pretty/src/app/[lang]/returns/page.test.tsx` (async `params` in test props)
+  - `apps/cover-me-pretty/src/app/[lang]/success/page.test.tsx` (async `params` in test props)
+  - `apps/cover-me-pretty/src/app/api/password-reset/[token]/route.test.ts` (async `params` in test props)
+  - `apps/cover-me-pretty/src/app/preview/[pageId]/page.test.tsx` (async `params` + `searchParams` in test props)
+- **Depends on:** TASK-04
+- **Blocks:** TASK-06
+- **Confidence:** 85%
+  - Implementation: 88% — targeted, mechanical fixes
+  - Approach: 90% — make build artifacts + test props match new Next 16 async signatures
+  - Impact: 85% — touches a leaf package + a handful of app tests; should be isolated
+- **Acceptance:**
+  - `@acme/editorial` build emits `packages/editorial/dist/index.d.ts`
+  - Cover-me-pretty tests compile with the new async request-props signatures (`params`/`searchParams` are Promises)
+  - `pnpm typecheck` passes (no TS6305 / Promise-props errors)
+- **Validation contract:**
+  - **TC-01:** `pnpm --filter @acme/editorial build` exits 0 and `ls packages/editorial/dist/index.d.ts` succeeds → passes
+  - **TC-02:** `pnpm exec tsc -b apps/cover-me-pretty/tsconfig.json --pretty false` exits 0 → passes
+  - **TC-03:** `pnpm typecheck` exits 0 → passes
+  - **Acceptance coverage:** TC-01 covers editorial emit; TC-02 covers cover-me-pretty typecheck; TC-03 covers repo-wide health
+  - **Validation type:** integration (build/typecheck)
+  - **Validation location:** repo-wide
+- **Rollout / rollback:**
+  - Rollout: single commit with editorial build config + test prop fixes
+  - Rollback: revert commit(s)
+- **Documentation impact:** None
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 6b5b0e0841
+- **Validation evidence:**
+  - Editorial build emits d.ts: `pnpm --filter @acme/editorial build` and `ls packages/editorial/dist/index.d.ts` -> PASS
+  - Cover-me-pretty typecheck: `pnpm exec tsc -b apps/cover-me-pretty/tsconfig.json --pretty false` -> PASS
+  - Repo-wide typecheck: `pnpm typecheck` -> PASS
+- **Implementation notes:**
+  - Added declaration emit to `packages/editorial/tsconfig.json` so `@acme/editorial` produces `dist/index.d.ts`.
+  - Updated cover-me-pretty tests to pass `params`/`searchParams` as Promises to match Next 16 Async Request API signatures.
+
 ### TASK-06: CHECKPOINT — Mid-upgrade validation
 
 - **Type:** CHECKPOINT
-- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05
+- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-09
 - **Blocks:** TASK-07, TASK-08
 - **Confidence:** 95%
 - **Acceptance:**

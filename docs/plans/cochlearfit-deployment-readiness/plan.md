@@ -247,7 +247,7 @@ Worker (Needs fixes):
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | TASK-19 | TASK-08, TASK-09 |
-| TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | TASK-20 | TASK-09 |
+| TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | TASK-20, TASK-22 | TASK-09 |
 | TASK-03 | IMPLEMENT | Select and configure email service | 75% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
 | TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Complete (2026-02-14) | - | TASK-05 |
 | TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Complete (2026-02-14) | TASK-04 | TASK-09 |
@@ -267,6 +267,7 @@ Worker (Needs fixes):
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-02, TASK-09 |
 | TASK-21 | IMPLEMENT | Fix ESLint flat-config crash (unblock Worker lint) | 85% | S | Complete (2026-02-14) | - | TASK-14 |
+| TASK-22 | IMPLEMENT | Add `x-shop-id` to inventory authority requests (Worker) | 85% | S | Pending | TASK-18, TASK-21 | TASK-02 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -277,8 +278,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-17, TASK-18, TASK-19, TASK-20, TASK-21 | TASK-05 (for 17,18) | Internal hardening + precursors (no external accounts required) |
-| 2 | TASK-01, TASK-02, TASK-03 | Wave 1: TASK-19 (for 01); TASK-20 (for 02) | External setup tasks (Stripe/Inventory/Email). TASK-03 remains blocked by domain + business timing |
+| 1 | TASK-17, TASK-18, TASK-19, TASK-20, TASK-21, TASK-22 | TASK-05 (for 17,18) | Internal hardening + precursors (no external accounts required) |
+| 2 | TASK-01, TASK-02, TASK-03 | Wave 1: TASK-19 (for 01); TASK-20, TASK-22 (for 02) | External setup tasks (Stripe/Inventory/Email). TASK-03 remains blocked by domain + business timing |
 | 3 | TASK-06, TASK-08, TASK-15 | Wave 2: TASK-03 (for 06); TASK-01 (for 08,15) | Email template, real price IDs in data files, fulfillment runbook |
 | 4 | TASK-07 | Wave 3: TASK-06; Wave 2: TASK-03 | Email sending in webhook |
 | 5 | TASK-09 | Wave 1: TASK-17; Wave 2: TASK-01, TASK-02, TASK-03 | Secrets/KV provisioning (external) |
@@ -288,9 +289,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | 9 | TASK-13 | Wave 8: TASK-12 | Production smoke test |
 | 10 | TASK-16 | Wave 9: TASK-13 | Post-launch comprehensive tests |
 
-**Max parallelism:** 4 (Wave 1)
-**Critical path (to production):** TASK-19 -> TASK-01 -> TASK-08 -> TASK-17 -> TASK-09 -> TASK-10 -> TASK-14 -> TASK-12 -> TASK-13
-**Total tasks:** 20
+**Max parallelism:** 6 (Wave 1)
+**Critical path (to production):** TASK-19 -> TASK-01 -> TASK-08 -> TASK-17 -> TASK-22 -> TASK-02 -> TASK-09 -> TASK-10 -> TASK-11 -> TASK-12 -> TASK-13
+**Total tasks:** 21
 
 ## Tasks
 
@@ -369,12 +370,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:** External (Inventory API deployment), `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
-- **Depends on:** TASK-20
+- **Depends on:** TASK-20, TASK-22
 - **Blocks:** TASK-09
 - **Confidence:** 70%
-  - Implementation: 75% — Contract is well-defined (line 204-244 of Worker index.ts shows payload format), straightforward REST API
-  - Approach: 70% — Unclear if API already exists elsewhere or needs greenfield build
-  - Impact: 65% — If API doesn't exist, deployment path unclear (hosting, DB, auth middleware)
+  - Implementation: 70% — Contract has a `shopId` requirement in the existing authority endpoint; Worker must send shop context (TASK-22) before this can be validated end-to-end
+  - Approach: 70% — Authority endpoint exists in-repo (`apps/cms`), but deployment/hosting decision is still external
+  - Impact: 65% — Inventory is a launch blocker; missing shop context manifests as hard 400/503 failures during checkout
 
 #### Re-plan Update (2026-02-14)
 - **Previous confidence:** 70%
@@ -388,11 +389,26 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Dependencies: now depends on TASK-20
   - Correctness note: Worker currently fails closed (503) when inventory URL/token missing; plan should not claim inventory can be disabled by empty URL without a code change.
 
+#### Re-plan Update (2026-02-14) — Inventory shopId mismatch
+- **Previous confidence:** 70%
+- **Updated confidence:** 70% (no uplift; discovered a blocking contract mismatch)
+  - **Evidence class:** E2 (executable verification + code audit)
+- **Investigation performed:**
+  - Authority endpoint requires `shopId` via `x-shop-id` header or body: `apps/cms/src/app/api/inventory/validate/route.ts:65-80`.
+  - Authority contract is test-covered: `apps/cms/__tests__/inventory-validate.test.ts` (PASS via `pnpm --filter @apps/cms test -- apps/cms/__tests__/inventory-validate.test.ts`).
+  - Cochlearfit Worker currently omits `shopId` (no header/body): `apps/cochlearfit-worker/src/index.ts:180-187`.
+- **Decision / resolution:**
+  - Create TASK-22 to add `x-shop-id: cochlearfit` to Worker inventory authority requests, and update `inventory-api.md` to include shop context requirements.
+- **Changes to task:**
+  - Dependencies: now depends on TASK-22 (in addition to TASK-20) so TASK-02 cannot be "done" while the Worker payload is incompatible with the authority contract.
+  - Acceptance/validation: updated below to include `shopId` requirement.
 
 - **Acceptance:**
   - [ ] API endpoint deployed and accessible (e.g., `https://inventory-api.example.com`)
   - [ ] Authentication token generated (Bearer token)
-  - [ ] Contract implemented: `POST /api/inventory/validate` accepts payload:
+  - [ ] Contract implemented: `POST /api/inventory/validate` requires shop context:
+    - `x-shop-id: <shopId>` header OR body `shopId` field (if both provided, they must match)
+  - [ ] Request body accepts payload (Worker-compatible):
     ```json
     {
       "items": [{
@@ -402,6 +418,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
       }]
     }
     ```
+    - Optional: `shopId` may also be provided in the body (but is not required when `x-shop-id` is present)
   - [ ] Response codes: 200 (OK), 409 (Insufficient stock), 503 (Service unavailable)
   - [ ] Test SKUs return expected validation results (in-stock → 200, out-of-stock → 409)
   - [ ] API contract documented in `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
@@ -411,10 +428,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-02: Out-of-stock validation → POST with unavailable SKU → returns 409
   - TC-03: Authentication → POST without Bearer token → returns 401
   - TC-04: Malformed payload → POST with invalid JSON → returns 400
-  - TC-05: Service unavailable → API down or slow → returns 503 or times out
-  - **Acceptance coverage:** TC-01+TC-02 cover validation logic, TC-03 covers auth, TC-04 covers error handling, TC-05 covers availability
+  - TC-05: Missing shop context → POST without `x-shop-id` and without `shopId` → returns 400
+  - TC-06: Service unavailable → API down or slow → returns 503 or times out
+  - **Acceptance coverage:** TC-01+TC-02 cover validation logic, TC-03 covers auth, TC-04 covers error handling, TC-05 covers shop context requirement, TC-06 covers availability
   - **Validation type:** integration testing (manual API calls with curl/Postman)
-  - **Run/verify:** `curl -X POST -H "Authorization: Bearer TOKEN" -d '{"items":[...]}' https://inventory-api.example.com/api/inventory/validate`
+  - **Run/verify:** `curl -X POST -H "x-shop-id: cochlearfit" -H "Authorization: Bearer TOKEN" -d '{"items":[...]}' https://inventory-api.example.com/api/inventory/validate`
 - **Execution plan:**
   - **Red → Green → Refactor**
   - **Red evidence:** First API call will fail 401 (no auth token configured)
@@ -435,9 +453,42 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
     - Error codes and meanings
     - Test SKUs for staging validation
 - **Notes / references:**
-  - Worker inventory validation logic: `apps/cochlearfit-worker/src/index.ts:204-244`
+  - Worker inventory validation logic: `apps/cochlearfit-worker/src/index.ts:170-194`
   - Payload format: `{ items: [{ sku, quantity, variantAttributes }] }`
   - Launch requirement per user decision
+
+### TASK-22: Add `x-shop-id` to inventory authority requests (Worker)
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change + Documentation artifact
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cochlearfit-worker/src/index.ts`
+  - `apps/cochlearfit-worker/src/__tests__/inventory-authority-shop-id.test.ts` (new)
+  - `docs/plans/cochlearfit-deployment-readiness/inventory-api.md`
+- **Depends on:** TASK-18, TASK-21
+- **Blocks:** TASK-02
+- **Confidence:** 85%
+  - Implementation: 90% — Single callsite; add header + unit test around fetch invocation
+  - Approach: 85% — Worker is single-tenant (cochlearfit), so an explicit shop id is acceptable; document the contract in `inventory-api.md`
+  - Impact: 85% — Without shop context the authority rejects requests (400), cascading into 503 checkout failures
+- **Acceptance:**
+  - [ ] Worker sends `x-shop-id: cochlearfit` on inventory authority requests.
+  - [ ] Unit test asserts the header is present and stable.
+  - [ ] `inventory-api.md` updated to include the shop context requirement (header/body) so the contract memo is not misleading.
+- **Validation contract:**
+  - TC-01: Inventory authority request includes shop header → unit test spies on `fetch` → asserts `headers["x-shop-id"] === "cochlearfit"`.
+  - TC-02: Inventory authority request body remains `{ items: [...] }` → unit test asserts `JSON.parse(body).items` exists and `shopId` is not required in body when header is present.
+  - **Acceptance coverage:** TC-01 covers header requirement; TC-02 covers payload stability + documentation clarity
+  - **Validation type:** unit tests (Jest)
+  - **Test location:** `apps/cochlearfit-worker/src/__tests__/inventory-authority-shop-id.test.ts`
+  - **Run/verify:** `pnpm --filter @apps/cochlearfit-worker test -- inventory-authority-shop-id`
+- **Rollout / rollback:**
+  - Rollout: deploy Worker after tests pass (no API shape change; adds required header)
+  - Rollback: revert to previous Worker build (not recommended; would re-break inventory checks against the authority contract)
+  - Note: This is safe to ship before TASK-02 completes; it only adds a header on already-authenticated requests.
+- **Documentation impact:**
+  - Update `docs/plans/cochlearfit-deployment-readiness/inventory-api.md` to document shop context requirements (header/body) and align with `apps/cms` authority behavior.
 
 ### TASK-03: Select and configure email service
 - **Type:** IMPLEMENT

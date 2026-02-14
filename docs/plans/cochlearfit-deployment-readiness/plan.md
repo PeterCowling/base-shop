@@ -250,7 +250,7 @@ Worker (Needs fixes):
 | TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | - | TASK-09 |
 | TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
 | TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Complete (2026-02-14) | - | TASK-05 |
-| TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Pending | TASK-04 | TASK-09 |
+| TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Complete (2026-02-14) | TASK-04 | TASK-09 |
 | TASK-06 | IMPLEMENT | Create email receipt template | 85% | M | Pending | TASK-03 | TASK-07 |
 | TASK-07 | IMPLEMENT | Implement email sending in Worker webhook | 80% | L | Pending | TASK-03, TASK-06 | TASK-10 |
 | TASK-08 | IMPLEMENT | Populate production data files with real Price IDs | 85% | S | Pending | TASK-01 | TASK-09 |
@@ -612,6 +612,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Hardcoded catalog location: `apps/cochlearfit-worker/src/index.ts:108-128`
   - Decision 6 from fact-find: Build-time bundling removes code duplication
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 8e243ac4ba
+- **Validation Evidence:**
+  - `pnpm --filter @apps/cochlearfit-worker typecheck` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker lint` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker build` — PASS
+  - TC-03 example from plan: `node --import tsx -e "import { catalog } from './apps/cochlearfit-worker/src/worker-catalog.generated.ts'; console.log(catalog.length)"` — prints `12`
+- **Confidence reassessment:** 90% -> 90% (wiring change validated; Stripe integration deferred until real Price IDs in TASK-08/TASK-11)
+- **Implementation notes:**
+  - `apps/cochlearfit-worker/src/index.ts` now imports `catalog` from `./worker-catalog.generated`.
+  - Removed the hardcoded `COLORS`/`SIZES`/`buildVariants()` and inline catalog array.
+  - Added `predev`/`prelint`/`pretypecheck` scripts so generated catalog exists before dev/lint/typecheck.
+
 
 ### TASK-06: Create email receipt template
 - **Type:** IMPLEMENT

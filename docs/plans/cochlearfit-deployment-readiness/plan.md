@@ -267,7 +267,7 @@ Worker (Needs fixes):
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-02, TASK-09 |
 | TASK-21 | IMPLEMENT | Fix ESLint flat-config crash (unblock Worker lint) | 85% | S | Complete (2026-02-14) | - | TASK-14 |
-| TASK-22 | IMPLEMENT | Add `x-shop-id` to inventory authority requests (Worker) | 85% | S | Pending | TASK-18, TASK-21 | TASK-02 |
+| TASK-22 | IMPLEMENT | Add `x-shop-id` to inventory authority requests (Worker) | 85% | M | Pending | TASK-18, TASK-21 | TASK-02 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -472,6 +472,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Implementation: 90% — Single callsite; add header + unit test around fetch invocation
   - Approach: 85% — Worker is single-tenant (cochlearfit), so an explicit shop id is acceptable; document the contract in `inventory-api.md`
   - Impact: 85% — Without shop context the authority rejects requests (400), cascading into 503 checkout failures
+
+#### Re-plan Update (2026-02-14) — Effort correction
+- **Previous effort:** S
+- **Updated effort:** M
+  - Reason: Task explicitly affects 3 files (runtime code + tests + contract memo), which exceeds the S-effort guardrail.
 - **Acceptance:**
   - [ ] Worker sends `x-shop-id: cochlearfit` on inventory authority requests.
   - [ ] Unit test asserts the header is present and stable.

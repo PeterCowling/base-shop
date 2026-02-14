@@ -144,4 +144,41 @@ describe("useActivitiesMutations", () => {
       activityCode: 27,
     });
   });
+
+  // TASK-06: Fix silent email failures for codes 2, 3, 4
+  it("does not attempt email for code 2 (no MCP template)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 2);
+    });
+
+    // TC-01: Code 2 does not trigger email attempt (not in relevantCodes)
+    expect(getMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
+
+  it("does not attempt email for code 3 (no MCP template)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 3);
+    });
+
+    // TC-02: Code 3 does not trigger email attempt (not in relevantCodes)
+    expect(getMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
+
+  it("does not attempt email for code 4 (no MCP template)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    await act(async () => {
+      await result.current.addActivity("occ1", 4);
+    });
+
+    // TC-03: Code 4 does not trigger email attempt (not in relevantCodes)
+    expect(getMock).not.toHaveBeenCalled();
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
 });

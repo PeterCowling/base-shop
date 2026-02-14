@@ -113,7 +113,8 @@ Chosen: Option A.
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 86% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
-| TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07 | TASK-09 |
+| TASK-12 | IMPLEMENT | Safety hardening: ensure `browser_act` safety gating cannot be bypassed by client-supplied risk/labels | 80% | M | Pending | TASK-06, TASK-07 | TASK-08 |
+| TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07, TASK-12 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Pending | TASK-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -127,10 +128,11 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 1 | TASK-03, TASK-04, TASK-05, TASK-10, TASK-11 | TASK-01 (complete), TASK-02 (complete) | Precursors (fixtures + pure shaping + session/driver contracts) |
 | 2 | TASK-06 | Wave 1: TASK-03, TASK-04, TASK-10, TASK-11 | Observe handler |
 | 3 | TASK-07 | Wave 2: TASK-06; Wave 1: TASK-05, TASK-10, TASK-11 | Act handler |
-| 4 | TASK-08 | Wave 2: TASK-06; Wave 3: TASK-07 | Tool wiring + smoke |
-| 5 | TASK-09 | Wave 4: TASK-08 | Checkpoint gate |
+| 4 | TASK-12 | Wave 3: TASK-07 | Safety hardening |
+| 5 | TASK-08 | Wave 2: TASK-06; Wave 3: TASK-07; Wave 4: TASK-12 | Tool wiring + smoke |
+| 6 | TASK-09 | Wave 5: TASK-08 | Checkpoint gate |
 
-**Max parallelism:** 5 (Wave 1) | **Critical path:** TASK-03 -> TASK-06 -> TASK-07 -> TASK-08 -> TASK-09 (5 waves) | **Total tasks:** 11
+**Max parallelism:** 5 (Wave 1) | **Critical path:** TASK-03 -> TASK-06 -> TASK-07 -> TASK-12 -> TASK-08 -> TASK-09 (6 waves) | **Total tasks:** 12
 
 ## Tasks
 
@@ -645,6 +647,41 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
     - Tool-verifies expectations and always returns `nextObservation`.
   - Added `packages/mcp-server/src/__tests__/browser-act.contract.test.ts` to lock the contract (safety, staleness, navigate, expectations, ACTION_NOT_FOUND).
 
+### TASK-12: Safety Hardening - Tool-Enforced Risk/Labels for `browser_act`
+
+- **Type:** IMPLEMENT
+- **Deliverable:** `browser_act` safety gating cannot be bypassed by passing a forged `risk` or `label` from the client; safety-relevant metadata is derived from the latest observation registry
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `packages/mcp-server/src/tools/browser/session.ts`
+  - `packages/mcp-server/src/tools/browser/observe.ts`
+  - `packages/mcp-server/src/tools/browser/act.ts`
+  - `packages/mcp-server/src/__tests__/browser-session.unit.test.ts`
+  - `packages/mcp-server/src/__tests__/browser-act.contract.test.ts`
+- **Depends on:** TASK-06, TASK-07
+- **Blocks:** TASK-08
+- **Confidence:** 80%
+  - Implementation: 84% -- action registry already exists; change is a narrow shape expansion + contract tests.
+  - Approach: 80% -- tool-derived safety is the only defensible security posture (no trust-in-client loopholes).
+  - Impact: 80% -- limited to browser tool internals + tests; no other tool families depend on these types yet.
+- **Acceptance:**
+  - Session action registry stores safety metadata per `actionId` from the latest observation (at minimum: `selector`, `role`, `name`, `risk`, optional `frameId`).
+  - `browser_act` derives `risk` and confirmation label from the session registry (not from caller-supplied fields).
+  - Attempted safety bypass is prevented:
+    - if the observed affordance is classified `danger`, `browser_act` requires confirmation regardless of any caller-provided values.
+- **Test contract:**
+  - TC-01: observe stores `risk`/`name` in action registry alongside selector -> pass
+  - TC-02: act gates dangerous action using registry-derived risk (no client override possible) -> pass
+  - TC-03: requiredConfirmationText uses registry-derived label/name -> pass
+  - **Test type:** unit/contract (mock driver)
+  - **Test location:** `packages/mcp-server/src/__tests__/browser-act.contract.test.ts`, `packages/mcp-server/src/__tests__/browser-session.unit.test.ts`
+  - **Run:** `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-act.contract.test.ts packages/mcp-server/src/__tests__/browser-session.unit.test.ts --runInBand`
+- **Execution plan:** Red -> Green -> Refactor
+- **Re-plan Update (2026-02-14):**
+  - Evidence (E1): TASK-07 currently accepts `risk`/`label` from the caller for safety gating; that is a bypass vector if a client lies.
+  - Fix: move safety-relevant metadata into the tool-owned session registry populated by `browser_observe`, and have `browser_act` read from that registry only.
+
 ### TASK-08: MCP Tool Wiring + Integration Tests + Smoke Runner
 
 - **Type:** IMPLEMENT
@@ -656,7 +693,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - `packages/mcp-server/src/tools/index.ts`
   - `packages/mcp-server/src/__tests__/browser-tools.integration.test.ts`
   - `packages/mcp-server/scripts/browser-smoke.mjs`
-- **Depends on:** TASK-06, TASK-07
+- **Depends on:** TASK-06, TASK-07, TASK-12
 - **Blocks:** TASK-09
 - **Confidence:** 80%
   - Implementation: 82% -- tool registration/dispatch is well-understood (see `packages/mcp-server/src/tools/index.ts`).
@@ -707,7 +744,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - Risk: CI cannot run real browser.
   - Mitigation: contract/fixture tests for core; optional smoke runner for local.
 - Risk: Safety confirmation bypass.
-  - Mitigation: tool-layer two-step confirmation enforced in `browser_act` (TASK-05 + TASK-07).
+  - Mitigation: tool-owned action registry stores safety metadata and `browser_act` gates using tool-derived risk/labels (TASK-12) + two-step confirmation protocol (TASK-05).
 - Risk: Repo-root Jest config fails when `.open-next` artifacts exist (haste-map duplicate packages).
   - Mitigation: package-scoped Jest config in TASK-01 for all tests in this plan.
 

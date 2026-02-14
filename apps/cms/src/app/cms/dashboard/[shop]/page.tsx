@@ -13,14 +13,14 @@ import type { Shop } from "@acme/types";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 
-export default async function ShopDashboard({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ shop: string }>;
-  searchParams: { campaign?: string | string[] };
-}) {
-  const shop = (await params).shop;
+export default async function ShopDashboard(
+  props: {
+    params: Promise<{ shop: string }>;
+    searchParams: Promise<{ campaign?: string | string[] }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const shop = (await props.params).shop;
   const [events, aggregates, shopData] = (await Promise.all([
     listEvents(shop),
     readAggregates(shop),

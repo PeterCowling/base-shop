@@ -88,6 +88,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 - TASK-04 - Repo-wide Async Request APIs migration (codemod + cleanup).
 - TASK-05 - Repo-wide Next 16 upgrade audit (next lint removal, images/runtime config/middleware-proxy flag grep checklist).
 - TASK-09 - Fix typecheck regressions discovered at CHECKPOINT (editorial d.ts emit + cover-me-pretty test props).
+- TASK-10 - Repo baseline fix discovered at CHECKPOINT: commit missing @acme/mcp-server browser tool entrypoint (unblocks typecheck/lint).
 - TASK-06 - Run mid-upgrade validation (build, typecheck, lint).
 - TASK-07 - Upgrade `@opennextjs/cloudflare` for Next 16.
 - TASK-08 - Run full test validation and regression fixes.
@@ -106,7 +107,8 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 | TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-09 | IMPLEMENT | Fix typecheck regressions: editorial d.ts emit + cover-me-pretty async-props tests | 85% | M | Complete (2026-02-14) | TASK-04 | TASK-06 |
-| TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09 | TASK-07, TASK-08 |
+| TASK-10 | IMPLEMENT | Repo baseline fix: commit missing mcp-server browser tool entrypoint | 85% | S | Pending | - | TASK-06 |
+| TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Pending | TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Full test validation and regression fixes | 80% | M | Pending | TASK-06, TASK-07 | - |
 
@@ -120,8 +122,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-01 | - | Foundation: version bump + config removals |
-| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09 | Wave 1: TASK-01 | Safe parallel: scripts, deps, codemod migrations, audit checklist, and checkpoint fixups |
-| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-05, TASK-09 | CHECKPOINT: builds, typecheck, lint before proceeding |
+| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10 | Wave 1: TASK-01 | Safe parallel: scripts, deps, codemod migrations, audit checklist, and checkpoint fixups |
+| 3 | TASK-06 | Wave 2: TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10 | CHECKPOINT: builds, typecheck, lint before proceeding |
 | 4 | TASK-07 | Wave 3: TASK-06 | Cloudflare adapter upgrade + worker build verification |
 | 5 | TASK-08 | Wave 4: TASK-07 | Final validation gate: typecheck, lint, full test suite |
 
@@ -483,10 +485,36 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Added declaration emit to `packages/editorial/tsconfig.json` so `@acme/editorial` produces `dist/index.d.ts`.
   - Updated cover-me-pretty tests to pass `params`/`searchParams` as Promises to match Next 16 Async Request API signatures.
 
+### TASK-10: Repo baseline fix discovered at CHECKPOINT — commit missing @acme/mcp-server browser tool entrypoint
+
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change — restore green `pnpm typecheck` in a clean checkout (no reliance on local/untracked files)
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `packages/mcp-server/src/tools/browser.ts` (new file; required by `packages/mcp-server/src/tools/index.ts`)
+- **Depends on:** -
+- **Blocks:** TASK-06
+- **Confidence:** 85%
+  - Implementation: 90% — add the missing module with the existing browser tool wiring
+  - Approach: 85% — commit the entrypoint so typecheck doesn't depend on local untracked state
+  - Impact: 85% — scoped to mcp-server tool surface; should not affect Next apps
+- **Acceptance:**
+  - Clean checkout typecheck passes: `pnpm typecheck` does not fail with `Cannot find module './browser.js'`
+  - `pnpm --filter @acme/mcp-server lint` passes (warnings allowed, no errors)
+- **Validation contract:**
+  - **TC-01:** `pnpm --filter @acme/mcp-server typecheck` exits 0 → passes
+  - **TC-02:** `pnpm --filter @acme/mcp-server lint` exits 0 → passes
+  - **TC-03:** Clean checkout validation: `pnpm typecheck` exits 0 → passes
+  - **Validation type:** integration
+- **Rollout / rollback:**
+  - Rollout: commit missing entrypoint file
+  - Rollback: revert commit
+- **Documentation impact:** None
+
 ### TASK-06: CHECKPOINT — Mid-upgrade validation
 
 - **Type:** CHECKPOINT
-- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-09
+- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10
 - **Blocks:** TASK-07, TASK-08
 - **Confidence:** 95%
 - **Acceptance:**

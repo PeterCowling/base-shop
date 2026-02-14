@@ -57,6 +57,13 @@
     "BOS-UX-12": {},
     "BOS-UX-13": {},
     "BOS-UX-14": {},
+    "BOS-422": {
+      "allow": [
+        "apps/business-os/src/components/board/GrowthLedgerCard.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Business OS: Growth Ledger board DS/i18n cleanup follow-up referenced in eslint-disable justifications."
+    },
     "BRIK-002": {
       "allow": [
         "apps/prime/src/**"
@@ -81,6 +88,13 @@
     "CF-1004": {},
     "CF-1005": {},
     "CF-1006": {},
+    "CFL-99": {
+      "allow": [
+        "apps/brikette/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Brikette customer-facing lint escalation: temporary eslint-disable exceptions while migrating legacy code."
+    },
     "CGW-0001": {},
     "CHORE-0000": {},
     "CMP-0001": {},
@@ -149,6 +163,42 @@
     "DS-1026": {},
     "DS-1027": {},
     "DS-1028": {},
+    "DS-01": {
+      "allow": [
+        "packages/design-system/src/primitives/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Design-system primitives: targeted eslint-disable justifications for Radix and layout edge cases."
+    },
+    "DS-02": {
+      "allow": [
+        "apps/business-os/src/**",
+        "packages/guide-system/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Design-system catalog/import guidance follow-ups referenced in eslint-disable justifications."
+    },
+    "DS-03": {
+      "allow": [
+        "apps/business-os/src/components/card-detail/CardActionsPanel.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Business OS: card detail panel DS lint exceptions pending refactor."
+    },
+    "DS-05": {
+      "allow": [
+        "apps/reception/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception: DS migration follow-ups referenced in eslint-disable justifications."
+    },
+    "DS-06": {
+      "allow": [
+        "apps/reception/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception: DS migration follow-ups referenced in eslint-disable justifications."
+    },
     "DS-1234": {},
     "DS-2504": {},
     "DS-3471": {},
@@ -280,6 +330,13 @@
     "PP-1100": {},
     "PP-1310": {},
     "QA-1234": {},
+    "REC-09": {
+      "allow": [
+        "apps/reception/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception DS migration: temporary eslint-disable exceptions during rule escalation."
+    },
     "SEC-0001": {},
     "SEC-002": {},
     "SEC-003": {},

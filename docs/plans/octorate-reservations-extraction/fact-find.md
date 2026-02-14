@@ -49,6 +49,7 @@ Build automated extraction of historical booking/reservation data from Octorate 
 - Must respect Octorate server resources (human-like delays, no rapid-fire requests)
 - Excel export format must be parsed reliably (handle format variations)
 - Session cookies may expire - need session validation and re-authentication
+- **PII constraints**: Guest names, contact info, payment details MUST NOT be stored long-term
 
 **Assumptions:**
 - Octorate statistics export contains historical booking data (dates, revenue, channels)
@@ -57,6 +58,86 @@ Build automated extraction of historical booking/reservation data from Octorate 
 - Login session from calendar export is still valid (or can be refreshed)
 - Reservations page structure is accessible with current session
 
+### PII Policy & Data Retention
+
+**MUST NOT store** (strip during transformation):
+- Guest names (first/last)
+- Guest contact information (email, phone)
+- Payment details (card numbers, billing addresses)
+- Passport/ID numbers
+- Any free-text notes that may contain PII
+
+**MAY store** (required for analysis):
+- Booking reference ID (anonymized hash if Octorate ID is considered sensitive)
+- Booking dates (check-in, check-out, booking date/time)
+- Revenue amounts (aggregated, no payment method details)
+- Channel name (OTA platform name, "Direct", etc.)
+- Room/rate plan identifiers
+- Booking status (confirmed, cancelled, no-show)
+
+**Retention policy**:
+- Raw Excel exports: 30 days (for debugging), then delete
+- Transformed JSONL: 24 months (for YoY analysis)
+- Aggregated metrics: indefinite (no PII)
+
+### Required Data Contract (Independent of Excel Format)
+
+**Minimum viable fields for success** (must be present in any export):
+
+| Field | Type | Required | Description | Used For |
+|-------|------|----------|-------------|----------|
+| `bookingDate` | ISO date-time | Yes | When booking was created | Booking velocity trends |
+| `checkIn` | ISO date | Yes | Guest arrival date | Occupancy calculation |
+| `checkOut` | ISO date | Yes | Guest departure date | Occupancy calculation, LOS |
+| `revenue` | Decimal (EUR) | Yes | Total booking value | Revenue analysis, optimization |
+| `channel` | String (enum) | Yes | Booking source | Channel attribution |
+| `roomId` | String | Yes | Room/rate plan identifier | Room-level analysis |
+| `status` | String (enum) | Yes | confirmed \| cancelled \| no-show | Cancellation rate, occupancy |
+| `bookingId` | String (hash) | No | Anonymized booking ref | Deduplication only |
+
+**Derived metrics** (calculated from above):
+- **Occupancy rate**: (days with bookings) / (days available) per date range
+- **ADR** (Average Daily Rate): total revenue / room-nights sold
+- **RevPAR** (Revenue Per Available Room): total revenue / room-nights available
+- **Cancellation rate**: cancelled bookings / total bookings
+- **Lead time**: checkIn - bookingDate (days)
+
+**Channel enumeration** (examples, actual list TBD):
+- `Booking.com`, `Hostelworld`, `Direct`, `Airbnb`, `Expedia`, `Other`
+
+**Status enumeration**:
+- `confirmed` - paid and confirmed
+- `cancelled` - cancelled after confirmation
+- `no-show` - guest didn't arrive
+- `pending` - not yet confirmed (exclude from occupancy if present)
+
+---
+
+## Verified Artifacts
+
+**Evidence checkpoints** (updated as work progresses):
+
+- [ ] **Session storage**: `.secrets/octorate/storage-state.json`
+  - Last refreshed: 2026-02-14 ~11:00 CET (login-octorate.mjs completed)
+  - Contains cookie: `octobooksessionid=ba4bcd5712400649520e6e80ee3d`
+  - Expiry: -1 (session cookie, expires on browser close)
+
+- [ ] **Reservations page state**: NOT YET CAPTURED
+  - Need: Screenshot or HTML dump proving we land on reservations list page OR MFA screen
+  - How: Open browser with saved session, navigate to `/octobook/user/reservation/list.xhtml`
+  - Expected: Either reservations page (can proceed) or MFA redirect (must re-auth)
+
+- [ ] **First Excel export**: NOT YET CAPTURED
+  - Need: One successful export with actual data (redacted if needed)
+  - File path: TBD (`data/octorate/octorate-reservations-YYYY-MM-DD.xlsx`)
+  - Expected structure: Multiple sheets with booking records
+  - Date range: TBD (ideally Jan 2024 - Feb 2026)
+
+- [ ] **Column mapping**: NOT YET DOCUMENTED
+  - Need: Map Excel columns → Required Data Contract fields
+  - Format: `Excel column "Guest Check-in" → checkIn (ISO date)`
+  - Missing fields: Document what's unavailable and impact
+
 ---
 
 ## Evidence Audit (Current State)
@@ -64,28 +145,31 @@ Build automated extraction of historical booking/reservation data from Octorate 
 ### Entry Points
 
 **Octorate Login & Session Management**:
-- `/Users/petercowling/base-shop/packages/mcp-server/login-octorate.mjs` — Interactive login script
+- `packages/mcp-server/login-octorate.mjs` — Interactive login script
   - Opens browser for manual login + MFA
   - Saves session to `.secrets/octorate/storage-state.json`
   - Session cookie: `octobooksessionid`
-  - **Status**: ✅ Working (login completed successfully)
+  - **Status**: ✅ Working (last verified: 2026-02-14 ~11:00 CET)
 
 **Reservations Export Script** (In progress):
-- `/Users/petercowling/base-shop/packages/mcp-server/export-octorate-reservations.mjs` — Automated reservations export
+- `packages/mcp-server/export-octorate-reservations.mjs` — Automated reservations export
   - Target URL: `https://admin.octorate.com/octobook/user/reservation/list.xhtml`
   - **Status**: ⚠️ Failing at Step 4 (element selector timeout)
   - **Issue**: Can't find `p-select[formcontrolname="type"]` element (10-second timeout)
+  - **Last attempted**: 2026-02-14
 
 **Debug Script**:
-- `/Users/petercowling/base-shop/packages/mcp-server/debug-reservations-page.mjs` — Page structure inspector
+- `packages/mcp-server/debug-reservations-page.mjs` — Page structure inspector
   - **Status**: ❌ Failed to save HTML (`.tmp` directory missing)
   - **Intent**: Capture actual page structure to fix selectors
+  - **Last attempted**: 2026-02-14
 
 **Calendar Export (Reference Implementation)**:
-- `/Users/petercowling/base-shop/packages/mcp-server/export-via-navigation.mjs` — Working calendar export
+- `packages/mcp-server/export-via-navigation.mjs` — Working calendar export
   - Successfully navigates Octorate UI
   - Handles dynamic JavaScript rendering with appropriate waits
   - Downloads Excel file reliably
+  - **Status**: ✅ Working (proven pattern)
   - **Pattern to follow**: Navigate via UI menus, wait for JS rendering, use JavaScript evaluation for viewport-blocked elements
 
 ### Key Modules / Files
@@ -215,18 +299,25 @@ Evidence: `export-via-navigation.mjs:48-63`, `export-octorate-reservations.mjs:8
 
 #### Recommended Test Approach
 
-**Contract tests for**:
-- Excel export structure (expected sheets, columns, date formats)
-- JSONL output format (required fields, data types, date formats)
-- Session validity (check cookie expiration before export)
+**Priority 1 (must-have before production)**:
+- **Fixture-based parsing tests**: Use 1-2 real exported XLSX files (redacted/synthetic)
+  - Assert required columns exist
+  - Parse sample rows successfully
+  - Fail loudly with diff-like message when schema changes
+- **Schema drift detector**: Automated test that validates Excel structure matches documented contract
+  - Run on every new export
+  - Alert if columns added/removed/renamed
 
-**Property-based tests for**:
-- Transformation invariants: all booking dates in valid range, revenue always positive, channel never null
-- Date consistency: check-in always before check-out, booking date before check-in
+**Priority 2 (once schema stable)**:
+- **Transformation tests**: Excel → JSONL with known inputs/outputs
+  - Date parsing correctness (timezone handling)
+  - Revenue decimal precision
+  - Channel enum validation
+  - PII stripping (guest names removed)
 
-**Manual tests for** (initially):
-- Full export flow (login → navigate → export → download → verify)
-- Data accuracy (spot-check exported bookings against Octorate UI)
+**Priority 3 (future hardening)**:
+- **Integration tests**: End-to-end with mock/recorded Octorate session (manual/local only, not CI)
+- **Property-based tests**: Only after transformation logic stabilizes (overkill until then)
 
 ### Recent Git History (Targeted)
 
@@ -453,127 +544,87 @@ No conflicts expected with reservations extraction work.
 
 ---
 
-## Suggested Task Seeds (Non-binding)
+## Unblockers (Next 60 Minutes)
 
-### Phase 1: Unblock Export (Critical)
+**Two critical artifacts needed before planning can proceed:**
 
-**Task 1.1**: Diagnose current export failure
-- Open browser with saved session, manually navigate to reservations page
-- Check if session valid or expired (on reservations page vs. MFA screen)
-- If expired: complete MFA, save new session
-- If valid: inspect page HTML, identify actual element structure
-- Document findings: current selectors vs. actual selectors needed
+### Artifact 1: Reservations Page State Capture
 
-**Task 1.2**: Fix element selectors in export script
-- Update `p-select[formcontrolname="type"]` selector to match actual page
-- Use stable attributes (aria labels, data-cy, formcontrolname) over dynamic IDs
-- Add fallback selectors in case primary selector fails
-- Increase wait times if needed (5s → 10s for Angular rendering)
-- Test: achieve first successful export, download Excel file
+**Goal**: Prove whether saved session lands on reservations page or redirects to MFA
 
-### Phase 2: Validate Data Structure
+**Steps**:
+1. Create simple script that opens browser with saved session
+2. Navigate to `https://admin.octorate.com/octobook/user/reservation/list.xhtml`
+3. Wait 10 seconds for page to load/redirect
+4. Capture:
+   - Screenshot: `.tmp/reservations-page-state.png`
+   - Page HTML: `.tmp/reservations-page-state.html`
+   - Current URL (to detect redirects)
+5. Check page title/content for:
+   - "MFA" or "Authentication" → Session expired, need re-auth
+   - "Reservations" or "Prenotazioni" → Session valid, need to fix selectors
 
-**Task 2.1**: Analyze Excel export structure
-- Read downloaded Excel file with ExcelJS
-- Document all sheets, columns, data types
-- Identify required fields: booking dates, revenue, channel, room, status
-- Check for missing fields or unexpected structure
-- Validate date range coverage (how far back does data go?)
+**Success criteria**: Have screenshot + HTML proving current page state
 
-**Task 2.2**: Document Excel schema
-- Create formal schema documentation (sheet names, column names, types, constraints)
-- Add example rows showing typical data
-- Identify edge cases (cancelled bookings, no-shows, multi-room bookings)
-- Document any data quality issues (missing values, format inconsistencies)
+**If session expired**: Run `login-octorate.mjs` again, complete MFA, save new session
 
-### Phase 3: Build Transformation Pipeline
+**If session valid**: Proceed to Artifact 2
 
-**Task 3.1**: Implement Excel → JSONL transformation
-- Read Excel file with ExcelJS
-- Extract booking records from appropriate sheet(s)
-- Map columns to JSONL schema (bookingId, checkIn, checkOut, roomId, channel, revenue, status, bookedAt)
-- Handle missing values and data type conversions
-- Write to JSONL: `data/octorate/reservations/YYYY-MM-DD.jsonl`
-- Add contract tests for expected Excel structure
+### Artifact 2: First Excel Export + Column Map
 
-**Task 3.2**: Implement data validation rules
-- Validate required fields present (dates, revenue, channel)
-- Check date consistency (checkOut > checkIn, bookedAt <= checkIn)
-- Validate revenue always positive
-- Check channel values against known list (Booking.com, Hostelworld, Direct, etc.)
-- Flag suspicious records for review (extreme prices, invalid dates)
+**Goal**: Get one successful export with actual booking data to validate Required Data Contract
 
-### Phase 4: Operational Hardening
+**Steps**:
+1. If Artifact 1 shows session valid:
+   - Inspect HTML from `.tmp/reservations-page-state.html`
+   - Find actual selectors for: sort dropdown, date pickers, channel filter, status filter, rooms filter, statistics button
+   - Update `export-octorate-reservations.mjs` with correct selectors
+   - Run export script
+2. If export succeeds:
+   - Save file to `data/octorate/octorate-reservations-YYYY-MM-DD.xlsx`
+   - Open in Excel (or LibreOffice) manually
+   - Document structure:
+     - Sheet names
+     - Column headers (all sheets)
+     - Sample row (redact guest name if present)
+     - Date range available
+3. Create column mapping document:
+   ```
+   Sheet: "Bookings" (or actual name)
+   Columns:
+   - "Booking Date" → bookingDate (ISO datetime)
+   - "Check-in" → checkIn (ISO date)
+   - "Check-out" → checkOut (ISO date)
+   - "Total" → revenue (EUR decimal)
+   - "Channel" → channel (string)
+   - "Room" → roomId (string)
+   - "Status" → status (string)
+   Missing fields: bookingId (use row number as proxy?)
+   ```
 
-**Task 4.1**: Add session validation and re-authentication
-- Check session cookie expiration before export
-- Validate session by attempting to load dashboard page
-- If session invalid: trigger Gmail MFA flow, save new session
-- Add retry logic (3 attempts with exponential backoff)
+**Success criteria**:
+- Excel file downloaded and openable
+- All 7 Required Data Contract fields present (or documented as missing with workaround)
+- Column mapping documented
+- Date range noted (how far back does data go?)
 
-**Task 4.2**: Implement error handling and logging
-- Log export attempts with timestamps, success/failure, error messages
-- Save failed page screenshots for debugging
-- Add circuit breaker (stop after 3 consecutive failures)
-- Implement manual fallback documentation (how to export manually)
+**If export fails**:
+- Document exact error (which selector failed, at what step)
+- Save screenshot of failure state
+- Consider manual export: use Octorate UI manually, download statistics report, proceed with column mapping
 
-**Task 4.3**: Add monitoring and alerting
-- Track export success rate (last 7 days, last 30 days)
-- Monitor data quality metrics (row count, missing fields, coverage)
-- Alert on: consecutive failures (>3), stale data (>7 days old), quality degradation
-- Build simple dashboard showing export health
+### Fallback: Manual Export (if automation blocked)
 
-### Phase 5: Automation & Scheduling
+**If automation proves too brittle**:
+1. Manual process:
+   - Navigate to reservations list in Octorate UI
+   - Configure filters (all channels, confirmed, all rooms, date range: Jan 2024 - present)
+   - Click Statistics button → Export to Excel
+   - Download file manually
+2. Proceed with column mapping (Artifact 2, step 3)
+3. Document manual process for interim use while fixing automation
 
-**Task 5.1**: Design scheduling strategy
-- Decide frequency: daily, weekly, or on-demand?
-- Choose infrastructure: GitHub Actions, cron, manual invocation?
-- Document operational requirements (credentials, environment)
-
-**Task 5.2**: Implement scheduled execution (if needed)
-- Configure GitHub Actions workflow (or cron job)
-- Add retry logic for transient failures
-- Implement notification on success/failure (email, Slack, etc.)
-
----
-
-## Execution Routing Packet
-
-**Primary execution skill**: `/lp-build`
-
-**Supporting skills**: None (pure code automation)
-
-**Deliverable acceptance package** (what must exist before task can be marked complete):
-
-**Phase 1 (Unblock)**:
-- Working export script that successfully downloads reservations Excel file
-- Documented navigation flow (dashboard → menu → submenu → export)
-- Saved session validation logic
-
-**Phase 2 (Validate)**:
-- Excel structure schema documentation (sheets, columns, types, constraints)
-- Data quality assessment report (coverage, completeness, edge cases)
-
-**Phase 3 (Transform)**:
-- Transformation script (Excel → JSONL)
-- Contract tests for Excel structure validation
-- Property-based tests for transformation invariants
-
-**Phase 4 (Harden)**:
-- Session validation and re-authentication flow
-- Error handling and logging
-- Circuit breaker and manual fallback documentation
-
-**Phase 5 (Automate)**:
-- Scheduling infrastructure (if needed)
-- Monitoring and alerting
-- Operational runbook
-
-**Post-delivery measurement plan**:
-- **Export success rate**: % successful exports over time
-- **Data quality score**: % records with all required fields, no validation errors
-- **Data freshness**: Days since last successful export
-- **Coverage**: Date range of available historical data
+**Decision point**: If manual export has all required fields → proceed to planning with "manual export + automated transformation" as Phase 1 scope
 
 ---
 

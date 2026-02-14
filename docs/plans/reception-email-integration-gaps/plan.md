@@ -520,7 +520,11 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
   - Removed codes 2, 3, 4 from relevantCodes array (now [21, 5, 6, 7, 8, 27])
   - Tests verify maybeSendEmailGuest NOT called for these codes
   - Fixes silent failures where codes without MCP templates caused error logs
-  - Comment added explaining removal reason (no templates, no business requirement)
+  - **TECH DEBT WARNING:** This is a workaround, NOT a permanent solution
+  - Codes 2 (FIRST_REMINDER), 3 (SECOND_REMINDER), 4 (AUTO_CANCEL_NO_TNC) exist in the system and SHOULD have email templates
+  - TODO comment added in useActivitiesMutations.ts with steps to properly fix this
+  - Until templates are created, these activities will NOT trigger email drafts (staff must send manually)
+  - Proper fix requires: (1) Create MCP templates, (2) Add codes back to relevantCodes, (3) Validate end-to-end
 
 ### TASK-07: Implement useArchiveBooking mutation
 - **Type:** IMPLEMENT

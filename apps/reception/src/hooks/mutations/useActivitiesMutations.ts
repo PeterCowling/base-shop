@@ -32,6 +32,16 @@ export default function useActivitiesMutations() {
    * List of codes that should trigger an email to the occupant.
    * TASK-05: Added code 27 (CANCELLED) for cancellation confirmation emails
    * TASK-06: Removed codes 2, 3, 4 (no MCP templates, caused silent failures)
+   *
+   * TODO [TECH DEBT]: Codes 2, 3, 4 are MISSING from this array because they lack
+   * MCP email templates. This is NOT a permanent solution — these codes exist in
+   * the system and SHOULD have templates. Silent failures were occurring when staff
+   * logged these activities. The proper fix is to:
+   *   1. Create MCP templates for codes 2 (FIRST_REMINDER), 3 (SECOND_REMINDER), 4 (AUTO_CANCEL_NO_TNC)
+   *   2. Add them back to relevantCodes array
+   *   3. Validate email generation works end-to-end
+   * Until templates exist, these codes will NOT trigger email drafts (staff must send manually).
+   * Track: reception-email-integration-gaps plan, TASK-06 notes.
    */
   const relevantCodes = useMemo<number[]>(() => [21, 5, 6, 7, 8, 27], []);
 

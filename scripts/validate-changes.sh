@@ -310,24 +310,13 @@ for pkg_file in "$PKG_MAP"/*; do
     # If test files changed, run them directly
     if [ -n "$TEST_FILES" ]; then
         echo "    Test files changed:$TEST_FILES"
-        if [ "$PKG_PATH" = "./packages/mcp-server" ]; then
-            echo "    Running changed tests with root Jest config (CJS preset)..."
-            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $TEST_FILES --maxWorkers=2 2>&1; then
-                echo "    FAIL: Tests failed in $PKG_PATH"
-                exit 1
-            fi
-        else
-            # Build relative paths for package-local test scripts.
-            RELATIVE_TESTS=""
-            for tf in $TEST_FILES; do
-                REL=$(echo "$tf" | sed "s|^${PKG_TYPE}/${PKG_NAME}/||")
-                RELATIVE_TESTS="$RELATIVE_TESTS $REL"
-            done
-            # Use explicit -- separator (not --$VAR which is fragile)
-            if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm --filter "$PKG_PATH" test -- $RELATIVE_TESTS --maxWorkers=2 2>&1; then
-                echo "    FAIL: Tests failed in $PKG_PATH"
-                exit 1
-            fi
+        ABS_TEST_FILES=""
+        for tf in $TEST_FILES; do
+            ABS_TEST_FILES="$ABS_TEST_FILES $(pwd)/$tf"
+        done
+        if ! JEST_ALLOW_PARTIAL_COVERAGE=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 run_jest_exec "$PKG_PATH" --runTestsByPath $ABS_TEST_FILES --maxWorkers=2 2>&1; then
+            echo "    FAIL: Tests failed in $PKG_PATH"
+            exit 1
         fi
     fi
 

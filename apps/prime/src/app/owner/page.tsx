@@ -1,9 +1,15 @@
+import type { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import { BarChart3, Clock, TrendingUp, Users } from 'lucide-react';
 
 import StaffOwnerDisabledNotice from '../../components/security/StaffOwnerDisabledNotice';
 import { readKpiRange } from '../../lib/owner/kpiReader';
 import { canAccessStaffOwnerRoutes } from '../../lib/security/staffOwnerGate';
+
+type ContainerProps = HTMLAttributes<HTMLDivElement>;
+function Container(props: ContainerProps) {
+  return <div {...props} />;
+}
 
 /**
  * TASK-48: Owner arrival insights dashboard
@@ -55,8 +61,8 @@ export default async function OwnerPage() {
   const totalBagDrops = kpiData.reduce((sum, day) => sum + day.bagDropRequestCount, 0);
 
   return (
-    <main className="min-h-screen bg-muted p-4">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-dvh bg-muted p-4">
+      <Container className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -184,7 +190,7 @@ export default async function OwnerPage() {
             Owner Setup
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import {
   AlertTriangle,
@@ -19,6 +20,11 @@ import {
 } from '../../../lib/owner/businessScorecard';
 import { readKpiRange } from '../../../lib/owner/kpiReader';
 import { canAccessStaffOwnerRoutes } from '../../../lib/security/staffOwnerGate';
+
+type ContainerProps = HTMLAttributes<HTMLDivElement>;
+function Container(props: ContainerProps) {
+  return <div {...props} />;
+}
 
 /**
  * TASK-49: Cross-app business impact scorecard page
@@ -43,8 +49,8 @@ export default async function ScorecardPage() {
   const scorecard = computeBusinessScorecard(kpiData);
 
   return (
-    <main className="min-h-screen bg-muted p-4">
-      <div className="mx-auto max-w-6xl">
+    <main className="min-h-dvh bg-muted p-4">
+      <Container className="mx-auto max-w-6xl">
         {/* Header */}
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -256,7 +262,7 @@ export default async function ScorecardPage() {
             Owner Dashboard
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

@@ -6,10 +6,11 @@
  * using bcryptjs and iron-session.
  */
 
+import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { getIronSession, type IronSession, type IronSessionData } from "iron-session";
 
-import { type User,USERS } from "./current-user";
+import { type User, USERS } from "./current-user";
 
 /**
  * Session data structure (extends IronSessionData)
@@ -109,7 +110,6 @@ export async function getAuthenticatedUser(
  */
 export async function getAuthenticatedUserFromHeaders(): Promise<User | null> {
   try {
-    const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
     const sessionCookie = cookieStore.get(sessionOptions.cookieName);
 

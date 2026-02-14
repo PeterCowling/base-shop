@@ -361,6 +361,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **What would make this >=90%:** add a deterministic mapping doc for expect states -> Playwright wait mapping (domcontentloaded/networkidle).
 - **Re-plan Update (2026-02-14):** split out from `browser_act` integration so safety/expect logic is testable without a browser.
 
+#### Build Completion (2026-02-14)
+
+- **Status:** Complete (2026-02-14)
+- **Commits:** c7db4cc7c0
+- **Execution cycle:**
+  - Validation cases executed: TC-01..TC-03
+  - Cycles: 1
+  - Initial validation: FAIL expected (missing modules)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 85%
+  - Post-validation: 90%
+  - Delta reason: expectation evaluation + danger confirmation protocol proven under contract tests (E2).
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-act-shaping.contract.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/tools/browser/expect.ts` (`evaluateExpectations`) with deterministic diagnostic reasons and observed deltas.
+  - Added `packages/mcp-server/src/tools/browser/safety.ts` (`enforceSafetyConfirmation`) returning `SAFETY_CONFIRMATION_REQUIRED` with `requiredConfirmationText`.
+  - Added `packages/mcp-server/src/__tests__/browser-act-shaping.contract.test.ts`.
+
 ### TASK-10: Session Action Registry (actionId -> target map)
 
 - **Type:** IMPLEMENT

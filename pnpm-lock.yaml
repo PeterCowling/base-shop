@@ -2284,10 +2284,10 @@ importers:
         specifier: 15.3.9
         version: 15.3.9(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.0)(babel-plugin-macros@3.1.0)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       react:
-        specifier: ^19.0.0
+        specifier: 19.2.1
         version: 19.2.1
       typescript:
-        specifier: ^5.0.0
+        specifier: 5.8.3
         version: 5.8.3
 
   packages/stripe:

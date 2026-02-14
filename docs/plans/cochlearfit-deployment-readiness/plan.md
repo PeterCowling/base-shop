@@ -249,7 +249,7 @@ Worker (Needs fixes):
 | TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | - | TASK-08, TASK-09 |
 | TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | - | TASK-09 |
 | TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
-| TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Pending | - | TASK-05 |
+| TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Complete (2026-02-14) | - | TASK-05 |
 | TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Pending | TASK-04 | TASK-09 |
 | TASK-06 | IMPLEMENT | Create email receipt template | 85% | M | Pending | TASK-03 | TASK-07 |
 | TASK-07 | IMPLEMENT | Implement email sending in Worker webhook | 80% | L | Pending | TASK-03, TASK-06 | TASK-10 |
@@ -547,6 +547,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Reference implementation: `apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts:178-223`
   - Schema contracts: lines 14-51 of cochlearfitCatalog.server.ts
   - Decision 6 from fact-find: Build-time bundling (single source of truth)
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 7fb1d23a1f
+- **Validation Evidence:**
+  - `pnpm --filter @apps/cochlearfit-worker typecheck` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker lint` — PASS
+  - `pnpm --filter @apps/cochlearfit-worker build` — PASS (prebuild runs bundler; generated file created)
+  - `pnpm exec eslint scripts/bundle-worker-catalog.ts` — PASS
+  - TC-02/TC-03 failure-mode checks executed via `node --import tsx scripts/bundle-worker-catalog.ts --data-dir <fixture>` — PASS
+- **Confidence reassessment:** 85% -> 90% (validation confirmed assumptions; build + failure modes verified)
+- **Implementation notes:**
+  - Added `scripts/bundle-worker-catalog.ts` to generate `apps/cochlearfit-worker/src/worker-catalog.generated.ts` from `data/shops/cochlearfit/*.json`.
+  - Seeded `data/shops/cochlearfit/{products,variants,inventory}.json` with placeholder `price_...` IDs; real Stripe Price IDs remain a TASK-08 requirement.
+
 
 ### TASK-05: Replace hardcoded catalog with generated import
 - **Type:** IMPLEMENT

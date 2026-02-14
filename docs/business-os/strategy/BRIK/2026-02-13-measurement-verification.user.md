@@ -19,6 +19,7 @@ Verify that GA4 + Search Console production setup is live for `hostel-positano.c
 |---|---|---|
 | GA4 script present on production homepage | Pass | `https://hostel-positano.com/en/` contains `gtag/js?id=G-2ZSYXG8R7T` and `gtag('config', 'G-2ZSYXG8R7T')` |
 | GA collect endpoint receives production hits | Pass | Headless browser capture observed `https://region1.google-analytics.com/g/collect` with `tid=G-2ZSYXG8R7T` and events `page_view`, `user_engagement` |
+| `web_vitals` events reach GA collect endpoint | Pass (collect-level) | 2026-02-14: Playwright capture on Pages deploy `https://6aa817b6.brikette-website.pages.dev/en/` observed `en=web_vitals` (2 hits) |
 | `robots.txt` advertises sitemap index | Pass | `https://hostel-positano.com/robots.txt` includes `Sitemap: https://hostel-positano.com/sitemap_index.xml` |
 | Sitemap index is reachable | Pass | `https://hostel-positano.com/sitemap_index.xml` returns valid XML with `https://hostel-positano.com/sitemap.xml` |
 | Search Console DNS verification tokens exist | Pass | DNS TXT for `hostel-positano.com` / `www.hostel-positano.com` includes `google-site-verification=...` records |
@@ -27,7 +28,7 @@ Verify that GA4 + Search Console production setup is live for `hostel-positano.c
 ## 3) Open Verification Items
 
 1. Resolve why `begin_checkout` and `web_vitals` are zero in the current 7-day GA4 window.
-2. Add/activate direct `web_vitals` verification path (DebugView and/or dedicated test coverage).
+2. Confirm `web_vitals` is visible in GA4 UI (Realtime/DebugView) and becomes non-zero in the rolling 7-day Data API extract.
 3. Continue weekly baseline refresh with date-bounded extracts.
 
 ## 4) Instrumentation Hardening Completed in Repo

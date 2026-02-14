@@ -108,6 +108,11 @@
 <td>Headless browser capture observed <code>https://region1.google-analytics.com/g/collect</code> with <code>tid=G-2ZSYXG8R7T</code> and events <code>page_view</code>, <code>user_engagement</code></td>
 </tr>
 <tr>
+<td><code>web_vitals</code> events reach GA collect endpoint</td>
+<td>Pass (collect-level)</td>
+<td>2026-02-14: Playwright capture on Pages deploy <code>https://6aa817b6.brikette-website.pages.dev/en/</code> observed <code>en=web_vitals</code> (2 hits)</td>
+</tr>
+<tr>
 <td><code>robots.txt</code> advertises sitemap index</td>
 <td>Pass</td>
 <td><code>https://hostel-positano.com/robots.txt</code> includes <code>Sitemap: https://hostel-positano.com/sitemap_index.xml</code></td>
@@ -132,7 +137,7 @@
 <h2>3) Open Verification Items</h2>
 <ol>
 <li>Resolve why <code>begin_checkout</code> and <code>web_vitals</code> are zero in the current 7-day GA4 window.</li>
-<li>Add/activate direct <code>web_vitals</code> verification path (DebugView and/or dedicated test coverage).</li>
+<li>Confirm <code>web_vitals</code> is visible in GA4 UI (Realtime/DebugView) and becomes non-zero in the rolling 7-day Data API extract.</li>
 <li>Continue weekly baseline refresh with date-bounded extracts.</li>
 </ol>
 <h2>4) Instrumentation Hardening Completed in Repo</h2>
@@ -229,7 +234,7 @@ pnpm exec wrangler pages deploy out --project-name brikette-website --branch mai
 </ul>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md</code></div>
-      <div>Generated: 2026-02-13T23:46:57.209Z</div>
+      <div>Generated: 2026-02-14T12:31:52.070Z</div>
     </div>
   </main>
   <script type="module">

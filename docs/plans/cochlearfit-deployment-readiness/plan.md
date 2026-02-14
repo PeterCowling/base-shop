@@ -264,7 +264,7 @@ Worker (Needs fixes):
 | TASK-16 | IMPLEMENT | Add comprehensive Worker tests (post-launch) | 70% ⚠️ | M | Pending | TASK-13 | - |
 | TASK-17 | IMPLEMENT | Sanitize wrangler.toml + add env topology (no committed secrets) | 85% | M | Complete (2026-02-14) | TASK-05 | TASK-09, TASK-10 |
 | TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Complete (2026-02-14) | TASK-05 | TASK-14 |
-| TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Pending | - | TASK-01, TASK-08, TASK-09 |
+| TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Pending | - | TASK-02, TASK-09 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -1511,6 +1511,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - [ ] Keys are documented as names/placeholders only (no secret values committed)
 - **Validation contract:**
   - TC-01: Doc exists and references variant IDs from `data/shops/cochlearfit/variants.json`
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** ba0a454ace
+- **Validation Evidence:**
+  - Confirmed doc contains all 12 variant IDs from `data/shops/cochlearfit/variants.json` (script check)
+- **Implementation notes:**
+  - Created `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md` scaffold (no secret values; IDs only).
 
 ### TASK-20: Inventory authority API contract memo + inventory-api.md scaffold
 - **Type:** INVESTIGATE

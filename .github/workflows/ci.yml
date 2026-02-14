@@ -169,7 +169,16 @@ jobs:
             fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
+            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            if [ "${{ github.ref_name }}" = "dev" ]; then
+              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              fi
+              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+            else
+              echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            fi
           fi
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Lint (affected workspaces)
@@ -236,7 +245,16 @@ jobs:
             fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
+            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            if [ "${{ github.ref_name }}" = "dev" ]; then
+              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              fi
+              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+            else
+              echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            fi
           fi
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
@@ -253,7 +271,7 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'promote-app:shop')
       }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -272,7 +290,16 @@ jobs:
             fi
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
-            echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
+            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            if [ "${{ github.ref_name }}" = "dev" ]; then
+              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              fi
+              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+            else
+              echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
+            fi
           fi
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Runtime contract manifest tests

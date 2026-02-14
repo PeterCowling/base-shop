@@ -24,6 +24,7 @@ The Worker package runs the catalog bundler automatically before key commands:
 - `pnpm --filter @apps/cochlearfit-worker typecheck`
 - `pnpm --filter @apps/cochlearfit-worker lint`
 - `pnpm --filter @apps/cochlearfit-worker build`
+- `pnpm --filter @apps/cochlearfit-worker test`
 
 You can also run the bundler directly from the repo root:
 
@@ -54,3 +55,17 @@ Note: placeholder `price_...` IDs are format-valid but must be replaced with rea
 2. Run `pnpm --filter @apps/cochlearfit-worker build`.
 3. Confirm `apps/cochlearfit-worker/src/worker-catalog.generated.ts` was regenerated.
 
+## Tests
+
+Run the Worker unit tests:
+
+```bash
+pnpm --filter @apps/cochlearfit-worker test
+```
+
+Pre-launch test scope:
+
+- Catalog bundling and validation (including invalid `stripePriceId` failure modes)
+- Generated catalog wiring
+
+Worker runtime/request-handling tests are intentionally deferred to post-launch hardening.

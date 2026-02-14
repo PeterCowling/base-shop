@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Archived
 Domain: Agents / DevEx
 Workstream: Engineering
 Created: 2026-02-14
@@ -13,7 +13,7 @@ Deliverable-Type: multi-deliverable
 Execution-Track: mixed
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Related-Plan: docs/plans/agent-web-browsing-superpower/plan.md
+Related-Plan: docs/plans/archive/agent-web-browsing-superpower/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
 Card-ID:

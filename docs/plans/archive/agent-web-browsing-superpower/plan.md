@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Agents / DevEx
 Workstream: Engineering
 Created: 2026-02-14
@@ -113,9 +113,9 @@ Chosen: Option A.
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 86% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
-| TASK-12 | IMPLEMENT | Safety hardening: ensure `browser_act` safety gating cannot be bypassed by client-supplied risk/labels | 80% | M | Pending | TASK-06, TASK-07 | TASK-08 |
-| TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07, TASK-12 | TASK-09 |
-| TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Pending | TASK-08 | - |
+| TASK-12 | IMPLEMENT | Safety hardening: ensure `browser_act` safety gating cannot be bypassed by client-supplied risk/labels | 80% | M | Complete (2026-02-14) | TASK-06, TASK-07 | TASK-08 |
+| TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Complete (2026-02-14) | TASK-06, TASK-07, TASK-12 | TASK-09 |
+| TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Complete (2026-02-14) | TASK-08 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -682,6 +682,17 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Evidence (E1): TASK-07 currently accepts `risk`/`label` from the caller for safety gating; that is a bypass vector if a client lies.
   - Fix: move safety-relevant metadata into the tool-owned session registry populated by `browser_observe`, and have `browser_act` read from that registry only.
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete (2026-02-14)
+- **Commits:** (not committed yet; user requested to proceed without commits)
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-act.contract.test.ts packages/mcp-server/src/__tests__/browser-session.unit.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Session action registry now stores safety-relevant metadata per `actionId` (role/name/risk) in addition to the selector.
+  - `browser_act` derives risk and confirmation label from the tool-owned registry; callers can no longer spoof risk/labels to bypass safety gating.
+
 ### TASK-08: MCP Tool Wiring + Integration Tests + Smoke Runner
 
 - **Type:** IMPLEMENT
@@ -690,6 +701,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution-Skill:** /lp-build
 - **Affects:**
   - `packages/mcp-server/src/tools/browser.ts`
+  - `packages/mcp-server/src/tools/browser/driver-playwright.ts`
   - `packages/mcp-server/src/tools/index.ts`
   - `packages/mcp-server/src/__tests__/browser-tools.integration.test.ts`
   - `packages/mcp-server/scripts/browser-smoke.mjs`
@@ -715,6 +727,22 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Re-plan Update (2026-02-14):** expanded TC list to meet M-effort minimums.
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete (2026-02-14)
+- **Commits:** (not committed yet; user requested to proceed without commits)
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-tools.integration.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+  - Local smoke: `pnpm --filter @acme/mcp-server build && node packages/mcp-server/scripts/browser-smoke.mjs` -- PASS
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/tools/browser.ts` with MCP tool definitions + handler for:
+    - `browser_session_open` / `browser_session_close`
+    - `browser_observe` / `browser_act`
+  - Wired browser tools into `packages/mcp-server/src/tools/index.ts` so MCP `ListTools` + `CallTool` can route them.
+  - Added `packages/mcp-server/src/tools/browser/driver-playwright.ts` (Playwright+CDP driver) to make the smoke runner exercise a real page.
+  - Added `packages/mcp-server/scripts/browser-smoke.mjs` to demonstrate observe -> act -> verify with safety gating.
+
 ### TASK-09: Horizon Checkpoint - Validate Against Real Sites, Adjust Plan
 
 - **Type:** CHECKPOINT
@@ -734,6 +762,15 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Selector generation is sufficiently reliable within an observation epoch.
   - CDP AX extraction captures enough interactive affordances for common UIs.
   - Verification expectations cover the most common "did it work?" checks.
+
+#### Checkpoint Completion (2026-02-14)
+- **Status:** Complete (2026-02-14)
+- **Evidence:**
+  - Local deterministic fixture workflow: `pnpm --filter @acme/mcp-server build && node packages/mcp-server/scripts/browser-smoke.mjs` -- PASS
+    - Safety confirmation was enforced (two-step), and expectations matched (`urlContains`, `headingContains`).
+  - Real site probe (public SPA-ish): GitHub home page -- PASS
+    - `browser_observe` returned bounded affordances (50) with `hasMore=true`, payload ~12KB
+    - Stale observation rejection verified: `browser_act` returned `STALE_OBSERVATION`
 
 ## Risks & Mitigations
 

@@ -1,7 +1,7 @@
 import {
   normalizedMutualInformationBinned,
   normalizedMutualInformationDiscrete,
-} from "../mutual-information";
+} from "../mutual-information.js";
 
 describe("normalizedMutualInformationDiscrete", () => {
   it("returns NaN for invalid inputs in default mode", () => {

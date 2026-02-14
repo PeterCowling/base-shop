@@ -1,4 +1,4 @@
-import { getShopFromPath } from '../getShopFromPath';
+import { getShopFromPath } from '../getShopFromPath.js';
 
 describe('getShopFromPath', () => {
   it('returns undefined for an undefined path', () => {

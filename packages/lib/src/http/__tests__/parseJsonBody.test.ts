@@ -3,8 +3,8 @@
  */
 import { z } from 'zod';
 
-import { parseJsonBody } from '../parseJsonBody.server';
-import { parseLimit } from '../parseLimit';
+import { parseJsonBody } from '../parseJsonBody.server.js';
+import { parseLimit } from '../parseLimit.js';
 
 describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });

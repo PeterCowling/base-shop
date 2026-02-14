@@ -1,6 +1,6 @@
-export { formatCurrency } from "./formatCurrency";
-export { formatNumber } from "./formatNumber";
-export { formatPrice } from "./formatPrice";
+export { formatCurrency } from "./formatCurrency.js";
+export { formatNumber } from "./formatNumber.js";
+export { formatPrice } from "./formatPrice.js";
 export {
   assertMinorInt,
   formatMinor,
@@ -8,4 +8,4 @@ export {
   getCurrencyFractionDigits,
   normalizeCurrencyCode,
   toMinor,
-} from "./money";
+} from "./money.js";

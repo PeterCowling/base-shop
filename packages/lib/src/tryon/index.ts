@@ -1,6 +1,6 @@
-import { createCloudflareProvider } from "./providers/cloudflare";
-import { createManagedTryOnProvider } from "./providers/garment/managed";
-import type { TryOnProvider } from "./providers/types";
+import { createCloudflareProvider } from "./providers/cloudflare.js";
+import { createManagedTryOnProvider } from "./providers/garment/managed.js";
+import type { TryOnProvider } from "./providers/types.js";
 
 export const BUDGET = { preprocessMs: 1500, enhanceMs: 6000 } as const;
 

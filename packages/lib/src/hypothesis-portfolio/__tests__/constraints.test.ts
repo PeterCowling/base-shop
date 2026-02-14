@@ -1,5 +1,5 @@
-import { applyPortfolioConstraints } from "../constraints";
-import type { Hypothesis, PortfolioMetadata } from "../types";
+import { applyPortfolioConstraints } from "../constraints.js";
+import type { Hypothesis, PortfolioMetadata } from "../types.js";
 
 const metadata: PortfolioMetadata = {
   max_concurrent_experiments: 3,

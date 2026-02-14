@@ -1,6 +1,6 @@
-import { normalSample, SeededRandom } from "../random";
+import { normalSample, SeededRandom } from "../random/index.js";
 
-import { regularizedIncompleteBeta } from "./internal/special-functions";
+import { regularizedIncompleteBeta } from "./internal/special-functions.js";
 
 export interface BetaPosteriorSummary {
   alpha: number;

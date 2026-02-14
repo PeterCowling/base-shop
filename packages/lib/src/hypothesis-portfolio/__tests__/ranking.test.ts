@@ -1,5 +1,5 @@
-import { rankHypotheses } from "../ranking";
-import type { Hypothesis, PortfolioMetadata } from "../types";
+import { rankHypotheses } from "../ranking.js";
+import type { Hypothesis, PortfolioMetadata } from "../types.js";
 
 const metadata: PortfolioMetadata = {
   max_concurrent_experiments: 3,

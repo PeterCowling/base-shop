@@ -1,5 +1,5 @@
-export { getShopFromPath } from "./getShopFromPath";
-export { replaceShopInPath } from "./replaceShopInPath";
+export { getShopFromPath } from "./getShopFromPath.js";
+export { replaceShopInPath } from "./replaceShopInPath.js";
 export {
   getOrCreateRequestId,
   getRequestIdFromHeaders,
@@ -9,4 +9,4 @@ export {
   SHOP_ID_HEADER,
   type ShopContext,
   stripSpoofableShopHeaders,
-} from "./shopContext";
+} from "./shopContext.js";

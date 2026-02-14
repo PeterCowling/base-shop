@@ -1,8 +1,8 @@
 import "server-only";
 
-import type { RequestContext } from "./types";
+import type { RequestContext } from "./types.js";
 
-export type { EnvLabel, RequestContext } from "./types";
+export type { EnvLabel, RequestContext } from "./types.js";
 
 let currentContext: RequestContext | undefined;
 

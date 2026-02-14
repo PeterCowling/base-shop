@@ -46,7 +46,7 @@ describe("generateMeta", () => {
         },
         { virtual: true },
       );
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,
@@ -71,7 +71,7 @@ describe("generateMeta", () => {
         },
         { virtual: true },
       );
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: "AI title",

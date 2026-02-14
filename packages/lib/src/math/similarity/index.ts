@@ -10,21 +10,21 @@ export {
   type PairInputRequirements,
   type SimilarityValidationOptions,
   validateNumericPairInputs,
-} from "./common";
+} from "./common.js";
 export {
   distanceCorrelation,
   type DistanceCorrelationOptions,
-} from "./distance-correlation";
-export { hoeffding, type HoeffdingOptions } from "./hoeffding";
+} from "./distance-correlation.js";
+export { hoeffding, type HoeffdingOptions } from "./hoeffding.js";
 export {
   jensenShannonDistance,
   jensenShannonDivergence,
   type JensenShannonOptions,
-} from "./jensen-shannon";
-export { type KendallOptions,kendallTau } from "./kendall";
+} from "./jensen-shannon.js";
+export { type KendallOptions,kendallTau } from "./kendall.js";
 export {
   normalizedMutualInformationBinned,
   type NormalizedMutualInformationBinnedOptions,
   normalizedMutualInformationDiscrete,
   type NormalizedMutualInformationDiscreteOptions,
-} from "./mutual-information";
+} from "./mutual-information.js";

@@ -3,14 +3,14 @@ export {
   applyPortfolioConstraints,
   type ConstraintBlockedHypothesis,
   type ConstraintResult,
-} from "./constraints";
+} from "./constraints.js";
 export {
   type BlockedHypothesis,
   type InadmissibleReason,
   type RankedHypothesis,
   rankHypotheses,
   type RankHypothesesResult,
-} from "./ranking";
+} from "./ranking.js";
 export type {
   Hypothesis,
   HypothesisOutcome,
@@ -22,5 +22,5 @@ export type {
   RiskTolerance,
   ValidationError,
   ValidationResult,
-} from "./types";
-export { validateHypothesis, validatePortfolioMetadata } from "./validation";
+} from "./types.js";
+export { validateHypothesis, validatePortfolioMetadata } from "./validation.js";

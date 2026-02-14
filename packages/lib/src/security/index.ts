@@ -1,2 +1,2 @@
-export { genSecret } from "./genSecret";
-export { getCsrfToken } from "./getCsrfToken";
+export { genSecret } from "./genSecret.js";
+export { getCsrfToken } from "./getCsrfToken.js";

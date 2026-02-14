@@ -4,8 +4,8 @@ import {
   growthLedgerSchema,
   thresholdSetSchema,
   validateGrowthCatalog,
-} from "../schema";
-import type { GrowthStageKey, StageThresholdDefinition } from "../types";
+} from "../schema.js";
+import type { GrowthStageKey, StageThresholdDefinition } from "../types.js";
 
 describe("growth schema", () => {
   test("TC-01: schema declares all 5 AARRR stages with required stage policy fields", () => {

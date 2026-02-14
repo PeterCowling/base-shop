@@ -13,7 +13,7 @@ describe('generateMeta', () => {
     await jest.isolateModulesAsync(async () => {
       (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
-      const { generateMeta } = await import('../generateMeta');
+      const { generateMeta } = await import('../generateMeta.js');
       meta = await generateMeta(baseProduct);
     });
     expect(meta).toEqual({
@@ -29,7 +29,7 @@ describe('generateMeta', () => {
     await jest.isolateModulesAsync(async () => {
       (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
-      const { generateMeta } = await import('../generateMeta');
+      const { generateMeta } = await import('../generateMeta.js');
       meta = await generateMeta({ id: '1' } as any);
     });
     expect(meta).toEqual({
@@ -45,7 +45,7 @@ describe('generateMeta', () => {
     await jest.isolateModulesAsync(async () => {
       (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
-      const { generateMeta } = await import('../generateMeta');
+      const { generateMeta } = await import('../generateMeta.js');
       const meta = await generateMeta(baseProduct);
       const custom = { keywords: 'foo,bar', description: 'Custom description' };
       merged = { ...meta, ...custom };

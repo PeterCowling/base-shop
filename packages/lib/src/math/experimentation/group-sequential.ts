@@ -1,5 +1,5 @@
-import { normalCdf, normalPpf } from "./internal/special-functions";
-import type { AlternativeHypothesis } from "./sample-size";
+import { normalCdf, normalPpf } from "./internal/special-functions.js";
+import type { AlternativeHypothesis } from "./sample-size.js";
 
 export interface GroupSequentialTestOptions {
   informationFractions: readonly number[];

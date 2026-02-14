@@ -62,7 +62,7 @@ describe("generateMeta", () => {
       jest.doMock("openai", () => ({ __esModule: true, default: OpenAI }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       const file = path.join(process.cwd(), "public", "og", `${product.id}.png`);
       expect(meta).toEqual({
@@ -108,7 +108,7 @@ describe("generateMeta", () => {
       jest.doMock("openai", () => ({ __esModule: true, OpenAI }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(responsesCreate).toHaveBeenCalled();
       expect(imagesGenerate).toHaveBeenCalled();
@@ -151,7 +151,7 @@ describe("generateMeta", () => {
         () => ({ __esModule: true, default: { default: OpenAI } }),
         { virtual: true },
       );
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(responsesCreate).toHaveBeenCalled();
       expect(imagesGenerate).toHaveBeenCalled();
@@ -182,7 +182,7 @@ describe("generateMeta", () => {
       jest.doMock("openai", () => ({ __esModule: true, default: OpenAI }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: "LLM Title",

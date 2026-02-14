@@ -1,13 +1,20 @@
 import "server-only";
 
-import { NextResponse } from "next/server";
 import { type ZodSchema } from "zod";
 
-import { parseLimit } from "./parseLimit";
+import { parseLimit } from "./parseLimit.js";
+
+function jsonResponse(body: unknown, init?: ResponseInit): Response {
+  const headers = new Headers(init?.headers);
+  if (!headers.has("content-type")) {
+    headers.set("content-type", "application/json; charset=utf-8");
+  }
+  return new Response(JSON.stringify(body), { ...init, headers });
+}
 
 export type ParseJsonResult<T> =
   | { success: true; data: T }
-  | { success: false; response: NextResponse };
+  | { success: false; response: Response };
 
 export async function parseJsonBody<T>(
   req: Request,
@@ -32,7 +39,7 @@ export async function parseJsonBody<T>(
       }
       return {
         success: false,
-        response: NextResponse.json(
+        response: jsonResponse(
           // i18n-exempt: API error code; not UI copy
           { error: "Invalid JSON" },
           { status: 400 },
@@ -53,7 +60,7 @@ export async function parseJsonBody<T>(
       if (byteLength > parseLimit(limit)) {
         return {
           success: false,
-          response: NextResponse.json(
+          response: jsonResponse(
             // i18n-exempt: API error code; not UI copy
             { error: "Payload Too Large" },
             { status: 413 },
@@ -68,7 +75,7 @@ export async function parseJsonBody<T>(
       if (byteLength > parseLimit(limit)) {
         return {
           success: false,
-          response: NextResponse.json(
+          response: jsonResponse(
             // i18n-exempt: API error code; not UI copy
             { error: "Payload Too Large" },
             { status: 413 },
@@ -82,7 +89,7 @@ export async function parseJsonBody<T>(
   } catch {
     return {
       success: false,
-      response: NextResponse.json(
+      response: jsonResponse(
         // i18n-exempt: API error code; not UI copy
         { error: "Invalid JSON" },
         { status: 400 },
@@ -94,7 +101,7 @@ export async function parseJsonBody<T>(
   if (!parsed.success) {
     return {
       success: false,
-      response: NextResponse.json(parsed.error.flatten().fieldErrors, {
+      response: jsonResponse(parsed.error.flatten().fieldErrors, {
         status: 400,
       }),
     };

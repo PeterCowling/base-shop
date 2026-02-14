@@ -32,9 +32,19 @@ export type BrowserActRequest = {
   action: BrowserActAction;
 };
 
+export type BrowserDownload = {
+  filename: string;
+  path: string;
+  size: number;
+  mimeType: string | null;
+  timestamp: string;
+};
+
 export type BrowserDriver = {
   snapshot: (input: BrowserObserveSnapshotRequest) => Promise<BrowserObserveSnapshot>;
   act: (input: BrowserActRequest) => Promise<void>;
+  getDownloads: () => Promise<ReadonlyArray<BrowserDownload>>;
+  waitForDownload: (input: { timeoutMs: number }) => Promise<BrowserDownload | null>;
   close: () => Promise<void>;
 };
 
@@ -97,9 +107,19 @@ export function createMockBrowserDriver(input: {
     // no-op
   }
 
+  async function getDownloads(): Promise<ReadonlyArray<BrowserDownload>> {
+    return [];
+  }
+
+  async function waitForDownload(_input: { timeoutMs: number }): Promise<BrowserDownload | null> {
+    return null;
+  }
+
   return {
     snapshot,
     act,
+    getDownloads,
+    waitForDownload,
     close,
     getRecordedActions: () => recorded,
   };

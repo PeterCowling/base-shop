@@ -5,7 +5,7 @@ import type {
   HypothesisValidationOptions,
   PortfolioMetadata,
   ValidationResult,
-} from "./types";
+} from "./types.js";
 
 const RATE_LIKE_TOKENS = ["MRR", "ARR", "ARPU", "RATE", "PCT", "PERCENT"];
 const MONETARY_UNIT_PATTERN = /^USD_[A-Z0-9_]+$/;

@@ -1,4 +1,4 @@
-import { distanceCorrelation } from "../distance-correlation";
+import { distanceCorrelation } from "../distance-correlation.js";
 
 describe("distanceCorrelation", () => {
   it("returns NaN for invalid inputs in default mode", () => {

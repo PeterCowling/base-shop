@@ -51,30 +51,30 @@ export type {
   AlwaysValidPValueResult,
   AlwaysValidType1SimulationOptions,
   AlwaysValidType1SimulationResult,
-} from "./always-valid-inference";
+} from "./always-valid-inference.js";
 export {
   alwaysValidPValue,
   simulateAlwaysValidPower,
   simulateAlwaysValidType1,
-} from "./always-valid-inference";
+} from "./always-valid-inference.js";
 export type {
   BayesianABTestOptions,
   BayesianABTestResult,
   BetaPosteriorSummary,
-} from "./bayesian";
-export { bayesianABTest } from "./bayesian";
-export type { ConfidenceIntervalResult } from "./confidence-intervals";
+} from "./bayesian.js";
+export { bayesianABTest } from "./bayesian.js";
+export type { ConfidenceIntervalResult } from "./confidence-intervals.js";
 export {
   meanConfidenceInterval,
   meanDifferenceCI,
   proportionConfidenceInterval,
   proportionDifferenceCI,
-} from "./confidence-intervals";
+} from "./confidence-intervals.js";
 export type {
   GroupSequentialTestOptions,
   GroupSequentialTestResult,
-} from "./group-sequential";
-export { groupSequentialTest } from "./group-sequential";
+} from "./group-sequential.js";
+export { groupSequentialTest } from "./group-sequential.js";
 export type {
   ChiSquareGoodnessOfFitOptions,
   ChiSquareGoodnessOfFitResult,
@@ -82,26 +82,26 @@ export type {
   WelchTTestResult,
   ZTestProportionsOptions,
   ZTestProportionsResult,
-} from "./hypothesis-tests";
+} from "./hypothesis-tests.js";
 export {
   chiSquareGoodnessOfFit,
   welchTTest,
   zTestProportions,
-} from "./hypothesis-tests";
+} from "./hypothesis-tests.js";
 export type {
   AlternativeHypothesis,
   SampleSizeForProportionsOptions,
   SampleSizeForProportionsResult,
-} from "./sample-size";
-export { sampleSizeForProportions } from "./sample-size";
+} from "./sample-size.js";
+export { sampleSizeForProportions } from "./sample-size.js";
 export type {
   ThompsonSamplingArm,
   ThompsonSamplingOptions,
   ThompsonSamplingResult,
   ThompsonSamplingSimulationOptions,
   ThompsonSamplingSimulationResult,
-} from "./thompson-sampling";
+} from "./thompson-sampling.js";
 export {
   thompsonSampling,
   thompsonSamplingSimulation,
-} from "./thompson-sampling";
+} from "./thompson-sampling.js";

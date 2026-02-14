@@ -6,7 +6,7 @@ describe("package root exports", () => {
   });
 
   it("re-exports helpers from their source modules", async () => {
-    const validateModule = await import("../validateShopName");
+    const validateModule = await import("../validateShopName.js");
 
     const zodExports = {
       applyFriendlyZodMessages: jest.fn(),
@@ -19,7 +19,7 @@ describe("package root exports", () => {
       { virtual: true },
     );
 
-    const pkg = await import("../index");
+    const pkg = await import("../index.js");
 
     expect(pkg.validateShopName).toBe(validateModule.validateShopName);
     expect(pkg.SHOP_NAME_RE).toBe(validateModule.SHOP_NAME_RE);
@@ -48,7 +48,7 @@ describe("package root exports", () => {
       { virtual: true },
     );
 
-    const mod = await import("../initZod");
+    const mod = await import("../initZod.js");
 
     expect(mod.initZod).toBe(initZodMock);
     expect(mod.applyFriendlyZodMessages).toBe(zodExports.applyFriendlyZodMessages);

@@ -1,4 +1,4 @@
-import { validateShopName } from "../validateShopName";
+import { validateShopName } from "../validateShopName.js";
 
 describe("validateShopName", () => {
   it("returns trimmed name", () => {

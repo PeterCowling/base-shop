@@ -1,7 +1,7 @@
 import {
   validateHypothesis,
   validatePortfolioMetadata,
-} from "../validation";
+} from "../validation.js";
 
 const baseHypothesis = {
   id: "BRIK-IDEA-0042",

@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { buildResponse, type ProxyResponse } from '../buildResponse.server';
+import { buildResponse, type ProxyResponse } from '../buildResponse.server.js';
 
 describe('buildResponse', () => {
   it('decodes a base64 body and sets status and headers', async () => {

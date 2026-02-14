@@ -1,4 +1,4 @@
-import { SeededRandom } from "../../random";
+import { SeededRandom } from "../../random/index.js";
 
 const DEFAULT_ALPHA = 0.05;
 const DEFAULT_TAU = 0.1;

@@ -1,4 +1,4 @@
-import type { Hypothesis, HypothesisStatus, PortfolioMetadata } from "./types";
+import type { Hypothesis, HypothesisStatus, PortfolioMetadata } from "./types.js";
 
 export interface ConstraintBlockedHypothesis {
   hypothesis: Hypothesis;

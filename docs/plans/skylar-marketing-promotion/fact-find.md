@@ -24,21 +24,21 @@ Card-ID:
 
 ## Scope
 ### Summary
-Skylar's public site (static Next.js app at `apps/skylar`) currently positions the company primarily as product design + China sourcing + custom distribution, with a secondary "flywheel" narrative and an Amalfi Coast hospitality portfolio as proof/testbed.
+Skylar's public site (static Next.js app at `apps/skylar`) currently reads as a company profile: products + platforms + real estate + people. It does not clearly encode the highest-level identity decision that drives marketing: Skylar builds and operates its own ventures (not for hire).
 
-This fact-find defines a bolder, venture-studio-forward messaging set that:
-- names our Startup Loop as the operating system behind speed and discipline,
-- uses the repo portfolio as proof (operating vs in-build streams), and
+This fact-find defines an aggressive but defensible messaging set that:
+- names the Startup Loop as the operating discipline behind speed and decision-quality,
+- uses the repo portfolio as proof (operating assets vs in-build streams), and
 - produces an implementable remove/replace delta for the Skylar website plus a promotion copy pack.
 
-Constraint: we can be aggressive and confident, but we do not fabricate client logos, revenue numbers, headcount, "as seen in", fake testimonials, or fake case studies.
+Constraint: we can be bold, but we do not fabricate client logos, revenue numbers, headcount, "as seen in", fake testimonials, or fake case studies.
 
 ### Goals
-- Reposition Skylar as an operator-led venture studio / business builder (not "a sourcing agency").
-- Translate the Startup Loop from an internal workflow into buyer outcomes and engagement model.
+- Remove "for-hire" positioning and enforce "operator-led portfolio builder" hierarchy.
+- Translate the Startup Loop from an internal workflow into buyer outcomes for the three real audiences.
 - Produce a plan-ready content pack:
   - Website copy replacements (verbatim text for existing keys; plus optional new section copy).
-  - Promotion copy: short bio, long bio, 30s pitch, 2-min pitch, pinned post, outbound email variants.
+  - Promotion copy split by audience: customers, suppliers, financial providers.
   - Claim -> proof -> placement ledger so bold claims stay defensible.
 
 ### Non-goals
@@ -46,13 +46,22 @@ Constraint: we can be aggressive and confident, but we do not fabricate client l
 - Full SEO keyword research or paid channel strategy (follow-up: `/lp-channels`, `/lp-seo`).
 
 ### Default Decisions (to keep this Ready-for-planning)
-These defaults unblock planning. If wrong, the plan changes in specific ways (noted inline).
+These defaults unblock planning. If wrong, the plan changes in specific ways.
 
-1. Primary external narrative: partner-facing venture studio ("build with us")
-- If wrong (holding-company/portfolio narrative): home hero/CTA becomes "explore portfolio" and we reduce service language.
+1. Primary external narrative: operator-led portfolio builder (not for hire)
+- We build and operate our own ventures. We do not sell "venture studio services".
+- If wrong (you do want for-hire): reintroduce partner intake CTAs and founder-facing outbound.
 
-2. Portfolio naming: name the in-build streams publicly, but label them explicitly as "in build" (no revenue claims)
-- If wrong (do not name): we keep the portfolio section generic ("operating" vs "in build") without business codes.
+2. Audience doors: finance / customer / supplier
+- Home + nav should support three clear paths:
+  - Customers: products + hospitality
+  - Suppliers: how we partner + supplier intro CTA
+  - Financial providers: portfolio + financing pack CTA
+- All doors share the same contact endpoint for now (different subject lines / landing pages can segment intent).
+
+3. Portfolio naming default: operating assets named; in-build streams generic
+- Public site names operating assets; "in build" is described without internal codes unless there is a strong reason.
+- If wrong (you want codes public): add a portfolio grid that labels "in build" explicitly and makes no revenue claims.
 
 ## Evidence Audit (Current State)
 ### Primary content sources (Skylar)
@@ -79,24 +88,29 @@ These defaults unblock planning. If wrong, the plan changes in specific ways (no
   - HBAG: `docs/business-os/strategy/HBAG/plan.user.md`
   - XA: `docs/business-os/strategy/XA/plan.user.md`
 
-### Baseline extract (EN - current copy)
-These are the minimum "current state" lines reviewers should not have to dig out of JSON.
+### Baseline extract (what is actually on the EN surface)
+The EN home route uses `SkylarTypoHome` (`apps/skylar/src/components/typo-home/EnglishHome.tsx`), so keys like `hero.subhead` are NOT rendered in the EN first fold. They still matter for metadata and other locales.
 
-- Current identity line:
-  - `hero.subhead`: "Product Design & China Sourcing"
-  - `hero.support`: "Custom Distribution & Sales Platforms ... 3-Hour Website Launch ... Multilingual Markets"
-  - `hero.copy`: "...design, source, and launch commerce experiences..."
-- Current home intro framing:
-  - `home.en.intro.column1.heading`: "The Flywheel"
-  - `home.en.intro.column1.body`: hospitality cashflows -> invest in product -> platform -> real estate loop
-- Current platform claim:
-  - `services.list.platform`: "3-hour website launch with the Skylar platform."
+EN home keys that dominate the visible surface:
+- `home.en.intro.column1.heading` / `.body` ("The Flywheel")
+- `home.en.story2.heading` / `.body` ("We sell the things we make.")
 
-### Current weaknesses (marketing)
-- Startup Loop is not named or explained on the public site.
-  - Evidence: no Startup Loop mention in `apps/skylar/i18n/en.json`.
-- The site reads like a company profile (products + real estate) rather than a "we can build/launch" proposition.
-- Portfolio breadth exists in the repo but is not presented as a coherent studio portfolio.
+EN products page keys:
+- `products.en.hero.body` and the poster sections:
+  - `products.en.design.body`
+  - `products.en.sourcing.body`
+  - `products.en.distribution.body` (includes "In a few hours we can spin up a dedicated brand site...")
+
+EN people page keys:
+- `people.en.hero.body` currently includes "services" and "service delivery".
+
+EN real estate page key to fix:
+- `realEstate.en.stack.cards.experiments.body` currently ends with "tools partners can reuse".
+
+### Current weaknesses (strategy/positioning)
+- The site is not explicit that Skylar is not for hire.
+- Some copy reads like client services ("How we work with you", "service delivery", "tools partners can reuse").
+- Startup Loop exists as a real operating system, but is not translated into audience-specific outcomes (customer, supplier, finance).
 
 ### Measurement/analytics finding
 - Searched Skylar source for common analytics hooks (gtag/GTM/GA4 + plausible/fathom/segment/posthog/mixpanel/heap/amplitude) and found none under `apps/skylar/src`.
@@ -104,15 +118,13 @@ These are the minimum "current state" lines reviewers should not have to dig out
 ## Positioning (external)
 
 ### Positioning statement (forced hierarchy)
-For founders/operators who want to launch something real (fast, multilingual, cross-border), Skylar is an operator-led venture studio that builds and launches businesses end-to-end.
+For customers who want well-designed, practical products and exceptional stays, and for suppliers and financial partners who want a disciplined operator, Skylar is an operator-led venture studio that builds and operates its own portfolio across hospitality and consumer commerce.
 
-Unlike agencies that hand off docs or factories that only ship boxes, we join up offer design, supply chain, distribution, and the platform layer, then run a weekly decision loop so work does not drift.
-
-Because we operate our own portfolio and build the systems in-repo, we can move quickly while staying evidence-led.
+Unlike agencies, we do not sell execution as a service. We run the whole loop internally (offer design, supply chain, distribution, and the platform layer) and make weekly decisions based on signal so capital and effort do not drift.
 
 ### Vocabulary guardrails
 Use consistently:
-- venture studio, operator-led, build and launch, end-to-end, offer, supply chain, distribution, platforms, multilingual
+- operator-led, portfolio, build and operate, end-to-end, offer, supply chain, distribution, platforms, multilingual
 
 Avoid or only use with proof:
 - proprietary (prefer "internal" unless we are selling it as a product)
@@ -121,12 +133,12 @@ Avoid or only use with proof:
 - forecasting (prefer "demand modeling" or "forecasting when needed" unless we are showing an artifact)
 
 ## Startup Loop translation (internal -> buyer outcomes)
-The loop must be described in buyer language.
+Startup Loop cannot be marketed as a stage list. It must be marketed as discipline.
 
-- Readiness gates -> "We will tell you 'not yet' fast, and exactly what to fix."
-- Research/market intelligence -> "We do competitor/pricing/channel homework before we build."
+- Readiness gates -> "We will tell you 'not yet' fast, and exactly what to fix before we commit capital."
+- Research/market intelligence -> "We do competitor/pricing/channel homework before we scale."
 - Offer design -> "We turn 'idea' into a sellable offer with pricing, objections, and packaging."
-- Channels -> "We pick 2-3 launch channels and build the assets to test demand."
+- Supply + distribution -> "We control factory, logistics, and channels so launches do not depend on handoffs."
 - Fact-find -> plan -> build -> "We reduce risk before coding and ship in controlled increments."
 - QA + weekly decisioning -> "We ship, measure, and decide weekly: keep, pivot, scale, or kill."
 
@@ -134,151 +146,115 @@ External nuance: internal docs note contract drift risk (not capability gaps). W
 
 ## Portfolio framing (public-safe)
 Recommended public vocabulary:
-- Operating: Brikette (BRIK) + Amalfi Coast hospitality assets (proof of operations complexity)
-- In build: PIPE / HEAD / HBAG / XA (explicitly "in build"; no revenue claims)
+- Operating: Brikette + Amalfi Coast hospitality assets (proof of operations complexity)
+- In build: described generically unless we decide to name codes publicly
 
 ## Claim -> Proof -> Placement Ledger
 This is the enforcement mechanism for bold copy.
 
 | Claim (exact phrase) | Where used | Proof hook (repo evidence) | Publicly linkable | Risk | Safer fallback |
 |---|---|---|---|---|---|
-| "Operator-led venture studio" | Home hero, pinned post, outreach | `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/strategy/businesses.json` | Partial (site only) | Med | "Operator-led studio" |
-| "Build and launch businesses end-to-end" | Home hero, products hero, outreach | `docs/business-os/startup-loop-workflow.user.md` | Partial | Med | "We can take a business from idea to launch" |
-| "3-hour website launch" | Home support, products page | Existing Skylar claim: `apps/skylar/i18n/en.json`; 3-hour target docs: `docs/plans/archive/launch-shop-pipeline-plan.md` (operator-controlled clock) | No | High | "Launch a clean multilingual site fast (hours, not weeks)" |
-| "Multilingual by default" | Home support, platform section | Skylar has 3 locales: `apps/skylar/i18n/*.json` | Yes (site) | Low | n/a |
-| "We operate Brikette" | Home/real-estate | BRIK plan: `docs/business-os/strategy/BRIK/plan.user.md` | Yes (Brikette site) | Low | n/a |
-| "Used in our operating portfolio" | Platform section | Portfolio apps exist under `apps/*` | Partial | Low | n/a |
-| "Forecasting / demand modeling" | Capability bullets (not hero) | Forecast stage exists: `docs/business-os/startup-loop-workflow.user.md` | No | Med | "Demand modeling when needed" |
+| "Operator-led portfolio" | Home, pinned post | `docs/business-os/strategy/businesses.json`, `docs/business-os/strategy/BRIK/plan.user.md` | Partial (site only) | Med | "Operator-led" |
+| "Not for hire" | Home, products, people | Strategy decision (this doc) | Yes (site) | Low | "We build and operate our own ventures" |
+| "We run a documented operating loop (Startup Loop)" | Finance page/section, pinned post | `docs/business-os/startup-loop-workflow.user.md` | Partial | Med | "We run a documented loop with explicit gates" |
+| "Spin up a dedicated brand site in a few hours" | Products/platform section (not hero) | Existing claim in `products.en.distribution.body` | No | High | "Launch new product sites fast (hours, not weeks)" |
+| "Tools we roll out across the portfolio" | Real estate proof section | Replace partner language: `realEstate.en.stack.cards.experiments.body` | Yes (site) | Med | "Operational playbooks we reuse internally" |
 
 Notes:
-- Any claim marked High risk must have a proof hook on-page (portfolio tile, artifact excerpt, or scoped wording).
+- Any claim marked High risk must have a scope definition on-page (what exactly launches, what is excluded) and must not imply client delivery.
 
 ## Remove/Replace Delta (website)
 
 ### Release sequence (recommended)
-- Release 1: Copy-only reposition + proof hooks + UTMs (fast deploy, low engineering risk).
-- Release 2: Add Loop poster + Portfolio map section (structure change to hit the "10 seconds" comprehension goal).
+- Release 1: Copy-only reposition + remove for-hire language + proof hooks + UTMs.
+- Release 2: Add audience doors + Loop poster + Portfolio map (structure change).
 
 ### Page-by-page checklist (Release 1)
 Home (`/[lang]`)
-- Hero: category, promise, support line, CTA labels
-- Intro columns: replace flywheel-first narrative with loop-first narrative
-- Services section: shift from "what we do" to "capability stack" and add proof hooks
-- Story sections: reframe from "we sell the things we make" to "we operate what we build"
+- Add explicit "not for hire" line (copy-only: encode into existing intro column 1).
+- Replace Flywheel-first narrative with Loop-as-discipline (internal loop, not a client method).
 
 Products (`/[lang]/products`)
-- Reframe from catalog/services into a venture studio capability stack with clear engagement model
-- Ensure "3-hour" claim is scoped (marketing site vs full commerce)
-
-Real estate (`/[lang]/real-estate`)
-- Demote to proof/lab (unless you intend to sell hospitality services)
-- Make the "operating lab" framing explicit
+- Remove client-service framing and ensure all platform claims are internal (how we operate).
 
 People (`/[lang]/people`)
-- Shift identity from "designers/sourcers" to "operators"
-- Add an explicit "how we work" line (what an engagement looks like)
+- Remove "services" and "service delivery" language.
+
+Real estate (`/[lang]/real-estate`)
+- Replace "tools partners can reuse" -> "tools we roll out across the portfolio".
 
 Global
-- Metadata: titles/descriptions should align with venture studio positioning
-- CTAs: every primary CTA should be measurable (UTM links; contact intent)
+- CTAs: avoid partner intake; instead route to finance/supplier/customer doors.
 
 ### Implementable copy pack (EN - Release 1)
-This section provides verbatim replacements for existing keys. (IT/ZH: translate after EN locks.)
+This section provides verbatim replacements for existing keys.
 
-Home hero and identity
-- `hero.subhead`:
-  - NEW: "Venture Studio: Build and Launch Businesses"
-- `hero.support`:
-  - NEW: "Offer | Supply Chain | Distribution | Platforms | Multilingual by default"
-- `hero.copy`:
-  - NEW: "Skylar is an operator-led venture studio. We build and launch businesses across China, Italy, and multilingual markets by joining up offer design, supply chain, distribution, and the platform layer. Behind the scenes we run a documented Startup Loop with explicit gates so work stays fast, evidence-led, and does not drift."
-
-Home intro (replace Flywheel -> Loop)
+EN home (make Loop + not-for-hire explicit)
 - `home.en.intro.column1.heading`:
-  - NEW: "The Startup Loop"
+  - NEW: "The Operating Loop"
 - `home.en.intro.column1.body`:
-  - NEW: "We do not build on vibes. We start with readiness gates, then do research and demand modeling, turn the idea into a sellable offer, pick channels, and ship. After launch we measure and decide weekly: keep, pivot, scale, or kill. The loop is documented so execution stays disciplined even when the work is ambitious."
+  - NEW: "We build and operate our own ventures. We are not for hire. We run a documented operating loop: readiness gates, research, demand modeling, supply chain execution, distribution, and weekly decisions based on signal so capital and effort do not drift."
 
-Home hero headline/body (first fold)
-- `home.en.hero.heading`:
-  - NEW: "Build. Launch. Operate."
-- `home.en.hero.body`:
-  - NEW: "Cross-border supply chain + distribution + platforms, wired together under one loop."
+EN home (reinforce operator posture)
+- `home.en.story2.heading`:
+  - NEW: "We operate what we build."
 
-Services section
-- `services.heading`:
-  - NEW: "Capabilities (the stack)"
-- `services.intro`:
-  - NEW: "Offer design, China sourcing, distribution, and fast multilingual launches. Built and used in our own operating portfolio."
-- `services.list.platform`:
-  - NEW: "Launch a clean multilingual site fast (hours, not weeks) on our internal platform."
-
-Products page hero (tighten scope)
+EN products (remove service-y implications, keep platform claim scoped)
 - `products.en.hero.body`:
-  - NEW: "We build and launch commerce and hospitality businesses by joining up product work, supply chain, distribution, and the platform layer. When we say end-to-end, we mean from brief to factory to front door, then weekly iteration based on measured signal."
+  - NEW: "We build and operate across hospitality and consumer commerce. We stay close to manufacturing, run distribution across multiple channels, and build the platform layer that keeps launches fast and multilingual."
+- `products.en.distribution.body`:
+  - NEW: "Once a product is ready, we plug it into our own commerce platform and take it to customers where they already spend their time. When we launch something new, we can spin up a dedicated brand site in a few hours, with feeds to search engines, links into social networks, and inventory that keeps orders in sync across channels. The same system connects to marketplaces like Amazon and Etsy, so sales across every channel are tracked from a single place and can scale without re-wiring the setup each time."
 
-People page hero
+EN people (remove services language)
 - `people.en.hero.body`:
-  - NEW: "Two operators driving one loop. Cristiana leads product research, operations, and quality across the portfolio. Peter leads platforms, commercial strategy, and delivery so every product line and property stays connected - and the work ships."
+  - NEW: "Two principals driving one loop. Cristiana leads product research, operations, and quality across the portfolio. Peter leads platforms, commercial strategy, and marketing so each property and product line stays connected and ships."
 
-Real estate hero (as proof/lab)
-- `realEstate.en.hero.body`:
-  - NEW: "We operate a diversified hospitality portfolio along the Amalfi Coast. It is not just real estate - it is an operating lab where we test service playbooks, logistics, and platform systems under real customer load, then feed those learnings back into our product and platform work."
+EN real estate (remove partner reuse language)
+- `realEstate.en.stack.cards.experiments.body`:
+  - NEW: "Real estate is our live testbed. We trial room layouts, check-in flows, and service playbooks across Positano and Piano di Sorrento before we roll them out across the portfolio."
 
-### Release 2 (Option B): Loop + Portfolio sections
-Add 1-2 new home sections:
-- "THE LOOP": 6-8 bullets + one paragraph + proof tiles
-- "PORTFOLIO": Operating vs In build grid
+### Release 2 (audience doors + Loop + Portfolio)
+Add explicit doors on the home page:
+- Customers: products + hospitality
+- Suppliers: supplier intro CTA
+- Financial providers: financing pack CTA
 
-Implementation note (where it lives): `apps/skylar/src/components/typo-home/EnglishHome.tsx` (and IT/ZH variants depending on locale home).
+Implementation note: will require code changes in `apps/skylar/src/components/typo-home/EnglishHome.tsx` and likely new routes/pages.
 
-## Promotion pack (EN - draft, plan-ready)
+## Promotion pack (EN - split by audience)
 
-### One-liner
-Skylar is an operator-led venture studio: we build and launch businesses end-to-end under a documented Startup Loop.
+### One-liner (general)
+Skylar builds and operates a portfolio across hospitality and consumer commerce, run on a documented operating loop ("Startup Loop") that keeps execution disciplined.
 
-### Short bio (50-80 words)
-Skylar is an operator-led venture studio based between Italy and China. We build and launch businesses end-to-end: offer design, supply chain, distribution, and the platform layer. We operate our own portfolio in hospitality and commerce, and we run a documented Startup Loop with explicit gates so execution stays fast and evidence-led.
+### 30-second pitch (financial providers)
+We are an operator-led portfolio spanning hospitality assets on the Amalfi Coast and consumer commerce. We control sourcing, distribution, and the platform layer, and we run a documented weekly decision loop so capital is deployed with discipline. We are looking for financing partners for inventory, capex, and growth across the portfolio.
 
-### Long bio (150-250 words)
-Skylar is an operator-led venture studio operating between Italy and China. We build and launch businesses end-to-end by joining up the pieces that usually break when teams scale: offer clarity, supply chain, distribution, and the platform layer.
+### 30-second pitch (suppliers)
+We are a direct operator: we design products, place orders ourselves, and sell through our channels. We move quickly on sampling, QC, packaging specs, and lead times, and we value consistent quality and documentation. If you can deliver repeatable production, we can build a long-term relationship.
 
-Our work is grounded in operations, not decks. We operate a real portfolio across hospitality and commerce, and we build the systems that run it. That operator reality is why we are disciplined about execution: we run a documented Startup Loop with explicit gates (readiness, research, demand modeling, offer, channels, build, QA, weekly decisions) so work does not drift and we can move quickly without making promises we cannot keep.
+### 30-second pitch (customers)
+We build functional products and operate hospitality spaces we would want to use ourselves. We stay close to manufacturing details, keep design understated, and obsess over the end-to-end experience from first use to support.
 
-If you are building something cross-border, multilingual, or multi-channel, we can accelerate your path from idea to launch - and tell you fast when something is not ready.
-
-### 30-second pitch
-We build and launch businesses end-to-end. Skylar joins up offer design, supply chain, distribution, and the platform layer so you can move fast across China, Italy, and multilingual markets. Behind the scenes we run a documented Startup Loop with explicit gates, then weekly keep/pivot/scale decisions - so execution stays disciplined and measurable.
-
-### 2-minute pitch
-Skylar is an operator-led venture studio. We build and launch businesses end-to-end by joining up four things that are usually fragmented: offer clarity, supply chain, distribution, and platforms.
-
-We are not an agency that hands you a deck. We operate our own portfolio in hospitality and commerce, and we build the systems that run it. That is the point: we learn by operating, then bake those learnings back into a repeatable loop.
-
-Internally we call it the Startup Loop. It is a documented process with explicit gates: readiness (what must be true to proceed), research and demand modeling, offer design, channel selection, fact-find, plan, build, QA, then weekly decisions based on signal. The goal is simple: ship fast without drifting into vague work.
-
-If you are building something cross-border or multilingual, we can help you get to a real launch faster, with fewer blind spots. And if it is not ready, we will tell you early and exactly what to fix.
-
-### Pinned post (LinkedIn)
-We build businesses like software.
-
-Skylar is an operator-led venture studio. We join up offer design, China sourcing, distribution, and platforms - then run a documented loop so execution stays fast and evidence-led.
-
-Operating portfolio (proof): hospitality + commerce.
-In build: new product streams with explicit outcomes.
-
-If you are launching cross-border or multilingual, and you want an operator team that ships, message me.
-
-### Outbound email (partner/founder)
-Subject: Operator-led venture studio (fast, multilingual, evidence-led)
+### Outbound email (financial provider)
+Subject: Operator-led portfolio (hospitality + commerce)
 
 Hi <Name>,
 
-I run Skylar. We are an operator-led venture studio: we build and launch businesses end-to-end (offer, supply chain, distribution, platform).
+Skylar is an operator-led portfolio spanning hospitality assets on the Amalfi Coast and consumer commerce. We control sourcing, distribution, and the platform layer, and we run a documented weekly decision loop so capital and effort stay disciplined.
 
-We run a documented Startup Loop with explicit gates so work stays measurable: readiness -> research/demand modeling -> offer -> channels -> build + QA -> weekly keep/pivot/scale decisions.
+We are exploring financing partnerships for inventory/capex and controlled growth across the portfolio. If this is in your lane, open to a short call next week?
 
-If you are working on <category> and need cross-border or multilingual execution, open to a 15-minute call next week? If it is not a fit, I will tell you quickly.
+Best,
+<Signature>
+
+### Outbound email (supplier)
+Subject: Direct operator seeking long-term factory partner
+
+Hi <Name>,
+
+Skylar is a direct operator: we design products, place orders ourselves, and sell through our channels. We care about repeatable quality, clear documentation, and reliable lead times.
+
+If your factory is strong in <category>, can you share your MOQ ranges, typical lead times, and how you handle sampling/QC? If it looks like a fit, we can move quickly.
 
 Best,
 <Signature>
@@ -287,48 +263,102 @@ Best,
 Even without analytics tooling, we can measure promotion effectiveness.
 
 1. UTM taxonomy (required immediately)
-- `utm_source`: linkedin | email | whatsapp | partner | referral
+- `utm_source`: linkedin | email | whatsapp | supplier | finance | referral
 - `utm_medium`: social | outbound | message | bio
-- `utm_campaign`: skylar-venture-studio-2026-02
-- `utm_content`: hero-variant-a | hero-variant-b | pitch-30s | pitch-2m
+- `utm_campaign`: skylar-operator-portfolio-2026-02
+- `utm_content`: customer-door | supplier-door | finance-door | pitch-finance | pitch-supplier
 
 2. CTA inventory (must be UTM-tagged)
-- Primary: contact CTA (email or form)
-- Secondary: portfolio CTAs (Brikette, real estate)
+- Finance: financing pack CTA
+- Supplier: supplier intro CTA
+- Customer: product/hospitality CTAs
+- Same contact endpoint for finance + supplier for now (different subject lines; segment via UTMs on the door pages).
 
-3. Manual outbound log (minimum)
+3. Manual outreach log (minimum)
 - Fields: date, target, segment, message variant, link (with UTM), reply quality (0-3), next step
 
 ## Risks & mitigations
-- Risk: Overclaiming "operating" status for streams that are explicitly pre-revenue.
-  - Mitigation: "Operating" only for BRIK + hospitality assets; label others "in build".
-- Risk: Confusion about what Skylar sells (services vs platform vs portfolio).
-  - Mitigation: enforce CTA architecture (Partner | Platform | Portfolio) and reduce identity soup.
-- Risk: "3-hour" claim reads like hype.
-  - Mitigation: scope it (what launches in hours) and/or phrase as "hours, not weeks" unless we are ready to defend the full claim.
+- Risk: Generating inbound we intend to refuse ("for-hire" confusion).
+  - Mitigation: explicit "not for hire" statement on the home page and remove service language site-wide.
+- Risk: Claim drift (bold copy without proof).
+  - Mitigation: claim -> proof ledger above; no new claims without a proof hook or scoped wording.
+- Risk: "few hours" platform claim reads like client pitch.
+  - Mitigation: ensure the phrasing is internal ("when we launch") and add scope (marketing site vs full commerce).
 - Risk: No analytics baseline.
-  - Mitigation: UTMs + outbound log now; analytics later.
+  - Mitigation: UTMs + outreach log now; analytics later.
 
 ## Confidence inputs (for /lp-plan)
 - Implementation: 85
   - Copy-only changes are straightforward in `apps/skylar/i18n/*.json`.
-- Approach: 82
-  - Venture studio positioning is consistent with Startup Loop + portfolio. Remaining risk is identity soup if we do not impose hierarchy.
-- Impact: 78
-  - Messaging changes affect trust and conversion; measurement is currently weak.
+- Approach: 88
+  - Operator-led, not-for-hire positioning matches stated strategy and reduces conversion noise.
+- Impact: 82
+  - Messaging changes reduce inbound noise; measurement is still limited.
 - Delivery readiness: 85
-  - Clear surfaces (site + outbound). Needs a measurement spec (defined above) and a translation workflow decision.
+  - Clear surfaces (site + outreach). Needs routing/doors in Release 2.
 
 What would make this >=90
-- Confirm whether we are explicitly selling "studio services" vs keeping it portfolio-forward.
-- Decide whether Release 2 (Loop + Portfolio sections) is in scope for the first deploy.
-- Decide IT/ZH shipping rule: same deploy vs EN-first.
+- Confirm whether Release 2 (doors + Loop + Portfolio) is in scope for the first deploy.
+- Decide whether to name in-build streams publicly or keep generic.
 
 ## Open questions (remaining)
 These are not blockers (defaults are set), but they change plan tasks.
 
-1. Do you want the primary CTA to be (a) email/DM (low friction) or (b) a structured partner intake form (higher intent, more measurable)?
-2. Should the Skylar site explicitly list PIPE/HEAD/HBAG/XA by name on day 1, or only show "in build" generically?
+1. Do we want to publish a "financing pack" as a page, a PDF, or an email-only deliverable?
 
+
+
+## Delivery & Channel Landscape
+### Audience
+- Customers: buy products / book stays.
+- Suppliers: factory + logistics partners.
+- Financial providers: inventory/capex/growth financing.
+
+### Channels / surfaces
+- Primary: Skylar website (`apps/skylar`) + outbound email/LinkedIn.
+- Constraints:
+  - Single shared contact endpoint for now (segment by subject lines + UTMs once door pages exist).
+  - No fabricated proof (logos, revenue, testimonials).
+
+### Ownership / approvals
+- Owner/reviewer: Pete (final sign-off before shipping copy).
+- Approval evidence: user acknowledgement in chat or in the eventual PR description.
+
+### Measurement
+- Short-term: manual outreach log + response quality scoring.
+- Medium-term: UTM-tagged door pages (Release 2) + CTA click tracking.
+
+## Hypothesis & Validation Landscape
+### Key hypotheses
+| # | Hypothesis | Pass condition | Time-box |
+|---|-----------|----------------|---------|
+| H1 | "Not for hire" + operator-led positioning reduces wrong-fit inbound. | <=1 wrong-fit inbound / week after ship (manual log). | 2-4 weeks |
+| H2 | Finance pitch variant produces qualified replies. | >=3 qualified replies from 30 targeted emails. | 14 days |
+| H3 | Supplier pitch variant produces partner conversations. | >=5 supplier replies from 30 targeted emails. | 14 days |
+
+### Existing signal coverage
+- No on-site analytics hooks found in `apps/skylar/src` (repo search).
+- No baseline outreach log exists yet.
+
+### Recommended validation approach
+- Red: send 10 finance + 10 supplier outreach messages with current copy; expect low/unclear signal; record failure modes.
+- Green: ship Release 1 copy + updated outreach variants; run 30/30 outreach; score replies.
+- Refactor: tighten copy based on reply patterns; rerun the same outreach protocol.
+
+## Confidence Inputs (for /lp-plan)
+- Implementation: 85
+  - Copy changes are contained to `apps/skylar/i18n/*.json`.
+- Approach: 88
+  - "Operator-led, not for hire" matches stated strategy and reduces conversion noise.
+- Impact: 82
+  - Blast radius is primarily copy/positioning; low technical risk, moderate trust risk.
+- Delivery-Readiness: 85
+  - Clear surfaces and owner; measurement is defined but not yet automated.
+- Testability: 70
+  - We can validate via builds + grep + manual outreach logs, but no analytics baseline.
+
+What would make this >=90
+- Add door pages (Release 2) and track CTA clickthrough by audience.
+- Add a lightweight contact intent selector (still same email endpoint) to separate finance vs supplier vs customer inquiries.
 ## Planning readiness
 Ready-for-planning.

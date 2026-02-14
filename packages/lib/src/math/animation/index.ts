@@ -1,4 +1,4 @@
-export type { EasingFunction } from "./bezier";
+export type { EasingFunction } from "./bezier.js";
 export {
   clamp,
   clamp01,
@@ -19,4 +19,4 @@ export {
   linear,
   remap,
   spring,
-} from "./bezier";
+} from "./bezier.js";

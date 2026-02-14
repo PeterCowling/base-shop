@@ -5,8 +5,8 @@
  * information criteria (AIC, BIC) on aligned comparison windows.
  */
 
-import type { ModelScore } from "./utils";
-import { scoreModel } from "./utils";
+import type { ModelScore } from "./utils.js";
+import { scoreModel } from "./utils.js";
 
 /**
  * Model candidate for comparison

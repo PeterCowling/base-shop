@@ -2,8 +2,8 @@ import {
   chiSquareSf,
   normalCdf,
   studentTCdf,
-} from "./internal/special-functions";
-import type { AlternativeHypothesis } from "./sample-size";
+} from "./internal/special-functions.js";
+import type { AlternativeHypothesis } from "./sample-size.js";
 
 interface WithAlpha {
   alpha?: number;

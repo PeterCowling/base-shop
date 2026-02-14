@@ -1,7 +1,7 @@
 import { describe, expect, it } from "@jest/globals";
 
-import type { GeneratedMeta } from "../generateMeta";
-import { resolveOpenAIConstructor } from "../generateMeta";
+import type { GeneratedMeta } from "../generateMeta.js";
+import { resolveOpenAIConstructor } from "../generateMeta.js";
 
 describe("resolveOpenAIConstructor", () => {
   it("prefers default export functions", () => {

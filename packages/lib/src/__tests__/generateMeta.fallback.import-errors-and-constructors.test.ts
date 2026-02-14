@@ -40,7 +40,7 @@ describe("generateMeta", () => {
     await jest.isolateModulesAsync(async () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,
@@ -65,7 +65,7 @@ describe("generateMeta", () => {
         },
         { virtual: true },
       );
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,
@@ -84,7 +84,7 @@ describe("generateMeta", () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
       jest.doMock("openai", () => ({ __esModule: true }), { virtual: true });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,
@@ -105,7 +105,7 @@ describe("generateMeta", () => {
       jest.doMock("openai", () => ({ __esModule: true, default: {} }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,
@@ -126,7 +126,7 @@ describe("generateMeta", () => {
       jest.doMock("openai", () => ({ __esModule: true, OpenAI: {} }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,
@@ -149,7 +149,7 @@ describe("generateMeta", () => {
         () => ({ __esModule: true, default: { default: {} } }),
         { virtual: true },
       );
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       const meta = await generateMeta(product);
       expect(meta).toEqual({
         title: product.title,

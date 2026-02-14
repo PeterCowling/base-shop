@@ -8,8 +8,8 @@ import {
   readGrowthLedger,
   updateGrowthLedger,
   writeGrowthLedger,
-} from "../store";
-import type { GrowthLedger } from "../types";
+} from "../store.js";
+import type { GrowthLedger } from "../types.js";
 
 const SHOP_ID = "HEAD";
 

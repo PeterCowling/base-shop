@@ -1,11 +1,11 @@
-import { SeededRandom } from "../random";
+import { SeededRandom } from "../random/index.js";
 
 import {
   msprtSpikeEValue,
   runMsprtSpikeExperiment,
   simulateMsprtSpikeNullType1,
-} from "./internal/msprt-spike";
-import type { AlternativeHypothesis } from "./sample-size";
+} from "./internal/msprt-spike.js";
+import type { AlternativeHypothesis } from "./sample-size.js";
 
 const DEFAULT_ALPHA = 0.05;
 const DEFAULT_TAU = 0.1;

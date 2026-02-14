@@ -1,4 +1,4 @@
-import { GROWTH_METRIC_CATALOG } from "./schema";
+import { GROWTH_METRIC_CATALOG } from "./schema.js";
 import {
   GROWTH_STAGE_KEYS,
   type GrowthLedgerStatus,
@@ -8,7 +8,7 @@ import {
   type StagePolicy,
   type StageThresholdDefinition,
   type ThresholdSet,
-} from "./types";
+} from "./types.js";
 
 export interface GrowthEvaluationInput {
   metrics: Record<GrowthStageKey, Record<string, number | null | undefined>>;

@@ -4,13 +4,13 @@ export type {
   FieldConfig,
   SearchResult,
   Tokenizer,
-} from "./bm25";
+} from "./bm25.js";
 export {
   BM25Index,
   defaultTokenizer,
   stemmedTokenizer,
-} from "./bm25";
-export type { BKTreeSearchResult, DistanceFunction } from "./edit-distance";
+} from "./bm25.js";
+export type { BKTreeSearchResult, DistanceFunction } from "./edit-distance.js";
 export {
   BKTree,
   damerauLevenshtein,
@@ -20,4 +20,4 @@ export {
   ngramSimilarity,
   normalizedDistance,
   similarity,
-} from "./edit-distance";
+} from "./edit-distance.js";

@@ -1,5 +1,5 @@
-import type { Hypothesis, PortfolioMetadata } from "./types";
-import { validateHypothesis } from "./validation";
+import type { Hypothesis, PortfolioMetadata } from "./types.js";
+import { validateHypothesis } from "./validation.js";
 
 export type InadmissibleReason =
   | "negative_ev"

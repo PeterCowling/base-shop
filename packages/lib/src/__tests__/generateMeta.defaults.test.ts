@@ -23,7 +23,7 @@ describe("generateMeta defaults", () => {
       jest.doMock("openai", () => ({ __esModule: true, default: OpenAI }), {
         virtual: true,
       });
-      const { generateMeta } = await import("../generateMeta");
+      const { generateMeta } = await import("../generateMeta.js");
       result = await generateMeta(product);
     });
     return result;

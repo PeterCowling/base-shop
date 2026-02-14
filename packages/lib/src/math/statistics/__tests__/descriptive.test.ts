@@ -16,7 +16,7 @@ import {
   sum,
   variance,
   zScore,
-} from "../descriptive";
+} from "../descriptive.js";
 
 describe("Descriptive Statistics", () => {
   describe("sum", () => {

@@ -1,4 +1,4 @@
-import { renderShadow } from "../fallback/shadow";
+import { renderShadow } from "../fallback/shadow.js";
 
 describe("renderShadow", () => {
   it("draws an elliptical shadow with the configured options", () => {

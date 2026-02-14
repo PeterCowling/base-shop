@@ -1,6 +1,6 @@
-import type { GrowthEvaluationInput } from "../evaluate";
-import { evaluateGrowthLedger, evaluateThresholdStatus } from "../evaluate";
-import type { StageThresholdDefinition } from "../types";
+import type { GrowthEvaluationInput } from "../evaluate.js";
+import { evaluateGrowthLedger, evaluateThresholdStatus } from "../evaluate.js";
+import type { StageThresholdDefinition } from "../types.js";
 
 function createGreenInput(): GrowthEvaluationInput {
   return {

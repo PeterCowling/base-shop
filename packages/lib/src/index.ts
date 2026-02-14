@@ -1,15 +1,15 @@
-export { SHOP_NAME_RE, validateShopName } from "./validateShopName";
+export { SHOP_NAME_RE, validateShopName } from "./validateShopName.js";
 
 // Migrated from @acme/shared-utils - universal exports
-export * from "./array";
-export * from "./format";
-export * from "./growth";
-export * from "./http";
-export * from "./hypothesis-portfolio";
-export * from "./json";
-export * from "./security";
-export * from "./shop";
-export * from "./string";
+export * from "./array/index.js";
+export * from "./format/index.js";
+export * from "./growth/index.js";
+export * from "./http/index.js";
+export * from "./hypothesis-portfolio/index.js";
+export * from "./json/index.js";
+export * from "./security/index.js";
+export * from "./shop/index.js";
+export * from "./string/index.js";
 /**
  * Re-export Zod helpers from their module files rather than the package
  * root.  The root of @acme/zod-utils lacks a compiled index.d.ts, which
@@ -21,25 +21,25 @@ export {
 } from "@acme/zod-utils/zodErrorMap";
 
 // Math utilities
-export type { BloomFilterOptions } from "./math/probabilistic/bloom-filter";
-export { BloomFilter } from "./math/probabilistic/bloom-filter";
+export type { BloomFilterOptions } from "./math/probabilistic/bloom-filter.js";
+export { BloomFilter } from "./math/probabilistic/bloom-filter.js";
 export type {
   CountMinSketchOptions,
   TrendingTrackerOptions,
-} from "./math/probabilistic/count-min-sketch";
-export { CountMinSketch, TrendingTracker } from "./math/probabilistic/count-min-sketch";
-export type { HyperLogLogOptions } from "./math/probabilistic/hyperloglog";
-export { HyperLogLog } from "./math/probabilistic/hyperloglog";
-export type { TDigestOptions } from "./math/probabilistic/t-digest";
-export { TDigest } from "./math/probabilistic/t-digest";
+} from "./math/probabilistic/count-min-sketch.js";
+export { CountMinSketch, TrendingTracker } from "./math/probabilistic/count-min-sketch.js";
+export type { HyperLogLogOptions } from "./math/probabilistic/hyperloglog.js";
+export { HyperLogLog } from "./math/probabilistic/hyperloglog.js";
+export type { TDigestOptions } from "./math/probabilistic/t-digest.js";
+export { TDigest } from "./math/probabilistic/t-digest.js";
 export type {
   ConsumeResult,
   LeakyBucketAddResult,
   LeakyBucketOptions,
   TokenBucketOptions,
   TokenBucketState,
-} from "./math/rate-limit/token-bucket";
-export { LeakyBucket,TokenBucket } from "./math/rate-limit/token-bucket";
+} from "./math/rate-limit/token-bucket.js";
+export { LeakyBucket,TokenBucket } from "./math/rate-limit/token-bucket.js";
 
 // Color utilities (OKLCH)
 export {
@@ -67,7 +67,7 @@ export {
   // Core conversions
   srgbToOklch,
   wcagContrast,
-} from "./math/color/oklch";
+} from "./math/color/oklch.js";
 
 // Animation utilities (Bézier easing)
 export {
@@ -92,7 +92,7 @@ export {
   linear,
   remap,
   spring,
-} from "./math/animation/bezier";
+} from "./math/animation/bezier.js";
 
 // Forecasting utilities (EWMA, exponential smoothing)
 export {
@@ -103,7 +103,7 @@ export {
   movingAverage,
   SimpleExponentialSmoothing,
   weightedMovingAverage,
-} from "./math/forecasting/ewma";
+} from "./math/forecasting/ewma.js";
 
 // Search utilities (edit distance, fuzzy matching)
 export {
@@ -117,7 +117,7 @@ export {
   ngramSimilarity,
   normalizedDistance,
   similarity,
-} from "./math/search/edit-distance";
+} from "./math/search/edit-distance.js";
 
 // Search utilities (BM25 full-text search)
 export {
@@ -129,7 +129,7 @@ export {
   type SearchResult,
   stemmedTokenizer,
   type Tokenizer,
-} from "./math/search/bm25";
+} from "./math/search/bm25.js";
 
 // Geometry utilities (vectors, rectangles, matrices)
 export {
@@ -234,7 +234,7 @@ export {
   // Vector constants
   ZERO2,
   ZERO3,
-} from "./math/geometry";
+} from "./math/geometry/index.js";
 
 // Statistics utilities
 export {
@@ -265,7 +265,7 @@ export {
   sum,
   variance,
   zScore,
-} from "./math/statistics";
+} from "./math/statistics/index.js";
 
 // Random utilities (seeded PRNG, sampling)
 export {
@@ -277,7 +277,7 @@ export {
   SeededRandom,
   type SeededRandomState,
   uniformSample,
-} from "./math/random";
+} from "./math/random/index.js";
 
 // Financial utilities (markup, margin, discounts, rounding)
 export {
@@ -301,4 +301,4 @@ export {
   roundToNearest,
   roundUpToIncrement,
   taxAmount,
-} from "./math/financial";
+} from "./math/financial/index.js";

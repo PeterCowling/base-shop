@@ -182,9 +182,10 @@ run_jest_exec() {
 
     if [ "$pkg_path" = "./packages/mcp-server" ]; then
         # Always run via the governed runner to comply with test policy.
+        # Use the package-local config so Jest's haste-map doesn't index unrelated apps,
+        # which can trigger duplicate manual mock errors.
         JEST_FORCE_CJS=1 bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- \
-            --config "$REPO_ROOT/jest.config.cjs" \
-            --modulePathIgnorePatterns '/.worktrees/' '/.ts-jest/' '/.open-next/' '/.next/' \
+            --config "$REPO_ROOT/packages/mcp-server/jest.config.cjs" \
             "$@"
         return $?
     fi

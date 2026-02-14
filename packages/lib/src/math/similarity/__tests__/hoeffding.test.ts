@@ -1,4 +1,4 @@
-import { hoeffding } from "../hoeffding";
+import { hoeffding } from "../hoeffding.js";
 
 describe("hoeffding", () => {
   it("returns NaN for invalid inputs in default mode", () => {

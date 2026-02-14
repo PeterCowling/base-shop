@@ -1,4 +1,4 @@
-import slugify from '../slugify';
+import slugify from '../slugify.js';
 
 describe('slugify', () => {
   it('converts basic ASCII strings', () => {

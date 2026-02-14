@@ -14,7 +14,7 @@ import {
   assertSeasonalPeriod,
   normalizeSeasonalAdditive,
   normalizeSeasonalMultiplicative,
-} from "./utils";
+} from "./utils.js";
 
 /**
  * Decomposition result with trend, seasonal, and remainder components

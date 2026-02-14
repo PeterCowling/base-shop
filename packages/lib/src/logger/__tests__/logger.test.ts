@@ -54,7 +54,7 @@ describe('logger', () => {
     ['info'],
     ['debug'],
   ])('%s forwards message and metadata to the pino instance', async (level) => {
-    const { logger } = await import('../logger.server');
+    const { logger } = await import('../logger.server.js');
     const meta = { id: 1 };
     const message = `${level} message`;
 
@@ -70,7 +70,7 @@ describe('logger', () => {
     ['info'],
     ['debug'],
   ])('%s forwards message with empty metadata when omitted', async (level) => {
-    const { logger } = await import('../logger.server');
+    const { logger } = await import('../logger.server.js');
     const message = `${level} only`;
     // @ts-expect-error - index signature for logger methods
     logger[level](message);
@@ -79,7 +79,7 @@ describe('logger', () => {
   });
 
   it('logs plain objects and Error instances appropriately', async () => {
-    const { logger } = await import('../logger.server');
+    const { logger } = await import('../logger.server.js');
     const obj = { id: 1 };
     const err = new Error('boom');
     logger.error('object meta', obj);
@@ -94,27 +94,27 @@ describe('logger', () => {
     [{ NODE_ENV: 'production', LOG_LEVEL: 'warn' }, 'warn'],
   ])('sets level based on LOG_LEVEL and NODE_ENV', async (env, level) => {
     Object.assign(process.env, env);
-    await import('../logger.server');
+    await import('../logger.server.js');
     expect(pinoMock).toHaveBeenCalledWith({ level });
   });
 
   it('suppresses debug output when level \u2265 info', async () => {
     process.env.NODE_ENV = 'production';
-    const { logger } = await import('../logger.server');
+    const { logger } = await import('../logger.server.js');
     logger.debug('hidden');
     expect(debugOutput).not.toHaveBeenCalled();
   });
 
   it('emits debug output when LOG_LEVEL=debug', async () => {
     process.env.LOG_LEVEL = 'debug';
-    const { logger } = await import('../logger.server');
+    const { logger } = await import('../logger.server.js');
     logger.debug('visible');
     expect(debugOutput).toHaveBeenCalledWith({}, 'visible');
   });
 
   it('includes request context when present', async () => {
-    const { logger } = await import('../logger.server');
-    const { setRequestContext } = await import('../../context/requestContext.server');
+    const { logger } = await import('../logger.server.js');
+    const { setRequestContext } = await import('../../context/requestContext.server.js');
     setRequestContext({
       requestId: 'req-123',
       service: 'test-service',

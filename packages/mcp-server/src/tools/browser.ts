@@ -89,12 +89,27 @@ const sessionOpenArgsSchema = z
     headless: z.boolean().optional().default(true),
     slowMoMs: z.number().int().min(0).max(2000).optional(),
     executablePath: z.string().min(1).optional(),
+    storageStatePath: z.string().min(1).optional(),
+    downloadDir: z.string().min(1).optional(),
   })
   .strict();
 
 const sessionCloseArgsSchema = z
   .object({
     sessionId: z.string().min(1),
+  })
+  .strict();
+
+const getDownloadsArgsSchema = z
+  .object({
+    sessionId: z.string().min(1),
+  })
+  .strict();
+
+const waitForDownloadArgsSchema = z
+  .object({
+    sessionId: z.string().min(1),
+    timeoutMs: z.number().int().min(1000).max(60000).optional().default(30000),
   })
   .strict();
 
@@ -110,6 +125,8 @@ export const browserTools = [
         headless: { type: "boolean", default: true },
         slowMoMs: { type: "number", default: 0 },
         executablePath: { type: "string", description: "Optional Chrome/Chromium executable path" },
+        storageStatePath: { type: "string", description: "Path to Playwright storage state JSON for session persistence" },
+        downloadDir: { type: "string", description: "Directory for downloads (default: .tmp/downloads)" },
       },
       required: ["url"],
     },
@@ -184,6 +201,31 @@ export const browserTools = [
       required: ["sessionId", "observationId", "action"],
     },
   },
+  {
+    name: "browser_get_downloads",
+    description:
+      "Get list of all downloads for a session.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        sessionId: { type: "string", description: "Browser session identifier" },
+      },
+      required: ["sessionId"],
+    },
+  },
+  {
+    name: "browser_wait_for_download",
+    description:
+      "Wait for a new download to complete. Returns { download: {...} } or { download: null } on timeout.",
+    inputSchema: {
+      type: "object",
+      properties: {
+        sessionId: { type: "string", description: "Browser session identifier" },
+        timeoutMs: { type: "number", description: "Timeout in milliseconds (default: 30000)", default: 30000 },
+      },
+      required: ["sessionId"],
+    },
+  },
 ] as const;
 
 export async function handleBrowserTool(name: string, args: unknown): Promise<BrowserToolCallResult> {
@@ -202,6 +244,8 @@ export async function handleBrowserTool(name: string, args: unknown): Promise<Br
           headless: parsed.data.headless,
           slowMoMs: parsed.data.slowMoMs,
           executablePath: parsed.data.executablePath,
+          storageStatePath: parsed.data.storageStatePath,
+          downloadDir: parsed.data.downloadDir,
         });
         const session = store.createSession({ driver });
         return okPayload({ sessionId: session.sessionId });
@@ -280,6 +324,70 @@ export async function handleBrowserTool(name: string, args: unknown): Promise<Br
       }
 
       return okPayload(result.value);
+    }
+
+    case "browser_get_downloads": {
+      const parsed = getDownloadsArgsSchema.safeParse(args);
+      if (!parsed.success) {
+        return contractError("Invalid arguments for browser_get_downloads.", {
+          issues: parsed.error.issues,
+        });
+      }
+
+      const session = store.getSession(parsed.data.sessionId);
+      if (!session) {
+        const envelope: BrowserToolErrorEnvelope = {
+          code: "SESSION_NOT_FOUND",
+          message: `Session ${parsed.data.sessionId} not found`,
+          retryable: false,
+        };
+        return browserErrorResult(envelope);
+      }
+
+      try {
+        const downloads = await session.driver.getDownloads();
+        return okPayload({ downloads });
+      } catch (error) {
+        const envelope: BrowserToolErrorEnvelope = {
+          code: "INTERNAL_ERROR",
+          message: error instanceof Error ? error.message : String(error),
+          retryable: false,
+        };
+        return browserErrorResult(envelope);
+      }
+    }
+
+    case "browser_wait_for_download": {
+      const parsed = waitForDownloadArgsSchema.safeParse(args);
+      if (!parsed.success) {
+        return contractError("Invalid arguments for browser_wait_for_download.", {
+          issues: parsed.error.issues,
+        });
+      }
+
+      const session = store.getSession(parsed.data.sessionId);
+      if (!session) {
+        const envelope: BrowserToolErrorEnvelope = {
+          code: "SESSION_NOT_FOUND",
+          message: `Session ${parsed.data.sessionId} not found`,
+          retryable: false,
+        };
+        return browserErrorResult(envelope);
+      }
+
+      try {
+        const download = await session.driver.waitForDownload({
+          timeoutMs: parsed.data.timeoutMs,
+        });
+        return okPayload({ download });
+      } catch (error) {
+        const envelope: BrowserToolErrorEnvelope = {
+          code: "INTERNAL_ERROR",
+          message: error instanceof Error ? error.message : String(error),
+          retryable: false,
+        };
+        return browserErrorResult(envelope);
+      }
     }
 
     default:

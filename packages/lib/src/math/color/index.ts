@@ -31,4 +31,4 @@ export {
   // Core conversions
   srgbToOklch,
   wcagContrast,
-} from "./oklch";
+} from "./oklch.js";

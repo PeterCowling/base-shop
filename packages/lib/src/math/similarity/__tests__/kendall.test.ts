@@ -1,4 +1,4 @@
-import { kendallTau } from "../kendall";
+import { kendallTau } from "../kendall.js";
 
 describe("kendallTau", () => {
   it("returns NaN for invalid inputs in default mode", () => {

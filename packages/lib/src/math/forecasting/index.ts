@@ -1,4 +1,4 @@
-export type { EWMAOptions } from "./ewma";
+export type { EWMAOptions } from "./ewma.js";
 export {
   EWMA,
   exponentialMovingAverage,
@@ -6,27 +6,27 @@ export {
   movingAverage,
   SimpleExponentialSmoothing,
   weightedMovingAverage,
-} from "./ewma";
-export type { HoltWintersOptions } from "./holt-winters";
-export { HoltWintersAdditive, HoltWintersMultiplicative } from "./holt-winters";
-export type { ModelCandidate, ModelComparisonResult } from "./model-selection";
-export { compareModels, selectBestModel } from "./model-selection";
+} from "./ewma.js";
+export type { HoltWintersOptions } from "./holt-winters.js";
+export { HoltWintersAdditive, HoltWintersMultiplicative } from "./holt-winters.js";
+export type { ModelCandidate, ModelComparisonResult } from "./model-selection.js";
+export { compareModels, selectBestModel } from "./model-selection.js";
 export type {
   OptimizationOptions,
   OptimizationResult,
-} from "./parameter-optimization";
-export { optimizeParameters } from "./parameter-optimization";
+} from "./parameter-optimization.js";
+export { optimizeParameters } from "./parameter-optimization.js";
 export type {
   ForecastInterval,
   IntervalOptions,
-} from "./prediction-intervals";
-export { forecastWithInterval } from "./prediction-intervals";
-export type { DecompositionResult } from "./seasonal-decomposition";
+} from "./prediction-intervals.js";
+export { forecastWithInterval } from "./prediction-intervals.js";
+export type { DecompositionResult } from "./seasonal-decomposition.js";
 export {
   decomposeAdditive,
   decomposeMultiplicative,
-} from "./seasonal-decomposition";
-export type { ModelScore } from "./utils";
+} from "./seasonal-decomposition.js";
+export type { ModelScore } from "./utils.js";
 export {
   assertFiniteArray,
   assertSeasonalPeriod,
@@ -37,4 +37,4 @@ export {
   seasonAtHorizon,
   seasonIndex,
   sumSquaredError,
-} from "./utils";
+} from "./utils.js";

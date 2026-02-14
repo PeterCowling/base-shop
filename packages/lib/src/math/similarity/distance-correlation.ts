@@ -2,7 +2,7 @@ import {
   handleSimilarityValidationFailure,
   type SimilarityValidationOptions,
   validateNumericPairInputs,
-} from "./common";
+} from "./common.js";
 
 export type DistanceCorrelationOptions = SimilarityValidationOptions;
 

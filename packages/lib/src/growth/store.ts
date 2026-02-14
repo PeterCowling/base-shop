@@ -1,9 +1,9 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-import { growthLedgerSchema } from "./schema";
-import { canonicalSerializeJson } from "./serialize";
-import type { GrowthLedger } from "./types";
+import { growthLedgerSchema } from "./schema.js";
+import { canonicalSerializeJson } from "./serialize.js";
+import type { GrowthLedger } from "./types.js";
 
 const DEFAULT_DATA_ROOT = path.join(process.cwd(), "data", "shops");
 

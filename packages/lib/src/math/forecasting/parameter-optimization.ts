@@ -1,8 +1,8 @@
 import {
   HoltWintersAdditive,
   HoltWintersMultiplicative,
-} from "./holt-winters";
-import { scoreModel } from "./utils";
+} from "./holt-winters.js";
+import { scoreModel } from "./utils.js";
 
 /**
  * Options for parameter optimization.

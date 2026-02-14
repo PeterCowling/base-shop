@@ -6,7 +6,7 @@
  * confidence bounds for future observations.
  */
 
-import { finiteResiduals } from "./utils";
+import { finiteResiduals } from "./utils.js";
 
 /**
  * Configuration options for prediction intervals

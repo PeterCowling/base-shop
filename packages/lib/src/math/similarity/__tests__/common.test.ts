@@ -1,7 +1,7 @@
 import {
   handleSimilarityValidationFailure,
   validateNumericPairInputs,
-} from "../common";
+} from "../common.js";
 
 describe("similarity/common validation", () => {
   describe("validateNumericPairInputs", () => {

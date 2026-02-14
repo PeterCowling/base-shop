@@ -1,4 +1,4 @@
-import { normalPpf } from "./internal/special-functions";
+import { normalPpf } from "./internal/special-functions.js";
 
 export type AlternativeHypothesis = "two-sided" | "greater" | "less";
 

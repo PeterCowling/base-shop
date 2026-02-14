@@ -1,4 +1,4 @@
-import { genSecret } from '../genSecret';
+import { genSecret } from '../genSecret.js';
 
 describe('genSecret', () => {
   const originalCrypto = globalThis.crypto;

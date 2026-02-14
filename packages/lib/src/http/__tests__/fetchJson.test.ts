@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { fetchJson } from '../fetchJson';
+import { fetchJson } from '../fetchJson.js';
 
 describe('fetchJson', () => {
   beforeEach(() => {

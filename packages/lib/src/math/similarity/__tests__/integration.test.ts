@@ -5,7 +5,7 @@ import {
   kendallTau,
   normalizedMutualInformationBinned,
   normalizedMutualInformationDiscrete,
-} from "..";
+} from "../index.js";
 
 describe("similarity module integration behavior", () => {
   it("shows metric divergence between monotonic and non-monotonic dependence", () => {

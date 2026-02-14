@@ -1,14 +1,27 @@
-import { type Browser, type BrowserContext, type CDPSession, chromium, type Page } from "playwright-core";
+import { promises as fs } from "node:fs";
+import { join } from "node:path";
+
+import type { Browser, BrowserContext, CDPSession, Download, Page } from "playwright-core";
+import { chromium } from "playwright-core";
 
 import type { BicPageIdentity } from "./bic.js";
 import type { AxNodeFixture, DomNodeDescriptionFixture } from "./cdp.js";
-import type { BrowserActRequest, BrowserDriver, BrowserObserveSnapshot, BrowserObserveSnapshotRequest } from "./driver.js";
+import type {
+  BrowserActRequest,
+  BrowserDownload,
+  BrowserDriver,
+  BrowserObserveSnapshot,
+  BrowserObserveSnapshotRequest,
+} from "./driver.js";
 
 type PlaywrightDriverState = {
   browser: Browser;
   context: BrowserContext;
   page: Page;
   cdp: CDPSession;
+  downloads: BrowserDownload[];
+  downloadDir: string;
+  pendingDownload: Download | null;
 };
 
 function safeString(value: unknown): string | undefined {
@@ -182,20 +195,67 @@ export async function createPlaywrightBrowserDriver(input: {
   headless: boolean;
   slowMoMs?: number;
   executablePath?: string;
+  storageStatePath?: string;
+  downloadDir?: string;
 }): Promise<BrowserDriver> {
+  // Set up download directory
+  const downloadDir = input.downloadDir ?? join(process.cwd(), ".tmp/downloads");
+  await fs.mkdir(downloadDir, { recursive: true });
+
   const browser = await chromium.launch({
     headless: input.headless,
     slowMo: input.slowMoMs,
     executablePath: input.executablePath,
   });
 
-  const context = await browser.newContext();
+  const context = await browser.newContext({
+    storageState: input.storageStatePath,
+    acceptDownloads: true,
+  });
+
   const page = await context.newPage();
+
+  const state: PlaywrightDriverState = {
+    browser,
+    context,
+    page,
+    cdp: await context.newCDPSession(page),
+    downloads: [],
+    downloadDir,
+    pendingDownload: null,
+  };
+
+  // Set up download event handler
+  page.on("download", async (download: Download) => {
+    state.pendingDownload = download;
+
+    try {
+      const suggestedFilename = download.suggestedFilename();
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-").substring(0, 19);
+      const filename = `${timestamp}_${suggestedFilename}`;
+      const filepath = join(downloadDir, filename);
+
+      await download.saveAs(filepath);
+
+      const stats = await fs.stat(filepath);
+      const downloadRecord: BrowserDownload = {
+        filename,
+        path: filepath,
+        size: stats.size,
+        mimeType: null,
+        timestamp: new Date().toISOString(),
+      };
+
+      state.downloads.push(downloadRecord);
+      console.info(`[browser] Download saved: ${filepath} (${stats.size} bytes)`);
+    } catch (error) {
+      console.error(`[browser] Download failed:`, error);
+    } finally {
+      state.pendingDownload = null;
+    }
+  });
+
   await page.goto(input.url, { waitUntil: "domcontentloaded" });
-
-  const cdp = await context.newCDPSession(page);
-
-  const state: PlaywrightDriverState = { browser, context, page, cdp };
 
   return {
     snapshot: async (req: BrowserObserveSnapshotRequest): Promise<BrowserObserveSnapshot> => {
@@ -203,6 +263,29 @@ export async function createPlaywrightBrowserDriver(input: {
     },
     act: async (req: BrowserActRequest): Promise<void> => {
       await actViaPlaywright({ state, req });
+    },
+    getDownloads: async (): Promise<ReadonlyArray<BrowserDownload>> => {
+      return state.downloads;
+    },
+    waitForDownload: async (input: { timeoutMs: number }): Promise<BrowserDownload | null> => {
+      const startTime = Date.now();
+      const initialCount = state.downloads.length;
+
+      // Poll for new download
+      while (Date.now() - startTime < input.timeoutMs) {
+        if (state.downloads.length > initialCount) {
+          return state.downloads[state.downloads.length - 1] ?? null;
+        }
+
+        if (state.pendingDownload) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          continue;
+        }
+
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+
+      return null;
     },
     close: async (): Promise<void> => {
       await browser.close();

@@ -14,7 +14,7 @@ import {
   type StageThresholdDefinition,
   THRESHOLD_DIRECTION_VALUES,
   type ThresholdSet,
-} from "./types";
+} from "./types.js";
 
 export const STAGE_POLICY_DEFAULTS: Record<GrowthStageKey, { blocking_mode: typeof BLOCKING_MODE_VALUES[number] }> = {
   acquisition: { blocking_mode: "always" },

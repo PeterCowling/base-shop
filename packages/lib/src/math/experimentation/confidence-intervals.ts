@@ -1,4 +1,4 @@
-import { normalPpf, studentTPpf } from "./internal/special-functions";
+import { normalPpf, studentTPpf } from "./internal/special-functions.js";
 
 export interface ConfidenceIntervalResult {
   estimate: number;

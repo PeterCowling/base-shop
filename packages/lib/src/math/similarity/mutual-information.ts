@@ -2,7 +2,7 @@ import {
   handleSimilarityValidationFailure,
   type SimilarityValidationOptions,
   validateNumericPairInputs,
-} from "./common";
+} from "./common.js";
 
 type DiscreteLabel = string | number | boolean;
 type BinningStrategy = "equalWidth" | "quantile";

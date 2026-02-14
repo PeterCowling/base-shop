@@ -17,7 +17,7 @@ import {
   normalizeSeasonalAdditive,
   normalizeSeasonalMultiplicative,
   seasonAtHorizon,
-} from "./utils";
+} from "./utils.js";
 
 /**
  * Holt-Winters Additive Seasonal Model

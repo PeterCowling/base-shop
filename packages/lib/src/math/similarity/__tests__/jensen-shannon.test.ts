@@ -1,7 +1,7 @@
 import {
   jensenShannonDistance,
   jensenShannonDivergence,
-} from "../jensen-shannon";
+} from "../jensen-shannon.js";
 
 describe("jensenShannonDivergence", () => {
   it("returns NaN for invalid inputs in default mode", () => {

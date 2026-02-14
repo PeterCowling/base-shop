@@ -1,7 +1,7 @@
 import {
   handleSimilarityValidationFailure,
   type SimilarityValidationOptions,
-} from "./common";
+} from "./common.js";
 
 export type JensenShannonOptions = SimilarityValidationOptions;
 

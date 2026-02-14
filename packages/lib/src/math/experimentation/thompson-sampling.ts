@@ -1,4 +1,4 @@
-import { normalSample, SeededRandom } from "../random";
+import { normalSample, SeededRandom } from "../random/index.js";
 
 export interface ThompsonSamplingArm {
   alpha: number;

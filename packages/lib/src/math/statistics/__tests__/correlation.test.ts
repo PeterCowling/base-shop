@@ -1,4 +1,4 @@
-import { covariance, pearson, spearman } from "../correlation";
+import { covariance, pearson, spearman } from "../correlation.js";
 
 describe("Correlation Statistics", () => {
   describe("covariance", () => {

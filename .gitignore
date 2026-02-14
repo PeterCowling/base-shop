@@ -134,3 +134,7 @@ docs/plans/email-autodraft-consolidation-baseline-sample.txt
 
 # Octorate browser session state (contains cookies; never commit)
 .secrets/octorate/*
+
+# Octorate data extraction (contains booking data, do not commit)
+data/octorate/
+packages/mcp-server/.tmp/

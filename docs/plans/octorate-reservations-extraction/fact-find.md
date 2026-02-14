@@ -10,8 +10,6 @@ Feature-Slug: octorate-reservations-extraction
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
-Primary-Execution-Skill: /lp-build
-Supporting-Skills: none
 Related-Plan: docs/plans/octorate-reservations-extraction/plan.md
 Business-OS-Integration: on
 Business-Unit: BRIK
@@ -75,32 +73,38 @@ Build automated extraction of historical booking/reservation data from Octorate 
 - Room/rate plan identifiers
 - Booking status (confirmed, cancelled, no-show)
 
-**Retention policy**:
-- Raw Excel exports: 30 days (for debugging), then delete
+**Retention policy** (aspirational until scheduling/cleanup implemented):
+- Raw Excel exports: 30 days (for debugging), then delete (requires cleanup script)
 - Transformed JSONL: 24 months (for YoY analysis)
 - Aggregated metrics: indefinite (no PII)
+- **Note**: `data/octorate/*` and `.tmp/*` must be in `.gitignore` (verify)
 
 ### Required Data Contract (Independent of Excel Format)
 
 **Minimum viable fields for success** (must be present in any export):
 
-| Field | Type | Required | Description | Used For |
-|-------|------|----------|-------------|----------|
-| `bookingDate` | ISO date-time | Yes | When booking was created | Booking velocity trends |
-| `checkIn` | ISO date | Yes | Guest arrival date | Occupancy calculation |
-| `checkOut` | ISO date | Yes | Guest departure date | Occupancy calculation, LOS |
-| `revenue` | Decimal (EUR) | Yes | Total booking value | Revenue analysis, optimization |
-| `channel` | String (enum) | Yes | Booking source | Channel attribution |
-| `roomId` | String | Yes | Room/rate plan identifier | Room-level analysis |
-| `status` | String (enum) | Yes | confirmed \| cancelled \| no-show | Cancellation rate, occupancy |
-| `bookingId` | String (hash) | No | Anonymized booking ref | Deduplication only |
+| Field | Type | Required | Description | Used For | Notes |
+|-------|------|----------|-------------|----------|-------|
+| `bookingDate` | ISO date-time | Yes | When booking was created | Booking velocity trends | Timezone: assume property-local (CET for BRIK), normalize to UTC |
+| `checkIn` | ISO date | Yes | Guest arrival date | Occupancy calculation | — |
+| `checkOut` | ISO date | Yes | Guest departure date | Occupancy calculation, LOS | — |
+| `revenue` | Decimal + currency | Yes | Total booking value | Revenue analysis, optimization | Assume EUR for BRIK unless currency field exists |
+| `channel` | String (enum) | Yes | Booking source | Channel attribution | — |
+| `roomId` OR `roomName` | String | Preferred | Room/rate plan identifier | Room-level analysis | Fallback: `roomType` or aggregate if no stable ID |
+| `status` | String (enum) | Yes | confirmed \| cancelled \| no-show | Cancellation rate, occupancy | — |
+| `bookingId` | String (hash) | No | Anonymized booking ref | Deduplication only | Optional |
 
 **Derived metrics** (calculated from above):
-- **Occupancy rate**: (days with bookings) / (days available) per date range
-- **ADR** (Average Daily Rate): total revenue / room-nights sold
-- **RevPAR** (Revenue Per Available Room): total revenue / room-nights available
-- **Cancellation rate**: cancelled bookings / total bookings
-- **Lead time**: checkIn - bookingDate (days)
+- **ADR** (Average Daily Rate): total revenue / room-nights sold ✅ (computable from bookings alone)
+- **Cancellation rate**: cancelled bookings / total bookings ✅ (computable from bookings alone)
+- **Lead time**: checkIn - bookingDate (days) ✅ (computable from bookings alone)
+- **Occupancy rate**: (days with bookings) / (days available) ⚠️ (requires inventory/capacity source)
+- **RevPAR** (Revenue Per Available Room): total revenue / room-nights available ⚠️ (requires inventory/capacity source)
+
+**Note**: Occupancy rate and RevPAR require inventory source (room capacity × nights). Either:
+- Extract from Octorate rooms configuration, or
+- Use internal `room-inventory.json` (11 rooms for BRIK), or
+- Defer occupancy/RevPAR until inventory source available
 
 **Channel enumeration** (examples, actual list TBD):
 - `Booking.com`, `Hostelworld`, `Direct`, `Airbnb`, `Expedia`, `Other`
@@ -117,10 +121,11 @@ Build automated extraction of historical booking/reservation data from Octorate 
 
 **Evidence checkpoints** (updated as work progresses):
 
-- [ ] **Session storage**: `.secrets/octorate/storage-state.json`
+- [x] **Session storage**: `.secrets/octorate/storage-state.json`
   - Last refreshed: 2026-02-14 ~11:00 CET (login-octorate.mjs completed)
-  - Contains cookie: `octobooksessionid=ba4bcd5712400649520e6e80ee3d`
-  - Expiry: -1 (session cookie, expires on browser close)
+  - Contains valid session cookie (do not paste secrets here)
+  - Validated: Successfully loaded `https://admin.octorate.com/` (dashboard)
+  - Expiry: Session cookie (expires on browser close or inactivity timeout)
 
 - [ ] **Reservations page state**: NOT YET CAPTURED
   - Need: Screenshot or HTML dump proving we land on reservations list page OR MFA screen
@@ -552,79 +557,97 @@ No conflicts expected with reservations extraction work.
 
 **Goal**: Prove whether saved session lands on reservations page or redirects to MFA
 
-**Steps**:
-1. Create simple script that opens browser with saved session
+**Script**: `packages/mcp-server/capture-reservations-page-state.mjs` (to be created)
+
+**Reproducible commands**:
+```bash
+cd packages/mcp-server
+mkdir -p .tmp  # Ensure directory exists (previous failure mode)
+node capture-reservations-page-state.mjs
+```
+
+**Script behavior**:
+1. Open browser with saved session from `.secrets/octorate/storage-state.json`
 2. Navigate to `https://admin.octorate.com/octobook/user/reservation/list.xhtml`
 3. Wait 10 seconds for page to load/redirect
 4. Capture:
    - Screenshot: `.tmp/reservations-page-state.png`
    - Page HTML: `.tmp/reservations-page-state.html`
-   - Current URL (to detect redirects)
-5. Check page title/content for:
-   - "MFA" or "Authentication" → Session expired, need re-auth
-   - "Reservations" or "Prenotazioni" → Session valid, need to fix selectors
+   - Current URL → log to console
+   - Page title → log to console
+5. Exit (leave browser open for 5s for manual inspection)
 
-**Success criteria**: Have screenshot + HTML proving current page state
+**Success criteria**: Screenshot + HTML saved, console shows current URL and title
 
-**If session expired**: Run `login-octorate.mjs` again, complete MFA, save new session
+**Interpretation**:
+- URL contains `/mfa.xhtml` OR title contains "MFA"/"Authentication" → **Session expired**, run `login-octorate.mjs`
+- URL contains `/reservation/list` OR title contains "Reservations"/"Prenotazioni" → **Session valid**, proceed to Artifact 2
 
-**If session valid**: Proceed to Artifact 2
+---
 
 ### Artifact 2: First Excel Export + Column Map
 
 **Goal**: Get one successful export with actual booking data to validate Required Data Contract
 
-**Steps**:
-1. If Artifact 1 shows session valid:
-   - Inspect HTML from `.tmp/reservations-page-state.html`
-   - Find actual selectors for: sort dropdown, date pickers, channel filter, status filter, rooms filter, statistics button
-   - Update `export-octorate-reservations.mjs` with correct selectors
-   - Run export script
-2. If export succeeds:
-   - Save file to `data/octorate/octorate-reservations-YYYY-MM-DD.xlsx`
-   - Open in Excel (or LibreOffice) manually
-   - Document structure:
-     - Sheet names
-     - Column headers (all sheets)
-     - Sample row (redact guest name if present)
-     - Date range available
-3. Create column mapping document:
-   ```
-   Sheet: "Bookings" (or actual name)
-   Columns:
-   - "Booking Date" → bookingDate (ISO datetime)
-   - "Check-in" → checkIn (ISO date)
-   - "Check-out" → checkOut (ISO date)
-   - "Total" → revenue (EUR decimal)
-   - "Channel" → channel (string)
-   - "Room" → roomId (string)
-   - "Status" → status (string)
-   Missing fields: bookingId (use row number as proxy?)
+**Recommended path**: **Manual export first** (fastest way to answer Q4 and unblock transformation work)
+
+**Manual export procedure** (execute immediately):
+1. Open browser, navigate to Octorate admin
+2. Go to: Reservations → List
+3. Configure filters:
+   - Sort: Create time
+   - Date range: 01/01/2024 → 14/02/2026 (or current date)
+   - Channels: All channels
+   - Status: Confirmed
+   - Rooms: All rooms
+4. Click **Statistics** button (chart icon)
+5. Select **Download to Excel**
+6. Save file as: `data/octorate/octorate-reservations-manual-2026-02-14.xlsx`
+
+**Analysis procedure** (after manual export succeeds):
+1. Open Excel file (Excel or LibreOffice)
+2. Document structure:
+   - Sheet names (list all)
+   - Column headers (for each sheet)
+   - Sample row (redact guest name if present)
+   - Row count and date range
+3. Create `data/octorate/reservations-column-mapping.md`:
+   ```markdown
+   # Octorate Reservations Export Schema
+
+   **File**: octorate-reservations-manual-2026-02-14.xlsx
+   **Date range**: YYYY-MM-DD to YYYY-MM-DD
+   **Total bookings**: NNN
+
+   ## Sheet: [actual name]
+
+   | Excel Column | Required Field | Type | Notes |
+   |--------------|----------------|------|-------|
+   | "Booking Date" | bookingDate | ISO datetime | Timezone: CET → UTC |
+   | "Check-in" | checkIn | ISO date | — |
+   | "Check-out" | checkOut | ISO date | — |
+   | "Total" | revenue | Decimal | Currency: EUR (assumed) |
+   | "Channel" | channel | String | — |
+   | "Room Name" | roomName | String | (no stable roomId, use name) |
+   | "Status" | status | String | — |
+
+   **Missing fields**: bookingId (not present, use row number)
+   **Currency**: EUR (no currency field, BRIK assumption valid)
    ```
 
 **Success criteria**:
-- Excel file downloaded and openable
-- All 7 Required Data Contract fields present (or documented as missing with workaround)
-- Column mapping documented
-- Date range noted (how far back does data go?)
+- Excel file downloaded and openable ✅
+- Required fields present (or documented as missing with workaround) ✅
+- Column mapping documented in `reservations-column-mapping.md` ✅
+- Date range validated (≥12 months for YoY analysis) ✅
 
-**If export fails**:
-- Document exact error (which selector failed, at what step)
-- Save screenshot of failure state
-- Consider manual export: use Octorate UI manually, download statistics report, proceed with column mapping
+**Automation path** (optional, after manual export proves structure):
+- If manual export successful and schema documented:
+  - Update `export-octorate-reservations.mjs` with correct selectors (from Artifact 1 HTML)
+  - Test automation using known-good manual export as fixture
+  - Automation becomes "nice-to-have" enhancement, not blocker
 
-### Fallback: Manual Export (if automation blocked)
-
-**If automation proves too brittle**:
-1. Manual process:
-   - Navigate to reservations list in Octorate UI
-   - Configure filters (all channels, confirmed, all rooms, date range: Jan 2024 - present)
-   - Click Statistics button → Export to Excel
-   - Download file manually
-2. Proceed with column mapping (Artifact 2, step 3)
-3. Document manual process for interim use while fixing automation
-
-**Decision point**: If manual export has all required fields → proceed to planning with "manual export + automated transformation" as Phase 1 scope
+**Decision point**: Manual export + documented schema = sufficient to proceed to `/lp-plan`
 
 ---
 

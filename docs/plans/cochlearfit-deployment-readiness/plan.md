@@ -246,10 +246,10 @@ Worker (Needs fixes):
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | - | TASK-04, TASK-08, TASK-09 |
+| TASK-01 | IMPLEMENT | Set up Stripe account and products | 75% | M | Pending | - | TASK-08, TASK-09 |
 | TASK-02 | IMPLEMENT | Set up inventory authority API | 70% | M | Pending | - | TASK-09 |
 | TASK-03 | IMPLEMENT | Select and configure email service | 80% | M | Blocked (2026-02-14) | - | TASK-06, TASK-07, TASK-09 |
-| TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Pending | TASK-01 | TASK-05 |
+| TASK-04 | IMPLEMENT | Implement build-time catalog bundling system | 85% | L | Pending | - | TASK-05 |
 | TASK-05 | IMPLEMENT | Replace hardcoded catalog with generated import | 90% | M | Pending | TASK-04 | TASK-09 |
 | TASK-06 | IMPLEMENT | Create email receipt template | 85% | M | Pending | TASK-03 | TASK-07 |
 | TASK-07 | IMPLEMENT | Implement email sending in Worker webhook | 80% | L | Pending | TASK-03, TASK-06 | TASK-10 |
@@ -273,7 +273,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-01, TASK-02, TASK-03 | - | Independent foundation tasks (Stripe, Inventory API, Email service setup) |
-| 2 | TASK-04, TASK-06, TASK-08, TASK-15 | Wave 1: TASK-01 (for 04, 08, 15), TASK-03 (for 06) | Build catalog system, email template, populate data files, draft fulfillment runbook (can run in parallel) |
+| 2 | TASK-04, TASK-06, TASK-08, TASK-15 | Wave 1: TASK-03 (for 06); TASK-01 (for 08, 15) | Build catalog system, email template, populate data files, draft fulfillment runbook (can run in parallel) |
 | 3 | TASK-05, TASK-07 | Wave 2: TASK-04 (for 05), TASK-06 (for 07); Wave 1: TASK-03 (for 07) | Replace hardcoded catalog, implement email webhook |
 | 4 | TASK-09 | Waves 1-3: TASK-01, TASK-02, TASK-03, TASK-05, TASK-08 | Configure all secrets (blocked by all setup tasks) |
 | 5 | TASK-10 | Wave 4: TASK-09; Wave 3: TASK-07 | Deploy to staging |
@@ -283,7 +283,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | 9 | TASK-16 | Wave 8: TASK-13 | Post-launch: Comprehensive Worker test suite |
 
 **Max parallelism:** 3 (Wave 1: Stripe + Inventory API + Email service setup in parallel)
-**Critical path:** TASK-01 → TASK-04 → TASK-05 → TASK-09 → TASK-10 → TASK-14 → TASK-12 → TASK-13 → TASK-16 (9 waves)
+**Critical path:** TASK-04 → TASK-05 → TASK-09 → TASK-10 → TASK-14 → TASK-12 → TASK-13 → TASK-16 (8 waves)
+
+> Note: TASK-01 (real Stripe Price IDs) is still required before launch; TASK-04/05 can proceed using placeholder `price_...` IDs to unblock build and remove hardcoding.
 **Total tasks:** 16
 
 ## Tasks
@@ -295,7 +297,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Affects:** External (Stripe Dashboard), `docs/plans/cochlearfit-deployment-readiness/stripe-setup.md`
 - **Depends on:** -
-- **Blocks:** TASK-04, TASK-08, TASK-09
+- **Blocks:** TASK-08, TASK-09
 - **Confidence:** 75%
   - Implementation: 80% — Stripe Dashboard is well-documented, straightforward product/variant setup
   - Approach: 75% — Standard Stripe Checkout pattern, but account verification adds uncertainty
@@ -477,9 +479,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `scripts/bundle-worker-catalog.ts` (new file)
   - `apps/cochlearfit-worker/package.json` (add prebuild script)
   - `apps/cochlearfit-worker/.gitignore` (exclude generated file)
-  - `[readonly] data/shops/cochlearfit/*.json` (read-only input)
+  - `apps/cochlearfit-worker/src/worker-catalog.generated.ts` (generated output)
+  - `data/shops/cochlearfit/products.json` (new, template data)
+  - `data/shops/cochlearfit/variants.json` (new, template data with placeholder `price_...` IDs)
+  - `data/shops/cochlearfit/inventory.json` (new, template data)
   - `[readonly] apps/cochlearfit/src/lib/cochlearfitCatalog.server.ts` (schema reference)
-- **Depends on:** TASK-01
+- **Depends on:** -
 - **Blocks:** TASK-05
 - **Confidence:** 85%
   - Implementation: 90% — Frontend catalog loading (cochlearfitCatalog.server.ts) already exists as reference, script logic is straightforward (read JSON → generate TypeScript)
@@ -504,20 +509,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
     ];
     ```
   - [ ] Script validates: fail build if Stripe Price IDs missing or malformed (must start with `price_`)
+  - [ ] Template `variants.json` uses placeholder Stripe Price IDs (format-valid `price_...`), to be replaced with real IDs in TASK-08
   - [ ] Script validates: fail build if products.json, variants.json, or inventory.json missing
-  - [ ] Script added to Worker package.json: `"prebuild": "tsx scripts/bundle-worker-catalog.ts"`
+  - [ ] Script added to Worker package.json: `"prebuild": "node --import tsx ../../scripts/bundle-worker-catalog.ts"`
   - [ ] Generated file added to `apps/cochlearfit-worker/.gitignore`
   - [ ] Build succeeds with template data files (Stripe Price IDs present)
   - [ ] Build fails gracefully with helpful error if data files missing or Price IDs invalid
 - **Validation contract:**
-  - TC-01: Build with valid data → run `pnpm --filter cochlearfit-worker build` → succeeds, generated file exists
-  - TC-02: Build with missing products.json → run build → fails with error "products.json not found"
-  - TC-03: Build with invalid Price ID → run build with Price ID not starting with `price_` → fails with error "Stripe Price ID malformed for variant X"
+  - TC-01: Build with valid template data → run `pnpm --filter @apps/cochlearfit-worker build` → succeeds, generated file exists
+  - TC-02: Build with missing products.json → run bundler with a fixture dir missing products.json → fails with error "products.json not found"
+  - TC-03: Build with invalid Price ID → run bundler with a fixture dir containing invalid Price ID → fails with error "Stripe Price ID malformed for variant X"
   - TC-04: Generated catalog structure → inspect generated file → matches expected TypeScript format
   - TC-05: Gitignore exclusion → run `git status` → generated file not shown as untracked
   - **Acceptance coverage:** TC-01+TC-04 cover happy path, TC-02+TC-03 cover validation, TC-05 covers git exclusion
   - **Validation type:** unit testing (build script execution)
-  - **Run/verify:** `pnpm --filter cochlearfit-worker build`, `git status`, inspect generated file
+  - **Run/verify:** `pnpm --filter @apps/cochlearfit-worker build`, `git status`, inspect generated file
 - **Execution plan:**
   - **Red → Green → Refactor**
   - **Red evidence:** First build attempt will fail (script doesn't exist yet, data files incomplete)

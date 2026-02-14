@@ -111,7 +111,7 @@ Chosen: Option A.
 | TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 90% | M | Complete (2026-02-14) | TASK-01 | TASK-07 |
 | TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Complete (2026-02-14) | TASK-02 | TASK-06, TASK-07 |
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 86% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 78% | L | Pending | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
+| TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Pending | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 74% | L | Pending | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
 | TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Pending | TASK-08 | - |
@@ -500,10 +500,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - `packages/mcp-server/src/__tests__/browser-observe.contract.test.ts`
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-10, TASK-11
 - **Blocks:** TASK-07, TASK-08
-- **Confidence:** 78% (-> 84% conditional on TASK-03, TASK-04, TASK-10, TASK-11)
-  - Implementation: 80% -- once CDP + selectors are proven, observe composition is straightforward.
-  - Approach: 78% -- identity/blocker extraction and affordance sizing controls need iteration.
-  - Impact: 78% -- wrong ranking/paging harms agent usability; must be tested.
+- **Confidence:** 82%
+  - Implementation: 85% -- CDP extraction + ranking/paging + session action registry + mock driver are all proven (TASK-03, TASK-04, TASK-10, TASK-11).
+  - Approach: 82% -- observe composition is now testable deterministically via fixtures; any remaining iteration is in heuristics quality, not feasibility.
+  - Impact: 82% -- blast radius is contained to new browser tools; contract tests will lock behavior.
 - **Acceptance:**
   - `browser_observe({ mode, scope, maxAffordances, includeHidden, includeDisabled, cursor })` is implemented.
   - Response includes `nextCursor` + `hasMore` and stable ordering within same page state (best-effort).
@@ -521,6 +521,18 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - **Run:** `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-observe.contract.test.ts --runInBand`
 - **Execution plan:** Red -> Green -> Refactor
 - **What would make this >=90%:** add one optional local integration snapshot test running headless Chromium if environment supports it (not CI-gating).
+
+#### Re-plan Update (2026-02-14) - Preconditions Satisfied
+
+- **Previous confidence:** 78% (-> 84% conditional)
+- **Updated confidence:** 82% ✅ ABOVE THRESHOLD
+  - **Evidence class:** E2 (precursor task validations)
+  - Selector/AX viability: proven by TASK-03 fixture contracts (`packages/mcp-server/src/__tests__/browser-cdp.contract.test.ts`)
+  - Paging/forms shaping: proven by TASK-04 unit/contract tests (`packages/mcp-server/src/__tests__/browser-observe-shaping.contract.test.ts`)
+  - ActionId -> target determinism: proven by TASK-10 unit tests (`packages/mcp-server/src/__tests__/browser-session.unit.test.ts`)
+  - Fixture-friendly driver seam: proven by TASK-11 unit tests (`packages/mcp-server/src/__tests__/browser-driver.unit.test.ts`)
+- **Decision / resolution:**
+  - With action targets and driver harness in place, `browser_observe` is now straightforward to implement via TDD without browser flakiness.
 
 #### Re-plan Update (2026-02-14)
 - **Previous confidence:** 78%

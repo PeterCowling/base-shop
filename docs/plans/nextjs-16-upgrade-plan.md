@@ -101,7 +101,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Foundation: bump Next.js to 16.x + React alignment + enforce Node >=20.9.0 + remove deprecated config | 83% | L | Complete (2026-02-14) | - | TASK-02, TASK-03, TASK-04, TASK-05 |
 | TASK-02 | IMPLEMENT | Add --webpack flag to all build/dev scripts | 90% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
-| TASK-03 | IMPLEMENT | Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl) | 82% | S | Pending | TASK-01 | TASK-06 |
+| TASK-03 | IMPLEMENT | Upgrade ecosystem deps (next-auth, eslint-config-next, next-intl) | 82% | S | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Repo-wide Async Request APIs migration (codemod + cleanup) | 80% | M | Pending | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Repo-wide Next 16 upgrade audit (lint/scripts/config/code grep checklist) | 90% | S | Pending | TASK-01 | TASK-06 |
 | TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07, TASK-08 |
@@ -298,6 +298,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Notes / references:**
   - Current: next-auth 4.24.11, eslint-config-next 15.3.8
   - next-intl is used only in `packages/template-app/src/i18n/request.ts` — minimal footprint. Upgrade to v4 is cheap and removes a likely peer-dep conflict with Next 16.
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 3afc6cb0ca
+- **Validation evidence:**
+  - Install: `pnpm install` -> PASS (peer warnings triaged)
+  - Resolved versions: `pnpm list next-auth eslint-config-next next-intl nodemailer --depth 0` -> next-auth `4.24.12`, eslint-config-next `16.1.6`, next-intl `4.8.2`, nodemailer `7.0.13`
+  - CMS lint: `pnpm --filter @apps/cms lint` -> PASS
+- **Implementation notes:** Upgraded Next ecosystem deps and fixed ESLint flat-config integration for `eslint-config-next@16` (remove FlatCompat circular config failure; avoid plugin redefinition collisions; disable React Compiler-related lint rules that became errors on existing code).
 
 ### TASK-04: Repo-wide Async Request APIs migration (codemod + cleanup)
 

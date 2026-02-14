@@ -112,7 +112,7 @@ Chosen: Option A.
 | TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Complete (2026-02-14) | TASK-02 | TASK-06, TASK-07 |
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 86% | M | Complete (2026-02-14) | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 82% | L | Pending | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
+| TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 82% | L | Complete (2026-02-14) | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
 | TASK-08 | IMPLEMENT | MCP tool wiring + integration tests + local smoke runner | 80% | M | Pending | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: validate against real sites, adjust plan | 95% | S | Pending | TASK-08 | - |
 
@@ -629,6 +629,21 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Mock driver can record actions + navigate state (TASK-11).
 - **Decision / resolution:**
   - Proceed with `browser_act` implementation via mock-driver contract tests to lock: safety confirmation protocol, action taxonomy dispatch, expectation verification, and nextObservation return shape.
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete (2026-02-14)
+- **Commits:** 95691ea142
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-act.contract.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/tools/browser/act.ts` with a deterministic `browserAct()` handler:
+    - Enforces observation epoch semantics (`observationId`) and rejects stale actions.
+    - Resolves `actionId` via session action target registry (no guess-click).
+    - Enforces tool-layer two-step confirmation for `danger` actions.
+    - Tool-verifies expectations and always returns `nextObservation`.
+  - Added `packages/mcp-server/src/__tests__/browser-act.contract.test.ts` to lock the contract (safety, staleness, navigate, expectations, ACTION_NOT_FOUND).
 
 ### TASK-08: MCP Tool Wiring + Integration Tests + Smoke Runner
 

@@ -1,4 +1,6 @@
 /* i18n-exempt file -- ABC-123 worker API error strings are not user-facing UI [ttl=2026-06-30] */
+import { catalog } from "./worker-catalog.generated";
+
 export interface Env {
   STRIPE_SECRET_KEY: string;
   STRIPE_WEBHOOK_SECRET: string;
@@ -11,24 +13,6 @@ export interface Env {
   INVENTORY_AUTHORITY_TOKEN?: string;
 }
 
-type CatalogVariant = {
-  id: string;
-  stripePriceId: string;
-  price: number;
-  currency: "USD";
-  size: "kids" | "adult";
-  color: "sand" | "ocean" | "berry";
-  productNameKey: string;
-  inStock: boolean;
-};
-
-type CatalogColor = {
-  key: "sand" | "ocean" | "berry";
-};
-
-type CatalogSize = {
-  key: "kids" | "adult";
-};
 
 type StripeSessionPayload = {
   id?: string;
@@ -89,40 +73,6 @@ const buildOrderRecord = (session: StripeSessionPayload): OrderRecord => ({
       : undefined,
 });
 
-const COLORS: CatalogColor[] = [
-  { key: "sand" },
-  { key: "ocean" },
-  { key: "berry" },
-];
-
-const SIZES: CatalogSize[] = [
-  { key: "kids" },
-  { key: "adult" },
-];
-
-const buildVariants = (
-  prefix: string,
-  productNameKey: string,
-  priceBySize: Record<CatalogVariant["size"], number>
-): CatalogVariant[] => {
-  return SIZES.flatMap((size) =>
-    COLORS.map((color) => ({
-      id: `${prefix}-${size.key}-${color.key}`,
-      stripePriceId: `price_${prefix}_${size.key}_${color.key}`,
-      price: priceBySize[size.key],
-      currency: "USD",
-      size: size.key,
-      color: color.key,
-      productNameKey,
-      inStock: true,
-    }))
-  );
-};
-
-const catalog = [
-  ...buildVariants("classic", "product.classic.name", { kids: 3400, adult: 3800 }),
-  ...buildVariants("sport", "product.sport.name", { kids: 3600, adult: 4000 }),
-];
 
 const catalogById = new Map(catalog.map((variant) => [variant.id, variant]));
 const catalogByPriceId = new Map(catalog.map((variant) => [variant.stripePriceId, variant]));

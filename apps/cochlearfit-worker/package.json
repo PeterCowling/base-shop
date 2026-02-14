@@ -2,10 +2,13 @@
   "name": "@apps/cochlearfit-worker",
   "private": true,
   "scripts": {
+    "predev": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
     "dev": "wrangler dev src/index.ts --local --port 8788",
     "prebuild": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
     "build": "wrangler build",
+    "prelint": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
     "lint": "eslint .",
+    "pretypecheck": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   }
 }

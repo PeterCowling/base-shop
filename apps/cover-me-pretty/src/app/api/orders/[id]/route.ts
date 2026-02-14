@@ -29,8 +29,9 @@ export async function GET(_req: Request, props: { params: Promise<{ id: string }
     }
     return NextResponse.json({ order });
   } catch (err) {
-    console.error("[api/orders] GET error:", err); // i18n-exempt -- server log
-    return NextResponse.json({ error: "Failed to fetch order" }, { status: 500 }); // i18n-exempt -- generic error
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.info("[api/orders] GET error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: message }, { status: 500 }); // i18n-exempt -- server log
   }
 }
 
@@ -80,7 +81,8 @@ export async function PATCH(req: Request, props: { params: Promise<{ id: string 
     }
     return NextResponse.json({ order });
   } catch (err) {
-    console.error("[api/orders] PATCH error:", err); // i18n-exempt -- server log
-    return NextResponse.json({ error: "Failed to update order" }, { status: 500 }); // i18n-exempt -- generic error
+    const message = err instanceof Error ? err.message : "Unknown error";
+    console.info("[api/orders] PATCH error:", err); // i18n-exempt -- server log
+    return NextResponse.json({ error: message }, { status: 500 }); // i18n-exempt -- server log
   }
 }

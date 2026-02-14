@@ -16,6 +16,8 @@ Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effo
 Business-OS-Integration: on
 Business-Unit: BRIK
 Card-ID: (to be assigned)
+Audit-Ref: working-tree
+Audit-Date: 2026-02-14
 ---
 
 # Reception Email Integration Gaps Plan
@@ -120,7 +122,7 @@ Close three major gaps in the reception-email integration: (1) manual cancellati
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add activity code 27, rename 25 | 90% | S | Complete (2026-02-14) | - | TASK-02,TASK-04,TASK-05 |
-| TASK-02 | IMPLEMENT | Update UI labels for code 25 | 88% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Update UI labels for code 25 | 88% | S | Complete (2026-02-14) | TASK-01 | - |
 | TASK-03 | IMPLEMENT | Add cancellation email template | 92% | S | Pending | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Wire code 27 to MCP | 90% | S | Pending | TASK-01,TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Add code 27 to relevantCodes | 90% | S | Pending | TASK-01,TASK-04 | TASK-11 |
@@ -257,6 +259,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel. 
 - **Notes / references:**
   - Evidence: `apps/reception/src/components/checkins/StatusButton.tsx:44` (displays "Cancelled" for code 25)
   - Search command: `rg "CANCELLED|Cancelled" apps/reception/src --type tsx --type ts -C 3` to find all references
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 27feef85a4
+- **Execution cycle:**
+  - Validation cases executed: TC-01 (dictionary check), TC-02 (audit)
+  - Cycles: 1 (direct change + audit verification)
+  - Initial validation: N/A (simple dictionary update)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 88% (Implementation: 92%, Approach: 90%, Impact: 82%)
+  - Post-validation: 88% (confirmed - audit showed no other references)
+  - Delta reason: validation confirmed completeness via grep audit
+- **Validation:**
+  - Ran: `pnpm --filter reception typecheck` — PASS
+  - Ran: `pnpm --filter reception lint` — PASS (68 pre-existing warnings)
+  - Ran: `rg "25.*Cancelled|Cancelled.*25" apps/reception/src` — PASS (only test documentation found)
+- **Documentation updated:** None required (internal UI label change)
+- **Implementation notes:**
+  - Changed StatusButton activityCodes dictionary entry for code 25 from "Cancelled" to "Deleted"
+  - Added test documentation for requirement verification
+  - Audit confirmed no remaining UI displays "Cancelled" for code 25
 
 ### TASK-03: Add cancellation email template
 - **Type:** IMPLEMENT

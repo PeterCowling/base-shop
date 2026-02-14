@@ -113,6 +113,13 @@ pnpm --filter @acme/mcp-server start
 | `theme_compare` | Compare theme tokens between shops or presets |
 | `theme_validate` | Validate theme configuration and check for issues |
 
+### Octorate Tools
+
+| Tool | Description |
+|------|-------------|
+| `octorate_login_interactive` | Opens local Chrome, logs in, waits for you to complete MFA, saves session state |
+| `octorate_calendar_check` | Uses saved session state to verify the calendar page can be opened headless |
+
 ### Startup-Loop Data Plane Tools
 
 | Tool | Type | Description |
@@ -158,6 +165,10 @@ The MCP server is configured in `.claude/settings.json`:
 
 ## Environment Variables
 
+- `OCTORATE_USERNAME` - Octorate login username (required for `octorate_*` tools)
+- `OCTORATE_PASSWORD` - Octorate login password (required for `octorate_*` tools; do not commit)
+- `OCTORATE_STORAGE_STATE_PATH` - Optional path to storage state JSON (default: `.secrets/octorate/storage-state.json`)
+- `OCTORATE_CHROME_EXECUTABLE` - Optional path to Chrome executable (defaults to common OS paths)
 - `DATABASE_URL` - PostgreSQL connection string (required for Prisma operations)
 - `BOS_AGENT_API_BASE_URL` - Base URL for Business OS agent API (required for `bos_*` tools)
 - `BOS_AGENT_API_KEY` - API key for Business OS agent API (required for `bos_*` tools)

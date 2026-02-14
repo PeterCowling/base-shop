@@ -12,6 +12,7 @@ import { gmailTools, handleGmailTool } from "./gmail.js";
 import { handleHealthTool,healthTools } from "./health.js";
 import { handleInventoryTool,inventoryTools } from "./inventory.js";
 import { handleLoopTool, loopToolPoliciesRaw, loopTools } from "./loop.js";
+import { handleOctorateTool, octorateTools } from "./octorate.js";
 import { handleOrderTool,orderTools } from "./orders.js";
 import { handleOutboundDraftTool, outboundDraftTools } from "./outbound-drafts.js";
 import { handlePageTool,pageTools } from "./pages.js";
@@ -39,6 +40,7 @@ export const toolDefinitions = [
   ...bosTools,
   ...loopTools,
   ...gmailTools,
+  ...octorateTools,
   ...bookingEmailTools,
   ...draftInterpretTools,
   ...draftGenerateTools,
@@ -70,6 +72,7 @@ const themeToolNames = new Set(themeTools.map((t) => t.name));
 const bosToolNames = new Set(bosTools.map((t) => t.name));
 const loopToolNames = new Set(loopTools.map((t) => t.name));
 const gmailToolNames = new Set(gmailTools.map((t) => t.name));
+const octorateToolNames = new Set(octorateTools.map((t) => t.name));
 const bookingEmailToolNames = new Set(bookingEmailTools.map((t) => t.name));
 const draftInterpretToolNames = new Set(draftInterpretTools.map((t) => t.name));
 const draftGenerateToolNames = new Set(draftGenerateTools.map((t) => t.name));
@@ -137,6 +140,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (gmailToolNames.has(name as never)) {
     return handleGmailTool(name, args);
+  }
+  if (octorateToolNames.has(name as never)) {
+    return handleOctorateTool(name, args);
   }
   if (bookingEmailToolNames.has(name as never)) {
     return handleBookingEmailTool(name, args);

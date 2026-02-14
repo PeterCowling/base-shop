@@ -131,3 +131,6 @@ docs/plans/email-autodraft-consolidation-baseline-sample.txt
 
 # GA4 service-account keys (local only)
 .secrets/ga4/*.json
+
+# Octorate browser session state (contains cookies; never commit)
+.secrets/octorate/*

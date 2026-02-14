@@ -1,5 +1,22 @@
 {
   "model": "sonnet",
+  "mcpServers": {
+    "base-shop": {
+      "command": "node",
+      "args": [
+        "./packages/mcp-server/dist/index.js"
+      ],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}",
+        "BOS_AGENT_API_BASE_URL": "${BOS_AGENT_API_BASE_URL}",
+        "BOS_AGENT_API_KEY": "${BOS_AGENT_API_KEY}",
+        "OCTORATE_USERNAME": "${OCTORATE_USERNAME}",
+        "OCTORATE_PASSWORD": "${OCTORATE_PASSWORD}",
+        "OCTORATE_STORAGE_STATE_PATH": "${OCTORATE_STORAGE_STATE_PATH}",
+        "OCTORATE_CHROME_EXECUTABLE": "${OCTORATE_CHROME_EXECUTABLE}"
+      }
+    }
+  },
   "hooks": {
     "PreToolUse": [
       {

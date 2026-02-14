@@ -683,6 +683,9 @@ importers:
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../../packages/platform-core
+      '@acme/seo':
+        specifier: workspace:*
+        version: link:../../packages/seo
       '@acme/telemetry':
         specifier: workspace:*
         version: link:../../packages/telemetry
@@ -2090,6 +2093,9 @@ importers:
       googleapis:
         specifier: ^171.0.0
         version: 171.0.0
+      playwright-core:
+        specifier: 1.57.0
+        version: 1.57.0
       zod:
         specifier: ^3.25.73
         version: 3.25.73
@@ -2431,6 +2437,9 @@ importers:
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../platform-core
+      '@acme/seo':
+        specifier: workspace:*
+        version: link:../seo
       '@acme/telemetry':
         specifier: workspace:*
         version: link:../telemetry
@@ -13856,11 +13865,6 @@ packages:
   platform@1.3.3:
     resolution: {integrity: sha512-VJK1SRmXBpjwsB4YOHYSturx48rLKMzHgCqDH2ZDa6ZbMS/N5huoNqyQdK5Fj/xayu3fqbXckn5SeCS1EbMDZg==}
 
-  playwright-core@1.53.2:
-    resolution: {integrity: sha512-ox/OytMy+2w1jcYEYlOo1Hhp8hZkLCximMTUTMBXjGUA1KoFfiSZ+DU+3a739jsPY0yoKH2TFy9S2fsJas8yAw==}
-    engines: {node: '>=18'}
-    hasBin: true
-
   playwright-core@1.57.0:
     resolution: {integrity: sha512-agTcKlMw/mjBWOnD6kFZttAAGHgi/Nw0CZ2o6JqWSbMlI219lAFLZZCyqByTsvVAJq5XA5H8cA6PrvBRpBWEuQ==}
     engines: {node: '>=18'}
@@ -22802,7 +22806,7 @@ snapshots:
       jest-watch-typeahead: 3.0.1(jest@30.2.0(@types/node@20.19.4)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.27.0))(ts-node@10.9.2(@swc/core@1.12.9)(@types/node@20.19.4)(typescript@5.8.3)))
       nyc: 15.1.0
       playwright: 1.57.0
-      playwright-core: 1.53.2
+      playwright-core: 1.58.0
       rimraf: 3.0.2
       storybook: 10.1.11(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       uuid: 8.3.2
@@ -31123,8 +31127,6 @@ snapshots:
       pathe: 2.0.3
 
   platform@1.3.3: {}
-
-  playwright-core@1.53.2: {}
 
   playwright-core@1.57.0: {}
 

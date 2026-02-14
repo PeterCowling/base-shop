@@ -111,7 +111,7 @@ Upgrade the Base-Shop monorepo from Next.js 15.3.9 to Next.js 16.x (latest stabl
 | TASK-10 | IMPLEMENT | Repo baseline fix: commit missing mcp-server browser tool entrypoint | 85% | S | Complete (2026-02-14) | - | TASK-06 |
 | TASK-11 | IMPLEMENT | Fix reception lint regression (setState-in-useMemo) | 85% | S | Complete (2026-02-14) | - | TASK-06 |
 | TASK-06 | CHECKPOINT | Mid-upgrade validation — builds, typecheck, lint | 95% | S | Complete (2026-02-14) | TASK-02, TASK-03, TASK-04, TASK-05, TASK-09, TASK-10, TASK-11 | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Pending | TASK-06 | TASK-08 |
+| TASK-07 | IMPLEMENT | Upgrade @opennextjs/cloudflare for Next 16 | 80% | M | Complete (2026-02-14) | TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | Full test validation and regression fixes | 80% | M | Pending | TASK-06, TASK-07 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -626,6 +626,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Current version: `^1.16.3`
   - OpenNext docs: https://opennext.js.org/cloudflare
   - MEMORY.md note: brikette staging uses static export (not OpenNext) — only production uses OpenNext
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commit:** 761b9297cc
+- **Changes:**
+  - Bumped `@opennextjs/cloudflare` to `^1.16.5` in brikette, business-os, xa, and cms.
+- **Validation evidence:**
+  - `pnpm list @opennextjs/cloudflare -r --depth 0` -> PASS (all 4 apps resolve `1.16.5`)
+  - `pnpm --filter @apps/business-os run build:worker` -> PASS (OpenNext uses `next build --webpack`; worker emitted at `apps/business-os/.open-next/worker.js`)
 
 ### TASK-08: Full test validation and regression fixes
 

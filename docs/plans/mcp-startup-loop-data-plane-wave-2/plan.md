@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Infrastructure
 Workstream: Engineering
 Created: 2026-02-13
-Last-updated: 2026-02-13
+Last-updated: 2026-02-14
 Feature-Slug: mcp-startup-loop-data-plane-wave-2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -83,8 +83,8 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 | TASK-04 | IMPLEMENT | Deliver vertical slice (`measure` + `app_packet` + `pack`) over artifacts | 80% | M | Complete (2026-02-13) | TASK-03 | TASK-05 |
 | TASK-05 | CHECKPOINT | Reassess post-slice before broad expansion | 95% | S | Complete (2026-02-13) | TASK-04 | TASK-06, TASK-09, TASK-10 |
 | TASK-06 | IMPLEMENT | Add refresh status/enqueue lifecycle and anomaly detection tools | 81% | M | Complete (2026-02-13) | TASK-03, TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Expand measurement adapters and enforce startup-loop `analytics_*` sunset trigger | 84% | M | Pending | TASK-01, TASK-03, TASK-05, TASK-09 | TASK-08 |
-| TASK-08 | IMPLEMENT | Add experiment runtime MCP and a guarded ops pilot | 82% | M | Blocked | TASK-03, TASK-05, TASK-07, TASK-10 | - |
+| TASK-07 | IMPLEMENT | Expand measurement adapters and enforce startup-loop `analytics_*` sunset trigger | 84% | M | Complete (2026-02-14) | TASK-01, TASK-03, TASK-05, TASK-09 | TASK-08 |
+| TASK-08 | IMPLEMENT | Add experiment runtime MCP and a guarded ops pilot | 82% | M | Complete (2026-02-14) | TASK-03, TASK-05, TASK-07, TASK-10 | - |
 | TASK-09 | SPIKE | Add `@acme/mcp-cloudflare` contract harness + package-local analytics tests | 84% | M | Complete (2026-02-13) | TASK-03, TASK-05 | TASK-07 |
 | TASK-10 | SPIKE | Probe `exp_*` runtime contract and guarded `ops_*` audit envelope | 83% | M | Complete (2026-02-13) | TASK-03, TASK-05 | TASK-08 |
 
@@ -593,6 +593,25 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Evidence:** `246da27213` added package-local Cloudflare analytics contract tests and MCP-side registry enforcement harness.
 - **Next action:** proceed with TASK-07 implementation using established adapter contract harness as a required regression gate.
 
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** `fb00002a9c`
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1 implementation cycle after TASK-09 prerequisite completion
+  - Initial validation: FAIL risk state (no startup-loop analytics sunset gate; measure adapters lacked multi-source coverage)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 84%
+  - Delta reason: confidence held; build evidence validated all acceptance contracts without widening blast radius.
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only)
+- **Documentation updated:** `docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md`
+- **Implementation notes:** Added multi-source `measure_snapshot_get` adapters, sunset trigger status instrumentation in `pack_weekly_s10_build`, and startup-loop-only `analytics_*` sunset preflight via `packages/mcp-server/src/tools/analytics-sunset.ts`.
+
 ### TASK-08: Add experiment runtime MCP and a guarded ops pilot
 - **Type:** IMPLEMENT
 - **Deliverable:** `exp_*` control tools + one `ops_*_guarded` pilot with audit/concurrency controls
@@ -667,6 +686,26 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - **Confidence update:** promoted from 74% to 82% after TASK-10 completion evidence.
 - **Evidence:** `f8d789c637` implemented contract probes for `exp_allocate_id`, `exp_register`, `exp_rollout_status`, `exp_results_snapshot`, and `ops_update_price_guarded`.
 - **Go/No-Go recommendation from TASK-10:** **GO** for TASK-08 once TASK-07 lands, with scope bounded to the validated contract envelopes and BOS conflict semantics.
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** `f8d789c637`, `fb00002a9c` (dependency-clearance integration)
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
+  - Cycles: 1 implementation cycle (TASK-10) + 1 dependency-clearance validation cycle (post TASK-07)
+  - Initial validation: PASS in spike scope with dependency hold
+  - Final validation: PASS with TASK-07 dependency resolved
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 82%
+  - Delta reason: confidence held; dependency gate cleared with no contract regressions.
+- **Validation:**
+  - Ran: `pnpm run test:governed -- jest -- --runTestsByPath packages/mcp-server/src/__tests__/bos-tools-write.test.ts packages/mcp-server/src/__tests__/exp-tools.contract.test.ts --maxWorkers=2 --modulePathIgnorePatterns='/\\.open-next/' '/\\.worktrees/' '/\\.ts-jest/'` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` — PASS (warnings only)
+- **Documentation updated:** `docs/plans/mcp-startup-loop-data-plane-wave-2/plan.md`
+- **Implementation notes:** TASK-10 contract implementations now run as production task outputs with TASK-07 sunset/measurement dependencies satisfied.
 
 ### TASK-09: Spike Cloudflare adapter contract harness and package-local test baseline
 - **Type:** SPIKE
@@ -819,10 +858,10 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - Alerts/Dashboards: weekly S10 coverage/regression board and refresh queue health board.
 
 ## Acceptance Criteria (overall)
-- [ ] Shared wave-2 contracts and middleware are versioned, reusable, and testable.
-- [ ] Vertical slice proves deterministic replayable outputs from artifact-backed MCP handlers.
-- [ ] Post-checkpoint expansion tasks are revalidated against real build evidence before full rollout.
-- [ ] Guarded write surfaces for experiments/ops enforce policy and concurrency controls without bypassing BOS.
+- [x] Shared wave-2 contracts and middleware are versioned, reusable, and testable.
+- [x] Vertical slice proves deterministic replayable outputs from artifact-backed MCP handlers.
+- [x] Post-checkpoint expansion tasks are revalidated against real build evidence before full rollout.
+- [x] Guarded write surfaces for experiments/ops enforce policy and concurrency controls without bypassing BOS.
 
 ## Decision Log
 - 2026-02-13: Chose artifact-reader MCP spine over live connector fan-out for reproducibility and governance.
@@ -833,3 +872,5 @@ Implement wave-2 in phased increments with a hard vertical-slice gate and checkp
 - 2026-02-13: Completed TASK-06 with passing startup-loop integration tests for refresh lifecycle and anomaly baseline gates.
 - 2026-02-13: Completed TASK-09 with Cloudflare package-local and MCP adapter contract harness evidence (`246da27213`), promoting TASK-07 to 84% and Pending.
 - 2026-02-13: Completed TASK-10 with passing `exp_*`/`ops_*` contract probes (`f8d789c637`), promoting TASK-08 to 82% and recommending GO once TASK-07 completes.
+- 2026-02-14: Completed TASK-07 with multi-source measure adapters and startup-loop analytics sunset enforcement (`fb00002a9c`).
+- 2026-02-14: Cleared TASK-08 dependency gate and marked implementation complete after post-TASK-07 validation reruns.

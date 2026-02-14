@@ -569,40 +569,41 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:**
-  - `apps/cochlearfit-worker/src/index.ts` (lines 108-128: remove hardcoded catalog, import generated)
+  - `apps/cochlearfit-worker/src/index.ts` (remove hardcoded catalog, import generated)
+  - `apps/cochlearfit-worker/package.json` (ensure generated file exists before dev/lint/typecheck)
   - `[readonly] apps/cochlearfit-worker/src/worker-catalog.generated.ts` (import source)
 - **Depends on:** TASK-04
 - **Blocks:** TASK-09
 - **Confidence:** 90%
   - Implementation: 95% — Straightforward import replacement, generated catalog already has correct structure
   - Approach: 90% — Clean removal of hardcoded logic, no side effects
-  - Impact: 85% — Must verify line items match Stripe products after change (integration test)
+  - Impact: 85% — Integration verification with real Stripe Price IDs happens after TASK-08 (data) and TASK-01 (Stripe); this task focuses on removing hardcoding and wiring to generated data
 - **Acceptance:**
-  - [ ] Import statement added: `import { catalog } from './worker-catalog.generated';`
+  - [ ] Import statement added: `import { catalog } from "./worker-catalog.generated";`
   - [ ] Hardcoded `buildVariants()` calls removed (lines 122-124)
   - [ ] `buildVariants()` function removed (lines 108-120, no longer needed)
   - [ ] Types updated to match generated catalog format
   - [ ] Build succeeds with no TypeScript errors
-  - [ ] Local test: create Stripe session → verify line items match generated catalog
-  - [ ] Local test: verify correct Price IDs sent to Stripe (not placeholder `price_classic_kids_sand`)
+  - [ ] Local check: imported `catalog` matches `data/shops/cochlearfit/variants.json` stripePriceId values (placeholder `price_...` allowed until TASK-08)
   - [ ] Commit changes (excluding generated file)
 - **Validation contract:**
-  - TC-01: TypeScript compilation → run `pnpm --filter cochlearfit-worker typecheck` → no errors
-  - TC-02: Generated catalog import → run `pnpm --filter cochlearfit-worker build` → import resolves correctly
-  - TC-03: Stripe session creation → POST `/api/checkout/session` locally → line items include real Price IDs (not placeholder format)
-  - TC-04: Price ID format → inspect session payload → Price IDs start with `price_` (Stripe format, not `price_classic_kids_sand`)
-  - **Acceptance coverage:** TC-01+TC-02 cover compilation, TC-03+TC-04 cover Stripe integration
-  - **Validation type:** unit testing (typecheck) + integration testing (local session creation)
-  - **Run/verify:** `pnpm --filter cochlearfit-worker typecheck && pnpm --filter cochlearfit-worker build`, test Stripe session creation locally
+  - TC-01: TypeScript compilation → run `pnpm --filter @apps/cochlearfit-worker typecheck` → no errors
+  - TC-02: Generated catalog import → run `pnpm --filter @apps/cochlearfit-worker build` → import resolves correctly
+  - TC-03: Catalog wiring sanity → run bundler + import generated catalog via tsx → expected variant IDs exist
+    - Example: `node --import tsx -e "import { catalog } from './apps/cochlearfit-worker/src/worker-catalog.generated.ts'; console.log(catalog.length)"` → prints `12`
+  - TC-04: Placeholder Price IDs tolerated pre-TASK-08 → confirm generated `stripePriceId` values start with `price_`
+  - **Acceptance coverage:** TC-01+TC-02 cover compilation/build, TC-03+TC-04 cover wiring and ID format
+  - **Validation type:** compile/build verification + local import sanity checks
+  - **Run/verify:** `pnpm --filter @apps/cochlearfit-worker typecheck && pnpm --filter @apps/cochlearfit-worker build`, plus TC-03 node import check
 - **Execution plan:**
   - **Red → Green → Refactor**
-  - **Red evidence:** First session creation will fail (old hardcoded catalog still active, placeholder Price IDs)
-  - **Green evidence:** After import replacement, session creation succeeds with real Price IDs from generated catalog
+  - **Red evidence:** N/A (this task is a wiring change validated by typecheck/build + local import sanity checks)
+  - **Green evidence:** After import replacement, typecheck/build succeed and the Worker catalog maps are driven by the generated file
   - **Refactor evidence:** Remove unused `buildVariants()` function, clean up imports
 - **Planning validation:**
   - Checks run: Reviewed Worker index.ts lines 108-128 (hardcoded catalog to be removed)
   - Unexpected findings: None (straightforward import replacement)
-- **What would make this ≥90%:** Already at 90% (straightforward implementation with real Price IDs from TASK-01)
+- **What would make this ≥90%:** Run end-to-end checkout using real Stripe Price IDs after TASK-08 + TASK-01 (covered by TASK-11 staging tests)
 - **Rollout / rollback:**
   - Rollout: Worker build includes generated catalog; no runtime changes required
   - Rollback: Revert to hardcoded catalog if generated import fails (temporary fallback)

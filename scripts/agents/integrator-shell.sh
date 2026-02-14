@@ -14,8 +14,8 @@ usage() {
   echo "Options:"
   echo "  --read-only       Guard-only mode (no writer lock; use for long audits/dry-runs)"
   echo "  --write           Force write mode (default)"
-  echo "  --timeout <sec>   Lock wait timeout in write mode (default: 0 = wait forever)"
-  echo "  --poll <sec>      Lock polling interval in write mode (default: 2)"
+  echo "  --timeout <sec>   Lock wait timeout in write mode (default: 300s in non-interactive; 0 = wait forever in interactive)"
+  echo "  --poll <sec>      Lock polling interval in write mode (default: 30)"
   echo "  --no-wait         Do not wait for lock in write mode"
   echo "  --wait-forever    Wait indefinitely for lock in write mode"
   echo "  -h, --help        Show this help"
@@ -130,11 +130,16 @@ if [[ -z "$lock_timeout" ]]; then
   if [[ -n "${BASESHOP_INTEGRATOR_LOCK_TIMEOUT_SEC:-}" ]]; then
     lock_timeout="${BASESHOP_INTEGRATOR_LOCK_TIMEOUT_SEC}"
   else
-    lock_timeout="0"
+    # Agents (non-interactive) should not wait indefinitely.
+    if [[ ! -t 0 ]]; then
+      lock_timeout="300"
+    else
+      lock_timeout="0"
+    fi
   fi
 fi
 if [[ -z "$lock_poll" ]]; then
-  lock_poll="${BASESHOP_INTEGRATOR_LOCK_POLL_SEC:-2}"
+  lock_poll="${BASESHOP_INTEGRATOR_LOCK_POLL_SEC:-30}"
 fi
 
 if ! [[ "$lock_timeout" =~ ^[0-9]+$ ]]; then

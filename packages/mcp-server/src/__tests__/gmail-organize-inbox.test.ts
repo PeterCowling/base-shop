@@ -2,6 +2,7 @@
 
 import { getGmailClient } from "../clients/gmail";
 import { handleGmailTool } from "../tools/gmail";
+import { processCancellationEmail } from "../tools/process-cancellation-email";
 
 type GmailLabel = { id: string; name: string };
 type GmailHeader = { name: string; value: string };
@@ -47,7 +48,12 @@ jest.mock("../clients/gmail", () => ({
   getGmailClient: jest.fn(),
 }));
 
+jest.mock("../tools/process-cancellation-email", () => ({
+  processCancellationEmail: jest.fn(),
+}));
+
 const getGmailClientMock = getGmailClient as jest.Mock;
+const processCancellationEmailMock = processCancellationEmail as jest.Mock;
 
 function createHeader(name: string, value: string): GmailHeader {
   return { name, value };
@@ -404,11 +410,15 @@ describe("gmail_organize_inbox classification", () => {
     expect(payload.counts.labeledPromotional).toBe(1);
   });
 
-  it("routes strong non-customer senders to promotional even with booking keywords", async () => {
+  it("routes Octorate cancellations to cancellation handler (not promotional)", async () => {
     const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const promotional = { id: "label-promo", name: "Brikette/Outcome/Promotional" };
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const cancellationProcessed = { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" };
+    const cancellationParseFailed = { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" };
+    const cancellationBookingNotFound = { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" };
     const { gmail } = createGmailStub({
-      labels: [needsProcessing, promotional],
+      labels: [needsProcessing, promotional, cancellationReceived, cancellationProcessed, cancellationParseFailed, cancellationBookingNotFound],
       threads: {
         "thread-9": {
           id: "thread-9",
@@ -418,11 +428,15 @@ describe("gmail_organize_inbox classification", () => {
               threadId: "thread-9",
               labelIds: ["INBOX", "UNREAD"],
               payload: {
+                mimeType: "text/html",
                 headers: [
                   createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
                   createHeader("Subject", "NEW CANCELLATION Booking 2026-05-01"),
                   createHeader("Date", "Tue, 10 Feb 2026 15:25:00 +0000"),
                 ],
+                body: {
+                  data: encodeBase64Url("<html>NEW CANCELLATION 6896451364_5972003394 Booking 2026-05-01</html>"),
+                },
               },
             },
           ],
@@ -431,11 +445,19 @@ describe("gmail_organize_inbox classification", () => {
     });
     getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
 
+    // Mock processCancellationEmail to return success
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "6896451364",
+      activitiesWritten: 2,
+    });
+
     const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
     const payload = JSON.parse(result.content[0].text);
 
+    expect(payload.counts.processedCancellations).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
     expect(payload.counts.labeledNeedsProcessing).toBe(0);
-    expect(payload.counts.labeledPromotional).toBe(1);
     expect(payload.counts.labeledDeferred).toBe(0);
   });
 
@@ -612,5 +634,239 @@ describe("gmail_organize_inbox classification", () => {
         }),
       ])
     );
+  });
+});
+
+describe("gmail_organize_inbox cancellation processing (TASK-15)", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // TC-01: Organize inbox with Octorate cancellation email → label applied, tool invoked
+  it("TC-01: processes Octorate cancellation email and applies Cancellation-Received label", async () => {
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const cancellationProcessed = { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" };
+    const cancellationParseFailed = { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" };
+    const cancellationBookingNotFound = { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [cancellationReceived, cancellationProcessed, cancellationParseFailed, cancellationBookingNotFound],
+      threads: {
+        "thread-cancel-1": {
+          id: "thread-cancel-1",
+          messages: [
+            {
+              id: "msg-cancel-1",
+              threadId: "thread-cancel-1",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW CANCELLATION 6896451364_5972003394 Booking 2026-08-30"),
+                  createHeader("Date", "Fri, 14 Feb 2026 10:00:00 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url("<html>NEW CANCELLATION 6896451364_5972003394 Booking 2026-08-30</html>"),
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // Mock processCancellationEmail to return success
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "6896451364",
+      activitiesWritten: 2,
+    });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedCancellations).toBe(1);
+    expect(messageStore["msg-cancel-1"].labelIds).toContain(cancellationReceived.id);
+    expect(messageStore["msg-cancel-1"].labelIds).toContain(cancellationProcessed.id);
+    expect(messageStore["msg-cancel-1"].labelIds).not.toContain("INBOX");
+  });
+
+  // TC-02: Organize inbox with Hostelworld cancellation email → NOT processed (OTA ignored)
+  it("TC-02: ignores Hostelworld cancellation emails (OTA filtering)", async () => {
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const promotional = { id: "label-promo", name: "Brikette/Outcome/Promotional" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [cancellationReceived, promotional],
+      threads: {
+        "thread-cancel-2": {
+          id: "thread-cancel-2",
+          messages: [
+            {
+              id: "msg-cancel-2",
+              threadId: "thread-cancel-2",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Hostelworld <noreply@hostelworld.com>"),
+                  createHeader("Subject", "Cancellation notification for your booking"),
+                  createHeader("Date", "Fri, 14 Feb 2026 10:05:00 +0100"),
+                ],
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedCancellations).toBe(0);
+    expect(messageStore["msg-cancel-2"].labelIds).not.toContain(cancellationReceived.id);
+    expect(messageStore["msg-cancel-2"].labelIds).toContain(promotional.id);
+  });
+
+  // TC-03: Tool success response → Cancellation-Processed label applied
+  it("TC-03: applies Cancellation-Processed label on tool success", async () => {
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const cancellationProcessed = { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" };
+    const cancellationParseFailed = { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" };
+    const cancellationBookingNotFound = { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [cancellationReceived, cancellationProcessed, cancellationParseFailed, cancellationBookingNotFound],
+      threads: {
+        "thread-cancel-3": {
+          id: "thread-cancel-3",
+          messages: [
+            {
+              id: "msg-cancel-3",
+              threadId: "thread-cancel-3",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW CANCELLATION 6896451364_5972003394 Booking 2026-08-30"),
+                  createHeader("Date", "Fri, 14 Feb 2026 10:10:00 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url("<html>NEW CANCELLATION 6896451364_5972003394 Booking 2026-08-30</html>"),
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // Mock processCancellationEmail to return success
+    processCancellationEmailMock.mockResolvedValue({
+      status: "success",
+      reservationCode: "6896451364",
+      activitiesWritten: 2,
+    });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedCancellations).toBe(1);
+    expect(messageStore["msg-cancel-3"].labelIds).toContain(cancellationProcessed.id);
+  });
+
+  // TC-04: Tool parse-failed response → Cancellation-Parse-Failed label applied
+  it("TC-04: applies Cancellation-Parse-Failed label on tool parse failure", async () => {
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const cancellationProcessed = { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" };
+    const cancellationParseFailed = { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" };
+    const cancellationBookingNotFound = { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [cancellationReceived, cancellationProcessed, cancellationParseFailed, cancellationBookingNotFound],
+      threads: {
+        "thread-cancel-4": {
+          id: "thread-cancel-4",
+          messages: [
+            {
+              id: "msg-cancel-4",
+              threadId: "thread-cancel-4",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW CANCELLATION malformed email"),
+                  createHeader("Date", "Fri, 14 Feb 2026 10:15:00 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url("<html>Malformed cancellation email without reservation code</html>"),
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // Mock processCancellationEmail to return parse-failed
+    processCancellationEmailMock.mockResolvedValue({
+      status: "parse-failed",
+      reason: "Could not extract reservation code from email",
+    });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedCancellations).toBe(1);
+    expect(messageStore["msg-cancel-4"].labelIds).toContain(cancellationParseFailed.id);
+  });
+
+  // TC-05: Tool booking-not-found response → Cancellation-Booking-Not-Found label applied
+  it("TC-05: applies Cancellation-Booking-Not-Found label when booking doesn't exist", async () => {
+    const cancellationReceived = { id: "label-cancel-received", name: "Brikette/Workflow/Cancellation-Received" };
+    const cancellationProcessed = { id: "label-cancel-processed", name: "Brikette/Workflow/Cancellation-Processed" };
+    const cancellationParseFailed = { id: "label-cancel-parse-failed", name: "Brikette/Workflow/Cancellation-Parse-Failed" };
+    const cancellationBookingNotFound = { id: "label-cancel-not-found", name: "Brikette/Workflow/Cancellation-Booking-Not-Found" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [cancellationReceived, cancellationProcessed, cancellationParseFailed, cancellationBookingNotFound],
+      threads: {
+        "thread-cancel-5": {
+          id: "thread-cancel-5",
+          messages: [
+            {
+              id: "msg-cancel-5",
+              threadId: "thread-cancel-5",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                mimeType: "text/html",
+                headers: [
+                  createHeader("From", "Octorate <noreply@smtp.octorate.com>"),
+                  createHeader("Subject", "NEW CANCELLATION 9999999999_8888888888 Booking 2026-09-01"),
+                  createHeader("Date", "Fri, 14 Feb 2026 10:20:00 +0100"),
+                ],
+                body: {
+                  data: encodeBase64Url("<html>NEW CANCELLATION 9999999999_8888888888 Booking 2026-09-01</html>"),
+                },
+              },
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    // Mock processCancellationEmail to return booking-not-found
+    processCancellationEmailMock.mockResolvedValue({
+      status: "booking-not-found",
+      reason: "Booking 9999999999 not found in Firebase",
+    });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.processedCancellations).toBe(1);
+    expect(messageStore["msg-cancel-5"].labelIds).toContain(cancellationBookingNotFound.id);
   });
 });

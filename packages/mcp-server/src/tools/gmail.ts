@@ -27,6 +27,8 @@ import {
   resolvePrepaymentWorkflow,
 } from "../utils/workflow-triggers.js";
 
+import { processCancellationEmail } from "./process-cancellation-email.js";
+
 // =============================================================================
 // Constants
 // =============================================================================
@@ -49,6 +51,10 @@ export const LABELS = {
   WORKFLOW_PREPAYMENT_CHASE_2: "Brikette/Workflow/Prepayment-Chase-2",
   WORKFLOW_PREPAYMENT_CHASE_3: "Brikette/Workflow/Prepayment-Chase-3",
   WORKFLOW_AGREEMENT_RECEIVED: "Brikette/Workflow/Agreement-Received",
+  WORKFLOW_CANCELLATION_RECEIVED: "Brikette/Workflow/Cancellation-Received",
+  WORKFLOW_CANCELLATION_PROCESSED: "Brikette/Workflow/Cancellation-Processed",
+  WORKFLOW_CANCELLATION_PARSE_FAILED: "Brikette/Workflow/Cancellation-Parse-Failed",
+  WORKFLOW_CANCELLATION_BOOKING_NOT_FOUND: "Brikette/Workflow/Cancellation-Booking-Not-Found",
   PROMOTIONAL: "Brikette/Outcome/Promotional",
   SPAM: "Brikette/Outcome/Spam",
   AGENT_CODEX: "Brikette/Agent/Codex",
@@ -98,6 +104,10 @@ export const REQUIRED_LABELS = [
   LABELS.WORKFLOW_PREPAYMENT_CHASE_2,
   LABELS.WORKFLOW_PREPAYMENT_CHASE_3,
   LABELS.WORKFLOW_AGREEMENT_RECEIVED,
+  LABELS.WORKFLOW_CANCELLATION_RECEIVED,
+  LABELS.WORKFLOW_CANCELLATION_PROCESSED,
+  LABELS.WORKFLOW_CANCELLATION_PARSE_FAILED,
+  LABELS.WORKFLOW_CANCELLATION_BOOKING_NOT_FOUND,
   LABELS.PROMOTIONAL,
   LABELS.SPAM,
   LABELS.AGENT_CODEX,
@@ -126,6 +136,14 @@ const BOOKING_MONITOR_FROM_PATTERNS = [
 
 const BOOKING_MONITOR_SUBJECT_PATTERNS = [
   /^new reservation\b/i,
+];
+
+const CANCELLATION_MONITOR_FROM_PATTERNS = [
+  "noreply@smtp.octorate.com",
+];
+
+const CANCELLATION_MONITOR_SUBJECT_PATTERNS = [
+  /^new cancellation\b/i,
 ];
 
 const TERMS_AND_CONDITIONS_URL =
@@ -789,6 +807,7 @@ function shouldTrashAsGarbage(fromRaw: string, subject: string): boolean {
 type OrganizeDecision =
   | "needs_processing"
   | "booking_reservation"
+  | "cancellation"
   | "promotional"
   | "spam"
   | "deferred"
@@ -829,6 +848,16 @@ function classifyOrganizeDecision(
   );
   if (matchesBookingMonitorSender && matchesBookingMonitorSubject) {
     return { decision: "booking_reservation", reason: "new-reservation-notification", senderEmail };
+  }
+
+  const matchesCancellationMonitorSender = CANCELLATION_MONITOR_FROM_PATTERNS.some((pattern) =>
+    fromLower.includes(pattern)
+  );
+  const matchesCancellationMonitorSubject = CANCELLATION_MONITOR_SUBJECT_PATTERNS.some((pattern) =>
+    pattern.test(subject)
+  );
+  if (matchesCancellationMonitorSender && matchesCancellationMonitorSubject) {
+    return { decision: "cancellation", reason: "new-cancellation-notification", senderEmail };
   }
 
   const hasNoReplySender = isNoReplySender(senderEmail);
@@ -1447,6 +1476,92 @@ async function processBookingReservationNotification({
 // Tool Case Handlers
 // =============================================================================
 
+/**
+ * Handle cancellation email processing.
+ * Extracts the cancellation workflow logic from the main organize inbox switch case.
+ */
+async function handleCancellationCase({
+  gmail,
+  labelMap,
+  latestMessage,
+  dryRun,
+  fromRaw,
+}: {
+  gmail: gmail_v1.Gmail;
+  labelMap: Map<string, string>;
+  latestMessage: gmail_v1.Schema$Message;
+  dryRun: boolean;
+  fromRaw: string;
+}): Promise<{ processed: boolean }> {
+  const cancellationReceivedLabelId = labelMap.get(LABELS.WORKFLOW_CANCELLATION_RECEIVED);
+  const cancellationProcessedLabelId = labelMap.get(LABELS.WORKFLOW_CANCELLATION_PROCESSED);
+  const cancellationParseFailedLabelId = labelMap.get(LABELS.WORKFLOW_CANCELLATION_PARSE_FAILED);
+  const cancellationBookingNotFoundLabelId = labelMap.get(
+    LABELS.WORKFLOW_CANCELLATION_BOOKING_NOT_FOUND
+  );
+
+  if (!cancellationReceivedLabelId) {
+    throw new Error(`Missing required label: ${LABELS.WORKFLOW_CANCELLATION_RECEIVED}`);
+  }
+
+  // Apply Cancellation-Received label immediately
+  if (!dryRun) {
+    await gmail.users.messages.modify({
+      userId: "me",
+      id: latestMessage.id!,
+      requestBody: {
+        addLabelIds: [cancellationReceivedLabelId],
+        removeLabelIds: [],
+      },
+    });
+  }
+
+  // Extract email body for processing
+  const extractedBody = extractBody(latestMessage.payload as Parameters<typeof extractBody>[0]);
+  const emailHtml = extractedBody.html || extractedBody.plain;
+
+  // Invoke processCancellationEmail tool (mock in tests, real in production)
+  const firebaseUrl = process.env.FIREBASE_DATABASE_URL || "";
+  const firebaseApiKey = process.env.FIREBASE_API_KEY;
+
+  try {
+    const result = await processCancellationEmail(
+      latestMessage.id!,
+      emailHtml,
+      fromRaw,
+      firebaseUrl,
+      firebaseApiKey
+    );
+
+    // Apply status-specific label based on tool result
+    let statusLabelId: string | undefined;
+    if (result.status === "success" && cancellationProcessedLabelId) {
+      statusLabelId = cancellationProcessedLabelId;
+    } else if (result.status === "parse-failed" && cancellationParseFailedLabelId) {
+      statusLabelId = cancellationParseFailedLabelId;
+    } else if (result.status === "booking-not-found" && cancellationBookingNotFoundLabelId) {
+      statusLabelId = cancellationBookingNotFoundLabelId;
+    }
+
+    if (statusLabelId && !dryRun) {
+      await gmail.users.messages.modify({
+        userId: "me",
+        id: latestMessage.id!,
+        requestBody: {
+          addLabelIds: [statusLabelId],
+          removeLabelIds: ["INBOX", "UNREAD"],
+        },
+      });
+    }
+
+    return { processed: true };
+  } catch (error) {
+    // Log error but don't throw - we've already marked it as received
+    console.error(`Failed to process cancellation email ${latestMessage.id}:`, error);
+    return { processed: false };
+  }
+}
+
 async function handleOrganizeInbox(
   gmail: gmail_v1.Gmail,
   args: unknown
@@ -1496,6 +1611,7 @@ async function handleOrganizeInbox(
   let labeledSpam = 0;
   let labeledDeferred = 0;
   let processedBookingReservations = 0;
+  let processedCancellations = 0;
   let trashed = 0;
   let skippedAlreadyManaged = 0;
   let skippedNoAction = 0;
@@ -1631,6 +1747,19 @@ async function handleOrganizeInbox(
         }
         break;
       }
+      case "cancellation": {
+        const result = await handleCancellationCase({
+          gmail,
+          labelMap,
+          latestMessage,
+          dryRun,
+          fromRaw,
+        });
+        if (result.processed) {
+          processedCancellations += 1;
+        }
+        break;
+      }
       case "promotional": {
         labeledPromotional += 1;
         if (!dryRun) {
@@ -1727,6 +1856,7 @@ async function handleOrganizeInbox(
       labeledSpam,
       labeledDeferred,
       processedBookingReservations,
+      processedCancellations,
       routedBookingMonitor: 0,
       trashed,
       skippedAlreadyManaged,

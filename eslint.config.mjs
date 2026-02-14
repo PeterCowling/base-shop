@@ -1,13 +1,11 @@
 // eslint.config.mjs
-import { FlatCompat } from "@eslint/eslintrc";
 import tsParser from "@typescript-eslint/parser"; // still needed for parser
-import tsPlugin from "@typescript-eslint/eslint-plugin";
 import boundaries from "eslint-plugin-boundaries";
-import importPlugin from "eslint-plugin-import";
 import dsPlugin from "@acme/eslint-plugin-ds";
 import securityPlugin from "eslint-plugin-security";
 import { fixupPluginRules } from "@eslint/compat";
-import jsxA11y from "eslint-plugin-jsx-a11y";
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 import testingLibrary from "eslint-plugin-testing-library";
 import storybook from "eslint-plugin-storybook";
 import noOnlyTests from "eslint-plugin-no-only-tests";
@@ -27,7 +25,6 @@ import eslintIgnorePatterns from "./tools/eslint-ignore-patterns.cjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const compat = new FlatCompat({ baseDirectory: __dirname });
 
 // Utility: turn off all ds/* rules (useful for the plugin's own test files)
 const offAllDsRules = Object.fromEntries(
@@ -55,7 +52,6 @@ export default [
     // Register baseline plugin objects and enable only Tailwind's contradicting class rule
     plugins: {
       ...(tailwindcss ? { tailwindcss } : {}),
-      "jsx-a11y": jsxA11y,
       "testing-library": testingLibrary,
     },
     rules: tailwindcss
@@ -136,7 +132,21 @@ export default [
   },
 
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Next 16 exports Flat Config arrays already; do not run them through compat shims.
+  ...nextCoreWebVitals,
+  ...nextTypescript,
+
+  /* ▸ React Hooks: keep core rules, disable new strictness rules introduced in newer react-hooks configs */
+  {
+    rules: {
+      "react-hooks/globals": "off",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/immutability": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/purity": "off",
+      "react-hooks/static-components": "off",
+    },
+  },
 
   /* ▸ Security rules */
   {
@@ -789,7 +799,7 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { ds: dsPlugin, "@typescript-eslint": tsPlugin },
+    plugins: { ds: dsPlugin },
     rules: {
       // d.ts files are type declarations; relax rules that don't apply
       "@typescript-eslint/no-unused-vars": "off",
@@ -812,7 +822,6 @@ export default [
         tsconfigRootDir: __dirname,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
   },
   {
@@ -877,7 +886,6 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
     rules: {
       // Node scripts may use require() ergonomically
       "@typescript-eslint/no-require-imports": "off",
@@ -933,7 +941,6 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
   },
 
@@ -1141,7 +1148,6 @@ export default [
   /* ▸ Enforce UI component layering */
   {
     files: ["packages/ui/**/*.{ts,tsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "import/no-restricted-paths": [
         "error",
@@ -1180,7 +1186,6 @@ export default [
   /* ▸ Package layering: prevent platform-core depending on UI or apps */
   {
     files: ["packages/platform-core/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "import/no-restricted-paths": [
         "error",
@@ -1207,7 +1212,6 @@ export default [
   /* ▸ Package layering: design-system cannot import from cms-ui or ui */
   {
     files: ["packages/design-system/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "no-restricted-imports": [
         "error",
@@ -1248,7 +1252,6 @@ export default [
   {
     files: ["packages/ui/src/**/*.{ts,tsx,js,jsx}"],
     ignores: ["packages/ui/src/shims/**/*.{ts,tsx,js,jsx}"],
-    plugins: { import: importPlugin },
     rules: {
       "no-restricted-imports": [
         "error",

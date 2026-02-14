@@ -1244,6 +1244,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Affects:**
   - `apps/cochlearfit-worker/src/__tests__/` (expand test directory created in TASK-18)
+  - `apps/cochlearfit-worker/README.md` (test running instructions + scope note)
   - `[readonly] apps/cochlearfit-worker/jest.config.cjs` (created in TASK-18)
   - `[readonly] apps/cochlearfit-worker/package.json` (test script created in TASK-18)
   - `[readonly] apps/cochlearfit-worker/src/worker-catalog.generated.ts` (generated dependency)
@@ -1274,6 +1275,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Ran: `pnpm --filter @apps/cochlearfit-worker test` — PASS (commit 2545c6cb6b)
 - **Changes to task:**
   - Confidence promoted above build threshold based on E2 evidence; no scope change
+
+#### Re-plan Update (2026-02-14) — Scope Fix (README in Affects)
+- **Previous confidence:** 80%
+- **Updated confidence:** 80% (scope alignment only)
+  - **Evidence class:** E1 (plan integrity check)
+- **Decision / resolution:**
+  - `apps/cochlearfit-worker/README.md` is listed as a Documentation impact; added it to `Affects` so `/lp-build` can update it without violating scope rules.
 
 - **Acceptance:**
   - [ ] Add at least 2 additional Jest tests under `apps/cochlearfit-worker/src/__tests__/` (beyond the TASK-18 spike)

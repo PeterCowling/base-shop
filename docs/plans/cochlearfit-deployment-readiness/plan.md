@@ -463,6 +463,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 #### Build Attempt (2026-02-14)
 - **Status:** Blocked (external prerequisite)
+- **Commit:** c18cddd395
 - **Blocker:** `cochlearfit.com` does not resolve (NXDOMAIN), so sender-domain DNS verification cannot be completed.
 - **Evidence:** `dig @1.1.1.1 cochlearfit.com` -> `status: NXDOMAIN`; `dig @8.8.8.8 cochlearfit.com` -> `status: NXDOMAIN` on 2026-02-14.
 - **Next action:** Register/configure the domain (or confirm the correct production domain) before continuing TASK-03 and any routing tasks (TASK-10/TASK-12/TASK-13).

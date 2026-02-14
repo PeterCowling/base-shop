@@ -266,7 +266,7 @@ Worker (Needs fixes):
 | TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Complete (2026-02-14) | TASK-05 | TASK-14 |
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-02, TASK-09 |
-| TASK-21 | IMPLEMENT | Fix ESLint flat-config crash (unblock Worker lint) | 85% | S | Pending | - | TASK-14 |
+| TASK-21 | IMPLEMENT | Fix ESLint flat-config crash (unblock Worker lint) | 85% | S | Complete (2026-02-14) | - | TASK-14 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -1353,6 +1353,19 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: None (repo tooling config only)
   - Rollback: Revert the config change if it causes rule regressions (should not; goal is to restore lint execution)
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-14)
+- **Status:** Complete
+- **Commits:** 3f4876c5af (existing change in `eslint.config.mjs`), plus plan tracking commit 857d2129f9
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1
+  - Final validation: PASS
+- **Validation:**
+  - Ran: `pnpm --filter @apps/cochlearfit-worker lint` — PASS
+  - Ran: `pnpm --filter @apps/xa-drop-worker lint` — PASS
+- **Implementation notes:**
+  - Root cause was a repo-level ESLint flat-config load crash; resolved by ensuring Next flat presets are used directly (no compat conversion of already-flat configs) in `eslint.config.mjs` (commit 3f4876c5af).
 
 ### TASK-15: Document fulfillment runbook (draft pre-launch)
 - **Type:** IMPLEMENT

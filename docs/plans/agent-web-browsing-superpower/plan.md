@@ -109,7 +109,7 @@ Chosen: Option A.
 | TASK-03 | SPIKE | CDP AX extraction + backend node resolution + selector builder (fixtures + unit tests) | 87% | L | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-04 | IMPLEMENT | Observe shaping (ranking + paging + forms derivation) (pure) | 90% | M | Complete (2026-02-14) | TASK-01 | TASK-06 |
 | TASK-05 | IMPLEMENT | Act shaping (expect evaluation + safety confirmation protocol) (pure) | 90% | M | Complete (2026-02-14) | TASK-01 | TASK-07 |
-| TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Pending | TASK-02 | TASK-06, TASK-07 |
+| TASK-10 | IMPLEMENT | Session action registry: store per-observation action targets (actionId -> target) | 84% | M | Complete (2026-02-14) | TASK-02 | TASK-06, TASK-07 |
 | TASK-11 | IMPLEMENT | BrowserDriver contract + mock driver harness for fixture-based tests | 82% | M | Pending | TASK-01 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | `browser_observe` tool handler (session + CDP + ranking/paging) | 78% | L | Pending | TASK-02, TASK-03, TASK-04, TASK-10, TASK-11 | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | `browser_act` tool handler (actions + verification + safety + nextObservation) | 74% | L | Pending | TASK-02, TASK-05, TASK-06, TASK-10, TASK-11 | TASK-08 |
@@ -413,6 +413,28 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **What would make this >=90%:** add a contract test that ensures the target map is cleared/rotated on every new observationId update (guards against mixed-epoch actionIds).
 - **Re-plan Update (2026-02-14):**
   - Added as an explicit precursor after discovering the current session store only tracks `currentObservationId` (no action target registry), which would force act() to re-observe and guess (violates BIC contract intent).
+
+#### Build Completion (2026-02-14)
+
+- **Status:** Complete (2026-02-14)
+- **Commits:** ee32bb9226
+- **Execution cycle:**
+  - Validation cases executed: TC-01..TC-03
+  - Cycles: 1
+  - Initial validation: FAIL expected (missing session mapping)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 84%
+  - Post-validation: 88%
+  - Delta reason: action target registry + stale/unknown handling proven under unit tests (E2).
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-session.unit.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Extended `BrowserSession` to store `currentActionTargets: Map<string, BrowserActionTarget>` and clear it on new observation epochs.
+  - Added `setCurrentObservation()` and `resolveActionTarget()` helpers to make actionId resolution deterministic for the latest observation epoch.
+  - Added unit tests in `packages/mcp-server/src/__tests__/browser-session.unit.test.ts`.
 
 ### TASK-11: BrowserDriver Contract + Mock Driver Harness
 

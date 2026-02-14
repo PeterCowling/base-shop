@@ -125,4 +125,23 @@ describe("useActivitiesMutations", () => {
 
     errorSpy.mockRestore();
   });
+
+  // TASK-05: Add code 27 to relevantCodes array
+  it("sends guest email for activity code 27 (CANCELLED)", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    let activityResult;
+    await act(async () => {
+      activityResult = await result.current.addActivity("occ1", 27);
+    });
+
+    // TC-01: Code 27 triggers email send (is in relevantCodes)
+    expect(activityResult).toMatchObject({ success: true });
+
+    // TC-02: sendEmailGuest called with code 27 and correct bookingRef
+    expect(sendEmailGuestMock).toHaveBeenCalledWith({
+      bookingRef: "REF123",
+      activityCode: 27,
+    });
+  });
 });

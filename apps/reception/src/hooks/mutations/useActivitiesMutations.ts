@@ -30,8 +30,9 @@ export default function useActivitiesMutations() {
 
   /**
    * List of codes that should trigger an email to the occupant.
+   * TASK-05: Added code 27 (CANCELLED) for cancellation confirmation emails
    */
-  const relevantCodes = useMemo<number[]>(() => [2, 3, 4, 21, 5, 6, 7, 8], []);
+  const relevantCodes = useMemo<number[]>(() => [2, 3, 4, 21, 5, 6, 7, 8, 27], []);
 
   /**
    * If code is relevant, fetch occupant's reservationCode and send an email.

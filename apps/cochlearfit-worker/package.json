@@ -9,6 +9,8 @@
     "prelint": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
     "lint": "eslint .",
     "pretypecheck": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "node --import tsx ../../scripts/bundle-worker-catalog.ts",
+    "test": "jest"
   }
 }

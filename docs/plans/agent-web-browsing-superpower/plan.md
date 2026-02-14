@@ -258,6 +258,27 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **What would make this >=90%:** add a local smoke script that records fixtures from a real page and replays them (deferred unless needed).
 - **Re-plan Update (2026-02-14):** expanded TC list to meet L-effort minimums.
 
+#### Build Completion (2026-02-14)
+
+- **Status:** Complete (2026-02-14)
+- **Commits:** <pending>
+- **Execution cycle:**
+  - Validation cases executed: TC-01..TC-05
+  - Cycles: 1
+  - Initial validation: FAIL expected (missing modules)
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 82%
+  - Post-validation: 87%
+  - Delta reason: fixture-driven extraction + node resolution + selector strategies proven under contract tests (E2).
+- **Validation:**
+  - Ran: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/browser-cdp.contract.test.ts --runInBand` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` -- PASS
+  - Ran: `pnpm --filter @acme/mcp-server lint` -- PASS (warnings only)
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/tools/browser/cdp.ts` with AX interactive candidate extraction + backend node resolution against `DOM.describeNode` fixture shapes.
+  - Added `packages/mcp-server/src/tools/browser/selectors.ts` with stable selector strategies: `#id`, `[data-testid="..."]`, and nth-child path fallback.
+
 ### TASK-04: Observe Shaping - Ranking + Paging + Forms Derivation (Pure)
 
 - **Type:** IMPLEMENT

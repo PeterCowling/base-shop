@@ -266,6 +266,7 @@ Worker (Needs fixes):
 | TASK-18 | SPIKE | Spike: Jest test harness for cochlearfit-worker | 82% | S | Complete (2026-02-14) | TASK-05 | TASK-14 |
 | TASK-19 | INVESTIGATE | Stripe setup memo + stripe-setup.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-01, TASK-08, TASK-09 |
 | TASK-20 | INVESTIGATE | Inventory authority API contract memo + inventory-api.md scaffold | 85% | S | Complete (2026-02-14) | - | TASK-02, TASK-09 |
+| TASK-21 | IMPLEMENT | Fix ESLint flat-config crash (unblock Worker lint) | 85% | S | Pending | - | TASK-14 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -276,7 +277,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-17, TASK-18, TASK-19, TASK-20 | TASK-05 (for 17,18) | Internal hardening + precursors (no external accounts required) |
+| 1 | TASK-17, TASK-18, TASK-19, TASK-20, TASK-21 | TASK-05 (for 17,18) | Internal hardening + precursors (no external accounts required) |
 | 2 | TASK-01, TASK-02, TASK-03 | Wave 1: TASK-19 (for 01); TASK-20 (for 02) | External setup tasks (Stripe/Inventory/Email). TASK-03 remains blocked by domain + business timing |
 | 3 | TASK-06, TASK-08, TASK-15 | Wave 2: TASK-03 (for 06); TASK-01 (for 08,15) | Email template, real price IDs in data files, fulfillment runbook |
 | 4 | TASK-07 | Wave 3: TASK-06; Wave 2: TASK-03 | Email sending in webhook |
@@ -1249,7 +1250,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `[readonly] apps/cochlearfit-worker/package.json` (test script created in TASK-18)
   - `[readonly] apps/cochlearfit-worker/src/worker-catalog.generated.ts` (generated dependency)
   - `[readonly] scripts/bundle-worker-catalog.ts` (catalog bundler validation)
-- **Depends on:** TASK-18
+- **Depends on:** TASK-18, TASK-21
 - **Blocks:** TASK-12
 - **Confidence:** 80%
   - Implementation: 90% — Jest harness feasibility verified by TASK-18 (E2: `pnpm --filter @apps/cochlearfit-worker test` PASS; commit 2545c6cb6b)
@@ -1283,6 +1284,16 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Decision / resolution:**
   - `apps/cochlearfit-worker/README.md` is listed as a Documentation impact; added it to `Affects` so `/lp-build` can update it without violating scope rules.
 
+#### Re-plan Update (2026-02-14) — Validation Gate Unblocked (ESLint crash)
+- **Previous confidence:** 80%
+- **Updated confidence:** 80% (blocked until TASK-21)
+  - **Evidence class:** E2 (executable verification: lint fails with config crash)
+- **Investigation performed:**
+  - Ran: `pnpm --filter @apps/cochlearfit-worker lint` → FAIL (`TypeError: Converting circular structure to JSON`)
+  - Reproduced in another Worker package: `pnpm --filter @apps/xa-drop-worker lint` → FAIL (same error)
+- **Decision / resolution:**
+  - Create TASK-21 to fix the repo ESLint config crash; TASK-14 now depends on TASK-21 so build/validation can proceed deterministically.
+
 - **Acceptance:**
   - [ ] Add at least 2 additional Jest tests under `apps/cochlearfit-worker/src/__tests__/` (beyond the TASK-18 spike)
   - [ ] Catalog bundler failure-mode test exists and passes:
@@ -1314,6 +1325,34 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
     - How to run Worker tests (`pnpm --filter @apps/cochlearfit-worker test`)
     - Scope: pre-launch tests cover catalog/bundler correctness; runtime tests deferred
 
+
+### TASK-21: Fix ESLint flat-config crash (unblock Worker lint)
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `eslint.config.mjs`
+- **Depends on:** -
+- **Blocks:** TASK-14
+- **Confidence:** 85%
+  - Implementation: 90% — Small config change; validated by running package lints
+  - Approach: 85% — Prefer first-party flat config usage over compat shims to avoid config-shape errors
+  - Impact: 80% — Repo-wide lint gate stability; affects many packages
+- **Acceptance:**
+  - [ ] `pnpm --filter @apps/cochlearfit-worker lint` passes
+  - [ ] `pnpm --filter @apps/xa-drop-worker lint` passes (regression check; previously reproduces the same crash)
+  - [ ] ESLint config uses Next flat presets directly (no compat conversion of already-flat configs)
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/cochlearfit-worker lint` → PASS
+  - TC-02: `pnpm --filter @apps/xa-drop-worker lint` → PASS
+  - **Acceptance coverage:** TC-01/TC-02 cover lint gate stability across two packages
+  - **Validation type:** targeted lint runs
+  - **Run/verify:** Run the two `pnpm --filter ... lint` commands above
+- **Rollout / rollback:**
+  - Rollout: None (repo tooling config only)
+  - Rollback: Revert the config change if it causes rule regressions (should not; goal is to restore lint execution)
+- **Documentation impact:** None
 
 ### TASK-15: Document fulfillment runbook (draft pre-launch)
 - **Type:** IMPLEMENT

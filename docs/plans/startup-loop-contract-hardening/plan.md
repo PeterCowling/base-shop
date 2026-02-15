@@ -82,12 +82,12 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-02 | IMPLEMENT | Agent API: accept stage aliases (lp-fact-find) with normalization + telemetry + tests | 84% | M | Complete (2026-02-15) | TASK-01 | TASK-11 |
 | TASK-03 | IMPLEMENT | Filesystem stage-doc reader: dual-read legacy fact-finding.user.md with canonical precedence + tests | 80% | M | Complete (2026-02-15) | TASK-01 | TASK-10 |
 | TASK-04 | IMPLEMENT | Docs: fix stage-doc helper + canonical filename/key references across core BOS docs | 85% | M | Complete (2026-02-15) | - | TASK-10 |
-| TASK-05 | IMPLEMENT | Skills: migrate idea-* stage-doc writes/paths to canonical stage keys; update wording | 85% | M | Pending | - | TASK-06, TASK-11 |
-| TASK-06 | IMPLEMENT | Contract lint: detect idea-* alias usage, fact-finding filename references, broken decision refs; allowlist support | 82% | M | Pending | TASK-01, TASK-05, TASK-09 | TASK-11 |
+| TASK-05 | IMPLEMENT | Skills: migrate idea-* stage-doc writes/paths to canonical stage keys; update wording | 85% | M | Complete (2026-02-15) | - | TASK-06, TASK-11 |
+| TASK-06 | IMPLEMENT | Contract lint: detect idea-* alias usage, fact-finding filename references, broken decision refs; allowlist support | 82% | M | Complete (2026-02-15) | TASK-01, TASK-05, TASK-09 | TASK-11 |
 | TASK-07 | IMPLEMENT | Add missing `/lp-bos-sync` skill doc (operator surface) | 90% | S | Complete (2026-02-15) | - | TASK-11 |
 | TASK-08 | IMPLEMENT | Fix SQ-12 + SQ-10: lp-experiment stage mapping; lp-seo path topology | 85% | S | Complete (2026-02-15) | - | TASK-11 |
 | TASK-09 | IMPLEMENT | Doc reference chain: add markdown shim for sequencing plan + update loop-spec/contract docs; lint check | 85% | M | Complete (2026-02-15) | - | TASK-06 |
-| TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Pending | TASK-03, TASK-04 | TASK-11 |
+| TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Complete (2026-02-15) | TASK-03, TASK-04 | TASK-11 |
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Pending | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Pending | TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12 | - |
@@ -277,7 +277,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Deliverable:** idea-* skills use canonical `fact-find` stage-doc type and canonical stage-doc endpoints
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
-- **Affects:** `.claude/skills/idea-generate/SKILL.md`, `.claude/skills/idea-develop/SKILL.md`
+- **Affects:** `.claude/skills/idea-generate/SKILL.md`, `.claude/skills/idea-develop/SKILL.md`, `.claude/skills/idea-advance/SKILL.md`
 - **Depends on:** -
 - **Blocks:** TASK-06, TASK-11
 - **Confidence:** 85%
@@ -299,15 +299,16 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollout: doc-only.
   - Rollback: revert doc edits; rely on API alias acceptance temporarily.
 - **Documentation impact:** None.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commits 671508880c (idea-generate, idea-develop) + 5cf98e360b (idea-advance); Validation: `bash scripts/check-startup-loop-contracts.sh` (PASS 2026-02-15).
 
 ### TASK-06: Contract Lint Expansion (Prevent Reintroduction)
 - **Type:** IMPLEMENT
-- **Deliverable:** Deterministic contract lint that can parse YAML + timeboxes without shell toolchain dependencies
+- **Deliverable:** Deterministic contract lint enhancements (decision-ref existence, allowlisted legacy filename refs, idea-* stage alias emissions) + `--self-test`
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:**
-  - `scripts/src/check-startup-loop-contracts.ts` (new; YAML parsing, allowlists, cutoffs)
-  - `scripts/check-startup-loop-contracts.sh` (wrapper)
+  - `scripts/check-startup-loop-contracts.sh`
 - **Depends on:** TASK-01, TASK-05, TASK-09
 - **Blocks:** TASK-11
 - **Confidence:** 82%
@@ -332,6 +333,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollout: land lint changes after offenders are fixed in same PR set.
   - Rollback: revert new checks or widen allowlist temporarily.
 - **Documentation impact:** Update lint README/comments in script.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commit 7cd6b09de3; Validation: `bash scripts/check-startup-loop-contracts.sh --self-test` (PASS) and `bash scripts/check-startup-loop-contracts.sh` (PASS) on 2026-02-15.
 
 ### TASK-07: Add Missing /lp-bos-sync Skill Doc
 - **Type:** IMPLEMENT
@@ -421,6 +424,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Affects:**
   - `docs/business-os/cards/BRIK-ENG-0020.user.md`
   - `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md` (rename)
+  - `docs/business-os/cards/BRIK-ENG-0020/fact-finding.agent.md` (rename)
   - `docs/registry.json` (if it tracks the old path)
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-11
@@ -443,6 +447,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollout: rename with git mv; keep dual-read during window.
   - Rollback: revert rename; retain dual-read.
 - **Documentation impact:** None.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commit b519e72960; Validation: `bash scripts/check-startup-loop-contracts.sh` (PASS 2026-02-15).
 
 ### TASK-11: Horizon Checkpoint (Pre-Removal Verification)
 - **Type:** CHECKPOINT

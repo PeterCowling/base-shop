@@ -157,6 +157,8 @@ Owner: Test
 
 # Measurement
 
+Production URL: https://test.example.com/en/
+
 - sessions: **73**
 - users: **53**
 - conversions: **0**
@@ -316,6 +318,8 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
     expect(promptContent).toContain("OverrideUsed: false");
     expect(promptContent).toContain("BEGIN_INTERNAL_BASELINES");
     expect(promptContent).toContain("Total rooms: 2");
+    expect(promptContent).toContain("CanonicalWebsiteUrl: https://test.example.com");
+    expect(promptContent).toContain("Canonical website URL: https://test.example.com");
 
     // TC-01: nested frontmatter contamination should not appear inside the Deep Research prompt block.
     const promptBlockMatch = promptContent.match(/```text\n([\s\S]*?)\n```/);
@@ -435,5 +439,90 @@ Profile-Id: b2c_dtc_product
     const promptContent = await fs.readFile(path.join(repoRoot, result.promptPath), "utf-8");
     expect(promptContent).toContain("SelectedProfile: b2c_dtc_product");
     expect(promptContent).toContain("OverrideUsed: true");
+  });
+
+  it("derives canonical website URL from Cloudflare host-filter-requested notes when other sources are missing", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-handoff-test-cloudflare-url-"));
+    await writeTemplates(repoRoot);
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
+      `---
+Type: Startup-Intake-Packet
+Status: Active
+Business: TEST
+Created: 2026-02-12
+Updated: 2026-02-12
+Owner: Test
+---
+
+# TEST Intake Packet
+
+## B) Business and Product Packet
+
+| Field | Value | Tag |
+|---|---|---|
+| Business code | TEST | observed |
+| Business name | TestCo | observed |
+| Core offer | Bookings | observed |
+| Launch-surface mode | website-live | inferred |
+
+## C) ICP and Channel Packet
+
+| Field | Value | Tag |
+|---|---|---|
+| Primary ICP (current) | Travelers | inferred |
+| Planned channels | Search + direct | observed |
+
+## A) Intake Summary
+
+- Business idea: test business.
+`,
+    );
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/2026-02-14-startup-loop-90-day-forecast-v1.user.md"),
+      `---
+Type: Startup-Loop-Forecast
+Status: Active
+Business: TEST
+Region: Europe (primary: Italy)
+Date: 2026-02-14
+Owner: Test
+---
+
+# Forecast
+`,
+    );
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/data/net_value_by_month.csv"),
+      ["month,net_booking_value,method,notes", "2025-01,1000,observed,ok", "2026-02,50,observed,partial", ""].join("\n"),
+    );
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/data/bookings_by_month.csv"),
+      [
+        "month,bookings_count,gross_booking_value,channel_source,notes",
+        "2025-01,100,2000,Direct:30; OTA:70,ok",
+        "2026-02,5,100,Direct:1; OTA:4,partial",
+        "",
+      ].join("\n"),
+    );
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/data/data_quality_notes.md"),
+      ["# Notes", "- host-filter-requested: cloudflare-derived.example", ""].join("\n"),
+    );
+
+    const result = await buildS2MarketIntelligenceHandoff({
+      repoRoot,
+      business: "TEST",
+      asOfDate: "2026-02-15",
+      owner: "TestOwner",
+    });
+
+    const promptContent = await fs.readFile(path.join(repoRoot, result.promptPath), "utf-8");
+    expect(promptContent).toContain("CanonicalWebsiteUrl: https://cloudflare-derived.example");
+    expect(promptContent).toContain("Canonical website URL: https://cloudflare-derived.example");
   });
 });

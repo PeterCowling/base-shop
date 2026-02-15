@@ -307,6 +307,52 @@ async function selectS2MarketIntelResearchProfile(args: {
   });
 }
 
+async function resolveCanonicalWebsiteUrl(args: {
+  repoRoot: string;
+  intakeDoc: UserDoc;
+  businessPlanDoc?: UserDoc | null;
+  measurementVerificationDoc?: UserDoc | null;
+  cloudflareNotesAbsolutePath: string;
+}): Promise<{ canonicalWebsiteUrl: string | null; selectionSignals: string[] }> {
+  const signals: string[] = [];
+
+  const intakeCandidate =
+    extractTableField(args.intakeDoc.body, "Website URL") ??
+    extractTableField(args.intakeDoc.body, "Website") ??
+    extractTableField(args.intakeDoc.body, "Domain");
+
+  const intakeUrl = intakeCandidate ? normalizeWebsiteUrl(intakeCandidate) : null;
+  if (intakeUrl) {
+    signals.push("website:intake");
+    return { canonicalWebsiteUrl: intakeUrl, selectionSignals: signals };
+  }
+
+  const measurementUrl = args.measurementVerificationDoc ? extractBestWebsiteOrigin(args.measurementVerificationDoc.body) : null;
+  if (measurementUrl) {
+    signals.push("website:measurement_verification");
+    return { canonicalWebsiteUrl: measurementUrl, selectionSignals: signals };
+  }
+
+  const planUrl = args.businessPlanDoc ? extractBestWebsiteOrigin(args.businessPlanDoc.body) : null;
+  if (planUrl) {
+    signals.push("website:business_plan");
+    return { canonicalWebsiteUrl: planUrl, selectionSignals: signals };
+  }
+
+  if (await exists(args.cloudflareNotesAbsolutePath)) {
+    const notes = await fs.readFile(args.cloudflareNotesAbsolutePath, "utf-8");
+    const host = extractCloudflareHostFilterRequested(notes);
+    const url = host ? normalizeWebsiteUrl(host) : null;
+    if (url) {
+      signals.push("website:cloudflare_host_filter_requested");
+      return { canonicalWebsiteUrl: url, selectionSignals: signals };
+    }
+  }
+
+  signals.push("website:missing");
+  return { canonicalWebsiteUrl: null, selectionSignals: signals };
+}
+
 function extractMarkdownSection(body: string, heading: string): string | null {
   const normalized = body.replace(/\r\n/g, "\n");
   const start = normalized.indexOf(heading);
@@ -338,6 +384,68 @@ function extractTableField(body: string, fieldLabel: string): string | null {
 function extractFirstFencedTextBlock(markdownBody: string): string | null {
   const normalized = markdownBody.replace(/\r\n/g, "\n");
   const match = normalized.match(/```text\n([\s\S]*?)\n```/);
+  return match ? match[1] : null;
+}
+
+function normalizeWebsiteUrl(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+
+  const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  try {
+    const url = new URL(withScheme);
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+function extractBestWebsiteOrigin(markdown: string): string | null {
+  const normalized = markdown.replace(/\r\n/g, "\n");
+  const matches = normalized.match(/https?:\/\/[^\s`)"'<]+/g) ?? [];
+  const origins: string[] = [];
+
+  for (const candidate of matches) {
+    try {
+      const url = new URL(candidate);
+      origins.push(url.origin);
+    } catch {
+      // ignore invalid
+    }
+  }
+
+  const seen = new Set<string>();
+  const unique = origins.filter((o) => {
+    if (seen.has(o)) return false;
+    seen.add(o);
+    return true;
+  });
+
+  const scored = unique
+    .map((origin) => {
+      let score = 0;
+      try {
+        const url = new URL(origin);
+        const host = url.hostname.toLowerCase();
+        if (host.includes("google")) score -= 100;
+        if (host.endsWith("google-analytics.com")) score -= 100;
+        if (host.endsWith("googletagmanager.com")) score -= 100;
+        if (host.endsWith("pages.dev")) score -= 10;
+        if (host.endsWith(".com") || host.endsWith(".it") || host.endsWith(".co.uk")) score += 3;
+        score += 10; // default for non-denylisted origins
+      } catch {
+        score -= 1000;
+      }
+      return { origin, score };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  return scored[0]?.origin ?? null;
+}
+
+function extractCloudflareHostFilterRequested(notes: string): string | null {
+  const normalized = notes.replace(/\r\n/g, "\n");
+  const match = normalized.match(/^\s*-\s*host-filter-requested:\s*(\S+)\s*$/m);
   return match ? match[1] : null;
 }
 
@@ -875,6 +983,14 @@ export async function buildS2MarketIntelligenceHandoff(
   const filledConstraints =
     constraints || "Startup-loop decisions must be measurement-led; do not scale paid until attribution is reliable.";
 
+  const website = await resolveCanonicalWebsiteUrl({
+    repoRoot,
+    intakeDoc,
+    businessPlanDoc: businessPlan,
+    measurementVerificationDoc: measurement,
+    cloudflareNotesAbsolutePath: cloudflareNotesPath,
+  });
+
   const selection = await selectS2MarketIntelResearchProfile({
     repoRoot,
     business,
@@ -888,7 +1004,7 @@ export async function buildS2MarketIntelligenceHandoff(
   const templateRelativePath = S2_MARKET_INTEL_PROFILE_TEMPLATES[selection.profileId];
   const template = await readDeepResearchPromptTemplate(repoRoot, templateRelativePath);
 
-  const deepResearchPrompt = renderTemplatePlaceholders(template.promptText, {
+  const renderedPrompt = renderTemplatePlaceholders(template.promptText, {
     BUSINESS_CODE: business,
     BUSINESS_NAME: intakeBusinessName,
     REGION: region,
@@ -903,7 +1019,24 @@ export async function buildS2MarketIntelligenceHandoff(
     STOCK_TIMELINE: stockTimeline,
     CONSTRAINTS: filledConstraints,
     INTERNAL_BASELINES: internalBaselineSnapshot.trim(),
+    CANONICAL_WEBSITE_URL: website.canonicalWebsiteUrl ?? "MISSING",
   });
+
+  const websiteAuditAddon =
+    selection.profileId === "hospitality_direct_booking_ota" && launchSurface === "website-live"
+      ? [
+          "",
+          "Website-live funnel audit (required):",
+          `- Canonical website URL: ${website.canonicalWebsiteUrl ?? "MISSING"}`,
+          "- If canonical website URL is missing: return `Status: BLOCKED` and list the missing field: website URL.",
+          `- Audit path: ${(website.canonicalWebsiteUrl ?? "<WEBSITE_URL>")}/ -> dates -> room -> checkout`,
+          "- Identify friction, trust gaps, and mobile-first issues (speed, clarity, checkout steps).",
+          "- Produce a P0/P1/P2 checklist; each item must include impact (L/M/H), effort (S/M/L), and the metric it should move.",
+          "",
+        ].join("\n")
+      : "";
+
+  const deepResearchPrompt = `${renderedPrompt.trim()}\n${websiteAuditAddon}`.trimEnd();
 
   await fs.mkdir(marketResearchDir, { recursive: true });
 
@@ -922,6 +1055,8 @@ export async function buildS2MarketIntelligenceHandoff(
     `SelectedProfile: ${selection.profileId}`,
     `OverrideUsed: ${selection.overrideUsed}`,
     `SelectionSignals: ${JSON.stringify(selection.selectionSignals)}`,
+    `CanonicalWebsiteUrl: ${website.canonicalWebsiteUrl ?? "MISSING"}`,
+    `WebsiteUrlSignals: ${JSON.stringify(website.selectionSignals)}`,
     `TemplatePath: ${template.templatePath}`,
     "",
   ].join("\n");

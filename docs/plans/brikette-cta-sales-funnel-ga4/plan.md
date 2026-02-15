@@ -415,7 +415,7 @@ Replan outcomes for remaining tasks (TASK-06..TASK-16):
   - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx --maxWorkers=2`
 
 **Evidence**
-- Commit: `45c66bc567`
+- Commit: `b519e72960`
 - Validations:
   - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx --maxWorkers=2`
   - `pnpm --filter brikette typecheck`

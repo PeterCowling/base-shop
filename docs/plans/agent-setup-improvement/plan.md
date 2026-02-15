@@ -42,7 +42,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - **TASK-03:** Safety kernel format + schema + generation boundaries (Complete 2026-02-15)
 - **TASK-04:** Add safety policy kernel + generators for enforcement layers (Complete 2026-02-15)
 - **TASK-05:** Update safety tests to consume the kernel-generated policy (Complete 2026-02-15)
-- **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Pending)
+- **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Complete 2026-02-15)
 - **TASK-10:** Decide hook/guard policy generation format (Pending)
 - **TASK-11:** Prototype policy-driven evaluation for one enforcement layer (Pending)
 - **TASK-09:** Wire enforcement layers to generated policy evaluation/data (Pending)
@@ -119,7 +119,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 | TASK-03 | DECISION | Safety kernel format + schema + generation boundaries | 70% | S | Complete (2026-02-15) | - | TASK-04 |
 | TASK-04 | SPIKE | Safety kernel + generator for `.claude/settings.json` + canonical policy artifacts | 82% | M | Complete (2026-02-15) | TASK-03 | TASK-05, TASK-09 |
 | TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-07 |
-| TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 82% | S | Pending | TASK-01 | TASK-07 |
+| TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-07 |
 | TASK-10 | INVESTIGATE | Decide hook/guard policy generation format | 85% | S | Pending | TASK-04, TASK-05 | TASK-11 |
 | TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Pending | TASK-10 | TASK-09 |
 | TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy evaluation/data | 74% (→84% conditional on TASK-10, TASK-11) ⚠️ | M | Pending | TASK-11 | TASK-07 |
@@ -383,6 +383,15 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Records explicit generated artifact contract (file path + exported variables/CLI args).
 - **Validation contract:**
   - VC-01: Decision section exists in TASK-10 with chosen option + rationale → pass.
+#### Decision (2026-02-15)
+- **Chosen:** Option B (shared node evaluator CLI called by both hook + guard)
+- **Why:** The hook and guard currently implement policy via bash regex + argv parsing (`.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`), while the generated include exports only Claude permission matcher strings (`.agents/safety/generated/git-safety-policy.sh`). A node evaluator can read the kernel JSON and produce a single, deterministic decision surface without duplicating policy logic in two bash scripts.
+- **Generated interface contract (proposal):**
+  - Add an evaluator entrypoint (exact path decided in TASK-11) that:
+    - Reads `.agents/safety/generated/git-safety-policy.json`
+    - Accepts either a raw command string (hook) or `argv` tokens (guard)
+    - Returns allow/deny with a stable exit code and optional reason string
+  - Fail-closed: if parsing/evaluation fails, return deny.
 
 ### TASK-11: Prototype policy-driven evaluation for one enforcement layer
 - **Type:** SPIKE
@@ -406,6 +415,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 
 ### TASK-06: Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** Docs no longer point at stale SKILLS_INDEX; the index is updated or replaced with generated output.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
@@ -432,6 +442,10 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - TC-02: `rg -n "SKILLS_INDEX\\.md" docs/github-setup.md .claude/HOW_TO_USE_SKILLS.md .claude/SETUP_COMPLETE.md` returns no matches → pass.
   - TC-03: `scripts/agents/list-skills` runs and includes `lp-plan` → pass.
 - **Rollout / rollback:** revert doc changes.
+- **Evidence:**
+  - Updated `.claude/SKILLS_INDEX.md` to point at `scripts/agents/list-skills` + generated registry.
+  - Updated `.claude/HOW_TO_USE_SKILLS.md`, `.claude/SETUP_COMPLETE.md`, `docs/github-setup.md` to stop pointing at stale skill paths.
+  - Commit: `7cd6b09de3`
 
 ### TASK-07: Horizon checkpoint: reassess before CODEX.md + policy rollout
 - **Type:** CHECKPOINT

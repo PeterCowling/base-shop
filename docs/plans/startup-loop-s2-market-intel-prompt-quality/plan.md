@@ -82,7 +82,7 @@ Chosen: Option B.
 | TASK-01 | IMPLEMENT | Baseline assembler: embedded deltas + compact slice; strip YAML contamination | 86 | M | Complete (2026-02-15) | - | TASK-03, TASK-05 |
 | TASK-02 | IMPLEMENT | Add hospitality S2 profile template (exemplar-aligned) incl. scenario rules + decision-grade criteria | 85 | S | Complete (2026-02-15) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Profile registry + override + selection debug metadata; generator chooses correct template | 82 | M | Complete (2026-02-15) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07 |
-| TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Pending | TASK-03 | TASK-07 |
+| TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Pending | TASK-01, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Pending | TASK-03 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | - |
@@ -256,6 +256,19 @@ Chosen: Option B.
   - TC-01: URL derived from measurement verification URLs when present.
   - TC-02: URL derived from Cloudflare metadata when explicit URL absent.
   - TC-03: missing URL → prompt includes explicit BLOCKED instruction.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** e386052792
+- **Execution cycle:** Red → Green → Refactor
+  - Added TC coverage for measurement-derived URL and Cloudflare `host-filter-requested` fallback in `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
+- **Validation:**
+  - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
+  - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+- **Implementation notes:**
+  - Generator now derives a canonical website origin via precedence: intake table (Website/Domain) -> measurement verification URLs -> business plan URLs -> Cloudflare `host-filter-requested`.
+  - For hospitality + `website-live`, the generated Deep Research prompt now includes an explicit funnel-audit block (URL + audit path) and a `Status: BLOCKED` instruction when the website URL is missing.
 
 ### TASK-05: Deterministic two-pass prompt emission + length guards + tests
 - **Type:** IMPLEMENT

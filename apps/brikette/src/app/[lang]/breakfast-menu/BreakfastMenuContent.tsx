@@ -10,7 +10,7 @@ import { Button } from "@acme/design-system/primitives";
 
 import BreakfastMenuStructuredData from "@/components/seo/BreakfastMenuStructuredData";
 import { BASE_URL } from "@/config/site";
-import { type BreakfastMenuItemKey,formatBreakfastMenuPrice } from "@/data/menuPricing";
+import { type BreakfastMenuItemKey, formatBreakfastMenuPrice } from "@/data/menuPricing";
 import type { AppLanguage } from "@/i18n.config";
 import { MenuRow } from "@/routes/breakfast-menu/_MenuRow";
 import { JSON_LD_MIME, STRUCTURED_DATA_ID } from "@/routes/breakfast-menu/constants";
@@ -21,6 +21,123 @@ import { getSlug } from "@/utils/slug";
 type Props = {
   lang: AppLanguage;
 };
+
+type MenuItemConfig = {
+  key: BreakfastMenuItemKey;
+  nameKey: `items.${string}.name`;
+  withItemNote?: boolean;
+};
+
+type MenuSectionConfig = {
+  id: "eggs" | "sweet" | "healthy" | "juices" | "hot" | "iced";
+  titleKey: `sections.${string}.title`;
+  subtitleKey?: `sections.${string}.subtitle`;
+  items: MenuItemConfig[];
+};
+
+const MENU_SECTIONS: MenuSectionConfig[] = [
+  {
+    id: "sweet",
+    titleKey: "sections.sweet.title",
+    items: [
+      { key: "frenchToast", nameKey: "items.frenchToast.name", withItemNote: true },
+      { key: "nutellaFrenchToast", nameKey: "items.nutellaFrenchToast.name", withItemNote: true },
+      { key: "pancakes", nameKey: "items.pancakes.name" },
+      { key: "addEggComboItem", nameKey: "items.addEggComboItem.name", withItemNote: true },
+      { key: "addAdditionalSyrup", nameKey: "items.addAdditionalSyrup.name", withItemNote: true },
+    ],
+  },
+  {
+    id: "healthy",
+    titleKey: "sections.healthy.title",
+    items: [
+      { key: "veggieToast", nameKey: "items.veggieToast.name", withItemNote: true },
+      { key: "healthyDelight", nameKey: "items.healthyDelight.name", withItemNote: true },
+    ],
+  },
+  {
+    id: "juices",
+    titleKey: "sections.juices.title",
+    items: [
+      { key: "detoxMe", nameKey: "items.detoxMe.name", withItemNote: true },
+      { key: "energizeMe", nameKey: "items.energizeMe.name", withItemNote: true },
+      { key: "multiV", nameKey: "items.multiV.name", withItemNote: true },
+      { key: "orangeJuice", nameKey: "items.orangeJuice.name", withItemNote: true },
+      { key: "bananaSmoothie", nameKey: "items.bananaSmoothie.name" },
+      { key: "strawberrySmoothie", nameKey: "items.strawberrySmoothie.name" },
+      { key: "saltedCaramelProteinSmoothie", nameKey: "items.saltedCaramelProteinSmoothie.name" },
+      { key: "addProtein", nameKey: "items.addProtein.name" },
+    ],
+  },
+  {
+    id: "hot",
+    titleKey: "sections.hot.title",
+    items: [
+      { key: "tea", nameKey: "items.tea.name" },
+      { key: "espresso", nameKey: "items.espresso.name" },
+      { key: "macchiato", nameKey: "items.macchiato.name" },
+      { key: "americano", nameKey: "items.americano.name" },
+      { key: "cappuccino", nameKey: "items.cappuccino.name" },
+      { key: "latte", nameKey: "items.latte.name" },
+      { key: "altMilk", nameKey: "items.altMilk.name" },
+    ],
+  },
+  {
+    id: "iced",
+    titleKey: "sections.iced.title",
+    items: [
+      { key: "icedLatte", nameKey: "items.icedLatte.name" },
+      { key: "icedSoyLatte", nameKey: "items.icedSoyLatte.name" },
+      { key: "icedRiceLatte", nameKey: "items.icedRiceLatte.name" },
+      { key: "icedTea", nameKey: "items.icedTea.name" },
+    ],
+  },
+];
+
+function MenuItemRow({
+  breakfastMenuString,
+  getDisplayPrice,
+  getItemNote,
+  item,
+}: {
+  breakfastMenuString: (key: string) => string;
+  getDisplayPrice: (key: BreakfastMenuItemKey) => string | undefined;
+  getItemNote: (key: BreakfastMenuItemKey) => string | undefined;
+  item: MenuItemConfig;
+}) {
+  return (
+    <MenuRow
+      name={breakfastMenuString(item.nameKey)}
+      price={getDisplayPrice(item.key)}
+      note={item.withItemNote ? getItemNote(item.key) : undefined}
+    />
+  );
+}
+
+function BreakfastEggsDetails({ breakfastMenuString }: { breakfastMenuString: (key: string) => string }) {
+  return (
+    <div className="mt-2 space-y-2 rounded-md border border-brand-surface/60 bg-brand-bg p-4 dark:border-brand-surface/20 dark:bg-brand-text">
+      <p className="text-sm font-semibold text-brand-heading dark:text-brand-secondary">
+        {breakfastMenuString("sections.eggs.howCooked")}
+      </p>
+      <ul className="list-disc pl-6 text-sm text-brand-text/90 dark:text-brand-surface/90">
+        <li>{breakfastMenuString("sections.eggs.cooked.0")}</li>
+        <li>{breakfastMenuString("sections.eggs.cooked.1")}</li>
+        <li>{breakfastMenuString("sections.eggs.cooked.2")}</li>
+        <li>{breakfastMenuString("sections.eggs.cooked.3")}</li>
+      </ul>
+      <p className="pt-2 text-sm font-semibold text-brand-heading dark:text-brand-secondary">
+        {breakfastMenuString("sections.eggs.addThree")}
+      </p>
+      <ul className="list-disc pl-6 text-sm text-brand-text/90 dark:text-brand-surface/90">
+        <li>{breakfastMenuString("sections.eggs.ingredients.0")}</li>
+        <li>{breakfastMenuString("sections.eggs.ingredients.1")}</li>
+        <li>{breakfastMenuString("sections.eggs.ingredients.2")}</li>
+        <li>{breakfastMenuString("sections.eggs.ingredients.3")}</li>
+      </ul>
+    </div>
+  );
+}
 
 export function BreakfastMenuContent({ lang }: Props) {
   const path = `/${lang}/${getSlug("breakfastMenu", lang)}`;
@@ -77,7 +194,6 @@ export function BreakfastMenuContent({ lang }: Props) {
           ) : null}
         </header>
 
-        {/* Eggs Combo */}
         <h2
           id="menuSections"
           className="mb-1 text-2xl font-bold text-brand-heading dark:text-brand-secondary"
@@ -91,44 +207,32 @@ export function BreakfastMenuContent({ lang }: Props) {
           name={breakfastMenuString("items.eggsCombo.name")}
           price={getDisplayPrice("eggsCombo")}
         />
-        <div className="mt-2 space-y-2 rounded-md border border-brand-surface/60 bg-brand-bg p-4 dark:border-brand-surface/20 dark:bg-brand-text">
-          <p className="text-sm font-semibold text-brand-heading dark:text-brand-secondary">
-            {breakfastMenuString("sections.eggs.howCooked")}
-          </p>
-          <ul className="list-disc pl-6 text-sm text-brand-text/90 dark:text-brand-surface/90">
-            <li>{breakfastMenuString("sections.eggs.cooked.0")}</li>
-            <li>{breakfastMenuString("sections.eggs.cooked.1")}</li>
-            <li>{breakfastMenuString("sections.eggs.cooked.2")}</li>
-            <li>{breakfastMenuString("sections.eggs.cooked.3")}</li>
-          </ul>
-          <p className="pt-2 text-sm font-semibold text-brand-heading dark:text-brand-secondary">
-            {breakfastMenuString("sections.eggs.addThree")}
-          </p>
-          <ul className="list-disc pl-6 text-sm text-brand-text/90 dark:text-brand-surface/90">
-            <li>{breakfastMenuString("sections.eggs.ingredients.0")}</li>
-            <li>{breakfastMenuString("sections.eggs.ingredients.1")}</li>
-            <li>{breakfastMenuString("sections.eggs.ingredients.2")}</li>
-            <li>{breakfastMenuString("sections.eggs.ingredients.3")}</li>
-          </ul>
-        </div>
+        <BreakfastEggsDetails breakfastMenuString={breakfastMenuString} />
 
-        {/* Sweet Options */}
         <h2 className="mb-4 mt-8 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
           {breakfastMenuString("sections.sweet.title")}
         </h2>
-        <MenuRow
-          name={breakfastMenuString("items.frenchToast.name")}
-          price={getDisplayPrice("frenchToast")}
-          note={getItemNote("frenchToast")}
+        <MenuItemRow
+          breakfastMenuString={breakfastMenuString}
+          getDisplayPrice={getDisplayPrice}
+          getItemNote={getItemNote}
+          item={{ key: "frenchToast", nameKey: "items.frenchToast.name", withItemNote: true }}
         />
-        <MenuRow
-          name={breakfastMenuString("items.nutellaFrenchToast.name")}
-          price={getDisplayPrice("nutellaFrenchToast")}
-          note={getItemNote("nutellaFrenchToast")}
+        <MenuItemRow
+          breakfastMenuString={breakfastMenuString}
+          getDisplayPrice={getDisplayPrice}
+          getItemNote={getItemNote}
+          item={{
+            key: "nutellaFrenchToast",
+            nameKey: "items.nutellaFrenchToast.name",
+            withItemNote: true,
+          }}
         />
-        <MenuRow
-          name={breakfastMenuString("items.pancakes.name")}
-          price={getDisplayPrice("pancakes")}
+        <MenuItemRow
+          breakfastMenuString={breakfastMenuString}
+          getDisplayPrice={getDisplayPrice}
+          getItemNote={getItemNote}
+          item={{ key: "pancakes", nameKey: "items.pancakes.name" }}
         />
         <div className="mb-4 mt-2">
           <p className="text-sm text-brand-text/80 dark:text-brand-surface/80">
@@ -142,120 +246,46 @@ export function BreakfastMenuContent({ lang }: Props) {
           </ul>
         </div>
 
-        <MenuRow
-          name={breakfastMenuString("items.addEggComboItem.name")}
-          price={getDisplayPrice("addEggComboItem")}
-          note={getItemNote("addEggComboItem")}
+        <MenuItemRow
+          breakfastMenuString={breakfastMenuString}
+          getDisplayPrice={getDisplayPrice}
+          getItemNote={getItemNote}
+          item={{ key: "addEggComboItem", nameKey: "items.addEggComboItem.name", withItemNote: true }}
         />
-        <MenuRow
-          name={breakfastMenuString("items.addAdditionalSyrup.name")}
-          price={getDisplayPrice("addAdditionalSyrup")}
-          note={getItemNote("addAdditionalSyrup")}
-        />
-
-        {/* Healthy Options */}
-        <h2 className="mb-4 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-          {breakfastMenuString("sections.healthy.title")}
-        </h2>
-        <MenuRow
-          name={breakfastMenuString("items.veggieToast.name")}
-          price={getDisplayPrice("veggieToast")}
-          note={getItemNote("veggieToast")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.healthyDelight.name")}
-          price={getDisplayPrice("healthyDelight")}
-          note={getItemNote("healthyDelight")}
+        <MenuItemRow
+          breakfastMenuString={breakfastMenuString}
+          getDisplayPrice={getDisplayPrice}
+          getItemNote={getItemNote}
+          item={{
+            key: "addAdditionalSyrup",
+            nameKey: "items.addAdditionalSyrup.name",
+            withItemNote: true,
+          }}
         />
 
-        {/* Juices and Smoothies */}
-        <h2 className="mb-4 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-          {breakfastMenuString("sections.juices.title")}
-        </h2>
-        <MenuRow
-          name={breakfastMenuString("items.detoxMe.name")}
-          price={getDisplayPrice("detoxMe")}
-          note={getItemNote("detoxMe")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.energizeMe.name")}
-          price={getDisplayPrice("energizeMe")}
-          note={getItemNote("energizeMe")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.multiV.name")}
-          price={getDisplayPrice("multiV")}
-          note={getItemNote("multiV")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.orangeJuice.name")}
-          price={getDisplayPrice("orangeJuice")}
-          note={getItemNote("orangeJuice")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.bananaSmoothie.name")}
-          price={getDisplayPrice("bananaSmoothie")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.strawberrySmoothie.name")}
-          price={getDisplayPrice("strawberrySmoothie")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.saltedCaramelProteinSmoothie.name")}
-          price={getDisplayPrice("saltedCaramelProteinSmoothie")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.addProtein.name")}
-          price={getDisplayPrice("addProtein")}
-        />
-
-        {/* Hot Caffeine */}
-        <h2 className="mb-4 mt-8 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-          {breakfastMenuString("sections.hot.title")}
-        </h2>
-        <MenuRow name={breakfastMenuString("items.tea.name")} price={getDisplayPrice("tea")} />
-        <MenuRow
-          name={breakfastMenuString("items.espresso.name")}
-          price={getDisplayPrice("espresso")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.macchiato.name")}
-          price={getDisplayPrice("macchiato")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.americano.name")}
-          price={getDisplayPrice("americano")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.cappuccino.name")}
-          price={getDisplayPrice("cappuccino")}
-        />
-        <MenuRow name={breakfastMenuString("items.latte.name")} price={getDisplayPrice("latte")} />
-        <MenuRow
-          name={breakfastMenuString("items.altMilk.name")}
-          price={getDisplayPrice("altMilk")}
-        />
-
-        {/* Iced Caffeine */}
-        <h2 className="mb-4 mt-8 text-2xl font-bold text-brand-heading dark:text-brand-secondary">
-          {breakfastMenuString("sections.iced.title")}
-        </h2>
-        <MenuRow
-          name={breakfastMenuString("items.icedLatte.name")}
-          price={getDisplayPrice("icedLatte")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.icedSoyLatte.name")}
-          price={getDisplayPrice("icedSoyLatte")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.icedRiceLatte.name")}
-          price={getDisplayPrice("icedRiceLatte")}
-        />
-        <MenuRow
-          name={breakfastMenuString("items.icedTea.name")}
-          price={getDisplayPrice("icedTea")}
-        />
+        {MENU_SECTIONS.filter((section) => section.id !== "sweet").map((section) => (
+          <Fragment key={section.id}>
+            <h2
+              className={[
+                "mb-4 text-2xl font-bold text-brand-heading dark:text-brand-secondary",
+                section.id === "hot" || section.id === "iced" ? "mt-8" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              {breakfastMenuString(section.titleKey)}
+            </h2>
+            {section.items.map((item) => (
+              <MenuItemRow
+                key={item.key}
+                breakfastMenuString={breakfastMenuString}
+                getDisplayPrice={getDisplayPrice}
+                getItemNote={getItemNote}
+                item={item}
+              />
+            ))}
+          </Fragment>
+        ))}
       </Section>
     </Fragment>
   );

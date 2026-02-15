@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-sequence
-Overall-confidence: 76%
+Overall-confidence: 75%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: on
 Business-Unit: PLAT
@@ -44,9 +44,11 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - **TASK-05:** Update safety tests to consume the kernel-generated policy (Complete 2026-02-15)
 - **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Complete 2026-02-15)
 - **TASK-10:** Decide hook/guard policy generation format (Complete 2026-02-15)
-- **TASK-12:** Add semantic safety rules to the kernel + compiled policy artifact (Pending)
-- **TASK-11:** Prototype policy-driven evaluation for one enforcement layer (Pending)
-- **TASK-09:** Wire enforcement layers to generated policy evaluation/data (Pending)
+- **TASK-12:** Add semantic safety rules to the kernel + compiled policy artifact (Complete 2026-02-15)
+- **TASK-11:** Prototype policy-driven evaluation for one enforcement layer (Complete 2026-02-15)
+- **TASK-13:** Hook integration decision + evaluator CLI contract (Pending)
+- **TASK-14:** Raw-command parsing + hook-mode evaluation in evaluator (Pending)
+- **TASK-09:** Wire enforcement layers to generated policy evaluation/data (Pending; now hook-focused)
 - **TASK-07:** Horizon checkpoint: reassess before CODEX.md + policy rollout (Pending)
 - **TASK-08:** Reduce CODEX.md bloat while keeping safety TL;DR (Pending)
 
@@ -79,7 +81,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
   - `.claude/SKILLS_INDEX.md` is now a pointer to the generated registry (`.agents/registry/skills.json`) and `scripts/agents/list-skills` (no longer a hand-maintained catalog).
 - CI drift gap:
   - `.github/workflows/ci.yml` runs `node scripts/validate-agent-manifest.js`.
-  - `scripts/validate-agent-manifest.js` is a stub that always passes.
+  - `scripts/validate-agent-manifest.js` now enforces drift checks (skill registry + git safety policy generation); CI fails on drift.
 
 ## Proposed Approach
 
@@ -122,9 +124,11 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 | TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-07 |
 | TASK-10 | INVESTIGATE | Decide hook/guard policy generation format | 85% | S | Complete (2026-02-15) | TASK-04, TASK-05 | TASK-11 |
-| TASK-12 | SPIKE | Add semantic safety rules to the kernel + compiled policy artifact | 82% | M | Pending | TASK-10 | TASK-11 |
-| TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Pending | TASK-12 | TASK-09 |
-| TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy evaluation/data | 74% (→84% conditional on TASK-10, TASK-11) ⚠️ | M | Pending | TASK-11 | TASK-07 |
+| TASK-12 | SPIKE | Add semantic safety rules to the kernel + compiled policy artifact | 82% | M | Complete (2026-02-15) | TASK-10 | TASK-11 |
+| TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Complete (2026-02-15) | TASK-12 | TASK-13, TASK-14, TASK-09 |
+| TASK-13 | INVESTIGATE | Hook integration decision + evaluator CLI contract | 86% | S | Pending | TASK-11 | TASK-14, TASK-09 |
+| TASK-14 | SPIKE | Raw-command parsing + hook-mode evaluation in evaluator | 82% | M | Pending | TASK-13 | TASK-09 |
+| TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy evaluation/data | 72% (→84% conditional on TASK-14) ⚠️ | M | Pending | TASK-14 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06, TASK-09 | TASK-08 |
 | TASK-08 | IMPLEMENT | Reduce CODEX.md bloat while keeping safety TL;DR | 82% | M | Pending | TASK-07 | - |
 
@@ -139,11 +143,13 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 | 1 | TASK-06 | - | Doc pointer fix (uses generated registry) |
 | 2 | TASK-12 | TASK-10 | Introduce semantic rules in the kernel + compiled artifact |
 | 3 | TASK-11 | TASK-12 | Prototype the policy-driven wiring approach (one path) |
-| 4 | TASK-09 | TASK-11 | Wire both enforcement layers once the spike proves approach |
-| 5 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
-| 6 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
+| 4 | TASK-13 | TASK-11 | Decide hook adapter contract (raw command parsing scope + ask semantics) |
+| 5 | TASK-14 | TASK-13 | Prove raw-command parsing + hook mode in evaluator (spike) |
+| 6 | TASK-09 | TASK-14 | Switch hook to evaluator + remove duplicated policy logic |
+| 7 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
+| 8 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
 
-**Max parallelism:** 2 (Wave 3/4) | **Critical path:** TASK-12 -> TASK-11 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 12
+**Max parallelism:** 2 (Wave 3/6) | **Critical path:** TASK-12 -> TASK-11 -> TASK-13 -> TASK-14 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 14
 
 
 ## Tasks
@@ -327,45 +333,95 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 ### TASK-09: Wire hook + git guard to generated policy evaluation/data
 - **Type:** IMPLEMENT
 - **Deliverable:** Enforcement layers consume generated policy evaluation/data
-  - `.claude/hooks/pre-tool-use-git-safety.sh` consumes a generated policy source (data or evaluator) rather than duplicating deny/allow logic.
-  - `scripts/agent-bin/git` consumes the same generated policy source.
+  - `.claude/hooks/pre-tool-use-git-safety.sh` consumes the shared evaluator (generated policy), rather than duplicating deny/allow logic in bash regex.
+  - `scripts/agent-bin/git` consumes the same evaluator (already done in TASK-11).
   - Kernel + generator remain the only place the policy is edited; enforcement scripts become thin evaluators.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:**
   - Primary: `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`
   - Secondary: `[readonly] .agents/safety/generated/git-safety-policy.*`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
-- **Depends on:** TASK-11
+- **Depends on:** TASK-14
 - **Blocks:** TASK-07
-- **Confidence:** 74% (→ 84% conditional on TASK-10, TASK-11) ⚠️
-  - Implementation: 74% — wiring must preserve existing bash parsing behavior; needs E2 evidence from running the suites after integration.
-  - Approach: 74% — current generated `.agents/safety/generated/git-safety-policy.sh` exports only Claude permission matchers (e.g. `Bash(git reset --hard:*)`), not the rule data the hook/guard use (regex/arg parsing). A decision is required on the generated interface.
-  - Impact: 74% — high blast radius if deny rules regress; mitigated by existing Jest suites.
+- **Confidence:** 72% (→ 84% conditional on TASK-14) ⚠️
+  - Implementation: 72% — guard is already wired via the evaluator (TASK-11), but the Claude PreToolUse hook is still raw-string + bash-regex based; the remaining unknown is safe, quote-aware tokenization for hook input.
+    - Evidence: `.claude/hooks/pre-tool-use-git-safety.sh`
+    - Evidence: `scripts/agents/evaluate-git-safety.mjs`
+  - Approach: 78% — keep single semantics in the evaluator; add a hook adapter mode:
+    - parse `tool_input.command` to the first `git` invocation argv (supports quotes and absolute paths)
+    - in hook mode, treat evaluator `ask` as allow so Claude permissions can prompt
+  - Impact: 72% — hook regressions weaken Claude safety; mitigated by existing Jest suites, but requires E2 proof post-wiring.
+    - Evidence: `scripts/__tests__/pre-tool-use-git-safety.test.ts`
+    - Evidence: `scripts/__tests__/git-safety-policy.test.ts`
 #### Re-plan Update (2026-02-15)
 - **Previous confidence:** 74%
-- **Updated confidence:** 74% (→ 84% conditional on TASK-10, TASK-11)
+- **Updated confidence:** 72% (→ 84% conditional on TASK-14)
   - **Evidence class:** E1 + E2
-  - Approach: cannot promote on static audit alone; the generated include currently provides Claude permission matcher strings, which do not map 1:1 to the hook/guard's regex + argv parsing logic.
-    - Evidence: `.agents/safety/generated/git-safety-policy.sh`
-    - Evidence: `.claude/hooks/pre-tool-use-git-safety.sh`
-    - Evidence: `scripts/agent-bin/git`
-  - Impact: executable drift protection improved in TASK-05 (kernel-derived tests + generated artifact parity), but wiring both enforcement layers still requires E2 proof.
-    - Evidence: `scripts/__tests__/git-safety-policy.test.ts`
-    - Evidence: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`
-- **Precursor tasks created:** TASK-10 (decision) → TASK-11 (single-layer spike) → TASK-09 (full wiring)
+  - Scope update: guard wiring is complete (single semantics via evaluator), so remaining work is hook-only but higher-risk per line of code due to raw command parsing.
+    - Evidence (E2): `pnpm test:governed -- jest scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` (green after guard migration)
+    - Evidence (E2): `scripts/agents/generate-git-safety-policy --check` and `node scripts/validate-agent-manifest.js` pass
+  - Hook reality: tests require blocking when git is embedded in compound commands (example: `echo test && git reset --hard`), without implementing a full shell AST parser.
+    - Evidence: `scripts/__tests__/pre-tool-use-git-safety.test.ts` (“handles piped commands with git”)
+- **Decision / resolution:**
+  - **Parsing scope:** extract and tokenize the first `git` invocation from `tool_input.command` (including `/usr/bin/git`, `/opt/homebrew/bin/git`), not full-shell parsing.
+  - **Ask behavior:** hook mode maps `ask` → allow (let Claude settings prompt); guard mode maps `ask` → deny.
+- **Precursor chain updated:** TASK-13 → TASK-14 → TASK-09
 - **Acceptance:**
-  - Both enforcement layers read policy evaluation/data from a shared generated source and no longer require duplicated policy edits in both scripts.
-  - Existing behavior remains unchanged (verified by current Jest suites).
+  - Git guard remains evaluator-driven (already true from TASK-11).
+  - PreToolUse hook delegates decisions to the evaluator and does not carry a duplicated bash deny matrix.
+  - Hook preserves interactive ask UX by allowing `ask` decisions through to `.claude/settings.json`.
+  - Existing deny/allow behavior remains unchanged (verified by suites).
 - **Validation contract:**
-  - TC-01: `scripts/__tests__/pre-tool-use-git-safety.test.ts` passes → hook behavior preserved.
-  - TC-02: `scripts/__tests__/git-safety-policy.test.ts` passes → guard + hook agree.
-  - Run/verify: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`.
+  - TC-01: `pnpm test:governed -- jest scripts/__tests__/pre-tool-use-git-safety.test.ts --maxWorkers=2` passes.
+  - TC-02: `pnpm test:governed -- jest scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` passes.
+  - TC-03: new evaluator raw-command parsing unit tests pass (added in TASK-14).
 - **What would make this ≥80%:**
-  - E2: implement full wiring and run both suites green; then promote to ≥80%.
+  - E3: TASK-14 completes (tokenizer + hook-mode), then TASK-09 can be wired with E2 suite evidence.
 - **Rollout / rollback:**
-  - Rollout: source include files and keep generator enforced by validator.
-  - Rollback: revert enforcement wiring commit (policy artifacts remain safe).
-- **Documentation impact:** None.
+  - Rollout: switch hook to call evaluator; timebox any fallback to the old regex logic.
+  - Rollback: revert hook wiring commit; guard/evaluator remains.
+
+### TASK-13: Hook integration decision + evaluator CLI contract
+- **Type:** INVESTIGATE
+- **Status:** Pending
+- **Deliverable:** Concrete interface contract for hooking the evaluator to Claude PreToolUse (raw string input), including ask behavior and parsing scope.
+- **Execution-Skill:** lp-replan
+- **Affects:** `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agents/evaluate-git-safety.mjs`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] .claude/settings.json`
+- **Depends on:** TASK-11
+- **Blocks:** TASK-14, TASK-09
+- **Confidence:** 86%
+  - Implementation: 90% — investigation + decision memo only.
+  - Approach: 86% — repo already encodes required behaviors via tests; define contract from evidence.
+  - Impact: 86% — clarifies adapter boundaries to avoid regressions.
+- **Acceptance:**
+  - Defines evaluator CLI for hook usage: input shape, output/exit codes, and `ask` handling for Claude.
+  - Defines parsing scope for `tool_input.command` (first git invocation extraction) and fail-closed rules.
+  - Enumerates a minimal test corpus to lock down edge cases (quotes, env var prefixes, `echo && git ...`, absolute git paths).
+- **Validation contract:**
+  - VC-01: Decision paragraph exists in TASK-13 with chosen parsing scope + ask behavior + rationale → pass.
+
+### TASK-14: Raw-command parsing + hook-mode evaluation in evaluator
+- **Type:** SPIKE
+- **Status:** Pending
+- **Deliverable:** Evaluator supports raw command strings safely (quote-aware) and a hook mode that treats `ask` as allow.
+- **Execution-Skill:** lp-build
+- **Affects:**
+  - Primary: `scripts/agents/evaluate-git-safety.mjs` (extend CLI), plus new unit tests (new file under `scripts/__tests__/`)
+  - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] docs/git-safety.md`
+- **Depends on:** TASK-13
+- **Blocks:** TASK-09
+- **Confidence:** 82%
+  - Implementation: 82% — bounded spike; unit tests can be isolated.
+  - Approach: 82% — evaluator remains single semantics; hook adapter becomes evaluator CLI.
+  - Impact: 82% — reduces risk by proving tokenizer behavior independently.
+- **Acceptance:**
+  - Evaluator accepts `--command <raw>` and extracts/tokens the first git invocation (supports quotes and env var prefixes).
+  - Evaluator supports `--mode hook` (or equivalent) where `ask` returns allow (exit 0) so Claude permissions can prompt.
+  - Unit tests cover: quoted commit messages, `echo && git ...`, absolute paths (`/usr/bin/git`), env var prefixes (`SKIP_WRITER_LOCK=1 git ...`).
+- **Validation contract:**
+  - TC-01: new evaluator unit test file passes under governed runner.
+  - TC-02: `pnpm test:governed -- jest scripts/__tests__/pre-tool-use-git-safety.test.ts --maxWorkers=2` passes.
+  - Run/verify: `pnpm test:governed -- jest <new-test-file> scripts/__tests__/pre-tool-use-git-safety.test.ts --maxWorkers=2`.
 
 ### TASK-10: Decide hook/guard policy generation format
 - **Type:** INVESTIGATE
@@ -412,13 +468,14 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 
 ### TASK-11: Prototype policy-driven evaluation for one enforcement layer
 - **Type:** SPIKE
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** One enforcement layer consumes the shared evaluator and passes tests (stabilize semantics before touching the messier entrypoint).
 - **Execution-Skill:** lp-build
 - **Affects:**
   - Primary: (recommended first) `scripts/agent-bin/git` (argv-based, cleaner inputs), plus evaluator entrypoint (new) and/or generator outputs under `.agents/safety/generated/`
   - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
 - **Depends on:** TASK-12
-- **Blocks:** TASK-09
+- **Blocks:** TASK-13, TASK-14, TASK-09
 - **Confidence:** 82%
   - Implementation: 82% — bounded to one layer; existing suites provide fast E2 feedback.
   - Approach: 82% — spike can validate the chosen interface without committing to a full refactor.
@@ -429,9 +486,16 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Validation contract:**
   - TC-01: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` passes (must pass; covers evaluator drift gate + parity expectations)
   - TC-02: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts --maxWorkers=2` passes if hook is migrated in-spike; otherwise deferred to TASK-09
+#### Evidence (2026-02-15)
+- Commit: `dc0ad51504` (adds `scripts/agents/evaluate-git-safety.mjs`; rewires `scripts/agent-bin/git` to use it)
+- Verified:
+  - `pnpm test:governed -- jest scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`
+  - `scripts/agents/generate-git-safety-policy --check`
+  - `node scripts/validate-agent-manifest.js`
 
 ### TASK-12: Add semantic safety rules to the kernel + compiled policy artifact
 - **Type:** SPIKE
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** Kernel gains a semantic rule set suitable for evaluation, and the generator emits a compiled policy artifact that includes semantic rules (not only platform matchers).
 - **Execution-Skill:** lp-build
 - **Affects:**
@@ -449,6 +513,12 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Validation contract:**
   - TC-01: `scripts/agents/generate-git-safety-policy --check` passes → compiled artifact stays in sync.
   - TC-02: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` passes → kernel/compiled artifact parity remains enforced.
+#### Evidence (2026-02-15)
+- Commit: `9083e2a907` (adds semantic `rules:` + `evaluation:` to kernel; updates parser; regenerates compiled JSON)
+- Verified:
+  - `pnpm test:governed -- jest scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`
+  - `scripts/agents/generate-git-safety-policy --check`
+  - `node scripts/validate-agent-manifest.js`
 
 ### TASK-06: Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers
 - **Type:** IMPLEMENT
@@ -536,5 +606,6 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 ## Decision Log
 - 2026-02-15: Confirmed Option A for safety kernel (YAML in `docs/git-safety.md`; generators update JSON properties / delimited blocks only).
 - 2026-02-15: Replanned safety work: narrowed TASK-04 to kernel+generator+artifacts; moved enforcement wiring to TASK-09; promoted TASK-04/TASK-05 to build-eligible via scope reduction + clearer validation.
+- 2026-02-15: Replanned TASK-09 as hook-focused: extract + tokenize the first `git` invocation from raw `tool_input.command` (not full shell parsing) and map evaluator `ask` to allow in hook mode (Claude settings provides the interactive prompt). Added TASK-13 (decision/contract) and TASK-14 (spike) as precursors.
 - 2026-02-15: Planning created from `docs/plans/agent-setup-improvement-fact-find.md` and superseding prior archived plans.
 - 2026-02-15: Replanned doc-only tasks (TASK-06, TASK-08) to avoid global `pnpm docs:lint` pass requirement (repo baseline currently fails due to legacy docs); replaced with task-scoped validation commands.

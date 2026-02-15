@@ -132,7 +132,12 @@ Confirm:
 
 ### C) Local readiness gate
 
-- Working tree is clean (or you explicitly understand any local diffs and they are unrelated and will not be mixed).
+- Working tree is clean, **or** you can prove the current dirty tree is non-overlapping with this task’s scope:
+  - Capture changed paths: `git status --porcelain=v1` and `git diff --name-only --diff-filter=ACMRTUXB`
+  - Compare changed paths to this task’s `Affects` list.
+  - If any changed path intersects with `Affects` (including untracked files you’d need to add for the task), STOP (risk of mixing changes) and resolve the overlap before building.
+  - If there is no intersection, proceed but enforce task-only staging: only `git add` / commit files in `Affects` (and explicitly planned new files); never stage unrelated diffs.
+
 - Baseline is sane:
   - For code/mixed tasks: if the repo has a standard "quick check" (typecheck/lint/unit), run it before starting.
   - For business-artifact tasks: verify required source docs/data and channel constraints are available before drafting.

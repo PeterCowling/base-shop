@@ -24,57 +24,53 @@ export function resolveMetaDescription({
   guidesEn,
   allowEnglishFallback,
 }: DescriptionResolverParams): string {
+  const pickMeaningful = (value: unknown, keyExpect: string): string => {
+    const s = typeof value === "string" ? value.trim() : "";
+    if (!s) return "";
+    return s !== keyExpect ? s : "";
+  };
+
+  const safeTranslate = (key: string): string => {
+    try {
+      const v = translateStringWithFallback(tGuides, guidesEn, key, undefined, { locale: lang });
+      return typeof v === "string" ? v.trim() : "";
+    } catch {
+      return "";
+    }
+  };
+
+  const safeGuidesEn = (key: string): string => {
+    try {
+      const v = guidesEn(key) as unknown;
+      return typeof v === "string" ? v.trim() : "";
+    } catch {
+      return "";
+    }
+  };
+
   // Prefer explicit meta.description when provided by the active locale
   const explicitMetaKey = `meta.${metaKey}.description` as const;
-  const localMetaRaw = tGuides(explicitMetaKey) as unknown;
-  const localMetaMeaningful =
-    typeof localMetaRaw === "string" &&
-    localMetaRaw.trim().length > 0 &&
-    localMetaRaw.trim() !== explicitMetaKey;
-  if (localMetaMeaningful) return (localMetaRaw as string).trim();
+  const localMeta = pickMeaningful(tGuides(explicitMetaKey) as unknown, explicitMetaKey);
+  if (localMeta) return localMeta;
 
   // Try content.seo.description
   const k = `content.${metaKey}.seo.description` as const;
-  const localOnly = tGuides(k) as unknown;
+  const localDesc = pickMeaningful(tGuides(k) as unknown, k);
+  if (localDesc) {
+    // Guard against placeholder strings where a locale mistakenly copies
+    // the EN title into description.
+    const enTitle = safeTranslate(`content.${metaKey}.seo.title`);
+    if (!enTitle || localDesc !== enTitle) return localDesc;
 
-  if (typeof localOnly === "string") {
-    const localDesc = localOnly.trim();
-    if (localDesc.length > 0 && localDesc !== k) {
-      // Guard against placeholder strings where a locale mistakenly copies
-      // the EN title into description
-      try {
-        const enTitle = translateStringWithFallback(
-          tGuides,
-          guidesEn,
-          `content.${metaKey}.seo.title`,
-          undefined,
-          { locale: lang },
-        );
-        if (typeof enTitle === "string" && enTitle.trim().length > 0 && localDesc === enTitle.trim()) {
-          // Locale description matches EN title → ignore and prefer EN description
-          try {
-            const enDescRaw = guidesEn(k) as unknown;
-            if (typeof enDescRaw === "string") {
-              const enDesc = enDescRaw.trim();
-              if (enDesc.length > 0 && enDesc !== k) return enDesc;
-            }
-          } catch {
-            /* fall back to generic EN handling below */
-          }
-        } else {
-          // Locale description is meaningful and not a placeholder
-          return localDesc;
-        }
-      } catch {
-        return localDesc;
-      }
-    }
+    // Locale description matches EN title → ignore and prefer EN description if available.
+    const enDesc = pickMeaningful(safeGuidesEn(k), k);
+    if (enDesc) return enDesc;
   }
 
   // Allow EN fallback regardless of structured content for blank/unresolved locale values
   if (allowEnglishFallback) {
-    const viaT = translateStringWithFallback(tGuides, guidesEn, k, undefined, { locale: lang });
-    if (typeof viaT === "string" && viaT.trim().length > 0 && viaT !== k) return viaT;
+    const viaT = pickMeaningful(safeTranslate(k), k);
+    if (viaT) return viaT;
   }
 
   // Final fallback: empty string

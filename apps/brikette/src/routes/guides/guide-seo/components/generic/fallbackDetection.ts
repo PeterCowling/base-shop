@@ -40,38 +40,28 @@ export function detectHasAnyFallback(params: {
   resolveEnGuidesTranslator: () => GuidesTranslator | undefined;
 }): boolean {
   const { hasStructured, hasStructuredEn, translations, guideKey, resolveEnGuidesTranslator } = params;
-  let hasAnyFallback = false;
-  if (!hasStructured && !hasStructuredEn) {
+  if (hasStructured || hasStructuredEn) return false;
+
+  const k = `content.${guideKey}.fallback` as const;
+  const safeGet = <T,>(fn: () => T, fallback: T): T => {
     try {
-      const manualLocal = translations.tGuides(`content.${guideKey}.fallback`, { returnObjects: true }) as unknown;
-      if (manualFallbackHasMeaningfulContent(manualLocal)) {
-        hasAnyFallback = true;
-      } else {
-        const enTranslator = resolveEnGuidesTranslator();
-        if (typeof enTranslator === "function") {
-          try {
-            const manualEn = enTranslator(`content.${guideKey}.fallback`, { returnObjects: true }) as unknown;
-            if (manualFallbackHasMeaningfulContent(manualEn)) {
-              hasAnyFallback = true;
-            }
-          } catch {
-            // No-op: EN translation lookup failed; continue to string check.
-            void 0;
-          }
-        }
-      }
-      if (!hasAnyFallback) {
-        const k = `content.${guideKey}.fallback` as const;
-        const localStrRaw = translations.tGuides(k) as unknown;
-        const localStr = typeof localStrRaw === "string" ? localStrRaw.trim() : "";
-        if (localStr && localStr !== k) {
-          hasAnyFallback = true;
-        }
-      }
+      return fn();
     } catch {
-      // No-op: guide translation lookup failed; treat as no fallback.
-      void 0;
+      return fallback;
     }
-  }
-  return hasAnyFallback;
+  };
+
+  const manualLocal = safeGet(() => translations.tGuides(k, { returnObjects: true }) as unknown, undefined);
+  if (manualFallbackHasMeaningfulContent(manualLocal)) return true;
+
+  const enTranslator = resolveEnGuidesTranslator();
+  const manualEn =
+    typeof enTranslator === "function"
+      ? safeGet(() => enTranslator(k, { returnObjects: true }) as unknown, undefined)
+      : undefined;
+  if (manualFallbackHasMeaningfulContent(manualEn)) return true;
+
+  const localStr = safeGet(() => translations.tGuides(k) as unknown, undefined);
+  const localStrTrimmed = typeof localStr === "string" ? localStr.trim() : "";
+  return localStrTrimmed.length > 0 && localStrTrimmed !== k;
 }

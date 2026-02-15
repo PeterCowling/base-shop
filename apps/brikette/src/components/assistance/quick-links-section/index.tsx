@@ -21,7 +21,7 @@ import { getSlug } from "@/utils/slug";
 
 import { buildQuickLinksJsonLd } from "./jsonLd";
 import { useAssistanceTranslations } from "./translations";
-import type { AssistanceQuickLinksProps , QuickLinkWithHref } from "./types";
+import type { AssistanceQuickLinksProps, QuickLinkWithHref } from "./types";
 import { useContactCta } from "./useContactCta";
 import { useQuickLinksWithHref, useResolvedQuickLinks } from "./useQuickLinks";
 
@@ -43,7 +43,7 @@ function resolveQuickLinkCardImage(
   if (!item.slug && item.href === howToPath) {
     return {
       src: buildCfImageUrl(HERO_IMAGE_SRC, { width: 160, height: 120, quality: 80, format: "auto" }),
-      alt: howToAlt || "Stone steps leading to Hostel Brikette",
+      alt: howToAlt.length > 0 ? howToAlt : item.label,
     };
   }
 
@@ -64,8 +64,29 @@ function AssistanceQuickLinksSectionWrapper({ lang, className }: AssistanceQuick
     return typeof maybeFixed === "function" ? (maybeFixed as TFunction<"guides">) : (tGuides as TFunction<"guides">);
   })();
 
-  const { t: tHowTo } = useTranslation("howToGetHere", { lng: resolvedLang });
-  const howToAlt = tHowTo("header.heroAlt", { defaultValue: "Stone steps framed by bougainvillea" }) as string;
+  const { t: tHowTo, i18n: howToI18n } = useTranslation("howToGetHere", { lng: resolvedLang });
+  const tHowToEn: TFunction<"howToGetHere"> = (() => {
+    const maybeFixed =
+      typeof howToI18n?.getFixedT === "function" ? howToI18n.getFixedT("en", "howToGetHere") : undefined;
+    return typeof maybeFixed === "function"
+      ? (maybeFixed as TFunction<"howToGetHere">)
+      : (tHowTo as TFunction<"howToGetHere">);
+  })();
+
+	  const pickMeaningfulI18nString = (value: unknown, keyExpect: string): string => {
+	    const s = typeof value === "string" ? value.trim() : "";
+	    if (!s) return "";
+	    if (s === keyExpect) return "";
+	    return s;
+	  };
+
+  const heroAltKey = "header.heroAlt" as const;
+  const heroAltFallbackKey = "header.heroAltFallback" as const;
+  const howToAlt =
+    pickMeaningfulI18nString(tHowTo(heroAltKey) as unknown, heroAltKey) ||
+    pickMeaningfulI18nString(tHowToEn(heroAltKey) as unknown, heroAltKey) ||
+    pickMeaningfulI18nString(tHowTo(heroAltFallbackKey) as unknown, heroAltFallbackKey) ||
+    pickMeaningfulI18nString(tHowToEn(heroAltFallbackKey) as unknown, heroAltFallbackKey);
 
   const heading = resolveAssistanceString("quickLinksHeading");
   const intro = resolveAssistanceString("quickLinksIntro");
@@ -74,10 +95,7 @@ function AssistanceQuickLinksSectionWrapper({ lang, className }: AssistanceQuick
   const quickLinks = useResolvedQuickLinks(resolvedLang, tAssistance, tAssistanceEn);
   const quickLinksWithHref = useQuickLinksWithHref(quickLinks, resolvedLang);
   const contactCta = useContactCta(tAssistance, tAssistanceEn);
-
-  if (quickLinksWithHref.length === 0) {
-    return null;
-  }
+  const hasQuickLinks = quickLinksWithHref.length > 0;
 
   const jsonLd = useMemo(
     () => serializeJsonLdValue(buildQuickLinksJsonLd(resolvedLang, quickLinksWithHref)),
@@ -109,6 +127,10 @@ function AssistanceQuickLinksSectionWrapper({ lang, className }: AssistanceQuick
     ),
     [],
   );
+
+  if (!hasQuickLinks) {
+    return null;
+  }
 
   return (
     <AssistanceQuickLinksSection

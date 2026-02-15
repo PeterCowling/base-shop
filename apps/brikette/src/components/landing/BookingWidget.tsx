@@ -11,6 +11,7 @@ import { resolveBookingDateFormat } from "@acme/ui/utils/bookingDateFormat";
 
 import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick } from "@/utils/ga4-events";
 
 const BOOKING_QUERY_KEYS = {
   checkIn: "checkin",
@@ -181,6 +182,7 @@ const BookingWidget = memo(function BookingWidget({
       setShowError(true);
       return;
     }
+    fireCtaClick({ ctaId: "booking_widget_check_availability", ctaLocation: "home_booking_widget" });
     openModal("booking", {
       checkIn: checkIn || undefined,
       checkOut: checkOut || undefined,

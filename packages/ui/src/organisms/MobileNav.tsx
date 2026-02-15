@@ -30,9 +30,16 @@ interface Props {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lang?: AppLanguage;
   bannerHeight?: number;
+  onPrimaryCtaClick?: () => void;
 }
 
-function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0 }: Props): JSX.Element {
+function MobileNav({
+  menuOpen,
+  setMenuOpen,
+  lang: explicitLang,
+  bannerHeight = 0,
+  onPrimaryCtaClick,
+}: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n: i18nextInstance } = useTranslation();
   const i18nLanguage = i18nextInstance?.language;
@@ -53,10 +60,11 @@ function MobileNav({ menuOpen, setMenuOpen, lang: explicitLang, bannerHeight = 0
   const onBookingClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
       // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      onPrimaryCtaClick?.();
       event.preventDefault();
       openBooking();
     },
-    [openBooking]
+    [onPrimaryCtaClick, openBooking]
   );
   const ctaClass = "cta-dark";
   const primaryCtaLabel = useMemo(() => {

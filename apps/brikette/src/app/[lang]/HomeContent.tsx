@@ -25,6 +25,7 @@ import { useOptionalModal } from "@/context/ModalContext";
 import { type Room,roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -39,6 +40,7 @@ function HomeContent({ lang }: Props) {
   });
 
   const handleReserve = useCallback(() => {
+    fireCtaClick({ ctaId: "hero_check_availability", ctaLocation: "home_hero" });
     openModal("booking");
   }, [openModal]);
 

@@ -64,6 +64,14 @@ export function isModalTypeParam(value: string): value is ModalTypeParam {
   return (GA4_ENUMS.modalType as readonly string[]).includes(value);
 }
 
+export function isCtaId(value: string): value is CtaId {
+  return (GA4_ENUMS.ctaId as readonly string[]).includes(value);
+}
+
+export function isCtaLocation(value: string): value is CtaLocation {
+  return (GA4_ENUMS.ctaLocation as readonly string[]).includes(value);
+}
+
 export function isItemListId(value: string): value is ItemListId {
   return (GA4_ENUMS.itemListId as readonly string[]).includes(value);
 }
@@ -220,6 +228,22 @@ export function fireModalClose(params: { modalType: string; source?: string }): 
 
   const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
   gtag("event", "modal_close", { modal_type: modalType, source });
+}
+
+export function fireCtaClick(params: { ctaId: string; ctaLocation: string }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  const ctaId = typeof params.ctaId === "string" && isCtaId(params.ctaId) ? params.ctaId : null;
+  const ctaLocation =
+    typeof params.ctaLocation === "string" && isCtaLocation(params.ctaLocation) ? params.ctaLocation : null;
+
+  if (!ctaId || !ctaLocation) return;
+
+  gtag("event", "cta_click", {
+    cta_id: ctaId,
+    cta_location: ctaLocation,
+  });
 }
 
 export function fireBeginCheckoutGeneric(params: {

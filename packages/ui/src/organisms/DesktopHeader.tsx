@@ -33,7 +33,13 @@ const FALLBACK_LOGO_ALT =
   /* i18n-exempt -- UI-1000 ttl=2026-12-31 fallback logo alt text. */
   "Hostel Brikette logo";
 
-function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JSX.Element {
+function DesktopHeader({
+  lang: explicitLang,
+  onPrimaryCtaClick,
+}: {
+  lang?: AppLanguage;
+  onPrimaryCtaClick?: () => void;
+}): React.JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const { i18n } = useTranslation();
   const normalizedI18nLang = useMemo(() => {
@@ -56,10 +62,11 @@ function DesktopHeader({ lang: explicitLang }: { lang?: AppLanguage }): React.JS
   const onBookClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
       // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
+      onPrimaryCtaClick?.();
       event.preventDefault();
       book();
     },
-    [book]
+    [book, onPrimaryCtaClick]
   );
 
   const navTranslate = useCallback<TranslateFn>(

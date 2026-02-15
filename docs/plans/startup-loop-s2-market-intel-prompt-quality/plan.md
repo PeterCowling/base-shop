@@ -88,7 +88,7 @@ Chosen: Option B.
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Complete (2026-02-15) | TASK-03, TASK-04, TASK-05, TASK-06 | - |
 | TASK-08 | IMPLEMENT | Template tightening: internal-baseline citation rule, parity check, fixed scenario dates contract, stop/continue/start structure, remove leading classification bias | 85 | S | Complete (2026-02-15) | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Generator tightening: deterministic scenario date injection, compress inventory header (no room label bloat), remove duplicate website-audit addon | 82 | M | Complete (2026-02-15) | TASK-08 | TASK-10 |
-| TASK-10 | CHECKPOINT | Regenerate BRIK prompt + rerun rubric after follow-up tranche | 95 | S | Pending | TASK-09 | - |
+| TASK-10 | CHECKPOINT | Regenerate BRIK prompt + rerun rubric after follow-up tranche | 95 | S | Complete (2026-02-15) | TASK-09 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -443,6 +443,14 @@ Chosen: Option B.
   - Re-generate the BRIK prompt for `2026-02-15`.
   - Re-score BRIK on the rubric and record the run notes (or confirm prior PASS still holds).
   - If any rubric dimension scores 0, run `/lp-replan` before continuing further changes.
+
+#### Checkpoint Completion (2026-02-15)
+- **Status:** Complete
+- **Evidence:**
+  - Regenerated prompt: `docs/business-os/market-research/BRIK/2026-02-15-deep-research-market-intelligence-prompt.user.md`
+  - Confirmed fixed scenario dates are injected (S1/S2/S3) and parity sub-test + internal-baseline citation clarification are present.
+  - Rubric run note updated: `docs/business-os/market-research/prompt-quality-eval.user.md` (commit 281bf6a9b8)
+- **Result:** PASS maintained for BRIK; no replanning required.
 
 ## Risks & Mitigations
 - Risk: Deep Research cannot access repo artifacts, so pointers reduce usefulness.

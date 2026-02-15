@@ -6,6 +6,7 @@ type GTag = (...args: unknown[]) => void;
 // Canonical analytics enums (authoritative). Keep these stable and low-cardinality.
 export const GA4_ENUMS = {
   itemListId: ["home_rooms_carousel", "rooms_index", "book_rooms", "deals_index"] as const,
+  modalType: ["offers", "booking", "booking2", "location", "contact", "facilities", "language"] as const,
   ctaId: [
     "header_check_availability",
     "mobile_nav_check_availability",
@@ -38,6 +39,7 @@ export const GA4_ENUMS = {
 } as const;
 
 export type ItemListId = (typeof GA4_ENUMS.itemListId)[number];
+export type ModalTypeParam = (typeof GA4_ENUMS.modalType)[number];
 export type CtaId = (typeof GA4_ENUMS.ctaId)[number];
 export type CtaLocation = (typeof GA4_ENUMS.ctaLocation)[number];
 export type EventSource = (typeof GA4_ENUMS.source)[number];
@@ -56,6 +58,10 @@ export function resolveItemListName(id: ItemListId): string {
 
 export function isEventSource(value: string): value is EventSource {
   return (GA4_ENUMS.source as readonly string[]).includes(value);
+}
+
+export function isModalTypeParam(value: string): value is ModalTypeParam {
+  return (GA4_ENUMS.modalType as readonly string[]).includes(value);
 }
 
 export function isItemListId(value: string): value is ItemListId {
@@ -192,6 +198,28 @@ export function fireSearchAvailabilityAndNavigate(params: {
     },
     onNavigate: params.onNavigate,
   });
+}
+
+export function fireModalOpen(params: { modalType: string; source?: string }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  const modalType = typeof params.modalType === "string" && isModalTypeParam(params.modalType) ? params.modalType : null;
+  if (!modalType) return;
+
+  const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
+  gtag("event", "modal_open", { modal_type: modalType, source });
+}
+
+export function fireModalClose(params: { modalType: string; source?: string }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  const modalType = typeof params.modalType === "string" && isModalTypeParam(params.modalType) ? params.modalType : null;
+  if (!modalType) return;
+
+  const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
+  gtag("event", "modal_close", { modal_type: modalType, source });
 }
 
 export function fireBeginCheckoutGeneric(params: {

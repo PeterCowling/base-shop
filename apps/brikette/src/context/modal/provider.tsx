@@ -7,6 +7,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { fireModalClose, fireModalOpen } from "@/utils/ga4-events";
 import { prefetchInteractiveBundlesNow } from "@/utils/prefetchInteractive";
 
 import { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./context";
@@ -34,9 +35,17 @@ const getDocumentBody = (): ShimBodyElement | null => {
   return body as DocumentShim["body"];
 };
 
+function extractModalSource(data: unknown): string | undefined {
+  if (!data || typeof data !== "object") return undefined;
+  const maybeSource = (data as { source?: unknown }).source;
+  return typeof maybeSource === "string" ? maybeSource : undefined;
+}
+
 export function ModalProvider({ children }: ModalProviderProps): JSX.Element {
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [modalData, setModalData] = useState<unknown>(null);
+  const activeModalRef = useRef<ModalType>(null);
+  const modalDataRef = useRef<unknown>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
   const openModal = useCallback((type: Exclude<ModalType, null>, data: unknown = null): void => {
@@ -48,13 +57,22 @@ export function ModalProvider({ children }: ModalProviderProps): JSX.Element {
     if (activeElement instanceof HTMLElement) {
       lastFocusedRef.current = activeElement;
     }
+    activeModalRef.current = type;
+    modalDataRef.current = data;
+    fireModalOpen({ modalType: type, source: extractModalSource(data) });
     setActiveModal(type);
     setModalData(data);
   }, []);
 
   const closeModal = useCallback((): void => {
+    const closingType = activeModalRef.current;
+    if (closingType) {
+      fireModalClose({ modalType: closingType, source: extractModalSource(modalDataRef.current) });
+    }
     setActiveModal(null);
     setModalData(null);
+    activeModalRef.current = null;
+    modalDataRef.current = null;
     lastFocusedRef.current?.focus?.();
     lastFocusedRef.current = null;
   }, []);

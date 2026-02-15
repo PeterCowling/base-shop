@@ -192,7 +192,7 @@ function GuideSeoTemplate({
     } catch {
       return undefined;
     }
-  }, [guideKey, translations.tGuides]);
+  }, [guideKey, translations]);
 
   const targetLocale = (requestedLang ?? lang)?.trim().toLowerCase();
   const hasLocalizedResourcesForRequested = useHasLocalizedResources({

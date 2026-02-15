@@ -1,7 +1,8 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/no-naked-img, ds/require-aspect-ratio-on-media -- BRIK-DS-001: in-progress design-system migration */
+/* eslint-disable ds/no-hardcoded-copy -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/LocationMiniBlock.tsx
 import { memo, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 import { Section } from "@acme/design-system/atoms";
 
@@ -11,13 +12,34 @@ import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
 import { MapPin } from "@/icons";
 
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+function isI18nKeyToken(input: string): boolean {
+  // Avoid regex here: ESLint security rules can flag even safe-looking patterns.
+  // We only treat tokens like `locationSection.title` as i18n keys.
+  if (!input.includes(".")) return false;
+
+  const parts = input.split(".");
+  if (parts.some((p) => p.length === 0)) return false;
+
+  for (const part of parts) {
+    for (let i = 0; i < part.length; i += 1) {
+      const code = part.charCodeAt(i);
+      const isUpper = code >= 65 && code <= 90;
+      const isLower = code >= 97 && code <= 122;
+      const isDigit = code >= 48 && code <= 57;
+      const isUnderscore = code === 95;
+
+      if (!isUpper && !isLower && !isDigit && !isUnderscore) return false;
+    }
+  }
+
+  return true;
+}
 
 function resolveTranslatedCopy(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback;
   const trimmed = value.trim();
   if (!trimmed) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  if (isI18nKeyToken(trimmed)) return fallback;
   return trimmed;
 }
 
@@ -137,10 +159,12 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
               </div>
             </Inline>
             <div className="relative h-36 w-full overflow-hidden rounded-2xl border border-brand-outline/20">
-              <img
+              <Image
                 src="/img/hostel-coastal-horizon.webp"
                 alt=""
-                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-t from-overlay-scrim-1 via-transparent to-transparent">
                 <div className="rounded-full bg-panel/90 p-2 shadow-lg dark:bg-brand-surface/90">

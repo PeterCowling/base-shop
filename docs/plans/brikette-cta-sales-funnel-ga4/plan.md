@@ -1211,6 +1211,7 @@ When implementing TASK-13, ensure:
 
 ### TASK-12: conversion copy parity in booking modals
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-16)
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/locales/en/*` (as needed)
 - **Depends on:** TASK-05, TASK-19
@@ -1233,6 +1234,32 @@ Notes:
 
 What would make this ≥90%:
 - Confirm the final copy structure with product owner and lock translation keys before implementation (avoids churn across locales).
+
+#### Build Completion (2026-02-16)
+- **Status:** Complete
+- **Commit:** fd40afb33c
+- **Execution cycle:**
+  - Validation cases executed: TC-01, TC-02
+  - Cycles: 1 (TDD: test-fail-implement-pass)
+  - Initial validation: tests written first, failed appropriately
+  - Final validation: PASS
+- **Confidence reassessment:**
+  - Original: 72%
+  - Post-validation: 82%
+  - Delta reason: TASK-19 decision memo provided copy structure; implementation validated fallback strategy
+- **Validation:**
+  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/components/booking-modals-direct-copy.test.tsx --maxWorkers=2` — PASS
+  - Typecheck: PASS (fixed collateral type error in seo-audit/index.ts)
+  - Lint: PASS
+- **Documentation updated:** None required (code-only task)
+- **Implementation notes:**
+  - Created DirectPerksBlock component in `apps/brikette/src/components/booking/DirectPerksBlock.tsx`
+  - Uses `modals.directPerks` namespace (heading + items array) with i18n fallback strategy
+  - Wired into BookingModal and Booking2Modal via extraContent prop (extends existing `BookingModalProps`)
+  - RTL support using logical spacing (me-2 instead of mr-2)
+  - Guard prevents rendering when heading is empty or items array is empty
+  - Integration test validates both TC-01 (renders with defaults) and TC-02 (guards empty data)
+  - Files changed: DirectPerksBlock.tsx (new), Booking2Modal.tsx, BookingModal.tsx (both apps/brikette), modals.json, booking-modals-direct-copy.test.tsx (new), BookingModal.tsx (packages/ui for extraContent prop)
 
 ### TASK-13: Upgrade /book + JSON-LD
 - **Type:** IMPLEMENT

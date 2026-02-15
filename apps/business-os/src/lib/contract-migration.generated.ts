@@ -8,9 +8,9 @@
 export const CONTRACT_MIGRATION_CONFIG = {
   "version": "1",
   "timebox": {
-    "alias_accept_until_utc": "2026-03-01",
-    "dual_read_until_utc": "2026-03-01",
-    "lint_warn_until_utc": "2026-02-22"
+    "alias_accept_until_utc": "2026-02-14",
+    "dual_read_until_utc": "2026-02-14",
+    "lint_warn_until_utc": "2026-02-14"
   },
   "stage_aliases": {
     "lp-fact-find": "fact-find"

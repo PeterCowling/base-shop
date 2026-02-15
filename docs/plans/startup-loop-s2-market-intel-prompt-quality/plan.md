@@ -86,6 +86,9 @@ Chosen: Option B.
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Complete (2026-02-15) | TASK-01, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Complete (2026-02-15) | TASK-03, TASK-04, TASK-05, TASK-06 | - |
+| TASK-08 | IMPLEMENT | Template tightening: internal-baseline citation rule, parity check, fixed scenario dates contract, stop/continue/start structure, remove leading classification bias | 85 | S | Pending | TASK-07 | TASK-09 |
+| TASK-09 | IMPLEMENT | Generator tightening: deterministic scenario date injection, compress inventory header (no room label bloat), remove duplicate website-audit addon | 82 | M | Pending | TASK-08 | TASK-10 |
+| TASK-10 | CHECKPOINT | Regenerate BRIK prompt + rerun rubric after follow-up tranche | 95 | S | Pending | TASK-09 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -100,6 +103,16 @@ Chosen: Option B.
 | 5 | TASK-07 | Wave 3-4 | Checkpoint after prompt generation changes land |
 
 **Max parallelism:** 2 (Wave 1, Wave 3) | **Critical path:** TASK-01 -> TASK-03 -> TASK-04 -> TASK-07 (5 waves total incl. optional TASK-05) | **Total tasks:** 7
+
+## Parallelism Guide (Follow-up Tranche)
+
+| Wave | Tasks | Prerequisites | Notes |
+|---|---|---|---|
+| 1 | TASK-08 | - | Template-only edits |
+| 2 | TASK-09 | Wave 1 | Generator + tests |
+| 3 | TASK-10 | Wave 2 | Checkpoint (regenerate + rubric) |
+
+**Max parallelism:** 1 | **Critical path:** TASK-08 -> TASK-09 -> TASK-10 | **Total new tasks:** 3
 
 ## Tasks
 
@@ -355,6 +368,63 @@ Chosen: Option B.
   - Rubric run recorded: `docs/business-os/market-research/prompt-quality-eval.user.md` (commit 15e2574c4b)
 - **Rubric score (BRIK):** {model=2, delta=2, benchmark=2, website=2} -> PASS
 - **Result:** No rubric dimension scored 0 for BRIK; no replanning required.
+
+### TASK-08: Template tightening (internal baseline citation rule, parity check, fixed scenario dates, stop/continue/start structure, remove leading bias)
+- **Type:** IMPLEMENT
+- **Deliverable:** Update the hospitality S2 template to resolve P0 prompt-quality issues identified in review.
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - Primary: `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md`
+- **Depends on:** TASK-07
+- **Blocks:** TASK-09
+- **Confidence:** 85
+  - Implementation: 90% — template-only edits.
+  - Approach: 85% — removes known ambiguity/variance sources that degrade decision-grade output.
+  - Impact: 85% — affects only generated prompt content for hospitality profile.
+- **Acceptance:**
+  - Clarify numeric-claim rule so internal baseline numbers do not require external citations (must be attributed as observed internal evidence).
+  - Pricing scenarios use a fixed-date contract (generator provides explicit dates; researcher must not change across competitors; blocked handling rule included).
+  - Add explicit parity sub-test: BRIK direct vs at least 2 OTA surfaces for S1-S3 (where listed), capturing total price, fees/taxes, cancellation, and payment/deposit differences.
+  - Remove leading bias from the A/B/C classification gate (no "(primary)" label).
+  - Channel-mix decomposition instruction is conditional: quantify only if channel-level revenue/margin data exists; otherwise propose a 14-day measurement plan to quantify it.
+  - Tighten Stop/Continue/Start: each item must include action, rationale, expected metric movement, and 14-day verification method.
+- **Validation contract:**
+  - VC-01: template contains the internal-baseline citation clarification rule.
+  - VC-02: template contains parity sub-test language.
+  - VC-03: template references fixed scenario dates placeholders (S1-S3) and includes non-variance rules.
+
+### TASK-09: Generator tightening (scenario date injection, compress inventory header, remove duplicate website-audit addon)
+- **Type:** IMPLEMENT
+- **Deliverable:** Generator renders hospitality prompts with deterministic scenario dates, compact inventory header, and no duplicated website-audit block.
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-10
+- **Confidence:** 82
+  - Implementation: 82% — deterministic date computation and baseline header compression are local changes and testable.
+  - Approach: 82% — stable prompt variance improves comparability between runs and businesses.
+  - Impact: 82% — affects prompt emission only; no runtime product impact.
+- **Acceptance:**
+  - Hospitality prompt includes explicit S1/S2/S3 date ranges derived deterministically from as-of date (injected via placeholders).
+  - Baseline header no longer prints full room label list; keeps only minimal inventory facts.
+  - Generated prompt does not duplicate website-audit requirements (template carries canonical URL via placeholder).
+- **Validation contract:**
+  - TC-01: test asserts deterministic scenario dates are present in generated hospitality prompt for as-of `2026-02-15`.
+  - TC-02: baseline header contains `Total rooms` but does not contain `Room labels:`.
+  - TC-03: existing profile selection + override tests remain passing.
+
+### TASK-10: Regenerate BRIK prompt + rerun rubric after follow-up tranche
+- **Type:** CHECKPOINT
+- **Execution-Skill:** /lp-build
+- **Depends on:** TASK-09
+- **Blocks:** -
+- **Confidence:** 95
+- **Acceptance:**
+  - Re-generate the BRIK prompt for `2026-02-15`.
+  - Re-score BRIK on the rubric and record the run notes (or confirm prior PASS still holds).
+  - If any rubric dimension scores 0, run `/lp-replan` before continuing further changes.
 
 ## Risks & Mitigations
 - Risk: Deep Research cannot access repo artifacts, so pointers reduce usefulness.

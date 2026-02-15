@@ -139,6 +139,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: revert to existing inline function in `s2-market-intelligence-handoff.ts`.
 - **Documentation impact:** None.
 
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** 46940b08e1
+- **Validation:**
+  - Ran: `pnpm --filter ./scripts test -- scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/hospitality-scenarios.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` — PASS
+- **Implementation notes:**
+  - Extracted hospitality scenario math to `scripts/src/startup-loop/hospitality-scenarios.ts` so parity capture can share the same source of truth.
+  - Updated `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` to consume labels via `computeHospitalityScenarioDateLabels()` and added a direct unit test for structured inputs.
+
 ### TASK-02: Configurable Octorate Export (S2 Window)
 - **Type:** IMPLEMENT
 - **Deliverable:** Extend export script to accept explicit filter and dates suitable for S2 month-range contract.

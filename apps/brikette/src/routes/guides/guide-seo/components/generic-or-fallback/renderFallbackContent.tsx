@@ -20,13 +20,22 @@ import {
   hasMeaningfulStructuredFallback,
   hasOnlyFaqs,
   resolveFallbackTranslator,
+  translatorProvidesStructured,
 } from "../generic";
 
-export function renderFallbackContent(params: {
-  lang: string;
-  guideKey: string;
-  translations: any;
-  hookI18n: any;
+type HookI18n = Parameters<typeof resolveFallbackTranslator>[1];
+type FallbackTranslator = ReturnType<typeof resolveFallbackTranslator>;
+type ManualHookI18n = Parameters<typeof RenderManualString>[0]["hookI18n"];
+
+type GuidesTranslations = {
+  tGuides: TFunction;
+};
+
+type RenderFallbackContentParams = {
+  lang: AppLanguage;
+  guideKey: GuideSeoTemplateContext["guideKey"];
+  translations: GuidesTranslations;
+  hookI18n: HookI18n;
   t: TFunction;
   context: GuideSeoTemplateContext;
   fallbackStructured: StructuredFallback | null;
@@ -40,81 +49,160 @@ export function renderFallbackContent(params: {
   suppressTocTitle?: boolean;
   localizedManualFallback: unknown;
   manualStructuredFallbackRendered?: boolean;
-}): JSX.Element | null {
-  const {
-    lang,
-    guideKey,
-    translations,
-    hookI18n,
-    t,
-    context,
-    fallbackStructured,
-    hasStructured,
-    hasStructuredLocal,
-    hasLocalizedContent,
-    renderGenericContent,
-    suppressUnlocalizedFallback,
-    preferManualWhenUnlocalized,
-    showTocWhenUnlocalized,
-    suppressTocTitle,
-    localizedManualFallback,
-    manualStructuredFallbackRendered,
-  } = params;
+};
 
+function toManualHookI18n(hookI18n: HookI18n): ManualHookI18n {
+  if (!hookI18n) return undefined;
+  return {
+    getFixedT: (lng: string, ns: string) => {
+      try {
+        const fixed = hookI18n.getFixedT?.(lng, ns);
+        return typeof fixed === "function" ? fixed : undefined;
+      } catch {
+        return undefined;
+      }
+    },
+  };
+}
+
+function safeDebugSkipped({
+  guideKey,
+  lang,
+  hasStructured,
+  hasLocalizedContent,
+}: Pick<RenderFallbackContentParams, "guideKey" | "lang" | "hasStructured" | "hasLocalizedContent">) {
   try {
-    debugGuide("GenericContent skipped — rendering fallbacks", {
-      guideKey,
-      lang,
-      hasStructured,
-      hasLocalizedContent,
-    });
-  } catch {}
+    debugGuide(
+      "GenericContent skipped — rendering fallbacks", // i18n-exempt -- DEV-000 [ttl=2099-12-31] Debug label
+      {
+        guideKey,
+        lang,
+        hasStructured,
+        hasLocalizedContent,
+      },
+    );
+  } catch {
+    /* noop */
+  }
+}
 
-  if (suppressUnlocalizedFallback && !hasLocalizedContent) {
+function resolveRawManualFallback({
+  localizedManualFallback,
+  translations,
+  guideKey,
+}: Pick<RenderFallbackContentParams, "localizedManualFallback" | "translations" | "guideKey">): Record<string, unknown> | null {
+  if (localizedManualFallback && typeof localizedManualFallback === "object" && !Array.isArray(localizedManualFallback)) {
+    return localizedManualFallback as Record<string, unknown>;
+  }
+  try {
+    const raw = translations.tGuides(`content.${guideKey}.fallback`, { returnObjects: true }) as unknown;
+    return raw && typeof raw === "object" && !Array.isArray(raw) ? (raw as Record<string, unknown>) : null;
+  } catch {
     return null;
   }
+}
 
-  // Manual string/paragraph fallbacks
-  const manualStringEarly = RenderManualString({ translations, hookI18n, guideKey, lang: lang as AppLanguage });
-  if (manualStringEarly) return manualStringEarly as any;
+function shouldSuppressFallbackWhenManualIsEmpty({
+  hasLocalizedContent,
+  localizedManualFallback,
+  translations,
+  guideKey,
+}: Pick<RenderFallbackContentParams, "hasLocalizedContent" | "localizedManualFallback" | "translations" | "guideKey">): boolean {
+  if (hasLocalizedContent) return false;
+  const rawManual = resolveRawManualFallback({ localizedManualFallback, translations, guideKey });
+  if (!rawManual) return false;
+  return !hasManualFallbackMeaningfulContent(rawManual);
+}
 
-  const manualParagraphEarly = RenderManualParagraph({ translations, hookI18n, guideKey, lang: lang as AppLanguage });
-  if (manualParagraphEarly) return manualParagraphEarly as any;
+function renderManualTextFallback({
+  translations,
+  hookI18n,
+  guideKey,
+  lang,
+}: Pick<RenderFallbackContentParams, "translations" | "hookI18n" | "guideKey" | "lang">): JSX.Element | null {
+  const manualStringEarly = RenderManualString({
+    translations,
+    hookI18n: toManualHookI18n(hookI18n),
+    guideKey,
+    lang,
+  });
+  if (manualStringEarly) return manualStringEarly;
 
-  // Suppress fallback when manual fallback sanitizes to nothing
-  if (!hasLocalizedContent) {
-    try {
-      const rawManual =
-        localizedManualFallback && typeof localizedManualFallback === "object" && !Array.isArray(localizedManualFallback)
-          ? (localizedManualFallback as Record<string, unknown>)
-          : ((translations?.tGuides?.(`content.${guideKey}.fallback`, { returnObjects: true } as any) as unknown) as Record<string, unknown>);
+  const manualParagraphEarly = RenderManualParagraph({
+    translations,
+    hookI18n: toManualHookI18n(hookI18n),
+    guideKey,
+    lang,
+  });
+  if (manualParagraphEarly) return manualParagraphEarly;
 
-      if (rawManual && typeof rawManual === "object" && !Array.isArray(rawManual)) {
-        if (!hasManualFallbackMeaningfulContent(rawManual)) {
-          return null;
-        }
-      }
-    } catch { /* noop */ }
+  return null;
+}
+
+function shouldSuppressDuplicateLocalizedStructured({
+  fallbackStructured,
+  hasLocalizedContent,
+  context,
+}: Pick<RenderFallbackContentParams, "fallbackStructured" | "hasLocalizedContent" | "context">): boolean {
+  return Boolean(fallbackStructured && hasLocalizedContent && context.sections.length > 0);
+}
+
+function shouldSuppressStructuredArraysWhenLocalized({
+  hasLocalizedContent,
+  context,
+  guideKey,
+}: Pick<RenderFallbackContentParams, "hasLocalizedContent" | "context" | "guideKey">): boolean {
+  if (!hasLocalizedContent) return false;
+  try {
+    const hasIntro = context.intro.length > 0;
+    const hasSections = context.sections.some((s) => s.body.length > 0);
+    return hasIntro && hasSections && !allowsStructuredArraysWhenLocalized(guideKey);
+  } catch {
+    return !allowsStructuredArraysWhenLocalized(guideKey);
   }
+}
 
-  // Resolve fallback translator
-  const tFb = resolveFallbackTranslator(fallbackStructured, hookI18n, lang, translations);
-
-  // Interrail alias block
+function renderInterrailAliasBlock({
+  lang,
+  guideKey,
+  translations,
+  t,
+  showTocWhenUnlocalized,
+  suppressTocTitle,
+}: Pick<
+  RenderFallbackContentParams,
+  "lang" | "guideKey" | "translations" | "t" | "showTocWhenUnlocalized" | "suppressTocTitle"
+>): JSX.Element | null {
   const aliasBlock = RenderInterrailAlias({
-    lang: lang as AppLanguage,
+    lang,
     guideKey,
     translations,
     t,
     showTocWhenUnlocalized,
     ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
   });
-  if (aliasBlock) return aliasBlock as any;
+  return aliasBlock ?? null;
+}
 
-  // Alias FAQs-only rendering (for guides with a contentAlias config)
+function renderAliasFaqsOnlyBlock({
+  context,
+  hasStructuredLocal,
+  translations,
+  tFb,
+  guideKey,
+  t,
+}: {
+  context: GuideSeoTemplateContext;
+  hasStructuredLocal: boolean;
+  translations: GuidesTranslations;
+  tFb: FallbackTranslator;
+  guideKey: GuideSeoTemplateContext["guideKey"];
+  t: TFunction;
+}): JSX.Element | null {
   const guideAlias = getContentAlias(guideKey);
-  if (guideAlias) {
-    const aliasFaqsBlock = renderAliasFaqsOnly({
+  if (!guideAlias) return null;
+  return (
+    renderAliasFaqsOnly({
       context,
       hasStructuredLocal,
       translations,
@@ -122,143 +210,164 @@ export function renderFallbackContent(params: {
       guideKey,
       t,
       alias: guideAlias,
-    });
-    if (aliasFaqsBlock) return aliasFaqsBlock;
+    }) ?? null
+  );
+}
+
+function renderStructuredFallbackBlock(
+  params: RenderFallbackContentParams & { tFb: FallbackTranslator },
+): JSX.Element | null {
+  const {
+    fallbackStructured,
+    suppressUnlocalizedFallback,
+    preferManualWhenUnlocalized,
+    renderGenericContent,
+    manualStructuredFallbackRendered,
+  } = params;
+  if (!fallbackStructured) return null;
+  if (suppressUnlocalizedFallback) return null;
+  if (!(preferManualWhenUnlocalized || !renderGenericContent)) return null;
+  if (manualStructuredFallbackRendered) return null;
+  if (!hasMeaningfulStructuredFallback(fallbackStructured)) return null;
+
+  return (
+    <RenderFallbackStructured
+      fallback={fallbackStructured}
+      context={params.context}
+      guideKey={params.guideKey}
+      t={params.t}
+      showTocWhenUnlocalized={params.showTocWhenUnlocalized}
+      {...(typeof params.suppressTocTitle === "boolean" ? { suppressTocTitle: params.suppressTocTitle } : {})}
+      {...(typeof params.preferManualWhenUnlocalized === "boolean"
+        ? { preferManualWhenUnlocalized: params.preferManualWhenUnlocalized }
+        : {})}
+    />
+  );
+}
+
+function renderManualObjectFallback(
+  params: RenderFallbackContentParams & { tFb: FallbackTranslator },
+): JSX.Element | null {
+  const { hasLocalizedContent, suppressUnlocalizedFallback } = params;
+  if (hasLocalizedContent || suppressUnlocalizedFallback) return null;
+
+  const manualObject = RenderManualObject({
+    translations: params.translations,
+    hookI18n: toManualHookI18n(params.hookI18n),
+    guideKey: params.guideKey,
+    lang: params.lang,
+    t: params.t,
+    showTocWhenUnlocalized: params.showTocWhenUnlocalized,
+    ...(typeof params.suppressTocTitle === "boolean" ? { suppressTocTitle: params.suppressTocTitle } : {}),
+    fallbackTranslator: params.tFb,
+  });
+  if (!manualObject) return null;
+
+  if (IS_DEV && process.env["DEBUG_TOC"] === "1") {
+    console.info("[GenericOrFallbackContent:return:manualObject]");
   }
 
-  // Suppress duplicate content when localized sections exist
-  if (
-    fallbackStructured &&
-    hasLocalizedContent &&
-    Array.isArray((context as any)?.sections) &&
-    (context as any).sections.length > 0
-  ) {
-    return null;
-  }
+  return manualObject;
+}
 
-  // Render structured fallback
-  if (
-    fallbackStructured &&
-    !suppressUnlocalizedFallback &&
-    (preferManualWhenUnlocalized || !renderGenericContent) &&
-    !manualStructuredFallbackRendered
-  ) {
-    if (!hasMeaningfulStructuredFallback(fallbackStructured)) {
-      return null;
-    }
-    return (
-      <RenderFallbackStructured
-        fallback={fallbackStructured}
-        context={context}
-        guideKey={guideKey}
-        t={t}
-        showTocWhenUnlocalized={showTocWhenUnlocalized}
-        {...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {})}
-        {...(typeof preferManualWhenUnlocalized === "boolean" ? { preferManualWhenUnlocalized } : {})}
-      />
-    );
-  }
-
-  // Manual object fallback (unlocalized only)
-  if (!hasLocalizedContent && !suppressUnlocalizedFallback) {
-    const manualObject = RenderManualObject({
-      translations,
-      hookI18n,
-      guideKey,
-      lang: lang as AppLanguage,
-      t,
-      showTocWhenUnlocalized,
-      ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
-      fallbackTranslator: tFb,
-    });
-    if (manualObject) {
-      if (IS_DEV && process.env["DEBUG_TOC"] === "1") {
-        console.info("[GenericOrFallbackContent:return:manualObject]");
-      }
-      return manualObject as any;
-    }
-  }
-
-  // Structured arrays rendering
-  if (hasLocalizedContent) {
+function renderStructuredArraysFallback(
+  params: RenderFallbackContentParams & { tFb: FallbackTranslator },
+): JSX.Element | null {
+  const allowManualStructuredFallback = Boolean(params.preferManualWhenUnlocalized && !params.suppressUnlocalizedFallback);
+  if (allowManualStructuredFallback) {
     try {
-      const introArr = Array.isArray((context as any)?.intro) ? ((context as any).intro as unknown[]) : [];
-      const hasIntro = introArr.length > 0;
-      const sectionsArr = Array.isArray((context as any)?.sections) ? ((context as any).sections as unknown[]) : [];
-      const hasSections = sectionsArr.some((s: any) => Array.isArray(s?.body) && s.body.length > 0);
-      if (hasIntro && hasSections && !allowsStructuredArraysWhenLocalized(guideKey)) {
+      if (hasOnlyFaqs(params.fallbackStructured, params.tFb, params.guideKey)) {
         return null;
       }
     } catch {
-      if (!allowsStructuredArraysWhenLocalized(guideKey)) {
-        return null;
-      }
+      /* noop */
     }
   }
 
-  const allowManualStructuredFallback = Boolean(preferManualWhenUnlocalized && !suppressUnlocalizedFallback);
-  if (allowManualStructuredFallback) {
-    try {
-      if (hasOnlyFaqs(fallbackStructured, tFb, guideKey)) {
-        return null;
-      }
-    } catch { /* noop */ }
-  }
-
   const shouldRenderStructuredFallback =
-    (!hasLocalizedContent && !suppressUnlocalizedFallback) || allowManualStructuredFallback;
-  if (shouldRenderStructuredFallback) {
-    const structuredArrays = RenderStructuredArrays({
-      tFb,
-      translations,
-      guideKey,
-      t,
-      showTocWhenUnlocalized,
-      ...(typeof suppressTocTitle === "boolean" ? { suppressTocTitle } : {}),
-      context: context as any,
-      ...(typeof preferManualWhenUnlocalized === "boolean" ? { preferManualWhenUnlocalized } : {}),
-      ...(typeof manualStructuredFallbackRendered === "boolean" ? { manualStructuredFallbackRendered } : {}),
-    });
-    if (structuredArrays) return structuredArrays as any;
+    (!params.hasLocalizedContent && !params.suppressUnlocalizedFallback) || allowManualStructuredFallback;
+  if (!shouldRenderStructuredFallback) return null;
+
+  return (
+    RenderStructuredArrays({
+      tFb: params.tFb,
+      translations: params.translations,
+      guideKey: params.guideKey,
+      t: params.t,
+      showTocWhenUnlocalized: params.showTocWhenUnlocalized,
+      ...(typeof params.suppressTocTitle === "boolean" ? { suppressTocTitle: params.suppressTocTitle } : {}),
+      context: params.context,
+      ...(typeof params.preferManualWhenUnlocalized === "boolean"
+        ? { preferManualWhenUnlocalized: params.preferManualWhenUnlocalized }
+        : {}),
+      ...(typeof params.manualStructuredFallbackRendered === "boolean"
+        ? { manualStructuredFallbackRendered: params.manualStructuredFallbackRendered }
+        : {}),
+    }) ?? null
+  );
+}
+
+function shouldSuppressForPreferManualFinalGuard({
+  preferManualWhenUnlocalized,
+  hasLocalizedContent,
+  translations,
+  tFb,
+  guideKey,
+}: Pick<RenderFallbackContentParams, "preferManualWhenUnlocalized" | "hasLocalizedContent" | "translations" | "guideKey"> & {
+  tFb: FallbackTranslator;
+}): boolean {
+  if (!preferManualWhenUnlocalized || hasLocalizedContent) return false;
+  return !translatorProvidesStructured(translations.tGuides, guideKey) && !translatorProvidesStructured(tFb, guideKey);
+}
+
+export function renderFallbackContent(params: RenderFallbackContentParams): JSX.Element | null {
+  safeDebugSkipped(params);
+
+  if (params.suppressUnlocalizedFallback && !params.hasLocalizedContent) {
+    return null;
   }
 
-  // Final guard for manual handling preference
-  if (preferManualWhenUnlocalized && !hasLocalizedContent) {
-    try {
-      const toArr = (v: unknown): string[] => (Array.isArray(v)
-        ? (v as unknown[])
-            .map((x) => (typeof x === "string" ? x.trim() : String(x)))
-            .filter((s) => s.length > 0)
-        : []);
-      const introLocal = toArr((translations as any)?.tGuides?.(`content.${guideKey}.intro`, { returnObjects: true }));
-      const sectionsLocal = (() => {
-        const raw = (translations as any)?.tGuides?.(`content.${guideKey}.sections`, { returnObjects: true });
-        const list = Array.isArray(raw) ? (raw as unknown[]) : [];
-        return list
-          .map((s) => {
-            if (!s || typeof s !== "object") return 0;
-            const title = typeof (s as any).title === "string" ? (s as any).title.trim() : "";
-            const body = toArr((s as any).body ?? (s as any).items);
-            return title.length > 0 || body.length > 0 ? 1 : 0;
-          })
-          .reduce<number>((a, b) => a + b, 0);
-      })();
-      const introFb = toArr((tFb as any)?.(`content.${guideKey}.intro`, { returnObjects: true }));
-      const sectionsFb = (() => {
-        const raw = (tFb as any)?.(`content.${guideKey}.sections`, { returnObjects: true });
-        const list = Array.isArray(raw) ? (raw as unknown[]) : [];
-        return list
-          .map((s) => {
-            if (!s || typeof s !== "object") return 0;
-            const title = typeof (s as any).title === "string" ? (s as any).title.trim() : "";
-            const body = toArr((s as any).body ?? (s as any).items);
-            return title.length > 0 || body.length > 0 ? 1 : 0;
-          })
-          .reduce<number>((a, b) => a + b, 0);
-      })();
-      const hasMeaningful = (introLocal.length + sectionsLocal + introFb.length + sectionsFb) > 0;
-      if (!hasMeaningful) return null;
-    } catch { /* noop */ }
+  const manualTextEarly = renderManualTextFallback(params);
+  if (manualTextEarly) return manualTextEarly;
+
+  if (shouldSuppressFallbackWhenManualIsEmpty(params)) {
+    return null;
+  }
+
+  const tFb = resolveFallbackTranslator(params.fallbackStructured, params.hookI18n, params.lang, params.translations);
+
+  const aliasBlock = renderInterrailAliasBlock(params);
+  if (aliasBlock) return aliasBlock;
+
+  const aliasFaqsBlock = renderAliasFaqsOnlyBlock({
+    context: params.context,
+    hasStructuredLocal: params.hasStructuredLocal,
+    translations: params.translations,
+    tFb,
+    guideKey: params.guideKey,
+    t: params.t,
+  });
+  if (aliasFaqsBlock) return aliasFaqsBlock;
+
+  if (shouldSuppressDuplicateLocalizedStructured(params)) {
+    return null;
+  }
+
+  const structuredFallbackNode = renderStructuredFallbackBlock({ ...params, tFb });
+  if (structuredFallbackNode) return structuredFallbackNode;
+
+  const manualObjectNode = renderManualObjectFallback({ ...params, tFb });
+  if (manualObjectNode) return manualObjectNode;
+
+  if (shouldSuppressStructuredArraysWhenLocalized(params)) {
+    return null;
+  }
+
+  const structuredArraysNode = renderStructuredArraysFallback({ ...params, tFb });
+  if (structuredArraysNode) return structuredArraysNode;
+
+  if (shouldSuppressForPreferManualFinalGuard({ ...params, tFb })) {
+    return null;
   }
 
   return null;

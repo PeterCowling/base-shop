@@ -81,7 +81,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-01 | IMPLEMENT | Add migration config + loader + schema validation for compatibility window | 80% | M | Complete (2026-02-15) | - | TASK-02, TASK-03, TASK-06 |
 | TASK-02 | IMPLEMENT | Agent API: accept stage aliases (lp-fact-find) with normalization + telemetry + tests | 84% | M | Complete (2026-02-15) | TASK-01 | TASK-11 |
 | TASK-03 | IMPLEMENT | Filesystem stage-doc reader: dual-read legacy fact-finding.user.md with canonical precedence + tests | 80% | M | Complete (2026-02-15) | TASK-01 | TASK-10 |
-| TASK-04 | IMPLEMENT | Docs: fix stage-doc helper + canonical filename/key references across core BOS docs | 85% | M | Pending | - | TASK-10 |
+| TASK-04 | IMPLEMENT | Docs: fix stage-doc helper + canonical filename/key references across core BOS docs | 85% | M | Complete (2026-02-15) | - | TASK-10 |
 | TASK-05 | IMPLEMENT | Skills: migrate idea-* stage-doc writes/paths to canonical stage keys; update wording | 85% | M | Pending | - | TASK-06, TASK-11 |
 | TASK-06 | IMPLEMENT | Contract lint: detect idea-* alias usage, fact-finding filename references, broken decision refs; allowlist support | 82% | M | Pending | TASK-01, TASK-05, TASK-09 | TASK-11 |
 | TASK-07 | IMPLEMENT | Add missing `/lp-bos-sync` skill doc (operator surface) | 90% | S | Pending | - | TASK-11 |
@@ -269,6 +269,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollout: doc-only.
   - Rollback: revert doc edits.
 - **Documentation impact:** None.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commit 0ef305950f.
 
 ### TASK-05: Skills Stop Writing Legacy Stage Keys (idea-*)
 - **Type:** IMPLEMENT

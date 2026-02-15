@@ -14,7 +14,10 @@ import { CartProvider } from "../contexts/XaCartContext";
 import { WishlistProvider } from "../contexts/XaWishlistContext";
 import { siteConfig } from "../lib/siteConfig";
 
-export const runtime = "edge";
+// Next.js 16's edge runtime currently breaks XA production builds during page
+// data collection (ReferenceError: document is not defined). Until the edge
+// runtime path is validated for this app, opt into Node.js.
+export const runtime = "nodejs";
 
 const atelierSans = Work_Sans({
   subsets: ["latin"],

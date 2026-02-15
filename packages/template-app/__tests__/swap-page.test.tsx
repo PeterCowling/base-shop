@@ -39,7 +39,7 @@ jest.mock("@acme/platform-core/repositories/subscriptionUsage.server", () => ({
 
 jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
 
-jest.mock("@date-utils", () => ({ nowIso: jest.fn(() => "2023-01-15") }));
+jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn(() => "2023-01-15") }));
 
 jest.mock("@acme/platform-core/products", () => ({ getProductById: jest.fn() }));
 

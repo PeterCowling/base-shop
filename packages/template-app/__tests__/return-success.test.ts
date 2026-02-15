@@ -21,7 +21,7 @@ describe("/api/return success", () => {
         .mockResolvedValue({ returnService: { homePickupEnabled: true } }),
     }));
 
-    const log = jest.spyOn(console, "log").mockImplementation(() => {});
+    const log = jest.spyOn(console, "info").mockImplementation(() => {});
     const fetchMock = jest.fn().mockResolvedValue({} as Response);
     (global as any).fetch = fetchMock;
 

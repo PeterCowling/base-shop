@@ -58,7 +58,7 @@ describe("analytics provider resolution", () => {
   test("console provider logs event", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({ analytics: { provider: "console", enabled: true } });
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const logSpy = jest.spyOn(console, "debug").mockImplementation(() => {});
     const { trackEvent } = await import("@acme/platform-core/analytics");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(logSpy).toHaveBeenCalledWith(

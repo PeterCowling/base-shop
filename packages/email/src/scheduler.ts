@@ -1,5 +1,6 @@
 import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
 
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { validateShopName } from "@acme/lib";
 import { logger } from "@acme/lib/logger";
 import type { AnalyticsEvent } from "@acme/platform-core/analytics";
@@ -91,9 +92,6 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
     process.env.EMAIL_BATCH_DELAY_MS === undefined
       ? 1000
       : Number(process.env.EMAIL_BATCH_DELAY_MS);
-  const { useTranslations: getServerTranslations } = await import(
-    "@acme/i18n/useTranslations.server" // i18n-exempt -- EMAIL-201 module specifier [ttl=2026-03-31]
-  );
   const t = await getServerTranslations("en");
   const { sendCampaignEmail } = await import("./send");
   const failures: { recipient: string; error: unknown }[] = [];

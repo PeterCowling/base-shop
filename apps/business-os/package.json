@@ -9,8 +9,8 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --cache --cache-location .eslintcache",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests",
-    "e2e": "cypress run",
-    "e2e:open": "cypress open"
+    "e2e": "CYPRESS_BASE_URL=http://127.0.0.1:3020 start-server-and-test \"pnpm start\" http://127.0.0.1:3020 \"cypress run\"",
+    "e2e:open": "CYPRESS_BASE_URL=http://127.0.0.1:3020 start-server-and-test \"pnpm start\" http://127.0.0.1:3020 \"cypress open\""
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

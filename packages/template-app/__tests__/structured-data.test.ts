@@ -76,7 +76,7 @@ describe("getStructuredData", () => {
   test("serializeJsonLd escapes '<'", () => {
     const raw = { text: "<script>" };
     const serialized = serializeJsonLd(raw);
-    expect(serialized).toContain("\\u003cscript>");
+    expect(serialized).toContain("\\u003cscript\\u003e");
     expect(serialized).not.toContain("<");
   });
 });

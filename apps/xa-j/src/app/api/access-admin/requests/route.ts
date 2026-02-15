@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import { hasAdminSession } from "../../../../lib/accessAdmin";
 import { listAccessRequests } from "../../../../lib/accessStore";
 
-export const runtime = "edge";
+// Uses node:crypto/fs via accessStore.
+export const runtime = "nodejs";
 
 function summarizeRequest(request: {
   id: string;

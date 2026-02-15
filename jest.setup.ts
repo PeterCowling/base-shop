@@ -100,6 +100,19 @@ const { configure } = require("@testing-library/react");
 configure({ testIdAttribute: "data-cy" });
 import "./test/polyfills/form-request-submit";
 // Provide a harmless confirm() stub that tests can spy on or override
+// jsdom does not provide setImmediate/clearImmediate; some Node-oriented code expects them.
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const anyGlobal = globalThis as any;
+  if (typeof anyGlobal.setImmediate !== "function") {
+    anyGlobal.setImmediate = (fn: (...args: any[]) => void, ...args: any[]) =>
+      setTimeout(fn, 0, ...args);
+  }
+  if (typeof anyGlobal.clearImmediate !== "function") {
+    anyGlobal.clearImmediate = (id: any) => clearTimeout(id);
+  }
+} catch {}
+
 try {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (globalThis as any).confirm = (msg?: string) => false;
@@ -318,6 +331,13 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   /^  • .*: .+/,
   // MSW warning for unhandled AI catalog feed preview request in tests
   /\[MSW\] Error: intercepted a request without a matching request handler:.*\/api\/seo\/ai-catalog/,
+  // Template-app expected error paths (tests assert status codes, not logs)
+  /^\[stripe-webhook\] tenant mismatch\b/,
+  /^\[stripe-webhook\] tenant unresolvable\b/,
+  "Failed to create Stripe checkout session",
+  "Inventory validation failed",
+  "Failed to load upgrade changes",
+  "Publish failed",
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
@@ -349,7 +369,7 @@ const shouldIgnoreConsoleMessage = (
       }
       return "";
     })
-    .join(" ");
+    .join(" ").trim();
 
   return patterns.some((pattern) =>
     typeof pattern === "string"

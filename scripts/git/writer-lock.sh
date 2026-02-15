@@ -482,10 +482,8 @@ case "$cmd" in
     if [[ "$wait" == "1" && ! -t 0 && "$timeout_sec" == "0" ]]; then
       timeout_sec="300"
     fi
-    # Keep polling at 30s for non-interactive agent runs (avoid "wait forever without checking").
-    if [[ "$wait" == "1" && ! -t 0 && "$poll_sec" != "30" ]]; then
-      poll_sec="30"
-    fi
+    # Default poll interval is 30s; if a caller explicitly provides --poll (e.g. tests),
+    # respect it.
 
     start_epoch="$(date +%s)"
     queue_ticket=""

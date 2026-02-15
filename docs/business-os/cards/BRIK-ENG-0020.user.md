@@ -62,7 +62,7 @@ Estimated impact: 60-80% of inquiries can be handled with high-quality auto-draf
 
 ## Fact-finding Summary
 
-**Brief:** `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md`
+**Brief:** `docs/business-os/cards/BRIK-ENG-0020/fact-find.user.md`
 **Workflow Design:** `docs/plans/email-autodraft-workflow-design.md`
 
 **Technical Approach:** Claude Code + MCP Tools (Pattern B)

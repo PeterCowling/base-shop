@@ -157,6 +157,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
       <RoomsSection
         lang={lang}
+        itemListId="book_rooms"
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,

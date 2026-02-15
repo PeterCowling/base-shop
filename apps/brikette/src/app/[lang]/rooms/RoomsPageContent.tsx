@@ -62,7 +62,7 @@ function RoomsPageContent({ lang, bookingQuery }: Props) {
       </Section>
 
       {/* Rooms Grid */}
-      <RoomsSection lang={lang} bookingQuery={bookingQuery} />
+      <RoomsSection lang={lang} bookingQuery={bookingQuery} itemListId="rooms_index" />
 
       {/* Direct Booking Perks */}
       <Section padding="default">

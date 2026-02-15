@@ -43,6 +43,17 @@ export type CtaLocation = (typeof GA4_ENUMS.ctaLocation)[number];
 export type EventSource = (typeof GA4_ENUMS.source)[number];
 export type RatePlan = (typeof GA4_ENUMS.ratePlan)[number];
 
+const ITEM_LIST_NAME: Record<ItemListId, string> = {
+  home_rooms_carousel: "Home rooms carousel",
+  rooms_index: "Rooms index",
+  book_rooms: "Book page rooms",
+  deals_index: "Deals index",
+};
+
+export function resolveItemListName(id: ItemListId): string {
+  return ITEM_LIST_NAME[id];
+}
+
 export function isEventSource(value: string): value is EventSource {
   return (GA4_ENUMS.source as readonly string[]).includes(value);
 }
@@ -258,5 +269,21 @@ export function fireBeginCheckoutRoomSelectedAndNavigate(params: {
       items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan })],
     },
     onNavigate: params.onNavigate,
+  });
+}
+
+export function fireSelectItem(params: {
+  itemListId: ItemListId;
+  roomSku: string;
+  plan: RatePlan;
+  index?: number;
+}): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  gtag("event", "select_item", {
+    item_list_id: params.itemListId,
+    item_list_name: resolveItemListName(params.itemListId),
+    items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan, index: params.index })],
   });
 }

@@ -106,9 +106,18 @@ function buildRoomInventorySummary(room: (typeof roomsData)[number], title: stri
 function RoomsSection({
   lang: explicitLang,
   bookingQuery,
+  itemListId,
+  onRoomSelect,
 }: {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
+  /** Optional analytics context for room-card CTA clicks (GA4-agnostic). */
+  itemListId?: string;
+  /**
+   * Optional hook invoked before opening Booking2 modal when a room/rate CTA is clicked.
+   * Kept GA4-agnostic; app callers can emit analytics using their own contract layer.
+   */
+  onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number; itemListId?: string }) => void;
 }): JSX.Element {
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
@@ -170,7 +179,7 @@ function RoomsSection({
         <RoomFilters selected={filter} onChange={setFilter} lang={lang} />
 
         <Grid cols={1} gap={8} className="sm:grid-cols-2">
-          {filteredRooms.map((room) => {
+          {filteredRooms.map((room, index) => {
             const href = `/${lang}/${roomsSlug}/${room.id}`;
             const title = resolveTranslatedCopy(
               t(`rooms.${room.id}.title`, {
@@ -192,6 +201,7 @@ function RoomsSection({
               const plan = rateType === "nonRefundable" ? "nr" : "flex";
               const octorateRateCode =
                 plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;
+              onRoomSelect?.({ roomSku: room.id, plan, index, itemListId });
               openModal("booking2", {
                 checkIn,
                 checkOut,

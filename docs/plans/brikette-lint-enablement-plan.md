@@ -229,8 +229,9 @@ Notes (evidence used for replan decomposition):
 | TASK-16 | IMPLEMENT | Fix remaining react-hooks error rules + `max-depth` errors (post-task-13-09 ledger) | 80% | M | Ready | TASK-08 | TASK-12 |
 | TASK-17 | IMPLEMENT | Fix remaining `max-lines-per-function` errors (post-task-13-09 ledger) | 82% | M | Ready | TASK-08 | TASK-12 |
 | TASK-18 | IMPLEMENT | Fix remaining `@typescript-eslint/no-unused-vars` errors (post-task-13-09 ledger) | 90% | S | Ready | TASK-08 | TASK-12 |
-| TASK-19 | INVESTIGATE | i18n/copy strategy check (coverage/parity tests + locale policy) | 90% | S | Ready | TASK-08 | TASK-20 |
-| TASK-20 | IMPLEMENT | Remove `ds/no-hardcoded-copy` errors (and as many warnings as feasible) | 74% | L | Blocked | TASK-19, TASK-14, TASK-16, TASK-18, TASK-24 | TASK-12 |
+| TASK-19 | INVESTIGATE | i18n/copy strategy check (coverage/parity tests + locale policy) | 90% | S | Complete (2026-02-15) | TASK-08 | TASK-20 |
+| TASK-20 | IMPLEMENT | Remove `ds/no-hardcoded-copy` errors in redirect stubs (cookie-policy, privacy-policy) | 85% | S | Ready | TASK-19 | TASK-12 |
+| TASK-29 | IMPLEMENT | Remove remaining `ds/no-hardcoded-copy` errors (and as many warnings as feasible) | 74% | L | Blocked | TASK-19 | TASK-12 |
 | TASK-21 | INVESTIGATE | Restricted-imports audit (verify supported entrypoints + migration map) | 85% | S | Ready | TASK-08 | TASK-22 |
 | TASK-22 | IMPLEMENT | Eliminate `no-restricted-imports` warnings in Brikette | 74% | L | Blocked | TASK-21 | TASK-12 |
 | TASK-23 | IMPLEMENT | Remediate security warnings to reach `--max-warnings=0` (tests + seo-audit) | 78% | L | Ready | TASK-08 | TASK-12 |
@@ -239,7 +240,7 @@ Notes (evidence used for replan decomposition):
 | TASK-26 | INVESTIGATE | `no-explicit-any` remaining offenders: type strategy + call-site map | 85% | M | Ready | TASK-08 | TASK-27 |
 | TASK-27 | IMPLEMENT | Remove remaining `@typescript-eslint/no-explicit-any` errors (post-task-13-09 ledger) | 74% | L | Blocked | TASK-26 | TASK-12 |
 | TASK-28 | IMPLEMENT | Reduce remaining `complexity` errors to configured thresholds (post-task-13-09 ledger) | 74% | L | Ready | TASK-08 | TASK-12 |
-| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 85% | S | Blocked | TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-27, TASK-28 (+ TASK-03 if applicable) | - |
+| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 85% | S | Blocked | TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-27, TASK-28, TASK-29 (+ TASK-03 if applicable) | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -256,7 +257,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 6 | TASK-09 + TASK-14..TASK-18 + TASK-19..TASK-28 | TASK-08 | Post-checkpoint remediation in small batches; each blocks TASK-12 |
 | 7 | TASK-12 | TASK-09, TASK-14..TASK-18, TASK-20, TASK-22, TASK-23..TASK-25, TASK-27, TASK-28 (+ TASK-03 if applicable) | Enable strict lint last |
 
-**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 28
+**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 29
 
 ## Tasks
 
@@ -817,7 +818,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution-Skill:** lp-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`, `[readonly] apps/brikette/src/test/content-readiness/i18n/**`, `[readonly] apps/brikette/src/locales/**`, `[readonly] apps/brikette/src/i18n.ts`
 - **Depends on:** TASK-08
-- **Blocks:** TASK-20
+- **Blocks:** TASK-20, TASK-29
 - **Confidence:** 90%
   - Implementation: 90% - static audit of tests/scripts + a single targeted jest run if needed
   - Approach: 90% - pick the narrowest strategy that keeps parity checks happy
@@ -836,31 +837,64 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:** N/A
 - **Documentation impact:** This plan only
 
-### TASK-20: Remove `ds/no-hardcoded-copy` errors (and as many warnings as feasible)
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Decision (locale policy):**
+  - Brikette uses `fallbackLng: "en"` (see `apps/brikette/src/i18n.config.ts`).
+  - For UI copy remediations: add new keys to `apps/brikette/src/locales/en/**` and rely on i18next fallback for other locales.
+  - Rationale: Brikette's i18n content readiness checks are warn-only by default and only become failing in strict mode when env vars are set (for example `CONTENT_READINESS_MODE=fail`, `I18N_MISSING_KEYS_MODE=fail`, `I18N_PARITY_MODE=fail`, `ENGLISH_FALLBACK_MODE=fail`). This keeps remediation work small and avoids creating “English duplicates” across non-en locales.
+- **Validation evidence:**
+  - Read: `apps/brikette/src/i18n.config.ts`, `apps/brikette/package.json`, `apps/brikette/src/test/content-readiness/i18n/*`, `apps/brikette/src/locales/__tests__/english-fallback.test.ts`
+  - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern "i18n-parity-quality-audit|i18n-render-audit|check-i18n-coverage" --maxWorkers=2 --passWithNoTests` — PASS
+
+### TASK-20: Remove `ds/no-hardcoded-copy` errors in redirect stubs (cookie-policy, privacy-policy)
 - **Type:** IMPLEMENT
-- **Deliverable:** Copy localization changes that eliminate `ds/no-hardcoded-copy` errors in the remaining offender set (and reduce warnings materially).
+- **Deliverable:** Redirect fallback pages comply with lint by removing hardcoded UI copy and using container primitives correctly.
 - **Execution-Skill:** lp-build
-- **Affects:** `apps/brikette/src/locales/**` plus the offender files identified in the post-task-13-09 ledger:
+- **Affects:**
+  - `apps/brikette/src/app/cookie-policy/page.tsx`
+  - `apps/brikette/src/app/privacy-policy/page.tsx`
+- **Depends on:** TASK-19
+- **Blocks:** TASK-12
+- **Confidence:** 85%
+  - Implementation: 90% - small, localized change
+  - Approach: 85% - remove/avoid hardcoded UI strings in redirect fallbacks
+  - Impact: 80% - redirect behavior must remain correct
+- **Acceptance:**
+  - `ds/no-hardcoded-copy` errors are eliminated for both redirect pages in `Affects`.
+  - `ds/container-widths-only-at` errors are eliminated for both redirect pages in `Affects`.
+  - Redirect behavior remains unchanged (immediate redirect + noscript fallback).
+- **Validation contract:**
+  - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`):
+    - `pnpm --filter @apps/brikette exec eslint src/app/cookie-policy/page.tsx --no-fix --max-warnings=0`
+    - `pnpm --filter @apps/brikette exec eslint src/app/privacy-policy/page.tsx --no-fix --max-warnings=0`
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+### TASK-29: Remove remaining `ds/no-hardcoded-copy` errors (and as many warnings as feasible)
+- **Type:** IMPLEMENT
+- **Deliverable:** Copy localization changes that eliminate remaining `ds/no-hardcoded-copy` errors (and reduce warnings materially).
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/locales/**` plus the remaining offender files identified in the post-task-13-09 ledger:
   - `apps/brikette/src/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx`
   - `apps/brikette/src/app/[lang]/hospitality-preview/page.tsx`
   - `apps/brikette/src/components/assistance/quick-links-section/index.tsx`
   - `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx`
-  - `apps/brikette/src/app/cookie-policy/page.tsx`
   - `apps/brikette/src/app/page.tsx`
-  - `apps/brikette/src/app/privacy-policy/page.tsx`
   - `apps/brikette/src/components/guides/GuideCollectionWithSearch.tsx`
   - `apps/brikette/src/components/guides/GuideSearchBar.tsx`
   - `apps/brikette/src/routes/guides/guide-seo/components/StructuredTocBlock.tsx`
   - `apps/brikette/src/routes/guides/guide-seo/components/structured-toc/StructuredTocSections.tsx`
-- **Depends on:** TASK-19, TASK-14, TASK-16, TASK-18, TASK-24
+- **Depends on:** TASK-19
 - **Blocks:** TASK-12
 - **Confidence:** 74% (→ 82% conditional on TASK-19)
   - Implementation: 80% - replace literals with `t()` keys and add keys to locale JSON
-  - Approach: 70% - multi-locale policy depends on coverage/parity enforcement details
-  - Impact: 74% - user-visible copy across many locales; tests may enforce completeness
+  - Approach: 75% - locale policy is now fixed by TASK-19; remaining uncertainty is batch size/churn
+  - Impact: 74% - user-visible copy across many pages; keep diffs small and validate with tests
 - **Acceptance:**
-  - `ds/no-hardcoded-copy` errors are eliminated for all files in `Affects`.
-  - Copy keys are added in a way that passes Brikette's i18n coverage/parity constraints (as decided in TASK-19).
+  - `ds/no-hardcoded-copy` errors are eliminated for the selected batch; repeat in follow-up batches until `ds/no-hardcoded-copy` is 0 for Brikette.
 - **Validation contract:**
   - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`), quoting `[lang]` paths.
   - TC-02: Targeted i18n tests:

@@ -128,7 +128,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05 | TASK-13 |
 | TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12 | TASK-14 |
 | TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15 | - |
-| TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Pending | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
+| TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Complete (2026-02-15) | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
 | TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Pending | TASK-05 | - |
 | TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Complete (2026-02-15) | TASK-02,TASK-04 | TASK-05 |
 | TASK-18 | IMPLEMENT | Fix impression dedupe to be per-navigation (not per session) + update unit test | 82% | S | Pending | TASK-01 | TASK-07 |
@@ -542,6 +542,7 @@ Guardrails:
 ### TASK-15: Staging stream isolation enablement (env-scoped GA measurement ID)
 - **Type:** IMPLEMENT
 - **Execution-Skill:** /lp-build
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** staging build uses a staging-only measurement ID (does not pollute prod stream)
 - **Affects:** `.github/workflows/brikette.yml`, `apps/brikette/src/config/env.ts` ([readonly])
 - **Depends on:** TASK-05
@@ -553,6 +554,22 @@ Guardrails:
 - **Validation contract:**
   - TC-01: staging build logs/HTML contains the staging measurement ID.
   - TC-02: GA4 DebugView shows events arriving in the staging stream/property, not production.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** `9f390162bf`
+- **Implementation notes:**
+  - `.github/workflows/brikette.yml` now sets `NEXT_PUBLIC_GA_MEASUREMENT_ID` from:
+    - staging: `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING` (fallback `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID`)
+    - production: `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION` (fallback `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID`)
+- **Operator checklist (staging isolation verification):**
+  - Ensure GitHub repo variables are set:
+    - `NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING` (staging stream Measurement ID)
+    - `NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION` (production stream Measurement ID)
+  - Deploy `staging` (or open the `staging-pages` URL) and confirm the loaded Measurement ID:
+    - In browser DevTools Console: `window.gtag?.toString?.()` exists and the GA config call includes `G-...` matching the staging ID (or inspect the page source for the Measurement ID string).
+    - In GA4 DebugView (staging stream): events appear when browsing staging with debug tooling enabled.
+  - Confirm production still uses the production Measurement ID.
 
 ### TASK-16: Verification protocol doc (DebugView + payload checklist)
 - **Type:** IMPLEMENT

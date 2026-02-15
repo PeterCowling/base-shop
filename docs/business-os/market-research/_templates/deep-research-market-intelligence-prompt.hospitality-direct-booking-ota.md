@@ -26,7 +26,7 @@ Business:
 
 CRITICAL: Business model classification (must be done explicitly)
 Using ONLY the input packet + internal baselines, classify which model {{BUSINESS_CODE}} is operating TODAY:
-A) Single-property direct booking site + OTAs (primary)
+A) Single-property direct booking site + OTAs
 B) Marketplace/affiliate for multiple properties
 C) Hybrid
 If the evidence is ambiguous, explicitly list the ambiguity and define the fastest 14-day test(s) to resolve it.
@@ -51,7 +51,7 @@ Step 1 - Internal diagnosis (must be quantitative):
 - Decompose YoY change in net booking value into:
   a) bookings (volume)
   b) net per booking (value)
-  c) channel mix (direct share vs OTA share)
+  c) channel mix (direct share vs OTA share) only if channel-level net value/margin data exists; otherwise treat as qualitative and define a 14-day measurement plan to quantify it
 - Identify the top 3 months contributing most to the YoY decline (absolute EUR and %).
 - Produce a hypothesis tree with 3-6 plausible root causes, each mapped to:
   - internal evidence (from baseline)
@@ -83,12 +83,18 @@ Pricing benchmark (standardize it so it's comparable):
   Scenario S1: Peak season weekend, 2 nights, 1 traveler, cheapest available refundable option if offered else cheapest available
   Scenario S2: Shoulder season midweek, 2 nights, 1 traveler, cheapest available option (refundable rule as above)
   Scenario S3: Off-season midweek, 2 nights, 1 traveler, cheapest available option (refundable rule as above)
-- Date selection rules (must be explicit calendar dates, relative to `As-of`):
-  - Peak (S1): choose a Fri-Sun weekend in Jul/Aug of the next upcoming summer season
-  - Shoulder (S2): choose a Tue-Thu in May or Sep of the next upcoming shoulder season
-  - Off-season (S3): choose a Tue-Thu in Jan/Feb of the next upcoming off-season
+- Fixed dates contract (do not vary between competitors):
+  - S1 dates: {{S1_DATES}}
+  - S2 dates: {{S2_DATES}}
+  - S3 dates: {{S3_DATES}}
+  - Do not change dates across competitors.
+  - If a date range is blocked (inventory not open or sold out), use the closest next week and state why.
 - For each scenario: capture displayed total price, taxes/fees clarity, cancellation cutoff, deposit requirements, payment methods, and any member discount mechanics.
 - If sold out or blocked: mark "sold out/blocked" and capture whatever policies/fees are visible with a citation.
+
+BRIK parity sub-test (required):
+- For S1-S3, capture BRIK direct price/terms on {{CANONICAL_WEBSITE_URL}} and compare against at least two OTA surfaces where the property is listed (e.g., Booking.com + Hostelworld if available).
+- Record total price, taxes/fees visibility, cancellation cutoff, and payment/deposit differences.
 
 Step 4 - Website-live conversion + measurement implications:
 - Audit the live funnel as a user would (home -> dates -> room -> checkout):
@@ -96,6 +102,7 @@ Step 4 - Website-live conversion + measurement implications:
   - identify missing trust signals
   - check mobile-first behaviors (speed, clarity, checkout steps)
 - If the canonical website URL is missing: return `Status: BLOCKED` and list the missing field (website URL).
+- Canonical website URL (for the funnel audit): {{CANONICAL_WEBSITE_URL}}
 - Produce an implementation-ready checklist prioritized as:
   - P0 (<=14 days, highest expected impact, low/medium effort)
   - P1 (30-60 days)
@@ -129,6 +136,7 @@ Confidence labeling:
 Hard rules:
 - Do not invent data.
 - Every numeric claim must have a citation OR be explicitly labeled `assumption` with a plausible range and rationale.
+- Internal baseline numbers inside BEGIN_INTERNAL_BASELINES are observed internal evidence and do not require external citations. When referencing them, tag as `observed` and attribute to "internal baseline (as-of {{AS_OF_DATE}})".
 - Explicitly tag each key claim as `observed` or `inferred`.
 - Prefer recent sources (last 24 months) and Italy/EU relevance.
 - If evidence is weak/conflicting: say so and propose a falsification test.
@@ -159,4 +167,10 @@ P) Source list with URL + access date
 Q) Delta and feedback for human operators (required):
    - What is working vs not working given internal baseline trends?
    - Stop / Continue / Start (14-day focus)
+
+For each Stop / Continue / Start item include:
+- action
+- rationale
+- expected metric movement
+- 14-day verification method
 ```

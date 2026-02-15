@@ -456,10 +456,8 @@ function buildInternalBaselineMarkdown(args: {
   netValues: NetValueMonthRow[];
   bookings: BookingMonthRow[];
   cloudflare: CloudflareMonthRow[];
-  cloudflareNotes?: string;
   measurementVerification?: { path: string; dataApi: Record<string, number> };
   octorateRooms?: { totalRooms: number; roomNames: string[] };
-  previousPackExecutiveSummary?: string;
 }): string {
   const asOfMonth = args.asOfDate.slice(0, 7);
 
@@ -483,123 +481,136 @@ function buildInternalBaselineMarkdown(args: {
   const maxIndex = monthIndexes.length > 0 ? Math.max(...monthIndexes) : null;
   const hasPartial = months.includes(asOfMonth);
   const lastCompleteIndex = maxIndex == null ? null : hasPartial ? maxIndex - 1 : maxIndex;
+  if (lastCompleteIndex == null) {
+    return `# Internal Baselines (Mandatory) — ${args.business} (as-of ${args.asOfDate})\n\nStatus: BLOCKED\n- Missing monthly export data (no parseable months found).`;
+  }
 
-  const trailing3 = lastCompleteIndex == null ? [] : [lastCompleteIndex - 2, lastCompleteIndex - 1, lastCompleteIndex].map(monthFromIndex);
-  const trailing12 = lastCompleteIndex == null ? [] : Array.from({ length: 12 }, (_, i) => monthFromIndex(lastCompleteIndex - (11 - i)));
-  const prev12 = lastCompleteIndex == null ? [] : Array.from({ length: 12 }, (_, i) => monthFromIndex(lastCompleteIndex - 12 - (11 - i)));
+  const lastCompleteMonth = monthFromIndex(lastCompleteIndex);
+  const currentWindowMonths = Array.from({ length: 12 }, (_, i) => monthFromIndex(lastCompleteIndex - (11 - i)));
+  const prevWindowMonths = currentWindowMonths.map((m) => monthFromIndex(parseMonthIndex(m) - 12));
 
-  const trailing3Summary = computeWindowSummary(joined, trailing3);
-  const trailing3YoYSummary = computeWindowSummary(
-    joined,
-    trailing3.map((m) => monthFromIndex(parseMonthIndex(m) - 12)),
+  const currentWindowSummary = computeWindowSummary(joined, currentWindowMonths);
+  const prevWindowSummary = computeWindowSummary(joined, prevWindowMonths);
+
+  const windowNetDelta = currentWindowSummary.netValueSum - prevWindowSummary.netValueSum;
+  const windowBookingsDelta = currentWindowSummary.bookingsSum - prevWindowSummary.bookingsSum;
+  const windowDirectShareDelta =
+    currentWindowSummary.directShare == null || prevWindowSummary.directShare == null
+      ? null
+      : currentWindowSummary.directShare - prevWindowSummary.directShare;
+
+  const prevNetPerBooking = prevWindowSummary.netPerBooking ?? null;
+  const currentNetPerBooking = currentWindowSummary.netPerBooking ?? null;
+
+  const volumeEffect =
+    prevNetPerBooking == null
+      ? null
+      : (currentWindowSummary.bookingsSum - prevWindowSummary.bookingsSum) * prevNetPerBooking;
+  const valuePerBookingEffect =
+    prevNetPerBooking == null || currentNetPerBooking == null
+      ? null
+      : currentWindowSummary.bookingsSum * (currentNetPerBooking - prevNetPerBooking);
+
+  const declineRows: Array<{ month: string; prevNet: number; currentNet: number; delta: number }> = [];
+  for (const month of currentWindowMonths) {
+    const prevMonth = monthFromIndex(parseMonthIndex(month) - 12);
+    if (!netByMonth.has(month) || !netByMonth.has(prevMonth)) continue;
+    const prevNet = netByMonth.get(prevMonth) ?? 0;
+    const currentNet = netByMonth.get(month) ?? 0;
+    declineRows.push({ month, prevNet, currentNet, delta: currentNet - prevNet });
+  }
+  declineRows.sort((a, b) => a.delta - b.delta);
+  const topDeclines = declineRows.slice(0, 3);
+
+  const lines: string[] = [];
+  lines.push(`# Internal Baselines (Mandatory) — ${args.business} (as-of ${args.asOfDate})`);
+  lines.push("");
+  lines.push("## Baseline Header");
+  lines.push("");
+  lines.push(`- Last complete month: ${lastCompleteMonth}`);
+  lines.push(
+    `- YoY window (12 complete months): ${currentWindowMonths[0]}..${currentWindowMonths[11]} vs ${prevWindowMonths[0]}..${prevWindowMonths[11]}`,
   );
+  if (args.octorateRooms) {
+    lines.push(`- Total rooms: ${args.octorateRooms.totalRooms}`);
+    lines.push(`- Room labels: ${args.octorateRooms.roomNames.join(", ")}`);
+  }
+  if (args.measurementVerification) {
+    const m = args.measurementVerification.dataApi;
+    const sessions = typeof m.sessions === "number" ? m.sessions : null;
+    const conversions = typeof m.conversions === "number" ? m.conversions : null;
+    const beginCheckout = typeof m.begin_checkout === "number" ? m.begin_checkout : null;
+    lines.push(
+      `- Measurement status (GA4 snapshot): sessions ${formatInt(sessions)}; begin_checkout ${formatInt(beginCheckout)}; conversions ${formatInt(conversions)} (directional only; likely incomplete).`,
+    );
+  }
+  lines.push("");
 
-  const trailing12Summary = computeWindowSummary(joined, trailing12);
-  const prev12Summary = computeWindowSummary(joined, prev12);
-
-  const peak = [...joined.entries()].reduce(
-    (best, current) => (best == null || current[1].netValue > best[1].netValue ? current : best),
-    null as [string, { netValue: number; bookings: number; direct: number; ota: number }] | null,
+  lines.push("## YoY Decomposition (Net Value)");
+  lines.push("");
+  lines.push("| Metric | Current | Previous | Delta |");
+  lines.push("|---|---:|---:|---:|");
+  lines.push(
+    `| Net value | ${formatMoney(currentWindowSummary.netValueSum)} | ${formatMoney(prevWindowSummary.netValueSum)} | ${formatMoney(windowNetDelta)} |`,
   );
-
-  const trough = [...joined.entries()].reduce(
-    (best, current) => (best == null || current[1].netValue < best[1].netValue ? current : best),
-    null as [string, { netValue: number; bookings: number; direct: number; ota: number }] | null,
+  lines.push(
+    `| Bookings | ${formatInt(currentWindowSummary.bookingsSum)} | ${formatInt(prevWindowSummary.bookingsSum)} | ${formatInt(windowBookingsDelta)} |`,
   );
+  lines.push(
+    `| Net/booking | ${formatMoney(currentNetPerBooking)} | ${formatMoney(prevNetPerBooking)} | ${
+      currentNetPerBooking == null || prevNetPerBooking == null ? "n/a" : formatMoney(currentNetPerBooking - prevNetPerBooking)
+    } |`,
+  );
+  lines.push(
+    `| Direct share | ${formatPercent(currentWindowSummary.directShare)} | ${formatPercent(prevWindowSummary.directShare)} | ${
+      windowDirectShareDelta == null ? "n/a" : `${(windowDirectShareDelta * 100).toFixed(1)}pp`
+    } |`,
+  );
+  lines.push("");
+  lines.push(
+    `- YoY net value change: ${formatMoney(windowNetDelta)} (${formatPercent(
+      percentChange(currentWindowSummary.netValueSum, prevWindowSummary.netValueSum),
+    )}).`,
+  );
+  lines.push(
+    `- Decomposition (exact): volume effect ${formatMoney(volumeEffect)}; value/booking effect ${formatMoney(valuePerBookingEffect)}.`,
+  );
+  lines.push("");
 
-  const cloudflareByMonth = new Map(args.cloudflare.map((r) => [r.month, r.requests]));
-  const corrXs: number[] = [];
-  const corrYs: number[] = [];
-  for (const month of months) {
-    const req = cloudflareByMonth.get(month);
+  lines.push("## Top YoY Decline Months (By Net Value Delta)");
+  lines.push("");
+  lines.push("| Month | Net value (prev year) | Net value (current) | Delta |");
+  lines.push("|---|---:|---:|---:|");
+  for (const row of topDeclines) {
+    lines.push(`| ${row.month} | ${formatMoney(row.prevNet)} | ${formatMoney(row.currentNet)} | ${formatMoney(row.delta)} |`);
+  }
+  lines.push("");
+
+  lines.push("## Monthly Slice (Last 12 Complete Months)");
+  lines.push("");
+  lines.push("| Month | Net value | Bookings | Net/booking | Direct share |");
+  lines.push("|---|---:|---:|---:|---:|");
+  for (const month of currentWindowMonths) {
     const row = joined.get(month);
-    if (req == null || row == null) continue;
-    corrXs.push(req);
-    corrYs.push(row.netValue);
-  }
-  const correlation = pearsonCorrelation(corrXs, corrYs);
-
-  const trendLines: string[] = [];
-  if (trailing3.length > 0) {
-    trendLines.push(
-      `- Trailing 3 complete months (${trailing3[0]}..${trailing3[2]}): net value ${formatMoney(trailing3Summary.netValueSum)}; bookings ${formatInt(trailing3Summary.bookingsSum)}; direct share ${formatPercent(trailing3Summary.directShare)}; net per booking ${formatMoney(trailing3Summary.netPerBooking)}.`,
-    );
-    trendLines.push(
-      `- YoY vs same 3-month window: net value ${formatPercent(percentChange(trailing3Summary.netValueSum, trailing3YoYSummary.netValueSum))}; bookings ${formatPercent(percentChange(trailing3Summary.bookingsSum, trailing3YoYSummary.bookingsSum))}; direct share delta ${(trailing3Summary.directShare != null && trailing3YoYSummary.directShare != null) ? `${((trailing3Summary.directShare - trailing3YoYSummary.directShare) * 100).toFixed(1)}pp` : "n/a"}.`,
-    );
-  }
-  if (trailing12.length > 0 && prev12.length > 0) {
-    trendLines.push(
-      `- Trailing 12 complete months: net value ${formatMoney(trailing12Summary.netValueSum)}; bookings ${formatInt(trailing12Summary.bookingsSum)}; direct share ${formatPercent(trailing12Summary.directShare)}.`,
-    );
-    trendLines.push(
-      `- YoY vs prior 12 months: net value ${formatPercent(percentChange(trailing12Summary.netValueSum, prev12Summary.netValueSum))}; bookings ${formatPercent(percentChange(trailing12Summary.bookingsSum, prev12Summary.bookingsSum))}; direct share delta ${(trailing12Summary.directShare != null && prev12Summary.directShare != null) ? `${((trailing12Summary.directShare - prev12Summary.directShare) * 100).toFixed(1)}pp` : "n/a"}.`,
-    );
-  }
-
-  const monthTableLines: string[] = [
-    "| Month | Net booking value | Bookings | Direct share | Net per booking | Cloudflare requests (proxy) |",
-    "|---|---:|---:|---:|---:|---:|",
-  ];
-
-  for (const month of months) {
-    const row = joined.get(month);
-    if (!row) continue;
+    const hasNet = netByMonth.has(month);
+    const hasBookings = bookingByMonth.has(month);
+    if (!hasNet || !hasBookings || !row) {
+      lines.push(`| ${month} | n/a | n/a | n/a | n/a |`);
+      continue;
+    }
     const directShare = row.bookings > 0 ? row.direct / row.bookings : null;
     const netPerBooking = row.bookings > 0 ? row.netValue / row.bookings : null;
-    const cf = cloudflareByMonth.get(month) ?? null;
-    monthTableLines.push(
-      `| ${month} | ${formatMoney(row.netValue)} | ${formatInt(row.bookings)} | ${formatPercent(directShare)} | ${formatMoney(netPerBooking)} | ${cf == null ? "n/a" : formatInt(cf)} |`,
+    lines.push(
+      `| ${month} | ${formatMoney(row.netValue)} | ${formatInt(row.bookings)} | ${formatMoney(netPerBooking)} | ${formatPercent(directShare)} |`,
     );
   }
-
-  const baselineParts: string[] = [];
-  baselineParts.push(`# Internal Baseline Snapshot (${args.business}, as-of ${args.asOfDate})`);
-  baselineParts.push("");
-
-  if (args.previousPackExecutiveSummary) {
-    baselineParts.push("## Previous Market Intelligence Pack (Executive Summary Excerpt)");
-    baselineParts.push("");
-    baselineParts.push(args.previousPackExecutiveSummary.trim());
-    baselineParts.push("");
-  }
-
-  baselineParts.push("## Observed Internal Performance (from monthly exports)");
-  baselineParts.push("");
-  baselineParts.push(...trendLines);
-  baselineParts.push("");
-
-  if (peak) {
-    baselineParts.push(`- Peak net value month: ${peak[0]} (${formatMoney(peak[1].netValue)}).`);
-  }
-  if (trough) {
-    baselineParts.push(`- Trough net value month: ${trough[0]} (${formatMoney(trough[1].netValue)}).`);
-  }
-
-  baselineParts.push("");
-  baselineParts.push("## Monthly Table (Joined)");
-  baselineParts.push("");
-  baselineParts.push(...monthTableLines);
-  baselineParts.push("");
-
-  if (args.cloudflare.length > 0) {
-    baselineParts.push("## Cloudflare Proxy Notes");
-    baselineParts.push("");
-    baselineParts.push(
-      `- Correlation proxy (net value vs requests where both available): ${correlation == null ? "n/a" : correlation.toFixed(2)} (directional only).`,
-    );
-    if (args.cloudflareNotes) {
-      baselineParts.push("");
-      baselineParts.push(args.cloudflareNotes.trim());
-    }
-    baselineParts.push("");
-  }
+  lines.push("");
 
   if (args.measurementVerification) {
-    baselineParts.push("## Measurement Snapshot (GA4 Data API)");
-    baselineParts.push("");
-    baselineParts.push(`Source: ${args.measurementVerification.path}`);
-    baselineParts.push("");
+    lines.push("## Measurement Snapshot (GA4 Data API)");
+    lines.push("");
+    lines.push(`Source: ${args.measurementVerification.path}`);
+    lines.push("");
     const metrics = args.measurementVerification.dataApi;
     const keys = [
       "sessions",
@@ -611,37 +622,16 @@ function buildInternalBaselineMarkdown(args: {
       "begin_checkout",
       "web_vitals",
     ];
-    baselineParts.push("| Metric | Value |");
-    baselineParts.push("|---|---:|");
+    lines.push("| Metric | Value |");
+    lines.push("|---|---:|");
     for (const key of keys) {
       if (typeof metrics[key] !== "number") continue;
-      baselineParts.push(`| ${key} | ${metrics[key]} |`);
+      lines.push(`| ${key} | ${metrics[key]} |`);
     }
-    baselineParts.push("");
+    lines.push("");
   }
 
-  if (args.octorateRooms) {
-    baselineParts.push("## Operational Inventory Snapshot (Octorate)");
-    baselineParts.push("");
-    baselineParts.push(`- Total rooms: ${args.octorateRooms.totalRooms}`);
-    baselineParts.push(`- Room labels: ${args.octorateRooms.roomNames.join(", ")}`);
-    baselineParts.push("");
-  }
-
-  baselineParts.push("## Delta Questions (Required)");
-  baselineParts.push("");
-  baselineParts.push(
-    "1. Based on the internal trends and mix, what are the 3 most likely root causes of the YoY softness (demand mix shift vs conversion vs pricing/policy vs distribution)?",
-  );
-  baselineParts.push(
-    "2. Which levers are most likely to move realized net value fastest (conversion, direct-share incentives, cancellation control, pricing, upsell, support trust), and what evidence supports that?",
-  );
-  baselineParts.push(
-    "3. What is working vs not working today, and what should stop/continue/start in the next 14 days to maximize speed-to-first-impact?",
-  );
-  baselineParts.push("");
-
-  return baselineParts.join("\n");
+  return lines.join("\n");
 }
 
 function buildDeepResearchPromptText(args: {
@@ -816,10 +806,6 @@ export async function buildS2MarketIntelligenceHandoff(
     ? parseCloudflareMonthlyProxiesCsv(await fs.readFile(cloudflareCsvPath, "utf-8"))
     : [];
 
-  const cloudflareNotes = (await exists(cloudflareNotesPath))
-    ? await fs.readFile(cloudflareNotesPath, "utf-8")
-    : undefined;
-
   const measurementSnapshot = measurement
     ? {
         path: measurement.relativePath,
@@ -837,30 +823,14 @@ export async function buildS2MarketIntelligenceHandoff(
     };
   }
 
-  const prevSummary = previousMarketIntel
-    ? (() => {
-        const section = extractMarkdownSection(previousMarketIntel.body, "## A) Executive Summary");
-        if (!section) return null;
-        const bullets = section
-          .split("\n")
-          .map((l) => l.trimEnd())
-          .filter((l) => l.trim().startsWith("-"))
-          .slice(0, 12)
-          .join("\n");
-        return bullets.trim() || null;
-      })()
-    : null;
-
   const internalBaselineSnapshot = buildInternalBaselineMarkdown({
     business,
     asOfDate: options.asOfDate,
     netValues,
     bookings,
     cloudflare,
-    cloudflareNotes,
     measurementVerification: measurementSnapshot,
     octorateRooms,
-    previousPackExecutiveSummary: prevSummary ?? undefined,
   });
 
   const deepResearchPrompt = buildDeepResearchPromptText({

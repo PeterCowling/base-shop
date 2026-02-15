@@ -107,32 +107,68 @@ Owner: Test
 
     await writeFile(
       path.join(repoRoot, "docs/business-os/strategy/TEST/data/net_value_by_month.csv"),
-      [
-        "month,net_booking_value,method,notes",
-        "2024-11,100,observed,ok",
-        "2024-12,200,observed,ok",
-        "2025-01,300,observed,ok",
-        "2025-11,110,observed,ok",
-        "2025-12,210,observed,ok",
-        "2026-01,310,observed,ok",
-        "2026-02,50,observed,partial",
-        "",
-      ].join("\n"),
+      (() => {
+        const rows: string[] = ["month,net_booking_value,method,notes"];
+        const months: string[] = [];
+        for (let year = 2024; year <= 2026; year += 1) {
+          for (let month = 1; month <= 12; month += 1) {
+            const yyyymm = `${year}-${String(month).padStart(2, "0")}`;
+            if (yyyymm < "2024-02") continue;
+            if (yyyymm > "2026-02") continue;
+            months.push(yyyymm);
+          }
+        }
+
+        for (const month of months) {
+          let net = 1000;
+          if (month >= "2025-02" && month <= "2026-01") net = 800;
+          if (month === "2025-08") net = 500;
+          if (month === "2025-12") net = 700;
+          if (month === "2025-03") net = 750;
+          if (month === "2026-02") net = 50; // partial month, should be excluded from "complete month" slice
+          rows.push(`${month},${net},observed,ok`);
+        }
+
+        rows.push("");
+        return rows.join("\n");
+      })(),
     );
 
     await writeFile(
       path.join(repoRoot, "docs/business-os/strategy/TEST/data/bookings_by_month.csv"),
-      [
-        "month,bookings_count,gross_booking_value,channel_source,notes",
-        "2024-11,10,100,Direct:2; OTA:8,ok",
-        "2024-12,20,200,Direct:4; OTA:16,ok",
-        "2025-01,30,300,Direct:6; OTA:24,ok",
-        "2025-11,11,110,Direct:3; OTA:8,ok",
-        "2025-12,21,210,Direct:5; OTA:16,ok",
-        "2026-01,31,310,Direct:7; OTA:24,ok",
-        "2026-02,5,50,Direct:1; OTA:4,partial",
-        "",
-      ].join("\n"),
+      (() => {
+        const rows: string[] = ["month,bookings_count,gross_booking_value,channel_source,notes"];
+        const months: string[] = [];
+        for (let year = 2024; year <= 2026; year += 1) {
+          for (let month = 1; month <= 12; month += 1) {
+            const yyyymm = `${year}-${String(month).padStart(2, "0")}`;
+            if (yyyymm < "2024-02") continue;
+            if (yyyymm > "2026-02") continue;
+            months.push(yyyymm);
+          }
+        }
+
+        for (const month of months) {
+          let bookings = 100;
+          let direct = 30;
+          let ota = 70;
+          if (month >= "2025-02" && month <= "2026-01") {
+            bookings = 90;
+            direct = 18;
+            ota = 72;
+          }
+          if (month === "2026-02") {
+            bookings = 5; // partial month, should be excluded from "complete month" slice
+            direct = 1;
+            ota = 4;
+          }
+          const grossValue = bookings * 20;
+          rows.push(`${month},${bookings},${grossValue},Direct:${direct}; OTA:${ota},ok`);
+        }
+
+        rows.push("");
+        return rows.join("\n");
+      })(),
     );
 
     await writeFile(
@@ -214,10 +250,29 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
     expect(promptContent).toContain("Type: Deep-Research-Prompt");
     expect(promptContent).toContain("Target-Output");
     expect(promptContent).toContain("BEGIN_INTERNAL_BASELINES");
-    expect(promptContent).toContain("Trailing 3 complete months (2025-11..2026-01): net value 630.00; bookings 63; direct share 23.8%; net per booking 10.00.");
-    expect(promptContent).toContain("YoY vs same 3-month window: net value 5.0%; bookings 5.0%; direct share delta 3.8pp.");
-    expect(promptContent).toContain("prior bullet 1");
-    expect(promptContent).toContain("prior bullet 2");
     expect(promptContent).toContain("Total rooms: 2");
+
+    // TC-01: nested frontmatter contamination should not appear inside the Deep Research prompt block.
+    const promptBlockMatch = promptContent.match(/```text\n([\s\S]*?)\n```/);
+    expect(promptBlockMatch).not.toBeNull();
+    const promptBlock = promptBlockMatch?.[1] ?? "";
+    expect(promptBlock).not.toContain("\n---\n");
+
+    // TC-03: compact slice should include only the last 12 complete months by date.
+    // As-of 2026-02-15 => last complete month is 2026-01, so slice should be 2025-02..2026-01.
+    expect(promptContent).toContain("YoY window (12 complete months): 2025-02..2026-01 vs 2024-02..2025-01");
+    expect(promptContent).toContain("## Monthly Slice (Last 12 Complete Months)");
+    expect(promptContent).toContain("| 2025-02 |");
+    expect(promptContent).toContain("| 2026-01 |");
+    expect(promptContent).not.toContain("| 2026-02 |");
+
+    // TC-02: top decline months should be present and ordered by largest net-value decline.
+    expect(promptContent).toContain("## Top YoY Decline Months (By Net Value Delta)");
+    const topDeclinesSection = promptContent.match(
+      /## Top YoY Decline Months \(By Net Value Delta\)[\s\S]*?(?=\n## |\n$)/,
+    )?.[0];
+    expect(topDeclinesSection).toContain("| 2025-08 |");
+    expect(topDeclinesSection).toContain("| 2025-12 |");
+    expect(topDeclinesSection).toContain("| 2025-03 |");
   });
 });

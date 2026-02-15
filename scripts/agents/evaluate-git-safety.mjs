@@ -32,20 +32,32 @@ function failClosed(msg, err) {
 
 function parseCli(argv) {
   let policyPath = null;
+  let mode = "guard"; // guard | hook
+  let rawCommand = null;
   let i = 0;
   while (i < argv.length) {
     const a = argv[i];
     if (a === "--") {
-      return { policyPath, gitArgs: argv.slice(i + 1) };
+      return { policyPath, mode, rawCommand, gitArgs: argv.slice(i + 1) };
     }
     if (a === "--policy" && i + 1 < argv.length) {
       policyPath = argv[i + 1];
       i += 2;
       continue;
     }
+    if (a === "--mode" && i + 1 < argv.length) {
+      mode = String(argv[i + 1] || "");
+      i += 2;
+      continue;
+    }
+    if (a === "--command" && i + 1 < argv.length) {
+      rawCommand = String(argv[i + 1] || "");
+      i += 2;
+      continue;
+    }
     i += 1;
   }
-  return { policyPath, gitArgs: [] };
+  return { policyPath, mode, rawCommand, gitArgs: [] };
 }
 
 function repoRootFromRuntime() {
@@ -66,18 +78,177 @@ function shellEscape(s) {
 }
 
 function gitSubcommandIndex(argv) {
-  // Skip only the global options we care about (-c key=value).
-  // Anything ambiguous is treated conservatively downstream (matchers should fail).
+  // Skip common git global options that can appear before the subcommand.
+  // Keep this list tight and test-driven; anything ambiguous should fail closed upstream.
+  const optionsWithValue = new Set([
+    "-c",
+    "-C",
+    "--git-dir",
+    "--work-tree",
+    "--namespace",
+    "--exec-path",
+  ]);
+
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
-    if (a === "-c") {
+    if (optionsWithValue.has(a)) {
       i += 1;
+      continue;
+    }
+    if (
+      a.startsWith("--git-dir=") ||
+      a.startsWith("--work-tree=") ||
+      a.startsWith("--namespace=") ||
+      a.startsWith("--exec-path=")
+    ) {
       continue;
     }
     if (a.startsWith("-")) continue;
     return i;
   }
   return -1;
+}
+
+function tokenizeShellLike(raw) {
+  // Minimal, quote-aware tokenizer sufficient for git CLI invocations.
+  // Not a full shell parser.
+  const tokens = [];
+  let cur = "";
+  let i = 0;
+  let state = "none"; // none | single | double
+
+  function push() {
+    if (cur.length > 0) tokens.push(cur);
+    cur = "";
+  }
+
+  while (i < raw.length) {
+    const ch = raw[i];
+
+    if (state === "none") {
+      if (ch === "'" ) {
+        state = "single";
+        i += 1;
+        continue;
+      }
+      if (ch === "\"") {
+        state = "double";
+        i += 1;
+        continue;
+      }
+      if (ch === "\\" && i + 1 < raw.length) {
+        cur += raw[i + 1];
+        i += 2;
+        continue;
+      }
+      if (/\s/.test(ch)) {
+        push();
+        i += 1;
+        continue;
+      }
+
+      // Operators: && || | ; &
+      if (ch === "&") {
+        push();
+        if (raw[i + 1] === "&") {
+          tokens.push("&&");
+          i += 2;
+        } else {
+          tokens.push("&");
+          i += 1;
+        }
+        continue;
+      }
+      if (ch === "|") {
+        push();
+        if (raw[i + 1] === "|") {
+          tokens.push("||");
+          i += 2;
+        } else {
+          tokens.push("|");
+          i += 1;
+        }
+        continue;
+      }
+      if (ch === ";") {
+        push();
+        tokens.push(";");
+        i += 1;
+        continue;
+      }
+
+      cur += ch;
+      i += 1;
+      continue;
+    }
+
+    if (state === "single") {
+      if (ch === "'") {
+        state = "none";
+        i += 1;
+        continue;
+      }
+      cur += ch;
+      i += 1;
+      continue;
+    }
+
+    // double
+    if (ch === "\"") {
+      state = "none";
+      i += 1;
+      continue;
+    }
+    if (ch === "\\" && i + 1 < raw.length) {
+      cur += raw[i + 1];
+      i += 2;
+      continue;
+    }
+    cur += ch;
+    i += 1;
+  }
+
+  if (state !== "none") {
+    throw new Error("Unbalanced quotes in command string");
+  }
+  push();
+  return tokens;
+}
+
+function isGitBinaryToken(tok) {
+  if (tok === "git") return true;
+  if (tok.startsWith("/") && tok.endsWith("/git")) return true;
+  return false;
+}
+
+function extractGitInvocationFromTokens(tokens) {
+  const separators = new Set(["&&", "||", "|", ";", "&"]);
+
+  for (let i = 0; i < tokens.length; i += 1) {
+    const t = tokens[i];
+    if (!isGitBinaryToken(t)) continue;
+
+    // Take args until the next separator.
+    let end = i + 1;
+    while (end < tokens.length && !separators.has(tokens[end])) end += 1;
+
+    // Parse env assignments immediately preceding git (e.g. FOO=bar git ...).
+    const env = {};
+    let j = i - 1;
+    while (j >= 0 && !separators.has(tokens[j])) {
+      const v = tokens[j];
+      if (!/^[A-Za-z_][A-Za-z0-9_]*=/.test(v)) break;
+      const k = v.slice(0, v.indexOf("="));
+      const val = v.slice(v.indexOf("=") + 1);
+      env[k] = val;
+      j -= 1;
+    }
+
+    // Evaluator expects git argv without the git binary token itself.
+    return { gitArgs: tokens.slice(i + 1, end), env };
+  }
+
+  return { gitArgs: null, env: {} };
 }
 
 function hasFlag(args, flag) {
@@ -320,7 +491,14 @@ function evaluate(policy, ctx) {
 }
 
 function main() {
-  const { policyPath: cliPolicyPath, gitArgs } = parseCli(process.argv.slice(2));
+  const { policyPath: cliPolicyPath, gitArgs: cliGitArgs, rawCommand, mode } = parseCli(
+    process.argv.slice(2),
+  );
+
+  if (mode !== "guard" && mode !== "hook") {
+    failClosed(`Invalid --mode: ${String(mode)} (expected guard|hook)`);
+    return;
+  }
 
   const repoRoot = repoRootFromRuntime();
   const policyPath = cliPolicyPath || path.join(repoRoot, ".agents/safety/generated/git-safety-policy.json");
@@ -333,7 +511,28 @@ function main() {
     return;
   }
 
-  const ctx = { argv: gitArgs, env: process.env };
+  let gitArgs = cliGitArgs;
+  let env = process.env;
+
+  if (rawCommand !== null) {
+    let tokens;
+    try {
+      tokens = tokenizeShellLike(rawCommand);
+    } catch (err) {
+      failClosed("Failed to tokenize --command input.", err);
+      return;
+    }
+
+    const extracted = extractGitInvocationFromTokens(tokens);
+    if (extracted.gitArgs === null) {
+      // Not a git command: allow.
+      process.exit(0);
+    }
+    gitArgs = extracted.gitArgs;
+    env = { ...process.env, ...extracted.env };
+  }
+
+  const ctx = { argv: gitArgs, env };
 
   let result;
   try {
@@ -344,8 +543,17 @@ function main() {
   }
 
   let effect = String(result.effect || "deny");
-  if (effect === "ask" && result.evalSem?.askBehavior === "deny_if_noninteractive") {
-    effect = "deny";
+  if (effect === "ask") {
+    if (mode === "hook") {
+      // Let Claude enforce the "ask" UX via .claude/settings.json.
+      process.stderr.write(
+        `[git-safety] ask: ${String(result.matched?.id || "(no-rule)")}\n`,
+      );
+      process.exit(0);
+    }
+    if (result.evalSem?.askBehavior === "deny_if_noninteractive") {
+      effect = "deny";
+    }
   }
 
   if (effect === "allow") process.exit(0);
@@ -369,4 +577,3 @@ function main() {
 }
 
 main();
-

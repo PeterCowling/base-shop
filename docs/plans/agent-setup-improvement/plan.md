@@ -126,7 +126,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 | TASK-10 | INVESTIGATE | Decide hook/guard policy generation format | 85% | S | Complete (2026-02-15) | TASK-04, TASK-05 | TASK-11 |
 | TASK-12 | SPIKE | Add semantic safety rules to the kernel + compiled policy artifact | 82% | M | Complete (2026-02-15) | TASK-10 | TASK-11 |
 | TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Complete (2026-02-15) | TASK-12 | TASK-13, TASK-14, TASK-09 |
-| TASK-13 | INVESTIGATE | Hook integration decision + evaluator CLI contract | 86% | S | Pending | TASK-11 | TASK-14, TASK-09 |
+| TASK-13 | INVESTIGATE | Hook integration decision + evaluator CLI contract | 86% | S | Complete (2026-02-15) | TASK-11 | TASK-14, TASK-09 |
 | TASK-14 | SPIKE | Raw-command parsing + hook-mode evaluation in evaluator | 82% | M | Pending | TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy evaluation/data | 72% (→84% conditional on TASK-14) ⚠️ | M | Pending | TASK-14 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06, TASK-09 | TASK-08 |
@@ -383,7 +383,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 
 ### TASK-13: Hook integration decision + evaluator CLI contract
 - **Type:** INVESTIGATE
-- **Status:** Pending
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** Concrete interface contract for hooking the evaluator to Claude PreToolUse (raw string input), including ask behavior and parsing scope.
 - **Execution-Skill:** lp-replan
 - **Affects:** `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agents/evaluate-git-safety.mjs`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] .claude/settings.json`
@@ -399,6 +399,22 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Enumerates a minimal test corpus to lock down edge cases (quotes, env var prefixes, `echo && git ...`, absolute git paths).
 - **Validation contract:**
   - VC-01: Decision paragraph exists in TASK-13 with chosen parsing scope + ask behavior + rationale → pass.
+#### Decision (2026-02-15)
+- **Chosen interface (hook mode):**
+  - `node scripts/agents/evaluate-git-safety.mjs --policy .agents/safety/generated/git-safety-policy.json --mode hook --command "<tool_input.command>"`
+  - Exit 0: allow (including `ask` decisions, which should fall through to `.claude/settings.json` for interactive prompting)
+  - Exit non-zero: block (hook should return 2 to Claude; adapter can map evaluator exit codes)
+- **Parsing scope:**
+  - Extract and tokenize the **first `git` invocation** from the raw command string (supports `git` and absolute paths like `/usr/bin/git` and `/opt/homebrew/bin/git`).
+  - Do **not** attempt full shell parsing; treat compound commands as “find the first git segment” (consistent with existing test: `echo test && git reset --hard` blocks).
+  - If the string contains **no git invocation**, return allow (exit 0).
+  - If tokenization is ambiguous (unbalanced quotes), fail closed (block).
+- **Ask semantics:**
+  - Evaluator `ask` returns allow in hook mode (`--mode hook`) so Claude can ask via `.claude/settings.json` ask rules.
+  - Guard mode continues to treat `ask` as deny (non-interactive).
+- **Evidence:**
+  - Hook operates on raw `tool_input.command` and blocks “git embedded in compound commands.” Evidence: `scripts/__tests__/pre-tool-use-git-safety.test.ts` (“handles piped commands with git”).
+  - Current guard/evaluator is argv-based and non-interactive; hook needs a dedicated adapter mode. Evidence: `scripts/agents/evaluate-git-safety.mjs`, `scripts/agent-bin/git`.
 
 ### TASK-14: Raw-command parsing + hook-mode evaluation in evaluator
 - **Type:** SPIKE

@@ -742,7 +742,10 @@ function buildInternalBaselineMarkdown(args: {
   );
   if (args.octorateRooms) {
     lines.push(`- Total rooms: ${args.octorateRooms.totalRooms}`);
-    lines.push(`- Room labels: ${args.octorateRooms.roomNames.join(", ")}`);
+    // Avoid bloating the baseline with low-ROI room labels.
+    const unique = Array.from(new Set(args.octorateRooms.roomNames)).slice(0, 3);
+    const sample = unique.length > 0 ? ` Sample labels: ${unique.join("; ")}${args.octorateRooms.roomNames.length > unique.length ? "; ..." : ""}` : "";
+    lines.push(`- Inventory note: ${args.octorateRooms.totalRooms} rooms.${sample}`);
   }
   if (args.measurementVerification) {
     const m = args.measurementVerification.dataApi;
@@ -870,6 +873,62 @@ function readIntFromEnv(name: string, fallback: number): number {
   const parsed = Number(raw);
   if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
   return Math.floor(parsed);
+}
+
+function dayOfWeekLabel(date: Date): string {
+  const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
+  return labels[date.getUTCDay()] ?? "n/a";
+}
+
+function formatIsoDate(date: Date): string {
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function nthWeekdayOfMonthUtc(args: {
+  year: number;
+  month1to12: number;
+  weekday0SunTo6Sat: number;
+  n: number;
+}): Date {
+  // Example: 3rd Friday of July => weekday=5 (Fri), n=3.
+  const monthIndex = args.month1to12 - 1;
+  const first = new Date(Date.UTC(args.year, monthIndex, 1));
+  const firstDow = first.getUTCDay();
+  const offset = (args.weekday0SunTo6Sat - firstDow + 7) % 7;
+  const day = 1 + offset + (args.n - 1) * 7;
+  return new Date(Date.UTC(args.year, monthIndex, day));
+}
+
+function fourthTuesdayOfFebruaryUtc(year: number): Date {
+  return nthWeekdayOfMonthUtc({ year, month1to12: 2, weekday0SunTo6Sat: 2, n: 4 });
+}
+
+function computeHospitalityScenarioDates(asOfDate: string): { s1: string; s2: string; s3: string } {
+  const asOfYear = Number(asOfDate.slice(0, 4));
+  const asOfMonth = Number(asOfDate.slice(5, 7));
+  const yearForPeak = asOfMonth <= 8 ? asOfYear : asOfYear + 1;
+  const yearForShoulder = asOfMonth <= 9 ? asOfYear : asOfYear + 1;
+  const yearForOffSeason = asOfMonth <= 2 ? asOfYear : asOfYear + 1;
+
+  // S1: 3rd Friday-Sunday of July in the chosen year.
+  const s1Start = nthWeekdayOfMonthUtc({ year: yearForPeak, month1to12: 7, weekday0SunTo6Sat: 5, n: 3 });
+  const s1End = new Date(Date.UTC(yearForPeak, 6, s1Start.getUTCDate() + 2));
+
+  // S2: 2nd Tuesday-Thursday of May in the chosen year.
+  const s2Start = nthWeekdayOfMonthUtc({ year: yearForShoulder, month1to12: 5, weekday0SunTo6Sat: 2, n: 2 });
+  const s2End = new Date(Date.UTC(yearForShoulder, 4, s2Start.getUTCDate() + 2));
+
+  // S3: 4th Tuesday-Thursday of February in the chosen year.
+  const s3Start = fourthTuesdayOfFebruaryUtc(yearForOffSeason);
+  const s3End = new Date(Date.UTC(yearForOffSeason, 1, s3Start.getUTCDate() + 2));
+
+  const s1 = `${formatIsoDate(s1Start)} (${dayOfWeekLabel(s1Start)}) to ${formatIsoDate(s1End)} (${dayOfWeekLabel(s1End)})`;
+  const s2 = `${formatIsoDate(s2Start)} (${dayOfWeekLabel(s2Start)}) to ${formatIsoDate(s2End)} (${dayOfWeekLabel(s2End)})`;
+  const s3 = `${formatIsoDate(s3Start)} (${dayOfWeekLabel(s3Start)}) to ${formatIsoDate(s3End)} (${dayOfWeekLabel(s3End)})`;
+  return { s1, s2, s3 };
 }
 
 function buildS2TwoPassPromptPass1(args: {
@@ -1136,6 +1195,9 @@ export async function buildS2MarketIntelligenceHandoff(
   const templateRelativePath = S2_MARKET_INTEL_PROFILE_TEMPLATES[selection.profileId];
   const template = await readDeepResearchPromptTemplate(repoRoot, templateRelativePath);
 
+  const scenarioDates =
+    selection.profileId === "hospitality_direct_booking_ota" ? computeHospitalityScenarioDates(options.asOfDate) : null;
+
   const renderedPrompt = renderTemplatePlaceholders(template.promptText, {
     BUSINESS_CODE: business,
     BUSINESS_NAME: intakeBusinessName,
@@ -1152,23 +1214,12 @@ export async function buildS2MarketIntelligenceHandoff(
     CONSTRAINTS: filledConstraints,
     INTERNAL_BASELINES: internalBaselineSnapshot.trim(),
     CANONICAL_WEBSITE_URL: website.canonicalWebsiteUrl ?? "MISSING",
+    S1_DATES: scenarioDates?.s1 ?? "MISSING",
+    S2_DATES: scenarioDates?.s2 ?? "MISSING",
+    S3_DATES: scenarioDates?.s3 ?? "MISSING",
   });
 
-  const websiteAuditAddon =
-    selection.profileId === "hospitality_direct_booking_ota" && launchSurface === "website-live"
-      ? [
-          "",
-          "Website-live funnel audit (required):",
-          `- Canonical website URL: ${website.canonicalWebsiteUrl ?? "MISSING"}`,
-          "- If canonical website URL is missing: return `Status: BLOCKED` and list the missing field: website URL.",
-          `- Audit path: ${(website.canonicalWebsiteUrl ?? "<WEBSITE_URL>")}/ -> dates -> room -> checkout`,
-          "- Identify friction, trust gaps, and mobile-first issues (speed, clarity, checkout steps).",
-          "- Produce a P0/P1/P2 checklist; each item must include impact (L/M/H), effort (S/M/L), and the metric it should move.",
-          "",
-        ].join("\n")
-      : "";
-
-  const deepResearchPrompt = `${renderedPrompt.trim()}\n${websiteAuditAddon}`.trimEnd();
+  const deepResearchPrompt = renderedPrompt.trimEnd();
 
   await fs.mkdir(marketResearchDir, { recursive: true });
 

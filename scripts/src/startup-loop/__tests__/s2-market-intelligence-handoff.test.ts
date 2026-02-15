@@ -62,6 +62,12 @@ Business:
 - Name: {{BUSINESS_NAME}}
 - As-of: {{AS_OF_DATE}}
 - Mode: {{LAUNCH_SURFACE}}
+- Canonical website URL: {{CANONICAL_WEBSITE_URL}}
+
+Pricing benchmark fixed dates:
+- S1: {{S1_DATES}}
+- S2: {{S2_DATES}}
+- S3: {{S3_DATES}}
 
 BEGIN_INTERNAL_BASELINES
 {{INTERNAL_BASELINES}}
@@ -320,6 +326,9 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
     expect(promptContent).toContain("Total rooms: 2");
     expect(promptContent).toContain("CanonicalWebsiteUrl: https://test.example.com");
     expect(promptContent).toContain("Canonical website URL: https://test.example.com");
+    expect(promptContent).toContain("S1: 2026-07-17 (Fri) to 2026-07-19 (Sun)");
+    expect(promptContent).toContain("S2: 2026-05-12 (Tue) to 2026-05-14 (Thu)");
+    expect(promptContent).toContain("S3: 2026-02-24 (Tue) to 2026-02-26 (Thu)");
 
     // TC-01: nested frontmatter contamination should not appear inside the Deep Research prompt block.
     const promptBlockMatch = promptContent.match(/```text\n([\s\S]*?)\n```/);
@@ -343,6 +352,9 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
     expect(topDeclinesSection).toContain("| 2025-08 |");
     expect(topDeclinesSection).toContain("| 2025-12 |");
     expect(topDeclinesSection).toContain("| 2025-03 |");
+
+    // TC-02: baseline header should not print full room label bloat.
+    expect(promptContent).not.toContain("Room labels:");
   });
 
   it("honors an Active research profile override file", async () => {

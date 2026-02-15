@@ -90,7 +90,8 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Complete (2026-02-15) | TASK-03, TASK-04 | TASK-11 |
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Complete (2026-02-15) | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Complete (2026-02-15) | TASK-11 | TASK-13 |
-| TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12 | - |
+| TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12, TASK-14 | - |
+| TASK-14 | INVESTIGATE | Stability gate: confirm post-cutoff alias/legacy usage is zero (telemetry + repo audit) | 85% | S | Pending | TASK-12 | TASK-13 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -105,13 +106,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 3 | TASK-10 | Wave 2: TASK-03 + Wave 1: TASK-04 | Doc/file migration |
 | 4 | TASK-11 | Wave 2 + Wave 3 + TASK-07 + TASK-08 | Checkpoint gate |
 | 5 | TASK-12 | Wave 4: TASK-11 | Window end: config disables legacy behavior |
-| 6 | TASK-13 | Wave 5: TASK-12 | Later cleanup |
+| 6 | TASK-14 | Wave 5: TASK-12 | Stability confirmation before removing rollback lever |
+| 7 | TASK-13 | Wave 6: TASK-14 | Later cleanup |
 
 **Max parallelism:** 6 (Wave 1)
 
 **Critical path (example):** TASK-01 -> TASK-02 -> TASK-10 -> TASK-11 -> TASK-12 -> TASK-13 (6 waves)
 
-**Total tasks:** 13
+**Total tasks:** 14
 
 ## Tasks
 
@@ -511,6 +513,38 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Status:** Complete (2026-02-15)
 - **Build evidence:** Commit a385abc14c; Validation: `pnpm --filter @apps/business-os test -- apps/business-os/src/lib/contract-migration.test.ts --maxWorkers=2` (PASS 2026-02-15).
 
+### TASK-14: Stability Gate (Pre-Removal Evidence)
+- **Type:** INVESTIGATE
+- **Deliverable:** decision memo + evidence packet confirming legacy usage is zero post-cutoff
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `docs/plans/startup-loop-contract-hardening/replan-notes.md` (new)
+  - `[readonly] docs/business-os/startup-loop/contract-migration.yaml`
+  - `[readonly] apps/business-os/src/app/api/agent/stage-docs/route.ts`
+  - `[readonly] apps/business-os/src/lib/stage-doc-paths.ts`
+  - `[readonly] scripts/check-startup-loop-contracts.sh`
+- **Depends on:** TASK-12
+- **Blocks:** TASK-13
+- **Confidence:** 85%
+  - Implementation: 85% — artifact-only memo with explicit queries + repo checks.
+  - Approach: 85% — hard gate before removing rollback lever.
+  - Impact: 85% — reduces risk of breaking hidden callers.
+- **Acceptance:**
+  - Memo includes:
+    - Cutoff recap: aliases/dual-read disabled since 2026-02-15 00:00Z (cutoffs set to 2026-02-14).
+    - Telemetry evidence since 2026-02-15 00:00Z:
+      - `bos.stage_alias_used` count = 0 (or list exact callers/time if non-zero).
+      - `bos.stage_doc_filename_alias_used` count = 0 (or list exact cards/time if non-zero).
+    - Repo audit evidence:
+      - `bash scripts/check-startup-loop-contracts.sh` output (PASS).
+      - `rg` audits showing no `lp-fact-find` stage-doc emissions and no `fact-finding.user.md` references outside config.
+  - Explicit go/no-go: “OK to remove compatibility code paths” with rationale.
+- **Validation contract:**
+  - VC-01: `docs/plans/startup-loop-contract-hardening/replan-notes.md` exists and contains the evidence packet + go/no-go.
+- **Rollout / rollback:** none (investigation only).
+- **Documentation impact:** none.
+
 ### TASK-13: Later Cleanup (Remove Dead Code)
 - **Type:** IMPLEMENT
 - **Deliverable:** remove alias/dual-read code paths + remove allowlists after stabilization period
@@ -521,11 +555,12 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - `apps/business-os/src/app/api/agent/stage-docs/[cardId]/[stage]/route.ts`
   - `apps/business-os/src/lib/lane-transitions.ts`
   - `apps/business-os/src/lib/repo-reader.ts`
-  - `scripts/src/check-startup-loop-contracts.ts`
   - `scripts/check-startup-loop-contracts.sh`
-- **Depends on:** TASK-12
+-  - `apps/business-os/src/lib/contract-migration.ts`
+-  - `apps/business-os/src/lib/stage-doc-paths.ts`
+- **Depends on:** TASK-12, TASK-14
 - **Blocks:** -
-- **Confidence:** 75% ⚠️
+- **Confidence:** 75% ⚠️ (→ 85% conditional on TASK-14)
   - Implementation: 80% — deletion work is straightforward but must be coordinated with stability evidence.
   - Approach: 75% — timing depends on operational readiness.
   - Impact: 75% — removing rollback lever is irreversible without revert.
@@ -536,10 +571,26 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Validation contract:**
   - TC-01: API tests updated for post-cleanup behavior.
   - TC-02: contract lint is fully green with no warns.
+  - TC-03: stage-doc reader tests updated (canonical-only; no dual-read).
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:**
   - Rollout: only after stability period following TASK-12.
   - Rollback: revert commit/PR.
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 75%
+- **Updated confidence:** 75% (→ 85% conditional on TASK-14)
+  - **Evidence class:** E1/E2
+  - Implementation: 80% — bounded file list + existing test seams exist for API + readers.
+  - Approach: 75% — still gated on post-cutoff telemetry to avoid breaking hidden callers.
+  - Impact: 75% — removing rollback lever remains the main risk; now explicitly gated.
+- **Investigation performed:**
+  - Verified cutoffs are in the past (aliases/dual-read disabled since 2026-02-15): `docs/business-os/startup-loop/contract-migration.yaml`.
+  - Lint is green: `bash scripts/check-startup-loop-contracts.sh` (PASS).
+- **Decision / resolution:**
+  - Do not remove compatibility code paths until telemetry confirms zero alias/legacy usage after cutoff.
+  - Added TASK-14 as explicit stability gate.
+  - Corrected Affects list: lint remains bash-based (`scripts/check-startup-loop-contracts.sh`), no TS port planned.
 
 ## Risks & Mitigations
 - Risk: hidden callers still depend on alias stage keys.

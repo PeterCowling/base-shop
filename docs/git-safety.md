@@ -43,6 +43,14 @@ rules:
       kind: env_var
       names: [SKIP_WRITER_LOCK, SKIP_SIMPLE_GIT_HOOKS]
 
+  - id: deny.skip_bypass_arg
+    effect: deny
+    priority: 995
+    rationale: Prevent bypassing writer lock / safety hooks by passing SKIP_* as arguments.
+    match:
+      kind: argv_regex_any
+      patterns: ["^SKIP_(WRITER_LOCK|SIMPLE_GIT_HOOKS)(=|$)"]
+
   - id: deny.hooks_path_bypass
     effect: deny
     priority: 990
@@ -75,6 +83,15 @@ rules:
       subcommand: commit
       flagsAny: [--amend]
 
+  - id: deny.commit_no_verify
+    effect: deny
+    priority: 955
+    rationale: --no-verify bypasses safety hooks.
+    match:
+      kind: git_argv
+      subcommand: commit
+      flagsAny: [--no-verify, -n]
+
   - id: deny.force_push
     effect: deny
     priority: 950
@@ -84,6 +101,15 @@ rules:
       subcommand: push
       flagsAny: [-f, --force, --force-with-lease, --mirror]
 
+  - id: deny.push_no_verify
+    effect: deny
+    priority: 945
+    rationale: --no-verify bypasses safety hooks.
+    match:
+      kind: git_argv
+      subcommand: push
+      flagsAny: [--no-verify, -n]
+
   - id: deny.reset_modes
     effect: deny
     priority: 940
@@ -91,7 +117,7 @@ rules:
     match:
       kind: git_argv
       subcommand: reset
-      flagsAny: [--hard, --merge, --keep]
+      flagsAny: [--hard, --mixed, --merge, --keep]
 
   - id: ask.reset_head_tilde
     effect: ask
@@ -102,6 +128,33 @@ rules:
       subcommand: reset
       argsAnyRegex: ["^HEAD~[0-9]*$"]
 
+  - id: deny.checkout_force
+    effect: deny
+    priority: 915
+    rationale: checkout --force discards local changes.
+    match:
+      kind: git_argv
+      subcommand: checkout
+      flagsAny: [-f, --force]
+
+  - id: deny.restore_worktree
+    effect: deny
+    priority: 914
+    rationale: restore --worktree can discard working tree changes.
+    match:
+      kind: git_argv
+      subcommand: restore
+      flagsAny: [--worktree]
+
+  - id: deny.switch_discard
+    effect: deny
+    priority: 913
+    rationale: switch --discard-changes/--force discards local changes.
+    match:
+      kind: git_argv
+      subcommand: switch
+      flagsAny: [--discard-changes, -f, --force]
+
   - id: deny.clean_force
     effect: deny
     priority: 920
@@ -111,6 +164,32 @@ rules:
       subcommand: clean
       flagsRegexAny: ["^-.*f"]
       flagsNone: [-n, --dry-run]
+
+  - id: deny.stash_mutations
+    effect: deny
+    priority: 910
+    rationale: Stash mutations hide work and create conflict debt in a multi-agent repo.
+    match:
+      kind: git_stash
+      allowSubcommands: [list, show]
+      denySubcommands: [push, pop, apply, drop, clear]
+      denyBare: true
+      denyUnknown: true
+
+  - id: deny.checkout_restore_bulk_discards
+    effect: deny
+    priority: 905
+    rationale: Bulk worktree discards are forbidden; only single-file restores are allowed.
+    match:
+      kind: git_checkout_restore_pathspecs
+
+  - id: deny.config_set_hooks_path
+    effect: deny
+    priority: 900
+    rationale: Setting core.hooksPath bypasses safety hooks.
+    match:
+      kind: git_config_set_key
+      key: core.hooksPath
 
   - id: allow.clean_dry_run
     effect: allow

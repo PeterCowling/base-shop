@@ -9,6 +9,7 @@
  *   tsx scripts/src/brikette/ga4-run-report.ts
  *   tsx scripts/src/brikette/ga4-run-report.ts --window 7daysAgo..today
  *   tsx scripts/src/brikette/ga4-run-report.ts --events page_view,user_engagement,begin_checkout,web_vitals
+ *   tsx scripts/src/brikette/ga4-run-report.ts --realtime --minutes 30
  *
  * Requires: .secrets/ga4/brikette-web-2b73459e229a.json (service account key)
  */
@@ -79,6 +80,10 @@ function parseArg(flag: string): string | undefined {
   return process.argv[idx + 1];
 }
 
+function hasFlag(flag: string): boolean {
+  return process.argv.includes(flag);
+}
+
 function splitCsv(value: string | undefined): string[] | undefined {
   if (!value) return undefined;
   const parts = value
@@ -140,8 +145,55 @@ async function runReport(params: {
   return resp.json();
 }
 
-function extractEventCounts(report: any): Record<string, number> {
+async function runRealtimeReport(params: {
+  propertyId: string;
+  minutes: number;
+  events: string[];
+  saKeyPath: string;
+}): Promise<unknown> {
+  const saRaw = fs.readFileSync(params.saKeyPath, "utf8");
+  const sa = JSON.parse(saRaw) as ServiceAccountKey;
+
+  const token = await getAccessToken(sa);
+
+  // GA4 standard properties: realtime supports up to 29 minutes ago.
+  // (360 properties can be larger; clamp so the script works everywhere.)
+  const minutes = Math.max(1, Math.min(29, Math.round(params.minutes)));
+
+  const body = {
+    minuteRanges: [{ startMinutesAgo: minutes, endMinutesAgo: 0 }],
+    dimensions: [{ name: "eventName" }],
+    metrics: [{ name: "eventCount" }],
+    dimensionFilter: {
+      filter: {
+        fieldName: "eventName",
+        inListFilter: { values: params.events },
+      },
+    },
+    limit: "1000",
+  };
+
+  const url = `https://analyticsdata.googleapis.com/v1beta/properties/${encodeURIComponent(
+    params.propertyId,
+  )}:runRealtimeReport`;
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  if (!resp.ok) {
+    throw new Error(`runRealtimeReport failed: ${resp.status} ${await resp.text()}`);
+  }
+  return resp.json();
+}
+
+function extractEventCounts(report: any, expectedEvents: string[]): Record<string, number> {
   const out: Record<string, number> = {};
+  for (const ev of expectedEvents) out[ev] = 0;
   const rows = Array.isArray(report?.rows) ? report.rows : [];
   for (const row of rows) {
     const name = row?.dimensionValues?.[0]?.value;
@@ -155,22 +207,26 @@ function extractEventCounts(report: any): Record<string, number> {
 
 async function main(): Promise<void> {
   const propertyId = parseArg("--property") ?? DEFAULT_PROPERTY_ID;
+  const isRealtime = hasFlag("--realtime");
   const window = parseArg("--window") ?? "7daysAgo..today";
+  const minutes = Number(parseArg("--minutes") ?? "30");
   const events =
     splitCsv(parseArg("--events")) ??
     ["page_view", "user_engagement", "begin_checkout", "web_vitals"];
   const saKeyPath = parseArg("--sa-key") ?? DEFAULT_SA_KEY_PATH;
 
   requireEnvLike(propertyId, "--property");
-  requireEnvLike(window, "--window");
+  if (!isRealtime) requireEnvLike(window, "--window");
 
-  const raw = await runReport({ propertyId, window, events, saKeyPath });
-  const counts = extractEventCounts(raw);
+  const raw = isRealtime
+    ? await runRealtimeReport({ propertyId, minutes, events, saKeyPath })
+    : await runReport({ propertyId, window, events, saKeyPath });
+  const counts = extractEventCounts(raw, events);
 
   // Stable JSON for copy/paste into verification docs.
   const payload = {
     propertyId,
-    window,
+    report: isRealtime ? { kind: "realtime", minutes: Math.max(1, Math.min(29, Math.round(minutes))) } : { kind: "standard", window },
     extractedAt: new Date().toISOString(),
     eventCounts: counts,
     raw,
@@ -180,4 +236,3 @@ async function main(): Promise<void> {
 }
 
 void main();
-

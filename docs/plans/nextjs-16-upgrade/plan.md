@@ -82,7 +82,7 @@ Note: Next 16 deprecates `middleware.ts` in favor of `proxy.ts`, but `proxy.ts` 
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-09 | IMPLEMENT | Fix XA build wrapper to force Webpack (`apps/xa/scripts/build-xa.mjs` adds `--webpack`) | 92% | S | Pending | - | TASK-13 |
+| TASK-09 | IMPLEMENT | Fix XA build wrapper to force Webpack (`apps/xa/scripts/build-xa.mjs` adds `--webpack`) | 92% | S | Complete (2026-02-15) | - | TASK-13 |
 | TASK-10 | INVESTIGATE | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | 86% | S | Pending | - | TASK-11, TASK-12, TASK-13 |
 | TASK-11 | IMPLEMENT | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | 85% | S | Pending | TASK-10 | TASK-13, TASK-15 |
 | TASK-12 | SPIKE | CMS build OOM mitigation prototype (reduce build-graph size; validate `@apps/cms` build) | 82% | M | Pending | TASK-10 | TASK-13 |
@@ -140,15 +140,26 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - XA build uses Webpack consistently with the rest of the repo’s Next apps.
 - **Validation contract:**
   - TC-01: Wrapper contains `--webpack` -> `rg -n \"pnpm exec next build\" apps/xa/scripts/build-xa.mjs` shows the flag.
-  - TC-02: `@apps/xa` typecheck passes -> `pnpm --filter @apps/xa typecheck` exits 0.
-  - TC-03: `@apps/xa` lint passes -> `pnpm --filter @apps/xa lint` exits 0.
-  - TC-04: `@apps/xa` build uses wrapper and succeeds -> `pnpm --filter @apps/xa build` exits 0.
+  - TC-02: `@apps/xa-c` typecheck passes -> `pnpm --filter @apps/xa-c typecheck` exits 0.
+  - TC-03: `@apps/xa-c` lint passes -> `pnpm --filter @apps/xa-c lint` exits 0.
+  - TC-04: `@apps/xa-c` build uses wrapper and succeeds -> `pnpm --filter @apps/xa-c build` exits 0.
   - Acceptance coverage: TC-01..TC-04 cover all acceptance criteria.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:**
   - Rollout: ship with other Next 16 hardening changes on `dev`.
   - Rollback: revert commit.
 - **Documentation impact:** None.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** <pending>
+- **Execution cycle:** Red -> Green (single pass)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/xa-c build` -> PASS
+  - Ran: `pnpm --filter @apps/xa-c typecheck` -> PASS (note: requires a prior build to generate `.next/types`)
+  - Ran: `pnpm --filter @apps/xa-c lint` -> PASS
+- **Implementation notes:**
+  - Updated `apps/xa/scripts/build-xa.mjs` to call `next build --webpack`, matching xa-b/xa-j behavior under Next 16.
 
 ### TASK-10: Build OOM Mitigation (Next 16)
 - **Type:** INVESTIGATE

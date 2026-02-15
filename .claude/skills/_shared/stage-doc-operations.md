@@ -6,12 +6,12 @@ Shared helper for creating and managing Business OS stage documents. Stage docs 
 
 | Stage | Canonical API Key | File Name | When Created | Purpose |
 |-------|-------------------|-----------|--------------|---------|
-| Fact-finding | `fact-find` | `fact-finding.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
-| Planned | `plan` | `planned.user.md` | `/lp-plan` completes with Card-ID | Link to plan doc, track confidence |
+| Fact-finding | `fact-find` | `fact-find.user.md` | Card enters Fact-finding lane | Track evidence gathering questions and findings |
+| Planned | `plan` | `plan.user.md` | `/lp-plan` completes with Card-ID | Link to plan doc, track confidence |
 | Build | `build` | `build.user.md` | `/lp-build` starts first task | Track task completion progress |
 | Reflect | `reflect` | `reflect.user.md` | Card enters Reflected lane | Post-mortem and learnings |
 
-**Note:** Always use the canonical API key when creating or updating stage docs via the Agent API. See `.claude/skills/_shared/workspace-paths.md` for the full key policy. Legacy alias `lp-fact-find` is accepted for reads but must not be used for writes.
+**Note:** When calling stage-doc endpoints, always use the **stage-doc type** (`fact-find|plan|build|reflect`), never a skill slug (e.g. `lp-fact-find`). Legacy aliases may be accepted during a compatibility window but must not be emitted by skills.
 
 ## File Location
 
@@ -19,27 +19,24 @@ Stage docs are stored in the card's directory:
 
 ```
 docs/business-os/cards/<CARD-ID>/
-├── fact-finding.user.md    (Fact-finding stage)
-├── planned.user.md         (Planned stage)
+├── fact-find.user.md       (Fact-finding stage, canonical)
+├── plan.user.md            (Planned stage, canonical)
 ├── build.user.md           (Build stage)
 └── reflect.user.md         (Reflect stage)
 ```
 
-**Note:** Stage docs use the `.user.md` suffix only (no `.agent.md` pair needed).
+**Note:** Canonical stage docs use the `.user.md` suffix. Some tooling may also maintain an optional `.agent.md` companion, but the agent API contract treats `.user.md` as canonical.
 
 ## Frontmatter Schema
 
 ```yaml
 ---
-Type: Stage-Doc
+Type: Stage
 Card-ID: <CARD-ID>           # e.g., BRIK-ENG-0021
-Stage: <STAGE>               # Fact-finding | Planned | Build | Reflect
+Stage: <STAGE>               # fact-find | plan | build | reflect
 Created: YYYY-MM-DD          # Creation date
-Owner: <OWNER>               # Person responsible (default: Pete in Phase 0)
 # Optional fields
 Updated: YYYY-MM-DD          # Last update date
-Plan-Link: <PATH>            # Link to plan document (Planned stage)
-Plan-Confidence: <%>         # Overall plan confidence (Planned stage)
 ---
 ```
 
@@ -51,11 +48,10 @@ Created when a card enters the Fact-finding lane (typically from `/lp-fact-find`
 
 ```markdown
 ---
-Type: Stage-Doc
+Type: Stage
 Card-ID: {CARD-ID}
-Stage: Fact-finding
+Stage: fact-find
 Created: {DATE}
-Owner: Pete
 ---
 
 # Fact-Finding: {CARD-TITLE}
@@ -109,11 +105,10 @@ Created when `/lp-plan` completes with a Card-ID.
 
 ```markdown
 ---
-Type: Stage-Doc
+Type: Stage
 Card-ID: {CARD-ID}
-Stage: Planned
+Stage: plan
 Created: {DATE}
-Owner: Pete
 Plan-Link: docs/plans/{feature-slug}/plan.md
 Plan-Confidence: {%}
 ---
@@ -157,11 +152,10 @@ Created when `/lp-build` starts the first task.
 
 ```markdown
 ---
-Type: Stage-Doc
+Type: Stage
 Card-ID: {CARD-ID}
-Stage: Build
+Stage: build
 Created: {DATE}
-Owner: Pete
 Updated: {DATE}
 Plan-Link: docs/plans/{feature-slug}/plan.md
 ---
@@ -203,11 +197,10 @@ Created when card moves to Reflected lane (post-mortem).
 
 ```markdown
 ---
-Type: Stage-Doc
+Type: Stage
 Card-ID: {CARD-ID}
-Stage: Reflect
+Stage: reflect
 Created: {DATE}
-Owner: Pete
 Plan-Link: docs/plans/{feature-slug}/plan.md
 ---
 
@@ -266,8 +259,8 @@ Create the appropriate stage doc file based on the stage type:
 
 | Stage | File to Create |
 |-------|----------------|
-| Fact-finding | `docs/business-os/cards/{CARD-ID}/fact-finding.user.md` |
-| Planned | `docs/business-os/cards/{CARD-ID}/planned.user.md` |
+| Fact-finding | `docs/business-os/cards/{CARD-ID}/fact-find.user.md` |
+| Planned | `docs/business-os/cards/{CARD-ID}/plan.user.md` |
 | Build | `docs/business-os/cards/{CARD-ID}/build.user.md` |
 | Reflect | `docs/business-os/cards/{CARD-ID}/reflect.user.md` |
 
@@ -297,7 +290,7 @@ Stage docs reference evidence types for tracking what kind of data supports find
 Before creating a stage doc, check if one already exists:
 
 ```bash
-if [ -f "docs/business-os/cards/${CARD_ID}/fact-finding.user.md" ]; then
+if [ -f "docs/business-os/cards/${CARD_ID}/fact-find.user.md" ]; then
   echo "Stage doc already exists"
   # Update instead of create, or skip
 fi
@@ -309,13 +302,13 @@ fi
 
 When `/lp-fact-find` completes with `Business-Unit`:
 1. Create card (see card-operations.md)
-2. Create fact-finding stage doc with initial questions from the lp-fact-find brief
+2. Create `fact-find` stage doc with initial questions from the lp-fact-find brief
 3. Card starts in `Fact-finding` lane
 
 ### From /lp-plan
 
 When `/lp-plan` completes with `Card-ID`:
-1. Create planned stage doc with plan link and confidence
+1. Create `plan` stage doc with plan link and confidence
 2. Update card frontmatter with `Plan-Link` and `Plan-Confidence`
 3. Suggest lane transition to `Planned`
 
@@ -337,8 +330,8 @@ When reflecting on completed work with `Card-ID`:
 
 | Stage Doc Created | Suggests Lane Transition |
 |-------------------|--------------------------|
-| fact-finding.user.md | Inbox -> Fact-finding |
-| planned.user.md | Fact-finding -> Planned |
+| fact-find.user.md | Inbox -> Fact-finding |
+| plan.user.md | Fact-finding -> Planned |
 | build.user.md | Planned -> In progress |
 | reflect.user.md | Done -> Reflected |
 
@@ -349,4 +342,4 @@ Use `/idea-advance` to formally propose transitions.
 - Card operations: `.claude/skills/_shared/card-operations.md`
 - Lane transitions: `.claude/skills/idea-advance/SKILL.md`
 - Stage types reference: `apps/business-os/src/lib/types.ts` (StageType enum)
-- Example stage doc: `docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md`
+- Example stage doc: `docs/business-os/cards/BRIK-ENG-0020/fact-find.user.md`

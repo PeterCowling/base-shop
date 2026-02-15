@@ -67,7 +67,7 @@ Agent:
 2. Clarifies scope (asks questions if needed)
 3. Creates worked idea with success criteria
 4. Creates card BRIK-ENG-0001 in Inbox lane
-5. Creates fact-finding.user.md with questions to answer
+5. Creates fact-find.user.md with questions to answer
 ```
 
 ---
@@ -213,8 +213,8 @@ The core loop (`/idea-generate` -> `/lp-fact-find` -> `/lp-plan` -> `/lp-build`)
 
 | Skill | Baseline integration behavior |
 |-------|-------------------------------|
-| `/idea-generate` | Creates prioritized ideas/cards and seeds top-K lp-fact-find stage docs via latest-wins upsert (`GET /stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
-| `/lp-fact-find` | On card selection, reads latest `lp-fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `lp-fact-find` stage doc via latest-wins upsert |
+| `/idea-generate` | Creates prioritized ideas/cards and seeds top-K `fact-find` stage docs via latest-wins upsert (`GET /api/agent/stage-docs/:cardId/:stage` -> `PATCH` if exists, `POST` if missing) |
+| `/lp-fact-find` | On card selection, reads latest `fact-find` stage doc (including sweep-seeded docs) as starting context; then creates/updates card + `fact-find` stage doc via latest-wins upsert |
 | `/lp-plan` | Creates `plan` stage doc, updates `Plan-Link`, applies deterministic `Fact-finding -> Planned` when gate passes |
 | `/lp-build` | Creates/updates `build` stage doc, updates `Last-Progress`, applies deterministic `Planned -> In progress` and `In progress -> Done` when gates pass |
 
@@ -247,20 +247,20 @@ The core loop (`/idea-generate` -> `/lp-fact-find` -> `/lp-plan` -> `/lp-build`)
 - Repository internals may append records over time, but workflow semantics are latest-wins for operator behavior.
 
 **Fact-find seeded-doc consumption contract:**
-- If `/idea-generate` seeded a `lp-fact-find` stage doc, `/lp-fact-find` must load it when a card is selected.
+- If `/idea-generate` seeded a `fact-find` stage doc, `/lp-fact-find` must load it when a card is selected.
 - Seeded content is starting context (questions/findings/recommendations), not a planning bypass.
-- `/lp-fact-find` deepens evidence and refreshes the same logical `lp-fact-find` stage doc via latest-wins upsert.
+- `/lp-fact-find` deepens evidence and refreshes the same logical `fact-find` stage doc via latest-wins upsert.
 
 **Compatibility:** existing documents without `Business-OS-Integration` field default to `on`; set `off` only for exception paths.
 
 ### Typical Card Lifecycle (Agent-Assisted)
 
 ```
-1. /idea-generate -> prioritized ideas + cards + top-K lp-fact-find stage docs
+1. /idea-generate -> prioritized ideas + cards + top-K fact-find stage docs
    ↓
-2. /lp-fact-find -> loads seeded lp-fact-find stage doc (if present), produces evidence brief, refreshes lp-fact-find stage doc (latest-wins)
+2. /lp-fact-find -> loads seeded fact-find stage doc (if present), produces evidence brief, refreshes fact-find stage doc (latest-wins)
    ↓
-3. /lp-plan -> plan doc + planned stage doc
+3. /lp-plan -> plan doc + plan stage doc
    ↓
 4. /lp-plan applies deterministic lane move: Fact-finding -> Planned (when plan gate passes)
    ↓

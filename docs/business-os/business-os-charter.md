@@ -109,8 +109,8 @@ docs/business-os/
 │   ├── <ID>.user.md              # Human-readable card (exported from D1)
 │   ├── <ID>.agent.md             # Agent-readable card (exported from D1)
 │   └── <ID>/
-│       ├── fact-finding.user.md  # Stage documentation (exported from D1)
-│       ├── planned.user.md
+│       ├── fact-find.user.md     # Stage documentation (exported from D1)
+│       ├── plan.user.md
 │       └── ...
 ├── ideas/
 │   ├── inbox/*.md                # Raw ideas (exported from D1)

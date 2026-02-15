@@ -263,7 +263,7 @@ Top rules by count (warnings):
 | TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Superseded (decomposed; see TASK-21..TASK-25) | TASK-08 | TASK-12 |
 | TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-14 | IMPLEMENT | Fix remaining `ds/container-widths-only-at` errors (post-task-13-09 ledger) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
-| TASK-15 | IMPLEMENT | Fix remaining `ds/enforce-layout-primitives` errors (post-task-13-09 ledger) | 85% | S | Ready | TASK-08 | TASK-12 |
+| TASK-15 | IMPLEMENT | Fix remaining `ds/enforce-layout-primitives` errors (post-task-13-09 ledger) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-16 | IMPLEMENT | Fix remaining react-hooks error rules + `max-depth` errors (post-task-13-09 ledger) | 80% | M | Ready | TASK-08 | TASK-12 |
 | TASK-17 | IMPLEMENT | Fix remaining `max-lines-per-function` errors (post-task-13-09 ledger) | 82% | M | Ready | TASK-08 | TASK-12 |
 | TASK-18 | IMPLEMENT | Fix remaining `@typescript-eslint/no-unused-vars` errors (post-task-13-09 ledger) | 90% | S | Ready | TASK-08 | TASK-12 |
@@ -276,11 +276,12 @@ Top rules by count (warnings):
 | TASK-24 | IMPLEMENT | Fix `ds/min-tap-size` warnings (apartment tranche + SkipLink) | 82% | M | Complete (2026-02-15) | TASK-14 | TASK-12 |
 | TASK-30 | IMPLEMENT | ExperiencesHero lint remediation (tap-size + coupled warnings) | 78% | M | Ready | TASK-08 | TASK-12 |
 | TASK-31 | IMPLEMENT | HowToGetHereIndexContent warnings (tap-size + unsafe-regex) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
+| TASK-32 | IMPLEMENT | How-to-get-here sections remediation (layout primitives + complexity) | 78% | L | Ready | TASK-08 | TASK-12 |
 | TASK-25 | IMPLEMENT | Fix remaining a11y/Next/react-hooks warnings (alt-text, no-img-element, exhaustive-deps) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-26 | INVESTIGATE | `no-explicit-any` remaining offenders: type strategy + call-site map | 85% | M | Ready | TASK-08 | TASK-27 |
 | TASK-27 | IMPLEMENT | Remove remaining `@typescript-eslint/no-explicit-any` errors (post-task-13-09 ledger) | 74% | L | Blocked | TASK-26 | TASK-12 |
 | TASK-28 | IMPLEMENT | Reduce remaining `complexity` errors to configured thresholds (post-task-13-09 ledger) | 74% | L | Ready | TASK-08 | TASK-12 |
-| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 85% | S | Blocked | TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-27, TASK-28, TASK-29 (+ TASK-03 if applicable) | - |
+| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 85% | S | Blocked | TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-32, TASK-27, TASK-28, TASK-29 (+ TASK-03 if applicable) | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 ## Parallelism Guide
@@ -293,10 +294,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 3 | TASK-03 (conditional) + TASK-04 | TASK-02 | TASK-03 only if infra/noise exists; TASK-04 can proceed if TASK-03 is N/A |
 | 4 | TASK-05 -> TASK-06 -> TASK-07 | TASK-04 | Sequential refactor tranches; keep diffs small |
 | 5 | TASK-08 | TASK-07 | Re-measure + replan |
-| 6 | TASK-09 + TASK-14..TASK-18 + TASK-19..TASK-31 | TASK-08 | Post-checkpoint remediation in small batches; each blocks TASK-12 |
-| 7 | TASK-12 | TASK-09, TASK-14..TASK-18, TASK-20, TASK-22, TASK-23..TASK-25, TASK-27, TASK-28, TASK-30, TASK-31 (+ TASK-03 if applicable) | Enable strict lint last |
+| 6 | TASK-09 + TASK-14..TASK-18 + TASK-19..TASK-32 | TASK-08 | Post-checkpoint remediation in small batches; each blocks TASK-12 |
+| 7 | TASK-12 | TASK-09, TASK-14..TASK-18, TASK-20, TASK-22, TASK-23..TASK-25, TASK-27, TASK-28, TASK-30, TASK-31, TASK-32 (+ TASK-03 if applicable) | Enable strict lint last |
 
-**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 31
+**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 32
 
 ## Tasks
 
@@ -687,7 +688,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/package.json`
-- **Depends on:** TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-27, TASK-28 (+ TASK-03 if applicable)
+- **Depends on:** TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-32, TASK-27, TASK-28 (+ TASK-03 if applicable)
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 90% - swap the script once strict lint is green
@@ -744,26 +745,49 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Deliverable:** Replace remaining non-DS layout primitives in the offender set until `ds/enforce-layout-primitives` errors are eliminated.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
-- **Affects:**
-  - `apps/brikette/src/app/page.tsx` *(has `ds/no-hardcoded-copy` error; defer until TASK-20)*
-  - `apps/brikette/src/routes/how-to-get-here/_galleries.tsx`
-  - `apps/brikette/src/routes/how-to-get-here/sections.tsx`
+- **Affects:** `apps/brikette/src/routes/how-to-get-here/_galleries.tsx`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
 - **Confidence:** 85%
-  - Implementation: 90% - typically mechanical replacement with DS `Grid`/`Stack` primitives
+  - Implementation: 90% - mechanical replacement with DS layout primitives
   - Approach: 85% - keep semantics/layout unchanged; avoid new disables
   - Impact: 80% - visible layout; validate route-level smoke tests
 - **Acceptance:**
-  - `ds/enforce-layout-primitives` errors are eliminated for all files in `Affects`.
+  - `ds/enforce-layout-primitives` errors are eliminated for the file in `Affects`.
 - **Validation contract:**
-  - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`), quoting `[lang]` paths:
-    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/experiences/ExperiencesCtaSection.tsx" --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint src/app/page.tsx --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint src/routes/how-to-get-here/_galleries.tsx --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint src/routes/how-to-get-here/sections.tsx --no-fix --max-warnings=0`
+  - TC-01: File-scoped eslint has **no errors** (warnings allowed here because `no-restricted-imports` is owned by TASK-22):
+    - `pnpm --filter @apps/brikette exec eslint src/routes/how-to-get-here/_galleries.tsx --no-fix --max-warnings=999`
   - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
-  - TC-03 (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern \"experiences|how-to-get-here\" --maxWorkers=2 --passWithNoTests`
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `ed25d06822`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/how-to-get-here/_galleries.tsx --no-fix --max-warnings=999` — PASS (no errors; `no-restricted-imports` warning remains, owned by TASK-22)
+  - Ran (via commit hooks): `pnpm --filter @apps/brikette typecheck` — PASS
+
+### TASK-32: How-to-get-here sections remediation (layout primitives + complexity)
+- **Type:** IMPLEMENT
+- **Deliverable:** Refactor `sections.tsx` to clear coupled lint errors (layout primitives + complexity) without changing rendered content.
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/routes/how-to-get-here/sections.tsx`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-12
+- **Confidence:** 78%
+  - Implementation: 75% - large function refactor likely required
+  - Approach: 80% - keep output stable; avoid new rule disables
+  - Impact: 78% - user-visible route content rendering
+- **Acceptance:**
+  - `ds/enforce-layout-primitives` errors are eliminated for `sections.tsx`.
+  - `complexity` errors are eliminated for `sections.tsx` (bring `renderSection` under configured threshold).
+- **Validation contract:**
+  - TC-01: File-scoped eslint has **no errors** (warnings allowed for restricted imports until TASK-22):
+    - `pnpm --filter @apps/brikette exec eslint src/routes/how-to-get-here/sections.tsx --no-fix --max-warnings=999`
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+  - TC-03 (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern "how-to-get-here" --maxWorkers=2 --passWithNoTests`
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None

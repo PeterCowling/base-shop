@@ -119,6 +119,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:**
   - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
   - Primary: `scripts/src/startup-loop/hospitality-scenarios.ts` (new)
+  - Primary: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** -
 - **Blocks:** TASK-05
 - **Confidence:** 82%

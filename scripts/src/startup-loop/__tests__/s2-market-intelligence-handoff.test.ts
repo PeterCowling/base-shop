@@ -2,6 +2,7 @@ import { promises as fs } from "fs";
 import os from "os";
 import path from "path";
 
+import { computeHospitalityScenarioInputs } from "../hospitality-scenarios";
 import { buildS2MarketIntelligenceHandoff } from "../s2-market-intelligence-handoff";
 
 async function writeFile(absolutePath: string, content: string): Promise<void> {
@@ -78,6 +79,15 @@ END_INTERNAL_BASELINES
 }
 
 describe("s2-market-intelligence-handoff", () => {
+  it("computes hospitality scenario inputs deterministically for parity capture", () => {
+    const scenarios = computeHospitalityScenarioInputs("2026-02-15");
+    expect(scenarios).toEqual({
+      s1: { checkIn: "2026-07-17", checkOut: "2026-07-19", travellers: 1 },
+      s2: { checkIn: "2026-05-12", checkOut: "2026-05-14", travellers: 1 },
+      s3: { checkIn: "2026-02-24", checkOut: "2026-02-26", travellers: 1 },
+    });
+  });
+
   it("generates a deep-research prompt with latest internal baselines embedded and delta summaries", async () => {
     const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-handoff-test-"));
     await writeTemplates(repoRoot);

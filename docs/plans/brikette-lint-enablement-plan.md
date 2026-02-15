@@ -182,7 +182,7 @@ Top rules by count (errors, unchanged ordering):
 | TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Ready | TASK-08 | TASK-12 |
 | TASK-10 | IMPLEMENT | Remove ds/no-hardcoded-copy errors using Brikette locales strategy | 78% | M | Ready | TASK-08 | TASK-12 |
 | TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Ready | TASK-08 | TASK-12 |
-| TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Ready | TASK-08 | TASK-12 |
+| TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 75% | S | Blocked | TASK-09, TASK-10, TASK-11, TASK-13 (+ TASK-03 if applicable) | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -485,6 +485,15 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `40319fd6bd`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/guides/guide-seo/components/generic-or-fallback/renderFallbackContent.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/guides/guide-seo/components/generic-or-fallback/renderPrimaryContent.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern "guide-seo|guides" --maxWorkers=2 --passWithNoTests` — PASS
 
 ### TASK-09: Fix DS/layout primitive errors in top-offender UI files
 - **Type:** IMPLEMENT

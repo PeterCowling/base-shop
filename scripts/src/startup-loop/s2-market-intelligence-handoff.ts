@@ -864,6 +864,138 @@ function renderTemplatePlaceholders(template: string, replacements: Record<strin
   return rendered;
 }
 
+function readIntFromEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed) || parsed <= 0) return fallback;
+  return Math.floor(parsed);
+}
+
+function buildS2TwoPassPromptPass1(args: {
+  business: string;
+  businessName: string;
+  region: string;
+  country: string;
+  asOfDate: string;
+  launchSurface: string;
+  canonicalWebsiteUrl: string | null;
+  internalBaselineSnapshot: string;
+}): string {
+  const websiteUrl = args.canonicalWebsiteUrl ?? "MISSING";
+
+  return `You are a market intelligence + growth analyst for hospitality direct booking and OTA distribution.
+
+Goal:
+Produce an INTERNAL diagnosis + measurement + website-live action plan for ${args.business} (as-of ${args.asOfDate}). This is Pass 1 of 2. Do NOT do deep external competitor/demand research in this pass.
+
+Business:
+- Code: ${args.business}
+- Name: ${args.businessName}
+- Region: ${args.region} (primary country: ${args.country})
+- Mode: ${args.launchSurface}
+- Canonical website URL: ${websiteUrl}
+
+MANDATORY internal baselines:
+- You MUST incorporate these internal baselines into the diagnosis and recommendations.
+- If the internal baseline block is missing or incomplete, return \`Status: BLOCKED\` and list the exact missing fields BEFORE giving recommendations.
+
+BEGIN_INTERNAL_BASELINES
+${args.internalBaselineSnapshot.trim()}
+END_INTERNAL_BASELINES
+
+Primary decisions (answer these explicitly):
+1) Why is net booking value down YoY? (volume vs net/booking vs channel mix; tie to months)
+2) What levers move realized net value fastest in the next 90 days (conversion, direct share, cancellation/policy, pricing, upsell)?
+3) What should STOP / CONTINUE / START in the next 14 days?
+
+Required method:
+- Quantitative decomposition using the internal baseline: identify top 3 decline months and the likely drivers.
+- Build a hypothesis tree (3-6 plausible root causes), each with:
+  - internal evidence (from baseline)
+  - what external evidence would confirm/refute
+  - a falsification test runnable in <=14 days
+
+Website-live requirements:
+- If canonical website URL is missing: return \`Status: BLOCKED\` and list the missing field: website URL.
+- Audit funnel (home -> dates -> room -> checkout) and identify:
+  - friction points
+  - missing trust signals
+  - mobile-first issues
+- Provide a measurement repair plan that enables weekly decisions:
+  - required events (view_item, begin_checkout, purchase/booking_confirm, phone/WhatsApp clicks, email capture)
+  - UTM discipline
+  - reconciliation to net booking value exports
+
+OUTPUT FORMAT (strict; use these exact sections):
+A) Executive summary (max 12 bullets; must answer the 3 decisions above)
+B) Business model classification (A/B/C) + any ambiguity and 14-day test to resolve it
+C) YoY decomposition (table) + top decline months (table)
+D) Hypothesis tree + falsification tests
+E) Website-live funnel audit findings (bullets)
+F) Measurement repair plan (implementation-ready)
+G) P0/P1/P2 checklist (impact/effort/metric for each item)
+H) Stop / Continue / Start (14-day focus)
+
+Hard rules:
+- Do not invent internal data.
+- Any numeric claim that is not in the baseline must be either cited (external) or labeled as an assumption with a plausible range.`;
+}
+
+function buildS2TwoPassPromptPass2(args: {
+  business: string;
+  businessName: string;
+  region: string;
+  country: string;
+  asOfDate: string;
+  launchSurface: string;
+  canonicalWebsiteUrl: string | null;
+}): string {
+  const websiteUrl = args.canonicalWebsiteUrl ?? "MISSING";
+
+  return `You are a market intelligence + growth analyst specializing in EU hospitality direct booking, OTA distribution, and travel-experience commerce.
+
+Goal:
+Produce an EXTERNAL market + competitor + pricing intelligence pack for ${args.business} (as-of ${args.asOfDate}). This is Pass 2 of 2. Assume Pass 1 already produced internal diagnosis, funnel/measurement fixes, and a 14-day plan.
+
+Business:
+- Code: ${args.business}
+- Name: ${args.businessName}
+- Region: ${args.region} (primary country: ${args.country})
+- Mode: ${args.launchSurface}
+- Canonical website URL: ${websiteUrl}
+
+BEGIN_PASS1_SUMMARY (OPERATOR MUST PASTE)
+Paste the Pass 1 Executive Summary + classification + the top 3 decline months here.
+END_PASS1_SUMMARY
+
+Research requirements:
+1) External demand signals (Italy + comparable EU leisure destinations), prefer primary/authoritative sources.
+2) Competitor + channel map (evidence-based, not listicle):
+   - Direct-property competitors (MIN 12; include catchment + other Italy cities)
+   - OTAs/meta (MIN 5)
+   - Experience marketplaces (MIN 4)
+   - Substitutes (MIN 4)
+3) Pricing + offer benchmark with standardized scenarios S1/S2/S3:
+   - Use explicit calendar dates relative to as-of date.
+   - Compare cheapest available refundable if offered else cheapest available.
+   - Capture taxes/fees clarity, cancellation cutoff, deposits/pay-later, and member discount mechanics.
+4) Regulatory/compliance constraints relevant to EU + Italy: price transparency, PSD2/SCA, GDPR, and package travel (if applicable).
+
+OUTPUT FORMAT (strict; use these exact sections):
+A) Executive summary (max 12 bullets; must tie back to Pass 1 decisions)
+B) Market size/demand signals table (with confidence labels)
+C) Competitor map table (direct/adjacent/substitute + OTA/meta + experiences)
+D) Pricing + offer benchmark table (S1-S3 scenarios)
+E) Unit economics priors (ranges; assumptions allowed with rationale)
+F) Regulatory red lines
+G) Source list (URL + access date)
+
+Hard rules:
+- Do not invent data.
+- Every numeric claim must have a citation OR be explicitly labeled \`assumption\` with a plausible range and rationale.`;
+}
+
 export async function buildS2MarketIntelligenceHandoff(
   options: S2MarketIntelligenceHandoffOptions,
 ): Promise<S2MarketIntelligenceHandoffArtifactPaths> {
@@ -1050,6 +1182,11 @@ export async function buildS2MarketIntelligenceHandoff(
     ...(previousMarketIntel ? { "Previous-Pack": previousMarketIntel.relativePath } : {}),
   };
 
+  const maxPromptChars = readIntFromEnv("BASESHOP_S2_MAX_PROMPT_CHARS", 16000);
+  const maxBaselineChars = readIntFromEnv("BASESHOP_S2_MAX_BASELINE_CHARS", 8000);
+  const twoPass =
+    deepResearchPrompt.length > maxPromptChars || internalBaselineSnapshot.length > maxBaselineChars;
+
   const generatorDebugLines = [
     "## Generator Debug",
     `SelectedProfile: ${selection.profileId}`,
@@ -1058,10 +1195,53 @@ export async function buildS2MarketIntelligenceHandoff(
     `CanonicalWebsiteUrl: ${website.canonicalWebsiteUrl ?? "MISSING"}`,
     `WebsiteUrlSignals: ${JSON.stringify(website.selectionSignals)}`,
     `TemplatePath: ${template.templatePath}`,
+    `TwoPass: ${twoPass}`,
+    `TwoPassThresholds: ${JSON.stringify({ maxPromptChars, maxBaselineChars })}`,
     "",
   ].join("\n");
 
-  const promptBody = `# ${business} Deep Research Prompt (Market Intelligence Refresh)\n\nUse the prompt below directly in Deep Research.\n\n${generatorDebugLines}\n\`\`\`text\n${deepResearchPrompt}\n\`\`\`\n\nAfter Deep Research returns:\n1. Save result to \`${targetOutputPath}\`.\n2. Set pack status to \`Active\` when decision-grade.\n3. Render HTML companion:\n   \`pnpm docs:render-user-html -- ${targetOutputPath}\`\n`;
+  const promptBlocks = twoPass
+    ? (() => {
+        const pass1 = buildS2TwoPassPromptPass1({
+          business,
+          businessName: intakeBusinessName,
+          region,
+          country,
+          asOfDate: options.asOfDate,
+          launchSurface,
+          canonicalWebsiteUrl: website.canonicalWebsiteUrl,
+          internalBaselineSnapshot,
+        });
+        const pass2 = buildS2TwoPassPromptPass2({
+          business,
+          businessName: intakeBusinessName,
+          region,
+          country,
+          asOfDate: options.asOfDate,
+          launchSurface,
+          canonicalWebsiteUrl: website.canonicalWebsiteUrl,
+        });
+        return [
+          "## Deep Research Pass 1 (Internal Diagnosis + Measurement + 14-Day Plan)",
+          "```text",
+          pass1,
+          "```",
+          "",
+          "## Deep Research Pass 2 (External Market + Competitors + Pricing)",
+          "```text",
+          pass2,
+          "```",
+          "",
+          "## Operator Synthesis (Required)",
+          "1. Run Pass 1 and save its output somewhere temporary (do not mark the pack Active yet).",
+          "2. Paste the Pass 1 executive summary + classification + top decline months into Pass 2 where requested.",
+          `3. After Pass 2, synthesize both into the final pack at \`${targetOutputPath}\`.`,
+          "",
+        ].join("\n");
+      })()
+    : ["```text", deepResearchPrompt, "```", ""].join("\n");
+
+  const promptBody = `# ${business} Deep Research Prompt (Market Intelligence Refresh)\n\nUse the prompt below directly in Deep Research.\n\n${generatorDebugLines}\n${promptBlocks}\nAfter Deep Research returns:\n1. Save result to \`${targetOutputPath}\`.\n2. Set pack status to \`Active\` when decision-grade.\n3. Render HTML companion:\n   \`pnpm docs:render-user-html -- ${targetOutputPath}\`\n`;
 
   const promptDoc = toUserDoc(frontmatter, promptBody);
   await fs.writeFile(outPromptPath, promptDoc, "utf-8");

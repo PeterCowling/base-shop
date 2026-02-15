@@ -232,7 +232,7 @@ Notes (evidence used for replan decomposition):
 | TASK-19 | INVESTIGATE | i18n/copy strategy check (coverage/parity tests + locale policy) | 90% | S | Complete (2026-02-15) | TASK-08 | TASK-20 |
 | TASK-20 | IMPLEMENT | Remove `ds/no-hardcoded-copy` errors in redirect stubs (cookie-policy, privacy-policy) | 85% | S | Complete (2026-02-15) | TASK-19 | TASK-12 |
 | TASK-29 | IMPLEMENT | Remove remaining `ds/no-hardcoded-copy` errors (and as many warnings as feasible) | 74% | L | Blocked | TASK-19 | TASK-12 |
-| TASK-21 | INVESTIGATE | Restricted-imports audit (verify supported entrypoints + migration map) | 85% | S | Ready | TASK-08 | TASK-22 |
+| TASK-21 | INVESTIGATE | Restricted-imports audit (verify supported entrypoints + migration map) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-22 |
 | TASK-22 | IMPLEMENT | Eliminate `no-restricted-imports` warnings in Brikette | 74% | L | Blocked | TASK-21 | TASK-12 |
 | TASK-23 | IMPLEMENT | Remediate security warnings to reach `--max-warnings=0` (tests + seo-audit) | 78% | L | Ready | TASK-08 | TASK-12 |
 | TASK-24 | IMPLEMENT | Fix `ds/min-tap-size` warnings (apartment tranche + SkipLink) | 82% | M | Complete (2026-02-15) | TASK-14 | TASK-12 |
@@ -928,6 +928,46 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** This plan only
+
+#### Findings (2026-02-15)
+- Rule scope (from `eslint.config.mjs`): `no-restricted-imports` warns on `@acme/ui/atoms` and `@acme/ui/atoms/*` for `apps/**/*.{ts,tsx,js,jsx}` with guidance to migrate to `@acme/design-system/primitives`.
+- Brikette non-test offenders (current import paths):
+  - `apps/brikette/src/app/[lang]/about/page.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/components/apartment/GallerySection.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/components/careers/CareersHero.tsx`: `@acme/ui/atoms/CfHeroImage`
+  - `apps/brikette/src/components/careers/CareersSection.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/components/guides/GuideCollectionCard.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/components/guides/GroupedGuideSection.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/components/guides/ImageGallery.tsx`: `@acme/ui/atoms/CfResponsiveImage`
+  - `apps/brikette/src/components/not-found/NotFoundView.tsx`: `@acme/ui/atoms/Link` (as `AppLink`)
+  - `apps/brikette/src/components/rooms/FullscreenImage.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/components/rooms/RoomImage.tsx`: `@acme/ui/atoms/CfCardImage`
+  - `apps/brikette/src/routes/guides/blocks/handlers/heroBlock.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/routes/how-to-get-here/_galleries.tsx`: `@acme/ui/atoms/CfResponsiveImage`
+  - `apps/brikette/src/routes/how-to-get-here/sections.tsx`: `@acme/ui/atoms/CfImage`, `@acme/ui/atoms/CfResponsiveImage`
+  - `apps/brikette/src/routes/how-to-get-here/components/HeaderSection.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/routes/how-to-get-here/components/ZoomableFigure.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/routes/how-to-get-here/ferryDockToBrikette/_articleLead.tsx`: `@acme/ui/atoms/CfImage`
+  - `apps/brikette/src/routes/how-to-get-here/chiesaNuovaArrivals/articleLead.tsx`: `@acme/ui/atoms/CfImage`
+- Export reality:
+  - `CfImage`, `CfResponsiveImage`, `CfHeroImage`, `CfCardImage`, and `AppLink` exist in `packages/ui/src/atoms/*` and are emitted under `packages/ui/dist/atoms/*`.
+  - There is no equivalent `CfImage` family export under `@acme/design-system/primitives` or `@acme/design-system/atoms`.
+- Implication: a pure import-path change cannot eliminate the warnings for the `CfImage` family without either moving/re-exporting them from a non-restricted entrypoint or adjusting the restriction policy.
+
+#### Recommendation
+- Treat this as a small policy/packaging decision, then implement in TASK-22:
+  - Option A (structural): move or re-export `CfImage` family via a design-system-owned entrypoint (for example a new `@acme/design-system/media` module) and migrate Brikette imports.
+  - Option B (minimal unblock): narrow the `no-restricted-imports` rule so it still warns on UI presentation primitives, but explicitly exempts the `CfImage` family (and possibly `AppLink`) until a design-system replacement exists.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Evidence gathered:**
+  - Read: `eslint.config.mjs` (restricted import patterns + messages)
+  - Read: `packages/ui/src/atoms/index.ts` + `packages/ui/src/atoms/{CfImage,CfResponsiveImage,CfHeroImage,CfCardImage,Link}.tsx`
+  - Read: `packages/design-system/src/primitives/index.ts`, `packages/design-system/src/atoms/index.ts`
+  - Searched: `rg -n "@acme/ui/atoms/" apps/brikette/src` (excluding tests)
+
 
 ### TASK-22: Eliminate `no-restricted-imports` warnings in Brikette
 - **Type:** IMPLEMENT

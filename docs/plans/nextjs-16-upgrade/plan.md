@@ -81,9 +81,9 @@ Note: Next 16 deprecates `middleware.ts` in favor of `proxy.ts`, but `proxy.ts` 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Fix remaining sync route handler `params` signatures (Next 16 async enforcement) | 95% | S | Complete (2026-02-15) | - | TASK-05 |
-| TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 82% | S | Pending | - | TASK-05, TASK-03, TASK-04 |
-| TASK-06 | INVESTIGATE | Next/Image behavior drift audit (defaults + usage patterns) and decide pinning | 85% | S | Pending | - | TASK-05, TASK-07 |
-| TASK-08 | INVESTIGATE | Audit tooling/scripts for `.next/dev` output changes; confirm no brittle assumptions | 85% | S | Pending | - | TASK-05 |
+| TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 85% | S | Complete (2026-02-15) | - | TASK-05, TASK-03, TASK-04 |
+| TASK-06 | INVESTIGATE | Next/Image behavior drift audit (defaults + usage patterns) and decide pinning | 90% | S | Complete (2026-02-15) | - | TASK-05, TASK-07 |
+| TASK-08 | INVESTIGATE | Audit tooling/scripts for `.next/dev` output changes; confirm no brittle assumptions | 88% | S | Complete (2026-02-15) | - | TASK-05 |
 | TASK-05 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-02, TASK-06, TASK-08 | TASK-03, TASK-04, TASK-07 |
 | TASK-03 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 78% ⚠️ | M | Pending | TASK-02, TASK-05 | - |
 | TASK-04 | IMPLEMENT | Fix Node-only imports in middleware by migrating to proxy or rewriting for Edge | 70% ⚠️ | L | Pending | TASK-02, TASK-05 | - |
@@ -150,7 +150,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Deployment entrypoints for each affected app (OpenNext/Cloudflare where applicable)
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-03, TASK-04
-- **Confidence:** 82%
+- **Confidence:** 85%
   - Implementation: 90% - inventory is straightforward and can be derived from repo structure + package metadata.
   - Approach: 82% - default recommendation is conservative: keep middleware for OpenNext/Cloudflare apps unless proxy feasibility is proven.
   - Impact: 85% - inventory directly reduces the chance of runtime-incompatible interception changes.
@@ -163,6 +163,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - A table exists for all middleware/proxy candidates with: app, file path, purpose, required runtime, Node-only deps, deployment target.
   - Deployment target evidence is recorded from repo metadata (e.g., presence of `@opennextjs/cloudflare` in `apps/<app>/package.json` or `build:worker` scripts).
   - A recommended action is recorded per app: keep middleware (Edge) vs migrate to proxy (Node), with an explicit note when the recommendation is constrained by Cloudflare/OpenNext runtime.
+  - Evidence: `docs/plans/nextjs-16-upgrade/runtime-inventory.md` (created 2026-02-15).
 
 ### TASK-06: Next/Image Behavior Drift Audit
 - **Type:** INVESTIGATE
@@ -174,7 +175,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Representative `<Image />` call sites in `apps/` + `packages/`
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-07
-- **Confidence:** 85%
+- **Confidence:** 90%
   - Implementation: 90% - grep-driven audit with targeted spot checks.
   - Approach: 85% - pin only where needed to avoid locking bad defaults.
   - Impact: 85% - image regressions are user-visible.
@@ -185,6 +186,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
     - local IP optimization restrictions (`dangerouslyAllowLocalIP`) if any local URLs are used
     - redirect behavior (`maximumRedirects`) if any remote patterns rely on redirects
   - A recommended set of explicit config pins (or confirmation that no pins are needed) is recorded.
+  - Evidence: `docs/plans/nextjs-16-upgrade/image-audit.md` (created 2026-02-15).
 
 ### TASK-08: Audit Tooling For `.next/dev` Output Changes
 - **Type:** INVESTIGATE
@@ -197,7 +199,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Any app tooling that reads `.next/*` directly
 - **Depends on:** -
 - **Blocks:** TASK-05
-- **Confidence:** 85%
+- **Confidence:** 88%
   - Implementation: 90% - grep-driven audit + targeted spot checks.
   - Approach: 85% - prefer resilience (no hardcoded `.next` internals) over chasing layout.
   - Impact: 85% - prevents CI flakes.
@@ -207,6 +209,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:**
   - TC-01: `rg -n "\.next/dev|\.next/trace" .github scripts apps packages` remains 0 (or references are intentional and documented).
   - TC-02: CI job that runs workspace builds remains green.
+  - Findings (2026-02-15):
+    - No `.next/dev` or `.next/trace` consumers found in tracked scripts/workflows.
+    - `.next` references are limited to: `tsconfig.json` includes of `.next/types/**`, ignore patterns, and a build-only chunk analyzer `apps/brikette/scripts/perf/analyze-chunks.mjs` reading `.next/static/chunks` after a completed build.
+    - A hard-break risk remains outside `.next/dev`: `apps/xa/scripts/build-xa.mjs` runs `pnpm exec next build` without `--webpack` (Next 16 defaults to Turbopack). This needs a follow-up IMPLEMENT task.
 
 ### TASK-05: CHECKPOINT - Post-Hardening Validation And Replan
 - **Type:** CHECKPOINT

@@ -88,7 +88,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-08 | IMPLEMENT | Fix SQ-12 + SQ-10: lp-experiment stage mapping; lp-seo path topology | 85% | S | Complete (2026-02-15) | - | TASK-11 |
 | TASK-09 | IMPLEMENT | Doc reference chain: add markdown shim for sequencing plan + update loop-spec/contract docs; lint check | 85% | M | Complete (2026-02-15) | - | TASK-06 |
 | TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Complete (2026-02-15) | TASK-03, TASK-04 | TASK-11 |
-| TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Pending | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
+| TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Complete (2026-02-15) | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Pending | TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12 | - |
 
@@ -469,6 +469,17 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Horizon assumptions to validate:**
   - No remaining callers depend on alias stage keys.
   - Dual-read covers any remaining legacy files without ambiguity.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:**
+  - `bash scripts/check-startup-loop-contracts.sh` (PASS 2026-02-15).
+  - Legacy usage checks (PASS 2026-02-15):
+    - `rg -n '"stage"\\s*:\\s*"lp-fact-find"' -S .claude/skills` (0 matches).
+    - `rg -n '/api/agent/stage-docs/.+/lp-fact-find\\b' -S .claude/skills` (0 matches).
+    - `rg -n --fixed-strings 'API stage \`lp-fact-find\`' -S .claude/skills` (0 matches).
+    - `rg -n --fixed-strings 'fact-finding.user.md' docs/business-os` (only `docs/business-os/startup-loop/contract-migration.yaml`).
+  - Downstream tests (PASS 2026-02-15):
+    - `pnpm --filter @acme/mcp-server test:startup-loop`
+    - `pnpm --filter @acme/platform-core test -- packages/platform-core/src/repositories/__tests__/businessOsOther.server.test.ts`
 
 ### TASK-12: Window End (Operational Disable Via Config)
 - **Type:** IMPLEMENT

@@ -80,7 +80,7 @@ Chosen: Option B.
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Baseline assembler: embedded deltas + compact slice; strip YAML contamination | 86 | M | Complete (2026-02-15) | - | TASK-03, TASK-05 |
-| TASK-02 | IMPLEMENT | Add hospitality S2 profile template (exemplar-aligned) incl. scenario rules + decision-grade criteria | 85 | S | Pending | - | TASK-03 |
+| TASK-02 | IMPLEMENT | Add hospitality S2 profile template (exemplar-aligned) incl. scenario rules + decision-grade criteria | 85 | S | Complete (2026-02-15) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Profile registry + override + selection debug metadata; generator chooses correct template | 82 | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Pending | TASK-03 | TASK-07 |
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Pending | TASK-01, TASK-03 | TASK-07 |
@@ -178,6 +178,12 @@ Chosen: Option B.
 - **Validation contract:**
   - VC-01: template contains explicit scenario rules and date selection rules.
   - VC-02: template contains a `Status: BLOCKED` rule for missing website URL.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** 0cbaa20ff3
+- **Validation:** VC-01/VC-02 satisfied in `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md`
+- **Implementation notes:** hospitality template is exemplar-aligned (Delta Q1-Q3 spine, A/B/C classification gate, reproducible competitor/pricing scenarios, website-live funnel + measurement repair requirements, and a decision-grade quality bar).
 
 ### TASK-03: Profile registry + override + selection debug metadata
 - **Type:** IMPLEMENT

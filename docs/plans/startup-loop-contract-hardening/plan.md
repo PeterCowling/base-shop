@@ -89,7 +89,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-09 | IMPLEMENT | Doc reference chain: add markdown shim for sequencing plan + update loop-spec/contract docs; lint check | 85% | M | Complete (2026-02-15) | - | TASK-06 |
 | TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Complete (2026-02-15) | TASK-03, TASK-04 | TASK-11 |
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Complete (2026-02-15) | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
-| TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Pending | TASK-11 | TASK-13 |
+| TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Complete (2026-02-15) | TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -508,6 +508,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollout: only after checkpoint confirms alias usage is zero.
   - Rollback: adjust cutoffs in config while remediating stragglers.
 - **Documentation impact:** Update compatibility window policy section in docs.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commit a385abc14c; Validation: `pnpm --filter @apps/business-os test -- apps/business-os/src/lib/contract-migration.test.ts --maxWorkers=2` (PASS 2026-02-15).
 
 ### TASK-13: Later Cleanup (Remove Dead Code)
 - **Type:** IMPLEMENT

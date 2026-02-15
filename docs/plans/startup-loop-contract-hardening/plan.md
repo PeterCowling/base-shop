@@ -86,7 +86,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-06 | IMPLEMENT | Contract lint: detect idea-* alias usage, fact-finding filename references, broken decision refs; allowlist support | 82% | M | Pending | TASK-01, TASK-05, TASK-09 | TASK-11 |
 | TASK-07 | IMPLEMENT | Add missing `/lp-bos-sync` skill doc (operator surface) | 90% | S | Complete (2026-02-15) | - | TASK-11 |
 | TASK-08 | IMPLEMENT | Fix SQ-12 + SQ-10: lp-experiment stage mapping; lp-seo path topology | 85% | S | Complete (2026-02-15) | - | TASK-11 |
-| TASK-09 | IMPLEMENT | Doc reference chain: add markdown shim for sequencing plan + update loop-spec/contract docs; lint check | 85% | M | Pending | - | TASK-06 |
+| TASK-09 | IMPLEMENT | Doc reference chain: add markdown shim for sequencing plan + update loop-spec/contract docs; lint check | 85% | M | Complete (2026-02-15) | - | TASK-06 |
 | TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Pending | TASK-03, TASK-04 | TASK-11 |
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Pending | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Pending | TASK-11 | TASK-13 |
@@ -410,6 +410,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Add lint coverage (TASK-06) that fails on broken decision_reference targets.
 - **Rollout / rollback:** doc-only.
 - **Documentation impact:** None.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commit 78350e3dcd; Validation: `bash scripts/check-startup-loop-contracts.sh` (PASS 2026-02-15).
 
 ### TASK-10: Migrate Legacy Fact-Finding Filename References + File Rename
 - **Type:** IMPLEMENT

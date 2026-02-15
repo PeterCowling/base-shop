@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@acme/design-system/primitives";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Grid } from "@acme/design-system/primitives";
 import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
 
 import { ZoomIn } from "@/icons";
@@ -35,11 +35,11 @@ export function renderGallery(
         key={gallery.key}
         className="space-y-6 rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/80"
       >
-        <ul className="grid grid-cols-1 gap-6 list-none p-0 sm:grid-cols-1 md:grid-cols-2">
+        <Grid role="list" cols={1} gap={6} className="list-none p-0 md:grid-cols-2">
           {gallery.items.map((item) => {
             const meta = itemsMeta?.[item.id] ?? {};
             return (
-              <li key={item.id} className="m-0">
+              <div key={item.id} role="listitem">
                 <Dialog>
                   <DialogTrigger asChild>
                     <button type="button" className="group w-full min-h-11 min-w-11 text-start">
@@ -82,10 +82,10 @@ export function renderGallery(
                     </div>
                   </DialogContent>
                 </Dialog>
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </Grid>
       </section>
     );
   });

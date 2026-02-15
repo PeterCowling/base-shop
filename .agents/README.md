@@ -18,6 +18,10 @@ Skills have moved to `.claude/skills/`. See:
 - Claude Code: invoke via `/skill-name` (auto-discovered)
 - Codex: read `.claude/skills/<name>/SKILL.md` directly
 
+Agent-agnostic discovery (recommended):
+- List all skills: `scripts/agents/list-skills`
+- Search skills: `scripts/agents/list-skills --grep <query>`
+
 ## Recording Learnings
 
 After significant work, use the `/meta-reflect` skill:

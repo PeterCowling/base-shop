@@ -21,8 +21,9 @@ const providerEventKeys: Record<string, ProviderEvent[]> = {
 
 export async function GET(
   _req: Request,
-  { params: _params }: { params: { id: string } }
+  props: { params: Promise<{ id: string }> }
 ) {
+  await props.params;
   const t = await getServerTranslations("en");
   const settings = await getShopSettings(shop.id);
   // Rental or high-volume shops may disable tracking by leaving this empty.

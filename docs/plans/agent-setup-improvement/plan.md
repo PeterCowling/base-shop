@@ -38,7 +38,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 
 ## Active tasks
 - **TASK-01:** Generate agent-agnostic skill registry + `scripts/agents/list-skills` (Complete 2026-02-15)
-- **TASK-02:** Implement real agent-config validator (replace stub) (Pending)
+- **TASK-02:** Implement real agent-config validator (replace stub) (Complete 2026-02-15)
 - **TASK-03:** Safety kernel format + schema + generation boundaries (Complete 2026-02-15)
 - **TASK-04:** Add safety policy kernel + generators for enforcement layers (Pending)
 - **TASK-05:** Update safety tests to consume the kernel-generated policy (Pending)
@@ -178,6 +178,7 @@ Initial sequencing (pre-`/lp-sequence`):
 
 ### TASK-02: Implement real agent-config validator (replace stub)
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** CI-enforced validator
   - Replace `scripts/validate-agent-manifest.js` with real checks (or rename to `scripts/validate-agent-config.js` and update call sites).
 - **Startup-Deliverable-Alias:** none
@@ -199,6 +200,10 @@ Initial sequencing (pre-`/lp-sequence`):
   - TC-01: temporarily modify `.agents/registry/skills.json` and ensure validator fails → pass.
   - TC-02: validator passes on clean tree → pass.
   - Run/verify: `node scripts/validate-agent-manifest.js` (locally) and in CI.
+- **Evidence:**
+  - `node scripts/validate-agent-manifest.js` (passes locally)
+  - Enforces skill registry drift check via `scripts/agents/generate-skill-registry --check`
+
 - **Rollout / rollback:**
   - Rollout: land validator; keep checks minimal then expand after TASK-04.
   - Rollback: revert to stub (discouraged; only if CI is blocked).

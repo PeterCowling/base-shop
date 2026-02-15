@@ -130,7 +130,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15 | - |
 | TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Pending | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
 | TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Pending | TASK-05 | - |
-| TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Pending | TASK-02,TASK-04 | TASK-05 |
+| TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Complete (2026-02-15) | TASK-02,TASK-04 | TASK-05 |
 | TASK-18 | IMPLEMENT | Fix impression dedupe to be per-navigation (not per session) + update unit test | 82% | S | Pending | TASK-01 | TASK-07 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -322,6 +322,7 @@ Boundary check:
 
 ### TASK-17: Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** Booking2Modal emits GA4 `begin_checkout` with `items[]` for room-selected flows (no `value`)
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`, `apps/brikette/src/components/rooms/RoomCard.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`
@@ -343,6 +344,24 @@ Boundary check:
   - TC-01: confirm action → gtag called with `begin_checkout` and item payload (`item_id`, `item_name`, `item_variant`).
   - TC-02: `value` and `currency` are absent for hostel room flows in this iteration.
   - Run/verify: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** `45d5f83066`
+- **Implementation notes:**
+  - Canonical booking2 modalData fields are now plumbed by both producers:
+    - `apps/brikette/src/components/rooms/RoomCard.tsx` adds `roomSku`, `plan`, `octorateRateCode`, `source` (keeps legacy fields for compatibility).
+    - `packages/ui/src/organisms/RoomsSection.tsx` adds the same fields (keeps legacy `rateType` + `room.{...Code}` for UI `GlobalModals` compatibility).
+  - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx` now:
+    - Navigates to `confirm.xhtml?room=...` and emits room-selected `begin_checkout` with `items[]` when room data is present.
+    - Falls back to availability-only `result.xhtml` + `search_availability` if required room fields are missing.
+  - `apps/brikette/src/utils/ga4-events.ts` adds `fireBeginCheckoutRoomSelectedAndNavigate` + `fireSearchAvailabilityAndNavigate` (beacon + callback/timeout navigation delay) and removes room-value computation for `fireRoomBeginCheckout`.
+- **Validation:**
+  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx --maxWorkers=2` (PASS)
+  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-08-book-checkout-payload.test.tsx --maxWorkers=2` (PASS)
+  - Ran: `pnpm --filter brikette typecheck` (PASS)
+  - Ran: `pnpm --filter @acme/ui typecheck` (PASS)
+  - Ran: `pnpm --filter @acme/ui lint` (PASS with warnings)
 
 ### TASK-05: Horizon checkpoint — reassess remaining GA4 surfaces
 - **Type:** CHECKPOINT

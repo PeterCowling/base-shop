@@ -14,13 +14,13 @@ version: "1"
 
 timebox:
   # Stage-key aliases are accepted (and normalized) until this cutoff.
-  alias_accept_until_utc: "2026-02-14"
+  alias_accept_until_utc: "2026-03-01"
 
   # Dual-read legacy filenames until this cutoff.
-  dual_read_until_utc: "2026-02-14"
+  dual_read_until_utc: "2026-03-01"
 
   # Lint escalates from WARN to FAIL after this date.
-  lint_warn_until_utc: "2026-02-14"
+  lint_warn_until_utc: "2026-02-22"
 
 stage_aliases:
   lp-fact-find: fact-find

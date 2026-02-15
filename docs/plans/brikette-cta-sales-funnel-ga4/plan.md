@@ -129,7 +129,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12 | TASK-14 |
 | TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15 | - |
 | TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Complete (2026-02-15) | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
-| TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Pending | TASK-05 | - |
+| TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Complete (2026-02-15) | TASK-05 | - |
 | TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Complete (2026-02-15) | TASK-02,TASK-04 | TASK-05 |
 | TASK-18 | IMPLEMENT | Fix impression dedupe to be per-navigation (not per session) + update unit test | 82% | S | Pending | TASK-01 | TASK-07 |
 
@@ -574,6 +574,7 @@ Guardrails:
 ### TASK-16: Verification protocol doc (DebugView + payload checklist)
 - **Type:** IMPLEMENT
 - **Execution-Skill:** /lp-build
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** `docs/plans/brikette-cta-sales-funnel-ga4/verification.md`
 - **Affects:** `docs/plans/brikette-cta-sales-funnel-ga4/verification.md`
 - **Depends on:** TASK-05
@@ -587,6 +588,12 @@ Guardrails:
     - A staging-vs-prod guard section (confirm staging stream isolation before testing).
 - **Validation contract:**
   - TC-01: operator can follow the checklist end-to-end and unambiguously determine pass/fail for a given event.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Docs:** `docs/plans/brikette-cta-sales-funnel-ga4/verification.md`
+- **Validation:**
+  - TC-01 satisfied by the presence of per-event pass/fail payload checklists (DebugView + Console `gtag` tap + optional Network cross-check) and explicit staging-vs-prod guardrails.
 
 ## Risks & Mitigations
 - **Semantics migration risk:** Model A changes existing events (BookingModal). Mitigate with explicit test updates + doc contract.

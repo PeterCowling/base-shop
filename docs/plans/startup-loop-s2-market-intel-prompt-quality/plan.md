@@ -86,7 +86,7 @@ Chosen: Option B.
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Complete (2026-02-15) | TASK-01, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Complete (2026-02-15) | TASK-03, TASK-04, TASK-05, TASK-06 | - |
-| TASK-08 | IMPLEMENT | Template tightening: internal-baseline citation rule, parity check, fixed scenario dates contract, stop/continue/start structure, remove leading classification bias | 85 | S | Pending | TASK-07 | TASK-09 |
+| TASK-08 | IMPLEMENT | Template tightening: internal-baseline citation rule, parity check, fixed scenario dates contract, stop/continue/start structure, remove leading classification bias | 85 | S | Complete (2026-02-15) | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Generator tightening: deterministic scenario date injection, compress inventory header (no room label bloat), remove duplicate website-audit addon | 82 | M | Pending | TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Regenerate BRIK prompt + rerun rubric after follow-up tranche | 95 | S | Pending | TASK-09 | - |
 
@@ -392,6 +392,11 @@ Chosen: Option B.
   - VC-01: template contains the internal-baseline citation clarification rule.
   - VC-02: template contains parity sub-test language.
   - VC-03: template references fixed scenario dates placeholders (S1-S3) and includes non-variance rules.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** 67deb24e7e
+- **Validation:** VC-01/02/03 satisfied in `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md`
 
 ### TASK-09: Generator tightening (scenario date injection, compress inventory header, remove duplicate website-audit addon)
 - **Type:** IMPLEMENT

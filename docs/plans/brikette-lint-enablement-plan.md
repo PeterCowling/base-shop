@@ -83,10 +83,80 @@ Because `@apps/brikette lint` is currently a no-op, new violations can accumulat
   - Baseline cap in CI: allow failing lint, but fail if counts exceed the snapshot.
   - Changed-files lint in CI: only lint changed Brikette files (prevents new debt; does not address backlog).
 
+## Lint Ledger (2026-02-15)
+Artifacts:
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.json`
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.stderr` (empty; no infra/noise detected)
+
+Note: this ledger run included an untracked file in the working tree:
+- `apps/brikette/src/test/content-readiness/i18n/i18n-raw-keys.enforce.test.ts` (eslint reported 1 error, 1 warning)
+
+Totals (this run):
+- 255 errors, 166 warnings (421 total)
+
+Top rules by count (errors):
+| Count | Rule |
+|---:|---|
+| 115 | `@typescript-eslint/no-explicit-any` |
+| 49 | `complexity` |
+| 28 | `ds/no-hardcoded-copy` |
+| 11 | `max-lines-per-function` |
+| 10 | `@typescript-eslint/no-unused-vars` |
+| 9 | `ds/container-widths-only-at` |
+| 5 | `ds/enforce-layout-primitives` |
+| 4 | `react-hooks/rules-of-hooks` |
+| 4 | `react-hooks/error-boundaries` |
+| 3 | `ds/require-disable-justification` |
+
+Top rules by count (warnings):
+| Count | Rule |
+|---:|---|
+| 76 | `ds/no-hardcoded-copy` |
+| 29 | `security/detect-non-literal-fs-filename` |
+| 20 | `no-restricted-imports` |
+| 12 | `security/detect-unsafe-regex` |
+| 10 | `security/detect-non-literal-regexp` |
+| 6 | `ds/min-tap-size` |
+| 5 | `(no-rule)` |
+| 3 | `react-hooks/exhaustive-deps` |
+| 2 | `jsx-a11y/alt-text` |
+| 1 | `@next/next/no-img-element` |
+
+Top 20 files by error count:
+| Errors | File |
+|---:|---|
+| 31 | `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderFallbackContent.tsx` |
+| 30 | `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderPrimaryContent.tsx` |
+| 17 | `apps/brikette/src/routes/guides/guide-seo/components/fallback/renderAliasFaqsOnly.tsx` |
+| 15 | `apps/brikette/src/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx` |
+| 12 | `apps/brikette/src/routes/how-to-get-here/transformRouteToGuide.ts` |
+| 11 | `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderStructuredFallback.tsx` |
+| 8 | `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderGenericFastPaths.tsx` |
+| 6 | `apps/brikette/src/components/assistance/quick-links-section/index.tsx` |
+| 6 | `apps/brikette/src/lib/seo-audit/index.ts` |
+| 5 | `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx` |
+| 4 | `apps/brikette/src/app/[lang]/hospitality-preview/page.tsx` |
+| 4 | `apps/brikette/src/routes/guides/guide-seo/components/fallback/RenderFallbackStructured.tsx` |
+| 4 | `apps/brikette/src/routes/guides/guide-seo/template/useAdditionalScripts.tsx` |
+| 3 | `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx` |
+| 3 | `apps/brikette/src/i18n.ts` |
+| 3 | `apps/brikette/src/routes/guides/guide-seo/components/structured-toc/StructuredTocFaqSection.tsx` |
+| 3 | `apps/brikette/src/routes/guides/guide-seo/template/useStructuredFallbackState.ts` |
+| 3 | `apps/brikette/src/utils/loadI18nNs.ts` |
+| 2 | `apps/brikette/src/app/cookie-policy/page.tsx` |
+| 2 | `apps/brikette/src/app/page.tsx` |
+
+Triage buckets (from this run):
+- Infra/noise: No infra/noise strings found in stderr (`project service could not find file`, `The file must be included in at least one of the projects provided`).
+- Mechanical/low-risk: `@typescript-eslint/no-unused-vars`, `ds/require-disable-justification` (some instances may be better solved by removing disables vs adding tickets).
+- UI/UX-sensitive: `ds/container-widths-only-at`, `ds/enforce-layout-primitives`, `ds/min-tap-size`, `@next/next/no-img-element`, `jsx-a11y/alt-text`.
+- Copy/localization: `ds/no-hardcoded-copy` (errors + warnings).
+- Deeper refactors: `@typescript-eslint/no-explicit-any`, `complexity`, `max-lines-per-function`, `react-hooks/*`.
+
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | Build lint ledger (errors + warnings + infra noise) | 95% | S | Pending | - | TASK-02 |
+| TASK-01 | INVESTIGATE | Build lint ledger (errors + warnings + infra noise) | 95% | S | Complete (2026-02-15) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy | 95% | S | Pending | TASK-01 | TASK-03, TASK-04 |
 | TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) (conditional) | 80% | M | Blocked | TASK-02 | TASK-12 (conditional) |
 | TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Blocked | TASK-02 | TASK-05 |
@@ -132,7 +202,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
     - Copy/localization
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
-- **Affects:** `[readonly] eslint.config.mjs`, `[readonly] apps/brikette/src/**/*`, `[readonly] apps/brikette/package.json`
+- **Affects:** `docs/plans/brikette-lint-enablement-plan.md`, `docs/plans/_artifacts/brikette-eslint.*.json`, `docs/plans/_artifacts/brikette-eslint.*.stderr`, `[readonly] eslint.config.mjs`, `[readonly] apps/brikette/src/**/*`, `[readonly] apps/brikette/package.json`
 - **Depends on:** -
 - **Blocks:** TASK-02
 - **Confidence:** 95%
@@ -155,6 +225,13 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Refactor: convert triage into concrete batches and unblock TASK-02
 - **Rollout / rollback:** N/A
 - **Documentation impact:** This plan only
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Execution notes:** Ledger run intentionally proceeded despite a dirty working tree; untracked file `apps/brikette/src/test/content-readiness/i18n/i18n-raw-keys.enforce.test.ts` was included in the lint run and is documented in the ledger above.
+- **Validation evidence:**
+- Ran: `pnpm --filter @apps/brikette --silent exec -- eslint src --no-fix -f json > docs/plans/_artifacts/brikette-eslint.2026-02-15.json 2> docs/plans/_artifacts/brikette-eslint.2026-02-15.stderr || true`
+- Infra/noise grep: no matches in `docs/plans/_artifacts/brikette-eslint.2026-02-15.stderr`
 
 ### TASK-02: Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy
 - **Type:** CHECKPOINT
@@ -421,8 +498,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Mitigation: drift guardrail policy (see "Lint Drift Guardrail" section); consider baseline-cap or changed-files lint if drift becomes a problem.
 
 ## Pending Audit Work
-- Produce the ledger and triage buckets (TASK-01).
-- Confirm whether project-service warnings exist in current lint output (TASK-01) and whether TASK-03 is needed or can be N/A.
+- Confirm sequencing changes needed based on the ledger distribution (TASK-02).
+- Decide whether TASK-03 should be marked N/A (ledger suggests infra/noise is absent).
 
 ## Acceptance Criteria (overall)
 - [ ] `pnpm --filter @apps/brikette exec eslint src --no-fix --max-warnings=0` passes.
@@ -432,4 +509,3 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 
 ## Decision Log
 - 2026-02-15: Revised plan based on execution hazards: added explicit sequencing gate (TASK-02), explicit infra/noise task (TASK-03), and fixed command footguns for `[lang]` paths.
-

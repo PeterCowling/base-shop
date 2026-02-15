@@ -2,7 +2,7 @@
 
 // src/app/[lang]/rooms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
-import { type ComponentProps, type ComponentPropsWithoutRef, Fragment, useCallback } from "react";
+import { type ComponentProps, type ComponentPropsWithoutRef, Fragment, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
@@ -19,7 +19,7 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { fireSearchAvailabilityAndNavigate } from "@/utils/ga4-events";
+import { fireSearchAvailabilityAndNavigate, fireViewItem } from "@/utils/ga4-events";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type Props = {
@@ -248,6 +248,11 @@ export default function RoomDetailContent({ lang, id }: Props) {
     },
     []
   );
+
+  // Fire view_item once per navigation
+  useEffect(() => {
+    fireViewItem({ itemId: room.sku, itemName: title });
+  }, [room.sku, title]);
 
   return (
     <Fragment>

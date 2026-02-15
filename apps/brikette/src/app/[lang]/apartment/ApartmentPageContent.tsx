@@ -2,7 +2,7 @@
 
 // src/app/[lang]/apartment/ApartmentPageContent.tsx
 // Client component for apartment page - migrated from routes/apartment.tsx
-import { Fragment, memo } from "react";
+import { Fragment, memo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -17,6 +17,7 @@ import GallerySection from "@/components/apartment/GallerySection";
 import ApartmentStructuredData from "@/components/seo/ApartmentStructuredData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireViewItem } from "@/utils/ga4-events";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
 
 type Props = {
@@ -28,6 +29,11 @@ const WHATSAPP_URL = "https://wa.me/393287073695";
 function ApartmentPageContent({ lang }: Props) {
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
+
+  // Fire view_item once per navigation
+  useEffect(() => {
+    fireViewItem({ itemId: "apartment", itemName: "apartment" });
+  }, []);
 
   return (
     <Fragment>

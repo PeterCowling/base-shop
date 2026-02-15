@@ -339,3 +339,37 @@ export function fireSelectItem(params: {
     items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan, index: params.index })],
   });
 }
+
+export function fireViewItemList(params: {
+  itemListId: ItemListId;
+  rooms: Array<{ sku: string }>;
+}): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  // Dedupe guard: fire once per navigation per item_list_id
+  if (!shouldFireImpressionOnce(`view_item_list:${params.itemListId}`)) return;
+
+  gtag("event", "view_item_list", {
+    item_list_id: params.itemListId,
+    item_list_name: resolveItemListName(params.itemListId),
+    items: params.rooms.map((room, index) => buildRoomItem({ roomSku: room.sku, index })),
+  });
+}
+
+export function fireViewItem(params: { itemId: string; itemName?: string }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  // Dedupe guard: fire once per navigation per item_id
+  if (!shouldFireImpressionOnce(`view_item:${params.itemId}`)) return;
+
+  gtag("event", "view_item", {
+    items: [
+      {
+        item_id: params.itemId,
+        item_name: params.itemName ?? params.itemId,
+      },
+    ],
+  });
+}

@@ -160,7 +160,7 @@ Triage buckets (from this run):
 | TASK-02 | CHECKPOINT | Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy | 95% | S | Complete (2026-02-15) | TASK-01 | TASK-03, TASK-04 |
 | TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) (conditional) | 80% | M | Complete (2026-02-15) | TASK-02 | TASK-12 (conditional) |
 | TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Complete (2026-02-15) | TASK-02 | TASK-05 |
-| TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Blocked | TASK-04 | TASK-06 |
+| TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Blocked | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Refactor max-lines-per-function offenders (configured thresholds) | 80% | M | Blocked | TASK-06 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Blocked | TASK-07 | TASK-09, TASK-10, TASK-11 |
@@ -324,7 +324,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Deliverable:** Code changes that eliminate mechanical lint failures and reduce churn for later refactors.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
-- **Affects:** `apps/brikette/src/components/guides/GuideCollectionWithSearch.tsx`, `apps/brikette/src/utils/loadI18nNs.ts` (import/no-duplicates portion), plus additional files selected from the TASK-01 ledger
+- **Affects:** `apps/brikette/src/components/assistance/quick-links-section/normalise.ts`, `apps/brikette/src/test/helpers/hydrationTestUtils.ts`, `apps/brikette/src/lib/metrics/smoothed-metrics.ts`, `apps/brikette/src/components/seo/TravelHelpStructuredData.tsx`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-06
 - **Confidence:** 82%
@@ -339,6 +339,18 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `0972be5e44`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/components/assistance/quick-links-section/normalise.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/test/helpers/hydrationTestUtils.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/lib/metrics/smoothed-metrics.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/components/seo/TravelHelpStructuredData.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+- **Implementation notes:**
+  - Removed unused constants/variables/imports; no behavior changes intended.
 
 ### TASK-06: Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds)
 - **Type:** IMPLEMENT

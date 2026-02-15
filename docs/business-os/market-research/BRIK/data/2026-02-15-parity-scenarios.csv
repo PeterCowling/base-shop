@@ -1,0 +1,10 @@
+scenario,surface,check_in,check_out,travellers,total_price_all_in,currency,taxes_fees_clarity,cancellation_cutoff,deposit_payment,notes,evidence_url
+S1,BRIK direct,2026-07-17,2026-07-19,1,,,,,,,https://hostel-positano.com/en/book
+S1,Booking.com,2026-07-17,2026-07-19,1,,,,,,,
+S1,Hostelworld,2026-07-17,2026-07-19,1,,,,,,,
+S2,BRIK direct,2026-05-12,2026-05-14,1,,,,,,,https://hostel-positano.com/en/book
+S2,Booking.com,2026-05-12,2026-05-14,1,,,,,,,
+S2,Hostelworld,2026-05-12,2026-05-14,1,,,,,,,
+S3,BRIK direct,2026-02-24,2026-02-26,1,,,,,,,https://hostel-positano.com/en/book
+S3,Booking.com,2026-02-24,2026-02-26,1,,,,,,,
+S3,Hostelworld,2026-02-24,2026-02-26,1,,,,,,,

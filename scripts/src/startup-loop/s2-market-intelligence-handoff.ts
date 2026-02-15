@@ -126,6 +126,14 @@ function parseFileDatePrefix(filename: string): number | null {
   return Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 }
 
+function parseAsOfDateUtc(asOfDate: string): number {
+  requireYyyyMmDd(asOfDate);
+  const year = Number(asOfDate.slice(0, 4));
+  const month = Number(asOfDate.slice(5, 7));
+  const day = Number(asOfDate.slice(8, 10));
+  return Date.UTC(year, month - 1, day);
+}
+
 function docSortKey(doc: UserDoc): number {
   return (
     parseIsoDateLike(doc.frontmatter.Updated) ??
@@ -218,6 +226,97 @@ async function resolvePreviousMarketIntelligencePath(repoRoot: string, business:
     return null;
   }
   return sourcePack;
+}
+
+async function findLatestDatedMarketResearchDataFile(args: {
+  repoRoot: string;
+  business: string;
+  asOfDate: string;
+  filenameSuffix: string;
+}): Promise<{ relativePath: string; absolutePath: string } | null> {
+  const absoluteDir = path.join(
+    args.repoRoot,
+    "docs",
+    "business-os",
+    "market-research",
+    args.business,
+    "data",
+  );
+  if (!(await exists(absoluteDir))) return null;
+
+  const asOfUtc = parseAsOfDateUtc(args.asOfDate);
+  const entries = await fs.readdir(absoluteDir, { withFileTypes: true });
+  const candidates = entries
+    .filter((e) => e.isFile())
+    .map((e) => e.name)
+    .filter((name) => name.endsWith(args.filenameSuffix))
+    .map((name) => ({ name, utc: parseFileDatePrefix(name) }))
+    .filter((c) => c.utc !== null && c.utc <= asOfUtc)
+    .sort((a, b) => (b.utc ?? 0) - (a.utc ?? 0));
+
+  const best = candidates[0];
+  if (!best) return null;
+  const absolutePath = path.join(absoluteDir, best.name);
+  return {
+    absolutePath,
+    relativePath: toPosixRelative(path.relative(args.repoRoot, absolutePath)),
+  };
+}
+
+function csvLooksEmptyOrHeaderOnly(csv: string): boolean {
+  const nonEmpty = csv
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter(Boolean);
+  return nonEmpty.length <= 1;
+}
+
+async function buildOperatorCapturedDataBlock(args: {
+  repoRoot: string;
+  business: string;
+  asOfDate: string;
+}): Promise<string> {
+  const captures: Array<{ title: string; relPath: string; content: string; headerOnly: boolean }> = [];
+  const wanted = [
+    { title: "Parity scenarios (S1-S3)", suffix: "-parity-scenarios.csv" },
+    { title: "Bookings by channel", suffix: "-bookings-by-channel.csv" },
+    { title: "Commission / take rate by channel", suffix: "-commission-by-channel.csv" },
+  ];
+
+  for (const w of wanted) {
+    const file = await findLatestDatedMarketResearchDataFile({
+      repoRoot: args.repoRoot,
+      business: args.business,
+      asOfDate: args.asOfDate,
+      filenameSuffix: w.suffix,
+    });
+    if (!file) continue;
+    const content = await fs.readFile(file.absolutePath, "utf8");
+    captures.push({
+      title: w.title,
+      relPath: file.relativePath,
+      content: content.trimEnd(),
+      headerOnly: csvLooksEmptyOrHeaderOnly(content),
+    });
+  }
+
+  if (captures.length === 0) return "None.";
+
+  const lines: string[] = [];
+  for (const cap of captures) {
+    lines.push(`# ${cap.title}`);
+    lines.push(`Source: ${cap.relPath}`);
+    if (cap.headerOnly) {
+      lines.push("");
+      lines.push("Status: present-but-empty (operator must fill)");
+    }
+    lines.push("");
+    lines.push("```csv");
+    lines.push(cap.content);
+    lines.push("```");
+    lines.push("");
+  }
+  return lines.join("\n").trimEnd();
 }
 
 const S2_MARKET_INTEL_PROFILE_TEMPLATES: Record<S2MarketIntelResearchProfileId, string> = {
@@ -1084,7 +1183,11 @@ export async function buildS2MarketIntelligenceHandoff(
 
   const measurement = await findLatestStrategyDoc(repoRoot, business, "measurement-verification");
   const forecast = await findLatestStrategyDoc(repoRoot, business, "startup-loop-90-day-forecast");
-  const previousMarketIntelPath = await resolvePreviousMarketIntelligencePath(repoRoot, business);
+  const previousMarketIntelPathRaw = await resolvePreviousMarketIntelligencePath(repoRoot, business);
+  const previousMarketIntelPath =
+    previousMarketIntelPathRaw && previousMarketIntelPathRaw !== targetOutputPath
+      ? previousMarketIntelPathRaw
+      : null;
   const previousMarketIntel = previousMarketIntelPath
     ? await readUserDoc(repoRoot, path.join(repoRoot, previousMarketIntelPath))
     : null;
@@ -1198,6 +1301,12 @@ export async function buildS2MarketIntelligenceHandoff(
   const scenarioDates =
     selection.profileId === "hospitality_direct_booking_ota" ? computeHospitalityScenarioDates(options.asOfDate) : null;
 
+  const operatorCapturedData = await buildOperatorCapturedDataBlock({
+    repoRoot,
+    business,
+    asOfDate: options.asOfDate,
+  });
+
   const renderedPrompt = renderTemplatePlaceholders(template.promptText, {
     BUSINESS_CODE: business,
     BUSINESS_NAME: intakeBusinessName,
@@ -1205,6 +1314,7 @@ export async function buildS2MarketIntelligenceHandoff(
     COUNTRY: country,
     AS_OF_DATE: options.asOfDate,
     LAUNCH_SURFACE: launchSurface,
+    OWNER: options.owner,
     BUSINESS_IDEA: filledBusinessIdea,
     PRODUCT_LIST: filledProductList,
     INITIAL_ICP: filledInitialIcp,
@@ -1213,6 +1323,7 @@ export async function buildS2MarketIntelligenceHandoff(
     STOCK_TIMELINE: stockTimeline,
     CONSTRAINTS: filledConstraints,
     INTERNAL_BASELINES: internalBaselineSnapshot.trim(),
+    OPERATOR_CAPTURED_DATA: operatorCapturedData.trim(),
     CANONICAL_WEBSITE_URL: website.canonicalWebsiteUrl ?? "MISSING",
     S1_DATES: scenarioDates?.s1 ?? "MISSING",
     S2_DATES: scenarioDates?.s2 ?? "MISSING",

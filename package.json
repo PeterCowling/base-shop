@@ -143,6 +143,9 @@
     "validate:deploy-env": "scripts/validate-deploy-env.sh",
     "preflight:brikette-deploy": "node --import tsx scripts/src/brikette/preflight-deploy.ts",
     "preflight:mcp-startup-loop": "node --import tsx scripts/src/startup-loop/mcp-preflight.ts",
+    "startup-loop:s2-market-intel-handoff": "node --import tsx scripts/src/startup-loop/s2-market-intelligence-handoff.ts",
+    "startup-loop:lint-market-intel-pack": "node --import tsx scripts/src/startup-loop/market-intelligence-pack-lint.ts",
+
     "brik:export-cloudflare-proxies": "node --import tsx scripts/src/brikette/export-cloudflare-monthly-proxies.ts",
     "validate:manifest": "node scripts/validate-agent-manifest.js",
     "launch-smoke": "tsx scripts/src/launch-shop/cli/smoke.ts",
@@ -225,6 +228,7 @@
     "aria-hidden": "^1.2.4",
     "chart.js": "^4.5.0",
     "cookie": "^0.7.2",
+    "exceljs": "^4.4.0",
     "fast-csv": "^5.0.5",
     "fast-redact": "^3.5.0",
     "helmet": "^8.1.0",

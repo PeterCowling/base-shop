@@ -5,117 +5,96 @@ Business: BRIK
 Date: 2026-02-15
 Owner: Codex
 Target-Output: docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md
-Previous-Pack: docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md
 ---
 
 # BRIK Deep Research Prompt (Market Intelligence Refresh)
 
 Use the prompt below directly in Deep Research.
 
+## Generator Debug
+SelectedProfile: hospitality_direct_booking_ota
+OverrideUsed: false
+SelectionSignals: ["octorate_rooms","mentions_booking_category","website_live"]
+CanonicalWebsiteUrl: https://hostel-positano.com
+WebsiteUrlSignals: ["website:measurement_verification"]
+TemplatePath: docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md
+TwoPass: false
+TwoPassThresholds: {"maxPromptChars":16000,"maxBaselineChars":8000}
+
 ```text
-You are a market intelligence analyst for a venture studio launching B2C consumer-product businesses.
+You are a market intelligence + growth analyst specializing in EU hospitality direct booking, OTA distribution, and travel-experience commerce.
 
-Task:
-Produce a decision-grade Market Intelligence Pack for:
-- Business code: BRIK
-- Business name: Brikette
+Goal:
+Produce a decision-grade Market Intelligence Pack for BRIK that directly answers the 3 Delta Questions (root causes, fastest levers, 14-day stop/continue/start), anchored in internal performance baselines and validated with external evidence.
+
+Business:
+- Code: BRIK
+- Name: Brikette
 - Region: Europe (primary country: Italy)
-- Launch-surface mode: website-live (`website-live` or `pre-website`)
+- As-of: 2026-02-15 (YYYY-MM-DD)
+- Mode: website-live (`website-live` expected; optimize conversion + distribution before scaling acquisition)
+- Offering (current): accommodation bookings + optional travel experiences commerce (cross-sell/upsell)
+- Budget guardrail: do not scale paid acquisition until conversion + measurement baselines are reliable
 
-Input packet:
-- Business idea: multilingual e-commerce platform for hostel bookings and travel experiences (`observed`).
-- Products and specs: Hostel bookings + travel experience commerce
-- Initial target customer: Travelers booking hostel stays/experiences
-- Planned channels: Direct website and content-led acquisition
-- Budget guardrails: Do not scale paid acquisition until conversion and measurement baselines are reliable.
-- Stock timeline: Not applicable (service/booking business).
-- Known constraints/non-negotiables: See Risks section in business plan
-- Previous market intelligence pack (internal reference): docs/business-os/market-research/BRIK/2026-02-12-market-intelligence.user.md
+CRITICAL: Business model classification (must be done explicitly)
+Using ONLY the input packet + internal baselines, classify which model BRIK is operating TODAY:
+A) Single-property direct booking site + OTAs
+B) Marketplace/affiliate for multiple properties
+C) Hybrid
+If the evidence is ambiguous, explicitly list the ambiguity and define the fastest 14-day test(s) to resolve it.
+All downstream unit economics + competitor comparisons must match the classified model.
 
-
-MANDATORY internal baselines (embedded below):
+MANDATORY internal baselines:
 - You MUST incorporate these internal baselines into segment, pricing, channel, and website implications.
-- If the internal baseline block is missing or incomplete, return `Status: BLOCKED` and list exact missing fields before giving recommendations.
+- If the internal baseline block is missing or incomplete, return `Status: BLOCKED` and list the exact missing fields BEFORE giving recommendations.
 
 BEGIN_INTERNAL_BASELINES
-# Internal Baseline Snapshot (BRIK, as-of 2026-02-15)
+# Internal Baselines (Mandatory) — BRIK (as-of 2026-02-15)
 
-## Previous Market Intelligence Pack (Executive Summary Excerpt)
+## Baseline Header
 
-- (observed) Italy tourism demand remains large: 458.4M accommodation presences in 2024, up 2.5% YoY; foreign presences grew faster (+6.8%).
-- (observed) Italy inbound travel spending reached EUR54.2B in 2024 (+16.8% YoY), which supports continued demand depth in destination-led booking markets.
-- (observed) EU short-stay demand on online platforms remained expansionary in 2025 (+17.8% YoY in Q2 nights), confirming digital-booking momentum.
-- (observed) BRIK internal baseline shows seasonality and a softer recent shape: Feb-Dec 2025 net value is down 15.13% vs Feb-Dec 2024.
-- (observed) BRIK Cloudflare request proxies are directionally useful but not decision-grade attribution data (`r ~= 0.37` vs net value in overlapping months).
-- (observed) Hostel demand behavior is mobile and near-term: Hostelworld reports 67% of bookings are made <=7 days before stay and 83% of bookings happen via app.
-- (observed) Direct-booking competitors increasingly use loyalty-discount mechanics (e.g., 5-25% member discounts) to shift demand from OTA-heavy journeys.
-- (observed) Booking funnels are offer-led: cancellation flexibility, visible discounts, and fee clarity are consistently used conversion levers.
-- (inferred) BRIK should treat mobile speed + pricing/fee transparency + policy clarity as core conversion primitives, not design polish extras.
-- (inferred) Until GA4/Search Console are fully live, channel scale decisions should be constrained to low-risk tests and measured weekly against net-value and proxy traffic movement.
-- (inferred) Fastest 90-day upside is conversion optimization on current demand, not broad top-of-funnel expansion.
+- Last complete month: 2026-01
+- YoY window (12 complete months): 2025-02..2026-01 vs 2024-02..2025-01
+- Total rooms: 11
+- Inventory note: 11 rooms. Sample labels: OTA, Refundable, 2022-7; OTA, Refundable, Room 10; OTA, Refundable, Room 11; ...
+- Measurement status (GA4 snapshot): sessions 73; begin_checkout 0; conversions 0 (directional only; likely incomplete).
 
-## Observed Internal Performance (from monthly exports)
+## YoY Decomposition (Net Value)
 
-- Trailing 3 complete months (2025-11..2026-01): net value 28927.79; bookings 100; direct share 18.0%; net per booking 289.28.
-- YoY vs same 3-month window: net value -14.6%; bookings -2.9%; direct share delta 9.3pp.
-- Trailing 12 complete months: net value 514800.23; bookings 1906; direct share 20.5%.
-- YoY vs prior 12 months: net value -15.2%; bookings -13.6%; direct share delta 6.4pp.
+| Metric | Current | Previous | Delta |
+|---|---:|---:|---:|
+| Net value | 514800.23 | 607097.46 | -92297.23 |
+| Bookings | 1906 | 2205 | -299 |
+| Net/booking | 270.09 | 275.33 | -5.23 |
+| Direct share | 20.5% | 14.1% | 6.4pp |
 
-- Peak net value month: 2024-06 (104807.43).
-- Trough net value month: 2025-11 (3118.65).
+- YoY net value change: -92297.23 (-15.2%).
+- Decomposition (exact): volume effect -82322.97; value/booking effect -9974.26.
 
-## Monthly Table (Joined)
+## Top YoY Decline Months (By Net Value Delta)
 
-| Month | Net booking value | Bookings | Direct share | Net per booking | Cloudflare requests (proxy) |
-|---|---:|---:|---:|---:|---:|
-| 2024-02 | 17934.65 | 66 | 15.2% | 271.74 | n/a |
-| 2024-03 | 46615.13 | 174 | 24.1% | 267.90 | n/a |
-| 2024-04 | 86892.32 | 263 | 18.3% | 330.39 | n/a |
-| 2024-05 | 91610.90 | 281 | 18.5% | 326.02 | n/a |
-| 2024-06 | 104807.43 | 352 | 13.9% | 297.75 | n/a |
-| 2024-07 | 90304.64 | 339 | 11.5% | 266.39 | n/a |
-| 2024-08 | 75758.66 | 333 | 8.1% | 227.50 | n/a |
-| 2024-09 | 43348.01 | 208 | 9.6% | 208.40 | n/a |
-| 2024-10 | 15946.00 | 86 | 18.6% | 185.42 | n/a |
-| 2024-11 | 4120.47 | 13 | 0.0% | 316.96 | n/a |
-| 2024-12 | 7794.72 | 23 | 17.4% | 338.90 | n/a |
-| 2025-01 | 21964.53 | 67 | 7.5% | 327.83 | n/a |
-| 2025-02 | 28646.47 | 103 | 22.3% | 278.12 | n/a |
-| 2025-03 | 46193.54 | 195 | 22.1% | 236.89 | 0 |
-| 2025-04 | 64471.32 | 232 | 18.5% | 277.89 | 59517 |
-| 2025-05 | 73571.33 | 256 | 24.2% | 287.39 | 186375 |
-| 2025-06 | 81317.03 | 296 | 16.9% | 274.72 | 178931 |
-| 2025-07 | 69696.17 | 263 | 21.3% | 265.00 | 193045 |
-| 2025-08 | 69100.15 | 234 | 23.9% | 295.30 | 166471 |
-| 2025-09 | 37049.13 | 153 | 16.3% | 242.15 | 127495 |
-| 2025-10 | 15827.30 | 74 | 20.3% | 213.88 | 139752 |
-| 2025-11 | 3118.65 | 13 | 15.4% | 239.90 | 107349 |
-| 2025-12 | 7618.52 | 24 | 33.3% | 317.44 | 155296 |
-| 2026-01 | 18190.62 | 63 | 12.7% | 288.74 | 137729 |
-| 2026-02 | 13316.63 | 44 | 13.6% | 302.65 | n/a |
+| Month | Net value (prev year) | Net value (current) | Delta |
+|---|---:|---:|---:|
+| 2025-06 | 104807.43 | 81317.03 | -23490.40 |
+| 2025-04 | 86892.32 | 64471.32 | -22421.00 |
+| 2025-07 | 90304.64 | 69696.17 | -20608.47 |
 
-## Cloudflare Proxy Notes
+## Monthly Slice (Last 12 Complete Months)
 
-- Correlation proxy (net value vs requests where both available): 0.23 (directional only).
-
----
-Type: Reference
-Status: Active
----
-
-# Cloudflare monthly proxies extraction
-
-- generated-at: 2026-02-12T12:48:13.090Z
-- zone-tag: 25b082bdadbb0541c0f34c2bf0d21cc4
-- zone-name: hostel-positano.com
-- host-filter-requested: hostel-positano.com
-- months: 24
-- include-current-month: false
-- first-month: 2024-02
-- last-month: 2026-01
-- endpoint: https://api.cloudflare.com/client/v4/graphql
-- monthly totals use httpRequests1dGroups(sum.requests).
-- top page/geo/device breakdowns are marked unavailable where plan/API access does not allow historical extraction.
+| Month | Net value | Bookings | Net/booking | Direct share |
+|---|---:|---:|---:|---:|
+| 2025-02 | 28646.47 | 103 | 278.12 | 22.3% |
+| 2025-03 | 46193.54 | 195 | 236.89 | 22.1% |
+| 2025-04 | 64471.32 | 232 | 277.89 | 18.5% |
+| 2025-05 | 73571.33 | 256 | 287.39 | 24.2% |
+| 2025-06 | 81317.03 | 296 | 274.72 | 16.9% |
+| 2025-07 | 69696.17 | 263 | 265.00 | 21.3% |
+| 2025-08 | 69100.15 | 234 | 295.30 | 23.9% |
+| 2025-09 | 37049.13 | 153 | 242.15 | 16.3% |
+| 2025-10 | 15827.30 | 74 | 213.88 | 20.3% |
+| 2025-11 | 3118.65 | 13 | 239.90 | 15.4% |
+| 2025-12 | 7618.52 | 24 | 317.44 | 33.3% |
+| 2026-01 | 18190.62 | 63 | 288.74 | 12.7% |
 
 ## Measurement Snapshot (GA4 Data API)
 
@@ -131,59 +110,192 @@ Source: docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.
 | user_engagement | 145 |
 | begin_checkout | 0 |
 | web_vitals | 0 |
-
-## Operational Inventory Snapshot (Octorate)
-
-- Total rooms: 11
-- Room labels: OTA, Refundable, 2022-7, OTA, Refundable, Room 10, OTA, Refundable, Room 11, OTA, Refundable, Room 12, OTA, Refundable, Room 3, OTA, Refundable, Room 4, OTA, Refundable, Room 5, OTA, Refundable, Room 6, OTA, Refundable, Room 9, OTA, Refundable, Room 8, OTA, Refundable, 2025-14
-
-## Delta Questions (Required)
-
-1. Based on the internal trends and mix, what are the 3 most likely root causes of the YoY softness (demand mix shift vs conversion vs pricing/policy vs distribution)?
-2. Which levers are most likely to move realized net value fastest (conversion, direct-share incentives, cancellation control, pricing, upsell, support trust), and what evidence supports that?
-3. What is working vs not working today, and what should stop/continue/start in the next 14 days to maximize speed-to-first-impact?
 END_INTERNAL_BASELINES
 
-Research requirements:
-1) Build a current competitor map (direct, adjacent, substitutes) for this region and channels.
-2) Extract pricing, offer structure, positioning, and channel tactics from competitors.
-3) Estimate demand signals (search/social/marketplace/proxy signals) and seasonality.
-4) Propose practical customer segment sequencing (who to target first, second, third).
-5) Produce unit-economics priors: AOV, CAC/CPC, return rates, margin ranges.
-6) Derive website design implications (information architecture, PDP requirements, checkout/payment expectations, trust signals, support patterns).
-7) Derive product design implications (must-have features, compatibility/fit needs, failure modes, quality requirements, packaging implications).
-8) Identify legal/claims constraints relevant to this category and region.
-9) Propose 90-day outcomes and leading indicators that maximize speed-to-first-sales.
-10) Define first-14-day validation tests that can quickly falsify bad assumptions.
+BEGIN_OPERATOR_CAPTURED_DATA
+# Parity scenarios (S1-S3)
+Source: docs/business-os/market-research/BRIK/data/2026-02-15-parity-scenarios.csv
 
-Output format (strict):
-A) Executive summary (max 12 bullets)
-B) Business context and explicit assumptions
+```csv
+scenario,surface,check_in,check_out,travellers,total_price_all_in,currency,taxes_fees_clarity,cancellation_cutoff,deposit_payment,notes,evidence_url
+S1,BRIK direct,2026-07-17,2026-07-19,1,,,,,,,https://hostel-positano.com/en/book
+S1,Booking.com,2026-07-17,2026-07-19,1,,,,,,,
+S1,Hostelworld,2026-07-17,2026-07-19,1,,,,,,,
+S2,BRIK direct,2026-05-12,2026-05-14,1,,,,,,,https://hostel-positano.com/en/book
+S2,Booking.com,2026-05-12,2026-05-14,1,,,,,,,
+S2,Hostelworld,2026-05-12,2026-05-14,1,,,,,,,
+S3,BRIK direct,2026-02-24,2026-02-26,1,,,,,,,https://hostel-positano.com/en/book
+S3,Booking.com,2026-02-24,2026-02-26,1,,,,,,,
+S3,Hostelworld,2026-02-24,2026-02-26,1,,,,,,,
+```
+
+# Bookings by channel
+Source: docs/business-os/market-research/BRIK/data/2026-02-15-bookings-by-channel.csv
+
+Status: present-but-empty (operator must fill)
+
+```csv
+month,channel,bookings,gross_value,net_value,cancellations,refunds_or_adjustments,notes
+```
+
+# Commission / take rate by channel
+Source: docs/business-os/market-research/BRIK/data/2026-02-15-commission-by-channel.csv
+
+Status: present-but-empty (operator must fill)
+
+```csv
+month,channel,commission_amount,currency,effective_take_rate,notes
+```
+END_OPERATOR_CAPTURED_DATA
+
+Primary decisions the pack must enable (answer these early and repeatedly):
+1) Why is net booking value down YoY? (demand mix vs conversion vs pricing/policy vs distribution)
+2) What levers move realized net value fastest in the next 90 days, and what evidence supports each?
+3) What should the operator STOP / CONTINUE / START in the next 14 days to maximize speed-to-first-impact?
+
+Execution method (follow in order; reflect results in the output):
+
+Step 1 - Internal diagnosis (must be quantitative):
+- Decompose YoY change in net booking value into:
+  a) bookings (volume)
+  b) net per booking (value)
+  c) channel mix (direct share vs OTA share) only if channel-level net value/margin data exists; otherwise treat as qualitative and define a 14-day measurement plan to quantify it
+- Identify the top 3 months contributing most to the YoY decline (absolute EUR and %).
+- Produce a hypothesis tree with 3-6 plausible root causes, each mapped to:
+  - internal evidence (from baseline)
+  - external evidence to gather
+  - a falsification test
+
+Step 2 - External market + demand signals (Italy + comparable EU leisure destinations):
+- Gather recent, region-relevant demand indicators (tourism arrivals/presences, inbound spend, digital booking behavior, seasonality).
+- Prefer primary/authoritative sources (ISTAT, Eurostat, Bank of Italy, UNWTO, OECD, major industry reports, platform earnings/insights).
+- Every numeric claim must be cited; otherwise label as assumption with a range.
+
+Step 3 - Competitor + channel map (must be evidence-based, not listicle):
+Build a competitor set with MINIMUM counts and selection logic:
+- Direct-property competitors (MIN 12):
+  - MIN 6 in the same catchment (e.g., Positano / Amalfi Coast / Sorrento / Naples / Salerno area or closest comparable budget stays)
+  - MIN 6 in other high-demand Italy cities that compete for the same traveler wallet (Rome/Florence/Venice/Milan/Naples etc.)
+- OTAs / meta (MIN 5): Booking.com, Hostelworld, Airbnb, Google Hotels/meta surfaces, plus any Italy-heavy alternatives
+- Experience marketplaces (MIN 4): GetYourGuide, Viator, Civitatis, Tiqets (plus any Italy-heavy platform)
+- Substitutes (MIN 4): budget hotels, B&Bs, short-term rentals, package operators, etc.
+
+For each competitor category, extract:
+- positioning (who they target, what promise)
+- offer mechanics (member discounts, bundles, cancellation, pay-later, deposits, fee/tax transparency)
+- trust + support patterns (reviews, guarantees, live chat/WhatsApp, phone, response promises)
+- channel tactics (SEO patterns, loyalty fences, app push, email capture, retargeting cues)
+
+Pricing benchmark (standardize it so it's comparable):
+- Choose 3 standardized booking scenarios and apply them across a subset of competitors (MIN 8 direct competitors + MIN 2 OTAs):
+  Scenario S1: Peak season weekend, 2 nights, 1 traveler, cheapest available refundable option if offered else cheapest available
+  Scenario S2: Shoulder season midweek, 2 nights, 1 traveler, cheapest available option (refundable rule as above)
+  Scenario S3: Off-season midweek, 2 nights, 1 traveler, cheapest available option (refundable rule as above)
+- Fixed dates contract (do not vary between competitors):
+  - S1 dates: 2026-07-17 (Fri) to 2026-07-19 (Sun)
+  - S2 dates: 2026-05-12 (Tue) to 2026-05-14 (Thu)
+  - S3 dates: 2026-02-24 (Tue) to 2026-02-26 (Thu)
+  - Do not change dates across competitors.
+  - If a date range is blocked (inventory not open or sold out), use the closest next week and state why.
+- For each scenario: capture displayed total price, taxes/fees clarity, cancellation cutoff, deposit requirements, payment methods, and any member discount mechanics.
+- If sold out or blocked: mark "sold out/blocked" and capture whatever policies/fees are visible with a citation.
+
+BRIK parity sub-test (required):
+- For S1-S3, capture BRIK direct price/terms on https://hostel-positano.com and compare against at least two OTA surfaces where the property is listed (e.g., Booking.com + Hostelworld if available).
+- Record total price, taxes/fees visibility, cancellation cutoff, and payment/deposit differences.
+
+Step 4 - Website-live conversion + measurement implications:
+- Audit the live funnel as a user would (home -> dates -> room -> checkout):
+  - identify friction points
+  - identify missing trust signals
+  - check mobile-first behaviors (speed, clarity, checkout steps)
+- If the canonical website URL is missing: return `Status: BLOCKED` and list the missing field (website URL).
+- Canonical website URL (for the funnel audit): https://hostel-positano.com
+- Produce an implementation-ready checklist prioritized as:
+  - P0 (<=14 days, highest expected impact, low/medium effort)
+  - P1 (30-60 days)
+  - P2 (nice-to-have)
+Each checklist item must include: expected impact (L/M/H), effort (S/M/L), and the metric it should move.
+
+Measurement is currently likely weak or incomplete.
+- Provide a measurement repair plan that enables weekly decisions:
+  - required events (view_item, begin_checkout, purchase/booking_confirm, phone/WhatsApp clicks, email capture)
+  - UTM discipline
+  - reconciliation to net booking value exports
+
+Unit economics priors (must match the classified business model):
+- Provide ranges (not point estimates) for:
+  - gross margin / contribution per booking (direct vs OTA)
+  - OTA commission ranges and payment processing fees (assumptions allowed with rationale)
+  - refund/cancellation exposure and support cost per booking (assumptions allowed with rationale)
+- Explicitly state what would make the ranges wrong and how to validate fast.
+
+Regulatory / compliance:
+- Identify EU + Italy constraints relevant to:
+  - accommodation booking terms (price transparency, taxes/fees display)
+  - payments (PSD2/SCA)
+  - data/privacy (GDPR, consent)
+  - if bundling accommodation + experiences: assess Package Travel Directive implications (or explicitly state "not applicable" with reasoning)
+
+Confidence labeling:
+- Use High/Medium/Low confidence labels for each major conclusion.
+- Define what "High/Medium/Low" means in terms of evidence quality.
+
+Hard rules:
+- Do not invent data.
+- Every numeric claim must have a citation OR be explicitly labeled `assumption` with a plausible range and rationale.
+- Internal baseline numbers inside BEGIN_INTERNAL_BASELINES are observed internal evidence and do not require external citations. When referencing them, tag as `observed` and attribute to "internal baseline (as-of 2026-02-15)".
+- Operator-captured data inside BEGIN_OPERATOR_CAPTURED_DATA is observed operator evidence and does not require external citations, but MUST include a source path and evidence URLs where applicable.
+- Explicitly tag each key claim as `observed` or `inferred`.
+- Prefer recent sources (last 24 months) and Italy/EU relevance.
+- If evidence is weak/conflicting: say so and propose a falsification test.
+- Citations hygiene:
+  - If you output a table with an "Evidence" column, every row MUST include at least one URL in that Evidence cell (even if interactive pricing is blocked).
+  - Do not include clipboard artifacts like "text" / "Copy" or stray image captions (alt-text fragments).
+
+Decision-grade bar (quality gate):
+- >=25 total sources, >=12 authoritative/primary
+- competitor evidence: >=12 direct, >=5 OTA/meta, >=4 experiences, each with citations
+- pricing benchmark completed for >=8 direct + >=2 OTA across S1-S3 (or explicitly blocked with reasons)
+- P0 checklist: >=12 items, each tied to a metric and effort/impact
+
+OUTPUT FORMAT (strict; use these exact sections):
+A) Executive summary (max 12 bullets; must answer Delta Q1-Q3 explicitly)
+B) Business context and explicit assumptions (include business model classification)
 C) Market size and demand signals table (with confidence labels)
-D) Competitor map table (direct/adjacent/substitute)
-E) Pricing and offer benchmark table
-F) Segment and JTBD section (primary + secondary sequence)
-G) Unit economics priors table (AOV/CAC/CVR/returns/margin ranges)
-H) Channel strategy implications (first 90 days)
-I) Website design implications (clear, implementation-ready checklist)
-J) Product design implications (clear, implementation-ready checklist)
+D) Competitor map table (direct/adjacent/substitute + OTA/meta + experiences)
+E) Pricing and offer benchmark table (using S1-S3 scenarios)
+F) Segment and JTBD section (primary + secondary sequence; include mobile/near-term implications if supported)
+G) Unit economics priors table (AOV/net per booking/CAC/CVR/cancellation/refund exposure/margin ranges)
+H) Channel strategy implications (first 90 days; constrain paid until measurement + CVR baselines)
+I) Website design implications (implementation-ready checklist with P0/P1/P2 + impact/effort/metric)
+J) Product + operations implications (booking product + experiences cross-sell; failure modes; support)
 K) Regulatory/claims constraints and red lines
-L) Proposed 90-day outcome contract (outcome, baseline, target, by, owner, leading indicators, decision links)
+L) Proposed 90-day outcome contract (outcome, baseline, target, by-date, owner, leading indicators, decision links)
 M) First-14-day validation plan (tests + thresholds + re-forecast triggers)
-N) Assumptions register (assumption, evidence, confidence, impact)
+N) Assumptions register (assumption, evidence, confidence, impact, validation test)
 O) Risk register (risk, why it matters, mitigation)
 P) Source list with URL + access date
 Q) Delta and feedback for human operators (required):
-- What is working vs not working given the internal baseline trends?
-- What should the operator do next (stop/continue/start), with a 14-day focus?
+   - What is working vs not working given internal baseline trends?
+   - Stop / Continue / Start (14-day focus)
 
-Rules:
-- Do not invent data.
-- Every numeric claim must include a citation or be explicitly labeled as an assumption.
-- Explicitly tag each key claim as `observed` or `inferred`.
-- Prefer recent, region-relevant sources.
-- Optimize recommendations for startup speed-to-first-sales.
-- If evidence is weak or conflicting, say so clearly and propose a fast validation test.
+For each Stop / Continue / Start item include:
+- action
+- rationale
+- expected metric movement
+- 14-day verification method
+
+After Deep Research returns (operator instructions, do NOT claim you executed them):
+1) Save result to `docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md`.
+2) Run pack lint and fix any errors before marking the pack decision-grade:
+   `pnpm startup-loop:lint-market-intel-pack -- docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md`
+3) If pricing scenario totals are blocked: run an operator browser capture and commit the filled CSV(s) under:
+   `docs/business-os/market-research/BRIK/data/`
+   Then re-run the handoff prompt generator so the next Deep Research run can consume the captured data:
+   `pnpm startup-loop:s2-market-intel-handoff --business BRIK --as-of 2026-02-15 --owner Codex`
+4) Render HTML companion:
+   `pnpm docs:render-user-html -- docs/business-os/market-research/BRIK/2026-02-15-market-intelligence.user.md`
 ```
 
 After Deep Research returns:

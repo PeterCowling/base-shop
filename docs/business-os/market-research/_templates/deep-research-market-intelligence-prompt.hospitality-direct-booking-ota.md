@@ -40,6 +40,10 @@ BEGIN_INTERNAL_BASELINES
 {{INTERNAL_BASELINES}}
 END_INTERNAL_BASELINES
 
+BEGIN_OPERATOR_CAPTURED_DATA
+{{OPERATOR_CAPTURED_DATA}}
+END_OPERATOR_CAPTURED_DATA
+
 Primary decisions the pack must enable (answer these early and repeatedly):
 1) Why is net booking value down YoY? (demand mix vs conversion vs pricing/policy vs distribution)
 2) What levers move realized net value fastest in the next 90 days, and what evidence supports each?
@@ -137,9 +141,13 @@ Hard rules:
 - Do not invent data.
 - Every numeric claim must have a citation OR be explicitly labeled `assumption` with a plausible range and rationale.
 - Internal baseline numbers inside BEGIN_INTERNAL_BASELINES are observed internal evidence and do not require external citations. When referencing them, tag as `observed` and attribute to "internal baseline (as-of {{AS_OF_DATE}})".
+- Operator-captured data inside BEGIN_OPERATOR_CAPTURED_DATA is observed operator evidence and does not require external citations, but MUST include a source path and evidence URLs where applicable.
 - Explicitly tag each key claim as `observed` or `inferred`.
 - Prefer recent sources (last 24 months) and Italy/EU relevance.
 - If evidence is weak/conflicting: say so and propose a falsification test.
+- Citations hygiene:
+  - If you output a table with an "Evidence" column, every row MUST include at least one URL in that Evidence cell (even if interactive pricing is blocked).
+  - Do not include clipboard artifacts like "text" / "Copy" or stray image captions (alt-text fragments).
 
 Decision-grade bar (quality gate):
 - >=25 total sources, >=12 authoritative/primary
@@ -173,4 +181,15 @@ For each Stop / Continue / Start item include:
 - rationale
 - expected metric movement
 - 14-day verification method
+
+After Deep Research returns (operator instructions, do NOT claim you executed them):
+1) Save result to `docs/business-os/market-research/{{BUSINESS_CODE}}/{{AS_OF_DATE}}-market-intelligence.user.md`.
+2) Run pack lint and fix any errors before marking the pack decision-grade:
+   `pnpm startup-loop:lint-market-intel-pack -- docs/business-os/market-research/{{BUSINESS_CODE}}/{{AS_OF_DATE}}-market-intelligence.user.md`
+3) If pricing scenario totals are blocked: run an operator browser capture and commit the filled CSV(s) under:
+   `docs/business-os/market-research/{{BUSINESS_CODE}}/data/`
+   Then re-run the handoff prompt generator so the next Deep Research run can consume the captured data:
+   `pnpm startup-loop:s2-market-intel-handoff --business {{BUSINESS_CODE}} --as-of {{AS_OF_DATE}} --owner {{OWNER}}`
+4) Render HTML companion:
+   `pnpm docs:render-user-html -- docs/business-os/market-research/{{BUSINESS_CODE}}/{{AS_OF_DATE}}-market-intelligence.user.md`
 ```

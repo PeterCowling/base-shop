@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 
 import type { BookingModal2Copy } from "@acme/ui/organisms/modals";
 
+import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
@@ -109,7 +110,12 @@ export function Booking2GlobalModal(): JSX.Element | null {
       checkIn={checkIn}
       checkOut={checkOut}
       adults={adults}
-      extraContent={<PolicyFeeClarityPanel lang={lang} variant="hostel" className="bg-brand-surface/30" />}
+      extraContent={
+        <>
+          <DirectPerksBlock lang={lang} className="mb-4 rounded-lg bg-brand-surface/30 p-3" />
+          <PolicyFeeClarityPanel lang={lang} variant="hostel" className="bg-brand-surface/30" />
+        </>
+      }
       onCheckInChange={(event: ChangeEvent<HTMLInputElement>) => setCheckIn(event.target.value)}
       onCheckOutChange={(event: ChangeEvent<HTMLInputElement>) => setCheckOut(event.target.value)}
       onAdultsChange={(event: ChangeEvent<HTMLInputElement>) => setAdults(parseInt(event.target.value, 10) || 1)}

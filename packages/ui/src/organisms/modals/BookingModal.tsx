@@ -1,4 +1,4 @@
-import {
+import React, {
   type ChangeEvent,
   type ComponentPropsWithoutRef,
   memo,
@@ -83,6 +83,8 @@ export interface BookingModalProps {
   readonly today?: Date;
   readonly testId?: string;
   readonly onAction?: (params: BookingModalBuildParams) => void;
+  /** Optional content rendered between form fields and the primary action button. */
+  readonly extraContent?: React.ReactNode;
 }
 
 const DEFAULT_MIN_NIGHTS = 2;
@@ -97,6 +99,7 @@ function BookingModal({
   today: todayOverride,
   testId = DEFAULT_TEST_ID,
   onAction,
+  extraContent,
 }: BookingModalProps): JSX.Element | null {
   const lang = useCurrentLanguage();
   const { dateFormat, placeholder } = useMemo(() => resolveBookingDateFormat(lang), [lang]);
@@ -230,6 +233,8 @@ function BookingModal({
               </select>
             </div>
           </div>
+
+          {extraContent ? <div className="mt-6">{extraContent}</div> : null}
 
           <div className="mt-8 flex flex-col space-y-4">
             <a

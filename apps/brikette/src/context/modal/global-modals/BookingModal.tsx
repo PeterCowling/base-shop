@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import type { BookingGuestOption, BookingModalBuildParams, BookingModalCopy } from "@acme/ui/organisms/modals";
 import { resolveSharedToken } from "@acme/ui/shared";
 
+import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { fireSearchAvailability } from "@/utils/ga4-events";
 
@@ -102,6 +103,7 @@ export function BookingGlobalModal(): JSX.Element | null {
       guestOptions={guestOptions}
       buildBookingHref={buildBookingHref}
       onAction={handleAction}
+      extraContent={<DirectPerksBlock lang={lang} className="rounded-lg bg-brand-surface/30 p-4" />}
     />
   );
 }

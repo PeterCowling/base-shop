@@ -48,6 +48,14 @@
     "confirm": "Confirm",
     "cancel": "Cancel"
   },
+  "directPerks": {
+    "heading": "Why book direct?",
+    "items": [
+      "Up to 25% off",
+      "Complimentary breakfast",
+      "Complimentary evening drink"
+    ]
+  },
   "facilities": {
     "title": "Our Facilities",
     "closeButton": "Close",

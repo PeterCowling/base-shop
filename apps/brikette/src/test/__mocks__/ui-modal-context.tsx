@@ -33,7 +33,8 @@ export const ssrStub: ModalContextValue = {
 };
 
 export const useModal = (): ModalContextValue => ssrStub;
-export const useOptionalModal = (): ModalContextValue | null => null;
+// Optional modal hook should still return a safe stub so callers can destructure.
+export const useOptionalModal = (): ModalContextValue => ssrStub;
 
 export const ModalProvider = ({ children }: ModalProviderProps) => {
   return <ModalContext.Provider value={ssrStub}>{children}</ModalContext.Provider>;

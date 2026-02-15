@@ -209,6 +209,44 @@ Notes (evidence used for replan decomposition):
 - `no-restricted-imports`: 19 warnings in 18 files.
 - Security warnings are dominated by tests (`apps/brikette/src/test/**`), but also include code under `apps/brikette/src/lib/seo-audit/index.ts`.
 
+## Lint Ledger (Post TASK-31, 2026-02-15)
+Artifacts:
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.post-task-31.json`
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.post-task-31.stderr` (empty; no infra/noise detected)
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.post-task-31.stdout` (pnpm wrapper output)
+
+Totals (this run):
+- 167 errors, 160 warnings (327 total)
+- Delta vs Post TASK-09 + TASK-13 ledger: **-6 errors**, **-4 warnings**
+
+Top rules by count (errors):
+| Count | Rule |
+|---:|---|
+| 59 | `@typescript-eslint/no-explicit-any` |
+| 40 | `complexity` |
+| 25 | `ds/no-hardcoded-copy` |
+| 6 | `@typescript-eslint/no-unused-vars` |
+| 6 | `max-lines-per-function` |
+| 4 | `ds/container-widths-only-at` |
+| 4 | `react-hooks/rules-of-hooks` |
+| 4 | `react-hooks/error-boundaries` |
+| 3 | `ds/enforce-layout-primitives` |
+| 3 | `max-depth` |
+
+Top rules by count (warnings):
+| Count | Rule |
+|---:|---|
+| 78 | `ds/no-hardcoded-copy` |
+| 29 | `security/detect-non-literal-fs-filename` |
+| 19 | `no-restricted-imports` |
+| 11 | `security/detect-unsafe-regex` |
+| 10 | `security/detect-non-literal-regexp` |
+| 4 | `(no-rule)` |
+| 3 | `react-hooks/exhaustive-deps` |
+| 2 | `jsx-a11y/alt-text` |
+| 1 | `ds/min-tap-size` |
+| 1 | `@next/next/no-img-element` |
+
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|

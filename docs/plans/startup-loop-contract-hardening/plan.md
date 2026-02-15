@@ -78,7 +78,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add migration config + loader + schema validation for compatibility window | 80% | M | Pending | - | TASK-02, TASK-03, TASK-06 |
+| TASK-01 | IMPLEMENT | Add migration config + loader + schema validation for compatibility window | 80% | M | Complete (2026-02-15) | - | TASK-02, TASK-03, TASK-06 |
 | TASK-02 | IMPLEMENT | Agent API: accept stage aliases (lp-fact-find) with normalization + telemetry + tests | 84% | M | Pending | TASK-01 | TASK-11 |
 | TASK-03 | IMPLEMENT | Filesystem stage-doc reader: dual-read legacy fact-finding.user.md with canonical precedence + tests | 80% | M | Pending | TASK-01 | TASK-10 |
 | TASK-04 | IMPLEMENT | Docs: fix stage-doc helper + canonical filename/key references across core BOS docs | 85% | M | Pending | - | TASK-10 |
@@ -155,6 +155,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Rollback: remove loader usage and hard-disable alias acceptance.
 - **Documentation impact:**
   - Update contract docs to mention config file as the enforcement switch.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** Commit 0e530b066c; Validation: pnpm --filter /business-os test -- apps/business-os/src/lib/contract-migration.test.ts --maxWorkers=2 (PASS).
 
 ### TASK-02: Agent API Alias Acceptance + Normalization + Telemetry
 - **Type:** IMPLEMENT

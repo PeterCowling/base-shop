@@ -3,6 +3,7 @@ import path from "path";
 import YAML from "yaml";
 
 export type GitSafetyDecision = "deny" | "allow";
+export type GitSafetyEffect = "deny" | "allow" | "ask";
 
 export interface GitSafetyPolicyTestCase {
   id: string;
@@ -15,6 +16,20 @@ export interface GitSafetyPolicyTestCase {
   guardEnv?: Record<string, string>;
 }
 
+export interface GitSafetyEvaluationSemantics {
+  resolution: "priority_then_first_match" | "first_match_wins";
+  defaultEffect: "allow" | "deny";
+  askBehavior: "deny_if_noninteractive" | "allow";
+}
+
+export interface GitSafetyRule {
+  id: string;
+  effect: GitSafetyEffect;
+  priority: number;
+  rationale: string;
+  match: Record<string, unknown> & { kind: string };
+}
+
 export interface ClaudePermissionsKernel {
   deny: string[];
   ask: string[];
@@ -23,6 +38,9 @@ export interface ClaudePermissionsKernel {
 
 export interface GitSafetyKernel {
   schemaVersion: 1;
+  policyId?: string;
+  evaluation?: GitSafetyEvaluationSemantics;
+  rules?: GitSafetyRule[];
   claudePermissions: ClaudePermissionsKernel;
   policyTable: GitSafetyPolicyTestCase[];
 }
@@ -133,6 +151,96 @@ function asOptionalEnv(
   return out;
 }
 
+function asOptionalString(value: unknown, label: string): string | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value !== "string") {
+    throw new TypeError(`[git-safety-policy] ${label} must be a string`);
+  }
+  return value;
+}
+
+function asNumber(value: unknown, label: string): number {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    throw new TypeError(`[git-safety-policy] ${label} must be a finite number`);
+  }
+  return value;
+}
+
+function asEffect(value: unknown, label: string): GitSafetyEffect {
+  if (value === "deny" || value === "allow" || value === "ask") return value;
+  throw new TypeError(`[git-safety-policy] ${label} must be deny|allow|ask`);
+}
+
+function asMatch(value: unknown, label: string): Record<string, unknown> & { kind: string } {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError(`[git-safety-policy] ${label} must be an object`);
+  }
+  const kind = (value as any).kind;
+  if (typeof kind !== "string" || !kind) {
+    throw new TypeError(`[git-safety-policy] ${label}.kind must be a non-empty string`);
+  }
+  return value as any;
+}
+
+function asOptionalEvaluation(
+  value: unknown,
+  label: string,
+): GitSafetyEvaluationSemantics | undefined {
+  if (value === undefined) return undefined;
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError(`[git-safety-policy] ${label} must be an object`);
+  }
+  const v = value as any;
+  const resolution = String(v.resolution ?? "");
+  if (
+    resolution !== "priority_then_first_match" &&
+    resolution !== "first_match_wins"
+  ) {
+    throw new TypeError(
+      `[git-safety-policy] ${label}.resolution must be priority_then_first_match|first_match_wins`,
+    );
+  }
+  const defaultEffect = String(v.defaultEffect ?? "");
+  if (defaultEffect !== "allow" && defaultEffect !== "deny") {
+    throw new TypeError(
+      `[git-safety-policy] ${label}.defaultEffect must be allow|deny`,
+    );
+  }
+  const askBehavior = String(v.askBehavior ?? "");
+  if (askBehavior !== "deny_if_noninteractive" && askBehavior !== "allow") {
+    throw new TypeError(
+      `[git-safety-policy] ${label}.askBehavior must be deny_if_noninteractive|allow`,
+    );
+  }
+  return {
+    resolution,
+    defaultEffect,
+    askBehavior,
+  } as GitSafetyEvaluationSemantics;
+}
+
+function asOptionalRules(value: unknown, label: string): GitSafetyRule[] | undefined {
+  if (value === undefined) return undefined;
+  if (!Array.isArray(value)) {
+    throw new TypeError(`[git-safety-policy] ${label} must be an array`);
+  }
+  return value.map((v, i) => {
+    if (!v || typeof v !== "object" || Array.isArray(v)) {
+      throw new TypeError(`[git-safety-policy] ${label}[${i}] must be an object`);
+    }
+    const r = v as any;
+    const id = String(r.id ?? "");
+    if (!id) throw new TypeError(`[git-safety-policy] ${label}[${i}].id required`);
+    return {
+      id,
+      effect: asEffect(r.effect, `${label}[${i}].effect`),
+      priority: asNumber(r.priority, `${label}[${i}].priority`),
+      rationale: String(r.rationale ?? ""),
+      match: asMatch(r.match, `${label}[${i}].match`),
+    };
+  });
+}
+
 export function parseKernelYaml(yamlText: string): GitSafetyKernel {
   const data = YAML.parse(yamlText) as unknown;
   if (!data || typeof data !== "object" || Array.isArray(data)) {
@@ -142,6 +250,9 @@ export function parseKernelYaml(yamlText: string): GitSafetyKernel {
   if (obj.schemaVersion !== 1) {
     throw new TypeError("[git-safety-policy] schemaVersion must be 1");
   }
+  const policyId = asOptionalString((obj as any).policyId, "policyId");
+  const evaluation = asOptionalEvaluation((obj as any).evaluation, "evaluation");
+  const rules = asOptionalRules((obj as any).rules, "rules");
   const cp = (obj as any).claudePermissions as Partial<ClaudePermissionsKernel>;
   if (!cp || typeof cp !== "object") {
     throw new TypeError("[git-safety-policy] claudePermissions is required");
@@ -204,6 +315,9 @@ export function parseKernelYaml(yamlText: string): GitSafetyKernel {
 
   return {
     schemaVersion: 1,
+    policyId,
+    evaluation,
+    rules,
     claudePermissions,
     policyTable,
   };
@@ -243,4 +357,3 @@ export function renderShellInclude(kernel: GitSafetyKernel): string {
     "",
   ].join("\n");
 }
-

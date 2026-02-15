@@ -24,6 +24,102 @@ Generators and tests must derive from this kernel to prevent drift between layer
 
 ```yaml baseshop-git-safety-policy
 schemaVersion: 1
+policyId: baseshop-git-safety
+
+evaluation:
+  resolution: priority_then_first_match
+  defaultEffect: allow
+  # If a platform cannot implement interactive "ask", treat ask as deny.
+  askBehavior: deny_if_noninteractive
+
+# Semantic rules for runtime enforcement. Platform adapters (e.g. Claude permissions
+# matchers) should be derived from these rules where possible.
+rules:
+  - id: deny.skip_bypass_env
+    effect: deny
+    priority: 1000
+    rationale: Prevent bypassing writer lock / safety hooks in agent workflows.
+    match:
+      kind: env_var
+      names: [SKIP_WRITER_LOCK, SKIP_SIMPLE_GIT_HOOKS]
+
+  - id: deny.hooks_path_bypass
+    effect: deny
+    priority: 990
+    rationale: Prevent bypassing git hooks via core.hooksPath.
+    match:
+      kind: git_hooks_path
+
+  - id: deny.worktree
+    effect: deny
+    priority: 980
+    rationale: Worktrees create additional checkouts and are forbidden in this repo.
+    match:
+      kind: git_argv
+      subcommand: worktree
+
+  - id: deny.rebase
+    effect: deny
+    priority: 970
+    rationale: Rebase rewrites history and is forbidden by default.
+    match:
+      kind: git_argv
+      subcommand: rebase
+
+  - id: deny.commit_amend
+    effect: deny
+    priority: 960
+    rationale: Amend rewrites history; use a new commit instead.
+    match:
+      kind: git_argv
+      subcommand: commit
+      flagsAny: [--amend]
+
+  - id: deny.force_push
+    effect: deny
+    priority: 950
+    rationale: Force-push can overwrite remote history.
+    match:
+      kind: git_argv
+      subcommand: push
+      flagsAny: [-f, --force, --force-with-lease, --mirror]
+
+  - id: deny.reset_modes
+    effect: deny
+    priority: 940
+    rationale: Reset with mode flags can destroy working tree state.
+    match:
+      kind: git_argv
+      subcommand: reset
+      flagsAny: [--hard, --merge, --keep]
+
+  - id: ask.reset_head_tilde
+    effect: ask
+    priority: 930
+    rationale: Bare reset to earlier commits is risky; requires explicit confirmation.
+    match:
+      kind: git_argv
+      subcommand: reset
+      argsAnyRegex: ["^HEAD~[0-9]*$"]
+
+  - id: deny.clean_force
+    effect: deny
+    priority: 920
+    rationale: Clean with force deletes untracked files; require dry-run first.
+    match:
+      kind: git_argv
+      subcommand: clean
+      flagsRegexAny: ["^-.*f"]
+      flagsNone: [-n, --dry-run]
+
+  - id: allow.clean_dry_run
+    effect: allow
+    priority: 100
+    rationale: Dry-run clean is safe.
+    match:
+      kind: git_argv
+      subcommand: clean
+      flagsAny: [-n, --dry-run]
 claudePermissions:
   deny:
     - Bash(git reset --hard:*)

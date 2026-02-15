@@ -157,9 +157,9 @@ Triage buckets (from this run):
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Build lint ledger (errors + warnings + infra noise) | 95% | S | Complete (2026-02-15) | - | TASK-02 |
-| TASK-02 | CHECKPOINT | Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy | 95% | S | Pending | TASK-01 | TASK-03, TASK-04 |
+| TASK-02 | CHECKPOINT | Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy | 95% | S | Complete (2026-02-15) | TASK-01 | TASK-03, TASK-04 |
 | TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) (conditional) | 80% | M | Blocked | TASK-02 | TASK-12 (conditional) |
-| TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Blocked | TASK-02 | TASK-05 |
+| TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Complete (2026-02-15) | TASK-02 | TASK-05 |
 | TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Blocked | TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Blocked | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Refactor max-lines-per-function offenders (configured thresholds) | 80% | M | Blocked | TASK-06 | TASK-08 |
@@ -254,6 +254,12 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:** N/A
 - **Documentation impact:** This plan only
 
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Sequencing decision (evidence-driven):** The highest-count error rule is `@typescript-eslint/no-explicit-any` (115 errors) and the top error files are concentrated under `apps/brikette/src/routes/guides/guide-seo/**`. Early remediation must focus on these hotspots without weakening repo rules.
+- **Infra/noise:** Absent in this ledger run (stderr empty; no infra/noise strings), so TASK-03 is expected to be `N/A` unless a future run shows project-service noise.
+- **Drift guardrail decision:** Minimum policy applies: PRs touching `apps/brikette/src/**` must not increase total errors/warnings vs the 2026-02-15 snapshot captured above.
+
 ### TASK-03: Fix TypeScript project-service wiring (no infra/noise warnings) (conditional)
 - **Type:** IMPLEMENT
 - **Deliverable:** Code/config change so eslint type-aware runs do not emit TypeScript project-service warnings for Brikette source files.
@@ -300,6 +306,13 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `33af1144e4` (note: commit subject is unrelated; change landed opportunistically in that commit)
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/utils/i18n-types.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
 
 ### TASK-05: Mechanical cleanup tranche (unused vars, duplicates, import sorting)
 - **Type:** IMPLEMENT

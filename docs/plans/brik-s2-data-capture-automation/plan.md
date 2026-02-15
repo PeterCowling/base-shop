@@ -78,7 +78,7 @@ Chosen: Option A, while still refactoring shared logic into testable modules so 
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Define shared scenario inputs + parsing helpers (structured S1/S2/S3) | 82% | M | Complete | - | TASK-05 |
 | TASK-02 | IMPLEMENT | Make Octorate export configurable for S2 (time filter + date range) | 80% | M | Complete | - | TASK-03 |
-| TASK-03 | IMPLEMENT | Implement per-channel bookings aggregation (check-in month, 12-month window, deterministic dedupe) | 82% | L | Pending | TASK-02 | TASK-04, TASK-09 |
+| TASK-03 | IMPLEMENT | Implement per-channel bookings aggregation (check-in month, 12-month window, deterministic dedupe) | 82% | L | Complete | TASK-02 | TASK-04, TASK-09 |
 | TASK-04 | IMPLEMENT | Commission derivation from config (provenance + edge-case rules) | 84% | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Orchestrator: run export -> economics -> parity captures -> verify outputs (atomic, scaffold replace rules) | 80% | L | Pending | TASK-01, TASK-04, TASK-07, TASK-08 | TASK-09 |
 | TASK-06 | IMPLEMENT | Parity capture: Direct (Octorate booking engine) with EUR and `--mode` plumbing | 80% | M | Pending | - | TASK-07, TASK-08 |
@@ -197,8 +197,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:**
   - Primary: `packages/mcp-server/octorate-process-bookings.mjs`
   - Primary: `packages/mcp-server/src/startup-loop/octorate-bookings.ts` (new pure module)
-  - Primary: `packages/mcp-server/src/startup-loop/__tests__/octorate-bookings.test.ts` (new)
-  - Primary: `packages/mcp-server/src/startup-loop/__tests__/fixtures/octorate-reservations-sample.xlsx` (new, anonymized)
+  - Primary: `packages/mcp-server/src/__tests__/startup-loop-octorate-bookings.test.ts` (new)
+  - Primary: `packages/mcp-server/jest.startup-loop.config.cjs` (expand testMatch)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04, TASK-09
 - **Confidence:** 82%
@@ -220,6 +220,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Planning validation:**
   - Evidence read: `packages/mcp-server/octorate-process-bookings.mjs`, `packages/mcp-server/OCTORATE_EXPORT_README.md`, and `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` parse expectations.
 - **What would make this ≥90%:** fixture coverage for real-world Refer patterns observed in the latest export.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** 572bf0a6b3
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+- **Implementation notes:**
+  - Added pure aggregation logic in `packages/mcp-server/src/startup-loop/octorate-bookings.ts` (12 complete check-in months, global Refer dedupe, Unknown safety).
+  - Extended `packages/mcp-server/octorate-process-bookings.mjs` to optionally emit `YYYY-MM-DD-bookings-by-channel.csv` via `--emit-bookings-by-channel` without changing legacy `bookings_by_month.csv` semantics.
+  - Expanded `packages/mcp-server/jest.startup-loop.config.cjs` so startup-loop suite includes the new unit tests.
 
 ### TASK-04: Commission Derivation (Config + Provenance)
 - **Type:** IMPLEMENT

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Active
 Domain: Repo
 Workstream: Engineering
 Created: 2026-01-26
@@ -224,26 +224,27 @@ Notes (evidence used for replan decomposition):
 | TASK-10 | IMPLEMENT | Remove ds/no-hardcoded-copy errors using Brikette locales strategy | 78% | M | Superseded (decomposed; see TASK-19, TASK-20) | TASK-08 | TASK-12 |
 | TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Superseded (decomposed; see TASK-21..TASK-25) | TASK-08 | TASK-12 |
 | TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Complete (2026-02-15) | TASK-08 | TASK-12 |
-| TASK-14 | IMPLEMENT | Fix remaining `ds/container-widths-only-at` errors (post-task-13-09 ledger) | 85% | S | Ready | TASK-08 | TASK-12 |
+| TASK-14 | IMPLEMENT | Fix remaining `ds/container-widths-only-at` errors (post-task-13-09 ledger) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-15 | IMPLEMENT | Fix remaining `ds/enforce-layout-primitives` errors (post-task-13-09 ledger) | 85% | S | Ready | TASK-08 | TASK-12 |
 | TASK-16 | IMPLEMENT | Fix remaining react-hooks error rules + `max-depth` errors (post-task-13-09 ledger) | 80% | M | Ready | TASK-08 | TASK-12 |
 | TASK-17 | IMPLEMENT | Fix remaining `max-lines-per-function` errors (post-task-13-09 ledger) | 82% | M | Ready | TASK-08 | TASK-12 |
 | TASK-18 | IMPLEMENT | Fix remaining `@typescript-eslint/no-unused-vars` errors (post-task-13-09 ledger) | 90% | S | Ready | TASK-08 | TASK-12 |
 | TASK-19 | INVESTIGATE | i18n/copy strategy check (coverage/parity tests + locale policy) | 90% | S | Complete (2026-02-15) | TASK-08 | TASK-20 |
-| TASK-20 | IMPLEMENT | Remove `ds/no-hardcoded-copy` errors in redirect stubs (cookie-policy, privacy-policy) | 85% | S | Ready | TASK-19 | TASK-12 |
+| TASK-20 | IMPLEMENT | Remove `ds/no-hardcoded-copy` errors in redirect stubs (cookie-policy, privacy-policy) | 85% | S | Complete (2026-02-15) | TASK-19 | TASK-12 |
 | TASK-29 | IMPLEMENT | Remove remaining `ds/no-hardcoded-copy` errors (and as many warnings as feasible) | 74% | L | Blocked | TASK-19 | TASK-12 |
 | TASK-21 | INVESTIGATE | Restricted-imports audit (verify supported entrypoints + migration map) | 85% | S | Ready | TASK-08 | TASK-22 |
 | TASK-22 | IMPLEMENT | Eliminate `no-restricted-imports` warnings in Brikette | 74% | L | Blocked | TASK-21 | TASK-12 |
 | TASK-23 | IMPLEMENT | Remediate security warnings to reach `--max-warnings=0` (tests + seo-audit) | 78% | L | Ready | TASK-08 | TASK-12 |
-| TASK-24 | IMPLEMENT | Fix `ds/min-tap-size` warnings (post-task-13-09 ledger) | 82% | M | Ready | TASK-14 | TASK-12 |
+| TASK-24 | IMPLEMENT | Fix `ds/min-tap-size` warnings (apartment tranche + SkipLink) | 82% | M | Complete (2026-02-15) | TASK-14 | TASK-12 |
+| TASK-30 | IMPLEMENT | ExperiencesHero lint remediation (tap-size + coupled warnings) | 78% | M | Ready | TASK-08 | TASK-12 |
+| TASK-31 | IMPLEMENT | HowToGetHereIndexContent warnings (tap-size + unsafe-regex) | 85% | S | Ready | TASK-08 | TASK-12 |
 | TASK-25 | IMPLEMENT | Fix remaining a11y/Next/react-hooks warnings (alt-text, no-img-element, exhaustive-deps) | 85% | S | Ready | TASK-08 | TASK-12 |
 | TASK-26 | INVESTIGATE | `no-explicit-any` remaining offenders: type strategy + call-site map | 85% | M | Ready | TASK-08 | TASK-27 |
 | TASK-27 | IMPLEMENT | Remove remaining `@typescript-eslint/no-explicit-any` errors (post-task-13-09 ledger) | 74% | L | Blocked | TASK-26 | TASK-12 |
 | TASK-28 | IMPLEMENT | Reduce remaining `complexity` errors to configured thresholds (post-task-13-09 ledger) | 74% | L | Ready | TASK-08 | TASK-12 |
-| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 85% | S | Blocked | TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-27, TASK-28, TASK-29 (+ TASK-03 if applicable) | - |
+| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 85% | S | Blocked | TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-27, TASK-28, TASK-29 (+ TASK-03 if applicable) | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
-
 ## Parallelism Guide
 Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 
@@ -254,10 +255,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 3 | TASK-03 (conditional) + TASK-04 | TASK-02 | TASK-03 only if infra/noise exists; TASK-04 can proceed if TASK-03 is N/A |
 | 4 | TASK-05 -> TASK-06 -> TASK-07 | TASK-04 | Sequential refactor tranches; keep diffs small |
 | 5 | TASK-08 | TASK-07 | Re-measure + replan |
-| 6 | TASK-09 + TASK-14..TASK-18 + TASK-19..TASK-28 | TASK-08 | Post-checkpoint remediation in small batches; each blocks TASK-12 |
-| 7 | TASK-12 | TASK-09, TASK-14..TASK-18, TASK-20, TASK-22, TASK-23..TASK-25, TASK-27, TASK-28 (+ TASK-03 if applicable) | Enable strict lint last |
+| 6 | TASK-09 + TASK-14..TASK-18 + TASK-19..TASK-31 | TASK-08 | Post-checkpoint remediation in small batches; each blocks TASK-12 |
+| 7 | TASK-12 | TASK-09, TASK-14..TASK-18, TASK-20, TASK-22, TASK-23..TASK-25, TASK-27, TASK-28, TASK-30, TASK-31 (+ TASK-03 if applicable) | Enable strict lint last |
 
-**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 29
+**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 31
 
 ## Tasks
 
@@ -648,7 +649,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/package.json`
-- **Depends on:** TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-27, TASK-28 (+ TASK-03 if applicable)
+- **Depends on:** TASK-09, TASK-14, TASK-15, TASK-16, TASK-17, TASK-18, TASK-20, TASK-22, TASK-23, TASK-24, TASK-25, TASK-30, TASK-31, TASK-27, TASK-28 (+ TASK-03 if applicable)
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 90% - swap the script once strict lint is green
@@ -969,16 +970,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
 
-### TASK-24: Fix `ds/min-tap-size` warnings (post-task-13-09 ledger)
+### TASK-24: Fix `ds/min-tap-size` warnings (apartment tranche + SkipLink)
 - **Type:** IMPLEMENT
-- **Deliverable:** UI changes that eliminate `ds/min-tap-size` warnings in the offender set.
+- **Deliverable:** UI changes that eliminate `ds/min-tap-size` warnings in a low-coupling offender subset.
 - **Execution-Skill:** lp-build
-- **Affects:** Offender set from the post-task-13-09 ledger (6 warnings, 6 files):
+- **Affects:**
   - `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx`
   - `apps/brikette/src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx`
   - `apps/brikette/src/app/[lang]/apartment/street-level-arrival/StreetLevelArrivalContent.tsx`
-  - `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx`
-  - `apps/brikette/src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx`
   - `apps/brikette/src/components/common/SkipLink.tsx`
 - **Depends on:** TASK-14
 - **Blocks:** TASK-12
@@ -987,7 +986,65 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - `ds/min-tap-size` warnings are eliminated for all files in `Affects`.
 - **Validation contract:**
   - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`), quoting `[lang]` paths.
-  - TC-02 (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern \"apartment|experiences|how-to-get-here|skip\" --maxWorkers=2 --passWithNoTests`
+  - TC-02 (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern "apartment|skip" --maxWorkers=2 --passWithNoTests`
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `5cf98e360b`
+- **Notes:**
+  - Brikette tap-size minimum is configured as `min: 44` in `eslint.config.mjs` for Brikette scope (so `min-h-11 min-w-11` is required; `-10` is insufficient).
+  - `SkipLink` is `sr-only` by default; `ds/min-tap-size` is a false-positive in the hidden state. A narrowly-scoped disable was applied for the hidden state with a TTL.
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/apartment/ApartmentPageContent.tsx" --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/apartment/private-stay/PrivateStayContent.tsx" --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/apartment/street-level-arrival/StreetLevelArrivalContent.tsx" --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/components/common/SkipLink.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern "ApartmentStructureAndLinks" --maxWorkers=2` — PASS
+
+### TASK-30: ExperiencesHero lint remediation (tap-size + coupled warnings)
+- **Type:** IMPLEMENT
+- **Deliverable:** Reduce blocker findings in `ExperiencesHero` so strict lint can progress (tap-size plus any directly coupled warnings/errors that prevent isolated fixes).
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-12
+- **Confidence:** 78%
+  - Implementation: 80% - single-file remediation, but multiple rule families may be present
+  - Approach: 75% - fix violations rather than disabling; only use narrowly-scoped disables when truly unavoidable
+  - Impact: 78% - user-visible hero; validate via targeted tests/typecheck
+- **Acceptance:**
+  - `ds/min-tap-size` warnings in `ExperiencesHero` are eliminated.
+  - Any additional warnings/errors in `ExperiencesHero` that block a clean file-scoped lint run are eliminated or explicitly routed to the owning tranche task (copy, restricted imports, DS/layout) with a plan note.
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/experiences/ExperiencesHero.tsx" --no-fix --max-warnings=0` passes.
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+  - TC-03 (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern "experiences" --maxWorkers=2 --passWithNoTests`
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+### TASK-31: HowToGetHereIndexContent warnings (tap-size + unsafe-regex)
+- **Type:** IMPLEMENT
+- **Deliverable:** Eliminate the warning set in `HowToGetHereIndexContent` needed for `--max-warnings=0`.
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-12
+- **Confidence:** 85%
+  - Implementation: 85% - localized changes
+  - Approach: 85% - fix warning root causes; do not globally weaken `security/*` rules
+  - Impact: 85% - user-visible page; validate quickly
+- **Acceptance:**
+  - `security/detect-unsafe-regex` warning is eliminated in the file.
+  - `ds/min-tap-size` warning is eliminated in the file.
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/how-to-get-here/HowToGetHereIndexContent.tsx" --no-fix --max-warnings=0` passes.
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+  - TC-03 (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern "how-to-get-here" --maxWorkers=2 --passWithNoTests`
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None

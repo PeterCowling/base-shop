@@ -132,11 +132,20 @@ Confirm:
 
 ### C) Local readiness gate
 
-- Working tree is clean, **or** you can prove the current dirty tree is non-overlapping with this task’s scope:
-  - Capture changed paths: `git status --porcelain=v1` and `git diff --name-only --diff-filter=ACMRTUXB`
-  - Compare changed paths to this task’s `Affects` list.
-  - If any changed path intersects with `Affects` (including untracked files you’d need to add for the task), STOP (risk of mixing changes) and resolve the overlap before building.
-  - If there is no intersection, proceed but enforce task-only staging: only `git add` / commit files in `Affects` (and explicitly planned new files); never stage unrelated diffs.
+- A clean working tree is preferred, but a dirty tree is **not automatically blocking**.
+
+- If the working tree is dirty, enter **Isolation Mode**:
+  - Capture changed paths:
+    - `git status --porcelain=v1`
+    - `git diff --name-only --diff-filter=ACMRTUXB`
+  - Compare the changed paths to the task’s `Affects` list.
+  - If there is **no intersection** with `Affects`: proceed, but enforce task-only staging (only `git add` / commit files in `Affects` and explicitly planned new files).
+  - If there **is** an intersection with `Affects`:
+    - Prefer to proceed only if you can keep the change set task-scoped (avoid mixing unrelated diffs).
+    - If the user explicitly instructs to proceed anyway, proceed in Isolation Mode but:
+      - Stage only the intended task files.
+      - Before committing, verify the staged file list is exactly what you intend: `git diff --cached --name-only`.
+      - Record a one-line note in the plan’s task completion section if any known overlap risk existed.
 
 - Baseline is sane:
   - For code/mixed tasks: if the repo has a standard "quick check" (typecheck/lint/unit), run it before starting.

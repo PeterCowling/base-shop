@@ -22,7 +22,7 @@ Card-ID:
 
 ## Scope
 ### Summary
-Audit the current `dev` branch (commit `bee516f2b4a976ba07eac5ffe778a9eb1bfbd51b`) against the official Next.js 16 release notes to identify:
+Audit the current `dev` branch (local HEAD `e7ee234ab1`, 2026-02-15) against the official Next.js 16 release notes to identify:
 - remaining breaking-risk issues
 - remaining deprecated usage
 - pragmatic opportunities to get more value from the upgrade
@@ -51,6 +51,7 @@ This is FACT-FIND ONLY: no migrations are applied in this brief.
 ### Entry Points
 - Root versions and constraints: `package.json`, `.nvmrc`, `.github/workflows/test.yml`
 - Next app scripts (webpack opt-out enforcement): `apps/*/package.json`
+- CI workflows that bypass app scripts: `.github/workflows/*.yml`
 - Next shared config: `packages/next-config/index.mjs`, `packages/next-config/next.config.mjs`
 - Middleware surface area: `apps/*/middleware.ts`, `apps/*/src/middleware.ts`
 - Async Request API surface area: `apps/**/src/app/**` (pages + route handlers + layouts + metadata/image routes)
@@ -62,6 +63,7 @@ This is FACT-FIND ONLY: no migrations are applied in this brief.
   - `.github/workflows/test.yml` (node-version: 20.19.4)
 - Webpack enforcement:
   - `apps/*/package.json` scripts all use `next build --webpack` and `next dev --webpack`.
+  - Exception risk: CI can still invoke `pnpm exec next build` directly (bypassing scripts), which would default to Turbopack on Next 16 unless `--webpack` is passed.
 - Image config (Next 16 defaults audit hooks):
   - `packages/next-config/index.mjs` sets `images.qualities: [75, 80, 85, 90]` and sets `images.unoptimized` for static export builds.
 - Middleware locations (Next 16 deprecation applies):
@@ -120,23 +122,33 @@ Key items called out in the release notes that map to repo risk:
 
 ### 1) Avoid Breaking Issues (Remaining Work)
 
-1) Residual sync `params` types in route handlers (hard-break risk)
-- `apps/cms/src/app/api/auth/[...nextauth]/route.ts` uses `ctx: { params: { nextauth: string[] } }` and forwards to `handler(req, ctx)`.
-- `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts` types context as `{ params: { id: string } }`.
+1) Residual sync `params` types in route handlers on `dev` branch (hard-break risk)
+- On `dev` as of `e7ee234ab1`:
+  - `apps/cms/src/app/api/auth/[...nextauth]/route.ts` uses `ctx: { params: { nextauth: string[] } }` and forwards to `handler(req, ctx)`.
+  - `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts` types context as `{ params: { id: string } }`.
+- In the current working tree (uncommitted), both files are already updated to async params (`params: Promise<...>` + `await params`).
 
 Why it matters:
 - Next 16 removes synchronous access for route context params; mismatched handler signatures can fail build/typegen even if params are unused.
 
-Quantification:
-- `rg -n "params\s*:\s*\{\s*[^}]+\}" apps/**/src/app` (excluding tests/CT) returns 3 matches; 2 are real route-handler signature matches and 1 is unrelated payload data (`apps/cover-me-pretty/src/app/api/analytics/tryon/route.ts`).
+Quantification note:
+- Simple greps for `params: {` are noisy in this repo because many helpers use a `params` key in payloads or function args (for example `apps/cover-me-pretty/src/app/api/analytics/tryon/route.ts`), and CT tests mount router params.
+- For route handlers, prefer auditing `apps/**/src/app/api/**/route.ts` signatures directly.
 
-2) CMS has two middleware entrypoints (routing ambiguity risk)
+2) CI workflow bypasses `--webpack` on Next 16 (hard-break / flake risk)
+- `.github/workflows/brikette.yml` runs `pnpm exec next build` (no `--webpack`) as part of the static export build command.
+
+Why it matters:
+- Next 16 defaults `next build` to Turbopack unless opted out.
+- This can diverge from local/app-script builds (which use `--webpack`) and can introduce CI-only failures or different output.
+
+3) CMS has two middleware entrypoints (routing ambiguity risk)
 - Both `apps/cms/middleware.ts` and `apps/cms/src/middleware.ts` exist.
 
 Why it matters:
 - Next supports middleware under app root or `src/`, but having both is ambiguous and can cause build-time errors or "wrong middleware runs" behavior.
 
-3) Middleware runtime incompatibility risk (Edge vs Node)
+4) Middleware runtime incompatibility risk (Edge vs Node)
 - Node-only imports exist in middleware entrypoints:
   - `apps/cover-me-pretty/middleware.ts` imports `node:crypto`.
   - `apps/cms/middleware.ts` imports `crypto` and `helmet`.
@@ -147,14 +159,17 @@ Why it matters:
 - If the app needs Edge interception, it must remain middleware (for now) and must not depend on Node-only modules.
 - For Cloudflare/OpenNext apps (`apps/brikette`, `apps/business-os`, `apps/xa`, `apps/cms`), `proxy.ts` may not be viable at all because the deployment runtime is Worker/Edge, not a full Node.js server.
 
-4) Build output directory changes: `.next/dev` (tooling/CI flake risk)
+5) Build output directory changes: `.next/dev` (tooling/CI flake risk)
 - Next 16 changes dev output to `.next/dev` and adds lockfile behavior for concurrent dev/build.
 
 Repo evidence:
 - No explicit references to `.next/dev` or `.next/trace` were found in tracked code.
-- Repo scripts do reference `.next` paths in a few places (e.g. CMS webpack cache directory and repo tooling that ignores `.next`), so any tooling that reads `.next/*` should be validated against the new layout.
+- There are multiple references to `.next/**`:
+  - `scripts/validate-changes.sh` ignores `apps/*/.next/` when resolving related tests (this should still work under `.next/dev` because it remains under `.next/`).
+  - `apps/brikette/scripts/perf/analyze-chunks.mjs` expects `.next/static/chunks` (build output; not dev output).
+  - Many `tsconfig.json` files include `.next/types/**/*.ts` (expected).
 
-5) Scroll behavior change is currently unmanaged (behavior drift risk)
+6) Scroll behavior change is currently unmanaged (behavior drift risk)
 - Next 16 no longer overrides global `scroll-behavior` during SPA transitions by default; opt back into the prior override behavior via `data-scroll-behavior="smooth"` on the `<html>` element.
 
 Repo evidence:
@@ -255,6 +270,9 @@ Remaining deprecation surface:
 - TASK-C: Next 16 operational behavior checks
   - Confirm no tooling depends on old `.next` dev layout; add a small CI smoke check if needed.
   - Decide and implement scroll behavior intent per app (`data-scroll-behavior` vs CSS only).
+- TASK-E: CI/Workflow build invocation consistency
+  - Ensure no workflow runs `next build` without `--webpack` (example: `.github/workflows/brikette.yml`).
+  - Validate whether `opennextjs-cloudflare build` is already enforcing Webpack on Next 16; if not, document the supported knob (env/config) and apply consistently across CF apps.
 - TASK-D (Optional): Turbopack pilot
   - Select one low-customization app and evaluate dropping `--webpack`.
 

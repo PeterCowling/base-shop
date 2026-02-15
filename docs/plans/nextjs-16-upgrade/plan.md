@@ -102,7 +102,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 | 2 | TASK-05 | Wave 1: TASK-02, TASK-06, TASK-08 | CHECKPOINT gate before riskier runtime work |
 | 3 | TASK-03, TASK-04, TASK-07 | Wave 2: TASK-05 | Middleware/proxy and image pinning depend on checkpoint |
 
-**Max parallelism:** 4 (Wave 1)
+**Max parallelism:** 3 (Wave 1)
 **Critical path:** TASK-02 -> TASK-05 -> TASK-04 (3 waves)
 **Total tasks:** 8
 
@@ -210,7 +210,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ### TASK-05: CHECKPOINT - Post-Hardening Validation And Replan
 - **Type:** CHECKPOINT
-- **Depends on:** TASK-01, TASK-02, TASK-06, TASK-08
+- **Depends on:** TASK-02, TASK-06, TASK-08
 - **Blocks:** TASK-03, TASK-04, TASK-07
 - **Confidence:** 95%
 - **Acceptance:**

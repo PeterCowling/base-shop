@@ -105,3 +105,40 @@ What would upgrade this to GO:
 - Provide an **aggregate** post-cutoff count for both events since `2026-02-15T00:00Z` (preferred), or
 - Run an operator-observed tail during normal traffic for a materially longer window (e.g. several hours) and record “0 hits” for both event names.
 
+## Deferred Execution Notes (Pick-Up Checklist)
+
+Default stability window (recommended for caution):
+- Window start: `2026-02-15T00:00:00Z` (aliases/dual-read disabled)
+- Window end (earliest GO date): `2026-02-22T00:00:00Z` (7 days)
+
+Evidence to capture before flipping GO for TASK-13:
+1) Telemetry (preferred: aggregate)
+- Goal: since `2026-02-15T00:00:00Z`, both are zero:
+  - `bos.stage_alias_used`
+  - `bos.stage_doc_filename_alias_used`
+- If you have aggregate access (dashboard/logpush), record the query + result counts here.
+
+2) Telemetry (fallback: long live tail during normal traffic)
+- Run in `apps/business-os`:
+```bash
+date -u +"%Y-%m-%dT%H:%M:%SZ"
+npx --yes wrangler tail business-os --format pretty --search bos.stage_alias_used
+date -u +"%Y-%m-%dT%H:%M:%SZ"
+
+date -u +"%Y-%m-%dT%H:%M:%SZ"
+npx --yes wrangler tail business-os --format pretty --search bos.stage_doc_filename_alias_used
+date -u +"%Y-%m-%dT%H:%M:%SZ"
+```
+- Target: multi-hour observation (not minutes). Record start/end timestamps and “0 hits observed”.
+
+3) Repo audit (re-run on the day you flip GO)
+```bash
+bash scripts/check-startup-loop-contracts.sh
+rg -n '\"stage\"\\s*:\\s*\"lp-fact-find\"' .claude/skills
+rg -n 'stage-docs/.*/lp-fact-find' .claude/skills
+rg -n --fixed-strings 'fact-finding.user.md' docs/business-os
+```
+
+Then update this memo with:
+- The aggregate counts or the long-tail observation windows
+- Explicit “GO” statement for TASK-13

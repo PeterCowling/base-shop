@@ -90,7 +90,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Complete (2026-02-15) | TASK-03, TASK-04 | TASK-11 |
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Complete (2026-02-15) | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Complete (2026-02-15) | TASK-11 | TASK-13 |
-| TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12, TASK-14 | - |
+| TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Deferred (earliest 2026-02-22) | TASK-12, TASK-14 | - |
 | TASK-14 | INVESTIGATE | Stability gate: confirm post-cutoff alias/legacy usage is zero (telemetry + repo audit) | 85% | S | Complete (2026-02-15) | TASK-12 | TASK-13 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -578,6 +578,9 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:**
   - Rollout: only after stability period following TASK-12.
   - Rollback: revert commit/PR.
+- **Status:** Deferred
+  - Earliest re-evaluation: 2026-02-22 (7 days after 2026-02-15T00:00Z cutoff).
+  - Gate evidence lives in `docs/plans/startup-loop-contract-hardening/replan-notes.md` (GO/NO-GO).
 
 #### Re-plan Update (2026-02-15)
 - **Previous confidence:** 75%

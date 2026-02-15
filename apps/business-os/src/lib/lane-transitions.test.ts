@@ -107,7 +107,8 @@ describe("lane-transitions", () => {
 
     it("treats legacy fact-finding.user.md as satisfying fact-find.user.md during window", async () => {
       jest.useFakeTimers();
-      jest.setSystemTime(new Date("2026-02-15T12:00:00.000Z"));
+      // Within window: dual-read enabled through 2026-02-14 (inclusive).
+      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
 
       const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
 
@@ -138,7 +139,8 @@ describe("lane-transitions", () => {
 
     it("does not create canonical fact-find.user.md when legacy exists (but still creates agent doc)", async () => {
       jest.useFakeTimers();
-      jest.setSystemTime(new Date("2026-02-15T12:00:00.000Z"));
+      // Within window: dual-read enabled through 2026-02-14 (inclusive).
+      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
 
       const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
 
@@ -176,6 +178,34 @@ describe("lane-transitions", () => {
           audience: "user",
         })
       );
+
+      infoSpy.mockRestore();
+      jest.useRealTimers();
+    });
+
+    it("does not treat legacy fact-finding.user.md as satisfying fact-find.user.md after window end", async () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date("2026-02-15T12:00:00.000Z"));
+
+      const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
+
+      const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-POST-WINDOW");
+      await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
+      await writeFileWithinRoot(
+        repoPath,
+        path.join(cardDir, "fact-finding.user.md"),
+        "legacy user",
+        "utf-8"
+      );
+
+      const exists = await stageDocExists(
+        repoPath,
+        "TEST-POST-WINDOW",
+        "fact-find",
+        "user"
+      );
+      expect(exists).toBe(false);
+      expect(infoSpy).not.toHaveBeenCalled();
 
       infoSpy.mockRestore();
       jest.useRealTimers();

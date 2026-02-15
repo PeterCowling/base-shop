@@ -1,0 +1,33 @@
+{
+  "currency": "EUR",
+  "rates": [
+    {
+      "channel": "Direct",
+      "rate": 0,
+      "rate_source": "contractual",
+      "rate_last_verified_at": "2026-02-15",
+      "source": "direct"
+    },
+    {
+      "channel": "Booking.com",
+      "rate": 0.15,
+      "rate_source": "estimated",
+      "rate_last_verified_at": "2026-02-15",
+      "source": "default_estimate"
+    },
+    {
+      "channel": "Hostelworld",
+      "rate": 0.1,
+      "rate_source": "estimated",
+      "rate_last_verified_at": "2026-02-15",
+      "source": "default_estimate"
+    },
+    {
+      "channel": "Unknown",
+      "rate": 0,
+      "rate_source": "estimated",
+      "rate_last_verified_at": "2026-02-15",
+      "source": "unknown_default"
+    }
+  ]
+}

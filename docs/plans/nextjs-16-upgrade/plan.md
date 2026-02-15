@@ -84,7 +84,7 @@ Note: Next 16 deprecates `middleware.ts` in favor of `proxy.ts`, but `proxy.ts` 
 |---|---|---|---:|---:|---|---|---|
 | TASK-09 | IMPLEMENT | Fix XA build wrapper to force Webpack (`apps/xa/scripts/build-xa.mjs` adds `--webpack`) | 92% | S | Complete (2026-02-15) | - | TASK-13 |
 | TASK-10 | INVESTIGATE | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | 86% | S | Complete (2026-02-15) | - | TASK-11, TASK-12, TASK-13 |
-| TASK-11 | IMPLEMENT | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | 85% | S | Pending | TASK-10 | TASK-13, TASK-15 |
+| TASK-11 | IMPLEMENT | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | 85% | S | Complete (2026-02-15) | TASK-10 | TASK-13, TASK-15 |
 | TASK-12 | SPIKE | CMS build OOM mitigation prototype (reduce build-graph size; validate `@apps/cms` build) | 82% | M | Pending | TASK-10 | TASK-13 |
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 | TASK-14, TASK-15 |
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 72% ⚠️ | M | Pending | TASK-02 (complete), TASK-13 | - |
@@ -225,6 +225,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:**
   - TC-01: `pnpm --filter @apps/cover-me-pretty build` exits 0 on a fresh shell (no pre-set `NODE_OPTIONS`).
   - TC-02: `pnpm --filter @apps/cover-me-pretty lint && pnpm --filter @apps/cover-me-pretty typecheck` exit 0.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** <pending>
+- **Validation:**
+  - Ran: `pnpm --filter @apps/cover-me-pretty build` -> PASS (no OOM)
+  - Ran: `pnpm --filter @apps/cover-me-pretty lint` -> PASS
+  - Ran: `pnpm --filter @apps/cover-me-pretty typecheck` -> PASS
+- **Implementation notes:**
+  - Updated `apps/cover-me-pretty/package.json` build script to run Next via `node --max-old-space-size=8192 .../next build --webpack`.
+  - Added `typecheck` script to make validation explicit for this app.
 
 ### TASK-12: SPIKE - CMS Build OOM Mitigation Prototype
 - **Type:** SPIKE

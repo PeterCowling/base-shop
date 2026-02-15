@@ -77,9 +77,8 @@ export function renderWithHydration(options: RenderWithHydrationOptions): Hydrat
     // Hydrate with error capture
     // In React 19 with StrictMode in tests, hydration errors throw instead of calling onRecoverableError
     // We catch both thrown errors and onRecoverableError callbacks
-    let root;
     try {
-      root = hydrateRoot(container, client, {
+      hydrateRoot(container, client, {
         onRecoverableError: (error: unknown) => {
           // Capture hydration errors reported via callback
           if (error instanceof Error) {

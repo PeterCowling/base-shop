@@ -1,9 +1,7 @@
-import { ASSISTANCE_GUIDE_KEYS, isAssistanceGuideKey } from "@/data/assistanceGuideKeys";
+import { isAssistanceGuideKey } from "@/data/assistanceGuideKeys";
 import type { GuideKey } from "@/routes.guides-helpers";
 
 import type { ContactCta, QuickLinkItem } from "./types";
-
-const ASSISTANCE_GUIDE_KEY_SET = new Set<GuideKey>(ASSISTANCE_GUIDE_KEYS);
 
 export function normaliseQuickLinks(value: unknown): QuickLinkItem[] {
   if (!Array.isArray(value)) return [];

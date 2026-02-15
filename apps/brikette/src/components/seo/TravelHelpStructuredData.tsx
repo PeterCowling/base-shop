@@ -100,7 +100,6 @@ export default function TravelHelpStructuredData() {
     : null;
   // Parse and normalize NEARBY to use the canonical HOTEL_ID and inLanguage
   let nearbyJson = "";
-  let nearbyParsed: NearbyGraph | undefined;
   try {
     const parsed = JSON.parse(NEARBY) as unknown;
     if (isNearbyGraph(parsed)) {
@@ -116,7 +115,6 @@ export default function TravelHelpStructuredData() {
 
       parsed.inLanguage = lang;
       parsed.url = pageUrl;
-      nearbyParsed = parsed;
       nearbyJson = serializeJsonLdValue(parsed);
     }
   } catch {

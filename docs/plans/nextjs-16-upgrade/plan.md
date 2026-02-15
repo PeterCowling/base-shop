@@ -76,7 +76,7 @@ Next.js 16 is already in the repo (Next 16.1.6 + React 19.2.1 + ESLint 9 toolcha
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Fix remaining sync route handler `params` signatures (Next 16 async enforcement) | 90% | S | Pending | - | TASK-05 |
-| TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 75% ⚠️ | S | Pending | - | TASK-05, TASK-03, TASK-04 |
+| TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 82% | S | Pending | - | TASK-05, TASK-03, TASK-04 |
 | TASK-06 | INVESTIGATE | Next/Image behavior drift audit (defaults + usage patterns) and decide pinning | 85% | S | Pending | - | TASK-05, TASK-07 |
 | TASK-08 | IMPLEMENT | Audit tooling/scripts for `.next/dev` output changes; fix any brittle assumptions | 80% | S | Pending | - | TASK-05 |
 | TASK-05 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-08 | TASK-03, TASK-04, TASK-07 |
@@ -143,10 +143,10 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Deployment entrypoints for each affected app (OpenNext/Cloudflare where applicable)
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-03, TASK-04
-- **Confidence:** 75% ⚠️ BELOW THRESHOLD
-  - Implementation: 85% - inventory is straightforward.
-  - Approach: 70% - must incorporate deployment runtime constraints per app.
-  - Impact: 75% - classification accuracy determines correctness of later migrations.
+- **Confidence:** 82%
+  - Implementation: 90% - inventory is straightforward and can be derived from repo structure + package metadata.
+  - Approach: 82% - default recommendation is conservative: keep middleware for OpenNext/Cloudflare apps unless proxy feasibility is proven.
+  - Impact: 85% - inventory directly reduces the chance of runtime-incompatible interception changes.
 - **Blockers / questions to answer:**
   - For each app with request interception, classify as:
     - Edge-required (must remain middleware), or
@@ -154,7 +154,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - For each interception entrypoint, list Node-only imports (if any) and whether they are required.
 - **Acceptance:**
   - A table exists for all middleware/proxy candidates with: app, file path, purpose, required runtime, Node-only deps, deployment target.
-  - A recommended action is recorded per app: keep middleware (Edge) vs migrate to proxy (Node).
+  - Deployment target evidence is recorded from repo metadata (e.g., presence of `@opennextjs/cloudflare` in `apps/<app>/package.json` or `build:worker` scripts).
+  - A recommended action is recorded per app: keep middleware (Edge) vs migrate to proxy (Node), with an explicit note when the recommendation is constrained by Cloudflare/OpenNext runtime.
 
 ### TASK-06: Next/Image Behavior Drift Audit
 - **Type:** INVESTIGATE

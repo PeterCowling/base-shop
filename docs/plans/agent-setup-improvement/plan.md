@@ -44,6 +44,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - **TASK-05:** Update safety tests to consume the kernel-generated policy (Complete 2026-02-15)
 - **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Complete 2026-02-15)
 - **TASK-10:** Decide hook/guard policy generation format (Complete 2026-02-15)
+- **TASK-12:** Add semantic safety rules to the kernel + compiled policy artifact (Pending)
 - **TASK-11:** Prototype policy-driven evaluation for one enforcement layer (Pending)
 - **TASK-09:** Wire enforcement layers to generated policy evaluation/data (Pending)
 - **TASK-07:** Horizon checkpoint: reassess before CODEX.md + policy rollout (Pending)
@@ -121,7 +122,8 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 | TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-07 |
 | TASK-10 | INVESTIGATE | Decide hook/guard policy generation format | 85% | S | Complete (2026-02-15) | TASK-04, TASK-05 | TASK-11 |
-| TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Pending | TASK-10 | TASK-09 |
+| TASK-12 | SPIKE | Add semantic safety rules to the kernel + compiled policy artifact | 82% | M | Pending | TASK-10 | TASK-11 |
+| TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Pending | TASK-12 | TASK-09 |
 | TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy evaluation/data | 74% (→84% conditional on TASK-10, TASK-11) ⚠️ | M | Pending | TASK-11 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06, TASK-09 | TASK-08 |
 | TASK-08 | IMPLEMENT | Reduce CODEX.md bloat while keeping safety TL;DR | 82% | M | Pending | TASK-07 | - |
@@ -135,12 +137,13 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
 | 1 | TASK-06 | - | Doc pointer fix (uses generated registry) |
-| 2 | TASK-11 | TASK-04, TASK-05, TASK-10 | Prototype the policy-driven wiring approach (one path) |
-| 3 | TASK-09 | TASK-11 | Wire both enforcement layers once the spike proves approach |
-| 4 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
-| 5 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
+| 2 | TASK-12 | TASK-10 | Introduce semantic rules in the kernel + compiled artifact |
+| 3 | TASK-11 | TASK-12 | Prototype the policy-driven wiring approach (one path) |
+| 4 | TASK-09 | TASK-11 | Wire both enforcement layers once the spike proves approach |
+| 5 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
+| 6 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
 
-**Max parallelism:** 2 (Wave 2) | **Critical path:** TASK-11 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 11
+**Max parallelism:** 2 (Wave 3/4) | **Critical path:** TASK-12 -> TASK-11 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 12
 
 
 ## Tasks
@@ -414,7 +417,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Affects:**
   - Primary: (recommended first) `scripts/agent-bin/git` (argv-based, cleaner inputs), plus evaluator entrypoint (new) and/or generator outputs under `.agents/safety/generated/`
   - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
-- **Depends on:** TASK-10
+- **Depends on:** TASK-12
 - **Blocks:** TASK-09
 - **Confidence:** 82%
   - Implementation: 82% — bounded to one layer; existing suites provide fast E2 feedback.
@@ -426,6 +429,26 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Validation contract:**
   - TC-01: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` passes (must pass; covers evaluator drift gate + parity expectations)
   - TC-02: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts --maxWorkers=2` passes if hook is migrated in-spike; otherwise deferred to TASK-09
+
+### TASK-12: Add semantic safety rules to the kernel + compiled policy artifact
+- **Type:** SPIKE
+- **Deliverable:** Kernel gains a semantic rule set suitable for evaluation, and the generator emits a compiled policy artifact that includes semantic rules (not only platform matchers).
+- **Execution-Skill:** lp-build
+- **Affects:**
+  - Primary: `docs/git-safety.md` (kernel schema), `scripts/src/agents/git-safety-policy.ts`, `scripts/src/agents/generate-git-safety-policy.ts`, `.agents/safety/generated/git-safety-policy.json`
+  - Secondary: `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agent-bin/git`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
+- **Depends on:** TASK-10
+- **Blocks:** TASK-11
+- **Confidence:** 82%
+  - Implementation: 82% — bounded to schema + generator + tests; does not change enforcement scripts yet.
+  - Approach: 82% — semantic rules in the kernel are required for a shared evaluator; otherwise the evaluator has no non-brittle policy to execute.
+  - Impact: 82% — enforcement scripts remain unchanged; drift is caught via generator `--check` + tests.
+- **Acceptance:**
+  - Kernel contains explicit evaluation semantics (resolution/default effect) and a semantic `rules:` set covering the current deny/allow surface.
+  - Compiled JSON includes rule semantics and is deterministic (`--check` passes).
+- **Validation contract:**
+  - TC-01: `scripts/agents/generate-git-safety-policy --check` passes → compiled artifact stays in sync.
+  - TC-02: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` passes → kernel/compiled artifact parity remains enforced.
 
 ### TASK-06: Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers
 - **Type:** IMPLEMENT

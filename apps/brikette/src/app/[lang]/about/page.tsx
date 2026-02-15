@@ -12,6 +12,8 @@ import { generateLangParams } from "@/app/_lib/static-params";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import { getSlug } from "@/utils/slug";
 
+import { AboutContentWrapper } from "./AboutContentWrapper";
+
 type Props = {
   params: Promise<{ lang: string }>;
 };
@@ -66,8 +68,8 @@ export default async function AboutPage({ params }: Props) {
   return (
     <Fragment>
       <AboutStructuredData />
-
-      <Section
+      <AboutContentWrapper lang={validLang}>
+        <Section
         as="main"
         padding="none"
         width="full"
@@ -137,6 +139,7 @@ export default async function AboutPage({ params }: Props) {
           ) : null}
         </Section>
       </Section>
+      </AboutContentWrapper>
     </Fragment>
   );
 }

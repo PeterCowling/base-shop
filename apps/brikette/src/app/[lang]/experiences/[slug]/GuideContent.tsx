@@ -7,6 +7,7 @@ import { memo, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
+import { ContentStickyCta } from "@/components/cta/ContentStickyCta";
 import { GuideBoundary } from "@/components/guides/GuideBoundary";
 import PlanChoiceAnalytics from "@/components/guides/PlanChoiceAnalytics";
 import { IS_DEV } from "@/config/env";
@@ -74,28 +75,31 @@ function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
   const metaKey = guideKey;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:max-w-4xl lg:px-8">
-      <Link
-        href={listingPath}
-        className="mb-6 inline-flex min-h-11 min-w-11 items-center gap-2 text-sm font-medium text-primary-700 underline decoration-primary-200 underline-offset-4 transition hover:text-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
-      >
-        <span aria-hidden="true">←</span>
-        {backLabel}
-      </Link>
-      <PlanChoiceAnalytics />
-      {loadError ? (
-        <div className="rounded-lg border border-1 bg-surface-1 p-6 text-center text-muted">
-          <p className="text-sm">This content could not be loaded. Please try refreshing the page.</p>
-        </div>
-      ) : (
-        <GuideBoundary guideKey={guideKey}>
-          <GuideSeoTemplate
-            guideKey={guideKey}
-            metaKey={metaKey}
-          />
-        </GuideBoundary>
-      )}
-    </div>
+    <>
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:max-w-4xl lg:px-8">
+        <Link
+          href={listingPath}
+          className="mb-6 inline-flex min-h-11 min-w-11 items-center gap-2 text-sm font-medium text-primary-700 underline decoration-primary-200 underline-offset-4 transition hover:text-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
+        >
+          <span aria-hidden="true">←</span>
+          {backLabel}
+        </Link>
+        <PlanChoiceAnalytics />
+        {loadError ? (
+          <div className="rounded-lg border border-1 bg-surface-1 p-6 text-center text-muted">
+            <p className="text-sm">This content could not be loaded. Please try refreshing the page.</p>
+          </div>
+        ) : (
+          <GuideBoundary guideKey={guideKey}>
+            <GuideSeoTemplate
+              guideKey={guideKey}
+              metaKey={metaKey}
+            />
+          </GuideBoundary>
+        )}
+      </div>
+      <ContentStickyCta lang={lang} ctaLocation="guide_detail" />
+    </>
   );
 }
 

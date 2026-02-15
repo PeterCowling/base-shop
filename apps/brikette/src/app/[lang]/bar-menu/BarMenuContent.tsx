@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 
+import { ContentStickyCta } from "@/components/cta/ContentStickyCta";
 import BarMenuStructuredData from "@/components/seo/BarMenuStructuredData";
 import { BASE_URL } from "@/config/site";
 import { type BarMenuItemKey, formatBarMenuPrice } from "@/data/menuPricing";
@@ -251,6 +252,7 @@ export function BarMenuContent({ lang }: Props) {
           </p>
         </div>
       </Section>
+      <ContentStickyCta lang={lang} ctaLocation="bar_menu" />
     </Fragment>
   );
 }

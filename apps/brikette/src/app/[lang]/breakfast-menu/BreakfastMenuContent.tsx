@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 
+import { ContentStickyCta } from "@/components/cta/ContentStickyCta";
 import BreakfastMenuStructuredData from "@/components/seo/BreakfastMenuStructuredData";
 import { BASE_URL } from "@/config/site";
 import { type BreakfastMenuItemKey, formatBreakfastMenuPrice } from "@/data/menuPricing";
@@ -287,6 +288,7 @@ export function BreakfastMenuContent({ lang }: Props) {
           </Fragment>
         ))}
       </Section>
+      <ContentStickyCta lang={lang} ctaLocation="breakfast_menu" />
     </Fragment>
   );
 }

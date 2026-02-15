@@ -179,7 +179,7 @@ Top rules by count (errors, unchanged ordering):
 | TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Complete (2026-02-15) | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Refactor max-lines-per-function offenders (configured thresholds) | 80% | M | Complete (2026-02-15) | TASK-06 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Complete (2026-02-15) | TASK-07 | TASK-09, TASK-10, TASK-11, TASK-13 |
-| TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Ready | TASK-08 | TASK-12 |
+| TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-10 | IMPLEMENT | Remove ds/no-hardcoded-copy errors using Brikette locales strategy | 78% | M | Ready | TASK-08 | TASK-12 |
 | TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Ready | TASK-08 | TASK-12 |
 | TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Complete (2026-02-15) | TASK-08 | TASK-12 |
@@ -519,6 +519,16 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `8c999689ea`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/assistance/layout.tsx" --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/components/footer/FooterNav.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/experiences/ExperienceFeatureSection.tsx" --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern "assistance|footer|experiences" --maxWorkers=2 --passWithNoTests` — PASS
 
 ### TASK-10: Remove ds/no-hardcoded-copy errors using Brikette locales strategy
 - **Type:** IMPLEMENT

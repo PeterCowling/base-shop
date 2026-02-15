@@ -1122,8 +1122,8 @@ When implementing TASK-13, ensure:
 
 ### TASK-21: Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo
 - **Type:** INVESTIGATE
-- **Status:** Pending
-- **Execution-Skill:** /lp-replan (decision memo; no code changes)
+- **Status:** Complete (2026-02-15)
+- **Execution-Skill:** /lp-build (decision memo; no code changes)
 - **Affects (read):** `apps/brikette/src/app/[lang]/experiences/[slug]/GuideContent.tsx`, `apps/brikette/src/app/[lang]/about/page.tsx`, `apps/brikette/src/app/[lang]/bar-menu/page.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
 - **Depends on:** TASK-05, TASK-11, TASK-15
 - **Blocks:** TASK-14
@@ -1136,7 +1136,24 @@ When implementing TASK-13, ensure:
     - dismiss TTL choice + storage mechanism recommendation (sessionStorage vs localStorage)
     - copy keys + CTA label fallback strategy (ties into `cta_id: content_sticky_check_availability`)
 - **Validation contract (investigate):**
-  - VC-01: decision memo includes a “do not proceed” checklist item: confirm staging stream isolation (TASK-15) is active before broad event testing.
+  - VC-01: decision memo includes a "do not proceed" checklist item: confirm staging stream isolation (TASK-15) is active before broad event testing.
+
+#### Investigation Completion (2026-02-15)
+- **Status:** Complete
+- **Decision memo:** `docs/plans/brikette-cta-sales-funnel-ga4/task-21-decision-memo.md`
+- **Key decisions:**
+  - **Page list:** Tier 1 (guide detail, about, bar-menu, breakfast-menu) ships in TASK-14; Tier 2 (how-to-get-here, assistance) deferred pending validation.
+  - **Dismiss TTL:** Session-dismissible via `sessionStorage` (key: `content-sticky-cta-dismissed`).
+  - **Copy strategy:** Reuse `_tokens:checkAvailability` for CTA label + `stickyCta.*` keys from `StickyBookNow` pattern for headline/subcopy.
+  - **Canonical GA4:** `cta_id: content_sticky_check_availability`, surface-specific `cta_location` enums (already in `GA4_ENUMS`).
+  - **Do-not-proceed checklist:** TASK-15 staging isolation must be verified active before TASK-14 starts.
+- **Evidence class:** E1 (read target page components, `StickyBookNow` pattern reference, `ga4-events.ts` enum verification).
+- **All validation criteria satisfied:**
+  - VC-01: Do-not-proceed checklist included in decision memo (staging stream isolation verification required).
+  - Final page list confirmed (Tier 1 + Tier 2 deferred).
+  - Dismiss TTL locked (sessionStorage, session-only).
+  - Copy keys locked (reuse stable tokens; no new namespace coupling).
+  - GA4 event contract locked (canonical enums align with TASK-11 implementation).
 
 ### TASK-12: conversion copy parity in booking modals
 - **Type:** IMPLEMENT

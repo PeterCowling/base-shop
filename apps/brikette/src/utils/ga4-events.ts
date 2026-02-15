@@ -61,8 +61,27 @@ export function buildRoomItem(params: { roomSku: string; plan?: RatePlan; index?
 }
 
 const impressionDedupe = new Set<string>();
+let impressionPathname: string | null = null;
+
+function getCurrentPathname(): string | null {
+  if (typeof window === "undefined") return null;
+  return typeof window.location?.pathname === "string" ? window.location.pathname : null;
+}
+
+export function resetImpressionDedupe(): void {
+  impressionDedupe.clear();
+  impressionPathname = getCurrentPathname();
+}
 
 export function shouldFireImpressionOnce(key: string): boolean {
+  const pathname = getCurrentPathname();
+  if (pathname && impressionPathname && pathname !== impressionPathname) {
+    // Dedupe is per-navigation (route) not per-session.
+    impressionDedupe.clear();
+  }
+  if (pathname) {
+    impressionPathname = pathname;
+  }
   if (impressionDedupe.has(key)) return false;
   impressionDedupe.add(key);
   return true;

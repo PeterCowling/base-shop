@@ -22,9 +22,20 @@ describe("ga4-events contract primitives", () => {
     expect(isEventSource("header_cta")).toBe(false);
   });
 
-  it("shouldFireImpressionOnce returns true only on first sight of a key", () => {
+  it("shouldFireImpressionOnce returns true only on first sight of a key (within a navigation)", () => {
     const key = "view_item_list:/en/rooms:rooms_index";
     expect(shouldFireImpressionOnce(key)).toBe(true);
     expect(shouldFireImpressionOnce(key)).toBe(false);
+  });
+
+  it("shouldFireImpressionOnce allows the same key after pathname changes (per-navigation dedupe)", () => {
+    const key = "view_item_list:rooms_index";
+
+    window.history.pushState({}, "", "/en/rooms");
+    expect(shouldFireImpressionOnce(key)).toBe(true);
+    expect(shouldFireImpressionOnce(key)).toBe(false);
+
+    window.history.pushState({}, "", "/en/book");
+    expect(shouldFireImpressionOnce(key)).toBe(true);
   });
 });

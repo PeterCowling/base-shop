@@ -873,6 +873,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `72ce9b0fea`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/app/cookie-policy/page.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/app/privacy-policy/page.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+
 ### TASK-29: Remove remaining `ds/no-hardcoded-copy` errors (and as many warnings as feasible)
 - **Type:** IMPLEMENT
 - **Deliverable:** Copy localization changes that eliminate remaining `ds/no-hardcoded-copy` errors (and reduce warnings materially).

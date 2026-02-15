@@ -200,7 +200,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 #### Build Completion (2026-02-15)
 - **Status:** Complete
-- **Commits:** <pending>
+- **Commits:** 95652530c0
 - **Output:** Updated `docs/plans/nextjs-16-upgrade/build-oom-notes.md` with CI wiring evidence and an explicit enforcement decision.
 - **Decision:** Enforce heap headroom via per-app build scripts (Option A). CI Lighthouse runs `pnpm --filter @apps/cover-me-pretty... build` without `NODE_OPTIONS`, so script-level is the only dev/CI-parity mechanism.
 - **Evidence:**

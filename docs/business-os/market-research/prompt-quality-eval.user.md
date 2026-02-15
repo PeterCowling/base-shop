@@ -63,7 +63,7 @@ Notes:
 ```
 
 2026-02-15:
-- BRIK: {model=2, delta=2, benchmark=2, website=2} -> PASS
+- BRIK: {model=2, delta=2, benchmark=2, website=2} -> PASS (updated template adds fixed scenario dates + parity sub-test; generator injects dates deterministically)
 - HEAD: BLOCKED (missing monthly exports: `net_value_by_month.csv` and `bookings_by_month.csv`)
 - PET: BLOCKED (missing monthly exports: `net_value_by_month.csv` and `bookings_by_month.csv`)
 Notes:

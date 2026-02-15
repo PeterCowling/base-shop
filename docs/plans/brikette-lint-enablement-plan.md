@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-refactor, lp-replan, lp-sequence
-Overall-confidence: 72
+Overall-confidence: 70
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
 ---
@@ -21,53 +21,76 @@ Business-OS-Integration: off
 # Brikette Lint Enablement Plan
 
 ## Summary
-Re-enable automated linting for `@apps/brikette` by remediating the current ESLint error and warning backlog under `apps/brikette/src`, then replacing the package’s no-op `lint` script with a real eslint invocation.
+Re-enable automated linting for `@apps/brikette` by remediating the current ESLint error and warning backlog under `apps/brikette/src`, then replacing the package's no-op `lint` script with a strict eslint invocation.
 
 Baseline as of **2026-02-15**:
 - `pnpm --filter @apps/brikette exec eslint src --no-fix` reports **419 problems (254 errors, 165 warnings)**.
-- Lint script is currently a no-op in `apps/brikette/package.json` (`echo 'Lint temporarily disabled...'`).
+- `apps/brikette/package.json` `lint` script is a no-op.
 
 ## Goals
 - `pnpm --filter @apps/brikette exec eslint src --no-fix --max-warnings=0` passes.
 - `pnpm --filter @apps/brikette lint` is a real eslint invocation and passes.
-- Brikette’s lint run is type-aware where intended, without “project service could not find file” noise.
+- Brikette's lint run is type-aware where intended, without TypeScript project-service warnings like `project service could not find file`.
 
 ## Non-goals
-- Large-scale UX or product changes.
-- Broad, repo-wide lint rule changes not justified by Brikette’s use case.
+- Large-scale UX/product changes unrelated to lint compliance.
+- Repo-wide rule weakening to make Brikette lint pass.
 
 ## Constraints & Assumptions
 - Constraints:
-  - The current backlog is large (254 errors / 165 warnings). The plan must be phased and checkpointed to avoid thrash.
-  - Avoid “turning off” rules as a primary tactic. Exceptions must be scoped, justified, and only when the rule is genuinely inapplicable (e.g., security lint in filesystem-walking tests).
+  - The backlog is large. Work must be phased and checkpointed to avoid thrash.
+  - Prefer fixing root causes. Overrides are allowed only when the rule is genuinely inapplicable to the scoped code (example: security lint on filesystem-walking tests).
 - Assumptions:
-  - Brikette’s translation source of truth is under `apps/brikette/src/locales/**` (not `packages/i18n`).
+  - Brikette's translation source of truth is `apps/brikette/src/locales/**` (not `packages/i18n`), even if some lint messages reference `packages/i18n`.
 
-## Existing System Notes
-- Repo lint config: `eslint.config.mjs` (flat config, type-aware).
-  - Apps are warned on direct imports from `@acme/ui/atoms/*` (e.g. `CfImage`). See `eslint.config.mjs` “Deprecate presentation imports from @acme/ui”.
-  - Brikette has DS raw-tailwind-color enforcement enabled (errors/warnings vary by rule).
-- Brikette lint script is currently disabled: `apps/brikette/package.json`.
+## Operational Notes (Do Not Skip)
+- Any command path containing `[lang]` must be quoted or escaped (shell glob metacharacters):
+  - Good: `eslint "src/app/[lang]/bar-menu/BarMenuContent.tsx"`
+  - Bad: `eslint src/app/[lang]/bar-menu/BarMenuContent.tsx`
+- Do not use non-core formatters (for example `--format unix` is not part of ESLint core). Prefer core `stylish` (default) or `json`.
+
+## Evidence Snapshot (2026-02-15)
+Representative failures confirmed via file-scoped lint runs:
+- `max-lines-per-function`:
+  - `src/app/[lang]/bar-menu/BarMenuContent.tsx` (313 > configured 200)
+  - `src/app/[lang]/breakfast-menu/BreakfastMenuContent.tsx` (227 > configured 200)
+- `complexity`:
+  - `src/components/guides/GenericContent.tsx` (34 > configured 20)
+  - `src/utils/ensureGuideContent.ts` (42 > configured 20)
+  - `src/utils/routeHead.ts` (`buildRouteMeta` 27 > configured 20)
+  - `src/utils/loadI18nNs.ts` (27 > configured 20)
+- DS/layout rules:
+  - `src/app/[lang]/assistance/layout.tsx` fails `ds/container-widths-only-at`
+  - `src/components/footer/FooterNav.tsx` fails `ds/enforce-layout-primitives`
+  - `src/app/[lang]/experiences/ExperienceFeatureSection.tsx` fails `ds/no-raw-typography`
+- Copy:
+  - `src/components/guides/GuideCollectionWithSearch.tsx` fails `ds/no-hardcoded-copy`
+- Warnings that will block strict lint (`--max-warnings=0`):
+  - Multiple files warn on restricted imports from `@acme/ui/atoms/*` (including `CfImage` / `CfResponsiveImage`).
+  - `@acme/ui` exports `CfImage` from `packages/ui/src/atoms/index.ts`, so imports can likely be rewritten to avoid restricted subpaths.
 
 ## Proposed Approach
-1. **Inventory first**: generate a stable lint ledger (top rules and top offending files) so remediation is measurable.
-2. **Fix “structural” blockers early**: utility complexity hotspots and rule-justification violations that block broad progress.
-3. **Batch remediation by class**: DS rules, copy localization, layout primitives, import sorting, then remaining warnings.
-4. **Enable lint last**: only flip `apps/brikette`’s `lint` script once strict lint is green.
+1. Ledger first: generate a diffable lint ledger (top rules + top files, separately for errors and warnings), and explicitly detect infra/noise.
+2. Early sequencing gate: immediately re-sequence based on ledger distribution (not preselected refactors).
+3. Fix infra/noise early (TypeScript project-service wiring).
+4. Treat warnings as first-class: strict `--max-warnings=0` means warnings must be planned, not deferred to the end.
+5. Enable lint last: only flip `apps/brikette` `lint` script once strict lint is green.
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | Build lint ledger (rules + top offending files) | 95% | S | Pending | - | TASK-02, TASK-07 |
-| TASK-02 | IMPLEMENT | Remove ds/require-disable-justification violation by eliminating unsafe `Function` typing | 90% | S | Pending | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Reduce complexity/import-no-duplicates in i18n loader utilities | 82% | M | Pending | TASK-02 | TASK-04 |
-| TASK-04 | IMPLEMENT | Reduce complexity hotspots in SEO/head utilities | 80% | M | Pending | TASK-03 | TASK-05 |
-| TASK-05 | IMPLEMENT | Refactor max-lines-per-function offenders in menu/content components | 80% | M | Pending | TASK-04 | TASK-06 |
-| TASK-06 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Pending | TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Fix DS rule errors in top-offender UI files (layout primitives, container widths, typography) | 82% | M | Blocked | TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | Fix ds/no-hardcoded-copy errors in top-offender files + add translation keys | 78% ⚠️ | M | Blocked | TASK-06 | TASK-09 |
-| TASK-09 | IMPLEMENT | Address warning backlog (security rules in filesystem tests, min tap size, restricted imports) | 70% ⚠️ | L | Blocked | TASK-06 | TASK-10 |
-| TASK-10 | IMPLEMENT | Re-enable `@apps/brikette` lint script and validate strict lint in monorepo sweep | 75% ⚠️ | S | Blocked | TASK-07, TASK-08, TASK-09 | - |
+| TASK-01 | INVESTIGATE | Build lint ledger (errors + warnings + infra noise) | 95% | S | Pending | - | TASK-02 |
+| TASK-02 | CHECKPOINT | Sequencing gate: replan tasks 3+ based on ledger distribution | 95% | S | Pending | TASK-01 | TASK-03 |
+| TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) | 80% | M | Blocked | TASK-02 | TASK-04 |
+| TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Blocked | TASK-03 | TASK-05 |
+| TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Blocked | TASK-04 | TASK-06 |
+| TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Blocked | TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Refactor max-lines-per-function offenders (configured thresholds) | 80% | M | Blocked | TASK-06 | TASK-08 |
+| TASK-08 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Blocked | TASK-07 | TASK-09 |
+| TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Blocked | TASK-08 | TASK-10 |
+| TASK-10 | IMPLEMENT | Remove ds/no-hardcoded-copy errors using Brikette locales strategy | 78% | M | Blocked | TASK-08 | TASK-11 |
+| TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Blocked | TASK-08 | TASK-12 |
+| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 75% | S | Blocked | TASK-09, TASK-10, TASK-11 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -76,307 +99,309 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-01 | - | Establish the ledger and prioritize work |
-| 2 | TASK-02 | TASK-01 | Small, surgical unblocks |
-| 3 | TASK-03 | TASK-02 | Utility refactors |
-| 4 | TASK-04 | TASK-03 | Utility refactors |
-| 5 | TASK-05 | TASK-04 | UI refactors with regression risk |
-| 6 | TASK-06 | TASK-05 | CHECKPOINT and replanning boundary |
+| 1 | TASK-01 | - | Produce evidence + triage (errors vs warnings vs infra) |
+| 2 | TASK-02 | TASK-01 | Re-sequence tasks based on distribution evidence |
+| 3 | TASK-03 | TASK-02 | Infra/noise unblock |
 
-**Max parallelism:** 1 | **Critical path:** Waves 1-6 | **Total tasks:** 10
+**Max parallelism:** 1 | **Critical path:** Waves 1-3 | **Total tasks:** 12
 
 ## Tasks
 
-### TASK-01: Build lint ledger (rules + top offending files)
+### TASK-01: Build lint ledger (errors + warnings + infra noise)
 - **Type:** INVESTIGATE
-- **Deliverable:** Lint ledger section added to this plan (top rules, top offending files, prioritized batches)
+- **Deliverable:** Add a `## Lint Ledger (YYYY-MM-DD)` section to this plan including:
+  - Totals (errors, warnings)
+  - Top 10 rules by count (errors and warnings separately)
+  - Top 20 files by error count
+  - Triage buckets:
+    - Infra/noise (project-service, parser/runtime)
+    - Mechanical/low-risk (unused vars, duplicates, import sort)
+    - UI/UX-sensitive (tap size, layout primitives, typography)
+    - Copy/localization
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `[readonly] eslint.config.mjs`, `[readonly] apps/brikette/src/**/*`, `[readonly] apps/brikette/package.json`
 - **Depends on:** -
-- **Blocks:** TASK-02, TASK-07
+- **Blocks:** TASK-02
 - **Confidence:** 95%
-  - Implementation: 95% — commands and inventory format are clear
-  - Approach: 90% — inventory-first reduces thrash and rework
-  - Impact: 95% — read-only evidence capture
+  - Implementation: 95% - core eslint supports `--format json` and `--output-file`
+  - Approach: 90% - evidence-first prevents wasted refactors
+  - Impact: 95% - read-only
 - **Acceptance:**
-  - Ledger includes total error/warn counts and at least top 10 rules by occurrence.
-  - Ledger lists top 20 files by error count.
-  - Ledger proposes concrete remediation batches (file lists per batch).
+  - Ledger includes the breakdowns above and explicitly identifies warning classes that must be resolved to reach `--max-warnings=0`.
+  - Ledger explicitly reports whether infra/noise strings occur (see validation).
 - **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src --no-fix` output captured (counts + representative errors) → ledger updated.
-  - TC-02: Ledger includes a deterministic rerun command set (no non-core formatters like `unix`) → rerun instructions work.
-- **Execution plan:** Red → Green → Refactor
-  - Red: run lint and confirm non-zero exit with errors/warnings
-  - Green: produce ledger with prioritized batches
-  - Refactor: tighten batches to be build-safe (explicit file lists)
+  - TC-01: Generate diffable output:
+    - `pnpm --filter @apps/brikette exec eslint src --no-fix -f json -o /tmp/brikette-eslint.json || true`
+  - TC-02: Verify infra/noise strings:
+    - `project service could not find file`
+    - `could not find file`
+- **Execution plan:** Red -> Green -> Refactor
+  - Red: confirm lint fails with non-zero exit
+  - Green: produce ledger + triage
+  - Refactor: convert triage into concrete batches and unblock TASK-02
 - **Rollout / rollback:** N/A
-- **Documentation impact:** This plan only.
+- **Documentation impact:** This plan only
 
-### TASK-02: Remove ds/require-disable-justification violation by eliminating unsafe `Function` typing
+### TASK-02: Sequencing gate: replan tasks 3+ based on ledger distribution
+- **Type:** CHECKPOINT
+- **Deliverable:** Updated plan tasks after TASK-02 are re-sequenced and (if needed) decomposed based on ledger evidence.
+- **Execution-Skill:** lp-build
+- **Affects:** `docs/plans/brikette-lint-enablement-plan.md`
+- **Depends on:** TASK-01
+- **Blocks:** TASK-03
+- **Confidence:** 95%
+- **Acceptance:**
+  - Run `/lp-replan` on tasks after this checkpoint.
+  - Reorder/replace tasks 3+ so the first remediation tranche targets the highest-count rules and highest-error files.
+  - Pull infra/noise and high-leverage warning blockers earlier if they dominate the distribution.
+  - If dependency topology changes, run `/lp-sequence` before proceeding to build.
+- **Validation contract:**
+  - TC-01: Updated task order + `Depends on` / `Blocks` are internally consistent.
+- **Rollout / rollback:** N/A
+- **Documentation impact:** This plan only
+
+### TASK-03: Fix TypeScript project-service wiring (no infra/noise warnings)
 - **Type:** IMPLEMENT
-- **Deliverable:** Code change; lint no longer errors on `ds/require-disable-justification` in Brikette utils
+- **Deliverable:** Code/config change so eslint type-aware runs do not emit TypeScript project-service warnings for Brikette source files.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/tsconfig.json`, `apps/brikette/tsconfig.scripts.json` (if needed), `eslint.config.mjs` (only if required)
+- **Depends on:** TASK-02
+- **Blocks:** TASK-04
+- **Confidence:** 80%
+  - Implementation: 85% - likely tsconfig include/exclude mismatch if the warning exists
+  - Approach: 80% - fix wiring rather than weakening type-aware lint
+  - Impact: 80% - config blast radius; must validate carefully
+- **Acceptance:**
+  - Lint output contains no project-service warnings.
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/brikette exec eslint src --no-fix 2>&1 | rg -n "project service could not find file|could not find file"` returns no matches.
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:**
+  - Rollout: minimal config change scoped to Brikette.
+  - Rollback: revert config change and replan if it impacts other scopes.
+- **Documentation impact:** None
+- **Planning validation:** (M-effort)
+  - Evidence gathered in TASK-01 determines whether this is a real blocker or can be downgraded.
+
+### TASK-04: Remove ds/require-disable-justification error in i18n types helper
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change; remove the eslint-disable and satisfy lint without adding fake tickets.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/utils/i18n-types.ts`
-- **Depends on:** TASK-01
-- **Blocks:** TASK-03
-- **Confidence:** 90%
-  - Implementation: 95% — can replace `Function` with a safe callable type to avoid eslint-disable
-  - Approach: 90% — remove the disable rather than adding a fake ticket
-  - Impact: 90% — isolated helper file; type-level change
-- **Acceptance:**
-  - No `ds/require-disable-justification` errors in `apps/brikette/src/utils/i18n-types.ts`.
-  - No behavior change for translator tagging in tests.
-- **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/utils/i18n-types.ts --no-fix --max-warnings=0` → PASS
-  - TC-02: `pnpm --filter @apps/brikette test -- --testPathPattern \"i18n\" --maxWorkers=2` → PASS (or nearest existing i18n test subset)
-- **Rollout / rollback:** N/A
-- **Documentation impact:** None.
-
-### TASK-03: Reduce complexity/import-no-duplicates in i18n loader utilities
-- **Type:** IMPLEMENT
-- **Deliverable:** Code change; complexity errors reduced under threshold; duplicate imports eliminated
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
-- **Affects:** `apps/brikette/src/utils/loadI18nNs.ts`
-- **Depends on:** TASK-02
-- **Blocks:** TASK-04
-- **Confidence:** 82%
-  - Implementation: 85% — refactor into smaller helpers and remove duplicate imports
-  - Approach: 80% — keep semantics; improve structure without changing API
-  - Impact: 82% — used by app initialization; requires careful validation
-- **Acceptance:**
-  - `import/no-duplicates` errors are eliminated.
-  - `complexity` is reduced to ≤20.
-- **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/utils/loadI18nNs.ts --no-fix --max-warnings=0` → PASS
-  - TC-02: `pnpm --filter @apps/brikette typecheck` → PASS
-  - TC-03: Targeted tests covering i18n init continue passing (`pnpm --filter @apps/brikette test -- --testPathPattern \"i18n|loadI18n\" --maxWorkers=2`)
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm `import/no-duplicates` and `complexity` failures via eslint on this file
-  - Green: refactor into helpers until eslint passes
-  - Refactor: simplify without changing behavior; keep tests passing
-- **Planning validation:** (M-effort)
-  - Checks run (2026-02-15): `pnpm --filter @apps/brikette exec eslint src/utils/loadI18nNs.ts --no-fix` — FAIL (expected: duplicate import + complexity)
-- **Rollout / rollback:** N/A
-- **Documentation impact:** None.
-- **What would make this ≥90%:**
-  - Add/extend a focused unit test for `loadI18nNs` behavior (namespaces loaded, fallbacks).
-
-### TASK-04: Reduce complexity hotspots in SEO/head utilities
-- **Type:** IMPLEMENT
-- **Deliverable:** Code change; complexity errors reduced under threshold
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
-- **Affects:** `apps/brikette/src/utils/ensureGuideContent.ts`, `apps/brikette/src/utils/routeHead.ts`, `apps/brikette/src/utils/testHeadFallback.ts`, `apps/brikette/src/utils/tags/normalizers.ts`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05
-- **Confidence:** 80%
-  - Implementation: 85% — extraction into helpers is straightforward
-  - Approach: 80% — keep contracts stable; prefer small pure helpers
-  - Impact: 80% — SEO/head logic touches rendering and metadata; regressions possible
+- **Confidence:** 90%
+  - Implementation: 95% - replace unsafe `Function` typing with a safe callable type and remove the disable
+  - Approach: 90% - remove the disable rather than justifying it
+  - Impact: 90% - isolated helper file
 - **Acceptance:**
-  - `complexity` lint errors for these utilities are eliminated (≤20).
+  - `apps/brikette/src/utils/i18n-types.ts` has no eslint-disable directives for unsafe function typing.
 - **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/utils --no-fix --max-warnings=0` → PASS (for affected files)
-  - TC-02: `pnpm --filter @apps/brikette test -- --testPathPattern \"routeHead|seo|guide\" --maxWorkers=2` → PASS (or nearest available subset)
-  - TC-03: `pnpm --filter @apps/brikette typecheck` → PASS
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm complexity failures in each target file with file-scoped eslint runs
-  - Green: extract helpers until complexity thresholds are met
-  - Refactor: remove duplication and clarify naming while keeping validations green
-- **Planning validation:** (M-effort)
-  - Checks run (2026-02-15): `pnpm --filter @apps/brikette exec eslint src --no-fix` — FAIL (expected: complexity errors in listed utilities)
+  - TC-01: `pnpm --filter @apps/brikette exec eslint src/utils/i18n-types.ts --no-fix --max-warnings=0` passes.
+- **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
-- **Documentation impact:** None.
-- **What would make this ≥90%:**
-  - Add/extend a test that asserts key route meta outputs for a representative route.
+- **Documentation impact:** None
 
-### TASK-05: Refactor max-lines-per-function offenders in menu/content components
+### TASK-05: Mechanical cleanup tranche (unused vars, duplicates, import sorting)
 - **Type:** IMPLEMENT
-- **Deliverable:** Code change; max-lines-per-function errors eliminated
+- **Deliverable:** Code changes that eliminate mechanical lint failures and reduce churn for later refactors.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/components/guides/GuideCollectionWithSearch.tsx`, `apps/brikette/src/utils/loadI18nNs.ts` (import/no-duplicates portion), plus additional files selected from the TASK-01 ledger
+- **Depends on:** TASK-04
+- **Blocks:** TASK-06
+- **Confidence:** 82%
+  - Implementation: 85% - mechanical fixes are straightforward
+  - Approach: 80% - reduce diff noise before deeper refactors
+  - Impact: 82% - some changes touch UI, keep them surgical
+- **Acceptance:**
+  - Mechanical rule errors for the selected batch are eliminated.
+- **Validation contract:**
+  - TC-01: File-scoped lint passes for each changed file with `--max-warnings=0`.
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+### TASK-06: Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds)
+- **Type:** IMPLEMENT
+- **Deliverable:** Refactors that reduce complexity under configured eslint thresholds without changing behavior.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/utils/loadI18nNs.ts`, `apps/brikette/src/utils/ensureGuideContent.ts`, `apps/brikette/src/utils/routeHead.ts`, `apps/brikette/src/utils/testHeadFallback.ts`, `apps/brikette/src/utils/tags/normalizers.ts`
+- **Depends on:** TASK-05
+- **Blocks:** TASK-07
+- **Confidence:** 80%
+  - Implementation: 85% - extract small pure helpers
+  - Approach: 80% - keep contracts stable
+  - Impact: 80% - utilities affect routing/SEO; validate carefully
+- **Acceptance:**
+  - `complexity` lint errors are eliminated in the selected files (per configured thresholds).
+- **Validation contract:**
+  - TC-01: File-scoped eslint passes for each affected file.
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+### TASK-07: Refactor max-lines-per-function offenders (configured thresholds)
+- **Type:** IMPLEMENT
+- **Deliverable:** Refactors that bring function length under configured thresholds while preserving UI output.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/src/app/[lang]/bar-menu/BarMenuContent.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/BreakfastMenuContent.tsx`, `apps/brikette/src/components/guides/GenericContent.tsx`
-- **Depends on:** TASK-04
-- **Blocks:** TASK-06
+- **Depends on:** TASK-06
+- **Blocks:** TASK-08
 - **Confidence:** 80%
-  - Implementation: 85% — split render helpers / subcomponents; keep props stable
-  - Approach: 80% — reduce cyclomatic complexity and function length without altering output
-  - Impact: 80% — UI regressions possible; requires verification
+  - Implementation: 85% - split render helpers/subcomponents
+  - Approach: 80% - reduce size/complexity without semantic changes
+  - Impact: 80% - UI regression risk; keep changes minimal
 - **Acceptance:**
-  - `max-lines-per-function` errors eliminated (≤200).
-  - `GenericContent` complexity reduced to ≤20.
+  - `max-lines-per-function` errors are eliminated for the selected files (per configured thresholds).
+  - `GenericContent` complexity errors are eliminated.
 - **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/app/[lang]/bar-menu/BarMenuContent.tsx --no-fix --max-warnings=0` → PASS
-  - TC-02: `pnpm --filter @apps/brikette exec eslint src/app/[lang]/breakfast-menu/BreakfastMenuContent.tsx --no-fix --max-warnings=0` → PASS
-  - TC-03: `pnpm --filter @apps/brikette exec eslint src/components/guides/GenericContent.tsx --no-fix --max-warnings=0` → PASS
-  - TC-04: `pnpm --filter @apps/brikette typecheck` → PASS
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm max-lines-per-function / complexity failures via file-scoped eslint runs
-  - Green: split into subcomponents/helpers until thresholds are met
-  - Refactor: tighten types and naming; avoid logic changes
-- **Planning validation:** (M-effort)
-  - Checks run (2026-02-15): file-scoped eslint confirms:
-    - `BarMenuContent` max-lines-per-function FAIL (313 > 200)
-    - `BreakfastMenuContent` max-lines-per-function FAIL (227 > 200)
-    - `GenericContent` max-lines-per-function + complexity FAIL
+  - TC-01: Quote `[lang]` paths in eslint commands:
+    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/bar-menu/BarMenuContent.tsx" --no-fix --max-warnings=0`
+    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/breakfast-menu/BreakfastMenuContent.tsx" --no-fix --max-warnings=0`
+  - TC-02: `pnpm --filter @apps/brikette exec eslint src/components/guides/GenericContent.tsx --no-fix --max-warnings=0`
+- **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
-- **Documentation impact:** None.
-- **What would make this ≥90%:**
-  - Add a minimal render test per component (or snapshot) for one representative locale.
+- **Documentation impact:** None
 
-### TASK-06: Horizon checkpoint: rerun lint, replan remaining remediation batches
+### TASK-08: Horizon checkpoint: rerun lint, replan remaining remediation batches
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan: remaining tasks re-scoped based on fresh ledger data
+- **Deliverable:** Updated plan for remaining remediation, driven by fresh ledger data after the first tranche.
 - **Execution-Skill:** lp-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`
-- **Depends on:** TASK-05
-- **Blocks:** TASK-07
+- **Depends on:** TASK-07
+- **Blocks:** TASK-09
 - **Confidence:** 95%
 - **Acceptance:**
   - Rerun `pnpm --filter @apps/brikette exec eslint src --no-fix` and capture new counts.
-  - Run `/lp-replan` on tasks after this checkpoint with updated evidence.
+  - Run `/lp-replan` on tasks after TASK-08 with updated evidence.
   - If tasks are split/added/removed, run `/lp-sequence` before continuing build.
 - **Validation contract:**
-  - TC-01: Lint rerun count delta recorded in this plan → PASS (evidence present)
-  - TC-02: `/lp-replan` applied to post-checkpoint tasks → PASS (plan updated)
+  - TC-01: Updated counts and deltas are recorded in this plan.
 - **Rollout / rollback:** N/A
-- **Documentation impact:** Update this plan only.
+- **Documentation impact:** This plan only
 
-### TASK-07: Fix DS rule errors in top-offender UI files (layout primitives, container widths, typography)
+### TASK-09: Fix DS/layout primitive errors in top-offender UI files
 - **Type:** IMPLEMENT
-- **Deliverable:** Code change; DS rule errors eliminated in selected files
+- **Deliverable:** Code changes that eliminate DS/layout primitive errors in a targeted batch.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
-- **Affects:** `apps/brikette/src/app/[lang]/assistance/layout.tsx`, `apps/brikette/src/components/footer/FooterNav.tsx`, `apps/brikette/src/app/[lang]/experiences/ExperienceFeatureSection.tsx`
-- **Depends on:** TASK-06
-- **Blocks:** TASK-08
-- **Confidence:** 82%
-  - Implementation: 85% — use existing Brikette container primitives (`Page`, local `Section`/`Container`) and DS layout primitives where required
-  - Approach: 80% — align with DS rules (Grid/Stack/etc) rather than silencing
-  - Impact: 82% — localized UI changes; verify layout
-- **Acceptance:**
-  - `ds/container-widths-only-at`, `ds/enforce-layout-primitives`, and `ds/no-raw-typography` errors eliminated for these files.
-- **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/app/[lang]/assistance/layout.tsx --no-fix --max-warnings=0` → PASS
-  - TC-02: `pnpm --filter @apps/brikette exec eslint src/components/footer/FooterNav.tsx --no-fix --max-warnings=0` → PASS
-  - TC-03: `pnpm --filter @apps/brikette exec eslint src/app/[lang]/experiences/ExperienceFeatureSection.tsx --no-fix --max-warnings=0` → PASS
-  - TC-04: `pnpm --filter @apps/brikette typecheck` → PASS
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm each DS rule violation via file-scoped eslint runs
-  - Green: migrate to allowed primitives/tokens until eslint passes
-  - Refactor: ensure layout/typography is still correct and minimal
-- **Planning validation:** (M-effort)
-  - Checks run (2026-02-15): file-scoped eslint confirms:
-    - `ds/container-widths-only-at` failure in assistance layout
-    - `ds/enforce-layout-primitives` failure in footer nav
-    - `ds/no-raw-typography` failure in ExperienceFeatureSection
-- **Rollout / rollback:** N/A
-- **Documentation impact:** None.
-
-### TASK-08: Fix ds/no-hardcoded-copy errors in top-offender files + add translation keys
-- **Type:** IMPLEMENT
-- **Deliverable:** Code + locale updates; hardcoded copy errors eliminated in selected files
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
-- **Affects:** `apps/brikette/src/components/guides/GuideCollectionWithSearch.tsx`, `apps/brikette/src/locales/en/**/*.json`, `apps/brikette/src/i18n.namespaces.ts` (as needed)
-- **Depends on:** TASK-06
-- **Blocks:** TASK-09
-- **Confidence:** 78% ⚠️
-  - Implementation: 80% — replace literals with `t()` and add keys
-  - Approach: 75% — rule message references `packages/i18n`, but Brikette uses local locales; may require nuanced handling
-  - Impact: 78% — touches user-facing copy; requires translation hygiene
-- **Acceptance:**
-  - `ds/no-hardcoded-copy` errors eliminated for selected files.
-  - New keys added to Brikette locales and wired via `useTranslation`.
-- **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/components/guides/GuideCollectionWithSearch.tsx --no-fix --max-warnings=0` → PASS
-  - TC-02: `pnpm --filter @apps/brikette test -- --testPathPattern \"i18n\" --maxWorkers=2` → PASS
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm `ds/no-hardcoded-copy` and related errors via file-scoped eslint runs
-  - Green: move copy behind `t()` keys and update locale JSON
-  - Refactor: ensure key names are stable and translation coverage checks remain green
-- **Planning validation:** (M-effort)
-  - Checks run (2026-02-15): file-scoped eslint confirms `ds/no-hardcoded-copy` error in `GuideCollectionWithSearch.tsx`.
-- **Rollout / rollback:** N/A
-- **Documentation impact:** None (no standing docs), but locale changes must be recorded in PR description.
-- **What would make this ≥90%:**
-  - Expand ledger to include all ds/no-hardcoded-copy offenders and batch them with explicit file lists (post-checkpoint).
-
-### TASK-09: Address warning backlog (security rules in filesystem tests, min tap size, restricted imports)
-- **Type:** IMPLEMENT
-- **Deliverable:** ESLint warning counts reduced; warning classes addressed with correct scoping
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** lp-build
-- **Affects:** `eslint.config.mjs`, `apps/brikette/src/test/migration/no-legacy-guides-path.test.ts`, `apps/brikette/src/test/migration/no-shared-module-regressions.test.ts`, `apps/brikette/src/test/migration/url-inventory.test.ts`
-- **Depends on:** TASK-06
+- **Affects:** `apps/brikette/src/app/[lang]/assistance/layout.tsx`, `apps/brikette/src/components/footer/FooterNav.tsx`, `apps/brikette/src/app/[lang]/experiences/ExperienceFeatureSection.tsx`, plus additional files selected from the post-checkpoint ledger
+- **Depends on:** TASK-08
 - **Blocks:** TASK-10
-- **Confidence:** 70% ⚠️
-  - Implementation: 80% — add a scoped override for security rule in filesystem-walking tests; fix small warning classes as they surface
-  - Approach: 65% — remaining warnings include DS min-tap-size and restricted imports that may require broader UI tweaks
-  - Impact: 70% — touches lint config; risk of affecting other scopes
+- **Confidence:** 82%
+  - Implementation: 85% - replace banned patterns with allowed primitives/tokens
+  - Approach: 80% - align with DS rules rather than silencing
+  - Impact: 82% - localized UI changes; verify layout
 - **Acceptance:**
-  - `security/detect-non-literal-fs-filename` no longer emits warnings for Brikette migration tests, via a scoped lint config override.
-  - Top warning classes are tracked in the ledger with an explicit plan.
+  - Errors like `ds/container-widths-only-at`, `ds/enforce-layout-primitives`, and `ds/no-raw-typography` are eliminated for the batch.
 - **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette exec eslint src/test/migration --no-fix --max-warnings=0` → PASS (for affected rule(s))
-  - TC-02: Root lint still parses and runs (`pnpm lint` remains viable once Brikette is re-enabled).
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm warning classes via scoped lint runs (tests, affected UI files)
-  - Green: apply the narrowest correct fix (scoped config override for tests; tokenized sizing for UI)
-  - Refactor: avoid weakening repo-wide rules; keep overrides scoped to Brikette
-- **Planning validation:** (L-effort)
-  - Checks run (2026-02-15): `pnpm --filter @apps/brikette exec eslint src --no-fix` tail confirms `security/detect-non-literal-fs-filename` warnings in migration tests.
-- **Rollout / rollback:**
-  - Rollout: add narrowly-scoped eslint config overrides (Brikette test-only) and fix warnings in batches.
-  - Rollback: revert the scoped override block(s) if it impacts other scopes.
-- **Documentation impact:** None.
+  - TC-01: Quote `[lang]` paths in eslint commands:
+    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/assistance/layout.tsx" --no-fix --max-warnings=0`
+    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/experiences/ExperienceFeatureSection.tsx" --no-fix --max-warnings=0`
+  - TC-02: `pnpm --filter @apps/brikette exec eslint src/components/footer/FooterNav.tsx --no-fix --max-warnings=0`
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
 
-### TASK-10: Re-enable `@apps/brikette` lint script and validate strict lint in monorepo sweep
+### TASK-10: Remove ds/no-hardcoded-copy errors using Brikette locales strategy
 - **Type:** IMPLEMENT
-- **Deliverable:** Package script change; lint is enabled and green
+- **Deliverable:** Code + locale updates that eliminate hardcoded copy errors.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/locales/**`, plus code files from the post-checkpoint ledger that fail `ds/no-hardcoded-copy`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-11
+- **Confidence:** 78%
+  - Implementation: 80% - replace literals with `t()` keys and add keys to locale JSON
+  - Approach: 75% - align with Brikette-local locale storage; avoid writing to `packages/i18n`
+  - Impact: 78% - user-visible copy; translation hygiene required
+- **Copy strategy (explicit):**
+  - Add new keys to `apps/brikette/src/locales/en/**`.
+  - For non-English locales, rely on i18next fallback to `en` unless an existing coverage check requires explicit keys. If coverage checks fail, extend the task scope to add keys (or stubs) to required locales.
+- **Acceptance:**
+  - `ds/no-hardcoded-copy` errors are eliminated for the selected batch.
+- **Validation contract:**
+  - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`).
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
+
+### TASK-11: Drive warning count to zero (restricted imports, tap size, migration-test security warnings)
+- **Type:** IMPLEMENT
+- **Deliverable:** Warning remediation so `--max-warnings=0` is feasible.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:** Brikette files from the post-checkpoint ledger; `eslint.config.mjs` (only for narrowly-scoped overrides if necessary)
+- **Depends on:** TASK-08
+- **Blocks:** TASK-12
+- **Confidence:** 70%
+  - Implementation: 80% - warnings can be addressed in batches, but volume/UX sensitivity is unknown until ledger
+  - Approach: 65% - must avoid broad rule weakening; overrides must be narrow and justified
+  - Impact: 70% - may touch lint config; verify it does not affect other apps
+- **Acceptance:**
+  - Restricted-import warnings (for example, `@acme/ui/atoms/CfImage`) are eliminated by migrating imports to supported entrypoints (preferred) or by a narrowly-scoped exception justified in-plan.
+  - `security/detect-non-literal-fs-filename` warnings in Brikette migration tests are addressed via the narrowest correct method (prefer a scoped config override over inline disables).
+  - `ds/min-tap-size` warnings are resolved (required for `--max-warnings=0`).
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/brikette exec eslint src --no-fix --max-warnings=0` warning count decreases toward zero; delta recorded.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:**
+  - Rollout: apply warning fixes in small batches; keep overrides scoped to Brikette.
+  - Rollback: revert scoped overrides if they impact other apps.
+- **Documentation impact:** None
+
+### TASK-12: Re-enable `@apps/brikette` lint script (strict) + final validation
+- **Type:** IMPLEMENT
+- **Deliverable:** Package script change; lint is enabled and green.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/package.json`
-- **Depends on:** TASK-07, TASK-08, TASK-09
+- **Depends on:** TASK-09, TASK-10, TASK-11
 - **Blocks:** -
-- **Confidence:** 75% ⚠️
-  - Implementation: 85% — swap no-op for `eslint` invocation with `--max-warnings=0`
-  - Approach: 75% — strictness depends on warning remediation completeness
-  - Impact: 75% — affects repo-wide lint sweeps
+- **Confidence:** 75%
+  - Implementation: 85% - swap the script once lint is green
+  - Approach: 75% - command should match repo norms and goal commands
+  - Impact: 75% - affects monorepo lint sweeps
 - **Acceptance:**
-  - `pnpm --filter @apps/brikette lint` passes.
+  - `apps/brikette/package.json` `lint` is a real eslint invocation and passes.
   - `pnpm --filter @apps/brikette exec eslint src --no-fix --max-warnings=0` passes.
 - **Validation contract:**
-  - TC-01: `pnpm --filter @apps/brikette lint` → PASS
-  - TC-02: `pnpm --filter @apps/brikette typecheck` → PASS
-- **Execution plan:** Red → Green → Refactor
-  - Red: confirm lint script is currently a no-op and strict lint fails
-  - Green: switch script to strict eslint once the backlog is cleared
-  - Refactor: keep lint command consistent with repo norms (cache, max warnings, paths)
-- **Planning validation:** (S-effort)
-  - Checks run (2026-02-15): `apps/brikette/package.json` `lint` script is an informational no-op.
+  - TC-01: `pnpm --filter @apps/brikette lint` passes.
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+- **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:**
-  - Rollout: change `apps/brikette/package.json` `lint` script to `eslint \"src/**/*.{ts,tsx}\" --cache --cache-location .eslintcache --max-warnings=0` (or equivalent repo-standard command).
-  - Rollback: revert to no-op `lint` script if CI is blocked (temporary; do not leave it long-term).
-- **Documentation impact:** None.
+  - Rollout: use a strict command aligned with goals, for example:
+    - `eslint src --cache --cache-location .eslintcache --max-warnings=0`
+  - Rollback: revert the script change only if CI is blocked; do not leave it disabled long-term.
+- **Documentation impact:** None
 
 ## Risks & Mitigations
-- Risk: Lint backlog is larger than the initial offender list.
-  - Mitigation: TASK-01 ledger + CHECKPOINT + `/lp-replan` to avoid blind batching.
-- Risk: Refactors for complexity/length introduce regressions.
-  - Mitigation: Keep refactors extraction-only; run targeted tests; avoid semantic changes.
+- Risk: Sequencing based on preselected refactors wastes time.
+  - Mitigation: TASK-02 sequencing gate is mandatory after the ledger.
+- Risk: Infra/noise warnings block strict lint after lots of remediation.
+  - Mitigation: TASK-03 makes project-service wiring a tracked deliverable.
+- Risk: Strict `--max-warnings=0` fails late because warnings were deferred.
+  - Mitigation: TASK-01 explicitly splits warnings by class; TASK-11 is treated as a primary track.
 
 ## Pending Audit Work
-- Identify the top 20 error-producing files and top 10 rules by count (TASK-01).
-- Determine whether restricted `@acme/ui/atoms/*` warnings should be eliminated by migrating imports, by publishing safe entrypoints, or by scoped overrides (post-checkpoint evidence).
+- Produce the ledger and triage buckets (TASK-01).
+- Confirm whether project-service warnings exist in current lint output (TASK-01) and whether TASK-03 is needed or can be downgraded.
 
 ## Acceptance Criteria (overall)
 - [ ] `pnpm --filter @apps/brikette exec eslint src --no-fix --max-warnings=0` passes.
 - [ ] `pnpm --filter @apps/brikette lint` passes with a real eslint invocation.
-- [ ] Brikette’s translation changes land in `apps/brikette/src/locales/**` and are wired through `useTranslation`.
+- [ ] All commands in this plan are runnable (quoted `[lang]` paths).
+- [ ] Copy/localization changes land in `apps/brikette/src/locales/**` and are wired through `useTranslation`.
 
 ## Decision Log
-- 2026-02-15: Plan converted to `/lp-plan` canonical format and checkpointed due to large lint backlog (254 errors / 165 warnings).
+- 2026-02-15: Revised plan based on execution hazards: added explicit sequencing gate (TASK-02), explicit infra/noise task (TASK-03), and fixed command footguns for `[lang]` paths.
+

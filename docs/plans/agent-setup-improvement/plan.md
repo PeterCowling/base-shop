@@ -43,6 +43,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - **TASK-04:** Add safety policy kernel + generators for enforcement layers (Pending)
 - **TASK-05:** Update safety tests to consume the kernel-generated policy (Pending)
 - **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Pending)
+- **TASK-09:** Wire enforcement layers to generated safety policy include (Pending)
 - **TASK-07:** Horizon checkpoint: reassess before CODEX.md + policy rollout (Pending)
 - **TASK-08:** Reduce CODEX.md bloat while keeping safety TL;DR (Pending)
 
@@ -111,31 +112,31 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Generate agent-agnostic skill registry + `scripts/agents/list-skills` | 88% | M | Pending | - | TASK-02, TASK-06 |
-| TASK-02 | IMPLEMENT | Implement real agent-config validator (replace stub) | 82% | M | Pending | TASK-01 | TASK-05 |
-| TASK-03 | DECISION | Safety kernel format + schema + generation boundaries | 70% ⚠️ | S | Needs-Input | - | TASK-04 |
-| TASK-04 | IMPLEMENT | Add safety policy kernel + generators for enforcement layers | 75% ⚠️ | L | Pending | TASK-03 | TASK-05 |
-| TASK-05 | IMPLEMENT | Update safety tests to consume the kernel-generated policy | 78% ⚠️ | M | Pending | TASK-02, TASK-04 | TASK-07 |
+| TASK-01 | IMPLEMENT | Generate agent-agnostic skill registry + `scripts/agents/list-skills` | 88% | M | Complete (2026-02-15) | - | TASK-06 |
+| TASK-02 | IMPLEMENT | Implement real agent-config validator (replace stub) | 82% | M | Complete (2026-02-15) | TASK-01 | TASK-05 |
+| TASK-03 | DECISION | Safety kernel format + schema + generation boundaries | 70% | S | Complete (2026-02-15) | - | TASK-04 |
+| TASK-04 | SPIKE | Safety kernel + generator for `.claude/settings.json` + canonical policy artifacts | 82% | M | Pending | TASK-03 | TASK-05, TASK-09 |
+| TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Pending | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 80% | S | Pending | TASK-01 | TASK-07 |
-| TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06 | TASK-08 |
+| TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy include | 74% (→82% after TASK-04) ⚠️ | M | Pending | TASK-04 | TASK-07 |
+| TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06, TASK-09 | TASK-08 |
 | TASK-08 | IMPLEMENT | Reduce CODEX.md bloat while keeping safety TL;DR | 80% | M | Pending | TASK-07 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
 ## Parallelism Guide
 
-Initial sequencing (pre-`/lp-sequence`):
+Sequenced after lp-replan (dependencies updated; no renumbering).
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-01, TASK-03 | - | Skill registry can proceed; safety kernel decision gates generator work |
-| 2 | TASK-02, TASK-06 | TASK-01 | Validator depends on registry; SKILLS_INDEX cleanup depends on registry |
-| 3 | TASK-04 | TASK-03 | Kernel + generators are gated on schema decision |
-| 4 | TASK-05 | TASK-02, TASK-04 | Tests updated once generator outputs exist |
-| 5 | TASK-07 | TASK-05, TASK-06 | Checkpoint before CODEX.md and any wide enforcement rollout |
-| 6 | TASK-08 | TASK-07 | CODEX.md reduction is last to avoid reliability regressions |
+| 1 | TASK-04, TASK-06 | - | Kernel/generator spike can proceed while SKILLS_INDEX/doc pointers are fixed |
+| 2 | TASK-05, TASK-09 | TASK-04 | Tests + enforcement wiring both depend on generated policy artifacts |
+| 3 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
+| 4 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
 
-**Max parallelism:** 2 (Wave 1) | **Critical path:** TASK-03 -> TASK-04 -> TASK-05 -> TASK-07 -> TASK-08 | **Total tasks:** 8
+**Max parallelism:** 2 (Wave 1/2) | **Critical path:** TASK-04 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 9
+
 
 ## Tasks
 
@@ -232,33 +233,40 @@ Initial sequencing (pre-`/lp-sequence`):
   - Schema includes explicit `deny`, `ask`, `allow` sets sufficient to generate `.claude/settings.json` and to drive tests.
 
 ### TASK-04: Add safety policy kernel + generators for enforcement layers
-- **Type:** IMPLEMENT
-- **Deliverable:** Kernel + deterministic generation
-  - `docs/git-safety.md` contains fenced YAML kernel
-  - generator script(s) that produce exact outputs for:
-    - `.claude/settings.json` permissions patterns (deny/ask/allow) within a delimited block
-    - `.claude/hooks/pre-tool-use-git-safety.sh` deny section within a delimited block
-    - `scripts/agent-bin/git` policy tables within a delimited block (retain complex parsing + UX outside generated block)
+- **Type:** SPIKE
+- **Deliverable:**
+  - `docs/git-safety.md` gains a fenced YAML kernel (canonical policy input).
+  - New generator: `scripts/agents/generate-git-safety-policy` (+ `--check`).
+  - Generated artifacts committed under `.agents/safety/generated/` (JSON + shell include).
+  - `.claude/settings.json` `permissions.{deny,ask,allow}` regenerated from the kernel (JSON-level replacement; no in-file markers).
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:**
-  - Primary: `docs/git-safety.md`, `.claude/settings.json`, `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`, generator script(s)
-  - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
+  - Primary: `docs/git-safety.md`, `.claude/settings.json`, `.agents/safety/generated/git-safety-policy.json`, `.agents/safety/generated/git-safety-policy.sh`, generator script(s)
+  - Secondary: `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agent-bin/git`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
 - **Depends on:** TASK-03
-- **Blocks:** TASK-05
-- **Confidence:** 75% ⚠️
-  - Implementation: 75% — generation must preserve hand-written bash logic; needs careful delimiting and escaping.
-  - Approach: 80% — kernel+generator is the only durable anti-drift solution.
-  - Impact: 75% — high blast radius if wrong; mitigated by tests + validator.
+- **Blocks:** TASK-05, TASK-09
+- **Confidence:** 82%
+  - Implementation: 82% — scope reduced to kernel + deterministic generation + `.claude/settings.json` regeneration; no script rewiring yet.
+  - Approach: 85% — kernel drives generated artifacts; `.claude/settings.json` updated at JSON property level avoids brittle in-file markers.
+  - Impact: 82% — enforcement scripts unchanged in this spike; drift prevention validated via generator `--check` + existing Jest suites.
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 75% (L-effort, multi-layer generation)
+- **Updated confidence:** 82% (M-effort, settings.json + canonical artifacts only)
+  - **Evidence class:** E1 (static audit)
+  - Repo evidence: `.claude/settings.json` is strict JSON (no comments), so generation boundary must be at JSON property level rather than delimited text blocks.
+  - Work preserved: hook/git-guard rewiring moved to TASK-09.
+
 - **Acceptance:**
-  - Kernel parses and is used as the only edited policy input.
-  - Regeneration is deterministic and idempotent.
-  - Enforcement behavior is unchanged (verified by existing tests).
+  - Kernel is present in `docs/git-safety.md` and is treated as canonical input.
+  - Generator writes deterministic `.agents/safety/generated/*` artifacts and regenerates `.claude/settings.json` permissions arrays from the kernel.
+  - `--check` mode fails when any generated output drifts.
 - **Validation contract:**
-  - TC-01: `scripts/__tests__/pre-tool-use-git-safety.test.ts` passes → hook behavior preserved.
-  - TC-02: `scripts/__tests__/git-safety-policy.test.ts` passes → guard + hook agree.
-  - TC-03: generator `--check` passes on clean tree and fails with diffs when outputs are modified → drift detection works.
-  - Run/verify: targeted Jest run with `--maxWorkers=2` for the two suites above.
+  - TC-01: `scripts/agents/generate-git-safety-policy --check` passes on clean tree → pass.
+  - TC-02: modify `.agents/safety/generated/git-safety-policy.json` and confirm `--check` fails → pass.
+  - TC-03: `.claude/settings.json` remains valid JSON and contains regenerated `permissions.*` arrays → pass.
+  - Run/verify: `scripts/agents/generate-git-safety-policy --write && scripts/agents/generate-git-safety-policy --check`.
 - **Rollout / rollback:**
   - Rollout: land kernel + generator behind “generated blocks”; keep validator enforcing.
   - Rollback: revert kernel + generator + generated block markers (single commit revert).
@@ -273,20 +281,62 @@ Initial sequencing (pre-`/lp-sequence`):
 - **Affects:**
   - Primary: `scripts/__tests__/git-safety-policy.test.ts`
   - Secondary: `[readonly] docs/git-safety.md`, `[readonly] generator outputs`
-- **Depends on:** TASK-02, TASK-04
+- **Depends on:** TASK-04
 - **Blocks:** TASK-07
-- **Confidence:** 78% ⚠️
+- **Confidence:** 82%
+  - Implementation: 82% — test refactor is straightforward once a single generated policy artifact exists.
+  - Approach: 82% — tests become a drift gate by consuming the same generated policy as enforcement layers.
+  - Impact: 82% — existing suites already cover both enforcement entry points; refactor should preserve coverage.
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 78%
+- **Updated confidence:** 82%
+  - **Evidence class:** E1 (static audit)
+  - Change driver: TASK-04 now produces a single canonical policy artifact, reducing test refactor ambiguity.
+
   - Implementation: 80% — refactor is straightforward but needs care to keep coverage.
   - Approach: 78% — tests should fail when kernel drifts from enforcement.
   - Impact: 78% — risk of reducing coverage if not done carefully.
 - **Acceptance:**
-  - Test table is derived from kernel outputs (or a compiled artifact) rather than maintained by hand.
+  - Test table is derived from generated policy artifacts (produced from the kernel) rather than maintained by hand.
   - Coverage remains at least equivalent (deny + allow cases).
 - **Validation contract:**
   - TC-01: tests fail if kernel adds a deny rule but enforcement scripts are not regenerated → pass.
   - TC-02: tests pass on clean tree → pass.
-  - Run/verify: `pnpm test -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` (or repo standard test runner).
+  - Run/verify: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`.
 - **Rollout / rollback:** revert test refactor.
+- **Documentation impact:** None.
+
+
+### TASK-09: Wire hook + git guard to generated policy include
+- **Type:** IMPLEMENT
+- **Deliverable:** Enforcement layers consume generated policy include
+  - `.claude/hooks/pre-tool-use-git-safety.sh` sources `.agents/safety/generated/git-safety-policy.sh` (deny/allow data only).
+  - `scripts/agent-bin/git` sources the same include (policy data only).
+  - Generator is the only place policy is edited; enforcement scripts become thin evaluators.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:**
+  - Primary: `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`
+  - Secondary: `[readonly] .agents/safety/generated/git-safety-policy.sh`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
+- **Depends on:** TASK-04
+- **Blocks:** TASK-07
+- **Confidence:** 74% (→ 82% conditional on TASK-04) ⚠️
+  - Implementation: 74% — wiring must preserve existing bash parsing behavior; needs E2 evidence from running the suites after integration.
+  - Approach: 85% — sourcing a generated include avoids rewriting whole scripts and removes duplication.
+  - Impact: 74% — high blast radius if deny rules regress; mitigated by existing Jest suites.
+- **Acceptance:**
+  - Both enforcement layers read policy data from the generated include and no longer duplicate the deny list in-script.
+  - Existing behavior remains unchanged (verified by current Jest suites).
+- **Validation contract:**
+  - TC-01: `scripts/__tests__/pre-tool-use-git-safety.test.ts` passes → hook behavior preserved.
+  - TC-02: `scripts/__tests__/git-safety-policy.test.ts` passes → guard + hook agree.
+  - Run/verify: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`.
+- **What would make this ≥80%:**
+  - E2: implement include-sourcing and run both suites green; then promote to ≥80%.
+- **Rollout / rollback:**
+  - Rollout: source include files and keep generator enforced by validator.
+  - Rollback: revert enforcement wiring commit (policy artifacts remain safe).
 - **Documentation impact:** None.
 
 ### TASK-06: Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers
@@ -313,7 +363,7 @@ Initial sequencing (pre-`/lp-sequence`):
 
 ### TASK-07: Horizon checkpoint: reassess before CODEX.md + policy rollout
 - **Type:** CHECKPOINT
-- **Depends on:** TASK-05, TASK-06
+- **Depends on:** TASK-05, TASK-06, TASK-09
 - **Blocks:** TASK-08
 - **Confidence:** 95%
 - **Acceptance:**
@@ -356,4 +406,6 @@ Initial sequencing (pre-`/lp-sequence`):
   - Mitigation: validator enforces required frontmatter keys and reports exact files.
 
 ## Decision Log
+- 2026-02-15: Confirmed Option A for safety kernel (YAML in `docs/git-safety.md`; generators update JSON properties / delimited blocks only).
+- 2026-02-15: Replanned safety work: narrowed TASK-04 to kernel+generator+artifacts; moved enforcement wiring to TASK-09; promoted TASK-04/TASK-05 to build-eligible via scope reduction + clearer validation.
 - 2026-02-15: Planning created from `docs/plans/agent-setup-improvement-fact-find.md` and superseding prior archived plans.

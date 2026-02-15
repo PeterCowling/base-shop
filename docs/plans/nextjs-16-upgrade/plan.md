@@ -11,7 +11,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 78%
+Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -25,6 +25,8 @@ Next.js 16 is already in the repo (Next 16.1.6 + React 19.2.1 + ESLint 9 toolcha
 - remove remaining synchronous route handler `params` signatures (async request API enforcement)
 - establish a middleware/proxy runtime policy per app, then fix middleware ambiguity + Node-only imports accordingly
 - audit/lock down Next/Image behavior drift and Next 16 operational changes (notably `.next/dev` output)
+
+Note: Next 16 deprecates `middleware.ts` in favor of `proxy.ts`, but `proxy.ts` is Node-only and Edge runtime is not supported/configurable there. This creates an external dependency gap for Cloudflare/OpenNext (Workers) apps: deprecation cleanup is constrained by platform/runtime support and Next's promised follow-up Edge guidance in a later minor release.
 
 ## Goals
 - All Next apps build on Next 16 with `--webpack`
@@ -44,7 +46,8 @@ Next.js 16 is already in the repo (Next 16.1.6 + React 19.2.1 + ESLint 9 toolcha
   - `proxy.ts` is Node-only per Next 16 guidance; Edge runtime is not supported in proxy.
 - Assumptions:
   - Node >=20.9.0 is enforced via `.nvmrc` and CI pins.
-  - TypeScript >=5.1.0 is satisfied (repo uses 5.8.3).
+  - TypeScript >=5.1.0 is satisfied (repo uses 5.8.3 in root `package.json`).
+  - Lint is enforced via `pnpm lint` (ESLint CLI/flat config). Next 16 removes `next lint` and `next build` no longer runs lint.
 
 ## Fact-Find Reference
 - Related brief: `docs/plans/nextjs-16-upgrade/fact-find.md`
@@ -55,9 +58,9 @@ Next.js 16 is already in the repo (Next 16.1.6 + React 19.2.1 + ESLint 9 toolcha
   - `packages/next-config/index.mjs` (base config; includes `images.qualities: [75, 80, 85, 90]`)
   - `packages/next-config/next.config.mjs` (webpack preset + aliases)
 - Known remaining hard-break surface (from fact-find):
-  - Residual sync route handler `params` typing in:
-    - `apps/cms/src/app/api/auth/[...nextauth]/route.ts`
-    - `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts`
+  - Residual sync route handler `params` typing (fixed on `dev`):
+    - `apps/cms/src/app/api/auth/[...nextauth]/route.ts` (commit `98a0cb42fc`)
+    - `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts` (commit `98a0cb42fc`)
   - Middleware ambiguity in CMS:
     - `apps/cms/middleware.ts` and `apps/cms/src/middleware.ts` both present
   - Node-only imports in middleware entrypoints:
@@ -77,11 +80,11 @@ Next.js 16 is already in the repo (Next 16.1.6 + React 19.2.1 + ESLint 9 toolcha
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Fix remaining sync route handler `params` signatures (Next 16 async enforcement) | 90% | S | Pending | - | TASK-05 |
+| TASK-01 | IMPLEMENT | Fix remaining sync route handler `params` signatures (Next 16 async enforcement) | 95% | S | Complete (2026-02-15) | - | TASK-05 |
 | TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 82% | S | Pending | - | TASK-05, TASK-03, TASK-04 |
 | TASK-06 | INVESTIGATE | Next/Image behavior drift audit (defaults + usage patterns) and decide pinning | 85% | S | Pending | - | TASK-05, TASK-07 |
-| TASK-08 | IMPLEMENT | Audit tooling/scripts for `.next/dev` output changes; fix any brittle assumptions | 80% | S | Pending | - | TASK-05 |
-| TASK-05 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01, TASK-02, TASK-06, TASK-08 | TASK-03, TASK-04, TASK-07 |
+| TASK-08 | INVESTIGATE | Audit tooling/scripts for `.next/dev` output changes; confirm no brittle assumptions | 85% | S | Pending | - | TASK-05 |
+| TASK-05 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-02, TASK-06, TASK-08 | TASK-03, TASK-04, TASK-07 |
 | TASK-03 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 78% ⚠️ | M | Pending | TASK-02, TASK-05 | - |
 | TASK-04 | IMPLEMENT | Fix Node-only imports in middleware by migrating to proxy or rewriting for Edge | 70% ⚠️ | L | Pending | TASK-02, TASK-05 | - |
 | TASK-07 | IMPLEMENT | Apply Next/Image config pinning (if required) + smoke validation | 75% ⚠️ | M | Pending | TASK-06, TASK-05 | - |
@@ -95,8 +98,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-01, TASK-02, TASK-06, TASK-08 | - | Independent fixes/audits |
-| 2 | TASK-05 | Wave 1: TASK-01, TASK-02, TASK-06, TASK-08 | CHECKPOINT gate before riskier runtime work |
+| 1 | TASK-02, TASK-06, TASK-08 | - | Independent audits/inventory |
+| 2 | TASK-05 | Wave 1: TASK-02, TASK-06, TASK-08 | CHECKPOINT gate before riskier runtime work |
 | 3 | TASK-03, TASK-04, TASK-07 | Wave 2: TASK-05 | Middleware/proxy and image pinning depend on checkpoint |
 
 **Max parallelism:** 4 (Wave 1)
@@ -115,20 +118,22 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts`
 - **Depends on:** -
 - **Blocks:** TASK-05
-- **Confidence:** 90%
+- **Confidence:** 95%
   - Implementation: 95% - mechanical Next 16 signature alignment; patterns already exist in the repo.
-  - Approach: 90% - align to Next 16 enforcement rather than relying on incidental compatibility.
-  - Impact: 90% - isolated to two route handlers; blast radius is limited and testable.
+  - Approach: 95% - align to Next 16 enforcement rather than relying on incidental compatibility.
+  - Impact: 95% - isolated to two route handlers; validated by typecheck/lint + related tests.
 - **Acceptance:**
   - Route handlers use `params: Promise<...>` where Next 16 expects async params.
   - No synchronous access to `params` remains in those handlers.
 - **Validation contract:**
-  - TC-01: `@apps/cms` builds with Webpack -> `pnpm --filter @apps/cms build` exits 0.
-  - TC-02: `@apps/cover-me-pretty` builds with Webpack -> `pnpm --filter @apps/cover-me-pretty build` exits 0.
-  - TC-03: `@apps/cms` typecheck passes -> `pnpm --filter @apps/cms typecheck` exits 0.
-  - Acceptance coverage: TC-01/02/03 cover all acceptance criteria.
-  - Validation type: integration (build) + typecheck.
-  - Run/verify: commands above.
+  - TC-01: `@apps/cms` typecheck passes -> `pnpm --filter @apps/cms typecheck` exits 0.
+  - TC-02: `@apps/cms` lint passes -> `pnpm --filter @apps/cms lint` exits 0.
+  - TC-03: `@apps/cms` related tests pass -> Jest related tests for `apps/cms/src/app/api/auth/[...nextauth]/route.ts` exit 0.
+  - TC-04: `@apps/cover-me-pretty` lint passes -> `pnpm --filter @apps/cover-me-pretty lint` exits 0.
+  - TC-05: `@apps/cover-me-pretty` related tests pass -> Jest related tests for `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts` exit 0.
+  - Acceptance coverage: TC-01..TC-05 cover all acceptance criteria.
+  - Validation type: typecheck + lint + related integration tests.
+  - Evidence: commit `98a0cb42fc` (validated by pre-push `scripts/validate-changes.sh`).
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:**
   - Rollout: ship with other Next 16 hardening changes on `dev`.
@@ -182,8 +187,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - A recommended set of explicit config pins (or confirmation that no pins are needed) is recorded.
 
 ### TASK-08: Audit Tooling For `.next/dev` Output Changes
-- **Type:** IMPLEMENT
-- **Deliverable:** Code change (scripts/CI/tooling adjustments) if any brittle assumptions exist
+- **Type:** INVESTIGATE
+- **Deliverable:** Analysis notes in this task (and a follow-up IMPLEMENT task only if any brittle assumptions exist)
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:**
@@ -192,13 +197,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Any app tooling that reads `.next/*` directly
 - **Depends on:** -
 - **Blocks:** TASK-05
-- **Confidence:** 80%
-  - Implementation: 85% - mostly search + patch.
-  - Approach: 80% - prefer resilience (no hardcoded `.next` internals) over chasing layout.
-  - Impact: 80% - prevents CI flakes.
+- **Confidence:** 85%
+  - Implementation: 90% - grep-driven audit + targeted spot checks.
+  - Approach: 85% - prefer resilience (no hardcoded `.next` internals) over chasing layout.
+  - Impact: 85% - prevents CI flakes.
 - **Acceptance:**
-  - No tooling assumes `next dev` output lives directly under `.next/`.
-  - Any scripts referencing `.next/*` are either updated or documented as build-only.
+  - Confirm no tooling assumes `next dev` output lives directly under `.next/` (Next 16 moves dev output to `.next/dev`).
+  - Any scripts referencing `.next/*` are either explicitly build-only, or updated to tolerate `.next/dev` layout.
 - **Validation contract:**
   - TC-01: `rg -n "\.next/dev|\.next/trace" .github scripts apps packages` remains 0 (or references are intentional and documented).
   - TC-02: CI job that runs workspace builds remains green.

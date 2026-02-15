@@ -164,17 +164,120 @@ const mergeGuideContent = (base: AnyRecord, overrides: AnyRecord): AnyRecord => 
   return result;
 };
 
-export async function ensureGuideContent(lang: string, key: string, imports: {
+type GuideContentImports = {
   en: () => Promise<unknown> | unknown;
   local?: (() => Promise<unknown> | unknown) | undefined;
-}): Promise<void> {
+};
+
+function normalizeGuideContentInputs(lang: string, key: string): { normalizedLang: string; normalizedKey: string } {
+  return {
+    normalizedLang: typeof lang === "string" ? lang.trim().toLowerCase() : "",
+    normalizedKey: typeof key === "string" ? key.trim() : "",
+  };
+}
+
+function unwrapDefaultExport(value: unknown): AnyRecord | undefined {
+  if (!value) return undefined;
+  if (typeof value === "object" && "default" in (value as AnyRecord)) {
+    return (value as { default?: unknown }).default as AnyRecord | undefined;
+  }
+  return value as AnyRecord | undefined;
+}
+
+async function maybeLoadGuideContent(params: {
+  loader: (() => Promise<unknown> | unknown) | undefined;
+  locale: string | undefined;
+  contentNamespace: string;
+}): Promise<AnyRecord | undefined> {
+  const { loader, locale, contentNamespace } = params;
+
+  const fromLoader = loader ? unwrapDefaultExport(await loader()) : undefined;
+  if (isRecord(fromLoader)) return fromLoader;
+
+  if (!locale || !contentNamespace) return undefined;
+  const fromContent = unwrapDefaultExport(await loadLocaleResource(locale, contentNamespace));
+  return isRecord(fromContent) ? fromContent : undefined;
+}
+
+function shouldMarkEnglishFallbackUsed(params: {
+  normalizedLang: string;
+  hasLocalStructured: boolean;
+  allowEnglishFallback: boolean;
+  englishHasStructured: boolean;
+}): boolean {
+  const { normalizedLang, hasLocalStructured, allowEnglishFallback, englishHasStructured } = params;
+  return (
+    normalizedLang.length > 0 &&
+    normalizedLang !== "en" &&
+    !hasLocalStructured &&
+    allowEnglishFallback &&
+    englishHasStructured
+  );
+}
+
+function pickGuideContentPatch(params: {
+  hasLocalStructured: boolean;
+  localRecord: AnyRecord | undefined;
+  enRecord: AnyRecord | undefined;
+}): AnyRecord | undefined {
+  const { hasLocalStructured, localRecord, enRecord } = params;
+  if (hasLocalStructured && localRecord) return localRecord;
+  if (enRecord) return localRecord ? mergeGuideContent(enRecord, localRecord) : enRecord;
+  return localRecord;
+}
+
+function synthesizeIntroFromSeoDescription(patch: AnyRecord): void {
+  const introVal = patch["intro"];
+  const hasIntro = Array.isArray(introVal) && introVal.length > 0;
+  const sectionsVal = patch["sections"];
+  const hasSections = Array.isArray(sectionsVal) && sectionsVal.length > 0;
+  if (hasIntro || hasSections) return;
+
+  const seoVal = isRecord(patch["seo"]) ? (patch["seo"] as AnyRecord) : undefined;
+  const desc = seoVal?.["description"];
+  if (typeof desc !== "string") return;
+  const trimmed = desc.trim();
+  if (trimmed.length === 0) return;
+
+  patch["intro"] = [trimmed];
+}
+
+function updateGuideContentFallbackRegistry(params: {
+  fallbackUsed: boolean;
+  normalizedLang: string;
+  key: string;
+}): void {
+  const { fallbackUsed, normalizedLang, key } = params;
+  if (fallbackUsed) {
+    markGuideContentFallback(normalizedLang, key);
+  } else {
+    clearGuideContentFallback(normalizedLang, key);
+  }
+}
+
+function applyGuideContentPatch(params: {
+  lang: string;
+  key: string;
+  ns: AnyRecord;
+  content: AnyRecord | undefined;
+  patch: AnyRecord;
+  existingRecord: AnyRecord | undefined;
+}): void {
+  const { lang, key, ns, content, patch, existingRecord } = params;
+  const mergedPatch = existingRecord ? mergeGuideContent(patch, existingRecord) : patch;
+  const nextContent: AnyRecord = { ...(content ?? {}), [key]: mergedPatch as unknown };
+  const next: GuidesNamespace | AnyRecord = { ...(ns as AnyRecord), content: nextContent };
+  i18n.addResourceBundle(lang, "guides", next as unknown, true, true);
+}
+
+export async function ensureGuideContent(lang: string, key: string, imports: GuideContentImports): Promise<void> {
   try {
-    const normalizedLang = typeof lang === "string" ? lang.trim().toLowerCase() : "";
-    const normalizedKey = typeof key === "string" ? key.trim() : "";
+    const { normalizedLang, normalizedKey } = normalizeGuideContentInputs(lang, key);
     if (normalizedLang && normalizedKey && hasManualGuideContentOverride(normalizedLang, normalizedKey)) {
       clearGuideContentFallback(normalizedLang, normalizedKey);
       return;
     }
+
     const nsUnknown = (i18n.getResourceBundle(lang, "guides") as unknown) ?? {};
     const ns = isRecord(nsUnknown) ? nsUnknown : {};
     const content = isRecord(ns["content"]) ? (ns["content"] as AnyRecord) : undefined;
@@ -185,79 +288,44 @@ export async function ensureGuideContent(lang: string, key: string, imports: {
     }
 
     const existingRecord = isRecord(existing) ? (existing as AnyRecord) : undefined;
-
     const contentNamespace = normalizedKey ? `guides/content/${normalizedKey}` : "";
-    const maybeLoad = async (
-      loader: (() => Promise<unknown> | unknown) | undefined,
-      locale?: string,
-    ) => {
-      let data: AnyRecord | undefined;
-      if (loader) {
-        const m = await loader();
-        data = (m && typeof m === "object" && "default" in (m as AnyRecord)
-          ? (m as { default?: unknown }).default
-          : m) as AnyRecord | undefined;
-      }
-      if (!data && locale && contentNamespace) {
-        const fromContent = await loadLocaleResource(locale, contentNamespace);
-        data = (fromContent && typeof fromContent === "object" && "default" in (fromContent as AnyRecord)
-          ? (fromContent as { default?: unknown }).default
-          : fromContent) as AnyRecord | undefined;
-      }
-      return data;
-    };
-
     const allowEnglishFallback = allowEnglishGuideFallback(lang);
-    const localData = await maybeLoad(imports.local, normalizedLang);
-    const localRecord = isRecord(localData) ? stripEmptyStructuredContent(localData as AnyRecord) : undefined;
-    const hasLocalStructured = hasStructuredContent(localRecord);
-    const enData = allowEnglishFallback ? await maybeLoad(imports.en, "en") : undefined;
-    const enRecord = isRecord(enData) ? (enData as AnyRecord) : undefined;
-    const englishHasStructured = hasStructuredContent(enRecord);
-    const fallbackUsed =
-      normalizedLang &&
-      normalizedLang !== "en" &&
-      !hasLocalStructured &&
-      allowEnglishFallback &&
-      englishHasStructured;
-    if (fallbackUsed) {
-      markGuideContentFallback(normalizedLang, key);
-    } else {
-      clearGuideContentFallback(normalizedLang, key);
-    }
-    let patch: AnyRecord | undefined;
-    if (hasLocalStructured && localRecord) {
-      patch = localRecord;
-    } else if (enRecord) {
-      patch = localRecord ? mergeGuideContent(enRecord, localRecord) : enRecord;
-    } else if (localRecord) {
-      patch = localRecord;
-    }
-    if (patch) {
-      // Dev-friendly synthesis: if structured content is missing but SEO
-      // description exists, expose it via a minimal intro array so the
-      // GenericContent renderer has something to show instead of raw keys.
-      try {
-        const patchRec = patch as AnyRecord;
-        const introVal = patchRec["intro"];
-        const hasIntro = Array.isArray(introVal) && introVal.length > 0;
-        const sectionsVal = patchRec["sections"];
-        const hasSections = Array.isArray(sectionsVal) && sectionsVal.length > 0;
-        const seoVal = isRecord(patchRec["seo"]) ? (patchRec["seo"] as AnyRecord) : undefined;
-        const desc = seoVal?.["description"];
-        if (!hasIntro && !hasSections && typeof desc === "string" && desc.trim().length > 0) {
-          patchRec["intro"] = [desc];
-        }
-      } catch (err) {
-        if (isGuideDebugEnabled()) debugGuide("ensureGuideContent() synthesis failed", String(err));
-      }
 
-      const mergedPatch = existingRecord ? mergeGuideContent(patch as AnyRecord, existingRecord) : patch;
-      const nextContent: AnyRecord = { ...(content ?? {}), [key]: mergedPatch as unknown };
-      const next: GuidesNamespace | AnyRecord = { ...(ns as AnyRecord), content: nextContent };
-      i18n.addResourceBundle(lang, "guides", next as unknown, true, true);
-      if (isGuideDebugEnabled()) debugGuide("ensureGuideContent() patched", { lang, key });
+    const localData = await maybeLoadGuideContent({
+      loader: imports.local,
+      locale: normalizedLang,
+      contentNamespace,
+    });
+    const localRecord = localData ? stripEmptyStructuredContent(localData) : undefined;
+    const hasLocalStructured = hasStructuredContent(localRecord);
+
+    const enRecord = allowEnglishFallback
+      ? await maybeLoadGuideContent({ loader: imports.en, locale: "en", contentNamespace })
+      : undefined;
+    const englishHasStructured = hasStructuredContent(enRecord);
+
+    const fallbackUsed = shouldMarkEnglishFallbackUsed({
+      normalizedLang,
+      hasLocalStructured,
+      allowEnglishFallback,
+      englishHasStructured,
+    });
+    updateGuideContentFallbackRegistry({ fallbackUsed, normalizedLang, key });
+
+    const patch = pickGuideContentPatch({ hasLocalStructured, localRecord, enRecord });
+    if (!patch) return;
+
+    // Dev-friendly synthesis: if structured content is missing but SEO
+    // description exists, expose it via a minimal intro array so the
+    // GenericContent renderer has something to show instead of raw keys.
+    try {
+      synthesizeIntroFromSeoDescription(patch);
+    } catch (err) {
+      if (isGuideDebugEnabled()) debugGuide("ensureGuideContent() synthesis failed", String(err));
     }
+
+    applyGuideContentPatch({ lang, key, ns, content, patch, existingRecord });
+    if (isGuideDebugEnabled()) debugGuide("ensureGuideContent() patched", { lang, key });
   } catch (e) {
     if (isGuideDebugEnabled()) debugGuide("ensureGuideContent() failed", String(e));
   }

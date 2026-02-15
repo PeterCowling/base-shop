@@ -22,74 +22,65 @@ const MULTI_VALUE_META_KEYS = new Set<string>(["og:locale:alternate"]);
 
 type Cleanup = () => void;
 
-export function applyMetaDescriptor(descriptor: MetaDescriptor): Cleanup | undefined {
-  if (typeof document === "undefined" || !descriptor) return undefined;
-
+function applyTitleDescriptor(descriptor: MetaDescriptor): Cleanup | undefined {
   const dUnknown = descriptor as Record<string, unknown>;
-  if ("title" in descriptor && typeof dUnknown["title"] === "string") {
-    const nextTitle = dUnknown["title"] as string;
-    const prevText = document.title;
-    let titleEl = document.head.querySelector<HTMLTitleElement>("title");
-    const created = !titleEl;
-    if (!titleEl) {
-      titleEl = document.createElement("title");
-      document.head.appendChild(titleEl);
-    }
-    const prevNodeText = titleEl.textContent ?? null;
-    document.title = nextTitle;
-    titleEl.textContent = nextTitle;
-    return () => {
-      // Restore both document.title and the <title> node
-      document.title = prevText;
-      const existing = document.head.querySelector<HTMLTitleElement>("title");
-      if (!existing) return;
-      if (created) {
-        existing.remove();
-      } else {
-        existing.textContent = prevNodeText;
-      }
-    };
+  if (!("title" in descriptor) || typeof dUnknown["title"] !== "string") return undefined;
+
+  const nextTitle = dUnknown["title"] as string;
+  const prevText = document.title;
+  let titleEl = document.head.querySelector<HTMLTitleElement>("title");
+  const created = !titleEl;
+  if (!titleEl) {
+    titleEl = document.createElement("title");
+    document.head.appendChild(titleEl);
   }
+  const prevNodeText = titleEl.textContent ?? null;
+  document.title = nextTitle;
+  titleEl.textContent = nextTitle;
+  return () => {
+    // Restore both document.title and the <title> node
+    document.title = prevText;
+    const existing = document.head.querySelector<HTMLTitleElement>("title");
+    if (!existing) return;
+    if (created) {
+      existing.remove();
+    } else {
+      existing.textContent = prevNodeText;
+    }
+  };
+}
 
-  const record = descriptor as Record<string, string | undefined>;
-  const keyName =
-    typeof record["name"] === "string"
-      ? "name"
-      : typeof record["property"] === "string"
-      ? "property"
-      : typeof record["httpEquiv"] === "string"
-      ? "http-equiv"
-      : typeof record["charSet"] === "string"
-      ? "charset"
-      : undefined;
-  const keyValue =
-    keyName === "name"
-      ? record["name"]
-      : keyName === "property"
-      ? record["property"]
-      : keyName === "http-equiv"
-      ? record["httpEquiv"]
-      : keyName === "charset"
-      ? record["charSet"]
-      : undefined;
+function resolveMetaKey(record: Record<string, string | undefined>): { keyName?: string; keyValue?: string } {
+  if (typeof record["name"] === "string") return { keyName: "name", keyValue: record["name"] };
+  if (typeof record["property"] === "string") return { keyName: "property", keyValue: record["property"] };
+  if (typeof record["httpEquiv"] === "string") return { keyName: "http-equiv", keyValue: record["httpEquiv"] };
+  if (typeof record["charSet"] === "string") return { keyName: "charset", keyValue: record["charSet"] };
+  return {};
+}
 
+function shouldCreateDuplicateMeta(params: {
+  el: HTMLMetaElement;
+  record: Record<string, string | undefined>;
+  keyName: string;
+  keyValue: string;
+}): boolean {
+  const { el, record, keyName, keyValue } = params;
+  const content = record["content"];
+  if (typeof content !== "string") return false;
+  if (el.getAttribute("content") === content) return false;
+  return keyName === "property" && MULTI_VALUE_META_KEYS.has(keyValue);
+}
+
+function upsertMetaElement(params: {
+  keyName?: string;
+  keyValue?: string;
+  record: Record<string, string | undefined>;
+}): { el: HTMLMetaElement; created: boolean } {
+  const { keyName, keyValue, record } = params;
   let el: HTMLMetaElement | null = null;
   if (keyName && keyValue) {
     el = document.head.querySelector(`meta[${keyName}="${escapeAttr(keyValue)}"]`);
-  }
-
-  // If an element exists for this key but represents a different content value
-  // (e.g. multiple og:locale:alternate entries), create a fresh element.
-  if (
-    el &&
-    typeof record["content"] === "string" &&
-    el.getAttribute("content") !== record["content"]
-  ) {
-    const allowDuplicate =
-      keyName === "property" && typeof keyValue === "string" && MULTI_VALUE_META_KEYS.has(keyValue);
-    if (!allowDuplicate) {
-      // Reuse the existing element by allowing the attribute update below.
-    } else {
+    if (el && shouldCreateDuplicateMeta({ el, record, keyName, keyValue })) {
       el = null;
     }
   }
@@ -101,24 +92,40 @@ export function applyMetaDescriptor(descriptor: MetaDescriptor): Cleanup | undef
     document.head.appendChild(el);
   }
 
+  return { el, created };
+}
+
+function applyDescriptorAttributes(el: HTMLElement, record: Record<string, string | undefined>): Map<string, string | null> {
   const previous = new Map<string, string | null>();
-  Object.entries(record).forEach(([raw, value]) => {
-    if (value == null) return;
+  for (const [raw, value] of Object.entries(record)) {
+    if (value == null) continue;
     const attr = normaliseName(raw);
-    if (attr === "title") return;
-    previous.set(attr, el!.getAttribute(attr));
-    el!.setAttribute(attr, String(value));
-  });
+    if (attr === "title") continue;
+    previous.set(attr, el.getAttribute(attr));
+    el.setAttribute(attr, String(value));
+  }
+  return previous;
+}
+
+export function applyMetaDescriptor(descriptor: MetaDescriptor): Cleanup | undefined {
+  if (typeof document === "undefined" || !descriptor) return undefined;
+
+  const titleCleanup = applyTitleDescriptor(descriptor);
+  if (titleCleanup) return titleCleanup;
+
+  const record = descriptor as Record<string, string | undefined>;
+  const { keyName, keyValue } = resolveMetaKey(record);
+  const { el, created } = upsertMetaElement({ keyName, keyValue, record });
+  const previous = applyDescriptorAttributes(el, record);
 
   return () => {
-    if (!el) return;
     if (created) {
       el.remove();
       return;
     }
     previous.forEach((prev, attr) => {
-      if (prev === null) el!.removeAttribute(attr);
-      else el!.setAttribute(attr, prev);
+      if (prev === null) el.removeAttribute(attr);
+      else el.setAttribute(attr, prev);
     });
   };
 }

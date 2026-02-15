@@ -118,7 +118,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-02 | IMPLEMENT | Add outbound reliability helper and wire it for same-tab redirects (Booking2Modal path only) | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-03,TASK-04 |
 | TASK-03 | IMPLEMENT | Enforce Model A on BookingModal exit: replace availability-only `begin_checkout` with `search_availability` + update GA4 test | 83% | S | Complete (2026-02-15) | TASK-01,TASK-02 (file overlap: `apps/brikette/src/utils/ga4-events.ts`) | TASK-05 |
 | TASK-04 | INVESTIGATE | Booking2 modalData contract: call-site map + canonical payload decision (roomSku + plan + list/source) | 85% | S | Complete (2026-02-15) | TASK-02 | TASK-17 |
-| TASK-05 | CHECKPOINT | Horizon checkpoint: re-assess remaining GA4 surfaces after modal semantics land | 95% | S | Pending | TASK-03,TASK-17 | TASK-15,TASK-16 |
+| TASK-05 | CHECKPOINT | Horizon checkpoint: re-assess remaining GA4 surfaces after modal semantics land | 95% | S | Complete (2026-02-15) | TASK-03,TASK-17 | TASK-15,TASK-16 |
 | TASK-06 | IMPLEMENT | Implement `select_item` on room CTA clicks (RoomCard + RoomsSection) using contract primitives | 75% ⚠️ | M | Pending | TASK-05,TASK-15 | TASK-07 |
 | TASK-07 | IMPLEMENT | Implement `view_item_list` impressions (rooms index, book rooms list, deals list, home rooms carousel) with dedupe | 72% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15,TASK-18 | TASK-08 |
 | TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 70% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15 | TASK-09 |
@@ -365,6 +365,7 @@ Boundary check:
 
 ### TASK-05: Horizon checkpoint — reassess remaining GA4 surfaces
 - **Type:** CHECKPOINT
+- **Status:** Complete (2026-02-15)
 - **Depends on:** TASK-03, TASK-17
 - **Blocks:** TASK-15, TASK-16
 - **Confidence:** 95%
@@ -373,6 +374,21 @@ Boundary check:
   - Confirm the monorepo boundary rule is enforced: `packages/ui` changes are callback-only (no imports from `apps/brikette`).
   - Confirm staging stream isolation will land before any broad instrumentation (TASK-06..TASK-11, TASK-14 are gated on TASK-15).
   - Confirm no unintended reporting regressions from Model A shift.
+
+#### Checkpoint Notes (2026-02-15)
+Evidence gathered from completed work:
+- Model A semantics confirmed with executable tests:
+  - BookingModal now emits `search_availability` (availability-only) instead of `begin_checkout` (TASK-03).
+  - Booking2Modal now emits room-selected `begin_checkout` with `items[]` and beacon/callback navigation delay (TASK-17).
+- Booking2 modalData contract is now proven end-to-end across both producers (E2): Brikette RoomCard + UI RoomsSection both supply `roomSku/plan/octorateRateCode/source`.
+- Monorepo boundary rule held: `packages/ui` was updated without importing `apps/brikette` analytics utilities; all GA4 emission remains app-owned.
+
+Replan outcomes for remaining tasks (TASK-06..TASK-16):
+- No topology changes required after TASK-17; existing dependency graph and staging-isolation gating remain correct.
+- Key known risks unchanged:
+  - Staging stream isolation (TASK-15) remains a hard gate before broad instrumentation tasks (06–11, 14).
+  - Impression dedupe implementation still needs per-navigation semantics (TASK-18) before TASK-07.
+  - StickyBookNow still requires GA4-agnostic navigation interception in UI (TASK-09) to avoid event loss.
 
 ### TASK-06: select_item on room CTA clicks (RoomCard + RoomsSection)
 - **Type:** IMPLEMENT

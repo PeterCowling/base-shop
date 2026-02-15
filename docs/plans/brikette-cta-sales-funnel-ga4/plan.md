@@ -123,7 +123,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-07 | IMPLEMENT | Implement `view_item_list` impressions (rooms index, book rooms list, deals list, home rooms carousel) with dedupe | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15,TASK-18 | TASK-08 |
 | TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15 | - |
 | TASK-09 | IMPLEMENT | Implement `search_availability` + reliability on StickyBookNow (room detail availability deep-link) | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | - |
-| TASK-10 | IMPLEMENT | Add modal lifecycle events (`modal_open`/`modal_close`) in Brikette ModalProvider | 82% | M | Pending | TASK-05,TASK-15 | TASK-11 |
+| TASK-10 | IMPLEMENT | Add modal lifecycle events (`modal_open`/`modal_close`) in Brikette ModalProvider | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-11 |
 | TASK-11 | IMPLEMENT | Add `cta_click` coverage for header/mobile-nav/hero/widget and new sticky CTA variant | 80% | M | Pending | TASK-05,TASK-15 | TASK-12 |
 | TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05 | TASK-13 |
 | TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12 | TASK-14 |
@@ -548,6 +548,7 @@ What would make this ≥90%:
 
 ### TASK-10: modal_open/modal_close
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/context/modal/provider.tsx`, `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx` (new)
 - **Depends on:** TASK-05, TASK-15
@@ -565,6 +566,12 @@ What would make this ≥90%:
   - Test type: integration
   - Test location: `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx` (new)
   - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx --maxWorkers=2`
+
+**Evidence**
+- Commit: `516fd6dd70`
+- Validations:
+  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx --maxWorkers=2`
+  - `pnpm --filter brikette typecheck`
 
 ### TASK-11: cta_click coverage
 - **Type:** IMPLEMENT

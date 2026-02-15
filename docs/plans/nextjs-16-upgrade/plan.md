@@ -11,7 +11,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 80%
+Overall-confidence: 78%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Business-OS-Integration: off
 Business-Unit: PLAT
@@ -78,16 +78,27 @@ Note: Next 16 deprecates `middleware.ts` in favor of `proxy.ts`, but `proxy.ts` 
 
 ## Task Summary
 
+### Pending Tasks
+
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Fix remaining sync route handler `params` signatures (Next 16 async enforcement) | 95% | S | Complete (2026-02-15) | - | TASK-05 |
-| TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 85% | S | Complete (2026-02-15) | - | TASK-05, TASK-03, TASK-04 |
-| TASK-06 | INVESTIGATE | Next/Image behavior drift audit (defaults + usage patterns) and decide pinning | 90% | S | Complete (2026-02-15) | - | TASK-05, TASK-07 |
-| TASK-08 | INVESTIGATE | Audit tooling/scripts for `.next/dev` output changes; confirm no brittle assumptions | 88% | S | Complete (2026-02-15) | - | TASK-05 |
-| TASK-05 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-02, TASK-06, TASK-08 | TASK-03, TASK-04, TASK-07 |
-| TASK-03 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 78% ⚠️ | M | Pending | TASK-02, TASK-05 | - |
-| TASK-04 | IMPLEMENT | Fix Node-only imports in middleware by migrating to proxy or rewriting for Edge | 70% ⚠️ | L | Pending | TASK-02, TASK-05 | - |
-| TASK-07 | IMPLEMENT | Apply Next/Image config pinning (if required) + smoke validation | 75% ⚠️ | M | Pending | TASK-06, TASK-05 | - |
+| TASK-09 | IMPLEMENT | Fix XA build wrapper to force Webpack (`apps/xa/scripts/build-xa.mjs` adds `--webpack`) | 92% | S | Pending | - | TASK-13 |
+| TASK-10 | INVESTIGATE | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | 86% | S | Pending | - | TASK-11, TASK-12, TASK-13 |
+| TASK-11 | IMPLEMENT | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | 85% | S | Pending | TASK-10 | TASK-13, TASK-15 |
+| TASK-12 | SPIKE | CMS build OOM mitigation prototype (reduce build-graph size; validate `@apps/cms` build) | 82% | M | Pending | TASK-10 | TASK-13 |
+| TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 | TASK-14, TASK-15 |
+| TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 72% ⚠️ | M | Pending | TASK-02 (complete), TASK-13 | - |
+| TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13, TASK-11 | - |
+
+### Completed Tasks (Historical)
+
+| Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
+|---|---|---|---:|---:|---|---|---|
+| TASK-01 | IMPLEMENT | Fix remaining sync route handler `params` signatures (Next 16 async enforcement) | 95% | S | Complete (2026-02-15) | - | TASK-13 |
+| TASK-02 | INVESTIGATE | Inventory request interception runtime per app (middleware vs proxy) | 85% | S | Complete (2026-02-15) | - | TASK-13, TASK-14 |
+| TASK-06 | INVESTIGATE | Next/Image behavior drift audit (defaults + usage patterns) and decide pinning | 90% | S | Complete (2026-02-15) | - | TASK-07, TASK-13 |
+| TASK-08 | INVESTIGATE | Audit tooling/scripts for `.next/dev` output changes; confirm no brittle assumptions | 88% | S | Complete (2026-02-15) | - | TASK-13 |
+| TASK-07 | IMPLEMENT | Next/Image config pinning: confirm no further changes needed + record smoke pages | 90% | S | Complete (2026-02-15) | TASK-06 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -98,15 +109,230 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-02, TASK-06, TASK-08 | - | Independent audits/inventory |
-| 2 | TASK-05 | Wave 1: TASK-02, TASK-06, TASK-08 | CHECKPOINT gate before riskier runtime work |
-| 3 | TASK-03, TASK-04, TASK-07 | Wave 2: TASK-05 | Middleware/proxy and image pinning depend on checkpoint |
+| 1 | TASK-09, TASK-10 | - | Independent hardening: enforce Webpack in XA + decide build heap policy |
+| 2 | TASK-11, TASK-12 | Wave 1: TASK-10 | Implement heap guard + spike CMS build-graph mitigation |
+| 3 | TASK-13 | Wave 2: TASK-09, TASK-10, TASK-11, TASK-12 + TASK-01/02/06/08 (complete) | CHECKPOINT gate before runtime-sensitive middleware work |
+| 4 | TASK-14, TASK-15 | Wave 3: TASK-13 | Middleware hardening (CMS + cover-me-pretty) |
 
-**Max parallelism:** 3 (Wave 1)
-**Critical path:** TASK-02 -> TASK-05 -> TASK-04 (3 waves)
-**Total tasks:** 8
+**Max parallelism:** 2 (Waves 1, 2, 4)
+**Critical path:** TASK-10 -> TASK-12 -> TASK-13 -> TASK-14 (4 waves)
+**Total tasks:** 12
 
 ## Tasks
+
+### TASK-09: Fix XA Build Wrapper To Force Webpack (`--webpack`)
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change (XA build wrapper uses `next build --webpack`)
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/xa/scripts/build-xa.mjs` (add `--webpack` to the `next build` invocation)
+  - `[readonly] apps/xa-b/scripts/build-xa.mjs` (reference; already includes `--webpack`)
+  - `[readonly] apps/xa-j/scripts/build-xa.mjs` (reference; already includes `--webpack`)
+- **Depends on:** -
+- **Blocks:** TASK-13
+- **Confidence:** 92%
+  - Implementation: 95% - align to existing xa-b/xa-j wrapper pattern.
+  - Approach: 92% - Next 16 defaults `next build` to Turbopack; `--webpack` is the supported opt-out for repos with custom webpack.
+  - Impact: 90% - isolated to XA build wrapper; reduces risk of "works in some XA apps but not others".
+- **Acceptance:**
+  - `apps/xa/scripts/build-xa.mjs` invokes `pnpm exec next build --webpack` (or equivalent argument ordering) for Next 16.
+  - XA build uses Webpack consistently with the rest of the repo’s Next apps.
+- **Validation contract:**
+  - TC-01: Wrapper contains `--webpack` -> `rg -n \"pnpm exec next build\" apps/xa/scripts/build-xa.mjs` shows the flag.
+  - TC-02: `@apps/xa` typecheck passes -> `pnpm --filter @apps/xa typecheck` exits 0.
+  - TC-03: `@apps/xa` lint passes -> `pnpm --filter @apps/xa lint` exits 0.
+  - TC-04: `@apps/xa` build uses wrapper and succeeds -> `pnpm --filter @apps/xa build` exits 0.
+  - Acceptance coverage: TC-01..TC-04 cover all acceptance criteria.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:**
+  - Rollout: ship with other Next 16 hardening changes on `dev`.
+  - Rollback: revert commit.
+- **Documentation impact:** None.
+
+### TASK-10: Build OOM Mitigation (Next 16)
+- **Type:** INVESTIGATE
+- **Deliverable:** Analysis artifact: `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cms/package.json` (build script / memory policy)
+  - `apps/cover-me-pretty/package.json` (build script / memory policy)
+  - `.github/workflows/**` (CI Node heap policy, if used)
+- **Depends on:** -
+- **Blocks:** TASK-11, TASK-12, TASK-13
+- **Confidence:** 86%
+  - Implementation: 90% - reproducible build runs can confirm OOM and identify minimal mitigation.
+  - Approach: 86% - decision is “script-level guard” vs “CI env policy”; both are straightforward but need a single repo standard.
+  - Impact: 86% - build stability is a gating prerequisite for all remaining hardening tasks.
+- **Uncertainty statement:**
+  - Which Next apps in this repo require increased Node heap for `next build --webpack` on Next 16, and what is the least-bad way to enforce the heap headroom (scripts vs CI env)?
+- **Falsifiable checks / evidence targets:**
+  - E2: Run `pnpm --filter <app> build` with default heap vs increased heap; record pass/fail.
+  - E2: Confirm whether CI already sets `NODE_OPTIONS` for builds (grep workflows).
+- **Acceptance:**
+  - A list of apps that OOM on default Node heap is recorded (at minimum `@apps/cms`, `@apps/cover-me-pretty`).
+  - For each OOM app, the minimal mitigation is recorded (e.g., `NODE_OPTIONS=--max-old-space-size=8192`).
+  - A repo enforcement decision is recorded:
+    - Option A: script-level guard in `apps/*/package.json` (preferred for dev parity), or
+    - Option B: CI-only `NODE_OPTIONS` policy (acceptable only if dev workflows are unaffected).
+  - Evidence: `docs/plans/nextjs-16-upgrade/build-oom-notes.md` (partial; CMS mitigation still unresolved as of 2026-02-15).
+- **Validation contract:**
+  - TC-01: Default heap build for `@apps/cms` fails with OOM -> `pnpm --filter @apps/cms build` exits non-zero (observed 2026-02-15).
+  - TC-02: Default heap build for `@apps/cover-me-pretty` fails with OOM -> `pnpm --filter @apps/cover-me-pretty build` exits non-zero (observed 2026-02-15).
+  - TC-03: Increased heap build for `@apps/cover-me-pretty` succeeds -> `NODE_OPTIONS=--max-old-space-size=8192 pnpm --filter @apps/cover-me-pretty build` exits 0 (observed 2026-02-15).
+  - TC-04: Increased heap build for `@apps/cms` is characterized -> record result in artifact.
+    - Observed 2026-02-15: fails at `8192` and `16384` (see `docs/plans/nextjs-16-upgrade/build-oom-notes.md`).
+  - Test type: integration (build).
+  - Run: commands above.
+
+### TASK-11: Cover-Me-Pretty Build Heap Headroom Guard
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change (cover-me-pretty build uses increased heap by default)
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cover-me-pretty/package.json` (`build` script)
+- **Depends on:** TASK-10
+- **Blocks:** TASK-13, TASK-15
+- **Confidence:** 85%
+  - Implementation: 88% - proven that increased heap resolves build OOM on this app (E2).
+  - Approach: 85% - choose a cross-platform script pattern aligned with repo conventions.
+  - Impact: 85% - reduces dev/CI divergence; enables checkpoint builds.
+- **Acceptance:**
+  - `pnpm --filter @apps/cover-me-pretty build` succeeds without requiring manual `NODE_OPTIONS` exports.
+  - The chosen script pattern is consistent with repo portability expectations (documented in TASK-10 artifact).
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/cover-me-pretty build` exits 0 on a fresh shell (no pre-set `NODE_OPTIONS`).
+  - TC-02: `pnpm --filter @apps/cover-me-pretty lint && pnpm --filter @apps/cover-me-pretty typecheck` exit 0.
+
+### TASK-12: SPIKE - CMS Build OOM Mitigation Prototype
+- **Type:** SPIKE
+- **Deliverable:** Prototype code change + evidence notes in `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `packages/platform-core/src/themeTokens/index.ts` (likely root cause: Node-only imports + broad dynamic import context)
+  - `apps/cms/src/services/shops/theme.ts` and `apps/cms/src/services/shops/themeService.ts` (consumers)
+  - `apps/cms/src/app/cms/shop/[shop]/themes/page.tsx` (server usage)
+- **Depends on:** TASK-10
+- **Blocks:** TASK-13
+- **Confidence:** 82%
+  - Implementation: 80% - CMS OOM persists even at `NODE_OPTIONS=--max-old-space-size=16384`, so mitigation likely requires reducing the build graph rather than “more heap”.
+  - Approach: 82% - first candidate is refactoring `@acme/platform-core/themeTokens` to avoid bundling Node-only token loaders (and `typescript`) into Next builds.
+  - Impact: 82% - unblocks all downstream CMS hardening by making builds runnable again.
+- **Uncertainty statement:**
+  - Can we eliminate CMS build OOM by removing/isolating the `@acme/platform-core/themeTokens` Node loader (which imports `typescript`, `node:fs`, `node:vm`) from the Next build graph?
+- **Falsifiable check / evidence target:**
+  - E3: Implement a minimal refactor that prevents Next/Webpack from including `typescript` and broad `@themes/*` import contexts in the CMS build, then re-run `pnpm --filter @apps/cms build`.
+- **Acceptance:**
+  - `pnpm --filter @apps/cms build` exits 0 under a documented heap policy (ideally default heap; otherwise explicit).
+  - A short note is added to `docs/plans/nextjs-16-upgrade/build-oom-notes.md` describing:
+    - the mitigation applied
+    - why it reduced memory footprint
+    - what follow-ups are required to harden it (tests, invariants, fallback behavior)
+- **Test contract:**
+  - TC-01: `pnpm --filter @apps/cms build` exits 0.
+  - TC-02: `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` exit 0.
+  - TC-03: `pnpm --filter @apps/cms test -- --testPathPattern tokenUtils` exits 0 (theme token behavior preserved).
+  - Test type: integration (build) + targeted tests.
+  - Run: commands above.
+
+### TASK-13: CHECKPOINT - Post-Hardening Validation And Replan
+- **Type:** CHECKPOINT
+- **Depends on:** TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 95%
+- **Acceptance:**
+  - Run scoped builds/typecheck/lint for all changed apps.
+  - Compare build output warnings and classify expected vs unexpected.
+  - Run `/lp-replan` on tasks after this checkpoint.
+- **Horizon assumptions to validate:**
+  - Async request API enforcement is fully satisfied (no residual signature mismatches).
+  - Runtime classification is sufficient to choose middleware vs proxy per app.
+  - Image audit outputs are sufficient to decide whether pins are necessary.
+  - Build heap policy is explicit and checkpoint builds are reproducible without ad-hoc local env tweaks.
+
+### TASK-14: Resolve CMS Middleware Ambiguity And Enforce Runtime-Compatible Dependencies
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change (single authoritative middleware/proxy entrypoint for CMS)
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cms/middleware.ts`
+  - `apps/cms/src/middleware.ts`
+  - `[readonly] apps/cms/next.config.mjs`
+- **Depends on:** TASK-02 (complete), TASK-13
+- **Blocks:** -
+- **Confidence:** 72% ⚠️ (→ 84% conditional on TASK-10, TASK-12)
+  - Implementation: 72% - CMS `next build --webpack` currently OOMs even with increased heap, preventing reliable validation until a stable build policy exists.
+  - Approach: 85% - CMS is Worker/Edge (OpenNext) and therefore must remain Edge interception for now (middleware; accept deprecation).
+  - Impact: 80% - CMS request interception is security-sensitive; changes must be validated with route-level smoke checks.
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 78%
+- **Updated confidence:** 72% (→ 84% conditional on TASK-10, TASK-12)
+  - **Evidence class:** E2 (executable verification)
+  - CMS build on default heap fails with OOM: `pnpm --filter @apps/cms build` (observed 2026-02-15).
+  - CMS build with `NODE_OPTIONS=--max-old-space-size=8192` still fails with OOM (observed 2026-02-15).
+  - CMS build with `NODE_OPTIONS=--max-old-space-size=16384` still fails with OOM (observed 2026-02-15; ~17 min).
+  - Therefore this task cannot be promoted until TASK-10 (policy decision) and TASK-12 (build-graph reduction prototype) make CMS builds reproducible.
+- **Decision / resolution:**
+  - Treat CMS as **Edge-required** due to `@opennextjs/cloudflare` + `build:worker` (`apps/cms/package.json`), so do **not** plan a `proxy.ts` migration for CMS in this phase.
+  - Plan to remove Node-centric middleware dependencies (`helmet`, Node `crypto`) and keep `middleware.ts` until platform/runtime support changes.
+- **Changes to task:**
+  - TC-01 updated to refer to the heap policy established in TASK-10.
+- **Acceptance:**
+  - Exactly one request interception entrypoint is used for CMS (either middleware or proxy).
+  - No Node-only imports remain in Edge-executed interception code.
+  - CMS still enforces auth/CSRF/security headers as intended.
+- **Validation contract:**
+  - TC-01: CMS build exits 0 under the repo’s chosen heap policy -> see TASK-10 (e.g. `NODE_OPTIONS=... pnpm --filter @apps/cms build`).
+  - TC-02: `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` exit 0.
+  - TC-03: Interception behavior smoke check (manual):
+    - unauthenticated access to protected `/cms/shop/<shop>/...` is blocked
+    - security headers are present on HTML responses
+  - Acceptance coverage: TC-01/02/03 cover all acceptance criteria.
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:**
+  - Rollout: ship on `dev`, verify staging CMS.
+  - Rollback: revert commit.
+- **Documentation impact:** None.
+
+### TASK-15: Cover-Me-Pretty Middleware Edge-Safety (Remove `node:crypto`)
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change (Edge-safe CSP hash generation for cover-me-pretty)
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** /lp-build
+- **Affects:**
+  - `apps/cover-me-pretty/middleware.ts`
+- **Depends on:** TASK-13, TASK-11
+- **Blocks:** -
+- **Confidence:** 82%
+  - Implementation: 82% - mechanical rewrite: replace `node:crypto` SHA-256 hashing with Web Crypto (`crypto.subtle.digest`) and preserve CSP behavior.
+  - Approach: 85% - prefer an Edge-safe implementation that also runs on Node (no `proxy.ts` migration required).
+  - Impact: 82% - touches CSP header generation; requires smoke checks for analytics consent flows.
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 70%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (executable verification) + E1 (static audit)
+  - `apps/cover-me-pretty/middleware.ts` imports `node:crypto` and uses it for CSP hashing (E1).
+  - `@apps/cover-me-pretty` build succeeds under increased heap headroom, enabling reliable validation after TASK-11 (E2).
+- **Decision / resolution:**
+  - Use an Edge-safe hashing implementation (Web Crypto) to eliminate runtime ambiguity.
+- **Acceptance:**
+  - `apps/cover-me-pretty/middleware.ts` no longer imports `node:crypto` (or other Node-only APIs).
+  - CSP `script-src` continues to allow GA4 inline init when `consent.analytics=true` and `NEXT_PUBLIC_GA4_ID` is set.
+  - Locale redirect behavior is unchanged.
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/cover-me-pretty build` exits 0.
+  - TC-02: `pnpm --filter @apps/cover-me-pretty lint && pnpm --filter @apps/cover-me-pretty typecheck` exit 0.
+  - TC-03: Manual smoke:
+    - request to `/` redirects to `/${LOCALES[0]}` as before
+    - request to `/<locale>/...` sets CSP when consent cookie is present
+- **Execution plan:** Red -> Green -> Refactor
+- **What would make this >=90%:** Add a small unit test for the SHA-256 base64 helper and/or a middleware integration probe that asserts the CSP contains `sha256-...` for the expected inline script.
+
+## Completed Tasks (Historical)
 
 ### TASK-01: Fix Remaining Sync Route Handler `params` Signatures
 - **Type:** IMPLEMENT
@@ -117,7 +343,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `apps/cms/src/app/api/auth/[...nextauth]/route.ts`
   - `apps/cover-me-pretty/src/app/api/orders/[id]/tracking/route.ts`
 - **Depends on:** -
-- **Blocks:** TASK-05
+- **Blocks:** TASK-13
 - **Confidence:** 95%
   - Implementation: 95% - mechanical Next 16 signature alignment; patterns already exist in the repo.
   - Approach: 95% - align to Next 16 enforcement rather than relying on incidental compatibility.
@@ -149,7 +375,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `apps/*/src/middleware.ts`
   - Deployment entrypoints for each affected app (OpenNext/Cloudflare where applicable)
 - **Depends on:** -
-- **Blocks:** TASK-05, TASK-03, TASK-04
+- **Blocks:** TASK-13, TASK-14
 - **Confidence:** 85%
   - Implementation: 90% - inventory is straightforward and can be derived from repo structure + package metadata.
   - Approach: 82% - default recommendation is conservative: keep middleware for OpenNext/Cloudflare apps unless proxy feasibility is proven.
@@ -174,7 +400,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `apps/*/next.config.*` (per-app images config overrides)
   - Representative `<Image />` call sites in `apps/` + `packages/`
 - **Depends on:** -
-- **Blocks:** TASK-05, TASK-07
+- **Blocks:** TASK-07, TASK-13
 - **Confidence:** 90%
   - Implementation: 90% - grep-driven audit with targeted spot checks.
   - Approach: 85% - pin only where needed to avoid locking bad defaults.
@@ -198,7 +424,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - `.github/**`
   - Any app tooling that reads `.next/*` directly
 - **Depends on:** -
-- **Blocks:** TASK-05
+- **Blocks:** TASK-13
 - **Confidence:** 88%
   - Implementation: 90% - grep-driven audit + targeted spot checks.
   - Approach: 85% - prefer resilience (no hardcoded `.next` internals) over chasing layout.
@@ -207,85 +433,12 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Confirm no tooling assumes `next dev` output lives directly under `.next/` (Next 16 moves dev output to `.next/dev`).
   - Any scripts referencing `.next/*` are either explicitly build-only, or updated to tolerate `.next/dev` layout.
 - **Validation contract:**
-  - TC-01: `rg -n "\.next/dev|\.next/trace" .github scripts apps packages` remains 0 (or references are intentional and documented).
+  - TC-01: `rg -n \"\\.next/dev|\\.next/trace\" .github scripts apps packages` remains 0 (or references are intentional and documented).
   - TC-02: CI job that runs workspace builds remains green.
   - Findings (2026-02-15):
     - No `.next/dev` or `.next/trace` consumers found in tracked scripts/workflows.
     - `.next` references are limited to: `tsconfig.json` includes of `.next/types/**`, ignore patterns, and a build-only chunk analyzer `apps/brikette/scripts/perf/analyze-chunks.mjs` reading `.next/static/chunks` after a completed build.
-    - A hard-break risk remains outside `.next/dev`: `apps/xa/scripts/build-xa.mjs` runs `pnpm exec next build` without `--webpack` (Next 16 defaults to Turbopack). This needs a follow-up IMPLEMENT task.
-
-### TASK-05: CHECKPOINT - Post-Hardening Validation And Replan
-- **Type:** CHECKPOINT
-- **Depends on:** TASK-02, TASK-06, TASK-08
-- **Blocks:** TASK-03, TASK-04, TASK-07
-- **Confidence:** 95%
-- **Acceptance:**
-  - Run scoped builds/typecheck/lint for all changed apps.
-  - Compare build output warnings and classify expected vs unexpected.
-  - Run `/lp-replan` on tasks after this checkpoint.
-- **Horizon assumptions to validate:**
-  - Async request API enforcement is fully satisfied (no residual signature mismatches).
-  - Runtime classification is sufficient to choose middleware vs proxy per app.
-  - Image audit outputs are sufficient to decide whether pins are necessary.
-
-### TASK-03: Resolve CMS Middleware Ambiguity And Enforce Runtime-Compatible Dependencies
-- **Type:** IMPLEMENT
-- **Deliverable:** Code change (single authoritative middleware/proxy entrypoint for CMS)
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Affects:**
-  - `apps/cms/middleware.ts`
-  - `apps/cms/src/middleware.ts`
-  - `[readonly] apps/cms/next.config.mjs`
-- **Depends on:** TASK-02, TASK-05
-- **Blocks:** -
-- **Confidence:** 78% ⚠️
-  - Implementation: 80% - consolidation is mechanical but runtime constraints may force architecture change.
-  - Approach: 78% - depends on classification outcome (Edge vs Node).
-  - Impact: 78% - CMS request interception is security-sensitive.
-- **Acceptance:**
-  - Exactly one request interception entrypoint is used for CMS (either middleware or proxy).
-  - No Node-only imports remain in Edge-executed interception code.
-  - CMS still enforces auth/CSRF/security headers as intended.
-- **Validation contract:**
-  - TC-01: `pnpm --filter @apps/cms build` exits 0.
-  - TC-02: `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` exit 0.
-  - TC-03: Interception behavior smoke check (manual):
-    - unauthenticated access to protected `/cms/shop/<shop>/...` is blocked
-    - security headers are present on HTML responses
-  - Acceptance coverage: TC-01/02/03 cover all acceptance criteria.
-- **Execution plan:** Red -> Green -> Refactor
-- **Rollout / rollback:**
-  - Rollout: ship on `dev`, verify staging CMS.
-  - Rollback: revert commit.
-- **Documentation impact:** None.
-
-### TASK-04: Fix Node-Only Imports In Middleware (Migrate To Proxy Or Rewrite For Edge)
-- **Type:** IMPLEMENT
-- **Deliverable:** Code change (runtime-correct request interception)
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Affects:**
-  - `apps/cover-me-pretty/middleware.ts`
-  - `apps/xa/middleware.ts`, `apps/xa-b/middleware.ts`, `apps/xa-j/middleware.ts`
-  - `apps/brikette/src/middleware.ts`, `apps/business-os/src/middleware.ts` (as inventory references)
-  - Any new `proxy.ts` files introduced
-- **Depends on:** TASK-02, TASK-05
-- **Blocks:** -
-- **Confidence:** 70% ⚠️
-  - Implementation: 75% - mechanics are clear but per-app runtime/deploy constraints can change the correct solution.
-  - Approach: 70% - needs per-app runtime policy from TASK-02.
-  - Impact: 70% - request interception is user-facing and security-sensitive.
-- **Acceptance:**
-  - For each app classified as Node-OK, interception is moved to `proxy.ts` and middleware removed.
-  - For each app classified as Edge-required, middleware remains but uses runtime-compatible APIs only (no Node-only imports).
-  - Known middleware deprecation warnings are tracked and intentionally allowed only for Edge-required apps.
-- **Validation contract:**
-  - TC-01: Build passes for each touched app (`pnpm --filter <app> build`).
-  - TC-02: Typecheck + lint pass for each touched app.
-  - TC-03: Targeted interception behavior smoke checks per app (redirects/rewrites/auth guards).
-- **Execution plan:** Red -> Green -> Refactor
-- **What would make this >=90%:** Confirm deployment/runtime constraints per app (Cloudflare/OpenNext vs Node server) with an end-to-end build + deploy dry run.
+    - A hard-break risk remains outside `.next/dev`: `apps/xa/scripts/build-xa.mjs` runs `pnpm exec next build` without `--webpack` (Next 16 defaults to Turbopack). This is tracked as TASK-09.
 
 ### TASK-07: Apply Next/Image Config Pinning + Smoke Validation
 - **Type:** IMPLEMENT
@@ -295,20 +448,35 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:**
   - `packages/next-config/index.mjs`
   - Any `apps/*/next.config.*` files requiring overrides
-- **Depends on:** TASK-06, TASK-05
+- **Depends on:** TASK-06
 - **Blocks:** -
-- **Confidence:** 75% ⚠️
-  - Implementation: 80% - config changes are mechanical.
-  - Approach: 75% - depends on audit outputs.
-  - Impact: 75% - changes can affect caching/cost and visual output.
+- **Confidence:** 90%
+  - Implementation: 90% - required pin (`images.qualities`) is already present in shared config.
+  - Approach: 90% - audit indicates no other pins are required unless regressions are observed.
+  - Impact: 90% - no behavioral change planned; this is confirmation + smoke-entrypoint inventory.
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 75%
+- **Updated confidence:** 90%
+  - **Evidence class:** E1 (static audit)
+  - `packages/next-config/index.mjs` already pins `images.qualities: [75, 80, 85, 90]` and real call sites use `quality={80|85|90}` (see `docs/plans/nextjs-16-upgrade/image-audit.md`).
+  - No evidence found of `images.domains`, `next/legacy/image`, local-image query strings, or local IP optimization needs (see `docs/plans/nextjs-16-upgrade/image-audit.md`).
+- **Decision / resolution:**
+  - Treat Next/Image as “already pinned where required”; additional pinning is deferred until a smoke test demonstrates a regression.
+  - Record concrete image-heavy UI entrypoints to smoke during TASK-13 checkpoint.
 - **Acceptance:**
-  - Config pins are applied only where audit indicates risk.
-  - Representative image-heavy pages render correctly (manual smoke).
+  - Confirm required config pins exist (notably `images.qualities`) and no additional pins are needed based on repo evidence.
+  - Record at least 2 image-heavy UI entrypoints per app to smoke during TASK-13:
+    - `@apps/cover-me-pretty`: `apps/cover-me-pretty/src/app/[lang]/product/[slug]/ComparePreview.tsx`, `apps/cover-me-pretty/src/app/account/orders/[id]/MobileReturnLink.tsx`
+    - `@apps/cms`: `apps/cms/src/app/cms/configurator/rapid-launch/review/DerivedPagePreview.tsx`, `apps/cms/src/app/cms/shop/[shop]/media/components/MediaOverviewHero.tsx`
+    - `@apps/brikette`: `apps/brikette/src/routes/guides/utils/_linkTokens.tsx`, `apps/brikette/src/components/careers/CareersSection.tsx`
 - **Validation contract:**
-  - TC-01: Builds pass for affected apps.
-  - TC-02: Manual smoke: at least 2 pages per affected app with remote + local images.
+  - TC-01: `rg -n \"images\\.qualities\" packages/next-config/index.mjs` shows `[75, 80, 85, 90]` (config pin present).
+  - TC-02: Manual smoke during TASK-13: open the recorded entrypoints and confirm images render as expected in dev/prod preview.
 
 ## Risks & Mitigations
+- Next 16 Webpack builds OOM on default Node heap (observed in CMS and cover-me-pretty).
+  - Mitigation: TASK-10 establishes heap/concurrency policy; TASK-11 enforces it for cover-me-pretty; CMS requires additional mitigation before TASK-14 can proceed.
 - Middleware/proxy runtime mismatch causes production request interception failures.
   - Mitigation: TASK-02 runtime inventory + per-app smoke tests; prefer smallest-change migration.
 - Node-only imports in Edge middleware lead to runtime bundling errors.
@@ -329,3 +497,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ## Decision Log
 - 2026-02-15: Created a post-upgrade hardening plan to cover Next 16 upgrade-guide enforcement and remaining runtime/deprecation surface. Legacy plan remains as phase 1 record.
+- 2026-02-15: Build OOM surfaced as a gating risk for Webpack builds; enforce explicit heap headroom per app (preferred) rather than relying on ad-hoc local env or CI-only settings.

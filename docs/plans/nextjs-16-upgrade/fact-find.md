@@ -12,7 +12,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Related-Plan: docs/plans/nextjs-16-upgrade-plan.md
+Related-Plan: docs/plans/nextjs-16-upgrade/plan.md
 Business-OS-Integration: off
 Business-Unit: PLAT
 Card-ID:
@@ -22,7 +22,7 @@ Card-ID:
 
 ## Scope
 ### Summary
-Audit the current `dev` branch (commit `f060014a752c3d444616b35619200476a4c74812`) against the official Next.js 16 release notes to identify:
+Audit the current `dev` branch (commit `bee516f2b4a976ba07eac5ffe778a9eb1bfbd51b`) against the official Next.js 16 release notes to identify:
 - remaining breaking-risk issues
 - remaining deprecated usage
 - pragmatic opportunities to get more value from the upgrade
@@ -114,7 +114,7 @@ Key items called out in the release notes that map to repo risk:
 - **Caching API deprecation:** `revalidateTag` signature changes/deprecations.
 - **Next/Image behavior/default changes:** defaults like `images.minimumCacheTTL`, `images.imageSizes`, `images.qualities`, local IP optimization restriction, maximum redirects.
 - **Build output layout:** `next dev` outputs to `.next/dev`, enabling concurrent `next dev` and `next build` and adding lockfile behavior.
-- **Automatic scroll-behavior:** "Automatic `scroll-behavior: smooth`" is removed; opt back in with `data-scroll-behavior="smooth"` on the HTML element.
+- **Navigation scroll behavior override:** Next 16 no longer overrides your global `scroll-behavior` during SPA transitions by default; opt back into the prior behavior via `data-scroll-behavior="smooth"` on the `<html>` element (typically in `app/layout.tsx`).
 
 ## Findings
 
@@ -140,10 +140,12 @@ Why it matters:
 - Node-only imports exist in middleware entrypoints:
   - `apps/cover-me-pretty/middleware.ts` imports `node:crypto`.
   - `apps/cms/middleware.ts` imports `crypto` and `helmet`.
+  - `apps/cms/src/middleware.ts` imports `helmet` (and Node `http` types), which is not Edge-compatible.
 
 Why it matters:
 - Next 16's preferred replacement (`proxy.ts`) is Node-only.
 - If the app needs Edge interception, it must remain middleware (for now) and must not depend on Node-only modules.
+- For Cloudflare/OpenNext apps (`apps/brikette`, `apps/business-os`, `apps/xa`, `apps/cms`), `proxy.ts` may not be viable at all because the deployment runtime is Worker/Edge, not a full Node.js server.
 
 4) Build output directory changes: `.next/dev` (tooling/CI flake risk)
 - Next 16 changes dev output to `.next/dev` and adds lockfile behavior for concurrent dev/build.
@@ -153,7 +155,7 @@ Repo evidence:
 - Repo scripts do reference `.next` paths in a few places (e.g. CMS webpack cache directory and repo tooling that ignores `.next`), so any tooling that reads `.next/*` should be validated against the new layout.
 
 5) Scroll behavior change is currently unmanaged (behavior drift risk)
-- Next 16 removed automatic `scroll-behavior: smooth`; opt-in is now explicit via `data-scroll-behavior="smooth"`.
+- Next 16 no longer overrides global `scroll-behavior` during SPA transitions by default; opt back into the prior override behavior via `data-scroll-behavior="smooth"` on the `<html>` element.
 
 Repo evidence:
 - No `data-scroll-behavior` attribute is present in app roots (0 matches).
@@ -280,7 +282,12 @@ Tracked-file scans (to avoid local uncommitted WIP skew):
   - Verified `images.qualities` is configured in `packages/next-config/index.mjs`.
 - `.next/dev` layout/tooling checks:
   - `rg -n "\.next/dev|\.next/trace" .github scripts apps packages` (0 matches).
-- Parallel routes: `find apps -path "*/src/app/*" -type d -name "@*"` (no results).
+- Parallel routes:
+  - `find apps (...) -prune -o -type d -name "@*" -print` with `node_modules`, `.next`, and `.open-next` pruned (no results).
+
+Important note on grep hygiene:
+- The repo contains generated lint report artifacts like `apps/cms.eslint.json` that embed source code strings.
+- All code-scanning greps in this brief should exclude `**/*.eslint.json` to avoid false positives and stale embedded content.
 
 ## Planning Readiness
 - Status: Ready-for-planning

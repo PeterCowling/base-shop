@@ -47,6 +47,11 @@ Notes:
     - `⚠ Compiled with warnings` (critical dependency warnings from `packages/platform-core` + `packages/config/jest.preset.cjs` import traces)
     - `⚠ Using edge runtime on a page currently disables static generation for that page`
 
+## Evidence (CI / Repo Wiring)
+- `cover-me-pretty` is built in CI Lighthouse workflow without an explicit `NODE_OPTIONS` override:
+  - `.github/workflows/ci-lighthouse.yml:131` runs `pnpm --filter @apps/cover-me-pretty... build`
+  - Therefore, the build-heap mitigation must live in the package build script (Option A) to keep CI and dev behavior consistent.
+
 ## Working Hypotheses
 - H1: Some apps exceed default Node heap during Webpack compilation under Next 16 (regression or existing latent issue surfaced by dep graph / compilation changes).
 - H2: Script-level heap headroom is required for dev parity; CI-only `NODE_OPTIONS` is insufficient because it masks local build failures.
@@ -70,9 +75,9 @@ Cons:
 - Harder to reason about which apps truly require heap headroom.
 
 ## Next Steps
-- Confirm CMS mitigation approach (beyond heap):
-  - try lower concurrency via Next config (`experimental.cpus: 1`) or build environment variables (if applicable)
-  - identify large/accidental imports pulled into the build graph
-- Once mitigation is chosen:
-  - implement per-app script guard(s) (TASK-11 covers cover-me-pretty)
-  - add a CI guardrail check to prevent regression (e.g., ensure `NODE_OPTIONS` is present for the known-OOM apps’ build steps)
+### Decision
+- Choose **Option A** (script-level heap guard), because it fixes both local builds and CI builds that call `pnpm --filter <app> build`.
+
+### Implementation Follow-ups
+- Implement per-app heap guard for `@apps/cover-me-pretty` build (TASK-11).
+- CMS requires a build-graph mitigation spike (TASK-12); heap-only changes are insufficient.

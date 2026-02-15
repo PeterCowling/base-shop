@@ -83,7 +83,7 @@ Note: Next 16 deprecates `middleware.ts` in favor of `proxy.ts`, but `proxy.ts` 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-09 | IMPLEMENT | Fix XA build wrapper to force Webpack (`apps/xa/scripts/build-xa.mjs` adds `--webpack`) | 92% | S | Complete (2026-02-15) | - | TASK-13 |
-| TASK-10 | INVESTIGATE | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | 86% | S | Pending | - | TASK-11, TASK-12, TASK-13 |
+| TASK-10 | INVESTIGATE | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | 86% | S | Complete (2026-02-15) | - | TASK-11, TASK-12, TASK-13 |
 | TASK-11 | IMPLEMENT | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | 85% | S | Pending | TASK-10 | TASK-13, TASK-15 |
 | TASK-12 | SPIKE | CMS build OOM mitigation prototype (reduce build-graph size; validate `@apps/cms` build) | 82% | M | Pending | TASK-10 | TASK-13 |
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 | TASK-14, TASK-15 |
@@ -166,9 +166,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Deliverable:** Analysis artifact: `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
 - **Execution-Skill:** /lp-build
 - **Affects:**
-  - `apps/cms/package.json` (build script / memory policy)
-  - `apps/cover-me-pretty/package.json` (build script / memory policy)
-  - `.github/workflows/**` (CI Node heap policy, if used)
+  - `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
+  - `[readonly] apps/cms/package.json` (build script / memory policy)
+  - `[readonly] apps/cover-me-pretty/package.json` (build script / memory policy)
+  - `[readonly] .github/workflows/ci.yml` (CI build invocations)
+  - `[readonly] .github/workflows/ci-lighthouse.yml` (CI build invocations)
 - **Depends on:** -
 - **Blocks:** TASK-11, TASK-12, TASK-13
 - **Confidence:** 86%
@@ -195,6 +197,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
     - Observed 2026-02-15: fails at `8192` and `16384` (see `docs/plans/nextjs-16-upgrade/build-oom-notes.md`).
   - Test type: integration (build).
   - Run: commands above.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** <pending>
+- **Output:** Updated `docs/plans/nextjs-16-upgrade/build-oom-notes.md` with CI wiring evidence and an explicit enforcement decision.
+- **Decision:** Enforce heap headroom via per-app build scripts (Option A). CI Lighthouse runs `pnpm --filter @apps/cover-me-pretty... build` without `NODE_OPTIONS`, so script-level is the only dev/CI-parity mechanism.
+- **Evidence:**
+  - `docs/plans/nextjs-16-upgrade/build-oom-notes.md` (OOM runs + CI workflow reference).
 
 ### TASK-11: Cover-Me-Pretty Build Heap Headroom Guard
 - **Type:** IMPLEMENT

@@ -65,7 +65,7 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --webpack &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --webpack &&
         pnpm --filter @apps/brikette generate:static-aliases; e=$?;
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)
@@ -97,7 +97,7 @@ jobs:
         pnpm exec turbo run build --filter=@apps/brikette^... &&
         cd apps/brikette &&
         mv "src/app/[lang]/guides/[...slug]" "src/app/[lang]/guides/_slug-off" &&
-        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --webpack &&
+        (OUTPUT_EXPORT=1 NEXT_PUBLIC_OUTPUT_EXPORT=1 NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION || vars.NEXT_PUBLIC_GA_MEASUREMENT_ID || '' }} pnpm exec next build --webpack &&
         pnpm --filter @apps/brikette generate:static-aliases; e=$?;
         mv "src/app/[lang]/guides/_slug-off" "src/app/[lang]/guides/[...slug]";
         exit $e)

@@ -76,8 +76,8 @@ Chosen: Option A, while still refactoring shared logic into testable modules so 
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Define shared scenario inputs + parsing helpers (structured S1/S2/S3) | 82% | M | Pending | - | TASK-05 |
-| TASK-02 | IMPLEMENT | Make Octorate export configurable for S2 (time filter + date range) | 80% | M | Pending | - | TASK-03 |
+| TASK-01 | IMPLEMENT | Define shared scenario inputs + parsing helpers (structured S1/S2/S3) | 82% | M | Complete | - | TASK-05 |
+| TASK-02 | IMPLEMENT | Make Octorate export configurable for S2 (time filter + date range) | 80% | M | Complete | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Implement per-channel bookings aggregation (check-in month, 12-month window, deterministic dedupe) | 82% | L | Pending | TASK-02 | TASK-04, TASK-09 |
 | TASK-04 | IMPLEMENT | Commission derivation from config (provenance + edge-case rules) | 84% | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Orchestrator: run export -> economics -> parity captures -> verify outputs (atomic, scaffold replace rules) | 80% | L | Pending | TASK-01, TASK-04, TASK-07, TASK-08 | TASK-09 |
@@ -157,6 +157,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Affects:**
   - Primary: `packages/mcp-server/octorate-export-final-working.mjs`
+  - Primary: `packages/mcp-server/octorate-export-args.cjs` (new)
+  - Primary: `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts`
   - Secondary: `[readonly] packages/mcp-server/OCTORATE_EXPORT_README.md`
 - **Depends on:** -
 - **Blocks:** TASK-03
@@ -175,6 +177,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Run/verify: `pnpm --filter @acme/mcp-server test:startup-loop` (add tests for helpers extracted from `.mjs`).
 - **Execution plan:** Red -> Green -> Refactor
 - **What would make this ≥90%:** a manual local run confirming Octorate UI still exposes the same option label for "Check in".
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** 11f8ef8166
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+- **Implementation notes:**
+  - Added `packages/mcp-server/octorate-export-args.cjs` to parse `--time-filter/--start/--end` with stable defaults (90-day range, create-time).
+  - Updated `packages/mcp-server/octorate-export-final-working.mjs` to select the requested time filter and apply the date range.
+  - Added contract tests for parsing + option label mapping in `packages/mcp-server/src/__tests__/startup-loop-tools.integration.test.ts`.
 
 ### TASK-03: Per-Channel Bookings Aggregation (MVP Contract)
 - **Type:** IMPLEMENT

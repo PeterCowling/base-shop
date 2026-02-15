@@ -225,7 +225,7 @@ Notes (evidence used for replan decomposition):
 | TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Superseded (decomposed; see TASK-21..TASK-25) | TASK-08 | TASK-12 |
 | TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-14 | IMPLEMENT | Fix remaining `ds/container-widths-only-at` errors (post-task-13-09 ledger) | 85% | S | Ready | TASK-08 | TASK-12 |
-| TASK-15 | IMPLEMENT | Fix remaining `ds/enforce-layout-primitives` errors (post-task-13-09 ledger) | 85% | S | Ready | TASK-14 | TASK-12 |
+| TASK-15 | IMPLEMENT | Fix remaining `ds/enforce-layout-primitives` errors (post-task-13-09 ledger) | 85% | S | Ready | TASK-08 | TASK-12 |
 | TASK-16 | IMPLEMENT | Fix remaining react-hooks error rules + `max-depth` errors (post-task-13-09 ledger) | 80% | M | Ready | TASK-08 | TASK-12 |
 | TASK-17 | IMPLEMENT | Fix remaining `max-lines-per-function` errors (post-task-13-09 ledger) | 82% | M | Ready | TASK-08 | TASK-12 |
 | TASK-18 | IMPLEMENT | Fix remaining `@typescript-eslint/no-unused-vars` errors (post-task-13-09 ledger) | 90% | S | Ready | TASK-08 | TASK-12 |
@@ -671,13 +671,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Deliverable:** DS/container compliance changes that eliminate `ds/container-widths-only-at` errors in the remaining offender set.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
-- **Affects:**
-  - `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx`
-  - `apps/brikette/src/app/[lang]/experiences/ExperiencesHero.tsx`
-  - `apps/brikette/src/app/[lang]/hospitality-preview/page.tsx`
-  - `apps/brikette/src/app/cookie-policy/page.tsx`
-  - `apps/brikette/src/app/privacy-policy/page.tsx`
-  - `apps/brikette/src/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx`
+- **Affects:** `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-12
 - **Confidence:** 85%
@@ -685,19 +679,14 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - Approach: 85% - replace raw max-width classes with DS container primitives where required
   - Impact: 85% - localized layout changes; validate key routes render
 - **Acceptance:**
-  - `ds/container-widths-only-at` errors are eliminated for all files in `Affects`.
+  - `ds/container-widths-only-at` errors are eliminated for the file in `Affects`.
   - No new `eslint-disable` directives are introduced for DS/layout rules.
 - **Validation contract:**
-  - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`):
+  - TC-01: File-scoped eslint passes (with `--max-warnings=0`), quoting `[lang]`:
     - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/experiences/ExperiencesCtaSection.tsx" --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/experiences/ExperiencesHero.tsx" --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint "src/app/[lang]/hospitality-preview/page.tsx" --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint src/app/cookie-policy/page.tsx --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint src/app/privacy-policy/page.tsx --no-fix --max-warnings=0`
-    - `pnpm --filter @apps/brikette exec eslint src/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx --no-fix --max-warnings=0`
   - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
   - TC-03 (best-effort): targeted tests:
-    - `pnpm --filter @apps/brikette test -- --testPathPattern "experiences|hospitality-preview|cookie-policy|privacy-policy|how-to-get-here" --maxWorkers=2 --passWithNoTests`
+    - `pnpm --filter @apps/brikette test -- --testPathPattern \"experiences\" --maxWorkers=2 --passWithNoTests`
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
@@ -708,11 +697,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:**
-  - `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx`
-  - `apps/brikette/src/app/page.tsx`
+  - `apps/brikette/src/app/page.tsx` *(has `ds/no-hardcoded-copy` error; defer until TASK-20)*
   - `apps/brikette/src/routes/how-to-get-here/_galleries.tsx`
   - `apps/brikette/src/routes/how-to-get-here/sections.tsx`
-- **Depends on:** TASK-14
+- **Depends on:** TASK-08
 - **Blocks:** TASK-12
 - **Confidence:** 85%
   - Implementation: 90% - typically mechanical replacement with DS `Grid`/`Stack` primitives

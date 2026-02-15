@@ -1,8 +1,6 @@
 // src/utils/ga4-events.ts
 // Small GA4 helpers used by Brikette app surfaces.
 
-import roomsData from "@/data/roomsData";
-
 type GTag = (...args: unknown[]) => void;
 
 // Canonical analytics enums (authoritative). Keep these stable and low-cardinality.
@@ -47,6 +45,10 @@ export type RatePlan = (typeof GA4_ENUMS.ratePlan)[number];
 
 export function isEventSource(value: string): value is EventSource {
   return (GA4_ENUMS.source as readonly string[]).includes(value);
+}
+
+export function isItemListId(value: string): value is ItemListId {
+  return (GA4_ENUMS.itemListId as readonly string[]).includes(value);
 }
 
 export function buildRoomItem(params: { roomSku: string; plan?: RatePlan; index?: number }): Record<string, unknown> {
@@ -104,6 +106,15 @@ function fireEventWithOutboundReliability(params: {
   });
 }
 
+export function fireEventAndNavigate(params: {
+  event: string;
+  payload: Record<string, unknown>;
+  onNavigate: () => void;
+  timeoutMs?: number;
+}): void {
+  fireEventWithOutboundReliability(params);
+}
+
 function calcNights(checkin: string, checkout: string): number {
   return Math.max(1, Math.round((new Date(checkout).getTime() - new Date(checkin).getTime()) / 86_400_000));
 }
@@ -130,6 +141,26 @@ export function fireSearchAvailability(params: {
     pax: params.pax,
     nights: calcNights(params.checkin, params.checkout),
     lead_time_days: calcLeadTimeDays(params.checkin),
+  });
+}
+
+export function fireSearchAvailabilityAndNavigate(params: {
+  source: string;
+  checkin: string;
+  checkout: string;
+  pax: number;
+  onNavigate: () => void;
+}): void {
+  const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
+  fireEventAndNavigate({
+    event: "search_availability",
+    payload: {
+      source,
+      pax: params.pax,
+      nights: calcNights(params.checkin, params.checkout),
+      lead_time_days: calcLeadTimeDays(params.checkin),
+    },
+    onNavigate: params.onNavigate,
   });
 }
 
@@ -178,20 +209,35 @@ export function fireRoomBeginCheckout(params: {
   const gtag = getGtag();
   if (!gtag) return;
 
-  const nights = calcNights(params.checkin, params.checkout);
-  const price = roomsData.find((r) => r.sku === params.roomSku)?.basePrice?.amount ?? 0;
-
   gtag("event", "begin_checkout", {
-    currency: "EUR",
-    value: price * nights,
-    items: [
-      {
-        item_id: params.roomSku,
-        item_name: params.roomSku,
-        item_variant: params.plan,
-        price,
-        quantity: nights,
-      },
-    ],
+    items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan })],
+  });
+}
+
+export function fireBeginCheckoutRoomSelectedAndNavigate(params: {
+  source: string;
+  roomSku: string;
+  plan: RatePlan;
+  checkin: string;
+  checkout: string;
+  pax: number;
+  item_list_id?: string;
+  onNavigate: () => void;
+}): void {
+  const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
+  const itemListId =
+    typeof params.item_list_id === "string" && isItemListId(params.item_list_id) ? params.item_list_id : undefined;
+
+  fireEventAndNavigate({
+    event: "begin_checkout",
+    payload: {
+      source,
+      checkin: params.checkin,
+      checkout: params.checkout,
+      pax: params.pax,
+      ...(itemListId ? { item_list_id: itemListId } : null),
+      items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan })],
+    },
+    onNavigate: params.onNavigate,
   });
 }

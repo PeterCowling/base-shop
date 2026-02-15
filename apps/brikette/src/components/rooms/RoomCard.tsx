@@ -182,21 +182,29 @@ export default memo(function RoomCard({
 
   const openNonRefundable = useCallback(() => {
     openModal("booking2", {
-      rateType: "nonRefundable",
-      room,
       checkIn,
       checkOut,
       adults,
+      rateType: "nonRefundable",
+      room,
+      roomSku: room.sku,
+      plan: "nr",
+      octorateRateCode: room.rateCodes.direct.nr,
+      source: "room_card",
     });
   }, [openModal, room, checkIn, checkOut, adults]);
 
   const openFlexible = useCallback(() => {
     openModal("booking2", {
-      rateType: "refundable",
-      room,
       checkIn,
       checkOut,
       adults,
+      rateType: "refundable",
+      room,
+      roomSku: room.sku,
+      plan: "flex",
+      octorateRateCode: room.rateCodes.direct.flex,
+      source: "room_card",
     });
   }, [openModal, room, checkIn, checkOut, adults]);
 

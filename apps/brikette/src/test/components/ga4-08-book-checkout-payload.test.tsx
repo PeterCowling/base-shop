@@ -18,25 +18,29 @@ describe("Room begin_checkout GA4 payload (GA4-08)", () => {
     window.gtag = originalGtag;
   });
 
-  it("fires begin_checkout with nights-based value and item payload", () => {
+  it("fires begin_checkout with item payload (no value/currency by default)", () => {
     fireRoomBeginCheckout({ roomSku: "room_10", plan: "flex", checkin: "2026-06-10", checkout: "2026-06-12" });
 
     expect(window.gtag).toHaveBeenCalledWith(
       "event",
       "begin_checkout",
       expect.objectContaining({
-        currency: "EUR",
-        value: 121.5,
         items: expect.arrayContaining([
           expect.objectContaining({
             item_id: "room_10",
             item_name: "room_10",
             item_variant: "flex",
-            price: 60.75,
-            quantity: 2,
           }),
         ]),
       }),
     );
+
+    const gtag = window.gtag as unknown as jest.Mock;
+    const payload = gtag.mock.calls.find((args) => args[0] === "event" && args[1] === "begin_checkout")?.[2] as
+      | Record<string, unknown>
+      | undefined;
+    expect(payload).toBeTruthy();
+    expect(payload).not.toHaveProperty("value");
+    expect(payload).not.toHaveProperty("currency");
   });
 });

@@ -189,6 +189,9 @@ function RoomsSection({
             const roomSummary = buildRoomInventorySummary(room, title);
 
             const openBooking = (rateType: "nonRefundable" | "refundable") => {
+              const plan = rateType === "nonRefundable" ? "nr" : "flex";
+              const octorateRateCode =
+                plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;
               openModal("booking2", {
                 checkIn,
                 checkOut,
@@ -198,6 +201,10 @@ function RoomsSection({
                   nonRefundableCode: room.rateCodes.direct.nr,
                   refundableCode: room.rateCodes.direct.flex,
                 },
+                roomSku: room.id,
+                plan,
+                octorateRateCode,
+                source: "room_card",
               });
             };
             return (

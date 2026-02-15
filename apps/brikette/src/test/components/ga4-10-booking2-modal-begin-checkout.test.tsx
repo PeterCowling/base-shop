@@ -73,7 +73,16 @@ describe("Booking2GlobalModal GA4 begin_checkout", () => {
       <ModalContext.Provider
         value={{
           activeModal: "booking2",
-          modalData: { checkIn: "2026-06-10", checkOut: "2026-06-12", adults: 2 },
+          modalData: {
+            checkIn: "2026-06-10",
+            checkOut: "2026-06-12",
+            adults: 2,
+            roomSku: "room_10",
+            plan: "flex",
+            octorateRateCode: "433898",
+            source: "room_card",
+            item_list_id: "rooms_index",
+          },
           openModal: jest.fn(),
           closeModal: jest.fn(),
         }}
@@ -93,20 +102,29 @@ describe("Booking2GlobalModal GA4 begin_checkout", () => {
 
     expect(payload).toEqual(
       expect.objectContaining({
-        source: "booking2_modal",
         checkin: "2026-06-10",
         checkout: "2026-06-12",
         pax: 2,
         transport_type: "beacon",
-      }),
+        items: [
+          expect.objectContaining({
+            item_id: "room_10",
+            item_name: "room_10",
+            item_variant: "flex",
+          }),
+        ],
+      })
     );
+
+    expect(payload).not.toHaveProperty("value");
+    expect(payload).not.toHaveProperty("currency");
 
     // Navigation is delayed until the GA callback or a short timeout.
     expect(mockSetWindowLocationHref).not.toHaveBeenCalled();
     expect(typeof payload.event_callback).toBe("function");
     (payload.event_callback as () => void)();
     expect(mockSetWindowLocationHref).toHaveBeenCalledWith(
-      expect.stringContaining("book.octorate.com/octobook/site/reservation/result.xhtml"),
+      expect.stringContaining("book.octorate.com/octobook/site/reservation/confirm.xhtml"),
     );
   });
 });

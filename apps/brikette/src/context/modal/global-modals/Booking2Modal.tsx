@@ -12,7 +12,7 @@ import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 import { getDatePlusTwoDays } from "@/utils/dateUtils";
-import { fireBeginCheckoutGenericAndNavigate } from "@/utils/ga4-events";
+import { fireBeginCheckoutRoomSelectedAndNavigate, fireSearchAvailabilityAndNavigate } from "@/utils/ga4-events";
 
 import { BOOKING_CODE } from "../constants";
 import { setWindowLocationHref } from "../environment";
@@ -52,6 +52,21 @@ export function Booking2GlobalModal(): JSX.Element | null {
   };
 
   const handleConfirm = (): void => {
+    const data =
+      (modalData as Partial<{
+        roomSku: string;
+        plan: "nr" | "flex";
+        octorateRateCode: string;
+        source: string;
+        item_list_id?: string;
+      }>) ?? {};
+
+    const roomSku = typeof data.roomSku === "string" ? data.roomSku.trim() : "";
+    const plan = data.plan === "nr" || data.plan === "flex" ? data.plan : undefined;
+    const octorateRateCode = typeof data.octorateRateCode === "string" ? data.octorateRateCode.trim() : "";
+    const source = typeof data.source === "string" ? data.source : "unknown";
+    const itemListId = typeof data.item_list_id === "string" ? data.item_list_id : undefined;
+
     const params = new URLSearchParams({
       codice: BOOKING_CODE,
       checkin: checkIn,
@@ -61,9 +76,25 @@ export function Booking2GlobalModal(): JSX.Element | null {
       childrenAges: "",
     });
 
+    if (roomSku && plan && octorateRateCode) {
+      params.set("room", octorateRateCode);
+      const href = `https://book.octorate.com/octobook/site/reservation/confirm.xhtml?${params}`;
+      fireBeginCheckoutRoomSelectedAndNavigate({
+        source,
+        roomSku,
+        plan,
+        checkin: checkIn,
+        checkout: checkOut,
+        pax: adults,
+        item_list_id: itemListId,
+        onNavigate: () => setWindowLocationHref(href),
+      });
+      return;
+    }
+
     const href = `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
-    fireBeginCheckoutGenericAndNavigate({
-      source: "booking2_modal",
+    fireSearchAvailabilityAndNavigate({
+      source,
       checkin: checkIn,
       checkout: checkOut,
       pax: adults,

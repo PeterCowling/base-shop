@@ -196,7 +196,7 @@ run_jest_exec() {
             bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config ./jest.config.cjs "$@"
             exit $?
         fi
-        bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- "$@"
+        bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config "$REPO_ROOT/jest.config.cjs" "$@"
     )
 }
 

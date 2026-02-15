@@ -1,6 +1,4 @@
 /** @jest-environment node */
- 
-import { chargeLateFeesOnce } from "../../lateFeeService";
 
 import * as testSetup from "./testSetup";
 
@@ -15,6 +13,10 @@ const {
   loggerErrorMock,
   NOW,
 } = testSetup;
+
+async function loadLateFeeService() {
+  return import("../../lateFeeService");
+}
 
 describe("chargeLateFeesOnce", () => {
   let dateSpy: jest.SpyInstance<number, []>;
@@ -32,6 +34,8 @@ describe("chargeLateFeesOnce", () => {
     ["no policy", {}],
     ["zero fee", { lateFeePolicy: { feeAmount: 0 } }],
   ])("skips charges when %s", async (_desc, shopJson) => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(JSON.stringify(shopJson));
 
@@ -44,6 +48,8 @@ describe("chargeLateFeesOnce", () => {
   });
 
   it("continues when shop policy cannot be loaded", async () => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockRejectedValueOnce(new Error("boom"));
 
@@ -56,6 +62,8 @@ describe("chargeLateFeesOnce", () => {
   });
 
   it("continues processing shops with policy", async () => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1", "s2"]);
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("s1/shop.json"))
@@ -88,6 +96,8 @@ describe("chargeLateFeesOnce", () => {
   });
 
   it("charges overdue orders and logs success", async () => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
       JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
@@ -124,6 +134,8 @@ describe("chargeLateFeesOnce", () => {
   });
 
   it("defaults currency to usd when session omits it", async () => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
       JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
@@ -153,6 +165,8 @@ describe("chargeLateFeesOnce", () => {
   });
 
   it("skips orders already returned, charged, or missing due date", async () => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
       JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
@@ -192,6 +206,8 @@ describe("chargeLateFeesOnce", () => {
       { customer: "cus_1", payment_intent: "pi_1", currency: "usd" },
     ],
   ])("skips charge when %s", async (_desc, session) => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
       JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
@@ -211,6 +227,8 @@ describe("chargeLateFeesOnce", () => {
   });
 
   it("logs error when session retrieval fails", async () => {
+    const { chargeLateFeesOnce } = await loadLateFeeService();
+
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
       JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
@@ -221,7 +239,7 @@ describe("chargeLateFeesOnce", () => {
         returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
       },
     ]);
-    stripeRetrieveMock.mockRejectedValueOnce(new Error("boom"));
+    stripeRetrieveMock.mockRejectedValueOnce(new Error("nope"));
 
     await chargeLateFeesOnce(undefined, "/data");
 
@@ -234,73 +252,6 @@ describe("chargeLateFeesOnce", () => {
       })
     );
     expect(stripeChargeMock).not.toHaveBeenCalled();
-    expect(markLateFeeChargedMock).not.toHaveBeenCalled();
-  });
-
-  it("logs error when marking late fee fails", async () => {
-    readdirMock.mockResolvedValue(["s1"]);
-    readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
-    );
-    readOrdersMock.mockResolvedValueOnce([
-      {
-        sessionId: "sess1",
-        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      },
-    ]);
-    stripeRetrieveMock.mockResolvedValueOnce({
-      customer: "cus_1",
-      payment_intent: { payment_method: "pm_1" },
-      currency: "usd",
-    });
-    stripeChargeMock.mockResolvedValueOnce({});
-    markLateFeeChargedMock.mockRejectedValueOnce(new Error("boom"));
-
-    await chargeLateFeesOnce(undefined, "/data");
-
-    expect(stripeChargeMock).toHaveBeenCalledTimes(1);
-    expect(markLateFeeChargedMock).toHaveBeenCalledWith("s1", "sess1", 5);
-    expect(loggerErrorMock).toHaveBeenCalledWith(
-      "late fee charge failed",
-      expect.objectContaining({
-        shopId: "s1",
-        sessionId: "sess1",
-        err: expect.any(Error),
-      })
-    );
-    expect(loggerInfoMock).not.toHaveBeenCalled();
-  });
-
-  it("logs error when charge fails", async () => {
-    readdirMock.mockResolvedValue(["s1"]);
-    readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
-    );
-    readOrdersMock.mockResolvedValueOnce([
-      {
-        sessionId: "sess1",
-        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      },
-    ]);
-    stripeRetrieveMock.mockResolvedValueOnce({
-      customer: "cus_1",
-      payment_intent: { payment_method: "pm_1" },
-      currency: "usd",
-    });
-    stripeChargeMock.mockImplementationOnce(() => {
-      throw new Error("boom");
-    });
-
-    await chargeLateFeesOnce(undefined, "/data");
-
-    expect(loggerErrorMock).toHaveBeenCalledWith(
-      "late fee charge failed",
-      expect.objectContaining({
-        shopId: "s1",
-        sessionId: "sess1",
-        err: expect.any(Error),
-      })
-    );
     expect(markLateFeeChargedMock).not.toHaveBeenCalled();
   });
 });

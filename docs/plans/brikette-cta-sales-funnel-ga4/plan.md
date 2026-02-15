@@ -630,24 +630,145 @@ Notes:
   - `pnpm --filter @acme/ui typecheck`
   - `pnpm --filter @acme/ui lint`
 
-### TASK-19: Lock modal “Why book direct” copy + i18n namespace/keys (no key leakage across locales)
+### TASK-19: Lock modal "Why book direct" copy + i18n namespace/keys (no key leakage across locales)
 - **Type:** INVESTIGATE
-- **Status:** Pending
-- **Execution-Skill:** /lp-replan (decision memo; no code changes)
+- **Status:** Complete (2026-02-15)
+- **Execution-Skill:** /lp-build (decision memo; no code changes)
 - **Affects (read):** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/locales/*/modals.json`, `apps/brikette/src/locales/*/bookPage.json`
 - **Depends on:** TASK-05
 - **Blocks:** TASK-12
 - **Confidence:** 85%
 - **Purpose / uncertainty:**
-  - Decide which namespace owns the “Why book direct” block (`modals` vs `bookPage`) and lock exact keys + fallback behavior so 17 locales do not ship raw key tokens.
+  - Decide which namespace owns the "Why book direct" block (`modals` vs `bookPage`) and lock exact keys + fallback behavior so 17 locales do not ship raw key tokens.
 - **Acceptance (exit criteria):**
   - Add a short decision memo under TASK-19 covering:
     - chosen namespace
     - exact key list (English copy + `defaultValue` strategy)
     - fallback behavior for missing non-EN keys (no key leakage)
-    - explicit “do not import `DirectBookingPerks` into modals” rule.
+    - explicit "do not import `DirectBookingPerks` into modals" rule.
 - **Validation contract (investigate):**
   - VC-01: staging manual check recipe exists to render BookingModal/Booking2Modal in 2-3 non-EN locales and confirm no key leakage for the new keys.
+
+#### Decision Memo: Modal "Why Book Direct" Copy Strategy (2026-02-15)
+
+**Decision: Use `modals` namespace with a new `directPerks` section**
+
+**Rationale:**
+1. **Namespace coupling avoidance:**
+   - Both modals already load the `modals` namespace exclusively for their UI copy
+   - `BookingModal` loads: `modals`, `_tokens`
+   - `Booking2Modal` loads: `modals`, `bookPage` (only for `PolicyFeeClarityPanel` child component), `footer` (also for child)
+   - Adding `bookPage` keys to the modals themselves would introduce unnecessary coupling
+   - The existing `DirectBookingPerks` component loads `dealsPage` namespace — importing it into modals would introduce cross-domain coupling (modals ← deals page)
+
+2. **Existing precedent:**
+   - The `modals.offers` section already contains direct-booking persuasion copy with perks structure:
+     - `offers.title`: "Book Direct & Save"
+     - `offers.description`: intro copy
+     - `offers.perks.discount/breakfast/drinks/upgrades`
+     - `offers.callToAction`: CTA text
+   - This proves the `modals` namespace is the appropriate domain for conversion copy inside modal surfaces
+
+3. **Scope alignment:**
+   - Modal conversion block needs minimal copy (2-4 bullet points), not the full `DirectBookingPerks` component
+   - `DirectBookingPerks` is a large, styled section with icons, links to terms, and complex fallback logic — overkill for modal context
+
+**Exact i18n keys (new section: `modals.directPerks`)**
+
+Add to `apps/brikette/src/locales/en/modals.json`:
+
+```json
+{
+  "directPerks": {
+    "heading": "Why book direct?",
+    "items": [
+      "Up to 25% off",
+      "Complimentary breakfast",
+      "Complimentary evening drink"
+    ]
+  }
+}
+```
+
+**Implementation strategy (for TASK-12):**
+
+```tsx
+// In BookingModal.tsx and Booking2Modal.tsx
+const { t: tModals } = useTranslation("modals", { lng: lang });
+
+const heading = tModals("directPerks.heading", {
+  defaultValue: "Why book direct?"
+}) as string;
+
+const items = (() => {
+  const raw = tModals("directPerks.items", {
+    returnObjects: true,
+    defaultValue: [
+      "Up to 25% off",
+      "Complimentary breakfast",
+      "Complimentary evening drink"
+    ]
+  });
+  return Array.isArray(raw) ? (raw as string[]) : [];
+})();
+```
+
+**Fallback behavior (no key leakage):**
+
+1. **Primary guard:** Always use `defaultValue` with English fallback text on every `t()` call
+2. **Array guard:** Check `Array.isArray()` after `returnObjects: true` and provide empty array fallback
+3. **String guard:** Cast result as `string` and check for non-empty after trim
+4. **Pattern:** Match existing modal code patterns (e.g., `Booking2Modal.tsx` line 51: `defaultValue: tModals("booking2.cancel")`)
+
+**What NOT to do:**
+
+1. **Do NOT import `DirectBookingPerks` component into modals**
+   - It pulls `dealsPage` namespace (cross-domain coupling)
+   - It has heavy styling/icons/links inappropriate for modal context
+   - It is designed for full-page sections, not inline modal blocks
+
+2. **Do NOT add `directPerks` keys to `bookPage` namespace**
+   - Would force both modals to load `bookPage` just for 3 strings
+   - `bookPage` is document-level copy; modal UI copy belongs in `modals`
+
+3. **Do NOT reuse `modals.offers.perks` directly**
+   - The `offers` modal is a distinct flow (triggered explicitly)
+   - Copy may diverge (offers modal emphasizes "thank you"; booking modals emphasize "why")
+   - Structural coupling between different modals is brittle
+
+**Staging manual check recipe (VC-01):**
+
+Execute these steps on staging after TASK-12 implementation:
+
+1. **Setup:** Deploy to staging with only EN keys populated (simulate missing translations)
+2. **Test locales:** German (`de`), French (`fr`), Japanese (`ja`) — representative of European + non-Latin scripts
+3. **Test procedure for each locale:**
+   - Navigate to `/[locale]` (e.g., `/de`)
+   - Open `BookingModal` (via header "Check availability" or hero CTA)
+   - **Expected:** "Why book direct?" heading + 3 perk bullets appear in English (defaultValue fallback)
+   - **Failure:** Raw key tokens like `directPerks.heading` or `directPerks.items[0]` visible
+   - Close modal
+   - Navigate to `/[locale]/rooms` and click "Non-Refundable" on any room card (opens `Booking2Modal`)
+   - **Expected:** Same "Why book direct?" block appears in English
+   - **Failure:** Raw key tokens or missing content
+4. **Evidence capture:**
+   - Screenshot showing the direct perks block rendered in fallback English
+   - Browser DevTools console: check for `i18next` warnings about missing keys (acceptable; proves fallback is working)
+   - HTML inspector: confirm rendered text is English fallback, not key tokens
+
+**Manual check pass criteria:**
+- No raw i18n key strings visible in any tested locale
+- Fallback English copy appears when locale-specific keys are missing
+- No console errors (i18next warnings are acceptable)
+- Modal layout is not broken by the new block
+
+**Completion checklist:**
+- [x] Namespace decision locked (`modals`)
+- [x] Key structure defined (`directPerks.heading` + `directPerks.items[]`)
+- [x] English copy locked (3 perks matching current site messaging)
+- [x] Fallback strategy defined (`defaultValue` on all `t()` calls + array/string guards)
+- [x] Anti-pattern documented (do NOT import `DirectBookingPerks`)
+- [x] Staging manual check recipe documented (3 locales × 2 modals × fallback validation)
 
 ### TASK-20: Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan
 - **Type:** INVESTIGATE

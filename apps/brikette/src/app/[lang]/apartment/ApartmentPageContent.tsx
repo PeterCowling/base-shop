@@ -95,7 +95,7 @@ function ApartmentPageContent({ lang }: Props) {
               <Link
                 href={`/${lang}/apartment/book/`}
                 onClick={() => trackApartmentEvent("click_check_availability", { source: "hub" })}
-                className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-fg-inverse shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-primary px-8 py-3 text-base font-semibold text-fg-inverse shadow-sm transition-colors hover:bg-brand-primary/90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
               >
                 {t("checkAvailability")}
               </Link>
@@ -104,7 +104,7 @@ function ApartmentPageContent({ lang }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackApartmentEvent("click_whatsapp", { source: "hub" })}
-                className="inline-flex items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-8 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-8 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
               >
                 {t("streetLevelArrival.whatsappCta")}
               </a>

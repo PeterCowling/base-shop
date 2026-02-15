@@ -19,6 +19,8 @@ type Props = {
   lang: AppLanguage;
 };
 
+const WHATSAPP_URL = "https://wa.me/393287073695";
+
 function buildOctorateLink(
   checkin: string,
   checkout: string,
@@ -187,6 +189,14 @@ function ApartmentBookContent({ lang }: Props) {
           >
             {selectedPlan === "nr" ? tBook("cta.nr") : tBook("cta.flex")}
           </Button>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
+          >
+            {t("streetLevelArrival.whatsappCta")}
+          </a>
         </div>
       </div>
     </Section>

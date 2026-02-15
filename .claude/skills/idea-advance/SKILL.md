@@ -34,7 +34,7 @@ Analyze a Business OS card's current state and propose a lane transition based o
 
 ### From Inbox → Fact-finding
 - **Evidence required:** None (always allowed)
-- **Action:** Agent creates `lp-fact-find` stage doc via `/idea-develop` (API-backed)
+- **Action:** Agent creates `fact-find` stage doc via `/idea-develop` (API-backed)
 
 ### From Fact-finding → Planned
 - **Evidence required:**
@@ -112,7 +112,7 @@ Analyze a Business OS card's current state and propose a lane transition based o
      ## Lane Move Proposal: Fact-finding → Planned
 
      **Evidence:**
-     - Fact-finding stage doc complete (API stage `lp-fact-find`)
+     - Fact-finding stage doc complete (API stage `fact-find`)
      - Key questions answered in FAQ section
      - Blast radius: Medium (affects 3 files in `apps/brikette/src/components/`)
      - Evidence sources: repo-diff (commit abc123), measurement (page load reduced 200ms)

@@ -78,7 +78,7 @@ function PrivateStayContent({ lang }: Props) {
           <Link
             href={`/${lang}/apartment/book/`}
             onClick={() => trackApartmentEvent("click_check_availability", { source: "private-stay" })}
-            className="inline-flex items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg bg-brand-primary px-6 py-3 font-semibold text-fg-inverse transition-colors hover:bg-brand-primary/90"
           >
             {t("privateStay.checkAvailability")}
           </Link>
@@ -87,7 +87,7 @@ function PrivateStayContent({ lang }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackApartmentEvent("click_whatsapp", { source: "private-stay" })}
-            className="inline-flex items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 font-semibold text-brand-heading transition-colors hover:bg-brand-surface/80"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 font-semibold text-brand-heading transition-colors hover:bg-brand-surface/80"
           >
             {t("privateStay.whatsappCta")}
           </a>

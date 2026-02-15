@@ -85,7 +85,7 @@ Chosen: Option B.
 | TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Complete (2026-02-15) | TASK-01, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Complete (2026-02-15) | TASK-03 | TASK-07 |
-| TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | - |
+| TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Complete (2026-02-15) | TASK-03, TASK-04, TASK-05, TASK-06 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -347,6 +347,14 @@ Chosen: Option B.
 - **Acceptance:**
   - Generate the BRIK prompt(s) and score them with the rubric.
   - If any rubric dimension scores 0, run `/lp-replan` before continuing and capture what failed.
+
+#### Checkpoint Completion (2026-02-15)
+- **Status:** Complete
+- **Evidence:**
+  - Regenerated prompt: `docs/business-os/market-research/BRIK/2026-02-15-deep-research-market-intelligence-prompt.user.md` (SelectedProfile: `hospitality_direct_booking_ota`, TwoPass: false, CanonicalWebsiteUrl: `https://hostel-positano.com`)
+  - Rubric run recorded: `docs/business-os/market-research/prompt-quality-eval.user.md` (commit 15e2574c4b)
+- **Rubric score (BRIK):** {model=2, delta=2, benchmark=2, website=2} -> PASS
+- **Result:** No rubric dimension scored 0 for BRIK; no replanning required.
 
 ## Risks & Mitigations
 - Risk: Deep Research cannot access repo artifacts, so pointers reduce usefulness.

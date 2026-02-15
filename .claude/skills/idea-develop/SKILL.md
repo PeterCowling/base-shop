@@ -157,7 +157,7 @@ Use PATCH with JSON Merge Patch and optimistic concurrency. Move location to `wo
   },
   "body": {
     "cardId": "BRIK-ENG-0001",
-    "stage": "lp-fact-find",
+    "stage": "fact-find",
     "content": "# Fact-Find: Add user authentication to guide booking flow\n\n## Questions to Answer\n\n1. **User demand:** Do users want account functionality?\n   - Method: Survey recent bookers\n   - Evidence type: customer-input\n\n2. **Technical feasibility:** Can platform auth integrate with Brikette?\n   - Method: Code review\n   - Evidence type: repo-diff\n\n3. **Compliance:** GDPR concerns?\n   - Method: Legal review\n   - Evidence type: legal\n\n4. **Performance:** Will auth slow booking?\n   - Method: Baseline + estimate\n   - Evidence type: measurement\n\n## Findings\n\n_TBD_\n\n## Recommendations\n\n_TBD_"
   }
 }
@@ -191,7 +191,7 @@ Agent:
 1) GET idea via /api/agent/ideas/BRIK-OPP-0001
 2) POST /api/agent/cards → cardId
 3) PATCH /api/agent/ideas/BRIK-OPP-0001 (Status worked, location worked, new content)
-4) POST /api/agent/stage-docs (lp-fact-find)
+4) POST /api/agent/stage-docs (fact-find)
 
 Done! Card created: BRIK-ENG-0001 (Inbox lane)
 Next step: /idea-advance BRIK-ENG-0001 to move to Fact-finding

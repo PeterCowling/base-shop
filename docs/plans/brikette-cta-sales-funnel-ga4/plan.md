@@ -131,7 +131,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Complete (2026-02-15) | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
 | TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Complete (2026-02-15) | TASK-05 | - |
 | TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Complete (2026-02-15) | TASK-02,TASK-04 | TASK-05 |
-| TASK-18 | IMPLEMENT | Fix impression dedupe to be per-navigation (not per session) + update unit test | 82% | S | Pending | TASK-01 | TASK-07 |
+| TASK-18 | IMPLEMENT | Fix impression dedupe to be per-navigation (not per session) + update unit test | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-07 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -460,6 +460,7 @@ Additional requirements:
 - **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/utils/ga4-events-contract.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-07
+- **Status:** Complete (2026-02-15)
 - **Confidence:** 82%
   - Implementation: 85% — bounded helper change + unit test updates.
   - Approach: 85% — aligns implementation with "per navigation" contract.
@@ -470,6 +471,16 @@ Additional requirements:
 - **Validation contract:**
   - TC-01: visiting the same pathname twice (simulated via reset/token) allows the impression to fire again.
   - TC-02: re-render within the same navigation remains deduped.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** `322688b1de`
+- **Implementation notes:**
+  - `apps/brikette/src/utils/ga4-events.ts` now scopes impression dedupe to the current `window.location.pathname` and clears the dedupe set when pathname changes (per-navigation semantics).
+  - Added `resetImpressionDedupe()` for explicit reset in edge cases/tests.
+- **Validation:**
+  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/utils/ga4-events-contract.test.ts --maxWorkers=2` (PASS)
+  - Ran: `pnpm --filter brikette typecheck` (PASS)
 
 ### TASK-10: modal_open/modal_close
 - **Type:** IMPLEMENT

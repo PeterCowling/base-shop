@@ -276,7 +276,7 @@ Top rules by count (warnings):
 | TASK-24 | IMPLEMENT | Fix `ds/min-tap-size` warnings (apartment tranche + SkipLink) | 82% | M | Complete (2026-02-15) | TASK-14 | TASK-12 |
 | TASK-30 | IMPLEMENT | ExperiencesHero lint remediation (tap-size + coupled warnings) | 78% | M | Ready | TASK-08 | TASK-12 |
 | TASK-31 | IMPLEMENT | HowToGetHereIndexContent warnings (tap-size + unsafe-regex) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
-| TASK-25 | IMPLEMENT | Fix remaining a11y/Next/react-hooks warnings (alt-text, no-img-element, exhaustive-deps) | 85% | S | Ready | TASK-08 | TASK-12 |
+| TASK-25 | IMPLEMENT | Fix remaining a11y/Next/react-hooks warnings (alt-text, no-img-element, exhaustive-deps) | 85% | S | Complete (2026-02-15) | TASK-08 | TASK-12 |
 | TASK-26 | INVESTIGATE | `no-explicit-any` remaining offenders: type strategy + call-site map | 85% | M | Ready | TASK-08 | TASK-27 |
 | TASK-27 | IMPLEMENT | Remove remaining `@typescript-eslint/no-explicit-any` errors (post-task-13-09 ledger) | 74% | L | Blocked | TASK-26 | TASK-12 |
 | TASK-28 | IMPLEMENT | Reduce remaining `complexity` errors to configured thresholds (post-task-13-09 ledger) | 74% | L | Ready | TASK-08 | TASK-12 |
@@ -1157,6 +1157,18 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
+
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `d33c7b9dc5`
+- **Notes:**
+  - `apps/brikette/src/components/guides/GuideCollectionCard.tsx`: `react-hooks/exhaustive-deps` warning fixed; `no-restricted-imports` warning for `@acme/ui/atoms/CfImage` remains and is owned by TASK-22 (requires policy/packaging decision).
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/test/components/careers-hero.test.tsx src/test/components/guide-collection-card.test.tsx src/components/landing/LocationMiniBlock.tsx src/context/modal/global-modals/LanguageModal.tsx src/routes/guides/_GuideSeoTemplate.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/components/guides/GuideCollectionCard.tsx --no-fix --max-warnings=999` — only `no-restricted-imports` warning remains
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran: `pnpm --filter @apps/brikette test -- --testPathPattern "careers-hero|guide-collection-card|LocationMiniBlock|LanguageModal|GuideSeoTemplate" --maxWorkers=2 --passWithNoTests` — PASS
 
 ### TASK-26: `no-explicit-any` remaining offenders: type strategy + call-site map
 - **Type:** INVESTIGATE

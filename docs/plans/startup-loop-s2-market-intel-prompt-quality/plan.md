@@ -83,7 +83,7 @@ Chosen: Option B.
 | TASK-02 | IMPLEMENT | Add hospitality S2 profile template (exemplar-aligned) incl. scenario rules + decision-grade criteria | 85 | S | Complete (2026-02-15) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Profile registry + override + selection debug metadata; generator chooses correct template | 82 | M | Complete (2026-02-15) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Complete (2026-02-15) | TASK-03 | TASK-07 |
-| TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Pending | TASK-01, TASK-03 | TASK-07 |
+| TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Complete (2026-02-15) | TASK-01, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Pending | TASK-03 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | - |
 
@@ -298,6 +298,19 @@ Chosen: Option B.
 - **Validation contract:**
   - TC-01: size trigger causes two-pass emission.
   - TC-02: size under threshold emits single-pass.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** 98f78a6826
+- **Execution cycle:** Red → Green → Refactor
+  - Added a two-pass trigger test (forces two-pass via `BASESHOP_S2_MAX_PROMPT_CHARS=1`) in `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
+- **Validation:**
+  - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
+  - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+- **Implementation notes:**
+  - Added deterministic two-pass emission when prompt size exceeds committed thresholds (`BASESHOP_S2_MAX_PROMPT_CHARS`, `BASESHOP_S2_MAX_BASELINE_CHARS`).
+  - Two-pass output is clearly labeled in the generated prompt doc, with explicit operator synthesis instructions.
 
 ### TASK-06: Prompt evaluation harness doc (golden businesses + rubric)
 - **Type:** IMPLEMENT

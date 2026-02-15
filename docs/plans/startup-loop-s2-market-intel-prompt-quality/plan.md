@@ -84,7 +84,7 @@ Chosen: Option B.
 | TASK-03 | IMPLEMENT | Profile registry + override + selection debug metadata; generator chooses correct template | 82 | M | Complete (2026-02-15) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Complete (2026-02-15) | TASK-01, TASK-03 | TASK-07 |
-| TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Pending | TASK-03 | TASK-07 |
+| TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -332,6 +332,12 @@ Chosen: Option B.
 - **Acceptance:**
   - Rubric is 0/1/2 per criterion; includes 3–5 golden businesses including BRIK.
   - Explicit “what constitutes pass” definitions.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** f89b741875
+- **Artifact:** `docs/business-os/market-research/prompt-quality-eval.user.md`
+- **Implementation notes:** manual rubric defined with 3 golden businesses (BRIK, HEAD, PET) and explicit pass/fail rules to catch prompt regressions.
 
 ### TASK-07: Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed
 - **Type:** CHECKPOINT

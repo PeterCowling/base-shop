@@ -10,7 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests",
     "e2e": "CYPRESS_BASE_URL=http://127.0.0.1:3020 start-server-and-test \"pnpm start\" http://127.0.0.1:3020 \"cypress run\"",
-    "e2e:open": "CYPRESS_BASE_URL=http://127.0.0.1:3020 start-server-and-test \"pnpm start\" http://127.0.0.1:3020 \"cypress open\""
+    "e2e:open": "CYPRESS_BASE_URL=http://127.0.0.1:3020 start-server-and-test \"pnpm start\" http://127.0.0.1:3020 \"cypress open\"",
+    "generate:contract-migration": "node scripts/generate-contract-migration.mjs",
+    "prebuild": "pnpm run generate:contract-migration"
   },
   "dependencies": {
     "@acme/design-system": "workspace:*",

@@ -1,0 +1,39 @@
+---
+# Startup Loop Contract Migration Window (Canonical)
+#
+# This file is canonical for human review and for lint/tooling.
+# Runtime MUST NOT read this file from the filesystem.
+# Runtime uses a build-time embedded module: apps/business-os/src/lib/contract-migration.generated.ts
+#
+# Semantics:
+# - Cutoffs are inclusive through 23:59:59Z on the given date.
+# - If config is missing/invalid at runtime, legacy behavior must fail-closed
+#   (aliases + dual-read disabled) while canonical behavior continues.
+
+version: "1"
+
+timebox:
+  # Stage-key aliases are accepted (and normalized) until this cutoff.
+  alias_accept_until_utc: "2026-03-01"
+
+  # Dual-read legacy filenames until this cutoff.
+  dual_read_until_utc: "2026-03-01"
+
+  # Lint escalates from WARN to FAIL after this date.
+  lint_warn_until_utc: "2026-02-22"
+
+stage_aliases:
+  lp-fact-find: fact-find
+
+filename_aliases:
+  fact-finding.user.md: fact-find.user.md
+
+allowlists:
+  # Temporary allowlist for references to legacy filenames.
+  # Use only for archived docs/fixtures. Remove after the compatibility window.
+  legacy_filename_refs: []
+
+  # Temporary allowlist for legacy stage keys emitted by skills.
+  # Should be empty quickly; use only to avoid breaking unrelated work during window start.
+  legacy_stage_key_emitters: []
+---

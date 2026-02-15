@@ -1,6 +1,6 @@
 /**
  * Tests for learning-compiler.ts
- * Task: LC-04 from docs/plans/learning-compiler-plan.md
+ * Task: LC-04 from docs/plans/archive/learning-compiler-plan.md
  */
 
 import * as fs from 'node:fs';

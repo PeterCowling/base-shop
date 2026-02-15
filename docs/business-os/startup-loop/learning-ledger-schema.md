@@ -10,7 +10,7 @@ Last-reviewed: 2026-02-13
 Canonical schema for `learning-ledger.jsonl` — the append-only, control-plane-owned
 ledger that records all experiment outcomes and their impact on baseline priors.
 
-**Decision reference:** `docs/plans/learning-compiler-plan.md` (LC-01, DL-LC-05, DL-LC-07)
+**Decision reference:** `docs/plans/archive/learning-compiler-plan.md` (LC-01, DL-LC-05, DL-LC-07)
 
 ## 1) Purpose
 

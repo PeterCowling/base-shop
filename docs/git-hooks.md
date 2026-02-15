@@ -31,10 +31,11 @@ Hooks are installed by `pnpm install` via the `prepare` script in `package.json`
 1. `pre-commit-check-env.sh`
 2. `require-writer-lock.sh`
 3. `no-partially-staged.js`
-4. `run-lint-staged.sh`
-5. `typecheck-staged.sh`
-6. `lint-staged-packages.sh`
-7. `pnpm validate:agent-context`
+4. `scripts/check-next-webpack-flag.mjs --staged` (enforces `next dev/build --webpack`)
+5. `run-lint-staged.sh`
+6. `typecheck-staged.sh`
+7. `lint-staged-packages.sh`
+8. `pnpm validate:agent-context`
 
 Key behavior:
 

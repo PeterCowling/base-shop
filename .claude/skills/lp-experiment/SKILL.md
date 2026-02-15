@@ -110,6 +110,11 @@ Two distinct modes:
 **Current traffic:** [sessions/day]
 
 ## Pass/Fail Criteria
+
+## Prior Links (Optional)
+If the hypothesis is testing (or correcting) an existing baseline prior, include `prior_refs` so the learning compiler can map outcomes deterministically.
+- Preferred form: `artifact_scope#prior_id` (example: `forecast#forecast.target.mrr_month3`)
+
 **PASS:** `[primary_metric]` ≥ [threshold] within [timebox]
 **FAIL:** `[primary_metric]` < [threshold] after [timebox]
 **INCONCLUSIVE:** Sample not reached within timebox
@@ -187,6 +192,11 @@ Two distinct modes:
 | `[metric]` | [value] | [value] | [+/- X%] |
 
 ## Verdict
+
+## Prior Links (Optional)
+If this readout updates baseline priors, include `prior_refs` to link directly to the affected priors.
+- Example: `prior_refs: ["forecast#forecast.target.mrr_month3"]`
+
 **Result:** [PASS / FAIL / INCONCLUSIVE]
 **Reasoning:** [Why this verdict based on pre-committed criteria]
 

@@ -57,7 +57,7 @@ Because this is a mixed execution track (code + operating artifact changes), eac
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/advanced-math-algorithms-fact-find.md` (Opportunity N).
+- Related brief: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (Opportunity N).
 - Key findings carried into this plan:
   - There is no current portfolio-level hypothesis optimizer.
   - Existing repo primitives already cover ideas and stage-doc persistence contracts.
@@ -207,7 +207,7 @@ HPM-04 completed on 2026-02-13.
   - Rollout: ship schema doc before code implementation.
   - Rollback: retain previous behavior and mark schema as draft if inconsistency is found.
 - **Documentation impact:** creates canonical schema reference for hypothesis portfolio.
-- **Notes / references:** `docs/plans/advanced-math-algorithms-fact-find.md`
+- **Notes / references:** `docs/plans/archive/advanced-math-algorithms-fact-find.md`
 
 ### HPM-02: Build typed hypothesis validation module in `@acme/lib`
 - **Type:** IMPLEMENT

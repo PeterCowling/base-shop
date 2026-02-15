@@ -45,6 +45,8 @@ Promoted from:
   - Room inventory: 11 total rooms (9 numbered: 3-6, 8-12; 2 year-named: 2022-7, 2025-14)
   - Data sheets: Price, Availability, Length of stay, Real availability
   - Source: `data/octorate/octorate-calendar-2026-02-14.xlsx` + metadata JSONs
+  - Automation: ✅ Fully automated via `packages/mcp-server/octorate-export-final-working.mjs`
+  - Protocol: `docs/business-os/startup-loop/octorate-data-collection-protocol.md`
 - Target (90 days, by 2026-05-13):
   - net booking value: EUR 205,200 (forecast P50)
   - bookings: 760 (forecast P50)

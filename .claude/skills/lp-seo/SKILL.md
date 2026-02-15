@@ -30,7 +30,7 @@ Systematic, phased SEO planning for organic search visibility. Works for any bus
 
 ## Operating Mode
 
-**Model**: Always use `model: "sonnet"` for all phases. Keyword research and SERP analysis are research-heavy but don't require opus-level reasoning.
+**Model**: Always use `model: "opus"` for all phases.
 
 **Execution Pattern**: Each phase builds on the previous. When running `/lp-seo all`, execute phases sequentially and pass outputs forward. When running a single phase, check for prerequisite outputs and either load them or warn the user.
 

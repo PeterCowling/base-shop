@@ -101,21 +101,39 @@ Metadata document describing the structure of the Excel export. Confirms 4 sheet
 
 ## 5) Data Extraction Method
 
-**Automation**: Fully automated Octorate calendar export via Playwright browser automation
+**Automation Status**: ✅ Fully automated via Playwright browser automation (production-ready)
 
 **Script**: `packages/mcp-server/octorate-export-final-working.mjs`
 
+**Export Type**: Calendar/inventory operational data (Price, Availability, Length of stay, Real availability)
+
 **Process**:
-1. Opens browser with saved session (no login required)
-2. Navigates to Octorate calendar export page
-3. Selects "Create time" filter
-4. Sets date range (default: last 90 days; can be customized)
+1. Opens browser with saved session (`.secrets/octorate/storage-state.json`)
+2. Navigates to: `https://admin.octorate.com/octobook/user/reservation/export.xhtml`
+3. Selects "Create time" filter from dropdown
+4. Sets date range (default: last 90 days; customizable)
 5. Clicks "Save as Excel"
-6. Downloads to `.tmp/octorate-downloads/`
+6. Downloads to: `.tmp/octorate-downloads/` with timestamped filename
+7. Processes with ExcelJS to extract room inventory and calendar structure
 
 **Documentation**: `packages/mcp-server/OCTORATE_EXPORT_README.md`
 
-**Session Management**: Session persists in `.secrets/octorate/storage-state.json`
+**Session Management**:
+- Session cookie stored in `.secrets/octorate/storage-state.json`
+- Session expires after inactivity - use MCP tool `octorate_login_interactive` to refresh
+- MCP tools available: `octorate_login_interactive`, `octorate_calendar_check`
+
+**Usage**:
+```bash
+cd packages/mcp-server
+node octorate-export-final-working.mjs
+```
+
+**Recent Successful Runs** (2026-02-14):
+- 10:15 - Calendar export (460KB) → processed to `data/octorate/octorate-calendar-2026-02-14.xlsx`
+- 10:16 - Room inventory extracted → `data/octorate/room-inventory.json`
+- 20:53 - Test run (3.3KB)
+- 22:11 - Test run (16KB)
 
 ## 6) Next Actions
 

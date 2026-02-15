@@ -9,7 +9,7 @@ import type { BookingGuestOption, BookingModalBuildParams, BookingModalCopy } fr
 import { resolveSharedToken } from "@acme/ui/shared";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { fireBeginCheckoutGeneric } from "@/utils/ga4-events";
+import { fireSearchAvailability } from "@/utils/ga4-events";
 
 import { BOOKING_CODE, formatDate } from "../constants";
 import { useModal } from "../hooks";
@@ -86,8 +86,8 @@ export function BookingGlobalModal(): JSX.Element | null {
   };
 
   const handleAction = (params: BookingModalBuildParams): void => {
-    fireBeginCheckoutGeneric({
-      source: "booking_modal",
+    fireSearchAvailability({
+      source: dealId ? "deals" : "unknown",
       checkin: formatDate(params.checkIn),
       checkout: formatDate(params.checkOut),
       pax: params.guests,

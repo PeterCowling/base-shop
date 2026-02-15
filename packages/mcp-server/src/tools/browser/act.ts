@@ -13,12 +13,17 @@ export type ActTarget =
       risk: BicRisk;
       label?: string;
     }
+  | {
+      kind: "element";
+      selector: string;
+    }
   | { kind: "page" };
 
 export type ActAction =
   | { type: "click" }
   | { type: "fill"; value: string }
-  | { type: "navigate"; url: string };
+  | { type: "navigate"; url: string }
+  | { type: "evaluate"; expression: string };
 
 export type ActRequest = {
   store: BrowserSessionStore;
@@ -93,33 +98,40 @@ export async function browserAct(input: ActRequest): Promise<BrowserSessionResul
   let driverTarget: { kind: "page" } | { kind: "element"; selector: string } | null = null;
 
   if (input.target.kind === "element") {
-    const resolved = input.store.resolveActionTarget({
-      sessionId: input.sessionId,
-      observationId: input.observationId,
-      actionId: input.target.actionId,
-    });
-
-    if (!resolved.ok) {
-      error = resolved.error;
+    // Check if using custom selector or actionId
+    if ("selector" in input.target) {
+      // Direct CSS selector - bypass BIC resolution
+      driverTarget = { kind: "element", selector: input.target.selector };
     } else {
-      driverTarget = toDriverActionTarget(resolved.value);
-    }
-
-    if (!error) {
-      const gate = enforceSafetyConfirmation({
-        risk: input.target.risk,
-        confirm: input.confirm,
-        confirmationText: input.confirmationText,
-        requiredConfirmationText: requiredConfirmationText({
-          domain,
-          actionType: input.action.type,
-          label: input.target.label,
-          actionId: input.target.actionId,
-        }),
+      // ActionId - resolve via BIC
+      const resolved = input.store.resolveActionTarget({
+        sessionId: input.sessionId,
+        observationId: input.observationId,
+        actionId: input.target.actionId,
       });
 
-      if (!gate.ok) {
-        error = gate.error;
+      if (!resolved.ok) {
+        error = resolved.error;
+      } else {
+        driverTarget = toDriverActionTarget(resolved.value);
+      }
+
+      if (!error) {
+        const gate = enforceSafetyConfirmation({
+          risk: input.target.risk,
+          confirm: input.confirm,
+          confirmationText: input.confirmationText,
+          requiredConfirmationText: requiredConfirmationText({
+            domain,
+            actionType: input.action.type,
+            label: input.target.label,
+            actionId: input.target.actionId,
+          }),
+        });
+
+        if (!gate.ok) {
+          error = gate.error;
+        }
       }
     }
   } else {

@@ -2340,9 +2340,9 @@
     "domain": "Infrastructure"
   },
   {
-    "path": "docs/plans/advanced-math-algorithms-fact-find.md",
+    "path": "docs/plans/archive/advanced-math-algorithms-fact-find.md",
     "type": "Fact-Find",
-    "status": "Proposed",
+    "status": "Archived",
     "domain": "Platform"
   },
   {
@@ -3432,13 +3432,13 @@
     "domain": "Brikette/SEO"
   },
   {
-    "path": "docs/plans/brikette-staging-launch-fact-find.md",
+    "path": "docs/plans/archive/brikette-staging-launch-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "CI-Deploy"
   },
   {
-    "path": "docs/plans/brikette-staging-to-live-launch-fact-find.md",
+    "path": "docs/plans/archive/brikette-staging-to-live-launch-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "Deploy"
@@ -3594,9 +3594,9 @@
     "domain": "Repo/Git"
   },
   {
-    "path": "docs/plans/github-update-strategy-fact-find.md",
+    "path": "docs/plans/archive/github-update-strategy-fact-find.md",
     "type": "Fact-Find",
-    "status": "Draft",
+    "status": "Archived",
     "domain": "Infra"
   },
   {
@@ -3672,7 +3672,7 @@
     "domain": "Platform"
   },
   {
-    "path": "docs/plans/ideas-go-faster-deliberation-upgrade-fact-find.md",
+    "path": "docs/plans/archive/ideas-go-faster-deliberation-upgrade-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "Business-OS"
@@ -3780,7 +3780,7 @@
     "domain": "Launch"
   },
   {
-    "path": "docs/plans/learning-compiler-plan.md",
+    "path": "docs/plans/archive/learning-compiler-plan.md",
     "type": "Plan",
     "status": "Archived",
     "domain": "Venture-Studio"
@@ -3906,9 +3906,9 @@
     "domain": "Prime"
   },
   {
-    "path": "docs/plans/prime-ui-theme-centralization-fact-find.md",
+    "path": "docs/plans/archive/prime-ui-theme-centralization-fact-find.md",
     "type": "Fact-Find",
-    "status": "Accepted",
+    "status": "Archived",
     "domain": "UI"
   },
   {
@@ -3924,7 +3924,7 @@
     "domain": "Automation"
   },
   {
-    "path": "docs/plans/remove-gallery-feature-fact-find.md",
+    "path": "docs/plans/archive/remove-gallery-feature-fact-find.md",
     "type": "Fact-Find",
     "status": "Draft",
     "domain": "CMS"

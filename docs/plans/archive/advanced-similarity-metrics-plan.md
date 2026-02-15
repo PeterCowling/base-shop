@@ -54,7 +54,7 @@ This plan adds a new `packages/lib/src/math/similarity/` module with five advanc
 
 ## Fact-Find Reference
 
-- Related brief: `docs/plans/advanced-math-algorithms-fact-find.md`
+- Related brief: `docs/plans/archive/advanced-math-algorithms-fact-find.md`
 - Key findings carried into this plan:
   - Opportunity K identified this work as TypeScript-feasible and high leverage for richer dependency analysis.
   - Existing library already supports Pearson/Spearman but lacks non-monotonic dependence metrics.
@@ -215,7 +215,7 @@ Chosen: Option B, because it validates the hardest assumptions early, keeps impl
   - Rollout: additive export in similarity barrel.
   - Rollback: remove metric export and test file only.
 - **Documentation impact:** add metric usage caveats in similarity README (added in ASM-09).
-- **Notes / references:** `docs/plans/advanced-math-algorithms-fact-find.md` Opportunity K.
+- **Notes / references:** `docs/plans/archive/advanced-math-algorithms-fact-find.md` Opportunity K.
 
 #### Build Completion (2026-02-13)
 - **Status:** Complete

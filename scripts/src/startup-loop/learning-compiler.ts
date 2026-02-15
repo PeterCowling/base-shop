@@ -5,7 +5,7 @@
  * Implements prior-ref routing (explicit vs keyword fallback) and invertible
  * confidence deltas.
  *
- * Task: LC-04 from docs/plans/learning-compiler-plan.md
+ * Task: LC-04 from docs/plans/archive/learning-compiler-plan.md
  */
 
 import { createHash } from 'node:crypto';

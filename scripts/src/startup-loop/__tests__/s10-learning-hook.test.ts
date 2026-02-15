@@ -1,6 +1,6 @@
 /**
  * Tests for s10-learning-hook.ts
- * Task: LC-06 from docs/plans/learning-compiler-plan.md
+ * Task: LC-06 from docs/plans/archive/learning-compiler-plan.md
  */
 
 import * as fs from 'node:fs';

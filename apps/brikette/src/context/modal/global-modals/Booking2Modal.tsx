@@ -12,7 +12,7 @@ import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 import { getDatePlusTwoDays } from "@/utils/dateUtils";
-import { fireBeginCheckoutGeneric } from "@/utils/ga4-events";
+import { fireBeginCheckoutGenericAndNavigate } from "@/utils/ga4-events";
 
 import { BOOKING_CODE } from "../constants";
 import { setWindowLocationHref } from "../environment";
@@ -52,13 +52,6 @@ export function Booking2GlobalModal(): JSX.Element | null {
   };
 
   const handleConfirm = (): void => {
-    fireBeginCheckoutGeneric({
-      source: "booking2_modal",
-      checkin: checkIn,
-      checkout: checkOut,
-      pax: adults,
-    });
-
     const params = new URLSearchParams({
       codice: BOOKING_CODE,
       checkin: checkIn,
@@ -68,7 +61,14 @@ export function Booking2GlobalModal(): JSX.Element | null {
       childrenAges: "",
     });
 
-    setWindowLocationHref(`https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`);
+    const href = `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
+    fireBeginCheckoutGenericAndNavigate({
+      source: "booking2_modal",
+      checkin: checkIn,
+      checkout: checkOut,
+      pax: adults,
+      onNavigate: () => setWindowLocationHref(href),
+    });
   };
 
   return (

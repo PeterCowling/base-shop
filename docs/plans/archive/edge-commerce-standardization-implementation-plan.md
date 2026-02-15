@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Draft
+Status: Archived
 Status-note: Revised after repo review + follow-up refinements
 Domain: Platform, Commerce
 Last-reviewed: 2026-02-14

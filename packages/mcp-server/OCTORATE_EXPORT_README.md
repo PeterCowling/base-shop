@@ -1,15 +1,43 @@
-# Octorate Reservations Export Automation
+# Octorate Reservations Export and Processing Automation
 
-Fully automated system to export Octorate reservations data to Excel with ZERO manual steps.
+Fully automated system to export Octorate reservations data and process it into monthly aggregates with ZERO manual steps.
 
 ## Quick Start
+
+### Full Pipeline (Export + Process) - Recommended
+
+```bash
+cd packages/mcp-server
+node octorate-full-pipeline.mjs
+```
+
+This runs both export and processing in sequence, updating the CSV files automatically.
+
+### Export Only
 
 ```bash
 cd packages/mcp-server
 node octorate-export-final-working.mjs
 ```
 
+### Process Existing Export
+
+```bash
+cd packages/mcp-server
+node octorate-process-bookings.mjs /path/to/export.xls [output-dir]
+```
+
 ## What It Does
+
+### octorate-full-pipeline.mjs (Recommended)
+
+1. Runs `octorate-export-final-working.mjs` to download raw reservations
+2. Finds the latest downloaded Excel file
+3. Runs `octorate-process-bookings.mjs` to process into monthly aggregates
+4. Updates `docs/business-os/strategy/BRIK/data/bookings_by_month.csv`
+5. Updates `docs/business-os/strategy/BRIK/data/net_value_by_month.csv`
+
+### octorate-export-final-working.mjs
 
 1. Opens browser with saved session (no login required)
 2. Navigates to export page
@@ -19,11 +47,25 @@ node octorate-export-final-working.mjs
 6. Downloads file to `.tmp/octorate-downloads/`
 7. Reports file details
 
+### octorate-process-bookings.mjs
+
+1. Reads Excel file from Octorate reservations export
+2. Parses booking records (Create time, Refer, Room, Total Room columns)
+3. Deduplicates by booking reference (Refer) per month
+4. Aggregates by create time month
+5. Calculates channel attribution (Direct vs OTA based on room name)
+6. Outputs two CSV files:
+   - `bookings_by_month.csv` - Monthly bookings count, gross value, channel split
+   - `net_value_by_month.csv` - Monthly net booking value (net-of-cancellations)
+
 ## File Locations
 
-- **Script:** `octorate-export-final-working.mjs`
+- **Pipeline script:** `octorate-full-pipeline.mjs` (export + process)
+- **Export script:** `octorate-export-final-working.mjs`
+- **Process script:** `octorate-process-bookings.mjs`
 - **Session:** `.secrets/octorate/storage-state.json`
-- **Downloads:** `.tmp/octorate-downloads/`
+- **Raw downloads:** `.tmp/octorate-downloads/`
+- **CSV outputs:** `docs/business-os/strategy/BRIK/data/`
 - **Login helper:** `octorate-login-with-code.mjs`
 - **MFA helper:** `get-octorate-mfa-code.mjs`
 
@@ -113,11 +155,47 @@ await handleToolCall('browser_session_open', {
 });
 ```
 
+## Output Data
+
+### Raw Excel Export
+
+**Columns:**
+- Create time - When booking was created
+- Check in - Guest arrival date
+- Guest - Guest name
+- Refer - Booking reference (used for deduplication)
+- Guests - Number of guests
+- Nights - Length of stay
+- Room - Room/rate plan name (contains "OTA" for OTA bookings)
+- Total Room - Booking value (EUR)
+- Email - Guest email
+
+### Processed CSV Files
+
+#### bookings_by_month.csv
+```csv
+month,bookings_count,gross_booking_value,channel_source,notes
+2024-02,66,17934.65,Direct:10; OTA:56,observed from export.xls; raw_rows=69; duplicate_refs_removed=3
+```
+
+#### net_value_by_month.csv
+```csv
+month,net_booking_value,method,notes
+2024-02,17934.65,observed export marked net-of-cancellations; deduped by Refer per month,observed from export.xls; raw_rows=69; duplicate_refs_removed=3
+```
+
 ## Success Metrics
 
-**First run:** 16.22 KB Excel file with 90 days of reservation data
-**Date range:** 16/11/2025 to 14/02/2026
-**Automation:** 100% - zero manual steps
+**Export:**
+- First run: 16.22 KB Excel file with 90 days of reservation data
+- Date range: 16/11/2025 to 14/02/2026
+- Automation: 100% - zero manual steps
+
+**Processing:**
+- Test run: 4332 rows → 4155 unique bookings (177 duplicates removed)
+- Date range: 25 months (2024-02 to 2026-02)
+- Channel split: 17.1% Direct, 82.9% OTA
+- Total value: EUR 1,135,214.32
 
 ## Maintenance
 
@@ -129,6 +207,7 @@ If Octorate UI changes:
 
 ## History
 
+- **2026-02-15**: Added processing automation (`octorate-process-bookings.mjs`, `octorate-full-pipeline.mjs`)
 - **2026-02-14**: Initial implementation with download automation restored
 - Fixed date format from MM/DD/YYYY to DD/MM/YYYY
 - Fixed "Create time" selection to use first 10 options only
@@ -137,5 +216,8 @@ If Octorate UI changes:
 
 ## Related Scripts
 
+- `octorate-calendar-export.mjs` - Calendar/inventory export (Batch 1)
+- `octorate-process-bookings.mjs` - Process reservations into monthly aggregates
+- `octorate-full-pipeline.mjs` - Full export + process pipeline
 - `octorate-debug-page.mjs` - Page inspection helper
 - `octorate-find-export.mjs` - Export button finder

@@ -41,6 +41,10 @@ export interface ModalFrameProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  /** Accessible title for screen readers. Rendered as a visually-hidden DialogTitle
+   *  to satisfy Radix's accessibility check. Ignored when children include their own
+   *  visible DialogTitle with a matching ariaLabelledBy id. */
+  title?: string;
   overlayClassName?: string;
   contentClassName?: string;
   testId?: string;
@@ -62,6 +66,7 @@ export function ModalFrame({
   isOpen,
   onClose,
   children,
+  title,
   overlayClassName,
   contentClassName,
   testId,
@@ -81,6 +86,9 @@ export function ModalFrame({
           data-cy={testId}
           data-testid={testId}
         >
+          <DialogPrimitive.Title className="sr-only">
+            {title ?? "Dialog"}
+          </DialogPrimitive.Title>
           {children}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

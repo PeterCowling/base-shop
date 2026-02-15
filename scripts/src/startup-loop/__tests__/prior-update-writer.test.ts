@@ -413,6 +413,10 @@ More narrative text that must not be modified.
     });
 
     it('updates last_updated field on modified prior', () => {
+      jest.useFakeTimers();
+      jest.setSystemTime(new Date('2026-02-13T12:00:00Z'));
+
+      try {
       const entryId = 'b8c9d0e1-cdef-67f2-3456-890abcdef012';
       const deltas: PriorDelta[] = [
         {
@@ -441,9 +445,12 @@ More narrative text that must not be modified.
         (p: { id: string }) => p.id === 'forecast.target.mrr_month3'
       );
 
-      // Should be updated to today's date (2026-02-13)
+      // Freeze time above; writer should stamp YYYY-MM-DD.
       expect(updatedPrior.last_updated).not.toBe('2026-01-15');
-      expect(updatedPrior.last_updated).toMatch(/2026-02-13/);
+      expect(updatedPrior.last_updated).toBe('2026-02-13');
+      } finally {
+        jest.useRealTimers();
+      }
     });
   });
 });

@@ -34,7 +34,7 @@ Implement a statistically rigorous experimentation module in `packages/lib/src/m
 5. Sequential testing in two phases: group-sequential boundaries first, always-valid inference second
 
 **Primary references:**
-- Fact-find: `docs/plans/advanced-math-algorithms-fact-find.md` (Opportunity C)
+- Fact-find: `docs/plans/archive/advanced-math-algorithms-fact-find.md` (Opportunity C)
 - Existing conventions: `packages/lib/src/math/statistics/`, `packages/lib/src/math/random/`
 
 ## Goals

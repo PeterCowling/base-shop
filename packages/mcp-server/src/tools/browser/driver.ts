@@ -25,7 +25,8 @@ export type BrowserActTarget =
 export type BrowserActAction =
   | { type: "click" }
   | { type: "fill"; value: string }
-  | { type: "navigate"; url: string };
+  | { type: "navigate"; url: string }
+  | { type: "evaluate"; expression: string };
 
 export type BrowserActRequest = {
   target: BrowserActTarget;

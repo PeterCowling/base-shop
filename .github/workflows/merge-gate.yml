@@ -26,6 +26,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Enforce Next.js Webpack opt-out policy
+        run: node scripts/check-next-webpack-flag.mjs --all
+
       - name: Detect required workflows
         id: filter
         run: |

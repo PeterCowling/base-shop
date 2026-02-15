@@ -4,7 +4,7 @@
  * Tests extraction, validation, and round-trip serialization of machine priors blocks
  * from baseline artifacts.
  *
- * Task: LC-00 from docs/plans/learning-compiler-plan.md
+ * Task: LC-00 from docs/plans/archive/learning-compiler-plan.md
  */
 
 import type { Prior } from '../baseline-priors';

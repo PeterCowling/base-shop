@@ -6,11 +6,11 @@ import {
   getLatestStageDoc,
   type StageDoc,
   StageDocSchema,
-  StageTypeSchema,
   upsertStageDoc,
 } from "@acme/platform-core/repositories/businessOs.server";
 
 import { requireAgentAuth } from "@/lib/auth/middleware";
+import { getContractMigrationConfig, normalizeStageKey } from "@/lib/contract-migration";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
@@ -82,6 +82,25 @@ async function readRequestJson(request: NextRequest): Promise<
   }
 }
 
+function maybeLogStageAliasUse(input: {
+  endpoint: string;
+  cardId: string;
+  normalized: ReturnType<typeof normalizeStageKey>;
+}): string | null {
+  const { normalized } = input;
+  if (!normalized || !normalized.normalized) return null;
+
+  // Telemetry surface = structured log only (no doc content).
+  console.info("bos.stage_alias_used", {
+    cardId: input.cardId,
+    rawStage: normalized.rawStage,
+    normalizedStage: normalized.normalizedStage,
+    endpoint: input.endpoint,
+  });
+
+  return `${normalized.rawStage}->${normalized.normalizedStage}`;
+}
+
 /**
  * GET /api/agent/stage-docs/[cardId]/[stage]
  * Fetch a stage doc with entity SHA for optimistic concurrency.
@@ -90,9 +109,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   const auth = await requireAgentAuth(request);
   if (auth instanceof NextResponse) return auth;
 
-  const { cardId, stage } = await params;
-  const stageResult = StageTypeSchema.safeParse(stage);
-  if (!stageResult.success) {
+  const { cardId, stage: rawStage } = await params;
+
+  const { config } = getContractMigrationConfig();
+  const normalized = normalizeStageKey(config, rawStage);
+  if (!normalized) {
     return NextResponse.json(
       // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
       { error: "Invalid stage" },
@@ -100,8 +121,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     );
   }
 
+  const stage = normalized.stage;
+  const normalizedHeader = maybeLogStageAliasUse({
+    endpoint: "GET /api/agent/stage-docs/[cardId]/[stage]",
+    cardId,
+    normalized,
+  });
+
   const db = getDb();
-  const stageDoc = await getLatestStageDoc(db, cardId, stageResult.data);
+  const stageDoc = await getLatestStageDoc(db, cardId, stage);
 
   if (!stageDoc) {
     return NextResponse.json(
@@ -112,7 +140,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 
   const entitySha = await computeStageDocEntitySha(stageDoc);
-  return NextResponse.json({ entity: stageDoc, entitySha });
+  const response = NextResponse.json({ entity: stageDoc, entitySha });
+
+  if (normalizedHeader) {
+    response.headers.set("x-bos-stage-normalized", normalizedHeader);
+  }
+
+  return response;
 }
 
 /**
@@ -123,15 +157,24 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   const auth = await requireAgentAuth(request);
   if (auth instanceof NextResponse) return auth;
 
-  const { cardId, stage } = await params;
-  const stageResult = StageTypeSchema.safeParse(stage);
-  if (!stageResult.success) {
+  const { cardId, stage: rawStage } = await params;
+
+  const { config } = getContractMigrationConfig();
+  const normalized = normalizeStageKey(config, rawStage);
+  if (!normalized) {
     return NextResponse.json(
       // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
       { error: "Invalid stage" },
       { status: 400 }
     );
   }
+
+  const stage = normalized.stage;
+  const normalizedHeader = maybeLogStageAliasUse({
+    endpoint: "PATCH /api/agent/stage-docs/[cardId]/[stage]",
+    cardId,
+    normalized,
+  });
 
   const bodyResult = await readRequestJson(request);
   if (!bodyResult.ok) return bodyResult.response;
@@ -154,7 +197,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   }
 
   const db = getDb();
-  const currentStageDoc = await getLatestStageDoc(db, cardId, stageResult.data);
+  const currentStageDoc = await getLatestStageDoc(db, cardId, stage);
   if (!currentStageDoc) {
     return NextResponse.json(
       // i18n-exempt -- BOS-02 API not found message [ttl=2026-03-31]
@@ -190,10 +233,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   const updatedStageDocBase: StageDoc = {
     ...(merged as StageDoc),
     Type: "Stage",
-    Stage: stageResult.data,
+    Stage: stage,
     "Card-ID": cardId,
     Updated: updatedDate,
-    filePath: `docs/business-os/cards/${cardId}/${stageResult.data}.user.md`,
+    filePath: `docs/business-os/cards/${cardId}/${stage}.user.md`,
   };
 
   const validation = StageDocSchema.safeParse(updatedStageDocBase);
@@ -225,11 +268,16 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
   await appendAuditEntry(db, {
     entity_type: "stage_doc",
-    entity_id: `${cardId}:${stageResult.data}`,
+    entity_id: `${cardId}:${stage}`,
     action: "update",
     actor: "agent",
     changes_json: JSON.stringify({ updated_at: updatedDate }),
   });
 
-  return NextResponse.json({ entity: updatedStageDoc, entitySha });
+  const response = NextResponse.json({ entity: updatedStageDoc, entitySha });
+  if (normalizedHeader) {
+    response.headers.set("x-bos-stage-normalized", normalizedHeader);
+  }
+
+  return response;
 }

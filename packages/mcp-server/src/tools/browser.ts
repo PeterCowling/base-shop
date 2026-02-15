@@ -55,7 +55,7 @@ const expectationsSchema = z
 const actArgsSchema = z
   .object({
     sessionId: z.string().min(1),
-    observationId: z.string().min(1),
+    observationId: z.string().min(1).optional().default(""),
     target: z
       .union([
         z.object({ kind: z.literal("page") }).strict(),
@@ -69,6 +69,12 @@ const actArgsSchema = z
             label: z.string().min(1).optional(),
           })
           .strict(),
+        z
+          .object({
+            kind: z.literal("element"),
+            selector: z.string().min(1),
+          })
+          .strict(),
       ])
       .optional()
       .default({ kind: "page" }),
@@ -76,6 +82,7 @@ const actArgsSchema = z
       z.object({ type: z.literal("click") }).strict(),
       z.object({ type: z.literal("fill"), value: z.string() }).strict(),
       z.object({ type: z.literal("navigate"), url: z.string().url() }).strict(),
+      z.object({ type: z.literal("evaluate"), expression: z.string().min(1) }).strict(),
     ]),
     confirm: z.boolean().optional(),
     confirmationText: z.string().optional(),
@@ -163,7 +170,7 @@ export const browserTools = [
   {
     name: "browser_act",
     description:
-      "Execute an action (click/fill/navigate) and return verification + nextObservation (BIC v0.1).",
+      "Execute an action (click/fill/navigate/evaluate) and return verification + nextObservation (BIC v0.1). Supports custom CSS selectors and JavaScript evaluation.",
     inputSchema: {
       type: "object",
       properties: {
@@ -176,6 +183,11 @@ export const browserTools = [
               type: "object",
               properties: { kind: { const: "element" }, actionId: { type: "string" } },
               required: ["kind", "actionId"],
+            },
+            {
+              type: "object",
+              properties: { kind: { const: "element" }, selector: { type: "string" } },
+              required: ["kind", "selector"],
             },
           ],
         },
@@ -191,6 +203,11 @@ export const browserTools = [
               type: "object",
               properties: { type: { const: "navigate" }, url: { type: "string" } },
               required: ["type", "url"],
+            },
+            {
+              type: "object",
+              properties: { type: { const: "evaluate" }, expression: { type: "string" } },
+              required: ["type", "expression"],
             },
           ],
         },

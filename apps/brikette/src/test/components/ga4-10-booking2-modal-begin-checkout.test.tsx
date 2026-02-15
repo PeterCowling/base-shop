@@ -86,17 +86,25 @@ describe("Booking2GlobalModal GA4 begin_checkout", () => {
 
     capture.props.onConfirm();
 
-    expect(window.gtag).toHaveBeenCalledWith(
-      "event",
-      "begin_checkout",
+    const gtag = window.gtag as unknown as jest.Mock;
+    const call = gtag.mock.calls.find((args) => args[0] === "event" && args[1] === "begin_checkout");
+    expect(call).toBeTruthy();
+    const payload = call?.[2] as Record<string, unknown>;
+
+    expect(payload).toEqual(
       expect.objectContaining({
         source: "booking2_modal",
         checkin: "2026-06-10",
         checkout: "2026-06-12",
         pax: 2,
+        transport_type: "beacon",
       }),
     );
 
+    // Navigation is delayed until the GA callback or a short timeout.
+    expect(mockSetWindowLocationHref).not.toHaveBeenCalled();
+    expect(typeof payload.event_callback).toBe("function");
+    (payload.event_callback as () => void)();
     expect(mockSetWindowLocationHref).toHaveBeenCalledWith(
       expect.stringContaining("book.octorate.com/octobook/site/reservation/result.xhtml"),
     );

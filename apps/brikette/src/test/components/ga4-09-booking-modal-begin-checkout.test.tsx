@@ -47,17 +47,26 @@ import { BookingGlobalModal } from "@/context/modal/global-modals/BookingModal";
 describe("BookingGlobalModal GA4 begin_checkout", () => {
   let originalGtag: typeof window.gtag;
 
+  beforeAll(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2026-06-01T00:00:00Z"));
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
     originalGtag = window.gtag;
     window.gtag = jest.fn();
   });
 
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   afterEach(() => {
     window.gtag = originalGtag;
   });
 
-  it("fires begin_checkout on BookingModal onAction", () => {
+  it("fires search_availability on BookingModal onAction", () => {
     render(
       <ModalContext.Provider
         value={{
@@ -81,12 +90,12 @@ describe("BookingGlobalModal GA4 begin_checkout", () => {
 
     expect(window.gtag).toHaveBeenCalledWith(
       "event",
-      "begin_checkout",
+      "search_availability",
       expect.objectContaining({
-        source: "booking_modal",
-        checkin: "2026-06-10",
-        checkout: "2026-06-12",
         pax: 2,
+        nights: 2,
+        lead_time_days: 9,
+        source: "unknown",
       }),
     );
   });

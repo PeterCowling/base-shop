@@ -31,7 +31,7 @@ describe("Room begin_checkout GA4 payload (GA4-08)", () => {
           expect.objectContaining({
             item_id: "room_10",
             item_name: "room_10",
-            item_category: "flex",
+            item_variant: "flex",
             price: 60.75,
             quantity: 2,
           }),

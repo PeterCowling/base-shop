@@ -46,15 +46,29 @@ echo ""
 echo "> Finding changed files..."
 
 ALL_CHANGED=""
+CHANGE_MODE=""
+WEBPACK_POLICY_SOURCE="fs"
 if [ -n "$VALIDATE_RANGE" ]; then
     echo "  Mode: git range ($VALIDATE_RANGE)"
     ALL_CHANGED=$(git diff --name-only --diff-filter=ACMRTUXB "$VALIDATE_RANGE" 2>/dev/null || true)
+    CHANGE_MODE="range"
+
+    end_ref="$(printf '%s' "$VALIDATE_RANGE" | awk -F'\\.\\.' '{print $NF}')"
+    end_sha="$(git rev-parse "$end_ref" 2>/dev/null || true)"
+    if [ -n "$end_sha" ]; then
+        WEBPACK_POLICY_SOURCE="ref:${end_sha}"
+    else
+        WEBPACK_POLICY_SOURCE="ref:${end_ref}"
+    fi
 elif git diff --cached --quiet 2>/dev/null; then
     echo "  Mode: working tree vs HEAD"
     ALL_CHANGED=$(git diff --name-only --diff-filter=ACMRTUXB HEAD 2>/dev/null || true)
+    CHANGE_MODE="worktree"
 else
     echo "  Mode: staged changes"
     ALL_CHANGED=$(git diff --cached --name-only --diff-filter=ACMRTUXB 2>/dev/null || true)
+    CHANGE_MODE="staged"
+    WEBPACK_POLICY_SOURCE="index"
 fi
 
 if [ -z "$ALL_CHANGED" ]; then
@@ -66,6 +80,16 @@ fi
 
 echo "Changed files (all):"
 echo "$ALL_CHANGED" | sed 's/^/  /'
+
+# 1. Policy checks (fast, deterministic)
+echo ""
+echo "> Policy checks"
+echo "Checking Next.js Webpack opt-out policy (--webpack)..."
+if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/check-next-webpack-flag.mjs" --repo-root "$REPO_ROOT" --source "$WEBPACK_POLICY_SOURCE"; then
+    echo "FAIL: Next.js Webpack opt-out policy check failed (${CHANGE_MODE})"
+    exit 1
+fi
+echo "OK: Next.js Webpack opt-out policy check passed"
 
 # 2. Typecheck + lint (scoped to changed workspace packages)
 echo ""
@@ -196,7 +220,7 @@ run_jest_exec() {
             bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config ./jest.config.cjs "$@"
             exit $?
         fi
-        bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- "$@"
+        bash "$REPO_ROOT/scripts/tests/run-governed-test.sh" -- jest -- --config "$REPO_ROOT/jest.config.cjs" "$@"
     )
 }
 

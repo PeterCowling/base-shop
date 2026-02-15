@@ -67,6 +67,16 @@
       "import": "./dist/themeTokens/index.js",
       "default": "./dist/themeTokens/index.js"
     },
+    "./themeTokens/index": {
+      "types": "./dist/themeTokens/index.d.ts",
+      "import": "./dist/themeTokens/index.js",
+      "default": "./dist/themeTokens/index.js"
+    },
+    "./themeTokens/browser": {
+      "types": "./dist/themeTokens/browser.d.ts",
+      "import": "./dist/themeTokens/browser.js",
+      "default": "./dist/themeTokens/browser.js"
+    },
     "./products": {
       "types": "./dist/products/index.d.ts",
       "import": "./dist/products/index.js",

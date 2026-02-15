@@ -171,6 +171,11 @@ async function actViaPlaywright(input: { state: PlaywrightDriverState; req: Brow
     return;
   }
 
+  if (input.req.target.kind === "page" && input.req.action.type === "evaluate") {
+    await page.evaluate(input.req.action.expression);
+    return;
+  }
+
   if (input.req.target.kind !== "element") {
     return;
   }
@@ -186,6 +191,9 @@ async function actViaPlaywright(input: { state: PlaywrightDriverState; req: Brow
       return;
     case "navigate":
       // navigate is page-targeted; ignore if misrouted.
+      return;
+    case "evaluate":
+      // evaluate is page-targeted; ignore if misrouted.
       return;
   }
 }

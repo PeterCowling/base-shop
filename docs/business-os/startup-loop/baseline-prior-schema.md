@@ -10,7 +10,7 @@ Last-reviewed: 2026-02-13
 Canonical schema for machine-owned priors blocks in baseline artifacts and the prior
 delta format used by the learning compiler.
 
-**Decision reference:** `docs/plans/learning-compiler-plan.md` (LC-01, DL-LC-02, DL-LC-04)
+**Decision reference:** `docs/plans/archive/learning-compiler-plan.md` (LC-01, DL-LC-02, DL-LC-04)
 
 ## 1) Purpose
 

@@ -5,7 +5,7 @@
  * building an index across multiple artifacts, and serializing priors back to
  * the machine block format.
  *
- * Task: LC-03 from docs/plans/learning-compiler-plan.md
+ * Task: LC-03 from docs/plans/archive/learning-compiler-plan.md
  */
 
 import * as fs from 'node:fs';

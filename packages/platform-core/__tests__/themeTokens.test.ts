@@ -3,9 +3,11 @@ import { join } from "node:path";
 
 import fs from "fs";
 
-import * as themeTokens from "../src/themeTokens";
+import * as themeTokensNode from "../src/themeTokens";
+import * as themeTokensBrowser from "../src/themeTokens/browser";
 
-const { loadThemeTokensNode, loadThemeTokensBrowser, baseTokens } = themeTokens;
+const { loadThemeTokensNode, baseTokens } = themeTokensNode;
+const { loadThemeTokensBrowser } = themeTokensBrowser;
 
 describe("loadThemeTokensNode", () => {
   beforeEach(() => {
@@ -190,12 +192,8 @@ describe("loadThemeTokens", () => {
     jest
       .spyOn(fs, "readFileSync")
       .mockReturnValue("export const tokens = { '--color-bg': '#bcd' };");
-    const original = global.window;
-    // @ts-expect-error - simulate Node environment
-    delete global.window;
-    const tokens = await themeTokens.loadThemeTokens("dark");
+    const tokens = await themeTokensNode.loadThemeTokens("dark");
     expect(tokens["--color-bg"]).toBe("#bcd");
-    global.window = original;
   });
 
   it("delegates to browser implementation when window is defined", async () => {
@@ -205,7 +203,7 @@ describe("loadThemeTokens", () => {
       join(dir, "index.ts"),
       "export const tokens = { '--color-bg': { light: '#def' } };"
     );
-    const tokens = await themeTokens.loadThemeTokens("delegation");
+    const tokens = await themeTokensBrowser.loadThemeTokens("delegation");
     expect(tokens["--color-bg"]).toBe("#def");
     fs.rmSync(join(__dirname, "../../themes/delegation"), {
       recursive: true,

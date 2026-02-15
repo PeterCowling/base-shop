@@ -276,6 +276,10 @@ describe("/api/agent/stage-docs", () => {
   });
 
   it("TC-09: stage filter accepts legacy alias within window (normalized)", async () => {
+    jest.useFakeTimers();
+    // Within window: alias acceptance enabled through 2026-02-14 (inclusive).
+    jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
     (listStageDocsForCard as jest.Mock).mockResolvedValue([baseStageDoc]);
 
     const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
@@ -308,9 +312,14 @@ describe("/api/agent/stage-docs", () => {
     );
 
     infoSpy.mockRestore();
+    jest.useRealTimers();
   });
 
   it("TC-10: POST accepts legacy alias stage within window (normalized)", async () => {
+    jest.useFakeTimers();
+    // Within window: alias acceptance enabled through 2026-02-14 (inclusive).
+    jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
     (getCardById as jest.Mock).mockResolvedValue(baseCard);
     (upsertStageDoc as jest.Mock).mockResolvedValue({ success: true, stageDoc: baseStageDoc });
 
@@ -354,9 +363,14 @@ describe("/api/agent/stage-docs", () => {
     );
 
     infoSpy.mockRestore();
+    jest.useRealTimers();
   });
 
   it("TC-11: path stage accepts legacy alias within window (normalized)", async () => {
+    jest.useFakeTimers();
+    // Within window: alias acceptance enabled through 2026-02-14 (inclusive).
+    jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
     (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
 
     const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
@@ -386,9 +400,14 @@ describe("/api/agent/stage-docs", () => {
     );
 
     infoSpy.mockRestore();
+    jest.useRealTimers();
   });
 
   it("TC-12: PATCH path stage accepts legacy alias within window (normalized)", async () => {
+    jest.useFakeTimers();
+    // Within window: alias acceptance enabled through 2026-02-14 (inclusive).
+    jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
+
     (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
     (upsertStageDoc as jest.Mock).mockResolvedValue({ success: true, stageDoc: baseStageDoc });
 
@@ -425,6 +444,7 @@ describe("/api/agent/stage-docs", () => {
     );
 
     infoSpy.mockRestore();
+    jest.useRealTimers();
   });
 
   it("TC-13: after cutoff, legacy alias is rejected (400)", async () => {

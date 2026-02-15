@@ -13,6 +13,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { handleToolCall } from "./dist/tools/index.js";
+import { parseIsoToLocalDate, parseOctorateExportArgs, timeFilterToOptionLabel } from "./octorate-export-args.cjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -20,7 +21,6 @@ const __dirname = dirname(__filename);
 const STORAGE_STATE = join(__dirname, ".secrets/octorate/storage-state.json");
 const DOWNLOAD_DIR = join(__dirname, ".tmp/octorate-downloads");
 const OCTORATE_EXPORT_URL = "https://admin.octorate.com/octobook/user/reservation/export.xhtml";
-const DEFAULT_RANGE_DAYS = 90;
 
 function formatDateDDMMYYYY(date) {
   const year = date.getFullYear();
@@ -109,7 +109,7 @@ async function fillByActionId(sessionId, observationId, actionId, value) {
   });
 }
 
-async function selectCreateTime(sessionId) {
+async function selectTimeFilter(sessionId, optionLabel) {
   const first = await observe(sessionId, "document");
 
   const dropdown = findFirstAffordance(
@@ -123,15 +123,15 @@ async function selectCreateTime(sessionId) {
 
   const menu = await observe(sessionId, "modal");
   const options = (menu.affordances ?? []).filter((a) => a.role === "option");
-  const createTime = options
+  const match = options
     .slice(0, 10)
-    .find((a) => (a.name ?? "").trim().toLowerCase() === "create time");
+    .find((a) => (a.name ?? "").trim().toLowerCase() === String(optionLabel).trim().toLowerCase());
 
-  if (!createTime) {
-    throw new Error('Could not find "Create time" option in the first 10 options');
+  if (!match) {
+    throw new Error(`Could not find "${optionLabel}" option in the first 10 options`);
   }
 
-  await clickByActionId(sessionId, menu.observationId, createTime.actionId);
+  await clickByActionId(sessionId, menu.observationId, match.actionId);
   await sleep(3000);
 }
 
@@ -139,7 +139,7 @@ async function setDateRange(sessionId, startDate, endDate) {
   const obs = await observe(sessionId, "document");
 
   if (typeof obs?.page?.url !== "string" || !obs.page.url.includes("export.xhtml")) {
-    throw new Error(`Unexpected page URL after selecting Create time: ${obs?.page?.url ?? "(missing)"}`);
+    throw new Error(`Unexpected page URL after selecting time filter: ${obs?.page?.url ?? "(missing)"}`);
   }
 
   const textboxes = (obs.affordances ?? []).filter((a) => a.role === "textbox");
@@ -229,10 +229,13 @@ async function main() {
 
   await ensureSessionFile();
 
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - DEFAULT_RANGE_DAYS);
+  const parsed = parseOctorateExportArgs(process.argv.slice(2), new Date());
+  const timeFilterLabel = timeFilterToOptionLabel(parsed.timeFilter);
 
+  const startDate = parseIsoToLocalDate(parsed.startIso);
+  const endDate = parseIsoToLocalDate(parsed.endIso);
+
+  console.info(`Time filter: ${timeFilterLabel}`);
   console.info(`Date range: ${formatDateDDMMYYYY(startDate)} to ${formatDateDDMMYYYY(endDate)}\n`);
 
   let sessionId;
@@ -244,8 +247,8 @@ async function main() {
     // Give JSF/PrimeFaces time to hydrate before first observe.
     await sleep(3000);
 
-    console.info('Selecting time filter: "Create time"...');
-    await selectCreateTime(sessionId);
+    console.info(`Selecting time filter: "${timeFilterLabel}"...`);
+    await selectTimeFilter(sessionId, timeFilterLabel);
 
     console.info("Setting date range...");
     await setDateRange(sessionId, startDate, endDate);
@@ -263,6 +266,7 @@ async function main() {
     console.info(`Filename: ${download.filename}`);
     console.info(`Path: ${download.path}`);
     console.info(`Size: ${(download.size / 1024).toFixed(2)} KB`);
+    console.info(`Time filter: ${timeFilterLabel}`);
     console.info(`Date range: ${formatDateDDMMYYYY(startDate)} to ${formatDateDDMMYYYY(endDate)}`);
   } finally {
     if (sessionId) {

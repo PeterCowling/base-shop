@@ -20,6 +20,45 @@ const LOOP_FIXTURES = path.join(FIXTURE_ROOT, "startup-loop");
 
 type BosStatusCase = "success" | "auth" | "not-found" | "conflict" | "unavailable";
 
+describe("octorate-export args parsing", () => {
+  const { parseOctorateExportArgs, timeFilterToOptionLabel } = require("../../octorate-export-args.cjs") as {
+    parseOctorateExportArgs: (argv: string[], now: Date) => {
+      timeFilter: "create_time" | "check_in";
+      startIso: string;
+      endIso: string;
+    };
+    timeFilterToOptionLabel: (timeFilter: "create_time" | "check_in") => string;
+  };
+
+  it("parses explicit time filter and date range", () => {
+    const parsed = parseOctorateExportArgs(
+      ["--time-filter", "check_in", "--start", "2025-02-01", "--end", "2026-01-31"],
+      new Date("2026-02-15T12:00:00Z"),
+    );
+    expect(parsed).toEqual({
+      timeFilter: "check_in",
+      startIso: "2025-02-01",
+      endIso: "2026-01-31",
+    });
+    expect(timeFilterToOptionLabel(parsed.timeFilter)).toBe("Check in");
+  });
+
+  it("uses stable defaults when args are omitted", () => {
+    const parsed = parseOctorateExportArgs([], new Date("2026-02-15T12:00:00Z"));
+    expect(parsed.timeFilter).toBe("create_time");
+    expect(parsed.endIso).toBe("2026-02-15");
+    // Default is last 90 days.
+    expect(parsed.startIso).toBe("2025-11-17");
+    expect(timeFilterToOptionLabel(parsed.timeFilter)).toBe("Create time");
+  });
+
+  it("rejects invalid time filter values", () => {
+    expect(() =>
+      parseOctorateExportArgs(["--time-filter", "bad_value"], new Date("2026-02-15T12:00:00Z")),
+    ).toThrow(/invalid_time_filter/i);
+  });
+});
+
 type MockResponse = {
   ok: boolean;
   status: number;

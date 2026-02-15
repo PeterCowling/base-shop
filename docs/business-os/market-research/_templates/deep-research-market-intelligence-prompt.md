@@ -28,6 +28,11 @@ Input packet:
 - Stock timeline: {{STOCK_TIMELINE}}
 - Known constraints/non-negotiables: {{CONSTRAINTS}}
 
+Existing-business additions (when launch-surface is `website-live`):
+- Include internal baseline snapshot (monthly net value, bookings, direct vs OTA mix, and any traffic proxies available).
+- Treat internal baselines as mandatory inputs for recommendations.
+
+
 Research requirements:
 1) Build a current competitor map (direct, adjacent, substitutes) for this region and channels.
 2) Extract pricing, offer structure, positioning, and channel tactics from competitors.
@@ -57,6 +62,9 @@ M) First-14-day validation plan (tests + thresholds + re-forecast triggers)
 N) Assumptions register (assumption, evidence, confidence, impact)
 O) Risk register (risk, why it matters, mitigation)
 P) Source list with URL + access date
+Q) Delta and feedback for human operators (required):
+- What is working vs not working given internal baseline trends?
+- What should the operator do next (stop/continue/start), with a 14-day focus?
 
 Rules:
 - Do not invent data.

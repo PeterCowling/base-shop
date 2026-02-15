@@ -2,13 +2,13 @@
 
 // src/app/[lang]/rooms/[id]/RoomDetailContent.tsx
 // Client component for room detail page (uses useTranslation hooks)
-import { type ComponentProps, type ComponentPropsWithoutRef, Fragment } from "react";
+import { type ComponentProps, type ComponentPropsWithoutRef, Fragment, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
 
 import { DirectBookingPerks } from "@acme/ui/molecules";
-import StickyBookNow from "@acme/ui/organisms/StickyBookNow";
+import StickyBookNow, { type StickyBookNowClickContext } from "@acme/ui/organisms/StickyBookNow";
 
 import LocationInline from "@/components/booking/LocationInline";
 import RoomCard from "@/components/rooms/RoomCard";
@@ -19,6 +19,7 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { fireSearchAvailabilityAndNavigate } from "@/utils/ga4-events";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type Props = {
@@ -235,6 +236,19 @@ export default function RoomDetailContent({ lang, id }: Props) {
   const hasFallbackCopy = !isAmenityArray && Boolean(amenityRaw) && Boolean(amenitiesHeading || amenitiesIntro);
   const shouldRenderAmenities = amenityBlurbs.length > 0 || hasFallbackCopy;
 
+  const onStickyCheckoutClick = useCallback(
+    (ctx: StickyBookNowClickContext) => {
+      fireSearchAvailabilityAndNavigate({
+        source: "sticky_cta",
+        checkin: ctx.checkin,
+        checkout: ctx.checkout,
+        pax: ctx.pax,
+        onNavigate: ctx.proceed,
+      });
+    },
+    []
+  );
+
   return (
     <Fragment>
       <RoomStructuredData room={room} lang={lang} />
@@ -282,7 +296,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
       {/* Spacer so the sticky CTA doesn't cover footer content on small screens */}
       <div className="h-20 sm:hidden" aria-hidden />
-      <StickyBookNow lang={lang} />
+      <StickyBookNow lang={lang} onStickyCheckoutClick={onStickyCheckoutClick} />
     </Fragment>
   );
 }

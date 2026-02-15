@@ -1,6 +1,6 @@
 // packages/ui/src/organisms/StickyBookNow.tsx
 // Floating CTA that deep‑links to Octorate with prefilled params when available.
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, type MouseEvent,useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
 
@@ -11,7 +11,29 @@ import { getDatePlusTwoDays, getTodayIso } from "../utils/dateUtils";
 
 const STICKY_CTA_STORAGE_KEY = "sticky-cta-dismissed";
 
-function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
+export type StickyBookNowClickContext = {
+  checkin: string;
+  checkout: string;
+  pax: number;
+  href: string;
+  proceed: () => void;
+};
+
+function StickyBookNow({
+  lang,
+  onStickyCheckoutClick,
+}: {
+  lang?: string;
+  /**
+   * Optional click hook for analytics or other side effects. When provided, the
+   * component will prevent default navigation and call `proceed()` after either:
+   * - your handler calls `ctx.proceed()`; or
+   * - a short timeout fallback.
+   *
+   * This stays GA4-agnostic: the app layer decides what to emit.
+   */
+  onStickyCheckoutClick?: (ctx: StickyBookNowClickContext) => void | Promise<void>;
+}): JSX.Element | null {
   const { t, ready } = useTranslation(undefined, { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
 
@@ -119,6 +141,63 @@ function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
     setIsDismissed(true);
   }, []);
 
+  const navigateToDeepLink = useCallback(() => {
+    if (typeof window === "undefined") return;
+    try {
+      window.location.assign(deepLink);
+    } catch {
+      window.location.href = deepLink;
+    }
+  }, [deepLink]);
+
+  const onCtaClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      if (!onStickyCheckoutClick) return;
+
+      event.preventDefault();
+
+      let didProceed = false;
+      const proceed = () => {
+        if (didProceed) return;
+        didProceed = true;
+        navigateToDeepLink();
+      };
+
+      // Safety fallback so a missing callback doesn't strand the user.
+      const fallbackTimer = window.setTimeout(proceed, 250);
+
+      try {
+        const maybePromise = onStickyCheckoutClick({
+          checkin: checkIn,
+          checkout: checkOut,
+          pax: adults,
+          href: deepLink,
+          proceed: () => {
+            window.clearTimeout(fallbackTimer);
+            proceed();
+          },
+        });
+
+        if (maybePromise && typeof (maybePromise as Promise<void>).then === "function") {
+          (maybePromise as Promise<void>)
+            .then(() => {
+              window.clearTimeout(fallbackTimer);
+              proceed();
+            })
+            .catch(() => {
+              // If the handler fails, continue navigation quickly.
+              window.clearTimeout(fallbackTimer);
+              proceed();
+            });
+        }
+      } catch {
+        window.clearTimeout(fallbackTimer);
+        proceed();
+      }
+    },
+    [adults, checkIn, checkOut, deepLink, navigateToDeepLink, onStickyCheckoutClick]
+  );
+
   if (isDismissed) {
     return null;
   }
@@ -156,6 +235,7 @@ function StickyBookNow({ lang }: { lang?: string }): JSX.Element | null {
           </div>
           <a
             href={deepLink}
+            onClick={onCtaClick}
             className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-heading shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
             aria-label={ctaLabel}
           >

@@ -125,7 +125,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-09 | IMPLEMENT | Implement `search_availability` + reliability on StickyBookNow (room detail availability deep-link) | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | - |
 | TASK-10 | IMPLEMENT | Add modal lifecycle events (`modal_open`/`modal_close`) in Brikette ModalProvider | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-11 |
 | TASK-11 | IMPLEMENT | Add `cta_click` coverage for header/mobile-nav/hero/widget and new sticky CTA variant | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-12 |
-| TASK-19 | INVESTIGATE | Lock modal “Why book direct” copy + i18n namespace/keys (no key leakage across locales) | 85% | S | Pending | TASK-05 | TASK-12 |
+| TASK-19 | INVESTIGATE | Lock modal "Why book direct" copy + i18n namespace/keys (no key leakage across locales) | 85% | S | Complete (2026-02-15) | TASK-05 | TASK-12 |
 | TASK-20 | INVESTIGATE | Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan | 85% | S | Pending | TASK-05 | TASK-13 |
 | TASK-21 | INVESTIGATE | Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo | 85% | S | Pending | TASK-05,TASK-11,TASK-15 | TASK-14 |
 | TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05,TASK-19 | TASK-13 |

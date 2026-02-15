@@ -120,14 +120,17 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-04 | INVESTIGATE | Booking2 modalData contract: call-site map + canonical payload decision (roomSku + plan + list/source) | 85% | S | Complete (2026-02-15) | TASK-02 | TASK-17 |
 | TASK-05 | CHECKPOINT | Horizon checkpoint: re-assess remaining GA4 surfaces after modal semantics land | 95% | S | Complete (2026-02-15) | TASK-03,TASK-17 | TASK-15,TASK-16 |
 | TASK-06 | IMPLEMENT | Implement `select_item` on room CTA clicks (RoomCard + RoomsSection) using contract primitives | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-07 |
-| TASK-07 | IMPLEMENT | Implement `view_item_list` impressions (rooms index, book rooms list, deals list, home rooms carousel) with dedupe | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15,TASK-18 | TASK-08 |
-| TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15 | - |
+| TASK-07 | IMPLEMENT | Implement `view_item_list` impressions (rooms index, book rooms list, deals list, home rooms carousel) with dedupe | 82% | M | Pending | TASK-05,TASK-06,TASK-15,TASK-18 | TASK-08 |
+| TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 82% | M | Pending | TASK-05,TASK-06,TASK-15 | - |
 | TASK-09 | IMPLEMENT | Implement `search_availability` + reliability on StickyBookNow (room detail availability deep-link) | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | - |
 | TASK-10 | IMPLEMENT | Add modal lifecycle events (`modal_open`/`modal_close`) in Brikette ModalProvider | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-11 |
 | TASK-11 | IMPLEMENT | Add `cta_click` coverage for header/mobile-nav/hero/widget and new sticky CTA variant | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-12 |
-| TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05 | TASK-13 |
-| TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12 | TASK-14 |
-| TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15 | - |
+| TASK-19 | INVESTIGATE | Lock modal “Why book direct” copy + i18n namespace/keys (no key leakage across locales) | 85% | S | Pending | TASK-05 | TASK-12 |
+| TASK-20 | INVESTIGATE | Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan | 85% | S | Pending | TASK-05 | TASK-13 |
+| TASK-21 | INVESTIGATE | Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo | 85% | S | Pending | TASK-05,TASK-11,TASK-15 | TASK-14 |
+| TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05,TASK-19 | TASK-13 |
+| TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12,TASK-20 | TASK-14 |
+| TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15,TASK-21 | - |
 | TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Complete (2026-02-15) | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
 | TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Complete (2026-02-15) | TASK-05 | - |
 | TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Complete (2026-02-15) | TASK-02,TASK-04 | TASK-05 |
@@ -150,13 +153,15 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 8 | TASK-06, TASK-10, TASK-11 | Wave 7: TASK-15 | Broad instrumentation begins only after isolation |
 | 9 | TASK-18 | Wave 1: TASK-01 | Dedupe fix must land before list impressions |
 | 10 | TASK-07, TASK-08, TASK-09 | Wave 8+9: TASK-18 (+ TASK-06 for TASK-07/TASK-08) | TASK-07/TASK-08 depend on selection + per-navigation dedupe; TASK-09 is availability-only + outbound reliability |
-| 12 | TASK-12 | Wave 5: TASK-05 | Conversion copy parity inside modals |
-| 13 | TASK-13 | Wave 12: TASK-12 | /book conversion + JSON-LD relies on settled copy + namespace approach |
-| 14 | TASK-14 | Wave 7: TASK-11 | Content sticky CTA depends on CTA click contract |
+| 11 | TASK-19, TASK-20 | Wave 6: TASK-05 | Decision memos: modal copy/i18n + /book JSON-LD strategy |
+| 12 | TASK-21 | Wave 8: TASK-11 (+ Wave 7: TASK-15) | Decide content sticky CTA scope + dismiss TTL; gated on staging isolation |
+| 13 | TASK-12 | Wave 11: TASK-19 | Conversion copy parity inside modals |
+| 14 | TASK-13 | Wave 11+13: TASK-20,TASK-12 | /book conversion + JSON-LD relies on settled copy + locked schema strategy |
+| 15 | TASK-14 | Wave 8+12: TASK-11,TASK-21 (+ Wave 7: TASK-15) | Content sticky CTA depends on CTA click contract + decision memo |
 
 **Max parallelism:** 3 (Wave 8)
-**Critical path (current):** TASK-01 → TASK-02 → TASK-03 → TASK-04 → TASK-17 → TASK-05 → TASK-15 → TASK-06 → TASK-18 → TASK-07 → TASK-13
-**Total tasks:** 18
+**Critical path (current):** TASK-01 → TASK-02 → TASK-03 → TASK-04 → TASK-17 → TASK-05 → TASK-15 → TASK-06 → TASK-18 → TASK-07 → TASK-19 → TASK-12 → TASK-20 → TASK-13
+**Total tasks:** 21
 
 ## Tasks
 
@@ -431,16 +436,26 @@ Replan notes:
 - **Affects:** `apps/brikette/src/app/[lang]/rooms/page.tsx` (or content component), `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** TASK-05, TASK-06, TASK-15, TASK-18
 - **Blocks:** TASK-08
-- **Confidence:** 76% ⚠️
-  - Evidence (E1): primary surfaces are known and stable (`RoomsPageContent`, `BookPageContent`, `DealsPageContent`, `HomeContent`).
-  - Evidence (E2): per-navigation dedupe helper is implemented and unit-tested (TASK-18).
+- **Confidence:** 82%
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 76%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (executable verification) + E1 (static audit)
+  - Implementation: 82% — all target surfaces are app-owned and can emit analytics without `packages/ui` importing app utilities:
+    - `/rooms` list: `apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx`
+    - `/book` list: `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
+    - Home carousel list: `apps/brikette/src/app/[lang]/HomeContent.tsx`
+    - Deals grid: `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`
+  - Approach: 82% — treat `view_item_list` as “list rendered this navigation” (not strictly viewport-visible), which avoids `IntersectionObserver` complexity while staying GA4-compatible.
+  - Impact: 82% — per-navigation dedupe is implemented (TASK-18) and GA4 integration test harness is stable (E2: existing GA4 tests passing, including `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx`, `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx`, `apps/brikette/src/test/components/ga4-sticky-book-now-search-availability.test.tsx`).
 - **Acceptance:**
   - `view_item_list` fires once per navigation per `item_list_id`.
+  - Payload follows GA4 ecommerce conventions:
+    - event-level: `item_list_id`, `item_list_name`
+    - item-level (`items[]`): `item_id`, `item_name`, `index`
   - `items[]` uses stable `item_id` and includes `index`.
-  - Dedupe is scoped to a single navigation/page-view:
-    - Prefer component-local `useRef` guards per surface.
-    - If a shared helper is used, it must reset on pathname change or accept a page-view token.
-  - Dedupe key includes at minimum `${pathname}:${item_list_id}`.
+  - Dedupe is scoped to a single navigation/page-view (via `shouldFireImpressionOnce()` from TASK-18).
   - Known limitation (documented): if list content changes within a navigation (re-render due to state), simple dedupe may undercount those changes in this iteration.
 
 Additional requirements:
@@ -452,8 +467,8 @@ Additional requirements:
   - TC-03: Home carousel fires `view_item_list` with `item_list_id: home_rooms_carousel` once per navigation.
   - TC-04: revisiting a page (navigate away then back) refires the impression (per-navigation).
   - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-12-view-item-list-impressions.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-12-view-item-list-impressions.test.tsx --maxWorkers=2`
+  - Test location: `apps/brikette/src/test/components/ga4-view-item-list-impressions.test.tsx` (new)
+  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-view-item-list-impressions.test.tsx --maxWorkers=2`
 
 What would make this ≥90%:
 - Add a small “impression payload builder” helper and unit-test it so list payload correctness isn’t only proven through brittle page/component tests.
@@ -461,22 +476,31 @@ What would make this ≥90%:
 ### TASK-08: view_item on room detail + apartment pages
 - **Type:** IMPLEMENT
 - **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/app/[lang]/rooms/[id]/page.tsx`, apartment page(s), `apps/brikette/src/utils/ga4-events.ts`
+- **Affects:** `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** TASK-05, TASK-06, TASK-15
 - **Blocks:** -
-- **Confidence:** 76% ⚠️
-  - Evidence (E1): room detail surface is isolated to `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` and has access to stable room identity (`Room.sku`).
+- **Confidence:** 82%
+
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 76%
+- **Updated confidence:** 82%
+  - **Evidence class:** E1 (static audit) + E2 (executable verification)
+  - Implementation: 82% — `view_item` can be emitted purely from app-owned page components with stable identifiers:
+    - Room detail: `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` already resolves `id` and looks up the room in `apps/brikette/src/data/roomsData.ts`.
+    - Apartment landing: `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx` is an app-owned surface and can emit `view_item` with `item_id: apartment`.
+  - Approach: 82% — fire once per navigation on mount using the same per-navigation guard used for impressions (TASK-18).
+  - Impact: 82% — GA4 event tests are stable in this repo (E2: multiple GA4 integration tests already passing).
 
 - **Acceptance:**
   - Room detail page emits `view_item` once per navigation with `items[0].item_id = Room.sku`.
-  - Apartment page emits `view_item` once per navigation with stable `item_id` (apartment sku).
+  - Apartment page emits `view_item` once per navigation with stable `item_id` (`apartment`).
   - No `begin_checkout` is emitted as a side-effect of `view_item`.
 - **Validation contract:**
   - TC-01: `/[lang]/rooms/[id]` emits `view_item` with `items[0].item_id` matching the room’s sku.
-  - TC-02: apartment page emits `view_item` with `items[0].item_id` matching apartment sku.
+  - TC-02: apartment page emits `view_item` with `items[0].item_id` === `apartment`.
   - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-13-view-item-detail.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-13-view-item-detail.test.tsx --maxWorkers=2`
+  - Test location: `apps/brikette/src/test/components/ga4-view-item-detail.test.tsx` (new)
+  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-view-item-detail.test.tsx --maxWorkers=2`
 
 What would make this ≥90%:
 - Add a shared “room -> item payload” builder that includes optional price only when stable and shown, then unit-test it in isolation.
@@ -606,13 +630,69 @@ Notes:
   - `pnpm --filter @acme/ui typecheck`
   - `pnpm --filter @acme/ui lint`
 
+### TASK-19: Lock modal “Why book direct” copy + i18n namespace/keys (no key leakage across locales)
+- **Type:** INVESTIGATE
+- **Status:** Pending
+- **Execution-Skill:** /lp-replan (decision memo; no code changes)
+- **Affects (read):** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/locales/*/modals.json`, `apps/brikette/src/locales/*/bookPage.json`
+- **Depends on:** TASK-05
+- **Blocks:** TASK-12
+- **Confidence:** 85%
+- **Purpose / uncertainty:**
+  - Decide which namespace owns the “Why book direct” block (`modals` vs `bookPage`) and lock exact keys + fallback behavior so 17 locales do not ship raw key tokens.
+- **Acceptance (exit criteria):**
+  - Add a short decision memo under TASK-19 covering:
+    - chosen namespace
+    - exact key list (English copy + `defaultValue` strategy)
+    - fallback behavior for missing non-EN keys (no key leakage)
+    - explicit “do not import `DirectBookingPerks` into modals” rule.
+- **Validation contract (investigate):**
+  - VC-01: staging manual check recipe exists to render BookingModal/Booking2Modal in 2-3 non-EN locales and confirm no key leakage for the new keys.
+
+### TASK-20: Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan
+- **Type:** INVESTIGATE
+- **Status:** Pending
+- **Execution-Skill:** /lp-replan (decision memo; no code changes)
+- **Affects (read):** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/components/seo/*`, `apps/brikette/src/components/seo/HomeStructuredData.tsx` (pattern reference)
+- **Depends on:** TASK-05
+- **Blocks:** TASK-13
+- **Confidence:** 85%
+- **Purpose / uncertainty:**
+  - Lock `@type` strategy (Hostel vs LodgingBusiness vs Hotel), required fields, and validation tooling (schema validity vs rich result eligibility).
+- **Acceptance (exit criteria):**
+  - Add a decision memo under TASK-20 covering:
+    - chosen `@type` strategy and required field list
+    - explicit prohibition: omit `aggregateRating` unless first-party reviews exist on-site
+    - validator tooling to use + what “pass” means
+    - snapshot-test outline for stable JSON-LD output.
+- **Validation contract (investigate):**
+  - VC-01: decision memo includes an example JSON-LD payload that passes a schema.org validator and contains no third-party ratings markup.
+
+### TASK-21: Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo
+- **Type:** INVESTIGATE
+- **Status:** Pending
+- **Execution-Skill:** /lp-replan (decision memo; no code changes)
+- **Affects (read):** `apps/brikette/src/app/[lang]/experiences/[slug]/GuideContent.tsx`, `apps/brikette/src/app/[lang]/about/page.tsx`, `apps/brikette/src/app/[lang]/bar-menu/page.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
+- **Depends on:** TASK-05, TASK-11, TASK-15
+- **Blocks:** TASK-14
+- **Confidence:** 85%
+- **Purpose / uncertainty:**
+  - Confirm exact page set and define dismiss behavior (session-only vs longer) and copy/placement for Variant A (opens BookingModal, not deep-link).
+- **Acceptance (exit criteria):**
+  - Add a short decision memo under TASK-21 covering:
+    - final page list
+    - dismiss TTL choice + storage mechanism recommendation (sessionStorage vs localStorage)
+    - copy keys + CTA label fallback strategy (ties into `cta_id: content_sticky_check_availability`)
+- **Validation contract (investigate):**
+  - VC-01: decision memo includes a “do not proceed” checklist item: confirm staging stream isolation (TASK-15) is active before broad event testing.
+
 ### TASK-12: conversion copy parity in booking modals
 - **Type:** IMPLEMENT
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/locales/en/*` (as needed)
-- **Depends on:** TASK-05
+- **Depends on:** TASK-05, TASK-19
 - **Blocks:** TASK-13
-- **Confidence:** 72% ⚠️
+- **Confidence:** 72% ⚠️ (→ 82% conditional on TASK-19)
 
 Notes:
 - Avoid importing `DirectBookingPerks` into modals just to reuse copy; it is wired to `dealsPage` i18n namespace. Prefer a small modal-specific block with copy in an appropriate namespace (`modals` / `bookPage`).
@@ -635,9 +715,9 @@ What would make this ≥90%:
 - **Type:** IMPLEMENT
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/locales/en/bookPage.json`, `apps/brikette/src/components/seo/*` (new book structured data component)
-- **Depends on:** TASK-05, TASK-12
+- **Depends on:** TASK-05, TASK-12, TASK-20
 - **Blocks:** TASK-14
-- **Confidence:** 70% ⚠️
+- **Confidence:** 70% ⚠️ (→ 82% conditional on TASK-12, TASK-20)
 - **Validation contract:**
   - TC-01: snapshot of JSON-LD output is stable and contains required fields; no third-party `aggregateRating`.
   - TC-02: `/[lang]/book` renders without i18n key leakage for 2-3 non-EN locales in staging.
@@ -657,9 +737,9 @@ What would make this ≥90%:
 - **Type:** IMPLEMENT
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/app/[lang]/experiences/[slug]/GuideContent.tsx`, `apps/brikette/src/app/[lang]/about/page.tsx`, `apps/brikette/src/app/[lang]/bar-menu/page.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
-- **Depends on:** TASK-05, TASK-11, TASK-15
+- **Depends on:** TASK-05, TASK-11, TASK-15, TASK-21
 - **Blocks:** -
-- **Confidence:** 68% ⚠️
+- **Confidence:** 68% ⚠️ (→ 82% conditional on TASK-21)
 
 - **Acceptance:**
   - Add a sticky CTA Variant A to the listed content pages that opens BookingModal (generic availability), not a deep-link.

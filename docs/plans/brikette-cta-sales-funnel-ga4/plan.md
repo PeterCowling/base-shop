@@ -124,7 +124,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15 | - |
 | TASK-09 | IMPLEMENT | Implement `search_availability` + reliability on StickyBookNow (room detail availability deep-link) | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | - |
 | TASK-10 | IMPLEMENT | Add modal lifecycle events (`modal_open`/`modal_close`) in Brikette ModalProvider | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-11 |
-| TASK-11 | IMPLEMENT | Add `cta_click` coverage for header/mobile-nav/hero/widget and new sticky CTA variant | 80% | M | Pending | TASK-05,TASK-15 | TASK-12 |
+| TASK-11 | IMPLEMENT | Add `cta_click` coverage for header/mobile-nav/hero/widget and new sticky CTA variant | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-12 |
 | TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05 | TASK-13 |
 | TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12 | TASK-14 |
 | TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15 | - |
@@ -575,6 +575,7 @@ What would make this ≥90%:
 
 ### TASK-11: cta_click coverage
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Execution-Skill:** /lp-build
 - **Affects:** `packages/ui/src/organisms/DesktopHeader.tsx`, `packages/ui/src/organisms/MobileNav.tsx`, `packages/ui/src/organisms/LandingHeroSection.tsx`, `apps/brikette/src/components/header/Header.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/components/landing/BookingWidget.tsx`
 - **Depends on:** TASK-05, TASK-15
@@ -596,6 +597,14 @@ Notes:
   - Test type: integration
   - Test location: `apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx` (new)
   - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx --maxWorkers=2`
+
+**Evidence**
+- Commit: `c33f2758d9`
+- Validations:
+  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx --maxWorkers=2`
+  - `pnpm --filter brikette typecheck`
+  - `pnpm --filter @acme/ui typecheck`
+  - `pnpm --filter @acme/ui lint`
 
 ### TASK-12: conversion copy parity in booking modals
 - **Type:** IMPLEMENT

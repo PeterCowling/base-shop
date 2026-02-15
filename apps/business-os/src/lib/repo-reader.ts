@@ -4,6 +4,7 @@ import matter from "gray-matter";
 
 import { computeFileSha } from "./file-sha";
 import { readdirWithinRoot, readFileWithinRoot } from "./safe-fs";
+import { getStageDocPathCandidates } from "./stage-doc-paths";
 import type {
   Business,
   BusinessCatalog,
@@ -198,32 +199,48 @@ export class RepoReader {
     cardId: string,
     stage: StageType
   ): Promise<StageDoc | null> {
-    const userPath = path.join(
-      this.businessOsPath,
-      `cards/${cardId}/${stage}.user.md`
-    );
+    const { canonicalPath, legacyPaths } = getStageDocPathCandidates({
+      repoRoot: this.repoRoot,
+      cardId,
+      stage,
+      audience: "user",
+    });
 
-    try {
-      const content = (await readFileWithinRoot(
-        this.repoRoot,
-        userPath,
-        "utf-8"
-      )) as string;
-      const fileSha = await computeFileSha(content);
-      const parsed = matter(content);
+    for (const filePath of [canonicalPath, ...legacyPaths]) {
+      try {
+        const content = (await readFileWithinRoot(
+          this.repoRoot,
+          filePath,
+          "utf-8"
+        )) as string;
+        const fileSha = await computeFileSha(content);
+        const parsed = matter(content);
 
-      return {
-        ...(parsed.data as StageFrontmatter),
-        content: parsed.content,
-        filePath: userPath,
-        fileSha,
-      };
-    } catch (err) {
-      if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-        return null;
+        if (filePath !== canonicalPath) {
+          // Telemetry surface = structured log only (no doc content).
+          console.info("bos.stage_doc_filename_alias_used", {
+            cardId,
+            stage,
+            audience: "user",
+            legacyPath: path.relative(this.repoRoot, filePath),
+          });
+        }
+
+        return {
+          ...(parsed.data as StageFrontmatter),
+          content: parsed.content,
+          filePath,
+          fileSha,
+        };
+      } catch (err) {
+        if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+          continue;
+        }
+        throw err;
       }
-      throw err;
     }
+
+    return null;
   }
 
   /**

@@ -119,7 +119,7 @@ Use these fixed English strings for `item_list_name` (do not i18n).
 | TASK-03 | IMPLEMENT | Enforce Model A on BookingModal exit: replace availability-only `begin_checkout` with `search_availability` + update GA4 test | 83% | S | Complete (2026-02-15) | TASK-01,TASK-02 (file overlap: `apps/brikette/src/utils/ga4-events.ts`) | TASK-05 |
 | TASK-04 | INVESTIGATE | Booking2 modalData contract: call-site map + canonical payload decision (roomSku + plan + list/source) | 85% | S | Complete (2026-02-15) | TASK-02 | TASK-17 |
 | TASK-05 | CHECKPOINT | Horizon checkpoint: re-assess remaining GA4 surfaces after modal semantics land | 95% | S | Complete (2026-02-15) | TASK-03,TASK-17 | TASK-15,TASK-16 |
-| TASK-06 | IMPLEMENT | Implement `select_item` on room CTA clicks (RoomCard + RoomsSection) using contract primitives | 82% | M | Pending | TASK-05,TASK-15 | TASK-07 |
+| TASK-06 | IMPLEMENT | Implement `select_item` on room CTA clicks (RoomCard + RoomsSection) using contract primitives | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-07 |
 | TASK-07 | IMPLEMENT | Implement `view_item_list` impressions (rooms index, book rooms list, deals list, home rooms carousel) with dedupe | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15,TASK-18 | TASK-08 |
 | TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 76% ⚠️ | M | Pending | TASK-05,TASK-06,TASK-15 | - |
 | TASK-09 | IMPLEMENT | Implement `search_availability` + reliability on StickyBookNow (room detail availability deep-link) | 80% | M | Pending | TASK-05,TASK-15 | - |
@@ -392,6 +392,7 @@ Replan outcomes for remaining tasks (TASK-06..TASK-16):
 
 ### TASK-06: select_item on room CTA clicks (RoomCard + RoomsSection)
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Execution-Skill:** /lp-build
 - **Affects:** `apps/brikette/src/components/rooms/RoomCard.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`, `apps/brikette/src/components/rooms/RoomsSection.tsx`, `apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx`, `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** TASK-05, TASK-15
@@ -412,6 +413,14 @@ Replan outcomes for remaining tasks (TASK-06..TASK-16):
   - Test type: integration (component)
   - Test location: `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx` (new)
   - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx --maxWorkers=2`
+
+**Evidence**
+- Commit: `45c66bc567`
+- Validations:
+  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx --maxWorkers=2`
+  - `pnpm --filter brikette typecheck`
+  - `pnpm --filter @acme/ui typecheck`
+  - `pnpm --filter @acme/ui lint`
 
 Replan notes:
 - To keep the monorepo boundary clean, `packages/ui/src/organisms/RoomsSection.tsx` should accept an optional callback prop (e.g. `onRoomSelect`) and invoke it before calling `openModal("booking2", ...)`. The Brikette app wrapper passes an analytics handler.

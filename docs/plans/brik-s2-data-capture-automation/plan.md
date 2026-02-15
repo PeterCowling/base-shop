@@ -4,7 +4,7 @@ Status: Active
 Domain: Data
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-15
+Last-updated: 2026-02-15 (TASK-06 complete)
 Feature-Slug: brik-s2-data-capture-automation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -23,7 +23,7 @@ Card-ID: pending
 ## Summary
 Close the S2 hospitality market-intelligence loop by generating three dated operator-captured CSVs (parity scenarios, bookings-by-channel, commission-by-channel) into `docs/business-os/market-research/BRIK/data/` before running `startup-loop:s2-market-intel-handoff`.
 
-The work is intentionally split into two phases: (1) Octorate channel economics with deterministic month-range + dedupe rules and test coverage, and (2) parity capture scripts with a hybrid/manual mode that remains repeatable under Booking.com bot detection. A CHECKPOINT gate forces reassessment before layering additional automation beyond the MVP reliability contracts.
+The work is intentionally split into two phases: (1) Octorate channel economics with deterministic month-range + dedupe rules and test coverage, and (2) parity capture scripts using auto-only mode with deterministic failure handling. A CHECKPOINT gate forces reassessment before layering additional automation beyond the MVP reliability contracts.
 
 ## Goals
 - Produce populated dated CSVs (suffixes below) for any `--as-of`:
@@ -40,9 +40,10 @@ The work is intentionally split into two phases: (1) Octorate channel economics 
 - Attempting “perfect” commission from unknown Octorate exports in MVP.
 
 ## Constraints & Assumptions
-- Booking.com automation must support `--mode=hybrid|manual` (deterministic prompts + CSV writes) due to bot detection.
+- Booking.com automation uses **auto-only mode** (no hybrid/manual fallback). If bot detection blocks extraction, the script must fail with a clear error and write a deterministic CSV row with `total_price_all_in=unavailable` and diagnostic `notes`.
 - Octorate export automation currently filters by **Create time** and last **90 days**; S2 economics needs last 12 complete **check-in months**, so export parameters must become configurable.
 - Currency target is EUR; if not enforceable per run, the row must still be written with `currency_mismatch=true` in `notes`.
+- Commission rates: 15% for both Booking.com and Hostelworld (contractual, verified 2026-02-15).
 
 ## Fact-Find Reference
 - Related brief: `docs/plans/brik-s2-data-capture-automation/fact-find.md`
@@ -81,9 +82,9 @@ Chosen: Option A, while still refactoring shared logic into testable modules so 
 | TASK-03 | IMPLEMENT | Implement per-channel bookings aggregation (check-in month, 12-month window, deterministic dedupe) | 82% | L | Complete | TASK-02 | TASK-04, TASK-09 |
 | TASK-04 | IMPLEMENT | Commission derivation from config (provenance + edge-case rules) | 84% | M | Complete | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Orchestrator: run export -> economics -> parity captures -> verify outputs (atomic, scaffold replace rules) | 80% | L | Pending | TASK-01, TASK-04, TASK-07, TASK-08 | TASK-09 |
-| TASK-06 | IMPLEMENT | Parity capture: Direct (Octorate booking engine) with EUR and `--mode` plumbing | 80% | M | Pending | - | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | Parity capture: Hostelworld (deposit + pay-at-property) with EUR + notes contract | 80% | M | Pending | TASK-06 | TASK-05 |
-| TASK-08 | IMPLEMENT | Parity capture: Booking.com hybrid/manual mode (open URL + prompt + write row) | 82% | M | Pending | TASK-06 | TASK-05 |
+| TASK-06 | IMPLEMENT | Parity capture: Direct (Octorate booking engine) with EUR and auto-only extraction | 80% | M | Complete | - | TASK-07, TASK-08 |
+| TASK-07 | IMPLEMENT | Parity capture: Hostelworld (deposit + pay-at-property) with auto-only extraction | 80% | M | Pending | TASK-06 | TASK-05 |
+| TASK-08 | IMPLEMENT | Parity capture: Booking.com with auto-only extraction and deterministic failure handling | 82% | M | Pending | TASK-06 | TASK-05 |
 | TASK-09 | IMPLEMENT | Tests: selector + embed fixtures + economics pure seams + notes formatting contracts | 81% | L | Pending | TASK-03, TASK-05 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint: reassess auto-extraction ambitions (Booking.com/Hostelworld) and remaining risks | 95% | S | Pending | TASK-09 | - |
 
@@ -286,7 +287,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Computes scenario inputs once and passes `--check-in/--check-out/--pax` to all parity capture steps.
   - Writes outputs atomically (`*.tmp` then rename).
   - Overwrite behavior: default no overwrite; allow overwrite only when target is header-only or scaffold-empty (replace-empty-scaffold semantics).
-  - On partial capture, writes deterministic rows with `total_price_all_in=unavailable` and diagnostic notes.
+  - On partial capture failure, ensures deterministic rows with `total_price_all_in=unavailable` and diagnostic notes are written by the parity scripts.
 - **Validation contract:**
   - TC-01: running S2 handoff after orchestrator embeds all 3 CSVs without "present-but-empty" warnings.
   - TC-02: idempotency: a second run without overwrite fails fast; a run with replace-empty-scaffold only replaces header-only/scaffold outputs.
@@ -305,15 +306,30 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** TASK-07, TASK-08
 - **Confidence:** 80%
   - Implementation: 80% — direct engine is a SPA/redirect; may require careful selector strategy.
-  - Approach: 80% — consistent `--mode` plumbing aligns with Booking.com fallback.
+  - Approach: 80% — auto-only extraction establishes the pattern for Hostelworld/Booking.com.
   - Impact: 80% — contained to new script outputs.
 - **Acceptance:**
-  - Supports `--mode=auto|hybrid|manual` and always produces a deterministic output row.
+  - Auto-only mode: attempts automated extraction; if extraction fails, writes a deterministic row with `total_price_all_in=unavailable` and diagnostic `notes` (including `failure_reason`).
   - Attempts to force EUR; records mismatch in notes.
+  - Always writes `capture_mode=auto`, `captured_at`, `source=octorate`, and `evidence_url`.
 - **Validation contract:**
   - TC-01: CSV row matches formatting rules (currency, decimals, notes tokens).
-  - TC-02: `--mode=manual` prompts and writes row without attempting extraction.
+  - TC-02: Failure path writes row with `total_price_all_in=unavailable` and `failure_reason=...` in notes.
   - Validation type: unit tests for row serialization helpers (no live browsing).
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** cd1cae805b (note: files accidentally included in TASK-07 commit for different plan; implementation is correct)
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS (29/29 tests)
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+  - Lint: security warnings consistent with existing octorate scripts baseline
+- **Implementation notes:**
+  - Created `octorate-parity-direct.mjs` with auto-only mode (no hybrid/manual fallback)
+  - Created `parity-direct.ts` with pure helper functions (URL building, CSV formatting, number parsing)
+  - Tests cover TC-01 (success path), TC-02 (failure path with unavailable + failure_reason)
+  - Auto extraction attempts DOM queries for price elements; on failure writes deterministic unavailable row
+  - Aligned with updated plan requirement (removed hybrid/manual modes from initial draft)
 
 ### TASK-07: Parity Capture (Hostelworld)
 - **Type:** IMPLEMENT
@@ -325,20 +341,22 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Depends on:** TASK-06
 - **Blocks:** TASK-05
 - **Confidence:** 80%
-  - Implementation: 82% — MVP uses hybrid/manual as a first-class path, so bot/DOM variance cannot prevent row creation.
+  - Implementation: 82% — auto-only with deterministic failure path ensures row creation.
   - Approach: 82% — deposit mapping contract is explicit.
   - Impact: 80% — future-date availability can still be unavailable, but remains deterministic via `unavailable` rows.
 - **Acceptance:**
+  - Auto-only mode: attempts automated extraction; on failure, writes row with `total_price_all_in=unavailable` and diagnostic `notes`.
   - `total_price_all_in` represents deposit + pay-at-property when both exist.
   - `deposit_payment` captures the components and terms.
+  - Always writes `capture_mode=auto`, `captured_at`, `source=hostelworld`, and `evidence_url`.
 - **Validation contract:**
   - TC-01: output row follows notes/taxes conventions.
-  - TC-02: hybrid/manual path produces deterministic row.
+  - TC-02: failure path produces deterministic row with `failure_reason=...`.
 - **What would make this ≥90%:** one real run confirming the page exposes deposit+remaining consistently for the listing.
 
-### TASK-08: Parity Capture (Booking.com Hybrid/Manual)
+### TASK-08: Parity Capture (Booking.com Auto-Only)
 - **Type:** IMPLEMENT
-- **Deliverable:** Script that navigates to Booking.com with scenario dates and prompts operator if extraction is blocked.
+- **Deliverable:** Script that navigates to Booking.com with scenario dates and extracts price automatically, with deterministic failure handling.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-build
 - **Affects:**
@@ -346,14 +364,15 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Depends on:** TASK-06
 - **Blocks:** TASK-05
 - **Confidence:** 82%
-  - Implementation: 85% — hybrid/manual path avoids bot-detection reliance.
-  - Approach: 85% — repeatable interface with capture provenance tokens.
+  - Implementation: 75% — bot detection is a real risk; slow navigation, realistic user-agent, and delays between actions may help.
+  - Approach: 85% — repeatable interface with capture provenance tokens; deterministic failure path.
   - Impact: 82% — must ensure it still writes output under block conditions.
 - **Acceptance:**
-  - `--mode=hybrid` attempts auto extraction; on failure, prompts for numeric price + optional policy text and still writes CSV row.
-  - Writes `evidence_url` as the final navigated URL.
+  - Auto-only mode: attempts automated extraction with slow navigation and delays to avoid bot detection.
+  - On failure (blocked or unable to extract), writes row with `total_price_all_in=unavailable` and diagnostic `notes` (including `failure_reason`).
+  - Always writes `capture_mode=auto`, `captured_at`, `source=booking`, and `evidence_url` (final navigated URL).
 - **Validation contract:**
-  - TC-01: when auto fails, manual prompt path still produces a row with required `notes` tokens.
+  - TC-01: failure path produces a row with required `notes` tokens (including `failure_reason`).
 
 ### TASK-09: Tests and Fixtures (Reliability Gate)
 - **Type:** IMPLEMENT
@@ -387,13 +406,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Blocks:** -
 - **Confidence:** 95%
 - **Acceptance:**
-  - Reassess whether to invest in fully automated extraction for Booking.com/Hostelworld beyond hybrid/manual.
+  - Reassess auto-only mode success rate for Booking.com/Hostelworld (if consistently blocked, consider fallback strategies or different extraction techniques).
   - Confirm Octorate export filter choice (check-in vs create-time) is producing the intended economics window.
+  - Verify commission rates (15%/15%) align with actual invoices or contracts.
   - If gaps exist, run `/lp-replan` on any remaining or newly added tasks.
 
 ## Risks & Mitigations
 - Booking.com bot detection blocks automation.
-  - Mitigation: hybrid/manual mode is first-class and still writes deterministic CSV rows.
+  - Mitigation: Auto-only mode with slow navigation, realistic user-agent, and delays between actions. On failure, writes deterministic CSV row with `total_price_all_in=unavailable` and diagnostic `notes`. Checkpoint (TASK-10) will reassess if automation consistently fails.
 - Octorate export filter/window mismatch causes incorrect month aggregation.
   - Mitigation: make export configurable and enforce month-range contract via tests.
 - Existing scaffold CSVs already exist for an `--as-of` date.
@@ -411,3 +431,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ## Decision Log
 - 2026-02-15: Chose S2-specific operator capture orchestrator (Option A) to minimize blast radius on existing strategy pipeline outputs.
+- 2026-02-15: Resolved fact-find open questions and aligned plan:
+  - Commission rates: 15% for both Booking.com and Hostelworld (contractual, verified).
+  - Parity capture mode: auto-only (no hybrid/manual fallback). Scripts fail with clear error and write deterministic `unavailable` rows on extraction failure.
+  - Octorate commission reports: confirmed none available; derive from contractual rates.

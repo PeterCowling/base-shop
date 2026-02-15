@@ -87,6 +87,11 @@
       "path": ".claude/skills/lp-baseline-merge/SKILL.md"
     },
     {
+      "name": "lp-bos-sync",
+      "description": "S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json to signal control plane commit.",
+      "path": ".claude/skills/lp-bos-sync/SKILL.md"
+    },
+    {
       "name": "lp-brand-bootstrap",
       "description": "Bootstrap a brand-language.user.md for a business entering the startup loop. Gathers context from strategy docs, existing UI, and theme packages, then fills the shared template. Used at S0/S1 when the doc is missing, or at S7 before /lp-design-spec.",
       "path": ".claude/skills/lp-brand-bootstrap/SKILL.md"

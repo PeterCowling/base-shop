@@ -71,17 +71,22 @@ jest.mock("../src/app/cms/shop/[shop]/settings/seo/SitemapStatusPanel", () => ({
   default: () => sitemapStatusMock(),
 }));
 
+let dynamicCallIndex = 0;
+
 jest.mock("next/dynamic", () => {
-  return (importer: () => Promise<any>) => {
-    const key = importer.toString();
-    if (key.includes("SeoEditor")) {
-      return (props: any) => seoEditorMock(props);
-    }
-    if (key.includes("SeoAuditPanel")) {
-      return (props: any) => seoAuditMock(props);
-    }
+  // `next/dynamic` is imported as a default export in the app code, but Jest's
+  // CJS/ESM interop can vary based on transform settings. Return a callable
+  // function and also attach `.default` so both import styles work.
+  const dynamic = () => {
+    dynamicCallIndex += 1;
+    if (dynamicCallIndex === 1) return (props: any) => seoEditorMock(props);
+    if (dynamicCallIndex === 2) return (props: any) => seoAuditMock(props);
     return () => null;
   };
+
+  (dynamic as any).__esModule = true;
+  (dynamic as any).default = dynamic;
+  return dynamic;
 });
 
 async function loadSeoSettingsPage() {

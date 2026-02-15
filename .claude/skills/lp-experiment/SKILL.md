@@ -296,12 +296,12 @@ Use during design mode to identify where in the conversion funnel an experiment 
 
 **Upstream:**
 - **lp-measure (S1B):** Provides event taxonomy for metric selection in design mode
-- **lp-build (S8):** Experiments designed during build phase to test features being shipped
+- **lp-build (S9):** Experiments designed during build phase to test features being shipped
 
 **Downstream:**
-- **lp-prioritize (S3):** Readout decisions feed back into prioritization for next cycle
-- **lp-content (S5):** Experiment learnings inform content strategy (what messaging resonates)
-- **lp-channel (S4):** Channel experiments use this skill for design and readout
+- **lp-prioritize (S5A):** Readout decisions feed back into prioritization for next cycle
+- **lp-channels (S6B):** Channel experiments use this skill for design and readout
+- **lp-seo (S6B):** Experiment learnings inform SEO messaging and content briefs
 
 **Weekly Loop (S10):**
 - Sunday: Review all active experiments, produce readouts

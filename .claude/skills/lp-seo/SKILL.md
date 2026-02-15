@@ -21,7 +21,7 @@ Systematic, phased SEO planning for organic search visibility. Works for any bus
 /lp-seo all --business <BIZ>
 ```
 
-**Required**: `--business <BIZ>` flag pointing to business directory under `docs/business-os/`.
+**Required**: `--business <BIZ>` flag pointing to the business directory under `docs/business-os/strategy/`.
 
 **Optional flags**:
 - `--locale <LOCALE>`: Target locale for keyword research (default: en-US)
@@ -34,7 +34,7 @@ Systematic, phased SEO planning for organic search visibility. Works for any bus
 
 **Execution Pattern**: Each phase builds on the previous. When running `/lp-seo all`, execute phases sequentially and pass outputs forward. When running a single phase, check for prerequisite outputs and either load them or warn the user.
 
-**Output Location**: All artifacts saved to `docs/business-os/<BIZ>/seo/` with timestamped filenames following pattern: `YYYY-MM-DD-<phase>-<BIZ>.md`.
+**Output Location**: All artifacts saved to `docs/business-os/strategy/<BIZ>/seo/` with timestamped filenames following pattern: `YYYY-MM-DD-<phase>-<BIZ>.user.md`.
 
 **Research Sources**: Use WebSearch extensively for keyword research, SERP analysis, and competitive intelligence. Use existing business artifacts (positioning, offer, channel strategy) from upstream skills.
 
@@ -44,8 +44,8 @@ Systematic, phased SEO planning for organic search visibility. Works for any bus
 
 Required artifacts from previous startup loop skills:
 
-- **From lp-offer (S2B)**: `docs/business-os/<BIZ>/strategy/YYYY-MM-DD-positioning-<BIZ>.md` - value proposition, target customer, differentiation
-- **From lp-channels (S6B)**: `docs/business-os/<BIZ>/strategy/YYYY-MM-DD-channel-strategy-<BIZ>.md` - confirmation that organic search is a prioritized channel
+- **From lp-offer (S2B)**: `docs/business-os/strategy/<BIZ>/YYYY-MM-DD-positioning-<BIZ>.user.md` - value proposition, target customer, differentiation
+- **From lp-channels (S6B)**: `docs/business-os/strategy/<BIZ>/YYYY-MM-DD-channel-strategy-<BIZ>.user.md` - confirmation that organic search is a prioritized channel
 
 Optional but recommended:
 

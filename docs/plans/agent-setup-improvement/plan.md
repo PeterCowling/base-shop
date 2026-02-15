@@ -40,8 +40,8 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - **TASK-01:** Generate agent-agnostic skill registry + `scripts/agents/list-skills` (Complete 2026-02-15)
 - **TASK-02:** Implement real agent-config validator (replace stub) (Complete 2026-02-15)
 - **TASK-03:** Safety kernel format + schema + generation boundaries (Complete 2026-02-15)
-- **TASK-04:** Add safety policy kernel + generators for enforcement layers (Pending)
-- **TASK-05:** Update safety tests to consume the kernel-generated policy (Pending)
+- **TASK-04:** Add safety policy kernel + generators for enforcement layers (Complete 2026-02-15)
+- **TASK-05:** Update safety tests to consume the kernel-generated policy (Complete 2026-02-15)
 - **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Pending)
 - **TASK-09:** Wire enforcement layers to generated safety policy include (Pending)
 - **TASK-07:** Horizon checkpoint: reassess before CODEX.md + policy rollout (Pending)
@@ -72,7 +72,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
     - `scripts/__tests__/git-safety-policy.test.ts`
     - `scripts/__tests__/pre-tool-use-git-safety.test.ts`
 - Skill inventory:
-  - 49 skills at `.claude/skills/*/SKILL.md` (excluding `_shared`).
+  - 50 skills at `.claude/skills/*/SKILL.md` (excluding `_shared`).
   - `.claude/SKILLS_INDEX.md` is referenced by docs but appears stale.
 - CI drift gap:
   - `.github/workflows/ci.yml` runs `node scripts/validate-agent-manifest.js`.
@@ -115,8 +115,8 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 | TASK-01 | IMPLEMENT | Generate agent-agnostic skill registry + `scripts/agents/list-skills` | 88% | M | Complete (2026-02-15) | - | TASK-06 |
 | TASK-02 | IMPLEMENT | Implement real agent-config validator (replace stub) | 82% | M | Complete (2026-02-15) | TASK-01 | TASK-05 |
 | TASK-03 | DECISION | Safety kernel format + schema + generation boundaries | 70% | S | Complete (2026-02-15) | - | TASK-04 |
-| TASK-04 | SPIKE | Safety kernel + generator for `.claude/settings.json` + canonical policy artifacts | 82% | M | Pending | TASK-03 | TASK-05, TASK-09 |
-| TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Pending | TASK-04 | TASK-07 |
+| TASK-04 | SPIKE | Safety kernel + generator for `.claude/settings.json` + canonical policy artifacts | 82% | M | Complete (2026-02-15) | TASK-03 | TASK-05, TASK-09 |
+| TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-07 |
 | TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 80% | S | Pending | TASK-01 | TASK-07 |
 | TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy include | 74% (→82% after TASK-04) ⚠️ | M | Pending | TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06, TASK-09 | TASK-08 |
@@ -234,6 +234,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 
 ### TASK-04: Add safety policy kernel + generators for enforcement layers
 - **Type:** SPIKE
+- **Status:** Complete (2026-02-15)
 - **Deliverable:**
   - `docs/git-safety.md` gains a fenced YAML kernel (canonical policy input).
   - New generator: `scripts/agents/generate-git-safety-policy` (+ `--check`).
@@ -272,9 +273,13 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Rollback: revert kernel + generator + generated block markers (single commit revert).
 - **Documentation impact:**
   - Update `docs/git-safety.md` to explicitly state the fenced kernel is canonical.
+- **Evidence:**
+  - Kernel + generator landed: `6e9fcb3fef`
+  - Run/verify: `scripts/agents/generate-git-safety-policy --check`
 
 ### TASK-05: Update safety tests to consume the kernel-generated policy
 - **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
 - **Deliverable:** Tests reference generated policy artifacts rather than duplicating the matrix in test code.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
@@ -306,6 +311,9 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Run/verify: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`.
 - **Rollout / rollback:** revert test refactor.
 - **Documentation impact:** None.
+- **Evidence:**
+  - Tests now derive table from the kernel + assert generated artifact parity: `scripts/__tests__/git-safety-policy.test.ts`
+  - Commit: `0b65609ca6`
 
 
 ### TASK-09: Wire hook + git guard to generated policy include

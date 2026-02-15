@@ -91,7 +91,7 @@ Eliminate contract drift across startup-loop skills, stage-doc API endpoints, on
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Complete (2026-02-15) | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Complete (2026-02-15) | TASK-11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Pending | TASK-12, TASK-14 | - |
-| TASK-14 | INVESTIGATE | Stability gate: confirm post-cutoff alias/legacy usage is zero (telemetry + repo audit) | 85% | S | Pending | TASK-12 | TASK-13 |
+| TASK-14 | INVESTIGATE | Stability gate: confirm post-cutoff alias/legacy usage is zero (telemetry + repo audit) | 85% | S | Complete (2026-02-15) | TASK-12 | TASK-13 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -544,6 +544,8 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - VC-01: `docs/plans/startup-loop-contract-hardening/replan-notes.md` exists and contains the evidence packet + go/no-go.
 - **Rollout / rollback:** none (investigation only).
 - **Documentation impact:** none.
+- **Status:** Complete (2026-02-15)
+- **Build evidence:** `docs/plans/startup-loop-contract-hardening/replan-notes.md` (go/no-go recorded).
 
 ### TASK-13: Later Cleanup (Remove Dead Code)
 - **Type:** IMPLEMENT

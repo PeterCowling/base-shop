@@ -123,7 +123,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:**
   - TC-01: `@apps/cms` builds with Webpack -> `pnpm --filter @apps/cms build` exits 0.
   - TC-02: `@apps/cover-me-pretty` builds with Webpack -> `pnpm --filter @apps/cover-me-pretty build` exits 0.
-  - TC-03: Typecheck passes for both apps -> `pnpm --filter @apps/cms typecheck && pnpm --filter @apps/cover-me-pretty typecheck` exits 0.
+  - TC-03: Typecheck passes for both apps -> `pnpm --filter @apps/cms typecheck && pnpm --filter @apps/cover-me-pretty exec tsc -p tsconfig.json --noEmit` exits 0.
   - Acceptance coverage: TC-01/02/03 cover all acceptance criteria.
   - Validation type: integration (build) + typecheck.
   - Run/verify: commands above.

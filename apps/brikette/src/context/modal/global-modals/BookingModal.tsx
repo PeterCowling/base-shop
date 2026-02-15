@@ -5,10 +5,11 @@
 
 import { useTranslation } from "react-i18next";
 
-import type { BookingGuestOption,BookingModalBuildParams, BookingModalCopy } from "@acme/ui/organisms/modals";
+import type { BookingGuestOption, BookingModalBuildParams, BookingModalCopy } from "@acme/ui/organisms/modals";
 import { resolveSharedToken } from "@acme/ui/shared";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { fireBeginCheckoutGeneric } from "@/utils/ga4-events";
 
 import { BOOKING_CODE, formatDate } from "../constants";
 import { useModal } from "../hooks";
@@ -84,6 +85,15 @@ export function BookingGlobalModal(): JSX.Element | null {
     return `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
   };
 
+  const handleAction = (params: BookingModalBuildParams): void => {
+    fireBeginCheckoutGeneric({
+      source: "booking_modal",
+      checkin: formatDate(params.checkIn),
+      checkout: formatDate(params.checkOut),
+      pax: params.guests,
+    });
+  };
+
   return (
     <BookingModal
       isOpen
@@ -91,6 +101,7 @@ export function BookingGlobalModal(): JSX.Element | null {
       copy={bookingCopy}
       guestOptions={guestOptions}
       buildBookingHref={buildBookingHref}
+      onAction={handleAction}
     />
   );
 }

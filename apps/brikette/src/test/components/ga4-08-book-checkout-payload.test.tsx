@@ -1,11 +1,11 @@
 /**
  * GA4-08: Shared room-booking checkout tracking payload
  *
- * Verifies begin_checkout payload is emitted without requiring a confirm URL.
+ * Verifies begin_checkout payload is emitted with e-commerce parameters.
  */
-import { fireCheckoutGA4 } from "@/app/[lang]/book/BookPageContent";
+import { fireRoomBeginCheckout } from "@/utils/ga4-events";
 
-describe("BookPageContent GA4 payload (GA4-08)", () => {
+describe("Room begin_checkout GA4 payload (GA4-08)", () => {
   let originalGtag: typeof window.gtag;
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe("BookPageContent GA4 payload (GA4-08)", () => {
   });
 
   it("fires begin_checkout with nights-based value and item payload", () => {
-    fireCheckoutGA4("room_10", "flex", "2026-06-10", "2026-06-12");
+    fireRoomBeginCheckout({ roomSku: "room_10", plan: "flex", checkin: "2026-06-10", checkout: "2026-06-12" });
 
     expect(window.gtag).toHaveBeenCalledWith(
       "event",

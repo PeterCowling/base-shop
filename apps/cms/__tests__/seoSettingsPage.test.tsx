@@ -71,27 +71,37 @@ jest.mock("../src/app/cms/shop/[shop]/settings/seo/SitemapStatusPanel", () => ({
   default: () => sitemapStatusMock(),
 }));
 
-let dynamicCallIndex = 0;
+function mockNextDynamic() {
+  // Other CMS tests may import `next/dynamic` before this test runs (Jest shares a
+  // module registry across test files in a single invocation). To keep this test
+  // deterministic, we apply the mock inside an isolated module load below.
+  jest.doMock("next/dynamic", () => {
+    const dynamic = (importer: unknown) => {
+      const key =
+        typeof importer === "function"
+          ? (importer as () => unknown).toString()
+          : String(importer);
 
-jest.mock("next/dynamic", () => {
-  // `next/dynamic` is imported as a default export in the app code, but Jest's
-  // CJS/ESM interop can vary based on transform settings. Return a callable
-  // function and also attach `.default` so both import styles work.
-  const dynamic = () => {
-    dynamicCallIndex += 1;
-    if (dynamicCallIndex === 1) return (props: any) => seoEditorMock(props);
-    if (dynamicCallIndex === 2) return (props: any) => seoAuditMock(props);
-    return () => null;
-  };
+      if (key.includes("SeoEditor")) return (props: any) => seoEditorMock(props);
+      if (key.includes("SeoAuditPanel")) return (props: any) => seoAuditMock(props);
 
-  (dynamic as any).__esModule = true;
-  (dynamic as any).default = dynamic;
-  return dynamic;
-});
+      return () => null;
+    };
+
+    (dynamic as any).__esModule = true;
+    (dynamic as any).default = dynamic;
+    return dynamic;
+  });
+}
 
 async function loadSeoSettingsPage() {
-  const mod = await import("../src/app/cms/shop/[shop]/settings/seo/page");
-  return mod.default;
+  let Page: unknown;
+  await jest.isolateModulesAsync(async () => {
+    mockNextDynamic();
+    const mod = await import("../src/app/cms/shop/[shop]/settings/seo/page");
+    Page = mod.default;
+  });
+  return Page as any;
 }
 
 describe("SeoSettingsPage", () => {

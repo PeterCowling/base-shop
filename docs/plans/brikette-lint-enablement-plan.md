@@ -153,6 +153,21 @@ Triage buckets (from this run):
 - Copy/localization: `ds/no-hardcoded-copy` (errors + warnings).
 - Deeper refactors: `@typescript-eslint/no-explicit-any`, `complexity`, `max-lines-per-function`, `react-hooks/*`.
 
+## Lint Ledger (Post TASK-07, 2026-02-15)
+Artifacts:
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.json`
+- `docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.stderr` (empty; no infra/noise detected)
+
+Totals (this run):
+- 239 errors, 166 warnings (405 total)
+- Delta vs 2026-02-15 baseline ledger: **-16 errors**, **+0 warnings**
+
+Top rules by count (errors, unchanged ordering):
+- `@typescript-eslint/no-explicit-any`: 115
+- `complexity`: 43 (down from 49)
+- `ds/no-hardcoded-copy`: 28
+- `max-lines-per-function`: 8 (down from 11)
+
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
@@ -163,11 +178,12 @@ Triage buckets (from this run):
 | TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Complete (2026-02-15) | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Refactor max-lines-per-function offenders (configured thresholds) | 80% | M | Complete (2026-02-15) | TASK-06 | TASK-08 |
-| TASK-08 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Blocked | TASK-07 | TASK-09, TASK-10, TASK-11 |
-| TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Blocked | TASK-08 | TASK-12 |
-| TASK-10 | IMPLEMENT | Remove ds/no-hardcoded-copy errors using Brikette locales strategy | 78% | M | Blocked | TASK-08 | TASK-12 |
-| TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Blocked | TASK-08 | TASK-12 |
-| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 75% | S | Blocked | TASK-09, TASK-10, TASK-11 (+ TASK-03 if applicable) | - |
+| TASK-08 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Complete (2026-02-15) | TASK-07 | TASK-09, TASK-10, TASK-11, TASK-13 |
+| TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Ready | TASK-08 | TASK-12 |
+| TASK-10 | IMPLEMENT | Remove ds/no-hardcoded-copy errors using Brikette locales strategy | 78% | M | Ready | TASK-08 | TASK-12 |
+| TASK-11 | IMPLEMENT | Drive warning count to zero (restricted imports, tap size, migration-test security warnings) | 70% | L | Ready | TASK-08 | TASK-12 |
+| TASK-13 | IMPLEMENT | Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders) | 75% | L | Ready | TASK-08 | TASK-12 |
+| TASK-12 | IMPLEMENT | Re-enable `@apps/brikette` lint script (strict) + final validation | 75% | S | Blocked | TASK-09, TASK-10, TASK-11, TASK-13 (+ TASK-03 if applicable) | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -181,10 +197,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 | 3 | TASK-03 (conditional) + TASK-04 | TASK-02 | TASK-03 only if infra/noise exists; TASK-04 can proceed if TASK-03 is N/A |
 | 4 | TASK-05 -> TASK-06 -> TASK-07 | TASK-04 | Sequential refactor tranches; keep diffs small |
 | 5 | TASK-08 | TASK-07 | Re-measure + replan |
-| 6 | TASK-09 + TASK-10 + TASK-11 | TASK-08 | Parallel siblings; each blocks TASK-12 |
-| 7 | TASK-12 | TASK-09 + TASK-10 + TASK-11 (+ TASK-03 if applicable) | Enable strict lint last |
+| 6 | TASK-09 + TASK-10 + TASK-11 + TASK-13 | TASK-08 | Parallel siblings; each blocks TASK-12 |
+| 7 | TASK-12 | TASK-09 + TASK-10 + TASK-11 + TASK-13 (+ TASK-03 if applicable) | Enable strict lint last |
 
-**Max parallelism:** 3 (post-checkpoint) | **Total tasks:** 12
+**Max parallelism:** 4 (post-checkpoint) | **Total tasks:** 13
 
 ## Tasks
 
@@ -425,7 +441,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution-Skill:** lp-build
 - **Affects:** `docs/plans/brikette-lint-enablement-plan.md`
 - **Depends on:** TASK-07
-- **Blocks:** TASK-09, TASK-10, TASK-11
+- **Blocks:** TASK-09, TASK-10, TASK-11, TASK-13
 - **Confidence:** 95%
 - **Acceptance:**
   - Rerun `pnpm --filter @apps/brikette exec eslint src --no-fix` and capture new counts.
@@ -435,6 +451,40 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
   - TC-01: Updated counts and deltas are recorded in this plan.
 - **Rollout / rollback:** N/A
 - **Documentation impact:** This plan only
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Artifacts:**
+  - `docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.json`
+  - `docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.stderr` (empty)
+- **Updated counts:** 239 errors, 166 warnings (405 total), delta vs baseline (2026-02-15): -16 errors / +0 warnings.
+- **Validation evidence:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src --no-fix -f json > docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.json 2> docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.stderr || true`
+  - Infra/noise grep: no matches in `docs/plans/_artifacts/brikette-eslint.2026-02-15.task-08.stderr`
+
+### TASK-13: Remove `@typescript-eslint/no-explicit-any` errors in guide-seo hotspots (top offenders)
+- **Type:** IMPLEMENT
+- **Deliverable:** Replace `any` with concrete types (or `unknown` + narrowing) in the highest-error guide SEO rendering path(s) until `@typescript-eslint/no-explicit-any` errors drop materially.
+- **Startup-Deliverable-Alias:** none
+- **Execution-Skill:** lp-build
+- **Affects:** `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderFallbackContent.tsx`, `apps/brikette/src/routes/guides/guide-seo/components/generic-or-fallback/renderPrimaryContent.tsx`, plus additional guide-seo files selected from the post-checkpoint ledger
+- **Depends on:** TASK-08
+- **Blocks:** TASK-12
+- **Confidence:** 75%
+  - Implementation: 70% - types may be under-specified; expect some discovery
+  - Approach: 80% - prefer real types over `as any`; use `unknown` with guards where needed
+  - Impact: 75% - affects SEO content rendering; verify via targeted tests
+- **Acceptance:**
+  - `@typescript-eslint/no-explicit-any` errors are eliminated for the selected batch.
+  - No new `eslint-disable` directives are introduced to bypass `no-explicit-any`.
+- **Validation contract:**
+  - TC-01: File-scoped eslint passes for each changed file (with `--max-warnings=0`).
+  - TC-02: `pnpm --filter @apps/brikette typecheck` passes.
+  - TC-03 (best-effort): targeted guide/SEO tests:
+    - `pnpm --filter @apps/brikette test -- --testPathPattern "guide-seo|guides" --maxWorkers=2 --passWithNoTests`
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** N/A
+- **Documentation impact:** None
 
 ### TASK-09: Fix DS/layout primitive errors in top-offender UI files
 - **Type:** IMPLEMENT
@@ -520,7 +570,7 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:** `apps/brikette/package.json`
-- **Depends on:** TASK-09, TASK-10, TASK-11 (+ TASK-03 if applicable)
+- **Depends on:** TASK-09, TASK-10, TASK-11, TASK-13 (+ TASK-03 if applicable)
 - **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 85% - swap the script once lint is green

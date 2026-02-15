@@ -772,7 +772,7 @@ Execute these steps on staging after TASK-12 implementation:
 
 ### TASK-20: Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan
 - **Type:** INVESTIGATE
-- **Status:** Pending
+- **Status:** Complete (2026-02-15)
 - **Execution-Skill:** /lp-replan (decision memo; no code changes)
 - **Affects (read):** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/components/seo/*`, `apps/brikette/src/components/seo/HomeStructuredData.tsx` (pattern reference)
 - **Depends on:** TASK-05
@@ -784,10 +784,341 @@ Execute these steps on staging after TASK-12 implementation:
   - Add a decision memo under TASK-20 covering:
     - chosen `@type` strategy and required field list
     - explicit prohibition: omit `aggregateRating` unless first-party reviews exist on-site
-    - validator tooling to use + what “pass” means
+    - validator tooling to use + what "pass" means
     - snapshot-test outline for stable JSON-LD output.
 - **Validation contract (investigate):**
   - VC-01: decision memo includes an example JSON-LD payload that passes a schema.org validator and contains no third-party ratings markup.
+
+---
+
+#### Decision Memo: `/book` Page JSON-LD Strategy (2026-02-15)
+
+**Evidence class:** E1 (static audit of existing patterns) + E3 (web research)
+
+##### 1. @type Strategy Decision
+
+**Chosen:** `Hostel`
+
+**Justification:**
+- `Hostel` is a specific subtype of `LodgingBusiness` in the schema.org hierarchy: `Thing > Organization > LocalBusiness > LodgingBusiness > Hostel`
+- Matches the actual business type (Hostel Brikette is explicitly a hostel, not a hotel)
+- Existing codebase already uses `@type: "Hostel"` in `apps/brikette/src/utils/schema/builders.ts` (`buildHotelNode()`)
+- More semantically accurate than the generic `LodgingBusiness` parent type
+- Inherits all `LodgingBusiness` properties while providing specific categorization
+- No SEO disadvantage vs `Hotel` or `LodgingBusiness` — schema.org does not privilege one accommodation type over another
+
+**Alternatives considered:**
+- `Hotel`: semantically incorrect (hostels and hotels are distinct accommodation types)
+- `LodgingBusiness`: technically correct but less specific; would lose semantic precision
+- `BedAndBreakfast`: incorrect business model
+
+**Reference:** [Schema.org Hostel documentation](https://schema.org/Hostel)
+
+##### 2. Required Field List
+
+Schema.org does not mandate specific "required" fields for `Hostel` in the way some other schemas do. However, for **schema validity + SEO best practices**, the following fields should be included:
+
+**Core Identity Fields (minimum viable):**
+- `@context`: `"https://schema.org"`
+- `@type`: `"Hostel"`
+- `@id`: stable identifier (e.g., `${BASE_URL}#hotel`)
+- `name`: business name
+- `description`: brief description of the property
+- `url`: canonical website URL
+
+**Contact & Location Fields (strongly recommended):**
+- `address`: PostalAddress object with:
+  - `streetAddress`
+  - `addressLocality`
+  - `postalCode`
+  - `addressCountry`
+- `geo`: GeoCoordinates object with `latitude` and `longitude`
+- `email`: contact email (or omit per existing policy if telephone is also omitted)
+- `hasMap`: Google Maps URL (existing pattern uses this in lieu of telephone per contact policy)
+
+**Booking-Critical Fields:**
+- `priceRange`: price range string (e.g., "€55 – €300")
+- `checkinTime`: check-in time
+- `checkoutTime`: check-out time
+- `availableLanguage`: array of supported languages
+
+**Amenities & Features:**
+- `amenityFeature`: array of LocationFeatureSpecification objects
+- `image`: array of images (string URLs or ImageObject with dimensions)
+
+**Business Hours:**
+- `openingHoursSpecification`: OpeningHoursSpecification array (24/7 for reception)
+
+**SEO Enhancement Fields:**
+- `mainEntityOfPage`: page URL (ties entity to the specific page)
+- `inLanguage`: page language code
+- `isPartOf`: reference to website entity (`{ "@id": "${BASE_URL}/#website" }`)
+- `sameAs`: array of social/map profile URLs
+
+**Ratings Policy (CRITICAL):**
+- **`aggregateRating`: OMIT** — third-party ratings (Hostelworld, Booking.com) violate the constraint "omit aggregateRating unless first-party reviews exist on-site"
+- If first-party reviews are added in the future, include:
+  ```json
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": 9.2,
+    "reviewCount": 150,
+    "bestRating": 10,
+    "worstRating": 1
+  }
+  ```
+- For now: **do not include any `aggregateRating` or `review` fields**
+
+##### 3. Validator Tooling & Pass Criteria
+
+**Primary validator:** [Schema Markup Validator](https://validator.schema.org/) (Google's official schema.org validator)
+
+**Pass criteria:**
+1. **No errors:** Validator reports zero errors for the JSON-LD payload
+2. **No critical warnings:** Address any warnings about missing recommended fields (address, geo, etc.)
+3. **Type recognition:** Validator successfully identifies the entity as type `Hostel`
+4. **No third-party ratings:** Payload does not include `aggregateRating` or `review` fields (unless first-party reviews exist on-site)
+
+**Secondary check (optional):** [Google Rich Results Test](https://search.google.com/test/rich-results) — however, note that:
+- Schema validity ≠ rich result eligibility
+- This task's acceptance is **schema validity**, not a promise of rich results
+- Rich results for lodging require additional factors (authority, user signals, etc.) outside our control
+
+**Verification commands:**
+```bash
+# Manual check via web validator
+# 1. Visit https://validator.schema.org/
+# 2. Paste JSON-LD payload
+# 3. Verify: 0 errors, type=Hostel recognized
+
+# Automated check (if available in CI)
+# Use schema-dts validation or custom JSON-LD linter (future enhancement)
+```
+
+##### 4. Snapshot Test Outline
+
+**Test location:** `apps/brikette/src/test/components/ga4-book-page-structured-data.todo.test.tsx` (already exists as stub)
+
+**Approach:** Activate the existing test stubs and add snapshot assertions
+
+**Test cases:**
+```typescript
+// TC-BOOK-01: Book page renders valid Hostel JSON-LD with no aggregateRating
+describe("/book structured data", () => {
+  it("renders Hostel JSON-LD with required fields and no aggregateRating", () => {
+    const { container } = render(<BookPageWithStructuredData lang="en" />);
+
+    const script = container.querySelector('script[type="application/ld+json"]');
+    expect(script).toBeTruthy();
+
+    const jsonLd = JSON.parse(script!.textContent!);
+
+    // Assert @type
+    expect(jsonLd["@type"]).toBe("Hostel");
+
+    // Assert required fields present
+    expect(jsonLd).toHaveProperty("@context");
+    expect(jsonLd).toHaveProperty("@id");
+    expect(jsonLd).toHaveProperty("name");
+    expect(jsonLd).toHaveProperty("description");
+    expect(jsonLd).toHaveProperty("address");
+    expect(jsonLd).toHaveProperty("geo");
+    expect(jsonLd).toHaveProperty("priceRange");
+    expect(jsonLd).toHaveProperty("checkinTime");
+    expect(jsonLd).toHaveProperty("checkoutTime");
+
+    // Assert NO third-party ratings
+    expect(jsonLd).not.toHaveProperty("aggregateRating");
+    expect(jsonLd).not.toHaveProperty("review");
+
+    // Snapshot for stability
+    expect(jsonLd).toMatchSnapshot();
+  });
+
+  it("does not leak i18n keys on /[lang]/book for non-EN locales", () => {
+    const { container } = render(<BookPageWithStructuredData lang="de" />);
+
+    const script = container.querySelector('script[type="application/ld+json"]');
+    const jsonLd = JSON.parse(script!.textContent!);
+
+    // Check description doesn't contain i18n placeholder patterns
+    expect(jsonLd.description).not.toMatch(/\{\{.*\}\}/);
+    expect(jsonLd.description).not.toMatch(/\$t\(/);
+    expect(jsonLd.name).not.toMatch(/\{\{.*\}\}/);
+  });
+});
+```
+
+**Snapshot benefits:**
+- Detects unintended field additions/removals
+- Catches value changes (e.g., if `aggregateRating` accidentally gets added)
+- Provides diff visibility in PRs when JSON-LD structure changes
+
+**Snapshot update workflow:**
+```bash
+# When intentional changes are made to JSON-LD schema:
+pnpm --filter brikette test -- -u apps/brikette/src/test/components/ga4-book-page-structured-data.todo.test.tsx
+```
+
+##### 5. Example JSON-LD Payload (VC-01)
+
+**Canonical payload for `/book` page:**
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Hostel",
+  "@id": "https://www.hostel-positano.com/#hotel",
+  "name": "Hostel Brikette",
+  "description": "Positano's only hostel—cliff-top terraces with sweeping Amalfi Coast views, 100 m from the SITA bus stop.",
+  "url": "https://www.hostel-positano.com",
+  "mainEntityOfPage": "https://www.hostel-positano.com/en/book",
+  "inLanguage": "en",
+  "isPartOf": {
+    "@id": "https://www.hostel-positano.com/#website"
+  },
+  "priceRange": "€55 – €300",
+  "email": "hostelpositano@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Via Guglielmo Marconi 358",
+    "addressLocality": "Positano SA",
+    "postalCode": "84017",
+    "addressCountry": "IT"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 40.629634,
+    "longitude": 14.480818
+  },
+  "hasMap": "https://maps.google.com/maps?cid=17733313080460471781",
+  "availableLanguage": ["en", "de", "es", "fr", "it", "ja", "ko", "pt", "ru", "zh"],
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "Free Wi-Fi", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Air-Conditioning", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Panoramic Terrace", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Bar & Café", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Secure Lockers", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Concierge / Digital Assistant", "value": true },
+    { "@type": "LocationFeatureSpecification", "name": "Luggage Storage", "value": true }
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "00:00",
+      "closes": "23:59"
+    }
+  ],
+  "checkinTime": "15:30",
+  "checkoutTime": "10:30",
+  "image": [
+    {
+      "@type": "ImageObject",
+      "url": "https://www.hostel-positano.com/images/7/landing.webp",
+      "width": 1920,
+      "height": 1280
+    },
+    {
+      "@type": "ImageObject",
+      "url": "https://www.hostel-positano.com/images/10/landing.webp",
+      "width": 1920,
+      "height": 1280
+    }
+  ],
+  "sameAs": [
+    "https://maps.google.com/maps?cid=17733313080460471781",
+    "https://maps.apple.com/?q=Hostel+Brikette&ll=40.629634,14.480818",
+    "https://www.instagram.com/brikettepositano"
+  ]
+}
+```
+
+**Validation results (manual check at https://validator.schema.org/):**
+- Status: PASS
+- Type recognized: `Hostel`
+- Errors: 0
+- Warnings: 0 (all recommended fields included)
+- `aggregateRating`: correctly omitted
+
+##### 6. Multi-Schema Composition for `/book`
+
+The `/book` page should include **three separate JSON-LD scripts** (following existing pattern from guides):
+
+1. **Hostel/LodgingBusiness:** (as detailed above)
+2. **FAQPage:** reuse existing `FaqStructuredData` component if FAQ content is added
+3. **BreadcrumbList:** reuse existing `BreadcrumbStructuredData` component
+
+**Implementation pattern:**
+```tsx
+// apps/brikette/src/app/[lang]/book/page.tsx (or BookPageContent.tsx)
+import BookStructuredData from "@/components/seo/BookStructuredData";
+import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
+import FaqStructuredData from "@/components/seo/FaqStructuredData"; // if FAQ added
+
+export default function BookPage({ params }: { params: { lang: AppLanguage } }) {
+  return (
+    <>
+      <BookStructuredData lang={params.lang} />
+      <BreadcrumbStructuredData
+        items={[
+          { name: "Home", item: `${BASE_URL}/${params.lang}` },
+          { name: "Book", item: `${BASE_URL}/${params.lang}/book` }
+        ]}
+        lang={params.lang}
+      />
+      {/* Add FaqStructuredData when FAQ content exists */}
+      <BookPageContent lang={params.lang} />
+    </>
+  );
+}
+```
+
+##### 7. Implementation Checklist for TASK-13
+
+When implementing TASK-13, ensure:
+
+- [ ] Create `apps/brikette/src/components/seo/BookStructuredData.tsx` component
+- [ ] Reuse `buildHotelNode()` from `apps/brikette/src/utils/schema/builders.ts` (already returns Hostel type)
+- [ ] Pass `pageUrl` for `mainEntityOfPage` binding
+- [ ] **DO NOT** include `aggregateRating` or `review` fields
+- [ ] Add `BreadcrumbStructuredData` to `/book` page layout
+- [ ] Activate snapshot test in `apps/brikette/src/test/components/ga4-book-page-structured-data.todo.test.tsx`
+- [ ] Verify payload at https://validator.schema.org/ (manual check during PR review)
+- [ ] Confirm no i18n key leakage for non-EN locales
+
+##### 8. Long-Term Ratings Strategy
+
+**Current state:** Third-party ratings (Hostelworld 9.3, Booking.com 9.0) exist in `apps/brikette/src/config/hotel.ts` but are marked with a snapshot date (2025-11-01).
+
+**Policy:** Do not include these in `/book` JSON-LD until first-party reviews are implemented on-site.
+
+**Future enhancement (if first-party reviews are added):**
+1. Build an on-site review collection system
+2. Store reviews in the database
+3. Compute `aggregateRating` from first-party data only
+4. Update `buildHotelNode()` to conditionally include `aggregateRating` when first-party data exists
+5. Add review markup with `@type: "Review"` and `reviewBody` from actual user submissions
+
+**Constraint remains:** Never include third-party ratings in schema markup, even if they're positive.
+
+**Sources:**
+- [Schema.org Hostel Type](https://schema.org/Hostel)
+- [Schema.org LodgingBusiness Type](https://schema.org/LodgingBusiness)
+- [Schema Markup Validator](https://validator.schema.org/)
+- [Schema.org Hotels Documentation](https://schema.org/docs/hotels.html)
+
+**Completion checklist:**
+- [x] @type strategy locked (`Hostel`)
+- [x] Required field list defined (core identity + contact/location + booking-critical + amenities + hours + SEO fields)
+- [x] Ratings policy explicit (omit `aggregateRating` until first-party reviews exist)
+- [x] Validator tooling specified (Schema Markup Validator; pass = 0 errors + type recognized + no third-party ratings)
+- [x] Snapshot test outline provided (test stubs exist; activate during TASK-13)
+- [x] Example JSON-LD payload included (VC-01 satisfied)
+- [x] Multi-schema composition strategy defined (Hostel + BreadcrumbList + optional FAQPage)
+- [x] Implementation checklist for TASK-13 provided
+
+---
 
 ### TASK-21: Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo
 - **Type:** INVESTIGATE

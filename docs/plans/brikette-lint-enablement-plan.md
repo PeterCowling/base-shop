@@ -158,7 +158,7 @@ Triage buckets (from this run):
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Build lint ledger (errors + warnings + infra noise) | 95% | S | Complete (2026-02-15) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Sequencing gate: replan tasks 3+ based on ledger distribution + set drift policy | 95% | S | Complete (2026-02-15) | TASK-01 | TASK-03, TASK-04 |
-| TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) (conditional) | 80% | M | Blocked | TASK-02 | TASK-12 (conditional) |
+| TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) (conditional) | 80% | M | Complete (2026-02-15) | TASK-02 | TASK-12 (conditional) |
 | TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Complete (2026-02-15) | TASK-02 | TASK-05 |
 | TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Blocked | TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Blocked | TASK-05 | TASK-07 |
@@ -286,6 +286,11 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Documentation impact:** None
 - **Planning validation:** (M-effort)
   - Evidence gathered in TASK-01 determines whether this is a real blocker or can be N/A.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete (N/A)
+- **Reason:** TASK-01 ledger stderr (`docs/plans/_artifacts/brikette-eslint.2026-02-15.stderr`) was empty and contained no infra/noise strings, so no project-service wiring work is required at this time.
+- **Validation evidence:** `grep -nE "project service could not find file|The file must be included in at least one of the projects provided" docs/plans/_artifacts/brikette-eslint.2026-02-15.stderr` returned no matches.
 
 ### TASK-04: Remove ds/require-disable-justification error in i18n types helper
 - **Type:** IMPLEMENT

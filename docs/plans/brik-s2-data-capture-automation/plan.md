@@ -4,7 +4,7 @@ Status: Active
 Domain: Data
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-15 (TASK-06 complete)
+Last-updated: 2026-02-15 (TASK-07 complete)
 Feature-Slug: brik-s2-data-capture-automation
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -83,7 +83,7 @@ Chosen: Option A, while still refactoring shared logic into testable modules so 
 | TASK-04 | IMPLEMENT | Commission derivation from config (provenance + edge-case rules) | 84% | M | Complete | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Orchestrator: run export -> economics -> parity captures -> verify outputs (atomic, scaffold replace rules) | 80% | L | Pending | TASK-01, TASK-04, TASK-07, TASK-08 | TASK-09 |
 | TASK-06 | IMPLEMENT | Parity capture: Direct (Octorate booking engine) with EUR and auto-only extraction | 80% | M | Complete | - | TASK-07, TASK-08 |
-| TASK-07 | IMPLEMENT | Parity capture: Hostelworld (deposit + pay-at-property) with auto-only extraction | 80% | M | Pending | TASK-06 | TASK-05 |
+| TASK-07 | IMPLEMENT | Parity capture: Hostelworld (deposit + pay-at-property) with auto-only extraction | 80% | M | Complete | TASK-06 | TASK-05 |
 | TASK-08 | IMPLEMENT | Parity capture: Booking.com with auto-only extraction and deterministic failure handling | 82% | M | Pending | TASK-06 | TASK-05 |
 | TASK-09 | IMPLEMENT | Tests: selector + embed fixtures + economics pure seams + notes formatting contracts | 81% | L | Pending | TASK-03, TASK-05 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint: reassess auto-extraction ambitions (Booking.com/Hostelworld) and remaining risks | 95% | S | Pending | TASK-09 | - |
@@ -353,6 +353,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-01: output row follows notes/taxes conventions.
   - TC-02: failure path produces deterministic row with `failure_reason=...`.
 - **What would make this ≥90%:** one real run confirming the page exposes deposit+remaining consistently for the listing.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** c11a6113840f
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS (33/33 tests, 4 new Hostelworld tests)
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+  - Lint: security warnings consistent with existing octorate scripts baseline
+- **Implementation notes:**
+  - Created `hostelworld-parity.mjs` with auto-only mode following TASK-06 pattern
+  - Created `parity-hostelworld.ts` with Hostelworld-specific functions (URL building, CSV with deposit_payment field)
+  - Tests cover TC-01 (success path with deposit split), TC-02 (failure path), TC-03 (URL building), TC-04 (deposit_payment field)
+  - Auto extraction attempts DOM queries for total price, deposit, and pay-at-property elements
+  - On failure: writes deterministic unavailable row with failure_reason
+  - deposit_payment field format: "deposit_amount=X; pay_at_property=Y"
 
 ### TASK-08: Parity Capture (Booking.com Auto-Only)
 - **Type:** IMPLEMENT

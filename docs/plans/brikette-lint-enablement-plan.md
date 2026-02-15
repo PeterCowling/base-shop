@@ -819,6 +819,18 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
 
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `c65f51e711`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/components/assistance/quick-links-section/index.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/guides/guide-seo/components/fallback/RenderManualString.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/guides/guide-seo/components/structured-toc/StructuredTocFaqSection.tsx --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/guides/guide-seo/meta-resolution/descriptionResolver.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/routes/guides/guide-seo/components/generic/fallbackDetection.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+  - Ran (best-effort): `pnpm --filter @apps/brikette test -- --testPathPattern "assistance|guide-seo|guides" --maxWorkers=2 --passWithNoTests` — PASS
+
 ### TASK-17: Fix remaining `max-lines-per-function` errors (post-task-13-09 ledger)
 - **Type:** IMPLEMENT
 - **Deliverable:** Refactors that bring remaining offender functions under the configured `max-lines-per-function` threshold without changing runtime behavior.

@@ -161,7 +161,7 @@ Triage buckets (from this run):
 | TASK-03 | IMPLEMENT | Fix TypeScript project-service wiring (no infra/noise warnings) (conditional) | 80% | M | Complete (2026-02-15) | TASK-02 | TASK-12 (conditional) |
 | TASK-04 | IMPLEMENT | Remove ds/require-disable-justification error in i18n types helper | 90% | S | Complete (2026-02-15) | TASK-02 | TASK-05 |
 | TASK-05 | IMPLEMENT | Mechanical cleanup tranche (unused vars, duplicates, import sorting) | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Blocked | TASK-05 | TASK-07 |
+| TASK-06 | IMPLEMENT | Reduce complexity hotspots in i18n + SEO/head utilities (configured thresholds) | 80% | M | Complete (2026-02-15) | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Refactor max-lines-per-function offenders (configured thresholds) | 80% | M | Blocked | TASK-06 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint: rerun lint, replan remaining remediation batches | 95% | S | Blocked | TASK-07 | TASK-09, TASK-10, TASK-11 |
 | TASK-09 | IMPLEMENT | Fix DS/layout primitive errors in top-offender UI files | 82% | M | Blocked | TASK-08 | TASK-12 |
@@ -372,6 +372,18 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:** N/A
 - **Documentation impact:** None
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** `c95ce07620`
+- **Validation:**
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/utils/loadI18nNs.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/utils/ensureGuideContent.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/utils/routeHead.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/utils/testHeadFallback.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette exec eslint src/utils/tags/normalizers.ts --no-fix --max-warnings=0` — PASS
+  - Ran: `pnpm --filter @apps/brikette typecheck` — PASS
+- **Implementation notes:** Extracted helper functions to reduce per-function complexity while keeping behavior unchanged.
 
 ### TASK-07: Refactor max-lines-per-function offenders (configured thresholds)
 - **Type:** IMPLEMENT

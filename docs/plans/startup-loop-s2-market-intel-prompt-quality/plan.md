@@ -81,7 +81,7 @@ Chosen: Option B.
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Baseline assembler: embedded deltas + compact slice; strip YAML contamination | 86 | M | Complete (2026-02-15) | - | TASK-03, TASK-05 |
 | TASK-02 | IMPLEMENT | Add hospitality S2 profile template (exemplar-aligned) incl. scenario rules + decision-grade criteria | 85 | S | Complete (2026-02-15) | - | TASK-03 |
-| TASK-03 | IMPLEMENT | Profile registry + override + selection debug metadata; generator chooses correct template | 82 | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07 |
+| TASK-03 | IMPLEMENT | Profile registry + override + selection debug metadata; generator chooses correct template | 82 | M | Complete (2026-02-15) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07 |
 | TASK-04 | IMPLEMENT | Base URL derivation + website-live BLOCKED behavior + funnel audit anchors | 82 | M | Pending | TASK-03 | TASK-07 |
 | TASK-05 | IMPLEMENT | Deterministic two-pass prompt emission + length guards + tests | 82 | M | Pending | TASK-01, TASK-03 | TASK-07 |
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Pending | TASK-03 | TASK-07 |
@@ -215,6 +215,20 @@ Chosen: Option B.
   - TC-01: profile selection → BRIK fixture selects `hospitality_direct_booking_ota`.
   - TC-02: override precedence → override file forces profile even if matchers disagree.
   - TC-03: debug metadata → output contains `SelectedProfile` and `OverrideUsed` lines.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** 6b937db473
+- **Execution cycle:** Red → Green → Refactor
+  - Added TC coverage for profile selection + override precedence + debug metadata in `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
+- **Validation:**
+  - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
+  - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+- **Implementation notes:**
+  - Generator now selects a research profile (`hospitality_direct_booking_ota` vs `b2c_dtc_product`) and renders Deep Research prompts from markdown templates, injecting `{{INTERNAL_BASELINES}}` as mandatory evidence.
+  - Added `docs/business-os/market-research/<BIZ>/research-profile.user.md` override support (Status: Active, `Profile-Id: ...`).
+  - Generated prompt doc now includes a `## Generator Debug` section with `SelectedProfile`, `OverrideUsed`, `SelectionSignals`, and `TemplatePath` (outside the Deep Research code block).
 
 ### TASK-04: Base URL derivation + website-live BLOCKED behavior + funnel audit anchors
 - **Type:** IMPLEMENT

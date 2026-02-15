@@ -15,9 +15,71 @@ set -euo pipefail
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$repo_root"
 
+SELF_TEST=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --self-test)
+      SELF_TEST=1
+      shift
+      ;;
+    -h|--help)
+      echo "Usage:"
+      echo "  scripts/check-startup-loop-contracts.sh"
+      echo "  scripts/check-startup-loop-contracts.sh --self-test"
+      exit 0
+      ;;
+    *)
+      echo "ERROR: unknown arg: $1" >&2
+      echo "Run with --help for usage." >&2
+      exit 2
+      ;;
+  esac
+done
+
 fail=0
 warn_count=0
 check_count=0
+
+run_self_tests() {
+  local st_fail=0
+
+  if ! command -v rg >/dev/null 2>&1; then
+    echo "SELF-TEST FAIL: rg not found in PATH" >&2
+    return 1
+  fi
+
+  # Stage alias detection patterns (used for SQ-13)
+  if ! printf '%s\n' '{ "stage": "lp-fact-find" }' | rg -q '"stage"\s*:\s*"lp-fact-find"'; then
+    echo "SELF-TEST FAIL: stage alias JSON pattern did not match" >&2
+    st_fail=1
+  fi
+  if ! printf '%s\n' 'GET /api/agent/stage-docs/BRIK-ENG-0001/lp-fact-find' | rg -q '/api/agent/stage-docs/.+/lp-fact-find'; then
+    echo "SELF-TEST FAIL: stage-doc path alias pattern did not match" >&2
+    st_fail=1
+  fi
+  if ! printf '%s\n' 'Fact-finding stage doc complete (API stage `lp-fact-find`)' | rg -q --fixed-strings 'API stage `lp-fact-find`'; then
+    echo "SELF-TEST FAIL: fixed-string backtick pattern did not match" >&2
+    st_fail=1
+  fi
+
+  # Decision reference extraction (used for SQ-14)
+  if ! printf '%s\n' 'decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"' \
+    | rg -q 'docs/plans/[^"]+\.md'; then
+    echo "SELF-TEST FAIL: decision_reference extraction pattern did not match" >&2
+    st_fail=1
+  fi
+
+  # Legacy filename reference (used for SQ-15)
+  if ! printf '%s\n' 'docs/business-os/cards/BRIK-ENG-0020/fact-finding.user.md' \
+    | rg -q --fixed-strings 'fact-finding.user.md'; then
+    echo "SELF-TEST FAIL: legacy filename fixed-string pattern did not match" >&2
+    st_fail=1
+  fi
+
+  if [[ "$st_fail" -ne 0 ]]; then
+    return 1
+  fi
+}
 
 check_fail() {
   echo "FAIL: $1" >&2
@@ -53,6 +115,15 @@ for ref_file in "$LOOP_SPEC" "$WRAPPER_SKILL" "$WORKFLOW_GUIDE" "$PROMPT_INDEX";
     exit 1
   fi
 done
+
+if [[ "$SELF_TEST" -eq 1 ]]; then
+  if run_self_tests; then
+    echo "SELF-TEST PASS"
+    exit 0
+  fi
+  echo "SELF-TEST FAIL" >&2
+  exit 1
+fi
 
 # ── SQ-01: Stage graph consistency ──
 # Loop-spec stage IDs must appear in wrapper skill and workflow guide.
@@ -220,6 +291,28 @@ if [[ $sq07_fail -eq 0 ]]; then
   check_pass
 fi
 
+# ── SQ-13: Stage-doc alias emission (idea-* skills) ──
+# idea-* skills must not emit legacy stage-doc keys/paths like lp-fact-find.
+# Skill slugs (e.g. /lp-fact-find) are allowed; only stage-doc API keys/paths are forbidden.
+
+sq13_fail=0
+if rg -q '"stage"\s*:\s*"lp-fact-find"' -S .claude/skills/idea-*/SKILL.md 2>/dev/null; then
+  check_fail "idea-* skills contain stage-doc writes using stage=lp-fact-find — must use stage=fact-find (SQ-13)"
+  sq13_fail=1
+fi
+if rg -q '/api/agent/stage-docs/.+/lp-fact-find\b' -S .claude/skills/idea-*/SKILL.md 2>/dev/null; then
+  check_fail "idea-* skills contain stage-doc endpoint paths using /lp-fact-find — must use /fact-find (SQ-13)"
+  sq13_fail=1
+fi
+if rg -q --fixed-strings 'API stage `lp-fact-find`' -S .claude/skills/idea-*/SKILL.md 2>/dev/null; then
+  check_fail "idea-* skills contain stage-doc type text `lp-fact-find` — must use `fact-find` (SQ-13)"
+  sq13_fail=1
+fi
+
+if [[ $sq13_fail -eq 0 ]]; then
+  check_pass
+fi
+
 # ── SQ-08: Launch gate dependency verification ──
 # lp-launch-qa dependencies must exist: state.json schema, QA skill contract.
 
@@ -328,6 +421,65 @@ if [[ -f ".claude/skills/lp-experiment/SKILL.md" ]]; then
 fi
 
 if [[ $sq12_fail -eq 0 ]]; then
+  check_pass
+fi
+
+# ── SQ-14: Decision reference targets exist ──
+# Canonical docs must not point at missing plan paths.
+
+sq14_fail=0
+declare -a decision_ref_sources=(
+  "$LOOP_SPEC"
+  "docs/business-os/startup-loop/autonomy-policy.md"
+  "docs/business-os/startup-loop/event-state-schema.md"
+  "docs/business-os/startup-loop/manifest-schema.md"
+  "docs/business-os/startup-loop/stage-result-schema.md"
+)
+
+for src in "${decision_ref_sources[@]}"; do
+  if [[ ! -f "$src" ]]; then
+    continue
+  fi
+  while IFS= read -r ref; do
+    # Strip any anchor fragment.
+    ref_path="${ref%%#*}"
+    if [[ -n "$ref_path" ]] && [[ ! -f "$ref_path" ]]; then
+      check_fail "Decision reference target missing: ${ref_path} (from ${src}) (SQ-14)"
+      sq14_fail=1
+    fi
+  done < <(rg -o 'docs/plans/[^"]+\.md(#[A-Za-z0-9_-]+)?' "$src" 2>/dev/null | sort -u)
+done
+
+if [[ $sq14_fail -eq 0 ]]; then
+  check_pass
+fi
+
+# ── SQ-15: Legacy stage-doc filename references allowlist ──
+# During the compatibility window, allow the legacy filename only in explicitly allowlisted locations.
+
+sq15_fail=0
+declare -a MIGRATION_ALLOWLIST=(
+  "docs/business-os/startup-loop/contract-migration.yaml"
+  "docs/business-os/cards/BRIK-ENG-0020.user.md"
+  "docs/registry.json"
+)
+
+while IFS= read -r match; do
+  match_file="${match%%:*}"
+  allowed=0
+  for allow in "${MIGRATION_ALLOWLIST[@]}"; do
+    if [[ "$match_file" == "$allow" ]]; then
+      allowed=1
+      break
+    fi
+  done
+  if [[ "$allowed" -eq 0 ]]; then
+    check_fail "Legacy filename reference fact-finding.user.md found in non-allowlisted file: ${match_file} (SQ-15)"
+    sq15_fail=1
+  fi
+done < <(rg -n --fixed-strings 'fact-finding.user.md' docs/business-os docs/registry.json 2>/dev/null || true)
+
+if [[ $sq15_fail -eq 0 ]]; then
   check_pass
 fi
 

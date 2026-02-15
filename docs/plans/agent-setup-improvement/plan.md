@@ -410,7 +410,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:**
-  - Primary: `.claude/SKILLS_INDEX.md`, `docs/github-setup.md`
+  - Primary: `.claude/SKILLS_INDEX.md`, `.claude/HOW_TO_USE_SKILLS.md`, `.claude/SETUP_COMPLETE.md`, `docs/github-setup.md`
   - Secondary: `[readonly] .agents/registry/skills.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-07
@@ -425,10 +425,12 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Repo evidence: `pnpm run docs:lint` currently exits non-zero repo-wide due to many legacy docs missing headers, so "docs lint passes" is not a meaningful validation gate for this task.
 - **Acceptance:**
   - `.claude/SKILLS_INDEX.md` no longer references non-existent skills.
+  - `.claude/HOW_TO_USE_SKILLS.md` and `.claude/SETUP_COMPLETE.md` reference the registry/command instead of a stale index.
   - `docs/github-setup.md` references the registry/command instead of a stale index.
 - **Validation contract:**
   - TC-01: `rg -n "skills/fact-find" .claude/SKILLS_INDEX.md` returns no matches → pass.
-  - TC-02: `scripts/agents/list-skills` runs and includes `lp-plan` → pass.
+  - TC-02: `rg -n "SKILLS_INDEX\\.md" docs/github-setup.md .claude/HOW_TO_USE_SKILLS.md .claude/SETUP_COMPLETE.md` returns no matches → pass.
+  - TC-03: `scripts/agents/list-skills` runs and includes `lp-plan` → pass.
 - **Rollout / rollback:** revert doc changes.
 
 ### TASK-07: Horizon checkpoint: reassess before CODEX.md + policy rollout

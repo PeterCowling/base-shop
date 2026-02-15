@@ -43,7 +43,9 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - **TASK-04:** Add safety policy kernel + generators for enforcement layers (Complete 2026-02-15)
 - **TASK-05:** Update safety tests to consume the kernel-generated policy (Complete 2026-02-15)
 - **TASK-06:** Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers (Pending)
-- **TASK-09:** Wire enforcement layers to generated safety policy include (Pending)
+- **TASK-10:** Decide hook/guard policy generation format (Pending)
+- **TASK-11:** Prototype policy-driven evaluation for one enforcement layer (Pending)
+- **TASK-09:** Wire enforcement layers to generated policy evaluation/data (Pending)
 - **TASK-07:** Horizon checkpoint: reassess before CODEX.md + policy rollout (Pending)
 - **TASK-08:** Reduce CODEX.md bloat while keeping safety TL;DR (Pending)
 
@@ -104,7 +106,7 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 - [ ] A machine-readable safety policy kernel exists and is treated as canonical.
 - [ ] Safety enforcement artifacts are generated from the kernel (no hand-edited duplication).
 - [ ] CI fails when regenerated outputs differ from committed outputs.
-- [ ] A generated skill registry enumerates 100% of supported skills (49 currently) with path + description.
+- [ ] A generated skill registry enumerates 100% of supported skills (50 currently) with path + description.
 - [ ] A single documented command lists skills for any agent (`scripts/agents/list-skills`).
 - [ ] CODEX.md no longer contains duplicated long-form safety matrices, but retains a safety TL;DR + integrator-shell requirement.
 
@@ -117,10 +119,12 @@ Unify and harden agent setup across Claude Code, Codex, and future agents by (1)
 | TASK-03 | DECISION | Safety kernel format + schema + generation boundaries | 70% | S | Complete (2026-02-15) | - | TASK-04 |
 | TASK-04 | SPIKE | Safety kernel + generator for `.claude/settings.json` + canonical policy artifacts | 82% | M | Complete (2026-02-15) | TASK-03 | TASK-05, TASK-09 |
 | TASK-05 | IMPLEMENT | Update safety tests to consume generated policy artifacts | 82% | M | Complete (2026-02-15) | TASK-04 | TASK-07 |
-| TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 80% | S | Pending | TASK-01 | TASK-07 |
-| TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy include | 74% (→82% after TASK-04) ⚠️ | M | Pending | TASK-04 | TASK-07 |
+| TASK-06 | IMPLEMENT | Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers | 82% | S | Pending | TASK-01 | TASK-07 |
+| TASK-10 | INVESTIGATE | Decide hook/guard policy generation format | 85% | S | Pending | TASK-04, TASK-05 | TASK-11 |
+| TASK-11 | SPIKE | Prototype policy-driven evaluation for one enforcement layer | 82% | M | Pending | TASK-10 | TASK-09 |
+| TASK-09 | IMPLEMENT | Wire hook + git guard to generated policy evaluation/data | 74% (→84% conditional on TASK-10, TASK-11) ⚠️ | M | Pending | TASK-11 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess before CODEX.md + policy rollout | 95% | S | Pending | TASK-05, TASK-06, TASK-09 | TASK-08 |
-| TASK-08 | IMPLEMENT | Reduce CODEX.md bloat while keeping safety TL;DR | 80% | M | Pending | TASK-07 | - |
+| TASK-08 | IMPLEMENT | Reduce CODEX.md bloat while keeping safety TL;DR | 82% | M | Pending | TASK-07 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
 
@@ -130,12 +134,13 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-04, TASK-06 | - | Kernel/generator spike can proceed while SKILLS_INDEX/doc pointers are fixed |
-| 2 | TASK-05, TASK-09 | TASK-04 | Tests + enforcement wiring both depend on generated policy artifacts |
-| 3 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
-| 4 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
+| 1 | TASK-06 | - | Doc pointer fix (uses generated registry) |
+| 2 | TASK-10, TASK-11 | TASK-04, TASK-05 | Decide + prototype the policy-driven wiring approach |
+| 3 | TASK-09 | TASK-11 | Wire both enforcement layers once the spike proves approach |
+| 4 | TASK-07 | TASK-05, TASK-06, TASK-09 | Checkpoint gate before CODEX.md reduction |
+| 5 | TASK-08 | TASK-07 | CODEX.md reduction last to avoid reliability regressions |
 
-**Max parallelism:** 2 (Wave 1/2) | **Critical path:** TASK-04 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 9
+**Max parallelism:** 2 (Wave 2) | **Critical path:** TASK-11 -> TASK-09 -> TASK-07 -> TASK-08 | **Total tasks:** 11
 
 
 ## Tasks
@@ -316,36 +321,88 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Commit: `0b65609ca6`
 
 
-### TASK-09: Wire hook + git guard to generated policy include
+### TASK-09: Wire hook + git guard to generated policy evaluation/data
 - **Type:** IMPLEMENT
-- **Deliverable:** Enforcement layers consume generated policy include
-  - `.claude/hooks/pre-tool-use-git-safety.sh` sources `.agents/safety/generated/git-safety-policy.sh` (deny/allow data only).
-  - `scripts/agent-bin/git` sources the same include (policy data only).
-  - Generator is the only place policy is edited; enforcement scripts become thin evaluators.
+- **Deliverable:** Enforcement layers consume generated policy evaluation/data
+  - `.claude/hooks/pre-tool-use-git-safety.sh` consumes a generated policy source (data or evaluator) rather than duplicating deny/allow logic.
+  - `scripts/agent-bin/git` consumes the same generated policy source.
+  - Kernel + generator remain the only place the policy is edited; enforcement scripts become thin evaluators.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** lp-build
 - **Affects:**
   - Primary: `.claude/hooks/pre-tool-use-git-safety.sh`, `scripts/agent-bin/git`
-  - Secondary: `[readonly] .agents/safety/generated/git-safety-policy.sh`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
-- **Depends on:** TASK-04
+  - Secondary: `[readonly] .agents/safety/generated/git-safety-policy.*`, `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
+- **Depends on:** TASK-11
 - **Blocks:** TASK-07
-- **Confidence:** 74% (→ 82% conditional on TASK-04) ⚠️
+- **Confidence:** 74% (→ 84% conditional on TASK-10, TASK-11) ⚠️
   - Implementation: 74% — wiring must preserve existing bash parsing behavior; needs E2 evidence from running the suites after integration.
-  - Approach: 85% — sourcing a generated include avoids rewriting whole scripts and removes duplication.
+  - Approach: 74% — current generated `.agents/safety/generated/git-safety-policy.sh` exports only Claude permission matchers (e.g. `Bash(git reset --hard:*)`), not the rule data the hook/guard use (regex/arg parsing). A decision is required on the generated interface.
   - Impact: 74% — high blast radius if deny rules regress; mitigated by existing Jest suites.
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 74%
+- **Updated confidence:** 74% (→ 84% conditional on TASK-10, TASK-11)
+  - **Evidence class:** E1 + E2
+  - Approach: cannot promote on static audit alone; the generated include currently provides Claude permission matcher strings, which do not map 1:1 to the hook/guard's regex + argv parsing logic.
+    - Evidence: `.agents/safety/generated/git-safety-policy.sh`
+    - Evidence: `.claude/hooks/pre-tool-use-git-safety.sh`
+    - Evidence: `scripts/agent-bin/git`
+  - Impact: executable drift protection improved in TASK-05 (kernel-derived tests + generated artifact parity), but wiring both enforcement layers still requires E2 proof.
+    - Evidence: `scripts/__tests__/git-safety-policy.test.ts`
+    - Evidence: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`
+- **Precursor tasks created:** TASK-10 (decision) → TASK-11 (single-layer spike) → TASK-09 (full wiring)
 - **Acceptance:**
-  - Both enforcement layers read policy data from the generated include and no longer duplicate the deny list in-script.
+  - Both enforcement layers read policy evaluation/data from a shared generated source and no longer require duplicated policy edits in both scripts.
   - Existing behavior remains unchanged (verified by current Jest suites).
 - **Validation contract:**
   - TC-01: `scripts/__tests__/pre-tool-use-git-safety.test.ts` passes → hook behavior preserved.
   - TC-02: `scripts/__tests__/git-safety-policy.test.ts` passes → guard + hook agree.
   - Run/verify: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2`.
 - **What would make this ≥80%:**
-  - E2: implement include-sourcing and run both suites green; then promote to ≥80%.
+  - E2: implement full wiring and run both suites green; then promote to ≥80%.
 - **Rollout / rollback:**
   - Rollout: source include files and keep generator enforced by validator.
   - Rollback: revert enforcement wiring commit (policy artifacts remain safe).
 - **Documentation impact:** None.
+
+### TASK-10: Decide hook/guard policy generation format
+- **Type:** INVESTIGATE
+- **Deliverable:** Decision recorded in this plan: choose how hook + guard will consume the kernel
+  - Option A: generated bash data tables (regex + allow/deny lists) sourced by both scripts
+  - Option B: shared node evaluator CLI (`node scripts/...`) called by both scripts
+  - Option C: keep scripts hand-maintained; enforce via tests only (explicitly accept manual edits)
+- **Execution-Skill:** lp-replan
+- **Affects:** `[readonly] docs/git-safety.md`, `[readonly] .agents/safety/generated/*`, `[readonly] .claude/hooks/pre-tool-use-git-safety.sh`, `[readonly] scripts/agent-bin/git`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
+- **Depends on:** TASK-04, TASK-05
+- **Blocks:** TASK-11
+- **Confidence:** 85%
+  - Implementation: 90% — investigation only; no code required.
+  - Approach: 85% — enough repo evidence exists to pick a least-brittle interface.
+  - Impact: 85% — clarifies the generator boundary to avoid breaking safety.
+- **Acceptance:**
+  - Records chosen option + rationale + how it preserves fail-closed behavior.
+  - Records explicit generated artifact contract (file path + exported variables/CLI args).
+- **Validation contract:**
+  - VC-01: Decision section exists in TASK-10 with chosen option + rationale → pass.
+
+### TASK-11: Prototype policy-driven evaluation for one enforcement layer
+- **Type:** SPIKE
+- **Deliverable:** One enforcement layer (hook OR guard) consumes the chosen generated policy interface and passes tests.
+- **Execution-Skill:** lp-build
+- **Affects:**
+  - Primary: (chosen in TASK-10) `.claude/hooks/pre-tool-use-git-safety.sh` OR `scripts/agent-bin/git`, plus generator outputs under `.agents/safety/generated/`
+  - Secondary: `[readonly] scripts/__tests__/pre-tool-use-git-safety.test.ts`, `[readonly] scripts/__tests__/git-safety-policy.test.ts`
+- **Depends on:** TASK-10
+- **Blocks:** TASK-09
+- **Confidence:** 82%
+  - Implementation: 82% — bounded to one layer; existing suites provide fast E2 feedback.
+  - Approach: 82% — spike can validate the chosen interface without committing to a full refactor.
+  - Impact: 82% — reduces blast radius by proving behavior before wiring both layers.
+- **Acceptance:**
+  - One layer consumes generated policy interface; no policy duplication required for that layer.
+  - Relevant Jest suite(s) are green.
+- **Validation contract:**
+  - TC-01: `pnpm run test:governed -- jest -- scripts/__tests__/pre-tool-use-git-safety.test.ts --maxWorkers=2` passes (if hook chosen)
+  - TC-02: `pnpm run test:governed -- jest -- scripts/__tests__/git-safety-policy.test.ts --maxWorkers=2` passes (must pass regardless)
 
 ### TASK-06: Replace stale `.claude/SKILLS_INDEX.md` usage with registry pointers
 - **Type:** IMPLEMENT
@@ -357,16 +414,21 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - Secondary: `[readonly] .agents/registry/skills.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-07
-- **Confidence:** 80%
+- **Confidence:** 82%
   - Implementation: 85% — small doc edits.
   - Approach: 80% — prefer generated registry as canonical; SKILLS_INDEX becomes a thin pointer or a generated list.
   - Impact: 80% — low risk; mainly improves correctness.
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 80%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (executable verification)
+  - Repo evidence: `pnpm run docs:lint` currently exits non-zero repo-wide due to many legacy docs missing headers, so "docs lint passes" is not a meaningful validation gate for this task.
 - **Acceptance:**
   - `.claude/SKILLS_INDEX.md` no longer references non-existent skills.
   - `docs/github-setup.md` references the registry/command instead of a stale index.
 - **Validation contract:**
   - TC-01: `rg -n "skills/fact-find" .claude/SKILLS_INDEX.md` returns no matches → pass.
-  - TC-02: `pnpm run docs:lint` passes → pass.
+  - TC-02: `scripts/agents/list-skills` runs and includes `lp-plan` → pass.
 - **Rollout / rollback:** revert doc changes.
 
 ### TASK-07: Horizon checkpoint: reassess before CODEX.md + policy rollout
@@ -390,10 +452,15 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - **Affects:** `CODEX.md`, (optional) `AGENTS.md`
 - **Depends on:** TASK-07
 - **Blocks:** -
-- **Confidence:** 80%
+- **Confidence:** 82%
   - Implementation: 80% — doc edits plus a few link updates.
   - Approach: 80% — keeps reliability while removing duplication.
   - Impact: 75% — risk is Codex regressions if the overlay loses critical reminders.
+#### Re-plan Update (2026-02-15)
+- **Previous confidence:** 80%
+- **Updated confidence:** 82%
+  - **Evidence class:** E2 (executable verification)
+  - Repo evidence: `pnpm run docs:lint` currently exits non-zero repo-wide due to many legacy docs missing headers, so "docs lint passes" is not a meaningful validation gate for CODEX overlay edits.
 - **Acceptance:**
   - CODEX.md retains:
     - explicit integrator-shell requirement
@@ -403,7 +470,7 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
   - CODEX.md removes duplicated long-form safety matrices already covered elsewhere.
 - **Validation contract:**
   - TC-01: `rg -n "integrator-shell" CODEX.md` shows the requirement is still prominent → pass.
-  - TC-02: docs lint passes → pass.
+  - TC-02: `node scripts/validate-agent-manifest.js` passes → pass.
 
 ## Risks & Mitigations
 - Risk: generator corrupts enforcement scripts or weakens safety.
@@ -417,3 +484,4 @@ Sequenced after lp-replan (dependencies updated; no renumbering).
 - 2026-02-15: Confirmed Option A for safety kernel (YAML in `docs/git-safety.md`; generators update JSON properties / delimited blocks only).
 - 2026-02-15: Replanned safety work: narrowed TASK-04 to kernel+generator+artifacts; moved enforcement wiring to TASK-09; promoted TASK-04/TASK-05 to build-eligible via scope reduction + clearer validation.
 - 2026-02-15: Planning created from `docs/plans/agent-setup-improvement-fact-find.md` and superseding prior archived plans.
+- 2026-02-15: Replanned doc-only tasks (TASK-06, TASK-08) to avoid global `pnpm docs:lint` pass requirement (repo baseline currently fails due to legacy docs); replaced with task-scoped validation commands.

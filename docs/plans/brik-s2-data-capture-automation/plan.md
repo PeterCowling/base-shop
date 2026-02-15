@@ -79,7 +79,7 @@ Chosen: Option A, while still refactoring shared logic into testable modules so 
 | TASK-01 | IMPLEMENT | Define shared scenario inputs + parsing helpers (structured S1/S2/S3) | 82% | M | Complete | - | TASK-05 |
 | TASK-02 | IMPLEMENT | Make Octorate export configurable for S2 (time filter + date range) | 80% | M | Complete | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Implement per-channel bookings aggregation (check-in month, 12-month window, deterministic dedupe) | 82% | L | Complete | TASK-02 | TASK-04, TASK-09 |
-| TASK-04 | IMPLEMENT | Commission derivation from config (provenance + edge-case rules) | 84% | M | Pending | TASK-03 | TASK-05 |
+| TASK-04 | IMPLEMENT | Commission derivation from config (provenance + edge-case rules) | 84% | M | Complete | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Orchestrator: run export -> economics -> parity captures -> verify outputs (atomic, scaffold replace rules) | 80% | L | Pending | TASK-01, TASK-04, TASK-07, TASK-08 | TASK-09 |
 | TASK-06 | IMPLEMENT | Parity capture: Direct (Octorate booking engine) with EUR and `--mode` plumbing | 80% | M | Pending | - | TASK-07, TASK-08 |
 | TASK-07 | IMPLEMENT | Parity capture: Hostelworld (deposit + pay-at-property) with EUR + notes contract | 80% | M | Pending | TASK-06 | TASK-05 |
@@ -240,7 +240,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Affects:**
   - Primary: `packages/mcp-server/src/startup-loop/commission.ts` (new)
   - Primary: `packages/mcp-server/src/startup-loop/commission-rates.json` (new)
-  - Primary: `packages/mcp-server/src/startup-loop/__tests__/commission.test.ts` (new)
+  - Primary: `packages/mcp-server/src/__tests__/startup-loop-commission.test.ts` (new)
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05
 - **Confidence:** 84%
@@ -256,6 +256,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-02: missing rate for channel fails loudly with actionable error.
   - Run/verify: `pnpm --filter @acme/mcp-server test:startup-loop`.
 - **Execution plan:** Red -> Green -> Refactor
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commit:** 6c9477657a
+- **Validation:**
+  - Ran: `pnpm --filter @acme/mcp-server test:startup-loop` — PASS
+  - Ran: `pnpm --filter @acme/mcp-server typecheck` — PASS
+- **Implementation notes:**
+  - Added `packages/mcp-server/src/startup-loop/commission.ts` with config-driven derivation + structured provenance in `notes`.
+  - Added default rates config at `packages/mcp-server/src/startup-loop/commission-rates.json` (estimated placeholders, explicit last_verified_at).
+  - Added unit tests in `packages/mcp-server/src/__tests__/startup-loop-commission.test.ts`.
 
 ### TASK-05: S2 Operator Capture Orchestrator
 - **Type:** IMPLEMENT

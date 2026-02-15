@@ -128,7 +128,7 @@ GitHub Environments provide deployment URLs and optional protection rules. Confi
 `.github/CODEOWNERS` requires `@petercowling` review for:
 - Agent instructions: `AGENTS.md`, `CLAUDE.md`, `CODEX.md`
 - Workflow files: `.github/workflows/**`
-- Skill definitions: `.claude/SKILLS_INDEX.md`, `.claude/prompts/README.md`
+- Skill definitions: `scripts/agents/list-skills` (registry: `.agents/registry/skills.json`), `.claude/prompts/README.md`
 
 CODEOWNERS enforcement requires a GitHub Ruleset with "Require code owner review" enabled (**Settings > Rules > Rulesets**).
 

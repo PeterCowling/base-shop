@@ -9,9 +9,72 @@ async function writeFile(absolutePath: string, content: string): Promise<void> {
   await fs.writeFile(absolutePath, content, "utf-8");
 }
 
+async function writeTemplates(repoRoot: string): Promise<void> {
+  await writeFile(
+    path.join(
+      repoRoot,
+      "docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md",
+    ),
+    `---
+Type: Template
+Status: Reference
+Domain: Business-OS
+Last-reviewed: 2026-02-15
+---
+
+# Template (B2C fallback)
+
+\`\`\`text
+You are a market intelligence analyst for a venture studio launching B2C consumer-product businesses.
+
+Business:
+- Code: {{BUSINESS_CODE}}
+- Name: {{BUSINESS_NAME}}
+- As-of: {{AS_OF_DATE}}
+- Mode: {{LAUNCH_SURFACE}}
+
+BEGIN_INTERNAL_BASELINES
+{{INTERNAL_BASELINES}}
+END_INTERNAL_BASELINES
+\`\`\`
+`,
+  );
+
+  await writeFile(
+    path.join(
+      repoRoot,
+      "docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md",
+    ),
+    `---
+Type: Template
+Status: Reference
+Domain: Business-OS
+Last-reviewed: 2026-02-15
+---
+
+# Template (Hospitality)
+
+\`\`\`text
+You are a market intelligence + growth analyst specializing in EU hospitality direct booking and OTA distribution.
+
+Business:
+- Code: {{BUSINESS_CODE}}
+- Name: {{BUSINESS_NAME}}
+- As-of: {{AS_OF_DATE}}
+- Mode: {{LAUNCH_SURFACE}}
+
+BEGIN_INTERNAL_BASELINES
+{{INTERNAL_BASELINES}}
+END_INTERNAL_BASELINES
+\`\`\`
+`,
+  );
+}
+
 describe("s2-market-intelligence-handoff", () => {
   it("generates a deep-research prompt with latest internal baselines embedded and delta summaries", async () => {
     const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-handoff-test-"));
+    await writeTemplates(repoRoot);
 
     await writeFile(
       path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
@@ -249,6 +312,8 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
 
     expect(promptContent).toContain("Type: Deep-Research-Prompt");
     expect(promptContent).toContain("Target-Output");
+    expect(promptContent).toContain("SelectedProfile: hospitality_direct_booking_ota");
+    expect(promptContent).toContain("OverrideUsed: false");
     expect(promptContent).toContain("BEGIN_INTERNAL_BASELINES");
     expect(promptContent).toContain("Total rooms: 2");
 
@@ -274,5 +339,101 @@ Source-Pack: docs/business-os/market-research/TEST/2026-02-01-market-intelligenc
     expect(topDeclinesSection).toContain("| 2025-08 |");
     expect(topDeclinesSection).toContain("| 2025-12 |");
     expect(topDeclinesSection).toContain("| 2025-03 |");
+  });
+
+  it("honors an Active research profile override file", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-handoff-test-override-"));
+    await writeTemplates(repoRoot);
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/startup-baselines/TEST-intake-packet.user.md"),
+      `---
+Type: Startup-Intake-Packet
+Status: Active
+Business: TEST
+Created: 2026-02-12
+Updated: 2026-02-12
+Owner: Test
+---
+
+# TEST Intake Packet
+
+## B) Business and Product Packet
+
+| Field | Value | Tag |
+|---|---|---|
+| Business code | TEST | observed |
+| Business name | TestCo | observed |
+| Core offer | Bookings | observed |
+| Launch-surface mode | website-live | inferred |
+
+## C) ICP and Channel Packet
+
+| Field | Value | Tag |
+|---|---|---|
+| Primary ICP (current) | Travelers | inferred |
+| Planned channels | Search + direct | observed |
+
+## A) Intake Summary
+
+- Business idea: test business.
+`,
+    );
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/2026-02-14-startup-loop-90-day-forecast-v1.user.md"),
+      `---
+Type: Startup-Loop-Forecast
+Status: Active
+Business: TEST
+Region: Europe (primary: Italy)
+Date: 2026-02-14
+Owner: Test
+---
+
+# Forecast
+`,
+    );
+
+    // Minimal monthly exports (must exist).
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/data/net_value_by_month.csv"),
+      ["month,net_booking_value,method,notes", "2025-01,1000,observed,ok", "2026-01,800,observed,ok", ""].join("\n"),
+    );
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/strategy/TEST/data/bookings_by_month.csv"),
+      [
+        "month,bookings_count,gross_booking_value,channel_source,notes",
+        "2025-01,100,2000,Direct:30; OTA:70,ok",
+        "2026-01,90,1800,Direct:18; OTA:72,ok",
+        "",
+      ].join("\n"),
+    );
+
+    await writeFile(
+      path.join(repoRoot, "docs/business-os/market-research/TEST/research-profile.user.md"),
+      `---
+Type: Research-Profile-Override
+Status: Active
+Business: TEST
+Updated: 2026-02-15
+Owner: Test
+Profile-Id: b2c_dtc_product
+---
+
+# Override
+`,
+    );
+
+    const result = await buildS2MarketIntelligenceHandoff({
+      repoRoot,
+      business: "TEST",
+      asOfDate: "2026-02-15",
+      owner: "TestOwner",
+    });
+
+    const promptContent = await fs.readFile(path.join(repoRoot, result.promptPath), "utf-8");
+    expect(promptContent).toContain("SelectedProfile: b2c_dtc_product");
+    expect(promptContent).toContain("OverrideUsed: true");
   });
 });

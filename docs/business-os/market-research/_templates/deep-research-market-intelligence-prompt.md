@@ -17,6 +17,7 @@ Produce a decision-grade Market Intelligence Pack for:
 - Business code: {{BUSINESS_CODE}}
 - Business name: {{BUSINESS_NAME}}
 - Region: {{REGION}} (primary country: {{COUNTRY}})
+- As-of: {{AS_OF_DATE}} (YYYY-MM-DD)
 - Launch-surface mode: {{LAUNCH_SURFACE}} (`website-live` or `pre-website`)
 
 Input packet:
@@ -31,6 +32,14 @@ Input packet:
 Existing-business additions (when launch-surface is `website-live`):
 - Include internal baseline snapshot (monthly net value, bookings, direct vs OTA mix, and any traffic proxies available).
 - Treat internal baselines as mandatory inputs for recommendations.
+
+MANDATORY internal baselines (embedded below):
+- You MUST incorporate these internal baselines into segment, pricing, channel, and website implications.
+- If the internal baseline block is missing or incomplete, return `Status: BLOCKED` and list the exact missing fields BEFORE giving recommendations.
+
+BEGIN_INTERNAL_BASELINES
+{{INTERNAL_BASELINES}}
+END_INTERNAL_BASELINES
 
 
 Research requirements:

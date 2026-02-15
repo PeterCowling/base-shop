@@ -52,6 +52,14 @@ interface CloudflareMonthRow {
   requests: number | null;
 }
 
+type S2MarketIntelResearchProfileId = "hospitality_direct_booking_ota" | "b2c_dtc_product";
+
+interface S2MarketIntelResearchProfileSelection {
+  profileId: S2MarketIntelResearchProfileId;
+  overrideUsed: boolean;
+  selectionSignals: string[];
+}
+
 function requireYyyyMmDd(date: string): void {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     throw new Error(`invalid_as_of_date:${date}`);
@@ -212,6 +220,93 @@ async function resolvePreviousMarketIntelligencePath(repoRoot: string, business:
   return sourcePack;
 }
 
+const S2_MARKET_INTEL_PROFILE_TEMPLATES: Record<S2MarketIntelResearchProfileId, string> = {
+  hospitality_direct_booking_ota:
+    "docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.hospitality-direct-booking-ota.md",
+  b2c_dtc_product: "docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md",
+};
+
+async function readS2MarketIntelResearchProfileOverride(
+  repoRoot: string,
+  business: string,
+): Promise<{ profileId: S2MarketIntelResearchProfileId; relativePath: string } | null> {
+  const absolutePath = path.join(
+    repoRoot,
+    "docs",
+    "business-os",
+    "market-research",
+    business,
+    "research-profile.user.md",
+  );
+  if (!(await exists(absolutePath))) {
+    return null;
+  }
+
+  const doc = await readUserDoc(repoRoot, absolutePath);
+  if (doc.frontmatter.Business !== business) return null;
+  if (doc.frontmatter.Status !== "Active") return null;
+
+  const profileId = doc.frontmatter["Profile-Id"];
+  if (typeof profileId !== "string") return null;
+  if (profileId !== "hospitality_direct_booking_ota" && profileId !== "b2c_dtc_product") {
+    return null;
+  }
+  return { profileId, relativePath: doc.relativePath };
+}
+
+function inferS2MarketIntelResearchProfileSelection(args: {
+  launchSurface: string;
+  businessIdea: string;
+  productList: string;
+  plannedChannels: string;
+  octorateRooms?: { totalRooms: number; roomNames: string[] };
+}): S2MarketIntelResearchProfileSelection {
+  const haystack = [args.launchSurface, args.businessIdea, args.productList, args.plannedChannels].join("\n").toLowerCase();
+  const signals: string[] = [];
+
+  const hasOctorateRooms = args.octorateRooms != null && args.octorateRooms.totalRooms > 0;
+  if (hasOctorateRooms) {
+    signals.push("octorate_rooms");
+  }
+  if (haystack.includes("ota")) signals.push("mentions_ota");
+  if (/\b(hostel|hotel|accommodation|room|rooms|booking|bookings)\b/.test(haystack)) signals.push("mentions_booking_category");
+  if (args.launchSurface === "website-live") signals.push("website_live");
+
+  const isHospitality = hasOctorateRooms || signals.includes("mentions_booking_category") || signals.includes("mentions_ota");
+  return {
+    profileId: isHospitality ? "hospitality_direct_booking_ota" : "b2c_dtc_product",
+    overrideUsed: false,
+    selectionSignals: signals.length > 0 ? signals : ["no_strong_signals"],
+  };
+}
+
+async function selectS2MarketIntelResearchProfile(args: {
+  repoRoot: string;
+  business: string;
+  launchSurface: string;
+  businessIdea: string;
+  productList: string;
+  plannedChannels: string;
+  octorateRooms?: { totalRooms: number; roomNames: string[] };
+}): Promise<S2MarketIntelResearchProfileSelection> {
+  const override = await readS2MarketIntelResearchProfileOverride(args.repoRoot, args.business);
+  if (override) {
+    return {
+      profileId: override.profileId,
+      overrideUsed: true,
+      selectionSignals: [`override:${override.relativePath}`],
+    };
+  }
+
+  return inferS2MarketIntelResearchProfileSelection({
+    launchSurface: args.launchSurface,
+    businessIdea: args.businessIdea,
+    productList: args.productList,
+    plannedChannels: args.plannedChannels,
+    octorateRooms: args.octorateRooms,
+  });
+}
+
 function extractMarkdownSection(body: string, heading: string): string | null {
   const normalized = body.replace(/\r\n/g, "\n");
   const start = normalized.indexOf(heading);
@@ -238,6 +333,12 @@ function extractTableField(body: string, fieldLabel: string): string | null {
     }
   }
   return null;
+}
+
+function extractFirstFencedTextBlock(markdownBody: string): string | null {
+  const normalized = markdownBody.replace(/\r\n/g, "\n");
+  const match = normalized.match(/```text\n([\s\S]*?)\n```/);
+  return match ? match[1] : null;
 }
 
 function extractBulletValue(body: string, prefix: string): string | null {
@@ -634,91 +735,25 @@ function buildInternalBaselineMarkdown(args: {
   return lines.join("\n");
 }
 
-function buildDeepResearchPromptText(args: {
-  business: string;
-  businessName: string;
-  region: string;
-  country: string;
-  launchSurface: string;
-  businessIdea: string;
-  productList: string;
-  initialIcp: string;
-  plannedChannels: string;
-  budgetGuardrails: string;
-  stockTimeline: string;
-  constraints: string;
-  internalBaselineSnapshot: string;
-  previousPackPath?: string;
-}): string {
-  const internal = args.internalBaselineSnapshot.trim();
+async function readDeepResearchPromptTemplate(
+  repoRoot: string,
+  templateRelativePath: string,
+): Promise<{ templatePath: string; promptText: string }> {
+  const absolutePath = path.join(repoRoot, ...templateRelativePath.split("/"));
+  const doc = await readUserDoc(repoRoot, absolutePath);
+  const promptText = extractFirstFencedTextBlock(doc.body);
+  if (!promptText) {
+    throw new Error(`invalid_template_missing_text_block:${doc.relativePath}`);
+  }
+  return { templatePath: doc.relativePath, promptText };
+}
 
-  return `You are a market intelligence analyst for a venture studio launching B2C consumer-product businesses.
-
-Task:
-Produce a decision-grade Market Intelligence Pack for:
-- Business code: ${args.business}
-- Business name: ${args.businessName}
-- Region: ${args.region} (primary country: ${args.country})
-- Launch-surface mode: ${args.launchSurface} (\`website-live\` or \`pre-website\`)
-
-Input packet:
-- Business idea: ${args.businessIdea}
-- Products and specs: ${args.productList}
-- Initial target customer: ${args.initialIcp}
-- Planned channels: ${args.plannedChannels}
-- Budget guardrails: ${args.budgetGuardrails}
-- Stock timeline: ${args.stockTimeline}
-- Known constraints/non-negotiables: ${args.constraints}
-${args.previousPackPath ? `- Previous market intelligence pack (internal reference): ${args.previousPackPath}\n` : ""}
-
-MANDATORY internal baselines (embedded below):
-- You MUST incorporate these internal baselines into segment, pricing, channel, and website implications.
-- If the internal baseline block is missing or incomplete, return \`Status: BLOCKED\` and list exact missing fields before giving recommendations.
-
-BEGIN_INTERNAL_BASELINES
-${internal}
-END_INTERNAL_BASELINES
-
-Research requirements:
-1) Build a current competitor map (direct, adjacent, substitutes) for this region and channels.
-2) Extract pricing, offer structure, positioning, and channel tactics from competitors.
-3) Estimate demand signals (search/social/marketplace/proxy signals) and seasonality.
-4) Propose practical customer segment sequencing (who to target first, second, third).
-5) Produce unit-economics priors: AOV, CAC/CPC, return rates, margin ranges.
-6) Derive website design implications (information architecture, PDP requirements, checkout/payment expectations, trust signals, support patterns).
-7) Derive product design implications (must-have features, compatibility/fit needs, failure modes, quality requirements, packaging implications).
-8) Identify legal/claims constraints relevant to this category and region.
-9) Propose 90-day outcomes and leading indicators that maximize speed-to-first-sales.
-10) Define first-14-day validation tests that can quickly falsify bad assumptions.
-
-Output format (strict):
-A) Executive summary (max 12 bullets)
-B) Business context and explicit assumptions
-C) Market size and demand signals table (with confidence labels)
-D) Competitor map table (direct/adjacent/substitute)
-E) Pricing and offer benchmark table
-F) Segment and JTBD section (primary + secondary sequence)
-G) Unit economics priors table (AOV/CAC/CVR/returns/margin ranges)
-H) Channel strategy implications (first 90 days)
-I) Website design implications (clear, implementation-ready checklist)
-J) Product design implications (clear, implementation-ready checklist)
-K) Regulatory/claims constraints and red lines
-L) Proposed 90-day outcome contract (outcome, baseline, target, by, owner, leading indicators, decision links)
-M) First-14-day validation plan (tests + thresholds + re-forecast triggers)
-N) Assumptions register (assumption, evidence, confidence, impact)
-O) Risk register (risk, why it matters, mitigation)
-P) Source list with URL + access date
-Q) Delta and feedback for human operators (required):
-- What is working vs not working given the internal baseline trends?
-- What should the operator do next (stop/continue/start), with a 14-day focus?
-
-Rules:
-- Do not invent data.
-- Every numeric claim must include a citation or be explicitly labeled as an assumption.
-- Explicitly tag each key claim as \`observed\` or \`inferred\`.
-- Prefer recent, region-relevant sources.
-- Optimize recommendations for startup speed-to-first-sales.
-- If evidence is weak or conflicting, say so clearly and propose a fast validation test.`;
+function renderTemplatePlaceholders(template: string, replacements: Record<string, string>): string {
+  let rendered = template;
+  for (const [key, value] of Object.entries(replacements)) {
+    rendered = rendered.replaceAll(`{{${key}}}`, value);
+  }
+  return rendered;
 }
 
 export async function buildS2MarketIntelligenceHandoff(
@@ -833,21 +868,41 @@ export async function buildS2MarketIntelligenceHandoff(
     octorateRooms,
   });
 
-  const deepResearchPrompt = buildDeepResearchPromptText({
+  const filledBusinessIdea = businessIdea || "Multilingual ecommerce platform for hostel bookings and travel experiences.";
+  const filledProductList = productList || "Hostel booking journeys and related conversion/support surfaces.";
+  const filledInitialIcp = initialIcp || "Travelers evaluating and booking hostel stays and related experiences.";
+  const filledPlannedChannels = plannedChannels || "Direct website traffic, search/content acquisition, referral traffic.";
+  const filledConstraints =
+    constraints || "Startup-loop decisions must be measurement-led; do not scale paid until attribution is reliable.";
+
+  const selection = await selectS2MarketIntelResearchProfile({
+    repoRoot,
     business,
-    businessName: intakeBusinessName,
-    region,
-    country,
     launchSurface,
-    businessIdea: businessIdea || "Multilingual ecommerce platform for hostel bookings and travel experiences.",
-    productList: productList || "Hostel booking journeys and related conversion/support surfaces.",
-    initialIcp: initialIcp || "Travelers evaluating and booking hostel stays and related experiences.",
-    plannedChannels: plannedChannels || "Direct website traffic, search/content acquisition, referral traffic.",
-    budgetGuardrails,
-    stockTimeline,
-    constraints: constraints || "Startup-loop decisions must be measurement-led; do not scale paid until attribution is reliable.",
-    internalBaselineSnapshot,
-    previousPackPath: previousMarketIntel?.relativePath,
+    businessIdea: filledBusinessIdea,
+    productList: filledProductList,
+    plannedChannels: filledPlannedChannels,
+    octorateRooms,
+  });
+
+  const templateRelativePath = S2_MARKET_INTEL_PROFILE_TEMPLATES[selection.profileId];
+  const template = await readDeepResearchPromptTemplate(repoRoot, templateRelativePath);
+
+  const deepResearchPrompt = renderTemplatePlaceholders(template.promptText, {
+    BUSINESS_CODE: business,
+    BUSINESS_NAME: intakeBusinessName,
+    REGION: region,
+    COUNTRY: country,
+    AS_OF_DATE: options.asOfDate,
+    LAUNCH_SURFACE: launchSurface,
+    BUSINESS_IDEA: filledBusinessIdea,
+    PRODUCT_LIST: filledProductList,
+    INITIAL_ICP: filledInitialIcp,
+    PLANNED_CHANNELS: filledPlannedChannels,
+    BUDGET_GUARDRAILS: budgetGuardrails,
+    STOCK_TIMELINE: stockTimeline,
+    CONSTRAINTS: filledConstraints,
+    INTERNAL_BASELINES: internalBaselineSnapshot.trim(),
   });
 
   await fs.mkdir(marketResearchDir, { recursive: true });
@@ -862,7 +917,16 @@ export async function buildS2MarketIntelligenceHandoff(
     ...(previousMarketIntel ? { "Previous-Pack": previousMarketIntel.relativePath } : {}),
   };
 
-  const promptBody = `# ${business} Deep Research Prompt (Market Intelligence Refresh)\n\nUse the prompt below directly in Deep Research.\n\n\`\`\`text\n${deepResearchPrompt}\n\`\`\`\n\nAfter Deep Research returns:\n1. Save result to \`${targetOutputPath}\`.\n2. Set pack status to \`Active\` when decision-grade.\n3. Render HTML companion:\n   \`pnpm docs:render-user-html -- ${targetOutputPath}\`\n`;
+  const generatorDebugLines = [
+    "## Generator Debug",
+    `SelectedProfile: ${selection.profileId}`,
+    `OverrideUsed: ${selection.overrideUsed}`,
+    `SelectionSignals: ${JSON.stringify(selection.selectionSignals)}`,
+    `TemplatePath: ${template.templatePath}`,
+    "",
+  ].join("\n");
+
+  const promptBody = `# ${business} Deep Research Prompt (Market Intelligence Refresh)\n\nUse the prompt below directly in Deep Research.\n\n${generatorDebugLines}\n\`\`\`text\n${deepResearchPrompt}\n\`\`\`\n\nAfter Deep Research returns:\n1. Save result to \`${targetOutputPath}\`.\n2. Set pack status to \`Active\` when decision-grade.\n3. Render HTML companion:\n   \`pnpm docs:render-user-html -- ${targetOutputPath}\`\n`;
 
   const promptDoc = toUserDoc(frontmatter, promptBody);
   await fs.writeFile(outPromptPath, promptDoc, "utf-8");

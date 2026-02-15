@@ -35,6 +35,9 @@ module.exports = {
     "/\\.worktrees/",
   ],
   setupFiles: ["dotenv/config"],
-  testMatch: ["<rootDir>/src/__tests__/startup-loop-tools.integration.test.ts"],
+  testMatch: [
+    "<rootDir>/src/__tests__/startup-loop-*.test.ts",
+    "<rootDir>/src/__tests__/startup-loop-tools.integration.test.ts",
+  ],
   passWithNoTests: false,
 };

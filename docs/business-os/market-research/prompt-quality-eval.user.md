@@ -62,3 +62,9 @@ Notes:
 - <one line on what regressed and where to fix>
 ```
 
+2026-02-15:
+- BRIK: {model=2, delta=2, benchmark=2, website=2} -> PASS
+- HEAD: BLOCKED (missing monthly exports: `net_value_by_month.csv` and `bookings_by_month.csv`)
+- PET: BLOCKED (missing monthly exports: `net_value_by_month.csv` and `bookings_by_month.csv`)
+Notes:
+- HEAD/PET are still pre-baseline for website-live market intelligence prompts; re-add to golden set when monthly exports exist or when S2 supports pre-website without export requirements.

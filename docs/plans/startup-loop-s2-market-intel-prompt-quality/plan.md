@@ -87,7 +87,7 @@ Chosen: Option B.
 | TASK-06 | IMPLEMENT | Prompt evaluation harness doc (golden businesses + rubric) | 80 | S | Complete (2026-02-15) | TASK-03 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: run rubric on BRIK + confirm prompt quality; replan if needed | 95 | S | Complete (2026-02-15) | TASK-03, TASK-04, TASK-05, TASK-06 | - |
 | TASK-08 | IMPLEMENT | Template tightening: internal-baseline citation rule, parity check, fixed scenario dates contract, stop/continue/start structure, remove leading classification bias | 85 | S | Complete (2026-02-15) | TASK-07 | TASK-09 |
-| TASK-09 | IMPLEMENT | Generator tightening: deterministic scenario date injection, compress inventory header (no room label bloat), remove duplicate website-audit addon | 82 | M | Pending | TASK-08 | TASK-10 |
+| TASK-09 | IMPLEMENT | Generator tightening: deterministic scenario date injection, compress inventory header (no room label bloat), remove duplicate website-audit addon | 82 | M | Complete (2026-02-15) | TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Regenerate BRIK prompt + rerun rubric after follow-up tranche | 95 | S | Pending | TASK-09 | - |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -419,6 +419,19 @@ Chosen: Option B.
   - TC-01: test asserts deterministic scenario dates are present in generated hospitality prompt for as-of `2026-02-15`.
   - TC-02: baseline header contains `Total rooms` but does not contain `Room labels:`.
   - TC-03: existing profile selection + override tests remain passing.
+
+#### Build Completion (2026-02-15)
+- **Status:** Complete
+- **Commits:** 34cbef2231
+- **Execution cycle:** Red → Green → Refactor
+- **Validation:**
+  - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
+  - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+- **Implementation notes:**
+  - Deterministic scenario dates are computed from `as-of` and injected into the hospitality prompt (`{{S1_DATES}}`, `{{S2_DATES}}`, `{{S3_DATES}}`).
+  - Baseline header no longer prints full Octorate room label lists; it keeps `Total rooms` plus a short sample note.
+  - Removed the generator's extra website-audit addon to avoid duplicate instructions; the template now carries canonical URL via `{{CANONICAL_WEBSITE_URL}}`.
 
 ### TASK-10: Regenerate BRIK prompt + rerun rubric after follow-up tranche
 - **Type:** CHECKPOINT

@@ -44,7 +44,10 @@ function safetyKernelPresent() {
   const safetyDoc = path.join(REPO_ROOT, "docs/git-safety.md");
   if (!fs.existsSync(safetyDoc)) return false;
   const body = fs.readFileSync(safetyDoc, "utf8");
-  return body.includes("baseshop-git-safety-policy") || body.includes("GIT_SAFETY_POLICY_KERNEL");
+  return (
+    body.includes("```yaml baseshop-git-safety-policy") ||
+    body.includes("baseshop-git-safety-policy")
+  );
 }
 
 function main() {
@@ -63,16 +66,10 @@ function main() {
   run("bash", ["scripts/agents/generate-skill-registry", "--check"]);
 
   // Safety kernel parsing is enforced only after the kernel is introduced.
-  // TASK-04 will make this fail-closed by requiring the kernel.
   if (safetyKernelPresent()) {
-    // Placeholder: once the kernel exists, TASK-04 will upgrade this to parse and
-    // fail if the kernel is malformed.
-    // For now, existence acts as a minimal sanity check.
-    const safetyDoc = path.join(REPO_ROOT, "docs/git-safety.md");
-    const body = fs.readFileSync(safetyDoc, "utf8");
-    if (!body.includes("```")) {
-      fail("Safety policy kernel marker present, but docs/git-safety.md has no code fences.");
-    }
+    // Fail-closed: kernel must parse and generated outputs must be in sync.
+    assertFileExists("scripts/agents/generate-git-safety-policy");
+    run("bash", ["scripts/agents/generate-git-safety-policy", "--check"]);
   }
 
   console.log("[validate-agent-manifest] OK");

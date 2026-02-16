@@ -9,11 +9,15 @@ import { useSearchParams } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
+import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import RoomsSection from "@/components/rooms/RoomsSection";
+import BookStructuredData from "@/components/seo/BookStructuredData";
+import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -98,8 +102,16 @@ function BookPageContent({ lang }: Props): JSX.Element {
     });
   }, [checkin, checkout, minCheckout, pax, todayIso]);
 
+  useEffect(() => {
+    fireViewItemList({
+      itemListId: "book_rooms",
+      rooms: roomsData,
+    });
+  }, []);
+
   return (
     <>
+      <BookStructuredData lang={lang} />
       <Section padding="default" className="mx-auto max-w-7xl">
         <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
           {t("heading")}
@@ -167,6 +179,7 @@ function BookPageContent({ lang }: Props): JSX.Element {
       />
 
       <Section padding="default" className="mx-auto max-w-7xl">
+        <DirectPerksBlock lang={lang} className="mb-8 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm" />
         <PolicyFeeClarityPanel lang={lang} variant="hostel" />
       </Section>
     </>

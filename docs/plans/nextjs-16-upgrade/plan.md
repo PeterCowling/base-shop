@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-18 complete; D-01/D-02 resolved; TASK-19 + TASK-20 remain)
+Last-updated: 2026-02-17 (TASK-19 complete; repro matrix written; TASK-20 checkpoint now eligible)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -141,7 +141,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
 | TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
 | TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 82% | M | Complete (2026-02-17) | TASK-17 (complete) | TASK-20 |
-| TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Pending | TASK-13 (complete) | TASK-20 |
+| TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Complete (2026-02-17) | TASK-13 (complete) | TASK-20 |
 | TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Pending | TASK-18, TASK-19 | - |
 
 ### Completed In This Plan (With Commits)
@@ -786,7 +786,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:**
   - `packages/next-config/next.config.mjs`
   - `apps/cms/next.config.mjs`
@@ -808,6 +808,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Planning validation:** required for M effort; include command list and outcome summary.
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** config snapshot evidence quality upgraded.
+- **Build completion evidence (2026-02-17):**
+  - §13 appended to `config-snapshot-fact-find-2026-02-17.md` with full Turbopack blocker repro matrix.
+  - Probes run: P1 XA `--turbopack` → `✓ Ready 1023ms`; P2 CMS `--turbopack` → `✓ Ready 845ms`; P4 XA page request → HTTP 500 `@acme/i18n` module-not-found (`.js` ESM specifiers unresolved).
+  - Repro matrix: 12 blocker entries across 3 layers (shared / CMS / brikette).
+  - 1 `OBSERVED-REPRO`: `extensionAlias` (.js → .ts rewriting in `@acme/next-config`) — confirmed by P4 HTTP 500.
+  - 10 `UNVERIFIED-ASSUMPTION`: all webpack() callback internals (silently skipped at startup; not page-tested).
+  - 1 `UNVERIFIED-ASSUMPTION (high-risk)`: brikette `?raw` loader rule — 2 live import sites identified; concrete test protocol provided.
+  - Acceptance criteria met: every blocker class labeled; test protocols for all unverified blockers included in §13.
 
 ### TASK-20: CHECKPOINT - Governance Tranche Replan And Confidence Recalibration
 - **Type:** CHECKPOINT
@@ -876,3 +884,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: TASK-16 complete. D-04 (wrapper-scan gap) accepted as limitation — all 3 XA wrapper bypass locations are compliant; scanner covers 93 authoritative files. Option B (convention comment) recommended; Option A (extend scanner) documented as future hardening path.
 - 2026-02-17: TASK-17 DECISION resolved — **Option A (peer-first)**. `@acme/next-config` will move `next`/`@next/env` from `dependencies` to `peerDependencies`; add `next` as `devDependency` for local testing. Root `devDependencies.next` duplicate removed. Eliminates D-01 structurally; resolves D-02. TASK-18 unblocked.
 - 2026-02-17: TASK-18 complete (`0aef8d5a59`). D-01 resolved: `@acme/next-config` now declares `next` as `peerDependencies: ">=16.0.0"` with no hard dep. D-02 resolved: root `devDependencies.next` removed; single authoritative declaration in `dependencies`. All 4 TCs passed (single version workspace-wide, stale `@next/env 15.3.5` path gone, next-config lint+tests clean, CMS+cover-me-pretty typecheck+lint green). TASK-20 now unblocked pending TASK-19.
+- 2026-02-17: TASK-19 complete. Turbopack blocker repro matrix written to §13 of config-snapshot artifact. Key finding: `extensionAlias` in `@acme/next-config` is the sole `OBSERVED-REPRO` blocker (XA page HTTP 500: `@acme/i18n` cannot resolve `.js` ESM specifiers under Turbopack). All webpack() callback internals are `UNVERIFIED-ASSUMPTION` (Turbopack silently skips the callback; startup probes alone are insufficient). Brikette `?raw` loader is `UNVERIFIED-ASSUMPTION (high-risk)` with 2 live import sites and a concrete test protocol. TASK-20 fully unblocked.

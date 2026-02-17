@@ -283,6 +283,37 @@ For `--domain all`, run all four domains sequentially.
 
 **Legal domain pass criteria:** All applicable checks pass. One failure blocks launch (legal risk too high).
 
+#### Domain 5: Brand Copy Compliance
+
+> **Pre-flight check:** If `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` is absent, skip all Domain 5 checks with note: _"Brand Dossier absent — skipping brand copy compliance checks."_ All Domain 5 failures are warnings (GATE-BD-06b Warn) — they do not block launch.
+
+**Goal:** Verify guest-facing copy aligns with the Brand Dossier voice, messaging hierarchy, and avoidance list.
+
+**Checks:**
+
+- **BC-04 [GATE-BD-06b Warn]: Words to Avoid**
+  - **What:** Scan guest-facing page copy (headings, CTAs, descriptions) against the brand-dossier "Words to Avoid" list
+  - **Pass condition:** None of the avoid-words appear in guest-facing copy (or any found instance is flagged for review)
+  - **Evidence:** Manual audit of page copy vs. brand-dossier Words to Avoid section; list any instances
+  - **Fail condition:** Avoid-words present in headings, CTAs, or primary copy → Warning
+  - **Note:** Skip if brand-dossier lacks "Words to Avoid" section; note the absence
+
+- **BC-05 [GATE-BD-06b Warn]: Claims in Messaging Hierarchy**
+  - **What:** Verify substantive marketing claims (features, guarantees, benefits) have a corresponding entry in `messaging-hierarchy.user.md` Claims + Proof Ledger (if the file exists)
+  - **Pass condition:** All substantive claims on guest-facing pages map to a Claims + Proof Ledger entry
+  - **Evidence:** List of substantive claims found on site → status in Claims + Proof Ledger (Substantiated / Missing)
+  - **Fail condition:** Substantive claim has no proof ledger entry → Warning
+  - **Note:** Skip entirely if `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` does not yet exist; note the absence
+
+- **BC-07 [GATE-BD-06b Warn]: Key Phrase alignment**
+  - **What:** Verify primary CTA labels and key UX labels match brand-dossier Key Phrases (e.g., "Explore" not "Browse", "Your stay" not "Your booking")
+  - **Pass condition:** CTAs and key labels are consistent with Key Phrases list
+  - **Evidence:** Screenshot or list of CTAs + brand-dossier Key Phrases cross-reference
+  - **Fail condition:** Primary CTAs contradict Key Phrases or use avoid-words → Warning
+  - **Note:** Skip if brand-dossier lacks Key Phrases section; note the absence
+
+**Brand Copy Compliance domain pass criteria:** All Domain 5 failures are warnings — skip the domain entirely if `brand-dossier.user.md` is absent.
+
 ### 3) Aggregate results and produce go/no-go decision
 
 **3a) Count pass/fail per domain**
@@ -290,10 +321,11 @@ For `--domain all`, run all four domains sequentially.
 - SEO: X/Y checks passed
 - Performance: X/Y checks passed
 - Legal: X/Y checks passed
+- Brand Copy: X/Y checks passed (or "Skipped — Brand Dossier absent")
 
 **3b) Determine blocker vs. warning severity**
 - **Blocker:** Any failure in Conversion or Legal domains; Performance P1–P3 failures
-- **Warning:** SEO failures (fix recommended but not blocking); Performance P4–P5 failures
+- **Warning:** SEO failures (fix recommended but not blocking); Performance P4–P5 failures; all Brand Copy failures (GATE-BD-06b Warn)
 
 **3c) Go/no-go decision**
 - **GO:** All blocker checks pass; warnings documented for follow-up
@@ -333,6 +365,7 @@ Decision: <GO | NO-GO>
 - SEO: X/Y passed (<% pass rate>)
 - Performance: X/Y passed (<% pass rate>)
 - Legal: X/Y passed (<% pass rate>)
+- Brand Copy: X/Y passed (<% pass rate>) | _or_ Skipped — Brand Dossier absent
 
 **Blockers:** <count> | **Warnings:** <count>
 
@@ -384,6 +417,27 @@ Decision: <GO | NO-GO>
 - **Notes:** <any deviations or observations>
 
 <... continue for all Legal checks ...>
+
+---
+
+## Domain 5: Brand Copy Compliance
+
+<_Skip this section if brand-dossier.user.md is absent. All Domain 5 failures are Warnings (GATE-BD-06b)._>
+
+### BC-04: Words to Avoid
+- **Status:** <PASS | WARN | SKIPPED>
+- **Evidence:** <list of found avoid-words or "none found">
+- **Notes:** <any instances flagged for review>
+
+### BC-05: Claims in Messaging Hierarchy
+- **Status:** <PASS | WARN | SKIPPED>
+- **Evidence:** <list of claims checked vs. proof ledger>
+- **Notes:** <any claims missing from proof ledger>
+
+### BC-07: Key Phrase alignment
+- **Status:** <PASS | WARN | SKIPPED>
+- **Evidence:** <CTAs / key labels checked vs. brand-dossier Key Phrases>
+- **Notes:** <any mismatches>
 
 ---
 

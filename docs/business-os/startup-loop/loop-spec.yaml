@@ -3,9 +3,10 @@
 # All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
 # Version bumps require downstream alignment check (VC-02).
 
-spec_version: "1.0.0"
+spec_version: "1.1.0"
 created: "2026-02-13"
 decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
+# v1.1.0: Added BD-3 sub-deliverable annotation on S2B (see docs/plans/startup-loop-branding-design-module/plan.md)
 
 # ─────────────────────────────────────────────────────────
 # Stage Graph
@@ -59,7 +60,10 @@ stages:
     skill: /lp-offer
     prompt_required: false
     conditional: false
-    bos_sync: "Persist offer artifact under docs/business-os/startup-baselines/<BIZ>/"
+    # BD-3 sub-deliverable: messaging-hierarchy.user.md (Draft minimum) must exist before S2B is Done.
+    # This does NOT block the S3/S6B parallel fan-out — both start after S2B completes.
+    # Gate policy: GATE-BD-03 (Hard, S2B Done gate). See: docs/business-os/strategy/_templates/index-template.user.md
+    bos_sync: "Persist offer + messaging_hierarchy artifacts under docs/business-os/startup-baselines/<BIZ>/"
 
   # ── Parallel fan-out ──────────────────────────────────
   # S3 and S6B may execute concurrently after S2B completes.

@@ -85,11 +85,16 @@ function extractTitle(markdownBody: string, sourcePath: string): string {
 
 function decodeHtmlEntities(value: string): string {
   return value
+    // Named entities
     .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+    .replace(/&apos;/g, "'")
+    // Decimal numeric character references (e.g. &#39;)
+    .replace(/&#(\d+);/g, (_, dec: string) => String.fromCharCode(Number(dec)))
+    // Hex numeric character references (e.g. &#x3C; — how rehype-stringify encodes <)
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex: string) => String.fromCharCode(parseInt(hex, 16)));
 }
 
 function normalizeMermaidLabelLineBreaks(diagram: string): string {

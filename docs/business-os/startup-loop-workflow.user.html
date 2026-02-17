@@ -411,7 +411,7 @@
         A1[Business Idea]
         A2[Product Spec]
         A3[Constraints]
-        A4[Historical Data&#x3C;br/>for existing businesses]
+        A4[Historical Data<br/>for existing businesses]
     end
 
     subgraph S0_INTAKE["S0: Intake"]
@@ -421,14 +421,14 @@
     end
 
     subgraph S1_READINESS["S1: Readiness"]
-        C1[Gate Checks&#x3C;br/>RG-01 to RG-07]
+        C1[Gate Checks<br/>RG-01 to RG-07]
         C2{Pass?}
         C1 --> C2
     end
 
     subgraph S1B_S2A["S1B/S2A: Conditional Gates"]
-        D1[Pre-website:&#x3C;br/>Measurement Bootstrap]
-        D2[Website-live:&#x3C;br/>Historical Baseline]
+        D1[Pre-website:<br/>Measurement Bootstrap]
+        D2[Website-live:<br/>Historical Baseline]
     end
 
     subgraph S2_RESEARCH["S2: Market Intelligence"]
@@ -446,8 +446,8 @@
     end
 
     subgraph PARALLEL["⚡ PARALLEL EXECUTION"]
-        S3_FORECAST["S3: Forecast&#x3C;br/>────────&#x3C;br/>P10/P50/P90&#x3C;br/>Assumptions&#x3C;br/>Test Metrics"]
-        S6B_CHANNELS["S6B: Channels&#x3C;br/>────────&#x3C;br/>GTM Strategy&#x3C;br/>SEO Plan&#x3C;br/>Outreach Scripts"]
+        S3_FORECAST["S3: Forecast<br/>────────<br/>P10/P50/P90<br/>Assumptions<br/>Test Metrics"]
+        S6B_CHANNELS["S6B: Channels<br/>────────<br/>GTM Strategy<br/>SEO Plan<br/>Outreach Scripts"]
     end
 
     subgraph S4_MERGE["S4: Baseline Merge"]
@@ -472,17 +472,17 @@
     end
 
     subgraph EXECUTION["🔨 EXECUTION LOOP"]
-        S7[S7: Fact-find&#x3C;br/>────────&#x3C;br/>Evidence Audit&#x3C;br/>Task Seeds]
-        S8[S8: Plan&#x3C;br/>────────&#x3C;br/>Confidence-Gated&#x3C;br/>Task Breakdown]
-        S9[S9: Build&#x3C;br/>────────&#x3C;br/>Implementation&#x3C;br/>Validation]
-        S9B[S9B: QA Gates&#x3C;br/>────────&#x3C;br/>Launch Checks&#x3C;br/>Design/Perf Audit]
+        S7[S7: Fact-find<br/>────────<br/>Evidence Audit<br/>Task Seeds]
+        S8[S8: Plan<br/>────────<br/>Confidence-Gated<br/>Task Breakdown]
+        S9[S9: Build<br/>────────<br/>Implementation<br/>Validation]
+        S9B[S9B: QA Gates<br/>────────<br/>Launch Checks<br/>Design/Perf Audit]
         S7 --> S8 --> S9 --> S9B
     end
 
     subgraph S10_DECISION["S10: Weekly Decision"]
         J1[Measure KPIs]
         J2[Gate Checks]
-        J3{Keep/Pivot/&#x3C;br/>Scale/Kill?}
+        J3{Keep/Pivot/<br/>Scale/Kill?}
         J4[Learning Ledger]
         J1 --> J2 --> J3 --> J4
     end
@@ -556,10 +556,10 @@
 <p>For website-live businesses like BRIK, use this route with historical baseline gate:</p>
 <pre class="mermaid">flowchart TD
     subgraph INPUT["📥 EXISTING BUSINESS INPUTS"]
-        A1[Business Context&#x3C;br/>from docs/business-os/strategy/BRIK/]
-        A2[Historical Net Value&#x3C;br/>CSV exports]
-        A3[Cloudflare Analytics&#x3C;br/>Monthly request totals]
-        A4[Ops Logs&#x3C;br/>Booking/capacity data]
+        A1[Business Context<br/>from docs/business-os/strategy/BRIK/]
+        A2[Historical Net Value<br/>CSV exports]
+        A3[Cloudflare Analytics<br/>Monthly request totals]
+        A4[Ops Logs<br/>Booking/capacity data]
     end
 
     subgraph S0_S1["S0-S1: Intake + Readiness"]
@@ -573,8 +573,8 @@
         C1{Data Available?}
         C2[Consolidate Baseline]
         C3[Data Quality Notes]
-        C4[historical-baseline.user.md&#x3C;br/>Status: Active]
-        C1 -->|No| C5[Hand data-request prompt&#x3C;br/>BLOCK until supplied]
+        C4[historical-baseline.user.md<br/>Status: Active]
+        C1 -->|No| C5[Hand data-request prompt<br/>BLOCK until supplied]
         C5 -.user supplies data.-> C1
         C1 -->|Yes| C2
         C2 --> C3 --> C4
@@ -582,15 +582,15 @@
 
     subgraph S2_S6["S2/S6: Deep Research Must Consume Baseline"]
         direction LR
-        D1[Market Intelligence&#x3C;br/>uses baseline demand]
-        D2[Site Upgrade Brief&#x3C;br/>uses baseline traffic]
+        D1[Market Intelligence<br/>uses baseline demand]
+        D2[Site Upgrade Brief<br/>uses baseline traffic]
         D1 -.consumes S2A.-> D2
     end
 
     subgraph S2B_S3_S6B["S2B/S3/S6B: Strategic Planning"]
         E1[Offer Design]
-        E2[90-day Forecast&#x3C;br/>uses baseline actuals]
-        E3[Channel Strategy&#x3C;br/>uses baseline channels]
+        E2[90-day Forecast<br/>uses baseline actuals]
+        E3[Channel Strategy<br/>uses baseline channels]
         E1 --> E2
         E1 --> E3
     end
@@ -611,8 +611,8 @@
     end
 
     subgraph S10["S10: Weekly Decision"]
-        H1[Measure Actuals&#x3C;br/>vs Forecast]
-        H2[Compare to Baseline&#x3C;br/>Growth rate]
+        H1[Measure Actuals<br/>vs Forecast]
+        H2[Compare to Baseline<br/>Growth rate]
         H3{K/P/C/S?}
         H4[Recalibration Doc]
         H1 --> H2 --> H3
@@ -650,33 +650,33 @@
 <pre class="mermaid">flowchart TB
     subgraph S0["S0: INTAKE"]
         direction LR
-        IN0[📥 Raw idea&#x3C;br/>Product spec&#x3C;br/>Constraints]
-        PROC0[🔄 Normalize&#x3C;br/>Structure&#x3C;br/>Validate]
-        OUT0[📦 intake-packet.user.md&#x3C;br/>────────&#x3C;br/>Business context&#x3C;br/>Product definition&#x3C;br/>Launch surface mode]
+        IN0[📥 Raw idea<br/>Product spec<br/>Constraints]
+        PROC0[🔄 Normalize<br/>Structure<br/>Validate]
+        OUT0[📦 intake-packet.user.md<br/>────────<br/>Business context<br/>Product definition<br/>Launch surface mode]
         IN0 --> PROC0 --> OUT0
     end
 
     subgraph S1_S1B_S2A["S1/S1B/S2A: READINESS + CONDITIONAL BOOTSTRAP"]
         direction LR
-        IN1[📥 Intake packet&#x3C;br/>Strategy plan&#x3C;br/>People profile&#x3C;br/>──────&#x3C;br/>Pre-website: none&#x3C;br/>Website-live: historical data]
-        PROC1[🔄 Gate checks RG-01..07&#x3C;br/>Detect blockers&#x3C;br/>──────&#x3C;br/>S1B: Analytics setup&#x3C;br/>S2A: Baseline consolidation]
-        OUT1[📦 readiness-report.user.md&#x3C;br/>Missing-context register&#x3C;br/>Blocker questions&#x3C;br/>──────&#x3C;br/>S1B: measurement-setup.user.md&#x3C;br/>S2A: historical-baseline.user.md]
+        IN1[📥 Intake packet<br/>Strategy plan<br/>People profile<br/>──────<br/>Pre-website: none<br/>Website-live: historical data]
+        PROC1[🔄 Gate checks RG-01..07<br/>Detect blockers<br/>──────<br/>S1B: Analytics setup<br/>S2A: Baseline consolidation]
+        OUT1[📦 readiness-report.user.md<br/>Missing-context register<br/>Blocker questions<br/>──────<br/>S1B: measurement-setup.user.md<br/>S2A: historical-baseline.user.md]
         IN1 --> PROC1 --> OUT1
     end
 
     subgraph S2["S2: MARKET INTELLIGENCE"]
         direction LR
-        IN2[📥 Intake packet&#x3C;br/>S2A baseline existing&#x3C;br/>Current constraints&#x3C;br/>Channel intent]
-        PROC2[🔄 Deep Research&#x3C;br/>Competitor analysis&#x3C;br/>Demand/pricing data&#x3C;br/>Regulatory scan&#x3C;br/>Confidence tagging]
-        OUT2[📦 market-intelligence.user.md&#x3C;br/>────────&#x3C;br/>Market sizing&#x3C;br/>Competitive landscape&#x3C;br/>Pricing benchmarks&#x3C;br/>Channel economics&#x3C;br/>Evidence sources]
+        IN2[📥 Intake packet<br/>S2A baseline existing<br/>Current constraints<br/>Channel intent]
+        PROC2[🔄 Deep Research<br/>Competitor analysis<br/>Demand/pricing data<br/>Regulatory scan<br/>Confidence tagging]
+        OUT2[📦 market-intelligence.user.md<br/>────────<br/>Market sizing<br/>Competitive landscape<br/>Pricing benchmarks<br/>Channel economics<br/>Evidence sources]
         IN2 --> PROC2 --> OUT2
     end
 
     subgraph S2B["S2B: OFFER DESIGN"]
         direction LR
-        IN2B[📥 Market intel pack&#x3C;br/>Intake packet&#x3C;br/>Constraints]
-        PROC2B[🔄 ICP definition&#x3C;br/>Positioning strategy&#x3C;br/>Pricing architecture&#x3C;br/>Objection mapping&#x3C;br/>Offer validation]
-        OUT2B[📦 offer-artifact.user.md&#x3C;br/>────────&#x3C;br/>Target customer profile&#x3C;br/>Value proposition&#x3C;br/>Pricing model&#x3C;br/>Positioning statement&#x3C;br/>Objection handlers]
+        IN2B[📥 Market intel pack<br/>Intake packet<br/>Constraints]
+        PROC2B[🔄 ICP definition<br/>Positioning strategy<br/>Pricing architecture<br/>Objection mapping<br/>Offer validation]
+        OUT2B[📦 offer-artifact.user.md<br/>────────<br/>Target customer profile<br/>Value proposition<br/>Pricing model<br/>Positioning statement<br/>Objection handlers]
         IN2B --> PROC2B --> OUT2B
     end
 
@@ -684,33 +684,33 @@
         direction TB
         subgraph S3["S3: FORECAST"]
             direction LR
-            IN3[📥 Offer artifact&#x3C;br/>Market intel&#x3C;br/>Fresh assumptions]
-            PROC3[🔄 P10/P50/P90 scenarios&#x3C;br/>Guardrails&#x3C;br/>14-day tests&#x3C;br/>Risk modeling]
-            OUT3[📦 90-day-forecast.user.md&#x3C;br/>forecast-exec-summary.user.md&#x3C;br/>forecast-seed.user.md&#x3C;br/>────────&#x3C;br/>Revenue bands&#x3C;br/>Cost assumptions&#x3C;br/>Gate thresholds&#x3C;br/>Test metrics]
+            IN3[📥 Offer artifact<br/>Market intel<br/>Fresh assumptions]
+            PROC3[🔄 P10/P50/P90 scenarios<br/>Guardrails<br/>14-day tests<br/>Risk modeling]
+            OUT3[📦 90-day-forecast.user.md<br/>forecast-exec-summary.user.md<br/>forecast-seed.user.md<br/>────────<br/>Revenue bands<br/>Cost assumptions<br/>Gate thresholds<br/>Test metrics]
             IN3 --> PROC3 --> OUT3
         end
         subgraph S6B["S6B: CHANNEL STRATEGY"]
             direction LR
-            IN6B[📥 Offer artifact&#x3C;br/>Market intel&#x3C;br/>Launch surface]
-            PROC6B[🔄 Channel-customer fit&#x3C;br/>2-3 launch channels&#x3C;br/>30-day GTM timeline&#x3C;br/>SEO strategy&#x3C;br/>Outreach scripts]
-            OUT6B[📦 channel-plan.user.md&#x3C;br/>seo-strategy.user.md&#x3C;br/>outreach-drafts.user.md&#x3C;br/>────────&#x3C;br/>Channel selection rationale&#x3C;br/>GTM calendar&#x3C;br/>Content roadmap&#x3C;br/>Early outreach assets]
+            IN6B[📥 Offer artifact<br/>Market intel<br/>Launch surface]
+            PROC6B[🔄 Channel-customer fit<br/>2-3 launch channels<br/>30-day GTM timeline<br/>SEO strategy<br/>Outreach scripts]
+            OUT6B[📦 channel-plan.user.md<br/>seo-strategy.user.md<br/>outreach-drafts.user.md<br/>────────<br/>Channel selection rationale<br/>GTM calendar<br/>Content roadmap<br/>Early outreach assets]
             IN6B --> PROC6B --> OUT6B
         end
     end
 
     subgraph S4_S5["S4/S5A/S5B: BASELINE MERGE + PRIORITIZATION"]
         direction LR
-        IN4[📥 Offer S2B&#x3C;br/>Forecast S3&#x3C;br/>Channels S6B]
-        PROC4[🔄 Validate artifacts&#x3C;br/>Compose snapshot&#x3C;br/>Score go-items&#x3C;br/>Rank by impact&#x3C;br/>Persist to BOS D1]
-        OUT4[📦 baseline-snapshot.json&#x3C;br/>manifest.json&#x3C;br/>prioritization-scorecard.user.md&#x3C;br/>────────&#x3C;br/>Committed BOS cards&#x3C;br/>Stage docs created&#x3C;br/>Top 2-3 items ranked]
+        IN4[📥 Offer S2B<br/>Forecast S3<br/>Channels S6B]
+        PROC4[🔄 Validate artifacts<br/>Compose snapshot<br/>Score go-items<br/>Rank by impact<br/>Persist to BOS D1]
+        OUT4[📦 baseline-snapshot.json<br/>manifest.json<br/>prioritization-scorecard.user.md<br/>────────<br/>Committed BOS cards<br/>Stage docs created<br/>Top 2-3 items ranked]
         IN4 --> PROC4 --> OUT4
     end
 
     subgraph S6["S6: SITE UPGRADE SYNTHESIS"]
         direction LR
-        IN6[📥 Platform baseline&#x3C;br/>Market intel&#x3C;br/>Business upgrade brief&#x3C;br/>Reference sites]
-        PROC6[🔄 Best-of decomposition&#x3C;br/>Adopt/Adapt/Defer/Reject&#x3C;br/>Feature prioritization&#x3C;br/>Handoff packet assembly]
-        OUT6[📦 upgrade-brief.user.md&#x3C;br/>────────&#x3C;br/>Platform-fit matrix&#x3C;br/>Prioritized features&#x3C;br/>Fact-find-ready backlog]
+        IN6[📥 Platform baseline<br/>Market intel<br/>Business upgrade brief<br/>Reference sites]
+        PROC6[🔄 Best-of decomposition<br/>Adopt/Adapt/Defer/Reject<br/>Feature prioritization<br/>Handoff packet assembly]
+        OUT6[📦 upgrade-brief.user.md<br/>────────<br/>Platform-fit matrix<br/>Prioritized features<br/>Fact-find-ready backlog]
         IN6 --> PROC6 --> OUT6
     end
 
@@ -718,39 +718,39 @@
         direction TB
         subgraph S7["S7: FACT-FIND"]
             direction LR
-            IN7[📥 Go-item selected&#x3C;br/>Evidence docs&#x3C;br/>Constraints]
-            PROC7[🔄 Deep audit&#x3C;br/>Code exploration&#x3C;br/>Task seed generation&#x3C;br/>Confidence assessment]
-            OUT7[📦 fact-find.md&#x3C;br/>────────&#x3C;br/>Context brief&#x3C;br/>Task seeds&#x3C;br/>Ready-for-planning status]
+            IN7[📥 Go-item selected<br/>Evidence docs<br/>Constraints]
+            PROC7[🔄 Deep audit<br/>Code exploration<br/>Task seed generation<br/>Confidence assessment]
+            OUT7[📦 fact-find.md<br/>────────<br/>Context brief<br/>Task seeds<br/>Ready-for-planning status]
             IN7 --> PROC7 --> OUT7
         end
         subgraph S8["S8: PLAN"]
             direction LR
             IN8[📥 Fact-find brief]
-            PROC8[🔄 Confidence gating&#x3C;br/>Task breakdown&#x3C;br/>Dependency mapping&#x3C;br/>Acceptance criteria]
-            OUT8[📦 plan.md&#x3C;br/>────────&#x3C;br/>Sequenced tasks&#x3C;br/>Validation checkpoints&#x3C;br/>Confidence scores]
+            PROC8[🔄 Confidence gating<br/>Task breakdown<br/>Dependency mapping<br/>Acceptance criteria]
+            OUT8[📦 plan.md<br/>────────<br/>Sequenced tasks<br/>Validation checkpoints<br/>Confidence scores]
             IN8 --> PROC8 --> OUT8
         end
         subgraph S9["S9: BUILD"]
             direction LR
-            IN9[📥 Plan tasks&#x3C;br/>Design spec]
-            PROC9[🔄 Implement&#x3C;br/>Validate per task&#x3C;br/>Track outputs&#x3C;br/>Evidence collection]
-            OUT9[📦 build.md&#x3C;br/>Shipped code&#x3C;br/>────────&#x3C;br/>Implementation evidence&#x3C;br/>Test results&#x3C;br/>Validation proofs]
+            IN9[📥 Plan tasks<br/>Design spec]
+            PROC9[🔄 Implement<br/>Validate per task<br/>Track outputs<br/>Evidence collection]
+            OUT9[📦 build.md<br/>Shipped code<br/>────────<br/>Implementation evidence<br/>Test results<br/>Validation proofs]
             IN9 --> PROC9 --> OUT9
         end
         subgraph S9B["S9B: QA GATES"]
             direction LR
-            IN9B[📥 Build outputs&#x3C;br/>Design spec&#x3C;br/>Performance budget]
-            PROC9B[🔄 Launch QA&#x3C;br/>Design QA&#x3C;br/>Measurement verification&#x3C;br/>Go/no-go decision]
-            OUT9B[📦 qa-report.md&#x3C;br/>────────&#x3C;br/>Issue inventory&#x3C;br/>Go/no-go recommendation&#x3C;br/>Deployment checklist]
+            IN9B[📥 Build outputs<br/>Design spec<br/>Performance budget]
+            PROC9B[🔄 Launch QA<br/>Design QA<br/>Measurement verification<br/>Go/no-go decision]
+            OUT9B[📦 qa-report.md<br/>────────<br/>Issue inventory<br/>Go/no-go recommendation<br/>Deployment checklist]
             IN9B --> PROC9B --> OUT9B
         end
     end
 
     subgraph S10["S10: WEEKLY DECISION LOOP"]
         direction LR
-        IN10[📥 KPI scoreboard&#x3C;br/>Gate metrics&#x3C;br/>Growth ledger&#x3C;br/>Operational reliability]
-        PROC10[🔄 K/P/C/S decisioning&#x3C;br/>Guardrail checks&#x3C;br/>Bottleneck diagnosis&#x3C;br/>Learning compilation&#x3C;br/>Replayability validation]
-        OUT10[📦 weekly-kpcs-decision.user.md&#x3C;br/>growth-ledger.json&#x3C;br/>growth-event-payload.json&#x3C;br/>stage-result.json&#x3C;br/>────────&#x3C;br/>Continue/Pivot/Scale/Kill&#x3C;br/>Next actions&#x3C;br/>Loop-back updates]
+        IN10[📥 KPI scoreboard<br/>Gate metrics<br/>Growth ledger<br/>Operational reliability]
+        PROC10[🔄 K/P/C/S decisioning<br/>Guardrail checks<br/>Bottleneck diagnosis<br/>Learning compilation<br/>Replayability validation]
+        OUT10[📦 weekly-kpcs-decision.user.md<br/>growth-ledger.json<br/>growth-event-payload.json<br/>stage-result.json<br/>────────<br/>Continue/Pivot/Scale/Kill<br/>Next actions<br/>Loop-back updates]
         IN10 --> PROC10 --> OUT10
     end
 
@@ -782,13 +782,13 @@
 <pre class="mermaid">flowchart TB
     subgraph FOUNDATIONAL["🏗️ FOUNDATIONAL ARTIFACTS Single-source, Long-lived"]
         direction TB
-        A1["📄 intake-packet.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S0&#x3C;br/>Consumed by: S1, S2, S2B, all downstream&#x3C;br/>Lifecycle: Update on major scope change&#x3C;br/>Location: docs/business-os/startup-baselines/"]
+        A1["📄 intake-packet.user.md<br/>────────<br/>Produced by: S0<br/>Consumed by: S1, S2, S2B, all downstream<br/>Lifecycle: Update on major scope change<br/>Location: docs/business-os/startup-baselines/"]
 
-        A2["📄 readiness-report.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S1&#x3C;br/>Consumed by: S2 blocker resolution&#x3C;br/>Lifecycle: Regenerate on major change&#x3C;br/>Location: docs/business-os/readiness/"]
+        A2["📄 readiness-report.user.md<br/>────────<br/>Produced by: S1<br/>Consumed by: S2 blocker resolution<br/>Lifecycle: Regenerate on major change<br/>Location: docs/business-os/readiness/"]
 
-        A3["📄 historical-baseline.user.md S2A&#x3C;br/>────────&#x3C;br/>Produced by: S2A website-live only&#x3C;br/>Consumed by: S2, S3, S10&#x3C;br/>Lifecycle: Refresh weekly first 30 days&#x3C;br/>Location: docs/business-os/strategy/BIZ/"]
+        A3["📄 historical-baseline.user.md S2A<br/>────────<br/>Produced by: S2A website-live only<br/>Consumed by: S2, S3, S10<br/>Lifecycle: Refresh weekly first 30 days<br/>Location: docs/business-os/strategy/BIZ/"]
 
-        A4["📄 measurement-setup.user.md S1B&#x3C;br/>────────&#x3C;br/>Produced by: S1B pre-website only&#x3C;br/>Consumed by: S2, S3, launch checklist&#x3C;br/>Lifecycle: Complete before paid traffic&#x3C;br/>Location: docs/business-os/strategy/BIZ/"]
+        A4["📄 measurement-setup.user.md S1B<br/>────────<br/>Produced by: S1B pre-website only<br/>Consumed by: S2, S3, launch checklist<br/>Lifecycle: Complete before paid traffic<br/>Location: docs/business-os/strategy/BIZ/"]
 
         A1 --> A2
         A2 --> A3
@@ -797,51 +797,51 @@
 
     subgraph RESEARCH["🔬 RESEARCH ARTIFACTS Refresh Monthly/Quarterly"]
         direction TB
-        B1["📄 market-intelligence.user.md&#x3C;br/>+ latest.user.md pointer&#x3C;br/>────────&#x3C;br/>Produced by: S2 Deep Research&#x3C;br/>Consumed by: S2B, S3, S6B&#x3C;br/>Refresh: Monthly or on material change&#x3C;br/>Location: docs/business-os/market-research/BIZ/"]
+        B1["📄 market-intelligence.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: S2 Deep Research<br/>Consumed by: S2B, S3, S6B<br/>Refresh: Monthly or on material change<br/>Location: docs/business-os/market-research/BIZ/"]
 
-        B2["📄 platform-capability-baseline.user.md&#x3C;br/>+ latest.user.md pointer&#x3C;br/>────────&#x3C;br/>Produced by: Periodic Deep Research&#x3C;br/>Consumed by: S6&#x3C;br/>Refresh: Every 30-45 days&#x3C;br/>Location: docs/business-os/platform-capability/"]
+        B2["📄 platform-capability-baseline.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: Periodic Deep Research<br/>Consumed by: S6<br/>Refresh: Every 30-45 days<br/>Location: docs/business-os/platform-capability/"]
 
-        B3["📄 upgrade-brief.user.md&#x3C;br/>+ latest.user.md pointer&#x3C;br/>────────&#x3C;br/>Produced by: S6 Deep Research&#x3C;br/>Consumed by: S7 backlog packet&#x3C;br/>Refresh: Monthly or on ICP/channel change&#x3C;br/>Location: docs/business-os/site-upgrades/BIZ/"]
+        B3["📄 upgrade-brief.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: S6 Deep Research<br/>Consumed by: S7 backlog packet<br/>Refresh: Monthly or on ICP/channel change<br/>Location: docs/business-os/site-upgrades/BIZ/"]
     end
 
     subgraph STRATEGIC["🎯 STRATEGIC PLANNING ARTIFACTS Core Baseline"]
         direction TB
-        C1["📄 offer-artifact.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S2B /lp-offer&#x3C;br/>Consumed by: S3, S6B, S4&#x3C;br/>Dependencies: Market intel S2&#x3C;br/>Location: docs/business-os/startup-baselines/BIZ/"]
+        C1["📄 offer-artifact.user.md<br/>────────<br/>Produced by: S2B /lp-offer<br/>Consumed by: S3, S6B, S4<br/>Dependencies: Market intel S2<br/>Location: docs/business-os/startup-baselines/BIZ/"]
 
-        C2["📄 90-day-forecast.user.md&#x3C;br/>+ forecast-seed.user.md&#x3C;br/>+ exec-summary.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S3 /lp-forecast&#x3C;br/>Consumed by: S4, S5A, S10&#x3C;br/>Dependencies: Offer S2B, Market intel S2&#x3C;br/>Recalibration: Day 14, then monthly&#x3C;br/>Location: docs/business-os/strategy/BIZ/"]
+        C2["📄 90-day-forecast.user.md<br/>+ forecast-seed.user.md<br/>+ exec-summary.user.md<br/>────────<br/>Produced by: S3 /lp-forecast<br/>Consumed by: S4, S5A, S10<br/>Dependencies: Offer S2B, Market intel S2<br/>Recalibration: Day 14, then monthly<br/>Location: docs/business-os/strategy/BIZ/"]
 
-        C3["📄 channel-plan.user.md&#x3C;br/>+ seo-strategy.user.md&#x3C;br/>+ outreach-drafts.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S6B /lp-channels + /lp-seo&#x3C;br/>Consumed by: S4, S7 marketing items&#x3C;br/>Dependencies: Offer S2B, Market intel S2&#x3C;br/>Location: docs/business-os/startup-baselines/BIZ/"]
+        C3["📄 channel-plan.user.md<br/>+ seo-strategy.user.md<br/>+ outreach-drafts.user.md<br/>────────<br/>Produced by: S6B /lp-channels + /lp-seo<br/>Consumed by: S4, S7 marketing items<br/>Dependencies: Offer S2B, Market intel S2<br/>Location: docs/business-os/startup-baselines/BIZ/"]
 
-        C4["📦 baseline-snapshot.json&#x3C;br/>+ manifest.json&#x3C;br/>────────&#x3C;br/>Produced by: S4 /lp-baseline-merge&#x3C;br/>Consumed by: S5A, S5B manifest commit&#x3C;br/>Dependencies: Offer C1, Forecast C2, Channels C3&#x3C;br/>Lifecycle: Immutable per runId&#x3C;br/>Location: docs/business-os/startup-baselines/BIZ/runs/RUNID/"]
+        C4["📦 baseline-snapshot.json<br/>+ manifest.json<br/>────────<br/>Produced by: S4 /lp-baseline-merge<br/>Consumed by: S5A, S5B manifest commit<br/>Dependencies: Offer C1, Forecast C2, Channels C3<br/>Lifecycle: Immutable per runId<br/>Location: docs/business-os/startup-baselines/BIZ/runs/RUNID/"]
 
-        C5["📄 prioritization-scorecard.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S5A /lp-prioritize&#x3C;br/>Consumed by: S5B, S7 item selection&#x3C;br/>Dependencies: Baseline snapshot C4&#x3C;br/>Refresh: Weekly or on new candidate&#x3C;br/>Location: docs/business-os/strategy/BIZ/"]
+        C5["📄 prioritization-scorecard.user.md<br/>────────<br/>Produced by: S5A /lp-prioritize<br/>Consumed by: S5B, S7 item selection<br/>Dependencies: Baseline snapshot C4<br/>Refresh: Weekly or on new candidate<br/>Location: docs/business-os/strategy/BIZ/"]
     end
 
     subgraph BOS_ENTITIES["💾 BUSINESS OS PERSISTED ENTITIES D1 Database"]
         direction TB
-        D1["🗂️ BOS Cards + Stage Docs&#x3C;br/>────────&#x3C;br/>Produced by: S5B /lp-bos-sync&#x3C;br/>Consumed by: S7, S8, S9, S10&#x3C;br/>Write path: POST/PATCH /api/agent/*&#x3C;br/>Read path: MCP bos_* tools&#x3C;br/>Persistence: D1 apps/business-os"]
+        D1["🗂️ BOS Cards + Stage Docs<br/>────────<br/>Produced by: S5B /lp-bos-sync<br/>Consumed by: S7, S8, S9, S10<br/>Write path: POST/PATCH /api/agent/*<br/>Read path: MCP bos_* tools<br/>Persistence: D1 apps/business-os"]
 
-        D2["📍 Committed Manifest Pointer&#x3C;br/>────────&#x3C;br/>Produced by: S5B&#x3C;br/>Consumed by: All subsequent runs&#x3C;br/>Purpose: Lock baseline as 'current'&#x3C;br/>Location: docs/business-os/startup-baselines/BIZ/manifest.json"]
+        D2["📍 Committed Manifest Pointer<br/>────────<br/>Produced by: S5B<br/>Consumed by: All subsequent runs<br/>Purpose: Lock baseline as 'current'<br/>Location: docs/business-os/startup-baselines/BIZ/manifest.json"]
     end
 
     subgraph EXECUTION["⚙️ EXECUTION ARTIFACTS Per Card/Plan"]
         direction TB
-        E1["📄 fact-find.md&#x3C;br/>────────&#x3C;br/>Produced by: S7 /lp-fact-find&#x3C;br/>Consumed by: S8&#x3C;br/>BOS sync: Stage doc upsert&#x3C;br/>Location: docs/plans/FEATURE-SLUG/"]
+        E1["📄 fact-find.md<br/>────────<br/>Produced by: S7 /lp-fact-find<br/>Consumed by: S8<br/>BOS sync: Stage doc upsert<br/>Location: docs/plans/FEATURE-SLUG/"]
 
-        E2["📄 plan.md&#x3C;br/>────────&#x3C;br/>Produced by: S8 /lp-plan&#x3C;br/>Consumed by: S9&#x3C;br/>BOS sync: Stage doc + lane transition&#x3C;br/>Location: docs/plans/FEATURE-SLUG/"]
+        E2["📄 plan.md<br/>────────<br/>Produced by: S8 /lp-plan<br/>Consumed by: S9<br/>BOS sync: Stage doc + lane transition<br/>Location: docs/plans/FEATURE-SLUG/"]
 
-        E3["📄 build.md + shipped code&#x3C;br/>────────&#x3C;br/>Produced by: S9 /lp-build&#x3C;br/>Consumed by: S9B, S10&#x3C;br/>BOS sync: Stage doc + Done lane&#x3C;br/>Evidence: git commits, test results&#x3C;br/>Location: docs/plans/FEATURE-SLUG/ + apps/*"]
+        E3["📄 build.md + shipped code<br/>────────<br/>Produced by: S9 /lp-build<br/>Consumed by: S9B, S10<br/>BOS sync: Stage doc + Done lane<br/>Evidence: git commits, test results<br/>Location: docs/plans/FEATURE-SLUG/ + apps/*"]
 
-        E4["📄 qa-report.md&#x3C;br/>────────&#x3C;br/>Produced by: S9B /lp-launch-qa&#x3C;br/>Consumed by: S10 go/no-go&#x3C;br/>Contents: Issue inventory, deployment checklist&#x3C;br/>Location: docs/plans/FEATURE-SLUG/"]
+        E4["📄 qa-report.md<br/>────────<br/>Produced by: S9B /lp-launch-qa<br/>Consumed by: S10 go/no-go<br/>Contents: Issue inventory, deployment checklist<br/>Location: docs/plans/FEATURE-SLUG/"]
     end
 
-    subgraph MEASUREMENT["📊 MEASUREMENT &#x26; DECISION ARTIFACTS Weekly Cadence"]
+    subgraph MEASUREMENT["📊 MEASUREMENT & DECISION ARTIFACTS Weekly Cadence"]
         direction TB
-        F1["📄 weekly-kpcs-decision.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S10 Weekly loop&#x3C;br/>Consumed by: Loop restart S2/S5 or Kill&#x3C;br/>Decision: Keep/Pivot/Scale/Kill&#x3C;br/>Location: docs/business-os/strategy/BIZ/"]
+        F1["📄 weekly-kpcs-decision.user.md<br/>────────<br/>Produced by: S10 Weekly loop<br/>Consumed by: Loop restart S2/S5 or Kill<br/>Decision: Keep/Pivot/Scale/Kill<br/>Location: docs/business-os/strategy/BIZ/"]
 
-        F2["📦 growth-ledger.json&#x3C;br/>+ growth-event-payload.json&#x3C;br/>+ stage-result.json&#x3C;br/>────────&#x3C;br/>Produced by: S10 diagnosis integration&#x3C;br/>Consumed by: Forecast recalibration, replays&#x3C;br/>Contents: Stage statuses, guardrail signals&#x3C;br/>Location: data/shops/SHOPID/ + runs/RUNID/stages/S10/"]
+        F2["📦 growth-ledger.json<br/>+ growth-event-payload.json<br/>+ stage-result.json<br/>────────<br/>Produced by: S10 diagnosis integration<br/>Consumed by: Forecast recalibration, replays<br/>Contents: Stage statuses, guardrail signals<br/>Location: data/shops/SHOPID/ + runs/RUNID/stages/S10/"]
 
-        F3["📄 forecast-recalibration.user.md&#x3C;br/>────────&#x3C;br/>Produced by: S10 or ad-hoc on gate fail&#x3C;br/>Consumed by: Updated strategy plan&#x3C;br/>Trigger: Day 14, major assumption break&#x3C;br/>Location: docs/business-os/strategy/BIZ/"]
+        F3["📄 forecast-recalibration.user.md<br/>────────<br/>Produced by: S10 or ad-hoc on gate fail<br/>Consumed by: Updated strategy plan<br/>Trigger: Day 14, major assumption break<br/>Location: docs/business-os/strategy/BIZ/"]
     end
 
     A3 --> B1
@@ -1939,7 +1939,7 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 </section>
     <div class="meta">
       <div>Source: <code>docs/business-os/startup-loop-workflow.user.md</code></div>
-      <div>Generated: 2026-02-17T12:42:23.866Z</div>
+      <div>Generated: 2026-02-17T12:44:01.751Z</div>
     </div>
   </main>
   <script type="module">

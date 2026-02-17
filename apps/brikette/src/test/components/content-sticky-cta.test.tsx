@@ -3,10 +3,13 @@
 // TC-03: Dismiss persists within session (navigate to another Tier 1 page → CTA stays hidden).
 // TC-04: cta_click event fires with correct cta_id + cta_location enums.
 
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, jest } from "@jest/globals";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { type AppLanguage } from "@/i18n.config";
+
+// Helper: query by data-testid directly (global testIdAttribute is "data-cy"; component uses data-testid)
+const getStickyCta = () => document.querySelector('[data-testid="content-sticky-cta"]');
 
 // Mock the modal context before importing components
 jest.mock("@acme/ui/context/ModalContext");
@@ -32,7 +35,12 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: { defaultValue?: string }) => {
       const translations: Record<string, string> = {
+        // bare keys (used when component calls tTokens("key") with namespace as separate param)
         "close": "Close",
+        "directBookingPerks": "Direct Booking Perks",
+        "bestPriceGuaranteed": "Best Price Guaranteed",
+        "checkAvailability": "Check availability",
+        // namespaced keys (kept for compatibility)
         "_tokens:directBookingPerks": "Direct Booking Perks",
         "_tokens:bestPriceGuaranteed": "Best Price Guaranteed",
         "_tokens:checkAvailability": "Check availability",
@@ -76,13 +84,12 @@ describe("ContentStickyCta", () => {
   });
 
   it("TC-01: guide detail page renders the sticky CTA and clicking it opens BookingModal", async () => {
-    const { container } = render(
+    render(
       <ContentStickyCta lang="en" ctaLocation="guide_detail" />
     );
 
     // Verify CTA is rendered
-    const ctaElement = screen.getByTestId("content-sticky-cta");
-    expect(ctaElement).toBeInTheDocument();
+    expect(getStickyCta()).toBeInTheDocument();
 
     // Verify copy elements are present
     expect(screen.getByText("Direct Booking Perks")).toBeInTheDocument();
@@ -114,8 +121,7 @@ describe("ContentStickyCta", () => {
     render(<ContentStickyCta lang="en" ctaLocation="about_page" />);
 
     // Verify CTA is rendered
-    const ctaElement = screen.getByTestId("content-sticky-cta");
-    expect(ctaElement).toBeInTheDocument();
+    expect(getStickyCta()).toBeInTheDocument();
 
     // Click the CTA button
     const ctaButton = screen.getByRole("button", { name: /check availability/i });
@@ -141,16 +147,14 @@ describe("ContentStickyCta", () => {
     );
 
     // Verify CTA is initially visible
-    let ctaElement = screen.queryByTestId("content-sticky-cta");
-    expect(ctaElement).toBeInTheDocument();
+    expect(getStickyCta()).toBeInTheDocument();
 
     // Click dismiss button
     const dismissButton = screen.getByRole("button", { name: /close/i });
     fireEvent.click(dismissButton);
 
     // Verify CTA is hidden after dismiss
-    ctaElement = screen.queryByTestId("content-sticky-cta");
-    expect(ctaElement).not.toBeInTheDocument();
+    expect(getStickyCta()).not.toBeInTheDocument();
 
     // Verify sessionStorage was set
     expect(window.sessionStorage.getItem("content-sticky-cta-dismissed")).toBe("true");
@@ -159,8 +163,7 @@ describe("ContentStickyCta", () => {
     rerender(<ContentStickyCta lang="en" ctaLocation="about_page" />);
 
     // Verify CTA stays hidden (reads from sessionStorage)
-    ctaElement = screen.queryByTestId("content-sticky-cta");
-    expect(ctaElement).not.toBeInTheDocument();
+    expect(getStickyCta()).not.toBeInTheDocument();
   });
 
   it("TC-04: cta_click event fires with correct cta_id + cta_location enums for all Tier 1 pages", async () => {
@@ -202,15 +205,14 @@ describe("ContentStickyCta", () => {
     render(<ContentStickyCta lang="en" ctaLocation="guide_detail" />);
 
     // Verify CTA is rendered
-    const ctaElement = screen.queryByTestId("content-sticky-cta");
-    expect(ctaElement).toBeInTheDocument();
+    expect(getStickyCta()).toBeInTheDocument();
 
     // Click dismiss button
     const dismissButton = screen.getByRole("button", { name: /close/i });
     fireEvent.click(dismissButton);
 
     // CTA should still be dismissed in UI state (even if sessionStorage fails)
-    expect(screen.queryByTestId("content-sticky-cta")).not.toBeInTheDocument();
+    expect(getStickyCta()).not.toBeInTheDocument();
 
     // Restore original implementation
     Storage.prototype.setItem = originalSetItem;
@@ -229,7 +231,7 @@ describe("ContentStickyCta", () => {
         <ContentStickyCta lang="en" ctaLocation={location} />
       );
 
-      expect(screen.getByTestId("content-sticky-cta")).toBeInTheDocument();
+      expect(getStickyCta()).toBeInTheDocument();
 
       unmount();
     }

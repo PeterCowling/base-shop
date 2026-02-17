@@ -8,12 +8,15 @@ import "@testing-library/jest-dom";
 
 import { render, screen } from "@testing-library/react";
 
+// Allow per-test override of the heading (null = use default value)
+let mockHeadingOverride: string | null = null;
+
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string, options?: { defaultValue?: string | string[]; returnObjects?: boolean }) => {
       // Mock modals.directPerks.heading
       if (key === "directPerks.heading") {
-        return options?.defaultValue ?? "Why book direct?";
+        return mockHeadingOverride !== null ? mockHeadingOverride : (options?.defaultValue ?? "Why book direct?");
       }
       // Mock modals.directPerks.items
       if (key === "directPerks.items") {
@@ -64,21 +67,12 @@ describe("Booking Modals Direct Copy", () => {
   });
 
   describe("TC-02: DirectPerksBlock guards against empty data", () => {
+    afterEach(() => {
+      mockHeadingOverride = null;
+    });
+
     it("should not render when heading is empty", () => {
-      // Override mock to return empty heading
-      jest.resetModules();
-      jest.mock("react-i18next", () => ({
-        useTranslation: () => ({
-          t: (key: string, options?: { defaultValue?: string | string[]; returnObjects?: boolean }) => {
-            if (key === "directPerks.heading") return "";
-            if (key === "directPerks.items") {
-              return options?.returnObjects ? ["Up to 25% off"] : [];
-            }
-            return key;
-          },
-          i18n: { language: "en" },
-        }),
-      }));
+      mockHeadingOverride = "";
 
       const { container } = render(<DirectPerksBlock lang="en" />);
 

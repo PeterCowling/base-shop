@@ -27,7 +27,7 @@ jest.mock("@acme/ui/context/ModalContext", () => {
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
     t: (key: string) => key,
-    i18n: { language: "en", hasResourceBundle: () => true, getFixedT: () => (k: string) => k },
+    i18n: { language: "en", hasResourceBundle: () => true, getFixedT: () => (k: string) => k, getResource: () => null },
     ready: true,
   }),
 }));
@@ -44,7 +44,7 @@ jest.mock("next/navigation", () => ({
 
 // Mock Link component from next/link
 jest.mock("next/link", () => {
-  function MockLink({ children, href, ...props }: { children: React.ReactNode; href: string }) {
+  function MockLink({ children, href, prefetch: _prefetch, ...props }: { children: React.ReactNode; href: string; prefetch?: boolean }) {
     return (
       <a href={href} {...props}>
         {children}

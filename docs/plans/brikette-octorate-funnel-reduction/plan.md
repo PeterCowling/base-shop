@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-05B replanned to 82%)
+Last-updated: 2026-02-17 (TASK-05B complete)
 Last-reviewed: 2026-02-17
 Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
@@ -161,7 +161,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 | TASK-03 | IMPLEMENT | Handoff behavior normalization (`same_tab`, endpoint policy, param contract) | 82% | M | Pending | TASK-05A | TASK-05B, TASK-07 |
 | TASK-04 | INVESTIGATE | Diagnose GA4 handoff capture gap in standard Data API reports | 72% | M | Complete (2026-02-17) | - | TASK-05A, TASK-06 |
 | TASK-05A | IMPLEMENT | Native `handoff_to_engine` instrumentation across existing flows (pre-normalization) | 84% | M | Complete (2026-02-17) | TASK-04 | TASK-03, TASK-06, TASK-07 |
-| TASK-05B | IMPLEMENT | Legacy `begin_checkout` compatibility cleanup after normalization | 82% | S | Pending | TASK-03, TASK-05A | - |
+| TASK-05B | IMPLEMENT | Legacy `begin_checkout` compatibility cleanup after normalization | 82% | S | Complete (2026-02-17) | TASK-03, TASK-05A | - |
 | TASK-06 | IMPLEMENT | GA4 admin governance + reporting contract + ops handoff evidence | 84% | M | Complete (2026-02-17) | TASK-01, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint after route + measurement foundation | 95% | S | Pending | TASK-02, TASK-03, TASK-05A, TASK-06, TASK-10A | TASK-08, TASK-10B |
 | TASK-08 | INVESTIGATE | Run overlap-window calibration (non-zero GA4 handoff + Octorate bookings) | 70% | M | Pending | TASK-07 | TASK-09 |
@@ -420,7 +420,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`, `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx`, `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx`, `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx`, `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
 - **Depends on:** TASK-03, TASK-05A
 - **Blocks:** -
@@ -446,6 +446,14 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - Rollout: `search_availability` removal first (zero risk — not mapped in GA4); `begin_checkout` cleanup only after exit criteria window closes.
   - Rollback: revert to dual-emit compatibility while preserving canonical `handoff_to_engine`.
 - **Documentation impact:** update migration completion notes and GA4 governance runbook.
+- **Build evidence (2026-02-17):**
+  - `BookingModal.tsx`: removed `fireSearchAvailability` import and call (was compat at line 94). Only `fireHandoffToEngineAndNavigate` remains.
+  - `Booking2Modal.tsx`: removed `fireSearchAvailability` import and call (was compat at line 108, else/result branch). `fireBeginCheckoutRoomSelected` compat retained (room-selected confirm path, per two-tier policy).
+  - `ga4-09-booking-modal-begin-checkout.test.tsx`: TC-01 assertion updated — now asserts `search_availability` does NOT fire (was: asserting it still fires). 2/2 tests passing.
+  - `ga4-10-booking2-modal-begin-checkout.test.tsx`: no change needed — tests only cover room-selected path; `begin_checkout` compat still fires there. 2/2 tests passing.
+  - All 11 previously-passing GA4 test suites still passing. 2 pre-existing failures unchanged (`ga4-view-item-detail`, `ga4-view-item-list-impressions` — jsonld import issue).
+  - Typecheck clean.
+  - `ga4-governance-runbook.md`: §2.2 updated (search_availability marked Removed; begin_checkout exit criteria explicit); §4 Q1 commands updated (search_availability removed from event list); §8 pending action updated; §9 evidence log entry added.
 
 #### Re-plan Update (2026-02-17)
 - Confidence: 78% -> 82% (Evidence: E1)
@@ -764,6 +772,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-10A complete. SSR/no-JS + i18n leakage detection suite added in report-only mode. TC-01 (i18n placeholder audit): 0 findings — all 15 non-EN locales × 6 commercial namespaces clean. TC-02 (no-JS dead-end): correctly detects `BookPageContent.tsx` + `book/page.tsx` have no static Octorate fallback; warns in normal mode, hard-fails with `CONTENT_READINESS_MODE=fail`. TC-03 (locale regression): 36/36 pass. Gate switches to CI-blocking after TASK-10B remediation. TASK-07 now blocked only on TASK-03.
 - 2026-02-17: GA4 admin actions confirmed complete by Pete: cross-domain include list (`hostel-positano.com` + `brikette-website.pages.dev`) and referral exclusion (`book.octorate.com`) both applied. Runbook §8 updated to reflect completion.
 - 2026-02-17: TASK-07 checkpoint complete. All three horizon assumptions validated from code evidence. GA4 post-deploy data deferred to weekly review cadence. TASK-08 and TASK-10B unblocked; no replan needed.
+- 2026-02-17: TASK-05B complete. `search_availability` compat calls removed from `BookingModal.tsx` + `Booking2Modal.tsx` (result path). `begin_checkout` compat retained in `ApartmentBookContent.tsx` + `Booking2Modal.tsx` (room-selected path) pending 30-day exit criteria. ga4-09 TC-01 assertion updated to verify `search_availability` no longer fires. Runbook §2.2/§4/§8/§9 updated. 11/11 previously-passing GA4 suites still green; typecheck clean.
 - 2026-02-17: TASK-05B replanned 78% → 82%. Two-tier cleanup policy made explicit: (1) `search_availability` compat removed in TASK-05B scope — no GA4 create-rule mapping, callers: BookingModal.tsx:94 + Booking2Modal.tsx:108; (2) `begin_checkout` compat retained until ≥30-day post-TASK-05A deploy exit criteria met — callers: ApartmentBookContent.tsx:69 + Booking2Modal.tsx:84; (3) dead helpers identified: `fireBeginCheckoutGeneric`, `fireBeginCheckoutGenericAndNavigate`, `fireBeginCheckoutRoomSelectedAndNavigate`. Out-of-scope: RoomDetailContent.tsx primary nav surface deferred to future phase. Task now at threshold (82% ≥ 80%) via E1 code audit.
 - 2026-02-17: TASK-03 complete. BookingModal (v1) normalized to same-tab handoff. `packages/ui` BookingModal.tsx: CTA prevents default when `onAction` is provided (beacon-driven nav). `BookingGlobalModal.tsx`: switched to `fireHandoffToEngineAndNavigate` with `same_tab`. All three primary booking surfaces (BookingModal, Booking2Modal, ApartmentBookContent) now emit `same_tab` for primary flow. TC-01/TC-04 automated; TC-05 deferred to post-deploy monitoring. TASK-07 checkpoint now unblocked (TASK-03 + TASK-10A both complete).
 

@@ -75,7 +75,7 @@ describe("BookingGlobalModal GA4 handoff events (TASK-03)", () => {
     window.gtag = originalGtag;
   });
 
-  it("TC-01/TC-04: fires handoff_to_engine same_tab (primary) and search_availability (compat) on onAction", () => {
+  it("TC-01/TC-04: fires handoff_to_engine same_tab (primary); search_availability compat removed (TASK-05B)", () => {
     render(
       <ModalContext.Provider
         value={{
@@ -123,18 +123,9 @@ describe("BookingGlobalModal GA4 handoff events (TASK-03)", () => {
       expect.stringContaining("book.octorate.com/octobook/site/reservation/result.xhtml"),
     );
 
-    // Compat: search_availability still fires during migration window (no beacon).
+    // TC-01 (TASK-05B): search_availability compat removed — must not fire.
     const searchCall = gtag.mock.calls.find((args) => args[0] === "event" && args[1] === "search_availability");
-    expect(searchCall).toBeTruthy();
-    const searchPayload = searchCall?.[2] as Record<string, unknown>;
-    expect(searchPayload).toEqual(
-      expect.objectContaining({
-        pax: 2,
-        nights: 2,
-        lead_time_days: 9,
-        source: "unknown",
-      }),
-    );
+    expect(searchCall).toBeUndefined();
   });
 
   it("TC-01: dedupe prevents double-firing handoff_to_engine on rapid double-click", () => {

@@ -3,7 +3,7 @@
 **Status:** Active
 **Owner (all lanes):** Pete
 **Cadence:** Weekly, Monday morning
-**Last updated:** 2026-02-17
+**Last updated:** 2026-02-17 (TASK-05B: search_availability compat removed)
 **Property:** `properties/474488225`
 **Web stream:** `properties/474488225/dataStreams/10183287178` (`G-2ZSYXG8R7T`)
 
@@ -41,12 +41,12 @@
 | `source` | string | Optional. Surface or campaign source. |
 | `transport_type` | `beacon` | Always present. Ensures event survives same-tab navigation. |
 
-### 2.2 Compatibility Event (Migration Window Only)
+### 2.2 Compatibility Event (Migration Window)
 
 | Event name | Status | Notes |
 |---|---|---|
-| `begin_checkout` | Compat only — fires without beacon during migration window | Remove after TASK-05B cleanup |
-| `search_availability` | Compat — fires in `Booking2Modal` no-room path | Keep for search-intent signal; not a booking handoff signal |
+| `begin_checkout` | **Retained** — fires without beacon during migration window | Exit criteria: ≥30 days post-TASK-05A production deploy with `handoff_to_engine > 0` in GA4 standard reports. Callers: `ApartmentBookContent.tsx`, `Booking2Modal.tsx` (room-selected confirm path). Remove callers + `fireBeginCheckoutRoomSelected` helper when exit criteria met. |
+| `search_availability` | **Removed (TASK-05B, 2026-02-17)** | Compat callers in `BookingModal.tsx` and `Booking2Modal.tsx` (result path) removed. No GA4 create-rule mapping; not a booking handoff signal. |
 
 ### 2.3 Key / Conversion Events (GA4 Admin as of 2026-02-17)
 
@@ -127,12 +127,12 @@ The following questions must be answerable from documented report surfaces each 
 # Current week (adjust dates each Monday)
 pnpm exec tsx scripts/src/brikette/ga4-run-report.ts \
   --window <YYYY-MM-DD>..<YYYY-MM-DD> \
-  --events handoff_to_engine,begin_checkout,search_availability,page_view
+  --events handoff_to_engine,begin_checkout,page_view
 
 # Prior week (for comparison)
 pnpm exec tsx scripts/src/brikette/ga4-run-report.ts \
   --window <YYYY-MM-DD>..<YYYY-MM-DD> \
-  --events handoff_to_engine,begin_checkout,search_availability,page_view
+  --events handoff_to_engine,begin_checkout,page_view
 ```
 
 **Interpret:** Compare `handoff_to_engine` count week-over-week. Flag if drop >15% vs prior week without a known traffic-volume confound (e.g. campaign pause, seasonality).
@@ -231,7 +231,7 @@ These GA4 admin changes are documented here but not yet applied. They must be co
 | Add `hostel-positano.com` + `brikette-website.pages.dev` to cross-domain include list | Pete | **Complete (2026-02-17)** |
 | Add `book.octorate.com` to unwanted referrals (referral exclusions) | Pete | **Complete (2026-02-17)** |
 | Define internal traffic filter (IP/hostname) for Pete's own sessions | Pete | Pending |
-| Confirm `handoff_to_engine` conversion designation policy after TASK-05B | Pete | Pending — depends on TASK-05B |
+| Confirm `handoff_to_engine` conversion designation policy (post-compat-cleanup) | Pete | Pending — schedule after `begin_checkout` compat exit criteria met (≥30 days post-TASK-05A deploy) |
 | Remove or archive `begin_checkout → handoff_to_engine` create rule after native emission confirmed stable | Pete | Pending — depends on operational window post-TASK-05A |
 
 ---
@@ -242,6 +242,7 @@ These GA4 admin changes are documented here but not yet applied. They must be co
 |---|---|---|
 | 2026-02-17 | GA4 Admin API snapshot: property, stream, key events, conversion events | fact-find §Data & Contracts |
 | 2026-02-17 | Event create rules added: `begin_checkout → handoff_to_engine`, `search_availability → handoff_to_engine` | fact-find §External Data Access Checks |
+| 2026-02-17 | TASK-05B: `search_availability` compat calls removed from `BookingModal.tsx` and `Booking2Modal.tsx`. `begin_checkout` compat retained in `ApartmentBookContent.tsx` + `Booking2Modal.tsx` (room-selected path) until exit criteria met. Exit criteria: ≥30 days post-TASK-05A production deploy with `handoff_to_engine > 0` in GA4 standard reports. | TASK-05B build |
 | 2026-02-17 | Custom dimensions created for handoff event params | fact-find §External Data Access Checks |
 | 2026-02-17 | Cross-domain linking configured: `hostel-positano.com` + `brikette-website.pages.dev` added | Pete (GA4 Admin) |
 | 2026-02-17 | Referral exclusion added: `book.octorate.com` in unwanted referrals | Pete (GA4 Admin) |

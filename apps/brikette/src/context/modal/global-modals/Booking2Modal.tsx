@@ -11,13 +11,10 @@ import type { BookingModal2Copy } from "@acme/ui/organisms/modals";
 import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import i18n from "@/i18n";
 import { getDatePlusTwoDays } from "@/utils/dateUtils";
 import {
   fireBeginCheckoutRoomSelected,
   fireHandoffToEngineAndNavigate,
-  fireSearchAvailability,
-  isEventSource,
 } from "@/utils/ga4-events";
 
 import { BOOKING_CODE } from "../constants";
@@ -41,11 +38,6 @@ export function Booking2GlobalModal(): JSX.Element | null {
     setCheckOut(data.checkOut ?? (data.checkIn ? getDatePlusTwoDays(data.checkIn) : ""));
     setAdults(typeof data.adults === "number" ? data.adults : 1);
   }, [modalData]);
-
-  useEffect(() => {
-    // Ensure policies + terms label resolve without flashing raw keys in the modal.
-    void i18n.loadNamespaces?.(["bookPage", "footer"]);
-  }, []);
 
   const booking2Copy: BookingModal2Copy = {
     title: tModals("booking2.selectDatesTitle"),
@@ -109,13 +101,6 @@ export function Booking2GlobalModal(): JSX.Element | null {
     }
 
     const href = `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
-    // Compat: search_availability fires synchronously during migration window.
-    fireSearchAvailability({
-      source: isEventSource(source) ? source : "unknown",
-      checkin: checkIn,
-      checkout: checkOut,
-      pax: adults,
-    });
     // Canonical handoff event drives navigation with beacon reliability.
     fireHandoffToEngineAndNavigate({
       handoff_mode: "same_tab",

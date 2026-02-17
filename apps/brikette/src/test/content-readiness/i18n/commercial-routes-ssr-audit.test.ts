@@ -1,10 +1,13 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- TEST-1001: Reads repo-local locale fixtures under src/locales. [ttl=2026-12-31] */
 /**
- * TASK-10A: SSR/no-JS + i18n leakage detection gate for commercial booking routes.
+ * TASK-10A/10B: SSR/no-JS + i18n leakage detection gate for commercial booking routes.
  *
  * Gate mode:
- *   Pre-TASK-10B (current): report-only — tests always pass; findings emit as console.warn.
- *   Post-TASK-10B: switch to CI-blocking by setting CONTENT_READINESS_MODE=fail.
+ *   TC-01  report-only — i18n placeholder findings warn but never hard-fail CI.
+ *          Set CONTENT_READINESS_MODE=fail to activate hard-fail for TC-01.
+ *   TC-02  CI-blocking (TASK-10B activated) — /{lang}/book must expose a static Octorate
+ *          fallback link. Always hard-fails if the link is missing.
+ *   TC-03  CI-blocking — locale namespace coverage regression always hard-fails.
  *
  * Coverage:
  *   TC-01  i18n placeholder leakage — commercial route namespaces across all locales.
@@ -52,11 +55,11 @@ const NON_EN_LOCALES = (i18nConfig.supportedLngs ?? []).filter(
 ) as AppLanguage[];
 
 /**
- * Source files for the /{lang}/book route family.
- * Paths are relative to SOURCE_ROOT (apps/brikette/src/).
+ * RSC entry point for the /{lang}/book route.
+ * The no-JS fallback link must live here (not in client components).
+ * Path is relative to SOURCE_ROOT (apps/brikette/src/).
  */
 const BOOKING_ROUTE_SOURCE_FILES = [
-  "app/[lang]/book/BookPageContent.tsx",
   "app/[lang]/book/page.tsx",
 ] as const;
 
@@ -129,7 +132,6 @@ describe("TC-01: commercial route namespace i18n placeholder audit (TASK-10A, re
       }
 
       // Report-only: warn but allow CI to pass.
-      // eslint-disable-next-line no-console
       console.warn(`[WARN] ${message}`);
     }
 
@@ -142,7 +144,7 @@ describe("TC-01: commercial route namespace i18n placeholder audit (TASK-10A, re
 // TC-02: No-JS dead-end detection — /{lang}/book must have a static fallback link
 // ---------------------------------------------------------------------------
 
-describe("TC-02: no-JS fallback audit for /{lang}/book (TASK-10A, report-only)", () => {
+describe("TC-02: no-JS fallback audit for /{lang}/book (TASK-10B, CI-blocking)", () => {
   it("/{lang}/book server source includes a static Octorate link for no-JS users", () => {
     const deadEndFiles: string[] = [];
 
@@ -161,23 +163,16 @@ describe("TC-02: no-JS fallback audit for /{lang}/book (TASK-10A, report-only)",
 
     if (deadEndFiles.length > 0) {
       const list = deadEndFiles.map((f) => `  - ${f}`).join("\n");
-      const message =
-        `[TASK-10A TC-02] No static Octorate link found in ${deadEndFiles.length} booking route source file(s).\n` +
-        `No-JS users on /{lang}/book reach a booking dead-end (modal-only flow):\n${list}\n` +
-        `\nRemediation (TASK-10B): add <a href="https://book.octorate.com/..."> as a visible no-JS fallback.\n` +
-        `Set CONTENT_READINESS_MODE=fail to enforce.`;
-
-      if (STRICT_MODE) {
-        throw new Error(message);
-      }
-
-      // Report-only: warn but allow CI to pass.
-      // eslint-disable-next-line no-console
-      console.warn(`[WARN] ${message}`);
+      // TC-02 is CI-blocking (activated in TASK-10B after static fallback link added to page.tsx).
+      // Any regression that removes book.octorate.com from booking route source will hard-fail here.
+      throw new Error(
+        `[TASK-10B TC-02] No static Octorate link found in ${deadEndFiles.length} booking route source file(s).\n` +
+          `No-JS users on /{lang}/book reach a booking dead-end (modal-only flow):\n${list}\n` +
+          `\nRemediation: restore <noscript><a href="https://book.octorate.com/..."> in book/page.tsx RSC layer.`,
+      );
     }
 
-    // Always passes in report-only mode.
-    expect(true).toBe(true);
+    expect(deadEndFiles).toHaveLength(0);
   });
 });
 

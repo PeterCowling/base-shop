@@ -1,13 +1,48 @@
 // i18n-exempt file -- ABC-123 ttl=2025-06-30
-import { NextResponse, type NextRequest } from "next/server";
-import crypto from "node:crypto";
+import { type NextRequest,NextResponse } from "next/server";
+
 import { LOCALES } from "@acme/i18n";
 
 // Helper: check locale prefix without using dynamic RegExp
 const hasLocalePrefix = (path: string): boolean =>
   LOCALES.some((l) => path === `/${l}` || path.startsWith(`/${l}/`));
 
-export function middleware(request: NextRequest) {
+function buildCspExtras(): {
+  connectExtra: string[];
+  imgExtra: string[];
+  scriptExtra: string[];
+} {
+  const connectExtra: string[] = [
+    "https://api.cloudflare.com",
+    "https://gateway.ai.cloudflare.com",
+  ];
+  try {
+    const r2 = process.env.R2_PUBLIC_BASE_URL;
+    if (r2) {
+      const { origin } = new URL(r2);
+      if (origin) connectExtra.push(origin);
+    }
+    const acct = process.env.CLOUDFLARE_ACCOUNT_ID;
+    if (acct) connectExtra.push(`https://${acct}.r2.cloudflarestorage.com`);
+  } catch {}
+
+  const imgExtra: string[] = [];
+  try {
+    const r2o = process.env.R2_PUBLIC_BASE_URL;
+    if (r2o) imgExtra.push(new URL(r2o).origin);
+  } catch {}
+
+  const scriptExtra: string[] = [];
+  try {
+    const mv = process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC;
+    if (mv && /^https?:\/\//.test(mv)) scriptExtra.push(new URL(mv).origin);
+    else if (!mv) scriptExtra.push("https://unpkg.com");
+  } catch {}
+
+  return { connectExtra, imgExtra, scriptExtra };
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = new URL(request.url);
 
   // Skip Next internals + static files
@@ -23,33 +58,9 @@ export function middleware(request: NextRequest) {
       const id = process.env.NEXT_PUBLIC_GA4_ID;
       if (consent && id) {
         const inline = `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${id}');`;
-        const hash = crypto.createHash('sha256').update(inline).digest('base64');
-        const connectExtra: string[] = [
-          "https://api.cloudflare.com",
-          "https://gateway.ai.cloudflare.com",
-        ];
-        try {
-          const r2 = process.env.R2_PUBLIC_BASE_URL;
-          if (r2) {
-            const { origin } = new URL(r2);
-            if (origin) connectExtra.push(origin);
-          }
-          const acct = process.env.CLOUDFLARE_ACCOUNT_ID;
-          if (acct) connectExtra.push(`https://${acct}.r2.cloudflarestorage.com`);
-        } catch {}
-
-        const imgExtra: string[] = [];
-        try {
-          const r2o = process.env.R2_PUBLIC_BASE_URL;
-          if (r2o) imgExtra.push(new URL(r2o).origin);
-        } catch {}
-
-        const scriptExtra: string[] = [];
-        try {
-          const mv = process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC;
-          if (mv && /^https?:\/\//.test(mv)) scriptExtra.push(new URL(mv).origin);
-          else if (!mv) scriptExtra.push("https://unpkg.com");
-        } catch {}
+        const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(inline));
+        const hash = btoa(Array.from(new Uint8Array(hashBuffer), (b) => String.fromCharCode(b)).join(''));
+        const { connectExtra, imgExtra, scriptExtra } = buildCspExtras();
         const csp = [
           "default-src 'self'", // i18n-exempt -- ABC-123 HTTP header policy value, not user-facing copy [ttl=2025-06-30]
           "base-uri 'self'", // i18n-exempt
@@ -68,7 +79,7 @@ export function middleware(request: NextRequest) {
     return res;
   }
 
-  // Default: redirect “/” or unknown prefixes to default locale (first in LOCALES)
+  // Default: redirect "/" or unknown prefixes to default locale (first in LOCALES)
   return NextResponse.redirect(new URL(`/${LOCALES[0]}`, request.url));
 }
 

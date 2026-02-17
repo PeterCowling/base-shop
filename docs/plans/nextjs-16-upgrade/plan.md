@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-13 complete; TASK-14 promoted to 82%; all Wave 6/7 tasks unblocked)
+Last-updated: 2026-02-17 (TASK-16 complete; D-04 accepted; TASK-17 unblocked)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -138,8 +138,8 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Complete (2026-02-17) | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09 (complete), TASK-10 (complete), TASK-11 (complete), TASK-12 (complete), TASK-22 (complete) | TASK-14, TASK-15 |
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 82% | M | Pending | TASK-02 (complete), TASK-13 (complete) | - |
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13 (complete), TASK-11 (complete) | - |
-| TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Pending | TASK-13 (complete) | TASK-17 |
-| TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Pending | TASK-16 | TASK-18 |
+| TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
+| TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Pending | TASK-16 (complete) | TASK-18 |
 | TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 78% ⚠️ | M | Pending | TASK-17 | TASK-20 |
 | TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Pending | TASK-13 (complete) | TASK-20 |
 | TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Pending | TASK-18, TASK-19 | - |
@@ -160,6 +160,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-21 | transpilePackages audit — @acme/ui (2,256 TS files) identified as dominant contributor; Tier 1/2 removal lists defined; src-alias constraints documented | Complete (2026-02-17) | see post-task commit |
 | TASK-22 | CMS build graph reduction — transpilePackages cut from 15 → 3 CMS-specific entries (~3,258 TS files removed); typescript added to serverExternalPackages; tokenUtils TS2307 fixed; CMS typecheck+lint green | Complete (2026-02-17) | `e469da612c` |
 | TASK-13 | CHECKPOINT — CMS/cmp/xa typecheck+lint+build all verified; zero sync API findings; Cloudflare audit artifact written; /lp-replan run; TASK-14 promoted to 82% | Complete (2026-02-17) | `3644f6efa9` (docs) + cloudflare-free-tier-audit.md |
+| TASK-16 | Webpack policy coverage map: 93 files scanned; 3 XA wrapper bypass vectors all compliant; D-04 accepted limitation; scanner gap documented with Option A/B hardening paths | Complete (2026-02-17) | config-snapshot §12 |
 
 ### Deferred / Blocked
 
@@ -618,7 +619,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:**
   - `scripts/check-next-webpack-flag.mjs`
   - `scripts/__tests__/next-webpack-flag-policy.test.ts`
@@ -640,6 +641,21 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Planning validation:** `None: investigation-only task`
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** Update audit artifact and this plan.
+
+#### Build Completion (2026-02-17)
+- **Status:** Complete
+- **Artifact:** `docs/plans/nextjs-16-upgrade/config-snapshot-fact-find-2026-02-17.md` §12 appended
+- **Validation:**
+  - Coverage map: ✅ documented (§12.1) — 93 files scanned across package.json + workflows; scanner invoked in pre-commit + CI merge gate
+  - Bypass vector audit: ✅ 3 XA wrapper scripts are only bypass locations; all include `--webpack` (OBSERVED via rg + file read)
+  - Hardening options: ✅ Option A (extend scanner to wrapper .mjs files, partial coverage) and Option B (convention comment, zero churn) both documented with tradeoffs (§12.4)
+  - D-04 updated: ✅ "ACCEPTED LIMITATION" — all current bypass locations compliant; `--all` scan exits 0
+  - Q1 answered: bypass vectors = 3 XA wrapper scripts only; all currently compliant
+  - Q2 answered: recommendation = accept D-04 as limitation + convention comment (Option B); scanner extension is viable but has residual false-negative for array-arg `spawnSync` patterns
+- **Key findings for TASK-17:**
+  - Scanner is wired correctly (pre-commit + merge gate); no additional wiring needed
+  - D-04 gap does not affect TASK-17 dependency ownership decision
+  - D-01/D-02 manifest drift remains the primary TASK-17 input (unchanged from prior analysis)
 
 ### TASK-17: DECISION - Dependency Ownership Model (`@acme/next-config` + Root Next Policy)
 - **Type:** DECISION

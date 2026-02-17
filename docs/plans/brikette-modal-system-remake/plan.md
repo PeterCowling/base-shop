@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-06 complete — provider effects decomposed into dedicated modules)
+Last-updated: 2026-02-17 (TASK-07 complete — modal scroll/layout primitives normalized)
 Feature-Slug: brikette-modal-system-remake
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -135,7 +135,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 | TASK-04 | IMPLEMENT | Introduce typed modal payload registry + migrate initial consumers off `unknown` casts | 82% | M | Complete (2026-02-17) | TASK-01, TASK-02 | TASK-05, TASK-06, TASK-09 |
 | TASK-05 | IMPLEMENT | Migrate to single modal host/switcher ownership and deprecate duplicate orchestration path | 80% | M | Complete (2026-02-17) | TASK-01, TASK-04 | TASK-06, TASK-07 |
 | TASK-06 | IMPLEMENT | Decompose provider effects and implement selected i18n preload contract | 82% | M | Complete (2026-02-17) | TASK-03, TASK-04, TASK-05 | TASK-08 |
-| TASK-07 | IMPLEMENT | Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency) | 81% | M | Pending | TASK-05 | TASK-08 |
+| TASK-07 | IMPLEMENT | Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency) | 81% | M | Complete (2026-02-17) | TASK-05 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint before downstream validation/cleanup | 95% | S | Pending | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add integration/contract/a11y test suite for modal invariants | 81% | M | Pending | TASK-04, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | IMPLEMENT | Remove legacy compatibility paths and finalize docs/rollout notes | 84% | S | Pending | TASK-09 | - |
@@ -481,8 +481,9 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `packages/ui/src/organisms/modals/primitives.tsx`, `packages/ui/src/organisms/modals/BookingModal.tsx`, `packages/ui/src/organisms/modals/BookingModal2.tsx`, `packages/ui/src/organisms/modals/FacilitiesModal.tsx`, `packages/ui/src/organisms/modals/LanguageModal.tsx`
+- **Controlled scope expansion:** `packages/ui/src/organisms/modals/__tests__/ModalBasics.test.tsx` (TC-07 layout contract tests added). Expansion bounded to TASK-07 validation objective.
 - **Depends on:** TASK-05
 - **Blocks:** TASK-08
 - **Confidence:** 81%
@@ -509,6 +510,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
     - `docs/plans/brikette-modal-system-remake/fact-find.md` (E8, E10)
   - Unexpected findings:
     - `ModalContainer` exists but is not consistently adopted.
+    - Radix Dialog uses portals into `document.body` — structural tests must query `document.body`, not `container`.
 - **Scouts:**
   - Compare overlay/content class divergence across all modal components before refactor.
 - **Edge Cases & Hardening:**
@@ -522,6 +524,17 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - Update modal primitive usage guidance.
 - **Notes / references:**
   - Fact-find evidence E8.
+- **Build completion evidence (2026-02-17):**
+  - `ModalScrollPanel` added to `primitives.tsx`: `max-h-[90dvh] overflow-y-auto overscroll-contain` whole-panel contract. Accepts `widthClassName`.
+  - `ModalScrollArea` added to `primitives.tsx`: `overflow-y-auto overscroll-contain` content-section scroll within fixed-height panel.
+  - `BookingModal2.tsx`: ad-hoc `max-h-[90dvh]` div replaced with `<ModalScrollPanel widthClassName="w-full sm:w-96">`.
+  - `FacilitiesModal.tsx`: `ModalScrollArea` wraps grid content; ModalPanel receives `flex max-h-[90dvh] flex-col`.
+  - `LanguageModal.tsx`: `ModalScrollArea` wraps `Cluster`; ModalPanel receives `flex max-h-[90dvh] flex-col`; Cluster simplified (no ad-hoc `max-h-[50svh]`).
+  - `BookingModal.tsx` (V1): panel div gains `overflow-y-auto overscroll-contain max-h-[calc(100dvh-6rem)]` (top-20 offset layout preserved).
+  - TC-07 tests (6 tests) added to `ModalBasics.test.tsx` — all 12 tests in suite pass.
+  - Key discovery: Radix Dialog portal → `document.body.querySelector` required for structural class queries.
+  - Typecheck: clean (`@acme/ui` tsc --noEmit exit 0).
+  - Commit: `bdbdddf4a0`.
 
 ### TASK-08: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT

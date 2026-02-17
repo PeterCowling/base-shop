@@ -120,4 +120,15 @@ describe("middleware", () => {
       "/403?shop=foo"
     );
   });
+
+  it("applies required security headers on every response", async () => {
+    __setMockToken({ role: "admin" } as JWT);
+
+    const res = await middleware(createRequest("/cms/shop/foo/products"));
+
+    // Verify key security headers are present (from next-secure-headers + helmet)
+    expect(res.headers.get("x-frame-options")).toBe("deny");
+    expect(res.headers.get("x-content-type-options")).toBe("nosniff");
+    expect(res.headers.get("referrer-policy")).toBe("no-referrer");
+  });
 });

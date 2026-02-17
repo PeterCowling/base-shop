@@ -72,11 +72,12 @@ const uiAtomsMock = path.resolve(__dirname, "src/test/__mocks__/ui-atoms.tsx");
 newMapper["^@acme/ui/atoms$"] = uiAtomsMock;
 newMapper["^@acme/ui/atoms/(.*)$"] = uiAtomsMock;
 
-// @acme/ui/molecules and @acme/ui/organisms/* — stub with Proxy-based componentStub
+// @acme/ui/molecules — stub with Proxy-based componentStub
+// Note: do NOT add a broad @acme/ui/organisms/* mapper here; tests that need
+// specific organisms mock them with jest.mock() and a broad mapper would conflict.
 const componentStub = path.resolve(__dirname, "../../test/__mocks__/componentStub.js");
 newMapper["^@acme/ui/molecules$"] = componentStub;
 newMapper["^@acme/ui/molecules/(.*)$"] = componentStub;
-newMapper["^@acme/ui/organisms/(.*)$"] = componentStub;
 
 // @acme/design-system sub-path exports (Jest doesn't support package.json "exports" field)
 const dsPrimitivesStub = path.resolve(__dirname, "src/test/__mocks__/design-system-primitives.ts");

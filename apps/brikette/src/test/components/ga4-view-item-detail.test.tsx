@@ -42,6 +42,13 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
+// Stub @acme/ui/organisms used by ApartmentPageContent and RoomDetailContent
+jest.mock("@acme/ui/organisms/ApartmentAmenitiesSection", () => ({ __esModule: true, default: () => null }));
+jest.mock("@acme/ui/organisms/ApartmentDetailsSection", () => ({ __esModule: true, default: () => null }));
+jest.mock("@acme/ui/organisms/ApartmentHeroSection", () => ({ __esModule: true, default: () => null }));
+jest.mock("@acme/ui/organisms/ApartmentHighlightsSection", () => ({ __esModule: true, default: () => null }));
+jest.mock("@acme/ui/organisms/StickyBookNow", () => ({ __esModule: true, default: () => null }));
+
 // Mock Link component from next/link
 jest.mock("next/link", () => {
   function MockLink({ children, href, prefetch: _prefetch, ...props }: { children: React.ReactNode; href: string; prefetch?: boolean }) {

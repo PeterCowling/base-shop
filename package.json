@@ -147,6 +147,7 @@
     "startup-loop:lint-market-intel-pack": "node --import tsx scripts/src/startup-loop/market-intelligence-pack-lint.ts",
 
     "brik:export-cloudflare-proxies": "node --import tsx scripts/src/brikette/export-cloudflare-monthly-proxies.ts",
+    "brik:analyse-room-pricing": "python3 scripts/brik/analyse-room-pricing.py",
     "validate:manifest": "node scripts/validate-agent-manifest.js",
     "launch-smoke": "tsx scripts/src/launch-shop/cli/smoke.ts",
     "launch-shop": "tsx scripts/src/launch-shop.ts",
@@ -349,7 +350,6 @@
     "minimatch": "^9.0.5",
     "msw": "^2.6.5",
     "msw-storybook-addon": "^2.0.3",
-    "next": "16.1.6",
     "nock": "^13.4.0",
     "nyc": "^15.1.0",
     "playwright": "^1.55.1",

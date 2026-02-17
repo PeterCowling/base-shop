@@ -16,9 +16,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@acme/config": "workspace:^",
-    "@next/env": "15.3.5",
-    "next": "^15.3.9"
+    "@acme/config": "workspace:^"
+  },
+  "peerDependencies": {
+    "next": ">=16.0.0"
   },
   "files": [
     "index.mjs",

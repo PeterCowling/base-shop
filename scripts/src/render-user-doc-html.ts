@@ -295,7 +295,7 @@ ${params.htmlBody}
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    mermaid.initialize({ startOnLoad: true, securityLevel: "antiscript", theme: "neutral" });
 
     // Audience toggle — Model A.
     // The toggle handler lives in this module script (same scope as the mermaid import)

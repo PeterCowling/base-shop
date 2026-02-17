@@ -373,3 +373,109 @@ export function fireViewItem(params: { itemId: string; itemName?: string }): voi
     ],
   });
 }
+
+// ─── handoff_to_engine instrumentation (TASK-05A) ───────────────────────────
+// Canonical event emitted at every Octorate handoff click point.
+// Required params: handoff_mode, engine_endpoint, checkin, checkout, pax.
+
+export type HandoffMode = "new_tab" | "same_tab";
+export type EngineEndpoint = "result" | "confirm";
+
+export interface HandoffToEngineParams {
+  handoff_mode: HandoffMode;
+  engine_endpoint: EngineEndpoint;
+  checkin: string;
+  checkout: string;
+  pax: number;
+  source?: string;
+}
+
+// Per-click dedupe: prevents double-fire within 300ms (TC-02).
+let _lastHandoffTs = 0;
+
+export function resetHandoffDedupe(): void {
+  _lastHandoffTs = 0;
+}
+
+/**
+ * Fire `handoff_to_engine` synchronously with beacon transport.
+ * Use for new_tab handoffs (page stays active) or when the caller owns navigation.
+ */
+export function fireHandoffToEngine(params: HandoffToEngineParams): void {
+  const now = Date.now();
+  if (now - _lastHandoffTs < 300) return;
+  _lastHandoffTs = now;
+
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  gtag("event", "handoff_to_engine", {
+    handoff_mode: params.handoff_mode,
+    engine_endpoint: params.engine_endpoint,
+    checkin: params.checkin,
+    checkout: params.checkout,
+    pax: params.pax,
+    transport_type: "beacon",
+    ...(params.source ? { source: params.source } : null),
+  });
+}
+
+/**
+ * Fire `handoff_to_engine` with outbound reliability (beacon + timeout fallback).
+ * Use for same_tab handoffs where this function must also drive page navigation.
+ */
+export function fireHandoffToEngineAndNavigate(
+  params: HandoffToEngineParams & { onNavigate: () => void; timeoutMs?: number },
+): void {
+  const now = Date.now();
+  if (now - _lastHandoffTs < 300) {
+    params.onNavigate();
+    return;
+  }
+  _lastHandoffTs = now;
+
+  fireEventWithOutboundReliability({
+    event: "handoff_to_engine",
+    payload: {
+      handoff_mode: params.handoff_mode,
+      engine_endpoint: params.engine_endpoint,
+      checkin: params.checkin,
+      checkout: params.checkout,
+      pax: params.pax,
+      ...(params.source ? { source: params.source } : null),
+    },
+    onNavigate: params.onNavigate,
+    timeoutMs: params.timeoutMs,
+  });
+}
+
+/**
+ * Non-navigating begin_checkout compat fire for migration window (see TASK-05B).
+ * Fires the event synchronously without beacon or navigation callback.
+ * To be cleaned up once handoff_to_engine parity is confirmed.
+ */
+export function fireBeginCheckoutRoomSelected(params: {
+  source: string;
+  roomSku: string;
+  plan: RatePlan;
+  checkin: string;
+  checkout: string;
+  pax: number;
+  item_list_id?: string;
+}): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
+  const itemListId =
+    typeof params.item_list_id === "string" && isItemListId(params.item_list_id) ? params.item_list_id : undefined;
+
+  gtag("event", "begin_checkout", {
+    source,
+    checkin: params.checkin,
+    checkout: params.checkout,
+    pax: params.pax,
+    ...(itemListId ? { item_list_id: itemListId } : null),
+    items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan })],
+  });
+}

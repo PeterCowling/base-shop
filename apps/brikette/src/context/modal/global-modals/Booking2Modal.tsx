@@ -13,7 +13,12 @@ import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import i18n from "@/i18n";
 import { getDatePlusTwoDays } from "@/utils/dateUtils";
-import { fireBeginCheckoutRoomSelectedAndNavigate, fireSearchAvailabilityAndNavigate } from "@/utils/ga4-events";
+import {
+  fireBeginCheckoutRoomSelected,
+  fireHandoffToEngineAndNavigate,
+  fireSearchAvailability,
+  isEventSource,
+} from "@/utils/ga4-events";
 
 import { BOOKING_CODE } from "../constants";
 import { setWindowLocationHref } from "../environment";
@@ -80,7 +85,8 @@ export function Booking2GlobalModal(): JSX.Element | null {
     if (roomSku && plan && octorateRateCode) {
       params.set("room", octorateRateCode);
       const href = `https://book.octorate.com/octobook/site/reservation/confirm.xhtml?${params}`;
-      fireBeginCheckoutRoomSelectedAndNavigate({
+      // Compat: begin_checkout fires synchronously (no beacon) during migration window (TASK-05B will decide cleanup policy).
+      fireBeginCheckoutRoomSelected({
         source,
         roomSku,
         plan,
@@ -88,17 +94,36 @@ export function Booking2GlobalModal(): JSX.Element | null {
         checkout: checkOut,
         pax: adults,
         item_list_id: itemListId,
+      });
+      // Canonical handoff event drives navigation with beacon reliability.
+      fireHandoffToEngineAndNavigate({
+        handoff_mode: "same_tab",
+        engine_endpoint: "confirm",
+        checkin: checkIn,
+        checkout: checkOut,
+        pax: adults,
+        source,
         onNavigate: () => setWindowLocationHref(href),
       });
       return;
     }
 
     const href = `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
-    fireSearchAvailabilityAndNavigate({
-      source,
+    // Compat: search_availability fires synchronously during migration window.
+    fireSearchAvailability({
+      source: isEventSource(source) ? source : "unknown",
       checkin: checkIn,
       checkout: checkOut,
       pax: adults,
+    });
+    // Canonical handoff event drives navigation with beacon reliability.
+    fireHandoffToEngineAndNavigate({
+      handoff_mode: "same_tab",
+      engine_endpoint: "result",
+      checkin: checkIn,
+      checkout: checkOut,
+      pax: adults,
+      source,
       onNavigate: () => setWindowLocationHref(href),
     });
   };

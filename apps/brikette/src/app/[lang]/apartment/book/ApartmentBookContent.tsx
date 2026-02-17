@@ -14,6 +14,7 @@ import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { fireHandoffToEngine } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -62,7 +63,7 @@ function ApartmentBookContent({ lang }: Props) {
       ),
     );
 
-    // Fire GA4 event
+    // Compat: begin_checkout kept during migration window (TASK-05B will decide cleanup policy).
     const win = window as unknown as { gtag?: (...args: unknown[]) => void };
     if (typeof win.gtag === "function") {
       win.gtag("event", "begin_checkout", {
@@ -79,6 +80,16 @@ function ApartmentBookContent({ lang }: Props) {
         ],
       });
     }
+
+    // Canonical handoff event (TASK-05A). Beacon transport ensures delivery before same-tab navigation.
+    fireHandoffToEngine({
+      handoff_mode: "same_tab",
+      engine_endpoint: "result",
+      checkin,
+      checkout,
+      pax: 1,
+      source: `apartment_${plan}`,
+    });
 
     // Navigate to Octorate
     window.location.assign(octorateUrl);

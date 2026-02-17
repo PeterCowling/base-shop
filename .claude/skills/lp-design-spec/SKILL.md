@@ -44,7 +44,7 @@ No argument — presents the app-to-business mapping and asks what you're design
 /lp-design-spec --bootstrap <BIZ-CODE>
 ```
 
-Creates or updates the brand language doc for a business unit without producing a feature design spec. Use when onboarding a new business or after a brand pivot.
+Runs GATE-BD-07 pre-flight for the business unit without producing a feature design spec. Blocks and redirects to `/lp-brand-bootstrap <BIZ>` if Brand Dossier is not Active. Use when checking brand-dossier readiness before onboarding a new business.
 
 ## Inputs
 
@@ -162,21 +162,22 @@ Define:
    - Touch target sizes (`min-h-11 min-w-11` for interactive elements).
 4. **Animation** — only if required. Use `motion-safe:` prefix. Respect `prefers-reduced-motion`.
 
-### Step 6: Brand Bootstrap (when brand language doc is missing)
+### Step 6: Brand Dossier Pre-flight (GATE-BD-07)
 
-When creating a new brand language doc for a business:
+**Before writing the design spec**, verify the Brand Dossier is Active:
 
-1. **Gather inputs:**
-   - Read `docs/business-os/strategy/<BIZ>/plan.user.md` for business context.
-   - Read any existing launch forecast (`*-launch-forecast*.user.md`) for demographic data.
-   - Read existing theme tokens if a theme package exists.
-   - Read the app's current UI (layout.tsx, key pages) for implicit brand choices.
+1. **Check** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` exists AND frontmatter `Status: Active`.
+2. **Check** the strategy index `docs/business-os/strategy/<BIZ>/index.user.md` — Brand Dossier row must show `Active`.
 
-2. **Create** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` using the template from `.claude/skills/_shared/brand-language-template.md`.
+**Gate result:**
 
-3. **Fill in what's known**, mark unknowns with `TBD — {what's needed to resolve}`.
+- **PASS** (Status == Active): proceed to Step 7.
+- **FAIL** (missing or Status != Active): **STOP immediately.**
+  - Error: `GATE-BD-07: Brand Dossier must be Active before running design spec.`
+  - Remediation: `Run /lp-brand-bootstrap <BIZ> to create or advance the Brand Dossier to Active, then re-run /lp-design-spec.`
+  - Do NOT create or populate brand-dossier.user.md from within this skill. That is the job of `/lp-brand-bootstrap`.
 
-4. **Present to user** for review before proceeding.
+**Note:** GATE-BD-01 at S1 advance requires brand-dossier at Draft minimum. GATE-BD-07 here requires Active. The gap (Draft → Active) is the operator's responsibility before running lp-design-spec.
 
 ### Step 7: Write Design Spec
 
@@ -309,7 +310,7 @@ PageLayout
 - [ ] Layout specifies all three breakpoints (mobile, tablet, desktop)
 - [ ] Dark mode addressed for every token binding
 - [ ] Accessibility section is non-empty with concrete ARIA/focus/contrast items
-- [ ] Brand language doc consulted (or bootstrapped)
+- [ ] Brand Dossier Active (GATE-BD-07 pre-flight passed: Status == Active in brand-dossier.user.md)
 - [ ] Token bindings match actual values in theme package (not invented)
 - [ ] Prerequisites list is complete — no hidden assumptions for `/lp-plan`
 
@@ -366,12 +367,13 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 > 1. `/lp-fact-find {slug}` — if the feature needs broader investigation
 > 2. `/lp-plan {slug}` — if scope is clear and you want to go straight to planning
 
-### Brand Bootstrap Complete
+### GATE-BD-07 Blocked (Brand Dossier not Active)
 
-> Brand language created: `docs/business-os/strategy/{BIZ}/brand-dossier.user.md`
+> **GATE-BD-07:** Brand Dossier must be Active before running design spec.
 >
-> **Status:** {N} sections complete, {M} marked TBD.
-> Review the doc and fill in TBD items before using it for design specs.
+> **Current Status:** `docs/business-os/strategy/{BIZ}/brand-dossier.user.md` is missing or Status ≠ Active.
+>
+> **Remediation:** Run `/lp-brand-bootstrap {BIZ}` to create or advance the Brand Dossier to Active, then re-run `/lp-design-spec`.
 
 ## Red Flags (Invalid Run)
 

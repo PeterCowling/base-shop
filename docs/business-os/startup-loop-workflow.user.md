@@ -14,45 +14,498 @@ Owner: Pete
 
 Define the full startup operating loop from idea/spec input to execution and lp-replanning, with explicit inputs, processing, outputs, and current remaining data gaps for HEAD, PET, and BRIK.
 
-## 2) End-to-End Loop (High Level)
+## 2) End-to-End Loop (Complete Data Flow)
 
 ```mermaid
 flowchart TD
-    A[User Inputs\nBusiness idea + product spec + constraints] --> B[Readiness + Mapping Preflight\nlp-readiness]
-    B -->|Blocked| B1[Collect missing data\nowner mapping/outcomes/research prompts]
-    B1 --> B
-    B -->|Ready| C[Market Intelligence Layer\nDeep Research prompts + saved packs]
-    C --> D[Forecast Layer\nidea-forecast]
-    D --> E[SFS-00 Baseline Merge\n0a intent + 0b existing work + 0c classification]
-    E --> F[Prioritized Go Items / Backlog Seeds]
-    F --> G[lp-fact-find]
-    G --> H[lp-plan]
-    H --> I[lp-build]
-    I --> J[Launch + Measure\nweekly K/P/C/S review]
-    J --> K{Keep / Pivot / Scale / Kill}
-    K -->|Continue/Pivot| C
-    K -->|Scale| F
-    K -->|Kill| L[Archive + Learning Capture]
+    subgraph INPUT["📥 INPUTS"]
+        A1[Business Idea]
+        A2[Product Spec]
+        A3[Constraints]
+        A4[Historical Data<br/>for existing businesses]
+    end
+
+    subgraph S0_INTAKE["S0: Intake"]
+        B1[Normalize Intent]
+        B2[Structure Context]
+        B1 --> B2
+    end
+
+    subgraph S1_READINESS["S1: Readiness"]
+        C1[Gate Checks<br/>RG-01 to RG-07]
+        C2{Pass?}
+        C1 --> C2
+    end
+
+    subgraph S1B_S2A["S1B/S2A: Conditional Gates"]
+        D1[Pre-website:<br/>Measurement Bootstrap]
+        D2[Website-live:<br/>Historical Baseline]
+    end
+
+    subgraph S2_RESEARCH["S2: Market Intelligence"]
+        E1[Deep Research]
+        E2[Competitor Analysis]
+        E3[Demand/Pricing Data]
+        E1 --> E2 --> E3
+    end
+
+    subgraph S2B_OFFER["S2B: Offer Design"]
+        F1[ICP Definition]
+        F2[Positioning]
+        F3[Pricing Model]
+        F1 --> F2 --> F3
+    end
+
+    subgraph PARALLEL["⚡ PARALLEL EXECUTION"]
+        S3_FORECAST["S3: Forecast<br/>────────<br/>P10/P50/P90<br/>Assumptions<br/>Test Metrics"]
+        S6B_CHANNELS["S6B: Channels<br/>────────<br/>GTM Strategy<br/>SEO Plan<br/>Outreach Scripts"]
+    end
+
+    subgraph S4_MERGE["S4: Baseline Merge"]
+        G1[Validate Artifacts]
+        G2[Compose Snapshot]
+        G3[Draft Manifest]
+        G1 --> G2 --> G3
+    end
+
+    subgraph S5_PRIORITIZE["S5A/S5B: Prioritize + Sync"]
+        H1[Score Go-Items]
+        H2[Rank by Impact]
+        H3[Persist to BOS D1]
+        H1 --> H2 --> H3
+    end
+
+    subgraph S6_UPGRADE["S6: Site Upgrade"]
+        I1[Platform Baseline]
+        I2[Best-Of Analysis]
+        I3[Adopt/Adapt Matrix]
+        I1 --> I2 --> I3
+    end
+
+    subgraph EXECUTION["🔨 EXECUTION LOOP"]
+        S7[S7: Fact-find<br/>────────<br/>Evidence Audit<br/>Task Seeds]
+        S8[S8: Plan<br/>────────<br/>Confidence-Gated<br/>Task Breakdown]
+        S9[S9: Build<br/>────────<br/>Implementation<br/>Validation]
+        S9B[S9B: QA Gates<br/>────────<br/>Launch Checks<br/>Design/Perf Audit]
+        S7 --> S8 --> S9 --> S9B
+    end
+
+    subgraph S10_DECISION["S10: Weekly Decision"]
+        J1[Measure KPIs]
+        J2[Gate Checks]
+        J3{Keep/Pivot/<br/>Scale/Kill?}
+        J4[Learning Ledger]
+        J1 --> J2 --> J3 --> J4
+    end
+
+    subgraph ARTIFACTS["📦 KEY ARTIFACTS"]
+        ART1[Intake Packet]
+        ART2[Readiness Report]
+        ART3[Market Intel Pack]
+        ART4[Offer Artifact]
+        ART5[Forecast Doc]
+        ART6[Channel Plan]
+        ART7[Baseline Snapshot]
+        ART8[Prioritization Scorecard]
+        ART9[Fact-find Brief]
+        ART10[Plan Doc]
+        ART11[Build Evidence]
+        ART12[Weekly K/P/C/S Decision]
+    end
+
+    INPUT --> S0_INTAKE
+    S0_INTAKE --> ART1
+    ART1 --> S1_READINESS
+    S1_READINESS --> ART2
+
+    C2 -->|Blocked| C1
+    C2 -->|Ready| S1B_S2A
+
+    S1B_S2A --> S2_RESEARCH
+    A4 --> S1B_S2A
+
+    S2_RESEARCH --> ART3
+    ART3 --> S2B_OFFER
+    S2B_OFFER --> ART4
+
+    ART4 --> S3_FORECAST
+    ART4 --> S6B_CHANNELS
+    ART3 --> S3_FORECAST
+    ART3 --> S6B_CHANNELS
+
+    S3_FORECAST --> ART5
+    S6B_CHANNELS --> ART6
+
+    ART5 --> S4_MERGE
+    ART6 --> S4_MERGE
+    ART4 --> S4_MERGE
+
+    S4_MERGE --> ART7
+    ART7 --> S5_PRIORITIZE
+    S5_PRIORITIZE --> ART8
+
+    ART8 --> S6_UPGRADE
+    S6_UPGRADE --> EXECUTION
+
+    EXECUTION --> ART9
+    ART9 --> ART10
+    ART10 --> ART11
+
+    ART11 --> S10_DECISION
+    S10_DECISION --> ART12
+
+    J3 -->|Continue/Pivot| S2_RESEARCH
+    J3 -->|Scale| S5_PRIORITIZE
+    J3 -->|Kill| J4
+
+    style INPUT fill:#e3f2fd
+    style ARTIFACTS fill:#fff3e0
+    style PARALLEL fill:#f3e5f5
+    style EXECUTION fill:#e8f5e9
+    style S10_DECISION fill:#fce4ec
 ```
 
-### 2.1 Existing-Business Route (BRIK)
+### 2.1 Existing-Business Route (BRIK) - Data Flow Detail
 
-For website-live businesses like BRIK, use this route:
+For website-live businesses like BRIK, use this route with historical baseline gate:
 
 ```mermaid
 flowchart TD
-    A[Existing Business Intake] --> B[Readiness]
-    B --> C[Historical Performance Baseline\nnet value/cloudflare]
-    C --> D[Deep Research S2\nmust consume baseline]
-    D --> E[Deep Research S6\nmust consume baseline]
-    E --> F[Forecast/Recalibration + Prioritization]
-    F --> G[lp-fact-find -> lp-plan -> lp-build]
+    subgraph INPUT["📥 EXISTING BUSINESS INPUTS"]
+        A1[Business Context<br/>from docs/business-os/strategy/BRIK/]
+        A2[Historical Net Value<br/>CSV exports]
+        A3[Cloudflare Analytics<br/>Monthly request totals]
+        A4[Ops Logs<br/>Booking/capacity data]
+    end
+
+    subgraph S0_S1["S0-S1: Intake + Readiness"]
+        B1[Intake Packet]
+        B2[Readiness Gates]
+        B1 --> B2
+    end
+
+    subgraph S2A["S2A: Historical Baseline Consolidation 🚧 GATE"]
+        direction TB
+        C1{Data Available?}
+        C2[Consolidate Baseline]
+        C3[Data Quality Notes]
+        C4[historical-baseline.user.md<br/>Status: Active]
+        C1 -->|No| C5[Hand data-request prompt<br/>BLOCK until supplied]
+        C5 -.user supplies data.-> C1
+        C1 -->|Yes| C2
+        C2 --> C3 --> C4
+    end
+
+    subgraph S2_S6["S2/S6: Deep Research Must Consume Baseline"]
+        direction LR
+        D1[Market Intelligence<br/>uses baseline demand]
+        D2[Site Upgrade Brief<br/>uses baseline traffic]
+        D1 -.consumes S2A.-> D2
+    end
+
+    subgraph S2B_S3_S6B["S2B/S3/S6B: Strategic Planning"]
+        E1[Offer Design]
+        E2[90-day Forecast<br/>uses baseline actuals]
+        E3[Channel Strategy<br/>uses baseline channels]
+        E1 --> E2
+        E1 --> E3
+    end
+
+    subgraph S4_S5["S4-S5: Baseline Merge + Prioritization"]
+        F1[Baseline Snapshot]
+        F2[Prioritized Go-Items]
+        F3[BOS Cards Created]
+        F1 --> F2 --> F3
+    end
+
+    subgraph EXECUTION["S7-S9B: Execution"]
+        G1[Fact-find]
+        G2[Plan]
+        G3[Build]
+        G4[QA Gates]
+        G1 --> G2 --> G3 --> G4
+    end
+
+    subgraph S10["S10: Weekly Decision"]
+        H1[Measure Actuals<br/>vs Forecast]
+        H2[Compare to Baseline<br/>Growth rate]
+        H3{K/P/C/S?}
+        H4[Recalibration Doc]
+        H1 --> H2 --> H3
+        H3 -->|Scale/Continue| H4
+        H4 -.updates.-> E2
+    end
+
+    A1 --> S0_S1
+    A2 --> S2A
+    A3 --> S2A
+    A4 --> S2A
+    S0_S1 --> S2A
+    S2A --> S2_S6
+    C4 -.consumed by.-> D1
+    C4 -.consumed by.-> D2
+    S2_S6 --> S2B_S3_S6B
+    C4 -.consumed by.-> E2
+    S2B_S3_S6B --> S4_S5
+    S4_S5 --> EXECUTION
+    EXECUTION --> S10
+    S10 -.loop back.-> S2_S6
+
+    style INPUT fill:#e3f2fd
+    style S2A fill:#ffebee
+    style S2_S6 fill:#f3e5f5
+    style S10 fill:#fff3e0
 ```
 
-Rule: BRIK does not proceed past S2/S6 while the historical baseline is missing or draft.
-When S2A is blocked due to missing data, the workflow must hand the user the S2A data-request prompt and pause progression until the data pack is supplied.
+**Critical Rule:** BRIK does not proceed past S2/S6 while the S2A historical baseline is missing or draft.
 
-### 2.2 Human Operator View: MCP Overlay + Data Connections
+**Data Flow:**
+- S2A baseline → consumed by S2 (market sizing validation), S3 (forecast anchoring), S6 (traffic patterns), S10 (growth measurement)
+- When S2A is blocked due to missing data, workflow hands user the S2A data-request prompt and pauses until data pack is supplied
+- S10 weekly decisions compare measured actuals vs baseline to calculate growth rate and trigger recalibration when guardrails break
+
+### 2.2 Detailed Stage Data Flow (Inputs → Processing → Outputs)
+
+```mermaid
+flowchart TB
+    subgraph S0["S0: INTAKE"]
+        direction LR
+        IN0[📥 Raw idea<br/>Product spec<br/>Constraints]
+        PROC0[🔄 Normalize<br/>Structure<br/>Validate]
+        OUT0[📦 intake-packet.user.md<br/>────────<br/>Business context<br/>Product definition<br/>Launch surface mode]
+        IN0 --> PROC0 --> OUT0
+    end
+
+    subgraph S1_S1B_S2A["S1/S1B/S2A: READINESS + CONDITIONAL BOOTSTRAP"]
+        direction LR
+        IN1[📥 Intake packet<br/>Strategy plan<br/>People profile<br/>──────<br/>Pre-website: none<br/>Website-live: historical data]
+        PROC1[🔄 Gate checks RG-01..07<br/>Detect blockers<br/>──────<br/>S1B: Analytics setup<br/>S2A: Baseline consolidation]
+        OUT1[📦 readiness-report.user.md<br/>Missing-context register<br/>Blocker questions<br/>──────<br/>S1B: measurement-setup.user.md<br/>S2A: historical-baseline.user.md]
+        IN1 --> PROC1 --> OUT1
+    end
+
+    subgraph S2["S2: MARKET INTELLIGENCE"]
+        direction LR
+        IN2[📥 Intake packet<br/>S2A baseline existing<br/>Current constraints<br/>Channel intent]
+        PROC2[🔄 Deep Research<br/>Competitor analysis<br/>Demand/pricing data<br/>Regulatory scan<br/>Confidence tagging]
+        OUT2[📦 market-intelligence.user.md<br/>────────<br/>Market sizing<br/>Competitive landscape<br/>Pricing benchmarks<br/>Channel economics<br/>Evidence sources]
+        IN2 --> PROC2 --> OUT2
+    end
+
+    subgraph S2B["S2B: OFFER DESIGN"]
+        direction LR
+        IN2B[📥 Market intel pack<br/>Intake packet<br/>Constraints]
+        PROC2B[🔄 ICP definition<br/>Positioning strategy<br/>Pricing architecture<br/>Objection mapping<br/>Offer validation]
+        OUT2B[📦 offer-artifact.user.md<br/>────────<br/>Target customer profile<br/>Value proposition<br/>Pricing model<br/>Positioning statement<br/>Objection handlers]
+        IN2B --> PROC2B --> OUT2B
+    end
+
+    subgraph PARALLEL_STAGES["⚡ S3 + S6B: PARALLEL EXECUTION"]
+        direction TB
+        subgraph S3["S3: FORECAST"]
+            direction LR
+            IN3[📥 Offer artifact<br/>Market intel<br/>Fresh assumptions]
+            PROC3[🔄 P10/P50/P90 scenarios<br/>Guardrails<br/>14-day tests<br/>Risk modeling]
+            OUT3[📦 90-day-forecast.user.md<br/>forecast-exec-summary.user.md<br/>forecast-seed.user.md<br/>────────<br/>Revenue bands<br/>Cost assumptions<br/>Gate thresholds<br/>Test metrics]
+            IN3 --> PROC3 --> OUT3
+        end
+        subgraph S6B["S6B: CHANNEL STRATEGY"]
+            direction LR
+            IN6B[📥 Offer artifact<br/>Market intel<br/>Launch surface]
+            PROC6B[🔄 Channel-customer fit<br/>2-3 launch channels<br/>30-day GTM timeline<br/>SEO strategy<br/>Outreach scripts]
+            OUT6B[📦 channel-plan.user.md<br/>seo-strategy.user.md<br/>outreach-drafts.user.md<br/>────────<br/>Channel selection rationale<br/>GTM calendar<br/>Content roadmap<br/>Early outreach assets]
+            IN6B --> PROC6B --> OUT6B
+        end
+    end
+
+    subgraph S4_S5["S4/S5A/S5B: BASELINE MERGE + PRIORITIZATION"]
+        direction LR
+        IN4[📥 Offer S2B<br/>Forecast S3<br/>Channels S6B]
+        PROC4[🔄 Validate artifacts<br/>Compose snapshot<br/>Score go-items<br/>Rank by impact<br/>Persist to BOS D1]
+        OUT4[📦 baseline-snapshot.json<br/>manifest.json<br/>prioritization-scorecard.user.md<br/>────────<br/>Committed BOS cards<br/>Stage docs created<br/>Top 2-3 items ranked]
+        IN4 --> PROC4 --> OUT4
+    end
+
+    subgraph S6["S6: SITE UPGRADE SYNTHESIS"]
+        direction LR
+        IN6[📥 Platform baseline<br/>Market intel<br/>Business upgrade brief<br/>Reference sites]
+        PROC6[🔄 Best-of decomposition<br/>Adopt/Adapt/Defer/Reject<br/>Feature prioritization<br/>Handoff packet assembly]
+        OUT6[📦 upgrade-brief.user.md<br/>────────<br/>Platform-fit matrix<br/>Prioritized features<br/>Fact-find-ready backlog]
+        IN6 --> PROC6 --> OUT6
+    end
+
+    subgraph S7_S9B["S7-S9B: EXECUTION STAGES"]
+        direction TB
+        subgraph S7["S7: FACT-FIND"]
+            direction LR
+            IN7[📥 Go-item selected<br/>Evidence docs<br/>Constraints]
+            PROC7[🔄 Deep audit<br/>Code exploration<br/>Task seed generation<br/>Confidence assessment]
+            OUT7[📦 fact-find.md<br/>────────<br/>Context brief<br/>Task seeds<br/>Ready-for-planning status]
+            IN7 --> PROC7 --> OUT7
+        end
+        subgraph S8["S8: PLAN"]
+            direction LR
+            IN8[📥 Fact-find brief]
+            PROC8[🔄 Confidence gating<br/>Task breakdown<br/>Dependency mapping<br/>Acceptance criteria]
+            OUT8[📦 plan.md<br/>────────<br/>Sequenced tasks<br/>Validation checkpoints<br/>Confidence scores]
+            IN8 --> PROC8 --> OUT8
+        end
+        subgraph S9["S9: BUILD"]
+            direction LR
+            IN9[📥 Plan tasks<br/>Design spec]
+            PROC9[🔄 Implement<br/>Validate per task<br/>Track outputs<br/>Evidence collection]
+            OUT9[📦 build.md<br/>Shipped code<br/>────────<br/>Implementation evidence<br/>Test results<br/>Validation proofs]
+            IN9 --> PROC9 --> OUT9
+        end
+        subgraph S9B["S9B: QA GATES"]
+            direction LR
+            IN9B[📥 Build outputs<br/>Design spec<br/>Performance budget]
+            PROC9B[🔄 Launch QA<br/>Design QA<br/>Measurement verification<br/>Go/no-go decision]
+            OUT9B[📦 qa-report.md<br/>────────<br/>Issue inventory<br/>Go/no-go recommendation<br/>Deployment checklist]
+            IN9B --> PROC9B --> OUT9B
+        end
+    end
+
+    subgraph S10["S10: WEEKLY DECISION LOOP"]
+        direction LR
+        IN10[📥 KPI scoreboard<br/>Gate metrics<br/>Growth ledger<br/>Operational reliability]
+        PROC10[🔄 K/P/C/S decisioning<br/>Guardrail checks<br/>Bottleneck diagnosis<br/>Learning compilation<br/>Replayability validation]
+        OUT10[📦 weekly-kpcs-decision.user.md<br/>growth-ledger.json<br/>growth-event-payload.json<br/>stage-result.json<br/>────────<br/>Continue/Pivot/Scale/Kill<br/>Next actions<br/>Loop-back updates]
+        IN10 --> PROC10 --> OUT10
+    end
+
+    OUT0 -.-> IN1
+    OUT1 -.-> IN2
+    OUT2 -.-> IN2B
+    OUT2B -.-> IN3
+    OUT2B -.-> IN6B
+    OUT3 -.-> IN4
+    OUT6B -.-> IN4
+    OUT4 -.-> IN6
+    OUT6 -.-> IN7
+    OUT7 -.-> IN8
+    OUT8 -.-> IN9
+    OUT9 -.-> IN9B
+    OUT9B -.-> IN10
+    OUT10 -.restart loop.-> IN2
+
+    style S0 fill:#e3f2fd
+    style S1_S1B_S2A fill:#f3e5f5
+    style S2 fill:#e8f5e9
+    style S2B fill:#fff3e0
+    style PARALLEL_STAGES fill:#fce4ec
+    style S4_S5 fill:#e0f2f1
+    style S6 fill:#f1f8e9
+    style S7_S9B fill:#fff9c4
+    style S10 fill:#ffebee
+```
+
+### 2.3 Artifact Production & Consumption Chain
+
+```mermaid
+flowchart TB
+    subgraph FOUNDATIONAL["🏗️ FOUNDATIONAL ARTIFACTS Single-source, Long-lived"]
+        direction TB
+        A1["📄 intake-packet.user.md<br/>────────<br/>Produced by: S0<br/>Consumed by: S1, S2, S2B, all downstream<br/>Lifecycle: Update on major scope change<br/>Location: docs/business-os/startup-baselines/"]
+
+        A2["📄 readiness-report.user.md<br/>────────<br/>Produced by: S1<br/>Consumed by: S2 blocker resolution<br/>Lifecycle: Regenerate on major change<br/>Location: docs/business-os/readiness/"]
+
+        A3["📄 historical-baseline.user.md S2A<br/>────────<br/>Produced by: S2A website-live only<br/>Consumed by: S2, S3, S10<br/>Lifecycle: Refresh weekly first 30 days<br/>Location: docs/business-os/strategy/BIZ/"]
+
+        A4["📄 measurement-setup.user.md S1B<br/>────────<br/>Produced by: S1B pre-website only<br/>Consumed by: S2, S3, launch checklist<br/>Lifecycle: Complete before paid traffic<br/>Location: docs/business-os/strategy/BIZ/"]
+
+        A1 --> A2
+        A2 --> A3
+        A2 --> A4
+    end
+
+    subgraph RESEARCH["🔬 RESEARCH ARTIFACTS Refresh Monthly/Quarterly"]
+        direction TB
+        B1["📄 market-intelligence.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: S2 Deep Research<br/>Consumed by: S2B, S3, S6B<br/>Refresh: Monthly or on material change<br/>Location: docs/business-os/market-research/BIZ/"]
+
+        B2["📄 platform-capability-baseline.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: Periodic Deep Research<br/>Consumed by: S6<br/>Refresh: Every 30-45 days<br/>Location: docs/business-os/platform-capability/"]
+
+        B3["📄 upgrade-brief.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: S6 Deep Research<br/>Consumed by: S7 backlog packet<br/>Refresh: Monthly or on ICP/channel change<br/>Location: docs/business-os/site-upgrades/BIZ/"]
+    end
+
+    subgraph STRATEGIC["🎯 STRATEGIC PLANNING ARTIFACTS Core Baseline"]
+        direction TB
+        C1["📄 offer-artifact.user.md<br/>────────<br/>Produced by: S2B /lp-offer<br/>Consumed by: S3, S6B, S4<br/>Dependencies: Market intel S2<br/>Location: docs/business-os/startup-baselines/BIZ/"]
+
+        C2["📄 90-day-forecast.user.md<br/>+ forecast-seed.user.md<br/>+ exec-summary.user.md<br/>────────<br/>Produced by: S3 /lp-forecast<br/>Consumed by: S4, S5A, S10<br/>Dependencies: Offer S2B, Market intel S2<br/>Recalibration: Day 14, then monthly<br/>Location: docs/business-os/strategy/BIZ/"]
+
+        C3["📄 channel-plan.user.md<br/>+ seo-strategy.user.md<br/>+ outreach-drafts.user.md<br/>────────<br/>Produced by: S6B /lp-channels + /lp-seo<br/>Consumed by: S4, S7 marketing items<br/>Dependencies: Offer S2B, Market intel S2<br/>Location: docs/business-os/startup-baselines/BIZ/"]
+
+        C4["📦 baseline-snapshot.json<br/>+ manifest.json<br/>────────<br/>Produced by: S4 /lp-baseline-merge<br/>Consumed by: S5A, S5B manifest commit<br/>Dependencies: Offer C1, Forecast C2, Channels C3<br/>Lifecycle: Immutable per runId<br/>Location: docs/business-os/startup-baselines/BIZ/runs/RUNID/"]
+
+        C5["📄 prioritization-scorecard.user.md<br/>────────<br/>Produced by: S5A /lp-prioritize<br/>Consumed by: S5B, S7 item selection<br/>Dependencies: Baseline snapshot C4<br/>Refresh: Weekly or on new candidate<br/>Location: docs/business-os/strategy/BIZ/"]
+    end
+
+    subgraph BOS_ENTITIES["💾 BUSINESS OS PERSISTED ENTITIES D1 Database"]
+        direction TB
+        D1["🗂️ BOS Cards + Stage Docs<br/>────────<br/>Produced by: S5B /lp-bos-sync<br/>Consumed by: S7, S8, S9, S10<br/>Write path: POST/PATCH /api/agent/*<br/>Read path: MCP bos_* tools<br/>Persistence: D1 apps/business-os"]
+
+        D2["📍 Committed Manifest Pointer<br/>────────<br/>Produced by: S5B<br/>Consumed by: All subsequent runs<br/>Purpose: Lock baseline as 'current'<br/>Location: docs/business-os/startup-baselines/BIZ/manifest.json"]
+    end
+
+    subgraph EXECUTION["⚙️ EXECUTION ARTIFACTS Per Card/Plan"]
+        direction TB
+        E1["📄 fact-find.md<br/>────────<br/>Produced by: S7 /lp-fact-find<br/>Consumed by: S8<br/>BOS sync: Stage doc upsert<br/>Location: docs/plans/FEATURE-SLUG/"]
+
+        E2["📄 plan.md<br/>────────<br/>Produced by: S8 /lp-plan<br/>Consumed by: S9<br/>BOS sync: Stage doc + lane transition<br/>Location: docs/plans/FEATURE-SLUG/"]
+
+        E3["📄 build.md + shipped code<br/>────────<br/>Produced by: S9 /lp-build<br/>Consumed by: S9B, S10<br/>BOS sync: Stage doc + Done lane<br/>Evidence: git commits, test results<br/>Location: docs/plans/FEATURE-SLUG/ + apps/*"]
+
+        E4["📄 qa-report.md<br/>────────<br/>Produced by: S9B /lp-launch-qa<br/>Consumed by: S10 go/no-go<br/>Contents: Issue inventory, deployment checklist<br/>Location: docs/plans/FEATURE-SLUG/"]
+    end
+
+    subgraph MEASUREMENT["📊 MEASUREMENT & DECISION ARTIFACTS Weekly Cadence"]
+        direction TB
+        F1["📄 weekly-kpcs-decision.user.md<br/>────────<br/>Produced by: S10 Weekly loop<br/>Consumed by: Loop restart S2/S5 or Kill<br/>Decision: Keep/Pivot/Scale/Kill<br/>Location: docs/business-os/strategy/BIZ/"]
+
+        F2["📦 growth-ledger.json<br/>+ growth-event-payload.json<br/>+ stage-result.json<br/>────────<br/>Produced by: S10 diagnosis integration<br/>Consumed by: Forecast recalibration, replays<br/>Contents: Stage statuses, guardrail signals<br/>Location: data/shops/SHOPID/ + runs/RUNID/stages/S10/"]
+
+        F3["📄 forecast-recalibration.user.md<br/>────────<br/>Produced by: S10 or ad-hoc on gate fail<br/>Consumed by: Updated strategy plan<br/>Trigger: Day 14, major assumption break<br/>Location: docs/business-os/strategy/BIZ/"]
+    end
+
+    A3 --> B1
+    A4 --> B1
+    B1 --> C1
+    B1 --> C2
+    B1 --> C3
+    C1 --> C2
+    C1 --> C3
+    C1 --> C4
+    C2 --> C4
+    C3 --> C4
+    C4 --> C5
+    C5 --> D1
+    C4 --> D2
+    D1 --> E1
+    D2 --> E1
+    B2 --> B3
+    B3 --> E1
+    E1 --> E2
+    E2 --> E3
+    E3 --> E4
+    E4 --> F1
+    C2 --> F1
+    E3 --> F2
+    F1 --> F2
+    F2 --> F3
+    F3 -.refresh.-> C2
+    F1 -.pivot.-> B1
+    F1 -.scale.-> C5
+
+    style FOUNDATIONAL fill:#e3f2fd
+    style RESEARCH fill:#f3e5f5
+    style STRATEGIC fill:#e8f5e9
+    style BOS_ENTITIES fill:#fff3e0
+    style EXECUTION fill:#fff9c4
+    style MEASUREMENT fill:#ffebee
+```
+
+### 2.4 Human Operator View: MCP Overlay + Data Connections
 
 ```mermaid
 flowchart LR
@@ -106,7 +559,7 @@ What this means for operators:
 2. `measure_*` tools are not in current wave and remain a planned dependency for stronger S2A/S3/S10 measurement.
 3. Writes to BOS remain guarded (`entitySha` + stage policy) through API contracts.
 
-### 2.3 Open Tasks (Required Now, Simple Language)
+### 2.5 Open Tasks (Required Now, Simple Language)
 
 | Required task | Why it is required | Evidence path |
 |---|---|---|
@@ -136,7 +589,7 @@ This sub-loop feeds the main startup loop at the lp-fact-find stage.
 
 ## 4) Stage-by-Stage Workflow (Input -> Processing -> Output)
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.0.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.1.0).
 
 | Stage | Inputs | Processing | Outputs |
 |---|---|---|---|
@@ -145,7 +598,7 @@ Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1
 | S1B. Pre-website measurement bootstrap (conditional: pre-website) | Launch-surface mode = `pre-website` + intake packet + business plan | Run mandatory analytics/measurement setup gate and operator handoff (GA4/Search Console/API prereqs) | Measurement setup note + verification checklist + blocker list |
 | S2A. Historical performance baseline (conditional: website-live) | Monthly net booking value exports + Cloudflare analytics + ops logs + Octorate data collection (Batch 1: booking value, Batch 2: calendar/inventory) | Consolidate internal history into decision baseline with data-quality notes | Historical baseline pack (`Status: Active` required before S2/S6 for existing businesses) + Octorate data collection protocol active |
 | S2. Market intelligence | Deep Research prompt template + business intake packet (+ S2A baseline for existing businesses) | Competitor/demand/pricing/regulatory research, confidence tagging | Market Intelligence Pack per business + `latest` pointer |
-| S2B. Offer design | Market intelligence + intake packet + constraints | Consolidate ICP, positioning, pricing, offer design into validated hypothesis | Offer artifact (`/lp-offer` output) |
+| S2B. Offer design | Market intelligence + intake packet + constraints | Consolidate ICP, positioning, pricing, offer design into validated hypothesis | Offer artifact (`/lp-offer` output); BD-3 sub-deliverable: messaging-hierarchy.user.md (Draft minimum required before S2B is Done — GATE-BD-03) |
 | *S3. Forecast* (parallel with S6B) | Business intake + fresh market intelligence + offer hypothesis | Build P10/P50/P90 forecast, guardrails, assumptions, 14-day tests | Forecast doc + exec summary + forecast seed |
 | *S6B. Channel strategy + GTM* (parallel with S3) | Offer hypothesis + market intelligence + launch surface | Channel-customer fit analysis, 2-3 launch channels, 30-day GTM timeline | Channel plan + SEO strategy + outreach drafts |
 | S4. Baseline merge (join barrier) | Offer (S2B) + forecast (S3) + channels (S6B) | Validate required upstream artifacts; compose deterministic baseline snapshot | Candidate baseline snapshot + draft manifest |
@@ -157,6 +610,17 @@ Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1
 | S9. Build | Approved plan tasks | Implement + validate + track outputs | Shipped work + validation evidence |
 | S9B. QA gates | Build outputs + design spec + performance budget | Launch QA, design QA, measurement verification | QA report + go/no-go recommendation |
 | S10. Weekly decision loop | KPI scoreboard + gate metrics + costs + operational reliability + growth ledger outputs (`stage_statuses`, `overall_status`, `guardrail_signal`, `threshold_set_hash`) | K/P/C/S decisioning + replayability check against growth event payload | Continue/Pivot/Scale/Kill decision + linked growth artifacts (`stages/S10/stage-result.json`, `data/shops/{shopId}/growth-ledger.json`, `stages/S10/growth-event-payload.json`) + loop-back updates |
+
+**Brand & Design touch-points (cross-cutting, enforced by advance gates):**
+
+| Touch-point | Trigger | Processing | Output / Gate |
+|---|---|---|---|
+| BD-1 Brand Dossier bootstrap | S1 advance | GATE-BD-01 (Hard): check brand-dossier.user.md Draft/Active status in strategy index; block S1 advance if missing | Run `/lp-brand-bootstrap <BIZ>` → `brand-dossier.user.md` at Draft minimum |
+| BD-2 Competitive Positioning | After S2 | Competitive positioning research via BRAND-DR-01/02 prompts | `competitive-positioning.user.md`; evidence pack entries under `docs/business-os/evidence/<BIZ>/` |
+| BD-3 Messaging Hierarchy (S2B sub-deliverable) | S2B completion | GATE-BD-03 (Hard): messaging-hierarchy.user.md must exist at Draft minimum before S2B is Done | `messaging-hierarchy.user.md` at Draft minimum; S2B not Done without it |
+| BD-4 Creative Voice Brief | After S6B | Creative voice brief derived from channel angles and messaging decisions (BRAND-DR-04) | `creative-voice-brief.user.md` |
+| BD-5 Design Spec gate | S7/S8 (lp-design-spec pre-flight) | GATE-BD-07 (Hard): lp-design-spec requires Active brand-dossier; blocks design spec if Status ≠ Active | Gate pass → lp-design-spec runs; gate block → advance brand-dossier to Active first |
+| BD-6 Brand Copy QA | S9B (`/lp-launch-qa`) | Domain 5 Brand Copy Compliance checks: BC-04 (words-to-avoid), BC-05 (claims in messaging hierarchy), BC-07 (voice audit) | Brand compliance verdict in QA report; pass required for go-live |
 
 ## 5) Current Missing Information (HEAD, PET, and BRIK)
 
@@ -374,45 +838,22 @@ Output hygiene for every prompt run:
 
 ## 11) Design Policy (Cross-Cutting)
 
-Design decisions for customer-facing surfaces must be grounded in demographic evidence, not developer defaults. This section seeds the design policy for each business.
+> **Retired.** Design policy and brand decisions have been migrated to first-class artifacts with front matter schemas and gate enforcement.
+>
+> See:
+> - **Brand Dossier (BRIK):** `docs/business-os/strategy/BRIK/brand-dossier.user.md` — audience, personality, visual identity, voice & tone
+> - **Prime App Design Branding:** `docs/business-os/strategy/BRIK/prime-app-design-branding.user.md` — Prime-specific design principles, token rationale, signature patterns
+> - **Strategy Index (artifact status + gate table):** `docs/business-os/strategy/BRIK/index.user.md`
+>
+> For HEAD and PET: brand-dossier.user.md is bootstrapped by `/lp-brand-bootstrap <BIZ>` at S1 entry (GATE-BD-01).
 
 ### 11.1 BRIK Design Policy (Prime Guest Portal)
 
-**Target Demographic (observed):**
-
-| Segment | Share | Implication |
-|---------|-------|-------------|
-| Female | ~99% | Avoid cold/corporate palettes. Favor warm, expressive, lifestyle-aligned aesthetics. |
-| Age 18-25 | ~60% | Mobile-native generation. Expect app-quality design (Instagram, Airbnb, Pinterest level). High sensitivity to visual polish and micro-interactions. |
-| Age 26-35 | ~39% | Similar expectations but slightly more tolerance for functional design. Still mobile-first. |
-| Age 35+ | ~1% | Not a design driver. |
-| Mobile-only | 100% | Prime is accessed on guests' phones during their stay. No desktop/tablet use case. |
-
-**Design Principles (BRIK customer-facing surfaces):**
-
-1. **Warm over cold** — Primary palette should use warm hues (coral, rose, warm violet, sage) rather than cold corporate blues/teals. The current teal (`192° 80% 34%`) reads as fintech, not travel/lifestyle.
-2. **Approachable typography** — Prefer friendly geometric sans-serifs (Plus Jakarta Sans, DM Sans) over developer-oriented fonts (Geist Sans, SF Mono). Rounded terminals signal warmth.
-3. **Expressive but not noisy** — Subtle gradients, soft shadows, and gentle motion. Avoid flat gray backgrounds. Slight warm tints on surfaces (e.g., `bg-rose-50` instead of `bg-gray-50`).
-4. **Mobile-only, thumb-first** — Prime is a phone-only app. Design exclusively for mobile viewports. Optimize for one-handed use, thumb-zone reachability, and handheld viewing distance. No desktop or tablet breakpoints. Primary actions belong in the bottom half of the screen.
-5. **Mobile-native quality bar** — This demographic benchmarks against Airbnb, Pinterest, Hostelworld, and Instagram. Card-based layouts with generous radius, smooth transitions, and high-quality imagery. The quality bar is set by the best apps on their home screen, not by web standards.
-6. **Inclusive, not stereotyped** — "Designed for young women" does not mean "pink everything." It means warm, polished, photography-forward, and emotionally resonant. Avoid patronizing color choices.
-7. **Token-driven** — All visual changes flow through the theme token system (`packages/themes/prime/tokens.css`). No hardcoded Tailwind colors. This ensures dark mode, accessibility, and future theme variants work automatically.
-
-**Surfaces governed by this policy:**
-- Prime guest portal (all guest-facing pages)
-- Brikette website (booking and guide pages) — to be aligned in a future pass
-- Email templates sent to guests
-
-**Surfaces NOT governed (internal tools):**
-- Reception app (staff-facing, operational)
-- Business OS (internal admin)
-- Owner/admin dashboards within Prime
-
-**Active fact-find:** `docs/plans/prime-design-refresh-fact-find.md`
+→ Migrated to `docs/business-os/strategy/BRIK/prime-app-design-branding.user.md`
 
 ### 11.2 HEAD / PET Design Policies
 
-Not yet established. Will be seeded when customer-facing surfaces are built for these businesses. Demographic research should inform design token choices from day one — do not default to framework/template aesthetics.
+→ Bootstrapped at S1 entry via `/lp-brand-bootstrap <BIZ>`. See `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` once created.
 
 ## 12) Standing Refresh Prompts (Periodic)
 
@@ -424,6 +865,7 @@ These are recurring research prompts for standing information refresh.
 | Market pulse per business | Monthly | Competitor/offer/channel shifts suspected | `docs/business-os/workflow-prompts/_templates/monthly-market-pulse-prompt.md` | `docs/business-os/market-research/<BIZ>/<YYYY-MM-DD>-market-pulse.user.md` |
 | Channel economics refresh | Monthly | CPC/CAC/CVR/returns shift or spend-plan review cycle | `docs/business-os/workflow-prompts/_templates/monthly-channel-economics-refresh-prompt.md` | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-channel-economics-refresh.user.md` |
 | Regulatory and claims watch | Quarterly | New policy/compliance/claims risks in target region | `docs/business-os/workflow-prompts/_templates/quarterly-regulatory-claims-watch-prompt.md` | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-regulatory-claims-watch.user.md` |
+| Brand Dossier review (GATE-BD-08) | Quarterly (90 days) | GATE-BD-08 (Soft) warning at S10 if Last-reviewed > 90 days; review claim/proof ledger, voice and audience sections | `docs/business-os/workflow-prompts/_templates/brand-claim-proof-validation-prompt.md` (BRAND-DR-03) | Update `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` in-place; bump `Last-reviewed` date |
 
 Markdown source artifact contract for standing refresh:
 
@@ -488,6 +930,12 @@ A stage is considered complete only when both are true:
 2. Required Business OS sync actions are confirmed complete.
 
 If either is missing, the run stays `blocked` at current stage.
+
+**Brand gates enforced on advance (see `.claude/skills/startup-loop/SKILL.md` for full gate definitions):**
+
+- **GATE-BD-01** (Hard): S1 advance blocked until `brand-dossier.user.md` exists at Draft minimum in strategy index.
+- **GATE-BD-03** (Hard): S2B completion blocked until `messaging-hierarchy.user.md` exists at Draft minimum in strategy index.
+- **GATE-BD-08** (Soft — warning only): S10 emits a staleness warning if brand-dossier `Last-reviewed` > 90 days.
 
 ## 14) Business OS Sync Contract (No Loop-to-BOS Drift)
 

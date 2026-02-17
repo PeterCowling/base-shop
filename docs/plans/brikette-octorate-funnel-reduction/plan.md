@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-10A complete)
+Last-updated: 2026-02-17 (TASK-03 complete)
 Last-reviewed: 2026-02-17
 Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
@@ -266,7 +266,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** TASK-05A
 - **Blocks:** TASK-05B, TASK-07
@@ -298,6 +298,14 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - Rollback: if handoff-to-session ratio drops by >=15% vs prior 14-day baseline (with no campaign-volume confound), revert affected surface to prior tab mode while retaining telemetry fields.
 - **Documentation impact:** update funnel click-map section and endpoint policy notes.
 - **Notes / references:** `docs/plans/brikette-octorate-funnel-reduction/fact-find.md`
+- **Build evidence (2026-02-17):**
+  - `packages/ui/src/organisms/modals/BookingModal.tsx`: CTA `<a>` now prevents default link navigation when `onAction` is provided; navigation is delegated to `onAction` callback (beacon-driven same-tab).
+  - `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`: switched from `fireHandoffToEngine` (`new_tab`) to `fireHandoffToEngineAndNavigate` (`same_tab`); navigation now driven by GA4 `event_callback` via `setWindowLocationHref`.
+  - TC-01/TC-04 (ga4-09-booking-modal-begin-checkout.test.tsx): assert `handoff_to_engine` fires with `handoff_mode: "same_tab"`, `engine_endpoint: "result"`, beacon transport; navigation deferred until `event_callback`; compat `search_availability` still fires. 2/2 pass.
+  - TC-02: Booking2Modal same-tab semantics confirmed via ga4-10 test (2/2 pass).
+  - TC-03: `confirm` path in Booking2Modal enforces room/rate context check (implemented in TASK-05A, still passing).
+  - TC-05: deferred to post-deploy; threshold monitoring via GA4 weekly review cadence (TASK-06/runbook).
+  - All surfaces now emit `same_tab` except legacy path (which is being deprecated). TASK-07 checkpoint now unblocked.
 
 ### TASK-04: Investigate GA4 handoff capture gap in standard reports
 - **Type:** INVESTIGATE
@@ -727,6 +735,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-05A complete. Native `handoff_to_engine` emission added across BookingModal (new_tab), Booking2Modal (same_tab/confirm + same_tab/result), and ApartmentBookContent (same_tab/result). `fireHandoffToEngineAndNavigate` with beacon is the primary navigation driver in Booking2Modal; `fireHandoffToEngine` with beacon-transport flag is used where navigation is owned externally. Compat `begin_checkout`/`search_availability` fires retained without beacon during migration window. TC-01/TC-02 automated; TC-03/TC-04 deferred to post-deploy.
 - 2026-02-17: TASK-10A complete. SSR/no-JS + i18n leakage detection suite added in report-only mode. TC-01 (i18n placeholder audit): 0 findings — all 15 non-EN locales × 6 commercial namespaces clean. TC-02 (no-JS dead-end): correctly detects `BookPageContent.tsx` + `book/page.tsx` have no static Octorate fallback; warns in normal mode, hard-fails with `CONTENT_READINESS_MODE=fail`. TC-03 (locale regression): 36/36 pass. Gate switches to CI-blocking after TASK-10B remediation. TASK-07 now blocked only on TASK-03.
 - 2026-02-17: GA4 admin actions confirmed complete by Pete: cross-domain include list (`hostel-positano.com` + `brikette-website.pages.dev`) and referral exclusion (`book.octorate.com`) both applied. Runbook §8 updated to reflect completion.
+- 2026-02-17: TASK-03 complete. BookingModal (v1) normalized to same-tab handoff. `packages/ui` BookingModal.tsx: CTA prevents default when `onAction` is provided (beacon-driven nav). `BookingGlobalModal.tsx`: switched to `fireHandoffToEngineAndNavigate` with `same_tab`. All three primary booking surfaces (BookingModal, Booking2Modal, ApartmentBookContent) now emit `same_tab` for primary flow. TC-01/TC-04 automated; TC-05 deferred to post-deploy monitoring. TASK-07 checkpoint now unblocked (TASK-03 + TASK-10A both complete).
 
 ## Overall-confidence Calculation
 - Effort weights: S=1, M=2, L=3

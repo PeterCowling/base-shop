@@ -10,9 +10,10 @@ import { resolveSharedToken } from "@acme/ui/shared";
 
 import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { fireHandoffToEngine, fireSearchAvailability } from "@/utils/ga4-events";
+import { fireHandoffToEngineAndNavigate, fireSearchAvailability } from "@/utils/ga4-events";
 
 import { BOOKING_CODE, formatDate } from "../constants";
+import { setWindowLocationHref } from "../environment";
 import { useModal } from "../hooks";
 import { BookingModal } from "../lazy-modals";
 
@@ -88,21 +89,24 @@ export function BookingGlobalModal(): JSX.Element | null {
 
   const handleAction = (params: BookingModalBuildParams): void => {
     const source = dealId ? "deals" : "unknown";
-    // Canonical handoff event (TASK-05A). New-tab handoff — page stays active so beacon fires reliably.
-    fireHandoffToEngine({
-      handoff_mode: "new_tab",
-      engine_endpoint: "result",
-      checkin: formatDate(params.checkIn),
-      checkout: formatDate(params.checkOut),
-      pax: params.guests,
-      source,
-    });
+    const href = buildBookingHref(params);
     // Compat: search_availability kept during migration window (see TASK-05B for cleanup policy).
     fireSearchAvailability({
       source,
       checkin: formatDate(params.checkIn),
       checkout: formatDate(params.checkOut),
       pax: params.guests,
+    });
+    // Canonical handoff event (TASK-03): same-tab with beacon reliability. Navigation is
+    // driven by the event_callback so the beacon has a chance to dispatch before unload.
+    fireHandoffToEngineAndNavigate({
+      handoff_mode: "same_tab",
+      engine_endpoint: "result",
+      checkin: formatDate(params.checkIn),
+      checkout: formatDate(params.checkOut),
+      pax: params.guests,
+      source,
+      onNavigate: () => setWindowLocationHref(href),
     });
   };
 

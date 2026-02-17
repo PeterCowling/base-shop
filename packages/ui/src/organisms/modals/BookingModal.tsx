@@ -7,7 +7,6 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
 import { DatePicker } from "@acme/design-system/molecules";
@@ -23,7 +22,6 @@ import type {
   BookingModalHrefBuilder,
 } from "./types";
 
-const BOOKING_MODAL_TITLE_ID = "booking-modal-title";
 const BOOKING_CHECK_IN_ID = "booking-check-in";
 const BOOKING_CHECK_OUT_ID = "booking-check-out";
 const BOOKING_GUESTS_ID = "booking-people-number";
@@ -159,9 +157,9 @@ function BookingModal({
       isOpen={isOpen}
       onClose={onClose}
       testId={testId}
+      title={copy.title}
       overlayClassName="layer-modal-backdrop pointer-coarse:p-4 bg-black/60 backdrop-blur-sm motion-safe:animate-fade-in dark:bg-black/80"
       contentClassName="layer-modal-container items-start justify-center"
-      ariaLabelledBy={BOOKING_MODAL_TITLE_ID}
     >
       <Container className="md:max-w-xl">
         <div className="layer-modal-panel pointer-events-auto rounded-2xl bg-brand-bg p-8 shadow-2xl drop-shadow-brand-primary-10 dark:bg-brand-text dark:text-brand-surface">
@@ -177,12 +175,9 @@ function BookingModal({
           </button>
 
           <header className="mb-8">
-            <DialogTitle
-              id={BOOKING_MODAL_TITLE_ID}
-              className="text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.2)]"
-            >
+            <h2 className="text-2xl font-bold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.2)]">
               {copy.title}
-            </DialogTitle>
+            </h2>
             <p className="mt-2 text-brand-text/70">{copy.subTitle}</p>
           </header>
 
@@ -243,7 +238,15 @@ function BookingModal({
               rel="noopener noreferrer"
               href={bookingHref}
               className={CTA_BUTTON_CLASSNAMES}
-              onClick={() => onAction?.(params)}
+              onClick={(e) => {
+                if (onAction) {
+                  // When onAction handles navigation (e.g. same-tab beacon flow),
+                  // prevent the browser from following the link so navigation is
+                  // driven by the GA4 event_callback instead (TASK-03).
+                  e.preventDefault();
+                  onAction(params);
+                }
+              }}
             >
               {copy.buttonLabel}
             </a>

@@ -4,14 +4,14 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-12 spike evidence added)
+Last-updated: 2026-02-17 (replan: TASK-12 spike done; TASK-21/22 precursor chain added)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: none
-Overall-confidence: 89%
+Overall-confidence: 88%
 Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -133,8 +133,9 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-12 | SPIKE | CMS build OOM mitigation prototype (reduce build-graph size; validate `@apps/cms` build) | 82% | M | Pending | TASK-10 | TASK-13 |
-| TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 | TASK-14, TASK-15 |
+| TASK-21 | INVESTIGATE | Audit CMS `transpilePackages` — identify packages with complete dist/ safe to remove | 88% | S | Pending | TASK-12 (complete) | TASK-22 |
+| TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 68% ⚠️ | M | Pending (below threshold — see TASK-21) | TASK-21 | TASK-13 |
+| TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 (complete), TASK-22 | TASK-14, TASK-15 |
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 72% ⚠️ | M | Pending | TASK-02 (complete), TASK-13 | - |
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13, TASK-11 | - |
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Pending | TASK-13 | TASK-17 |
@@ -155,12 +156,13 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-09 | Fix XA build wrapper to force Webpack (`apps/xa/scripts/build-xa.mjs` adds `--webpack`) | Complete (2026-02-15) | `d377c8a730` |
 | TASK-10 | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | Complete (2026-02-15) | `95652530c0` |
 | TASK-11 | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | Complete (2026-02-15) | `e582db8822` |
+| TASK-12 | SPIKE — CMS build OOM: webpack-escape for typescript import committed; TC-01 (build exits 0) not satisfied on 16 GB machine; precursor chain TASK-21→TASK-22 created | Spike Complete (2026-02-17) / TC-01 unmet | `71fe4c561d` |
 
 ### Deferred / Blocked
 
 | Item | Current State | Unblock Condition |
 |---|---|---|
-| CMS middleware consolidation (TASK-14) | Blocked on reproducible CMS build in this tranche | TASK-12 produces stable `@apps/cms` build baseline under documented heap policy |
+| CMS middleware consolidation (TASK-14) | Blocked on CMS typecheck/lint baseline | TASK-22 produces CMS `typecheck + lint` baseline (full build exits 0 may require 32 GB+ CI machine; TASK-13 checkpoint accepts typecheck/lint as primary gate) |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting). Overall-confidence is computed as weighted average of task confidence by effort, with completed tasks treated as 100%.
 
@@ -171,18 +173,20 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 | Wave | Tasks | Prerequisites | Notes |
 |------|-------|---------------|-------|
-| 1 | TASK-09, TASK-10 | - | Independent hardening: enforce Webpack in XA + decide build heap policy |
-| 2 | TASK-11, TASK-12 | Wave 1: TASK-10 | Implement heap guard + spike CMS build-graph mitigation |
-| 3 | TASK-13 | Wave 2: TASK-09, TASK-10, TASK-11, TASK-12 + TASK-01/02/06/08 (complete) | CHECKPOINT gate before runtime-sensitive middleware work |
-| 4 | TASK-14, TASK-15 | Wave 3: TASK-13 | Middleware hardening (CMS + cover-me-pretty) |
-| 5 | TASK-16, TASK-19 | Wave 3: TASK-13 | Governance evidence tranche (policy coverage + Turbopack repro evidence) |
-| 6 | TASK-17 | Wave 5: TASK-16 | Decide dependency ownership and declaration policy |
-| 7 | TASK-18 | Wave 6: TASK-17 | Apply manifest/dependency policy |
-| 8 | TASK-20 | Wave 7: TASK-18 and Wave 5: TASK-19 | Final governance checkpoint and confidence recalibration |
+| 1 | TASK-09, TASK-10 | - | Independent hardening: enforce Webpack in XA + decide build heap policy — **complete** |
+| 2 | TASK-11, TASK-12 | Wave 1: TASK-10 | Heap guard + spike — **complete** |
+| 3 | TASK-21 | Wave 2: TASK-12 (complete) | Audit CMS transpilePackages for safe-to-remove entries |
+| 4 | TASK-22 | Wave 3: TASK-21 | Apply build-graph reduction + commit deferred config changes |
+| 5 | TASK-13 | Wave 4: TASK-22 + TASK-01/02/06/08/09/10/11 (all complete) | CHECKPOINT gate before runtime-sensitive middleware work |
+| 6 | TASK-14, TASK-15 | Wave 5: TASK-13 | Middleware hardening (CMS + cover-me-pretty) |
+| 7 | TASK-16, TASK-19 | Wave 5: TASK-13 | Governance evidence tranche (policy coverage + Turbopack repro evidence) |
+| 8 | TASK-17 | Wave 7: TASK-16 | Decide dependency ownership and declaration policy |
+| 9 | TASK-18 | Wave 8: TASK-17 | Apply manifest/dependency policy |
+| 10 | TASK-20 | Wave 9: TASK-18 and Wave 7: TASK-19 | Final governance checkpoint and confidence recalibration |
 
-**Max parallelism:** 2 (Waves 1, 2, 4, 5)
-**Critical path (remaining):** TASK-12 -> TASK-13 -> TASK-16 -> TASK-17 -> TASK-18 -> TASK-20 (6 waves)
-**Total tasks:** 17
+**Max parallelism:** 2 (Waves 1, 2, 6, 7)
+**Critical path (remaining):** TASK-21 → TASK-22 → TASK-13 → TASK-16 → TASK-17 → TASK-18 → TASK-20 (7 tasks)
+**Total tasks:** 19
 
 ## Tasks
 
@@ -344,9 +348,81 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Scope expansion documented:** `apps/cms/next.config.mjs` (not in original Affects list) — added `typescript` to `serverExternalPackages` as belt-and-suspenders.
 - **Routing:** → `/lp-replan` for TASK-12 with new evidence. See full spike evidence in `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
 
+#### Re-plan Update (2026-02-17)
+- Confidence: 82% → Spike Complete (TC-01 unmet); Evidence: E2 (executable build verification at 4/8/10/12 GB)
+- Key change: Spike done — primary hypothesis invalidated; precursor chain TASK-21→TASK-22 created to pursue transpilePackages reduction
+- Dependencies: TASK-21 now blocks TASK-22; TASK-22 now blocks TASK-13 (replacing TASK-12's direct TASK-13 block)
+- Validation contract: TC-01 deferred to TASK-22 (typecheck+lint gate) and potentially TASK-13 (full build; may require 32 GB+ CI)
+- Notes: `apps/cms/next.config.mjs` (typescript in serverExternalPackages) deferred to TASK-22 — commit blocked by pre-existing tokenUtils.ts TS2307 errors triggering CMS typecheck on staged files
+
+### TASK-21: INVESTIGATE - CMS `transpilePackages` Reduction Audit
+- **Type:** INVESTIGATE
+- **Deliverable:** Audit note appended to `docs/plans/nextjs-16-upgrade/build-oom-notes.md` — list of packages safe to remove from CMS `transpilePackages`, with must-keep rationale and expected memory-impact estimate.
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `docs/plans/nextjs-16-upgrade/build-oom-notes.md`
+  - `[readonly] apps/cms/next.config.mjs` (transpilePackages list to audit)
+  - `[readonly] packages/*/dist/` (verify compiled output exists for each candidate)
+- **Depends on:** TASK-12 (complete)
+- **Blocks:** TASK-22
+- **Confidence:** 88%
+  - Implementation: 92% — straightforward: check dist/ presence for each package in transpilePackages.
+  - Approach: 88% — packages with complete dist/ output do not need transpilation by webpack; removal reduces build graph.
+  - Impact: 85% — spike showed removing a single package (platform-core) is insufficient at 8 GB; full-list reduction may change the picture but magnitude is uncertain.
+- **Questions to answer:**
+  - Which packages in CMS `transpilePackages` have a complete `dist/` with `index.js` and type declarations?
+  - Which packages have template-string dynamic imports or other webpack-hostile patterns that _require_ transpilation?
+  - What is the minimum-keep set for CMS typecheck/lint to pass?
+- **Acceptance:**
+  - Documented list: (a) safe-to-remove, (b) must-keep with rationale, (c) uncertain.
+  - Qualitative memory-reduction estimate (low/medium/high) with reasoning.
+- **Validation contract:** File-system checks + static analysis; no behavior changes in this task.
+- **Planning validation:** `None: investigation-only task`
+- **Rollout / rollback:** `None: non-implementation task`
+- **Documentation impact:** Append transpilePackages audit section to `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
+
+### TASK-22: IMPLEMENT - CMS Build Graph Reduction
+- **Type:** IMPLEMENT
+- **Deliverable:** Code change — reduced `transpilePackages` in `apps/cms/next.config.mjs` + committed deferred `serverExternalPackages` change; documented pre-existing tokenUtils.ts typecheck errors.
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending (below IMPLEMENT confidence threshold — see conditional note)
+- **Affects:**
+  - `apps/cms/next.config.mjs` (transpilePackages reduction + `typescript` to serverExternalPackages)
+  - `apps/cms/src/app/cms/wizard/tokenUtils.ts` (document or fix pre-existing TS2307 for `@themes/brandx/tailwind-tokens`, `@themes/dark/tailwind-tokens`)
+  - `docs/plans/nextjs-16-upgrade/build-oom-notes.md` (updated post-reduction build evidence)
+- **Depends on:** TASK-21
+- **Blocks:** TASK-13
+- **Confidence:** 68% ⚠️ (→ ≥80% conditional on TASK-21 confirming sufficient safe-to-remove candidates)
+  - Implementation: 68% — cannot confirm feasibility until TASK-21 identifies which packages can be safely removed without CMS typecheck/lint regressions.
+  - Approach: 78% — established pattern: packages with complete dist/ can use compiled output; removal reduces webpack compilation work.
+  - Impact: 72% — memory reduction magnitude is unknown until TASK-21; spike confirmed single-package removal insufficient at 8 GB.
+- **Conditional note:** Below IMPLEMENT threshold (80%). Execute TASK-21 first, then re-run `/lp-replan` to promote confidence based on audit findings before building this task.
+- **Acceptance:**
+  - `transpilePackages` reduced per TASK-21 safe-to-remove list.
+  - `typescript` committed to `serverExternalPackages` in `apps/cms/next.config.mjs`.
+  - Pre-existing `tokenUtils.ts` TS2307 errors documented (or fixed) so CMS typecheck runs to completion without pre-existing errors masking real regressions.
+  - `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` exit 0.
+  - `pnpm --filter @apps/cms build` attempted; result documented in build-oom-notes.md (OOM threshold improved, or exits 0 if reduction sufficient on 16 GB).
+- **Validation contract:**
+  - TC-01: `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` exit 0.
+  - TC-02: `pnpm --filter @apps/cms build` attempted; OOM threshold documented (best-effort; 32 GB+ may be required for full exit 0).
+  - TC-03: `pnpm --filter @apps/cms test -- --testPathPattern tokenUtils` exits 0 or pre-existing failures explicitly confirmed (not introduced by this task).
+- **Execution plan:** Red → Green → Refactor
+- **What would make this ≥90%:** TASK-21 confirms ≥4 safe-to-remove packages that together account for a significant portion of build-graph compilation time.
+- **Rollout / rollback:**
+  - Rollout: ship on `dev`; verify CMS dev server still starts (`pnpm --filter @apps/cms dev`).
+  - Rollback: revert `apps/cms/next.config.mjs` changes.
+- **Documentation impact:** Append post-reduction build evidence to `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
+
 ### TASK-13: CHECKPOINT - Post-Hardening Validation And Replan
 - **Type:** CHECKPOINT
-- **Depends on:** TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12
+- **Depends on:** TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 (complete), TASK-22
 - **Blocks:** TASK-14, TASK-15
 - **Confidence:** 95%
 - **Acceptance:**
@@ -372,6 +448,14 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Cloudflare deployments remain inside Free-tier request, invocation, and binding limits without requiring a paid-plan fallback.
   - Image audit outputs are sufficient to decide whether pins are necessary.
   - Build heap policy is explicit and checkpoint builds are reproducible without ad-hoc local env tweaks.
+  - Note (replan 2026-02-17): CMS `pnpm --filter @apps/cms build` may OOM on 16 GB machine even after TASK-22; checkpoint accepts `typecheck + lint + middleware validation` as primary gate; build evidence is best-effort and documented in build-oom-notes.md.
+
+#### Re-plan Update (2026-02-17)
+- Confidence: 95% → unchanged
+- Key change: Added TASK-22 to Depends-on; CMS build (TC-01 in command set) noted as best-effort — typecheck+lint+middleware checks are the primary verification targets
+- Dependencies: TASK-22 added; TASK-12 now complete
+- Validation contract: unchanged — command set retained; annotated that CMS build may require 32 GB+
+- Notes: see TASK-21/22 for the path to CMS build baseline
 
 ### TASK-14: Resolve CMS Middleware Ambiguity And Enforce Runtime-Compatible Dependencies
 - **Type:** IMPLEMENT
@@ -420,6 +504,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: ship on `dev`, verify staging CMS.
   - Rollback: revert commit.
 - **Documentation impact:** None.
+
+#### Re-plan Update (2026-02-17)
+- Confidence: 72% (→ 84% conditional on TASK-10, TASK-12) → 72% (→ 82% conditional on TASK-22); Evidence: E2 (spike build evidence)
+- Key change: Promotion condition updated — TASK-12 spike done (complete); TASK-22 now provides the CMS typecheck+lint baseline that unblocks validation. Full `next build` exit 0 may require 32 GB+ CI; TC-01 softened to typecheck+lint primary gate.
+- Dependencies: TASK-13 still blocks this; TASK-13 now depends on TASK-22; chain intact.
+- Validation contract: TC-01 updated — CMS typecheck+lint exit 0 (from TASK-22); build attempt is best-effort documented in build-oom-notes.md.
+- Notes: Confidence promotion condition changes from "TASK-12 makes build reproducible" to "TASK-22 produces typecheck+lint baseline"
 
 ### TASK-15: Cover-Me-Pretty Middleware Edge-Safety (Remove `node:crypto`)
 - **Type:** IMPLEMENT
@@ -647,3 +738,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: Replanned in `plan-only` mode after audit-grade config snapshot. Added governance tranche (TASK-16..TASK-20) for policy coverage hardening, dependency ownership decisions, manifest drift remediation (D-01/D-02), and blocker-evidence quality upgrades.
 - 2026-02-17: Applied audit-hygiene corrections: split status accounting into Remaining/Completed/Deferred, filled missing TASK-11 commit evidence, defined deterministic TASK-13 checkpoint commands, added runtime policy outcomes (Edge middleware vs Node proxy), and documented confidence formula treatment for completed tasks.
 - 2026-02-17: Added explicit Cloudflare Free-tier guardrails (Workers/Pages quotas, fail-mode policy, and invocation-scope checks) to keep the plan compliant with Free-tier deployment constraints.
+- 2026-02-17: TASK-12 spike complete (evidence committed, `71fe4c561d`). Primary hypothesis invalidated: typescript import was a minor contributor; root cause is CMS build graph (130+ routes + transpilePackages) requiring >12 GB on 16 GB machine. Created precursor chain TASK-21 (INVESTIGATE: transpilePackages audit) → TASK-22 (IMPLEMENT: apply reduction + commit deferred config). TASK-13 now depends on TASK-22. TASK-14 confidence condition updated from "TASK-12" to "TASK-22." CMS full build (exit 0) may require 32 GB+ CI machine; checkpoint accepts typecheck+lint as primary verification gate.

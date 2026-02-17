@@ -431,3 +431,76 @@ Updated D-04 in section 8:
 > - Package.json `build` scripts that invoke wrappers ARE scanned — policy path is intact.
 > - Hardening option: extend `isRelevantPath()` for wrapper files (partial; residual array-arg false-negative remains). See TASK-16 evidence §12.4.
 > - Convention mandate: all future wrapper scripts invoking `next build/dev` must use array-arg with `"--webpack"` element explicitly.
+
+---
+
+## 13) TASK-19 Evidence: Turbopack Blocker Repro Matrix (2026-02-17)
+
+> Added by TASK-19 (INVESTIGATE — Turbopack Blocker Repro Matrix). All findings below are OBSERVED from live probes, except where labelled UNVERIFIED-ASSUMPTION.
+
+### 13.1 Probe Methodology
+
+**Probes run (2026-02-17):**
+
+| Probe | Command | Duration | Outcome |
+|---|---|---|---|
+| P1 — XA startup | `pnpm --filter @apps/xa-c exec next dev --turbopack --port 19992` | ~1s to Ready | `✓ Ready in 1023ms` — EXIT 143 (SIGTERM) |
+| P2 — CMS startup | `pnpm --filter @apps/cms exec next dev --turbopack --port 19993` | ~1s to Ready | `✓ Ready in 845ms` — EXIT 143 (SIGTERM) |
+| P3 — Brikette startup | `pnpm --filter @apps/brikette exec next dev --turbopack --port 19991` | config OK | `✓ Starting...` then lock conflict (pre-existing dev server held lock) — config did not error |
+| P4 — XA page request | `curl http://localhost:19992/` after P1 | 28s compile | HTTP 500 — module-not-found errors from `@acme/i18n` (`.js` ESM specifiers unresolved) |
+
+**Observation:** The `webpack()` callback in `next.config.mjs` is **not called by Turbopack**. All webpack-specific APIs defined inside that callback are silently skipped at startup. This means:
+- Startup `✓ Ready` only confirms the config-level (outside `webpack()`) is Turbopack-compatible.
+- Functional blockers inside `webpack()` surface at page compilation time, not at startup.
+
+### 13.2 Repro Matrix
+
+#### Blocker Layer A — Shared `@acme/next-config` (`packages/next-config/next.config.mjs`)
+
+| Blocker | API | Location | Evidence Label | Notes |
+|---|---|---|---|---|
+| `node:` prefix normalisation via `NormalModuleReplacementPlugin` | `webpack.NormalModuleReplacementPlugin` | `next.config.mjs:79` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Turbopack has built-in `node:` prefix support; plugin silently skipped. P1 (XA) reached `✓ Ready`. No startup or page error attributed to this blocker. |
+| `extensionAlias` (`.js` → `.ts` resolution) | `config.resolve.extensionAlias[".js"] = [".ts", ".tsx", ".js", ".jsx"]` | `next.config.mjs:40` (inside `webpack()`) | **OBSERVED-REPRO** ⚠️ | Turbopack does NOT apply webpack `extensionAlias`. Packages using fully-specified `.js` ESM specifiers (TSC style) fail at page compilation. **P4 confirms HTTP 500** on XA homepage with `Module not found` for `./locales.js`, `./parseMultilingualInput.js`, `./resolveText.js`, `./tokenization/index.js` — all from `packages/i18n/src/index.ts`. Import trace: `@acme/i18n` → `@acme/ui/AnnouncementBar` → `XaShell` → `layout.tsx`. |
+| `node:*` → bare module alias map (resolve.alias loop) | `config.resolve.alias["node:${mod}"] = mod` | `next.config.mjs:57–76` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Alias silently skipped. P1/P2 reached `✓ Ready`. Turbopack handles `node:` protocol natively. Risk: any code relying on `node:crypto` being re-exported as `crypto` might fail at page compile — not reproduced in this probe. |
+
+#### Blocker Layer B — CMS-specific (`apps/cms/next.config.mjs`)
+
+| Blocker | API | Location | Evidence Label | Notes |
+|---|---|---|---|---|
+| `hashFunction: "xxhash64"` | `config.output.hashFunction` | `apps/cms/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Turbopack manages its own hashing; webpack output config silently skipped. P2 (CMS) reached `✓ Ready in 845ms` without error. Build-time only; dev-mode probe is sufficient proxy. |
+| Webpack filesystem cache | `config.cache = { type: "filesystem", ... }` | `apps/cms/next.config.mjs` (inside `webpack()`, dev-only) | **UNVERIFIED-ASSUMPTION** | Turbopack has its own persistent cache; webpack cache config silently skipped. P2 shows CMS starts under Turbopack without error. |
+| React exact-match aliases (`react$`, `react-dom$`) | `config.resolve.alias["react$"]`, `config.resolve.alias["react-dom$"]` | `apps/cms/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Webpack `$`-suffix exact-match aliases are silently skipped. Turbopack bundles React internally. P2 (CMS) reached `✓ Ready`. Page-compile not tested. Risk: CMS depends on single-instance React deduplication; without the alias, duplicate React instances could surface. |
+| `entities/decode` + `entities/escape` aliasing | `config.resolve.alias["entities/decode"]` etc. | `apps/cms/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Silently skipped. CMS started without error. Only surfaces if CMS pages import `entities` and Turbopack resolves a different version. |
+| `pino` symlink dep aliasing | Dynamic `config.resolve.alias[dep]` loop for pino runtime deps | `apps/cms/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Silently skipped. Risk if CMS pages exercise server-side pino logging; not tested. |
+| `oidc-token-hash` alias | `config.resolve.alias["oidc-token-hash"]` via `realpathSync` | `apps/cms/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Silently skipped. Risk only if `next-auth` requires a specific `oidc-token-hash` instance; Turbopack may resolve correctly from hoisted node_modules. |
+| `ignoreWarnings` filter for platform-core resolvers | `config.ignoreWarnings.push(...)` | `apps/cms/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** | Silently skipped; Turbopack has its own warning system. Functional risk: zero (warning filter, not a functionality blocker). |
+
+#### Blocker Layer C — Brikette-specific (`apps/brikette/next.config.mjs`)
+
+| Blocker | API | Location | Evidence Label | Notes |
+|---|---|---|---|---|
+| Client-side Node module fallbacks | `config.resolve.fallback = { fs: false, module: false, path: false, url: false }` | `apps/brikette/next.config.mjs` (inside `webpack()`, client-only) | **UNVERIFIED-ASSUMPTION** | Silently skipped. P3 shows brikette started past `✓ Starting...` without config error. Risk: if brikette client components import Node modules, Turbopack may include or fail differently vs webpack's `false` fallback. Test protocol: start brikette under Turbopack (after clearing lock) and request a page with client components that transitively import Node-guarded helpers. |
+| `?raw` module rule (`resourceQuery: /raw/`) | `config.module.rules.unshift({ resourceQuery: /raw/, type: "asset/source" })` | `apps/brikette/next.config.mjs` (inside `webpack()`) | **UNVERIFIED-ASSUMPTION** ⚠️ (high-risk) | Silently skipped by Turbopack. Brikette has 2 live `?raw` import sites: `TravelHelpStructuredData.tsx:10` (`en-nearby.jsonld?raw`) and `ApartmentStructuredData.tsx:5` (`apartment.jsonld?raw`). Turbopack does not support webpack `resourceQuery` rules. **Test protocol**: start brikette under `--turbopack` (clear `.next/dev/lock` after confirming no live process holds it), then `curl http://localhost:<port>/it` or any page that renders structured data components. Expected failure: `Module parse failed` or `Unsupported file type` for `.jsonld` files. Fix path: add `turbopack.rules` to `next.config.mjs` (`{ "*.jsonld": { as: "source" } }` or equivalent). |
+
+### 13.3 Summary
+
+| Label | Count | Key items |
+|---|---|---|
+| `OBSERVED-REPRO` | **1** | `extensionAlias` (`.js`→`.ts`) — HTTP 500 on XA homepage, `@acme/i18n` module-not-found |
+| `UNVERIFIED-ASSUMPTION` | **10** | All other webpack() callback internals (NormalModuleReplacementPlugin, node: alias loop, hashFunction, filesystem cache, React aliases, entities aliases, pino aliases, oidc-token-hash alias, ignoreWarnings, resolve.fallback) |
+| `UNVERIFIED-ASSUMPTION (high-risk)` | **1** | Brikette `?raw` module rule — silently skipped; live import sites exist; untested |
+
+**Key insight:** All webpack-specific APIs live **inside the `webpack()` callback** in `next.config.mjs`. Turbopack never calls this callback, so these APIs are silently inert — they do not cause startup errors. The functional surface that *does* break at page compilation is the **`extensionAlias`** behaviour: packages that use fully-specified `.js` ESM specifiers (TypeScript compiler output style, e.g. `from "./locales.js"`) require this alias to resolve to their `.ts` counterparts. Without it, pages importing such packages get `Module not found` errors.
+
+**Updated §E answer:**
+> Turbopack probes run 2026-02-17. `extensionAlias` (`.js`→`.ts`) is `OBSERVED-REPRO` (HTTP 500). All other blocker claims are `UNVERIFIED-ASSUMPTION` — webpack callback silently skipped at startup; functional risks at page compilation remain untested except for `extensionAlias`.
+
+### 13.4 Test Protocols for Unverified Blockers
+
+| Blocker | Test protocol |
+|---|---|
+| Brikette `?raw` rule | Clear `.next/dev/lock` (confirm no live process), start `pnpm --filter @apps/brikette exec next dev --turbopack --port 19991`, `curl` any page that renders `ApartmentStructuredData` or `TravelHelpStructuredData`. Expected: compile error for `.jsonld` file. |
+| CMS React exact-match aliases | Start CMS under `--turbopack`, navigate to a page that renders a modal or interactive component; check browser console for React hook call errors (duplicate instance symptom). |
+| Node: alias loop | Start any app under `--turbopack`, compile a server component that imports `crypto` or another re-aliased node module; check for module resolution error. |
+| CMS pino aliasing | Start CMS under `--turbopack`, trigger a request that exercises the pino logger (any API route with structured logging). |
+| Brikette client-side fallbacks | Start brikette under `--turbopack`, navigate to a page that exercises Node-guarded utility code on the client. |

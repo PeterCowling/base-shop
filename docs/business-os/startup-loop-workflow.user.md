@@ -1,20 +1,224 @@
 ---
-Type: Workflow-Guide
+Type: Operator-Guide
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-13
-Last-reviewed: 2026-02-13
+Updated: 2026-02-17
+Last-reviewed: 2026-02-17
 Owner: Pete
 ---
 
-# Startup Loop Workflow (HEAD + PET + BRIK)
+# Startup Loop: What to do next for HEAD, PET, and BRIK
 
 ## 1) Purpose
 
-Define the full startup operating loop from idea/spec input to execution and lp-replanning, with explicit inputs, processing, outputs, and current remaining data gaps for HEAD, PET, and BRIK.
+This page tells you what to do next for HEAD, PET, and BRIK — and how to do it.
 
-## 2) End-to-End Loop (Complete Data Flow)
+## Today (updated 2026-02-17)
+
+### HEAD
+
+**Current blocker:** Operational confirmations are missing — in-stock date, sellable units, pricing, compatibility, payment flow readiness, and returns SLA have not been confirmed. Measurement setup is also not yet in place.
+
+**Do this now:** Fill in the Operational Confirmations form for HEAD (all 6 fields). Then complete the Pre-website Measurement Setup checklist.
+
+**Done when:** All 6 operational fields are confirmed and timestamped. Measurement setup document is at Active status.
+
+---
+
+### PET
+
+**Current blocker:** Inventory reality is unconfirmed (units, arrival date, landed cost). No measured CPC or CVR data yet — the forecast cannot reach decision-grade without these inputs.
+
+**Do this now:** Confirm inventory units, expected arrival date, and landed cost per unit. Then run a 7-day paid acquisition test to capture the first observed CPC and CVR.
+
+**Done when:** Inventory confirmed. First measured CPC and CVR captured. Forecast upgraded to decision-grade.
+
+---
+
+### BRIK
+
+**Current blocker:** GA4 measurement signal quality is unverified. The begin_checkout and web_vitals events have not been confirmed in standard GA4 reports (non-realtime, 7-day window).
+
+**Do this now:** Open GA4 Standard Reports (NOT Realtime). Check begin_checkout for the last 7 days. Check web_vitals for the last 7 days. Document what you find.
+
+**Done when:** Non-zero signal confirmed in standard 7-day GA4 report for both begin_checkout and web_vitals. Then run the day-14 forecast recalibration.
+
+## The Loop in 8 steps
+
+Every week you run the same eight steps — gather data, design your offer, forecast, prioritise, act, then review — so the business gets sharper each time round.
+
+```mermaid
+flowchart LR
+    N1["Setup\n(S0–S1)"]
+    N2["Research\n(S2)"]
+    N3["Offer Design\n(S2B)"]
+    N4["Forecast + Channels\n(S3/S6B)"]
+    N5["Prioritise\n(S4–S5)"]
+    N6["Pick top actions\n(S5A)"]
+    N7["Execute\n(S7–S9B)"]
+    N8["Weekly review\n(S10)"]
+    NEND["End"]
+
+    N1 --> N2
+    N2 --> N3
+    N3 --> N4
+    N4 --> N5
+    N5 --> N6
+    N6 --> N7
+    N7 --> N8
+
+    N8 -->|Continue| N2
+    N8 -->|Scale| N5
+    N8 -->|Kill| NEND
+```
+
+Each week the S10 review gives you one of three verdicts: Continue (loop back to Research and sharpen your data), Scale (jump straight to Prioritise with what you already know), or Kill (end the business and move on). The loop is designed to be fast — most businesses complete the full first pass in 2–4 weeks.
+
+## Readiness check
+
+Before investing time in the next stage, answer these six questions. Each one is a yes/no check. A 'No' means you have work to do first — see the action cards above.
+
+1. Is the offer defined clearly enough to test with real customers?
+2. Is measurement set up and producing real data?
+3. Do we have baseline data to compare against? *(existing businesses only — skip if you are pre-launch)*
+4. Do we have inventory and cost inputs to build a reliable forecast?
+5. Have we chosen our 2–3 launch channels and do we have a plan for each?
+6. Have we selected and scored the top 2–3 things to work on next?
+
+> **Note for engineers:** The full gate specification (RG-01 through RG-07) with acceptance criteria and evidence paths is preserved verbatim in the Engineering appendix below.
+
+## Business Operator Actions
+
+These are the actions owned by Pete as venture-studio operator. Each row is a concrete next step — not a platform task.
+
+| Action | Why it matters | Done when |
+|---|---|---|
+| Fill the Operational Confirmations form for HEAD | HEAD 90-day forecast cannot reach decision-grade without stock date, units, pricing, compatibility, payment readiness, and returns SLA. | All 6 fields confirmed and timestamped. |
+| Fill the Operational Confirmations form for PET (inventory + costs) | PET forecast is not decision-grade without real inventory units, arrival date, and landed cost. | Inventory confirmed: units, arrival date, landed cost per unit all captured. |
+| Run a 7-day paid acquisition test for PET | PET has no measured CPC or CVR yet — the forecast relies on seed assumptions until real data is captured. | First measured CPC and CVR documented from a 7-day live test. |
+| Verify GA4 standard report signal for BRIK (begin_checkout + web_vitals) | The weekly BRIK decision loop needs confirmed non-zero signal in 7-day standard reports, not just realtime. | Non-zero begin_checkout and web_vitals in standard 7-day GA4 report. |
+| Run the day-14 forecast recalibration for BRIK | BRIK v1 forecast is based on seed assumptions; first two weeks of measured data must replace them for reliable scaling decisions. | Day-14 recalibration document produced and integrated into the BRIK strategy plan. |
+| Complete the Pre-website Measurement Setup checklist for HEAD | HEAD is pre-website; paid traffic cannot start without GA4, Search Console, and conversion event setup. | Measurement setup document at Active status. |
+| Complete the Pre-website Measurement Setup checklist for PET | PET is pre-website; same measurement requirement as HEAD. | Measurement setup document at Active status. |
+| Run the weekly K/P/C/S decision for each active business | Loop health depends on weekly cadence — decisions go stale within days without the weekly review. | Weekly K/P/C/S decision document produced and dated this week. |
+| Run standing refresh prompts when cadence triggers | Market/channel/regulatory inputs go stale without periodic refresh. | Monthly market-pulse, channel-economics, and quarterly regulatory-watch documents up to date. |
+
+## Per-business action cards
+
+These cards tell you exactly what to do for each business. Each step is actionable — no code knowledge or repository access required.
+
+### HEAD card
+
+**Title:** Confirm HEAD operations
+
+**Why it matters:** The HEAD 90-day forecast cannot become decision-grade until six operational inputs are confirmed. Without them, any planning and investment decision rests on assumptions.
+
+1. Confirm the in-stock date — when will the product physically be available to ship?
+2. Confirm sellable units — how many units are available at launch?
+3. Confirm pricing and any bundle options.
+4. Provide the compatibility matrix — which devices/platforms does the product work with?
+5. Confirm the payment flow is ready to accept orders.
+6. Define the returns policy and SLA (how long does a return take?).
+
+**Done when:** All six fields are filled in and timestamped. The Operational Confirmations form shows complete status.
+
+---
+
+### PET card
+
+**Title:** Confirm PET supply and run first acquisition test
+
+**Why it matters:** The PET forecast is not decision-grade without real inventory data and at least one measured acquisition data point. Seed assumptions are not enough to make a confident investment decision.
+
+1. Confirm inventory units — how many units are on hand or on order?
+2. Confirm the expected arrival date for the inventory.
+3. Confirm the landed cost per unit (total cost including shipping, duties, and fees).
+4. Run a small paid acquisition test for 7 days (any channel — Meta, Google, TikTok).
+5. Record the observed cost per click (CPC) and conversion rate (CVR) from the test.
+
+**Done when:** All inventory inputs confirmed. First measured CPC and CVR captured. Forecast document updated to decision-grade.
+
+---
+
+### BRIK card
+
+**Title:** Restore GA4 measurement signal
+
+**Why it matters:** The weekly BRIK decision loop depends on non-zero signal from two GA4 events (begin_checkout and web_vitals) in standard 7-day reports. If these show zero, the weekly cadence cannot produce reliable data.
+
+1. Open Google Analytics 4 → go to Standard Reports (NOT the Realtime section).
+2. Navigate to Engagement → Events.
+3. Set the date range to the last 7 days.
+4. Check whether begin_checkout shows a non-zero count.
+5. Check whether web_vitals shows a non-zero count.
+6. If either is zero: open GA4 DebugView, open a live browser session on the site, and check whether the events fire during a real checkout attempt.
+7. Document your findings — what you saw and whether it resolved.
+
+**Done when:** Non-zero begin_checkout and web_vitals confirmed in standard 7-day GA4 report. Document saved. Then proceed to the day-14 forecast recalibration.
+
+## If you have 10/30/60 minutes
+
+Already familiar with the loop? Use this guide to decide what to work on today based on the time you have.
+
+### 10 minutes — Check status and pick one action
+
+- Read the Today panel for the business you want to move forward.
+- Identify the single top blocker.
+- Complete one concrete step toward that blocker: fill a field in the Operational Confirmations form, run a 5-minute GA4 check, or confirm one inventory number.
+- Done: you have moved at least one blocker forward.
+
+### 30 minutes — Complete a full checklist
+
+- Pick one of these and run it end-to-end:
+  - **GA4 measurement verification for BRIK** — open Standard Reports, check begin_checkout and web_vitals for last 7 days, run DebugView if needed, document outcome.
+  - **Operational Confirmations for HEAD or PET** — fill all 6 required fields in the form and timestamp them.
+  - **Baseline refresh review** — check whether any standing refresh prompt (market pulse, channel economics) is overdue and queue it.
+- Done: the chosen checklist is complete and documented.
+
+### 60 minutes — Produce a required artifact
+
+- Pick one of these artifacts and produce it:
+  - **Day-14 forecast recalibration** — update the BRIK 90-day forecast using measured week-1/2 actuals to replace seed assumptions.
+  - **Weekly K/P/C/S decision** — run the weekly Keep/Pivot/Scale/Kill review for HEAD, PET, or BRIK and produce the decision document.
+  - **Complete action card** — pick one business, work through all steps in its action card, and mark it done.
+- Done: the artifact exists and is dated today.
+
+## Quick Actions by stage
+
+Use this table to find the right action for each stage. For prompt file paths and output paths, see the Engineering appendix.
+
+| When you are at | What to do | Done when |
+|---|---|---|
+| Starting a new business or major scope shift (S0) | Run the Intake Normaliser prompt for this business | Intake packet exists for the business |
+| Readiness check shows a block or warning (S1) | Run the Blocker Interview prompt to identify what is missing | Blocker interview document exists; all blockers have an owner and a deadline |
+| Business is pre-website and measurement is not set up (S1B) | Run the Pre-website Measurement Setup checklist | Measurement setup document is at Active status |
+| Business is website-live and historical baseline is missing or blocked (S2A) | Run the Historical Data Request prompt to identify what data is needed | Data request document sent to the data owner |
+| Required S2A data pack has arrived | Run the Historical Baseline Consolidation prompt | Historical baseline document is at Active status |
+| Market intelligence is missing, stale, or points to a Draft (S2) | Run the Deep Research: Market Intelligence prompt | Market intelligence document is at Active status with a valid latest pointer |
+| Week-1/2 actuals are available or a major assumption has broken (S3) | Run the Forecast Recalibration prompt | Forecast recalibration document exists and is dated |
+| 3 or more candidate actions are competing for priority (S5) | Run the Prioritisation Scorer prompt | Prioritisation scorecard exists with top 2–3 items ranked |
+| Site upgrade brief is missing, stale, or points to a Draft (S6) | Run the Deep Research: Site Upgrade prompt | Site upgrade brief is at Active status with a valid latest pointer |
+| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt | This week's K/P/C/S decision document is dated and saved |
+
+> **For prompt paths and output paths:** See the Engineering appendix → Prompt Hand-Off Map section.
+
+## Engineering appendix
+
+## Platform Engineering Actions
+
+These are platform and engineering tasks. They are not required from the operator — they are tracked here for visibility.
+
+| Action | Why it matters | Done when |
+|---|---|---|
+| Resolve MCP identity/deployment decision (TASK-05 in MCP plan) | Guarded BOS write rollout cannot proceed safely until the identity and deployment model is confirmed. | Decision documented and the MCP plan TASK-05 marked complete. |
+| Complete MCP guarded BOS write rollout (TASK-06 in MCP plan) | S5B/S7/S8/S9/S10 write paths need governed MCP write capability before BOS can be fully operationalised. | MCP guarded-write end-to-end test passes; TASK-06 marked complete. |
+| Implement wave-2 measure_* MCP connectors | S2A/S3/S10 measurement stages need normalised cross-source measurement contracts — GA4, Search Console, and Cloudflare data accessible via MCP tools. | Wave-2 connector fact-find brief exists; at least one connector implemented and validated. |
+| Automate Octorate Batch 1 (booking value) data collection | BRIK historical baseline currently relies on manual Batch 1 extraction — automation reduces refresh friction. | Automated extraction produces a valid booking value dataset matching the manual baseline format. |
+
+> **Note for engineers:** The original "Open Tasks" table (with evidence paths and stage codes) is preserved verbatim in the Engineering appendix below.
+
+## End-to-End Loop (Complete Data Flow) [Engineering Reference]
 
 ```mermaid
 flowchart TD
@@ -575,7 +779,7 @@ What this means for operators:
 | MCP TASK-06 guarded BOS write rollout is required. | S5B/S7/S8/S9/S10 write paths need governed MCP write capability. | `docs/plans/mcp-startup-loop-data-plane/plan.md` TASK-06 |
 | MCP wave-2 `measure_*` connectors are required. | S2A/S3/S10 need normalized cross-source measurement contracts. | `docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md` |
 
-## 3) Website Upgrade Sub-Loop
+## Website Upgrade Sub-Loop [Engineering Reference]
 
 ```mermaid
 flowchart LR
@@ -587,7 +791,7 @@ flowchart LR
 
 This sub-loop feeds the main startup loop at the lp-fact-find stage.
 
-## 4) Stage-by-Stage Workflow (Input -> Processing -> Output)
+## Stage-by-Stage Workflow [Engineering Reference]
 
 Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.1.0).
 
@@ -622,7 +826,7 @@ Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1
 | BD-5 Design Spec gate | S7/S8 (lp-design-spec pre-flight) | GATE-BD-07 (Hard): lp-design-spec requires Active brand-dossier; blocks design spec if Status ≠ Active | Gate pass → lp-design-spec runs; gate block → advance brand-dossier to Active first |
 | BD-6 Brand Copy QA | S9B (`/lp-launch-qa`) | Domain 5 Brand Copy Compliance checks: BC-04 (words-to-avoid), BC-05 (claims in messaging hierarchy), BC-07 (voice audit) | Brand compliance verdict in QA report; pass required for go-live |
 
-## 5) Current Missing Information (HEAD, PET, and BRIK)
+## Current Missing Information (HEAD, PET, and BRIK) [Engineering Reference]
 
 ### 5.1 Cross-cutting blockers (impact HEAD, PET, and BRIK)
 
@@ -700,7 +904,7 @@ Resolved recently (no longer missing):
 | S6 Website synthesis | Decision-grade brief is now active; enforce monthly freshness + change-trigger refresh | Refresh cadence risk | `docs/business-os/site-upgrades/BRIK/2026-02-12-upgrade-brief.user.md` (`Status: Active`); handoff prompt retained at `docs/business-os/site-upgrades/BRIK/2026-02-12-deep-research-site-upgrade-prompt.user.md` |
 | S10 Weekly decision loop | First weekly decision artifact is now active; maintain strict weekly cadence and link to gate evidence | Cadence risk | `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md` (`Status: Active`) |
 
-## 6) Current State Snapshot by Stage (HEAD vs PET vs BRIK)
+## Current State Snapshot by Stage [Engineering Reference]
 
 | Stage | HEAD | PET | BRIK |
 |---|---|---|---|
@@ -720,7 +924,7 @@ Resolved recently (no longer missing):
 | S9B QA gates | Not yet started | Not yet started | Not yet started |
 | S10 Weekly decision loop | Active weekly decision log started | Active weekly decision log started | Active weekly decision log started |
 
-## 7) Minimal Closure Set to Make the Loop Operationally Strong
+## Minimal Closure Set [Engineering Reference]
 
 1. HEAD and PET operational confirmations are required (`stock/date/units/price/compatibility/payments/returns SLA`).
 2. HEAD and PET forecast recalibration artifacts from measured week-1/2 data are required.
@@ -731,19 +935,7 @@ Resolved recently (no longer missing):
 7. Standing refresh artifacts (market pulse, channel economics, regulatory watch) are required.
 8. `HOLDCO` registration in business catalog is required (taxonomy hygiene item from readiness warning).
 
-## 8) Practical Reading Order for Operators
-
-1. `docs/business-os/platform-capability/latest.user.md`
-2. `docs/business-os/market-research/<BIZ>/latest.user.md`
-3. `docs/business-os/site-upgrades/<BIZ>/latest.user.md`
-4. `docs/business-os/strategy/<BIZ>/plan.user.md`
-5. Existing-business route only: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-historical-performance-baseline.user.md`
-6. `docs/business-os/startup-baselines/<BIZ>-forecast-seed.user.md`
-7. latest readiness report in `docs/business-os/readiness/`
-8. prompt pack index: `docs/business-os/workflow-prompts/_templates/`
-9. then run `lp-fact-find -> lp-plan -> lp-build` for top P1 item
-
-## 9) Deep Research Gate (S2 + S6)
+## Deep Research Gate (S2 + S6) [Engineering Reference]
 
 ### 9.1 Mandatory hand-off rule
 
@@ -812,7 +1004,7 @@ S2/S6 is complete only when:
 - HTML companion exists.
 - Source list and evidence sections are populated (decision-grade quality bar met).
 
-## 10) Prompt Hand-Off Map (By Stage)
+## Prompt Hand-Off Map (By Stage) [Engineering Reference]
 
 Use this map to decide when the user should be handed a prompt and what output must be produced.
 
@@ -836,7 +1028,7 @@ Output hygiene for every prompt run:
    `pnpm docs:render-user-html -- <output.user.md>`
 3. Update relevant `latest.user.md` pointer when applicable.
 
-## 11) Design Policy (Cross-Cutting)
+## Design Policy (Cross-Cutting) [Engineering Reference]
 
 > **Retired.** Design policy and brand decisions have been migrated to first-class artifacts with front matter schemas and gate enforcement.
 >
@@ -855,7 +1047,7 @@ Output hygiene for every prompt run:
 
 → Bootstrapped at S1 entry via `/lp-brand-bootstrap <BIZ>`. See `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` once created.
 
-## 12) Standing Refresh Prompts (Periodic)
+## Standing Refresh Prompts (Periodic) [Engineering Reference]
 
 These are recurring research prompts for standing information refresh.
 
@@ -892,7 +1084,7 @@ Then render HTML:
 pnpm docs:render-user-html -- {{OUTPUT_PATH}}
 ```
 
-## 13) Operator Interface (How User Engages Startup Loop)
+## Operator Interface [Engineering Reference]
 
 Startup Loop needs a single operator interaction pattern so users do not guess the next step.
 Canonical chat wrapper skill: `.claude/skills/startup-loop/SKILL.md`.
@@ -937,7 +1129,7 @@ If either is missing, the run stays `blocked` at current stage.
 - **GATE-BD-03** (Hard): S2B completion blocked until `messaging-hierarchy.user.md` exists at Draft minimum in strategy index.
 - **GATE-BD-08** (Soft — warning only): S10 emits a staleness warning if brand-dossier `Last-reviewed` > 90 days.
 
-## 14) Business OS Sync Contract (No Loop-to-BOS Drift)
+## Business OS Sync Contract (No Loop-to-BOS Drift) [Engineering Reference]
 
 Startup Loop artifacts and Business OS state must move together.
 

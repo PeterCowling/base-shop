@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-20 CHECKPOINT complete; governance tranche done; TASK-14 + TASK-15 ready for /lp-build)
+Last-updated: 2026-02-17 (TASK-14 complete; CMS middleware consolidated; TASK-15 remains)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -136,7 +136,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-21 | INVESTIGATE | Audit CMS `transpilePackages` — identify packages with complete dist/ safe to remove | 88% | S | Complete (2026-02-17) | TASK-12 (complete) | TASK-22 |
 | TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 82% | M | Complete (2026-02-17) | TASK-21 (complete) | TASK-13 |
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Complete (2026-02-17) | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09 (complete), TASK-10 (complete), TASK-11 (complete), TASK-12 (complete), TASK-22 (complete) | TASK-14, TASK-15 |
-| TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 82% | M | Pending | TASK-02 (complete), TASK-13 (complete) | - |
+| TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 82% | M | Complete (2026-02-17) | TASK-02 (complete), TASK-13 (complete) | - |
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13 (complete), TASK-11 (complete) | - |
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
 | TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
@@ -165,6 +165,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-18 | D-01/D-02 manifest remediation: `packages/next-config` moves `next` to peerDependencies; `@next/env` removed; root devDep duplicate removed; lockfile updated. All 4 TCs passed. | Complete (2026-02-17) | `0aef8d5a59` |
 | TASK-19 | Turbopack repro matrix: 1 OBSERVED-REPRO (extensionAlias); 10 UNVERIFIED-ASSUMPTION (webpack() internals); 1 UNVERIFIED-ASSUMPTION (high-risk: brikette `?raw`). §13 written to config-snapshot. | Complete (2026-02-17) | `4614e29dfd` |
 | TASK-20 | CHECKPOINT — governance tranche reviewed; TASK-14/15 confidence unchanged at 82%; Cloudflare posture valid; topology unchanged; TASK-14 and TASK-15 ready for `/lp-build`. | Complete (2026-02-17) | plan-only |
+| TASK-14 | CMS middleware ambiguity resolved: deleted root `middleware.ts` (Node crypto, no auth); `src/middleware.ts` is now active (JWT auth, CSRF, RBAC, Edge-safe). 38/38 tests pass. Lint + typecheck clean. | Complete (2026-02-17) | `1dc0880c1b` (del) + `4ae9186cf3` (test) |
 
 ### Deferred / Blocked
 
@@ -580,6 +581,24 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - TC-01 formally updated: `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` (primary gate); `pnpm --filter @apps/cms build` (best-effort; may OOM on 16 GB)
 - Status: **Ready for /lp-build**
 
+#### Build Completion (2026-02-17)
+- **Status:** Complete
+- **Commits:** middleware deletion in `1dc0880c1b` (picked up by concurrent agent via writer lock) + `4ae9186cf3` (security headers test)
+- **Changes:**
+  - `apps/cms/middleware.ts` (root): DELETED — had `import crypto from "crypto"` (Node-only, Edge-incompatible); no auth enforcement.
+  - `apps/cms/__tests__/middleware.test.ts`: Added security headers test case (`x-frame-options: deny`, `x-content-type-options: nosniff`, `referrer-policy: no-referrer`).
+  - `apps/cms/src/middleware.ts` is now the active middleware — auth/RBAC enforced, CSRF protection, Edge-safe Web Crypto.
+- **Scope expansion:** `apps/cms/__tests__/middleware.test.ts` added to Affects (bounded: test-only, same objective).
+- **TC-01:** `pnpm --filter @apps/cms lint` → 0 errors (1 pre-existing warning in productsPage.test.tsx) ✅
+- **TC-02:** `pnpm --filter @apps/cms typecheck` → clean ✅
+- **TC-03:** 38/38 middleware tests pass (both `middleware.test.ts` and `middleware.integration.test.ts` import `src/middleware.ts`; security headers assertion added and passing) ✅
+- **TC-04 (manual smoke):** deferred to staging deploy (requires live CMS session).
+- **Acceptance criteria:**
+  - Single authoritative entrypoint: `src/middleware.ts` ✅
+  - No Node-only imports in Edge-executed code: `http` import is `type`-only; `crypto.randomUUID()` uses global Web Crypto ✅
+  - Auth enforcement survives: JWT decode + `/login` redirect + RBAC (`canRead`/`canWrite`) all in active middleware ✅
+  - Automated probe: TC-03 covers redirect/block semantics and required security headers ✅
+
 ### TASK-15: Cover-Me-Pretty Middleware Edge-Safety (Remove `node:crypto`)
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change (Edge-safe CSP hash generation for cover-me-pretty)
@@ -895,3 +914,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: TASK-18 complete (`0aef8d5a59`). D-01 resolved: `@acme/next-config` now declares `next` as `peerDependencies: ">=16.0.0"` with no hard dep. D-02 resolved: root `devDependencies.next` removed; single authoritative declaration in `dependencies`. All 4 TCs passed (single version workspace-wide, stale `@next/env 15.3.5` path gone, next-config lint+tests clean, CMS+cover-me-pretty typecheck+lint green). TASK-20 now unblocked pending TASK-19.
 - 2026-02-17: TASK-19 complete. Turbopack blocker repro matrix written to §13 of config-snapshot artifact. Key finding: `extensionAlias` in `@acme/next-config` is the sole `OBSERVED-REPRO` blocker (XA page HTTP 500: `@acme/i18n` cannot resolve `.js` ESM specifiers under Turbopack). All webpack() callback internals are `UNVERIFIED-ASSUMPTION` (Turbopack silently skips the callback; startup probes alone are insufficient). Brikette `?raw` loader is `UNVERIFIED-ASSUMPTION (high-risk)` with 2 live import sites and a concrete test protocol. TASK-20 fully unblocked.
 - 2026-02-17: TASK-20 CHECKPOINT complete. Governance tranche (TASK-16→TASK-19) reviewed — all four tasks are orthogonal to TASK-14 and TASK-15. No confidence adjustments needed. Cloudflare Free-tier posture valid (TASK-18 manifest-only + TASK-19 investigation-only made no runtime changes). Topology unchanged; `/lp-sequence` not required. TASK-14 (82%) and TASK-15 (82%) are both above IMPLEMENT threshold with complete validation contracts. Both are ready for `/lp-build`.
+- 2026-02-17: TASK-14 complete (`1dc0880c1b` del + `4ae9186cf3` test). Root `apps/cms/middleware.ts` removed — had Node-only `crypto` import and no auth enforcement. `apps/cms/src/middleware.ts` is now the sole active middleware: JWT auth, CSRF protection, RBAC via `canRead`/`canWrite`, Edge-safe (Web Crypto `randomUUID`; type-only `http` import). 38/38 middleware tests pass; CMS lint 0 errors; typecheck clean. Security headers assertion added to TC-03.

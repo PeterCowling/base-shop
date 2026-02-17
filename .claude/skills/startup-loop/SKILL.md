@@ -176,6 +176,54 @@ S6 handoff:
 - `prompt_file`: `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md`
 - `required_output_path`: `docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md`
 
+### GATE-BD-01: Brand Dossier bootstrap required at S1 advance
+
+Gate ID: GATE-BD-01 (Hard)
+Trigger: Before advancing from S1 to S2 (or S1B/S2A for conditional stages).
+
+Rule:
+- Check `docs/business-os/strategy/<BIZ>/index.user.md` — read Brand Dossier Status column.
+- Gate passes if Brand Dossier Status = `Draft` or `Active`.
+- Gate blocks if Brand Dossier Status = `—` (not created) or file is missing.
+
+Check command:
+```bash
+grep "Brand Dossier" docs/business-os/strategy/<BIZ>/index.user.md | grep -E "Draft|Active"
+```
+
+When blocked:
+- Blocking reason: `GATE-BD-01: Brand Dossier missing or not at Draft minimum. Cannot advance past S1.`
+- Next action: `Run /lp-brand-bootstrap <BIZ> to create brand-dossier.user.md, then update index.user.md Status to Draft.`
+
+### GATE-BD-03: Messaging Hierarchy required at S2B Done
+
+Gate ID: GATE-BD-03 (Hard)
+Trigger: S2B completion check — S2B is not Done until both offer artifact AND messaging-hierarchy.user.md (Draft minimum) exist.
+
+Rule:
+- Check `docs/business-os/strategy/<BIZ>/index.user.md` — read Messaging Hierarchy Status column.
+- Gate passes if Messaging Hierarchy Status = `Draft` or `Active`.
+- Gate blocks if Status = `—` or file is missing. Default to blocked (fail-closed) if Status cannot be parsed.
+
+Check command:
+```bash
+grep "Messaging Hierarchy" docs/business-os/strategy/<BIZ>/index.user.md | grep -E "Draft|Active"
+```
+
+When blocked:
+- Blocking reason: `GATE-BD-03: Messaging Hierarchy missing or not at Draft minimum. S2B is not Done until messaging-hierarchy.user.md exists.`
+- Next action: `Create messaging-hierarchy.user.md at Draft minimum using BRAND-DR-03/04 prompts, then update index.user.md Status to Draft.`
+
+### GATE-BD-08: Brand Dossier staleness warning at S10
+
+Gate ID: GATE-BD-08 (Soft — warning, not block)
+Trigger: S10 weekly readout review.
+
+Rule:
+- Check Brand Dossier `Last-reviewed` date in `docs/business-os/strategy/<BIZ>/index.user.md`.
+- If Last-reviewed > 90 days ago: emit warning (do not block).
+- Warning message: `GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating brand-dossier.user.md.`
+
 ## Business OS Sync Contract (Required Before Advance)
 
 For each stage, require appropriate sync actions:

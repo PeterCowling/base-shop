@@ -48,6 +48,12 @@ stages:
     skill: prompt-handoff
     prompt_required: true
     prompt_template: pre-website-measurement-bootstrap-prompt.md
+    # expanded 2026-02-17: thin template replaced in-place with comprehensive Phase 0-2 bootstrap
+    # covering access bundle (P0-01..P0-12 + deferred P0-11a/b), Phase 1 agent steps (G,SC,D,GH,C),
+    # Phase 2 staging verification (V-01..V-06), 7 Derived Policies, IDs glossary, Consent Mode v2.
+    # Decision: Option A (in-place, same filename) — no spec_version bump for this change alone.
+    # Reference: docs/plans/startup-loop-infra-measurement-bootstrap/plan.md
+    # For website-live businesses: use measurement-quality-audit-prompt.md (separate template, S2A path).
     conditional: true
     condition: "launch-surface = pre-website"
     bos_sync: "Record measurement setup status under docs/business-os/strategy/<BIZ>/"

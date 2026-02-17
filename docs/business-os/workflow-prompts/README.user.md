@@ -3,8 +3,8 @@ Type: Prompt-Pack-Index
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-02-12
-Last-reviewed: 2026-02-12
+Updated: 2026-02-17
+Last-reviewed: 2026-02-17
 Owner: Pete
 ---
 
@@ -16,33 +16,35 @@ Canonical template directory:
 
 ## Stage prompts
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.0.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.3.0).
 
-| Stage | Prompt template | Notes |
-|---|---|---|
-| S0 Intake | `intake-normalizer-prompt.md` | |
-| S1 Readiness | `readiness-blocker-interview-prompt.md` | |
-| S1B Pre-website measurement bootstrap | `pre-website-measurement-bootstrap-prompt.md` | Conditional: pre-website only |
-| S2A Existing-business data request | `historical-data-request-prompt.md` | Conditional: website-live only |
-| S2A Existing-business baseline | `existing-business-historical-baseline-prompt.md` | Conditional: website-live only |
-| S2B Offer design | no-prompt-required | Skill-driven: `/lp-offer` |
-| S3 Forecast | no-prompt-required | Skill-driven: `/lp-forecast` |
-| S3 Forecast recalibration | `forecast-recalibration-prompt.md` | Post-launch recalibration only |
-| S6B Channel strategy + GTM | no-prompt-required | Skill-driven: `/lp-channels` |
-| S4 Baseline merge | no-prompt-required | Skill-driven: `/lp-baseline-merge` |
-| S5A Prioritize | `prioritization-scorer-prompt.md` | |
-| S5B BOS sync | no-prompt-required | Skill-driven: `/lp-bos-sync` |
-| S7 Fact-find | no-prompt-required | Skill-driven: `/lp-fact-find` |
-| S8 Plan | no-prompt-required | Skill-driven: `/lp-plan` |
-| S9 Build | no-prompt-required | Skill-driven: `/lp-build` |
-| S9B QA gates | no-prompt-required | Skill-driven: `/lp-launch-qa` |
-| S10 Weekly decision | `weekly-kpcs-decision-prompt.md` | |
+| Stage | Prompt template | Launch-surface | Notes |
+|---|---|---|---|
+| S0 Intake | `intake-normalizer-prompt.md` | all | |
+| S1 Readiness | `readiness-blocker-interview-prompt.md` | all | |
+| S1B Pre-website measurement bootstrap | `pre-website-measurement-bootstrap-prompt.md` | pre-website | Comprehensive Phase 0 access bundle (P0-01..P0-12), Phase 1 agent config (GA4/GSC/DNS/GitHub/Code), Phase 2 staging verification. 7 Derived Policies. Front-loads all credential creation so agents run Phase 1 unattended. |
+| S1B / S2A Measurement quality audit | `measurement-quality-audit-prompt.md` | website-live | For existing live sites entering the loop. Idempotent gap audit against 7 Derived Policies. Does not provision; only reports current vs required state. Use when GA4+Cloudflare are already set up. |
+| S2A Existing-business data request | `historical-data-request-prompt.md` | website-live | |
+| S2A Existing-business baseline | `existing-business-historical-baseline-prompt.md` | website-live | |
+| S2B Offer design | no-prompt-required | all | Skill-driven: `/lp-offer` |
+| S3 Forecast | no-prompt-required | all | Skill-driven: `/lp-forecast` |
+| S3 Forecast recalibration | `forecast-recalibration-prompt.md` | all | Post-launch recalibration only |
+| S6B Channel strategy + GTM | no-prompt-required | all | Skill-driven: `/lp-channels` |
+| S4 Baseline merge | no-prompt-required | all | Skill-driven: `/lp-baseline-merge` |
+| S5A Prioritize | `prioritization-scorer-prompt.md` | all | |
+| S5B BOS sync | no-prompt-required | all | Skill-driven: `/lp-bos-sync` |
+| S7 Fact-find | no-prompt-required | all | Skill-driven: `/lp-fact-find` |
+| S8 Plan | no-prompt-required | all | Skill-driven: `/lp-plan` |
+| S9 Build | no-prompt-required | all | Skill-driven: `/lp-build` |
+| S9B Post-deploy verification | `post-deploy-measurement-verification-prompt.md` | all | Run immediately after first production deploy. Two-phase: Immediate (T+0, DebugView/curl only) and Delayed (T+1 Data API baseline, T+7 week-1 baseline + GSC coverage delta). DV-03 cross-domain linking is advisory (H). |
+| S9B QA gates | no-prompt-required | all | Skill-driven: `/lp-launch-qa` |
+| S10 Weekly decision | `weekly-kpcs-decision-prompt.md` | all | |
 
 ## Operator prompts
 
-| Purpose | Prompt template |
-|---|---|
-| Run-packet and next-step handoff (`start/status/submit/advance`) | `startup-loop-operator-handoff-prompt.md` |
+| Purpose | Prompt template | Launch-surface |
+|---|---|---|
+| Run-packet and next-step handoff (`start/status/submit/advance`) | `startup-loop-operator-handoff-prompt.md` | all |
 
 Command wrapper that uses this operator prompt:
 

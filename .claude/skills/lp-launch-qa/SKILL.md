@@ -11,23 +11,24 @@ Pre-launch quality assurance gate for the startup loop (S9B). Validates conversi
 
 ## Purpose
 
-Prevent embarrassing launch failures by systematically verifying the four critical domains that separate a built site from a production-ready site:
+Prevent embarrassing launch failures by systematically verifying the five critical domains that separate a built site from a production-ready site:
 - Conversion machinery (forms submit, checkout flows, analytics fire)
 - SEO technical health (indexing, canonicals, structured data)
 - Performance budget (Core Web Vitals, asset sizes, critical rendering path)
 - Legal compliance (GDPR, cookie consent, terms, returns policy, disclaimers)
+- Measurement infrastructure (GA4 staging/production isolation, Consent Mode v2, DNS redirects)
 
 This is the **final gate** before S10 (launch/experiment). If any domain fails, the site is not ready.
 
 ## Invocation
 
 ```
-/lp-launch-qa --business <BIZ> [--domain conversion|seo|performance|legal|all]
+/lp-launch-qa --business <BIZ> [--domain conversion|seo|performance|legal|measurement|all]
 ```
 
 **Arguments:**
 - `--business`: Business unit code (`BRIK`, `PLAT`, `PIPE`, `BOS`) — determines which site/app to audit
-- `--domain`: Optional scope filter. Default: `all` (run all four domains)
+- `--domain`: Optional scope filter. Default: `all` (run all five domains)
 
 **Fast path examples:**
 ```
@@ -90,7 +91,7 @@ This is the **final gate** before S10 (launch/experiment). If any domain fails, 
 
 **1a) Validate arguments**
 - Confirm `--business` is a valid business unit code
-- Confirm `--domain` is one of: `conversion`, `seo`, `performance`, `legal`, `all` (or omitted, defaults to `all`)
+- Confirm `--domain` is one of: `conversion`, `seo`, `performance`, `legal`, `measurement`, `all` (or omitted, defaults to `all`)
 
 **1b) Locate site baseline and loop state**
 - Read `docs/business-os/site-upgrades/<BIZ>/latest.user.md` to get deployment URL, analytics config, expected conversion flows, legal doc paths
@@ -111,7 +112,7 @@ This is the **final gate** before S10 (launch/experiment). If any domain fails, 
 
 Run checks for the selected domain(s). Each check produces **pass/fail + evidence**.
 
-For `--domain all`, run all four domains sequentially.
+For `--domain all`, run all five domains sequentially.
 
 #### Domain 1: Conversion QA
 
@@ -249,6 +250,13 @@ For `--domain all`, run all four domains sequentially.
   - **Evidence:** Screenshot of consent banner + network tab showing no tracking requests before consent
   - **Fail condition:** No consent banner, tracking cookies set before consent, cannot reject
 
+- **L1b: Two-phase consent signal check (Consent Mode v2)**
+  - **What:** Verify that GA4 Consent Mode v2 signals fire in the correct phases: (a) before consent — `analytics_storage: denied`, no `_ga` cookie, no analytics network requests; (b) after consent accepted — `analytics_storage: granted`, `_ga` cookie set, analytics events visible in GA4 DebugView
+  - **Pass condition:** Both phases correct. Before accept: no `_ga` cookie, no analytics beacons. After accept: `_ga` cookie present, DebugView shows events with no consent-denied signal
+  - **Evidence:** Network tab screenshots for both states (before/after consent); cookie inspector showing `_ga` absent before and present after
+  - **Fail condition:** Analytics firing before consent (`_ga` set on page load); or `_ga` never set after consent; or DebugView empty after consent with no error explanation
+  - **Note:** An empty DebugView while consent is still `denied` is correct behaviour — **not a GA4 bug**. DebugView silence with denied consent is expected; only silence *after* accept is a failure.
+
 - **L2: Privacy policy exists and is linked**
   - **What:** Verify privacy policy page exists and is linked from footer and cookie banner
   - **Pass condition:** Privacy policy page returns 200; contains GDPR-required disclosures (data controller, data usage, user rights); linked from footer
@@ -314,6 +322,62 @@ For `--domain all`, run all four domains sequentially.
 
 **Brand Copy Compliance domain pass criteria:** All Domain 5 failures are warnings — skip the domain entirely if `brand-dossier.user.md` is absent.
 
+#### Domain 6: Measurement & Analytics
+
+> **Pre-flight note:** If the business did not go through S1B (pre-website measurement bootstrap) — e.g. an existing-site business on the `website-live` path — checks M1 and M2 may reveal a gap. In that case, produce a gap advisory and recommend routing to `measurement-quality-audit-prompt.md` rather than blocking launch.
+
+> **Delayed checks (DV-series):** Checks marked `(DELAYED)` cannot be verified at T+0 because GA4 Data API has 24-72 hour data latency. Failures on delayed checks are **warnings only** — they do not block launch. Document as "Deferred to T+1/T+7 post-deploy verification (`post-deploy-measurement-verification-prompt.md`)."
+
+**Goal:** Verify measurement infrastructure is correctly separated (staging/production), properly configured, and instrumented before live traffic hits the site.
+
+**Checks:**
+
+- **M1: Staging GA4 measurement ID ≠ production GA4 measurement ID**
+  - **What:** Read `NEXT_PUBLIC_GA_MEASUREMENT_ID` (or equivalent) for staging and production environments; confirm the two IDs are different
+  - **Pass condition:** Staging ID ≠ Production ID (necessary condition — required but not sufficient alone; see M2)
+  - **Evidence:** Both measurement IDs shown side-by-side (redact everything after `G-` prefix to first 3 chars; e.g., `G-ABC...` vs `G-XYZ...`)
+  - **Fail condition:** Same measurement ID in both environments → high-risk data contamination; **BLOCKER**
+
+- **M2: Staging measurement ID belongs to a different GA4 property than production (V-05 full check)**
+  - **What:** Using GA4 Admin API (`analyticsadmin.googleapis.com`), read the `parent` property for each measurement ID; confirm they are different property IDs
+  - **Pass condition:** Staging measurement ID → Property A (staging property); Production measurement ID → Property B (production property). BOTH conditions must hold (different IDs AND different properties)
+  - **Evidence:** `GET /v1beta/properties/{propertyId}/dataStreams` → show property IDs for each stream
+  - **Fail condition:** Staging stream belongs to same property as production → Policy-02 violated; **BLOCKER**
+  - **Note:** This is the V-05 full check from the S1B verification checklist. M1 pass alone is not sufficient.
+
+- **M3: GA4 internal traffic filter status = Active (read-only confirm)**
+  - **What:** Using GA4 Admin API, read the internal traffic filter for the production property; confirm status = `ACTIVE`
+  - **Pass condition:** Filter exists and status is `ACTIVE`; IP match rule covers the operator's known office/home IP range
+  - **Evidence:** `GET /v1beta/properties/{propertyId}/dataStreams/{streamId}/measurementProtocolSecrets` and filter list; show status field
+  - **Fail condition:** Filter absent or status = `ENABLED` but not `ACTIVE` (not yet applied) → Warning (defers to Policy-05 post-launch remediation)
+  - **Note:** **Do NOT activate or modify the filter here.** This check is read-only. G-07 (Phase 1) is the setter; activating in QA scope is prohibited.
+
+- **M5: Cross-domain linking advisory (H — human action, non-blocking)**
+  - **What:** Note whether the site has any external domains that should share GA4 sessions (e.g. external booking engine, external checkout, subdomain payment provider)
+  - **Pass condition:** Either (a) no external domains in conversion flow, or (b) cross-domain linking is confirmed configured in GA4 Tag Settings (owner confirms in-session)
+  - **Evidence:** List external domains in conversion path; owner verbal confirmation or GA4 Tag Settings screenshot
+  - **Fail condition:** External domains in conversion path AND cross-domain linking not configured → Warning (advisory, not blocker)
+  - **Note:** `(H)` only — no GA4 Admin API endpoint exists for cross-domain linking configuration. Human must add allowed domains in GA4 UI: Admin → Tag Settings → Configure your Google tag → Domains. DV-03 in `post-deploy-measurement-verification-prompt.md` covers the delayed verification.
+
+- **M6: SC-03 Coverage API guard (internal constraint)**
+  - **What:** Confirm that no automated check in this QA run is attempting to call the Google Search Console Coverage/Pages API for bulk index totals
+  - **Pass condition:** No Coverage API calls made; SC-03b (manual GSC UI export) is noted as deferred human action
+  - **Evidence:** Audit log confirms no `searchconsole.googleapis.com/webmasters/v3/sites/.../sitemaps` coverage bulk calls in this run
+  - **Fail condition:** An automated step attempted to call GSC Coverage bulk API → **internal constraint violation**; abort and flag
+  - **Note:** GSC has no bulk Coverage/Pages report API. Agents must NOT attempt to call it. SC-03b requires manual GSC UI export by the operator. This check prevents silent constraint violation.
+
+- **M7: DNS redirect health (apex + www + booking path)**
+  - **What:** Using `curl -I`, verify that apex → www redirect, www → production URL, and any external booking path redirect are all functioning correctly
+  - **Pass condition:** All redirects return correct HTTP codes (301/302); final destination is production URL with correct SSL; no redirect loops
+  - **Evidence:** `curl -I` output for apex, www, and booking redirect path (automated)
+  - **Fail condition:** Missing redirect, redirect loop, HTTP 404/5xx at redirect target → **BLOCKER** (broken DNS before launch = traffic lost)
+
+**Measurement domain pass criteria:**
+- **Blockers:** M1 (same measurement ID in both envs), M2 (same property for staging + production), M7 (DNS redirect broken)
+- **Warnings:** M3 (internal traffic filter not active), M5 (cross-domain advisory), M6 (internal constraint note)
+- **Existing-site gap advisory:** If S1B was not run (website-live path), M1/M2 failures produce a gap advisory → recommend `measurement-quality-audit-prompt.md`; do not block launch on this basis alone.
+- **Delayed checks:** DV-series checks from `post-deploy-measurement-verification-prompt.md` are explicitly out of scope for launch-time QA. Document as deferred.
+
 ### 3) Aggregate results and produce go/no-go decision
 
 **3a) Count pass/fail per domain**
@@ -322,10 +386,12 @@ For `--domain all`, run all four domains sequentially.
 - Performance: X/Y checks passed
 - Legal: X/Y checks passed
 - Brand Copy: X/Y checks passed (or "Skipped — Brand Dossier absent")
+- Measurement: X/Y checks passed (or "Gap advisory — S1B not run; route to measurement-quality-audit")
 
 **3b) Determine blocker vs. warning severity**
-- **Blocker:** Any failure in Conversion or Legal domains; Performance P1–P3 failures
-- **Warning:** SEO failures (fix recommended but not blocking); Performance P4–P5 failures; all Brand Copy failures (GATE-BD-06b Warn)
+- **Blocker:** Any failure in Conversion or Legal domains; Performance P1–P3 failures; Measurement M1, M2, or M7 failures
+- **Warning:** SEO failures (fix recommended but not blocking); Performance P4–P5 failures; all Brand Copy failures (GATE-BD-06b Warn); Measurement M3, M5, M6 failures; all DV-series delayed checks (deferred to post-deploy verification)
+- **Existing-site gap advisory (non-blocking):** M1/M2 failure where S1B was not run → recommend `measurement-quality-audit-prompt.md`; does not block launch unilaterally
 
 **3c) Go/no-go decision**
 - **GO:** All blocker checks pass; warnings documented for follow-up
@@ -347,7 +413,7 @@ Business-Unit: <BIZ>
 Audit-Date: YYYY-MM-DD
 Deployment-Target: <staging | production>
 Deployment-URL: <URL>
-Domains-Audited: <conversion, seo, performance, legal | all>
+Domains-Audited: <conversion, seo, performance, legal, measurement | all>
 Decision: <GO | NO-GO>
 ---
 
@@ -366,6 +432,7 @@ Decision: <GO | NO-GO>
 - Performance: X/Y passed (<% pass rate>)
 - Legal: X/Y passed (<% pass rate>)
 - Brand Copy: X/Y passed (<% pass rate>) | _or_ Skipped — Brand Dossier absent
+- Measurement: X/Y passed (<% pass rate>) | _or_ Gap advisory — S1B not run
 
 **Blockers:** <count> | **Warnings:** <count>
 
@@ -438,6 +505,42 @@ Decision: <GO | NO-GO>
 - **Status:** <PASS | WARN | SKIPPED>
 - **Evidence:** <CTAs / key labels checked vs. brand-dossier Key Phrases>
 - **Notes:** <any mismatches>
+
+---
+
+## Domain 6: Measurement & Analytics
+
+<_Note: DV-series checks (delayed) are out of scope here — deferred to post-deploy verification (`post-deploy-measurement-verification-prompt.md`). Document as "Deferred (T+1/T+7)" rather than FAIL._>
+
+### M1: Staging GA4 measurement ID ≠ production GA4 measurement ID
+- **Status:** <PASS | FAIL>
+- **Evidence:** <staging ID prefix vs. production ID prefix (redacted)>
+- **Notes:** <any environment config observations>
+
+### M2: Staging ID belongs to different GA4 property than production (V-05 full check)
+- **Status:** <PASS | FAIL | GAP-ADVISORY>
+- **Evidence:** <property IDs for staging and production streams (from Admin API)>
+- **Notes:** <if GAP-ADVISORY: S1B not run for this business; recommend measurement-quality-audit-prompt.md>
+
+### M3: GA4 internal traffic filter status = Active (read-only confirm)
+- **Status:** <PASS | WARN>
+- **Evidence:** <filter status from Admin API; filter IP rule summary>
+- **Notes:** <if WARN: remediate post-launch via G-07; do not activate here>
+
+### M5: Cross-domain linking advisory (H — advisory)
+- **Status:** <PASS | WARN | N/A>
+- **Evidence:** <list external domains in conversion path; owner confirmation if applicable>
+- **Notes:** <if WARN: owner to add domains in GA4 Tag Settings > Configure your Google tag > Domains; DV-03 tracks post-deploy verification>
+
+### M6: SC-03 Coverage API guard (internal constraint check)
+- **Status:** <PASS | VIOLATION>
+- **Evidence:** <confirm no GSC Coverage bulk API calls made in this QA run>
+- **Notes:** <SC-03b (manual GSC UI export) noted as deferred human action>
+
+### M7: DNS redirect health (apex + www + booking path)
+- **Status:** <PASS | FAIL>
+- **Evidence:** <curl -I output for apex, www, booking redirect; final destination URL + HTTP status>
+- **Notes:** <any redirect anomalies>
 
 ---
 
@@ -553,7 +656,7 @@ git add docs/business-os/startup-baselines/<BIZ>/loop-state.json  # if exists
 git commit -m "$(cat <<'EOF'
 docs(launch-qa): <BIZ> pre-launch QA — <GO | NO-GO>
 
-- Audited domains: <conversion, seo, performance, legal | all>
+- Audited domains: <conversion, seo, performance, legal, measurement | all>
 - Deployment target: <staging | production>
 - Decision: <GO | NO-GO>
 - Blockers: <count> | Warnings: <count>

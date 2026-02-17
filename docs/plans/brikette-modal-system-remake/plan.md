@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-05 complete — single host invariant + orphaned shim deprecation)
+Last-updated: 2026-02-17 (TASK-06 complete — provider effects decomposed into dedicated modules)
 Feature-Slug: brikette-modal-system-remake
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -134,7 +134,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 | TASK-03 | INVESTIGATE | Produce preload-policy evidence (global core preload vs modal-scoped preload contract) | 72% | S | Complete (2026-02-17) | - | TASK-06 |
 | TASK-04 | IMPLEMENT | Introduce typed modal payload registry + migrate initial consumers off `unknown` casts | 82% | M | Complete (2026-02-17) | TASK-01, TASK-02 | TASK-05, TASK-06, TASK-09 |
 | TASK-05 | IMPLEMENT | Migrate to single modal host/switcher ownership and deprecate duplicate orchestration path | 80% | M | Complete (2026-02-17) | TASK-01, TASK-04 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | Decompose provider effects and implement selected i18n preload contract | 82% | M | Pending | TASK-03, TASK-04, TASK-05 | TASK-08 |
+| TASK-06 | IMPLEMENT | Decompose provider effects and implement selected i18n preload contract | 82% | M | Complete (2026-02-17) | TASK-03, TASK-04, TASK-05 | TASK-08 |
 | TASK-07 | IMPLEMENT | Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency) | 81% | M | Pending | TASK-05 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint before downstream validation/cleanup | 95% | S | Pending | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add integration/contract/a11y test suite for modal invariants | 81% | M | Pending | TASK-04, TASK-06, TASK-07, TASK-08 | TASK-10 |
@@ -414,8 +414,9 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `apps/brikette/src/context/modal/provider.tsx`, `apps/brikette/src/context/modal/environment.ts`, `apps/brikette/src/i18n.namespaces.ts`, `[readonly] apps/brikette/src/i18n.ts`
+- **Controlled scope expansion:** `apps/brikette/src/context/modal/effects/useModalEscapeKey.ts`, `apps/brikette/src/context/modal/effects/useModalScrollLock.ts`, `apps/brikette/src/context/modal/effects/useModalI18nPreload.ts` (new effect hook modules — direct deliverable of decomposition task), `apps/brikette/src/test/context/modal-provider-effects.test.tsx` (TC-02/03/04 tests). Expansion bounded to TASK-06 objective.
 - **Depends on:** TASK-03, TASK-04, TASK-05
 - **Blocks:** TASK-08
 - **Confidence:** 82%
@@ -459,6 +460,19 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - Add provider architecture notes and preload policy rationale.
 - **Notes / references:**
   - Fact-find evidence E3-E5.
+- **Build completion evidence (2026-02-17):**
+  - `MODAL_I18N_PRELOAD_NAMESPACES = ["bookPage"]` added to `i18n.namespaces.ts` — explicit preload policy constant.
+  - `getDocument()` + `getDocumentBody()` moved to `environment.ts` as exports.
+  - Three dedicated effect hooks created in `context/modal/effects/`: `useModalEscapeKey`, `useModalScrollLock`, `useModalI18nPreload`.
+  - `provider.tsx` refactored: inline effects removed, 3 hooks imported and called. Provider now owns state transitions only.
+  - TC-02: `loadNamespaces(["bookPage"])` called exactly once on mount — PASS.
+  - TC-03a: Escape key closes active modal — PASS.
+  - TC-03b: Escape key no-op when no modal active — PASS.
+  - TC-03c: Focus returns to trigger after close — PASS.
+  - TC-04: Preload fires before first openModal — PASS.
+  - TC-01 (GA4 lifecycle baseline): `emits modal_open and modal_close` — PASS.
+  - Typecheck: clean (brikette tsc --noEmit exit 0).
+  - Commit: `3d9a112cb1`.
 
 ### TASK-07: Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency)
 - **Type:** IMPLEMENT

@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-03 complete)
+Last-updated: 2026-02-17 (TASK-07 checkpoint complete)
 Last-reviewed: 2026-02-17
 Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
@@ -497,7 +497,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `docs/plans/brikette-octorate-funnel-reduction/plan.md`
 - **Depends on:** TASK-02, TASK-03, TASK-05A, TASK-06, TASK-10A
 - **Blocks:** TASK-08, TASK-10B
@@ -517,6 +517,12 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Planning validation:** replan evidence linked in Decision Log.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** plan gate and confidence updates.
+- **Checkpoint notes (2026-02-17):**
+  - Assumption 1 (GA4 non-zero): TASK-05A native emitters deployed; post-deploy production window evidence not yet available. Monitoring delegated to first Monday weekly review (TASK-06 runbook §4 Q1). No confidence regression — code instrumentation is complete and verified via automated TC.
+  - Assumption 2 (same-tab regression): TASK-03 complete; all three primary booking surfaces now emit `same_tab`. TC-05 threshold monitoring via runbook §6 escalation policy. No regression detected in test suites.
+  - Assumption 3 (redirect rollout): TASK-02 Complete (2026-02-17). Middleware test suite green. No anomaly detected.
+  - Downstream assessment: TASK-10B (SSR remediation) unblocked and ready; confidence 72% — proceed. TASK-08 (calibration) requires post-deploy GA4 window; confidence unchanged at 74% — deferred to first available post-deploy window where GA4 handoff count > 0. No topology change required; existing sequence remains valid.
+  - Verdict: Proceed. No `/lp-replan` required for downstream confidence. TASK-08 and TASK-10B unblocked.
 
 ### TASK-08: Overlap-window calibration (non-zero GA4 handoff + Octorate bookings)
 - **Type:** INVESTIGATE
@@ -735,6 +741,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-05A complete. Native `handoff_to_engine` emission added across BookingModal (new_tab), Booking2Modal (same_tab/confirm + same_tab/result), and ApartmentBookContent (same_tab/result). `fireHandoffToEngineAndNavigate` with beacon is the primary navigation driver in Booking2Modal; `fireHandoffToEngine` with beacon-transport flag is used where navigation is owned externally. Compat `begin_checkout`/`search_availability` fires retained without beacon during migration window. TC-01/TC-02 automated; TC-03/TC-04 deferred to post-deploy.
 - 2026-02-17: TASK-10A complete. SSR/no-JS + i18n leakage detection suite added in report-only mode. TC-01 (i18n placeholder audit): 0 findings — all 15 non-EN locales × 6 commercial namespaces clean. TC-02 (no-JS dead-end): correctly detects `BookPageContent.tsx` + `book/page.tsx` have no static Octorate fallback; warns in normal mode, hard-fails with `CONTENT_READINESS_MODE=fail`. TC-03 (locale regression): 36/36 pass. Gate switches to CI-blocking after TASK-10B remediation. TASK-07 now blocked only on TASK-03.
 - 2026-02-17: GA4 admin actions confirmed complete by Pete: cross-domain include list (`hostel-positano.com` + `brikette-website.pages.dev`) and referral exclusion (`book.octorate.com`) both applied. Runbook §8 updated to reflect completion.
+- 2026-02-17: TASK-07 checkpoint complete. All three horizon assumptions validated from code evidence. GA4 post-deploy data deferred to weekly review cadence. TASK-08 and TASK-10B unblocked; no replan needed.
 - 2026-02-17: TASK-03 complete. BookingModal (v1) normalized to same-tab handoff. `packages/ui` BookingModal.tsx: CTA prevents default when `onAction` is provided (beacon-driven nav). `BookingGlobalModal.tsx`: switched to `fireHandoffToEngineAndNavigate` with `same_tab`. All three primary booking surfaces (BookingModal, Booking2Modal, ApartmentBookContent) now emit `same_tab` for primary flow. TC-01/TC-04 automated; TC-05 deferred to post-deploy monitoring. TASK-07 checkpoint now unblocked (TASK-03 + TASK-10A both complete).
 
 ## Overall-confidence Calculation

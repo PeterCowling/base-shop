@@ -39,6 +39,7 @@ Optional (enhances quality):
 - Customer reviews (competitor products/services)
 - Market research docs from `docs/business-os/market-research/`
 - Existing offer drafts or positioning statements
+- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — enhances Positioning One-Pager (Section 4) voice and personality
 
 ## Workflow
 

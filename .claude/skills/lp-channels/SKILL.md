@@ -43,6 +43,8 @@ Optional (enhances quality):
 - Resource constraints (team size, skills, available time)
 - Existing channels/audiences (email list, social followers, content library)
 - Market research docs from `docs/business-os/market-research/`
+- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — channel voice and tone alignment
+- `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` — channel-specific messaging alignment
 
 ## Workflow
 

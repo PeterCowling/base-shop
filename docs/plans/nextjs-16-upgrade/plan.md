@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-16 complete; D-04 accepted; TASK-17 unblocked)
+Last-updated: 2026-02-17 (TASK-17 resolved: Option A peer-first; TASK-18 unblocked)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -139,8 +139,8 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 82% | M | Pending | TASK-02 (complete), TASK-13 (complete) | - |
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13 (complete), TASK-11 (complete) | - |
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
-| TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Pending | TASK-16 (complete) | TASK-18 |
-| TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 78% ⚠️ | M | Pending | TASK-17 | TASK-20 |
+| TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
+| TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 78% ⚠️ | M | Pending | TASK-17 (complete) | TASK-20 |
 | TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Pending | TASK-13 (complete) | TASK-20 |
 | TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Pending | TASK-18, TASK-19 | - |
 
@@ -161,6 +161,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-22 | CMS build graph reduction — transpilePackages cut from 15 → 3 CMS-specific entries (~3,258 TS files removed); typescript added to serverExternalPackages; tokenUtils TS2307 fixed; CMS typecheck+lint green | Complete (2026-02-17) | `e469da612c` |
 | TASK-13 | CHECKPOINT — CMS/cmp/xa typecheck+lint+build all verified; zero sync API findings; Cloudflare audit artifact written; /lp-replan run; TASK-14 promoted to 82% | Complete (2026-02-17) | `3644f6efa9` (docs) + cloudflare-free-tier-audit.md |
 | TASK-16 | Webpack policy coverage map: 93 files scanned; 3 XA wrapper bypass vectors all compliant; D-04 accepted limitation; scanner gap documented with Option A/B hardening paths | Complete (2026-02-17) | config-snapshot §12 |
+| TASK-17 | Decision: Option A (peer-first). `@acme/next-config` moves next/react/react-dom to peerDependencies; root devDependencies.next removed. D-01/D-02 remediation path explicit. | Complete (2026-02-17) | plan decision log |
 
 ### Deferred / Blocked
 
@@ -663,7 +664,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:**
   - `packages/next-config/package.json`
   - `root/package.json`
@@ -688,6 +689,27 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Planning validation:** `None: decision task`
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** plan decision log + task updates.
+
+#### Decision Resolution (2026-02-17)
+- **Decision: Option A — peer-first**
+- **Evidence basis (OBSERVED):**
+  - `packages/next-config/package.json` currently declares `next: "^15.3.9"` and `@next/env: "15.3.5"` as hard `dependencies` — both stale vs root `16.1.6` (D-01 confirmed)
+  - No `peerDependencies` declared in `packages/next-config/package.json`
+  - Root `package.json` declares `next: "16.1.6"` in BOTH `dependencies` and `devDependencies` (D-02 confirmed)
+  - 14 consumers of `@acme/next-config` all use `workspace:*`; all have `next` reachable via root hoisting
+- **Rationale:**
+  1. Semantic correctness: `@acme/next-config` configures Next but does not consume it at runtime — peer semantics are the correct contract
+  2. Eliminates D-01 structurally: no version number to maintain in the config package; consumer's `next` satisfies the peer automatically
+  3. All 14 consumers already have `next` resolvable; no breaking change for existing consumers
+  4. Standard pattern for shared config packages (analogous to shared eslint/prettier configs)
+  5. Future upgrade path: bump `next` in root + apps only; config package requires no change
+- **D-01 remediation path (TASK-18):**
+  - `packages/next-config/package.json`: move `next` and `@next/env` from `dependencies` to `peerDependencies` with broad range (`>=16.0.0`)
+  - `packages/next-config/package.json`: add `next` as `devDependency` (workspace reference or pinned) for local typecheck/test ergonomics
+  - `packages/next-config/package.json`: remove explicit `@next/env` from both deps and peers — Next 16 manages it transitively; no direct consumer need
+- **D-02 remediation path (TASK-18):**
+  - Root `package.json`: remove `next: "16.1.6"` from `devDependencies`; keep only in `dependencies` as the single authoritative root declaration
+- **Accepted risk:** isolated `@acme/next-config` package testing requires devDependency `next` to be present; this is expected and documented
 
 ### TASK-18: IMPLEMENT - Apply Dependency Policy Decision (D-01/D-02 Remediation)
 - **Type:** IMPLEMENT
@@ -819,3 +841,5 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: Added explicit Cloudflare Free-tier guardrails (Workers/Pages quotas, fail-mode policy, and invocation-scope checks) to keep the plan compliant with Free-tier deployment constraints.
 - 2026-02-17: TASK-12 spike complete (evidence committed, `71fe4c561d`). Primary hypothesis invalidated: typescript import was a minor contributor; root cause is CMS build graph (130+ routes + transpilePackages) requiring >12 GB on 16 GB machine. Created precursor chain TASK-21 (INVESTIGATE: transpilePackages audit) → TASK-22 (IMPLEMENT: apply reduction + commit deferred config). TASK-13 now depends on TASK-22. TASK-14 confidence condition updated from "TASK-12" to "TASK-22." CMS full build (exit 0) may require 32 GB+ CI machine; checkpoint accepts typecheck+lint as primary verification gate.
 - 2026-02-17: TASK-13 CHECKPOINT complete. All scoped build/typecheck/lint checks passed (CMS, cover-me-pretty, XA). Zero sync API findings. Cloudflare free-tier audit artifact written (`docs/plans/nextjs-16-upgrade/cloudflare-free-tier-audit.md`). TASK-14 promoted 72% → 82% (E2 evidence: CMS typecheck+lint PASS). TASK-15, TASK-16, TASK-19 unblocked (all above type thresholds). Key finding: `apps/cms/middleware.ts` (root, no auth) and `apps/cms/src/middleware.ts` (src/, full auth/RBAC) both exist — root-level takes precedence; auth middleware may be dead code. TASK-14 must resolve this ambiguity.
+- 2026-02-17: TASK-16 complete. D-04 (wrapper-scan gap) accepted as limitation — all 3 XA wrapper bypass locations are compliant; scanner covers 93 authoritative files. Option B (convention comment) recommended; Option A (extend scanner) documented as future hardening path.
+- 2026-02-17: TASK-17 DECISION resolved — **Option A (peer-first)**. `@acme/next-config` will move `next`/`@next/env` from `dependencies` to `peerDependencies`; add `next` as `devDependency` for local testing. Root `devDependencies.next` duplicate removed. Eliminates D-01 structurally; resolves D-02. TASK-18 unblocked.

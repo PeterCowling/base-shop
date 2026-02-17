@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (replan: TASK-12 spike done; TASK-21/22 precursor chain added)
+Last-updated: 2026-02-17 (TASK-21 complete; TASK-22 promoted to 82%)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -133,8 +133,8 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-21 | INVESTIGATE | Audit CMS `transpilePackages` — identify packages with complete dist/ safe to remove | 88% | S | Pending | TASK-12 (complete) | TASK-22 |
-| TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 68% ⚠️ | M | Pending (below threshold — see TASK-21) | TASK-21 | TASK-13 |
+| TASK-21 | INVESTIGATE | Audit CMS `transpilePackages` — identify packages with complete dist/ safe to remove | 88% | S | Complete (2026-02-17) | TASK-12 (complete) | TASK-22 |
+| TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 82% | M | Pending | TASK-21 (complete) | TASK-13 |
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 (complete), TASK-22 | TASK-14, TASK-15 |
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 72% ⚠️ | M | Pending | TASK-02 (complete), TASK-13 | - |
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13, TASK-11 | - |
@@ -157,6 +157,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-10 | Build OOM mitigation: confirm which apps need increased Node heap and decide how to enforce | Complete (2026-02-15) | `95652530c0` |
 | TASK-11 | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | Complete (2026-02-15) | `e582db8822` |
 | TASK-12 | SPIKE — CMS build OOM: webpack-escape for typescript import committed; TC-01 (build exits 0) not satisfied on 16 GB machine; precursor chain TASK-21→TASK-22 created | Spike Complete (2026-02-17) / TC-01 unmet | `71fe4c561d` |
+| TASK-21 | transpilePackages audit — @acme/ui (2,256 TS files) identified as dominant contributor; Tier 1/2 removal lists defined; src-alias constraints documented | Complete (2026-02-17) | see post-task commit |
 
 ### Deferred / Blocked
 
@@ -384,6 +385,19 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** Append transpilePackages audit section to `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
 
+#### Build Completion (2026-02-17)
+- **Status:** Complete
+- **Commit:** (see post-task commit)
+- **Output:** Audit appended to `docs/plans/nextjs-16-upgrade/build-oom-notes.md` (TASK-21 Evidence section)
+- **Key finding:** `@acme/ui` is the dominant contributor at **2,256 TS source files** — never addressed by the TASK-12 spike. Removal is the highest-impact action available.
+- **Tier 1 removals** (safe, high-impact): `@acme/ui` (2,256), `@acme/platform-core` (522), `@acme/types` (287), `@acme/config` (145)
+- **Tier 2 removals** (safe, low-impact): `@acme/design-tokens`, `@acme/telemetry`, `@acme/date-utils`, `@acme/theme`, `@themes/base`, `@themes/bcd`, `@acme/tailwind-config`
+- **Must keep (no dist):** `@themes/brandx`, `@themes/dark`
+- **Must keep (src-aliased, removal alone won't help):** `@acme/lib` (preset alias → src), `@acme/configurator` (CMS alias → src)
+- **Total reduction if all safe-to-remove applied:** ~3,258 TS files removed (94% of workspace package source)
+- **Memory-reduction estimate:** HIGH — but full build exit 0 on 16 GB still uncertain
+- **Validation:** filesystem checks + package.json exports verification + template-string import scan (all evidence in build-oom-notes.md)
+
 ### TASK-22: IMPLEMENT - CMS Build Graph Reduction
 - **Type:** IMPLEMENT
 - **Deliverable:** Code change — reduced `transpilePackages` in `apps/cms/next.config.mjs` + committed deferred `serverExternalPackages` change; documented pre-existing tokenUtils.ts typecheck errors.
@@ -391,18 +405,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending (below IMPLEMENT confidence threshold — see conditional note)
+- **Status:** Pending
 - **Affects:**
   - `apps/cms/next.config.mjs` (transpilePackages reduction + `typescript` to serverExternalPackages)
   - `apps/cms/src/app/cms/wizard/tokenUtils.ts` (document or fix pre-existing TS2307 for `@themes/brandx/tailwind-tokens`, `@themes/dark/tailwind-tokens`)
   - `docs/plans/nextjs-16-upgrade/build-oom-notes.md` (updated post-reduction build evidence)
-- **Depends on:** TASK-21
+- **Depends on:** TASK-21 (complete)
 - **Blocks:** TASK-13
-- **Confidence:** 68% ⚠️ (→ ≥80% conditional on TASK-21 confirming sufficient safe-to-remove candidates)
-  - Implementation: 68% — cannot confirm feasibility until TASK-21 identifies which packages can be safely removed without CMS typecheck/lint regressions.
-  - Approach: 78% — established pattern: packages with complete dist/ can use compiled output; removal reduces webpack compilation work.
-  - Impact: 72% — memory reduction magnitude is unknown until TASK-21; spike confirmed single-package removal insufficient at 8 GB.
-- **Conditional note:** Below IMPLEMENT threshold (80%). Execute TASK-21 first, then re-run `/lp-replan` to promote confidence based on audit findings before building this task.
+- **Confidence:** 82%
+  - Implementation: 82% — TASK-21 audit confirmed all Tier 1 packages have complete dist/ with no src aliases; removal steps are well-defined.
+  - Approach: 85% — removing 3,258 TS files (94% of workspace source currently transpiled) is the largest available lever; @acme/ui alone (2,256 files) was never evaluated in TASK-12 spike.
+  - Impact: 80% — significant memory reduction highly likely; full build exit 0 on 16 GB still uncertain (may still require 32 GB+); primary TC is typecheck+lint, not build exit 0.
 - **Acceptance:**
   - `transpilePackages` reduced per TASK-21 safe-to-remove list.
   - `typescript` committed to `serverExternalPackages` in `apps/cms/next.config.mjs`.

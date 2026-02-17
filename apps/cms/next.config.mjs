@@ -171,7 +171,12 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
 
-  // Keep heavy Node-only libs external on the server bundle
+  // Keep heavy Node-only libs external on the server bundle.
+  // `typescript` is here because @acme/platform-core/themeTokens imports it
+  // statically; when platform-core is in transpilePackages, webpack follows the
+  // import and tries to bundle the entire TS compiler (~40 MB), causing OOM on
+  // Next 16 --webpack builds. Keeping it external lets the server use the
+  // workspace devDep via require() without bundling it. (TASK-12 spike fix)
   serverExternalPackages: [
     "lighthouse",
     "puppeteer",
@@ -179,28 +184,21 @@ const nextConfig = {
     "resend",
     "@react-email/render",
     "html-to-text",
+    "typescript",
   ],
 
-  // Transpile workspace packages that ship TS/modern syntax
+  // Transpile workspace packages that ship TS/modern syntax.
+  // TASK-22 reduction: packages with a complete dist/ and no src-alias override are
+  // removed so webpack uses compiled JS instead of TypeScript source. This reduces
+  // the build-graph size by ~3,258 TS files (~94%). See build-oom-notes.md TASK-21/22.
   transpilePackages: Array.from(
     new Set([
       ...(preset.transpilePackages ?? []),
-      "@themes/base",
-      "@themes/bcd",
+      // Must transpile: no dist/ directory (source-only theme packages).
       "@themes/brandx",
       "@themes/dark",
-      "@acme/platform-core",
-      "@acme/ui",
-      "@acme/date-utils",
-      "@acme/lib",
-      "@acme/types",
-      "@acme/tailwind-config",
-      "@acme/design-tokens",
+      // Must transpile: src-aliased by this webpack config (dist/ is never reached).
       "@acme/configurator",
-      "@acme/telemetry",
-      "@acme/config",
-      // NEW: transpile the theme package itself so Next can parse its TS
-      "@acme/theme",
     ])
   ),
 

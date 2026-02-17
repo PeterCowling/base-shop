@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-18 promoted to 82%; ready for /lp-build)
+Last-updated: 2026-02-17 (TASK-18 complete; D-01/D-02 resolved; TASK-19 + TASK-20 remain)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -140,7 +140,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13 (complete), TASK-11 (complete) | - |
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
 | TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
-| TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 82% | M | Pending | TASK-17 (complete) | TASK-20 |
+| TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 82% | M | Complete (2026-02-17) | TASK-17 (complete) | TASK-20 |
 | TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Pending | TASK-13 (complete) | TASK-20 |
 | TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Pending | TASK-18, TASK-19 | - |
 
@@ -162,6 +162,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-13 | CHECKPOINT — CMS/cmp/xa typecheck+lint+build all verified; zero sync API findings; Cloudflare audit artifact written; /lp-replan run; TASK-14 promoted to 82% | Complete (2026-02-17) | `3644f6efa9` (docs) + cloudflare-free-tier-audit.md |
 | TASK-16 | Webpack policy coverage map: 93 files scanned; 3 XA wrapper bypass vectors all compliant; D-04 accepted limitation; scanner gap documented with Option A/B hardening paths | Complete (2026-02-17) | config-snapshot §12 |
 | TASK-17 | Decision: Option A (peer-first). `@acme/next-config` moves next/react/react-dom to peerDependencies; root devDependencies.next removed. D-01/D-02 remediation path explicit. | Complete (2026-02-17) | plan decision log |
+| TASK-18 | D-01/D-02 manifest remediation: `packages/next-config` moves `next` to peerDependencies; `@next/env` removed; root devDep duplicate removed; lockfile updated. All 4 TCs passed. | Complete (2026-02-17) | `0aef8d5a59` |
 
 ### Deferred / Blocked
 
@@ -718,7 +719,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `packages/next-config/package.json`, `root/package.json`, `pnpm-lock.yaml`
 - **Depends on:** TASK-17 (complete)
 - **Blocks:** TASK-20
@@ -762,6 +763,22 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - All 14 consumers resolve `next` via root hoisting; peer constraint `">=16.0.0"` satisfied automatically
 - **TC contract updated:** TC-03 split — added `pnpm --filter @acme/next-config test` (covers Node builtin test runner); TC-04 added for key consumer typecheck+lint
 - **Status:** Ready for `/lp-build`
+
+#### Build Completion (2026-02-17)
+- **Status:** Complete
+- **Commit:** `0aef8d5a59`
+- **Changes:**
+  - `packages/next-config/package.json`: removed `@next/env: 15.3.5` + `next: ^15.3.9` from `dependencies`; added `peerDependencies: { "next": ">=16.0.0" }`
+  - `package.json` (root): removed `next: 16.1.6` from `devDependencies`; authoritative declaration remains in `dependencies`
+  - `pnpm-lock.yaml`: updated (23 lines changed — stale entries removed; no new installs)
+- **TC-01:** `pnpm -r list next --depth -1` → all entries `next 16.1.6` ✅
+- **TC-02:** `pnpm why @next/env` → `@next/env 16.1.6` only via root `next`; stale `15.3.5` path gone ✅ (pre-existing `@next/env 16.0.0` from `vite-plugin-storybook-nextjs` unchanged)
+- **TC-03:** `@acme/next-config` lint clean + 8/8 node builtin tests pass ✅
+- **TC-04:** `@apps/cms` typecheck + lint exit 0; `@apps/cover-me-pretty` typecheck + lint exit 0 ✅
+- **Peer resolution:** `pnpm install` completed without new peer warnings. Pre-existing storybook/react peer mismatches are unchanged.
+- **D-01 resolved:** `@acme/next-config` no longer has hard dependency on `next`; peer semantics correct.
+- **D-02 resolved:** Root `package.json` has single authoritative `next: 16.1.6` in `dependencies` only.
+- **Pre-commit hooks:** typecheck-staged (@acme/next-config), lint-staged, agent-context — all ✅
 
 ### TASK-19: INVESTIGATE - Turbopack Blocker Repro Matrix (Observed vs Assumed)
 - **Type:** INVESTIGATE
@@ -858,3 +875,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: TASK-13 CHECKPOINT complete. All scoped build/typecheck/lint checks passed (CMS, cover-me-pretty, XA). Zero sync API findings. Cloudflare free-tier audit artifact written (`docs/plans/nextjs-16-upgrade/cloudflare-free-tier-audit.md`). TASK-14 promoted 72% → 82% (E2 evidence: CMS typecheck+lint PASS). TASK-15, TASK-16, TASK-19 unblocked (all above type thresholds). Key finding: `apps/cms/middleware.ts` (root, no auth) and `apps/cms/src/middleware.ts` (src/, full auth/RBAC) both exist — root-level takes precedence; auth middleware may be dead code. TASK-14 must resolve this ambiguity.
 - 2026-02-17: TASK-16 complete. D-04 (wrapper-scan gap) accepted as limitation — all 3 XA wrapper bypass locations are compliant; scanner covers 93 authoritative files. Option B (convention comment) recommended; Option A (extend scanner) documented as future hardening path.
 - 2026-02-17: TASK-17 DECISION resolved — **Option A (peer-first)**. `@acme/next-config` will move `next`/`@next/env` from `dependencies` to `peerDependencies`; add `next` as `devDependency` for local testing. Root `devDependencies.next` duplicate removed. Eliminates D-01 structurally; resolves D-02. TASK-18 unblocked.
+- 2026-02-17: TASK-18 complete (`0aef8d5a59`). D-01 resolved: `@acme/next-config` now declares `next` as `peerDependencies: ">=16.0.0"` with no hard dep. D-02 resolved: root `devDependencies.next` removed; single authoritative declaration in `dependencies`. All 4 TCs passed (single version workspace-wide, stale `@next/env 15.3.5` path gone, next-config lint+tests clean, CMS+cover-me-pretty typecheck+lint green). TASK-20 now unblocked pending TASK-19.

@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-05B complete)
+Last-updated: 2026-02-17 (TASK-10B replanned to 84%)
 Last-reviewed: 2026-02-17
 Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
@@ -167,7 +167,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 | TASK-08 | INVESTIGATE | Run overlap-window calibration (non-zero GA4 handoff + Octorate bookings) | 70% | M | Pending | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | No-API reconciliation operating pack (aggregate + probabilistic) | 78% | M | Pending | TASK-08 | - |
 | TASK-10A | IMPLEMENT | Add SSR/no-JS + i18n leakage detection gate in report-only mode for commercial routes | 82% | M | Pending | - | TASK-07, TASK-10B |
-| TASK-10B | IMPLEMENT | SSR/no-JS remediation for booking landers + i18n leakage fixes | 72% | L | Pending | TASK-07, TASK-10A | - |
+| TASK-10B | IMPLEMENT | SSR/no-JS remediation for booking landers + i18n leakage fixes | 84% | L | Pending | TASK-07, TASK-10A | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -695,35 +695,48 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
 - **Status:** Pending
-- **Affects:** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx`, `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`, `docs/plans/brikette-octorate-funnel-reduction/fact-find.md`
+- **Affects:** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/app/[lang]/book/page.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx`, `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`, `apps/brikette/src/test/content-readiness/i18n/commercial-routes-ssr-audit.test.ts`, `docs/plans/brikette-octorate-funnel-reduction/fact-find.md`
 - **Depends on:** TASK-07, TASK-10A
 - **Blocks:** -
-- **Confidence:** 72%
-  - Implementation: 74% - rendering remediation spans multiple commercial surfaces.
-  - Approach: 72% - remediation depth may vary by route-specific translation/runtime behavior.
-  - Impact: 88% - directly addresses dead-funnel SEO/no-JS risk.
+- **Confidence:** 84%
+  - Implementation: 87% - implementation path explicit: one static `<a>` link in RSC layer of `page.tsx` outside Suspense boundary passes TC-02; no complex SSR rendering change needed (E1+E2: 2026-02-17).
+  - Approach: 84% - Suspense architecture confirmed: `<Suspense fallback={null}>` means client component is not available pre-hydration; fallback must be in RSC layer, not client component; pass condition for TC-02 is `/book\.octorate\.com/` in source text (E1+E2: 2026-02-17).
+  - Impact: 88% - directly addresses dead-funnel SEO/no-JS risk (unchanged).
+- **Key implementation finding (2026-02-17):**
+  - `book/page.tsx` wraps `BookPageContent` in `<Suspense fallback={null}>`. Static fallback for no-JS users must be added to the RSC layer (`page.tsx`) OUTSIDE the Suspense boundary.
+  - TC-02 pass condition: string `book.octorate.com` present in source of `BookPageContent.tsx` OR `book/page.tsx` (per `OCTORATE_STATIC_LINK_PATTERN = /book\.octorate\.com/` in commercial-routes-ssr-audit.test.ts).
+  - BOOKING_CODE = `"45111"` — codice param for default Octorate result URL: `https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111`.
+  - Gate-switch mechanism: `CONTENT_READINESS_MODE=fail` env var activates hard-fail mode in TASK-10A test; no test source change required if CI env sets this var.
+  - Out-of-scope: `HomeContent.tsx`, `RoomsPageContent.tsx`, `DealsPageContent.tsx` — TC-01 found 0 i18n placeholder findings on 2026-02-17; no immediate remediation needed in these files. Scope can shrink to `book/page.tsx` + gate-switch.
 - **Acceptance:**
-  - `/{lang}/book` serves SSR persuasion plus direct Octorate link fallback (no dead-end pre-hydration).
-  - All TASK-10A leakage/no-JS gates pass for commercial routes.
-  - TASK-10A is switched from report-only to CI-blocking mode after remediation passes.
+  - `/{lang}/book` serves a visible, static direct Octorate link for no-JS users (in RSC layer, outside Suspense boundary).
+  - TASK-10A TC-02 passes with `CONTENT_READINESS_MODE=fail` (gate switched to CI-blocking).
+  - All other TASK-10A gates remain passing after remediation.
   - Remediation notes identify residual limitations and next-step debt explicitly.
 - **Validation contract (TC-XX):**
-  - TC-01: TASK-10A suite passes in CI for EN + at least one additional locale.
-  - TC-02: manual no-JS spot checks on EN/IT/DE confirm booking-intent continuity.
+  - TC-01: `CONTENT_READINESS_MODE=fail pnpm --filter brikette test commercial-routes-ssr-audit` passes — TC-02 hard-fail gate clears after static link is added; TC-01 and TC-03 already passing and must remain so.
+  - TC-02: static `<a href="https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111">` link (or equivalent with params) visible in RSC-rendered source — verified by TC-01 gate and manual inspection.
   - TC-03: no new route loops/regressions introduced by remediation.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: fact-find reproducibility commands for hydration dependence and token leakage.
-  - Validation artifacts: fact-find reproducibility snapshot section.
-  - Unexpected findings: article-level assistance route state indicates broader routing/SSR coupling risk.
-- **Scouts:** isolate which leakage originates from translation namespace loading vs render timing.
-- **Edge Cases & Hardening:** guard against locale fallback collisions and stale pre-render outputs.
-- **What would make this >=90%:** successful SSR/no-JS smoke automation plus production spot checks on EN/IT/DE with no leakage regressions.
+  - Checks run (2026-02-17): E1 static audit of `BookPageContent.tsx` + `book/page.tsx`; E2 executable review of `commercial-routes-ssr-audit.test.ts` TC-02 pass condition.
+  - Validation artifacts: source read of both booking route files + TASK-10A test file.
+  - Unexpected findings: `<Suspense fallback={null}>` confirmed — RSC-layer placement of fallback is architecturally required, not optional.
+- **Scouts:** n/a — exact implementation path identified (RSC-layer static link); no further discovery needed.
+- **Edge Cases & Hardening:** fallback link must survive static export and not break SSG; use absolute Octorate URL with `codice=45111` as minimum safe default; guard against accidental double-rendering.
+- **What would make this >=90%:** TC-01 hard-fail gate passing in CI with `CONTENT_READINESS_MODE=fail` plus manual no-JS verification on EN/IT.
 - **Rollout / rollback:**
-  - Rollout: staged deploy with no-JS and 404/handoff monitoring.
-  - Rollback: revert route rendering changes while preserving tests and diagnostics.
+  - Rollout: staged deploy; confirm TC-02 hard-fail gate green before enabling `CONTENT_READINESS_MODE=fail` in CI.
+  - Rollback: revert static link addition and keep gate in report-only mode.
 - **Documentation impact:** update funnel rendering matrix and release notes.
 - **Notes / references:** `docs/plans/brikette-octorate-funnel-reduction/fact-find.md`
+
+#### Re-plan Update (2026-02-17)
+- Confidence: 72% -> 84% (Evidence: E1+E2)
+- Key change: implementation path explicit — static `<a>` in `page.tsx` RSC layer outside Suspense; TC-02 pass condition confirmed; Suspense architecture resolved as architectural constraint, not variable risk.
+- Dependencies: TASK-07, TASK-10A (unchanged)
+- Validation contract: TC-01 sharpened (run with `CONTENT_READINESS_MODE=fail`); TC-02 sharpened (specific href pattern + RSC-layer placement)
+- Notes: out-of-scope confirmed for HomeContent.tsx/RoomsPageContent.tsx/DealsPageContent.tsx (TC-01 clean on 2026-02-17); scope reduced to `book/page.tsx` + gate-switch
 
 ## Risks & Mitigations
 - GA4 handoff events remain zero in standard windows.
@@ -772,6 +785,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-10A complete. SSR/no-JS + i18n leakage detection suite added in report-only mode. TC-01 (i18n placeholder audit): 0 findings — all 15 non-EN locales × 6 commercial namespaces clean. TC-02 (no-JS dead-end): correctly detects `BookPageContent.tsx` + `book/page.tsx` have no static Octorate fallback; warns in normal mode, hard-fails with `CONTENT_READINESS_MODE=fail`. TC-03 (locale regression): 36/36 pass. Gate switches to CI-blocking after TASK-10B remediation. TASK-07 now blocked only on TASK-03.
 - 2026-02-17: GA4 admin actions confirmed complete by Pete: cross-domain include list (`hostel-positano.com` + `brikette-website.pages.dev`) and referral exclusion (`book.octorate.com`) both applied. Runbook §8 updated to reflect completion.
 - 2026-02-17: TASK-07 checkpoint complete. All three horizon assumptions validated from code evidence. GA4 post-deploy data deferred to weekly review cadence. TASK-08 and TASK-10B unblocked; no replan needed.
+- 2026-02-17: TASK-10B replanned 72% → 84% (E1+E2). Suspense architecture confirmed as key constraint: `<Suspense fallback={null}>` means client component not available pre-hydration; static Octorate fallback must go in RSC layer of `page.tsx` outside the Suspense boundary. TC-02 pass condition confirmed as `/book\.octorate\.com/` in source text — one static `<a>` tag satisfies it. BOOKING_CODE=`"45111"`. Out-of-scope confirmed for HomeContent/RoomsPageContent/DealsPageContent (TC-01 clean). Task now at 84% ≥ 80% threshold.
 - 2026-02-17: TASK-05B complete. `search_availability` compat calls removed from `BookingModal.tsx` + `Booking2Modal.tsx` (result path). `begin_checkout` compat retained in `ApartmentBookContent.tsx` + `Booking2Modal.tsx` (room-selected path) pending 30-day exit criteria. ga4-09 TC-01 assertion updated to verify `search_availability` no longer fires. Runbook §2.2/§4/§8/§9 updated. 11/11 previously-passing GA4 suites still green; typecheck clean.
 - 2026-02-17: TASK-05B replanned 78% → 82%. Two-tier cleanup policy made explicit: (1) `search_availability` compat removed in TASK-05B scope — no GA4 create-rule mapping, callers: BookingModal.tsx:94 + Booking2Modal.tsx:108; (2) `begin_checkout` compat retained until ≥30-day post-TASK-05A deploy exit criteria met — callers: ApartmentBookContent.tsx:69 + Booking2Modal.tsx:84; (3) dead helpers identified: `fireBeginCheckoutGeneric`, `fireBeginCheckoutGenericAndNavigate`, `fireBeginCheckoutRoomSelectedAndNavigate`. Out-of-scope: RoomDetailContent.tsx primary nav surface deferred to future phase. Task now at threshold (82% ≥ 80%) via E1 code audit.
 - 2026-02-17: TASK-03 complete. BookingModal (v1) normalized to same-tab handoff. `packages/ui` BookingModal.tsx: CTA prevents default when `onAction` is provided (beacon-driven nav). `BookingGlobalModal.tsx`: switched to `fireHandoffToEngineAndNavigate` with `same_tab`. All three primary booking surfaces (BookingModal, Booking2Modal, ApartmentBookContent) now emit `same_tab` for primary flow. TC-01/TC-04 automated; TC-05 deferred to post-deploy monitoring. TASK-07 checkpoint now unblocked (TASK-03 + TASK-10A both complete).
@@ -790,14 +804,14 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - TASK-08: 70 * 2 = 140
   - TASK-09: 78 * 2 = 156
   - TASK-10A: 82 * 2 = 164
-  - TASK-10B: 72 * 3 = 216
-- Total weighted score: 1752
+  - TASK-10B: 84 * 3 = 252
+- Total weighted score: 1788
 - Total weight: 22
-- Overall-confidence (weighted): 1752 / 22 = 79.63% -> **80%**
+- Overall-confidence (weighted): 1788 / 22 = 81.27% -> **81%**
 - Remaining-work confidence (excluding completed TASK-02 and TASK-04):
-  - Remaining weighted score: 1436
+  - Remaining weighted score: 1472
   - Remaining weight: 18
-  - Remaining confidence: 1436 / 18 = 79.77% -> **80%**
+  - Remaining confidence: 1472 / 18 = 81.77% -> **82%**
 - Critical-path confidence (blocking realism):
   - Critical path: TASK-05A -> TASK-06 -> TASK-07 -> TASK-08 -> TASK-09
   - Min confidence on critical path: **70%**

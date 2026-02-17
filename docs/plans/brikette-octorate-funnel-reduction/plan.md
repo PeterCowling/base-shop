@@ -530,7 +530,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Blocked (Awaiting TASK-05A production deployment + post-deploy GA4 data window)
 - **Affects:** `.tmp/reconciliation-*`, `docs/plans/brikette-octorate-funnel-reduction/reconciliation-calibration.md`, `[readonly] packages/mcp-server/octorate-process-bookings.mjs`
 - **Depends on:** TASK-07
 - **Blocks:** TASK-09
@@ -554,6 +554,15 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** update fact-find open-question closure notes.
 - **Notes / references:** `.tmp/reconciliation-2026-02-10_2026-02-17/`
+- **Investigation evidence (2026-02-17):**
+  - Fresh GA4 standard report (`2026-02-10..2026-02-17`): `handoff_to_engine = 0`, `begin_checkout = 0`, `search_availability = 0`, `page_view = 266`. Property is receiving data but no booking-intent events.
+  - GA4 realtime (last 30 min, 2026-02-17): all booking events = 0.
+  - Octorate data confirmed non-zero: 31 bookings, €8,682.99 for same window.
+  - Root cause: TASK-05A native emitters committed to `dev` branch 2026-02-17 but NOT YET deployed to production. Pre-TASK-05A code had no instrumentation for these events.
+  - GA4 admin create rules (begin_checkout → handoff_to_engine) are live but produce no events since begin_checkout = 0.
+  - Calibration artifact written to: `docs/plans/brikette-octorate-funnel-reduction/reconciliation-calibration.md`.
+  - Blocking condition: acceptance criterion ("non-zero counts on both sides") cannot be met until TASK-05A is deployed and a post-deploy window accumulates.
+  - Unblock trigger: deploy TASK-05A to production, then run `ga4-run-report.ts --window <deploy-date>..<deploy-date+7>` and confirm `handoff_to_engine > 0` before re-attempting TASK-08.
 
 ### TASK-09: No-API reconciliation operating pack (aggregate + probabilistic)
 - **Type:** IMPLEMENT

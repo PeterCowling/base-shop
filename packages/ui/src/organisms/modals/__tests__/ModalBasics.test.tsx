@@ -14,6 +14,7 @@ import {
   type LocationModalCopy,
   OffersModal,
 } from "..";
+import { ModalScrollArea,ModalScrollPanel } from "../primitives";
 
 const categories: FacilitiesModalCategory[] = [
   { title: "General", items: ["Wi-Fi", "Breakfast"] },
@@ -172,4 +173,91 @@ describe("Modal primitives integration", () => {
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 
+});
+
+// ---------------------------------------------------------------------------
+// TC-07: TASK-07 layout contract invariants
+// ---------------------------------------------------------------------------
+describe("TASK-07: modal layout contract (TC-07)", () => {
+  // TC-01: FacilitiesModal panel is viewport-bounded and content is scrollable
+  it("TC-01: FacilitiesModal ModalScrollArea is present for scrollable content", () => {
+    render(
+      <FacilitiesModal
+        isOpen
+        onClose={jest.fn()}
+        categories={categories}
+        copy={{ title: "Amenities", closeButton: "Close" }}
+      />,
+    );
+    // Radix Dialog renders through a portal into document.body — query from there.
+    // ModalScrollArea renders with overflow-y-auto (scroll in single container).
+    const scrollArea = document.body.querySelector("[class*='overflow-y-auto']");
+    expect(scrollArea).toBeTruthy();
+  });
+
+  // TC-02: BookingModal2 uses ModalScrollPanel (standardized, not ad-hoc max-h)
+  it("TC-02: BookingModal2 renders with ModalScrollPanel scroll contract", () => {
+    render(
+      <BookingModal2
+        isOpen
+        copy={booking2Copy}
+        checkIn="2025-05-01"
+        checkOut="2025-05-03"
+        adults={2}
+        onCheckInChange={jest.fn()}
+        onCheckOutChange={jest.fn()}
+        onAdultsChange={jest.fn()}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />,
+    );
+    // Radix Dialog renders through a portal into document.body — query from there.
+    // ModalScrollPanel applies max-h-[90dvh] via SCROLL_PANEL_BASE.
+    const scrollPanel = document.body.querySelector("[class*='max-h-\\[90dvh\\]']");
+    expect(scrollPanel).toBeTruthy();
+  });
+
+  // TC-03: Close affordance not regressed — FacilitiesModal and LanguageModal still have close buttons
+  it("TC-03: FacilitiesModal close button is present", () => {
+    render(
+      <FacilitiesModal
+        isOpen
+        onClose={jest.fn()}
+        categories={categories}
+        copy={{ title: "Amenities", closeButton: "Close" }}
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+  });
+
+  it("TC-03: LanguageModal close button is present", () => {
+    render(
+      <LanguageModal
+        isOpen
+        onClose={jest.fn()}
+        options={languageOptions}
+        currentCode="en"
+        onSelect={jest.fn()}
+        copy={{ title: "Language", closeLabel: "Done" }}
+        theme="light"
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Done" })).toBeInTheDocument();
+  });
+
+  // Smoke tests for ModalScrollPanel and ModalScrollArea primitives
+  it("ModalScrollPanel renders with scroll contract classes", () => {
+    const { container } = render(<ModalScrollPanel>content</ModalScrollPanel>);
+    const el = container.firstChild as HTMLElement;
+    expect(el.className).toMatch(/overflow-y-auto/);
+    expect(el.className).toMatch(/overscroll-contain/);
+    expect(el.className).toMatch(/max-h-\[90dvh\]/);
+  });
+
+  it("ModalScrollArea renders with scroll contract classes", () => {
+    const { container } = render(<ModalScrollArea>content</ModalScrollArea>);
+    const el = container.firstChild as HTMLElement;
+    expect(el.className).toMatch(/overflow-y-auto/);
+    expect(el.className).toMatch(/overscroll-contain/);
+  });
 });

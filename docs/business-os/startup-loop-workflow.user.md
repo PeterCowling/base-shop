@@ -14,35 +14,43 @@ Owner: Pete
 
 This page tells you what to do next for HEAD, PET, and BRIK — and how to do it.
 
-## Today (updated 2026-02-17)
+## Open tasks (updated 2026-02-17)
+
+Use these ranked lists to pick your next action. Tasks are ordered — complete from top to bottom, as each one unlocks the next.
 
 ### HEAD
 
-**Current blocker:** Operational confirmations are missing — in-stock date, sellable units, pricing, compatibility, payment flow readiness, and returns SLA have not been confirmed. Measurement setup is also not yet in place.
-
-**Do this now:** Fill in the Operational Confirmations form for HEAD (all 6 fields). Then complete the Pre-website Measurement Setup checklist.
-
-**Done when:** All 6 operational fields are confirmed and timestamped. Measurement setup document is at Active status.
-
----
+| # | Task | Why this comes first | Done when |
+|---|---|---|---|
+| 1 | Fill Operational Confirmations (6 fields): in-stock date, units, pricing, compatibility, payment readiness, returns SLA | Nothing else for HEAD can advance until these are confirmed. The forecast, offer design, and channel selection all depend on known inventory and operational reality. | All 6 fields confirmed and timestamped. |
+| 2 | Complete Pre-website Measurement Setup | HEAD is pre-website. Paid traffic without GA4, Search Console, and conversion event setup produces data you cannot use. | Measurement setup document at Active status. |
+| 3 | Produce the HEAD offer artifact (S2B) | Requires the operational inputs from task 1. Without the offer, the forecast and channel plan have no anchor. | Offer artifact exists with target customer profile, positioning, and pricing model. |
+| 4 | Advance HEAD forecast to decision-grade (S3) | A draft forecast exists from 12 Feb based on assumptions. Rebuild it once operational inputs are confirmed. | Forecast document at Active status with confirmed inputs replacing assumptions. |
+| 5 | Run this week's K/P/C/S decision | First decision is dated 12 Feb. The loop loses signal without weekly continuation. | This week's decision document exists and is dated. |
+| 6 | Run standing refresh | No market-pulse, channel-economics, or regulatory-watch documents exist yet for HEAD. | At least one standing refresh document produced and dated. |
 
 ### PET
 
-**Current blocker:** Inventory reality is unconfirmed (units, arrival date, landed cost). No measured CPC or CVR data yet — the forecast cannot reach decision-grade without these inputs.
-
-**Do this now:** Confirm inventory units, expected arrival date, and landed cost per unit. Then run a 7-day paid acquisition test to capture the first observed CPC and CVR.
-
-**Done when:** Inventory confirmed. First measured CPC and CVR captured. Forecast upgraded to decision-grade.
-
----
+| # | Task | Why this comes first | Done when |
+|---|---|---|---|
+| 1 | Confirm inventory inputs: units on hand, expected arrival date, landed cost per unit | PET forecast cannot reach decision-grade without these three numbers. All other PET planning depends on knowing supply reality. | All three inventory inputs confirmed and documented. |
+| 2 | Run a 7-day paid acquisition test | No measured CPC or CVR data exists. The forecast uses seed assumptions only — replace them with a real data point. | First measured CPC and CVR documented from a 7-day live test. |
+| 3 | Complete Pre-website Measurement Setup | Same requirement as HEAD. Measurement must be in place before paid traffic can produce usable data. | Measurement setup document at Active status. |
+| 4 | Produce the PET offer artifact (S2B) | Requires inventory inputs (task 1) and measurement setup (task 3). Without the offer, channel and forecast work has no input. | Offer artifact exists with target customer profile, positioning, and pricing model. |
+| 5 | Advance PET forecast to decision-grade (S3) | A draft exists from 11 Feb. Rebuild it once inventory is confirmed and acquisition data is captured. | Forecast document at Active status with confirmed inputs replacing assumptions. |
+| 6 | Run this week's K/P/C/S decision | First decision is dated 12 Feb. Weekly continuation required. | This week's decision document exists and is dated. |
+| 7 | Run standing refresh | No standing refresh documents exist yet for PET. | At least one standing refresh document produced and dated. |
 
 ### BRIK
 
-**Current blocker:** GA4 measurement signal quality is unverified. The begin_checkout and web_vitals events have not been confirmed in standard GA4 reports (non-realtime, 7-day window).
-
-**Do this now:** Open GA4 Standard Reports (NOT Realtime). Check begin_checkout for the last 7 days. Check web_vitals for the last 7 days. Document what you find.
-
-**Done when:** Non-zero signal confirmed in standard 7-day GA4 report for both begin_checkout and web_vitals. Then run the day-14 forecast recalibration.
+| # | Task | Why this comes first | Done when |
+|---|---|---|---|
+| 1 | Verify GA4 standard report signal: open Standard Reports (not Realtime), check begin_checkout and web_vitals for last 7 days | Weekly decisions depend on confirmed non-zero signal in 7-day standard reports. If either event shows zero, all downstream measurement is unreliable. | Non-zero begin_checkout and web_vitals confirmed in standard 7-day GA4 report, findings documented. |
+| 2 | Run day-14 forecast recalibration | Forecast v1 from 13 Feb is based on seed assumptions. Replace them with measured week 1/2 actuals before making scale decisions. | Recalibration document exists with measured actuals replacing seed inputs. |
+| 3 | Produce the BRIK offer artifact (S2B) | BRIK has not completed offer design. Channel strategy and refined forecasting both require it. | Offer artifact exists with target customer profile, positioning, and pricing model. |
+| 4 | Run Channel Strategy (S6B) | No BRIK channel plan yet. Requires the offer artifact from task 3. | Channel plan exists with 2-3 selected channels and a 30-day GTM timeline. |
+| 5 | Run this week's K/P/C/S decision | First decision is dated 13 Feb. Weekly continuation required. | This week's decision document exists and is dated. |
+| 6 | Run standing refresh | No standing refresh documents exist yet for BRIK. | At least one standing refresh document produced and dated. |
 
 ## The Loop in 8 steps
 
@@ -74,6 +82,58 @@ flowchart LR
 ```
 
 Each week the S10 review gives you one of three verdicts: Continue (loop back to Research and sharpen your data), Scale (jump straight to Prioritise with what you already know), or Kill (end the business and move on). The loop is designed to be fast — most businesses complete the full first pass in 2–4 weeks.
+
+## Tasks by theme
+
+The same open tasks as above, grouped by type for when you want to tackle one theme across all three businesses at once.
+
+### Measurement setup
+- **HEAD** — Complete Pre-website Measurement Setup (GA4 + Search Console + conversion events).
+- **PET** — Complete Pre-website Measurement Setup (same requirement as HEAD).
+- **BRIK** — Verify GA4 standard report signal: check begin_checkout and web_vitals in standard 7-day reports (not Realtime).
+
+### Operational confirmations
+- **HEAD** — Fill Operational Confirmations: in-stock date, units, pricing, compatibility, payment flow readiness, returns SLA.
+- **PET** — Confirm inventory inputs: units on hand, expected arrival date, landed cost per unit.
+
+### Acquisition data
+- **PET** — Run a 7-day paid acquisition test to capture the first measured CPC and CVR.
+
+### Forecasting
+- **HEAD** — Advance forecast to decision-grade once operational inputs are confirmed (rebuild the 12 Feb draft).
+- **PET** — Advance forecast to decision-grade once inventory and acquisition data are captured (rebuild the 11 Feb draft).
+- **BRIK** — Run day-14 forecast recalibration: replace seed assumptions with measured week 1/2 actuals.
+
+### Offer and channel design
+- **HEAD** — Produce offer artifact: target customer profile, positioning, pricing model.
+- **PET** — Produce offer artifact: target customer profile, positioning, pricing model.
+- **BRIK** — Produce offer artifact, then produce channel strategy (S6B) with 2-3 launch channels and a 30-day GTM plan.
+
+### Weekly cadence
+- Run the K/P/C/S decision for each business this week. Last completed: HEAD 12 Feb, PET 12 Feb, BRIK 13 Feb.
+
+### Standing refresh (cross-cutting)
+- No standing refresh documents exist yet for any business. Produce at minimum: one market-pulse document, one channel-economics-refresh document.
+
+## Stage status
+
+When each stage was last completed per business. **Draft** means the artifact exists but is not yet decision-grade. **Never** means the stage has not been run. **N/A** means the stage does not apply to that business.
+
+| Stage | What you provide | What happens | What comes out | Why it matters | HEAD | PET | BRIK |
+|---|---|---|---|---|---|---|---|
+| **S0 — Intake** | Business idea, product spec, constraints | Turns raw input into structured startup context | Intake packet | Everything else depends on this | Feb 12 ✓ | Feb 12 ✓ | Feb 12 ✓ |
+| **S1 — Readiness** | Strategy plan, people profile | Checks 7 gates; identifies blockers | Readiness report + blocker list | Tells you what is missing before you spend time on research | Feb 12 ✓ | Feb 12 ✓ | Never |
+| **S1B — Measurement setup** *(pre-website only)* | Launch surface confirmed as pre-website | Sets up analytics before any traffic | Measurement setup document | You cannot measure what you cannot track | **Never** | **Never** | Feb 13 ✓ |
+| **S2A — Historical baseline** *(website-live only)* | Net value exports, booking data, traffic logs | Consolidates business history into a decision baseline | Historical baseline document | Existing businesses cannot forecast without knowing where they started | N/A | N/A | Feb 12 ✓ |
+| **S2 — Market intelligence** | Intake packet, baseline (if existing) | Researches competitors, demand, pricing, and channels | Market intelligence pack | Your offer and forecast are guesses without market data | Feb 12 ✓ | Feb 12 ✓ | Feb 15 ✓ |
+| **S2B — Offer design** | Market intel, intake packet | Defines target customer, positioning, and pricing model | Offer artifact | Without an offer, there is nothing to forecast or sell | **Never** | **Never** | **Never** |
+| **S3 — Forecast** | Offer artifact, market intel | Builds P10/P50/P90 revenue scenarios with guardrails | 90-day forecast document | Tells you what success looks like so you know when to pivot | Feb 12 (draft) | Feb 11 (draft) | Feb 13 ✓ |
+| **S3 — Recalibration** | Week 1/2 measured actuals | Replaces seed assumptions with real data | Recalibration document | Seed-assumption forecasts go stale; recalibrate at day 14 | **Never** | **Never** | **Never** |
+| **S6B — Channel strategy** | Offer artifact, market intel | Selects 2-3 launch channels with 30-day GTM plan | Channel plan + SEO strategy | Without a channel plan, you are guessing where to spend | **Never** | **Never** | **Never** |
+| **S4/S5 — Prioritise** | Offer + forecast + channels | Scores and ranks actions by impact | Prioritised action list | Stops you working on the wrong thing | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
+| **S6 — Site upgrade** | Prioritised list, platform baseline | Builds upgrade backlog from best-of analysis | Site upgrade brief | Turns competitor observations into a concrete improvement plan | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
+| **S10 — Weekly decision** | This week's KPIs and gate checks | Runs Keep/Pivot/Scale/Kill decision | Weekly K/P/C/S decision document | Loop health degrades within days without the weekly decision | Feb 12 ✓ | Feb 12 ✓ | Feb 13 ✓ |
+| **Standing refresh** | Time passing (monthly/quarterly cadence) | Refreshes market, channel, and regulatory inputs | Market-pulse + channel-economics + regulatory-watch documents | Inputs go stale; decisions based on stale data are dangerous | **Never** | **Never** | **Never** |
 
 ## Readiness check
 
@@ -218,566 +278,9 @@ These are platform and engineering tasks. They are not required from the operato
 
 > **Note for engineers:** The original "Open Tasks" table (with evidence paths and stage codes) is preserved verbatim in the Engineering appendix below.
 
-## End-to-End Loop (Complete Data Flow) [Engineering Reference]
+## Data Flow Reference [Engineering Reference]
 
-```mermaid
-flowchart TD
-    subgraph INPUT["📥 INPUTS"]
-        A1[Business Idea]
-        A2[Product Spec]
-        A3[Constraints]
-        A4[Historical Data<br/>for existing businesses]
-    end
-
-    subgraph S0_INTAKE["S0: Intake"]
-        B1[Normalize Intent]
-        B2[Structure Context]
-        B1 --> B2
-    end
-
-    subgraph S1_READINESS["S1: Readiness"]
-        C1[Gate Checks<br/>RG-01 to RG-07]
-        C2{Pass?}
-        C1 --> C2
-    end
-
-    subgraph S1B_S2A["S1B/S2A: Conditional Gates"]
-        D1[Pre-website:<br/>Measurement Bootstrap]
-        D2[Website-live:<br/>Historical Baseline]
-    end
-
-    subgraph S2_RESEARCH["S2: Market Intelligence"]
-        E1[Deep Research]
-        E2[Competitor Analysis]
-        E3[Demand/Pricing Data]
-        E1 --> E2 --> E3
-    end
-
-    subgraph S2B_OFFER["S2B: Offer Design"]
-        F1[ICP Definition]
-        F2[Positioning]
-        F3[Pricing Model]
-        F1 --> F2 --> F3
-    end
-
-    subgraph PARALLEL["⚡ PARALLEL EXECUTION"]
-        S3_FORECAST["S3: Forecast<br/>────────<br/>P10/P50/P90<br/>Assumptions<br/>Test Metrics"]
-        S6B_CHANNELS["S6B: Channels<br/>────────<br/>GTM Strategy<br/>SEO Plan<br/>Outreach Scripts"]
-    end
-
-    subgraph S4_MERGE["S4: Baseline Merge"]
-        G1[Validate Artifacts]
-        G2[Compose Snapshot]
-        G3[Draft Manifest]
-        G1 --> G2 --> G3
-    end
-
-    subgraph S5_PRIORITIZE["S5A/S5B: Prioritize + Sync"]
-        H1[Score Go-Items]
-        H2[Rank by Impact]
-        H3[Persist to BOS D1]
-        H1 --> H2 --> H3
-    end
-
-    subgraph S6_UPGRADE["S6: Site Upgrade"]
-        I1[Platform Baseline]
-        I2[Best-Of Analysis]
-        I3[Adopt/Adapt Matrix]
-        I1 --> I2 --> I3
-    end
-
-    subgraph EXECUTION["🔨 EXECUTION LOOP"]
-        S7[S7: Fact-find<br/>────────<br/>Evidence Audit<br/>Task Seeds]
-        S8[S8: Plan<br/>────────<br/>Confidence-Gated<br/>Task Breakdown]
-        S9[S9: Build<br/>────────<br/>Implementation<br/>Validation]
-        S9B[S9B: QA Gates<br/>────────<br/>Launch Checks<br/>Design/Perf Audit]
-        S7 --> S8 --> S9 --> S9B
-    end
-
-    subgraph S10_DECISION["S10: Weekly Decision"]
-        J1[Measure KPIs]
-        J2[Gate Checks]
-        J3{Keep/Pivot/<br/>Scale/Kill?}
-        J4[Learning Ledger]
-        J1 --> J2 --> J3 --> J4
-    end
-
-    subgraph ARTIFACTS["📦 KEY ARTIFACTS"]
-        ART1[Intake Packet]
-        ART2[Readiness Report]
-        ART3[Market Intel Pack]
-        ART4[Offer Artifact]
-        ART5[Forecast Doc]
-        ART6[Channel Plan]
-        ART7[Baseline Snapshot]
-        ART8[Prioritization Scorecard]
-        ART9[Fact-find Brief]
-        ART10[Plan Doc]
-        ART11[Build Evidence]
-        ART12[Weekly K/P/C/S Decision]
-    end
-
-    INPUT --> S0_INTAKE
-    S0_INTAKE --> ART1
-    ART1 --> S1_READINESS
-    S1_READINESS --> ART2
-
-    C2 -->|Blocked| C1
-    C2 -->|Ready| S1B_S2A
-
-    S1B_S2A --> S2_RESEARCH
-    A4 --> S1B_S2A
-
-    S2_RESEARCH --> ART3
-    ART3 --> S2B_OFFER
-    S2B_OFFER --> ART4
-
-    ART4 --> S3_FORECAST
-    ART4 --> S6B_CHANNELS
-    ART3 --> S3_FORECAST
-    ART3 --> S6B_CHANNELS
-
-    S3_FORECAST --> ART5
-    S6B_CHANNELS --> ART6
-
-    ART5 --> S4_MERGE
-    ART6 --> S4_MERGE
-    ART4 --> S4_MERGE
-
-    S4_MERGE --> ART7
-    ART7 --> S5_PRIORITIZE
-    S5_PRIORITIZE --> ART8
-
-    ART8 --> S6_UPGRADE
-    S6_UPGRADE --> EXECUTION
-
-    EXECUTION --> ART9
-    ART9 --> ART10
-    ART10 --> ART11
-
-    ART11 --> S10_DECISION
-    S10_DECISION --> ART12
-
-    J3 -->|Continue/Pivot| S2_RESEARCH
-    J3 -->|Scale| S5_PRIORITIZE
-    J3 -->|Kill| J4
-
-    style INPUT fill:#e3f2fd
-    style ARTIFACTS fill:#fff3e0
-    style PARALLEL fill:#f3e5f5
-    style EXECUTION fill:#e8f5e9
-    style S10_DECISION fill:#fce4ec
-```
-
-### 2.1 Existing-Business Route (BRIK) - Data Flow Detail
-
-For website-live businesses like BRIK, use this route with historical baseline gate:
-
-```mermaid
-flowchart TD
-    subgraph INPUT["📥 EXISTING BUSINESS INPUTS"]
-        A1[Business Context<br/>from docs/business-os/strategy/BRIK/]
-        A2[Historical Net Value<br/>CSV exports]
-        A3[Cloudflare Analytics<br/>Monthly request totals]
-        A4[Ops Logs<br/>Booking/capacity data]
-    end
-
-    subgraph S0_S1["S0-S1: Intake + Readiness"]
-        B1[Intake Packet]
-        B2[Readiness Gates]
-        B1 --> B2
-    end
-
-    subgraph S2A["S2A: Historical Baseline Consolidation 🚧 GATE"]
-        direction TB
-        C1{Data Available?}
-        C2[Consolidate Baseline]
-        C3[Data Quality Notes]
-        C4[historical-baseline.user.md<br/>Status: Active]
-        C1 -->|No| C5[Hand data-request prompt<br/>BLOCK until supplied]
-        C5 -.user supplies data.-> C1
-        C1 -->|Yes| C2
-        C2 --> C3 --> C4
-    end
-
-    subgraph S2_S6["S2/S6: Deep Research Must Consume Baseline"]
-        direction LR
-        D1[Market Intelligence<br/>uses baseline demand]
-        D2[Site Upgrade Brief<br/>uses baseline traffic]
-        D1 -.consumes S2A.-> D2
-    end
-
-    subgraph S2B_S3_S6B["S2B/S3/S6B: Strategic Planning"]
-        E1[Offer Design]
-        E2[90-day Forecast<br/>uses baseline actuals]
-        E3[Channel Strategy<br/>uses baseline channels]
-        E1 --> E2
-        E1 --> E3
-    end
-
-    subgraph S4_S5["S4-S5: Baseline Merge + Prioritization"]
-        F1[Baseline Snapshot]
-        F2[Prioritized Go-Items]
-        F3[BOS Cards Created]
-        F1 --> F2 --> F3
-    end
-
-    subgraph EXECUTION["S7-S9B: Execution"]
-        G1[Fact-find]
-        G2[Plan]
-        G3[Build]
-        G4[QA Gates]
-        G1 --> G2 --> G3 --> G4
-    end
-
-    subgraph S10["S10: Weekly Decision"]
-        H1[Measure Actuals<br/>vs Forecast]
-        H2[Compare to Baseline<br/>Growth rate]
-        H3{K/P/C/S?}
-        H4[Recalibration Doc]
-        H1 --> H2 --> H3
-        H3 -->|Scale/Continue| H4
-        H4 -.updates.-> E2
-    end
-
-    A1 --> S0_S1
-    A2 --> S2A
-    A3 --> S2A
-    A4 --> S2A
-    S0_S1 --> S2A
-    S2A --> S2_S6
-    C4 -.consumed by.-> D1
-    C4 -.consumed by.-> D2
-    S2_S6 --> S2B_S3_S6B
-    C4 -.consumed by.-> E2
-    S2B_S3_S6B --> S4_S5
-    S4_S5 --> EXECUTION
-    EXECUTION --> S10
-    S10 -.loop back.-> S2_S6
-
-    style INPUT fill:#e3f2fd
-    style S2A fill:#ffebee
-    style S2_S6 fill:#f3e5f5
-    style S10 fill:#fff3e0
-```
-
-**Critical Rule:** BRIK does not proceed past S2/S6 while the S2A historical baseline is missing or draft.
-
-**Data Flow:**
-- S2A baseline → consumed by S2 (market sizing validation), S3 (forecast anchoring), S6 (traffic patterns), S10 (growth measurement)
-- When S2A is blocked due to missing data, workflow hands user the S2A data-request prompt and pauses until data pack is supplied
-- S10 weekly decisions compare measured actuals vs baseline to calculate growth rate and trigger recalibration when guardrails break
-
-### 2.2 Detailed Stage Data Flow (Inputs → Processing → Outputs)
-
-```mermaid
-flowchart TB
-    subgraph S0["S0: INTAKE"]
-        direction LR
-        IN0[📥 Raw idea<br/>Product spec<br/>Constraints]
-        PROC0[🔄 Normalize<br/>Structure<br/>Validate]
-        OUT0[📦 intake-packet.user.md<br/>────────<br/>Business context<br/>Product definition<br/>Launch surface mode]
-        IN0 --> PROC0 --> OUT0
-    end
-
-    subgraph S1_S1B_S2A["S1/S1B/S2A: READINESS + CONDITIONAL BOOTSTRAP"]
-        direction LR
-        IN1[📥 Intake packet<br/>Strategy plan<br/>People profile<br/>──────<br/>Pre-website: none<br/>Website-live: historical data]
-        PROC1[🔄 Gate checks RG-01..07<br/>Detect blockers<br/>──────<br/>S1B: Analytics setup<br/>S2A: Baseline consolidation]
-        OUT1[📦 readiness-report.user.md<br/>Missing-context register<br/>Blocker questions<br/>──────<br/>S1B: measurement-setup.user.md<br/>S2A: historical-baseline.user.md]
-        IN1 --> PROC1 --> OUT1
-    end
-
-    subgraph S2["S2: MARKET INTELLIGENCE"]
-        direction LR
-        IN2[📥 Intake packet<br/>S2A baseline existing<br/>Current constraints<br/>Channel intent]
-        PROC2[🔄 Deep Research<br/>Competitor analysis<br/>Demand/pricing data<br/>Regulatory scan<br/>Confidence tagging]
-        OUT2[📦 market-intelligence.user.md<br/>────────<br/>Market sizing<br/>Competitive landscape<br/>Pricing benchmarks<br/>Channel economics<br/>Evidence sources]
-        IN2 --> PROC2 --> OUT2
-    end
-
-    subgraph S2B["S2B: OFFER DESIGN"]
-        direction LR
-        IN2B[📥 Market intel pack<br/>Intake packet<br/>Constraints]
-        PROC2B[🔄 ICP definition<br/>Positioning strategy<br/>Pricing architecture<br/>Objection mapping<br/>Offer validation]
-        OUT2B[📦 offer-artifact.user.md<br/>────────<br/>Target customer profile<br/>Value proposition<br/>Pricing model<br/>Positioning statement<br/>Objection handlers]
-        IN2B --> PROC2B --> OUT2B
-    end
-
-    subgraph PARALLEL_STAGES["⚡ S3 + S6B: PARALLEL EXECUTION"]
-        direction TB
-        subgraph S3["S3: FORECAST"]
-            direction LR
-            IN3[📥 Offer artifact<br/>Market intel<br/>Fresh assumptions]
-            PROC3[🔄 P10/P50/P90 scenarios<br/>Guardrails<br/>14-day tests<br/>Risk modeling]
-            OUT3[📦 90-day-forecast.user.md<br/>forecast-exec-summary.user.md<br/>forecast-seed.user.md<br/>────────<br/>Revenue bands<br/>Cost assumptions<br/>Gate thresholds<br/>Test metrics]
-            IN3 --> PROC3 --> OUT3
-        end
-        subgraph S6B["S6B: CHANNEL STRATEGY"]
-            direction LR
-            IN6B[📥 Offer artifact<br/>Market intel<br/>Launch surface]
-            PROC6B[🔄 Channel-customer fit<br/>2-3 launch channels<br/>30-day GTM timeline<br/>SEO strategy<br/>Outreach scripts]
-            OUT6B[📦 channel-plan.user.md<br/>seo-strategy.user.md<br/>outreach-drafts.user.md<br/>────────<br/>Channel selection rationale<br/>GTM calendar<br/>Content roadmap<br/>Early outreach assets]
-            IN6B --> PROC6B --> OUT6B
-        end
-    end
-
-    subgraph S4_S5["S4/S5A/S5B: BASELINE MERGE + PRIORITIZATION"]
-        direction LR
-        IN4[📥 Offer S2B<br/>Forecast S3<br/>Channels S6B]
-        PROC4[🔄 Validate artifacts<br/>Compose snapshot<br/>Score go-items<br/>Rank by impact<br/>Persist to BOS D1]
-        OUT4[📦 baseline-snapshot.json<br/>manifest.json<br/>prioritization-scorecard.user.md<br/>────────<br/>Committed BOS cards<br/>Stage docs created<br/>Top 2-3 items ranked]
-        IN4 --> PROC4 --> OUT4
-    end
-
-    subgraph S6["S6: SITE UPGRADE SYNTHESIS"]
-        direction LR
-        IN6[📥 Platform baseline<br/>Market intel<br/>Business upgrade brief<br/>Reference sites]
-        PROC6[🔄 Best-of decomposition<br/>Adopt/Adapt/Defer/Reject<br/>Feature prioritization<br/>Handoff packet assembly]
-        OUT6[📦 upgrade-brief.user.md<br/>────────<br/>Platform-fit matrix<br/>Prioritized features<br/>Fact-find-ready backlog]
-        IN6 --> PROC6 --> OUT6
-    end
-
-    subgraph S7_S9B["S7-S9B: EXECUTION STAGES"]
-        direction TB
-        subgraph S7["S7: FACT-FIND"]
-            direction LR
-            IN7[📥 Go-item selected<br/>Evidence docs<br/>Constraints]
-            PROC7[🔄 Deep audit<br/>Code exploration<br/>Task seed generation<br/>Confidence assessment]
-            OUT7[📦 fact-find.md<br/>────────<br/>Context brief<br/>Task seeds<br/>Ready-for-planning status]
-            IN7 --> PROC7 --> OUT7
-        end
-        subgraph S8["S8: PLAN"]
-            direction LR
-            IN8[📥 Fact-find brief]
-            PROC8[🔄 Confidence gating<br/>Task breakdown<br/>Dependency mapping<br/>Acceptance criteria]
-            OUT8[📦 plan.md<br/>────────<br/>Sequenced tasks<br/>Validation checkpoints<br/>Confidence scores]
-            IN8 --> PROC8 --> OUT8
-        end
-        subgraph S9["S9: BUILD"]
-            direction LR
-            IN9[📥 Plan tasks<br/>Design spec]
-            PROC9[🔄 Implement<br/>Validate per task<br/>Track outputs<br/>Evidence collection]
-            OUT9[📦 build.md<br/>Shipped code<br/>────────<br/>Implementation evidence<br/>Test results<br/>Validation proofs]
-            IN9 --> PROC9 --> OUT9
-        end
-        subgraph S9B["S9B: QA GATES"]
-            direction LR
-            IN9B[📥 Build outputs<br/>Design spec<br/>Performance budget]
-            PROC9B[🔄 Launch QA<br/>Design QA<br/>Measurement verification<br/>Go/no-go decision]
-            OUT9B[📦 qa-report.md<br/>────────<br/>Issue inventory<br/>Go/no-go recommendation<br/>Deployment checklist]
-            IN9B --> PROC9B --> OUT9B
-        end
-    end
-
-    subgraph S10["S10: WEEKLY DECISION LOOP"]
-        direction LR
-        IN10[📥 KPI scoreboard<br/>Gate metrics<br/>Growth ledger<br/>Operational reliability]
-        PROC10[🔄 K/P/C/S decisioning<br/>Guardrail checks<br/>Bottleneck diagnosis<br/>Learning compilation<br/>Replayability validation]
-        OUT10[📦 weekly-kpcs-decision.user.md<br/>growth-ledger.json<br/>growth-event-payload.json<br/>stage-result.json<br/>────────<br/>Continue/Pivot/Scale/Kill<br/>Next actions<br/>Loop-back updates]
-        IN10 --> PROC10 --> OUT10
-    end
-
-    OUT0 -.-> IN1
-    OUT1 -.-> IN2
-    OUT2 -.-> IN2B
-    OUT2B -.-> IN3
-    OUT2B -.-> IN6B
-    OUT3 -.-> IN4
-    OUT6B -.-> IN4
-    OUT4 -.-> IN6
-    OUT6 -.-> IN7
-    OUT7 -.-> IN8
-    OUT8 -.-> IN9
-    OUT9 -.-> IN9B
-    OUT9B -.-> IN10
-    OUT10 -.restart loop.-> IN2
-
-    style S0 fill:#e3f2fd
-    style S1_S1B_S2A fill:#f3e5f5
-    style S2 fill:#e8f5e9
-    style S2B fill:#fff3e0
-    style PARALLEL_STAGES fill:#fce4ec
-    style S4_S5 fill:#e0f2f1
-    style S6 fill:#f1f8e9
-    style S7_S9B fill:#fff9c4
-    style S10 fill:#ffebee
-```
-
-### 2.3 Artifact Production & Consumption Chain
-
-```mermaid
-flowchart TB
-    subgraph FOUNDATIONAL["🏗️ FOUNDATIONAL ARTIFACTS Single-source, Long-lived"]
-        direction TB
-        A1["📄 intake-packet.user.md<br/>────────<br/>Produced by: S0<br/>Consumed by: S1, S2, S2B, all downstream<br/>Lifecycle: Update on major scope change<br/>Location: docs/business-os/startup-baselines/"]
-
-        A2["📄 readiness-report.user.md<br/>────────<br/>Produced by: S1<br/>Consumed by: S2 blocker resolution<br/>Lifecycle: Regenerate on major change<br/>Location: docs/business-os/readiness/"]
-
-        A3["📄 historical-baseline.user.md S2A<br/>────────<br/>Produced by: S2A website-live only<br/>Consumed by: S2, S3, S10<br/>Lifecycle: Refresh weekly first 30 days<br/>Location: docs/business-os/strategy/BIZ/"]
-
-        A4["📄 measurement-setup.user.md S1B<br/>────────<br/>Produced by: S1B pre-website only<br/>Consumed by: S2, S3, launch checklist<br/>Lifecycle: Complete before paid traffic<br/>Location: docs/business-os/strategy/BIZ/"]
-
-        A1 --> A2
-        A2 --> A3
-        A2 --> A4
-    end
-
-    subgraph RESEARCH["🔬 RESEARCH ARTIFACTS Refresh Monthly/Quarterly"]
-        direction TB
-        B1["📄 market-intelligence.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: S2 Deep Research<br/>Consumed by: S2B, S3, S6B<br/>Refresh: Monthly or on material change<br/>Location: docs/business-os/market-research/BIZ/"]
-
-        B2["📄 platform-capability-baseline.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: Periodic Deep Research<br/>Consumed by: S6<br/>Refresh: Every 30-45 days<br/>Location: docs/business-os/platform-capability/"]
-
-        B3["📄 upgrade-brief.user.md<br/>+ latest.user.md pointer<br/>────────<br/>Produced by: S6 Deep Research<br/>Consumed by: S7 backlog packet<br/>Refresh: Monthly or on ICP/channel change<br/>Location: docs/business-os/site-upgrades/BIZ/"]
-    end
-
-    subgraph STRATEGIC["🎯 STRATEGIC PLANNING ARTIFACTS Core Baseline"]
-        direction TB
-        C1["📄 offer-artifact.user.md<br/>────────<br/>Produced by: S2B /lp-offer<br/>Consumed by: S3, S6B, S4<br/>Dependencies: Market intel S2<br/>Location: docs/business-os/startup-baselines/BIZ/"]
-
-        C2["📄 90-day-forecast.user.md<br/>+ forecast-seed.user.md<br/>+ exec-summary.user.md<br/>────────<br/>Produced by: S3 /lp-forecast<br/>Consumed by: S4, S5A, S10<br/>Dependencies: Offer S2B, Market intel S2<br/>Recalibration: Day 14, then monthly<br/>Location: docs/business-os/strategy/BIZ/"]
-
-        C3["📄 channel-plan.user.md<br/>+ seo-strategy.user.md<br/>+ outreach-drafts.user.md<br/>────────<br/>Produced by: S6B /lp-channels + /lp-seo<br/>Consumed by: S4, S7 marketing items<br/>Dependencies: Offer S2B, Market intel S2<br/>Location: docs/business-os/startup-baselines/BIZ/"]
-
-        C4["📦 baseline-snapshot.json<br/>+ manifest.json<br/>────────<br/>Produced by: S4 /lp-baseline-merge<br/>Consumed by: S5A, S5B manifest commit<br/>Dependencies: Offer C1, Forecast C2, Channels C3<br/>Lifecycle: Immutable per runId<br/>Location: docs/business-os/startup-baselines/BIZ/runs/RUNID/"]
-
-        C5["📄 prioritization-scorecard.user.md<br/>────────<br/>Produced by: S5A /lp-prioritize<br/>Consumed by: S5B, S7 item selection<br/>Dependencies: Baseline snapshot C4<br/>Refresh: Weekly or on new candidate<br/>Location: docs/business-os/strategy/BIZ/"]
-    end
-
-    subgraph BOS_ENTITIES["💾 BUSINESS OS PERSISTED ENTITIES D1 Database"]
-        direction TB
-        D1["🗂️ BOS Cards + Stage Docs<br/>────────<br/>Produced by: S5B /lp-bos-sync<br/>Consumed by: S7, S8, S9, S10<br/>Write path: POST/PATCH /api/agent/*<br/>Read path: MCP bos_* tools<br/>Persistence: D1 apps/business-os"]
-
-        D2["📍 Committed Manifest Pointer<br/>────────<br/>Produced by: S5B<br/>Consumed by: All subsequent runs<br/>Purpose: Lock baseline as 'current'<br/>Location: docs/business-os/startup-baselines/BIZ/manifest.json"]
-    end
-
-    subgraph EXECUTION["⚙️ EXECUTION ARTIFACTS Per Card/Plan"]
-        direction TB
-        E1["📄 fact-find.md<br/>────────<br/>Produced by: S7 /lp-fact-find<br/>Consumed by: S8<br/>BOS sync: Stage doc upsert<br/>Location: docs/plans/FEATURE-SLUG/"]
-
-        E2["📄 plan.md<br/>────────<br/>Produced by: S8 /lp-plan<br/>Consumed by: S9<br/>BOS sync: Stage doc + lane transition<br/>Location: docs/plans/FEATURE-SLUG/"]
-
-        E3["📄 build.md + shipped code<br/>────────<br/>Produced by: S9 /lp-build<br/>Consumed by: S9B, S10<br/>BOS sync: Stage doc + Done lane<br/>Evidence: git commits, test results<br/>Location: docs/plans/FEATURE-SLUG/ + apps/*"]
-
-        E4["📄 qa-report.md<br/>────────<br/>Produced by: S9B /lp-launch-qa<br/>Consumed by: S10 go/no-go<br/>Contents: Issue inventory, deployment checklist<br/>Location: docs/plans/FEATURE-SLUG/"]
-    end
-
-    subgraph MEASUREMENT["📊 MEASUREMENT & DECISION ARTIFACTS Weekly Cadence"]
-        direction TB
-        F1["📄 weekly-kpcs-decision.user.md<br/>────────<br/>Produced by: S10 Weekly loop<br/>Consumed by: Loop restart S2/S5 or Kill<br/>Decision: Keep/Pivot/Scale/Kill<br/>Location: docs/business-os/strategy/BIZ/"]
-
-        F2["📦 growth-ledger.json<br/>+ growth-event-payload.json<br/>+ stage-result.json<br/>────────<br/>Produced by: S10 diagnosis integration<br/>Consumed by: Forecast recalibration, replays<br/>Contents: Stage statuses, guardrail signals<br/>Location: data/shops/SHOPID/ + runs/RUNID/stages/S10/"]
-
-        F3["📄 forecast-recalibration.user.md<br/>────────<br/>Produced by: S10 or ad-hoc on gate fail<br/>Consumed by: Updated strategy plan<br/>Trigger: Day 14, major assumption break<br/>Location: docs/business-os/strategy/BIZ/"]
-    end
-
-    A3 --> B1
-    A4 --> B1
-    B1 --> C1
-    B1 --> C2
-    B1 --> C3
-    C1 --> C2
-    C1 --> C3
-    C1 --> C4
-    C2 --> C4
-    C3 --> C4
-    C4 --> C5
-    C5 --> D1
-    C4 --> D2
-    D1 --> E1
-    D2 --> E1
-    B2 --> B3
-    B3 --> E1
-    E1 --> E2
-    E2 --> E3
-    E3 --> E4
-    E4 --> F1
-    C2 --> F1
-    E3 --> F2
-    F1 --> F2
-    F2 --> F3
-    F3 -.refresh.-> C2
-    F1 -.pivot.-> B1
-    F1 -.scale.-> C5
-
-    style FOUNDATIONAL fill:#e3f2fd
-    style RESEARCH fill:#f3e5f5
-    style STRATEGIC fill:#e8f5e9
-    style BOS_ENTITIES fill:#fff3e0
-    style EXECUTION fill:#fff9c4
-    style MEASUREMENT fill:#ffebee
-```
-
-### 2.4 Human Operator View: MCP Overlay + Data Connections
-
-```mermaid
-flowchart LR
-    subgraph LOOP[Startup Loop Control]
-      U[Operator / Skill Runner] --> ST[S0..S10 stage execution]
-    end
-
-    subgraph MCP[MCP Data Plane - packages/mcp-server]
-      PG[Policy gate\nallowedStages + permission + sideEffects]
-      BOSR[bos_cards_list\nbos_stage_doc_get]
-      LOOPR[loop_manifest_status\nloop_learning_ledger_status\nloop_metrics_summary]
-      BOSW[bos_stage_doc_patch_guarded]
-      MEAS[measure_* connectors\nwave-2 planned]
-    end
-
-    subgraph SOURCES[Pull Sources]
-      API[Business OS agent API\napps/business-os/src/app/api/agent/*]
-      RUN[startup-loop run artifacts\ndocs/business-os/startup-baselines/[BIZ]/runs/*\nstages/*/stage-result.json]
-      DOCS[Strategy + readiness docs\ndocs/business-os/strategy/*\ndocs/business-os/readiness/*]
-      APPS[Operational apps\napps/brikette + apps/prime + apps/reception]
-      EXT[External analytics\nGA4 + Search Console + Cloudflare]
-    end
-
-    subgraph SINKS[Push / Process Targets]
-      D1[BOS persisted entities\ncards + stage docs]
-      LEDGER[S10 outputs\ndata/shops/[shopId]/growth-ledger.json\nstages/S10/growth-event-payload.json]
-      PLAN[Planning artifacts\ndocs/plans/* + docs/business-os/*.user.md]
-    end
-
-    ST --> PG
-    PG --> BOSR
-    PG --> LOOPR
-    PG --> BOSW
-    PG -. planned .-> MEAS
-
-    BOSR -- pull --> API
-    LOOPR -- pull --> RUN
-    LOOPR -- pull --> DOCS
-    MEAS -. pull .-> APPS
-    MEAS -. pull .-> EXT
-
-    BOSW -- guarded push --> API
-    API --> D1
-    ST --> LEDGER
-    ST --> PLAN
-```
-
-What this means for operators:
-
-1. `bos_*` and `loop_*` tools are the current MCP startup-loop tools and are policy-gated by stage.
-2. `measure_*` tools are not in current wave and remain a planned dependency for stronger S2A/S3/S10 measurement.
-3. Writes to BOS remain guarded (`entitySha` + stage policy) through API contracts.
-
-### 2.5 Open Tasks (Required Now, Simple Language)
-
-| Required task | Why it is required | Evidence path |
-|---|---|---|
-| HEAD and PET operational confirmations are required. | Forecasts cannot become decision-grade without stock/date/units/price/compatibility/payments/returns confirmation. | `docs/business-os/startup-loop-workflow.user.md` section 5.2 and 5.3 |
-| HEAD and PET forecast recalibration documents are required. | Weekly decisions need measured data, not only seed assumptions. | `docs/business-os/startup-loop-workflow.user.md` section 5.2 and 5.3 |
-| BRIK GA4 verification for `web_vitals` plus post-deploy 7-day `begin_checkout` report confirmation is required. | S2A measurement is partially closed: live `begin_checkout` collect is verified, but report-level closure is pending until refreshed extraction confirms sustained signal. | `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
-| BRIK first 7-day measured KPI baseline is now locked; weekly refresh is required. | Baseline now exists, but decision quality depends on continuous refresh and restoring non-zero funnel/vitals signals. | `docs/business-os/strategy/BRIK/plan.user.md`; `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` |
-| BRIK day-14 forecast recalibration artifact is required. | S3 v1 assumptions must be replaced with measured week-1/2 evidence for reliable scale decisions. | `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md` |
-| BRIK prioritization execution routing packet is active; P1-01 baseline lock and production checkout deployment alignment are complete, and next action is post-deploy report refresh plus P1-02/P1-03 execution. | Routing and baseline artifacts are in place; remaining risk is execution throughput and signal restoration at report level. | `docs/plans/brik-ga4-baseline-lock/fact-find.md`; `docs/plans/brik-ga4-baseline-lock/plan.md`; `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`; `docs/business-os/strategy/BRIK/plan.user.md` |
-| BRIK weekly decision cadence continuation is required. | First S10 artifact exists, but loop health depends on sustained weekly decision updates. | `docs/business-os/strategy/BRIK/2026-02-13-weekly-kpcs-decision.user.md` |
-| Startup standing refresh artifacts are required. | Market/channel/regulatory inputs go stale without periodic refresh documents. | `docs/business-os/startup-loop-workflow.user.md` section 5.1 and 12 |
-| MCP TASK-05 identity/deployment decision is required. | Guarded write rollout cannot proceed safely without this decision. | `docs/plans/mcp-startup-loop-data-plane/plan.md` TASK-05 |
-| MCP TASK-06 guarded BOS write rollout is required. | S5B/S7/S8/S9/S10 write paths need governed MCP write capability. | `docs/plans/mcp-startup-loop-data-plane/plan.md` TASK-06 |
-| MCP wave-2 `measure_*` connectors are required. | S2A/S3/S10 need normalized cross-source measurement contracts. | `docs/plans/mcp-startup-loop-data-plane-wave-2/fact-find.md` |
+The detailed stage-by-stage data flow (inputs, processing, outputs) is captured in the **Stage-by-Stage Workflow** table below. Artifact paths and lifecycle notes are in the artifact front-matter under `docs/business-os/startup-baselines/`, `docs/business-os/strategy/`, and `docs/business-os/market-research/`.
 
 ## Website Upgrade Sub-Loop [Engineering Reference]
 

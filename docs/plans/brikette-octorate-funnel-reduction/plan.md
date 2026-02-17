@@ -162,7 +162,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 | TASK-04 | INVESTIGATE | Diagnose GA4 handoff capture gap in standard Data API reports | 72% | M | Complete (2026-02-17) | - | TASK-05A, TASK-06 |
 | TASK-05A | IMPLEMENT | Native `handoff_to_engine` instrumentation across existing flows (pre-normalization) | 84% | M | Complete (2026-02-17) | TASK-04 | TASK-03, TASK-06, TASK-07 |
 | TASK-05B | IMPLEMENT | Legacy `begin_checkout` compatibility cleanup after normalization | 78% | S | Pending | TASK-03, TASK-05A | - |
-| TASK-06 | IMPLEMENT | GA4 admin governance + reporting contract + ops handoff evidence | 84% | M | Pending | TASK-01, TASK-04 | TASK-07 |
+| TASK-06 | IMPLEMENT | GA4 admin governance + reporting contract + ops handoff evidence | 84% | M | Complete (2026-02-17) | TASK-01, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint after route + measurement foundation | 95% | S | Pending | TASK-02, TASK-03, TASK-05A, TASK-06, TASK-10A | TASK-08, TASK-10B |
 | TASK-08 | INVESTIGATE | Run overlap-window calibration (non-zero GA4 handoff + Octorate bookings) | 70% | M | Pending | TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | No-API reconciliation operating pack (aggregate + probabilistic) | 78% | M | Pending | TASK-08 | - |
@@ -440,10 +440,10 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Artifact-Destination:** analytics operations handoff pack in `docs/plans/brikette-octorate-funnel-reduction/`
 - **Reviewer:** Pete (decision owner) + analytics owner
-- **Approval-Evidence:** None: pending explicit sign-off comment in plan Decision Log
+- **Approval-Evidence:** Pete confirmed VC-01 sign-off in session on 2026-02-17 (see Decision Log)
 - **Measurement-Readiness:** weekly cadence, owner assignment, and report query references documented in runbook
 - **Affects:** `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`, `docs/plans/brikette-octorate-funnel-reduction/plan.md`, `[readonly] docs/plans/brikette-octorate-funnel-reduction/fact-find.md`
 - **Depends on:** TASK-01, TASK-04
@@ -477,6 +477,11 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - Rollback: retain prior reporting while documenting gaps; do not delete evidence artifacts.
 - **Documentation impact:** add governance runbook and decision-log sign-off.
 - **Notes / references:** `docs/business-os/_shared/business-vc-quality-checklist.md`
+- **Build evidence (2026-02-17):**
+  - Red: GA4 Data API window `2026-02-10..2026-02-17` returned zero `handoff_to_engine` / `begin_checkout` events; no referral exclusion for `book.octorate.com` configured; no cross-domain linking configured; no formalized weekly review cadence or report query paths existed.
+  - Green: `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md` created covering: owner/cadence (§1), canonical event taxonomy + compat policy + admin create rules + custom dimensions (§2), admin config state with action items (§3), weekly funnel question set with `ga4-run-report.ts` commands for handoff trend / 404 trend / reconciliation lag (§4), consent reporting rules (§5), escalation thresholds (§6), VC-01 checklist (§7), pending admin actions (§8), evidence log (§9).
+  - VC-01 ✓: Pete confirmed runbook completeness in session on 2026-02-17 (analytics owner = Pete per TASK-01 decision).
+  - VC-02 (deferred): "weekly operating review can answer funnel question set for 2 consecutive weekly checks" — requires post-deployment operational window. Confirmed answerable from §4 commands; operational evidence to accumulate from first Monday review after TASK-05A emission is live in production.
 
 ### TASK-07: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT
@@ -709,6 +714,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-10A/TASK-10B strategy set to staged gate (`report-only -> blocking`) to avoid pre-remediation blocking paradox.
 - 2026-02-17: Search Console API export added for `2026-01-20..2026-02-17`; not-found sample URLs showed zero performance rows, while canonical-issue cohort (`http://` + `www.` variants) showed 33 clicks / 1,044 impressions.
 - 2026-02-17: TASK-04 evidence acceptance clarified: API payload evidence is sufficient for planning closure; screenshots are supportive, not mandatory.
+- 2026-02-17: TASK-06 complete. GA4 governance runbook written at `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`. Pete confirmed VC-01 sign-off in session (analytics owner per TASK-01). VC-02 operational evidence deferred to first Monday review post-TASK-05A production deployment. Pending admin actions documented in runbook §8 (cross-domain linking, referral exclusion for `book.octorate.com`, internal traffic filter). TASK-07 now blocked only on TASK-03 and TASK-10A.
 - 2026-02-17: TASK-01 decision closed. Option B adopted: Pete owns all three lanes (analytics/admin, engineering, ops reconciliation). Weekly cadence: Monday morning. Evidence destination: plan Decision Log + reconciliation memo artifacts. TASK-06 unblocked.
 - 2026-02-17: TASK-05A complete. Native `handoff_to_engine` emission added across BookingModal (new_tab), Booking2Modal (same_tab/confirm + same_tab/result), and ApartmentBookContent (same_tab/result). `fireHandoffToEngineAndNavigate` with beacon is the primary navigation driver in Booking2Modal; `fireHandoffToEngine` with beacon-transport flag is used where navigation is owned externally. Compat `begin_checkout`/`search_availability` fires retained without beacon during migration window. TC-01/TC-02 automated; TC-03/TC-04 deferred to post-deploy.
 

@@ -19,11 +19,12 @@ import {
 
 import { BOOKING_CODE } from "../constants";
 import { setWindowLocationHref } from "../environment";
-import { useModal } from "../hooks";
+import { useModal, useModalPayload } from "../hooks";
 import { BookingModal2 } from "../lazy-modals";
 
 export function Booking2GlobalModal(): JSX.Element | null {
-  const { modalData, closeModal } = useModal();
+  const { closeModal } = useModal();
+  const payload = useModalPayload("booking2");
   const lang = useCurrentLanguage();
 
   const { t: tModals } = useTranslation("modals", { lng: lang });
@@ -33,11 +34,10 @@ export function Booking2GlobalModal(): JSX.Element | null {
   const [adults, setAdults] = useState(1);
 
   useEffect(() => {
-    const data = (modalData as Partial<{ checkIn: string; checkOut: string; adults: number }>) ?? {};
-    setCheckIn(data.checkIn ?? "");
-    setCheckOut(data.checkOut ?? (data.checkIn ? getDatePlusTwoDays(data.checkIn) : ""));
-    setAdults(typeof data.adults === "number" ? data.adults : 1);
-  }, [modalData]);
+    setCheckIn(payload?.checkIn ?? "");
+    setCheckOut(payload?.checkOut ?? (payload?.checkIn ? getDatePlusTwoDays(payload.checkIn) : ""));
+    setAdults(typeof payload?.adults === "number" ? payload.adults : 1);
+  }, [payload]);
 
   const booking2Copy: BookingModal2Copy = {
     title: tModals("booking2.selectDatesTitle"),
@@ -50,20 +50,12 @@ export function Booking2GlobalModal(): JSX.Element | null {
   };
 
   const handleConfirm = (): void => {
-    const data =
-      (modalData as Partial<{
-        roomSku: string;
-        plan: "nr" | "flex";
-        octorateRateCode: string;
-        source: string;
-        item_list_id?: string;
-      }>) ?? {};
-
-    const roomSku = typeof data.roomSku === "string" ? data.roomSku.trim() : "";
-    const plan = data.plan === "nr" || data.plan === "flex" ? data.plan : undefined;
-    const octorateRateCode = typeof data.octorateRateCode === "string" ? data.octorateRateCode.trim() : "";
-    const source = typeof data.source === "string" ? data.source : "unknown";
-    const itemListId = typeof data.item_list_id === "string" ? data.item_list_id : undefined;
+    const roomSku = typeof payload?.roomSku === "string" ? payload.roomSku.trim() : "";
+    const plan = payload?.plan === "nr" || payload?.plan === "flex" ? payload.plan : undefined;
+    const octorateRateCode =
+      typeof payload?.octorateRateCode === "string" ? payload.octorateRateCode.trim() : "";
+    const source = typeof payload?.source === "string" ? payload.source : "unknown";
+    const itemListId = typeof payload?.item_list_id === "string" ? payload.item_list_id : undefined;
 
     const params = new URLSearchParams({
       codice: BOOKING_CODE,

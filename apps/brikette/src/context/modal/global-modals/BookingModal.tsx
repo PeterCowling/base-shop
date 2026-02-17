@@ -14,20 +14,21 @@ import { fireHandoffToEngineAndNavigate } from "@/utils/ga4-events";
 
 import { BOOKING_CODE, formatDate } from "../constants";
 import { setWindowLocationHref } from "../environment";
-import { useModal } from "../hooks";
+import { useModal, useModalPayload } from "../hooks";
 import { BookingModal } from "../lazy-modals";
 
 const BOOKING_FALLBACK_LABEL = "Check availability"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Fallback when translations are missing
 
 export function BookingGlobalModal(): JSX.Element | null {
-  const { closeModal, modalData } = useModal();
+  const { closeModal } = useModal();
+  const payload = useModalPayload("booking");
   const lang = useCurrentLanguage();
 
   const { t: tModals } = useTranslation("modals", { lng: lang });
   const { t: tTokens } = useTranslation("_tokens", { lng: lang });
 
   const dealId = (() => {
-    const raw = (modalData as Partial<{ deal?: unknown }> | null | undefined)?.deal;
+    const raw = payload?.deal;
     if (typeof raw !== "string") return undefined;
     const trimmed = raw.trim();
     return trimmed.length ? trimmed : undefined;

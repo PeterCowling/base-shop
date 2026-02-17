@@ -3,12 +3,11 @@ import {
   memo,
   type ReactNode,
 } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 import { useCurrentLanguage } from "../../hooks/useCurrentLanguage";
 import { resolveBookingDateFormat } from "../../utils/bookingDateFormat";
 
-import { ModalFrame } from "./primitives";
+import { ModalFrame, ModalScrollPanel } from "./primitives";
 import type { BookingModal2Copy } from "./types";
 
 const DEFAULT_TEST_ID = "booking-modal-2";
@@ -56,15 +55,13 @@ const BookingModal2 = memo(function BookingModal2({
       isOpen={isOpen}
       onClose={onCancel}
       testId={testId}
+      title={copy.title}
       overlayClassName="layer-modal-backdrop pointer-coarse:p-6 grid place-items-center bg-black/60 backdrop-blur-sm motion-safe:animate-fade-in dark:bg-black/80"
     >
-      <div
-        className="pointer-events-auto w-full rounded-2xl bg-brand-bg p-6 text-start shadow-2xl drop-shadow-brand-primary-10
-                   sm:w-96 dark:bg-brand-text dark:text-brand-surface"
-      >
-        <DialogTitle className="mb-4 text-lg font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
+      <ModalScrollPanel widthClassName="w-full sm:w-96" className="p-6 text-start">
+        <h2 className="mb-4 text-lg font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
           {copy.title}
-        </DialogTitle>
+        </h2>
 
         <div className="space-y-4">
           <div className="flex flex-col space-y-1">
@@ -139,7 +136,7 @@ const BookingModal2 = memo(function BookingModal2({
             {copy.cancelLabel}
           </button>
         </div>
-      </div>
+      </ModalScrollPanel>
     </ModalFrame>
   );
 });

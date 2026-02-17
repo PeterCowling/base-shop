@@ -162,7 +162,7 @@ function BookingModal({
       contentClassName="layer-modal-container items-start justify-center"
     >
       <Container className="md:max-w-xl">
-        <div className="layer-modal-panel pointer-events-auto rounded-2xl bg-brand-bg p-8 shadow-2xl drop-shadow-brand-primary-10 dark:bg-brand-text dark:text-brand-surface">
+        <div className="layer-modal-panel pointer-events-auto overflow-y-auto overscroll-contain rounded-2xl bg-brand-bg p-8 shadow-2xl drop-shadow-brand-primary-10 dark:bg-brand-text dark:text-brand-surface max-h-[calc(100dvh-6rem)]">
           <button
             aria-label={copy.closeLabel}
             onClick={onClose}

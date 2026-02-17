@@ -41,14 +41,12 @@ export interface ModalFrameProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  /** Accessible title for screen readers. Rendered as a visually-hidden DialogTitle
-   *  to satisfy Radix's accessibility check. Ignored when children include their own
-   *  visible DialogTitle with a matching ariaLabelledBy id. */
+  /** Accessible title rendered as a visually-hidden DialogTitle. Radix uses this
+   *  to wire up aria-labelledby automatically. Defaults to "Dialog". */
   title?: string;
   overlayClassName?: string;
   contentClassName?: string;
   testId?: string;
-  ariaLabelledBy?: string;
   ariaDescribedBy?: string;
 }
 
@@ -70,7 +68,6 @@ export function ModalFrame({
   overlayClassName,
   contentClassName,
   testId,
-  ariaLabelledBy,
   ariaDescribedBy,
 }: ModalFrameProps): JSX.Element | null {
   if (!isOpen) return null;
@@ -81,11 +78,14 @@ export function ModalFrame({
         <DialogPrimitive.Overlay className={clsx(OVERLAY_BASE, overlayClassName)} />
         <DialogPrimitive.Content
           className={clsx(FRAME_BASE, contentClassName)}
-          aria-labelledby={ariaLabelledBy}
           aria-describedby={ariaDescribedBy}
           data-cy={testId}
           data-testid={testId}
         >
+          {/* DialogTitle is inside DialogContent so it commits in the same render
+              cycle as TitleWarning. Both are portal children, so when TitleWarning's
+              useEffect fires, document.getElementById(context.titleId) finds this
+              element immediately. No cross-render-cycle timing issues. */}
           <DialogPrimitive.Title className="sr-only">
             {title ?? "Dialog"}
           </DialogPrimitive.Title>
@@ -143,6 +143,69 @@ export const ModalPanel = forwardRef(function ModalPanel(
   return <div ref={ref} className={classes} {...rest} />;
 });
 ModalPanel.displayName = "ModalPanel";
+
+/**
+ * Viewport-bounded panel that scrolls its own content.
+ *
+ * Use when the entire modal body (including form fields) should be scrollable.
+ * Does not include `overflow-hidden` — content is clipped via scroll instead.
+ * Background page scrolling is locked by the host (ModalProvider.useModalScrollLock).
+ *
+ * Layout invariant contract (TASK-07):
+ * - `max-h-[90dvh]` — dynamic viewport height so mobile browser chrome does not cut content.
+ * - `overflow-y-auto` — content scrolls in a single container.
+ * - `overscroll-contain` — prevents scroll-chaining to the background page.
+ */
+export interface ModalScrollPanelProps extends HTMLAttributes<HTMLDivElement> {
+  widthClassName?: string;
+}
+
+const SCROLL_PANEL_BASE = [
+  "pointer-events-auto",
+  "overflow-x-hidden",
+  "overflow-y-auto",
+  "overscroll-contain",
+  "max-h-[90dvh]",
+  "rounded-2xl",
+  "bg-brand-bg",
+  "shadow-2xl",
+  "drop-shadow-brand-primary-10",
+  "text-brand-text",
+  "dark:bg-brand-text",
+  "dark:text-brand-surface",
+];
+
+export const ModalScrollPanel = forwardRef(function ModalScrollPanel(
+  { widthClassName, className, ...rest }: ModalScrollPanelProps,
+  ref: Ref<HTMLDivElement>,
+): JSX.Element {
+  const classes = clsx(SCROLL_PANEL_BASE, widthClassName, className);
+  return <div ref={ref} className={classes} {...rest} />;
+});
+ModalScrollPanel.displayName = "ModalScrollPanel";
+
+/**
+ * Scrollable content zone for use inside a panel with a sticky header and/or footer.
+ *
+ * The parent panel must have `max-h` set to enable bounded scrolling and should use
+ * `flex flex-col` so this area expands to fill available space via `flex-1`.
+ *
+ * Layout invariant contract (TASK-07):
+ * - Single documented scroll container — no per-modal ad-hoc scroll wrappers.
+ * - `overscroll-contain` — prevents scroll-chaining to background page.
+ */
+export type ModalScrollAreaProps = HTMLAttributes<HTMLDivElement>;
+
+const SCROLL_AREA_BASE = ["overflow-y-auto", "overscroll-contain"];
+
+export const ModalScrollArea = forwardRef(function ModalScrollArea(
+  { className, ...rest }: ModalScrollAreaProps,
+  ref: Ref<HTMLDivElement>,
+): JSX.Element {
+  const classes = clsx(SCROLL_AREA_BASE, className);
+  return <div ref={ref} className={classes} {...rest} />;
+});
+ModalScrollArea.displayName = "ModalScrollArea";
 
 /** Standard action button displayed in modal footers. */
 export type ModalFooterButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;

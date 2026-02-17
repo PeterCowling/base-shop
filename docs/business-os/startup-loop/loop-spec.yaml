@@ -3,10 +3,17 @@
 # All other documents (SKILL.md, workflow guide, prompt index) MUST align to this spec.
 # Version bumps require downstream alignment check (VC-02).
 
-spec_version: "1.1.0"
+spec_version: "1.3.0"
 created: "2026-02-13"
 decision_reference: "docs/plans/lp-skill-system-sequencing-plan.md#DL-01"
 # v1.1.0: Added BD-3 sub-deliverable annotation on S2B (see docs/plans/startup-loop-branding-design-module/plan.md)
+# v1.2.0: Added GATE-MEAS-01 (Hard) — S6B blocked until decision-grade measurement signal verified.
+#         Rationale: channel strategy before working measurement is structurally invalid. Always.
+#         Decision captured: 2026-02-17 during BRIK S0 startup loop initiation.
+# v1.3.0: Added GATE-BD-00 (Hard) — S0→S1 blocked when business_name_status=unconfirmed until naming
+#         shortlist returned. Gate is a prompt-handoff pattern (mirrors S2 market intelligence).
+#         Absent or confirmed status skips gate (backwards-compatible). Decision: 2026-02-17.
+#         See: docs/plans/startup-loop-business-naming/plan.md
 
 # ─────────────────────────────────────────────────────────
 # Stage Graph
@@ -20,6 +27,13 @@ stages:
     prompt_template: intake-normalizer-prompt.md
     conditional: false
     bos_sync: "Update docs/business-os/strategy/<BIZ>/plan.user.md"
+    # GATE-BD-00 (Hard) — evaluated at S0→S1 advance.
+    # Triggers when business_name_status=unconfirmed in intake packet.
+    # Absent or confirmed status skips gate (backwards-compatible, fail-open).
+    # Prompt template: docs/business-os/market-research/_templates/deep-research-naming-prompt.md
+    # Pass condition: any *-naming-shortlist.user.md glob match under docs/business-os/strategy/<BIZ>/
+    # On pass: writes docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md (stable pointer)
+    # See: docs/plans/startup-loop-business-naming/plan.md
 
   - id: S1
     name: Readiness
@@ -222,5 +236,6 @@ run_packet:
     - next_action
     - prompt_file
     - required_output_path
+    - naming_gate     # skipped | blocked | complete (computed from filesystem; see GATE-BD-00)
     - bos_sync_actions
     - loop_spec_version   # must match this spec's spec_version

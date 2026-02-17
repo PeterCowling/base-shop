@@ -21,6 +21,7 @@ Initialize brand language documentation for a business in the startup loop.
 | Strategy plan | `docs/business-os/strategy/<BIZ>/plan.user.md` | Yes |
 | Business registry | `docs/business-os/strategy/businesses.json` | Yes |
 | Brand language template | `.claude/skills/_shared/brand-language-template.md` | Yes |
+| Naming shortlist | `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` | No — read if present; provides `recommended_business_name` via YAML front matter |
 | Launch forecast | `docs/business-os/strategy/<BIZ>/*-launch-forecast*.user.md` | No |
 | Theme package | `packages/themes/<theme>/src/tokens.ts` | No — only if app exists |
 | Existing app UI | `apps/<app>/src/app/layout.tsx`, key pages | No — only if app exists |
@@ -33,6 +34,14 @@ Initialize brand language documentation for a business in the startup loop.
 1. Read `businesses.json` to get business name, apps, and theme mappings
 2. Read strategy plan for audience, positioning, and product description
 3. Read launch forecast (if exists) for demographic data and channel strategy
+4. Check for naming shortlist (GATE-BD-00 output):
+   - If `docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md` exists:
+     - Parse YAML front matter to extract `recommended_business_name` and `shortlist` array
+     - Use `recommended_business_name` as the primary name input when filling the brand dossier template
+     - Include `shortlist` as context when writing the Audience and Personality sections
+     - If front matter is absent or malformed: emit advisory and continue without pre-fill:
+       `Advisory: Naming shortlist found at latest-naming-shortlist.user.md but front matter could not be parsed — fill business name in brand dossier manually.`
+   - If file absent: skip gracefully, no message needed
 
 ### Step 2: Gather Design Evidence
 

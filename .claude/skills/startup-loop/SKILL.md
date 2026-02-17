@@ -45,13 +45,14 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 1.0.0
+loop_spec_version: 1.3.0
 current_stage: <S#>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
 next_action: <single sentence command/action>
 prompt_file: <path or none>
 required_output_path: <path or none>
+naming_gate: <skipped|blocked|complete>
 bos_sync_actions:
   - <required sync action 1>
   - <required sync action 2>
@@ -59,7 +60,7 @@ bos_sync_actions:
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.0.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.3.0).
 
 Stages: `S0`..`S10` (17 stages total):
 
@@ -176,6 +177,69 @@ S6 handoff:
 - `prompt_file`: `docs/business-os/site-upgrades/_templates/deep-research-business-upgrade-prompt.md`
 - `required_output_path`: `docs/business-os/site-upgrades/<BIZ>/<YYYY-MM-DD>-upgrade-brief.user.md`
 
+### GATE-BD-00: Business naming research required at S0→S1 (when name unconfirmed)
+
+Gate ID: GATE-BD-00 (Hard)
+Trigger: Before advancing from S0 to S1 — evaluated during `/startup-loop advance` when S0 is current.
+
+Runs before GATE-BD-01. Does not trigger for businesses with a confirmed name.
+
+**`naming_gate` computation (filesystem-only, no stored state):**
+
+```bash
+# Step 1 — read business_name_status from intake packet
+grep -i "Business name status" docs/business-os/startup-baselines/<BIZ>-intake-packet.user.md 2>/dev/null \
+  | grep -i "unconfirmed"
+# If no match → status is absent or confirmed → naming_gate: skipped
+```
+
+```bash
+# Step 2 (only if unconfirmed) — check for returned shortlist
+ls docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md 2>/dev/null
+# If match found → naming_gate: complete
+# If no match     → naming_gate: blocked
+```
+
+**Decision table:**
+
+| `business_name_status` | Shortlist exists? | `naming_gate` | Action |
+|---|---|---|---|
+| absent or `confirmed` | either | `skipped` | Continue to GATE-BD-01 |
+| `unconfirmed` | no | `blocked` | Generate prompt (idempotent); block advance |
+| `unconfirmed` | yes | `complete` | Write stable pointer; emit advisory; continue to GATE-BD-01 |
+
+**When `naming_gate: blocked`:**
+
+1. Check if naming prompt already exists (idempotent — do not overwrite):
+   ```bash
+   ls docs/business-os/strategy/<BIZ>/*-naming-prompt.md 2>/dev/null
+   ```
+2. If prompt absent: read intake packet fields, populate template, write prompt:
+   - Template: `docs/business-os/market-research/_templates/deep-research-naming-prompt.md`
+   - Output path: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md`
+3. Return blocked run packet:
+   - `blocking_reason`: `GATE-BD-00: Business name status is unconfirmed and no naming shortlist has been returned.`
+   - `next_action`: `Run the naming prompt at docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md through Deep Research (or Perplexity). Save the returned document — including the required YAML front matter — to docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-shortlist.user.md, then run /startup-loop advance --business <BIZ>.`
+   - `prompt_file`: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-naming-prompt.md`
+   - `required_output_path`: `docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md (any date prefix accepted)`
+
+**When `naming_gate: complete`:**
+
+1. Identify the most recent shortlist file (pick `max(date)` if multiple):
+   ```bash
+   ls docs/business-os/strategy/<BIZ>/*-naming-shortlist.user.md 2>/dev/null | sort -r | head -1
+   ```
+2. Write stable pointer (copy to fixed path for `lp-brand-bootstrap`):
+   ```bash
+   cp "<latest-shortlist-path>" docs/business-os/strategy/<BIZ>/latest-naming-shortlist.user.md
+   ```
+3. Emit non-blocking advisory:
+   `GATE-BD-00: Naming shortlist accepted. Recommended name extracted for lp-brand-bootstrap. Consider updating business_name in the intake packet and setting business_name_status to confirmed.`
+4. Continue to GATE-BD-01.
+
+**Parse error handling:** If `business_name_status` field is present but value cannot be parsed (malformed YAML or unexpected value), treat as `confirmed` (fail-open) and emit:
+`Warning: GATE-BD-00: Could not parse business_name_status — treating as confirmed. Check intake packet for malformed field.`
+
 ### GATE-BD-01: Brand Dossier bootstrap required at S1 advance
 
 Gate ID: GATE-BD-01 (Hard)
@@ -223,6 +287,39 @@ Rule:
 - Check Brand Dossier `Last-reviewed` date in `docs/business-os/strategy/<BIZ>/index.user.md`.
 - If Last-reviewed > 90 days ago: emit warning (do not block).
 - Warning message: `GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating brand-dossier.user.md.`
+
+### GATE-MEAS-01: Decision-grade measurement required before S6B
+
+Gate ID: GATE-MEAS-01 (Hard)
+Trigger: Before S6B (Channel Strategy + GTM) can start — evaluated at the S2B→S6B fan-out.
+
+Rationale: Channel strategy without working measurement is structurally invalid. CAC, CVR, and
+channel performance cannot be evaluated if key conversion events are not firing in production.
+This is not a one-off deferral decision — it is always true that channel spend before measurement
+is waste. There is never a valid reason to start S6B while measurement is unverified.
+
+Rule — all three checks must pass:
+1. A measurement verification artifact exists with `Status: Active`:
+   `docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md`
+2. No active measurement risks at `Severity: High` or `Severity: Critical` in `plan.user.md`.
+3. Key conversion-intent events are verified firing in production (non-zero in the locked
+   7-day baseline or a subsequent verified period).
+
+Check commands:
+```bash
+# Check 1: measurement verification doc exists and is Active
+grep "Status: Active" docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md 2>/dev/null
+
+# Check 2: no High/Critical measurement signal risks
+grep -i "measurement" docs/business-os/strategy/<BIZ>/plan.user.md | grep -iE "severity: (high|critical)"
+
+# Check 3: conversion events non-zero (begin_checkout, add_to_cart, or equivalent)
+grep -iE "begin_checkout|add_to_cart|conversion" docs/business-os/strategy/<BIZ>/plan.user.md | grep -v "| 0$\|0.00%\| 0 "
+```
+
+When blocked:
+- Blocking reason: `GATE-MEAS-01: Decision-grade measurement signal not verified. Channel strategy without working measurement is waste — CAC, CVR, and channel performance cannot be evaluated.`
+- Next action: `Resolve active measurement risks, verify conversion events firing in production, and update measurement-verification artifact to Status: Active. Then re-run /startup-loop status --business <BIZ>.`
 
 ## Business OS Sync Contract (Required Before Advance)
 

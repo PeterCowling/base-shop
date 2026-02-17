@@ -134,7 +134,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-21 | INVESTIGATE | Audit CMS `transpilePackages` — identify packages with complete dist/ safe to remove | 88% | S | Complete (2026-02-17) | TASK-12 (complete) | TASK-22 |
-| TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 82% | M | Pending | TASK-21 (complete) | TASK-13 |
+| TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 82% | M | Complete (2026-02-17) | TASK-21 (complete) | TASK-13 |
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Pending | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09, TASK-10, TASK-11, TASK-12 (complete), TASK-22 | TASK-14, TASK-15 |
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 72% ⚠️ | M | Pending | TASK-02 (complete), TASK-13 | - |
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13, TASK-11 | - |
@@ -158,6 +158,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-11 | Cover-me-pretty: enforce `next build` heap headroom to avoid OOM (script-level guard) | Complete (2026-02-15) | `e582db8822` |
 | TASK-12 | SPIKE — CMS build OOM: webpack-escape for typescript import committed; TC-01 (build exits 0) not satisfied on 16 GB machine; precursor chain TASK-21→TASK-22 created | Spike Complete (2026-02-17) / TC-01 unmet | `71fe4c561d` |
 | TASK-21 | transpilePackages audit — @acme/ui (2,256 TS files) identified as dominant contributor; Tier 1/2 removal lists defined; src-alias constraints documented | Complete (2026-02-17) | see post-task commit |
+| TASK-22 | CMS build graph reduction — transpilePackages cut from 15 → 3 CMS-specific entries (~3,258 TS files removed); typescript added to serverExternalPackages; tokenUtils TS2307 fixed; CMS typecheck+lint green | Complete (2026-02-17) | `e469da612c` |
 
 ### Deferred / Blocked
 
@@ -432,6 +433,17 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollout: ship on `dev`; verify CMS dev server still starts (`pnpm --filter @apps/cms dev`).
   - Rollback: revert `apps/cms/next.config.mjs` changes.
 - **Documentation impact:** Append post-reduction build evidence to `docs/plans/nextjs-16-upgrade/build-oom-notes.md`.
+
+#### Build Completion (2026-02-17)
+- **Status:** Complete
+- **Commit:** `e469da612c` (changes included in user checkpoint commit)
+- **TC-01:** `pnpm --filter @apps/cms lint && pnpm --filter @apps/cms typecheck` → **PASS** ✅
+- **TC-02:** `pnpm --filter @apps/cms build` → **OOM / SIGABRT** (expected; best-effort evidence: build graph significantly smaller, 3,258 fewer TS source files in webpack compilation; 32 GB+ still required for full exit 0)
+- **TC-03:** tokenUtils 4/6 pass; 2 pre-existing failures (`brandx/dummy theme data mismatch`); confirmed not introduced by this task
+- **TS2307 fix:** Added `@ts-expect-error` annotations to `tokenUtils.ts` for `@themes/brandx` and `@themes/dark` imports (their `package.json` exports reference `dist/` which is gitignored; types unavailable; runtime resolution via webpack `transpilePackages`)
+- **transpilePackages reduced from 15 → 3** (CMS-specific entries): retained `@themes/brandx`, `@themes/dark` (no dist), `@acme/configurator` (src-aliased). All others removed.
+- **serverExternalPackages:** `typescript` now committed (deferred from TASK-12)
+- **Scope note:** TASK-13 can now proceed; CMS typecheck+lint baseline is clean
 
 ### TASK-13: CHECKPOINT - Post-Hardening Validation And Replan
 - **Type:** CHECKPOINT

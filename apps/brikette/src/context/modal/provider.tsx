@@ -5,14 +5,37 @@
 /*  Modal provider component                                                  */
 /* -------------------------------------------------------------------------- */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
+import i18n from "@/i18n";
 import { fireModalClose, fireModalOpen } from "@/utils/ga4-events";
 import { prefetchInteractiveBundlesNow } from "@/utils/prefetchInteractive";
 
 import { ModalContext, type ModalContextValue, type ModalProviderProps, type ModalType } from "./context";
 import { ensureDocument } from "./environment";
 import { GlobalModals } from "./global-modals";
+
+// ---------------------------------------------------------------------------
+// Single-host invariant guard
+// Detects a nested ModalProvider by reading the parent context value.
+// Fires a console.error in dev/test so errors surface without crashing SSR.
+// ---------------------------------------------------------------------------
+function useModalHostInvariant(): void {
+  const parentCtx = useContext(ModalContext);
+  useEffect(() => {
+    if (parentCtx !== null) {
+       
+      // Developer invariant logger — not user-facing, exempt from i18n
+      // i18n-exempt -- BRIK-0 [ttl=2026-12-31]
+      console.error(
+        "[ModalProvider] Invariant: nested ModalProvider detected. " + // i18n-exempt -- BRIK-0 [ttl=2026-12-31]
+          "Brikette must have exactly one ModalProvider in the tree. " +
+          "Check AppLayout for accidental double-mounting. " +
+          "(TASK-05 — brikette-modal-system-remake)", // i18n-exempt -- BRIK-0 [ttl=2026-12-31]
+      );
+    }
+  }, [parentCtx]);
+}
 
 ensureDocument();
 
@@ -42,6 +65,7 @@ function extractModalSource(data: unknown): string | undefined {
 }
 
 export function ModalProvider({ children }: ModalProviderProps): JSX.Element {
+  useModalHostInvariant();
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [modalData, setModalData] = useState<unknown>(null);
   const activeModalRef = useRef<ModalType>(null);
@@ -75,6 +99,12 @@ export function ModalProvider({ children }: ModalProviderProps): JSX.Element {
     modalDataRef.current = null;
     lastFocusedRef.current?.focus?.();
     lastFocusedRef.current = null;
+  }, []);
+
+  useEffect(() => {
+    // Preload bookPage namespace so PolicyFeeClarityPanel has translations ready
+    // before the booking modal first opens. bookPage is not in CORE_LAYOUT_I18N_NAMESPACES.
+    void i18n.loadNamespaces?.(["bookPage"]);
   }, []);
 
   useEffect(() => {

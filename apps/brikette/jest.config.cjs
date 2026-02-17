@@ -97,6 +97,11 @@ newMapper["^@tests/(.*)$"] = path.resolve(__dirname, "src/test/$1");
 // ?raw imports (Vite/webpack raw-loader query) — Jest can't handle ?raw suffix
 newMapper["^(.+)\\?raw$"] = path.resolve(__dirname, "src/test/__mocks__/raw-file.ts");
 
+// swiper/css imports — CSS package sub-paths not matched by *.css extension pattern
+const emptyStub = path.resolve(__dirname, "src/test/__mocks__/raw-file.ts");
+newMapper["^swiper/css$"] = emptyStub;
+newMapper["^swiper/css/(.*)$"] = emptyStub;
+
 // --- Copy remaining original mappers, filtering out CMS-specific stubs ---
 // The shared preset's jest.moduleMapper.cjs includes patterns designed for the CMS app
 // (e.g. ^@/components/(.*)$ → componentStub.js) that incorrectly replace brikette's

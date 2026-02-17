@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-19 complete; repro matrix written; TASK-20 checkpoint now eligible)
+Last-updated: 2026-02-17 (TASK-20 CHECKPOINT complete; governance tranche done; TASK-14 + TASK-15 ready for /lp-build)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -142,7 +142,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
 | TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 82% | M | Complete (2026-02-17) | TASK-17 (complete) | TASK-20 |
 | TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Complete (2026-02-17) | TASK-13 (complete) | TASK-20 |
-| TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Pending | TASK-18, TASK-19 | - |
+| TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Complete (2026-02-17) | TASK-18, TASK-19 | - |
 
 ### Completed In This Plan (With Commits)
 
@@ -163,6 +163,8 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-16 | Webpack policy coverage map: 93 files scanned; 3 XA wrapper bypass vectors all compliant; D-04 accepted limitation; scanner gap documented with Option A/B hardening paths | Complete (2026-02-17) | config-snapshot §12 |
 | TASK-17 | Decision: Option A (peer-first). `@acme/next-config` moves next/react/react-dom to peerDependencies; root devDependencies.next removed. D-01/D-02 remediation path explicit. | Complete (2026-02-17) | plan decision log |
 | TASK-18 | D-01/D-02 manifest remediation: `packages/next-config` moves `next` to peerDependencies; `@next/env` removed; root devDep duplicate removed; lockfile updated. All 4 TCs passed. | Complete (2026-02-17) | `0aef8d5a59` |
+| TASK-19 | Turbopack repro matrix: 1 OBSERVED-REPRO (extensionAlias); 10 UNVERIFIED-ASSUMPTION (webpack() internals); 1 UNVERIFIED-ASSUMPTION (high-risk: brikette `?raw`). §13 written to config-snapshot. | Complete (2026-02-17) | `4614e29dfd` |
+| TASK-20 | CHECKPOINT — governance tranche reviewed; TASK-14/15 confidence unchanged at 82%; Cloudflare posture valid; topology unchanged; TASK-14 and TASK-15 ready for `/lp-build`. | Complete (2026-02-17) | plan-only |
 
 ### Deferred / Blocked
 
@@ -823,7 +825,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Skill:** /lp-replan
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `docs/plans/nextjs-16-upgrade/plan.md`
 - **Depends on:** TASK-18, TASK-19
 - **Blocks:** -
@@ -842,6 +844,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Validation contract:** updated plan includes refreshed task table + gate statuses.
 - **Planning validation:** replan evidence recorded in plan decision log.
 - **Rollout / rollback:** `None: planning control task`
+- **Build completion evidence (2026-02-17):**
+  - Tranche evidence reviewed: TASK-16 (webpack scanner 93 files; D-04 accepted), TASK-17 (Option A peer-first), TASK-18 (D-01/D-02 resolved; 4 TCs pass), TASK-19 (extensionAlias OBSERVED-REPRO; webpack() internals UNVERIFIED-ASSUMPTION).
+  - TASK-14 (82%): unchanged — tranche is orthogonal to CMS middleware runtime. Remains above 80% threshold. TC contract complete. Ready for `/lp-build`.
+  - TASK-15 (82%): unchanged — tranche is orthogonal to CMP crypto middleware. Remains above 80% threshold. TC contract complete. Ready for `/lp-build`.
+  - Cloudflare Free-tier posture: valid — TASK-18 (manifest-only) and TASK-19 (investigation-only) made zero runtime/Worker/Pages changes. TASK-13 audit artifact remains authoritative.
+  - Topology: no new tasks, no new dependencies. `/lp-sequence` not needed.
+  - All acceptance criteria met.
 
 ## Risks & Mitigations
 - Next 16 Webpack builds OOM on default Node heap (observed in CMS and cover-me-pretty).
@@ -885,3 +894,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: TASK-17 DECISION resolved — **Option A (peer-first)**. `@acme/next-config` will move `next`/`@next/env` from `dependencies` to `peerDependencies`; add `next` as `devDependency` for local testing. Root `devDependencies.next` duplicate removed. Eliminates D-01 structurally; resolves D-02. TASK-18 unblocked.
 - 2026-02-17: TASK-18 complete (`0aef8d5a59`). D-01 resolved: `@acme/next-config` now declares `next` as `peerDependencies: ">=16.0.0"` with no hard dep. D-02 resolved: root `devDependencies.next` removed; single authoritative declaration in `dependencies`. All 4 TCs passed (single version workspace-wide, stale `@next/env 15.3.5` path gone, next-config lint+tests clean, CMS+cover-me-pretty typecheck+lint green). TASK-20 now unblocked pending TASK-19.
 - 2026-02-17: TASK-19 complete. Turbopack blocker repro matrix written to §13 of config-snapshot artifact. Key finding: `extensionAlias` in `@acme/next-config` is the sole `OBSERVED-REPRO` blocker (XA page HTTP 500: `@acme/i18n` cannot resolve `.js` ESM specifiers under Turbopack). All webpack() callback internals are `UNVERIFIED-ASSUMPTION` (Turbopack silently skips the callback; startup probes alone are insufficient). Brikette `?raw` loader is `UNVERIFIED-ASSUMPTION (high-risk)` with 2 live import sites and a concrete test protocol. TASK-20 fully unblocked.
+- 2026-02-17: TASK-20 CHECKPOINT complete. Governance tranche (TASK-16→TASK-19) reviewed — all four tasks are orthogonal to TASK-14 and TASK-15. No confidence adjustments needed. Cloudflare Free-tier posture valid (TASK-18 manifest-only + TASK-19 investigation-only made no runtime changes). Topology unchanged; `/lp-sequence` not required. TASK-14 (82%) and TASK-15 (82%) are both above IMPLEMENT threshold with complete validation contracts. Both are ready for `/lp-build`.

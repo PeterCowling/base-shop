@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- TEST-1001: Reads repo-local locale fixtures under src/locales. [ttl=2026-12-31] */
 /**
- * TASK-10A/10B: SSR/no-JS + i18n leakage detection gate for commercial booking routes.
+ * TASK-10A/10B/TASK-08: SSR/no-JS + i18n leakage detection gate for commercial booking routes.
  *
  * Gate mode:
  *   TC-01  report-only — i18n placeholder findings warn but never hard-fail CI.
@@ -8,11 +8,16 @@
  *   TC-02  CI-blocking (TASK-10B activated) — /{lang}/book must expose a static Octorate
  *          fallback link. Always hard-fails if the link is missing.
  *   TC-03  CI-blocking — locale namespace coverage regression always hard-fails.
+ *   TC-04  CI-blocking (TASK-08) — /{lang}/apartment/book must expose a static Octorate
+ *          fallback link. Always hard-fails if the link is missing.
+ *   TC-05  CI-blocking (TASK-08) — apartmentPage.json must exist for every locale.
  *
  * Coverage:
  *   TC-01  i18n placeholder leakage — commercial route namespaces across all locales.
  *   TC-02  No-JS dead-end detection — /{lang}/book must expose a static Octorate fallback link.
  *   TC-03  Localized namespace coverage regression — bookPage.json exists for every locale.
+ *   TC-04  No-JS dead-end detection — /{lang}/apartment/book static Octorate fallback link.
+ *   TC-05  Apartment namespace coverage regression — apartmentPage.json exists for every locale.
  */
 
 import { existsSync, readFileSync } from "node:fs";
@@ -62,6 +67,14 @@ const NON_EN_LOCALES = (i18nConfig.supportedLngs ?? []).filter(
 const BOOKING_ROUTE_SOURCE_FILES = [
   "app/[lang]/book/page.tsx",
 ] as const;
+
+/**
+ * RSC entry point for the /{lang}/apartment/book route.
+ * The no-JS fallback link must live in the RSC layer, not in ApartmentBookContent (client).
+ * Path is relative to SOURCE_ROOT (apps/brikette/src/).
+ */
+const APARTMENT_BOOKING_ROUTE_SOURCE_FILE =
+  "app/[lang]/apartment/book/page.tsx" as const;
 
 /** Pattern that indicates a static, non-JS-dependent Octorate booking link. */
 const OCTORATE_STATIC_LINK_PATTERN = /book\.octorate\.com/;
@@ -193,6 +206,47 @@ describe("TC-03: commercial namespace coverage regression (TASK-10A)", () => {
     "locale %s has modals.json (booking modal namespace)",
     (locale) => {
       const filePath = path.join(LOCALES_ROOT, locale, "modals.json");
+      expect(existsSync(filePath)).toBe(true);
+    },
+  );
+});
+
+// ---------------------------------------------------------------------------
+// TC-04: No-JS dead-end detection — /{lang}/apartment/book must have a static fallback link
+// ---------------------------------------------------------------------------
+
+describe("TC-04: no-JS fallback audit for /{lang}/apartment/book (TASK-08, CI-blocking)", () => {
+  it("/{lang}/apartment/book server source includes a static Octorate link for no-JS users", () => {
+    const fullPath = path.join(SOURCE_ROOT, APARTMENT_BOOKING_ROUTE_SOURCE_FILE);
+    if (!existsSync(fullPath)) {
+      throw new Error(
+        `[TASK-08 TC-04] Apartment booking route source not found: ${APARTMENT_BOOKING_ROUTE_SOURCE_FILE}`,
+      );
+    }
+
+    const source = readFileSync(fullPath, "utf8");
+    if (!OCTORATE_STATIC_LINK_PATTERN.test(source)) {
+      throw new Error(
+        `[TASK-08 TC-04] No static Octorate link found in apartment booking route source.\n` +
+          `No-JS users on /{lang}/apartment/book reach a booking dead-end (JS-only flow):\n` +
+          `  - ${APARTMENT_BOOKING_ROUTE_SOURCE_FILE}\n` +
+          `\nRemediation: add <noscript><a href="https://book.octorate.com/..."> in apartment/book/page.tsx RSC layer.`,
+      );
+    }
+
+    expect(source).toMatch(OCTORATE_STATIC_LINK_PATTERN);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-05: apartmentPage namespace coverage regression
+// ---------------------------------------------------------------------------
+
+describe("TC-05: apartment namespace coverage regression (TASK-08, CI-blocking)", () => {
+  it.each(NON_EN_LOCALES)(
+    "locale %s has apartmentPage.json (apartment route namespace)",
+    (locale) => {
+      const filePath = path.join(LOCALES_ROOT, locale, "apartmentPage.json");
       expect(existsSync(filePath)).toBe(true);
     },
   );

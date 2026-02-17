@@ -5,7 +5,7 @@
 import type { KeyboardEvent } from "react";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -93,6 +93,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   const { t, ready } = useTranslation("notificationBanner", { lng: lang });
   const { t: tModals } = useTranslation("modals", { lng: lang });
   const router = useRouter();
+  const pathname = usePathname();
   const setBannerRef = useSetBannerRef();
   const [isVisible, setIsVisible] = useState(true);
   const dismissButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -235,6 +236,8 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   );
 
   if (!isVisible) return null;
+  // Suppress banner on apartment routes — perks_apply_apartment: false (TASK-04/TASK-07)
+  if (pathname.includes("/apartment")) return null;
 
   return (
     <div className="sticky top-0">

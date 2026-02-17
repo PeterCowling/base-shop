@@ -57,6 +57,42 @@ describe("WhatsApp link validity across apartment pages", () => {
   });
 });
 
+describe("TASK-07: apartment-context CTA, legal label, and perks-route behavior", () => {
+  const UI_DIR = path.resolve(__dirname, "../../../../../../packages/ui/src/organisms");
+  const BRIKETTE_SRC = path.resolve(__dirname, "../../../");
+  const BANNER_FILE = path.join(BRIKETTE_SRC, "components/header/NotificationBanner.tsx");
+
+  // TC-01: DesktopHeader uses apartment-aware CTA routing
+  it("DesktopHeader has apartment-aware bookHref that routes to apartment/book", () => {
+    const content = fs.readFileSync(path.join(UI_DIR, "DesktopHeader.tsx"), "utf-8");
+    expect(content).toMatch(/isApartmentRoute/);
+    expect(content).toContain("apartmentPath}/book");
+  });
+
+  // TC-02: MobileNav uses apartment-aware CTA routing
+  it("MobileNav has apartment-aware bookHref that routes to apartment/book", () => {
+    const content = fs.readFileSync(path.join(UI_DIR, "MobileNav.tsx"), "utf-8");
+    expect(content).toMatch(/isApartmentRoute/);
+    expect(content).toContain("apartmentPath}/book");
+  });
+
+  // TC-03: footer.json terms label is accommodation-neutral
+  it("footer.json terms label does not contain hostel-specific 'Room Bookings' text", () => {
+    const footerJson = JSON.parse(
+      fs.readFileSync(path.join(BRIKETTE_SRC, "locales/en/footer.json"), "utf-8"),
+    );
+    expect(footerJson.terms).toBeDefined();
+    expect(footerJson.terms.toLowerCase()).not.toContain("room bookings");
+  });
+
+  // TC-04: NotificationBanner is suppressed on apartment routes
+  it("NotificationBanner source contains usePathname guard returning null on apartment routes", () => {
+    const content = fs.readFileSync(BANNER_FILE, "utf-8");
+    expect(content).toContain("usePathname");
+    expect(content).toMatch(/apartment/);
+  });
+});
+
 describe("Hub page structure", () => {
   // TC-01: HeroSection renders before intent cards (source order check)
   it("HeroSection appears before intent-routing cards in source", () => {

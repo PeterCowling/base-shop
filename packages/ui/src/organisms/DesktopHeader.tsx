@@ -58,15 +58,23 @@ function DesktopHeader({
   const { theme } = useTheme();
 
   const book = useCallback(() => openModal("booking"), [openModal]);
-  const bookHref = `/${lang}/${translatePath("book", lang)}`;
+  // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
+  // booking page instead of opening the hostel booking modal.
+  const apartmentPath = `/${translatePath("apartment", lang)}`;
+  const isApartmentRoute = pathname.startsWith(`/${lang}${apartmentPath}`);
+  const bookHref = isApartmentRoute
+    ? `/${lang}${apartmentPath}/book`
+    : `/${lang}/${translatePath("book", lang)}`;
   const onBookClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
+      // On apartment routes let normal navigation handle the link — no modal.
+      if (isApartmentRoute) return;
       // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
       onPrimaryCtaClick?.();
       event.preventDefault();
       book();
     },
-    [book, onPrimaryCtaClick]
+    [book, onPrimaryCtaClick, isApartmentRoute]
   );
 
   const navTranslate = useCallback<TranslateFn>(
@@ -105,7 +113,6 @@ function DesktopHeader({
 
   const { navLinks } = buildNavLinks(lang, navTranslate);
   const ctaClass = "cta-dark";
-  const apartmentPath = `/${translatePath("apartment", lang)}`;
   const primaryCtaLabel = useMemo(() => {
     if (!tokensReady) return FALLBACK_PRIMARY_CTA_LABEL;
     return resolvePrimaryCtaLabel(tTokens, { fallback: FALLBACK_PRIMARY_CTA_LABEL }) ?? FALLBACK_PRIMARY_CTA_LABEL;

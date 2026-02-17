@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-14 complete; CMS middleware consolidated; TASK-15 remains)
+Last-updated: 2026-02-17 (TASK-14 + TASK-15 complete; all implementation tasks done; plan complete)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -137,7 +137,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-22 | IMPLEMENT | CMS build graph reduction: apply transpilePackages reduction + commit deferred config | 82% | M | Complete (2026-02-17) | TASK-21 (complete) | TASK-13 |
 | TASK-13 | CHECKPOINT | Post-hardening checkpoint: scoped builds + typecheck + lint; replan remaining tasks | 95% | S | Complete (2026-02-17) | TASK-01 (complete), TASK-02 (complete), TASK-06 (complete), TASK-08 (complete), TASK-09 (complete), TASK-10 (complete), TASK-11 (complete), TASK-12 (complete), TASK-22 (complete) | TASK-14, TASK-15 |
 | TASK-14 | IMPLEMENT | Resolve CMS middleware ambiguity and enforce runtime-compatible dependencies | 82% | M | Complete (2026-02-17) | TASK-02 (complete), TASK-13 (complete) | - |
-| TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13 (complete), TASK-11 (complete) | - |
+| TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Complete (2026-02-17) | TASK-13 (complete), TASK-11 (complete) | - |
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
 | TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
 | TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 82% | M | Complete (2026-02-17) | TASK-17 (complete) | TASK-20 |
@@ -166,6 +166,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-19 | Turbopack repro matrix: 1 OBSERVED-REPRO (extensionAlias); 10 UNVERIFIED-ASSUMPTION (webpack() internals); 1 UNVERIFIED-ASSUMPTION (high-risk: brikette `?raw`). §13 written to config-snapshot. | Complete (2026-02-17) | `4614e29dfd` |
 | TASK-20 | CHECKPOINT — governance tranche reviewed; TASK-14/15 confidence unchanged at 82%; Cloudflare posture valid; topology unchanged; TASK-14 and TASK-15 ready for `/lp-build`. | Complete (2026-02-17) | plan-only |
 | TASK-14 | CMS middleware ambiguity resolved: deleted root `middleware.ts` (Node crypto, no auth); `src/middleware.ts` is now active (JWT auth, CSRF, RBAC, Edge-safe). 38/38 tests pass. Lint + typecheck clean. | Complete (2026-02-17) | `1dc0880c1b` (del) + `4ae9186cf3` (test) |
+| TASK-15 | `node:crypto` removed from cover-me-pretty middleware; replaced with `await crypto.subtle.digest()` + btoa; `buildCspExtras()` helper extracted (max-depth lint fix); `@jest-environment node` docblock added to test (jsdom lacks crypto.subtle). 4/4 tests pass. | Complete (2026-02-17) | `d1b3839072` |
 
 ### Deferred / Blocked
 
@@ -636,6 +637,19 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution plan:** Red -> Green -> Refactor
 - **What would make this >=90%:** Add middleware integration probe asserting `sha256-...` appears in CSP for expected inline script.
 
+#### Build Completion (2026-02-17)
+- **Status:** Complete
+- **Commit:** `d1b3839072`
+- **Validation:**
+  - TC-01 (tests): 4/4 PASS — middleware.test.ts (allows locale, redirects invalid, skips static, deterministic sha256 hash)
+  - TC-02 (lint/typecheck): clean — eslint + tsc both exit 0; import sort fixed + max-depth reduced via `buildCspExtras()` helper
+  - TC-03 (deterministic hash): PASS — `sha256-...` present in CSP header; idempotent across two calls with same env
+  - Acceptance: `node:crypto` import removed ✅; CSP `script-src` continues to allow GA4 inline ✅; locale redirect unchanged ✅
+- **Key findings:**
+  - `@jest-environment node` docblock (JSDoc `/* */` format required) needed for `crypto.subtle` availability — jsdom exposes `crypto` without `subtle`; setupFetchPolyfill polyfill is conditional on `!globalThis.crypto` so it's skipped
+  - `buildCspExtras()` helper extracted to reduce nesting depth from 6 → 3 (lint: `max-depth` rule, max 5)
+  - `simple-import-sort` groups: external packages (`next/server`) before workspace scoped imports (`@acme/i18n`)
+
 ### TASK-16: INVESTIGATE - Webpack Policy Coverage Hardening (Wrapper/Baseline Gaps)
 - **Type:** INVESTIGATE
 - **Deliverable:** Analysis artifact update in `docs/plans/nextjs-16-upgrade/config-snapshot-fact-find-2026-02-17.md` with a scanner-hardening recommendation and explicit scope map.
@@ -915,3 +929,4 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - 2026-02-17: TASK-19 complete. Turbopack blocker repro matrix written to §13 of config-snapshot artifact. Key finding: `extensionAlias` in `@acme/next-config` is the sole `OBSERVED-REPRO` blocker (XA page HTTP 500: `@acme/i18n` cannot resolve `.js` ESM specifiers under Turbopack). All webpack() callback internals are `UNVERIFIED-ASSUMPTION` (Turbopack silently skips the callback; startup probes alone are insufficient). Brikette `?raw` loader is `UNVERIFIED-ASSUMPTION (high-risk)` with 2 live import sites and a concrete test protocol. TASK-20 fully unblocked.
 - 2026-02-17: TASK-20 CHECKPOINT complete. Governance tranche (TASK-16→TASK-19) reviewed — all four tasks are orthogonal to TASK-14 and TASK-15. No confidence adjustments needed. Cloudflare Free-tier posture valid (TASK-18 manifest-only + TASK-19 investigation-only made no runtime changes). Topology unchanged; `/lp-sequence` not required. TASK-14 (82%) and TASK-15 (82%) are both above IMPLEMENT threshold with complete validation contracts. Both are ready for `/lp-build`.
 - 2026-02-17: TASK-14 complete (`1dc0880c1b` del + `4ae9186cf3` test). Root `apps/cms/middleware.ts` removed — had Node-only `crypto` import and no auth enforcement. `apps/cms/src/middleware.ts` is now the sole active middleware: JWT auth, CSRF protection, RBAC via `canRead`/`canWrite`, Edge-safe (Web Crypto `randomUUID`; type-only `http` import). 38/38 middleware tests pass; CMS lint 0 errors; typecheck clean. Security headers assertion added to TC-03.
+- 2026-02-17: TASK-15 complete (`d1b3839072`). `node:crypto` removed from cover-me-pretty middleware; `crypto.subtle.digest('SHA-256', ...)` + btoa now used for CSP hash generation. `buildCspExtras()` helper extracted to satisfy max-depth lint constraint. `@jest-environment node` docblock added to test file — jsdom exposes `crypto` without `subtle` and the conditional polyfill is skipped when `globalThis.crypto` already exists. 4/4 tests pass; lint + typecheck clean. Plan Status → Complete.

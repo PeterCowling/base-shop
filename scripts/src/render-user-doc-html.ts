@@ -300,22 +300,34 @@ ${params.htmlBody}
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "antiscript", theme: "neutral" });
+    // startOnLoad: false — we render manually so hidden engineering diagrams
+    // (inside display:none) are not attempted on load, which causes spurious
+    // "Syntax error in text" failures in Mermaid v11.
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    // Render only the visible (operator) diagrams immediately.
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
 
     // Audience toggle — Model A.
-    // The toggle handler lives in this module script (same scope as the mermaid import)
-    // so it can call mermaid.run() to render diagrams that become visible after toggle.
+    // Engineering diagrams are rendered on first reveal (not on load).
+    let engineeringRendered = false;
     const toggleBtn = document.getElementById("audience-toggle");
     if (toggleBtn) {
       toggleBtn.addEventListener("click", () => {
         const isShowing = document.body.classList.toggle("show-engineering");
         toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
         toggleBtn.setAttribute("aria-pressed", String(isShowing));
-        if (isShowing) {
-          // Re-render Mermaid diagrams that were hidden and may not have initialised.
+        if (isShowing && !engineeringRendered) {
+          // Render engineering diagrams now that they are visible.
           const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
           if (nodes.length > 0) {
             mermaid.run({ nodes });
+            engineeringRendered = true;
           }
         }
       });

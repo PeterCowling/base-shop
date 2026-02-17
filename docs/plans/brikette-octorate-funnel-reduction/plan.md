@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-07 checkpoint complete)
+Last-updated: 2026-02-17 (TASK-05B replanned to 82%)
 Last-reviewed: 2026-02-17
 Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
@@ -161,7 +161,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 | TASK-03 | IMPLEMENT | Handoff behavior normalization (`same_tab`, endpoint policy, param contract) | 82% | M | Pending | TASK-05A | TASK-05B, TASK-07 |
 | TASK-04 | INVESTIGATE | Diagnose GA4 handoff capture gap in standard Data API reports | 72% | M | Complete (2026-02-17) | - | TASK-05A, TASK-06 |
 | TASK-05A | IMPLEMENT | Native `handoff_to_engine` instrumentation across existing flows (pre-normalization) | 84% | M | Complete (2026-02-17) | TASK-04 | TASK-03, TASK-06, TASK-07 |
-| TASK-05B | IMPLEMENT | Legacy `begin_checkout` compatibility cleanup after normalization | 78% | S | Pending | TASK-03, TASK-05A | - |
+| TASK-05B | IMPLEMENT | Legacy `begin_checkout` compatibility cleanup after normalization | 82% | S | Pending | TASK-03, TASK-05A | - |
 | TASK-06 | IMPLEMENT | GA4 admin governance + reporting contract + ops handoff evidence | 84% | M | Complete (2026-02-17) | TASK-01, TASK-04 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint after route + measurement foundation | 95% | S | Pending | TASK-02, TASK-03, TASK-05A, TASK-06, TASK-10A | TASK-08, TASK-10B |
 | TASK-08 | INVESTIGATE | Run overlap-window calibration (non-zero GA4 handoff + Octorate bookings) | 70% | M | Pending | TASK-07 | TASK-09 |
@@ -421,25 +421,38 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`
+- **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`, `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx`, `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx`, `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx`, `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
 - **Depends on:** TASK-03, TASK-05A
 - **Blocks:** -
-- **Confidence:** 78%
-  - Implementation: 82% - bounded to compatibility toggles and documentation.
-  - Approach: 78% - dependent on observed stability after normalization window.
-  - Impact: 80% - reduces taxonomy ambiguity and long-term reporting drift.
+- **Confidence:** 82%
+  - Implementation: 84% - all compat call sites enumerated; dead code identified (E1: code audit, 2026-02-17).
+  - Approach: 82% - two-tier cleanup policy now explicit with defined exit criteria; no longer dependent on vague observational window (E1: code audit, 2026-02-17).
+  - Impact: 82% - blast radius confirmed bounded to 3 source files + 4 test files + ga4-events.ts helper cleanup (E1: code audit, 2026-02-17).
+- **Two-tier cleanup policy:**
+  - **`search_availability` compat** (callers: `BookingModal.tsx:94`, `Booking2Modal.tsx:108`): remove in TASK-05B. No GA4 create-rule maps this event; runbook §2 establishes `handoff_to_engine` as sole canonical handoff event. No observational window required.
+  - **`begin_checkout` compat** (callers: `ApartmentBookContent.tsx:69` raw gtag, `Booking2Modal.tsx:84` `fireBeginCheckoutRoomSelected`): retain until exit criteria met: ≥30 days post-TASK-05A production deploy with `handoff_to_engine > 0` in GA4 standard reports. Then remove callers + helper functions.
+  - **Dead code to remove at cleanup time:** `fireBeginCheckoutGeneric`, `fireBeginCheckoutGenericAndNavigate`, `fireBeginCheckoutRoomSelectedAndNavigate` — no active callers post-TASK-05A (confirmed by code audit 2026-02-17).
+  - **Out of scope:** `RoomDetailContent.tsx` uses `fireSearchAvailabilityAndNavigate` as a primary navigation call (not compat); normalization of this surface is deferred to a future phase.
 - **Acceptance:**
-  - Compatibility end-state decision is explicit (`keep mapped legacy event` or `remove legacy event`).
-  - Reporting contract and dashboards are updated to canonical `handoff_to_engine`.
+  - `search_availability` compat fires removed from `BookingModal.tsx` and `Booking2Modal.tsx`.
+  - `begin_checkout` compat exit criteria documented in governance runbook with explicit trigger (≥30 days `handoff_to_engine > 0`).
+  - Reporting contract updated to canonical `handoff_to_engine` as sole primary event.
   - No double-counting introduced during compatibility transition.
 - **Validation contract (TC-XX):**
-  - TC-01: event counts remain stable when legacy compatibility mode is toggled to final state.
-  - TC-02: governance runbook reflects final canonical event policy and migration timestamp.
+  - TC-01: after `search_availability` compat removal, ga4-09 test verifies NO `search_availability` event fires from BookingModal; ga4-10 test verifies NO `search_availability` event fires from Booking2Modal. Existing `handoff_to_engine` assertions remain passing.
+  - TC-02: governance runbook updated with explicit two-tier cleanup policy, exit criteria for `begin_checkout`, and compat cleanup timeline.
 - **Execution plan:** Red -> Green -> Refactor
 - **Rollout / rollback:**
-  - Rollout: execute during low-risk window after TASK-03 stabilization.
+  - Rollout: `search_availability` removal first (zero risk — not mapped in GA4); `begin_checkout` cleanup only after exit criteria window closes.
   - Rollback: revert to dual-emit compatibility while preserving canonical `handoff_to_engine`.
 - **Documentation impact:** update migration completion notes and GA4 governance runbook.
+
+#### Re-plan Update (2026-02-17)
+- Confidence: 78% -> 82% (Evidence: E1)
+- Key change: two-tier cleanup policy made explicit — `search_availability` removed immediately (no create-rule mapping); `begin_checkout` retained until 30-day post-deploy exit criteria met; dead helper functions identified for future removal.
+- Dependencies: TASK-03, TASK-05A (unchanged)
+- Validation contract: TC-01 sharpened (asserts NO compat event fires post-removal); TC-02 sharpened (runbook exit criteria explicit)
+- Notes: all call sites enumerated via code audit; RoomDetailContent.tsx primary navigation surface noted as out-of-scope
 
 ### TASK-06: GA4 admin governance + reporting contract + ops handoff
 - **Type:** IMPLEMENT
@@ -751,6 +764,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-10A complete. SSR/no-JS + i18n leakage detection suite added in report-only mode. TC-01 (i18n placeholder audit): 0 findings — all 15 non-EN locales × 6 commercial namespaces clean. TC-02 (no-JS dead-end): correctly detects `BookPageContent.tsx` + `book/page.tsx` have no static Octorate fallback; warns in normal mode, hard-fails with `CONTENT_READINESS_MODE=fail`. TC-03 (locale regression): 36/36 pass. Gate switches to CI-blocking after TASK-10B remediation. TASK-07 now blocked only on TASK-03.
 - 2026-02-17: GA4 admin actions confirmed complete by Pete: cross-domain include list (`hostel-positano.com` + `brikette-website.pages.dev`) and referral exclusion (`book.octorate.com`) both applied. Runbook §8 updated to reflect completion.
 - 2026-02-17: TASK-07 checkpoint complete. All three horizon assumptions validated from code evidence. GA4 post-deploy data deferred to weekly review cadence. TASK-08 and TASK-10B unblocked; no replan needed.
+- 2026-02-17: TASK-05B replanned 78% → 82%. Two-tier cleanup policy made explicit: (1) `search_availability` compat removed in TASK-05B scope — no GA4 create-rule mapping, callers: BookingModal.tsx:94 + Booking2Modal.tsx:108; (2) `begin_checkout` compat retained until ≥30-day post-TASK-05A deploy exit criteria met — callers: ApartmentBookContent.tsx:69 + Booking2Modal.tsx:84; (3) dead helpers identified: `fireBeginCheckoutGeneric`, `fireBeginCheckoutGenericAndNavigate`, `fireBeginCheckoutRoomSelectedAndNavigate`. Out-of-scope: RoomDetailContent.tsx primary nav surface deferred to future phase. Task now at threshold (82% ≥ 80%) via E1 code audit.
 - 2026-02-17: TASK-03 complete. BookingModal (v1) normalized to same-tab handoff. `packages/ui` BookingModal.tsx: CTA prevents default when `onAction` is provided (beacon-driven nav). `BookingGlobalModal.tsx`: switched to `fireHandoffToEngineAndNavigate` with `same_tab`. All three primary booking surfaces (BookingModal, Booking2Modal, ApartmentBookContent) now emit `same_tab` for primary flow. TC-01/TC-04 automated; TC-05 deferred to post-deploy monitoring. TASK-07 checkpoint now unblocked (TASK-03 + TASK-10A both complete).
 
 ## Overall-confidence Calculation
@@ -761,20 +775,20 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - TASK-03: 82 * 2 = 164
   - TASK-04: 72 * 2 = 144
   - TASK-05A: 84 * 2 = 168
-  - TASK-05B: 78 * 1 = 78
+  - TASK-05B: 82 * 1 = 82
   - TASK-06: 84 * 2 = 168
   - TASK-07: 95 * 1 = 95
   - TASK-08: 70 * 2 = 140
   - TASK-09: 78 * 2 = 156
   - TASK-10A: 82 * 2 = 164
   - TASK-10B: 72 * 3 = 216
-- Total weighted score: 1748
+- Total weighted score: 1752
 - Total weight: 22
-- Overall-confidence (weighted): 1748 / 22 = 79.45% -> **79%**
+- Overall-confidence (weighted): 1752 / 22 = 79.63% -> **80%**
 - Remaining-work confidence (excluding completed TASK-02 and TASK-04):
-  - Remaining weighted score: 1432
+  - Remaining weighted score: 1436
   - Remaining weight: 18
-  - Remaining confidence: 1432 / 18 = 79.56% -> **80%**
+  - Remaining confidence: 1436 / 18 = 79.77% -> **80%**
 - Critical-path confidence (blocking realism):
   - Critical path: TASK-05A -> TASK-06 -> TASK-07 -> TASK-08 -> TASK-09
   - Min confidence on critical path: **70%**

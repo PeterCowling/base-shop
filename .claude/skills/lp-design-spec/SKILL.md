@@ -51,7 +51,7 @@ Creates or updates the brand language doc for a business unit without producing 
 | Source | Path | Purpose |
 |--------|------|---------|
 | Business registry | `docs/business-os/strategy/businesses.json` | Resolve app → business unit → theme package |
-| Brand language | `docs/business-os/strategy/<BIZ>/brand-language.user.md` | Per-business visual identity, tone, audience |
+| Brand language | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Per-business visual identity, tone, audience |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Concrete token values for the target app |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Default token system (overridden by theme) |
 | Design system handbook | `docs/design-system-handbook.md` | Component catalog, atomic design layers |
@@ -62,7 +62,7 @@ Creates or updates the brand language doc for a business unit without producing 
 ### App-to-Business Resolution
 
 Use `businesses.json` to resolve which business owns the target app, then locate:
-1. **Brand language doc**: `docs/business-os/strategy/<BIZ>/brand-language.user.md`
+1. **Brand language doc**: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
 2. **Theme package**: `packages/themes/<theme>/` (mapped from app name)
 3. **Strategy context**: `docs/business-os/strategy/<BIZ>/plan.user.md`
 
@@ -172,7 +172,7 @@ When creating a new brand language doc for a business:
    - Read existing theme tokens if a theme package exists.
    - Read the app's current UI (layout.tsx, key pages) for implicit brand choices.
 
-2. **Create** `docs/business-os/strategy/<BIZ>/brand-language.user.md` using the template from `.claude/skills/_shared/brand-language-template.md`.
+2. **Create** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` using the template from `.claude/skills/_shared/brand-language-template.md`.
 
 3. **Fill in what's known**, mark unknowns with `TBD — {what's needed to resolve}`.
 
@@ -202,7 +202,7 @@ Feature-Slug: {slug}
 Business-Unit: {BIZ}
 Target-App: {app-name}
 Theme-Package: {theme-package}
-Brand-Language: docs/business-os/strategy/{BIZ}/brand-language.user.md
+Brand-Language: docs/business-os/strategy/{BIZ}/brand-dossier.user.md
 Created: {DATE}
 ---
 
@@ -292,7 +292,7 @@ PageLayout
 
 ## Prerequisites for Plan
 
-- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/brand-language.user.md`
+- [ ] Brand language doc exists: `docs/business-os/strategy/{BIZ}/brand-dossier.user.md`
 - [ ] Theme package exists: `packages/themes/{theme}/`
 - [ ] All required tokens exist (see "New tokens required" above)
 - [ ] All reused components verified in component catalog
@@ -342,7 +342,7 @@ During build, the design spec serves as a reference:
 
 ### With Brand Language Docs
 
-**Reads from:** `docs/business-os/strategy/<BIZ>/brand-language.user.md`
+**Reads from:** `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
 **Writes back to:** Same file, when stable new patterns emerge (Step 8).
 
 This creates a virtuous cycle: each design spec strengthens the brand language, which makes future specs faster and more consistent.
@@ -368,7 +368,7 @@ This creates a virtuous cycle: each design spec strengthens the brand language, 
 
 ### Brand Bootstrap Complete
 
-> Brand language created: `docs/business-os/strategy/{BIZ}/brand-language.user.md`
+> Brand language created: `docs/business-os/strategy/{BIZ}/brand-dossier.user.md`
 >
 > **Status:** {N} sections complete, {M} marked TBD.
 > Review the doc and fill in TBD items before using it for design specs.

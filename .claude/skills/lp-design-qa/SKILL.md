@@ -27,7 +27,7 @@ Audit a built UI against the design spec, design system standards, and brand lan
 
 **Allowed:**
 - Read design spec (`docs/plans/<slug>-design-spec.md`)
-- Read brand language doc (`docs/business-os/strategy/<BIZ>/brand-language.user.md`)
+- Read brand language doc (`docs/business-os/strategy/<BIZ>/brand-dossier.user.md`)
 - Read built UI components (files from lp-build completion)
 - Read design system docs and token reference
 - Trace component tree and token bindings
@@ -77,7 +77,7 @@ Audit only specific categories. `--scope full` audits all categories (default).
 |--------|------|----------|
 | Design spec | `docs/plans/<slug>-design-spec.md` | Yes (for feature-level audit) |
 | Plan doc | `docs/plans/<slug>-plan.md` | Yes (for feature-level audit) |
-| Brand language | `docs/business-os/strategy/<BIZ>/brand-language.user.md` | Yes |
+| Brand language | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | Yes |
 | Built UI components | Paths from plan's completed tasks "Affects" lists | Yes |
 | Design system handbook | `docs/design-system-handbook.md` | Yes |
 | Token reference | `packages/themes/<theme>/src/tokens.ts` | Yes |

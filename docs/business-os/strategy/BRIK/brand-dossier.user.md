@@ -1,13 +1,18 @@
 ---
-Type: Brand-Language
+Type: Brand-Dossier
 Business-Unit: BRIK
 Business-Name: Brikette
 Status: Active
 Created: 2026-02-12
-Last-reviewed: 2026-02-12
+Last-reviewed: 2026-02-17
+Token-Source: packages/themes/prime/src/tokens.ts
 ---
 
-# Brikette — Brand Language
+# Brikette — Brand Dossier
+
+> Token values are not duplicated in this document. The single source of truth is
+> `packages/themes/prime/src/tokens.ts`. The Token Rationale section below records
+> *why* each token was chosen, not what value it holds.
 
 ## Audience
 
@@ -28,14 +33,14 @@ Last-reviewed: 2026-02-12
 
 ### Color Palette
 
-| Role | Token | HSL (light) | HSL (dark) | Rationale |
-|------|-------|-------------|------------|-----------|
-| Primary | `--color-primary` | `6 78% 57%` | `6 72% 68%` | Warm coral — Airbnb/Glossier aesthetic. Resonates with young female demographic. Replaced cold teal. |
-| Primary soft | `--color-primary-soft` | `6 65% 96%` | `6 60% 18%` | Tinted background for cards and highlights |
-| Primary hover | `--color-primary-hover` | `6 78% 52%` | `6 72% 74%` | Slightly darker for interaction feedback |
-| Primary active | `--color-primary-active` | `6 78% 47%` | `6 72% 78%` | Pressed state |
-| Accent | `--color-accent` | `36 85% 55%` | `36 80% 62%` | Warm gold — complementary to coral, avoids reading as warning |
-| Accent soft | `--color-accent-soft` | `36 80% 96%` | `36 65% 20%` | Tinted background |
+| Role | Token | Rationale |
+|------|-------|-----------|
+| Primary | `--color-primary` | Warm coral — Airbnb/Glossier aesthetic. Resonates with young female demographic. Replaced cold teal. |
+| Primary soft | `--color-primary-soft` | Tinted background for cards and highlights |
+| Primary hover | `--color-primary-hover` | Slightly darker for interaction feedback |
+| Primary active | `--color-primary-active` | Pressed state |
+| Accent | `--color-accent` | Warm gold — complementary to coral, avoids reading as warning |
+| Accent soft | `--color-accent-soft` | Tinted background |
 
 **Palette mood:** Warm, high-saturation, Mediterranean. Coral + gold evokes sunset tones — emotional, not utilitarian.
 
@@ -50,11 +55,30 @@ Last-reviewed: 2026-02-12
 
 ### Shape & Elevation
 
-| Property | Token | Value | Notes |
-|----------|-------|-------|-------|
-| Card radius | `--radius-md` | `0.5rem` | Softer than base (0.375rem) — friendlier feel |
-| Section radius | `--radius-lg` | `0.75rem` | Softer than base (0.5rem) |
-| Default shadow | `shadow-sm` | _(from base)_ | Light elevation. Cards use `shadow-sm`, modals use `shadow-lg`. |
+| Property | Token | Rationale |
+|----------|-------|-----------|
+| Card radius | `--radius-md` | Softer than base — friendlier feel |
+| Section radius | `--radius-lg` | Softer than base |
+| Default shadow | `shadow-sm` | Light elevation. Cards use `shadow-sm`, modals use `shadow-lg`. |
+
+### Token Rationale
+
+> Reference `packages/themes/prime/src/tokens.ts` for actual values. This section records the
+> design reasoning so token changes are intentional, not accidental.
+
+| Token | Design rationale |
+|-------|-----------------|
+| `--color-primary` | Warm coral chosen for Airbnb/Glossier aesthetic affinity with 18-25 female demographic |
+| `--color-primary-fg` | White text ensures WCAG AA contrast on coral background |
+| `--color-primary-soft` | Low-saturation tint for card backgrounds without visual noise |
+| `--color-primary-hover` | Slightly darker coral for clear interactive feedback |
+| `--color-primary-active` | Pressed state — darker still, clearly distinct from hover |
+| `--color-accent` | Warm gold is complementary to coral on the color wheel; avoids danger/warning reading |
+| `--color-accent-fg` | Dark text on gold background for WCAG contrast |
+| `--color-accent-soft` | Tinted accent background (same logic as primary-soft) |
+| `--font-sans` | Plus Jakarta Sans chosen for: geometric warmth, high x-height on mobile, approachable feel |
+| `--radius-md` | Slightly larger than base to feel friendlier, not sharper/corporate |
+| `--radius-lg` | Same philosophy as radius-md at section level |
 
 ### Imagery Direction
 
@@ -84,28 +108,6 @@ Last-reviewed: 2026-02-12
 - "Click" — they're tapping on mobile
 - "Dashboard" — too corporate for guest-facing UI
 
-## Token Overrides
-
-Theme package: `packages/themes/prime/src/tokens.ts` (Prime guest portal)
-
-**Tokens that differ from base:**
-
-| Token | Base Value | Prime Override | Reason |
-|-------|-----------|----------------|--------|
-| `--color-primary` | `210 60% 45%` (blue) | `6 78% 57%` (coral) | Warm lifestyle palette |
-| `--color-primary-fg` | _(base)_ | `0 0% 100%` | White text on coral |
-| `--color-primary-soft` | _(base)_ | `6 65% 96%` | Tinted card backgrounds |
-| `--color-primary-hover` | _(base)_ | `6 78% 52%` | Interaction state |
-| `--color-primary-active` | _(base)_ | `6 78% 47%` | Pressed state |
-| `--color-accent` | _(base)_ | `36 85% 55%` (gold) | Complementary warm accent |
-| `--color-accent-fg` | _(base)_ | `0 0% 10%` | Dark text on gold |
-| `--color-accent-soft` | _(base)_ | `36 80% 96%` | Tinted background |
-| `--font-sans` | system/Geist | Plus Jakarta Sans | Friendly geometric |
-| `--radius-md` | `0.375rem` | `0.5rem` | Softer corners |
-| `--radius-lg` | `0.5rem` | `0.75rem` | Softer corners |
-
-**Brikette marketing site** uses base theme (no overrides yet). TBD — whether marketing site adopts Prime's warm palette or maintains neutral base.
-
 ## Signature Patterns
 
 ### Gradient Cards
@@ -134,8 +136,17 @@ _More patterns will be added as `/lp-design-spec` identifies them during feature
 ## References
 
 - Business strategy: `docs/business-os/strategy/BRIK/plan.user.md`
-- Prime theme tokens: `packages/themes/prime/src/tokens.ts`
+- Strategy index (artifact status): `docs/business-os/strategy/BRIK/index.user.md`
+- Prime theme tokens (source of truth): `packages/themes/prime/src/tokens.ts`
 - Base theme tokens: `packages/themes/base/src/tokens.ts`
 - Design refresh fact-find: `docs/plans/prime-design-refresh-fact-find.md`
 - Design refresh plan: `docs/plans/prime-design-refresh-plan.md`
 - Design system handbook: `docs/design-system-handbook.md`
+
+## Proof Ledger
+
+| Claim | Evidence | Source | Confidence |
+|-------|----------|--------|------------|
+| 99% female, primarily 18-25 | Booking platform demographic data | Octorate/manual review | Medium |
+| Coral resonates with target demographic | Airbnb/Glossier brand affinity | Design rationale + market research | Medium |
+| Plus Jakarta Sans outperforms Geist Sans for guest-facing legibility | UX decision at design refresh | Prime design refresh fact-find | Medium |

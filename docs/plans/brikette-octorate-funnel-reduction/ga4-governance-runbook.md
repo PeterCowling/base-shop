@@ -228,8 +228,8 @@ These GA4 admin changes are documented here but not yet applied. They must be co
 
 | Action | Owner | Status |
 |---|---|---|
-| Add `hostel-positano.com` + `brikette-website.pages.dev` to cross-domain include list | Pete | Pending |
-| Add `book.octorate.com` to unwanted referrals (referral exclusions) | Pete | Pending |
+| Add `hostel-positano.com` + `brikette-website.pages.dev` to cross-domain include list | Pete | **Complete (2026-02-17)** |
+| Add `book.octorate.com` to unwanted referrals (referral exclusions) | Pete | **Complete (2026-02-17)** |
 | Define internal traffic filter (IP/hostname) for Pete's own sessions | Pete | Pending |
 | Confirm `handoff_to_engine` conversion designation policy after TASK-05B | Pete | Pending — depends on TASK-05B |
 | Remove or archive `begin_checkout → handoff_to_engine` create rule after native emission confirmed stable | Pete | Pending — depends on operational window post-TASK-05A |
@@ -243,6 +243,8 @@ These GA4 admin changes are documented here but not yet applied. They must be co
 | 2026-02-17 | GA4 Admin API snapshot: property, stream, key events, conversion events | fact-find §Data & Contracts |
 | 2026-02-17 | Event create rules added: `begin_checkout → handoff_to_engine`, `search_availability → handoff_to_engine` | fact-find §External Data Access Checks |
 | 2026-02-17 | Custom dimensions created for handoff event params | fact-find §External Data Access Checks |
+| 2026-02-17 | Cross-domain linking configured: `hostel-positano.com` + `brikette-website.pages.dev` added | Pete (GA4 Admin) |
+| 2026-02-17 | Referral exclusion added: `book.octorate.com` in unwanted referrals | Pete (GA4 Admin) |
 | 2026-02-17 | Calibration attempt: GA4 handoff events = 0 despite Octorate bookings = 31 | fact-find §Calibration attempt |
 | 2026-02-17 | TASK-05A: native `handoff_to_engine` emission added to BookingModal, Booking2Modal, ApartmentBookContent | plan.md TASK-05A build evidence |
 | 2026-02-17 | TASK-01: Pete confirmed as owner of all three lanes; weekly Monday morning cadence | plan.md Decision Log |

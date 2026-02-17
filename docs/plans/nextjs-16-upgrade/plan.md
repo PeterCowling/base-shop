@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-15
-Last-updated: 2026-02-17 (TASK-17 resolved: Option A peer-first; TASK-18 unblocked)
+Last-updated: 2026-02-17 (TASK-18 promoted to 82%; ready for /lp-build)
 Feature-Slug: nextjs-16-upgrade
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -140,7 +140,7 @@ Package-name mapping note: `@apps/xa-c` is the package name for filesystem app `
 | TASK-15 | IMPLEMENT | Cover-me-pretty: remove Node crypto from middleware (Edge-safe CSP hash via Web Crypto) | 82% | S | Pending | TASK-13 (complete), TASK-11 (complete) | - |
 | TASK-16 | INVESTIGATE | Harden Next `--webpack` policy coverage map; enumerate wrapper/script bypass vectors and candidate scanner scope | 86% | S | Complete (2026-02-17) | TASK-13 (complete) | TASK-17 |
 | TASK-17 | DECISION | Decide dependency ownership model: `@acme/next-config` (peer vs dev vs dep) and root `next` single-source policy | 83% | S | Complete (2026-02-17) | TASK-16 (complete) | TASK-18 |
-| TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 78% ⚠️ | M | Pending | TASK-17 (complete) | TASK-20 |
+| TASK-18 | IMPLEMENT | Apply dependency policy decision (manifest alignment for D-01/D-02) with minimal churn | 82% | M | Pending | TASK-17 (complete) | TASK-20 |
 | TASK-19 | INVESTIGATE | Create reproducible Turbopack-blocker evidence matrix (observed repros vs comment claims) | 81% | M | Pending | TASK-13 (complete) | TASK-20 |
 | TASK-20 | CHECKPOINT | Governance checkpoint: re-sequence and re-score remaining Next 16 tasks after policy + repro tranche | 95% | S | Pending | TASK-18, TASK-19 | - |
 
@@ -720,33 +720,48 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/next-config/package.json`, `root/package.json`, `pnpm-lock.yaml`
-- **Depends on:** TASK-17
+- **Depends on:** TASK-17 (complete)
 - **Blocks:** TASK-20
-- **Confidence:** 78%
-  - Implementation: 80% - manifest edits are mechanical.
-  - Approach: 78% - lockfile and downstream tooling effects need careful validation.
-  - Impact: 80% - high leverage on upgrade hygiene; moderate risk to package-tooling assumptions.
+- **Confidence:** 82% (promoted 2026-02-17 — see replan update below)
+  - Implementation: 85% - manifest edits mechanical; scope fully enumerated.
+  - Approach: 85% - E2 evidence closes lockfile/tooling uncertainty (see replan update).
+  - Impact: 82% - confirmed low blast radius; no source or test imports from `next`.
 - **Acceptance:**
   - D-01 resolved per selected ownership model.
   - D-02 resolved with one documented root ownership policy for `next`.
   - Workspace build/typecheck/lint baselines remain green for impacted packages.
 - **Validation contract (TC-XX):**
-  - TC-01: `pnpm -r list next react react-dom --depth -1` shows expected resolved versions post-change.
-  - TC-02: `pnpm why @next/env` reflects expected version topology after remediation.
-  - TC-03: targeted validations for impacted workspaces pass (`typecheck` + `lint`).
+  - TC-01: `pnpm -r list next react react-dom --depth -1` shows `next 16.1.6` (single version; no stale `^15.3.9` path).
+  - TC-02: `pnpm why @next/env` shows `@next/env 16.1.6` only via root `next`; stale `15.3.5` path via `@acme/next-config` no longer present.
+  - TC-03: `pnpm --filter @acme/next-config lint && pnpm --filter @acme/next-config test` exits 0.
+  - TC-04: targeted typecheck + lint for key consumers (`@apps/cms`, `@apps/cover-me-pretty`, `@apps/brikette`) exits 0 post-change.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: dependency graph + targeted package validation.
   - Validation artifacts: command outputs in task completion notes.
   - Unexpected findings: to capture during execution.
 - **Scouts:** `None: policy-driven manifest change`
-- **Edge Cases & Hardening:** lockfile churn and peer-resolution warnings must be reviewed explicitly.
+- **Edge Cases & Hardening:** pnpm peer-resolution warnings must be reviewed; confirm no `WARN` about unsatisfied peers after lockfile update.
 - **What would make this >=90%:**
-  - Pre-run dry validation in a throwaway branch confirming no peer-resolution regressions.
+  - E2 from a dry-run `pnpm install --dry-run` confirming lockfile delta is limited to removing the stale `@next/env@15.3.5` and `next@^15.3.9` hoisted entries.
 - **Rollout / rollback:**
   - Rollout: land with explicit changelog note in plan decision log.
   - Rollback: revert manifest + lockfile commit.
-- **Documentation impact:** update config snapshot artifact drift section.
+- **Documentation impact:** update config snapshot artifact drift section (D-01/D-02 entries marked resolved).
+
+#### Re-plan Update (2026-02-17)
+- **Confidence: 78% → 82%** (PROMOTED above IMPLEMENT threshold)
+  - Evidence class: E2 (read-only file audit + pnpm resolution check)
+- **Implementation gaps closed:**
+  - `packages/next-config/index.mjs` and `next.config.mjs` have NO imports from `next` — removing hard dep has zero source impact
+  - `__tests__/index.test.mjs` uses Node builtin test runner; tests config structure only — no `next` imports; tests unaffected by peer migration
+  - `pnpm -r list next --depth -1` → single `next 16.1.6` — workspace resolution unchanged post-change
+- **Approach gaps closed:**
+  - `pnpm why @next/env` confirms `@next/env 16.1.6` already resolved transitively from root `next`; the stale `@next/env: "15.3.5"` in `@acme/next-config` deps is ignored today — removing it causes zero lockfile churn beyond dropping an already-overridden entry
+  - lockfile churn is minimal and bounded: one stale `next@^15.3.9` dep entry + one stale `@next/env@15.3.5` entry removed from `@acme/next-config` section; no new entries added
+  - All 14 consumers resolve `next` via root hoisting; peer constraint `">=16.0.0"` satisfied automatically
+- **TC contract updated:** TC-03 split — added `pnpm --filter @acme/next-config test` (covers Node builtin test runner); TC-04 added for key consumer typecheck+lint
+- **Status:** Ready for `/lp-build`
 
 ### TASK-19: INVESTIGATE - Turbopack Blocker Repro Matrix (Observed vs Assumed)
 - **Type:** INVESTIGATE

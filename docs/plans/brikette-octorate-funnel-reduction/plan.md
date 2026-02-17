@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI | SEO | Analytics | Integration
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-05A complete)
+Last-updated: 2026-02-17 (TASK-10A complete)
 Last-reviewed: 2026-02-17
 Feature-Slug: brikette-octorate-funnel-reduction
 Deliverable-Type: multi-deliverable
@@ -610,7 +610,7 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-17)
 - **Affects:** `apps/brikette/src/test/*book*`, `apps/brikette/src/test/content-readiness/i18n/*.test.ts`, `apps/brikette/src/test/middleware.test.ts`, `docs/plans/brikette-octorate-funnel-reduction/fact-find.md`
 - **Depends on:** -
 - **Blocks:** TASK-07, TASK-10B
@@ -634,6 +634,14 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
   - Rollout: enable report-only gate before checkpoint.
   - Rollback: none; detection visibility remains mandatory.
 - **Documentation impact:** update quality gate references in plan/fact-find.
+- **Build evidence (2026-02-17):**
+  - New test file: `apps/brikette/src/test/content-readiness/i18n/commercial-routes-ssr-audit.test.ts`
+  - TC-01 (i18n placeholder audit): 0 findings in commercial route namespaces across all locales — all 15 non-EN locales × 6 namespaces scanned. PASS.
+  - TC-02 (no-JS dead-end detection): detected `BookPageContent.tsx` and `book/page.tsx` have no static Octorate link — warns in report-only mode; hard-fails with `CONTENT_READINESS_MODE=fail`. Detection confirmed working. PASS (report-only).
+  - TC-03 (locale regression): 36/36 locale coverage assertions pass (bookPage.json + modals.json across 14 non-EN locales). Brikette middleware test green. PASS.
+  - `jest.setup.ts`: added `/\[WARN\] \[TASK-10A/` to `IGNORED_WARN_PATTERNS` (consistent with existing content readiness pattern).
+  - Gate mode: report-only. Escalation to CI-blocking deferred to TASK-10B.
+  - GA4 governance runbook §8 updated: cross-domain linking and `book.octorate.com` referral exclusion marked Complete (2026-02-17) per Pete.
 
 ### TASK-10B: SSR/no-JS remediation for booking landers + i18n leakage fixes
 - **Type:** IMPLEMENT
@@ -717,6 +725,8 @@ The plan includes SSR/no-JS hardening guardrails for commercial booking routes s
 - 2026-02-17: TASK-06 complete. GA4 governance runbook written at `docs/plans/brikette-octorate-funnel-reduction/ga4-governance-runbook.md`. Pete confirmed VC-01 sign-off in session (analytics owner per TASK-01). VC-02 operational evidence deferred to first Monday review post-TASK-05A production deployment. Pending admin actions documented in runbook §8 (cross-domain linking, referral exclusion for `book.octorate.com`, internal traffic filter). TASK-07 now blocked only on TASK-03 and TASK-10A.
 - 2026-02-17: TASK-01 decision closed. Option B adopted: Pete owns all three lanes (analytics/admin, engineering, ops reconciliation). Weekly cadence: Monday morning. Evidence destination: plan Decision Log + reconciliation memo artifacts. TASK-06 unblocked.
 - 2026-02-17: TASK-05A complete. Native `handoff_to_engine` emission added across BookingModal (new_tab), Booking2Modal (same_tab/confirm + same_tab/result), and ApartmentBookContent (same_tab/result). `fireHandoffToEngineAndNavigate` with beacon is the primary navigation driver in Booking2Modal; `fireHandoffToEngine` with beacon-transport flag is used where navigation is owned externally. Compat `begin_checkout`/`search_availability` fires retained without beacon during migration window. TC-01/TC-02 automated; TC-03/TC-04 deferred to post-deploy.
+- 2026-02-17: TASK-10A complete. SSR/no-JS + i18n leakage detection suite added in report-only mode. TC-01 (i18n placeholder audit): 0 findings — all 15 non-EN locales × 6 commercial namespaces clean. TC-02 (no-JS dead-end): correctly detects `BookPageContent.tsx` + `book/page.tsx` have no static Octorate fallback; warns in normal mode, hard-fails with `CONTENT_READINESS_MODE=fail`. TC-03 (locale regression): 36/36 pass. Gate switches to CI-blocking after TASK-10B remediation. TASK-07 now blocked only on TASK-03.
+- 2026-02-17: GA4 admin actions confirmed complete by Pete: cross-domain include list (`hostel-positano.com` + `brikette-website.pages.dev`) and referral exclusion (`book.octorate.com`) both applied. Runbook §8 updated to reflect completion.
 
 ## Overall-confidence Calculation
 - Effort weights: S=1, M=2, L=3

@@ -346,6 +346,8 @@ const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   /ALLOW_EN_FALLBACKS=1 set; found \d+ English strings/,
   /\[WARN\] i18n parity\/quality issues found/,
   /\[WARN\] Guide content parity\/quality issues found/,
+  // TASK-10A: commercial route SSR/no-JS audit warnings (report-only gate, pre-TASK-10B)
+  /\[WARN\] \[TASK-10A/,
   // Funnel metrics extractor expected warnings (BL-02)
   /\[extractFunnelMetrics\] Failed to read/,
   /\[guide-manifest-overrides\] Malformed JSON, using empty defaults/,

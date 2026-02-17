@@ -126,7 +126,7 @@ All 7 affected files updated in one task. docs/registry.json entry updated.
 | TASK-07 | IMPLEMENT | Create 5 Deep Research prompt templates (BRAND-DR-01..05) | 85% | M | Complete (2026-02-17) | TASK-05 | - |
 | TASK-08 | IMPLEMENT | Create index.user.md template for strategy dir | 92% | S | Complete (2026-02-17) | TASK-05 | TASK-17,18,19 |
 | TASK-09 | IMPLEMENT | Rename BRIK brand-language → brand-dossier; update all 7 skill/doc refs; fix token mirroring | 84% | L | Complete (2026-02-17) | TASK-05 | TASK-10,12,13,14,15,16,17,18,19 |
-| TASK-10 | IMPLEMENT | Create prime-app-design-branding.user.md for BRIK (extract from §11.1, fix path) | 88% | S | Pending | TASK-09 | TASK-13 |
+| TASK-10 | IMPLEMENT | Create prime-app-design-branding.user.md for BRIK (extract from §11.1, fix path) | 88% | S | Complete (2026-02-17) | TASK-09 | TASK-13 |
 | TASK-11 | IMPLEMENT | Update loop-spec.yaml: BD-3 sub-deliverable comment; version note | 88% | S | Complete (2026-02-17) | TASK-05 | TASK-12 |
 | TASK-12 | IMPLEMENT | Update startup-loop SKILL.md: add GATE-BD-01 + GATE-BD-03 + GATE-BD-08 advance rules | 85% | S | Pending | TASK-09,11 | TASK-13 |
 | TASK-13 | IMPLEMENT | Surgery on startup-loop-workflow.user.md: §4 BD-1..6 table, §11 retirement, §12 refresh | 82% | M | Pending | TASK-10,12 | - |

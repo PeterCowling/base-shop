@@ -46,7 +46,7 @@ describe("ProductCard media", () => {
   });
 
   it("renders an Image for image media", () => {
-    const sku = { ...baseSku, media: [{ type: "image", url: "/img.jpg" }] };
+    const sku = { ...baseSku, media: [{ type: "image" as const, url: "/img.jpg" }] };
     render(<ProductCard sku={sku} />);
     // The next/image mock renders <input type="image"> (role="button") to avoid DS lint issues
     expect(screen.getByRole("button", { name: baseSku.title })).toBeInTheDocument();
@@ -54,7 +54,7 @@ describe("ProductCard media", () => {
   });
 
   it("renders a video element for video media", () => {
-    const sku = { ...baseSku, media: [{ type: "video", url: "/vid.mp4" }] };
+    const sku = { ...baseSku, media: [{ type: "video" as const, url: "/vid.mp4" }] };
     const { container } = render(<ProductCard sku={sku} />);
     expect(container.querySelector("video")).toBeInTheDocument();
     expect(screen.queryByRole("img")).toBeNull();

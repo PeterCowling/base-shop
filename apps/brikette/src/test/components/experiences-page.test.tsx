@@ -1,10 +1,22 @@
 import "@testing-library/jest-dom";
 
+import React from "react";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "@tests/renderers";
 
 import ExperiencesPageContent from "@/app/[lang]/experiences/ExperiencesPageContent";
+
+// next/link: strip Next-specific props that are invalid as DOM attributes.
+jest.mock("next/link", () => {
+  const LinkMock = React.forwardRef(function LinkPassthrough(
+    { children, href, prefetch: _p, scroll: _s, replace: _r, ...rest }: any,
+    ref: any,
+  ) {
+    return React.createElement("a", { href, ref, ...rest }, children);
+  });
+  return { __esModule: true, default: LinkMock };
+});
 
 const openModalSpy = jest.fn();
 
@@ -19,11 +31,13 @@ jest.mock("@/context/ModalContext", () => ({
 
 let searchParams = new URLSearchParams("");
 let pathname = "/en/experiences";
+let mockPush: jest.Mock;
 
 jest.mock("next/navigation", () => ({
   useSearchParams: () => searchParams,
   usePathname: () => pathname,
   useParams: () => ({ lang: "en" }),
+  useRouter: () => ({ push: mockPush }),
 }));
 
 jest.mock("@/data/guides.index", () => ({
@@ -189,6 +203,7 @@ jest.mock("react-i18next", () => ({
 describe("<ExperiencesPageContent />", () => {
   beforeEach(() => {
     openModalSpy.mockClear();
+    mockPush = jest.fn();
     searchParams = new URLSearchParams("");
     pathname = "/en/experiences";
   });
@@ -202,7 +217,7 @@ describe("<ExperiencesPageContent />", () => {
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /book now/i }));
-    expect(openModalSpy).toHaveBeenCalledWith("booking");
+    expect(mockPush).toHaveBeenCalledWith("/en/book");
 
     await user.click(screen.getByRole("button", { name: /chat with the concierge/i }));
     expect(openModalSpy).toHaveBeenCalledWith("contact");

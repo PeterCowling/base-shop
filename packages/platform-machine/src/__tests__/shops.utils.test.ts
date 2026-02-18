@@ -35,7 +35,7 @@ describe("getShopSettings", () => {
   it("returns defaults when settings file missing", async () => {
     readFileSpy.mockRejectedValueOnce(new Error("missing"));
     const settings = await getShopSettings("shop");
-    expect(settings.depositService.intervalMinutes).toBe(60);
+    expect(settings.depositService!.intervalMinutes).toBe(60);
     expect(settings.currency).toBe("EUR");
   });
 

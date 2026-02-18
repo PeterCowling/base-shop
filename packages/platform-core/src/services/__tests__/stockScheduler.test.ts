@@ -1,8 +1,8 @@
 import { jest } from "@jest/globals";
 
-import type { InventoryItem } from "../types/inventory";
+import type { InventoryItem } from "../../types/inventory";
 
-const checkAndAlert = jest.fn().mockResolvedValue([]);
+const checkAndAlert = (jest.fn() as any).mockResolvedValue([]);
 
 jest.mock("../stockAlert.server", () => ({
   checkAndAlert,
@@ -21,16 +21,16 @@ describe("scheduleStockChecks", () => {
   it(
     "runs checkAndAlert on the specified interval",
     async () => {
-      const getItems = jest.fn().mockResolvedValue([{ sku: "s" } as any]);
+      const getItems = (jest.fn() as any).mockResolvedValue([{ sku: "s" } as any]);
       const { scheduleStockChecks } = await import("../stockScheduler.server");
 
       scheduleStockChecks("shop", getItems, 1000);
 
-      await jest.advanceTimersByTimeAsync(1000);
+      await (jest as any).advanceTimersByTimeAsync(1000);
       expect(getItems).toHaveBeenCalledTimes(1);
       expect(checkAndAlert).toHaveBeenCalledWith("shop", [{ sku: "s" }]);
 
-      await jest.advanceTimersByTimeAsync(1000);
+      await (jest as any).advanceTimersByTimeAsync(1000);
       expect(getItems).toHaveBeenCalledTimes(2);
     },
     10_000,
@@ -38,14 +38,14 @@ describe("scheduleStockChecks", () => {
 
   it("logs errors from checkAndAlert", async () => {
     const err = new Error("boom");
-    const getItems = jest.fn().mockResolvedValue([]);
+    const getItems = (jest.fn() as any).mockResolvedValue([]);
     checkAndAlert.mockRejectedValueOnce(err);
     const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
     const { scheduleStockChecks } = await import("../stockScheduler.server");
 
     scheduleStockChecks("shop", getItems, 1000);
 
-    await jest.advanceTimersByTimeAsync(1000);
+    await (jest as any).advanceTimersByTimeAsync(1000);
     expect(consoleError).toHaveBeenCalledWith(
       "Scheduled stock check failed",
       err,
@@ -55,15 +55,15 @@ describe("scheduleStockChecks", () => {
 
   it("continues scheduling after failures", async () => {
     const err = new Error("boom");
-    const getItems = jest.fn().mockResolvedValue([]);
+    const getItems = (jest.fn() as any).mockResolvedValue([]);
     checkAndAlert.mockRejectedValueOnce(err);
     const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
     const { scheduleStockChecks } = await import("../stockScheduler.server");
 
     scheduleStockChecks("shop", getItems, 1000);
 
-    await jest.advanceTimersByTimeAsync(1000);
-    await jest.advanceTimersByTimeAsync(1000);
+    await (jest as any).advanceTimersByTimeAsync(1000);
+    await (jest as any).advanceTimersByTimeAsync(1000);
     expect(checkAndAlert).toHaveBeenCalledTimes(2);
     expect(consoleError).toHaveBeenCalledWith(
       "Scheduled stock check failed",
@@ -73,13 +73,13 @@ describe("scheduleStockChecks", () => {
   });
 
   it("does not accumulate timers over long periods", async () => {
-    const getItems = jest.fn().mockResolvedValue([]);
+    const getItems = (jest.fn() as any).mockResolvedValue([]);
     const { scheduleStockChecks } = await import("../stockScheduler.server");
 
     scheduleStockChecks("shop", getItems, 60 * 60 * 1000); // hourly
 
     for (let i = 1; i <= 24; i++) {
-      await jest.advanceTimersByTimeAsync(60 * 60 * 1000);
+      await (jest as any).advanceTimersByTimeAsync(60 * 60 * 1000);
       expect(getItems).toHaveBeenCalledTimes(i);
       expect(checkAndAlert).toHaveBeenCalledTimes(i);
       expect(jest.getTimerCount()).toBe(1);
@@ -87,13 +87,13 @@ describe("scheduleStockChecks", () => {
   });
 
   it("tracks last run and history", async () => {
-    const getItems = jest.fn().mockResolvedValue([]);
+    const getItems = (jest.fn() as any).mockResolvedValue([]);
     const { scheduleStockChecks, getStockCheckStatus } = await import(
       "../stockScheduler.server"
     );
 
     scheduleStockChecks("shop", getItems, 1000);
-    await jest.advanceTimersByTimeAsync(1000);
+    await (jest as any).advanceTimersByTimeAsync(1000);
 
     const status = getStockCheckStatus("shop");
     expect(status?.intervalMs).toBe(1000);
@@ -108,15 +108,14 @@ describe("scheduleStockChecks", () => {
     );
 
     let resolveFirstItems: ((items: InventoryItem[]) => void) | undefined;
-    const slowGetItems = jest
-      .fn()
+    const slowGetItems = (jest.fn() as any)
       .mockImplementation(
         () =>
           new Promise<InventoryItem[]>((resolve) => {
             resolveFirstItems = resolve;
           }),
       );
-    const fastGetItems = jest.fn().mockResolvedValue([]);
+    const fastGetItems = (jest.fn() as any).mockResolvedValue([]);
 
     scheduleStockChecks("shop", slowGetItems, 100);
     jest.advanceTimersByTime(100); // kick off the first run without waiting for completion
@@ -127,7 +126,7 @@ describe("scheduleStockChecks", () => {
     await Promise.resolve();
     await Promise.resolve();
 
-    await jest.advanceTimersByTimeAsync(100);
+    await (jest as any).advanceTimersByTimeAsync(100);
 
     const status = getStockCheckStatus("shop");
     expect(slowGetItems).toHaveBeenCalledTimes(1);

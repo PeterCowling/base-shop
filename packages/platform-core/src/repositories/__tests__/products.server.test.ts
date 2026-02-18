@@ -19,7 +19,7 @@ describe("products repository", () => {
   });
 
   it("readRepo returns empty array on JSON parse error", async () => {
-    const readFile = jest.fn().mockResolvedValue("not json");
+    const readFile = (jest.fn() as any).mockResolvedValue("not json");
     jest.doMock("fs", () => ({ promises: { readFile } }));
     const { readRepo } = await import("../products.server");
     await expect(readRepo(shop)).resolves.toEqual([]);
@@ -57,8 +57,7 @@ describe("products repository", () => {
 
   describe("getProductById", () => {
     it("returns product when found", async () => {
-      const readFile = jest
-        .fn()
+      const readFile = (jest.fn() as any)
         .mockResolvedValue('[{"id":"1","row_version":1}]');
       jest.doMock("fs", () => ({ promises: { readFile } }));
       const { getProductById } = await import("../products.server");
@@ -69,7 +68,7 @@ describe("products repository", () => {
     });
 
     it("returns null when product is missing", async () => {
-      const readFile = jest.fn().mockResolvedValue("[]");
+      const readFile = (jest.fn() as any).mockResolvedValue("[]");
       jest.doMock("fs", () => ({ promises: { readFile } }));
       const { getProductById } = await import("../products.server");
       await expect(getProductById(shop, "2")).resolves.toBeNull();
@@ -78,24 +77,23 @@ describe("products repository", () => {
 
   describe("updateProductInRepo", () => {
     it("updates product and increments row_version", async () => {
-      const readFile = jest
-        .fn()
+      const readFile = (jest.fn() as any)
         .mockResolvedValue('[{"id":"1","row_version":1,"name":"old"}]');
       const writeFile = jest.fn();
       const mkdir = jest.fn();
       const rename = jest.fn();
       jest.doMock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
       const { updateProductInRepo } = await import("../products.server");
-      const result = await updateProductInRepo(shop, { id: "1", name: "new" });
+      const result = await updateProductInRepo(shop, { id: "1", name: "new" } as any);
       expect(result).toEqual({ id: "1", row_version: 2, name: "new" });
-      const written = JSON.parse(writeFile.mock.calls[0][1]);
+      const written = JSON.parse(writeFile.mock.calls[0][1] as string);
       expect(written[0]).toEqual(result);
       expect(readFile).toHaveBeenCalled();
       expect(writeFile).toHaveBeenCalled();
     });
 
     it("throws when id not found", async () => {
-      const readFile = jest.fn().mockResolvedValue("[]");
+      const readFile = (jest.fn() as any).mockResolvedValue("[]");
       const writeFile = jest.fn();
       const mkdir = jest.fn();
       const rename = jest.fn();
@@ -109,7 +107,7 @@ describe("products repository", () => {
   });
 
   it("deleteProductFromRepo throws when product absent", async () => {
-    const readFile = jest.fn().mockResolvedValue('[{"id":"1"}]');
+    const readFile = (jest.fn() as any).mockResolvedValue('[{"id":"1"}]');
     const writeFile = jest.fn();
     const mkdir = jest.fn();
     const rename = jest.fn();
@@ -122,14 +120,14 @@ describe("products repository", () => {
   });
 
   it("deleteProductFromRepo removes product when present", async () => {
-    const readFile = jest.fn().mockResolvedValue('[{"id":"1"},{"id":"2"}]');
+    const readFile = (jest.fn() as any).mockResolvedValue('[{"id":"1"},{"id":"2"}]');
     const writeFile = jest.fn();
     const mkdir = jest.fn();
     const rename = jest.fn();
     jest.doMock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
     const { deleteProductFromRepo } = await import("../products.server");
     await expect(deleteProductFromRepo(shop, "1")).resolves.toBeUndefined();
-    const written = JSON.parse(writeFile.mock.calls[0][1]);
+    const written = JSON.parse(writeFile.mock.calls[0][1] as string);
     expect(written).toEqual([{ id: "2" }]);
   });
 
@@ -143,7 +141,7 @@ describe("products repository", () => {
         created_at: "old",
         updated_at: "old",
       };
-      const readFile = jest.fn().mockResolvedValue(JSON.stringify([product]));
+      const readFile = (jest.fn() as any).mockResolvedValue(JSON.stringify([product]));
       const writeFile = jest.fn();
       const mkdir = jest.fn();
       const rename = jest.fn();
@@ -160,13 +158,13 @@ describe("products repository", () => {
         created_at: "2020-01-01T00:00:00Z",
         updated_at: "2020-01-01T00:00:00Z",
       });
-      const written = JSON.parse(writeFile.mock.calls[0][1]);
+      const written = JSON.parse(writeFile.mock.calls[0][1] as string);
       expect(written[0]).toEqual(copy);
       expect(written[1]).toEqual(product);
     });
 
     it("throws when original missing", async () => {
-      const readFile = jest.fn().mockResolvedValue("[]");
+      const readFile = (jest.fn() as any).mockResolvedValue("[]");
       const writeFile = jest.fn();
       const mkdir = jest.fn();
       const rename = jest.fn();

@@ -14,7 +14,7 @@ describe("redisHelpers", () => {
       () => Promise.resolve(1),
       () => Promise.resolve(undefined),
     ];
-    const fb = jest.fn(async () => "fallback");
+    const fb = (jest.fn() as any).mockImplementation(async () => "fallback");
     const res = await withFallback(ops, fb);
     expect(res).toBe("fallback");
     expect(fb).toHaveBeenCalled();
@@ -22,15 +22,14 @@ describe("redisHelpers", () => {
 
   it("withFallback skips fallback when all operations succeed", async () => {
     const ops = [() => Promise.resolve(1)];
-    const fb = jest.fn();
+    const fb = jest.fn() as any;
     await withFallback(ops, fb);
     expect(fb).not.toHaveBeenCalled();
   });
 
   it("expireBoth expires both keys and reports failure", async () => {
     const client = {
-      expire: jest
-        .fn()
+      expire: (jest.fn() as any)
         .mockResolvedValueOnce(1)
         .mockRejectedValueOnce(new Error("fail")),
     } as any;

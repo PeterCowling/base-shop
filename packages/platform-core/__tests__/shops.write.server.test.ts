@@ -42,7 +42,7 @@ describe("writeShop", () => {
       const result = await writeShop("test", {
         id: "test",
         themeDefaults: { accent: "red" },
-        themeOverrides: { accent: "red", extra: "green", drop: null },
+        themeOverrides: { accent: "red", extra: "green", drop: null as any },
       });
       expect(result.themeDefaults).toEqual({ accent: "red" });
       expect(result.themeOverrides).toEqual({ extra: "green" });

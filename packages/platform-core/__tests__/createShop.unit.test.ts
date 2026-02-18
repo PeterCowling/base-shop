@@ -47,7 +47,7 @@ describe('createShop', () => {
       'myshop',
       'shop.json'
     );
-    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const data = JSON.parse(fs.readFileSync(file, 'utf8') as string);
     expect(data.themeDefaults).toEqual({ primary: 'red', secondary: 'green' });
     expect(data.themeOverrides).toEqual({ secondary: 'blue' });
     expect(data.themeTokens).toEqual({ primary: 'red', secondary: 'blue' });
@@ -68,7 +68,7 @@ describe('createShop', () => {
       { deploy: false }
     );
     expect(prismaMock.page.createMany).toHaveBeenCalledTimes(1);
-    const call = prismaMock.page.createMany.mock.calls[0][0];
+    const call = (prismaMock.page.createMany.mock.calls[0] as any)?.[0];
     expect(call.data[0]).toMatchObject({ shopId: 'pages', slug: 'about' });
   });
 

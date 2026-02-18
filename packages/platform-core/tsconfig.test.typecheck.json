@@ -1,15 +1,11 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.test.typecheck.json",
   "compilerOptions": {
     "composite": false,
     "declaration": false,
     "declarationDir": null,
     "declarationMap": false,
-    "emitDeclarationOnly": false,
-    "noEmit": true,
-    "rootDir": "../..",
-    "types": ["node", "react", "react-dom", "jest", "@testing-library/jest-dom"],
-    "verbatimModuleSyntax": false
+    "emitDeclarationOnly": false
   },
   "include": [
     "src/__tests__/**/*.ts",

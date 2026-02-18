@@ -2,13 +2,13 @@ import { jest } from "@jest/globals";
 
 describe("products repository via prisma", () => {
   const shop = "demo";
-  let repo: { write: jest.Mock; duplicate: jest.Mock };
-  let resolveRepo: jest.Mock;
+  let repo: { write: any; duplicate: any };
+  let resolveRepo: any;
 
   beforeEach(() => {
     jest.resetModules();
     repo = { write: jest.fn(), duplicate: jest.fn() };
-    resolveRepo = jest.fn().mockResolvedValue(repo);
+    resolveRepo = (jest.fn() as any).mockResolvedValue(repo);
     process.env.PRODUCTS_BACKEND = "prisma";
     process.env.DATABASE_URL = "postgres://example";
     jest.doMock("../../db", () => ({ prisma: { product: {} } }));

@@ -3,19 +3,19 @@ import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
 
 const fsMock = {
-  appendFile: jest.fn().mockResolvedValue(undefined),
-  mkdir: jest.fn().mockResolvedValue(undefined),
-  readFile: jest.fn(),
+  appendFile: (jest.fn() as any).mockResolvedValue(undefined),
+  mkdir: (jest.fn() as any).mockResolvedValue(undefined),
+  readFile: jest.fn() as any,
 };
 
 jest.mock("fs", () => ({ promises: fsMock }));
 
 const prismaMock = {
   page: {
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    update: jest.fn(),
-    deleteMany: jest.fn(),
+    findMany: jest.fn() as any,
+    upsert: jest.fn() as any,
+    update: jest.fn() as any,
+    deleteMany: jest.fn() as any,
   },
 };
 

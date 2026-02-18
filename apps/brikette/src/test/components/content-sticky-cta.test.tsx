@@ -11,8 +11,11 @@ import { type AppLanguage } from "@/i18n.config";
 // Helper: query by data-testid directly (global testIdAttribute is "data-cy"; component uses data-testid)
 const getStickyCta = () => document.querySelector('[data-testid="content-sticky-cta"]');
 
-// Mock the modal context before importing components
-jest.mock("@acme/ui/context/ModalContext");
+// next/navigation: ContentStickyCta uses useRouter to navigate to /book.
+let mockPush: jest.Mock;
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
 
 // Mock GA4 events module path
 const mockFireCtaClick = jest.fn<() => void>();
@@ -55,28 +58,15 @@ jest.mock("react-i18next", () => ({
 
 describe("ContentStickyCta", () => {
   let ContentStickyCta: typeof import("@/components/cta/ContentStickyCta").ContentStickyCta;
-  let mockOpenModal: jest.Mock<() => void>;
-  let mockUseModal: jest.Mock<() => { openModal: typeof mockOpenModal }>;
 
   beforeEach(async () => {
     jest.clearAllMocks();
+    mockPush = jest.fn();
 
     // Reset sessionStorage
     if (typeof window !== "undefined") {
       window.sessionStorage.clear();
     }
-
-    // Setup modal context mock
-    mockOpenModal = jest.fn();
-    mockUseModal = jest.fn(() => ({
-      activeModal: null,
-      modalData: null,
-      openModal: mockOpenModal,
-      closeModal: jest.fn(),
-    }));
-
-    const modalContextModule = await import("@acme/ui/context/ModalContext");
-    (modalContextModule.useModal as unknown as jest.Mock) = mockUseModal;
 
     // Import component after mocks are set up
     const module = await import("../../components/cta/ContentStickyCta");
@@ -111,13 +101,13 @@ describe("ContentStickyCta", () => {
       });
     });
 
-    // Verify modal was opened
+    // Verify router navigates to /book
     await waitFor(() => {
-      expect(mockOpenModal).toHaveBeenCalledWith("booking", { source: "sticky_cta" });
+      expect(mockPush).toHaveBeenCalledWith("/en/book");
     });
   });
 
-  it("TC-02: about page renders the sticky CTA and clicking it opens BookingModal", async () => {
+  it("TC-02: about page renders the sticky CTA and clicking it navigates to /book", async () => {
     render(<ContentStickyCta lang="en" ctaLocation="about_page" />);
 
     // Verify CTA is rendered
@@ -135,9 +125,9 @@ describe("ContentStickyCta", () => {
       });
     });
 
-    // Verify modal was opened
+    // Verify router navigates to /book
     await waitFor(() => {
-      expect(mockOpenModal).toHaveBeenCalledWith("booking", { source: "sticky_cta" });
+      expect(mockPush).toHaveBeenCalledWith("/en/book");
     });
   });
 

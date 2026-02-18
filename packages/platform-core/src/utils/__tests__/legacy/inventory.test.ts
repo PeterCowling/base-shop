@@ -1,11 +1,11 @@
 // packages/platform-core/src/utils/inventory.test.ts
+import type { InventoryItem } from "../../../types/inventory";
 import {
   applyInventoryBatch,
   computeAvailability,
   expandInventoryItem,
   flattenInventoryItem,
 } from "../../inventory";
-import type { InventoryItem } from "../../types/inventory";
 
 describe("flattenInventoryItem", () => {
   it("flattens items with full variant attributes", () => {
@@ -182,7 +182,7 @@ describe("expandInventoryItem", () => {
         productId: "prod9",
         quantity: 1,
         variantAttributes: {},
-      }),
+      } as any),
     ).toThrow();
 
     expect(() =>

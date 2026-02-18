@@ -2,15 +2,15 @@ import { jest } from "@jest/globals";
 
 function createRepoStub() {
   return {
-    read: jest.fn().mockResolvedValue([]),
-    write: jest.fn().mockResolvedValue(undefined),
-    getById: jest.fn().mockResolvedValue(null),
-    getByKey: jest.fn().mockResolvedValue(null),
-    update: jest.fn().mockResolvedValue({ id: "g1", row_version: 2 }),
-    delete: jest.fn().mockResolvedValue(undefined),
-    duplicate: jest.fn().mockResolvedValue({ id: "copy" }),
-    getContent: jest.fn().mockResolvedValue(null),
-    writeContent: jest.fn().mockResolvedValue(undefined),
+    read: (jest.fn() as any).mockResolvedValue([]),
+    write: (jest.fn() as any).mockResolvedValue(undefined),
+    getById: (jest.fn() as any).mockResolvedValue(null),
+    getByKey: (jest.fn() as any).mockResolvedValue(null),
+    update: (jest.fn() as any).mockResolvedValue({ id: "g1", row_version: 2 }),
+    delete: (jest.fn() as any).mockResolvedValue(undefined),
+    duplicate: (jest.fn() as any).mockResolvedValue({ id: "copy" }),
+    getContent: (jest.fn() as any).mockResolvedValue(null),
+    writeContent: (jest.fn() as any).mockResolvedValue(undefined),
   };
 }
 
@@ -24,7 +24,7 @@ describe("guides.server delegation", () => {
 
   it("readGuideRepo delegates to repository read()", async () => {
     const repo = createRepoStub();
-    const resolveRepo = jest.fn().mockResolvedValue(repo);
+    const resolveRepo = (jest.fn() as any).mockResolvedValue(repo);
     jest.doMock("../repoResolver", () => ({ resolveRepo }));
 
     const { readGuideRepo } = await import("../guides.server");
@@ -35,7 +35,7 @@ describe("guides.server delegation", () => {
 
   it("getGuideByKey delegates to repository getByKey()", async () => {
     const repo = createRepoStub();
-    const resolveRepo = jest.fn().mockResolvedValue(repo);
+    const resolveRepo = (jest.fn() as any).mockResolvedValue(repo);
     jest.doMock("../repoResolver", () => ({ resolveRepo }));
 
     const { getGuideByKey } = await import("../guides.server");
@@ -46,7 +46,7 @@ describe("guides.server delegation", () => {
 
   it("updateGuideInRepo delegates to repository update()", async () => {
     const repo = createRepoStub();
-    const resolveRepo = jest.fn().mockResolvedValue(repo);
+    const resolveRepo = (jest.fn() as any).mockResolvedValue(repo);
     jest.doMock("../repoResolver", () => ({ resolveRepo }));
 
     const { updateGuideInRepo } = await import("../guides.server");
@@ -60,7 +60,7 @@ describe("guides.server delegation", () => {
 
   it("reuses repoPromise singleton across calls", async () => {
     const repo = createRepoStub();
-    const resolveRepo = jest.fn().mockResolvedValue(repo);
+    const resolveRepo = (jest.fn() as any).mockResolvedValue(repo);
     jest.doMock("../repoResolver", () => ({ resolveRepo }));
 
     const { readGuideRepo,writeGuideRepo } = await import("../guides.server");

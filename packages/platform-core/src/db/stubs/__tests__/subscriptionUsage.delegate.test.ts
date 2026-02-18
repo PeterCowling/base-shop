@@ -8,16 +8,16 @@ describe("subscriptionUsage delegate", () => {
     await d.upsert({
       where: { id: "1" },
       update: {},
-      create: { id: "1", count: 1 },
+      create: { id: "1", count: 1 } as any,
     });
     const updated = await d.upsert({
       where: { id: "1" },
-      update: { count: 2 },
-      create: { id: "1", count: 2 },
+      update: { count: 2 } as any,
+      create: { id: "1", count: 2 } as any,
     });
-    expect(updated.count).toBe(2);
+    expect((updated as any).count).toBe(2);
     const found = await d.findUnique({ where: { id: "1" } });
-    expect(found?.count).toBe(2);
+    expect((found as any)?.count).toBe(2);
   });
 });
 

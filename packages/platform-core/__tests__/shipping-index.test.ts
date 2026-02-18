@@ -1,11 +1,13 @@
 import { jest } from '@jest/globals';
 
-import { __resetShippingEnv,__setShippingEnv } from '@acme/config/env/shipping';
+import * as _shippingEnvModule from '@acme/config/env/shipping';
 
 import { getShippingRate, getTrackingStatus } from '../src/shipping/index';
 
+const { __resetShippingEnv, __setShippingEnv } = _shippingEnvModule as any;
+
 describe('getShippingRate', () => {
-  let fetchMock: jest.Mock;
+  let fetchMock: any;
 
   beforeEach(() => {
     fetchMock = jest.fn();
@@ -261,7 +263,7 @@ describe('getShippingRate', () => {
 });
 
 describe('getTrackingStatus', () => {
-  let fetchMock: jest.Mock;
+  let fetchMock: any;
 
   beforeEach(() => {
     fetchMock = jest.fn();

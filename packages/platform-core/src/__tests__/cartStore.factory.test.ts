@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
+const STRONG_TOKEN_FACTORY = "strongtokenstrongtokenstrongtoken!!";
 
 describe("cartStore factory", () => {
   afterEach(() => {
@@ -23,7 +23,7 @@ describe("cartStore factory", () => {
         loadCoreEnv: () => ({
           SESSION_STORE: "redis",
           UPSTASH_REDIS_REST_URL: "https://example",
-          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN_FACTORY,
         }),
       }));
       jest.doMock("@upstash/redis", () => ({ Redis: RedisClass }));
@@ -49,7 +49,7 @@ describe("cartStore factory", () => {
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({
           UPSTASH_REDIS_REST_URL: "https://example",
-          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN_FACTORY,
         }),
       }));
       jest.doMock("@upstash/redis", () => ({ Redis: RedisClass }));
@@ -67,7 +67,7 @@ describe("cartStore factory", () => {
       {
         SESSION_STORE: "memory",
         UPSTASH_REDIS_REST_URL: "https://example",
-        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN_FACTORY,
       },
     ],
     ["redis credentials missing", {}],
@@ -101,7 +101,7 @@ describe("cartStore factory", () => {
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({
           UPSTASH_REDIS_REST_URL: "https://example",
-          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN_FACTORY,
         }),
       }));
       jest.doMock("@upstash/redis", () => {
@@ -129,7 +129,7 @@ describe("cartStore factory", () => {
         loadCoreEnv: () => ({
           SESSION_STORE: "redis",
           UPSTASH_REDIS_REST_URL: "https://example",
-          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN_FACTORY,
         }),
       }));
       jest.doMock("@upstash/redis", () => ({ Redis: RedisClass }));

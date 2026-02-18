@@ -3,26 +3,13 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 
-// Jest transform for @acme/ui context can be brittle in app tests; mock to a real React context.
-jest.mock("@acme/ui/context/ModalContext", () => {
-  const React = require("react");
-  const ModalContext = React.createContext(null);
-  return {
-    __esModule: true,
-    ModalContext,
-    ssrStub: {
-      activeModal: null,
-      modalData: null,
-      openModal: () => {},
-      closeModal: () => {},
-    },
-    useModal: () => {
-      const ctx = React.useContext(ModalContext);
-      if (!ctx) throw new Error("Missing ModalContext Provider in test");
-      return ctx;
-    },
-  };
-});
+// @acme/ui/context/ModalContext: stub for any transitive imports; booking2 modal
+// was removed in TASK-24 so no Provider is required.
+jest.mock("@acme/ui/context/ModalContext", () => ({
+  __esModule: true,
+  ssrStub: { activeModal: null, modalData: null, openModal: () => {}, closeModal: () => {} },
+  useModal: () => ({ activeModal: null, modalData: null, openModal: () => {}, closeModal: () => {} }),
+}));
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -32,7 +19,6 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 
-const { ModalContext } = require("@acme/ui/context/ModalContext");
 const RoomsSection = require("@/components/rooms/RoomsSection").default as typeof import("@/components/rooms/RoomsSection").default;
 
 describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
@@ -48,24 +34,13 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
     window.gtag = originalGtag;
   });
 
-  it("fires select_item before opening booking2 modal on NR click (rooms_index)", () => {
-    const openModal = jest.fn();
-
+  it("fires select_item on NR click (rooms_index)", () => {
     render(
-      <ModalContext.Provider
-        value={{
-          activeModal: null,
-          modalData: null,
-          openModal,
-          closeModal: jest.fn(),
-        }}
-      >
-        <RoomsSection
-          lang="en"
-          itemListId="rooms_index"
-          bookingQuery={{ checkIn: "2026-06-10", checkOut: "2026-06-12", pax: "2", queryString: "" }}
-        />
-      </ModalContext.Provider>,
+      <RoomsSection
+        lang="en"
+        itemListId="rooms_index"
+        bookingQuery={{ checkIn: "2026-06-10", checkOut: "2026-06-12", pax: "2", queryString: "" }}
+      />,
     );
 
     // In this test we mock i18n to return key tokens; the UI RoomCard uses those
@@ -91,12 +66,5 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
         ],
       }),
     );
-
-    expect(openModal).toHaveBeenCalledWith("booking2", expect.any(Object));
-
-    // Ensure analytics is emitted before the modal opens.
-    const gtagOrder = (gtag.mock.invocationCallOrder[0] ?? Number.POSITIVE_INFINITY) as number;
-    const openOrder = (openModal.mock.invocationCallOrder[0] ?? Number.NEGATIVE_INFINITY) as number;
-    expect(gtagOrder).toBeLessThan(openOrder);
   });
 });

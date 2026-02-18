@@ -6,12 +6,12 @@ describe("prisma client selection", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
-    delete process.env.NODE_ENV;
+    delete (process.env as any).NODE_ENV;
     delete process.env.DATABASE_URL;
   });
 
   it("instantiates PrismaClient with DATABASE_URL", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as any).NODE_ENV = "production";
     const fakeUrl = "postgres://fake";
     process.env.DATABASE_URL = fakeUrl;
 
@@ -41,7 +41,7 @@ describe("prisma client selection", () => {
   });
 
   it("falls back to stub when DATABASE_URL is missing", async () => {
-    process.env.NODE_ENV = "production";
+    (process.env as any).NODE_ENV = "production";
 
     const ctor = jest.fn();
     jest.doMock("@acme/config/env/core", () => ({

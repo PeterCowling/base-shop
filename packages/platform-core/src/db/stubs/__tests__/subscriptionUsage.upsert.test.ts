@@ -11,16 +11,16 @@ describe("createSubscriptionUsageDelegate.upsert", () => {
     // creation branch of upsert
     const created = await d.upsert({
       where: { id: "u1" },
-      update: { count: 999 },
-      create: { id: "u1", count: 1 },
+      update: { count: 999 } as any,
+      create: { id: "u1", count: 1 } as any,
     });
     expect(created).toEqual({ id: "u1", count: 1 });
 
     // update branch of upsert
     const updated = await d.upsert({
       where: { id: "u1" },
-      update: { count: 2 },
-      create: { id: "u1", count: 2 },
+      update: { count: 2 } as any,
+      create: { id: "u1", count: 2 } as any,
     });
     expect(updated).toEqual({ id: "u1", count: 2 });
 

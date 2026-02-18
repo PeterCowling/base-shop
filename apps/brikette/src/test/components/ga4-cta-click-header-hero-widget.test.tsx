@@ -35,6 +35,7 @@ jest.mock("../../components/header/MobileMenu", () => ({
 
 jest.mock("next/navigation", () => ({
   usePathname: () => "/en",
+  useRouter: () => ({ push: jest.fn() }),
 }));
 
 jest.mock("react-i18next", () => ({

@@ -149,7 +149,7 @@ describe("json inventory repository", () => {
       "shop",
       "s",
       { size: "L" },
-      () => ({ productId: "p", quantity: 0, lowStockThreshold: 1 })
+      () => ({ productId: "p", quantity: 0, lowStockThreshold: 1 }) as any
     );
 
     const data = JSON.parse(writeFile.mock.calls[0][1] as string);

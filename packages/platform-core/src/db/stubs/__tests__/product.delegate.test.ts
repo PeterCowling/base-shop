@@ -18,7 +18,7 @@ describe("product delegate", () => {
     expect(
       await d.findUnique({ where: { shopId_id: { shopId: "s9", id: "p1" } } })
     ).toBeNull();
-    expect(await d.findUnique({ where: { id: "p1" } })).toBeNull();
+    expect(await d.findUnique({ where: { id: "p1" } as any })).toBeNull();
     const updated = await d.update({
       where: { shopId_id: { shopId: "s1", id: "p1" } },
       data: { name: "aa" },

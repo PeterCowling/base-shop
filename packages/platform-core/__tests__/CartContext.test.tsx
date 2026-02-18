@@ -68,7 +68,7 @@ describe("CartContext", () => {
 
     const qty = screen.getByTestId("qty");
     await waitFor(() => expect(qty.textContent).toBe("2"));
-    expect(getRequestPath(fetchMock.mock.calls[0][0])).toBe("/api/cart");
+    expect(getRequestPath(fetchMock.mock.calls[0][0] as RequestInfo)).toBe("/api/cart");
     expect(localStorage.setItem).toHaveBeenCalledWith(
       "cart",
       JSON.stringify(cart)

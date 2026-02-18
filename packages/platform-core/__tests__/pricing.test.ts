@@ -21,7 +21,7 @@ async function setup(
     if (file.includes("exchangeRates.json")) return JSON.stringify(rateData);
     throw new Error(`Unexpected file: ${file}`);
   });
-  const actualFs = jest.requireActual("node:fs");
+  const actualFs = jest.requireActual("node:fs") as any;
   jest.doMock("node:fs", () => ({
     ...actualFs,
     promises: { ...actualFs.promises, readFile },

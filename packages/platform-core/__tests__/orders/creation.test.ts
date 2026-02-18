@@ -27,7 +27,7 @@ describe("order creation", () => {
       expect(prismaMock.rentalOrder.findMany).toHaveBeenCalledWith({
         where: { shop: "shop" },
       });
-      expect(result[0].foo).toBeUndefined();
+      expect((result[0] as any).foo).toBeUndefined();
     });
 
     it("propagates errors without normalization", async () => {
@@ -48,7 +48,7 @@ describe("order creation", () => {
       expect(prismaMock.rentalOrder.findMany).toHaveBeenCalledWith({
         where: { shop: "shop" },
       });
-      expect(result[0].foo).toBeUndefined();
+      expect((result[0] as any).foo).toBeUndefined();
     });
   });
 
@@ -198,7 +198,7 @@ describe("order creation", () => {
         where: { shop: "shop", customerId: "cust" },
       });
       expect(result).toHaveLength(1);
-      expect(result[0].foo).toBeUndefined();
+      expect((result[0] as any).foo).toBeUndefined();
     });
 
     it("throws when lookup fails", async () => {
@@ -252,7 +252,7 @@ describe("order creation", () => {
         "2024-03-01T00:00:00.000Z",
         "2024-04-01T00:00:00.000Z",
       ]);
-      expect(result[0].foo).toBeUndefined();
+      expect((result[0] as any).foo).toBeUndefined();
     });
 
     it("throws when lookup fails", async () => {

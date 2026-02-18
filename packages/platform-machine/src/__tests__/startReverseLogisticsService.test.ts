@@ -39,7 +39,7 @@ describe("startReverseLogisticsService", () => {
 
     const setSpy = jest.spyOn(global, "setInterval").mockImplementation((fn) => {
       fn();
-      return 1;
+      return 1 as unknown as NodeJS.Timeout;
     });
     const clearSpy = jest.spyOn(global, "clearInterval").mockImplementation(() => {
       return undefined;
@@ -82,7 +82,7 @@ describe("startReverseLogisticsService", () => {
 
     const processor = jest.fn().mockRejectedValueOnce(new Error("fail"));
 
-    const setSpy = jest.spyOn(global, "setInterval").mockReturnValue(1);
+    const setSpy = jest.spyOn(global, "setInterval").mockReturnValue(1 as unknown as NodeJS.Timeout);
     const clearSpy = jest
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined);

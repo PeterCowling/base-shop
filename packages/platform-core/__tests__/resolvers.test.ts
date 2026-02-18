@@ -67,12 +67,13 @@ describe("plugin resolvers", () => {
     );
     const realStat = jest.requireActual("fs/promises").stat;
     const statMock = fs.stat as jest.MockedFunction<typeof fs.stat>;
-    statMock.mockImplementation(async (p: string) => {
-      if (p.endsWith("index.mjs") || p.endsWith(path.join("dist", "index.js"))) {
+    const statImpl: any = async (p: any) => {
+      if (String(p).endsWith("index.mjs") || String(p).endsWith(path.join("dist", "index.js"))) {
         return { isFile: () => true } as any;
       }
       throw Object.assign(new Error("not found"), { code: "ENOENT" });
-    });
+    };
+    statMock.mockImplementation(statImpl);
     const res = await resolvePluginEntry(dir);
     expect(res).toEqual({ entryPath: path.join(dir, "index.mjs"), isModule: true });
     statMock.mockImplementation(realStat);

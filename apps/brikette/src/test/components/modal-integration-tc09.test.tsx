@@ -1,11 +1,11 @@
 /**
  * TASK-09: TC-01 and TC-02 integration tests.
  *
- * TC-01: BookingWidget → booking modal payload integration
+ * TC-01: BookingWidget → navigates to /book (TASK-27 — modal removed)
  * TC-02: PolicyFeeClarityPanel namespace race (graceful empty + items rendered)
  *
  * TC-04 (tab-trap) is added to packages/ui ModalBasics.test.tsx.
- * TC-05 (handoff events + deduplication) is covered by ga4-09 and ga4-10.
+ * TC-05 (handoff events) covered by ga4-09/ga4-10 — deleted in TASK-28 (modal removed).
  * TC-03 / TC-06 fall to staging manual QA checklist (no Playwright harness).
  */
 
@@ -59,6 +59,12 @@ jest.mock("@/utils/ga4-events", () => ({
   fireCtaClick: jest.fn(),
 }));
 
+// next/navigation: BookingWidget uses useRouter to navigate to /book.
+let mockPush: jest.Mock;
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: mockPush }),
+}));
+
 // next/link: anchor passthrough — strip next-specific props to avoid React 19
 // console.error for unknown DOM attributes (prefetch, scroll, replace, etc.).
 jest.mock("next/link", () => {
@@ -84,8 +90,6 @@ jest.mock("@/utils/slug", () => ({
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 // eslint-disable-next-line import/first
 import BookingWidget from "@/components/landing/BookingWidget";
-// eslint-disable-next-line import/first
-import { ModalContext } from "@/context/modal/context";
 
 // ---------------------------------------------------------------------------
 // Helper to get the useTranslation mock for per-test overrides (TC-02).
@@ -95,29 +99,18 @@ function getUseTranslationMock(): jest.Mock {
 }
 
 // ---------------------------------------------------------------------------
-// TC-01: BookingWidget → booking modal payload integration
+// TC-01: BookingWidget → navigates to /book (TASK-27)
 // ---------------------------------------------------------------------------
-describe("TC-01: BookingWidget → booking modal payload integration (TASK-09)", () => {
+describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
   beforeEach(() => {
+    mockPush = jest.fn();
     // BookingWidget writes date state back to window.location.search via useEffect.
     // Clear URL search params between tests to prevent cross-test contamination.
     window.history.replaceState(null, "", window.location.pathname);
   });
 
-  it("calls openModal('booking') with the entered checkIn, checkOut, and adults", () => {
-    const mockOpenModal = jest.fn();
-    render(
-      <ModalContext.Provider
-        value={{
-          activeModal: null,
-          modalData: null,
-          openModal: mockOpenModal,
-          closeModal: jest.fn(),
-        }}
-      >
-        <BookingWidget />
-      </ModalContext.Provider>,
-    );
+  it("navigates to /book with the entered dates and guests", () => {
+    render(<BookingWidget />);
 
     const checkInInput = screen.getByLabelText("booking.checkInLabel");
     const checkOutInput = screen.getByLabelText("booking.checkOutLabel");
@@ -131,53 +124,22 @@ describe("TC-01: BookingWidget → booking modal payload integration (TASK-09)",
     // Only one button in the widget (the CTA).
     fireEvent.click(screen.getByRole("button"));
 
-    expect(mockOpenModal).toHaveBeenCalledTimes(1);
-    expect(mockOpenModal).toHaveBeenCalledWith("booking", {
-      checkIn: "2025-06-01",
-      checkOut: "2025-06-03",
-      adults: 2,
-    });
+    expect(mockPush).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledWith("/en/book?checkin=2025-06-01&checkout=2025-06-03&pax=2");
   });
 
-  it("calls openModal('booking') with undefined dates when fields are empty", () => {
-    const mockOpenModal = jest.fn();
-    render(
-      <ModalContext.Provider
-        value={{
-          activeModal: null,
-          modalData: null,
-          openModal: mockOpenModal,
-          closeModal: jest.fn(),
-        }}
-      >
-        <BookingWidget />
-      </ModalContext.Provider>,
-    );
+  it("navigates to /book with pax only when no dates are entered", () => {
+    render(<BookingWidget />);
 
-    // Click without filling any dates — empty string || undefined = undefined.
+    // Click without filling any dates — empty fields are omitted from query.
     fireEvent.click(screen.getByRole("button"));
 
-    expect(mockOpenModal).toHaveBeenCalledWith("booking", {
-      checkIn: undefined,
-      checkOut: undefined,
-      adults: 1,
-    });
+    expect(mockPush).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledWith("/en/book?pax=1");
   });
 
-  it("does not call openModal when date range is invalid (checkout <= checkin)", () => {
-    const mockOpenModal = jest.fn();
-    render(
-      <ModalContext.Provider
-        value={{
-          activeModal: null,
-          modalData: null,
-          openModal: mockOpenModal,
-          closeModal: jest.fn(),
-        }}
-      >
-        <BookingWidget />
-      </ModalContext.Provider>,
-    );
+  it("does not navigate when date range is invalid (checkout <= checkin)", () => {
+    render(<BookingWidget />);
 
     fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
       target: { value: "2025-06-05" },
@@ -188,8 +150,8 @@ describe("TC-01: BookingWidget → booking modal payload integration (TASK-09)",
 
     fireEvent.click(screen.getByRole("button"));
 
-    // Widget shows error and does NOT open modal on invalid range.
-    expect(mockOpenModal).not.toHaveBeenCalled();
+    // Widget shows error and does NOT navigate on invalid range.
+    expect(mockPush).not.toHaveBeenCalled();
     // Error alert is shown.
     expect(screen.getByRole("alert")).toBeInTheDocument();
   });

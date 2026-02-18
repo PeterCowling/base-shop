@@ -4,7 +4,7 @@ import type { DeployInfo } from "../deployInfo";
 import * as health from "../health";
 
 jest.mock("../deployInfo", () => {
-  const actual = jest.requireActual("../deployInfo");
+  const actual = jest.requireActual("../deployInfo") as any;
   return {
     ...actual,
     readDeployInfo: jest.fn(),
@@ -16,8 +16,8 @@ const { readDeployInfo } = jest.requireMock("../deployInfo") as {
 };
 
 describe("deriveOperationalHealth", () => {
-  let latestUpgrade: jest.SpyInstance;
-  let healthJson: jest.SpyInstance;
+  let latestUpgrade: any;
+  let healthJson: any;
 
   beforeEach(() => {
     readDeployInfo.mockReset();

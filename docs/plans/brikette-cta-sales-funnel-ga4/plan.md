@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18
+Last-updated: 2026-02-18 (TASK-29 checkpoint complete — replan applied)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -186,16 +186,16 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-25 | IMPLEMENT | Remove brikette booking modal infrastructure (lazy-modals, payloadMap, global-modals, delete files) | 85% | M | Complete (2026-02-18) | TASK-24 | TASK-26,TASK-28 |
 | TASK-26 | IMPLEMENT | Migrate 9x openModal("booking") call sites to router.push/Link | 85% | M | Complete (2026-02-18) | TASK-22,TASK-24 | TASK-28 |
 | TASK-27 | IMPLEMENT | Migrate 2x openModal("booking2") in RoomCard to direct Octorate link (Decision B + E queryState) | 82% | M | Complete (2026-02-18) | TASK-22,TASK-23,TASK-24 | TASK-28 |
-| TASK-28 | IMPLEMENT | Delete ga4-09/ga4-10 extinct tests + update 7 affected modal-era tests | 85% | M | Pending | TASK-25,TASK-26,TASK-27 | TASK-29 |
-| TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Pending | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
+| TASK-28 | IMPLEMENT | Delete ga4-09/ga4-10 extinct tests + update 7 affected modal-era tests | 85% | M | Complete (2026-02-18) | TASK-25,TASK-26,TASK-27 | TASK-29 |
+| TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Complete (2026-02-18) | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
 | TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Pending | TASK-29 | TASK-32,TASK-35 |
-| TASK-31 | IMPLEMENT | Create GA4 helpers: fireSearchAvailability, fireViewPromotion, fireSelectPromotion, fireCTAClick (updated) + unit tests | 85% | S | Pending | TASK-29 | TASK-33,TASK-34,TASK-36 |
-| TASK-32 | IMPLEMENT | Wire select_item + begin_checkout on RoomCard direct Octorate navigation (via trackThenNavigate) | 83% | M | Pending | TASK-29,TASK-30,TASK-31,TASK-15 | — |
+| TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Pending | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
+| TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Pending | TASK-29,TASK-30,TASK-31,TASK-15 | — |
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Pending | TASK-29,TASK-30,TASK-15 | — |
-| TASK-36 | IMPLEMENT | Add cta_click to header/hero/BookingWidget/OffersModal/content-page CTAs (navigation-based) | 82% | M | Pending | TASK-29,TASK-31,TASK-15 | — |
-| TASK-37 | IMPLEMENT | Update GA4_ENUMS: remove booking/booking2 modal_type, add new enum values | 88% | S | Pending | TASK-29 | — |
+| TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-37 | IMPLEMENT | Update GA4_ENUMS + delete superseded helpers + clean prefetchInteractive dead imports | 88% | S | Pending | TASK-29 | TASK-31 |
 | TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
 | TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Complete (2026-02-18) | — | — |
 | TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Pending | TASK-29 | — |
@@ -213,8 +213,9 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | 3 | TASK-26, TASK-27 | TASK-22, TASK-24 (both); TASK-23 also for TASK-27 | Parallel call site migrations; TASK-22 verdict must be known for URL path |
 | 4 | TASK-28 | TASK-25, TASK-26, TASK-27 | Test cleanup; all migrations must be complete |
 | 5 | TASK-29 | TASK-28 | CHECKPOINT — must invoke /lp-replan before proceeding |
-| 6 | TASK-20, TASK-21, TASK-30, TASK-31, TASK-37, TASK-40, TASK-41, TASK-42 | TASK-29 | Parallel: decisions + helpers + enum + protocol + SPA page_view + custom dimensions |
-| 7 | TASK-13, TASK-14, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36 | Wave 6 per task + TASK-15 | Parallel: all implementation tracks; TASK-13 needs TASK-20, TASK-14 needs TASK-21 |
+| 6a | TASK-20, TASK-21, TASK-30, TASK-37, TASK-40, TASK-41, TASK-42 | TASK-29 | Parallel: TASK-37 (enum cleanup) must complete before TASK-31 starts |
+| 6b | TASK-31 | TASK-37 | Helpers using cleaned enums; TASK-31 now depends on TASK-37 (replan delta) |
+| 7 | TASK-13, TASK-14, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36 | Wave 6b per task + TASK-15 | Parallel: all implementation tracks; TASK-13 needs TASK-20, TASK-14 needs TASK-21 |
 | 8 | TASK-38 | TASK-32, TASK-15 + staging deploy | Playwright smoke test (staging only; requires staging deploy after Wave 7) |
 
 **Max parallelism:** 4 (Wave 1) / 8 (Wave 6–7)
@@ -226,8 +227,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Option B:** stacked PRs, but "CI-green" means green *after stacking onto all prior PRs in the chain*, not individually. PR for TASK-25 stacks on TASK-24's branch; etc. Do not merge any PR in the chain until the full stack is ready.
 - Wave 1/2/3/4 describes *development order*, not *merge order*. All TASK-24–28 changes are committed but held until the full stack is CI-green.
 
-**Wave 6 suggested sub-ordering (still parallel, but start in this order to reduce fallout):**
-TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume enums) → TASK-30 (trackThenNavigate) → TASK-41 (page_view) → TASK-40 (protocol doc) → TASK-42 (Admin dims — start **first** among Wave 6 ops tasks to account for 24–48h propagation delay).
+**Wave 6 ordering update (TASK-29 checkpoint):** TASK-37 now BLOCKS TASK-31 (TASK-31 depends on cleaned enums/helpers). TASK-37 must complete before TASK-31 starts. Within Wave 6:
+- **Start immediately:** TASK-37 (enums + cleanup), TASK-30 (trackThenNavigate), TASK-20, TASK-21, TASK-40, TASK-41, TASK-42 (Admin dims — start first to allow 24–48h propagation delay)
+- **After TASK-37 complete:** TASK-31 (helpers using clean enums)
+- **After TASK-31 complete:** TASK-33, TASK-34, TASK-36 (consume new helpers)
 
 ## Tasks
 
@@ -569,7 +572,13 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Red: TASK-25 deferred `payloadMap.ts` cleanup (BookingPayload/Booking2Payload types); confirmed `openModal("booking")` pattern used in all 9 call sites.
+  - Green: All 9 `openModal("booking")` call sites migrated — HomeContent, BookingWidget, ContentStickyCta, ExperiencesPageContent, NotFoundView, DealsPageContent (×2), OffersModal. URL follows Decision A (`/${lang}/book`). `useModal` hook removed from components that exclusively used booking.
+  - TC-01: `grep -r 'openModal.*"booking"' apps/brikette/src/ --include="*.tsx"` → 0 production results (only comments in hooks.ts). ✓
+  - TC-02: modal-integration-tc09 test — BookingWidget submit → navigates to /book. PASS. ✓
+  - TC-03: OffersModal "Reserve Now" → calls closeModal + router.push. PASS. ✓
 - **Affects:**
   - `apps/brikette/src/app/[lang]/HomeContent.tsx` (lines 44, 50)
   - `apps/brikette/src/components/landing/BookingWidget.tsx` (line 186)
@@ -606,7 +615,6 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
 - **Affects:**
   - `apps/brikette/src/components/rooms/RoomCard.tsx`
   - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx` (add `queryState` prop passing)
@@ -653,19 +661,28 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
-  - `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx` (delete)
-  - `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx` (delete)
-  - `apps/brikette/src/test/components/modal-integration-tc09.test.tsx` (update: router.push not openModal)
-  - `apps/brikette/src/test/components/content-sticky-cta.test.tsx` (update: navigation not openModal)
-  - `apps/brikette/src/test/components/deals-page.test.tsx` (update: router.push to /book?deal=...)
-  - `apps/brikette/src/test/components/experiences-page.test.tsx` (update: router.push not openModal)
-  - `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx` (update: Octorate URL, not openModal)
-  - `apps/brikette/src/test/context/modal-provider-effects.test.tsx` (update: use retained modal type)
-  - `apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx` (update: navigation assertions)
+  - `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx` (deleted)
+  - `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx` (deleted)
+  - `apps/brikette/src/test/components/modal-integration-tc09.test.tsx` (updated: router.push not openModal)
+  - `apps/brikette/src/test/components/content-sticky-cta.test.tsx` (updated: navigation not openModal)
+  - `apps/brikette/src/test/components/deals-page.test.tsx` (updated: router.push to /book)
+  - `apps/brikette/src/test/components/experiences-page.test.tsx` (updated: router.push not openModal; +next/link mock)
+  - `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx` (updated: removed ModalContext Provider + openModal assertions)
+  - `apps/brikette/src/test/context/modal-provider-effects.test.tsx` (file not found — no-op, confirmed non-existent)
+  - `apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx` (updated: added useRouter mock)
+  - `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx` (deleted — extinct test; booking modals removed; controlled scope expansion)
 - **Depends on:** TASK-25, TASK-26, TASK-27
 - **Blocks:** TASK-29
+- **Build evidence (2026-02-18):**
+  - Deleted ga4-09, ga4-10, ga4-modal-lifecycle test files (3 extinct tests removed; ga4-modal-lifecycle added as controlled scope expansion)
+  - Updated 6 live test files (modal-provider-effects.test.tsx confirmed non-existent — no-op)
+  - 6/6 test suites pass; 18/18 tests pass; 0 TypeScript errors
+  - All `openModal("booking")` / `openModal("booking2")` assertions removed
+  - BookingWidget now asserts router.push("/en/book?checkin=...&checkout=...&pax=N")
+  - ContentStickyCta now asserts router.push("/en/book")
+  - GA4-11 select_item assertion retained; ModalContext.Provider wrapper removed
 - **Confidence:** 85%
   - Implementation: 88% — test changes mirror the production changes; extinct tests are straightforward deletes.
   - Approach: 88% — update assertions to match new navigation patterns.
@@ -690,7 +707,7 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `docs/plans/brikette-cta-sales-funnel-ga4/plan.md`
 - **Depends on:** TASK-28
 - **Blocks:** TASK-20, TASK-21, TASK-30, TASK-31, TASK-37, TASK-40, TASK-41, TASK-42
@@ -707,6 +724,13 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
   - Are any Track C events already accidentally duplicated in the existing code (from superseded TASK-06/11)?
   - Are there any RoomCard rendering issues post-queryState on staging?
 - **Validation contract:** TASK-28 complete; `pnpm --filter brikette test` green; plan updated post-replan.
+- **Build evidence (2026-02-18):** `/lp-replan` executed. All 3 horizon assumptions validated:
+  1. **TypeScript clean:** ✅ 0 errors in brikette + packages/ui after full Track E work.
+  2. **Duplicate GA4 events:** 3 findings with plan deltas applied:
+     - `fireSelectItem` already wired in `apps/brikette/src/components/rooms/RoomsSection.tsx` (line 38). TASK-32 updated: do not add a second `select_item` fire from RoomCard; instead update RoomsSection's `onRoomSelect` to fire with full GA4 item fields + wrap navigation in `trackThenNavigate` for `begin_checkout`.
+     - `fireCTAClick` already wired in Header, HomeContent, BookingWidget (tests confirm). TASK-36 scope reduced: only OffersModal + content-page CTAs remain.
+     - `ga4-events.ts` contains `fireBeginCheckoutGeneric`/`fireBeginCheckoutGenericAndNavigate` with `source: "booking_modal" | "booking2_modal"` params (superseded). TASK-37 scope expanded to remove these + clean `prefetchInteractive.ts` dead BookingModal imports.
+  3. **RoomCard rendering:** ✅ `queryState` prop in place (line 39), TypeScript clean, no issues.
 
 ---
 
@@ -751,7 +775,7 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 
 ### TASK-31: Create new GA4 event helpers + unit tests
 - **Type:** IMPLEMENT
-- **Deliverable:** New helper functions in `apps/brikette/src/utils/ga4-events.ts`: `fireSearchAvailability`, `fireViewPromotion`, `fireSelectPromotion`, `fireCTAClick` (updated), `fireSelectItem` (updated for direct-nav context)
+- **Deliverable:** New/updated helper functions in `apps/brikette/src/utils/ga4-events.ts`: `fireViewPromotion` (new), `fireSelectPromotion` (new), `fireSelectItem` (updated for full GA4 item fields)
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
@@ -759,67 +783,63 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Status:** Pending
 - **Affects:**
   - `apps/brikette/src/utils/ga4-events.ts`
-- **Depends on:** TASK-29
+- **Depends on:** TASK-29, TASK-37
 - **Blocks:** TASK-33, TASK-34, TASK-36
-- **Confidence:** 85%
+- **Confidence:** 87%
   - Implementation: 88% — follows established `getGtag()` + `window.gtag("event", ...)` pattern exactly.
-  - Approach: 88% — event shapes fully specified in fact-find Event Contract table.
+  - Approach: 90% — event shapes fully specified in fact-find Event Contract table.
   - Impact: 85% — additive helpers; no call sites wired yet (done in TASK-32-36).
+- **Scope note (TASK-29 checkpoint):** `fireSearchAvailability` and `fireCTAClick` (`fireCtaClick`) already exist in `ga4-events.ts`. Scope reduces to: (1) ADD `fireViewPromotion` + `fireSelectPromotion` (genuinely new); (2) UPDATE `fireSelectItem` to include full GA4 item fields (`item_name`, `item_category`, `affiliation`, `currency`) if not already present; (3) verify `fireSearchAvailability` signature matches fact-find contract (no raw date strings, use `nights` + `lead_time_days`). TASK-37 runs first to remove superseded helpers and clean enums; TASK-31 depends on TASK-37.
 - **Acceptance:**
-  - `fireSearchAvailability({ nights, lead_time_days, pax })` — no raw date strings
-  - `fireViewPromotion({ items: [...promotions] })` — deals promotions model
-  - `fireSelectPromotion({ items: [...promotions] })` — single deal click
-  - `fireCTAClick({ cta_id, cta_location })` — updated to drop modal intercept context
-  - `fireSelectItem({ item_list_id, item_list_name, items[] })` — updated for direct-nav context (no modal)
-  - **All item events include required GA4 e-commerce fields:**
-    - `item_id` (= room.sku from roomsData)
-    - `item_name` (= room display title / name string)
-    - `item_category: "hostel"` (static)
-    - `affiliation: "Hostel Brikette"` (static)
-    - `currency: "EUR"` (static)
-    - `item_variant` ("nr" or "flex")
+  - `fireViewPromotion({ items: [...promotions] })` — deals promotions model (NEW)
+  - `fireSelectPromotion({ items: [...promotions] })` — single deal click (NEW)
+  - `fireSelectItem` updated: all items[] include `item_id`, `item_name`, `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant` ("nr" or "flex")
+  - `fireSearchAvailability` verified: `nights`, `lead_time_days`, `pax` only (no raw date strings)
   - `begin_checkout` in deal context includes `coupon: deal.id` (deal code propagated from URL param)
   - All helpers use canonical enums from TASK-37; unit tests assert gtag called with correct shape
 - **Validation contract:**
-  - TC-01 through TC-05: one test per helper asserting full gtag call args using canonical enums
-  - TC-06: `fireSelectItem` includes `item_name`, `item_category`, `affiliation`, `currency` in items[]
-  - TC-07: `begin_checkout` with `deal` context includes `coupon: deal.id`
+  - TC-01: `fireViewPromotion` → gtag called with `view_promotion` + promotions array
+  - TC-02: `fireSelectPromotion` → gtag called with `select_promotion` + single promotion
+  - TC-03: `fireSelectItem` → gtag called with correct item including `item_name`, `item_category`, `affiliation`, `currency`
+  - TC-04: `fireSearchAvailability` → no raw date strings in params (only `nights`, `lead_time_days`)
+  - TC-05: `begin_checkout` with `deal` context includes `coupon: deal.id`
 
 ---
 
 ### TASK-32: Wire select_item + begin_checkout on RoomCard direct Octorate navigation
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `RoomCard.tsx` firing `select_item` + `begin_checkout` via `trackThenNavigate` before Octorate navigation; unit test
+- **Deliverable:** Updated `apps/brikette/src/components/rooms/RoomsSection.tsx` — onRoomSelect fires `select_item` with full GA4 item fields + wraps Octorate navigation in `trackThenNavigate` for `begin_checkout`
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
 - **Affects:**
-  - `apps/brikette/src/components/rooms/RoomCard.tsx`
+  - `apps/brikette/src/components/rooms/RoomsSection.tsx`
   - `[readonly] apps/brikette/src/utils/trackThenNavigate.ts`
   - `[readonly] apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** TASK-29, TASK-30, TASK-31, TASK-15
 - **Blocks:** —
-- **Confidence:** 83%
-  - Implementation: 83% — RoomCard already has all needed data post-TASK-27; just needs GA4 event wiring.
+- **Confidence:** 82%
+  - Implementation: 82% — RoomsSection.tsx already fires `fireSelectItem` in `onRoomSelect`; task updates it with full item fields and wraps navigation in trackThenNavigate.
   - Approach: 85% — callback prop pattern per Decision C; GA4 in app layer.
   - Impact: 88% — this is the core e-commerce event; without it the funnel has no select_item or begin_checkout.
+- **Architecture note (TASK-29 checkpoint):** `fireSelectItem` is already wired in `apps/brikette/src/components/rooms/RoomsSection.tsx` line 38 (fires on every `onRoomSelect` when `itemListId` is provided). **Do NOT add a second `select_item` fire in `RoomCard.tsx`** — that would duplicate the event on every room click. Instead, TASK-32 updates `RoomsSection.tsx`'s `onRoomSelect` handler to:
+  1. Update the existing `fireSelectItem` call to include full GA4 item fields (look up `room` from `roomsData` by sku; add `item_name`, `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant`)
+  2. Replace direct `window.location.href` Octorate navigation with `trackThenNavigate("begin_checkout", {...}, () => window.location.assign(octorateUrl))`
+  3. Preserve existing `/book` fallback path for `queryState !== "valid"`
 - **Acceptance:**
-  - **Event ordering (explicit decision):** fire `select_item` fire-and-forget (no beacon delay needed), then use `trackThenNavigate` only for `begin_checkout`. This ensures navigation is not blocked waiting for `select_item` callback, and occasional ordering noise in raw streams is acceptable. Do not chain `begin_checkout` inside `select_item`'s event_callback (adds latency, no funnel benefit).
-  - onClick applies shouldInterceptClick guard (TASK-30 caller contract) and `isNavigating` ref before calling `e.preventDefault()`
-  - Pattern: `fireSelectItem({...})` (fire-and-forget) → `trackThenNavigate("begin_checkout", {...}, () => window.location.assign(octorateUrl))`
-  - `item_list_id` sourced from props (e.g. `"book_rooms"` or `"rooms_index"`)
-  - `items[]` includes: `item_id` (room.sku), `item_name` (room display title), `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant` ("nr" or "flex")
-  - Navigation occurs only via `window.location.assign(octorateUrl)` inside the `navigate` callback — never directly from the onClick handler
+  - **Event ordering:** `fireSelectItem({...})` fire-and-forget first; then `trackThenNavigate` for `begin_checkout`. No chaining inside event_callback.
+  - `onRoomSelect` handler in `RoomsSection.tsx` applies shouldInterceptClick guard and `isNavigating` ref before navigation
+  - `items[]` includes: `item_id` (room.sku), `item_name` (room display title from roomsData), `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant` ("nr" or "flex")
+  - Navigation occurs only via `window.location.assign(octorateUrl)` inside the `navigate` callback
   - Both events verified in staging via Network tab (items[] and item_id present in collect request)
 - **Validation contract:**
-  - TC-01: onClick (plain left click, no modifiers) → `e.preventDefault()` called; `select_item` gtag called fire-and-forget with correct item (incl. item_name, item_category, affiliation, currency)
-  - TC-02: onClick → `trackThenNavigate` called with `begin_checkout` event; navigation occurs after callback or timeout
+  - TC-01: `onRoomSelect` (valid queryState, no modifiers) → `select_item` gtag called fire-and-forget with correct item incl. item_name, item_category, affiliation, currency
+  - TC-02: `onRoomSelect` → `trackThenNavigate` called with `begin_checkout`; navigation occurs after callback or timeout
   - TC-03: navigation to Octorate URL occurs via `window.location.assign` inside navigate callback
   - TC-04: `trackThenNavigate` called with `transport_type: "beacon"` (asserted via mock)
-  - TC-05: Cmd+click (metaKey=true) → `e.preventDefault()` NOT called; browser handles normally
-  - TC-06: second click while `isNavigating=true` → `e.preventDefault()` NOT called; no duplicate GA4 events fired
+  - TC-05: second invocation while `isNavigating=true` → no duplicate GA4 events fired
 - **Rollout / rollback:** Revert commit
 
 ---
@@ -914,40 +934,37 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 
 ---
 
-### TASK-36: Add cta_click to header/hero/BookingWidget/OffersModal CTAs (navigation-based)
+### TASK-36: Wire cta_click to OffersModal + content-page CTAs
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated CTA components firing `fireCTAClick` on navigation (not modal-open) events
+- **Deliverable:** Updated `OffersModal.tsx` firing `fireCtaClick` before router.push; content-page CTAs wired via TASK-14
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
-- **Effort:** M
+- **Effort:** S
 - **Status:** Pending
 - **Affects:**
-  - `packages/ui/src/organisms/DesktopHeader.tsx`
-  - `packages/ui/src/organisms/MobileNav.tsx`
-  - `apps/brikette/src/app/[lang]/HomeContent.tsx`
-  - `apps/brikette/src/components/landing/BookingWidget.tsx`
   - `apps/brikette/src/context/modal/global-modals/OffersModal.tsx`
 - **Depends on:** TASK-29, TASK-31, TASK-15
 - **Blocks:** —
-- **Confidence:** 82%
-  - Implementation: 83% — each component needs an `onPrimaryCtaClick` callback prop (Decision C); app layer wires `fireCTAClick`.
-  - Approach: 85% — standard callback prop pattern; no GA4 in packages/ui.
-  - Impact: 82% — `cta_click` is the funnel entry point; without it, the CTA→/book conversion cannot be measured.
+- **Confidence:** 85%
+  - Implementation: 87% — one component; existing `fireCtaClick` pattern in place.
+  - Approach: 88% — follows same pattern as already-wired CTAs.
+  - Impact: 82% — OffersModal is a conversion surface; closing the gap closes the funnel.
+- **Scope note (TASK-29 checkpoint):** Header, HomeContent (hero), and BookingWidget already fire `fireCtaClick` correctly (confirmed by ga4-cta-click-header-hero-widget test passing). `DesktopHeader.tsx`/`MobileNav.tsx` (packages/ui) already use callback props that wire to `fireCtaClick` in Header.tsx (brikette). **TASK-36 scope reduces to OffersModal only.** Content-page CTA click is wired as part of TASK-14 (which adds `ContentStickyCta` + GA4 event together).
 - **Acceptance:**
-  - Header, mobile nav, hero, BookingWidget CTAs each fire `fireCTAClick({ cta_id, cta_location })` on navigate-to-book click
-  - OffersModal "Reserve Now" fires `fireCTAClick({ cta_id: "offers_modal_reserve", cta_location: "offers_modal" })`
-  - No modal intercept in cta_click; events fire on navigation intent only
-  - `ContentStickyCta` cta_click wired via TASK-14 (separate task)
+  - OffersModal "Reserve Now" fires `fireCtaClick({ ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" })` before `router.push("/{lang}/book")`
+  - No modal intercept in cta_click; event fires on navigation intent only
+  - `ContentStickyCta` cta_click handled in TASK-14
 - **Validation contract:**
-  - TC-01 through TC-05: one test per CTA surface asserting gtag called with correct cta_id + cta_location
+  - TC-01: OffersModal "Reserve Now" click → gtag called with `cta_click` + `cta_id: "offers_modal_reserve"` + `cta_location: "offers_modal"`
+  - TC-02: Navigation to /book still occurs after event fires
 - **Rollout / rollback:** Revert commit
 
 ---
 
-### TASK-37: Update GA4_ENUMS: remove booking/booking2 modal_type + add new values
+### TASK-37: Update GA4_ENUMS + clean superseded helpers + prefetch dead imports
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `apps/brikette/src/utils/ga4-events.ts` GA4_ENUMS (or equivalent enum object)
+- **Deliverable:** Updated `apps/brikette/src/utils/ga4-events.ts` (enum + helper cleanup) + cleaned `apps/brikette/src/utils/prefetchInteractive.ts`
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
@@ -955,22 +972,30 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Status:** Pending
 - **Affects:**
   - `apps/brikette/src/utils/ga4-events.ts`
+  - `apps/brikette/src/utils/prefetchInteractive.ts`
 - **Depends on:** TASK-29
-- **Blocks:** —
+- **Blocks:** TASK-31
 - **Confidence:** 88%
-  - Implementation: 90% — straightforward enum update; TypeScript catches misuse.
-  - Approach: 90% — remove deleted modal types; add new enums from fact-find.
-  - Impact: 88% — maintains enum authority; prevents enum drift in TASK-31/32/33/34/35/36.
+  - Implementation: 90% — straightforward enum update + helper deletion; TypeScript catches misuse.
+  - Approach: 90% — remove deleted modal types; add new enums from fact-find; delete superseded helpers.
+  - Impact: 88% — maintains enum authority; prevents enum drift in TASK-31/32/33/34/35/36; fixes dead webpack prefetch imports.
+- **Scope note (TASK-29 checkpoint):** Scope expanded beyond enum values. Additional items found during checkpoint:
+  1. `prefetchInteractive.ts` lines 87-88 contain `await import("@acme/ui/organisms/modals/BookingModal")` / `BookingModal2` — both modules are deleted; these are dead webpack prefetch imports that will cause build warnings or chunk-not-found errors in production. Must be removed.
+  2. `fireBeginCheckoutGeneric` + `fireBeginCheckoutGenericAndNavigate` in `ga4-events.ts` have `source: "booking_modal" | "booking2_modal"` types — these are superseded helpers with no call sites; remove them.
+  3. `ContentStickyCta.tsx` has a stale comment "opens BookingModal" (line 5) and stale i18n key `modals:booking.buttonAvailability` — low priority cleanup, absorb into TASK-14 or TASK-26 followup.
 - **Acceptance:**
   - `modal_type` enum: `booking` and `booking2` removed; `offers`, `location`, `contact`, `facilities`, `language` retained
-  - `item_list_id` enum: `room_detail` verified present (may already exist — confirm, add if not)
-  - `cta_id` enum: `offers_modal_reserve` verified present (listed in authoritative section above — confirm, add if not)
-  - `cta_location` enum: `offers_modal` verified present (listed in authoritative section above — confirm, add if not)
-  - Note: the Analytics Enums section in this plan already shows the target state; TASK-37 job is to make `ga4-events.ts` match that authoritative list — verify presence, do not assume values are missing
+  - `item_list_id` enum: `room_detail` verified present (confirm, add if not)
+  - `cta_id` enum: `offers_modal_reserve` verified present (confirm, add if not)
+  - `cta_location` enum: `offers_modal` verified present (confirm, add if not)
+  - `fireBeginCheckoutGeneric` + `fireBeginCheckoutGenericAndNavigate` deleted (no call sites outside ga4-events.ts)
+  - `prefetchInteractive.ts`: BookingModal + BookingModal2 `webpackPrefetch` dynamic imports removed; file otherwise unchanged
   - All references to removed enum values produce TypeScript errors (confirming their absence)
+  - Note: the Analytics Enums section in this plan shows the target state; TASK-37 job is to make `ga4-events.ts` match that list
 - **Validation contract:**
-  - TC-01: TypeScript compilation clean with new enums
+  - TC-01: TypeScript compilation clean with new enums and deleted helpers
   - TC-02: Existing tests using retained enum values still pass
+  - TC-03: `grep "BookingModal" apps/brikette/src/utils/prefetchInteractive.ts` returns 0 results
 
 ---
 

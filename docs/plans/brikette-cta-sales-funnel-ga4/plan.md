@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-41 complete — Wave 6 progressing)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-40, TASK-41 complete — Wave 6 nearly done)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -198,7 +198,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-37 | IMPLEMENT | Update GA4_ENUMS + delete superseded helpers + clean prefetchInteractive dead imports | 88% | S | Complete (2026-02-18) | TASK-29 | TASK-31 |
 | TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
 | TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Complete (2026-02-18) | — | — |
-| TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Pending | TASK-29 | — |
+| TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Complete (2026-02-18) | TASK-29 | — |
 | TASK-41 | IMPLEMENT | Verify and implement page_view on SPA route changes (Home → /book internal navigation) | 80% | S | Complete (2026-02-18) | TASK-29 | — |
 | TASK-42 | IMPLEMENT | Register GA4 custom dimensions in GA4 Admin (cta_id, cta_location, item_list_id, coupon) | 90% | S | Pending | TASK-31,TASK-37 | — |
 
@@ -1097,6 +1097,16 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - **SPA page_view step:** verify that navigating internally from Home → /book produces a `page_view` event with correct `page_path` and `page_location` in DebugView and Network tab
   - Network tab probe steps documented (filter `**/g/collect`)
   - **Custom dimensions step:** verify `cta_id`, `cta_location`, `item_list_id`, `coupon` are visible in GA4 DebugView event params after TASK-42 configuration
+- **Build completion evidence (2026-02-18):**
+  - `docs/plans/brikette-cta-sales-funnel-ga4/verification.md` updated (TASK-16 output; no separate verification-protocol.md created).
+  - Added: Google Analytics Debugger extension instructions (not `?gtm_debug`); `debug_mode: true` as staging-only code patch alternative.
+  - Added: SPA `page_view` verification step (Pattern B — single fire on hard load, one per SPA nav; pass/fail criteria).
+  - Added: `view_promotion` and `select_promotion` event checklists with payload shape.
+  - Updated: `select_item` and `begin_checkout` checklists reflect full GA4Item fields (`item_category`, `affiliation`, `currency`) and `trackThenNavigate` beacon pattern.
+  - Added: custom dimensions verification step (after TASK-42).
+  - Added: Network tab filter `**/g/collect` (catches both GET and POST beacon).
+  - Removed: obsolete `modal_open`/`modal_close` section (BookingModal deleted in TASK-37).
+  - VC pass: all 6 acceptance criteria satisfied.
 
 ---
 

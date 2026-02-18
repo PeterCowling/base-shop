@@ -10,7 +10,7 @@ describe("createStubPrisma", () => {
   });
 
   it("creates, updates, and queries rental orders", async () => {
-    process.env.NODE_ENV = "production";
+    process.env.NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({}),
     }));
@@ -46,7 +46,7 @@ describe("createStubPrisma", () => {
     ).rejects.toThrow("Order not found");
   });
 
-  it("falls back to the stub when @prisma/client fails to load", async () => {
+  it("throws a helpful error when prisma client is unavailable in production", async () => {
     process.env.NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
@@ -60,16 +60,13 @@ describe("createStubPrisma", () => {
     );
 
     const { prisma } = (await import("../db")) as { prisma: PrismaClient };
-
-    await prisma.rentalOrder.create({
-      data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-    expect(orders).toHaveLength(1);
+    expect(() =>
+      prisma.rentalOrder.findMany({ where: { shop: "s" } }),
+    ).toThrow(/Prisma client unavailable/);
   });
 
   it("updates rental orders via tracking number and finds missing orders", async () => {
-    process.env.NODE_ENV = "production";
+    process.env.NODE_ENV = "test";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({}),
     }));
@@ -94,4 +91,3 @@ describe("createStubPrisma", () => {
     ).toBeNull();
   });
 });
-

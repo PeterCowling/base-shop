@@ -6,19 +6,18 @@ import { Check } from "lucide-react";
 
 import { Heading } from "../atoms/Typography";
 import { Button, Card, CardContent } from "../components/atoms/shadcn";
-import { useModal } from "../context/ModalContext";
 import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";
 
 interface DetailsSectionProps {
   bookingUrl?: string;
   lang?: string;
+  onBookingCtaClick?: () => void;
 }
 
-function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX.Element {
+function ApartmentDetailsSection({ bookingUrl, lang, onBookingCtaClick }: DetailsSectionProps): JSX.Element {
   const { t, ready } = useTranslation("apartmentPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
-  const { openModal } = useModal();
   const raw = t("detailsList", { returnObjects: true });
   const items = Array.isArray(raw) ? (raw as string[]) : [];
 
@@ -73,7 +72,7 @@ function ApartmentDetailsSection({ bookingUrl, lang }: DetailsSectionProps): JSX
                 );
               }
               return (
-                <Button onClick={() => openModal("booking")} className="cta-light dark:cta-dark">
+                <Button onClick={() => onBookingCtaClick?.()} className="cta-light dark:cta-dark">
                   {ctaLabel}
                 </Button>
               );

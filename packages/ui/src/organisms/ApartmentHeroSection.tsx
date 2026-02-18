@@ -6,7 +6,6 @@ import Link from "next/link";
 import { CfHeroImage } from "../atoms/CfHeroImage";
 import { Section } from "../atoms/Section";
 import { Button } from "../components/atoms/shadcn";
-import { useModal } from "../context/ModalContext";
 import { i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";
 
@@ -15,12 +14,12 @@ const APARTMENT_HERO_IMAGE_SRC = "/img/facade.avif";
 interface HeroSectionProps {
   bookingUrl?: string;
   lang?: string;
+  onBookingCtaClick?: () => void;
 }
 
-function ApartmentHeroSection({ bookingUrl, lang }: HeroSectionProps): JSX.Element {
+function ApartmentHeroSection({ bookingUrl, lang, onBookingCtaClick }: HeroSectionProps): JSX.Element {
   const { t, ready } = useTranslation("apartmentPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
-  const { openModal } = useModal();
 
   const ctaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
@@ -70,7 +69,7 @@ function ApartmentHeroSection({ bookingUrl, lang }: HeroSectionProps): JSX.Eleme
               );
             }
             return (
-              <Button onClick={() => openModal("booking")} className="cta-light dark:cta-dark">
+              <Button onClick={() => onBookingCtaClick?.()} className="cta-light dark:cta-dark">
                 {ctaLabel}
               </Button>
             );

@@ -8,7 +8,6 @@ import { Section } from "../atoms/Section";
 import { Stack } from "../components/atoms/primitives/Stack";
 import { Card, CardContent } from "../components/atoms/shadcn";
 import DealsStructuredData from "../components/seo/DealsStructuredData";
-import { useModal } from "../context/ModalContext";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolveBookingCtaLabel } from "../shared";
 import formatDisplayDate from "../utils/formatDisplayDate";
@@ -26,15 +25,15 @@ interface DealsPageProps {
   title: string;
   desc: string;
   structuredData?: Record<string, unknown> | unknown[];
+  onBookingCtaClick?: () => void;
 }
 
-function DealsPage({ lang, title, desc, structuredData }: DealsPageProps): JSX.Element {
+function DealsPage({ lang, title, desc, structuredData, onBookingCtaClick }: DealsPageProps): JSX.Element {
   const { supportedLngs } = i18nConfig;
   const { t, ready } = useTranslation("dealsPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
-  const { openModal } = useModal();
 
-  const reserve = useCallback(() => openModal("booking"), [openModal]);
+  const reserve = useCallback(() => onBookingCtaClick?.(), [onBookingCtaClick]);
 
   const bookingCtaLabel = useMemo(() => {
     if (!ready && !tokensReady) {

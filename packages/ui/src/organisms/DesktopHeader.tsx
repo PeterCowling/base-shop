@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 
 import { Section } from "../atoms/Section";
 import { Inline } from "../components/atoms/primitives/Inline";
-import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useTheme } from "../hooks/useTheme";
 import type { AppLanguage } from "../i18n.config";
@@ -53,11 +52,9 @@ function DesktopHeader({
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const headerT = useMemo(() => i18n.getFixedT(lang, "header"), [i18n, lang]);
   const hasHeaderBundle = i18n.hasResourceBundle(lang, "header");
-  const { openModal } = useModal();
   const pathname = usePathname();
   const { theme } = useTheme();
 
-  const book = useCallback(() => openModal("booking"), [openModal]);
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
@@ -72,9 +69,8 @@ function DesktopHeader({
       // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
       onPrimaryCtaClick?.();
       event.preventDefault();
-      book();
     },
-    [book, onPrimaryCtaClick, isApartmentRoute]
+    [onPrimaryCtaClick, isApartmentRoute]
   );
 
   const navTranslate = useCallback<TranslateFn>(

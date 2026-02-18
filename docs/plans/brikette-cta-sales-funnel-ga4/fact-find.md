@@ -910,22 +910,22 @@ For the verification protocol (Track C Task 0 + Track D-43), the staging GA4 str
    - **Staging/static export:** `public/_redirects` 200-rewrites handle inbound requests only — middleware does NOT run
 3. Client-side Next.js router (SPA navigation via `router.push` or `<Link>`) resolves paths against App Router routes, NOT middleware rewrites. On static export, `router.push("/it/prenota")` will 404 because no App Router route matches that segment.
 
-**⚠️ UNRESOLVED CONTRADICTION in prior document versions:** Some sections use `getSlug("book", lang)` (which returns `"prenota"` for Italian) for in-app navigation; other sections show `/{lang}/book` hardcoded. These are not equivalent on static export.
+**RESOLVED (TASK-22, 2026-02-18) — Outcome B confirmed.** Static analysis conclusively establishes Outcome B without requiring a staging test:
 
-**Verification Task 0 (must run before any CTA migration):** See Track E Task 29 below. Before migrating any call site, verify by manual test or CI canary:
-- Direct load `https://staging.brikette-website.pages.dev/it/prenota` → confirms 200-rewrite works for external traffic
-- Click a CTA that calls `router.push("/it/prenota")` from within the SPA → confirms whether this 404s or resolves
-- Repeat for 1 non-EN locale that uses the canonical `/book` segment (e.g. English stays `/en/book`)
+- `apps/brikette/src/app/[lang]/book/page.tsx` → `generateStaticParams()` calls `generateLangParams()` which produces `{ lang: "it" }`, `{ lang: "de" }` etc. Static files are generated at `/{lang}/book/index.html` only. No route exists for `[lang]/prenota` in the App Router file system.
+- `public/_redirects` contains Cloudflare Pages 200-rewrites (e.g. `/it/prenota → /it/book  200`). These run at the Cloudflare edge for inbound HTTP requests. They do **not** intercept in-SPA `router.push` or `<Link>` navigation — the running JavaScript SPA uses Next.js's client router which resolves against App Router routes only.
+- `getSlug("book", "it")` returns `"prenota"` (slug-map.ts). This is the correct value for SEO-facing URLs. It is **not** a valid App Router path segment.
+- Staging manual Test B (in-app nav test) is no longer required to determine URL strategy — the mechanism is unambiguous.
 
-**Provisional rule (apply this until verification contradicts it):** Use `/{lang}/book` (canonical App Router path) for all `router.push()` and `<Link href>` calls in-app. Reserve localized slug paths for SEO-facing display URLs only (e.g., canonical `<link>` tag, sitemap.xml, external share links). If verification proves `router.push("/it/prenota")` works correctly on static export, update this decision to use `getSlug` everywhere.
+**Confirmed rule:** Use `/{lang}/book` (canonical App Router path) for all `router.push()` and `<Link href>` in-app navigation. Use `getSlug("book", lang)` **only** for SEO-facing display URLs (canonical `<link>` tag, sitemap.xml, external share links, and `generateMetadata` path construction as already done in `book/page.tsx`).
 
 ```ts
-// Provisional — use canonical path for in-app navigation
+// CONFIRMED CORRECT — canonical path for in-app navigation
 const bookPath = `/${lang}/book`;
-// NOT: `/${lang}/${getSlug("book", lang)}` — fails on static export until verified
+// getSlug("book", "it") → "prenota" — use ONLY for canonical/sitemap, NOT router.push
 ```
 
-**Effect on call site table:** All `router.push` and `<Link href>` values in the blast radius table use `/${lang}/book`. The `getSlug` helper is preserved for sitemap/canonical tag use where it already works correctly.
+**Effect on call site table:** All `router.push` and `<Link href>` values in the blast radius table use `/${lang}/book`. No changes to the blast radius table needed — the provisional rule was already correct. Staging Test B is now optional (useful to confirm 200-rewrite for inbound traffic, not needed to determine in-app strategy).
 
 ### Decision B: Reserve Now with No Dates
 

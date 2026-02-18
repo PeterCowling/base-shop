@@ -93,7 +93,7 @@ and reliable `begin_checkout` (with `items[]`) are still missing.
 
 - Related brief: `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md`
 - Key architectural decisions from fact-find:
-  - Decision A: URL strategy (provisional: canonical `/{lang}/book` for in-app nav; pending TASK-22 verification)
+  - Decision A: URL strategy — RESOLVED (TASK-22, 2026-02-18): use `/{lang}/book` for all in-app navigation; `getSlug` for SEO-facing external URLs only
   - Decision B: Dates gate — disable RoomCard CTAs until valid dates present on `/book`
   - Decision C: Analytics placement — callback props from app layer; `packages/ui` stays dumb
   - Decision D: Deals — `view_promotion`/`select_promotion`, navigate to `/book?deal=ID`
@@ -180,9 +180,9 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Pending | TASK-21,TASK-29 | — |
 | TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Pending | TASK-29 | TASK-13 |
 | TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Pending | TASK-29 | TASK-14 |
-| TASK-22 | INVESTIGATE | Route truth verification: test in-app nav for localized slugs on static export | 90% | S | Pending | — | TASK-26,TASK-27 |
-| TASK-23 | IMPLEMENT | Extract Octorate URL builder from Booking2Modal into shared utility + unit tests | 85% | M | Pending | — | TASK-27 |
-| TASK-24 | IMPLEMENT | Remove ModalType booking/booking2 + delete packages/ui booking modal primitives | 85% | S | Pending | — | TASK-25,TASK-26 |
+| TASK-22 | INVESTIGATE | Route truth verification: test in-app nav for localized slugs on static export | 90% | S | Complete (2026-02-18) | — | TASK-26,TASK-27 |
+| TASK-23 | IMPLEMENT | Extract Octorate URL builder from Booking2Modal into shared utility + unit tests | 85% | M | Complete (2026-02-18) | — | TASK-27 |
+| TASK-24 | IMPLEMENT | Remove ModalType booking/booking2 + delete packages/ui booking modal primitives (scope expanded: all packages/ui consumers) | 85% | S | Complete (2026-02-18) | — | TASK-25,TASK-26 |
 | TASK-25 | IMPLEMENT | Remove brikette booking modal infrastructure (lazy-modals, payloadMap, global-modals, delete files) | 85% | M | Pending | TASK-24 | TASK-26,TASK-28 |
 | TASK-26 | IMPLEMENT | Migrate 9x openModal("booking") call sites to router.push/Link | 85% | M | Pending | TASK-22,TASK-24 | TASK-28 |
 | TASK-27 | IMPLEMENT | Migrate 2x openModal("booking2") in RoomCard to direct Octorate link (Decision B + E queryState) | 82% | M | Pending | TASK-22,TASK-23,TASK-24 | TASK-28 |
@@ -197,7 +197,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-36 | IMPLEMENT | Add cta_click to header/hero/BookingWidget/OffersModal/content-page CTAs (navigation-based) | 82% | M | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-37 | IMPLEMENT | Update GA4_ENUMS: remove booking/booking2 modal_type, add new enum values | 88% | S | Pending | TASK-29 | — |
 | TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
-| TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Pending | — | — |
+| TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Complete (2026-02-18) | — | — |
 | TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Pending | TASK-29 | — |
 | TASK-41 | IMPLEMENT | Verify and implement page_view on SPA route changes (Home → /book internal navigation) | 80% | S | Pending | TASK-29 | — |
 | TASK-42 | IMPLEMENT | Register GA4 custom dimensions in GA4 Admin (cta_id, cta_location, item_list_id, coupon) | 90% | S | Pending | TASK-31,TASK-37 | — |
@@ -423,7 +423,8 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** Static code analysis (no staging deploy needed). `generateStaticParams()` produces `/{lang}/book/index.html` only. Cloudflare `_redirects` 200-rewrites are edge-only (HTTP requests), not in-SPA client router. `router.push("/it/prenota")` would 404 on static export. Outcome B confirmed: use `/{lang}/book` for all in-app navigation. `fact-find.md` updated with full resolution notes.
 - **Affects:** `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` (decision update only)
 - **Depends on:** —
 - **Blocks:** TASK-26, TASK-27
@@ -451,7 +452,8 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** `buildOctorateUrl.ts` created with discriminated union return, `codice=45111`, NR/Flex routing, deal+UTM params, 5 validation guards. `buildOctorateUrl.test.ts`: 15/15 tests pass. Scout finding: param name is `room` (not `codfta`); NR/Flex rate codes come from `roomsData[id].rateCodes.direct.nr/flex`; endpoint is `confirm.xhtml`.
 - **Affects:**
   - `apps/brikette/src/utils/buildOctorateUrl.ts` (new)
   - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx` ([readonly — source of truth for URL params])
@@ -489,7 +491,8 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence (scope expanded):** Original scope insufficient — packages/ui TypeScript would fail unless all internal consumers were fixed. Controlled scope expansion documented here: context.ts (ModalType), index.ts, types.ts (5 booking interfaces removed), lazy-modals.ts, GlobalModals.tsx (all booking state/memo/callback/JSX removed), RoomsSection.tsx (openModal removed), ApartmentDetailsSection.tsx + ApartmentHeroSection.tsx + DealsPage.tsx + MobileNav.tsx (useModal → onBookingCtaClick callback prop), DesktopHeader.tsx (useModal removed, book() removed, onBookClick simplified), LandingHeroSection.tsx (handleReserve → no-op), ModalBasics.test.tsx (3 BookingModal2 tests removed), BookingModal.tsx + BookingModal2.tsx deleted. TypeScript check: 0 errors after fixes. TC-01 (packages/ui TypeScript clean): Pass. TASK-25 (brikette lazy-modals/payloadMap/global-modals) and TASK-26 (brikette-specific call sites) remain separate.
 - **Affects:**
   - `packages/ui/src/context/modal/context.ts`
   - `packages/ui/src/organisms/modals/BookingModal.tsx` (delete)
@@ -998,7 +1001,8 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** 4 new tests added to existing `apps/brikette/src/test/performance/reportWebVitals.test.ts` (7 total, all pass). Scout finding: transport is `gtag("event", "web_vitals", {...})` not `navigator.sendBeacon` — plan description was incorrect; tests written for actual gtag transport. Also discovered try/catch error swallowing, enabling the "swallows errors" test. Run with `--config apps/brikette/jest.config.cjs` (brikette-specific `@/` alias required; governed runner needs explicit config flag for brikette tests).
 - **Affects:**
   - `apps/brikette/src/test/performance/reportWebVitals-coverage.test.ts`
   - `[readonly] apps/brikette/src/performance/reportWebVitals.ts`

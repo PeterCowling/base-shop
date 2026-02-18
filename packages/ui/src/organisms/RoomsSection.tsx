@@ -6,7 +6,6 @@ import Link from "next/link";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
-import { useModal } from "../context/ModalContext";
 import { roomsData } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import RoomCard from "../molecules/RoomCard";
@@ -122,7 +121,6 @@ function RoomsSection({
   const fallbackLang = useCurrentLanguage();
   const lang = explicitLang ?? fallbackLang;
   const { t } = useTranslation("roomsPage", { lng: lang });
-  const { openModal } = useModal();
   const [clientBookingQuery, setClientBookingQuery] = useState<RoomsSectionBookingQuery | null>(
     bookingQuery ?? null
   );
@@ -133,8 +131,8 @@ function RoomsSection({
   }, [bookingQuery]);
   const resolvedBookingQuery = bookingQuery ?? clientBookingQuery;
   const checkIn = resolvedBookingQuery?.checkIn?.trim() || getTodayIso();
-  const checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
-  const adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
+  const _checkOut = resolvedBookingQuery?.checkOut?.trim() || getDatePlusTwoDays(checkIn);
+  const _adults = parseInt(resolvedBookingQuery?.pax ?? "1", 10) || 1;
   const normalizedQueryString = (resolvedBookingQuery?.queryString ?? "").trim().replace(/^\?/, "");
   const searchString = normalizedQueryString ? `?${normalizedQueryString}` : "";
 
@@ -199,23 +197,9 @@ function RoomsSection({
 
             const openBooking = (rateType: "nonRefundable" | "refundable") => {
               const plan = rateType === "nonRefundable" ? "nr" : "flex";
-              const octorateRateCode =
-                plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;
               onRoomSelect?.({ roomSku: room.id, plan, index, itemListId });
-              openModal("booking2", {
-                checkIn,
-                checkOut,
-                adults,
-                rateType,
-                room: {
-                  nonRefundableCode: room.rateCodes.direct.nr,
-                  refundableCode: room.rateCodes.direct.flex,
-                },
-                roomSku: room.id,
-                plan,
-                octorateRateCode,
-                source: "room_card",
-              });
+              // Booking modal removed (TASK-24). Navigation is handled by the app layer
+              // via RoomCard props (brikette: TASK-27 direct Octorate link).
             };
             return (
               <div key={room.id} className="flex flex-col">

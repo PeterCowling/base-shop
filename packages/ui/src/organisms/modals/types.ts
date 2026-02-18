@@ -43,37 +43,3 @@ export interface ContactModalCopy {
   footerButton: string;
 }
 
-export interface BookingModalCopy {
-  title: string;
-  subTitle: string;
-  checkInLabel: string;
-  checkOutLabel: string;
-  guestsLabel: string;
-  overlayLabel: string;
-  closeLabel: string;
-  datePlaceholder: string;
-  buttonLabel: string;
-}
-
-export interface BookingGuestOption {
-  value: number;
-  label: string;
-}
-
-export interface BookingModalBuildParams {
-  checkIn: Date;
-  checkOut: Date;
-  guests: number;
-}
-
-export type BookingModalHrefBuilder = (params: BookingModalBuildParams) => string;
-
-export interface BookingModal2Copy {
-  title: string;
-  checkInLabel: string;
-  checkOutLabel: string;
-  adultsLabel: string;
-  confirmLabel: string;
-  cancelLabel: string;
-  overlayLabel: string;
-}

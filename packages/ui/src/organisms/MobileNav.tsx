@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
-import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolvePrimaryCtaLabel } from "../shared";
@@ -53,7 +52,6 @@ function MobileNav({
   const lang = explicitLang ?? normalizedI18nLang ?? fallbackLang;
   const { t, ready } = useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
-  const { openModal } = useModal();
   const pathname = usePathname();
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
@@ -64,7 +62,6 @@ function MobileNav({
     : `/${lang}/${translatePath("book", lang)}`;
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
-  const openBooking = useCallback(() => openModal("booking"), [openModal]);
   const onBookingClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
       // On apartment routes let normal navigation handle the link — no modal.
@@ -72,9 +69,8 @@ function MobileNav({
       // Keep a semantic link fallback for no-JS while preserving modal UX when hydrated.
       onPrimaryCtaClick?.();
       event.preventDefault();
-      openBooking();
     },
-    [onPrimaryCtaClick, openBooking, isApartmentRoute]
+    [onPrimaryCtaClick, isApartmentRoute]
   );
   const ctaClass = "cta-dark";
   const primaryCtaLabel = useMemo(() => {

@@ -20,7 +20,7 @@ describe("createCustomerSession", () => {
 
   afterAll(() => {
     if (originalNodeEnv === undefined) {
-      delete process.env.NODE_ENV;
+      delete (process.env as Record<string, string | undefined>).NODE_ENV;
     } else {
       (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
     }

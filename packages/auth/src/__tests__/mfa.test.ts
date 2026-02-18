@@ -5,7 +5,7 @@ const realKeyuri = authenticator.keyuri;
 const keyuri = jest.spyOn(authenticator, "keyuri");
 const realVerify = authenticator.verify;
 type VerifyOptions = Parameters<typeof authenticator.verify>[0] & { window?: number };
-const verify = jest.spyOn(authenticator, "verify") as jest.MockedFunction<
+const verify = jest.spyOn(authenticator, "verify") as unknown as jest.MockedFunction<
   (opts: VerifyOptions) => boolean
 >;
 

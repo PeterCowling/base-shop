@@ -60,13 +60,13 @@ function createCookieStore(): CookieStoreMock {
     get: jest.fn(function get(this: CookieStoreMock, key: string) {
       const value = this.jar.get(key);
       return value ? { name: key, value } : undefined;
-    }),
+    }) as unknown as CookieStoreMock["get"],
     set: jest.fn(function set(this: CookieStoreMock, key: string, value: string) {
       this.jar.set(key, value);
-    }),
+    }) as unknown as CookieStoreMock["set"],
     delete: jest.fn(function del(this: CookieStoreMock, opts: { name: string }) {
       this.jar.delete(opts.name);
-    }),
+    }) as unknown as CookieStoreMock["delete"],
   };
   return store;
 }
@@ -81,16 +81,16 @@ export function makeCookieStore(initial: Record<string, string> = {}): CookieSto
 
 function createHeaders(): HeadersMock {
   return {
-    get: jest.fn(() => null),
+    get: jest.fn(() => null) as unknown as HeadersMock["get"],
   };
 }
 
 function createSessionStore(): SessionStoreMock {
   return {
-    get: jest.fn(async () => null),
-    set: jest.fn(async () => undefined),
-    delete: jest.fn(async () => undefined),
-    list: jest.fn(async () => []),
+    get: jest.fn(async () => null) as unknown as SessionStoreMock["get"],
+    set: jest.fn(async () => undefined) as unknown as SessionStoreMock["set"],
+    delete: jest.fn(async () => undefined) as unknown as SessionStoreMock["delete"],
+    list: jest.fn(async () => []) as unknown as SessionStoreMock["list"],
   };
 }
 
@@ -104,13 +104,13 @@ const ORIGINAL_ENV = { ...process.env };
 const state: SessionMockState = {
   cookies: createCookieStore(),
   headers: createHeaders(),
-  sealData: jest.fn(async (_data: unknown, _options: { password: string; ttl: number }) => "sealed-token"),
+  sealData: jest.fn(async (_data: unknown, _options: { password: string; ttl: number }) => "sealed-token") as unknown as SessionMockState["sealData"],
   unsealData: jest.fn(async (_token: string, _options: { password: string; ttl: number }) => {
     throw new Error("unsealData mock not configured");
-  }),
-  randomUUID: jest.fn(),
+  }) as unknown as SessionMockState["unsealData"],
+  randomUUID: jest.fn() as unknown as SessionMockState["randomUUID"],
   sessionStore: createSessionStore(),
-  createSessionStoreImpl: jest.fn(),
+  createSessionStoreImpl: jest.fn() as unknown as SessionMockState["createSessionStoreImpl"],
   sessionTtlSeconds: 3600,
   env: {
     SESSION_SECRET: "secret",
@@ -146,7 +146,7 @@ jest.mock("@acme/config/env/core", () => ({
 }));
 
 jest.mock("../../src/store", () => {
-  const actual = jest.requireActual<typeof import("../../src/store")>("../../src/store");
+  const actual = jest.requireActual("../../src/store") as Record<string, unknown>;
   return {
     __esModule: true,
     ...actual,

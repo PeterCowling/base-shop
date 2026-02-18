@@ -108,12 +108,11 @@ When the plan has a `## Parallelism Guide` section:
 
 1. Read the guide and identify the current eligible wave (earliest wave where all prerequisites are Complete).
 2. If wave size = 1: proceed with standard single-task execution below.
-3. If wave size ≥ 2 AND all tasks are code-track IMPLEMENT: use `_shared/wave-dispatch-protocol.md`.
+3. If wave size ≥ 2: use `_shared/wave-dispatch-protocol.md`.
    - Dispatch all wave tasks as analysis subagents in a SINGLE message.
    - Collect results; run conflict detection via `touched_files`.
    - Apply phase: orchestrator applies diffs sequentially under writer lock.
    - Commit wave together; run post-task updates for all tasks in the wave.
-4. If wave size ≥ 2 AND any task is business-artifact: fall back to sequential execution (wave dispatch for business-artifact is deferred to v2).
 
 ## Executor Dispatch
 

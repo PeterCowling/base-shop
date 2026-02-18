@@ -6,9 +6,17 @@ Execute business-artifact work with explicit VC validation and fail-first eviden
 
 ## Required Sequence
 
-1. **Red:** run falsification probe from task execution plan; record evidence.
+The Red→Green→Refactor phases are always sequential. Subagent parallelism applies **within** phases where items are independent.
+
+1. **Red:** run falsification probes from task execution plan; record evidence.
+   - If task has ≥2 independent VC checks: dispatch parallel read-only subagents (one per VC probe) in a SINGLE message. Synthesize all probe results before proceeding to Green.
+   - If only 1 VC check or probes are coupled: run sequentially.
 2. **Green:** produce minimum artifact that satisfies scoped VC checks.
-3. **Refactor:** improve quality/operability; rerun VC checks.
+   - If artifact has ≥2 structurally independent sections (e.g. separate contract docs, independent taxonomy tables): dispatch parallel drafting subagents in a SINGLE message. Apply section diffs serially under writer lock.
+   - If sections are coupled or artifact is a single unified doc: draft sequentially.
+3. **Refactor:** improve quality/operability; rerun VC checks. Always sequential — cross-section coherence required.
+
+See `../../_shared/subagent-dispatch-contract.md` (Model A) for output schema, budget controls, and failure handling.
 
 ## Approval and Measurement
 

@@ -49,7 +49,3 @@ If a subagent returns `status: fail`:
 - Continue applying remaining non-conflicting subagent results
 - Surface blocked task to operator after wave commit
 
-## Code-Track Only (v1)
-
-Initial release: code-track tasks only. Business-artifact wave dispatch deferred to v2
-pending one validated code-track wave run.

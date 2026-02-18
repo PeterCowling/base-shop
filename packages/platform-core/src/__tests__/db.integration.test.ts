@@ -27,7 +27,6 @@
  * strongly recommended.
  */
 
-import type { PrismaClient } from "@prisma/client";
 
 // Check if we should run integration tests
 const DATABASE_URL = process.env.DATABASE_URL;
@@ -38,7 +37,8 @@ const shouldRunIntegration = Boolean(DATABASE_URL) && NODE_ENV !== "test";
 const describeIntegration = shouldRunIntegration ? describe : describe.skip;
 
 describeIntegration("Database integration", () => {
-  let prisma: PrismaClient;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let prisma: any;
   const testPrefix = `test_${Date.now()}_`;
   const createdShopIds: string[] = [];
   const createdOrderIds: string[] = [];
@@ -350,7 +350,7 @@ describeIntegration("Database integration", () => {
       createdShopIds.push(shop);
       createdOrderIds.push(orderId);
 
-      await prisma.$transaction(async (tx) => {
+      await prisma.$transaction(async (tx: any) => {
         await tx.shop.create({
           data: { id: shop, data: { name: "TX Shop" } },
         });
@@ -381,7 +381,7 @@ describeIntegration("Database integration", () => {
       const orderId = `${testPrefix}order_rollback`;
 
       try {
-        await prisma.$transaction(async (tx) => {
+        await prisma.$transaction(async (tx: any) => {
           await tx.shop.create({
             data: { id: shop, data: { name: "Rollback Shop" } },
           });
@@ -438,7 +438,7 @@ describeIntegration("Database integration", () => {
       });
 
       expect(shop1Orders).toHaveLength(2);
-      expect(shop1Orders.every((o) => o.shop === shop1)).toBe(true);
+      expect(shop1Orders.every((o: any) => o.shop === shop1)).toBe(true);
     });
 
     it("orders results by field", async () => {
@@ -468,7 +468,7 @@ describeIntegration("Database integration", () => {
         orderBy: { deposit: "asc" },
       });
 
-      expect(sorted.map((o) => o.deposit)).toEqual([1000, 2000, 3000]);
+      expect(sorted.map((o: any) => o.deposit)).toEqual([1000, 2000, 3000]);
     });
   });
 });

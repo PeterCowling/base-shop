@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-40, TASK-41 complete — Wave 7 in progress)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-40, TASK-41 complete — Wave 7 in progress)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -192,7 +192,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Complete (2026-02-18) | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
 | TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Complete (2026-02-18) | TASK-29,TASK-30,TASK-31,TASK-15 | — |
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
-| TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Pending | TASK-29,TASK-30,TASK-15 | — |
 | TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-37 | IMPLEMENT | Update GA4_ENUMS + delete superseded helpers + clean prefetchInteractive dead imports | 88% | S | Complete (2026-02-18) | TASK-29 | TASK-31 |
@@ -904,9 +904,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`
+  - `apps/brikette/src/test/components/ga4-34-deals-page-promotions.test.tsx` (new)
   - `[readonly] apps/brikette/src/utils/ga4-events.ts`
 - **Depends on:** TASK-29, TASK-31, TASK-15
 - **Blocks:** —
@@ -922,6 +923,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Validation contract:**
   - TC-01: Render → `view_promotion` called with deals promotions array
   - TC-02: Click → `select_promotion` called with single promotion; then navigation to /book?deal=ID
+- **Build evidence (2026-02-18):**
+  - `DealsPageContent.tsx`: mount `useEffect` fires `fireViewPromotion` for all DEALS; `openBooking` callback fires `fireSelectPromotion` + `router.push(…?deal=ID)` when `kind === "deal"`.
+  - DealCard mock uses `data-cy` (project testIdAttribute); fake timer set to 2025-10-01 (active period for sep20_oct31_15off).
+  - Test: `ga4-34-deals-page-promotions.test.tsx` — 2/2 pass (TC-01 view_promotion, TC-02 select_promotion + navigation).
 
 ---
 

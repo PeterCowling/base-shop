@@ -23,7 +23,7 @@ import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
-import { fireViewItemList } from "@/utils/ga4-events";
+import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -283,6 +283,15 @@ function DealsPageContent({ lang }: Props) {
       itemListId: "deals_index",
       rooms: DEALS.map((deal) => ({ sku: deal.id })),
     });
+    // TC-01: fire view_promotion for all deals on mount
+    if (DEALS.length > 0) {
+      fireViewPromotion({
+        promotions: DEALS.map((deal) => ({
+          promotion_id: deal.id,
+          promotion_name: `${deal.discountPct}% off`,
+        })),
+      });
+    }
   }, []);
   const { t } = useTranslation("dealsPage", { lng: lang });
   const { openModal } = useOptionalModal();
@@ -296,6 +305,14 @@ function DealsPageContent({ lang }: Props) {
   const openBooking = useCallback(
     ({ kind, dealId }: { kind: "deal" | "standard"; dealId?: string }) => {
       if (kind === "deal" && dealId) {
+        // TC-02: fire select_promotion before navigating to /book?deal=ID
+        const deal = DEALS.find((d) => d.id === dealId);
+        fireSelectPromotion({
+          promotion: {
+            promotion_id: dealId,
+            promotion_name: deal ? `${deal.discountPct}% off` : dealId,
+          },
+        });
         router.push(`/${lang}/book?deal=${encodeURIComponent(dealId)}`);
         return;
       }

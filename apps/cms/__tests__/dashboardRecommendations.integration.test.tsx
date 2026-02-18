@@ -11,6 +11,31 @@ jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   useLayout: () => ({ setConfiguratorProgress: jest.fn() }),
 }));
 
+// Capture toast.info calls so we can assert recommendation messages
+// without needing a real NotificationProvider in the tree.
+// NOTE: The stable _toastInfo object is created inside the factory so it is
+// accessible even after jest.mock() hoisting.
+jest.mock("@acme/ui/operations", () => {
+  const React = require("react");
+  const _toastInfo = jest.fn();
+  return {
+    __toastInfo: _toastInfo,
+    useToast: () => ({
+      success: jest.fn(),
+      error: jest.fn(),
+      warning: jest.fn(),
+      info: _toastInfo,
+      loading: jest.fn(),
+      dismiss: jest.fn(),
+    }),
+    useNotifications: () => ({ notifications: [], addNotification: jest.fn(), removeNotification: jest.fn(), clearAll: jest.fn() }),
+    toast: { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() },
+    NotificationProvider: ({ children }: { children: React.ReactNode }) => children,
+    NotificationProviderWithGlobal: ({ children }: { children: React.ReactNode }) => children,
+    NotificationContainer: () => null,
+  };
+});
+
 jest.mock(
   "@/components/atoms",
   () => {
@@ -130,6 +155,11 @@ afterEach(() => {
   window.addEventListener = originalAddEventListener;
 });
 
+beforeEach(() => {
+  const { __toastInfo } = jest.requireMock("@acme/ui/operations") as { __toastInfo: jest.Mock };
+  __toastInfo.mockClear();
+});
+
 test(
   "shows recommendation message when launching step with suggested steps",
   async () => {
@@ -140,8 +170,12 @@ test(
     expect(link).toBeDefined();
     link?.addEventListener("click", (e) => e.preventDefault());
     fireEvent.click(link!);
-    const alert = await screen.findByRole("alert");
-    expect(alert).toHaveTextContent(/step a/i);
+    // The implementation calls toast.info() with the recommendation message
+    // rather than rendering a DOM alert element.
+    const { __toastInfo } = jest.requireMock("@acme/ui/operations") as { __toastInfo: jest.Mock };
+    expect(__toastInfo).toHaveBeenCalledWith(
+      expect.stringMatching(/step a/i),
+    );
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     expect(stored.completed?.b).toBeFalsy();
   }

@@ -11,8 +11,26 @@ const mockRename = jest.fn(async () => {});
 const mockExistsSync = jest.fn(() => true);
 const mockRenameSync = jest.fn();
 
+// Stub fs.promises.open to return a fake FileHandle for acquireLock().
+// The route calls fs.open(LOCK, 'wx') to acquire a write lock; we allow
+// the first call to succeed and return a handle that can be closed/unlinked.
+const mockFileHandle = { close: jest.fn(async () => {}) };
+const mockOpen = jest.fn(async () => mockFileHandle);
+const mockCopyFile = jest.fn(async () => {});
+const mockUnlink = jest.fn(async () => {});
+const mockWriteFile = jest.fn(async () => {});
+const mockMkdir = jest.fn(async () => {});
+
 jest.mock('fs', () => ({
-  promises: { readFile: mockReadFile, rename: mockRename },
+  promises: {
+    readFile: mockReadFile,
+    rename: mockRename,
+    open: mockOpen,
+    copyFile: mockCopyFile,
+    unlink: mockUnlink,
+    writeFile: mockWriteFile,
+    mkdir: mockMkdir,
+  },
   existsSync: mockExistsSync,
   renameSync: mockRenameSync,
 }));

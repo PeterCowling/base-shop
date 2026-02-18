@@ -73,3 +73,17 @@ jest.mock("next/router", () => ({
     prefetch: jest.fn(),
   }),
 }));
+
+// Stub @acme/ui/operations so components using NotificationCenter (useToast)
+// render without a real NotificationProvider in tests.
+jest.mock("@acme/ui/operations", () => {
+  const React = require("react");
+  return {
+    useToast: () => ({ success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() }),
+    useNotifications: () => ({ notifications: [], addNotification: jest.fn(), removeNotification: jest.fn(), clearAll: jest.fn() }),
+    toast: { success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() },
+    NotificationProvider: ({ children }: { children: React.ReactNode }) => children,
+    NotificationProviderWithGlobal: ({ children }: { children: React.ReactNode }) => children,
+    NotificationContainer: () => null,
+  };
+});

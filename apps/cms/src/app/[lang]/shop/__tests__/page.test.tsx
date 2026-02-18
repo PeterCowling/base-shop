@@ -31,7 +31,7 @@ const expectedSkus: SKU[] = [
   },
 ];
 
-const mockShopClient = jest.fn(() => null);
+let mockShopClient: jest.Mock;
 
 jest.mock("@acme/platform-core/products", () => ({
   PRODUCTS: [
@@ -66,7 +66,10 @@ jest.mock("@acme/platform-core/products", () => ({
 
 jest.mock("../ShopClient.client", () => ({
   __esModule: true,
-  default: mockShopClient,
+  default: (() => {
+    mockShopClient = jest.fn(() => null);
+    return mockShopClient;
+  })(),
 }));
 
 describe("ShopIndexPage", () => {

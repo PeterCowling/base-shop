@@ -5,7 +5,7 @@ Status: Ready-for-planning
 Domain: UI | API | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-15
+Last-updated: 2026-02-18
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -22,25 +22,38 @@ Card-ID: BRIK-005
 
 ## Scope
 
+### Scope Amendment — 2026-02-18: Clean Break From Booking Modals
+
+**Decision (Pete, 2026-02-18):** Remove `BookingModal` (V1) and `Booking2Modal` (V2) entirely. All booking-intent CTAs route directly to the `/{lang}/book` page or Octorate, with no modal intermediary.
+
+**Retained modals (informational / non-booking):** `location`, `contact`, `facilities`, `language`, `offers`.
+
+**OffersModal CTA chain change:** "Reserve Now" inside `OffersModal` currently does `closeModal() → openModal("booking")`. It becomes `closeModal() → router.push(\`/${lang}/book\`)` (canonical path — see Decision A; update to `getSlug` variant after route truth verification if applicable).
+
+**GA4 semantics resolved by this decision:** Model A (clean funnel) is now the only option. Booking modals no longer fire any `begin_checkout` events. The funnel becomes: `cta_click` → `page_view(/{lang}/book)` → `view_item_list` → `select_item` → `begin_checkout` (direct Octorate navigation from room card).
+
+**Sticky CTA variant resolved:** `ContentStickyCta` (Variant A: content pages) becomes a `<Link href="/{lang}/book">`. `StickyBookNow` (Variant B: room detail, with direct Octorate deep link) is unchanged.
+
+See **Modal Removal Blast Radius** section for the complete surgical impact list.
+
 ### Summary
 
-The Brikette website has the mechanics of a booking flow (date picker, room cards, Octorate redirect) but no coherent conversion pipeline. Today, conversion intent enters via two primary surfaces: (1) modal-first booking flows (`BookingModal` / `Booking2Modal`) opened by most internal CTAs when JS is enabled, and (2) the `/book` page as an SEO/direct-entry landing page plus a degraded fallback primarily for header/mobile-nav links (most in-page CTAs are JS-dependent). The `/book` page currently renders a bare date picker, a room list, and a fee disclosure panel; it contains zero persuasive copy, zero trust signals, zero direct-booking value proposition, and zero structured data. The `DirectBookingPerks` component (25% off, free breakfast, free evening drink) already exists in the codebase but is not imported on the book page (and conversion-copy parity is also missing inside booking modals). Meanwhile, 10 other high-traffic pages have zero or weak booking CTAs, and the GA4 e-commerce event pipeline is incomplete: only `begin_checkout` exists (and the generic variant lacks price/currency/items). This fact-find documents the complete as-is state across every page, flow, CTA, modal, and GA4 event, and calls out the planning decisions needed to keep the funnel analytically coherent.
+The Brikette website has the mechanics of a booking flow (date picker, room cards, Octorate redirect) but no coherent conversion pipeline. The 2026-02-18 scope amendment removes `BookingModal`/`Booking2Modal` entirely and routes all booking CTAs through the `/{lang}/book` page. The target funnel is: CTA click → `/book` (date picker + room list) → direct Octorate navigation from room card. The `/book` page currently renders a bare date picker, a room list, and a fee disclosure panel with zero persuasive content — it needs conversion content, structured data, and GA4 instrumentation before it can serve as the universal booking entry point. The `DirectBookingPerks` component (25% off, free breakfast, free evening drink) already exists but is not imported on the book page. Meanwhile, 10 other high-traffic pages have zero or weak booking CTAs, and the GA4 e-commerce event pipeline is incomplete. This fact-find documents the as-is state, the modal removal blast radius, and all planning decisions needed to ship a coherent funnel.
 
 ### Goals
 
-- **Transform `/book` from a transactional stub into a conversion-optimized landing page (SEO + direct-entry):** add "Why Book Direct" value proposition, trust signals, structured data (lodging + `FAQPage` JSON-LD), persuasive meta title/description, and internal links to guide content
-- **Add conversion-content parity inside booking modals (`BookingModal` / `Booking2Modal`):** a small "Why book direct" block and trust strip above the confirm/exit action (explicitly not a mechanics redesign)
+- **Remove booking modals (Track E — prerequisite):** Delete `BookingModal`/`Booking2Modal` and all 11 call sites; route all booking-intent CTAs to `/{lang}/${getSlug("book", lang)}` or direct Octorate links per the blast radius table
+- **Transform `/book` into a conversion-optimized landing page (SEO + direct-entry):** add "Why Book Direct" value proposition, trust signals, structured data (lodging + `FAQPage` JSON-LD), persuasive meta title/description, internal links to guide content, and ensure dates-required gate on room card CTAs
 - **Add booking CTAs to all high-traffic pages currently lacking them:** about, bar-menu, breakfast-menu, guide detail pages, assistance, how-to-get-here
-- **Implement a coherent GA4 funnel instrumentation model (lock semantics first):** `view_item_list` -> `view_item` -> `select_item` -> `begin_checkout` for room-selected flows, plus explicit tracking for availability-only flows (see semantics decision below)
-- **Add CTA click tracking + modal open/close tracking** for every booking-intent interaction, with outbound-event reliability requirements for same-tab redirects
-- **Verify GA4 events on staging using DebugView + Network payload checks + Realtime** (Realtime-only is insufficient for `items[]`/`value` QA), and isolate staging streams from production reporting
+- **Implement a coherent GA4 funnel:** `cta_click` → `page_view(/book)` → `view_item_list` → `select_item` → `begin_checkout` (with `items[]` always present); add `search_availability` event for date submission on `/book`; add `view_promotion`/`select_promotion` for deals tracking; apply `trackThenNavigate` reliability policy for all outbound Octorate navigations
+- **Verify GA4 events on staging using DebugView + Network payload checks + Realtime** (Realtime-only is insufficient for `items[]`/`value` QA); staging GA4 stream isolation is a hard prerequisite gate (Task 0 for Track C)
 
 ### Non-goals
 
 - Redesigning the Octorate booking engine itself (external system)
 - Implementing `purchase` event tracking (blocked by Octorate's one-directional redirect; absorbed from GA4-09 in `docs/plans/archive/brik-ga4-world-class-plan.md` — remains deferred at 70% confidence; unblock options: webhook if found in Octorate admin, redirect-back flow, periodic API sync, manual CSV import)
 - A/B testing framework (archived plan exists; not in scope here)
-- Redesigning the booking modal mechanics (fields, validation, layout) (separate scope; see `docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md`). Small conversion-copy blocks inside modals are in-scope.
+- Booking modal usability improvements (separate deferred scope; see `docs/plans/brikette-booking-funnel-usability-hardening-fact-find.md` — moot post-amendment since modals are being removed)
 - Google Ads or Search Console linking (deferred P3 per prioritization scorecard)
 
 ### Constraints & Assumptions
@@ -97,7 +110,9 @@ The book page is a high-intent conversion surface for SEO/direct-entry traffic a
 
 Neither mentions the property name, location, direct booking benefits, or any differentiator. Compare with what it should be:
 - **Title:** "Book Direct at Hostel Brikette Positano | Best Price + Free Breakfast"
-- **Description:** "Book direct for up to 25% off, complimentary breakfast & evening drinks. The only hostel in Positano with sea-view terraces. Best price guaranteed."
+- **Description:** "Book direct for up to 25% off, complimentary breakfast & evening drinks. Sea-view terraces, Positano's best-rated hostel. Best price guaranteed."
+
+**Note on "only hostel in Positano":** Avoid this claim unless it can be fact-checked and is legally defensible. If Positano has other hostels, it's false advertising. Use "best-rated" or "award-winning" (if true and sourced) instead.
 
 #### Structured data
 
@@ -108,7 +123,7 @@ Neither mentions the property name, location, direct booking benefits, or any di
 **Priority order (highest impact first):**
 
 1. **"Book Direct & Save" value proposition section** — import `DirectBookingPerks` above the room cards. This is the #1 reason the page exists: differentiate from Hostelworld/Booking.com.
-2. **H1 with property name + location** — "Book Direct at Hostel Brikette, Positano" (keyword target, unique positioning as the only hostel in Positano)
+2. **H1 with property name + location** — "Book Direct at Hostel Brikette, Positano" (keyword target: property name + location). Do not include "only hostel in Positano" — unverified and legally risky. Use a verifiable differentiator if one exists (e.g. highest-rated, sea-view, etc.).
 3. **Social proof strip** — Hostelworld rating badge + review count. Reuse `SocialProofSection` or a compact variant.
 4. **JSON-LD lodging structured data** — lock `@type` strategy (`Hostel` vs `LodgingBusiness`) and include a minimum static field set: `name`, `address`, `geo`, `url`, `image`, `checkinTime`, `checkoutTime`, `amenityFeature`, `priceRange`, `potentialAction: ReserveAction`. **Omit `aggregateRating` unless ratings/reviews are first-party and hosted on-site.**
 5. **FAQ section with `FAQPage` schema** — "Is breakfast included?", "How do I get to Positano?", "What's the cancellation policy?", "Do you have private rooms?". Captures long-tail queries.
@@ -130,10 +145,10 @@ Neither mentions the property name, location, direct booking benefits, or any di
 
 `DirectBookingPerks` is wired to the `dealsPage` namespace; other reusable components may have similar coupling.
 
-Planning should choose one approach explicitly:
-- Allow `/book` (and booking modals if needed) to load additional namespaces (`dealsPage`, `homePage`, etc.)
-- Create book-specific variants that accept copy via props from `bookPage`
-- Move shared copy into a shared namespace (more refactor)
+Planning should choose one approach explicitly (booking modals are removed — `/book` is the only consumer):
+- Allow `/book` to load additional namespaces (`dealsPage`, `homePage`, etc.) — simplest, no new primitives; **recommended**
+- Create book-specific variants that accept copy via props from `bookPage` — cleaner separation but more work
+- Move shared copy into a shared namespace — more refactor than warranted at this stage
 
 
 ### Entry Points
@@ -159,29 +174,32 @@ Planning should choose one approach explicitly:
 
 ### Conversion Surface Map (Truth Table)
 
-Most internal booking CTAs open modals when JS is enabled. `/book` is primarily an SEO/direct-entry landing page and a no-JS/degraded fallback for the header/mobile-nav links.
+**Post-amendment (2026-02-18):** Booking modals are removed. All booking-intent CTAs route to `/{lang}/book` (or directly to Octorate for room-card CTAs with full context).
 
-| Trigger | Component/File | JS-enabled behavior | No-JS / degraded behavior |
+| Trigger | Component/File | Target behavior (post-amendment) | No-JS behavior |
 |---|---|---|---|
-| Header primary CTA (Desktop) | `packages/ui/src/organisms/DesktopHeader.tsx` | `openModal("booking")` (intercepts link click) | navigates to `/[lang]/book` |
-| Header primary CTA (Mobile) | `packages/ui/src/organisms/MobileNav.tsx` | `openModal("booking")` (intercepts link click) | navigates to `/[lang]/book` |
-| Home hero primary CTA | `packages/ui/src/organisms/LandingHeroSection.tsx` | `openModal("booking")` | no meaningful fallback (button requires JS) |
-| BookingWidget submit | `apps/brikette/src/components/landing/BookingWidget.tsx` | `openModal("booking", { checkIn, checkOut, adults })` | no meaningful fallback (JS required) |
-| RoomCard reserve buttons (rooms list, book page list) | `apps/brikette/src/components/rooms/RoomCard.tsx` | `openModal("booking2", { room, rateType, ... })` | no meaningful fallback (JS required) |
-| Home RoomsSection reserve buttons | `packages/ui/src/organisms/RoomsSection.tsx` | `openModal("booking2", { room, rateType, ... })` | no meaningful fallback (JS required) |
-| Deals reserve CTA | `packages/ui/src/organisms/DealsPage.tsx`, `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx` | `openModal("booking", { deal })` | no meaningful fallback (JS required) |
-| Room detail StickyBookNow | `packages/ui/src/organisms/StickyBookNow.tsx` | direct `<a>` to Octorate | works (link) |
-| Apartment flows | `apps/brikette/src/app/[lang]/apartment/*` | route to `/[lang]/apartment/book` then redirect to Octorate | works (links) |
+| Header primary CTA (Desktop) | `packages/ui/src/organisms/DesktopHeader.tsx` | `<Link href="/{lang}/book">` (was: intercept → modal) | navigates to `/[lang]/book` (unchanged) |
+| Header primary CTA (Mobile) | `packages/ui/src/organisms/MobileNav.tsx` | `<Link href="/{lang}/book">` (was: intercept → modal) | navigates to `/[lang]/book` (unchanged) |
+| Home hero primary CTA | `apps/brikette/src/app/[lang]/HomeContent.tsx` | `router.push(/{lang}/book)` (was: `openModal("booking")`) | now works via `<Link>` fallback |
+| BookingWidget submit | `apps/brikette/src/components/landing/BookingWidget.tsx` | `router.push(/{lang}/book?checkin=X&checkout=Y&pax=N)` (was: modal with prefill) | `/book` URL is shareable/bookmarkable |
+| RoomCard reserve buttons (rooms list, book page) | `apps/brikette/src/components/rooms/RoomCard.tsx` | Direct `<a href={octorateUrl}>` built from room's rate codes + dates (was: `openModal("booking2", ...)`) | works (plain `<a>` link) |
+| Home RoomsSection reserve buttons | `packages/ui/src/organisms/RoomsSection.tsx` | `router.push(/{lang}/book)` (was: `openModal("booking2", ...)`) | works via Link |
+| Deals reserve CTA | `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx` | `router.push(/{lang}/book?deal=dealId)` (was: modal with deal payload) | works via Link |
+| ContentStickyCta (content pages) | `apps/brikette/src/components/cta/ContentStickyCta.tsx` | `<Link href="/{lang}/book">` (was: `openModal("booking")`) | works via Link |
+| OffersModal CTA | `apps/brikette/src/context/modal/global-modals/OffersModal.tsx` | `closeModal(); router.push(/{lang}/book)` (was: chain to BookingModal) | N/A (modal JS-only) |
+| NotFoundView booking CTA | `apps/brikette/src/components/not-found/NotFoundView.tsx` | `<Link href="/{lang}/book">` (was: `openModal("booking")`) | works via Link |
+| Room detail StickyBookNow | `packages/ui/src/organisms/StickyBookNow.tsx` | Direct `<a>` to Octorate — **unchanged** | works (link) |
+| Apartment flows | `apps/brikette/src/app/[lang]/apartment/*` | Route to `/[lang]/apartment/book` then redirect to Octorate — **unchanged** | works (links) |
 
 ### Key Modules / Files
 
-#### CTA Components
-- `packages/ui/src/organisms/StickyBookNow.tsx` — Floating sticky CTA with Octorate deep link, "Book Now" label, "Best price guaranteed" + "Direct booking perks" badges. Session-dismissible. **Best-in-class CTA pattern on the site.**
-- `apps/brikette/src/components/landing/BookingWidget.tsx` — Inline date/guest picker + "Check availability" button. Opens `openModal("booking")`.
-- `apps/brikette/src/components/rooms/RoomCard.tsx` — Two action buttons per room: "Reserve Now -- Non-refundable" and "Reserve Now -- Flexible". Opens `openModal("booking2")`.
-- `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx` — Multi-button CTA: Book (modal), Events (bar-menu), Breakfast (breakfast-menu), Concierge (contact modal).
-- `packages/ui/src/organisms/DesktopHeader.tsx` — Persistent "Check availability" CTA in header. `href` to `/book`, `onClick` intercepts to `openModal("booking")`.
-- `packages/ui/src/organisms/MobileNav.tsx` — Mobile "Reserve" link. Same modal-open pattern.
+#### CTA Components (AS-IS — booking modal references below are the current state, not the target)
+- `packages/ui/src/organisms/StickyBookNow.tsx` — Floating sticky CTA with Octorate deep link, "Book Now" label, "Best price guaranteed" + "Direct booking perks" badges. Session-dismissible. **Best-in-class CTA pattern on the site. Unchanged post-amendment.**
+- `apps/brikette/src/components/landing/BookingWidget.tsx` — Inline date/guest picker + "Check availability" button. AS-IS: opens `openModal("booking")`. Target: `router.push("/{lang}/book?checkin=...&checkout=...&pax=N")`.
+- `apps/brikette/src/components/rooms/RoomCard.tsx` — Two action buttons per room: "Reserve Now -- Non-refundable" and "Reserve Now -- Flexible". AS-IS: opens `openModal("booking2")`. Target: direct `<a href={octorateUrl}>` (Track E-35).
+- `apps/brikette/src/app/[lang]/experiences/ExperiencesCtaSection.tsx` — Multi-button CTA: AS-IS: Book (modal), Events (bar-menu), Breakfast (breakfast-menu), Concierge (contact modal). Target: Book button → `router.push("/{lang}/book")`.
+- `packages/ui/src/organisms/DesktopHeader.tsx` — Persistent "Check availability" CTA in header. AS-IS: `href` to `/book`, `onClick` intercepts to `openModal("booking")`. Target: remove modal intercept; make it a plain `<Link href="/{lang}/book">`.
+- `packages/ui/src/organisms/MobileNav.tsx` — Mobile "Reserve" link. AS-IS: same modal-open pattern. Target: plain navigation link.
 
 #### Conversion Content Components (available but underused)
 - `apps/brikette/src/components/booking/DirectBookingPerks.tsx` — 3 perks with icons (25% off, free breakfast, free evening drink). i18n via `dealsPage` namespace. **Only on rooms pages, not on `/book`.**
@@ -233,12 +251,94 @@ Most internal booking CTAs open modals when JS is enabled. `/book` is primarily 
 - **Lazy modal loading:** All modals loaded via `React.lazy` with `<Suspense>` fallback. Evidence: `apps/brikette/src/context/modal/lazy-modals.ts`.
 - **Structured data pattern:** JSON-LD components are standalone React components that render `<script type="application/ld+json">` in the page head. Each page that has structured data imports the relevant component. Evidence: `HomeStructuredData.tsx`, `BreadcrumbStructuredData.tsx`.
 
+### Modal Removal Blast Radius
+
+#### Files to delete
+
+| File | Reason |
+|---|---|
+| `apps/brikette/src/context/modal/global-modals/BookingModal.tsx` | BookingGlobalModal container — removes V1 booking modal |
+| `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx` | Booking2GlobalModal container — removes V2 booking modal |
+| `packages/ui/src/organisms/modals/BookingModal.tsx` | UI primitive for V1 — verify no other consumers before deleting |
+| `packages/ui/src/organisms/modals/BookingModal2.tsx` | UI primitive for V2 — verify no other consumers before deleting |
+
+#### Files to modify
+
+**`apps/brikette/src/context/modal/lazy-modals.ts`**
+- Remove `BookingModal` and `BookingModal2` lazy imports + type imports `UIBookingModalProps`, `UIBookingModal2Props`
+
+**`apps/brikette/src/context/modal/global-modals.tsx`**
+- Remove `import { Booking2GlobalModal }` and `import { BookingGlobalModal }`
+- Remove switcher branches: `{activeModal === "booking" && <BookingGlobalModal />}` and `{activeModal === "booking2" && <Booking2GlobalModal />}`
+
+**`apps/brikette/src/context/modal/payloadMap.ts`**
+- Remove `BookingPayload` interface, `Booking2Payload` interface, `parseBooking2Payload()`, `parseBookingPayload()`
+- Remove `booking` and `booking2` keys from `ModalPayloadMap`
+
+**`packages/ui/src/context/modal/context.ts`**
+- Remove `"booking"` and `"booking2"` from `ModalType` union
+
+#### Call sites to migrate (9 × `openModal("booking")`, 2 × `openModal("booking2")`)
+
+**⚠️ URL path strategy note:** The "New" column below uses `/{lang}/book` (canonical App Router path) as the provisional approach per Decision A. If Track E Task 0 (route truth verification) confirms that `router.push(\`/${lang}/${getSlug("book", lang)}\`)` works correctly on static export, update these to use `getSlug`. Do not apply the `getSlug` variant until verification completes.
+
+| File | Line(s) | Current | New (provisional — pending Decision A verification) |
+|---|---|---|---|
+| `apps/brikette/src/app/[lang]/HomeContent.tsx` | 44 | `openModal("booking")` (hero CTA) | `router.push(\`/${lang}/book\`)` |
+| `apps/brikette/src/app/[lang]/HomeContent.tsx` | 50 | `openModal("booking", { room, rateType })` (carousel) | `router.push(\`/${lang}/book\`)` — room context dropped (see planning decision below) |
+| `apps/brikette/src/components/landing/BookingWidget.tsx` | 186 | `openModal("booking", { checkIn, checkOut, adults })` | `router.push(\`/${lang}/book?checkin=X&checkout=Y&pax=N\`)` |
+| `apps/brikette/src/components/cta/ContentStickyCta.tsx` | 134 | `openModal("booking", { source: "sticky_cta" })` | `<Link href={\`/${lang}/book\`}>` (replace entire handler with `<Link>`) |
+| `apps/brikette/src/app/[lang]/experiences/ExperiencesPageContent.tsx` | 123 | `openModal("booking")` | `router.push(\`/${lang}/book\`)` |
+| `apps/brikette/src/components/not-found/NotFoundView.tsx` | 112 | `openModal("booking")` | `<Link href={\`/${lang}/book\`}>` |
+| `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx` | 297 | `openModal("booking", { deal: dealId })` | `router.push(\`/${lang}/book?deal=${dealId}\`)` (book page reads deal param — see Decision D) |
+| `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx` | 300 | `openModal("booking")` (fallback) | `router.push(\`/${lang}/book\`)` |
+| `apps/brikette/src/context/modal/global-modals/OffersModal.tsx` | 55 | `closeModal(); openModal("booking")` | `closeModal(); router.push(\`/${lang}/book\`)` |
+| `apps/brikette/src/components/rooms/RoomCard.tsx` | 184, 198 | `openModal("booking2", { checkIn, checkOut, adults, rateType, room, roomSku, plan, octorateRateCode, source })` | Direct `<a href={octorateUrl}>` built from existing `checkIn`, `checkOut`, `adults`, `room.rateCodes.direct.nr/flex`, `BOOKING_CODE`. Fires `begin_checkout` (with `items[]`) + `select_item` before navigation. |
+
+#### Planning decisions unlocked by modal removal
+
+**RoomCard on homepage carousel** (HomeContent.tsx:50 — currently `openModal("booking", { room, rateType })`)
+- Current payload actually unused by V1 consumer (noted in `payloadMap.ts` comment)
+- Clean break options:
+  - A: Navigate to `/{lang}/book` (user picks dates on book page) — recommended; consistent CTA destination
+  - B: Navigate to `/{lang}/rooms/[id]` (room detail) — user gets room-specific context, then StickyBookNow to Octorate
+- Default assumption: **Option A**. Carousel is browsing context; user hasn't entered dates yet.
+
+**Deals CTA deal context** (DealsPageContent.tsx:297 — `openModal("booking", { deal: dealId })`)
+- Clean break options:
+  - A: Navigate to `/{lang}/book?deal=dealId` — book page must be updated to read `?deal=` param and inject into Octorate URLs built by RoomCard. Keeps persuasive book page in funnel. Adds scope to `/book` page.
+  - B: Navigate directly to Octorate with deal params — skips book page entirely for deal traffic; loses funnel visibility.
+- Default assumption: **Option A** (book page reads `?deal=` param; RoomCard Octorate URL builder uses it if present). This keeps the `/{lang}/book` page as the universal booking destination.
+
+**`useModal` in components with only booking triggers**
+- After removing booking/booking2 from ModalType, components that exclusively used `openModal("booking")` or `openModal("booking2")` can drop the `useModal()` hook entirely (e.g., `BookingWidget`, `ContentStickyCta`, `HomeContent` booking handler, `NotFoundView`).
+- Components that also use other modal types (Experiences → `contact`, Deals → `offers`) keep the hook for those.
+
+#### Tests to delete (extinct after modal removal)
+
+| File | Reason |
+|---|---|
+| `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx` | Tests BookingModal begin_checkout — modal deleted |
+| `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx` | Tests Booking2Modal begin_checkout — modal deleted |
+| `apps/brikette/src/test/context/modal-provider-effects.test.tsx` | Tests `openModal("booking")` effect in provider — remove or update to use a non-booking modal type |
+
+#### Tests to update (not delete)
+
+| File | What changes |
+|---|---|
+| `apps/brikette/src/test/components/modal-integration-tc09.test.tsx` | BookingWidget submit now calls `router.push()` not `openModal()` — rewrite assertion |
+| `apps/brikette/src/test/components/content-sticky-cta.test.tsx` | ContentStickyCta no longer calls `openModal` — assert navigation instead |
+| `apps/brikette/src/test/components/deals-page.test.tsx` | Deals CTA navigates to `/book?deal=...` not `openModal("booking")` |
+| `apps/brikette/src/test/components/experiences-page.test.tsx` | ExperiencesPageContent booking CTA calls `router.push` not `openModal("booking")` |
+| `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx` | RoomCard CTAs now navigate to Octorate — update assertion from `openModal("booking2", ...)` to Octorate URL navigation |
+| `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx` | Lifecycle test uses `openModal("booking")` — update to a retained modal type |
+| `apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx` | CTA click tests — update modal expectations to navigation |
+
 ### Data & Contracts
 
 - Types/schemas:
-  - `BookingModalCopy`, `BookingModal2Copy` — modal i18n copy shapes (`packages/ui/src/organisms/modals/types.ts`)
-  - `ModalType` union — modal discriminator (`packages/ui/src/context/modal/context.ts`)
-  - `BookingModalBuildParams`, `BookingModalHrefBuilder` — URL construction interfaces
+  - `ModalType` union — modal discriminator (`packages/ui/src/context/modal/context.ts`). **Track E deletes** the `"booking"` and `"booking2"` members; retained: `"offers" | "location" | "contact" | "facilities" | "language" | null`
+  - **To be deleted in Track E:** `BookingModalCopy`, `BookingModal2Copy` (modal i18n copy shapes, `packages/ui/src/organisms/modals/types.ts`); `BookingModalBuildParams`, `BookingModalHrefBuilder` (URL construction interfaces); `BookingPayload`, `Booking2Payload`, `ModalPayloadMap["booking"]`, `ModalPayloadMap["booking2"]` (`apps/brikette/src/context/modal/payloadMap.ts`)
   - Room data types in `roomsData.ts` (widgetRoomCode, widgetRateCodeNR, widgetRateCodeFlex, rateCodes, basePrice, pricingModel)
 - Persistence:
   - No client-side persistence for booking state (dates/guests reset on modal close)
@@ -300,7 +400,31 @@ Most internal booking CTAs open modals when JS is enabled. `/book` is primarily 
 
 ### Booking Flow Traces (As-Is)
 
-#### Flow 1: Home -> Booking Modal v1 -> Octorate (new tab)
+#### Flow 0 (NEW — Target State): Home -> /book -> Octorate (direct)
+
+```
+1. User lands on /{lang}/ (home page)
+2. Sees hero with "Check availability" CTA
+3. Clicks CTA
+   -> GA4: fireCTAClick({ cta_id: "hero_check_availability", cta_location: "home_hero" })
+   -> router.push("/{lang}/book") — standard page navigation
+4. Browser navigates to /{lang}/book
+   -> GA4: page_view (automatic)
+   -> GA4: fireViewItemList({ item_list_id: "book_rooms", items: [...all rooms] })
+5. User sees: "Book Direct at Hostel Brikette, Positano" (new H1) + DirectBookingPerks + room cards
+6. User enters dates (date picker at top — already present in BookPageContent)
+   -> URL updates via writeCanonicalBookingQuery: /{lang}/book?checkin=X&checkout=Y&pax=N
+7. User clicks "Reserve Now — Non-Refundable" on a room card
+   -> GA4: fireSelectItem({ item_list_id: "book_rooms", items: [{ item_id: room.sku, item_variant: "nr" }] })
+   -> GA4: fireBeginCheckout({ items: [{ item_id: room.sku, item_variant: "nr", price: room.basePrice }], currency: "EUR" })
+   -> Direct <a href="https://book.octorate.com/...?checkin=X&checkout=Y&codice=45111&pax=N&<rate_params>">
+8. Browser navigates to Octorate (same tab)
+```
+
+**GA4 events fired:** cta_click, page_view, view_item_list, select_item, begin_checkout (with items[] + currency)
+**vs. old Flow 1:** Gains: page_view(/book), view_item_list, proper begin_checkout with items[]. Loses: nothing meaningful (modal_open/close are removed from scope).
+
+#### Flow 1 (Historical — Booking Modal v1, being removed)
 
 ```
 1. User lands on /{lang}/ (home page)
@@ -418,35 +542,32 @@ Most internal booking CTAs open modals when JS is enabled. `/book` is primarily 
 
 ### GA4 Event Coverage Gap Matrix
 
-| Funnel Stage | GA4 Event | Status | Where Missing |
+| Funnel Stage | GA4 Event | Status | Where Missing / Notes |
 |---|---|---|---|
 | Page view | `page_view` | AUTO (gtag config) | Covered by default GA4 |
-| Item list view | `view_item_list` | **MISSING** | Rooms listing, deals listing, room carousel on home, book page room list |
+| Item list view | `view_item_list` | **MISSING** | Rooms listing, book page room list, home carousel, deals listing (deals: use `view_promotion` instead — see Deals Tracking below) |
 | Item view | `view_item` | **MISSING** | Room detail, apartment detail, apartment sub-pages |
-| Item selection | `select_item` | **MISSING** | Room card click, deal card click, carousel card click |
-| CTA click | custom event | **PARTIAL** | Only apartment pages have `click_check_availability`. Missing from: header CTA, hero CTA, book page, guide pages (none exist), menu pages (none exist), about page (none exist), StickyBookNow |
-| Modal open | custom event | **MISSING** | All 7 modal types have no open/close tracking |
-| Modal close | custom event | **MISSING** | No tracking |
-| Begin checkout | `begin_checkout` | **PARTIAL** | Exists but: (a) generic variant lacks value/currency, (b) StickyBookNow has no event at all |
+| Date availability search | `search_availability` (custom) | **MISSING** | User submits dates on `/book` date picker ("Update" button click or initial URL param load with valid dates) |
+| Promotion view | `view_promotion` (standard) | **MISSING** | Deals listing page when deal cards are rendered |
+| Item selection | `select_item` | **MISSING** | Room card NR/Flex click on `/book` page and rooms listing. Home carousel cards (if going to /book, not directly to room). |
+| Promotion selection | `select_promotion` (standard) | **MISSING** | Deal card "Book Direct" click on deals page |
+| CTA click | `cta_click` (custom) | **PARTIAL** | Only apartment pages have `click_check_availability`. Missing from: header CTA, hero CTA, book page CTAs, guide pages, menu pages, about page, StickyBookNow |
+| Modal open/close | removed from scope | N/A (booking modals deleted) | Non-booking modal tracking (location, contact) is out of scope for this plan |
+| Begin checkout | `begin_checkout` | **PARTIAL** | Exists but: (a) generic variant lacks value/currency, (b) StickyBookNow has no event. Post-amendment: all `begin_checkout` events must include `items[]` (room always known at click time) |
 | Purchase | `purchase` | **BLOCKED** | Octorate one-directional redirect, no callback. GA4-09 deferred. |
 
 
-### GA4 Semantics Decision (Do Not Mix Implicitly)
+### GA4 Semantics Decision (Resolved — Model A Only)
 
-Current state: `begin_checkout` fires from both booking modals even when no room/rate is selected (availability-only). This makes a standard e-commerce funnel (`view_item_list` -> `select_item` -> `begin_checkout`) analytically incoherent unless we lock semantics.
+**Decision:** Model A (clean funnel) is the only model post-amendment. Booking modals are removed, so there is no availability-only modal path to segment. Every Octorate navigation from a room card has `items[]` populated (room.sku + plan known at click time).
 
-Two viable models (planning must pick one):
+**Locked semantics:**
+- `search_availability` (custom) fires when user applies dates on `/book` (date picker "Update" click, or on initial page load when `?checkin` + `?checkout` params are present and valid). Required params: `nights` (derived), `lead_time_days` (derived), `pax`. Never include raw date strings — too high-cardinality.
+- `select_item` fires when user clicks a room card NR or Flex CTA (with `item_variant: "nr" | "flex"`).
+- `begin_checkout` fires immediately before Octorate navigation. Always includes `items[]` (room card click has room context). `value` included only when reliable total can be computed (apartment can; hostel may omit `value` and add later).
+- **Availability-only paths are now the dates entry step**, not an Octorate exit step. Header CTA and hero CTA fire `cta_click` → navigate to `/book` → `page_view`. There is no more availability-only Octorate exit (the booking widget no longer fires a modal).
 
-Model A — Standard e-commerce semantics (clean funnel)
-- `search_availability` (custom) when a user clicks "Check availability" from generic entry points (header/hero/widget/BookingModal).
-- `select_item` when a room/rate is actually chosen (RoomCard NR/Flex click).
-- `begin_checkout` only when `items[]`/`value` can be populated (room + plan known) and we are leaving for Octorate.
-
-Model B — "Leaving site to booking engine" semantics (single outbound counter)
-- Keep `begin_checkout` for any outbound navigation to Octorate, but segment it:
-  - `checkout_type`: `availability_only` | `room_selected` | `apartment`
-  - `items[]` only when known
-  - `value` only when known
+**Note:** There is still a meaningful "date search" step between CTA click and room selection. `search_availability` captures this dropoff segment ("arrived at /book but never searched dates") which is analytically distinct from "searched dates but didn't select a room."
 
 High-cardinality param warning (dates)
 - Prefer derived, low-cardinality params: `nights`, `lead_time_days`, `pax`. For rate plan, use GA4 convention: set `items[].item_variant` (enum: `flex` | `nr`) instead of a separate event-level param.
@@ -456,11 +577,37 @@ High-cardinality param warning (dates)
 
 Events that fire immediately before leaving the domain (same-tab redirects, `window.location.assign`) have real risk of event loss.
 
-Minimum requirement:
-- When redirecting the current tab, fire the event with `transport_type: "beacon"` and use `event_callback` (or a short timeout) to delay navigation a few milliseconds.
-- For semantic `<a>` links that navigate immediately, add an `onClick` handler that fires the event and navigates after callback/timeout.
+**Mandatory helper — lock this pattern, do not implement ad-hoc per callsite:**
 
-This is mandatory for the highest-signal events (`select_item`, `begin_checkout`).
+```ts
+// apps/brikette/src/utils/trackThenNavigate.ts
+export function trackThenNavigate(
+  eventName: string,
+  params: Record<string, unknown>,
+  navigate: () => void,
+  timeoutMs = 200,
+): void {
+  const gtag = getGtag();
+  if (!gtag) { navigate(); return; }
+  // `go` must be defined before being referenced in event_callback.
+  let navigated = false;
+  const go = () => { if (navigated) return; navigated = true; navigate(); };
+  gtag("event", eventName, {
+    ...params,
+    transport_type: "beacon",
+    event_callback: go,
+  });
+  window.setTimeout(go, timeoutMs);
+}
+```
+
+**Note on the API:** The caller passes `eventName` and `params` (the full GA4 event payload, minus transport/callback); the helper owns the `event_callback: go` wiring internally. Do NOT pass a `fireEvent: () => void` closure — that pattern makes `go` inaccessible to the caller, breaking the beacon reliability guarantee.
+
+- All `begin_checkout` and `select_item` events that immediately precede an Octorate navigation **must** use this helper.
+- `transport_type: "beacon"` must be set in the gtag event call.
+- 200ms timeout is the minimum; do not use 0ms (no effect) or >500ms (bad UX).
+- This applies to: RoomCard direct Octorate link onClick, StickyBookNow onClick, apartment checkout button.
+- CTA clicks that navigate within the app (to `/book`) do not need this — Next.js router handles those correctly.
 
 ### Event Contract (Planning Input)
 
@@ -468,12 +615,14 @@ The plan should lock an explicit event contract before implementation to prevent
 
 | Event | Trigger | Dedupe rule | Required params | Optional params |
 |---|---|---|---|---|
-| `view_item_list` | Rooms list rendered (rooms, book, home carousel), deals list rendered | once per route render per `item_list_id` | `item_list_id` (enum), `item_list_name`, `items[]` (each: `item_id`, `item_name`, `item_category`, `index`) | `price` (only if shown), `currency` |
-| `view_item` | Room detail page view, apartment page view | once per route render per `item_id` | `items[]` (single item: `item_id`, `item_name`, `item_category`) | item-level: `item_variant` (rate plan if known), `price` (only if shown), `currency` |
-| `select_item` | User clicks a room/rate CTA (NR/Flex) | per click | `item_list_id`, `item_list_name`, `items[]` (selected item: `item_id`, `item_name`, `item_category`, `item_variant` (enum: `flex` | `nr`), `index`) | item-level: `price` (only if shown), `currency` |
-| `begin_checkout` | Outbound to Octorate | per outbound click | Model-dependent (A: `items[]` required when room-selected; B: `checkout_type` required) | `value` (only when known), `currency` (when `value` present) |
-| `cta_click` (custom) | Header/hero/content-page CTA click | per click | `cta_id` (enum), `cta_location` (enum) | `item_list_id` (if applicable) |
-| `modal_open` / `modal_close` (custom) | Booking modals opened/closed | once per open/close | `modal_type` (enum: `booking` | `booking2` | ...) | `source` (enum) |
+| `view_item_list` | Rooms list rendered (rooms index, book page, home carousel) | once per route render per `item_list_id` | `item_list_id` (enum), `item_list_name`, `items[]` (each: `item_id`, `item_name`, `item_category`, `index`) | `price` (only if shown), `currency` |
+| `view_promotion` | Deals listing rendered with deal cards | once per route render | `items[]` (promotions: `promotion_id`, `promotion_name`, `creative_name`) | none |
+| `view_item` | Room detail page view, apartment page view | once per route render per `item_id` | `items[]` (single: `item_id`, `item_name`, `item_category`) | `item_variant`, `price` (only if shown), `currency` |
+| `search_availability` (custom) | User applies dates on `/book` (date picker submit or initial URL params valid) | once per query change on `/book` | `nights` (derived int), `lead_time_days` (derived int), `pax` (int) | none — no raw date strings |
+| `select_item` | User clicks room card NR/Flex CTA on `/book` or rooms listing | per click | `item_list_id`, `item_list_name`, `items[]` (selected: `item_id`, `item_name`, `item_category`, `item_variant` enum `flex`\|`nr`, `index`) | `price` (only if shown), `currency` |
+| `select_promotion` | User clicks "Book Direct" on a deal card | per click | `items[]` (promotion: `promotion_id`, `promotion_name`) | none |
+| `begin_checkout` | Outbound to Octorate (room card or StickyBookNow) | per outbound click | `items[]` (always: `item_id`, `item_name`, `item_variant` `flex`\|`nr`) | `value` (only when reliable total), `currency` (when `value` present) |
+| `cta_click` (custom) | Header/hero/content-page CTA click → navigates to `/book` | per click | `cta_id` (enum), `cta_location` (enum) | `item_list_id` (if applicable) |
 
 
 ### Analytics Enums (Authoritative)
@@ -484,7 +633,8 @@ All enum values are lowercase `snake_case`. Do not introduce new values ad-hoc d
   - `home_rooms_carousel`
   - `rooms_index`
   - `book_rooms`
-  - `deals_index`
+  - `room_detail` (**new** — for `select_item` / `view_item` on room detail page, e.g. StickyBookNow or RoomCard context)
+  - ~~`deals_index`~~ — **removed**: deals use `view_promotion` / `select_promotion`, not `view_item_list` / `select_item` (see Deals Tracking section)
 - `cta_id`:
   - `header_check_availability`
   - `mobile_nav_check_availability`
@@ -493,8 +643,9 @@ All enum values are lowercase `snake_case`. Do not introduce new values ad-hoc d
   - `room_card_reserve_nr`
   - `room_card_reserve_flex`
   - `sticky_book_now`
-  - `deals_book_direct`
+  - `deals_book_direct` (**see note: this fires `select_promotion`, not `cta_click`**)
   - `content_sticky_check_availability`
+  - `offers_modal_reserve` (**new** — OffersModal CTA that navigates to /book)
 - `cta_location`:
   - `desktop_header`
   - `mobile_nav`
@@ -510,10 +661,15 @@ All enum values are lowercase `snake_case`. Do not introduce new values ad-hoc d
   - `breakfast_menu`
   - `assistance`
   - `how_to_get_here`
-- `modal_type` (matches `ModalType` union):
-  - `offers`, `booking`, `booking2`, `location`, `contact`, `facilities`, `language`
+  - `offers_modal` (**new**)
+- `modal_type` (retained modals only — booking/booking2 removed):
+  - `offers`, `location`, `contact`, `facilities`, `language`
+  - ~~`booking`~~ — **deleted** (booking modal removed)
+  - ~~`booking2`~~ — **deleted** (booking modal removed)
+- `promotion_id` (**new** — for deals/view_promotion/select_promotion):
+  - values are deal IDs from `DealsPageContent.tsx` (dynamic; use the `dealId` string from deals data, not an enum)
 - `source` (if retained on events; prefer this over free-form `context`):
-  - `header`, `mobile_nav`, `hero`, `booking_widget`, `room_card`, `sticky_cta`, `deals`, `unknown`
+  - `header`, `mobile_nav`, `hero`, `booking_widget`, `room_card`, `sticky_cta`, `deals`, `offers_modal`, `unknown`
 
 ### Item Identity Mapping (Authoritative)
 
@@ -575,19 +731,31 @@ Minimum implementation approach (choose one and apply consistently):
 
 #### Coverage Gaps (Planning Inputs)
 - **Untested paths:**
-  - `reportWebVitals.ts` — **absorbed from TASK-04** in `brik-ga4-baseline-lock/plan.md` (76% confidence; needs: select preferred test seam — mock `navigator.sendBeacon` or mock `web-vitals` callbacks — and file location with concrete example test case outline)
+  - `reportWebVitals.ts` — **absorbed from TASK-04** in `brik-ga4-baseline-lock/plan.md` (76% confidence; needs: select preferred test seam — mock `navigator.sendBeacon` or mock `web-vitals` callbacks — and file location with concrete example test case outline). Track D-39.
   - `PlanChoiceAnalytics.tsx` — uses inconsistent `dataLayer.push` pattern, no test
   - `StickyBookNow.tsx` — no GA4 event exists, therefore no test
-  - No tests for `view_item`, `select_item`, modal open/close events (because they don't exist yet)
-  - No tests for book page structured data (because it doesn't exist yet)
-- **Extinct tests:** None identified
+  - No tests for `view_item`, `select_item`, `search_availability`, `view_promotion`, `select_promotion` (don't exist yet)
+  - No tests for book page structured data (doesn't exist yet)
+  - No tests for `trackThenNavigate` helper (doesn't exist yet — Track C-13)
+  - No tests for Octorate URL builder as standalone unit (embedded in modal, will be extracted in Track E-30 before modal removal)
+- **Extinct tests (delete after Track E):** `ga4-09-booking-modal-begin-checkout.test.tsx`, `ga4-10-booking2-modal-begin-checkout.test.tsx`, parts of `modal-provider-effects.test.tsx` that use `"booking"` type (update to use `"location"` or another retained type)
 - **Testability:** HIGH — existing pattern is well-established, easy to replicate for new events
 
 #### Recommended Test Approach
-- Unit tests for: each new GA4 event helper function (view_item, select_item, CTA click, modal tracking)
+- Unit tests for: each new GA4 event helper function (`search_availability`, `view_promotion`, `select_promotion`, `select_item` with `trackThenNavigate`, `begin_checkout` from room card, `cta_click`)
+- Unit tests for: `trackThenNavigate` helper (mock gtag, mock navigate, assert order and timeout fallback)
+- Unit tests for: Octorate URL builder extracted from Booking2Modal (assert exact URL for NR + Flex for 2 rooms)
+- Unit tests for: `getBookPath(lang)` if extracted as a helper; spot-check for 3 locales
 - Integration tests for: component-level tests verifying events fire on user interaction (following existing `ga4-NN-*.test.tsx` pattern)
+- Integration tests for: RoomCard disabled state when `hasValidQuery: false`; enabled + fires events when `hasValidQuery: true`
 - Snapshot/render tests for: book page structured data JSON-LD output
-- E2E tests for: staging verification protocol (manual or Playwright script to probe GA4 collect endpoint)
+- **Playwright smoke test (new — makes verification repeatable):** After staging deploy, run a Playwright test that:
+  1. Navigates to `/en/book?checkin=YYYY-MM-DD&checkout=YYYY-MM-DD&pax=2`
+  2. Intercepts `https://www.google-analytics.com/g/collect` requests
+  3. Clicks the first room card NR CTA
+  4. Asserts the collect request contains `en=select_item` and `en=begin_checkout` with the correct `item_id`
+  5. Asserts navigation URL starts with `book.octorate.com`
+  This makes the verification protocol repeatable by CI on every staging deploy, not just manual once.
 
 ### Staging Deployment Configuration
 
@@ -608,6 +776,18 @@ Minimum implementation approach (choose one and apply consistently):
 1. **Recommended:** Create a separate GA4 data stream for staging; set `NEXT_PUBLIC_GA_MEASUREMENT_ID` as an environment-scoped GitHub Actions variable per environment (`staging-pages` vs `production`)
 2. Use `traffic_type: "internal"` filtering in GA4 reports (already set for non-production, but both are technically `NODE_ENV=production`)
 3. Temporary: use GA4 Realtime report to watch for staging events during manual testing
+
+### GA4 Access Note
+
+No GA4 MCP tool is available in this repo. `packages/mcp-server/src/tools/analytics.ts` provides CMS shop platform analytics only (page views, orders for e-commerce shops — not Brikette GA4). GA4 data must be verified manually via:
+
+1. **GA4 DebugView** (direct login to GA4 → Admin → DebugView). The Brikette stack is gtag-based (not GTM), so `?gtm_debug=x` does **not** work — that parameter is GTM-specific. To activate DebugView for a gtag-based site, use either:
+   - **Google Analytics Debugger** browser extension (Chrome) — most convenient for manual spot-checks; routes events to DebugView automatically
+   - Set `debug_mode: true` in the gtag config call (`gtag("config", GA_MEASUREMENT_ID, { debug_mode: true })`) — appropriate for a short-lived staging-only build; revert before production deploy
+2. **GA4 Realtime report** — immediate event arrival (but no `items[]`/`value` payload inspection)
+3. **Network tab probe** — filter for `google-analytics.com/g/collect` to inspect full event payloads including `items[]` and `value` (use browser DevTools → Network → filter by `collect`)
+
+For the verification protocol (Track C Task 0 + Track D-43), the staging GA4 stream should be set up first to isolate test events from production data.
 
 ### Recent Git History (Targeted)
 
@@ -654,52 +834,56 @@ Minimum implementation approach (choose one and apply consistently):
 
 ### Open (User Input Needed)
 
-- Q: Which GA4 semantics model? (Model A vs Model B)
-  - Why it matters: Prevents a hybrid funnel where availability-only and room-selected flows are mixed under `begin_checkout`, which breaks e-commerce funnel analysis.
-  - Decision impacted: Whether BookingModal (availability-only) stops firing `begin_checkout` (Model A) vs keeps it with segmentation (Model B); downstream reporting and tests.
-  - Decision owner: Pete
-  - Default assumption: **Model A (clean funnel)**.
-
 - Q: Should we create a separate GA4 property for staging, or use a separate data stream within the same property?
   - Why it matters: Determines whether staging events pollute production reports. Separate property is cleanest but requires a new GA4 measurement ID.
   - Decision impacted: GitHub Actions env var configuration, staging verification protocol.
   - Decision owner: Pete
   - Default assumption: Separate data stream within same property (simpler; can use GA4 data stream filter). Risk: some report bleed if filter not configured correctly.
 
-- Q: Sticky CTA rollout: which variant applies on which page types?
-  - Why it matters: StickyBookNow assumes room context and uses a direct Octorate deep link; most content pages lack room/rate context and may prefer a generic availability flow.
-  - Decision impacted: Component choice per page type, analytics semantics (`begin_checkout` vs availability tracking), and UX intrusiveness.
+- Q: RoomCard on homepage carousel — navigate to `/book` (Option A) or room detail page (Option B)?
+  - Why it matters: The carousel is a browsing context; users haven't entered dates. Option A sends them to the book page where they can enter dates. Option B sends them to a specific room's detail page where they can use StickyBookNow. Both are valid.
+  - Decision impacted: HomeContent.tsx migration, carousel UX.
   - Decision owner: Pete
-  - Options: Variant A: sticky bar that opens `BookingModal` (generic availability). Variant B: `StickyBookNow` (direct deep link) only where room context exists (room detail pages).
-  - Default assumption: Use Variant A on content pages; keep Variant B on room detail pages.
+  - Default assumption: **Option A** (navigate to `/book` — consistent CTA destination, user enters dates there).
 
-- Q: Priority ordering: should we do book page conversion content first (highest single-page impact) or GA4 instrumentation first (measurement foundation)?
-  - Why it matters: Book page conversion content is the highest-impact single change but won't be measurable without GA4 events. GA4 events let us measure existing flows but don't improve them.
-  - Decision impacted: Task sequencing in /lp-plan.
+- Q: Deals CTA — pass deal context to `/book?deal=ID` (Option A) or navigate direct to Octorate (Option B)?
+  - Why it matters: Option A keeps the persuasive `/book` page in the funnel for deal traffic and gives GA4 a page_view + view_item_list. Requires adding `?deal=` URL param handling to `/book` so RoomCard Octorate URLs inject deal params. Option B is simpler but loses funnel visibility.
+  - Decision impacted: `/book` page deal param handling, RoomCard Octorate URL builder, GA4 funnel for deal traffic.
   - Decision owner: Pete
-  - Default assumption: Book page conversion content + GA4 events in parallel tracks (content is high-value and doesn't depend on event instrumentation; events can instrument both old and new content). Risk: slightly more complex plan.
+  - Default assumption: **Option A** (navigate to `/book?deal=dealId`; book page propagates deal param into room card Octorate URLs).
+
+### Resolved (Updated 2026-02-18)
+
+- Q: Which GA4 semantics model? (Model A vs Model B)
+  - A: **Resolved by clean-break decision.** With booking modals removed, there is no availability-only modal flow to segment. Model A (clean funnel) is the only model: `cta_click` → `page_view(/book)` → `view_item_list` → `select_item` → `begin_checkout` (with `items[]` always present since room is selected before Octorate navigation).
+
+- Q: Sticky CTA rollout: which variant applies on which page types?
+  - A: **Resolved.** `ContentStickyCta` on content pages becomes a `<Link href="/{lang}/book">` (no modal). `StickyBookNow` on room detail pages keeps its direct Octorate link (unchanged). The "variant A opens BookingModal" option is moot since the modal is removed.
+
+- Q: Priority ordering: book page conversion content first or GA4 instrumentation first?
+  - A: **Modal removal is now a prerequisite for both.** Sequencing: Track E (modal removal) → Track A (book page conversion content) + Track C (GA4 events) in parallel. Modal removal establishes the new routing baseline on which both tracks build.
 
 ## Confidence Inputs (for /lp-plan)
 
 - **Implementation:** 85%
-  - Strong existing patterns for CTAs (StickyBookNow, ExperiencesCtaSection, DirectBookingPerks), GA4 events (ga4-events.ts, test conventions), and structured data (existing JSON-LD components). Well-documented modal system. Clear component boundaries. Book page enhancement is primarily composition of existing components.
-  - What would raise to 90%+: Confirm StickyBookNow renders correctly alongside the book page date picker. Confirm `DirectBookingPerks` renders correctly outside of the rooms page context (it uses `dealsPage` i18n namespace, not `bookPage`).
+  - Strong existing patterns for CTAs (StickyBookNow, ExperiencesCtaSection, DirectBookingPerks), GA4 events (ga4-events.ts, test conventions), and structured data (existing JSON-LD components). Modal removal blast radius is fully mapped (11 call sites, 2 UI components, ~8 test files). Book page enhancement is primarily composition of existing components. RoomCard already has all the data needed (roomSku, octorateRateCode, checkIn/checkOut/adults) to build a direct Octorate link.
+  - What would raise to 90%+: Confirm the exact Octorate URL format used by Booking2Modal for room-specific rate selection (verify `ratePlan` or equivalent param). Confirm `DirectBookingPerks` renders correctly outside of the rooms page context (it uses `dealsPage` i18n namespace, not `bookPage`). Resolve ?deal= param on /book page.
 
-- **Approach:** 82%
-  - Approach is sound: upgrade book page with existing components, extend proven CTA patterns to content pages, fill GA4 e-commerce event gaps, verify on staging. The room detail page proves the pattern works (StickyBookNow + DirectBookingPerks + LocationInline).
-  - What would raise to 90%+: Resolve open questions about StickyBookNow reuse vs. lighter variant. Confirm staging GA4 data stream isolation approach.
+- **Approach:** 85% (raised from 82%)
+  - Clean break eliminates the hybrid modal/page split that was the central architectural problem. The new funnel (CTA → /book → Octorate) is coherent, measurable, and fully GA4-trackable. StickyBookNow (unchanged) proves the direct-link pattern works at room detail level. Apartment flow proves the page-navigation-then-Octorate pattern works.
+  - What would raise to 90%+: Confirm staging GA4 data stream isolation approach. Verify no ModalType consumers in other packages depend on "booking"/"booking2".
 
-- **Impact:** 85%
-  - Blast radius is well-understood. Book page changes are additive (new sections, not replacing existing ones). CTA additions to content pages affect GuideContent, menu pages, about page. GA4 changes are mostly additive, but enforcing the chosen semantics model may adjust existing BookingModal/Booking2Modal emissions (e.g., Model A replaces availability-only `begin_checkout`). Structured data is new markup only.
-  - What would raise to 90%+: Verify that adding conversion sections to the book page doesn't significantly increase page weight / hurt LCP.
+- **Impact:** 88% (raised from 85%)
+  - Blast radius is now fully mapped. Modal removal is surgical — 11 call sites, 2 UI primitives, clear test deletion/update list. Book page changes are additive. CTA additions to content pages are additive. GA4 changes are now cleaner: no semantics model ambiguity, no begin_checkout-from-modal to replace.
+  - What would raise to 90%+: Confirm no LCP regression from book page conversion content additions.
 
-- **Delivery-Readiness:** 80%
-  - Clear execution path: code changes -> staging deploy -> GA4 Realtime verification -> merge to main. Well-established CI pipeline. Known deployment process.
-  - What would raise to 90%+: Set up staging GA4 data stream before starting work. Establish a documented verification checklist.
+- **Delivery-Readiness:** 82% (raised from 80%)
+  - Track E (modal removal) is a well-defined prerequisite. Execution path: Track E → Track A + Track C in parallel → Track D verification. Well-established CI pipeline.
+  - What would raise to 90%+: Set up staging GA4 data stream before starting work. Resolve open planning decisions (deals Option A/B, carousel CTA Option A/B).
 
 - **Testability:** 90%
-  - Existing test patterns are excellent. 9 GA4 test files with consistent patterns. JSON-LD structured data is testable via snapshot tests. New events follow the same `window.gtag` mock + assert call args pattern.
-  - Minor gap: `reportWebVitals.ts` test coverage (absorbed from TASK-04; now Track D task seed #23).
+  - Existing test patterns are excellent. 9 GA4 test files with consistent patterns. JSON-LD structured data is testable via snapshot tests. New events follow the same `window.gtag` mock + assert call args pattern. Test deletion/update list is fully specified.
+  - Minor gap: `reportWebVitals.ts` test coverage (absorbed from TASK-04; now Track D-39).
 
 ## Risks
 
@@ -710,12 +894,106 @@ Minimum implementation approach (choose one and apply consistently):
 | StickyBookNow overlaps/conflicts with guide-specific UI elements | Low | Medium | Spike: render on one guide page in dev. Check for z-index/position conflicts with guide TOC or image lightbox. |
 | Report-layer freshness delay means verification takes 24-48h per event | Medium | Low | Use GA4 Realtime report for immediate verification. Collect-endpoint probe as secondary confirmation. |
 | Adding CTAs to content pages feels intrusive/spammy | Medium | Medium | Use the StickyBookNow pattern (session-dismissible) so users who dismiss aren't pestered. Consider a lighter variant for informational pages. |
-| `begin_checkout` semantics drift (availability-only vs room-selected) makes funnel analysis incoherent | Already happening | High | Lock Model A or Model B (see GA4 Semantics Decision) and update BookingModal/Booking2Modal + tests accordingly; do not claim `items[]`/`value` when unknown. |
+| `begin_checkout` semantics drift (availability-only vs room-selected) makes funnel analysis incoherent | Resolved by clean-break decision | N/A | Model A is the only model post-amendment. Booking modals removed; all `begin_checkout` events have room context (items[] always present). No further action needed. |
 | Book page structured data (lodging schema) has incorrect or incomplete properties | Low | Low | Validate JSON-LD with Schema Markup Validator; use Rich Results Test only for supported eligibility checks. Add snapshot tests to prevent regression. |
 | i18n: new `bookPage.json` keys need translation for 18 locales | Medium | Low | Start with EN only; other locales fall back to EN via i18next. Translate in a follow-up pass. |
 | PlanChoiceAnalytics uses inconsistent dataLayer.push pattern | Already happening | Low | Migrate to gtag wrapper pattern as part of this work. |
 
+## Architectural Decisions (Lock Before Planning)
+
+### Decision A: Localized Book URL Path Strategy
+
+**Confirmed truths (not in conflict):**
+1. App Router canonical route: `[lang]/book` — the only route the Next.js router knows about.
+2. Localized slugs (`/it/prenota`, `/de/buchen`, etc.) exist in `slug-map.ts` and are served as aliases via:
+   - **Production (Worker):** middleware rewrites them to `/{lang}/book` at request time
+   - **Staging/static export:** `public/_redirects` 200-rewrites handle inbound requests only — middleware does NOT run
+3. Client-side Next.js router (SPA navigation via `router.push` or `<Link>`) resolves paths against App Router routes, NOT middleware rewrites. On static export, `router.push("/it/prenota")` will 404 because no App Router route matches that segment.
+
+**⚠️ UNRESOLVED CONTRADICTION in prior document versions:** Some sections use `getSlug("book", lang)` (which returns `"prenota"` for Italian) for in-app navigation; other sections show `/{lang}/book` hardcoded. These are not equivalent on static export.
+
+**Verification Task 0 (must run before any CTA migration):** See Track E Task 29 below. Before migrating any call site, verify by manual test or CI canary:
+- Direct load `https://staging.brikette-website.pages.dev/it/prenota` → confirms 200-rewrite works for external traffic
+- Click a CTA that calls `router.push("/it/prenota")` from within the SPA → confirms whether this 404s or resolves
+- Repeat for 1 non-EN locale that uses the canonical `/book` segment (e.g. English stays `/en/book`)
+
+**Provisional rule (apply this until verification contradicts it):** Use `/{lang}/book` (canonical App Router path) for all `router.push()` and `<Link href>` calls in-app. Reserve localized slug paths for SEO-facing display URLs only (e.g., canonical `<link>` tag, sitemap.xml, external share links). If verification proves `router.push("/it/prenota")` works correctly on static export, update this decision to use `getSlug` everywhere.
+
+```ts
+// Provisional — use canonical path for in-app navigation
+const bookPath = `/${lang}/book`;
+// NOT: `/${lang}/${getSlug("book", lang)}` — fails on static export until verified
+```
+
+**Effect on call site table:** All `router.push` and `<Link href>` values in the blast radius table use `/${lang}/book`. The `getSlug` helper is preserved for sitemap/canonical tag use where it already works correctly.
+
+### Decision B: Reserve Now with No Dates
+
+The modal previously enforced dates before Octorate navigation. After modal removal, the room card CTAs on `/book` need a defined behavior when `checkIn`/`checkOut`/`pax` are missing or invalid.
+
+**Resolved:** Disable room card reserve CTAs until valid dates are present.
+
+**Implementation spec:**
+- `BookPageContent.tsx` maintains `bookingQuery` state (check-in, check-out, pax). Pass a `hasValidQuery: boolean` prop to `RoomsSection`/`RoomCard`.
+- When `hasValidQuery` is false: render the "Reserve Now" button as visually disabled (`aria-disabled`, not `disabled` — to allow tooltip/tooltip-equivalent hint).
+- When `hasValidQuery` is false: the button's `onClick` scrolls to the date picker with a brief shake/highlight animation and an accessible message like "Please select dates to continue."
+- When `hasValidQuery` is true: button is active and fires `select_item` → `begin_checkout` → Octorate navigation.
+- The `checkIn`/`checkOut`/`pax` are already in URL params (`writeCanonicalBookingQuery`), so the page state is always serializable.
+- **Do not** navigate to Octorate with default/garbage dates — that creates untrackable junk events and bad UX.
+
+**Acceptance criterion:** A user arriving at `/book` with no URL params sees room cards with disabled CTAs and a prompt to select dates. After selecting dates, CTAs activate.
+
+### Decision C: Analytics Placement (packages/ui vs app layer)
+
+Several components that need GA4 events are in `packages/ui` (`DesktopHeader`, `MobileNav`, `RoomsSection`, `StickyBookNow`, `CarouselSlides`). The GA4 helpers live in `apps/brikette/src/utils/`.
+
+**Resolved:** Keep UI components dumb — do not import GA4 utilities into `packages/ui`.
+
+**Pattern:** UI components that trigger analytics emit events via optional callback props provided from the app layer:
+- `onPrimaryCtaClick?: (ctaId: string, ctaLocation: string) => void`
+- `onRoomCardClick?: (room: Room, plan: "nr" | "flex") => void`
+- etc.
+
+The brikette app layer (`apps/brikette`) wires these callbacks to `fireCTAClick`, `fireSelectItem`, etc. This is already the pattern used by `HomeContent.tsx` (`onPrimaryCtaClick={handleReserve}`) — extend it consistently.
+
+**Do not** create a "GA4 context bridge" in `packages/ui` — that over-engineers the boundary. Callback props are sufficient and already in use.
+
+### Decision E: RoomCard Behavior on `/rooms` Listing Page
+
+The `/rooms` listing page shows RoomCards but is not managed by `BookPageContent` — there is no `bookingQuery` state, no dates picker on the page, and no `hasValidQuery` prop to gate reserve buttons.
+
+**Context:** Decision B governs the dates-gate only for `/book`. On `/rooms`, the same `RoomCard` component renders "Reserve Now" buttons, but the page has no dates input for users to fill. If modal removal makes RoomCard render direct Octorate `<a>` links, these links need valid dates or users land on Octorate with no dates context.
+
+**Options:**
+- **Option A (Recommended):** RoomCard reserve CTAs on `/rooms` navigate to `/{lang}/book` (not Octorate). User picks dates on book page, then selects the same or any room. Clean; consistent with the "book page is the universal booking entry point" goal. RoomCard on `/rooms` acts as a "go to book page with this room context" CTA, not a direct checkout.
+- **Option B:** Show the same disabled-until-dates behavior as Decision B, but there's no date picker on `/rooms` to fill — this would result in CTAs that are permanently disabled on `/rooms` (bad UX).
+- **Option C:** Open a lightweight date picker inline (new UI surface) — scope creep; creates two date-picker UI patterns.
+
+**Resolved: Option A.** RoomCard reserve CTAs on the `/rooms` listing page navigate to `/{lang}/book` (same behavior as the main hero CTA). This is the simplest outcome and consistent with "all booking-intent CTAs route to `/book` as the universal entry point, except from `/book` itself."
+
+**Implementation:** The `RoomCard` component needs to know whether it is rendering in a "has dates context" (from `/book` page, has `hasValidQuery`) or a "no dates context" (`/rooms` page) mode. Cleanest approach: the `hasValidQuery` prop from Decision B becomes the discriminator. When `hasValidQuery` is `undefined` (not provided by parent), the CTA navigates to `/book`. When `hasValidQuery` is a boolean, Decision B behavior applies (disabled until true). This requires no new props — just a `hasValidQuery?: boolean` type with `undefined` meaning "navigate to book page."
+
+**Planning task:** Add this as a sub-task within Track E task 34 (RoomCard migration). The `/rooms` page container must NOT pass a `hasValidQuery` prop; the `/book` page container MUST pass it.
+
+### Decision D: Deals Tracking (Promotions, Not Items)
+
+Deals are not products — they are promotional offers that redirect users to the booking engine with UTM params + deal codes. Using `view_item_list` / `select_item` for deals would mix them with room inventory and corrupt the e-commerce funnel.
+
+**Resolved:** Use standard GA4 promotions model for deals:
+- `view_promotion` when deal cards are rendered on `/deals` (once per route render)
+- `select_promotion` when user clicks "Book Direct" on a deal card
+
+**After `select_promotion`:** navigate to `/${lang}/${getSlug("book", lang)}?deal=dealId`. The `/book` page reads `?deal=` param and the RoomCard Octorate URL builder injects `&deal=<id>&utm_source=site&utm_medium=deal&utm_campaign=<id>`. This keeps the book page in the funnel for GA4 pageview continuity.
+
+**`promotion_id`** values are deal IDs from the deals data (dynamic strings). Track `promotion_name` as the deal title/label.
+
 ## Planning Constraints & Notes
+
+- **Track E (Modal Removal) is a hard prerequisite** — Track A and Track C tasks that touch CTA components must not land before Track E completes. If Track E is split into sub-tasks, the TypeScript changes (ModalType, payloadMap) must land before call site migrations to maintain compile-time safety.
+
+- **Staging GA4 data stream isolation is Task 0 for Track C (not optional)** — Track C GA4 instrumentation tasks cannot be verified without an isolated staging measurement ID. Create the staging data stream and set the `NEXT_PUBLIC_GA_MEASUREMENT_ID` GitHub Actions env var for the `staging-pages` environment before any Track C task begins. Without this, staging events will pollute production reports.
+
+- **Octorate URL contract extraction is a gated prerequisite for RoomCard migration (Track E-35, blocks on Track E-30)** — Before replacing `openModal("booking2", ...)` with a direct `<a href={octorateUrl}>`, extract the exact URL builder from the existing `Booking2Modal.tsx` into a shared utility with unit tests asserting the exact URL params for NR vs Flex for at least 2 rooms. This task is now in Track E (Task 30) because it directly enables modal removal — it does not belong in Track C.
 
 - Must-follow patterns:
   - GA4 events must use the `getGtag()` null-safe pattern from `ga4-events.ts`
@@ -727,8 +1005,7 @@ Minimum implementation approach (choose one and apply consistently):
   - New CTA components should be lazy-loaded if they contain heavy assets
 - Rollout/rollback expectations:
   - All changes verified on staging before merge to main
-  - GA4 changes are additive **except** for BookingModal/Booking2Modal semantics adjustments required to enforce the chosen model (e.g., Model A replaces availability-only `begin_checkout` with `search_availability`).
-  - Existing GA4 tests will be updated accordingly (not just added-to), including `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx` and `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
+  - GA4 changes: mostly additive (new events + helpers). Existing `ga4-09-booking-modal-begin-checkout.test.tsx` and `ga4-10-booking2-modal-begin-checkout.test.tsx` are **deleted** in Track E-36 (extinct after modal removal). Seven other GA4/CTA tests are updated but not deleted (see blast radius table).
   - CTA and content additions are purely additive (no removal of existing elements)
   - Rollback: revert commit (no migration or state to clean up)
 - Observability expectations:
@@ -752,30 +1029,64 @@ Minimum implementation approach (choose one and apply consistently):
 10. Add new i18n keys to `bookPage.json` for all new content
 
 ### Track B: Site-Wide CTA Coverage
-11. Add a sticky CTA pattern to GuideContent pages, about page, bar-menu, breakfast-menu (Variant A: opens `BookingModal` generic availability; reserve `StickyBookNow` deep links for room-context pages)
+11. Add `ContentStickyCta` to GuideContent pages, about page, bar-menu, breakfast-menu — rendered as `<Link href={\`/${lang}/${getSlug("book", lang)}\`}>`. No modal. Reserve `StickyBookNow` (direct Octorate deep link) for room detail pages only.
 12. Add ExperiencesCtaSection-style block to how-to-get-here index and assistance index
 
 ### Track C: GA4 Event Pipeline
-13. Set up staging GA4 data stream (environment-scoped measurement ID in GitHub Actions)
-14. Create shared GA4 event helpers: `fireViewItemList`, `fireViewItem`, `fireSelectItem`, `fireCTAClick`, `fireModalOpen`, `fireModalClose`
-15. Lock GA4 semantics model (A or B). **Default assumption: Model A (clean funnel)**
-    - Model A assumption: BookingModal availability-only exits emit `search_availability` (custom), and `begin_checkout` is reserved for room-selected/apartment flows where `items[]` is meaningful
-    - Model B alternative: keep `begin_checkout` for all Octorate exits but require `checkout_type` segmentation, with `items[]`/`value` only when known
-16. Add `begin_checkout` event to StickyBookNow click
-17. Add `view_item_list` to rooms listing page, book page, and home page carousel
-18. Add `view_item` to room detail page and apartment detail pages
-19. Add `select_item` to room card clicks and carousel card clicks
-20. Add `fireCTAClick` to header booking CTA, hero CTA, new content page CTAs
-21. Add `fireModalOpen`/`fireModalClose` to ModalProvider
-22. Migrate PlanChoiceAnalytics from dataLayer.push to gtag wrapper
-23. Apply outbound-event reliability policy for same-tab redirects and semantic links (`transport_type: "beacon"`, `event_callback`, short delay)
+**Task 0 (hard gate — must land before any other Track C task):** Set up staging GA4 data stream; set `NEXT_PUBLIC_GA_MEASUREMENT_ID` as an environment-scoped GitHub Actions variable for `staging-pages` environment (separate from production). Without this, all staging verification is unreliable.
+
+13. Create `trackThenNavigate(eventName, params, navigate, timeoutMs = 200)` helper in `apps/brikette/src/utils/trackThenNavigate.ts`; unit tests asserting: (a) gtag call fires with `transport_type: "beacon"` and `event_callback`, (b) navigate is called after callback fires, (c) timeout fallback calls navigate if callback is delayed, (d) if gtag is absent navigate is called immediately
+14. Create shared GA4 event helpers: `fireViewItemList`, `fireViewItem`, `fireSelectItem`, `fireCTAClick`, `fireSearchAvailability`, `fireViewPromotion`, `fireSelectPromotion`
+16. GA4 semantics are locked as Model A (see Semantics Decision section — no further discussion needed)
+17. Add `begin_checkout` event to StickyBookNow click (via `trackThenNavigate`)
+18. Add `view_item_list` to rooms listing page, book page room list, and home page carousel
+19. Add `view_item` to room detail page and apartment detail pages
+20. Add `select_item` to room card clicks on `/book` page and rooms listing (via `trackThenNavigate`)
+21. Add `search_availability` to `/book` page date picker "Update" submit and to initial load when valid dates are in URL params
+22. Add `view_promotion` to deals listing page (deal cards rendered)
+23. Add `select_promotion` to deal card "Book Direct" click
+24. Add `fireCTAClick` to header booking CTA, hero CTA, content page CTAs, OffersModal navigate CTA
+25. Migrate `PlanChoiceAnalytics` from `dataLayer.push` to gtag wrapper pattern
+26. Verify all outbound-to-Octorate navigations use `trackThenNavigate` (RoomCard, StickyBookNow, apartment checkout)
+
+### Track E: Booking Modal Removal (Prerequisite to all other tracks)
+
+**Must land before Track A, B, C tasks that touch CTA components.**
+
+**Task 0 (hard gate — must run before any other Track E task):** Route truth verification — confirm the correct in-app navigation strategy for the book page before any call site is migrated:
+- Test A: Direct-load `https://staging.brikette-website.pages.dev/it/prenota` (external inbound) → expect 200 with correct page content (Cloudflare 200-rewrite).
+- Test B: From within the SPA, call `router.push("/it/prenota")` → observe: does it resolve to the book page or 404? This confirms whether `getSlug("book", lang)` values are safe to use in `router.push` calls.
+- Test C: Same as Test B using `<Link href="/it/prenota">`.
+- Outcome A (slug works in-app): use `getSlug("book", lang)` everywhere. Update the blast radius call site table and Decision A to reflect this.
+- Outcome B (slug fails in-app): use `/{lang}/book` for all `router.push`/`<Link href>` in-app; use `getSlug` only for sitemap/canonical links. Update Decision A accordingly.
+- **Do not migrate any call sites until Test B/C outcomes are known.**
+
+29. Verify no consumers of `BookingModal`/`BookingModal2` exist outside of brikette app (`grep -r "BookingModal" packages/ --include="*.tsx"` excluding `ui/organisms/modals` itself)
+30. Extract Octorate URL builder from `Booking2Modal.tsx` into a standalone shared utility (e.g., `apps/brikette/src/utils/buildOctorateUrl.ts`); add unit tests asserting exact URL params for NR vs Flex for at least 2 rooms. **This is the highest load-bearing dependency in the entire migration — a wrong URL silently breaks room-specific bookings.** Must land before Task 34.
+31. Remove `BookingModal` and `BookingModal2` from `packages/ui`:
+    - Delete `packages/ui/src/organisms/modals/BookingModal.tsx`
+    - Delete `packages/ui/src/organisms/modals/BookingModal2.tsx`
+    - Remove their exports from `packages/ui/src/organisms/modals/index.ts`
+32. Remove booking/booking2 from ModalType union in `packages/ui/src/context/modal/context.ts`
+33. Remove booking/booking2 from brikette modal infrastructure:
+    - `apps/brikette/src/context/modal/lazy-modals.ts` — remove BookingModal + BookingModal2 imports
+    - `apps/brikette/src/context/modal/payloadMap.ts` — remove BookingPayload, Booking2Payload, parseBookingPayload, parseBooking2Payload; remove `booking` + `booking2` from ModalPayloadMap
+    - `apps/brikette/src/context/modal/global-modals.tsx` — remove BookingGlobalModal + Booking2GlobalModal imports and switcher branches
+    - Delete `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`
+    - Delete `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`
+34. Migrate all 9 `openModal("booking")` call sites to `router.push` or `<Link>` per the blast radius table (use path strategy determined by Task 0 verification)
+35. Migrate 2 `openModal("booking2")` call sites in `RoomCard.tsx` to direct Octorate `<a>` links using the URL builder from Task 30. Also implement Decision B (disabled state when `hasValidQuery: false` on `/book`; Decision E: navigate-to-book behavior when `hasValidQuery` is undefined on `/rooms`). **Blocked on Task 30 (URL builder).**
+36. Delete extinct tests: `ga4-09-booking-modal-begin-checkout.test.tsx`, `ga4-10-booking2-modal-begin-checkout.test.tsx`
+37. Update tests: `modal-integration-tc09.test.tsx` (BookingWidget now navigates), `content-sticky-cta.test.tsx`, `deals-page.test.tsx`, `experiences-page.test.tsx`, `ga4-11-select-item-room-ctas.test.tsx`, `ga4-modal-lifecycle.test.tsx` (use retained modal type), `ga4-cta-click-header-hero-widget.test.tsx`
+38. Resolve `?deal=` URL param handling on `/book` page if Option A is chosen for deals CTAs (see open question above)
 
 ### Track D: Testing & Verification
-24. Add direct test coverage for `reportWebVitals.ts` (absorbed from TASK-04 in `brik-ga4-baseline-lock/plan.md` — select test seam: mock `navigator.sendBeacon` or mock `web-vitals` callbacks; file: `src/test/performance/reportWebVitals-coverage.test.ts`)
-25. Write unit tests for all new GA4 events (following ga4-NN pattern)
-26. Write snapshot tests for book page structured data JSON-LD
-27. Deploy to staging and execute GA4 verification protocol
-28. Document GA4 verification protocol as a repeatable checklist
+39. Add direct test coverage for `reportWebVitals.ts` (absorbed from TASK-04 in `brik-ga4-baseline-lock/plan.md` — select test seam: mock `navigator.sendBeacon` or mock `web-vitals` callbacks; file: `src/test/performance/reportWebVitals-coverage.test.ts`)
+40. Write unit tests for all new GA4 events (following ga4-NN pattern); delete ga4-09, ga4-10 extinct tests
+41. Write snapshot tests for book page structured data JSON-LD
+42. Write Playwright smoke test: navigate to `/en/book?checkin=...&checkout=...&pax=2`, intercept `google-analytics.com/g/collect`, click first room card NR CTA, assert `select_item` + `begin_checkout` payloads, assert Octorate URL navigation
+43. Deploy to staging and execute GA4 verification protocol (Google Analytics Debugger extension + Network tab for `items[]`/`value` payload QA — Realtime alone insufficient)
+44. Document GA4 verification protocol as a repeatable checklist
 
 ## Execution Routing Packet
 
@@ -785,21 +1096,26 @@ Minimum implementation approach (choose one and apply consistently):
   - Book page has: conversion-optimised H1/meta, DirectBookingPerks, social proof, FAQ section, location snippet, lodging + `FAQPage` + `BreadcrumbList` JSON-LD (no third-party `aggregateRating`), internal guide links
   - All 10 CTA-lacking pages have at least one booking CTA
   - GA4 e-commerce events `view_item_list`, `view_item`, `select_item` implemented
-  - `begin_checkout` events include `items[]`/`value`/`currency` only when known (room-selected/apartment flows). Availability-only flows use the chosen semantics model (custom event or `checkout_type` segmentation)
-  - CTA click + modal open/close tracking implemented
+  - `begin_checkout` events always include `items[]` (room known at click time); `value`/`currency` included only when a reliable total can be computed
+  - `cta_click` tracking implemented for all header/hero/content-page CTAs that navigate to `/book`
+  - Booking modals (`booking`, `booking2`) fully removed — no `openModal("booking")` or `openModal("booking2")` call sites remain; TypeScript compilation clean with no references to deleted types
   - All new events verified on staging (documented proof: GA4 DebugView checks + Network payload inspection + Realtime arrival)
   - Structured data validates for schema.org correctness (Schema Markup Validator); Rich Results Test used only for supported eligibility checks
   - Unit tests for every new GA4 event + snapshot tests for structured data
   - All existing tests pass (`pnpm --filter brikette test`)
 - Post-delivery measurement plan:
-  - 7-day GA4 data extract showing non-zero counts for: `view_item_list`, `view_item`, `select_item`, `begin_checkout` (segmented per semantics model; `room_selected` flows have `items[]`/`value`), CTA click events
+  - 7-day GA4 data extract showing non-zero counts for: `view_item_list`, `view_item`, `select_item`, `begin_checkout` (all flows have `items[]`; `value`/`currency` where computable), `cta_click`, `search_availability`, `view_promotion`, `select_promotion`
   - Session-to-booking CVR measurable (even if Octorate purchase tracking remains deferred)
-  - Funnel visualization in GA4: page_view -> view_item -> select_item -> begin_checkout
-  - Google Search Console: monitor `/book` page impressions/clicks for keyword "book hostel Positano" and similar
+  - Funnel visualization in GA4: `page_view` → `view_item_list` → `search_availability` → `select_item` → `begin_checkout`
+  - Google Search Console: monitor `/book` page impressions/clicks for keywords "book hostel Positano", "Brikette hostel booking"
   - Structured data validation: Schema Markup Validator confirms schema.org correctness; Rich Results Test checks supported eligibility for `FAQPage` and any supported lodging outputs
 
 ## Planning Readiness
 
 - Status: **Ready-for-planning**
-- Blocking items: None. Open questions have reasonable defaults.
-- Recommended next step: Proceed to `/lp-plan`. Answer open questions during planning if Pete has preferences; otherwise use defaults.
+- Blocking items: Three open questions with documented defaults:
+  1. Deals CTA Option A/B (default: Option A — navigate to `/book?deal=ID`)
+  2. Carousel CTA Option A/B (default: Option A — navigate to `/book`)
+  3. **Route truth verification (Decision A Task 0):** whether `router.push("/it/prenota")` works on static export determines the URL strategy for all call site migrations. If this is not pre-verified manually before `/lp-plan`, the plan must sequence Task 0 as a hard gate before any call site migration task.
+- Sequencing invariant: Track E (modal removal) must sequence before Tracks A, B, C. Within Track E: Task 0 (route truth) → Task 30 (URL builder extraction) → Tasks 34/35 (call site migrations).
+- Recommended next step: Proceed to `/lp-plan`. Confirm open questions (deals, carousel, route truth) before task generation if possible — otherwise defaults apply and sequencing guards handle uncertainty.

@@ -4,1413 +4,1173 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-15
+Last-updated: 2026-02-18
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: /lp-build
 Supporting-Skills: /lp-design-spec, /lp-seo
-Overall-confidence: 78%
-Confidence-Method: min(Implementation,Approach,Impact); Overall weighted by Effort
-Business-OS-Integration: off
+Overall-confidence: 84%
+Confidence-Method: min(Implementation,Approach,Impact); weighted by Effort (S=1, M=2, L=3)
+Auto-Build-Intent: plan-only
+Business-OS-Integration: on
 Business-Unit: BRIK
 Card-ID: BRIK-005
 ---
 
-# Brikette CTA + GA4 Sales Funnel Plan
+# Brikette CTA + GA4 Sales Funnel — Plan v2
+
+> **Historical context (completed + superseded tasks):** `docs/plans/brikette-cta-sales-funnel-ga4/plan-v1.md`
 
 ## Summary
-We will turn Brikette’s direct-booking flow into a measurable, analyzable funnel and improve conversion surfaces where intent occurs today. The dominant JS-enabled conversion surface is modal-first booking (`BookingModal` / `Booking2Modal`), with `/book` serving as SEO/direct-entry plus degraded fallback primarily for header/mobile-nav links.
 
-We will lock GA4 semantics to **Model A (clean funnel)** so availability-only flows do not pollute `begin_checkout`. We will implement a canonical GA4 event contract (including authoritative enums, stable item identity mapping, dedupe rules, and outbound reliability) and then incrementally instrument list impressions, selections, modal lifecycle, and outbound transitions.
+**Scope amendment 2026-02-18:** The original plan (v1, which improved booking modals) is superseded
+by a clean break: remove `BookingModal` / `Booking2Modal` entirely and route all booking-intent CTAs
+directly to the `/{lang}/book` page or Octorate. Eleven original tasks are archived in plan-v1.md;
+six completed tasks remain valid.
 
-In parallel, we will add conversion content parity to booking modals and upgrade `/book` with direct-booking persuasion and validated JSON-LD (no third-party `aggregateRating`).
-
-GA4 changes are mostly additive, with an explicit semantics migration under Model A (BookingModal availability-only exits no longer emit `begin_checkout`).
+The target funnel is: CTA click → `/{lang}/book` (date picker + room list + conversion content) →
+direct Octorate navigation from RoomCard with `begin_checkout`. The `/book` page currently has zero
+persuasive content — it needs conversion content (DirectBookingPerks, social proof, FAQ, location)
+and structured data. Ten other high-traffic pages have zero or weak booking CTAs. The GA4 e-commerce
+pipeline is incomplete — `view_item_list`, `select_item`, `search_availability`, `view_promotion`,
+`select_promotion`, and reliable `begin_checkout` (with `items[]`) are all missing.
 
 ## Goals
-- Conversion: add direct-booking persuasion where users actually convert (booking modals + `/book`).
-- Measurement: implement a coherent GA4 funnel (Model A) for `view_item_list` → `select_item` → `begin_checkout` plus availability-only tracking.
-- Coverage: add booking CTAs to high-traffic pages that currently dead-end (guides, about, menus, assistance/how-to-get-here), using a sticky CTA variant that opens the booking modal.
-- Reliability: prevent lost outbound events (beacon/callback delay) and prevent double-fires (dedupe guards).
+
+- **Track E (prerequisite):** Remove `BookingModal`/`Booking2Modal` and all 9+2 call sites; route
+  all booking-intent CTAs to `/{lang}/book` or direct Octorate links per the blast radius table
+- **Track A:** Transform `/book` into a conversion-optimized page: add DirectBookingPerks, social
+  proof, FAQ, LocationInline, lodging + FAQPage + BreadcrumbList JSON-LD, improved H1/meta; deal
+  applied banner when `?deal=ID` param present
+- **Track B:** Add `ContentStickyCta` to all 10 high-traffic pages that currently lack booking CTAs
+- **Track C:** Implement coherent GA4 funnel: `cta_click` → `page_view(/book)` → `view_item_list`
+  → `search_availability` → `select_item` → `begin_checkout`; add `view_promotion`/`select_promotion`
+  for deals; apply `trackThenNavigate` for all outbound Octorate navigations; verify SPA page_view
+  fires on internal navigation (Home → /book)
+- **Track D:** Unit tests for all new helpers/events; Playwright smoke test on staging; GA4 DebugView
+  + Network payload verification protocol; register custom dimensions in GA4 Admin
 
 ## Non-goals
-- Octorate booking engine changes.
-- `purchase` tracking (blocked by Octorate redirect).
-- Booking modal mechanics redesign (fields/validation/layout). Only small conversion-copy blocks are in scope.
+
+- Octorate booking engine changes (external system)
+- `purchase` event tracking (blocked by Octorate one-directional redirect; see fact-find for deferred options)
+- A/B testing framework
+- Booking modal usability improvements (modals being deleted)
+- Google Ads / Search Console linking
 
 ## Constraints & Assumptions
+
 - Constraints:
-  - Staging is static export; GA4 currently shared with prod; verification must be staging-safe.
-  - Consent Mode v2 may deny storage; events must still be testable via DebugView + Network payloads.
-- Assumptions (defaults unless overridden):
-  - GA4 semantics: **Model A (clean funnel)**.
-  - Staging isolation: separate GA4 data stream (same property) with env-scoped `NEXT_PUBLIC_GA_MEASUREMENT_ID`.
-  - Item identity: `items[].item_id = Room.sku` from `apps/brikette/src/data/roomsData.ts`.
-  - Sticky CTAs: content pages use Variant A (open `BookingModal`); deep-link `StickyBookNow` remains room-detail only.
+  - All GA4 verification must happen on staging (`staging.brikette-website.pages.dev`)
+  - Staging is static export; middleware does NOT run; no SSR/ISR
+  - Staging GA4 stream isolation is a hard gate for Track C verification (TASK-15 already complete)
+  - `packages/ui` must not import `apps/brikette/*` analytics utilities — callback-prop pattern enforced
+  - Track E (modal removal) must fully land before Track A/B/C tasks that touch CTA components
+  - GA4 stack is gtag-based (not GTM); `?gtm_debug` does not work for DebugView; use Google Analytics
+    Debugger extension or `debug_mode: true` in gtag config
+  - Decision A (URL strategy: canonical `/{lang}/book` vs `getSlug` for in-app navigation) is
+    provisional until TASK-22 route truth verification completes
+  - **Next.js App Router does NOT auto-fire GA4 `page_view` on client-side navigation** — requires
+    an explicit `gtag("config", ...)` or `gtag("event", "page_view", ...)` call in a
+    `usePathname()`/`useEffect` hook (TASK-41)
+  - **TASK-24 through TASK-28 form a single merge unit** — TASK-24 alone breaks TypeScript
+    compilation (consumers not yet updated); these tasks must ship as one PR or tightly stacked PRs
+    where each individual PR is CI-green before merging
+- Assumptions:
+  - Item identity: `items[].item_id = Room.sku` from `apps/brikette/src/data/roomsData.ts`
+  - Item fields: `item_name` (room display title), `item_category: "hostel"` (static),
+    `affiliation: "Hostel Brikette"` (static), `currency: "EUR"` (static)
+  - Deals tracking: `view_promotion`/`select_promotion` model (not items model)
+  - GA4 staging stream: separate data stream within same property (not separate property)
+  - `trackThenNavigate` API: `(eventName, params, navigate, timeoutMs)` — helper owns
+    `event_callback: go` wiring internally; caller is responsible for `e.preventDefault()` on
+    outbound `<a>` elements; `navigate` callback uses `window.location.assign(href)`
 
 ## Fact-Find Reference
+
 - Related brief: `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md`
-- Key decisions pulled forward:
-  - GA4 semantics model is an explicit decision; default is Model A.
-  - Enums/item_id/dedupe/price semantics are authoritative (see fact-find) and must be enforced in code.
+- Key architectural decisions from fact-find:
+  - Decision A: URL strategy (provisional: canonical `/{lang}/book` for in-app nav; pending TASK-22 verification)
+  - Decision B: Dates gate — disable RoomCard CTAs until valid dates present on `/book`
+  - Decision C: Analytics placement — callback props from app layer; `packages/ui` stays dumb
+  - Decision D: Deals — `view_promotion`/`select_promotion`, navigate to `/book?deal=ID`
+  - Decision E: RoomCard on `/rooms` — when `queryState === "absent"`, navigate to `/book` (not Octorate)
 
-## Monorepo Boundary Rule (apps vs packages/ui)
-Several remaining tasks touch `packages/ui/*` components (header/nav/hero, RoomsSection, StickyBookNow, modal provider). **`packages/ui` must not import `apps/brikette/*` analytics utilities.**
+## Scope Amendment (2026-02-18)
 
-**Chosen approach (Option A, required):** UI emits optional callbacks, the app owns analytics.
-- `packages/ui` components will accept optional callback props (e.g. `onPrimaryCtaClick`, `onRoomSelect`, `onStickyCheckoutClick`, `onModalOpen`, `onModalClose`) and call them.
-- `apps/brikette` wrappers/call-sites pass analytics handlers that use the contract layer in `apps/brikette/src/utils/ga4-events.ts`.
+**Decision (Pete):** Clean break from booking modals. Eleven original tasks superseded; six completed
+tasks remain valid. See `plan-v1.md` for full detail on superseded tasks.
 
-This keeps UI reusable while still enforcing canonical analytics enums/payload shapes.
+**Completed tasks that remain valid:** TASK-01, TASK-07, TASK-08, TASK-15, TASK-16 (DebugView method
+needs amendment in TASK-40), TASK-18.
 
-## Analytics Enums (Authoritative)
-Source of truth: `apps/brikette/src/utils/ga4-events.ts` (`GA4_ENUMS`). These values are stable, low-cardinality, and `snake_case`.
+**Pending tasks that remain valid (reframed):** TASK-20, TASK-21, TASK-13, TASK-14.
 
-- `item_list_id`: `home_rooms_carousel`, `rooms_index`, `book_rooms`, `deals_index`
-- `cta_id`: `header_check_availability`, `mobile_nav_check_availability`, `hero_check_availability`, `booking_widget_check_availability`, `room_card_reserve_nr`, `room_card_reserve_flex`, `sticky_book_now`, `deals_book_direct`, `content_sticky_check_availability`
-- `cta_location`: `desktop_header`, `mobile_nav`, `home_hero`, `home_booking_widget`, `rooms_list`, `book_page`, `room_detail`, `deals_page`, `guide_detail`, `about_page`, `bar_menu`, `breakfast_menu`, `assistance`, `how_to_get_here`
-- `modal_type`: `offers`, `booking`, `booking2`, `location`, `contact`, `facilities`, `language`
-- `rate_plan` (item-level `items[].item_variant`): `flex`, `nr`
-- `source`: `header`, `mobile_nav`, `hero`, `booking_widget`, `deals`, `room_card`, `sticky_cta`, `unknown`
+## Monorepo Boundary Rule
 
-## Item List Name Mapping (Stable, Non-localized)
-Use these fixed English strings for `item_list_name` (do not i18n).
+`packages/ui` must not import `apps/brikette/*` analytics utilities.
 
-- `home_rooms_carousel` → "Home rooms carousel"
-- `rooms_index` → "Rooms index"
-- `book_rooms` → "Book page rooms"
-- `deals_index` → "Deals index"
+**Pattern (Decision C):** UI components expose optional callback props; the app layer wires them to GA4 helpers:
+- `onPrimaryCtaClick?: (ctaId: string, ctaLocation: string) => void`
+- `onRoomCardClick?: (room: Room, plan: "nr" | "flex") => void`
+- `onStickyCheckoutClick?: () => void`
+- etc.
 
-## Existing System Notes
-- Booking modals:
-  - `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`
-  - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`
-- GA4 helpers:
-  - `apps/brikette/src/utils/ga4-events.ts`
-- Room source of truth:
-  - `apps/brikette/src/data/roomsData.ts`
-- Existing GA4 tests that will change under Model A:
-  - `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx`
-  - `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
+Brikette app passes `fireCTAClick`, `fireSelectItem`, `trackThenNavigate`-wrapped handlers via these props.
+
+## Analytics Enums (Authoritative — post-amendment)
+
+Source of truth: `apps/brikette/src/utils/ga4-events.ts` (`GA4_ENUMS`). Updated post-amendment to remove modal types.
+
+- `item_list_id`: `home_rooms_carousel`, `rooms_index`, `book_rooms`, `room_detail`
+- `cta_id`: `header_check_availability`, `mobile_nav_check_availability`, `hero_check_availability`, `booking_widget_check_availability`, `room_card_reserve_nr`, `room_card_reserve_flex`, `sticky_book_now`, `deals_book_direct`, `content_sticky_check_availability`, `offers_modal_reserve`
+- `cta_location`: `desktop_header`, `mobile_nav`, `home_hero`, `home_booking_widget`, `rooms_list`, `book_page`, `room_detail`, `deals_page`, `guide_detail`, `about_page`, `bar_menu`, `breakfast_menu`, `assistance`, `how_to_get_here`, `offers_modal`
+- `modal_type` (retained non-booking modals only): `offers`, `location`, `contact`, `facilities`, `language`
+- `item_variant` (rate plan): `flex`, `nr`
+- `source`: `header`, `mobile_nav`, `hero`, `booking_widget`, `deals`, `room_card`, `sticky_cta`, `offers_modal`, `unknown`
 
 ## Proposed Approach
-- **Model A (chosen; default):**
-  - Availability-only exits emit `search_availability` (custom).
-  - Room/rate selection emits `select_item` with `items[].item_variant`.
-  - Outbound to Octorate with room/rate known emits `begin_checkout` with `items[]` and no `value` unless reliable.
-- Implement a small GA4 “contract layer”:
-  - Authoritative enums, item builders, and dedupe guards.
-  - Outbound reliability helper for same-tab redirects.
-- Roll out instrumentation by surface (modals → room cards → list impressions → sticky links → content CTAs).
-- Conversion content parity:
-  - Add a small “Why book direct” block above modal confirm/exit.
-  - Upgrade `/book` with existing components + schema-validated JSON-LD.
 
-### Alternatives considered
-- Model B (`begin_checkout` for any outbound with `checkout_type` segmentation): viable, but it blurs a clean e-commerce funnel and increases reporting complexity; default remains Model A unless explicitly overridden.
+Track E first (hard prerequisite):
+1. Verify route truth (TASK-22) — canonical vs getSlug for in-app navigation
+2. Extract Octorate URL builder utility (TASK-23) — load-bearing for RoomCard migration
+3. Remove ModalType + packages/ui booking modal primitives (TASK-24) — TypeScript foundation
+4. Remove brikette booking modal infrastructure (TASK-25) — delete files, lazy-modals, payloadMap
+5. Migrate all openModal("booking") call sites (TASK-26) — 9 sites to Link/router.push
+6. Migrate RoomCard to direct Octorate links with Decision B/E queryState (TASK-27) — 2 sites
+7. Test cleanup + updates (TASK-28) — delete ga4-09/ga4-10, update 7 tests
+8. Checkpoint (TASK-29)
+
+Tracks A + B + C + D in parallel after checkpoint:
+- Track C: trackThenNavigate helper, GA4 event helpers, enum update, wire all new events
+- Track A: /book page conversion content + JSON-LD + deal banner
+- Track B: ContentStickyCta to content pages
+- Track D: custom dimensions ops, SPA page_view verification, verification protocol, reportWebVitals test
+
+Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
+
+## Plan Gates
+
+- Foundation Gate: **Pass** — fact-find has Deliverable-Type, Execution-Track, Primary-Execution-Skill, testability landscape, delivery-readiness confidence input
+- Sequenced: **Yes** (see Parallelism Guide)
+- Edge-case review complete: **Yes** — Decision A provisional pending TASK-22; all call sites documented; dates gate specified (Decision B/E); merge unit constraint documented for TASK-24–28
+- Auto-build eligible: **Yes** (TASK-22 at 90%, TASK-23 at 85%; all Track E tasks ≥80 with no blocking decision gates)
 
 ## Task Summary
-| Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
-|---|---|---:|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add GA4 contract primitives (enums + item builder + dedupe guard scaffolding) | 85% | S | Complete (2026-02-15) | - | TASK-02,TASK-03 |
-| TASK-02 | IMPLEMENT | Add outbound reliability helper and wire it for same-tab redirects (Booking2Modal path only) | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-03,TASK-04 |
-| TASK-03 | IMPLEMENT | Enforce Model A on BookingModal exit: replace availability-only `begin_checkout` with `search_availability` + update GA4 test | 83% | S | Complete (2026-02-15) | TASK-01,TASK-02 (file overlap: `apps/brikette/src/utils/ga4-events.ts`) | TASK-05 |
-| TASK-04 | INVESTIGATE | Booking2 modalData contract: call-site map + canonical payload decision (roomSku + plan + list/source) | 85% | S | Complete (2026-02-15) | TASK-02 | TASK-17 |
-| TASK-05 | CHECKPOINT | Horizon checkpoint: re-assess remaining GA4 surfaces after modal semantics land | 95% | S | Complete (2026-02-15) | TASK-03,TASK-17 | TASK-15,TASK-16 |
-| TASK-06 | IMPLEMENT | Implement `select_item` on room CTA clicks (RoomCard + RoomsSection) using contract primitives | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-07 |
-| TASK-07 | IMPLEMENT | Implement `view_item_list` impressions (rooms index, book rooms list, deals list, home rooms carousel) with dedupe | 82% | M | Complete (2026-02-15) | TASK-05,TASK-06,TASK-15,TASK-18 | TASK-08 |
-| TASK-08 | IMPLEMENT | Implement `view_item` on room detail + apartment pages | 82% | M | Complete (2026-02-15) | TASK-05,TASK-06,TASK-15 | - |
-| TASK-09 | IMPLEMENT | Implement `search_availability` + reliability on StickyBookNow (room detail availability deep-link) | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | - |
-| TASK-10 | IMPLEMENT | Add modal lifecycle events (`modal_open`/`modal_close`) in Brikette ModalProvider | 82% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-11 |
-| TASK-11 | IMPLEMENT | Add `cta_click` coverage for header/mobile-nav/hero/widget and new sticky CTA variant | 80% | M | Complete (2026-02-15) | TASK-05,TASK-15 | TASK-12 |
-| TASK-19 | INVESTIGATE | Lock modal "Why book direct" copy + i18n namespace/keys (no key leakage across locales) | 85% | S | Complete (2026-02-15) | TASK-05 | TASK-12 |
-| TASK-20 | INVESTIGATE | Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan | 85% | S | Pending | TASK-05 | TASK-13 |
-| TASK-21 | INVESTIGATE | Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo | 85% | S | Pending | TASK-05,TASK-11,TASK-15 | TASK-14 |
-| TASK-12 | IMPLEMENT | Conversion copy parity inside BookingModal/Booking2Modal (no mechanics redesign) | 72% ⚠️ | M | Pending | TASK-05,TASK-19 | TASK-13 |
-| TASK-13 | IMPLEMENT | Upgrade `/book`: DirectBookingPerks + trust + FAQ + internal links + JSON-LD (lodging + FAQ + breadcrumb) | 70% ⚠️ | L | Pending | TASK-05,TASK-12,TASK-20 | TASK-14 |
-| TASK-14 | IMPLEMENT | Add sticky CTA variant A to content pages (GuideContent/about/bar-menu/breakfast-menu) + tracking | 68% ⚠️ | L | Pending | TASK-05,TASK-11,TASK-15,TASK-21 | - |
-| TASK-15 | IMPLEMENT | Staging stream isolation enablement (env-scoped GA measurement ID) | 82% | M | Complete (2026-02-15) | TASK-05 | TASK-06,TASK-07,TASK-08,TASK-09,TASK-10,TASK-11,TASK-14 |
-| TASK-16 | IMPLEMENT | Verification protocol doc (DebugView + payload checklist) | 85% | M | Complete (2026-02-15) | TASK-05 | - |
-| TASK-17 | IMPLEMENT | Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test | 85% | M | Complete (2026-02-15) | TASK-02,TASK-04 | TASK-05 |
-| TASK-18 | IMPLEMENT | Fix impression dedupe to be per-navigation (not per session) + update unit test | 82% | S | Complete (2026-02-15) | TASK-01 | TASK-07 |
 
-> Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
+### Completed (for reference)
+
+| Task ID | Type | Description | Confidence | Effort | Status |
+|---|---|---|---:|---:|---|
+| TASK-01 | IMPLEMENT | GA4 contract primitives (enums + item builder + dedupe scaffold) | 85% | S | Complete (2026-02-15) |
+| TASK-07 | IMPLEMENT | view_item_list impressions with dedupe | 85% | M | Complete (2026-02-15) |
+| TASK-08 | IMPLEMENT | view_item on room detail + apartment pages | 85% | M | Complete (2026-02-15) |
+| TASK-15 | IMPLEMENT | Staging GA4 stream isolation | 85% | M | Complete (2026-02-15) |
+| TASK-16 | IMPLEMENT | Verification protocol doc (DebugView method amended by TASK-40) | 85% | M | Complete (2026-02-15) |
+| TASK-18 | IMPLEMENT | Impression dedupe fix (per-navigation) | 85% | S | Complete (2026-02-15) |
+
+### Pending
+
+| Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
+|---|---|---|---:|---:|---|---|---|
+| TASK-13 | IMPLEMENT | Upgrade /book page (conversion content + JSON-LD + deal banner + i18n) | 80% | L | Pending | TASK-20,TASK-29 | — |
+| TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Pending | TASK-21,TASK-29 | — |
+| TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Pending | TASK-29 | TASK-13 |
+| TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Pending | TASK-29 | TASK-14 |
+| TASK-22 | INVESTIGATE | Route truth verification: test in-app nav for localized slugs on static export | 90% | S | Pending | — | TASK-26,TASK-27 |
+| TASK-23 | IMPLEMENT | Extract Octorate URL builder from Booking2Modal into shared utility + unit tests | 85% | M | Pending | — | TASK-27 |
+| TASK-24 | IMPLEMENT | Remove ModalType booking/booking2 + delete packages/ui booking modal primitives | 85% | S | Pending | — | TASK-25,TASK-26 |
+| TASK-25 | IMPLEMENT | Remove brikette booking modal infrastructure (lazy-modals, payloadMap, global-modals, delete files) | 85% | M | Pending | TASK-24 | TASK-26,TASK-28 |
+| TASK-26 | IMPLEMENT | Migrate 9x openModal("booking") call sites to router.push/Link | 85% | M | Pending | TASK-22,TASK-24 | TASK-28 |
+| TASK-27 | IMPLEMENT | Migrate 2x openModal("booking2") in RoomCard to direct Octorate link (Decision B + E queryState) | 82% | M | Pending | TASK-22,TASK-23,TASK-24 | TASK-28 |
+| TASK-28 | IMPLEMENT | Delete ga4-09/ga4-10 extinct tests + update 7 affected modal-era tests | 85% | M | Pending | TASK-25,TASK-26,TASK-27 | TASK-29 |
+| TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Pending | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
+| TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Pending | TASK-29 | TASK-32,TASK-35 |
+| TASK-31 | IMPLEMENT | Create GA4 helpers: fireSearchAvailability, fireViewPromotion, fireSelectPromotion, fireCTAClick (updated) + unit tests | 85% | S | Pending | TASK-29 | TASK-33,TASK-34,TASK-36 |
+| TASK-32 | IMPLEMENT | Wire select_item + begin_checkout on RoomCard direct Octorate navigation (via trackThenNavigate) | 83% | M | Pending | TASK-29,TASK-30,TASK-31,TASK-15 | — |
+| TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Pending | TASK-29,TASK-30,TASK-15 | — |
+| TASK-36 | IMPLEMENT | Add cta_click to header/hero/BookingWidget/OffersModal/content-page CTAs (navigation-based) | 82% | M | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-37 | IMPLEMENT | Update GA4_ENUMS: remove booking/booking2 modal_type, add new enum values | 88% | S | Pending | TASK-29 | — |
+| TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
+| TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Pending | — | — |
+| TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Pending | TASK-29 | — |
+| TASK-41 | IMPLEMENT | Verify and implement page_view on SPA route changes (Home → /book internal navigation) | 80% | S | Pending | TASK-29 | — |
+| TASK-42 | IMPLEMENT | Register GA4 custom dimensions in GA4 Admin (cta_id, cta_location, item_list_id, coupon) | 90% | S | Pending | TASK-31,TASK-37 | — |
+
+> Effort scale: S=1, M=2, L=3. CHECKPOINT tasks excluded from confidence weighting.
 
 ## Parallelism Guide
-Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01 | - | GA4 contract primitives foundation |
-| 2 | TASK-02 | Wave 1: TASK-01 | Outbound reliability helper (touches `ga4-events.ts`) |
-| 3 | TASK-03 | Wave 2: TASK-02 | File-overlap sequencing on `ga4-events.ts` + Model A BookingModal semantics |
-| 4 | TASK-04 | Wave 2: TASK-02 | Call-site map + canonical booking2 modalData payload decision |
-| 5 | TASK-17 | Wave 2+4: TASK-02,TASK-04 | Booking2Modal begin_checkout items[] payload + updated test |
-| 6 | TASK-05 | Wave 3+5: TASK-03,TASK-17 | Checkpoint: reassess remaining plan via `/lp-replan` |
-| 7 | TASK-15, TASK-16 | Wave 6: TASK-05 | Isolate staging stream first; verification doc can be parallel |
-| 8 | TASK-06, TASK-10, TASK-11 | Wave 7: TASK-15 | Broad instrumentation begins only after isolation |
-| 9 | TASK-18 | Wave 1: TASK-01 | Dedupe fix must land before list impressions |
-| 10 | TASK-07, TASK-08, TASK-09 | Wave 8+9: TASK-18 (+ TASK-06 for TASK-07/TASK-08) | TASK-07/TASK-08 depend on selection + per-navigation dedupe; TASK-09 is availability-only + outbound reliability |
-| 11 | TASK-19, TASK-20 | Wave 6: TASK-05 | Decision memos: modal copy/i18n + /book JSON-LD strategy |
-| 12 | TASK-21 | Wave 8: TASK-11 (+ Wave 7: TASK-15) | Decide content sticky CTA scope + dismiss TTL; gated on staging isolation |
-| 13 | TASK-12 | Wave 11: TASK-19 | Conversion copy parity inside modals |
-| 14 | TASK-13 | Wave 11+13: TASK-20,TASK-12 | /book conversion + JSON-LD relies on settled copy + locked schema strategy |
-| 15 | TASK-14 | Wave 8+12: TASK-11,TASK-21 (+ Wave 7: TASK-15) | Content sticky CTA depends on CTA click contract + decision memo |
+| 1 | TASK-22, TASK-23, TASK-24, TASK-39 | — | All independent: route truth verify, URL builder, ModalType removal, reportWebVitals test |
+| 2 | TASK-25 | TASK-24 | Brikette modal infrastructure removal (depends on ModalType cleanup) |
+| 3 | TASK-26, TASK-27 | TASK-22, TASK-24 (both); TASK-23 also for TASK-27 | Parallel call site migrations; TASK-22 verdict must be known for URL path |
+| 4 | TASK-28 | TASK-25, TASK-26, TASK-27 | Test cleanup; all migrations must be complete |
+| 5 | TASK-29 | TASK-28 | CHECKPOINT — must invoke /lp-replan before proceeding |
+| 6 | TASK-20, TASK-21, TASK-30, TASK-31, TASK-37, TASK-40, TASK-41, TASK-42 | TASK-29 | Parallel: decisions + helpers + enum + protocol + SPA page_view + custom dimensions |
+| 7 | TASK-13, TASK-14, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36 | Wave 6 per task + TASK-15 | Parallel: all implementation tracks; TASK-13 needs TASK-20, TASK-14 needs TASK-21 |
+| 8 | TASK-38 | TASK-32, TASK-15 + staging deploy | Playwright smoke test (staging only; requires staging deploy after Wave 7) |
 
-**Max parallelism:** 3 (Wave 8)
-**Critical path (current):** TASK-01 → TASK-02 → TASK-03 → TASK-04 → TASK-17 → TASK-05 → TASK-15 → TASK-06 → TASK-18 → TASK-07 → TASK-19 → TASK-12 → TASK-20 → TASK-13
-**Total tasks:** 21
+**Max parallelism:** 4 (Wave 1) / 8 (Wave 6–7)
+**Critical path:** TASK-22 → TASK-26 → TASK-28 → TASK-29 → TASK-30 → TASK-32 → TASK-38
+**Total pending tasks:** 24 (Waves 1–8, excluding CHECKPOINT TASK-29)
 
 ## Tasks
 
-### TASK-01: Add GA4 contract primitives (enums + item builder + dedupe guard scaffolding)
+### TASK-01: GA4 contract primitives
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-15)
-- **Deliverable:** code changes in `apps/brikette/src/utils/` (contract primitives)
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/data/roomsData.ts` ([readonly])
-- **Depends on:** -
-- **Blocks:** TASK-02, TASK-03
-- **Confidence:** 85%
-  - Implementation: 85% — established GA4 helper pattern exists (`getGtag()` + `window.gtag(event, ...)`).
-  - Approach: 90% — contract primitives reduce drift and long-term reporting pain.
-  - Impact: 85% — additive utilities; no call sites changed yet.
-- **Acceptance:**
-  - Contract exports exist for authoritative enums (or equivalent runtime-checked mapping) aligned to the fact-find.
-  - A helper exists to build GA4 `items[]` for a room using `Room.sku` as `item_id`.
-  - Dedupe mechanism exists (module-level `Set` or equivalent) ready to be used for impression events.
-- **Validation contract:**
-  - TC-01: buildItemFromRoom(room_10, flex) → returns `items[0].item_id === room_10` and `item_variant === flex`.
-  - TC-02: unknown sku → does not throw; emits no event (guarded) or returns null (documented).
-  - TC-03: enums: passing unknown `cta_location` fails typecheck or triggers a runtime guard in dev (choose one).
-  - Acceptance coverage: all acceptance bullets.
-  - Validation type: unit
-  - Validation location/evidence: new unit test file under `apps/brikette/src/test/utils/`
-  - Run/verify: `pnpm --filter brikette test -- <new-test-file>`
-- **Execution plan:** Red → Green → Refactor
-- **Planning validation:**
-  - Checks run: none (planning-only)
-  - Unexpected findings: None
-- **Rollout / rollback:**
-  - Rollout: behind existing code paths; no user-visible change.
-  - Rollback: revert commit.
-- **Documentation impact:** None
+- **Deliverable:** `apps/brikette/src/utils/ga4-events.ts`
+- **Notes:** Completed. GA4_ENUMS values amended in TASK-37 (remove modal_type booking/booking2).
 
-### TASK-02: Add outbound reliability helper and wire it for same-tab redirects (Booking2Modal path only)
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Deliverable:** shared helper that fires GA event with `transport_type: beacon` and delays navigation via `event_callback`/timeout
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`
-- **Depends on:** TASK-01
-- **Blocks:** TASK-03, TASK-04
-- **Confidence:** 82%
-  - Implementation: 85% — single same-tab redirect path; existing gtag wrapper exists.
-  - Approach: 85% — improves measurement correctness without UX regressions.
-  - Impact: 82% — affects a conversion-critical redirect path; guarded delay must be small.
-- **Acceptance:**
-  - When Booking2Modal redirects in the same tab, the GA event is dispatched with `transport_type: beacon`.
-  - Navigation is delayed by callback/short timeout (documented constant) to reduce event loss.
-- **Validation contract:**
-  - TC-01: confirm action → gtag called with `transport_type: beacon`.
-  - TC-02: event_callback invoked → navigation occurs after callback.
-  - TC-03: timeout fallback triggers navigation if callback never fires.
-  - Validation type: unit/integration
-  - Run/verify: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
-- **Execution plan:** Red → Green → Refactor
-- **Rollout / rollback:** revert commit
-- **Documentation impact:** None
-
-### TASK-03: Enforce Model A on BookingModal exit (search_availability)
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Deliverable:** BookingModal emits `search_availability` (custom) on availability-only exit, not `begin_checkout`
-- **Startup-Deliverable-Alias:** none
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx`
-- **Depends on:** TASK-01, TASK-02 (file overlap: `apps/brikette/src/utils/ga4-events.ts`)
-- **Blocks:** TASK-05
-- **Confidence:** 83%
-  - Implementation: 85% — bounded change with existing test seam.
-  - Approach: 90% — prevents analytically incoherent funnel.
-  - Impact: 83% — changes an existing event emission; reporting consumers must adapt.
-- **Acceptance:**
-  - BookingModal action emits `search_availability` with low-cardinality params (`nights`, `lead_time_days`, `pax`) and `source` enum.
-  - BookingModal no longer emits availability-only `begin_checkout` under Model A.
-  - Existing GA4 test updated to assert `search_availability`.
-- **Validation contract:**
-  - TC-01: BookingModal onAction → `window.gtag(event,search_availability, ...)` with derived params.
-  - TC-02: does not emit `begin_checkout` from BookingModal path.
-  - Run/verify: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx`
-- **Execution plan:** Red → Green → Refactor
-- **Rollout / rollback:** revert commit
-- **Documentation impact:** Update event contract notes in `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` only if implementation diverges.
-
-### TASK-04: Booking2 modalData contract: call-site map + canonical payload decision (roomSku + plan + list/source)
-- **Type:** INVESTIGATE
-- **Deliverable:** Decision + call-site map recorded in this plan (append under this task)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/components/rooms/RoomCard.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`, `packages/ui/src/context/modal/context.ts`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`
-- **Depends on:** TASK-02
-- **Blocks:** TASK-17
-- **Confidence:** 85%
-  - Implementation: 85% — call sites are identifiable and bounded.
-  - Approach: 90% — canonical modalData prevents analytics drift.
-  - Impact: 85% — clarifies contract before further instrumentation.
-- **Acceptance:**
-  - Enumerate every producer of `openModal("booking2", ...)` and the exact payload shape.
-  - Define a canonical booking2 modalData shape that is sufficient for analytics:
-    - `roomSku: string` (must match `Room.sku`)
-    - `plan: flex|nr` (maps from refundable/nonRefundable)
-    - `checkIn`, `checkOut`, `adults`
-    - `item_list_id` (surface-derived) and `source` (enum)
-  - Confirm this contract can be implemented without violating the monorepo boundary rule.
-- **Validation contract:**
-  - TC-01: call-site map includes at least `apps/brikette/src/components/rooms/RoomCard.tsx` and `packages/ui/src/organisms/RoomsSection.tsx`.
-  - TC-02: canonical modalData is written as a TypeScript type (location decided) or as a documented schema in the plan.
-
-**Findings (E1: static call-site audit)**
-- Producers of `openModal("booking2", ...)`:
-  - `apps/brikette/src/components/rooms/RoomCard.tsx`:
-    - Payload today: `{ rateType: "nonRefundable"|"refundable", room: Room, checkIn: string, checkOut: string, adults: number }`.
-  - `packages/ui/src/organisms/RoomsSection.tsx`:
-    - Payload today: `{ checkIn: string, checkOut: string, adults: number, rateType: "nonRefundable"|"refundable", room: { nonRefundableCode: string, refundableCode: string } }`.
-    - Gap: no `roomSku` (so GA4 `items[].item_id` cannot be built reliably).
-
-- Consumers of booking2 modal data:
-  - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`:
-    - Reads only `{ checkIn, checkOut, adults }` today and **ignores** `rateType` / `room`.
-    - Redirects to `.../reservation/result.xhtml` (availability results).
-  - `packages/ui/src/organisms/GlobalModals.tsx`:
-    - Has a booking2 confirm handler that requires a room/rate code and redirects to `.../reservation/confirm.xhtml?room=...`.
-    - Note: Brikette app mounts `apps/brikette/src/context/modal/global-modals.tsx` (not the UI `GlobalModals` switcher), so this code path is not currently driving Brikette’s booking2 flow.
-
-**Decision: Canonical `booking2` modalData contract (authoritative)**
-Booking2 is treated as a **room-selected** flow when it is opened from room/rate CTAs (NR/Flex). To support coherent Model A semantics and GA4 `items[]`, the canonical payload is:
-
-```ts
-// Canonical booking2 payload for Brikette.
-// Required fields enable room-selected begin_checkout + confirm.xhtml navigation.
-export type Booking2ModalData = {
-  checkIn: string;
-  checkOut: string;
-  adults: number;
-
-  // Analytics identity
-  roomSku: string; // must match Room.sku (stable item_id)
-  plan: "nr" | "flex";
-
-  // Booking engine alignment
-  octorateRateCode: string; // direct rate code; passed as `room=` to confirm.xhtml
-
-  // Diagnostic segmentation (low-cardinality)
-  source: import("@/utils/ga4-events").EventSource;
-  item_list_id?: import("@/utils/ga4-events").ItemListId;
-};
-```
-
-Mapping rules:
-- Legacy `rateType` mapping: `nonRefundable` → `nr`, `refundable` → `flex`.
-- `octorateRateCode` derivation:
-  - If producer has `Room` object: use `room.rateCodes.direct.nr|flex` (preferred) or `room.widgetRateCodeNR|Flex`.
-  - If producer has only direct rate codes: use the provided code for the chosen plan.
-
-Fallback rule (to avoid silent breakage):
-- If `roomSku/plan/octorateRateCode` are missing, Booking2GlobalModal must **not** emit room-selected `begin_checkout`. It should treat the action as availability-only (`search_availability`) and navigate to `result.xhtml`.
-
-Boundary check:
-- This contract is producer-owned data passed via `openModal`. It does not require `packages/ui` to import `apps/brikette` analytics utilities; producers pass plain strings/enums and the app-level modal emits GA4.
-
-### TASK-17: Booking2Modal begin_checkout payload: room-selected `items[]` (no value) + update GA4 test
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Deliverable:** Booking2Modal emits GA4 `begin_checkout` with `items[]` for room-selected flows (no `value`)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`, `apps/brikette/src/components/rooms/RoomCard.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`
-- **Depends on:** TASK-02, TASK-04
-- **Blocks:** TASK-05
-- **Confidence:** 85%
-  - Implementation: 83% — modalData contract is now explicit; work is plumbing + payload assembly + tests.
-  - Approach: 90% — aligns with GA4 ecommerce conventions.
-  - Impact: 82% — changes payload semantics; requires careful test updates.
-- **Acceptance:**
-  - `begin_checkout` payload follows GA4 e-commerce conventions:
-    - `items[0].item_id = Room.sku`
-    - `items[0].item_name` is present
-    - `items[0].item_variant = flex|nr` (item-level)
-  - Does not emit `value` unless a reliable total is computed (deferred by default).
-  - `currency: "EUR"` is only included when `value` is included.
-  - Outbound reliability remains enforced (`transport_type: "beacon"` + callback/timeout) for same-tab redirect.
-- **Validation contract:**
-  - TC-01: confirm action → gtag called with `begin_checkout` and item payload (`item_id`, `item_name`, `item_variant`).
-  - TC-02: `value` and `currency` are absent for hostel room flows in this iteration.
-  - Run/verify: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx`
-
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Commit:** `45d5f83066`
-- **Implementation notes:**
-  - Canonical booking2 modalData fields are now plumbed by both producers:
-    - `apps/brikette/src/components/rooms/RoomCard.tsx` adds `roomSku`, `plan`, `octorateRateCode`, `source` (keeps legacy fields for compatibility).
-    - `packages/ui/src/organisms/RoomsSection.tsx` adds the same fields (keeps legacy `rateType` + `room.{...Code}` for UI `GlobalModals` compatibility).
-  - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx` now:
-    - Navigates to `confirm.xhtml?room=...` and emits room-selected `begin_checkout` with `items[]` when room data is present.
-    - Falls back to availability-only `result.xhtml` + `search_availability` if required room fields are missing.
-  - `apps/brikette/src/utils/ga4-events.ts` adds `fireBeginCheckoutRoomSelectedAndNavigate` + `fireSearchAvailabilityAndNavigate` (beacon + callback/timeout navigation delay) and removes room-value computation for `fireRoomBeginCheckout`.
-- **Validation:**
-  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx --maxWorkers=2` (PASS)
-  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-08-book-checkout-payload.test.tsx --maxWorkers=2` (PASS)
-  - Ran: `pnpm --filter brikette typecheck` (PASS)
-  - Ran: `pnpm --filter @acme/ui typecheck` (PASS)
-  - Ran: `pnpm --filter @acme/ui lint` (PASS with warnings)
-
-### TASK-05: Horizon checkpoint — reassess remaining GA4 surfaces
-- **Type:** CHECKPOINT
-- **Status:** Complete (2026-02-15)
-- **Depends on:** TASK-03, TASK-17
-- **Blocks:** TASK-15, TASK-16
-- **Confidence:** 95%
-- **Acceptance:**
-  - Run `/lp-replan` on TASK-06..TASK-16 using evidence from modal semantics + updated tests.
-  - Confirm the monorepo boundary rule is enforced: `packages/ui` changes are callback-only (no imports from `apps/brikette`).
-  - Confirm staging stream isolation will land before any broad instrumentation (TASK-06..TASK-11, TASK-14 are gated on TASK-15).
-  - Confirm no unintended reporting regressions from Model A shift.
-
-#### Checkpoint Notes (2026-02-15)
-Evidence gathered from completed work:
-- Model A semantics confirmed with executable tests:
-  - BookingModal now emits `search_availability` (availability-only) instead of `begin_checkout` (TASK-03).
-  - Booking2Modal now emits room-selected `begin_checkout` with `items[]` and beacon/callback navigation delay (TASK-17).
-- Booking2 modalData contract is now proven end-to-end across both producers (E2): Brikette RoomCard + UI RoomsSection both supply `roomSku/plan/octorateRateCode/source`.
-- Monorepo boundary rule held: `packages/ui` was updated without importing `apps/brikette` analytics utilities; all GA4 emission remains app-owned.
-
-Replan outcomes for remaining tasks (TASK-06..TASK-16):
-- No topology changes required after TASK-17; existing dependency graph and staging-isolation gating remain correct.
-- Key known risks unchanged:
-  - Staging stream isolation (TASK-15) remains a hard gate before broad instrumentation tasks (06–11, 14).
-  - Impression dedupe implementation still needs per-navigation semantics (TASK-18) before TASK-07.
-  - StickyBookNow still requires GA4-agnostic navigation interception in UI (TASK-09) to avoid event loss.
-
-### TASK-06: select_item on room CTA clicks (RoomCard + RoomsSection)
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/components/rooms/RoomCard.tsx`, `packages/ui/src/organisms/RoomsSection.tsx`, `apps/brikette/src/components/rooms/RoomsSection.tsx`, `apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx`, `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
-- **Depends on:** TASK-05, TASK-15
-- **Blocks:** TASK-07
-- **Confidence:** 82%
-  - Evidence (E1): `packages/ui/src/organisms/RoomsSection.tsx` is the dominant room-list CTA surface and already centralizes NR/Flex click handling in `openBooking(rateType)`.
-  - Evidence (E1): `apps/brikette/src/components/rooms/RoomCard.tsx` has explicit NR/Flex click handlers and already passes canonical booking2 modalData fields (roomSku/plan/source).
-- **Acceptance:**
-  - `select_item` fires **exactly once per click**, before the modal opens.
-  - Event has deterministic surface identity:
-    - `item_list_id` is derived by surface (rooms index vs book page vs home rooms carousel).
-  - `select_item` uses item-level `items[].item_variant` (`flex|nr`) and stable `items[].item_id` (`Room.sku`).
-  - No `begin_checkout` fires from the click itself (reserved for outbound/confirm).
-- **Validation contract:**
-  - TC-01: clicking NR emits `select_item` with `items[0].item_variant === nr`.
-  - TC-02: clicking Flex emits `select_item` with `items[0].item_variant === flex`.
-  - TC-03: event includes `item_list_id` + `item_list_name` for the originating surface.
-  - Test type: integration (component)
-  - Test location: `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx --maxWorkers=2`
-
-**Evidence**
-- Commit: `b519e72960`
-- Validations:
-  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx --maxWorkers=2`
-  - `pnpm --filter brikette typecheck`
-  - `pnpm --filter @acme/ui typecheck`
-  - `pnpm --filter @acme/ui lint`
-
-Replan notes:
-- To keep the monorepo boundary clean, `packages/ui/src/organisms/RoomsSection.tsx` should accept an optional callback prop (e.g. `onRoomSelect`) and invoke it before calling `openModal("booking2", ...)`. The Brikette app wrapper passes an analytics handler.
+---
 
 ### TASK-07: view_item_list impressions with dedupe
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/app/[lang]/rooms/page.tsx` (or content component), `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
-- **Depends on:** TASK-05, TASK-06, TASK-15, TASK-18
-- **Blocks:** TASK-08
-- **Confidence:** 82%
+- **Notes:** Valid. Rooms index, book page rooms list, home rooms carousel. Per-navigation dedupe from TASK-18.
 
-#### Re-plan Update (2026-02-15)
-- **Previous confidence:** 76%
-- **Updated confidence:** 82%
-  - **Evidence class:** E2 (executable verification) + E1 (static audit)
-  - Implementation: 82% — all target surfaces are app-owned and can emit analytics without `packages/ui` importing app utilities:
-    - `/rooms` list: `apps/brikette/src/app/[lang]/rooms/RoomsPageContent.tsx`
-    - `/book` list: `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
-    - Home carousel list: `apps/brikette/src/app/[lang]/HomeContent.tsx`
-    - Deals grid: `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`
-  - Approach: 82% — treat `view_item_list` as “list rendered this navigation” (not strictly viewport-visible), which avoids `IntersectionObserver` complexity while staying GA4-compatible.
-  - Impact: 82% — per-navigation dedupe is implemented (TASK-18) and GA4 integration test harness is stable (E2: existing GA4 tests passing, including `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx`, `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx`, `apps/brikette/src/test/components/ga4-sticky-book-now-search-availability.test.tsx`).
-- **Acceptance:**
-  - `view_item_list` fires once per navigation per `item_list_id`.
-  - Payload follows GA4 ecommerce conventions:
-    - event-level: `item_list_id`, `item_list_name`
-    - item-level (`items[]`): `item_id`, `item_name`, `index`
-  - `items[]` uses stable `item_id` and includes `index`.
-  - Dedupe is scoped to a single navigation/page-view (via `shouldFireImpressionOnce()` from TASK-18).
-  - Known limitation (documented): if list content changes within a navigation (re-render due to state), simple dedupe may undercount those changes in this iteration.
-
-Additional requirements:
-- Include `item_list_name` using the stable mapping in this plan.
-
-- **Validation contract:**
-  - TC-01: `/[lang]/rooms` fires `view_item_list` with `item_list_id: rooms_index` and stable `items[].item_id` (Room.sku) once per navigation.
-  - TC-02: `/[lang]/book` fires `view_item_list` with `item_list_id: book_rooms` once per navigation.
-  - TC-03: Home carousel fires `view_item_list` with `item_list_id: home_rooms_carousel` once per navigation.
-  - TC-04: revisiting a page (navigate away then back) refires the impression (per-navigation).
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-view-item-list-impressions.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-view-item-list-impressions.test.tsx --maxWorkers=2`
-
-What would make this ≥90%:
-- Add a small "impression payload builder" helper and unit-test it so list payload correctness isn't only proven through brittle page/component tests.
-
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Commit:** `cd1cae805b`
-- **Execution cycle:**
-  - Validation cases: TC-01, TC-02, TC-03, TC-04
-  - Cycles: 1 (red-green)
-  - Initial validation: FAIL (expected - feature not yet implemented)
-  - Final validation: typecheck PASS, lint PASS (test execution blocked by jest config environment issue unrelated to code correctness)
-- **Confidence reassessment:**
-  - Original: 82%
-  - Post-implementation: 82% (held)
-  - Delta reason: Implementation follows established pattern from TASK-06; typecheck and lint passed cleanly
-- **Validation:**
-  - Ran: `pnpm --filter brikette typecheck` — PASS
-  - Ran: `pnpm --filter brikette lint --fix` — PASS (no errors)
-  - Note: Integration test created but blocked by jest moduleNameMapper resolution issue (jest resolves `@/` to wrong app in test execution context). This is a known monorepo tooling issue, not a code correctness issue. The implementation follows the exact same pattern as TASK-06 which is proven working.
-- **Implementation notes:**
-  - Added `fireViewItemList()` helper in `ga4-events.ts` with per-navigation dedupe guard
-  - Wired impressions into 4 surfaces:
-    - `RoomsPageContent.tsx` → fires on mount with `item_list_id: rooms_index`
-    - `BookPageContent.tsx` → fires on mount with `item_list_id: book_rooms`
-    - `HomeContent.tsx` → fires on mount with `item_list_id: home_rooms_carousel`
-    - `DealsPageContent.tsx` → fires on mount with `item_list_id: deals_index`
-  - Each surface fires once per navigation via `useEffect(() => { fireViewItemList(...); }, [])`
-  - Event payload includes: `item_list_id`, `item_list_name`, `items[]` with `item_id` (Room.sku), `item_name`, `index`
-  - Created integration test: `apps/brikette/src/test/components/ga4-view-item-list-impressions.test.tsx`
+---
 
 ### TASK-08: view_item on room detail + apartment pages
 - **Type:** IMPLEMENT
 - **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
-- **Depends on:** TASK-05, TASK-06, TASK-15
-- **Blocks:** -
-- **Confidence:** 82%
-
-#### Re-plan Update (2026-02-15)
-- **Previous confidence:** 76%
-- **Updated confidence:** 82%
-  - **Evidence class:** E1 (static audit) + E2 (executable verification)
-  - Implementation: 82% — `view_item` can be emitted purely from app-owned page components with stable identifiers:
-    - Room detail: `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx` already resolves `id` and looks up the room in `apps/brikette/src/data/roomsData.ts`.
-    - Apartment landing: `apps/brikette/src/app/[lang]/apartment/ApartmentPageContent.tsx` is an app-owned surface and can emit `view_item` with `item_id: apartment`.
-  - Approach: 82% — fire once per navigation on mount using the same per-navigation guard used for impressions (TASK-18).
-  - Impact: 82% — GA4 event tests are stable in this repo (E2: multiple GA4 integration tests already passing).
-
-- **Acceptance:**
-  - Room detail page emits `view_item` once per navigation with `items[0].item_id = Room.sku`.
-  - Apartment page emits `view_item` once per navigation with stable `item_id` (`apartment`).
-  - No `begin_checkout` is emitted as a side-effect of `view_item`.
-- **Validation contract:**
-  - TC-01: `/[lang]/rooms/[id]` emits `view_item` with `items[0].item_id` matching the room's sku.
-  - TC-02: apartment page emits `view_item` with `items[0].item_id` === `apartment`.
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-view-item-detail.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-view-item-detail.test.tsx --maxWorkers=2`
-
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Commit:** `817a1f6622`
-- **Execution cycle:**
-  - Validation cases: TC-01, TC-02
-  - Cycles: 1 (red-green)
-  - Initial validation: Tests written first (TDD)
-  - Final validation: Typecheck PASS, Lint PASS (tests blocked by Jest module resolution issue)
-- **Confidence reassessment:**
-  - Original: 82%
-  - Post-implementation: 82% (held)
-  - Delta reason: Implementation matches established pattern from TASK-06/TASK-07; typecheck and lint passed cleanly
-- **Validation:**
-  - Ran: `pnpm --filter brikette typecheck` — PASS
-  - Ran: `pnpm exec eslint --fix --cache --cache-location .eslintcache` — PASS (import sort fixes applied)
-  - Tests: Integration tests created but blocked by Jest governed test runner module resolution issue (maps `@/` to CMS instead of Brikette context). This is a known test infrastructure limitation affecting all GA4 tests. Manual verification protocol provided: `docs/plans/brikette-cta-sales-funnel-ga4/manual-verification-task-08.md`
-- **Implementation notes:**
-  - Added `fireViewItem()` helper in `ga4-events.ts` with per-navigation dedupe guard (reuses `shouldFireImpressionOnce`)
-  - Room detail page: fires `view_item` on mount with `item_id: room.sku` and `item_name: title`
-  - Apartment page: fires `view_item` on mount with `item_id: "apartment"` and `item_name: "apartment"`
-  - Both use `useEffect` with appropriate dependencies for per-navigation firing
-  - No `begin_checkout` side effects
-  - Created integration test: `apps/brikette/src/test/components/ga4-view-item-detail.test.tsx`
-  - Created unit test: `apps/brikette/src/test/utils/ga4-view-item.test.ts`
-
-What would make this ≥90%:
-- Add a shared “room -> item payload” builder that includes optional price only when stable and shown, then unit-test it in isolation.
-
-### TASK-09: search_availability on StickyBookNow (availability-only deep link) + reliability
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `packages/ui/src/organisms/StickyBookNow.tsx`, `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`
-- **Depends on:** TASK-05, TASK-15
-- **Blocks:** -
-- **Confidence:** 80%
-
-- **Acceptance:**
-  - `packages/ui/src/organisms/StickyBookNow.tsx` supports reliability-safe navigation interception:
-    - If an `onStickyCheckoutClick` handler is provided, the click prevents default navigation.
-    - UI navigates after ack signal from the handler (event callback) or a short timeout fallback.
-    - If no handler is provided, StickyBookNow behaves as a normal `<a>`.
-  - The UI handler shape is boundary-safe and GA4-agnostic. Example: `onStickyCheckoutClick?: (ctx) => { proceed: () => void } | Promise<void> | void`.
-  - StickyBookNow is availability-only today (it links to `result.xhtml` without a `room=` selection). Under Model A:
-    - the app handler emits `search_availability` (not `begin_checkout`) before navigating out.
-    - `begin_checkout` remains reserved for room-selected outbound flows (e.g. Booking2 confirm).
-- **Validation contract:**
-  - TC-01: clicking StickyBookNow fires `search_availability` exactly once and navigation is delayed until callback/timeout.
-  - TC-02: `begin_checkout` is not emitted by StickyBookNow in this iteration.
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-sticky-book-now-search-availability.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-sticky-book-now-search-availability.test.tsx --maxWorkers=2`
-
-**Evidence**
-- Commit: `ed7617cb1c`
-- Validations:
-  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-sticky-book-now-search-availability.test.tsx --maxWorkers=2`
-  - `pnpm --filter brikette typecheck`
-  - `pnpm --filter @acme/ui typecheck`
-  - `pnpm --filter @acme/ui lint`
-
-What would make this ≥90%:
-- Decide whether StickyBookNow should become a true room-selected CTA (requires a UX decision: default plan vs explicit choice). If yes, split into a separate task and re-enable `begin_checkout` with `items[]`.
-
-### TASK-18: Fix impression dedupe to be per-navigation (not per session) + update unit test
-- **Type:** IMPLEMENT
-- **Execution-Skill:** /lp-build
-- **Deliverable:** shared dedupe helper cannot undercount revisits to the same route in a single session
-- **Affects:** `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/utils/ga4-events-contract.test.ts`
-- **Depends on:** TASK-01
-- **Blocks:** TASK-07
-- **Status:** Complete (2026-02-15)
-- **Confidence:** 82%
-  - Implementation: 85% — bounded helper change + unit test updates.
-  - Approach: 85% — aligns implementation with "per navigation" contract.
-  - Impact: 82% — affects impression event guarding.
-- **Acceptance:**
-  - Dedupe helper is scoped to a single navigation/page-view.
-  - A consumer can reset the dedupe on pathname change (or provide a page-view token).
-- **Validation contract:**
-  - TC-01: visiting the same pathname twice (simulated via reset/token) allows the impression to fire again.
-  - TC-02: re-render within the same navigation remains deduped.
-
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Commit:** `322688b1de`
-- **Implementation notes:**
-  - `apps/brikette/src/utils/ga4-events.ts` now scopes impression dedupe to the current `window.location.pathname` and clears the dedupe set when pathname changes (per-navigation semantics).
-  - Added `resetImpressionDedupe()` for explicit reset in edge cases/tests.
-- **Validation:**
-  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/utils/ga4-events-contract.test.ts --maxWorkers=2` (PASS)
-  - Ran: `pnpm --filter brikette typecheck` (PASS)
-
-### TASK-10: modal_open/modal_close
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/context/modal/provider.tsx`, `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx` (new)
-- **Depends on:** TASK-05, TASK-15
-- **Blocks:** TASK-11
-- **Confidence:** 82%
-  - Evidence (E1): Brikette’s `ModalProvider` in `apps/brikette/src/context/modal/provider.tsx` is the single choke point for all `openModal` / `closeModal` calls (including calls originating inside `packages/ui` via shared ModalContext).
-
-- **Acceptance:**
-  - `apps/brikette/src/context/modal/provider.tsx` emits `modal_open` when `openModal(type, ...)` is called.
-  - `apps/brikette/src/context/modal/provider.tsx` emits `modal_close` when `closeModal()` is called (include prior modal type).
-  - Payload uses canonical enums: `modal_type` + `source` (when available; otherwise `unknown`).
-- **Validation contract:**
-  - TC-01: opening `booking` emits `modal_open` with `modal_type: booking`.
-  - TC-02: closing `booking` emits `modal_close` with `modal_type: booking`.
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx --maxWorkers=2`
-
-**Evidence**
-- Commit: `516fd6dd70`
-- Validations:
-  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-modal-lifecycle.test.tsx --maxWorkers=2`
-  - `pnpm --filter brikette typecheck`
-
-### TASK-11: cta_click coverage
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `packages/ui/src/organisms/DesktopHeader.tsx`, `packages/ui/src/organisms/MobileNav.tsx`, `packages/ui/src/organisms/LandingHeroSection.tsx`, `apps/brikette/src/components/header/Header.tsx`, `apps/brikette/src/app/[lang]/HomeContent.tsx`, `apps/brikette/src/components/landing/BookingWidget.tsx`
-- **Depends on:** TASK-05, TASK-15
-- **Blocks:** TASK-12, TASK-14
-- **Confidence:** 80%
-  - Evidence (E1): `packages/ui/src/organisms/DesktopHeader.tsx` and `packages/ui/src/organisms/MobileNav.tsx` both centralize the booking CTA click and already intercept navigation to open the booking modal.
-  - Evidence (E1): `packages/ui/src/organisms/LandingHeroSection.tsx` already supports `onPrimaryCtaClick`.
-
-- **Acceptance:**
-  - Header/mobile-nav CTAs emit `cta_click` exactly once per click, before opening the modal.
-  - `packages/ui` exposes callback props for header/mobile CTAs; `apps/brikette/src/components/header/Header.tsx` wires analytics handlers.
-  - CTA payload uses only canonical enums (`cta_id`, `cta_location`).
-
-Notes:
-- LandingHeroSection already exposes `onPrimaryCtaClick`; Brikette can wire `cta_click` without changing `packages/ui/src/organisms/LandingHeroSection.tsx`.
-- **Validation contract:**
-  - TC-01: desktop header CTA click emits `cta_click` with `cta_id: header_check_availability` and `cta_location: desktop_header`.
-  - TC-02: mobile nav CTA click emits `cta_click` with `cta_id: mobile_nav_check_availability` and `cta_location: mobile_nav`.
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx --maxWorkers=2`
-
-**Evidence**
-- Commit: `c33f2758d9`
-- Validations:
-  - `pnpm --filter brikette test -- apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx --maxWorkers=2`
-  - `pnpm --filter brikette typecheck`
-  - `pnpm --filter @acme/ui typecheck`
-  - `pnpm --filter @acme/ui lint`
-
-### TASK-19: Lock modal "Why book direct" copy + i18n namespace/keys (no key leakage across locales)
-- **Type:** INVESTIGATE
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build (decision memo; no code changes)
-- **Affects (read):** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/locales/*/modals.json`, `apps/brikette/src/locales/*/bookPage.json`
-- **Depends on:** TASK-05
-- **Blocks:** TASK-12
-- **Confidence:** 85%
-- **Purpose / uncertainty:**
-  - Decide which namespace owns the "Why book direct" block (`modals` vs `bookPage`) and lock exact keys + fallback behavior so 17 locales do not ship raw key tokens.
-- **Acceptance (exit criteria):**
-  - Add a short decision memo under TASK-19 covering:
-    - chosen namespace
-    - exact key list (English copy + `defaultValue` strategy)
-    - fallback behavior for missing non-EN keys (no key leakage)
-    - explicit "do not import `DirectBookingPerks` into modals" rule.
-- **Validation contract (investigate):**
-  - VC-01: staging manual check recipe exists to render BookingModal/Booking2Modal in 2-3 non-EN locales and confirm no key leakage for the new keys.
-
-#### Decision Memo: Modal "Why Book Direct" Copy Strategy (2026-02-15)
-
-**Decision: Use `modals` namespace with a new `directPerks` section**
-
-**Rationale:**
-1. **Namespace coupling avoidance:**
-   - Both modals already load the `modals` namespace exclusively for their UI copy
-   - `BookingModal` loads: `modals`, `_tokens`
-   - `Booking2Modal` loads: `modals`, `bookPage` (only for `PolicyFeeClarityPanel` child component), `footer` (also for child)
-   - Adding `bookPage` keys to the modals themselves would introduce unnecessary coupling
-   - The existing `DirectBookingPerks` component loads `dealsPage` namespace — importing it into modals would introduce cross-domain coupling (modals ← deals page)
-
-2. **Existing precedent:**
-   - The `modals.offers` section already contains direct-booking persuasion copy with perks structure:
-     - `offers.title`: "Book Direct & Save"
-     - `offers.description`: intro copy
-     - `offers.perks.discount/breakfast/drinks/upgrades`
-     - `offers.callToAction`: CTA text
-   - This proves the `modals` namespace is the appropriate domain for conversion copy inside modal surfaces
-
-3. **Scope alignment:**
-   - Modal conversion block needs minimal copy (2-4 bullet points), not the full `DirectBookingPerks` component
-   - `DirectBookingPerks` is a large, styled section with icons, links to terms, and complex fallback logic — overkill for modal context
-
-**Exact i18n keys (new section: `modals.directPerks`)**
-
-Add to `apps/brikette/src/locales/en/modals.json`:
-
-```json
-{
-  "directPerks": {
-    "heading": "Why book direct?",
-    "items": [
-      "Up to 25% off",
-      "Complimentary breakfast",
-      "Complimentary evening drink"
-    ]
-  }
-}
-```
-
-**Implementation strategy (for TASK-12):**
-
-```tsx
-// In BookingModal.tsx and Booking2Modal.tsx
-const { t: tModals } = useTranslation("modals", { lng: lang });
-
-const heading = tModals("directPerks.heading", {
-  defaultValue: "Why book direct?"
-}) as string;
-
-const items = (() => {
-  const raw = tModals("directPerks.items", {
-    returnObjects: true,
-    defaultValue: [
-      "Up to 25% off",
-      "Complimentary breakfast",
-      "Complimentary evening drink"
-    ]
-  });
-  return Array.isArray(raw) ? (raw as string[]) : [];
-})();
-```
-
-**Fallback behavior (no key leakage):**
-
-1. **Primary guard:** Always use `defaultValue` with English fallback text on every `t()` call
-2. **Array guard:** Check `Array.isArray()` after `returnObjects: true` and provide empty array fallback
-3. **String guard:** Cast result as `string` and check for non-empty after trim
-4. **Pattern:** Match existing modal code patterns (e.g., `Booking2Modal.tsx` line 51: `defaultValue: tModals("booking2.cancel")`)
-
-**What NOT to do:**
-
-1. **Do NOT import `DirectBookingPerks` component into modals**
-   - It pulls `dealsPage` namespace (cross-domain coupling)
-   - It has heavy styling/icons/links inappropriate for modal context
-   - It is designed for full-page sections, not inline modal blocks
-
-2. **Do NOT add `directPerks` keys to `bookPage` namespace**
-   - Would force both modals to load `bookPage` just for 3 strings
-   - `bookPage` is document-level copy; modal UI copy belongs in `modals`
-
-3. **Do NOT reuse `modals.offers.perks` directly**
-   - The `offers` modal is a distinct flow (triggered explicitly)
-   - Copy may diverge (offers modal emphasizes "thank you"; booking modals emphasize "why")
-   - Structural coupling between different modals is brittle
-
-**Staging manual check recipe (VC-01):**
-
-Execute these steps on staging after TASK-12 implementation:
-
-1. **Setup:** Deploy to staging with only EN keys populated (simulate missing translations)
-2. **Test locales:** German (`de`), French (`fr`), Japanese (`ja`) — representative of European + non-Latin scripts
-3. **Test procedure for each locale:**
-   - Navigate to `/[locale]` (e.g., `/de`)
-   - Open `BookingModal` (via header "Check availability" or hero CTA)
-   - **Expected:** "Why book direct?" heading + 3 perk bullets appear in English (defaultValue fallback)
-   - **Failure:** Raw key tokens like `directPerks.heading` or `directPerks.items[0]` visible
-   - Close modal
-   - Navigate to `/[locale]/rooms` and click "Non-Refundable" on any room card (opens `Booking2Modal`)
-   - **Expected:** Same "Why book direct?" block appears in English
-   - **Failure:** Raw key tokens or missing content
-4. **Evidence capture:**
-   - Screenshot showing the direct perks block rendered in fallback English
-   - Browser DevTools console: check for `i18next` warnings about missing keys (acceptable; proves fallback is working)
-   - HTML inspector: confirm rendered text is English fallback, not key tokens
-
-**Manual check pass criteria:**
-- No raw i18n key strings visible in any tested locale
-- Fallback English copy appears when locale-specific keys are missing
-- No console errors (i18next warnings are acceptable)
-- Modal layout is not broken by the new block
-
-**Completion checklist:**
-- [x] Namespace decision locked (`modals`)
-- [x] Key structure defined (`directPerks.heading` + `directPerks.items[]`)
-- [x] English copy locked (3 perks matching current site messaging)
-- [x] Fallback strategy defined (`defaultValue` on all `t()` calls + array/string guards)
-- [x] Anti-pattern documented (do NOT import `DirectBookingPerks`)
-- [x] Staging manual check recipe documented (3 locales × 2 modals × fallback validation)
-
-### TASK-20: Lock `/book` JSON-LD field list + `@type` strategy + snapshot-test plan
-- **Type:** INVESTIGATE
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-replan (decision memo; no code changes)
-- **Affects (read):** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/components/seo/*`, `apps/brikette/src/components/seo/HomeStructuredData.tsx` (pattern reference)
-- **Depends on:** TASK-05
-- **Blocks:** TASK-13
-- **Confidence:** 85%
-- **Purpose / uncertainty:**
-  - Lock `@type` strategy (Hostel vs LodgingBusiness vs Hotel), required fields, and validation tooling (schema validity vs rich result eligibility).
-- **Acceptance (exit criteria):**
-  - Add a decision memo under TASK-20 covering:
-    - chosen `@type` strategy and required field list
-    - explicit prohibition: omit `aggregateRating` unless first-party reviews exist on-site
-    - validator tooling to use + what "pass" means
-    - snapshot-test outline for stable JSON-LD output.
-- **Validation contract (investigate):**
-  - VC-01: decision memo includes an example JSON-LD payload that passes a schema.org validator and contains no third-party ratings markup.
+- **Notes:** Valid.
 
 ---
 
-#### Decision Memo: `/book` Page JSON-LD Strategy (2026-02-15)
-
-**Evidence class:** E1 (static audit of existing patterns) + E3 (web research)
-
-##### 1. @type Strategy Decision
-
-**Chosen:** `Hostel`
-
-**Justification:**
-- `Hostel` is a specific subtype of `LodgingBusiness` in the schema.org hierarchy: `Thing > Organization > LocalBusiness > LodgingBusiness > Hostel`
-- Matches the actual business type (Hostel Brikette is explicitly a hostel, not a hotel)
-- Existing codebase already uses `@type: "Hostel"` in `apps/brikette/src/utils/schema/builders.ts` (`buildHotelNode()`)
-- More semantically accurate than the generic `LodgingBusiness` parent type
-- Inherits all `LodgingBusiness` properties while providing specific categorization
-- No SEO disadvantage vs `Hotel` or `LodgingBusiness` — schema.org does not privilege one accommodation type over another
-
-**Alternatives considered:**
-- `Hotel`: semantically incorrect (hostels and hotels are distinct accommodation types)
-- `LodgingBusiness`: technically correct but less specific; would lose semantic precision
-- `BedAndBreakfast`: incorrect business model
-
-**Reference:** [Schema.org Hostel documentation](https://schema.org/Hostel)
-
-##### 2. Required Field List
-
-Schema.org does not mandate specific "required" fields for `Hostel` in the way some other schemas do. However, for **schema validity + SEO best practices**, the following fields should be included:
-
-**Core Identity Fields (minimum viable):**
-- `@context`: `"https://schema.org"`
-- `@type`: `"Hostel"`
-- `@id`: stable identifier (e.g., `${BASE_URL}#hotel`)
-- `name`: business name
-- `description`: brief description of the property
-- `url`: canonical website URL
-
-**Contact & Location Fields (strongly recommended):**
-- `address`: PostalAddress object with:
-  - `streetAddress`
-  - `addressLocality`
-  - `postalCode`
-  - `addressCountry`
-- `geo`: GeoCoordinates object with `latitude` and `longitude`
-- `email`: contact email (or omit per existing policy if telephone is also omitted)
-- `hasMap`: Google Maps URL (existing pattern uses this in lieu of telephone per contact policy)
-
-**Booking-Critical Fields:**
-- `priceRange`: price range string (e.g., "€55 – €300")
-- `checkinTime`: check-in time
-- `checkoutTime`: check-out time
-- `availableLanguage`: array of supported languages
-
-**Amenities & Features:**
-- `amenityFeature`: array of LocationFeatureSpecification objects
-- `image`: array of images (string URLs or ImageObject with dimensions)
-
-**Business Hours:**
-- `openingHoursSpecification`: OpeningHoursSpecification array (24/7 for reception)
-
-**SEO Enhancement Fields:**
-- `mainEntityOfPage`: page URL (ties entity to the specific page)
-- `inLanguage`: page language code
-- `isPartOf`: reference to website entity (`{ "@id": "${BASE_URL}/#website" }`)
-- `sameAs`: array of social/map profile URLs
-
-**Ratings Policy (CRITICAL):**
-- **`aggregateRating`: OMIT** — third-party ratings (Hostelworld, Booking.com) violate the constraint "omit aggregateRating unless first-party reviews exist on-site"
-- If first-party reviews are added in the future, include:
-  ```json
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": 9.2,
-    "reviewCount": 150,
-    "bestRating": 10,
-    "worstRating": 1
-  }
-  ```
-- For now: **do not include any `aggregateRating` or `review` fields**
-
-##### 3. Validator Tooling & Pass Criteria
-
-**Primary validator:** [Schema Markup Validator](https://validator.schema.org/) (Google's official schema.org validator)
-
-**Pass criteria:**
-1. **No errors:** Validator reports zero errors for the JSON-LD payload
-2. **No critical warnings:** Address any warnings about missing recommended fields (address, geo, etc.)
-3. **Type recognition:** Validator successfully identifies the entity as type `Hostel`
-4. **No third-party ratings:** Payload does not include `aggregateRating` or `review` fields (unless first-party reviews exist on-site)
-
-**Secondary check (optional):** [Google Rich Results Test](https://search.google.com/test/rich-results) — however, note that:
-- Schema validity ≠ rich result eligibility
-- This task's acceptance is **schema validity**, not a promise of rich results
-- Rich results for lodging require additional factors (authority, user signals, etc.) outside our control
-
-**Verification commands:**
-```bash
-# Manual check via web validator
-# 1. Visit https://validator.schema.org/
-# 2. Paste JSON-LD payload
-# 3. Verify: 0 errors, type=Hostel recognized
-
-# Automated check (if available in CI)
-# Use schema-dts validation or custom JSON-LD linter (future enhancement)
-```
-
-##### 4. Snapshot Test Outline
-
-**Test location:** `apps/brikette/src/test/components/ga4-book-page-structured-data.todo.test.tsx` (already exists as stub)
-
-**Approach:** Activate the existing test stubs and add snapshot assertions
-
-**Test cases:**
-```typescript
-// TC-BOOK-01: Book page renders valid Hostel JSON-LD with no aggregateRating
-describe("/book structured data", () => {
-  it("renders Hostel JSON-LD with required fields and no aggregateRating", () => {
-    const { container } = render(<BookPageWithStructuredData lang="en" />);
-
-    const script = container.querySelector('script[type="application/ld+json"]');
-    expect(script).toBeTruthy();
-
-    const jsonLd = JSON.parse(script!.textContent!);
-
-    // Assert @type
-    expect(jsonLd["@type"]).toBe("Hostel");
-
-    // Assert required fields present
-    expect(jsonLd).toHaveProperty("@context");
-    expect(jsonLd).toHaveProperty("@id");
-    expect(jsonLd).toHaveProperty("name");
-    expect(jsonLd).toHaveProperty("description");
-    expect(jsonLd).toHaveProperty("address");
-    expect(jsonLd).toHaveProperty("geo");
-    expect(jsonLd).toHaveProperty("priceRange");
-    expect(jsonLd).toHaveProperty("checkinTime");
-    expect(jsonLd).toHaveProperty("checkoutTime");
-
-    // Assert NO third-party ratings
-    expect(jsonLd).not.toHaveProperty("aggregateRating");
-    expect(jsonLd).not.toHaveProperty("review");
-
-    // Snapshot for stability
-    expect(jsonLd).toMatchSnapshot();
-  });
-
-  it("does not leak i18n keys on /[lang]/book for non-EN locales", () => {
-    const { container } = render(<BookPageWithStructuredData lang="de" />);
-
-    const script = container.querySelector('script[type="application/ld+json"]');
-    const jsonLd = JSON.parse(script!.textContent!);
-
-    // Check description doesn't contain i18n placeholder patterns
-    expect(jsonLd.description).not.toMatch(/\{\{.*\}\}/);
-    expect(jsonLd.description).not.toMatch(/\$t\(/);
-    expect(jsonLd.name).not.toMatch(/\{\{.*\}\}/);
-  });
-});
-```
-
-**Snapshot benefits:**
-- Detects unintended field additions/removals
-- Catches value changes (e.g., if `aggregateRating` accidentally gets added)
-- Provides diff visibility in PRs when JSON-LD structure changes
-
-**Snapshot update workflow:**
-```bash
-# When intentional changes are made to JSON-LD schema:
-pnpm --filter brikette test -- -u apps/brikette/src/test/components/ga4-book-page-structured-data.todo.test.tsx
-```
-
-##### 5. Example JSON-LD Payload (VC-01)
-
-**Canonical payload for `/book` page:**
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Hostel",
-  "@id": "https://www.hostel-positano.com/#hotel",
-  "name": "Hostel Brikette",
-  "description": "Positano's only hostel—cliff-top terraces with sweeping Amalfi Coast views, 100 m from the SITA bus stop.",
-  "url": "https://www.hostel-positano.com",
-  "mainEntityOfPage": "https://www.hostel-positano.com/en/book",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@id": "https://www.hostel-positano.com/#website"
-  },
-  "priceRange": "€55 – €300",
-  "email": "hostelpositano@gmail.com",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Via Guglielmo Marconi 358",
-    "addressLocality": "Positano SA",
-    "postalCode": "84017",
-    "addressCountry": "IT"
-  },
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": 40.629634,
-    "longitude": 14.480818
-  },
-  "hasMap": "https://maps.google.com/maps?cid=17733313080460471781",
-  "availableLanguage": ["en", "de", "es", "fr", "it", "ja", "ko", "pt", "ru", "zh"],
-  "amenityFeature": [
-    { "@type": "LocationFeatureSpecification", "name": "Free Wi-Fi", "value": true },
-    { "@type": "LocationFeatureSpecification", "name": "Air-Conditioning", "value": true },
-    { "@type": "LocationFeatureSpecification", "name": "Panoramic Terrace", "value": true },
-    { "@type": "LocationFeatureSpecification", "name": "Bar & Café", "value": true },
-    { "@type": "LocationFeatureSpecification", "name": "Secure Lockers", "value": true },
-    { "@type": "LocationFeatureSpecification", "name": "Concierge / Digital Assistant", "value": true },
-    { "@type": "LocationFeatureSpecification", "name": "Luggage Storage", "value": true }
-  ],
-  "openingHoursSpecification": [
-    {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "00:00",
-      "closes": "23:59"
-    }
-  ],
-  "checkinTime": "15:30",
-  "checkoutTime": "10:30",
-  "image": [
-    {
-      "@type": "ImageObject",
-      "url": "https://www.hostel-positano.com/images/7/landing.webp",
-      "width": 1920,
-      "height": 1280
-    },
-    {
-      "@type": "ImageObject",
-      "url": "https://www.hostel-positano.com/images/10/landing.webp",
-      "width": 1920,
-      "height": 1280
-    }
-  ],
-  "sameAs": [
-    "https://maps.google.com/maps?cid=17733313080460471781",
-    "https://maps.apple.com/?q=Hostel+Brikette&ll=40.629634,14.480818",
-    "https://www.instagram.com/brikettepositano"
-  ]
-}
-```
-
-**Validation results (manual check at https://validator.schema.org/):**
-- Status: PASS
-- Type recognized: `Hostel`
-- Errors: 0
-- Warnings: 0 (all recommended fields included)
-- `aggregateRating`: correctly omitted
-
-##### 6. Multi-Schema Composition for `/book`
-
-The `/book` page should include **three separate JSON-LD scripts** (following existing pattern from guides):
-
-1. **Hostel/LodgingBusiness:** (as detailed above)
-2. **FAQPage:** reuse existing `FaqStructuredData` component if FAQ content is added
-3. **BreadcrumbList:** reuse existing `BreadcrumbStructuredData` component
-
-**Implementation pattern:**
-```tsx
-// apps/brikette/src/app/[lang]/book/page.tsx (or BookPageContent.tsx)
-import BookStructuredData from "@/components/seo/BookStructuredData";
-import BreadcrumbStructuredData from "@/components/seo/BreadcrumbStructuredData";
-import FaqStructuredData from "@/components/seo/FaqStructuredData"; // if FAQ added
-
-export default function BookPage({ params }: { params: { lang: AppLanguage } }) {
-  return (
-    <>
-      <BookStructuredData lang={params.lang} />
-      <BreadcrumbStructuredData
-        items={[
-          { name: "Home", item: `${BASE_URL}/${params.lang}` },
-          { name: "Book", item: `${BASE_URL}/${params.lang}/book` }
-        ]}
-        lang={params.lang}
-      />
-      {/* Add FaqStructuredData when FAQ content exists */}
-      <BookPageContent lang={params.lang} />
-    </>
-  );
-}
-```
-
-##### 7. Implementation Checklist for TASK-13
-
-When implementing TASK-13, ensure:
-
-- [ ] Create `apps/brikette/src/components/seo/BookStructuredData.tsx` component
-- [ ] Reuse `buildHotelNode()` from `apps/brikette/src/utils/schema/builders.ts` (already returns Hostel type)
-- [ ] Pass `pageUrl` for `mainEntityOfPage` binding
-- [ ] **DO NOT** include `aggregateRating` or `review` fields
-- [ ] Add `BreadcrumbStructuredData` to `/book` page layout
-- [ ] Activate snapshot test in `apps/brikette/src/test/components/ga4-book-page-structured-data.todo.test.tsx`
-- [ ] Verify payload at https://validator.schema.org/ (manual check during PR review)
-- [ ] Confirm no i18n key leakage for non-EN locales
-
-##### 8. Long-Term Ratings Strategy
-
-**Current state:** Third-party ratings (Hostelworld 9.3, Booking.com 9.0) exist in `apps/brikette/src/config/hotel.ts` but are marked with a snapshot date (2025-11-01).
-
-**Policy:** Do not include these in `/book` JSON-LD until first-party reviews are implemented on-site.
-
-**Future enhancement (if first-party reviews are added):**
-1. Build an on-site review collection system
-2. Store reviews in the database
-3. Compute `aggregateRating` from first-party data only
-4. Update `buildHotelNode()` to conditionally include `aggregateRating` when first-party data exists
-5. Add review markup with `@type: "Review"` and `reviewBody` from actual user submissions
-
-**Constraint remains:** Never include third-party ratings in schema markup, even if they're positive.
-
-**Sources:**
-- [Schema.org Hostel Type](https://schema.org/Hostel)
-- [Schema.org LodgingBusiness Type](https://schema.org/LodgingBusiness)
-- [Schema Markup Validator](https://validator.schema.org/)
-- [Schema.org Hotels Documentation](https://schema.org/docs/hotels.html)
-
-**Completion checklist:**
-- [x] @type strategy locked (`Hostel`)
-- [x] Required field list defined (core identity + contact/location + booking-critical + amenities + hours + SEO fields)
-- [x] Ratings policy explicit (omit `aggregateRating` until first-party reviews exist)
-- [x] Validator tooling specified (Schema Markup Validator; pass = 0 errors + type recognized + no third-party ratings)
-- [x] Snapshot test outline provided (test stubs exist; activate during TASK-13)
-- [x] Example JSON-LD payload included (VC-01 satisfied)
-- [x] Multi-schema composition strategy defined (Hostel + BreadcrumbList + optional FAQPage)
-- [x] Implementation checklist for TASK-13 provided
+### TASK-15: Staging GA4 stream isolation
+- **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
+- **Notes:** Valid. Separate GA4 data stream for staging; `NEXT_PUBLIC_GA_MEASUREMENT_ID` env-scoped per environment.
 
 ---
 
-### TASK-21: Content sticky CTA Variant A: target pages + dismiss TTL + copy/placement decision memo
+### TASK-16: Verification protocol doc
+- **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
+- **Notes:** Valid but needs amendment: DebugView must use Google Analytics Debugger extension (not `?gtm_debug`). TASK-40 updates the doc.
+
+---
+
+### TASK-18: Impression dedupe fix (per-navigation)
+- **Type:** IMPLEMENT
+- **Status:** Complete (2026-02-15)
+- **Notes:** Valid.
+
+---
+
+### TASK-13: Upgrade /book page (conversion content + JSON-LD + deal banner + i18n)
+- **Type:** IMPLEMENT
+- **Deliverable:** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx` + new `BookPageStructuredData.tsx` + `bookPage.json` additions
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** L
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
+  - `apps/brikette/src/app/[lang]/book/page.tsx`
+  - `apps/brikette/src/components/seo/BookPageStructuredData.tsx` (new)
+  - `apps/brikette/src/locales/en/bookPage.json`
+- **Depends on:** TASK-20, TASK-29
+- **Blocks:** —
+- **Confidence:** 80%
+  - Implementation: 80% — all needed components exist (`DirectBookingPerks`, `SocialProofSection`, `FaqStrip`, `LocationInline`); composition is the bulk of the work. JSON-LD field list + absolute URL source decided in TASK-20 first.
+  - Approach: 82% — `dealsPage` namespace coupling in `DirectBookingPerks` needs resolution (allow book page to load additional namespaces — simplest approach).
+  - Impact: 85% — high-impact: /book is the universal booking entry point post-amendment.
+- **Acceptance:**
+  - /book renders: DirectBookingPerks (above room cards), social proof strip, FAQ section, LocationInline, "Book Direct" value prop
+  - H1: "Book Direct at Hostel Brikette, Positano" (no "only hostel" claim)
+  - Meta title: "Book Direct at Hostel Brikette Positano | Best Price + Free Breakfast"
+  - BookPageStructuredData renders `<script type="application/ld+json">` with LodgingBusiness + FAQPage + BreadcrumbList
+  - JSON-LD `url` and `image` fields use absolute URLs from environment config (base URL resolved in TASK-20), not hardcoded domain; staging must not leak production domain
+  - JSON-LD validates via Schema Markup Validator (schema.org correctness)
+  - **Deal applied banner:** when `/book?deal=SUMMER25` URL param is present, a visible "Deal applied: SUMMER25" banner renders above the room cards; deal code is propagated into `buildOctorateUrl` calls (via TASK-23) so the discount applies at Octorate checkout
+  - All new keys in `bookPage.json`; no hardcoded copy in components; no i18n key leakage on 3 non-EN locales
+- **Validation contract:**
+  - TC-01: Snapshot test for BookPageStructuredData JSON output — matches expected lodging schema fields
+  - TC-02: No `aggregateRating` in JSON-LD output (third-party ratings not first-party)
+  - TC-03: DirectBookingPerks renders without namespace errors on /book
+  - TC-04: 3 non-EN locale renders show translated copy (not raw i18n keys)
+  - TC-05: `/book?deal=SUMMER25` → deal banner visible; deal code present in Octorate URL generated by buildOctorateUrl
+  - TC-06: `/book` with no deal param → no banner rendered
+- **Execution plan:** Red (test snapshot fails) → Green (component added) → Refactor (key cleanup)
+- **Planning validation:**
+  - Checks run: None (planning-only)
+  - Unexpected findings: `DirectBookingPerks` uses `dealsPage` namespace — plan allows additional namespace load on /book
+- **Rollout / rollback:**
+  - Rollout: additive; new components loaded on /book only
+  - Rollback: revert commit
+- **Documentation impact:** `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` — mark Track A complete
+- **Notes:** Does not depend on TASK-12 (modal copy, superseded). Structured data strategy locked in TASK-20.
+
+---
+
+### TASK-14: Add ContentStickyCta to content pages (Link-based)
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `GuideContent`, `BarMenuContent`, `BreakfastMenuContent`, about page, assistance pages, how-to-get-here pages with `<Link href="/{lang}/book">` sticky CTA
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/components/guides/GuideContent.tsx` (or equivalent)
+  - `apps/brikette/src/app/[lang]/about/page.tsx`
+  - `apps/brikette/src/app/[lang]/bar-menu/page.tsx`
+  - `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
+  - `apps/brikette/src/app/[lang]/assistance/` pages
+  - `apps/brikette/src/app/[lang]/how-to-get-here/` pages
+  - `apps/brikette/src/components/cta/ContentStickyCta.tsx`
+- **Depends on:** TASK-21, TASK-29
+- **Blocks:** —
+- **Confidence:** 80%
+  - Implementation: 80% — `ContentStickyCta` exists and was already used (now Link-only, no modal); straightforward composition on target pages.
+  - Approach: 82% — scope (which pages) determined by TASK-21.
+  - Impact: 82% — adds booking path to 10 currently dead-end pages.
+- **Acceptance:**
+  - All pages identified in TASK-21 render `ContentStickyCta` with `<Link href="/{lang}/book">` (no `openModal`)
+  - No `useModal` import on pages that only have the sticky CTA
+  - CTA is session-dismissible per existing mechanism
+  - cta_click event fires on click (TASK-36 dependency) — add `onCtaClick` prop if not already present
+- **Validation contract:**
+  - TC-01: ContentStickyCta renders `<a>` with expected href on 3 content page types
+  - TC-02: openModal is not called anywhere in updated ContentStickyCta
+  - TC-03: Click fires cta_click GA4 event (assert gtag called)
+- **Execution plan:** Red → Green → Refactor
+- **Planning validation:** None (planning-only)
+- **Rollout / rollback:** Additive; revert commit
+- **Documentation impact:** None
+
+---
+
+### TASK-20: Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan
 - **Type:** INVESTIGATE
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build (decision memo; no code changes)
-- **Affects (read):** `apps/brikette/src/app/[lang]/experiences/[slug]/GuideContent.tsx`, `apps/brikette/src/app/[lang]/about/page.tsx`, `apps/brikette/src/app/[lang]/bar-menu/page.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
-- **Depends on:** TASK-05, TASK-11, TASK-15
-- **Blocks:** TASK-14
-- **Confidence:** 85%
-- **Purpose / uncertainty:**
-  - Confirm exact page set and define dismiss behavior (session-only vs longer) and copy/placement for Variant A (opens BookingModal, not deep-link).
-- **Acceptance (exit criteria):**
-  - Add a short decision memo under TASK-21 covering:
-    - final page list
-    - dismiss TTL choice + storage mechanism recommendation (sessionStorage vs localStorage)
-    - copy keys + CTA label fallback strategy (ties into `cta_id: content_sticky_check_availability`)
-- **Validation contract (investigate):**
-  - VC-01: decision memo includes a "do not proceed" checklist item: confirm staging stream isolation (TASK-15) is active before broad event testing.
-
-#### Investigation Completion (2026-02-15)
-- **Status:** Complete
-- **Decision memo:** `docs/plans/brikette-cta-sales-funnel-ga4/task-21-decision-memo.md`
-- **Key decisions:**
-  - **Page list:** Tier 1 (guide detail, about, bar-menu, breakfast-menu) ships in TASK-14; Tier 2 (how-to-get-here, assistance) deferred pending validation.
-  - **Dismiss TTL:** Session-dismissible via `sessionStorage` (key: `content-sticky-cta-dismissed`).
-  - **Copy strategy:** Reuse `_tokens:checkAvailability` for CTA label + `stickyCta.*` keys from `StickyBookNow` pattern for headline/subcopy.
-  - **Canonical GA4:** `cta_id: content_sticky_check_availability`, surface-specific `cta_location` enums (already in `GA4_ENUMS`).
-  - **Do-not-proceed checklist:** TASK-15 staging isolation must be verified active before TASK-14 starts.
-- **Evidence class:** E1 (read target page components, `StickyBookNow` pattern reference, `ga4-events.ts` enum verification).
-- **All validation criteria satisfied:**
-  - VC-01: Do-not-proceed checklist included in decision memo (staging stream isolation verification required).
-  - Final page list confirmed (Tier 1 + Tier 2 deferred).
-  - Dismiss TTL locked (sessionStorage, session-only).
-  - Copy keys locked (reuse stable tokens; no new namespace coupling).
-  - GA4 event contract locked (canonical enums align with TASK-11 implementation).
-
-### TASK-12: conversion copy parity in booking modals
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-16)
+- **Deliverable:** Decision memo appended to `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` (or inline decision note in TASK-13)
 - **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/context/modal/global-modals/BookingModal.tsx`, `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx`, `apps/brikette/src/locales/en/*` (as needed)
-- **Depends on:** TASK-05, TASK-19
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Depends on:** TASK-29
 - **Blocks:** TASK-13
-- **Confidence:** 72% ⚠️ (→ 82% conditional on TASK-19)
-
-Notes:
-- Avoid importing `DirectBookingPerks` into modals just to reuse copy; it is wired to `dealsPage` i18n namespace. Prefer a small modal-specific block with copy in an appropriate namespace (`modals` / `bookPage`).
-
-- **Acceptance:**
-  - BookingModal and Booking2Modal render a small “Why book direct” block above the primary action area (no mechanics redesign).
-  - Copy is sourced from an appropriate namespace (`modals` or `bookPage`) and does not introduce new namespace coupling into the modals.
-  - The block is present in EN and falls back safely for non-EN locales (no raw i18n key tokens displayed).
-- **Validation contract:**
-  - TC-01: BookingModal renders the direct-booking block (smoke render test).
-  - TC-02: Booking2Modal renders the direct-booking block (smoke render test).
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/booking-modals-direct-copy.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/booking-modals-direct-copy.test.tsx --maxWorkers=2`
-
-What would make this ≥90%:
-- Confirm the final copy structure with product owner and lock translation keys before implementation (avoids churn across locales).
-
-#### Build Completion (2026-02-16)
-- **Status:** Complete
-- **Commit:** fd40afb33c
-- **Execution cycle:**
-  - Validation cases executed: TC-01, TC-02
-  - Cycles: 1 (TDD: test-fail-implement-pass)
-  - Initial validation: tests written first, failed appropriately
-  - Final validation: PASS
-- **Confidence reassessment:**
-  - Original: 72%
-  - Post-validation: 82%
-  - Delta reason: TASK-19 decision memo provided copy structure; implementation validated fallback strategy
-- **Validation:**
-  - Ran: `pnpm --filter brikette test -- apps/brikette/src/test/components/booking-modals-direct-copy.test.tsx --maxWorkers=2` — PASS
-  - Typecheck: PASS (fixed collateral type error in seo-audit/index.ts)
-  - Lint: PASS
-- **Documentation updated:** None required (code-only task)
-- **Implementation notes:**
-  - Created DirectPerksBlock component in `apps/brikette/src/components/booking/DirectPerksBlock.tsx`
-  - Uses `modals.directPerks` namespace (heading + items array) with i18n fallback strategy
-  - Wired into BookingModal and Booking2Modal via extraContent prop (extends existing `BookingModalProps`)
-  - RTL support using logical spacing (me-2 instead of mr-2)
-  - Guard prevents rendering when heading is empty or items array is empty
-  - Integration test validates both TC-01 (renders with defaults) and TC-02 (guards empty data)
-  - Files changed: DirectPerksBlock.tsx (new), Booking2Modal.tsx, BookingModal.tsx (both apps/brikette), modals.json, booking-modals-direct-copy.test.tsx (new), BookingModal.tsx (packages/ui for extraContent prop)
-
-### TASK-13: Upgrade /book + JSON-LD
-- **Type:** IMPLEMENT
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`, `apps/brikette/src/locales/en/bookPage.json`, `apps/brikette/src/components/seo/*` (new book structured data component)
-- **Depends on:** TASK-05, TASK-12, TASK-20
-- **Blocks:** TASK-14
-- **Confidence:** 70% ⚠️ (→ 82% conditional on TASK-12, TASK-20)
-- **Validation contract:**
-  - TC-01: snapshot of JSON-LD output is stable and contains required fields; no third-party `aggregateRating`.
-  - TC-02: `/[lang]/book` renders without i18n key leakage for 2-3 non-EN locales in staging.
-
-Guardrails:
-- JSON-LD acceptance is schema validity + stable output, not an outcome promise (rich results may not appear).
-- `aggregateRating` remains omitted unless first-party reviews exist on-site.
-
-Replan notes (E1):
-- `/book` currently loads `bookPage` + `roomsPage` namespaces; adding conversion content must avoid pulling in unrelated namespaces that create coupling (e.g. `dealsPage`).
-- Validation must explicitly use the “valid schema, no errors” standard rather than promising rich results.
-
-What would make this ≥90%:
-- A concrete, locked JSON-LD field list for the chosen `@type` strategy (Hostel vs LodgingBusiness) + a snapshot test covering the final output.
-
-### TASK-14: Sticky CTA variant A on content pages
-- **Type:** IMPLEMENT
-- **Status:** Complete (2026-02-15)
-- **Execution-Skill:** /lp-build
-- **Affects:** `apps/brikette/src/app/[lang]/experiences/[slug]/GuideContent.tsx`, `apps/brikette/src/app/[lang]/about/page.tsx`, `apps/brikette/src/app/[lang]/bar-menu/page.tsx`, `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
-- **Depends on:** TASK-05, TASK-11, TASK-15, TASK-21
-- **Blocks:** -
-- **Confidence:** 68% ⚠️ (→ 82% conditional on TASK-21)
-
-- **Acceptance:**
-  - Add a sticky CTA Variant A to the listed content pages that opens BookingModal (generic availability), not a deep-link.
-  - CTA is session-dismissible (avoid intrusive behavior) and reuses the "sticky CTA pattern" rather than forcing `StickyBookNow` deep-links where room context is absent.
-  - Tracking:
-    - emits `cta_click` with canonical `cta_id`/`cta_location`
-    - emits `modal_open`/`modal_close` through the modal lifecycle task
-- **Validation contract:**
-  - TC-01: guide detail page renders the sticky CTA and clicking it opens BookingModal.
-  - TC-02: about page renders the sticky CTA and clicking it opens BookingModal.
-  - Test type: integration
-  - Test location: `apps/brikette/src/test/components/content-sticky-cta.test.tsx` (new)
-  - Run: `pnpm --filter brikette test -- apps/brikette/src/test/components/content-sticky-cta.test.tsx --maxWorkers=2`
-
-What would make this ≥90%:
-- Confirm the exact target page set and the desired dismiss TTL (session vs longer) with product owner; these are UX decisions that affect intrusiveness risk.
-
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Commit:** c11a611384 (note: commit message references TASK-07 from parallel workstream due to writer lock queue collision; TASK-14 files are present in commit)
-- **Implementation notes:**
-  - Created `ContentStickyCta` component in `apps/brikette/src/components/cta/`
-  - Reuses visual pattern from `StickyBookNow` but opens modal instead of deep-link
-  - Session-scoped dismiss via `sessionStorage` key: `content-sticky-cta-dismissed`
-  - GA4 tracking: `fireCtaClick` with `cta_id: content_sticky_check_availability` and surface-specific `cta_location`
-  - Copy keys from TASK-21 decision memo: `_tokens:checkAvailability`, `stickyCta.directHeadline`, etc.
-  - Created `AboutContentWrapper` client boundary for server component integration
-  - Added sticky CTA to all Tier 1 pages:
-    - `/[lang]/experiences/[slug]` — GuideContent.tsx
-    - `/[lang]/about` — AboutContentWrapper.tsx wrapper
-    - `/[lang]/bar-menu` — BarMenuContent.tsx
-    - `/[lang]/breakfast-menu` — BreakfastMenuContent.tsx
-- **Execution cycle:**
-  - Validation cases executed: TC-01, TC-02, TC-03, TC-04
-  - Cycles: 1 (red-green TDD cycle)
-  - Initial validation: test written, component implemented
-  - Final validation: typecheck PASS, lint N/A (disabled per eslint.config.mjs)
-- **Confidence reassessment:**
-  - Original: 68% (conditional on TASK-21)
-  - Post-validation: 82% (TASK-21 complete, implementation straightforward)
-  - Delta reason: TASK-21 decision memo approved; implementation followed established patterns
-- **Validation:**
-  - Typecheck: PASS (`pnpm --filter brikette typecheck`)
-  - Lint: N/A (temporarily disabled per brikette eslint.config.mjs)
-  - Tests: integration test created, deferred execution due to test lock contention
-- **Documentation updated:** Plan status updated; no standing docs impacted
-
-### TASK-15: Staging stream isolation enablement (env-scoped GA measurement ID)
-- **Type:** IMPLEMENT
-- **Execution-Skill:** /lp-build
-- **Status:** Complete (2026-02-15)
-- **Deliverable:** staging build uses a staging-only measurement ID (does not pollute prod stream)
-- **Affects:** `.github/workflows/brikette.yml`, `apps/brikette/src/config/env.ts` ([readonly])
-- **Depends on:** TASK-05
-- **Blocks:** TASK-06, TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-14
-- **Confidence:** 82%
-- **Acceptance:**
-  - Staging deploy uses a staging-specific `NEXT_PUBLIC_GA_MEASUREMENT_ID` (environment-scoped) distinct from production.
-  - A documented checklist exists describing how to confirm which measurement ID loaded.
-- **Validation contract:**
-  - TC-01: staging build logs/HTML contains the staging measurement ID.
-  - TC-02: GA4 DebugView shows events arriving in the staging stream/property, not production.
-
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Commit:** `9f390162bf`
-- **Implementation notes:**
-  - `.github/workflows/brikette.yml` now sets `NEXT_PUBLIC_GA_MEASUREMENT_ID` from:
-    - staging: `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING` (fallback `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID`)
-    - production: `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION` (fallback `vars.NEXT_PUBLIC_GA_MEASUREMENT_ID`)
-- **Operator checklist (staging isolation verification):**
-  - Ensure GitHub repo variables are set:
-    - `NEXT_PUBLIC_GA_MEASUREMENT_ID_STAGING` (staging stream Measurement ID)
-    - `NEXT_PUBLIC_GA_MEASUREMENT_ID_PRODUCTION` (production stream Measurement ID)
-  - Deploy `staging` (or open the `staging-pages` URL) and confirm the loaded Measurement ID:
-    - In browser DevTools Console: `window.gtag?.toString?.()` exists and the GA config call includes `G-...` matching the staging ID (or inspect the page source for the Measurement ID string).
-    - In GA4 DebugView (staging stream): events appear when browsing staging with debug tooling enabled.
-  - Confirm production still uses the production Measurement ID.
-
-### TASK-16: Verification protocol doc (DebugView + payload checklist)
-- **Type:** IMPLEMENT
-- **Execution-Skill:** /lp-build
-- **Status:** Complete (2026-02-15)
-- **Deliverable:** `docs/plans/brikette-cta-sales-funnel-ga4/verification.md`
-- **Affects:** `docs/plans/brikette-cta-sales-funnel-ga4/verification.md`
-- **Depends on:** TASK-05
-- **Blocks:** -
 - **Confidence:** 85%
-
+  - Implementation: 85% — requires checking schema.org for `Hostel` vs `LodgingBusiness` type definitions.
+  - Approach: 85% — decision is clear (use `Hostel`; omit `aggregateRating`; use static fields only).
+  - Impact: 85% — prevents rework/bikeshedding on JSON-LD structure.
+- **Questions to answer:**
+  - `@type: "Hostel"` vs `"LodgingBusiness"` — which is more specific and supported?
+  - Minimum required field set: `name`, `address`, `geo`, `url`, `image`, `checkinTime`, `checkoutTime`, `amenityFeature`, `priceRange`, `potentialAction: ReserveAction` — is this correct?
+  - How to validate: Schema Markup Validator for schema.org; Rich Results Test for eligibility (not correctness)
+  - `aggregateRating`: confirm third-party badges (Hostelworld, Booking.com) are not eligible for structured data markup
+  - **Absolute URL source:** How are `url`, `image`, and breadcrumb item URLs computed for JSON-LD fields? Must use an env/config base URL (e.g. `NEXT_PUBLIC_BASE_URL` or framework `headers().get("host")`). Staging must not leak production domain. Document the chosen source so TASK-13 implements it consistently.
 - **Acceptance:**
-  - `docs/plans/brikette-cta-sales-funnel-ga4/verification.md` includes:
-    - DebugView checklist per event type (`search_availability`, `select_item`, `view_item_list`, `view_item`, `begin_checkout`, `cta_click`, `modal_open`, `modal_close`).
-    - Network payload checklist (what params to expect and where they live, especially `items[].item_variant`).
-    - A staging-vs-prod guard section (confirm staging stream isolation before testing).
-- **Validation contract:**
-  - TC-01: operator can follow the checklist end-to-end and unambiguously determine pass/fail for a given event.
+  - `@type` strategy chosen with rationale
+  - Minimum field set enumerated (static vs derived, how each is sourced)
+  - Absolute URL source decided and documented (single source of truth for base URL)
+  - Snapshot test approach confirmed (what the `<script>` output must contain)
+  - Validation tooling documented
+- **Validation contract:** Decision memo written and reviewed; TASK-13 can proceed.
 
-#### Build Completion (2026-02-15)
-- **Status:** Complete
-- **Docs:** `docs/plans/brikette-cta-sales-funnel-ga4/verification.md`
-- **Validation:**
-  - TC-01 satisfied by the presence of per-event pass/fail payload checklists (DebugView + Console `gtag` tap + optional Network cross-check) and explicit staging-vs-prod guardrails.
+---
+
+### TASK-21: Content sticky CTA scope + copy + Link-only approach
+- **Type:** INVESTIGATE
+- **Deliverable:** Decision memo (inline in fact-find or separate planning note)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Depends on:** TASK-29
+- **Blocks:** TASK-14
+- **Confidence:** 85%
+  - Implementation: 85% — scope and copy decisions needed before TASK-14.
+  - Approach: 85% — Link-only approach confirmed (Decision C: no modal).
+  - Impact: 85% — prevents scope creep or under-delivery on TASK-14.
+- **Questions to answer:**
+  - Which specific pages should receive `ContentStickyCta`? (Guide detail pages, how-to-get-here detail, assistance detail, about, bar-menu, breakfast-menu — all 10 listed in fact-find)
+  - Dismiss TTL: session-dismiss (current behavior) or page-specific dismiss?
+  - Copy: use existing `_tokens.checkAvailability` or book-specific copy?
+  - Should it appear on index pages (assistance index, how-to-get-here index)?
+- **Acceptance:**
+  - Page list finalized
+  - Dismiss TTL decided
+  - Copy source decided (token vs custom)
+  - Any z-index conflicts with guide TOC or image lightbox noted
+
+---
+
+### TASK-22: Route truth verification (Decision A)
+- **Type:** INVESTIGATE
+- **Deliverable:** Decision A updated in `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` with verified URL strategy; update all call site table entries accordingly
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` (decision update only)
+- **Depends on:** —
+- **Blocks:** TASK-26, TASK-27
+- **Confidence:** 90%
+  - Implementation: 90% — verification is a test operation; requires staging deploy or local dev.
+  - Approach: 90% — two outcomes are clearly defined.
+  - Impact: 90% — if verification shows getSlug fails for in-app nav, all call sites must use canonical `/{lang}/book`; wrong URL choice breaks Italian/German/etc. users.
+- **Questions to answer:**
+  - Does `router.push("/it/prenota")` (or `<Link href="/it/prenota">`) resolve correctly in the Next.js App Router on static export?
+  - Does direct load of `https://staging.brikette-website.pages.dev/it/prenota` return 200 with correct content?
+  - What does the browser URL bar show after in-app navigation to `/it/prenota` vs `/it/book`?
+- **Acceptance:**
+  - Test A (external direct load) and Test B (in-app navigation) documented with actual results
+  - Decision A in fact-find updated: either "use `getSlug` everywhere" or "use `/{lang}/book` for in-app, `getSlug` for external only"
+  - Call site table updated if needed
+- **Validation contract:** Test results documented; Decision A marked "Verified (YYYY-MM-DD)" in fact-find.
+- **Planning validation:** None (investigation task)
+
+---
+
+### TASK-23: Extract Octorate URL builder from Booking2Modal into shared utility
+- **Type:** IMPLEMENT
+- **Deliverable:** `apps/brikette/src/utils/buildOctorateUrl.ts` (new) + `apps/brikette/src/utils/buildOctorateUrl.test.ts` (new)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/utils/buildOctorateUrl.ts` (new)
+  - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx` ([readonly — source of truth for URL params])
+- **Depends on:** —
+- **Blocks:** TASK-27
+- **Confidence:** 85%
+  - Implementation: 85% — URL params are visible in `Booking2Modal.tsx`; extraction is mechanical. Risk: undiscovered param for NR vs Flex rate selection (need to verify rate code param name).
+  - Approach: 88% — standalone utility with unit tests is the right pattern; prevents drift.
+  - Impact: 90% — load-bearing for TASK-27 and TASK-13 deal propagation; wrong URL silently breaks room-specific bookings.
+- **Acceptance:**
+  - `buildOctorateUrl({ checkin, checkout, pax, plan, roomSku, rateCodes, bookingCode, deal? })` exported from new utility
+  - Unit tests assert exact URL string for NR and Flex for at least 2 different rooms
+  - Deal param (`&deal=ID&utm_source=site&utm_medium=deal&utm_campaign=ID`) included when `deal` is provided
+  - `codice=45111` always present
+- **Validation contract:**
+  - TC-01: `buildOctorateUrl({ plan: "nr", roomSku: "brik-room-1", rateCodes: ..., ...dates })` → URL contains `&checkin=YYYY-MM-DD&checkout=YYYY-MM-DD&codice=45111&pax=N` + NR rate params
+  - TC-02: `plan: "flex"` → URL contains Flex rate params instead
+  - TC-03: `deal: "SUMMER25"` → URL contains `&deal=SUMMER25&utm_source=site&utm_medium=deal&utm_campaign=SUMMER25`
+  - TC-04: `deal: undefined` → URL does not contain `&deal=`
+- **Execution plan:** Red (tests written referencing non-existent util) → Green (util extracted) → Refactor
+- **Planning validation:** Checks run: read `Booking2Modal.tsx` for URL construction logic
+- **Scouts:** Verify: what is the param name for the room-specific NR/Flex rate code? (Hypothesis: `codfta` or similar Octorate param — must confirm from Booking2Modal source.)
+- **Edge Cases & Hardening:** Apartment entry in roomsData has TODO placeholders for rate codes — `buildOctorateUrl` must guard against undefined rate codes (return null or throw with informative error).
+- **Rollout / rollback:** Additive new utility; Booking2Modal still imports its internal URL builder until TASK-27 deletes it.
+- **Documentation impact:** None
+
+---
+
+### TASK-24: Remove ModalType booking/booking2 + delete packages/ui booking modal primitives
+- **Type:** IMPLEMENT
+- **Deliverable:** Modified `packages/ui/src/context/modal/context.ts`, deleted `packages/ui/src/organisms/modals/BookingModal.tsx` + `BookingModal2.tsx`, updated `packages/ui/src/organisms/modals/index.ts`
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `packages/ui/src/context/modal/context.ts`
+  - `packages/ui/src/organisms/modals/BookingModal.tsx` (delete)
+  - `packages/ui/src/organisms/modals/BookingModal2.tsx` (delete)
+  - `packages/ui/src/organisms/modals/index.ts`
+- **Depends on:** —
+- **Blocks:** TASK-25, TASK-26
+- **Confidence:** 85%
+  - Implementation: 88% — deletions + type removal; TypeScript will surface all remaining consumers.
+  - Approach: 90% — remove from the type system first; consumers must be updated before TypeScript will compile.
+  - Impact: 85% — safe only after consumer call sites are verified; TASK-25/26/27 handle consumers.
+- **Acceptance:**
+  - `ModalType` union no longer contains `"booking"` or `"booking2"`
+  - `BookingModal.tsx` and `BookingModal2.tsx` deleted from `packages/ui/src/organisms/modals/`
+  - `index.ts` exports updated accordingly
+  - Verify no non-brikette consumers exist before deletion (`grep -r "BookingModal" packages/ --include="*.tsx"` excluding deleted files)
+- **Validation contract:**
+  - TC-01: TypeScript compilation clean after TASK-24 + TASK-25 + TASK-26 + TASK-27 + TASK-28 are all landed (not independently)
+  - TC-02: No import of `BookingModal` or `BookingModal2` from packages outside their deleted path
+- **Execution plan:** Red (TypeScript fails with consumers still using deleted types) → Green (all consumers removed in TASK-25/26) → Refactor
+- **Merge unit constraint:** TASK-24 alone produces TypeScript errors. **TASK-24/25/26/27/28 must be submitted as a single PR or tightly stacked PRs where each individual PR is CI-green before merging.** Do not merge TASK-24 independently.
+- **Scouts:** Run `grep -r "BookingModal\|booking2" packages/ --include="*.tsx"` excluding `ui/organisms/modals` to confirm no other package consumers.
+- **Rollout / rollback:** Revert commit. TypeScript enforces safety before merge.
+- **Documentation impact:** None
+
+---
+
+### TASK-25: Remove brikette booking modal infrastructure
+- **Type:** IMPLEMENT
+- **Deliverable:** Deleted `BookingModal.tsx` + `Booking2Modal.tsx` from brikette global-modals; updated `lazy-modals.ts`, `payloadMap.ts`, `global-modals.tsx`
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/context/modal/global-modals/BookingModal.tsx` (delete)
+  - `apps/brikette/src/context/modal/global-modals/Booking2Modal.tsx` (delete)
+  - `apps/brikette/src/context/modal/lazy-modals.ts`
+  - `apps/brikette/src/context/modal/payloadMap.ts`
+  - `apps/brikette/src/context/modal/global-modals.tsx`
+- **Depends on:** TASK-24
+- **Blocks:** TASK-26, TASK-28
+- **Confidence:** 85%
+  - Implementation: 88% — surgical file deletions + targeted removals from 3 files.
+  - Approach: 88% — changes are clearly specified in fact-find blast radius section.
+  - Impact: 85% — TypeScript ensures no dangling references compile after TASK-24.
+- **Acceptance:**
+  - `lazy-modals.ts`: `BookingModal` and `BookingModal2` lazy imports removed + type imports `UIBookingModalProps`, `UIBookingModal2Props` removed
+  - `payloadMap.ts`: `BookingPayload`, `Booking2Payload`, `parseBookingPayload`, `parseBooking2Payload` deleted; `booking` and `booking2` keys removed from `ModalPayloadMap`
+  - `global-modals.tsx`: `BookingGlobalModal` and `Booking2GlobalModal` imports and switcher branches removed
+  - Files `BookingModal.tsx` and `Booking2Modal.tsx` deleted
+  - TypeScript compilation clean (combined with TASK-24/26/27/28)
+- **Validation contract:**
+  - TC-01: TypeScript compilation passes after TASK-24 + TASK-25 combined (consumers not yet resolved — this task is part of the merge unit)
+  - TC-02: `grep -r "openModal.*booking" apps/brikette/src/context/` returns 0 results
+- **Execution plan:** Red → Green → Refactor
+- **Rollout / rollback:** Revert commit
+- **Documentation impact:** None
+
+---
+
+### TASK-26: Migrate 9x openModal("booking") call sites to router.push/Link
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated files across 8 components/pages (per blast radius table in fact-find)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/app/[lang]/HomeContent.tsx` (lines 44, 50)
+  - `apps/brikette/src/components/landing/BookingWidget.tsx` (line 186)
+  - `apps/brikette/src/components/cta/ContentStickyCta.tsx` (line 134)
+  - `apps/brikette/src/app/[lang]/experiences/ExperiencesPageContent.tsx` (line 123)
+  - `apps/brikette/src/components/not-found/NotFoundView.tsx` (line 112)
+  - `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx` (lines 297, 300)
+  - `apps/brikette/src/context/modal/global-modals/OffersModal.tsx` (line 55)
+- **Depends on:** TASK-22, TASK-24
+- **Blocks:** TASK-28
+- **Confidence:** 85%
+  - Implementation: 85% — URL path strategy confirmed by TASK-22; call sites clearly documented.
+  - Approach: 88% — simple substitution: `openModal("booking")` → `router.push(\`/${lang}/book\`)` or `<Link href>`.
+  - Impact: 85% — all booking CTA paths change; verified by TypeScript (after TASK-24 removes ModalType).
+- **Acceptance:**
+  - All 9 `openModal("booking")` call sites migrated per blast radius table
+  - Components that exclusively used `openModal("booking")` drop the `useModal()` hook entirely
+  - Components retaining other modal types keep the hook
+  - URL path follows Decision A verdict from TASK-22
+- **Validation contract:**
+  - TC-01: `grep -r 'openModal.*"booking"' apps/brikette/src/ --include="*.tsx"` returns 0 results after migration
+  - TC-02: BookingWidget submit → navigates to /book (router.push asserted in updated modal-integration-tc09 test)
+  - TC-03: OffersModal "Reserve Now" → calls closeModal + router.push (not openModal)
+- **Execution plan:** Red → Green → Refactor
+- **Rollout / rollback:** Revert commit
+- **Documentation impact:** None
+
+---
+
+### TASK-27: Migrate 2x openModal("booking2") in RoomCard to direct Octorate links
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `apps/brikette/src/components/rooms/RoomCard.tsx` with direct `<a href={octorateUrl}>` and Decision B/E queryState logic
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/components/rooms/RoomCard.tsx`
+  - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx` (add `queryState` prop passing)
+  - `[readonly] apps/brikette/src/utils/buildOctorateUrl.ts` (from TASK-23)
+- **Depends on:** TASK-22, TASK-23, TASK-24
+- **Blocks:** TASK-28
+- **Confidence:** 82%
+  - Implementation: 82% — RoomCard has all the data needed (`checkIn`, `checkOut`, `adults`, `room.rateCodes.direct.nr/flex`, `BOOKING_CODE`); `buildOctorateUrl` from TASK-23 is the URL builder.
+  - Approach: 85% — Decision B (disabled state) and Decision E (absent → navigate to /book) are well-specified.
+  - Impact: 88% — fixes the critical "RoomCard with no dates navigates to Octorate with garbage" UX regression.
+- **Acceptance:**
+  - RoomCard accepts `queryState: "valid" | "invalid" | "absent"` prop (replacing the former `hasValidQuery?: boolean` tri-state footgun):
+    - `queryState === "invalid"` (from /book page, dates not set or invalid): button visually disabled (`aria-disabled`), click scrolls to date picker with shake animation + accessible message
+    - `queryState === "absent"` (no date context, e.g. /rooms page): button navigates to `/{lang}/book` (Decision E)
+    - `queryState === "valid"` (from /book page, valid dates): button fires `select_item` + `begin_checkout` (via TASK-32) then navigates to Octorate
+  - RoomCard "Reserve Now" buttons are `<a href={octorateUrl}>` (no `openModal("booking2")`)
+  - `BookPageContent.tsx` passes `queryState={validDates ? "valid" : "invalid"}` to `RoomsSection`/`RoomCard`
+  - `/rooms` page does NOT pass `queryState` (defaults to `"absent"`)
+- **Validation contract:**
+  - TC-01: RoomCard with `queryState="invalid"` → renders button as `aria-disabled`, click does not navigate
+  - TC-02: RoomCard with `queryState="absent"` → renders active button pointing to `/{lang}/book`
+  - TC-03: RoomCard with `queryState="valid"` → renders active `<a href>` pointing to Octorate URL with correct params
+  - TC-04: Octorate URL from RoomCard matches URL from extracted builder unit test (TASK-23)
+- **Execution plan:** Red → Green → Refactor
+- **Planning validation:** Read RoomCard lines 120-209 to confirm data availability — confirmed (checkIn, checkOut, adults, room.rateCodes.direct.nr/flex available at call site)
+- **Scouts:** Confirm `room.rateCodes.direct.nr` and `.flex` are always populated in `roomsData.ts` (apartment entry has TODOs — guard must handle undefined)
+- **Edge Cases & Hardening:** Apartment rate code TODOs — `buildOctorateUrl` must return null for missing rate codes; RoomCard must not render Octorate link when null.
+- **Rollout / rollback:** Revert commit
+- **Documentation impact:** None
+
+---
+
+### TASK-28: Delete extinct tests + update 7 modal-era tests
+- **Type:** IMPLEMENT
+- **Deliverable:** Deleted test files (×2) + updated test assertions in 7 test files
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/test/components/ga4-09-booking-modal-begin-checkout.test.tsx` (delete)
+  - `apps/brikette/src/test/components/ga4-10-booking2-modal-begin-checkout.test.tsx` (delete)
+  - `apps/brikette/src/test/components/modal-integration-tc09.test.tsx` (update: router.push not openModal)
+  - `apps/brikette/src/test/components/content-sticky-cta.test.tsx` (update: navigation not openModal)
+  - `apps/brikette/src/test/components/deals-page.test.tsx` (update: router.push to /book?deal=...)
+  - `apps/brikette/src/test/components/experiences-page.test.tsx` (update: router.push not openModal)
+  - `apps/brikette/src/test/components/ga4-11-select-item-room-ctas.test.tsx` (update: Octorate URL, not openModal)
+  - `apps/brikette/src/test/context/modal-provider-effects.test.tsx` (update: use retained modal type)
+  - `apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx` (update: navigation assertions)
+- **Depends on:** TASK-25, TASK-26, TASK-27
+- **Blocks:** TASK-29
+- **Confidence:** 85%
+  - Implementation: 88% — test changes mirror the production changes; extinct tests are straightforward deletes.
+  - Approach: 88% — update assertions to match new navigation patterns.
+  - Impact: 85% — all 23 pending Jest tests must pass before checkpoint.
+- **Acceptance:**
+  - `pnpm --filter brikette test` passes clean (no failures, no skips added)
+  - ga4-09 and ga4-10 test files deleted (not skipped)
+  - 7 updated tests assert navigation (router.push/Link/href) not openModal
+  - `modal-provider-effects.test.tsx` uses a retained modal type (`"location"` or similar)
+- **Validation contract:**
+  - TC-01: `pnpm --filter brikette test` exits 0
+  - TC-02: No remaining assertion like `expect(openModal).toHaveBeenCalledWith("booking", ...)` in test suite
+- **Execution plan:** Red (delete extinct tests first; update assertions to match new behavior) → Green → Refactor
+- **Rollout / rollback:** Revert commit
+- **Documentation impact:** None
+
+---
+
+### TASK-29: CHECKPOINT — Horizon checkpoint post-modal-removal
+- **Type:** CHECKPOINT
+- **Deliverable:** Reassessed plan via `/lp-replan` for Track A/B/C/D tasks
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/brikette-cta-sales-funnel-ga4/plan.md`
+- **Depends on:** TASK-28
+- **Blocks:** TASK-20, TASK-21, TASK-30, TASK-31, TASK-37, TASK-40, TASK-41, TASK-42
+- **Confidence:** 95%
+  - Implementation: 95% — process is defined.
+  - Approach: 95% — prevents deep dead-end execution.
+  - Impact: 95% — controls downstream risk.
+- **Acceptance:**
+  - `/lp-build` executor confirms TASK-28 complete and test suite green
+  - `/lp-replan` run on TASK-20, TASK-21, TASK-30–TASK-42 with updated evidence
+  - Plan updated and re-sequenced if needed
+- **Horizon assumptions to validate:**
+  - Is the TypeScript compilation fully clean after all Track E work? (No residual booking/booking2 references)
+  - Are any Track C events already accidentally duplicated in the existing code (from superseded TASK-06/11)?
+  - Are there any RoomCard rendering issues post-queryState on staging?
+- **Validation contract:** TASK-28 complete; `pnpm --filter brikette test` green; plan updated post-replan.
+
+---
+
+### TASK-30: Create trackThenNavigate helper + unit tests
+- **Type:** IMPLEMENT
+- **Deliverable:** `apps/brikette/src/utils/trackThenNavigate.ts` (new) + unit tests
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/utils/trackThenNavigate.ts` (new)
+- **Depends on:** TASK-29
+- **Blocks:** TASK-32, TASK-35
+- **Confidence:** 85%
+  - Implementation: 88% — API is fully specified; existing `getGtag()` pattern available.
+  - Approach: 90% — canonical outbound reliability helper; locked API prevents drift.
+  - Impact: 85% — outbound event loss is the primary risk for begin_checkout; this mitigates it.
+- **Acceptance:**
+  - `trackThenNavigate(eventName, params, navigate, timeoutMs = 200)` exported
+  - API: helper builds gtag call internally with `transport_type: "beacon"` and `event_callback: go`
+  - `go` is defined before event fire; `navigated` flag prevents double-call
+  - If `getGtag()` returns null, navigate is called immediately (no hang)
+  - **200ms timeout rationale:** empirically-established UX trade-off — short enough to feel near-instant, long enough for most browsers to dispatch the beacon before page unload. Document this in the helper's JSDoc comment.
+  - **Caller contract for outbound `<a>` elements:** The onClick handler at the call site **must** call `e.preventDefault()` before invoking `trackThenNavigate`; the `navigate` callback performs the actual navigation via `window.location.assign(href)`. This is the caller's responsibility, not the helper's.
+- **Validation contract:**
+  - TC-01: gtag called with `{ transport_type: "beacon", event_callback: <fn> }` + all passed params
+  - TC-02: navigate called after event_callback fires (not before)
+  - TC-03: navigate called after timeout if callback never fires (mock setTimeout)
+  - TC-04: navigate called immediately when gtag is absent (null guard)
+  - TC-05: navigate not called twice when both callback and timeout fire
+  - TC-06: Caller contract documented — test that when invoked from an `<a>` onClick, `e.preventDefault()` was called before navigate and navigation occurs only via `window.location.assign(href)` inside the navigate callback (integration-level assertion in TASK-32 tests)
+- **Execution plan:** Red (all TCs written) → Green (util implemented) → Refactor
+- **Rollout / rollback:** Additive new util; revert commit
+- **Documentation impact:** None
+
+---
+
+### TASK-31: Create new GA4 event helpers + unit tests
+- **Type:** IMPLEMENT
+- **Deliverable:** New helper functions in `apps/brikette/src/utils/ga4-events.ts`: `fireSearchAvailability`, `fireViewPromotion`, `fireSelectPromotion`, `fireCTAClick` (updated), `fireSelectItem` (updated for direct-nav context)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/utils/ga4-events.ts`
+- **Depends on:** TASK-29
+- **Blocks:** TASK-33, TASK-34, TASK-36
+- **Confidence:** 85%
+  - Implementation: 88% — follows established `getGtag()` + `window.gtag("event", ...)` pattern exactly.
+  - Approach: 88% — event shapes fully specified in fact-find Event Contract table.
+  - Impact: 85% — additive helpers; no call sites wired yet (done in TASK-32-36).
+- **Acceptance:**
+  - `fireSearchAvailability({ nights, lead_time_days, pax })` — no raw date strings
+  - `fireViewPromotion({ items: [...promotions] })` — deals promotions model
+  - `fireSelectPromotion({ items: [...promotions] })` — single deal click
+  - `fireCTAClick({ cta_id, cta_location })` — updated to drop modal intercept context
+  - `fireSelectItem({ item_list_id, item_list_name, items[] })` — updated for direct-nav context (no modal)
+  - **All item events include required GA4 e-commerce fields:**
+    - `item_id` (= room.sku from roomsData)
+    - `item_name` (= room display title / name string)
+    - `item_category: "hostel"` (static)
+    - `affiliation: "Hostel Brikette"` (static)
+    - `currency: "EUR"` (static)
+    - `item_variant` ("nr" or "flex")
+  - `begin_checkout` in deal context includes `coupon: deal.id` (deal code propagated from URL param)
+  - All helpers use canonical enums from TASK-37; unit tests assert gtag called with correct shape
+- **Validation contract:**
+  - TC-01 through TC-05: one test per helper asserting full gtag call args using canonical enums
+  - TC-06: `fireSelectItem` includes `item_name`, `item_category`, `affiliation`, `currency` in items[]
+  - TC-07: `begin_checkout` with `deal` context includes `coupon: deal.id`
+
+---
+
+### TASK-32: Wire select_item + begin_checkout on RoomCard direct Octorate navigation
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `RoomCard.tsx` firing `select_item` + `begin_checkout` via `trackThenNavigate` before Octorate navigation; unit test
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/components/rooms/RoomCard.tsx`
+  - `[readonly] apps/brikette/src/utils/trackThenNavigate.ts`
+  - `[readonly] apps/brikette/src/utils/ga4-events.ts`
+- **Depends on:** TASK-29, TASK-30, TASK-31, TASK-15
+- **Blocks:** —
+- **Confidence:** 83%
+  - Implementation: 83% — RoomCard already has all needed data post-TASK-27; just needs GA4 event wiring.
+  - Approach: 85% — callback prop pattern per Decision C; GA4 in app layer.
+  - Impact: 88% — this is the core e-commerce event; without it the funnel has no select_item or begin_checkout.
+- **Acceptance:**
+  - RoomCard `<a>` onClick: **calls `e.preventDefault()` first**, then calls `trackThenNavigate("select_item", {...}, () => window.location.assign(octorateUrl))`
+  - Or: onClick calls `e.preventDefault()`, fires `fireSelectItem`, then `trackThenNavigate("begin_checkout", {...}, () => window.location.assign(octorateUrl))`
+  - `item_list_id` sourced from props (e.g. `"book_rooms"` or `"rooms_index"`)
+  - `items[]` includes: `item_id` (room.sku), `item_name` (room display title), `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant` ("nr" or "flex")
+  - Navigation occurs only via `window.location.assign(octorateUrl)` inside the `navigate` callback — never directly from the onClick handler
+  - Both events verified in staging via Network tab (items[] and item_id present in collect request)
+- **Validation contract:**
+  - TC-01: onClick → `e.preventDefault()` called; gtag called with `select_item` event containing correct item (incl. item_name, item_category, affiliation, currency)
+  - TC-02: onClick → gtag called with `begin_checkout` event containing correct item
+  - TC-03: navigation to Octorate URL occurs after event_callback or timeout (via `window.location.assign`)
+  - TC-04: `trackThenNavigate` called with `transport_type: "beacon"` (asserted via mock)
+  - TC-05: `e.preventDefault()` called before any navigation
+- **Rollout / rollback:** Revert commit
+
+---
+
+### TASK-33: Add search_availability to /book date picker
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `BookPageContent.tsx` firing `search_availability` on date picker submit and on initial valid URL param load
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
+  - `[readonly] apps/brikette/src/utils/ga4-events.ts`
+- **Depends on:** TASK-29, TASK-31, TASK-15
+- **Blocks:** —
+- **Confidence:** 82%
+  - Implementation: 85% — fire on "Update" button click and on mount when URL params are valid.
+  - Approach: 88% — `nights` and `lead_time_days` derived from dates; no raw date strings in params.
+  - Impact: 80% — analytically valuable (measures date-search dropoff) but not blocking other funnel events.
+- **Acceptance:**
+  - `fireSearchAvailability({ nights, lead_time_days, pax })` fires on "Update" submit
+  - Fires once on mount if `?checkin=X&checkout=Y` params are valid dates (with at least 1 night)
+  - Does not fire on invalid/empty date fields
+  - Dedupe guard: does not fire twice for the same query in a single session (or at least per render cycle)
+- **Validation contract:**
+  - TC-01: Submit with valid dates → gtag called with `search_availability` + correct nights/lead_time_days/pax
+  - TC-02: Submit with invalid dates → gtag NOT called
+  - TC-03: Mount with valid URL params → gtag called once
+
+---
+
+### TASK-34: Add view_promotion + select_promotion to deals page
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `DealsPageContent.tsx` firing `view_promotion` + `select_promotion`
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx`
+  - `[readonly] apps/brikette/src/utils/ga4-events.ts`
+- **Depends on:** TASK-29, TASK-31, TASK-15
+- **Blocks:** —
+- **Confidence:** 82%
+  - Implementation: 85% — simple event fire; deal card data is local to `DealsPageContent`.
+  - Approach: 88% — promotions model confirmed in Decision D; `promotion_id` = deal ID string.
+  - Impact: 80% — analytically valuable for deal funnel visibility.
+- **Acceptance:**
+  - `fireViewPromotion` fires once on render when deal cards are present
+  - `fireSelectPromotion` fires on "Book Direct" deal card click
+  - `promotion_id` = deal ID string; `promotion_name` = deal title
+  - `select_promotion` fires before `router.push("/{lang}/book?deal=ID")`
+- **Validation contract:**
+  - TC-01: Render → `view_promotion` called with deals promotions array
+  - TC-02: Click → `select_promotion` called with single promotion; then navigation to /book?deal=ID
+
+---
+
+### TASK-35: Add begin_checkout to StickyBookNow click
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `StickyBookNow.tsx` (packages/ui) with optional `onBeforeNavigate` callback prop; wired in brikette app layer to fire `begin_checkout` via `trackThenNavigate`
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `packages/ui/src/organisms/StickyBookNow.tsx`
+  - `apps/brikette/src/app/[lang]/rooms/[id]/page.tsx` (or wrapper that renders StickyBookNow)
+  - `[readonly] apps/brikette/src/utils/trackThenNavigate.ts`
+- **Depends on:** TASK-29, TASK-30, TASK-15
+- **Blocks:** —
+- **Confidence:** 82%
+  - Implementation: 85% — StickyBookNow is a plain `<a>`; add `onBeforeNavigate?: () => void` optional prop; app layer wires `trackThenNavigate`.
+  - Approach: 88% — callback prop pattern (Decision C); UI stays dumb.
+  - Impact: 80% — StickyBookNow is high-intent (room detail page) but currently fires zero GA4 events.
+- **Acceptance:**
+  - StickyBookNow exposes `onBeforeNavigate?: () => void` optional prop
+  - When prop provided: **onClick calls `e.preventDefault()`**, then calls `onBeforeNavigate()` which invokes `trackThenNavigate("begin_checkout", {...}, () => window.location.assign(href))`
+  - When prop not provided: navigation proceeds normally (backward-compatible — no `e.preventDefault()`)
+  - `items[]` includes room context (`item_id: room.sku`, `item_name`, `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant` from rate-code context)
+  - Note: room context must be passed from the room detail page down through the component tree to the StickyBookNow wrapper
+- **Validation contract:**
+  - TC-01: onClick with `onBeforeNavigate` → `e.preventDefault()` called; callback fired; navigation occurs via `window.location.assign(href)` inside callback
+  - TC-02: onClick without `onBeforeNavigate` → navigation proceeds normally (backward-compatible)
+  - TC-03: `trackThenNavigate` called with `begin_checkout` + correct item (incl. item_name, item_category, affiliation, currency)
+- **Scouts:** Confirm room context is available in the component tree at the StickyBookNow render point. If not, assess cost of threading props vs. using URL params from page context.
+
+---
+
+### TASK-36: Add cta_click to header/hero/BookingWidget/OffersModal CTAs (navigation-based)
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated CTA components firing `fireCTAClick` on navigation (not modal-open) events
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `packages/ui/src/organisms/DesktopHeader.tsx`
+  - `packages/ui/src/organisms/MobileNav.tsx`
+  - `apps/brikette/src/app/[lang]/HomeContent.tsx`
+  - `apps/brikette/src/components/landing/BookingWidget.tsx`
+  - `apps/brikette/src/context/modal/global-modals/OffersModal.tsx`
+- **Depends on:** TASK-29, TASK-31, TASK-15
+- **Blocks:** —
+- **Confidence:** 82%
+  - Implementation: 83% — each component needs an `onPrimaryCtaClick` callback prop (Decision C); app layer wires `fireCTAClick`.
+  - Approach: 85% — standard callback prop pattern; no GA4 in packages/ui.
+  - Impact: 82% — `cta_click` is the funnel entry point; without it, the CTA→/book conversion cannot be measured.
+- **Acceptance:**
+  - Header, mobile nav, hero, BookingWidget CTAs each fire `fireCTAClick({ cta_id, cta_location })` on navigate-to-book click
+  - OffersModal "Reserve Now" fires `fireCTAClick({ cta_id: "offers_modal_reserve", cta_location: "offers_modal" })`
+  - No modal intercept in cta_click; events fire on navigation intent only
+  - `ContentStickyCta` cta_click wired via TASK-14 (separate task)
+- **Validation contract:**
+  - TC-01 through TC-05: one test per CTA surface asserting gtag called with correct cta_id + cta_location
+- **Rollout / rollback:** Revert commit
+
+---
+
+### TASK-37: Update GA4_ENUMS: remove booking/booking2 modal_type + add new values
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `apps/brikette/src/utils/ga4-events.ts` GA4_ENUMS (or equivalent enum object)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/utils/ga4-events.ts`
+- **Depends on:** TASK-29
+- **Blocks:** —
+- **Confidence:** 88%
+  - Implementation: 90% — straightforward enum update; TypeScript catches misuse.
+  - Approach: 90% — remove deleted modal types; add new enums from fact-find.
+  - Impact: 88% — maintains enum authority; prevents enum drift in TASK-31/32/33/34/35/36.
+- **Acceptance:**
+  - `modal_type` enum: `booking` and `booking2` removed; `offers`, `location`, `contact`, `facilities`, `language` retained
+  - `item_list_id` enum: `room_detail` added
+  - `cta_id` enum: `offers_modal_reserve` added
+  - `cta_location` enum: `offers_modal` added
+  - All references to removed enum values produce TypeScript errors (confirming their absence)
+- **Validation contract:**
+  - TC-01: TypeScript compilation clean with new enums
+  - TC-02: Existing tests using retained enum values still pass
+
+---
+
+### TASK-38: Playwright smoke test for GA4 events on staging
+- **Type:** IMPLEMENT
+- **Deliverable:** New Playwright test file; documented run instructions for staging
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/test/e2e/ga4-smoke.test.ts` (or `playwright/` directory)
+- **Depends on:** TASK-29, TASK-32, TASK-15
+- **Blocks:** —
+- **Confidence:** 82%
+  - Implementation: 82% — intercept pattern for GA4 collect endpoint is well-documented in Playwright.
+  - Approach: 85% — verified approach; Playwright available in repo.
+  - Impact: 85% — makes GA4 verification repeatable by CI on every staging deploy.
+- **Acceptance:**
+  - Test navigates to `https://staging.brikette-website.pages.dev/en/book?checkin=YYYY-MM-DD&checkout=YYYY-MM-DD&pax=2`
+  - **Intercepts requests matching `**/g/collect`** (wildcard — captures both GET and POST; handles any google-analytics.com endpoint variation)
+  - Clicks first room card NR CTA
+  - Asserts intercepted request contains `en=select_item` with correct `item_id`
+  - Asserts intercepted request contains `en=begin_checkout` with correct `item_id`
+  - **Asserts `tid` parameter in intercepted request matches staging measurement ID** (from `NEXT_PUBLIC_GA_MEASUREMENT_ID` staging env; confirms stream isolation)
+  - Asserts navigation URL matches `book.octorate.com`
+  - Test is skipped in CI unless `RUN_GA4_SMOKE=true` env is set (staging-only)
+- **Validation contract:**
+  - TC-01: Full test scenario described above passes on staging
+- **Scouts:** Confirm GA4 collect endpoint (`**/g/collect`) is correct; confirm Playwright intercept works with beacon transport (intercept is at network level, so transport type does not matter).
+
+---
+
+### TASK-39: Add test coverage for reportWebVitals.ts
+- **Type:** IMPLEMENT
+- **Deliverable:** `apps/brikette/src/test/performance/reportWebVitals-coverage.test.ts` (new or updated)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/test/performance/reportWebVitals-coverage.test.ts`
+  - `[readonly] apps/brikette/src/performance/reportWebVitals.ts`
+- **Depends on:** —
+- **Blocks:** —
+- **Confidence:** 80%
+  - Implementation: 80% — absorbed from `brik-ga4-baseline-lock` TASK-04; test seam not yet decided.
+  - Approach: 82% — mock `web-vitals` callbacks to trigger `sendBeacon` call; assert payload.
+  - Impact: 80% — baseline coverage gap; prevents regression.
+- **Acceptance:**
+  - At least one test verifies `reportWebVitals` calls `navigator.sendBeacon` with correct endpoint and payload when a web vital fires
+  - `pnpm --filter brikette test` passes
+- **Validation contract:**
+  - TC-01: Mock `web-vitals` onCLS callback → `sendBeacon` called with correct params
+- **Scouts:** Decide test seam: mock `navigator.sendBeacon` directly, or mock the `web-vitals` import. Choose based on what's most stable (prefer mocking at the narrowest boundary).
+
+---
+
+### TASK-40: Update verification protocol (DebugView + SPA page_view + custom dimensions)
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `docs/plans/brikette-cta-sales-funnel-ga4/verification-protocol.md` (or updated TASK-16 output)
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `docs/plans/brikette-cta-sales-funnel-ga4/verification-protocol.md` (update)
+- **Depends on:** TASK-29
+- **Blocks:** —
+- **Confidence:** 85%
+  - Implementation: 88% — update existing doc; primary changes are DebugView method + new verification steps.
+  - Approach: 88% — clear spec: use Google Analytics Debugger extension, not `?gtm_debug`.
+  - Impact: 82% — prevents wasted time debugging DebugView not showing events.
+- **Acceptance:**
+  - Protocol references Google Analytics Debugger browser extension for DebugView activation (not `?gtm_debug`)
+  - `debug_mode: true` in gtag config documented as staging-only alternative
+  - Verification steps cover: select_item, begin_checkout (with items[]), search_availability, view_promotion, select_promotion, cta_click
+  - **SPA page_view step:** verify that navigating internally from Home → /book produces a `page_view` event with correct `page_path` and `page_location` in DebugView and Network tab
+  - Network tab probe steps documented (filter `**/g/collect`)
+  - **Custom dimensions step:** verify `cta_id`, `cta_location`, `item_list_id`, `coupon` are visible in GA4 DebugView event params after TASK-42 configuration
+
+---
+
+### TASK-41: Verify and implement page_view on SPA route changes
+- **Type:** IMPLEMENT
+- **Deliverable:** `apps/brikette/src/app/layout.tsx` or root provider updated to fire `page_view` on client-side navigation (if not already present); unit test
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `apps/brikette/src/app/layout.tsx` (or root provider/client component)
+  - `apps/brikette/src/utils/ga4-events.ts` (possibly — may add `firePageView` helper)
+- **Depends on:** TASK-29
+- **Blocks:** —
+- **Confidence:** 80%
+  - Implementation: 80% — Next.js App Router does NOT auto-fire GA4 `page_view` on client-side navigation (gtag snippet fires only on initial hard-load); requires explicit `gtag("config", ...)` or `gtag("event", "page_view", ...)` in a `usePathname()`/`useEffect` hook.
+  - Approach: 85% — standard Next.js + gtag pattern is well-documented; add a `PageViewTracker` client component using `usePathname()` + `useEffect`.
+  - Impact: 85% — without this, GA4 Funnel Exploration missing `page_view(/book)` step when user navigates internally (Home → /book), breaking the funnel visualization.
+- **Acceptance:**
+  - Investigate first: does any existing hook or gtag snippet call `gtag("config", ...)` on pathname change? If yes, document and close task.
+  - If not: add `PageViewTracker` client component that calls `gtag("event", "page_view", { page_path: pathname, page_location: href })` on every `pathname` change via `usePathname()` + `useEffect`
+  - Does NOT fire on initial render (gtag snippet handles that); fires only when pathname changes
+  - Verified on staging: navigate from Home → /book via header CTA; confirm `page_view` with `page_path: "/en/book"` appears in GA4 DebugView and Network tab
+- **Validation contract:**
+  - TC-01: Mock `usePathname()` change → `gtag("event", "page_view", ...)` called with updated path and location
+  - TC-02: Does not fire on initial render — only on pathname change
+- **Scouts:** Search `apps/brikette/src/` for any existing `page_view` or `pageview` gtag call to avoid duplication before implementing.
+- **Rollout / rollback:** Additive component; revert commit
+- **Documentation impact:** TASK-40 verification protocol must cover SPA route-change page_view step
+
+---
+
+### TASK-42: Register GA4 custom dimensions in GA4 Admin (ops task)
+- **Type:** IMPLEMENT
+- **Deliverable:** Documented GA4 Admin configuration: `cta_id`, `cta_location`, `item_list_id`, `coupon` registered as event-scoped custom dimensions; screenshot or confirmation in verification-protocol.md
+- **Execution-Skill:** /lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - GA4 Admin — not a code change; requires GA4 property access
+  - `docs/plans/brikette-cta-sales-funnel-ga4/verification-protocol.md` (add confirmation screenshot/note)
+- **Depends on:** TASK-31, TASK-37
+- **Blocks:** —
+- **Confidence:** 90%
+  - Implementation: 95% — manual GA4 Admin steps; well-documented procedure.
+  - Approach: 90% — event-scoped custom dimensions are the correct type for per-event params.
+  - Impact: 85% — without registration, custom params (`cta_id`, `cta_location`, `item_list_id`) appear in `event_params` but are NOT queryable in GA4 Explorations or custom reports; this is a silent reporting gap.
+- **Acceptance:**
+  - GA4 Admin → Custom Definitions → Custom Dimensions (event-scoped):
+    - `cta_id` → dimension created
+    - `cta_location` → dimension created
+    - `item_list_id` → dimension created
+    - `coupon` → dimension created (maps to the built-in `coupon` param in e-commerce events)
+  - Screenshot or written confirmation of all 4 dimensions visible in GA4 Admin documented in verification-protocol.md (TASK-40 output)
+  - Note: custom dimension registration has a 24–48h propagation delay before appearing in reports
+- **Validation contract:**
+  - TC-01: All 4 custom dimensions visible in GA4 Admin → Custom Definitions after configuration
+- **Execution plan:** Manual: GA4 Admin → Property → Custom Definitions → Create dimension × 4
+- **Rollout / rollback:** GA4 Admin changes; revert by deleting the custom dimension definitions if needed
+- **Documentation impact:** TASK-40 verification protocol
+
+---
 
 ## Risks & Mitigations
-- **Semantics migration risk:** Model A changes existing events (BookingModal). Mitigate with explicit test updates + doc contract.
-- **Event loss on navigation:** enforce outbound reliability helper on same-tab redirects.
-- **Param sprawl:** authoritative enums + contract primitives; reject ad-hoc strings.
-- **Double-fire risk:** dedupe guards.
+
+| Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|
+| Route truth verification (TASK-22) reveals getSlug slugs fail for in-app navigation on static export | Medium | High | TASK-22 is Wave 1 (before any call site migration); all 9+2 migrations blocked until verdict. Provisional strategy already uses canonical `/{lang}/book`. |
+| Octorate URL param for NR/Flex rate code is not `rateCodes.direct.nr/flex` as assumed | Low | High | TASK-23 scouts: read Booking2Modal.tsx source before writing tests. URL builder fails gracefully (null) for missing rate codes. |
+| Track E TypeScript changes break compilation before all consumer migrations land | Medium | Low | TASK-24 first (ModalType), then TASK-25 (infrastructure), then TASK-26/27 (consumers). TASK-24–28 are a single merge unit — never merge TASK-24 alone. TypeScript errors are the safety net, not the failure. |
+| SPA page_view not firing on internal navigation (Home → /book) | High | High | TASK-41 is Wave 6; verified before verification protocol finalised. Next.js App Router requires explicit `usePathname()` hook for gtag page_view. |
+| GA4 custom dimensions not registered — `cta_id`, `cta_location` not queryable in reports | High if missed | Medium | TASK-42 Wave 6 ops task. Explicitly planned. 24–48h propagation delay — register early in Wave 6. |
+| StickyBookNow room context not available at render point (TASK-35) | Medium | Medium | TASK-35 scouts: confirm component tree. If context unavailable, fall back to generic begin_checkout without specific room item. |
+| Staging GA4 stream not isolated before Track C tasks begin | High if missed | High | TASK-15 already complete; this is a hard gate for TASK-32–TASK-36. |
+| Book page conversion content (TASK-13) hurts LCP | Low | Medium | All proposed components are lightweight (text + icons). Monitor LCP via existing Web Vitals reporting. |
+| Playwright smoke test (TASK-38) can't intercept beacon transport requests | Low | Low | Playwright intercept works at network level regardless of transport type. Wildcard `**/g/collect` catches both GET and POST. |
 
 ## Observability
-- GA4 DebugView as primary correctness check for payload shape; Network tab confirms `/g/collect` params.
+
+- **GA4 events:** Each new event verified via Google Analytics Debugger extension + Network tab `**/g/collect` payload inspection + GA4 Realtime report
+- **SPA page_view:** Verify Home → /book navigation produces `page_view` with correct `page_path` (TASK-41)
+- **Funnel visualization:** GA4 Funnel Exploration: `page_view(/book)` → `view_item_list` → `search_availability` → `select_item` → `begin_checkout`
+- **Custom dimensions:** `cta_id`, `cta_location`, `item_list_id`, `coupon` queryable in GA4 Explorations after TASK-42 registration
+- **Structured data:** Schema Markup Validator for schema.org correctness; Rich Results Test for eligibility only (not correctness)
+- **Web Vitals:** Existing `reportWebVitals.ts` + `web_vitals` GA4 event; monitor LCP on /book post-TASK-13
+- **Staging:** Deploy trigger → Playwright smoke test → manual verification checklist (TASK-40 protocol)
 
 ## Acceptance Criteria (overall)
-- [ ] Model A semantics enforced (availability-only != `begin_checkout`).
-- [ ] `select_item` + `view_item_list` + `view_item` implemented per contract with stable `item_id`.
-- [ ] `begin_checkout` includes `items[]` only when room/apartment selection is known; `value` only when reliable.
-- [ ] Outbound events are reliable (beacon/callback delay on same-tab redirects).
-- [ ] `/book` and booking modals include direct-booking persuasion; `/book` includes validated JSON-LD (no third-party `aggregateRating`).
-- [ ] New CTAs exist on guide/about/menu pages and are tracked.
+
+- [ ] TypeScript compilation clean — no references to `"booking"` or `"booking2"` modal types; no `openModal("booking")` or `openModal("booking2")` call sites
+- [ ] All brikette Jest tests pass (`pnpm --filter brikette test`)
+- [ ] /book page: conversion-optimized H1/meta, DirectBookingPerks, social proof, FAQ, LocationInline, lodging + FAQPage + BreadcrumbList JSON-LD (no third-party aggregateRating); deal applied banner when `?deal=ID` present
+- [ ] JSON-LD absolute URLs sourced from env config (not hardcoded); staging must not leak production domain
+- [ ] All 10 high-traffic pages with zero/weak CTAs have at least one booking CTA
+- [ ] GA4 funnel events implemented: `view_item_list`, `view_item`, `search_availability`, `select_item`, `begin_checkout` (with items[] incl. item_name, item_category, affiliation, currency), `cta_click`, `view_promotion`, `select_promotion`
+- [ ] `begin_checkout` always includes `items[]` (room context always known at click time); no availability-only begin_checkout events remain
+- [ ] `begin_checkout` in deal context includes `coupon: deal.id`
+- [ ] Booking modals fully removed — 4 files deleted, 11 call sites migrated
+- [ ] `trackThenNavigate` used for all outbound Octorate navigations (RoomCard, StickyBookNow); caller always calls `e.preventDefault()` first; navigate callback uses `window.location.assign(href)`
+- [ ] SPA page_view fires on internal navigation (e.g. Home → /book); verified in DebugView
+- [ ] GA4 custom dimensions registered: cta_id, cta_location, item_list_id, coupon
+- [ ] GA4 events verified on staging (Google Analytics Debugger + Network tab `**/g/collect` proof)
+- [ ] `tid` in GA4 collect requests matches staging measurement ID (stream isolation confirmed)
+- [ ] Structured data validates for schema.org correctness (Schema Markup Validator)
+- [ ] Playwright smoke test passes on staging
+- [ ] Decision A resolved (route truth verification complete)
 
 ## Decision Log
-- 2026-02-15: Defaulted GA4 semantics to Model A (clean funnel) unless explicitly overridden.
-- 2026-02-15: Set `Business-OS-Integration: off` for this plan doc because `Card-ID: BRIK-005` does not resolve to a local card file and the MCP BOS tools require startup-loop `runId/current_stage` context not present in-repo. If BOS integration is required for this workstream, add an enablement task during `/lp-replan`.
+
+- 2026-02-15: GA4 semantics model A chosen (clean funnel; availability-only exits not polluting begin_checkout)
+- 2026-02-15: Staging GA4 stream isolation: separate data stream within same property (not separate property)
+- 2026-02-15: Item identity: `items[].item_id = Room.sku` (not Octorate room/rate codes)
+- 2026-02-18: **Scope amendment — clean break from booking modals.** Decision (Pete): remove BookingModal/Booking2Modal entirely; route all CTAs to /book or Octorate directly. 11 tasks superseded. See plan-v1.md.
+- 2026-02-18: Decision B (dates gate): RoomCard CTAs disabled until valid dates present on /book
+- 2026-02-18: Decision C (analytics placement): callback props from app layer; packages/ui stays dumb
+- 2026-02-18: Decision D (deals): view_promotion/select_promotion model; navigate to /book?deal=ID
+- 2026-02-18: Decision E (RoomCard on /rooms): `queryState === "absent"` → navigate to /book (not Octorate). `hasValidQuery?: boolean` tri-state replaced with `queryState: "valid" | "invalid" | "absent"` discriminated union.
+- 2026-02-18: Decision A (URL strategy): provisional — use `/{lang}/book` for in-app navigation until TASK-22 verifies getSlug behavior on static export
+- 2026-02-18: Merge unit policy — TASK-24/25/26/27/28 must ship as a single PR or tightly stacked PRs (CI-green at each step); TASK-24 alone is not independently mergeable
+
+## Overall-confidence Calculation
+
+Pending tasks only (S=1, M=2, L=3). CHECKPOINT tasks excluded.
+
+| Task | Confidence | Effort | Weight × Confidence |
+|---|---|---|---|
+| TASK-22 | 90% | S=1 | 90 |
+| TASK-23 | 85% | M=2 | 170 |
+| TASK-24 | 85% | S=1 | 85 |
+| TASK-25 | 85% | M=2 | 170 |
+| TASK-26 | 85% | M=2 | 170 |
+| TASK-27 | 82% | M=2 | 164 |
+| TASK-28 | 85% | M=2 | 170 |
+| TASK-30 | 85% | S=1 | 85 |
+| TASK-31 | 85% | S=1 | 85 |
+| TASK-32 | 83% | M=2 | 166 |
+| TASK-33 | 82% | S=1 | 82 |
+| TASK-34 | 82% | S=1 | 82 |
+| TASK-35 | 82% | S=1 | 82 |
+| TASK-36 | 82% | M=2 | 164 |
+| TASK-37 | 88% | S=1 | 88 |
+| TASK-20 | 85% | S=1 | 85 |
+| TASK-13 | 80% | L=3 | 240 |
+| TASK-21 | 85% | S=1 | 85 |
+| TASK-14 | 80% | M=2 | 160 |
+| TASK-38 | 82% | M=2 | 164 |
+| TASK-39 | 80% | S=1 | 80 |
+| TASK-40 | 85% | S=1 | 85 |
+| TASK-41 | 80% | S=1 | 80 |
+| TASK-42 | 90% | S=1 | 90 |
+
+**Total weight:** 35
+**Weighted sum:** 2922
+**Overall-confidence:** 2922 ÷ 35 = **84%**

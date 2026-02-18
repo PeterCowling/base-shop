@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00 Complete; TASK-01 Complete (DECISION resolved); TASK-02 Complete; TASK-03/TASK-04 Pending (unblocked)
+Build-Progress: TASK-00..04 Complete; TASK-05 next (unblocked — all Wave 3 deps met)
 Feature-Slug: startup-loop-orchestrated-os-comparison
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -82,8 +82,8 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 | TASK-00 | INVESTIGATE | Build contract-overlap matrix: current startup-loop contracts vs research process model | 88% | S | Complete (2026-02-18) | - | TASK-01 |
 | TASK-01 | DECISION | Lock v1 boundary: stage orchestration vs process-layer registry responsibilities | 83% | S | Complete (2026-02-18) | TASK-00 | TASK-02, TASK-03, TASK-04 |
 | TASK-02 | IMPLEMENT | Create process-registry-v1 contract (CDI/OFF/GTM/OPS/CX/FIN/DATA mapped to current stages) | 82% | L | Complete (2026-02-18) | TASK-01 | TASK-05 |
-| TASK-03 | IMPLEMENT | Add CAP-05 sales-ops schema contract + artifact template references | 81% | M | Pending | TASK-01 | TASK-05 |
-| TASK-04 | IMPLEMENT | Add CAP-06 lifecycle/retention schema contract + S10 contract hooks | 80% | M | Pending | TASK-01 | TASK-05 |
+| TASK-03 | IMPLEMENT | Add CAP-05 sales-ops schema contract + artifact template references | 81% | M | Complete (2026-02-18) | TASK-01 | TASK-05 |
+| TASK-04 | IMPLEMENT | Add CAP-06 lifecycle/retention schema contract + S10 contract hooks | 80% | M | Complete (2026-02-18) | TASK-01 | TASK-05 |
 | TASK-05 | IMPLEMENT | Define exception-runbooks-v1 for Demand/Cash/Quality/Compliance | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Add weekly-light/monthly-deep audit checklist contracts and workflow integration | 82% | M | Pending | TASK-05 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess pilot-readiness and sequence downstream build scope | 95% | S | Pending | TASK-06 | - |
@@ -245,7 +245,14 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Red: CAP-05 confirmed `Missing` with no artifact path or gate. GTM-3 confirmed as Missing in TASK-00 matrix. Extension point in KPCs prompt identified as additive-safe.
+  - Green: `docs/business-os/startup-loop/sales-ops-schema.md` created — pipeline stages, speed-to-lead SLA, follow-up loop, objection scripts, stage conversion denominators, weekly denominator check, N/A policy, VC-03-A/B/C validation rules. CAP-05 row in capability contract updated from `Missing` to `Schema-defined`. Artifact path table updated. KPCs prompt extended with CAP-05 pipeline denominator section.
+  - Refactor: Explicit `Not-yet-active` vs `Not-applicable` distinction added to prevent misuse. N/A policy covers pure DTC and hospitality booking profiles. SLA wording hardened ("As soon as possible" explicitly invalid).
+  - VC-03-A: All required schema sections with explicit validation rules. ✓
+  - VC-03-B: Denominator floors defined per stage; no-decision rule explicit (`pipeline-no-decision`). ✓
+  - VC-03-C: Pass/fail criteria unambiguous; example interpretations included. ✓ (designed; reviewer sample needed)
 - **Artifact-Destination:** `docs/business-os/startup-loop/sales-ops-schema.md` + updates to capability contract
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Linked decision from TASK-01
@@ -294,7 +301,14 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Red: CAP-06 confirmed `Missing` — no artifact, schema, or S10 enforcement. CX-3 and GTM-4 confirmed Missing in TASK-00. Key constraint validated: retention signals weaker pre-PMF; mandatory fields impossible before first repeat signal must use `Not-yet-active` / `pre-PMF deferral` rather than hard block.
+  - Green: `docs/business-os/startup-loop/retention-schema.md` created — retention segments, repeat/referral drivers, churn log, LTV estimate, denominator hooks, profile mappings (hospitality-direct-booking + dtc-ecommerce), phase-aware N/A policy, VC-04-A/B/C. CAP-06 row in capability contract updated from `Missing` to `Schema-defined`. KPCs prompt extended with CAP-06 retention denominator section and explicit pre-PMF deferral rules.
+  - Refactor: `cap-06-pre-pmf-deferral` signal distinguished from `retention-no-decision` to prevent blocking pre-PMF businesses. Cancel/refund log made always-required (minimum integrity check). Profile metric tables for both hospitality and DTC added for VC-04-C.
+  - VC-04-A: All required sections with pre-PMF pass conditions. ✓
+  - VC-04-B: Non-blocking under floor (pre-PMF deferral); blocking for PMF+ Scale. ✓
+  - VC-04-C: Hospitality + DTC profile mappings with denominators. ✓
 - **Artifact-Destination:** `docs/business-os/startup-loop/retention-schema.md` + CAP/S10 updates
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Linked decision from TASK-01
@@ -501,6 +515,8 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - 2026-02-18: TASK-00 complete. Overlap matrix confirms 1 Covered / 15 Partial / 12 Missing across 28 process IDs. All missing rows have destination paths. 1 High collision risk (DATA-4) identified — do not create competing Weekly Review contract. See `artifacts/contract-overlap-matrix.md`.
 - 2026-02-18: TASK-01 complete. Option A selected (additive only; no loop-spec edits in v1). Decision artifact: `decisions/v1-boundary-decision.md`. Canonical files permitted listed; loop-spec.yaml, manifest-schema.md, bottleneck-diagnosis-schema.md explicitly out-of-scope.
 - 2026-02-18: TASK-02 complete. process-registry-v1.md created at `docs/business-os/startup-loop/process-registry-v1.md`. All 28 process IDs documented with full operational contracts. VC-02-A/B/C addressed. TASK-03 and TASK-04 now unblocked.
+- 2026-02-18: TASK-03 complete. sales-ops-schema.md created; CAP-05 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-05 pipeline denominator section.
+- 2026-02-18: TASK-04 complete. retention-schema.md created; CAP-06 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-06 retention denominator section including pre-PMF deferral rules. TASK-05 now unblocked (all Wave 3 deps met).
 
 ## What Would Make This >=90%
 - Complete TASK-00 and TASK-01 with no unresolved scope ambiguity.

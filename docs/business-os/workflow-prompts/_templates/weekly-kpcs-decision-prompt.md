@@ -55,4 +55,28 @@ Rules:
 - If any KPI denominator is below minimum threshold, output `no-decision` for `Scale` and `Kill` — restrict to `Continue` or `Investigate` actions only.
 - Separate measured signal from assumptions.
 - Keep to execution-oriented recommendations only.
+
+CAP-05 Sales Pipeline Denominators (include when CAP-05 is active for this business):
+
+| Pipeline metric | Minimum denominator | Additional validity check | If check fails |
+|---|---|---|---|
+| Lead response rate | ≥20 leads in trailing 4 weeks | Speed-to-lead SLA defined with named owner | No pipeline Scale/Kill — `pipeline-no-decision` |
+| Stage conversion rate (primary stage) | ≥10 leads converted-to-next at primary stage | Stage transition entry/exit criteria defined | No pipeline Scale/Kill — `pipeline-no-decision` |
+| Opportunity win rate | ≥8 Closed-Won + Closed-Lost combined | Pipeline stages include Closed-Won and Closed-Lost | No pipeline Scale/Kill — `pipeline-no-decision` |
+
+CAP-05 rule: If CAP-05 is active and any pipeline metric fails its denominator, output `pipeline-no-decision` for Scale and Kill decisions referencing pipeline performance. Restrict to Continue/Investigate for pipeline-related actions. Record in Section A of the output. If CAP-05 is Not-yet-active or Not-applicable, omit this section.
+
+CAP-06 Retention Denominators (include when CAP-06 is active; use phase-aware deferral when pre-PMF):
+
+| Retention metric | Minimum denominator | Phase gate | If check fails |
+|---|---|---|---|
+| Repeat rate (product) / Re-booking rate (hospitality) | ≥20 customers/guests with ≥1 completed purchase/stay | PMF entry | PMF+: `retention-no-decision` for Scale/Kill. Pre-PMF: `cap-06-pre-pmf-deferral` (not a failure). |
+| Referral rate | ≥30 customers/guests invited to refer | PMF entry | PMF+: `retention-no-decision` for referral-based Scale/Kill. Pre-PMF: `cap-06-pre-pmf-deferral`. |
+| Cancel/refund reason log | ≥1 entry (log must exist) | Activation gate (always) | FAIL regardless of stage — log must exist before CAP-06 is considered active |
+
+CAP-06 rules:
+- If CAP-06 is Not-yet-active: record `cap-06-not-yet-active` in Section A. Do not make retention-based decisions. Proceed with other KPIs.
+- If CAP-06 is active, PMF+, and repeat/referral denominator FAIL: output `retention-no-decision` for Scale and Kill on retention-referencing actions. Continue/Investigate permitted.
+- If CAP-06 is active, pre-PMF, and denominator below floor: output `cap-06-pre-pmf-deferral` (advisory only; weekly session proceeds normally).
+- Cancel/refund reason log check is always required once CAP-06 is active, regardless of stage.
 ```

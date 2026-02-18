@@ -46,7 +46,7 @@
   },
   {
     "subject": "Out of hours check-in",
-    "body": "Dear Guest,\r\n\r\nPlease find our out of hours check-in process here.\r\n\r\nWe look forward to seeing you at the hostel.\r\n\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
+    "body": "Dear Guest,\r\n\r\nPlease find our out of hours check-in process here: <https://hostel-positano.com/en/assistance/late-checkin>.\r\n\r\nWe look forward to seeing you at the hostel.\r\n\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\n\r\nOwner",
     "category": "check-in"
   },
   {
@@ -213,5 +213,55 @@
     "subject": "Overbooking Support \u2014 Next Steps",
     "body": "Dear Guest,\r\n\r\nThank you for your patience, and we are sorry for the inconvenience.\r\n\r\nWe are reviewing your booking status urgently and will confirm the final accommodation plan shortly.\r\n\r\nIf your original room cannot be honored, we will provide clear next steps, including relocation or cancellation options based on policy.\r\n\r\nPlease share the best phone number for urgent contact while we finalize this.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
     "category": "booking-issues"
+  },
+  {
+    "subject": "Bar and Terrace \u2014 Hours and Access",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about our bar and terrace.\r\n\r\nOur bar and terrace are open daily and are available to all guests from 10:30 AM. They are a great place to relax, enjoy a drink, and take in the views over Positano.\r\n\r\nGuests are welcome to use the bar and terrace both before check-in (from 10:30 AM on arrival day) and after checkout (until 3:30 PM on departure day).\r\n\r\nPlease note that only drinks purchased at the hostel bar may be consumed on the terrace, in line with our licensed premises policy.\r\n\r\nFor more information about our facilities, please visit: <https://hostel-positano.com/en/assistance>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "faq"
+  },
+  {
+    "subject": "Parking \u2014 Not Available, Nearby Options",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about parking.\r\n\r\nUnfortunately, Hostel Brikette does not have on-site parking and we are unable to reserve parking spaces on your behalf. Positano is a pedestrian-priority town and private car access to the centre is restricted, particularly during peak season.\r\n\r\nSome options guests use:\r\n\r\n   - Public car parks are available at the entrances to Positano (e.g. Piazza dei Mulini and Via Cristoforo Colombo). These operate on a pay-and-display basis and spaces fill quickly in summer.\r\n   - A number of guests prefer to travel by ferry, bus, or taxi to avoid the parking challenge entirely.\r\n\r\nFor travel directions to the hostel, including ferry and bus options, please see: <https://hostel-positano.com/en/assistance/travel-help>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "transportation"
+  },
+  {
+    "subject": "Pets \u2014 Policy",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about bringing a pet.\r\n\r\nWe are sorry, but Hostel Brikette does not permit pets on the premises. This policy applies to all guest rooms and communal areas, and is in place to protect the comfort and wellbeing of all guests, including those with allergies.\r\n\r\nWe appreciate your understanding.\r\n\r\nIf you have any other questions about your stay, please do not hesitate to ask.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "policies"
+  },
+  {
+    "subject": "City Tax \u2014 What to Expect at Check-in",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about the city tax.\r\n\r\nThe city tax (tassa di soggiorno) is a local government levy collected at check-in, as required by Italian law. It is not included in the room rate and must be paid in person at the hostel.\r\n\r\nThe amount varies depending on the municipality's current rate and your length of stay. Our team will confirm the exact amount when you arrive.\r\n\r\nPlease note that payment is required at check-in along with the \u20ac10 refundable keycard deposit.\r\n\r\nFor full details on the check-in process, please see: <https://hostel-positano.com/en/assistance/checkin-checkout>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "check-in"
+  },
+  {
+    "subject": "Private Room vs Dormitory \u2014 Comparison",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about our room types.\r\n\r\nHere is a quick comparison to help you choose:\r\n\r\n*Private Rooms*\r\n\r\n   - Accommodates 2 guests\r\n   - Exclusive use of the room\r\n   - Ideal for couples or guests who prefer more privacy\r\n   - Subject to availability\r\n\r\n*Dormitory Rooms*\r\n\r\n   - Shared rooms with multiple beds\r\n   - Each booking is for one bed\r\n   - Great for solo travellers and those looking to meet other guests\r\n   - Our most affordable option\r\n\r\nBoth room types include access to all hostel facilities: bar, terrace, WiFi, and luggage storage.\r\n\r\nFor live availability and pricing for both options, please visit: <https://hostel-positano.com/>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "booking-issues"
+  },
+  {
+    "subject": "Things to Do in Positano",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about activities in Positano.\r\n\r\nPositano and the Amalfi Coast have a huge amount to offer. Here are some of our top recommendations:\r\n\r\n   - Path of the Gods hike \u2014 our most popular recommendation. See our guide: <https://hostel-positano.com/en/assistance/path-of-gods-hike>\r\n   - Ferry trips to Amalfi, Ravello, and Capri\r\n   - The beaches of Positano (Spiaggia Grande and Fornillo)\r\n   - Exploring the village, shops, and restaurants\r\n   - Boat hire and coastal excursions\r\n\r\nFor a full set of local tips and travel guides, please visit our digital assistant: <https://hostel-positano.com/en/assistance>.\r\n\r\nWe are always happy to give personal recommendations at the hostel \u2014 just ask at reception!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "activities"
+  },
+  {
+    "subject": "Receipt / Invoice Request",
+    "body": "Dear Guest,\r\n\r\nThank you for your email.\r\n\r\nWe are happy to provide a receipt or invoice for your stay. Please reply with the following details so we can process this for you:\r\n\r\n   - Your full name (or company name if a business invoice is required)\r\n   - Your booking reference or dates of stay\r\n   - The billing address and, if applicable, your VAT number\r\n\r\nWe will send the document to the email address associated with your booking.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "payment"
+  },
+  {
+    "subject": "Group Booking \u2014 How It Works",
+    "body": "Dear Guest,\r\n\r\nThank you for your interest in a group booking at Hostel Brikette.\r\n\r\nFor groups, here is how the booking process works:\r\n\r\n   - Each guest books individually for their own bed in a shared dormitory room, or you can request a private room (accommodates 2 guests) if available.\r\n   - For groups of 3 or more, we recommend contacting us directly so we can check current availability and advise on the best room configuration.\r\n   - Please note our maximum stay is 7 nights and our rooms accommodate up to 5 guests per room.\r\n\r\nTo check live availability, please visit: <https://hostel-positano.com/>.\r\n\r\nIf you would like to discuss a group arrangement further, please reply with your group size, preferred dates, and any specific requirements.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "booking-issues"
+  },
+  {
+    "subject": "Out of Hours Check-In Instructions",
+    "body": "Dear Guest,\r\n\r\nThank you for letting us know you will be arriving late.\r\n\r\nFor arrivals after 10:30 PM, we have a self-check-in process in place. Please follow the step-by-step instructions in our late check-in guide: <https://hostel-positano.com/en/assistance/late-checkin>.\r\n\r\nThe guide covers:\r\n\r\n   - How to access the building after hours\r\n   - Locating your room\r\n   - What to do if you have any difficulty\r\n\r\nIf you have any questions or need assistance on the night, the emergency contact details are included in the guide.\r\n\r\nWe look forward to welcoming you!\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "check-in"
+  },
+  {
+    "subject": "Arriving by Bus",
+    "body": "Dear Guest,\r\n\r\nThank you for your question about arriving by bus.\r\n\r\nPositano is well connected by bus from Naples, Sorrento, and along the Amalfi Coast. The SITA Sud bus service runs regularly during the season.\r\n\r\nFor step-by-step instructions on arriving by bus, including stop locations and walking directions to the hostel, please see our arriving by bus guide: <https://hostel-positano.com/en/assistance/arriving-by-bus>.\r\n\r\nIf you are travelling from Naples or Sorrento, we also have a general travel directions guide here: <https://hostel-positano.com/en/assistance/travel-help>.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+    "category": "transportation"
   }
 ]

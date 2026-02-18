@@ -1091,6 +1091,61 @@ describe("TASK-18: Critical Error Checks", () => {
 
 });
 
+describe("TASK-04: Multi-Scenario Action Plan", () => {
+  it("TC-04-04a: legacy single-scenario fixture still passes (singular scenario field present)", async () => {
+    const fixture = fixtures.find((f) => f.id === "FAQ-01")!;
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: fixture.body,
+      subject: fixture.subject,
+    });
+    const payload = parseResult<{ scenario: { category: string; confidence: number } }>(result);
+    expect(payload.scenario).toBeDefined();
+    expect(payload.scenario.category).toBeDefined();
+    expect(payload.scenario.confidence).toBeGreaterThan(0);
+  });
+
+  it("TC-04-04b: multi-question pipeline fixture produces actionPlanVersion 1.1.0 and scenarios[]", async () => {
+    const fixture = fixtures.find((f) => f.id === "FAQ-05")!;
+    const interpretResult = await handleDraftInterpretTool("draft_interpret", {
+      body: fixture.body,
+      subject: fixture.subject,
+    });
+    const actionPlan = parseResult<{
+      scenario: { category: string; confidence: number };
+      scenarios?: Array<{ category: string; confidence: number }>;
+      actionPlanVersion?: string;
+      normalized_text: string;
+      language: string;
+      intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
+      agreement: object;
+      workflow_triggers: { booking_monitor: boolean };
+      escalation: object;
+    }>(interpretResult);
+
+    expect(actionPlan.actionPlanVersion).toBe("1.1.0");
+    expect(Array.isArray(actionPlan.scenarios)).toBe(true);
+    expect(actionPlan.scenarios!.length).toBeGreaterThanOrEqual(1);
+    expect(actionPlan.scenario.category).toBe(actionPlan.scenarios![0].category);
+  });
+
+  it("TC-04-04c: cancellation fixture — cancellation is scenarios[0] in v1.1.0 payload", async () => {
+    const fixture = fixtures.find((f) => f.id === "CAN-01")!;
+    const interpretResult = await handleDraftInterpretTool("draft_interpret", {
+      body: fixture.body,
+      subject: fixture.subject,
+    });
+    const actionPlan = parseResult<{
+      scenario: { category: string };
+      scenarios?: Array<{ category: string; confidence: number }>;
+      actionPlanVersion?: string;
+    }>(interpretResult);
+
+    expect(actionPlan.actionPlanVersion).toBe("1.1.0");
+    expect(actionPlan.scenarios![0].category).toBe("cancellation");
+    expect(actionPlan.scenario.category).toBe("cancellation");
+  });
+});
+
 describe("TASK-04: Taxonomy Integrity", () => {
   it("TC-06: template JSON categories are valid unified scenario categories", () => {
     const templates = JSON.parse(

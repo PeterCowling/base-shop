@@ -1,18 +1,16 @@
 import { z } from "zod";
 
-import { stemmedTokenizer } from "@acme/lib";
-
+import {
+  evaluateQuestionCoverage,
+  extractQuestionKeywords,
+  type QuestionCoverageEntry,
+} from "../utils/coverage.js";
 import {
   normalizeScenarioCategory,
   type ScenarioCategory,
-  SYNONYMS,
 } from "../utils/template-ranker.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
-
-function tokenize(text: string): string[] {
-  return stemmedTokenizer.tokenize(text);
-}
 
 type QualityResult = {
   passed: boolean;
@@ -20,14 +18,6 @@ type QualityResult = {
   warnings: string[];
   confidence: number;
   question_coverage: QuestionCoverageEntry[];
-};
-
-type QuestionCoverageEntry = {
-  question: string;
-  matched_count: number;
-  required_matches: number;
-  coverage_score: number;
-  status: "covered" | "partial" | "missing";
 };
 
 type EmailActionPlanInput = {
@@ -42,6 +32,9 @@ type EmailActionPlanInput = {
   scenario: {
     category: ScenarioCategory | string;
   };
+  // TASK-04: v1.1.0 additive multi-scenario fields (optional for backward compat)
+  scenarios?: Array<{ category: ScenarioCategory | string; confidence: number }>;
+  actionPlanVersion?: string;
   thread_summary?: {
     prior_commitments: string[];
   };
@@ -75,6 +68,16 @@ const qualityCheckSchema = z.object({
     scenario: z.object({
       category: z.string().min(1),
     }),
+    // TASK-04: v1.1.0 additive multi-scenario fields (optional for backward compat)
+    scenarios: z
+      .array(
+        z.object({
+          category: z.string().min(1),
+          confidence: z.number().min(0).max(1),
+        })
+      )
+      .optional(),
+    actionPlanVersion: z.string().optional(),
     thread_summary: z
       .object({
         prior_commitments: z.array(z.string()).default([]),
@@ -204,73 +207,6 @@ function hasLink(text: string): boolean {
   return /(https?:\/\/\S+)/i.test(text);
 }
 
-const STOP_WORDS = new Set([
-  "that", "this", "from", "with", "what", "when", "where", "which",
-  "have", "does", "will", "would", "could", "should", "there", "their",
-  "they", "them", "been", "being", "also", "just", "about", "than",
-  "your", "some", "each", "were", "more", "very",
-]);
-
-function extractQuestionKeywords(question: string): string[] {
-  return question
-    .replace(/\?/g, "")
-    .split(/\s+/)
-    .map(w => w.toLowerCase())
-    .filter(w => w.length > 2 && !STOP_WORDS.has(w))
-    .slice(0, 5);
-}
-
-function evaluateQuestionCoverage(
-  body: string,
-  questions: Array<{ text: string }>
-): QuestionCoverageEntry[] {
-  const bodyTokens = tokenize(body.toLowerCase());
-  const bodySet = new Set(bodyTokens);
-
-  return questions.map((question) => {
-    const keywords = extractQuestionKeywords(question.text);
-    if (keywords.length === 0) {
-      return {
-        question: question.text,
-        matched_count: 0,
-        required_matches: 0,
-        coverage_score: 1,
-        status: "covered",
-      };
-    }
-
-    const matchedKeywords: string[] = [];
-    for (const keyword of keywords) {
-      const variants = [keyword, ...(SYNONYMS[keyword] ?? [])];
-      const matched = variants.some((variant) => {
-        const stems = tokenize(variant.toLowerCase());
-        return stems.some((stem) => bodySet.has(stem));
-      });
-      if (matched) {
-        matchedKeywords.push(keyword);
-      }
-    }
-
-    const required_matches = keywords.length >= 2 ? 2 : 1;
-    const matched_count = matchedKeywords.length;
-    const coverage_score = Number((matched_count / keywords.length).toFixed(2));
-    const status =
-      matched_count === 0
-        ? "missing"
-        : matched_count < required_matches
-          ? "partial"
-          : "covered";
-
-    return {
-      question: question.text,
-      matched_count,
-      required_matches,
-      coverage_score,
-      status,
-    };
-  });
-}
-
 function contradictsCommitments(body: string, commitments: string[]): boolean {
   const lower = body.toLowerCase();
   const contradictionCues = [
@@ -397,7 +333,12 @@ function runChecks(
     warnings.push("language_mismatch");
   }
 
-  const target = scenarioTarget(actionPlan.scenario.category);
+  // TASK-04: resolve primary scenario category — prefer scenarios[0] (v1.1.0) over singular scenario (v1.0.0)
+  const primaryScenarioCategory =
+    (actionPlan.actionPlanVersion === "1.1.0" && actionPlan.scenarios && actionPlan.scenarios.length > 0)
+      ? actionPlan.scenarios[0].category
+      : actionPlan.scenario.category;
+  const target = scenarioTarget(primaryScenarioCategory);
   const count = wordCount(draft.bodyPlain);
   if (count < target.min * 0.8 || count > target.max * 1.2) {
     warnings.push("length_out_of_range");

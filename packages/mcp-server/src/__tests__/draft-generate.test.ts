@@ -592,6 +592,65 @@ describe("draft_generate tool TASK-01", () => {
   });
 });
 
+describe("draft_generate tool TASK-05", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-05-02: generate output includes preliminary_coverage with per-question entries", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Check-in times",
+          body: "Check-in starts at 3:00 PM. Best regards, Hostel Brikette",
+          category: "check-in",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "What time is check-in and is breakfast included?",
+        intents: {
+          questions: [
+            { text: "What time is check-in?" },
+            { text: "Is breakfast included?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: {
+          category: "check-in",
+          confidence: 0.85,
+        },
+      },
+      subject: "Check-in and breakfast",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error((result as { content: Array<{ text: string }> }).content[0].text);
+    }
+
+    const payload = JSON.parse((result as { content: Array<{ text: string }> }).content[0].text);
+
+    expect(payload.preliminary_coverage).toBeDefined();
+    expect(payload.preliminary_coverage.coverage).toBeInstanceOf(Array);
+    expect(payload.preliminary_coverage.coverage).toHaveLength(2);
+
+    for (const entry of payload.preliminary_coverage.coverage) {
+      expect(entry).toHaveProperty("question");
+      expect(entry).toHaveProperty("matched_count");
+      expect(entry).toHaveProperty("required_matches");
+      expect(entry).toHaveProperty("coverage_score");
+      expect(entry).toHaveProperty("status");
+      expect(entry.status).toBe("missing");
+      expect(entry.matched_count).toBe(0);
+    }
+
+    expect(payload.preliminary_coverage.questions_with_no_template_match).toEqual(
+      expect.arrayContaining(["What time is check-in?", "Is breakfast included?"])
+    );
+  });
+});
+
 describe("draft_generate tool TASK-02", () => {
   beforeEach(setupDraftGenerateMocks);
 

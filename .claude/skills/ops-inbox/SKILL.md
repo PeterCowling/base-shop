@@ -138,9 +138,55 @@ When user selects an email to process:
    ```typescript
    draft_quality_check({ actionPlan, draft })
    ```
-   If `passed=false`, present failed checks and ask how to proceed (edit or regenerate).
+   Capture the full result including `quality.question_coverage[]`.
 
-6. **Present to user**:
+   **Gap-Patch Loop** — run this before presenting to the user:
+
+   a. Inspect every entry in `quality.question_coverage[]`:
+      - `status: "covered"` → no action needed for that question.
+      - `status: "missing"` → the question received zero keyword matches; a patch is required.
+      - `status: "partial"` → the question was touched but under the required match threshold; a patch attempt is required.
+
+   b. For each `missing` or `partial` entry, look up the question text against
+      `knowledge_summaries` returned by `draft_generate`.
+      - If a relevant snippet exists in `knowledge_summaries`: rewrite the relevant
+        paragraph to include a source-backed answer. Cite the snippet URI inline
+        if helpful. **NEVER invent an answer that has no source snippet.**
+      - If no relevant snippet exists for that question: insert the following
+        escalation sentence in place of an invented answer:
+        > "For this specific question we want to give you the most accurate
+        >  answer — Pete or Cristiana will follow up with you directly."
+        Do not attempt to paraphrase, guess, or approximate the missing information.
+
+   c. **Hard-rule categories — do NOT modify under any circumstance:**
+      - `prepayment` category text (1st/2nd/3rd attempt, cancelled, successful templates)
+      - `cancellation` category text (non-refundable, no-show templates)
+      These paragraphs are legally and operationally fixed. If a `missing`/`partial`
+      entry belongs to a question about prepayment or cancellation policy, escalate
+      using the sentence above rather than touching the template wording.
+
+   d. **Partial-subset rule:** When an email contains multiple questions and only
+      *some* can be source-backed, patch what can be sourced and escalate the rest
+      individually. Do not withhold the draft because one question lacks a snippet —
+      produce the best partial draft and flag each unanswered question explicitly
+      in the user-facing summary.
+
+   e. After applying all patches (or escalation insertions), re-render `bodyPlain`
+      and `bodyHtml`.
+
+6. **Mandatory second quality gate** — always run before creating the Gmail draft:
+   ```typescript
+   draft_quality_check({ actionPlan, draft: { bodyPlain: patchedBodyPlain, bodyHtml: patchedBodyHtml } })
+   ```
+   - If `passed=true` and no `question_coverage` entries remain `missing`: proceed
+     to creating the draft.
+   - If `passed=false` after patching: surface the remaining `failed_checks` and
+     `question_coverage` entries to the user and ask how to proceed (manual edit,
+     defer, or flag for owner review). Do **not** silently skip this gate.
+   - `partial_question_coverage` warnings after patching are acceptable to proceed
+     if the escalation sentence has been inserted; note them in the session summary.
+
+7. **Present to user**:
    ```markdown
    ## Email #1: Availability Inquiry
 

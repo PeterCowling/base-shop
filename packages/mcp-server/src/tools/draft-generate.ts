@@ -5,6 +5,7 @@ import { z } from "zod";
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
+import { evaluateQuestionCoverage } from "../utils/coverage.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import {
@@ -65,6 +66,16 @@ const draftGenerateSchema = z.object({
       category: z.string().min(1),
       confidence: z.number().min(0).max(1),
     }),
+    // TASK-04: v1.1.0 additive multi-scenario fields (optional for backward compat)
+    scenarios: z
+      .array(
+        z.object({
+          category: z.string().min(1),
+          confidence: z.number().min(0).max(1),
+        })
+      )
+      .optional(),
+    actionPlanVersion: z.string().optional(),
     escalation: z
       .object({
         tier: z.enum(["NONE", "HIGH", "CRITICAL"]),
@@ -941,10 +952,25 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
 
     const templates = await loadTemplates();
 
+    // TASK-04: resolve primary scenario category — prefer scenarios[0] (v1.1.0) over singular scenario (v1.0.0)
+    const primaryScenarioCategory =
+      (actionPlan.actionPlanVersion === "1.1.0" && actionPlan.scenarios && actionPlan.scenarios.length > 0)
+        ? actionPlan.scenarios[0].category
+        : actionPlan.scenario.category;
+
+    const allIntents = [
+      ...actionPlan.intents.questions,
+      ...actionPlan.intents.requests,
+    ];
+    const preliminaryCoverage = evaluateQuestionCoverage("", allIntents);
+    const uncoveredQuestions = preliminaryCoverage
+      .filter((entry) => entry.status === "missing")
+      .map((entry) => entry.question);
+
     const rankResult = rankTemplates(templates, {
       subject: subject ?? "",
       body: actionPlan.normalized_text,
-      categoryHint: actionPlan.scenario.category,
+      categoryHint: primaryScenarioCategory,
       prepaymentStep,
       prepaymentProvider,
     });
@@ -983,7 +1009,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     const voiceExamplesResult = await handleVoiceExamplesRead();
     const draftGuide = parseResourceResult<DraftGuide>(draftGuideResult);
     const voiceExamples = parseResourceResult<VoiceExamples>(voiceExamplesResult);
-    const voiceScenario = resolveVoiceScenario(voiceExamples, actionPlan.scenario.category);
+    const voiceScenario = resolveVoiceScenario(voiceExamples, primaryScenarioCategory);
 
     const neverRules = draftGuide?.content_rules?.never ?? [];
     const forbiddenPhrases = [
@@ -1002,12 +1028,12 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     );
     contentBody = applyConditionalRule(
       contentBody,
-      actionPlan.scenario.category,
+      primaryScenarioCategory,
       draftGuide?.content_rules?.if ?? [],
     );
     contentBody = applyVoicePreferences(contentBody, voiceScenario);
 
-    const contentBounds = resolveLengthBounds(draftGuide, actionPlan.scenario.category);
+    const contentBounds = resolveLengthBounds(draftGuide, primaryScenarioCategory);
     contentBody = enforceLengthBounds(contentBody, contentBounds);
     contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
     bodyPlain = stripSignature(contentBody).trim();
@@ -1021,9 +1047,9 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       subject,
     });
 
-    const knowledgeUris = resolveKnowledgeSources(actionPlan.scenario.category);
+    const knowledgeUris = resolveKnowledgeSources(primaryScenarioCategory);
     const knowledgeSummaries = await loadKnowledgeSummaries(knowledgeUris, {
-      category: actionPlan.scenario.category,
+      category: primaryScenarioCategory,
       normalizedText: actionPlan.normalized_text,
       intents: [...actionPlan.intents.questions, ...actionPlan.intents.requests],
     });
@@ -1036,7 +1062,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
           requests: actionPlan.intents.requests,
         },
         workflow_triggers: { booking_monitor: includeBookingLink },
-        scenario: { category: actionPlan.scenario.category },
+        scenario: { category: primaryScenarioCategory },
         thread_summary: actionPlan.thread_summary,
       },
       draft: { bodyPlain, bodyHtml },
@@ -1049,6 +1075,10 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
 
     return jsonResult({
       composite: isComposite,
+      preliminary_coverage: {
+        questions_with_no_template_match: uncoveredQuestions,
+        coverage: preliminaryCoverage,
+      },
       draft: {
         bodyPlain,
         bodyHtml,

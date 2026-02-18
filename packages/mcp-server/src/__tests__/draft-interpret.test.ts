@@ -190,6 +190,67 @@ wrote:
   });
 });
 
+describe("draft_interpret TASK-04 multi-scenario", () => {
+  it("TC-04-01: legacy consumer path — singular scenario field always present", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "What time is check-in?",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string; confidence: number };
+    };
+    expect(payload.scenario).toBeDefined();
+    expect(payload.scenario.category).toBeDefined();
+    expect(payload.scenario.confidence).toBeGreaterThan(0);
+  });
+
+  it("TC-04-02: multi-question input yields ordered scenarios[] with deterministic confidence ordering", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Is breakfast included? Can we store our luggage? Do you have WiFi?",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string; confidence: number };
+      scenarios?: Array<{ category: string; confidence: number }>;
+      actionPlanVersion?: string;
+    };
+    expect(payload.scenarios).toBeDefined();
+    expect(Array.isArray(payload.scenarios)).toBe(true);
+    expect(payload.scenarios!.length).toBeGreaterThanOrEqual(2);
+    expect(payload.actionPlanVersion).toBe("1.1.0");
+    const confidences = payload.scenarios!.map((s) => s.confidence);
+    for (let i = 1; i < confidences.length; i++) {
+      expect(confidences[i]).toBeLessThanOrEqual(confidences[i - 1]);
+    }
+    expect(payload.scenario.category).toBe(payload.scenarios![0].category);
+  });
+
+  it("TC-04-03: hard-rule dominance — cancellation is always scenarios[0]", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I need to cancel my booking, request a refund for the card payment, and also ask about breakfast.",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string };
+      scenarios?: Array<{ category: string; confidence: number }>;
+    };
+    expect(payload.scenarios).toBeDefined();
+    expect(payload.scenarios!.length).toBeGreaterThanOrEqual(2);
+    expect(payload.scenarios![0].category).toBe("cancellation");
+    expect(payload.scenario.category).toBe("cancellation");
+  });
+
+  it("TC-04-03b: hard-rule dominance — prepayment is always scenarios[0] when present", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Please send the prepayment link. I also have a card payment question and want to confirm my check-in time.",
+    });
+    const payload = JSON.parse(result.content[0].text) as {
+      scenario: { category: string };
+      scenarios?: Array<{ category: string; confidence: number }>;
+    };
+    expect(payload.scenarios).toBeDefined();
+    expect(payload.scenarios![0].category).toBe("prepayment");
+    expect(payload.scenario.category).toBe("prepayment");
+  });
+});
+
 describe("draft_interpret TASK-03 escalation", () => {
   it("TASK-03 TC-01: refund + dispute escalates to HIGH", async () => {
     const result = await handleDraftInterpretTool("draft_interpret", {

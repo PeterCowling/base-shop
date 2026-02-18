@@ -342,6 +342,48 @@ describe("draft_quality_check TASK-05", () => {
     expect(payload.failed_checks).not.toContain("contradicts_thread");
   });
 
+  it("TASK-05 TC-03: parity — coverage utility returns identical scores regardless of call path", async () => {
+    const questions = [
+      { text: "What time is check-in?" },
+      { text: "Is breakfast included?" },
+    ];
+
+    // Use a body that contains no check-in or breakfast keywords — both questions
+    // will be "missing" in coverage, but the body is non-empty so the tool won't error.
+    const testBody = "Thank you for contacting Hostel Brikette. We look forward to welcoming you.";
+
+    // Path A: quality-check tool with a body unrelated to the questions.
+    const qualityResult = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: { questions, requests: [] },
+        workflow_triggers: { booking_monitor: false },
+        scenario: { category: "faq" },
+      },
+      draft: {
+        bodyPlain: testBody,
+        bodyHtml: `<p>${testBody}</p>`,
+      },
+    });
+    const qualityPayload = parseResult(qualityResult);
+    const qualityScores = qualityPayload.question_coverage?.map((e: { question: string; coverage_score: number; status: string }) => ({
+      question: e.question,
+      coverage_score: e.coverage_score,
+      status: e.status,
+    }));
+
+    // Path B: shared utility called directly with the same body.
+    const { evaluateQuestionCoverage } = await import("../utils/coverage");
+    const directCoverage = evaluateQuestionCoverage(testBody, questions);
+    const directScores = directCoverage.map((e) => ({
+      question: e.question,
+      coverage_score: e.coverage_score,
+      status: e.status,
+    }));
+
+    expect(qualityScores).toEqual(directScores);
+  });
+
   it("TASK-05 TC-07: quality result includes question coverage breakdown", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {

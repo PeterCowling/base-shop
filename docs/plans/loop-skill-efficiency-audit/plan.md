@@ -67,7 +67,8 @@ cadence docs, and run the first live audit.
 
 - Related brief: `docs/plans/loop-skill-efficiency-audit/fact-find.md`
 - Key findings used:
-  - Current loop-skill inventory (16 skills scanned): 7 already compliant, 6 opportunities
+  - Current loop-skill inventory (16 largest/priority skills sampled): 7 already compliant, 6 opportunities; live audit scans full scope (~28 skills)
+
   - Thin-orchestrator baseline confirmed at ≤200L via 7 completed examples
   - Dispatch adoption: 4 skills adopted `subagent-dispatch-contract.md` as of 2026-02-18
   - Integration point: `startup-loop-workflow.user.md` §Standing Refresh table; NOT inside S10
@@ -127,7 +128,7 @@ cadence docs, and run the first live audit.
 - **Affects:** `.claude/skills/meta-loop-efficiency/SKILL.md` (new)
 - **Depends on:** -
 - **Blocks:** TASK-03
-- **Build evidence:** SKILL.md written at 129L (71L under 200L limit). TC-01–TC-07 all pass. Commit `e6d7d2a9b0`. Key findings: H4 anchored regex works correctly in practice (confirmed with manual spot-check on lp-channels Stage headings); grep approach needed correction for single-file directories (H2 data).
+- **Build evidence:** SKILL.md written at 129L (71L under 200L limit). TC-01–TC-07 all pass. Commit `e6d7d2a9b0`. Key findings: H2 anchored heading regex works correctly in practice (confirmed with manual spot-check on lp-channels Stage headings); grep approach needed correction for single-file directories (use `grep -h`, not `grep -c` + awk).
 - **Confidence:** 82%
   - Implementation: 88% — pure `.md` authoring; all heuristics are fully specified in
     fact-find (H0 SHA hash, H1 wc-l, H2 anchored heading grep, H3 wave-dispatch ref);
@@ -160,7 +161,7 @@ cadence docs, and run the first live audit.
 - **Scouts:**
   - Verify: `ls .claude/skills/meta-loop-efficiency/` does not already exist
   - Confirm: `wc -l .claude/skills/*/SKILL.md | sort -rn | head -5` shows lp-build
-    (222L) as the largest compliant orchestrator — sets mental model for what 200L looks like
+    (222L) as the largest bloated-orchestrator above threshold — confirms what the H1 flag looks like in practice (lp-build has modules/ so it is bloated-orchestrator, not monolith; the 200L threshold itself is the reference point)
 - **Edge Cases & Hardening:**
   - If SKILL.md draft exceeds 200L: extract the heuristic detail tables to a
     `modules/heuristics.md` file (allowed by the thin-orchestrator pattern); SKILL.md
@@ -266,7 +267,7 @@ cadence docs, and run the first live audit.
     the dry-run path validates heuristic output before committing
   - Approach: 85% — dry-run first, then live commit; matches SKILL.md operating mode spec
   - Impact: 80% — first run validates all four heuristics (H0–H3) against real data;
-    if the heading-anchored regex (H4) produces too many false positives, output will
+    if the H2 anchored heading regex produces too many false positives, output will
     need iteration before this task is truly complete
 - **Acceptance:**
   - Artifact file exists at `docs/business-os/platform-capability/skill-efficiency-audit-*.md`
@@ -285,7 +286,7 @@ cadence docs, and run the first live audit.
 - **Execution plan:** Red → Green → Refactor
   - Red: invoke `/meta-loop-efficiency --dry-run`; confirm output structure matches
     SKILL.md spec (no artifact committed yet)
-  - Green: review dry-run output; if H4 regex produces obvious false positives, adjust
+  - Green: review dry-run output; if H2 anchored heading regex produces obvious false positives, adjust
     the heading pattern per SKILL.md §Heuristic Evolution; invoke live run; commit artifact
   - Refactor: verify git log; verify 6-line header; verify delta section says `previous_artifact: none`
 - **Planning validation (required for M/L):** None: S-effort task
@@ -293,16 +294,14 @@ cadence docs, and run the first live audit.
   - Confirm `docs/business-os/platform-capability/` directory exists (or create it)
   - Confirm no existing `skill-efficiency-audit-*.md` files (so `previous_artifact: none` is correct)
 - **Edge Cases & Hardening:**
-  - Dirty working tree at invocation time: SKILL.md commit guard fires → dry-run mode
-    activated → commit deferred; note in task build evidence; instruct operator to
-    clean tree then rerun
-  - H4 regex produces >20 false positives on a single skill: cap `phase_matches_any_md`
+  - Dirty working tree at invocation time: commit guard checks `git status --porcelain`; if dirty files exist beyond the artifact path, stage ONLY the artifact file explicitly (`git add <artifact-path>`); verify with `git diff --cached --name-only` that only the artifact is staged before committing; this prevents contamination without requiring a pristine tree
+  - H2 anchored heading regex produces >20 false positives on a single skill: cap `phase_matches_any_md`
     report at 20 and add a `(capped)` flag in output; do not abort the run
   - `docs/business-os/platform-capability/` does not exist: create the directory before
     writing the artifact; add it to `Affects`
 - **What would make this >=90%:**
   - If dry-run output exactly matches expected table format on first attempt
-    (no H4 regex tuning needed), implementation confidence rises to 93%
+    (no H2 anchored heading regex tuning needed), implementation confidence rises to 93%
 - **Rollout / rollback:**
   - Rollout: commit artifact; task complete
   - Rollback: `git rm docs/business-os/platform-capability/skill-efficiency-audit-<stamp>.md`
@@ -319,9 +318,9 @@ cadence docs, and run the first live audit.
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
 | SKILL.md exceeds 200L on first draft | Low | Low | Extract heuristic tables to `modules/heuristics.md`; orchestrator stays thin |
-| H4 anchored heading regex produces >10 false positives per skill | Medium | Low | Cap output at 20; add `(capped)` flag; tune regex per §Heuristic Evolution in SKILL.md |
+| H2 anchored heading regex produces >10 false positives per skill | Medium | Low | Cap output at 20; add `(capped)` flag; tune regex per §Heuristic Evolution in SKILL.md |
 | Weekly cadence produces constant no-op → skill is ignored | Medium | Medium | No-op signal is explicit in output; cadence can be changed to bi-weekly after 4 runs |
-| Dirty working tree blocks first artifact commit | Low | Low | Commit guard fires; dry-run produces artifact for review; operator cleans tree and reruns |
+| Dirty working tree prevents artifact commit | Low | Low | Stage artifact by explicit path only; verify with `git diff --cached --name-only` before committing; unrelated dirty files are never included |
 | New `lp-*` skills added not in invocation-tier table → incorrect tier assignment | Low | Low | §Heuristic Evolution section in SKILL.md instructs how to extend tier table |
 
 ## Observability
@@ -332,12 +331,14 @@ cadence docs, and run the first live audit.
 
 ## Acceptance Criteria (overall)
 
-- [ ] `.claude/skills/meta-loop-efficiency/SKILL.md` exists; ≤200 lines; H0/H1/H2/H3 + delta anchor + commit guard all present
-- [ ] `startup-loop-workflow.user.md` §Standing Refresh table has `/meta-loop-efficiency` row with YYYY-MM-DD-HHMM path pattern
-- [ ] `.claude/skills/lp-experiment/SKILL.md` has one-line S10 Readout footnote for `/meta-loop-efficiency`
-- [ ] First audit artifact exists at `docs/business-os/platform-capability/skill-efficiency-audit-YYYY-MM-DD-HHMM.md`
-- [ ] Artifact has required 6-line header with `previous_artifact: none`
-- [ ] Artifact is committed in git via writer lock
+Accepted on 2026-02-18. Evidence: commits `e6d7d2a9b0` (TASK-01), `676c03d2ac` (TASK-02), `5d62e65aba` (TASK-03).
+
+- [x] `.claude/skills/meta-loop-efficiency/SKILL.md` exists; ≤200 lines (129L); H0/H1/H2/H3 + delta anchor + commit guard all present
+- [x] `startup-loop-workflow.user.md` §Standing Refresh table has `/meta-loop-efficiency` row with YYYY-MM-DD-HHMM path pattern
+- [x] `.claude/skills/lp-experiment/SKILL.md` has one-line S10 Readout footnote for `/meta-loop-efficiency`
+- [x] First audit artifact exists at `docs/business-os/platform-capability/skill-efficiency-audit-2026-02-18-1230.md`
+- [x] Artifact has required 6-line header with `previous_artifact: none`
+- [x] Artifact is committed in git via writer lock (`5d62e65aba`)
 
 ## Decision Log
 

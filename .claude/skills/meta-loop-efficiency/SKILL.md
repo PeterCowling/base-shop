@@ -26,6 +26,10 @@ In-scope: all `lp-*` prefix skills + `startup-loop` + `draft-outreach`.
 Out-of-scope: `idea-*`, `meta-*`, `ops-*`, `review-*`, `biz-*`, `guide-*` — never scan these.
 Canonical list derived from the startup-loop Stage Model in `startup-loop/SKILL.md`.
 
+**No scope override is supported by design.** Non-loop skill families have different
+invocation patterns and their own improvement cadences. For a full cross-portfolio scan,
+run this skill against each family directory manually as a one-off operator action.
+
 ## Heuristics
 
 All heuristics operate over ALL `.md` files in each skill directory (SKILL.md + modules/ + others), not SKILL.md alone.
@@ -116,9 +120,13 @@ Artifact sections:
 
 Before writing/committing the artifact:
 1. Run `git status --porcelain`.
-2. If any files are dirty beyond the artifact path → abort commit; fall back to `--dry-run`; warn operator.
-3. If clean (or only audit artifact dirty) → stage ONLY the artifact file; commit it alone.
-4. Use writer lock: `scripts/agents/with-writer-lock.sh --wait-forever -- git commit`
+2. Stage ONLY the artifact file by explicit path: `git add docs/business-os/platform-capability/skill-efficiency-audit-<stamp>.md`
+3. Verify with `git diff --cached --name-only` that only the artifact is staged.
+4. If any unrelated files appear staged → abort; warn operator; do not commit.
+5. Use writer lock: `scripts/agents/with-writer-lock.sh --wait-forever -- git commit`
+
+Note: a dirty working tree (other unstaged changes) does NOT block the commit, provided
+only the artifact file is staged. Use `--dry-run` to inspect output without committing.
 
 ## Heuristic Evolution
 

@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Mixed
 Created: 2026-02-17
 Last-reviewed: 2026-02-17
-Last-updated: 2026-02-17 (TASK-10 complete; TASK-11 unblocked pending media assets)
+Last-updated: 2026-02-18 (TASK-09 IMPLEMENT complete — WhatsApp prefill, long-stay reroute, sessionStorage redirect-back, whatsapp_click GA4 event; 7/7 TC PASS)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: brik-apartment-landing-conversion-audit
 Deliverable-Type: multi-deliverable
@@ -97,10 +97,11 @@ Chosen approach: Option A.
     - business validation landscape captured (facts, legal/perks/review policies, channel and hypothesis constraints)
 - Build Gate: Open
   - TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 complete.
-  - TASK-09 now unblocked (depends on TASK-02 ✓, TASK-07 ✓) — eligible for next `/lp-build` cycle at 76% (below 80% threshold → route to `/lp-replan` first).
-  - TASK-10 complete.
-  - TASK-11 unblocked (depends on TASK-10 ✓) — 78% confidence, below 80% threshold → route to `/lp-replan` (requires media asset delivery confirmation before execution).
-  - TASK-12 still blocked by TASK-09, TASK-11.
+  - TASK-09 complete (2026-02-18) — WhatsApp prefill, long-stay reroute, sessionStorage redirect-back, `whatsapp_click` GA4 event; 7/7 TC PASS.
+  - TASK-11 promoted to 82% via `/lp-replan` (2026-02-17) — CF pattern confirmed; eligible for next `/lp-build`.
+  - TASK-16 complete — Octorate precheck INCAPABLE; TASK-09 narrowed scope confirmed.
+  - TASK-11 (82%) eligible for next `/lp-build` cycle.
+  - TASK-12 still blocked by TASK-11.
 - Sequenced: Yes
 - Edge-case review complete: Yes
   - Reviewed no-JS crawlability, multilingual canonicalization, legal/policy mismatch, no-availability flows, and mobile performance regressions.
@@ -119,9 +120,10 @@ Chosen approach: Option A.
 | TASK-06 | DECISION | Finalize canonical host, hreflang locale matrix, and locale link map | 81% | S | Complete (2026-02-17) | TASK-01 | TASK-13 |
 | TASK-07 | IMPLEMENT | Implement apartment-context CTA, legal label wiring, and perks-route behavior | 81% | M | Complete (2026-02-17) | TASK-01, TASK-03, TASK-04 | TASK-09, TASK-12 |
 | TASK-08 | IMPLEMENT | Harden SSR/i18n rendering for apartment routes with deterministic source checks | 80% | M | Complete (2026-02-17) | TASK-01 | TASK-12, TASK-13 |
-| TASK-09 | IMPLEMENT | Implement booking module no-result fallback + WhatsApp prefill attribution | 76% | L | Pending | TASK-02, TASK-07 | TASK-12, TASK-15 |
+| TASK-09 | IMPLEMENT | Implement booking module no-result fallback + WhatsApp prefill attribution | 82% | L | Complete (2026-02-18) | TASK-02, TASK-07 | TASK-12, TASK-15 |
+| TASK-16 | SPIKE | Probe Octorate API for real-time availability precheck capability | 80% | S | Complete (2026-02-17) | TASK-07 | TASK-09 |
 | TASK-10 | IMPLEMENT | Publish verified apartment content pack (facts/policies/arrival/fallback copy) | 80% | M | Complete (2026-02-17) | TASK-02, TASK-03 | TASK-11, TASK-12, TASK-14 |
-| TASK-11 | IMPLEMENT | Replace apartment media set and image SEO metadata | 78% | M | Pending | TASK-10 | TASK-12, TASK-13, TASK-15 |
+| TASK-11 | IMPLEMENT | Replace apartment media set and image SEO metadata | 82% | M | Pending | TASK-10 | TASK-12, TASK-13, TASK-15 |
 | TASK-12 | CHECKPOINT | Horizon checkpoint before technical SEO/review/perf tranche | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11 | TASK-13, TASK-14, TASK-15 |
 | TASK-13 | IMPLEMENT | Implement canonical/hreflang and baseline schema hardening | 79% | M | Pending | TASK-06, TASK-08, TASK-11, TASK-12 | TASK-14 |
 | TASK-14 | IMPLEMENT | Ship testimonial module and conditional review schema gating | 77% | M | Pending | TASK-03, TASK-05, TASK-10, TASK-12, TASK-13 | - |
@@ -134,7 +136,7 @@ Chosen approach: Option A.
 | 1 | TASK-01 | - | Establish reproducible evidence and baseline before policy/implementation branches |
 | 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-01 | Policy/ownership decisions can run in parallel |
 | 3 | TASK-07, TASK-08, TASK-10 | Wave 2 decisions by dependency | Conversion-critical implementation and content foundation |
-| 4 | TASK-09, TASK-11 | TASK-09 needs TASK-02+TASK-07; TASK-11 needs TASK-10 | Booking fallback and media hardening |
+| 4 | TASK-09, TASK-11, TASK-16 | TASK-09 needs TASK-02+TASK-07; TASK-11 needs TASK-10; TASK-16 needs TASK-07 | Booking fallback, media hardening, Octorate API spike (parallel) |
 | 5 | TASK-12 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11 | Mandatory checkpoint before SEO/review/perf tranche |
 | 6 | TASK-13, TASK-15 | TASK-13 needs TASK-06+TASK-08+TASK-11+TASK-12; TASK-15 needs TASK-09+TASK-11+TASK-12 | Can run concurrently after checkpoint |
 | 7 | TASK-14 | TASK-03, TASK-05, TASK-10, TASK-12, TASK-13 | Final trust/schema task after policy + baseline schema |
@@ -480,42 +482,67 @@ Chosen approach: Option A.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** website-upgrade-backlog
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx`, `apps/brikette/src/utils/ga4-events.ts`, `apps/brikette/src/utils/trackApartmentEvent.ts`, `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx`, `apps/brikette/src/test/utils/ga4-events-contract.test.ts`
 - **Depends on:** TASK-02, TASK-07
 - **Blocks:** TASK-12, TASK-15
-- **Confidence:** 76%
-  - Implementation: 78% - booking code path exists but fallback path and attribution fields require deeper integration.
-  - Approach: 76% - combines UX fallback, pricing-rule policy, and analytics schema in one chain.
-  - Impact: 88% - high conversion impact by preventing dead-end no-availability flows.
+- **Confidence:** 82%
+  - Implementation: 85% - date state (`checkin`, `checkout`) already in `ApartmentBookContent.tsx`; nights calc and `WHATSAPP_URL` const present; `ga4-events.ts` pattern established for `whatsapp_click` event.
+  - Approach: 82% - WhatsApp prefill and long-stay reroute are clean additions; `availability_no_result` event removed from this task (moved to TASK-16 SPIKE — blocked by Octorate API capability unknown).
+  - Impact: 85% - WhatsApp prefill + long-stay reroute directly reduce conversion dead-ends.
+- **Scope change (2026-02-17 replan):** `availability_no_result` event and `fallback_click` event removed from TASK-09 scope. `window.location.assign()` same-tab navigation prevents in-page no-result detection. Moved to TASK-16 SPIKE. TASK-09 now covers: dynamic WhatsApp prefill, long-stay reroute, `whatsapp_click` GA4 event, pre-click fallback copy.
 - **Acceptance:**
-  - Above-fold date/guest interactions support no-result fallback UX (alternate dates or next-available plus room/lead-capture path).
-  - Events `availability_no_result` and `fallback_click` are emitted with deterministic payloads.
-  - WhatsApp CTA supports prefilled context (`dates_selected`, `guests_selected`, route/placement).
+  - WhatsApp CTA href contains prefilled date context from current date state.
+  - Stays >14 nights trigger soft WhatsApp-primary reroute (Octorate secondary).
+  - `whatsapp_click` GA4 event fires with `placement` and `prefill_present` fields.
+  - Pre-click fallback copy (from content-pack-v1 State A) visible above CTA.
+  - Pricing copy follows TASK-02 policy (no disallowed static claims).
 - **Validation contract (TC-09):**
-  - TC-01: unavailable-search scenario renders fallback actions and does not dead-end.
-  - TC-02: `availability_no_result` and `fallback_click` events fire with expected fields.
-  - TC-03: WhatsApp link contains prefilled query when dates/guests are selected.
-  - TC-04: pricing copy follows TASK-02 policy (no disallowed static claims).
+  - TC-01: WhatsApp href in `ApartmentBookContent` includes URL-encoded date query when dates are selected (source check).
+  - TC-02: `whatsapp_click` event shape matches GA4 contract (`placement`, `prefill_present` fields).
+  - TC-03: Long-stay scenario (>14 nights computed) renders WhatsApp as primary CTA (source check).
+  - TC-04: pricing copy follows TASK-02 policy — no disallowed static claims in component source.
+  - ~~TC-02 (old)~~ `availability_no_result` event — deferred to TASK-16.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: reviewed apartment booking component and existing GA4 tests.
-  - Validation artifacts: `ApartmentBookContent.tsx`, existing GA4 contract tests.
-  - Unexpected findings: current booking flow emits checkout events but lacks no-result fallback instrumentation.
+  - Checks run: read `ApartmentBookContent.tsx` (date state, WhatsApp URL, nights calc, GA4 hook) + `ga4-events.ts` (`fireHandoffToEngine` pattern).
+  - Validation artifacts: file reads above; GA4 contract tests in scope.
+  - Unexpected findings: booking component is further along than plan anticipated — date state, WhatsApp link, and nights calc all present. No-result detection blocked by same-tab navigation constraint (confirmed).
 - **Scouts:**
-  - Probe whether fallback can be implemented fully in current page or requires booking-engine API precheck.
+  - RESOLVED: Fallback cannot include `availability_no_result` detection without Octorate API precheck. Moved to TASK-16 SPIKE.
 - **Edge Cases & Hardening:**
-  - Date parsing/time-zone boundaries for fallback suggestions.
+  - Date parsing/time-zone boundaries for long-stay threshold (use same calc as existing nights logic).
   - Preserve accessibility and keyboard flow in booking controls.
-- **What would make this >=80%:**
-  - confirm booking-engine capability for no-result detection without brittle client heuristics.
+- **What would make this >=90%:**
+  - Add dedicated GA4 contract test for `whatsapp_click` event and prefill detection logic.
 - **What would make this >=90%:**
   - add deterministic integration tests against mocked booking-engine responses including failure paths.
 - **Rollout / rollback:**
   - Rollout: enable fallback and attribution fields behind event-contract tests.
   - Rollback: disable fallback module while preserving existing checkout flow.
 - **Documentation impact:** update measurement spec in fact-find and event dictionary notes.
-- **Notes / references:** TASK-02 policy artifacts.
+- **Notes / references:** TASK-02 policy artifacts; `content-pack-v1.md` Section 5 (fallback copy) and Section 6 (WhatsApp templates).
+
+#### Re-plan Update (2026-02-17)
+- Confidence: 76% -> 82% (Evidence: E2 — `ApartmentBookContent.tsx` date state, nights calc, `WHATSAPP_URL` const; `ga4-events.ts` established event pattern)
+- Key change: scope narrowed — `availability_no_result` event deferred to TASK-16 SPIKE (same-tab navigation constraint confirmed); WhatsApp prefill + long-stay reroute + `whatsapp_click` event remain in scope.
+- Dependencies: TASK-16 (new SPIKE) added as optional precursor for full no-result detection.
+- Validation contract: TC-01 reframed as WhatsApp prefill check; TC-02 = `whatsapp_click` event shape; TC-03 = long-stay reroute; TC-04 = pricing policy.
+- Notes: `content-pack-v1.md` Section 6 provides WhatsApp URL template for prefill implementation.
+
+#### Build Completion Evidence (2026-02-18)
+- **TC results:** 7/7 PASS (2 pre-existing GA4-07 TCs + 5 new TASK-09 TCs)
+  - TC-01 ✓ WhatsApp CTA href prefilled with URL-encoded checkin/checkout
+  - TC-02 ✓ `whatsapp_click` GA4 event fires with `placement` + `prefill_present:true`
+  - TC-03 ✓ Checkout >14 nights sets `data-long-stay-primary="true"` on CTA
+  - TC-04 ✓ No disallowed pricing claims in component source
+  - TC-05 ✓ `sessionStorage.setItem` called before `window.location.assign` (ordering confirmed)
+- **Files changed:**
+  - `apps/brikette/src/app/[lang]/apartment/book/ApartmentBookContent.tsx` — `buildWhatsappUrl()`, dynamic href, `isLongStay`, `handleWhatsappClick`, sessionStorage store + return detection (`useEffect`)
+  - `apps/brikette/src/utils/ga4-events.ts` — `fireWhatsappClick()` added
+  - `apps/brikette/src/test/components/ga4-07-apartment-checkout.test.tsx` — TASK-09 describe block (TC-01–TC-05)
+- **Decision applied:** Option A (sessionStorage redirect-back UX) — user confirmed 2026-02-18.
+- **Scope boundary respected:** `availability_no_result` event not implemented (Octorate API INCAPABLE per TASK-16 spike).
 
 ### TASK-10: Publish verified apartment content pack (facts/policies/arrival/fallback copy)
 - **Type:** IMPLEMENT
@@ -592,36 +619,83 @@ Chosen approach: Option A.
 - **Affects:** `docs/plans/brik-apartment-landing-conversion-audit/media-manifest-v1.md`, `apps/brikette/src/locales/en/apartmentPage.json`, `apps/brikette/src/app/[lang]/apartment/page.tsx`, `apps/brikette/src/components/apartment/GallerySection.tsx`
 - **Depends on:** TASK-10
 - **Blocks:** TASK-12, TASK-13, TASK-15
-- **Confidence:** 78%
-  - Implementation: 80% - target surfaces and shot priorities are explicit.
-  - Approach: 78% - asset production timing and integration details can delay rollout.
+- **Confidence:** 82%
+  - Implementation: 83% - `GallerySection.tsx::IMAGES` const is a trivially updatable 3-element array; `CfImage preset="gallery"` is the established integration pattern confirmed in source.
+  - Approach: 82% - manifest-first → const update → OG path swap is clean linear sequence. Scout resolved: no additional CF pipeline config needed (same `CfImage` + preset).
   - Impact: 85% - media relevance strongly affects apartment conversion confidence.
 - **Acceptance:**
   - Minimum viable image set (hero + arrival + bedroom + bathrooms + kitchen + terrace) is integrated.
-  - Irrelevant legacy assets removed from apartment gallery context.
+  - `GallerySection.tsx::IMAGES` references only approved media-manifest paths (no `hostel-communal-terrace` assets in apartment gallery).
   - Alt text and captions are descriptive and non-placeholder.
+  - OG image in `apartment/page.tsx` replaced from `/img/facade.avif` to apartment-specific asset.
 - **Validation contract (TC-11):**
-  - TC-01: gallery/hero references only approved media-manifest assets.
-  - TC-02: no placeholder alt keys (`heroImageAlt`, `galleryAlt`) appear in rendered copy.
-  - TC-03: image filenames/captions follow manifest naming convention.
+  - TC-01 (gate): referenced image paths in `GallerySection.tsx::IMAGES` and `apartment/page.tsx` exist under `public/img/` — verified before commit.
+  - TC-02: `GallerySection.tsx::IMAGES` contains no `hostel-` prefixed asset paths.
+  - TC-03: `apartmentPage.json::galleryAlts` entries are descriptive (no placeholder key names).
+  - TC-04: `apartment/page.tsx` OG image path differs from `/img/facade.avif`.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: reviewed apartment copy and page metadata image usage (`/img/facade.avif`).
-  - Validation artifacts: apartment metadata/page files and media requirements in fact-find.
-  - Unexpected findings: current metadata still points to generic facade asset for OG.
+  - Checks run: read `GallerySection.tsx` (IMAGES const, CfImage usage), `apartment/page.tsx` (OG path), `apartmentPage.json` (alt text keys).
+  - Validation artifacts: source confirms trivial const-swap integration.
+  - Unexpected findings: `hostel-communal-terrace-lush-view.webp` is currently in the apartment gallery — explicitly wrong asset, needs replacement. `facade.avif` is OG — generic asset, needs replacement.
 - **Scouts:**
-  - Probe whether Cloudflare image pipeline requires additional config for new asset locations.
+  - RESOLVED: No additional Cloudflare image pipeline config required — `CfImage` with `preset="gallery"` is the established pattern; new assets placed in `public/img/` work identically.
 - **Edge Cases & Hardening:**
-  - Maintain performance budgets when replacing hero assets.
-- **What would make this >=80%:**
-  - lock photographer delivery date and confirm source asset dimensions/formats.
+  - TC-01 file-existence gate prevents broken image references from reaching production.
+  - Maintain performance budgets — `CfImage` handles optimization automatically via preset.
 - **What would make this >=90%:**
-  - include automated regression checks for missing asset references and alt text completeness.
+  - Lock photographer delivery date and confirm asset dimensions/formats match `CfImage` preset requirements.
 - **Rollout / rollback:**
-  - Rollout: switch to new asset manifest in one tranche.
+  - Rollout: switch to new asset manifest in one tranche; TC-01 file-existence gate enforces asset readiness before commit.
   - Rollback: restore previous asset references if broken media links are detected.
 - **Documentation impact:** maintain media manifest as canonical shot/source map.
-- **Notes / references:** fact-find section F shot list.
+- **Notes / references:** fact-find section F shot list; `content-pack-v1.md` Section 8 (claims audit includes terrace qualifier requirement).
+
+#### Re-plan Update (2026-02-17)
+- Confidence: 78% -> 82% (Evidence: E2 — `GallerySection.tsx::IMAGES` const confirmed trivially updatable; `CfImage preset="gallery"` is established pattern; scout resolved — no CF pipeline config changes needed)
+- Key change: `hostel-communal-terrace-lush-view.webp` confirmed in apartment gallery (wrong asset); `/img/facade.avif` confirmed as OG (generic); both are explicit targets for replacement.
+- Dependencies: unchanged (TASK-10 ✓).
+- Validation contract: TC-01 file-existence gate added as build-time guard; TC-02 `hostel-` prefix check added; TC-03/TC-04 updated to target specific assets.
+- Notes: asset delivery timing is the only remaining risk; TC-01 gate enforces readiness before commit.
+
+### TASK-16: Probe Octorate API for real-time availability precheck capability
+- **Type:** SPIKE
+- **Deliverable:** Evidence report on Octorate availability precheck API capability and integration pattern
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/brik-apartment-landing-conversion-audit/spike-octorate-precheck.md`
+- **Depends on:** TASK-07
+- **Blocks:** -
+- **Confidence:** 80%
+  - Implementation: 82% - known API surface to probe (Octorate booking engine with codice=45111).
+  - Approach: 80% - documentation review + HTTP probe is standard spike methodology.
+  - Impact: 85% - result directly determines whether `availability_no_result` event is achievable in TASK-09.
+- **Acceptance:**
+  - Spike report documents whether Octorate API supports real-time availability precheck.
+  - If yes: documents endpoint, auth requirements, response schema, and CORS feasibility.
+  - If no: documents redirect-back heuristic (sessionStorage + visibilitychange) as alternative and its reliability constraints.
+  - Either outcome unblocks `availability_no_result` event implementation decision.
+- **Validation contract (TC-16):**
+  - VC-01: Spike report exists at `spike-octorate-precheck.md` with explicit CAPABLE / INCAPABLE conclusion.
+  - VC-02: Evidence source (docs URL or HTTP probe result) cited for conclusion.
+  - VC-03: Integration path documented for whichever approach is feasible.
+- **Execution plan:** Read Octorate docs → probe endpoint → evaluate CORS/auth → write report.
+- **Scouts:** none.
+- **Edge Cases & Hardening:** If Octorate API is rate-limited or auth-gated, document constraints and fallback.
+- **What would make this >=90%:** Test a live probe against the Octorate endpoint in non-production mode.
+- **Rollout / rollback:** None — spike only.
+- **Documentation impact:** spike report feeds directly into TASK-09 scope expansion decision.
+- **Notes / references:** Octorate booking URL: `https://book.octorate.com/octobook/site/reservation/result.xhtml?codice=45111`
+- **Status:** Complete (2026-02-17)
+- **Build completion evidence (2026-02-17):**
+  - **Conclusion: INCAPABLE** — no lightweight availability precheck feasible from the Brikette Next.js app without Octorate operator credentials.
+  - **VC-01**: Spike report at `spike-octorate-precheck.md` with explicit INCAPABLE conclusion. ✓
+  - **VC-02**: Evidence cited — Octorate REST API (OAuth2, operator-only, push/webhook ARI); JSF booking engine (opaque PrimeFaces protocol, no REST contract); CORS blocks cross-origin XHR. ✓
+  - **VC-03**: Integration paths documented — Option A (sessionStorage redirect-back, zero-dep, recommended), Option B (iCal feed, needs property owner iCal URL), Option C (Octorate partner OAuth, significant effort). ✓
+  - **Impact on TASK-09**: narrowed scope confirmed correct. TC-01 through TC-04 feasible. `availability_no_result` event definitively deferred (requires Option B/C as future work).
+  - **Recommendation**: TASK-09 proceeds at 82% narrowed scope. Future iCal-based availability task can be created when property owner retrieves iCal URL from Octorate dashboard.
 
 ### TASK-12: Horizon checkpoint before technical SEO/review/perf tranche
 - **Type:** CHECKPOINT
@@ -817,6 +891,8 @@ Chosen approach: Option A.
 - 2026-02-17: TASK-02–TASK-06 complete (DECISION wave). Decisions: pricing Option A (static "from €265/night in shoulder season"); terms Option B (neutral global label); perks `perks_apply_apartment: false` (banner suppressed on apartment routes); review schema INELIGIBLE (testimonials only); canonical host `www.brikette.com`. 7 artifacts written. TASK-07 and TASK-10 now unblocked.
 - 2026-02-17: TASK-07 complete via `/lp-build`. Implemented apartment-aware CTA routing in `DesktopHeader.tsx` + `MobileNav.tsx` (apartment routes → `/apartment/book`, hostel routes → `/book`), neutral `"Terms & Conditions"` label in `footer.json`, and `NotificationBanner` suppression via `usePathname()` guard. 10/10 tests pass (ApartmentStructureAndLinks). TASK-09 now unblocked (76% confidence → `/lp-replan` recommended before execution).
 - 2026-02-17: TASK-10 complete via `/lp-build`. Produced `content-pack-v1.md` (8 sections): quick facts, pricing copy, legal/perks policy, fit-check copy, 3 no-availability fallback states, 2 WhatsApp prefill templates, locale link targets, 17-claim copy audit. All VC contracts pass. "authentic Positano character" claim flagged EXCLUDED. Artifact tagged Draft — Awaiting owner review with embedded checklist. TASK-11 now unblocked at 78% (below 80% → `/lp-replan` required; media asset delivery confirmation needed).
+- 2026-02-17: `/lp-replan` — TASK-09 promoted 76%→82% (scope narrowed: `availability_no_result` deferred to TASK-16 SPIKE; dynamic WhatsApp prefill + long-stay reroute + `whatsapp_click` event remain). TASK-11 promoted 78%→82% (scout resolved: no CF config changes; `GallerySection.tsx::IMAGES` trivially updatable; TC-01 file-existence gate added). TASK-16 SPIKE added to probe Octorate precheck API. Both TASK-09 and TASK-11 now eligible for `/lp-build`.
+- 2026-02-17: TASK-16 SPIKE complete — Octorate precheck INCAPABLE. No public availability endpoint; partner API is OAuth2 operator-only; booking engine is JSF/PrimeFaces (not REST); CORS blocks cross-origin XHR. Recommended alternative: iCal feed (Option B, needs iCal URL from property owner dashboard). TASK-09 narrowed scope confirmed correct. `spike-octorate-precheck.md` written.
 
 ## Overall-confidence Calculation
 

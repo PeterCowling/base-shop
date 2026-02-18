@@ -3,7 +3,7 @@
 // src/app/[lang]/apartment/book/ApartmentBookContent.tsx
 // Client component for apartment booking page
 import type React from "react";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -14,13 +14,19 @@ import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { fireHandoffToEngine } from "@/utils/ga4-events";
+import { fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
 };
 
-const WHATSAPP_URL = "https://wa.me/393287073695";
+const WHATSAPP_BASE = "https://wa.me/393287073695";
+const APARTMENT_BOOKING_RETURN_KEY = "apartment_booking_return";
+
+function buildWhatsappUrl(checkin: string, checkout: string): string {
+  const text = `Hi, I'm interested in staying at the Brikette apartment. Could you tell me about availability for ${checkin} to ${checkout}?`;
+  return `${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`;
+}
 
 function buildOctorateLink(
   checkin: string,
@@ -50,18 +56,33 @@ function ApartmentBookContent({ lang }: Props) {
   const [checkout, setCheckout] = useState(getDatePlusTwoDays(getTodayIso()));
   const [selectedPlan, setSelectedPlan] = useState<"flex" | "nr" | null>(null);
 
+  // Option A: restore dates if user returns from Octorate (TASK-09 / spike-octorate-precheck)
+  useEffect(() => {
+    const stored = sessionStorage.getItem(APARTMENT_BOOKING_RETURN_KEY);
+    if (!stored) return;
+    try {
+      const data = JSON.parse(stored) as { checkin?: string; checkout?: string };
+      if (data.checkin) setCheckin(data.checkin);
+      if (data.checkout) setCheckout(data.checkout);
+    } catch {
+      // ignore malformed data
+    }
+    sessionStorage.removeItem(APARTMENT_BOOKING_RETURN_KEY);
+  }, []);
+
+  // Derive nights and long-stay flag reactively from date state
+  const nights = Math.max(
+    1,
+    Math.round(
+      (new Date(checkout).getTime() - new Date(checkin).getTime()) /
+        (1000 * 60 * 60 * 24),
+    ),
+  );
+  const isLongStay = nights > 14;
+
   const handleCheckAvailability = useCallback(() => {
     const plan = selectedPlan || "flex";
     const octorateUrl = buildOctorateLink(checkin, checkout, plan);
-
-    // Calculate nights for GA4 e-commerce (GA4-07)
-    const nights = Math.max(
-      1,
-      Math.round(
-        (new Date(checkout).getTime() - new Date(checkin).getTime()) /
-          (1000 * 60 * 60 * 24),
-      ),
-    );
 
     // Compat: begin_checkout kept during migration window (TASK-05B will decide cleanup policy).
     const win = window as unknown as { gtag?: (...args: unknown[]) => void };
@@ -91,9 +112,22 @@ function ApartmentBookContent({ lang }: Props) {
       source: `apartment_${plan}`,
     });
 
+    // Store booking state before navigation so we can restore on return (Option A — TASK-09)
+    sessionStorage.setItem(
+      APARTMENT_BOOKING_RETURN_KEY,
+      JSON.stringify({ checkin, checkout, plan }),
+    );
+
     // Navigate to Octorate
     window.location.assign(octorateUrl);
-  }, [checkin, checkout, selectedPlan]);
+  }, [checkin, checkout, nights, selectedPlan]);
+
+  const handleWhatsappClick = useCallback(() => {
+    fireWhatsappClick({
+      placement: "apartment_book",
+      prefill_present: true,
+    });
+  }, []);
 
   return (
     <Section padding="default" className="mx-auto max-w-4xl">
@@ -201,7 +235,10 @@ function ApartmentBookContent({ lang }: Props) {
             {selectedPlan === "nr" ? tBook("cta.nr") : tBook("cta.flex")}
           </Button>
           <a
-            href={WHATSAPP_URL}
+            data-testid="whatsapp-cta"
+            data-long-stay-primary={isLongStay ? "true" : undefined}
+            href={buildWhatsappUrl(checkin, checkout)}
+            onClick={handleWhatsappClick}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"

@@ -449,6 +449,18 @@ export function fireHandoffToEngineAndNavigate(
   });
 }
 
+// ─── whatsapp_click instrumentation (TASK-09) ───────────────────────────────
+// Fired when a user clicks the WhatsApp CTA from the apartment booking surface.
+
+export function fireWhatsappClick(params: { placement: string; prefill_present: boolean }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+  gtag("event", "whatsapp_click", {
+    placement: params.placement,
+    prefill_present: params.prefill_present,
+  });
+}
+
 /**
  * Non-navigating begin_checkout compat fire for migration window (see TASK-05B).
  * Fires the event synchronously without beacon or navigation callback.

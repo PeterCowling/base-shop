@@ -1,3 +1,4 @@
+import { act } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -259,5 +260,70 @@ describe("TASK-07: modal layout contract (TC-07)", () => {
     const el = container.firstChild as HTMLElement;
     expect(el.className).toMatch(/overflow-y-auto/);
     expect(el.className).toMatch(/overscroll-contain/);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-04: TASK-09 — tab-trap / keyboard accessibility
+// ---------------------------------------------------------------------------
+describe("TASK-09: TC-04 — modal tab-trap and keyboard accessibility", () => {
+  // TC-04a: single-element modal — Tab wraps focus within the dialog
+  it("TC-04a: Tab key keeps focus within FacilitiesModal (Radix FocusScope)", async () => {
+    const user = userEvent.setup();
+    render(
+      <FacilitiesModal
+        isOpen
+        onClose={jest.fn()}
+        categories={categories}
+        copy={{ title: "Facilities", closeButton: "Close" }}
+      />,
+    );
+
+    const closeBtn = await screen.findByRole("button", { name: "Close" });
+    await act(async () => { closeBtn.focus(); });
+    expect(document.activeElement).toBe(closeBtn);
+
+    // Tab within a modal that has one focusable element — wraps back.
+    await user.tab();
+    const dialog = document.body.querySelector("[role='dialog']");
+    expect(dialog).toBeTruthy();
+    expect(dialog?.contains(document.activeElement)).toBe(true);
+  });
+
+  // TC-04b: multi-element modal — Tab cycles through modal elements only
+  it("TC-04b: Tab cycles focus through BookingModal2 interactive elements", async () => {
+    const user = userEvent.setup();
+    render(
+      <BookingModal2
+        isOpen
+        copy={booking2Copy}
+        checkIn="2025-05-01"
+        checkOut="2025-05-03"
+        adults={2}
+        onCheckInChange={jest.fn()}
+        onCheckOutChange={jest.fn()}
+        onAdultsChange={jest.fn()}
+        onConfirm={jest.fn()}
+        onCancel={jest.fn()}
+      />,
+    );
+
+    const dialog = document.body.querySelector("[role='dialog']");
+    expect(dialog).toBeTruthy();
+
+    // Focus the Confirm button and Tab forward — focus must stay in dialog.
+    const confirmBtn = screen.getByRole("button", { name: "Confirm" });
+    await act(async () => { confirmBtn.focus(); });
+
+    await user.tab();
+    expect(dialog?.contains(document.activeElement)).toBe(true);
+
+    // Tab again — still in dialog.
+    await user.tab();
+    expect(dialog?.contains(document.activeElement)).toBe(true);
+
+    // Shift-Tab backward — also stays in dialog.
+    await user.tab({ shift: true });
+    expect(dialog?.contains(document.activeElement)).toBe(true);
   });
 });

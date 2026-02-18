@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-29 checkpoint complete — replan applied)
+Last-updated: 2026-02-18 (TASK-30, TASK-41 complete — Wave 6 progressing)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -188,7 +188,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-27 | IMPLEMENT | Migrate 2x openModal("booking2") in RoomCard to direct Octorate link (Decision B + E queryState) | 82% | M | Complete (2026-02-18) | TASK-22,TASK-23,TASK-24 | TASK-28 |
 | TASK-28 | IMPLEMENT | Delete ga4-09/ga4-10 extinct tests + update 7 affected modal-era tests | 85% | M | Complete (2026-02-18) | TASK-25,TASK-26,TASK-27 | TASK-29 |
 | TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Complete (2026-02-18) | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
-| TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Pending | TASK-29 | TASK-32,TASK-35 |
+| TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-32,TASK-35 |
 | TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Pending | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
 | TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Pending | TASK-29,TASK-30,TASK-31,TASK-15 | — |
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
@@ -199,7 +199,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
 | TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Complete (2026-02-18) | — | — |
 | TASK-40 | IMPLEMENT | Update verification protocol (DebugView via GA Analytics Debugger, SPA page_view step, custom dimensions) | 85% | S | Pending | TASK-29 | — |
-| TASK-41 | IMPLEMENT | Verify and implement page_view on SPA route changes (Home → /book internal navigation) | 80% | S | Pending | TASK-29 | — |
+| TASK-41 | IMPLEMENT | Verify and implement page_view on SPA route changes (Home → /book internal navigation) | 80% | S | Complete (2026-02-18) | TASK-29 | — |
 | TASK-42 | IMPLEMENT | Register GA4 custom dimensions in GA4 Admin (cta_id, cta_location, item_list_id, coupon) | 90% | S | Pending | TASK-31,TASK-37 | — |
 
 > Effort scale: S=1, M=2, L=3. CHECKPOINT tasks excluded from confidence weighting.
@@ -741,9 +741,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `apps/brikette/src/utils/trackThenNavigate.ts` (new)
+  - `apps/brikette/src/test/utils/trackThenNavigate.test.ts` (new)
 - **Depends on:** TASK-29
 - **Blocks:** TASK-32, TASK-35
 - **Confidence:** 85%
@@ -770,6 +771,11 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution plan:** Red (all TCs written) → Green (util implemented) → Refactor
 - **Rollout / rollback:** Additive new util; revert commit
 - **Documentation impact:** None
+- **Build completion evidence (2026-02-18):**
+  - `apps/brikette/src/utils/trackThenNavigate.ts` already existed with full implementation: `getGtag()` null guard, `navigated` flag, 200ms timeout, `transport_type: "beacon"`, `event_callback: go`. Caller contract documented in JSDoc.
+  - `apps/brikette/src/test/utils/trackThenNavigate.test.ts` already existed with TC-01 through TC-05 using `jest.useFakeTimers()`.
+  - Verification: `pnpm -w run test:governed -- jest -- --config apps/brikette/jest.config.cjs --testPathPattern='trackThenNavigate'` → 5/5 tests pass.
+  - TC-06 (integration-level caller contract) deferred to TASK-32 per plan spec.
 
 ---
 
@@ -1092,9 +1098,11 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
-  - `apps/brikette/src/app/layout.tsx` (or root provider/client component)
+  - `apps/brikette/src/app/layout.tsx` (Pattern B chosen — no changes needed; already correct)
+  - `apps/brikette/src/components/analytics/PageViewTracker.tsx` (new — already existed)
+  - `apps/brikette/src/test/components/page-view-tracker.test.tsx` (new — already existed, fixed)
   - `apps/brikette/src/utils/ga4-events.ts` (possibly — may add `firePageView` helper)
 - **Depends on:** TASK-29
 - **Blocks:** —
@@ -1116,6 +1124,13 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Scouts:** Search `apps/brikette/src/` for any existing `page_view` or `pageview` gtag call to avoid duplication before implementing.
 - **Rollout / rollback:** Additive component; revert commit
 - **Documentation impact:** TASK-40 verification protocol must cover SPA route-change page_view step
+- **Build completion evidence (2026-02-18):**
+  - Scout confirmed: inline gtag snippet in `layout.tsx` does NOT use `send_page_view: false` → Pattern B chosen (skip initial render, fire on subsequent pathname changes only).
+  - `apps/brikette/src/components/analytics/PageViewTracker.tsx` already existed with full Pattern B implementation: `isFirstRender` ref skips initial render; fires `gtag("config", GA_MEASUREMENT_ID, { page_path, page_location })` on `usePathname()` changes.
+  - `apps/brikette/src/app/layout.tsx` already imports and renders `<PageViewTracker />` conditionally at line 126 (body, after `{children}`).
+  - `apps/brikette/src/test/components/page-view-tracker.test.tsx` already existed. Fixed: removed `jest.resetModules()` from `beforeEach` + replaced all dynamic `require()` calls with static import to eliminate multiple-React-instances "Invalid hook call" error.
+  - Verification: `pnpm -w run test:governed -- jest -- --config apps/brikette/jest.config.cjs --testPathPattern='page-view-tracker'` → 4/4 tests pass (TC-02: no fire on initial render; TC-01: fires on SPA nav; extended: fires on each nav; noop guard).
+  - Staging DebugView verification deferred to TASK-40 protocol (requires staging deploy).
 
 ---
 

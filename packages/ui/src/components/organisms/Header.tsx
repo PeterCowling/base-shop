@@ -1,4 +1,5 @@
 import * as React from "react";
+import Link from "next/link";
 
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
@@ -67,7 +68,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
         <div className="mx-auto h-16 px-4">
           {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
           <Cluster alignY="center" justify="between" className="h-full gap-6">
-            <a href="/" data-token="--color-fg">
+            <Link href="/" data-token="--color-fg">
               <Logo
                 src={logo?.src}
                 width={logo?.width}
@@ -76,31 +77,31 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 fallbackText={shopName}
                 className="font-bold" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               />
-            </a>
+            </Link>
             <nav aria-label={String(t("nav.mainAriaLabel"))}>
               <Inline gap={6}>
                 {nav.map((section) => (
                   <div key={section.title} className="group relative">
-                    <a
+                    <Link
                       href={section.href}
                       className="inline-flex min-h-11 min-w-11 items-center font-medium"
                       data-token="--color-fg"
                     >
                       {section.title}
-                    </a>
+                    </Link>
                     {section.items && section.items.length > 0 && (
                   <div className="bg-panel border-border-2 absolute top-full start-0 hidden w-48 rounded-md border p-2 shadow-elevation-3 group-hover:block">
                     <Stack gap={1}>
                       <ul>
                         {section.items.map((item) => (
                           <li key={item.title}>
-                            <a
+                            <Link
                               href={item.href}
                               className="block rounded px-3 py-2 text-sm hover:bg-surface-3 min-h-11 min-w-11" /* i18n-exempt */
                               data-token="--color-fg"
                             >
                               {item.title}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                           </ul>

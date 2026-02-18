@@ -1,5 +1,6 @@
 "use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 import * as React from "react";
+import Link from "next/link";
 
 import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/i18n/locales";
@@ -60,9 +61,9 @@ export default function AnnouncementBar({ text, href, closable = false, classNam
   );
 
   return href ? (
-    <a href={href} className="block w-full min-h-11 min-w-11">{/* i18n-exempt: class names */}
+    <Link href={href} className="block w-full min-h-11 min-w-11">{/* i18n-exempt: class names */}
       {content}
-    </a>
+    </Link>
   ) : (
     content
   );

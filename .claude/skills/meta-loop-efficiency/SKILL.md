@@ -53,9 +53,14 @@ Additional: if `modules/` exists and any module exceeds 400 lines → **module-m
 - `phase_matches_any_md`: matches of anchored heading pattern `^#{1,6}\s+(Phase|Stage|Domain|Step)\s+[0-9]+` across ALL `.md` files
 - `dispatch_refs_any_md == 0` AND `phase_matches_any_md ≥ 3` → **dispatch-candidate**
 
+**Implementation note (H2):** Use `grep -h` to suppress filenames before counting — `grep -c` with a single file omits the `filename:` prefix, causing `awk -F:` to produce wrong counts. Correct pattern:
+```bash
+find "$skill" -name "*.md" -exec grep -hE "^#{1,6} (Phase|Stage|Domain|Step) [0-9]+" {} \; | wc -l
+```
+
 ### H3 — Wave dispatch adoption
 
-Applies only to skills that reference `lp-build` as their execution skill.
+Applies only to skills that reference `lp-build` as their execution skill AND have `phase_matches_any_md ≥ 3` (filters out skills that merely name lp-build as a downstream step).
 If `wave-dispatch-protocol.md` is not referenced in any `.md` file in the directory → **wave-candidate** (advisory).
 
 ## Ranking
@@ -82,11 +87,13 @@ Rank within each tier by `phase_matches_any_md` descending:
 - **medium**: lp-launch-qa, lp-design-qa, lp-experiment, lp-design-spec, lp-prioritize, lp-site-upgrade
 - **low**: lp-onboarding-audit, lp-brand-bootstrap, lp-readiness, lp-bos-sync, lp-baseline-merge, lp-measure, draft-outreach
 
+Any `lp-*` skill not listed above defaults to **low** tier. Add new skills here when they enter the loop.
+
 ## Delta-Aware Planning Anchor
 
 Always write the artifact. Emit planning anchor ONLY when findings are new:
 
-1. Locate previous artifact: most recent `docs/business-os/platform-capability/skill-efficiency-audit-*.md` by filename.
+1. Locate previous artifact: glob `docs/business-os/platform-capability/skill-efficiency-audit-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9].md`, sort lexicographically, take last. Files not matching this exact pattern are excluded (lexicographic order equals timestamp order for this format).
 2. For each skill flagged in List 1 or List 2:
    - Not in previous artifact → **new-to-HIGH** → emit planning anchor.
    - Already flagged → status: `known` (suppress anchor for that skill).

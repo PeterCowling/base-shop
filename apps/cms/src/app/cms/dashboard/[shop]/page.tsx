@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { buildMetrics } from "@cms/lib/analytics";
 
 import { Progress } from "@acme/design-system/atoms";
@@ -175,7 +176,11 @@ export default async function ShopDashboard(
           Domain: {domain} {domainStatus ? `(${domainStatus})` : ""}
         </p>
       )}
-      {campaigns.length > 0 && <CampaignFilter campaigns={campaigns} />}
+      {campaigns.length > 0 && (
+        <Suspense fallback={null}>
+          <CampaignFilter campaigns={campaigns} />
+        </Suspense>
+      )}
       {content}
     </div>
   );

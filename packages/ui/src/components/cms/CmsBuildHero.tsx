@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/CmsBuildHero.tsx
 
 import type { ReactNode } from "react";
+import Link from "next/link";
 
 import { Button } from "../../components/atoms";
 import { Grid } from "../../components/atoms/primitives/Grid";
@@ -84,7 +85,7 @@ export function CmsBuildHero({
                 asChild={Boolean(primaryCta.href)}
               >
                 {primaryCta.href ? (
-                  <a href={primaryCta.href}>{primaryCta.label}</a>
+                  <Link href={primaryCta.href}>{primaryCta.label}</Link>
                 ) : (
                   <span>{primaryCta.label}</span>
                 )}
@@ -99,7 +100,7 @@ export function CmsBuildHero({
                 asChild={Boolean(cta.href)}
               >
                 {cta.href ? (
-                  <a href={cta.href}>{cta.label}</a>
+                  <Link href={cta.href}>{cta.label}</Link>
                 ) : (
                   <span>{cta.label}</span>
                 )}

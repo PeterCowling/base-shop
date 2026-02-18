@@ -184,8 +184,8 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-23 | IMPLEMENT | Extract Octorate URL builder from Booking2Modal into shared utility + unit tests | 85% | M | Complete (2026-02-18) | — | TASK-27 |
 | TASK-24 | IMPLEMENT | Remove ModalType booking/booking2 + delete packages/ui booking modal primitives (scope expanded: all packages/ui consumers) | 85% | S | Complete (2026-02-18) | — | TASK-25,TASK-26 |
 | TASK-25 | IMPLEMENT | Remove brikette booking modal infrastructure (lazy-modals, payloadMap, global-modals, delete files) | 85% | M | Complete (2026-02-18) | TASK-24 | TASK-26,TASK-28 |
-| TASK-26 | IMPLEMENT | Migrate 9x openModal("booking") call sites to router.push/Link | 85% | M | Pending | TASK-22,TASK-24 | TASK-28 |
-| TASK-27 | IMPLEMENT | Migrate 2x openModal("booking2") in RoomCard to direct Octorate link (Decision B + E queryState) | 82% | M | Pending | TASK-22,TASK-23,TASK-24 | TASK-28 |
+| TASK-26 | IMPLEMENT | Migrate 9x openModal("booking") call sites to router.push/Link | 85% | M | Complete (2026-02-18) | TASK-22,TASK-24 | TASK-28 |
+| TASK-27 | IMPLEMENT | Migrate 2x openModal("booking2") in RoomCard to direct Octorate link (Decision B + E queryState) | 82% | M | Complete (2026-02-18) | TASK-22,TASK-23,TASK-24 | TASK-28 |
 | TASK-28 | IMPLEMENT | Delete ga4-09/ga4-10 extinct tests + update 7 affected modal-era tests | 85% | M | Pending | TASK-25,TASK-26,TASK-27 | TASK-29 |
 | TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Pending | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
 | TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Pending | TASK-29 | TASK-32,TASK-35 |
@@ -637,6 +637,12 @@ TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume 
 - **Edge Cases & Hardening:** Apartment rate code TODOs — `buildOctorateUrl` must return null for missing rate codes; RoomCard must not render Octorate link when null.
 - **Rollout / rollback:** Revert commit
 - **Documentation impact:** None
+- **Status:** Complete (2026-02-18)
+- **Build evidence:**
+  - `RoomCard.tsx`: removed `useModal`; added `useRouter`, `buildOctorateUrl`, `BOOKING_CODE`; added `queryState`/`datePickerRef` props; precomputes `nrOctorateUrl`/`flexOctorateUrl` useMemos; "valid" → `window.location.href = octorateUrl`; "absent"/url-fail → `router.push(/${lang}/book)`; actions `disabled` guards invalid + url-build-fail
+  - `RoomsSection.tsx` (scope expansion): `queryState` prop destructured; `onRoomSelect` navigates via `buildOctorateUrl`+`window.location.href` when "valid"; fallback to `/${lang}/book` for absent
+  - `BookPageContent.tsx`: passes `queryState="valid"` to `RoomsSection`
+  - TypeScript: 0 errors; no production `openModal("booking2")` calls remain
 
 ---
 

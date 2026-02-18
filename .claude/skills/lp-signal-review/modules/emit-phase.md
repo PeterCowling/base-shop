@@ -9,7 +9,7 @@ This module is invoked by `/lp-signal-review` after `audit-phase.md` produces a 
 3. Applies novelty gate and cap enforcement
 4. Emits the Signal Review artifact with all required sections
 
-**Draft-mode constraint (normative)**: This module must not call `/lp-fact-find` or any other skill. It must not create files other than the Signal Review artifact. It must not write to BOS API or modify prior Signal Review artifacts. Finding Brief stubs are embedded in the Signal Review only; promotion is always manual.
+**Draft-mode constraint (normative)**: This module must not call `/lp-fact-find`, `/meta-reflect`, or any other skill. It must not create files other than the Signal Review artifact. It must not write to BOS API or modify prior Signal Review artifacts. Finding Brief stubs and Process-Improvement Stubs are embedded in the Signal Review only; promotion is always manual.
 
 ---
 
@@ -74,6 +74,49 @@ If the fingerprint matches nothing in either dedup source: the finding is **nove
 After dedup and novelty filtering, take the top `max_findings` candidates from the ranked list (default: 3).
 
 Remaining eligible candidates (after cap) → log to **Skipped Findings** with reason `cap-exceeded`.
+
+---
+
+## Step 3.5: Generate Process-Improvement Stubs
+
+For each Finding Brief emitted (after cap), generate one Process-Improvement Stub. PI stubs
+are emitted in Section 8 of the Signal Review artifact alongside the findings they annotate.
+
+**Purpose distinction**:
+- Finding Brief → addresses the *symptom*: what artifact is wrong or missing in this run.
+- Process-Improvement Stub → addresses the *cause*: which process artifact, if updated, would
+  prevent this class of violation from recurring in future runs.
+
+### Root Cause Taxonomy
+
+Classify each finding's process root cause into exactly one category:
+
+| Code | Description | Typical fix target |
+|---|---|---|
+| `missing-upstream-gate` | A gate earlier in the loop would have caught this before S10 | `cmd-advance.md` GATE-* section |
+| `no-enforcement` | The principle is stated but nothing in the loop checks for it | `startup-loop/SKILL.md` or `cmd-advance.md` |
+| `doc-gap` | Guidance exists but is not surfaced at the right stage of the run | Relevant skill SKILL.md or module |
+| `wrong-canonical-path` | A gate check references a path that doesn't match how artifacts are created | `cmd-advance.md` gate check itself |
+| `cadence-failure` | A recurring action has no dispatch trigger or reminder in the loop | `startup-loop/SKILL.md` S10 dispatch |
+| `timing-mismatch` | Check is correct but triggers too late to be preventive | Gate trigger stage in `cmd-advance.md` |
+
+### PI Stub Generation Procedure
+
+For each emitted Finding Brief (in rank order, matching the Top Findings section):
+
+1. Identify the root cause class from the taxonomy above.
+2. Identify the specific process artifact(s) whose update would prevent this class of violation.
+   **Allowed targets** (process infrastructure, not business run artifacts):
+   - `.claude/skills/startup-loop/SKILL.md`
+   - `.claude/skills/startup-loop/modules/cmd-advance.md`
+   - `.claude/skills/lp-readiness/SKILL.md`
+   - Any `.claude/skills/lp-*/SKILL.md` or `modules/*.md`
+   - `.claude/skills/_shared/signal-principles.md`
+   Do **not** target `docs/` artifacts — those are the Finding Brief's domain.
+3. Describe the minimum change in one sentence per artifact.
+4. If the root cause is purely operator omission with no earlier catchable moment in the
+   process, note: `"No process change identified — operator action only."` and skip
+   the Suggested fix field.
 
 ---
 
@@ -277,4 +320,41 @@ To act on a finding:
 Suggested invocation after creating the file:
 
     /lp-fact-find docs/plans/<finding-slug>/fact-find.md
+
+To act on a Process-Improvement Stub:
+
+1. Review the Suggested fix field — it names the process artifact and the minimum change.
+2. Run `/meta-reflect <process-artifact-path>` to open the improvement workflow for that artifact.
+3. The PI stub does not generate a fact-find or plan file — it drives a direct process update.
+```
+
+---
+
+#### Section 8: Process-Improvement Stubs
+
+Emit this section even if stubs are sparse. One stub per Finding Brief emitted, in the same rank order.
+
+```markdown
+## Process-Improvement Stubs
+
+### PI Stub <N>: <principle name> — <root-cause class code>
+
+- Finding-fingerprint: `<fingerprint>` (see Finding <N> above)
+- Root-cause class: `<code>`
+- Why: <one sentence — which specific gap in the process enabled this violation>
+- Suggested fix:
+  - `<process-artifact-path>` — <minimum change that prevents this class of violation (one sentence)>
+- Promotion: `/meta-reflect <process-artifact-path>`
+```
+
+**If no process fix is identifiable** (pure operator omission, no catchable moment upstream):
+
+```markdown
+### PI Stub <N>: <principle name> — operator-action-only
+
+- Finding-fingerprint: `<fingerprint>`
+- Root-cause class: `operator-action-only`
+- Why: <one sentence — this is a behavioral gap, not a process design gap>
+- Suggested fix: No process artifact change identified. Operator action required.
+- Promotion: None.
 ```

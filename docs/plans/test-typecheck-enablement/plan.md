@@ -590,9 +590,9 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Affects:** `packages/platform-machine/tsconfig.test.typecheck.json` (new), `packages/platform-machine/src/__tests__/**`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-09
-- **Confidence:** 78%
-  - Implementation: 80% — same pattern as TASK-07; error count unknown
-  - Approach: 82% — state machine tests are typically well-typed (pure functions); likely fewer errors
+- **Confidence:** 84%
+  - Implementation: 84% — Phase 1 patterns proven; platform-machine parent has `rootDir: "."` but imports @platform-core source, so test tsconfig needs `rootDir: "../.."`. State machine tests likely fewer errors (<70) than platform-core.
+  - Approach: 85% — state machine tests are typically well-typed (pure functions); likely fewer errors
   - Impact: 85% — late-fee service and rental lifecycle tests are business-critical
 - **Acceptance:**
   - `packages/platform-machine/tsconfig.test.typecheck.json` created
@@ -620,8 +620,8 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Modified test file: `packages/platform-machine/src/__tests__/lateFeeService/testSetup.ts`
 
 #### Re-plan Update (2026-02-18)
-- Confidence: 78% unchanged (-> 84% conditional on TASK-06 evidence)
-- Key change: Root config showed 70 error occurrences but per-package context likely differs. platform-machine is more functional (state machine) so error count may be lower than platform-core.
+- Confidence: 78% → 84% (lifted at TASK-06 CHECKPOINT: Phase 1 patterns proven)
+- Key change: Root config showed 70 error occurrences. Per-package context: platform-machine parent has `rootDir: "."` (not `"src"`) but its path aliases reference other packages via monorepo-root-relative paths — test tsconfig still needs `rootDir: "../.."` to avoid TS6059 from transitive platform-core source imports. lateFeeService subdir in tests must be included.
 - Dependencies: unchanged
 - Validation contract: unchanged
 
@@ -887,11 +887,11 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - TASK-16: 90% × 1 = 90 (new)
   - TASK-04: 75% × 2 = 150 (deferred; included in weighted avg)
   - TASK-05: 90% × 1 = 90
-  - TASK-07: 78% × 2 = 156
-  - TASK-08: 78% × 2 = 156
+  - TASK-07: 84% × 2 = 168 (lifted from 78% at TASK-06 CHECKPOINT)
+  - TASK-08: 84% × 2 = 168 (lifted from 78% at TASK-06 CHECKPOINT)
   - TASK-09: 90% × 1 = 90
   - TASK-11: 72% × 3 = 216
   - TASK-12: 78% × 2 = 156
   - TASK-13: 90% × 1 = 90
-- Sum: 1548 / 19 = **81%**
-- Note: Improvement from 80% → 81% because TASK-02 (82%) replaced by TASK-15 (88%) + TASK-16 (90%)
+- Sum: 1572 / 19 = **83%**
+- Note: Improvement from 81% → 83% because TASK-07/08 lifted from 78% → 84% at TASK-06 CHECKPOINT

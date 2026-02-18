@@ -1,16 +1,17 @@
 ---
 name: lp-signal-review
-description: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles, scores each on Severity × Support axes, identifies top findings, and emits a Signal Review artifact with ranked Finding Briefs for operator promotion.
+description: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles, scores each on Severity × Support axes, identifies top findings, and emits a Signal Review artifact with ranked Finding Briefs (quality check — what went wrong this run) and Process-Improvement Stubs (continuous improvement — which process artifact caused it and what to change).
 ---
 
 # Signal Review Orchestrator
 
 `/lp-signal-review` is the audit and emission layer for weekly startup loop signal strengthening.
 
-This skill does three things:
+This skill does four things:
 1. Load run artifacts and principle definitions
 2. Score all ten principles via `modules/audit-phase.md`
-3. Emit ranked Finding Briefs and Signal Review artifact via `modules/emit-phase.md`
+3. Emit ranked Finding Briefs (quality check layer) via `modules/emit-phase.md`
+4. Emit Process-Improvement Stubs (continuous improvement layer) — one per finding, identifying which process artifact caused the violation and what minimum change prevents recurrence
 
 Keep this file thin. Do not embed principle definitions, scoring rubrics, or finding templates here.
 
@@ -46,6 +47,7 @@ Keep this file thin. Do not embed principle definitions, scoring rubrics, or fin
 ### Prohibited actions
 
 - Auto-spawning `/lp-fact-find` calls. Finding Briefs are stubs within the Signal Review; operator promotes manually.
+- Auto-spawning `/meta-reflect` calls. Process-Improvement Stubs are stubs within the Signal Review; operator promotes manually by running `/meta-reflect <process-artifact-path>`.
 - Creating any files other than the Signal Review artifact.
 - Code changes, plan edits, BOS API writes (v1).
 - Destructive shell or git commands.
@@ -63,7 +65,7 @@ Keep this file thin. Do not embed principle definitions, scoring rubrics, or fin
 Execute phases in sequence:
 
 1. **`modules/audit-phase.md`** — load stage artifacts; score all ten principles; produce scored principles table
-2. **`modules/emit-phase.md`** — dedup; apply novelty gate and cap; emit Signal Review artifact with Finding Briefs
+2. **`modules/emit-phase.md`** — dedup; apply novelty gate and cap; emit Signal Review artifact with Finding Briefs (quality check) and Process-Improvement Stubs (continuous improvement — one per finding, `/meta-reflect`-promotable)
 
 ## Self-Check Gate
 

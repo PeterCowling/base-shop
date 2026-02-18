@@ -2,6 +2,9 @@ import type { ComponentProps } from "react";
 
 import RoomsSectionBase from "@acme/ui/organisms/RoomsSection";
 
+import { BOOKING_CODE } from "@/context/modal/constants";
+import { roomsData } from "@/data/roomsData";
+import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
 
 export type RoomsSectionBookingQuery = {
@@ -15,19 +18,62 @@ type RoomsSectionProps = {
   lang?: string;
   bookingQuery?: RoomsSectionBookingQuery;
   itemListId?: ItemListId;
+  /**
+   * Controls CTA navigation behavior for room card actions.
+   * - "valid": navigate directly to Octorate booking URL (dates are set and valid)
+   * - "invalid": actions are disabled (no navigation)
+   * - "absent" (default): navigate to /{lang}/book
+   */
+  queryState?: "valid" | "invalid" | "absent";
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
 
-export function RoomsSection(props: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
+export function RoomsSection({
+  queryState,
+  ...props
+}: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
   const onRoomSelect = (ctx: { roomSku: string; plan: RatePlan; index: number }): void => {
-    if (!props.itemListId) return;
-    fireSelectItem({
-      itemListId: props.itemListId,
-      roomSku: ctx.roomSku,
-      plan: ctx.plan,
-      index: ctx.index,
-    });
+    if (props.itemListId) {
+      fireSelectItem({
+        itemListId: props.itemListId,
+        roomSku: ctx.roomSku,
+        plan: ctx.plan,
+        index: ctx.index,
+      });
+    }
+
+    if (typeof window === "undefined") return;
+
+    if (queryState === "valid") {
+      // Navigate directly to Octorate using the booking query dates
+      const room = roomsData.find((r) => r.id === ctx.roomSku);
+      if (room) {
+        const octorateRateCode =
+          ctx.plan === "nr" ? room.rateCodes.direct.nr : room.rateCodes.direct.flex;
+        const checkin = props.bookingQuery?.checkIn ?? "";
+        const checkout = props.bookingQuery?.checkOut ?? "";
+        const pax = parseInt(props.bookingQuery?.pax ?? "1", 10) || 1;
+        const result = buildOctorateUrl({
+          checkin,
+          checkout,
+          pax,
+          plan: ctx.plan,
+          roomSku: ctx.roomSku,
+          octorateRateCode,
+          bookingCode: BOOKING_CODE,
+        });
+        if (result.ok) {
+          window.location.href = result.url;
+          return;
+        }
+      }
+    }
+
+    if (queryState !== "invalid") {
+      const lang = props.lang ?? "en";
+      window.location.href = `/${lang}/book`;
+    }
   };
 
   return (

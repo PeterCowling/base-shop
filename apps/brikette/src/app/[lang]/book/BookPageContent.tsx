@@ -3,7 +3,7 @@
 // src/app/[lang]/book/BookPageContent.tsx
 // Booking landing page used for direct landings (SEO/sitemap/no-JS fallback).
 
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSearchParams } from "next/navigation";
 
@@ -17,7 +17,7 @@ import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { fireViewItemList } from "@/utils/ga4-events";
+import { fireSearchAvailability, fireViewItemList } from "@/utils/ga4-events";
 
 type Props = {
   lang: AppLanguage;
@@ -57,6 +57,10 @@ function writeCanonicalBookingQuery(next: { checkin: string; checkout: string; p
   window.history.replaceState(null, "", url.toString());
 }
 
+function isValidSearch(checkIn: string, checkOut: string): boolean {
+  return checkIn.length > 0 && checkOut.length > 0 && checkOut > checkIn;
+}
+
 function BookPageContent({ lang }: Props): JSX.Element {
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({
@@ -72,6 +76,16 @@ function BookPageContent({ lang }: Props): JSX.Element {
   const initialCheckin = readQueryDate(params, ["checkin"], todayIso);
   const initialCheckout = readQueryDate(params, ["checkout"], getDatePlusTwoDays(initialCheckin));
   const initialPax = readQueryNumber(params, ["pax", "guests", "adults"], 1);
+
+  // Dedupe ref: tracks the search key of the last fired search_availability event.
+  const lastSearchKeyRef = useRef<string | null>(null);
+  // Capture initial URL params at component init time for the mount-only effect.
+  // Only fire on mount when the user explicitly provided checkin/checkout in the URL.
+  const mountedSearchRef = useRef(
+    params?.has("checkin") && params?.has("checkout") && isValidSearch(initialCheckin, initialCheckout)
+      ? { checkin: initialCheckin, checkout: initialCheckout, pax: initialPax }
+      : null,
+  );
 
   const [checkin, setCheckin] = useState(initialCheckin);
   const [checkout, setCheckout] = useState(initialCheckout);
@@ -100,6 +114,20 @@ function BookPageContent({ lang }: Props): JSX.Element {
       checkout: normalizedCheckout,
       pax: normalizedPax,
     });
+
+    // TC-01: fire search_availability on submit; dedupe repeated identical queries.
+    if (isValidSearch(normalizedCheckin, normalizedCheckout)) {
+      const key = `${normalizedCheckin}|${normalizedCheckout}|${normalizedPax}`;
+      if (lastSearchKeyRef.current !== key) {
+        lastSearchKeyRef.current = key;
+        fireSearchAvailability({
+          source: "booking_widget",
+          checkin: normalizedCheckin,
+          checkout: normalizedCheckout,
+          pax: normalizedPax,
+        });
+      }
+    }
   }, [checkin, checkout, minCheckout, pax, todayIso]);
 
   useEffect(() => {
@@ -107,7 +135,19 @@ function BookPageContent({ lang }: Props): JSX.Element {
       itemListId: "book_rooms",
       rooms: roomsData,
     });
-  }, []);
+    // TC-03: fire search_availability on mount when URL params provide a valid date range.
+    const initial = mountedSearchRef.current;
+    if (initial) {
+      const key = `${initial.checkin}|${initial.checkout}|${initial.pax}`;
+      lastSearchKeyRef.current = key;
+      fireSearchAvailability({
+        source: "booking_widget",
+        checkin: initial.checkin,
+        checkout: initial.checkout,
+        pax: initial.pax,
+      });
+    }
+  }, []); // mount only — initial URL params captured in mountedSearchRef
 
   return (
     <>

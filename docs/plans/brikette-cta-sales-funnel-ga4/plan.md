@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-40, TASK-41 complete — Wave 7 in progress)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-40, TASK-41 complete — Wave 7 in progress)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -191,7 +191,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-32,TASK-35 |
 | TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Complete (2026-02-18) | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
 | TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Complete (2026-02-18) | TASK-29,TASK-30,TASK-31,TASK-15 | — |
-| TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Pending | TASK-29,TASK-30,TASK-15 | — |
 | TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
@@ -871,7 +871,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
   - `[readonly] apps/brikette/src/utils/ga4-events.ts`
@@ -888,9 +888,12 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - **Search-key dedupe:** deduplication key must include `checkin + checkout + pax`, not just navigation/session. When user changes dates and re-submits on the same page, `search_availability` fires again (and `view_item_list` should also re-fire — coordinate with existing TASK-07 dedupe so the post-search list impression is not suppressed by the initial-load impression)
   - Dedupe guard: does not fire twice for the same `(checkin, checkout, pax)` triple in one render cycle
 - **Validation contract:**
-  - TC-01: Submit with valid dates → gtag called with `search_availability` + correct nights/lead_time_days/pax
-  - TC-02: Submit with invalid dates → gtag NOT called
-  - TC-03: Mount with valid URL params → gtag called once
+  - TC-01: Submit with valid dates → gtag called with `search_availability` + correct nights/lead_time_days/pax ✓
+  - TC-02: Mount with no URL params → gtag NOT called on mount ✓
+  - TC-03: Mount with valid URL params → gtag called once ✓
+- **Build evidence (2026-02-18):**
+  - `BookPageContent.tsx`: added `useRef`, `isValidSearch` helper, `lastSearchKeyRef` (dedupe), `mountedSearchRef` (URL-param-present gate); mount effect fires `search_availability` only when `params.has("checkin") && params.has("checkout") && isValidSearch(...)`; `applyQuery` fires on submit with key-dedupe.
+  - Test: `ga4-33-book-page-search-availability.test.tsx` — 3/3 pass (TC-01 submit, TC-02 no-params, TC-03 mount).
 
 ---
 

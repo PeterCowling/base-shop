@@ -23,8 +23,14 @@ module.exports = {
       },
     ],
   },
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "mjs", "node"],
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
+    "^@acme/lib$": "<rootDir>/../../packages/lib/src/index.ts",
+    "^@acme/lib/(.*)$": "<rootDir>/../../packages/lib/src/$1",
+    "^@acme/zod-utils/zodErrorMap$": "<rootDir>/../../packages/zod-utils/src/zodErrorMap.ts",
+    "^@acme/zod-utils/(.*)$": "<rootDir>/../../packages/zod-utils/src/$1",
+    "^@acme/zod-utils$": "<rootDir>/../../packages/zod-utils/src/index.ts",
   },
   modulePathIgnorePatterns: [
     "<rootDir>/dist/",

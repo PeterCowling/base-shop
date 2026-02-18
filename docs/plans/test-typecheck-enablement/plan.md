@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (Phases 1–3 complete: TASK-07–TASK-13 done; Phase 4 seeded: TASK-17–TASK-21 + TASK-04/05 pending)
+Last-updated: 2026-02-18 (Phases 1–3 complete; TASK-17 complete; TASK-18/19/20/21 + TASK-04/05 pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -105,7 +105,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Complete (2026-02-18) | TASK-10         | TASK-13         |
 | TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Complete (2026-02-18) | TASK-11, TASK-12| TASK-14         |
 | TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Complete (2026-02-18) | TASK-13         | TASK-17         |
-| TASK-17     | IMPLEMENT   | Fix packages/ui tsconfig.test.typecheck.json exclude bug | 92%        | S      | Pending | TASK-14         | TASK-20         |
+| TASK-17     | IMPLEMENT   | Fix packages/ui tsconfig.test.typecheck.json exclude bug | 92%        | S      | Complete (2026-02-18) | TASK-14         | TASK-20         |
 | TASK-18     | IMPLEMENT   | packages/auth: create tsconfig + fix errors              | 80%        | M      | Pending | TASK-14         | TASK-20         |
 | TASK-19     | IMPLEMENT   | packages/email: create tsconfig + fix errors             | 80%        | M      | Pending | TASK-14         | TASK-20         |
 | TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Pending | TASK-17, TASK-18, TASK-19 | TASK-21 |
@@ -911,7 +911,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `packages/ui/tsconfig.test.typecheck.json`
 - **Depends on:** TASK-14
 - **Blocks:** TASK-20
@@ -924,6 +924,10 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** None: S effort
 - **Rollout / rollback:** Revert single file if errors surface
 - **Documentation impact:** None
+- **Build evidence (2026-02-18):**
+  - Removed `"__tests__/**"` from `exclude` array in `packages/ui/tsconfig.test.typecheck.json`
+  - Fix exposed 1 real error: TS2339 in `useProductFilters.test.tsx` — `as any` cast on `products` prevented `T=ProductPublication` inference; removed cast, `filteredRows.map(p => p.id)` now resolves correctly
+  - `TYPECHECK_FILTER=packages/ui` → 0 errors; 7 useProductFilters tests pass, no regressions
 
 ---
 

@@ -94,6 +94,21 @@
       "@themes/*": [
         "../../packages/themes/*/src", "../../packages/themes/*/dist"
       ],
+      "@themes/bcd/tailwind-tokens": [
+        "../../packages/themes/bcd/src/tailwind-tokens.ts"
+      ],
+      "@themes/brandx/tailwind-tokens": [
+        "../../packages/themes/brandx/src/tailwind-tokens.ts"
+      ],
+      "@themes/dark/tailwind-tokens": [
+        "../../packages/themes/dark/src/tailwind-tokens.ts"
+      ],
+      "@themes/dummy/tailwind-tokens": [
+        "../../packages/themes/dummy/src/tailwind-tokens.ts"
+      ],
+      "@themes/prime/tailwind-tokens": [
+        "../../packages/themes/prime/src/tailwind-tokens.ts"
+      ],
       "@platform-core": [
         "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index"
       ],
@@ -190,6 +205,7 @@
     "instrumentation.ts",
     "src/**/*",
     "src/**/*.json",
+    "../../packages/themes/*/src/**/*.ts",
     ".next/types/**/*.ts",
     "jest.env.ts"
   ],

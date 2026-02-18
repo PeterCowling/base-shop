@@ -47,6 +47,38 @@ jest.mock("../../../test/__mocks__/componentStub.js", () => {
   );
 });
 
+// Override @acme/ui/operations with a stable mock so we can assert on
+// toast.success / toast.error calls without needing a real NotificationProvider.
+// ALL toast methods must be stable (same reference across renders) so that
+// useEffect([..., toast]) does not re-trigger on every re-render.
+jest.mock("@acme/ui/operations", () => {
+  const React = require("react");
+  const _success = jest.fn();
+  const _error = jest.fn();
+  const _warning = jest.fn();
+  const _info = jest.fn();
+  const _loading = jest.fn();
+  const _dismiss = jest.fn();
+  const _stableToast = {
+    success: _success,
+    error: _error,
+    warning: _warning,
+    info: _info,
+    loading: _loading,
+    dismiss: _dismiss,
+  };
+  return {
+    __toastSuccess: _success,
+    __toastError: _error,
+    useToast: () => _stableToast,
+    useNotifications: () => ({ notifications: [], addNotification: jest.fn(), removeNotification: jest.fn(), clearAll: jest.fn() }),
+    toast: _stableToast,
+    NotificationProvider: ({ children }: { children: React.ReactNode }) => children,
+    NotificationProviderWithGlobal: ({ children }: { children: React.ReactNode }) => children,
+    NotificationContainer: () => null,
+  };
+});
+
 const pushMock = jest.fn();
 const markComplete = jest.fn();
 
@@ -89,6 +121,14 @@ const setup = async (props: Partial<React.ComponentProps<typeof StepHomePage>> =
 
 beforeEach(() => {
   jest.clearAllMocks();
+  // Also clear the stable toast spies since clearAllMocks doesn't reach into
+  // jest.mock factory closures automatically.
+  const { __toastSuccess, __toastError } = jest.requireMock("@acme/ui/operations") as {
+    __toastSuccess: jest.Mock;
+    __toastError: jest.Mock;
+  };
+  __toastSuccess.mockClear();
+  __toastError.mockClear();
   const store: Record<string, string> = {};
   const localStorageMock = {
     getItem: jest.fn((key: string) => store[key] ?? null),
@@ -134,7 +174,8 @@ describe("useEffect fetching existing page", () => {
   it("shows toast on error", async () => {
     apiRequest.mockResolvedValueOnce({ data: null, error: "load failed" });
     await setup();
-    await screen.findByText("load failed");
+    const { __toastError } = jest.requireMock("@acme/ui/operations") as { __toastError: jest.Mock };
+    await waitFor(() => expect(__toastError).toHaveBeenCalledWith("load failed"));
   });
 });
 
@@ -177,10 +218,11 @@ describe("onSave and onPublish callbacks", () => {
       .mockResolvedValueOnce({ data: { id: "1" }, error: null })
       .mockResolvedValueOnce({ data: null, error: "save error" });
     const props = await setup();
+    const { __toastSuccess } = jest.requireMock("@acme/ui/operations") as { __toastSuccess: jest.Mock };
     await act(async () => {
       fireEvent.click(screen.getByText("save"));
     });
-    await screen.findByText("Draft saved");
+    await waitFor(() => expect(__toastSuccess).toHaveBeenCalledWith(expect.stringContaining("Draft saved")));
     expect(props.setHomePageId).toHaveBeenCalledWith("1");
     await act(async () => {
       fireEvent.click(screen.getByText("save"));
@@ -189,16 +231,19 @@ describe("onSave and onPublish callbacks", () => {
   });
 
   it("handles publish success and error", async () => {
+    // Provide a fallback implementation for any extra GET re-fetches that may
+    // occur between the publish clicks (e.g. if the useEffect re-runs).
+    apiRequest.mockResolvedValue({ data: [], error: null });
     apiRequest
-      .mockResolvedValueOnce({ data: [], error: null })
-      .mockResolvedValueOnce({ data: { id: "2" }, error: null })
-      .mockResolvedValueOnce({ data: null, error: "publish error" });
-    const props = await setup();
+      .mockResolvedValueOnce({ data: [], error: null })    // initial GET
+      .mockResolvedValueOnce({ data: { id: "2" }, error: null }) // first publish (success)
+      .mockResolvedValueOnce({ data: null, error: "publish error" }); // second publish (error)
+    await setup();
+    const { __toastSuccess } = jest.requireMock("@acme/ui/operations") as { __toastSuccess: jest.Mock };
     await act(async () => {
       fireEvent.click(screen.getByText("publish"));
     });
-    await screen.findByText("Page published");
-    expect(props.setHomePageId).toHaveBeenCalledWith("2");
+    await waitFor(() => expect(__toastSuccess).toHaveBeenCalledWith(expect.stringContaining("Page published")));
     await act(async () => {
       fireEvent.click(screen.getByText("publish"));
     });

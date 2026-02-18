@@ -1119,3 +1119,131 @@ Deals are not products — they are promotional offers that redirect users to th
   3. **Route truth verification (Decision A Task 0):** whether `router.push("/it/prenota")` works on static export determines the URL strategy for all call site migrations. If this is not pre-verified manually before `/lp-plan`, the plan must sequence Task 0 as a hard gate before any call site migration task.
 - Sequencing invariant: Track E (modal removal) must sequence before Tracks A, B, C. Within Track E: Task 0 (route truth) → Task 30 (URL builder extraction) → Tasks 34/35 (call site migrations).
 - Recommended next step: Proceed to `/lp-plan`. Confirm open questions (deals, carousel, route truth) before task generation if possible — otherwise defaults apply and sequencing guards handle uncertainty.
+
+---
+
+## TASK-20 Decision Memo: /book JSON-LD Field List
+
+**Date:** 2026-02-18
+**Status:** Resolved — unblocks TASK-13
+
+### 1. `@type` Strategy
+
+**Decision: `@type: "Hostel"` (already in production)**
+
+`Hostel` is a schema.org type that extends `LodgingBusiness` → `LocalBusiness` → `Organization`. It is more semantically precise for the property type and is already used in `buildHotelNode()` (`apps/brikette/src/utils/schema/builders.ts:62`) and `BookStructuredData.tsx` (`apps/brikette/src/components/seo/BookStructuredData.tsx:27`).
+
+**Rationale:**
+- `Hostel` is the most specific schema.org type for a property offering shared-room/hostel accommodation.
+- Google does not currently offer a distinct Rich Result format for `Hostel` vs `LodgingBusiness`, so there is no eligibility tradeoff.
+- The type is already used throughout the codebase — no migration needed.
+
+**Verdict:** No change required. `@type: "Hostel"` is locked.
+
+### 2. Minimum Field Set for /book JSON-LD
+
+`BookStructuredData.tsx` already clones from `buildHotelNode()` and strips ineligible fields. The confirmed field set (post-strip) is:
+
+| Field | Type | Source |
+|---|---|---|
+| `@context` | `"https://schema.org"` | constant |
+| `@type` | `"Hostel"` | constant |
+| `@id` | `${BASE_URL}/#hotel` | `HOTEL_ID` constant |
+| `name` | `"Hostel Brikette"` | static |
+| `description` | static description string | static |
+| `url` | `BASE_URL` | env-resolved constant |
+| `priceRange` | `"€55 – €300"` | static |
+| `email` | `CONTACT_EMAIL` | hotel config |
+| `address` | `PostalAddress` | static (street, locality, postal, country) |
+| `geo` | `GeoCoordinates` | static (lat/lng) |
+| `amenityFeature` | `LocationFeatureSpecification[]` | static (7 items) |
+| `openingHoursSpecification` | 24/7, all days | static |
+| `checkinTime` | `"15:30"` | static |
+| `checkoutTime` | `"10:30"` | static |
+| `sameAs` | `string[]` | static (Google Maps, Apple Maps, Instagram) |
+| `hasMap` | Google Maps CID URL | static |
+| `availableLanguage` | `string[]` | static (18 locales) |
+| `image` | `ImageObject[]` | `IMAGE_MANIFEST` (4 images with dimensions) |
+| `mainEntityOfPage` | `${BASE_URL}/${lang}/book` | derived from lang prop |
+| `isPartOf` | `{ "@id": WEBSITE_ID }` | `${BASE_URL}/#website` |
+
+**Explicitly omitted:**
+- `aggregateRating` — third-party review badges (Hostelworld, Booking.com) are not eligible for schema.org structured data markup. Only first-party reviews qualify. Omitting avoids a Google Quality Reviewer flag.
+- `additionalProperty` — contains `ratingsSnapshotDate` metadata, which is only meaningful alongside `aggregateRating`. Removed with it.
+- `publisher` — included on the Home graph (Organization markup); not needed on the /book page node.
+- `inLanguage` — not required for correctness; omitted to keep the node lean.
+
+### 3. Absolute URL Source
+
+**Decision: Use `BASE_URL` from `@/config/site` (no new helper needed)**
+
+The plan spec mentioned creating a `getSiteBaseUrl()` helper backed by `NEXT_PUBLIC_SITE_URL`. Codebase inspection shows this is unnecessary:
+
+- `BASE_URL` is exported from `@/config/site` → re-exported from `@/config/baseUrl.ts`
+- `baseUrl.ts` already implements a full resolution chain: `NEXT_PUBLIC_BASE_URL` → `NEXT_PUBLIC_SITE_DOMAIN` → `NEXT_PUBLIC_PUBLIC_DOMAIN` → `NEXT_PUBLIC_DOMAIN` → platform previews (Netlify/Vercel) → fallback production domain
+- The constant is resolved at module initialization — no runtime `headers()` call needed
+- `headers().get("host")` is correctly ruled out: static export has no server runtime
+
+**Single source of truth:** `import { BASE_URL } from "@/config/site"` — already in use in `BookStructuredData.tsx`, `builders.ts`, and `types.ts`.
+
+**Enforcement pattern:**
+```ts
+const pageUrl = `${BASE_URL}/${lang}/book`;  // already in BookStructuredData.tsx:23
+```
+
+No additional `getSiteBaseUrl()` helper required. `BASE_URL` is the single source.
+
+### 4. Canonical URL Policy
+
+**Decision (aligned with TASK-22 Decision A verdict):**
+
+- Canonical slug for the book page in all internal navigation: `/{lang}/book`
+- `<link rel="canonical">` must point to `${BASE_URL}/${lang}/book` for all locales
+- JSON-LD `url` field: `BASE_URL` (hostel entity URL, not page-specific)
+- JSON-LD `mainEntityOfPage` field: `${BASE_URL}/${lang}/book` (page-specific, set via `pageUrl` opt)
+
+**Note on localized slugs (Cloudflare `_redirects`):** Localized slugs (e.g., `/it/prenota`) are HTTP-level 200-rewrites at the CDN edge only. The Next.js App Router knows nothing of them — `router.push("/it/prenota")` would 404 on static export. Therefore, canonical is always `/${lang}/book`. The CDN rewrite is a vanity URL only; the canonical link tag should always use `/book`.
+
+### 5. Snapshot Test Approach
+
+**Pattern:** Unit test using `buildHotelNode()` + manual clone + strip (same operation as `BookStructuredData.tsx`), then assert key fields.
+
+**Test file:** `apps/brikette/src/test/components/book-jsonld-contract.test.ts`
+
+**Minimum assertions for TASK-13:**
+```ts
+const base = buildHotelNode({ pageUrl: "https://hostel-positano.com/en/book", lang: "en" });
+const hostel = { ...base, "@id": HOTEL_ID, "@type": "Hostel" };
+delete hostel.aggregateRating;
+delete hostel.additionalProperty;
+
+expect(hostel["@type"]).toBe("Hostel");
+expect(hostel.aggregateRating).toBeUndefined();
+expect(hostel.additionalProperty).toBeUndefined();
+expect(hostel.mainEntityOfPage).toBe("https://hostel-positano.com/en/book");
+expect(hostel["@id"]).toContain("/#hotel");
+expect(typeof hostel.checkinTime).toBe("string");
+expect(typeof hostel.checkoutTime).toBe("string");
+expect(Array.isArray(hostel.image)).toBe(true);
+```
+
+**Render test (optional for TASK-13):** render `<BookStructuredData lang="en" />`, query for `script[type="application/ld+json"]`, parse innerHTML as JSON, assert the same fields. This validates the component end-to-end rather than just the builder.
+
+### 6. Validation Tooling
+
+- **Schema Markup Validator** (validator.schema.org): paste rendered JSON-LD output; confirm no errors or warnings for the `Hostel` type definition. This is the correctness gate.
+- **Rich Results Test** (search.google.com/test/rich-results): use for eligibility checks only. `Hostel` does not have a dedicated Rich Result format; `FAQPage` (if added in TASK-13) does. Do not rely on Rich Results Test for `Hostel` correctness — it checks eligibility, not schema.org validity.
+- **Local validation:** `pnpm --filter brikette test book-jsonld-contract` after TASK-13.
+
+### 7. Status of `BookStructuredData.tsx`
+
+The component is already implemented correctly. TASK-13 needs to:
+1. Import and render `<BookStructuredData lang={lang} />` on the `/book` page (if not already done)
+2. Add the `book-jsonld-contract.test.ts` snapshot/contract test
+3. Confirm `<link rel="canonical">` is set to `${BASE_URL}/${lang}/book` in page metadata
+
+No changes to `BookStructuredData.tsx`, `builders.ts`, or `types.ts` are required for TASK-13 to proceed.
+
+---
+
+**Verdict:** All TASK-20 acceptance criteria satisfied. TASK-13 is unblocked.

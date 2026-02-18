@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete — Wave 7 nearly complete)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete — Wave 7 nearly complete; TASK-20 complete — TASK-13 now unblocked)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -178,7 +178,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 |---|---|---|---:|---:|---|---|---|
 | TASK-13 | IMPLEMENT | Upgrade /book page (conversion content + JSON-LD + deal banner + i18n) | 80% | L | Pending | TASK-20,TASK-29 | — |
 | TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Pending | TASK-21,TASK-29 | — |
-| TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Pending | TASK-29 | TASK-13 |
+| TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-13 |
 | TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Pending | TASK-29 | TASK-14 |
 | TASK-22 | INVESTIGATE | Route truth verification: test in-app nav for localized slugs on static export | 90% | S | Complete (2026-02-18) | — | TASK-26,TASK-27 |
 | TASK-23 | IMPLEMENT | Extract Octorate URL builder from Booking2Modal into shared utility + unit tests | 85% | M | Complete (2026-02-18) | — | TASK-27 |
@@ -369,28 +369,19 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Skill:** /lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Depends on:** TASK-29
 - **Blocks:** TASK-13
 - **Confidence:** 85%
-  - Implementation: 85% — requires checking schema.org for `Hostel` vs `LodgingBusiness` type definitions.
-  - Approach: 85% — decision is clear (use `Hostel`; omit `aggregateRating`; use static fields only).
-  - Impact: 85% — prevents rework/bikeshedding on JSON-LD structure.
-- **Questions to answer:**
-  - `@type: "Hostel"` vs `"LodgingBusiness"` — which is more specific and supported?
-  - Minimum required field set: `name`, `address`, `geo`, `url`, `image`, `checkinTime`, `checkoutTime`, `amenityFeature`, `priceRange`, `potentialAction: ReserveAction` — is this correct?
-  - How to validate: Schema Markup Validator for schema.org; Rich Results Test for eligibility (not correctness)
-  - `aggregateRating`: confirm third-party badges (Hostelworld, Booking.com) are not eligible for structured data markup
-  - **Absolute URL source (static export constraint):** `headers().get("host")` is NOT available in static export (no server runtime). Lock to `NEXT_PUBLIC_SITE_URL` environment variable + a single `getSiteBaseUrl()` helper. This helper is the single source of truth for all absolute URLs in JSON-LD and canonical tags. Enforce: `new URL(path, getSiteBaseUrl()).toString()`.
-  - **Canonical URL policy:** if Decision A results in both `/en/book` and `/en/prenota` being accessible (even temporarily), define which is canonical and set `<link rel="canonical">` + JSON-LD `url` field consistently to that choice. Specify this policy so TASK-13 and TASK-22 are coordinated.
-- **Acceptance:**
-  - `@type` strategy chosen with rationale
-  - Minimum field set enumerated (static vs derived, how each is sourced)
-  - Absolute URL source decided: `NEXT_PUBLIC_SITE_URL` + `getSiteBaseUrl()` helper documented; `headers().get("host")` ruled out (static export)
-  - Canonical URL policy documented (which slug is canonical if both exist post-Decision A)
-  - Snapshot test approach confirmed (what the `<script>` output must contain)
-  - Validation tooling documented
-- **Validation contract:** Decision memo written and reviewed; TASK-13 can proceed.
+- **Build evidence (2026-02-18):**
+  - Decision memo appended to `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` (§ TASK-20 Decision Memo)
+  - `@type: "Hostel"` confirmed — already in `buildHotelNode()` (`builders.ts:62`) and `BookStructuredData.tsx:27`; no change needed
+  - Minimum field set enumerated (19 fields; table in memo); `aggregateRating` + `additionalProperty` omitted with rationale
+  - Absolute URL source: `BASE_URL` from `@/config/site` (resolves via `NEXT_PUBLIC_BASE_URL` → `NEXT_PUBLIC_SITE_DOMAIN` chain); no new helper needed; `headers().get("host")` ruled out
+  - Canonical URL policy: `${BASE_URL}/${lang}/book` for both `<link rel="canonical">` and `mainEntityOfPage`; localized slugs are CDN-only vanity URLs
+  - Snapshot test approach: `book-jsonld-contract.test.ts` using `buildHotelNode()` + clone + strip; 8 key assertions listed
+  - Validation tooling: Schema Markup Validator (correctness gate) + Rich Results Test (eligibility only)
+  - `BookStructuredData.tsx` already correctly implemented; TASK-13 only needs to import/render it + add the contract test
 
 ---
 

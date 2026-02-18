@@ -94,6 +94,11 @@ export interface TemplateRankResult {
   reason: string;
 }
 
+export interface PerQuestionRankEntry {
+  question: string;
+  candidates: TemplateCandidate[];
+}
+
 const DEFAULT_LIMIT = 3;
 const AUTO_THRESHOLD = 80;
 const SUGGEST_THRESHOLD = 25;
@@ -325,4 +330,43 @@ export function rankTemplates(
     .filter((candidate): candidate is TemplateCandidate => candidate !== null);
 
   return applyThresholds(candidates);
+}
+
+/**
+ * Rank templates independently for each question/request text.
+ * Returns one entry per question with its BM25 candidate list.
+ * Uses the same expandQuery + BM25 index as rankTemplates but builds
+ * a fresh query for each question independently, enabling per-topic
+ * template selection rather than a single combined-intent query.
+ *
+ * A single shared BM25 index is built once from all templates (not rebuilt
+ * per question) to avoid redundant work. The limit parameter caps how many
+ * candidates are returned per question (defaults to DEFAULT_LIMIT).
+ */
+export function rankTemplatesPerQuestion(
+  questions: Array<{ text: string }>,
+  templates: EmailTemplate[],
+  limit?: number
+): PerQuestionRankEntry[] {
+  const effectiveLimit = limit ?? DEFAULT_LIMIT;
+  const index = buildIndex(templates);
+  const templatesBySubject = new Map(
+    templates.map((template) => [template.subject, template])
+  );
+
+  return questions.map((question) => {
+    const query = expandQuery(question.text);
+    const queryTerms = new Set(stemmedTokenizer.tokenize(query));
+    const results = index.search(query, effectiveLimit);
+
+    const candidates = results
+      .map((result) => {
+        const template = templatesBySubject.get(result.id);
+        if (!template) return null;
+        return buildCandidate(template, result, queryTerms);
+      })
+      .filter((candidate): candidate is TemplateCandidate => candidate !== null);
+
+    return { question: question.text, candidates };
+  });
 }

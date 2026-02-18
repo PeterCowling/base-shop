@@ -8,7 +8,7 @@ import { CfImage } from "@acme/ui/atoms/CfImage";
 const IMAGES = [
   "/img/interno1.webp",
   "/img/interno2.webp",
-  "/img/hostel-communal-terrace-lush-view.webp",
+  "/img/apt2.jpg",
 ] as const;
 
 type GridProps = React.ComponentProps<"div">;

@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-05 complete; TASK-06 promoted to 80% (eligible); TASK-12+TASK-13 added (INVESTIGATE precursors); TASK-07 regressed to 70% (needs TASK-12+TASK-06); TASK-08 at 75% (needs TASK-13)
+Build-Progress: TASK-00..TASK-06 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-07 at 70% (needs replan — TASK-12 done); TASK-08 at 75% (needs replan — TASK-13 done)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -88,14 +88,14 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-03 | IMPLEMENT | Add missing templates and enforce template-link/placeholder lint gates | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-09 |
 | TASK-04 | IMPLEMENT | Introduce additive multi-scenario action plan model with dominant/exclusive semantics | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-08, TASK-09 |
 | TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-07, TASK-09 |
-| TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-09 |
+| TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04 | TASK-07, TASK-09 |
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 70% | M | Pending | TASK-05, TASK-06, TASK-12 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 75% | M | Pending | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
-| TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Pending | TASK-05 | TASK-07 |
-| TASK-13 | INVESTIGATE | Verify thread snippet sufficiency for context deduplication; define expanded request pattern set and false-positive rate | 80% | S | Pending | TASK-04 | TASK-08 |
+| TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Complete (2026-02-18) | TASK-05 | TASK-07 |
+| TASK-13 | INVESTIGATE | Verify thread snippet sufficiency for context deduplication; define expanded request pattern set and false-positive rate | 80% | S | Complete (2026-02-18) | TASK-04 | TASK-08 |
 
 ## Parallelism Guide
 
@@ -358,7 +358,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/utils/template-ranker.ts`, `packages/mcp-server/src/__tests__/template-ranker.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-07, TASK-09
@@ -393,6 +393,12 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Rollback: disable question-first mode and fall back to current category-first ranker.
 - **Documentation impact:**
   - Update draft generation notes for question-first selection behavior.
+- **Build completion evidence (2026-02-18):**
+  - Added `PerQuestionRankEntry` interface + `rankTemplatesPerQuestion` export to `template-ranker.ts`.
+  - Added `DEFAULT_COMPOSITE_LIMIT=3`, `selectTemplatesPerQuestion()` helper, and per-question `isComposite` trigger to `draft-generate.ts`.
+  - `isComposite` now: `uniqueTemplatesForComposite.length >= 2` (was: `questions.length >= 2 && policyCandidates.length >= 2`).
+  - New TASK-06 describe blocks in both test files: 2 in `template-ranker.test.ts`, 3 in `draft-generate.test.ts`.
+  - 34 tests pass (`template-ranker.test.ts` + `draft-generate.test.ts`).
 
 ### TASK-07: Inject knowledge-backed answers with source attribution and escalation fallback
 - **Type:** IMPLEMENT
@@ -579,7 +585,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `[readonly] packages/mcp-server/src/tools/draft-generate.ts`, `[readonly] packages/mcp-server/src/resources/brikette-knowledge.ts`, `[readonly] packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** TASK-05
 - **Blocks:** TASK-07
@@ -602,6 +608,9 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Planning validation:** None — S-effort investigation task.
 - **Rollout / rollback:** `None: investigation task`
 - **Documentation impact:** Populates `replan-notes.md` with design decisions consumed by TASK-07 builder.
+- **Build completion evidence (2026-02-18):**
+  - All 4 questions answered: (1) strip via `/\[[^\]]+\]\s*/g`; (2) pre-draft injection required; (3) `SourcesUsedEntry { uri, citation, text, score, injected }` schema; (4) category allowlist guard for pricing snippets.
+  - Design note written to `docs/plans/email-draft-quality-upgrade/replan-notes.md` (TASK-12 section).
 
 ### TASK-13: Verify thread snippet sufficiency; define expanded request pattern set and false-positive rate
 - **Type:** INVESTIGATE
@@ -610,7 +619,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/draft-interpret.ts`, `[readonly] packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `[readonly] packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-08
@@ -633,6 +642,9 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Planning validation:** None — S-effort investigation task.
 - **Rollout / rollback:** `None: investigation task`
 - **Documentation impact:** Populates `replan-notes.md` with design decisions consumed by TASK-08 builder.
+- **Build completion evidence (2026-02-18):**
+  - All 4 questions answered: (1) snippet-only SUFFICIENT — FAQ-04 (51 chars), PAY-01 (93 chars) contain clear topic signals; (2) format='full' rejected for TASK-08 scope (latency risk); (3) 9-pattern expanded set defined (3 existing + 6 new); (4) `g` flag + `matchAll()` migration required, dedup guard needed.
+  - Design note written to `docs/plans/email-draft-quality-upgrade/replan-notes.md` (TASK-13 section).
 
 ## Risks & Mitigations
 - Regression in hard-rule categories (cancellation/prepayment).

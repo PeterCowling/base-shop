@@ -7,7 +7,7 @@ import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
 
 const IMAGES = {
-  slide1: "/img/positano-panorama.avif",
+  slide1: "/img/apt1.jpg",
   slide2: "/img/free-perks.avif",
   slide3: "/img/facade.avif",
 } as const;

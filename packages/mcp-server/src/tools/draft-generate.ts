@@ -10,7 +10,9 @@ import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import {
   type EmailTemplate,
+  type PerQuestionRankEntry,
   rankTemplates,
+  rankTemplatesPerQuestion,
   type TemplateCandidate,
 } from "../utils/template-ranker.js";
 import {
@@ -917,6 +919,29 @@ function enforceLengthBounds(body: string, bounds: LengthBounds): string {
   return normalizeParagraphs(adjusted);
 }
 
+const DEFAULT_COMPOSITE_LIMIT = 3;
+
+/**
+ * TASK-06: Greedily select one best-fit template per question.
+ * Deduplicates by template subject so the same template is not assembled twice.
+ * Caps the result at DEFAULT_COMPOSITE_LIMIT to keep composite emails focused.
+ */
+function selectTemplatesPerQuestion(
+  perQuestionRanks: PerQuestionRankEntry[],
+): EmailTemplate[] {
+  const seen = new Set<string>();
+  const selected: EmailTemplate[] = [];
+  for (const entry of perQuestionRanks) {
+    const top = entry.candidates[0];
+    if (!top) continue;
+    if (seen.has(top.template.subject)) continue;
+    seen.add(top.template.subject);
+    selected.push(top.template);
+    if (selected.length >= DEFAULT_COMPOSITE_LIMIT) break;
+  }
+  return selected;
+}
+
 function assembleCompositeBody(
   templates: EmailTemplate[],
 ): string {
@@ -992,14 +1017,21 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       ?? availabilityTemplate
       ?? (rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined);
 
-    const isComposite =
-      actionPlan.intents.questions.length >= 2 &&
-      policyCandidates.length >= 2;
+    // TASK-06: per-question template ranking for composite assembly.
+    let uniqueTemplatesForComposite: EmailTemplate[] = [];
+    if (actionPlan.intents.questions.length >= 2) {
+      const perQuestionRanks = rankTemplatesPerQuestion(
+        actionPlan.intents.questions,
+        templates,
+      );
+      uniqueTemplatesForComposite = selectTemplatesPerQuestion(perQuestionRanks);
+    }
+
+    const isComposite = uniqueTemplatesForComposite.length >= 2;
 
     let bodyPlain: string;
     if (isComposite) {
-      const candidateTemplates = policyCandidates.map((candidate) => candidate.template);
-      bodyPlain = assembleCompositeBody(candidateTemplates);
+      bodyPlain = assembleCompositeBody(uniqueTemplatesForComposite);
     } else {
       bodyPlain = selectedTemplate?.body ??
         `Thanks for your email. We will review your request and respond shortly.`;

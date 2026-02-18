@@ -951,3 +951,126 @@ describe("draft_generate tool TASK-02", () => {
     expect(menuSummary.summary).toBe("");
   });
 });
+
+describe("draft_generate tool TASK-06 — per-question composite ranking", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-06-01: two questions mapping to same template deduplicate to composite: false", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Luggage Storage — Before Check-in",
+          body: "Dear Guest,\r\n\r\nFree luggage storage on your arrival day.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "luggage",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can we store luggage? Where do we leave our bags?",
+        intents: {
+          questions: [
+            { text: "Can we store luggage?" },
+            { text: "Where do we leave our bags?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Luggage question",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(false);
+  });
+
+  it("TC-06-02: two questions mapping to distinct templates produce composite: true", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nComplimentary WiFi is available throughout the hostel.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).toContain("breakfast");
+    expect(body).toContain("wifi");
+  });
+
+  it("TC-06-03: composite body has exactly one greeting and no trailing signature", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nComplimentary WiFi is available.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    const body = payload.draft.bodyPlain;
+    const dearCount = (body.match(/\bDear\b/gi) ?? []).length;
+    const signatureCount = (body.match(/\bBest regards\b/gi) ?? []).length;
+    expect(dearCount).toBe(1);
+    expect(signatureCount).toBe(0);
+  });
+});

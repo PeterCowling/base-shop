@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00+TASK-01 complete; Wave 3 unblocked (TASK-02..TASK-05 ready); TASK-11 stub added (Needs-Replan after TASK-10)
+Build-Progress: TASK-00..TASK-05 complete; Wave 4 unblocked (TASK-06+TASK-08 ready); TASK-07 blocked on TASK-06; TASK-09 blocked on TASK-06..TASK-08
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -84,10 +84,10 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 |---|---|---|---:|---:|---|---|---|
 | TASK-00 | DECISION | Lock v1.1 scope boundary (deterministic-first vs immediate LLM stage, versioning, locale policy) | 85% | S | Complete (2026-02-18) | TASK-01 | TASK-02, TASK-03, TASK-04, TASK-05 |
 | TASK-01 | INVESTIGATE | Produce baseline quality/evaluation artifact and fixture manifest | 75% | M | Complete (2026-02-18) | - | TASK-00, TASK-09 |
-| TASK-02 | IMPLEMENT | Patch `ops-inbox` workflow to perform mandatory post-quality gap patch loop | 85% | S | Pending | TASK-00 | TASK-10 |
-| TASK-03 | IMPLEMENT | Add missing templates and enforce template-link/placeholder lint gates | 85% | M | Pending | TASK-00 | TASK-06, TASK-09 |
-| TASK-04 | IMPLEMENT | Introduce additive multi-scenario action plan model with dominant/exclusive semantics | 85% | M | Pending | TASK-00 | TASK-06, TASK-08, TASK-09 |
-| TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Pending | TASK-00 | TASK-07, TASK-09 |
+| TASK-02 | IMPLEMENT | Patch `ops-inbox` workflow to perform mandatory post-quality gap patch loop | 85% | S | Complete (2026-02-18) | TASK-00 | TASK-10 |
+| TASK-03 | IMPLEMENT | Add missing templates and enforce template-link/placeholder lint gates | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-09 |
+| TASK-04 | IMPLEMENT | Introduce additive multi-scenario action plan model with dominant/exclusive semantics | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-08, TASK-09 |
+| TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-07, TASK-09 |
 | TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 75% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-09 |
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 75% | M | Pending | TASK-05, TASK-06 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 70% | M | Pending | TASK-04 | TASK-09 |
@@ -191,7 +191,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** `.claude/skills/ops-inbox/SKILL.md` updated. Single quality gate replaced with full 5-step gap-patch loop (steps a–e). Mandatory second `draft_quality_check` before `gmail_create_draft`. Hard-rules: never modify prepayment/cancellation text; no invented policy facts; defined escalation sentence for unanswerable gaps. Subagent TC walkthrough confirmed all TC-02-01/02/03 criteria met. Part of Wave 3 commit `06e6820db6`.
 - **Affects:** `.claude/skills/ops-inbox/SKILL.md`, `[readonly] packages/mcp-server/src/tools/draft-generate.ts`, `[readonly] packages/mcp-server/src/tools/draft-quality-check.ts`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-10
@@ -228,7 +229,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** `email-templates.json` expanded to 53 templates (10 new: Bar/Terrace-faq, Parking-transportation, Pets-policies, City Tax-check-in, Private vs Dorm-booking-issues, Things To Do-activities, Receipt/Invoice-payment, Group Booking-booking-issues, Late Check-In Instructions-check-in, Arriving By Bus-transportation). "Out of hours check-in" here-without-URL stub fixed. `template-lint.ts` updated: `here_without_url` code, `PLACEHOLDER_REGEX` extended ({var}/{{var}}/[PLACEHOLDER]), `findHereWithoutUrl()`, `lintTemplatesSync()`. Tests: 47 passed (template-lint + email-template suites). All TC-03-01..04 criteria met. Wave 3 commit `06e6820db6`.
 - **Affects:** `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/utils/template-lint.ts`, `packages/mcp-server/src/__tests__/template-lint.test.ts`, `packages/mcp-server/src/__tests__/email-template.test.ts`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-06, TASK-09
@@ -269,7 +271,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** `draft-interpret.ts`: `classifyAllScenarios()` replaces single-match `classifyScenario`; `DOMINANT_CATEGORIES = {cancellation, prepayment}` enforces precedence; handler sets `plan.scenarios`, `plan.scenario = scenarios[0]`, `plan.actionPlanVersion = "1.1.0"`. `draft-generate.ts` + `draft-quality-check.ts`: Zod schemas extended with optional `scenarios[]` + `actionPlanVersion`; `primaryScenarioCategory` resolution before all category consumers. Tests: 28 passed (draft-interpret); 63 passed (pipeline-integration incl. TC-04-04a/b/c multi-scenario tests and 47-fixture 90% gate). All TC-04-01..04 criteria met. Wave 3 commit `06e6820db6`.
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-06, TASK-08, TASK-09
@@ -311,7 +314,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** New `packages/mcp-server/src/utils/coverage.ts` exports `QuestionCoverageEntry`, `extractQuestionKeywords()`, `evaluateQuestionCoverage()`. `draft-quality-check.ts` imports from coverage.ts (all inline duplication removed). `draft-generate.ts` imports coverage.ts and computes `preliminary_coverage` (pre-selection gap signal) before `rankTemplates`. Parity confirmed: TC-05-03 test calls both tool path and direct `evaluateQuestionCoverage` and asserts identical `coverage_score`+`status`. Tests: 35 passed (draft-quality-check + draft-generate suites). All TC-05-01..04 criteria met. Wave 3 commit `06e6820db6`.
 - **Affects:** `packages/mcp-server/src/utils/coverage.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-07, TASK-09

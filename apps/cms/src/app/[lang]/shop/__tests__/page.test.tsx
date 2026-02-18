@@ -79,9 +79,11 @@ describe("ShopIndexPage", () => {
 
   it("passes the SKU list to the client component without extra props", () => {
     const element = ShopIndexPage();
+    const child = element.props.children;
 
-    expect(element.type).toBe(mockShopClient);
-    expect(element.props.skus).toEqual(expectedSkus);
-    expect(element.props).toEqual({ skus: expectedSkus });
+    expect(typeof element.type).toBe("symbol");
+    expect(child.type).toBe(mockShopClient);
+    expect(child.props.skus).toEqual(expectedSkus);
+    expect(child.props).toEqual({ skus: expectedSkus });
   });
 });

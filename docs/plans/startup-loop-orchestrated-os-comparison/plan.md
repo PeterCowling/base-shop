@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..04 Complete; TASK-05 next (unblocked — all Wave 3 deps met)
+Build-Progress: TASK-00..05 Complete; TASK-06 next (unblocked)
 Feature-Slug: startup-loop-orchestrated-os-comparison
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -84,7 +84,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 | TASK-02 | IMPLEMENT | Create process-registry-v1 contract (CDI/OFF/GTM/OPS/CX/FIN/DATA mapped to current stages) | 82% | L | Complete (2026-02-18) | TASK-01 | TASK-05 |
 | TASK-03 | IMPLEMENT | Add CAP-05 sales-ops schema contract + artifact template references | 81% | M | Complete (2026-02-18) | TASK-01 | TASK-05 |
 | TASK-04 | IMPLEMENT | Add CAP-06 lifecycle/retention schema contract + S10 contract hooks | 80% | M | Complete (2026-02-18) | TASK-01 | TASK-05 |
-| TASK-05 | IMPLEMENT | Define exception-runbooks-v1 for Demand/Cash/Quality/Compliance | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06 |
+| TASK-05 | IMPLEMENT | Define exception-runbooks-v1 for Demand/Cash/Quality/Compliance | 80% | M | Complete (2026-02-18) | TASK-02, TASK-03, TASK-04 | TASK-06 |
 | TASK-06 | IMPLEMENT | Add weekly-light/monthly-deep audit checklist contracts and workflow integration | 82% | M | Pending | TASK-05 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess pilot-readiness and sequence downstream build scope | 95% | S | Pending | TASK-06 | - |
 
@@ -358,7 +358,14 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Red: `bottleneck-diagnosis-schema.md` has 4 trigger codes (`compliance`, `ops_capacity`, `demand_drop`, `cash_burn`) — structural exception handling present but no runbook, no SLA, no owner, no closure criteria. Trigger overlap between Demand Shock + Cash Constraint confirmed as the key edge case (precedence rule required).
+  - Green: `docs/business-os/startup-loop/exception-runbooks-v1.md` created with all four runbooks — Demand Shock (precedence 4), Cash Constraint (precedence 3), Quality Incident (precedence 2), Compliance/Safety Incident (precedence 1). Each runbook includes: objective trigger thresholds with confirmation periods, explicit non-triggers, owner/escalation table, acknowledgement + resolution SLA table, required processes from process-registry-v1.md, mandatory artifacts checklist, closure criteria, and escalation paths.
+  - Refactor: Trigger overlap decision matrix added (Demand Shock + Cash together → open both, Cash takes control flow priority). Exception ticket format standardized: `EXC-<BIZ>-<YYYYMMDD>-<sequence>`. Integration notes confirm non-modification of `bottleneck-diagnosis-schema.md` blocked-stage key taxonomy.
+  - VC-05-A: Each state has ≥1 objective trigger threshold (with confirmation period) and ≥1 explicit non-trigger condition. ✓
+  - VC-05-B: All 4 exception states have named owner role, acknowledgement SLA (2h–48h by state), and resolution SLA (24h–14 days by state). ✓
+  - VC-05-C: Closure evidence package defined per state (ticket closed, decision log entry, corrective action documented, loop spec compliance check). ✓
 - **Artifact-Destination:** `docs/business-os/startup-loop/exception-runbooks-v1.md`
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** Review note in plan decision log
@@ -517,6 +524,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - 2026-02-18: TASK-02 complete. process-registry-v1.md created at `docs/business-os/startup-loop/process-registry-v1.md`. All 28 process IDs documented with full operational contracts. VC-02-A/B/C addressed. TASK-03 and TASK-04 now unblocked.
 - 2026-02-18: TASK-03 complete. sales-ops-schema.md created; CAP-05 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-05 pipeline denominator section.
 - 2026-02-18: TASK-04 complete. retention-schema.md created; CAP-06 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-06 retention denominator section including pre-PMF deferral rules. TASK-05 now unblocked (all Wave 3 deps met).
+- 2026-02-18: TASK-05 complete. exception-runbooks-v1.md created with all four canonical exception state runbooks (Demand Shock, Cash Constraint, Quality Incident, Compliance/Safety Incident). Each includes trigger thresholds, owner/escalation, SLAs, required processes, mandatory artifacts, closure criteria. Precedence ordering established (Compliance=1 highest). Trigger overlap decision matrix included. VC-05-A/B/C addressed. TASK-06 now unblocked.
 
 ## What Would Make This >=90%
 - Complete TASK-00 and TASK-01 with no unresolved scope ambiguity.

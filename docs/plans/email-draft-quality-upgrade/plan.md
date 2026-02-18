@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-01 complete (baseline artifact produced); TASK-00 pending (DECISION — requires human resolution); TASK-02..TASK-10 pending
+Build-Progress: TASK-00+TASK-01 complete; Wave 3 unblocked (TASK-02..TASK-05 ready); TASK-11 stub added (Needs-Replan after TASK-10)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -82,7 +82,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-00 | DECISION | Lock v1.1 scope boundary (deterministic-first vs immediate LLM stage, versioning, locale policy) | 85% | S | Pending | TASK-01 | TASK-02, TASK-03, TASK-04, TASK-05 |
+| TASK-00 | DECISION | Lock v1.1 scope boundary (deterministic-first vs immediate LLM stage, versioning, locale policy) | 85% | S | Complete (2026-02-18) | TASK-01 | TASK-02, TASK-03, TASK-04, TASK-05 |
 | TASK-01 | INVESTIGATE | Produce baseline quality/evaluation artifact and fixture manifest | 75% | M | Complete (2026-02-18) | - | TASK-00, TASK-09 |
 | TASK-02 | IMPLEMENT | Patch `ops-inbox` workflow to perform mandatory post-quality gap patch loop | 85% | S | Pending | TASK-00 | TASK-10 |
 | TASK-03 | IMPLEMENT | Add missing templates and enforce template-link/placeholder lint gates | 85% | M | Pending | TASK-00 | TASK-06, TASK-09 |
@@ -92,7 +92,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 75% | M | Pending | TASK-05, TASK-06 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 70% | M | Pending | TASK-04 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
-| TASK-10 | CHECKPOINT | Horizon checkpoint for optional LLM refinement wave and rollout policy | 95% | S | Pending | TASK-02, TASK-09 | - |
+| TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
+| TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
 
 ## Parallelism Guide
 
@@ -114,7 +115,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build evidence:** Decision artifact created. Operator decisions: (1) LLM now — Option B selected, implementation via AI agent CLI; (2) actionPlanVersion = semver; (3) english-only. Downstream compatibility check passed — no conflicting interpretations. TASK-02..TASK-05 unblocked. TASK-04 scope updated for semver. TASK-10/TASK-11 scope updated for mandatory LLM wave.
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `.claude/skills/ops-inbox/SKILL.md`, `[readonly] docs/plans/email-draft-quality-upgrade/fact-find.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-02, TASK-03, TASK-04, TASK-05
@@ -278,6 +280,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Acceptance:**
   - `EmailActionPlan` includes `scenarios[]` and retains legacy `scenario` field.
   - Dominant/exclusive metadata enforces cancellation/prepayment precedence.
+  - `actionPlanVersion` field uses **semver string** format (e.g., `"1.1.0"`). v1.0.0 = legacy; v1.1.0 = scenarios[] additive; v2.0.0 = future breaking removal of scenario alias.
   - Version marker is added and validated in consumer paths.
   - Existing single-topic behavior remains stable for unchanged inputs.
 - **Validation contract (TC-04):**
@@ -509,35 +512,57 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Documentation impact:**
   - Add benchmark/check command docs and expected metric interpretation.
 
-### TASK-10: Horizon checkpoint for optional LLM refinement wave and rollout policy
+### TASK-10: Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope
 - **Type:** CHECKPOINT
-- **Deliverable:** updated plan evidence via `/lp-replan` for any post-v1.1 LLM-stage work
+- **Deliverable:** updated plan evidence via `/lp-replan` defining TASK-11 (`draft_refine`) scope and confidence
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
 - **Affects:** `docs/plans/email-draft-quality-upgrade/plan.md`
 - **Depends on:** TASK-02, TASK-09
-- **Blocks:** -
+- **Blocks:** TASK-11
 - **Confidence:** 95%
   - Implementation: 95% - checkpoint process is established.
-  - Approach: 95% - forces evidence-based scope expansion decisions.
-  - Impact: 95% - protects against premature architecture expansion.
+  - Approach: 95% - TASK-11 scope can be defined from TASK-09 metrics.
+  - Impact: 95% - gates LLM implementation on regression harness stability.
 - **Acceptance:**
   - `/lp-build` checkpoint executor run.
-  - `/lp-replan` run for any proposed LLM-stage tasks.
-  - downstream confidence/dependencies recalibrated from benchmark evidence.
-  - explicit decision: defer or proceed with LLM-stage tasks.
+  - `/lp-replan` run to define TASK-11 scope with confidence ≥ 80% from TASK-09 benchmark evidence.
+  - TASK-09 regression harness shows ≥ 2 consecutive stable CI runs.
+  - TASK-11 scoped: `draft_refine` MCP tool with `refinement_applied` flag, `refinement_source` metadata, and graceful fallback; implementation via AI agent CLI (Claude CLI or Codex).
+  - downstream TASK-11 confidence/dependencies set from benchmark evidence.
 - **Horizon assumptions to validate:**
   - Deterministic-first upgrades materially reduce multi-question coverage failures.
-  - Regression harness is stable enough to evaluate incremental LLM benefit/cost.
+  - Regression harness is stable enough to gate LLM output assertions.
+  - Claude CLI tool-use capability is available for `draft_refine` implementation.
 - **Validation contract:**
-  - Checkpoint closes only when post-TASK-09 metrics are logged and next-wave decision is explicit.
+  - Checkpoint closes only when TASK-09 metrics are logged, TASK-11 is replanned with confidence ≥ 80%, and LLM rollout trigger criteria are confirmed from `decisions/v1-1-scope-boundary-decision.md`.
 - **Planning validation:**
   - Replan evidence appended to decision log.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:**
-  - Updates this plan with checkpoint outcomes and next-wave route.
+  - Updates this plan with checkpoint outcomes and TASK-11 scope.
+
+### TASK-11: Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata
+- **Type:** IMPLEMENT
+- **Deliverable:** `draft_refine` MCP tool (additive LLM refinement stage)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** TBD (set at TASK-10 replan)
+- **Status:** Needs-Replan
+- **Affects:** TBD — defined at TASK-10 replan
+- **Depends on:** TASK-10
+- **Blocks:** -
+- **Confidence:** TBD
+- **Execution constraint:** Must be implemented via AI agent CLI (Claude CLI or Codex), not manual authoring.
+- **Acceptance:** TBD — defined at TASK-10 replan. Must include:
+  - `refinement_applied: boolean` output flag
+  - `refinement_source: 'claude-cli' | 'codex' | 'none'` metadata
+  - Graceful fallback to deterministic draft when LLM call fails or exceeds latency threshold
+  - Additive only — does not replace `draft_generate` or `draft_quality_check`
+- **Note:** Scope and confidence to be fully defined via `/lp-replan` at TASK-10 checkpoint.
 
 ## Risks & Mitigations
 - Regression in hard-rule categories (cancellation/prepayment).
@@ -575,7 +600,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 ## Decision Log
 - 2026-02-18: Initial plan created from `docs/plans/email-draft-quality-upgrade/fact-find.md` via `/lp-plan`.
 - 2026-02-18: Sequenced into seven execution waves with explicit mixed-track dependencies and checkpoint gate.
-- 2026-02-18: TASK-01 complete. Baseline artifact at `artifacts/quality-baseline-and-fixture-manifest.md`. Key findings: existing 90% pass-rate gate over 47 pipeline fixtures is the first regression gate; `policy`/`complaint` have zero templates (blocked from fixture coverage); minimum TASK-09 sample = 20 fixtures; 14 deterministic metric definitions ready for TASK-09 calibration. TASK-00 DECISION now unblocked — requires operator input on 3 scope questions before TASK-02..TASK-05 can proceed.
+- 2026-02-18: TASK-01 complete. Baseline artifact at `artifacts/quality-baseline-and-fixture-manifest.md`. Key findings: existing 90% pass-rate gate over 47 pipeline fixtures is the first regression gate; `policy`/`complaint` have zero templates (blocked from fixture coverage); minimum TASK-09 sample = 20 fixtures; 14 deterministic metric definitions ready for TASK-09 calibration.
+- 2026-02-18: TASK-00 complete. Operator decisions: (1) LLM refinement NOW in this wave — implement via AI agent CLI (Claude/Codex); (2) actionPlanVersion = semver strings; (3) english-only templates. Decision artifact: `decisions/v1-1-scope-boundary-decision.md`. TASK-11 stub added for `draft_refine` (Needs-Replan after TASK-10). Wave 3 unblocked.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

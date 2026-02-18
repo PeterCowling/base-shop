@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-41 complete — Wave 6 progressing)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-41 complete — Wave 6 progressing)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -189,7 +189,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-28 | IMPLEMENT | Delete ga4-09/ga4-10 extinct tests + update 7 affected modal-era tests | 85% | M | Complete (2026-02-18) | TASK-25,TASK-26,TASK-27 | TASK-29 |
 | TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Complete (2026-02-18) | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
 | TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-32,TASK-35 |
-| TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Pending | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
+| TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Complete (2026-02-18) | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
 | TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Pending | TASK-29,TASK-30,TASK-31,TASK-15 | — |
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
@@ -786,9 +786,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `apps/brikette/src/utils/ga4-events.ts`
+  - `apps/brikette/src/test/utils/ga4-events-contract.test.ts` (new TASK-31 describe block)
 - **Depends on:** TASK-29, TASK-37
 - **Blocks:** TASK-33, TASK-34, TASK-36
 - **Confidence:** 87%
@@ -809,6 +810,14 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - TC-03: `fireSelectItem` → gtag called with correct item including `item_name`, `item_category`, `affiliation`, `currency`
   - TC-04: `fireSearchAvailability` → no raw date strings in params (only `nights`, `lead_time_days`)
   - TC-05: `begin_checkout` with `deal` context includes `coupon: deal.id`
+- **Build completion evidence (2026-02-18):**
+  - `GA4Promotion` and `GA4Item` interfaces added to `ga4-events.ts`.
+  - `buildRoomItem` updated: return type `GA4Item`, adds `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`. `itemName?` param added; falls back to `roomSku`.
+  - `fireViewPromotion(promotions)` and `fireSelectPromotion(promotion)` added (new).
+  - `fireSelectItem` and `fireViewItemList` updated to pass `itemName` through `buildRoomItem`.
+  - `fireSearchAvailability` verified: already correct (no raw dates; uses `nights` + `lead_time_days`).
+  - `coupon?: string` param added to both `fireBeginCheckoutRoomSelected` and `fireBeginCheckoutRoomSelectedAndNavigate`; omitted from payload when absent.
+  - Tests: `apps/brikette/src/test/utils/ga4-events-contract.test.ts` — added "ga4-events TASK-31 contracts" describe block: TC-01..TC-05 + 2 buildRoomItem assertions = 8 new tests. Total 13/13 pass.
 
 ---
 

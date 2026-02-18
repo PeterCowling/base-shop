@@ -47,6 +47,27 @@ export type CtaLocation = (typeof GA4_ENUMS.ctaLocation)[number];
 export type EventSource = (typeof GA4_ENUMS.source)[number];
 export type RatePlan = (typeof GA4_ENUMS.ratePlan)[number];
 
+// ─── GA4 e-commerce data models ─────────────────────────────────────────────
+
+export interface GA4Promotion {
+  promotion_id: string; // deal ID
+  promotion_name: string; // deal title
+}
+
+export interface GA4Item {
+  item_id: string;
+  item_name: string;
+  item_category: "hostel";
+  affiliation: "Hostel Brikette";
+  currency: "EUR";
+  item_variant?: "nr" | "flex";
+  item_list_id?: string;
+  item_list_name?: string;
+  price?: number;
+  quantity?: number;
+  index?: number;
+}
+
 const ITEM_LIST_NAME: Record<ItemListId, string> = {
   home_rooms_carousel: "Home rooms carousel",
   rooms_index: "Rooms index",
@@ -79,13 +100,21 @@ export function isItemListId(value: string): value is ItemListId {
   return (GA4_ENUMS.itemListId as readonly string[]).includes(value);
 }
 
-export function buildRoomItem(params: { roomSku: string; plan?: RatePlan; index?: number }): Record<string, unknown> {
+export function buildRoomItem(params: {
+  roomSku: string;
+  itemName?: string;
+  plan?: RatePlan;
+  index?: number;
+}): GA4Item {
   return {
     item_id: params.roomSku,
-    item_name: params.roomSku,
-    ...(params.plan ? { item_variant: params.plan } : null),
-    ...(typeof params.index === "number" ? { index: params.index } : null),
-  };
+    item_name: params.itemName ?? params.roomSku,
+    item_category: "hostel",
+    affiliation: "Hostel Brikette",
+    currency: "EUR",
+    ...(params.plan ? { item_variant: params.plan } : undefined),
+    ...(typeof params.index === "number" ? { index: params.index } : undefined),
+  } as GA4Item;
 }
 
 const impressionDedupe = new Set<string>();
@@ -271,6 +300,7 @@ export function fireBeginCheckoutRoomSelectedAndNavigate(params: {
   checkout: string;
   pax: number;
   item_list_id?: string;
+  coupon?: string;
   onNavigate: () => void;
 }): void {
   const source = typeof params.source === "string" && isEventSource(params.source) ? params.source : "unknown";
@@ -285,6 +315,7 @@ export function fireBeginCheckoutRoomSelectedAndNavigate(params: {
       checkout: params.checkout,
       pax: params.pax,
       ...(itemListId ? { item_list_id: itemListId } : null),
+      ...(params.coupon ? { coupon: params.coupon } : null),
       items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan })],
     },
     onNavigate: params.onNavigate,
@@ -294,6 +325,7 @@ export function fireBeginCheckoutRoomSelectedAndNavigate(params: {
 export function fireSelectItem(params: {
   itemListId: ItemListId;
   roomSku: string;
+  itemName?: string;
   plan: RatePlan;
   index?: number;
 }): void {
@@ -303,13 +335,13 @@ export function fireSelectItem(params: {
   gtag("event", "select_item", {
     item_list_id: params.itemListId,
     item_list_name: resolveItemListName(params.itemListId),
-    items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan, index: params.index })],
+    items: [buildRoomItem({ roomSku: params.roomSku, itemName: params.itemName, plan: params.plan, index: params.index })],
   });
 }
 
 export function fireViewItemList(params: {
   itemListId: ItemListId;
-  rooms: Array<{ sku: string }>;
+  rooms: Array<{ sku: string; name?: string }>;
 }): void {
   const gtag = getGtag();
   if (!gtag) return;
@@ -320,7 +352,39 @@ export function fireViewItemList(params: {
   gtag("event", "view_item_list", {
     item_list_id: params.itemListId,
     item_list_name: resolveItemListName(params.itemListId),
-    items: params.rooms.map((room, index) => buildRoomItem({ roomSku: room.sku, index })),
+    items: params.rooms.map((room, index) => buildRoomItem({ roomSku: room.sku, itemName: room.name, index })),
+  });
+}
+
+// ─── Promotion events (TASK-31) ───────────────────────────────────────────────
+
+/**
+ * Fire `view_promotion` when a list of promotions/deals becomes visible to the user.
+ * Corresponds to GA4 standard e-commerce event.
+ *
+ * TC-01: gtag called with "view_promotion" + { promotions: GA4Promotion[] }
+ */
+export function fireViewPromotion(params: { promotions: GA4Promotion[] }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  gtag("event", "view_promotion", {
+    promotions: params.promotions,
+  });
+}
+
+/**
+ * Fire `select_promotion` when the user clicks/selects a single promotion/deal.
+ * Corresponds to GA4 standard e-commerce event.
+ *
+ * TC-02: gtag called with "select_promotion" + { promotions: [GA4Promotion] }
+ */
+export function fireSelectPromotion(params: { promotion: GA4Promotion }): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+
+  gtag("event", "select_promotion", {
+    promotions: [params.promotion],
   });
 }
 
@@ -441,6 +505,7 @@ export function fireBeginCheckoutRoomSelected(params: {
   checkout: string;
   pax: number;
   item_list_id?: string;
+  coupon?: string;
 }): void {
   const gtag = getGtag();
   if (!gtag) return;
@@ -455,6 +520,7 @@ export function fireBeginCheckoutRoomSelected(params: {
     checkout: params.checkout,
     pax: params.pax,
     ...(itemListId ? { item_list_id: itemListId } : null),
+    ...(params.coupon ? { coupon: params.coupon } : null),
     items: [buildRoomItem({ roomSku: params.roomSku, plan: params.plan })],
   });
 }

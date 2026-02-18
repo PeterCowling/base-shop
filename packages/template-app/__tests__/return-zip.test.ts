@@ -10,14 +10,12 @@ describe("/api/return zip", () => {
     setupReturnMocks();
     jest.doMock("@acme/platform-core/returnLogistics", () => ({
       __esModule: true,
-      getReturnBagAndLabel: jest
-        .fn()
+      getReturnBagAndLabel: (jest.fn() as any)
         .mockResolvedValue({ homePickupZipCodes: ["99999"] }),
     }));
     jest.doMock("@acme/platform-core/repositories/settings.server", () => ({
       __esModule: true,
-      getShopSettings: jest
-        .fn()
+      getShopSettings: (jest.fn() as any)
         .mockResolvedValue({ returnService: { homePickupEnabled: true } }),
     }));
 

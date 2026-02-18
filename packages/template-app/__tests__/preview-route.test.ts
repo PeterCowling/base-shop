@@ -38,7 +38,7 @@ test("valid token returns page JSON", async () => {
     slug: "home",
     status: "draft",
     components: [],
-    seo: { title: "Home" },
+    seo: { title: "Home" } as any,
     createdAt: nowIso(),
     updatedAt: nowIso(),
     createdBy: "tester",
@@ -116,7 +116,7 @@ test("missing secret yields 401", async () => {
 test("timingSafeEqual error yields 401", async () => {
   mockEnv();
   jest.doMock("crypto", () => {
-    const actual = jest.requireActual("node:crypto");
+    const actual = jest.requireActual("node:crypto") as any;
     return { ...actual, timingSafeEqual: () => { throw new Error("boom"); } };
   });
   const getPages = jest.fn(async () => []);
@@ -180,7 +180,7 @@ test("valid upgrade token returns page JSON", async () => {
     slug: "home",
     status: "draft",
     components: [],
-    seo: { title: "Home" },
+    seo: { title: "Home" } as any,
     createdAt: nowIso(),
     updatedAt: nowIso(),
     createdBy: "tester",

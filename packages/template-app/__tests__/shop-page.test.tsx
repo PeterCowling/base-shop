@@ -39,8 +39,8 @@ jest.mock("../src/lib/seo", () => ({
 }));
 
 const skus: SKU[] = [
-  { id: "1", title: "Red Shoe", slug: "red-shoe", price: 10, sizes: ["M"], deposit: 0, media: [] },
-  { id: "2", title: "Blue Shoe", slug: "blue-shoe", price: 20, sizes: ["M"], deposit: 0, media: [] },
+  { id: "1", title: "Red Shoe", slug: "red-shoe", price: 10, sizes: ["M"], deposit: 0, media: [] } as any,
+  { id: "2", title: "Blue Shoe", slug: "blue-shoe", price: 20, sizes: ["M"], deposit: 0, media: [] } as any,
 ];
 
 describe("Shop components", () => {
@@ -55,7 +55,7 @@ describe("Shop components", () => {
 
   it("renders shop page", async () => {
     const ui = (await ShopPage({ params: Promise.resolve({ lang: "en" }) })) as ReactElement;
-    const [, shop] = ui.props.children;
+    const [, shop] = (ui as any).props.children;
     expect(shop.props.skus).toHaveLength(3);
   });
 });

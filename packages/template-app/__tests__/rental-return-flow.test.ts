@@ -45,11 +45,9 @@ describe("rental order lifecycle", () => {
   test("order is returned and refunded", async () => {
     await withShop(async () => {
       const reserveRentalInventory = jest.fn();
-      const readInventory = jest
-        .fn()
+      const readInventory = (jest.fn() as any)
         .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
-      const readProducts = jest
-        .fn()
+      const readProducts = (jest.fn() as any)
         .mockResolvedValue([{ id: "sku1" }]);
       const retrieve = jest
         .fn<Promise<any>, any[]>()

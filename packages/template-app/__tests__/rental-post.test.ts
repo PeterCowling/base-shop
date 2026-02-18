@@ -52,14 +52,13 @@ describe("/api/rental POST", () => {
           ]),
         },
       });
-    mockStripe({ checkout: { sessions: { retrieve } }, refunds: { create: jest.fn() } });
-    const addOrder = jest.fn();
+    mockStripe({ checkout: { sessions: { retrieve: retrieve as any } }, refunds: { create: jest.fn() as any } });
+    const addOrder = jest.fn() as any;
     mockRentalRepo({ addOrder });
     const reserveRentalInventory = jest.fn();
-    const readInventory = jest
-      .fn()
+    const readInventory = (jest.fn() as any)
       .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
-    const readProducts = jest.fn().mockResolvedValue([{ id: "sku1" }]);
+    const readProducts = (jest.fn() as any).mockResolvedValue([{ id: "sku1" }]);
     jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory,
@@ -116,14 +115,13 @@ describe("/api/rental POST", () => {
           ]),
         },
       });
-    mockStripe({ checkout: { sessions: { retrieve } }, refunds: { create: jest.fn() } });
-    const addOrder = jest.fn();
+    mockStripe({ checkout: { sessions: { retrieve: retrieve as any } }, refunds: { create: jest.fn() as any } });
+    const addOrder = jest.fn() as any;
     mockRentalRepo({ addOrder });
     const reserveRentalInventory = jest.fn();
-    const readInventory = jest
-      .fn()
+    const readInventory = (jest.fn() as any)
       .mockResolvedValue([{ sku: "sku1", quantity: 1, variantAttributes: {} }]);
-    const readProducts = jest.fn().mockResolvedValue([{ id: "sku1" }]);
+    const readProducts = (jest.fn() as any).mockResolvedValue([{ id: "sku1" }]);
     jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory,
@@ -176,15 +174,15 @@ describe("/api/rental POST", () => {
           ]),
         },
       });
-    mockStripe({ checkout: { sessions: { retrieve } }, refunds: { create: jest.fn() } });
-    const addOrder = jest.fn();
+    mockStripe({ checkout: { sessions: { retrieve: retrieve as any } }, refunds: { create: jest.fn() as any } });
+    const addOrder = jest.fn() as any;
     mockRentalRepo({ addOrder });
     const reserveRentalInventory = jest.fn();
-    const readInventory = jest.fn().mockResolvedValue([
+    const readInventory = (jest.fn() as any).mockResolvedValue([
       { sku: "sku1", quantity: 1, variantAttributes: {} },
       { sku: "missing", quantity: 1, variantAttributes: {} },
     ]);
-    const readProducts = jest.fn().mockResolvedValue([{ id: "sku1" }]);
+    const readProducts = (jest.fn() as any).mockResolvedValue([{ id: "sku1" }]);
     jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory,

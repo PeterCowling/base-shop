@@ -26,7 +26,7 @@ describe("getSeo", () => {
   };
 
   beforeEach(() => {
-    getShopSettingsMock.mockResolvedValue(settings);
+    (getShopSettingsMock as any).mockResolvedValue(settings);
   });
 
   afterEach(() => {
@@ -113,7 +113,7 @@ describe("getSeo", () => {
   );
 
   it("omits openGraph images when none provided", async () => {
-    getShopSettingsMock.mockResolvedValueOnce({
+    (getShopSettingsMock as any).mockResolvedValueOnce({
       languages: ["en", "de"],
       seo: {
         en: { canonicalBase: "https://shop.com" },
@@ -187,11 +187,11 @@ describe("getSeo", () => {
         type: "article",
         locale: "fr_FR",
         alternateLocale: ["de_DE"],
-      },
+      } as any,
     });
     expect(seo.openGraph?.type).toBe("article");
     expect(seo.openGraph?.locale).toBe("fr_FR");
-    expect(seo.openGraph?.alternateLocale).toEqual(["de_DE"]);
+    expect((seo.openGraph as any)?.alternateLocale).toEqual(["de_DE"]);
   });
 
   it.each([
@@ -213,7 +213,7 @@ describe("getSeo", () => {
   });
 
   it("overrides base title, description and OG URL with pageSeo", async () => {
-    getShopSettingsMock.mockResolvedValueOnce({
+    (getShopSettingsMock as any).mockResolvedValueOnce({
       languages: ["en", "de"],
       seo: {
         en: {
@@ -243,7 +243,7 @@ describe("getSeo", () => {
   });
 
   it("uses base title, description and OG URL when pageSeo lacks them", async () => {
-    getShopSettingsMock.mockResolvedValueOnce({
+    (getShopSettingsMock as any).mockResolvedValueOnce({
       languages: ["en", "de"],
       seo: {
         en: {
@@ -275,7 +275,7 @@ describe("getSeo", () => {
   });
 
   it("omits locales without canonicalBase from alternate links", async () => {
-    getShopSettingsMock.mockResolvedValueOnce({
+    (getShopSettingsMock as any).mockResolvedValueOnce({
       languages: ["en", "de"],
       seo: {
         en: { canonicalBase: "https://shop.com", openGraph: { image: "/default.jpg" } },
@@ -293,7 +293,7 @@ describe("getSeo", () => {
   });
 
   it("falls back to empty canonical when canonicalBase missing", async () => {
-    getShopSettingsMock.mockResolvedValueOnce({
+    (getShopSettingsMock as any).mockResolvedValueOnce({
       languages: ["en", "de"],
       seo: { en: {}, de: {} },
     });

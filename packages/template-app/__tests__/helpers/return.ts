@@ -39,8 +39,7 @@ export function setupReturnMocks(options: MockOptions = {}) {
 
   jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
     __esModule: true,
-    readShop: jest
-      .fn()
+    readShop: (jest.fn() as any)
       .mockResolvedValue({
         returnsEnabled: true,
         coverageIncluded: true,

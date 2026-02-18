@@ -12,7 +12,7 @@ describe("/api/return refund", () => {
       payment_intent: "pi_1",
     } as SessionSubset;
     const { computeDamageFee, refundCreate } = setupReturnMocks({ session });
-    computeDamageFee.mockResolvedValue(20);
+    (computeDamageFee as any).mockResolvedValue(20);
 
     const { POST } = await import("../src/api/return/route");
     const res = await POST({

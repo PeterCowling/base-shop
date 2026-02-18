@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00, TASK-01, TASK-10 complete; TASK-09 (SPIKE) added; topology re-sequenced after /lp-replan; TASK-02 is next runnable task
+Build-Progress: TASK-00, TASK-01, TASK-02, TASK-10 complete; Wave 3 eligible — TASK-03 + TASK-09 runnable in parallel
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -91,7 +91,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 |---|---|---|---:|---:|---|---|---|
 | TASK-00 | DECISION | Lock v2 scope boundary (stage-label scope + v1/v2 migration mode) | 84% | S | Complete (2026-02-18) | TASK-01 | TASK-04, TASK-06, TASK-07 |
 | TASK-01 | INVESTIGATE | Produce canonical vocabulary + assignment baseline artifact (terms, mappings, migration aliases) | 86% | S | Complete (2026-02-18) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Pending | TASK-01 | TASK-03, TASK-04, TASK-06 |
+| TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Complete (2026-02-18) | TASK-01 | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Create machine-readable process assignment matrix (28 processes) | 82% | S | Pending | TASK-02 | TASK-04, TASK-05 |
 | TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure + Option B label rename in stage-operator-dictionary.yaml | 80% | M | Pending | TASK-00, TASK-03, TASK-09, TASK-10 | TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 76% | M | Pending | TASK-03, TASK-09 | TASK-07 |
@@ -219,7 +219,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Artifact-Destination:** `docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.md` + `docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml`
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** draft may proceed with default-assumption note; final approval requires TASK-00 decision reference in header
@@ -273,6 +273,16 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Adds canonical vocabulary contract in startup-loop docs.
 - **Notes / references:**
   - `docs/business-os/_shared/business-vc-quality-checklist.md`
+- **Build Evidence (2026-02-18):**
+  - Status: Complete
+  - Deliverables: `docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.md` + `.yaml`
+  - Red phase: neither file existed; all 5 VCs failed — confirmed.
+  - VC-02-A: PASS — 7/7 workstreams + 7/7 workflow phases + 3 activation tokens, all with id/name/description.
+  - VC-02-B: PASS (structural) — anti-conflation rule present and explicit. Async reviewer sign-offs pending (2 required post-delivery).
+  - VC-02-C: PASS — all 7 workstreams include research brief alignment statement.
+  - VC-02-D: PASS (structural) — phase semantics + primary_workflow_phase requirement defined in §3. Async reviewer classification pending.
+  - VC-02-E: PASS — YAML parses cleanly; `OFF` id quoted to prevent YAML boolean coercion (regression fix).
+  - Note: TASK-00 decision record referenced in both artifacts (Option B + supersede-now).
 
 ### TASK-03: Create machine-readable process assignment matrix (28 processes)
 - **Type:** IMPLEMENT

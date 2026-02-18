@@ -45,17 +45,17 @@ jest.mock("@acme/platform-core/products", () => ({ getProductById: jest.fn() }))
 
 describe("SwapPage", () => {
   it("calls notFound when subscriptions disabled", async () => {
-    readShop.mockResolvedValue({ subscriptionsEnabled: false });
+    (readShop as any).mockResolvedValue({ subscriptionsEnabled: false });
     await SwapPage();
     expect(notFound).toHaveBeenCalled();
   });
 
   it("renders cart with disabled swap when no swaps left", async () => {
-    readShop.mockResolvedValue({
+    (readShop as any).mockResolvedValue({
       subscriptionsEnabled: true,
       rentalSubscriptions: [],
     });
-    getCart.mockResolvedValue({
+    (getCart as any).mockResolvedValue({
       sku1: {
         sku: {
           id: "sku1",
@@ -69,9 +69,9 @@ describe("SwapPage", () => {
         qty: 1,
       },
     });
-    getCustomerSession.mockResolvedValue({ customerId: "cust" });
-    getUserPlan.mockResolvedValue(undefined);
-    getRemainingSwaps.mockResolvedValue(0);
+    (getCustomerSession as any).mockResolvedValue({ customerId: "cust" });
+    (getUserPlan as any).mockResolvedValue(undefined);
+    (getRemainingSwaps as any).mockResolvedValue(0);
     const ui = (await SwapPage()) as ReactElement;
     render(ui);
     expect(screen.getByText("Item")).toBeInTheDocument();

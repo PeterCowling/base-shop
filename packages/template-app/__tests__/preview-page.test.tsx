@@ -40,7 +40,7 @@ describe("preview/[pageId]/page", () => {
     await expect(
       Page({ params: Promise.resolve({ pageId: "x" }), searchParams: Promise.resolve({}) })
     ).rejects.toThrow('not-found');
-    expect((notFound as jest.Mock)).toHaveBeenCalled();
+    expect((notFound as unknown as jest.Mock)).toHaveBeenCalled();
   });
 
   it("calls notFound on 401 (unauthorized)", async () => {
@@ -53,7 +53,7 @@ describe("preview/[pageId]/page", () => {
         searchParams: Promise.resolve({ token: "bad" }),
       })
     ).rejects.toThrow("not-found");
-    expect((notFound as jest.Mock)).toHaveBeenCalled();
+    expect((notFound as unknown as jest.Mock)).toHaveBeenCalled();
   });
 
   it("renders PreviewClient with initialDeviceId derived from legacy preset", async () => {

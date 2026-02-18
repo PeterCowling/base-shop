@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 + TASK-11 + TASK-12 + TASK-13 complete; TASK-14 remaining)
+Last-updated: 2026-02-18 (Phases 1–3 complete: TASK-07–TASK-13 done; Phase 4 seeded: TASK-17–TASK-21 + TASK-04/05 pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -104,7 +104,12 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 84%        | L      | Complete (2026-02-18) | TASK-10  | TASK-13         |
 | TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Complete (2026-02-18) | TASK-10         | TASK-13         |
 | TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Complete (2026-02-18) | TASK-11, TASK-12| TASK-14         |
-| TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Pending | TASK-13         | -               |
+| TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Complete (2026-02-18) | TASK-13         | TASK-17         |
+| TASK-17     | IMPLEMENT   | Fix packages/ui tsconfig.test.typecheck.json exclude bug | 92%        | S      | Pending | TASK-14         | TASK-20         |
+| TASK-18     | IMPLEMENT   | packages/auth: create tsconfig + fix errors              | 80%        | M      | Pending | TASK-14         | TASK-20         |
+| TASK-19     | IMPLEMENT   | packages/email: create tsconfig + fix errors             | 80%        | M      | Pending | TASK-14         | TASK-20         |
+| TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Pending | TASK-17, TASK-18, TASK-19 | TASK-21 |
+| TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Pending | TASK-20, TASK-04 | -              |
 
 ## Parallelism Guide
 | Wave | Tasks           | Prerequisites   | Notes                                                      |
@@ -864,10 +869,10 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
 - **Depends on:** TASK-13
-- **Blocks:** -
+- **Blocks:** TASK-17
 - **Confidence:** 95%
   - Implementation: 95% — process is defined
   - Approach: 95% — final horizon gate
@@ -888,6 +893,129 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** Phase 3 CI evidence; error count summary across all phases
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/test-typecheck-enablement/plan.md` updated with Phase 4 tasks
+- **Build evidence (2026-02-18):**
+  - Phase 3 CI: 11 invocations confirmed passing at 0 errors (`apps/brikette` + `packages/template-app` added)
+  - **TYPECHECK_ALL=1 verdict: NOT safe** — 40+ packages/apps lack `tsconfig.test.typecheck.json`; fallback to `tsconfig.test.json` in script would sweep uncovered packages including high-error ones (TASK-01 found 1175 root errors). Deferred indefinitely until Phase 5+.
+  - **tsconfig.test.json fallback guard**: not urgent since CI uses `TYPECHECK_FILTER`; evaluate for Phase 5
+  - **packages/ui exclude bug**: `exclude: ["__tests__/**"]` cancels the `include` entirely; ~60 test files unprotected → promoted to Phase 4 as TASK-17 (S effort, trivial fix)
+  - **Phase 4 targets (new)**: packages/ui fix (TASK-17, S), packages/auth (TASK-18, M, 47 tests), packages/email (TASK-19, M, 159 tests), CI extension (TASK-20, S), Phase 4 CHECKPOINT (TASK-21)
+  - **TASK-04 (apps/cms)** remains in plan, unblocked (TASK-03 + TASK-06 both complete); 178 errors, M effort
+  - **Pre-commit hook**: deferred to Phase 5 CHECKPOINT or TASK-21
+  - Decision: Phase 4 = fix ui bug + add auth + email; re-assess remaining 35+ packages at TASK-21
+
+---
+
+### TASK-17: Fix packages/ui tsconfig.test.typecheck.json exclude bug
+- **Type:** IMPLEMENT
+- **Deliverable:** Corrected `packages/ui/tsconfig.test.typecheck.json` (remove `exclude: ["__tests__/**"]` that cancels include)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `packages/ui/tsconfig.test.typecheck.json`
+- **Depends on:** TASK-14
+- **Blocks:** TASK-20
+- **Confidence:** 92%
+  - Implementation: 95% — trivial one-line fix
+  - Approach: 95% — root cause confirmed; exclude cancels include
+  - Impact: 90% — adds ~60 test files to coverage
+- **Acceptance:** `TYPECHECK_FILTER=packages/ui node scripts/typecheck-tests.mjs` exits 0 after fix
+- **Validation contract:** TC-01: typecheck passes 0 errors after exclude removal
+- **Planning validation:** None: S effort
+- **Rollout / rollback:** Revert single file if errors surface
+- **Documentation impact:** None
+
+---
+
+### TASK-18: packages/auth — create tsconfig + fix errors
+- **Type:** IMPLEMENT
+- **Deliverable:** `packages/auth/tsconfig.test.typecheck.json` + error fixes in `packages/auth` test files
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `packages/auth/tsconfig.test.typecheck.json`, `packages/auth/**/*.test.ts`
+- **Depends on:** TASK-14
+- **Blocks:** TASK-20
+- **Confidence:** 80%
+  - Implementation: 82% — established pattern; error count unknown
+  - Approach: 85% — same pattern as platform-core/machine
+  - Impact: 85% — auth is high-risk foundational package (47 test files)
+- **Acceptance:** `TYPECHECK_FILTER=packages/auth node scripts/typecheck-tests.mjs` exits 0; no test regressions
+- **Validation contract:** TC-01: 0 errors; TC-02: jest tests unchanged
+- **Planning validation:** Run typecheck first to get error count; if >80 errors escalate to L effort
+- **Rollout / rollback:** Revert test fixes if regressions; CI step added in TASK-20
+- **Documentation impact:** None
+
+---
+
+### TASK-19: packages/email — create tsconfig + fix errors
+- **Type:** IMPLEMENT
+- **Deliverable:** `packages/email/tsconfig.test.typecheck.json` + error fixes in `packages/email` test files
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `packages/email/tsconfig.test.typecheck.json`, `packages/email/**/*.test.ts`
+- **Depends on:** TASK-14
+- **Blocks:** TASK-20
+- **Confidence:** 80%
+  - Implementation: 80% — established pattern; 159 test files may have many mock-type errors
+  - Approach: 85% — same pattern; email has dynamic require for cyclic dep workaround (likely needs cast)
+  - Impact: 85% — email service is cross-cutting (platform-core depends on it)
+- **Acceptance:** `TYPECHECK_FILTER=packages/email node scripts/typecheck-tests.mjs` exits 0; no test regressions
+- **Validation contract:** TC-01: 0 errors; TC-02: jest tests unchanged
+- **Planning validation:** Run typecheck first; if >100 errors consider splitting by sub-directory
+- **Rollout / rollback:** Revert test fixes if regressions
+- **Documentation impact:** None
+
+---
+
+### TASK-20: Extend CI step — packages/ui + packages/auth + packages/email
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `.github/workflows/ci.yml` with Phase 4 packages added to loop
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `.github/workflows/ci.yml`
+- **Depends on:** TASK-17, TASK-18, TASK-19
+- **Blocks:** TASK-21
+- **Confidence:** 90%
+- **Acceptance:** CI step runs 14 invocations; all pass; job within 15 min budget
+- **Validation contract:** TC-01: all new invocations exit 0; TC-02: CI job passes
+- **Planning validation:** None: S effort
+- **Rollout / rollback:** Revert CI step if failures; CI is the alert
+- **Documentation impact:** None
+
+---
+
+### TASK-21: Phase 4 CHECKPOINT — assess remaining coverage + pre-commit
+- **Type:** CHECKPOINT
+- **Deliverable:** Updated plan via `/lp-replan` for Phase 5 (pre-commit, TYPECHECK_ALL, remaining packages)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
+- **Depends on:** TASK-20, TASK-04
+- **Blocks:** -
+- **Confidence:** 90%
+- **Acceptance:**
+  - Phase 4 CI confirmed passing (14 invocations)
+  - Decision on TYPECHECK_ALL=1 viability (need all significant packages covered)
+  - Decision on pre-commit hook (estimate: 35+ remaining packages = Phase 5+)
+  - apps/cms CI confirmed (TASK-04 + TASK-05 complete, or deferred with reason)
+  - Plan updated with Phase 5 task seeds or closed if no further expansion needed
+- **Horizon questions:**
+  - Is CI job duration still within budget at 14+ invocations?
+  - Which remaining packages warrant Phase 5 coverage? (packages/lib, packages/cms-ui, packages/auth-* etc.)
+  - Is TYPECHECK_ALL=1 safe with Phase 4 complete?
+  - Should pre-commit hook gate on typecheck-tests or remain CI-only?
+- **Validation contract:** `/lp-replan` run; Phase 5 tasks defined or plan closed
+- **Planning validation:** Phase 4 CI evidence; remaining error count estimate
+- **Rollout / rollback:** None: planning control task
+- **Documentation impact:** Plan updated with Phase 5 tasks or Status: Complete
 
 ---
 

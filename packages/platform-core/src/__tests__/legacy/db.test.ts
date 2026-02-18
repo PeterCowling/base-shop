@@ -192,7 +192,7 @@ describe("db", () => {
     expect(orders).toHaveLength(1);
   });
 
-  it("uses stub when NODE_ENV=production and no DATABASE_URL", async () => {
+  it("throws when NODE_ENV=production and no DATABASE_URL", async () => {
     (process.env as any).NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
     jest.doMock(
@@ -205,16 +205,10 @@ describe("db", () => {
 
     const { prisma } = (await import("../../db")) as { prisma: any };
 
-    const shop = "prod-shop";
-    expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
-    await prisma.rentalOrder.create({
-      data: { shop, sessionId: "s1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
   });
 
-  it("falls back to stub when @prisma/client fails to load", async () => {
+  it("throws when @prisma/client fails to load", async () => {
     (process.env as any).NODE_ENV = "production";
     process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
@@ -230,14 +224,10 @@ describe("db", () => {
 
     const { prisma } = (await import("../../db")) as { prisma: any };
 
-    await prisma.rentalOrder.create({
-      data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
   });
 
-  it("falls back to stub when createRequire throws", async () => {
+  it("throws when createRequire throws", async () => {
     (process.env as any).NODE_ENV = "production";
     process.env.DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
@@ -250,11 +240,7 @@ describe("db", () => {
 
     const { prisma } = (await import("../../db")) as { prisma: any };
 
-    await prisma.rentalOrder.create({
-      data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
     expect(createRequireMock).toHaveBeenCalled();
   });
 

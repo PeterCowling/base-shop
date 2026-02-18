@@ -9,7 +9,7 @@ describe("loadPrismaClient", () => {
     delete (process.env as any).NODE_ENV;
   });
 
-  it("returns undefined and falls back to stub when DATABASE_URL is missing", async () => {
+  it("returns undefined when DATABASE_URL is missing and createRequire throws", async () => {
     await jest.isolateModulesAsync(async () => {
       (process.env as any).NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
@@ -25,14 +25,8 @@ describe("loadPrismaClient", () => {
 
       expect(loadPrismaClient()).toBeUndefined();
       expect(createRequireMock).toHaveBeenCalled();
-
-      await prisma.rentalOrder.create({
-        data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
-      });
-      const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
-      expect(orders).toEqual([
-        { shop: "s", sessionId: "1", trackingNumber: "t1" },
-      ]);
+      // prisma is missingPrismaClient() — throws on property access
+      expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
     });
   });
 

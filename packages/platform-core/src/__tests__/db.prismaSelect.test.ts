@@ -40,7 +40,7 @@ describe("prisma client selection", () => {
     expect(prisma).toBeInstanceOf(FakePrismaClient);
   });
 
-  it("falls back to stub when DATABASE_URL is missing", async () => {
+  it("throws when DATABASE_URL is missing", async () => {
     (process.env as any).NODE_ENV = "production";
 
     const ctor = jest.fn();
@@ -55,7 +55,8 @@ describe("prisma client selection", () => {
 
     const { prisma } = await import("../db");
 
-    await expect(prisma.rentalOrder.findMany({ where: { shop: "s" } })).resolves.toEqual([]);
+    // missingPrismaClient() proxy throws on any property access
+    expect(() => (prisma as any).rentalOrder).toThrow("Prisma client unavailable");
     expect(ctor).not.toHaveBeenCalled();
   });
 });

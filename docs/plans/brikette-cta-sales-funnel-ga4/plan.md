@@ -34,8 +34,9 @@ The target funnel is: CTA click → `/{lang}/book` (date picker + room list + co
 direct Octorate navigation from RoomCard with `begin_checkout`. The `/book` page currently has zero
 persuasive content — it needs conversion content (DirectBookingPerks, social proof, FAQ, location)
 and structured data. Ten other high-traffic pages have zero or weak booking CTAs. The GA4 e-commerce
-pipeline is incomplete — `view_item_list`, `select_item`, `search_availability`, `view_promotion`,
-`select_promotion`, and reliable `begin_checkout` (with `items[]`) are all missing.
+pipeline is partially implemented — `view_item_list` (TASK-07, complete) and `view_item` (TASK-08,
+complete) already exist; `select_item`, `search_availability`, `view_promotion`, `select_promotion`,
+and reliable `begin_checkout` (with `items[]`) are still missing.
 
 ## Goals
 
@@ -220,6 +221,14 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 **Critical path:** TASK-22 → TASK-26 → TASK-28 → TASK-29 → TASK-30 → TASK-32 → TASK-38
 **Total pending tasks:** 24 (Waves 1–8, excluding CHECKPOINT TASK-29)
 
+**Merge unit PR strategy for TASK-24–28:**
+- **Option A (recommended):** single PR containing all of TASK-24/25/26/27/28. Cleanest; TypeScript is always green at merge.
+- **Option B:** stacked PRs, but "CI-green" means green *after stacking onto all prior PRs in the chain*, not individually. PR for TASK-25 stacks on TASK-24's branch; etc. Do not merge any PR in the chain until the full stack is ready.
+- Wave 1/2/3/4 describes *development order*, not *merge order*. All TASK-24–28 changes are committed but held until the full stack is CI-green.
+
+**Wave 6 suggested sub-ordering (still parallel, but start in this order to reduce fallout):**
+TASK-37 (enums, establishes authoritative values) → TASK-31 (helpers, consume enums) → TASK-30 (trackThenNavigate) → TASK-41 (page_view) → TASK-40 (protocol doc) → TASK-42 (Admin dims — start **first** among Wave 6 ops tasks to account for 24–48h propagation delay).
+
 ## Tasks
 
 ### TASK-01: GA4 contract primitives
@@ -289,7 +298,8 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - H1: "Book Direct at Hostel Brikette, Positano" (no "only hostel" claim)
   - Meta title: "Book Direct at Hostel Brikette Positano | Best Price + Free Breakfast"
   - BookPageStructuredData renders `<script type="application/ld+json">` with LodgingBusiness + FAQPage + BreadcrumbList
-  - JSON-LD `url` and `image` fields use absolute URLs from environment config (base URL resolved in TASK-20), not hardcoded domain; staging must not leak production domain
+  - JSON-LD `url` and `image` fields use `getSiteBaseUrl()` helper (locked in TASK-20); staging must not leak production domain
+  - `<link rel="canonical">` set consistently with canonical URL policy from TASK-20
   - JSON-LD validates via Schema Markup Validator (schema.org correctness)
   - **Deal applied banner:** when `/book?deal=SUMMER25` URL param is present, a visible "Deal applied: SUMMER25" banner renders above the room cards; deal code is propagated into `buildOctorateUrl` calls (via TASK-23) so the discount applies at Octorate checkout
   - All new keys in `bookPage.json`; no hardcoded copy in components; no i18n key leakage on 3 non-EN locales
@@ -368,11 +378,13 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Minimum required field set: `name`, `address`, `geo`, `url`, `image`, `checkinTime`, `checkoutTime`, `amenityFeature`, `priceRange`, `potentialAction: ReserveAction` — is this correct?
   - How to validate: Schema Markup Validator for schema.org; Rich Results Test for eligibility (not correctness)
   - `aggregateRating`: confirm third-party badges (Hostelworld, Booking.com) are not eligible for structured data markup
-  - **Absolute URL source:** How are `url`, `image`, and breadcrumb item URLs computed for JSON-LD fields? Must use an env/config base URL (e.g. `NEXT_PUBLIC_BASE_URL` or framework `headers().get("host")`). Staging must not leak production domain. Document the chosen source so TASK-13 implements it consistently.
+  - **Absolute URL source (static export constraint):** `headers().get("host")` is NOT available in static export (no server runtime). Lock to `NEXT_PUBLIC_SITE_URL` environment variable + a single `getSiteBaseUrl()` helper. This helper is the single source of truth for all absolute URLs in JSON-LD and canonical tags. Enforce: `new URL(path, getSiteBaseUrl()).toString()`.
+  - **Canonical URL policy:** if Decision A results in both `/en/book` and `/en/prenota` being accessible (even temporarily), define which is canonical and set `<link rel="canonical">` + JSON-LD `url` field consistently to that choice. Specify this policy so TASK-13 and TASK-22 are coordinated.
 - **Acceptance:**
   - `@type` strategy chosen with rationale
   - Minimum field set enumerated (static vs derived, how each is sourced)
-  - Absolute URL source decided and documented (single source of truth for base URL)
+  - Absolute URL source decided: `NEXT_PUBLIC_SITE_URL` + `getSiteBaseUrl()` helper documented; `headers().get("host")` ruled out (static export)
+  - Canonical URL policy documented (which slug is canonical if both exist post-Decision A)
   - Snapshot test approach confirmed (what the `<script>` output must contain)
   - Validation tooling documented
 - **Validation contract:** Decision memo written and reviewed; TASK-13 can proceed.
@@ -451,6 +463,8 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Impact: 90% — load-bearing for TASK-27 and TASK-13 deal propagation; wrong URL silently breaks room-specific bookings.
 - **Acceptance:**
   - `buildOctorateUrl({ checkin, checkout, pax, plan, roomSku, rateCodes, bookingCode, deal? })` exported from new utility
+  - **Return type is a discriminated union:** `{ ok: true; url: string } | { ok: false; error: "missing_rate_code" | "missing_booking_code" | "invalid_dates" }` — never throws; never returns null
+  - Callers (RoomCard, StickyBookNow) check `result.ok` before rendering the Octorate link; render disabled CTA with appropriate message when `!result.ok`
   - Unit tests assert exact URL string for NR and Flex for at least 2 different rooms
   - Deal param (`&deal=ID&utm_source=site&utm_medium=deal&utm_campaign=ID`) included when `deal` is provided
   - `codice=45111` always present
@@ -595,12 +609,13 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Impact: 88% — fixes the critical "RoomCard with no dates navigates to Octorate with garbage" UX regression.
 - **Acceptance:**
   - RoomCard accepts `queryState: "valid" | "invalid" | "absent"` prop (replacing the former `hasValidQuery?: boolean` tri-state footgun):
-    - `queryState === "invalid"` (from /book page, dates not set or invalid): button visually disabled (`aria-disabled`), click scrolls to date picker with shake animation + accessible message
+    - `queryState === "invalid"` (from /book page, dates not set or invalid): button visually disabled (`aria-disabled`); if `datePickerRef` is provided, click scrolls to date picker with shake animation + accessible message; if no `datePickerRef`, button stays disabled with tooltip (no scroll — avoids undefined scroll behavior on non-/book contexts)
     - `queryState === "absent"` (no date context, e.g. /rooms page): button navigates to `/{lang}/book` (Decision E)
     - `queryState === "valid"` (from /book page, valid dates): button fires `select_item` + `begin_checkout` (via TASK-32) then navigates to Octorate
   - RoomCard "Reserve Now" buttons are `<a href={octorateUrl}>` (no `openModal("booking2")`)
-  - `BookPageContent.tsx` passes `queryState={validDates ? "valid" : "invalid"}` to `RoomsSection`/`RoomCard`
-  - `/rooms` page does NOT pass `queryState` (defaults to `"absent"`)
+  - When `buildOctorateUrl` returns `{ ok: false }`: button renders as disabled (not an `<a>` link) with an appropriate fallback message; no Octorate navigation
+  - `BookPageContent.tsx` passes `queryState={validDates ? "valid" : "invalid"}` and `datePickerRef` to `RoomsSection`/`RoomCard`
+  - `/rooms` page does NOT pass `queryState` (defaults to `"absent"`); does NOT pass `datePickerRef`
 - **Validation contract:**
   - TC-01: RoomCard with `queryState="invalid"` → renders button as `aria-disabled`, click does not navigate
   - TC-02: RoomCard with `queryState="absent"` → renders active button pointing to `/{lang}/book`
@@ -701,7 +716,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - `go` is defined before event fire; `navigated` flag prevents double-call
   - If `getGtag()` returns null, navigate is called immediately (no hang)
   - **200ms timeout rationale:** empirically-established UX trade-off — short enough to feel near-instant, long enough for most browsers to dispatch the beacon before page unload. Document this in the helper's JSDoc comment.
-  - **Caller contract for outbound `<a>` elements:** The onClick handler at the call site **must** call `e.preventDefault()` before invoking `trackThenNavigate`; the `navigate` callback performs the actual navigation via `window.location.assign(href)`. This is the caller's responsibility, not the helper's.
+  - **Caller contract for outbound `<a>` elements:**
+    - **shouldInterceptClick guard (required at every call site):** only intercept when `e.button === 0` (primary button) AND `!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey` AND `target !== "_blank"`. If the guard fails, do NOT call `e.preventDefault()` — let the browser handle Cmd/Ctrl-click (new tab), middle-click, right-click normally. Best-effort: fire the GA4 event without beacon delay in that case (no navigation block).
+    - When guard passes: call `e.preventDefault()` first, then `trackThenNavigate(...)`; the `navigate` callback performs navigation via `window.location.assign(href)`. This is the caller's responsibility, not the helper's.
+    - **Double-click / multi-tap deduplication (required at every call site):** set an `isNavigating` flag (React ref or state) on first intercept; ignore subsequent clicks until navigation completes. This prevents duplicate `select_item`/`begin_checkout` fires on mobile double-tap.
 - **Validation contract:**
   - TC-01: gtag called with `{ transport_type: "beacon", event_callback: <fn> }` + all passed params
   - TC-02: navigate called after event_callback fires (not before)
@@ -772,18 +790,20 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Approach: 85% — callback prop pattern per Decision C; GA4 in app layer.
   - Impact: 88% — this is the core e-commerce event; without it the funnel has no select_item or begin_checkout.
 - **Acceptance:**
-  - RoomCard `<a>` onClick: **calls `e.preventDefault()` first**, then calls `trackThenNavigate("select_item", {...}, () => window.location.assign(octorateUrl))`
-  - Or: onClick calls `e.preventDefault()`, fires `fireSelectItem`, then `trackThenNavigate("begin_checkout", {...}, () => window.location.assign(octorateUrl))`
+  - **Event ordering (explicit decision):** fire `select_item` fire-and-forget (no beacon delay needed), then use `trackThenNavigate` only for `begin_checkout`. This ensures navigation is not blocked waiting for `select_item` callback, and occasional ordering noise in raw streams is acceptable. Do not chain `begin_checkout` inside `select_item`'s event_callback (adds latency, no funnel benefit).
+  - onClick applies shouldInterceptClick guard (TASK-30 caller contract) and `isNavigating` ref before calling `e.preventDefault()`
+  - Pattern: `fireSelectItem({...})` (fire-and-forget) → `trackThenNavigate("begin_checkout", {...}, () => window.location.assign(octorateUrl))`
   - `item_list_id` sourced from props (e.g. `"book_rooms"` or `"rooms_index"`)
   - `items[]` includes: `item_id` (room.sku), `item_name` (room display title), `item_category: "hostel"`, `affiliation: "Hostel Brikette"`, `currency: "EUR"`, `item_variant` ("nr" or "flex")
   - Navigation occurs only via `window.location.assign(octorateUrl)` inside the `navigate` callback — never directly from the onClick handler
   - Both events verified in staging via Network tab (items[] and item_id present in collect request)
 - **Validation contract:**
-  - TC-01: onClick → `e.preventDefault()` called; gtag called with `select_item` event containing correct item (incl. item_name, item_category, affiliation, currency)
-  - TC-02: onClick → gtag called with `begin_checkout` event containing correct item
-  - TC-03: navigation to Octorate URL occurs after event_callback or timeout (via `window.location.assign`)
+  - TC-01: onClick (plain left click, no modifiers) → `e.preventDefault()` called; `select_item` gtag called fire-and-forget with correct item (incl. item_name, item_category, affiliation, currency)
+  - TC-02: onClick → `trackThenNavigate` called with `begin_checkout` event; navigation occurs after callback or timeout
+  - TC-03: navigation to Octorate URL occurs via `window.location.assign` inside navigate callback
   - TC-04: `trackThenNavigate` called with `transport_type: "beacon"` (asserted via mock)
-  - TC-05: `e.preventDefault()` called before any navigation
+  - TC-05: Cmd+click (metaKey=true) → `e.preventDefault()` NOT called; browser handles normally
+  - TC-06: second click while `isNavigating=true` → `e.preventDefault()` NOT called; no duplicate GA4 events fired
 - **Rollout / rollback:** Revert commit
 
 ---
@@ -809,7 +829,8 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - `fireSearchAvailability({ nights, lead_time_days, pax })` fires on "Update" submit
   - Fires once on mount if `?checkin=X&checkout=Y` params are valid dates (with at least 1 night)
   - Does not fire on invalid/empty date fields
-  - Dedupe guard: does not fire twice for the same query in a single session (or at least per render cycle)
+  - **Search-key dedupe:** deduplication key must include `checkin + checkout + pax`, not just navigation/session. When user changes dates and re-submits on the same page, `search_availability` fires again (and `view_item_list` should also re-fire — coordinate with existing TASK-07 dedupe so the post-search list impression is not suppressed by the initial-load impression)
+  - Dedupe guard: does not fire twice for the same `(checkin, checkout, pax)` triple in one render cycle
 - **Validation contract:**
   - TC-01: Submit with valid dates → gtag called with `search_availability` + correct nights/lead_time_days/pax
   - TC-02: Submit with invalid dates → gtag NOT called
@@ -926,9 +947,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Impact: 88% — maintains enum authority; prevents enum drift in TASK-31/32/33/34/35/36.
 - **Acceptance:**
   - `modal_type` enum: `booking` and `booking2` removed; `offers`, `location`, `contact`, `facilities`, `language` retained
-  - `item_list_id` enum: `room_detail` added
-  - `cta_id` enum: `offers_modal_reserve` added
-  - `cta_location` enum: `offers_modal` added
+  - `item_list_id` enum: `room_detail` verified present (may already exist — confirm, add if not)
+  - `cta_id` enum: `offers_modal_reserve` verified present (listed in authoritative section above — confirm, add if not)
+  - `cta_location` enum: `offers_modal` verified present (listed in authoritative section above — confirm, add if not)
+  - Note: the Analytics Enums section in this plan already shows the target state; TASK-37 job is to make `ga4-events.ts` match that authoritative list — verify presence, do not assume values are missing
   - All references to removed enum values produce TypeScript errors (confirming their absence)
 - **Validation contract:**
   - TC-01: TypeScript compilation clean with new enums
@@ -954,12 +976,14 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Impact: 85% — makes GA4 verification repeatable by CI on every staging deploy.
 - **Acceptance:**
   - Test navigates to `https://staging.brikette-website.pages.dev/en/book?checkin=YYYY-MM-DD&checkout=YYYY-MM-DD&pax=2`
-  - **Intercepts requests matching `**/g/collect`** (wildcard — captures both GET and POST; handles any google-analytics.com endpoint variation)
+  - **Intercepts requests matching `**/g/collect`** (wildcard — captures GET and POST; matches both `www.google-analytics.com` and `region1.google-analytics.com` variants)
+  - For POST requests: parse body as URLSearchParams (Measurement Protocol batch format); for GET requests: parse query string. Event name is in `en=` param.
   - Clicks first room card NR CTA
   - Asserts intercepted request contains `en=select_item` with correct `item_id`
   - Asserts intercepted request contains `en=begin_checkout` with correct `item_id`
   - **Asserts `tid` parameter in intercepted request matches staging measurement ID** (from `NEXT_PUBLIC_GA_MEASUREMENT_ID` staging env; confirms stream isolation)
   - Asserts navigation URL matches `book.octorate.com`
+  - **Localized slug scenario:** additionally navigate to `/it/<book-slug>?checkin=...&checkout=...&pax=2` (slug determined by TASK-22 verdict), click first room card, assert same `select_item` + `begin_checkout` events fire — guards Decision A routing on static export
   - Test is skipped in CI unless `RUN_GA4_SMOKE=true` env is set (staging-only)
 - **Validation contract:**
   - TC-01: Full test scenario described above passes on staging
@@ -1037,10 +1061,13 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Approach: 85% — standard Next.js + gtag pattern is well-documented; add a `PageViewTracker` client component using `usePathname()` + `useEffect`.
   - Impact: 85% — without this, GA4 Funnel Exploration missing `page_view(/book)` step when user navigates internally (Home → /book), breaking the funnel visualization.
 - **Acceptance:**
-  - Investigate first: does any existing hook or gtag snippet call `gtag("config", ...)` on pathname change? If yes, document and close task.
-  - If not: add `PageViewTracker` client component that calls `gtag("event", "page_view", { page_path: pathname, page_location: href })` on every `pathname` change via `usePathname()` + `useEffect`
-  - Does NOT fire on initial render (gtag snippet handles that); fires only when pathname changes
-  - Verified on staging: navigate from Home → /book via header CTA; confirm `page_view` with `page_path: "/en/book"` appears in GA4 DebugView and Network tab
+  - Investigate first: does the existing gtag snippet use `send_page_view: false`? Does any hook already call `gtag("config", ...)` on pathname change?
+  - **Choose and implement one pattern — document the choice in a code comment:**
+    - **Pattern A (recommended if snippet has `send_page_view: false`):** add `PageViewTracker` using `usePathname()` + `useEffect` that fires `gtag("event", "page_view", { page_path: pathname, page_location: window.location.href })` on every pathname change including initial load
+    - **Pattern B (if snippet already handles initial load):** add `PageViewTracker` that fires `gtag("config", MEASUREMENT_ID, { page_path: pathname })` on pathname changes only (skips initial render with a `isFirst` ref) — this sends `page_view` via the config call automatically
+  - Do NOT mix both patterns — double page_view on SPA navigation is a silent data quality failure. Document which is chosen and why.
+  - Does not cause duplicate page_view on initial load (verify in DebugView: only one page_view on hard load)
+  - Verified on staging: navigate from Home → /book via header CTA; confirm exactly one `page_view` with `page_path: "/en/book"` in DebugView and Network tab
 - **Validation contract:**
   - TC-01: Mock `usePathname()` change → `gtag("event", "page_view", ...)` called with updated path and location
   - TC-02: Does not fire on initial render — only on pathname change
@@ -1068,13 +1095,14 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Approach: 90% — event-scoped custom dimensions are the correct type for per-event params.
   - Impact: 85% — without registration, custom params (`cta_id`, `cta_location`, `item_list_id`) appear in `event_params` but are NOT queryable in GA4 Explorations or custom reports; this is a silent reporting gap.
 - **Acceptance:**
+  - **Start immediately at Wave 6 open** (do not wait for other Wave 6 tasks) — 24–48h propagation delay means delaying registration delays when dimensions appear in Explorations
   - GA4 Admin → Custom Definitions → Custom Dimensions (event-scoped):
     - `cta_id` → dimension created
     - `cta_location` → dimension created
     - `item_list_id` → dimension created
-    - `coupon` → dimension created (maps to the built-in `coupon` param in e-commerce events)
-  - Screenshot or written confirmation of all 4 dimensions visible in GA4 Admin documented in verification-protocol.md (TASK-40 output)
-  - Note: custom dimension registration has a 24–48h propagation delay before appearing in reports
+    - `coupon` → **verify first:** check if GA4 already has a built-in "Coupon" dimension available in Explorations (some properties surface this automatically for e-commerce events). If already available and queryable, do NOT create a duplicate custom dimension. Document the outcome either way.
+  - Screenshot or written confirmation of all 4 dimensions (or 3 if coupon is built-in) visible in GA4 Admin documented in verification-protocol.md (TASK-40 output)
+  - Note: propagation delay means dimensions are registerable on day 1 but may not appear in Explorations until 24–48h later — register early
 - **Validation contract:**
   - TC-01: All 4 custom dimensions visible in GA4 Admin → Custom Definitions after configuration
 - **Execution plan:** Manual: GA4 Admin → Property → Custom Definitions → Create dimension × 4
@@ -1096,6 +1124,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | Staging GA4 stream not isolated before Track C tasks begin | High if missed | High | TASK-15 already complete; this is a hard gate for TASK-32–TASK-36. |
 | Book page conversion content (TASK-13) hurts LCP | Low | Medium | All proposed components are lightweight (text + icons). Monitor LCP via existing Web Vitals reporting. |
 | Playwright smoke test (TASK-38) can't intercept beacon transport requests | Low | Low | Playwright intercept works at network level regardless of transport type. Wildcard `**/g/collect` catches both GET and POST. |
+| SPA page_view double-counts on initial load (TASK-41) | Medium | Medium | Must choose one pattern (A or B) and document it. Verify in DebugView: exactly one page_view on hard load, one on each SPA navigation. |
+| Cmd/Ctrl-click on Octorate CTA breaks (opens same tab instead of new tab) | High | Medium | shouldInterceptClick guard required at all trackThenNavigate call sites. Guard is in TASK-30 caller contract; enforced by TC-05 in TASK-32. |
+| view_item_list undercounts post-search list on /book (dedupe suppresses re-fire) | Medium | Medium | TASK-33 search-key dedupe (checkin+checkout+pax) resets view_item_list dedupe on meaningful query changes. Coordinate with TASK-07 dedupe implementation. |
+| buildOctorateUrl returns error state (apartment missing rate codes) — UI silently shows broken CTA | Low | High | Discriminated union return type; RoomCard renders disabled button on `{ ok: false }` (TASK-23/27). User sees fallback, not a broken navigation. |
 
 ## Observability
 

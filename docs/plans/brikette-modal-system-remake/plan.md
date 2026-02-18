@@ -4,7 +4,7 @@ Status: Draft
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-17
-Last-updated: 2026-02-17 (TASK-08 complete — checkpoint replan; TASK-09/TASK-10 validated and ready)
+Last-updated: 2026-02-18 (TASK-09 complete — 6 new brikette tests + 2 TC-04 tab-trap tests pass)
 Feature-Slug: brikette-modal-system-remake
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -137,7 +137,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 | TASK-06 | IMPLEMENT | Decompose provider effects and implement selected i18n preload contract | 82% | M | Complete (2026-02-17) | TASK-03, TASK-04, TASK-05 | TASK-08 |
 | TASK-07 | IMPLEMENT | Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency) | 81% | M | Complete (2026-02-17) | TASK-05 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint before downstream validation/cleanup | 95% | S | Complete (2026-02-17) | TASK-06, TASK-07 | TASK-09 |
-| TASK-09 | IMPLEMENT | Add integration/contract/a11y test suite for modal invariants | 81% | M | Pending | TASK-04, TASK-06, TASK-07, TASK-08 | TASK-10 |
+| TASK-09 | IMPLEMENT | Add integration/contract/a11y test suite for modal invariants | 81% | M | Complete (2026-02-18) | TASK-04, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | IMPLEMENT | Remove legacy compatibility paths and finalize docs/rollout notes | 84% | S | Pending | TASK-09 | - |
 
 ## Parallelism Guide
@@ -582,7 +582,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `apps/brikette/src/test/components/*modal*.test.tsx`, `packages/ui/src/organisms/modals/__tests__/ModalBasics.test.tsx`, `apps/brikette/src/test/context/*`, `[readonly] apps/brikette/src/context/modal/*`
 - **Depends on:** TASK-04, TASK-06, TASK-07, TASK-08
 - **Blocks:** TASK-10
@@ -633,6 +633,16 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - update testing policy references in plan notes if new harness conventions are introduced.
 - **Notes / references:**
   - Fact-find Recommended Test Approach.
+- **Build completion evidence (2026-02-18):**
+  - TC-01 (BookingWidget → modal payload): 3 tests green — checkIn/checkOut/adults correct, empty fields yield undefined, invalid date range blocked without openModal call.
+  - TC-02 (PolicyFeeClarityPanel namespace race): 3 tests green — graceful empty, hostel items all rendered, apartment variant filters correctly.
+  - TC-04 (tab-trap a11y): 2 tests added to `packages/ui ModalBasics.test.tsx` — TC-04a FacilitiesModal Radix FocusScope wraps focus, TC-04b BookingModal2 Tab/Shift-Tab cycles stay in dialog.
+  - TC-05: confirmed pre-covered by ga4-09/ga4-10 (TASK-08 checkpoint).
+  - TC-03 / TC-06: staging manual QA checklist (no Playwright harness in Brikette).
+  - All 14 packages/ui ModalBasics tests still pass (no regression).
+  - Key infra fix: `ui-modal-context.tsx` mock updated to use `useContext` so `ModalContext.Provider` wrapping works in tests (matches real implementation contract).
+  - Root-cause documented: jest.mock for `@acme/design-system/atoms` and `primitives` both resolve to same stub file; second factory clobbers first — merged into single mock with both exports.
+  - Commits: `20c9e97f96` (test files + mock fix), `1f5cd9e365` (ModalBasics TC-04 additions).
 
 ### TASK-10: Remove legacy compatibility paths and finalize docs/rollout notes
 - **Type:** IMPLEMENT

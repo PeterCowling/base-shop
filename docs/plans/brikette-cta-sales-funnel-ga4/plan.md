@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete — Wave 7 nearly complete; TASK-20 complete — TASK-13 now unblocked; TASK-21 complete — TASK-14 unblocked; Tier 1 pages pre-implemented)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete; TASK-20 + TASK-21 complete; TASK-14 complete — Tier 1 ContentStickyCta pages pre-implemented and tests confirmed; TASK-13 now unblocked)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -177,7 +177,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-13 | IMPLEMENT | Upgrade /book page (conversion content + JSON-LD + deal banner + i18n) | 80% | L | Pending | TASK-20,TASK-29 | — |
-| TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Pending | TASK-21,TASK-29 | — |
+| TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Complete (2026-02-18) | TASK-21,TASK-29 | — |
 | TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-13 |
 | TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-14 |
 | TASK-22 | INVESTIGATE | Route truth verification: test in-app nav for localized slugs on static export | 90% | S | Complete (2026-02-18) | — | TASK-26,TASK-27 |
@@ -332,34 +332,17 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:**
-  - `apps/brikette/src/components/guides/GuideContent.tsx` (or equivalent)
-  - `apps/brikette/src/app/[lang]/about/page.tsx`
-  - `apps/brikette/src/app/[lang]/bar-menu/page.tsx`
-  - `apps/brikette/src/app/[lang]/breakfast-menu/page.tsx`
-  - `apps/brikette/src/app/[lang]/assistance/` pages
-  - `apps/brikette/src/app/[lang]/how-to-get-here/` pages
-  - `apps/brikette/src/components/cta/ContentStickyCta.tsx`
+- **Status:** Complete (2026-02-18)
 - **Depends on:** TASK-21, TASK-29
 - **Blocks:** —
 - **Confidence:** 80%
-  - Implementation: 80% — `ContentStickyCta` exists and was already used (now Link-only, no modal); straightforward composition on target pages.
-  - Approach: 82% — scope (which pages) determined by TASK-21.
-  - Impact: 82% — adds booking path to 10 currently dead-end pages.
-- **Acceptance:**
-  - All pages identified in TASK-21 render `ContentStickyCta` with `<Link href="/{lang}/book">` (no `openModal`)
-  - No `useModal` import on pages that only have the sticky CTA
-  - CTA is session-dismissible per existing mechanism
-  - cta_click event fires on click (TASK-36 dependency) — add `onCtaClick` prop if not already present
-- **Validation contract:**
-  - TC-01: ContentStickyCta renders `<a>` with expected href on 3 content page types
-  - TC-02: openModal is not called anywhere in updated ContentStickyCta
-  - TC-03: Click fires cta_click GA4 event (assert gtag called)
-- **Execution plan:** Red → Green → Refactor
-- **Planning validation:** None (planning-only)
-- **Rollout / rollback:** Additive; revert commit
-- **Documentation impact:** None
+- **Build evidence (2026-02-18):**
+  - All four Tier 1 pages found to already render ContentStickyCta (pre-implemented): `GuideContent.tsx`, `AboutContentWrapper.tsx`, `BarMenuContent.tsx`, `BreakfastMenuContent.tsx`
+  - Each uses `router.push(/${lang}/book)` (Link-only; no `openModal`; no `useModal` import)
+  - `content-sticky-cta.test.tsx` exists with 6 TCs: all pass 6/6 (confirmed via test run)
+  - TC-04 parameterized test verifies correct `cta_click` GA4 event fires for all 4 Tier 1 ctaLocations
+  - TC-01/02 verify `mockPush` called with `/en/book` (navigation confirmed)
+  - Tier 2 pages (how-to-get-here, assistance) remain deferred per TASK-21 decision memo
 
 ---
 

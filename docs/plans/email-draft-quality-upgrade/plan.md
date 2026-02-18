@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-08 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-09 now eligible (all IMPLEMENT dependencies satisfied)
+Build-Progress: TASK-00..TASK-09 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-10 CHECKPOINT eligible (depends on TASK-02+TASK-09)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -91,7 +91,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04 | TASK-07, TASK-09 |
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 80% | M | Complete (2026-02-18) | TASK-05, TASK-06, TASK-12 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Complete (2026-02-18) | TASK-04, TASK-13 | TASK-09 |
-| TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 80% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
+| TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 80% | M | Complete (2026-02-18) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
 | TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Complete (2026-02-18) | TASK-05 | TASK-07 |
@@ -512,8 +512,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/mcp-server/data/test-fixtures/draft-pipeline/`, `packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`, `packages/mcp-server/package.json`, `docs/testing-policy.md`
+- **Status:** Complete (2026-02-18)
+- **Affects:** `packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts`, `[readonly] packages/mcp-server/src/__tests__/pipeline-integration.test.ts`, `docs/testing-policy.md` *(controlled scope contraction: `data/test-fixtures/draft-pipeline/` not needed — inline fixtures used; `package.json` not needed — governed runner requires no new script)*
 - **Depends on:** TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08
 - **Blocks:** TASK-10
 - **Confidence:** 80% *(promoted from 75% — 2026-02-18 replan; E1 evidence from suite audit)*
@@ -546,6 +546,16 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Rollback: demote to informational check while preserving fixture generation scripts.
 - **Documentation impact:**
   - Add benchmark/check command docs and expected metric interpretation.
+- **Build completion evidence (2026-02-18):**
+  - `draft-pipeline.integration.test.ts` created: 5 single-topic + 5 multi-topic synthetic inline fixtures (10 total).
+  - `afterAll` emits TC-09-01 metric summary: quality pass rate + avg coverage rate + knowledge injection count + per-scenarioType breakdown.
+  - TC-09-02 (regression detection): adversarial draft with "availability confirmed" → `quality.passed === false`, `failed_checks` all named snake_case identifiers.
+  - TC-09-03 (command contract): `readFileSync("docs/testing-policy.md")` asserts `"draft-pipeline.integration"` present.
+  - TC-09-04 passRate gate: `passRate >= 0.90` — achieved 10/10 (100%) in Green run.
+  - `docs/testing-policy.md` updated: Email Draft Pipeline section added with governed runner command, metric interpretation guide.
+  - Controlled scope contraction: `data/test-fixtures/draft-pipeline/` omitted (inline TypeScript fixtures), `package.json` omitted (governed runner needs no new script).
+  - Green: 13/13 tests passing in new suite; Refactor: 165/165 passing across 6 suites — zero regressions.
+  - Commit: `[pending]` — 3 files changed.
 
 ### TASK-10: Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope
 - **Type:** CHECKPOINT

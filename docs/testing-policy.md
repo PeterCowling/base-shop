@@ -122,6 +122,24 @@ CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand
 CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/bos-tools-write.test.ts
 CI=true pnpm run test:governed -- jest -- --config ./jest.config.cjs --runInBand --runTestsByPath packages/mcp-server/src/__tests__/loop-tools.test.ts
 ```
+
+### Email Draft Pipeline (Targeted)
+
+Use the governed runner with a testPathPattern to run the email draft pipeline evaluation harness. This suite covers `draft_interpret → draft_generate` end-to-end with coverage metrics and a `passRate >= 0.90` gate.
+
+```bash
+# Full evaluation harness (10 synthetic fixtures, coverage + quality metrics)
+pnpm -w run test:governed -- jest -- --testPathPattern="draft-pipeline.integration" --no-coverage
+
+# Individual draft-tool unit suites (draft-generate, draft-interpret, draft-quality-check)
+pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-interpret|draft-quality-check" --no-coverage
+```
+
+**Metric interpretation:**
+- `Quality pass rate`: fraction of fixtures that pass `draft_quality_check`. Gate: ≥ 90%.
+- `Avg question coverage`: fraction of detected questions where stemmed keywords appear in the draft body.
+- `Knowledge injections`: count of `sources_used` entries with `injected: true` (TASK-07 gap-fill signal).
+
 ---
 
 ## Rule 3: Limit Jest Workers

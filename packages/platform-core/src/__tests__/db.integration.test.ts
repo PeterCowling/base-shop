@@ -37,7 +37,6 @@ const shouldRunIntegration = Boolean(DATABASE_URL) && NODE_ENV !== "test";
 const describeIntegration = shouldRunIntegration ? describe : describe.skip;
 
 describeIntegration("Database integration", () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let prisma: any;
   const testPrefix = `test_${Date.now()}_`;
   const createdShopIds: string[] = [];

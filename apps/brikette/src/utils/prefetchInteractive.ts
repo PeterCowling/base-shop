@@ -84,8 +84,6 @@ let prefetchStarted = false;
 const importInteractiveBundles = async (): Promise<void> => {
   await import(/* webpackPrefetch: true */ "swiper");
   await import(/* webpackPrefetch: true */ "swiper/react");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/BookingModal");
-  await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/BookingModal2");
   await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/LocationModal");
   await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/ContactModal");
   await import(/* webpackPrefetch: true */ "@acme/ui/organisms/modals/OffersModal");

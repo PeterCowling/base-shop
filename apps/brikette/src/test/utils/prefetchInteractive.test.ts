@@ -9,14 +9,6 @@ jest.mock("swiper/react", () => {
   importSpy("swiper/react");
   return { __esModule: true, default: {} };
 });
-jest.mock("@acme/ui/organisms/modals/BookingModal", () => {
-  importSpy("BookingModal");
-  return { __esModule: true, default: {} };
-});
-jest.mock("@acme/ui/organisms/modals/BookingModal2", () => {
-  importSpy("BookingModal2");
-  return { __esModule: true, default: {} };
-});
 jest.mock("@acme/ui/organisms/modals/LocationModal", () => {
   importSpy("LocationModal");
   return { __esModule: true, default: {} };

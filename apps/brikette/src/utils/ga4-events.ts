@@ -5,8 +5,8 @@ type GTag = (...args: unknown[]) => void;
 
 // Canonical analytics enums (authoritative). Keep these stable and low-cardinality.
 export const GA4_ENUMS = {
-  itemListId: ["home_rooms_carousel", "rooms_index", "book_rooms", "deals_index"] as const,
-  modalType: ["offers", "booking", "booking2", "location", "contact", "facilities", "language"] as const,
+  itemListId: ["home_rooms_carousel", "rooms_index", "book_rooms", "deals_index", "room_detail"] as const,
+  modalType: ["offers", "location", "contact", "facilities", "language"] as const,
   ctaId: [
     "header_check_availability",
     "mobile_nav_check_availability",
@@ -17,6 +17,7 @@ export const GA4_ENUMS = {
     "sticky_book_now",
     "deals_book_direct",
     "content_sticky_check_availability",
+    "offers_modal_reserve",
   ] as const,
   ctaLocation: [
     "desktop_header",
@@ -33,6 +34,7 @@ export const GA4_ENUMS = {
     "breakfast_menu",
     "assistance",
     "how_to_get_here",
+    "offers_modal",
   ] as const,
   source: ["header", "mobile_nav", "hero", "booking_widget", "room_card", "sticky_cta", "deals", "unknown"] as const,
   ratePlan: ["flex", "nr"] as const,
@@ -50,6 +52,7 @@ const ITEM_LIST_NAME: Record<ItemListId, string> = {
   rooms_index: "Rooms index",
   book_rooms: "Book page rooms",
   deals_index: "Deals index",
+  room_detail: "Room detail",
 };
 
 export function resolveItemListName(id: ItemListId): string {
@@ -243,42 +246,6 @@ export function fireCtaClick(params: { ctaId: string; ctaLocation: string }): vo
   gtag("event", "cta_click", {
     cta_id: ctaId,
     cta_location: ctaLocation,
-  });
-}
-
-export function fireBeginCheckoutGeneric(params: {
-  source: "booking_modal" | "booking2_modal";
-  checkin: string;
-  checkout: string;
-  pax: number;
-}): void {
-  const gtag = getGtag();
-  if (!gtag) return;
-
-  gtag("event", "begin_checkout", {
-    source: params.source,
-    checkin: params.checkin,
-    checkout: params.checkout,
-    pax: params.pax,
-  });
-}
-
-export function fireBeginCheckoutGenericAndNavigate(params: {
-  source: "booking_modal" | "booking2_modal";
-  checkin: string;
-  checkout: string;
-  pax: number;
-  onNavigate: () => void;
-}): void {
-  fireEventWithOutboundReliability({
-    event: "begin_checkout",
-    payload: {
-      source: params.source,
-      checkin: params.checkin,
-      checkout: params.checkout,
-      pax: params.pax,
-    },
-    onNavigate: params.onNavigate,
   });
 }
 

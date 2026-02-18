@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18
+Last-updated: 2026-02-18 (TASK-06 CHECKPOINT)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -96,9 +96,9 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-05     | IMPLEMENT   | Extend CI step to cover apps/cms                         | 90%        | S      | Pending | TASK-04, TASK-16| TASK-06 *(post-defer)* |
 | TASK-15     | IMPLEMENT   | Fix 8 small packages + create per-package typecheck configs | 88%     | M      | Complete (2026-02-18) | TASK-01         | TASK-16         |
 | TASK-16     | IMPLEMENT   | Add CI step for 7 fixed small packages                   | 90%        | S      | Complete (2026-02-18) | TASK-15         | TASK-06         |
-| TASK-06     | CHECKPOINT  | Phase 1 gate — reassess Phase 2 + CMS priority          | 95%        | S      | Pending | TASK-16         | TASK-07, TASK-08|
-| TASK-07     | IMPLEMENT   | platform-core: create tsconfig + fix errors              | 78%        | M      | Pending | TASK-06         | TASK-09         |
-| TASK-08     | IMPLEMENT   | platform-machine: create tsconfig + fix errors           | 78%        | M      | Pending | TASK-06         | TASK-09         |
+| TASK-06     | CHECKPOINT  | Phase 1 gate — reassess Phase 2 + CMS priority          | 95%        | S      | Complete (2026-02-18) | TASK-16         | TASK-07, TASK-08|
+| TASK-07     | IMPLEMENT   | platform-core: create tsconfig + fix errors              | 84%        | M      | Pending | TASK-06         | TASK-09         |
+| TASK-08     | IMPLEMENT   | platform-machine: create tsconfig + fix errors           | 84%        | M      | Pending | TASK-06         | TASK-09         |
 | TASK-09     | IMPLEMENT   | Extend CI step: platform-core + platform-machine         | 90%        | S      | Pending | TASK-07, TASK-08| TASK-10         |
 | TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Pending | TASK-09         | TASK-11, TASK-12|
 | TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 72%        | L      | Pending | TASK-10         | TASK-13         |
@@ -118,7 +118,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | 7    | TASK-11, TASK-12| TASK-10         | Phase 3: parallel (brikette L, template-app M)             |
 | 8    | TASK-13         | TASK-11, TASK-12| CI extension after both Phase 3 configs clean              |
 | 9    | TASK-14         | TASK-13         | Phase 3 CHECKPOINT; assess Phase 4                         |
-| *    | TASK-04, TASK-05| TASK-06 gate    | CMS path: evaluated at TASK-06; slotted into Phase 2 or 3  |
+| *    | TASK-04, TASK-05| TASK-10 gate    | CMS path: deferred to Phase 3 (Wave 7); TASK-04 alongside TASK-11/12, TASK-05 alongside TASK-13  |
 
 ## Tasks
 
@@ -476,7 +476,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
 - **Depends on:** TASK-16
 - **Blocks:** TASK-07, TASK-08
@@ -500,6 +500,25 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/test-typecheck-enablement/plan.md` updated
 
+#### Build evidence (2026-02-18):
+**Phase 1 complete. All 7 packages pass. TASK-07/08 confidence lifted. CMS deferred to Phase 3.**
+
+Horizon validation results:
+- All 7 Phase 1 packages reach zero errors ✓ (editorial, types, stripe, i18n, design-system, design-tokens, seo)
+- CI job duration: 7 TYPECHECK_FILTER invocations expected ~30-60s each; well within 15-min budget
+- CMS (178 errors): **Deferred to Phase 3 (alongside TASK-11/12 in Wave 7).** CMS errors include TS2305 (design-system API drift) + transitive source regressions (different in character from mock-type errors in Phase 1). Phase 2 should establish platform-core mock patterns first.
+- `packages/themes` (1 error, sub-package structure): still deferred; evaluate at TASK-10 CHECKPOINT
+- Second-tier packages (auth 43, email 45, lib 34): evaluate at TASK-10 CHECKPOINT
+
+Established patterns (all Phase 2+ configs must apply these):
+1. `"declarationMap": false` — required in ALL test tsconfigs (avoids TS5069 with `composite: false`)
+2. `"rootDir": "../.."` — required for any package that transitively imports other `@acme/*` packages' source files (avoids TS6059)
+3. `"allowImportingTsExtensions": true` — only for packages with `.ts` extension imports in test files
+4. `jest-axe@10.0.0` has no type declarations — scope test tsconfig includes to avoid atoms tests importing it (risk for design-system Phase 3+ expansion)
+
+TASK-07 confidence lift: 78% → 84% (patterns established; platform-core has two __tests__ dirs, `rootDir: "src"` in parent — test tsconfig needs `rootDir: "../.."` and both `src/__tests__/` + `__tests__/` includes)
+TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in parent but imports @platform-core source — still needs `rootDir: "../.."` for cross-package resolution)
+
 #### Re-plan Update (2026-02-18)
 - Confidence: 95% unchanged
 - Key change: Dependency updated TASK-05 → TASK-16. Horizon expanded to include CMS path decision (TASK-04/05 deferred).
@@ -510,18 +529,18 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 
 ### TASK-07: packages/platform-core — create tsconfig + fix errors
 - **Type:** IMPLEMENT
-- **Deliverable:** `packages/platform-core/tsconfig.test.typecheck.json` (new file); fixed test files in `packages/platform-core/src/__tests__/**`
+- **Deliverable:** `packages/platform-core/tsconfig.test.typecheck.json` (new file); fixed test files in `packages/platform-core/src/__tests__/**` and `packages/platform-core/__tests__/**`
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `packages/platform-core/tsconfig.test.typecheck.json` (new), `packages/platform-core/src/__tests__/**`
+- **Affects:** `packages/platform-core/tsconfig.test.typecheck.json` (new), `packages/platform-core/src/__tests__/**`, `packages/platform-core/__tests__/**`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-09
-- **Confidence:** 78%
-  - Implementation: 80% — config creation follows CMS template; error count unknown
-  - Approach: 82% — platform-core tests are already partially covered by root config (packages/**); per-package config is narrower and more explicit
+- **Confidence:** 84%
+  - Implementation: 84% — Phase 1 patterns proven; platform-core has TWO __tests__ dirs (src/__tests__/ and root __tests__/) — both must be included; `rootDir: "src"` in parent needs override to `rootDir: "../.."`
+  - Approach: 85% — patterns established; error count still unknown but approach is clear
   - Impact: 85% — platform-core is core DB/business logic; enforced test types reduces silent contract mismatches
 - **Acceptance:**
   - `packages/platform-core/tsconfig.test.typecheck.json` created and extends `./tsconfig.json`
@@ -553,8 +572,8 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
   - Modified test files from git status: `packages/platform-core/src/__tests__/db.stub.test.ts`, `packages/platform-core/src/__tests__/rentalOrder.stub.test.ts`, `packages/platform-core/__tests__/db.stub.test.ts`
 
 #### Re-plan Update (2026-02-18)
-- Confidence: 78% unchanged (-> 84% conditional on TASK-06 CHECKPOINT evidence)
-- Key change: Root config showed 396 error occurrences for platform-core but per-package config context may differ (different compiler options, fewer transitive imports). Actual per-package error count unknown until TASK-07 execution.
+- Confidence: 78% → 84% (lifted at TASK-06 CHECKPOINT: Phase 1 patterns proven; rootDir + declarationMap invariants established)
+- Key change: Root config showed 396 error occurrences for platform-core but per-package config context differs (explicit types override, two test directories, Prisma mock types). Per-package error count unknown until TASK-07 execution. Platform-core has both `src/__tests__/` and root `__tests__/` — test tsconfig include must cover both. Parent sets `rootDir: "src"` — test config must override to `rootDir: "../.."`.
 - Dependencies: unchanged (TASK-06 → TASK-09)
 - Validation contract: unchanged
 

@@ -12,6 +12,12 @@ jest.mock("@acme/config/env/core", () => ({
   coreEnv: { NEXT_PUBLIC_SHOP_ID: "shop" },
 }));
 
+jest.mock("next/script", () => {
+  return function MockNextScript(props: Record<string, unknown>) {
+    return <script {...props} />;
+  };
+});
+
 describe("AnalyticsScripts", () => {
   beforeEach(() => {
     jest.resetModules();

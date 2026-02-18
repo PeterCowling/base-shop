@@ -5,6 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
+Build-Progress: TASK-00 Complete; TASK-01 Complete (DECISION resolved); TASK-02 Complete; TASK-03/TASK-04 Pending (unblocked)
 Feature-Slug: startup-loop-orchestrated-os-comparison
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -78,9 +79,9 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-00 | INVESTIGATE | Build contract-overlap matrix: current startup-loop contracts vs research process model | 88% | S | Pending | - | TASK-01 |
-| TASK-01 | DECISION | Lock v1 boundary: stage orchestration vs process-layer registry responsibilities | 83% | S | Pending | TASK-00 | TASK-02, TASK-03, TASK-04 |
-| TASK-02 | IMPLEMENT | Create process-registry-v1 contract (CDI/OFF/GTM/OPS/CX/FIN/DATA mapped to current stages) | 82% | L | Pending | TASK-01 | TASK-05 |
+| TASK-00 | INVESTIGATE | Build contract-overlap matrix: current startup-loop contracts vs research process model | 88% | S | Complete (2026-02-18) | - | TASK-01 |
+| TASK-01 | DECISION | Lock v1 boundary: stage orchestration vs process-layer registry responsibilities | 83% | S | Complete (2026-02-18) | TASK-00 | TASK-02, TASK-03, TASK-04 |
+| TASK-02 | IMPLEMENT | Create process-registry-v1 contract (CDI/OFF/GTM/OPS/CX/FIN/DATA mapped to current stages) | 82% | L | Complete (2026-02-18) | TASK-01 | TASK-05 |
 | TASK-03 | IMPLEMENT | Add CAP-05 sales-ops schema contract + artifact template references | 81% | M | Pending | TASK-01 | TASK-05 |
 | TASK-04 | IMPLEMENT | Add CAP-06 lifecycle/retention schema contract + S10 contract hooks | 80% | M | Pending | TASK-01 | TASK-05 |
 | TASK-05 | IMPLEMENT | Define exception-runbooks-v1 for Demand/Cash/Quality/Compliance | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06 |
@@ -106,7 +107,13 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Artifact: `docs/plans/startup-loop-orchestrated-os-comparison/artifacts/contract-overlap-matrix.md` — created 2026-02-18.
+  - Mapped all 28 research process IDs across CDI/OFF/GTM/OPS/CX/FIN/DATA.
+  - Coverage: 1 Covered, 15 Partial, 12 Missing. All 12 Missing rows have candidate destination paths.
+  - Identified 1 High collision risk (DATA-4 — do not add competing Weekly Review contract), 5 Medium, 10 Low, 12 None.
+  - Confirmed: no loop-spec.yaml changes required in v1; all additions are additive. TASK-01 boundary decision has full evidence.
 - **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `docs/business-os/startup-loop/manifest-schema.md`, `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md`
 - **Depends on:** -
 - **Blocks:** TASK-01
@@ -139,7 +146,14 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Decision artifact: `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md` — created 2026-02-18.
+  - Selected: Option A (additive only; no loop-spec edits in v1).
+  - Evidence basis: TASK-00 overlap matrix (1 Covered, 15 Partial, 12 Missing; no loop-spec changes required).
+  - Canonical files permitted: 5 new contract docs under startup-loop/ + targeted updates to capability-contract + KPCs prompt.
+  - Explicit out-of-scope: loop-spec.yaml, manifest-schema.md, bottleneck-diagnosis-schema.md, artifact-registry.md.
+  - Downstream tasks TASK-02/03/04 unblocked with zero scope ambiguity.
 - **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `docs/business-os/startup-loop/manifest-schema.md`, `[readonly] docs/business-os/startup-loop-current-vs-proposed.user.md`
 - **Depends on:** TASK-00
 - **Blocks:** TASK-02, TASK-03, TASK-04
@@ -174,7 +188,14 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Red: Collision risk identified and documented in overlap matrix (TASK-00). Key risks: DATA-4 (High, do not replace), CAP-01/03 offer artifact path (Medium), DATA-2 vs bottleneck-diagnosis (Medium). All mitigated in contract language.
+  - Green: `docs/business-os/startup-loop/process-registry-v1.md` created with all 28 process IDs across CDI/OFF/GTM/OPS/CX/FIN/DATA. Each entry includes: owner role, inputs, outputs, artifact path, entry/exit criteria, exception linkage, profile/branch conditions, and collision notes where applicable.
+  - Refactor: DATA-4 entry made reference-only (collision prevention); Quick Reference Index added at top for operator usability (VC-02-C); Stage Coverage Map included for VC-02-A compliance; OPS-2/OPS-4 and CDI-3/OFF-3 explicitly distinguished from their one-time stage counterparts (VC-02-B).
+  - VC-02-A: All 17 stages S0..S10 mapped. ✓
+  - VC-02-B: No canonical stage ownership duplicated; collision notes confirm non-overlap. ✓
+  - VC-02-C: Quick Reference Index designed for ≤15-min priority-to-process-ID mapping; pilot validation required. ✓ (designed)
 - **Artifact-Destination:** `docs/business-os/startup-loop/process-registry-v1.md`
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Decision note in `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md`
@@ -477,6 +498,9 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 ## Decision Log
 - 2026-02-18: Plan created from `startup-loop-orchestrated-os-comparison` fact-find in `plan-only` mode.
 - 2026-02-18: Chosen approach = additive process-layer contracts (no loop-spec rewrite in v1).
+- 2026-02-18: TASK-00 complete. Overlap matrix confirms 1 Covered / 15 Partial / 12 Missing across 28 process IDs. All missing rows have destination paths. 1 High collision risk (DATA-4) identified — do not create competing Weekly Review contract. See `artifacts/contract-overlap-matrix.md`.
+- 2026-02-18: TASK-01 complete. Option A selected (additive only; no loop-spec edits in v1). Decision artifact: `decisions/v1-boundary-decision.md`. Canonical files permitted listed; loop-spec.yaml, manifest-schema.md, bottleneck-diagnosis-schema.md explicitly out-of-scope.
+- 2026-02-18: TASK-02 complete. process-registry-v1.md created at `docs/business-os/startup-loop/process-registry-v1.md`. All 28 process IDs documented with full operational contracts. VC-02-A/B/C addressed. TASK-03 and TASK-04 now unblocked.
 
 ## What Would Make This >=90%
 - Complete TASK-00 and TASK-01 with no unresolved scope ambiguity.

@@ -1,0 +1,129 @@
+---
+name: meta-loop-efficiency
+description: Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics (wc-l, grep, ls), emits a ranked opportunity artifact, and fires a planning anchor only on new-to-HIGH findings.
+---
+
+# /meta-loop-efficiency
+
+Weekly audit of startup-loop skill files. Read-only scan. Writes one committed artifact per run.
+
+## Invocation
+
+```
+/meta-loop-efficiency                     # default scan, commit artifact
+/meta-loop-efficiency --threshold <N>    # custom line threshold (default 200)
+/meta-loop-efficiency --dry-run          # print findings; do not commit
+```
+
+## Operating Mode
+
+**AUDIT ONLY** — no skill file modifications permitted.
+Writes and commits one artifact per run (skipped on `--dry-run`).
+
+## Audit Scope
+
+In-scope: all `lp-*` prefix skills + `startup-loop` + `draft-outreach`.
+Out-of-scope: `idea-*`, `meta-*`, `ops-*`, `review-*`, `biz-*`, `guide-*` — never scan these.
+Canonical list derived from the startup-loop Stage Model in `startup-loop/SKILL.md`.
+
+## Heuristics
+
+All heuristics operate over ALL `.md` files in each skill directory (SKILL.md + modules/ + others), not SKILL.md alone.
+
+### H0 — Duplicate candidate detection
+
+SHA256-hash the content of each in-scope `SKILL.md` (normalize whitespace). Group skills with identical hashes. Emit a "Possible duplicates" section for any group of ≥2. Advisory only; does not affect H1–H3 scoring.
+
+### H1 — Size / modularization
+
+Threshold applies to `SKILL.md` orchestrator line count only:
+- `wc -l SKILL.md` > threshold AND no `modules/` → **monolith** (strong signal)
+- `wc -l SKILL.md` > threshold AND has `modules/` → **bloated-orchestrator** (weaker signal)
+- `wc -l SKILL.md` ≤ threshold → **compliant**
+
+Additional: if `modules/` exists and any module exceeds 400 lines → **module-monolith** advisory (logged, not ranked).
+
+### H2 — Dispatch adoption gap
+
+- `dispatch_refs_any_md`: count of `subagent-dispatch-contract` matches across ALL `.md` files in the skill directory
+- `phase_matches_any_md`: matches of anchored heading pattern `^#{1,6}\s+(Phase|Stage|Domain|Step)\s+[0-9]+` across ALL `.md` files
+- `dispatch_refs_any_md == 0` AND `phase_matches_any_md ≥ 3` → **dispatch-candidate**
+
+### H3 — Wave dispatch adoption
+
+Applies only to skills that reference `lp-build` as their execution skill.
+If `wave-dispatch-protocol.md` is not referenced in any `.md` file in the directory → **wave-candidate** (advisory).
+
+## Ranking
+
+Produce **two separate hierarchical ranked lists**. Do not merge H1 and H2/H3 signals.
+
+### List 1 — Modularization opportunities (H1)
+
+Rank within each tier by `SKILL.md` lines descending:
+1. `high` tier — monolith or bloated-orchestrator
+2. `medium` tier
+3. `low` tier
+
+### List 2 — Dispatch opportunities (H2 + H3)
+
+Rank within each tier by `phase_matches_any_md` descending:
+1. `high` tier — dispatch-candidate or wave-candidate
+2. `medium` tier
+3. `low` tier
+
+### Invocation tier assignments (fixed)
+
+- **high**: startup-loop, lp-build, lp-plan, lp-replan, lp-sequence, lp-offer, lp-channels, lp-seo, lp-forecast, lp-fact-find
+- **medium**: lp-launch-qa, lp-design-qa, lp-experiment, lp-design-spec, lp-prioritize, lp-site-upgrade
+- **low**: lp-onboarding-audit, lp-brand-bootstrap, lp-readiness, lp-bos-sync, lp-baseline-merge, lp-measure, draft-outreach
+
+## Delta-Aware Planning Anchor
+
+Always write the artifact. Emit planning anchor ONLY when findings are new:
+
+1. Locate previous artifact: most recent `docs/business-os/platform-capability/skill-efficiency-audit-*.md` by filename.
+2. For each skill flagged in List 1 or List 2:
+   - Not in previous artifact → **new-to-HIGH** → emit planning anchor.
+   - Already flagged → status: `known` (suppress anchor for that skill).
+3. Any previously compliant skill now flagged → always emit planning anchor (regression).
+4. No new items and no regressions → emit:
+   > "No new HIGH opportunities since last audit (YYYY-MM-DD-HHMM). Known opportunities remain open — see previous anchor."
+
+## Output Artifact
+
+Path: `docs/business-os/platform-capability/skill-efficiency-audit-YYYY-MM-DD-HHMM.md`
+
+Required header (first 6 lines of artifact body):
+```
+scan_timestamp: YYYY-MM-DD HH:MM
+threshold: <N> lines
+scope: lp-*, startup-loop, draft-outreach
+git_sha: <HEAD SHA 7 chars>
+previous_artifact: <filename or "none">
+skills_scanned: <N>
+```
+
+Artifact sections:
+1. **Scan summary** — header + scanned/compliant/opportunity counts
+2. **Possible duplicates** (H0)
+3. **List 1 — Modularization opportunities** (H1, hierarchical)
+4. **List 2 — Dispatch opportunities** (H2/H3, hierarchical)
+5. **Planning anchor** — when new-to-HIGH items exist: suggest `/lp-fact-find startup-loop-token-efficiency-v2`
+6. **Delta status** — new-vs-known breakdown, regression flags
+
+## Commit Guard
+
+Before writing/committing the artifact:
+1. Run `git status --porcelain`.
+2. If any files are dirty beyond the artifact path → abort commit; fall back to `--dry-run`; warn operator.
+3. If clean (or only audit artifact dirty) → stage ONLY the artifact file; commit it alone.
+4. Use writer lock: `scripts/agents/with-writer-lock.sh --wait-forever -- git commit`
+
+## Heuristic Evolution
+
+To extend or update this skill:
+1. Add new heuristic `H<N>` section under `## Heuristics`.
+2. Update `## Ranking` lists to include the new signal.
+3. Add tier entries for any new `lp-*` skills added since last update.
+4. Keep SKILL.md ≤200 lines; extract to `modules/heuristics.md` if needed.

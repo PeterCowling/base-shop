@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-40, TASK-41 complete — Wave 6 nearly done)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-40, TASK-41 complete — Wave 7 in progress)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -190,7 +190,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-29 | CHECKPOINT | Horizon checkpoint: reassess post-modal-removal before GA4/content tracks begin | 95% | S | Complete (2026-02-18) | TASK-28 | TASK-20,TASK-21,TASK-30,TASK-31,TASK-37,TASK-40,TASK-41,TASK-42 |
 | TASK-30 | IMPLEMENT | Create trackThenNavigate(eventName, params, navigate, timeoutMs) helper + unit tests | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-32,TASK-35 |
 | TASK-31 | IMPLEMENT | Add fireViewPromotion, fireSelectPromotion (new) + update fireSelectItem with full item fields | 87% | S | Complete (2026-02-18) | TASK-29,TASK-37 | TASK-33,TASK-34,TASK-36 |
-| TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Pending | TASK-29,TASK-30,TASK-31,TASK-15 | — |
+| TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Complete (2026-02-18) | TASK-29,TASK-30,TASK-31,TASK-15 | — |
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Pending | TASK-29,TASK-30,TASK-15 | — |
@@ -856,6 +856,11 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - TC-04: `trackThenNavigate` called with `transport_type: "beacon"` (asserted via mock)
   - TC-05: second invocation while `isNavigating=true` → no duplicate GA4 events fired
 - **Rollout / rollback:** Revert commit
+- **Build completion evidence (2026-02-18):**
+  - `apps/brikette/src/components/rooms/RoomsSection.tsx`: imported `trackThenNavigate` and `buildRoomItem`; added closure-level `isNavigating` guard; fireSelectItem unchanged (buildRoomItem already provides full item fields via TASK-31); replaced `window.location.href = result.url` with `trackThenNavigate("begin_checkout", { source: "room_card", checkin, checkout, pax, item_list_id, items: [buildRoomItem(...)] }, () => window.location.assign(result.url))`.
+  - Event ordering: `fireSelectItem` fire-and-forget → `isNavigating = true` → `trackThenNavigate`.
+  - `/book` fallback path unchanged (no GA4 event on fallback navigation).
+  - Tests added to `ga4-11-select-item-room-ctas.test.tsx`: TASK-32 describe block — TC-01 (full GA4 item shape), TC-02/TC-04 (beacon + event_callback), TC-03 (assign not called immediately, only in callback), TC-05 (double-click guard). 5/5 pass.
 
 ---
 

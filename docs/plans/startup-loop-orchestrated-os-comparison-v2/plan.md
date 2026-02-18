@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00 + TASK-01 complete; routing to /lp-replan — Option B (label rename) + supersede-now expand scope; new TDD tasks expected
+Build-Progress: TASK-00, TASK-01, TASK-10 complete; TASK-09 (SPIKE) added; topology re-sequenced after /lp-replan; TASK-02 is next runnable task
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -93,22 +93,24 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 | TASK-01 | INVESTIGATE | Produce canonical vocabulary + assignment baseline artifact (terms, mappings, migration aliases) | 86% | S | Complete (2026-02-18) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Pending | TASK-01 | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Create machine-readable process assignment matrix (28 processes) | 82% | S | Pending | TASK-02 | TASK-04, TASK-05 |
-| TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure | 78% | M | Pending | TASK-00, TASK-03 | TASK-06, TASK-07 |
-| TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 76% | M | Pending | TASK-03 | TASK-07 |
-| TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, and operator docs to v2 vocabulary | 81% | S | Pending | TASK-04 | TASK-08 |
-| TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint) | 76% | M | Pending | TASK-04, TASK-05 | TASK-08 |
-| TASK-08 | CHECKPOINT | Horizon checkpoint for optional stage-label rename wave | 95% | S | Pending | TASK-06, TASK-07 | - |
+| TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure + Option B label rename in stage-operator-dictionary.yaml | 80% | M | Pending | TASK-00, TASK-03, TASK-09, TASK-10 | TASK-06, TASK-07 |
+| TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 76% | M | Pending | TASK-03, TASK-09 | TASK-07 |
+| TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, operator docs, and supersede-now consumer files to v2 vocabulary | 80% | M | Pending | TASK-04, TASK-10 | TASK-08 |
+| TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint + label rename correctness) | 82% | M | Pending | TASK-04, TASK-05, TASK-09 | TASK-08 |
+| TASK-08 | CHECKPOINT | Completion checkpoint — verify Option B label rename complete, supersede-now archive clean, all suites passing | 95% | S | Pending | TASK-06, TASK-07 | - |
+| TASK-09 | SPIKE | Write failing RED tests for stage-label rename before implementation (TDD gate for Option B) | 85% | S | Pending | TASK-02 | TASK-04, TASK-05, TASK-07 |
+| TASK-10 | INVESTIGATE | supersede-now consumer breakage audit — scan all v1 authoritative references, produce migration list | 88% | S | Complete (2026-02-18) | - | TASK-04, TASK-06 |
 
 ## Parallelism Guide
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01 | - | Baseline evidence package for deterministic naming/assignment |
-| 2 | TASK-00, TASK-02 | TASK-01 | Scope/migration decision and taxonomy contract proceed in parallel |
-| 3 | TASK-03 | TASK-02 | Assignment matrix becomes single mapping source |
-| 4 | TASK-04, TASK-05 | TASK-03 (+ TASK-00 for TASK-04) | Registry refactor and validator can proceed in parallel |
-| 5 | TASK-06, TASK-07 | TASK-04 (+ TASK-05 for TASK-07) | Consumer contracts/docs/skills + compatibility tests |
-| 6 | TASK-08 | TASK-06, TASK-07 | Checkpoint before any stage-label rename work |
+| 1 | TASK-01, TASK-10 | - | TASK-01: vocabulary baseline; TASK-10: v1 consumer scan (both complete ✓) |
+| 2 | TASK-00, TASK-02 | TASK-01 | TASK-00: scope decision (complete ✓); TASK-02: taxonomy contract |
+| 3 | TASK-03, TASK-09 | TASK-02 | Assignment matrix + RED test spike proceed in parallel once taxonomy is fixed |
+| 4 | TASK-04, TASK-05 | TASK-03 + TASK-09 + TASK-10 (+ TASK-00 for TASK-04) | Registry/label refactor and validator can proceed in parallel; both gated by TASK-09 RED tests |
+| 5 | TASK-06, TASK-07 | TASK-04 (+ TASK-05 + TASK-09 for TASK-07; + TASK-10 for TASK-06) | Consumer doc/skill updates + compatibility tests |
+| 6 | TASK-08 | TASK-06, TASK-07 | Completion checkpoint: Option B label rename confirmed, supersede-now archive clean |
 
 ## Tasks
 
@@ -338,16 +340,16 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Artifact-Destination:** `docs/business-os/startup-loop/process-registry-v2.md` (plus compatibility note in v1 registry)
+- **Artifact-Destination:** `docs/business-os/startup-loop/process-registry-v2.md` (plus tombstone in v1 registry per supersede-now)
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** linked review note in plan decision log
 - **Measurement-Readiness:** time-to-map top 3 weekly priorities to workstreams (minutes, target <=15) and legacy-term incidence in sampled notes over 2 weekly cycles
-- **Affects:** `docs/business-os/startup-loop/process-registry-v2.md`, `docs/business-os/startup-loop/process-registry-v1.md`, `[readonly] docs/business-os/startup-loop/process-assignment-v2.yaml`
-- **Depends on:** TASK-00, TASK-03
+- **Affects:** `docs/business-os/startup-loop/process-registry-v2.md`, `docs/business-os/startup-loop/process-registry-v1.md` (tombstone header), `docs/business-os/startup-loop/stage-operator-dictionary.yaml` (Option B: rename label_operator_short/long fields + add old values to aliases[]), `[readonly] docs/business-os/startup-loop/process-assignment-v2.yaml`
+- **Depends on:** TASK-00, TASK-03, TASK-09, TASK-10
 - **Blocks:** TASK-06, TASK-07
-- **Confidence:** 78%
-  - Implementation: 80% - content is known and migration mode is pre-decided by TASK-00.
-  - Approach: 78% - authority/deprecation policy reduces dual-authority risk.
+- **Confidence:** 80%
+  - Implementation: 83% - alias mechanism already exists in stage-operator-dictionary.yaml; label rename = YAML field update + add old value to aliases[]. No source code changes needed. (Evidence: aliases[] confirmed in all stage entries; resolveByAlias confirmed in stage-addressing.ts.)
+  - Approach: 78% - supersede-now means v1 gets tombstone immediately; TASK-10 consumer audit provides the breakage list.
   - Impact: 83% - primary visible output of v2 naming refactor.
 - **Acceptance:**
   - Registry sections use canonical `Workstream` naming (not `Domain`).
@@ -355,9 +357,17 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Registry includes explicit **Authority & Deprecation Policy** aligned to TASK-00:
     - source-of-truth for process definitions,
     - source-of-truth for assignments,
-    - v1 freeze policy,
+    - v1 tombstone (immediate freeze, no new edits),
     - change-order rule for assignment vs prose updates.
-  - v1 compatibility note defines authoritative version and migration path.
+  - v1 registry gets `> ARCHIVED: superseded by process-registry-v2.md as of <date>` tombstone header.
+  - `stage-operator-dictionary.yaml`: all `label_operator_short` and `label_operator_long` fields updated to v2 canonical terms; old values added to each stage's `aliases[]` array.
+  - TASK-09 RED tests all pass (GREEN) after these changes.
+#### Re-plan Update (2026-02-18)
+- Confidence: 78% -> 80% (Evidence: E2 — alias mechanism confirmed in stage-operator-dictionary.yaml + stage-addressing.ts; label rename scope is YAML-only, no source code changes)
+- Key change: Option B + supersede-now scope added; stage-operator-dictionary.yaml now editable; v1 gets tombstone not compatibility note
+- Dependencies: TASK-09, TASK-10 added as blockers
+- Validation contract: VC-04 unchanged; acceptance extended with tombstone + label rename criteria
+- Notes: TASK-10 consumer audit artifact at `artifacts/v1-consumer-audit.md`
 - **Validation contract (VC-04):**
   - VC-04-A: structural consistency -> pass when each process entry includes `workstream_id` + `workflow_phases` and matches matrix values.
   - VC-04-B: authority clarity -> pass when registry header states stage ordering authority remains `loop-spec.yaml` and S10 DATA-4 non-duplication rule is preserved.
@@ -442,19 +452,19 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
-- **Effort:** S
+- **Effort:** M
 - **Status:** Pending
 - **Artifact-Destination:** updated contracts/docs under `docs/business-os/startup-loop/` + startup-loop skill docs under `.claude/skills/` + workflow prompt templates under `docs/business-os/workflow-prompts/_templates/`
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** review acknowledgment in decision log
 - **Measurement-Readiness:** time-to-map top 3 weekly priorities to workstreams (minutes, target <=15) + legacy-term incidence count (`Domain` as primary lane label) in sampled S10 notes
-- **Affects:** `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/startup-loop/event-state-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`, `.claude/skills/lp-readiness/SKILL.md`, `.claude/skills/lp-offer/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`, `.claude/skills/lp-fact-find/SKILL.md`, `.claude/skills/lp-plan/SKILL.md`, `.claude/skills/lp-build/SKILL.md`, `[readonly] docs/business-os/startup-loop/process-registry-v2.md`
-- **Depends on:** TASK-04
+- **Affects:** `docs/business-os/startup-loop/marketing-sales-capability-contract.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/startup-loop/event-state-schema.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`, `.claude/skills/lp-readiness/SKILL.md`, `.claude/skills/lp-offer/SKILL.md`, `.claude/skills/lp-channels/SKILL.md`, `.claude/skills/lp-fact-find/SKILL.md`, `.claude/skills/lp-plan/SKILL.md`, `.claude/skills/lp-build/SKILL.md`, `docs/business-os/startup-loop/exception-runbooks-v1.md` (v1→v2 re-point), `docs/business-os/startup-loop/audit-cadence-contract-v1.md` (v1→v2 re-point), `docs/business-os/startup-loop/retention-schema.md` (v1→v2 re-point), `docs/business-os/startup-loop/sales-ops-schema.md` (v1→v2 re-point), `[readonly] docs/business-os/startup-loop/process-registry-v2.md`
+- **Depends on:** TASK-04, TASK-10
 - **Blocks:** TASK-08
-- **Confidence:** 81%
-  - Implementation: 83% - file set is clear and bounded.
-  - Approach: 81% - requires strict consistency checks across docs.
-  - Impact: 84% - reduces operator-level naming ambiguity.
+- **Confidence:** 80%
+  - Implementation: 82% - file set is fully enumerated by TASK-10 consumer audit; no unknown consumers.
+  - Approach: 80% - supersede-now adds 4 extra consumer re-point files; TASK-10 audit provides exact line-level migration steps.
+  - Impact: 84% - reduces operator-level naming ambiguity and ensures no orphaned v1 references post-archive.
 - **Acceptance:**
   - All touched contracts/docs reference canonical v2 workstream terms.
   - Skill docs and workflow prompt templates that mention loop process/workstream vocabulary are updated to canonical terms.
@@ -462,7 +472,14 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - No doc or skill guidance claims conflict with stage authority boundaries.
   - `rg` evidence appendix captures before/after counts for key legacy terms across touched files.
   - Evidence appendix records baseline metrics from most recent pre-v2 weekly cycle (N=1 minimum) using same counting protocol as post-update checks.
-  - Stage label strings are unchanged unless explicitly authorized by TASK-00 decision.
+  - **supersede-now**: all 5 authoritative v1 consumers re-pointed to v2 (per TASK-10 audit: exception-runbooks-v1.md, audit-cadence-contract-v1.md, retention-schema.md, sales-ops-schema.md, marketing-sales-capability-contract.md).
+  - Stage label literals updated to v2 values (authorized by TASK-00 Option B decision).
+#### Re-plan Update (2026-02-18)
+- Confidence: 81% -> 80% (Evidence: E2 — TASK-10 consumer audit identified 5 authoritative v1 consumers; scope expanded but fully bounded)
+- Key change: Effort S→M; 4 additional Affects files (v1 consumer re-points); stage label literals now in scope (Option B authorized); TASK-10 added as dependency
+- Dependencies: TASK-10 added
+- Validation contract: VC-06-05 updated — stage label changes are now in scope (TASK-00 Option B authorized)
+- Notes: Consumer migration steps at `artifacts/v1-consumer-audit.md`
 - **Validation contract (VC-06):**
   - VC-06-01: terminology consistency -> pass when no touched doc uses `Domain` as primary process-lane term without alias note.
   - VC-06-02: authority integrity -> pass when docs still point stage ordering/gates to `loop-spec.yaml`.
@@ -497,35 +514,43 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/__tests__/generate-stage-operator-views.test.ts`, `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`, `scripts/src/startup-loop/__tests__/derive-state.test.ts`, `scripts/src/startup-loop/__tests__/validate-process-assignment.test.ts`
-- **Depends on:** TASK-04, TASK-05
+- **Affects:** `scripts/src/startup-loop/__tests__/generate-stage-operator-views.test.ts`, `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`, `scripts/src/startup-loop/__tests__/derive-state.test.ts`, `scripts/src/startup-loop/__tests__/validate-process-assignment.test.ts`, `scripts/src/startup-loop/__tests__/stage-label-rename.test.ts` (extend TASK-09 RED tests to GREEN)
+- **Depends on:** TASK-04, TASK-05, TASK-09
 - **Blocks:** TASK-08
-- **Confidence:** 76%
-  - Implementation: 78% - existing test suites provide clear extension points.
-  - Approach: 76% - explicit legacy fixture and hook criteria reduce ambiguity.
-  - Impact: 82% - critical for safe rollout and future CI guardrails.
+- **Confidence:** 82%
+  - Implementation: 84% - alias mechanism confirmed in stage-addressing.ts (resolveByAlias + ALIAS_INDEX); extension seam is clear. (Evidence: E2 — resolveByAlias + LABEL_INDEX pattern confirmed)
+  - Approach: 82% - TASK-09 RED tests pre-define exact assertions; TASK-07 makes them GREEN.
+  - Impact: 84% - critical for safe Option B rollout and CI guardrails.
 - **Acceptance:**
-  - Existing stage addressing behavior remains unchanged unless explicitly approved.
+  - TASK-09 RED tests all pass GREEN after TASK-04 label rename implementation.
+  - Old `label_operator_short` values resolve correctly via `resolveByAlias` (alias fallback confirmed).
+  - New `label_operator_short` values resolve correctly via `resolveByLabel` (exact match).
   - Assignment validator tests pass for valid/invalid fixtures.
   - Generator check still deterministic with no stale artifacts.
   - At least one legacy-addressing fixture (`--stage-alias`/`--stage-label`) is included to prove backward compatibility in CI.
 - **Validation contract (TC-07):**
   - TC-07-01: `stage-addressing` tests -> all current ID/alias/label compatibility tests pass.
-  - TC-07-02: `generate-stage-operator-views` tests -> deterministic and schema checks pass.
+  - TC-07-02: `generate-stage-operator-views` tests -> deterministic and schema checks pass; new labels emitted correctly.
   - TC-07-03: `derive-state` tests -> stage name derivation behavior unchanged.
   - TC-07-04: new assignment validator tests -> pass/fail behavior matches spec.
-- **Execution plan:** Red -> Green -> Refactor
+  - TC-07-05: label rename correctness -> `resolveByLabel(newLabel)` resolves for all renamed stages.
+  - TC-07-06: alias fallback -> `resolveByAlias(oldLabel.toLowerCase())` resolves for all renamed stages.
+- **Execution plan:** Red -> Green -> Refactor (RED phase is TASK-09; GREEN/Refactor here)
 - **Planning validation (required for M/L):**
-  - Checks run: reviewed existing test coverage in three startup-loop test suites.
-  - Validation artifacts: v2 fact-find test landscape and dependency map.
-  - Unexpected findings: none.
-- **Scouts:** None: check-command aggregation is resolved by TASK-05 execution hook.
+  - Checks run: reviewed existing test coverage in three startup-loop test suites; confirmed alias mechanism.
+  - Validation artifacts: v2 fact-find test landscape, TASK-09 RED tests.
+  - Unexpected findings: aliases[] already present — no source code changes needed in stage-addressing.ts.
+- **Scouts:** None: check-command aggregation is resolved by TASK-05 execution hook; label extension seam confirmed by TASK-09.
 - **Edge Cases & Hardening:**
   - Ensure snapshot/order-sensitive tests are deterministic across environments.
-- **What would make this >=80%:**
-  - Already met once TASK-05 execution hook is landed and one legacy-addressing fixture is codified in this task.
 - **What would make this >=90%:**
-  - Stable CI run with repeated pass on check commands across two consecutive runs.
+  - Stable CI run with repeated pass on all check commands including TC-07-05/06 across two consecutive runs.
+#### Re-plan Update (2026-02-18)
+- Confidence: 76% -> 82% (Evidence: E2 — aliases[] confirmed in stage-operator-dictionary.yaml; resolveByAlias confirmed in stage-addressing.ts; TASK-09 pre-gates RED tests)
+- Key change: TC-07-05 (label rename correctness) + TC-07-06 (alias fallback) added; stage-label-rename.test.ts added to Affects; TASK-09 added as dependency
+- Dependencies: TASK-09 added
+- Validation contract: TC-07-05, TC-07-06 added
+- Notes: No source changes needed to stage-addressing.ts — alias mechanism is already in place
 - **Rollout / rollback:**
   - Rollout: include tests in targeted validation flow for changed packages.
   - Rollback: revert new tests/commands and keep manual review gate temporarily.
@@ -534,9 +559,9 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Notes / references:**
   - `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`
 
-### TASK-08: Horizon checkpoint - reassess downstream rename wave
+### TASK-08: Completion checkpoint — Option B label rename confirmed + supersede-now archive clean
 - **Type:** CHECKPOINT
-- **Deliverable:** Updated plan evidence via `/lp-replan` for optional stage-label rename work
+- **Deliverable:** Completion evidence record confirming Option B label rename complete and supersede-now archive clean
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
@@ -550,35 +575,93 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Impact: 95% - controls scope and confidence before next wave.
 - **Acceptance:**
   - `/lp-build` checkpoint executor run.
-  - `/lp-replan` run for any proposed rename-wave tasks.
-  - confidence and dependency graph refreshed from implementation evidence.
-  - plan updated and re-sequenced.
-  - Rename-wave eligibility criteria evaluated explicitly:
-    - validator + regression suite fully passing,
-    - operator mapping-time metric improves or remains <=15 minutes,
-    - no unresolved stage-label confusion in sampled weekly reviews.
+  - All TC-07 tests passing (including TC-07-05 label rename correctness + TC-07-06 alias fallback).
+  - `rg process-registry-v1` scan confirms zero authoritative references remain in the 5 consumer files.
+  - v1 registry tombstone header present and correct.
+  - Operator mapping-time metric ≤15 min (or improved).
 - **Horizon assumptions to validate:**
-  - v2 additive contracts reduced naming ambiguity enough to defer label rename.
+  - Option B label rename is complete and all consumers resolve correctly via alias fallback.
+  - supersede-now archive is clean — no consumer file still points to v1 as authoritative.
   - compatibility tests prove no regressions in stage resolution and derived state displays.
 - **Validation contract:**
-  - Checkpoint is complete only when post-TASK-07 evidence is logged and either:
-    - rename wave is explicitly deferred, or
-    - rename wave tasks are added with >=80 confidence.
+  - Checkpoint is complete only when:
+    - all TC-07 tests pass (including TC-07-05/06),
+    - `rg process-registry-v1` in authoritative consumer files returns zero hits,
+    - v1 tombstone is present.
 - **Planning validation:**
   - replan evidence path appended to decision log.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:**
   - updates this plan with checkpoint outcomes and next-wave decision.
 
+### TASK-09: Write failing RED tests for stage-label rename (TDD gate for Option B)
+- **Type:** SPIKE
+- **Deliverable:** `scripts/src/startup-loop/__tests__/stage-label-rename.test.ts` (failing test file — RED phase)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `scripts/src/startup-loop/__tests__/stage-label-rename.test.ts` (create)
+- **Depends on:** TASK-02
+- **Blocks:** TASK-04, TASK-05, TASK-07
+- **Confidence:** 85%
+  - Implementation: 88% - alias mechanism confirmed in stage-operator-dictionary.yaml (aliases[] array) and stage-addressing.ts (resolveByAlias + ALIAS_INDEX). Test pattern exists in stage-addressing.test.ts.
+  - Approach: 85% - exact test seam is clear: assert new label_operator_short values, assert old labels resolve via resolveByAlias.
+  - Impact: 84% - gates Option B label implementation behind failing tests before any YAML change is made.
+- **Acceptance:**
+  - Test file asserts expected new `label_operator_short` values for all renamed stages (sourced from TASK-02 taxonomy) — currently RED (failing).
+  - Test file asserts old `label_operator_short` values resolve correctly via `resolveByAlias(oldLabel.toLowerCase())` — currently RED (will pass once TASK-04 adds old values to aliases[]).
+  - Test file asserts `buildTable` output contains new label strings — currently RED.
+  - Tests follow same patterns as `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`.
+  - File includes `// SPIKE_NOTE: RED phase — TASK-04 implementation must make these pass` header comment.
+  - Tests are deterministic and environment-independent.
+- **Validation contract (TC-09):**
+  - TC-09-01: all tests in file execute (no syntax errors or import failures).
+  - TC-09-02: all tests FAIL before TASK-04 is implemented (confirms test sensitivity).
+  - TC-09-03: tests are isolated (no side effects on other test suites).
+- **Execution plan:** Write failing tests only (no implementation). RED phase.
+- **Planning validation:** None (S-effort SPIKE; seam confirmed by evidence scan).
+- **Scouts:** None: integration seam fully confirmed by /lp-replan evidence scan.
+- **Edge Cases & Hardening:**
+  - Parameterize label assertions per stage ID so a single fixture covers all renamed stages.
+- **Rollout / rollback:**
+  - Rollout: commit RED test file; TASK-04 makes it GREEN.
+  - Rollback: delete test file (no production impact).
+- **Documentation impact:**
+  - Adds test file with SPIKE_NOTE header documenting the TDD gate intent.
+
+### TASK-10: supersede-now consumer breakage audit
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/startup-loop-orchestrated-os-comparison-v2/artifacts/v1-consumer-audit.md`
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Complete (2026-02-18)
+- **Affects:** `docs/plans/startup-loop-orchestrated-os-comparison-v2/artifacts/v1-consumer-audit.md` (created)
+- **Depends on:** -
+- **Blocks:** TASK-04, TASK-06
+- **Confidence:** 88%
+- **Build Evidence (2026-02-18):**
+  - Status: Complete (executed during /lp-replan evidence pass)
+  - Method: ripgrep scan for `process-registry-v1` + `## Domain:` references across repo
+  - Key findings:
+    - 5 high-risk authoritative consumers: exception-runbooks-v1.md, audit-cadence-contract-v1.md, retention-schema.md, sales-ops-schema.md, marketing-sales-capability-contract.md
+    - `Domain:` headings exist ONLY in process-registry-v1.md — zero external breakage
+    - stage-operator-dictionary.yaml aliases[] already exists — no source code changes needed for label backward compat
+  - Deliverable: `artifacts/v1-consumer-audit.md` with per-file migration steps
+
 ## Risks & Mitigations
-- Stage label compatibility regression.
-  - Mitigation: additive-first scope, explicit compatibility tests (TASK-07), checkpoint gate (TASK-08).
+- Stage label compatibility regression (Option B).
+  - Mitigation: TASK-09 TDD gate (RED tests pre-defined before implementation), alias[] mechanism already in place, TC-07-05/06 tests, TASK-08 checkpoint.
+- v1 orphaned references post supersede-now archive.
+  - Mitigation: TASK-10 consumer audit (5 files identified); TASK-06 re-points all before TASK-04 tombstones v1; TASK-08 final rg scan confirms zero remaining.
 - Dual-authority confusion between v1 and v2 process registries.
-  - Mitigation: explicit authority statements + migration note in TASK-04.
+  - Mitigation: supersede-now tombstone in v1 + authority statements in v2 (TASK-04).
 - Assignment matrix drift from registry prose.
   - Mitigation: validator script + deterministic checks (TASK-05/TASK-07).
 - Over-scoping into loop-spec refactor.
-  - Mitigation: TASK-00 boundary decision + out-of-scope lock.
+  - Mitigation: TASK-00 boundary decision + out-of-scope lock (stage IDs/gates/ordering unchanged).
 
 ## Observability
 - Logging:
@@ -606,6 +689,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: Plan patched again for consistency and enforcement: TASK-00/TASK-01 gating alignment, machine-readable taxonomy enum source, explicit transitional process-ID authority, activation field semantics/tests, CI rollout mode, and baseline observability protocol.
 - 2026-02-18: TASK-01 complete. Vocabulary/assignment baseline artifact produced at `artifacts/v2-vocabulary-and-assignment-baseline.md`. Wave 2 partially eligible: TASK-02 runnable; TASK-00 is DECISION type (requires plan/replan resolution before TASK-04/TASK-06/TASK-07 can proceed).
 - 2026-02-18: TASK-00 closed. Operator decisions: **Option B** (stage labels renamed this wave) + **`supersede-now`** (v2 immediately replaces v1, no coexist). Decision artifact at `decisions/v2-scope-boundary-decision.md`. Routing to /lp-replan to add TDD de-risking tasks for label rename and supersede-now scope expansion.
+- 2026-02-18: /lp-replan complete. Key findings: alias[] mechanism already exists in stage-operator-dictionary.yaml — Option B scope is YAML field updates only, no source changes to stage-addressing.ts or generator. TASK-09 (SPIKE, RED tests) + TASK-10 (consumer audit, Complete) added. TASK-04/06/07/08 updated. Topology re-sequenced. Plan re-confidence: TASK-04 78→80%, TASK-07 76→82%, TASK-06 81→80% (scope expanded M).
 
 ## Overall-confidence Calculation
 - Effort weights: `S=1`, `M=2`, `L=3`

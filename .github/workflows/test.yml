@@ -44,6 +44,9 @@ jobs:
         with:
           turbo-token: ${{ secrets.TURBO_TOKEN }}
           turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Install Playwright browsers (scripts workspace only)
+        if: matrix.workspace == 'scripts'
+        run: pnpm exec playwright install chromium --with-deps
       - name: Build workspace (scoped)
         run: pnpm exec turbo run build --filter=./${{ matrix.workspace }}
       - run: pnpm --filter ./${{ matrix.workspace }} lint
@@ -119,7 +122,7 @@ jobs:
         if: matrix.workspace == 'packages/next-config'
         run: pnpm --filter ./packages/next-config test:coverage
       - name: E2E (if present)
-        run: pnpm --filter "./${{ matrix.workspace }}" --if-present run e2e
+        run: pnpm --filter "./${{ matrix.workspace }}" run --if-present e2e
       - name: Compute coverage artifact metadata
         id: coverage-meta
         if: always()

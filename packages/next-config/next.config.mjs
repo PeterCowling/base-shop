@@ -15,7 +15,7 @@ const coreEnv = {
 
 export default withShopCode(coreEnv.SHOP_CODE, {
   outputFileTracingRoot: repoRoot,
-  webpack(config, { isServer, webpack }) {
+  webpack(config, { isServer, webpack, nextRuntime }) {
     // Preserve existing tweaks from the base config
     if (typeof baseConfig.webpack === "function") {
       config = baseConfig.webpack(config, { isServer });
@@ -54,35 +54,40 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
     };
 
-    // Map built-in node modules consistently (unchanged)
-    for (const mod of [
-      "assert",
-      "buffer",
-      "child_process",
-      "crypto",
-      "fs",
-      "http",
-      "https",
-      "module",
-      "path",
-      "stream",
-      "string_decoder",
-      "timers",
-      "url",
-      "util",
-      "vm",
-      "zlib",
-    ]) {
-      config.resolve.alias[`node:${mod}`] = mod;
-    }
+    // Map built-in node modules consistently.
+    // Skip for edge runtime — node:* modules are unavailable there and the
+    // replacement would cause webpack to fail on imports in nodejs-only files
+    // that happen to be compiled by the edge-route loader pass in Next.js 15.
+    if (nextRuntime !== "edge") {
+      for (const mod of [
+        "assert",
+        "buffer",
+        "child_process",
+        "crypto",
+        "fs",
+        "http",
+        "https",
+        "module",
+        "path",
+        "stream",
+        "string_decoder",
+        "timers",
+        "url",
+        "util",
+        "vm",
+        "zlib",
+      ]) {
+        config.resolve.alias[`node:${mod}`] = mod;
+      }
 
-    if (webpack?.NormalModuleReplacementPlugin) {
-      config.plugins ??= [];
-      config.plugins.push(
-        new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
-          resource.request = resource.request.replace(/^node:/, "");
-        }),
-      );
+      if (webpack?.NormalModuleReplacementPlugin) {
+        config.plugins ??= [];
+        config.plugins.push(
+          new webpack.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+            resource.request = resource.request.replace(/^node:/, "");
+          }),
+        );
+      }
     }
 
     return config;

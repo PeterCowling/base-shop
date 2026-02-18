@@ -1,12 +1,20 @@
 // apps/cover-me-pretty/__tests__/checkout-session.test.ts
-import { decodeCartCookie } from "@acme/platform-core/cartCookie";
-import { PRODUCTS } from "@acme/platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
-import { POST } from "../src/api/checkout-session/route";
-import { asNextJson } from "@acme/test-utils";
-import { CART_COOKIE } from "@acme/platform-core/cartCookie";
+import {
+  CART_COOKIE,
+  decodeCartCookie,
+} from "@acme/platform-core/cartCookie";
+import {
+  createInventoryHold,
+  InventoryHoldInsufficientError,
+} from "@acme/platform-core/inventoryHolds";
 import { validateInventoryAvailability } from "@acme/platform-core/inventoryValidation";
+import { PRODUCTS } from "@acme/platform-core/products";
 import { variantKey } from "@acme/platform-core/types/inventory";
+import { stripe } from "@acme/stripe";
+import { asNextJson } from "@acme/test-utils";
+
+import { POST } from "../src/api/checkout-session/route";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -38,11 +46,21 @@ jest.mock("@acme/platform-core/inventoryValidation", () => {
     validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
   };
 });
+jest.mock("@acme/platform-core/inventoryHolds", () => {
+  const actual = jest.requireActual("@acme/platform-core/inventoryHolds");
+  return {
+    ...actual,
+    createInventoryHold: jest.fn(async () => ({
+      holdId: "hold-test",
+      expiresAt: new Date(),
+    })),
+  };
+});
 
-import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
 const validateInventoryAvailabilityMock =
   validateInventoryAvailability as jest.Mock;
+const createInventoryHoldMock = createInventoryHold as jest.Mock;
 
 jest.mock("@acme/platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@acme/auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
@@ -168,18 +186,18 @@ test("responds with 409 when cart exceeds available stock", async () => {
   const sku = { ...PRODUCTS[0], stock: 1 };
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
-  validateInventoryAvailabilityMock.mockResolvedValueOnce({
-    ok: false,
-    insufficient: [
-      {
-        sku: sku.id,
-        variantAttributes: { size },
-        variantKey: variantKey(sku.id, { size }),
-        requested: 2,
-        available: 1,
-      },
-    ],
-  });
+  const insufficient = [
+    {
+      sku: sku.id,
+      variantAttributes: { size },
+      variantKey: variantKey(sku.id, { size }),
+      requested: 2,
+      available: 1,
+    },
+  ];
+  createInventoryHoldMock.mockRejectedValueOnce(
+    new InventoryHoldInsufficientError(insufficient),
+  );
   const req = createRequest(
     { returnDate: "2025-01-02", currency: "EUR", taxRegion: "EU" },
     "cart-1",

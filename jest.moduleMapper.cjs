@@ -140,6 +140,8 @@ const moduleMapper = {
     " /packages/email/src/providers/sendgrid.ts",
   "^\\./providers/types\\.js$": " /packages/email/src/providers/types.ts",
   "^\\./stats\\.js$": " /packages/email/src/stats.ts",
+  "^@auth$": " /packages/auth/src/index.ts",
+  "^@auth/(.*)$": " /packages/auth/src/$1",
   "^@prisma/client$": " /__mocks__/@prisma/client.ts",
   "^@/components/atoms/shadcn$": " /test/__mocks__/shadcnDialogStub.tsx",
   "^@/i18n/(.*)$": " /packages/i18n/src/$1",

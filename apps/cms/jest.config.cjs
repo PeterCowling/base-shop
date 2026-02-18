@@ -51,6 +51,12 @@ module.exports = {
     "<rootDir>/apps/cms/__tests__/msw/server.ts",
   ],
   moduleNameMapper: {
+    // IMPORTANT: specific @acme/ui/* overrides must come BEFORE ...baseModuleNameMapper
+    // because the base preset includes a catch-all "^@acme/ui/(.*)$" that would
+    // otherwise match before these specific patterns (Jest uses first-match).
+    // @acme/ui/operations: stub useToast so components using NotificationCenter
+    // render without a real NotificationProvider in tests.
+    "^@acme/ui/operations$": "<rootDir>/test/__mocks__/ui-operations.mock.ts",
     ...baseModuleNameMapper,
     // Avoid React unknown-prop warnings by mapping Next.js Link to a
     // DOM-safe mock that strips Next-specific props like `scroll`.

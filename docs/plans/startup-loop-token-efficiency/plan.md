@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-11, TASK-12 SPIKEs complete; TASK-06, TASK-07, TASK-09 now eligible)
+Last-updated: 2026-02-18 (all 12 tasks complete — TASK-06, TASK-07, TASK-09 TCs verified)
 Feature-Slug: startup-loop-token-efficiency
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -90,10 +90,10 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 | TASK-03 | IMPLEMENT | OPP-3a: lp-seo phase modules + phase-base-contract | 82% | M | Complete (2026-02-18) | - | TASK-05, TASK-09 |
 | TASK-04 | IMPLEMENT | OPP-B: Author _shared/subagent-dispatch-contract.md | 82% | S | Complete (2026-02-18) | - | TASK-05 |
 | TASK-05 | CHECKPOINT | Validate Wave 1 extractions; replan Wave 3 dispatch tasks | 95% | S | Complete (2026-02-18) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
-| TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 80% | M | Pending | TASK-04, TASK-05 | - |
-| TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 82% | L | Pending | TASK-04, TASK-05, TASK-11 | - |
+| TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 80% | M | Complete (2026-02-18) | TASK-04, TASK-05 | - |
+| TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 82% | L | Complete (2026-02-18) | TASK-04, TASK-05, TASK-11 | - |
 | TASK-08 | IMPLEMENT | OPP-4: startup-loop S6B parallel secondary skill dispatch | 80% | S | Complete (2026-02-18) | TASK-04, TASK-05 | - |
-| TASK-09 | IMPLEMENT | OPP-3b: lp-seo Phase 3 SERP intra-phase parallelism | 80% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-12 | - |
+| TASK-09 | IMPLEMENT | OPP-3b: lp-seo Phase 3 SERP intra-phase parallelism | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04, TASK-05, TASK-12 | - |
 | TASK-10 | IMPLEMENT | OPP-5: lp-offer competitor research parallel dispatch | 80% | S | Complete (2026-02-18) | TASK-04, TASK-05 | - |
 | TASK-11 | SPIKE | Validate Model A parallel dispatch on minimal 2-task test | 85% | S | Complete (2026-02-18) | TASK-04, TASK-05 | TASK-07 |
 | TASK-12 | SPIKE | Validate WebSearch concurrent rate behavior (3-parallel) | 88% | S | Complete (2026-02-18) | TASK-03, TASK-04, TASK-05 | TASK-09 |
@@ -418,6 +418,14 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Restore original lp-launch-qa/SKILL.md from git; delete modules directory
 - **Documentation impact:** None beyond skill files
 - **Notes / references:** The +85% total token trade-off is explicit and accepted per fact-find. Decision owner confirmed: latency is primary driver.
+- **Status:** Complete (2026-02-18)
+- **Build evidence (2026-02-18):**
+  - TC-01: `lp-launch-qa/SKILL.md` = 128 lines (≤150 ✓)
+  - TC-02: 6 domain modules exist; domain-conversion=42L, domain-seo=48L, domain-performance=40L, domain-legal=55L, domain-brand-copy=33L, domain-measurement=57L — all within 30–60L target ✓ (domain-measurement at 57L, slightly above 60L nominal but content is verbatim mandatory pre-flight; accepted)
+  - TC-03: "Cross-domain synthesis" section present (line 86: `### 3) Cross-domain synthesis`, line 123 quality checklist) ✓ (note: capitalized — grep case-insensitive pass)
+  - TC-04: `subagent-dispatch-contract.md` referenced in SKILL.md (1 match at line 66) ✓
+  - `report-template.md` exists (273L) ✓; `--domain <X>` single-domain path preserved (line 76) ✓
+  - All 6 domain modules dispatched simultaneously via Task tool in a SINGLE message (line 64) ✓
 
 ---
 
@@ -468,6 +476,14 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Revert lp-build SKILL.md to pre-dispatch version; delete wave-dispatch-protocol.md
 - **Documentation impact:** MEMORY.md: note that lp-build now supports wave dispatch with Model A; reference wave-dispatch-protocol.md
 - **Notes / references:** Code-track tasks only for initial release. Business-artifact wave dispatch deferred pending one validated code-track run. Per open question resolution default: start code-only.
+- **Status:** Complete (2026-02-18)
+- **Build evidence (2026-02-18):**
+  - TC-01: `lp-build/SKILL.md` = 222 lines (≤250 ✓)
+  - TC-02: `wave-dispatch-protocol.md` = 55 lines (≤60 ✓); "Model A" + "touched_files" both present (4 combined matches) ✓
+  - TC-03: Wave dispatch block dispatches analysis subagents in ONE message; output schema `{diff_proposal, touched_files, summary, status}` specified ✓
+  - TC-04: Conflict detection via `touched_files` overlap → serial apply for conflicting tasks ✓
+  - TC-05: Failed task marked `Blocked`; quarantined; remaining wave tasks continue ✓
+  - `lp-build/SKILL.md` references `wave-dispatch-protocol.md` (1 match) ✓; `wave-dispatch-protocol.md` references `subagent-dispatch-contract.md` (1 match) ✓
 
 ---
 
@@ -561,6 +577,14 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Revert phase-3.md to TASK-03 version
 - **Documentation impact:** None beyond skill files
 - **Notes / references:** Rate limiting is the primary open risk. CHECKPOINT horizon assumption H-05 covers lp-seo phase quality; TASK-09 adds operational risk on top. Confidence will be re-assessed at TASK-05.
+- **Status:** Complete (2026-02-18)
+- **Build evidence (2026-02-18):**
+  - TC-01 (concurrency cap): `grep "max 5"` → 1 match ✓
+  - TC-02 (schema enforced): `grep "snippet_type"` → 1 match ✓
+  - TC-03 (failure handling): `grep "fetch-failed"` → 2 matches ✓
+  - `phase-3.md` = 174 lines (≤220 ✓) ✓
+  - SERP parallel dispatch block added; batching instruction for >5 keywords ✓
+  - Protocol references `_shared/subagent-dispatch-contract.md` ✓
 
 ---
 
@@ -722,18 +746,18 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 ## Acceptance Criteria (overall)
 
-- [ ] TASK-01: stage-doc-core.md + stage-doc-templates.md + stage-doc-integration.md exist; BOS integration files updated; stage-doc-operations.md replaced; TC-01/02/03 pass
-- [ ] TASK-02: startup-loop/SKILL.md ≤120 lines; 4 command modules exist; gate cross-reference validated
-- [ ] TASK-03: lp-seo/SKILL.md ≤120 lines; phase-base-contract.md ≤40 lines; 5 phase modules exist; no rubric duplication
-- [ ] TASK-04: subagent-dispatch-contract.md exists; 50-70 lines; all 6 required sections present
+- [x] TASK-01: stage-doc-core.md + stage-doc-templates.md + stage-doc-integration.md exist; BOS integration files updated; stage-doc-operations.md replaced; TC-01/02/03 pass
+- [x] TASK-02: startup-loop/SKILL.md ≤120 lines; 4 command modules exist; gate cross-reference validated
+- [x] TASK-03: lp-seo/SKILL.md ≤120 lines; phase-base-contract.md ≤40 lines; 5 phase modules exist; no rubric duplication
+- [x] TASK-04: subagent-dispatch-contract.md exists; 50-70 lines; all 6 required sections present
 - [x] TASK-05: CHECKPOINT complete; TASK-06 through TASK-10 confidence re-assessed; TASK-11+TASK-12 SPIKE precursors added; plan updated
-- [ ] TASK-11: Model A dispatch validated (evidence note produced); TASK-07 confidence updated to ≥80
-- [ ] TASK-12: WebSearch 3-concurrent validated (evidence note produced); TASK-09 confidence updated to ≥80
-- [ ] TASK-06: lp-launch-qa/SKILL.md ≤150 lines; 6 domain modules + report-template.md exist; cross-domain synthesis step present; --domain flag backwards compatible
-- [ ] TASK-07: wave-dispatch-protocol.md exists; lp-build SKILL.md ≤250 lines; wave dispatch block present; single-task wave regression-free
-- [ ] TASK-08: startup-loop S6B section directs parallel lp-seo + draft-outreach dispatch
-- [ ] TASK-09: phase-3.md contains SERP dispatch block; hard caps and output schema present; failure handling present
-- [ ] TASK-10: competitor-research-brief.md exists; lp-offer Stage 1 updated with parallel dispatch
+- [x] TASK-11: Model A dispatch validated (evidence note produced); TASK-07 confidence updated to ≥80
+- [x] TASK-12: WebSearch 3-concurrent validated (evidence note produced); TASK-09 confidence updated to ≥80
+- [x] TASK-06: lp-launch-qa/SKILL.md ≤150 lines; 6 domain modules + report-template.md exist; cross-domain synthesis step present; --domain flag backwards compatible
+- [x] TASK-07: wave-dispatch-protocol.md exists; lp-build SKILL.md ≤250 lines; wave dispatch block present; single-task wave regression-free
+- [x] TASK-08: startup-loop S6B section directs parallel lp-seo + draft-outreach dispatch
+- [x] TASK-09: phase-3.md contains SERP dispatch block; hard caps and output schema present; failure handling present
+- [x] TASK-10: competitor-research-brief.md exists; lp-offer Stage 1 updated with parallel dispatch
 
 ## Decision Log
 
@@ -743,7 +767,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 ## Overall-confidence Calculation
 
-*(Updated at TASK-05 CHECKPOINT — 2026-02-18)*
+*(Updated at plan completion — 2026-02-18; all 12 tasks complete)*
 
 - S=1, M=2, L=3
 - TASK-01: 80% × 1 = 80 (complete)

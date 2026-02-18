@@ -12,10 +12,29 @@ Analyze top-ranking pages for priority keywords to create content briefs that ma
    - From Phase 2 clusters, pick 5-10 high-priority keywords
    - Focus on Phase 1 production priorities (quick wins + strategic pillars)
 
-2. **SERP research per keyword** (use WebSearch):
-   - Fetch top 10 organic results for each keyword
-   - Identify common content patterns: length, structure, headings, media types
-   - Note SERP features: featured snippets, People Also Ask, video carousels, local packs, knowledge panels
+2. **SERP research per keyword** — parallel dispatch (see `_shared/subagent-dispatch-contract.md`):
+
+   **Dispatch directive**: spawn one subagent per keyword, max 5 concurrent subagents. If the keyword list has >5 items, process in batches of 5; wait for each batch to complete before dispatching the next.
+
+   **Per-keyword subagent brief**:
+   - Scope: one keyword only — do not expand scope to adjacent keywords
+   - Fetch top 10 organic results for the keyword using WebSearch
+   - Max output: 400 words per subagent
+   - Return the following structured JSON (no prose):
+
+   ```json
+   {
+     "keyword": "<keyword>",
+     "top_urls": ["<url1>", "<url2>", "..."],
+     "snippet_type": "featured|list|none",
+     "intent_signals": ["<signal1>"],
+     "gap_opportunities": ["<opportunity1>"]
+   }
+   ```
+
+   **Failure handling**: If a keyword fetch fails, the subagent returns `{ "keyword": "<kw>", "status": "fetch-failed" }` and the orchestrator continues with remaining keywords. Do NOT abort the phase for a single failed keyword. Flag any `fetch-failed` results in the merge step.
+
+   **Merge step**: After all keyword subagents in a batch complete, merge results into the Brief Summary table format (see Output Template below). For any `fetch-failed` keyword, insert a row marked `WARN: fetch-failed` and proceed.
 
 3. **Content gap identification**:
    - What do top results cover that others miss?

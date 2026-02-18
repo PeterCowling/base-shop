@@ -1,16 +1,17 @@
 import * as path from 'node:path';
 
 describe('@acme/editorial', () => {
+  const repoRoot = path.resolve(__dirname, '..', '..', '..');
+  const dataRoot = path.join(repoRoot, 'data', 'shops');
+
   beforeAll(() => {
-    const repoRoot = path.resolve(process.cwd(), '../../..');
-    process.env.DATA_ROOT = path.join(repoRoot, 'data', 'shops');
+    process.env.DATA_ROOT = dataRoot;
   });
 
   it('lists posts from data/shops/demo/blog', async () => {
-    const repoRoot = path.resolve(process.cwd(), '../../..');
     jest.resetModules();
     jest.doMock('@acme/platform-core/dataRoot', () => ({
-      DATA_ROOT: path.join(repoRoot, 'data', 'shops'),
+      DATA_ROOT: dataRoot,
     }), { virtual: true });
     const core = require('@acme/platform-core/dataRoot');
     expect(core.DATA_ROOT.endsWith(path.join('data','shops'))).toBe(true);
@@ -22,10 +23,9 @@ describe('@acme/editorial', () => {
   });
 
   it('fetches a post by slug and returns body', async () => {
-    const repoRoot = path.resolve(process.cwd(), '../../..');
     jest.resetModules();
     jest.doMock('@acme/platform-core/dataRoot', () => ({
-      DATA_ROOT: path.join(repoRoot, 'data', 'shops'),
+      DATA_ROOT: dataRoot,
     }), { virtual: true });
     const editorial = require('../src/index');
     const post = await editorial.fetchPostBySlug('demo', 'hello-world');

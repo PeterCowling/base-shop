@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archive
 Domain: Venture-Studio
 Workstream: Mixed
 Created: 2026-02-17

@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-06 complete; TASK-08 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-07 promoted to 80% (eligible for build)
+Build-Progress: TASK-00..TASK-08 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-09 now eligible (all IMPLEMENT dependencies satisfied)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -89,7 +89,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-04 | IMPLEMENT | Introduce additive multi-scenario action plan model with dominant/exclusive semantics | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-08, TASK-09 |
 | TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-07, TASK-09 |
 | TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04 | TASK-07, TASK-09 |
-| TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 80% | M | Pending | TASK-05, TASK-06, TASK-12 | TASK-09 |
+| TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 80% | M | Complete (2026-02-18) | TASK-05, TASK-06, TASK-12 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Complete (2026-02-18) | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
@@ -106,7 +106,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | 3 | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-00 | Quick ops bridge + foundational contracts in parallel |
 | 4 | TASK-06, TASK-12, TASK-13 | TASK-03+TASK-04 for TASK-06; TASK-05 for TASK-12; TASK-04 for TASK-13 | Ranking implement + two approach-definition investigations in parallel |
 | 5 | TASK-08 | TASK-04, TASK-13 | Thread/request extraction; replan complete (2026-02-18), promoted to 80% |
-| 6 | TASK-07 | TASK-05, TASK-06, TASK-12 | Knowledge injection; replan complete (2026-02-18), promoted to 80% |
+| 6 | TASK-07 | TASK-05, TASK-06, TASK-12 | Knowledge injection; complete (2026-02-18) — `loadKnowledgeData` + `buildGapFillResult` + `sources_used` |
 | 7 | TASK-09 | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | Regression and evaluation gate activation |
 | 8 | TASK-10 | TASK-02, TASK-09 | Replan checkpoint before any LLM-stage expansion |
 
@@ -407,7 +407,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-05, TASK-06, TASK-12
 - **Blocks:** TASK-09
@@ -441,6 +441,17 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Rollback: disable insertion branch while retaining coverage diagnostics.
 - **Documentation impact:**
   - Update operator notes for source-attribution metadata interpretation.
+- **Build completion evidence (2026-02-18):**
+  - `loadKnowledgeSummaries` replaced by `loadKnowledgeData`: single-pass over all URIs produces both `KnowledgeSummary[]` (output metadata) and `injectionCandidates` (raw snippets sorted by score descending). Avoids double HTTP calls.
+  - `KNOWLEDGE_INJECTION_SAFE_URIS` allowlist: `brikette://faq`, `brikette://rooms`, `brikette://policies`. `brikette://pricing/menu` excluded to prevent forbidden pricing language in guest-facing content.
+  - `KNOWLEDGE_MAX_INJECTIONS = 2` cap prevents bloating short single-question drafts.
+  - `stripCitationMarkers(text)`: `/\[[^\]]+\]\s*/g` safety-strips bracket markers before injection.
+  - `buildGapFillResult(body, uncoveredQuestions, candidates)`: runs BEFORE `removeForbiddenPhrases` + `enforceLengthBounds` so injected text flows through full sanitisation pipeline. Returns `{ body: string; sourcesUsed: SourcesUsedEntry[] }`.
+  - `SourcesUsedEntry` type added: `{ uri, citation, text, score, injected: boolean }` — emitted in tool output as `sources_used`.
+  - Post-assembly coverage check: `evaluateQuestionCoverage(bodyPlain, allIntents)` called after body assembly; `status === "missing"` entries trigger gap-fill candidates.
+  - Score note: `KnowledgeSnippet.score` is an integer count (not 0-1 float); `createSnippet` already filters ≤0, so all returned candidates are valid for injection.
+  - 3 new tests (TC-07-01/02/03): Red (3 failures, 21 existing passing); Green (24/24 passing); Refactor (152/152 passing across 5 suites — zero regressions).
+  - Commit: `306c605b3a` — feat(email-quality): TASK-07 — knowledge gap-fill injection + sources_used attribution; 2 files changed, 261 insertions, 14 deletions.
 
 ### TASK-08: Improve implicit request/thread-context extraction and policy-safe language rules
 - **Type:** IMPLEMENT

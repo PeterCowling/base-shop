@@ -146,6 +146,13 @@ const DEFAULT_KNOWLEDGE_URIS = [
 
 const KNOWLEDGE_MAX_WORDS_PER_RESOURCE = 500;
 const KNOWLEDGE_MAX_SNIPPETS_PER_RESOURCE = 6;
+// TASK-07: URIs safe for body injection — pricing/menu excluded (may contain forbidden pricing language).
+const KNOWLEDGE_INJECTION_SAFE_URIS = new Set<string>([
+  "brikette://faq",
+  "brikette://rooms",
+  "brikette://policies",
+]);
+const KNOWLEDGE_MAX_INJECTIONS = 2;
 const KNOWLEDGE_STOP_WORDS = new Set([
   "the",
   "and",
@@ -219,6 +226,12 @@ type KnowledgeContext = {
 
 type KnowledgeSummary = { uri: string; summary: string };
 type KnowledgeSnippet = { citation: string; text: string; score: number };
+// TASK-07: tracks which knowledge snippets were incorporated into the draft body.
+type SourcesUsedEntry = { uri: string; citation: string; text: string; score: number; injected: boolean };
+type KnowledgeData = {
+  summaries: KnowledgeSummary[];
+  injectionCandidates: Array<{ uri: string; snippet: KnowledgeSnippet }>;
+};
 
 function resolveKnowledgeSources(_category: string): string[] {
   return [...DEFAULT_KNOWLEDGE_URIS];
@@ -577,12 +590,14 @@ function formatKnowledgeSummary(snippets: KnowledgeSnippet[]): string {
   return truncateWords(summary, KNOWLEDGE_MAX_WORDS_PER_RESOURCE);
 }
 
-async function loadKnowledgeSummaries(
+// TASK-07: unified knowledge loader — produces summaries (for output) and injection candidates (for gap-fill).
+async function loadKnowledgeData(
   uris: string[],
   context: KnowledgeContext,
-): Promise<KnowledgeSummary[]> {
+): Promise<KnowledgeData> {
   const terms = buildKnowledgeTerms(context);
   const summaries: KnowledgeSummary[] = [];
+  const injectionCandidates: Array<{ uri: string; snippet: KnowledgeSnippet }> = [];
 
   for (const uri of uris) {
     const result = await handleBriketteResourceRead(uri);
@@ -593,13 +608,17 @@ async function loadKnowledgeSummaries(
     }
 
     const snippets = extractKnowledgeSnippets(uri, payload, terms);
-    summaries.push({
-      uri,
-      summary: formatKnowledgeSummary(snippets),
-    });
+    summaries.push({ uri, summary: formatKnowledgeSummary(snippets) });
+
+    if (KNOWLEDGE_INJECTION_SAFE_URIS.has(uri)) {
+      for (const snippet of snippets) {
+        injectionCandidates.push({ uri, snippet });
+      }
+    }
   }
 
-  return summaries;
+  injectionCandidates.sort((a, b) => b.snippet.score - a.snippet.score);
+  return { summaries, injectionCandidates };
 }
 
 function parseToolResult<T>(result: { content: Array<{ text: string }> }): T {
@@ -778,6 +797,58 @@ function removeForbiddenPhrases(body: string, phrases: string[]): string {
   }
 
   return normalizeParagraphs(sanitized);
+}
+
+// TASK-07: strips inline citation markers like [faq:check-in-window] before body injection.
+function stripCitationMarkers(text: string): string {
+  return text.replace(/\[[^\]]+\]\s*/g, "").trim();
+}
+
+// TASK-07: injects high-relevance knowledge snippets for uncovered questions into the body.
+// Injection happens before removeForbiddenPhrases + enforceLengthBounds so sanitisation applies.
+function buildGapFillResult(
+  body: string,
+  uncoveredQuestions: string[],
+  candidates: Array<{ uri: string; snippet: KnowledgeSnippet }>,
+): { body: string; sourcesUsed: SourcesUsedEntry[] } {
+  if (uncoveredQuestions.length === 0 || candidates.length === 0) {
+    return { body, sourcesUsed: [] };
+  }
+
+  const sourcesUsed: SourcesUsedEntry[] = [];
+  const injectedCitations = new Set<string>();
+  let resultBody = body;
+
+  for (const _question of uncoveredQuestions.slice(0, KNOWLEDGE_MAX_INJECTIONS)) {
+    const match = candidates.find((c) => !injectedCitations.has(c.snippet.citation));
+    if (match) {
+      injectedCitations.add(match.snippet.citation);
+      const cleanText = stripCitationMarkers(match.snippet.text);
+      resultBody = normalizeParagraphs(`${resultBody}\n\n${cleanText}`);
+      sourcesUsed.push({
+        uri: match.uri,
+        citation: match.snippet.citation,
+        text: cleanText,
+        score: match.snippet.score,
+        injected: true,
+      });
+    }
+  }
+
+  // Record non-injected candidates for transparency.
+  for (const { uri, snippet } of candidates) {
+    if (!injectedCitations.has(snippet.citation)) {
+      sourcesUsed.push({
+        uri,
+        citation: snippet.citation,
+        text: stripCitationMarkers(snippet.text),
+        score: snippet.score,
+        injected: false,
+      });
+    }
+  }
+
+  return { body: resultBody, sourcesUsed };
 }
 
 function applyAlwaysRules(
@@ -1041,6 +1112,30 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
         `Thanks for your email. We will review your request and respond shortly.`;
     }
 
+    // TASK-07: load knowledge data and run gap-fill injection before the sanitisation pipeline
+    // (removeForbiddenPhrases + enforceLengthBounds both apply to injected text).
+    const knowledgeUris = resolveKnowledgeSources(primaryScenarioCategory);
+    const { summaries: knowledgeSummaries, injectionCandidates } = await loadKnowledgeData(
+      knowledgeUris,
+      {
+        category: primaryScenarioCategory,
+        normalizedText: actionPlan.normalized_text,
+        intents: allIntents,
+      },
+    );
+
+    const postAssemblyCoverage = evaluateQuestionCoverage(bodyPlain, allIntents);
+    const uncoveredAfterAssembly = postAssemblyCoverage
+      .filter((entry) => entry.status === "missing")
+      .map((entry) => entry.question);
+
+    const { body: bodyWithGapFills, sourcesUsed } = buildGapFillResult(
+      bodyPlain,
+      uncoveredAfterAssembly,
+      injectionCandidates,
+    );
+    bodyPlain = bodyWithGapFills;
+
     const draftGuideResult = await handleDraftGuideRead();
     const voiceExamplesResult = await handleVoiceExamplesRead();
     const draftGuide = parseResourceResult<DraftGuide>(draftGuideResult);
@@ -1081,13 +1176,6 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       bodyText: bodyPlain,
       includeBookingLink,
       subject,
-    });
-
-    const knowledgeUris = resolveKnowledgeSources(primaryScenarioCategory);
-    const knowledgeSummaries = await loadKnowledgeSummaries(knowledgeUris, {
-      category: primaryScenarioCategory,
-      normalizedText: actionPlan.normalized_text,
-      intents: [...actionPlan.intents.questions, ...actionPlan.intents.requests],
     });
 
     const qualityResponse = await handleDraftQualityTool("draft_quality_check", {
@@ -1135,6 +1223,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
           },
       knowledge_sources: knowledgeSummaries.map((summary) => summary.uri),
       knowledge_summaries: knowledgeSummaries,
+      sources_used: sourcesUsed,
       policy: policyDecision,
       quality,
       ranker: {

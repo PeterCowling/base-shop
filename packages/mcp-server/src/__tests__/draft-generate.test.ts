@@ -1125,3 +1125,161 @@ describe("draft_generate tool TASK-08 — variable-data guardrail", () => {
     expect(payload.draft.bodyPlain).not.toContain("at a cost of €");
   });
 });
+
+describe("draft_generate tool TASK-07 — knowledge gap-fill injection", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-07-01: uncovered question gets knowledge snippet injected into bodyPlain with sources_used injected:true", async () => {
+    // Template body has no breakfast content — question will be uncovered after assembly
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. We will be happy to assist. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+    // FAQ has relevant breakfast answer
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://faq") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                items: [
+                  {
+                    id: "breakfast-window",
+                    question: "When is breakfast served?",
+                    answer: "Breakfast is served from 08:00 to 10:30 daily.",
+                  },
+                ],
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "What time is breakfast served?",
+        intents: {
+          questions: [{ text: "What time is breakfast served?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "breakfast", confidence: 0.8 },
+      },
+      subject: "Breakfast hours inquiry",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    // Injected snippet text must appear in bodyPlain (citation markers stripped)
+    expect(payload.draft.bodyPlain).toContain("Breakfast is served from 08:00 to 10:30 daily.");
+    // sources_used must be present with at least one injected entry
+    expect(payload.sources_used).toBeDefined();
+    const injectedEntry = (payload.sources_used as Array<{ injected: boolean; citation: string }>)
+      .find((e) => e.injected);
+    expect(injectedEntry).toBeDefined();
+    expect(injectedEntry?.citation).toContain("breakfast");
+  });
+
+  it("TC-07-02: no matching snippet produces sources_used with no injected:true entries", async () => {
+    // Template body doesn't mention wifi — question will be uncovered
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+    // All URIs return empty items — no matching snippets
+    handleBriketteResourceReadMock.mockResolvedValue({
+      contents: [{ uri: "brikette://faq", mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Does the hostel have wifi internet available?",
+        intents: {
+          questions: [{ text: "Does the hostel have wifi internet available?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "wifi", confidence: 0.8 },
+      },
+      subject: "Wifi availability",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.sources_used).toBeDefined();
+    const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
+    expect(anyInjected).toBe(false);
+  });
+
+  it("TC-07-03: pricing/menu URI excluded from injection even when content matches (allowlist enforced)", async () => {
+    // Template body doesn't cover breakfast pricing
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "General inquiry",
+          body: "Thank you for contacting us. Best regards, Hostel Brikette",
+          category: "general",
+        },
+      ])
+    );
+    // Only pricing/menu has matching content — safe URIs return empty
+    handleBriketteResourceReadMock.mockImplementation(async (uri: string) => {
+      if (uri === "brikette://pricing/menu") {
+        return {
+          contents: [
+            {
+              uri,
+              mimeType: "application/json",
+              text: JSON.stringify({
+                breakfast: { price: "€12 per person", note: "Breakfast costs €12 per person." },
+              }),
+            },
+          ],
+        };
+      }
+      return {
+        contents: [{ uri, mimeType: "application/json", text: JSON.stringify({ items: [] }) }],
+      };
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "How much does breakfast cost per person?",
+        intents: {
+          questions: [{ text: "How much does breakfast cost per person?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "breakfast", confidence: 0.8 },
+      },
+      subject: "Breakfast pricing",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    // Pricing content must NOT be injected — allowlist blocks brikette://pricing/menu
+    expect(payload.draft.bodyPlain).not.toContain("€12 per person");
+    expect(payload.sources_used).toBeDefined();
+    const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
+    expect(anyInjected).toBe(false);
+  });
+});

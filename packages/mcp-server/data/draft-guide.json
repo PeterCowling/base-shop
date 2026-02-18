@@ -37,7 +37,8 @@
     "never": [
       "Never confirm availability.",
       "Never state that a card will be charged immediately.",
-      "Never include internal notes or instructions."
+      "Never include internal notes or instructions.",
+      "Never quote specific service prices inline without noting they may vary."
     ]
   },
   "information_order": [

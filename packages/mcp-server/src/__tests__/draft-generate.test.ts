@@ -1074,3 +1074,54 @@ describe("draft_generate tool TASK-06 — per-question composite ranking", () =>
     expect(signatureCount).toBe(0);
   });
 });
+
+describe("draft_generate tool TASK-08 — variable-data guardrail", () => {
+  beforeEach(setupDraftGenerateMocks);
+
+  it("TC-08-03: strips inline service pricing phrase from draft body", async () => {
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Luggage Storage — After Checkout",
+          body: "Dear Guest,\r\n\r\nAfter checkout, luggage storage is free until 3:30 PM. Porter service is available at a cost of €15 per bag.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "luggage",
+        },
+      ])
+    );
+    handleDraftGuideReadMock.mockResolvedValue({
+      contents: [
+        {
+          uri: "brikette://draft-guide",
+          mimeType: "application/json",
+          text: JSON.stringify({
+            content_rules: {
+              never: ["Never quote specific service prices inline without noting they may vary."],
+              always: [],
+              if: [],
+            },
+          }),
+        },
+      ],
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Can you store our bags after checkout?",
+        intents: {
+          questions: [{ text: "Can you store our bags after checkout?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "luggage", confidence: 0.9 },
+      },
+      subject: "Luggage storage after checkout",
+    });
+    if ("isError" in result && result.isError) {
+      throw new Error(result.content[0].text);
+    }
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.draft.bodyPlain).not.toContain("at a cost of €");
+  });
+});

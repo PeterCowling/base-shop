@@ -289,13 +289,28 @@ function extractQuestions(text: string): IntentItem[] {
 }
 
 function extractRequests(text: string): IntentItem[] {
+  // TASK-08: expanded from 3 → 9 patterns; matchAll + dedup guard.
+  const patterns = [
+    /please\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /(can|could|would) you\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /i would like\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /i was wondering\s+(?:if\s+)?([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /we would like\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /we need\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /i need\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /would it be possible\s+(?:to\s+)?([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+    /please could you\s+([^\.\n\r\?]+)[\.\n\r\?]?/gi,
+  ];
+  const seen = new Set<string>();
   const requests: IntentItem[] = [];
-  const patterns = [/please\s+([^\.\n\r\?]+)[\.\n\r\?]?/i, /(can|could|would) you\s+([^\.\n\r\?]+)[\.\n\r\?]?/i, /i would like\s+([^\.\n\r\?]+)[\.\n\r\?]?/i];
   for (const pattern of patterns) {
-    const match = text.match(pattern);
-    if (match) {
+    for (const match of text.matchAll(pattern)) {
       const textMatch = match[0].trim();
-      requests.push({ text: textMatch, evidence: textMatch });
+      const key = textMatch.toLowerCase().trim();
+      if (!seen.has(key)) {
+        seen.add(key);
+        requests.push({ text: textMatch, evidence: textMatch });
+      }
     }
   }
   return requests;

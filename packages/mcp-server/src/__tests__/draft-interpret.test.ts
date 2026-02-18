@@ -368,3 +368,78 @@ describe("draft_interpret TASK-03 escalation", () => {
     expect(payload.escalation.confidence).toBe(0);
   });
 });
+
+describe("draft_interpret TASK-08 — expanded request extraction", () => {
+  it("TC-08-01a: captures 'I was wondering' phrasing as a request", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "I was wondering if breakfast is included for direct bookings.",
+    });
+    const payload = parseResult(result);
+    expect(payload.intents.requests.length).toBeGreaterThan(0);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase());
+    expect(texts.some((t) => t.includes("wondering"))).toBe(true);
+  });
+
+  it("TC-08-01b: captures 'we need' phrasing as a request", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "We need to store our bags before check-in.",
+    });
+    const payload = parseResult(result);
+    expect(payload.intents.requests.length).toBeGreaterThan(0);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase());
+    expect(texts.some((t) => t.includes("need"))).toBe(true);
+  });
+
+  it("TC-08-01c: captures 'would it be possible' phrasing as a request", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Would it be possible to arrange an early check-in?",
+    });
+    const payload = parseResult(result);
+    expect(payload.intents.requests.length).toBeGreaterThan(0);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase());
+    expect(texts.some((t) => t.includes("possible"))).toBe(true);
+  });
+
+  it("TC-08-01d: dedup prevents identical extractions from overlapping patterns", async () => {
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Please could you confirm our booking details?",
+    });
+    const payload = parseResult(result);
+    const texts = payload.intents.requests.map((r) => r.text.toLowerCase().trim());
+    const uniqueTexts = [...new Set(texts)];
+    expect(uniqueTexts.length).toBe(texts.length);
+  });
+
+  it("TC-08-02: snippet-only thread context populates resolved_questions for answered question", async () => {
+    const threadContext = {
+      messages: [
+        {
+          from: "Guest <guest@example.com>",
+          date: "Mon, 01 Jan 2026 10:00:00 +0000",
+          snippet: "Is breakfast included for direct bookings?",
+        },
+        {
+          from: "Hostel Brikette <info@hostel-positano.com>",
+          date: "Mon, 01 Jan 2026 12:00:00 +0000",
+          snippet: "Yes, breakfast is included for direct bookings.",
+        },
+        {
+          from: "Guest <guest@example.com>",
+          date: "Tue, 02 Jan 2026 08:00:00 +0000",
+          snippet: "Great, and what time is check-in?",
+        },
+      ],
+    };
+    const result = await handleDraftInterpretTool("draft_interpret", {
+      body: "Great, and what time is check-in?",
+      threadContext,
+    });
+    const payload = parseResult(result);
+    expect(payload.thread_summary?.resolved_questions.some(
+      (q) => q.toLowerCase().includes("breakfast"),
+    )).toBe(true);
+    expect(payload.thread_summary?.open_questions.some(
+      (q) => q.toLowerCase().includes("check-in") || q.toLowerCase().includes("check in"),
+    )).toBe(true);
+  });
+});

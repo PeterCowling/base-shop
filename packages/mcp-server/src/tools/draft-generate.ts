@@ -760,6 +760,10 @@ function mapNeverRulesToPhrases(neverRules: string[]): string[] {
     if (lower.includes("internal notes")) {
       phrases.push("internal note", "internal notes");
     }
+    if (lower.includes("specific service prices") || lower.includes("service prices inline")) {
+      // TASK-08: strip inline pricing patterns from draft bodies (variable pricing guardrail).
+      phrases.push("at a cost of €", "€15 per bag", "€ per bag", "for a fee of €");
+    }
   }
 
   return phrases;

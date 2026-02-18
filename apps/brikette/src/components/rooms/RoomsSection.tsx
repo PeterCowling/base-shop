@@ -26,12 +26,15 @@ type RoomsSectionProps = {
    * - "absent" (default): navigate to /{lang}/book
    */
   queryState?: "valid" | "invalid" | "absent";
+  /** Optional deal / coupon code to propagate into Octorate booking URL */
+  deal?: string;
 };
 
 type RoomsSectionBaseProps = ComponentProps<typeof RoomsSectionBase>;
 
 export function RoomsSection({
   queryState,
+  deal,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
   // Closure-level guard — prevents double-click / multi-tap from firing duplicate
@@ -74,6 +77,7 @@ export function RoomsSection({
           roomSku: ctx.roomSku,
           octorateRateCode,
           bookingCode: BOOKING_CODE,
+          ...(deal ? { deal } : {}),
         });
         if (result.ok) {
           // Set guard before async beacon dispatch to block re-entrant calls.

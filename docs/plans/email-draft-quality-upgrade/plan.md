@@ -7,14 +7,14 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-06 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-07 at 70% (needs replan — TASK-12 done); TASK-08 promoted to 80% (eligible for build)
+Build-Progress: TASK-00..TASK-06 complete; TASK-08 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-07 promoted to 80% (eligible for build)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-sequence, lp-replan, lp-fact-find
-Overall-confidence: 80%
+Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -89,8 +89,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-04 | IMPLEMENT | Introduce additive multi-scenario action plan model with dominant/exclusive semantics | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-08, TASK-09 |
 | TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-07, TASK-09 |
 | TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04 | TASK-07, TASK-09 |
-| TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 70% | M | Pending | TASK-05, TASK-06, TASK-12 | TASK-09 |
-| TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Pending | TASK-04, TASK-13 | TASK-09 |
+| TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 80% | M | Pending | TASK-05, TASK-06, TASK-12 | TASK-09 |
+| TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Complete (2026-02-18) | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
@@ -106,7 +106,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | 3 | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-00 | Quick ops bridge + foundational contracts in parallel |
 | 4 | TASK-06, TASK-12, TASK-13 | TASK-03+TASK-04 for TASK-06; TASK-05 for TASK-12; TASK-04 for TASK-13 | Ranking implement + two approach-definition investigations in parallel |
 | 5 | TASK-08 | TASK-04, TASK-13 | Thread/request extraction; replan complete (2026-02-18), promoted to 80% |
-| 6 | TASK-07 (after replan) | TASK-05, TASK-06, TASK-12 | Knowledge injection; needs replan after TASK-06+TASK-12 |
+| 6 | TASK-07 | TASK-05, TASK-06, TASK-12 | Knowledge injection; replan complete (2026-02-18), promoted to 80% |
 | 7 | TASK-09 | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | Regression and evaluation gate activation |
 | 8 | TASK-10 | TASK-02, TASK-09 | Replan checkpoint before any LLM-stage expansion |
 
@@ -411,27 +411,27 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
 - **Depends on:** TASK-05, TASK-06, TASK-12
 - **Blocks:** TASK-09
-- **Confidence:** 70% *(regressed from 75% — 2026-02-18 replan; new TASK-12 precursor added)*
-  - Implementation: 80% - insertion point confirmed (move `loadKnowledgeSummaries` call pre-draft), but citation marker rendering in guest-facing text and sanitisation pass ordering are non-trivial concerns now known.
-  - Approach: 70% - E1 investigation revealed: (a) citation markers like `[faq:check-in-window]` would appear in guest email body unless stripped; (b) `sources_used` schema is undefined anywhere in codebase; (c) injected snippets bypass existing length enforcement and forbidden-phrase checks. These risks are greater than previously assessed. TASK-12 must resolve them before implementation.
-  - Impact: 85% - closes highest-value gap (unanswered questions).
+- **Confidence:** 80% *(promoted from 70% — 2026-02-18 replan; TASK-12 precursor complete)*
+  - Implementation: 80% - injection point confirmed (after line 1042, before `stripSignature` ~line 1058); `loadKnowledgeSummaries` reorder from line 1087→before 1036 is safe (context available earlier); `stripCitationMarkers` fully specified (TASK-12 Q1); `SourcesUsedEntry` schema fully specified (Q3). Remaining: score threshold (0.5 recommended) and injection paragraph format — both bounded implementation decisions. Held-back test: neither is a blocking unknown.
+  - Approach: 80% - E3 uplift +10 (minimum range): all three blocking concerns resolved by TASK-12: (a) `stripCitationMarkers()` removes `[faq:x]` markers before guest-visible injection (Q1); (b) pre-draft injection ensures `removeForbiddenPhrases`+`enforceLengthBounds` both run post-injection (Q2); (c) `sources_used: SourcesUsedEntry[]` schema fully defined (Q3); category allowlist guards forbidden-phrase bypass (Q4). Held-back test: allowlist is conservative; `removeForbiddenPhrases` provides a second safety net.
+  - Impact: 85% - closes highest-value gap (unanswered questions). Unchanged.
 - **Acceptance:**
   - Missing-question gaps trigger source-backed insertions when high-relevance snippet exists.
   - Policy-critical topics prioritize policy sources; unsupported cases escalate safely.
   - Output metadata includes `sources_used` entries traceable to snippet origin.
   - No hallucinated claims are introduced in patched content.
-- **Validation contract (TC-07):**
-  - TC-07-01: fixture with matching snippet inserts attributed answer and passes quality check.
-  - TC-07-02: fixture without sufficient snippet produces escalation text (no fabricated answer).
-  - TC-07-03: policy-topic fixture prefers policy snippet over FAQ/pricing sources.
-  - TC-07-04: targeted tests pass with `pnpm --filter mcp-server test -- src/__tests__/draft-generate.test.ts`, `pnpm --filter mcp-server test -- src/__tests__/draft-quality-check.test.ts`, and `pnpm --filter mcp-server test -- src/__tests__/pipeline-integration.test.ts --testPathPattern="draft" --maxWorkers=2`.
+- **Validation contract (TC-07):** *(updated 2026-02-18 replan — TASK-12 findings applied)*
+  - TC-07-01: fixture with matching snippet (score ≥0.5, safe category) → `bodyPlain` contains injected snippet text with citation markers stripped; `sources_used` includes entry with `injected: true`; quality check passes.
+  - TC-07-02: fixture without sufficient snippet (score <0.5 OR unsafe category) → body contains escalation text; `sources_used` entry has `injected: false`; no fabricated answer.
+  - TC-07-03: policy-topic fixture → policy-source snippet preferred over FAQ/pricing sources; category allowlist enforced.
+  - TC-07-04: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-quality-check" --no-coverage`.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: fact-find pipeline-order constraint review + test inventory check.
   - Validation artifacts: Pattern A notes in fact-find and existing pipeline integration tests.
   - Unexpected findings: none.
-- **Scouts:**
-  - Validate snippet relevance threshold sensitivity to reduce false insertions.
+- **Scouts:** *(resolved — 2026-02-18 replan)*
+  - ~~Validate snippet relevance threshold sensitivity~~ — resolved by TASK-12 Q4: category allowlist (check-in, checkout, wifi, luggage, faq, general) guards against unsafe injection. Score threshold 0.5 is a bounded implementation decision. `removeForbiddenPhrases` provides a second safety net post-injection.
 - **Edge Cases & Hardening:**
   - Maintain deterministic sentence insertion order for reproducibility.
 - **What would make this >=90%:**
@@ -449,8 +449,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/data/draft-guide.json`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `.claude/skills/ops-inbox/SKILL.md`
+- **Status:** Complete (2026-02-18)
+- **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/data/draft-guide.json`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `.claude/skills/ops-inbox/SKILL.md`, `packages/mcp-server/src/tools/draft-generate.ts` *(controlled scope expansion — mapNeverRulesToPhrases)*, `packages/mcp-server/src/__tests__/draft-generate.test.ts` *(controlled scope expansion — TC-08-03)*
 - **Depends on:** TASK-04, TASK-13
 - **Blocks:** TASK-09
 - **Confidence:** 80% *(promoted from 75% — 2026-02-18 replan; TASK-13 precursor complete)*
@@ -485,6 +485,14 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Rollback: revert to current extraction patterns while preserving policy-guide improvements.
 - **Documentation impact:**
   - Update extraction behavior notes in ops-inbox skill and draft guide references.
+- **Build completion evidence (2026-02-18):**
+  - `extractRequests` expanded: 3 → 9 patterns; `text.match()` → `text.matchAll()` (global flag on all regexes); dedup guard via lowercase+trim Set.
+  - New `never` rule in `draft-guide.json`: "Never quote specific service prices inline without noting they may vary."
+  - `mapNeverRulesToPhrases` extended in `draft-generate.ts` (controlled scope expansion): keyword match on "specific service prices inline" strips "at a cost of €", "€15 per bag", "€ per bag", "for a fee of €" via `removeForbiddenPhrases`.
+  - 6 new tests: TC-08-01a/b/c/d (extractRequests patterns + dedup), TC-08-02 (snippet-only thread context → resolved_questions), TC-08-03 (variable-data guardrail — phrase stripped from bodyPlain).
+  - Red: 4 failures confirmed (TC-08-01a/b/c + TC-08-03); TC-08-01d and TC-08-02 passed as non-regression baseline.
+  - Refactor: 54/54 tests passing (zero regressions).
+  - Commit: `17fa12001e` — 6 files changed, 155 insertions, 5 deletions.
 
 ### TASK-09: Add end-to-end evaluation harness + non-regression command contract
 - **Type:** IMPLEMENT
@@ -689,8 +697,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
-- Weighted sum:
+- Weighted sum (complete tasks counted at their locked confidence):
   - S tasks: `85 + 85 + 95 = 265`
-  - M tasks: `2 * (75 + 85 + 85 + 85 + 75 + 75 + 70 + 75) = 1250`
+  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 75 + 80 + 75) = 1280` *(TASK-07 promoted to 80%; TASK-08 promoted to 80%)*
 - Total weight: `3 + 16 = 19`
-- Overall-confidence: `1515 / 19 = 79.74%` -> **80%**
+- Overall-confidence: `1545 / 19 = 81.3%` -> **81%**

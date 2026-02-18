@@ -123,6 +123,63 @@ Three implementation requirements for the pattern expansion:
 
 ---
 
+## TASK-07: Replan Evidence — Confidence Promotion 70% → 80%
+
+**Date:** 2026-02-18
+**Trigger:** TASK-12 Complete — all 4 questions answered. TASK-05+TASK-06+TASK-12 all Complete; all dependencies satisfied.
+
+### Audit findings (E1 static, 2026-02-18)
+
+| Surface | Finding |
+|---|---|
+| `draft-generate.ts:1036` | Body assembly begins: `let bodyPlain: string; if (isComposite) ...` |
+| `draft-generate.ts:1087` | `loadKnowledgeSummaries` call — currently **after** body assembly; must be moved to before line 1036 |
+| `draft-generate.ts:772` | `removeForbiddenPhrases(body, phrases): string` — runs at lines 1059, 819 |
+| `draft-generate.ts:916` | `enforceLengthBounds(body, bounds): string` — runs at line 1073 |
+| `draft-generate.ts:220-221` | `KnowledgeSummary = { uri, summary }`, `KnowledgeSnippet = { citation, text, score }` — private types |
+| `draft-generate.ts:1136-1137` | `knowledge_summaries` in output payload — passive metadata only, not injected into body |
+| `sources_used` | **Absent everywhere** — net-new field |
+| `draft-quality-check.ts` | No awareness of knowledge or `sources_used` |
+| `draft-generate.test.ts` | Zero assertions verify knowledge content appears in `bodyPlain`/`bodyHtml` |
+
+### Confidence dimensions
+
+| Dimension | Old | New | Justification |
+|---|---|---|---|
+| Implementation | 80% | 80% | Unchanged. Injection point: insert after line 1042, before `stripSignature` at line 1058. `loadKnowledgeSummaries` reorder from 1087→before 1036 is safe (context — actionPlan, normalizedText, intents — is available much earlier). `stripCitationMarkers` fully specified (Q1). `SourcesUsedEntry` schema fully specified (Q3). Remaining: relevance score threshold (builder decision, 0.5 recommended) and injection paragraph format. Held-back test passes: neither is a blocking unknown. |
+| Approach | 70% | 80% | E3 uplift +10 (minimum range): TASK-12 explicitly resolved all three blocking concerns. (a) Citation markers → `stripCitationMarkers()` using `/\[[^\]]+\]\s*/g` (Q1). (b) Pre-draft injection ensures `removeForbiddenPhrases` and `enforceLengthBounds` both run after injection (Q2). (c) `sources_used` schema is `SourcesUsedEntry[]` with `injected: boolean` flag (Q3). (d) Category allowlist guards against forbidden-phrase bypass (Q4). Held-back test: category allowlist is conservative and `removeForbiddenPhrases` provides a second safety net. |
+| Impact | 85% | 85% | Unchanged. |
+| **Overall** | **70%** | **80%** | **min(80, 80, 85) = 80%** |
+
+### Implementation notes for builder
+
+1. **Move `loadKnowledgeSummaries` call**: from line 1087 to before body assembly at line 1036. All required context (`primaryScenarioCategory`, `normalizedText`, `intents`) is available from `actionPlan` well before this point.
+
+2. **Injection logic** (new function, e.g. `injectKnowledgeGapFills`):
+   - Check `preliminary_coverage` (from TASK-05's shared coverage module) for questions with `status: 'missing'` or `status: 'partial'`.
+   - For each uncovered question, find the highest-scoring `KnowledgeSnippet` with `score >= 0.5`.
+   - Category allowlist for safe injection: `['check-in', 'checkout', 'wifi', 'luggage', 'faq', 'general']`. Pricing/payment categories require explicit opt-in.
+   - Strip citation markers from snippet text via `stripCitationMarkers(text)` before injection.
+   - Append injected snippets as new paragraphs to `bodyPlain` (before `removeForbiddenPhrases` / `enforceLengthBounds`).
+   - Record each snippet as `SourcesUsedEntry` with `injected: true`; non-injected candidates get `injected: false`.
+
+3. **`stripCitationMarkers` helper**: `/\[[^\]]+\]\s*/g` — add near line 770 alongside `removeForbiddenPhrases`.
+
+4. **`SourcesUsedEntry` interface**: add near lines 220-221 (private types block in `draft-generate.ts`).
+
+5. **Escalation text**: when no sufficient snippet exists for a question (`score < 0.5` or category not in allowlist), append: "For more details on [topic], please visit our website or contact us directly."
+
+6. **Output schema**: add `sources_used: SourcesUsedEntry[]` alongside `knowledge_summaries` in the `jsonResult(...)` payload.
+
+### Updated TC-07 contract
+
+- **TC-07-01**: fixture with matching snippet (score ≥0.5, safe category) → `bodyPlain` contains injected snippet text (citation markers stripped); `sources_used` includes entry with `injected: true`; quality check passes.
+- **TC-07-02**: fixture without sufficient snippet (score <0.5 OR unsafe category) → body contains escalation text; `sources_used` entry has `injected: false`; no fabricated answer.
+- **TC-07-03**: policy-topic fixture → policy-source snippet preferred over FAQ/pricing sources; category allowlist enforced.
+- **TC-07-04**: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-quality-check" --no-coverage`
+
+---
+
 ## TASK-08: Replan Evidence — Confidence Promotion 75% → 80%
 
 **Date:** 2026-02-18

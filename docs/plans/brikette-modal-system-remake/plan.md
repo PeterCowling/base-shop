@@ -1,10 +1,10 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: UI
 Workstream: Engineering
 Created: 2026-02-17
-Last-updated: 2026-02-18 (TASK-09 complete — 6 new brikette tests + 2 TC-04 tab-trap tests pass)
+Last-updated: 2026-02-18 (TASK-10 complete — deprecated GlobalModals shim deleted; all tasks complete; plan Status → Complete)
 Feature-Slug: brikette-modal-system-remake
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -138,7 +138,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 | TASK-07 | IMPLEMENT | Normalize modal primitive/layout behavior (viewport, scroll affordance, interaction consistency) | 81% | M | Complete (2026-02-17) | TASK-05 | TASK-08 |
 | TASK-08 | CHECKPOINT | Horizon checkpoint before downstream validation/cleanup | 95% | S | Complete (2026-02-17) | TASK-06, TASK-07 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add integration/contract/a11y test suite for modal invariants | 81% | M | Complete (2026-02-18) | TASK-04, TASK-06, TASK-07, TASK-08 | TASK-10 |
-| TASK-10 | IMPLEMENT | Remove legacy compatibility paths and finalize docs/rollout notes | 84% | S | Pending | TASK-09 | - |
+| TASK-10 | IMPLEMENT | Remove legacy compatibility paths and finalize docs/rollout notes | 84% | S | Complete (2026-02-18) | TASK-09 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -651,7 +651,7 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `apps/brikette/src/components/modals/GlobalModals.tsx`, `packages/ui/src/context/modal/*`, `docs/plans/brikette-modal-system-remake/plan.md`, `[readonly] docs/briefs/policy-fee-clarity-panel-modal-visibility-briefing.md`
 - **Depends on:** TASK-09
 - **Blocks:** -
@@ -690,6 +690,13 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - finalize plan decision log and migration completion notes.
 - **Notes / references:**
   - TASK-09 outputs and checkpoint evidence.
+- **Build completion evidence (2026-02-18):**
+  - TC-01 (no runtime imports through deprecated host path): `grep -r "components/modals/GlobalModals" apps/brikette/src --include="*.ts" --include="*.tsx" -l | grep -v test/` → zero results. ✓
+  - TC-03 (cross-repo scan): `grep -r "from.*@acme/ui/organisms/GlobalModals"` → only the shim file itself; no other apps or packages. Safe to delete. ✓
+  - TC-02 (docs accurate): plan Status set to Complete; all task statuses updated; migration architecture reflected in Decision Log. ✓
+  - Action: `apps/brikette/src/components/modals/GlobalModals.tsx` deleted. `packages/ui/src/context/modal/*` retained (internally used by packages/ui; no Brikette runtime dependency confirmed).
+  - TypeScript clean: no errors after deletion.
+  - **Final migration state:** Brikette runs on one authoritative modal orchestration stack (TASK-01 Option A). Typed payload registry in place (TASK-04). Scroll/viewport contracts normalized (TASK-07). Integration/a11y test suite locked (TASK-09). Legacy shim removed (TASK-10).
 
 ## Risks & Mitigations
 - Decision latency on TASK-01/TASK-02 can stall implementation start.

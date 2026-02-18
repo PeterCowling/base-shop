@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 complete)
+Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 complete)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -100,9 +100,9 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-07     | IMPLEMENT   | platform-core: create tsconfig + fix errors              | 84%        | M      | Complete (2026-02-18) | TASK-06         | TASK-09         |
 | TASK-08     | IMPLEMENT   | platform-machine: create tsconfig + fix errors           | 84%        | M      | Complete (2026-02-18) | TASK-06         | TASK-09         |
 | TASK-09     | IMPLEMENT   | Extend CI step: platform-core + platform-machine         | 90%        | S      | Complete (2026-02-18) | TASK-07, TASK-08| TASK-10         |
-| TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Pending | TASK-09         | TASK-11, TASK-12|
-| TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 72%        | L      | Pending | TASK-10         | TASK-13         |
-| TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 78%        | M      | Pending | TASK-10         | TASK-13         |
+| TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Complete (2026-02-18) | TASK-09         | TASK-11, TASK-12|
+| TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 78%        | L      | Pending | TASK-10         | TASK-13         |
+| TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Pending | TASK-10         | TASK-13         |
 | TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Pending | TASK-11, TASK-12| TASK-14         |
 | TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Pending | TASK-13         | -               |
 
@@ -685,7 +685,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
 - **Depends on:** TASK-09
 - **Blocks:** TASK-11, TASK-12
@@ -706,6 +706,16 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** Phase 2 CI evidence
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/test-typecheck-enablement/plan.md` updated
+- **Build evidence (2026-02-18):**
+  - **Phase 2 answers:**
+    - platform-core: ~50 errors after tsconfig created; all fixable mock/jest patterns (Prisma namespace, process.env, `jest.fn() as any`) — L but finite scope
+    - platform-machine: 0 errors immediately — well-typed state machine tests
+    - CI duration: 9 packages in Phase-1 loop, each <10s locally — well under 15 min budget
+  - **Phase 3 evidence (provisional tsconfig run):**
+    - brikette: 628 errors — 294 TS2307 path resolution (brikette's `@/*` alias not in root test tsconfig) + 334 real type errors. **Key finding**: brikette's `tsconfig.test.typecheck.json` must extend from `./tsconfig.json` (not root), then override to add jest types. L-effort estimate confirmed. Confidence raised to 78%.
+    - template-app: 125 errors — 3 TS2307, rest real type errors (TS2741/TS2345 patterns from jest.fn() mocks). M-effort still accurate. Confidence raised to 83%.
+  - packages/ui exclude bug: Deferred to Phase 4 (evaluate at next CHECKPOINT after template-app)
+  - Provisional tsconfigs: template-app provisional KEPT (standard approach works); brikette provisional REMOVED (needs extend-from-app-tsconfig approach)
 
 ---
 
@@ -720,9 +730,9 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Affects:** `apps/brikette/tsconfig.test.typecheck.json` (new), `apps/brikette/src/test/**/*.ts`, `apps/brikette/src/test/**/*.tsx`
 - **Depends on:** TASK-10
 - **Blocks:** TASK-13
-- **Confidence:** 72%
-  - Implementation: 72% — brikette has the largest test suite, no prior typecheck enforcement, heavy i18n/guide/SEO test helpers with complex types
-  - Approach: 78% — pattern is established from Phase 2; brikette has `src/test/` not `__tests__/` so include patterns need adjustment
+- **Confidence:** 78% (raised from 72% at TASK-10 — approach now confirmed: extend from `./tsconfig.json` not root; 334 real errors after path fix)
+  - Implementation: 78% — 628 provisional errors; 294 are path resolution (fixable in tsconfig); 334 are real type errors (TS2339/TS7006/TS7031/TS2503 mix)
+  - Approach: 82% — pattern confirmed: tsconfig must extend from `./tsconfig.json`, add jest types override; root-extension approach DOES NOT WORK for brikette
   - Impact: 90% — brikette is SEO-critical; type errors in test helpers could mask guide content regressions
 - **Acceptance:**
   - `apps/brikette/tsconfig.test.typecheck.json` created extending `apps/brikette/tsconfig.json`
@@ -771,9 +781,9 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Affects:** `packages/template-app/tsconfig.test.typecheck.json` (new), `packages/template-app/__tests__/**`
 - **Depends on:** TASK-10
 - **Blocks:** TASK-13
-- **Confidence:** 78%
-  - Implementation: 80% — smaller test surface; Stripe webhook tests are well-structured
-  - Approach: 82% — follows CMS/platform pattern exactly
+- **Confidence:** 83% (raised from 78% at TASK-10 — provisional tsconfig works, 125 errors confirmed)
+  - Implementation: 83% — 125 provisional errors confirmed; standard approach works (extends root test tsconfig); error mix is TS2741/TS2345 (jest.fn() mock patterns from platform-core)
+  - Approach: 85% — tsconfig.test.typecheck.json already created at TASK-10 CHECKPOINT (kept); standard root-extension works
   - Impact: 80% — Stripe webhook handler test type correctness reduces payment processing regression risk
 - **Acceptance:**
   - Config created; `TYPECHECK_FILTER=packages/template-app node scripts/typecheck-tests.mjs` exits 0
@@ -789,7 +799,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Checks run: None pre-planned
   - Validation artifacts: Error count at start
   - Unexpected findings: Stripe webhook tests may need explicit `Request`/`Response` type handling
-- **Scouts:** `packages/template-app/__tests__/stripe-webhook.test.ts` is modified (per git status)
+- **Scouts:** `packages/template-app/__tests__/stripe-webhook.test.ts` is modified (per git status). **Note:** `packages/template-app/tsconfig.test.typecheck.json` was provisionally created at TASK-10 CHECKPOINT — TASK-12 can use it directly and begin fixing errors.
 - **Edge Cases & Hardening:** Stripe SDK types may require version-pinned type assertions
 - **What would make this >=90%:** <5 type errors found (likely given small test surface)
 - **Rollout / rollback:**

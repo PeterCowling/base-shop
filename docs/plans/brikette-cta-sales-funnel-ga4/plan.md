@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete — Wave 7 nearly complete; TASK-20 complete — TASK-13 now unblocked)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete — Wave 7 nearly complete; TASK-20 complete — TASK-13 now unblocked; TASK-21 complete — TASK-14 unblocked; Tier 1 pages pre-implemented)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -179,7 +179,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-13 | IMPLEMENT | Upgrade /book page (conversion content + JSON-LD + deal banner + i18n) | 80% | L | Pending | TASK-20,TASK-29 | — |
 | TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Pending | TASK-21,TASK-29 | — |
 | TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-13 |
-| TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Pending | TASK-29 | TASK-14 |
+| TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-14 |
 | TASK-22 | INVESTIGATE | Route truth verification: test in-app nav for localized slugs on static export | 90% | S | Complete (2026-02-18) | — | TASK-26,TASK-27 |
 | TASK-23 | IMPLEMENT | Extract Octorate URL builder from Booking2Modal into shared utility + unit tests | 85% | M | Complete (2026-02-18) | — | TASK-27 |
 | TASK-24 | IMPLEMENT | Remove ModalType booking/booking2 + delete packages/ui booking modal primitives (scope expanded: all packages/ui consumers) | 85% | S | Complete (2026-02-18) | — | TASK-25,TASK-26 |
@@ -394,20 +394,17 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Status:** Pending
 - **Depends on:** TASK-29
 - **Blocks:** TASK-14
+- **Status:** Complete (2026-02-18)
 - **Confidence:** 85%
-  - Implementation: 85% — scope and copy decisions needed before TASK-14.
-  - Approach: 85% — Link-only approach confirmed (Decision C: no modal).
-  - Impact: 85% — prevents scope creep or under-delivery on TASK-14.
-- **Questions to answer:**
-  - Which specific pages should receive `ContentStickyCta`? (Guide detail pages, how-to-get-here detail, assistance detail, about, bar-menu, breakfast-menu — all 10 listed in fact-find)
-  - Dismiss TTL: session-dismiss (current behavior) or page-specific dismiss?
-  - Copy: use existing `_tokens.checkAvailability` or book-specific copy?
-  - Should it appear on index pages (assistance index, how-to-get-here index)?
-- **Acceptance:**
-  - Page list finalized
-  - Dismiss TTL decided
-  - Copy source decided (token vs custom)
-  - Any z-index conflicts with guide TOC or image lightbox noted
+- **Build evidence (2026-02-18):**
+  - Updated decision memo written to `docs/plans/brikette-cta-sales-funnel-ga4/task-21-decision-memo.md` (supersedes 2026-02-15 BookingModal-era memo)
+  - **Key finding:** All four Tier 1 pages already render ContentStickyCta with correct ctaLocation — no new page integrations needed for TASK-14
+  - Approach confirmed: `router.push(/${lang}/book)` — Link-only, no modal (post-amendment)
+  - GA4 contract updated: only `cta_click` fires (no `modal_open`/`search_availability`); all 6 ctaLocation values in `GA4_ENUMS.ctaLocation` ✓
+  - Copy: `_tokens:checkAvailability` (full locale coverage) + `stickyCta.*` keys for headline/subcopy
+  - Dismiss: sessionStorage `"content-sticky-cta-dismissed"` (session-only) — already implemented
+  - Tests: `content-sticky-cta.test.tsx` exists with 6 TCs covering all 4 Tier 1 ctaLocations
+  - TASK-14 reduces to: run tests, confirm pass, mark complete (Tier 1 pre-implemented)
 
 ---
 

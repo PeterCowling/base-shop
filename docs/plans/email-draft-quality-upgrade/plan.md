@@ -14,7 +14,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-sequence, lp-replan, lp-fact-find
-Overall-confidence: 81%
+Overall-confidence: 82%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort (S=1, M=2, L=3)
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -91,7 +91,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04 | TASK-07, TASK-09 |
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 80% | M | Complete (2026-02-18) | TASK-05, TASK-06, TASK-12 | TASK-09 |
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Complete (2026-02-18) | TASK-04, TASK-13 | TASK-09 |
-| TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
+| TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 80% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
 | TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Complete (2026-02-18) | TASK-05 | TASK-07 |
@@ -516,27 +516,27 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Affects:** `packages/mcp-server/data/test-fixtures/draft-pipeline/`, `packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`, `packages/mcp-server/package.json`, `docs/testing-policy.md`
 - **Depends on:** TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08
 - **Blocks:** TASK-10
-- **Confidence:** 75%
-  - Implementation: 85% - fixture framework can build on existing integration suite.
-  - Approach: 75% - metric thresholds need calibration from baseline data.
-  - Impact: 85% - required to prove improvements and block regressions.
+- **Confidence:** 80% *(promoted from 75% — 2026-02-18 replan; E1 evidence from suite audit)*
+  - Implementation: 85% - `pipeline-integration.test.ts` (1209 lines, passRate ≥0.90 gate, 47 inline fixtures) is a direct template. `draft-pipeline.integration.test.ts` is net-new. TC-09-04 command form corrected (see below — governed runner, no `"test"` script exists). All other decisions are bounded.
+  - Approach: 80% - E1+5 uplift: (1) calibration concern resolved — `pipeline-integration.test.ts:afterAll` `passRate >= 0.90` is the proven in-repo threshold; adopt it directly; (2) anonymization scout resolved — TASK-09 uses synthetic fixtures only, no production-derived fixture commits, PII concern eliminated by scope decision; (3) TASK-01 `artifacts/quality-baseline-and-fixture-manifest.md` gives 14 metric definitions as implementation reference. Held-back: synthetic fixtures may not expose all real-world patterns — rejected, existing 47-fixture inline suite proves synthetic fixtures work.
+  - Impact: 85% - all upstream TASK-03..TASK-08 improvements complete; harness measures real improvement signal.
 - **Acceptance:**
   - Fixture set includes labeled single-topic and multi-topic examples with expected coverage outcomes.
   - Regression command contract is explicit for local + CI use.
   - Metrics include question coverage, unsupported-claim checks, and escalation correctness.
   - Contract defines fail thresholds and deterministic reporting format.
-- **Validation contract (TC-09):**
+- **Validation contract (TC-09):** *(updated 2026-02-18 replan — TC-09-04 command corrected)*
   - TC-09-01: benchmark run emits coverage/escalation metric summary.
   - TC-09-02: known-regression fixture fails with actionable diagnostics.
   - TC-09-03: command contract is documented and reproducible on clean checkout.
-  - TC-09-04: targeted run passes with `pnpm --filter mcp-server test -- src/__tests__/draft-pipeline.integration.test.ts --maxWorkers=2`.
+  - TC-09-04: targeted run passes with `pnpm -w run test:governed -- jest -- --testPathPattern="draft-pipeline.integration" --no-coverage`. *(corrected from original — no `"test"` script exists in mcp-server package.json, only `"test:startup-loop"`)*
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: existing pipeline integration suite discovery and fixture path scan.
   - Validation artifacts: `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`, fact-find W1 requirements.
-  - Unexpected findings: fixture anonymization workflow not yet documented.
-- **Scouts:**
-  - Scout anonymization workflow for production-derived emails before fixture commit.
+  - Unexpected findings: fixture anonymization workflow not yet documented — resolved by synthetic-only scope decision.
+- **Scouts:** *(resolved — 2026-02-18 replan)*
+  - ~~Scout anonymization workflow for production-derived emails before fixture commit~~ — resolved: TASK-09 uses synthetic fixtures only; no production-derived fixture commits in scope; PII concern eliminated by design.
 - **Edge Cases & Hardening:**
   - Ensure benchmark avoids flaky expectations tied to nondeterministic ordering.
 - **What would make this >=90%:**
@@ -710,6 +710,6 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - S=1, M=2, L=3
 - Weighted sum (complete tasks counted at their locked confidence):
   - S tasks: `85 + 85 + 95 = 265`
-  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 75 + 80 + 75) = 1280` *(TASK-07 promoted to 80%; TASK-08 promoted to 80%)*
+  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 80 + 80 + 80) = 1300` *(TASK-07, TASK-08, TASK-09 all promoted to 80%)*
 - Total weight: `3 + 16 = 19`
-- Overall-confidence: `1545 / 19 = 81.3%` -> **81%**
+- Overall-confidence: `1565 / 19 = 82.4%` -> **82%**

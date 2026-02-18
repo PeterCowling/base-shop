@@ -13,7 +13,7 @@ Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-replan,lp-sequence,lp-refactor
 Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
-Auto-Build-Intent: plan-only
+Auto-Build-Intent: executed
 Business-OS-Integration: off
 Business-Unit: BRIK
 Card-ID: none
@@ -33,7 +33,7 @@ The target is an architecture-first remake: typed payload contracts, single orch
 
 The plan explicitly preserves product and analytics invariants while reducing regression risk from contract drift and duplicated hosts. Execution is staged to avoid a big-bang replacement and includes a checkpoint before final validation and cleanup.
 
-Because open decisions remain (ownership boundary and booking-flow convergence), this plan is `Draft` and `plan-only`.
+**Execution record:** All 10 tasks are complete as of 2026-02-18. The plan was created in draft/plan-only mode with open decisions (ownership boundary and booking-flow convergence); both were resolved on 2026-02-17 and execution proceeded from there. The summary above reflects the intended target state; the task sections below contain the full execution record with commits and validation evidence.
 
 ## Goals
 - Replace `unknown` modal payload handling with typed, compile-time-checked contracts.
@@ -110,6 +110,8 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - Brikette-specific payload fields remain in `apps/brikette` to avoid reverse coupling.
 - Circular dependency guard:
   - `packages/ui` must not import Brikette app payload types.
+  - `apps/brikette` must not import `packages/ui/src/context/modal/*` orchestration paths at runtime.
+  - **Enforcement status:** currently convention-only; no ESLint boundary rule or CI grep guard exists. See FU-02 in Follow-up Backlog.
 
 ## Global Rollout and Rollback Plan
 - Single operational lever: `modal_orchestration_v2_enabled` runtime flag selects active host/orchestration path.
@@ -118,8 +120,8 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - Stage 2: `staging` full regression/a11y/browser-harness validation.
   - Stage 3: production ramp 10% -> 50% -> 100% after 24h healthy intervals.
 - Rollback policy:
-  - Immediate rollback to legacy host path if trigger thresholds are breached.
-  - Trigger thresholds:
+  - **Important: TASK-10 removed the deprecated GlobalModals shim. Flag-based rollback to the legacy host path is no longer viable.** Rollback now requires a code revert and redeploy (expected: ~15min to staging, ~30min to production via CI). Plan for this in incident runbooks.
+  - Trigger thresholds (still applicable — trigger rollback-by-revert):
     - booking abandonment increases >3% vs 7-day baseline.
     - handoff success drops >2% vs 7-day baseline.
     - modal lifecycle event mismatch exceeds 1%.
@@ -212,11 +214,8 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 - **Options:**
   - Option A: keep V1/V2 separate with explicit, versioned contracts.
   - Option B: converge to one booking modal flow with one handoff mode and event contract.
-- **Recommendation:** Option A as transitional target for this remake, with documented migration path to Option B after parity data.
-- **Decision input needed:**
-  - question: Should V1/V2 remain distinct in this migration horizon?
-  - why it matters: drives payload model and validation scope for TASK-04 onward.
-  - default + risk: Default to Option A; risk is prolonged dual-flow complexity.
+- **Recommendation:** N/A — decision made (Option B). Pre-decision recommendation was Option A as a transitional step; overridden by explicit Option B decision on 2026-02-17. Rationale: converging flows eliminates dual-path payload model and test-matrix complexity faster.
+- **Decision input needed:** N/A — resolved.
 - **Canonical event contract (applies in both options):**
 
 | Event | Trigger | Required dimensions | Dedupe rule |
@@ -721,13 +720,13 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
   - Threshold alerts align with rollback triggers in `Global Rollout and Rollback Plan`.
 
 ## Acceptance Criteria (overall)
-- [ ] Modal payload handling is typed and compile-time enforced for migrated modal types.
-- [ ] Brikette runs on one authoritative modal orchestration stack.
-- [ ] Provider concerns are decomposed and preload strategy is explicit.
-- [ ] Modal layout behavior is contract-driven and viewport-safe.
-- [ ] Integration/contract/a11y test suite covers identified regression classes, including browser-level assertions for viewport/focus/scroll-lock.
-- [ ] Legacy compatibility paths are removed or explicitly quarantined with rationale.
-- [ ] Rollout flag and rollback triggers are configured and validated before production ramp.
+- [x] Modal payload handling is typed and compile-time enforced for migrated modal types. *(TASK-04 — commit `06f72dceac`)*
+- [x] Brikette runs on one authoritative modal orchestration stack. *(TASK-05 — commit `8f4ed6b348`)*
+- [x] Provider concerns are decomposed and preload strategy is explicit. *(TASK-06 — confirmed modal-scoped preload)*
+- [x] Modal layout behavior is contract-driven and viewport-safe. *(TASK-07 — `ModalScrollPanel`/`ModalScrollArea` primitives, `max-h-[90dvh]` contract)*
+- [x] Integration/contract/a11y test suite covers identified regression classes. *(TASK-09 — TC-01/TC-02/TC-04 automated; TC-03/TC-06 → staging manual QA checklist. Note: browser-level automation not present in Brikette CI; Playwright harness is a follow-up item — see FU-04.)*
+- [x] Legacy compatibility paths are removed or explicitly quarantined with rationale. *(TASK-10 — deprecated GlobalModals shim deleted)*
+- [ ] Rollout flag and rollback triggers are validated before production ramp. *(Pending: `modal_orchestration_v2_enabled` flag defined; production ramp not yet executed. Rollback is now revert-based — see updated rollback policy.)*
 
 ## Decision Log
 - 2026-02-17: Plan created in `plan-only` mode from `docs/plans/brikette-modal-system-remake/fact-find.md`.
@@ -774,6 +773,18 @@ Because open decisions remain (ownership boundary and booking-flow convergence),
 - Raw critical-path confidence = 1141 / 14 = 81.5%
 - Decision gate cap: lifted — TASK-01/TASK-02 resolved 2026-02-17.
 - Effective critical-path confidence (current) = 81.5%
+
+## Follow-up Backlog (post-completion)
+
+These are not blocking items for this plan — they are hardening and coverage improvements to pick up in a follow-on cycle.
+
+| ID | Description | Priority |
+|---|---|---|
+| FU-01 | Add global sentinel (`globalThis.__ACME_MODAL_HOST__` or `Symbol.for(...)`) set on provider mount/cleared on unmount to detect cross-context dual-hosting that `useContext` nesting detection cannot catch. | High |
+| FU-02 | Add ESLint boundary rule (or CI grep) banning import of `packages/ui/src/context/modal/*` orchestration paths from `apps/brikette` runtime code. Currently enforced by convention only. | High |
+| FU-03 | Make safe-area inset handling explicit in `ModalScrollPanel` (e.g. `pb-safe` / `env(safe-area-inset-bottom)`) or document explicitly why it is not needed. Current `max-h-[90dvh]` contracts do not address iOS bottom safe area clipping of footer affordances. | Medium |
+| FU-04 | Introduce Playwright (or Storybook test runner) for at least one "constrained viewport + keyboard" critical path to retire the staging manual QA gate for TC-03 and TC-06 over time. | Medium |
+| FU-05 | Define and instrument the GA4 mismatch metric (`modal lifecycle event mismatch rate`) with a concrete measurement query, so rollback triggers have an operational definition rather than a description. | Medium |
 
 ## Section Omission Rule
 

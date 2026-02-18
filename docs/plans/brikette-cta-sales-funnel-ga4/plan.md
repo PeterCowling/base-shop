@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-40, TASK-41 complete — Wave 7 in progress)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-40, TASK-41 complete — Wave 7 in progress)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -193,7 +193,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-32 | IMPLEMENT | Update RoomsSection.onRoomSelect: full select_item fields + begin_checkout via trackThenNavigate (no RoomCard duplicate) | 82% | M | Complete (2026-02-18) | TASK-29,TASK-30,TASK-31,TASK-15 | — |
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
-| TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Pending | TASK-29,TASK-30,TASK-15 | — |
+| TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-30,TASK-15 | — |
 | TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
 | TASK-37 | IMPLEMENT | Update GA4_ENUMS + delete superseded helpers + clean prefetchInteractive dead imports | 88% | S | Complete (2026-02-18) | TASK-29 | TASK-31 |
 | TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
@@ -937,11 +937,12 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
-  - `packages/ui/src/organisms/StickyBookNow.tsx`
-  - `apps/brikette/src/app/[lang]/rooms/[id]/page.tsx` (or wrapper that renders StickyBookNow)
+  - `apps/brikette/src/app/[lang]/rooms/[id]/RoomDetailContent.tsx`
+  - `apps/brikette/src/test/components/ga4-35-sticky-begin-checkout.test.tsx` (new)
   - `[readonly] apps/brikette/src/utils/trackThenNavigate.ts`
+  - `[readonly] packages/ui/src/organisms/StickyBookNow.tsx` (already had onStickyCheckoutClick — no change needed)
 - **Depends on:** TASK-29, TASK-30, TASK-15
 - **Blocks:** —
 - **Confidence:** 82%
@@ -958,7 +959,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - TC-01: onClick with `onBeforeNavigate` → `e.preventDefault()` called; callback fired; navigation occurs via `window.location.assign(href)` inside callback
   - TC-02: onClick without `onBeforeNavigate` → navigation proceeds normally (backward-compatible)
   - TC-03: `trackThenNavigate` called with `begin_checkout` + correct item (incl. item_name, item_category, affiliation, currency)
-- **Scouts:** Confirm room context is available in the component tree at the StickyBookNow render point. If not, assess cost of threading props vs. using URL params from page context.
+- **Build evidence (2026-02-18):**
+  - `StickyBookNow.tsx` already had the `onStickyCheckoutClick` callback pattern — no change needed to the UI package.
+  - `RoomDetailContent.tsx`: replaced `fireSearchAvailabilityAndNavigate` with `trackThenNavigate("begin_checkout", { source: "sticky_cta", items: [buildRoomItem({ roomSku: room.sku, itemName: title })] }, ctx.proceed)`.
+  - Test: `ga4-35-sticky-begin-checkout.test.tsx` — 3/3 pass (TC-01 no begin_checkout on render, TC-02 begin_checkout on click, TC-03 proceed via 200ms timeout). Existing `ga4-view-item-detail` tests continue to pass.
 
 ---
 

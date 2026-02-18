@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-05 complete; Wave 4 unblocked (TASK-06+TASK-08 ready); TASK-07 blocked on TASK-06; TASK-09 blocked on TASK-06..TASK-08
+Build-Progress: TASK-00..TASK-05 complete; TASK-06 promoted to 80% (eligible); TASK-12+TASK-13 added (INVESTIGATE precursors); TASK-07 regressed to 70% (needs TASK-12+TASK-06); TASK-08 at 75% (needs TASK-13)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -88,12 +88,14 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-03 | IMPLEMENT | Add missing templates and enforce template-link/placeholder lint gates | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-09 |
 | TASK-04 | IMPLEMENT | Introduce additive multi-scenario action plan model with dominant/exclusive semantics | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-06, TASK-08, TASK-09 |
 | TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-07, TASK-09 |
-| TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 75% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-09 |
-| TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 75% | M | Pending | TASK-05, TASK-06 | TASK-09 |
-| TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 70% | M | Pending | TASK-04 | TASK-09 |
+| TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-09 |
+| TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 70% | M | Pending | TASK-05, TASK-06, TASK-12 | TASK-09 |
+| TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 75% | M | Pending | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
+| TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Pending | TASK-05 | TASK-07 |
+| TASK-13 | INVESTIGATE | Verify thread snippet sufficiency for context deduplication; define expanded request pattern set and false-positive rate | 80% | S | Pending | TASK-04 | TASK-08 |
 
 ## Parallelism Guide
 
@@ -102,10 +104,11 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | 1 | TASK-01 | - | Baseline evidence and fixture inventory |
 | 2 | TASK-00 | TASK-01 | Scope/authority decision locks downstream behavior |
 | 3 | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-00 | Quick ops bridge + foundational contracts in parallel |
-| 4 | TASK-06, TASK-08 | TASK-03+TASK-04 for TASK-06; TASK-04 for TASK-08 | Composition/ranking and extraction/policy workstreams |
-| 5 | TASK-07 | TASK-05, TASK-06 | Knowledge injection depends on coverage + assembly |
-| 6 | TASK-09 | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | Regression and evaluation gate activation |
-| 7 | TASK-10 | TASK-02, TASK-09 | Replan checkpoint before any LLM-stage expansion |
+| 4 | TASK-06, TASK-12, TASK-13 | TASK-03+TASK-04 for TASK-06; TASK-05 for TASK-12; TASK-04 for TASK-13 | Ranking implement + two approach-definition investigations in parallel |
+| 5 | TASK-08 (after replan) | TASK-04, TASK-13 | Thread/request extraction; needs replan after TASK-13 |
+| 6 | TASK-07 (after replan) | TASK-05, TASK-06, TASK-12 | Knowledge injection; needs replan after TASK-06+TASK-12 |
+| 7 | TASK-09 | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | Regression and evaluation gate activation |
+| 8 | TASK-10 | TASK-02, TASK-09 | Replan checkpoint before any LLM-stage expansion |
 
 ## Tasks
 
@@ -359,9 +362,9 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/utils/template-ranker.ts`, `packages/mcp-server/src/__tests__/template-ranker.test.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-07, TASK-09
-- **Confidence:** 75%
-  - Implementation: 85% - per-question logic is clear but touches ranking + assembly paths.
-  - Approach: 75% - balancing coverage and verbosity needs careful heuristic tuning.
+- **Confidence:** 80% *(promoted from 75% — 2026-02-18 replan)*
+  - Implementation: 85% - per-question logic is clear, `assembleCompositeBody()` with greeting/signature dedup confirmed to exist.
+  - Approach: 80% - E1 +5: scout confirmed `DEFAULT_LIMIT=3` resolves heuristic cap question; `isComposite` dual-gate mechanism fully understood; dedup when questions map to same template has deterministic resolution (dedup by template ID). Held-back test: no unresolved unknowns remain that would push below 80%.
   - Impact: 85% - directly addresses multi-question quality failures.
 - **Acceptance:**
   - Ranking is executed per extracted question/request, not single category only.
@@ -378,10 +381,11 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Checks run: review of current ranker limit behavior and composite assembly flow.
   - Validation artifacts: fact-find GAP-4/GAP-6/GAP-7 evidence + existing tests.
   - Unexpected findings: none.
-- **Scouts:**
-  - Probe heuristic cap values (3/4/5) against fixture coverage before finalizing default.
+- **Scouts:** *(resolved — 2026-02-18 replan)*
+  - ~~Probe heuristic cap values (3/4/5)~~ — resolved: `DEFAULT_LIMIT=3` confirmed as correct cap; scout confirmed this via static analysis of template-ranker.ts + fixture coverage (~8/42 multi-question fixtures). Heuristic cap = 3 locked.
 - **Edge Cases & Hardening:**
   - Preserve deterministic output ordering for CI stability.
+  - Per-question sub-queries may all return the same top template: resolve by deduplicating on template ID and accepting fewer blocks when unique-template count < question count.
 - **What would make this >=90%:**
   - Fixture run showing >=95% question coverage with no length-rule regressions.
 - **Rollout / rollback:**
@@ -399,11 +403,11 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`, `packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
-- **Depends on:** TASK-05, TASK-06
+- **Depends on:** TASK-05, TASK-06, TASK-12
 - **Blocks:** TASK-09
-- **Confidence:** 75%
-  - Implementation: 85% - insertion points are known after shared coverage + assembly work.
-  - Approach: 75% - source-priority and escalation semantics need careful boundary tests.
+- **Confidence:** 70% *(regressed from 75% — 2026-02-18 replan; new TASK-12 precursor added)*
+  - Implementation: 80% - insertion point confirmed (move `loadKnowledgeSummaries` call pre-draft), but citation marker rendering in guest-facing text and sanitisation pass ordering are non-trivial concerns now known.
+  - Approach: 70% - E1 investigation revealed: (a) citation markers like `[faq:check-in-window]` would appear in guest email body unless stripped; (b) `sources_used` schema is undefined anywhere in codebase; (c) injected snippets bypass existing length enforcement and forbidden-phrase checks. These risks are greater than previously assessed. TASK-12 must resolve them before implementation.
   - Impact: 85% - closes highest-value gap (unanswered questions).
 - **Acceptance:**
   - Missing-question gaps trigger source-backed insertions when high-relevance snippet exists.
@@ -441,11 +445,11 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/data/draft-guide.json`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `.claude/skills/ops-inbox/SKILL.md`
-- **Depends on:** TASK-04
+- **Depends on:** TASK-04, TASK-13
 - **Blocks:** TASK-09
-- **Confidence:** 70%
-  - Implementation: 75% - touchpoints are known but thread-body availability is uncertain.
-  - Approach: 70% - quoted-text handling and continuation detection need careful tuning.
+- **Confidence:** 75% *(updated from 70% — 2026-02-18 replan; new TASK-13 precursor added)*
+  - Implementation: 75% - thread infrastructure confirmed (includeThread: true wired end-to-end); prior messages available as 180-char snippets (format='metadata'). Whether snippet-only satisfies TC-08-02 is open — TASK-13 resolves. Pattern expansion scope is clear (3 → 8-10 patterns, matchAll fix, [faq:FAQ-02 "I was wondering" gap confirmed]).
+  - Approach: 75% - E1 +5: pattern expansion scope is concrete (scout confirmed exact gaps); thread approach risk is LOW per scout (infrastructure in place). Snippet-vs-full-body decision remains open — TASK-13 must resolve before approach reaches ≥80%.
   - Impact: 75% - improves follow-up email quality but has broader parsing risk.
 - **Acceptance:**
   - Implicit request regex patterns cover documented missing phrasings.
@@ -462,8 +466,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Checks run: repository scan for thread context support and current interpret tests.
   - Validation artifacts: `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/gmail.ts`, fact-find W2/W3 notes.
   - Unexpected findings: includeThread body-depth still needs empirical verification.
-- **Scouts:**
-  - Scout whether `includeThread: true` consistently returns sufficient full-message bodies.
+- **Scouts:** *(partially resolved — 2026-02-18 replan)*
+  - ~~Scout whether `includeThread: true` consistently returns sufficient full-message bodies~~ — E1 confirmed: `includeThread: true` is the default and thread infrastructure is end-to-end wired. Prior messages use `format='metadata'` (snippet-only, 180 chars). Open question (delegated to TASK-13): whether snippet is sufficient for TC-08-02 or requires `format='full'` upgrade.
 - **Edge Cases & Hardening:**
   - Prevent false-positive request extraction from signature/footer lines.
 - **What would make this >=90%:**
@@ -567,6 +571,68 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Graceful fallback to deterministic draft when LLM call fails or exceeds latency threshold
   - Additive only — does not replace `draft_generate` or `draft_quality_check`
 - **Note:** Scope and confidence to be fully defined via `/lp-replan` at TASK-10 checkpoint.
+
+### TASK-12: Define knowledge injection approach (injection timing, citation rendering, sources_used schema, sanitisation)
+- **Type:** INVESTIGATE
+- **Deliverable:** design note in `docs/plans/email-draft-quality-upgrade/replan-notes.md` (TASK-12 section)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `[readonly] packages/mcp-server/src/tools/draft-generate.ts`, `[readonly] packages/mcp-server/src/resources/brikette-knowledge.ts`, `[readonly] packages/mcp-server/src/__tests__/draft-generate.test.ts`
+- **Depends on:** TASK-05
+- **Blocks:** TASK-07
+- **Confidence:** 80%
+  - Implementation: 90% - static evidence sources are clear; no executable probes needed.
+  - Approach: 80% - investigation scope is bounded to 4 defined questions.
+  - Impact: 90% - unblocks TASK-07 which is otherwise below threshold.
+- **Questions to answer:**
+  1. Can knowledge snippets be injected into draft body text without citation markers (e.g., `[faq:check-in-window]`) appearing in the guest-facing email?
+  2. Must injection move to pre-draft (before template assembly) or can it run as a post-assembly gap-fill pass after quality check? Which is safer relative to existing length enforcement and forbidden-phrase checks?
+  3. What should the `sources_used` schema look like (array of `{ uri, citation, snippetText }` or simpler)?
+  4. Do injected snippet texts safely pass through the existing forbidden-phrase and policy-decision content sanitisation steps, or do specific guard clauses need to wrap them?
+- **Acceptance:**
+  - Design note answers all 4 questions with evidence citations from code (file:line format).
+  - Injection timing recommendation (pre-draft vs. post-assembly) is justified with tradeoff analysis.
+  - `sources_used` schema proposed with field-level rationale.
+  - Sanitisation pass order is explicit and no forbidden-phrase bypass scenario is identified.
+- **Validation contract:**
+  - Investigation closes when all 4 questions have definitive answers backed by E1 static evidence. No executable code required.
+- **Planning validation:** None — S-effort investigation task.
+- **Rollout / rollback:** `None: investigation task`
+- **Documentation impact:** Populates `replan-notes.md` with design decisions consumed by TASK-07 builder.
+
+### TASK-13: Verify thread snippet sufficiency; define expanded request pattern set and false-positive rate
+- **Type:** INVESTIGATE
+- **Deliverable:** design note in `docs/plans/email-draft-quality-upgrade/replan-notes.md` (TASK-13 section)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/draft-interpret.ts`, `[readonly] packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `[readonly] packages/mcp-server/src/__tests__/pipeline-integration.test.ts`
+- **Depends on:** TASK-04
+- **Blocks:** TASK-08
+- **Confidence:** 80%
+  - Implementation: 90% - static evidence sources are clear; thread fixtures exist.
+  - Approach: 80% - bounded to reading existing fixtures + API call shape review.
+  - Impact: 90% - unblocks TASK-08 which is otherwise at 75%.
+- **Questions to answer:**
+  1. Is the 180-char snippet from `format='metadata'` sufficient to satisfy TC-08-02 (avoid double-answering prior thread questions)? Evidence: read FAQ-04 and PAY-01 thread fixtures and check if snippet contains enough topic signal.
+  2. If snippet-only is insufficient: is upgrading `threads.get` to `format='full'` feasible? What is the latency/payload tradeoff? Are there any downstream parsing implications?
+  3. What is the concrete expanded pattern set for `extractRequests()` (from 3 → target N)? Include: "I was wondering", "we would like", "we need", "I need", "would it be possible", "please could you", multilingual variants (Italian, Spanish basics). Confirm no false-positive risk against signature/footer lines in existing test fixtures.
+  4. Does the `text.match()` → `matchAll()` change have any edge cases in existing fixtures (e.g., global flag issues)?
+- **Acceptance:**
+  - Design note answers all 4 questions.
+  - Snippet-vs-full-body recommendation is made with evidence from at least 2 thread fixtures.
+  - Expanded pattern list (≥6 patterns) is enumerated with false-positive check against existing test fixture bodies.
+  - `matchAll` edge cases documented (if any).
+- **Validation contract:**
+  - Investigation closes when snippet sufficiency is confirmed or rejected with evidence, AND expanded pattern set is defined. No executable code required.
+- **Planning validation:** None — S-effort investigation task.
+- **Rollout / rollback:** `None: investigation task`
+- **Documentation impact:** Populates `replan-notes.md` with design decisions consumed by TASK-08 builder.
 
 ## Risks & Mitigations
 - Regression in hard-rule categories (cancellation/prepayment).

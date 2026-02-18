@@ -19,7 +19,8 @@ import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
-import { fireSearchAvailabilityAndNavigate, fireViewItem } from "@/utils/ga4-events";
+import { buildRoomItem, fireViewItem } from "@/utils/ga4-events";
+import { trackThenNavigate } from "@/utils/trackThenNavigate";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type Props = {
@@ -238,15 +239,17 @@ export default function RoomDetailContent({ lang, id }: Props) {
 
   const onStickyCheckoutClick = useCallback(
     (ctx: StickyBookNowClickContext) => {
-      fireSearchAvailabilityAndNavigate({
-        source: "sticky_cta",
-        checkin: ctx.checkin,
-        checkout: ctx.checkout,
-        pax: ctx.pax,
-        onNavigate: ctx.proceed,
-      });
+      // TC-03: fire begin_checkout with room item context, then proceed via trackThenNavigate
+      trackThenNavigate(
+        "begin_checkout",
+        {
+          source: "sticky_cta",
+          items: [buildRoomItem({ roomSku: room.sku, itemName: title })],
+        },
+        ctx.proceed,
+      );
     },
-    []
+    [room.sku, title],
   );
 
   // Fire view_item once per navigation

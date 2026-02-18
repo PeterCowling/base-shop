@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 complete)
+Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 + TASK-12 complete; TASK-11 below 80% threshold → needs replan)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -102,7 +102,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-09     | IMPLEMENT   | Extend CI step: platform-core + platform-machine         | 90%        | S      | Complete (2026-02-18) | TASK-07, TASK-08| TASK-10         |
 | TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Complete (2026-02-18) | TASK-09         | TASK-11, TASK-12|
 | TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 78%        | L      | Pending | TASK-10         | TASK-13         |
-| TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Pending | TASK-10         | TASK-13         |
+| TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Complete (2026-02-18) | TASK-10         | TASK-13         |
 | TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Pending | TASK-11, TASK-12| TASK-14         |
 | TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Pending | TASK-13         | -               |
 
@@ -777,7 +777,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `packages/template-app/tsconfig.test.typecheck.json` (new), `packages/template-app/__tests__/**`
 - **Depends on:** TASK-10
 - **Blocks:** TASK-13
@@ -808,6 +808,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Documentation impact:** None
 - **Notes / references:**
   - Modified test file: `packages/template-app/__tests__/stripe-webhook.test.ts`
+- **Build evidence (2026-02-18):** Created `tsconfig.test.typecheck.json` extending root test tsconfig with explicit root-relative paths (baseUrl is monorepo root). 121 errors fixed across 34 files by subagent: jest.fn() as any, prisma: any, isolateModulesAsync → (jest as any), (stripe.subscriptions as any).del, (fn as any).mockResolvedValue, product objects as any, (ui as any).props, as unknown as Headers/Mock patterns, checkouts arguments cast. 1 test remains pre-existing failing (db.test.ts "falls back to stub in production" — pre-existing, not introduced). TC-01: exits 0 ✓. TC-02: 1 pre-existing failure unchanged ✓.
 
 ---
 

@@ -4,14 +4,14 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-01, TASK-02, TASK-03, TASK-04 complete)
+Last-updated: 2026-02-18 (TASK-05 checkpoint; TASK-11, TASK-12 SPIKE precursors added)
 Feature-Slug: startup-loop-token-efficiency
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-build
 Supporting-Skills: none
-Overall-confidence: 78%
+Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall effort-weighted
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -89,20 +89,23 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 | TASK-02 | IMPLEMENT | EFF-1: startup-loop command-specific modules | 82% | M | Complete (2026-02-18) | - | TASK-05 |
 | TASK-03 | IMPLEMENT | OPP-3a: lp-seo phase modules + phase-base-contract | 82% | M | Complete (2026-02-18) | - | TASK-05, TASK-09 |
 | TASK-04 | IMPLEMENT | OPP-B: Author _shared/subagent-dispatch-contract.md | 82% | S | Complete (2026-02-18) | - | TASK-05 |
-| TASK-05 | CHECKPOINT | Validate Wave 1 extractions; replan Wave 3 dispatch tasks | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
-| TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 72% | M | Pending | TASK-04, TASK-05 | - |
-| TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 70% | L | Pending | TASK-04, TASK-05 | - |
+| TASK-05 | CHECKPOINT | Validate Wave 1 extractions; replan Wave 3 dispatch tasks | 95% | S | Complete (2026-02-18) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
+| TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 78% | M | Pending | TASK-04, TASK-05 | - |
+| TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 73% | L | Pending | TASK-04, TASK-05, TASK-11 | - |
 | TASK-08 | IMPLEMENT | OPP-4: startup-loop S6B parallel secondary skill dispatch | 80% | S | Pending | TASK-04, TASK-05 | - |
-| TASK-09 | IMPLEMENT | OPP-3b: lp-seo Phase 3 SERP intra-phase parallelism | 72% | M | Pending | TASK-03, TASK-04, TASK-05 | - |
-| TASK-10 | IMPLEMENT | OPP-5: lp-offer competitor research parallel dispatch | 78% | S | Pending | TASK-04, TASK-05 | - |
+| TASK-09 | IMPLEMENT | OPP-3b: lp-seo Phase 3 SERP intra-phase parallelism | 75% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-12 | - |
+| TASK-10 | IMPLEMENT | OPP-5: lp-offer competitor research parallel dispatch | 80% | S | Pending | TASK-04, TASK-05 | - |
+| TASK-11 | SPIKE | Validate Model A parallel dispatch on minimal 2-task test | 85% | S | Pending | TASK-04, TASK-05 | TASK-07 |
+| TASK-12 | SPIKE | Validate WebSearch concurrent rate behavior (3-parallel) | 88% | S | Pending | TASK-03, TASK-04, TASK-05 | TASK-09 |
 
 ## Parallelism Guide
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01, TASK-02, TASK-03, TASK-04 | None | All independent; different target files; run in parallel |
-| 2 | TASK-05 | TASK-01–04 all complete | CHECKPOINT: validate Wave 1; replan Wave 3 before proceeding |
-| 3 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 | TASK-05 complete; TASK-03 complete (TASK-09 specifically) | Dispatch tasks; all independent of each other; TASK-06/07/08/10 can run in parallel; TASK-09 also needs TASK-03 |
+| 1 | TASK-01, TASK-02, TASK-03, TASK-04 | None | All complete |
+| 2 | TASK-05 | TASK-01–04 all complete | CHECKPOINT complete |
+| 3 | TASK-08, TASK-10, TASK-11, TASK-12 | TASK-05 complete; TASK-03 complete (TASK-12) | TASK-08, TASK-10 immediately eligible (≥80); TASK-11 + TASK-12 SPIKEs run in parallel to unblock TASK-07 + TASK-09 |
+| 4 | TASK-06, TASK-07, TASK-09 | TASK-11 (TASK-06, TASK-07); TASK-12 (TASK-09) | TASK-07 after TASK-11 SPIKE validates Model A; TASK-09 after TASK-12 SPIKE; TASK-06 re-assess at ≥80 after TASK-11 evidence |
 
 ---
 
@@ -346,10 +349,20 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - H-04: startup-loop gate cross-references (TASK-02) are complete — verify by running `startup-loop status` command
   - H-05: lp-seo phase-base-contract.md is complete enough that phase modules don't need to duplicate rubric — verify by attempting a Phase 3 run after TASK-03
   - H-06: subagent-dispatch-contract.md (TASK-04) covers all cases needed by TASK-06, TASK-07, TASK-08 — review against each task's dispatch requirements
+- **Status:** Complete (2026-02-18)
 - **Validation contract:** lp-replan run produces updated confidence scores for TASK-06 through TASK-10; plan re-sequenced; all downstream tasks re-evaluated
 - **Planning validation:** None: planning control task
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** `docs/plans/startup-loop-token-efficiency/plan.md` updated with new confidence scores
+- **Build evidence (2026-02-18):**
+  - H-01: Brand Copy (Domain 5) reads only brand-dossier + messaging-hierarchy — zero SEO domain references ✓
+  - H-02: lp-sequence SKILL.md Parallelism Guide format confirmed canonical (`| Wave | Tasks | Prerequisites | Notes |`) ✓
+  - H-03: All 3 BOS integration files reference `stage-doc-core.md` (grep confirmed, 0 remaining `stage-doc-operations` refs) ✓
+  - H-04: All active loop-spec.yaml gate names covered in startup-loop command modules ✓
+  - H-05: phase-base-contract.md (39L) serves all 5 phase modules via `**Loads**` header; no rubric duplication ✓
+  - H-06: subagent-dispatch-contract.md §1–§6 covers all TASK-06/07/08 dispatch requirements ✓
+  - New findings: Domain 6 (Measurement) = ~55 lines — within 30-60L target ✓; Model A empirically untested → TASK-11 SPIKE added; WebSearch rate limiting under parallel dispatch unverified → TASK-12 SPIKE added
+  - Confidence re-assessed: TASK-08 (80% ✓), TASK-10 (80% ✓) immediately eligible; TASK-06 (78%), TASK-07 (73%), TASK-09 (75%) below threshold pending SPIKE evidence
 
 ---
 
@@ -374,10 +387,11 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** -
-- **Confidence:** 72% *(to be re-assessed at TASK-05 CHECKPOINT)*
-  - Implementation: 83% — domain boundaries confirmed; report template extraction is mechanical; dispatch wiring follows OPP-B contract
-  - Approach: 72% — cross-domain synthesis step is new design not proven in practice; Model A unproven for multi-domain aggregation; Brand Copy domain independence assumption unverified
-  - Impact: 83% — latency improvement well-modeled (75-80% reduction); trade-off of +85% total tokens is understood and accepted
+- **Confidence:** 78% *(reassessed at TASK-05; H-01 confirmed)*
+  - Implementation: 83% — domain boundaries confirmed by full SKILL.md read; Domain 5 = 30L, Domain 6 = 55L, both within 30-60L target; report template extraction mechanical; dispatch wiring follows OPP-B contract
+  - Approach: 78% — H-01 CONFIRMED (Brand Copy independent of SEO); dispatch contract confirmed (all 6 sections present); cross-domain synthesis still unproven in practice (new design); TASK-11 evidence will further de-risk
+  - Impact: 83% — latency improvement well-modeled (75-80% reduction); trade-off of +85% total tokens understood and accepted
+  - **What would make this >=80**: TASK-11 SPIKE confirms Model A dispatch works without writer-lock contention → raise Approach to 80%+
 - **Acceptance:**
   - `lp-launch-qa/SKILL.md` ≤150 lines; contains: invocation, dispatch block (6 domain subagents via Task tool), cross-domain synthesis step, go/no-go aggregation, loop state update
   - 6 domain module files exist; each 30–60 lines (matching fact-find line boundaries)
@@ -422,12 +436,13 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - `.claude/skills/_shared/wave-dispatch-protocol.md` (new)
   - `[readonly] .claude/skills/lp-sequence/SKILL.md`
   - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
-- **Depends on:** TASK-04, TASK-05
+- **Depends on:** TASK-04, TASK-05, TASK-11
 - **Blocks:** -
-- **Confidence:** 70% *(to be re-assessed at TASK-05 CHECKPOINT — L effort; approach is modeled but untested)*
-  - Implementation: 80% — Parallelism Guide format confirmed; wave-reading logic is well-specified; Model A protocol clear
-  - Approach: 70% — Model A is analytically sound but completely untested; writer-lock interaction with parallel analysis not empirically validated; L effort with reasoning-only evidence on approach caps at 75 per scoring rules
+- **Confidence:** 73% *(reassessed at TASK-05; H-02 confirmed; TASK-11 SPIKE added as precursor)*
+  - Implementation: 82% — H-02 CONFIRMED (Parallelism Guide `| Wave | Tasks | Prerequisites | Notes |` format canonical in lp-sequence SKILL.md); wave-reading logic has confirmed input schema; SKILL.md at 209 lines, adding ~30 lines for wave logic stays within 250L limit
+  - Approach: 73% — H-02 resolved; format locked; but Model A empirically untested (writer-lock interaction with parallel analysis unvalidated); L effort cap applies; TASK-11 SPIKE is the precursor that resolves this
   - Impact: 82% — Amdahl's law analysis gives 40-70% range; well-bounded
+  - **What would make this >=80**: TASK-11 SPIKE validates Model A without writer-lock contention → raise Approach to 80%+; then this IMPLEMENT becomes eligible
 - **Acceptance:**
   - `lp-build/SKILL.md` remains ≤250 lines (currently ~685 effective context at BOS-on; SKILL.md is 209 lines — may grow by ~30 lines for wave logic)
   - `_shared/wave-dispatch-protocol.md` exists; references `subagent-dispatch-contract.md`; specifies: wave-reading from Parallelism Guide, how to dispatch tasks in parallel via Task tool, conflict detection via `touched_files` comparison, merge procedure, failure handling (quarantine task, continue wave)
@@ -473,10 +488,10 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - `[readonly] docs/business-os/startup-loop/loop-spec.yaml`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 88% — change is a single section update; clear what needs to change; dispatch mechanism specified in OPP-B
-  - Approach: 82% — dispatch contract (TASK-04) is in place; lp-seo and draft-outreach produce independent output files; no shared write conflicts
-  - Impact: 80% — halves S6B wall time; lp-seo is the most expensive secondary skill; after TASK-03 (lp-seo modularized), dispatched skill context is also reduced
+- **Confidence:** 80% *(confirmed at TASK-05 checkpoint)*
+  - Implementation: 88% — change is a single section update in cmd-advance.md (confirmed exists); clear what needs to change; dispatch mechanism specified in OPP-B
+  - Approach: 84% — dispatch contract confirmed complete (all 6 sections); lp-seo modularized (TASK-03 complete) → dispatched context is lean; lp-seo and draft-outreach confirmed to produce independent output files; no shared write conflicts
+  - Impact: 80% — halves S6B wall time; lp-seo is the most expensive secondary skill and is now modularized
 - **Acceptance:**
   - S6B section in startup-loop (SKILL.md or cmd-advance.md module) explicitly directs: after `lp-channels` completes, dispatch `lp-seo` and `draft-outreach` in parallel via Task tool in a single message
   - The directive references `subagent-dispatch-contract.md` for protocol
@@ -513,12 +528,13 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Affects:**
   - `.claude/skills/lp-seo/modules/phase-3.md` (add SERP dispatch block)
   - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
-- **Depends on:** TASK-03, TASK-04, TASK-05
+- **Depends on:** TASK-03, TASK-04, TASK-05, TASK-12
 - **Blocks:** -
-- **Confidence:** 72% *(to be re-assessed at TASK-05 CHECKPOINT)*
-  - Implementation: 82% — dispatch mechanism is specified; hard caps are defined; schema is defined; phase-3.md will be in place after TASK-03
-  - Approach: 72% — rate limiting on parallel web fetches is a real operational concern not yet empirically tested; structured output schema compatibility with SERP research tools not confirmed
+- **Confidence:** 75% *(reassessed at TASK-05; phase-3.md confirmed; TASK-12 SPIKE added as precursor)*
+  - Implementation: 83% — phase-3.md (155L) confirmed by file read; per-keyword SERP research is clearly isolated (no cross-keyword dependencies in step 2); dispatch block addition is well-bounded
+  - Approach: 75% — per-keyword isolation confirmed clean; WebSearch is built-in tool (not external API) so rate limiting risk lower than assumed; hard cap of 5 concurrent provides mitigation; TASK-12 SPIKE will empirically verify before IMPLEMENT
   - Impact: 80% — Phase 3 is the most research-intensive phase; parallelism well-modeled for N>5 keywords
+  - **What would make this >=80**: TASK-12 SPIKE confirms WebSearch handles 3-concurrent without throttling → raise Approach to 80%+
 - **Acceptance:**
   - `phase-3.md` contains a SERP dispatch block: for each keyword in the brief list, dispatch a subagent with a compact brief
   - Hard caps enforced: max 5 concurrent subagents, max 10 results per keyword, max 400 words per keyword brief
@@ -560,10 +576,10 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** -
-- **Confidence:** 78% *(to be re-assessed at TASK-05 CHECKPOINT)*
-  - Implementation: 85% — compact schema and brief template are specified; Stage 1 change is well-bounded; one new file + one section edit
-  - Approach: 80% — dispatch mechanism clear after TASK-04; hard 200-word cap controls token sprawl
-  - Impact: 78% — latency improvement for Stage 1 is real; token savings from compact summaries vs raw web content; moderate impact (P3 in priority matrix)
+- **Confidence:** 80% *(confirmed at TASK-05 checkpoint)*
+  - Implementation: 85% — compact schema and brief template specified; Stage 1 change well-bounded; one new file + one section edit
+  - Approach: 82% — dispatch contract confirmed (§1 output schema, §3 budget controls, §5 failure handling all applicable); 200-word cap pattern clear; Evidence Register merge step well-scoped
+  - Impact: 80% — latency improvement for Stage 1 real; token savings from structured extracts vs raw web content; moderate impact (P3 in priority matrix)
 - **Acceptance:**
   - `lp-offer/competitor-research-brief.md` exists; ≤35 lines; contains: research brief format, output schema, word limit (200 words max), fields to extract (pricing, positioning_promise, icp_signals, proof_claims, key_objections, differentiators)
   - `lp-offer/SKILL.md` Stage 1 updated: identify competitors → dispatch one subagent per competitor using `competitor-research-brief.md` as brief → merge structured extracts into Evidence Register → proceed to Stage 2
@@ -585,6 +601,79 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Revert lp-offer SKILL.md Stage 1; delete brief template
 - **Documentation impact:** None beyond skill files
 - **Notes / references:** P3 priority; simplest dispatch task in Wave 3. Good validation target for the dispatch contract since lp-offer SKILL.md (230 lines) is already well within context budget.
+
+---
+
+### TASK-11: SPIKE — Validate Model A parallel dispatch on minimal 2-task test
+
+- **Type:** SPIKE
+- **Deliverable:** Evidence note in `docs/plans/startup-loop-token-efficiency/task-11-model-a-spike.md` — structured output confirming Model A dispatch works without writer-lock contention
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `docs/plans/startup-loop-token-efficiency/task-11-model-a-spike.md` (new)
+  - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
+- **Depends on:** TASK-04, TASK-05
+- **Blocks:** TASK-07
+- **Confidence:** 85%
+  - Implementation: 90% — test design is straightforward; dispatch 2 independent analysis subagents, collect schema-conformant responses, apply sequentially
+  - Approach: 85% — Model A is analytically sound; SPIKE will confirm or refute empirically; very low risk of inconclusive result
+  - Impact: 88% — TASK-07 and TASK-06 both blocked by unproven Model A; positive SPIKE result unblocks both
+- **Acceptance:**
+  - 2 subagents dispatched in a single message using Task tool; each returns `{ status, summary, outputs, touched_files }` conforming to subagent-dispatch-contract.md §1
+  - No writer-lock contention during analysis phase (subagents run read-only; no file writes)
+  - Orchestrator applies outputs sequentially; no conflict (different touched_files)
+  - Evidence note captures: dispatch method, subagent response times, schema conformance, apply-phase result
+- **Validation contract (TC-01 to TC-02):**
+  - TC-01: Task tool dispatched in a single message with ≥2 subagents → confirmed in evidence note
+  - TC-02: Both subagents return status `ok`; `touched_files` contain no overlapping paths → confirmed in evidence note
+- **Execution plan:** Red (draft 2-task dispatch brief; identify which tasks to use as test subjects — TASK-08 and TASK-10 are S-effort, independent, and eligible) → Green (dispatch TASK-08 and TASK-10 as analysis-only subagents; collect responses; apply sequentially) → Refactor (write evidence note; update TASK-07 confidence based on result)
+- **Planning validation:** Added at TASK-05 CHECKPOINT. Model A unproven → precursor doctrine requires SPIKE before TASK-07 IMPLEMENT.
+- **Edge Cases & Hardening:** If either subagent fails during SPIKE, diagnose root cause (timeout? context error? schema mismatch?) and create a follow-up INVESTIGATE task before retrying TASK-07.
+- **What would make this >=90%:** N/A — this is a SPIKE; results are binary (confirms or refutes).
+- **Rollout / rollback:** Evidence-only; no production files changed; no rollback needed.
+- **Documentation impact:** Evidence note referenced in TASK-07 confidence update.
+- **Notes / references:** Using TASK-08 and TASK-10 as test subjects: both are S-effort section edits to independent files (cmd-advance.md and lp-offer/SKILL.md); no touched_files overlap; ideal Model A validation targets.
+
+---
+
+### TASK-12: SPIKE — Validate WebSearch concurrent rate behavior (3-parallel calls)
+
+- **Type:** SPIKE
+- **Deliverable:** Evidence note in `docs/plans/startup-loop-token-efficiency/task-12-websearch-spike.md` — structured output confirming WebSearch handles 3-concurrent calls without throttling
+- **Execution-Skill:** lp-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:**
+  - `docs/plans/startup-loop-token-efficiency/task-12-websearch-spike.md` (new)
+  - `[readonly] .claude/skills/lp-seo/modules/phase-3.md`
+  - `[readonly] .claude/skills/_shared/subagent-dispatch-contract.md`
+- **Depends on:** TASK-03, TASK-04, TASK-05
+- **Blocks:** TASK-09
+- **Confidence:** 88%
+  - Implementation: 92% — test design is trivial; 3 WebSearch calls dispatched simultaneously for 3 distinct lp-seo keywords; measure success rate and output quality
+  - Approach: 88% — WebSearch is a built-in tool (not an external API); rate limiting unlikely but unverified; SPIKE will confirm
+  - Impact: 88% — TASK-09 blocked by rate limiting concern; positive SPIKE result directly unblocks
+- **Acceptance:**
+  - 3 WebSearch calls dispatched in a single message (3 distinct keywords from an lp-seo keyword set)
+  - All 3 return usable results with no throttling error
+  - Each result contains top-10 URLs and intent signals (minimum viable Phase 3 input)
+  - Evidence note documents: dispatch timing, result quality, any rate limiting signals
+- **Validation contract (TC-01 to TC-02):**
+  - TC-01: 3 WebSearch calls dispatched simultaneously in a single message → confirmed in evidence note
+  - TC-02: All 3 return `status: ok` with non-empty results → confirmed in evidence note
+- **Execution plan:** Red (select 3 representative lp-seo keywords; confirm they are distinct and typical of Phase 3 SERP research) → Green (dispatch 3 searches simultaneously; collect results) → Refactor (write evidence note; update TASK-09 confidence and rate limit cap recommendation)
+- **Planning validation:** Added at TASK-05 CHECKPOINT. WebSearch rate behavior under parallel dispatch unverified → precursor doctrine requires SPIKE before TASK-09 IMPLEMENT.
+- **Edge Cases & Hardening:** If throttling detected, update TASK-09 acceptance criteria: reduce concurrency cap from 5 to 3; add inter-batch delay note.
+- **What would make this >=90%:** N/A — this is a SPIKE; results are binary (confirms or refutes).
+- **Rollout / rollback:** Evidence-only; no production files changed; no rollback needed.
+- **Documentation impact:** Evidence note referenced in TASK-09 confidence update.
+- **Notes / references:** If SPIKE shows throttling, TASK-09 Approach can still reach ≥80% with updated caps + batching. Throttling does not kill TASK-09; it adjusts the hard cap recommendation.
 
 ---
 
@@ -613,7 +702,9 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - [ ] TASK-02: startup-loop/SKILL.md ≤120 lines; 4 command modules exist; gate cross-reference validated
 - [ ] TASK-03: lp-seo/SKILL.md ≤120 lines; phase-base-contract.md ≤40 lines; 5 phase modules exist; no rubric duplication
 - [ ] TASK-04: subagent-dispatch-contract.md exists; 50-70 lines; all 6 required sections present
-- [ ] TASK-05: CHECKPOINT complete; TASK-06 through TASK-10 confidence re-assessed; plan updated
+- [x] TASK-05: CHECKPOINT complete; TASK-06 through TASK-10 confidence re-assessed; TASK-11+TASK-12 SPIKE precursors added; plan updated
+- [ ] TASK-11: Model A dispatch validated (evidence note produced); TASK-07 confidence updated to ≥80
+- [ ] TASK-12: WebSearch 3-concurrent validated (evidence note produced); TASK-09 confidence updated to ≥80
 - [ ] TASK-06: lp-launch-qa/SKILL.md ≤150 lines; 6 domain modules + report-template.md exist; cross-domain synthesis step present; --domain flag backwards compatible
 - [ ] TASK-07: wave-dispatch-protocol.md exists; lp-build SKILL.md ≤250 lines; wave dispatch block present; single-task wave regression-free
 - [ ] TASK-08: startup-loop S6B section directs parallel lp-seo + draft-outreach dispatch
@@ -628,20 +719,24 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 
 ## Overall-confidence Calculation
 
+*(Updated at TASK-05 CHECKPOINT — 2026-02-18)*
+
 - S=1, M=2, L=3
-- TASK-01: 80% × 1 = 80
-- TASK-02: 82% × 2 = 164
-- TASK-03: 82% × 2 = 164
-- TASK-04: 82% × 1 = 82
-- TASK-05: 95% × 1 = 95
-- TASK-06: 72% × 2 = 144
-- TASK-07: 70% × 3 = 210
-- TASK-08: 80% × 1 = 80
-- TASK-09: 72% × 2 = 144
-- TASK-10: 78% × 1 = 78
-- Sum weighted: 1241
-- Sum effort weights: 16
-- Overall-confidence: 1241 / 16 = **78%**
+- TASK-01: 80% × 1 = 80 (complete)
+- TASK-02: 82% × 2 = 164 (complete)
+- TASK-03: 82% × 2 = 164 (complete)
+- TASK-04: 82% × 1 = 82 (complete)
+- TASK-05: 95% × 1 = 95 (complete)
+- TASK-06: 78% × 2 = 156 (↑ from 72%; H-01 confirmed)
+- TASK-07: 73% × 3 = 219 (↑ from 70%; H-02 confirmed; TASK-11 SPIKE precursor added)
+- TASK-08: 80% × 1 = 80 (confirmed eligible)
+- TASK-09: 75% × 2 = 150 (↑ from 72%; phase-3.md confirmed; TASK-12 SPIKE precursor added)
+- TASK-10: 80% × 1 = 80 (↑ from 78%; dispatch contract confirmed; now eligible)
+- TASK-11: 85% × 1 = 85 (new SPIKE; Model A validation)
+- TASK-12: 88% × 1 = 88 (new SPIKE; WebSearch rate validation)
+- Sum weighted: 80+164+164+82+95+156+219+80+150+80+85+88 = 1443
+- Sum effort weights: 1+2+2+1+1+2+3+1+2+1+1+1 = 18
+- Overall-confidence: 1443 / 18 = **80%**
 
 ## Section Omission Rule
 

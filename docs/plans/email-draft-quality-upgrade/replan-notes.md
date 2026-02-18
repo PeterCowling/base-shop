@@ -122,3 +122,45 @@ Three implementation requirements for the pattern expansion:
    before appending to the results array.
 
 ---
+
+## TASK-08: Replan Evidence — Confidence Promotion 75% → 80%
+
+**Date:** 2026-02-18
+**Trigger:** TASK-13 Complete — all 4 questions answered.
+
+### Implementation scope (scout findings)
+
+`extractRequests` at `draft-interpret.ts:291-302`:
+- 12 lines, 3 patterns, `text.match()` (first-match only per pattern, no dedup)
+- Uses `match[0]` (full matched span) as both `text` and `evidence`
+- Replacement scope: swap 3 patterns → 9, `match()` → `matchAll()`, add dedup guard
+
+`draft-guide.json` variable-data rules:
+- Current `content_rules.never` covers card-charging and availability-confirmation only
+- No existing variable-data guardrail for speculative pricing or uncertain operating details
+- TC-08-03 requires adding: e.g. "Never quote specific prices that may vary without consulting live rates"
+
+`gmail.ts`: NOT IN SCOPE — TASK-13 Q1 confirmed snippet-only is sufficient; no format='full' needed.
+
+### Confidence dimensions
+
+| Dimension | Old | New | Justification |
+|---|---|---|---|
+| Implementation | 75% | 85% | 9 patterns fully specified (replan-notes Q3), matchAll migration specified (Q4), `extractRequests` is 12-line function. All unknowns resolved. |
+| Approach | 75% | 85% | TASK-13 Q1 closed snippet sufficiency; Q4 closed matchAll edge cases; zero FP on all existing fixture bodies confirmed. |
+| Impact | 75% | 80% | FAQ-02 "I was wondering" gap directly addressed by pattern 4; held-back test passed (dedup uses equality not similarity; distinct requests are not collapsed). |
+| **Overall** | **75%** | **80%** | **min(85, 85, 80) = 80%** |
+
+### Affects scope change
+
+- `packages/mcp-server/src/tools/gmail.ts` → `[readonly]` (no changes needed per TASK-13 Q1)
+- `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts` → `[readonly]` (no gmail changes needed)
+
+### TC-08 contract clarifications for builder
+
+- **TC-08-01:** Verify "I was wondering", "we need", and "would it be possible" phrasings each produce ≥1 `requests` entry.
+- **TC-08-02:** Verify `summarizeThreadContext` with snippet-only thread messages correctly populates `resolved_questions`; no `gmail.ts` change involved.
+- **TC-08-03:** Verify new `draft-guide.json` `never` rules cause `removeForbiddenPhrases` to strip speculative wording (e.g. "€15 per bag" without qualification).
+- **TC-08-04:** Run `pnpm -w run test:governed -- jest -- --testPathPattern="draft-interpret" --no-coverage` (gmail-organize-inbox excluded from scope).
+
+---

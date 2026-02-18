@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..TASK-06 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-07 at 70% (needs replan — TASK-12 done); TASK-08 at 75% (needs replan — TASK-13 done)
+Build-Progress: TASK-00..TASK-06 complete; TASK-12+TASK-13 complete (INVESTIGATE precursors); TASK-07 at 70% (needs replan — TASK-12 done); TASK-08 promoted to 80% (eligible for build)
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -90,7 +90,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-05 | IMPLEMENT | Extract shared coverage module and reuse across generate/quality tooling | 85% | M | Complete (2026-02-18) | TASK-00 | TASK-07, TASK-09 |
 | TASK-06 | IMPLEMENT | Implement per-question template ranking and coherent composite assembly | 80% | M | Complete (2026-02-18) | TASK-03, TASK-04 | TASK-07, TASK-09 |
 | TASK-07 | IMPLEMENT | Inject knowledge-backed answers with source attribution and escalation fallback | 70% | M | Pending | TASK-05, TASK-06, TASK-12 | TASK-09 |
-| TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 75% | M | Pending | TASK-04, TASK-13 | TASK-09 |
+| TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Pending | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Pending | TASK-02, TASK-09 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | TBD | TBD | Needs-Replan | TASK-10 | - |
@@ -105,7 +105,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | 2 | TASK-00 | TASK-01 | Scope/authority decision locks downstream behavior |
 | 3 | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-00 | Quick ops bridge + foundational contracts in parallel |
 | 4 | TASK-06, TASK-12, TASK-13 | TASK-03+TASK-04 for TASK-06; TASK-05 for TASK-12; TASK-04 for TASK-13 | Ranking implement + two approach-definition investigations in parallel |
-| 5 | TASK-08 (after replan) | TASK-04, TASK-13 | Thread/request extraction; needs replan after TASK-13 |
+| 5 | TASK-08 | TASK-04, TASK-13 | Thread/request extraction; replan complete (2026-02-18), promoted to 80% |
 | 6 | TASK-07 (after replan) | TASK-05, TASK-06, TASK-12 | Knowledge injection; needs replan after TASK-06+TASK-12 |
 | 7 | TASK-09 | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | Regression and evaluation gate activation |
 | 8 | TASK-10 | TASK-02, TASK-09 | Replan checkpoint before any LLM-stage expansion |
@@ -450,30 +450,32 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/data/draft-guide.json`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `.claude/skills/ops-inbox/SKILL.md`
+- **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/data/draft-guide.json`, `packages/mcp-server/src/__tests__/draft-interpret.test.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `.claude/skills/ops-inbox/SKILL.md`
 - **Depends on:** TASK-04, TASK-13
 - **Blocks:** TASK-09
-- **Confidence:** 75% *(updated from 70% — 2026-02-18 replan; new TASK-13 precursor added)*
-  - Implementation: 75% - thread infrastructure confirmed (includeThread: true wired end-to-end); prior messages available as 180-char snippets (format='metadata'). Whether snippet-only satisfies TC-08-02 is open — TASK-13 resolves. Pattern expansion scope is clear (3 → 8-10 patterns, matchAll fix, [faq:FAQ-02 "I was wondering" gap confirmed]).
-  - Approach: 75% - E1 +5: pattern expansion scope is concrete (scout confirmed exact gaps); thread approach risk is LOW per scout (infrastructure in place). Snippet-vs-full-body decision remains open — TASK-13 must resolve before approach reaches ≥80%.
-  - Impact: 75% - improves follow-up email quality but has broader parsing risk.
+- **Confidence:** 80% *(promoted from 75% — 2026-02-18 replan; TASK-13 precursor complete)*
+  - Implementation: 85% - `extractRequests` is a 12-line / 3-pattern function; full replacement scope is bounded. All 9 patterns specified in replan-notes.md (Q3). `matchAll()` migration and dedup guard specified (Q4). `draft-guide.json` variable-data rule additions are structurally clear. No unknowns remain.
+  - Approach: 85% - TASK-13 Q1 closed: snippet-only is SUFFICIENT; no `gmail.ts` change needed. `matchAll()` is standard JS API; zero false-positives confirmed against all existing fixture bodies (TASK-13 Q4).
+  - Impact: 80% - FAQ-02 "I was wondering" gap directly closed by pattern 4; patterns 5-9 cover compound phrasings from fact-find. Held-back test passed: dedup uses exact normalized-text equality (not similarity), so distinct requests are not collapsed.
 - **Acceptance:**
   - Implicit request regex patterns cover documented missing phrasings.
   - Thread-aware extraction uses available prior messages without duplicating quoted content.
   - Draft guide adds explicit variable-data language safeguards.
   - New behavior remains deterministic and auditable.
 - **Validation contract (TC-08):**
-  - TC-08-01: implicit-request fixtures are captured into requests list.
-  - TC-08-02: reply-thread fixture avoids double-answering quoted historic questions.
-  - TC-08-03: variable-policy fixture enforces guarded wording for uncertain details.
-  - TC-08-04: targeted tests pass with `pnpm --filter mcp-server test -- src/__tests__/draft-interpret.test.ts` and `pnpm --filter mcp-server test -- src/__tests__/gmail-organize-inbox.test.ts`.
+  - TC-08-01: implicit-request fixtures captured — "I was wondering", "we need", "would it be possible" phrasings produce at least one `requests` entry each.
+  - TC-08-02: reply-thread fixture — `summarizeThreadContext` correctly populates `resolved_questions` from snippet-only prior messages; no double-answering in composed draft.
+  - TC-08-03: variable-policy fixture — `draft-guide.json` new `never` rules produce rejection/stripping of speculative pricing/availability language.
+  - TC-08-04: targeted tests pass with `pnpm -w run test:governed -- jest -- --testPathPattern="draft-interpret" --no-coverage`.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run: repository scan for thread context support and current interpret tests.
-  - Validation artifacts: `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/gmail.ts`, fact-find W2/W3 notes.
-  - Unexpected findings: includeThread body-depth still needs empirical verification.
-- **Scouts:** *(partially resolved — 2026-02-18 replan)*
-  - ~~Scout whether `includeThread: true` consistently returns sufficient full-message bodies~~ — E1 confirmed: `includeThread: true` is the default and thread infrastructure is end-to-end wired. Prior messages use `format='metadata'` (snippet-only, 180 chars). Open question (delegated to TASK-13): whether snippet is sufficient for TC-08-02 or requires `format='full'` upgrade.
+  - Validation artifacts: `packages/mcp-server/src/tools/draft-interpret.ts` (scout: 12-line `extractRequests`, 3-pattern), `packages/mcp-server/data/draft-guide.json` (scout: no variable-data rules currently), TASK-13 replan-notes Q1-Q4 (all closed).
+  - Unexpected findings: none — TASK-13 fully resolved all open questions including `gmail.ts` scope (not needed).
+- **Scouts:** *(fully resolved — 2026-02-18 replan)*
+  - ~~Scout whether `includeThread: true` consistently returns sufficient full-message bodies~~ — E1 confirmed (TASK-13 Q1): snippet-only (180 chars) is SUFFICIENT. FAQ-04 (51 chars) and PAY-01 (93 chars) fixtures both contain clear topic signals. No `gmail.ts` change required.
+  - ~~Confirm pattern expansion targets (3 → N)~~ — resolved by TASK-13 Q3: 9 patterns specified (3 existing + 6 new). Zero FP against existing fixture bodies confirmed.
+  - ~~Confirm matchAll migration edge cases~~ — resolved by TASK-13 Q4: `g` flag + `matchAll()` + dedup by normalized text (lowercase+trim). No edge cases found.
 - **Edge Cases & Hardening:**
   - Prevent false-positive request extraction from signature/footer lines.
 - **What would make this >=90%:**

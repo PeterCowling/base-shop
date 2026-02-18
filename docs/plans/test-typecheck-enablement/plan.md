@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-07 + TASK-08 complete)
+Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 complete)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -99,7 +99,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-06     | CHECKPOINT  | Phase 1 gate — reassess Phase 2 + CMS priority          | 95%        | S      | Complete (2026-02-18) | TASK-16         | TASK-07, TASK-08|
 | TASK-07     | IMPLEMENT   | platform-core: create tsconfig + fix errors              | 84%        | M      | Complete (2026-02-18) | TASK-06         | TASK-09         |
 | TASK-08     | IMPLEMENT   | platform-machine: create tsconfig + fix errors           | 84%        | M      | Complete (2026-02-18) | TASK-06         | TASK-09         |
-| TASK-09     | IMPLEMENT   | Extend CI step: platform-core + platform-machine         | 90%        | S      | Pending | TASK-07, TASK-08| TASK-10         |
+| TASK-09     | IMPLEMENT   | Extend CI step: platform-core + platform-machine         | 90%        | S      | Complete (2026-02-18) | TASK-07, TASK-08| TASK-10         |
 | TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Pending | TASK-09         | TASK-11, TASK-12|
 | TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 72%        | L      | Pending | TASK-10         | TASK-13         |
 | TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 78%        | M      | Pending | TASK-10         | TASK-13         |
@@ -649,7 +649,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `.github/workflows/ci.yml`
 - **Depends on:** TASK-07, TASK-08
 - **Blocks:** TASK-10
@@ -675,6 +675,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Rollout: PR; CI must pass
   - Rollback: Revert CI step
 - **Documentation impact:** None
+- **Build evidence (2026-02-18):** Added `packages/platform-core` and `packages/platform-machine` to Phase-1 CI loop in `.github/workflows/ci.yml` line 265. Both packages verified passing (`TYPECHECK_FILTER=packages/platform-core node scripts/typecheck-tests.mjs` → 0 errors; same for platform-machine). Also fixed residual db-related type errors discovered during final verification: `testStub.ts` (product in Pick union), `db.integration.test.ts` (prisma: any), `db.test.ts` + `legacy/db.test.ts` (prisma: any + process.env.NODE_ENV casts), `db.stub.test.ts` (tx: any).
 
 ---
 

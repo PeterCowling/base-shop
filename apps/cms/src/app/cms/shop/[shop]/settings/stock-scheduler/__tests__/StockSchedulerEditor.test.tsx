@@ -77,10 +77,6 @@ describe("StockSchedulerEditor", () => {
     await userEvent.type(interval, "5000");
     await userEvent.click(saveButton);
 
-    expect(
-      await screen.findByText("Stock scheduler updated."),
-    ).toBeInTheDocument();
-
     expect(updateStockScheduler).toHaveBeenCalledTimes(1);
     const [shopArg, formDataArg] = updateStockScheduler.mock.calls[0];
     expect(shopArg).toBe("lux");

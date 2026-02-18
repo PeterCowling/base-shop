@@ -1,7 +1,5 @@
 import type { SKU } from "@acme/types";
 
-import { default as ShopIndexPage, metadata } from "../page";
-
 const expectedSkus: SKU[] = [
   {
     id: "01H000000000000000000001",
@@ -30,8 +28,6 @@ const expectedSkus: SKU[] = [
     description: "Second mock SKU",
   },
 ];
-
-let mockShopClient: jest.Mock;
 
 jest.mock("@acme/platform-core/products", () => ({
   PRODUCTS: [
@@ -66,13 +62,13 @@ jest.mock("@acme/platform-core/products", () => ({
 
 jest.mock("../ShopClient.client", () => ({
   __esModule: true,
-  default: (() => {
-    mockShopClient = jest.fn(() => null);
-    return mockShopClient;
-  })(),
+  default: jest.fn(() => null),
 }));
 
 describe("ShopIndexPage", () => {
+  const { default: ShopIndexPage, metadata } = require("../page");
+  const mockShopClient = require("../ShopClient.client").default as jest.Mock;
+
   beforeEach(() => {
     mockShopClient.mockClear();
   });

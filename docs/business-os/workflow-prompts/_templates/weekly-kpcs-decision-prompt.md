@@ -100,4 +100,6 @@ Remediation task format: `REM-<BIZ>-<YYYYMMDD>-<n>`. Record all REM task IDs in 
 Note on A1: If A1 fails, add a measurement-unreliability note to Section A. Restrict decision class to `Continue` / `Investigate` regardless of nominal KPI values until signal is restored.
 
 Full checklist specification (including monthly deep-audit): `docs/business-os/startup-loop/audit-cadence-contract-v1.md`.
+
+<!-- Cross-reference (read-only, do not change prompt authority content above): This prompt is invoked by the S10 orchestrator (`/lp-weekly`) at Step 3 of the S10 weekly sequence. Orchestration contract: `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`. Weekly packet schema (additive artifact produced by Step 7): `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md`. The orchestrator links this artifact; it does not author or override the decision content produced here. -->
 ```

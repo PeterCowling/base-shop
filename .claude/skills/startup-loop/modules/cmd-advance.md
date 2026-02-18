@@ -112,6 +112,26 @@ grep "Messaging Hierarchy" docs/business-os/strategy/<BIZ>/index.user.md | grep 
 
 ---
 
+### S10 Phase 1 Weekly Advance Dispatch
+
+**Trigger**: S10 weekly advance (Phase 1 default route).
+
+**Invocation**:
+
+```
+/lp-weekly --biz <BIZ> --week <YYYY-Www>
+```
+
+Where:
+- `<BIZ>` is the business ID from the `--business` flag on the advance command
+- `<YYYY-Www>` is the ISO week of the weekly cycle being advanced (e.g. `2026-W08`)
+
+**Subsumes note**: This dispatch orchestrates GATE-BD-08, signal-review, feedback-audit, KPCS decision, and experiment lane. When `/lp-weekly` is invoked, the standalone dispatches below are the Phase 0 fallback path.
+
+**Fallback**: If `/lp-weekly` is unavailable, proceed with GATE-BD-08 → Signal Review Dispatch as the fallback sequence.
+
+---
+
 ### GATE-BD-08: Brand Dossier staleness warning at S10
 
 **Gate ID**: GATE-BD-08 (Soft — warning, not block)

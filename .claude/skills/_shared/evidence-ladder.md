@@ -11,4 +11,7 @@ Use evidence classes when adjusting confidence.
 
 Rules:
 - Do not promote to `>=80` from E1-only evidence when key unknowns remain.
-- Cite evidence artifacts used for each uplift.
+- Cite the specific evidence artifact for each uplift (not just the class label).
+- State *why* the claimed uplift amount falls at that point in the range. Default to the minimum of the range unless there is explicit justification for a higher value.
+- Maximum-range uplift (top quartile: E1 ≥4, E2 ≥13, E3 ≥20) requires a positive stated reason. "No reason given" defaults to minimum-range uplift.
+- Accumulating more E1 evidence does not unlock E2-level promotions. Class, not volume, determines promotion eligibility.

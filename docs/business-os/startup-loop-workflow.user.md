@@ -269,7 +269,7 @@ Use this table to find the right action for each stage. For prompt file paths an
 | Week-1/2 actuals are available or a major assumption has broken (S3) | Run the Forecast Recalibration prompt | Forecast recalibration document exists and is dated |
 | 3 or more candidate actions are competing for priority (S5) | Run the Prioritisation Scorer prompt | Prioritisation scorecard exists with top 2–3 items ranked |
 | Site upgrade brief is missing, stale, or points to a Draft (S6) | Run the Deep Research: Site Upgrade prompt | Site upgrade brief is at Active status with a valid latest pointer |
-| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) | This week's K/P/C/S decision document is dated and saved; Section H audit completed |
+| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) via `/lp-weekly` (see [S10 weekly orchestration contract](docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md); packet schema: [s10-weekly-packet-schema-v1](docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md)) | This week's K/P/C/S decision document is dated and saved; Section H audit completed; S10 weekly packet published at `docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md`; latest pointer updated |
 | It is the first week of the month | Run the monthly deep-audit checklist | `<YYYY-MM>-monthly-audit.user.md` exists for each active business; all REM tasks have owners |
 
 > **For prompt paths and output paths:** See the Engineering appendix → Prompt Hand-Off Map section.

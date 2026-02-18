@@ -99,7 +99,7 @@ Stages S0..S10 (17 stages total):
 | S8 | Plan | `/lp-plan` |
 | S9 | Build | `/lp-build` |
 | S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` |
-| S10 | Weekly decision | `/lp-experiment` |
+| S10 | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) |
 
 ## Global Invariants
 

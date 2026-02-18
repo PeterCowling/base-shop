@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-09, TASK-10 complete; Wave 4 eligible — TASK-04 + TASK-05 runnable in parallel
+Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-04, TASK-09, TASK-10 complete; TASK-05 below threshold (76%) — route to /lp-replan before Wave 4 can close; TASK-06/07 blocked on TASK-04+TASK-05
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -93,7 +93,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 | TASK-01 | INVESTIGATE | Produce canonical vocabulary + assignment baseline artifact (terms, mappings, migration aliases) | 86% | S | Complete (2026-02-18) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Complete (2026-02-18) | TASK-01 | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Create machine-readable process assignment matrix (28 processes) | 82% | S | Complete (2026-02-18) | TASK-02 | TASK-04, TASK-05 |
-| TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure + Option B label rename in stage-operator-dictionary.yaml | 80% | M | Pending | TASK-00, TASK-03, TASK-09, TASK-10 | TASK-06, TASK-07 |
+| TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure + Option B label rename in stage-operator-dictionary.yaml | 80% | M | Complete (2026-02-18) | TASK-00, TASK-03, TASK-09, TASK-10 | TASK-06, TASK-07 |
 | TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 76% | M | Pending | TASK-03, TASK-09 | TASK-07 |
 | TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, operator docs, and supersede-now consumer files to v2 vocabulary | 80% | M | Pending | TASK-04, TASK-10 | TASK-08 |
 | TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint + label rename correctness) | 82% | M | Pending | TASK-04, TASK-05, TASK-09 | TASK-08 |
@@ -412,6 +412,17 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Adds v2 registry and updates v1 compatibility notice.
 - **Notes / references:**
   - `docs/business-os/startup-loop/process-registry-v1.md`
+- **Build Evidence (2026-02-18):**
+  - Status: Complete
+  - Deliverables: `docs/business-os/startup-loop/process-registry-v2.md` (created) + tombstone in `process-registry-v1.md`
+  - Red phase: 7 `## Domain:` headings in v1; 5 deprecated workstream long-form names; no assignment rows; no taxonomy-ref; no authority/deprecation policy section.
+  - Green phase: v2 registry written with 7 `## Workstream:` headings; canonical v2 long-form names; 4 assignment rows per process (28/28); Authority and Deprecation Policy section; taxonomy-ref + assignment-ref in frontmatter.
+  - VC-04-A: PASS — 28/28 process sections each have Workstream, Workflow phases, Primary phase, Activation rows; all values match process-assignment-v2.yaml.
+  - VC-04-B: PASS — authority statement (loop-spec.yaml) + DATA-4 non-duplication rule preserved.
+  - VC-04-C: PASS — v1 tombstone present: "ARCHIVED: Superseded by process-registry-v2.md as of 2026-02-18".
+  - Option B (stage-operator-dictionary.yaml): ZERO changes needed — TASK-09 SPIKE confirmed label rename scope = zero; stability tests at 87/87 GREEN.
+  - Quick Reference: Workstream column replaces Domain column; all 5 deprecated workstream long-form names replaced.
+  - Deprecation guard: no deprecated workstream names appear as section headings.
 
 ### TASK-05: Add assignment validator script/tests for completeness and enum safety
 - **Type:** IMPLEMENT
@@ -720,6 +731,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: TASK-00 closed. Operator decisions: **Option B** (stage labels renamed this wave) + **`supersede-now`** (v2 immediately replaces v1, no coexist). Decision artifact at `decisions/v2-scope-boundary-decision.md`. Routing to /lp-replan to add TDD de-risking tasks for label rename and supersede-now scope expansion.
 - 2026-02-18: /lp-replan complete. Key findings: alias[] mechanism already exists in stage-operator-dictionary.yaml — Option B scope is YAML field updates only, no source changes to stage-addressing.ts or generator. TASK-09 (SPIKE, RED tests) + TASK-10 (consumer audit, Complete) added. TASK-04/06/07/08 updated. Topology re-sequenced. Plan re-confidence: TASK-04 78→80%, TASK-07 76→82%, TASK-06 81→80% (scope expanded M).
 - 2026-02-18: Wave 3 complete (TASK-03 + TASK-09). process-assignment-v2.yaml written (28/28 processes, OPS-4 phase ordering corrected). SPIKE finding: Option B label rename scope = ZERO — no stage labels contain deprecated workstream terminology; no label field changes needed in stage-operator-dictionary.yaml. stage-label-rename.test.ts: 87 pass, 2 todo, 0 fail. Wave 4 eligible: TASK-04 + TASK-05.
+- 2026-02-18: TASK-04 complete. process-registry-v2.md created (28 processes, 7 canonical Workstream sections, 4 assignment rows per process, Authority & Deprecation Policy, VC-04-A/B/C all pass). v1 tombstoned. stage-operator-dictionary.yaml: zero changes (label scope = zero per TASK-09). TASK-05 at 76% below IMPLEMENT threshold — routed to /lp-replan.
 
 ## Overall-confidence Calculation
 - Effort weights: `S=1`, `M=2`, `L=3`

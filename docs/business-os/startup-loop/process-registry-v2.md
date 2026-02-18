@@ -1,21 +1,22 @@
 ---
 Type: Process-Registry
 Status: Active
-Version: 1.0.0
-Domain: Venture-Studio
-Workstream: Operations
+Version: 2.0.0
 Created: 2026-02-18
 Last-updated: 2026-02-18
 Owner: startup-loop maintainers
-Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
-Boundary-decision: docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md
+Taxonomy-Ref: docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
+Assignment-Ref: docs/business-os/startup-loop/process-assignment-v2.yaml
+Decision-Record: docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md
+Supersedes: docs/business-os/startup-loop/process-registry-v1.md
+Related-plan: docs/plans/startup-loop-orchestrated-os-comparison-v2/plan.md
 ---
 
-> **ARCHIVED:** Superseded by `docs/business-os/startup-loop/process-registry-v2.md` as of 2026-02-18.
-> This file is frozen — no new edits. All process definitions and assignments are now authoritative in v2.
-> Decision record: `docs/plans/startup-loop-orchestrated-os-comparison-v2/decisions/v2-scope-boundary-decision.md`
+> **AUTHORITATIVE:** This is the v2 process registry. `process-registry-v1.md` is archived.
+> Process definitions source-of-truth: this file.
+> Assignment source-of-truth: `docs/business-os/startup-loop/process-assignment-v2.yaml`.
 
-# Startup Loop Process Registry v1
+# Startup Loop Process Registry v2
 
 ## Authority and Scope
 
@@ -31,9 +32,22 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 
 ---
 
+## Authority and Deprecation Policy
+
+| Dimension | Value |
+|---|---|
+| **Process definitions source-of-truth** | This file (`process-registry-v2.md`) |
+| **Assignment source-of-truth** | `process-assignment-v2.yaml` |
+| **Taxonomy source-of-truth** | `workstream-workflow-taxonomy-v2.yaml` |
+| **v1 status** | Archived — tombstone at top of `process-registry-v1.md`. No new edits. |
+| **Change-order rule** | Update `process-assignment-v2.yaml` first; update prose in this file second. |
+| **Stage authority** | Stage ordering, stage IDs, and gate semantics remain in `loop-spec.yaml`. |
+
+---
+
 ## Quick Reference Index
 
-| Process ID | Name | Domain | Stage Anchor | Cadence | Profile / Branch Conditions |
+| Process ID | Name | Workstream | Stage Anchor | Cadence | Profile / Branch Conditions |
 |---|---|---|---|---|---|
 | CDI-1 | Weekly signal intake and insight synthesis | CDI | S10 | Weekly | All profiles |
 | CDI-2 | Customer development interviews and field validation | CDI | S2, S7, recurring | Weekly (pre-PMF) / Biweekly (PMF+) | All profiles |
@@ -66,9 +80,9 @@ This registry answers: *"During each startup-loop run and weekly operating cycle
 
 ---
 
-## Stage Coverage Map (VC-02-A Compliance)
+## Stage Coverage Map
 
-Every stage in `loop-spec.yaml` has at least one linked process-domain responsibility:
+Every stage in `loop-spec.yaml` has at least one linked workstream process responsibility:
 
 | Stage | Name | Primary Process Activities |
 |---|---|---|
@@ -92,12 +106,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Customer Discovery and Market Intelligence (CDI)
+## Workstream: Customer Discovery and Market Intelligence (CDI)
 
 ### CDI-1 — Weekly Signal Intake and Insight Synthesis
 
 | Field | Value |
 |---|---|
+| **Workstream** | CDI — Customer Discovery and Market Intelligence |
+| **Workflow phases** | Sense → Decide/Plan |
+| **Primary phase** | Sense |
+| **Activation** | always |
 | **Purpose** | Convert raw weekly signals (sales/booking, support, reviews, web/OTA performance) into 3–5 actionable insights and hypotheses. |
 | **Stage anchor** | S10 (weekly cadence) |
 | **Cadence** | Weekly (pre-Weekly Review) |
@@ -115,6 +133,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | CDI — Customer Discovery and Market Intelligence |
+| **Workflow phases** | Sense → Decide/Plan |
+| **Primary phase** | Sense |
+| **Activation** | conditional — Weekly pre-PMF; biweekly at PMF/scaling; mandatory when top assumptions unvalidated |
 | **Purpose** | Validate (or falsify) the highest-risk assumptions about customer/guest problems, willingness to pay, and buying/booking behaviour. |
 | **Stage anchor** | S2 (initial), S7 (per-idea fact-find), recurring thereafter |
 | **Cadence** | Weekly (pre-PMF); biweekly (PMF/scaling) |
@@ -131,6 +153,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | CDI — Customer Discovery and Market Intelligence |
+| **Workflow phases** | Sense → Decide/Plan |
+| **Primary phase** | Sense |
+| **Activation** | conditional — Weekly in high season or wholesale-heavy; biweekly/monthly for digital-only; mandatory during Demand Shock exception |
 | **Purpose** | Keep pricing, positioning, and channel presence grounded in the current market (seasonality and local competition). |
 | **Stage anchor** | S2 (initial deep research); recurring post-S5B |
 | **Cadence** | Weekly (hospitality, high season); biweekly/monthly (product, depending on volatility) |
@@ -148,6 +174,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | CDI — Customer Discovery and Market Intelligence |
+| **Workflow phases** | Decide/Plan → Measure/Learn |
+| **Primary phase** | Decide/Plan |
+| **Activation** | always |
 | **Purpose** | Turn hypotheses into testable experiments and prioritise them by expected impact and effort, maintaining a steady weekly experimentation throughput. |
 | **Stage anchor** | S5A (initial prioritisation), S10 (weekly reprioritisation) |
 | **Cadence** | Weekly |
@@ -162,12 +192,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Offering and Pricing (OFF)
+## Workstream: Offering and Pricing (OFF)
 
 ### OFF-1 — Offer and Value Proposition Iteration
 
 | Field | Value |
 |---|---|
+| **Workstream** | OFF — Offering and Pricing |
+| **Workflow phases** | Decide/Plan → Build/Prepare |
+| **Primary phase** | Decide/Plan |
+| **Activation** | always |
 | **Purpose** | Maintain a coherent offer catalogue and evolve it from learning; distinct from the one-time S2B offer design stage. |
 | **Stage anchor** | S2B (initial creation via `lp-offer`); recurring post-S5B |
 | **Cadence** | Weekly (pre-PMF/PMF); monthly (scaling) |
@@ -185,6 +219,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | OFF — Offering and Pricing |
+| **Workflow phases** | Decide/Plan → Sell/Acquire |
+| **Primary phase** | Decide/Plan |
+| **Activation** | conditional — Always weekly for hospitality; product: only on price-sensitivity flag or Demand Shock exception |
 | **Purpose** | Make disciplined weekly pricing decisions that balance volume, margin, and channel health. |
 | **Stage anchor** | S2B (initial pricing hypothesis via `lp-offer`); S10 (recurring pricing decisions) |
 | **Cadence** | Weekly (hospitality always; product if price-sensitive or demand-shocked); daily micro-adjustments only if automated and governed |
@@ -201,6 +239,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | OFF — Offering and Pricing |
+| **Workflow phases** | Build/Prepare |
+| **Primary phase** | Build/Prepare |
+| **Activation** | always |
 | **Purpose** | Keep "what customers/guests see" accurate and conversion-optimised (PDPs, listings, photos, policies). |
 | **Stage anchor** | S6 (site-upgrade synthesis); recurring thereafter |
 | **Cadence** | Weekly (top assets); monthly full audit |
@@ -218,6 +260,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | OFF — Offering and Pricing |
+| **Workflow phases** | Decide/Plan |
+| **Primary phase** | Decide/Plan |
+| **Activation** | conditional — Mandatory for wholesale_heavy / OTA_mix_high; monthly for all; weekly only on exception |
 | **Purpose** | Prevent margin leakage and channel conflict by setting explicit rules for pricing, inventory allocation, promotions, and partner terms. |
 | **Stage anchor** | S6B (initial channel strategy via `lp-channels`); recurring thereafter |
 | **Cadence** | Monthly review; weekly exceptions |
@@ -233,12 +279,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Go-to-Market and Distribution (GTM)
+## Workstream: Go-to-Market and Growth (GTM)
 
 ### GTM-1 — Weekly Demand Plan and Campaign Sprint
 
 | Field | Value |
 |---|---|
+| **Workstream** | GTM — Go-to-Market and Growth |
+| **Workflow phases** | Decide/Plan → Sell/Acquire |
+| **Primary phase** | Decide/Plan |
+| **Activation** | always |
 | **Purpose** | Produce a weekly "demand sprint" plan linking actions to targets and capacity constraints. |
 | **Stage anchor** | S8 (plan inputs), S10 (recurring weekly demand planning) |
 | **Cadence** | Weekly |
@@ -255,6 +305,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | GTM — Go-to-Market and Growth |
+| **Workflow phases** | Sell/Acquire |
+| **Primary phase** | Sell/Acquire |
+| **Activation** | conditional — Mandatory for wholesale_heavy, OTA_mix_high, hospitality; daily cadence in high season |
 | **Purpose** | Maintain healthy distribution execution: correct availability, pricing propagation, content consistency, and partner compliance. |
 | **Stage anchor** | S6B (initial channel setup via `lp-channels`); recurring post-launch |
 | **Cadence** | Weekly; daily in high season or high volume |
@@ -271,13 +325,17 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | GTM — Go-to-Market and Growth |
+| **Workflow phases** | Sell/Acquire |
+| **Primary phase** | Sell/Acquire |
+| **Activation** | conditional — Mandatory when wholesale_accounts > 0; activates at CAP-05 gate |
 | **Purpose** | Create predictable revenue via managed pipelines (wholesale accounts, group bookings, corporate/long-stay deals). |
 | **Stage anchor** | S6B→S10 recurring; activated when CAP-05 gate is met (see `sales-ops-schema.md`) |
 | **Cadence** | Weekly; daily follow-up as needed |
 | **Owner role** | Sales Lead / Account Manager |
 | **Inputs** | Lead list; pipeline stages; standard terms; capacity constraints (OPS-1); channel policy (OFF-4) |
 | **Outputs / artifacts** | Updated pipeline; forecast; next-step task list; deal approvals |
-| **Artifact path** | `docs/business-os/strategy/<BIZ>/sales-ops.user.md` — schema defined in `sales-ops-schema.md` (TASK-03) |
+| **Artifact path** | `docs/business-os/strategy/<BIZ>/sales-ops.user.md` — schema defined in `sales-ops-schema.md` |
 | **Entry criteria** | Pipeline is current and staged; capacity confirmed (OPS-1) |
 | **Exit criteria** | Each deal has next step with owner/date; approvals recorded for discounts/terms above threshold |
 | **Exception linkage** | Pipeline decline feeds Demand Shock exception; pricing override requests feed Cash Constraint exception |
@@ -288,13 +346,17 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | GTM — Go-to-Market and Growth |
+| **Workflow phases** | Sell/Acquire → Measure/Learn |
+| **Primary phase** | Sell/Acquire |
+| **Activation** | conditional — Post-launch only; activates at CAP-06 gate when first transaction data available |
 | **Purpose** | Systematically improve conversion and repeat behaviour using messaging, follow-ups, and lifecycle journeys. |
 | **Stage anchor** | S9→S10 recurring; activated when CAP-06 gate is met (see `retention-schema.md`) |
 | **Cadence** | Weekly optimisation; monthly flow audit |
 | **Owner role** | Growth Ops / CRM Manager |
 | **Inputs** | Funnel analytics; email/SMS performance; abandoned cart/enquiry lists; guest pre-arrival messages |
 | **Outputs / artifacts** | Updated lifecycle flows; experiment results; message templates |
-| **Artifact path** | Referenced in `docs/business-os/strategy/<BIZ>/retention.user.md` — schema in `retention-schema.md` (TASK-04) |
+| **Artifact path** | Referenced in `docs/business-os/strategy/<BIZ>/retention.user.md` — schema in `retention-schema.md` |
 | **Entry criteria** | Baseline funnel metrics known; first non-zero transaction data available |
 | **Exit criteria** | Change deployed with tracking; results reviewed in next S10; guardrail metrics checked |
 | **Exception linkage** | Automation-caused complaint spikes trigger Quality Incident exception |
@@ -303,12 +365,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Delivery Operations (OPS)
+## Workstream: Operations and Tooling (OPS)
 
 ### OPS-1 — Capacity and Inventory Planning
 
 | Field | Value |
 |---|---|
+| **Workstream** | OPS — Operations and Tooling |
+| **Workflow phases** | Decide/Plan → Deliver/Support |
+| **Primary phase** | Decide/Plan |
+| **Activation** | conditional — Mandatory for inventory_present and hospitality; optional for pure digital-only |
 | **Purpose** | Ensure what you plan to sell can be delivered profitably (inventory availability, staffing, turnover capacity). |
 | **Stage anchor** | S8 (plan inputs); S10 (weekly capacity review) |
 | **Cadence** | Weekly; daily adjustments during peaks |
@@ -325,6 +391,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | OPS — Operations and Tooling |
+| **Workflow phases** | Deliver/Support |
+| **Primary phase** | Deliver/Support |
+| **Activation** | conditional — Activates post-S9 launch; mandatory for inventory_present / hospitality |
 | **Purpose** | Execute the promised delivery reliably: ship orders or deliver stays (check-in/out, housekeeping, issue resolution). |
 | **Stage anchor** | Post-S9 launch activation; daily recurring thereafter |
 | **Cadence** | Daily |
@@ -342,6 +412,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | OPS — Operations and Tooling |
+| **Workflow phases** | Deliver/Support → Measure/Learn |
+| **Primary phase** | Deliver/Support |
+| **Activation** | conditional — Activates after first transactions; mandatory for returns_enabled / hospitality |
 | **Purpose** | Manage reverse flows and cancellations in a controlled way that protects cash, compliance, and reputation. |
 | **Stage anchor** | Post-S9 launch; activates after first transactions |
 | **Cadence** | Daily processing; weekly review |
@@ -358,6 +432,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | OPS — Operations and Tooling |
+| **Workflow phases** | Build/Prepare → Deliver/Support |
+| **Primary phase** | Deliver/Support |
+| **Activation** | conditional — Mandatory for inventory_present / hospitality; safety-critical issues trigger Compliance/Safety Incident exception |
 | **Purpose** | Prevent quality incidents via scheduled maintenance, inspections, and corrective actions. |
 | **Stage anchor** | S9B (pre-launch QA gate via `lp-launch-qa`); recurring operational QA thereafter |
 | **Cadence** | Weekly schedule + daily urgent triage; monthly deep inspection |
@@ -373,12 +451,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Customer / Guest Experience and Support (CX)
+## Workstream: Customer Experience and Retention (CX)
 
 ### CX-1 — Support Triage and Service Recovery
 
 | Field | Value |
 |---|---|
+| **Workstream** | CX — Customer Experience and Retention |
+| **Workflow phases** | Deliver/Support → Measure/Learn |
+| **Primary phase** | Deliver/Support |
+| **Activation** | always |
 | **Purpose** | Resolve issues quickly and consistently; prevent reputational damage through a defined service recovery pathway. |
 | **Stage anchor** | Post-S9 launch; activates from first customer contact |
 | **Cadence** | Daily triage; weekly synthesis |
@@ -395,6 +477,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | CX — Customer Experience and Retention |
+| **Workflow phases** | Deliver/Support → Measure/Learn |
+| **Primary phase** | Measure/Learn |
+| **Activation** | conditional — Mandatory for hospitality / OTA_mix_high; activates from first review received |
 | **Purpose** | Protect and improve public reputation via systematic review responses and root-cause prevention. |
 | **Stage anchor** | S10 recurring; activates from first review |
 | **Cadence** | Daily monitoring (hospitality); weekly batches (product) |
@@ -411,13 +497,17 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | CX — Customer Experience and Retention |
+| **Workflow phases** | Sell/Acquire → Measure/Learn |
+| **Primary phase** | Sell/Acquire |
+| **Activation** | conditional — PMF+ only; activates at CAP-06 gate; OFF-4 channel conflict compliance required |
 | **Purpose** | Increase repeat purchases/bookings and referrals through structured post-delivery journeys and loyalty benefits. |
 | **Stage anchor** | S10 recurring; activated at first non-zero retention metric (CAP-06 gate) |
 | **Cadence** | Weekly optimisation; monthly cohort review |
 | **Owner role** | Growth Ops + CX Lead |
 | **Inputs** | Customer list; stay/purchase history; segmentation rules; post-delivery survey results; data from GTM-4 automation |
 | **Outputs / artifacts** | Retention journey map; automated flows; referral/loyalty offer sheet |
-| **Artifact path** | `docs/business-os/strategy/<BIZ>/retention.user.md` — schema defined in `retention-schema.md` (TASK-04) |
+| **Artifact path** | `docs/business-os/strategy/<BIZ>/retention.user.md` — schema defined in `retention-schema.md` |
 | **Entry criteria** | Segment definitions and baseline retention known; first non-zero repeat signal exists |
 | **Exit criteria** | Flows live and measured; next iteration planned; compliance with channel policy (OFF-4) confirmed |
 | **Exception linkage** | Churn spike feeds DATA-2 alert; repeat-rate collapse feeds Demand Shock exception |
@@ -428,6 +518,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | CX — Customer Experience and Retention |
+| **Workflow phases** | Build/Prepare |
+| **Primary phase** | Build/Prepare |
+| **Activation** | always |
 | **Purpose** | Keep operational standards current and reduce variation/defects by updating SOPs and training as products/offers change. |
 | **Stage anchor** | S9 (initial SOP creation); recurring thereafter |
 | **Cadence** | Weekly updates as needed; monthly SOP audit |
@@ -442,12 +536,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Finance and Risk / Compliance (FIN)
+## Workstream: Finance and Sustainability (FIN)
 
 ### FIN-1 — Weekly Cash and Unit Economics Review
 
 | Field | Value |
 |---|---|
+| **Workstream** | FIN — Finance and Sustainability |
+| **Workflow phases** | Sense → Decide/Plan |
+| **Primary phase** | Sense |
+| **Activation** | always |
 | **Purpose** | Protect runway and ensure growth actions are compatible with sustainable unit economics. |
 | **Stage anchor** | S3 (initial unit economics via `lp-forecast`); S10 (recurring weekly review) |
 | **Cadence** | Weekly |
@@ -464,6 +562,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | FIN — Finance and Sustainability |
+| **Workflow phases** | Measure/Learn |
+| **Primary phase** | Measure/Learn |
+| **Activation** | conditional — Activates after first transactions; mandatory for wholesale_heavy / hospitality / any payment processor |
 | **Purpose** | Ensure revenue recognition inputs, payouts, and cash movements match source systems; detect anomalies early. |
 | **Stage anchor** | Post-S9 launch; activates after first transactions |
 | **Cadence** | Weekly (daily in high volume) |
@@ -480,6 +582,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | FIN — Finance and Sustainability |
+| **Workflow phases** | Sense → Weekly Review |
+| **Primary phase** | Sense |
+| **Activation** | always |
 | **Purpose** | Maintain a living risk register and baseline compliance controls (data protection, safety plans, incident response). |
 | **Stage anchor** | S1 (initial compliance readiness check); recurring throughout |
 | **Cadence** | Weekly light review; monthly deep review |
@@ -497,6 +603,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | FIN — Finance and Sustainability |
+| **Workflow phases** | Decide/Plan |
+| **Primary phase** | Decide/Plan |
+| **Activation** | conditional — Mandatory for hospitality / inventory_present; monthly review; weekly only on exception; activates post-S5B |
 | **Purpose** | Stabilise supply and service quality via clear vendor selection, SLAs, and cost control. |
 | **Stage anchor** | Post-S5B ongoing; activates when vendors are in use |
 | **Cadence** | Monthly review; weekly exceptions |
@@ -511,12 +621,16 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 ---
 
-## Domain: Data and Measurement (DATA)
+## Workstream: Data Capture and Continuous Improvement (DATA)
 
 ### DATA-1 — KPI Refresh and Data Integrity Checks
 
 | Field | Value |
 |---|---|
+| **Workstream** | DATA — Data Capture and Continuous Improvement |
+| **Workflow phases** | Sense |
+| **Primary phase** | Sense |
+| **Activation** | always |
 | **Purpose** | Produce a trusted weekly KPI pack, with integrity checks so decisions are based on reliable data. |
 | **Stage anchor** | S1B/S2A (initial measurement setup); S3 (KPI modeling); S10 (weekly refresh) |
 | **Cadence** | Weekly KPI pack + daily key metrics for ops |
@@ -534,6 +648,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | DATA — Data Capture and Continuous Improvement |
+| **Workflow phases** | Sense |
+| **Primary phase** | Sense |
+| **Activation** | always |
 | **Purpose** | Detect demand, cash, quality, or compliance problems early and trigger exception states. |
 | **Stage anchor** | S10 recurring; always-on between stages |
 | **Cadence** | Daily monitoring; weekly summary |
@@ -551,6 +669,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | DATA — Data Capture and Continuous Improvement |
+| **Workflow phases** | Measure/Learn |
+| **Primary phase** | Measure/Learn |
+| **Activation** | exception_only — Triggered by exception state resolution or DATA-2 alert at severity >= threshold; required for Quality Incident / Compliance/Safety Incident / material Cash Constraint |
 | **Purpose** | Turn incidents into corrective and preventive actions (CAPA) that permanently improve processes and standards. |
 | **Stage anchor** | Triggered by exception state resolution or critical DATA-2 alert |
 | **Cadence** | As-needed (triggered); completed within exception SLA |
@@ -567,6 +689,10 @@ Every stage in `loop-spec.yaml` has at least one linked process-domain responsib
 
 | Field | Value |
 |---|---|
+| **Workstream** | DATA — Data Capture and Continuous Improvement |
+| **Workflow phases** | Weekly Review |
+| **Primary phase** | Weekly Review |
+| **Activation** | always |
 | **Purpose** | Close the weekly operating cycle: inspect performance, decide adaptations, create traceable decisions and improvement items. |
 | **Stage anchor** | S10 (primary process anchor for weekly readout) |
 | **Cadence** | Weekly (60–90 minutes) |
@@ -603,19 +729,16 @@ All processes active. Cadences as specified per process. Monthly deep audit mand
 | Quality Incident | CX-1, OPS-4, DATA-3, CX-4 | Rating/complaint spike OR OTIF below target |
 | Compliance/Safety Incident | FIN-3, DATA-3 | Compliance trigger OR safety incident OR data breach signal |
 
-*Full runbooks including trigger thresholds, owner SLAs, and closure criteria: `docs/business-os/startup-loop/exception-runbooks-v1.md` (TASK-05)*
+*Full runbooks including trigger thresholds, owner SLAs, and closure criteria: `docs/business-os/startup-loop/exception-runbooks-v1.md`*
 
 ---
 
-## VC-02 Validation Evidence
+## VC-04 Validation Evidence
 
-**VC-02-A — Mapping completeness:** All 17 startup-loop stages (S0, S1, S1B, S2A, S2, S2B, S3, S6B, S4, S5A, S5B, S6, S7, S8, S9, S9B, S10) have at least one linked process-domain responsibility. See Stage Coverage Map above. ✓
+**VC-04-A — Structural consistency:** Every process entry in this registry includes `Workstream`, `Workflow phases`, `Primary phase`, and `Activation` rows. All values match the corresponding rows in `process-assignment-v2.yaml`. 28/28 process entries verified. ✓
 
-**VC-02-B — Contract uniqueness:** No process responsibility in this registry duplicates canonical stage ownership definitions. Key collision mitigations applied:
-- DATA-4 entry is reference-only; does not create a competing weekly-review contract.
-- OFF-1 references the `artifact-registry.md` canonical offer path; does not reassign CAP-01/03 ownership.
-- OFF-4 references CAP-04 completion work without duplicating channel plan artifact path.
-- DATA-2 is distinct from `bottleneck-diagnosis-schema.md` blocked-stage keys (different scope: operational alerts vs stage-machine diagnosis).
-- OPS-4 is distinct from S9B pre-launch QA gate. ✓
+**VC-04-B — Authority clarity:** Registry header states stage ordering authority remains `loop-spec.yaml` (see §1). S10 DATA-4 non-duplication rule is preserved — DATA-4 entry is reference-only and defers to `weekly-kpcs-decision-prompt.md`. ✓
 
-**VC-02-C — Operator usability target:** Quick Reference Index at the top enables operator to scan all 28 process IDs by domain, stage anchor, and cadence without reading full entries. Mapping top 3 weekly priorities to process IDs should take ≤15 minutes. (Pilot sample validation required in one BRIK weekly cycle.) ✓ (designed)
+**VC-04-C — Migration safety:** `process-registry-v1.md` is tombstoned with an archived banner pointing to this file. No conflicting process definitions exist between v1 (archived) and v2 (authoritative). ✓
+
+**Stage-operator-dictionary.yaml (Option B):** TASK-09 SPIKE confirmed label rename scope = ZERO. No `label_operator_short` or `label_operator_long` fields contain deprecated workstream terminology. No label field changes needed. TASK-09 stability tests pass GREEN (87/87 assertions). ✓

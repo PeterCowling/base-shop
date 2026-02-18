@@ -38,13 +38,13 @@ describe("callout block handler (TASK-02)", () => {
       blocks: [],
       relatedGuides: [],
       contentKey: "testGuide",
-    } as GuideManifestEntry;
+    } as unknown as GuideManifestEntry;
 
     mockContext = {
       guideKey: "testGuide",
       translateGuides: mockTranslateGuides,
       lang: "en",
-    } as GuideSeoTemplateContext;
+    } as unknown as GuideSeoTemplateContext;
   });
 
   describe("tip variant", () => {

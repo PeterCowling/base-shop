@@ -41,7 +41,7 @@ const englishNamespace: RoomsNamespace = {
 };
 
 const loadI18nNs = jest.fn(async () => undefined);
-const getDataByLanguage = jest.fn<(lang: string) => RoomsNamespace | undefined>();
+const getDataByLanguage = jest.fn<RoomsNamespace | undefined, [string]>();
 const i18nOptions: Record<string, unknown> = { fallbackLng: ["en"] };
 const configMock = {
   fallbackLng: ["en"] as string[] | string,

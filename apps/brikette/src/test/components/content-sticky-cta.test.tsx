@@ -3,7 +3,7 @@
 // TC-03: Dismiss persists within session (navigate to another Tier 1 page → CTA stays hidden).
 // TC-04: cta_click event fires with correct cta_id + cta_location enums.
 
-import { describe, expect, it, jest } from "@jest/globals";
+import { describe, it, jest } from "@jest/globals";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { type AppLanguage } from "@/i18n.config";
@@ -12,14 +12,15 @@ import { type AppLanguage } from "@/i18n.config";
 const getStickyCta = () => document.querySelector('[data-testid="content-sticky-cta"]');
 
 // next/navigation: ContentStickyCta uses useRouter to navigate to /book.
-let mockPush: jest.Mock;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockPush: jest.Mock<any, any, any>;
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: mockPush }),
 }));
 
 // Mock GA4 events module path
-const mockFireCtaClick = jest.fn<() => void>();
-const mockFireModalOpen = jest.fn<() => void>();
+const mockFireCtaClick = jest.fn<() => void, []>();
+const mockFireModalOpen = jest.fn<() => void, []>();
 
 // Dynamic mock setup
 jest.mock("../../utils/ga4-events", () => ({
@@ -61,7 +62,7 @@ describe("ContentStickyCta", () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    mockPush = jest.fn();
+    mockPush = jest.fn() as unknown as jest.Mock<any, any, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 
     // Reset sessionStorage
     if (typeof window !== "undefined") {

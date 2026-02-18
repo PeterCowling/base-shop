@@ -8,7 +8,7 @@ Created: 2026-02-18
 Last-updated: 2026-02-18
 Owner: startup-loop maintainers + operator
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
-Related-process-registry: docs/business-os/startup-loop/process-registry-v1.md
+Related-process-registry: docs/business-os/startup-loop/process-registry-v2.md
 Related-exception-runbooks: docs/business-os/startup-loop/exception-runbooks-v1.md
 Related-kpcs-prompt: docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md
 ---
@@ -107,7 +107,7 @@ A remediation task must include: REM ID, checklist item that failed, owner, due 
 
 | # | Item | Pass condition | Fail condition | Owner | If fail |
 |---|---|---|---|---|---|
-| B5 | **Process sample audit (3 IDs)** | Select 3 process IDs from process-registry-v1.md (choose across CDI, OPS, CX workstreams). For each: the expected primary artifact exists and is dated within the expected cadence. | Any sampled process ID has no matching artifact, or the artifact is past its expected refresh cadence with no documented skip reason. | Operator | Create REM task for each failing process ID. Note which artifact is missing or stale. |
+| B5 | **Process sample audit (3 IDs)** | Select 3 process IDs from process-registry-v2.md (choose across CDI, OPS, CX workstreams). For each: the expected primary artifact exists and is dated within the expected cadence. | Any sampled process ID has no matching artifact, or the artifact is past its expected refresh cadence with no documented skip reason. | Operator | Create REM task for each failing process ID. Note which artifact is missing or stale. |
 | B6 | **Owner roles filled** | For each process entry tagged "active this month" in the registry: a named person or role is identified as owner. No entry is marked active with owner = TBD. | Any active process entry has no named owner. | startup-loop maintainers | Assign owner. If unresolvable, flag as process-registry-gap and log REM task. |
 | B7 | **Exception state process adherence** | For any exception ticket opened and closed this month: all required processes listed in the runbook under "Required Processes" have run (artifacts exist). | Required processes were skipped during an active exception state with no recorded waiver. | Operator | Create REM task: "Complete post-exception process audit for EXC-[ticket]." |
 
@@ -150,7 +150,7 @@ A remediation task must include: REM ID, checklist item that failed, owner, due 
 | # | Item | Pass condition | Fail condition | Owner | If fail |
 |---|---|---|---|---|---|
 | B19 | **Exception runbook coverage still valid** | All four exception states (Demand Shock, Cash Constraint, Quality Incident, Compliance/Safety) remain relevant to at least one active business. If any state is N/A for all active businesses, document rationale. | An exception state applies to an active business but has been silently removed from operating practice. | startup-loop maintainers | Create REM task: "Audit exception runbook applicability for [BIZ]." |
-| B20 | **Data governance alignment** | For DATA-3 (data governance and schema alignment in process-registry-v1.md): all active data schema changes this month are documented in the relevant artifact or change log. No undocumented schema drift. | A data schema change occurred with no change log entry. | Operator | Create REM task: "Document schema change [description] for [BIZ]." |
+| B20 | **Data governance alignment** | For DATA-3 (data governance and schema alignment in process-registry-v2.md): all active data schema changes this month are documented in the relevant artifact or change log. No undocumented schema drift. | A data schema change occurred with no change log entry. | Operator | Create REM task: "Document schema change [description] for [BIZ]." |
 | B21 | **Regulatory and claims compliance current** | Regulatory-watch artifact for each active business is updated within 90 days. No open compliance items from prior quarter remain unaddressed. | Regulatory-watch is >90 days old, or a prior-quarter compliance item has no resolution. | Operator | Create REM task: "Update regulatory watch for [BIZ]." Escalate compliance items immediately. |
 
 ---
@@ -238,9 +238,9 @@ Exception: if item A1 (Measurement active) FAILs, Section A of the KPCs decision
 
 ### With Process Registry
 
-- Item B5 (process sample audit) samples randomly from `process-registry-v1.md`.
-- Item B6 (owner roles filled) uses the Owner Role column from `process-registry-v1.md`.
-- Items referencing DATA-3 (B20) link to the OPS/DATA workstream in `process-registry-v1.md`.
+- Item B5 (process sample audit) samples randomly from `process-registry-v2.md`.
+- Item B6 (owner roles filled) uses the Owner Role column from `process-registry-v2.md`.
+- Items referencing DATA-3 (B20) link to the OPS/DATA workstream in `process-registry-v2.md`.
 
 ### With Capability Contract Registry
 
@@ -284,7 +284,7 @@ Exception: if item A1 (Measurement active) FAILs, Section A of the KPCs decision
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | Section H (weekly audit) appended to each S10 decision document |
 | `docs/business-os/startup-loop-workflow.user.md` | Audit cadence referenced in Quick Actions and stage status table |
 | `docs/business-os/startup-loop/exception-runbooks-v1.md` | Exception SLA thresholds referenced in items A4, B8, B9, B10 |
-| `docs/business-os/startup-loop/process-registry-v1.md` | Process sample audit (B5) and owner check (B6) source |
+| `docs/business-os/startup-loop/process-registry-v2.md` | Process sample audit (B5) and owner check (B6) source |
 | `docs/business-os/startup-loop/marketing-sales-capability-contract.md` | CAP health items B1–B4 source of truth |
 
 ---
@@ -316,7 +316,7 @@ N/A items are excluded from the pass/fail count but must be documented in the ou
 ## References
 
 - Capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
-- Process registry: `docs/business-os/startup-loop/process-registry-v1.md`
+- Process registry: `docs/business-os/startup-loop/process-registry-v2.md`
 - Exception runbooks: `docs/business-os/startup-loop/exception-runbooks-v1.md`
 - Weekly KPCs prompt: `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - Bottleneck diagnosis: `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`

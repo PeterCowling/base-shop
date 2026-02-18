@@ -62,8 +62,14 @@ jest.mock("@/routes.guides-helpers", () => ({
   guideNamespace: () => ({ baseKey: "experiences", baseSlug: "experiences" }),
 }));
 
+type GuideContentProps = {
+  lang: string;
+  guideKey: never;
+  serverGuides?: Record<string, unknown>;
+  serverGuidesEn?: Record<string, unknown>;
+};
 // Unwrap memo for testing
-const GuideContent = (GuideContentMemo as unknown as { type: React.ComponentType }).type ?? GuideContentMemo;
+const GuideContent = ((GuideContentMemo as unknown as { type: React.ComponentType }).type ?? GuideContentMemo) as React.ComponentType<GuideContentProps>;
 
 beforeEach(() => {
   addResourceBundleSpy.mockClear();

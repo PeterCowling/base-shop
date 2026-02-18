@@ -1,7 +1,6 @@
 import type { ReactElement } from "react";
 import { renderWithProviders } from "@tests/renderers";
 import type { TFunction } from "i18next";
-import { vi } from "vitest";
 
 import i18n from "@/i18n";
 
@@ -93,7 +92,7 @@ const registerGuideContentOverride = (lang: string, normalized: Record<string, u
 
 export const capturedFaqFallbacks = new Map<string, (lang: string) => unknown>();
 
-export const genericContentMock = vi.fn((props: { guideKey?: string; t?: TFunction }) => (
+export const genericContentMock = jest.fn((props: { guideKey?: string; t?: TFunction }) => (
   <>
     {process.env.DEBUG_GUIDE_TRANSLATIONS === "1"
       ? // eslint-disable-next-line no-console -- Local debug helper for coverage failures
@@ -103,7 +102,7 @@ export const genericContentMock = vi.fn((props: { guideKey?: string; t?: TFuncti
   </>
 ));
 
-export const tableOfContentsMock = vi.fn(
+export const tableOfContentsMock = jest.fn(
   ({ items, title }: { items?: Array<{ href: string; label: string }>; title?: string }) => (
     <nav data-testid="table-of-contents">
       {title ? <span data-testid="toc-title">{title}</span> : null}
@@ -118,33 +117,33 @@ export const tableOfContentsMock = vi.fn(
   ),
 );
 
-export const tagChipsMock = vi.fn(() => <div data-testid="tag-chips" />);
-export const relatedGuidesMock = vi.fn(() => <div data-testid="related-guides" />);
-export const imageGalleryMock = vi.fn(
+export const tagChipsMock = jest.fn(() => <div data-testid="tag-chips" />);
+export const relatedGuidesMock = jest.fn(() => <div data-testid="related-guides" />);
+export const imageGalleryMock = jest.fn(
   ({ items }: { items?: Array<{ src: string; alt: string; caption?: string }> }) => (
     <div data-testid="image-gallery" data-count={items?.length ?? 0} />
   ),
 );
 
-export const breadcrumbStructuredDataMock = vi.fn(
+export const breadcrumbStructuredDataMock = jest.fn(
   ({ breadcrumb }: { breadcrumb?: unknown }) => (
     <div data-testid="breadcrumb-structured" data-breadcrumb={JSON.stringify(breadcrumb ?? null)} />
   ),
 );
 
-export const guidesTagsStructuredDataMock = vi.fn(
+export const guidesTagsStructuredDataMock = jest.fn(
   ({ items }: { items?: unknown }) => (
     <div data-testid="guides-tags-structured-data" data-items={JSON.stringify(items ?? [])} />
   ),
 );
 
-export const articleStructuredDataMock = vi.fn(
+export const articleStructuredDataMock = jest.fn(
   ({ headline, description }: { headline?: string; description?: string }) => (
     <div data-testid="article-structured" data-headline={headline ?? ""} data-description={description ?? ""} />
   ),
 );
 
-export const guideFaqJsonLdMock = vi.fn(
+export const guideFaqJsonLdMock = jest.fn(
   ({ guideKey, fallback }: { guideKey: string; fallback?: (lang: string) => unknown }) => {
     if (typeof fallback === "function") {
       capturedFaqFallbacks.set(guideKey, fallback);
@@ -286,39 +285,39 @@ export const renderWithRouter = (ui: ReactElement, route?: string) => {
   return renderWithProviders(ui, { route: resolvedRoute });
 };
 
-vi.mock("@/components/guides/GenericContent", () => ({
+jest.mock("@/components/guides/GenericContent", () => ({
   __esModule: true,
   default: genericContentMock,
 }));
-vi.mock("@/components/guides/TableOfContents", () => ({
+jest.mock("@/components/guides/TableOfContents", () => ({
   __esModule: true,
   default: tableOfContentsMock,
 }));
-vi.mock("@/components/guides/TagChips", () => ({
+jest.mock("@/components/guides/TagChips", () => ({
   __esModule: true,
   default: tagChipsMock,
 }));
-vi.mock("@/components/guides/RelatedGuides", () => ({
+jest.mock("@/components/guides/RelatedGuides", () => ({
   __esModule: true,
   default: relatedGuidesMock,
 }));
-vi.mock("@/components/guides/ImageGallery", () => ({
+jest.mock("@/components/guides/ImageGallery", () => ({
   __esModule: true,
   default: imageGalleryMock,
 }));
-vi.mock("@/components/seo/BreadcrumbStructuredData", () => ({
+jest.mock("@/components/seo/BreadcrumbStructuredData", () => ({
   __esModule: true,
   default: breadcrumbStructuredDataMock,
 }));
-vi.mock("@/components/seo/GuidesTagsStructuredData", () => ({
+jest.mock("@/components/seo/GuidesTagsStructuredData", () => ({
   __esModule: true,
   default: guidesTagsStructuredDataMock,
 }));
-vi.mock("@/components/seo/ArticleStructuredData", () => ({
+jest.mock("@/components/seo/ArticleStructuredData", () => ({
   __esModule: true,
   default: articleStructuredDataMock,
 }));
-vi.mock("@/components/seo/GuideFaqJsonLd", () => ({
+jest.mock("@/components/seo/GuideFaqJsonLd", () => ({
   __esModule: true,
   default: guideFaqJsonLdMock,
 }));

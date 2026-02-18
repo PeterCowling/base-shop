@@ -87,11 +87,11 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
       useGuideManifestState.mockReturnValue({
         manifestEntry: {
           guideKey: "testGuide",
-          areas: ["experiences"],
+          areas: ["experience"],
           blocks: [],
           relatedGuides: [],
           contentKey: "testGuide",
-        } satisfies Partial<GuideManifestEntry>,
+        } as unknown as Partial<GuideManifestEntry>,
       });
 
       const { container } = render(
@@ -107,9 +107,9 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
     it("explicit route props override block-derived props", () => {
       const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");
 
-      const testManifestEntry: Partial<GuideManifestEntry> = {
+      const testManifestEntry = {
         guideKey: "testGuide",
-        areas: ["experiences"],
+        areas: ["experience"],
         blocks: [
           {
             type: "planChoice",
@@ -118,7 +118,7 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
         ],
         relatedGuides: [],
         contentKey: "testGuide",
-      };
+      } as unknown as Partial<GuideManifestEntry>;
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
@@ -145,9 +145,9 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
       const consoleSpy = jest.spyOn(console, "warn").mockImplementation();
       const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");
 
-      const testManifestEntry: Partial<GuideManifestEntry> = {
+      const testManifestEntry = {
         guideKey: "testGuide",
-        areas: ["experiences"],
+        areas: ["experience"],
         blocks: [
           {
             type: "custom",
@@ -158,7 +158,7 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
         ],
         relatedGuides: [],
         contentKey: "testGuide",
-      };
+      } as unknown as Partial<GuideManifestEntry>;
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
@@ -180,13 +180,13 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
     it("renders relatedGuides from manifest when no relatedGuides block exists", () => {
       const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");
 
-      const testManifestEntry: Partial<GuideManifestEntry> = {
+      const testManifestEntry = {
         guideKey: "testGuide",
-        areas: ["experiences"],
+        areas: ["experience"],
         blocks: [],
         relatedGuides: ["guideA", "guideB", "guideC"],
         contentKey: "testGuide",
-      };
+      } as unknown as Partial<GuideManifestEntry>;
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
@@ -204,13 +204,13 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
     it("does NOT render relatedGuides when manifest.relatedGuides is empty", () => {
       const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");
 
-      const testManifestEntry: Partial<GuideManifestEntry> = {
+      const testManifestEntry = {
         guideKey: "testGuide",
-        areas: ["experiences"],
+        areas: ["experience"],
         blocks: [],
         relatedGuides: [],
         contentKey: "testGuide",
-      };
+      } as unknown as Partial<GuideManifestEntry>;
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,
@@ -227,9 +227,9 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
     it("explicit relatedGuides block overrides manifest relatedGuides", () => {
       const { useGuideManifestState } = require("@/routes/guides/guide-seo/template/useGuideManifestState");
 
-      const testManifestEntry: Partial<GuideManifestEntry> = {
+      const testManifestEntry = {
         guideKey: "testGuide",
-        areas: ["experiences"],
+        areas: ["experience"],
         blocks: [
           {
             type: "relatedGuides",
@@ -240,7 +240,7 @@ describe("GuideSeoTemplate block wiring (TASK-01)", () => {
         ],
         relatedGuides: ["defaultA", "defaultB", "defaultC"],
         contentKey: "testGuide",
-      };
+      } as unknown as Partial<GuideManifestEntry>;
 
       useGuideManifestState.mockReturnValue({
         manifestEntry: testManifestEntry,

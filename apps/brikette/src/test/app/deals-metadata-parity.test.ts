@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const getTranslationsMock = jest.fn(async () => {
+const getTranslationsMock = jest.fn<Promise<(key: string, options?: Record<string, unknown>) => string>, unknown[]>(async () => {
   return (key: string, options?: Record<string, unknown>) => {
     if (key === "meta.title") return "Save 15% on stays Sept 20 - Oct 31";
     if (key === "meta.description") {

@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-04, TASK-09, TASK-10 complete; TASK-05 raised to 82% (Ready) — Wave 4 fully eligible; TASK-06/07 eligible after TASK-05 completes
+Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 complete; Wave 6 eligible: TASK-08 (CHECKPOINT)
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -94,9 +94,9 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 | TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Complete (2026-02-18) | TASK-01 | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Create machine-readable process assignment matrix (28 processes) | 82% | S | Complete (2026-02-18) | TASK-02 | TASK-04, TASK-05 |
 | TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure + Option B label rename in stage-operator-dictionary.yaml | 80% | M | Complete (2026-02-18) | TASK-00, TASK-03, TASK-09, TASK-10 | TASK-06, TASK-07 |
-| TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 82% | M | Pending | TASK-03, TASK-09 | TASK-07 |
-| TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, operator docs, and supersede-now consumer files to v2 vocabulary | 80% | M | Pending | TASK-04, TASK-10 | TASK-08 |
-| TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint + label rename correctness) | 82% | M | Pending | TASK-04, TASK-05, TASK-09 | TASK-08 |
+| TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 82% | M | Complete (2026-02-18) | TASK-03, TASK-09 | TASK-07 |
+| TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, operator docs, and supersede-now consumer files to v2 vocabulary | 80% | M | Complete (2026-02-18) | TASK-04, TASK-10 | TASK-08 |
+| TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint + label rename correctness) | 82% | M | Complete (2026-02-18) | TASK-04, TASK-05, TASK-09 | TASK-08 |
 | TASK-08 | CHECKPOINT | Completion checkpoint — verify Option B label rename complete, supersede-now archive clean, all suites passing | 95% | S | Pending | TASK-06, TASK-07 | - |
 | TASK-09 | SPIKE | Write failing RED tests for stage-label rename before implementation (TDD gate for Option B) | 85% | S | Complete (2026-02-18) | TASK-02 | TASK-04, TASK-05, TASK-07 |
 | TASK-10 | INVESTIGATE | supersede-now consumer breakage audit — scan all v1 authoritative references, produce migration list | 88% | S | Complete (2026-02-18) | - | TASK-04, TASK-06 |
@@ -431,8 +431,8 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/validate-process-assignment.ts`, `scripts/src/startup-loop/__tests__/validate-process-assignment.test.ts`, `docs/business-os/startup-loop/process-assignment-v2.yaml`, `[readonly] docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml`
+- **Status:** Complete (2026-02-18)
+- **Affects:** `scripts/src/startup-loop/validate-process-assignment.ts`, `scripts/src/startup-loop/__tests__/validate-process-assignment.test.ts`, `scripts/package.json`, `docs/business-os/startup-loop/process-assignment-v2.yaml`, `[readonly] docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-07
 - **Confidence:** 82%
@@ -474,6 +474,20 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Adds validation script docs and test references.
 - **Notes / references:**
   - `scripts/src/startup-loop/generate-stage-operator-views.ts`
+- **Build Evidence (2026-02-18):**
+  - Status: Complete
+  - Deliverables: `scripts/src/startup-loop/validate-process-assignment.ts`, `scripts/src/startup-loop/__tests__/validate-process-assignment.test.ts`, `scripts/package.json` (`validate-process-assignment` script added)
+  - Red phase: neither TS file existed; TC-05-01..07 all would fail.
+  - Green phase: validator implemented following `generate-stage-operator-views.ts` template; js-yaml load pattern; `unknown`→typed-interface narrowing; CLI guard; `run()` entrypoint.
+  - TC-05-01: PASS — valid matrix returns no errors (21/21 tests pass)
+  - TC-05-02: PASS — missing IDs reported including all-empty case
+  - TC-05-03: PASS — unknown workstream_id and workflow_phase both reported with taxonomy path
+  - TC-05-04: PASS — duplicate process_id detected and reported
+  - TC-05-05: PASS — out-of-order workflow_phases and out-of-canonical-order process rows both caught
+  - TC-05-06: PASS — invalid activation token + missing/empty activation_condition for conditional/exception_only rows
+  - TC-05-07: PASS — taxonomy file path included in workstream and phase enum error messages
+  - Live fixture: `node --import tsx scripts/src/startup-loop/validate-process-assignment.ts` → `[validate-process-assignment] OK — 28/28 processes valid`
+  - Error determinism test: PASS — identical invalid input produces identical sorted error list.
 
 ### TASK-06: Update dependent contracts, skills, prompt templates, and operator docs to v2 vocabulary
 - **Type:** IMPLEMENT
@@ -534,6 +548,17 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Updates operator + contract documentation with unified v2 vocabulary.
 - **Notes / references:**
   - `docs/plans/startup-loop-orchestrated-os-comparison-v2/fact-find.md`
+- **Build Evidence (2026-02-18):**
+  - Status: Complete
+  - Affected files: exception-runbooks-v1.md (7 refs), audit-cadence-contract-v1.md (8 refs), retention-schema.md (4 refs), sales-ops-schema.md (4 refs), marketing-sales-capability-contract.md (2 refs) — 25 total string replacements
+  - Group 2 (startup-loop-workflow.user.md, event-state-schema.md, weekly-kpcs-decision-prompt.md): clean — no deprecated workstream long-form names or Domain-as-lane-term usage found
+  - Group 3 (6 skill docs: lp-readiness, lp-offer, lp-channels, lp-fact-find, lp-plan, lp-build): clean — no deprecated workstream vocabulary in instructional content
+  - VC-06-01: PASS — `rg process-registry-v1` in all 5 consumer files = 0 hits
+  - VC-06-02: PASS — no doc changes touched stage ordering or loop-spec.yaml references
+  - VC-06-03: PASS (structural) — operator mapping clarity improved by consistent v2 registry pointer
+  - VC-06-04: PASS — all 6 skill docs already used canonical terms; no changes needed
+  - VC-06-05: PASS — no stage label literal changes (label scope = zero per TASK-09)
+  - VC-06-06: PASS — baseline counting rules unchanged; no metric window affected
 
 ### TASK-07: Add compatibility regression checks (addressing, generator, assignment)
 - **Type:** IMPLEMENT
@@ -587,6 +612,16 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Adds validation guidance to plan and possibly testing notes.
 - **Notes / references:**
   - `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`
+- **Build Evidence (2026-02-18):**
+  - Status: Complete
+  - diff_proposal: empty — all TCs satisfied by existing tests with no additions needed
+  - Test run: 5 suites, 163 passed, 2 todo (intentional stubs), 0 fail
+  - TC-07-01 (stage-addressing): PASS — 26 tests, describe blocks explicitly named `--stage-alias` and `--stage-label` provide required legacy-addressing fixtures
+  - TC-07-02 (generate-stage-operator-views): PASS — determinism, schema validation, drift detection, canonical round-trip, VC-05 label naming convention guardrails across all 17 stages
+  - TC-07-03 (derive-state): PASS — 12 tests covering happy-path, manual resume, launch-QA contract, deterministic replay
+  - TC-07-04 (assignment validator): PASS — 21 tests (TC-05-01..07 + error determinism + live fixture)
+  - TC-07-05 (label rename correctness): PASS — stage-label-rename.test.ts section A: it.each over all 17 SHORT_LABELS + 17 LONG_LABELS via resolveByLabel; scope-zero confirmed
+  - TC-07-06 (alias fallback): PASS — stage-label-rename.test.ts section C: it.each over all 44 canonical aliases via resolveByAlias
 
 ### TASK-08: Completion checkpoint — Option B label rename confirmed + supersede-now archive clean
 - **Type:** CHECKPOINT
@@ -733,6 +768,8 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: Wave 3 complete (TASK-03 + TASK-09). process-assignment-v2.yaml written (28/28 processes, OPS-4 phase ordering corrected). SPIKE finding: Option B label rename scope = ZERO — no stage labels contain deprecated workstream terminology; no label field changes needed in stage-operator-dictionary.yaml. stage-label-rename.test.ts: 87 pass, 2 todo, 0 fail. Wave 4 eligible: TASK-04 + TASK-05.
 - 2026-02-18: TASK-04 complete. process-registry-v2.md created (28 processes, 7 canonical Workstream sections, 4 assignment rows per process, Authority & Deprecation Policy, VC-04-A/B/C all pass). v1 tombstoned. stage-operator-dictionary.yaml: zero changes (label scope = zero per TASK-09). TASK-05 at 76% below IMPLEMENT threshold — routed to /lp-replan.
 - 2026-02-18: /lp-replan complete (TASK-05). E2 evidence: generate-stage-operator-views.ts confirmed as near-complete template; `node --import tsx` hook confirmed; --check flag NOT needed for pure validators; all deps in place. TASK-05 confidence 76% → 82%. Execution hook acceptance clarified. No topology changes. TASK-05 ready for /lp-build.
+- 2026-02-18: TASK-05 complete. Validator (`validate-process-assignment.ts`) and tests (`validate-process-assignment.test.ts`) written following generate-stage-operator-views.ts template. 21/21 tests pass (TC-05-01..07). Live validator: 28/28 processes valid. `validate-process-assignment` npm script added to scripts/package.json. Wave 5 eligible: TASK-06 + TASK-07.
+- 2026-02-18: Wave 5 complete (TASK-06 + TASK-07). TASK-06: 5 consumer files re-pointed (25 replacements total); all Group 2/3 files clean — no changes needed; VC-06-01..06 all pass; rg scan zero hits. TASK-07: 163/163 tests pass, 0 fail — no additions needed; all TC-07-01..06 satisfied by existing test coverage. Wave 6 eligible: TASK-08 (CHECKPOINT).
 
 ## Overall-confidence Calculation
 - Effort weights: `S=1`, `M=2`, `L=3`

@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 + TASK-12 complete; TASK-11 below 80% threshold → needs replan)
+Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 + TASK-11 + TASK-12 complete; TASK-13 + TASK-14 remaining)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -101,7 +101,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-08     | IMPLEMENT   | platform-machine: create tsconfig + fix errors           | 84%        | M      | Complete (2026-02-18) | TASK-06         | TASK-09         |
 | TASK-09     | IMPLEMENT   | Extend CI step: platform-core + platform-machine         | 90%        | S      | Complete (2026-02-18) | TASK-07, TASK-08| TASK-10         |
 | TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Complete (2026-02-18) | TASK-09         | TASK-11, TASK-12|
-| TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 78%        | L      | Pending | TASK-10         | TASK-13         |
+| TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 84%        | L      | Complete (2026-02-18) | TASK-10  | TASK-13         |
 | TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Complete (2026-02-18) | TASK-10         | TASK-13         |
 | TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Pending | TASK-11, TASK-12| TASK-14         |
 | TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Pending | TASK-13         | -               |
@@ -730,7 +730,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Affects:** `apps/brikette/tsconfig.test.typecheck.json` (new), `apps/brikette/src/test/**/*.ts`, `apps/brikette/src/test/**/*.tsx`
 - **Depends on:** TASK-10
 - **Blocks:** TASK-13
-- **Confidence:** 78% (raised from 72% at TASK-10 — approach now confirmed: extend from `./tsconfig.json` not root; 334 real errors after path fix)
+- **Confidence:** 84% (raised from 78% — approach confirmed and executed; 0 errors achieved)
   - Implementation: 78% — 628 provisional errors; 294 are path resolution (fixable in tsconfig); 334 are real type errors (TS2339/TS7006/TS7031/TS2503 mix)
   - Approach: 82% — pattern confirmed: tsconfig must extend from `./tsconfig.json`, add jest types override; root-extension approach DOES NOT WORK for brikette
   - Impact: 90% — brikette is SEO-critical; type errors in test helpers could mask guide content regressions
@@ -767,6 +767,15 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Test directory is `src/test/` not `__tests__/` — include pattern: `"src/test/**/*.ts"`, `"src/test/**/*.tsx"`
   - Config must include `"resolveJsonModule": true` (locale JSON imports in tests)
   - `apps/brikette` has no `tsconfig.test.json` so the new config must specify full paths independently
+
+#### Build evidence (2026-02-18)
+- Config approach: `extends: "./tsconfig.json"` (not root test tsconfig) — confirmed essential. Overrides: `types: ["jest", "node", "react", "react-dom", "@testing-library/jest-dom"]` to restore react/react-dom; paths override to add `@tests/*` → `src/test/*` and `~test/*` → `../../test/*`; include adds `src/types/**/*.d.ts` for GlobalRef/DocumentShim/raw-imports types.
+- Excluded from typecheck: jest-excluded test files (`loadI18nNs.test.ts`, `loadI18nNs.client-and-preload.test.ts`, `buildCfImageUrl.test.ts`, `cfLibImage.test.ts`) and vitest coverage tests (`src/test/routes/guides/__tests__/coverage/**`).
+- Added `src/test/jest-dom-augment.ts` to apply `@testing-library/jest-dom` augmentation in compilation scope.
+- Key fix: `content-sticky-cta.test.tsx` used `import { expect } from "@jest/globals"` but the `@jest/expect.Matchers` augmentation doesn't work through `expect` package re-export chain. Fixed by removing `expect` from the `@jest/globals` import (uses global `@types/jest` expect which IS augmented by jest-dom).
+- Error patterns fixed (45 real errors): TS2558 (jest.fn type args: 2 required), TS2741 (jest.fn() `as any`, TFunction `$TFunctionBrand` cast), TS2820/TS2352 (partial type casts with `as unknown as`), TS2322 branded types (ContentKey), TS2769 (React component overload), TS2578 (stale @ts-expect-error), TS2304 (use jest.Mock not Mock), TS18049 (non-null assertions), TS2345 (setTimeout cast), TS2743 (jest.fn type arg order).
+- Outcome: `TYPECHECK_FILTER=apps/brikette node scripts/typecheck-tests.mjs` → 0 errors ✓
+- Jest tests: 157 suites, 1001 tests passed, 13 todo — no regressions ✓
 
 ---
 

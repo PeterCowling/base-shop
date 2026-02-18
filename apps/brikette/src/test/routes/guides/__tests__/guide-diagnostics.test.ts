@@ -144,9 +144,9 @@ describe("guide diagnostics", () => {
       });
 
       expect(typeof seoTitle).toBe("string");
-      expect(seoTitle.length).toBeGreaterThan(0);
+      expect(seoTitle!.length).toBeGreaterThan(0);
       expect(typeof seoDescription).toBe("string");
-      expect(seoDescription.length).toBeGreaterThan(0);
+      expect(seoDescription!.length).toBeGreaterThan(0);
     });
   });
 

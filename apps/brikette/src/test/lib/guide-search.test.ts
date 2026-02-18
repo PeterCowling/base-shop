@@ -14,7 +14,7 @@ describe("GuideSearchService", () => {
   const sampleGuides: GuideMeta[] = [
     { key: "positanoBeaches" as never, tags: ["beach", "beaches", "positano"], section: "experiences" },
     { key: "pathOfTheGods" as never, tags: ["hiking", "stairs", "positano"], section: "experiences" },
-    { key: "howToGetToPositano" as never, tags: ["transport", "decision", "positano"], section: "help" },
+    { key: "howToGetToPositano" as never, tags: ["transport", "decision", "positano"], section: "assistance" as const },
     { key: "capriDayTrip" as never, tags: ["day-trip", "capri", "ferry"], section: "experiences" },
     { key: "cheapEats" as never, tags: ["budgeting", "cuisine", "positano"], section: "experiences" },
   ];

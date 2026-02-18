@@ -7,7 +7,7 @@ describe("guide manifest status", () => {
     for (const key of GUIDE_KEYS) {
       const entry = getGuideManifestEntry(key);
       expect(entry).toBeDefined();
-      expect(validStatuses.has(entry?.status ?? "")).toBe(true);
+      expect(validStatuses.has((entry?.status ?? "") as "live" | "draft" | "review")).toBe(true);
     }
   });
 });

@@ -8,7 +8,7 @@ Created: 2026-02-18
 Last-updated: 2026-02-18
 Owner: startup-loop maintainers + operator
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
-Related-process-registry: docs/business-os/startup-loop/process-registry-v1.md
+Related-process-registry: docs/business-os/startup-loop/process-registry-v2.md
 Related-bottleneck-schema: docs/business-os/startup-loop/bottleneck-diagnosis-schema.md
 ---
 
@@ -20,7 +20,7 @@ This document defines operational runbooks for the four canonical exception stat
 
 **Exception handling in the startup loop has two existing layers this document extends:**
 1. `bottleneck-diagnosis-schema.md` — metric-based constraint diagnosis and blocked-stage reason taxonomy (`compliance`, `ops_capacity`, etc.). This document does NOT modify those keys.
-2. `process-registry-v1.md` (DATA-2) — leading indicator monitoring and alert ticket generation. This document defines the escalation path and SLAs once a DATA-2 alert ticket is opened.
+2. `process-registry-v2.md` (DATA-2) — leading indicator monitoring and alert ticket generation. This document defines the escalation path and SLAs once a DATA-2 alert ticket is opened.
 
 **These runbooks are additive.** They reference existing contracts without replacing them.
 
@@ -101,7 +101,7 @@ Decision log reference: [DATA-4 entry date/ID]
 | First recovery action documented | 24 hours from acknowledgement | 48 hours |
 | Weekly cycle recovery plan | By next S10 session | 7 days from trigger |
 
-### Required Processes (from process-registry-v1.md)
+### Required Processes (from process-registry-v2.md)
 
 | Process | Action required |
 |---|---|
@@ -168,7 +168,7 @@ If Demand Shock co-occurs with Cash Constraint (e.g., demand drop causing runway
 | Runway recalculation published | 24 hours from acknowledgement | 48 hours |
 | Recovery options documented | 72 hours from acknowledgement | 7 days |
 
-### Required Processes (from process-registry-v1.md)
+### Required Processes (from process-registry-v2.md)
 
 | Process | Action required |
 |---|---|
@@ -232,7 +232,7 @@ Exception closes when ALL of the following are true:
 | CAPA documented (DATA-3) | 48 hours from root cause | 72 hours |
 | SOP updated (CX-4) | 72 hours from CAPA | 7 days |
 
-### Required Processes (from process-registry-v1.md)
+### Required Processes (from process-registry-v2.md)
 
 | Process | Action required |
 |---|---|
@@ -301,7 +301,7 @@ Exception closes when ALL of the following are true:
 | DATA-3 post-mortem initiated | 24 hours from containment | 48 hours |
 | Updated risk register and playbook | 7 days from resolution | 14 days |
 
-### Required Processes (from process-registry-v1.md)
+### Required Processes (from process-registry-v2.md)
 
 | Process | Action required |
 |---|---|
@@ -358,7 +358,7 @@ Exception closes when ALL of the following are true:
 | Contract | Relationship |
 |---|---|
 | `bottleneck-diagnosis-schema.md` | Exception states map to blocked-stage reason codes: `compliance` → Compliance/Safety; `ops_capacity` → Quality Incident or Demand Shock. This document does NOT modify the blocked-stage key taxonomy. |
-| `process-registry-v1.md` | Required processes per exception state sourced from DATA-2 (triggering), CDI-3/OFF-2/GTM-1 (Demand Shock), FIN-1/FIN-2/OFF-4 (Cash Constraint), CX-1/OPS-4/DATA-3/CX-4 (Quality), FIN-3/DATA-3 (Compliance). |
+| `process-registry-v2.md` | Required processes per exception state sourced from DATA-2 (triggering), CDI-3/OFF-2/GTM-1 (Demand Shock), FIN-1/FIN-2/OFF-4 (Cash Constraint), CX-1/OPS-4/DATA-3/CX-4 (Quality), FIN-3/DATA-3 (Compliance). |
 | `weekly-kpcs-decision-prompt.md` | Exception outcomes recorded in DATA-4 / S10 memo Section F (Risk watchlist). Exception active status noted in Section A (KPI denominator validity check). |
 | `audit-cadence-contract-v1.md` (TASK-06) | Weekly light audit checks that all exception tickets have acknowledgement and resolution SLAs tracked. Monthly deep audit reviews closed exceptions for playbook improvement. |
 

@@ -79,10 +79,10 @@ describe("prefetchInteractiveBundles", () => {
   it("falls back to setTimeout when requestIdleCallback is missing", async () => {
     setConnection(undefined);
     Object.defineProperty(window, "requestIdleCallback", { writable: true, value: undefined });
-    const setTimeoutSpy = jest.spyOn(window, "setTimeout").mockImplementation((cb: () => void) => {
+    const setTimeoutSpy = jest.spyOn(window, "setTimeout").mockImplementation(((cb: () => void) => {
       cb();
-      return 0 as unknown as number;
-    });
+      return 0;
+    }) as typeof setTimeout);
 
     const mod = await import("@/utils/prefetchInteractive");
     await mod.default();

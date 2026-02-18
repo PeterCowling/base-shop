@@ -10,7 +10,7 @@ Last-updated: 2026-02-18
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-orchestrated-os-comparison/plan.md
 Related-capability-contract: docs/business-os/startup-loop/marketing-sales-capability-contract.md
-Related-process: GTM-3 (process-registry-v1.md)
+Related-process: GTM-3 (process-registry-v2.md)
 ---
 
 # CAP-05 — Sales Ops Schema Contract
@@ -21,7 +21,7 @@ This document defines the canonical schema for CAP-05 (Sales ops): the artifact 
 
 **CAP-05 is the capability contract for sales pipeline operations.** It governs structured deal tracking, speed-to-lead responsiveness, follow-up cadence, and objection handling — the operational layer between initial channel distribution (CAP-04) and retention/repeat (CAP-06).
 
-**Process vehicle:** GTM-3 (Sales/account pipeline and booking deals) in `process-registry-v1.md` is the primary recurring process for executing CAP-05.
+**Process vehicle:** GTM-3 (Sales/account pipeline and booking deals) in `process-registry-v2.md` is the primary recurring process for executing CAP-05.
 
 ---
 
@@ -173,7 +173,7 @@ No-decision rule: If any metric is FAIL, pipeline-based Scale and Kill decisions
 |---|---|
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | CAP-05 denominator check section gates pipeline-based Scale/Kill decisions |
 | `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` | Speed-to-lead SLA breach feeds `S6B/median_response_time` metric (hospitality) or custom constraint signal |
-| `docs/business-os/startup-loop/process-registry-v1.md` (GTM-3) | GTM-3 is the primary recurring execution vehicle for this capability |
+| `docs/business-os/startup-loop/process-registry-v2.md` (GTM-3) | GTM-3 is the primary recurring execution vehicle for this capability |
 | `docs/business-os/startup-loop/exception-runbooks-v1.md` | Pipeline stall (no movement for 2+ weeks) is a Demand Shock exception trigger |
 
 ---
@@ -225,6 +225,6 @@ Weekly metrics to track once CAP-05 is active:
 ## References
 
 - Capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md`
-- Process registry: `docs/business-os/startup-loop/process-registry-v1.md` (GTM-3)
+- Process registry: `docs/business-os/startup-loop/process-registry-v2.md` (GTM-3)
 - Boundary decision: `docs/plans/startup-loop-orchestrated-os-comparison/decisions/v1-boundary-decision.md`
 - Research baseline: `docs/briefs/orchestrated-business-startup-loop-operating-system-research.md` (GTM-3 specification)

@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-04, TASK-09, TASK-10 complete; TASK-05 below threshold (76%) — route to /lp-replan before Wave 4 can close; TASK-06/07 blocked on TASK-04+TASK-05
+Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-04, TASK-09, TASK-10 complete; TASK-05 raised to 82% (Ready) — Wave 4 fully eligible; TASK-06/07 eligible after TASK-05 completes
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -94,7 +94,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 | TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Complete (2026-02-18) | TASK-01 | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Create machine-readable process assignment matrix (28 processes) | 82% | S | Complete (2026-02-18) | TASK-02 | TASK-04, TASK-05 |
 | TASK-04 | IMPLEMENT | Refactor process registry to v2 naming/assignment structure + Option B label rename in stage-operator-dictionary.yaml | 80% | M | Complete (2026-02-18) | TASK-00, TASK-03, TASK-09, TASK-10 | TASK-06, TASK-07 |
-| TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 76% | M | Pending | TASK-03, TASK-09 | TASK-07 |
+| TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 82% | M | Pending | TASK-03, TASK-09 | TASK-07 |
 | TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, operator docs, and supersede-now consumer files to v2 vocabulary | 80% | M | Pending | TASK-04, TASK-10 | TASK-08 |
 | TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint + label rename correctness) | 82% | M | Pending | TASK-04, TASK-05, TASK-09 | TASK-08 |
 | TASK-08 | CHECKPOINT | Completion checkpoint — verify Option B label rename complete, supersede-now archive clean, all suites passing | 95% | S | Pending | TASK-06, TASK-07 | - |
@@ -435,9 +435,9 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Affects:** `scripts/src/startup-loop/validate-process-assignment.ts`, `scripts/src/startup-loop/__tests__/validate-process-assignment.test.ts`, `docs/business-os/startup-loop/process-assignment-v2.yaml`, `[readonly] docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-07
-- **Confidence:** 76%
-  - Implementation: 78% - parser/validation pattern already exists in generator tooling.
-  - Approach: 76% - execution hook is now an explicit acceptance requirement.
+- **Confidence:** 82%
+  - Implementation: 88% - `generate-stage-operator-views.ts` is a near-complete template: same `js-yaml` load pattern, same `unknown`→typed-interface narrowing, same `node --import tsx` runner. Zero setup needed. (Evidence: E2 — direct file read 2026-02-18)
+  - Approach: 85% - execution hook confirmed: `node --import tsx src/startup-loop/validate-process-assignment.ts` + npm script entry `"validate-process-assignment"`. No `--check` flag needed — pure validators always exit 0/non-zero (confirmed from generate-stage-operator-views.ts CLI guard pattern). (Evidence: E2 — scripts/package.json read 2026-02-18)
   - Impact: 82% - removes manual validation risk.
 - **Acceptance:**
   - Validator fails on missing process IDs, invalid workstream IDs, invalid phase values, and duplicate primary assignments.
@@ -446,7 +446,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - Validator enforces activation semantics (`always`, `conditional`, `exception_only`) and required companion `activation_condition` values for non-`always` rows.
   - Validator passes for a complete valid matrix.
   - Deterministic error-ordering is enforced.
-  - Execution hook is explicit (`--check` and/or CI command) and documented in plan/README note.
+  - Execution hook: `node --import tsx src/startup-loop/validate-process-assignment.ts` (npm script `"validate-process-assignment"` in `scripts/package.json`). No `--check` flag — pure validator exits 0/non-zero directly.
 - **Validation contract (TC-05):**
   - TC-05-01: valid matrix input -> exits 0 with success message.
   - TC-05-02: missing process ID -> exits non-zero and reports missing ID list.
@@ -457,14 +457,14 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
   - TC-05-07: taxonomy enum source mismatch (matrix references token not present in taxonomy YAML) -> exits non-zero and reports taxonomy file path.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
-  - Checks run: reviewed existing generator/addressing test patterns in `scripts/src/startup-loop/__tests__/generate-stage-operator-views.test.ts` and `scripts/src/startup-loop/__tests__/stage-addressing.test.ts`.
-  - Validation artifacts: v2 fact-find test landscape and command list.
-  - Unexpected findings: none.
-- **Scouts:** None: execution hook is a required acceptance criterion in this task.
+  - Checks run: reviewed `generate-stage-operator-views.ts` (YAML loading + CLI pattern), `scripts/package.json` (npm script hook), `contract-lint.ts` (pure validator pattern), `jest.config.cjs` (test config). E2 evidence 2026-02-18.
+  - Validation artifacts: v2 fact-find test landscape; E2 evidence scan confirming template + hook pattern.
+  - Unexpected findings: `--check` flag is NOT the right pattern for a pure validator (only for generator scripts with committed output). Pure validator exits 0/non-zero directly. Acceptance updated.
+- **Scouts:** None: template (`generate-stage-operator-views.ts`) fully defines implementation seam.
 - **Edge Cases & Hardening:**
   - Ensure deterministic error ordering to prevent flaky CI output.
 - **What would make this >=80%:**
-  - Already met once execution hook is encoded in acceptance and command contract.
+  - MET (2026-02-18): Execution hook confirmed (`node --import tsx` + npm script); template identified (`generate-stage-operator-views.ts`); all deps in place.
 - **What would make this >=90%:**
   - Run validator against both valid and intentionally broken fixtures in CI.
 - **Rollout / rollback:**
@@ -732,6 +732,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: /lp-replan complete. Key findings: alias[] mechanism already exists in stage-operator-dictionary.yaml — Option B scope is YAML field updates only, no source changes to stage-addressing.ts or generator. TASK-09 (SPIKE, RED tests) + TASK-10 (consumer audit, Complete) added. TASK-04/06/07/08 updated. Topology re-sequenced. Plan re-confidence: TASK-04 78→80%, TASK-07 76→82%, TASK-06 81→80% (scope expanded M).
 - 2026-02-18: Wave 3 complete (TASK-03 + TASK-09). process-assignment-v2.yaml written (28/28 processes, OPS-4 phase ordering corrected). SPIKE finding: Option B label rename scope = ZERO — no stage labels contain deprecated workstream terminology; no label field changes needed in stage-operator-dictionary.yaml. stage-label-rename.test.ts: 87 pass, 2 todo, 0 fail. Wave 4 eligible: TASK-04 + TASK-05.
 - 2026-02-18: TASK-04 complete. process-registry-v2.md created (28 processes, 7 canonical Workstream sections, 4 assignment rows per process, Authority & Deprecation Policy, VC-04-A/B/C all pass). v1 tombstoned. stage-operator-dictionary.yaml: zero changes (label scope = zero per TASK-09). TASK-05 at 76% below IMPLEMENT threshold — routed to /lp-replan.
+- 2026-02-18: /lp-replan complete (TASK-05). E2 evidence: generate-stage-operator-views.ts confirmed as near-complete template; `node --import tsx` hook confirmed; --check flag NOT needed for pure validators; all deps in place. TASK-05 confidence 76% → 82%. Execution hook acceptance clarified. No topology changes. TASK-05 ready for /lp-build.
 
 ## Overall-confidence Calculation
 - Effort weights: `S=1`, `M=2`, `L=3`

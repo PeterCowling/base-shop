@@ -262,7 +262,7 @@ jobs:
       - name: Typecheck tests (Phase-1 packages)
         run: |
           set -e
-          for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo packages/platform-core packages/platform-machine; do
+          for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo packages/platform-core packages/platform-machine apps/brikette packages/template-app; do
             TYPECHECK_FILTER="$pkg" node scripts/typecheck-tests.mjs
           done
 

@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 + TASK-11 + TASK-12 complete; TASK-13 + TASK-14 remaining)
+Last-updated: 2026-02-18 (TASK-07 + TASK-08 + TASK-09 + TASK-10 + TASK-11 + TASK-12 + TASK-13 complete; TASK-14 remaining)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -103,7 +103,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-10     | CHECKPOINT  | Phase 2 gate — reassess Phase 3                          | 95%        | S      | Complete (2026-02-18) | TASK-09         | TASK-11, TASK-12|
 | TASK-11     | IMPLEMENT   | brikette: create tsconfig + fix errors                   | 84%        | L      | Complete (2026-02-18) | TASK-10  | TASK-13         |
 | TASK-12     | IMPLEMENT   | template-app: create tsconfig + fix errors               | 83%        | M      | Complete (2026-02-18) | TASK-10         | TASK-13         |
-| TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Pending | TASK-11, TASK-12| TASK-14         |
+| TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Complete (2026-02-18) | TASK-11, TASK-12| TASK-14         |
 | TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Pending | TASK-13         | -               |
 
 ## Parallelism Guide
@@ -828,7 +828,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `.github/workflows/ci.yml`
 - **Depends on:** TASK-11, TASK-12
 - **Blocks:** TASK-14
@@ -850,6 +850,11 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Rollout: PR; CI must pass
   - Rollback: Revert CI step
 - **Documentation impact:** None
+- **Build evidence (2026-02-18):**
+  - Added `apps/brikette` and `packages/template-app` to the Phase-1 packages loop in `.github/workflows/ci.yml` (line 265)
+  - CI step now runs 11 invocations total
+  - Pre-commit validation: `TYPECHECK_FILTER=apps/brikette` → 0 errors; `TYPECHECK_FILTER=packages/template-app` → 0 errors
+  - Both invocations confirmed passing before CI commit; no regressions
 
 ---
 

@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-40, TASK-41 complete — Wave 7 in progress)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete — Wave 7 nearly complete)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -194,7 +194,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 | TASK-33 | IMPLEMENT | Add search_availability to /book date picker (submit + initial valid URL params) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-34 | IMPLEMENT | Add view_promotion + select_promotion to deals page | 82% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-35 | IMPLEMENT | Add begin_checkout to StickyBookNow click (via trackThenNavigate) | 82% | S | Complete (2026-02-18) | TASK-29,TASK-30,TASK-15 | — |
-| TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Pending | TASK-29,TASK-31,TASK-15 | — |
+| TASK-36 | IMPLEMENT | Wire cta_click to OffersModal + content-page CTAs (header/hero/widget already wired) | 85% | S | Complete (2026-02-18) | TASK-29,TASK-31,TASK-15 | — |
 | TASK-37 | IMPLEMENT | Update GA4_ENUMS + delete superseded helpers + clean prefetchInteractive dead imports | 88% | S | Complete (2026-02-18) | TASK-29 | TASK-31 |
 | TASK-38 | IMPLEMENT | Playwright smoke test: navigate /book with dates, intercept g/collect, assert select_item + begin_checkout + Octorate URL | 82% | M | Pending | TASK-29,TASK-32,TASK-15 | — |
 | TASK-39 | IMPLEMENT | Add test coverage for reportWebVitals.ts (absorbed from brik-ga4-baseline-lock TASK-04) | 80% | S | Complete (2026-02-18) | — | — |
@@ -973,9 +973,10 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `apps/brikette/src/context/modal/global-modals/OffersModal.tsx`
+  - `apps/brikette/src/test/components/ga4-36-offers-modal-cta-click.test.tsx` (new)
 - **Depends on:** TASK-29, TASK-31, TASK-15
 - **Blocks:** —
 - **Confidence:** 85%
@@ -991,6 +992,9 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - TC-01: OffersModal "Reserve Now" click → gtag called with `cta_click` + `cta_id: "offers_modal_reserve"` + `cta_location: "offers_modal"`
   - TC-02: Navigation to /book still occurs after event fires
 - **Rollout / rollback:** Revert commit
+- **Build evidence (2026-02-18):**
+  - `OffersModal.tsx`: added `fireCtaClick` import; `handleReserve` now calls `fireCtaClick({ ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" })` before `closeModal()` + `router.push`.
+  - Test: `ga4-36-offers-modal-cta-click.test.tsx` — 2/2 pass (TC-01 cta_click payload, TC-02 navigation + closeModal). Used custom `@acme/ui/context/ModalContext` factory mock with `require("react")` to avoid hoisting issues.
 
 ---
 

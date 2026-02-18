@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00..05 Complete; TASK-06 next (unblocked)
+Build-Progress: TASK-00..06 Complete; TASK-07 CHECKPOINT next
 Feature-Slug: startup-loop-orchestrated-os-comparison
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -85,7 +85,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 | TASK-03 | IMPLEMENT | Add CAP-05 sales-ops schema contract + artifact template references | 81% | M | Complete (2026-02-18) | TASK-01 | TASK-05 |
 | TASK-04 | IMPLEMENT | Add CAP-06 lifecycle/retention schema contract + S10 contract hooks | 80% | M | Complete (2026-02-18) | TASK-01 | TASK-05 |
 | TASK-05 | IMPLEMENT | Define exception-runbooks-v1 for Demand/Cash/Quality/Compliance | 80% | M | Complete (2026-02-18) | TASK-02, TASK-03, TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Add weekly-light/monthly-deep audit checklist contracts and workflow integration | 82% | M | Pending | TASK-05 | TASK-07 |
+| TASK-06 | IMPLEMENT | Add weekly-light/monthly-deep audit checklist contracts and workflow integration | 82% | M | Complete (2026-02-18) | TASK-05 | TASK-07 |
 | TASK-07 | CHECKPOINT | Horizon checkpoint: reassess pilot-readiness and sequence downstream build scope | 95% | S | Pending | TASK-06 | - |
 
 ## Parallelism Guide
@@ -415,7 +415,14 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
+- **Build-Evidence:**
+  - Red: S10 prompt has Section G (data quality) but no process conformance check. No audit cadence contract exists. Gaps identified: no check that prior action items are executed, no periodic CAP contract validation, no exception ticket age gate, no standing audit of data/process freshness at monthly cadence.
+  - Green: `docs/business-os/startup-loop/audit-cadence-contract-v1.md` created with: 8-item weekly light-audit (≤20 min S10 companion) and 21-item monthly deep-audit (≤120 min, 6 categories). REM task format `REM-<BIZ>-<YYYYMMDD>-<n>` defined. Canonical output paths: Section H in KPCs decision doc (weekly); `<YYYY-MM>-monthly-audit.user.md` (monthly). KPCs prompt extended with Section H template. `startup-loop-workflow.user.md` extended with audit reference note and monthly deep-audit row in Quick Actions table.
+  - Refactor: N/A policy added (no-open-tickets counts as PASS; CAP-not-yet-active for inactive CAPs; website-live-only items marked for pre-launch businesses). Conditional Pass threshold defined (≤2 non-critical failures) to prevent false-block on healthy businesses. Integration notes clarify separation of concerns with KPCs decision (audit ≠ KPI check).
+  - VC-06-A: 29 items (8 weekly + 21 monthly); all have objective pass/fail, owner, if-fail action. ✓
+  - VC-06-B: Weekly 8 items × 2 min = 16 min < 20 min. Monthly 6 categories: 25+20+20+25+20+10 = 120 min exactly at target. ✓
+  - VC-06-C: REM task format defined; output paths canonical per audit cadence. 100% of FAIL items require REM task with owner and due date. ✓
 - **Artifact-Destination:** `docs/business-os/startup-loop/audit-cadence-contract-v1.md`
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** Review sign-off in decision log
@@ -525,6 +532,7 @@ This plan operationalizes the findings in `docs/plans/startup-loop-orchestrated-
 - 2026-02-18: TASK-03 complete. sales-ops-schema.md created; CAP-05 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-05 pipeline denominator section.
 - 2026-02-18: TASK-04 complete. retention-schema.md created; CAP-06 status updated to Schema-defined in capability contract; KPCs prompt extended with CAP-06 retention denominator section including pre-PMF deferral rules. TASK-05 now unblocked (all Wave 3 deps met).
 - 2026-02-18: TASK-05 complete. exception-runbooks-v1.md created with all four canonical exception state runbooks (Demand Shock, Cash Constraint, Quality Incident, Compliance/Safety Incident). Each includes trigger thresholds, owner/escalation, SLAs, required processes, mandatory artifacts, closure criteria. Precedence ordering established (Compliance=1 highest). Trigger overlap decision matrix included. VC-05-A/B/C addressed. TASK-06 now unblocked.
+- 2026-02-18: TASK-06 complete. audit-cadence-contract-v1.md created with 8-item weekly light-audit (S10 companion, ≤20 min) and 21-item monthly deep-audit (6 categories, ≤120 min). KPCs prompt extended with Section H template. startup-loop-workflow.user.md updated with audit reference note and monthly deep-audit Quick Actions row. REM task format defined. VC-06-A/B/C addressed. TASK-07 CHECKPOINT now next.
 
 ## What Would Make This >=90%
 - Complete TASK-00 and TASK-01 with no unresolved scope ambiguity.

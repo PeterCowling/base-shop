@@ -154,6 +154,8 @@ Before investing time in the next stage, answer these six questions. Each one is
 
 > **S10 denominator validity contract:** Weekly K/P/C/S decisions require denominator validity checks before issuing Scale or Kill. Five KPI families have explicit minimum denominators (Traffic trend ≥200 sessions/week; Lead CVR ≥100 visits + 10 leads; Booking/Purchase CVR ≥150 visits + 8 orders; CAC ≥10 conversions; Revenue/AOV ≥10 orders). If any selected KPI fails its threshold, the decision class is restricted to `Continue` or `Investigate` — `Scale` and `Kill` require all relevant denominators to pass. Full table in `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` (§ KPI Denominator Minimums) and `.claude/skills/lp-launch-qa/SKILL.md` (§ KPI Denominator Validity).
 
+> **Audit cadence contract:** Every S10 session includes a weekly light-audit (8 items, ≤20 min) appended as Section H to the KPCs decision document. A monthly deep-audit (21 items, ≤120 min) runs in the first week of each month, producing a `<YYYY-MM>-monthly-audit.user.md` per business. Any failed item creates a `REM-<BIZ>-<YYYYMMDD>-<n>` task with named owner and due date. If item A1 (Measurement active) fails, KPI signal is unreliable and decision class is restricted to `Continue` / `Investigate`. Full checklist: `docs/business-os/startup-loop/audit-cadence-contract-v1.md`.
+
 > **Bottleneck profile adapter contract:** S10 bottleneck diagnosis is business-model-aware when `business_model_profile` is set on the run context. Two profiles are supported: `hospitality-direct-booking` (adds `inquiry_to_quote_rate`, `quote_to_booking_rate`, `median_response_time`, `direct_ota_mix`, `cancellation_rate`, `review_velocity`) and `dtc-ecommerce` (adds `page_to_atc_rate`, `checkout_completion_rate`, `cac_by_cohort`, `refund_rate`, `support_load_per_100_orders`, `repeat_purchase_rate`). Profile primary primitives compete with base catalog metrics by miss magnitude; profile secondary derived metrics are deprioritised when a profile primary has severity ≥ moderate. Existing v1 snapshots without a profile remain valid. Full schema and examples in `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` (§§ 2A, 5, 11).
 
 ## Business Operator Actions
@@ -267,7 +269,8 @@ Use this table to find the right action for each stage. For prompt file paths an
 | Week-1/2 actuals are available or a major assumption has broken (S3) | Run the Forecast Recalibration prompt | Forecast recalibration document exists and is dated |
 | 3 or more candidate actions are competing for priority (S5) | Run the Prioritisation Scorer prompt | Prioritisation scorecard exists with top 2–3 items ranked |
 | Site upgrade brief is missing, stale, or points to a Draft (S6) | Run the Deep Research: Site Upgrade prompt | Site upgrade brief is at Active status with a valid latest pointer |
-| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt | This week's K/P/C/S decision document is dated and saved |
+| It is the weekly cadence checkpoint (S10) | Run the Weekly K/P/C/S Decision prompt (includes Section H weekly audit) | This week's K/P/C/S decision document is dated and saved; Section H audit completed |
+| It is the first week of the month | Run the monthly deep-audit checklist | `<YYYY-MM>-monthly-audit.user.md` exists for each active business; all REM tasks have owners |
 
 > **For prompt paths and output paths:** See the Engineering appendix → Prompt Hand-Off Map section.
 

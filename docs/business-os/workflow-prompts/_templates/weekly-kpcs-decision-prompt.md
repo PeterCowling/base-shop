@@ -79,4 +79,25 @@ CAP-06 rules:
 - If CAP-06 is active, PMF+, and repeat/referral denominator FAIL: output `retention-no-decision` for Scale and Kill on retention-referencing actions. Continue/Investigate permitted.
 - If CAP-06 is active, pre-PMF, and denominator below floor: output `cap-06-pre-pmf-deferral` (advisory only; weekly session proceeds normally).
 - Cancel/refund reason log check is always required once CAP-06 is active, regardless of stage.
+
+Section H — Weekly Audit Compliance (run after Sections A–G):
+
+After completing the KPCs decision, run the 8-item weekly light-audit. Append Section H to this document.
+
+| Item | Check | If FAIL |
+|---|---|---|
+| A1 Measurement active | Primary conversion event non-zero in last 7 days (standard reports, not Realtime) | Restrict Section A KPI validity note to unreliable; create REM task |
+| A2 S10 decision documented | This document exists, is dated, and is at the canonical output path | Resolve immediately; PASS if corrected in this session |
+| A3 Last-week action items reviewed | Every Section E item from last week has a disposition this week | List undisposed items; create REM task |
+| A4 Exception tickets checked | No open EXC-* ticket is past its acknowledgement SLA | Escalate to owner; create REM task |
+| A5 Capability contract not regressed | No active CAP status has regressed without a recorded decision | Create REM task to investigate |
+| A6 Forecast within recalibration window | Active forecast next_review_date is in the future | Create REM task: run recalibration within 5 business days |
+| A7 Prior Section G items have dispositions | All prior Section G data quality items are resolved or have open REM tasks | Carry forward to this Section G; create REM task if no owner |
+| A8 No ownerless exception tickets | Every open EXC-* ticket has a named owner | Assign owner immediately |
+
+Remediation task format: `REM-<BIZ>-<YYYYMMDD>-<n>`. Record all REM task IDs in Section H.
+
+Note on A1: If A1 fails, add a measurement-unreliability note to Section A. Restrict decision class to `Continue` / `Investigate` regardless of nominal KPI values until signal is restored.
+
+Full checklist specification (including monthly deep-audit): `docs/business-os/startup-loop/audit-cadence-contract-v1.md`.
 ```

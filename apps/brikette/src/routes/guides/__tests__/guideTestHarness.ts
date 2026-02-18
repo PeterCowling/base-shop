@@ -1,6 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
 import { renderRoute as renderTestRoute } from "@tests/renderers";
-import { vi } from "vitest";
 
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
@@ -61,12 +60,12 @@ type HarnessOptions = {
 
 const applyGuideMocks = () => {
   const mocks = ensureGuideMocks();
-  vi.doMock("@/utils/loadI18nNs", async () => {
-    const actual = (await vi.importActual<typeof import("@/utils/loadI18nNs")>("@/utils/loadI18nNs"));
+  jest.doMock("@/utils/loadI18nNs", async () => {
+    const actual = jest.requireActual<typeof import("@/utils/loadI18nNs")>("@/utils/loadI18nNs");
     const overrides = (globalThis as {
       __GUIDES_BACKEND_OVERRIDES__?: Record<string, unknown>;
     }).__GUIDES_BACKEND_OVERRIDES__;
-    const i18n = (await vi.importActual<typeof import("@/i18n")>("@/i18n")).default;
+    const i18n = (jest.requireActual<typeof import("@/i18n")>("@/i18n")).default;
     const seedOverride = (lang: string, namespaces: readonly string[] | string) => {
       if (!overrides) return false;
       const requested = Array.isArray(namespaces) ? namespaces : [namespaces];
@@ -93,24 +92,24 @@ const applyGuideMocks = () => {
       },
     };
   });
-  vi.doMock("@/components/guides/GenericContent", () => ({ __esModule: true, default: mocks.genericContent }));
-  vi.doMock("@/components/guides/RelatedGuides", () => ({ __esModule: true, default: mocks.relatedGuides }));
-  vi.doMock("@/components/guides/TagChips", () => ({ __esModule: true, default: mocks.tagChips }));
-  vi.doMock("@/components/guides/TableOfContents", () => ({ __esModule: true, default: mocks.tableOfContents }));
-  vi.doMock("@/components/guides/ImageGallery", () => ({ __esModule: true, default: mocks.imageGallery }));
-  vi.doMock("@/components/seo/BreadcrumbStructuredData", () => ({
+  jest.doMock("@/components/guides/GenericContent", () => ({ __esModule: true, default: mocks.genericContent }));
+  jest.doMock("@/components/guides/RelatedGuides", () => ({ __esModule: true, default: mocks.relatedGuides }));
+  jest.doMock("@/components/guides/TagChips", () => ({ __esModule: true, default: mocks.tagChips }));
+  jest.doMock("@/components/guides/TableOfContents", () => ({ __esModule: true, default: mocks.tableOfContents }));
+  jest.doMock("@/components/guides/ImageGallery", () => ({ __esModule: true, default: mocks.imageGallery }));
+  jest.doMock("@/components/seo/BreadcrumbStructuredData", () => ({
     __esModule: true,
     default: mocks.breadcrumbStructuredData,
   }));
-  vi.doMock("@/components/seo/GuidesTagsStructuredData", () => ({
+  jest.doMock("@/components/seo/GuidesTagsStructuredData", () => ({
     __esModule: true,
     default: mocks.guidesTagsStructuredData,
   }));
-  vi.doMock("@/components/seo/ArticleStructuredData", () => ({
+  jest.doMock("@/components/seo/ArticleStructuredData", () => ({
     __esModule: true,
     default: mocks.articleStructuredData,
   }));
-  vi.doMock("@/components/seo/GuideFaqJsonLd", () => ({ __esModule: true, default: mocks.guideFaqJsonLd }));
+  jest.doMock("@/components/seo/GuideFaqJsonLd", () => ({ __esModule: true, default: mocks.guideFaqJsonLd }));
 };
 
 const resolveRouteModule = async (guideKey: GuideKey): Promise<RouteModule> => {

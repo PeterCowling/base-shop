@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-00, TASK-01, TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 complete; Wave 6 eligible: TASK-08 (CHECKPOINT)
+Build-Progress: All 10 tasks complete (TASK-00..10). Plan Status: Complete.
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -97,7 +97,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 | TASK-05 | IMPLEMENT | Add assignment validator script/tests for completeness + enum safety | 82% | M | Complete (2026-02-18) | TASK-03, TASK-09 | TASK-07 |
 | TASK-06 | IMPLEMENT | Update dependent contracts, skills, prompt templates, operator docs, and supersede-now consumer files to v2 vocabulary | 80% | M | Complete (2026-02-18) | TASK-04, TASK-10 | TASK-08 |
 | TASK-07 | IMPLEMENT | Add regression checks for compatibility (addressing + generator + assignment lint + label rename correctness) | 82% | M | Complete (2026-02-18) | TASK-04, TASK-05, TASK-09 | TASK-08 |
-| TASK-08 | CHECKPOINT | Completion checkpoint — verify Option B label rename complete, supersede-now archive clean, all suites passing | 95% | S | Pending | TASK-06, TASK-07 | - |
+| TASK-08 | CHECKPOINT | Completion checkpoint — verify Option B label rename complete, supersede-now archive clean, all suites passing | 95% | S | Complete (2026-02-18) | TASK-06, TASK-07 | - |
 | TASK-09 | SPIKE | Write failing RED tests for stage-label rename before implementation (TDD gate for Option B) | 85% | S | Complete (2026-02-18) | TASK-02 | TASK-04, TASK-05, TASK-07 |
 | TASK-10 | INVESTIGATE | supersede-now consumer breakage audit — scan all v1 authoritative references, produce migration list | 88% | S | Complete (2026-02-18) | - | TASK-04, TASK-06 |
 
@@ -657,6 +657,13 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:**
   - updates this plan with checkpoint outcomes and next-wave decision.
+- **Build Evidence (2026-02-18):**
+  - Status: Complete
+  - Horizon assumption 1 (Option B label rename): CONFIRMED — scope = ZERO (TASK-09). All 17 stage labels (S0–S10) contain no deprecated workstream terminology. No label field changes were made. All labels resolve correctly via resolveByLabel (TC-07-05 PASS).
+  - Horizon assumption 2 (supersede-now archive clean): CONFIRMED — `rg process-registry-v1` in all 5 authoritative consumer files = 0 hits. v1 tombstone present: "ARCHIVED: Superseded by process-registry-v2.md as of 2026-02-18".
+  - Horizon assumption 3 (compatibility regressions): CONFIRMED — 33 test suites, 451 passed, 2 todo, 0 fail. TC-07-01..06 all pass.
+  - No downstream tasks — plan closes at this checkpoint.
+  - Plan Status: Complete.
 
 ### TASK-09: Write failing RED tests for stage-label rename (TDD gate for Option B)
 - **Type:** SPIKE
@@ -770,6 +777,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: /lp-replan complete (TASK-05). E2 evidence: generate-stage-operator-views.ts confirmed as near-complete template; `node --import tsx` hook confirmed; --check flag NOT needed for pure validators; all deps in place. TASK-05 confidence 76% → 82%. Execution hook acceptance clarified. No topology changes. TASK-05 ready for /lp-build.
 - 2026-02-18: TASK-05 complete. Validator (`validate-process-assignment.ts`) and tests (`validate-process-assignment.test.ts`) written following generate-stage-operator-views.ts template. 21/21 tests pass (TC-05-01..07). Live validator: 28/28 processes valid. `validate-process-assignment` npm script added to scripts/package.json. Wave 5 eligible: TASK-06 + TASK-07.
 - 2026-02-18: Wave 5 complete (TASK-06 + TASK-07). TASK-06: 5 consumer files re-pointed (25 replacements total); all Group 2/3 files clean — no changes needed; VC-06-01..06 all pass; rg scan zero hits. TASK-07: 163/163 tests pass, 0 fail — no additions needed; all TC-07-01..06 satisfied by existing test coverage. Wave 6 eligible: TASK-08 (CHECKPOINT).
+- 2026-02-18: TASK-08 CHECKPOINT complete. All 3 horizon assumptions validated. Option B label rename scope = ZERO (no changes needed). supersede-now archive clean (0 v1 hits in 5 consumer files). 33 suites, 451 tests pass. Plan Status: Complete.
 
 ## Overall-confidence Calculation
 - Effort weights: `S=1`, `M=2`, `L=3`

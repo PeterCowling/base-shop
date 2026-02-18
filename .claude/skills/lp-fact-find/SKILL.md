@@ -19,8 +19,6 @@ Do not embed long templates, long checklists, or API payload blocks here.
 
 ## Global Invariants
 
-Apply these rules in every run.
-
 ### Operating mode
 
 **FACT-FIND ONLY**

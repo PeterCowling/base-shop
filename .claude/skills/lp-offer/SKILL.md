@@ -48,8 +48,11 @@ Optional (enhances quality):
 1. Read `lp-readiness` output to understand offer clarity gaps
 2. Load business context from strategy docs
 3. Identify 3-5 direct competitors
-4. Extract competitor offerings, pricing, guarantees from websites
-5. Mine competitor reviews for customer pains and objections (use review sites, G2, Trustpilot, Amazon, etc.)
+4. **Dispatch ONE subagent per competitor in a SINGLE message (parallel).** Each subagent receives `.claude/skills/lp-offer/competitor-research-brief.md` as its brief. Subagents run read-only Mode A (analysis phase only — no file writes). Protocol: `_shared/subagent-dispatch-contract.md`.
+   - Hard limit: **200 words max per subagent output**
+   - If a subagent returns > 200 words: orchestrator truncates to structured schema fields, discards prose before synthesis
+   - If a subagent returns `status: fail`: quarantine result, continue with remaining, flag gap in Evidence Register
+5. Merge all structured extracts into the Evidence Register. Then proceed to Stage 2.
 
 ### Stage 2: Build Offer Artifact (DESIGN)
 
@@ -166,6 +169,8 @@ Top 5 objections with responses:
 ## Output Contract
 
 Produces single file: `docs/business-os/startup-baselines/<BIZ>-offer.md`
+
+**Artifact registry**: Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `offer`).
 
 **Structure**:
 1. Metadata frontmatter (YAML)

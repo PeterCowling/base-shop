@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-05 checkpoint; TASK-11, TASK-12 SPIKE precursors added)
+Last-updated: 2026-02-18 (TASK-08, TASK-10 complete)
 Feature-Slug: startup-loop-token-efficiency
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -92,9 +92,9 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 | TASK-05 | CHECKPOINT | Validate Wave 1 extractions; replan Wave 3 dispatch tasks | 95% | S | Complete (2026-02-18) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 78% | M | Pending | TASK-04, TASK-05 | - |
 | TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 73% | L | Pending | TASK-04, TASK-05, TASK-11 | - |
-| TASK-08 | IMPLEMENT | OPP-4: startup-loop S6B parallel secondary skill dispatch | 80% | S | Pending | TASK-04, TASK-05 | - |
+| TASK-08 | IMPLEMENT | OPP-4: startup-loop S6B parallel secondary skill dispatch | 80% | S | Complete (2026-02-18) | TASK-04, TASK-05 | - |
 | TASK-09 | IMPLEMENT | OPP-3b: lp-seo Phase 3 SERP intra-phase parallelism | 75% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-12 | - |
-| TASK-10 | IMPLEMENT | OPP-5: lp-offer competitor research parallel dispatch | 80% | S | Pending | TASK-04, TASK-05 | - |
+| TASK-10 | IMPLEMENT | OPP-5: lp-offer competitor research parallel dispatch | 80% | S | Complete (2026-02-18) | TASK-04, TASK-05 | - |
 | TASK-11 | SPIKE | Validate Model A parallel dispatch on minimal 2-task test | 85% | S | Pending | TASK-04, TASK-05 | TASK-07 |
 | TASK-12 | SPIKE | Validate WebSearch concurrent rate behavior (3-parallel) | 88% | S | Pending | TASK-03, TASK-04, TASK-05 | TASK-09 |
 
@@ -513,6 +513,12 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Revert the section edit
 - **Documentation impact:** None beyond skill file
 - **Notes / references:** TASK-08 depends on TASK-02 being complete (targeting cmd-advance.md, not SKILL.md directly). Since TASK-02 and TASK-08 are in different waves, this ordering is guaranteed.
+- **Status:** Complete (2026-02-18)
+- **Build evidence (2026-02-18):**
+  - TC-01: "parallel" and "simultaneously" both present in S6B section (2 matches) ✓
+  - TC-02: "lp-seo" and "draft-outreach" in same instruction block (3 matches in context window) ✓
+  - New section "### S6B Secondary Skill Dispatch" inserted after GATE-S6B-ACT-01 block; references `subagent-dispatch-contract.md`; requires single-message parallel Task dispatch; await-both-completions step explicit ✓
+  - lp-channels invocation and gate definitions untouched ✓
 
 ---
 
@@ -601,6 +607,12 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Revert lp-offer SKILL.md Stage 1; delete brief template
 - **Documentation impact:** None beyond skill files
 - **Notes / references:** P3 priority; simplest dispatch task in Wave 3. Good validation target for the dispatch contract since lp-offer SKILL.md (230 lines) is already well within context budget.
+- **Status:** Complete (2026-02-18)
+- **Build evidence (2026-02-18):**
+  - TC-01: `competitor-research-brief.md` exists; 34 lines (≤35 ✓); "200 words" cap present ✓
+  - TC-02: `lp-offer/SKILL.md` Stage 1 contains dispatch instruction; `competitor-research-brief.md` referenced by name ✓
+  - Stage 1 steps 4-5 replaced with parallel dispatch directive (single-message, Model A, 200-word hard cap, truncation rule, quarantine-on-fail) ✓
+  - `competitor-research-brief.md` contains all 6 required fields + output schema + "main context never receives raw web content" ✓
 
 ---
 

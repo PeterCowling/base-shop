@@ -169,6 +169,28 @@ Surface this gate when the business moves from channel strategy completion (plan
 
 ---
 
+### S6B Secondary Skill Dispatch (after lp-channels completes)
+
+**Trigger**: After `/lp-channels` produces a completed channel strategy artifact and the S6B stage doc is committed.
+
+**Do NOT alter**: the `/lp-channels` invocation itself, GATE-S6B-STRAT-01, or GATE-S6B-ACT-01.
+
+**Directive**: Dispatch `lp-seo` and `draft-outreach` in parallel simultaneously via the Task tool in a SINGLE message. Do not dispatch them sequentially — both must be launched in the same Task tool call batch.
+
+Protocol reference: `.claude/skills/_shared/subagent-dispatch-contract.md` (Model A — analysis phase; orchestrator applies diffs after both complete).
+
+**Required steps**:
+1. Confirm `/lp-channels` artifact is committed and S6B stage doc is updated.
+2. In a single message, spawn two Task tool calls in parallel:
+   - Task A: `/lp-seo` — SEO strategy for the business, scoped to S6B outputs.
+   - Task B: `draft-outreach` — outreach draft, scoped to S6B channel and offer artifacts.
+3. Await both completions before advancing S6B stage doc to Done.
+4. Synthesize both outputs into the S6B stage doc before triggering the S4 join barrier.
+
+**Blocked if**: either subagent returns `status: fail` — quarantine the failed result, flag in S6B stage doc, and surface to operator before advancing.
+
+---
+
 ## Business OS Sync Contract (Required Before Advance)
 
 For each stage, require appropriate sync actions:

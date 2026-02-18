@@ -5,7 +5,7 @@ Domain: Business-OS
 Workstream: Operations
 Created: 2026-02-18
 Last-updated: 2026-02-18
-Build-Progress: TASK-01 complete; Wave 2 partially eligible (TASK-02 runnable; TASK-00 is DECISION — needs plan/replan resolution)
+Build-Progress: TASK-00 + TASK-01 complete; routing to /lp-replan — Option B (label rename) + supersede-now expand scope; new TDD tasks expected
 Feature-Slug: startup-loop-orchestrated-os-comparison-v2
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -89,7 +89,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-00 | DECISION | Lock v2 scope boundary (stage-label scope + v1/v2 migration mode) | 84% | S | Pending (DECISION — not lp-build executable) | TASK-01 | TASK-04, TASK-06, TASK-07 |
+| TASK-00 | DECISION | Lock v2 scope boundary (stage-label scope + v1/v2 migration mode) | 84% | S | Complete (2026-02-18) | TASK-01 | TASK-04, TASK-06, TASK-07 |
 | TASK-01 | INVESTIGATE | Produce canonical vocabulary + assignment baseline artifact (terms, mappings, migration aliases) | 86% | S | Complete (2026-02-18) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Define `workstream-workflow-taxonomy-v2` contract | 82% | S | Pending | TASK-01 | TASK-03, TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Create machine-readable process assignment matrix (28 processes) | 82% | S | Pending | TASK-02 | TASK-04, TASK-05 |
@@ -605,6 +605,7 @@ This plan converts the v2 fact-find into an execution path that standardizes sta
 - 2026-02-18: Plan patched from reviewer feedback: dependency unblocking, workflow-phase semantics, source-of-truth/deprecation policy, schema-versioned matrix requirements, and measurable rollout criteria.
 - 2026-02-18: Plan patched again for consistency and enforcement: TASK-00/TASK-01 gating alignment, machine-readable taxonomy enum source, explicit transitional process-ID authority, activation field semantics/tests, CI rollout mode, and baseline observability protocol.
 - 2026-02-18: TASK-01 complete. Vocabulary/assignment baseline artifact produced at `artifacts/v2-vocabulary-and-assignment-baseline.md`. Wave 2 partially eligible: TASK-02 runnable; TASK-00 is DECISION type (requires plan/replan resolution before TASK-04/TASK-06/TASK-07 can proceed).
+- 2026-02-18: TASK-00 closed. Operator decisions: **Option B** (stage labels renamed this wave) + **`supersede-now`** (v2 immediately replaces v1, no coexist). Decision artifact at `decisions/v2-scope-boundary-decision.md`. Routing to /lp-replan to add TDD de-risking tasks for label rename and supersede-now scope expansion.
 
 ## Overall-confidence Calculation
 - Effort weights: `S=1`, `M=2`, `L=3`

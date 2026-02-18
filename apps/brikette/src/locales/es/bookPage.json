@@ -3,7 +3,11 @@
     "title": "Reserva tu estancia – Sitio oficial",
     "description": "Tarifas flexibles y no reembolsables. Pago seguro en nuestro motor de reservas oficial."
   },
-  "heading": "Reserva tu estancia",
+  "heading": "Reserva directa en Hostel Brikette, Positano",
+  "subheading": "Elige tus fechas y luego una habitación.",
+  "dealBanner": {
+    "applied": "Oferta aplicada: {{code}}"
+  },
   "roomLabel": "Habitación",
   "cta": {
     "flex": "Flexible – Ir al pago",

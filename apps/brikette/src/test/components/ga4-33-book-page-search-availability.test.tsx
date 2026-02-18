@@ -22,9 +22,12 @@ jest.mock("next/navigation", () => ({
 }));
 
 jest.mock("@/hooks/usePagePreload", () => ({ usePagePreload: () => {} }));
-jest.mock("@/components/seo/BookStructuredData", () => ({ __esModule: true, default: () => null }));
+jest.mock("@/components/seo/BookPageStructuredData", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/booking/DirectPerksBlock", () => ({ DirectPerksBlock: () => null }));
+jest.mock("@/components/booking/LocationInline", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/booking/PolicyFeeClarityPanel", () => ({ __esModule: true, default: () => null }));
+jest.mock("@/components/landing/SocialProofSection", () => ({ __esModule: true, default: () => null }));
+jest.mock("@/components/landing/FaqStrip", () => ({ __esModule: true, default: () => null }));
 jest.mock("@/components/rooms/RoomsSection", () => ({ __esModule: true, default: () => null }));
 
 const BookPageContent = require("@/app/[lang]/book/BookPageContent")

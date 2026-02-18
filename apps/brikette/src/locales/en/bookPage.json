@@ -1,9 +1,13 @@
 {
   "meta": {
-    "title": "Book your stay – Official site",
-    "description": "Flexible and Non‑Refundable rates. Secure checkout on our official booking engine."
+    "title": "Book Direct at Hostel Brikette Positano | Best Price + Free Breakfast",
+    "description": "Book direct and get our best rate with free breakfast, a complimentary evening drink, and no third-party fees. Official booking engine for Hostel Brikette, Positano."
   },
-  "heading": "Book your stay",
+  "heading": "Book Direct at Hostel Brikette, Positano",
+  "subheading": "Choose your dates, then pick a room.",
+  "dealBanner": {
+    "applied": "Deal applied: {{code}}"
+  },
   "roomLabel": "Room",
   "cta": {
     "flex": "Flexible – Go to checkout",

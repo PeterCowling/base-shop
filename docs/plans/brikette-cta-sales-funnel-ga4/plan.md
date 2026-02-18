@@ -4,7 +4,7 @@ Status: Active
 Domain: UI | Data
 Workstream: Mixed
 Created: 2026-02-15
-Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete; TASK-20 + TASK-21 complete; TASK-14 complete — Tier 1 ContentStickyCta pages pre-implemented and tests confirmed; TASK-13 now unblocked)
+Last-updated: 2026-02-18 (TASK-30, TASK-31, TASK-32, TASK-33, TASK-34, TASK-35, TASK-36, TASK-40, TASK-41 complete; TASK-20 + TASK-21 complete; TASK-14 complete — Tier 1 ContentStickyCta pages pre-implemented and tests confirmed; TASK-13 complete — /book page upgraded with conversion content + JSON-LD + deal banner; only TASK-38 + TASK-42 remain)
 Feature-Slug: brikette-cta-sales-funnel-ga4
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -176,7 +176,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-13 | IMPLEMENT | Upgrade /book page (conversion content + JSON-LD + deal banner + i18n) | 80% | L | Pending | TASK-20,TASK-29 | — |
+| TASK-13 | IMPLEMENT | Upgrade /book page (conversion content + JSON-LD + deal banner + i18n) | 80% | L | Complete (2026-02-18) | TASK-20,TASK-29 | — |
 | TASK-14 | IMPLEMENT | Add ContentStickyCta to guide/about/menu content pages (Link-based) | 80% | M | Complete (2026-02-18) | TASK-21,TASK-29 | — |
 | TASK-20 | INVESTIGATE | Lock /book JSON-LD field list + @type strategy + absolute URL source + snapshot-test plan | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-13 |
 | TASK-21 | INVESTIGATE | Content sticky CTA scope decision (pages + copy + Link-only approach) | 85% | S | Complete (2026-02-18) | TASK-29 | TASK-14 |
@@ -284,7 +284,7 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `apps/brikette/src/app/[lang]/book/BookPageContent.tsx`
   - `apps/brikette/src/app/[lang]/book/page.tsx`
@@ -322,6 +322,15 @@ Playwright smoke test (TASK-38) last — requires staging deploy after Wave 7.
   - Rollback: revert commit
 - **Documentation impact:** `docs/plans/brikette-cta-sales-funnel-ga4/fact-find.md` — mark Track A complete
 - **Notes:** Does not depend on TASK-12 (modal copy, superseded). Structured data strategy locked in TASK-20.
+- **Build evidence (2026-02-18):**
+  - `BookPageStructuredData.tsx` created: renders `BookStructuredData` (Hostel) + `FaqJsonLdScript` (FAQPage) + `FaqJsonLdScript` (BreadcrumbList) via `buildFaqJsonLd` + `buildBreadcrumbList`
+  - `BookPageContent.tsx` updated: imports `BookPageStructuredData` (replaces `BookStructuredData`); adds `SocialProofSection`, `FaqStrip`, `LocationInline`; deal banner (`?deal=` param → sticky bar); `deal` prop forwarded to `RoomsSection`
+  - `RoomsSection.tsx` updated: `deal?` prop extracted and passed into `buildOctorateUrl`
+  - `en/bookPage.json` updated: H1 "Book Direct at Hostel Brikette, Positano", meta.title, subheading, dealBanner.applied
+  - 5 non-EN locale files (de, es, fr, ar, da) updated with translated heading + new keys
+  - `ga4-book-page-structured-data.todo.test.tsx` → converted to live test: TC-BOOK-01 (Hostel+FAQPage+BreadcrumbList rendered), TC-BOOK-02 (no i18n key leakage for de/es)
+  - `ga4-33-book-page-search-availability.test.tsx` mocks updated for new component imports
+  - Test result: 5/5 pass (2 structured-data + 3 search-availability TCs)
 
 ---
 

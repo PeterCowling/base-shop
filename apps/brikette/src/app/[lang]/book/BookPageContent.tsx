@@ -10,9 +10,12 @@ import { useSearchParams } from "next/navigation";
 import { Section } from "@acme/design-system/atoms";
 
 import { DirectPerksBlock } from "@/components/booking/DirectPerksBlock";
+import LocationInline from "@/components/booking/LocationInline";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
+import FaqStrip from "@/components/landing/FaqStrip";
+import SocialProofSection from "@/components/landing/SocialProofSection";
 import RoomsSection from "@/components/rooms/RoomsSection";
-import BookStructuredData from "@/components/seo/BookStructuredData";
+import BookPageStructuredData from "@/components/seo/BookPageStructuredData";
 import { roomsData } from "@/data/roomsData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -65,11 +68,12 @@ function BookPageContent({ lang }: Props): JSX.Element {
   const { t } = useTranslation("bookPage", { lng: lang, useSuspense: true });
   usePagePreload({
     lang,
-    namespaces: ["bookPage", "roomsPage"],
-    optionalNamespaces: ["_tokens", "modals", "footer"],
+    namespaces: ["bookPage", "roomsPage", "landingPage", "faq"],
+    optionalNamespaces: ["_tokens", "modals", "footer", "testimonials", "ratingsBar", "dealsPage"],
   });
 
   const params = useSearchParams();
+  const deal = params?.get("deal") ?? null;
 
   const todayIso = useMemo(() => getTodayIso(), []);
 
@@ -151,7 +155,14 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
   return (
     <>
-      <BookStructuredData lang={lang} />
+      <BookPageStructuredData lang={lang} />
+
+      {deal ? (
+        <div className="sticky top-0 bg-brand-secondary px-4 py-2 text-center text-sm font-semibold text-neutral-900">
+          {t("dealBanner.applied", { defaultValue: `Deal applied: ${deal}`, replace: { code: deal } }) as string}
+        </div>
+      ) : null}
+
       <Section padding="default" className="mx-auto max-w-7xl">
         <h1 className="text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
           {t("heading")}
@@ -207,10 +218,13 @@ function BookPageContent({ lang }: Props): JSX.Element {
         </div>
       </Section>
 
+      <SocialProofSection lang={lang} />
+
       <RoomsSection
         lang={lang}
         itemListId="book_rooms"
         queryState="valid"
+        deal={deal ?? undefined}
         bookingQuery={{
           checkIn: checkin,
           checkOut: checkout,
@@ -221,8 +235,11 @@ function BookPageContent({ lang }: Props): JSX.Element {
 
       <Section padding="default" className="mx-auto max-w-7xl">
         <DirectPerksBlock lang={lang} className="mb-8 rounded-2xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm" />
+        <LocationInline lang={lang} />
         <PolicyFeeClarityPanel lang={lang} variant="hostel" />
       </Section>
+
+      <FaqStrip lang={lang} />
     </>
   );
 }

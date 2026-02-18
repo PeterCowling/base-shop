@@ -21,6 +21,9 @@ jest.mock("@acme/platform-core/dataRoot", () => ({
 jest.mock("fs/promises", () => ({
   readFile: (...args: any[]) => readFileMock(...args),
 }));
+jest.mock("node:fs/promises", () => ({
+  readFile: (...args: any[]) => readFileMock(...args),
+}));
 jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   updateShopInRepo: (...args: any[]) => updateShopInRepoMock(...args),
 }));
@@ -145,4 +148,3 @@ describe("updateDeployStatus", () => {
     consoleError.mockRestore();
   });
 });
-

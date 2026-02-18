@@ -71,10 +71,10 @@ describe("StockSchedulerEditor", () => {
     expect(updateStockScheduler).not.toHaveBeenCalled();
 
     expect(
-      await screen.findByText("Interval must be at least 1 millisecond."),
+      await screen.findByText(/Interval must be at least 1 millisecond.|cms\.stockScheduler\.interval\.min/i),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Enter an interval greater than zero."),
+      screen.getByText(/Enter an interval greater than zero.|cms\.stockScheduler\.interval\.invalidGreaterThanZero/i),
     ).toBeInTheDocument();
 
     await userEvent.type(interval, "5000");

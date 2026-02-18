@@ -1,8 +1,8 @@
 import type { SKU } from "@acme/types";
 
-import { default as ShopIndexPage,metadata } from "../page";
+import { default as ShopIndexPage, metadata } from "../page";
 
-const mockSkus: SKU[] = [
+const expectedSkus: SKU[] = [
   {
     id: "01H000000000000000000001",
     slug: "mock-sku-1",
@@ -34,7 +34,34 @@ const mockSkus: SKU[] = [
 const mockShopClient = jest.fn(() => null);
 
 jest.mock("@acme/platform-core/products", () => ({
-  PRODUCTS: mockSkus,
+  PRODUCTS: [
+    {
+      id: "01H000000000000000000001",
+      slug: "mock-sku-1",
+      title: "Mock SKU 1",
+      price: 1000,
+      deposit: 0,
+      stock: 5,
+      forSale: true,
+      forRental: false,
+      media: [],
+      sizes: ["M"],
+      description: "First mock SKU",
+    },
+    {
+      id: "01H000000000000000000002",
+      slug: "mock-sku-2",
+      title: "Mock SKU 2",
+      price: 2000,
+      deposit: 0,
+      stock: 8,
+      forSale: true,
+      forRental: false,
+      media: [],
+      sizes: ["L"],
+      description: "Second mock SKU",
+    },
+  ] satisfies SKU[],
 }));
 
 jest.mock("../ShopClient.client", () => ({
@@ -55,7 +82,7 @@ describe("ShopIndexPage", () => {
     const element = ShopIndexPage();
 
     expect(element.type).toBe(mockShopClient);
-    expect(element.props.skus).toBe(mockSkus);
-    expect(element.props).toEqual({ skus: mockSkus });
+    expect(element.props.skus).toEqual(expectedSkus);
+    expect(element.props).toEqual({ skus: expectedSkus });
   });
 });

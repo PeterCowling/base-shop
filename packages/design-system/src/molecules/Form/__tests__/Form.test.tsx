@@ -37,7 +37,7 @@ function TestForm({
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <input {...field} data-cy="username-input" />
+                <input {...(field as any)} data-cy="username-input" />
               </FormControl>
               <FormDescription>Enter your username</FormDescription>
               <FormMessage />
@@ -87,7 +87,7 @@ function ValidatedForm({
             <FormItem>
               <FormLabel required>Email</FormLabel>
               <FormControl>
-                <input {...field} data-cy="email-input" />
+                <input {...(field as any)} data-cy="email-input" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,7 +121,7 @@ function BlurValidationForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <input {...field} data-cy="name-input" />
+                <input {...(field as any)} data-cy="name-input" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -177,9 +177,9 @@ function ZodValidationForm({
               <FormLabel>Age</FormLabel>
               <FormControl>
                 <input
-                  {...field}
+                  {...(field as any)}
                   type="number"
-                  onChange={(e) => field.onChange(Number(e.target.value))}
+                  onChange={(e: any) => field.onChange(Number(e.target.value))}
                   data-cy="age-input"
                 />
               </FormControl>

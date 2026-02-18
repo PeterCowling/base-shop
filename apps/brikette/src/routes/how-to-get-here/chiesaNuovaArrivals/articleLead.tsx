@@ -12,6 +12,74 @@ import type { GuideExtras } from "./types";
 
 const MAP_REFERRER_POLICY: HTMLAttributeReferrerPolicy = "no-referrer-when-downgrade";
 
+function renderIntroSection(
+  intro: string[],
+  image: { src: string; alt: string; caption?: string } | undefined,
+): JSX.Element | null {
+  if (intro.length === 0 && !image) return null;
+
+  return (
+    <div className="space-y-4">
+      {intro.map((paragraph) => (
+        <p key={paragraph} className="leading-relaxed">
+          {paragraph}
+        </p>
+      ))}
+      {image ? (
+        <figure className="overflow-hidden rounded-2xl border border-brand-outline/20 shadow-sm">
+          <CfImage
+            src={image.src}
+            preset="gallery"
+            alt={image.alt}
+            className="size-full object-cover"
+            data-aspect="4/3"
+          />
+          {image.caption ? (
+            <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-text/80">
+              {image.caption}
+            </figcaption>
+          ) : null}
+        </figure>
+      ) : null}
+    </div>
+  );
+}
+
+function renderCustomSections(
+  sections: Array<{ id: string; title: string; body: string[] }>,
+  context: GuideSeoTemplateContext,
+): JSX.Element[] {
+  return sections
+    .filter((section) => {
+      const isDuplicateOfGeneric =
+        (context.renderGenericContent ?? true) &&
+        Array.isArray(context.sections) &&
+        context.sections.some((s) => s?.id === section.id);
+      return !isDuplicateOfGeneric;
+    })
+    .map((section) => {
+      const isStubAnchor = typeof section.id === "string" && section.id.endsWith("-stub");
+      return (
+        <section key={section.id} id={section.id} className="space-y-5">
+          {isStubAnchor ? (
+            <div aria-hidden="true" className="sr-only">
+              {section.title}
+            </div>
+          ) : (
+            <h2 className="text-pretty text-3xl font-semibold tracking-tight">{section.title}</h2>
+          )}
+          <div className="space-y-4">
+            {section.body.map((paragraph) => (
+              <p key={paragraph} className="leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        </section>
+      );
+    });
+}
+
 export function renderArticleLead(context: GuideSeoTemplateContext, extras: GuideExtras): JSX.Element {
   const {
     intro,
@@ -41,72 +109,19 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
     (kneesDockPrefix && kneesDockLinkText) ||
     (kneesPorterPrefix && kneesPorterLinkText);
 
+  const introSection = renderIntroSection(intro, image);
+  const customSections = renderCustomSections(sections, context);
+
   return (
     <div className="space-y-12">
-      {intro.length > 0 || image ? (
-        <div className="space-y-4">
-          {intro.map((paragraph, index) => (
-            <p key={index} className="leading-relaxed">
-              {paragraph}
-            </p>
-          ))}
-          {image ? (
-            <figure className="overflow-hidden rounded-2xl border border-brand-outline/20 shadow-sm">
-              <CfImage
-                src={image.src}
-                preset="gallery"
-                alt={image.alt}
-                className="size-full object-cover"
-                data-aspect="4/3"
-              />
-              {image.caption ? (
-                <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/70 dark:bg-brand-surface/70 dark:text-brand-text/80">
-                  {image.caption}
-                </figcaption>
-              ) : null}
-            </figure>
-          ) : null}
-        </div>
-      ) : null}
+      {introSection}
 
       {/* Render a local Table of Contents when items are provided. */}
       {Array.isArray(tocItems) && tocItems.length > 0 ? (
         <TableOfContents title={tocTitle} items={tocItems} />
       ) : null}
 
-      {sections.map((section) => {
-        const isDuplicateOfGeneric =
-          (context.renderGenericContent ?? true) &&
-          Array.isArray(context.sections) &&
-          context.sections.some((s) => s?.id === section.id);
-        if (isDuplicateOfGeneric) return null;
-
-        return (
-          <section key={section.id} id={section.id} className="space-y-5">
-            {(() => {
-              const isStubAnchor = typeof section.id === "string" && section.id.endsWith("-stub");
-              if (isStubAnchor) {
-                // Provide an anchor target without creating a second visible H2.
-                return (
-                  <div aria-hidden="true" className="sr-only">
-                    {section.title}
-                  </div>
-                );
-              }
-              return (
-                <h2 className="text-pretty text-3xl font-semibold tracking-tight">{section.title}</h2>
-              );
-            })()}
-            <div className="space-y-4">
-              {section.body.map((paragraph, index) => (
-                <p key={index} className="leading-relaxed">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </section>
-        );
-      })}
+      {customSections}
 
       {beforeList.length > 0 ? (
         <section id="before" className="space-y-4">
@@ -114,8 +129,8 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
             {readLabel("toc.before") ?? labels.before}
           </h2>
           <ul className="list-disc space-y-2 pl-5">
-            {beforeList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+            {beforeList.map((item) => (
+              <li key={item} className="leading-relaxed">
                 {item}
               </li>
             ))}
@@ -129,8 +144,8 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
             {stepsHeading}
           </h2>
           <ol className="list-decimal space-y-2 pl-5">
-            {stepsList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+            {stepsList.map((item) => (
+              <li key={item} className="leading-relaxed">
                 {item}
               </li>
             ))}
@@ -159,8 +174,8 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
             {readLabel("toc.knees") ?? labels.knees}
           </h2>
           <ul className="list-disc space-y-2 pl-5">
-            {kneesList.map((item, index) => (
-              <li key={index} className="leading-relaxed">
+            {kneesList.map((item) => (
+              <li key={item} className="leading-relaxed">
                 {item}
               </li>
             ))}
@@ -198,7 +213,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
           <div className="space-y-3">
             {faqs.map((faq, index) => (
               <details
-                key={index}
+                key={faq.q}
                 className="rounded-lg border border-brand-outline/20 bg-brand-surface/80 p-4 shadow-sm transition hover:border-brand-primary/40 dark:border-brand-outline/40 dark:bg-brand-surface/30"
               >
                 <summary className="cursor-pointer text-base font-semibold text-brand-heading outline-none transition focus-visible:ring-2 focus-visible:ring-brand-primary/60 focus-visible:ring-offset-2 dark:text-brand-text">
@@ -206,7 +221,7 @@ export function renderArticleLead(context: GuideSeoTemplateContext, extras: Guid
                 </summary>
                 <div className="mt-3 space-y-3">
                   {faq.a.map((answer, answerIndex) => (
-                    <p key={answerIndex} className="leading-relaxed">
+                    <p key={`faq-${index}-answer-${answerIndex}`} className="leading-relaxed">
                       {answer}
                     </p>
                   ))}

@@ -239,7 +239,7 @@ export function GenericContentFaqSection({
       <div className="space-y-4">
         {effectiveFaqs.map((item, index) => (
           <details
-            key={index}
+            key={item.q}
             className="overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface/40 shadow-sm transition-shadow hover:shadow-md dark:border-brand-outline/40 dark:bg-brand-bg/60"
           >
             <summary className="px-4 py-3 text-lg font-semibold leading-snug text-brand-heading sm:text-xl">
@@ -248,7 +248,7 @@ export function GenericContentFaqSection({
             {Array.isArray(item.a) ? (
               <div className="space-y-3 px-4 pb-4 pt-1 text-base leading-relaxed text-brand-text/90 sm:text-lg">
                 {item.a.map((answer, answerIndex) => (
-                  <p key={answerIndex}>
+                  <p key={`${guideKey}-faq-${index}-answer-${answerIndex}`}>
                     {renderTokens(answer, `${guideKey}-faq-${index}-answer-${answerIndex}`)}
                   </p>
                 ))}

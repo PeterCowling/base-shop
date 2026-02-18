@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "declarationDir": null,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "rootDir": "../..",
+    "verbatimModuleSyntax": false
+  },
+  "include": [
+    "src/molecules/Form/__tests__/**/*.ts",
+    "src/molecules/Form/__tests__/**/*.tsx"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}

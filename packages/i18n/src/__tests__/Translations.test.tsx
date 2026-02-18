@@ -195,7 +195,7 @@ describe("TranslationsProvider and useTranslations", () => {
     );
 
     const { result } = renderHook(() => useTranslations(), { wrapper });
-    expect(result.current("greet", { name: undefined })).toBe("Hi undefined");
+    expect(result.current("greet", { name: undefined as unknown as string })).toBe("Hi undefined");
   });
 
   it("preserves context and translator on identical re-renders", () => {
@@ -243,7 +243,7 @@ describe("TranslationsProvider and useTranslations", () => {
     };
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider
-        messages={{ rich: <strong>Hi</strong>, plain: "Hello" }}
+        messages={{ rich: <strong>Hi</strong>, plain: "Hello" } as unknown as Record<string, string>}
       >
         {children}
       </TranslationsProvider>

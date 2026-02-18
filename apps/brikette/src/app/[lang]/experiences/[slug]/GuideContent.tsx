@@ -3,7 +3,7 @@
 
 // src/app/[lang]/experiences/[slug]/GuideContent.tsx
 // Client component for guide pages (App Router version)
-import { memo, useEffect, useState } from "react";
+import { memo, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -91,10 +91,12 @@ function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
           </div>
         ) : (
           <GuideBoundary guideKey={guideKey}>
-            <GuideSeoTemplate
-              guideKey={guideKey}
-              metaKey={metaKey}
-            />
+            <Suspense fallback={null}>
+              <GuideSeoTemplate
+                guideKey={guideKey}
+                metaKey={metaKey}
+              />
+            </Suspense>
           </GuideBoundary>
         )}
       </div>

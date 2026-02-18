@@ -3,13 +3,13 @@
 
 import { type ChangeEvent, memo, type Ref, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/primitives";
 import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 import { resolveBookingDateFormat } from "@acme/ui/utils/bookingDateFormat";
 
-import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
 import { fireCtaClick } from "@/utils/ga4-events";
 
@@ -93,7 +93,7 @@ const BookingWidget = memo(function BookingWidget({
   sectionRef,
   checkInRef,
 }: BookingWidgetProps): JSX.Element {
-  const { openModal } = useOptionalModal();
+  const router = useRouter();
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t: tModals } = useTranslation("modals", translationOptions);
   const { t: tTokens } = useTranslation("_tokens", translationOptions);
@@ -183,12 +183,14 @@ const BookingWidget = memo(function BookingWidget({
       return;
     }
     fireCtaClick({ ctaId: "booking_widget_check_availability", ctaLocation: "home_booking_widget" });
-    openModal("booking", {
-      checkIn: checkIn || undefined,
-      checkOut: checkOut || undefined,
-      adults: guests,
-    });
-  }, [checkIn, checkOut, guests, invalidRange, openModal]);
+    const effectiveLang = lang ?? "en";
+    const params = new URLSearchParams();
+    if (checkIn) params.set("checkin", checkIn);
+    if (checkOut) params.set("checkout", checkOut);
+    params.set("pax", String(guests));
+    const qs = params.toString();
+    router.push(`/${effectiveLang}/book${qs ? `?${qs}` : ""}`);
+  }, [checkIn, checkOut, guests, invalidRange, lang, router]);
 
   const errorMessage = tLanding("bookingWidget.invalidDateRange") as string;
   const minCheckIn = today ?? undefined;

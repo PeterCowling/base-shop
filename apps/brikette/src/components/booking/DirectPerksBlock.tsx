@@ -46,8 +46,8 @@ export function DirectPerksBlock({ lang, className }: DirectPerksBlockProps): JS
         {heading}
       </h3>
       <ul className="space-y-1.5">
-        {items.map((item, index) => (
-          <li key={index} className="flex items-start text-sm text-brand-text/80">
+        {items.map((item) => (
+          <li key={item} className="flex items-start text-sm text-brand-text/80">
             <span className="me-2 mt-0.5 text-brand-secondary">✓</span>
             <span>{item}</span>
           </li>

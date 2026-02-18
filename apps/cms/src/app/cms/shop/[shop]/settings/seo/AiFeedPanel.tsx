@@ -88,7 +88,7 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
             </TableHeader>
             <TableBody>
               {filtered.map((e, idx) => (
-                <TableRow key={idx}>
+                <TableRow key={e.timestamp ?? `event-${idx}`}>
                   <TableCell>{formatTimestamp(e.timestamp as string)}</TableCell>
                   <TableCell>{String(e.status)}</TableCell>
                 </TableRow>

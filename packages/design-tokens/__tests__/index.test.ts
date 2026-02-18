@@ -5,7 +5,7 @@ import { disabledColors } from "../src/core/disabled.ts";
 
 describe("designTokens Tailwind plugin", () => {
   it("exposes the expected Tailwind theme extensions", () => {
-    const pluginInstance = designTokens();
+    const pluginInstance = (designTokens as unknown as () => any)();
 
     const theme = (pluginInstance as any).config?.theme?.extend ?? {};
     const colors = theme.colors ?? {};
@@ -59,7 +59,7 @@ describe("designTokens Tailwind plugin", () => {
   });
 
   it("registers a noop Tailwind plugin handler", () => {
-    const pluginInstance = designTokens();
+    const pluginInstance = (designTokens as unknown as () => any)();
 
     expect(typeof pluginInstance.handler).toBe("function");
 

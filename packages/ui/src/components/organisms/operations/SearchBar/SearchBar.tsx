@@ -223,8 +223,8 @@ export function SearchBar({
             )}
           </div>
           <ul className="max-h-60 overflow-y-auto py-1">
-            {recentSearches.map((search, index) => (
-              <li key={index}>
+            {recentSearches.map((search) => (
+              <li key={search}>
                 <button
                   type="button"
                   onClick={() => handleSelectRecent(search)}

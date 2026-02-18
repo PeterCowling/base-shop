@@ -56,9 +56,7 @@ Signal:
 - Forecast seed created (`docs/business-os/startup-baselines/BRIK-forecast-seed.user.md`).
 - Prioritization scorecard published (`2026-02-13-prioritization-scorecard.user.md`).
 - Production measurement verification document published and updated with Data API extraction (`2026-02-13-measurement-verification.user.md`).
-- P1 execution routing packet activated for GA4 verification + baseline lock:
-  - `docs/plans/brik-ga4-baseline-lock/fact-find.md`
-  - `docs/plans/brik-ga4-baseline-lock/plan.md`
+- GA4 verification + baseline lock work is tracked in `docs/business-os/strategy/BRIK/2026-02-13-measurement-verification.user.md` (Status: Active). No separate plan file exists for this work stream — the measurement-verification artifact is the canonical checkpoint for P1 GA4 baseline tracking.
 
 Noise:
 - Traffic baseline exists, but funnel/performance events are still zero.

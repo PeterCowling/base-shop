@@ -2,6 +2,7 @@
 // apps/cover-me-pretty/src/app/account/orders/[id]/MobileReturnLink.tsx
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import QRCode from "qrcode";
 
 import { useTranslations } from "@acme/i18n";
@@ -15,9 +16,9 @@ export function MobileReturnLink() {
   }, []);
   return (
     <div className="space-y-2">
-      <a href="/returns/mobile" className="inline-flex min-h-11 min-w-11 items-center text-primary underline px-2">
+      <Link href="/returns/mobile" className="inline-flex min-h-11 min-w-11 items-center text-primary underline px-2">
         {t("returns.mobile.link")}
-      </a>
+      </Link>
       {qr && (
         <Image
           src={qr}

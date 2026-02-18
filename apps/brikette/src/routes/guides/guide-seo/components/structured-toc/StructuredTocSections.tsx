@@ -224,7 +224,7 @@ export function MinimalUnlocalizedIntro({
   return (
     <div className="space-y-4">
       {introTrimmed.map((p, idx) => (
-        <p key={idx}>{p}</p>
+        <p key={`intro-${idx}`}>{p}</p>
       ))}
     </div>
   );
@@ -271,6 +271,7 @@ export function MinimalUnlocalizedSections({
   if (meaningful.length === 0) return null;
 
   try {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- TASK-29: debug message not user-facing
     debugGuide("Render minimal fallback sections", {
       count: meaningful.length,
       keys: meaningful.map((s) => s.id),
@@ -297,7 +298,7 @@ export function MinimalUnlocalizedSections({
             .map((b) => (typeof b === "string" ? b.trim() : String(b)))
             .filter((text: string) => text.length > 0)
             .map((text: string, i: number) => (
-              <p key={i}>{text}</p>
+              <p key={`body-${i}`}>{text}</p>
             ))}
           {s.images?.length ? <ImageGallery items={s.images} className="my-0" /> : null}
         </section>

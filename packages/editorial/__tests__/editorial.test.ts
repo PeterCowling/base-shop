@@ -17,7 +17,7 @@ describe('@acme/editorial', () => {
     const editorial = require('../src/index');
     const posts = await editorial.fetchPublishedPosts('demo');
     expect(Array.isArray(posts)).toBe(true);
-    const slugs = posts.map(p => p.slug);
+    const slugs = posts.map((p: { slug: string }) => p.slug);
     expect(slugs).toContain('hello-world');
   });
 

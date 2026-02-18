@@ -132,7 +132,7 @@ describe("faqJsonLd (TC-06)", () => {
     const result = faqJsonLd([
       { question: "What is this?", answer: "A test" },
       { question: "How does it work?", answer: "Like magic" },
-    ]);
+    ])!;
     expect(result["@context"]).toBe("https://schema.org");
     expect(result["@type"]).toBe("FAQPage");
     const entities = result.mainEntity as Array<Record<string, unknown>>;
@@ -155,7 +155,7 @@ describe("breadcrumbJsonLd (TC-07)", () => {
     const result = breadcrumbJsonLd([
       { name: "Home", url: "https://example.com/" },
       { name: "Rooms", url: "https://example.com/rooms/" },
-    ]);
+    ])!;
     expect(result["@context"]).toBe("https://schema.org");
     expect(result["@type"]).toBe("BreadcrumbList");
     const items = result.itemListElement as Array<Record<string, unknown>>;

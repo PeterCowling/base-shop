@@ -52,8 +52,8 @@ function EventInfo({ date, location, tips = [], className = "", lang: explicitLa
       ) : null}
       {safeTips.length > 0 ? (
         <ul className="mt-3 list-disc pl-5 text-sm text-secondary">
-          {safeTips.map((t, i) => (
-            <li key={i}>{t}</li>
+          {safeTips.map((t) => (
+            <li key={t}>{t}</li>
           ))}
         </ul>
       ) : null}

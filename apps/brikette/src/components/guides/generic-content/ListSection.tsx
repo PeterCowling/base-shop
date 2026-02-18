@@ -18,7 +18,7 @@ export function ListSection({ id, title, items, renderItem }: ListSectionProps):
       <SectionHeading>{title}</SectionHeading>
       <ul className="space-y-3">
         {items.map((item, index) => (
-          <li key={index}>{renderItem(item, index)}</li>
+          <li key={item}>{renderItem(item, index)}</li>
         ))}
       </ul>
     </section>

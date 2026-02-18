@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable ds/no-hardcoded-copy, ds/absolute-parent-guard, ds/no-nonlayered-zindex -- BRIK-2145 [ttl=2026-12-31] Temporary CTA variant copy/layout override during funnel experiment. */
 
 // apps/brikette/src/components/cta/ContentStickyCta.tsx
 // Sticky CTA Variant A for content pages - opens BookingModal (generic availability)
@@ -6,11 +7,10 @@
 
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
 
 import { Section } from "@acme/design-system/atoms";
-import { useModal } from "@acme/ui/context/ModalContext";
-import { i18nConfig } from "@acme/ui/i18n.config";
 import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 import type { AppLanguage } from "@/i18n.config";
@@ -29,7 +29,7 @@ type ContentStickyCtaProps = {
 function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Element | null {
   const { t, ready } = useTranslation(undefined, { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
-  const { openModal } = useModal();
+  const router = useRouter();
 
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -130,9 +130,8 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
       ctaLocation,
     });
 
-    // Open BookingModal with sticky_cta source
-    openModal("booking", { source: "sticky_cta" });
-  }, [ctaLocation, openModal]);
+    router.push(`/${lang}/book`);
+  }, [ctaLocation, router, lang]);
 
   if (isDismissed) {
     return null;

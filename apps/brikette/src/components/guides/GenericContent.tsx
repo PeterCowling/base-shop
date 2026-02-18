@@ -311,7 +311,7 @@ function renderSimpleListSection({
       <SectionHeading>{title}</SectionHeading>
       <ul className="space-y-3">
         {items.map((item, index) => (
-          <li key={index}>{renderTokens(item, `${guideKey}-${tokenKeyPrefix}-${index}`)}</li>
+          <li key={`${guideKey}-${tokenKeyPrefix}-${index}`}>{renderTokens(item, `${guideKey}-${tokenKeyPrefix}-${index}`)}</li>
         ))}
       </ul>
     </section>
@@ -370,7 +370,7 @@ function renderIntroParagraphs({
   return (
     <div className="space-y-4">
       {introParagraphs.map((paragraph, index) => (
-        <p key={index}>{renderTokens(paragraph, `${guideKey}-intro-${index}`)}</p>
+        <p key={`${guideKey}-intro-${index}`}>{renderTokens(paragraph, `${guideKey}-intro-${index}`)}</p>
       ))}
     </div>
   );

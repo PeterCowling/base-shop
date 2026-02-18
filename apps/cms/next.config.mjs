@@ -239,6 +239,29 @@ const nextConfig = {
       "@": path.resolve(__dirname, "src"),
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../../packages/themes"),
+      // Subpath aliases for theme packages that have no dist/ in CI and no
+      // build script. Aliasing only the consumed subpath avoids the OOM risk
+      // of adding the whole package to transpilePackages.
+      "@themes/bcd/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/bcd/src/tailwind-tokens.ts",
+      ),
+      "@themes/brandx/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/brandx/src/tailwind-tokens.ts",
+      ),
+      "@themes/dark/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dark/src/tailwind-tokens.ts",
+      ),
+      "@themes/dummy/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/dummy/src/tailwind-tokens.ts",
+      ),
+      "@themes/prime/tailwind-tokens": path.resolve(
+        __dirname,
+        "../../packages/themes/prime/src/tailwind-tokens.ts",
+      ),
       "@acme/configurator": path.resolve(
         __dirname,
         "../../packages/configurator/src",

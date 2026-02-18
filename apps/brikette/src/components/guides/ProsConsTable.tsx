@@ -18,8 +18,8 @@ function ProsConsTable({ rows, className = "" }: Props): JSX.Element | null {
           </tr>
         </thead>
         <tbody>
-          {rows.map((r, i) => (
-            <tr key={i}>
+          {rows.map((r) => (
+            <tr key={r.title}>
               <td className="border border-2 p-2 align-top">
                 <strong>
                   {r.href ? (
@@ -37,15 +37,15 @@ function ProsConsTable({ rows, className = "" }: Props): JSX.Element | null {
               </td>
               <td className="border border-2 p-2 align-top">
                 <ul className="list-disc pl-4">
-                  {r.pros.map((p, j) => (
-                    <li key={j}>{p}</li>
+                  {r.pros.map((p) => (
+                    <li key={p}>{p}</li>
                   ))}
                 </ul>
               </td>
               <td className="border border-2 p-2 align-top">
                 <ul className="list-disc pl-4">
-                  {r.cons.map((c, j) => (
-                    <li key={j}>{c}</li>
+                  {r.cons.map((c) => (
+                    <li key={c}>{c}</li>
                   ))}
                 </ul>
               </td>

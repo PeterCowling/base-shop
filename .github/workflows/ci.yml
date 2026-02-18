@@ -259,6 +259,12 @@ jobs:
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
         run: pnpm exec turbo run typecheck --affected
+      - name: Typecheck tests (Phase-1 packages)
+        run: |
+          set -e
+          for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo; do
+            TYPECHECK_FILTER="$pkg" node scripts/typecheck-tests.mjs
+          done
 
   test:
     name: Unit tests

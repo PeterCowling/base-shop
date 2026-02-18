@@ -20,6 +20,7 @@ export const loadGuidesLocaleResource = async (
 ): Promise<unknown | undefined> => {
   try {
     const filePath = path.join(LOCALES_DIR, lang, `${ns}.json`);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- BRIK-2145 Path constructed from validated lang/ns parameters and known locales directory structure; used in SSG build only
     const content = fs.readFileSync(filePath, "utf-8");
     return JSON.parse(content);
   } catch {

@@ -555,7 +555,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - `docs/testing-policy.md` updated: Email Draft Pipeline section added with governed runner command, metric interpretation guide.
   - Controlled scope contraction: `data/test-fixtures/draft-pipeline/` omitted (inline TypeScript fixtures), `package.json` omitted (governed runner needs no new script).
   - Green: 13/13 tests passing in new suite; Refactor: 165/165 passing across 6 suites — zero regressions.
-  - Commit: `[pending]` — 3 files changed.
+  - Commit: `3d9550d3e7` — feat(email-quality): TASK-09 — pipeline evaluation harness + command contract; 3 files changed, 444 insertions, 4 deletions.
 
 ### TASK-10: Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope
 - **Type:** CHECKPOINT

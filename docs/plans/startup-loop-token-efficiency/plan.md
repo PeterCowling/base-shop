@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (TASK-01 complete)
+Last-updated: 2026-02-18 (TASK-01, TASK-02, TASK-03, TASK-04 complete)
 Feature-Slug: startup-loop-token-efficiency
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
@@ -86,9 +86,9 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | OPP-A: Split stage-doc-operations.md (core/templates/integration) | 80% | S | Complete (2026-02-18) | - | TASK-05 |
-| TASK-02 | IMPLEMENT | EFF-1: startup-loop command-specific modules | 82% | M | Pending | - | TASK-05 |
-| TASK-03 | IMPLEMENT | OPP-3a: lp-seo phase modules + phase-base-contract | 82% | M | Pending | - | TASK-05, TASK-09 |
-| TASK-04 | IMPLEMENT | OPP-B: Author _shared/subagent-dispatch-contract.md | 82% | S | Pending | - | TASK-05 |
+| TASK-02 | IMPLEMENT | EFF-1: startup-loop command-specific modules | 82% | M | Complete (2026-02-18) | - | TASK-05 |
+| TASK-03 | IMPLEMENT | OPP-3a: lp-seo phase modules + phase-base-contract | 82% | M | Complete (2026-02-18) | - | TASK-05, TASK-09 |
+| TASK-04 | IMPLEMENT | OPP-B: Author _shared/subagent-dispatch-contract.md | 82% | S | Complete (2026-02-18) | - | TASK-05 |
 | TASK-05 | CHECKPOINT | Validate Wave 1 extractions; replan Wave 3 dispatch tasks | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-06 | IMPLEMENT | OPP-2: lp-launch-qa domain modules + parallel orchestrator | 72% | M | Pending | TASK-04, TASK-05 | - |
 | TASK-07 | IMPLEMENT | OPP-1: lp-build wave dispatch (Model A) | 70% | L | Pending | TASK-04, TASK-05 | - |
@@ -173,7 +173,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `.claude/skills/startup-loop/SKILL.md` (restructured to thin router)
   - `.claude/skills/startup-loop/modules/cmd-start.md` (new)
@@ -211,6 +211,11 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Restore original SKILL.md from git; delete modules directory
 - **Documentation impact:** None beyond the skill files themselves
 - **Notes / references:** Gate logic split is the key risk; gate names are defined in loop-spec.yaml (the authority), not in SKILL.md. Module split must preserve all gate references.
+- **Build evidence (2026-02-18):**
+  - TC-01: `startup-loop/SKILL.md` = 109 lines (≤120 ✓)
+  - TC-02: Gate names (GATE-BD-00, GATE-BD-01, GATE-BD-03, GATE-BD-08, GATE-S6B-STRAT-01, GATE-S6B-ACT-01, Gate A, Gate B, Gate C) all present in at least one module file ✓
+  - TC-03: loop-spec.yaml gates (GATE-BD-00, GATE-BD-03, GATE-S6B-STRAT-01, GATE-S6B-ACT-01) all covered in cmd-advance.md; GATE-MEAS-01 confirmed superseded by v1.5.0 split (comment in loop-spec.yaml) → not orphaned ✓; GATE-BD-01 and GATE-BD-08 preserved in cmd-advance.md from original SKILL.md ✓
+  - TC-04: 4 module files present (cmd-start.md, cmd-status.md, cmd-submit.md, cmd-advance.md) ✓
 
 ---
 
@@ -222,7 +227,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `.claude/skills/lp-seo/SKILL.md` (restructured to thin orchestrator)
   - `.claude/skills/lp-seo/modules/phase-base-contract.md` (new)
@@ -263,6 +268,11 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Restore original SKILL.md from git; delete modules directory
 - **Documentation impact:** TASK-09 (OPP-3b) depends on TASK-03 phase modules being in place before SERP parallelism is added
 - **Notes / references:** Phase 3 module is specifically called out as OPP-3b target in TASK-09; do not pre-implement SERP dispatch here — that is TASK-09's scope.
+- **Build evidence (2026-02-18):**
+  - TC-01: `lp-seo/SKILL.md` = 66 lines (≤120 ✓)
+  - TC-02: `phase-base-contract.md` = 39 lines (≤40 ✓)
+  - TC-03: All 5 phase files within 220-line limit: phase-1=106, phase-2=104, phase-3=155, phase-4=208, phase-5=191 ✓
+  - TC-04: All 5 phase modules (phase-1 through phase-5) reference `phase-base-contract.md` via `**Loads**` header ✓
 
 ---
 
@@ -274,7 +284,7 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:**
   - `.claude/skills/_shared/subagent-dispatch-contract.md` (new)
 - **Depends on:** -
@@ -307,6 +317,10 @@ Every startup loop stage currently runs as a single-agent, sequential prompt exe
   - Rollback: Delete the file; no side effects
 - **Documentation impact:** All future parallel dispatch skills should reference this contract. Note in MEMORY.md if confirmed stable.
 - **Notes / references:** The contract must be self-contained — each dispatch skill loads it directly, not via another BOS integration wrapper.
+- **Build evidence (2026-02-18):**
+  - TC-01: `subagent-dispatch-contract.md` = 69 lines (50–70 ✓)
+  - TC-02: 7 matches for required terms (Model A, touched_files, synthesis, concurrency) ✓
+  - All 6 required sections present: output schema, writer-lock model, budget controls, quality guardrails, failure handling, return-only-deltas ✓
 
 ---
 

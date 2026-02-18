@@ -26,6 +26,13 @@ import { formatError, jsonResult } from "../utils/validation.js";
 
 import type { ToolCallResult, ToolErrorCode } from "./policy.js";
 
+// STARTUP_LOOP_STAGES: canonical stage ID list for policy validation.
+// Canonical source: docs/business-os/startup-loop/_generated/stage-operator-map.json
+// (generated from stage-operator-dictionary.yaml via generate-stage-operator-views.ts)
+// Migration note (TASK-18, 2026-02-17): literal retained here — NodeNext moduleResolution
+// in this package requires JSON import assertions not yet established.
+// The scripts/src/startup-loop/stage-addressing.ts resolver uses the generated map directly.
+// Re-sync when stages change and bump loop-spec spec_version.
 const STARTUP_LOOP_STAGES = [
   "S0",
   "S1",

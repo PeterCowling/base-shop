@@ -3,7 +3,7 @@ import { execFileSync } from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
 
-import { parseHeader } from "./docs-lint-helpers";
+import { checkBareStageIds, parseHeader } from "./docs-lint-helpers";
 
 const ROOT = process.cwd();
 const DOCS_DIR = path.join(ROOT, "docs");
@@ -139,6 +139,19 @@ async function main() {
         `[docs-lint] Missing Primary code entrypoints/Canonical code section in ${rel}`,
       );
       hadError = true;
+    }
+
+    // Stage-label adjacency check for startup-loop operator docs (warn-level).
+    // Flags bare canonical stage IDs (e.g. "S6B") used in prose without an adjacent
+    // human-readable label. Scoped to startup-loop docs to avoid noise elsewhere.
+    const relParts = rel.split(path.sep);
+    const isStartupLoopDoc = relParts.includes("startup-loop");
+    if (isStartupLoopDoc) {
+      const bareIdViolations = checkBareStageIds(content);
+      for (const violation of bareIdViolations) {
+        console.warn(`[docs-lint] ${rel}: ${violation}`);
+        // warn-level only during Phase 0 rollout; not setting hadError
+      }
     }
 
     // Business OS type validations (only for files in business-os directory)

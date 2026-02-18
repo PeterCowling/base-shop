@@ -1,0 +1,227 @@
+# Startup Loop Stage Operator Dictionary
+# Canonical naming source for operator-facing stage labels, aliases, and display fields.
+# Generated views (stage-operator-map.json, stage-operator-table.md) are derived from this file.
+#
+# INVARIANTS:
+#   - List order must match stages array order in loop-spec.yaml exactly (VC-03).
+#   - Aliases must be globally unique across all entries (VC-02).
+#   - label_operator_short must be <=28 characters.
+#   - Validated against: stage-operator-dictionary.schema.json
+#
+# Decision reference: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md (TASK-14)
+# TASK-02 decision: S6B retains stage key; split into GATE-S6B-STRAT-01 and GATE-S6B-ACT-01.
+
+schema_version: 1
+loop_spec_version: "1.3.0"
+
+stages:
+
+  - id: S0
+    name_machine: intake
+    label_operator_short: "Intake"
+    label_operator_long: "S0 — Intake"
+    outcome_operator: "Structured startup context packet ready for all downstream stages."
+    aliases:
+      - intake
+      - s0
+    display_order: 1
+    operator_next_prompt: "Run /lp-readiness to check gate readiness before moving to S1."
+
+  - id: S1
+    name_machine: readiness
+    label_operator_short: "Readiness check"
+    label_operator_long: "S1 — Readiness"
+    outcome_operator: "Readiness report with blocker list. All 7 gates checked."
+    aliases:
+      - readiness
+      - s1
+    display_order: 2
+    operator_next_prompt: "Resolve any blockers, then proceed to measurement setup (pre-website) or historical baseline (website-live)."
+
+  - id: S1B
+    name_machine: measurement-bootstrap
+    label_operator_short: "Measurement setup"
+    label_operator_long: "S1B — Measurement bootstrap (pre-website)"
+    outcome_operator: "Analytics stack live with GA4, Search Console, and conversion events verified before any paid traffic."
+    aliases:
+      - measurement-bootstrap
+      - measurement-setup
+      - s1b
+    display_order: 3
+    conditional: true
+    condition: "launch-surface = pre-website"
+    operator_next_prompt: "Confirm measurement setup is Active, then proceed to S2 Market intelligence."
+
+  - id: S2A
+    name_machine: historical-baseline
+    label_operator_short: "Historical baseline"
+    label_operator_long: "S2A — Historical baseline (website-live)"
+    outcome_operator: "Consolidated business history document with net value, booking data, and traffic logs as a decision baseline."
+    aliases:
+      - historical-baseline
+      - baseline-history
+      - s2a
+    display_order: 4
+    conditional: true
+    condition: "launch-surface = website-live"
+    operator_next_prompt: "Proceed to S2 Market intelligence once baseline is Active."
+
+  - id: S2
+    name_machine: market-intelligence
+    label_operator_short: "Market intelligence"
+    label_operator_long: "S2 — Market intelligence"
+    outcome_operator: "Decision-grade market intelligence pack covering competitors, demand, pricing, and channels."
+    aliases:
+      - market-intelligence
+      - market-intel
+      - s2
+    display_order: 5
+    operator_next_prompt: "Proceed to S2B Offer design once market intelligence is Active."
+
+  - id: S2B
+    name_machine: offer-design
+    label_operator_short: "Offer design"
+    label_operator_long: "S2B — Offer design"
+    outcome_operator: "Offer artifact: target customer, positioning, pricing model, and messaging hierarchy."
+    aliases:
+      - offer-design
+      - offer
+      - s2b
+    display_order: 6
+    operator_next_prompt: "S3 Forecast and S6B Channel strategy can now run in parallel."
+
+  - id: S3
+    name_machine: forecast
+    label_operator_short: "Forecast"
+    label_operator_long: "S3 — Forecast"
+    outcome_operator: "90-day P10/P50/P90 revenue forecast with assumption register and sparse-evidence guardrails."
+    aliases:
+      - forecast
+      - s3
+    display_order: 7
+    operator_next_prompt: "Forecast and S6B Channel strategy must both complete before S4 Baseline merge."
+
+  - id: S6B
+    name_machine: channel-strategy
+    label_operator_short: "Channel strategy + GTM"
+    label_operator_long: "S6B — Channel strategy + GTM"
+    outcome_operator: "Channel plan with 2-3 selected launch channels, 30-day GTM timeline, and SEO strategy."
+    aliases:
+      - channel-strategy
+      - channels
+      - gtm
+      - s6b
+    display_order: 8
+    operator_next_prompt: "Both S3 Forecast and S6B must complete before S4 Baseline merge."
+    operator_microsteps:
+      - id: GATE-S6B-STRAT-01
+        label: "Strategy design complete"
+        gate: Hard
+        description: "Channel hypothesis and strategy design are complete. Requires S2B offer artifact. Allows channel plan artifact generation. Does not require measurement verification."
+      - id: GATE-S6B-ACT-01
+        label: "Spend authorization"
+        gate: Hard
+        description: "Spend activation gate. Requires decision-grade measurement signal verified (GATE-MEAS-01 pass). Blocks any live spend or channel activation until measurement thresholds are met."
+
+  - id: S4
+    name_machine: baseline-merge
+    label_operator_short: "Baseline merge"
+    label_operator_long: "S4 — Baseline merge"
+    outcome_operator: "Candidate baseline snapshot and draft manifest combining offer, forecast, and channel artifacts."
+    aliases:
+      - baseline-merge
+      - s4
+    display_order: 9
+    operator_next_prompt: "Proceed to S5A Prioritize."
+
+  - id: S5A
+    name_machine: prioritize
+    label_operator_short: "Prioritize"
+    label_operator_long: "S5A — Prioritize"
+    outcome_operator: "Scored and ranked action list — top 2-3 items to work on next."
+    aliases:
+      - prioritize
+      - s5a
+    display_order: 10
+    operator_next_prompt: "Proceed to S5B BOS sync to persist prioritization outputs."
+
+  - id: S5B
+    name_machine: bos-sync
+    label_operator_short: "BOS sync"
+    label_operator_long: "S5B — BOS sync"
+    outcome_operator: "Business OS cards and stage docs persisted to D1. Manifest pointer committed."
+    aliases:
+      - bos-sync
+      - s5b
+    display_order: 11
+    operator_next_prompt: "S6 Site-upgrade and S7 Fact-find can now proceed."
+
+  - id: S6
+    name_machine: site-upgrade
+    label_operator_short: "Site-upgrade synthesis"
+    label_operator_long: "S6 — Site-upgrade synthesis"
+    outcome_operator: "Site upgrade brief with prioritized improvement backlog derived from competitor best-of analysis."
+    aliases:
+      - site-upgrade
+      - site-upgrade-synthesis
+      - s6
+    display_order: 12
+    operator_next_prompt: "Proceed to S7 Fact-find."
+
+  - id: S7
+    name_machine: fact-find
+    label_operator_short: "Fact-find"
+    label_operator_long: "S7 — Fact-find"
+    outcome_operator: "Planning-grade fact-find brief with evidence, open questions, and routing packet."
+    aliases:
+      - fact-find
+      - s7
+    display_order: 13
+    operator_next_prompt: "Proceed to S8 Plan."
+
+  - id: S8
+    name_machine: plan
+    label_operator_short: "Plan"
+    label_operator_long: "S8 — Plan"
+    outcome_operator: "Sequenced implementation plan with confidence-gated tasks and validation contracts."
+    aliases:
+      - plan
+      - s8
+    display_order: 14
+    operator_next_prompt: "Proceed to S9 Build when plan confidence is sufficient."
+
+  - id: S9
+    name_machine: build
+    label_operator_short: "Build"
+    label_operator_long: "S9 — Build"
+    outcome_operator: "Implemented feature or artifact with validation evidence and plan task statuses updated."
+    aliases:
+      - build
+      - s9
+    display_order: 15
+    operator_next_prompt: "Proceed to S9B QA gates before launch."
+
+  - id: S9B
+    name_machine: qa-gates
+    label_operator_short: "QA gates"
+    label_operator_long: "S9B — QA gates"
+    outcome_operator: "QA gate pass evidence: conversion flows, SEO readiness, performance budget, and legal compliance verified."
+    aliases:
+      - qa-gates
+      - qa
+      - s9b
+    display_order: 16
+    operator_next_prompt: "Proceed to S10 Weekly decision loop."
+
+  - id: S10
+    name_machine: weekly-readout
+    label_operator_short: "Weekly decision"
+    label_operator_long: "S10 — Weekly readout + experiments"
+    outcome_operator: "Weekly K/P/C/S decision document with denominator-valid KPI assessment and next actions."
+    aliases:
+      - weekly-readout
+      - weekly-decision
+      - weekly
+      - s10
+    display_order: 17
+    operator_next_prompt: "Repeat weekly. Run standing refresh prompts on monthly/quarterly cadence."

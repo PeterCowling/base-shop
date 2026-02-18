@@ -45,7 +45,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 1.3.0
+loop_spec_version: 1.5.0
 current_stage: <S#>
 status: <ready|blocked|awaiting-input|complete>
 blocking_reason: <none or exact reason>
@@ -58,31 +58,48 @@ bos_sync_actions:
   - <required sync action 2>
 ```
 
+## Stage Addressing
+
+Stage references in all commands are resolved by the canonical hierarchy:
+
+| Flag | Behavior | Example |
+|---|---|---|
+| `--stage <ID>` | Canonical stage ID. Case-insensitive. Always primary. | `--stage S6B` |
+| `--stage-alias <slug>` | Deterministic slug from `stage-operator-map.json` alias_index. Fail-closed on unknown. | `--stage-alias channels` |
+| `--stage-label <text>` | Exact match against `label_operator_short` or `label_operator_long`. Case-sensitive. Fail-closed on near-match. | `--stage-label "Channel strategy + GTM"` |
+
+Resolver module: `scripts/src/startup-loop/stage-addressing.ts`
+Canonical alias source: `docs/business-os/startup-loop/_generated/stage-operator-map.json`
+
+When a stage reference cannot be resolved, the resolver returns fail-closed with deterministic suggestions.
+Do not infer or guess stage IDs from near-matches — always use canonical `--stage <ID>` or a verified alias.
+
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.3.0).
+Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 1.5.0).
+Stage labels sourced from: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
 Stages: `S0`..`S10` (17 stages total):
 
-- `S0`  Intake — `/startup-loop start`
-- `S1`  Readiness preflight — `/lp-readiness`
-- `S1B` Pre-website measurement bootstrap — prompt handoff (conditional: pre-website)
-- `S2A` Existing-business historical baseline — prompt handoff (conditional: website-live)
-- `S2`  Market intelligence — Deep Research prompt handoff
-- `S2B` Offer design — `/lp-offer`
+- Intake (`S0`) — `/startup-loop start`
+- Readiness check (`S1`) — `/lp-readiness`
+- Measurement setup (`S1B`) — prompt handoff (conditional: pre-website)
+- Historical baseline (`S2A`) — prompt handoff (conditional: website-live)
+- Market intelligence (`S2`) — Deep Research prompt handoff
+- Offer design (`S2B`) — `/lp-offer`
 - ── parallel fan-out (S3 and S6B run concurrently) ──
-- `S3`  Forecast — `/lp-forecast`
-- `S6B` Channel strategy + GTM — `/lp-channels`, `/lp-seo`, `/draft-outreach`
+- Forecast (`S3`) — `/lp-forecast`
+- Channel strategy + GTM (`S6B`) — `/lp-channels`, `/lp-seo`, `/draft-outreach`
 - ── parallel fan-in ──
-- `S4`  Baseline merge (join barrier) — `/lp-baseline-merge`
-- `S5A` Prioritize (pure ranking, no side effects) — `/lp-prioritize`
-- `S5B` BOS sync (sole mutation boundary) — `/lp-bos-sync`
-- `S6`  Site-upgrade synthesis — `/lp-site-upgrade`
-- `S7`  Fact-find — `/lp-fact-find`
-- `S8`  Plan — `/lp-plan`
-- `S9`  Build — `/lp-build`
-- `S9B` QA gates — `/lp-launch-qa`, `/lp-design-qa`
-- `S10` Weekly readout + experiments — `/lp-experiment`
+- Baseline merge (`S4`, join barrier) — `/lp-baseline-merge`
+- Prioritize (`S5A`, pure ranking) — `/lp-prioritize`
+- BOS sync (`S5B`, sole mutation boundary) — `/lp-bos-sync`
+- Site-upgrade synthesis (`S6`) — `/lp-site-upgrade`
+- Fact-find (`S7`) — `/lp-fact-find`
+- Plan (`S8`) — `/lp-plan`
+- Build (`S9`) — `/lp-build`
+- QA gates (`S9B`) — `/lp-launch-qa`, `/lp-design-qa`
+- Weekly decision (`S10`) — `/lp-experiment`
 
 ## Command Behavior
 
@@ -312,17 +329,44 @@ Rule:
 - If Last-reviewed > 90 days ago: emit warning (do not block).
 - Warning message: `GATE-BD-08: Brand Dossier not reviewed in >90 days. Consider re-running BRAND-DR-01/02 and updating brand-dossier.user.md.`
 
-### GATE-MEAS-01: Decision-grade measurement required before S6B
+### GATE-S6B-STRAT-01 + GATE-S6B-ACT-01: Two-gate S6B model
 
-Gate ID: GATE-MEAS-01 (Hard)
-Trigger: Before S6B (Channel Strategy + GTM) can start — evaluated at the S2B→S6B fan-out.
+S6B uses two sequential gates separating strategy design from spend commitment. This replaces the
+prior single-gate GATE-MEAS-01 (loop-spec v1.2.0), which blocked all of S6B on measurement readiness
+and caused planning stalls for pre-website businesses. Strategy design is now unblocked; only spend
+activation requires measurement. Decision: TASK-02, 2026-02-17.
 
-Rationale: Channel strategy without working measurement is structurally invalid. CAC, CVR, and
-channel performance cannot be evaluated if key conversion events are not firing in production.
-This is not a one-off deferral decision — it is always true that channel spend before measurement
-is waste. There is never a valid reason to start S6B while measurement is unverified.
+---
 
-Rule — all three checks must pass:
+**GATE-S6B-STRAT-01 (Hard) — Strategy design gate**
+
+Gate ID: GATE-S6B-STRAT-01 (Hard)
+Trigger: Before S6B (Channel Strategy + GTM) begins — evaluated at the S2B→S6B fan-out.
+
+Rationale: Channel selection, GTM planning, and messaging strategy can validly precede measurement
+readiness — you need a strategy to know which events to measure and which channels to instrument.
+Strategy design work is not spend commitment.
+
+Rule — must pass:
+1. A valid Demand Evidence Pack (DEP) artifact exists for this business and passes the schema pass floor:
+   `docs/business-os/startup-baselines/<BIZ>/demand-evidence-pack.md`
+
+When blocked:
+- Blocking reason: `GATE-S6B-STRAT-01: No valid DEP artifact. Channel strategy requires demand evidence — run /lp-readiness or capture DEP records before starting S6B.`
+- Next action: `Complete DEP capture, verify it passes the schema pass floor (demand-evidence-pack-schema.md §2), then re-run /startup-loop status --business <BIZ>.`
+
+---
+
+**GATE-S6B-ACT-01 (Hard) — Spend activation gate**
+
+Gate ID: GATE-S6B-ACT-01 (Hard)
+Trigger: Before any paid channel spend is committed from S6B channel selection.
+
+Rationale: Channel spend before working measurement is structurally invalid. CAC, CVR, and channel
+performance cannot be evaluated if key conversion events are not firing in production. This is not
+a deferral decision — spend commitment before measurement is always waste.
+
+Rule — all three checks must pass (inherits GATE-MEAS-01 conditions, loop-spec v1.2.0):
 1. A measurement verification artifact exists with `Status: Active`:
    `docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md`
 2. No active measurement risks at `Severity: High` or `Severity: Critical` in `plan.user.md`.
@@ -342,8 +386,12 @@ grep -iE "begin_checkout|add_to_cart|conversion" docs/business-os/strategy/<BIZ>
 ```
 
 When blocked:
-- Blocking reason: `GATE-MEAS-01: Decision-grade measurement signal not verified. Channel strategy without working measurement is waste — CAC, CVR, and channel performance cannot be evaluated.`
+- Blocking reason: `GATE-S6B-ACT-01: Decision-grade measurement signal not verified. Channel spend before working measurement is waste — CAC, CVR, and channel performance cannot be evaluated.`
 - Next action: `Resolve active measurement risks, verify conversion events firing in production, and update measurement-verification artifact to Status: Active. Then re-run /startup-loop status --business <BIZ>.`
+
+Surface this gate when the business moves from channel strategy completion (plan done) to channel
+activation planning (budget allocation, first ad spend). Strategy design output (channel selection,
+30-day GTM plan) may be completed and persisted without triggering this gate.
 
 ## Business OS Sync Contract (Required Before Advance)
 

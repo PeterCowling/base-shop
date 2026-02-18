@@ -11,6 +11,10 @@ jest.mock("../../hooks/useStepCompletion", () => ({
   default: () => [false, markComplete],
 }));
 
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => ({ success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() }),
+}));
+
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
 }));
@@ -27,7 +31,7 @@ jest.mock("../hooks/useProductPageData", () => ({
   }),
 }));
 
-jest.mock("../components/TemplateSelector", () => {
+jest.mock("@/app/cms/configurator/components/TemplateSelector", () => {
   const React = require("react");
   const MockTemplateSelector = ({ onSelect }: any) => (
     <button data-cy="template-selector" onClick={() => onSelect("Temp", [])}>
@@ -98,7 +102,8 @@ describe("StepProductPage", () => {
   });
 
   it("marks complete and navigates on Save & return", () => {
-    setup();
+    // canProceed requires template, saved page, and components
+    setup({ productLayout: "Temp", productPageId: "page-id", productComponents: [{ type: "hero" } as any] });
     fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");

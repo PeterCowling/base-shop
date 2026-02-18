@@ -7,6 +7,11 @@ import StepLayout from "../src/app/cms/configurator/steps/StepLayout";
 const pushMock = jest.fn();
 jest.mock("next/navigation", () => ({ useRouter: () => ({ push: pushMock }) }));
 
+// Stub useToast so StepLayout renders without a real NotificationProvider.
+jest.mock("@acme/ui/operations", () => ({
+  useToast: () => ({ success: jest.fn(), error: jest.fn(), warning: jest.fn(), info: jest.fn(), loading: jest.fn(), dismiss: jest.fn() }),
+}));
+
 jest.mock("../src/app/cms/configurator/hooks/useThemeLoader", () => ({
   useThemeLoader: () => ({}),
 }));

@@ -1,38 +1,83 @@
 import "@testing-library/jest-dom";
 
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import RollbackCard from "../src/app/cms/shop/[shop]/RollbackCard";
 
-jest.mock("@acme/design-system/atoms", () => {
+jest.mock("@acme/design-system/shadcn", () => {
   const React = require("react");
-
   return {
     __esModule: true,
     Button: React.forwardRef(function Button({ children, ...props }: any, ref: any) {
-      return (
-        <button ref={ref} {...props}>
-          {children}
-        </button>
-      );
+      return React.createElement("button", { ref, ...props }, children);
     }),
-    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    Toast: ({ open, message, onClose, ...props }: any) => (
-      <div {...props} data-state={open ? "open" : "closed"}>
-        {open ? (
-          <>
-            <span>{message}</span>
-            <button type="button" onClick={onClose}>
-              Close toast
-            </button>
-          </>
-        ) : null}
-      </div>
-    ),
+    Card: ({ children, ...props }: any) => React.createElement("div", props, children),
+    CardContent: ({ children, ...props }: any) => React.createElement("div", props, children),
   };
 });
+
+jest.mock("@acme/ui/operations", () => {
+  const React = require("react");
+  const Ctx = React.createContext(null);
+
+  function ToastProvider({ children }: any) {
+    const [toasts, setToasts] = React.useState<
+      Array<{ id: number; type: string; message: string }>
+    >([]);
+    const value = {
+      success: (message: string) =>
+        setToasts((p: any[]) => [
+          ...p,
+          { id: Math.random(), type: "success", message },
+        ]),
+      error: (message: string) =>
+        setToasts((p: any[]) => [
+          ...p,
+          { id: Math.random(), type: "error", message },
+        ]),
+    };
+    return React.createElement(
+      Ctx.Provider,
+      { value },
+      children,
+      ...toasts.map((t: any) =>
+        React.createElement(
+          "div",
+          { key: t.id },
+          React.createElement("span", null, t.message),
+          React.createElement(
+            "button",
+            {
+              type: "button",
+              onClick: () =>
+                setToasts((p: any[]) => p.filter((x: any) => x.id !== t.id)),
+            },
+            "Close toast",
+          ),
+        ),
+      ),
+    );
+  }
+
+  return {
+    __esModule: true,
+    ToastProvider,
+    useToast: () => {
+      const ctx = React.useContext(Ctx);
+      if (!ctx) throw new Error("useToast must be used within a ToastProvider");
+      return ctx;
+    },
+  };
+});
+
+function renderWithToast(ui: React.ReactElement) {
+  const { ToastProvider } = jest.requireMock("@acme/ui/operations") as {
+    ToastProvider: React.ComponentType<{ children: React.ReactNode }>;
+  };
+  return render(<ToastProvider>{ui}</ToastProvider>);
+}
 
 type Deferred<T> = {
   promise: Promise<T>;
@@ -72,7 +117,7 @@ describe("RollbackCard", () => {
     const fetchMock = jest.fn().mockReturnValue(deferred.promise);
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    render(<RollbackCard shop="demo-shop" />);
+    renderWithToast(<RollbackCard shop="demo-shop" />);
     const user = userEvent.setup();
     const rollbackButton = screen.getByRole("button", {
       name: /rollback to previous version/i,
@@ -103,7 +148,7 @@ describe("RollbackCard", () => {
     const fetchMock = jest.fn().mockReturnValue(deferred.promise);
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    render(<RollbackCard shop="demo-shop" />);
+    renderWithToast(<RollbackCard shop="demo-shop" />);
     const user = userEvent.setup();
     const rollbackButton = screen.getByRole("button", {
       name: /rollback to previous version/i,
@@ -139,7 +184,7 @@ describe("RollbackCard", () => {
     const fetchMock = jest.fn().mockReturnValue(deferred.promise);
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    render(<RollbackCard shop="demo-shop" />);
+    renderWithToast(<RollbackCard shop="demo-shop" />);
     const user = userEvent.setup();
     const rollbackButton = screen.getByRole("button", {
       name: /rollback to previous version/i,
@@ -175,7 +220,7 @@ describe("RollbackCard", () => {
     const fetchMock = jest.fn().mockReturnValue(deferred.promise);
     global.fetch = fetchMock as unknown as typeof fetch;
 
-    render(<RollbackCard shop="demo-shop" />);
+    renderWithToast(<RollbackCard shop="demo-shop" />);
     const user = userEvent.setup();
     const rollbackButton = screen.getByRole("button", {
       name: /rollback to previous version/i,

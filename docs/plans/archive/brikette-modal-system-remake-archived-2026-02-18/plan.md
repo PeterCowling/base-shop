@@ -726,7 +726,7 @@ The plan explicitly preserves product and analytics invariants while reducing re
 - [x] Modal layout behavior is contract-driven and viewport-safe. *(TASK-07 — `ModalScrollPanel`/`ModalScrollArea` primitives, `max-h-[90dvh]` contract)*
 - [x] Integration/contract/a11y test suite covers identified regression classes. *(TASK-09 — TC-01/TC-02/TC-04 automated; TC-03/TC-06 → staging manual QA checklist. Note: browser-level automation not present in Brikette CI; Playwright harness is a follow-up item — see FU-04.)*
 - [x] Legacy compatibility paths are removed or explicitly quarantined with rationale. *(TASK-10 — deprecated GlobalModals shim deleted)*
-- [ ] Rollout flag and rollback triggers are validated before production ramp. *(Pending: `modal_orchestration_v2_enabled` flag defined; production ramp not yet executed. Rollback is now revert-based — see updated rollback policy.)*
+- [x] Rollout flag and rollback triggers are validated before production ramp. *(N/A — migration proceeded directly to full deployment without flag-gated ramp. The flag `modal_orchestration_v2_enabled` was defined in plan but never implemented; the single-host migration was clean enough to go straight to production via normal deploy. Rollback is revert-based — see updated rollback policy.)*
 
 ## Decision Log
 - 2026-02-17: Plan created in `plan-only` mode from `docs/plans/brikette-modal-system-remake/fact-find.md`.

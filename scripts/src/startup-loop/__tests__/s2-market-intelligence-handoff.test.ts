@@ -3,7 +3,7 @@ import os from "os";
 import path from "path";
 
 import { computeHospitalityScenarioInputs } from "../hospitality-scenarios";
-import { buildS2MarketIntelligenceHandoff } from "../s2-market-intelligence-handoff";
+import { buildS2MarketIntelligenceHandoff, findLatestDatedMarketResearchDataFile } from "../s2-market-intelligence-handoff";
 
 async function writeFile(absolutePath: string, content: string): Promise<void> {
   await fs.mkdir(path.dirname(absolutePath), { recursive: true });
@@ -630,5 +630,86 @@ Owner: Test
         process.env.BASESHOP_S2_MAX_PROMPT_CHARS = prevMax;
       }
     }
+  });
+
+  describe("findLatestDatedMarketResearchDataFile", () => {
+    it("TC-01: selects latest file with date <= as-of", async () => {
+      const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-dated-file-latest-"));
+      const dataDir = path.join(repoRoot, "docs/business-os/market-research/TEST/data");
+      await fs.mkdir(dataDir, { recursive: true });
+
+      // Create files with different dates
+      await writeFile(path.join(dataDir, "2026-02-01-parity-scenarios.csv"), "header\nrow1");
+      await writeFile(path.join(dataDir, "2026-02-10-parity-scenarios.csv"), "header\nrow2");
+      await writeFile(path.join(dataDir, "2026-02-15-parity-scenarios.csv"), "header\nrow3");
+
+      const result = await findLatestDatedMarketResearchDataFile({
+        repoRoot,
+        business: "TEST",
+        asOfDate: "2026-02-15",
+        filenameSuffix: "-parity-scenarios.csv",
+      });
+
+      expect(result).not.toBeNull();
+      expect(result?.relativePath).toContain("2026-02-15-parity-scenarios.csv");
+    });
+
+    it("TC-02: ignores future-dated files", async () => {
+      const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-dated-file-future-"));
+      const dataDir = path.join(repoRoot, "docs/business-os/market-research/TEST/data");
+      await fs.mkdir(dataDir, { recursive: true });
+
+      // Create files: one before as-of, one after
+      await writeFile(path.join(dataDir, "2026-02-10-parity-scenarios.csv"), "header\nrow1");
+      await writeFile(path.join(dataDir, "2026-02-20-parity-scenarios.csv"), "header\nfuture");
+      await writeFile(path.join(dataDir, "2026-03-01-parity-scenarios.csv"), "header\nfuture2");
+
+      const result = await findLatestDatedMarketResearchDataFile({
+        repoRoot,
+        business: "TEST",
+        asOfDate: "2026-02-15",
+        filenameSuffix: "-parity-scenarios.csv",
+      });
+
+      expect(result).not.toBeNull();
+      expect(result?.relativePath).toContain("2026-02-10-parity-scenarios.csv");
+      expect(result?.relativePath).not.toContain("2026-02-20");
+      expect(result?.relativePath).not.toContain("2026-03-01");
+    });
+
+    it("TC-03: discovers CSVs by pattern suffix", async () => {
+      const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "s2-dated-file-pattern-"));
+      const dataDir = path.join(repoRoot, "docs/business-os/market-research/TEST/data");
+      await fs.mkdir(dataDir, { recursive: true });
+
+      // Create files with different suffixes
+      await writeFile(path.join(dataDir, "2026-02-10-parity-scenarios.csv"), "header\nparity");
+      await writeFile(path.join(dataDir, "2026-02-10-bookings-by-channel.csv"), "header\nbookings");
+      await writeFile(path.join(dataDir, "2026-02-10-commission-by-channel.csv"), "header\ncommission");
+
+      const parityResult = await findLatestDatedMarketResearchDataFile({
+        repoRoot,
+        business: "TEST",
+        asOfDate: "2026-02-15",
+        filenameSuffix: "-parity-scenarios.csv",
+      });
+      expect(parityResult?.relativePath).toContain("parity-scenarios.csv");
+
+      const bookingsResult = await findLatestDatedMarketResearchDataFile({
+        repoRoot,
+        business: "TEST",
+        asOfDate: "2026-02-15",
+        filenameSuffix: "-bookings-by-channel.csv",
+      });
+      expect(bookingsResult?.relativePath).toContain("bookings-by-channel.csv");
+
+      const commissionResult = await findLatestDatedMarketResearchDataFile({
+        repoRoot,
+        business: "TEST",
+        asOfDate: "2026-02-15",
+        filenameSuffix: "-commission-by-channel.csv",
+      });
+      expect(commissionResult?.relativePath).toContain("commission-by-channel.csv");
+    });
   });
 });

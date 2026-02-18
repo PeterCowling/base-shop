@@ -1,0 +1,28 @@
+### TASK-XX: <description>
+- **Type:** DECISION
+- **Deliverable:** <decision artifact output path>
+- **Execution-Skill:** <lp-build | lp-replan | specialized>
+- **Execution-Track:** <code | business-artifact | mixed>
+- **Effort:** <S | M | L>
+- **Status:** <Pending | In-Progress | Complete (YYYY-MM-DD) | Blocked | Superseded | Needs-Input>
+- **Affects:** `path/to/area`, `[readonly] path/to/reference`
+- **Depends on:** <TASK-IDs or "-">
+- **Blocks:** <TASK-IDs or "-">
+- **Confidence:** <0-100>%
+  - Implementation: <0-100>% - <reason>
+  - Approach: <0-100>% - <reason>
+  - Impact: <0-100>% - <reason>
+- **Options:**
+  - Option A: <trade-offs>
+  - Option B: <trade-offs>
+- **Recommendation:** <A/B + rationale>
+- **Decision input needed:**
+  - question:
+  - why it matters:
+  - default + risk:
+- **Acceptance:**
+  - ...
+- **Validation contract:** <what evidence constitutes decision closure>
+- **Planning validation:** <checks run or `None: <reason>`>
+- **Rollout / rollback:** `None: non-implementation task` (or explain)
+- **Documentation impact:** <docs/notes updated>

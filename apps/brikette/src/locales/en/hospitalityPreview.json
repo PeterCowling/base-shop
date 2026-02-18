@@ -1,0 +1,12 @@
+{
+  "title": "Hospitality Theme Preview",
+  "guestActivation": {
+    "label": "Guest activation",
+    "description": "Last 7 days"
+  },
+  "signalBridge": {
+    "title": "Signal bridge check",
+    "etaShared": "ETA shared",
+    "cashPrepared": "Cash prepared"
+  }
+}

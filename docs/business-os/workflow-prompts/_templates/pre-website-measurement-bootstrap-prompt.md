@@ -383,6 +383,26 @@ Deferred (after SC-01 + DNS propagation):
 
 ---
 
+## DEMAND SIGNAL CAPTURE (Parallel to Phase 0-2)
+
+Infra setup (Phases 0-2) is a prerequisite for measurement, but demand signal capture must begin in parallel — not after infra is complete. Delaying capture until infra is ready introduces 1-2 weeks of avoidable S6B activation lag.
+
+**What to start now (alongside Phase 0):**
+
+1. Register at least 1 message hypothesis in `docs/business-os/strategy/<BIZ>/message-variants.user.md`:
+   - Channel, audience_slice, asset_ref, timestamp for each variant
+   - Minimum 2 variants per hypothesis
+
+2. Set up source-tagged tracking before any impressions go out (UTM or nearest-origin tag per channel)
+
+3. Log objections from any early outreach, discovery calls, or landing page visits
+
+**Schema and pass floor:** `docs/business-os/startup-loop/demand-evidence-pack-schema.md`
+
+**Why this matters:** Demand Evidence Pack (DEP) is required before GATE-S6B-ACT-01 (spend authorization). DEP capture cannot be retroactively reconstructed from infra data alone — it requires active logging of variants, denominators, and objections from the start.
+
+---
+
 ## OUTPUT FORMAT
 
 Produce each section in order:

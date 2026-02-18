@@ -3,28 +3,44 @@ Type: Business-Plan
 Status: Active
 Business: BRIK
 Created: 2026-02-09
-Updated: 2026-02-14
-Last-reviewed: 2026-02-14
+Updated: 2026-02-17
+Last-reviewed: 2026-02-17
 Owner: Pete
 ---
 
 # Brikette — Business Plan
 
+## Business overview
+
+Brikette is a physical hostel in Positano on the Amalfi Coast. The ambition is to be the most expensive hostel in the world while remaining very busy — premium pricing justified by exceptional quality across every dimension: comfortable rooms, great common areas, great staff and service, organised activities, and deep local knowledge delivered to guests. This is not a budget product with an inflated price; it is a genuinely excellent hospitality product that earns its premium.
+
+Revenue lines, all part of the same physical hospitality business:
+
+- **Hostel bookings** — room nights across 11 rooms in a multi-locale market, currently sold via OTA and direct
+- **Experiences and activities** — organised activities and local knowledge as a product, not a free add-on
+- **StepFree Chiesa Nuova apartment** — a 100sqm apartment adjacent to the hostel (new for 2026), targeting couples, listed on Booking.com only so far
+
+The digital platform (brikette website, content guides, reception app) is infrastructure that supports the physical business — it is not the business itself.
+
 ## Strategy
 
-### Current Focus (2026-02-13)
+### Current Focus (2026-02-17)
 
 1. **L3 Transition: Reception Infrastructure** (Priority: High)
    - Status: Building reception app with live till, loan items, shift management; addressing Firebase prerender errors and client boundary issues
    - Next: Complete BRIK-ENG-0018 (Dashboard Upgrade Aggregator) to unify reception metrics
 
 2. **Analytics & Visibility Gap** (Priority: High)
-   - Status: GA4 config is live in production (`G-2ZSYXG8R7T`), Data API access is now working, and first 7-day baseline is locked (sessions/users/page_view measured)
-   - Next: Verify report-layer non-zero `begin_checkout` after deployment propagation and close `web_vitals` verification path
+   - Status: GA4 admin settings are verified (referral exclusion and cross-domain suggestions reviewed), and debug validation confirms `begin_checkout` can fire under consent-granted test conditions
+   - Next: Verify non-zero handoff event counts in standard Data API windows and complete governance runbook (`handoff_to_engine`, conversion mapping, weekly review cadence)
 
 3. **Content Commerce Maturity** (Priority: Medium)
    - Status: 168+ guides across 18 locales operational; Cloudflare staging deployed (staging.brikette-website.pages.dev)
    - Next: Validate guide translation quality, establish content update workflow
+
+4. **Booking Funnel Recovery (Octorate Last-Mile Model)** (Priority: High)
+   - Status: Fact-find and sequenced plan completed with no-API scope confirmed (`BRIK-ENG-0021`)
+   - Next: Execute foundation tasks in validated order: native `handoff_to_engine` emission (`TASK-05A`) -> same-tab normalization (`TASK-03`) -> GA4 governance parity (`TASK-06`) -> overlap-window reconciliation calibration (`TASK-08`)
 
 ## Startup-Loop Outcome Contract (Canonical)
 
@@ -34,7 +50,7 @@ Promoted from:
 - `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`
 
 - Outcome-ID: `BRIK-OUT-2026Q2-01`
-- Outcome statement: Stabilize and grow BRIK net booking value over the next 90 days by improving conversion quality, direct-share economics, and cancellation control under measured weekly decisioning.
+- Outcome statement: Grow Brikette's net booking value and revenue per available bed over the next 90 days — establishing the measurement and operational foundation needed to price, fill, and operate at the premium level the product ambition demands.
 - Baseline (2026-02-13):
   - trailing 90-day net booking value (2025-11..2026-01): EUR 28,927.79
   - trailing 90-day bookings (2025-11..2026-01): 100
@@ -72,10 +88,15 @@ Promoted from:
 
 ### Active Risks
 
-- **Measurement Signal Quality Incomplete** (Severity: Medium, Added: 2026-02-09, Updated: 2026-02-13)
-  - Source: First 7-day GA4 baseline is measured and production deploy alignment is complete, but current 7-day report still shows `begin_checkout=0` and `web_vitals=0`
-  - Impact: Traffic baseline exists, but conversion and performance decisioning remain partially blind until report-layer confirmation stabilizes
-  - Mitigation: Re-run bounded GA4 extracts after propagation window, verify non-zero `begin_checkout`, and close `web_vitals` verification with weekly refresh discipline
+- **Measurement Signal Quality Incomplete** (Severity: Medium, Added: 2026-02-09, Updated: 2026-02-17)
+  - Source: Event firing is observable in debug sessions, but standard report windows still show inconsistent/zero handoff coverage for decision use
+  - Impact: Traffic baseline exists, but conversion decisioning remains partially blind until report-layer handoff visibility stabilizes
+  - Mitigation: ship native `handoff_to_engine` instrumentation, validate in bounded windows, and enforce a weekly GA4 governance checklist
+
+- **Booking Completion Attribution Gap (No API/Webhook Access)** (Severity: Medium, Added: 2026-02-17)
+  - Source: Octorate API/webhook onboarding is unavailable in this phase; deterministic join key closure is not yet feasible
+  - Impact: End-to-end revenue attribution is probabilistic and can lag operational decisions
+  - Mitigation: run no-API reconciliation (aggregate + probabilistic) weekly with explicit confidence thresholds and caveat labeling
 
 - **Translation Quality Unknown** (Severity: Medium, Added: 2026-02-09)
   - Source: 168+ guides x 18 locales = 3,024 guide pages; structure-first translation workflow established but quality gates unvalidated at scale

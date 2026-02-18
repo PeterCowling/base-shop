@@ -59,10 +59,14 @@ echo '  ],'
 # ========== PLAN-FEATURE: Ready for planning ==========
 echo '  "readyForPlanning": ['
 first=true
-for f in docs/plans/*-fact-find.md; do
+for f in docs/plans/*-fact-find.md docs/plans/*/fact-find.md; do
   status=$(grep -m1 "^Status:" "$f" | sed 's/Status: //')
   [ "$status" = "Ready-for-planning" ] || continue
-  slug=$(basename "$f" -fact-find.md)
+  if [[ "$f" == docs/plans/*/fact-find.md ]]; then
+    slug=$(basename "$(dirname "$f")")
+  else
+    slug=$(basename "$f" -fact-find.md)
+  fi
   cardId=$(grep -m1 "^Card-ID:" "$f" | sed 's/Card-ID: //' || echo "")
   business=$(grep -m1 "^Business-Unit:" "$f" | sed 's/Business-Unit: //' || echo "")
   title=$(grep -m1 "^# " "$f" | sed 's/^# //' | sed 's/ Fact-Find Brief//')
@@ -75,10 +79,14 @@ echo '  ],'
 # ========== BUILD-FEATURE: Active plans with eligible tasks ==========
 echo '  "readyForBuild": ['
 first=true
-for f in docs/plans/*-plan.md; do
+for f in docs/plans/*-plan.md docs/plans/*/plan.md; do
   status=$(grep -m1 "^Status:" "$f" | sed 's/Status: //')
   [ "$status" = "Active" ] || continue
-  slug=$(basename "$f" -plan.md)
+  if [[ "$f" == docs/plans/*/plan.md ]]; then
+    slug=$(basename "$(dirname "$f")")
+  else
+    slug=$(basename "$f" -plan.md)
+  fi
   cardId=$(grep -m1 "^Card-ID:" "$f" | sed 's/Card-ID: //' || echo "")
   business=$(grep -m1 "^Business-Unit:" "$f" | sed 's/Business-Unit: //' || echo "")
   pendingCount=$(grep -c "Status: Pending" "$f" 2>/dev/null || true)

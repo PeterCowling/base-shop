@@ -30,14 +30,15 @@ export type StructuredArrayContent = {
   derivedFromDays: StructuredSection[];
 };
 
-export function resolveStructuredArrayContent({
-  tFb,
-  translations,
-  guideKey,
-  alias,
-  showTocWhenUnlocalized,
-  preferManualWhenUnlocalized,
-}: ResolveStructuredArrayContentParams): StructuredArrayContent {
+// Helper to resolve intro paragraphs from fallback and alias sources
+function resolveIntro(
+  tFb: FallbackTranslator | undefined,
+  translations: GuidesTranslationsMinimal,
+  guideKey: string,
+  alias: string | null | undefined,
+  showTocWhenUnlocalized: boolean,
+  preferManualWhenUnlocalized: boolean | undefined,
+): { intro: string[]; introFromEn: boolean } {
   const tEn = translations?.guidesEn;
 
   let introFbPrimary = ensureStringArray(tFb?.(`content.${guideKey}.intro`, { returnObjects: true }));
@@ -57,7 +58,6 @@ export function resolveStructuredArrayContent({
   const introFb = (() => {
     if (introFbPrimary.length > 0) return introFbPrimary;
     if (introFbAlt.length > 0) return introFbAlt;
-    // Avoid falling back to EN structured intro when preferring manual paths
     if (preferManualWhenUnlocalized) return [] as string[];
     return showTocWhenUnlocalized
       ? ensureStringArray(tEn?.(`content.${guideKey}.intro`, { returnObjects: true }) as unknown)
@@ -65,6 +65,16 @@ export function resolveStructuredArrayContent({
   })();
   const introFromEn = introFbPrimary.length === 0 && introFbAlt.length === 0 && introFb.length > 0;
 
+  return { intro: introFb, introFromEn };
+}
+
+// Helper to resolve ToC raw data from fallback and alias sources
+function resolveTocRaw(
+  tFb: FallbackTranslator | undefined,
+  translations: GuidesTranslationsMinimal,
+  guideKey: string,
+  alias: string | null | undefined,
+): Array<{ href?: string; label?: string }> {
   let tocFbRaw = ensureArray<{ href?: string; label?: string }>(
     tFb?.(`content.${guideKey}.toc`, { returnObjects: true }),
   );
@@ -93,7 +103,18 @@ export function resolveStructuredArrayContent({
       /* noop: alias not available */
     }
   }
+  return tocFbRaw;
+}
 
+// Helper to resolve sections from fallback and alias sources
+function resolveSectionsRaw(
+  tFb: FallbackTranslator | undefined,
+  translations: GuidesTranslationsMinimal,
+  guideKey: string,
+  alias: string | null | undefined,
+  showTocWhenUnlocalized: boolean,
+  preferManualWhenUnlocalized: boolean | undefined,
+): Array<{ id?: string; title?: string; body?: unknown; items?: unknown }> {
   let sectionsFb1Raw = ensureArray<{
     id?: string;
     title?: string;
@@ -135,7 +156,15 @@ export function resolveStructuredArrayContent({
           translations?.guidesEn?.(`content.${guideKey}.sections`, { returnObjects: true }) as unknown,
         )
       : [];
-  const sectionsFb = (sectionsFb1Raw.length > 0 ? sectionsFb1Raw : sectionsFbEnRaw)
+  return sectionsFb1Raw.length > 0 ? sectionsFb1Raw : sectionsFbEnRaw;
+}
+
+// Helper to process raw sections into structured format
+function processSections(
+  rawSections: Array<{ id?: string; title?: string; body?: unknown; items?: unknown }>,
+  guideKey: string,
+): StructuredSection[] {
+  return rawSections
     .map((s, idx) => {
       const id = typeof s?.id === "string" && s.id.trim().length > 0 ? s.id.trim() : `s-${idx}`;
       const rawTitle = typeof s?.title === "string" ? s.title.trim() : "";
@@ -152,15 +181,17 @@ export function resolveStructuredArrayContent({
       return { id, title, body };
     })
     .filter(Boolean) as StructuredSection[];
+}
 
-  const derivedFromDays = sectionsFb.length === 0
-    ? deriveSectionsFromDays({
-        tFb,
-        translations,
-        guideKey,
-      })
-    : [];
-
+// Helper to synthesize ToC from various sources
+function synthesizeTocItems(
+  tocFbRaw: Array<{ href?: string; label?: string }>,
+  introFb: string[],
+  sectionsFb: StructuredSection[],
+  derivedFromDays: StructuredSection[],
+  guideKey: string,
+  showTocWhenUnlocalized: boolean,
+): TocEntry[] {
   let tocItems = tocFbRaw
     .map((it, index) => {
       const label = typeof it?.label === "string" ? it.label.trim() : "";
@@ -173,14 +204,12 @@ export function resolveStructuredArrayContent({
     })
     .filter((x): x is TocEntry => x != null);
 
-  // Preserve the FAQs anchor for guides that merge alias FAQs to match test
-  // expectations; otherwise omit it from fallback ToC.
+  // Preserve FAQs anchor filtering
   if (tocItems.length > 0 && !shouldMergeAliasFaqs(guideKey)) {
     tocItems = tocItems.filter((it) => it.href !== "#faqs");
   }
 
-  // If ToC items are still empty, synthesize from sections (prefer titles)
-  // so fallback-rendered pages expose a minimal navigation landmark.
+  // Synthesize from sections if empty
   if (tocItems.length === 0 && showTocWhenUnlocalized) {
     const fromSections = (sectionsFb.length > 0 ? sectionsFb : [])
       .map((s) => {
@@ -195,7 +224,7 @@ export function resolveStructuredArrayContent({
     }
   }
 
-  // If still empty, synthesize ToC from derived day-plan sections
+  // Synthesize from derived day-plan sections if still empty
   if (tocItems.length === 0 && showTocWhenUnlocalized && derivedFromDays.length > 0) {
     for (let i = 0; i < derivedFromDays.length; i += 1) {
       const d = derivedFromDays[i];
@@ -205,6 +234,52 @@ export function resolveStructuredArrayContent({
       if (label.length > 0) tocItems.push({ href, label });
     }
   }
+
+  return tocItems;
+}
+
+export function resolveStructuredArrayContent({
+  tFb,
+  translations,
+  guideKey,
+  alias,
+  showTocWhenUnlocalized,
+  preferManualWhenUnlocalized,
+}: ResolveStructuredArrayContentParams): StructuredArrayContent {
+  const { intro: introFb, introFromEn } = resolveIntro(
+    tFb,
+    translations,
+    guideKey,
+    alias,
+    showTocWhenUnlocalized,
+    preferManualWhenUnlocalized,
+  );
+
+  const tocFbRaw = resolveTocRaw(tFb, translations, guideKey, alias);
+
+  const sectionsRaw = resolveSectionsRaw(
+    tFb,
+    translations,
+    guideKey,
+    alias,
+    showTocWhenUnlocalized,
+    preferManualWhenUnlocalized,
+  );
+
+  const sectionsFb = processSections(sectionsRaw, guideKey);
+
+  const derivedFromDays = sectionsFb.length === 0
+    ? deriveSectionsFromDays({ tFb, translations, guideKey })
+    : [];
+
+  const tocItems = synthesizeTocItems(
+    tocFbRaw,
+    introFb,
+    sectionsFb,
+    derivedFromDays,
+    guideKey,
+    showTocWhenUnlocalized,
+  );
 
   return {
     intro: introFb,

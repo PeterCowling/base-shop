@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 import { ModalFooterButton, ModalFrame, ModalPanel } from "./primitives";
 import type { OffersModalCopy } from "./types";
@@ -28,6 +28,7 @@ function OffersModal({
       isOpen={isOpen}
       onClose={onClose}
       testId={testId}
+      title={copy.title}
       overlayClassName="px-4 py-6"
     >
       <ModalPanel
@@ -43,9 +44,9 @@ function OffersModal({
           {copy.closeLabel}
         </button>
 
-        <DialogTitle className="mb-4 text-2xl font-semibold text-brand-primary">
+        <h2 className="mb-4 text-2xl font-semibold text-brand-primary">
           {copy.title}
-        </DialogTitle>
+        </h2>
 
         <DialogDescription className="mx-auto mb-4 text-pretty text-brand-text sm:w-80">
           {copy.description}

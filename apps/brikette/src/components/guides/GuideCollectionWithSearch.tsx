@@ -6,8 +6,9 @@
  */
 
 import { memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
-import { type GuideMeta,GUIDES_INDEX } from "@/data/guides.index";
+import { type GuideMeta } from "@/data/guides.index";
 import { useGuideSearch } from "@/hooks/useGuideSearch";
 
 import GuideCollection from "./GuideCollection";
@@ -46,6 +47,8 @@ function GuideCollectionWithSearch({
   searchPlaceholder,
   ...props
 }: GuideCollectionWithSearchProps): JSX.Element | null {
+  const { t } = useTranslation("guides", { lng: lang });
+
   // Create a filter function that only includes guides from the provided list
   const guideKeySet = useMemo(
     () => new Set(guides.map((g) => g.key)),
@@ -115,8 +118,8 @@ function GuideCollectionWithSearch({
         {query.trim() && isReady && (
           <p className="mt-2 text-sm text-brand-muted dark:text-brand-muted">
             {displayGuides.length === 0
-              ? "No guides found"
-              : `Found ${displayGuides.length} guide${displayGuides.length === 1 ? "" : "s"}`}
+              ? t("search.noResults")
+              : t("search.resultsCount", { count: displayGuides.length })}
           </p>
         )}
       </div>

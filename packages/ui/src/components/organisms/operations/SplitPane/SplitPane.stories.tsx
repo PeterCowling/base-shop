@@ -99,52 +99,53 @@ export const WithConstraints: StoryObj<typeof SplitPane> = {
   ),
 };
 
-export const Collapsible: StoryObj<typeof SplitPane> = {
-  render: () => {
-    const [collapsed, setCollapsed] = useState(false);
+function CollapsibleStory() {
+  const [collapsed, setCollapsed] = useState(false);
 
-    return (
-      <div className="flex flex-col gap-4" style={{ height: 400 }}>
-        <div className="flex items-center gap-4 px-4">
-          <button
-            onClick={() => setCollapsed(!collapsed)}
-            className="rounded bg-slate-700 px-3 py-1 text-sm text-white"
-          >
-            {collapsed ? "Expand" : "Collapse"} Sidebar
-          </button>
-          <span className="text-sm text-slate-500">
-            Or drag the handle to the left to collapse
-          </span>
-        </div>
-        <div className="flex-1">
-          <SplitPane
-            collapsible
-            collapsed={collapsed}
-            onCollapsedChange={setCollapsed}
-            defaultSize={250}
-            minSize={200}
-          >
-            <div className="flex h-full flex-col bg-slate-800 p-4 text-white">
-              <h3 className="font-semibold">Sidebar</h3>
-              <nav className="mt-4 space-y-2">
-                <div className="rounded bg-slate-700 px-3 py-2">Dashboard</div>
-                <div className="rounded px-3 py-2 hover:bg-slate-700">Projects</div>
-                <div className="rounded px-3 py-2 hover:bg-slate-700">Settings</div>
-              </nav>
-            </div>
-            <div className="flex h-full items-center justify-center bg-slate-50 p-4">
-              <div className="text-center">
-                <h3 className="font-semibold">Main Content</h3>
-                <p className="text-sm text-slate-500">
-                  The sidebar can be collapsed by dragging
-                </p>
-              </div>
-            </div>
-          </SplitPane>
-        </div>
+  return (
+    <div className="flex flex-col gap-4" style={{ height: 400 }}>
+      <div className="flex items-center gap-4 px-4">
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="rounded bg-slate-700 px-3 py-1 text-sm text-white"
+        >
+          {collapsed ? "Expand" : "Collapse"} Sidebar
+        </button>
+        <span className="text-sm text-slate-500">
+          Or drag the handle to the left to collapse
+        </span>
       </div>
-    );
-  },
+      <div className="flex-1">
+        <SplitPane
+          collapsible
+          collapsed={collapsed}
+          onCollapsedChange={setCollapsed}
+          defaultSize={250}
+          minSize={200}
+        >
+          <div className="flex h-full flex-col bg-slate-800 p-4 text-white">
+            <h3 className="font-semibold">Sidebar</h3>
+            <nav className="mt-4 space-y-2">
+              <div className="rounded bg-slate-700 px-3 py-2">Dashboard</div>
+              <div className="rounded px-3 py-2 hover:bg-slate-700">Projects</div>
+              <div className="rounded px-3 py-2 hover:bg-slate-700">Settings</div>
+            </nav>
+          </div>
+          <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+            <div className="text-center">
+              <h3 className="font-semibold">Main Content</h3>
+              <p className="text-sm text-slate-500">
+                The sidebar can be collapsed by dragging
+              </p>
+            </div>
+          </div>
+        </SplitPane>
+      </div>
+    </div>
+  );
+}
+export const Collapsible: StoryObj<typeof SplitPane> = {
+  render: () => <CollapsibleStory />,
 };
 
 export const CodeEditor: StoryObj<typeof SplitPane> = {
@@ -219,43 +220,44 @@ export const NestedSplits: StoryObj<typeof SplitPane> = {
   ),
 };
 
-export const WithResizeCallbacks: StoryObj<typeof SplitPane> = {
-  render: () => {
-    const [size, setSize] = useState<number | null>(null);
-    const [isResizing, setIsResizing] = useState(false);
+function WithResizeCallbacksStory() {
+  const [size, setSize] = useState<number | null>(null);
+  const [isResizing, setIsResizing] = useState(false);
 
-    return (
-      <div className="flex flex-col gap-4" style={{ height: 400 }}>
-        <div className="flex items-center gap-4 px-4">
-          <div className="rounded bg-slate-100 px-3 py-1 text-sm">
-            Size: {size ? `${Math.round(size)}px` : "–"}
-          </div>
-          <div
-            className={`rounded px-3 py-1 text-sm ${
-              isResizing ? "bg-green-100 text-green-700" : "bg-slate-100"
-            }`}
-          >
-            {isResizing ? "Resizing..." : "Idle"}
-          </div>
+  return (
+    <div className="flex flex-col gap-4" style={{ height: 400 }}>
+      <div className="flex items-center gap-4 px-4">
+        <div className="rounded bg-slate-100 px-3 py-1 text-sm">
+          Size: {size ? `${Math.round(size)}px` : "–"}
         </div>
-        <div className="flex-1">
-          <SplitPane
-            defaultSize={300}
-            onResize={setSize}
-            onResizeStart={() => setIsResizing(true)}
-            onResizeEnd={() => setIsResizing(false)}
-          >
-            <div className="flex h-full items-center justify-center bg-slate-100 p-4">
-              Primary Pane
-            </div>
-            <div className="flex h-full items-center justify-center bg-slate-50 p-4">
-              Secondary Pane
-            </div>
-          </SplitPane>
+        <div
+          className={`rounded px-3 py-1 text-sm ${
+            isResizing ? "bg-green-100 text-green-700" : "bg-slate-100"
+          }`}
+        >
+          {isResizing ? "Resizing..." : "Idle"}
         </div>
       </div>
-    );
-  },
+      <div className="flex-1">
+        <SplitPane
+          defaultSize={300}
+          onResize={setSize}
+          onResizeStart={() => setIsResizing(true)}
+          onResizeEnd={() => setIsResizing(false)}
+        >
+          <div className="flex h-full items-center justify-center bg-slate-100 p-4">
+            Primary Pane
+          </div>
+          <div className="flex h-full items-center justify-center bg-slate-50 p-4">
+            Secondary Pane
+          </div>
+        </SplitPane>
+      </div>
+    </div>
+  );
+}
+export const WithResizeCallbacks: StoryObj<typeof SplitPane> = {
+  render: () => <WithResizeCallbacksStory />,
 };
 
 export const CustomHandle: StoryObj<typeof SplitPane> = {

@@ -10,13 +10,18 @@ import {
 } from "./i18n";
 import type { GuideExtras, TocEntry } from "./types";
 
-export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
-  const translate = context.translateGuides;
-  const rawTranslate = context.translator;
-  const guidesFallbackLocal = getGuidesFallbackTranslator(context.lang);
-  const guidesFallbackEn = getGuidesFallbackTranslator("en");
-  const fallbackLabels = buildGuideFallbackLabels(guidesFallbackLocal, guidesFallbackEn);
+type TranslationHelpers = {
+  readArray: <T>(suffix: string, normaliser: (value: unknown) => T[]) => T[];
+  readString: (suffix: string, options?: { allowBlank?: boolean }) => string | undefined;
+  coerceString: (value: unknown) => string | undefined;
+};
 
+function createTranslationHelpers(
+  translate: GuideSeoTemplateContext["translateGuides"],
+  rawTranslate: GuideSeoTemplateContext["translator"],
+  guidesFallbackLocal: ReturnType<typeof getGuidesFallbackTranslator>,
+  guidesFallbackEn: ReturnType<typeof getGuidesFallbackTranslator>,
+): TranslationHelpers {
   const coerceString = (value: unknown) => {
     if (typeof value !== "string") return undefined;
     const trimmed = value.trim();
@@ -57,6 +62,84 @@ export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras
 
     return undefined;
   };
+
+  return { coerceString, readArray, readString };
+}
+
+type TocItemsParams = {
+  sections: Array<{ id: string; title: string }>;
+  beforeList: string[];
+  stepsList: string[];
+  kneesList: string[];
+  kneesDockPrefix: string | undefined;
+  kneesDockLinkText: string | undefined;
+  kneesPorterPrefix: string | undefined;
+  kneesPorterLinkText: string | undefined;
+  faqs: unknown[];
+  faqsTitle: string | undefined;
+  readString: (suffix: string, options?: { allowBlank?: boolean }) => string | undefined;
+  fallbackLabels: ReturnType<typeof buildGuideFallbackLabels>;
+};
+
+function buildTocItems(params: TocItemsParams): TocEntry[] {
+  const {
+    sections,
+    beforeList,
+    stepsList,
+    kneesList,
+    kneesDockPrefix,
+    kneesDockLinkText,
+    kneesPorterPrefix,
+    kneesPorterLinkText,
+    faqs,
+    faqsTitle,
+    readString,
+    fallbackLabels,
+  } = params;
+
+  const tocItemsCandidates: TocEntry[] = [];
+  const pushItem = (item: TocEntry | null | undefined) => {
+    if (!item) return;
+    if (tocItemsCandidates.some((candidate) => candidate.href === item.href)) return;
+    tocItemsCandidates.push(item);
+  };
+
+  sections.forEach((section) => {
+    pushItem({ href: `#${section.id}`, label: section.title });
+  });
+  if (beforeList.length > 0) {
+    pushItem({ href: "#before", label: readString("toc.before") ?? fallbackLabels.before });
+  }
+  if (stepsList.length > 0) {
+    pushItem({ href: "#steps", label: readString("toc.steps") ?? fallbackLabels.steps });
+  }
+  const shouldRenderKnees =
+    kneesList.length > 0 ||
+    (kneesDockPrefix && kneesDockLinkText) ||
+    (kneesPorterPrefix && kneesPorterLinkText);
+  if (shouldRenderKnees) {
+    pushItem({ href: "#knees", label: readString("toc.knees") ?? fallbackLabels.knees });
+  }
+  if (faqs.length > 0) {
+    pushItem({ href: "#faqs", label: readString("toc.faqs") ?? faqsTitle ?? fallbackLabels.faqs });
+  }
+
+  return tocItemsCandidates;
+}
+
+export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
+  const translate = context.translateGuides;
+  const rawTranslate = context.translator;
+  const guidesFallbackLocal = getGuidesFallbackTranslator(context.lang);
+  const guidesFallbackEn = getGuidesFallbackTranslator("en");
+  const fallbackLabels = buildGuideFallbackLabels(guidesFallbackLocal, guidesFallbackEn);
+
+  const { coerceString, readArray, readString } = createTranslationHelpers(
+    translate,
+    rawTranslate,
+    guidesFallbackLocal,
+    guidesFallbackEn,
+  );
 
   const intro = readArray("intro", ensureStringArray);
   const sections = readArray("sections", normaliseSections);
@@ -99,32 +182,20 @@ export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras
       ? fallbackTocItems
       : normaliseTocItems(guidesFallbackEn(`${GUIDE_KEY}.tocItems`, { returnObjects: true }));
 
-  const tocItemsCandidates: TocEntry[] = [];
-  const pushItem = (item: TocEntry | null | undefined) => {
-    if (!item) return;
-    if (tocItemsCandidates.some((candidate) => candidate.href === item.href)) return;
-    tocItemsCandidates.push(item);
-  };
-
-  sections.forEach((section) => {
-    pushItem({ href: `#${section.id}`, label: section.title });
+  const tocItemsCandidates = buildTocItems({
+    sections,
+    beforeList,
+    stepsList,
+    kneesList,
+    kneesDockPrefix,
+    kneesDockLinkText,
+    kneesPorterPrefix,
+    kneesPorterLinkText,
+    faqs,
+    faqsTitle,
+    readString,
+    fallbackLabels,
   });
-  if (beforeList.length > 0) {
-    pushItem({ href: "#before", label: readString("toc.before") ?? fallbackLabels.before });
-  }
-  if (stepsList.length > 0) {
-    pushItem({ href: "#steps", label: readString("toc.steps") ?? fallbackLabels.steps });
-  }
-  const shouldRenderKnees =
-    kneesList.length > 0 ||
-    (kneesDockPrefix && kneesDockLinkText) ||
-    (kneesPorterPrefix && kneesPorterLinkText);
-  if (shouldRenderKnees) {
-    pushItem({ href: "#knees", label: readString("toc.knees") ?? fallbackLabels.knees });
-  }
-  if (faqs.length > 0) {
-    pushItem({ href: "#faqs", label: readString("toc.faqs") ?? faqsTitle ?? fallbackLabels.faqs });
-  }
 
   const tocItems =
     explicitTocItems.length > 0

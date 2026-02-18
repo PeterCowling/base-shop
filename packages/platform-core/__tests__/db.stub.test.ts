@@ -1,4 +1,4 @@
-import { createTestPrismaStub } from "../src/db";
+import { createTestPrismaStub } from "../src/db/testStub";
 
 describe("createTestPrismaStub", () => {
   it("supports rentalOrder CRUD operations", async () => {

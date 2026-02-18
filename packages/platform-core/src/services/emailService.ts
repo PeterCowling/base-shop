@@ -34,8 +34,8 @@ export async function sendSystemEmail(data: {
   type EmailModule = {
     sendEmail(to: string, subject: string, html: string): Promise<unknown>;
   };
-  // Dynamic require hidden from webpack static analysis to avoid cyclic dependency
-  const pkg = ["@acme", "email"].join("/");
-  const mod = req(pkg) as EmailModule;
+  // Use a literal module id so webpack does not create a broad require-context
+  // (which can significantly increase Next/Webpack build memory usage).
+  const mod = req("@acme/email") as EmailModule;
   return mod.sendEmail(data.to, data.subject, data.html);
 }

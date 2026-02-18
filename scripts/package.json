@@ -5,6 +5,8 @@
     "classify-deploy-change": "node --import tsx src/ci/classify-deploy-change.ts",
     "classify-paths": "node ci/path-classifier.cjs",
     "collect-workflow-metrics": "node --import tsx src/ci/collect-workflow-metrics.ts",
+    "generate-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts",
+    "check-stage-operator-views": "node --import tsx src/startup-loop/generate-stage-operator-views.ts --check",
     "test": "cross-env JEST_FORCE_CJS=1 bash tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
   }
 }

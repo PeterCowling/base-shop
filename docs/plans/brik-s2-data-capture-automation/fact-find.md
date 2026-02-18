@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: Ready-for-planning
+Status: Ready-for-planning (all open questions resolved 2026-02-15)
 Domain: Data
 Workstream: Engineering
 Created: 2026-02-15
@@ -232,29 +232,23 @@ Three automation tracks:
   - A: If we enriched `bookings_by_month.csv` `channel_source` keys beyond `Direct:N; OTA:N` (e.g. `Booking.com`, `Hostelworld`), `parseChannelSource()` would break because it expects only `Direct` and `OTA`. Mitigation: keep `bookings_by_month.csv` backward-compatible and emit per-channel detail only to the new dated `*-bookings-by-channel.csv` / `*-commission-by-channel.csv` artifacts.
   - Evidence: `s2-market-intelligence-handoff.ts` — `parseChannelSource` function
 
-### Open (User Input Needed)
-
 - **Q: What are BRIK's actual OTA commission rates?**
-  - Why it matters: The `commission-by-channel.csv` needs `commission_amount` and `effective_take_rate` per channel per month. Without contractual rates, we can only estimate (Booking.com ~15-18%, Hostelworld ~12-15%).
-  - Decision impacted: Whether commission CSV uses actual rates or industry-standard estimates.
-  - Decision owner: Pete
-  - Default assumption + risk: Use industry-standard rates (Booking.com 15%, Hostelworld 12%) with `notes` column flagging "estimated — replace with contractual rate". Risk: inaccurate unit economics in S6B channel strategy. Medium impact — can be corrected later.
+  - A: Both channels are 15% (Booking.com: 15%, Hostelworld: 15%)
+  - Evidence: Confirmed by Pete 2026-02-15
 
 - **Q: Should parity capture use fully automated scraping or semi-automated (script opens pages, operator reads prices)?**
-  - Why it matters: Booking.com anti-bot detection may block fully automated extraction.
-  - Decision impacted: Script architecture and repeatability guarantees.
-  - Decision owner: Pete
-  - Default assumption + contract: Implement a single script interface with modes:
-    - `--mode=auto`: attempt extraction; fail if blocked
-    - `--mode=hybrid`: attempt extraction; if blocked, prompt for terminal inputs (price, optional policy text) and still write CSV
-    - `--mode=manual`: always prompt, but still opens the exact URL (with check-in/out/pax) to ensure determinism
-    - All modes must write `notes` including `capture_mode=...` and a timestamp; `evidence_url` should be the final navigated URL.
+  - A: Auto-only mode. Scripts must extract prices automatically with no hybrid/manual fallback. If extraction fails due to bot detection, the script should fail with a clear error message.
+  - Evidence: Confirmed by Pete 2026-02-15
+  - Implementation note: Scripts must still write deterministic CSV rows on failure with `total_price_all_in=unavailable` and diagnostic `notes` (include `capture_mode=auto`, `failure_reason=...`, timestamp).
 
 - **Q: Is there an Octorate Statistics/Reports page with channel-level commission data?**
-  - Why it matters: If Octorate tracks commission per booking, we could extract actual commission amounts rather than estimating from contractual rates.
-  - Decision impacted: Whether to build a new Octorate scraper for commission data or derive from rates × booking value.
-  - Decision owner: Pete
-  - Default assumption + risk: Octorate does not expose per-booking commission in the standard export. Derive commission as `gross_value × contractual_rate`. Risk: slight inaccuracy if commission varies by room type or season. Low impact.
+  - A: No. Octorate does not expose per-booking commission data in any export or report.
+  - Evidence: Confirmed by Pete 2026-02-15
+  - Implementation note: Derive commission as `gross_value × contractual_rate` (15% for both OTA channels).
+
+### Open (User Input Needed)
+
+None. All questions resolved.
 
 ## Confidence Inputs (for /lp-plan)
 
@@ -288,7 +282,7 @@ Three automation tracks:
 
 | Risk | Likelihood | Impact | Mitigation / Open Question |
 |------|-----------|--------|---------------------------|
-| Booking.com blocks automated price scraping | Medium | Medium | Build with semi-automated fallback: script navigates to correct page, prompts operator if extraction fails. Hostelworld + BRIK direct still fully automated. |
+| Booking.com blocks automated price scraping | Medium | Medium | Auto-only mode per user decision. If blocked, script fails with clear error. Mitigation: slow navigation, realistic user-agent, delays between actions. May require session state management if login helps avoid detection. |
 | Octorate session expiry during pipeline run | Medium | Low | Scripts already handle this pattern (fail with clear "session expired" message). Operator runs `octorate_login_interactive` to refresh. |
 | Refer column format doesn't cover all OTA channels | Low | Medium | If bookings come from Expedia or other OTAs not matching known patterns, they'd be classified as "Other OTA". Can add patterns as discovered. Current data shows only Booking.com + Hostelworld + Direct. |
 | Commission rates vary by season/promotion | Medium | Low | Use flat contractual rates initially, flag as "estimated" in notes column. Refine with actual Octorate invoice data if available. |
@@ -299,7 +293,7 @@ Three automation tracks:
 ## Operational Contracts (Prevent Rework)
 
 - **Idempotency + atomic writes:** scripts must write `*.tmp` then rename to the final `YYYY-MM-DD-*.csv` filename (atomic). Default `--overwrite=false` (fail if target exists) unless explicitly opted in.
-- **Partial failure behavior:** a failed surface/scenario capture must still produce a deterministic CSV row with `total_price_all_in=unavailable` (or equivalent) and a diagnostic `notes` entry (include `capture_mode=auto|hybrid|manual_input` and timestamp).
+- **Partial failure behavior:** a failed surface/scenario capture must still produce a deterministic CSV row with `total_price_all_in=unavailable` (or equivalent) and a diagnostic `notes` entry (include `capture_mode=auto`, `failure_reason=...`, and timestamp).
 - **Artifact landing matrix (avoid path drift):**
   - S2 operator-captured artifacts consumed by `buildOperatorCapturedDataBlock()` live in `docs/business-os/market-research/BRIK/data/`.
   - Default mechanism: every script that produces S2 operator-captured artifacts must accept `--output-dir`, and the orchestrator must pass `docs/business-os/market-research/BRIK/data/` explicitly. Avoid copy steps unless an existing script interface cannot be changed.
@@ -329,8 +323,8 @@ Three automation tracks:
   - Numeric fields (`total_price_all_in`, `gross_value`, `commission_amount`) must be plain numbers with `.` decimal separator, no currency symbols, rounded to 2 decimals.
 - **`taxes_fees_clarity` convention (prefix enum + optional detail):** must begin with one of `includes_taxes`, `excludes_city_tax`, `taxes_may_apply`, `unknown`, followed by optional human text.
 - **`notes` convention (universal):** `notes` is a semicolon-separated list of `key=value` tokens. Free text is allowed only as `free_text=...`.
-  - Minimum parity tokens: `capture_mode=auto|hybrid|manual_input`; `captured_at=YYYY-MM-DDThh:mm:ssZ`; `source=octorate|booking|hostelworld`
-  - Minimum commission tokens: `rate=0.15`; `rate_source=estimated|contractual`; `rate_last_verified_at=YYYY-MM-DD`
+  - Minimum parity tokens: `capture_mode=auto`; `captured_at=YYYY-MM-DDThh:mm:ssZ`; `source=octorate|booking|hostelworld`; on failure add `failure_reason=...`
+  - Minimum commission tokens: `rate=0.15`; `rate_source=contractual`; `rate_last_verified_at=2026-02-15`
 - **Commission edge cases (MVP):**
   - Always emit `Direct` rows with `commission_amount=0` and `effective_take_rate=0`.
   - If `gross_value==0`, set `effective_take_rate=0` and add `notes` token `gross_zero=true` (avoid division-by-zero).

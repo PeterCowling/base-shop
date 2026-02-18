@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { createTestPrismaStub } from "../db";
+import { createTestPrismaStub } from "../db/testStub";
 
 describe("rentalOrder stub delegate", () => {
   it("creates orders and finds them by shop_sessionId", async () => {

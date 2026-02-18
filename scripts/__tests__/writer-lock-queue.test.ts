@@ -27,7 +27,11 @@ function createTempGitRepo(): string {
     cwd: tmpDir,
     stdio: "ignore",
   });
-  execSync('git commit --allow-empty -m "init"', {
+  execSync("git config core.hooksPath /dev/null", {
+    cwd: tmpDir,
+    stdio: "ignore",
+  });
+  execSync('git -c commit.gpgsign=false commit --allow-empty -m "init"', {
     cwd: tmpDir,
     stdio: "ignore",
   });

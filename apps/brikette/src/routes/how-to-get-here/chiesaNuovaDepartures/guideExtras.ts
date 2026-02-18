@@ -10,13 +10,18 @@ import {
 } from "./i18n";
 import type { GuideExtras, TocEntry } from "./types";
 
-export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
-  const translate = context.translateGuides;
-  const rawTranslate = context.translator;
-  const guidesFallbackLocal = getGuidesFallbackTranslator(context.lang);
-  const guidesFallbackEn = getGuidesFallbackTranslator("en");
-  const fallbackLabels = buildGuideFallbackLabels(guidesFallbackLocal, guidesFallbackEn);
+type TranslationHelpers = {
+  readArray: <T>(suffix: string, normaliser: (value: unknown) => T[], options?: { skipEnglishFallback?: boolean }) => T[];
+  readString: (suffix: string, options?: { allowBlank?: boolean }) => string | undefined;
+  coerceString: (value: unknown) => string | undefined;
+};
 
+function createTranslationHelpers(
+  translate: GuideSeoTemplateContext["translateGuides"],
+  rawTranslate: GuideSeoTemplateContext["translator"],
+  guidesFallbackLocal: ReturnType<typeof getGuidesFallbackTranslator>,
+  guidesFallbackEn: ReturnType<typeof getGuidesFallbackTranslator>,
+): TranslationHelpers {
   const coerceString = (value: unknown) => {
     if (typeof value !== "string") return undefined;
     const trimmed = value.trim();
@@ -65,49 +70,39 @@ export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras
     return undefined;
   };
 
-  const intro = readArray("intro", ensureStringArray);
-  const sections = readArray("sections", normaliseSections);
-  const beforeList = readArray("beforeList", ensureStringArray);
-  const stepsList = readArray("stepsList", ensureStringArray);
-  const stepsMapEmbedUrl = readString("stepsMapEmbedUrl");
-  const kneesList = readArray("kneesList", ensureStringArray);
-  const kneesDockPrefix = readString("kneesDockPrefix", { allowBlank: true });
-  const kneesDockLinkText = readString("kneesDockLinkLabel", { allowBlank: true });
-  const kneesPorterPrefix = readString("kneesPorterPrefix", { allowBlank: true });
-  const kneesPorterLinkText = readString("kneesPorterLinkLabel", { allowBlank: true });
-  const imageAlt = readString("image.alt");
-  const imageCaption = readString("image.caption");
-  let faqs = readArray("faqs", normaliseFaqs, { skipEnglishFallback: true });
-  if (faqs.length === 0) {
-    const legacyFaq = readArray("faq", normaliseFaqs, { skipEnglishFallback: true });
-    if (legacyFaq.length > 0) {
-      faqs = legacyFaq;
-    } else {
-      const fallbackFaqs = normaliseFaqs(guidesFallbackEn(`${GUIDE_KEY}.faqs`, { returnObjects: true }));
-      faqs = fallbackFaqs.length > 0 ? fallbackFaqs : normaliseFaqs(guidesFallbackEn(`${GUIDE_KEY}.faq`, { returnObjects: true }));
-    }
-  }
+  return { coerceString, readArray, readString };
+}
 
-  const faqsTitle =
-    readString("faqsTitle") ??
-    coerceString(guidesFallbackLocal(`${GUIDE_KEY}.faqsTitle`, { defaultValue: "" })) ??
-    coerceString(guidesFallbackEn(`${GUIDE_KEY}.faqsTitle`, { defaultValue: "" }));
+type TocItemsParams = {
+  sections: Array<{ id: string; title: string }>;
+  beforeList: string[];
+  stepsList: string[];
+  kneesList: string[];
+  kneesDockPrefix: string | undefined;
+  kneesDockLinkText: string | undefined;
+  kneesPorterPrefix: string | undefined;
+  kneesPorterLinkText: string | undefined;
+  faqs: unknown[];
+  faqsTitle: string | undefined;
+  readString: (suffix: string, options?: { allowBlank?: boolean }) => string | undefined;
+  fallbackLabels: ReturnType<typeof buildGuideFallbackLabels>;
+};
 
-  const howToSteps = readArray("howtoSteps", ensureStringArray);
-
-  const tocTitle = readString("toc.onThisPage") ?? readString("tocTitle") ?? fallbackLabels.onThisPage;
-
-  const explicitTocItems = normaliseTocItems(
-    translate(buildTranslationKey("tocItems"), { returnObjects: true }),
-  );
-  const fallbackTocItems =
-    explicitTocItems.length > 0
-      ? explicitTocItems
-      : normaliseTocItems(guidesFallbackLocal(`${GUIDE_KEY}.tocItems`, { returnObjects: true }));
-  const fallbackEnTocItems =
-    fallbackTocItems.length > 0
-      ? fallbackTocItems
-      : normaliseTocItems(guidesFallbackEn(`${GUIDE_KEY}.tocItems`, { returnObjects: true }));
+function buildTocItems(params: TocItemsParams): Array<{ href: string; label: string }> {
+  const {
+    sections,
+    beforeList,
+    stepsList,
+    kneesList,
+    kneesDockPrefix,
+    kneesDockLinkText,
+    kneesPorterPrefix,
+    kneesPorterLinkText,
+    faqs,
+    faqsTitle,
+    readString,
+    fallbackLabels,
+  } = params;
 
   const tocItemsCandidates: TocEntry[] = [];
   const pushItem = (item: TocEntry | null | undefined) => {
@@ -135,6 +130,89 @@ export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras
   if (faqs.length > 0) {
     pushItem({ href: "#faqs", label: readString("toc.faqs") ?? faqsTitle ?? fallbackLabels.faqs });
   }
+
+  return tocItemsCandidates;
+}
+
+function resolveFaqs(
+  readArray: <T>(suffix: string, normaliser: (value: unknown) => T[], options?: { skipEnglishFallback?: boolean }) => T[],
+  guidesFallbackEn: ReturnType<typeof getGuidesFallbackTranslator>,
+): Array<{ q: string; a: string[] }> {
+  let faqs = readArray("faqs", normaliseFaqs, { skipEnglishFallback: true });
+  if (faqs.length > 0) return faqs;
+
+  const legacyFaq = readArray("faq", normaliseFaqs, { skipEnglishFallback: true });
+  if (legacyFaq.length > 0) return legacyFaq;
+
+  const fallbackFaqs = normaliseFaqs(guidesFallbackEn(`${GUIDE_KEY}.faqs`, { returnObjects: true }));
+  if (fallbackFaqs.length > 0) return fallbackFaqs;
+
+  return normaliseFaqs(guidesFallbackEn(`${GUIDE_KEY}.faq`, { returnObjects: true }));
+}
+
+export function createGuideExtras(context: GuideSeoTemplateContext): GuideExtras {
+  const translate = context.translateGuides;
+  const rawTranslate = context.translator;
+  const guidesFallbackLocal = getGuidesFallbackTranslator(context.lang);
+  const guidesFallbackEn = getGuidesFallbackTranslator("en");
+  const fallbackLabels = buildGuideFallbackLabels(guidesFallbackLocal, guidesFallbackEn);
+
+  const { coerceString, readArray, readString } = createTranslationHelpers(
+    translate,
+    rawTranslate,
+    guidesFallbackLocal,
+    guidesFallbackEn,
+  );
+
+  const intro = readArray("intro", ensureStringArray);
+  const sections = readArray("sections", normaliseSections);
+  const beforeList = readArray("beforeList", ensureStringArray);
+  const stepsList = readArray("stepsList", ensureStringArray);
+  const stepsMapEmbedUrl = readString("stepsMapEmbedUrl");
+  const kneesList = readArray("kneesList", ensureStringArray);
+  const kneesDockPrefix = readString("kneesDockPrefix", { allowBlank: true });
+  const kneesDockLinkText = readString("kneesDockLinkLabel", { allowBlank: true });
+  const kneesPorterPrefix = readString("kneesPorterPrefix", { allowBlank: true });
+  const kneesPorterLinkText = readString("kneesPorterLinkLabel", { allowBlank: true });
+  const imageAlt = readString("image.alt");
+  const imageCaption = readString("image.caption");
+  const faqs = resolveFaqs(readArray, guidesFallbackEn);
+
+  const faqsTitle =
+    readString("faqsTitle") ??
+    coerceString(guidesFallbackLocal(`${GUIDE_KEY}.faqsTitle`, { defaultValue: "" })) ??
+    coerceString(guidesFallbackEn(`${GUIDE_KEY}.faqsTitle`, { defaultValue: "" }));
+
+  const howToSteps = readArray("howtoSteps", ensureStringArray);
+
+  const tocTitle = readString("toc.onThisPage") ?? readString("tocTitle") ?? fallbackLabels.onThisPage;
+
+  const explicitTocItems = normaliseTocItems(
+    translate(buildTranslationKey("tocItems"), { returnObjects: true }),
+  );
+  const fallbackTocItems =
+    explicitTocItems.length > 0
+      ? explicitTocItems
+      : normaliseTocItems(guidesFallbackLocal(`${GUIDE_KEY}.tocItems`, { returnObjects: true }));
+  const fallbackEnTocItems =
+    fallbackTocItems.length > 0
+      ? fallbackTocItems
+      : normaliseTocItems(guidesFallbackEn(`${GUIDE_KEY}.tocItems`, { returnObjects: true }));
+
+  const tocItemsCandidates = buildTocItems({
+    sections,
+    beforeList,
+    stepsList,
+    kneesList,
+    kneesDockPrefix,
+    kneesDockLinkText,
+    kneesPorterPrefix,
+    kneesPorterLinkText,
+    faqs,
+    faqsTitle,
+    readString,
+    fallbackLabels,
+  });
 
   const tocItems =
     explicitTocItems.length > 0

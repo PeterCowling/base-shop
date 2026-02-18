@@ -59,9 +59,9 @@ export function useGuideTocOptions(params: {
   //   items so GenericContent can provide a minimal ToC. Respect an explicit
   //   route-specified showToc flag in all cases.
   const effectiveGenericOptions = useMemo(() => {
-    const base =
+    const base: NonNullable<typeof genericContentOptions> =
       genericContentOptions && typeof genericContentOptions === "object"
-        ? genericContentOptions
+        ? (genericContentOptions as NonNullable<typeof genericContentOptions>)
         : {};
     const applyOverride = <T extends Record<string, unknown>>(value: T): T => {
       if (!hasLocalizedContent && localizedFallbackTocSuppressed) {
@@ -71,25 +71,25 @@ export function useGuideTocOptions(params: {
     };
     if (typeof buildTocItems === "function") {
       // Respect explicit route preference when provided.
-      if (typeof (base as any).showToc !== "undefined") {
-        return applyOverride(base as NonNullable<typeof genericContentOptions>);
+      if (typeof base.showToc !== "undefined") {
+        return applyOverride(base);
       }
       // Template test coverage: for specific guides, allow GenericContent to
       // render its own ToC even when a custom builder provides items.
       if (needsExplicitTocTrue(guideKey)) {
-        return applyOverride({ ...(base as any), showToc: true } as NonNullable<typeof genericContentOptions>);
+        return applyOverride({ ...base, showToc: true });
       }
       // When a custom builder yielded items, suppress GenericContent's ToC to
       // avoid duplicates. If the builder produced no items, allow GenericContent
       // to render its own minimal ToC.
       const hasCustomItems = Array.isArray(structuredTocItems) && structuredTocItems.length > 0;
-      return applyOverride({ ...base, showToc: !hasCustomItems } as NonNullable<typeof genericContentOptions>);
+      return applyOverride({ ...base, showToc: !hasCustomItems });
     }
     // Route-specific: for specific guides, suppress GenericContent's ToC.
     if (needsExplicitTocFalse(guideKey)) {
-      return applyOverride({ ...base, showToc: false } as NonNullable<typeof genericContentOptions>);
+      return applyOverride({ ...base, showToc: false });
     }
-    return applyOverride(base as NonNullable<typeof genericContentOptions>);
+    return applyOverride(base);
   }, [
     genericContentOptions,
     buildTocItems,

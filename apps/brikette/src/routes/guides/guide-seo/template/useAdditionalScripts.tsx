@@ -1,6 +1,7 @@
-import { isValidElement, useRef } from "react";
+import { useRef } from "react";
 
 import { IS_DEV } from "@/config/env";
+import { isFunctionComponentElement } from "@/types/react-utils";
 
 import type { GuideSeoTemplateContext } from "../types";
 
@@ -21,7 +22,7 @@ export function useAdditionalScripts(params: {
     // Include article title in the cache key so tests that mutate dictionaries
     // across renders don't receive stale additional scripts from a previous
     // invocation with different localized content.
-    const cacheKey = `${String(guideKey)}::${String(lang)}::${String((context as any)?.article?.title ?? "").trim()}`;
+    const cacheKey = `${String(guideKey)}::${String(lang)}::${String(context.article.title).trim()}`;
     // If we have a cached node for this (guide, lang, title) snapshot, reuse
     // it to avoid re-invoking function components (e.g., CheapEatsMeta) on
     // incidental re-mounts or state-driven re-renders in tests.
@@ -36,9 +37,9 @@ export function useAdditionalScripts(params: {
       const built = additionalScripts ? additionalScripts(context) : null;
       const resolveTopLevel = (node: React.ReactNode): React.ReactNode => {
         try {
-          if (isValidElement(node) && typeof (node as any).type === "function") {
-            const Comp = (node as any).type as (p: unknown) => React.ReactNode;
-            return Comp((node as any).props);
+          if (isFunctionComponentElement(node)) {
+            const Comp = node.type;
+            return Comp(node.props);
           }
         } catch (err) {
           if (IS_DEV) console.debug("[GuideSeoTemplate] component render", err);

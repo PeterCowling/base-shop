@@ -138,44 +138,45 @@ export const AllSectionsExpanded: Story = {
   },
 };
 
-export const Interactive: Story = {
-  render: () => {
-    const [activeCount, setActiveCount] = useState(0);
+function InteractiveStory() {
+  const [activeCount, setActiveCount] = useState(0);
 
-    return (
-      <div className="space-y-4">
-        <FilterPanel
-          sections={sampleSections}
-          activeFiltersCount={activeCount}
-          showClearButton
-          showApplyButton
-          onClear={() => {
-            setActiveCount(0);
-            alert('Filters cleared!');
-          }}
-          onApply={() => alert(`Applied ${activeCount} filters`)}
-        />
+  return (
+    <div className="space-y-4">
+      <FilterPanel
+        sections={sampleSections}
+        activeFiltersCount={activeCount}
+        showClearButton
+        showApplyButton
+        onClear={() => {
+          setActiveCount(0);
+          alert('Filters cleared!');
+        }}
+        onApply={() => alert(`Applied ${activeCount} filters`)}
+      />
 
-        <div className="rounded border border-slate-200 bg-slate-50 p-4">
-          <p className="mb-2 text-sm font-medium">Simulate filters:</p>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setActiveCount((c) => Math.min(c + 1, 10))}
-              className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
-            >
-              Add Filter
-            </button>
-            <button
-              onClick={() => setActiveCount((c) => Math.max(c - 1, 0))}
-              className="rounded bg-slate-600 px-3 py-1 text-sm text-white hover:bg-slate-700"
-            >
-              Remove Filter
-            </button>
-          </div>
+      <div className="rounded border border-slate-200 bg-slate-50 p-4">
+        <p className="mb-2 text-sm font-medium">Simulate filters:</p>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setActiveCount((c) => Math.min(c + 1, 10))}
+            className="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
+          >
+            Add Filter
+          </button>
+          <button
+            onClick={() => setActiveCount((c) => Math.max(c - 1, 0))}
+            className="rounded bg-slate-600 px-3 py-1 text-sm text-white hover:bg-slate-700"
+          >
+            Remove Filter
+          </button>
         </div>
       </div>
-    );
-  },
+    </div>
+  );
+}
+export const Interactive: Story = {
+  render: () => <InteractiveStory />,
 };
 
 export const DarkMode: Story = {

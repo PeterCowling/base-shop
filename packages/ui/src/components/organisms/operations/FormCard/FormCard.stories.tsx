@@ -124,68 +124,69 @@ export const NoFooter: Story = {
 };
 
 // Interactive example
+function InteractiveStory() {
+  const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [quantity, setQuantity] = useState('');
+
+  const handleSubmit = () => {
+    setState('loading');
+    setTimeout(() => {
+      if (quantity && parseInt(quantity) > 0) {
+        setState('success');
+        setTimeout(() => setState('idle'), 3000);
+      } else {
+        setState('error');
+      }
+    }, 2000);
+  };
+
+  return (
+    <FormCard
+      title="Add Stock"
+      description="Increase inventory count"
+      state={state}
+      successMessage="Stock added successfully!"
+      errorMessage="Please enter a valid quantity greater than 0"
+      showLoadingOverlay={true}
+      footer={
+        <>
+          <button
+            type="button"
+            onClick={() => {
+              setState('idle');
+              setQuantity('');
+            }}
+            className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg"
+          >
+            Reset
+          </button>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={state === 'loading'}
+            className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600"
+          >
+            {state === 'loading' ? 'Saving...' : 'Add Stock'}
+          </button>
+        </>
+      }
+    >
+      <div>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          Quantity to Add
+        </label>
+        <input
+          type="number"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
+          min="1"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+          placeholder="Enter quantity"
+        />
+      </div>
+    </FormCard>
+  );
+}
 export const Interactive: Story = {
-  render: () => {
-    const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-    const [quantity, setQuantity] = useState('');
-
-    const handleSubmit = () => {
-      setState('loading');
-      setTimeout(() => {
-        if (quantity && parseInt(quantity) > 0) {
-          setState('success');
-          setTimeout(() => setState('idle'), 3000);
-        } else {
-          setState('error');
-        }
-      }, 2000);
-    };
-
-    return (
-      <FormCard
-        title="Add Stock"
-        description="Increase inventory count"
-        state={state}
-        successMessage="Stock added successfully!"
-        errorMessage="Please enter a valid quantity greater than 0"
-        showLoadingOverlay={true}
-        footer={
-          <>
-            <button
-              type="button"
-              onClick={() => {
-                setState('idle');
-                setQuantity('');
-              }}
-              className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg"
-            >
-              Reset
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={state === 'loading'}
-              className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 disabled:opacity-50 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600"
-            >
-              {state === 'loading' ? 'Saving...' : 'Add Stock'}
-            </button>
-          </>
-        }
-      >
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Quantity to Add
-          </label>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            min="1"
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
-            placeholder="Enter quantity"
-          />
-        </div>
-      </FormCard>
-    );
-  },
+  render: () => <InteractiveStory />,
 };

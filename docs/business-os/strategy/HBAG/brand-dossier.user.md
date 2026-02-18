@@ -10,11 +10,9 @@ Token-Source: TBD — no app or theme package exists yet for Handbag Accessory
 
 # Handbag Accessory — Brand Dossier
 
-> **Draft status.** This dossier was bootstrapped from the business plan.
-> HBAG was recently separated from XA for independent planning and decision-making.
-> No app or theme package exists. The offer hypothesis and target segment are not yet
-> finalized (see plan §Strategy items 1-2). All `TBD` fields require operator input
-> after Core Offer and Positioning is defined.
+> **Draft status.** Positioning tier locked 2026-02-17: **Premium (€80–€150)**.
+> No app or theme package exists yet. Audience, palette, and typography are directional
+> pending first customer inputs (≥3 after first 10 sales).
 
 ## Audience
 
@@ -30,17 +28,13 @@ Token-Source: TBD — no app or theme package exists yet for Handbag Accessory
 
 ## Personality
 
-> TBD — Directional candidates pending offer lock:
-> - If premium/fashion positioning: **Sophisticated + curated**, clean, minimal, aspirational
-> - If functional/practical positioning: **Organized + practical**, reliable, quality-focused
-> - If accessible lifestyle positioning: **Stylish + approachable**, warm, relatable
->
-> Validate personality direction after offer lock and ≥3 customer inputs.
+> Positioning locked: **Premium (€80–€150)**, confirmed Pete 2026-02-17.
+> Validate with ≥3 customer inputs after first 10 sales.
 
-Common candidates regardless of positioning:
+- **Sophisticated + curated** — clean, minimal, aspirational without being inaccessible
 - **Feminine**, not generic
-- **Confident**, not apologetic
-- **Tasteful**, not trend-chasing
+- **Confident**, not apologetic — own the quality story, don't over-justify the price
+- **Tasteful**, not trend-chasing — the bag charm trend is an entry point, not the identity
 
 ## Visual Identity
 

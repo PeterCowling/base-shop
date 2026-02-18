@@ -217,6 +217,78 @@ interface WithTranslatorParams {
   t: TFunction;
 }
 
+// Helper to establish base translator
+function establishBaseTranslator(
+  obj: Record<string, unknown>,
+  t: TFunction,
+  hasLocalizedContent: boolean,
+  englishFallbackAllowed: boolean,
+  hookI18n: I18nInstance,
+  guideKey: string,
+): TFunction {
+  if (typeof obj["t"] === "function") {
+    return obj["t"] as TFunction;
+  }
+
+  let baseT = t;
+  if (!hasLocalizedContent && englishFallbackAllowed) {
+    const { hookCandidate, appCandidate } = getEnTranslatorCandidates(hookI18n);
+    baseT = resolveEnglishTranslator({
+      hookCandidate,
+      appCandidate,
+      fallback: baseT,
+      guideKey,
+    });
+  }
+  return baseT;
+}
+
+// Helper to check if guide has localized arrays
+function hasLocalizedArrays(
+  guideKey: string,
+  translations: TranslationsBundle,
+): boolean {
+  try {
+    const intro = translations?.tGuides?.(`content.${guideKey}.intro`, { returnObjects: true }) as unknown;
+    const sections = translations?.tGuides?.(`content.${guideKey}.sections`, { returnObjects: true }) as unknown;
+    const hasIntro = Array.isArray(intro) ? intro.some((v) => typeof v === "string" && v.trim().length > 0) : false;
+    const hasSections = Array.isArray(sections)
+      ? (sections as unknown[]).some((s) => {
+          if (!s || typeof s !== "object") return false;
+          const rec = s as Record<string, unknown>;
+          const title = typeof rec["title"] === "string" ? (rec["title"] as string).trim() : "";
+          const body = Array.isArray(rec["body"])
+            ? (rec["body"] as unknown[]).filter((x) => typeof x === "string" && (x as string).trim().length > 0)
+            : [];
+          const items = Array.isArray(rec["items"])
+            ? (rec["items"] as unknown[]).filter((x) => typeof x === "string" && (x as string).trim().length > 0)
+            : [];
+          return title.length > 0 || body.length > 0 || items.length > 0;
+        })
+      : false;
+    return hasIntro || hasSections;
+  } catch {
+    return false;
+  }
+}
+
+// Helper to resolve EN translator for fallback
+function resolveEnTranslator(
+  englishFallbackAllowed: boolean,
+  hookI18n: I18nInstance,
+  baseT: TFunction,
+  guideKey: string,
+): TFunction | undefined {
+  if (!englishFallbackAllowed) return undefined;
+  const { hookCandidate, appCandidate } = getEnTranslatorCandidates(hookI18n);
+  return resolveEnglishTranslator({
+    hookCandidate,
+    appCandidate,
+    fallback: baseT,
+    guideKey,
+  });
+}
+
 /**
  * Wrap props to ensure GenericContent receives a properly configured translator.
  *
@@ -247,66 +319,27 @@ export function withTranslator(
 
     const obj = props as Record<string, unknown>;
 
-    // Establish a base translator function to pass to GenericContent.
-    let baseT: TFunction;
-    if (typeof obj["t"] === "function") {
-      baseT = obj["t"] as TFunction;
-    } else {
-      baseT = t;
-      if (!hasLocalizedContent && englishFallbackAllowed) {
-        const { hookCandidate, appCandidate } = getEnTranslatorCandidates(hookI18n);
-        baseT = resolveEnglishTranslator({
-          hookCandidate,
-          appCandidate,
-          fallback: baseT,
-          guideKey,
-        });
-      }
-    }
+    // Establish base translator
+    const baseT = establishBaseTranslator(
+      obj,
+      t,
+      hasLocalizedContent,
+      englishFallbackAllowed,
+      hookI18n,
+      guideKey,
+    );
 
     // Route-specific: preserve active locale translator when localized arrays exist
     if (shouldPreserveTranslatorWhenLocalized(guideKey)) {
-      try {
-        const intro = translations?.tGuides?.(`content.${guideKey}.intro`, { returnObjects: true }) as unknown;
-        const sections = translations?.tGuides?.(`content.${guideKey}.sections`, { returnObjects: true }) as unknown;
-        const hasIntro = Array.isArray(intro) ? intro.some((v) => typeof v === "string" && v.trim().length > 0) : false;
-        const hasSections = Array.isArray(sections)
-          ? (sections as unknown[]).some((s) => {
-              if (!s || typeof s !== "object") return false;
-              const rec = s as Record<string, unknown>;
-              const title = typeof rec["title"] === "string" ? (rec["title"] as string).trim() : "";
-              const body = Array.isArray(rec["body"])
-                ? (rec["body"] as unknown[]).filter((x) => typeof x === "string" && (x as string).trim().length > 0)
-                : [];
-              const items = Array.isArray(rec["items"])
-                ? (rec["items"] as unknown[]).filter((x) => typeof x === "string" && (x as string).trim().length > 0)
-                : [];
-              return title.length > 0 || body.length > 0 || items.length > 0;
-            })
-          : false;
-        if (hasIntro || hasSections) {
-          return { ...obj, t: baseT };
-        }
-      } catch {
-        /* noop */
+      if (hasLocalizedArrays(guideKey, translations)) {
+        return { ...obj, t: baseT };
       }
     }
 
     // Get EN translator for fallback scenarios
-    const enT = !englishFallbackAllowed
-      ? undefined
-      : (() => {
-          const { hookCandidate, appCandidate } = getEnTranslatorCandidates(hookI18n);
-          return resolveEnglishTranslator({
-            hookCandidate,
-            appCandidate,
-            fallback: baseT,
-            guideKey,
-          });
-        })();
+    const enT = resolveEnTranslator(englishFallbackAllowed, hookI18n, baseT, guideKey);
 
-    // Preserve translator identity when localized content exists, or when
-    // we are already using the EN fallback translator.
+    // Preserve translator identity when localized content exists
     if (hasLocalizedContent || (typeof enT === "function" && baseT === enT)) {
       try {
         const fn = baseT as { __lang?: string; __namespace?: string };
@@ -348,6 +381,93 @@ export function withTranslator(
   return props;
 }
 
+// Helper to handle fallback translations
+function tryFallbackTranslation(
+  val: unknown,
+  key: string,
+  keyAsString: string | undefined,
+  shouldProbeFallback: boolean,
+  translations: TranslationsBundle,
+  baseT: TFunction,
+  opts: Record<string, unknown> | undefined,
+): unknown {
+  if (!shouldProbeFallback || !isUnresolved(val, keyAsString)) {
+    return val;
+  }
+
+  const fallbackTranslators = collectFallbackTranslators(translations, baseT);
+  for (const translator of fallbackTranslators) {
+    try {
+      const fallbackVal = translator(key, opts);
+      if (!isUnresolved(fallbackVal, keyAsString)) {
+        return fallbackVal;
+      }
+    } catch {
+      /* noop */
+    }
+  }
+  return val;
+}
+
+// Helper to handle intro array fallback
+function handleIntroFallback(
+  val: unknown,
+  key: string,
+  enT: TFunction,
+): unknown {
+  const toArr = (v: unknown): string[] =>
+    ensureStringArray(v)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+  const arr = Array.isArray(val) ? toArr(val) : typeof val === "string" ? toArr([val]) : [];
+  if (arr.length === 0) {
+    const enVal = enT(key, { returnObjects: true });
+    const enArr = Array.isArray(enVal) ? toArr(enVal) : typeof enVal === "string" ? toArr([enVal]) : [];
+    if (enArr.length > 0) return enArr;
+  }
+  return val;
+}
+
+// Helper to handle FAQ array fallback
+function handleFaqsFallback(
+  val: unknown,
+  key: string,
+  enT: TFunction,
+): unknown {
+  const toArr = (v: unknown): string[] =>
+    ensureStringArray(v)
+      .map((s) => s.trim())
+      .filter(Boolean);
+
+  const toFaqs = (input: unknown): Array<{ q: string; a: string[] }> => {
+    const raw = Array.isArray(input) ? (input as unknown[]) : [];
+    return raw
+      .map((e) => {
+        if (!e || typeof e !== "object") return null;
+        const faqObj = e as Record<string, unknown>;
+        const qRaw =
+          typeof faqObj["q"] === "string"
+            ? faqObj["q"]
+            : typeof faqObj["question"] === "string"
+            ? faqObj["question"]
+            : "";
+        const q = qRaw.trim();
+        const a = toArr(faqObj["a"] ?? faqObj["answer"]);
+        return q && a.length > 0 ? { q, a } : null;
+      })
+      .filter((x): x is { q: string; a: string[] } => x != null);
+  };
+
+  const current = toFaqs(val);
+  if (current.length === 0) {
+    const enVal = enT(key, { returnObjects: true });
+    const enFaqs = toFaqs(enVal);
+    if (enFaqs.length > 0) return enFaqs;
+  }
+  return val;
+}
+
 /**
  * Create a wrapped translator that handles fallback for intro/FAQ arrays.
  */
@@ -364,27 +484,13 @@ function createWrappedTranslator(
   const { guideKey, hasLocalizedContent, englishFallbackAllowed, translations, enT } = params;
 
   const wrapped = ((key: string, opts?: Record<string, unknown>) => {
-    const val = baseT(key, opts);
+    let val = baseT(key, opts);
     const keyAsString = typeof key === "string" ? key : undefined;
     const shouldProbeFallback =
       !hasLocalizedContent && typeof keyAsString === "string" && keyAsString.length > 0;
 
-    const fallbackTranslators = shouldProbeFallback
-      ? collectFallbackTranslators(translations, baseT)
-      : [];
-
-    if (shouldProbeFallback && isUnresolved(val, keyAsString)) {
-      for (const translator of fallbackTranslators) {
-        try {
-          const fallbackVal = translator(key, opts);
-          if (!isUnresolved(fallbackVal, keyAsString)) {
-            return fallbackVal;
-          }
-        } catch {
-          /* noop */
-        }
-      }
-    }
+    // Try fallback translators if needed
+    val = tryFallbackTranslation(val, key, keyAsString, shouldProbeFallback, translations, baseT, opts);
 
     const isIntroKey =
       typeof key === "string" &&
@@ -393,8 +499,7 @@ function createWrappedTranslator(
       typeof key === "string" &&
       (key === `content.${guideKey}.faqs` || key === `content.${guideKey}.faq`);
 
-    // For intro/faqs arrays, when the active translator returns empty,
-    // fall back to EN to populate those fields.
+    // Handle intro/FAQ array fallbacks
     if (
       !hasLocalizedContent &&
       englishFallbackAllowed &&
@@ -403,43 +508,10 @@ function createWrappedTranslator(
       opts &&
       (opts.returnObjects || typeof val !== "string")
     ) {
-      const toArr = (v: unknown): string[] =>
-        ensureStringArray(v)
-          .map((s) => s.trim())
-          .filter(Boolean);
-
       if (isIntroKey) {
-        const arr = Array.isArray(val) ? toArr(val) : typeof val === "string" ? toArr([val]) : [];
-        if (arr.length === 0) {
-          const enVal = enT(key, { returnObjects: true });
-          const enArr = Array.isArray(enVal) ? toArr(enVal) : typeof enVal === "string" ? toArr([enVal]) : [];
-          if (enArr.length > 0) return enArr;
-        }
+        return handleIntroFallback(val, key, enT);
       } else if (isFaqsKey) {
-        const toFaqs = (input: unknown): Array<{ q: string; a: string[] }> => {
-          const raw = Array.isArray(input) ? (input as unknown[]) : [];
-          return raw
-            .map((e) => {
-              if (!e || typeof e !== "object") return null;
-              const faqObj = e as Record<string, unknown>;
-              const qRaw =
-                typeof faqObj["q"] === "string"
-                  ? faqObj["q"]
-                  : typeof faqObj["question"] === "string"
-                  ? faqObj["question"]
-                  : "";
-              const q = qRaw.trim();
-              const a = toArr(faqObj["a"] ?? faqObj["answer"]);
-              return q && a.length > 0 ? { q, a } : null;
-            })
-            .filter((x): x is { q: string; a: string[] } => x != null);
-        };
-        const current = toFaqs(val);
-        if (current.length === 0) {
-          const enVal = enT(key, { returnObjects: true });
-          const enFaqs = toFaqs(enVal);
-          if (enFaqs.length > 0) return enFaqs;
-        }
+        return handleFaqsFallback(val, key, enT);
       }
     }
 

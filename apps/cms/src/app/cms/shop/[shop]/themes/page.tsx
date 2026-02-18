@@ -12,6 +12,8 @@ import {
 } from "@acme/platform-core/repositories/themePresets.server";
 import { baseTokens, loadThemeTokens } from "@acme/platform-core/themeTokens";
 
+import { ensureAuthorized } from "@/actions/common/auth";
+
 import ThemeEditor from "./ThemeEditor";
 
 export async function savePreset(
@@ -19,10 +21,12 @@ export async function savePreset(
   name: string,
   tokens: Record<string, string>,
 ) {
+  await ensureAuthorized();
   await saveThemePreset(shop, name, tokens);
 }
 
 export async function deletePreset(shop: string, name: string) {
+  await ensureAuthorized();
   await deleteThemePreset(shop, name);
 }
 

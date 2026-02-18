@@ -97,6 +97,27 @@ Can we measure whether the offer is working?
 - No baseline plan (can't tell if 5% conversion is good or bad)
 - Data collection requires prohibited access (GDPR violations, scraping, etc.)
 
+### DEP Capture Advisory (informational — not an S1 gate)
+
+S1 is the recommended start of Demand Evidence Pack (DEP) capture. DEP is not a blocking gate at S1 — readiness is intentionally hypothesis-tolerant — but early capture reduces S6B activation lag.
+
+When producing the S1 verdict, include this advisory section:
+
+```
+## Demand Evidence Pack (DEP) Capture
+
+DEP is required before GATE-S6B-ACT-01 (spend authorization). Starting capture at S1 reduces channel activation lag by 1-2 weeks.
+
+To start now:
+- Register at least 1 message hypothesis (channel + audience_slice + asset_ref)
+- Set up source-tagged tracking before any test impressions
+- Schema: docs/business-os/startup-loop/demand-evidence-pack-schema.md
+
+Current DEP status: [Not started | In progress | Pass-floor met]
+```
+
+If DEP is already in progress, note its status in the Context Summary. If DEP is not started, include the above advisory — do not block GO verdict for its absence.
+
 ## Workflow
 
 ### Stage 1: Load Context (READ)

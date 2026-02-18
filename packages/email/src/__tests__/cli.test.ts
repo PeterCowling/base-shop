@@ -3,6 +3,23 @@ import path from "path";
 
 jest.setTimeout(10000);
 
+// Mock the server-side translation loader so tests don't perform file I/O
+// and the translator returns actual English strings (matching test expectations).
+jest.mock("@acme/i18n/useTranslations.server", () => ({
+  useTranslations: async (_locale: string) => {
+    const en = require("@acme/i18n/en.json") as Record<string, string>;
+    return (key: string, vars?: Record<string, unknown>): string => {
+      const msg = en[key] ?? key;
+      if (!vars) return msg;
+      return msg.replace(/\{(.*?)\}/g, (_: string, name: string) =>
+        Object.prototype.hasOwnProperty.call(vars, name)
+          ? String(vars[name])
+          : `{${name}}`,
+      );
+    };
+  },
+}));
+
 const files: Record<string, string> = {};
 
 const fsMock = {

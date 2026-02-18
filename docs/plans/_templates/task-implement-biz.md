@@ -1,0 +1,43 @@
+### TASK-XX: <description>
+- **Type:** IMPLEMENT
+- **Deliverable:** <business artifact + output location>
+- **Execution-Skill:** <draft-email | draft-whatsapp | draft-marketing | biz-product-brief | biz-spreadsheet | lp-build>
+- **Execution-Track:** <business-artifact | mixed>
+- **Startup-Deliverable-Alias:** <none | startup-* alias>
+- **Effort:** <S | M | L>
+- **Status:** <Pending | In-Progress | Complete (YYYY-MM-DD) | Blocked | Superseded | Needs-Input>
+- **Artifact-Destination:** <publish/handoff destination>
+- **Reviewer:** <named owner/role>
+- **Approval-Evidence:** <path/link/comment proving acknowledgement>
+- **Measurement-Readiness:** <metric owner + cadence + tracking location>
+- **Affects:** `path/to/doc.md`, `[readonly] path/to/reference.md`
+- **Depends on:** <TASK-IDs or "-">
+- **Blocks:** <TASK-IDs or "-">
+- **Confidence:** <0-100>%
+  - Implementation: <0-100>% - <reason>
+  - Approach: <0-100>% - <reason>
+  - Impact: <0-100>% - <reason>
+- **Acceptance:**
+  - ...
+- **Validation contract (VC-XX):**
+  - VC-01: <check> -> <pass rule + deadline + sample>
+  - VC-02: <check> -> <pass rule + deadline + sample>
+- **Execution plan:** Red -> Green -> Refactor (VC-first)
+  - Red evidence plan:
+  - Green evidence plan:
+  - Refactor evidence plan:
+- **Planning validation (required for M/L):**
+  - Checks run:
+  - Validation artifacts:
+  - Unexpected findings:
+- **Scouts:** <assumption probes or `None: <reason>`>
+- **Edge Cases & Hardening:** <edge case handling or `None: <reason>`>
+- **What would make this >=90%:**
+  - ...
+- **Rollout / rollback:**
+  - Rollout:
+  - Rollback:
+- **Documentation impact:**
+  - ...
+- **Notes / references:**
+  - ...

@@ -44,6 +44,51 @@ Each metric has a default stage assignment based on where the constraint is typi
 - `orders` → `S10` (Derived outcome, not actionable as primary)
 - `revenue` → `S10` (Derived outcome, not actionable as primary)
 
+## 2A) Business Model Profile Catalog
+
+The base metric catalog (Section 2) applies to all businesses. When a `business_model_profile` is set on the run context, profile-specific metrics are included in the ranking candidate pool alongside base catalog metrics.
+
+### Supported Profiles
+
+| Profile ID | Description |
+|---|---|
+| `hospitality-direct-booking` | Accommodation businesses targeting direct bookings (no OTA intermediary) |
+| `dtc-ecommerce` | Direct-to-consumer ecommerce businesses with online checkout |
+
+### Profile Metric Catalog
+
+Each profile metric has a `candidate_priority`:
+- **`primary`**: Competes with all other metrics (base + profile primary) by miss magnitude. These are actionable primitives.
+- **`secondary`**: Ranked after all `primary` metrics. Profile secondary metrics are deprioritized when any same-profile primary metric has severity ≥ `moderate` — mirroring the base catalog treatment of `orders` and `revenue` relative to their upstream primitives.
+
+| Metric ID | Profile | Class | Direction | Default Stage | Candidate Priority |
+|---|---|---|---|---|---|
+| `inquiry_to_quote_rate` | hospitality-direct-booking | primitive | higher_is_better | `S3` | primary |
+| `quote_to_booking_rate` | hospitality-direct-booking | primitive | higher_is_better | `S6B` | primary |
+| `median_response_time` | hospitality-direct-booking | primitive | lower_is_better | `S6B` | primary |
+| `direct_ota_mix` | hospitality-direct-booking | primitive | higher_is_better | `S6B` | secondary |
+| `cancellation_rate` | hospitality-direct-booking | derived | lower_is_better | `S10` | secondary |
+| `review_velocity` | hospitality-direct-booking | derived | higher_is_better | `S10` | secondary |
+| `page_to_atc_rate` | dtc-ecommerce | primitive | higher_is_better | `S3` | primary |
+| `checkout_completion_rate` | dtc-ecommerce | primitive | higher_is_better | `S3` | primary |
+| `cac_by_cohort` | dtc-ecommerce | primitive | lower_is_better | `S6B` | primary |
+| `refund_rate` | dtc-ecommerce | derived | lower_is_better | `S10` | secondary |
+| `support_load_per_100_orders` | dtc-ecommerce | derived | lower_is_better | `S10` | secondary |
+| `repeat_purchase_rate` | dtc-ecommerce | derived | higher_is_better | `S10` | secondary |
+
+### No-Profile Fallback
+
+When `business_model_profile` is null or absent, `profile_funnel_metrics` is empty or absent and behavior is identical to v1: only base catalog metrics are ranked. Existing v1 snapshots without `business_model_profile` are valid and require no migration.
+
+### Constraint Keys for Profile Metrics
+
+Profile metrics use the same constraint key format as base metrics: `<stage>/<metric_id>`.
+
+**Examples:**
+- `S3/inquiry_to_quote_rate` — inquiry-to-quote conversion at Forecast stage
+- `S6B/median_response_time` — response time at Channel strategy stage
+- `S3/page_to_atc_rate` — product page-to-add-to-cart at Forecast stage
+
 ## 3) Normalized Miss Formula
 
 The `miss` metric is normalized so that **higher values are always worse**, regardless of metric direction:
@@ -113,6 +158,10 @@ When multiple constraints are present, the system prefers upstream drivers over 
    - Otherwise, select between `orders` and `aov` by miss magnitude.
 
 **Rationale:** Derived outcomes (`orders`, `revenue`) are symptoms. Addressing primitive drivers (`traffic`, `cvr`, `aov`, `cac`) is more actionable and leveraged.
+
+3. **Profile secondary deprioritisation:** When a `business_model_profile` is set and at least one profile primary metric has severity ≥ `moderate`, profile secondary metrics are excluded from primary selection (ranked only after all primary metrics, base and profile).
+
+**Example:** For `dtc-ecommerce`, if `page_to_atc_rate` (primary, miss=0.42) and `refund_rate` (secondary, miss=1.25) are both present, `page_to_atc_rate` is selected as primary because it is a profile primary primitive with severity ≥ moderate, and `refund_rate` is a profile secondary derived metric.
 
 ## 6) Constraint Signatures
 
@@ -274,6 +323,7 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
   "metric_catalog_version": "v1",
   "run_id": "<string: SFS-<BIZ>-<YYYYMMDD>-<hhmm>>",
   "business": "<string: business key>",
+  "business_model_profile": "<enum: null | hospitality-direct-booking | dtc-ecommerce>",
   "timestamp": "<string: ISO 8601 UTC>",
   "diagnosis_status": "<enum: ok | no_bottleneck | insufficient_data | partial_data>",
   "data_quality": {
@@ -283,6 +333,17 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
   },
   "funnel_metrics": {
     "<MetricId>": {
+      "target": "<number|null>",
+      "actual": "<number|null>",
+      "delta_pct": "<number|null>",
+      "miss": "<number|null>",
+      "stage": "<string: stage ID>",
+      "direction": "<enum: higher_is_better | lower_is_better>",
+      "metric_class": "<enum: primitive | derived>"
+    }
+  },
+  "profile_funnel_metrics": {
+    "<ProfileMetricId>": {
       "target": "<number|null>",
       "actual": "<number|null>",
       "delta_pct": "<number|null>",
@@ -335,6 +396,8 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
 | `metric_catalog_version` | string | yes | Always `"v1"` for this version |
 | `run_id` | string | yes | Stable run identifier matching `SFS-<BIZ>-<YYYYMMDD>-<hhmm>` |
 | `business` | string | yes | Business key (e.g., `BRIK`, `HEAD`, `PET`) |
+| `business_model_profile` | enum or null | no | Profile adapter applied to this run; null = generic v1 behavior; see Section 2A for supported values |
+| `profile_funnel_metrics` | object | no | Map of ProfileMetricId → per-metric details (same shape as `funnel_metrics`); absent when `business_model_profile` is null |
 | `timestamp` | string | yes | ISO 8601 UTC — when the diagnosis was performed |
 | `diagnosis_status` | enum | yes | One of `ok`, `no_bottleneck`, `insufficient_data`, `partial_data` |
 | `data_quality` | object | yes | Tracks missing/excluded metrics |
@@ -694,6 +757,131 @@ docs/business-os/startup-baselines/<BIZ>/runs/<run_id>/bottleneck-diagnosis.json
       "cac": "improving",
       "orders": "improving",
       "revenue": "improving"
+    }
+  }
+}
+```
+
+### Example 4: Hospitality Direct-Booking Profile
+
+Profile primitive `median_response_time` (primary, miss=1.75) outranks base primitive `cvr` (miss=0.20) due to higher miss magnitude.
+
+```json
+{
+  "diagnosis_schema_version": "v1",
+  "constraint_key_version": "v1",
+  "metric_catalog_version": "v1",
+  "run_id": "SFS-BRIK-20260217-1000",
+  "business": "BRIK",
+  "business_model_profile": "hospitality-direct-booking",
+  "timestamp": "2026-02-17T10:00:00Z",
+  "diagnosis_status": "ok",
+  "data_quality": {
+    "missing_targets": [],
+    "missing_actuals": [],
+    "excluded_metrics": []
+  },
+  "funnel_metrics": {
+    "traffic": { "target": 5000, "actual": 4800, "delta_pct": -4.0, "miss": 0.04, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cvr": { "target": 0.05, "actual": 0.04, "delta_pct": -20.0, "miss": 0.20, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
+    "aov": { "target": 300, "actual": 310, "delta_pct": 3.3, "miss": 0.0, "stage": "S2B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cac": { "target": 80, "actual": 72, "delta_pct": -10.0, "miss": 0.0, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" }
+  },
+  "profile_funnel_metrics": {
+    "inquiry_to_quote_rate": { "target": 0.60, "actual": 0.35, "delta_pct": -41.7, "miss": 0.417, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
+    "quote_to_booking_rate": { "target": 0.45, "actual": 0.40, "delta_pct": -11.1, "miss": 0.111, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "median_response_time": { "target": 2.0, "actual": 5.5, "delta_pct": 175.0, "miss": 1.75, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" },
+    "direct_ota_mix": { "target": 0.70, "actual": 0.58, "delta_pct": -17.1, "miss": 0.171, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cancellation_rate": { "target": 0.05, "actual": 0.08, "delta_pct": 60.0, "miss": 0.60, "stage": "S10", "direction": "lower_is_better", "metric_class": "derived" },
+    "review_velocity": { "target": 5.0, "actual": 3.0, "delta_pct": -40.0, "miss": 0.40, "stage": "S10", "direction": "higher_is_better", "metric_class": "derived" }
+  },
+  "identified_constraint": {
+    "constraint_key": "S6B/median_response_time",
+    "constraint_type": "metric",
+    "stage": "S6B",
+    "metric": "median_response_time",
+    "reason_code": null,
+    "severity": "critical",
+    "miss": 1.75,
+    "reasoning": "Median response time is 175% worse than the 2-hour target (actual: 5.5 hours). This profile primary primitive has the highest miss in the candidate pool. Slow response time directly suppresses inquiry-to-quote conversion for direct-booking hospitality. Profile secondary metrics (cancellation_rate miss=0.60, review_velocity miss=0.40) are deprioritised because profile primary primitives exist with severity >= moderate. Profile: hospitality-direct-booking."
+  },
+  "ranked_constraints": [
+    { "rank": 1, "constraint_key": "S6B/median_response_time", "constraint_type": "metric", "stage": "S6B", "metric": "median_response_time", "reason_code": null, "severity": "critical", "miss": 1.75, "reasoning": "Primary — profile primary primitive: response time 175% above target" },
+    { "rank": 2, "constraint_key": "S3/inquiry_to_quote_rate", "constraint_type": "metric", "stage": "S3", "metric": "inquiry_to_quote_rate", "reason_code": null, "severity": "moderate", "miss": 0.417, "reasoning": "Secondary — profile primary primitive: inquiry-to-quote 41.7% below target" },
+    { "rank": 3, "constraint_key": "S3/cvr", "constraint_type": "metric", "stage": "S3", "metric": "cvr", "reason_code": null, "severity": "moderate", "miss": 0.20, "reasoning": "Tertiary — base primitive: CVR 20% below target" }
+  ],
+  "comparison_to_prior_run": {
+    "prior_run_id": null,
+    "constraint_changed": false,
+    "prior_constraint_key": null,
+    "metric_trends": {}
+  }
+}
+```
+
+### Example 5: DTC Ecommerce Profile
+
+Profile secondary `refund_rate` (miss=1.25, critical) is deprioritised because profile primary `page_to_atc_rate` (miss=0.42, moderate) exists. Primary primitive wins.
+
+```json
+{
+  "diagnosis_schema_version": "v1",
+  "constraint_key_version": "v1",
+  "metric_catalog_version": "v1",
+  "run_id": "SFS-HEAD-20260217-1400",
+  "business": "HEAD",
+  "business_model_profile": "dtc-ecommerce",
+  "timestamp": "2026-02-17T14:00:00Z",
+  "diagnosis_status": "ok",
+  "data_quality": {
+    "missing_targets": [],
+    "missing_actuals": [],
+    "excluded_metrics": []
+  },
+  "funnel_metrics": {
+    "traffic": { "target": 15000, "actual": 12000, "delta_pct": -20.0, "miss": 0.20, "stage": "S6B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cvr": { "target": 0.025, "actual": 0.019, "delta_pct": -24.0, "miss": 0.24, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
+    "aov": { "target": 95, "actual": 92, "delta_pct": -3.2, "miss": 0.032, "stage": "S2B", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cac": { "target": 35, "actual": 32, "delta_pct": -8.6, "miss": 0.0, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" }
+  },
+  "profile_funnel_metrics": {
+    "page_to_atc_rate": { "target": 0.12, "actual": 0.07, "delta_pct": -41.7, "miss": 0.417, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
+    "checkout_completion_rate": { "target": 0.70, "actual": 0.58, "delta_pct": -17.1, "miss": 0.171, "stage": "S3", "direction": "higher_is_better", "metric_class": "primitive" },
+    "cac_by_cohort": { "target": 45, "actual": 38, "delta_pct": -15.6, "miss": 0.0, "stage": "S6B", "direction": "lower_is_better", "metric_class": "primitive" },
+    "refund_rate": { "target": 0.04, "actual": 0.09, "delta_pct": 125.0, "miss": 1.25, "stage": "S10", "direction": "lower_is_better", "metric_class": "derived" },
+    "support_load_per_100_orders": { "target": 8, "actual": 14, "delta_pct": 75.0, "miss": 0.75, "stage": "S10", "direction": "lower_is_better", "metric_class": "derived" },
+    "repeat_purchase_rate": { "target": 0.30, "actual": 0.22, "delta_pct": -26.7, "miss": 0.267, "stage": "S10", "direction": "higher_is_better", "metric_class": "derived" }
+  },
+  "identified_constraint": {
+    "constraint_key": "S3/page_to_atc_rate",
+    "constraint_type": "metric",
+    "stage": "S3",
+    "metric": "page_to_atc_rate",
+    "reason_code": null,
+    "severity": "moderate",
+    "miss": 0.417,
+    "reasoning": "Page-to-add-to-cart rate is 41.7% below target (actual: 7%, target: 12%). Profile secondary metrics refund_rate (miss=1.25) and support_load_per_100_orders (miss=0.75) are deprioritised because profile primary primitive page_to_atc_rate has severity >= moderate. Addressing funnel drop-off before ATC is more actionable than treating derived outcome symptoms. Profile: dtc-ecommerce."
+  },
+  "ranked_constraints": [
+    { "rank": 1, "constraint_key": "S3/page_to_atc_rate", "constraint_type": "metric", "stage": "S3", "metric": "page_to_atc_rate", "reason_code": null, "severity": "moderate", "miss": 0.417, "reasoning": "Primary — profile primary primitive: ATC rate 41.7% below target" },
+    { "rank": 2, "constraint_key": "S3/cvr", "constraint_type": "metric", "stage": "S3", "metric": "cvr", "reason_code": null, "severity": "moderate", "miss": 0.24, "reasoning": "Secondary — base primitive: overall CVR 24% below target (correlated with ATC constraint)" },
+    { "rank": 3, "constraint_key": "S10/refund_rate", "constraint_type": "metric", "stage": "S10", "metric": "refund_rate", "reason_code": null, "severity": "critical", "miss": 1.25, "reasoning": "Profile secondary (deprioritised) — refund rate 125% above target; high miss but derived outcome, ranked after primaries" }
+  ],
+  "comparison_to_prior_run": {
+    "prior_run_id": "SFS-HEAD-20260210-1400",
+    "constraint_changed": true,
+    "prior_constraint_key": "S6B/traffic",
+    "metric_trends": {
+      "traffic": "improving",
+      "cvr": "stable",
+      "aov": "stable",
+      "cac": "improving",
+      "page_to_atc_rate": "worsening",
+      "checkout_completion_rate": "stable",
+      "cac_by_cohort": "improving",
+      "refund_rate": "worsening",
+      "support_load_per_100_orders": "worsening",
+      "repeat_purchase_rate": "stable"
     }
   }
 }
@@ -1118,6 +1306,6 @@ The trigger auto-resolves after `autoResolveAfterNonPersistentRuns` consecutive 
 
 ---
 
-**Document version:** v1
-**Last updated:** 2026-02-13
-**Schema stability:** Stable — v1 is the canonical contract for BL-02 through BL-07 implementation
+**Document version:** v1 (profile adapter extension: 2026-02-17)
+**Last updated:** 2026-02-17
+**Schema stability:** Stable — v1 is the canonical contract for BL-02 through BL-07 implementation. Profile adapter fields (`business_model_profile`, `profile_funnel_metrics`) are optional and additive; existing v1 snapshots require no migration.

@@ -28,53 +28,93 @@ function getStringArray(record: Record<string, unknown>, key: string): string[] 
   return items.length > 0 ? items : undefined;
 }
 
+function tryCreateListCallout(
+  bodyText: string | undefined,
+  listItems: string[] | undefined,
+  listKey: string | undefined,
+  introCandidates: Array<string | null>,
+): NormalizedCallout | null {
+  if (!bodyText || !listItems || !listKey) return null;
+  return {
+    kind: "list",
+    intro: bodyText,
+    introCandidates,
+    items: listItems,
+    itemsKey: listKey,
+  };
+}
+
+function tryCreateRichTextCallout(
+  text: string | undefined,
+  candidates: Array<string | null>,
+): NormalizedCallout | null {
+  if (!text) return null;
+  return { kind: "richText", text, candidates };
+}
+
+function tryCreateLinkedCallout(
+  record: Record<string, unknown>,
+  candidates: Array<string | null>,
+): NormalizedCallout | null {
+  const linkLabel =
+    getString(record, "linkLabel") ??
+    getString(record, "guideLinkLabel") ??
+    getString(record, "ctaLinkLabel");
+
+  if (!linkLabel) return null;
+
+  const before =
+    getString(record, "beforeLink") ??
+    getString(record, "before") ??
+    getString(record, "intro") ??
+    getString(record, "prefix");
+  const after =
+    getString(record, "afterLink") ??
+    getString(record, "after") ??
+    getString(record, "outro") ??
+    getString(record, "suffix");
+
+  if (!before && !after) return null;
+
+  const linkedValue = {
+    linkLabel,
+    ...(before !== undefined ? { before } : {}),
+    ...(after !== undefined ? { after } : {}),
+  };
+  return {
+    kind: "linked",
+    value: linkedValue,
+    candidates,
+  } satisfies NormalizedCallout;
+}
+
 export function normalizeCalloutContent(record: Record<string, unknown>): NormalizedCallout | null {
   const listKeyCandidates = ["items", "list", "points"] as const;
   const listKey = listKeyCandidates.find((key) => getStringArray(record, key));
   const listItems = listKey ? getStringArray(record, listKey) : undefined;
 
+  // Try body string
   const bodyString = getString(record, "body");
-  if (bodyString) {
-    if (listItems && listKey) {
-      return {
-        kind: "list",
-        intro: bodyString,
-        introCandidates: ["body", "copy", "description", null],
-        items: listItems,
-        itemsKey: listKey,
-      };
-    }
-    return { kind: "richText", text: bodyString, candidates: ["body", "copy", null] };
-  }
+  const bodyList = tryCreateListCallout(bodyString, listItems, listKey, ["body", "copy", "description", null]);
+  if (bodyList) return bodyList;
+  const bodyRichText = tryCreateRichTextCallout(bodyString, ["body", "copy", null]);
+  if (bodyRichText) return bodyRichText;
 
+  // Try copy string
   const copyString = getString(record, "copy");
-  if (copyString) {
-    if (listItems && listKey) {
-      return {
-        kind: "list",
-        intro: copyString,
-        introCandidates: ["copy", "body", "description", null],
-        items: listItems,
-        itemsKey: listKey,
-      };
-    }
-    return { kind: "richText", text: copyString, candidates: ["copy", "body", null] };
-  }
+  const copyList = tryCreateListCallout(copyString, listItems, listKey, ["copy", "body", "description", null]);
+  if (copyList) return copyList;
+  const copyRichText = tryCreateRichTextCallout(copyString, ["copy", "body", null]);
+  if (copyRichText) return copyRichText;
 
+  // Try description string
   const descriptionString = getString(record, "description");
-  if (descriptionString) {
-    if (listItems && listKey) {
-      return {
-        kind: "list",
-        intro: descriptionString,
-        introCandidates: ["description", "body", "copy", null],
-        items: listItems,
-        itemsKey: listKey,
-      };
-    }
-    return { kind: "richText", text: descriptionString, candidates: ["description", "body", "copy", null] };
-  }
+  const descList = tryCreateListCallout(descriptionString, listItems, listKey, ["description", "body", "copy", null]);
+  if (descList) return descList;
+  const descRichText = tryCreateRichTextCallout(descriptionString, ["description", "body", "copy", null]);
+  if (descRichText) return descRichText;
 
+  // Try linked copy objects
   const bodyValue = record["body"];
   if (isLinkedCopy(bodyValue)) {
     return { kind: "linked", value: bodyValue, candidates: ["body", "copy", null] };
@@ -85,6 +125,7 @@ export function normalizeCalloutContent(record: Record<string, unknown>): Normal
     return { kind: "linked", value: copyValue, candidates: ["copy", "body", null] };
   }
 
+  // List without intro
   if (listItems && listKey) {
     return {
       kind: "list",
@@ -95,38 +136,8 @@ export function normalizeCalloutContent(record: Record<string, unknown>): Normal
     };
   }
 
-  const linkLabel =
-    getString(record, "linkLabel") ??
-    getString(record, "guideLinkLabel") ??
-    getString(record, "ctaLinkLabel");
-
-  if (linkLabel) {
-    const before =
-      getString(record, "beforeLink") ??
-      getString(record, "before") ??
-      getString(record, "intro") ??
-      getString(record, "prefix");
-    const after =
-      getString(record, "afterLink") ??
-      getString(record, "after") ??
-      getString(record, "outro") ??
-      getString(record, "suffix");
-
-    if (before || after) {
-      const linkedValue = {
-        linkLabel,
-        ...(before !== undefined ? { before } : {}),
-        ...(after !== undefined ? { after } : {}),
-      };
-      return {
-        kind: "linked",
-        value: linkedValue,
-        candidates: ["copy", "body", null],
-      } satisfies NormalizedCallout;
-    }
-  }
-
-  return null;
+  // Try creating linked callout from link label
+  return tryCreateLinkedCallout(record, ["copy", "body", null]);
 }
 
 function pickCalloutBinding(

@@ -7,6 +7,8 @@
  * @see docs/business-os/startup-loop/event-state-schema.md
  */
 
+import stageOperatorMap from "../../../docs/business-os/startup-loop/_generated/stage-operator-map.json";
+
 // -- Types --
 
 export interface RunEvent {
@@ -43,27 +45,13 @@ export interface DeriveStateOptions {
   loop_spec_version: string;
 }
 
-// -- Stage name map (from loop-spec.yaml) --
+// -- Stage name map (sourced from generated stage-operator-map) --
+// Canonical source: docs/business-os/startup-loop/_generated/stage-operator-map.json
+// Re-generate with: node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts
 
-const STAGE_NAMES: Record<string, string> = {
-  S0: "Intake",
-  S1: "Readiness",
-  S1B: "Measurement bootstrap",
-  S2A: "Historical baseline",
-  S2: "Market intelligence",
-  S2B: "Offer design",
-  S3: "Forecast",
-  S6B: "Channel strategy + GTM",
-  S4: "Baseline merge",
-  S5A: "Prioritize",
-  S5B: "BOS sync",
-  S6: "Site-upgrade synthesis",
-  S7: "Fact-find",
-  S8: "Plan",
-  S9: "Build",
-  S9B: "QA gates",
-  S10: "Weekly readout + experiments",
-};
+const STAGE_NAMES: Record<string, string> = Object.fromEntries(
+  stageOperatorMap.stages.map((s) => [s.id, s.label_operator_short]),
+);
 
 /** All 17 stage IDs, sorted alphabetically for deterministic output. */
 const ALL_STAGE_IDS = Object.keys(STAGE_NAMES).sort();

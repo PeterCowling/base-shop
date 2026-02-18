@@ -230,7 +230,7 @@ async function resolvePreviousMarketIntelligencePath(repoRoot: string, business:
   return sourcePack;
 }
 
-async function findLatestDatedMarketResearchDataFile(args: {
+export async function findLatestDatedMarketResearchDataFile(args: {
   repoRoot: string;
   business: string;
   asOfDate: string;
@@ -1375,6 +1375,9 @@ export async function buildS2MarketIntelligenceHandoff(
     },
   };
 }
+
+// Export internal functions for testing
+export { buildOperatorCapturedDataBlock, csvLooksEmptyOrHeaderOnly,findLatestDatedMarketResearchDataFile };
 
 function parseCliArgs(argv: string[]): { business: string; asOfDate: string; owner: string; repoRoot: string } {
   const args = new Map<string, string>();

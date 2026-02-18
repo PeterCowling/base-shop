@@ -44,9 +44,11 @@ This skill is NOT a rename or copy of `idea-forecast`. Key differences:
 
 Reads from:
 - Business context: `docs/business-os/startup-baselines/<BIZ>/`
-- Offer hypothesis: Output from lp-offer (S2B) — `docs/business-os/startup-baselines/<BIZ>/S2-offer-hypothesis/`
-- Channel selection: Output from lp-channels — `docs/business-os/startup-baselines/<BIZ>/S2-channel-selection/`
+- Offer hypothesis: Output from lp-offer (S2B) — `docs/business-os/startup-baselines/<BIZ>-offer.md`
+- Channel selection: Output from lp-channels — `docs/business-os/startup-baselines/<BIZ>-channels.md`
 - Market data: Any available competitor pricing, channel benchmarks, market size signals (opportunistic)
+
+**Artifact registry**: Canonical producer paths are defined in `docs/business-os/startup-loop/artifact-registry.md`.
 
 No formal market intelligence pack required. If none exists, proceed with web research.
 
@@ -112,12 +114,23 @@ Output format:
 
 File: `docs/business-os/startup-baselines/<BIZ>/S3-forecast/YYYY-MM-DD-lp-forecast.user.md`
 
+**Artifact registry**: Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `forecast`).
+
 Required sections:
 1. **Scenario Summary**: P10/P50/P90 bands for revenue, orders, traffic/leads
 2. **Unit Economics**: CAC, AOV, margin, conversion rate per scenario
 3. **Channel Ranges**: Traffic, spend, CAC per channel (from lp-channels)
 4. **First-14-Day Validation Plan**: Metrics, thresholds, decision gates, data sources
-5. **Assumption Register**: List all assumptions with confidence tags (high/medium/low) and sources
+5. **Assumption Register**: All assumptions with these mandatory fields:
+   - `assumption_id` — stable ID for tracking across review cycles
+   - `assumption_statement` — plain-language claim being made
+   - `prior_range` — plausible range before evidence
+   - `sensitivity` — impact on CAC/CVR/revenue if assumption is wrong (Low/Medium/High)
+   - `evidence_source` — URL or artifact reference
+   - `confidence_level` — `low` (<60) / `medium` (60–79) / `high` (≥80)
+   - `kill_trigger` — observable state that invalidates this assumption (e.g., "Day 7 CAC > 2× P90 estimate")
+   - `owner` — named person responsible for monitoring and re-checking
+   - `next_review_date` — ISO date for next assumption review
 6. **Source List**: URLs for competitor data, channel benchmarks, market signals
 
 ## Quality Checks
@@ -127,7 +140,8 @@ Self-audit before delivery:
 - [ ] Unit economics defined for each scenario
 - [ ] Channel-specific ranges match channels selected in lp-channels
 - [ ] First-14-day validation plan includes metrics, thresholds, and decision gates
-- [ ] Assumption register tags confidence level for each assumption
+- [ ] Assumption register includes all 9 mandatory fields for every assumption (`assumption_id`, `assumption_statement`, `prior_range`, `sensitivity`, `evidence_source`, `confidence_level`, `kill_trigger`, `owner`, `next_review_date`)
+- [ ] Confidence tier declared (low/medium/high) with corresponding spend cap, time cap, cadence, and allowed decision class
 - [ ] Source list includes URLs for all claims (no unsourced assertions)
 - [ ] Output file persisted to `docs/business-os/startup-baselines/<BIZ>/S3-forecast/`
 
@@ -139,7 +153,8 @@ Invalid outputs that require rework:
 - Unsourced claims (no URLs in source list)
 - Unit economics missing for any scenario
 - Channel ranges don't match lp-channels output
-- No confidence tags on assumptions
+- Assumption register missing `kill_trigger`, `owner`, or `next_review_date` for any assumption
+- Confidence tier not declared or spend cap / time cap not stated for the tier
 - Validation plan has no decision gates
 
 ## Integration
@@ -147,6 +162,23 @@ Invalid outputs that require rework:
 - **Consumes**: lp-offer output (S2B), lp-channels output (S2C)
 - **Feeds into**: lp-prioritize (S4 prioritization), startup-loop S4 baseline (first-14-day tracking)
 - **Trigger**: Called automatically by startup-loop at S3 stage, or manually via `/lp-forecast`
+
+## Forecast Guardrails (Confidence Tier Policy)
+
+Apply the correct tier based on the overall confidence level of the forecast. Confidence level = the lowest confidence across all P50 scenario assumptions.
+
+| Forecast confidence tier | Spend cap | Operator time cap | Re-check cadence | Allowed decision class |
+|---|---|---|---|---|
+| `low` (<60) | 10% of planned monthly spend (or fixed micro-budget) | ≤5 hours/week/channel | Every 7 days | `Continue` or `Investigate` only — no `Scale` or `Kill` |
+| `medium` (60–79) | 30% of planned monthly spend | ≤10 hours/week/channel | Every 7 days | `Keep`, `Pivot`, or `Continue` — no full `Scale` |
+| `high` (≥80) | Up to planned budget | Planned operating cadence | Weekly | Full decision set including `Scale` and `Kill` |
+
+**Guardrail breach handling:**
+- If actual spend is at or approaching the cap before the re-check cadence is due, pause and run an ad-hoc review — do not extend the cap unilaterally.
+- If confidence improves at re-check (new evidence), tier may be upgraded. Document the upgrade with evidence source.
+- Unknown or missing confidence values default to `low` tier — fail closed.
+
+**Reference:** `docs/plans/startup-loop-marketing-sales-capability-gap-audit/fact-find.md` (Sparse-evidence forecast control surface)
 
 ## Launch Surface Modes
 
@@ -163,7 +195,7 @@ Invalid outputs that require rework:
 ## Notes
 
 - This forecast is a **hypothesis to validate**, not a prediction to execute
-- Low-confidence assumptions are acceptable — tag them clearly
+- Low-confidence assumptions are acceptable — apply the `low` confidence tier guardrail (10% spend cap, ≤5 hrs/week/channel, Continue/Investigate only). See `## Forecast Guardrails` above.
 - First-14-day validation plan is THE critical output (the forecast exists to be tested)
 - If evidence is sparse, proceed with low-confidence tags and wide P10-P90 bands
 - No Deep Research gate — work with what's available and mark uncertainty

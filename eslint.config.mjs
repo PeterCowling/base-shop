@@ -1097,6 +1097,43 @@ export default [
       ],
     },
   },
+  /* ▸ Exception: Files using CfImage family or AppLink are exempt from @acme/ui/atoms restriction
+   * until design-system equivalents exist. See docs/plans/brikette-lint-enablement-plan.md TASK-21.
+   */
+  {
+    files: [
+      "**/app/\\[lang\\]/about/page.tsx",
+      "**/app/\\[lang\\]/breakfast-menu/BreakfastMenuContent.tsx",
+      "**/components/apartment/GallerySection.tsx",
+      "**/components/booking/DirectPerksBlock.tsx",
+      "**/components/careers/CareersSection.tsx",
+      "**/components/careers/CareersHero.tsx",
+      "**/components/cta/ContentStickyCta.tsx",
+      "**/components/guides/GuideCollectionCard.tsx",
+      "**/components/guides/GuideCollectionWithSearch.tsx",
+      "**/components/guides/GroupedGuideSection.tsx",
+      "**/components/guides/ImageGallery.tsx",
+      "**/components/guides/generic-content/buildContent.ts",
+      "**/components/not-found/NotFoundView.tsx",
+      "**/components/rooms/FullscreenImage.tsx",
+      "**/components/rooms/RoomCard.tsx",
+      "**/components/rooms/RoomImage.tsx",
+      "**/components/seo/GuideSectionsItemListStructuredData.tsx",
+      "**/routes/guides/blocks/handlers/heroBlock.tsx",
+      "**/routes/guides/blocks/handlers/serviceSchemaBlock.tsx",
+      "**/routes/how-to-get-here/_galleries.tsx",
+      "**/routes/how-to-get-here/sections.tsx",
+      "**/routes/how-to-get-here/components/HeaderSection.tsx",
+      "**/routes/how-to-get-here/components/ZoomableFigure.tsx",
+      "**/routes/how-to-get-here/briketteToFerryDock/_articleLead.tsx",
+      "**/routes/how-to-get-here/ferryDockToBrikette/_articleLead.tsx",
+      "**/routes/how-to-get-here/ferryDockToBrikette/guideExtras.ts",
+      "**/routes/how-to-get-here/chiesaNuovaArrivals/articleLead.tsx",
+    ],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
   {
     files: [
       "packages/platform-core/src/repositories/inventory.server.ts",

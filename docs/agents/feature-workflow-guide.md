@@ -34,25 +34,28 @@ For non-code deliverables, `/lp-build` dispatches to progressive execution skill
 - **You don't understand current behavior or blast radius yet** → Fact-find
 - **You need tasks + acceptance criteria + confidence** → Plan-feature (includes sequencing)
 - **You have an approved plan + an eligible task** → Build-feature
-- **Task is <80% confidence, blocked, or scope changes during build** → Re-plan (includes sequencing)
+- **Task is below its execution threshold (`IMPLEMENT/SPIKE <80`, `INVESTIGATE <60`), blocked, or scope changes during build** → Re-plan (includes sequencing)
 - **You need to reorder an existing plan or check parallelism opportunities** → Sequence-plan (standalone)
 
-## Confidence Index (CI)
+## Plan Confidence
 
-In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
+In plan docs, use **confidence** / **Overall-confidence** terminology for planning confidence.
 
-- **CI ≥90:** target/motivation (aim for it when credible)
-- **CI 80–89:** build-eligible, but treat remaining unknowns as real (explicit verification steps)
-- **CI 60–79:** planning-only/caution; split into INVESTIGATE/DECISION or add “What would make this ≥90%”
-- **CI <60:** do not build; lp-replan first
+- **Confidence ≥90:** target/motivation (aim for it when credible)
+- **Confidence 80–89:** implementation/spike build-eligible when unblocked
+- **Confidence 60–79:** caution; often planning-only unless task type is INVESTIGATE
+- **Confidence <60:** do not build; lp-replan first
 
-**Build gate:** only **IMPLEMENT** tasks that are **≥80%** confidence and unblocked proceed to build.
+**Build gates:**
+- **IMPLEMENT** and **SPIKE** tasks require **≥80%** confidence and unblocked dependencies.
+- **INVESTIGATE** tasks require **≥60%** confidence and unblocked dependencies.
+- **CHECKPOINT** is procedural and handled by `/lp-build` checkpoint flow.
 
 ## Scientific Re-Plan Rules
 
 When running `/lp-replan`, confidence increases must be evidence-led:
 
-- Do not raise CI from narrative reasoning alone.
+- Do not raise confidence from narrative reasoning alone.
 - Use an evidence ladder:
   - **E1:** static repo audit (small uplift only)
   - **E2:** executable verification (tests/probes/scripts)
@@ -68,10 +71,10 @@ When running `/lp-replan`, confidence increases must be evidence-led:
 
 ## Outputs by Phase
 
-- **Fact-find:** `docs/plans/<feature>-lp-fact-find.md` (evidence + impact map)
-- **Plan-feature:** `docs/plans/<feature>-plan.md` (atomic tasks + CI per task)
+- **Fact-find:** `docs/plans/<feature>/fact-find.md` (evidence + impact map)
+- **Plan-feature:** `docs/plans/<feature>/plan.md` (atomic tasks + per-task confidence)
 - **Build-feature:** code and/or business artifacts + plan updated per task; commits tied to TASK IDs
-- **Re-plan:** plan updated with evidence/decisions/CIs (no implementation changes)
+- **Re-plan:** plan updated with evidence/decisions/confidence (no implementation changes)
 
 ## Business OS Card Tracking (Default)
 

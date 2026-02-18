@@ -259,3 +259,49 @@ export function bookingsByChannelRowsToCsv(rows: BookingsByChannelRow[]): string
 
   return lines.join("\n") + "\n";
 }
+
+export function parseBookingsByChannelCsv(csv: string): BookingsByChannelRow[] {
+  const lines = csv.trim().split("\n");
+  if (lines.length === 0) {
+    throw new Error("empty_csv");
+  }
+
+  const header = lines[0];
+  if (!header) {
+    throw new Error("missing_header");
+  }
+
+  const rows: BookingsByChannelRow[] = [];
+
+  for (let i = 1; i < lines.length; i += 1) {
+    const line = lines[i]?.trim();
+    if (!line) continue;
+
+    const parts = line.split(",");
+    if (parts.length < 8) {
+      throw new Error(`invalid_row:line_${i + 1}`);
+    }
+
+    const month = parts[0] ?? "";
+    const channel = parts[1] ?? "";
+    const bookings = Number.parseInt(parts[2] ?? "0", 10);
+    const grossValue = Number.parseFloat(parts[3] ?? "0");
+    const netValue = Number.parseFloat(parts[4] ?? "0");
+    const cancellations = Number.parseInt(parts[5] ?? "0", 10);
+    const refundsOrAdjustments = Number.parseInt(parts[6] ?? "0", 10);
+    const notes = parts.slice(7).join(",");
+
+    rows.push({
+      month,
+      channel: channel as BookingChannel,
+      bookings,
+      gross_value: grossValue,
+      net_value: netValue,
+      cancellations,
+      refunds_or_adjustments: refundsOrAdjustments,
+      notes,
+    });
+  }
+
+  return rows;
+}

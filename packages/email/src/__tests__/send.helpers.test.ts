@@ -137,6 +137,8 @@ describe("send helpers", () => {
     });
 
     it("retries primitive rejections and succeeds", async () => {
+      // Suppress expected console.warn from "Unrecognized provider error" on primitive rejections
+      const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       const { sendWithRetry } = await import("../send");
       const provider = {
         send: jest
@@ -163,6 +165,7 @@ describe("send helpers", () => {
       expect(setTimeoutSpy).toHaveBeenNthCalledWith(1, expect.any(Function), 100);
       expect(setTimeoutSpy).toHaveBeenNthCalledWith(2, expect.any(Function), 200);
       setTimeoutSpy.mockRestore();
+      warnSpy.mockRestore();
     });
 
     it("does not retry on non-retryable errors", async () => {

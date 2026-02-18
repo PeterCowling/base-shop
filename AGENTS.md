@@ -107,7 +107,7 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 4. Implement → Validate → Commit
 5. Mark task complete, move to next
 
-**Feature workflow**: `/lp-fact-find` → `/lp-plan` → `/lp-build` → `/lp-replan` (if confidence <80%)
+**Feature workflow**: `/lp-fact-find` → `/lp-plan` → `/lp-build` → `/lp-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
 **Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-fact-find docs. Feeds into the feature workflow above.
 - Full pipeline: `/idea-generate` → `/lp-fact-find` → `/lp-plan` → `/lp-build`
@@ -146,7 +146,7 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 - `lp-refactor`: Refactor React components for maintainability, performance, and pattern quality. (file: `.claude/skills/lp-refactor/SKILL.md`)
 - `lp-replan`: Resolve low-confidence plan tasks with additional evidence and decisions. (file: `.claude/skills/lp-replan/SKILL.md`)
 - `lp-seo`: Produce phased SEO strategy (keywords, clusters, SERP, technical, snippets). (file: `.claude/skills/lp-seo/SKILL.md`)
-- `lp-sequence`: Topologically sequence/renumber plan tasks and dependency metadata. (file: `.claude/skills/lp-sequence/SKILL.md`)
+- `lp-sequence`: Topologically sequence plan tasks and dependency metadata (stable IDs by default; renumber only when explicitly requested). (file: `.claude/skills/lp-sequence/SKILL.md`)
 - `lp-site-upgrade`: Create layered website-upgrade strategy and `lp-fact-find` handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
 
 ### How to use `lp-*` skills
@@ -156,14 +156,18 @@ A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
 - Path resolution: resolve relative paths from the skill directory before trying alternatives.
 - Reuse over rewrite: prefer referenced templates/scripts/assets shipped with the skill.
 
-## Confidence Index (CI) Policy (Planning)
+## Plan Confidence Policy
 
-In plan docs, **CI** means **Confidence Index** (plan confidence), not CI/CD.
+In plan docs, use **confidence** / **Overall-confidence** for plan confidence values.
 
-- **CI ≥90 is a motivation, not a quota.** Do not "raise CI" by deleting planned work or narrowing scope without an explicit user decision.
-- **How to raise CI credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small spike/INVESTIGATE task to remove uncertainty.
-- **If CI <90:** keep the work, but add a clear **"What would make this ≥90%"** section (concrete actions/evidence that would raise confidence).
-- **Build gate still applies:** `/lp-build` only proceeds on **IMPLEMENT** tasks that are **≥80%** confidence and unblocked. If <80%, stop and `/lp-replan`.
+- **Confidence ≥90 is a motivation, not a quota.** Do not "raise confidence" by deleting planned work or narrowing scope without an explicit user decision.
+- **How to raise confidence credibly:** add evidence (file references, call-site maps), add/strengthen tests, run targeted validations, or add a small SPIKE/INVESTIGATE task to remove uncertainty.
+- **If confidence <90:** keep the work, but add a clear **"What would make this ≥90%"** section (concrete actions/evidence that would raise confidence).
+- **Build gates:**
+  - `IMPLEMENT` and `SPIKE` tasks require **≥80%** confidence and must be unblocked.
+  - `INVESTIGATE` tasks require **≥60%** confidence and must be unblocked.
+  - `CHECKPOINT` is procedural and handled by `/lp-build` checkpoint contract.
+  - If below threshold, stop and run `/lp-replan`.
 
 ## Progressive Context Loading
 
@@ -203,8 +207,8 @@ Error: Cannot use import statement outside a module
 
 ## Plan Documentation
 
-- **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow `docs/plans/<name>-plan.md`.
-- **Completed plans** live in `docs/plans/archive/` with `Status: Archived`.
+- **Current / maintained plans** live in `docs/plans/` (or the domain’s plan directory like `docs/cms-plan/`) and should follow canonical path `docs/plans/<slug>/plan.md` (legacy flat path is read-only compatibility).
+- **Completed plans** keep `Status: Complete`; they may remain in place or be moved to `docs/plans/archive/` as storage policy, while keeping `Status: Complete`.
 - **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
 - **When superseding a plan (v2, rewrites, etc.)**
   - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).
@@ -212,7 +216,7 @@ Error: Cannot use import statement outside a module
   - Add a forward pointer in the superseded plan header: `Superseded-by: <path-to-new-plan>`.
   - If you must disambiguate filenames, append a date (preferred) like `-superseded-YYYY-MM-DD` rather than adding `-v2` to the current plan.
 - Required metadata: Type, Status, Domain, Last-reviewed, Relates-to charter
-- **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it's not in Plan format), create/update one in the most appropriate location (default: `docs/plans/`; CMS threads: `docs/cms-plan/`) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
+- **When the user asks for a plan:** the plan must be persisted as a Plan doc (not just chat output). If no relevant Plan doc exists (or it's not in Plan format), create/update one in the most appropriate location (default: `docs/plans/<slug>/plan.md`; CMS threads may use their domain plan directory) and populate it with the planning/audit results (summary, tasks, acceptance criteria, risks).
 
 ### Handling Audit Limits
 

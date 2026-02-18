@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo, useState } from "react";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import clsx from "clsx";
 
 import { ModalFrame, ModalPanel } from "./primitives";
@@ -59,6 +58,7 @@ function LocationModal({
       isOpen={isOpen}
       onClose={onClose}
       testId={testId}
+      title={copy.title}
       overlayClassName="pointer-coarse:p-6 bg-black/50 p-6 backdrop-blur-sm dark:bg-black/80"
     >
       <ModalPanel
@@ -92,9 +92,9 @@ function LocationModal({
           ×
         </button>
 
-        <DialogTitle className="mb-4 text-2xl font-bold text-brand-heading">
+        <h2 className="mb-4 text-2xl font-bold text-brand-heading">
           {copy.title}
-        </DialogTitle>
+        </h2>
 
         <div className="mb-4">
           <label htmlFor={CURRENT_LOCATION_INPUT_ID} className="mb-1 block font-semibold text-brand-text">

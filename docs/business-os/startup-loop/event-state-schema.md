@@ -117,13 +117,15 @@ The derived state is compatible with the existing `loop-state.json` contract:
 
 ## 4) Stage Name Map
 
-Derived from `loop-spec.yaml`:
+**Canonical source:** `docs/business-os/startup-loop/_generated/stage-operator-map.json` (generated from `stage-operator-dictionary.yaml`). The table below is informational; implementations must read from the generated map, not from this table.
 
-| Stage ID | Name |
+`derive-state.ts` sources `stages[id].name` from `label_operator_short` in the generated map. Do not hardcode stage names in consumer code.
+
+| Stage ID | label_operator_short |
 |---|---|
 | S0 | Intake |
-| S1 | Readiness |
-| S1B | Measurement bootstrap |
+| S1 | Readiness check |
+| S1B | Measurement setup |
 | S2A | Historical baseline |
 | S2 | Market intelligence |
 | S2B | Offer design |
@@ -137,7 +139,20 @@ Derived from `loop-spec.yaml`:
 | S8 | Plan |
 | S9 | Build |
 | S9B | QA gates |
-| S10 | Weekly readout + experiments |
+| S10 | Weekly decision |
+
+## 4A) Run-Packet Display Enrichment
+
+The run-packet (assembled by `/startup-loop status`, `/startup-loop advance`, etc.) includes derived display fields in addition to the core `state.json` fields. These fields are computed at packet-assembly time from `stage-operator-map.json` and are **not** persisted to `state.json`.
+
+| Run-packet field | Source | Example |
+|---|---|---|
+| `current_stage_label` | `label_operator_short` for `active_stage` | `"Forecast"` |
+| `current_stage_display` | `label_operator_long` for `active_stage` | `"S3 — Forecast"` |
+| `next_stage_label` | `label_operator_short` for next eligible stage | `"Channel strategy + GTM"` |
+| `next_stage_display` | `label_operator_long` for next eligible stage | `"S6B — Channel strategy + GTM"` |
+
+These fields are required by `loop-spec.yaml` v1.4.0 run_packet contract. Consumers must handle `null` values for `next_stage_*` fields when no next stage is defined.
 
 ## 5) Relationship to Other Schemas
 

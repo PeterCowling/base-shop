@@ -13,7 +13,8 @@ Source-Plan: docs/business-os/strategy/BRIK/plan.user.md
 
 ## A) Intake Summary
 
-- Business idea: multilingual e-commerce platform for hostel bookings and travel experiences (`observed`).
+- Business idea: physical hostel in Positano (Amalfi Coast), with the ambition to be the most expensive hostel in the world while maintaining high occupancy (`observed`). The model is premium pricing justified by exceptional rooms, outstanding common areas, great staff and service, organised activities, and deep local knowledge — delivered as a coherent guest experience, not a budget product with a high price tag.
+- Revenue lines: hostel room bookings, travel experiences and activities, and the StepFree Chiesa Nuova apartment (a 100sqm property adjacent to the hostel, new for 2026). All are part of the same physical hospitality business (`observed`).
 - Business is already operating and has substantial product and content footprint (`observed`).
 - Core current execution lane includes reception infrastructure and dashboard/operations unification (`observed`).
 - Critical gap remains analytics/visibility baseline (GA/Search Console not fully configured) (`observed`).
@@ -27,7 +28,7 @@ Source-Plan: docs/business-os/strategy/BRIK/plan.user.md
 | Business code | BRIK | observed |
 | Business name | Brikette | observed |
 | Region | Multi-locale (18 locales in current content footprint) | observed |
-| Core offer | Hostel bookings + travel experience commerce | observed |
+| Core offer | Premium physical hostel experience — comfortable rooms, exceptional common areas, staff-led service, organised activities, and deep local knowledge — targeting the highest price point in the hostel category while maintaining high occupancy | observed |
 | Current app surfaces | `brikette`, `reception`, `prime`, `brikette-scripts` | observed |
 | Launch-surface mode | website-live | inferred |
 
@@ -51,7 +52,7 @@ Source-Plan: docs/business-os/strategy/BRIK/plan.user.md
 
 ## E) Draft Outcome Contract
 
-- Outcome statement: Establish measurable BRIK conversion and traffic baseline, then improve booking conversion and operational reliability with weekly decision cadence.
+- Outcome statement: Establish measurable baseline for Brikette's physical hospitality business (room bookings, activities, apartment), then grow revenue per available bed and overall occupancy through premium positioning, operational excellence, and weekly measurement cadence.
 - Baseline:
   - MAU: not measured
   - booking conversion rate: not measured

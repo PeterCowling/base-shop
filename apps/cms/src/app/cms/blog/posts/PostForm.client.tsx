@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect,useState } from "react";
+import { Suspense } from "react";
 import { useFormState } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import { PortableText } from "@portabletext/react";
@@ -88,12 +89,14 @@ function PostFormContent({ action, submitLabel, post }: Props) {
     }, 300);
     return () => clearTimeout(handle);
   }, [slug, shopId, slugId, t]);
+  // Note: lazy init — only runs on mount. If prop changes, state won't update automatically.
   const [publishedAt, setPublishedAt] = useState(
-    post?.publishedAt ? post.publishedAt.slice(0, 16) : "",
+    () => post?.publishedAt ? post.publishedAt.slice(0, 16) : "",
   );
   const [mainImage, setMainImage] = useState(post?.mainImage ?? "");
+  // Note: lazy init — only runs on mount. If prop changes, state won't update automatically.
   const [content, setContent] = useState<PortableTextBlock[]>(
-    Array.isArray(post?.body)
+    () => Array.isArray(post?.body)
       ? (post?.body as PortableTextBlock[])
       : typeof post?.body === "string"
         ? JSON.parse(post.body)
@@ -206,7 +209,9 @@ function PostFormContent({ action, submitLabel, post }: Props) {
 export default function PostForm(props: Props) {
   return (
     <InvalidProductProvider>
-      <PostFormContent {...props} />
+      <Suspense fallback={null}>
+        <PostFormContent {...props} />
+      </Suspense>
     </InvalidProductProvider>
   );
 }

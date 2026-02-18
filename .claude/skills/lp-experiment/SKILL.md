@@ -307,3 +307,4 @@ Use during design mode to identify where in the conversion funnel an experiment 
 - Sunday: Review all active experiments, produce readouts
 - Monday: Review readouts, make continue/pivot/scale/kill decisions
 - Tuesday: Design next experiments based on learnings
+- Platform: Run `/meta-loop-efficiency` if last audit artifact is >7 days old.

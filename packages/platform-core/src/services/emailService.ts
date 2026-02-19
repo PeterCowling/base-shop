@@ -34,8 +34,9 @@ export async function sendSystemEmail(data: {
   type EmailModule = {
     sendEmail(to: string, subject: string, html: string): Promise<unknown>;
   };
-  // Use a literal module id so webpack does not create a broad require-context
-  // (which can significantly increase Next/Webpack build memory usage).
-  const mod = req("@acme/email") as EmailModule;
+  // Keep module id runtime-resolved to avoid forcing a hard workspace
+  // dependency edge from platform-core -> email (which creates graph cycles).
+  const moduleId = process.env.ACME_EMAIL_MODULE_ID || "@acme/email";
+  const mod = req(moduleId) as EmailModule;
   return mod.sendEmail(data.to, data.subject, data.html);
 }

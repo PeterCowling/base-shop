@@ -76,7 +76,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Build-eligible now: TASK-01, TASK-02, TASK-09, TASK-11 (>=80 and unblocked).
+  - Build-eligible now: TASK-02, TASK-11 (>=80 and unblocked).
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -156,7 +156,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Documentation impact:** update ops runbook for auth failure troubleshooting and local private-mode setup.
 - **Notes / references:** `docs/plans/email-system-design-gaps-v2/fact-find.md` V2-01, D1.
 - **Scope expansion (build):** Added reception client auth-header propagation (`mcpAuthHeaders` + hook call-sites) so authenticated browser-origin requests continue to satisfy the new server-side route guard.
-- **Build evidence:** Validation PASS (2026-02-19):
+- **Build evidence:** Commit `6cc3e8556a`; Validation PASS (2026-02-19):
   - `pnpm --filter @apps/reception typecheck`
   - `pnpm --filter @apps/reception lint`
   - `pnpm --filter @apps/reception test -- src/app/api/mcp/_shared/__tests__/staff-auth.test.ts src/app/api/mcp/__tests__/booking-email.route.test.ts src/app/api/mcp/__tests__/guest-email-activity.route.test.ts src/services/__tests__/useBookingEmail.test.ts src/services/__tests__/useEmailGuest.test.tsx --maxWorkers=2`

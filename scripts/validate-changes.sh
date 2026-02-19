@@ -84,12 +84,12 @@ echo "$ALL_CHANGED" | sed 's/^/  /'
 # 1. Policy checks (fast, deterministic)
 echo ""
 echo "> Policy checks"
-echo "Checking Next.js Webpack opt-out policy (--webpack)..."
+echo "Checking Next.js command policy matrix..."
 if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/check-next-webpack-flag.mjs" --repo-root "$REPO_ROOT" --source "$WEBPACK_POLICY_SOURCE"; then
-    echo "FAIL: Next.js Webpack opt-out policy check failed (${CHANGE_MODE})"
+    echo "FAIL: Next.js command policy matrix check failed (${CHANGE_MODE})"
     exit 1
 fi
-echo "OK: Next.js Webpack opt-out policy check passed"
+echo "OK: Next.js command policy matrix check passed"
 
 # 2. Typecheck + lint (scoped to changed workspace packages)
 echo ""

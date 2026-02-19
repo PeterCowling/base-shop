@@ -73,7 +73,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Replace global webpack-only checker with app/command policy matrix and updated tests | 85% | M | Complete (2026-02-19) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Align docs/workflow messaging to the revised bundler policy contract | 85% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Align docs/workflow messaging to the revised bundler policy contract | 85% | S | Complete (2026-02-19) | TASK-01 | - |
 | TASK-03 | INVESTIGATE | Validate browser-safe shared export seam for `createGuideUrlHelpers` | 75% | S | Complete (2026-02-19) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Migrate Brikette to shared guide helper export and delete local duplicate | 80% | M | Pending | TASK-03 | - |
 | TASK-05 | INVESTIGATE | Probe CI Turbopack smoke runtime budget and workflow placement | 70% | S | Complete (2026-02-19) | - | TASK-06 |
@@ -162,7 +162,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `docs/git-hooks.md`, `.github/workflows/merge-gate.yml`, `scripts/validate-changes.sh`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -192,6 +192,15 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
   - Updates user/operator-facing policy wording.
 - **Notes / references:**
   - Existing hook flow reference: `docs/git-hooks.md`
+- **Build completion evidence (2026-02-19):**
+  - Updated messaging surfaces to reference policy script ownership and app/command matrix behavior:
+    - `docs/git-hooks.md`
+    - `.github/workflows/merge-gate.yml`
+    - `scripts/validate-changes.sh`
+  - Validation results:
+    - TC-01: `rg -n 'app/command matrix|source-of-truth.*check-next-webpack-flag|check-next-webpack-flag.*source-of-truth' docs/git-hooks.md` -> matched line with source-of-truth text.
+    - TC-02: stale global-policy grep returned no matches (`STALE_POLICY_TEXT_FOUND=0`).
+    - TC-03: `node scripts/check-next-webpack-flag.mjs --all` -> pass.
 
 ---
 

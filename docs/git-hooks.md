@@ -31,7 +31,7 @@ Hooks are installed by `pnpm install` via the `prepare` script in `package.json`
 1. `pre-commit-check-env.sh`
 2. `require-writer-lock.sh`
 3. `no-partially-staged.js`
-4. `scripts/check-next-webpack-flag.mjs --staged` (enforces `next dev/build --webpack`)
+4. `scripts/check-next-webpack-flag.mjs --staged` (enforces Next.js command policy matrix)
 5. `run-lint-staged.sh`
 6. `typecheck-staged.sh`
 7. `lint-staged-packages.sh`
@@ -42,6 +42,7 @@ Key behavior:
 - scope is staged changes (not full-repo typecheck/lint)
 - partial staging is blocked to avoid accidental hunk mutation
 - lockfile/writer-lock guard is always enforced
+- Next.js app/command matrix source-of-truth is `scripts/check-next-webpack-flag.mjs`
 
 ## Pre-push Flow
 

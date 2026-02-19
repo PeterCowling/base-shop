@@ -76,7 +76,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Build-eligible now: TASK-02, TASK-11 (>=80 and unblocked).
+  - Build-eligible now: TASK-11 (>=80 and unblocked).
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -89,7 +89,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add server-side auth/authz guard for reception MCP routes | 85% | M | Complete (2026-02-19) | - | TASK-03, TASK-04, TASK-05, TASK-07, TASK-08, TASK-09, TASK-10 |
-| TASK-02 | INVESTIGATE | Resolve production usage attribution for queue vs reception draft paths | 85% | S | Pending | - | TASK-03 |
+| TASK-02 | INVESTIGATE | Resolve production usage attribution for queue vs reception draft paths | 85% | S | Complete (2026-02-19) | - | TASK-03 |
 | TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 75% | M | Pending | TASK-01, TASK-02 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 75% | M | Pending | TASK-01 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
@@ -167,7 +167,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `data/email-audit-log.jsonl`, `[readonly] docs/plans/email-system-design-gaps-v2/fact-find.md`, `docs/plans/email-system-design-gaps-v2/plan.md`
 - **Depends on:** -
 - **Blocks:** TASK-03
@@ -187,6 +187,34 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Rollout / rollback:** `None: non-implementation task`
 - **Documentation impact:** update plan decision log with investigation outcome.
 - **Notes / references:** `docs/plans/email-system-design-gaps-v2/fact-find.md` runtime section (`0 Drafted` ambiguity).
+- **Build evidence:** Investigation completed (2026-02-19) using read-only evidence sources:
+  - **Evidence sources (30-day window = 2026-01-20 to 2026-02-19):**
+    - `gmail_list_query(label:"Brikette/Outcome/Drafted" newer_than:30d)` -> `0` emails.
+    - `gmail_list_query(in:drafts from:hostelpositano@gmail.com newer_than:30d)` -> `5` draft emails.
+    - `gmail_list_query(in:drafts newer_than:30d label:"Brikette/Outcome/Drafted")` -> `0` emails (no overlap with drafts).
+    - Queue signals:
+      - `gmail_list_query(label:"Brikette/Queue/Needs-Processing" newer_than:30d)` -> `2`.
+      - `gmail_list_query(label:"Brikette/Queue/In-Progress" newer_than:30d)` -> `1`.
+      - `gmail_list_query(label:"Brikette/Queue/Needs-Decision" newer_than:30d)` -> `1`.
+      - `gmail_list_query(label:"Brikette/Queue/Deferred" newer_than:30d)` -> `1`.
+    - Outcome signals:
+      - `gmail_list_query(label:"Brikette/Outcome/Acknowledged" newer_than:30d)` -> `0`.
+      - `gmail_list_query(label:"Brikette/Outcome/Skipped" newer_than:30d)` -> `2`.
+    - Review signal:
+      - `gmail_list_query(label:"Brikette/Drafts/Ready-For-Review" newer_than:30d)` -> `2`.
+    - Volume context:
+      - `gmail_list_query(in:inbox newer_than:30d, limit:100)` -> `100` with `hasMore: true` (>=100 inbox messages).
+    - Local audit log (`data/email-audit-log.jsonl`):
+      - `42` rows, window `2026-02-19T13:40:22.898Z` -> `2026-02-19T17:14:17.939Z`.
+      - Actions: `lock-acquired: 8`, `outcome: 21`, `lock-released: 13`.
+      - Message IDs are mostly synthetic/session-local (`40/42` with `msg-*` prefixes).
+  - **Attribution statement:** queue workflow is active (non-zero queue and review labels), but path attribution for drafted outcomes remains unresolved from current telemetry. Drafts exist without corresponding `Brikette/Outcome/Drafted` labels, which is consistent with route-specific paths that create drafts without `gmail_mark_processed` labeling (`packages/mcp-server/src/tools/booking-email.ts`, `packages/mcp-server/src/tools/guest-email-activity.ts`) and with missing source-path fields in audit events.
+  - **Dependency/priority impact:** no dependency reorder required; keep TASK-03 as the next instrumentation dependency for capability tasks.
+  - **Minimum counters required (feeds TASK-03):**
+    - `draft_created_total{source_path=queue|reception|outbound}`.
+    - `outcome_labeled_total{action}` including `drafted`.
+    - `draft_without_outcome_total{source_path}`.
+    - `queue_transition_total{from_label,to_label}` for queue-state attribution.
 
 ### TASK-03: Add production telemetry for fallback, drafted outcomes, and path usage
 - **Type:** IMPLEMENT

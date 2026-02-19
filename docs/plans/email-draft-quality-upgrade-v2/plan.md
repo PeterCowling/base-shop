@@ -7,7 +7,7 @@ Last-reviewed: 2026-02-19
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-19
 Last-updated: 2026-02-19
-Build-Progress: Not started
+Build-Progress: 1/3 tasks complete
 Feature-Slug: email-draft-quality-upgrade-v2
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
@@ -114,7 +114,7 @@ or corrupt output.
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Rework `draft_refine` tool: attestation pattern, remove SDK, new input schema | 90% | S | Pending | - | TASK-02, TASK-03 |
+| TASK-01 | IMPLEMENT | Rework `draft_refine` tool: attestation pattern, remove SDK, new input schema | 90% | S | Complete (2026-02-19) | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Update `ops-inbox` skill: Claude refines → calls `draft_refine` to commit | 90% | S | Pending | TASK-01 | - |
 | TASK-03 | IMPLEMENT | Rewrite `draft-refine.test.ts` + update `testing-policy.md` semantics | 90% | S | Pending | TASK-01 | - |
 
@@ -133,11 +133,13 @@ or corrupt output.
 - **Execution-Skill:** lp-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/draft-refine.ts`
+  - `packages/mcp-server/src/__tests__/draft-refine.test.ts`
   - `packages/mcp-server/package.json`
   - `pnpm-lock.yaml`
+  - `packages/lib/src/growth/schema.ts` [scope expansion: pre-existing lint error exposed by lockfile change]
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
 - **Confidence:** 90%
@@ -220,6 +222,15 @@ Tool wraps `refinedBodyPlain` in standard HTML structure, splitting on double-ne
   - Rollout: TASK-01 and TASK-02 treated as one logical release (zero in-repo callers until TASK-02 lands).
   - Rollback: revert `draft-refine.ts` and `package.json`; restore SDK dep.
 - **Documentation impact:** None in TASK-01 — covered in TASK-03.
+
+#### Build completion evidence (2026-02-19)
+
+- Red: TC-01-01..05 failed, TC-01-06 failed (SDK string in source) → 5/6 fail confirmed.
+- Green: Rewrote `draft-refine.ts` — removed SDK import, new input schema, schema guard, identity check, `deriveHtml()`, `runQualityGate()` via `handleDraftQualityTool`. TC-01-01..06 all pass.
+- Refactor: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --no-coverage --maxWorkers=2` → 42 suites, 381 tests, all pass.
+- TC-01-07: ESLint autofix applied (import sort); lint clean. TypeScript clean (`tsc -b` via turbo).
+- TC-01-08: targeted run exits 0; 6/6 tests pass.
+- Commit: `ce5bf75b0f` (includes pre-existing `@acme/lib` lint fix exposed by lockfile change).
 
 ---
 

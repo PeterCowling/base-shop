@@ -76,7 +76,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 | TASK-02 | IMPLEMENT | Align docs/workflow messaging to the revised bundler policy contract | 85% | S | Pending | TASK-01 | - |
 | TASK-03 | INVESTIGATE | Validate browser-safe shared export seam for `createGuideUrlHelpers` | 75% | S | Complete (2026-02-19) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Migrate Brikette to shared guide helper export and delete local duplicate | 80% | M | Pending | TASK-03 | - |
-| TASK-05 | INVESTIGATE | Probe CI Turbopack smoke runtime budget and workflow placement | 70% | S | Pending | - | TASK-06 |
+| TASK-05 | INVESTIGATE | Probe CI Turbopack smoke runtime budget and workflow placement | 70% | S | Complete (2026-02-19) | - | TASK-06 |
 | TASK-06 | IMPLEMENT | Add deterministic Brikette Turbopack dev smoke check to CI | 85% | M | Pending | TASK-05 | - |
 
 ## Parallelism Guide
@@ -298,7 +298,7 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `.github/workflows/brikette.yml`, `.github/workflows/reusable-app.yml`, `apps/brikette/package.json`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -320,6 +320,21 @@ Brikette now runs Turbopack in development, but repo-wide enforcement and owners
 - **Documentation impact:** add CI probe artifact under plan directory.
 - **Notes / references:**
   - Route targets from fact-find: `/en/apartment`, `/en/help`, `/en/breakfast-menu`
+- **Build completion evidence (2026-02-19):**
+  - Created artifact: `docs/plans/turbopack-post-migration-hardening/artifacts/ci-turbopack-smoke-probe.md`.
+  - Placement decision locked for TASK-06: implement Turbopack smoke in `.github/workflows/brikette.yml` (app-specific), not in `reusable-app.yml`.
+  - Threshold decision locked for TASK-06:
+    - readiness timeout: `45s`
+    - per-route assertion timeout: `30s`
+    - workflow step budget: `8m`
+  - Validation evidence captured:
+    - Active local lock/process state:
+      - `lsof -nP -iTCP:3012 -sTCP:LISTEN` showed active listener.
+      - `apps/brikette/.next/dev/lock` present.
+    - Route timing observations (5 requests each against `http://127.0.0.1:3012`):
+      - `/en/apartment`: `6.829746,2.748177,1.463490,1.660614,0.975683`, JSON-LD assertion count `1`.
+      - `/en/help`: `2.850730,1.949868,2.172584,2.869517,5.408239`, `positano` assertion count `549`.
+      - `/en/breakfast-menu`: `20.513374,1.692164,0.348920,1.689258,0.815517`, `menu|breakfast` assertion count `144`.
 
 ---
 

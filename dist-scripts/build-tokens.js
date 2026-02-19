@@ -1,9 +1,13 @@
 // scripts/build-tokens.ts
 /* eslint-disable @typescript-eslint/no-require-imports -- ENG-2005: dist-scripts are CommonJS-style Node entrypoints used by CLI and tests [ttl=2026-12-31] */
-import { readdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { join } from "node:path";
+import { pathToFileURL } from "node:url";
 import { runInNewContext } from "node:vm";
+
 import ts from "typescript";
+
 const { tokens } = require("../packages/themes/base/tokens.js");
 /**
  * Create a plain-value stylesheet (no CSS variables).
@@ -66,7 +70,7 @@ function generateDynamicCss(map) {
 const outDir = join(__dirname, "..", "packages", "themes", "base");
 writeFileSync(join(outDir, "tokens.static.css"), generateStaticCss(tokens));
 writeFileSync(join(outDir, "tokens.dynamic.css"), generateDynamicCss(tokens));
-console.log("→ tokens.static.css and tokens.dynamic.css generated");
+console.info("→ tokens.static.css and tokens.dynamic.css generated");
 /* -------------------------------------------------------------------------- */
 /*  Additional theme tokens                                                   */
 /* -------------------------------------------------------------------------- */
@@ -115,10 +119,11 @@ async function buildThemeCss() {
         const transpiled = ts.transpileModule(source, {
             compilerOptions: { module: ts.ModuleKind.CommonJS },
         }).outputText;
+        const sandboxRequire = createRequire(pathToFileURL(modPath).href);
         const sandbox = {
             module: { exports: {} },
             exports: {},
-            require,
+            require: sandboxRequire,
         };
         sandbox.exports = sandbox.module.exports;
         runInNewContext(transpiled, sandbox);
@@ -130,11 +135,11 @@ async function buildThemeCss() {
 }
 void buildThemeCss()
     .then(() => {
-    console.log("→ theme tokens generated");
+    console.info("→ theme tokens generated");
 })
     .catch((err) => {
     console.error(err);
-	    process.exit(1);
-	});
+    process.exit(1);
+});
 
-export { generateStaticCss, generateDynamicCss, generateThemeCss };
+export { generateDynamicCss, generateStaticCss, generateThemeCss };

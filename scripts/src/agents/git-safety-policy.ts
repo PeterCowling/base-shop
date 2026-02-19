@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
+import { load as loadYaml } from "js-yaml";
 import path from "path";
-import YAML from "yaml";
 
 export type GitSafetyDecision = "deny" | "allow";
 export type GitSafetyEffect = "deny" | "allow" | "ask";
@@ -242,7 +242,7 @@ function asOptionalRules(value: unknown, label: string): GitSafetyRule[] | undef
 }
 
 export function parseKernelYaml(yamlText: string): GitSafetyKernel {
-  const data = YAML.parse(yamlText) as unknown;
+  const data = loadYaml(yamlText) as unknown;
   if (!data || typeof data !== "object" || Array.isArray(data)) {
     throw new TypeError("[git-safety-policy] Kernel YAML must be a mapping");
   }

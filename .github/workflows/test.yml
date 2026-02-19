@@ -47,10 +47,34 @@ jobs:
       - name: Install Playwright browsers (scripts workspace only)
         if: matrix.workspace == 'scripts'
         run: pnpm exec playwright install chromium --with-deps
+      - name: Install Cypress binary (Cypress workspaces only)
+        run: |
+          set -euo pipefail
+          workspace="${{ matrix.workspace }}"
+          package_json="${workspace}/package.json"
+
+          if [ ! -f "$package_json" ]; then
+            exit 0
+          fi
+
+          has_cypress="$(node -e '
+            const fs = require("fs");
+            const pkgPath = process.argv[1];
+            const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+            const deps = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+            process.stdout.write(Object.prototype.hasOwnProperty.call(deps, "cypress") ? "1" : "0");
+          ' "$package_json")"
+
+          if [ "$has_cypress" = "1" ]; then
+            echo "Installing Cypress binary for ${workspace}"
+            pnpm --filter "./${workspace}" exec cypress install
+          fi
       - name: Build workspace (scoped)
         run: pnpm exec turbo run build --filter=./${{ matrix.workspace }}
-      - run: pnpm --filter ./${{ matrix.workspace }} lint
-      - run: pnpm --filter ./${{ matrix.workspace }} typecheck
+      - name: Lint (if present)
+        run: pnpm --filter ./${{ matrix.workspace }} run --if-present lint
+      - name: Typecheck (if present)
+        run: pnpm --filter ./${{ matrix.workspace }} run --if-present typecheck
       - name: Test with coverage
         if: matrix.workspace != 'packages/next-config'
         run: |

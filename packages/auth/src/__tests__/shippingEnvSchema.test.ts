@@ -88,11 +88,11 @@ describe("shippingEnvSchema", () => {
     });
   });
 
-  it("returns object with undefined values when keys missing", async () => {
+  it("returns default provider with optional fields undefined when keys missing", async () => {
     const { loadShippingEnv } = await import("@acme/config/env/shipping");
     const env = loadShippingEnv({} as unknown as NodeJS.ProcessEnv);
-    // Schema returns all keys with undefined values (SHIPPING_PROVIDER is optional, no default)
-    expect(env.SHIPPING_PROVIDER).toBeUndefined();
+    // Schema defaults SHIPPING_PROVIDER to "none" and leaves optional fields undefined
+    expect(env.SHIPPING_PROVIDER).toBe("none");
     expect(env.DEFAULT_SHIPPING_ZONE).toBeUndefined();
     expect(env.FREE_SHIPPING_THRESHOLD).toBeUndefined();
   });

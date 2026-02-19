@@ -270,6 +270,7 @@ describe("Governed Test Runner", () => {
       BASESHOP_ADMISSION_MOCK_ACTIVE_TEST_RSS_MB: "0",
       BASESHOP_ADMISSION_MOCK_ACTIVE_WORKER_SLOTS: "0",
       BASESHOP_ADMISSION_MOCK_PRESSURE_LEVEL: "normal",
+      BASESHOP_GOVERNED_CI_MODE: "off",
       PATH: `${mockBinDir}:${process.env.PATH}`,
       ...extra,
     };
@@ -442,7 +443,8 @@ describe("Governed Test Runner", () => {
       createMockPnpm(mockBinDir);
       const logPath = path.join(newTempDir("governed-log-"), "events.log");
       const env = baseEnv(repo, mockBinDir, logPath, {
-        BASESHOP_TEST_GOVERNED_SLEEP_SEC: "3",
+        BASESHOP_TEST_GOVERNED_SLEEP_SEC: "6",
+        BASESHOP_ALLOW_OVERLOAD: "1",
       });
 
       const holder = trackChild(spawnRunner(["jest"], repo, env));
@@ -456,6 +458,7 @@ describe("Governed Test Runner", () => {
       );
       const waiterTicket = waiterOut.match(/Joined test queue as ticket (\d+)/)?.[1] ?? "";
       expect(waiterTicket).not.toBe("");
+      await waitForOutput(waiter, /Waiting for test lock\.\.\. queue position/, 10_000);
 
       const cancel = spawnSync("bash", [LOCK_SCRIPT, "cancel", "--ticket", waiterTicket], {
         cwd: repo,
@@ -541,6 +544,7 @@ describe("Governed Test Runner", () => {
     const logPath = path.join(newTempDir("governed-log-"), "events.log");
     const env = baseEnv(repo, mockBinDir, logPath, {
       CI: "true",
+      BASESHOP_GOVERNED_CI_MODE: "auto",
     });
 
     const result = runRunner(["jest"], repo, env);

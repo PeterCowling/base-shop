@@ -195,6 +195,7 @@ describe("Governed runner admission integration", () => {
       BASESHOP_ADMISSION_MOCK_LOGICAL_CPU: "10",
       BASESHOP_ADMISSION_MOCK_PRESSURE_LEVEL: "normal",
       BASESHOP_TEST_GOVERNOR_ADMISSION_POLL_SEC: "1",
+      BASESHOP_GOVERNED_CI_MODE: "off",
       PATH: `${mockBinDir}:${process.env.PATH}`,
       ...extra,
     };

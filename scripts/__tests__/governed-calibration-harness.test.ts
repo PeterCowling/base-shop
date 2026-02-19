@@ -93,6 +93,8 @@ describe("Governed calibration harness", () => {
       BASESHOP_TEST_LOCK_SCOPE: "repo",
       BASESHOP_TEST_LOCK_REPO_ROOT: sandboxRoot,
       BASESHOP_TEST_LOCK_HEARTBEAT_SEC: "1",
+      BASESHOP_GOVERNED_CI_MODE: "off",
+      BASESHOP_ALLOW_OVERLOAD: "1",
       PATH: `${mockBinDir}:${process.env.PATH}`,
     };
 

@@ -4,7 +4,7 @@ import path from "node:path";
 const REPO_ROOT = path.resolve(__dirname, "../..");
 const FOCUSED_AUDIT_SCRIPT = path.join(
   REPO_ROOT,
-  ".claude/skills/meta-user-test/scripts/run-meta-user-test.mjs"
+  ".claude/skills/meta-user-test/scripts/run-user-testing-audit.mjs"
 );
 const FULL_CRAWL_AUDIT_SCRIPT = path.join(
   REPO_ROOT,

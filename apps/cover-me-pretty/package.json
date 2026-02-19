@@ -14,6 +14,7 @@
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/design-system": "workspace:*",
+    "@acme/editorial": "workspace:*",
     "@acme/email": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/lib": "workspace:*",

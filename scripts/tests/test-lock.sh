@@ -231,15 +231,16 @@ queue_allows_attempt() {
   local head
   head="$(queue_head_ticket)"
 
-  if [[ -z "$head" ]]; then
-    return 0
-  fi
-
   if [[ -z "$requester_ticket" ]]; then
-    return 1
+    [[ -z "$head" ]]
+    return
   fi
 
   if [[ ! -f "${queue_entries_dir}/${requester_ticket}.meta" ]]; then
+    return 1
+  fi
+
+  if [[ -z "$head" ]]; then
     return 1
   fi
 

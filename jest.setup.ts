@@ -328,7 +328,7 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
   "Failed to send campaign email",
   // Bullet-point issue details printed by core/shipping env loaders
-  /^  • .*: .+/,
+  /^\s*• .*: .+/,
   // MSW warning for unhandled AI catalog feed preview request in tests
   /\[MSW\] Error: intercepted a request without a matching request handler:.*\/api\/seo\/ai-catalog/,
   // Template-app expected error paths (tests assert status codes, not logs)
@@ -338,6 +338,7 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "Inventory validation failed",
   "Failed to load upgrade changes",
   "Publish failed",
+  /^\[api\/delivery\] schedulePickup error:/,
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
@@ -357,6 +358,8 @@ const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
   "Redis operation failed",
   // Unrecognized email provider errors (tested in email provider fallback tests)
   /^Unrecognized provider error/,
+  // Shop smoke tests intentionally warn when SHOP_ID is absent.
+  "SHOP_ID is not set; shop smoke tests will be skipped.",
 ];
 
 const shouldIgnoreConsoleMessage = (

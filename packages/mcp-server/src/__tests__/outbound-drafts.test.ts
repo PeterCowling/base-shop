@@ -87,7 +87,10 @@ function makeFirebaseResponse(records: Record<string, object>): Response {
     ok: true,
     status: 200,
     statusText: "OK",
-    headers: new Headers({ "Content-Type": "application/json" }),
+    headers:
+      typeof globalThis.Headers === "function"
+        ? new globalThis.Headers({ "Content-Type": "application/json" })
+        : ({ get: () => "application/json" } as unknown as Headers),
     json: async () => records,
     text: async () => JSON.stringify(records),
     clone: () => factory() as Response,
@@ -100,7 +103,10 @@ function makeFirebasePatchResponse(): Response {
     ok: true,
     status: 200,
     statusText: "OK",
-    headers: new Headers({ "Content-Type": "application/json" }),
+    headers:
+      typeof globalThis.Headers === "function"
+        ? new globalThis.Headers({ "Content-Type": "application/json" })
+        : ({ get: () => "application/json" } as unknown as Headers),
     json: async () => ({}),
     text: async () => "{}",
     clone: () => factory() as Response,

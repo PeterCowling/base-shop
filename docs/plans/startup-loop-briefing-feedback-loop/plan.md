@@ -12,7 +12,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-build
 Supporting-Skills: lp-sequence, lp-replan
-Overall-confidence: 78%
+Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -68,7 +68,7 @@ Chosen approach: **Option B**.
 
 ## Plan Gates
 - Foundation Gate: Pass
-- Build Gate: Fail (next parallel wave contains `TASK-05` at 75% confidence, below IMPLEMENT threshold; run `/lp-replan` before next `/lp-build` cycle)
+- Build Gate: Fail (`TASK-05` is blocked awaiting operator approval evidence; `TASK-06` depends on `TASK-05`)
 - Auto-Continue Gate: Fail (`Auto-Build-Intent: plan-only`; no explicit build-now intent)
 - Sequenced: Yes
 - Edge-case review complete: Yes
@@ -80,11 +80,11 @@ Chosen approach: **Option B**.
 | TASK-01 | DECISION | Choose canonical outcome-contract namespace and migration posture | 85% | S | Complete (2026-02-19) | - | TASK-03, TASK-05 |
 | TASK-02 | DECISION | Choose contradiction gate severity policy (hard-fail vs conflict-banner) | 85% | S | Complete (2026-02-19) | - | TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Define briefing contract schema + status taxonomy + registry contract | 80% | M | Complete (2026-02-19) | TASK-01 | TASK-04, TASK-05, TASK-08 |
-| TASK-04 | IMPLEMENT | Extend startup-loop lint tooling for briefing contract checks + tests | 80% | M | Pending | TASK-02, TASK-03 | TASK-07 |
-| TASK-05 | IMPLEMENT | Introduce canonical HEAD outcome contract artifact and de-duplicate references | 75% | M | Pending | TASK-01, TASK-03 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | Create and wire HEAD channel-surface decision artifact (`DEC-HEAD-CH-01`) | 75% | M | Pending | TASK-02, TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Refactor HEAD top-of-fold into strict operator card + conflict block + consolidated blockers | 75% | L | Pending | TASK-04, TASK-05, TASK-06 | TASK-09 |
-| TASK-08 | IMPLEMENT | Enforce S10 weekly learning payload contract (+ regression checks) | 80% | M | Pending | TASK-03 | TASK-09 |
+| TASK-04 | IMPLEMENT | Extend startup-loop lint tooling for briefing contract checks + tests | 80% | M | Complete (2026-02-19) | TASK-02, TASK-03 | TASK-07 |
+| TASK-05 | IMPLEMENT | Introduce canonical HEAD outcome contract artifact and de-duplicate references | 80% | M | Blocked (Awaiting approval evidence) | TASK-01, TASK-03 | TASK-06, TASK-07 |
+| TASK-06 | IMPLEMENT | Create and wire HEAD channel-surface decision artifact (`DEC-HEAD-CH-01`) | 80% | M | Pending | TASK-02, TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Refactor HEAD top-of-fold into strict operator card + conflict block + consolidated blockers | 80% | L | Pending | TASK-04, TASK-05, TASK-06 | TASK-09 |
+| TASK-08 | IMPLEMENT | Enforce S10 weekly learning payload contract (+ regression checks) | 80% | M | Complete (2026-02-19) | TASK-03 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: replan PET/BRIK rollout and P1/P2 expansion from HEAD evidence | 95% | S | Pending | TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | INVESTIGATE | PET/BRIK rollout packet and automation backlog (claim registry, instrumentation, risk/gate map) | 70% | M | Pending | TASK-09 | - |
 
@@ -228,7 +228,7 @@ Chosen approach: **Option B**.
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `scripts/src/startup-loop/contract-lint.ts`, `scripts/src/startup-loop/__tests__/contract-lint.test.ts`, `scripts/package.json`, `[readonly] docs/business-os/startup-loop/briefing-contract-schema-v1.md`
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** TASK-07
@@ -237,9 +237,9 @@ Chosen approach: **Option B**.
   - Approach: 80% - Held-back test: no single unresolved unknown drops below 80 once severity policy (TASK-02) is fixed; implementation extends current pure-function pattern.
   - Impact: 85% - Prevents recurrence of contamination/contradiction drift at compile gate.
 - **Acceptance:**
-  - [ ] New lint checks emit deterministic codes for missing required fields, invalid status, label mismatch, and contradiction-key conflicts.
-  - [ ] Severity behavior follows TASK-02 policy.
-  - [ ] Tests cover compliant paths and intentional failure fixtures for each new code.
+  - [x] New lint checks emit deterministic codes for missing required fields, invalid status, label mismatch, and contradiction-key conflicts.
+  - [x] Severity behavior follows TASK-02 policy.
+  - [x] Tests cover compliant paths and intentional failure fixtures for each new code.
 - **Validation contract (TC-XX):**
   - TC-01: Valid fixture set -> no issues.
   - TC-02: Missing required field fixture -> deterministic `missing_required_field` issue code.
@@ -259,6 +259,15 @@ Chosen approach: **Option B**.
   - Rollback: disable new checks behind feature flag branch in lint runner.
 - **Documentation impact:** Update lint contract section in schema doc and registry.
 - **Notes / references:** baseline pass evidence from 2026-02-19 test run.
+- **Build completion evidence (2026-02-19):**
+  - Red: baseline lint only enforced path contracts (`dep` + `measurement-verification`) and had no briefing metadata/taxonomy/contradiction checks.
+  - Green: extended `scripts/src/startup-loop/contract-lint.ts` with `lintBriefingContract` and deterministic codes: `missing_required_field`, `invalid_status_taxonomy`, `label_mismatch`, `contradiction_conflict`; added policy-aware severities for contradiction/status preflight modes.
+  - Refactor: added stable normalization for contradiction keys (`primary_channel_surface`, `primary_icp`, `hero_sku_price_corridor`, `claim_confidence`) and deterministic object serialization.
+  - TC-01: pass — compliant fixture set yields no issues.
+  - TC-02: pass — missing required field fixture emits `missing_required_field`.
+  - TC-03: pass — legacy status emits `invalid_status_taxonomy` with mode-dependent severity.
+  - TC-04: pass — contradiction fixture emits `contradiction_conflict` with policy-aligned severity.
+  - Validation run: `pnpm --filter ./scripts test -- scripts/src/startup-loop/__tests__/contract-lint.test.ts --maxWorkers=2` (PASS, 20/20).
 
 ### TASK-05: Canonical HEAD Outcome Contract and De-duplication
 - **Type:** IMPLEMENT
@@ -267,7 +276,7 @@ Chosen approach: **Option B**.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Blocked (Awaiting approval evidence)
 - **Artifact-Destination:** `docs/business-os/contracts/HEAD/outcome-contract.user.md` plus reference updates.
 - **Reviewer:** Operator (Peter)
 - **Approval-Evidence:** Operator confirms one contract source and no conflicting target/CAC values across referenced HEAD artifacts.
@@ -275,9 +284,9 @@ Chosen approach: **Option B**.
 - **Affects:** `docs/business-os/contracts/HEAD/outcome-contract.user.md`, `docs/business-os/strategy/HEAD/plan.user.md`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-06, TASK-07
-- **Confidence:** 75%
-  - Implementation: 75% - Multiple source documents require careful non-breaking reference migration.
-  - Approach: 75% - Some narrative sections may still need local contextual restatement after de-dup.
+- **Confidence:** 80%
+  - Implementation: 80% - Migration scope is bounded to a fixed five-file set and duplicate numeric contract values are already aligned.
+  - Approach: 80% - Canonical contract schema is now explicit (`briefing-contract-schema-v1.md`), so de-dup can follow deterministic replace-with-reference rules.
   - Impact: 85% - Resolves a high-impact trust and drift issue.
 - **Acceptance:**
   - [ ] Canonical HEAD outcome-contract artifact exists at selected namespace path.
@@ -292,17 +301,32 @@ Chosen approach: **Option B**.
   - Green evidence plan: Create canonical contract artifact and replace duplicate sections with references.
   - Refactor evidence plan: Normalize wording and keep context-only narrative where needed.
 - **Planning validation (required for M/L):**
-  - Checks run: source duplication evidence captured in fact-find F-02.
+  - Checks run:
+    - `rg -n "Outcome|Target by|By:|net orders|3,000|CAC|Decision link|Outcome-ID" ...` over HEAD plan/intake/market/forecast files (2026-02-19)
+    - `rg -n "2026-05-13|110 net orders|EUR 3,000|<=EUR 13|DEC-HEAD-01" ...` across same set (2026-02-19)
   - Validation artifacts: HEAD strategy/intake/market/forecast files.
-  - Unexpected findings: None.
+  - Unexpected findings: No conflicting target-date/order/revenue/CAC values in sampled authoritative blocks; duplication is structural rather than numeric conflict.
 - **Scouts:** `None: source files and duplication points already identified`
 - **Edge Cases & Hardening:** preserve historical context notes without reintroducing authoritative numeric duplicates.
-- **What would make this >=90%:** Pilot migration diff with automated duplicate-field scan across HEAD artifacts.
+- **What would make this >=90%:** Complete one migration pass with automated post-change duplicate-field scan and zero drift findings.
 - **Rollout / rollback:**
   - Rollout: HEAD-only canonicalization first.
   - Rollback: restore previous sections if reference migration breaks downstream reading.
 - **Documentation impact:** Adds canonical contract artifact and updates multiple HEAD source docs.
 - **Notes / references:** fact-find F-02 and open-question resolution from TASK-01.
+- **Build attempt evidence (2026-02-19):**
+  - Red: confirmed duplicate contract definitions across HEAD plan + intake + market + forecast sources.
+  - Green: created `docs/business-os/contracts/HEAD/outcome-contract.user.md` as canonical source and updated:
+    - `docs/business-os/strategy/HEAD/plan.user.md`
+    - `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`
+    - `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`
+    - `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
+    to reference canonical contract and avoid redefining contract target/CAC fields.
+  - Refactor: added explicit "source of truth / does not redefine" wording in each updated source.
+  - VC-01 probe: canonical contract file exists and contains authoritative contract block (Outcome-ID, targets, guardrails).
+  - VC-02 probe: all target docs contain canonical contract pointer.
+  - VC-03 probe: sampled contract-specific phrases removed from plan/intake/market/forecast contract sections; no conflicting contract-value statements found in sampled docs.
+  - Block reason: reviewer requirement is `Operator (Peter)` and approval evidence is asynchronous/unavailable in this run.
 
 ### TASK-06: Channel-Surface Decision Artifact (DEC-HEAD-CH-01)
 - **Type:** IMPLEMENT
@@ -319,9 +343,9 @@ Chosen approach: **Option B**.
 - **Affects:** `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`, `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md`
 - **Depends on:** TASK-02, TASK-05
 - **Blocks:** TASK-07
-- **Confidence:** 75%
-  - Implementation: 75% - Contradiction is clear, but final decision framing requires owner alignment.
-  - Approach: 75% - Decision integration across artifacts is straightforward but cross-doc consistency risk remains.
+- **Confidence:** 80%
+  - Implementation: 80% - Contradiction surface is narrow and explicit in current sources; implementation is constrained to one new decision artifact plus three references.
+  - Approach: 80% - Accepted contradiction policy from TASK-02 and canonical contract ownership from TASK-01 remove unresolved policy ambiguity.
   - Impact: 85% - Removes a primary execution-surface ambiguity.
 - **Acceptance:**
   - [ ] `DEC-HEAD-CH-01` exists with chosen primary channel surface and trigger conditions.
@@ -333,12 +357,13 @@ Chosen approach: **Option B**.
   - VC-03: Contradiction closure -> pass when no direct own-site-primary vs marketplace-primary conflict remains in the sampled HEAD docs.
 - **Execution plan:** Red -> Green -> Refactor (VC-first)
 - **Planning validation (required for M/L):**
-  - Checks run: contradiction evidence captured in fact-find F-03.
+  - Checks run:
+    - `rg -n "own-site|marketplace|Etsy|Amazon|DEC-HEAD" ...` across intake + market-intel + forecast-exec summary (2026-02-19)
   - Validation artifacts: intake packet + market intelligence + exec summary.
-  - Unexpected findings: None.
+  - Unexpected findings: Contradictory channel posture appears in a bounded set of references; no additional hidden contradiction surfaces were found in target files.
 - **Scouts:** `None: contradiction surfaces already identified`
 - **Edge Cases & Hardening:** preserve optional secondary channel paths without implying unresolved primary-surface ambiguity.
-- **What would make this >=90%:** Operator-signed decision state with one-week validation trigger pre-written.
+- **What would make this >=90%:** Operator-signed decision plus validated propagation check showing zero remaining contradictory phrasing in all target files.
 - **Rollout / rollback:**
   - Rollout: publish decision artifact and update references in same change.
   - Rollback: revert to previous text and mark decision as blocked.
@@ -359,9 +384,9 @@ Chosen approach: **Option B**.
 - **Affects:** `docs/business-os/startup-loop-output-registry.user.html`, `[readonly] docs/business-os/startup-loop/briefing-contract-schema-v1.md`, `[readonly] docs/business-os/contracts/HEAD/outcome-contract.user.md`, `[readonly] docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`
 - **Depends on:** TASK-04, TASK-05, TASK-06
 - **Blocks:** TASK-09
-- **Confidence:** 75%
-  - Implementation: 75% - Large single-file HTML update with dense content and ordering constraints.
-  - Approach: 75% - Strict top-of-fold schema is clear, but reconciling readability with existing content density remains non-trivial.
+- **Confidence:** 80%
+  - Implementation: 80% - Edit scope is bounded to the HEAD panel section (`id="head"` to before `id="pet"`), reducing cross-panel regression risk.
+  - Approach: 80% - T1 block contract is now explicit in `briefing-contract-schema-v1.md`, and prior tab/overflow QA contract is already established.
   - Impact: 90% - Directly improves operator decision usability.
 - **Acceptance:**
   - [ ] HEAD top-of-fold starts with operator card blocks (outcome window, gate state, blockers, 72h plan, decision register).
@@ -374,12 +399,14 @@ Chosen approach: **Option B**.
   - VC-03: Regression safety -> pass when tab-switch and overflow checks remain pass at 1200/1440/1920 (sample: HEAD/PET/BRIK tabs).
 - **Execution plan:** Red -> Green -> Refactor (VC-first)
 - **Planning validation (required for M/L):**
-  - Checks run: previous Playwright QA contract already established in `docs/plans/startup-loop-briefing-doc/plan.md` TASK-05.
+  - Checks run:
+    - `rg -n "<section id=\"head\"|<section id=\"pet\"|showPanel\\(|Missing-Data Checklist|Open Questions" docs/business-os/startup-loop-output-registry.user.html` (2026-02-19)
+    - prior Playwright QA contract evidence from `docs/plans/startup-loop-briefing-doc/plan.md` TASK-05
   - Validation artifacts: current output-registry HTML and fact-find F-06/F-07.
-  - Unexpected findings: None.
+  - Unexpected findings: HEAD panel boundaries are explicit and isolated; PET/BRIK panels remain separable for no-touch guarantee.
 - **Scouts:** `None: rendering path and tab behavior already validated in prior build cycle`
 - **Edge Cases & Hardening:** preserve existing PET/BRIK sections unchanged in HEAD pilot scope.
-- **What would make this >=90%:** small renderer abstraction or fixture-based generation to reduce manual large-file editing risk.
+- **What would make this >=90%:** Add fixture-driven renderer or automated section-level snapshot checks to reduce single-file manual edit risk.
 - **Rollout / rollback:**
   - Rollout: HEAD-only top-of-fold refactor with unchanged tab shell and non-HEAD sections.
   - Rollback: restore previous HEAD section snapshot from git.
@@ -392,7 +419,7 @@ Chosen approach: **Option B**.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Artifact-Destination:** S10 prompt template + startup-loop routing tests.
 - **Reviewer:** Startup-loop maintainer
 - **Approval-Evidence:** Prompt section and tests merged with explicit authority-preserving wording.
@@ -405,9 +432,9 @@ Chosen approach: **Option B**.
   - Approach: 80% - Held-back test: no single unresolved unknown drops below 80 because authority boundary is already codified and tested.
   - Impact: 85% - Closes a confirmed feedback-loop enforcement gap.
 - **Acceptance:**
-  - [ ] Prompt includes mandatory learning payload section with required fields (`tested`, `learned`, `changed`, `stop-next-week`, `no-test reason` when applicable).
-  - [ ] Output format remains authority-compatible with existing S10 routing/tests.
-  - [ ] Regression tests continue to pass for S10 routing authority expectations.
+  - [x] Prompt includes mandatory learning payload section with required fields (`tested`, `learned`, `changed`, `stop-next-week`, `no-test reason` when applicable).
+  - [x] Output format remains authority-compatible with existing S10 routing/tests.
+  - [x] Regression tests continue to pass for S10 routing authority expectations.
 - **Validation contract (TC-XX):**
   - TC-01: Prompt file contains mandatory learning payload contract text and strict-output requirement.
   - TC-02: `scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts` passes unchanged authority assertions.
@@ -425,6 +452,14 @@ Chosen approach: **Option B**.
   - Rollout: additive section insertion preserving existing A-H structure.
   - Rollback: revert prompt section and new assertions.
 - **Documentation impact:** Updates canonical S10 prompt contract.
+- **Build completion evidence (2026-02-19):**
+  - Red: prompt had no mandatory learning payload contract and output format stopped at A-G.
+  - Green: updated `weekly-kpcs-decision-prompt.md` with mandatory learning payload requirement, output format now includes Section I, and explicit field contract (`tested`, `learned`, `changed`, `stop-next-week`, `no-test reason`).
+  - Refactor: preserved A-H authority structure and inserted additive Section I guidance without modifying S10 routing authority boundaries.
+  - TC-01: pass — prompt contains mandatory learning payload contract text.
+  - TC-02: pass — routing authority assertions unchanged and green.
+  - TC-03: pass — new regression tests assert mandatory Section I and required field keys.
+  - Validation run: `pnpm --filter ./scripts test -- scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts --maxWorkers=2` (PASS, 17/17).
 
 ### TASK-09: Horizon Checkpoint - Reassess Downstream Rollout
 - **Type:** CHECKPOINT
@@ -494,6 +529,21 @@ Chosen approach: **Option B**.
   - `Ready` for `/lp-build` on `TASK-03`
   - Remaining tasks still gated by declared dependencies
 
+## Replan Notes (2026-02-19, cycle 2)
+- Invocation mode: `standard`
+- Replan scope:
+  - Targeted low-confidence IMPLEMENT tasks: `TASK-05`, `TASK-06`, `TASK-07`
+  - Direct dependents reviewed for readiness impact: `TASK-04`, `TASK-08`, `TASK-09`
+- Gate outcomes:
+  - Promotion Gate: Pass (`TASK-05`, `TASK-06`, `TASK-07` promoted from 75% to 80% with E2 evidence from bounded file-scope and contradiction/duplication probes)
+  - Validation Gate: Pass (all promoted tasks retain complete VC contracts with concrete Red/Green/Refactor plans)
+  - Precursor Gate: Pass (no unresolved unknowns requiring new `INVESTIGATE`/`SPIKE` precursor tasks)
+  - Sequencing Gate: Pass (topology unchanged; stable task IDs preserved; no `/lp-sequence` run required)
+  - Escalation Gate: Pass (policy intent already decided in TASK-01/TASK-02 and no additional user decision required)
+- Readiness decision:
+  - `Ready` for `/lp-build` on Wave 3 tasks (`TASK-04`, `TASK-05`, `TASK-08`)
+  - Downstream tasks remain dependency-gated, not confidence-gated
+
 ## Risks & Mitigations
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
@@ -514,12 +564,12 @@ Chosen approach: **Option B**.
   - None: use test/lint failures as immediate gate signals in this phase.
 
 ## Acceptance Criteria (overall)
-- [ ] Briefing contract schema exists with required metadata, taxonomy, contradiction keys, and T1 operator-card requirements.
-- [ ] Lint and tests enforce metadata/status/contradiction checks deterministically.
+- [x] Briefing contract schema exists with required metadata, taxonomy, contradiction keys, and T1 operator-card requirements.
+- [x] Lint and tests enforce metadata/status/contradiction checks deterministically.
 - [ ] HEAD has one canonical outcome-contract artifact with deduplicated references.
 - [ ] `DEC-HEAD-CH-01` exists and channel contradiction is resolved in referenced HEAD docs.
 - [ ] HEAD top-of-fold in consolidated briefing is strict operator-card format and regression-safe.
-- [ ] S10 weekly prompt includes mandatory learning payload and routing tests remain green.
+- [x] S10 weekly prompt includes mandatory learning payload and routing tests remain green.
 - [ ] Checkpoint completed before any PET/BRIK rollout work begins.
 
 ## Decision Log
@@ -534,13 +584,13 @@ Chosen approach: **Option B**.
 - TASK-02: 85%, effort S (weight 1)
 - TASK-03: 80%, effort M (weight 2)
 - TASK-04: 80%, effort M (weight 2)
-- TASK-05: 75%, effort M (weight 2)
-- TASK-06: 75%, effort M (weight 2)
-- TASK-07: 75%, effort L (weight 3)
+- TASK-05: 80%, effort M (weight 2)
+- TASK-06: 80%, effort M (weight 2)
+- TASK-07: 80%, effort L (weight 3)
 - TASK-08: 80%, effort M (weight 2)
 - TASK-09: 95%, effort S (weight 1)
 - TASK-10: 70%, effort M (weight 2)
-- Overall-confidence = (85x1 + 85x1 + 80x2 + 80x2 + 75x2 + 75x2 + 75x3 + 80x2 + 95x1 + 70x2) / (1+1+2+2+2+2+3+2+1+2) = 1410 / 18 = **78%**
+- Overall-confidence = (85x1 + 85x1 + 80x2 + 80x2 + 80x2 + 80x2 + 80x3 + 80x2 + 95x1 + 70x2) / (1+1+2+2+2+2+3+2+1+2) = 1445 / 18 = **80%**
 
 ## Section Omission Rule
 None: all sections are relevant for this planning cycle.

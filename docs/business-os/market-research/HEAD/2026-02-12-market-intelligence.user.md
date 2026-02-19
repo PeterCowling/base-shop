@@ -146,16 +146,17 @@ Red lines:
 2. No unsafe child-oriented attachment design.
 3. No DTC launch without compliant withdrawal/returns/legal identity setup.
 
-## L) Proposed 90-Day Outcome Contract
+## L) Outcome Contract Hand-off (Non-Authoritative)
 
-| Outcome | Target window |
+- Canonical contract (source of truth): `docs/business-os/contracts/HEAD/outcome-contract.user.md`
+- This market-intelligence pack supplies evidence and constraints for contract maintenance; it does not redefine target/CAC contract values.
+
+| Contract input area | Evidence contribution from this pack |
 |---|---|
-| First paid orders | Day 14 threshold test |
-| Repeatable weekly sales | By Day 60 with consistency gate |
-| Return-rate control | By Day 90 with reason-coded tracking |
-| Positive contribution trend | By Day 90, pre-ads contribution guardrail |
-| Compliance readiness for full site-live | By Day 45 checklist completion |
-| Owned audience growth | By Day 90 audience baseline established |
+| Segment priority and ICP sequence | Children/caregiver priority, then sport-active and daily-comfort users |
+| Channel surface risk/opportunity | Marketplace evidence, own-site implications, and sequencing constraints |
+| Economics sensitivity | CVR/CAC/returns sensitivity and payment-mix constraints |
+| Compliance boundary conditions | MDR/GPSR/withdrawal-rights constraints and claims red lines |
 
 ## M) First-14-Day Validation Plan
 

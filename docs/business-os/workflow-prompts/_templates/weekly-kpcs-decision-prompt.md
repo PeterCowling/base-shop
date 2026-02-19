@@ -40,6 +40,7 @@ Requirements:
 3) Explain decision with evidence and uncertainty notes.
 4) Define next-week top actions with owners and pass criteria.
 5) Call out risks requiring immediate mitigation.
+6) Provide a mandatory weekly learning payload. If no experiment ran, explicitly state why and what remediation will ensure one runs next week.
 
 Output format (strict):
 A) KPI Denominator Validity — for each KPI family in scope: current denominator, minimum threshold, PASS or FAIL. If any FAIL → decision class restricted to `Continue` / `Investigate` only.
@@ -49,12 +50,15 @@ D) What changed this week (signal vs noise)
 E) Next-week action plan (max 5 items)
 F) Risk watchlist and mitigations
 G) Data quality issues to fix before next week
+H) Weekly Audit Compliance (8-item light audit, as defined below)
+I) Weekly Learning Payload (mandatory): `tested`, `learned`, `changed`, `stop-next-week`, and `no-test reason` (required only when no experiment ran)
 
 Rules:
 - Do not make decision without referencing KPI evidence.
 - If any KPI denominator is below minimum threshold, output `no-decision` for `Scale` and `Kill` — restrict to `Continue` or `Investigate` actions only.
 - Separate measured signal from assumptions.
 - Keep to execution-oriented recommendations only.
+- The learning payload is mandatory every week. If no experiment ran, include `no-test reason` and a concrete remediation action in Section I.
 
 CAP-05 Sales Pipeline Denominators (include when CAP-05 is active for this business):
 
@@ -98,6 +102,16 @@ After completing the KPCs decision, run the 8-item weekly light-audit. Append Se
 Remediation task format: `REM-<BIZ>-<YYYYMMDD>-<n>`. Record all REM task IDs in Section H.
 
 Note on A1: If A1 fails, add a measurement-unreliability note to Section A. Restrict decision class to `Continue` / `Investigate` regardless of nominal KPI values until signal is restored.
+
+Section I — Weekly Learning Payload (mandatory):
+
+After Section H, append Section I with this exact structure:
+
+- `tested`: what was tested this week (experiment IDs or "none")
+- `learned`: evidence-backed learning from the test(s), or "none" with reason
+- `changed`: what changed in plan/forecast/operations due to learning
+- `stop-next-week`: what will be stopped next week based on evidence
+- `no-test reason`: required only when `tested` is "none"; include remediation owner + due date for restoring test cadence
 
 Full checklist specification (including monthly deep-audit): `docs/business-os/startup-loop/audit-cadence-contract-v1.md`.
 

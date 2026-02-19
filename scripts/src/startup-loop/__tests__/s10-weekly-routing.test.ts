@@ -113,3 +113,31 @@ describe("TC-06-02: authority boundary (cmd-advance.md + startup-loop SKILL.md)"
     expect(s10Row).toContain("lp-weekly");
   });
 });
+
+describe("TC-08-01: weekly learning payload contract (weekly-kpcs prompt)", () => {
+  const promptPath = path.join(
+    REPO_ROOT,
+    "docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md",
+  );
+
+  it("weekly-kpcs prompt is readable", () => {
+    expect(() => fs.readFileSync(promptPath, "utf8")).not.toThrow();
+  });
+
+  it("output format still includes Sections A-H and adds mandatory Section I", () => {
+    const raw = fs.readFileSync(promptPath, "utf8");
+    expect(raw).toContain("A) KPI Denominator Validity");
+    expect(raw).toContain("H) Weekly Audit Compliance");
+    expect(raw).toContain("I) Weekly Learning Payload (mandatory)");
+  });
+
+  it("Section I requires tested/learned/changed/stop-next-week/no-test reason fields", () => {
+    const raw = fs.readFileSync(promptPath, "utf8");
+    expect(raw).toContain("Section I — Weekly Learning Payload (mandatory)");
+    expect(raw).toContain("`tested`");
+    expect(raw).toContain("`learned`");
+    expect(raw).toContain("`changed`");
+    expect(raw).toContain("`stop-next-week`");
+    expect(raw).toContain("`no-test reason`");
+  });
+});

@@ -41,7 +41,8 @@ Source: Deep Research output (2026-02-12)
 9. With small TAM, niche awareness can be saturated with modest budget, but cold paid cannot be primary growth engine unless AOV/repeat behavior improves.
 10. Multiple payment methods are required for conversion hygiene in Italy.
 11. EU/Italy distance-selling withdrawal rights (14 days) must be treated as mandatory operating baseline.
-12. Proposed 90-day base target: around 110 net orders (P50) with immediate week-1/week-2 recalibration.
+12. Forecast scenarios must be recalibrated with week-1/week-2 measured data before any scale decision.
+13. Canonical contract authority is `docs/business-os/contracts/HEAD/outcome-contract.user.md`; this forecast is decision support and does not redefine target/CAC contract values.
 
 ## B) Competitor Benchmark Table
 
@@ -90,7 +91,7 @@ Interpretation notes:
 - Return assumptions are anchored to Italian incidence benchmarks and should be re-estimated with observed week-1/week-2 data.
 - Paid cost assumptions are directional and require immediate validation.
 
-## D) Proposed Goals
+## D) Proposed Goals (Forecast Alignment)
 
 ### Primary ICP recommendation
 
@@ -101,14 +102,12 @@ Interpretation notes:
 - School-age children with movement/sport use cases.
 - Active adults with sport/heat/sweat retention use cases.
 
-### 90-day targets
+### 90-day target alignment
 
-- Commercial target: ~110 net orders in 90 days (aligned with P50 net orders).
-- Revenue target: ~EUR 3,000 net revenue in 90 days (aligned with P50 net revenue).
-- Learning target: >=6,000 total sessions by day 90, with clean tracking by channel and landing page.
-- Paid efficiency guardrail: blended CAC <=EUR 13 by day 60 and paid CAC <=EUR 25 by day 90 unless AOV increases via bundles.
-- Returns target: <=7% return rate.
-- Effort allocation target: preserve ~95/5 split (direct launch execution vs CMS migration).
+- Canonical target/guardrail source: `docs/business-os/contracts/HEAD/outcome-contract.user.md`
+- Forecast alignment: P50 scenario remains aligned to the canonical contract at time of this draft.
+- Learning target (forecast-specific): >=6,000 total sessions by day 90, with clean tracking by channel and landing page.
+- Effort allocation target (operating posture): preserve ~95/5 split (direct launch execution vs CMS migration).
 
 ### Weekly leading indicators
 

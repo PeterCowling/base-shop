@@ -53,27 +53,10 @@ Source-Forecast: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-
 | Outcome should be sales-led, not platform-cleanup-led | observed | Current operating principle (startup execution first) | High |
 | First ICP should be caregiver-led before broader expansion | inferred | Category patterns and HEAD research evidence | Medium |
 
-## E) Draft Outcome Contract
+## E) Outcome Contract Reference
 
-- Outcome statement: Achieve first reliable direct sales for HEAD in Italy, then stabilize weekly sales with controlled CAC and returns.
-- Baseline:
-  - paid orders: 0
-  - net revenue: EUR 0
-  - blended CAC: not measured
-  - return rate: not measured
-- Target (90 days):
-  - net orders: 110 (P50 planning target)
-  - net revenue: EUR 3,000 (P50 planning target)
-  - blended CAC: <=EUR 13 by day 60-90
-  - return rate: <=7%
-- By: 2026-05-13
-- Owner: Pete
-- Leading indicators:
-  - sessions by channel
-  - CVR by channel
-  - paid CAC and blended CAC
-  - payment success rate
-  - return reason distribution
+- Canonical contract (source of truth): `docs/business-os/contracts/HEAD/outcome-contract.user.md`
+- Intake role: provide assumptions, constraints, and missing-data inputs to the canonical contract; this packet does not redefine target/CAC contract values.
 - Decision link: `DEC-HEAD-01` (scale vs hold paid expansion)
 
 ## F) Missing-Data Checklist (to progress S1/S3)

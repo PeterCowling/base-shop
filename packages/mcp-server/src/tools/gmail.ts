@@ -10,6 +10,9 @@
  * - gmail_reconcile_in_progress: Resolve stale in-progress items via policy
  */
 
+import * as fs from "node:fs";
+import * as nodePath from "node:path";
+
 import type { gmail_v1 } from "googleapis";
 import { z } from "zod";
 
@@ -119,6 +122,74 @@ export const REQUIRED_LABELS = [
 
 const PROCESSING_TIMEOUT_MS = 30 * 60 * 1000;
 const processingLocks = new Map<string, number>();
+
+// =============================================================================
+// Audit log
+// =============================================================================
+
+/**
+ * An entry in the append-only email processing audit log.
+ * Written as JSON-lines (one JSON object per line) to data/email-audit-log.jsonl.
+ */
+export interface AuditEntry {
+  ts: string;           // ISO 8601 UTC timestamp
+  messageId: string;
+  action: "lock-acquired" | "outcome";
+  actor: string;
+  result?: string;      // only present for action === "outcome"
+}
+
+/**
+ * Resolves the default audit log path.
+ * Priority:
+ *   1. AUDIT_LOG_PATH env var (used in tests to redirect to a temp directory)
+ *   2. mcp-server package root (cwd = packages/mcp-server) → data/email-audit-log.jsonl
+ *   3. monorepo root (cwd = repo root) → packages/mcp-server/data/email-audit-log.jsonl
+ */
+function resolveDefaultAuditLogPath(): string {
+  if (process.env.AUDIT_LOG_PATH) {
+    return process.env.AUDIT_LOG_PATH;
+  }
+  const fromMonorepoRoot = nodePath.join(
+    process.cwd(),
+    "packages",
+    "mcp-server",
+    "data",
+    "email-audit-log.jsonl"
+  );
+  const fromPackageRoot = nodePath.join(
+    process.cwd(),
+    "data",
+    "email-audit-log.jsonl"
+  );
+  // Prefer the candidate whose parent data/ dir exists, else fall back to monorepo-root path.
+  if (fs.existsSync(nodePath.dirname(fromPackageRoot))) {
+    return fromPackageRoot;
+  }
+  return fromMonorepoRoot;
+}
+
+/**
+ * Appends a single JSON-lines audit entry to the audit log.
+ *
+ * - Creates the data/ directory if it does not exist.
+ * - Never throws — audit failure must not break tool flow.
+ *
+ * @param entry   The audit entry to write.
+ * @param logPath Override for the log file path (used in tests).
+ */
+export function appendAuditEntry(entry: AuditEntry, logPath?: string): void {
+  const filePath = logPath ?? resolveDefaultAuditLogPath();
+  try {
+    fs.mkdirSync(nodePath.dirname(filePath), { recursive: true });
+    fs.appendFileSync(filePath, JSON.stringify(entry) + "\n");
+  } catch (err) {
+    // Audit failure must never break tool flow — log to stderr and continue.
+    process.stderr.write(
+      `[audit-log] Failed to write audit entry: ${String(err)}\n`
+    );
+  }
+}
 
 const GARBAGE_FROM_PATTERNS = [
   "promotion-it@amazon.it",
@@ -2082,6 +2153,7 @@ async function handleGetEmail(
     },
   });
   processingLocks.set(emailId, Date.now());
+  appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-acquired", actor });
 
   const headers = (msg.payload?.headers || []) as EmailHeader[];
   const from = parseEmailAddress(getHeader(headers, "From"));
@@ -2376,6 +2448,7 @@ async function handleMarkProcessed(
     },
   });
   processingLocks.delete(emailId);
+  appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "outcome", actor, result: action });
 
   const workflow = isPrepaymentAction(action)
     ? {

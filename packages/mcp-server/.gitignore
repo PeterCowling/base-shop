@@ -1,1 +1,3 @@
 bookingcom-scout*.mjs
+data/locks/
+data/*.jsonl

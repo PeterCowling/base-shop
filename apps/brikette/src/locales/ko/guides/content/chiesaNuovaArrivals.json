@@ -214,7 +214,7 @@
     "보도에서 비알레 파지테아를 따라 약 120~140미터 걷기.",
     "호스텔 브리케트 표지판을 찾고 리셉션까지 짧은 계단 올라가기."
   ],
-  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d755.2447449721735!2d14.479394!3d40.6295534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x133b976673927785%3A0x5187a720325ee588!2sBar%20Internazionale%2C%20Positano!3m2!1d40.629495!2d14.482264!4m5!1s0x133b97669dd0003b%3A0xf11f22a59b1b00da!2sHostel%20Brikette%2C%20Positano!3m2!1d40.629634!2d14.480818!5e0!3m2!1sen!2sit!4v1700000000000",
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed/v1/directions?origin=Bar+Internazionale%2C+Positano%2C+Italy&destination=Hostel+Brikette%2C+Positano%2C+Italy&mode=walking",
   "kneesList": [
     "경로는 긴 계단을 피합니다 — 대부분 보도와 짧은 입구 계단입니다.",
     "무거운 짐을 들고 있는 경우 키에사 누오바 / 바 인테르나치오날레에서 픽업/드롭오프를 위한 %LINK:porterServices|포터 서비스%를 고려하세요.",

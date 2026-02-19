@@ -75,8 +75,10 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
-- Build Gate: Pass (task-level)
-  - Build-eligible now: TASK-13 (`INVESTIGATE`, >=60 confidence, unblocked).
+- Build Gate: Partial (task-level)
+  - TASK-13 executed and completed in this build cycle.
+  - Build-eligible now: none (`TASK-03`/`TASK-04` remain below `IMPLEMENT` confidence threshold; downstream waves remain blocked).
+  - Next action: run `/lp-replan` before resuming `/lp-build`.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -91,7 +93,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-01 | IMPLEMENT | Add server-side auth/authz guard for reception MCP routes | 85% | M | Complete (2026-02-19) | - | TASK-03, TASK-04, TASK-05, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-02 | INVESTIGATE | Resolve production usage attribution for queue vs reception draft paths | 85% | S | Complete (2026-02-19) | - | TASK-03 |
 | TASK-12 | INVESTIGATE | Finalize telemetry event contract + daily rollup sink before instrumentation | 85% | S | Complete (2026-02-19) | TASK-01, TASK-02 | TASK-03 |
-| TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Pending | TASK-01 | TASK-04 |
+| TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Complete (2026-02-19) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 75% | M | Pending | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 75% | M | Pending | TASK-01, TASK-13 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
@@ -266,7 +268,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/data/email-templates.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04
@@ -291,6 +293,13 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Rollout / rollback:** `None: investigation-only task`
 - **Documentation impact:** add matrix and batch ordering to `replan-notes.md`.
 - **Notes / references:** fact-find V2-05, D2.
+- **Build evidence:** Investigation completed (2026-02-19):
+  - Full 53-template scope matrix + canonical targets + TASK-04 batch checks documented in `docs/plans/email-system-design-gaps-v2/replan-notes.md` (`TASK-13 Output (Build, 2026-02-19)`).
+  - Validation PASS:
+    - `node -e 'const fs=require("fs");const a=JSON.parse(fs.readFileSync("packages/mcp-server/data/email-templates.json","utf8"));const arr=Array.isArray(a)?a:(a.templates||[]);const no=arr.filter(t=>!/https?:\\/\\//i.test(JSON.stringify(t)));console.log(JSON.stringify({total:arr.length,noUrl:no.length}));'`
+    - Result: `{"total":53,"noUrl":24}`
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts --maxWorkers=2`
+    - Result: `2/2` suites passed, `27/27` tests passed.
 
 ### TASK-03: Add production telemetry for fallback, drafted outcomes, and path usage
 - **Type:** IMPLEMENT
@@ -756,6 +765,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: D3 locked - reviewed-ledger-first learning architecture.
 - 2026-02-19: `/lp-plan` mode selected as `plan-only`; no automatic `/lp-build` handoff.
 - 2026-02-19: `/lp-replan` (standard mode) added precursor chain TASK-12/TASK-13/TASK-14/TASK-15; stable task IDs preserved and execution resequenced.
+- 2026-02-19: `/lp-build` completed TASK-13 and recorded template scope matrix evidence; no further build-eligible tasks until `/lp-replan`.
 
 ## Overall-confidence Calculation
 

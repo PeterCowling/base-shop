@@ -4,7 +4,7 @@ Status: Draft
 Domain: Platform
 Workstream: Mixed
 Last-reviewed: 2026-02-19
-Relates-to: docs/plans/email-draft-quality-upgrade/plan.md
+Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-19
 Last-updated: 2026-02-19
 Build-Progress: Not started
@@ -26,13 +26,13 @@ Card-ID: none
 ## Context
 
 v1 (`docs/plans/email-draft-quality-upgrade/plan.md`) delivered all 13 tasks including
-`draft_refine` (TASK-11). However, the `draft_refine` implementation used `@anthropic-ai/sdk`
-to make a direct Anthropic API call from inside the MCP tool handler. This is the wrong design.
+`draft_refine` (TASK-11). However, the TASK-11 implementation used `@anthropic-ai/sdk`
+to make a direct Anthropic API call from inside the MCP tool handler. This violates the
+TASK-00 decision: *"implementation via AI agent CLI"*.
 
-The TASK-00 decision specified: *"implementation via AI agent CLI"*. The intent is that
-**Claude (running in the user's CLI session) performs the refinement itself**, then calls
-`draft_refine` to commit the result with attribution metadata. The tool is an attestation
-and quality-gate layer — not a second LLM call.
+The correct design is that **Claude (running in the user's CLI session) performs the
+refinement itself**, then calls `draft_refine` to submit and attest the result. The tool
+is a deterministic attestation and quality-gate layer — no API calls, no SDK.
 
 ## Correct Design
 
@@ -42,54 +42,60 @@ v1 (wrong):
     → MCP: draft_generate
     → MCP: draft_quality_check
     → MCP: draft_refine
-         └── [hidden API call to Anthropic inside the tool]
-         └── returns refined draft
+         └── [hidden Anthropic SDK call inside tool handler]
 
 v2 (correct):
   /ops-inbox → Claude CLI
     → MCP: draft_generate          (deterministic draft)
     → MCP: draft_quality_check     (identify gaps)
-    → [Claude rewrites the draft, filling coverage gaps]
-    → MCP: draft_refine            (Claude submits its refinement;
+    → [Claude rewrites the draft, filling coverage gaps — no API call]
+    → MCP: draft_refine            (Claude submits refinedBodyPlain;
                                     tool validates quality + attests)
-    → { refinement_applied: true, refinement_source: 'claude-cli' }
+    → { refinement_applied: true, refinement_source: 'claude-cli',
+        quality: { passed, failed_checks, warnings } }
 ```
 
-The refinement intelligence lives entirely in the CLI session. `draft_refine` becomes a
-deterministic tool: accept original + refined drafts from Claude, run `draft_quality_check`
-on the refined content, return attribution metadata.
+## Input Contract Migration
+
+`draft_refine` currently accepts `draft: { bodyPlain, bodyHtml }`. v2 changes this to
+`originalDraft + refinedBodyPlain`. This is a **clean break** — zero production callers
+exist. The `ops-inbox` skill was never updated to call `draft_refine` (TASK-11 created
+the tool only; skill integration was deferred). TASK-01 and TASK-02 ship together, so
+the new schema is live before any caller exists.
+
+No dual-schema window or versioning shim is needed.
 
 ## Goals
 
-- Correct `draft_refine` to be a deterministic attestation tool with no internal API calls.
+- Correct `draft_refine` to a deterministic attestation tool with no internal API calls.
+- Preserve the `refinement_source: 'claude-cli' | 'codex' | 'none'` tri-state contract
+  from `decisions/v1-1-scope-boundary-decision.md`.
+- Define explicit quality-failure semantics: soft-fail with transparency.
+- Eliminate plain/HTML body divergence by deriving `bodyHtml` from `refinedBodyPlain`.
 - Remove `@anthropic-ai/sdk` dependency from `packages/mcp-server`.
-- Update `ops-inbox` skill to show Claude as the refinement intelligence.
-- Keep `refinement_applied` / `refinement_source` metadata contract intact.
+- Add `ops-inbox` skill step where Claude refines then commits via `draft_refine`.
 
 ## Non-goals
 
-- Changing any other tool (draft_generate, draft_quality_check, draft_interpret).
-- Altering the evaluation harness or testing-policy.md beyond the draft-refine command update.
-- Redesigning the ops-inbox workflow beyond the refinement step.
+- Changing `draft_generate`, `draft_quality_check`, or `draft_interpret`.
+- Altering the evaluation harness or regression fixtures.
+- Redesigning the broader ops-inbox workflow beyond the refinement step.
 
 ## Constraints & Assumptions
 
-- `refinement_source: 'claude-cli'` remains the correct label — it now accurately describes
-  the source (Claude running in the CLI, not a hidden SDK call).
-- The `draft_quality_check` call inside `draft_refine` uses the already-tested handler
-  directly (no new network calls).
-- `ops-inbox` skill invokes `draft_refine` after Claude has already produced the refined text.
-
-## Proposed Approach
-
-Rework `draft-refine.ts` in-place: change input schema (add `refinedBodyPlain` +
-`refinedBodyHtml`), remove SDK, run `draft_quality_check` internally, return attestation
-result. Update skill and tests. Remove SDK dependency.
+- `refinement_source: 'codex'` is preserved in the type even though no Codex path is
+  implemented; this keeps the enum open for future CLI-based LLMs.
+- On quality failure: tool returns refined draft with `refinement_applied: true` and
+  `quality.passed: false`. The caller (Claude in the CLI session) decides whether to
+  retry, fall back to the original, or escalate. Hard-failing loses information;
+  `refinement_applied: false` would be factually wrong.
+- `bodyHtml` is always derived from `refinedBodyPlain` inside the tool (wrap in standard
+  HTML structure). No `refinedBodyHtml` input accepted — eliminates plain/HTML divergence.
 
 ## Plan Gates
 
-- Foundation Gate: **Pass** — v1 baseline is complete; scope is narrow and bounded.
-- Build Gate: **Pass** — all surfaces are known, no open scouts, confidence ≥ 80%.
+- Foundation Gate: **Pass** — v1 baseline complete; scope is bounded to 3 S-effort tasks.
+- Build Gate: **Pass** — all surfaces known, no scouts needed, confidence ≥ 80%.
 
 ## Task Summary
 
@@ -97,7 +103,7 @@ result. Update skill and tests. Remove SDK dependency.
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Rework `draft_refine` tool: attestation pattern, remove SDK, new input schema | 90% | S | Pending | - | TASK-02, TASK-03 |
 | TASK-02 | IMPLEMENT | Update `ops-inbox` skill: Claude refines → calls `draft_refine` to commit | 90% | S | Pending | TASK-01 | - |
-| TASK-03 | IMPLEMENT | Rewrite `draft-refine.test.ts`: remove SDK mock, test new schema | 90% | S | Pending | TASK-01 | - |
+| TASK-03 | IMPLEMENT | Rewrite `draft-refine.test.ts`: remove SDK mock, test new schema and failure paths | 90% | S | Pending | TASK-01 | - |
 
 ## Parallelism Guide
 
@@ -122,43 +128,65 @@ result. Update skill and tests. Remove SDK dependency.
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03
 - **Confidence:** 90%
-  - Implementation: 90% — input schema change is bounded; `handleDraftQualityTool` is importable directly.
-  - Approach: 90% — attestation pattern is simpler than the current SDK pattern; no unknowns.
-  - Impact: 95% — removes hidden API call and aligns with operator intent.
+  - Implementation: 90% — input schema change is bounded; `handleDraftQualityTool` is importable directly; HTML derivation is a simple wrapper.
+  - Approach: 90% — attestation pattern is simpler than the SDK pattern; no unknowns.
+  - Impact: 95% — removes hidden API call, eliminates plain/HTML divergence, aligns with operator intent.
+
+### Input schema (new)
+
+```typescript
+{
+  actionPlan: EmailActionPlan,
+  originalDraft: { bodyPlain: string; bodyHtml: string },
+  refinedBodyPlain: string,   // Claude's improved plain text — HTML derived internally
+  context?: string,           // optional: why/what was refined
+}
+```
+
+### Output schema (surface preserved; `codex` tri-state restored)
+
+```typescript
+{
+  draft: { bodyPlain: string; bodyHtml: string },
+  refinement_applied: boolean,                    // true if Claude submitted refinedBodyPlain
+  refinement_source: 'claude-cli' | 'codex' | 'none',
+  quality: { passed: boolean; failed_checks: string[]; warnings: string[] },
+}
+```
+
+### Quality failure semantics
+
+- `refinement_applied: true` always when `refinedBodyPlain` is provided (Claude did produce it).
+- `quality` reflects the `draft_quality_check` result on the refined content, regardless of pass/fail.
+- Caller inspects `quality.passed` and `quality.failed_checks` to decide next action.
+
+### HTML derivation
+
+Tool wraps `refinedBodyPlain` in a minimal HTML structure (`<!DOCTYPE html>...`), converting
+double-newlines to `<p>` tags. This matches the structure used in existing quality-check
+test fixtures. No `refinedBodyHtml` input is accepted.
+
 - **Acceptance:**
-  - `draft_refine` accepts `originalDraft` + `refinedBodyPlain` + optional `refinedBodyHtml`.
-  - Tool calls `handleDraftQualityTool` internally on the refined content.
-  - Returns `{ draft, refinement_applied: true, refinement_source: 'claude-cli', quality }`.
+  - `draft_refine` accepts `originalDraft` + `refinedBodyPlain`; no `draft` field in schema.
   - `@anthropic-ai/sdk` removed from `packages/mcp-server/package.json` dependencies.
   - No Anthropic SDK import in `draft-refine.ts`.
-- **New input schema:**
-  ```typescript
-  {
-    actionPlan: EmailActionPlan,
-    originalDraft: { bodyPlain: string; bodyHtml: string },
-    refinedBodyPlain: string,       // Claude's improved plain text
-    refinedBodyHtml?: string,       // optional; falls back to originalDraft.bodyHtml
-  }
-  ```
-- **Output schema (unchanged surface, no breaking change to downstream):**
-  ```typescript
-  {
-    draft: { bodyPlain: string; bodyHtml: string },
-    refinement_applied: boolean,
-    refinement_source: 'claude-cli' | 'none',
-    quality: { passed: boolean; failed_checks: string[]; warnings: string[] },
-  }
-  ```
+  - `refinement_source` type is `'claude-cli' | 'codex' | 'none'` (tri-state preserved).
+  - Quality failure returns refined draft with `refinement_applied: true`, `quality.passed: false` — no exception thrown.
+  - `bodyHtml` in output is always derived from `refinedBodyPlain`, never from `originalDraft.bodyHtml`.
+
 - **Validation contract (TC-01):**
-  - TC-01-01: valid `refinedBodyPlain` that passes quality check → `refinement_applied: true`, `refinement_source: 'claude-cli'`, `quality.passed: true`.
-  - TC-01-02: `refinedBodyPlain` missing (Zod parse fail) → `errorResult` returned.
-  - TC-01-03: no `@anthropic-ai/sdk` import present in `draft-refine.ts` (static assertion).
-  - TC-01-04: governed runner passes — `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage`.
+  - TC-01-01: valid `refinedBodyPlain` that passes quality check → `refinement_applied: true`, `refinement_source: 'claude-cli'`, `quality.passed: true`, `draft.bodyHtml` contains `<!DOCTYPE html>`.
+  - TC-01-02: valid `refinedBodyPlain` that fails quality check (e.g. contains "availability confirmed") → `refinement_applied: true`, `quality.passed: false`, named `failed_checks`, no exception.
+  - TC-01-03: missing `refinedBodyPlain` (Zod parse fail) → `errorResult` returned.
+  - TC-01-04: `grep -c "@anthropic-ai/sdk" packages/mcp-server/src/tools/draft-refine.ts` returns 0.
+  - TC-01-05: `pnpm --filter @acme/mcp-server typecheck` passes; `pnpm --filter @acme/mcp-server lint` passes.
+  - TC-01-06: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage` exits 0.
+
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:**
-  - Rollout: ship reworked tool; ops-inbox skill update lands in TASK-02.
+  - Rollout: TASK-01 and TASK-02 treated as one logical release (zero callers until TASK-02 lands).
   - Rollback: revert `draft-refine.ts` and `package.json`; restore SDK dep.
-- **Documentation impact:** None beyond `testing-policy.md` (command unchanged).
+- **Documentation impact:** `testing-policy.md` governed runner command unchanged.
 
 ---
 
@@ -174,26 +202,31 @@ result. Update skill and tests. Remove SDK dependency.
 - **Blocks:** -
 - **Confidence:** 90%
   - Implementation: 95% — bounded to skill doc only; no code change.
-  - Approach: 90% — the new flow is well-defined; prompt wording is the only variable.
-  - Impact: 90% — aligns operator behaviour with the correct design.
+  - Approach: 90% — flow is well-defined; prompt wording is the only variable.
+  - Impact: 90% — activates the corrected tool for the first time; first real caller.
+
 - **Acceptance:**
-  - Skill describes a step where Claude (not a tool) rewrites the draft to address coverage gaps.
-  - Skill shows `draft_refine` called after Claude's rewrite, with `refinedBodyPlain` as Claude's output.
-  - Skill explains `refinement_applied` / `refinement_source` metadata for audit purposes.
-  - Hard rules (no invented policy facts, no cancellation/prepayment edits) carried forward from v1 TASK-02.
+  - Skill doc shows a step where **Claude** (not a tool) rewrites the draft to address coverage gaps identified by `draft_quality_check`.
+  - Skill shows `draft_refine` called with `originalDraft` + `refinedBodyPlain` (Claude's output).
+  - Skill explains `quality.passed` / `failed_checks` response: if `false`, Claude retries or escalates — does not silently accept a failed refinement.
+  - Hard rules from v1 TASK-02 carried forward: no invented policy facts, cancellation/prepayment text uneditable in refinement step.
+  - Skill does NOT describe `refinement_source: 'codex'` as an active path (reserved, not implemented).
+
 - **Validation contract (TC-02):**
-  - TC-02-01: skill doc contains `draft_refine` call with `refinedBodyPlain` parameter.
-  - TC-02-02: skill doc explicitly states Claude performs the refinement (not an internal API call).
-  - TC-02-03: hard-rule preservation — cancellation/prepayment text remains uneditable in refinement step.
+  - TC-02-01: skill doc contains `draft_refine` with `refinedBodyPlain` in the call shape.
+  - TC-02-02: skill doc explicitly names Claude as the actor performing the rewrite.
+  - TC-02-03: skill doc includes explicit handling instruction for `quality.passed: false`.
+  - TC-02-04: hard-rule preservation — cancellation/prepayment text remains uneditable in the refinement step.
+
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:**
-  - Rollout: publish updated skill.
-  - Rollback: revert skill to v1 TASK-02 version.
+  - Rollout: publish updated skill; this is the first moment `draft_refine` has a live caller.
+  - Rollback: revert skill to v1 TASK-02 version (gap-patch loop, no `draft_refine` call).
 - **Documentation impact:** Updates operator runbook with corrected refinement flow.
 
 ---
 
-### TASK-03: Rewrite `draft-refine.test.ts` — remove SDK mock, test new input schema
+### TASK-03: Rewrite `draft-refine.test.ts` — remove SDK mock, test new schema and failure paths
 
 - **Type:** IMPLEMENT
 - **Execution-Skill:** lp-build
@@ -204,17 +237,24 @@ result. Update skill and tests. Remove SDK dependency.
 - **Depends on:** TASK-01
 - **Blocks:** -
 - **Confidence:** 90%
-  - Implementation: 95% — test patterns are established; SDK mock removal simplifies the file.
-  - Approach: 90% — no external mocks needed; tool is now fully deterministic.
-  - Impact: 85% — tests become more reliable without mock fragility (`__esModule: true` issue resolved by design).
+  - Implementation: 95% — SDK mock removal simplifies the file; tool is now fully deterministic; no external mocks needed.
+  - Approach: 90% — test patterns established; `__esModule: true` hack resolved by design.
+  - Impact: 85% — tests become more reliable and cover the previously-missing quality-failure path.
+
 - **Acceptance:**
-  - No `jest.mock("@anthropic-ai/sdk")` or `MockAnthropic` in the test file.
-  - TC-01-01..04 from TASK-01 implemented as jest tests.
-  - Full mcp-server suite (42 suites) passes with zero regressions.
+  - No `jest.mock("@anthropic-ai/sdk")`, `MockAnthropic`, or `__esModule` in the test file.
+  - TC-01-01..TC-01-06 implemented as jest tests.
+  - Quality failure path (TC-01-02) explicitly tested with an adversarial `refinedBodyPlain`.
+  - Full mcp-server suite passes: `pnpm -w run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --no-coverage`.
+  - `pnpm --filter @acme/mcp-server typecheck` passes.
+
 - **Validation contract (TC-03):**
-  - TC-03-01: `grep "@anthropic-ai/sdk" draft-refine.test.ts` returns no matches.
-  - TC-03-02: all TC-01-01..04 assertions pass.
-  - TC-03-03: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage` exits 0.
+  - TC-03-01: `grep -c "@anthropic-ai/sdk" packages/mcp-server/src/__tests__/draft-refine.test.ts` returns 0.
+  - TC-03-02: all TC-01-01..TC-01-06 assertions pass.
+  - TC-03-03: quality-failure fixture (`refinedBodyPlain` containing "availability confirmed") produces `quality.passed: false` with named `failed_checks`.
+  - TC-03-04: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage` exits 0.
+  - TC-03-05: `pnpm --filter @acme/mcp-server typecheck` exits 0.
+
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:** Test-only change; rollback by reverting test file.
 - **Documentation impact:** None.
@@ -223,16 +263,21 @@ result. Update skill and tests. Remove SDK dependency.
 
 ## Risks & Mitigations
 
-- `ops-inbox` skill wording could be ambiguous about who performs the refinement.
-  - Mitigation: TASK-02 explicitly names Claude as the actor; `draft_refine` is the commit step.
-- Removing `@anthropic-ai/sdk` may affect other packages if they reference mcp-server types.
-  - Mitigation: SDK was only used in `draft-refine.ts`; no other mcp-server file imports it.
+- `ops-inbox` skill wording could be ambiguous about whether Claude or a tool performs refinement.
+  - Mitigation: TASK-02 acceptance explicitly requires Claude named as actor; tool named as commit step.
+- `codex` in the enum but no implementation may confuse future builders.
+  - Mitigation: TASK-02 acceptance explicitly notes `codex` is reserved, not active.
+- HTML derivation from plain text may differ visually from v1 HTML output.
+  - Mitigation: `draft_quality_check` checks `bodyHtml` only for emptiness and signature; visual
+    divergence is inconsequential for the quality gate. Operator sees plain text in Gmail compose.
 
 ## Decision Log
 
 - 2026-02-19: v2 plan created. v1 TASK-11 shipped the wrong pattern (direct SDK call inside tool).
   Correct design: Claude (CLI) is the refinement intelligence; `draft_refine` is a deterministic
-  attestation + quality-gate tool. Referenced from v1 plan.
+  attestation + quality-gate tool. Clean break on input schema — zero existing callers.
+  Tri-state `refinement_source` preserved per `decisions/v1-1-scope-boundary-decision.md`.
+  Quality failure: soft-fail with transparency (caller decides).
 
 ## Overall-confidence Calculation
 

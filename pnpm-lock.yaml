@@ -2055,6 +2055,9 @@ importers:
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:../zod-utils
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
       pino:
         specifier: ^9.9.0
         version: 9.9.0

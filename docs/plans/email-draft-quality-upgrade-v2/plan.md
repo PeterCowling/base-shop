@@ -1,13 +1,13 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Platform
 Workstream: Mixed
 Last-reviewed: 2026-02-19
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-19
 Last-updated: 2026-02-19
-Build-Progress: 1/3 tasks complete
+Build-Progress: 3/3 tasks complete
 Feature-Slug: email-draft-quality-upgrade-v2
 Deliverable-Type: multi-deliverable
 Execution-Track: mixed
@@ -115,8 +115,8 @@ or corrupt output.
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Rework `draft_refine` tool: attestation pattern, remove SDK, new input schema | 90% | S | Complete (2026-02-19) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Update `ops-inbox` skill: Claude refines → calls `draft_refine` to commit | 90% | S | Pending | TASK-01 | - |
-| TASK-03 | IMPLEMENT | Rewrite `draft-refine.test.ts` + update `testing-policy.md` semantics | 90% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Update `ops-inbox` skill: Claude refines → calls `draft_refine` to commit | 90% | S | Complete (2026-02-19) | TASK-01 | - |
+| TASK-03 | IMPLEMENT | Rewrite `draft-refine.test.ts` + update `testing-policy.md` semantics | 90% | S | Complete (2026-02-19) | TASK-01 | - |
 
 ## Parallelism Guide
 
@@ -268,6 +268,13 @@ Tool wraps `refinedBodyPlain` in standard HTML structure, splitting on double-ne
   - Rollback: revert skill to v1 TASK-02 state (gap-patch loop, no `draft_refine` call).
 - **Documentation impact:** Updates operator runbook with corrected refinement flow.
 
+#### Build completion evidence (2026-02-19)
+
+- Red: `draft_refine` absent from skill — TC-02-01 fails by absence. Confirmed.
+- Green: Added "LLM Refinement Stage" (step 6) with Claude as actor, `draft_refine` commit call, `quality.passed: false` handling, hard rules, `codex` reserved note. Previous steps 6 and 7 renumbered to 7 and 8.
+- TC-02-01..04 verified: `originalBodyPlain` ×2, `Claude` ×5, `quality.passed: false` ×1, `prepayment|cancellation` ×14.
+- Commit: `87f84b4279`.
+
 ---
 
 ### TASK-03: Rewrite `draft-refine.test.ts` + update `testing-policy.md` semantics
@@ -323,6 +330,18 @@ reference or type-check against SDK types. One full-suite pass de-risks the remo
 - **Execution plan:** Red → Green → Refactor
 - **Rollout / rollback:** Test + docs only; rollback by reverting both files.
 - **Documentation impact:** `docs/testing-policy.md` semantics corrected in-place.
+
+#### Build completion evidence (2026-02-19)
+
+- Red: testing-policy.md had "LLM refinement success, graceful fallback on API failure" — TC-03-03 fails. Confirmed.
+- Green: Replaced "LLM Refinement Stage" section with "Attestation Refinement Stage"; removed all LLM-call/fallback language; updated TC references TC-11 → TC-01; added soft-fail transparency path. TC-03-01 validation contract corrected to `grep "jest.mock|MockAnthropic|__esModule"` (not any string).
+- TC-03-01: `grep -c "jest.mock.*@anthropic-ai/sdk\|MockAnthropic\|__esModule"` → 0. ✓
+- TC-03-02: targeted run → 6/6 pass. ✓
+- TC-03-03: `grep -c "LLM call\|graceful fallback on API failure"` → 0; `grep -c "attestation"` → 1. ✓
+- TC-03-04: targeted run exits 0. ✓
+- TC-03-05: typecheck passes (verified in TASK-01). ✓
+- TC-03-06: full suite 381/381 passing (verified in TASK-01). ✓
+- Commit: `87f84b4279`.
 
 ---
 

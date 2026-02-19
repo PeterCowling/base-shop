@@ -1,3 +1,4 @@
+export {};
 // Mock implementations will be configured per-test via the variables below.
 let mockRenderTemplate: jest.Mock;
 let mockSanitizeHtml: jest.Mock;

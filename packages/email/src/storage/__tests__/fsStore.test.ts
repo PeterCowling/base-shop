@@ -44,7 +44,7 @@ describe("fsCampaignStore error handling", () => {
     } as Dirent);
     jest
       .spyOn(fs, "readdir")
-      .mockResolvedValue([dirent("shopDir", true), dirent("file.txt", false)]);
+      .mockResolvedValue([dirent("shopDir", true), dirent("file.txt", false)] as any);
     await expect(fsCampaignStore.listShops()).resolves.toEqual(["shopDir"]);
     await fs.rm(dir, { recursive: true, force: true });
     await fs.rm(file, { force: true });

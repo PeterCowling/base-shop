@@ -1,3 +1,4 @@
+export {};
 let mockSendgridSend: jest.Mock;
 let mockResendSend: jest.Mock;
 let mockSendMail: jest.Mock;
@@ -94,8 +95,8 @@ describe("send helpers", () => {
       const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
       const { loadProvider } = await import("../send");
-      const first = await loadProvider("unknown");
-      const second = await loadProvider("unknown");
+      const first = await loadProvider("unknown" as any);
+      const second = await loadProvider("unknown" as any);
       expect(first).toBeUndefined();
       expect(second).toBeUndefined();
       const { SendgridProvider } = await import("../providers/sendgrid");
@@ -124,7 +125,7 @@ describe("send helpers", () => {
           return 0 as any;
         });
 
-      await sendWithRetry(provider, {
+      await sendWithRetry(provider as any, {
         to: "a",
         subject: "b",
         html: "<p>x</p>",
@@ -154,7 +155,7 @@ describe("send helpers", () => {
           return 0 as any;
         });
 
-      await sendWithRetry(provider, {
+      await sendWithRetry(provider as any, {
         to: "a",
         subject: "b",
         html: "<p>x</p>",
@@ -181,7 +182,7 @@ describe("send helpers", () => {
         });
 
       await expect(
-        sendWithRetry(provider, {
+        sendWithRetry(provider as any, {
           to: "a",
           subject: "b",
           html: "<p>x</p>",
@@ -207,7 +208,7 @@ describe("send helpers", () => {
 
       await expect(
         sendWithRetry(
-          provider,
+          provider as any,
           {
             to: "a",
             subject: "b",

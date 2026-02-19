@@ -1,17 +1,36 @@
 #!/usr/bin/env node
-// Enforce repo policy: any `next dev` / `next build` invocation in:
+// Enforce repo policy for `next dev` / `next build` invocations in:
 // - apps/<app>/package.json (scripts)
 // - packages/<pkg>/package.json (scripts)
 // - packages/<group>/<pkg>/package.json (scripts)
 // - .github/workflows/*.yml / .github/workflows/*.yaml (run steps)
-// must include the `--webpack` flag.
 //
-// Why: Next 16+ defaults to Turbopack; this repo intentionally opts out to
-// preserve existing custom Webpack behavior.
+// Policy is fail-closed by default (`--webpack` required), with explicit
+// app/command exceptions via matrix rules.
 
 import { spawnSync } from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+
+const RULE_REQUIRE_WEBPACK = "require-webpack";
+const RULE_ALLOW_ANY = "allow-any";
+
+const DEFAULT_COMMAND_POLICY = Object.freeze({
+  dev: RULE_REQUIRE_WEBPACK,
+  build: RULE_REQUIRE_WEBPACK,
+});
+
+const APP_COMMAND_POLICY_MATRIX = Object.freeze({
+  brikette: Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_REQUIRE_WEBPACK,
+  }),
+});
+
+const WORKFLOW_APP_MATRIX = Object.freeze({
+  "brikette.yml": "brikette",
+  "brikette.yaml": "brikette",
+});
 
 const USAGE = `Usage:
   node scripts/check-next-webpack-flag.mjs [options] [--paths <p1> <p2> ...]
@@ -133,9 +152,13 @@ function parseArgs(argv) {
   return out;
 }
 
+function normalizeRelPath(p) {
+  return p.replaceAll("\\", "/");
+}
+
 function isRelevantPath(p) {
   if (!p) return false;
-  const norm = p.replaceAll("\\", "/");
+  const norm = normalizeRelPath(p);
   if (norm.startsWith("apps/") || norm.startsWith("packages/")) {
     if (norm.endsWith("/package.json")) return true;
   }
@@ -156,7 +179,36 @@ function firstSeparatorIndex(s) {
   return best;
 }
 
-function findMissingWebpackSegments(command) {
+function hasWebpackFlag(segment) {
+  return /(^|\s)--webpack(\s|$)/.test(segment);
+}
+
+function resolveAppPolicy(relPath) {
+  const norm = normalizeRelPath(relPath);
+
+  const appPackage = norm.match(/^apps\/([^/]+)\/package\.json$/);
+  if (appPackage) {
+    const appId = appPackage[1];
+    return APP_COMMAND_POLICY_MATRIX[appId] || DEFAULT_COMMAND_POLICY;
+  }
+
+  const workflow = norm.match(/^\.github\/workflows\/([^/]+)$/);
+  if (workflow) {
+    const workflowName = workflow[1];
+    const appId = WORKFLOW_APP_MATRIX[workflowName];
+    if (appId) return APP_COMMAND_POLICY_MATRIX[appId] || DEFAULT_COMMAND_POLICY;
+  }
+
+  return DEFAULT_COMMAND_POLICY;
+}
+
+function shouldRequireWebpack({ relPath, kind }) {
+  const policy = resolveAppPolicy(relPath);
+  const rule = policy[kind] || DEFAULT_COMMAND_POLICY[kind] || RULE_REQUIRE_WEBPACK;
+  return rule === RULE_REQUIRE_WEBPACK;
+}
+
+function findPolicyViolations(command, { relPath }) {
   const missing = [];
   const re = /\bnext\s+(dev|build)\b/g;
   let m;
@@ -165,7 +217,10 @@ function findMissingWebpackSegments(command) {
     const rest = command.slice(start);
     const sepIdx = firstSeparatorIndex(rest);
     const segment = (sepIdx === -1 ? rest : rest.slice(0, sepIdx)).trim();
-    if (!segment.includes("--webpack")) {
+    if (!shouldRequireWebpack({ relPath, kind: m[1] })) {
+      continue;
+    }
+    if (!hasWebpackFlag(segment)) {
       missing.push({ segment, kind: m[1] });
     }
   }
@@ -223,7 +278,7 @@ function checkPackageJson({ repoRoot, source, relPath, content }) {
 
   for (const [name, cmd] of Object.entries(scripts)) {
     if (typeof cmd !== "string") continue;
-    const missing = findMissingWebpackSegments(cmd);
+    const missing = findPolicyViolations(cmd, { relPath });
     if (!missing.length) continue;
 
     for (const seg of missing) {
@@ -246,7 +301,7 @@ function checkWorkflow({ relPath, content }) {
     const trimmed = line.trimStart();
     if (trimmed.startsWith("#")) continue;
 
-    const missing = findMissingWebpackSegments(line);
+    const missing = findPolicyViolations(line, { relPath });
     if (!missing.length) continue;
 
     // Best-effort line number: map logical lines back to raw approx by counting newlines.
@@ -303,13 +358,13 @@ async function main() {
 
   if (violations.length > 0) {
     process.stderr.write("------------------------------------------------------------------\n");
-    process.stderr.write("POLICY VIOLATION: Next.js must be forced to Webpack\n");
+    process.stderr.write("POLICY VIOLATION: Next.js command violates bundler policy matrix\n");
     process.stderr.write("------------------------------------------------------------------\n\n");
-    process.stderr.write("This repo intentionally requires `--webpack` on every `next dev` / `next build`.\n");
-    process.stderr.write("Reason: preserve custom Webpack behavior; avoid Turbopack default changes.\n\n");
+    process.stderr.write("This repo enforces an app/command policy matrix for `next dev` / `next build`.\n");
+    process.stderr.write("Default behavior is fail-closed: `--webpack` required unless explicitly allowed.\n\n");
     process.stderr.write("Violations:\n");
     process.stderr.write(violations.map((v) => `  ${v}`).join("\n"));
-    process.stderr.write("\n\nFix: add `--webpack` to the affected command(s).\n");
+    process.stderr.write("\n\nFix: add `--webpack` to the affected command(s), or update matrix rules intentionally.\n");
     process.exit(1);
   }
 

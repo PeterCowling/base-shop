@@ -1091,13 +1091,20 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Affects:** `packages/lib/tsconfig.test.typecheck.json`, `packages/lib/**/*.test.ts`
 - **Depends on:** TASK-21
 - **Blocks:** TASK-24
-- **Confidence:** 72%
-  - Implementation: 75% — 83 test files; error count unknown; lib is a broad utility package
-  - Approach: 80% — same pattern; security lint warnings pre-exist (fs filename warnings)
-  - Impact: 80% — lib is cross-cutting
+- **Confidence:** 83%
+  - Implementation: 83% — 53 errors confirmed with loose config (< 60 threshold); patterns all established
+  - Approach: 85% — must extend `./tsconfig.json` (package loose config), NOT root strict config; tsconfig.test.json already uses this approach with strict: false, noImplicitAny: false
+  - Impact: 80% — lib is cross-cutting; 6 production source file narrowing fixes needed (ranking.ts, validation.ts, schema.ts) alongside test fixes
 - **Acceptance:** `TYPECHECK_FILTER=packages/lib` exits 0; no test regressions
 - **Validation contract:** TC-01: 0 errors; TC-02: jest tests unchanged
-- **Planning validation:** Run typecheck first; if >60 errors escalate to L and split
+- **Planning validation:** ✓ Error count confirmed = 53 (loose config) < 60 threshold → M effort maintained
+- **Replan evidence (2026-02-19):**
+  - 53 errors with `tsconfig.test.json` (strict: false) approach
+  - Error breakdown: 20 TS2339 parseJsonBody.test.ts (discriminated union `result.response` without `success` guard); 13 TS2339 validation.test.ts (`result.error` without `ok` guard); 9 TS2741 logger.test.ts (mock arity); 3 TS2339 ranking.ts (prod); 2 TS2322 validation.ts (prod); 1 TS2322 schema.ts (prod); 6 other
+  - `ParseJsonResult<T>` = `{ success: true; data: T } | { success: false; response: Response }` — tests access `.response` without narrowing
+  - `ValidationResult<T>` = `{ ok: true; value: T } | { ok: false; error: ValidationError }` — tests access `.error` without narrowing
+  - Production file narrowing fixes are small and safe (3+2+1=6 errors across 3 files)
+  - Approach: create tsconfig.test.typecheck.json extending `./tsconfig.json` (package own), add jest types; no strict mode increase
 - **Rollout / rollback:** Revert test fixes if regressions
 - **Documentation impact:** None
 

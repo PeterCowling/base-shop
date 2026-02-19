@@ -107,8 +107,14 @@ export async function resolvePluginEntry(dir: string): Promise<{
   }
 }
 
-export async function importByType(entryPath: string, _isModule: boolean) {
+export async function importByType(entryPath: string, isModule: boolean) {
+  if (!isModule) {
+    // CJS modules: use require() so Jest's module resolver can handle the path,
+    // and so Node.js doesn't need a file:// URL specifier for .cjs/.js files.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    return require(entryPath) as unknown;
+  }
   const specifier = pathToFileURL(entryPath).href;
-  // Dynamic import works for both ESM and CJS; CJS modules appear under `default`.
+  // Dynamic import works for ESM; CJS modules appear under `default`.
   return import(/* webpackIgnore: true */ specifier);
 }

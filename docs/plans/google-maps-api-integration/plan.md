@@ -100,8 +100,8 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 | TASK-02 | IMPLEMENT | Wire NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY into .env.local + Cloudflare Pages | 85% | S | Pending | TASK-01 | - |
 | TASK-03 | IMPLEMENT | LocationModal: TDD — red tests then URL migration + fallback link | 80% | M | Complete (2026-02-19) | - | TASK-CP1 |
 | TASK-04 | IMPLEMENT | ContactFormWithMap: TDD — red tests then default URL + stories + fixtures | 80% | S | Complete (2026-02-19) | - | TASK-CP1 |
-| TASK-CP1 | CHECKPOINT | Checkpoint: component tests green; validate approach before guide migration | 95% | S | Pending | TASK-03 ✓, TASK-04 ✓ | TASK-05 |
-| TASK-05 | IMPLEMENT | articleLead.tsx: key injection at render time + guide URL format test | 80% | S | Pending | TASK-CP1 | TASK-06 |
+| TASK-CP1 | CHECKPOINT | Checkpoint: component tests green; validate approach before guide migration | 95% | S | Complete (2026-02-19) | TASK-03 ✓, TASK-04 ✓ | TASK-05 |
+| TASK-05 | IMPLEMENT | articleLead.tsx: key injection at render time + guide URL format test | 80% | S | Complete (2026-02-19) | TASK-CP1 ✓ | TASK-06 |
 | TASK-06 | IMPLEMENT | Update 36 locale JSON files: replace ?pb= stepsMapEmbedUrl with v1 URLs | 80% | M | Pending | TASK-05 | - |
 
 ## Parallelism Guide
@@ -314,7 +314,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `docs/plans/google-maps-api-integration/plan.md`
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-05
@@ -336,6 +336,11 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 - **Planning validation:** None: procedural checkpoint
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Update plan status; record any horizon findings; invoke /lp-replan if TASK-05/06 approach needs revision
+- **Build evidence (2026-02-19):**
+  - All 3 targeted component test suites green (15/15 ModalBasics; 2/2 ContactFormWithMap ×2)
+  - No horizon assumption invalidated; no topology change; no replan required
+  - Scout: jest `process.env` direct assignment confirmed viable for TASK-05
+  - TASK-05 and TASK-06 remain at 80% confidence — go/no-go: PROCEED
 
 ---
 
@@ -346,7 +351,7 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `apps/brikette/src/routes/how-to-get-here/chiesaNuovaArrivals/articleLead.tsx`
   - `apps/brikette/src/test/routes/how-to-get-here/__tests__/chiesaNuovaArticleLead.mapSrc.test.tsx` (new)
@@ -385,6 +390,11 @@ The Brikette app renders embedded maps in three surfaces using undocumented, key
   - Rollout: single-line change in articleLead.tsx; `departures/articleLead.tsx` is a re-export and gets the change automatically
   - Rollback: revert to `src={stepsMapEmbedUrl}` (one-line change)
 - **Documentation impact:** None
+- **Build evidence (2026-02-19):**
+  - Red: TC-01 failed as expected (src had no key); TC-02 passed (base URL unchanged)
+  - Green: added `const mapKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED_KEY` + `src={mapKey ? \`${stepsMapEmbedUrl}&key=${mapKey}\` : stepsMapEmbedUrl}` in articleLead.tsx
+  - TC-01 and TC-02: 2/2 green; `pnpm --filter @apps/brikette typecheck` clean
+  - Commit: `842c5868f5`
 
 ---
 

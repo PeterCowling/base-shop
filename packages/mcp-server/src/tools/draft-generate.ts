@@ -5,7 +5,10 @@ import { z } from "zod";
 import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
-import { evaluateQuestionCoverage } from "../utils/coverage.js";
+import {
+  evaluateQuestionCoverage,
+  extractQuestionKeywords,
+} from "../utils/coverage.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import {
@@ -852,6 +855,40 @@ function buildGapFillResult(
   return { body: resultBody, sourcesUsed };
 }
 
+function appendCoverageFallbacks(
+  body: string,
+  uncoveredQuestions: string[],
+): string {
+  if (uncoveredQuestions.length === 0) {
+    return body;
+  }
+
+  const additions: string[] = [];
+  const seenTopics = new Set<string>();
+
+  for (const question of uncoveredQuestions.slice(0, 3)) {
+    const keywords = extractQuestionKeywords(question).slice(0, 4);
+    const topic = keywords.length > 0
+      ? keywords.join(", ")
+      : question.replace(/\s+/g, " ").replace(/\?/g, "").trim();
+    if (!topic || seenTopics.has(topic)) {
+      continue;
+    }
+    seenTopics.add(topic);
+    additions.push(
+      sentence(
+        `For your question about ${topic}, we can confirm the details and help with next steps`
+      )
+    );
+  }
+
+  if (additions.length === 0) {
+    return body;
+  }
+
+  return normalizeParagraphs(`${body}\n\n${additions.join("\n\n")}`);
+}
+
 function applyAlwaysRules(
   body: string,
   _alwaysRules: string[],
@@ -1185,6 +1222,12 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     contentBody = applyPolicyDecisionContent(contentBody, policyDecision);
     bodyPlain = stripSignature(contentBody).trim();
     bodyPlain = personalizeGreeting(bodyPlain, recipientName);
+
+    const finalCoverage = evaluateQuestionCoverage(bodyPlain, allIntents);
+    const uncoveredAfterRefinement = finalCoverage
+      .filter((entry) => entry.status === "missing")
+      .map((entry) => entry.question);
+    bodyPlain = appendCoverageFallbacks(bodyPlain, uncoveredAfterRefinement);
 
     const includeBookingLink = actionPlan.workflow_triggers.booking_monitor && !agreementTemplate;
     const bodyHtml = generateEmailHtml({

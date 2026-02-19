@@ -13,7 +13,6 @@
  * @see https://developers.google.com/gmail/api/quickstart/nodejs
  */
 
-import { authenticate } from "@google-cloud/local-auth";
 import { existsSync } from "fs";
 import { readFile, writeFile } from "fs/promises";
 import type { gmail_v1 } from "googleapis";
@@ -164,6 +163,8 @@ async function authorize(interactive = false): Promise<AuthClient | null> {
         "Please download OAuth credentials from Google Cloud Console and save as credentials.json"
     );
   }
+
+  const { authenticate } = await import("@google-cloud/local-auth");
 
   // Run interactive OAuth flow
   // This will open a browser for the user to authorize

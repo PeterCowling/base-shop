@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-19 (Phases 1–4 complete; TASK-22 complete; TASK-23/24/25 + TASK-04/05 (cms) pending)
+Last-updated: 2026-02-19 (Phases 1–4 complete; TASK-22 + TASK-23 complete; TASK-24/25 + TASK-04/05 (cms) pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -111,7 +111,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Complete (2026-02-18) | TASK-17, TASK-18, TASK-19 | TASK-21 |
 | TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Complete (2026-02-18) | TASK-20, TASK-04 | TASK-22      |
 | TASK-22     | IMPLEMENT   | Phase 5 small batch: zod-utils, telemetry, date-utils, themes, email-templates | 75% | M | Complete (2026-02-19) | TASK-21 | TASK-23 |
-| TASK-23     | IMPLEMENT   | Phase 5: packages/lib tsconfig + error fixes             | 72%        | M      | Pending | TASK-21         | TASK-24         |
+| TASK-23     | IMPLEMENT   | Phase 5: packages/lib tsconfig + error fixes             | 83%        | M      | Complete (2026-02-19) | TASK-21 | TASK-24 |
 | TASK-24     | IMPLEMENT   | Phase 5: Extend CI for Phase 5 packages                  | 85%        | S      | Pending | TASK-22, TASK-23, TASK-04 | TASK-25 |
 | TASK-25     | CHECKPOINT  | Phase 5 gate — assess remaining 30+ packages + TYPECHECK_ALL readiness | 85% | S | Pending | TASK-24 | -      |
 
@@ -1087,7 +1087,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/lib/tsconfig.test.typecheck.json`, `packages/lib/**/*.test.ts`
 - **Depends on:** TASK-21
 - **Blocks:** TASK-24
@@ -1107,6 +1107,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
   - Approach: create tsconfig.test.typecheck.json extending `./tsconfig.json` (package own), add jest types; no strict mode increase
 - **Rollout / rollback:** Revert test fixes if regressions
 - **Documentation impact:** None
+- **Build evidence (2026-02-19):** Commit `b55d5ef6b5`. `TYPECHECK_FILTER=packages/lib node scripts/typecheck-tests.mjs` → exit 0 (0 errors). Key learnings: (1) must include `jest-globals.d.ts` in tsconfig include to get `isolateModulesAsync` augmentation; (2) `!result.ok` does not narrow discriminated unions with `strict: false` — must use `result.ok === false`; (3) `@types/jest` v29 `Mock<T,Y,C>` (3-param) conflicts with `@jest/globals` v27 `Mock<T,Y>` (2-param) — use `any` for mock property type annotations in test files; (4) Zod `ZodEffects`/`ZodObject` not assignable to `ZodType<T>` — use `as unknown as ZodType<T>` cast; (5) partial Crypto mocks need `as unknown as Crypto`.
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: API
 Workstream: Engineering
 Created: 2026-02-19
@@ -117,7 +117,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/gmail.ts` (write audit entries in handleGetEmail, handleMarkProcessed)
   - `packages/mcp-server/data/email-audit-log.jsonl` (created; gitignored)
@@ -161,7 +161,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/gmail.ts` (try/catch in handleMarkProcessed, handleGetEmail)
   - `packages/mcp-server/src/__tests__/gmail-label-state.test.ts` (extend with error-path cases)
@@ -202,7 +202,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/gmail.ts` (replace processingLocks Map usage; update isProcessingLockStale; add startup recovery to handleOrganizeInbox; lower staleHours default to 2)
   - `packages/mcp-server/src/utils/lock-store.ts` (new pure module)
@@ -257,7 +257,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/draft-refine.ts`
   - `packages/mcp-server/src/__tests__/draft-refine.test.ts`
@@ -300,7 +300,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/draft-interpret.ts`
   - `.claude/skills/ops-inbox/SKILL.md` (update step 3 to check escalation_required before calling draft_generate; document threshold logic)
@@ -346,7 +346,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/gmail.ts` (handleOrganizeInbox query construction)
   - `packages/mcp-server/src/utils/organize-query.ts` (new pure module: buildOrganizeQuery)
@@ -396,7 +396,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - `packages/mcp-server/src/tools/outbound-drafts.ts`
   - `packages/mcp-server/src/__tests__/outbound-drafts.test.ts` (new or extend)
@@ -439,7 +439,7 @@ The Brikette email pipeline (MCP server tools: `gmail_organize_inbox`, `draft_in
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:**
   - None: no code changes. Deliverable is a Decision Log entry in this plan file recording the confirmed query form.
 - **Depends on:** -

@@ -22,6 +22,7 @@ import {
 } from "../utils/validation.js";
 
 import { handleDraftQualityTool } from "./draft-quality-check.js";
+import { appendTelemetryEvent } from "./gmail.js";
 import {
   evaluatePolicy,
   type PolicyDecision,
@@ -1105,11 +1106,26 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
     const isComposite = uniqueTemplatesForComposite.length >= 2;
 
     let bodyPlain: string;
+    let usedTemplateFallback = false;
     if (isComposite) {
       bodyPlain = assembleCompositeBody(uniqueTemplatesForComposite);
     } else {
-      bodyPlain = selectedTemplate?.body ??
-        `Thanks for your email. We will review your request and respond shortly.`;
+      usedTemplateFallback = !selectedTemplate;
+      bodyPlain =
+        selectedTemplate?.body ??
+        "Thanks for your email. We will review your request and respond shortly.";
+    }
+
+    if (usedTemplateFallback) {
+      appendTelemetryEvent({
+        ts: new Date().toISOString(),
+        event_key: "email_fallback_detected",
+        source_path: "queue",
+        tool_name: "draft_generate",
+        actor: "system",
+        reason: "template-selection-none",
+        classification: "template_fallback",
+      });
     }
 
     // TASK-07: load knowledge data and run gap-fill injection before the sanitisation pipeline

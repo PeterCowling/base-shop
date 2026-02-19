@@ -1,5 +1,9 @@
 /** @jest-environment node */
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+
 import { getGmailClient } from "../clients/gmail";
 import { handleBookingEmailTool } from "../tools/booking-email";
 
@@ -16,8 +20,19 @@ function decodeRawEmail(raw: string): string {
 }
 
 describe("booking email tool", () => {
+  let tmpDir: string;
+  let auditLogPath: string;
+
   beforeEach(() => {
     jest.resetAllMocks();
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "booking-email-test-"));
+    auditLogPath = path.join(tmpDir, "email-audit-log.jsonl");
+    process.env.AUDIT_LOG_PATH = auditLogPath;
+  });
+
+  afterEach(() => {
+    delete process.env.AUDIT_LOG_PATH;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
   it("creates booking email draft with occupant links", async () => {
@@ -64,5 +79,17 @@ describe("booking email tool", () => {
     expect(payload.success).toBe(true);
     expect(payload.draftId).toBe("draft-1");
     expect(payload.messageId).toBe("msg-1");
+
+    const rawLog = fs.readFileSync(auditLogPath, "utf-8");
+    const telemetryLines = rawLog
+      .split("\n")
+      .filter((line) => line.trim() !== "")
+      .map((line) => JSON.parse(line) as { event_key?: string; source_path?: string; tool_name?: string });
+    const draftCreatedEvent = telemetryLines.find((line) => line.event_key === "email_draft_created");
+    expect(draftCreatedEvent).toMatchObject({
+      event_key: "email_draft_created",
+      source_path: "reception",
+      tool_name: "mcp_send_booking_email",
+    });
   });
 });

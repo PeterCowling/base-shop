@@ -29,6 +29,10 @@ jest.mock("../resources/voice-examples.js", () => ({
   })),
 }));
 
+jest.mock("../tools/gmail.js", () => ({
+  appendTelemetryEvent: jest.fn(),
+}));
+
 const readFileMock = readFile as jest.Mock;
 const handleBriketteResourceReadMock = handleBriketteResourceRead as jest.Mock;
 const handleDraftGuideReadMock = handleDraftGuideRead as jest.Mock;
@@ -148,7 +152,9 @@ function setupDraftGenerateMocks(): void {
 }
 
 describe("draft_generate tool", () => {
-  beforeEach(setupDraftGenerateMocks);
+  beforeEach(() => {
+    setupDraftGenerateMocks();
+  });
 
   it("TC-01/05: uses template ranker output and tracks answered questions", async () => {
     readFileMock.mockResolvedValue(
@@ -330,6 +336,7 @@ describe("draft_generate tool", () => {
     expect(body).toContain("luggage");
     expect(body).toContain("wifi");
   });
+
 
   it("TC-07: composite body does not append plaintext signature boilerplate", async () => {
     readFileMock.mockResolvedValue(

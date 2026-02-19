@@ -63,10 +63,21 @@ type GmailStub = {
 
 interface AuditEntry {
   ts: string;
-  messageId: string;
-  action: "lock-acquired" | "outcome";
+  messageId?: string;
+  action?: "lock-acquired" | "lock-released" | "outcome";
   actor: string;
   result?: string;
+}
+
+interface TelemetryEntry {
+  ts: string;
+  event_key: string;
+  source_path: string;
+  actor: string;
+  message_id?: string | null;
+  action?: string;
+  queue_from?: string | null;
+  queue_to?: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -158,13 +169,27 @@ function makeMessage(id: string, extraLabels: string[] = []): GmailMessage {
   };
 }
 
-function readAuditEntries(logPath: string): AuditEntry[] {
+function readAuditEntries(logPath: string): Array<AuditEntry | TelemetryEntry> {
   if (!fs.existsSync(logPath)) return [];
   const raw = fs.readFileSync(logPath, "utf-8");
   return raw
     .split("\n")
     .filter(line => line.trim() !== "")
-    .map(line => JSON.parse(line) as AuditEntry);
+    .map(line => JSON.parse(line) as AuditEntry | TelemetryEntry);
+}
+
+function readLegacyAuditEntries(logPath: string): AuditEntry[] {
+  return readAuditEntries(logPath).filter(
+    (entry): entry is AuditEntry =>
+      typeof (entry as { action?: unknown }).action === "string",
+  );
+}
+
+function readTelemetryEntries(logPath: string): TelemetryEntry[] {
+  return readAuditEntries(logPath).filter(
+    (entry): entry is TelemetryEntry =>
+      typeof (entry as { event_key?: unknown }).event_key === "string",
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -208,7 +233,7 @@ describe("gmail audit log (TASK-01)", () => {
     expect(result).toHaveProperty("content");
     expect((result as { isError?: boolean }).isError).not.toBe(true);
 
-    const entries = readAuditEntries(auditLogPath);
+    const entries = readLegacyAuditEntries(auditLogPath);
     expect(entries).toHaveLength(1);
 
     const entry = entries[0];
@@ -245,7 +270,7 @@ describe("gmail audit log (TASK-01)", () => {
     expect(result).toHaveProperty("content");
     expect((result as { isError?: boolean }).isError).not.toBe(true);
 
-    const entries = readAuditEntries(auditLogPath);
+    const entries = readLegacyAuditEntries(auditLogPath);
     // handleMarkProcessed now writes two entries: lock-released + outcome
     expect(entries.length).toBeGreaterThanOrEqual(1);
 
@@ -257,6 +282,18 @@ describe("gmail audit log (TASK-01)", () => {
     expect(outcomeEntry!.result).toBe("drafted");
     expect(typeof outcomeEntry!.ts).toBe("string");
     expect(() => new Date(outcomeEntry!.ts).toISOString()).not.toThrow();
+
+    const telemetryEntries = readTelemetryEntries(auditLogPath);
+    const labeled = telemetryEntries.find(e => e.event_key === "email_outcome_labeled");
+    expect(labeled).toBeDefined();
+    expect(labeled?.source_path).toBe("queue");
+    expect(labeled?.action).toBe("drafted");
+
+    const transition = telemetryEntries.find(e => e.event_key === "email_queue_transition");
+    expect(transition).toBeDefined();
+    expect(transition?.source_path).toBe("queue");
+    expect(transition?.queue_from).toBe("Brikette/Queue/In-Progress");
+    expect(transition?.queue_to).toBeNull();
   });
 
   // -------------------------------------------------------------------------
@@ -319,7 +356,7 @@ describe("gmail audit log (TASK-01)", () => {
     getGmailClientMock.mockResolvedValue({ success: true, client: g2 });
     await handleGmailTool("gmail_get_email", { emailId: "msg-tc04b", actor: "human" });
 
-    const entries = readAuditEntries(auditLogPath);
+    const entries = readLegacyAuditEntries(auditLogPath);
     expect(entries).toHaveLength(2);
 
     // First entry must be unchanged
@@ -330,5 +367,65 @@ describe("gmail audit log (TASK-01)", () => {
     // Second entry is for the second messageId
     expect(entries[0].messageId).toBe("msg-tc04a");
     expect(entries[1].messageId).toBe("msg-tc04b");
+  });
+
+  it("TC-03-03: gmail_telemetry_daily_rollup reports drafted/deferred/requeued/fallback totals", async () => {
+    const lines = [
+      {
+        ts: "2026-02-19T08:00:00.000Z",
+        event_key: "email_draft_created",
+        source_path: "queue",
+        actor: "system",
+      },
+      {
+        ts: "2026-02-19T08:05:00.000Z",
+        event_key: "email_draft_deferred",
+        source_path: "reception",
+        actor: "system",
+      },
+      {
+        ts: "2026-02-19T08:10:00.000Z",
+        event_key: "email_queue_transition",
+        source_path: "queue",
+        actor: "codex",
+        queue_from: "Brikette/Queue/In-Progress",
+        queue_to: "Brikette/Queue/Needs-Processing",
+      },
+      {
+        ts: "2026-02-19T08:11:00.000Z",
+        event_key: "email_fallback_detected",
+        source_path: "queue",
+        actor: "system",
+      },
+    ];
+    fs.writeFileSync(
+      auditLogPath,
+      `${lines.map((line) => JSON.stringify(line)).join("\n")}\n`,
+      "utf-8",
+    );
+
+    const result = await handleGmailTool("gmail_telemetry_daily_rollup", {
+      startDate: "2026-02-19",
+      days: 2,
+    });
+
+    expect((result as { isError?: boolean }).isError).not.toBe(true);
+    const payload = JSON.parse(result.content[0].text) as {
+      totals: { drafted: number; deferred: number; requeued: number; fallback: number };
+      daily: Array<{ day: string; drafted: number; deferred: number; requeued: number; fallback: number }>;
+    };
+    expect(payload.totals).toEqual({
+      drafted: 1,
+      deferred: 1,
+      requeued: 1,
+      fallback: 1,
+    });
+    expect(payload.daily[0]).toMatchObject({
+      day: "2026-02-19",
+      drafted: 1,
+      deferred: 1,
+      requeued: 1,
+      fallback: 1,
+    });
   });
 });

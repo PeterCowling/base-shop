@@ -1,5 +1,9 @@
 /** @jest-environment node */
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
+
 import { getGmailClient } from "../clients/gmail";
 import {
   clearGuestEmailTemplateCache,
@@ -19,9 +23,20 @@ function decodeRawEmail(raw: string): string {
 }
 
 describe("guest email activity helper", () => {
+  let tmpDir: string;
+  let auditLogPath: string;
+
   beforeEach(() => {
     clearGuestEmailTemplateCache();
     jest.resetAllMocks();
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "guest-activity-test-"));
+    auditLogPath = path.join(tmpDir, "email-audit-log.jsonl");
+    process.env.AUDIT_LOG_PATH = auditLogPath;
+  });
+
+  afterEach(() => {
+    delete process.env.AUDIT_LOG_PATH;
+    fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
   it("creates agreement-received draft for activity code 21", async () => {
@@ -56,6 +71,21 @@ describe("guest email activity helper", () => {
     const decoded = decodeRawEmail(raw);
     expect(decoded).toContain("Subject: Agreement Received");
     expect(decoded).toContain("we have received your agreement to the terms and conditions");
+
+    const telemetryLines = fs
+      .readFileSync(auditLogPath, "utf-8")
+      .split("\n")
+      .filter((line) => line.trim() !== "")
+      .map((line) => JSON.parse(line) as { event_key?: string; source_path?: string; tool_name?: string });
+    expect(telemetryLines).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          event_key: "email_draft_created",
+          source_path: "reception",
+          tool_name: "guest_email_activity",
+        }),
+      ]),
+    );
   });
 
   it("selects hostelworld first-attempt template for code 5 when bookingRef starts with 7763-", async () => {
@@ -131,6 +161,21 @@ describe("guest email activity helper", () => {
       reason: "unsupported-activity-code",
     });
     expect(getGmailClientMock).not.toHaveBeenCalled();
+
+    const telemetryLines = fs
+      .readFileSync(auditLogPath, "utf-8")
+      .split("\n")
+      .filter((line) => line.trim() !== "")
+      .map((line) => JSON.parse(line) as { event_key?: string; source_path?: string; reason?: string });
+    expect(telemetryLines).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          event_key: "email_draft_deferred",
+          source_path: "reception",
+          reason: "unsupported-activity-code",
+        }),
+      ]),
+    );
   });
 
   it("returns preview in dry-run mode without creating Gmail drafts", async () => {

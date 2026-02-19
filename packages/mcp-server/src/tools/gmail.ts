@@ -178,6 +178,30 @@ export interface AuditEntry {
   result?: string;      // only present for action === "outcome"
 }
 
+export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
+
+export type TelemetryEventKey =
+  | "email_draft_created"
+  | "email_draft_deferred"
+  | "email_outcome_labeled"
+  | "email_queue_transition"
+  | "email_fallback_detected";
+
+export interface TelemetryEvent {
+  ts: string;
+  event_key: TelemetryEventKey;
+  source_path: EmailSourcePath;
+  actor: string;
+  tool_name?: string;
+  message_id?: string | null;
+  draft_id?: string | null;
+  action?: string;
+  reason?: string;
+  classification?: string;
+  queue_from?: string | null;
+  queue_to?: string | null;
+}
+
 /**
  * Resolves the default audit log path.
  * Priority:
@@ -228,6 +252,102 @@ export function appendAuditEntry(entry: AuditEntry, logPath?: string): void {
       `[audit-log] Failed to write audit entry: ${String(err)}\n`
     );
   }
+}
+
+export function appendTelemetryEvent(
+  event: TelemetryEvent,
+  logPath?: string,
+): void {
+  const filePath = logPath ?? resolveDefaultAuditLogPath();
+  try {
+    fs.mkdirSync(nodePath.dirname(filePath), { recursive: true });
+    fs.appendFileSync(filePath, JSON.stringify(event) + "\n");
+  } catch (err) {
+    process.stderr.write(
+      `[audit-log] Failed to write telemetry event: ${String(err)}\n`,
+    );
+  }
+}
+
+function readTelemetryEvents(logPath?: string): TelemetryEvent[] {
+  const filePath = logPath ?? resolveDefaultAuditLogPath();
+  if (!fs.existsSync(filePath)) {
+    return [];
+  }
+  const raw = fs.readFileSync(filePath, "utf-8");
+  const lines = raw.split("\n").filter((line) => line.trim() !== "");
+  const events: TelemetryEvent[] = [];
+  for (const line of lines) {
+    try {
+      const parsed = JSON.parse(line) as Partial<TelemetryEvent>;
+      if (
+        parsed &&
+        typeof parsed === "object" &&
+        typeof parsed.event_key === "string" &&
+        typeof parsed.ts === "string"
+      ) {
+        events.push(parsed as TelemetryEvent);
+      }
+    } catch {
+      // Ignore malformed lines so rollups remain non-fatal.
+    }
+  }
+  return events;
+}
+
+interface DailyRollupBucket {
+  day: string;
+  drafted: number;
+  deferred: number;
+  requeued: number;
+  fallback: number;
+}
+
+function computeDailyTelemetryRollup(
+  events: TelemetryEvent[],
+  start: Date,
+  endExclusive: Date,
+): DailyRollupBucket[] {
+  const buckets = new Map<string, DailyRollupBucket>();
+  const getBucket = (day: string): DailyRollupBucket => {
+    const existing = buckets.get(day);
+    if (existing) return existing;
+    const created: DailyRollupBucket = {
+      day,
+      drafted: 0,
+      deferred: 0,
+      requeued: 0,
+      fallback: 0,
+    };
+    buckets.set(day, created);
+    return created;
+  };
+
+  for (const event of events) {
+    const ts = new Date(event.ts);
+    if (Number.isNaN(ts.getTime())) continue;
+    if (ts < start || ts >= endExclusive) continue;
+    const day = ts.toISOString().slice(0, 10);
+    const bucket = getBucket(day);
+
+    if (event.event_key === "email_draft_created") {
+      bucket.drafted += 1;
+      continue;
+    }
+    if (event.event_key === "email_draft_deferred") {
+      bucket.deferred += 1;
+      continue;
+    }
+    if (event.event_key === "email_fallback_detected") {
+      bucket.fallback += 1;
+      continue;
+    }
+    if (event.event_key === "email_queue_transition" && event.queue_to === LABELS.NEEDS_PROCESSING) {
+      bucket.requeued += 1;
+    }
+  }
+
+  return Array.from(buckets.values()).sort((a, b) => a.day.localeCompare(b.day));
 }
 
 const GARBAGE_FROM_PATTERNS = [
@@ -418,7 +538,16 @@ const markProcessedSchema = z.object({
     "prepayment_chase_3",
   ]),
   actor: z.enum(["codex", "claude", "human"]).optional().default("codex"),
+  sourcePath: z
+    .enum(["queue", "reception", "outbound", "unknown"])
+    .optional()
+    .default("queue"),
   prepaymentProvider: z.enum(["octorate", "hostelworld"]).optional(),
+});
+
+const telemetryDailyRollupSchema = z.object({
+  startDate: z.string().optional(),
+  days: z.number().int().min(1).max(90).optional().default(7),
 });
 
 const migrateLabelsSchema = z.object({
@@ -533,6 +662,12 @@ export const gmailTools = [
           description: "Actor applying the state transition for Agent/* labels.",
           default: "codex",
         },
+        sourcePath: {
+          type: "string",
+          enum: ["queue", "reception", "outbound", "unknown"],
+          description: "Telemetry source path for outcome attribution.",
+          default: "queue",
+        },
         action: {
           type: "string",
           enum: [
@@ -553,6 +688,17 @@ export const gmailTools = [
         },
       },
       required: ["emailId", "action"],
+    },
+  },
+  {
+    name: "gmail_telemetry_daily_rollup",
+    description: "Read daily telemetry rollups from the append-only audit log (drafted, deferred, requeued, fallback).",
+    inputSchema: {
+      type: "object",
+      properties: {
+        startDate: { type: "string", description: "Optional UTC start date (YYYY-MM-DD)." },
+        days: { type: "number", description: "Number of days to summarize (1-90).", default: 7 },
+      },
     },
   },
   {
@@ -2354,6 +2500,16 @@ async function handleCreateDraft(
     }
   }
 
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_draft_created",
+    source_path: "queue",
+    tool_name: "gmail_create_draft",
+    message_id: emailId,
+    draft_id: draft.data.id ?? null,
+    actor: "system",
+  });
+
   return jsonResult({
     success: true,
     draftId: draft.data.id,
@@ -2396,13 +2552,62 @@ async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail): Promis
   }
 }
 
+function resolveQueueStateFromLabels(
+  labelIds: string[],
+  labelMap: Map<string, string>,
+): string | null {
+  const queueOrder = [
+    LABELS.NEEDS_PROCESSING,
+    LABELS.PROCESSING,
+    LABELS.AWAITING_AGREEMENT,
+    LABELS.DEFERRED,
+    LEGACY_LABELS.NEEDS_PROCESSING,
+    LEGACY_LABELS.PROCESSING,
+    LEGACY_LABELS.AWAITING_AGREEMENT,
+    LEGACY_LABELS.DEFERRED,
+  ];
+  for (const labelName of queueOrder) {
+    const labelId = labelMap.get(labelName);
+    if (labelId && labelIds.includes(labelId)) {
+      return labelName;
+    }
+  }
+  return null;
+}
+
+function resolveQueueTargetForAction(action: z.infer<typeof markProcessedSchema>["action"]): string | null {
+  if (action === "deferred") {
+    return LABELS.DEFERRED;
+  }
+  if (action === "requeued") {
+    return LABELS.NEEDS_PROCESSING;
+  }
+  if (
+    action === "awaiting_agreement" ||
+    action === "agreement_received" ||
+    action === "prepayment_chase_1" ||
+    action === "prepayment_chase_2" ||
+    action === "prepayment_chase_3"
+  ) {
+    return LABELS.AWAITING_AGREEMENT;
+  }
+  return null;
+}
+
 async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
-  const { emailId, action, actor, prepaymentProvider } = markProcessedSchema.parse(args);
+  const { emailId, action, actor, sourcePath, prepaymentProvider } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
+  const preModify = await gmail.users.messages.get({
+    userId: "me",
+    id: emailId,
+    format: "metadata",
+  });
+  const queueFrom = resolveQueueStateFromLabels(preModify.data.labelIds || [], labelMap);
+  const queueTo = resolveQueueTargetForAction(action);
   const actorLabelId = labelMap.get(actorToLabelName(actor));
   const queueLabelIds = collectLabelIds(labelMap, [
     LABELS.NEEDS_PROCESSING,
@@ -2574,8 +2779,26 @@ async function handleMarkProcessed(
     return errorResult(`Failed to apply labels: ${errorMessage}. ${cleanupStatus}`);
   }
   lockStoreRef.release(emailId);
-  appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
-  appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "outcome", actor, result: action });
+  const ts = new Date().toISOString();
+  appendAuditEntry({ ts, messageId: emailId, action: "lock-released", actor: "system" });
+  appendAuditEntry({ ts, messageId: emailId, action: "outcome", actor, result: action });
+  appendTelemetryEvent({
+    ts,
+    event_key: "email_outcome_labeled",
+    source_path: sourcePath,
+    message_id: emailId,
+    actor,
+    action,
+  });
+  appendTelemetryEvent({
+    ts,
+    event_key: "email_queue_transition",
+    source_path: sourcePath,
+    message_id: emailId,
+    actor,
+    queue_from: queueFrom,
+    queue_to: queueTo,
+  });
 
   const workflow = isPrepaymentAction(action)
     ? {
@@ -2592,6 +2815,57 @@ async function handleMarkProcessed(
     action,
     actor,
     workflow,
+  });
+}
+
+async function handleTelemetryDailyRollup(
+  args: unknown,
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { startDate, days } = telemetryDailyRollupSchema.parse(args ?? {});
+  const now = new Date();
+  const endExclusive = new Date(Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1,
+    0,
+    0,
+    0,
+    0,
+  ));
+  const start = startDate
+    ? new Date(`${startDate}T00:00:00.000Z`)
+    : new Date(endExclusive.getTime() - days * 24 * 60 * 60 * 1000);
+
+  if (Number.isNaN(start.getTime())) {
+    return errorResult("Invalid startDate. Expected YYYY-MM-DD.");
+  }
+  if (start >= endExclusive) {
+    return errorResult("startDate must be before today (UTC).");
+  }
+
+  const events = readTelemetryEvents();
+  const buckets = computeDailyTelemetryRollup(events, start, endExclusive);
+  const totals = buckets.reduce(
+    (acc, bucket) => {
+      acc.drafted += bucket.drafted;
+      acc.deferred += bucket.deferred;
+      acc.requeued += bucket.requeued;
+      acc.fallback += bucket.fallback;
+      return acc;
+    },
+    { drafted: 0, deferred: 0, requeued: 0, fallback: 0 },
+  );
+
+  return jsonResult({
+    success: true,
+    source: "packages/mcp-server/data/email-audit-log.jsonl",
+    window: {
+      start: start.toISOString().slice(0, 10),
+      endExclusive: endExclusive.toISOString().slice(0, 10),
+      days: buckets.length,
+    },
+    totals,
+    daily: buckets,
   });
 }
 
@@ -2885,6 +3159,10 @@ async function handleReconcileInProgress(
 // =============================================================================
 
 export async function handleGmailTool(name: string, args: unknown) {
+  if (name === "gmail_telemetry_daily_rollup") {
+    return handleTelemetryDailyRollup(args);
+  }
+
   // Get Gmail client
   const clientResult = await getGmailClient();
   if (!clientResult.success) {
@@ -2926,6 +3204,10 @@ export async function handleGmailTool(name: string, args: unknown) {
 
       case "gmail_mark_processed": {
         return await handleMarkProcessed(gmail, args);
+      }
+
+      case "gmail_telemetry_daily_rollup": {
+        return await handleTelemetryDailyRollup(args);
       }
 
       case "gmail_migrate_labels": {

@@ -77,8 +77,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
   - Promotion Gate satisfied for `TASK-03` and `TASK-04` using completed precursor evidence (`TASK-12`, `TASK-13`) plus fresh E2 validation checks.
-  - Build-eligible now: `TASK-03`, `TASK-04` (`IMPLEMENT`, `>=80`, unblocked).
-  - Next action: resume `/lp-build` on Wave 3.
+  - Build-eligible now: `TASK-04` (`IMPLEMENT`, `>=80`, unblocked); `TASK-03` completed in this build cycle.
+  - Next action: continue `/lp-build` on remaining Wave 3 task.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -94,7 +94,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-02 | INVESTIGATE | Resolve production usage attribution for queue vs reception draft paths | 85% | S | Complete (2026-02-19) | - | TASK-03 |
 | TASK-12 | INVESTIGATE | Finalize telemetry event contract + daily rollup sink before instrumentation | 85% | S | Complete (2026-02-19) | TASK-01, TASK-02 | TASK-03 |
 | TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Complete (2026-02-19) | TASK-01 | TASK-04 |
-| TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 80% | M | Pending | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
+| TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 80% | M | Complete (2026-02-19) | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
 | TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 80% | M | Pending | TASK-01, TASK-13 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Pending | TASK-01, TASK-03 | TASK-06 |
@@ -308,7 +308,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/tools/guest-email-activity.ts`, `packages/mcp-server/src/tools/booking-email.ts`, `packages/mcp-server/src/__tests__/*`, `docs/guides/brikette-email-system.html`
 - **Depends on:** TASK-01, TASK-02, TASK-12
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-09, TASK-10
@@ -344,6 +344,27 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - Dependencies: unchanged (`TASK-01`, `TASK-02`, `TASK-12`).
 - Validation contract: unchanged (TC-03 remains complete for implementation phase).
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
+- **Build evidence:** Implementation completed (2026-02-19):
+  - Added telemetry event emission for:
+    - fallback detection in `draft_generate`,
+    - draft creation in `gmail_create_draft`,
+    - labeled outcomes + queue transitions in `gmail_mark_processed`,
+    - reception-path drafted/deferred outcomes in booking/activity tools.
+  - Added operator daily rollup tool:
+    - `gmail_telemetry_daily_rollup` (drafted, deferred, requeued, fallback totals from append-only audit log).
+  - Added/updated tests:
+    - `packages/mcp-server/src/__tests__/gmail-audit-log.test.ts`
+    - `packages/mcp-server/src/__tests__/draft-generate-telemetry.test.ts`
+    - `packages/mcp-server/src/__tests__/booking-email.test.ts`
+    - `packages/mcp-server/src/__tests__/guest-email-activity.test.ts`
+    - compatibility mock update in `packages/mcp-server/src/__tests__/draft-generate.test.ts`
+  - Validation PASS:
+    - `pnpm exec jest --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-audit-log.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/draft-generate-telemetry.test.ts packages/mcp-server/src/__tests__/booking-email.test.ts packages/mcp-server/src/__tests__/guest-email-activity.test.ts --maxWorkers=2`
+      - Result: `5/5` suites passed, `38/38` tests passed.
+    - `pnpm --filter @acme/mcp-server typecheck`
+      - Result: pass.
+    - `pnpm --filter @acme/mcp-server lint`
+      - Result: pass (existing repo warnings only).
 
 ### TASK-04: Normalize template references and scoping metadata
 - **Type:** IMPLEMENT
@@ -767,6 +788,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-replan` (standard mode) added precursor chain TASK-12/TASK-13/TASK-14/TASK-15; stable task IDs preserved and execution resequenced.
 - 2026-02-19: `/lp-build` completed TASK-13 and recorded template scope matrix evidence; no further build-eligible tasks until `/lp-replan`.
 - 2026-02-19: `/lp-replan` (standard mode) promoted TASK-03 and TASK-04 to 80% after precursor completion + fresh E2 validation; Wave 3 is now build-eligible.
+- 2026-02-19: `/lp-build` completed TASK-03 telemetry implementation; Wave 3 now has TASK-04 remaining.
 
 ## Overall-confidence Calculation
 

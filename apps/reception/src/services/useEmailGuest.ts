@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 
+import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
 import { fetchGuestEmails } from "./useBookingEmail";
 
 export interface SendEmailGuestInput {
@@ -97,10 +98,11 @@ function useEmailGuest() {
         if (dryRun) {
           payload.dryRun = true;
         }
+        const headers = await buildMcpAuthHeaders();
 
         const response = await fetch("/api/mcp/guest-email-activity", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify(payload),
         });
         const json = (await response.json()) as GuestEmailRouteResponse;

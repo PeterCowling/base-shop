@@ -27,6 +27,8 @@ import {
   OCCUPANT_LINK_PREFIX,
 } from "../utils/emailConstants";
 
+import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
+
 /* -----------------------------------------------------------------------
  * Types
  * --------------------------------------------------------------------- */
@@ -113,10 +115,11 @@ export default function useBookingEmail() {
           : Object.values(mergedEmails).filter(Boolean);
 
         const links = guestIds.map((id) => `${OCCUPANT_LINK_PREFIX}${id}`);
+        const headers = await buildMcpAuthHeaders();
 
         const resp = await fetch("/api/mcp/booking-email", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify({
             bookingRef,
             recipients,

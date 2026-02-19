@@ -11,6 +11,15 @@ import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 import { handleDraftQualityTool } from "./draft-quality-check.js";
 
 // ---------------------------------------------------------------------------
+// Hard-rule protected categories
+// See: .claude/skills/ops-inbox/SKILL.md — "Hard rules" section
+// These categories contain legally/operationally sensitive template text
+// that must never be modified during refinement.
+// ---------------------------------------------------------------------------
+
+export const PROTECTED_CATEGORIES = ["prepayment", "cancellation"] as const;
+
+// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
@@ -127,6 +136,20 @@ export async function handleDraftRefineTool(name: string, args: unknown) {
   }
 
   const { actionPlan, originalBodyPlain, refinedBodyPlain } = parsed.data;
+
+  // Hard-rule guard: protected categories must not have their text modified.
+  // See: .claude/skills/ops-inbox/SKILL.md — "Hard rules" section
+  const dominantCategory = actionPlan.scenario.category;
+  if (
+    PROTECTED_CATEGORIES.includes(
+      dominantCategory as (typeof PROTECTED_CATEGORIES)[number],
+    ) &&
+    refinedBodyPlain.trim() !== originalBodyPlain.trim()
+  ) {
+    return errorResult(
+      `Hard rule violation: ${dominantCategory} template text must not be modified. Pass originalBodyPlain unchanged in refinedBodyPlain for this category.`,
+    );
+  }
 
   // Identity check: refinement was a no-op
   if (refinedBodyPlain.trim() === originalBodyPlain.trim()) {

@@ -197,3 +197,110 @@ describe("TASK-11 v2: TC-01-06 No SDK import in source", () => {
     expect(source).not.toContain("@anthropic-ai/sdk");
   });
 });
+
+// ---------------------------------------------------------------------------
+// TC-04-01: Hard rule — prepayment category blocks text change
+// ---------------------------------------------------------------------------
+
+describe("TASK-04: TC-04-01 Prepayment category blocks text modification", () => {
+  it("returns errorResult containing 'Hard rule violation' when prepayment text is changed", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: { questions: [], requests: [] },
+        scenario: { category: "prepayment" },
+        workflow_triggers: { booking_monitor: false },
+      },
+      originalBodyPlain:
+        "Your prepayment of €50 is required within 48 hours to confirm your booking.",
+      refinedBodyPlain:
+        "Your prepayment of €50 is required within 48 hours to confirm your booking. Please note cancellations are not accepted.",
+    });
+
+    expect(isErrorResult(result)).toBe(true);
+    const text = errorText(result as { content: Array<{ text: string }> });
+    expect(text).toContain("Hard rule violation");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-04-02: Hard rule — cancellation category blocks text change
+// ---------------------------------------------------------------------------
+
+describe("TASK-04: TC-04-02 Cancellation category blocks text modification", () => {
+  it("returns errorResult containing 'Hard rule violation' when cancellation text is changed", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: { questions: [], requests: [] },
+        scenario: { category: "cancellation" },
+        workflow_triggers: { booking_monitor: false },
+      },
+      originalBodyPlain:
+        "We confirm your booking has been cancelled per our policy. No refund is applicable.",
+      refinedBodyPlain:
+        "We confirm your booking has been cancelled per our policy. No refund is applicable. We hope to host you in future.",
+    });
+
+    expect(isErrorResult(result)).toBe(true);
+    const text = errorText(result as { content: Array<{ text: string }> });
+    expect(text).toContain("Hard rule violation");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-04-03: Prepayment category — identical text passes (no-op refinement)
+// ---------------------------------------------------------------------------
+
+describe("TASK-04: TC-04-03 Prepayment category with identical text passes", () => {
+  it("returns refinement_applied: false when prepayment body is unchanged", async () => {
+    const prepaymentBody =
+      "Your prepayment of €50 is required within 48 hours to confirm your booking.";
+
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: { questions: [], requests: [] },
+        scenario: { category: "prepayment" },
+        workflow_triggers: { booking_monitor: false },
+      },
+      originalBodyPlain: prepaymentBody,
+      refinedBodyPlain: prepaymentBody,
+    });
+
+    expect(isErrorResult(result)).toBe(false);
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
+    );
+    expect(payload.refinement_applied).toBe(false);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-04-04: Non-protected category — changed text passes normally
+// ---------------------------------------------------------------------------
+
+describe("TASK-04: TC-04-04 Non-protected category allows text modification", () => {
+  it("returns refinement_applied: true for a non-protected category with changed text", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What time is check-in?" }],
+          requests: [],
+        },
+        scenario: { category: "faq" },
+        workflow_triggers: { booking_monitor: false },
+      },
+      originalBodyPlain: "Check-in is from 2:30pm. Best regards, Hostel Brikette",
+      refinedBodyPlain:
+        "Dear guest, thank you for reaching out to Hostel Brikette. Check-in is available from 2:30pm each day. If you plan to arrive earlier we are happy to offer complimentary luggage storage from 10:30am. We look forward to welcoming you very soon. Warm regards, the Brikette team.",
+    });
+
+    expect(isErrorResult(result)).toBe(false);
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
+    );
+    expect(payload.refinement_applied).toBe(true);
+  });
+});

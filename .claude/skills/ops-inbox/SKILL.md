@@ -120,6 +120,7 @@ When user selects an email to process:
    - Check detected language
    - Inspect agreement detection status
    - Note workflow triggers (prepayment, T&C, booking monitor)
+   - **Check `escalation_required`**: if `true`, do NOT proceed to `draft_generate`. Instead, move the email to `Brikette/Queue/Deferred` via `gmail_mark_processed({ emailId, action: "deferred" })` and stop the pipeline for this email. Inform the user that the email requires human review before a draft can be generated.
    - If classification is ambiguous or context looks odd, default to `deferred` (manual review)
 
 4. **Run Composition stage** using `draft_generate`:

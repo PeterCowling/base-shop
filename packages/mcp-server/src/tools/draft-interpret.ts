@@ -68,6 +68,14 @@ export type EmailActionPlan = {
   /** Semver string. "1.1.0" when scenarios[] is populated; absent/"1.0.0" for legacy. */
   actionPlanVersion?: string;
   escalation: EscalationClassification;
+  /**
+   * True when the escalation tier and confidence meet the threshold for mandatory human review:
+   * - CRITICAL tier → always true
+   * - HIGH tier + confidence >= 0.80 → true
+   * - HIGH tier + confidence < 0.80 → false
+   * - NONE tier → false
+   */
+  escalation_required: boolean;
   thread_summary?: ThreadSummary;
 };
 
@@ -726,6 +734,10 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
     const scenarios = classifyAllScenarios(classifyText);
     const primaryScenario = scenarios[0];
 
+    const escalation_required =
+      escalation.tier === "CRITICAL" ||
+      (escalation.tier === "HIGH" && escalation.confidence >= 0.80);
+
     const plan: EmailActionPlan = {
       normalized_text: normalized,
       language,
@@ -736,6 +748,7 @@ export async function handleDraftInterpretTool(name: string, args: unknown) {
       scenarios,
       actionPlanVersion: "1.1.0",
       escalation,
+      escalation_required,
     };
 
     if (threadSummary) {

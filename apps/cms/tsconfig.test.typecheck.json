@@ -8,6 +8,7 @@
     "noEmit": true,
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "verbatimModuleSyntax": false,
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     "paths": {
       "@/*": ["./src/*"],
@@ -82,6 +83,7 @@
     "__tests__/**/*.ts",
     "__tests__/**/*.tsx",
     "__tests__/**/*.d.ts",
+    "src/auth/**/*.d.ts",
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/**/*.spec.ts",

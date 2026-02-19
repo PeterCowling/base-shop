@@ -29,7 +29,7 @@ describe("auth route", () => {
 
     const res = await GET(
       new NextRequest("http://test.local/cms/api/auth/session"),
-      { params: { nextauth: ["session"] } },
+      { params: Promise.resolve({ nextauth: ["session"] }) },
     );
 
     expect(res.status).toBe(200);
@@ -46,7 +46,7 @@ describe("auth route", () => {
     const req = new NextRequest("http://test.local/cms/api/auth/signin", {
       method: "POST",
     });
-    const res = await POST(req, { params: { nextauth: ["signin"] } });
+    const res = await POST(req, { params: Promise.resolve({ nextauth: ["signin"] }) });
 
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ user: { name: "Bob" } });
@@ -62,7 +62,7 @@ describe("auth route", () => {
     const req = new NextRequest("http://test.local/cms/api/auth/signin", {
       method: "POST",
     });
-    const res = await POST(req, { params: { nextauth: ["signin"] } });
+    const res = await POST(req, { params: Promise.resolve({ nextauth: ["signin"] }) });
 
     expect(res.status).toBe(401);
     expect(await res.json()).toEqual({ error: "Invalid credentials" });

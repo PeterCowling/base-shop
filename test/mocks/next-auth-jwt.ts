@@ -6,6 +6,9 @@ export type TestJWT = {
   [key: string]: unknown;
 } | null;
 
+// Named alias expected by middleware tests
+export type JWT = TestJWT;
+
 let currentToken: TestJWT = null;
 
 export function __setMockToken(token: TestJWT): void {

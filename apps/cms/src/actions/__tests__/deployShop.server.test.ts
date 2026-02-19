@@ -97,7 +97,7 @@ describe("updateDeployStatus", () => {
     updateShopInRepoMock.mockResolvedValue(undefined);
 
     await updateDeployStatus("shop1", {
-      status: "new",
+      status: "new" as "pending",
       domain: "shop.example.com",
       domainStatus: "active",
       certificateStatus: "valid",

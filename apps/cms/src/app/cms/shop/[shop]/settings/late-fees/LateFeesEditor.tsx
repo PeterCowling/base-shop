@@ -36,7 +36,7 @@ export default function LateFeesEditor({ shop, initial }: Props) {
     if (result.errors) {
       setErrors(result.errors);
     } else if (result.settings?.lateFeeService) {
-      setState(result.settings.lateFeeService);
+      setState(result.settings.lateFeeService as { enabled: boolean; intervalMinutes: number });
       setErrors({});
     }
     setSaving(false);

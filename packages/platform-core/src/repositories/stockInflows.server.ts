@@ -134,7 +134,7 @@ export async function receiveStockInflow(
         ...(prior.note ? { note: prior.note } : {}),
         created: prior.report.created,
         updated: prior.report.updated,
-        items: prior.report.items,
+        items: prior.report.items as StockInflowItemResult[],
       };
       return { ok: true, duplicate: true, report, event: prior };
     }

@@ -17,7 +17,7 @@ export const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
       children: z.array(navItemSchema).optional(),
     })
     .strict(),
-);
+) as z.ZodType<NavItem, z.ZodTypeDef, NavItem>;
 
 const localeRecordSchema = z.record(localeSchema, z.string());
 

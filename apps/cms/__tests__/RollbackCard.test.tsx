@@ -23,9 +23,9 @@ jest.mock("@acme/ui/operations", () => {
   const Ctx = React.createContext(null);
 
   function ToastProvider({ children }: any) {
-    const [toasts, setToasts] = React.useState<
-      Array<{ id: number; type: string; message: string }>
-    >([]);
+    const [toasts, setToasts] = React.useState(
+      [] as Array<{ id: number; type: string; message: string }>
+    );
     const value = {
       success: (message: string) =>
         setToasts((p: any[]) => [

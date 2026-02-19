@@ -3,7 +3,7 @@ import { ensureAuthorized } from "@cms/actions/common/auth";
 
 import { cmsEnv as env } from "@acme/config/env/cms";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
-import { getSanityConfig } from "@acme/platform-core/shops";
+import { getSanityConfig, type Shop } from "@acme/platform-core/shops";
 
 export const runtime = "nodejs";
 
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
   if (!shop) {
     return NextResponse.json({ error: "Shop not found" }, { status: 404 });
   }
-  const sanity = getSanityConfig(shop) as
+  const sanity = getSanityConfig(shop as Shop) as
     | { projectId: string; dataset: string; token?: string }
     | undefined;
   if (!sanity || !sanity.projectId || !sanity.dataset) {

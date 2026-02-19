@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import type { RunnerResult } from "lighthouse";
 import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore -- validator/lib/isURL lacks type declarations in test tsconfig context; using ts-ignore since ts-expect-error fails in production tsconfig where types resolve
 import isURL from "validator/lib/isURL";
 
 import { nowIso } from "@acme/date-utils";

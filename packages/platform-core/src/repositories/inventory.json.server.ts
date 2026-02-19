@@ -148,7 +148,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
       ...(Object.keys(variantAttributes).length
         ? { variantAttributes }
         : {}),
-    })
+    } as RawInventoryItem)
   );
   await ensureDir(shop);
   const lockFile = `${inventoryPath(shop)}.lock`;
@@ -226,7 +226,7 @@ async function update(
         ...(Object.keys(variantAttributes).length
           ? { variantAttributes }
           : {}),
-      })
+      } as RawInventoryItem)
     );
 
     const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;

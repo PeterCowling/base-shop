@@ -70,7 +70,7 @@ it("renders campaign filter and charts", async () => {
 
   const { default: Page } = await import("./page");
   render(
-    await Page({ params: Promise.resolve({ shop: "s1" }), searchParams: {} })
+    await Page({ params: Promise.resolve({ shop: "s1" }), searchParams: Promise.resolve({}) })
   );
 
   expect(screen.getByText("Dashboard: s1")).toBeInTheDocument();

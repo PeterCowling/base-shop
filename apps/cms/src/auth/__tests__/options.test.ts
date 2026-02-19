@@ -205,13 +205,13 @@ describe("callbacks", () => {
 
     const token = {} as JWT & { role?: Role };
     const user = { id: "1", role: "admin" as Role };
-    const withRole = await jwtCb({ token, user });
+    const withRole = await jwtCb({ token, user } as any);
 
     expect((withRole as JWT & { role?: Role }).role).toBe("admin");
 
     const session = { user: {} } as Session & { user: { role?: Role } };
     const result = await sessionCb({ session, token: withRole } as any);
-    expect(result.user!.role).toBe("admin");
+    expect((result.user! as any).role).toBe("admin");
   });
 
   it("keeps token role when user is absent", async () => {
@@ -219,7 +219,7 @@ describe("callbacks", () => {
     const jwtCb = options.callbacks!.jwt!;
 
     const token = { role: "admin" as Role } as JWT & { role?: Role };
-    const result = await jwtCb({ token });
+    const result = await jwtCb({ token } as any);
 
     expect((result as JWT & { role?: Role }).role).toBe("admin");
   });
@@ -233,7 +233,7 @@ describe("callbacks", () => {
       session,
       token: { role: "guest" } as unknown as JWT & { role: Role },
     } as any);
-    expect(result.user!.role).toBe("guest");
+    expect((result.user! as any).role).toBe("guest");
   });
 
   it("leaves role undefined when token lacks it", async () => {
@@ -242,6 +242,6 @@ describe("callbacks", () => {
     const session = { user: {} } as Session & { user: { role?: Role } };
 
     const result = await sessionCb({ session, token: {} as JWT } as any);
-    expect(result.user!.role).toBeUndefined();
+    expect((result.user! as any).role).toBeUndefined();
   });
 });

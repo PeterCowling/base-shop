@@ -19,10 +19,10 @@ export default async function ReverseLogisticsSettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const reverseLogistics = settings.reverseLogisticsService ?? {
+  const reverseLogistics = (settings.reverseLogisticsService ?? {
     enabled: false,
     intervalMinutes: 60,
-  };
+  }) as { enabled: boolean; intervalMinutes: number };
 
   return (
     <div className="space-y-6">

@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-19 (Phases 1–4 + Phase 5 complete; TASK-04 replanned 75%→85% M→L; TASK-04/05 (cms) remaining)
+Last-updated: 2026-02-19 (Phases 1–5 complete; TASK-04 complete; TASK-05 (cms CI) remaining)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -92,7 +92,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-01     | INVESTIGATE | Verify packages/** test typecheck passes clean           | 90%        | S      | Complete (2026-02-18) | -               | TASK-15         |
 | TASK-02     | IMPLEMENT   | ~~Add CI step for packages/** + fix any errors found~~   | 35%        | M      | Superseded | TASK-01      | -               |
 | TASK-03     | INVESTIGATE | Enumerate apps/cms test type errors                      | 88%        | S      | Complete (2026-02-18) | -               | TASK-04         |
-| TASK-04     | IMPLEMENT   | Fix apps/cms test type errors (deferred post-TASK-06)    | 85%        | L      | Pending | TASK-03, TASK-06| TASK-05         |
+| TASK-04     | IMPLEMENT   | Fix apps/cms test type errors (deferred post-TASK-06)    | 85%        | L      | Complete (2026-02-19) | TASK-03, TASK-06| TASK-05         |
 | TASK-05     | IMPLEMENT   | Extend CI step to cover apps/cms                         | 90%        | S      | Pending | TASK-04, TASK-16| TASK-06 *(post-defer)* |
 | TASK-15     | IMPLEMENT   | Fix 8 small packages + create per-package typecheck configs | 88%     | M      | Complete (2026-02-18) | TASK-01         | TASK-16         |
 | TASK-16     | IMPLEMENT   | Add CI step for 7 fixed small packages                   | 90%        | S      | Complete (2026-02-18) | TASK-15         | TASK-06         |
@@ -273,7 +273,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** L
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `apps/cms/__tests__/**/*.ts`, `apps/cms/src/**/*.test.ts`, `test/__mocks__/telemetryMock.ts`
 - **Depends on:** TASK-03, TASK-06
 - **Blocks:** TASK-05
@@ -308,6 +308,12 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Documentation impact:** None
 - **Notes / references:**
   - Common fix patterns: `const mock = jest.fn() as jest.MockedFunction<typeof fn>`, explicit return types on test helpers
+
+#### Build evidence (2026-02-19)
+- **TC-01 PASS**: `TYPECHECK_FILTER=apps/cms node scripts/typecheck-tests.mjs` exits 0 (0 errors)
+- **Path**: 171 errors → 70 (batch-1) → 17 (production source fixes via subagent) → 0 (final test-file fixes)
+- **Root causes resolved**: (1) `telemetryMock.ts` `track()` 0-arg signature → fixed with correct signature + `TelemetryEvent` type; (2) 18 TS5097 from missing `allowImportingTsExtensions: true` in tsconfig; (3) `shadcnDialogStub.tsx` missing 16 component exports (Table*, Accordion*, DropdownMenu*, DialogHeader); (4) NextAuth `session.user.role` missing — fixed by adding `src/auth/**/*.d.ts` to tsconfig include; (5) Next.js 15 async `params`/`searchParams` — wrapped in `Promise.resolve()` in 4 test files; (6) `jwtCb`/`sessionCb` type mismatches — `as any` casts; (7) `jest.fn()` typed as `never` — cast `(jest.fn() as any).mockResolvedValue(...)` pattern
+- **Files changed**: `test/__mocks__/telemetryMock.ts`, `test/__mocks__/shadcnDialogStub.tsx`, `apps/cms/tsconfig.test.typecheck.json`, `test/mocks/next-auth-jwt.ts`, 8 `__tests__/*.test.ts` files, ~20 production source type-only cast fixes across `packages/` and `apps/cms/src/`
 
 #### Re-plan Update (2026-02-19) — TASK-25 Checkpoint
 - Confidence: 75% → **85%** (E3: re-ran typecheck; 148 errors, all patterns identified)

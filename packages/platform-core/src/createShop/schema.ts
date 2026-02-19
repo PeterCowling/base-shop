@@ -24,7 +24,7 @@ const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
       children: z.array(navItemSchema).optional(),
     })
     .strict()
-);
+) as z.ZodType<NavItem, z.ZodTypeDef, NavItem>;
 
 // SEO schema for brand kit / shop-level SEO (LAUNCH-23)
 const seoConfigSchema = z
@@ -311,7 +311,7 @@ export function prepareOptions(
     themeDefaults: parsed.themeDefaults,
     themeTokens: parsed.themeTokens,
     payment: payments,
-    billingProvider,
+    billingProvider: billingProvider as "stripe" | "paypal",
     shipping,
     tax,
     pageTitle: fillLocales(parsed.pageTitle, "Home"),

@@ -39,9 +39,7 @@ describe("EmailMarketingPage form", () => {
       }
       return Promise.resolve({ ok: true, json: async () => ({ segments: [], campaigns: [] }) }) as any;
     });
-    // @ts-expect-error assign global fetch for jsdom
     global.fetch = fetchMock;
-    // @ts-expect-error assign window fetch
     window.fetch = fetchMock;
 
     render(<EmailMarketingPage />);
@@ -93,9 +91,7 @@ describe("EmailMarketingPage form", () => {
       }
       return Promise.resolve({ ok: true, json: async () => ({ segments: [], campaigns: [] }) }) as any;
     });
-    // @ts-expect-error assign global fetch for jsdom
     global.fetch = fetchMock;
-    // @ts-expect-error assign window fetch
     window.fetch = fetchMock;
 
     render(<EmailMarketingPage />);

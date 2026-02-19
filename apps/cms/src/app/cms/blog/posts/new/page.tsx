@@ -4,7 +4,7 @@ import Link from "next/link";
 import { createPost } from "@cms/actions/blog.server";
 
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
-import { getSanityConfig } from "@acme/platform-core/shops";
+import { getSanityConfig, type Shop } from "@acme/platform-core/shops";
 
 import PostForm from "../PostForm.client";
 
@@ -16,7 +16,7 @@ export default async function NewPostPage(props: {
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
   if (!shop) return <p>Shop not found.</p>;
-  const sanity = getSanityConfig(shop);
+  const sanity = getSanityConfig(shop as Shop);
   if (!sanity) {
     return (
       <p>

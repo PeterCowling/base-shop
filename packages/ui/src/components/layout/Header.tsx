@@ -60,7 +60,7 @@ export default async function Header({
   // Read the shop configuration, including navigation
   const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const shop = await readShop(shopId);
-  const rawNav: NavigationItem[] = shop.navigation ?? [];
+  const rawNav: NavigationItem[] = (shop.navigation ?? []) as NavigationItem[];
 
   // Normalise navigation labels to strings
   const nav: ProcessedNavigationItem[] = rawNav.map((item) => {

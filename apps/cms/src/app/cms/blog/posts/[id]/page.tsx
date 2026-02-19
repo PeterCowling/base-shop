@@ -6,7 +6,7 @@ import { getPost, updatePost } from "@cms/actions/blog.server";
 
 import { formatTimestamp } from "@acme/date-utils";
 import { getShopById } from "@acme/platform-core/repositories/shop.server";
-import { getSanityConfig } from "@acme/platform-core/shops";
+import { getSanityConfig, type Shop } from "@acme/platform-core/shops";
 
 import DeleteButton from "../DeleteButton.client";
 import PostForm from "../PostForm.client";
@@ -25,7 +25,7 @@ export default async function EditPostPage({ params, searchParams }: Params) {
   if (!shopId) return notFound();
   const shop = await getShopById(shopId);
   if (!shop) return notFound();
-  const sanity = getSanityConfig(shop);
+  const sanity = getSanityConfig(shop as Shop);
   if (!sanity) {
     return (
       <p>

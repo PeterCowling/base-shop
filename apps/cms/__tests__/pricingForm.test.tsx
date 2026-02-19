@@ -1,12 +1,12 @@
 import "@testing-library/jest-dom";
 
 import React, { act } from "react";
-import { fireEvent,render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
-import { checkShopExists } from "@acme/lib";
 import { readPricing } from "@acme/platform-core/repositories/pricing.server";
+import { checkShopExists } from "@acme/platform-core/shops";
 
-jest.mock("@acme/lib", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   checkShopExists: jest.fn(),
 }));
 
@@ -132,4 +132,3 @@ describe("PricingForm", () => {
     expect(schemaErrors.length).toBeGreaterThan(0);
   });
 });
-

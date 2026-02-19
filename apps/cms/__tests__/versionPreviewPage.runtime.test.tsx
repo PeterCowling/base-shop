@@ -39,7 +39,7 @@ describe("Version preview page", () => {
   });
 
   it("renders a runtime preview for a loaded version", async () => {
-    render(<PreviewViewer params={{ token: "test-token" }} />);
+    render(<PreviewViewer params={Promise.resolve({ token: "test-token" })} />);
 
     await waitFor(() =>
       expect(screen.getByTestId("runtime-preview")).toBeInTheDocument(),

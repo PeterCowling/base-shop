@@ -47,6 +47,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  turbopack-smoke:
+    name: Turbopack smoke (Brikette dev)
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+
+      - name: Run Turbopack route smoke
+        timeout-minutes: 8
+        run: node apps/brikette/scripts/e2e/brikette-smoke.mjs --mode=turbopack
+
   staging:
     name: Deploy (staging)
     if: >-

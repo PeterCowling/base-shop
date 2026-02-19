@@ -1,13 +1,13 @@
 ---
 Type: Plan
-Status: Draft
+Status: Complete
 Domain: Platform
 Workstream: Mixed
 Last-reviewed: 2026-02-18
 Relates-to: docs/business-os/business-os-charter.md
 Created: 2026-02-18
 Last-updated: 2026-02-19
-Build-Progress: TASK-00..TASK-10 complete (TASK-10 CHECKPOINT done 2026-02-19); TASK-11 now eligible
+Build-Progress: All tasks complete (TASK-11 done 2026-02-19). Plan Status: Complete.
 Feature-Slug: email-draft-quality-upgrade
 Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
@@ -93,7 +93,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 | TASK-08 | IMPLEMENT | Improve implicit request/thread-context extraction and policy-safe language rules | 80% | M | Complete (2026-02-18) | TASK-04, TASK-13 | TASK-09 |
 | TASK-09 | IMPLEMENT | Add end-to-end evaluation harness + non-regression command contract | 80% | M | Complete (2026-02-18) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Horizon checkpoint — activate LLM refinement wave and define TASK-11 scope | 95% | S | Complete (2026-02-19) | TASK-02, TASK-09 | TASK-11 |
-| TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | 80% | M | Pending | TASK-10 | - |
+| TASK-11 | IMPLEMENT | Implement `draft_refine` LLM stage MCP tool with fallback and attribution metadata | 80% | M | Complete (2026-02-19) | TASK-10 | - |
 | TASK-12 | INVESTIGATE | Define knowledge injection approach: injection timing, citation rendering, sources_used schema, sanitisation pass order | 80% | S | Complete (2026-02-18) | TASK-05 | TASK-07 |
 | TASK-13 | INVESTIGATE | Verify thread snippet sufficiency for context deduplication; define expanded request pattern set and false-positive rate | 80% | S | Complete (2026-02-18) | TASK-04 | TASK-08 |
 
@@ -602,7 +602,7 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/mcp-server/src/tools/draft-refine.ts`, `packages/mcp-server/src/tools/index.ts`, `packages/mcp-server/package.json`, `packages/mcp-server/src/__tests__/draft-refine.test.ts`
 - **Depends on:** TASK-10
 - **Blocks:** -
@@ -639,6 +639,15 @@ This plan converts the fact-find into a staged mixed-track execution path that i
   - Rollback: unregister tool from `index.ts` dispatch table; revert `package.json` SDK addition.
 - **Documentation impact:**
   - Update ops-inbox skill to include `draft_refine` as optional refinement step after `draft_generate`.
+- **Build completion evidence (2026-02-19):**
+  - `packages/mcp-server/src/tools/draft-refine.ts` created: Zod input schema, `draftRefineTools` definition, `handleDraftRefineTool` handler. Uses `claude-haiku-4-5-20251001` via `@anthropic-ai/sdk`. Fallback: try/catch returns original draft with `refinement_applied: false`, `refinement_source: 'none'`. Success path: `refinement_applied: true`, `refinement_source: 'claude-cli'`.
+  - `packages/mcp-server/src/tools/index.ts` updated: import + `...draftRefineTools` in `toolDefinitions` + `draftRefineToolNames` Set + dispatch block.
+  - `@anthropic-ai/sdk: ^0.32.1` added to `packages/mcp-server/package.json` dependencies. Already in workspace (apps/brikette), no new download required.
+  - `__esModule: true` flag required in jest.mock factory to correctly resolve default export under ts-jest CJS+esModuleInterop mode.
+  - Red: 4/4 failures (TC-11-01/02/03 — stub returns `{status: "not_implemented"}`; TC-11-04 — "draft-refine" absent from testing-policy.md).
+  - Green: 4/4 passing. TC-11-03 mock text (58 words) passes `draft_quality_check` — quality check has no word-count hard fail; checks: unanswered_questions, prohibited_claims, missing_plaintext, missing_html, missing_signature.
+  - Refactor: 42 suites, 379 tests across full mcp-server suite — zero regressions.
+  - Commit: `c01e1ad314` — feat(email-quality): TASK-11; 6 files, 388 insertions.
 
 ### TASK-12: Define knowledge injection approach (injection timing, citation rendering, sources_used schema, sanitisation)
 - **Type:** INVESTIGATE
@@ -749,8 +758,8 @@ This plan converts the fact-find into a staged mixed-track execution path that i
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
-- Weighted sum (complete tasks counted at their locked confidence):
-  - S tasks: `85 + 85 + 95 = 265` *(TASK-00, TASK-02, TASK-10)*
-  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 80 + 80 + 80 + 80) = 1460` *(TASK-01, TASK-03..TASK-09, TASK-11 — all promoted/set to ≥80%)*
-- Total weight: `3 + 18 = 21`
-- Overall-confidence: `1725 / 21 = 82.1%` -> **82%**
+- Weighted sum (all tasks complete — locked confidence):
+  - S tasks: `85 + 85 + 95 + 80 + 80 = 425` *(TASK-00, TASK-02, TASK-10, TASK-12, TASK-13)*
+  - M tasks: `2 * (75 + 85 + 85 + 85 + 80 + 80 + 80 + 80 + 80) = 1460` *(TASK-01, TASK-03..TASK-09, TASK-11)*
+- Total weight: `5 + 18 = 23`
+- Overall-confidence: `1885 / 23 = 81.9%` -> **82%**

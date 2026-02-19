@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (Phases 1–3 complete; TASK-17 complete; TASK-18/19/20/21 + TASK-04/05 pending)
+Last-updated: 2026-02-18 (Phases 1–3 complete; TASK-17/18/19 complete; TASK-20/21 + TASK-04/05 pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -106,8 +106,8 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-13     | IMPLEMENT   | Extend CI step: brikette + template-app                  | 90%        | S      | Complete (2026-02-18) | TASK-11, TASK-12| TASK-14         |
 | TASK-14     | CHECKPOINT  | Phase 3 gate — assess Phase 4 (TYPECHECK_ALL + pre-commit)| 95%       | S      | Complete (2026-02-18) | TASK-13         | TASK-17         |
 | TASK-17     | IMPLEMENT   | Fix packages/ui tsconfig.test.typecheck.json exclude bug | 92%        | S      | Complete (2026-02-18) | TASK-14         | TASK-20         |
-| TASK-18     | IMPLEMENT   | packages/auth: create tsconfig + fix errors              | 80%        | M      | Pending | TASK-14         | TASK-20         |
-| TASK-19     | IMPLEMENT   | packages/email: create tsconfig + fix errors             | 80%        | M      | Pending | TASK-14         | TASK-20         |
+| TASK-18     | IMPLEMENT   | packages/auth: create tsconfig + fix errors              | 80%        | M      | Complete (2026-02-18) | TASK-14         | TASK-20         |
+| TASK-19     | IMPLEMENT   | packages/email: create tsconfig + fix errors             | 80%        | M      | Complete (2026-02-18) | TASK-14         | TASK-20         |
 | TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Pending | TASK-17, TASK-18, TASK-19 | TASK-21 |
 | TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Pending | TASK-20, TASK-04 | -              |
 
@@ -937,7 +937,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `packages/auth/tsconfig.test.typecheck.json`, `packages/auth/**/*.test.ts`
 - **Depends on:** TASK-14
 - **Blocks:** TASK-20
@@ -950,6 +950,10 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** Run typecheck first to get error count; if >80 errors escalate to L effort
 - **Rollout / rollback:** Revert test fixes if regressions; CI step added in TASK-20
 - **Documentation impact:** None
+- **Build evidence (2026-02-18):**
+  - Created `packages/auth/tsconfig.test.typecheck.json` extending `./tsconfig.json`; added `allowImportingTsExtensions: true`
+  - Fixed 9 auth test files: `as unknown as X` casts for jest.Mock assignments, `delete (process.env as Record<...>)`, `jest.isolateModulesAsync` cast via `(jest as any)`
+  - `TYPECHECK_FILTER=packages/auth` → 0 errors; commit 15d966a3d4
 
 ---
 
@@ -959,7 +963,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `packages/email/tsconfig.test.typecheck.json`, `packages/email/**/*.test.ts`
 - **Depends on:** TASK-14
 - **Blocks:** TASK-20
@@ -972,6 +976,10 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** Run typecheck first; if >100 errors consider splitting by sub-directory
 - **Rollout / rollback:** Revert test fixes if regressions
 - **Documentation impact:** None
+- **Build evidence (2026-02-18):**
+  - Created `packages/email/tsconfig.test.typecheck.json` extending root config (`../../tsconfig.test.typecheck.json`)
+  - Fixed 30 errors across 11 test files: TS6200 (export {} for 4 script-mode files), TS2459 (Campaign import path), TS2322 (Dirent<Buffer> as any), TS2739 (remove explicit Mock<> annotation), TS2345 (mockResolvedValue never via unknown cast), TS2339 (OpenAI mock this as any)
+  - Pre-commit import sort issue fixed via eslint --fix; `TYPECHECK_FILTER=packages/email/` → 0 errors; commit 7fe1c15789
 
 ---
 

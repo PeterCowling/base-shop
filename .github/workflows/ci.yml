@@ -259,10 +259,10 @@ jobs:
           echo "TURBO_SCM_HEAD=${{ github.sha }}" >> "$GITHUB_ENV"
       - name: Typecheck (affected workspaces)
         run: pnpm exec turbo run typecheck --affected
-      - name: Typecheck tests (Phase-1 packages)
+      - name: Typecheck tests (Phase-1 + Phase-4 packages)
         run: |
           set -e
-          for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo packages/platform-core packages/platform-machine apps/brikette packages/template-app; do
+          for pkg in packages/editorial packages/types packages/stripe packages/i18n packages/design-system packages/design-tokens packages/seo packages/platform-core packages/platform-machine apps/brikette packages/template-app packages/ui packages/auth packages/email/; do
             TYPECHECK_FILTER="$pkg" node scripts/typecheck-tests.mjs
           done
 

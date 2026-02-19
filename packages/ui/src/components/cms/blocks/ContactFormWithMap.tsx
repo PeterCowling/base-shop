@@ -4,7 +4,7 @@ import { useTranslations } from "@acme/i18n";
 import ContactForm from "./ContactForm";
 
 export default function ContactFormWithMap({
-  mapSrc = "https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed",
+  mapSrc = "https://www.google.com/maps/embed/v1/place?key=&q=Hostel+Brikette+Positano+Italy&zoom=13",
 }: {
   mapSrc?: string;
 }) {

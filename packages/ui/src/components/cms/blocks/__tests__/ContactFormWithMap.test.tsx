@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import ContactFormWithMap from "../ContactFormWithMap";
 
 const DEFAULT_SRC =
-  "https://maps.google.com/maps?q=New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed";
+  "https://www.google.com/maps/embed/v1/place?key=&q=Hostel+Brikette+Positano+Italy&zoom=13";
 
 describe("ContactFormWithMap", () => {
   it("renders form and iframe with default mapSrc in a grid", () => {

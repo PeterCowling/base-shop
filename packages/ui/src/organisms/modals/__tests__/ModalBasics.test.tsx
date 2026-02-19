@@ -104,7 +104,7 @@ describe("Modal primitives integration", () => {
     await userEvent.click(screen.getByRole("button", { name: "Done" }));
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
-  it("renders location iframe when open", async () => {
+  it("renders location fallback link when open (no mapsEmbedKey)", async () => {
     const handleClose = jest.fn();
     render(
       <LocationModal
@@ -115,7 +115,10 @@ describe("Modal primitives integration", () => {
       />,
     );
 
-    expect(await screen.findByTitle("Find us")).toBeInTheDocument();
+    // No key → fallback link, no iframe
+    expect(screen.queryByTitle("Find us")).not.toBeInTheDocument();
+    const fallbackLink = await screen.findByRole("link", { name: "Find us" });
+    expect(fallbackLink).toHaveAttribute("href", expect.stringContaining("google.com/maps"));
     await userEvent.click(screen.getAllByRole("button", { name: "Close" })[0]);
     expect(handleClose).toHaveBeenCalled();
   });
@@ -136,6 +139,78 @@ describe("Modal primitives integration", () => {
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 
+});
+
+// ---------------------------------------------------------------------------
+// TASK-03: LocationModal Maps Embed API v1 (TC-01–TC-04)
+// ---------------------------------------------------------------------------
+describe("TASK-03: LocationModal Maps Embed API v1 (TC-01–TC-04)", () => {
+  it("TC-01: renders v1 place embed when mapsEmbedKey provided", async () => {
+    render(
+      <LocationModal
+        isOpen
+        onClose={jest.fn()}
+        copy={locationCopy}
+        hostelAddress="Via Roma"
+        mapsEmbedKey="test-key"
+      />,
+    );
+    const iframe = await screen.findByTitle("Find us");
+    expect(iframe).toHaveAttribute(
+      "src",
+      expect.stringMatching(/^https:\/\/www\.google\.com\/maps\/embed\/v1\/place\?key=test-key&q=Via%20Roma/),
+    );
+  });
+
+  it("TC-02: renders v1 directions embed when directions active and key provided", async () => {
+    render(
+      <LocationModal
+        isOpen
+        onClose={jest.fn()}
+        copy={locationCopy}
+        hostelAddress="Via Roma"
+        mapsEmbedKey="test-key"
+      />,
+    );
+    const input = screen.getByPlaceholderText("City");
+    await userEvent.type(input, "Naples");
+    await userEvent.click(screen.getByRole("button", { name: "Get directions" }));
+    const iframe = await screen.findByTitle("Find us");
+    expect(iframe).toHaveAttribute(
+      "src",
+      expect.stringMatching(/^https:\/\/www\.google\.com\/maps\/embed\/v1\/directions\?key=test-key/),
+    );
+  });
+
+  it("TC-03: renders fallback link when no mapsEmbedKey provided", async () => {
+    render(
+      <LocationModal
+        isOpen
+        onClose={jest.fn()}
+        copy={locationCopy}
+        hostelAddress="Via Roma"
+      />,
+    );
+    expect(screen.queryByTitle("Find us")).not.toBeInTheDocument();
+    const fallbackLink = await screen.findByRole("link", { name: "Find us" });
+    expect(fallbackLink).toHaveAttribute("href", expect.stringContaining("google.com/maps"));
+  });
+
+  it("TC-04: encodes special characters in hostelAddress", async () => {
+    render(
+      <LocationModal
+        isOpen
+        onClose={jest.fn()}
+        copy={locationCopy}
+        hostelAddress="Via Roma & Co., 42"
+        mapsEmbedKey="test-key"
+      />,
+    );
+    const iframe = await screen.findByTitle("Find us");
+    const src = iframe.getAttribute("src") ?? "";
+    expect(src).toContain("%26"); // & was URI-encoded
+    expect(src).not.toContain("Via Roma & Co"); // raw address not in URL
+  });
 });
 
 // ---------------------------------------------------------------------------

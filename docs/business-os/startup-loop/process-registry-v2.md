@@ -1,9 +1,9 @@
 ---
 Type: Process-Registry
 Status: Active
-Version: 2.0.0
+Version: 2.0.1
 Created: 2026-02-18
-Last-updated: 2026-02-18
+Last-updated: 2026-02-19
 Owner: startup-loop maintainers
 Taxonomy-Ref: docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml
 Assignment-Ref: docs/business-os/startup-loop/process-assignment-v2.yaml
@@ -29,6 +29,8 @@ Stage sequencing, join barriers, run packet structure, and gate conditions remai
 This registry answers: *"During each startup-loop run and weekly operating cycle, which process activities should be executed, by whom, and with what inputs/outputs?"* It complements the stage engine by specifying the operational substance within and between stages.
 
 **Canonical artifact paths for `lp-*` skill outputs** remain in `docs/business-os/startup-loop/artifact-registry.md`. This registry references those paths but does not replace them.
+
+**Consolidated operator briefing integrity** is governed by `docs/business-os/startup-loop/briefing-contract-schema-v1.md` (metadata contract, status taxonomy, contradiction keys, and T1 operator-card requirements). This registry references that contract for S10 operations and does not duplicate it.
 
 ---
 
@@ -700,6 +702,7 @@ Every stage in `loop-spec.yaml` has at least one linked workstream process respo
 | **Inputs** | KPI Pack (DATA-1); delivery report (OPS-2); risk register highlights (FIN-3); experiment readouts (CDI-4); reconciliation pack (FIN-2) |
 | **Outputs / artifacts** | Weekly Review Notes; Decision Log; updated plan for next week; improvement backlog updates |
 | **Artifact path** | Governed by `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` — authoritative S10 contract |
+| **Briefing contract** | Consolidated briefing outputs MUST satisfy `docs/business-os/startup-loop/briefing-contract-schema-v1.md`; lint enforcement responsibility is defined in `artifact-registry.md` |
 | **Entry criteria** | Required inputs published ≥24 hours before meeting |
 | **Exit criteria** | Decisions logged with owners; next-week plan drafted; backlog updated |
 | **Exception linkage** | All exception outcomes are recorded in the DATA-4 decision log |
@@ -737,7 +740,7 @@ All processes active. Cadences as specified per process. Monthly deep audit mand
 
 **VC-04-A — Structural consistency:** Every process entry in this registry includes `Workstream`, `Workflow phases`, `Primary phase`, and `Activation` rows. All values match the corresponding rows in `process-assignment-v2.yaml`. 28/28 process entries verified. ✓
 
-**VC-04-B — Authority clarity:** Registry header states stage ordering authority remains `loop-spec.yaml` (see §1). S10 DATA-4 non-duplication rule is preserved — DATA-4 entry is reference-only and defers to `weekly-kpcs-decision-prompt.md`. ✓
+**VC-04-B — Authority clarity:** Registry header states stage ordering authority remains `loop-spec.yaml` (see §1). S10 DATA-4 non-duplication rule is preserved — DATA-4 entry is reference-only and defers to `weekly-kpcs-decision-prompt.md`. Consolidated briefing integrity is delegated to `briefing-contract-schema-v1.md` and is not duplicated as a second S10 prompt contract. ✓
 
 **VC-04-C — Migration safety:** `process-registry-v1.md` is tombstoned with an archived banner pointing to this file. No conflicting process definitions exist between v1 (archived) and v2 (authoritative). ✓
 

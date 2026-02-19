@@ -1,11 +1,11 @@
 ---
 Type: Schema-Contract
 Status: Active
-Version: 1.0.0
+Version: 1.1.0
 Domain: Venture-Studio
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17
+Last-updated: 2026-02-19
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md
 Related-capability: docs/business-os/startup-loop/marketing-sales-capability-contract.md
@@ -27,12 +27,14 @@ Skills MUST use canonical paths from this registry. Stale or legacy paths listed
 | `channels` | `lp-channels` | S6B | `docs/business-os/startup-baselines/<BIZ>-channels.md` | Selected channels (2-3), constraints (stop condition, denominator target, quality metric, owner, review date, spend/timebox), 30-day GTM timeline, budget allocation | `lp-forecast`, `lp-seo`, `lp-fact-find` | frontmatter `artifact: channel-strategy` |
 | `forecast` | `lp-forecast` | S3 | `docs/business-os/startup-baselines/<BIZ>/S3-forecast/YYYY-MM-DD-lp-forecast.user.md` | P10/P50/P90 scenario bands, unit economics (CAC/AOV/margin/CVR), channel ranges, first-14-day validation plan, assumption register | `lp-prioritize`, startup-loop S4 baseline | Dated filename; frontmatter `artifact: forecast` |
 | `seo` | `lp-seo` | S6B companion | `docs/business-os/strategy/<BIZ>/seo/YYYY-MM-DD-<phase>-<BIZ>.user.md` | Phase-specific output (keyword-universe / content-clusters / serp-briefs / tech-audit / snippet-optimization) | `draft-marketing`, `lp-launch-qa`, `lp-metrics` | Dated filename; phase tag in filename |
+| `briefing_contract` | startup-loop maintainers (`lp-build` workflow) | S6/S10 operator briefing | `docs/business-os/startup-loop/briefing-contract-schema-v1.md` | Required metadata keys (`business`, `artifact`, `status`, `owner`, `last_updated`, `source_of_truth`, `depends_on`, `decisions`); status taxonomy; contradiction key set; T1 operator-card schema | `scripts/src/startup-loop/contract-lint.ts`, `docs/business-os/startup-loop-output-registry.user.html`, `/lp-build` task contracts | frontmatter `Type: Schema-Contract`, `Version: 1.0.0` |
 
 ## Path Namespace Rules
 
 1. **Flat-file artifacts** (`offer`, `channels`): `docs/business-os/startup-baselines/<BIZ>-<artifact>.md` — no date prefix; overwritten on each run. Single authoritative file per business.
 2. **Dated artifacts** (`forecast`): `docs/business-os/startup-baselines/<BIZ>/<stage>-<type>/YYYY-MM-DD-*.user.md` — one file per run; consumers read the most recent file in the directory unless a specific date is required.
 3. **Phase artifacts** (`seo`): `docs/business-os/strategy/<BIZ>/seo/YYYY-MM-DD-<phase>-<BIZ>.user.md` — one file per phase per run; phases build on each other (keyword-universe → content-clusters → serp-briefs → tech-audit → snippet-optimization).
+4. **Briefing integrity contract** (`briefing_contract`): `docs/business-os/startup-loop/briefing-contract-schema-v1.md` — single authoritative schema for consolidated briefing metadata/taxonomy/contradiction checks.
 
 ## S4 Join Barrier Artifact Keys
 
@@ -69,7 +71,7 @@ lp-readiness (S1)
 
 ## Validation Rules (for lint tooling)
 
-When `TASK-12` implements contract lint tests, apply these checks per skill:
+When startup-loop contract lint runs, apply these checks:
 
 | Check | Rule |
 |---|---|
@@ -78,11 +80,16 @@ When `TASK-12` implements contract lint tests, apply these checks per skill:
 | `forecast-consumer-path` | Any consumer of `lp-forecast` output MUST reference `docs/business-os/startup-baselines/<BIZ>/S3-forecast/` |
 | `seo-consumer-path` | Any consumer of `lp-seo` output MUST reference `docs/business-os/strategy/<BIZ>/seo/` |
 | `no-legacy-path` | Paths in the Legacy Path Compatibility table MUST NOT appear in skill Input sections |
+| `briefing-required-fields` | Briefing source artifacts MUST expose canonical lowercase metadata fields listed in `briefing-contract-schema-v1.md` |
+| `briefing-status-taxonomy` | Briefing source artifact status MUST be one of `Draft`, `Active`, `Frozen`, `Superseded` (legacy values only allowed during explicit preflight mode) |
+| `briefing-contradiction-keys` | P0 keys (`primary_channel_surface`, `primary_icp`, `hero_sku_price_corridor`, `claim_confidence`) MUST not contradict across `source_of_truth: true` artifacts |
+| `briefing-operator-card` | Consolidated briefing output MUST contain required T1 operator-card blocks defined by `briefing-contract-schema-v1.md` |
 
 ## References
 
 - Capability contract: `docs/business-os/startup-loop/marketing-sales-capability-contract.md` (CAP-01 through CAP-07)
 - Demand Evidence Pack schema: `docs/business-os/startup-loop/demand-evidence-pack-schema.md`
+- Briefing contract schema: `docs/business-os/startup-loop/briefing-contract-schema-v1.md`
 - Stage operator dictionary: `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
 - Loop spec: `docs/business-os/startup-loop/loop-spec.yaml`
 - Related plan: `docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md` (TASK-06)

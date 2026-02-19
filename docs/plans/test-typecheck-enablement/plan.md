@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (Phases 1–4 complete; TASK-17/18/19/20/21 complete; Phase 5 seeded TASK-22/23/24/25; TASK-04/05 (cms) still pending)
+Last-updated: 2026-02-19 (Phases 1–4 complete; TASK-22 complete; TASK-23/24/25 + TASK-04/05 (cms) pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -110,7 +110,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-19     | IMPLEMENT   | packages/email: create tsconfig + fix errors             | 80%        | M      | Complete (2026-02-18) | TASK-14         | TASK-20         |
 | TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Complete (2026-02-18) | TASK-17, TASK-18, TASK-19 | TASK-21 |
 | TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Complete (2026-02-18) | TASK-20, TASK-04 | TASK-22      |
-| TASK-22     | IMPLEMENT   | Phase 5 small batch: zod-utils, telemetry, date-utils, themes, email-templates | 75% | M | Pending | TASK-21 | TASK-23 |
+| TASK-22     | IMPLEMENT   | Phase 5 small batch: zod-utils, telemetry, date-utils, themes, email-templates | 75% | M | Complete (2026-02-19) | TASK-21 | TASK-23 |
 | TASK-23     | IMPLEMENT   | Phase 5: packages/lib tsconfig + error fixes             | 72%        | M      | Pending | TASK-21         | TASK-24         |
 | TASK-24     | IMPLEMENT   | Phase 5: Extend CI for Phase 5 packages                  | 85%        | S      | Pending | TASK-22, TASK-23, TASK-04 | TASK-25 |
 | TASK-25     | CHECKPOINT  | Phase 5 gate — assess remaining 30+ packages + TYPECHECK_ALL readiness | 85% | S | Pending | TASK-24 | -      |
@@ -1060,7 +1060,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/zod-utils/tsconfig.test.typecheck.json`, `packages/telemetry/tsconfig.test.typecheck.json`, `packages/date-utils/tsconfig.test.typecheck.json`, `packages/themes/tsconfig.test.typecheck.json`, `packages/email-templates/tsconfig.test.typecheck.json`, and test files in each
 - **Depends on:** TASK-21
 - **Blocks:** TASK-24
@@ -1073,6 +1073,11 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** Run typecheck first on each; escalate if any has >30 errors
 - **Rollout / rollback:** Revert individual package if errors surface
 - **Documentation impact:** None
+- **Build evidence (2026-02-19):**
+  - zod-utils, telemetry, date-utils, email-templates: 0 errors immediately; standard root-config extend pattern
+  - themes: 1 error in contrast.test.ts — `entry.dark` access on union type that includes entries without `dark` (e.g. transition timing `{light: "280ms"}`); fixed with `(entry as any).dark ?? entry.light`
+  - themes tsconfig covers all sub-packages (base, bcd, brandx, dark, prime) via nested globs since CI script only scans one level deep
+  - All 5 verified at 0 errors: `TYPECHECK_FILTER=packages/<pkg>` → Test typecheck passed; commit 6ee14333c9
 
 ---
 

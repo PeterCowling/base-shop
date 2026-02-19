@@ -1,12 +1,20 @@
 /** @jest-environment node */
 
 /**
- * TASK-11: Tests for the draft_refine MCP tool (additive LLM refinement stage).
+ * TASK-11 v2: Tests for the reworked draft_refine MCP tool (attestation pattern).
  *
- * TC-11-01: Successful refinement → refinement_applied: true, refinement_source: 'claude-cli'
- * TC-11-02: API failure → graceful fallback, original draft unchanged, refinement_applied: false
- * TC-11-03: Refined output passes draft_quality_check
- * TC-11-04: Governed runner command is documented in docs/testing-policy.md
+ * Claude (CLI) performs the refinement and submits refinedBodyPlain.
+ * draft_refine validates quality, attests, and derives bodyHtml — no API calls.
+ *
+ * TC-01-01: valid refinement (text changed, quality passes) → refinement_applied: true,
+ *           refinement_source: 'claude-cli', quality.passed: true, bodyHtml has DOCTYPE
+ * TC-01-02: identity check (refinedBodyPlain === originalBodyPlain) → refinement_applied: false
+ * TC-01-03: quality failure (adversarial text) → refinement_applied: true, quality.passed: false
+ * TC-01-04: old-schema payload (draft field, no refinedBodyPlain) → errorResult migration message
+ * TC-01-05: missing refinedBodyPlain (Zod fail) → errorResult
+ * TC-01-06: no @anthropic-ai/sdk import in draft-refine.ts source
+ * TC-01-07: typecheck + lint — run separately via pnpm --filter @acme/mcp-server
+ * TC-01-08: governed runner — this file passing is the contract
  *
  * Run command:
  *   pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage
@@ -14,21 +22,7 @@
 
 import { readFileSync } from "node:fs";
 
-import Anthropic from "@anthropic-ai/sdk";
-
-import { handleDraftQualityTool } from "../tools/draft-quality-check";
 import { handleDraftRefineTool } from "../tools/draft-refine";
-
-// ---------------------------------------------------------------------------
-// Mock @anthropic-ai/sdk — factory avoids hoisting issues
-// ---------------------------------------------------------------------------
-
-jest.mock("@anthropic-ai/sdk", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
-
-const MockAnthropic = Anthropic as jest.Mock;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -38,16 +32,24 @@ function parseResult<T>(result: { content: Array<{ text: string }> }): T {
   return JSON.parse(result.content[0].text) as T;
 }
 
+function isErrorResult(result: unknown): boolean {
+  return (
+    typeof result === "object" &&
+    result !== null &&
+    "isError" in result &&
+    (result as { isError: boolean }).isError === true
+  );
+}
+
+function errorText(result: { content: Array<{ text: string }> }): string {
+  return result.content[0].text;
+}
+
 type RefinePayload = {
   draft: { bodyPlain: string; bodyHtml: string };
   refinement_applied: boolean;
   refinement_source: string;
-};
-
-type QualityPayload = {
-  passed: boolean;
-  failed_checks: string[];
-  warnings: string[];
+  quality: { passed: boolean; failed_checks: string[]; warnings: string[] };
 };
 
 // ---------------------------------------------------------------------------
@@ -64,42 +66,27 @@ const BASE_ACTION_PLAN = {
   workflow_triggers: { booking_monitor: false },
 };
 
-const BASE_DRAFT = {
-  bodyPlain:
-    "Dear guest, thank you for your message. Check-in is from 2:30pm. We look forward to welcoming you. Best regards, Hostel Brikette",
-  bodyHtml:
-    '<!DOCTYPE html><html><body><p>Dear guest, thank you for your message. Check-in is from 2:30pm. We look forward to welcoming you. Best regards, Hostel Brikette</p></body></html>',
-};
+const ORIGINAL_BODY =
+  "Check-in is from 2:30pm. Best regards, Hostel Brikette";
 
-const REFINED_BODY_TC01 =
-  "Hi there! Thanks for reaching out. Great news — check-in starts at 2:30pm each day. If you happen to arrive earlier, you are welcome to drop your bags with us from 10:30am. We look forward to welcoming you to Hostel Brikette. Warm regards, the Brikette team.";
+// Quality-passing refined text: covers the question, has signature, no prohibited claims
+const REFINED_BODY_PASS =
+  "Dear guest, thank you for reaching out to Hostel Brikette. Check-in is available from 2:30pm each day. If you plan to arrive earlier we are happy to offer complimentary luggage storage from 10:30am. We look forward to welcoming you very soon. Warm regards, the Brikette team.";
 
-const REFINED_BODY_TC03 =
-  "Dear Alice, thank you so much for reaching out to us at Hostel Brikette! We are excited to welcome you soon. Regarding check-in: our standard check-in time is from 2:30pm. If you arrive earlier, we offer complimentary luggage storage from 10:30am so you can start exploring the city right away. Should you have any other questions, please do not hesitate to ask. We look forward to seeing you very soon. Warm regards, the Brikette team.";
+// Adversarial: contains prohibited claim
+const REFINED_BODY_FAIL =
+  "Availability confirmed for your dates. We look forward to hosting you. Best regards, Hostel Brikette";
 
 // ---------------------------------------------------------------------------
-// TC-11-01: Successful refinement
+// TC-01-01: Successful refinement
 // ---------------------------------------------------------------------------
 
-describe("TASK-11: TC-11-01 Successful refinement", () => {
-  beforeEach(() => {
-    MockAnthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{ type: "text", text: REFINED_BODY_TC01 }],
-        }),
-      },
-    }));
-  });
-
-  afterEach(() => {
-    MockAnthropic.mockReset();
-  });
-
-  it("TC-11-01 returns refinement_applied: true and refinement_source: claude-cli", async () => {
+describe("TASK-11 v2: TC-01-01 Successful refinement", () => {
+  it("returns refinement_applied: true, claude-cli, quality.passed: true, DOCTYPE html", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
-      draft: BASE_DRAFT,
+      originalBodyPlain: ORIGINAL_BODY,
+      refinedBodyPlain: REFINED_BODY_PASS,
     });
 
     const payload = parseResult<RefinePayload>(
@@ -108,33 +95,22 @@ describe("TASK-11: TC-11-01 Successful refinement", () => {
 
     expect(payload.refinement_applied).toBe(true);
     expect(payload.refinement_source).toBe("claude-cli");
-    expect(payload.draft.bodyPlain.length).toBeGreaterThan(0);
-    // Original HTML is preserved (operator can regenerate if needed)
-    expect(payload.draft.bodyHtml).toBe(BASE_DRAFT.bodyHtml);
+    expect(payload.quality.passed).toBe(true);
+    expect(payload.draft.bodyPlain).toBe(REFINED_BODY_PASS);
+    expect(payload.draft.bodyHtml).toContain("<!DOCTYPE html>");
   });
 });
 
 // ---------------------------------------------------------------------------
-// TC-11-02: API failure fallback
+// TC-01-02: Identity check — no-op refinement
 // ---------------------------------------------------------------------------
 
-describe("TASK-11: TC-11-02 API failure fallback", () => {
-  beforeEach(() => {
-    MockAnthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockRejectedValue(new Error("API unavailable")),
-      },
-    }));
-  });
-
-  afterEach(() => {
-    MockAnthropic.mockReset();
-  });
-
-  it("TC-11-02 returns refinement_applied: false with original draft unchanged", async () => {
+describe("TASK-11 v2: TC-01-02 Identity check (no-op)", () => {
+  it("returns refinement_applied: false when refinedBodyPlain equals originalBodyPlain", async () => {
     const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
-      draft: BASE_DRAFT,
+      originalBodyPlain: ORIGINAL_BODY,
+      refinedBodyPlain: ORIGINAL_BODY, // same text
     });
 
     const payload = parseResult<RefinePayload>(
@@ -143,65 +119,81 @@ describe("TASK-11: TC-11-02 API failure fallback", () => {
 
     expect(payload.refinement_applied).toBe(false);
     expect(payload.refinement_source).toBe("none");
-    expect(payload.draft.bodyPlain).toBe(BASE_DRAFT.bodyPlain);
-    expect(payload.draft.bodyHtml).toBe(BASE_DRAFT.bodyHtml);
+    expect(payload.draft.bodyPlain).toBe(ORIGINAL_BODY);
   });
 });
 
 // ---------------------------------------------------------------------------
-// TC-11-03: Refined output passes draft_quality_check
+// TC-01-03: Quality failure — adversarial refined text
 // ---------------------------------------------------------------------------
 
-describe("TASK-11: TC-11-03 Quality gate passes on refined draft", () => {
-  beforeEach(() => {
-    MockAnthropic.mockImplementation(() => ({
-      messages: {
-        create: jest.fn().mockResolvedValue({
-          content: [{ type: "text", text: REFINED_BODY_TC03 }],
-        }),
-      },
-    }));
-  });
-
-  afterEach(() => {
-    MockAnthropic.mockReset();
-  });
-
-  it("TC-11-03 refined bodyPlain passes draft_quality_check", async () => {
-    const refineResult = await handleDraftRefineTool("draft_refine", {
+describe("TASK-11 v2: TC-01-03 Quality failure (adversarial text)", () => {
+  it("returns refinement_applied: true with quality.passed: false and named failed_checks", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
       actionPlan: BASE_ACTION_PLAN,
-      draft: BASE_DRAFT,
+      originalBodyPlain: ORIGINAL_BODY,
+      refinedBodyPlain: REFINED_BODY_FAIL,
     });
 
-    const refined = parseResult<RefinePayload>(
-      refineResult as { content: Array<{ text: string }> },
+    const payload = parseResult<RefinePayload>(
+      result as { content: Array<{ text: string }> },
     );
 
-    expect(refined.refinement_applied).toBe(true);
-
-    const qualityResult = await handleDraftQualityTool("draft_quality_check", {
-      actionPlan: BASE_ACTION_PLAN,
-      draft: {
-        bodyPlain: refined.draft.bodyPlain,
-        bodyHtml: `<!DOCTYPE html><html><body><p>${refined.draft.bodyPlain}</p></body></html>`,
-      },
-    });
-
-    const quality = parseResult<QualityPayload>(
-      qualityResult as { content: Array<{ text: string }> },
-    );
-
-    expect(quality.passed).toBe(true);
+    // Refinement was applied (Claude submitted it) even though quality failed
+    expect(payload.refinement_applied).toBe(true);
+    expect(payload.quality.passed).toBe(false);
+    expect(payload.quality.failed_checks.length).toBeGreaterThan(0);
+    for (const check of payload.quality.failed_checks) {
+      expect(check).toMatch(/^[a-z][a-z_]+$/);
+    }
   });
 });
 
 // ---------------------------------------------------------------------------
-// TC-11-04: Command contract documentation
+// TC-01-04: Old-schema guard
 // ---------------------------------------------------------------------------
 
-describe("TASK-11: TC-11-04 Command contract documented", () => {
-  it("TC-11-04 governed runner command is present in docs/testing-policy.md", () => {
-    const policy = readFileSync("docs/testing-policy.md", "utf-8");
-    expect(policy).toContain("draft-refine");
+describe("TASK-11 v2: TC-01-04 Old-schema guard", () => {
+  it("returns errorResult with migration message when draft field is present and refinedBodyPlain is absent", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: BASE_ACTION_PLAN,
+      // old v1 schema shape
+      draft: { bodyPlain: ORIGINAL_BODY, bodyHtml: "<p>old</p>" },
+    });
+
+    expect(isErrorResult(result)).toBe(true);
+    const text = errorText(result as { content: Array<{ text: string }> });
+    expect(text).toContain("originalBodyPlain");
+    expect(text).toContain("refinedBodyPlain");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-01-05: Missing refinedBodyPlain (Zod parse fail)
+// ---------------------------------------------------------------------------
+
+describe("TASK-11 v2: TC-01-05 Missing refinedBodyPlain", () => {
+  it("returns errorResult when refinedBodyPlain is absent", async () => {
+    const result = await handleDraftRefineTool("draft_refine", {
+      actionPlan: BASE_ACTION_PLAN,
+      originalBodyPlain: ORIGINAL_BODY,
+      // refinedBodyPlain omitted
+    });
+
+    expect(isErrorResult(result)).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-01-06: No @anthropic-ai/sdk import in draft-refine.ts
+// ---------------------------------------------------------------------------
+
+describe("TASK-11 v2: TC-01-06 No SDK import in source", () => {
+  it("draft-refine.ts source does not import @anthropic-ai/sdk", () => {
+    const source = readFileSync(
+      "packages/mcp-server/src/tools/draft-refine.ts",
+      "utf-8",
+    );
+    expect(source).not.toContain("@anthropic-ai/sdk");
   });
 });

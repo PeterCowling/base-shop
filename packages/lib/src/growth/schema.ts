@@ -1,5 +1,5 @@
-import { createHash } from "node:crypto";
-
+import { sha256 } from "@noble/hashes/sha2";
+import { bytesToHex } from "@noble/hashes/utils";
 import { z } from "zod";
 
 import {
@@ -370,7 +370,7 @@ export function canonicalStringify(value: unknown): string {
 
 export function createThresholdSetHash(stages: Record<GrowthStageKey, StageThresholdDefinition[]>): string {
   const canonicalPayload = canonicalStringify(stages);
-  const digest = createHash("sha256").update(canonicalPayload).digest("hex");
+  const digest = bytesToHex(sha256(canonicalPayload));
   return `sha256:${digest}`;
 }
 

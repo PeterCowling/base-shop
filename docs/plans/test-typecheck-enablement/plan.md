@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-19 (Phases 1–4 complete; TASK-22 + TASK-23 + TASK-24 complete; TASK-25 + TASK-04/05 (cms) pending)
+Last-updated: 2026-02-19 (Phases 1–4 + Phase 5 complete; TASK-04 replanned 75%→85% M→L; TASK-04/05 (cms) remaining)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -92,7 +92,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-01     | INVESTIGATE | Verify packages/** test typecheck passes clean           | 90%        | S      | Complete (2026-02-18) | -               | TASK-15         |
 | TASK-02     | IMPLEMENT   | ~~Add CI step for packages/** + fix any errors found~~   | 35%        | M      | Superseded | TASK-01      | -               |
 | TASK-03     | INVESTIGATE | Enumerate apps/cms test type errors                      | 88%        | S      | Complete (2026-02-18) | -               | TASK-04         |
-| TASK-04     | IMPLEMENT   | Fix apps/cms test type errors (deferred post-TASK-06)    | 75%        | M      | Pending | TASK-03, TASK-06| TASK-05         |
+| TASK-04     | IMPLEMENT   | Fix apps/cms test type errors (deferred post-TASK-06)    | 85%        | L      | Pending | TASK-03, TASK-06| TASK-05         |
 | TASK-05     | IMPLEMENT   | Extend CI step to cover apps/cms                         | 90%        | S      | Pending | TASK-04, TASK-16| TASK-06 *(post-defer)* |
 | TASK-15     | IMPLEMENT   | Fix 8 small packages + create per-package typecheck configs | 88%     | M      | Complete (2026-02-18) | TASK-01         | TASK-16         |
 | TASK-16     | IMPLEMENT   | Add CI step for 7 fixed small packages                   | 90%        | S      | Complete (2026-02-18) | TASK-15         | TASK-06         |
@@ -113,7 +113,7 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-22     | IMPLEMENT   | Phase 5 small batch: zod-utils, telemetry, date-utils, themes, email-templates | 75% | M | Complete (2026-02-19) | TASK-21 | TASK-23 |
 | TASK-23     | IMPLEMENT   | Phase 5: packages/lib tsconfig + error fixes             | 83%        | M      | Complete (2026-02-19) | TASK-21 | TASK-24 |
 | TASK-24     | IMPLEMENT   | Phase 5: Extend CI for Phase 5 packages                  | 85%        | S      | Complete (2026-02-19) | TASK-22, TASK-23 | TASK-25 |
-| TASK-25     | CHECKPOINT  | Phase 5 gate — assess remaining 30+ packages + TYPECHECK_ALL readiness | 85% | S | Pending | TASK-24 | -      |
+| TASK-25     | CHECKPOINT  | Phase 5 gate — assess remaining 30+ packages + TYPECHECK_ALL readiness | 85% | S | Complete (2026-02-19) | TASK-24 | -  |
 
 ## Parallelism Guide
 | Wave | Tasks           | Prerequisites   | Notes                                                      |
@@ -272,14 +272,14 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
-- **Effort:** M
+- **Effort:** L
 - **Status:** Pending
-- **Affects:** `apps/cms/__tests__/**/*.ts`, `apps/cms/src/**/*.test.ts`
+- **Affects:** `apps/cms/__tests__/**/*.ts`, `apps/cms/src/**/*.test.ts`, `test/__mocks__/telemetryMock.ts`
 - **Depends on:** TASK-03, TASK-06
 - **Blocks:** TASK-05
-- **Confidence:** 75%
-  - Implementation: 75% — error count unknown until TASK-03; CMS tests include auth/Stripe/theme tests which may have complex mock type issues
-  - Approach: 80% — standard TypeScript error fixing; add explicit types to mocks and helpers
+- **Confidence:** 85%
+  - Implementation: 85% — 148 errors (E3 evidence); 7 distinct fix patterns; telemetry mock root cause identified
+  - Approach: 85% — TC-03 relaxed; mock fixes + type-only production-transitive source fixes
   - Impact: 85% — required before adding CMS to CI gate
 - **Acceptance:**
   - `TYPECHECK_FILTER=apps/cms node scripts/typecheck-tests.mjs` exits 0
@@ -288,15 +288,15 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Validation contract (TC-XX):**
   - TC-01: `TYPECHECK_FILTER=apps/cms node scripts/typecheck-tests.mjs` exits 0 after fixes
   - TC-02: `pnpm --filter cms test` passes with same pass/fail counts as before
-  - TC-03: No production source files modified (only `__tests__/**` and `*.test.ts` files)
+  - TC-03 (relaxed): Production source modifications are type-only (no logic changes); mock/type augmentation files may be updated
 - **Execution plan:**
-  - Red: Enumerate all errors from TASK-03 output
-  - Green: Fix each error (add explicit types, fix mock shapes, use `as const`, add type assertions)
+  - Red: Run `TYPECHECK_FILTER=apps/cms node scripts/typecheck-tests.mjs` — 148 errors confirmed
+  - Green: Fix in priority order: (1) telemetry mock 1-line fix → -13 errors; (2) TS5097 tsconfig/import fix → -13; (3) session.user.role NextAuth augmentation → -5; (4) SanityBlogConfig mock cast → -8; (5) stale @ts-expect-error + removed exports → -8; (6) remaining scattered fixes
   - Refactor: Group similar fixes; prefer type utility functions in test helpers over per-test assertions
-- **Planning validation (required for M):**
-  - Checks run: TASK-03 invocation
-  - Validation artifacts: TASK-03 error list
-  - Unexpected findings: If error count >50, escalate to L effort and add a sub-checkpoint
+- **Planning validation (required for L):**
+  - Checks run: TASK-03 invocation + TASK-25 checkpoint re-run
+  - Validation artifacts: 148-error breakdown, 7 fix patterns, telemetry mock root cause confirmed
+  - Error count >50 → escalated to L effort (planning validation rule triggered)
 - **Scouts:** `apps/cms/__tests__/themePageActions.auth.test.ts` is an untracked new file (per git status); may have type issues
 - **Edge Cases & Hardening:**
   - Mock objects for Prisma/DB may need `as unknown as PrismaClient` casts — acceptable pattern
@@ -308,6 +308,13 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 - **Documentation impact:** None
 - **Notes / references:**
   - Common fix patterns: `const mock = jest.fn() as jest.MockedFunction<typeof fn>`, explicit return types on test helpers
+
+#### Re-plan Update (2026-02-19) — TASK-25 Checkpoint
+- Confidence: 75% → **85%** (E3: re-ran typecheck; 148 errors, all patterns identified)
+- Effort: M → **L** (148 > 50 threshold; planning validation rule triggered)
+- Key findings: (1) TS2554 cluster (13 errors) caused by `test/__mocks__/telemetryMock.ts` exporting `track()` with 0 args — 1-line fix; (2) 57 prod-source files appear because test tsconfig picks them up transitively; fixes are type-only; (3) TC-03 relaxed to allow transitive source fixes
+- Fix priority: telemetryMock.ts → allowImportingTsExtensions → NextAuth session augmentation → SanityBlogConfig casts → stale directives → remaining 20-30 scattered
+- TC-03 relaxed: production source changes are type-only (no logic changes)
 
 #### Re-plan Update (2026-02-18)
 - Confidence: 75% unchanged (Evidence: TASK-03 confirmed 178 errors across ~70 files, including transitive source files)
@@ -1137,13 +1144,13 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
 - **Depends on:** TASK-24
 - **Blocks:** -
 - **Confidence:** 85%
 - **Acceptance:**
-  - Phase 5 CI confirmed passing
+  - Phase 5 CI confirmed passing ✓
   - Decision on TYPECHECK_ALL=1 (likely deferred; still 30+ uncovered)
   - Decision on pre-commit hook (viable to gate small number of CI-passing packages)
   - Plan updated with Phase 6 task seeds or closed if no further expansion needed
@@ -1154,6 +1161,14 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Validation contract:** `/lp-replan` run; Phase 6 tasks defined or plan closed
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Plan updated with Phase 6 tasks or Status: Complete
+- **Checkpoint evidence (2026-02-19):**
+  - CI loop (20 pkgs): 3m46s — well within 15-min budget ✓
+  - TYPECHECK_ALL: **Deferred** — 30+ uncovered packages/apps; not viable until they are covered
+  - Pre-commit test typecheck: **Deferred** — CI already gates; ~4-min overhead per commit is too high
+  - Further package expansion (cms-ui 245 tests, reception 336 tests): **Out of scope** — separate plan if needed
+  - TASK-04 replanned: 75% → 85%, M → L, TC-03 relaxed, 148 errors with all root causes identified
+  - TASK-05: Confirmed ready at 90%; no replan needed
+  - Plan to close with Status: Complete after TASK-04 + TASK-05 complete
 
 ---
 

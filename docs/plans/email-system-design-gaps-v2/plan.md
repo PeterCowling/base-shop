@@ -76,7 +76,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Build-eligible now: TASK-11 (>=80 and unblocked).
+  - Build-eligible now: none (remaining runnable `IMPLEMENT` tasks are currently <80 confidence; run `/lp-replan` to raise confidence before next `/lp-build` cycle).
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -94,7 +94,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 75% | M | Pending | TASK-01 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Pending | TASK-01, TASK-03 | TASK-06 |
-| TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Pending | - | TASK-06 |
+| TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
 | TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Pending | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-07, TASK-10 |
 | TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 75% | M | Pending | TASK-01, TASK-03, TASK-06 | TASK-08 |
 | TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 75% | M | Pending | TASK-03, TASK-06 | - |
@@ -373,7 +373,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Affects:** `packages/mcp-server/src/tools/health.ts` (or equivalent health utilities), `docs/guides/brikette-email-system.html`, `packages/mcp-server/src/__tests__/health*.test.ts`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -399,6 +399,10 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: keep checks as manual tool command fallback.
 - **Documentation impact:** update startup checklist and troubleshooting section.
 - **Notes / references:** fact-find V2-08.
+- **Build evidence:** Validation PASS (2026-02-19):
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/health.test.ts --maxWorkers=2`
+  - `pnpm --filter @acme/mcp-server typecheck`
+  - `pnpm --filter @acme/mcp-server lint` (existing package warnings only; no task-scoped lint errors)
 
 ### TASK-06: Horizon checkpoint - reassess downstream plan
 - **Type:** CHECKPOINT

@@ -5,7 +5,7 @@ import {
   localeSchema,
   uiLocaleSchema,
 } from "./Product";
-import { lateFeeServiceSchema, shopSeoFieldsSchema } from "./Shop";
+import { lateFeeServiceSchema, type ShopSeoFields, shopSeoFieldsSchema } from "./Shop";
 
 export const aiCatalogFieldSchema = z.enum([
   "id",
@@ -23,7 +23,13 @@ export const aiCatalogConfigSchema = z
   })
   .strict();
 
-export const seoSettingsSchema = z
+// Explicit type annotation prevents TypeScript from generating an overly complex
+// generic declaration that fails to parse on Linux in tsc composite project builds.
+export type SeoSettings = {
+  aiCatalog?: z.infer<typeof aiCatalogConfigSchema>;
+} & ShopSeoFields;
+
+export const seoSettingsSchema: z.ZodType<SeoSettings, z.ZodTypeDef, SeoSettings> = z
   .object({
     aiCatalog: aiCatalogConfigSchema.optional(),
   })

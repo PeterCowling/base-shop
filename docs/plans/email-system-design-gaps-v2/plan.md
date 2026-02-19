@@ -12,7 +12,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-build
 Supporting-Skills: none
-Overall-confidence: 79%
+Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -76,7 +76,7 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
 - Build Gate: Pass (task-level)
-  - Build-eligible now: none (remaining runnable `IMPLEMENT` tasks are currently <80 confidence; run `/lp-replan` to raise confidence before next `/lp-build` cycle).
+  - Build-eligible now: TASK-13 (`INVESTIGATE`, >=60 confidence, unblocked).
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -90,15 +90,19 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Add server-side auth/authz guard for reception MCP routes | 85% | M | Complete (2026-02-19) | - | TASK-03, TASK-04, TASK-05, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-02 | INVESTIGATE | Resolve production usage attribution for queue vs reception draft paths | 85% | S | Complete (2026-02-19) | - | TASK-03 |
-| TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 75% | M | Pending | TASK-01, TASK-02 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
-| TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 75% | M | Pending | TASK-01 | TASK-05, TASK-06 |
+| TASK-12 | INVESTIGATE | Finalize telemetry event contract + daily rollup sink before instrumentation | 85% | S | Complete (2026-02-19) | TASK-01, TASK-02 | TASK-03 |
+| TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Pending | TASK-01 | TASK-04 |
+| TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 75% | M | Pending | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
+| TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 75% | M | Pending | TASK-01, TASK-13 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Pending | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
-| TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Pending | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-07, TASK-10 |
-| TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 75% | M | Pending | TASK-01, TASK-03, TASK-06 | TASK-08 |
-| TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 75% | M | Pending | TASK-03, TASK-06 | - |
-| TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 75% | M | Pending | TASK-07 | - |
+| TASK-06 | CHECKPOINT | Horizon checkpoint after foundation quality/telemetry tranche | 95% | S | Pending | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | TASK-14, TASK-15, TASK-07, TASK-10 |
+| TASK-14 | SPIKE | Probe reviewed-ledger storage/state model and promotion idempotency contract | 80% | S | Pending | TASK-06 | TASK-07, TASK-08 |
+| TASK-15 | INVESTIGATE | Build 90-day Octorate subject corpus + misroute baseline for parser hardening | 85% | S | Pending | TASK-06 | TASK-10 |
+| TASK-07 | IMPLEMENT | Build unknown-answer capture and reviewed-ledger ingestion | 75% | M | Pending | TASK-01, TASK-03, TASK-06, TASK-14 | TASK-08 |
+| TASK-10 | IMPLEMENT | Harden Octorate routing patterns and replay fixtures | 75% | M | Pending | TASK-03, TASK-06, TASK-15 | - |
+| TASK-08 | IMPLEMENT | Build reviewed promotion path from ledger into reusable KB/templates | 75% | M | Pending | TASK-07, TASK-14 | - |
 
 ## Parallelism Guide
 
@@ -106,15 +110,17 @@ Execution waves for `/lp-build` subagent dispatch. Later waves require completio
 
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01, TASK-02, TASK-11 | - | Security gate, attribution investigation, and preflight foundation can run in parallel. |
-| 2 | TASK-03, TASK-04 | TASK-01 (and TASK-02 for TASK-03) | Telemetry + template normalization foundation. |
-| 3 | TASK-05, TASK-09 | TASK-03 + TASK-04 (+ TASK-01) | Quality enforcement and label-path alignment. |
-| 4 | TASK-06 | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | Mandatory checkpoint before learning and Octorate hardening rollout. |
-| 5 | TASK-07, TASK-10 | TASK-06 (+ TASK-03 for both, TASK-01 for TASK-07) | Learning ingestion and Octorate hardening can run together. |
-| 6 | TASK-08 | TASK-07 | Promotion path depends on reviewed ledger ingestion output. |
+| 1 | TASK-01, TASK-02, TASK-11 | - | Complete: security gate, attribution investigation, and preflight foundation. |
+| 2 | TASK-12, TASK-13 | TASK-01 (+ TASK-02 for TASK-12) | New precursor investigations that resolve unresolved design unknowns. |
+| 3 | TASK-03, TASK-04 | TASK-12/TASK-13 (+ TASK-01) | Telemetry + template normalization foundation. |
+| 4 | TASK-05, TASK-09 | TASK-03 + TASK-04 (+ TASK-01) | Quality enforcement and label-path alignment. |
+| 5 | TASK-06 | TASK-03, TASK-04, TASK-05, TASK-09, TASK-11 | Mandatory checkpoint before learning and Octorate hardening rollout. |
+| 6 | TASK-14, TASK-15 | TASK-06 | Post-checkpoint precursor spike/investigation for learning and Octorate long-tail reliability. |
+| 7 | TASK-07, TASK-10 | TASK-14/TASK-15 (+ TASK-03, TASK-06, TASK-01 for TASK-07) | Learning ingestion and Octorate hardening can run together after precursor evidence lands. |
+| 8 | TASK-08 | TASK-07, TASK-14 | Promotion path depends on reviewed-ledger ingestion and spike contract output. |
 
 Max parallelism: 3 tasks (Wave 1)
-Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6 waves)
+Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 -> TASK-07 -> TASK-08 (8 waves)
 
 ## Tasks
 
@@ -216,6 +222,76 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
     - `draft_without_outcome_total{source_path}`.
     - `queue_transition_total{from_label,to_label}` for queue-state attribution.
 
+### TASK-12: Finalize telemetry event contract + daily rollup sink before instrumentation
+- **Type:** INVESTIGATE
+- **Deliverable:** Evidence-backed telemetry contract (event names/fields/source-path taxonomy) and one storage sink decision for daily rollups.
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Complete (2026-02-19)
+- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/draft-generate.ts`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/tools/booking-email.ts`, `[readonly] packages/mcp-server/src/tools/guest-email-activity.ts`
+- **Depends on:** TASK-01, TASK-02
+- **Blocks:** TASK-03
+- **Confidence:** 85%
+  - Implementation: 85% - bounded to call-site mapping and contract selection, no code mutation.
+  - Approach: 85% - existing audit-log and quality payload seams provide a concrete baseline for schema design.
+  - Impact: 85% - removes the primary held-back unknown that currently caps TASK-03.
+- **Questions to answer:**
+  - Which event contract fields are mandatory per path (`queue`, `reception`, `outbound`)?
+  - Which existing sink (`audit-log jsonl` vs dedicated metrics artifact) will carry daily rollups first?
+  - Which backward-compatible defaults apply when source metadata is unavailable?
+- **Acceptance:**
+  - A telemetry contract table is documented with stable event keys and required fields.
+  - One rollup sink decision is explicit with fallback behavior.
+  - TASK-03 dependencies and confidence can be reassessed with no unresolved schema unknowns.
+- **Validation contract:**
+  - Evidence packet includes call-site map + executable baseline checks.
+  - Run:
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-audit-log.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
+  - Pass condition: tests confirm append-only audit seam and deterministic draft diagnostics fields.
+- **Rollout / rollback:** `None: investigation-only task`
+- **Documentation impact:** append telemetry contract decision to `replan-notes.md`.
+- **Notes / references:** fact-find V2-03 + TASK-02 attribution evidence.
+- **Build evidence:** Investigation completed (2026-02-19):
+  - Telemetry contract table + source-path defaults + rollup sink decision documented in `docs/plans/email-system-design-gaps-v2/replan-notes.md` (`TASK-12 Output (Build, 2026-02-19)`).
+  - Validation PASS:
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-audit-log.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts --maxWorkers=2`
+    - Result: `2/2` suites passed, `28/28` tests passed.
+
+### TASK-13: Produce template reference-scope matrix for all 53 templates
+- **Type:** INVESTIGATE
+- **Deliverable:** Full template matrix marking `reference_required` vs `reference_optional/excluded`, canonical URL targets, and normalization batches.
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/data/email-templates.json`
+- **Depends on:** TASK-01
+- **Blocks:** TASK-04
+- **Confidence:** 85%
+  - Implementation: 85% - bounded inventory/matrix task with deterministic source data.
+  - Approach: 85% - template-lint and pipeline fixtures provide concrete categories for scope partitioning.
+  - Impact: 85% - removes false-fail risk from TASK-04/TASK-05 by resolving scoping ambiguity first.
+- **Questions to answer:**
+  - Which templates are factual/policy and must carry canonical references?
+  - Which templates are operational-only and should be explicitly excluded from strict link enforcement?
+  - Which template families should be normalized first to minimize regression risk?
+- **Acceptance:**
+  - All 53 templates are classified in a single matrix with explicit rationale.
+  - Every in-scope template family maps to canonical URL targets.
+  - TASK-04 execution batches are defined with deterministic completion checks.
+- **Validation contract:**
+  - Evidence packet includes template inventory script output + quality baseline tests.
+  - Run:
+    - `node -e 'const fs=require("fs");const a=JSON.parse(fs.readFileSync("packages/mcp-server/data/email-templates.json","utf8"));const arr=Array.isArray(a)?a:(a.templates||[]);const no=arr.filter(t=>!/https?:\\/\\//i.test(JSON.stringify(t)));console.log({total:arr.length,noUrl:no.length});'`
+    - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/template-lint.test.ts packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts --maxWorkers=2`
+  - Pass condition: inventory totals reconcile and baseline tests pass before normalization sequencing.
+- **Rollout / rollback:** `None: investigation-only task`
+- **Documentation impact:** add matrix and batch ordering to `replan-notes.md`.
+- **Notes / references:** fact-find V2-05, D2.
+
 ### TASK-03: Add production telemetry for fallback, drafted outcomes, and path usage
 - **Type:** IMPLEMENT
 - **Deliverable:** Structured counters/events for fallback and path attribution plus daily rollup visibility for operators.
@@ -225,7 +301,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/tools/guest-email-activity.ts`, `packages/mcp-server/src/tools/booking-email.ts`, `packages/mcp-server/src/__tests__/*`, `docs/guides/brikette-email-system.html`
-- **Depends on:** TASK-01, TASK-02
+- **Depends on:** TASK-01, TASK-02, TASK-12
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-09, TASK-10
 - **Confidence:** 75%
   - Implementation: 75% - multiple tool boundaries need consistent event taxonomy.
@@ -253,6 +329,12 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: disable emission via feature flag while preserving core draft paths.
 - **Documentation impact:** add telemetry key definitions and interpretation notes for operators.
 - **Notes / references:** fact-find V2-03, runtime `8/61` signal, and 0-Drafted ambiguity findings.
+#### Re-plan Update (2026-02-19)
+- Confidence: 75% -> 75% (Evidence: E2)
+- Key change: Added TASK-12 precursor to close telemetry schema/sink ambiguity before implementation.
+- Dependencies: updated to include `TASK-12`.
+- Validation contract: unchanged (TC-03 remains complete for implementation phase).
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-04: Normalize template references and scoping metadata
 - **Type:** IMPLEMENT
@@ -263,7 +345,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`
-- **Depends on:** TASK-01
+- **Depends on:** TASK-01, TASK-13
 - **Blocks:** TASK-05, TASK-06
 - **Confidence:** 75%
   - Implementation: 75% - template edits are broad and require careful scenario-by-scenario review.
@@ -290,6 +372,12 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: revert template file and disable strict-check enforcement toggle.
 - **Documentation impact:** update template authoring guidance with scope-tag rules.
 - **Notes / references:** fact-find V2-05 criterion definition.
+#### Re-plan Update (2026-02-19)
+- Confidence: 75% -> 75% (Evidence: E2)
+- Key change: Added TASK-13 precursor to produce deterministic reference-scope matrix before broad template edits.
+- Dependencies: updated to include `TASK-13`.
+- Validation contract: unchanged (TC-04 remains complete for implementation phase).
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-05: Enforce strict context-aware reference quality checks
 - **Type:** IMPLEMENT
@@ -328,6 +416,12 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: disable strict mode flag and preserve telemetry for postmortem.
 - **Documentation impact:** add quality-rule matrix to email operations guide.
 - **Notes / references:** fact-find V2-04, D2, false-fail risk row.
+#### Re-plan Update (2026-02-19)
+- Confidence: 75% -> 75% (Evidence: E2)
+- Key change: Kept below threshold; strict-rule rollout remains blocked on upstream precursors/tasks (`TASK-12`, `TASK-13`, `TASK-03`, `TASK-04`).
+- Dependencies: unchanged (`TASK-01`, `TASK-03`, `TASK-04`).
+- Validation contract: unchanged.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-09: Unify label attribution for booking and guest-activity draft flows
 - **Type:** IMPLEMENT
@@ -413,7 +507,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Status:** Pending
 - **Affects:** `docs/plans/email-system-design-gaps-v2/plan.md`
 - **Depends on:** TASK-03, TASK-04, TASK-05, TASK-09, TASK-11
-- **Blocks:** TASK-07, TASK-10
+- **Blocks:** TASK-14, TASK-15, TASK-07, TASK-10
 - **Confidence:** 95%
   - Implementation: 95% - process contract is defined.
   - Approach: 95% - checkpoint prevents blind continuation into learning/parser tranche.
@@ -430,6 +524,63 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Rollout / rollback:** `None: planning control task`.
 - **Documentation impact:** update plan history with checkpoint outcome.
 
+### TASK-14: Probe reviewed-ledger storage/state model and promotion idempotency contract
+- **Type:** SPIKE
+- **Deliverable:** Short prototype/decision packet covering storage format, review-state transitions, promotion idempotency keying, and rollback semantics.
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `packages/mcp-server/src/__tests__/fixtures/startup-loop/learning-ledger.complete.jsonl`, `[readonly] packages/mcp-server/src/resources/brikette-knowledge.ts`
+- **Depends on:** TASK-06
+- **Blocks:** TASK-07, TASK-08
+- **Confidence:** 80%
+  - Implementation: 80% - spike scope is bounded to prototype-level contract validation.
+  - Approach: 80% - converts unresolved storage/transition unknowns into a tested contract before build.
+  - Impact: 80% - removes the largest unresolved design risk across both learning-loop implementation tasks.
+- **Acceptance:**
+  - Candidate storage model is tested with representative unknown-question records and review transitions.
+  - Promotion keying/idempotency strategy is demonstrated on duplicate inputs.
+  - Revert/unpublish semantics are documented with one executable proof path.
+- **Validation contract (TC-14):**
+  - TC-14-01: prototype ingest applies allowed state transitions (`new -> approved/rejected/deferred`) and rejects invalid transitions.
+  - TC-14-02: duplicate promotion attempts resolve idempotently to one promoted artifact.
+  - TC-14-03: rollback prototype removes/invalidates promoted entry without corrupting ledger history.
+  - Test type: contract/prototype.
+  - Test location: `packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts` (or equivalent spike test path).
+  - Run: `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/ledger-promotion.spike.test.ts --maxWorkers=2`
+- **Execution plan:** Red -> Green -> Refactor
+- **Rollout / rollback:** `None: spike-only task`
+- **Documentation impact:** include contract decision + rejected alternatives in `replan-notes.md`.
+- **Notes / references:** fact-find D3 reviewed-ledger decision; lack of dedicated ledger/promotion tests in current suite.
+
+### TASK-15: Build 90-day Octorate subject corpus + misroute baseline for parser hardening
+- **Type:** INVESTIGATE
+- **Deliverable:** Reproducible subject-corpus baseline (90-day window), variant clustering, and fixture candidate list for TASK-10.
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/email-system-design-gaps-v2/replan-notes.md`, `docs/plans/email-system-design-gaps-v2/plan.md`, `[readonly] packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`
+- **Depends on:** TASK-06
+- **Blocks:** TASK-10
+- **Confidence:** 85%
+  - Implementation: 85% - bounded query/classification investigation with deterministic output format.
+  - Approach: 85% - complements existing unit coverage with production-window frequency evidence.
+  - Impact: 85% - reduces long-tail parser drift risk before TASK-10 code changes.
+- **Acceptance:**
+  - 90-day Octorate subject sample window and extraction method are documented.
+  - Variants are grouped into parser-covered vs uncovered classes with counts.
+  - Fixture candidates are enumerated for direct adoption in TASK-10 tests.
+- **Validation contract:**
+  - Evidence packet includes query outputs + classification worksheet + reproducible extraction command(s).
+  - Pass condition: sample frame and baseline are explicit enough to evaluate pre/post TASK-10 misroute deltas.
+- **Rollout / rollback:** `None: investigation-only task`
+- **Documentation impact:** append baseline table and fixture backlog into `replan-notes.md`.
+- **Notes / references:** fact-find V2-07 sampling clarification and outstanding long-tail uncertainty.
+
 ### TASK-07: Build unknown-answer capture and reviewed-ledger ingestion
 - **Type:** IMPLEMENT
 - **Deliverable:** Persistence path for unknown-answer events into reviewed ledger with operator review state.
@@ -439,7 +590,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/src/tools/draft-interpret.ts`, `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/__tests__/draft-*.test.ts`, `docs/guides/brikette-email-system.html`
-- **Depends on:** TASK-01, TASK-03, TASK-06
+- **Depends on:** TASK-01, TASK-03, TASK-06, TASK-14
 - **Blocks:** TASK-08
 - **Confidence:** 75%
   - Implementation: 75% - new persistence and review-state transitions are required.
@@ -466,6 +617,12 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: disable ledger writes while retaining escalation behavior.
 - **Documentation impact:** add operator SOP for reviewing unknown entries.
 - **Notes / references:** fact-find D3 and reviewed burden estimate.
+#### Re-plan Update (2026-02-19)
+- Confidence: 75% -> 75% (Evidence: E1/E2)
+- Key change: Added TASK-14 spike as mandatory precursor for storage/transition contract before ingestion implementation.
+- Dependencies: updated to include `TASK-14`.
+- Validation contract: unchanged (TC-07), now paired with upstream `TC-14` spike contract.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-10: Harden Octorate routing patterns and replay fixtures
 - **Type:** IMPLEMENT
@@ -476,7 +633,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts`, `packages/mcp-server/src/__fixtures__/octorate/*`
-- **Depends on:** TASK-03, TASK-06
+- **Depends on:** TASK-03, TASK-06, TASK-15
 - **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 75% - parser extension is straightforward but variant coverage may be broad.
@@ -503,6 +660,12 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: restore previous pattern set while keeping fixtures.
 - **Documentation impact:** update monitor-pattern maintenance note for operators.
 - **Notes / references:** fact-find V2-07.
+#### Re-plan Update (2026-02-19)
+- Confidence: 75% -> 75% (Evidence: E2)
+- Key change: Added TASK-15 investigation to quantify 90-day subject variants before parser hardening.
+- Dependencies: updated to include `TASK-15`.
+- Validation contract: unchanged (TC-10), pending fixture enrichment from TASK-15.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ### TASK-08: Build reviewed promotion path from ledger into reusable KB/templates
 - **Type:** IMPLEMENT
@@ -513,7 +676,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `packages/mcp-server/src/tools/*ledger*.ts`, `packages/mcp-server/src/resources/brikette-knowledge.ts`, `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/ledger-promotion*.test.ts`
-- **Depends on:** TASK-07
+- **Depends on:** TASK-07, TASK-14
 - **Blocks:** -
 - **Confidence:** 75%
   - Implementation: 75% - promotion writes need schema-safe merge logic and audit hooks.
@@ -541,19 +704,25 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
   - Rollback: disable promotion writer and revert promoted entries from audit log map.
 - **Documentation impact:** add knowledge promotion SOP and quality checklist.
 - **Notes / references:** fact-find D3 and risks on low-quality learning promotion.
+#### Re-plan Update (2026-02-19)
+- Confidence: 75% -> 75% (Evidence: E1)
+- Key change: Added TASK-14 as explicit precursor to lock idempotency/revert semantics before promotion writes.
+- Dependencies: updated to include `TASK-14` alongside `TASK-07`.
+- Validation contract: unchanged (TC-08), now gated by upstream spike evidence.
+- Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
 ## Risks & Mitigations
 
 - Auth regression blocks internal operations.
   - Mitigation: explicit role-matrix tests and emergency bypass procedure with audit logging.
 - Workflow inactivity leads to mis-prioritized quality work.
-  - Mitigation: TASK-02 and TASK-03 establish path-attribution baseline before strict-rule rollout.
+  - Mitigation: TASK-02 baseline plus TASK-12 contract investigation before TASK-03 instrumentation rollout.
 - Strict reference enforcement increases deferrals/manual edits.
-  - Mitigation: TASK-04 precedes TASK-05; monitor defer/manual-edit rates post rollout.
+  - Mitigation: TASK-13 scope matrix precedes TASK-04 and TASK-05; monitor defer/manual-edit rates post rollout.
 - Reviewed-ledger backlog exceeds operator capacity.
-  - Mitigation: threshold of <=1 unknown/operator-day; add batching/escalation if exceeded.
+  - Mitigation: threshold of <=1 unknown/operator-day; TASK-14 spike defines ingestion/promotion controls before TASK-07/TASK-08.
 - Octorate pattern drift continues post-fix.
-  - Mitigation: fixture-driven tests and recurring 30-day classification review.
+  - Mitigation: TASK-15 90-day baseline + fixture-driven TASK-10 parser tests + recurring 30-day classification review.
 
 ## Observability
 
@@ -586,6 +755,7 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - 2026-02-19: D2 locked - strict reference-required policy for factual/policy answers.
 - 2026-02-19: D3 locked - reviewed-ledger-first learning architecture.
 - 2026-02-19: `/lp-plan` mode selected as `plan-only`; no automatic `/lp-build` handoff.
+- 2026-02-19: `/lp-replan` (standard mode) added precursor chain TASK-12/TASK-13/TASK-14/TASK-15; stable task IDs preserved and execution resequenced.
 
 ## Overall-confidence Calculation
 
@@ -593,15 +763,19 @@ Critical path: TASK-01 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-07 -> TASK-08 (6
 - Task confidence scores:
   - TASK-01 85 (M=2)
   - TASK-02 85 (S=1)
+  - TASK-12 85 (S=1)
+  - TASK-13 85 (S=1)
   - TASK-03 75 (M=2)
   - TASK-04 75 (M=2)
   - TASK-05 75 (M=2)
-  - TASK-06 95 (S=1)
-  - TASK-07 75 (M=2)
-  - TASK-08 75 (M=2)
   - TASK-09 85 (M=2)
-  - TASK-10 75 (M=2)
   - TASK-11 85 (S=1)
-- Weighted sum = 1505
-- Total weight = 19
-- Overall-confidence = 1505 / 19 = 79.2% -> **79%**
+  - TASK-06 95 (S=1)
+  - TASK-14 80 (S=1)
+  - TASK-15 85 (S=1)
+  - TASK-07 75 (M=2)
+  - TASK-10 75 (M=2)
+  - TASK-08 75 (M=2)
+- Weighted sum = 1840
+- Total weight = 23
+- Overall-confidence = 1840 / 23 = 80.0% -> **80%**

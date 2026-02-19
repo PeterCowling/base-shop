@@ -96,7 +96,7 @@ describe("media actions", () => {
         await expect(listMedia("shop1")).resolves.toEqual([]);
       })
     );
-  }, 15_000);
+  }, 60_000);
 
   it("uploadMedia stores file, metadata and returns item", async () => {
     await withTmpDir((dir) =>

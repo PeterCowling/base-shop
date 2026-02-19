@@ -8,13 +8,13 @@ Relates-to: docs/plans/email-system-design-gaps-v2/plan.md
 
 # Email System Design Gaps V2 Replan Notes
 
-## Invocation
+## Invocation (Run 1)
 
 - Skill: `/lp-replan` (standard mode)
 - Date: 2026-02-19
 - Scope: low-confidence `IMPLEMENT` tasks (`TASK-03`, `TASK-04`, `TASK-05`, `TASK-07`, `TASK-08`, `TASK-10`) and direct dependents.
 
-## Gate Outcomes
+## Gate Outcomes (Run 1)
 
 - Promotion Gate: not met for `TASK-03/04/05/07/08/10`; unresolved unknowns remain non-trivial.
 - Validation Gate: met for all affected tasks (TC contracts present); precursor tasks added for unresolved design unknowns.
@@ -58,7 +58,7 @@ Relates-to: docs/plans/email-system-design-gaps-v2/plan.md
 - Template inventory baseline remains `53` total / `24` no-url by `https?://` criterion:
   - `packages/mcp-server/data/email-templates.json`
 
-## Replan Decisions
+## Replan Decisions (Run 1)
 
 - Added `TASK-12` before `TASK-03` to resolve telemetry event taxonomy + rollup sink ambiguity.
 - Added `TASK-13` before `TASK-04` to produce full template reference-scope matrix and avoid false-fail rollout.
@@ -217,7 +217,41 @@ Backward-compatible defaults when metadata is missing:
 - Batch D (`21` templates): Operational/transactional templates (`reference_optional_excluded`) plus final-state confirmations.
   - Deterministic check: templates remain explicitly tagged as optional/excluded and are skipped by strict-link enforcement logic in TASK-05.
 
+## Invocation (Run 2)
+
+- Skill: `/lp-replan` (standard mode)
+- Date: 2026-02-19
+- Scope: promote Wave 3 foundation IMPLEMENT tasks (`TASK-03`, `TASK-04`) after precursor completion (`TASK-12`, `TASK-13`).
+
+## Gate Outcomes (Run 2)
+
+- Promotion Gate: met for `TASK-03` and `TASK-04` via completed precursor outputs plus fresh E2 checks.
+- Validation Gate: met for promoted tasks; TC-03 and TC-04 remain complete for build execution.
+- Precursor Gate: unchanged; no new precursor tasks required.
+- Sequencing Gate: no topology change (stable task IDs, dependencies, and wave ordering unchanged).
+- Escalation Gate: no new user decision required; D1/D2/D3 remain active.
+
+## Evidence (Run 2, E2)
+
+- Command:
+  - `node -e 'const fs=require("fs");const a=JSON.parse(fs.readFileSync("packages/mcp-server/data/email-templates.json","utf8"));const arr=Array.isArray(a)?a:(a.templates||[]);const no=arr.filter(t=>!/https?:\\/\\//i.test(JSON.stringify(t)));console.log(JSON.stringify({total:arr.length,noUrl:no.length}));'`
+  - Result: `{"total":53,"noUrl":24}`.
+- Command:
+  - `pnpm run test:governed -- jest -- --config packages/mcp-server/jest.config.cjs --runTestsByPath packages/mcp-server/src/__tests__/gmail-audit-log.test.ts packages/mcp-server/src/__tests__/draft-generate.test.ts packages/mcp-server/src/__tests__/template-lint.test.ts packages/mcp-server/src/__tests__/draft-pipeline.integration.test.ts --maxWorkers=2`
+  - Result: `4/4` suites passed, `55/55` tests passed.
+  - Harness output (`draft-pipeline.integration`): `10/10` fixtures passed quality checks; average question coverage `100%`.
+
+## Replan Decisions (Run 2)
+
+- Promoted `TASK-03` confidence from `75%` to `80%`:
+  - Unknown removed: telemetry event taxonomy + rollup sink ambiguity, resolved by TASK-12 output.
+  - E2 reconfirmation: `gmail-audit-log` + `draft-generate` governed tests passed in this replan run.
+- Promoted `TASK-04` confidence from `75%` to `80%`:
+  - Unknown removed: template scope partition ambiguity, resolved by TASK-13 full 53-template matrix and batch plan.
+  - E2 reconfirmation: template lint + draft pipeline integration suites passed in this replan run.
+- Left `TASK-05`, `TASK-07`, `TASK-08`, `TASK-10` unchanged at `75%` pending post-implementation evidence from upstream dependencies/checkpoint flow.
+
 ## Next Build Order
 
-1. Run `/lp-replan` to reassess and promote `TASK-03` / `TASK-04` confidence after `TASK-12` + `TASK-13` precursor evidence.
-2. Resume `/lp-build` once an `IMPLEMENT` task is raised to eligible threshold (`>=80`).
+1. Run `/lp-build` for Wave 3 foundation tasks (`TASK-03`, `TASK-04`) now that both are `>=80` and unblocked.
+2. Re-run `/lp-replan` after Wave 3 and Wave 4 complete (or at CHECKPOINT TASK-06) for downstream confidence reassessment.

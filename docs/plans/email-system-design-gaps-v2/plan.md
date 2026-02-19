@@ -12,7 +12,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-build
 Supporting-Skills: none
-Overall-confidence: 80%
+Overall-confidence: 81%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 Business-OS-Integration: off
@@ -75,10 +75,10 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 
 - Foundation Gate: Pass
   - Fact-find contains required routing metadata (`Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`), confidence inputs, code-track test landscape, and capability findings.
-- Build Gate: Partial (task-level)
-  - TASK-13 executed and completed in this build cycle.
-  - Build-eligible now: none (`TASK-03`/`TASK-04` remain below `IMPLEMENT` confidence threshold; downstream waves remain blocked).
-  - Next action: run `/lp-replan` before resuming `/lp-build`.
+- Build Gate: Pass (task-level)
+  - Promotion Gate satisfied for `TASK-03` and `TASK-04` using completed precursor evidence (`TASK-12`, `TASK-13`) plus fresh E2 validation checks.
+  - Build-eligible now: `TASK-03`, `TASK-04` (`IMPLEMENT`, `>=80`, unblocked).
+  - Next action: resume `/lp-build` on Wave 3.
 - Sequenced: Yes
   - `/lp-sequence` logic applied: explicit dependencies + blocker inversion + execution waves.
 - Edge-case review complete: Yes
@@ -94,8 +94,8 @@ This plan operationalizes the v2 fact-find into an auth-first remediation sequen
 | TASK-02 | INVESTIGATE | Resolve production usage attribution for queue vs reception draft paths | 85% | S | Complete (2026-02-19) | - | TASK-03 |
 | TASK-12 | INVESTIGATE | Finalize telemetry event contract + daily rollup sink before instrumentation | 85% | S | Complete (2026-02-19) | TASK-01, TASK-02 | TASK-03 |
 | TASK-13 | INVESTIGATE | Produce template reference-scope matrix for all 53 templates | 85% | S | Complete (2026-02-19) | TASK-01 | TASK-04 |
-| TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 75% | M | Pending | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
-| TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 75% | M | Pending | TASK-01, TASK-13 | TASK-05, TASK-06 |
+| TASK-03 | IMPLEMENT | Add production telemetry for fallback, drafted outcomes, and path usage | 80% | M | Pending | TASK-01, TASK-02, TASK-12 | TASK-05, TASK-06, TASK-07, TASK-09, TASK-10 |
+| TASK-04 | IMPLEMENT | Normalize template references and scoping metadata | 80% | M | Pending | TASK-01, TASK-13 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Enforce strict context-aware reference quality checks | 75% | M | Pending | TASK-01, TASK-03, TASK-04 | TASK-06 |
 | TASK-09 | IMPLEMENT | Unify label attribution for booking and guest-activity draft flows | 85% | M | Pending | TASK-01, TASK-03 | TASK-06 |
 | TASK-11 | IMPLEMENT | Add startup preflight checks for email system dependencies | 85% | S | Complete (2026-02-19) | - | TASK-06 |
@@ -312,10 +312,10 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Affects:** `packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/tools/gmail.ts`, `packages/mcp-server/src/tools/guest-email-activity.ts`, `packages/mcp-server/src/tools/booking-email.ts`, `packages/mcp-server/src/__tests__/*`, `docs/guides/brikette-email-system.html`
 - **Depends on:** TASK-01, TASK-02, TASK-12
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-09, TASK-10
-- **Confidence:** 75%
-  - Implementation: 75% - multiple tool boundaries need consistent event taxonomy.
-  - Approach: 75% - telemetry schema design is clear, but production baselines are not yet established.
-  - Impact: 80% - Held-back test: if event taxonomy is inconsistent across paths, dashboards become misleading. Because this single unknown could reduce impact, score held to 75.
+- **Confidence:** 80%
+  - Implementation: 80% - event taxonomy and sink decision are now fixed by TASK-12 contract output, leaving bounded implementation work across known seams.
+  - Approach: 80% - source-path defaults and required fields were validated with governed tests and call-site mapping; approach is now implementation-ready.
+  - Impact: 80% - Held-back test: if telemetry emission overhead or path attribution mismatches occur, dashboard fidelity drops. This is now a measurable implementation risk rather than a planning unknown.
 - **Acceptance:**
   - Fallback events are emitted with reason/classification metadata.
   - Drafted outcome counts and source path (queue vs reception-triggered vs outbound) are emitted.
@@ -330,7 +330,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - Checks run: `rg -n "fallback|unknown|requeued|deferred" packages/mcp-server/src/tools/draft-generate.ts`; fact-find runtime evidence review.
   - Validation artifacts: fallback observability gap explicitly confirmed in fact-find.
   - Unexpected findings: no existing production baseline counters in tool outputs.
-- **Scouts:** confirm storage location for daily rollup output (`None: choose existing audit/log channel during implementation`).
+- **Scouts:** `None: TASK-12 already fixed daily rollup sink to append-only audit-log JSONL.`
 - **Edge Cases & Hardening:** duplicate event suppression, timezone normalization, missing actor/path metadata fallback.
 - **What would make this >=90%:** approved telemetry schema + golden fixtures proving stable aggregates across all active flows.
 - **Rollout / rollback:**
@@ -339,9 +339,9 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Documentation impact:** add telemetry key definitions and interpretation notes for operators.
 - **Notes / references:** fact-find V2-03, runtime `8/61` signal, and 0-Drafted ambiguity findings.
 #### Re-plan Update (2026-02-19)
-- Confidence: 75% -> 75% (Evidence: E2)
-- Key change: Added TASK-12 precursor to close telemetry schema/sink ambiguity before implementation.
-- Dependencies: updated to include `TASK-12`.
+- Confidence: 75% -> 80% (Evidence: E2)
+- Key change: Promoted after TASK-12 contract completion removed schema/sink unknowns and fresh governed tests reconfirmed telemetry seams.
+- Dependencies: unchanged (`TASK-01`, `TASK-02`, `TASK-12`).
 - Validation contract: unchanged (TC-03 remains complete for implementation phase).
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
@@ -356,10 +356,10 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Affects:** `packages/mcp-server/data/email-templates.json`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`
 - **Depends on:** TASK-01, TASK-13
 - **Blocks:** TASK-05, TASK-06
-- **Confidence:** 75%
-  - Implementation: 75% - template edits are broad and require careful scenario-by-scenario review.
-  - Approach: 75% - criterion is defined (`https?://`), but exclusion scoping for non-factual templates needs explicit tagging.
-  - Impact: 80% - Held-back test: if scoping tags are wrong, strict checks can over-fail; impact held to 75 overall.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-13 delivered full 53-template matrix with batch ordering, reducing implementation uncertainty to execution discipline.
+  - Approach: 80% - scope partition (`reference_required` vs `reference_optional_excluded`) and canonical targets are explicitly documented and test-baselined.
+  - Impact: 80% - Held-back test: if scope tags are applied inconsistently during edits, strict checks can over-fail. This remains an execution-quality risk, not a planning ambiguity.
 - **Acceptance:**
   - Templates requiring factual/policy grounding contain canonical website/guide/terms references.
   - Templates with non-factual or placeholder-only content are explicitly tagged for exclusion from strict link checks.
@@ -373,7 +373,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - Checks run: `node -e 'const fs=require(\"fs\");const a=JSON.parse(fs.readFileSync(\"packages/mcp-server/data/email-templates.json\",\"utf8\"));const arr=Array.isArray(a)?a:(a.templates||[]);const no=arr.filter(t=>!/https?:\\/\\//i.test(JSON.stringify(t)));console.log({total:arr.length,noUrl:no.length});'` (result: `{ total: 53, noUrl: 24 }`).
   - Validation artifacts: quantitative scope of normalization confirmed.
   - Unexpected findings: none.
-- **Scouts:** `None: no external dependency required`.
+- **Scouts:** `None: no external dependency required; TASK-13 matrix provides execution map.`
 - **Edge Cases & Hardening:** multilingual templates, policy templates with dynamic placeholders, stale URLs.
 - **What would make this >=90%:** complete template tagging matrix with reviewer signoff and zero false-fails in dry-run sample pack.
 - **Rollout / rollback:**
@@ -382,9 +382,9 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - **Documentation impact:** update template authoring guidance with scope-tag rules.
 - **Notes / references:** fact-find V2-05 criterion definition.
 #### Re-plan Update (2026-02-19)
-- Confidence: 75% -> 75% (Evidence: E2)
-- Key change: Added TASK-13 precursor to produce deterministic reference-scope matrix before broad template edits.
-- Dependencies: updated to include `TASK-13`.
+- Confidence: 75% -> 80% (Evidence: E2)
+- Key change: Promoted after TASK-13 matrix completion resolved scope ambiguity and fresh governed tests reconfirmed template/pipeline baselines.
+- Dependencies: unchanged (`TASK-01`, `TASK-13`).
 - Validation contract: unchanged (TC-04 remains complete for implementation phase).
 - Notes: `docs/plans/email-system-design-gaps-v2/replan-notes.md`
 
@@ -766,6 +766,7 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
 - 2026-02-19: `/lp-plan` mode selected as `plan-only`; no automatic `/lp-build` handoff.
 - 2026-02-19: `/lp-replan` (standard mode) added precursor chain TASK-12/TASK-13/TASK-14/TASK-15; stable task IDs preserved and execution resequenced.
 - 2026-02-19: `/lp-build` completed TASK-13 and recorded template scope matrix evidence; no further build-eligible tasks until `/lp-replan`.
+- 2026-02-19: `/lp-replan` (standard mode) promoted TASK-03 and TASK-04 to 80% after precursor completion + fresh E2 validation; Wave 3 is now build-eligible.
 
 ## Overall-confidence Calculation
 
@@ -775,8 +776,8 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TASK-02 85 (S=1)
   - TASK-12 85 (S=1)
   - TASK-13 85 (S=1)
-  - TASK-03 75 (M=2)
-  - TASK-04 75 (M=2)
+  - TASK-03 80 (M=2)
+  - TASK-04 80 (M=2)
   - TASK-05 75 (M=2)
   - TASK-09 85 (M=2)
   - TASK-11 85 (S=1)
@@ -786,6 +787,6 @@ Critical path: TASK-01 -> TASK-12 -> TASK-03 -> TASK-05 -> TASK-06 -> TASK-14 ->
   - TASK-07 75 (M=2)
   - TASK-10 75 (M=2)
   - TASK-08 75 (M=2)
-- Weighted sum = 1840
+- Weighted sum = 1860
 - Total weight = 23
-- Overall-confidence = 1840 / 23 = 80.0% -> **80%**
+- Overall-confidence = 1860 / 23 = 80.9% -> **81%**

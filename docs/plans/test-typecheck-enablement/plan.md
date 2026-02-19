@@ -4,7 +4,7 @@ Status: Draft
 Domain: Infra
 Workstream: Engineering
 Created: 2026-02-18
-Last-updated: 2026-02-18 (Phases 1–3 complete; TASK-17/18/19 complete; TASK-20/21 + TASK-04/05 pending)
+Last-updated: 2026-02-18 (Phases 1–4 complete; TASK-17/18/19/20/21 complete; Phase 5 seeded TASK-22/23/24/25; TASK-04/05 (cms) still pending)
 Build-note: TASK-01 + TASK-03 + TASK-15 + TASK-16 complete 2026-02-18. 7 packages now CI-gated: editorial, types, stripe, i18n, design-system, design-tokens, seo. Key learnings: (1) `declarationMap: false` required in all test tsconfigs; (2) packages with cross-package imports need `rootDir: "../.."` to avoid TS6059; (3) design-system atoms tests blocked by missing jest-axe types — scoped to Form tests only.
 Feature-Slug: test-typecheck-enablement
 Deliverable-Type: code-change
@@ -108,8 +108,12 @@ platform-machine, brikette, template-app), with CHECKPOINT gates between each ph
 | TASK-17     | IMPLEMENT   | Fix packages/ui tsconfig.test.typecheck.json exclude bug | 92%        | S      | Complete (2026-02-18) | TASK-14         | TASK-20         |
 | TASK-18     | IMPLEMENT   | packages/auth: create tsconfig + fix errors              | 80%        | M      | Complete (2026-02-18) | TASK-14         | TASK-20         |
 | TASK-19     | IMPLEMENT   | packages/email: create tsconfig + fix errors             | 80%        | M      | Complete (2026-02-18) | TASK-14         | TASK-20         |
-| TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Pending | TASK-17, TASK-18, TASK-19 | TASK-21 |
-| TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Pending | TASK-20, TASK-04 | -              |
+| TASK-20     | IMPLEMENT   | Extend CI step: packages/ui + packages/auth + packages/email | 90%    | S      | Complete (2026-02-18) | TASK-17, TASK-18, TASK-19 | TASK-21 |
+| TASK-21     | CHECKPOINT  | Phase 4 gate — assess TYPECHECK_ALL + pre-commit + cms   | 90%        | S      | Complete (2026-02-18) | TASK-20, TASK-04 | TASK-22      |
+| TASK-22     | IMPLEMENT   | Phase 5 small batch: zod-utils, telemetry, date-utils, themes, email-templates | 75% | M | Pending | TASK-21 | TASK-23 |
+| TASK-23     | IMPLEMENT   | Phase 5: packages/lib tsconfig + error fixes             | 72%        | M      | Pending | TASK-21         | TASK-24         |
+| TASK-24     | IMPLEMENT   | Phase 5: Extend CI for Phase 5 packages                  | 85%        | S      | Pending | TASK-22, TASK-23, TASK-04 | TASK-25 |
+| TASK-25     | CHECKPOINT  | Phase 5 gate — assess remaining 30+ packages + TYPECHECK_ALL readiness | 85% | S | Pending | TASK-24 | -      |
 
 ## Parallelism Guide
 | Wave | Tasks           | Prerequisites   | Notes                                                      |
@@ -989,7 +993,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `.github/workflows/ci.yml`
 - **Depends on:** TASK-17, TASK-18, TASK-19
 - **Blocks:** TASK-21
@@ -999,6 +1003,10 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** None: S effort
 - **Rollout / rollback:** Revert CI step if failures; CI is the alert
 - **Documentation impact:** None
+- **Build evidence (2026-02-18):**
+  - Added `packages/ui packages/auth packages/email/` to CI loop (14 total invocations)
+  - Trailing slash on `packages/email/` prevents substring match with `packages/email-templates`
+  - All 14 invocations verified at 0 errors locally (consecutive pass); included in ec5aba6b01
 
 ---
 
@@ -1008,7 +1016,7 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Execution-Skill:** lp-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-02-18)
 - **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
 - **Depends on:** TASK-20, TASK-04
 - **Blocks:** -
@@ -1028,6 +1036,110 @@ TASK-08 confidence lift: 78% → 84% (platform-machine has `rootDir: "."` in par
 - **Planning validation:** Phase 4 CI evidence; remaining error count estimate
 - **Rollout / rollback:** None: planning control task
 - **Documentation impact:** Plan updated with Phase 5 tasks or Status: Complete
+- **Build evidence (2026-02-18) — Checkpoint assessment:**
+  - **Phase 4 complete**: 14 packages/apps now CI-gated (editorial, types, stripe, i18n, design-system, design-tokens, seo, platform-core, platform-machine, brikette, template-app, ui, auth, email)
+  - **13 packages with tsconfig.test.typecheck.json** (all above except brikette)
+  - **TYPECHECK_ALL=1 still NOT safe**: 39 packages/apps remain uncovered (21 packages, 18 apps); fallback to tsconfig.test.json would be dangerous
+  - **apps/cms**: TASK-04 still pending (178 errors identified); highest-priority Phase 5 item
+  - **Pre-commit hook**: deferred to Phase 6 — enabling it on CI-only ensures no friction until coverage is higher
+  - **Phase 5 candidates (next batch, smallest first)**:
+    - packages/zod-utils (9 test files, likely clean) — TASK-22 (S)
+    - packages/telemetry (4 test files, likely clean) — TASK-22 (S, can batch)
+    - packages/date-utils (26 test files, likely clean) — TASK-22 (S, can batch)
+    - packages/themes (8 test files) — TASK-22 (S, can batch)
+    - packages/email-templates (2 test files, trivial) — TASK-22 (S, can batch)
+    - packages/lib (83 test files, moderate risk) — TASK-23 (M)
+    - apps/cms (178 errors, high risk) — TASK-04 (M, already investigated)
+  - **Plan status**: Active; Phase 5 task seeds added below; TASK-04/05 remain from original plan
+
+---
+
+### TASK-22: Phase 5 small batch — zod-utils, telemetry, date-utils, themes, email-templates
+- **Type:** IMPLEMENT
+- **Deliverable:** `tsconfig.test.typecheck.json` for 5 small packages; error fixes; 0 errors each
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `packages/zod-utils/tsconfig.test.typecheck.json`, `packages/telemetry/tsconfig.test.typecheck.json`, `packages/date-utils/tsconfig.test.typecheck.json`, `packages/themes/tsconfig.test.typecheck.json`, `packages/email-templates/tsconfig.test.typecheck.json`, and test files in each
+- **Depends on:** TASK-21
+- **Blocks:** TASK-24
+- **Confidence:** 75%
+  - Implementation: 80% — established pattern; error counts unknown
+  - Approach: 80% — small packages, likely low error density
+  - Impact: 70% — adds 5 more packages; low individual risk but increases total coverage
+- **Acceptance:** `TYPECHECK_FILTER=packages/<pkg>/` exits 0 for all 5; no test regressions
+- **Validation contract:** TC-01: 0 errors each; TC-02: jest tests unchanged
+- **Planning validation:** Run typecheck first on each; escalate if any has >30 errors
+- **Rollout / rollback:** Revert individual package if errors surface
+- **Documentation impact:** None
+
+---
+
+### TASK-23: Phase 5 — packages/lib tsconfig + error fixes
+- **Type:** IMPLEMENT
+- **Deliverable:** `packages/lib/tsconfig.test.typecheck.json` + error fixes in `packages/lib` test files
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `packages/lib/tsconfig.test.typecheck.json`, `packages/lib/**/*.test.ts`
+- **Depends on:** TASK-21
+- **Blocks:** TASK-24
+- **Confidence:** 72%
+  - Implementation: 75% — 83 test files; error count unknown; lib is a broad utility package
+  - Approach: 80% — same pattern; security lint warnings pre-exist (fs filename warnings)
+  - Impact: 80% — lib is cross-cutting
+- **Acceptance:** `TYPECHECK_FILTER=packages/lib` exits 0; no test regressions
+- **Validation contract:** TC-01: 0 errors; TC-02: jest tests unchanged
+- **Planning validation:** Run typecheck first; if >60 errors escalate to L and split
+- **Rollout / rollback:** Revert test fixes if regressions
+- **Documentation impact:** None
+
+---
+
+### TASK-24: Phase 5 — Extend CI step for Phase 5 packages
+- **Type:** IMPLEMENT
+- **Deliverable:** Updated `.github/workflows/ci.yml` with Phase 5 packages added to loop
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `.github/workflows/ci.yml`
+- **Depends on:** TASK-22, TASK-23, TASK-04
+- **Blocks:** TASK-25
+- **Confidence:** 85%
+- **Acceptance:** All new invocations exit 0; CI job duration within 15 min
+- **Validation contract:** TC-01: all new invocations exit 0; TC-02: CI job passes
+- **Planning validation:** None: S effort
+- **Rollout / rollback:** Revert CI step if failures
+- **Documentation impact:** None
+
+---
+
+### TASK-25: Phase 5 CHECKPOINT — assess TYPECHECK_ALL readiness + pre-commit
+- **Type:** CHECKPOINT
+- **Deliverable:** Updated plan via `/lp-replan` for Phase 6 (pre-commit hook, remaining large packages)
+- **Execution-Skill:** lp-build
+- **Execution-Track:** code
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/test-typecheck-enablement/plan.md`
+- **Depends on:** TASK-24
+- **Blocks:** -
+- **Confidence:** 85%
+- **Acceptance:**
+  - Phase 5 CI confirmed passing
+  - Decision on TYPECHECK_ALL=1 (likely deferred; still 30+ uncovered)
+  - Decision on pre-commit hook (viable to gate small number of CI-passing packages)
+  - Plan updated with Phase 6 task seeds or closed if no further expansion needed
+- **Horizon questions:**
+  - Has CI duration crept past 15 min?
+  - Which of remaining packages/apps are high-risk (business-os 353 tests, reception 335 tests, cms-ui 240 tests, config 126 tests)?
+  - Is pre-commit hook worth enabling for covered packages before full TYPECHECK_ALL?
+- **Validation contract:** `/lp-replan` run; Phase 6 tasks defined or plan closed
+- **Rollout / rollback:** None: planning control task
+- **Documentation impact:** Plan updated with Phase 6 tasks or Status: Complete
 
 ---
 

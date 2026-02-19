@@ -311,7 +311,7 @@ reference or type-check against SDK types. One full-suite pass de-risks the remo
   - `testing-policy.md` "LLM Refinement Stage" section rewritten: attestation semantics, no LLM-call/fallback language.
 
 - **Validation contract (TC-03):**
-  - TC-03-01: `grep -c "@anthropic-ai/sdk" packages/mcp-server/src/__tests__/draft-refine.test.ts` returns 0.
+  - TC-03-01: `grep -c "jest.mock.*@anthropic-ai/sdk\|MockAnthropic\|__esModule" packages/mcp-server/src/__tests__/draft-refine.test.ts` returns 0 (no SDK mock or mock helpers in the file; the string "@anthropic-ai/sdk" may appear as a literal in TC-01-06's assertion).
   - TC-03-02: all TC-01-01..TC-01-08 assertions pass in targeted run.
   - TC-03-03: `testing-policy.md` no longer contains "LLM call" or "fallback" language in the refinement section; does contain "attestation" or "Claude refines".
   - TC-03-04: `pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage` exits 0.

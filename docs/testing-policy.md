@@ -140,19 +140,20 @@ pnpm -w run test:governed -- jest -- --testPathPattern="draft-generate|draft-int
 - `Avg question coverage`: fraction of detected questions where stemmed keywords appear in the draft body.
 - `Knowledge injections`: count of `sources_used` entries with `injected: true` (TASK-07 gap-fill signal).
 
-### LLM Refinement Stage (Targeted)
+### Attestation Refinement Stage (Targeted)
 
-Use the governed runner with `testPathPattern="draft-refine"` to run the `draft_refine` MCP tool test suite. This suite covers LLM refinement success, graceful fallback on API failure, and quality gate pass on refined output (TASK-11).
+Use the governed runner with `testPathPattern="draft-refine"` to run the `draft_refine` MCP tool test suite. The tool is a **deterministic attestation layer** — Claude (running in the CLI session) performs the refinement and submits `refinedBodyPlain`; the tool validates quality, attests the result, and derives `bodyHtml`. No Anthropic SDK call occurs inside the tool handler (v2, see `docs/plans/email-draft-quality-upgrade-v2/plan.md` TASK-01).
 
 ```bash
-# draft_refine tool unit suite (TC-11-01..04)
+# draft_refine tool unit suite (TC-01-01..TC-01-06)
 pnpm -w run test:governed -- jest -- --testPathPattern="draft-refine" --no-coverage
 ```
 
 **Metric interpretation:**
-- `refinement_applied: true` + `refinement_source: 'claude-cli'` confirms the LLM path executed.
-- `refinement_applied: false` + `refinement_source: 'none'` confirms graceful fallback on error.
-- Quality gate check confirms refined output passes `draft_quality_check`.
+- `refinement_applied: true` + `refinement_source: 'claude-cli'` confirms Claude submitted a refined body (text changed).
+- `refinement_applied: false` + `refinement_source: 'none'` confirms identity check fired (no-op: `refinedBodyPlain === originalBodyPlain`).
+- `quality.passed: true` confirms the attested body passes `draft_quality_check`.
+- `quality.passed: false` with named `failed_checks` is the soft-fail transparency path — caller decides to retry or escalate.
 
 ---
 

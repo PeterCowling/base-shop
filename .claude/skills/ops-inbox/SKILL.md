@@ -174,9 +174,37 @@ When user selects an email to process:
    e. After applying all patches (or escalation insertions), re-render `bodyPlain`
       and `bodyHtml`.
 
-6. **Mandatory second quality gate** — always run before creating the Gmail draft:
+6. **LLM Refinement Stage** — after gap-patching, Claude (not a tool call) assesses
+   the draft holistically and optionally rewrites it to improve tone, flow, and coverage.
+   Then call `draft_refine` to submit and attest the result:
+
    ```typescript
-   draft_quality_check({ actionPlan, draft: { bodyPlain: patchedBodyPlain, bodyHtml: patchedBodyHtml } })
+   draft_refine({
+     actionPlan,
+     originalBodyPlain: patchedBodyPlain,  // post-gap-patch plain text
+     refinedBodyPlain: claudeRefinedBodyPlain,  // Claude's rewrite (or same text if no improvement)
+   })
+   ```
+
+   **Refinement rules:**
+   - **Claude is the refinement actor** — Claude rewrites the body; `draft_refine` is the commit
+     step only. Never invoke an external model from inside this skill.
+   - If Claude judges the draft already strong, pass `refinedBodyPlain === originalBodyPlain` —
+     `draft_refine` will return `refinement_applied: false, refinement_source: 'none'`.
+   - If Claude rewrites: `refinement_applied: true, refinement_source: 'claude-cli'`.
+   - **Hard rules — do NOT modify in refinement:**
+     - `prepayment` category text (1st/2nd/3rd attempt, cancelled, successful templates)
+     - `cancellation` category text (non-refundable, no-show templates)
+     - Never invent policy facts not present in `knowledge_summaries`.
+   - If `quality.passed: false` after refinement: inspect `failed_checks`. If resolvable
+     by a targeted patch, patch and call `draft_refine` again (max one retry). If still
+     failing, escalate to the user with `failed_checks` listed and ask how to proceed.
+   - Note: `refinement_source: 'codex'` is reserved for future CLI-based LLMs; it is
+     not an active path in this workflow.
+
+7. **Mandatory second quality gate** — always run before creating the Gmail draft:
+   ```typescript
+   draft_quality_check({ actionPlan, draft: { bodyPlain: refinedBodyPlain, bodyHtml: refinedBodyHtml } })
    ```
    - If `passed=true` and no `question_coverage` entries remain `missing`: proceed
      to creating the draft.
@@ -186,7 +214,7 @@ When user selects an email to process:
    - `partial_question_coverage` warnings after patching are acceptable to proceed
      if the escalation sentence has been inserted; note them in the session summary.
 
-7. **Present to user**:
+8. **Present to user**:
    ```markdown
    ## Email #1: Availability Inquiry
 

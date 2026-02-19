@@ -5,6 +5,8 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
+import { appendTelemetryEvent } from "./gmail.js";
+
 const bookingEmailSchema = z.object({
   bookingRef: z.string().min(1),
   recipients: z.array(z.string().email()).min(1),
@@ -95,6 +97,16 @@ export async function sendBookingEmail(
     requestBody: {
       message: { raw },
     },
+  });
+
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_draft_created",
+    source_path: "reception",
+    tool_name: "mcp_send_booking_email",
+    message_id: response.data?.message?.id || null,
+    draft_id: response.data?.id || null,
+    actor: "system",
   });
 
   return {

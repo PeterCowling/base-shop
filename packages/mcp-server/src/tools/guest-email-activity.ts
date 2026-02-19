@@ -8,6 +8,8 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { stripLegacySignatureBlock } from "../utils/email-signature.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 
+import { appendTelemetryEvent } from "./gmail.js";
+
 function resolveDataRoot(): string {
   const candidates = [
     join(process.cwd(), "packages", "mcp-server", "data"),
@@ -139,6 +141,14 @@ export async function sendGuestEmailActivity(
   const selection = resolveTemplateSubject(activityCode, resolvedProvider);
 
   if (!selection.subject) {
+    appendTelemetryEvent({
+      ts: new Date().toISOString(),
+      event_key: "email_draft_deferred",
+      source_path: "reception",
+      tool_name: "guest_email_activity",
+      actor: "system",
+      reason: selection.reason ?? "unsupported-activity-code",
+    });
     return {
       success: true,
       status: "deferred",
@@ -155,6 +165,14 @@ export async function sendGuestEmailActivity(
   const template = findTemplateBySubject(templates, selection.subject);
 
   if (!template) {
+    appendTelemetryEvent({
+      ts: new Date().toISOString(),
+      event_key: "email_draft_deferred",
+      source_path: "reception",
+      tool_name: "guest_email_activity",
+      actor: "system",
+      reason: "template-not-found",
+    });
     return {
       success: true,
       status: "deferred",
@@ -215,6 +233,16 @@ export async function sendGuestEmailActivity(
     requestBody: {
       message: { raw },
     },
+  });
+
+  appendTelemetryEvent({
+    ts: new Date().toISOString(),
+    event_key: "email_draft_created",
+    source_path: "reception",
+    tool_name: "guest_email_activity",
+    message_id: response.data?.message?.id || null,
+    draft_id: response.data?.id || null,
+    actor: "system",
   });
 
   return {

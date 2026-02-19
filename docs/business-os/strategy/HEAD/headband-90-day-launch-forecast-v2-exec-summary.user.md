@@ -14,7 +14,7 @@ Source: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.m
 
 ## Decision
 
-Launch HEAD on own-site with a precision acquisition strategy and strict week-1/week-2 recalibration before any scale step.
+Launch HEAD with channel authority from `DEC-HEAD-CH-01`: own-site DTC primary, constrained marketplace probes, and strict week-1/week-2 recalibration before any scale step.
 
 ## Proposed 90-Day Targets
 
@@ -47,3 +47,4 @@ Launch HEAD on own-site with a precision acquisition strategy and strict week-1/
 
 - If CAC/CVR/returns/payment indicators are inside guardrails after week-2 sampling thresholds, continue controlled scale.
 - If not, hold spend expansion, run a focused fix sprint, then re-forecast from observed data.
+- Reopen channel-surface mode only via `DEC-HEAD-CH-01` trigger conditions.

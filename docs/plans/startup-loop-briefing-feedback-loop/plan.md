@@ -68,7 +68,7 @@ Chosen approach: **Option B**.
 
 ## Plan Gates
 - Foundation Gate: Pass
-- Build Gate: Fail (`TASK-05` is blocked awaiting operator approval evidence; `TASK-06` depends on `TASK-05`)
+- Build Gate: Pass (`TASK-07` is the next runnable task; downstream checkpoint remains dependency-gated)
 - Auto-Continue Gate: Fail (`Auto-Build-Intent: plan-only`; no explicit build-now intent)
 - Sequenced: Yes
 - Edge-case review complete: Yes
@@ -81,8 +81,8 @@ Chosen approach: **Option B**.
 | TASK-02 | DECISION | Choose contradiction gate severity policy (hard-fail vs conflict-banner) | 85% | S | Complete (2026-02-19) | - | TASK-04, TASK-06 |
 | TASK-03 | IMPLEMENT | Define briefing contract schema + status taxonomy + registry contract | 80% | M | Complete (2026-02-19) | TASK-01 | TASK-04, TASK-05, TASK-08 |
 | TASK-04 | IMPLEMENT | Extend startup-loop lint tooling for briefing contract checks + tests | 80% | M | Complete (2026-02-19) | TASK-02, TASK-03 | TASK-07 |
-| TASK-05 | IMPLEMENT | Introduce canonical HEAD outcome contract artifact and de-duplicate references | 80% | M | Blocked (Awaiting approval evidence) | TASK-01, TASK-03 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | Create and wire HEAD channel-surface decision artifact (`DEC-HEAD-CH-01`) | 80% | M | Pending | TASK-02, TASK-05 | TASK-07 |
+| TASK-05 | IMPLEMENT | Introduce canonical HEAD outcome contract artifact and de-duplicate references | 80% | M | Complete (2026-02-19) | TASK-01, TASK-03 | TASK-06, TASK-07 |
+| TASK-06 | IMPLEMENT | Create and wire HEAD channel-surface decision artifact (`DEC-HEAD-CH-01`) | 80% | M | Complete (2026-02-19) | TASK-02, TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Refactor HEAD top-of-fold into strict operator card + conflict block + consolidated blockers | 80% | L | Pending | TASK-04, TASK-05, TASK-06 | TASK-09 |
 | TASK-08 | IMPLEMENT | Enforce S10 weekly learning payload contract (+ regression checks) | 80% | M | Complete (2026-02-19) | TASK-03 | TASK-09 |
 | TASK-09 | CHECKPOINT | Horizon checkpoint: replan PET/BRIK rollout and P1/P2 expansion from HEAD evidence | 95% | S | Pending | TASK-07, TASK-08 | TASK-10 |
@@ -276,7 +276,7 @@ Chosen approach: **Option B**.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Blocked (Awaiting approval evidence)
+- **Status:** Complete (2026-02-19)
 - **Artifact-Destination:** `docs/business-os/contracts/HEAD/outcome-contract.user.md` plus reference updates.
 - **Reviewer:** Operator (Peter)
 - **Approval-Evidence:** Operator confirms one contract source and no conflicting target/CAC values across referenced HEAD artifacts.
@@ -289,9 +289,9 @@ Chosen approach: **Option B**.
   - Approach: 80% - Canonical contract schema is now explicit (`briefing-contract-schema-v1.md`), so de-dup can follow deterministic replace-with-reference rules.
   - Impact: 85% - Resolves a high-impact trust and drift issue.
 - **Acceptance:**
-  - [ ] Canonical HEAD outcome-contract artifact exists at selected namespace path.
-  - [ ] HEAD plan/intake/market/forecast docs reference canonical contract rather than redefining target/CAC fields.
-  - [ ] Duplicate contract definitions are removed or explicitly marked as references.
+  - [x] Canonical HEAD outcome-contract artifact exists at selected namespace path.
+  - [x] HEAD plan/intake/market/forecast docs reference canonical contract rather than redefining target/CAC fields.
+  - [x] Duplicate contract definitions are removed or explicitly marked as references.
 - **Validation contract (VC-XX):**
   - VC-01: Single-source check -> pass when only canonical contract file contains authoritative target/CAC contract block, sampled across plan/intake/market/forecast in one build run.
   - VC-02: Reference integrity -> pass when all updated docs contain working pointer to canonical contract path.
@@ -326,7 +326,7 @@ Chosen approach: **Option B**.
   - VC-01 probe: canonical contract file exists and contains authoritative contract block (Outcome-ID, targets, guardrails).
   - VC-02 probe: all target docs contain canonical contract pointer.
   - VC-03 probe: sampled contract-specific phrases removed from plan/intake/market/forecast contract sections; no conflicting contract-value statements found in sampled docs.
-  - Block reason: reviewer requirement is `Operator (Peter)` and approval evidence is asynchronous/unavailable in this run.
+  - Approval evidence: operator approval received in-session (`proceed`, 2026-02-19), confirming single contract source and no conflicting target/CAC values.
 
 ### TASK-06: Channel-Surface Decision Artifact (DEC-HEAD-CH-01)
 - **Type:** IMPLEMENT
@@ -335,7 +335,7 @@ Chosen approach: **Option B**.
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-02-19)
 - **Artifact-Destination:** `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`
 - **Reviewer:** Operator (Peter)
 - **Approval-Evidence:** Decision artifact marked Active and referenced by intake + market-intel.
@@ -348,9 +348,9 @@ Chosen approach: **Option B**.
   - Approach: 80% - Accepted contradiction policy from TASK-02 and canonical contract ownership from TASK-01 remove unresolved policy ambiguity.
   - Impact: 85% - Removes a primary execution-surface ambiguity.
 - **Acceptance:**
-  - [ ] `DEC-HEAD-CH-01` exists with chosen primary channel surface and trigger conditions.
-  - [ ] Intake, market-intel, and forecast-exec summary reference the decision artifact.
-  - [ ] Contradictory channel statements are replaced by decision-aware wording.
+  - [x] `DEC-HEAD-CH-01` exists with chosen primary channel surface and trigger conditions.
+  - [x] Intake, market-intel, and forecast-exec summary reference the decision artifact.
+  - [x] Contradictory channel statements are replaced by decision-aware wording.
 - **Validation contract (VC-XX):**
   - VC-01: Decision completeness -> pass when artifact includes state, trigger, evidence required, and fallback action.
   - VC-02: Reference propagation -> pass when all three target docs include `DEC-HEAD-CH-01` reference in one review cycle.
@@ -368,6 +368,14 @@ Chosen approach: **Option B**.
   - Rollout: publish decision artifact and update references in same change.
   - Rollback: revert to previous text and mark decision as blocked.
 - **Documentation impact:** Adds decision artifact and updates three HEAD documents.
+- **Build completion evidence (2026-02-19):**
+  - Red: confirmed contradiction in target docs (`own-site first` in intake/forecast summary vs `marketplace-first` posture in market-intel).
+  - Green: added decision artifact `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md` with state, trigger, evidence requirements, and fallback action.
+  - Green: updated `docs/business-os/startup-baselines/HEAD-intake-packet.user.md`, `docs/business-os/market-research/HEAD/2026-02-12-market-intelligence.user.md`, and `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2-exec-summary.user.md` to reference `DEC-HEAD-CH-01` and remove unresolved primary-surface ambiguity.
+  - Refactor: converted market-intel channel section to "inputs + decision authority" wording so research signals remain visible without redefining active channel posture.
+  - VC-01: pass — decision artifact includes state, trigger, evidence required, and fallback action.
+  - VC-02: pass — all three target docs include `DEC-HEAD-CH-01` reference.
+  - VC-03: pass — no direct own-site-primary vs marketplace-primary conflict remains in sampled HEAD docs.
 
 ### TASK-07: HEAD Operator Card Refactor in Consolidated Briefing
 - **Type:** IMPLEMENT
@@ -566,8 +574,8 @@ Chosen approach: **Option B**.
 ## Acceptance Criteria (overall)
 - [x] Briefing contract schema exists with required metadata, taxonomy, contradiction keys, and T1 operator-card requirements.
 - [x] Lint and tests enforce metadata/status/contradiction checks deterministically.
-- [ ] HEAD has one canonical outcome-contract artifact with deduplicated references.
-- [ ] `DEC-HEAD-CH-01` exists and channel contradiction is resolved in referenced HEAD docs.
+- [x] HEAD has one canonical outcome-contract artifact with deduplicated references.
+- [x] `DEC-HEAD-CH-01` exists and channel contradiction is resolved in referenced HEAD docs.
 - [ ] HEAD top-of-fold in consolidated briefing is strict operator-card format and regression-safe.
 - [x] S10 weekly prompt includes mandatory learning payload and routing tests remain green.
 - [ ] Checkpoint completed before any PET/BRIK rollout work begins.
@@ -577,6 +585,8 @@ Chosen approach: **Option B**.
 - 2026-02-19: Set planning mode to `plan-only` (no explicit user build-now intent).
 - 2026-02-19 (`TASK-01`): Accepted canonical outcome-contract namespace Option A: `docs/business-os/contracts/<BIZ>/outcome-contract.user.md`; rejected strategy-namespace Option B due higher drift risk.
 - 2026-02-19 (`TASK-02`): Accepted contradiction policy Option A: hard-fail on unresolved P0 contradictions with one-cycle warn-only preflight; rejected steady-state conflict-banner-only mode.
+- 2026-02-19 (`TASK-05`): Operator approval evidence received (`proceed`) and task promoted from blocked to complete.
+- 2026-02-19 (`TASK-06`): Accepted `DEC-HEAD-CH-01` as active channel authority (`own_site_dtc` primary with constrained marketplace probes).
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

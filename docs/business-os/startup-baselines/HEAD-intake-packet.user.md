@@ -18,7 +18,7 @@ Source-Forecast: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-
 - First product lane: headbands that keep processors secure during daily use, school/play, and sport (`observed`).
 - Launch-surface mode is currently `pre-website` (`observed`).
 - Stock for first product is already purchased; near-term availability is expected (`observed`).
-- Channel intent is own-site first, with speed-to-first-sales priority (`observed`).
+- Channel-surface decision is `DEC-HEAD-CH-01`: own-site DTC primary, with constrained marketplace probes for evidence capture (`observed`).
 - Execution posture is startup-speed: direct sales execution is prioritized over CMS work (`observed`).
 - Core uncertainty is not category demand; it is execution quality (fit/compatibility clarity, conversion, and returns control) (`inferred`).
 
@@ -40,7 +40,7 @@ Source-Forecast: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-
 |---|---|---|
 | First-buyer ICP | Parents/caregivers of young children with cochlear implants | inferred (from market-intel and competitor patterns) |
 | Secondary ICP | Active/sport users and daily-comfort adult users | inferred |
-| Planned channels (initial) | Own-site DTC (primary), with speed-first launch posture | observed |
+| Planned channels (initial) | Decision-locked by `DEC-HEAD-CH-01`: own-site DTC (primary) + constrained marketplace probes | observed |
 | Support expectation | Fast pre-purchase support for compatibility/fit uncertainty | inferred |
 
 ## D) Constraints and Assumptions Register
@@ -57,7 +57,9 @@ Source-Forecast: docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-
 
 - Canonical contract (source of truth): `docs/business-os/contracts/HEAD/outcome-contract.user.md`
 - Intake role: provide assumptions, constraints, and missing-data inputs to the canonical contract; this packet does not redefine target/CAC contract values.
-- Decision link: `DEC-HEAD-01` (scale vs hold paid expansion)
+- Decision links:
+  - `DEC-HEAD-01` (scale vs hold paid expansion)
+  - `DEC-HEAD-CH-01` (channel-surface decision)
 
 ## F) Missing-Data Checklist (to progress S1/S3)
 

@@ -19,7 +19,7 @@ Source: Deep Research (operator-provided)
 - Headband retention products are clearly active in Italian specialist retail.
 - Observed visible price corridor is broad (roughly low-teens EUR to premium ~EUR65).
 - Etsy and Amazon surfaces show established marketplace behavior for this category.
-- Fastest route to first sales is likely marketplace-first plus lightweight DTC.
+- Research signal suggests strong marketplace demand capture potential; operating channel authority is decision-bound in `DEC-HEAD-CH-01`.
 - Segment sequencing should start with highest urgency users (caregivers/children), then sport-active users, then daily-comfort adults.
 - Economics can work but are highly sensitive to conversion, CAC, and especially returns.
 - Checkout/payments must align with Italian buyer expectations (cards/wallets, with PayPal strong).
@@ -99,13 +99,17 @@ Directional priors for early planning:
 - CAC prior: highly uncertain pre-launch; must be measured in week 1-2.
 - Margin prior: feasible only if fit/returns/support friction are managed.
 
-## H) Channel Strategy (First 90 Days)
+## H) Channel Strategy Inputs (First 90 Days)
 
-Recommended sequence:
-1. Marketplace-first demand capture (Etsy first; Amazon if operationally feasible).
-2. Minimal DTC surface for trust/FAQ/compatibility and assisted checkout.
-3. Community/association-led trust channels for low-CAC signal.
-4. Paid expansion only after evidence gates pass.
+Decision authority:
+- Channel-surface decision is governed by `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`.
+- Current decision state (Active): own-site DTC primary, with constrained marketplace probes.
+
+Research-derived channel inputs:
+1. Marketplace probes should prioritize Etsy first; Amazon only if operationally feasible.
+2. Minimal DTC trust/FAQ/compatibility surface remains mandatory for denominator-quality learning.
+3. Community/association-led trust channels remain low-CAC opportunities.
+4. Paid expansion should follow evidence-gate pass conditions only.
 
 ## I) Website Design Implications
 
@@ -154,7 +158,7 @@ Red lines:
 | Contract input area | Evidence contribution from this pack |
 |---|---|
 | Segment priority and ICP sequence | Children/caregiver priority, then sport-active and daily-comfort users |
-| Channel surface risk/opportunity | Marketplace evidence, own-site implications, and sequencing constraints |
+| Channel surface risk/opportunity | Marketplace evidence, own-site implications, sequencing constraints; authority delegated to `DEC-HEAD-CH-01` |
 | Economics sensitivity | CVR/CAC/returns sensitivity and payment-mix constraints |
 | Compliance boundary conditions | MDR/GPSR/withdrawal-rights constraints and claims red lines |
 

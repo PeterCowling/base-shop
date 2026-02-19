@@ -43,7 +43,9 @@ describe("platform-core db stub", () => {
     });
   });
 
-  it("falls back to stub when prisma client fails to load", async () => {
+  it("throws when prisma client fails to load in production", async () => {
+    // db.ts now uses missingPrismaClient() (throwing proxy) when Prisma is
+    // unavailable in production — no longer falls back to an in-memory stub.
     (process.env as Record<string, string | undefined>).NODE_ENV = "production";
     (process.env as Record<string, string | undefined>).DATABASE_URL = "postgres://example";
     jest.doMock("@acme/config/env/core", () => ({
@@ -59,11 +61,7 @@ describe("platform-core db stub", () => {
 
     const { prisma } = (await import("@acme/platform-core/db")) as { prisma: any };
 
-    await prisma.rentalOrder.create({
-      data: { shop: "shop", sessionId: "1", trackingNumber: "t1" },
-    });
-    const orders = await prisma.rentalOrder.findMany({ where: { shop: "shop" } });
-    expect(orders).toHaveLength(1);
+    expect(() => prisma.rentalOrder).toThrow("Prisma client unavailable");
   });
 
   it("throws when updating a nonexistent order", async () => {

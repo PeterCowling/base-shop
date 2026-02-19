@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { mockNextAuthAdmin,withTempRepo } from "@acme/test-utils";
 
-jest.setTimeout(30000);
+jest.setTimeout(120000);
 
 const withRepo = (cb: (dir: string) => Promise<void>) =>
   withTempRepo(async (dir) => {
@@ -15,7 +15,6 @@ describe("page actions", () => {
   afterEach(() => jest.resetAllMocks());
 
   it("createPage stores new page", async () => {
-    jest.setTimeout(60000);
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));

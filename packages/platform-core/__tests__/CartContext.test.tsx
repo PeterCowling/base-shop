@@ -51,6 +51,7 @@ beforeEach(() => {
   localStorage.clear();
   jest.restoreAllMocks();
   jest.spyOn(console, "error").mockImplementation(() => {});
+  jest.spyOn(console, "warn").mockImplementation(() => {});
 });
 
 describe("CartContext", () => {

@@ -71,7 +71,7 @@ describe("PricingForm", () => {
       "/api/data/s1/rental/pricing",
       expect.objectContaining({ method: "POST" })
     );
-    expect(await screen.findByText("Saved!")).toBeInTheDocument();
+    expect(await screen.findByText("Pricing saved")).toBeInTheDocument();
   });
 
   it("shows error for invalid JSON", async () => {

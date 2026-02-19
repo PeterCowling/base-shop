@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 
-import React from "react";
+import React, { Suspense } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 
 import PreviewViewer from "../src/app/preview/[token]/page";
@@ -39,7 +39,11 @@ describe("Version preview page", () => {
   });
 
   it("renders a runtime preview for a loaded version", async () => {
-    render(<PreviewViewer params={Promise.resolve({ token: "test-token" })} />);
+    render(
+      <Suspense fallback={null}>
+        <PreviewViewer params={Promise.resolve({ token: "test-token" })} />
+      </Suspense>
+    );
 
     await waitFor(() =>
       expect(screen.getByTestId("runtime-preview")).toBeInTheDocument(),

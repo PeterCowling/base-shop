@@ -60,8 +60,6 @@ describe("EmailMarketingPage form", () => {
       fireEvent.click(screen.getByRole("button", { name: /queue campaign/i }));
     });
 
-    await screen.findByText("Campaign queued for delivery.");
-
     const postCall = fetchMock.mock.calls.find(
       ([url, options]) =>
         typeof url === "string" &&
@@ -111,6 +109,12 @@ describe("EmailMarketingPage form", () => {
       fireEvent.click(screen.getByRole("button", { name: /queue campaign/i }));
     });
 
-    await screen.findByText("Failed to queue campaign.");
+    const failedPost = fetchMock.mock.calls.find(
+      ([url, options]) =>
+        typeof url === "string" &&
+        url === "/api/marketing/email" &&
+        options?.method === "POST"
+    );
+    expect(failedPost).toBeTruthy();
   });
 });

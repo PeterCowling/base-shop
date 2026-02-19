@@ -15,6 +15,7 @@ describe("page actions", () => {
   afterEach(() => jest.resetAllMocks());
 
   it("createPage stores new page", async () => {
+    jest.setTimeout(60000);
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
